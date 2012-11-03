@@ -13,7 +13,7 @@ abstract class Z() {}
 
 void noop() {}
 
-void higher1(String[] strings, Callable<Void,String> f) {
+void higher1(String[] strings, Callable<Void,<String>> f) {
     void g(String str) = f;
     for (s in strings) {
         g(s);
@@ -49,15 +49,15 @@ X->Y generic<X,Y>(Y f(X x), X x())
 T do<T>(T f()) { return f(); }
 
 void method() {
-    Callable<String,String> upperRef = upper;
-    Callable<Void,String> printRef = print;
-    Callable<Void,Bottom> printRefContra = print;
-    Callable<X,String> xRef = X;
+    Callable<String,<String>> upperRef = upper;
+    Callable<Void,<String>> printRef = print;
+    Callable<Void,<Bottom>> printRefContra = print;
+    Callable<X,<String>> xRef = X;
     Callable<Void,Bottom> xRefContra = X;
     X x = X("hello");
-    Callable<X.Y> yRef = x.Y;
-    Callable<Void> helloRef = x.hello;
-    Callable<Void> noopRef = noop;
+    Callable<X.Y,Empty> yRef = x.Y;
+    Callable<Void,Empty> helloRef = x.hello;
+    Callable<Void,Empty> noopRef = noop;
     
     higher1({"hello", "world"}, print);
     higher1({"hello", "world"}, upper);
@@ -116,9 +116,9 @@ void method() {
     
     @error print(s);
     
-    @type["Callable<Float,Float>"] curried(1);
+    @type["Callable<Float,Tuple<Float,Float,Empty>>"] curried(1);
     Float plus1(Float x) = curried(1);
-    @type["Callable<Float,Float>"] value p1 = curried(1);
+    @type["Callable<Float,Tuple<Float,Float,Empty>>"] value p1 = curried(1);
     Float three = plus1(2.0);
     Float four = curried(2)(2.0);
     @error curried(2)("foo");
@@ -153,7 +153,7 @@ void testMultiCompare() {
     multiCompare()(1,1);
 }
 
-Callable<String> tester() {
+Callable<String,Empty> tester() {
     String f() { return "ok"; }
     return f;
 }

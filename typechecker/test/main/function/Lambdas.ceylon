@@ -55,15 +55,15 @@ class Lambdas() {
     applyToTwo(sqrt);
     applyToTwo((Float x) x**3);
     
-    @type["Callable<Float,Callable<Float,Float>>"] value applyToOne = apply(1.0);
+    @type["Callable<Float,Tuple<Callable<Float,Tuple<Float,Float,Empty>>,Callable<Float,Tuple<Float,Float,Empty>>,Empty>>"] value applyToOne = apply(1.0);
     @type["Float"] applyToOne(sqrt);
     @type["Float"] applyToOne((Float x) x**3);
     
-    void exec(Callable<Void> run) {
+    void exec(Callable<Void,Empty> run) {
         run();
     }
     
-    Callable<String> lazy(String s) {
+    Callable<String,Empty> lazy(String s) {
         function result() {
             return s;
         }
@@ -81,24 +81,24 @@ class Lambdas() {
     @type["String"] function nm2(String middle)(String last) = name("Gavin");
     @type["String"] function nm1(String last) = name("Gavin")("A");
     
-    @type["Callable<Callable<String,String>,String>"] value nmv2 = name("Gavin");
-    @type["Callable<String,String>"] value nmv1 = name("Gavin")("A");
+    @type["Callable<Callable<String,Tuple<String,String,Empty>>,Tuple<String,String,Empty>>"] value nmv2 = name("Gavin");
+    @type["Callable<String,Tuple<String,String,Empty>>"] value nmv1 = name("Gavin")("A");
     
     void noop(String x)(Integer y)(Float z) {}
     noop("")(1)(1.0);
     @error noop("")(1.0)(1.0);
     @error noop("")(1)(1);
     
-    @type["Callable<String,String>"] function higher() {
+    @type["Callable<String,Tuple<String,String,Empty>>"] function higher() {
         return (String s) s.uppercased;
     }
 
-    @type["Callable<Callable<Float,Float>,Float>"] function evenHigher(Float z) {
+    @type["Callable<Callable<Float,Tuple<Float,Float,Empty>>,Tuple<Float,Float,Empty>>"] function evenHigher(Float z) {
         return (Float x)(Float y) x+y+z;
     }
     
     @type["String"] function l1(String s) = (String s) s.uppercased;
-    @type["Callable<String,String>"] value l2 = (String s) s.lowercased;
+    @type["Callable<String,Tuple<String,String,Empty>>"] value l2 = (String s) s.lowercased;
     @error String l3(String s) = (String s) s.size;
     @error Integer l4(String s, Integer i) = (String s) s.size;
     
