@@ -46,3 +46,47 @@ final class selfType2_ {
         x.compareTo((X)y);
     }
 }
+interface A extends .ceylon.language.Comparable {
+}
+final class A$impl {
+    
+    A$impl(.com.redhat.ceylon.compiler.java.test.expression.invoke.A $this) {
+        this.$this = $this;
+    }
+    private final .com.redhat.ceylon.compiler.java.test.expression.invoke.A $this;
+}
+interface C extends .ceylon.language.Comparable {
+}
+final class C$impl {
+    
+    C$impl(.com.redhat.ceylon.compiler.java.test.expression.invoke.C $this) {
+        this.$this = $this;
+    }
+    private final .com.redhat.ceylon.compiler.java.test.expression.invoke.C $this;
+}
+interface D extends .ceylon.language.Comparable<.com.redhat.ceylon.compiler.java.test.expression.invoke.D> {
+}
+final class D$impl {
+    
+    D$impl(.com.redhat.ceylon.compiler.java.test.expression.invoke.D $this) {
+        this.$this = $this;
+    }
+    private final .com.redhat.ceylon.compiler.java.test.expression.invoke.D $this;
+}
+final class selfTypeTest_ {
+    
+    private selfTypeTest_() {
+    }
+    
+    static void selfTypeTest(final .ceylon.language.Comparable<? super .com.redhat.ceylon.compiler.java.test.expression.invoke.D> d) {
+        final .com.redhat.ceylon.compiler.java.test.expression.invoke.D temp = (.com.redhat.ceylon.compiler.java.test.expression.invoke.D)d;
+        final .java.lang.Object v = (
+            let
+            {
+                .ceylon.language.print_.print(.ceylon.language.String.instance(""));
+            }
+            returning null;
+        );
+        .ceylon.language.print_.print(v);
+    }
+}
