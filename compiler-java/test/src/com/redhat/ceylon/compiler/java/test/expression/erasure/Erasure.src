@@ -414,7 +414,7 @@ class Test {
         .java.lang.Object $elem$20;
         for (.ceylon.language.Iterator<? extends .java.lang.Object> $it$iter$21 = (.ceylon.language.Iterator<? extends .java.lang.Object>)naturals.getIterator(); !(($elem$20 = $it$iter$21.next()) instanceof .ceylon.language.Finished); ) {
             final .java.lang.Object it = (.java.lang.Object)$elem$20;
-            final long n6 = ((.ceylon.language.Integer)it).longValue();
+            final .ceylon.language.Numeric<.ceylon.language.Integer> n6 = (.ceylon.language.Integer)it;
         }
         .java.lang.Object $elem$22;
         for (.ceylon.language.Iterator<? extends .com.redhat.ceylon.compiler.java.test.expression.erasure.Left> $itLeft$iter$23 = (.ceylon.language.Iterator<? extends .com.redhat.ceylon.compiler.java.test.expression.erasure.Left>)leftsAndRights.getIterator(); !(($elem$22 = $itLeft$iter$23.next()) instanceof .ceylon.language.Finished); ) {
