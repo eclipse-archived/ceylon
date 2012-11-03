@@ -1061,6 +1061,7 @@ public abstract class AbstractTransformer implements Transformation {
     private ListBuffer<JCExpression> makeTypeArgs(boolean isCeylonCallable,
             int flags, Map<TypeParameter, ProducedType> tas,
             java.util.List<TypeParameter> tps) {
+        boolean onlyErasedUnions = true;
         ListBuffer<JCExpression> typeArgs = new ListBuffer<JCExpression>();
         for (TypeParameter tp : tps) {
             ProducedType ta = tas.get(tp);
@@ -1080,17 +1081,22 @@ public abstract class AbstractTransformer implements Transformation {
                     // use raw types if:
                     // - we're calling a constructor
                     // - we're not in a type argument (when used as type arguments raw types have more constraint than at the toplevel)
-                    //   or not in an extends or satisfies
+                    //   or we're in an extends or satisfies and the type parameter is a self type
                     if((flags & JT_CLASS_NEW) != 0
-                            || (flags & (__JT_TYPE_ARGUMENT | JT_EXTENDS | JT_SATISFIES)) == 0
                             || ((flags & (JT_EXTENDS | JT_SATISFIES)) != 0 && tp.getSelfTypedDeclaration() != null)){
                         // A bit ugly, but we need to escape from the loop and create a raw type, no generics
                         typeArgs = null;
                         break;
+                    } else if((flags & (__JT_TYPE_ARGUMENT | JT_EXTENDS | JT_SATISFIES)) != 0) {
+                        onlyErasedUnions = false;
                     }
                     // otherwise just go on
-                }else
+                }else{
                     ta = listType;
+                    onlyErasedUnions = false;
+                }
+            } else {
+                onlyErasedUnions = false;
             }
             if (isCeylonBoolean(ta)
                     && !isTypeParameter(ta)) {
@@ -1187,6 +1193,9 @@ public abstract class AbstractTransformer implements Transformation {
                 // In the runtime Callable only has a single type param
                 break;
             }
+        }
+        if (onlyErasedUnions) {
+            typeArgs = null;
         }
         return typeArgs;
     }
