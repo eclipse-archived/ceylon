@@ -24,8 +24,8 @@ doc "A nonempty, immutable sequence of values. A sequence of
 see (Empty)
 by "Gavin"
 shared interface Sequence<out Element>
-        satisfies List<Element> & Some<Element> &
-                  Ranged<Integer,Element[]> &
+        satisfies Sequential<Element> & 
+                  Some<Element> &
                   Cloneable<Sequence<Element>> {
     
     doc "The index of the last element of the sequence."

@@ -2,7 +2,8 @@ doc "A sequence with no elements. The type of the expression
      `{}`."
 see (Sequence)
 shared interface Empty
-           satisfies List<Bottom> & None<Bottom> &
+           satisfies Sequential<Bottom> & 
+                     None<Bottom> &
                      Ranged<Integer,Empty> &
                      Cloneable<Empty> {
 
