@@ -22,10 +22,10 @@ initType(StringOfSome, "ceylon.language::StringOfSome", String$, Some);
 function StringOfNone() {}
 initType(StringOfNone, "ceylon.language::StringOfNone", String$, None);
 var String$proto = String$.$$.prototype;
-String$proto.getT$name$ = function() {
+String$proto.getT$name = function() {
     return ((this.length!==0)?StringOfSome:StringOfNone).$$.T$name;
 }
-String$proto.getT$all$ = function() {
+String$proto.getT$all = function() {
     return ((this.length!==0)?StringOfSome:StringOfNone).$$.T$all;
 }
 String$proto.toString = origStrToString;

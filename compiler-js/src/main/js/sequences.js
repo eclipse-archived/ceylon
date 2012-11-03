@@ -46,10 +46,10 @@ function ArraySequence(/* js array */value) {
 }
 initTypeProto(ArraySequence, 'ceylon.language::ArraySequence', IdentifiableObject, Sequence);
 
-Array$proto.getT$name$ = function() {
+Array$proto.getT$name = function() {
     return (this.$seq ? ArraySequence : (this.length>0?ArrayList:EmptyArray)).$$.T$name;
 }
-Array$proto.getT$all$ = function() {
+Array$proto.getT$all = function() {
     return (this.$seq ? ArraySequence : (this.length>0?ArrayList:EmptyArray)).$$.T$all;
 }
 

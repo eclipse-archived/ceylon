@@ -24,8 +24,8 @@ function initType(type, typeName) {
         var superTypes = arguments[i].$$.T$all;
         for (var $ in superTypes) {cons.T$all[$] = superTypes[$]}
     }
-    cons.prototype.getT$name$ = getT$name;
-    cons.prototype.getT$all$ = getT$all;
+    cons.prototype.getT$name = getT$name;
+    cons.prototype.getT$all = getT$all;
 }
 function initTypeProto(type, typeName) {
     initType.apply(this, arguments);
@@ -46,8 +46,8 @@ function initExistingType(type, cons, typeName) {
     var proto = cons.prototype;
     if (cons !== undefined) {
         try {
-            cons.prototype.getT$name$ = getT$name;
-            cons.prototype.getT$all$ = getT$all;
+            cons.prototype.getT$name = getT$name;
+            cons.prototype.getT$all = getT$all;
         } catch (exc) {
             // browser probably prevented access to the prototype
         }
@@ -274,10 +274,10 @@ function trueClass() {}
 initType(trueClass, "ceylon.language::true", Boolean$);
 function falseClass() {}
 initType(falseClass, "ceylon.language::false", Boolean$);
-Boolean.prototype.getT$name$ = function() {
+Boolean.prototype.getT$name = function() {
     return (this.valueOf()?trueClass:falseClass).$$.T$name;
 }
-Boolean.prototype.getT$all$ = function() {
+Boolean.prototype.getT$all = function() {
     return (this.valueOf()?trueClass:falseClass).$$.T$all;
 }
 Boolean.prototype.equals = function(other) {return other.constructor===Boolean && other==this;}

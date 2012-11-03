@@ -32,10 +32,10 @@ function Float(value) {
 initTypeProto(Float, 'ceylon.language::Float', Object$, Scalar, Castable, Exponentiable);
 
 var JSNum$proto = Number.prototype;
-JSNum$proto.getT$all$ = function() {
+JSNum$proto.getT$all = function() {
     return (this.$float ? Float : Integer).$$.T$all;
 }
-JSNum$proto.getT$name$ = function() {
+JSNum$proto.getT$name = function() {
     return (this.$float ? Float : Integer).$$.T$name;
 }
 JSNum$proto.toString = origNumToString;

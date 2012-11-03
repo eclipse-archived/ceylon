@@ -1497,7 +1497,7 @@ public class GenerateJsVisitor extends Visitor
         
         Scope scope = getSuperMemberScope(node);
         if (prototypeStyle && (scope != null)) {
-            sb.append("getT$all$()['");
+            sb.append("getT$all()['");
             sb.append(scope.getQualifiedNameString());
             sb.append("'].$$.prototype.");
         }
