@@ -416,13 +416,14 @@ public class TypeVisitor extends Visitor {
     @Override
     public void visit(Tree.FunctionType that) {
         super.visit(that);
+        //TODO: handle sequenced parameter types, i.e. Void(String...)
         List<ProducedType> args = new ArrayList<ProducedType>();
         for (Tree.StaticType st: that.getArgumentTypes()) {
             args.add(st.getTypeModel());
         }
         that.setTypeModel(producedType(unit.getCallableDeclaration(),
         		that.getReturnType().getTypeModel(),
-        		unit.getTupleType(args)));
+        		unit.getTupleType(args, false)));
     }
     
     @Override

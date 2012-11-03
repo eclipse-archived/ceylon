@@ -1160,6 +1160,9 @@ public class ProducedType extends ProducedReference {
                     return tal.get(0).getProducedTypeName() + 
                     		"(" + argtypes(tal.get(1)) + ")";
                 }
+                if (abbreviateTuple(unit)) {
+                    return "<" + argtypes(this) + ">";
+                }
             }
             if (getDeclaration() instanceof UnionType) {
                 StringBuilder name = new StringBuilder();
@@ -1192,17 +1195,15 @@ public class ProducedType extends ProducedReference {
             }
         }
     }
+
+	private boolean abbreviateTuple(Unit unit) {
+		return getDeclaration() instanceof Class && getDeclaration().equals(unit.getTupleDeclaration());
+	}
     
-    private String argtypes(ProducedType args) {
-    	Unit unit = getDeclaration().getUnit();
+    private static String argtypes(ProducedType args) {
+    	Unit unit = args.getDeclaration().getUnit();
     	if (args!=null) {
-    		if (args.getDeclaration() instanceof UnionType) {
-    			ProducedType elementType = unit.getElementType(args);
-    			if (elementType!=null) { 
-    				return elementType.getProducedTypeName() + "...";
-    			}
-    		}
-    		else if (args.getDeclaration() instanceof Class) {
+    		if (args.getDeclaration() instanceof ClassOrInterface) {
     			if (args.getDeclaration().equals(unit.getTupleDeclaration())) {
     				List<ProducedType> tal = args.getTypeArgumentList();
     				if (tal.size()>=3) {
@@ -1210,7 +1211,8 @@ public class ProducedType extends ProducedReference {
     					ProducedType rest = tal.get(2);
     					if (first!=null && rest!=null) {
     						String result = first.getProducedTypeName();
-    						if (!rest.getDeclaration().equals(unit.getEmptyDeclaration())) {
+    						if (!(rest.getDeclaration() instanceof Interface) ||
+    								!rest.getDeclaration().equals(unit.getEmptyDeclaration())) {
     							result += ", " + argtypes(rest);
     						}
     						return result;
@@ -1219,6 +1221,12 @@ public class ProducedType extends ProducedReference {
     			}
     			else if (args.getDeclaration().equals(unit.getEmptyDeclaration())) {
     				return "";
+    			}
+    		}
+    		else {
+    			ProducedType elementType = unit.getElementType(args);
+    			if (elementType!=null) { 
+    				return elementType.getProducedTypeName() + "...";
     			}
     		}
     	}

@@ -366,32 +366,43 @@ public class Unit {
     	ProducedType result = rt;
     	if (ref.getDeclaration() instanceof Functional) {
     	    List<ParameterList> pls = ((Functional) ref.getDeclaration()).getParameterLists();
+    	    boolean hasSequenced = false;
             for (int i=pls.size()-1; i>=0; i--) {
     	        List<ProducedType> args = new ArrayList<ProducedType>();
     	    	for (Parameter p: pls.get(i).getParameters()) {
     	    		ProducedTypedReference np = ref.getTypedParameter(p);
-    	    		if (np.getDeclaration() instanceof Functional) {
-    	    			args.add(getCallableType(np, np.getType()));
+    	    		ProducedType npt = np.getType();
+					if (np.getDeclaration() instanceof Functional) {
+    	    			args.add(getCallableType(np, npt));
+    	    		}
+    	    		else if (p.isSequenced()) {
+    	    			args.add(getIteratedType(npt));
+    	    			hasSequenced = true;
     	    		}
     	    		else {
-					    args.add(np.getType());
+					    args.add(npt);
     	    		}
     	    	}
     	    	result = producedType(getCallableDeclaration(), result,
-    	    			getTupleType(args));
+    	    			getTupleType(args, hasSequenced));
     	    }
     	}
     	return result;
     }
     
-    public ProducedType getTupleType(List<ProducedType> elemTypes) {
+    public ProducedType getTupleType(List<ProducedType> elemTypes, boolean sequenced) {
     	ProducedType result = getEmptyDeclaration().getType();
     	ProducedType union = getBottomDeclaration().getType();
-    	for (int i=elemTypes.size()-1; i>=0; i--) {
+    	int last = elemTypes.size()-1;
+    	for (int i=last; i>=0; i--) {
     		ProducedType elemType = elemTypes.get(i);
     		union = unionType(union, elemType, this);
-			result = producedType(getTupleDeclaration(), union, elemType, result);
-    		
+    		if (sequenced && i==last) {
+    			result = getEmptyType(getSequenceType(elemType));
+    		}
+    		else {
+    			result = producedType(getTupleDeclaration(), union, elemType, result);
+    		}
     	}
     	return result;
     }

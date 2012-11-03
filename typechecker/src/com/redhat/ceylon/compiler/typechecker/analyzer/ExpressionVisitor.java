@@ -1676,7 +1676,7 @@ public class ExpressionVisitor extends Visitor {
     
     private List<ProducedType> argtypes(ProducedType args) {
 		if (args!=null) {
-    		if (args.getDeclaration() instanceof Class) {
+    		if (args.getDeclaration() instanceof ClassOrInterface) {
     			if (args.getDeclaration().equals(unit.getTupleDeclaration())) {
     				List<ProducedType> tal = args.getTypeArgumentList();
     				if (tal.size()>=3) {
@@ -1684,10 +1684,10 @@ public class ExpressionVisitor extends Visitor {
     					result.add(0, tal.get(1));
     					return result;
     				}
-    			}
-    		}
-    		else if (args.getDeclaration().equals(unit.getEmptyDeclaration())) {
-    			return new LinkedList<ProducedType>();
+        		}
+        		else if (args.getDeclaration().equals(unit.getEmptyDeclaration())) {
+        			return new LinkedList<ProducedType>();
+        		}
     		}
     		else {
 				ProducedType elemType = unit.getElementType(args);
