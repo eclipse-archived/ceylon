@@ -245,6 +245,10 @@ public class Unit {
         return (Interface) getLanguageModuleDeclaration("Iterable");
     }
     
+    public Interface getSequentialDeclaration() {
+        return (Interface) getLanguageModuleDeclaration("Sequential");
+    }
+    
     public Interface getListDeclaration() {
         return (Interface) getLanguageModuleDeclaration("List");
     }
@@ -588,6 +592,10 @@ public class Unit {
     
     public boolean isIterableType(ProducedType pt) {
         return pt.getSupertype(getIterableDeclaration())!=null;
+    }
+    
+    public boolean isSequentialType(ProducedType pt) {
+        return pt.getSupertype(getSequentialDeclaration())!=null;
     }
     
     public boolean isOptionalType(ProducedType pt) {

@@ -1616,13 +1616,19 @@ functionOrExpressionOrTuple returns [Expression expression]
       { $expression=$fe1.expression;
         t.addExpression($fe1.expression); }
       (
-        c=COMMA 
-        { $expression = e;
-          t.setEndToken($c); }
-        fe2=functionOrExpression
-        { t.addExpression($fe2.expression);
-          t.setEndToken(null); }
-      )*
+        (
+          c=COMMA 
+          { $expression = e;
+            t.setEndToken($c); }
+          fe2=functionOrExpression
+          { t.addExpression($fe2.expression);
+            t.setEndToken(null); }
+        )+
+        (
+          ELLIPSIS
+          { t.setEllipsis(new Ellipsis($ELLIPSIS)); }
+        )?
+      )?
     ;
     
 positionalArguments returns [PositionalArgumentList positionalArgumentList]
@@ -2131,14 +2137,14 @@ stringTemplate returns [StringTemplate stringTemplate]
 typeArguments returns [TypeArgumentList typeArgumentList]
     : SMALLER_OP
       { $typeArgumentList = new TypeArgumentList($SMALLER_OP); }
-      ta1=typeArgument 
+      ta1=type
       { if ($ta1.type!=null)
             $typeArgumentList.addType($ta1.type); }
       (
         c=COMMA
         { $typeArgumentList.setEndToken($c); }
         (
-          ta2=typeArgument
+          ta2=type
           { $typeArgumentList.addType($ta2.type); 
             $typeArgumentList.setEndToken(null); }
           | { displayRecognitionError(getTokenNames(), 
@@ -2149,7 +2155,7 @@ typeArguments returns [TypeArgumentList typeArgumentList]
       { $typeArgumentList.setEndToken($LARGER_OP); }
     ;
 
-typeArgument returns [Type type]
+tupleElementType returns [Type type]
     : t=type
       { $type = $t.type; }
       ( 
@@ -2169,12 +2175,12 @@ type returns [StaticType type]
 tupleType returns [TupleType type]
     : SMALLER_OP
       { $type = new TupleType($SMALLER_OP); }
-      t1=typeArgument 
+      t1=tupleElementType 
       { $type.addElementType($t1.type); }
       (
         c=COMMA
         { $type.setEndToken($c); }
-        t2=typeArgument
+        t2=tupleElementType
         { $type.addElementType($t2.type);
           $type.setEndToken(null); }
       )*
@@ -2275,15 +2281,15 @@ abbreviatedType returns [StaticType type]
           bt.setReturnType($type);
           $type=bt; }
           (
-            t1=type
+            t1=tupleElementType
             { if ($t1.type!=null)
                   bt.addArgumentType($t1.type); }
             (
               COMMA
               { bt.setEndToken($COMMA); }
-              t2=type
+              t2=tupleElementType
               { if ($t2.type!=null)
-                  bt.getArgumentTypes().add($t2.type); }
+                    bt.addArgumentType($t2.type); }
             )*
           )?
         RPAREN

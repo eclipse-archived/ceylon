@@ -182,6 +182,8 @@ Sequence<Boolean()(String)> singletonBooleanFunc = Singleton<Boolean()(String)>(
 
 void sequencedParams() {
     value str = string;
+    Void(Character...) str0 = str;
+    Void(Character...) str0p = string;
     Void(Character) str1 = str;
     Void(Character, Character) str2 = str;
     str("hello".characters...);

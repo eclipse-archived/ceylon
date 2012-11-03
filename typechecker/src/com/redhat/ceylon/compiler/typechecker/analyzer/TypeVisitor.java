@@ -8,7 +8,6 @@ import static com.redhat.ceylon.compiler.typechecker.model.Util.addToIntersectio
 import static com.redhat.ceylon.compiler.typechecker.model.Util.addToUnion;
 import static com.redhat.ceylon.compiler.typechecker.model.Util.getContainingClassOrInterface;
 import static com.redhat.ceylon.compiler.typechecker.model.Util.producedType;
-import static com.redhat.ceylon.compiler.typechecker.model.Util.unionType;
 import static com.redhat.ceylon.compiler.typechecker.tree.Util.name;
 
 import java.util.ArrayList;
@@ -416,39 +415,49 @@ public class TypeVisitor extends Visitor {
     @Override
     public void visit(Tree.FunctionType that) {
         super.visit(that);
-        //TODO: handle sequenced parameter types, i.e. Void(String...)
         List<ProducedType> args = new ArrayList<ProducedType>();
-        for (Tree.StaticType st: that.getArgumentTypes()) {
-            args.add(st.getTypeModel());
+        boolean sequenced = false;
+        List<Tree.Type> ats = that.getArgumentTypes();
+		for (int i=0; i<ats.size(); i++) {
+			Tree.Type st = ats.get(i);
+			ProducedType arg = st.getTypeModel();
+        	if (arg!=null && st instanceof Tree.SequencedType) {
+				if (i!=ats.size()-1) {
+					st.addError("variant element must occur last in a function type parameter list");
+				}
+				else {
+	        		sequenced = true;
+					arg = unit.getIteratedType(arg);
+				}
+        	}
+        	args.add(arg);
         }
         that.setTypeModel(producedType(unit.getCallableDeclaration(),
         		that.getReturnType().getTypeModel(),
-        		unit.getTupleType(args, false)));
+        		unit.getTupleType(args, sequenced)));
     }
     
     @Override
     public void visit(Tree.TupleType that) {
         super.visit(that);
-        ProducedType result = unit.getEmptyDeclaration().getType();
-        ProducedType ut = unit.getBottomDeclaration().getType();
+        List<ProducedType> args = new ArrayList<ProducedType>();
+        boolean sequenced = false;
 		List<Tree.Type> ets = that.getElementTypes();
-		for (int i=ets.size()-1; i>=0; i--) {
+		for (int i=0; i<ets.size(); i++) {
 			Tree.Type st = ets.get(i);
-			if (st instanceof Tree.SequencedType) {
-				ProducedType et = ((Tree.SequencedType) st).getType().getTypeModel();
-				result = unit.getEmptyType(unit.getSequenceType(et));
-				ut = et;
+			ProducedType arg = st.getTypeModel();
+			if (arg!=null && st instanceof Tree.SequencedType) {
 				if (i!=ets.size()-1) {
 					st.addError("variant element must occur last in a tuple type");
 				}
+				else {
+					sequenced = true;
+					arg = unit.getIteratedType(arg);
+				}
 			}
-			else {
-				ProducedType et = st.getTypeModel();
-				ut = unionType(ut, et, unit);
-				result = producedType(unit.getTupleDeclaration(), ut, et, result);
-			}
+			args.add(arg);
         }
-        that.setTypeModel(result);
+        that.setTypeModel(unit.getTupleType(args, sequenced));
     }
     
     //TODO: copy/pasted from ExpressionVisitor

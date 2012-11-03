@@ -3354,8 +3354,18 @@ public class ExpressionVisitor extends Visitor {
         List<Expression> es = that.getExpressions();
 		for (int i=es.size()-1; i>=0; i--) {
 			ProducedType et = es.get(i).getTypeModel();
-			ut = unionType(ut, et, unit);
-			result = producedType(unit.getTupleDeclaration(), ut, et, result);
+			if (i==es.size()-1 && that.getEllipsis()!=null) {
+				ut = unit.getElementType(et);
+				result = unit.getEmptyType(unit.getSequenceType(ut));
+				if (!unit.isSequentialType(et)) {
+					that.getEllipsis().addError("last element expression is not a sequence: " +
+							et.getProducedTypeName() + " is not a sequence type");
+				}
+			}
+			else {
+				ut = unionType(ut, et, unit);
+				result = producedType(unit.getTupleDeclaration(), ut, et, result);
+			}
 		}
         that.setTypeModel(result);
     }

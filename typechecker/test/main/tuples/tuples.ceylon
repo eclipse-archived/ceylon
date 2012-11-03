@@ -27,4 +27,6 @@ void test() {
     @type["Empty|Sequence<String>"]
     <String...> hibye2 = hibye;
     <String, Integer, Object...> trip = triple("", 0, 0.0);
+    value ints = {1,2,3};
+    <String,Integer,Integer...> vartup = ("hello", 4, ints...);
 }

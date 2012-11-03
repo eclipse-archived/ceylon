@@ -233,7 +233,7 @@
 
 ^(FUNCTION_TYPE: STATIC_TYPE
     STATIC_TYPE returnType
-    STATIC_TYPE* argumentType)
+    TYPE* argumentType)
 
 ^(ENTRY_TYPE: STATIC_TYPE
     STATIC_TYPE keyType
@@ -661,7 +661,8 @@ argument list."
     COMPREHENSION?)
 
 ^(TUPLE:ATOM 
-    EXPRESSION*)
+    EXPRESSION*
+    ELLIPSIS?)
 
 "A string template."
 ^(STRING_TEMPLATE:ATOM 
