@@ -368,7 +368,6 @@ public class Unit {
     	    List<ParameterList> pls = ((Functional) ref.getDeclaration()).getParameterLists();
             for (int i=pls.size()-1; i>=0; i--) {
     	        List<ProducedType> args = new ArrayList<ProducedType>();
-    	        args.add(result);
     	    	for (Parameter p: pls.get(i).getParameters()) {
     	    		ProducedTypedReference np = ref.getTypedParameter(p);
     	    		if (np.getDeclaration() instanceof Functional) {
@@ -378,8 +377,21 @@ public class Unit {
 					    args.add(np.getType());
     	    		}
     	    	}
-    	    	result = getCallableDeclaration().getProducedType(null, args);
+    	    	result = producedType(getCallableDeclaration(), result,
+    	    			getTupleType(args));
     	    }
+    	}
+    	return result;
+    }
+    
+    public ProducedType getTupleType(List<ProducedType> elemTypes) {
+    	ProducedType result = getEmptyDeclaration().getType();
+    	ProducedType union = getBottomDeclaration().getType();
+    	for (int i=elemTypes.size()-1; i>=0; i--) {
+    		ProducedType elemType = elemTypes.get(i);
+    		union = unionType(union, elemType, this);
+			result = producedType(getTupleDeclaration(), union, elemType, result);
+    		
     	}
     	return result;
     }

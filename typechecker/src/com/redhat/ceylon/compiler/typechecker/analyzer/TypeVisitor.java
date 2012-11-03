@@ -7,9 +7,9 @@ import static com.redhat.ceylon.compiler.typechecker.analyzer.Util.getTypeArgume
 import static com.redhat.ceylon.compiler.typechecker.model.Util.addToIntersection;
 import static com.redhat.ceylon.compiler.typechecker.model.Util.addToUnion;
 import static com.redhat.ceylon.compiler.typechecker.model.Util.getContainingClassOrInterface;
+import static com.redhat.ceylon.compiler.typechecker.model.Util.producedType;
 import static com.redhat.ceylon.compiler.typechecker.model.Util.unionType;
 import static com.redhat.ceylon.compiler.typechecker.tree.Util.name;
-import static java.util.Arrays.asList;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -417,12 +417,12 @@ public class TypeVisitor extends Visitor {
     public void visit(Tree.FunctionType that) {
         super.visit(that);
         List<ProducedType> args = new ArrayList<ProducedType>();
-        args.add(that.getReturnType().getTypeModel());
         for (Tree.StaticType st: that.getArgumentTypes()) {
             args.add(st.getTypeModel());
         }
-        that.setTypeModel(unit.getCallableDeclaration()
-                .getProducedType(null, args));
+        that.setTypeModel(producedType(unit.getCallableDeclaration(),
+        		that.getReturnType().getTypeModel(),
+        		unit.getTupleType(args)));
     }
     
     @Override
@@ -444,8 +444,7 @@ public class TypeVisitor extends Visitor {
 			else {
 				ProducedType et = st.getTypeModel();
 				ut = unionType(ut, et, unit);
-				result = unit.getTupleDeclaration().getProducedType(null, 
-	            				asList(ut, et, result));
+				result = producedType(unit.getTupleDeclaration(), ut, et, result);
 			}
         }
         that.setTypeModel(result);

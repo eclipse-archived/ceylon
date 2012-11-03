@@ -1,8 +1,9 @@
 package com.redhat.ceylon.compiler.typechecker.model;
 
+import static java.util.Arrays.asList;
+import static java.util.Collections.singletonList;
+
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
@@ -61,7 +62,7 @@ public class Util {
      * to a toplevel type declaration.  
      */
     public static ProducedType producedType(TypeDeclaration declaration, ProducedType typeArgument) {
-        return declaration.getProducedType(null, Collections.singletonList(typeArgument));
+        return declaration.getProducedType(null, singletonList(typeArgument));
     }
 
     /**
@@ -69,7 +70,7 @@ public class Util {
      * to a toplevel type declaration.  
      */
     public static ProducedType producedType(TypeDeclaration declaration, ProducedType... typeArguments) {
-        return declaration.getProducedType(null, Arrays.asList(typeArguments));
+        return declaration.getProducedType(null, asList(typeArguments));
     }
 
     public static boolean isResolvable(Declaration declaration) {

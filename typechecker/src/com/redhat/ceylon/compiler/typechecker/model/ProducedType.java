@@ -1157,16 +1157,8 @@ public class ProducedType extends ProducedReference {
                 }*/
                 if (abbreviateCallable()) {
                     List<ProducedType> tal = getTypeArgumentList();
-                    String result = tal.get(0).getProducedTypeName() + "(";
-                    if (tal.size()>1) {
-                        ProducedType t = tal.get(1);
-                        result += t==null ? "unknown" : t.getProducedTypeName();
-                        for (int i=2; i<tal.size(); i++) {
-                            ProducedType ti = tal.get(i);
-                            result += ", " + (ti==null ? "unknown" : ti.getProducedTypeName());
-                        }
-                    }
-                    return result + ")";
+                    return tal.get(0).getProducedTypeName() + 
+                    		"(" + argtypes(tal.get(1)) + ")";
                 }
             }
             if (getDeclaration() instanceof UnionType) {
@@ -1199,6 +1191,38 @@ public class ProducedType extends ProducedReference {
                 return getSimpleProducedTypeName(abbreviate);
             }
         }
+    }
+    
+    private String argtypes(ProducedType args) {
+    	Unit unit = getDeclaration().getUnit();
+    	if (args!=null) {
+    		if (args.getDeclaration() instanceof UnionType) {
+    			ProducedType elementType = unit.getElementType(args);
+    			if (elementType!=null) { 
+    				return elementType.getProducedTypeName() + "...";
+    			}
+    		}
+    		else if (args.getDeclaration() instanceof Class) {
+    			if (args.getDeclaration().equals(unit.getTupleDeclaration())) {
+    				List<ProducedType> tal = args.getTypeArgumentList();
+    				if (tal.size()>=3) {
+    					ProducedType first = tal.get(1);
+    					ProducedType rest = tal.get(2);
+    					if (first!=null && rest!=null) {
+    						String result = first.getProducedTypeName();
+    						if (!rest.getDeclaration().equals(unit.getEmptyDeclaration())) {
+    							result += ", " + argtypes(rest);
+    						}
+    						return result;
+    					}
+    				}
+    			}
+    			else if (args.getDeclaration().equals(unit.getEmptyDeclaration())) {
+    				return "";
+    			}
+    		}
+    	}
+    	return "unknown";
     }
 
     private boolean abbreviateEntry() {
@@ -1475,6 +1499,7 @@ public class ProducedType extends ProducedReference {
         }
     }
 
+    //TODO: we can remove this now!!
     public boolean isCallable() {
         //TODO: yew, fix this:
         return getDeclaration().getQualifiedNameString()

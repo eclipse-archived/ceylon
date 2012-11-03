@@ -17,14 +17,13 @@ import static com.redhat.ceylon.compiler.typechecker.model.Util.isAbstraction;
 import static com.redhat.ceylon.compiler.typechecker.model.Util.isTypeUnknown;
 import static com.redhat.ceylon.compiler.typechecker.model.Util.producedType;
 import static com.redhat.ceylon.compiler.typechecker.model.Util.unionType;
-import static com.redhat.ceylon.compiler.typechecker.tree.Util.name;
-import static java.util.Arrays.asList;
 import static com.redhat.ceylon.compiler.typechecker.tree.Util.hasUncheckedNulls;
+import static com.redhat.ceylon.compiler.typechecker.tree.Util.name;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashSet;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
 
@@ -827,41 +826,47 @@ public class ExpressionVisitor extends Visitor {
         if (se!=null) {
             Tree.Expression e = se.getExpression();
             if (e!=null) {
-                ProducedType et = e.getTypeModel();
+                ProducedType returnType = e.getTypeModel();
                 for (Tree.ParameterList pl: that.getParameterLists()) {
-                    if (checkCallable(et, se, "specified value must be a reference to a function or class")){
+                    if (checkCallable(returnType, se, "specified value must be a reference to a function or class")) {
                         /*if (e.getTerm() instanceof MemberOrTypeExpression) {
                             Declaration d = ((MemberOrTypeExpression) e.getTerm()).getDeclaration();
                             if (d instanceof Class && ((Class) d).isAbstract()) {
                                 se.addError("specified reference is to an abstract class: " + d.getName());
                             }
                         }*/
-                        if (pl.getParameters().size()+1==et.getTypeArgumentList().size()) {
-                            int i=0;
-                            for (Tree.Parameter p: pl.getParameters()) {
-                                if (p!=null) {
-                                    i++;
-                                    ProducedType rt = et.getTypeArgumentList().get(i);
-                                    ProducedType pt = p.getDeclarationModel().getProducedTypedReference(null, 
-                                            Collections.<ProducedType>emptyList()).getFullType();
-                                    checkIsExactly(rt, pt, p.getType(), 
-                                            "specified reference parameter type must be exactly the same as declared type of parameter " + 
-                                            p.getDeclarationModel().getName());
-                                }
+                        List<ProducedType> tal = returnType.getTypeArgumentList();
+                        if (tal.size()>=2) {
+                            returnType = tal.get(0);
+                        	List<ProducedType> paramTypes = argtypes(tal.get(1));
+                        	if (pl.getParameters().size()==paramTypes.size()) {
+                        		int i=0;
+                        		for (Tree.Parameter p: pl.getParameters()) {
+                        			if (p!=null) {
+                        				ProducedType rt = paramTypes.get(i++);
+                        				ProducedType pt = p.getDeclarationModel().getProducedTypedReference(null, 
+                        						Collections.<ProducedType>emptyList()).getFullType();
+                        				checkIsExactly(rt, pt, p.getType(), 
+                        						"specified reference parameter type must be exactly the same as declared type of parameter " + 
+                        								p.getDeclarationModel().getName());
+                        			}
+                        		}
+                        	}
+                            else {
+                                se.addError("specified reference must have the same number of parameters");
                             }
                         }
                         else {
-                            se.addError("specified reference must have the same number of parameters");
+                        	se.addError("specified reference does not have a well-defined type");
                         }
-                        et = et.getTypeArgumentList().get(0);
                     }
                     else {
                         return; //Note: early exit!
                     }
                 }
-                inferFunctionType(that, et);
+                inferFunctionType(that, returnType);
                 if (that.getType()!=null) {
-                    checkFunctionType(et, that.getType());
+                    checkFunctionType(returnType, that.getType());
                 }
             }
         }
@@ -1670,6 +1675,23 @@ public class ExpressionVisitor extends Visitor {
             visitInvocation(pal, null, that, pr);
         }
     }*/
+    
+    private List<ProducedType> argtypes(ProducedType args) {
+    	if (args.getDeclaration() instanceof Class) {
+    		if (args.getDeclaration().equals(unit.getTupleDeclaration())) {
+    			List<ProducedType> result = argtypes(args.getTypeArgumentList().get(2));
+    			result.add(0, args.getTypeArgumentList().get(1));
+				return result;
+    		}
+    		else {
+    			return new LinkedList<ProducedType>();
+    		}
+    	}
+    	else {
+    		//TODO!!!
+    		return new LinkedList<ProducedType>();
+    	}
+    }
 
     private void visitInvocation(Tree.InvocationExpression that, ProducedReference prf) {
         if (prf==null || !prf.isFunctional()) {
@@ -1689,7 +1711,7 @@ public class ExpressionVisitor extends Visitor {
                         that.setTypeModel(typeArgs.get(0));
                     }
                     //typecheck arguments using the type args of Callable
-                    checkIndirectInvocationArguments(that, typeArgs);
+                    checkIndirectInvocationArguments(that, argtypes(typeArgs.get(1)));
                 }
             }
         }
@@ -1747,7 +1769,7 @@ public class ExpressionVisitor extends Visitor {
             List<Tree.PositionalArgument> args = that.getPositionalArgumentList()
                     .getPositionalArguments();
             int argCount = args.size();
-            int paramCount = typeArgs.size()-1;
+            int paramCount = typeArgs.size();
             if (argCount<paramCount) {
                 that.addError("not enough arguments: " + 
                          paramCount + " arguments required");
@@ -1759,7 +1781,7 @@ public class ExpressionVisitor extends Visitor {
             for (int i=0; i<paramCount && i<argCount; i++) {
                 Tree.PositionalArgument arg = args.get(i);
                 checkAssignable(getPositionalArgumentType(arg), 
-                        typeArgs.get(i+1), arg, 
+                        typeArgs.get(i), arg, 
                         "argument must be assignable to parameter type");
             }
         }
@@ -3282,8 +3304,7 @@ public class ExpressionVisitor extends Visitor {
 		for (int i=es.size()-1; i>=0; i--) {
 			ProducedType et = es.get(i).getTypeModel();
 			ut = unionType(ut, et, unit);
-			result = unit.getTupleDeclaration().getProducedType(null, 
-					asList(ut, et, result));
+			result = producedType(unit.getTupleDeclaration(), ut, et, result);
 		}
         that.setTypeModel(result);
     }
