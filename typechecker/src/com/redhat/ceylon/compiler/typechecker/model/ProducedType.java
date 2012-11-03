@@ -1157,11 +1157,18 @@ public class ProducedType extends ProducedReference {
                 }*/
                 if (abbreviateCallable()) {
                     List<ProducedType> tal = getTypeArgumentList();
-                    return tal.get(0).getProducedTypeName() + 
-                    		"(" + argtypes(tal.get(1)) + ")";
+                    ProducedType rt = tal.get(0);
+                    String argtypes = argtypes(tal.get(1));
+                    if (rt!=null && argtypes!=null) {
+                    	return rt.getProducedTypeName() + 
+                    			"(" + argtypes + ")";
+                    }
                 }
                 if (abbreviateTuple(unit)) {
-                    return "<" + argtypes(this) + ">";
+                	String argtypes = argtypes(this);
+                	if (argtypes!=null) {
+                		return "<" + argtypes + ">";
+                	}
                 }
             }
             if (getDeclaration() instanceof UnionType) {
@@ -1197,7 +1204,8 @@ public class ProducedType extends ProducedReference {
     }
 
 	private boolean abbreviateTuple(Unit unit) {
-		return getDeclaration() instanceof Class && getDeclaration().equals(unit.getTupleDeclaration());
+		return getDeclaration() instanceof Class && 
+				getDeclaration().equals(unit.getTupleDeclaration());
 	}
     
     private static String argtypes(ProducedType args) {
@@ -1210,12 +1218,17 @@ public class ProducedType extends ProducedReference {
     					ProducedType first = tal.get(1);
     					ProducedType rest = tal.get(2);
     					if (first!=null && rest!=null) {
-    						String result = first.getProducedTypeName();
-    						if (!(rest.getDeclaration() instanceof Interface) ||
-    								!rest.getDeclaration().equals(unit.getEmptyDeclaration())) {
-    							result += ", " + argtypes(rest);
+    						String argtype = first.getProducedTypeName();
+    						if (rest.getDeclaration() instanceof Interface &&
+    								rest.getDeclaration().equals(unit.getEmptyDeclaration())) {
+    							return argtype;
     						}
-    						return result;
+    						else {
+    							String argtypes = argtypes(rest);
+    							if (argtypes!=null) {
+    								return argtype + ", " + argtypes;
+    							}
+    						}
     					}
     				}
     			}
@@ -1225,12 +1238,13 @@ public class ProducedType extends ProducedReference {
     		}
     		else {
     			ProducedType elementType = unit.getElementType(args);
-    			if (elementType!=null) { 
+    			if (elementType!=null && 
+    					args.isExactly(unit.getEmptyType(unit.getSequenceType(elementType)))) { 
     				return elementType.getProducedTypeName() + "...";
     			}
     		}
     	}
-    	return "unknown";
+    	return null;
     }
 
     private boolean abbreviateEntry() {
