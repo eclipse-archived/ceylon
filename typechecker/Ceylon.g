@@ -1602,7 +1602,8 @@ parExpression returns [Expression expression]
     : LPAREN 
       { $expression = new Expression($LPAREN); }
       functionOrExpressionOrTuple
-      { $expression.setTerm($functionOrExpressionOrTuple.expression.getTerm()); }
+      { if ($functionOrExpressionOrTuple.expression!=null)
+            $expression.setTerm($functionOrExpressionOrTuple.expression.getTerm()); }
       RPAREN
       { $expression.setEndToken($RPAREN); }
     ;
