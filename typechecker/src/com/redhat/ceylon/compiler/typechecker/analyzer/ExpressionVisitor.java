@@ -1677,20 +1677,32 @@ public class ExpressionVisitor extends Visitor {
     }*/
     
     private List<ProducedType> argtypes(ProducedType args) {
-    	if (args.getDeclaration() instanceof Class) {
-    		if (args.getDeclaration().equals(unit.getTupleDeclaration())) {
-    			List<ProducedType> result = argtypes(args.getTypeArgumentList().get(2));
-    			result.add(0, args.getTypeArgumentList().get(1));
-				return result;
+		if (args!=null) {
+    		if (args.getDeclaration() instanceof Class) {
+    			if (args.getDeclaration().equals(unit.getTupleDeclaration())) {
+    				List<ProducedType> tal = args.getTypeArgumentList();
+    				if (tal.size()>=3) {
+    					List<ProducedType> result = argtypes(tal.get(2));
+    					result.add(0, tal.get(1));
+    					return result;
+    				}
+    			}
     		}
-    		else {
+    		else if (args.getDeclaration().equals(unit.getEmptyDeclaration())) {
     			return new LinkedList<ProducedType>();
     		}
+    		else {
+				ProducedType elemType = unit.getElementType(args);
+    			if (elemType!=null) {
+    				LinkedList<ProducedType> sequenced = new LinkedList<ProducedType>();
+    				sequenced.add(unit.getEmptyType(unit.getSequenceType(elemType)));
+        			return sequenced;
+    			}
+    		}
     	}
-    	else {
-    		//TODO!!!
-    		return new LinkedList<ProducedType>();
-    	}
+    	LinkedList<ProducedType> unknown = new LinkedList<ProducedType>();
+    	unknown.add(new UnknownType(unit).getType());
+		return unknown;
     }
 
     private void visitInvocation(Tree.InvocationExpression that, ProducedReference prf) {
@@ -1711,7 +1723,9 @@ public class ExpressionVisitor extends Visitor {
                         that.setTypeModel(typeArgs.get(0));
                     }
                     //typecheck arguments using the type args of Callable
-                    checkIndirectInvocationArguments(that, argtypes(typeArgs.get(1)));
+                    if (typeArgs.size()>=2) {
+                    	checkIndirectInvocationArguments(that, argtypes(typeArgs.get(1)));
+                    }
                 }
             }
         }
