@@ -179,3 +179,16 @@ void moreTests() {
 
 Sequence<String()> singletonStringFunc = Singleton<String()>(()"hello");
 Sequence<Boolean()(String)> singletonBooleanFunc = Singleton<Boolean()(String)>((String s)()s=="hello");
+
+void sequencedParams() {
+    value str = string;
+    Void(Character) str1 = str;
+    Void(Character, Character) str2 = str;
+    str("hello".characters...);
+    str();
+    str(`X`);
+    str(`h`, `e`, `l`, `l`, `o`);
+    @error str(1);
+    @error str("hello".characters);
+    @error str(`X`...);
+}

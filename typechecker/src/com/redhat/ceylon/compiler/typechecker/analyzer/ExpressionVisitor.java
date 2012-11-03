@@ -1703,6 +1703,29 @@ public class ExpressionVisitor extends Visitor {
 		return unknown;
     }
 
+    private boolean argsequenced(ProducedType args) {
+		if (args!=null) {
+    		if (args.getDeclaration() instanceof ClassOrInterface) {
+    			if (args.getDeclaration().equals(unit.getTupleDeclaration())) {
+    				List<ProducedType> tal = args.getTypeArgumentList();
+    				if (tal.size()>=3) {
+    					return argsequenced(tal.get(2));
+    				}
+        		}
+        		else if (args.getDeclaration().equals(unit.getEmptyDeclaration())) {
+        			return false;
+        		}
+    		}
+    		else {
+				ProducedType elemType = unit.getElementType(args);
+    			if (elemType!=null) {
+        			return true;
+    			}
+    		}
+    	}
+    	return false;
+    }
+
     private void visitInvocation(Tree.InvocationExpression that, ProducedReference prf) {
         if (prf==null || !prf.isFunctional()) {
             ProducedType pt = that.getPrimary().getTypeModel();
@@ -1722,7 +1745,9 @@ public class ExpressionVisitor extends Visitor {
                     }
                     //typecheck arguments using the type args of Callable
                     if (typeArgs.size()>=2) {
-                    	checkIndirectInvocationArguments(that, argtypes(typeArgs.get(1)));
+                    	checkIndirectInvocationArguments(that, 
+                    			argtypes(typeArgs.get(1)),
+                    			argsequenced(typeArgs.get(1)));
                     }
                 }
             }
@@ -1769,32 +1794,46 @@ public class ExpressionVisitor extends Visitor {
         }
     }
 
-    private void checkIndirectInvocationArguments(
-            Tree.InvocationExpression that, List<ProducedType> typeArgs) {
+    private void checkIndirectInvocationArguments(Tree.InvocationExpression that, 
+    		List<ProducedType> typeArgs, boolean sequenced) {
         if (that.getNamedArgumentList() != null) {
             that.addError("named arguments not supported for indirect invocations");
         }
         if (that.getPositionalArgumentList() != null) {
-            if (that.getPositionalArgumentList().getEllipsis()!=null) {
-                that.addError("sequenced arguments not supported for indirect invocations");
-            }
+        	Tree.Ellipsis ellipsis = that.getPositionalArgumentList().getEllipsis();
             List<Tree.PositionalArgument> args = that.getPositionalArgumentList()
                     .getPositionalArguments();
             int argCount = args.size();
             int paramCount = typeArgs.size();
-            if (argCount<paramCount) {
-                that.addError("not enough arguments: " + 
-                         paramCount + " arguments required");
+            boolean invokeAsSequenced = sequenced && ellipsis==null;
+            if (ellipsis!=null) {
+            	if (!sequenced) {
+            		ellipsis.addError("no matching sequenced parameter");
+            	}
             }
-            if (argCount>paramCount) {
-                that.addError("too many arguments: " + 
-                         paramCount + " arguments required");
+            if (argCount>paramCount && !invokeAsSequenced) {
+            	that.addError("too many arguments: " + 
+            			paramCount + " arguments required");
             }
-            for (int i=0; i<paramCount && i<argCount; i++) {
+            if (argCount<paramCount-1 || 
+            		argCount<paramCount && !invokeAsSequenced) {
+            		that.addError("not enough arguments: " + 
+            				paramCount + " arguments required");
+            }
+            int i=0;
+            for (; i<(invokeAsSequenced?paramCount-1:paramCount) && i<argCount; i++) {
                 Tree.PositionalArgument arg = args.get(i);
                 checkAssignable(getPositionalArgumentType(arg), 
                         typeArgs.get(i), arg, 
                         "argument must be assignable to parameter type");
+            }
+            if (invokeAsSequenced) {
+                ProducedType type = unit.getElementType(typeArgs.get(typeArgs.size()-1));
+            	for (; i<argCount; i++) {
+            		Tree.PositionalArgument arg = args.get(i);
+					checkAssignable(getPositionalArgumentType(arg), type, arg, 
+                            "argument must be assignable to sequenced parameter type");
+            	}
             }
         }
     }
