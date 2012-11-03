@@ -1062,14 +1062,8 @@ public abstract class AbstractTransformer implements Transformation {
             int flags, Map<TypeParameter, ProducedType> tas,
             java.util.List<TypeParameter> tps) {
         ListBuffer<JCExpression> typeArgs = new ListBuffer<JCExpression>();
-        int idx = 0;
         for (TypeParameter tp : tps) {
             ProducedType ta = tas.get(tp);
-            if (idx > 0 &&
-                    isCeylonCallable) {
-                // In the runtime Callable only has a single type param
-                break;
-            }
             if (isOptional(ta)) {
                 // For an optional type T?:
                 // - The Ceylon type Foo<T?> results in the Java type Foo<T>.
@@ -1078,7 +1072,7 @@ public abstract class AbstractTransformer implements Transformation {
             if (typeFact().isUnion(ta) || typeFact().isIntersection(ta)) {
                 // For any other union type U|V (U nor V is Optional):
                 // - The Ceylon type Foo<U|V> results in the raw Java type Foo.
-                // For any other intersection type U|V:
+                // For any other intersection type U&V:
                 // - The Ceylon type Foo<U&V> results in the raw Java type Foo.
                 ProducedType listType = typeFact().getNonemptyListType(typeFact().getDefiniteType(ta));
                 // don't break if the union type is erased to something better than Object
@@ -1087,7 +1081,9 @@ public abstract class AbstractTransformer implements Transformation {
                     // - we're calling a constructor
                     // - we're not in a type argument (when used as type arguments raw types have more constraint than at the toplevel)
                     //   or not in an extends or satisfies
-                    if((flags & JT_CLASS_NEW) != 0 || (flags & (__JT_TYPE_ARGUMENT | JT_EXTENDS | JT_SATISFIES)) == 0){
+                    if((flags & JT_CLASS_NEW) != 0
+                            || (flags & (__JT_TYPE_ARGUMENT | JT_EXTENDS | JT_SATISFIES)) == 0
+                            || ((flags & (JT_EXTENDS | JT_SATISFIES)) != 0 && tp.getSelfTypedDeclaration() != null)){
                         // A bit ugly, but we need to escape from the loop and create a raw type, no generics
                         typeArgs = null;
                         break;
@@ -1186,7 +1182,11 @@ public abstract class AbstractTransformer implements Transformation {
                 }
             }
             typeArgs.add(jta);
-            idx++;
+            
+            if (isCeylonCallable) {
+                // In the runtime Callable only has a single type param
+                break;
+            }
         }
         return typeArgs;
     }
