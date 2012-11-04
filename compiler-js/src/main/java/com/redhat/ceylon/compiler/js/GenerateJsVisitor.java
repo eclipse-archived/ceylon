@@ -1778,31 +1778,39 @@ public class GenerateJsVisitor extends Visitor
     private int boxUnboxStart(boolean fromNative, ProducedType fromType, boolean toNative) {
         if (fromNative != toNative) {
             // Box the value
+            String fromTypeName = fromType.getProducedTypeQualifiedName();
             if (fromNative) {
-                if (fromType.getProducedTypeQualifiedName().equals("ceylon.language::String")) {
+                // conversion from native value to Ceylon value
+                if (fromTypeName.equals("ceylon.language::String")) {
                     out(clAlias, ".String(");
-                } else if (fromType.getProducedTypeQualifiedName().equals("ceylon.language::Integer")) {
+                } else if (fromTypeName.equals("ceylon.language::Integer")) {
                     out("(");
-                } else if (fromType.getProducedTypeQualifiedName().equals("ceylon.language::Float")) {
+                } else if (fromTypeName.equals("ceylon.language::Float")) {
                     out(clAlias, ".Float(");
-                } else if (fromType.getProducedTypeQualifiedName().equals("ceylon.language::Boolean")) {
+                } else if (fromTypeName.equals("ceylon.language::Boolean")) {
                     out("(");
-                } else if (fromType.getProducedTypeQualifiedName().equals("ceylon.language::Character")) {
+                } else if (fromTypeName.equals("ceylon.language::Character")) {
                     out(clAlias, ".Character(");
                 } else {
                     return 0;
                 }
                 return 1;
-            } else {
+            } else if ("ceylon.language::String".equals(fromTypeName)
+                        || "ceylon.language::Float".equals(fromTypeName)) {
+                // conversion from Ceylon String or Float to native value
                 return 2;
+            } else {
+                return 3;
             }
         }
         return 0;
     }
 
     private void boxUnboxEnd(int boxType) {
-        if (boxType== 1) {
-            out(")");
+        switch (boxType) {
+        case 1: out(")"); break;
+        case 2: out(".valueOf()"); break;
+        default: //nothing
         }
     }
 
