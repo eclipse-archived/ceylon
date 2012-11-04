@@ -49,7 +49,7 @@ class TypeArgInference() {
         }
     }
     
-    @type["Nothing|Empty|Sequence<String>"] String[]? strings = {"hello", "goodbye"};
+    @type["Nothing|Sequential<String>"] String[]? strings = {"hello", "goodbye"};
     @type["Nothing|String"] value s = firstElem(strings);
     @type["Nothing|String"] value ss = firstElem { sequence=strings; };
 

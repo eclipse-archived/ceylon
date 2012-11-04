@@ -261,17 +261,17 @@ public class Unit {
         return (Interface) getLanguageModuleDeclaration("Iterator");
     }
 
-    public Interface getFixedSizedDeclaration() {
-        return (Interface) getLanguageModuleDeclaration("FixedSized");
-    }
-
-    public Interface getSomeDeclaration() {
-        return (Interface) getLanguageModuleDeclaration("Some");
-    }
-
-    public Interface getNoneDeclaration() {
-        return (Interface) getLanguageModuleDeclaration("None");
-    }
+//    public Interface getFixedSizedDeclaration() {
+//        return (Interface) getLanguageModuleDeclaration("FixedSized");
+//    }
+//
+//    public Interface getSomeDeclaration() {
+//        return (Interface) getLanguageModuleDeclaration("Some");
+//    }
+//
+//    public Interface getNoneDeclaration() {
+//        return (Interface) getLanguageModuleDeclaration("None");
+//    }
 
     public Interface getCallableDeclaration() {
         return (Interface) getLanguageModuleDeclaration("Callable");
@@ -402,7 +402,7 @@ public class Unit {
     		ProducedType elemType = elemTypes.get(i);
     		union = unionType(union, elemType, this);
     		if (sequenced && i==last) {
-    			result = getEmptyType(getSequenceType(elemType));
+    			result = getSequentialType(elemType);
     		}
     		else {
     			result = producedType(getTupleDeclaration(), union, elemType, result);
@@ -434,7 +434,7 @@ public class Unit {
     
     public ProducedType getPossiblyNoneType(ProducedType pt) {
         return pt==null ? null :
-            unionType(pt, producedType(getFixedSizedDeclaration(), 
+            unionType(pt, producedType(getSequentialDeclaration(),
                     getVoidDeclaration().getType()), this);
     }
     
@@ -461,6 +461,10 @@ public class Unit {
     
     public ProducedType getSequenceType(ProducedType et) {
         return producedType(getSequenceDeclaration(), et);
+    }
+    
+    public ProducedType getSequentialType(ProducedType et) {
+        return producedType(getSequentialDeclaration(), et);
     }
     
     public ProducedType getIterableType(ProducedType et) {
@@ -538,7 +542,7 @@ public class Unit {
     }
 
     public ProducedType getFixedSizedElementType(ProducedType type) {
-        ProducedType st = type.getSupertype(getFixedSizedDeclaration());
+        ProducedType st = type.getSupertype(getSequentialDeclaration());
         if (st!=null && st.getTypeArguments().size()==1) {
             return st.getTypeArgumentList().get(0);
         }
@@ -559,7 +563,7 @@ public class Unit {
     }
 
     public ProducedType getNonemptyType(ProducedType pt) {
-        return intersectionType(producedType(getSomeDeclaration(), 
+        return intersectionType(producedType(getSequenceDeclaration(), 
                 getFixedSizedElementType(pt)), pt, 
                 pt.getDeclaration().getUnit());
         /*if (pt.getDeclaration().equals(getVoidDeclaration())) {
@@ -608,18 +612,15 @@ public class Unit {
     }
     
     public boolean isEmptyType(ProducedType pt) {
-        //must be a subtype of FixedSized<Void>?
-        return unionType(producedType(getFixedSizedDeclaration(), 
-                    getVoidDeclaration().getType()), 
-                    getNothingDeclaration().getType(), this)
+        //must be a subtype of Sequential<Void>
+        return getOptionalType(producedType(getSequentialDeclaration(), 
+                    getVoidDeclaration().getType()))
                 .isSupertypeOf(pt) &&
-        //must have non-empty intersection with None<Bottom>
-        //and non-empty intersection with Some<Bottom>
-               !(intersectionType(producedType(getNoneDeclaration(),
-                    getBottomDeclaration().getType()), pt, this)
+        //must have non-empty intersection with Empty
+        //and non-empty intersection with Sequence<Bottom>
+               !(intersectionType(getEmptyDeclaration().getType(), pt, this)
                         .getDeclaration() instanceof BottomType) &&
-               !(intersectionType(producedType(getSomeDeclaration(),
-                    getBottomDeclaration().getType()), pt, this)
+               !(intersectionType(getSequenceType(getBottomDeclaration().getType()), pt, this)
                         .getDeclaration() instanceof BottomType);
     }
     

@@ -72,9 +72,9 @@ class Optional() {
     value sci = somechars.iterator;
     
     @type["Nothing|String|Integer|Sequence<Object>"] String? | String | String? | Integer | Sequence<Object> foobar1 = -1;
-    @type["Nothing|Empty|Sequence<String>|Integer"] String[]? | String[] | Sequence<String> | Integer foobar2 = 1.integer;
+    @type["Nothing|Sequential<String>|Integer"] String[]? | String[] | Sequence<String> | Integer foobar2 = 1.integer;
     
-    @type["Sequence<Nothing|String|Integer|Sequence<Object>|Empty>"] value xyz = { foobar1, foobar2 };
+    @type["Sequence<Nothing|String|Integer|Sequence<Object>|Sequential<String>>"] value xyz = { foobar1, foobar2 };
     
     //TODO: I think the type parameter X does
     //      not hide the X defined above - it
@@ -102,7 +102,7 @@ class Optional() {
     }
     
     if (exists seq = WithOptional<String>("goodbye").seq) {
-        @type["Empty|Sequence<String>"] value sseq = seq;
+        @type["Sequential<String>"] value sseq = seq;
     }
     
     if (nonempty seq = WithOptional<String>("hello again").seq) {
@@ -119,7 +119,7 @@ class Optional() {
         void method() {
         
             if (exists seq = WithOptionalString("hello").seq) {
-                @type["Empty|Sequence<String>"] value sseq = seq;
+                @type["Sequential<String>"] value sseq = seq;
             }
             
             if (nonempty seq = WithOptionalString("hello").seq) {
@@ -132,7 +132,7 @@ class Optional() {
     
     
     if (exists seq = WithOptionalString("hello").seq) {
-        @type["Empty|Sequence<String>"] value sseq = seq;
+        @type["Sequential<String>"] value sseq = seq;
     }
     
     if (nonempty seq = WithOptionalString("hello").seq) {

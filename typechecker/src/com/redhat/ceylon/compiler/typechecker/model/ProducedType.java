@@ -1287,7 +1287,7 @@ public class ProducedType extends ProducedReference {
     		else {
     			ProducedType elementType = unit.getElementType(args);
     			if (elementType!=null && 
-    					args.isExactly(unit.getEmptyType(unit.getSequenceType(elementType)))) { 
+    					args.isExactly(unit.getSequentialType(elementType))) { 
     				return elementType.getProducedTypeName() + "...";
     			}
     		}

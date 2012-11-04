@@ -389,7 +389,7 @@ public class TypeVisitor extends Visitor {
         super.visit(that);
         ProducedType et = that.getElementType().getTypeModel();
         if (et!=null) {
-            that.setTypeModel(unit.getEmptyType(unit.getSequenceType(et)));
+            that.setTypeModel(unit.getSequentialType(et));
         }
     }
     
