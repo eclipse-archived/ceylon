@@ -55,9 +55,9 @@ void method() {
     Callable<X,<String>> xRef = X;
     Callable<Void,Bottom> xRefContra = X;
     X x = X("hello");
-    Callable<X.Y,Empty> yRef = x.Y;
-    Callable<Void,Empty> helloRef = x.hello;
-    Callable<Void,Empty> noopRef = noop;
+    Callable<X.Y,<>> yRef = x.Y;
+    Callable<Void,<>> helloRef = x.hello;
+    Callable<Void,<>> noopRef = noop;
     
     higher1({"hello", "world"}, print);
     higher1({"hello", "world"}, upper);
@@ -153,7 +153,7 @@ void testMultiCompare() {
     multiCompare()(1,1);
 }
 
-Callable<String,Empty> tester() {
+Callable<String,<>> tester() {
     String f() { return "ok"; }
     return f;
 }

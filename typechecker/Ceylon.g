@@ -829,17 +829,6 @@ parameters returns [ParameterList parameterList]
       //-> ^(PARAMETER_LIST[$LPAREN] annotatedParameter*)
     ;
 
-//special rule for syntactic predicate
-//to distinguish between a formal 
-//parameter list and a parenthesized body 
-//of an inline callable argument
-//be careful with this one, since it 
-//matches "()", which can also be an 
-//argument list
-parametersStart
-    : LPAREN ( annotatedDeclarationStart | RPAREN )
-    ;
-    
 // FIXME: This accepts more than the language spec: named arguments
 // and varargs arguments can appear in any order.  We'll have to
 // enforce the rule that the ... appears at the end of the parapmeter
@@ -1629,6 +1618,7 @@ functionOrExpressionOrTuple returns [Expression expression]
           { t.setEllipsis(new Ellipsis($ELLIPSIS)); }
         )?
       )?
+    | { $expression = e; }
     ;
     
 positionalArguments returns [PositionalArgumentList positionalArgumentList]
@@ -1665,6 +1655,10 @@ positionalArgument returns [PositionalArgument positionalArgument]
     @init { $positionalArgument = new PositionalArgument(null); }
     : functionOrExpression
       { $positionalArgument.setExpression($functionOrExpression.expression); }
+    ;
+
+parametersStart
+    : LPAREN (annotatedDeclarationStart | RPAREN (interpolatedExpressionStart|STRING_LITERAL|SUM_OP))
     ;
 
 functionOrExpression returns [Expression expression]
@@ -2175,15 +2169,17 @@ type returns [StaticType type]
 tupleType returns [TupleType type]
     : SMALLER_OP
       { $type = new TupleType($SMALLER_OP); }
-      t1=tupleElementType 
-      { $type.addElementType($t1.type); }
       (
-        c=COMMA
-        { $type.setEndToken($c); }
-        t2=tupleElementType
-        { $type.addElementType($t2.type);
-          $type.setEndToken(null); }
-      )*
+        t1=tupleElementType 
+        { $type.addElementType($t1.type); }
+        (
+          c=COMMA
+          { $type.setEndToken($c); }
+          t2=tupleElementType
+          { $type.addElementType($t2.type);
+            $type.setEndToken(null); }
+        )*
+      )?
       LARGER_OP
       { $type.setEndToken($LARGER_OP); }
     ;
