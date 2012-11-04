@@ -611,11 +611,27 @@ public class ProducedType extends ProducedReference {
                     //      empty of Iterable<String>&Sized
                     TypeDeclaration rd = result.getDeclaration();
                     TypeDeclaration prd = possibleResult.getDeclaration();
+
+                    //Note: the following is pretty adhoc
+                    //TODO: search for common supertypes!!!
+                    TypeDeclaration d = null;
                     if (rd.equals(prd)) {
+                    	d = rd;
+                    }
+                    else if (rd.inherits(prd)) {
+                    	d=prd;
+                    	result=result.getSupertype(d);
+                    }
+                    else if (prd.inherits(rd)) {
+                    	d=rd;
+                    	possibleResult=possibleResult.getSupertype(d);
+                    }
+                    
+                    if (d!=null) {
                         List<ProducedType> args = constructPrincipalInstantiation(
-                                rd, result, possibleResult);
+                                d, result, possibleResult);
                         //TODO: broken for member types! ugh :-(
-                        result = rd.getProducedType(result.getQualifyingType(), args);
+                        result = d.getProducedType(result.getQualifyingType(), args);
                     }
                     else {
                         //ambiguous! we can't decide between the two 
