@@ -29,4 +29,8 @@ void test() {
     <String, Integer, Object...> trip = triple("", 0, 0.0);
     value ints = {1,2,3};
     <String,Integer,Integer...> vartup = ("hello", 4, ints...);
+    <> emp1 = {};
+    <> emp2 = ();
+    Tuple<String,String,Tuple<String,String,<>>> unsugared = Tuple("hello",Tuple("goodbye",()));
+    <String,String> sugared = unsugared;
 }

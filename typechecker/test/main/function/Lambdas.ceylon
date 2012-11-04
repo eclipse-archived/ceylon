@@ -59,11 +59,11 @@ class Lambdas() {
     @type["Float"] applyToOne(sqrt);
     @type["Float"] applyToOne((Float x) x**3);
     
-    void exec(Callable<Void,Empty> run) {
+    void exec(Callable<Void,<>> run) {
         run();
     }
     
-    Callable<String,Empty> lazy(String s) {
+    Callable<String,<>> lazy(String s) {
         function result() {
             return s;
         }
