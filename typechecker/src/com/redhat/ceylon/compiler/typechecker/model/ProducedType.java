@@ -552,23 +552,7 @@ public class ProducedType extends ProducedReference {
                 //first find a common superclass or superinterface 
                 //declaration that satisfies the criteria, ignoring
                 //type arguments for now
-                Criteria c2 = new Criteria() {
-                    @Override
-                    public boolean satisfies(TypeDeclaration type) {
-                        if ( c.satisfies(type) ) {
-                            for (ProducedType ct: caseTypes) {
-                                if (ct.getSupertype(type)==null) {
-                                    return false;
-                                }
-                            }
-                            return true;
-                        }
-                        else {
-                            return false;
-                        }
-                    }
-                };
-                ProducedType stc = caseTypes.get(0).getSupertype(c2, list);
+                ProducedType stc = findCommonSuperclass(c, caseTypes);
                 if (stc!=null) {
                     //we found the declaration, now try to construct a 
                     //produced type that is a true common supertype
@@ -584,7 +568,39 @@ public class ProducedType extends ProducedReference {
         return result;
     }
 
-    private ProducedType getPrincipalInstantiation(final Criteria c,
+	private ProducedType findCommonSuperclass(Criteria c,
+			List<ProducedType> types) {
+		ProducedType stc = null;
+		for (ProducedType pt: types.get(0).getSupertypes()) {
+			TypeDeclaration ptd = pt.getDeclaration();
+			if (ptd instanceof ClassOrInterface && c.satisfies(ptd)) {
+		    	for (ProducedType ct: types) {
+		    		if (!ct.getDeclaration().inherits(ptd)) {
+		    			pt = null;
+		    			break;
+		    		}
+		    	}
+		    	if (pt!=null) {
+		    		if (stc==null) {
+		    			stc = pt;
+		    		}
+		    		else if (ptd.inherits(stc.getDeclaration())) {
+		    			stc = pt;
+		    		}
+		    		else if (stc.getDeclaration().inherits(ptd)) {
+		    			
+		    		}
+		    		else {
+		    			stc = null;
+		    			break;
+		    		}
+		    	}
+			}
+		}
+		return stc;
+	}
+
+    private ProducedType getPrincipalInstantiation(Criteria c,
             List<ProducedType> list) {
         //search for the most-specific supertype 
         //for the given declaration
@@ -612,20 +628,36 @@ public class ProducedType extends ProducedReference {
                     TypeDeclaration rd = result.getDeclaration();
                     TypeDeclaration prd = possibleResult.getDeclaration();
 
-                    //Note: the following is pretty adhoc
-                    //TODO: search for common supertypes!!!
+                    //Resolve ambiguities in favor of
+                    //the most-refined declaration
+                    /*if (rd.equals(prd)) {
+                        List<ProducedType> args = constructPrincipalInstantiation(
+                                rd, result, possibleResult);
+                        //TODO: broken for member types! ugh :-(
+                        result = rd.getProducedType(result.getQualifyingType(), args);
+                    }
+                    else if (rd.inherits(prd)) {
+                    }
+                    else if (prd.inherits(rd)) {
+                    	result = possibleResult;
+                    }*/
+                    
                     TypeDeclaration d = null;
                     if (rd.equals(prd)) {
                     	d = rd;
                     }
-                    else if (rd.inherits(prd)) {
+                    //Resolve ambiguities in favor of 
+                    //least-refined declaration (in
+                    //order to take advantage of most
+                    //specific type arguments)
+                    /*else if (rd.inherits(prd)) {
                     	d=prd;
                     	result=result.getSupertype(d);
                     }
                     else if (prd.inherits(rd)) {
                     	d=rd;
                     	possibleResult=possibleResult.getSupertype(d);
-                    }
+                    }*/
                     
                     if (d!=null) {
                         List<ProducedType> args = constructPrincipalInstantiation(

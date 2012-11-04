@@ -275,7 +275,11 @@ public abstract class TypeDeclaration extends Declaration
             return false;
         }
         visited.add(this);
-        if (equals(dec)) return true;
+        if (this instanceof ClassOrInterface && 
+        	dec instanceof ClassOrInterface && 
+        		equals(dec)) {
+        	return true;
+        }
         for (TypeDeclaration t: getSatisfiedTypeDeclarations()) {
             if (t.inherits(dec, visited)) {
                 return true;
