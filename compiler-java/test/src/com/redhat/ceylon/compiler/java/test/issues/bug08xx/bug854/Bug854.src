@@ -1,0 +1,11 @@
+package com.redhat.ceylon.compiler.java.test.issues.bug08xx.bug854;
+
+final class bug854_ {
+    
+    private bug854_() {
+    }
+    
+    static <T>T bug854(final T x) {
+        return new .com.redhat.ceylon.compiler.java.test.issues.bug08xx.bug854.Bug854<T>().id(x);
+    }
+}
