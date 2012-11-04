@@ -834,7 +834,7 @@ public class ExpressionTransformer extends AbstractTransformer {
     }
 
     public JCTree transform(Tree.DefaultOp op) {
-        JCExpression left = transformExpression(op.getLeftTerm(), BoxingStrategy.BOXED, op.getTypeModel());
+        JCExpression left = transformExpression(op.getLeftTerm(), BoxingStrategy.BOXED, typeFact().getOptionalType(op.getTypeModel()));
         JCExpression right = transformExpression(op.getRightTerm(), BoxingStrategy.BOXED, op.getTypeModel());
         Naming.SyntheticName varName = naming.temp();
         JCExpression varIdent = varName.makeIdent();
