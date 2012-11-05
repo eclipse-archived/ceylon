@@ -119,10 +119,13 @@ public abstract class ClassOrPackageDoc extends CeylonDoc {
             if( value.isShared() && !value.isVariable() ) {
                 Unit unit = value.getUnit();
                 TypeDeclaration type = value.getTypeDeclaration();
-
-                if( type instanceof UnionType && isSequenceType((UnionType) type) ) {
-                    ProducedType elementType = unit.getElementType(((UnionType)type).getType());
-                    type = elementType.getDeclaration();
+                
+                if (type instanceof UnionType) {
+                    ProducedType nonemptySequenceType = unit.getNonemptySequenceType(value.getType());
+                    if (nonemptySequenceType != null) {
+                        ProducedType elementType = unit.getElementType(nonemptySequenceType);
+                        type = elementType.getDeclaration();
+                    }
                 }
 
                 if (unit.getStringDeclaration().equals(type)
@@ -134,14 +137,6 @@ public abstract class ClassOrPackageDoc extends CeylonDoc {
             }
         }
         return false;
-    }
-
-    private boolean isSequenceType(UnionType unionType) {
-        return unionType.getCaseTypes().size() == 2 &&
-                com.redhat.ceylon.compiler.typechecker.model.Util.isElementOfUnion(
-                        unionType, unionType.getUnit().getEmptyDeclaration()) &&
-                com.redhat.ceylon.compiler.typechecker.model.Util.isElementOfUnion(
-                        unionType, unionType.getUnit().getSequenceDeclaration());
     }
 
     private void writeConstantValue(Value v) throws IOException {
