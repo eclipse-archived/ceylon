@@ -1545,6 +1545,16 @@ public class ExpressionVisitor extends Visitor {
             }
             else if (paramType.getDeclaration() instanceof UnionType) {
                 List<ProducedType> list = new ArrayList<ProducedType>();
+                //if there is more than one type parameter in
+                //the union, ignore this union when inferring 
+                //types
+                boolean found = false;
+                for (ProducedType ct: paramType.getDeclaration().getCaseTypes()) {
+                	if (ct.getDeclaration() instanceof TypeDeclaration) {
+                		if (found) return null;
+                		found = true;
+                	}
+                }
                 for (ProducedType ct: paramType.getDeclaration().getCaseTypes()) {
                     addToIntersection(list, inferTypeArg(tp, 
                             ct.substitute(paramType.getTypeArguments()), 
