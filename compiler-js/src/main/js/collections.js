@@ -222,7 +222,7 @@ function Empty() {
     that.value = [];
     return that;
 }
-initTypeProtoI(Empty, 'ceylon.language::Empty', None, Ranged, Cloneable, List);
+initTypeProtoI(Empty, 'ceylon.language::Empty', Sequential, None, Ranged, Cloneable);
 var Empty$proto = Empty.$$.prototype;
 Empty$proto.getEmpty = function() { return true; }
 Empty$proto.defines = function(x) { return false; }
