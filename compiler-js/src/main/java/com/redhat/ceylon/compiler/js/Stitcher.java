@@ -7,9 +7,10 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
 
+import net.minidev.json.JSONObject;
+
 import com.redhat.ceylon.cmr.impl.JULLogger;
 import com.redhat.ceylon.cmr.impl.ShaSigner;
-import com.redhat.ceylon.compiler.SimpleJsonEncoder;
 import com.redhat.ceylon.compiler.typechecker.TypeChecker;
 import com.redhat.ceylon.compiler.typechecker.TypeCheckerBuilder;
 import com.redhat.ceylon.compiler.typechecker.context.PhasedUnit;
@@ -48,7 +49,7 @@ public class Stitcher {
                             pu.getCompilationUnit().visit(mmg);
                         }
                         writer.print("$$metamodel$$=");
-                        new SimpleJsonEncoder().encode(mmg.getModel(), writer);
+                        writer.print(JSONObject.toJSONString(mmg.getModel()));
                         writer.println(";");
                         writer.println("exports.$$metamodel$$=$$metamodel$$;");
                     } else if (!line.endsWith("//IGNORE")) {
