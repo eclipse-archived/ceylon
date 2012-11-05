@@ -217,6 +217,12 @@ ListIterator.$$.prototype.next = function() {
     return $finished;
 }
 
+function Sequential($$sequential) {
+    return $$sequential;
+}
+initTypeProtoI(Sequential, 'ceylon.language::Sequential', List, FixedSized, Ranged, Cloneable);
+exports.Sequential=Sequential;
+
 function Empty() {
     var that = new Empty.$$;
     that.value = [];

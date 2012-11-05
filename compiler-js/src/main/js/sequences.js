@@ -9,11 +9,6 @@ function Exception(){}//IGNORE
 var List,Some,Cloneable,Ranged,exports,larger,smaller,equal,Object$,$empty,$finished,Iterator;//IGNORE
 var IdentifiableObject,Category,Sized;//IGNORE
 
-function Sequential($$sequential) {
-    return $$sequential;
-}
-initTypeProtoI(Sequential, 'ceylon.language::Sequential', List, FixedSized, Ranged, Cloneable);
-
 function Sequence($$sequence) {
     return $$sequence;
 }
@@ -281,7 +276,6 @@ $SingletonIterator$proto.next = function() {
     return this.elem;
 }
 
-exports.Sequential=Sequential;
 exports.Sequence=Sequence;
 exports.SequenceBuilder=SequenceBuilder;
 exports.SequenceAppender=SequenceAppender;
