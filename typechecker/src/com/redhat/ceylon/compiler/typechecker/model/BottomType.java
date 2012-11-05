@@ -26,7 +26,7 @@ public class BottomType extends TypeDeclaration {
 
     @Override
     public String getQualifiedNameString() {
-        return "ceylon.language.Bottom";
+        return "ceylon.language::Bottom";
     }
 
     @Override
