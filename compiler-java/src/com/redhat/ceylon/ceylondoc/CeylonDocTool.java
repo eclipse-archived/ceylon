@@ -131,7 +131,8 @@ public class CeylonDocTool implements Tool {
     private Map<TypeDeclaration, List<ClassOrInterface>> satisfyingClassesOrInterfaces = new HashMap<TypeDeclaration, List<ClassOrInterface>>();    
     private boolean includeNonShared;
     private boolean includeSourceCode;
-    private Map<Declaration, Node> sourceLocations = new HashMap<Declaration, Node>();
+    private Map<Declaration, PhasedUnit> declarationUnitMap = new HashMap<Declaration, PhasedUnit>();
+    private Map<Declaration, Node> declarationNodeMap = new HashMap<Declaration, Node>();
     private File tempDestDir;
     private CeylondLogger log;
     private List<String> compiledClasses = new LinkedList<String>();
@@ -431,8 +432,8 @@ public class CeylonDocTool implements Tool {
     
     public void makeDoc() throws IOException {
         
+        buildDeclarationMaps();
         if (includeSourceCode) {
-            buildSourceLocations();
             copySourceFiles();
         }
 
@@ -567,20 +568,23 @@ public class CeylonDocTool implements Tool {
         }
     }
 
-    private void buildSourceLocations() {
-        for (PhasedUnit pu : phasedUnits) {
+    private void buildDeclarationMaps() {
+        for (final PhasedUnit pu : phasedUnits) {
             CompilationUnit cu = pu.getCompilationUnit();
             Walker.walkCompilationUnit(new Visitor() {
                 public void visit(Tree.Declaration decl) {
-                    sourceLocations.put(decl.getDeclarationModel(), decl);
+                    declarationUnitMap.put(decl.getDeclarationModel(), pu);
+                    declarationNodeMap.put(decl.getDeclarationModel(), decl);
                     super.visit(decl);
                 }
                 public void visit(Tree.MethodDeclaration decl) {
-                    sourceLocations.put(decl.getDeclarationModel(), decl);
+                    declarationUnitMap.put(decl.getDeclarationModel(), pu);
+                    declarationNodeMap.put(decl.getDeclarationModel(), decl);
                     super.visit(decl);
                 }
                 public void visit(Tree.AttributeDeclaration decl) {
-                    sourceLocations.put(decl.getDeclarationModel(), decl);
+                    declarationUnitMap.put(decl.getDeclarationModel(), pu);
+                    declarationNodeMap.put(decl.getDeclarationModel(), decl);
                     super.visit(decl);
                 }
             }, cu);
@@ -903,16 +907,26 @@ public class CeylonDocTool implements Tool {
         return result;
     }
     
+    protected PhasedUnit getDeclarationUnit(Declaration decl) {
+        return declarationUnitMap.get(decl);
+    }
+    
+    protected Node getDeclarationNode(Declaration decl) {
+        return declarationNodeMap.get(decl);
+    }
+    
     /**
      * Returns the starting and ending line number of the given declaration
      * @param decl The declaration
      * @return [start, end]
      */
-    int[] getDeclarationSrcLocation(Declaration decl) {
-        Node node = this.sourceLocations.get(decl);
-        if(node == null)
+    protected int[] getDeclarationSrcLocation(Declaration decl) {
+        Node node = declarationNodeMap.get(decl);
+        if (node == null) {
             return null;
-        return new int[]{node.getToken().getLine(), node.getEndToken().getLine()};
+        } else {
+            return new int[] { node.getToken().getLine(), node.getEndToken().getLine() };
+        }
     }
     
     protected Module getCurrentModule() {

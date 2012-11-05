@@ -183,6 +183,7 @@ public class CeylonDocToolTest {
         assertCallableParameter(destDir);
         assertFencedCodeBlockWithSyntaxHighlighter(destDir);
         assertWikiStyleLinkSyntax(destDir);
+        assertConstants(destDir);
         assertBug659ShowInheritedMembers(destDir);
         assertBug691AbbreviatedOptionalType(destDir);
         assertBug839(destDir);
@@ -219,6 +220,7 @@ public class CeylonDocToolTest {
         assertCallableParameter(destDir);
         assertFencedCodeBlockWithSyntaxHighlighter(destDir);
         assertWikiStyleLinkSyntax(destDir);
+        assertConstants(destDir);
         assertBug659ShowInheritedMembers(destDir);
         assertBug691AbbreviatedOptionalType(destDir);
         assertBug839(destDir);
@@ -352,7 +354,7 @@ public class CeylonDocToolTest {
         tool.makeDoc();
         
         for(String moduleName : moduleNames){
-            Module module = makeModule("ceylon." + moduleName, "0.5");
+            Module module = makeModule("ceylon." + moduleName, "0.4");
             File destDir = getOutputDir(tool, module);
 
             assertFileExists(destDir, "index.html");
@@ -617,6 +619,23 @@ public class CeylonDocToolTest {
                 Pattern.compile("fullStubInterface with custom name = <a class='link' href='interface_StubInterface.html'>full custom stub interface</a>"));
         assertMatchInFile(destDir, "class_StubClass.html", 
                 Pattern.compile("fullUnresolvable = unresolvable@StubInterface"));
+    }
+    
+    private void assertConstants(File destDir) throws IOException {
+        assertMatchInFile(destDir, "index.html", 
+                Pattern.compile("String constAbc<span class='specifier-operator'> = </span><span class='specifier-start'> \"abcdef\"</span><span class='specifier-semicolon'>;</span>"));
+        assertMatchInFile(destDir, "index.html", 
+                Pattern.compile("String constAbcSingleQuoted<span class='specifier-operator'> = </span><span class='specifier-start'> 'abcdef'</span><span class='specifier-semicolon'>;</span>"));
+        assertMatchInFile(destDir, "index.html", 
+                Pattern.compile("String constLoremIpsumMultiLine<span class='specifier-operator'> = </span><span class='specifier-start'> \"Lorem ipsum dolor sit amet, consectetur adipisicing elit, </span><a class='specifier-ellipsis' href='#' title='Click for expand the rest of value.'>...</a><div class='specifier-rest'>                                          sed do eiusmod tempor incididunt ut labore et dolore magna aliqua."));
+        assertMatchInFile(destDir, "index.html", 
+                Pattern.compile("String\\[\\] constAbcArray<span class='specifier-operator'> = </span><span class='specifier-start'> \\{</span><a class='specifier-ellipsis' href='#' title='Click for expand the rest of value.'>...</a><div class='specifier-rest'>    \"abc\","));
+        assertMatchInFile(destDir, "index.html", 
+                Pattern.compile("Character constCharA<span class='specifier-operator'> = </span><span class='specifier-start'> `A`</span><span class='specifier-semicolon'>;</span>"));
+        assertMatchInFile(destDir, "index.html", 
+                Pattern.compile("Integer constNumTwo<span class='specifier-operator'> = </span><span class='specifier-start'> constNumZero \\+ 1 \\+ 1</span><span class='specifier-semicolon'>;</span>"));
+        assertMatchInFile(destDir, "index.html", 
+                Pattern.compile("Float constNumPI<span class='specifier-operator'> = </span><span class='specifier-start'> 3.14</span><span class='specifier-semicolon'>;</span>"));
     }
 
     private void assertBug659ShowInheritedMembers(File destDir) throws IOException {
