@@ -31,10 +31,10 @@ void testMultipleParamLists() {
     function apat(String c)=multiFullname("A")("B");
     check(apat("C") == "A B C", "Multi fullname 2");
     function nombre(String name)=multiFullname("Name");
-    check(is Callable<Callable<String,String>,String> nombre("Z"), "Multi callable 1");
+    check(is Callable<Callable<String,<String>>,<String>> nombre("Z"), "Multi callable 1");
     check(nombre("Z")("L")=="Name Z L", "Multi callable 2");
     check(multiDefaulted()("B")("C")=="A B C", "Multi defaulted 1");
-    Callable<Callable<String,String>,String> md1=multiDefaulted();
+    Callable<Callable<String,<String>>,<String>> md1=multiDefaulted();
     check(md1("B")("C")=="A B C", "Multi defaulted 2");
     check(md1("B")("Z")=="A B Z", "Multi defaulted 3");
     check(md1("Z")("C")=="A Z C", "Multi defaulted 4");

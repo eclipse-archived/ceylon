@@ -193,9 +193,9 @@ void testNullsafeOperators() {
     NullsafeTest? obj = null;
     Integer? i = obj?.f();
     check(!exists i, "nullsafe invoke");
-    Callable<Integer?> f2 = obj?.f;
+    Callable<Integer?,<>> f2 = obj?.f;
     check(!exists nullsafeTest(f2), "nullsafe method ref");
-    Callable<Integer?>? f3 = obj?.f;
+    Callable<Integer?,<>>? f3 = obj?.f;
     check(exists f3, "nullsafe method ref 2");
     obj?.f();
     check(!exists obj?.f(), "nullsafe simple call");
