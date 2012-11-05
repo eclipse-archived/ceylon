@@ -2179,6 +2179,53 @@ public class ExpressionVisitor extends Visitor {
                                 "index must be assignable to key type");
                         ProducedType rt = unit.getOptionalType(vt);
                         that.setTypeModel(rt);
+                        Tree.Term t = e.getExpression().getTerm();
+                        //TODO: in theory we could do a whole lot
+                        //      more static-execution of the 
+                        //      expression, but this seems
+                        //      perfectly sufficient
+                        boolean negated = false;
+                        if (t instanceof Tree.NegativeOp) {
+                			t = ((Tree.NegativeOp) t).getTerm();
+                			negated = true;
+                		}
+                        else if (t instanceof Tree.PositiveOp) {
+                			t = ((Tree.PositiveOp) t).getTerm();
+                		}
+                        if (pt.getDeclaration() instanceof Class &&
+                    			pt.getDeclaration().equals(unit.getTupleDeclaration())) {
+                    		if (t instanceof Tree.NaturalLiteral) {
+                    			int index = Integer.parseInt(t.getText());
+                    			if (negated) index = -index;
+                        		List<ProducedType> elementTypes = argtypes(pt);
+                        		boolean sequenced = argsequenced(pt);
+                        		//TODO: handle terminating type of tuple type!
+                        		if (elementTypes!=null) {
+                        			if (index<0) {
+                        				that.setTypeModel(unit.getNothingDeclaration().getType());
+                        			}
+                        			else if (index<elementTypes.size()-(sequenced?1:0)) {
+                        				ProducedType iet = elementTypes.get(index);
+                        				if (iet!=null) {
+                        					that.setTypeModel(iet);
+                        				}
+                        			}
+                        			else {
+                        				if (sequenced) {
+                        					ProducedType iet = elementTypes.get(elementTypes.size()-1);
+                        					if (iet!=null) {
+                        						that.setTypeModel(unionType(unit.getIteratedType(iet), 
+                        								unit.getNothingDeclaration().getType(), 
+                        								unit));
+                        					}
+                        				}
+                        				else {
+                        					that.setTypeModel(unit.getNothingDeclaration().getType());
+                        				}
+                        			}
+                        		}
+                    		}
+                        }
                     }
                 }
                 else {
