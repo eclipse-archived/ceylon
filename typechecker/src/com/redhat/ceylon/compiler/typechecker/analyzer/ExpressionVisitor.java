@@ -749,7 +749,7 @@ public class ExpressionVisitor extends Visitor {
     private void checkFunctionType(ProducedType et, Tree.Type that) {
         if (et!=null) {
             checkAssignable(et, that.getTypeModel(), that, 
-                    "specified reference return type must be assignable to declared return type");
+                    "specified expression type must be assignable to declared return type");
         }
     }
 
@@ -827,43 +827,6 @@ public class ExpressionVisitor extends Visitor {
             Tree.Expression e = se.getExpression();
             if (e!=null) {
                 ProducedType returnType = e.getTypeModel();
-                for (Tree.ParameterList pl: that.getParameterLists()) {
-                    if (checkCallable(returnType, se, "specified value must be a reference to a function or class")) {
-                        /*if (e.getTerm() instanceof MemberOrTypeExpression) {
-                            Declaration d = ((MemberOrTypeExpression) e.getTerm()).getDeclaration();
-                            if (d instanceof Class && ((Class) d).isAbstract()) {
-                                se.addError("specified reference is to an abstract class: " + d.getName());
-                            }
-                        }*/
-                        List<ProducedType> tal = returnType.getTypeArgumentList();
-                        if (tal.size()>=2) {
-                            returnType = tal.get(0);
-                        	List<ProducedType> paramTypes = argtypes(tal.get(1));
-                        	if (pl.getParameters().size()==paramTypes.size()) {
-                        		int i=0;
-                        		for (Tree.Parameter p: pl.getParameters()) {
-                        			if (p!=null) {
-                        				ProducedType rt = paramTypes.get(i++);
-                        				ProducedType pt = p.getDeclarationModel().getProducedTypedReference(null, 
-                        						Collections.<ProducedType>emptyList()).getFullType();
-                        				checkIsExactly(rt, pt, p.getType(), 
-                        						"specified reference parameter type must be exactly the same as declared type of parameter " + 
-                        								p.getDeclarationModel().getName());
-                        			}
-                        		}
-                        	}
-                            else {
-                                se.addError("specified reference must have the same number of parameters");
-                            }
-                        }
-                        else {
-                        	se.addError("specified reference does not have a well-defined type");
-                        }
-                    }
-                    else {
-                        return; //Note: early exit!
-                    }
-                }
                 inferFunctionType(that, returnType);
                 if (that.getType()!=null) {
                     checkFunctionType(returnType, that.getType());
