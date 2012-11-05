@@ -139,6 +139,10 @@ void method() {
     @error function fy(String g()) = do;
     value fw = do<String>;
     @error value fz = do;
+
+    function sqrt(Float x) = x**0.5;
+    value temp = sqrt;
+    Float root(Float x) = temp(x);
 }
 
 class Outer() {
