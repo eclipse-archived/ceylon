@@ -9,3 +9,12 @@ final class bug854_ {
         return new .com.redhat.ceylon.compiler.java.test.issues.bug08xx.bug854.Bug854<T>().id(x);
     }
 }
+final class bug854b_ {
+    
+    private bug854b_() {
+    }
+    
+    static <T>T bug854b(final T x) {
+        return .com.redhat.ceylon.compiler.java.Util.checkNull(new .com.redhat.ceylon.compiler.java.test.issues.bug08xx.bug854.Bug854<T>().id(x));
+    }
+}

@@ -191,7 +191,9 @@ public class ExpressionTransformer extends AbstractTransformer {
         }
 
         result = applyErasureAndBoxing(result, expr, boxingStrategy, expectedType, flags);
-        if(expectedType != null && hasUncheckedNulls(expr) && !isOptional(expectedType) && !isTypeParameter(expectedType)){
+        if (expectedType != null && hasUncheckedNulls(expr) && !isOptional(expectedType)  
+                && (!isTypeParameter(expectedType) 
+                        || expectedType.isSubtypeOf(typeFact().getObjectDeclaration().getType()))) {
             result = makeUtilInvocation("checkNull", List.of(result), null);
         }
 

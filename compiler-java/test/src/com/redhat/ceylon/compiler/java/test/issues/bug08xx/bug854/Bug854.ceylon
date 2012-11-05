@@ -19,3 +19,5 @@
  */
 @nomodel
 T bug854<T>(T x) { return Bug854<T>().id(x); }
+@nomodel
+T bug854b<T>(T x) given T satisfies Object { return Bug854<T>().id(x); }
