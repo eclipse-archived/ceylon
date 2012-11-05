@@ -8,11 +8,3 @@ void unionRefinement() {
     print(ints3.first else "");
     print(ints4.first else "");
 }
-
-//class MethodIfNonEmptySequence() {
-//    shared void m(String s) {
-//        if (nonempty s) {
-//            print(s.first);
-//        }
-//    }
-//}
