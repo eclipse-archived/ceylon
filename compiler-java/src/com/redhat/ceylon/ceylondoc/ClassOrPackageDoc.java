@@ -23,11 +23,16 @@ package com.redhat.ceylon.ceylondoc;
 import static com.redhat.ceylon.ceylondoc.Util.getDoc;
 import static com.redhat.ceylon.ceylondoc.Util.getModifiers;
 
+import java.io.BufferedReader;
 import java.io.IOException;
+import java.io.InputStreamReader;
 import java.io.Writer;
 import java.util.Iterator;
 import java.util.List;
 
+import org.antlr.runtime.Token;
+
+import com.redhat.ceylon.compiler.typechecker.context.PhasedUnit;
 import com.redhat.ceylon.compiler.typechecker.model.Annotation;
 import com.redhat.ceylon.compiler.typechecker.model.ClassOrInterface;
 import com.redhat.ceylon.compiler.typechecker.model.Declaration;
@@ -39,7 +44,13 @@ import com.redhat.ceylon.compiler.typechecker.model.Module;
 import com.redhat.ceylon.compiler.typechecker.model.Parameter;
 import com.redhat.ceylon.compiler.typechecker.model.ParameterList;
 import com.redhat.ceylon.compiler.typechecker.model.ProducedType;
+import com.redhat.ceylon.compiler.typechecker.model.TypeDeclaration;
 import com.redhat.ceylon.compiler.typechecker.model.TypeParameter;
+import com.redhat.ceylon.compiler.typechecker.model.UnionType;
+import com.redhat.ceylon.compiler.typechecker.model.Unit;
+import com.redhat.ceylon.compiler.typechecker.model.Value;
+import com.redhat.ceylon.compiler.typechecker.tree.Node;
+import com.redhat.ceylon.compiler.typechecker.tree.Tree;
 
 public abstract class ClassOrPackageDoc extends CeylonDoc {
 
@@ -88,6 +99,9 @@ public abstract class ClassOrPackageDoc extends CeylonDoc {
         linkRenderer().to(d.getType()).write();
         write(" ");
         write(d.getName());
+        if( isConstantValue(d) ) {
+            writeConstantValue((Value) d);
+        }
         if( d instanceof Method ) {
             Method m = (Method) d;
             writeTypeParameters(m);
@@ -99,6 +113,98 @@ public abstract class ClassOrPackageDoc extends CeylonDoc {
         close("tr");
     }
     
+    private boolean isConstantValue(Declaration d) {
+        if( d instanceof Value ) {
+            Value value = (Value) d;
+            if( value.isShared() && !value.isVariable() ) {
+                Unit unit = value.getUnit();
+                TypeDeclaration type = value.getTypeDeclaration();
+                
+                if (type instanceof UnionType) {
+                    ProducedType nonemptySequenceType = unit.getNonemptySequenceType(value.getType());
+                    if (nonemptySequenceType != null) {
+                        ProducedType elementType = unit.getElementType(nonemptySequenceType);
+                        type = elementType.getDeclaration();
+                    }
+                }
+
+                if (unit.getStringDeclaration().equals(type)
+                        || unit.getIntegerDeclaration().equals(type)
+                        || unit.getFloatDeclaration().equals(type)
+                        || unit.getCharacterDeclaration().equals(type)) {
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+
+    private void writeConstantValue(Value v) throws IOException {
+        Node node = tool.getDeclarationNode(v);
+        PhasedUnit pu = tool.getDeclarationUnit(v);
+        if (pu == null || !(node instanceof Tree.AttributeDeclaration)) {
+            return;
+        }
+        
+        Tree.AttributeDeclaration attribute = (Tree.AttributeDeclaration) node;
+        Tree.SpecifierOrInitializerExpression specifierExpression = attribute.getSpecifierOrInitializerExpression();
+        if (specifierExpression == null || specifierExpression.getExpression() == null) {
+            return;
+        }
+        
+        Token startToken = specifierExpression.getExpression().getToken();
+        int startLine = startToken.getLine();
+        int startLinePosition = startToken.getCharPositionInLine();
+
+        Token endToken = attribute.getEndToken();
+        int endLine = endToken.getLine();
+        int endLinePosition = endToken.getCharPositionInLine();
+
+        StringBuilder valueBuilder = new StringBuilder(" ");
+        BufferedReader sourceCodeReader = new BufferedReader(new InputStreamReader(pu.getUnitFile().getInputStream()));
+        try{
+            int lineIndex = 1;
+            String line = sourceCodeReader.readLine();
+            while (line != null) {
+                if (lineIndex == startLine && lineIndex == endLine) {
+                    valueBuilder.append(line.substring(startLinePosition, endLinePosition));
+                    break;
+                } else if (lineIndex == startLine) {
+                    valueBuilder.append(line.substring(startLinePosition, line.length()));
+                } else if (lineIndex > startLine && lineIndex < endLine) {
+                    valueBuilder.append("\n");
+                    valueBuilder.append(line);
+                } else if( lineIndex == endLine) {
+                    valueBuilder.append("\n");
+                    valueBuilder.append(line.substring(0, endLinePosition));
+                    break;
+                }
+
+                line = sourceCodeReader.readLine();
+                lineIndex++;
+            }
+        } finally {
+            sourceCodeReader.close();
+        }
+
+        String value = valueBuilder.toString();
+        int newLineIndex = value.indexOf("\n");
+        String valueFirstLine = newLineIndex != -1 ? value.substring(0, newLineIndex) : value;
+
+        around("span class='specifier-operator'", " = ");
+        around("span class='specifier-start'", valueFirstLine);
+        if (newLineIndex != -1) {
+            around("a class='specifier-ellipsis' href='#' title='Click for expand the rest of value.'",
+                    "...");
+            open("div class='specifier-rest'");
+            write(value.substring(newLineIndex + 1));
+            around("span class='specifier-semicolon'", ";");
+            close("div");
+        } else {
+            around("span class='specifier-semicolon'", ";");
+        }
+    }
+
     private void writeDescription(Declaration d) throws IOException {
         open("div class='description'");
         writeDeprecated(d);

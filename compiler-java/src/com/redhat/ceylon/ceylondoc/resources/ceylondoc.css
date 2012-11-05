@@ -154,6 +154,26 @@
 	font-style: italic;
 }
 
+.specifier-operator,
+.specifier-semicolon {
+	color: rgb(120, 120, 120);
+}
+
+.specifier-start,
+.specifier-rest {
+	color: rgb(77, 77, 255);
+}
+
+.specifier-rest {
+	display: none;
+	white-space: pre;
+}
+
+.specifier-ellipsis {
+	color: #0088cc;
+	padding-left: 4px;
+}
+
 .inherited-members {
 	padding-left: 30px;
 }

@@ -66,6 +66,21 @@ $("table").each(function() {
 
 
 /*
+ * COLLAPSIBLE SPECIFIER EXPRESSION 
+ */
+$(".specifier-ellipsis").each(function() {
+	var specifierEllipsis = $(this);
+	var specifierRest = specifierEllipsis.next();
+
+	specifierEllipsis.click(function() {
+		specifierEllipsis.toggle();
+		specifierRest.toggle();
+		return false;
+	});
+});
+
+
+/*
  * COLLAPSIBLE DESCRIPTION
  */
 $('tbody .description').each(function() {
