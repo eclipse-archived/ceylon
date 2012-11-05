@@ -1579,12 +1579,12 @@ public class ExpressionVisitor extends Visitor {
             }
             else if (paramType.getDeclaration() instanceof UnionType) {
                 List<ProducedType> list = new ArrayList<ProducedType>();
-                //if there is more than one type parameter in
+                //If there is more than one type parameter in
                 //the union, ignore this union when inferring 
-                //types
+                //types. TODO: this is a bit adhoc
                 boolean found = false;
                 for (ProducedType ct: paramType.getDeclaration().getCaseTypes()) {
-                	if (ct.getDeclaration() instanceof TypeDeclaration) {
+                	if (ct.getDeclaration() instanceof TypeParameter) {
                 		if (found) return null;
                 		found = true;
                 	}
