@@ -51,7 +51,7 @@ class Lambdas() {
     @type["Float"] apply(2.0)(sqrt);
     @type["Float"] apply<Float>(2.0)((Float x) x**3);
     
-    @type["Float"] function applyToTwo(Float f(Float x)) = apply(2.0);
+    @type["Float"] function applyToTwo(Float f(Float x)) = apply(2.0)(f);
     applyToTwo(sqrt);
     applyToTwo((Float x) x**3);
     
@@ -74,12 +74,14 @@ class Lambdas() {
     function name(String first)(String middle)(String last) {
         return "" first " " middle " " last "";
     }
+    String n1(String middle)(String last) = name("Gavin")(middle)(last);
+    String n2(String last) = name("Gavin")("A")(last);
     String n3 = name("Gavin")("A")("King");
-    String n2(String last) = name("Gavin")("A");
-    String n1(String middle)(String last) = name("Gavin");
+    String(String) n4 = name("Gavin")("A");
+    String(String)(String) n5 = name("Gavin");
     
-    @type["String"] function nm2(String middle)(String last) = name("Gavin");
-    @type["String"] function nm1(String last) = name("Gavin")("A");
+    @type["String"] function nm2(String middle)(String last) = name("Gavin")(middle)(last);
+    @type["String"] function nm1(String last) = name("Gavin")("A")(last);
     
     @type["Callable<Callable<String,Tuple<String,String,Empty>>,Tuple<String,String,Empty>>"] value nmv2 = name("Gavin");
     @type["Callable<String,Tuple<String,String,Empty>>"] value nmv1 = name("Gavin")("A");
@@ -97,7 +99,7 @@ class Lambdas() {
         return (Float x)(Float y) x+y+z;
     }
     
-    @type["String"] function l1(String s) = (String s) s.uppercased;
+    @type["String"] function l1(String s) = ((String s) s.uppercased)(s);
     @type["Callable<String,Tuple<String,String,Empty>>"] value l2 = (String s) s.lowercased;
     @error String l3(String s) = (String s) s.size;
     @error Integer l4(String s, Integer i) = (String s) s.size;

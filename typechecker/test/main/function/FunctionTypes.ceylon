@@ -71,7 +71,7 @@ void method() {
     @error higher2({"hello", "world"}, noop);
     @error higher2({"hello", "world"}, str);
     
-    @type["String"] function up(String s) = upper;
+    @type["String"] function up(String s) = upper(s);
     void pr(String s) = print;
     void np() = noop;
     
@@ -79,13 +79,13 @@ void method() {
     @type["Void"] pr("hello");
     @type["Void"] np();
     
-    @type["X"] function good(String s) = X;
-    X better(String s) = X;
-    @type["X"] @error function bad() = X;
-    @type["X"] function badder(@error Integer n) = X;
+    @type["X"] function good(String s) = X(s);
+    X better(String s) = X(s);
+    @type["X"] @error function bad() = X();
+    @type["X"] @error function badder(Integer n) = X(n);
     @error String worse(String s) = X;
     @error String worst() = X;
-    @error void broke() = noop();
+    void broke() = noop();
     @error Z moreBroke() = Z;
     @error do(Z);
     @type["Void"] function z() { return Z; }
@@ -117,7 +117,7 @@ void method() {
     @error print(s);
     
     @type["Callable<Float,Tuple<Float,Float,Empty>>"] curried(1);
-    Float plus1(Float x) = curried(1);
+    Float plus1(Float x) = curried(1)(x);
     @type["Callable<Float,Tuple<Float,Float,Empty>>"] value p1 = curried(1);
     Float three = plus1(2.0);
     Float four = curried(2)(2.0);

@@ -276,7 +276,8 @@ class Capture() {
 }
 
 class MethodDefaultedParamCaptureInitParam1(@captured String s) {
-    String m(String t = s) = (String x) x;
+    String m(String t = s);
+    m = (String x) x;
 }
 
 class MethodDefaultedParamCaptureInitParam2(@captured String s) {
@@ -292,7 +293,8 @@ class MethodDefaultedParamCaptureInitParam4(@captured String s) {
 }
 
 void methodDefaultedParamCaptureInitParam1(@captured String s) {
-    String m(String t = s) = (String x) x;
+    String m(String t = s);
+    m = (String x) x;
 }
 
 void methodDefaultedParamCaptureInitParam2(@captured String s) {
