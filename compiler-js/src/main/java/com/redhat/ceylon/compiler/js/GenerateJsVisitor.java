@@ -171,12 +171,12 @@ public class GenerateJsVisitor extends Visitor
         }
     }
 
-    /** Prints a newline. Indentation will automatically be printed by <code>out</code>
+    /** Prints a newline. Indentation will automatically be printed by {@link #out(String, String...)}
      * when the next line is started. */
     void endLine() {
         endLine(false);
     }
-    /** Prints a newline. Indentation will automatically be printed by <code>out</code>
+    /** Prints a newline. Indentation will automatically be printed by {@link #out(String, String...)}
      * when the next line is started.
      * @param semicolon  if <code>true</code> then a semicolon is printed at the end
      *                  of the previous line*/
@@ -185,14 +185,14 @@ public class GenerateJsVisitor extends Visitor
         out("\n");
         needIndent = true;
     }
-    /** Calls <code>endLine</code> if the current position is not already the beginning
+    /** Calls {@link #endLine()} if the current position is not already the beginning
      * of a line. */
     void beginNewLine() {
         if (!needIndent) { endLine(); }
     }
 
     /** Increases indentation level, prints opening brace and newline. Indentation will
-     * automatically be printed by <code>out</code>* when the next line is started. */
+     * automatically be printed by {@link #out(String, String...)} when the next line is started. */
     void beginBlock() {
         indentLevel++;
         out("{");
@@ -200,25 +200,25 @@ public class GenerateJsVisitor extends Visitor
     }
 
     /** Decreases indentation level, prints a closing brace in new line (using
-     * <code>beginNewLine</code>) and calls <code>endLine</code>. */
+     * {@link #beginNewLine()}) and calls {@link #endLine()}. */
     void endBlockNewLine() {
         endBlock(false, true);
     }
     /** Decreases indentation level, prints a closing brace in new line (using
-     * <code>beginNewLine</code>) and calls <code>endLine</code>.
+     * {@link #beginNewLine()}) and calls {@link #endLine()}.
      * @param semicolon  if <code>true</code> then prints a semicolon after the brace*/
     void endBlockNewLine(boolean semicolon) {
         endBlock(semicolon, true);
     }
     /** Decreases indentation level and prints a closing brace in new line (using
-     * <code>beginNewLine</code>). */
+     * {@link #beginNewLine()}). */
     void endBlock() {
         endBlock(false, false);
     }
     /** Decreases indentation level and prints a closing brace in new line (using
-     * <code>beginNewLine</code>).
+     * {@link #beginNewLine()}).
      * @param semicolon  if <code>true</code> then prints a semicolon after the brace
-     * @param newline  if <code>true</code> then additionally calls <code>endLine</code> */
+     * @param newline  if <code>true</code> then additionally calls {@link #endLine()} */
     void endBlock(boolean semicolon, boolean newline) {
         indentLevel--;
         beginNewLine();
@@ -945,8 +945,7 @@ public class GenerateJsVisitor extends Visitor
             comment(that);
             out("var ", names.name(that.getDeclarationModel()), "=");
             that.getSpecifierExpression().getExpression().visit(this);
-            out(";");
-            endLine();
+            endLine(true);
             share(that.getDeclarationModel(), false);
         } else {
             //Check for refinement of simple param declaration
@@ -1151,8 +1150,7 @@ public class GenerateJsVisitor extends Visitor
                     outerSelf(d);
                     out(".", names.name(d), "=");
                     super.visit(that);
-                    out(";");
-                    endLine();
+                    endLine(true);
                 } else if (classParam != null) {
                     outerSelf(d);
                     out(".", names.name(d), "=", classParam, ";");
@@ -1172,8 +1170,7 @@ public class GenerateJsVisitor extends Visitor
                 } else {
                     super.visit(that);
                 }
-                out(";");
-                endLine();
+                endLine(true);
                 if (isCaptured(d)) {
                     out("var ", names.getter(d),"=function(){return ", varName, ";};");
                     endLine();
@@ -2993,7 +2990,7 @@ public class GenerateJsVisitor extends Visitor
         out("var ", expvar, "=");
         Expression expr = that.getSwitchClause().getExpression();
         expr.visit(this);
-        out(";"); endLine();
+        endLine(true);
         //For each case, do an if
         boolean first = true;
         for (CaseClause cc : that.getSwitchCaseList().getCaseClauses()) {
