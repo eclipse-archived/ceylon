@@ -1283,13 +1283,12 @@ public class ProducedType extends ProducedReference {
     			else if (args.getDeclaration().equals(unit.getEmptyDeclaration())) {
     				return "";
     			}
-    		}
-    		else {
-    			ProducedType elementType = unit.getElementType(args);
-    			if (elementType!=null && 
-    					args.isExactly(unit.getSequentialType(elementType))) { 
-    				return elementType.getProducedTypeName() + "...";
-    			}
+        		else if (args.getDeclaration().equals(unit.getSequentialDeclaration())) {
+        			ProducedType elementType = unit.getIteratedType(args);
+        			if (elementType!=null) { 
+        				return elementType.getProducedTypeName() + "...";
+        			}
+        		}
     		}
     	}
     	return null;
