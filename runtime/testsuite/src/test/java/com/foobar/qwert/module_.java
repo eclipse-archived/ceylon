@@ -27,7 +27,7 @@ import com.redhat.ceylon.compiler.java.metadata.Module;
         version = "1.0.0.GA",
         dependencies = {
                 @Import(name = "org.jboss.acme", version = "1.0.0.CR1", export = true),
-                @Import(name = "eu.cloud.clazz", version = "1.0.0.GA", export = true)
+                @Import(name = "eu.cloud.clazz", version = "1.0.0.GA")
         })
 public class module_ {
     public static ceylon.language.descriptor.Module getModule() {
