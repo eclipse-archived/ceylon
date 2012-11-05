@@ -1,7 +1,6 @@
 /*
- * Copyright 2011 Red Hat inc. and third party contributors as noted 
+ * Copyright 2012 Red Hat inc. and third party contributors as noted
  * by the author tags.
- * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -15,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.foobar.qwert;
+package cz.brno.as8;
 
 import com.redhat.ceylon.compiler.java.metadata.Import;
 import com.redhat.ceylon.compiler.java.metadata.Module;
@@ -23,11 +22,10 @@ import com.redhat.ceylon.compiler.java.metadata.Module;
 /**
  * @author <a href="mailto:ales.justin@jboss.org">Ales Justin</a>
  */
-@Module(name = "com.foobar.qwert",
-        version = "1.0.0.GA",
+@Module(name = "cz.brno.as8",
+        version = "8.0.0.Alpha1",
         dependencies = {
-                @Import(name = "org.jboss.acme", version = "1.0.0.CR1", export = true),
-                @Import(name = "eu.cloud.clazz", version = "1.0.0.GA", export = true)
+                @Import(name = "com.foobar.qwert", version = "1.0.0.GA")
         })
 public class module_ {
     public static ceylon.language.descriptor.Module getModule() {

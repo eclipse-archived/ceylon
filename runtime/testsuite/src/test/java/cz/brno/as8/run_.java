@@ -1,7 +1,6 @@
 /*
- * Copyright 2011 Red Hat inc. and third party contributors as noted 
+ * Copyright 2012 Red Hat inc. and third party contributors as noted
  * by the author tags.
- * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -15,22 +14,20 @@
  * limitations under the License.
  */
 
-package com.foobar.qwert;
-
-import com.redhat.ceylon.compiler.java.metadata.Import;
-import com.redhat.ceylon.compiler.java.metadata.Module;
+package cz.brno.as8;
 
 /**
  * @author <a href="mailto:ales.justin@jboss.org">Ales Justin</a>
  */
-@Module(name = "com.foobar.qwert",
-        version = "1.0.0.GA",
-        dependencies = {
-                @Import(name = "org.jboss.acme", version = "1.0.0.CR1", export = true),
-                @Import(name = "eu.cloud.clazz", version = "1.0.0.GA", export = true)
-        })
-public class module_ {
-    public static ceylon.language.descriptor.Module getModule() {
-        return null;
+public class run_ {
+    public static void main(String[] args) {
+        org.jboss.acme.module_.run(); // should be able to run this
+
+        try {
+            run_.class.getClassLoader().loadClass("org.jboss.filtered.api.SomeAPI");
+            throw new RuntimeException("Should not be here");
+        } catch (ClassNotFoundException cnfe) {
+            System.out.println("CNFE = " + cnfe);
+        }
     }
 }

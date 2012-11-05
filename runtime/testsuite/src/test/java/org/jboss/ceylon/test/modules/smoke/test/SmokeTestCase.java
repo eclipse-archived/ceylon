@@ -40,13 +40,25 @@ public class SmokeTestCase extends ModulesTest {
 
     @Test
     public void transitiveModule() throws Throwable {
-        JavaArchive module = ShrinkWrap.create(JavaArchive.class, "com.foobar.qwert-1.0.0.GA.car");
-        module.addClasses(com.foobar.qwert.module_.class, com.foobar.qwert.run_.class);
+        JavaArchive module = ShrinkWrap.create(JavaArchive.class, "cz.brno.as8-8.0.0.Alpha1.car");
+        module.addClasses(cz.brno.as8.module_.class, cz.brno.as8.run_.class);
 
-        JavaArchive lib = ShrinkWrap.create(JavaArchive.class, "org.jboss.acme-1.0.0.CR1.car");
-        lib.addClasses(module_.class, run_.class);
+        JavaArchive lib1 = ShrinkWrap.create(JavaArchive.class, "com.foobar.qwert-1.0.0.GA.car");
+        lib1.addClasses(com.foobar.qwert.module_.class, com.foobar.qwert.run_.class);
 
-        testArchive(module, lib);
+        JavaArchive lib2 = ShrinkWrap.create(JavaArchive.class, "org.jboss.acme-1.0.0.CR1.car");
+        lib2.addClasses(module_.class, run_.class);
+
+        JavaArchive lib3 = ShrinkWrap.create(JavaArchive.class, "eu.cloud.clazz-1.0.0.GA.car");
+        lib3.addClasses(eu.cloud.clazz.module_.class, eu.cloud.clazz.run_.class);
+
+        JavaArchive lib4 = ShrinkWrap.create(JavaArchive.class, "org.jboss.filtered-1.0.0.Alpha1.car");
+        lib4.addClass(org.jboss.filtered.module_.class);
+        lib4.addClass(SomeSPI.class);
+        lib4.addClass(SomeAPI.class);
+        lib4.addClass(SomeImpl.class);
+
+        testArchive(module, lib1, lib2, lib3, lib4);
     }
 
     @Test
