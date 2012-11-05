@@ -17,7 +17,14 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
  * MA  02110-1301, USA.
  */
+import java.util { JList=ArrayList }
+
 @nomodel
 T bug854<T>(T x) { return Bug854<T>().id(x); }
 @nomodel
 T bug854b<T>(T x) given T satisfies Object { return Bug854<T>().id(x); }
+@nomodel
+Element|Finished x<Element>() {
+    value jit = JList<Element>().iterator();
+    return jit.next();
+}
