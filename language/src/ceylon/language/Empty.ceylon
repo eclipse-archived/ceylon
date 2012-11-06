@@ -4,7 +4,7 @@ see (Sequence)
 shared interface Empty
            satisfies Sequential<Bottom> & 
                      None<Bottom> &
-                     Ranged<Integer,Empty> &
+                     Ranged<Integer,<>> &
                      Cloneable<Empty> {
 
     doc "Returns 0."

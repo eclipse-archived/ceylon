@@ -21,7 +21,7 @@ import com.redhat.ceylon.compiler.java.metadata.ValueType;
 
 @Ceylon(major = 3)
 @Class(extendsType="ceylon.language::Object")
-@SatisfiedTypes({"ceylon.language::List<ceylon.language::Character>",
+@SatisfiedTypes({"ceylon.language::Sequential<ceylon.language::Character>",
                  "ceylon.language::Comparable<ceylon.language::String>",
                  "ceylon.language::Ranged<ceylon.language::Integer,ceylon.language::String>",
                  "ceylon.language::FixedSized<ceylon.language::Character>",
@@ -30,7 +30,7 @@ import com.redhat.ceylon.compiler.java.metadata.ValueType;
                  "ceylon.language::Cloneable<ceylon.language::String>"})
 @ValueType
 public abstract class String
-    implements Comparable<String>, List<Character>,
+    implements Comparable<String>, Sequential<Character>,
                Summable<String>, Castable<String>,
                FixedSized<Character> {
 
