@@ -108,7 +108,9 @@
 	color: #005580;
 }
 
-.link-source-code,.link-collapsible {
+.link-one-self,
+.link-source-code,
+.link-collapsible {
 	float: right;
 	font-size: 0.8em;
 	padding-left: 10px;

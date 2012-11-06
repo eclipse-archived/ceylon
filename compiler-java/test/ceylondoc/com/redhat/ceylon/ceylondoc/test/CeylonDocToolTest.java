@@ -432,6 +432,11 @@ public class CeylonDocToolTest {
             assertNoMatchInFile(destDir, "class_SharedClass.html", 
                     Pattern.compile("<.*? id='privateGetter'.*?>"));
         }
+        
+        assertMatchInFile(destDir, "index.html", 
+                Pattern.compile("<a class='link-one-self' title='Link to this declaration' href='index.html#StubClass'><i class='icon-link'></i></a>"));
+        assertMatchInFile(destDir, "index.html", 
+                Pattern.compile("<a class='link-source-code' href='StubClass.ceylon.html'><i class='icon-source-code'></i>Source Code</a>"));
     }
 
     private void assertBy(File destDir) throws IOException {
@@ -516,7 +521,9 @@ public class CeylonDocToolTest {
         assertFileExists(destDir, "class_DeprecatedClass.html");
         
         assertMatchInFile(destDir, "index.html",
-                Pattern.compile("<td id='DeprecatedClass' nowrap><i class='icon-decoration-deprecated'><i class='icon-class'></i></i><a class='link-discreet' href='class_DeprecatedClass.html'>DeprecatedClass</a></td><td><a class='link-source-code' href='DeprecatedClass.ceylon.html'><i class='icon-source-code'></i>Source Code</a><div class='signature'><span class='modifiers'>shared</span> <a class='link' href='class_DeprecatedClass.html'>DeprecatedClass</a></div><div class='description'><div class='deprecated section'><p><strong>Deprecated:</strong> This is <code>DeprecatedClass</code></p>"));
+                Pattern.compile("<td id='DeprecatedClass' nowrap><i class='icon-decoration-deprecated'><i class='icon-class'></i></i><a class='link-discreet' href='class_DeprecatedClass.html'>DeprecatedClass</a></td>"));
+        assertMatchInFile(destDir, "index.html",
+                Pattern.compile("<div class='signature'><span class='modifiers'>shared</span> <a class='link' href='class_DeprecatedClass.html'>DeprecatedClass</a></div><div class='description'><div class='deprecated section'><p><strong>Deprecated:</strong> This is <code>DeprecatedClass</code></p>"));
         assertMatchInFile(destDir, "class_DeprecatedClass.html",
                 Pattern.compile("<div class='deprecated section'><p><strong>Deprecated:</strong> Don't use this attribute!"));
         assertMatchInFile(destDir, "class_DeprecatedClass.html",
