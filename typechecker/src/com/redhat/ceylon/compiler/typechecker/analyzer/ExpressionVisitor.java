@@ -57,6 +57,7 @@ import com.redhat.ceylon.compiler.typechecker.tree.Node;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.Expression;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.SupertypeQualifier;
+import com.redhat.ceylon.compiler.typechecker.tree.Tree.Type;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.TypedArgument;
 import com.redhat.ceylon.compiler.typechecker.tree.Visitor;
 
@@ -581,10 +582,42 @@ public class ExpressionVisitor extends Visitor {
         }
     }
     
+    @Override public void visit(Tree.ParameterizedExpression that) {
+    	super.visit(that);
+    	Tree.Term p = that.getPrimary();
+    	if (p.getTypeModel()!=null) {
+    		ProducedType ct = p.getTypeModel().getSupertype(unit.getCallableDeclaration());
+    		if (ct==null) {
+    			p.addError("not a reference to a function");
+    		}
+    		if (that.getParameterLists().size()>1) {
+    			that.addError("multiple parameter lists not yet supported");
+    		}
+    		if (ct.getTypeArgumentList().size()>=2) {
+    			that.setTypeModel(ct.getTypeArgumentList().get(0));
+    			List<ProducedType> argTypes = argtypes(ct.getTypeArgumentList().get(1));
+    			List<Tree.Parameter> paramTypes = that.getParameterLists().get(0).getParameters();
+    			if (argTypes.size()!=paramTypes.size()) {
+    				that.getParameterLists().get(0).addError("wrong number of declared parameters: must have " + argTypes.size() + " parameters");
+    			}
+    			for (int i=0; i<argTypes.size()&&i<paramTypes.size(); i++) {
+    				ProducedType at = argTypes.get(i);
+					Type pt = paramTypes.get(i).getType();
+					if (!pt.getTypeModel().isSubtypeOf(at)) {
+    					pt.addError("declared parameter must be a subtype of " + at.getProducedTypeName());
+    				}
+    			}
+    		}
+    	}
+    }
+    
     @Override public void visit(Tree.SpecifierStatement that) {
         super.visit(that);
         Tree.Term me = that.getBaseMemberExpression();
         Tree.SpecifierExpression sie = that.getSpecifierExpression();
+        while (me instanceof Tree.ParameterizedExpression) {
+        	me = ((Tree.ParameterizedExpression) me).getPrimary();
+        }
         if (me instanceof Tree.BaseMemberExpression) {
             Tree.BaseMemberExpression bme = (Tree.BaseMemberExpression) me;
             Declaration d = bme.getDeclaration();
@@ -615,7 +648,7 @@ public class ExpressionVisitor extends Visitor {
                 else if (d.isToplevel()) {
                     me.addError("toplevel declarations may not be specified");
                 }
-                checkType(me.getTypeModel(), d.getName(), sie, 2100);
+                checkType(that.getBaseMemberExpression().getTypeModel(), d.getName(), sie, 2100);
             }
         }
         else {
@@ -1700,14 +1733,6 @@ public class ExpressionVisitor extends Visitor {
         if (prf==null || !prf.isFunctional()) {
             ProducedType pt = that.getPrimary().getTypeModel();
             if (pt!=null) {
-                if (that instanceof Tree.SyntheticInvocationExpression) {
-                    Declaration d = ((Tree.BaseTypeExpression) that.getPrimary()).getDeclaration();
-                    if (!(d instanceof Class) || 
-                            ((Class) d).isAbstract()) {
-                        that.getPrimary().addError("cannot build an instance of abstract type (missing return statement)");
-                        return; //NOTE EARLY EXIT
-                    }
-                }
                 if (checkCallable(pt, that.getPrimary(), "invoked expression must be callable")) {
                     List<ProducedType> typeArgs = pt.getTypeArgumentList();
                     if (!typeArgs.isEmpty()) {

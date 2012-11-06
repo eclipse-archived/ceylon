@@ -293,6 +293,9 @@ public class SpecificationVisitor extends Visitor {
     @Override
     public void visit(Tree.SpecifierStatement that) {
         Tree.Term m = that.getBaseMemberExpression();
+        while (m instanceof Tree.ParameterizedExpression) {
+        	m = ((Tree.ParameterizedExpression) m).getPrimary();
+        }
         assign(m);
         if (m instanceof Tree.BaseMemberExpression) {
 	        Declaration member = getBaseDeclaration((Tree.BaseMemberExpression)m, null, false);

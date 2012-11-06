@@ -6,7 +6,6 @@ import java.util.Map;
 
 public class NamedArgumentList extends Element implements Scope {
 	
-    private boolean synthetic;
     private ParameterList parameterList;
     private List<String> argumentNames = new ArrayList<String>();
     
@@ -15,13 +14,6 @@ public class NamedArgumentList extends Element implements Scope {
     }
     public void setParameterList(ParameterList parameterList) {
         this.parameterList = parameterList;
-    }
-    
-    public boolean isSynthetic() {
-        return synthetic;
-    }
-    public void setSynthetic(boolean synthetic) {
-        this.synthetic = synthetic;
     }
     
     @Override

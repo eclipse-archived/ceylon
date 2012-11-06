@@ -1259,6 +1259,19 @@ primary returns [Primary primary]
         if ($qualifiedReference.typeArgumentList!=null)
             qe.setTypeArguments($qualifiedReference.typeArgumentList);
         $primary=qe; }
+      | indexOrIndexRange 
+        { $indexOrIndexRange.indexExpression.setPrimary($primary);
+          $primary = $indexOrIndexRange.indexExpression; }
+      | (specifierParametersStart)=> parameters
+        { ParameterizedExpression pe;
+          if ($primary instanceof ParameterizedExpression) {
+              pe = (ParameterizedExpression) $primary;
+          } else {
+              pe = new ParameterizedExpression(null);
+              pe.setPrimary($primary);
+          }
+          pe.addParameterList($parameters.parameterList);
+          $primary = pe; }
       | arguments
         { InvocationExpression ie = new InvocationExpression(null);
           ie.setPrimary($primary);
@@ -1267,10 +1280,11 @@ primary returns [Primary primary]
           if ($arguments.argumentList instanceof NamedArgumentList)
               ie.setNamedArgumentList((NamedArgumentList)$arguments.argumentList);
           $primary=ie; }
-      | indexOrIndexRange 
-        { $indexOrIndexRange.indexExpression.setPrimary($primary);
-          $primary = $indexOrIndexRange.indexExpression; }
     )*
+    ;
+
+specifierParametersStart
+    : LPAREN (compilerAnnotations annotatedDeclarationStart | RPAREN SPECIFY)
     ;
 
 qualifiedReference returns [Identifier identifier, MemberOperator operator, 
@@ -1657,14 +1671,14 @@ positionalArgument returns [PositionalArgument positionalArgument]
       { $positionalArgument.setExpression($functionOrExpression.expression); }
     ;
 
-parametersStart
-    : LPAREN (annotatedDeclarationStart | RPAREN (interpolatedExpressionStart|STRING_LITERAL|SUM_OP))
+anonParametersStart
+    : LPAREN (compilerAnnotations annotatedDeclarationStart | RPAREN (interpolatedExpressionStart|STRING_LITERAL|SUM_OP))
     ;
 
 functionOrExpression returns [Expression expression]
     @init { FunctionArgument fa = new FunctionArgument(null);
             fa.setType(new FunctionModifier(null)); }
-    : (FUNCTION_MODIFIER|VOID_MODIFIER|parametersStart)=>
+    : (FUNCTION_MODIFIER|VOID_MODIFIER|anonParametersStart)=>
       (
         FUNCTION_MODIFIER 
         { fa.setType(new FunctionModifier($FUNCTION_MODIFIER)); }
@@ -1674,7 +1688,7 @@ functionOrExpression returns [Expression expression]
       p1=parameters
       { fa.addParameterList($p1.parameterList); }
       ( 
-        (parametersStart)=> 
+        (anonParametersStart)=> 
         p2=parameters
         { fa.addParameterList($p2.parameterList); }
       )*

@@ -28,6 +28,7 @@ import com.redhat.ceylon.compiler.typechecker.model.Parameter;
 import com.redhat.ceylon.compiler.typechecker.model.ParameterList;
 import com.redhat.ceylon.compiler.typechecker.model.Scope;
 import com.redhat.ceylon.compiler.typechecker.model.Setter;
+import com.redhat.ceylon.compiler.typechecker.model.Specification;
 import com.redhat.ceylon.compiler.typechecker.model.TypeAlias;
 import com.redhat.ceylon.compiler.typechecker.model.TypeParameter;
 import com.redhat.ceylon.compiler.typechecker.model.TypedDeclaration;
@@ -643,7 +644,9 @@ public class DeclarationVisitor extends Visitor {
             }
         }
         else {
-            that.addError("may not have a parameter list");
+        	if (!(scope instanceof Specification)) {
+        		that.addError("may not have a parameter list");
+        	}
             first = true;
         }
         parameterList = pl;
@@ -723,15 +726,6 @@ public class DeclarationVisitor extends Visitor {
         Scope o = enterScope(nal);
         super.visit(that);
         exitScope(o);
-    }
-    
-    @Override
-    public void visit(Tree.SyntheticInvocationExpression that) {
-        super.visit(that);
-        Tree.NamedArgumentList nal = that.getNamedArgumentList();
-        if (nal!=null) {
-            nal.getNamedArgumentList().setSynthetic(true);
-        }
     }
     
     @Override
@@ -984,6 +978,17 @@ public class DeclarationVisitor extends Visitor {
             that.addWarning("parameter bounds are not yet supported");
         }
     }
+    
+    @Override
+    public void visit(Tree.SpecifierStatement that) {
+    	Specification s = new Specification();
+    	visitElement(that, s);
+    	Scope o = enterScope(s);
+        super.visit(that);
+        exitScope(o);
+    }
+
+
     
     @Override
     public void visit(Tree.SatisfiesCondition that) {
