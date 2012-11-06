@@ -184,6 +184,7 @@ public class CeylonDocToolTest {
         assertFencedCodeBlockWithSyntaxHighlighter(destDir);
         assertWikiStyleLinkSyntax(destDir);
         assertConstants(destDir);
+        assertLinksToRefinedDeclaration(destDir);
         assertBug659ShowInheritedMembers(destDir);
         assertBug691AbbreviatedOptionalType(destDir);
         assertBug839(destDir);
@@ -221,6 +222,7 @@ public class CeylonDocToolTest {
         assertFencedCodeBlockWithSyntaxHighlighter(destDir);
         assertWikiStyleLinkSyntax(destDir);
         assertConstants(destDir);
+        assertLinksToRefinedDeclaration(destDir);
         assertBug659ShowInheritedMembers(destDir);
         assertBug691AbbreviatedOptionalType(destDir);
         assertBug839(destDir);
@@ -643,6 +645,13 @@ public class CeylonDocToolTest {
                 Pattern.compile("Integer constNumTwo<span class='specifier-operator'> = </span><span class='specifier-start'> constNumZero \\+ 1 \\+ 1</span><span class='specifier-semicolon'>;</span>"));
         assertMatchInFile(destDir, "index.html", 
                 Pattern.compile("Float constNumPI<span class='specifier-operator'> = </span><span class='specifier-start'> 3.14</span><span class='specifier-semicolon'>;</span>"));
+    }
+    
+    private void assertLinksToRefinedDeclaration(File destDir) throws IOException {
+        assertMatchInFile(destDir, "class_StubClass.html",
+                Pattern.compile("<div class='refined section'><span class='title'>Refined declaration: </span><a class='link' href='interface_StubInterface.html#defaultDeprecatedMethodFromStubInterface'>defaultDeprecatedMethodFromStubInterface</a><span class='value'></span></div>"));
+        assertMatchInFile(destDir, "class_StubClass.html",
+                Pattern.compile("<div class='refined section'><span class='title'>Refined declaration: </span><a class='link' href='interface_StubInterface.html#formalMethodFromStubInterface'>formalMethodFromStubInterface</a><span class='value'></span></div>"));
     }
 
     private void assertBug659ShowInheritedMembers(File destDir) throws IOException {

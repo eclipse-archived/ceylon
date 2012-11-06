@@ -47,6 +47,7 @@ import com.redhat.ceylon.compiler.typechecker.model.ParameterList;
 import com.redhat.ceylon.compiler.typechecker.model.ProducedType;
 import com.redhat.ceylon.compiler.typechecker.model.TypeDeclaration;
 import com.redhat.ceylon.compiler.typechecker.model.TypeParameter;
+import com.redhat.ceylon.compiler.typechecker.model.TypedDeclaration;
 import com.redhat.ceylon.compiler.typechecker.model.UnionType;
 import com.redhat.ceylon.compiler.typechecker.model.Unit;
 import com.redhat.ceylon.compiler.typechecker.model.Value;
@@ -217,6 +218,7 @@ public abstract class ClassOrPackageDoc extends CeylonDoc {
             writeThrows(d);        
             writeBy(d);
             writeSee(d);
+            writeLinkToRefinedDeclaration(d);
         }
         close("div"); // description
     }
@@ -259,6 +261,18 @@ public abstract class ClassOrPackageDoc extends CeylonDoc {
             write("<i class='icon-source-code'></i>");
             write("Source Code");
             close("a");
+        }
+    }
+
+    private void writeLinkToRefinedDeclaration(Declaration d) throws IOException {
+        Declaration refinedDecl = d.getRefinedDeclaration();
+        if (refinedDecl != null && refinedDecl != d) {
+            open("div class='refined section'");
+            around("span class='title'", "Refined declaration: ");
+            linkRenderer().to(refinedDecl).write();
+            open("span class='value'");
+            close("span");
+            close("div");
         }
     }
 
