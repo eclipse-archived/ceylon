@@ -1349,7 +1349,7 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
         }
         
         markUnboxed(method, methodMirror.getReturnType());
-        markTypeErased(method, methodMirror.getReturnType());
+        markTypeErased(method, methodMirror, methodMirror.getReturnType());
         setAnnotations(method, methodMirror);
         
         klass.getMembers().add(method);
@@ -1500,7 +1500,7 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
             throw x;
         }
         markUnboxed(value, fieldMirror.getType());
-        markTypeErased(value, fieldMirror.getType());
+        markTypeErased(value, fieldMirror, fieldMirror.getType());
         klass.getMembers().add(value);
     }
     
@@ -1521,7 +1521,7 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
             throw x;
         }
         markUnboxed(value, methodMirror.getReturnType());
-        markTypeErased(value, methodMirror.getReturnType());
+        markTypeErased(value, methodMirror, methodMirror.getReturnType());
         setAnnotations(value, methodMirror);
         klass.getMembers().add(value);
     }
@@ -1697,8 +1697,12 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
         }
     }
 
-    private void markTypeErased(TypedDeclaration decl, TypeMirror type) {
-        decl.setTypeErased(sameType(type, OBJECT_TYPE));
+    private void markTypeErased(TypedDeclaration decl, AnnotatedMirror typedMirror, TypeMirror type) {
+        if (getAnnotationBooleanValue(typedMirror, CEYLON_TYPE_INFO_ANNOTATION, "erased") == Boolean.TRUE) {
+            decl.setTypeErased(true);
+        } else {
+            decl.setTypeErased(sameType(type, OBJECT_TYPE));
+        }
     }
 
     private void markUnboxed(TypedDeclaration decl, TypeMirror type) {
@@ -1781,7 +1785,7 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
                 throw x;
             }
             markUnboxed(method, meth.getReturnType());
-            markTypeErased(method, meth.getReturnType());
+            markTypeErased(method, meth, meth.getReturnType());
 
             setAnnotations(method, meth);
         }finally{
