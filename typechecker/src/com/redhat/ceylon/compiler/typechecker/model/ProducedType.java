@@ -1257,8 +1257,8 @@ public class ProducedType extends ProducedReference {
 	}
     
     private static String argtypes(ProducedType args) {
-    	Unit unit = args.getDeclaration().getUnit();
     	if (args!=null) {
+        	Unit unit = args.getDeclaration().getUnit();
     		if (args.getDeclaration() instanceof ClassOrInterface) {
     			if (args.getDeclaration().equals(unit.getTupleDeclaration())) {
     				List<ProducedType> tal = args.getTypeArgumentList();

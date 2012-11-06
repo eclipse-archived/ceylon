@@ -143,6 +143,10 @@ void method() {
     function sqrt(Float x) = x**0.5;
     value temp = sqrt;
     Float root(Float x) = temp(x);
+    
+    @error Callable<Void> reallyBroken(void foo()) {
+        @error return foo;
+    }
 }
 
 class Outer() {
