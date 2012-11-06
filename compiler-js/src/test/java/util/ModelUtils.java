@@ -54,7 +54,7 @@ public class ModelUtils {
                     name, method.get(MetamodelGenerator.KEY_NAME)),
                     "1", parm.get("seq"));
             Assert.assertEquals("Sequenced parameter should be last", params.size()-1, pos);
-            Assert.assertEquals("ceylon.language.Iterable", String.format("%s.%s", tmap.get(MetamodelGenerator.KEY_PACKAGE),
+            Assert.assertEquals("ceylon.language::Iterable", String.format("%s::%s", tmap.get(MetamodelGenerator.KEY_PACKAGE),
                     tmap.get(MetamodelGenerator.KEY_NAME)));
             List<Map<String, Object>> pts = (List<Map<String, Object>>)tmap.get(MetamodelGenerator.KEY_TYPE_PARAMS);
             checkTypeParameters(0, pts, type);
@@ -111,7 +111,7 @@ public class ModelUtils {
             name = name.substring(0, sep);
         }
         if (tmap.containsKey(MetamodelGenerator.KEY_PACKAGE)) {
-            Assert.assertEquals(name, String.format("%s.%s", tmap.get(MetamodelGenerator.KEY_PACKAGE),
+            Assert.assertEquals(name, String.format("%s::%s", tmap.get(MetamodelGenerator.KEY_PACKAGE),
                     tmap.get(MetamodelGenerator.KEY_NAME)));
         } else {
             Assert.assertEquals(name, tmap.get(MetamodelGenerator.KEY_NAME));
@@ -147,7 +147,7 @@ public class ModelUtils {
             } else {
                 String plain = name.substring(0, lt);
                 for (Map<String, Object> tp : map) {
-                    if (plain.equals(String.format("%s.%s", tp.get(MetamodelGenerator.KEY_PACKAGE),
+                    if (plain.equals(String.format("%s::%s", tp.get(MetamodelGenerator.KEY_PACKAGE),
                             tp.get(MetamodelGenerator.KEY_NAME)))) {
                         checkType(tp, name);
                         return;
@@ -163,7 +163,7 @@ public class ModelUtils {
             } else {
                 for (Map<String, Object> tp : map) {
                     String expectedName = tp.containsKey(MetamodelGenerator.KEY_PACKAGE) ?
-                            String.format("%s.%s", tp.get(MetamodelGenerator.KEY_PACKAGE),
+                            String.format("%s::%s", tp.get(MetamodelGenerator.KEY_PACKAGE),
                                     tp.get(MetamodelGenerator.KEY_NAME)) : (String)tp.get(MetamodelGenerator.KEY_NAME);
                     if (name.equals(expectedName)) {
                         checkType(tp,name);
