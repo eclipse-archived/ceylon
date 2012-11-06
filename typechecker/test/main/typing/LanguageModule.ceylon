@@ -22,5 +22,8 @@ class LanguageModule() {
     
     //print(append({"one", "two" , "three"}, "four").size==4);
     print({"one", "two" , "three"}.withTrailing("four").size==4);
+    
+    if (nonempty "hello") {}
+    Character[] chars = "hello";
 
 }
