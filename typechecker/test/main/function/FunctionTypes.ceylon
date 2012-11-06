@@ -147,6 +147,18 @@ void method() {
     @error Callable<Void> reallyBroken(void foo()) {
         @error return foo;
     }
+    
+    void foo(Integer... seq) {}
+    void bar(Integer... ints) = foo(ints...);
+    void baz(Integer... seq); baz = foo;
+    void qux(Integer... ints) = baz(ints...);
+    void ok(Integer ints) = foo(ints);
+    @error void broke(Integer ints) = foo(ints...);
+    void notBroke(Integer ints); notBroke = foo;
+    void alsoBroke(Integer... ints); @error alsoBroke = ok;
+    void reallyBroke(Integer... ints); @error reallyBroke(Integer[] ints) = foo(ints...);
+    void badlyBroke(Integer... ints); @error badlyBroke(Integer[] ints) = ok(ints.first else 0);
+    void terrible(Integer... ints); @error terrible(Integer... ints) = foo;
 }
 
 class Outer() {
