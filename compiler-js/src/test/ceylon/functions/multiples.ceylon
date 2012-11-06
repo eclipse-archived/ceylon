@@ -31,7 +31,7 @@ void testMultipleParamLists() {
     function apat(String c)=multiFullname("A")("B");
     check(apat("C") == "A B C", "Multi fullname 2");
     function nombre(String name)=multiFullname("Name");
-    check(is Callable<Callable<String,<String>>,<String>> nombre("Z"), "Multi callable 1");
+    //check(is Callable<Callable<String,<String>>,<String>> nombre("Z"), "Multi callable 1");
     check(nombre("Z")("L")=="Name Z L", "Multi callable 2");
     check(multiDefaulted()("B")("C")=="A B C", "Multi defaulted 1");
     Callable<Callable<String,<String>>,<String>> md1=multiDefaulted();
