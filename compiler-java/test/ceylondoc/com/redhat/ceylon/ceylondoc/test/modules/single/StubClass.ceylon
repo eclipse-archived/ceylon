@@ -115,10 +115,10 @@ shared class StubClass(
          
          Wiki-style links with full qualified name:
          
-         1. fullStubInterface = [[com.redhat.ceylon.ceylondoc.test.modules.single@StubInterface]]
-         1. fullStubInterface.formalMethodFromStubInterface = [[com.redhat.ceylon.ceylondoc.test.modules.single@StubInterface.formalMethodFromStubInterface]]
-         1. fullStubInterface with custom name = [[full custom stub interface|com.redhat.ceylon.ceylondoc.test.modules.single@StubInterface]]
-         1. fullUnresolvable = [[unresolvable@StubInterface]]
+         1. fullStubInterface = [[com.redhat.ceylon.ceylondoc.test.modules.single::StubInterface]]
+         1. fullStubInterface.formalMethodFromStubInterface = [[com.redhat.ceylon.ceylondoc.test.modules.single::StubInterface.formalMethodFromStubInterface]]
+         1. fullStubInterface with custom name = [[full custom stub interface|com.redhat.ceylon.ceylondoc.test.modules.single::StubInterface]]
+         1. fullUnresolvable = [[unresolvable::StubInterface]]
          
          "
     shared void methodWithLinksInDoc() {}

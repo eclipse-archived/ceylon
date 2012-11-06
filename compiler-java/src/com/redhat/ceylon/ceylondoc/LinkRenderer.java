@@ -282,13 +282,13 @@ public class LinkRenderer {
         String declName;
         Scope currentScope;
         
-        int pkgSeparatorIndex = declLink.indexOf("@");
+        int pkgSeparatorIndex = declLink.indexOf("::");
         if( pkgSeparatorIndex == -1 ) {
             declName = declLink;
             currentScope = scope;
         } else {
             String pkgName = declLink.substring(0, pkgSeparatorIndex);
-            declName = declLink.substring(pkgSeparatorIndex+1, declLink.length());
+            declName = declLink.substring(pkgSeparatorIndex+2, declLink.length());
             currentScope = ceylonDocTool.getCurrentModule().getPackage(pkgName);
         }
         

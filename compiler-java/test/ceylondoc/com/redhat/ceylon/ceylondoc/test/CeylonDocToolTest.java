@@ -619,13 +619,13 @@ public class CeylonDocToolTest {
                 Pattern.compile("imported AliasA2 = <a class='link' href='a/class_A2.html'>AliasA2</a>"));
         
         assertMatchInFile(destDir, "class_StubClass.html", 
-                Pattern.compile("fullStubInterface = <a class='link' href='interface_StubInterface.html'>com.redhat.ceylon.ceylondoc.test.modules.single@StubInterface</a>"));
+                Pattern.compile("fullStubInterface = <a class='link' href='interface_StubInterface.html'>com.redhat.ceylon.ceylondoc.test.modules.single::StubInterface</a>"));
         assertMatchInFile(destDir, "class_StubClass.html", 
-                Pattern.compile("fullStubInterface.formalMethodFromStubInterface = <a class='link' href='interface_StubInterface.html#formalMethodFromStubInterface'>com.redhat.ceylon.ceylondoc.test.modules.single@StubInterface.formalMethodFromStubInterface</a>"));
+                Pattern.compile("fullStubInterface.formalMethodFromStubInterface = <a class='link' href='interface_StubInterface.html#formalMethodFromStubInterface'>com.redhat.ceylon.ceylondoc.test.modules.single::StubInterface.formalMethodFromStubInterface</a>"));
         assertMatchInFile(destDir, "class_StubClass.html", 
                 Pattern.compile("fullStubInterface with custom name = <a class='link' href='interface_StubInterface.html'>full custom stub interface</a>"));
         assertMatchInFile(destDir, "class_StubClass.html", 
-                Pattern.compile("fullUnresolvable = unresolvable@StubInterface"));
+                Pattern.compile("fullUnresolvable = unresolvable::StubInterface"));
     }
     
     private void assertConstants(File destDir) throws IOException {
