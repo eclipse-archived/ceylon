@@ -941,15 +941,20 @@ public class GenerateJsVisitor extends Visitor
     public void visit(MethodDeclaration that) {
         //Don't even bother with nodes that have errors
         if (that.getErrors() != null && !that.getErrors().isEmpty()) return;
+        Method m = that.getDeclarationModel();
         if (that.getSpecifierExpression() != null) {
             comment(that);
-            out("var ", names.name(that.getDeclarationModel()), "=");
+            out("function ", names.name(m));
+            for (ParameterList plist : that.getParameterLists()) {
+                plist.visit(this);
+            }
+            out("{return ");
             that.getSpecifierExpression().getExpression().visit(this);
-            endLine(true);
-            share(that.getDeclarationModel(), false);
+            out(";}");
+            endLine();
+            share(m, false);
         } else {
             //Check for refinement of simple param declaration
-            Method m = that.getDeclarationModel();
             if (m == that.getScope()) {
                 if (m.getContainer() instanceof Class && m.isClassOrInterfaceMember()) {
                     //Declare the method just by pointing to the param function
