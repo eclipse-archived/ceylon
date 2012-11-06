@@ -165,4 +165,12 @@ public class TestModelMethodsAndAttributes {
         ModelUtils.checkType(attrib, "ceylon.language::ContainerWithFirstElement<ceylon.language::Singleton<ceylon.language::Integer>|ceylon.language::String,ceylon.language::Nothing>");
     }
 
+    @Test @SuppressWarnings("unchecked")
+    public void testSequentials() {
+        Map<String, Object> attrib = (Map<String, Object>)model.get("sequentialAttribute1");
+        ModelUtils.checkType(attrib, "ceylon.language::Sequential<ceylon.language::Integer>");
+        attrib = (Map<String, Object>)model.get("sequentialAttribute2");
+        ModelUtils.checkType(attrib, "ceylon.language::Sequential<ceylon.language::Integer>");
+    }
+
 }
