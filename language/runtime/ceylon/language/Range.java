@@ -127,7 +127,7 @@ public class Range<Element extends Comparable<? super Element> & Ordinal<? super
                     private long current = ((Integer)first).value;
                     private boolean go = true;
 
-                    @TypeInfo("Element|ceylon.language::Finished")
+                    @TypeInfo(value="Element|ceylon.language::Finished", erased=true)
                     public java.lang.Object next() {
                         if (!go) return exhausted_.getExhausted$();
                         long result = current;
@@ -149,7 +149,7 @@ public class Range<Element extends Comparable<? super Element> & Ordinal<? super
                 private java.lang.Object current = first;
                 private boolean go = true;
 
-                @TypeInfo("Element|ceylon.language::Finished")
+                @TypeInfo(value="Element|ceylon.language::Finished", erased=true)
                 public java.lang.Object next() {
                     if (!go) return exhausted_.getExhausted$();
                     java.lang.Object result = current;
@@ -172,7 +172,7 @@ public class Range<Element extends Comparable<? super Element> & Ordinal<? super
                     private long current = ((Integer)first).value;
                     private boolean go = true;
 
-                    @TypeInfo("Element|ceylon.language::Finished")
+                    @TypeInfo(value="Element|ceylon.language::Finished", erased=true)
                     public java.lang.Object next() {
                         if (!go) return exhausted_.getExhausted$();
                         long result = current;
@@ -194,7 +194,7 @@ public class Range<Element extends Comparable<? super Element> & Ordinal<? super
                 private java.lang.Object current = first;
                 private boolean go = true;
 
-                @TypeInfo("Element|ceylon.language::Finished")
+                @TypeInfo(value="Element|ceylon.language::Finished", erased=true)
                 public java.lang.Object next() {
                     if (!go) return exhausted_.getExhausted$();
                     java.lang.Object result = current;
@@ -447,7 +447,7 @@ public class Range<Element extends Comparable<? super Element> & Ordinal<? super
                         final long lim = ((Integer)last).value;
                         boolean inverse = lim < current;
 
-                        @TypeInfo("Element|ceylon.language::Finished")
+                        @TypeInfo(value="Element|ceylon.language::Finished", erased=true)
                         public java.lang.Object next() {
                             long result = current;
                             if (inverse) {

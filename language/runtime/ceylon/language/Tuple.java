@@ -36,20 +36,20 @@ public class Tuple<Element, First extends Element, Rest extends Sequential<Eleme
 	private final Element first;
 	private final List<Element> rest;
 	
-	public Tuple(@TypeInfo("First") 
+	public Tuple(@TypeInfo(value="First", erased=true) 
 	             @Name("first") Element first,
-	             @TypeInfo("Rest&Empty|Rest&Sequence<Element>")
+	             @TypeInfo(value="Rest&Empty|Rest&Sequence<Element>", erased=true)
 			     @Name("rest") List<Element> rest) {
 		this.first = first;
 		this.rest = rest;
 	}
 	
-	@TypeInfo("First")
+	@TypeInfo(value="First", erased=true)
 	public Element getFirst() {
 		return first;
 	}
 	
-	@TypeInfo("Rest&Empty|Rest&Sequence<Element>")
+	@TypeInfo(value="Rest&Empty|Rest&Sequence<Element>", erased=true)
 	public List<Element> getRest() {
 		return rest;
 	}

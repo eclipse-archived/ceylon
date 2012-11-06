@@ -17,4 +17,10 @@ public @interface TypeInfo {
      * String representation of the Ceylon type that the annotated element has
      */
     String value() default "";
+    
+    /**
+     * Whether the Ceylon type has been erased.
+     * @return
+     */
+    boolean erased() default false;
 }

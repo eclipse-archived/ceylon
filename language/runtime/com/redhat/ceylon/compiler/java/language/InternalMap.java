@@ -130,7 +130,7 @@ public class InternalMap<Key, Item> implements Map<Key, Item> {
             private final java.util.Iterator<? extends java.util.Map.Entry<? extends Key, ? extends Item>> inner = m.entrySet().iterator();
             @Override
             @Annotations(@Annotation("formal"))
-            @TypeInfo("Element|ceylon.language::Finished")
+            @TypeInfo(value="Element|ceylon.language::Finished", erased=true)
             public Object next() {
                 if (inner.hasNext()) {
                     java.util.Map.Entry<? extends Key, ? extends Item> e = inner.next();

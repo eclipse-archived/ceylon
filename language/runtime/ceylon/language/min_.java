@@ -18,10 +18,10 @@ public final class min_ {
             satisfies="ceylon.language::Comparable<Value>"),
                      @TypeParameter(value="Null", 
             satisfies="ceylon.language::Nothing")})
-    @TypeInfo("Null|Value")
+    @TypeInfo(value="Null|Value", erased=true)
     public static <Value, Null> 
     Value min(@Name("values")
-    @TypeInfo("ceylon.language::Iterable<Value>&ceylon.language::ContainerWithFirstElement<Value,Null>")
+    @TypeInfo(value="ceylon.language::Iterable<Value>&ceylon.language::ContainerWithFirstElement<Value,Null>", erased=true)
     final Iterable<? extends Value> values) {
         Value min = (Value) values.getFirst();
         if (min!=null) {
