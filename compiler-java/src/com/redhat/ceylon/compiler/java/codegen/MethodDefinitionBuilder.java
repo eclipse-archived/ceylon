@@ -381,7 +381,7 @@ public class MethodDefinitionBuilder {
                 }
                 sb.append('>');
             }
-            return resultType(gen.makeAtType(sb.toString()), gen.makeJavaType(gen.functionalReturnType(method), flags));
+            return resultType(gen.makeAtType(sb.toString(), false), gen.makeJavaType(gen.functionalReturnType(method), flags));
         } else {
             ProducedTypedReference typedRef = gen.getTypedReference(method);
             ProducedTypedReference nonWideningTypedRef = gen.nonWideningTypeDecl(typedRef);

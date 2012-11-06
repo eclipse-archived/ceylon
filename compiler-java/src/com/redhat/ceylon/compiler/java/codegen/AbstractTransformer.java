@@ -1491,8 +1491,13 @@ public abstract class AbstractTransformer implements Transformation {
         return makeModelAnnotation(syms().ceylonAtNameType, List.<JCExpression>of(make().Literal(name)));
     }
 
-    List<JCAnnotation> makeAtType(String name) {
-        return makeModelAnnotation(syms().ceylonAtTypeInfoType, List.<JCExpression>of(make().Literal(name)));
+    List<JCAnnotation> makeAtType(String name, boolean erased) {
+        if (!erased) {
+            return makeModelAnnotation(syms().ceylonAtTypeInfoType, List.<JCExpression>of(make().Literal(name)));
+        } 
+        return makeModelAnnotation(syms().ceylonAtTypeInfoType, List.<JCExpression>of(
+                make().Assign(naming.makeUnquotedIdent("value"), make().Literal(name)),
+                make().Assign(naming.makeUnquotedIdent("erased"), make().Literal(true))));
     }
 
     List<JCAnnotation> makeAtAlias(ProducedType type) {
@@ -1729,7 +1734,8 @@ public abstract class AbstractTransformer implements Transformation {
         if (!required)
             return List.nil();
         // Add the original type to the annotations
-        return makeAtType(serialiseTypeSignature(type));
+        return makeAtType(serialiseTypeSignature(type), 
+                willEraseToObject(type) && !isVoid(type) && !isCeylonObject(type));
     }
     
     private String serialiseTypeSignature(ProducedType type){
