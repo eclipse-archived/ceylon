@@ -3,7 +3,11 @@ package com.redhat.ceylon.compiler.js;
 import java.util.Map;
 
 import com.redhat.ceylon.compiler.loader.MetamodelGenerator;
+import com.redhat.ceylon.compiler.typechecker.analyzer.AnalysisWarning;
+import com.redhat.ceylon.compiler.typechecker.analyzer.UsageWarning;
 import com.redhat.ceylon.compiler.typechecker.model.Module;
+import com.redhat.ceylon.compiler.typechecker.tree.Message;
+import com.redhat.ceylon.compiler.typechecker.tree.Node;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree;
 import com.redhat.ceylon.compiler.typechecker.tree.Visitor;
 
@@ -26,21 +30,23 @@ public class MetamodelVisitor extends Visitor {
     }
 
     @Override public void visit(Tree.MethodDeclaration that) {
-        if (that.getErrors() == null  || that.getErrors().isEmpty()) {
+        if (errorFree(that)) {
             gen.encodeMethod(that.getDeclarationModel());
         }
     }
 
     /** Create and store the model of a method definition. */
     @Override public void visit(Tree.MethodDefinition that) {
-        if (that.getErrors() == null  || that.getErrors().isEmpty()) {
+        if (errorFree(that)) {
             gen.encodeMethod(that.getDeclarationModel());
+        } else {
+            System.out.println("me saldo metodo " + that);
         }
     }
 
     /** Create and store the metamodel info for an attribute. */
     @Override public void visit(Tree.AttributeDeclaration that) {
-        if (that.getErrors() == null  || that.getErrors().isEmpty()) {
+        if (errorFree(that)) {
             gen.encodeAttribute(that.getDeclarationModel());
             super.visit(that);
         }
@@ -48,7 +54,7 @@ public class MetamodelVisitor extends Visitor {
 
     @Override
     public void visit(Tree.ClassDefinition that) {
-        if (that.getErrors() == null  || that.getErrors().isEmpty()) {
+        if (errorFree(that)) {
             gen.encodeClass(that.getDeclarationModel());
             super.visit(that);
         }
@@ -56,7 +62,7 @@ public class MetamodelVisitor extends Visitor {
 
     @Override
     public void visit(Tree.InterfaceDefinition that) {
-        if (that.getErrors() == null  || that.getErrors().isEmpty()) {
+        if (errorFree(that)) {
             gen.encodeInterface(that.getDeclarationModel());
             super.visit(that);
         }
@@ -64,7 +70,7 @@ public class MetamodelVisitor extends Visitor {
 
     @Override
     public void visit(Tree.ObjectDefinition that) {
-        if (that.getErrors() == null  || that.getErrors().isEmpty()) {
+        if (errorFree(that)) {
             gen.encodeObject(that.getDeclarationModel());
             super.visit(that);
         }
@@ -72,28 +78,38 @@ public class MetamodelVisitor extends Visitor {
 
     @Override
     public void visit(Tree.AttributeGetterDefinition that) {
-        if (that.getErrors() == null  || that.getErrors().isEmpty()) {
+        if (errorFree(that)) {
             gen.encodeGetter(that.getDeclarationModel());
         }
     }
 
     @Override
     public void visit(Tree.TypeAliasDeclaration that) {
-        if (that.getErrors() == null  || that.getErrors().isEmpty()) {
+        if (errorFree(that)) {
             gen.encodeTypeAlias(that.getDeclarationModel());
         }
     }
     @Override
     public void visit(Tree.ClassDeclaration that) {
-        if (that.getErrors() == null  || that.getErrors().isEmpty()) {
+        if (errorFree(that)) {
             gen.encodeClass(that.getDeclarationModel());
         }
     }
     @Override
     public void visit(Tree.InterfaceDeclaration that) {
-        if (that.getErrors() == null  || that.getErrors().isEmpty()) {
+        if (errorFree(that)) {
             gen.encodeInterface(that.getDeclarationModel());
         }
     }
 
+    public boolean errorFree(Node node) {
+        if (node.getErrors() != null) {
+            for (Message m : node.getErrors()) {
+                if (!(m instanceof UsageWarning)) {
+                    return false;
+                }
+            }
+        }
+        return true;
+    }
 }
