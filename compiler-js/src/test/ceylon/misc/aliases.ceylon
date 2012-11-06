@@ -48,8 +48,10 @@ class MiMatrix(Integer gridSize) satisfies Matrix<Integer> {
     shared actual String string = grid.string;
     shared actual Integer hash = grid.hash;
     shared actual Boolean equals(Object other) = grid.equals(other);
-    shared actual Sequence<Integer>[] span(Integer from, Integer? to) = grid.span(from,to);
-    shared actual Sequence<Integer>[] segment(Integer from, Integer length) = grid.segment(from,length);
+    //shared actual Sequence<Integer>[] span(Integer from, Integer? to) = grid.span(from,to);
+    //shared actual Sequence<Integer>[] segment(Integer from, Integer length) = grid.segment(from,length);
+    span = grid.span;
+    segment = grid.segment;
     shared actual Matrix<Integer> reversed = grid.reversed;
     shared actual Integer lastIndex = grid.lastIndex;
     shared actual Sequence<Integer>? item(Integer i) = grid.item(i);
