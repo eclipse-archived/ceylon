@@ -603,9 +603,8 @@ public class ExpressionVisitor extends Visitor {
     					for (int i=0; i<argTypes.size()&&i<paramTypes.size(); i++) {
     						ProducedType at = argTypes.get(i);
     						Type t = paramTypes.get(i).getType();
-    						if (!t.getTypeModel().isSubtypeOf(at)) {
-    							t.addError("declared parameter must be a subtype of " + at.getProducedTypeName());
-    						}
+    						checkAssignable(t.getTypeModel(), at, t, 
+    								"declared parameter type must be a subtype of type declared in function declaration");
     					}
     					pt = ct.getTypeArgumentList().get(0);
         				that.setTypeModel(pt);
