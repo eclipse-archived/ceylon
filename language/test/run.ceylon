@@ -2,9 +2,8 @@ shared void run() {
     print("Equality");
     equality();
     //complex();
-    print("Booleans");
+    print("Booleans & Numbers");
     booleans();
-    print("Numbers");
     numbers();
     print("Lists & sequences");
     lists();
@@ -12,16 +11,16 @@ shared void run() {
     print("Characters & strings");
     characters();
     strings();
-    print("Iterators");
+    print("Iterators, Entries, Ranges, spans & segments");
     iterators();
-    print("Entries and ranges");
     entriesAndRanges();
-    print("Comparables");
+    spansegments();
+    print("Comparables & Clones");
     comparables();
-    print("Clones");
     clones();
-    print("Types");
+    print("Types/satisfying interfaces");
     types();
+    testSatisfaction();
     print("Exceptions");
     exceptions();
     print("Operators");
@@ -36,16 +35,12 @@ shared void run() {
     print("Map & Set tests");
     testMaps();
     testSets();
-    print("Iterables: map/fold/filter/find/sort etc");
+    print("Iterables & comprehensions");
     testIterables();
-    print("Comprehensions and comprehension-related functions");
     comprehensions();
     print("Process");
     testProcess();
-    print("Interfaces (satisfaction)");
-    testSatisfaction();
-    print("Backward spans and segments");
-    spansegments();
+    tuples();
     results();
 }
 
