@@ -1,5 +1,5 @@
-alias Strinteger = String|Integer;
-alias Verbostring = String&Some<Character>;
+shared alias Strinteger = String|Integer;
+shared alias Verbostring = String&Some<Character>;
 alias Numbers = Integer[];
 alias Objecton<T> given T satisfies Object = T|Singleton<T>;
 
