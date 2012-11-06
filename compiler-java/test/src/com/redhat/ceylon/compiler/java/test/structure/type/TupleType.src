@@ -5,7 +5,7 @@ final class triple_ {
     private triple_() {
     }
     
-    static .ceylon.language.Tuple triple(final .java.lang.String s, final long i, final double f) {
+    static .ceylon.language.Tuple<? extends .java.lang.Object, ? extends .ceylon.language.String, ? extends .ceylon.language.Tuple<? extends .java.lang.Object, ? extends .ceylon.language.Integer, ? extends .ceylon.language.Tuple<? extends .ceylon.language.Float, ? extends .ceylon.language.Float, ? extends .ceylon.language.Empty>>> triple(final .java.lang.String s, final long i, final double f) {
         return new .ceylon.language.Tuple(.ceylon.language.String.instance(s), new .ceylon.language.Tuple(.ceylon.language.Integer.instance(i), new .ceylon.language.Tuple(.ceylon.language.Float.instance(f), .ceylon.language.empty_.getEmpty$())));
     }
 }
@@ -29,7 +29,7 @@ final class add_ {
     }
     
     static double add(final .ceylon.language.Tuple<? extends .ceylon.language.Float, ? extends .ceylon.language.Float, ? extends .ceylon.language.Tuple<? extends .ceylon.language.Float, ? extends .ceylon.language.Float, ? extends .ceylon.language.Empty>> floats) {
-        return floats.getFirst().plus(((.ceylon.language.Tuple<? extends .ceylon.language.Float, ? extends .ceylon.language.Float, ? extends .ceylon.language.Empty>)floats.getRest()).getFirst()).doubleValue();
+        return ((.ceylon.language.Float)floats.getFirst()).plus((.ceylon.language.Float)((.ceylon.language.Tuple<? extends .ceylon.language.Float, ? extends .ceylon.language.Float, ? extends .ceylon.language.Empty>)floats.getRest()).getFirst()).doubleValue();
     }
 }
 final class tupleTypeTest_ {
@@ -38,7 +38,10 @@ final class tupleTypeTest_ {
     }
     
     static void tupleTypeTest() {
-        final .ceylon.language.Tuple tup = .com.redhat.ceylon.compiler.java.test.structure.type.triple_.triple("hello", 0L, 0.0);
+        final .ceylon.language.Tuple<? extends .java.lang.Object, ? extends .ceylon.language.String, ? extends .ceylon.language.Tuple<? extends .java.lang.Object, ? extends .ceylon.language.Integer, ? extends .ceylon.language.Tuple<? extends .ceylon.language.Float, ? extends .ceylon.language.Float, ? extends .ceylon.language.Empty>>> tup = .com.redhat.ceylon.compiler.java.test.structure.type.triple_.triple("hello", 0L, 0.0);
+        final .java.lang.String a = ((.ceylon.language.String)tup.getFirst()).toString();
+        final long b = ((.ceylon.language.Integer)((.ceylon.language.Tuple<? extends .java.lang.Object, ? extends .ceylon.language.Integer, ? extends .ceylon.language.Tuple<? extends .ceylon.language.Float, ? extends .ceylon.language.Float, ? extends .ceylon.language.Empty>>)tup.getRest()).getFirst()).longValue();
+        final double c = ((.ceylon.language.Float)((.ceylon.language.Tuple<? extends .ceylon.language.Float, ? extends .ceylon.language.Float, ? extends .ceylon.language.Empty>)((.ceylon.language.Tuple<? extends .java.lang.Object, ? extends .ceylon.language.Integer, ? extends .ceylon.language.Tuple<? extends .ceylon.language.Float, ? extends .ceylon.language.Float, ? extends .ceylon.language.Empty>>)tup.getRest()).getRest()).getFirst()).doubleValue();
         final .ceylon.language.Tuple<? extends .ceylon.language.String, ? extends .ceylon.language.String, ? extends .ceylon.language.Tuple<? extends .ceylon.language.String, ? extends .ceylon.language.String, ? extends .ceylon.language.Empty>> hibye = new .ceylon.language.Tuple(.ceylon.language.String.instance("hello"), new .ceylon.language.Tuple(.ceylon.language.String.instance("goodbye"), .ceylon.language.empty_.getEmpty$()));
         
         final class fun_ {
