@@ -348,8 +348,12 @@ td [class^='icon-'] {
 	background-position: -48px 0px;
 }
 
-.icon-package {
+.icon-object {
 	background-position: -64px 0px;
+}
+
+.icon-package {
+	background-position: -80px 0px;
 }
 
 .icon-decoration-local {
@@ -357,19 +361,19 @@ td [class^='icon-'] {
 }
 
 .icon-decoration-abstract {
-	background-position: -80px 0px;
-}
-
-.icon-decoration-formal {
 	background-position: -96px 0px;
 }
 
-.icon-decoration-impl {
+.icon-decoration-formal {
 	background-position: -112px 0px;
 }
 
-.icon-decoration-over {
+.icon-decoration-impl {
 	background-position: -128px 0px;
+}
+
+.icon-decoration-over {
+	background-position: -144px 0px;
 }
 
 .icon-decoration-deprecated {
@@ -378,67 +382,85 @@ td [class^='icon-'] {
 
 .icon-search {
 	vertical-align: text-bottom;
-	background-position: -176px 0px;
+	background-position: -192px 0px;
 }
 
 .icon-filter {
     vertical-align: text-bottom;
-    background-position: -208px 0px;
+    background-position: -224px 0px;
+}
+
+.icon-info {
+    vertical-align: text-bottom;
+    background-position: -256px 0px;
 }
 
 .icon-expand {
-	background-position: -224px 0px;
+	background-position: -272px 0px;
 }
 
 .icon-collapse {
-	background-position: -240px 0px;
+	background-position: -288px 0px;
 }
 
 .icon-indentation {
-	background-position: -256px 0px;
+	background-position: -304px 0px;
 	position: relative;
 	top: -6px;
 	left: -2px;
 }
 
 .icon-source-code {
-	background-position: -272px 0px;
-	vertical-align: top !important;
+	background-position: -320px 0px;
+	vertical-align: top;
 	margin-right: 1px;
 }
 
+.icon-link {
+	background-position: -336px 0px;
+}
+
 .icon-expand2 {
-	background-position: -288px 0px;
+	background-position: -352px 0px;
 }
 
 .icon-collapse2 {
-	background-position: -304px 0px;
+	background-position: -368px 0px;
 }
 
 .icon-decoration-expand {
-	background-position: -320px 0px;
+	background-position: -384px 0px;
 	width: 32px;
 	height: 4px;
 }
 
 .icon-decoration-collapse {
-	background-position: -352px 0px;
+	background-position: -416px 0px;
 	width: 32px;
 	height: 4px;
 }
 
 a:HOVER .icon-search {
 	vertical-align: text-bottom;
-	background-position: -160px 0px;
+	background-position: -176px 0px;
 }
 
 a:HOVER .icon-filter {
     vertical-align: text-bottom;
-    background-position: -192px 0px;
+    background-position: -208px 0px;
 }
 .dropdown.open .icon-filter {
     vertical-align: text-bottom;
-    background-position: -192px 0px;
+    background-position: -208px 0px;
+}
+
+a:HOVER .icon-info {
+    vertical-align: text-bottom;
+    background-position: -240px 0px;
+}
+.dropdown.open .icon-info {
+    vertical-align: text-bottom;
+    background-position: -240px 0px;
 }
 
 thead .icon-expand,
@@ -446,8 +468,11 @@ thead .icon-collapse {
 	float: right;
 }
 
+td .icon-source-code,
+td .icon-link,
 td .icon-expand2,
 td .icon-collapse2 {
 	vertical-align: top;
 	margin-right: 1px;
+	margin-top: 3px;
 }
