@@ -45,7 +45,8 @@ void test() {
     @type["Nothing|Integer"] value v4 = vartup[3];
     @type["Nothing|Integer"] value v5 = vartup[4];
     <> emp1 = {};
-    <> emp2 = ();
-    Tuple<String,String,Tuple<String,String,<>>> unsugared = Tuple("hello",Tuple("goodbye",()));
+    //<> emp2 = ();
+    //Tuple<String,String,Tuple<String,String,<>>> unsugared = Tuple("hello",Tuple("goodbye",()));
+    Tuple<String,String,Tuple<String,String,<>>> unsugared = Tuple("hello",Tuple("goodbye",{}));
     <String,String> sugared = unsugared;
 }

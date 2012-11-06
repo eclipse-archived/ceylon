@@ -112,7 +112,7 @@ abstract class X<T>() {
 }
 
 class Y() extends X<String>() {
-    foo = void (String s) print(s.uppercased);
+    foo = (String s) print(s.uppercased);
     bar = "hello";
     baz = (String(Integer) s) s(0);
     @error qux = () "hello";

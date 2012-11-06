@@ -112,7 +112,7 @@ void method() {
         function f(String s) { print(s); return s.size; }
     };
     higher2({"goodbye"}, (String s) print(s));
-    higher2({"goodbye"}, function (String s) print(s));
+    higher2({"goodbye"}, (String s) print(s));
     
     @error print(s);
     

@@ -16,8 +16,8 @@ class Lambdas() {
     }
     
     repeat(10, (Integer n) print("Hello"));
-    repeat(10, void (Integer n) print("Hello"));
-    repeat(10, function (Integer n) print("Hello"));
+    repeat(10, (Integer n) print("Hello"));
+    repeat(10, (Integer n) print("Hello"));
 
     @error repeat(10, (Float n) print("Hello"));
     
@@ -26,9 +26,9 @@ class Lambdas() {
     }
     
     @type["Float"] foo((Float x)(Integer y) x+y);
-    @type["Float"] foo(function (Float x)(Integer y) x+y);
+    @type["Float"] foo((Float x)(Integer y) x+y);
     
-    @error foo(void (Float x)(Integer y) print((x+y).string));
+    @error foo((Float x)(Integer y) print((x+y).string));
     @error foo((Float x)(Float y) x+y);
     
     function baz(Float bar(Float qux(Float x))) {
@@ -36,7 +36,7 @@ class Lambdas() {
     }
     
     @type["Float"] baz((Float qux(Float x)) qux(1.0));
-    @type["Float"] baz(function (Float qux(Float x)) qux(1.0));
+    @type["Float"] baz((Float qux(Float x)) qux(1.0));
 
     @error baz((Float qux(Float x)) qux(1.0).integer);
     @error baz((Float qux(Integer x)) qux(1));

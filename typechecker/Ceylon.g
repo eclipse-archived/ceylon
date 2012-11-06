@@ -1672,19 +1672,13 @@ positionalArgument returns [PositionalArgument positionalArgument]
     ;
 
 anonParametersStart
-    : LPAREN (compilerAnnotations annotatedDeclarationStart | RPAREN (interpolatedExpressionStart|STRING_LITERAL|SUM_OP))
+    : LPAREN (compilerAnnotations annotatedDeclarationStart | RPAREN)
     ;
 
 functionOrExpression returns [Expression expression]
     @init { FunctionArgument fa = new FunctionArgument(null);
             fa.setType(new FunctionModifier(null)); }
-    : (FUNCTION_MODIFIER|VOID_MODIFIER|anonParametersStart)=>
-      (
-        FUNCTION_MODIFIER 
-        { fa.setType(new FunctionModifier($FUNCTION_MODIFIER)); }
-      | VOID_MODIFIER
-         { fa.setType(new VoidModifier($VOID_MODIFIER)); }
-      )?
+    : (anonParametersStart)=>
       p1=parameters
       { fa.addParameterList($p1.parameterList); }
       ( 
