@@ -1,8 +1,7 @@
 //Array tests
 void testArrays() {
-    check(!nonempty array(), "arrayOfNone");
+    check(array().size==0, "arrayOfNone");
     value a1 = array(1);
-    check(nonempty a1, "nonempty array");
     check(a1.size==1, "array.size");
     check(a1[0] exists, "array[0]");
     check(!a1.empty, "array.empty");
@@ -15,7 +14,6 @@ void testArrays() {
     value a3=arrayOfSome({1,2,3});
     check(a2==a3, "array.equals");
     check(a2.size==a3.size, "array.size");
-    check(nonempty a2, "nonempty array 2");
     a2.setItem(0,10);
     if (exists i=a2[0]) {
         check(i==10, "array.setItem 2");

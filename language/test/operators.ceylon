@@ -20,7 +20,6 @@ void operators() {
     check(!exists maybe?[10], "?[]");
     check(!exists maybeNot?[0], "?[]");
     check(!exists maybeNot?[10], "?[]");
-    check(!nonempty maybeNot, "nonempty null");
 
     String[] empty = {};
     String[] full = { "hello", "world" };
