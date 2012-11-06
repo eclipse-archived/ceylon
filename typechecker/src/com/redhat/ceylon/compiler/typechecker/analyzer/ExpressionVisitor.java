@@ -57,7 +57,6 @@ import com.redhat.ceylon.compiler.typechecker.tree.Node;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.Expression;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.SupertypeQualifier;
-import com.redhat.ceylon.compiler.typechecker.tree.Tree.Type;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.TypedArgument;
 import com.redhat.ceylon.compiler.typechecker.tree.Visitor;
 
@@ -595,17 +594,28 @@ public class ExpressionVisitor extends Visitor {
     					pl.addError("no matching parameter list in referenced declaration");
     				}
     				else if (ct.getTypeArgumentList().size()>=2) {
-    					List<ProducedType> argTypes = argtypes(ct.getTypeArgumentList().get(1));
-						List<Tree.Parameter> paramTypes = pl.getParameters();
-    					if (argTypes.size()!=paramTypes.size()) {
+    					ProducedType tupleType = ct.getTypeArgumentList().get(1);
+						List<ProducedType> argTypes = argtypes(tupleType);
+    					boolean sequenced = argsequenced(tupleType);
+						List<Tree.Parameter> params = pl.getParameters();
+    					if (argTypes.size()!=params.size()) {
     						pl.addError("wrong number of declared parameters: must have " + argTypes.size() + " parameters");
     					}
-    					for (int i=0; i<argTypes.size()&&i<paramTypes.size(); i++) {
+    					for (int i=0; i<argTypes.size()&&i<params.size(); i++) {
     						ProducedType at = argTypes.get(i);
-    						Type t = paramTypes.get(i).getType();
+    						Tree.Parameter param = params.get(i);
+							Tree.Type t = param.getType();
     						checkAssignable(t.getTypeModel(), at, t, 
     								"declared parameter type must be a subtype of type declared in function declaration");
     					}
+						Tree.Parameter lastParam = params.get(params.size()-1);
+						boolean refSequenced = lastParam.getDeclarationModel().isSequenced();
+						if (refSequenced && !sequenced) {
+							lastParam.addError("parameter list in referenced declaration does not have a sequenced parameter");
+						}
+						if (!refSequenced && sequenced) {
+							lastParam.addError("parameter list in referenced declaration has a sequenced parameter");							
+						}
     					pt = ct.getTypeArgumentList().get(0);
         				that.setTypeModel(pt);
     				}

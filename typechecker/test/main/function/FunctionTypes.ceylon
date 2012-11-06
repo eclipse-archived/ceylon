@@ -156,8 +156,8 @@ void method() {
     @error void broke(Integer ints) = foo(ints...);
     void notBroke(Integer ints); notBroke = foo;
     void alsoBroke(Integer... ints); @error alsoBroke = ok;
-    void reallyBroke(Integer... ints); @error reallyBroke(Integer[] ints) = foo(ints...);
-    void badlyBroke(Integer... ints); @error badlyBroke(Integer[] ints) = ok(ints.first else 0);
+    void reallyBroke(Integer... ints); reallyBroke(@error Integer[] ints) = foo(ints...);
+    void badlyBroke(Integer... ints); badlyBroke(@error Integer[] ints) = ok(ints.first else 0);
     void terrible(Integer... ints); @error terrible(Integer... ints) = foo;
 }
 
@@ -214,3 +214,11 @@ void sequencedParams() {
     @error str("hello".characters);
     @error str(`X`...);
 }
+
+ class Outer1() {
+   shared class Inner() { }
+ }
+ Outer1? o = null;
+ Outer1.Inner? i1 = o?.Inner();
+ Outer1.Inner? cons() = o?.Inner();
+
