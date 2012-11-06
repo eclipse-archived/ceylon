@@ -622,8 +622,9 @@ public class ExpressionVisitor extends Visitor {
             Tree.BaseMemberExpression bme = (Tree.BaseMemberExpression) me;
             Declaration d = bme.getDeclaration();
             if (d!=null) { 
-                if (that.getScope() instanceof Class && 
-                        !d.isDefinedInScope(that.getScope())) {
+                Scope cs = that.getScope().getContainer();
+				if (cs instanceof Class && 
+                        !d.isDefinedInScope(cs)) {
                     //then it must be inherited ... TODO: is this totally correct? 
                     //so it's actually a refinement of a formal declaration!
                     if (d instanceof Value) {
@@ -658,7 +659,7 @@ public class ExpressionVisitor extends Visitor {
 
     private void refine(Value sv, Tree.BaseMemberExpression bme,
             Tree.SpecifierStatement that) {
-        Class c = (Class) that.getScope();
+        Class c = (Class) that.getScope().getContainer();
         if (sv.isVariable()) {
             that.addError("attribute is variable: " + 
                     RefinementVisitor.message(sv));
@@ -695,7 +696,7 @@ public class ExpressionVisitor extends Visitor {
 
     private void refine(Method sm, Tree.BaseMemberExpression bme,
             Tree.SpecifierStatement that) {
-        Class c = (Class) that.getScope();
+        Class c = (Class) that.getScope().getContainer();
         if (!sm.isFormal()
                 && !sm.isShortcutRefinement()) { //this condition is here to squash a dupe message
             bme.addError("method is not formal: " + 
