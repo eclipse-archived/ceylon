@@ -77,16 +77,16 @@ public class MemberTypeAliasClass {
         }
     }
     
-    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("com.redhat.ceylon.compiler.java.test.structure.alias::MemberTypeAliasClass.TypeAliasClass&com.redhat.ceylon.compiler.java.test.structure.alias::MemberTypeAliasClass.TypeAliasInterface")
+    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo(value = "com.redhat.ceylon.compiler.java.test.structure.alias::MemberTypeAliasClass.TypeAliasClass&com.redhat.ceylon.compiler.java.test.structure.alias::MemberTypeAliasClass.TypeAliasInterface", erased = true)
     private final .java.lang.Object classAliasMethod1(@.com.redhat.ceylon.compiler.java.metadata.Name("f")
-    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("com.redhat.ceylon.compiler.java.test.structure.alias::MemberTypeAliasClass.TypeAliasClass&com.redhat.ceylon.compiler.java.test.structure.alias::MemberTypeAliasClass.TypeAliasInterface")
+    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo(value = "com.redhat.ceylon.compiler.java.test.structure.alias::MemberTypeAliasClass.TypeAliasClass&com.redhat.ceylon.compiler.java.test.structure.alias::MemberTypeAliasClass.TypeAliasInterface", erased = true)
     final .java.lang.Object f) {
         return f;
     }
     
-    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("com.redhat.ceylon.compiler.java.test.structure.alias::MemberTypeAliasClass.TypeAliasClass|com.redhat.ceylon.compiler.java.test.structure.alias::MemberTypeAliasClass.TypeAliasInterface")
+    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo(value = "com.redhat.ceylon.compiler.java.test.structure.alias::MemberTypeAliasClass.TypeAliasClass|com.redhat.ceylon.compiler.java.test.structure.alias::MemberTypeAliasClass.TypeAliasInterface", erased = true)
     private final .java.lang.Object classAliasMethod2(@.com.redhat.ceylon.compiler.java.metadata.Name("f")
-    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("com.redhat.ceylon.compiler.java.test.structure.alias::MemberTypeAliasClass.TypeAliasClass|com.redhat.ceylon.compiler.java.test.structure.alias::MemberTypeAliasClass.TypeAliasInterface")
+    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo(value = "com.redhat.ceylon.compiler.java.test.structure.alias::MemberTypeAliasClass.TypeAliasClass|com.redhat.ceylon.compiler.java.test.structure.alias::MemberTypeAliasClass.TypeAliasInterface", erased = true)
     final .java.lang.Object f) {
         return f;
     }

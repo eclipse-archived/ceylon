@@ -57,9 +57,9 @@ final class typeAliasWithTypeParametersMethod1_ {
     private typeAliasWithTypeParametersMethod1_() {
     }
     
-    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("com.redhat.ceylon.compiler.java.test.structure.alias::TypeAliasWithTypeParametersClass<ceylon.language::Integer>&com.redhat.ceylon.compiler.java.test.structure.alias::TypeAliasWithTypeParametersInterface<ceylon.language::String>")
+    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo(value = "com.redhat.ceylon.compiler.java.test.structure.alias::TypeAliasWithTypeParametersClass<ceylon.language::Integer>&com.redhat.ceylon.compiler.java.test.structure.alias::TypeAliasWithTypeParametersInterface<ceylon.language::String>", erased = true)
     static .java.lang.Object typeAliasWithTypeParametersMethod1(@.com.redhat.ceylon.compiler.java.metadata.Name("f")
-    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("com.redhat.ceylon.compiler.java.test.structure.alias::TypeAliasWithTypeParametersClass<ceylon.language::Integer>&com.redhat.ceylon.compiler.java.test.structure.alias::TypeAliasWithTypeParametersInterface<ceylon.language::String>")
+    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo(value = "com.redhat.ceylon.compiler.java.test.structure.alias::TypeAliasWithTypeParametersClass<ceylon.language::Integer>&com.redhat.ceylon.compiler.java.test.structure.alias::TypeAliasWithTypeParametersInterface<ceylon.language::String>", erased = true)
     final .java.lang.Object f) {
         return f;
     }
@@ -71,9 +71,9 @@ final class typeAliasWithTypeParametersMethod2_ {
     private typeAliasWithTypeParametersMethod2_() {
     }
     
-    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("com.redhat.ceylon.compiler.java.test.structure.alias::TypeAliasWithTypeParametersClass<ceylon.language::Integer>|com.redhat.ceylon.compiler.java.test.structure.alias::TypeAliasWithTypeParametersInterface<ceylon.language::Integer>")
+    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo(value = "com.redhat.ceylon.compiler.java.test.structure.alias::TypeAliasWithTypeParametersClass<ceylon.language::Integer>|com.redhat.ceylon.compiler.java.test.structure.alias::TypeAliasWithTypeParametersInterface<ceylon.language::Integer>", erased = true)
     static .java.lang.Object typeAliasWithTypeParametersMethod2(@.com.redhat.ceylon.compiler.java.metadata.Name("f")
-    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("com.redhat.ceylon.compiler.java.test.structure.alias::TypeAliasWithTypeParametersClass<ceylon.language::Integer>|com.redhat.ceylon.compiler.java.test.structure.alias::TypeAliasWithTypeParametersInterface<ceylon.language::Integer>")
+    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo(value = "com.redhat.ceylon.compiler.java.test.structure.alias::TypeAliasWithTypeParametersClass<ceylon.language::Integer>|com.redhat.ceylon.compiler.java.test.structure.alias::TypeAliasWithTypeParametersInterface<ceylon.language::Integer>", erased = true)
     final .java.lang.Object f) {
         return f;
     }

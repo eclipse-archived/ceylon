@@ -6,19 +6,19 @@ package com.redhat.ceylon.compiler.java.test.annotations;
 public interface References<T> {
     
     @.com.redhat.ceylon.compiler.java.metadata.Annotations({@.com.redhat.ceylon.compiler.java.metadata.Annotation("shared"), @.com.redhat.ceylon.compiler.java.metadata.Annotation("formal")})
-    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("com.redhat.ceylon.compiler.java.test.annotations::Interface|T")
+    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo(value = "com.redhat.ceylon.compiler.java.test.annotations::Interface|T", erased = true)
     public abstract .java.lang.Object iface();
     
     @.com.redhat.ceylon.compiler.java.metadata.Annotations({@.com.redhat.ceylon.compiler.java.metadata.Annotation("shared"), @.com.redhat.ceylon.compiler.java.metadata.Annotation("formal")})
-    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("com.redhat.ceylon.compiler.java.test.annotations::Klass|T")
+    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo(value = "com.redhat.ceylon.compiler.java.test.annotations::Klass|T", erased = true)
     public abstract .java.lang.Object klass();
     
     @.com.redhat.ceylon.compiler.java.metadata.Annotations({@.com.redhat.ceylon.compiler.java.metadata.Annotation("shared"), @.com.redhat.ceylon.compiler.java.metadata.Annotation("formal")})
-    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("com.redhat.ceylon.compiler.java.test.annotations::MemberKlass.Member|T")
+    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo(value = "com.redhat.ceylon.compiler.java.test.annotations::MemberKlass.Member|T", erased = true)
     public abstract .java.lang.Object memberKlass();
     
     @.com.redhat.ceylon.compiler.java.metadata.Annotations({@.com.redhat.ceylon.compiler.java.metadata.Annotation("shared"), @.com.redhat.ceylon.compiler.java.metadata.Annotation("formal")})
-    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("com.redhat.ceylon.compiler.java.test.annotations::MemberKlass.Member.MemberMember|T")
+    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo(value = "com.redhat.ceylon.compiler.java.test.annotations::MemberKlass.Member.MemberMember|T", erased = true)
     public abstract .java.lang.Object memberMember();
 }
 @.com.redhat.ceylon.compiler.java.metadata.Ignore
