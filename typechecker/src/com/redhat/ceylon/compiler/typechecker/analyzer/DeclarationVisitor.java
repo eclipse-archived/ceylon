@@ -576,13 +576,19 @@ public class DeclarationVisitor extends Visitor {
         if (that.getDefaultArgument()!=null) {
             Tree.SpecifierExpression se = that.getDefaultArgument().getSpecifierExpression();
             if (se!=null) {
-                if (declaration.isActual()) {
-                    se.addError("parameter of actual declaration may not define default value: parameter " +
-                            name(that.getIdentifier()) + " of " + declaration.getName());
-                }
-                if (that.getDeclarationModel().getDeclaration() instanceof Parameter) {
-                    se.addError("parameter of callable parameter may not have default argument");
-                }
+            	if (that.getScope() instanceof Specification) {
+            		se.addError("parameter of specification statement may not define default value");
+            	}
+            	else {
+            		Declaration d = that.getDeclarationModel().getDeclaration();
+            		if (d.isActual()) {
+            			se.addError("parameter of actual declaration may not define default value: parameter " +
+            					name(that.getIdentifier()) + " of " + declaration.getName());
+            		}
+            		if (d instanceof Parameter) {
+            			se.addError("parameter of callable parameter may not have default argument");
+            		}
+            	}
                 /*if (declaration instanceof Method &&
                     !declaration.isToplevel() &&
                     !(declaration.isClassOrInterfaceMember() && 

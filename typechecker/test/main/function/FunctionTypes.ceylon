@@ -158,10 +158,7 @@ void method() {
     void alsoBroke(Integer... ints); @error alsoBroke = ok;
     void reallyBroke(Integer... ints); reallyBroke(@error Integer[] ints) = foo(ints...);
     void badlyBroke(Integer... ints); badlyBroke(@error Integer[] ints) = ok(ints.first else 0);
-    void terrible(Integer... ints); @error terrible(Integer... ints) = foo;
-    
-    void f(String... x, @error String... y);
-    f(String... x, @error String... y) = bottom;
+    void terrible(Integer... ints); @error terrible(Integer... ints) = foo;    
 }
 
 class Outer() {

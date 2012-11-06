@@ -44,4 +44,9 @@ void splitFunction() {
         add0(Float x)(@error Integer y) = x+y.float;
     }
 
+    void func(String... x, @error String... y);
+    func(String... x, @error String... y) = bottom;
+    void printit(String s);
+    printit(@error String s="hello") = print(s);
+    
 }
