@@ -1284,7 +1284,7 @@ primary returns [Primary primary]
     ;
 
 specifierParametersStart
-    : LPAREN (compilerAnnotations annotatedDeclarationStart | RPAREN SPECIFY)
+    : LPAREN (compilerAnnotations annotatedDeclarationStart | RPAREN (SPECIFY|specifierParametersStart))
     ;
 
 qualifiedReference returns [Identifier identifier, MemberOperator operator, 

@@ -586,25 +586,29 @@ public class ExpressionVisitor extends Visitor {
     	super.visit(that);
     	Tree.Term p = that.getPrimary();
     	if (p.getTypeModel()!=null) {
-    		ProducedType ct = p.getTypeModel().getSupertype(unit.getCallableDeclaration());
-    		if (ct==null) {
-    			p.addError("not a reference to a function");
-    		}
-    		if (that.getParameterLists().size()>1) {
-    			that.addError("multiple parameter lists not yet supported");
-    		}
-    		if (ct.getTypeArgumentList().size()>=2) {
-    			that.setTypeModel(ct.getTypeArgumentList().get(0));
-    			List<ProducedType> argTypes = argtypes(ct.getTypeArgumentList().get(1));
-    			List<Tree.Parameter> paramTypes = that.getParameterLists().get(0).getParameters();
-    			if (argTypes.size()!=paramTypes.size()) {
-    				that.getParameterLists().get(0).addError("wrong number of declared parameters: must have " + argTypes.size() + " parameters");
-    			}
-    			for (int i=0; i<argTypes.size()&&i<paramTypes.size(); i++) {
-    				ProducedType at = argTypes.get(i);
-					Type pt = paramTypes.get(i).getType();
-					if (!pt.getTypeModel().isSubtypeOf(at)) {
-    					pt.addError("declared parameter must be a subtype of " + at.getProducedTypeName());
+    		ProducedType pt = p.getTypeModel();
+    		if (pt!=null) {
+    			for (int j=0; j<that.getParameterLists().size(); j++) {
+					Tree.ParameterList pl = that.getParameterLists().get(j);
+    				ProducedType ct = pt.getSupertype(unit.getCallableDeclaration());
+    				if (ct==null) {
+    					pl.addError("no matching parameter list in referenced declaration");
+    				}
+    				else if (ct.getTypeArgumentList().size()>=2) {
+    					List<ProducedType> argTypes = argtypes(ct.getTypeArgumentList().get(1));
+						List<Tree.Parameter> paramTypes = pl.getParameters();
+    					if (argTypes.size()!=paramTypes.size()) {
+    						pl.addError("wrong number of declared parameters: must have " + argTypes.size() + " parameters");
+    					}
+    					for (int i=0; i<argTypes.size()&&i<paramTypes.size(); i++) {
+    						ProducedType at = argTypes.get(i);
+    						Type t = paramTypes.get(i).getType();
+    						if (!t.getTypeModel().isSubtypeOf(at)) {
+    							t.addError("declared parameter must be a subtype of " + at.getProducedTypeName());
+    						}
+    					}
+    					pt = ct.getTypeArgumentList().get(0);
+        				that.setTypeModel(pt);
     				}
     			}
     		}
@@ -649,7 +653,8 @@ public class ExpressionVisitor extends Visitor {
                 else if (d.isToplevel()) {
                     me.addError("toplevel declarations may not be specified");
                 }
-                checkType(that.getBaseMemberExpression().getTypeModel(), d.getName(), sie, 2100);
+//            	checkType(bme.getTarget().getType(), d.getName(), sie, 2100);
+            	checkType(that.getBaseMemberExpression().getTypeModel(), d.getName(), sie, 2100);
             }
         }
         else {
