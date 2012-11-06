@@ -665,6 +665,9 @@ public class DeclarationVisitor extends Visitor {
                     }
                 }
                 else if (p.getType() instanceof Tree.SequencedType) {
+                    if (foundSequenced) {
+                        p.addError("parameter list may have at most one sequenced parameter");
+                    }
                     foundSequenced = true;
                     if (!first) {
                         p.addError("only the first parameter list may have a sequenced parameter");

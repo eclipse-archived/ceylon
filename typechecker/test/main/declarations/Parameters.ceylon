@@ -39,5 +39,7 @@ class Parameters() {
     }
     
     void method()(@error String name="gavin")(@error String... names) {}
+    
+    void func(String... x, @error String... y) {}
 
 }
