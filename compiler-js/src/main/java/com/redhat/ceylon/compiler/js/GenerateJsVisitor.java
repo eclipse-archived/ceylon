@@ -1980,13 +1980,13 @@ public class GenerateJsVisitor extends Visitor
     }
 
     private String qualifiedPath(Node that, Declaration d, boolean inProto) {
-        if (isImported(that, d)) {
+        boolean isMember = d.isClassOrInterfaceMember();
+        if (!isMember && isImported(that, d)) {
             return names.moduleAlias(d.getUnit().getPackage().getModule());
         }
         else if (prototypeStyle && !inProto) {
-            if (d.isClassOrInterfaceMember() &&
-                    !(d instanceof com.redhat.ceylon.compiler.typechecker.model.Parameter &&
-                            !d.isCaptured())) {
+            if (isMember && !(d instanceof com.redhat.ceylon.compiler.typechecker.model.Parameter
+                              && !d.isCaptured())) {
                 TypeDeclaration id = that.getScope().getInheritingDeclaration(d);
                 if (id == null) {
                     //a local declaration of some kind,
@@ -2025,7 +2025,7 @@ public class GenerateJsVisitor extends Visitor
                 return path;
             }
         }
-        else if (d != null && (d.isShared() || inProto) && d.isClassOrInterfaceMember()) {
+        else if (d != null && (d.isShared() || inProto) && isMember) {
             TypeDeclaration id = that.getScope().getInheritingDeclaration(d);
             if (id==null) {
                 //a shared local declaration
