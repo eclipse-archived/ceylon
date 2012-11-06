@@ -60,6 +60,17 @@ class QualifiedB() extends QualifiedA() {
   shared Integer supera { return QualifiedA::a; }
 }
 
+class TestList() satisfies List<String> {
+    shared actual List<String> clone = {};
+    shared actual String? item(Integer index) { return null; }
+    shared actual Integer? lastIndex = null;
+    shared actual List<String> reversed = {};
+    shared actual List<String> segment(Integer from, Integer length) { return {}; }
+    shared actual List<String> span(Integer from, Integer? to) { return {}; }
+    shared actual Boolean equals(Object that) { return List::equals(that); }
+    shared actual Integer hash { return List::hash; }
+}
+
 void testQualified() {
     value q1 = QualifyAmbiguousSupertypes(true);
     value q2 = QualifyAmbiguousSupertypes(false);
@@ -76,4 +87,7 @@ void testQualified() {
     qb.f();
     check(++qb.a == qb.supera, "Qualified attribute [2]");
     check(++qb.a == qb.g(), "Qualified attribute [3]");
+    value tl = TestList();
+    check(tl.hash=={}.hash, "List::hash");
+    check(tl=={}, "List::equals");
 }
