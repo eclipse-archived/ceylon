@@ -18,10 +18,10 @@ public final class max_ {
             satisfies="ceylon.language::Comparable<Value>"),
                      @TypeParameter(value="Null", 
             satisfies="ceylon.language::Nothing")})
-    @TypeInfo("Null|Value")
+    @TypeInfo(value="Null|Value", erased=true)
     public static <Value, Null> 
     Value max(@Name("values")
-    @TypeInfo("ceylon.language::Iterable<Value>&ceylon.language::ContainerWithFirstElement<Value,Null>")
+    @TypeInfo(value="ceylon.language::Iterable<Value>&ceylon.language::ContainerWithFirstElement<Value,Null>", erased=true)
     final Iterable<? extends Value> values) {
         Value max = (Value) values.getFirst();
         if (max!=null) {

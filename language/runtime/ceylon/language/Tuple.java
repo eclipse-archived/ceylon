@@ -34,20 +34,20 @@ public class Tuple<Element, First, Rest>
 	private final Element first;
 	private final List<Element> rest;
 	
-	public Tuple(@TypeInfo("First&Element") 
+	public Tuple(@TypeInfo(value="First&Element", erased=true) 
 	             @Name("first") Element first,
-	             @TypeInfo("Rest&Empty|Rest&Sequence<Element>")
+	             @TypeInfo(value="Rest&Empty|Rest&Sequence<Element>", erased=true)
 			     @Name("rest") List<Element> rest) {
 		this.first = first;
 		this.rest = rest;
 	}
 	
-	@TypeInfo("First&Element")
+	@TypeInfo(value="First&Element", erased=true)
 	public Element getFirst() {
 		return first;
 	}
 	
-	@TypeInfo("Rest&Empty|Rest&Sequence<Element>")
+	@TypeInfo(value="Rest&Empty|Rest&Sequence<Element>", erased=true)
 	public List<Element> getRest() {
 		return rest;
 	}

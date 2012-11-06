@@ -16,10 +16,10 @@ import com.redhat.ceylon.compiler.java.metadata.Variance;
 @SatisfiedTypes("ceylon.language::Container")
 public interface ContainerWithFirstElement<Element,Null> extends Container {
 	@Annotations(@Annotation("formal"))
-	@TypeInfo("Null|Element")
+	@TypeInfo(value="Null|Element", erased=true)
     public java.lang.Object getFirst();
 
     @Annotations(@Annotation("formal"))
-    @TypeInfo("Null|Element")
+    @TypeInfo(value="Null|Element", erased=true)
     public java.lang.Object getLast();
 }

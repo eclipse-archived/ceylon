@@ -48,7 +48,7 @@ public final class arrayOfSize_ {
             public Iterator<Element> getIterator() {
                 return new Iterator<Element>() {
                     long idx = 0;
-                    @TypeInfo("Element|ceylon.language::Finished")
+                    @TypeInfo(value="Element|ceylon.language::Finished", erased=true)
                     public java.lang.Object next() {
                         return idx++<size ? element : exhausted_.getExhausted$();
                     }

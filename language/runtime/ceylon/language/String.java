@@ -839,7 +839,7 @@ public abstract class String
 
     @TypeInfo("ceylon.language::Iterable<ceylon.language::String>")
     public Iterable<? extends String> split(
-            @TypeInfo("ceylon.language::Iterable<ceylon.language::Character>|ceylon.language::Callable<ceylon.language::Boolean,ceylon.language::Character>")
+            @TypeInfo(value="ceylon.language::Iterable<ceylon.language::Character>|ceylon.language::Callable<ceylon.language::Boolean,ceylon.language::Character>", erased=true)
             @Defaulted
             @Name("separator") java.lang.Object separator,
             @Defaulted

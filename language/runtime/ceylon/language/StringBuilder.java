@@ -67,7 +67,7 @@ public class StringBuilder {
     @TypeInfo("ceylon.language::StringBuilder")
     public final synchronized StringBuilder insert(
             @Name("pos") @TypeInfo("ceylon.language::Integer") int pos,
-            @Name("content") @TypeInfo("ceylon.language::String|ceylon.language::Character")
+            @Name("content") @TypeInfo(value="ceylon.language::String|ceylon.language::Character", erased=true)
             java.lang.Object content) {
         if (pos < 0) pos = 0;
         if (pos >= builder.length()) {

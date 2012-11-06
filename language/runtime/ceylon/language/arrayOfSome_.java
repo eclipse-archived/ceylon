@@ -16,7 +16,7 @@ public final class arrayOfSome_ {
     private arrayOfSome_() {}
 
     @TypeParameters(@TypeParameter(value="Element"))
-    @TypeInfo("ceylon.language::Array<Element>&ceylon.language::Some<Element>")
+    @TypeInfo(value="ceylon.language::Array<Element>&ceylon.language::Some<Element>", erased=true)
     public static <Element> Array<Element> arrayOfSome(
     @Name("elements")
     @TypeInfo("ceylon.language::Sequence<Element>")
