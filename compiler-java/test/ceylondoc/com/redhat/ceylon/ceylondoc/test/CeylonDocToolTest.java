@@ -154,60 +154,31 @@ public class CeylonDocToolTest {
     
     @Test
     public void moduleA() throws IOException {
-        String pathname = "test/ceylondoc";
-        String moduleName = "com.redhat.ceylon.ceylondoc.test.modules.single";
-
-        CeylonDocTool tool = tool(pathname, moduleName, true);
-        tool.setIncludeNonShared(false);
-        tool.setIncludeSourceCode(true);
-        tool.makeDoc();
-        
-        Module module = new Module();
-        module.setName(Arrays.asList(moduleName));
-        module.setVersion("3.1.4");
-        
-        File destDir = getOutputDir(tool, module);
-        
-        assertFileExists(destDir, false);
-        assertBasicContent(destDir, false);
-        assertBy(destDir);
-        assertParametersDocumentation(destDir);
-        assertThrows(destDir);
-        assertSee(destDir);
-        assertIcons(destDir);
-        assertInnerTypesDoc(destDir);
-        assertDeprecated(destDir);
-        assertTagged(destDir);
-        assertDocumentationOfRefinedMember(destDir);
-        assertSequencedParameter(destDir);
-        assertCallableParameter(destDir);
-        assertFencedCodeBlockWithSyntaxHighlighter(destDir);
-        assertWikiStyleLinkSyntax(destDir);
-        assertConstants(destDir);
-        assertLinksToRefinedDeclaration(destDir);
-        assertBug659ShowInheritedMembers(destDir);
-        assertBug691AbbreviatedOptionalType(destDir);
-        assertBug839(destDir);
+        moduleA(false);
     }
-
+    
     @Test
     public void moduleAWithPrivate() throws IOException {
+        moduleA(true);
+    }
+
+    private void moduleA(boolean includeNonShared) throws IOException {
         String pathname = "test/ceylondoc";
         String moduleName = "com.redhat.ceylon.ceylondoc.test.modules.single";
-        
+
         CeylonDocTool tool = tool(pathname, moduleName, true);
-        tool.setIncludeNonShared(true);
+        tool.setIncludeNonShared(includeNonShared);
         tool.setIncludeSourceCode(true);
         tool.makeDoc();
         
         Module module = new Module();
         module.setName(Arrays.asList(moduleName));
         module.setVersion("3.1.4");
-    
+        
         File destDir = getOutputDir(tool, module);
         
-        assertFileExists(destDir, true);
-        assertBasicContent(destDir, true);
+        assertFileExists(destDir, includeNonShared);
+        assertBasicContent(destDir, includeNonShared);
         assertBy(destDir);
         assertParametersDocumentation(destDir);
         assertThrows(destDir);
