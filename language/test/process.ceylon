@@ -31,7 +31,7 @@ void testProcess() {
     check(language.majorVersion==0, "language.majorVersion");
     check(language.minorVersion==5, "language.minorVersion");
     check(language.releaseVersion==0, "language.releaseVersion");
-    check(nonempty language.versionName, "language.versionName");
+    check(!language.versionName.empty, "language.versionName");
     check(language.majorVersionBinary==3, "language.majorVersionBinary");
     check(language.minorVersionBinary==0, "language.minorVersionBinary");
     print("Ceylon language version " language.version " major " language.majorVersion

@@ -42,7 +42,7 @@ void callables() {
     value which=g();
     check(which==2, "closures: callable returns " which " instead of 2");
   }
-  variable Callable<Integer>? f := null;
+  variable Callable<Integer,<>>? f := null;
   for (i in 1..2) {
     if (i > 0) {
       value j = i*2;
