@@ -139,6 +139,10 @@ void method() {
     @error function fy(String g()) = do;
     value fw = do<String>;
     @error value fz = do;
+    
+    @error Callable<Void> reallyBroken(void foo()) {
+        @error return foo;
+    }
 }
 
 class Outer() {
