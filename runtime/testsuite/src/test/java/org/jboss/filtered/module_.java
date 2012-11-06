@@ -17,6 +17,7 @@
 
 package org.jboss.filtered;
 
+import com.redhat.ceylon.compiler.java.metadata.Import;
 import com.redhat.ceylon.compiler.java.metadata.Module;
 
 
@@ -24,7 +25,10 @@ import com.redhat.ceylon.compiler.java.metadata.Module;
  * @author <a href="mailto:ales.justin@jboss.org">Ales Justin</a>
  */
 @Module(name = "org.jboss.filtered",
-        version = "1.0.0.Alpha1")
+        version = "1.0.0.Alpha1",
+        dependencies = {
+                @Import(name = "eu.cloud.clazz", version = "1.0.0.GA")
+        })
 public class module_ {
     public static ceylon.language.descriptor.Module getModule() {
         return null;
