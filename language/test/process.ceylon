@@ -29,7 +29,7 @@ void testProcess() {
     //language object
     check(language.version=="0.5", "language.version");
     check(language.majorVersion==0, "language.majorVersion");
-    check(language.minorVersion==4, "language.minorVersion");
+    check(language.minorVersion==5, "language.minorVersion");
     check(language.releaseVersion==0, "language.releaseVersion");
     check(nonempty language.versionName, "language.versionName");
     check(language.majorVersionBinary==3, "language.majorVersionBinary");
