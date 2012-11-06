@@ -59,7 +59,7 @@ void testIssue10() {
     check(obj.f7()==12, "Issue #10 (shared method)");
     check(obj.f10()==14, "Issue #10 (shared method)");
     check(obj.f9()==14, "Issue #10 (shared method)");
-    check(nonempty obj.string, "Issue #113 (inheritance)");
+    check(!obj.string.empty, "Issue #113 (inheritance)");
 }
 
 class AssignTest() {
@@ -87,8 +87,8 @@ class AliasMemberTest() {
     class AliasB() = B;
     shared String b() { return AliasB().s; }
  
-    shared Util f1() = Util;   
-    shared A f2() = AliasA;
+    shared Util f1() = Util();   
+    shared A f2() = AliasA();
 }
 
 shared void test() {
