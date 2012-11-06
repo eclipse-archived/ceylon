@@ -33,5 +33,15 @@ void splitFunction() {
 
     Float add5(Float x)(Integer y);
     @error add5(Float x)(Integer y)(Float z) = x+z;
+    
+    abstract class Abstract() {
+        shared formal Float add(Float x)(Float y);
+        shared formal Float add0(Float x)(Float y);
+    }
+    
+    class Concrete() extends Abstract() {
+        add(Float x)(Float y) = x+y;
+        add0(Float x)(@error Integer y) = x+y.float;
+    }
 
 }
