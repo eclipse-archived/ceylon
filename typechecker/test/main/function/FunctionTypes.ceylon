@@ -148,17 +148,17 @@ void method() {
         @error return foo;
     }
     
-    void foo(Integer... seq) {}
-    void bar(Integer... ints) = foo(ints...);
-    void baz(Integer... seq); baz = foo;
-    void qux(Integer... ints) = baz(ints...);
-    void ok(Integer ints) = foo(ints);
-    @error void broke(Integer ints) = foo(ints...);
-    void notBroke(Integer ints); notBroke = foo;
-    void alsoBroke(Integer... ints); @error alsoBroke = ok;
-    void reallyBroke(Integer... ints); reallyBroke(@error Integer[] ints) = foo(ints...);
-    void badlyBroke(Integer... ints); badlyBroke(@error Integer[] ints) = ok(ints.first else 0);
-    void terrible(Integer... ints); @error terrible(Integer... ints) = foo;    
+    Nothing foo(Integer... seq) { return null; }
+    Nothing bar(Integer... ints) = foo(ints...);
+    Nothing baz(Integer... seq); baz = foo;
+    Nothing qux(Integer... ints) = baz(ints...);
+    Nothing ok(Integer ints) = foo(ints);
+    @error Nothing broke(Integer ints) = foo(ints...);
+    Nothing notBroke(Integer ints); notBroke = foo;
+    Nothing alsoBroke(Integer... ints); @error alsoBroke = ok;
+    Nothing reallyBroke(Integer... ints); reallyBroke(@error Integer[] ints) = foo(ints...);
+    Nothing badlyBroke(Integer... ints); badlyBroke(@error Integer[] ints) = ok(ints.first else 0);
+    Nothing terrible(Integer... ints); @error terrible(Integer... ints) = foo;    
 }
 
 class Outer() {

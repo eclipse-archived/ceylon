@@ -589,7 +589,7 @@ public class TypeVisitor extends Visitor {
         super.visit(that);
         ProducedType type = that.getType().getTypeModel();
         if (type!=null) {
-            that.setTypeModel(unit.getIterableType(type));
+            that.setTypeModel(unit.getSequentialType(type));
         }
     }
 

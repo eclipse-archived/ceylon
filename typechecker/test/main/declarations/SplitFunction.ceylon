@@ -44,8 +44,21 @@ void splitFunction() {
         add0(Float x)(@error Integer y) = x+y.float;
     }
 
-    void func(String... x, @error String... y);
-    func(String... x, @error String... y) = bottom;
+    void func0(String[] x, String... y);
+    func0(String[] x, String... y) = bottom;
+    
+    void func1(String[] x, String[] y);
+    func1(String... x, @error String... y) = bottom;
+    
+    void func2(String... x, @error String... y);
+    //func2(String[] x, String[] y) = bottom;
+    
+    void func3(String[] x, String[] y);
+    func3(String[] x, @error String... y) = bottom;
+    
+    void func4(String[] x, String... y);
+    func4(String[] x, @error String[] y) = bottom;
+    
     void printit(String s);
     printit(@error String s="hello") = print(s);
     
