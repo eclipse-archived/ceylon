@@ -205,6 +205,16 @@ class Util {
         }
     }
 
+    static void checkAssignableWithWarning(ProducedType type, ProducedType supertype, 
+            Node node, String message) {
+        if (isTypeUnknown(type) || isTypeUnknown(supertype)) {
+        	addTypeUnknownError(node, message);
+        }
+        else if (!type.isSubtypeOf(supertype)) {
+        	node.addWarning(message + message(type, " is not assignable to ", supertype));
+        }
+    }
+
     static void checkAssignableToOneOf(ProducedType type, ProducedType supertype1, ProducedType supertype2, 
             Node node, String message) {
         if (isTypeUnknown(type) || isTypeUnknown(supertype1) || isTypeUnknown(supertype2)) {

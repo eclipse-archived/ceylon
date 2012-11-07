@@ -1,6 +1,7 @@
 package com.redhat.ceylon.compiler.typechecker.analyzer;
 
 import static com.redhat.ceylon.compiler.typechecker.analyzer.Util.checkAssignable;
+import static com.redhat.ceylon.compiler.typechecker.analyzer.Util.checkAssignableWithWarning;
 import static com.redhat.ceylon.compiler.typechecker.analyzer.Util.checkCallable;
 import static com.redhat.ceylon.compiler.typechecker.analyzer.Util.checkIsExactly;
 import static com.redhat.ceylon.compiler.typechecker.analyzer.Util.checkSupertype;
@@ -941,13 +942,14 @@ public class ExpressionVisitor extends Visitor {
         endReturnScope(rt, null);
         validateEnumeratedSupertypes(that, that.getAnonymousClass());
     }
-
+    
+    //TODO: this whole method can be removed once the backend
+    //      implements full support for the new class alias stuff
     @Override public void visit(Tree.ClassDeclaration that) {
         super.visit(that);
         Class alias = that.getDeclarationModel();
         Class c = alias.getExtendedTypeDeclaration();
         if (c!=null) {
-            //that.getTypeSpecifier().getType().get
             ProducedType at = alias.getExtendedType();
             ParameterList pl = c.getParameterList();
             ParameterList apl = alias.getParameterList();
@@ -955,7 +957,7 @@ public class ExpressionVisitor extends Visitor {
                 int cps = pl.getParameters().size();
                 int aps = apl.getParameters().size();
                 if (cps!=aps) {
-                    that.addError("wrong number of initializer parameters declared by class alias: " + 
+                    that.addWarning("wrong number of initializer parameters declared by class alias: " + 
                             alias.getName());
                 }
                 for (int i=0; i<(cps<=aps ? cps : aps); i++) {
@@ -964,7 +966,7 @@ public class ExpressionVisitor extends Visitor {
                     ProducedType pt = at.getTypedParameter(cp).getType();
                     ap.setAliasedParameter(cp);
                     //TODO: properly check type of functional parameters!!
-                    checkAssignable(ap.getType(), pt, that, "alias parameter " + 
+                    checkAssignableWithWarning(ap.getType(), pt, that, "alias parameter " + 
                             ap.getName() + " must be assignable to corresponding class parameter " +
                             cp.getName());
                 }

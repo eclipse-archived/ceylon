@@ -14,9 +14,13 @@ class Aliases() {
     Class<String> cs = Class<String>("gday");
     @type["Aliases.C"] C cp = cs;
     @type["Aliases.C"] value l = C("hi");
+    
+    class Cok1(String s) = Class<String>("");
+    class Cok2() = Class<String>("");
+    class Cok3(Integer i) = Class<String>(i.string);
+    class Cok4(String x, String y) = Class<String>(x+y);
     @error class Cbroken1(String s) = Class<String>;
     @error class Cbroken2(Integer i) = Class<String>(i);
-    class Cok(String s) = Class<String>("");
     @error class Cbroken4(String s) = Class<String>(0);
     
     class D() extends C("greetings") {}
