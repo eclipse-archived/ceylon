@@ -681,20 +681,20 @@ public class TypeVisitor extends Visitor {
     @Override 
     public void visit(Tree.ClassDeclaration that) {
         super.visit(that);
-        if (that.getTypeSpecifier()==null) {
+        if (that.getExtendedType()==null) {
             that.addError("missing class body or aliased class reference");
         }
         else {
-            Tree.StaticType et = that.getTypeSpecifier().getType();
+            Tree.StaticType et = that.getExtendedType().getType();
             if (et==null) {
                 that.addError("malformed aliased class");
             }
             else if (!(et instanceof Tree.StaticType)) {
-            	that.getTypeSpecifier()
+            	that.getExtendedType()
             			.addError("aliased type must be a class");
             }
             else if (et instanceof Tree.QualifiedType) {
-            	that.getTypeSpecifier()
+            	that.getExtendedType()
             	        .addError("aliased class may not be a qualified type");
         	}
             else {
@@ -873,7 +873,8 @@ public class TypeVisitor extends Visitor {
         						type.getProducedTypeName());
         			}
         			else if (!etd.isExtendable() && 
-        					!inLanguageModule(that)) {
+        					!inLanguageModule(that) &&
+        					!td.isAlias()) {
         				et.addError("directly extends a special language type: " +
         						type.getProducedTypeName());
         			}

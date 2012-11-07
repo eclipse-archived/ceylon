@@ -588,8 +588,8 @@ classDeclaration returns [AnyClass declaration]
       //-> ^(CLASS_DEFINITION typeName classParameters? classBody)
       | 
         (
-          typeSpecifier
-          { dec.setTypeSpecifier($typeSpecifier.typeSpecifier); }
+          classSpecifier
+          { dec.setExtendedType($classSpecifier.extendedType); }
         )?
         { expecting=SEMICOLON; }
         SEMICOLON
@@ -693,11 +693,23 @@ classBody returns [ClassBody classBody]
     ;
 
 extendedType returns [ExtendedType extendedType]
-    : EXTENDS
-      { $extendedType = new ExtendedType($EXTENDS); }
-      (
+    : EXTENDS { $extendedType = new ExtendedType($EXTENDS); }
+      ci=classInstantiation
+      { $extendedType.setType($ci.type);
+        $extendedType.setInvocationExpression($ci.invocationExpression); }
+    ;
+
+classSpecifier returns [ExtendedType extendedType]
+    : SPECIFY { $extendedType = new ExtendedType($SPECIFY); }
+      ci=classInstantiation
+      { $extendedType.setType($ci.type);
+        $extendedType.setInvocationExpression($ci.invocationExpression); }
+    ;
+
+classInstantiation returns [SimpleType type, InvocationExpression invocationExpression]
+    : (
         qualifiedType
-        { $extendedType.setType($qualifiedType.type); }
+        { $type=$qualifiedType.type; }
         //-> ^(EXTENDED_TYPE[$EXTENDS] type ^(INVOCATION_EXPRESSION ^(EXTENDED_TYPE_EXPRESSION) positionalArguments))
       | SUPER MEMBER_OP 
         typeReference 
@@ -707,7 +719,7 @@ extendedType returns [ExtendedType extendedType]
           qt.setIdentifier($typeReference.identifier);
           if ($typeReference.typeArgumentList!=null)
               qt.setTypeArgumentList($typeReference.typeArgumentList);
-          $extendedType.setType(qt); }
+          $type=qt; }
         //-> ^(EXTENDED_TYPE[$EXTENDS] ^(QUALIFIED_TYPE SUPER_TYPE[$SUPER] typeReference) ^(INVOCATION_EXPRESSION ^(EXTENDED_TYPE_EXPRESSION) positionalArguments))
       )
       (
@@ -715,11 +727,11 @@ extendedType returns [ExtendedType extendedType]
         { InvocationExpression ie = new InvocationExpression(null);
           ExtendedTypeExpression ete = new ExtendedTypeExpression(null);
           ie.setPrimary(ete);
-          ete.setExtendedType($extendedType.getType());
+          ete.setExtendedType($type);
           ie.setPositionalArgumentList($positionalArguments.positionalArgumentList);
-          $extendedType.setInvocationExpression(ie); }
-      | { displayRecognitionError(getTokenNames(),
-            new MismatchedTokenException(LPAREN, input)); }
+          $invocationExpression=ie; }
+      | /*{ displayRecognitionError(getTokenNames(),
+            new MismatchedTokenException(LPAREN, input)); }*/
       )
     ;
 

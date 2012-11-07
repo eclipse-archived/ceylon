@@ -1,6 +1,6 @@
 class Aliases() {
     
-    class C(String s) = Class<String>;
+    class C(String s) = Class<String>(s);
     @type["Aliases.C"] C("hello");
     @type["Aliases.C"] C{s="hello";};
     Class<String> x = C("hello");
@@ -38,11 +38,11 @@ class Aliases() {
     @type["Aliases.IS"] IS isa = i;
     Interface<String> insa = isa;
     
-    @error class BadC1() = Class<String>;
-    @error class BadC2(Integer n) = Class<String>;
-    @error class BadC3(String s1, String s2) = Class<String>;
+    @error class BadC1() = Class<String>();
+    @error class BadC2(Integer n) = Class<String>(n);
+    @error class BadC3(String s1, String s2) = Class<String>(s1,s2);
     
-    @error class X() = String|Integer;
+    //@error class X() = String|Integer;
     @error interface Y = Container&Identifiable;
 }
 
@@ -55,10 +55,10 @@ interface LL1<out E> = List<List<E>>;
 @error interface LL2<out E> = List<SequenceBuilder<E>>;
 @error interface LL3<out E> = SequenceBuilder<List<E>>;
 
-class Si1<T>(T t) given T satisfies Object = Singleton<T>; 
-@error class Si2<in T>(T t) given T satisfies Object = Singleton<T>; 
-class Si3<out T>(T t) given T satisfies Object = Singleton<T>;
+class Si1<T>(T t) given T satisfies Object = Singleton<T>(t); 
+@error class Si2<in T>(T t) given T satisfies Object = Singleton<T>(t); 
+class Si3<out T>(T t) given T satisfies Object = Singleton<T>(t);
 
-class E1<out T>(T x, T y) given T satisfies Object = Entry<T,T>;
-@error class E2<out T>(T x, T y) = Entry<T,T>;
-@error class E3<in T>(T x, T y) given T satisfies Object = Entry<T,T>;
+class E1<out T>(T x, T y) given T satisfies Object = Entry<T,T>(x,y);
+@error class E2<out T>(T x, T y) = Entry<T,T>(x,y);
+@error class E3<in T>(T x, T y) given T satisfies Object = Entry<T,T>(x,y);

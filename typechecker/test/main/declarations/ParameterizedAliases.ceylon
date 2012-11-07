@@ -1,16 +1,16 @@
 interface I1 = Iterable<String>;
 interface I2<S> = Iterable<S>;
 @error interface I3 = Iterable;
-class E1(String name, Integer i) = Entry<String,Integer>;
-class E2<T>(String name, T t) given T satisfies Object = Entry<String,T>;
-class E3<T>(T t, String s) given T satisfies Object = Entry<T,String>;
-void p(Void s) = print;
+class E1(String name, Integer i) = Entry<String,Integer>(name,i);
+class E2<T>(String name, T t) given T satisfies Object = Entry<String,T>(name,t);
+class E3<T>(T t, String s) given T satisfies Object = Entry<T,String>(t,s);
+void p(Void s) = print(s);
 Entry<String,Integer> e1(String name, Integer i) = Entry<String,Integer>(name, i);
-@error Entry<String,T> e2<T>(String name, T t) given T satisfies Object = Entry<String,T>;
-@error Entry<String,Integer> e3(String name, Integer i) = Entry;
+Entry<String,T> e2<T>(String name, T t) given T satisfies Object = Entry<String,T>(name,t);
+Entry<String,Integer> e3(String name, Integer i) = Entry(name,i);
 @error Callable<Entry<Object,Object>,Object,Object> e5 = Entry;
-class F() = Float;
-@error abstract class F1() = Float;
+class F() = Float();
+@error abstract class F1() = Float();
 
 void check() { 
     E1 g1 = E1("gavin",1); 

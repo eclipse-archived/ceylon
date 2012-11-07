@@ -9,14 +9,14 @@ void testis() {
 interface Foo<out T> {}
 interface Bar = Foo<String>;
 class Baz() satisfies Bar {}
-class Qux() = Baz;
+class Qux() = Baz();
 
 Int i = 1;
-class Int() = Integer;
+class Int() = Integer();
 
 
 Y y = Y();
 YY yy = YY();
 class X() {}
 class Y() extends X() {}
-class YY() = X;
+class YY() = X();

@@ -43,7 +43,7 @@ class Singleton(String s)
             return s;
         }
     }
-    shared class Alias() = Iterator;
+    shared class Alias() = Iterator();
 }
 
 void testSin() {
@@ -54,8 +54,8 @@ void testSin() {
     Singleton.Iterator i2 = Singleton("goodbye").Alias();
 }
 
-@error class SingletonAlias() = Singleton.Iterator;
-@error class Alias() = Many<Integer>.Iterator;
+@error class SingletonAlias() = Singleton.Iterator();
+@error class Alias() = Many<Integer>.Iterator();
 
 interface InterfaceFormalMemberClass {
     shared formal class Member() {
