@@ -1,6 +1,8 @@
 class Aliases() {
     
     class C(String s) = Class<String>(s);
+    @error class C1(String s) = Class(s);
+    @error class C2(String s) = Class<String>;
     @type["Aliases.C"] C("hello");
     @type["Aliases.C"] C{s="hello";};
     Class<String> x = C("hello");
@@ -22,6 +24,10 @@ class Aliases() {
     @error class Cbroken1(String s) = Class<String>;
     @error class Cbroken2(Integer i) = Class<String>(i);
     @error class Cbroken4(String s) = Class<String>(0);
+    
+    class Def(String s="") = Class<String>(s);
+    Def def0 = Def();
+    Def def1 = Def("hello");
     
     class D() extends C("greetings") {}
     
