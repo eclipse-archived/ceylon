@@ -138,7 +138,7 @@ public abstract class CeylonDoc extends Markup {
         open("div class='row-fluid'");
         
         open("div id='info-doc-shortcuts' class='span6'");
-        around("h5","Documantation:");
+        around("h5","Documentation:");
         writeKeyboardShortcutInfo("o", "Jump to module documentation");
         writeKeyboardShortcutInfo("p", "Jump to package documentation");
         writeKeyboardShortcutInfo("a", "Jump to attributes");

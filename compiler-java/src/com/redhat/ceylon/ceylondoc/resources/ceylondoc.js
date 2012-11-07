@@ -419,6 +419,15 @@ function search(q){
 
 jQuery("#q").each(function(){
 	
+	enableInfoKeybordShortcut('\\?');
+    $('html').keypress(function(evt) {
+        evt = evt || window.event;
+        var keyCode = evt.keyCode || evt.which;
+        if (keyCode == 63) {
+            $('#infoDropdown').toggleClass('open');
+        }
+    });
+	
 	enableInfoKeybordShortcut('enter');
 	enableInfoKeybordShortcut('esc');
 	enableInfoKeybordShortcut('up');
