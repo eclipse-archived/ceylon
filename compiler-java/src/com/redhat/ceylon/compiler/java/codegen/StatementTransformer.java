@@ -23,9 +23,7 @@ package com.redhat.ceylon.compiler.java.codegen;
 import static com.sun.tools.javac.code.Flags.FINAL;
 
 import java.util.Collections;
-import java.util.HashMap;
 import java.util.LinkedHashMap;
-import java.util.Map;
 
 import com.redhat.ceylon.compiler.java.codegen.Naming.CName;
 import com.redhat.ceylon.compiler.java.codegen.Naming.SubstitutedName;
@@ -811,9 +809,9 @@ public class StatementTransformer extends AbstractTransformer {
         @Override
         public JCExpression makeResultExpr() {
             Value decl = this.cond.getVariable().getDeclarationModel();
-            return expressionGen().applyErasureAndBoxing(testVar.makeIdent(), 
-                    toType, true, 
-                    CodegenUtil.getBoxingStrategy(decl), 
+            return expressionGen().applyErasureAndBoxing(testVar.makeIdent(),
+                    typeFact().getDefiniteType(this.specifierExpr.getTypeModel()), true,
+                    CodegenUtil.getBoxingStrategy(decl),
                     decl.getType());
         }
         
@@ -856,7 +854,11 @@ public class StatementTransformer extends AbstractTransformer {
         
         @Override
         public JCExpression makeResultExpr() {
-            return make().TypeCast(makeTypeExpr(), testVar.makeIdent());
+            Value decl = this.cond.getVariable().getDeclarationModel();
+            return expressionGen().applyErasureAndBoxing(testVar.makeIdent(),
+                    typeFact().getDefiniteType(this.specifierExpr.getTypeModel()), true,
+                    BoxingStrategy.BOXED,
+                    decl.getType());
         }
         
         @Override
