@@ -517,16 +517,16 @@ public class ClassDoc extends ClassOrPackageDoc {
     }
 
     @Override
-    protected void writeAdditionalKeyboardShortcuts() throws IOException {
-        writeKeyboardShortcut('p', "index.html");
+    protected void registerAdditionalKeyboardShortcuts() throws IOException {
+        registerKeyboardShortcut('p', "index.html");
         if (hasAnyAttributes()) {
-            writeKeyboardShortcut('a', "#section-attributes");
+            registerKeyboardShortcut('a', "#section-attributes");
         }
         if (hasConstructor()) {
-            writeKeyboardShortcut('c', "#section-constructor");
+            registerKeyboardShortcut('c', "#section-constructor");
         }
         if (hasAnyMethods()) {
-            writeKeyboardShortcut('m', "#section-methods");
+            registerKeyboardShortcut('m', "#section-methods");
         }
     }
 

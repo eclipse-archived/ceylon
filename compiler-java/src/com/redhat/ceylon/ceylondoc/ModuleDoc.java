@@ -59,9 +59,10 @@ public class ModuleDoc extends CeylonDoc {
     }
 
     @Override
-    protected void writeAdditionalKeyboardShortcuts() throws IOException {
+    protected void registerAdditionalKeyboardShortcuts() throws IOException {
         if( rootPackageDoc != null ) {
-            rootPackageDoc.writeAdditionalKeyboardShortcuts();
+            rootPackageDoc.registerAdditionalKeyboardShortcuts();
+            keyboardShortcuts.putAll(rootPackageDoc.keyboardShortcuts);
         }
     }
 

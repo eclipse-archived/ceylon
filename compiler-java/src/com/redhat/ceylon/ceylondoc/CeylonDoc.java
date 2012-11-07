@@ -23,7 +23,9 @@ package com.redhat.ceylon.ceylondoc;
 import java.io.IOException;
 import java.io.Writer;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import com.redhat.ceylon.compiler.typechecker.model.Annotation;
 import com.redhat.ceylon.compiler.typechecker.model.Class;
@@ -38,6 +40,7 @@ public abstract class CeylonDoc extends Markup {
 
     protected final CeylonDocTool tool;
     protected final Module module;
+    protected final Map<Character, String> keyboardShortcuts = new HashMap<Character, String>();
 
     public CeylonDoc(Module module, CeylonDocTool tool, Writer writer) {
         super(writer);
@@ -108,11 +111,63 @@ public abstract class CeylonDoc extends Markup {
         around("span class='module-version'", module.getVersion());
         close("a");
 
+        writeNavBarInfoMenu();
         writeNavBarSearchMenu();
         writeNavBarFilterMenu();
 
         close("div"); // navbar-inner
         close("div"); // navbar
+    }
+
+    private void writeNavBarInfoMenu() throws IOException {
+        open("ul class='nav pull-right'");
+        write("<li class='divider-vertical' />");
+        open("li id='infoDropdown' class='dropdown'");
+        write("<a href='#' title='Show keyboard shortcuts [Shortcut: ?]' role='button' class='dropdown-toggle' data-toggle='dropdown'><i class='icon-info'></i></a>");
+        open("ul id='info-dropdown-panel' class='dropdown-menu'");
+        around("h4", "Keyboard Shortcuts");
+        write("<li class='divider'></li>");
+        
+        open("div id='info-common-shortcuts'");
+        writeKeyboardShortcutInfo("f", "Open filter by tags");
+        writeKeyboardShortcutInfo("s", "Open search page");
+        writeKeyboardShortcutInfo("?", "Open this information panel");
+        close("div"); // info-common-shortcuts
+        write("<li class='divider'></li>");
+        
+        open("div class='row-fluid'");
+        
+        open("div id='info-doc-shortcuts' class='span6'");
+        around("h5","Documantation:");
+        writeKeyboardShortcutInfo("o", "Jump to module documentation");
+        writeKeyboardShortcutInfo("p", "Jump to package documentation");
+        writeKeyboardShortcutInfo("a", "Jump to attributes");
+        writeKeyboardShortcutInfo("c", "Jump to constructor");
+        writeKeyboardShortcutInfo("m", "Jump to methods");
+        writeKeyboardShortcutInfo("i", "Jump to interfaces");
+        writeKeyboardShortcutInfo("c", "Jump to classes");
+        writeKeyboardShortcutInfo("e", "Jump to exceptions");
+        close("div"); // info-doc-shortcuts
+        
+        open("div id='info-search-shortcuts' class='span6'");
+        around("h5", "Search page:");
+        writeKeyboardShortcutInfo("enter", "Jump to selected declaration");
+        writeKeyboardShortcutInfo("esc", "Clear search query/Go to overview");
+        writeKeyboardShortcutInfo("up", "Move selection up");
+        writeKeyboardShortcutInfo("down", "Move selection down");
+        close("div"); // info-search-shortcuts
+        
+        close("div"); // row-fluid
+        close("ul"); // dropdown-menu
+        close("li"); // dropdown
+        close("ul"); // nav        
+    }
+
+    private void writeKeyboardShortcutInfo(String key, String info) throws IOException {
+        open("div id='"+key+"'");
+        around("span class='key badge'", key);
+        around("span class='info muted'", info);
+        close("div");
     }
 
     protected void writeNavBarSearchMenu() throws IOException {
@@ -128,7 +183,9 @@ public abstract class CeylonDoc extends Markup {
         open("li id='filterDropdown' class='dropdown'");
         write("<a href='#' title='Filter declarations by tags [Shortcut: F]' role='button' class='dropdown-toggle' data-toggle='dropdown'><i class='icon-filter'></i>Filter <span id='filterDropdownLinkInfo'></span> <b class='caret'></b></a>");
         open("ul id='filterDropdownPanel' class='dropdown-menu'");
-        write("<div id='filterDropdownPanelInfo'>Filter declarations by tags</div>");
+        around("h4 id='filterDropdownPanelInfo'", "Filter declarations by tags");
+        write("<li class='divider'></li>");
+        
         write("<div id='filterDropdownPanelTags'></div>");
         write("<li class='divider'></li>");
         open("div id='filterActions'");
@@ -155,25 +212,43 @@ public abstract class CeylonDoc extends Markup {
     }
 
     protected void writeKeyboardShortcuts() throws IOException{
-        open("script type='text/javascript'");
-        write("jQuery('html').keypress(function(evt){\n");
-        write("  evt = evt || window.event;\n");
-        write("  var keyCode = evt.keyCode || evt.which;\n");
-        writeKeyboardShortcut('s', linkRenderer().getResourceUrl("../search.html"));
-        writeKeyboardShortcut('o', linkRenderer().getResourceUrl("../index.html"));
-        writeAdditionalKeyboardShortcuts();
-        write("});\n");
-        close("script");
+        registerKeyboardShortcut('s', linkRenderer().getResourceUrl("../search.html"));
+        registerKeyboardShortcut('o', linkRenderer().getResourceUrl("../index.html"));
+        registerAdditionalKeyboardShortcuts();
+        
+        if( !keyboardShortcuts.isEmpty() ) {
+            open("script type='text/javascript'");
+            write("jQuery('html').keypress(function(evt){\n");
+            write("  evt = evt || window.event;\n");
+            write("  var keyCode = evt.keyCode || evt.which;\n");
+            
+            write("  if (keyCode == " + (int)'?' + ") {\n");
+            write("    $('#infoDropdown').toggleClass('open');\n");
+            write("  }\n");
+
+            for(Map.Entry<Character, String> keyboardShortcut : keyboardShortcuts.entrySet()) {
+                write(" if(keyCode == "+(int)keyboardShortcut.getKey().charValue()+"){\n");
+                write("   document.location = '"+keyboardShortcut.getValue()+"';\n"); 
+                write(" }\n");
+            }
+
+            write("});\n");
+            
+            write("enableInfoKeybordShortcut('\\\\?');\n");
+            for (Map.Entry<Character, String> keyboardShortcut : keyboardShortcuts.entrySet()) {
+                write("enableInfoKeybordShortcut('"+ keyboardShortcut.getKey() + "');\n");
+            }
+            
+            close("script");
+        }
     }
 
-    protected void writeAdditionalKeyboardShortcuts() throws IOException {
+    protected void registerAdditionalKeyboardShortcuts() throws IOException {
         // for subclasses
     }
 
-    protected final void writeKeyboardShortcut(char c, String url) throws IOException {
-        write(" if(keyCode == "+(int)c+"){\n");
-        write("   document.location = '"+url+"';\n"); 
-        write(" }\n");
+    protected final void registerKeyboardShortcut(char c, String url) throws IOException {
+        keyboardShortcuts.put(c, url);
     }
 
     protected final void writeLinkSourceCode(Object obj) throws IOException {

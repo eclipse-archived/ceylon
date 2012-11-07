@@ -235,6 +235,27 @@ td .description {
     background-color: #356635;
 }
 
+#info-dropdown-panel {
+	min-width: 600px;
+	padding: 16px;
+}
+
+#info-dropdown-panel .key {
+	float: left;
+	margin-right: 10px;
+	text-align: center;
+	min-width: 10px;
+}
+
+#info-search-shortcuts .key {
+	min-width: 30px;
+}
+
+#info-dropdown-panel .info {
+	position: relative;
+	top: -2px;
+}
+
 #filterDropdown {
 	display: none;
 }
@@ -244,8 +265,7 @@ td .description {
 }
 
 #filterDropdownPanelInfo {
-    text-align: center;
-    color: #333;
+    padding: 10px 8px 2px 8px;
 }
 
 #filterActions {

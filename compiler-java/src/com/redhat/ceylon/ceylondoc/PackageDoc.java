@@ -210,22 +210,22 @@ public class PackageDoc extends ClassOrPackageDoc {
     }
     
     @Override
-    protected void writeAdditionalKeyboardShortcuts() throws IOException {
-        writeKeyboardShortcut('p', "index.html");
+    protected void registerAdditionalKeyboardShortcuts() throws IOException {
+        registerKeyboardShortcut('p', "index.html");
         if (!attributes.isEmpty()) {
-            writeKeyboardShortcut('a', "#section-attributes");
+            registerKeyboardShortcut('a', "#section-attributes");
         } 
         if (!methods.isEmpty()) {
-            writeKeyboardShortcut('m', "#section-methods");
+            registerKeyboardShortcut('m', "#section-methods");
         }
         if (!interfaces.isEmpty()) {
-            writeKeyboardShortcut('i', "#section-interfaces");
+            registerKeyboardShortcut('i', "#section-interfaces");
         }
         if (!classes.isEmpty()) {
-            writeKeyboardShortcut('c', "#section-classes");
+            registerKeyboardShortcut('c', "#section-classes");
         }
         if (!exceptions.isEmpty()) {
-            writeKeyboardShortcut('e', "#section-exceptions");
+            registerKeyboardShortcut('e', "#section-exceptions");
         }
     }
 
