@@ -154,59 +154,31 @@ public class CeylonDocToolTest {
     
     @Test
     public void moduleA() throws IOException {
-        String pathname = "test/ceylondoc";
-        String moduleName = "com.redhat.ceylon.ceylondoc.test.modules.single";
-
-        CeylonDocTool tool = tool(pathname, moduleName, true);
-        tool.setIncludeNonShared(false);
-        tool.setIncludeSourceCode(true);
-        tool.makeDoc();
-        
-        Module module = new Module();
-        module.setName(Arrays.asList(moduleName));
-        module.setVersion("3.1.4");
-        
-        File destDir = getOutputDir(tool, module);
-        
-        assertFileExists(destDir, false);
-        assertBasicContent(destDir, false);
-        assertBy(destDir);
-        assertParametersDocumentation(destDir);
-        assertThrows(destDir);
-        assertSee(destDir);
-        assertIcons(destDir);
-        assertInnerTypesDoc(destDir);
-        assertDeprecated(destDir);
-        assertTagged(destDir);
-        assertDocumentationOfRefinedMember(destDir);
-        assertSequencedParameter(destDir);
-        assertCallableParameter(destDir);
-        assertFencedCodeBlockWithSyntaxHighlighter(destDir);
-        assertWikiStyleLinkSyntax(destDir);
-        assertConstants(destDir);
-        assertBug659ShowInheritedMembers(destDir);
-        assertBug691AbbreviatedOptionalType(destDir);
-        assertBug839(destDir);
+        moduleA(false);
     }
-
+    
     @Test
     public void moduleAWithPrivate() throws IOException {
+        moduleA(true);
+    }
+
+    private void moduleA(boolean includeNonShared) throws IOException {
         String pathname = "test/ceylondoc";
         String moduleName = "com.redhat.ceylon.ceylondoc.test.modules.single";
-        
+
         CeylonDocTool tool = tool(pathname, moduleName, true);
-        tool.setIncludeNonShared(true);
+        tool.setIncludeNonShared(includeNonShared);
         tool.setIncludeSourceCode(true);
         tool.makeDoc();
         
         Module module = new Module();
         module.setName(Arrays.asList(moduleName));
         module.setVersion("3.1.4");
-    
+        
         File destDir = getOutputDir(tool, module);
         
-        assertFileExists(destDir, true);
-        assertBasicContent(destDir, true);
+        assertFileExists(destDir, includeNonShared);
+        assertBasicContent(destDir, includeNonShared);
         assertBy(destDir);
         assertParametersDocumentation(destDir);
         assertThrows(destDir);
@@ -221,6 +193,7 @@ public class CeylonDocToolTest {
         assertFencedCodeBlockWithSyntaxHighlighter(destDir);
         assertWikiStyleLinkSyntax(destDir);
         assertConstants(destDir);
+        assertLinksToRefinedDeclaration(destDir);
         assertBug659ShowInheritedMembers(destDir);
         assertBug691AbbreviatedOptionalType(destDir);
         assertBug839(destDir);
@@ -432,6 +405,11 @@ public class CeylonDocToolTest {
             assertNoMatchInFile(destDir, "class_SharedClass.html", 
                     Pattern.compile("<.*? id='privateGetter'.*?>"));
         }
+        
+        assertMatchInFile(destDir, "index.html", 
+                Pattern.compile("<a class='link-one-self' title='Link to this declaration' href='index.html#StubClass'><i class='icon-link'></i></a>"));
+        assertMatchInFile(destDir, "index.html", 
+                Pattern.compile("<a class='link-source-code' href='StubClass.ceylon.html'><i class='icon-source-code'></i>Source Code</a>"));
     }
 
     private void assertBy(File destDir) throws IOException {
@@ -516,7 +494,9 @@ public class CeylonDocToolTest {
         assertFileExists(destDir, "class_DeprecatedClass.html");
         
         assertMatchInFile(destDir, "index.html",
-                Pattern.compile("<td id='DeprecatedClass' nowrap><i class='icon-decoration-deprecated'><i class='icon-class'></i></i><a class='link-discreet' href='class_DeprecatedClass.html'>DeprecatedClass</a></td><td><a class='link-source-code' href='DeprecatedClass.ceylon.html'><i class='icon-source-code'></i>Source Code</a><div class='signature'><span class='modifiers'>shared</span> <a class='link' href='class_DeprecatedClass.html'>DeprecatedClass</a></div><div class='description'><div class='deprecated section'><p><strong>Deprecated:</strong> This is <code>DeprecatedClass</code></p>"));
+                Pattern.compile("<td id='DeprecatedClass' nowrap><i class='icon-decoration-deprecated'><i class='icon-class'></i></i><a class='link-discreet' href='class_DeprecatedClass.html'>DeprecatedClass</a></td>"));
+        assertMatchInFile(destDir, "index.html",
+                Pattern.compile("<div class='signature'><span class='modifiers'>shared</span> <a class='link' href='class_DeprecatedClass.html'>DeprecatedClass</a></div><div class='description'><div class='deprecated section'><p><strong>Deprecated:</strong> This is <code>DeprecatedClass</code></p>"));
         assertMatchInFile(destDir, "class_DeprecatedClass.html",
                 Pattern.compile("<div class='deprecated section'><p><strong>Deprecated:</strong> Don't use this attribute!"));
         assertMatchInFile(destDir, "class_DeprecatedClass.html",
@@ -612,13 +592,13 @@ public class CeylonDocToolTest {
                 Pattern.compile("imported AliasA2 = <a class='link' href='a/class_A2.html'>AliasA2</a>"));
         
         assertMatchInFile(destDir, "class_StubClass.html", 
-                Pattern.compile("fullStubInterface = <a class='link' href='interface_StubInterface.html'>com.redhat.ceylon.ceylondoc.test.modules.single@StubInterface</a>"));
+                Pattern.compile("fullStubInterface = <a class='link' href='interface_StubInterface.html'>com.redhat.ceylon.ceylondoc.test.modules.single::StubInterface</a>"));
         assertMatchInFile(destDir, "class_StubClass.html", 
-                Pattern.compile("fullStubInterface.formalMethodFromStubInterface = <a class='link' href='interface_StubInterface.html#formalMethodFromStubInterface'>com.redhat.ceylon.ceylondoc.test.modules.single@StubInterface.formalMethodFromStubInterface</a>"));
+                Pattern.compile("fullStubInterface.formalMethodFromStubInterface = <a class='link' href='interface_StubInterface.html#formalMethodFromStubInterface'>com.redhat.ceylon.ceylondoc.test.modules.single::StubInterface.formalMethodFromStubInterface</a>"));
         assertMatchInFile(destDir, "class_StubClass.html", 
                 Pattern.compile("fullStubInterface with custom name = <a class='link' href='interface_StubInterface.html'>full custom stub interface</a>"));
         assertMatchInFile(destDir, "class_StubClass.html", 
-                Pattern.compile("fullUnresolvable = unresolvable@StubInterface"));
+                Pattern.compile("fullUnresolvable = unresolvable::StubInterface"));
     }
     
     private void assertConstants(File destDir) throws IOException {
@@ -636,6 +616,13 @@ public class CeylonDocToolTest {
                 Pattern.compile("Integer constNumTwo<span class='specifier-operator'> = </span><span class='specifier-start'> constNumZero \\+ 1 \\+ 1</span><span class='specifier-semicolon'>;</span>"));
         assertMatchInFile(destDir, "index.html", 
                 Pattern.compile("Float constNumPI<span class='specifier-operator'> = </span><span class='specifier-start'> 3.14</span><span class='specifier-semicolon'>;</span>"));
+    }
+    
+    private void assertLinksToRefinedDeclaration(File destDir) throws IOException {
+        assertMatchInFile(destDir, "class_StubClass.html",
+                Pattern.compile("<div class='refined section'><span class='title'>Refined declaration: </span><a class='link' href='interface_StubInterface.html#defaultDeprecatedMethodFromStubInterface'>defaultDeprecatedMethodFromStubInterface</a><span class='value'></span></div>"));
+        assertMatchInFile(destDir, "class_StubClass.html",
+                Pattern.compile("<div class='refined section'><span class='title'>Refined declaration: </span><a class='link' href='interface_StubInterface.html#formalMethodFromStubInterface'>formalMethodFromStubInterface</a><span class='value'></span></div>"));
     }
 
     private void assertBug659ShowInheritedMembers(File destDir) throws IOException {

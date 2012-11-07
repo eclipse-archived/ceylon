@@ -41,11 +41,13 @@ import com.redhat.ceylon.compiler.typechecker.model.FunctionalParameter;
 import com.redhat.ceylon.compiler.typechecker.model.Method;
 import com.redhat.ceylon.compiler.typechecker.model.MethodOrValue;
 import com.redhat.ceylon.compiler.typechecker.model.Module;
+import com.redhat.ceylon.compiler.typechecker.model.Package;
 import com.redhat.ceylon.compiler.typechecker.model.Parameter;
 import com.redhat.ceylon.compiler.typechecker.model.ParameterList;
 import com.redhat.ceylon.compiler.typechecker.model.ProducedType;
 import com.redhat.ceylon.compiler.typechecker.model.TypeDeclaration;
 import com.redhat.ceylon.compiler.typechecker.model.TypeParameter;
+import com.redhat.ceylon.compiler.typechecker.model.TypedDeclaration;
 import com.redhat.ceylon.compiler.typechecker.model.UnionType;
 import com.redhat.ceylon.compiler.typechecker.model.Unit;
 import com.redhat.ceylon.compiler.typechecker.model.Value;
@@ -54,7 +56,7 @@ import com.redhat.ceylon.compiler.typechecker.tree.Tree;
 
 public abstract class ClassOrPackageDoc extends CeylonDoc {
 
-	public ClassOrPackageDoc(Module module, CeylonDocTool tool, Writer writer) {
+    public ClassOrPackageDoc(Module module, CeylonDocTool tool, Writer writer) {
 		super(module, tool, writer);
 	}
 
@@ -67,6 +69,7 @@ public abstract class ClassOrPackageDoc extends CeylonDoc {
         close("td");
         
         open("td");
+        writeLinkOneSelf(d);
         writeLinkSourceCode(d);
         writeTagged(d);
         open("div class='signature'");
@@ -90,6 +93,7 @@ public abstract class ClassOrPackageDoc extends CeylonDoc {
         close("td");
         
         open("td");
+        writeLinkOneSelf(d);
         writeLinkSource(d);
         writeTagged(d);
         
@@ -214,8 +218,31 @@ public abstract class ClassOrPackageDoc extends CeylonDoc {
             writeThrows(d);        
             writeBy(d);
             writeSee(d);
+            writeLinkToRefinedDeclaration(d);
         }
         close("div"); // description
+    }
+    
+    private void writeLinkOneSelf(Declaration d) throws IOException {
+        String url;
+        Object fromObject = getFromObject();
+        if (fromObject instanceof Package) {
+            url = linkRenderer().to((Package) fromObject).getUrl();
+        } else {
+            url = linkRenderer().to((ClassOrInterface) fromObject).getUrl();
+        }
+        
+        if (url != null) {
+            int sharpIndex = url.lastIndexOf("#");
+            if (sharpIndex != -1) {
+                url = url.substring(0, sharpIndex);
+            }
+        
+            url += "#" + d.getName();
+            open("a class='link-one-self' title='Link to this declaration' href='" + url + "'");
+            write("<i class='icon-link'></i>");
+            close("a");
+        }
     }
 
     private void writeLinkSource(MethodOrValue m) throws IOException {
@@ -230,10 +257,22 @@ public abstract class ClassOrPackageDoc extends CeylonDoc {
         }
         int[] lines = tool.getDeclarationSrcLocation(m);
         if(lines != null){
-            open("a class='link-source-code member' href='" + srcUrl + "#" + lines[0] + "," + lines[1] + "'");
+            open("a class='link-source-code' title='Link to source code' href='" + srcUrl + "#" + lines[0] + "," + lines[1] + "'");
             write("<i class='icon-source-code'></i>");
             write("Source Code");
             close("a");
+        }
+    }
+
+    private void writeLinkToRefinedDeclaration(Declaration d) throws IOException {
+        Declaration refinedDecl = d.getRefinedDeclaration();
+        if (refinedDecl != null && refinedDecl != d) {
+            open("div class='refined section'");
+            around("span class='title'", "Refined declaration: ");
+            linkRenderer().to(refinedDecl).write();
+            open("span class='value'");
+            close("span");
+            close("div");
         }
     }
 

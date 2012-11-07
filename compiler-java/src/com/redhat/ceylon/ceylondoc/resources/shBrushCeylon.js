@@ -31,10 +31,10 @@
             var keywords = 'import class interface object given assign void value function of ' +
                            'extends satisfies adapts abstracts in out return break continue throw ' +
                            'if else switch case for while try catch finally ' +
-                           'this outer super is exists nonempty';
+                           'this outer super is exists nonempty module package assert alias';
 //		var annotations = 'actual doc formal in out see shared';
             var annotations = 'shared abstract formal default actual variable deprecated small ' +
-                              'literal doc by see throws tagged';
+                              'literal doc by see throws tagged license export';
 
 		this.regexList = [
 			{ regex: SyntaxHighlighter.regexLib.singleLineCComments,	css: 'comments' },		// one line comments

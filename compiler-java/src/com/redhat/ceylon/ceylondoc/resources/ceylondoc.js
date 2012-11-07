@@ -100,6 +100,9 @@ $('tbody .description').each(function() {
 			if( target.is('a') && !target.is('.link-collapsible') ) {
 				return true;
 			}
+			if( target.is('i') && (target.is('.icon-link') || target.is('.icon-source-code')) ) {
+				return true;
+			}
 
 			var isCollapsed = descDiv.hasClass('description-collapsed');
 			if( isCollapsed ) {
