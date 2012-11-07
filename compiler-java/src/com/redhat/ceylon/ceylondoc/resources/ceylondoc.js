@@ -1,3 +1,9 @@
+function enableInfoKeybordShortcut(key) {
+	$("#"+key+" .key").addClass("badge-info");
+	$("#"+key+" .info").addClass("text-info");
+}
+
+
 /*
  * AUTOMATIC SYNTAX HIGHLIGHTING FOR PRE TAGS 
  */
@@ -145,11 +151,12 @@ $('tbody .description').each(function() {
  */
 $(document).ready(function() {
     
+	if( tagIndex.length == 0 ) {
+		$("#f").hide();
+		return;
+	}
     if( $('#filterDropdownPanel').length == 0 ) {
         return;
-    }
-    if( tagIndex.length == 0 ) {
-    	return;
     }
     $('#filterDropdown').show();
     
@@ -168,6 +175,7 @@ $(document).ready(function() {
                 $('#filterDropdown').toggleClass('open');
             }
         });
+        enableInfoKeybordShortcut('f');
     };
 
     function initFilterActionAll() {
@@ -410,6 +418,12 @@ function search(q){
 }
 
 jQuery("#q").each(function(){
+	
+	enableInfoKeybordShortcut('enter');
+	enableInfoKeybordShortcut('esc');
+	enableInfoKeybordShortcut('up');
+	enableInfoKeybordShortcut('down');
+	
 	var q = getUrlVars()['q'];
 	if(q) {
 		jQuery(this).val(q);         
