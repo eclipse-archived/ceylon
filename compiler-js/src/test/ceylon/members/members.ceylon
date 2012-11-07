@@ -83,8 +83,8 @@ class AliasMemberTest() {
     interface I2Alias = I2;
     shared class A() satisfies I1Alias {}
     class B() satisfies I2Alias {}
-    shared class AliasA() = A;
-    class AliasB() = B;
+    shared class AliasA() = A();
+    class AliasB() = B();
     shared String b() { return AliasB().s; }
  
     shared Util f1() = Util();   

@@ -12,7 +12,7 @@ shared class AliasingClass() {
 }
 
 class AliasingSubclass() extends AliasingClass() {
-    shared class InnerAlias() = AliasingInner;
+    shared class InnerAlias() = AliasingInner();
     shared class SubAlias() extends InnerAlias() {}
 
     shared Boolean aliasingSubclass() {
@@ -30,7 +30,7 @@ class AliasingSub2() extends AliasingSubclass() {
 }
 
 interface Matrix<Cell> = Sequence<Sequence<Cell>>;
-class Listleton<T>(List<T> l) = Singleton<List<T>>;
+class Listleton<T>(List<T> l) = Singleton<List<T>>(l);
 
 class MiMatrix(Integer gridSize) satisfies Matrix<Integer> {
     value sb = SequenceBuilder<Sequence<Integer>>();
@@ -63,7 +63,7 @@ class MiMatrix(Integer gridSize) satisfies Matrix<Integer> {
 void testAliasing() {
     print("testing type aliases");
     check(AliasingSubclass().aliasingSubclass(), "Aliased member class");
-    class InnerSubalias() = AliasingSubclass;
+    class InnerSubalias() = AliasingSubclass();
     check(InnerSubalias().aliasingSubclass(), "Aliased top-level class");
     interface AliasedIface2 = AliasingClass.AliasingIface;
     Boolean use(AliasedIface2 aif) { return aif.aliasingIface(); }
