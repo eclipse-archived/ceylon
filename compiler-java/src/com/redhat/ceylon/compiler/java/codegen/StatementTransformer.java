@@ -281,8 +281,9 @@ public class StatementTransformer extends AbstractTransformer {
         @Override
         protected List<JCStatement> transformCommon(Cond transformedCond, 
                 java.util.List<Condition> rest, JCExpression test, List<JCStatement> stmts, JCStatement elseBlock) {
-            if (transformedCond.makeTestVarDecl(0, false) != null) {
-                varDecls.append(transformedCond.makeTestVarDecl(0, false));
+            JCStatement testVarDecl = transformedCond.makeTestVarDecl(0, false);
+            if (testVarDecl != null) {
+                varDecls.append(testVarDecl);
             }
             if (transformedCond.hasResultDecl()) {
                 JCVariableDecl resultVarDecl = make().VarDef(make().Modifiers(Flags.FINAL), 
@@ -809,8 +810,12 @@ public class StatementTransformer extends AbstractTransformer {
         @Override
         public JCExpression makeResultExpr() {
             Value decl = this.cond.getVariable().getDeclarationModel();
+            ProducedType exprType = this.specifierExpr.getTypeModel();
+            if (isOptional(exprType)) {
+                exprType = typeFact().getDefiniteType(exprType);
+            }
             return expressionGen().applyErasureAndBoxing(testVar.makeIdent(),
-                    typeFact().getDefiniteType(this.specifierExpr.getTypeModel()), true,
+                    exprType, true,
                     CodegenUtil.getBoxingStrategy(decl),
                     decl.getType());
         }

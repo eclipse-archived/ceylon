@@ -23,6 +23,6 @@ shared void bug870<Value,Null>(Iterable<Value>&ContainerWithFirstElement<Value,N
         given Null satisfies Nothing {
     ContainerWithFirstElement<Value,Null> cwfe = values;
     value first = cwfe.first;
-    if (is Object first) {
+    if (exists first) {
     }
 }
