@@ -31,7 +31,6 @@ fi
 
 LIB="$CEYLON_HOME/lib"
 RUNTIME_REPO="$CEYLON_HOME/runtime-repo"
-BOOTSTRAP_REPO="$CEYLON_HOME/repo"
 
 JAVA_CP="$LIB/jboss-modules.jar"
 JAVA_CP="$JAVA_CP:$LIB/ceylon-runtime-bootstrap.jar"

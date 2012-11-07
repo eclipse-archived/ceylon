@@ -31,14 +31,34 @@ if test -z "$CEYLON_REPO"
 then
     # Try the distribution repo
     CEYLON_REPO="$CEYLON_HOME/repo"
-    # If it does not exist let's use the user repo
-    if test \! -d "$CEYLON_REPO"
-    then
-        echo "Could not find distribution repo, using $HOME/.ceylon/repo"
-        CEYLON_REPO="$HOME/.ceylon/repo"
-    fi
+    # Check for special command line arguments
+    while test "$#" -gt 0
+    do
+        # --sysrep overrides CEYLON_REPO
+        if test "$1" = --sysrep
+        then
+            CEYLON_REPO=$2
+            ARGS="$ARGS $1 $2"
+            shift
+        # --runtime overrides CEYLON_VERSION
+        elif test "$1" = --runtime
+        then
+            CEYLON_VERSION=$2
+            shift
+        else
+            ARGS="$ARGS $1"
+        fi
+        shift
+    done
 fi
 
+# If CEYLON_REPO does not exist let's use the user repo
+if test \! -d "$CEYLON_REPO"
+then
+    echo "Could not find distribution repo, using $HOME/.ceylon/repo"
+    CEYLON_REPO="$HOME/.ceylon/repo"
+fi
+    
 # Make sure we have java installed
 if hash java 2>&-
 then

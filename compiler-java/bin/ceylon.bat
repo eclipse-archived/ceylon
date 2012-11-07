@@ -19,6 +19,6 @@ set "JAVA_CP=%JAVA_CP%;%MINIMAL_CP%"
     "-Dceylon.home=%CEYLON_HOME%" ^
     "-Dceylon.system.repo=%CEYLON_REPO%" ^
     com.redhat.ceylon.tools.CeylonTool ^
-    %*
+    %ARGS%
 
 endlocal

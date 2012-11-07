@@ -18,6 +18,27 @@ rem Set CEYLON_REPO if not already set
 if "%CEYLON_REPO%" == "" (
     rem Try the destribution repo
     set "CEYLON_REPO=%CEYLON_HOME%\repo"
+    
+:loop_args
+    if "%~1" == "" goto :done_args
+    
+    if "%~1" == "--sysrep" (
+        rem --sysrep overrides CEYLON_REPO
+        set "CEYLON_REPO=%~2"
+        set "ARGS=%ARGS% %1 %2"
+        shift
+    ) else if "%~1" == "--runtime" (
+        rem --runtime overrides CEYLON_VERSION
+        set "CEYLON_VERSION=%~2"
+        shift
+    ) else (
+        set "ARGS=%ARGS% %1"
+    )
+
+    shift
+    goto loop_args
+
+:done_args
 )
 
 rem If it does not exist let's use the user repo
