@@ -256,7 +256,11 @@ public class Ceylonc extends LazyTask {
         }
         
         if (getSystemRepository() != null) {
-            cmd.createArgument().setValue("--sysrep=" + Util.quoteParameter(getSystemRepository().url));
+            // This argument is separated on purpose! It has to be parsed
+            // by the "ceylon" scripts themselves which are not able to
+            // handle "="-joined arguments!
+            cmd.createArgument().setValue("--sysrep");
+            cmd.createArgument().setValue(Util.quoteParameter(getSystemRepository()));
         }
         for(Rep rep : getRepositories()){
             // skip empty entries
