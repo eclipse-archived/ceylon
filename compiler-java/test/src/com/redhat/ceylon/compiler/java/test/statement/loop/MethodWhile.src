@@ -30,7 +30,7 @@ class MethodWhile {
         while (true) {
             .ceylon.language.List<? extends .ceylon.language.Integer> $s$2;
             if (($s$2 = seq) instanceof .ceylon.language.FixedSized && !((.ceylon.language.FixedSized)$s$2).getEmpty()) {
-                final .ceylon.language.List<? extends .ceylon.language.Integer> $s$3 = (.ceylon.language.List<? extends .ceylon.language.Integer>)$s$2;
+                final .ceylon.language.List<? extends .ceylon.language.Integer> $s$3 = $s$2;
                 seq = (.ceylon.language.List).ceylon.language.empty_.getEmpty$();
             } else break;
         }

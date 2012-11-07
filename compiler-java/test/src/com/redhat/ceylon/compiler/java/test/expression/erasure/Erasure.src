@@ -478,7 +478,7 @@ class Test {
         sync = ((.ceylon.language.List<? extends .java.lang.Object>)leftsAndRights).getSize();
         .ceylon.language.List $naturals$37;
         if (($naturals$37 = naturals) instanceof .ceylon.language.FixedSized && !((.ceylon.language.FixedSized)$naturals$37).getEmpty()) {
-            final .ceylon.language.Sequence $naturals$38 = (.ceylon.language.Sequence)$naturals$37;
+            final .ceylon.language.Sequence $naturals$38 = (.ceylon.language.Sequence<? extends .java.lang.Object>)$naturals$37;
         }
         boolean bSync;
         bSync = (
