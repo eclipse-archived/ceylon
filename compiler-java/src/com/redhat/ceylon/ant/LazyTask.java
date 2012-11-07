@@ -20,7 +20,7 @@ abstract class LazyTask extends Task {
     private Path src;
     private String out;
     private Boolean noMtimeCheck = false;
-    private Rep systemRepository;
+    private String systemRepository;
     private List<Rep> repositories = new LinkedList<Rep>();
     private final Task task = this;
     
@@ -71,7 +71,7 @@ abstract class LazyTask extends Task {
         return repositories;
     }
 
-    protected Rep getSystemRepository() {
+    protected String getSystemRepository() {
         return systemRepository;
     }
 
@@ -79,7 +79,7 @@ abstract class LazyTask extends Task {
      * Sets the system repository
      * @param rep the new system repository
      */
-    public void setSysRep(Rep rep) {
+    public void setSysRep(String rep) {
         systemRepository = rep;
     }
 
