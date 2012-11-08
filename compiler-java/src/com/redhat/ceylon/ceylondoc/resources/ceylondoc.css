@@ -302,8 +302,8 @@ td .description {
 	width: 200px;
 }
 
-#results .highlight {
-	background: rgb(191, 223, 255);
+.highlight {
+	background-color: rgb(191, 223, 255);
 }
 
 .doc.section {

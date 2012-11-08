@@ -529,6 +529,34 @@ function getUrlVars() {
 
 
 /*
+ * highlight anchor target
+ */
+$(document).ready(function() {
+    $(window).bind('hashchange', function() {
+        highlightAnchorTarget();
+    });
+    highlightAnchorTarget();
+
+    function highlightAnchorTarget() {
+        var highlightedSpan = $('td > span.highlight');
+        if (highlightedSpan.length > 0) {
+            var highlightedTd = highlightedSpan.parent();
+            highlightedSpan.contents().appendTo(highlightedTd);
+            highlightedSpan.remove();
+        }
+
+        var anchor = location.hash;
+        if (anchor) {
+            var td = $(anchor);
+            if (td.is('td')) {
+                td.wrapInner('<span class="highlight" />');
+            }
+        }
+    }
+});
+
+
+/*
  * easter egg
  */
 var konami = 0;
