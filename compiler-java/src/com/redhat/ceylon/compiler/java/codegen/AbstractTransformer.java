@@ -1247,10 +1247,31 @@ public abstract class AbstractTransformer implements Transformation {
      * @return The result type of the {@code Callable}.
      */
     ProducedType getReturnTypeOfCallable(ProducedType typeModel) {
-        if (!isCeylonCallable(typeModel)) {
-            throw new RuntimeException("Not a Callable<>: " + typeModel);
-        }
+        Assert.that(typeModel.isCallable());
         return typeModel.getTypeArgumentList().get(0);
+    }
+    
+    ProducedType getParameterTypeOfCallable(ProducedType callableType, int parameter) {
+        Assert.that(callableType.isCallable());
+        ProducedType sequentialType = callableType.getTypeArgumentList().get(1);
+        for (int ii = 0; ii < parameter; ii++) {
+            sequentialType = sequentialType.getTypeArgumentList().get(2);
+        }
+        if (sequentialType.getDeclaration() instanceof ClassOrInterface) {
+            return sequentialType.getTypeArgumentList().get(1);    
+        } else {
+            return sequentialType;//Sequence|Empty (i.e. a ...)
+        }
+    }
+    int getNumParametersOfCallable(ProducedType callableType) {
+        Assert.that(callableType.isCallable());
+        ProducedType sequentialType = callableType.getTypeArgumentList().get(1);
+        int num = 0;
+        while (sequentialType.getTypeArgumentList().size() == 3) {
+            num++;
+            sequentialType = sequentialType.getTypeArgumentList().get(2);
+        }
+        return num;
     }
     
     /**
