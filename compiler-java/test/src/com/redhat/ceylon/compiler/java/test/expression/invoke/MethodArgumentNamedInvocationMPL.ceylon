@@ -1,9 +1,9 @@
 @nomodel
 class MethodArgumentNamedInvocationMPL() {
-    void m1(Callable<Callable<String, Integer>> f) {
+    void m1(Callable<Callable<String, <Integer>>, <>> f) {
         String s = f()(1);
     }
-    void m2(Callable<Callable<Void, Integer>> f) {
+    void m2(Callable<Callable<Void, <Integer>>, <>> f) {
         Void v = f()(1);
     }
     void m3(String(Integer)() f) {

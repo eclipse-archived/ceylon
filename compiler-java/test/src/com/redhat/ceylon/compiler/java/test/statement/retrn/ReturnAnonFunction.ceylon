@@ -18,6 +18,6 @@
  * MA  02110-1301, USA.
  */
 @nomodel
-Callable<Integer,Integer> returnAnonFunction() {
+Callable<Integer,<Integer>> returnAnonFunction() {
     return (Integer i) i;
 }

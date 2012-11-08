@@ -19,6 +19,6 @@
  */
 @nomodel
 class MethodSpecifierGetter() {
-    Callable<Integer, Boolean> f { throw;}
+    Callable<Integer, <Boolean>> f { throw;}
     Integer foo(Boolean b) = f;
 }
