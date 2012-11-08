@@ -361,7 +361,12 @@ abstract class InvocationBuilder {
                         parameters);
             } else {
                 // indirect invocation
-                final java.util.List<ProducedType> tas = primary.getTypeModel().getTypeArgumentList();
+                final java.util.List<ProducedType> tas = new ArrayList<>();
+                tas.add(gen.getReturnTypeOfCallable(primary.getTypeModel()));
+                for (int ii = 0; ii < gen.getNumParametersOfCallable(primary.getTypeModel()); ii++) {
+                    tas.add(gen.getParameterTypeOfCallable(primary.getTypeModel(), ii));
+                }
+                //final java.util.List<ProducedType> tas = primary.getTypeModel().getTypeArgumentList();
                 final java.util.List<ProducedType> parameterTypes = tas.subList(1, tas.size());
                 final java.util.List<Tree.Expression> argumentExpressions = new ArrayList<Tree.Expression>(tas.size());
                 for (Tree.PositionalArgument argument : invocation.getPositionalArgumentList().getPositionalArguments()) {
@@ -867,9 +872,11 @@ class CallableInvocationBuilder extends DirectInvocationBuilder {
     @Override
     protected JCExpression getTransformedArgumentExpression(int argIndex) {
         Parameter param = callableParameters.get(argIndex);
-        ProducedType argType = primary.getTypeModel().getTypeArgumentList().get(argIndex+1);
+        ProducedType argType = gen.getParameterTypeOfCallable(primary.getTypeModel(), argIndex);
         return CallableBuilder.unpickCallableParameter(gen, producedReference, param, argType, argIndex, functionalParameters.size());
     }
+
+
     @Override
     protected Parameter getParameter(int index) {
         return functionalParameters.get(index);
