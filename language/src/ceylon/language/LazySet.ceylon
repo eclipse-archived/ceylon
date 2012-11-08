@@ -30,17 +30,19 @@ shared class LazySet<Element>(Element... elems)
 
     shared actual Set<Element|Other> union<Other>(Set<Other> set)
             given Other satisfies Object {
-        return LazySet(elems.chain(set)...);
+        return LazySet(elems.chain(set).sequence...);
     }
     shared actual Set<Element&Other> intersection<Other>(Set<Other> set)
             given Other satisfies Object {
-        return LazySet(for (e in set) if (is Element e) if (exists elems.find((Element o) e==o)) e);
+        return LazySet(for (e in set) if (is Element e)
+                       if (exists elems.find((Element o) e==o)) e);
     }
     shared actual Set<Element|Other> exclusiveUnion<Other>(Set<Other> other)
             given Other satisfies Object {
         value hereNotThere = elements { for (e in elems) if (!e in other) e };
-        value thereNotHere = elements { for (e in other) if (!exists elems.find((Element o) e==o)) e };
-        return LazySet(hereNotThere.chain(thereNotHere)...);
+        value thereNotHere = elements { for (e in other)
+            if (!exists elems.find((Element o) e==o)) e };
+        return LazySet(hereNotThere.chain(thereNotHere).sequence...);
     }
     shared actual Set<Element> complement<Other>(Set<Other> set)
             given Other satisfies Object {

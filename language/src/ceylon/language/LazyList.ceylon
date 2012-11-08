@@ -41,13 +41,13 @@ shared class LazyList<out Element>(Element... elems)
             if (to >= from) {
                 value els = from > 0 then elems.skipping(from)
                     else elems;
-                return LazyList(els.taking(to-from+1)...);
+                return LazyList(els.taking(to-from+1).sequence...);
             } else {
                 //reversed
                 throw;
             }
         } else {
-            value els = from > 0 then elems.skipping(from)
+            value els = from > 0 then elems.skipping(from).sequence
                 else elems;
             return LazyList(els...);
         }
@@ -58,7 +58,7 @@ shared class LazyList<out Element>(Element... elems)
         if (length > 0) {
             value els = from > 0 then elems.skipping(from)
                 else elems;
-            return LazyList(els.taking(length)...);
+            return LazyList(els.taking(length).sequence...);
         } else {
             return {};
         }
