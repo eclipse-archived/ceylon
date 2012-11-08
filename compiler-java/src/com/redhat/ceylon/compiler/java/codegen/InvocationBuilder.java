@@ -60,6 +60,7 @@ import com.redhat.ceylon.compiler.typechecker.tree.Tree.BaseMemberExpression;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.ClassDefinition;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.Expression;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.FunctionArgument;
+import com.redhat.ceylon.compiler.typechecker.tree.Tree.InvocationExpression;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.Primary;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.QualifiedTypeExpression;
 import com.sun.tools.javac.tree.JCTree;
@@ -418,6 +419,9 @@ abstract class InvocationBuilder {
             Method method) {
         Tree.Term primary = specifierExpression.getExpression().getTerm();
         InvocationBuilder builder;
+        if (primary instanceof InvocationExpression) {
+            primary = ((InvocationExpression)primary).getPrimary();
+        }
         if (primary instanceof Tree.MemberOrTypeExpression
                 && ((Tree.MemberOrTypeExpression)primary).getDeclaration() instanceof Functional) {
             Declaration primaryDeclaration = ((Tree.MemberOrTypeExpression)primary).getDeclaration();
@@ -436,7 +440,7 @@ abstract class InvocationBuilder {
                     specifierExpression, 
                     primary);
         } else {
-            throw new RuntimeException();
+            throw Assert.fail("Unhandled primary " + primary);
         }
         builder.handleBoxing(true);
         builder.compute();
