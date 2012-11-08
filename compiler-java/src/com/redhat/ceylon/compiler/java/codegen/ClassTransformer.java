@@ -1423,10 +1423,12 @@ public class ClassTransformer extends AbstractTransformer {
             for (Substitution subs : substitutions) {
                 subs.close();
             }
-        } else {
-            returnNull = isVoid(getReturnTypeOfCallable(term.getTypeModel())) && term.getUnboxed();
+        } else if (term.getTypeModel() instanceof Functional) {
+            returnNull = isVoid(term.getTypeModel()) && term.getUnboxed();
             InvocationBuilder specifierBuilder = InvocationBuilder.forSpecifierInvocation(gen(), specifierExpression, methodDecl.getDeclarationModel());
             bodyExpr = specifierBuilder.build();
+        } else {
+            bodyExpr = expressionGen().transformExpression(term);
         }
         if (!Decl.isUnboxedVoid(model) || Strategy.useBoxedVoid(model)) {
             if (returnNull) {
