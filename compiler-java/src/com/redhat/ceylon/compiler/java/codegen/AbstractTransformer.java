@@ -1989,9 +1989,9 @@ public abstract class AbstractTransformer implements Transformation {
         return makeSequence(elems, typeFact().getObjectDeclaration().getType(), CeylonTransformer.JT_RAW);
     }
     
-    JCExpression makeEmptyAsIterable(boolean needsCast){
+    JCExpression makeEmptyAsSequential(boolean needsCast){
         if(needsCast)
-            return make().TypeCast(makeJavaType(typeFact().getIterableDeclaration().getType(), JT_RAW), makeEmpty());
+            return make().TypeCast(makeJavaType(typeFact().getSequentialDeclaration().getType(), JT_RAW), makeEmpty());
         return makeEmpty();
     }
     

@@ -1253,7 +1253,7 @@ class NamedArgumentInvocationBuilder extends InvocationBuilder {
                     } else {
                         if (primaryDeclaration instanceof FunctionalParameter) {
                             // honestly I don't know if it needs a cast but it can't hurt
-                            argExpr = gen.makeEmptyAsIterable(true);
+                            argExpr = gen.makeEmptyAsSequential(true);
                         } else {
                             argExpr = makeDefaultedArgumentMethodCall(param);
                             hasDefaulted |= true;
