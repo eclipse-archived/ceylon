@@ -377,7 +377,7 @@ public class MethodDefinitionBuilder {
                 ParameterList plist = method.getParameterLists().get(i);
                 for (Parameter p : plist.getParameters()) {
                     sb.append(',');
-                    sb.append(p.getTypeDeclaration().getQualifiedNameString());
+                    sb.append(p.getType().getProducedTypeQualifiedName());
                 }
                 sb.append('>');
             }
