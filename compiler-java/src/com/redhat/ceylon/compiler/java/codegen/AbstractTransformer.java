@@ -1247,7 +1247,7 @@ public abstract class AbstractTransformer implements Transformation {
      * @return The result type of the {@code Callable}.
      */
     ProducedType getReturnTypeOfCallable(ProducedType typeModel) {
-        Assert.that(typeModel.isCallable());
+        Assert.that(typeModel.isCallable(), "Expected Callable<...>, but was " + typeModel);
         return typeModel.getTypeArgumentList().get(0);
     }
     
