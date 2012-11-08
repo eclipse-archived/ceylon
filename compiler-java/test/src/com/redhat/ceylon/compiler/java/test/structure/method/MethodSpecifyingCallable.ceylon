@@ -23,5 +23,5 @@ Callable<String,<Integer>> methodSpecifyingCallable_f() {
 }
 @nomodel
 class MethodSpecifyingCallable() {
-    String foo(Integer i) = methodSpecifyingCallable_f();
+    String foo(Integer i) = methodSpecifyingCallable_f()(i);
 }

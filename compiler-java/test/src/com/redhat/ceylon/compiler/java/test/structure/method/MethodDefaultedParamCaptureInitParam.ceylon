@@ -19,5 +19,5 @@
  */
 @nomodel
 class MethodDefaultedParamCaptureInitParam(String s) {
-    String m(String t = s) = (String x) x;
+    String m(String t = s) = t;
 }

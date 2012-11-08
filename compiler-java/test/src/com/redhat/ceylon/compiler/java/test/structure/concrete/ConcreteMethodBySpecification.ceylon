@@ -25,17 +25,17 @@ Integer concreteMethodBySpecificationMethod() {
 interface ConcreteMethodBySpecification {
     shared formal Integer mFormal(Integer i);
     
-    shared Integer mSharedFn() = concreteMethodBySpecificationMethod;
-    shared Integer mSharedMem(Integer i = 1) = mFormal;
+    shared Integer mSharedFn() = concreteMethodBySpecificationMethod();
+    shared Integer mSharedMem(Integer i = 1) = mFormal(i);
     
-    shared default Integer mDefaultFn() = concreteMethodBySpecificationMethod;
-    shared default Integer mDefaultMem(Integer i = 1) = mFormal;
+    shared default Integer mDefaultFn() = concreteMethodBySpecificationMethod();
+    shared default Integer mDefaultMem(Integer i = 1) = mFormal(i);
 }
 @nomodel
 interface ConcreteMethodBySpecificationSub satisfies ConcreteMethodBySpecification {
     
-    shared Integer mSharedSup(Integer i = 1) = mFormal;
-    shared default Integer mDefaultSup(Integer i = 1) = mFormal;
+    shared Integer mSharedSup(Integer i = 1) = mFormal(i);
+    shared default Integer mDefaultSup(Integer i = 1) = mFormal(i);
 }
 @nomodel
 class ConcreteMethodBySpecificationImpl() satisfies ConcreteMethodBySpecificationSub {

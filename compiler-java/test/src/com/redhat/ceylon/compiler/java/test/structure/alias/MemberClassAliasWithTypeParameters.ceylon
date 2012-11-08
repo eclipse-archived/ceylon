@@ -1,9 +1,9 @@
 shared class MemberClassAliasWithTypeParameters_Foo<C>(C c){
     shared class Member<T>(T t){}
     
-    shared class MemberClassAlias1<S>(S s) = Member<S>;
-    shared class MemberClassAlias2(Integer s) = Member<Integer>;
-    shared class MemberClassAlias3(C s) = Member<C>;
+    shared class MemberClassAlias1<S>(S s) = Member<S>(s);
+    shared class MemberClassAlias2(Integer s) = Member<Integer>(s);
+    shared class MemberClassAlias3(C s) = Member<C>(s);
 
     void test(){
         value m1 = MemberClassAlias1<Integer>(1);
