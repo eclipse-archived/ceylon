@@ -3,20 +3,36 @@ package com.redhat.ceylon.compiler.java.test;
 import javax.tools.Diagnostic;
 
 public class CompilerError implements Comparable<CompilerError>{
+    public enum Classification {
+        /** A Ceylon syntax or typechecker error */
+        FRONTEND,
+        /** A javac typechecker error */
+        BACKEND,
+        /** A propogated exception */
+        CRASH,
+        /** An unclassified error */
+        UNCLASSIFIED
+    }
     public final long lineNumber;
     public final String message;
     public final Diagnostic.Kind kind;
-    public final String filename; // note: not included in equals() or hash()
+    public final String filename; // note: not included in equals(),hash(),compareTo()
+    public final Classification classification; // note: not included in equals(),hash(),compareTo()
 
     public CompilerError(long lineNumber, String message) {
         this(Diagnostic.Kind.ERROR, null, lineNumber, message);
     }
     
     public CompilerError(Diagnostic.Kind kind, String filename, long lineNumber, String message) {
+        this(kind, filename, lineNumber, message, Classification.UNCLASSIFIED);
+    }
+    
+    public CompilerError(Diagnostic.Kind kind, String filename, long lineNumber, String message, Classification classification) {
         this.kind = kind;
         this.filename = filename;
         this.lineNumber = lineNumber;
         this.message = message;
+        this.classification = classification;
     }
 
     @Override
@@ -52,7 +68,23 @@ public class CompilerError implements Comparable<CompilerError>{
     }
 
     public String toString() {
-        return lineNumber + ": " + message;
+        String sort;
+        switch (classification) {
+        case BACKEND:
+            sort = "backend";
+            break;
+        case FRONTEND:
+            sort = "frontend";
+            break;
+        case CRASH:
+            sort = "crash";
+            break;
+        case UNCLASSIFIED:
+        default:
+            sort = "unclassified";
+            break;
+        }
+        return kind + ": " + sort + ": " +  lineNumber + ": " + message;
     }
 
     @Override

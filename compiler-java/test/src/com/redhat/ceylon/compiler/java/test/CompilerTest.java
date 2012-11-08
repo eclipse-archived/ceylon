@@ -154,23 +154,18 @@ public abstract class CompilerTest {
     
     protected void compareErrors(TreeSet<CompilerError> actualErrors, CompilerError... expectedErrors) {
         TreeSet<CompilerError> expectedErrorSet = new TreeSet<CompilerError>(Arrays.asList(expectedErrors));
-        // shortcut for simple cases
-        if(expectedErrorSet.size() == 1 && actualErrors.size() == 1){
-            Assert.assertEquals("Error mismatch", expectedErrorSet.first().toString(), actualErrors.first().toString());
-        }else{
-            // first dump the actual errors
-            for(CompilerError actualError : actualErrors){
-                System.err.println(actualError.lineNumber+": "+actualError.message);
-            }
-            
-            // make sure we have all those we expect
-            for(CompilerError expectedError : expectedErrorSet){
-                Assert.assertTrue("Missing expected error: "+expectedError, actualErrors.contains(expectedError));
-            }
-            //  make sure we don't have unexpected ones
-            for(CompilerError actualError : actualErrors){
-                Assert.assertTrue("Unexpected error: "+actualError, expectedErrorSet.contains(actualError));
-            }
+        // first dump the actual errors
+        for(CompilerError actualError : actualErrors){
+            System.err.println(actualError.lineNumber+": "+actualError.message);
+        }
+        
+        // make sure we have all those we expect
+        for(CompilerError expectedError : expectedErrorSet){
+            Assert.assertTrue("Missing expected error: "+expectedError, actualErrors.contains(expectedError));
+        }
+        //  make sure we don't have unexpected ones
+        for(CompilerError actualError : actualErrors){
+            Assert.assertTrue("Unexpected error: "+actualError, expectedErrorSet.contains(actualError));
         }
     }
     
@@ -264,7 +259,8 @@ public abstract class CompilerTest {
     protected void compareWithJavaSource(String java, String... ceylon) {
         // make a compiler task
         // FIXME: runFileManager.setSourcePath(dir);
-        CeyloncTaskImpl task = getCompilerTask(ceylon);
+        ErrorCollector collector = new ErrorCollector();
+        CeyloncTaskImpl task = getCompilerTask(collector, ceylon);
 
         // grab the CU after we've completed it
         class Listener implements TaskListener{
@@ -292,7 +288,8 @@ public abstract class CompilerTest {
         // now compile it all the way
         Boolean success = task.call();
 
-        Assert.assertTrue("Compilation failed", success);
+        //Assert.assertTrue("Compilation failed", success);
+        Assert.assertTrue(collector.getAssertionFailureMessage(), success);
 
         // now look at what we expected
         File expectedSrcFile = new File(getPackagePath(), java);
@@ -349,8 +346,9 @@ public abstract class CompilerTest {
     }
 
     protected void compile(String... ceylon) {
-        Boolean success = getCompilerTask(ceylon).call();
-        Assert.assertTrue(success);
+        ErrorCollector c = new ErrorCollector();
+        Boolean success = getCompilerTask(c, ceylon).call();
+        Assert.assertTrue(c.getAssertionFailureMessage(), success);
     }
     
     protected void compilesWithoutWarnings(String... ceylon) {
@@ -444,6 +442,10 @@ public abstract class CompilerTest {
 
     protected CeyloncTaskImpl getCompilerTask(String... sourcePaths){
         return getCompilerTask(defaultOptions, null, sourcePaths);
+    }
+    
+    protected CeyloncTaskImpl getCompilerTask(DiagnosticListener<? super FileObject> diagnosticListener, String... sourcePaths){
+        return getCompilerTask(defaultOptions, diagnosticListener, sourcePaths);
     }
 
     protected CeyloncTaskImpl getCompilerTask(List<String> options, String... sourcePaths){
