@@ -1428,7 +1428,7 @@ public class ClassTransformer extends AbstractTransformer {
             InvocationBuilder specifierBuilder = InvocationBuilder.forSpecifierInvocation(gen(), specifierExpression, methodDecl.getDeclarationModel());
             bodyExpr = specifierBuilder.build();
         } else {
-            bodyExpr = expressionGen().transformExpression(term);
+            bodyExpr = expressionGen().transformExpression(term, CodegenUtil.getBoxingStrategy(model), term.getTypeModel());
         }
         if (!Decl.isUnboxedVoid(model) || Strategy.useBoxedVoid(model)) {
             if (returnNull) {
