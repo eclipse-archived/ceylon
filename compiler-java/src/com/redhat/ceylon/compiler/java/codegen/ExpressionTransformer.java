@@ -1424,7 +1424,7 @@ public class ExpressionTransformer extends AbstractTransformer {
         Naming.SyntheticName varBaseName = naming.alias("spread");
         // sequence
         Naming.SyntheticName srcSequenceName = varBaseName.suffixedBy("$0");
-        ProducedType srcSequenceType = typeFact().getNonemptySequenceType(expr.getPrimary().getTypeModel());
+        ProducedType srcSequenceType = typeFact().getNonemptyType(expr.getPrimary().getTypeModel());
         ProducedType srcElementType = typeFact().getElementType(srcSequenceType);
         JCExpression srcSequenceTypeExpr = makeJavaType(srcSequenceType, JT_NO_PRIMITIVES);
         JCExpression srcSequenceExpr = make().TypeCast(srcSequenceTypeExpr, testVarName.makeIdent());
