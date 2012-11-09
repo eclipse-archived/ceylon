@@ -2091,7 +2091,7 @@ public abstract class AbstractTransformer implements Transformation {
                         newArrayExpr),
                 List.of(klass2));
         
-        // since T[] is erased to Iterable<T> we probably need a cast to FixedSized<T>
+        // since T[] is erased to Sequential<T> we probably need a cast to FixedSized<T>
         JCExpression castedExpr = make().TypeCast(seqTypeExpr2, expr);
         
         return makeLetExpr(seqName, List.<JCStatement>nil(), seqTypeExpr1, castedExpr, sequenceToArrayExpr);
