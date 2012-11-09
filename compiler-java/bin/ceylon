@@ -52,4 +52,4 @@ java \
  "-Dcom.redhat.ceylon.common.tool.terminal.width=$(tput cols)" \
  "-Dcom.redhat.ceylon.common.tool.progname=$(basename $PRG)" \
  com.redhat.ceylon.tools.CeylonTool \
- "$@"
+ $ARGS
