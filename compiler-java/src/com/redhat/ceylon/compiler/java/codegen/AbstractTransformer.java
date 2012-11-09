@@ -730,6 +730,7 @@ public abstract class AbstractTransformer implements Transformation {
                 || decl == typeFact.getIdentifiableObjectDeclaration()
                 || decl == typeFact.getNothingDeclaration()
                 || decl == typeFact.getVoidDeclaration()
+                || decl == typeFact.getSequentialDeclaration()
                 || decl instanceof BottomType
                 || decl instanceof UnionType
                 || decl instanceof IntersectionType;
