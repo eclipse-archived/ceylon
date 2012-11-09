@@ -2178,18 +2178,10 @@ public abstract class AbstractTransformer implements Transformation {
         return result;
     }
 
-    JCExpression makeNonEmptyTest(JCExpression firstTimeExpr, Naming.SyntheticName varName) {
-        Interface fixedSize = typeFact().getFixedSizedDeclaration();
-        JCExpression test = makeTypeTest(firstTimeExpr, varName, fixedSize.getType());
-        JCExpression fixedSizeType = makeJavaType(fixedSize.getType(), JT_NO_PRIMITIVES | JT_RAW);
-        JCExpression nonEmpty = makeNonEmptyTest(make().TypeCast(fixedSizeType, varName.makeIdent()));
-        return make().Binary(JCTree.AND, test, nonEmpty);
-    }
-
-    JCExpression makeNonEmptyTest(JCExpression expr){
-        JCExpression getEmptyCall = make().Select(expr, names().fromString("getEmpty"));
-        JCExpression empty = make().Apply(List.<JCExpression>nil(), getEmptyCall, List.<JCExpression>nil());
-        return make().Unary(JCTree.NOT, empty);
+    JCExpression makeNonEmptyTest(JCExpression firstTimeExpr) {
+        Interface sequence = typeFact().getSequenceDeclaration();
+        JCExpression sequenceType = makeJavaType(sequence.getType(), JT_NO_PRIMITIVES | JT_RAW);
+        return make().TypeTest(firstTimeExpr, sequenceType);
     }
     
     /**
