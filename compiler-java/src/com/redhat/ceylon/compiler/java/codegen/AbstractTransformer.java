@@ -1257,11 +1257,15 @@ public abstract class AbstractTransformer implements Transformation {
         for (int ii = 0; ii < parameter; ii++) {
             sequentialType = sequentialType.getTypeArgumentList().get(2);
         }
-        if (sequentialType.getDeclaration() instanceof ClassOrInterface) {
+        TypeDeclaration decl = sequentialType.getDeclaration();
+        if (decl.equals(typeFact().getTupleDeclaration())) {
             return sequentialType.getTypeArgumentList().get(1);    
-        } else {
+        } else if (decl.equals(typeFact().getEmptyDeclaration())) {
+            return decl.getType();
+        } else if (decl.equals(typeFact().getSequentialDeclaration())) {
             return sequentialType;//Sequence|Empty (i.e. a ...)
         }
+        throw Assert.fail(""+decl);
     }
     int getNumParametersOfCallable(ProducedType callableType) {
         Assert.that(callableType.isCallable());
