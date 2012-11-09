@@ -24,6 +24,7 @@ import java.util.Collections;
 
 import com.redhat.ceylon.compiler.java.tools.LanguageCompiler;
 import com.redhat.ceylon.compiler.typechecker.context.Context;
+import com.redhat.ceylon.compiler.typechecker.model.Interface;
 import com.redhat.ceylon.compiler.typechecker.model.IntersectionType;
 import com.redhat.ceylon.compiler.typechecker.model.ProducedType;
 import com.redhat.ceylon.compiler.typechecker.model.TypeDeclaration;
@@ -89,6 +90,10 @@ public class TypeFactory extends Unit {
         else {
             return null;
         }
+    }
+    
+    public Interface getFixedSizedDeclaration() {
+        return (Interface) getLanguageModuleDeclaration("FixedSized");
     }
     
     public ProducedType getFixedSizedType(ProducedType pt) {
