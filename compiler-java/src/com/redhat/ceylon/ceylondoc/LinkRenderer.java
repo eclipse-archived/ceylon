@@ -46,6 +46,7 @@ public class LinkRenderer {
     private Writer writer;
     private String customText;
     private Scope scope;
+    private Declaration anchor;
     private boolean skipTypeArguments;
     
     public LinkRenderer(CeylonDocTool ceylonDocTool, Writer writer, Object from) {
@@ -54,28 +55,20 @@ public class LinkRenderer {
         this.from = from;
     }
     
-    public LinkRenderer to(String declarationName) {
-        to = declarationName;
-        return this;
+    public LinkRenderer(LinkRenderer linkRenderer) {
+        this.buffer = linkRenderer.buffer;
+        this.to = linkRenderer.to;
+        this.from = linkRenderer.from;
+        this.ceylonDocTool = linkRenderer.ceylonDocTool;
+        this.writer = linkRenderer.writer;
+        this.customText = linkRenderer.customText;
+        this.scope = linkRenderer.scope;
+        this.anchor = linkRenderer.anchor;
+        this.skipTypeArguments = linkRenderer.skipTypeArguments;
     }
-
-    public LinkRenderer to(Declaration declaration) {
-        to = declaration;
-        return this;
-    }
-
-    public LinkRenderer to(ProducedType producedType) {
-        to = producedType;
-        return this;
-    }
-
-    public LinkRenderer to(Module module) {
-        to = module;
-        return this;
-    }
-
-    public LinkRenderer to(Package pkg) {
-        to = pkg;
+    
+    public LinkRenderer to(Object to) {
+        this.to = to;
         return this;
     }
     
@@ -99,12 +92,17 @@ public class LinkRenderer {
         return this;
     }
     
+    public LinkRenderer useAnchor(Declaration anchor) {
+        this.anchor = anchor;
+        return this;
+    }
+
     public LinkRenderer skipTypeArguments() {
         this.skipTypeArguments = true;
         return this;
     }
     
-    public String getAnchor() {
+    public String getLink() {
         try {
             if (to instanceof String) {
                 processDeclarationLink((String) to);
@@ -142,18 +140,18 @@ public class LinkRenderer {
     }
 
     public void write() throws IOException {
-        String link = getAnchor();
+        String link = getLink();
         writer.write(link);
     }
 
     private void processModule(Module module) {
         String moduleUrl = getUrl(module);
-        appendAnchor(moduleUrl, module.getNameAsString());
+        appendLinkElement(moduleUrl, module.getNameAsString());
     }
     
     private void processPackage(Package pkg) {
         String pkgUrl = getUrl(pkg);
-        appendAnchor(pkgUrl, pkg.getNameAsString());
+        appendLinkElement(pkgUrl, pkg.getNameAsString());
     }
 
     private void processProducedType(ProducedType producedType) {
@@ -214,7 +212,7 @@ public class LinkRenderer {
         String clazzName = clazz.getName();
         if (isInCurrentModule(clazz)) {
             String clazzUrl = getUrl(clazz);
-            appendAnchor(clazzUrl, clazzName);
+            appendLinkElement(clazzUrl, clazzName);
         } else {
             buffer.append(clazzName);
         }
@@ -265,14 +263,12 @@ public class LinkRenderer {
         Scope declContainer = decl.getContainer();
 
         if (isInCurrentModule(declContainer)) {
-            String sectionPackageAnchor = "#section-package";
-            String containerUrl = getUrl(declContainer);
-            if (containerUrl.endsWith(sectionPackageAnchor)) {
-                containerUrl = containerUrl.substring(0, containerUrl.length() - sectionPackageAnchor.length());
+            if (anchor != null) {
+                throw new IllegalArgumentException();
             }
-            String declUrl = containerUrl + "#" + declName;
-            
-            appendAnchor(declUrl, declName);
+            anchor = decl;
+            String url = getUrl(declContainer);
+            appendLinkElement(url, declName);
         } else {
             buffer.append(declName);
         }
@@ -402,13 +398,23 @@ public class LinkRenderer {
 
     private String getUrl(Object to) {
         try {
-            return ceylonDocTool.getObjectUrl(from, to);
+            String url = ceylonDocTool.getObjectUrl(from, to);
+            
+            if (anchor != null) {
+                String sectionPackageAnchor = "#section-package";
+                if (url.endsWith(sectionPackageAnchor)) {
+                    url = url.substring(0, url.length() - sectionPackageAnchor.length());
+                }
+                url = url + "#" + anchor.getName();
+            }            
+            
+            return url;
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
     }
 
-    private void appendAnchor(String url, String text) {
+    private void appendLinkElement(String url, String text) {
         buffer.append("<a class='link' href='").append(url).append("'>");
         if( customText != null ) {
             buffer.append(customText);

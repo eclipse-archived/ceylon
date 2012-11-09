@@ -194,6 +194,7 @@ public class CeylonDocToolTest {
         assertWikiStyleLinkSyntax(destDir);
         assertConstants(destDir);
         assertLinksToRefinedDeclaration(destDir);
+        assertObjectPageDifferences(destDir);
         assertBug659ShowInheritedMembers(destDir);
         assertBug691AbbreviatedOptionalType(destDir);
         assertBug839(destDir);
@@ -623,6 +624,17 @@ public class CeylonDocToolTest {
                 Pattern.compile("<div class='refined section'><span class='title'>Refined declaration: </span><a class='link' href='interface_StubInterface.html#defaultDeprecatedMethodFromStubInterface'>defaultDeprecatedMethodFromStubInterface</a><span class='value'></span></div>"));
         assertMatchInFile(destDir, "class_StubClass.html",
                 Pattern.compile("<div class='refined section'><span class='title'>Refined declaration: </span><a class='link' href='interface_StubInterface.html#formalMethodFromStubInterface'>formalMethodFromStubInterface</a><span class='value'></span></div>"));
+    }
+    
+    private void assertObjectPageDifferences(File destDir) throws IOException {
+        assertMatchInFile(destDir, "object_caseSensitive.html",
+                Pattern.compile("<title>Object caseSensitive</title>"));
+        assertMatchInFile(destDir, "object_caseSensitive.html",
+                Pattern.compile("<span class='sub-navbar-label'>object</span><i class='icon-object'></i><span class='sub-navbar-name'>caseSensitive</span>"));
+        assertMatchInFile(destDir, "object_caseSensitive.html",
+                Pattern.compile("<a href='index.html#caseSensitive'><span title='Jump to singleton object declaration'>Singleton object declaration</span></a>"));
+        assertNoMatchInFile(destDir, "object_caseSensitive.html", 
+                Pattern.compile("<table id='section-constructor'"));
     }
 
     private void assertBug659ShowInheritedMembers(File destDir) throws IOException {

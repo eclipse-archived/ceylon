@@ -202,11 +202,15 @@ public abstract class CeylonDoc extends Markup {
         open("a href='" + href + "'");
         
         int index = text.indexOf(key);
-        String before = text.substring(0, index);
-        String after = text.substring(index+1);
-        
-        write("<span title='", tooltip, " [Shortcut: ", String.valueOf(key), "]'>");
-        write(before, "<span class='accesskey'>", String.valueOf(key), "</span>", after, "</span>");
+        if( index == -1 ) {
+            write("<span title='", tooltip, "'>", text, "</span>");
+        } else {
+            String before = text.substring(0, index);
+            String after = text.substring(index+1);
+
+            write("<span title='", tooltip, " [Shortcut: ", String.valueOf(key), "]'>");
+            write(before, "<span class='accesskey'>", String.valueOf(key), "</span>", after, "</span>");
+        }
         
         close("a");
     }
@@ -320,8 +324,13 @@ public abstract class CeylonDoc extends Markup {
                     icons.add("icon-interface");
                 }
                 if (decl instanceof Class) {
-                    icons.add("icon-class");
-                    if (((Class) decl).isAbstract()) {
+                    Class klass = (Class) decl;
+                    if (klass.isAnonymous()) {
+                        icons.add("icon-object");
+                    } else {
+                        icons.add("icon-class");
+                    }
+                    if (klass.isAbstract()) {
                         icons.add("icon-decoration-abstract");
                     }
                 }

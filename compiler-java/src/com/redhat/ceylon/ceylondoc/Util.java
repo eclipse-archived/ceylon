@@ -193,6 +193,21 @@ public class Util {
         }
         return string;
     }
+    
+    public static String capitalize(String text) {
+        char[] buffer = text.toCharArray();
+        boolean capitalizeNext = true;
+        for (int i = 0; i < buffer.length; i++) {
+            char ch = buffer[i];
+            if (Character.isWhitespace(ch)) {
+                capitalizeNext = true;
+            } else if (capitalizeNext) {
+                buffer[i] = Character.toTitleCase(ch);
+                capitalizeNext = false;
+            }
+        }
+        return new String(buffer);
+    }
 
     public static String getModifiers(Declaration d) {
         StringBuilder modifiers = new StringBuilder();
@@ -374,7 +389,7 @@ public class Util {
                 customName = content.substring(0, indexOf);
                 declName = content.substring(indexOf+1, content.length()); 
             }
-            String link = linkRenderer.to(declName).useCustomText(customName).getAnchor();
+            String link = new LinkRenderer(linkRenderer).to(declName).useCustomText(customName).getLink();
             out.append(link);
         }
         

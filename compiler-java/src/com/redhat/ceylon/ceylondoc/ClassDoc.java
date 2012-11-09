@@ -202,9 +202,13 @@ public class ClassDoc extends ClassOrPackageDoc {
             }
         return members;
     }
+    
+    private boolean isObject() {
+        return klass instanceof Class && klass.isAnonymous();
+    }
 
     private boolean hasConstructor() {
-        return (klass instanceof Class);
+        return klass instanceof Class && !isObject();
     }
 
     /**
@@ -225,6 +229,14 @@ public class ClassDoc extends ClassOrPackageDoc {
         return !(methods.isEmpty() 
                     && interfaceInheritedMembers.get(methodSpecification).isEmpty()
                     && superclassInheritedMembers.get(methodSpecification).isEmpty());
+    }
+    
+    private String getClassLabel() {
+        if (klass instanceof Interface) {
+            return "interface";
+        } else {
+            return isObject() ? "object" : "class";
+        }
     }
 
     private String getClassName() throws IOException {
@@ -249,7 +261,7 @@ public class ClassDoc extends ClassOrPackageDoc {
     }
 
     public void generate() throws IOException {
-        writeHeader("Class for " + klass.getName());
+        writeHeader(Util.capitalize(getClassLabel()) + " " + klass.getName());
         writeNavBar();
         writeSubNavBar();
         
@@ -295,7 +307,7 @@ public class ClassDoc extends ClassOrPackageDoc {
         
         around("a class='sub-navbar-package' href='"+ linkRenderer().to(pkg).getUrl() +"'", pkg.getNameAsString());
         write("<br/>");
-        around("span class='sub-navbar-label'", klass instanceof Class ? "class" : "interface");
+        around("span class='sub-navbar-label'", getClassLabel());
         writeIcon(klass);
         around("span class='sub-navbar-name'", getClassName());
         close("div"); // sub-navbar-inner
@@ -320,6 +332,9 @@ public class ClassDoc extends ClassOrPackageDoc {
         }
         if (!innerExceptions.isEmpty()) {
             writeSubNavBarLink("#section-exceptions", "Nested Exceptions", 'E', "Jump to nested exceptions");
+        }
+        if( isObject() ) {
+            writeSubNavBarLink(linkRenderer().to(pkg).useAnchor(klass).getUrl(), "Singleton object declaration", '\0', "Jump to singleton object declaration");
         }
         
         close("div"); // sub-navbar-menu
@@ -367,7 +382,7 @@ public class ClassDoc extends ClassOrPackageDoc {
                 }
                 
                 writeIcon(superType.getDeclaration());
-                around("span class='decl' title='"+ superType.getProducedTypeQualifiedName() +"'", linkRenderer().to(superType).getAnchor());
+                around("span class='decl' title='"+ superType.getProducedTypeQualifiedName() +"'", linkRenderer().to(superType).getLink());
                 i++;
             }
             while (i-- > 0) {

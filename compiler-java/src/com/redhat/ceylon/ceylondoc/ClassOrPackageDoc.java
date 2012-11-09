@@ -41,13 +41,11 @@ import com.redhat.ceylon.compiler.typechecker.model.FunctionalParameter;
 import com.redhat.ceylon.compiler.typechecker.model.Method;
 import com.redhat.ceylon.compiler.typechecker.model.MethodOrValue;
 import com.redhat.ceylon.compiler.typechecker.model.Module;
-import com.redhat.ceylon.compiler.typechecker.model.Package;
 import com.redhat.ceylon.compiler.typechecker.model.Parameter;
 import com.redhat.ceylon.compiler.typechecker.model.ParameterList;
 import com.redhat.ceylon.compiler.typechecker.model.ProducedType;
 import com.redhat.ceylon.compiler.typechecker.model.TypeDeclaration;
 import com.redhat.ceylon.compiler.typechecker.model.TypeParameter;
-import com.redhat.ceylon.compiler.typechecker.model.TypedDeclaration;
 import com.redhat.ceylon.compiler.typechecker.model.UnionType;
 import com.redhat.ceylon.compiler.typechecker.model.Unit;
 import com.redhat.ceylon.compiler.typechecker.model.Value;
@@ -224,21 +222,8 @@ public abstract class ClassOrPackageDoc extends CeylonDoc {
     }
     
     private void writeLinkOneSelf(Declaration d) throws IOException {
-        String url;
-        Object fromObject = getFromObject();
-        if (fromObject instanceof Package) {
-            url = linkRenderer().to((Package) fromObject).getUrl();
-        } else {
-            url = linkRenderer().to((ClassOrInterface) fromObject).getUrl();
-        }
-        
+        String url = linkRenderer().to(getFromObject()).useAnchor(d).getUrl();
         if (url != null) {
-            int sharpIndex = url.lastIndexOf("#");
-            if (sharpIndex != -1) {
-                url = url.substring(0, sharpIndex);
-            }
-        
-            url += "#" + d.getName();
             open("a class='link-one-self' title='Link to this declaration' href='" + url + "'");
             write("<i class='icon-link'></i>");
             close("a");
