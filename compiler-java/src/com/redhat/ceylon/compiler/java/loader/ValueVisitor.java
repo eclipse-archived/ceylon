@@ -7,6 +7,7 @@ import com.redhat.ceylon.compiler.typechecker.model.TypedDeclaration;
 import com.redhat.ceylon.compiler.typechecker.model.Value;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.Expression;
+import com.redhat.ceylon.compiler.typechecker.tree.Tree.InvocationExpression;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.SpecifierExpression;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.Term;
 import com.redhat.ceylon.compiler.typechecker.tree.Visitor;
@@ -180,7 +181,10 @@ public class ValueVisitor extends Visitor {
         if (specifier != null) {
             
             final Expression expr = specifier.getExpression();
-            final Term term = expr.getTerm();
+            Term term = expr.getTerm();
+            if (term instanceof InvocationExpression) {
+                term = ((InvocationExpression)term).getPrimary();
+            }
             if (term instanceof Tree.Primary) {
                 capture((Tree.Primary)term, true);
             } 
