@@ -82,7 +82,7 @@ shared class Range<Element>(first, last)
             variable Element|Finished current := first;
             shared actual Element|Finished next() {
                 Element|Finished result = current;
-                if (is Element curr = current) {
+                if (!is Finished curr = current) {
                     if (curr == last) {
                         current := exhausted;
                     } 
@@ -101,12 +101,13 @@ shared class Range<Element>(first, last)
     
     doc "Determines if the range includes the given object."
     shared actual Boolean contains(Object element) {
-        if (is Element element) {
-            return includes(element);
-        }
-        else {
-            return false;
-        }
+        throw;
+        //if (is Element element) {
+        //    return includes(element);
+        //}
+        //else {
+        //    return false;
+        //}
     }
     
     shared actual Integer count(Boolean selecting(Element element)) {
@@ -150,14 +151,15 @@ shared class Range<Element>(first, last)
     doc "Determines if two ranges are the same by comparing
          their endpoints."
     shared actual Boolean equals(Object that) {
-        if (is Range<Element> that) {
-            //optimize for another Range
-            return that.first==first && that.last==last;
-        }
-        else {
-            //it might be another sort of List
-            return that.equals(this);
-        }
+        throw;
+        //if (is Range<Element> that) {
+        //    //optimize for another Range
+        //    return that.first==first && that.last==last;
+        //}
+        //else {
+        //    //it might be another sort of List
+        //    return that.equals(this);
+        //}
     }
     
     doc "Returns the range itself, since ranges are 

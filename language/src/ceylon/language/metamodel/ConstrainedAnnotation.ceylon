@@ -7,6 +7,7 @@ shared interface ConstrainedAnnotation<out Value, out Values, in ProgramElement>
         given Value satisfies Annotation<Value>
         given ProgramElement satisfies Annotated {
     shared Boolean occurs(Annotated programElement) {
-        return programElement is ProgramElement;
+        throw;
+        //return programElement is ProgramElement;
     }
 }

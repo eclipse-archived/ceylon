@@ -73,7 +73,7 @@ shared interface Iterable<out Element>
          This should produce the same value as
          `ordered.iterator.head`."
     shared actual default Element? first {
-        if (is Element first = iterator.next()) {
+        if (!is Finished first = iterator.next()) {
             return first;
         }
         else {
@@ -356,7 +356,7 @@ shared interface Iterable<out Element>
                         variable value i:=0;
                         actual shared Entry<Integer,Element&Object>?|Finished next() {
                             value next = iter.next();
-                            if (is Element next) {
+                            if (!is Finished next) {
                                 if (exists next) {
                                     return i++->next;
                                 }

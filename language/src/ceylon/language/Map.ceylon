@@ -112,12 +112,13 @@ shared interface Map<out Key,out Item>
                 return this;
             }
             shared actual Result? item(Object key) {
-                if (is Key key) {
-                    if (exists item=outer[key]) {
-                        return mapping(key, item);
-                    }
-                }
-                return null;
+                throw;
+                //if (is Key key) {
+                //    if (exists item=outer[key]) {
+                //        return mapping(key, item);
+                //    }
+                //}
+                //return null;
             }
             shared actual Iterator<Key->Result> iterator {
                 return outer.map((Key->Item e) 

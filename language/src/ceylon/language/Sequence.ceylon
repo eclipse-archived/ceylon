@@ -39,12 +39,13 @@ shared interface Sequence<out Element>
     doc "The last element of the sequence, that is, the
          element with index `sequence.lastIndex`."
     shared actual default Element last {
-        if (is Element last = this[lastIndex]) {
-            return last;
-        }
-        else {
-            throw; //never occurs for well-behaved implementations
-        } 
+        throw;
+        //if (is Element last = this[lastIndex]) {
+        //    return last;
+        //}
+        //else {
+        //    throw; //never occurs for well-behaved implementations
+        //} 
     }
     
     doc "The rest of the sequence, without the first 

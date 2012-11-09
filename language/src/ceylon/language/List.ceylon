@@ -58,7 +58,7 @@ shared interface List<out Element>
             variable Integer index := 0;
             shared actual Element|Finished next() {
                 if (index < lastIndex?-1) {
-                    if (is Element elem = item(index++)) {
+                    if (exists elem = item(index++)) {
                         return elem;
                     }
                     else {
@@ -151,7 +151,7 @@ shared interface List<out Element>
         if (exists l=lastIndex) {
             variable value index := l;
             while (index >= 0) {
-                if (is Element elem = item(index--)) {
+                if (exists elem = item(index--)) {
                     if (selecting(elem)) {
                         return elem;
                     }

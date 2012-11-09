@@ -38,12 +38,13 @@ shared interface Correspondence<in Key, out Item>
     shared default Category keys {
         object keys satisfies Category {
             shared actual Boolean contains(Object key) {
-                if (is Key key) {
-                    return defines(key);
-                }
-                else {
-                    return false;
-                }
+                throw;
+                //if (is Key key) {
+                //    return defines(key);
+                //}
+                //else {
+                //    return false;
+                //}
             }
         }
         return keys;

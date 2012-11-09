@@ -5,7 +5,7 @@ shared interface Some<out Element>
 
     doc "Returns the first element, which always exists."
     shared actual default Element first {
-        if (is Element first = iterator.next()) {
+        if (!is Finished first = iterator.next()) {
             return first;
         }
         else {

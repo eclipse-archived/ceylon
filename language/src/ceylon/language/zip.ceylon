@@ -15,5 +15,5 @@ shared Entry<Key,Item>[] zip<Key,Item>(Iterable<Key> keys, Iterable<Item> items)
         given Key satisfies Object
         given Item satisfies Object {
     value iter = items.iterator;
-    return { for (key in keys) if (is Item item=iter.next()) key->item };
+    return { for (key in keys) if (!is Finished item=iter.next()) key->item };
 }
