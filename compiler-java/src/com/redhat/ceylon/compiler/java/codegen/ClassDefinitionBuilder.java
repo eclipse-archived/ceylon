@@ -217,8 +217,8 @@ public class ClassDefinitionBuilder {
 
     private void appendDefinitionsTo(ListBuffer<JCTree> defs) {
         if ((modifiers & INTERFACE) == 0) {
-            if (superCall != null) {
-                init.prepend(superCall);
+            if (superCall != null && !isAlias) {
+                init.prepend(superCall);    
             }
             if (!isCompanion) {
                 createConstructor(init.toList());
@@ -336,8 +336,10 @@ public class ClassDefinitionBuilder {
     }
 
     public ClassDefinitionBuilder extending(ProducedType extendingType) {
-        this.extending = getSuperclass(extendingType);
-        annotations(gen.makeAtClass(extendingType));
+        if (!isAlias) {
+            this.extending = getSuperclass(extendingType);
+            annotations(gen.makeAtClass(extendingType));
+        }
         return this;
     }
     
