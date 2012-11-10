@@ -1,9 +1,9 @@
 class TestList<Element>(Element... items) satisfies List<Element> {
     value elems = items.sequence;
-    shared actual Boolean equals(Object other) { return false; }
+    shared actual Boolean equals(Object other) { return List::equals(other); }
     shared actual Element? item(Integer x) { return elems[x]; }
     shared actual TestList<Element> reversed { return TestList(elems.reversed...); }
-    shared actual Integer hash { return elems.hash; }
+    shared actual Integer hash { return List::hash; }
     shared actual Integer? lastIndex { return elems.lastIndex; }
     shared actual TestList<Element> span(Integer a, Integer? b) { return TestList(elems.span(a, b)...); }
     shared actual TestList<Element> segment(Integer a, Integer b) { return TestList(elems.segment(a, b)...); }
@@ -62,4 +62,10 @@ void lists() {
         check(e==8, "LazyList.last");
     } else { fail("LazyList.last"); }
     check(b.reversed==8..1, "LazyList.reversed");
+    
+    //#167
+    value empty167 = TestList<Bottom>();
+    check(empty167=={}, "empty167=={}");
+    check({}==empty167, "{}==empty167");
+    check(empty167.hash=={}.hash, "empty167.hash=={}.hash");
 }
