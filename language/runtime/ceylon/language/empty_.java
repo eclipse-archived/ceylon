@@ -185,14 +185,15 @@ public class empty_ {
             return Empty$impl._defines(this, key);
         }
 
-        public boolean equals(Object that) {
+        @Override
+        public boolean equals(java.lang.Object that) {
             return that instanceof List ?
                     ((List) that).getEmpty() : false;
         }
         
         @Override
         public int hashCode() {
-            return 0;
+            return 1;
         }
 
         @Override
