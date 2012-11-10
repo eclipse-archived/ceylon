@@ -25,11 +25,11 @@ void variance() {
     //Class<Object> klass = var;
     //Interface<Object> interf = var;
     
-    @type["Callable<Object,Nothing|Interface<Object>>"]
+    @type["Callable<Object,Tuple<Nothing|Interface<Object>,Nothing|Interface<Object>,Empty>>"]
     value interfaceMethod = var.interfaceMethod;
     @type["Object"] value ret1 = var.interfaceMethod(var);
 
-    @type["Callable<Object,Nothing|Class<Object>>"]
+    @type["Callable<Object,Tuple<Nothing|Class<Object>,Nothing|Class<Object>,Empty>>"]
     value classMethod = var.classMethod;
     @type["Object"] value ret2 = var.classMethod(var);
     
