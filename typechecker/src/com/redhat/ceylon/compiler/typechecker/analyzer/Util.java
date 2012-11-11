@@ -123,11 +123,11 @@ class Util {
                         return s;
                     }
                 }
-                if (s instanceof Tree.MethodDeclaration) {
+                /*if (s instanceof Tree.MethodDeclaration) {
                     if ( ((Tree.MethodDeclaration) s).getSpecifierExpression()!=null ) {
                         return s;
                     }
-                }
+                }*/
                 if (s instanceof Tree.ObjectDefinition) {
                     Tree.ObjectDefinition o = (Tree.ObjectDefinition) s;
                     if (o.getExtendedType()!=null) {
