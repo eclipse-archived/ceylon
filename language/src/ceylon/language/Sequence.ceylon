@@ -74,10 +74,8 @@ shared interface Sequence<out Element>
             doc "The transformation applied to the elements."
             Result collecting(Element element)) {
         value s = map(collecting).sequence;
-        if (nonempty s) {
-            return s;
-        }
-        throw; //Should never happen in a well-behaved implementation
+        assert (nonempty s);
+        return s;
     }
 
     /*shared actual formal Element[] span(Integer from,

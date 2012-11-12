@@ -58,17 +58,17 @@ see (Collection)
 by "Gavin"
 shared interface Iterable<out Element> 
         satisfies ContainerWithFirstElement<Element,Nothing> {
-
+    
     doc "An iterator for the elements belonging to this 
          container."
     shared formal Iterator<Element> iterator;
-
+    
     doc "Determines if the iterable object is empty, that is
          to say, if the iterator returns no elements."
     shared actual default Boolean empty {
         return is Finished iterator.next();
     }
-
+    
     doc "The first element returned by the iterator, if any.
          This should produce the same value as
          `ordered.iterator.head`."
@@ -80,7 +80,7 @@ shared interface Iterable<out Element>
             return null;
         }
     }
-
+    
     doc "The last element returned by the iterator, if any.
          Iterables are potentially infinite, so calling this
          might never return; also, this implementation will
@@ -93,38 +93,36 @@ shared interface Iterable<out Element>
         }
         return e;
     }
-
+    
     doc "Returns an iterable object containing all but the 
          first element of this container."
     shared default Iterable<Element> rest {
         return skipping(1);
     }
-
+    
     doc "A sequence containing the elements returned by the
          iterator."
     shared default Element[] sequence {
         return { this... };
     }
-
+    
     doc "An `Iterable` containing the results of applying
          the given mapping to the elements of to this 
          container."
     see (collect)
     shared default Iterable<Result> map<Result>(
             doc "The mapping to apply to the elements."
-            Result collecting(Element elem)) {
-        return elements(for (elem in this) collecting(elem));
-    }
-
+            Result collecting(Element elem)) =
+        elements(for (elem in this) collecting(elem));
+    
     doc "An `Iterable` containing the elements of this 
          container that satisfy the given predicate."
     see (select)
     shared default Iterable<Element> filter(
             doc "The predicate the elements must satisfy."
-            Boolean selecting(Element elem)) {
-        return elements(for (elem in this) if (selecting(elem)) elem);
-    }
-
+            Boolean selecting(Element elem)) =
+        elements(for (elem in this) if (selecting(elem)) elem);
+    
     doc "The result of applying the accumulating function to 
          each element of this container in turn." 
     shared default Result fold<Result>(Result initial,
@@ -137,7 +135,7 @@ shared interface Iterable<out Element>
         }
         return r;
     }
-
+    
     doc "The first element which satisfies the given 
          predicate, if any, or `null` otherwise."
     shared default Element? find(
@@ -150,7 +148,7 @@ shared interface Iterable<out Element>
         }
         return null;
     }
-
+    
     doc "The last element which satisfies the given
          predicate, if any, or `null` otherwise."
     shared default Element? findLast(
@@ -164,7 +162,7 @@ shared interface Iterable<out Element>
         }
         return last;
     }
-
+    
     doc "A sequence containing the elements of this
          container, sorted according to a function 
          imposing a partial order upon the elements.
@@ -179,28 +177,28 @@ shared interface Iterable<out Element>
     see (byIncreasing, byDecreasing)
     shared default Element[] sort(
             doc "The function comparing pairs of elements."
-            Comparison? comparing(Element x, Element y)) { throw; }
-
+            Comparison? comparing(Element x, Element y)) { 
+        throw;
+    }
+    
     doc "A sequence containing the results of applying the
          given mapping to the elements of this container. An 
          eager counterpart to `map()`."
     see (map)
     shared default Result[] collect<Result>(
             doc "The transformation applied to the elements."
-            Result collecting(Element element)) {
-        return map(collecting).sequence;
-    }
-
+            Result collecting(Element element)) = 
+        map(collecting).sequence;
+    
     doc "A sequence containing the elements of this 
          container that satisfy the given predicate. An 
          eager counterpart to `filter()`."
     see (filter)
     shared default Element[] select(
             doc "The predicate the elements must satisfy."
-            Boolean selecting(Element element)) {
-        return filter(selecting).sequence;
-    }
-
+            Boolean selecting(Element element)) =
+        filter(selecting).sequence;
+    
     doc "Return `true` if at least one element satisfies the
          predicate function."
     shared default Boolean any(
@@ -214,7 +212,7 @@ shared interface Iterable<out Element>
         }
         return false;
     }
-
+    
     doc "Return `true` if all elements satisfy the predicate
          function."
     shared default Boolean every(
@@ -246,7 +244,7 @@ shared interface Iterable<out Element>
         }
         return iterable;
     }
-
+    
     doc "Produce an `Iterable` containing the first `take`
          elements of this iterable object. If the specified 
          number of elements is larger than the number of 
@@ -309,7 +307,7 @@ shared interface Iterable<out Element>
             return iterable;
         }
     }
-
+    
     doc "Return the number of elements in this `Iterable` 
          that satisfy the predicate function."
     shared default Integer count(
@@ -326,7 +324,7 @@ shared interface Iterable<out Element>
         }
         return count;
     }
-
+    
     doc "The non-null elements of this `Iterable`, in their
          original order. For null elements of the original 
          `Iterable`, there is no entry in the resulting 
@@ -334,7 +332,7 @@ shared interface Iterable<out Element>
     shared default Iterable<Element&Object> coalesced {
         return elements { for (e in this) if (exists e) e };
     }
-
+    
     doc "All entries of form `index->element` where `index` 
          is the position at which `element` occurs, for every
          non-null element of this `Iterable`, ordered by
@@ -375,7 +373,7 @@ shared interface Iterable<out Element>
             }
             return iterable.coalesced;
     }
-
+    
     doc "The elements of this iterable object, in their
          original order, followed by the elements of the 
          given iterable object also in their original
@@ -389,7 +387,7 @@ shared interface Iterable<out Element>
         }
         return chained;
     }
-
+    
     doc "Creates a Map that contains this `Iterable`'s
          elements, grouped in `Sequence`s under the
          keys provided by the grouping function."
@@ -400,5 +398,5 @@ shared interface Iterable<out Element>
             given Grouping satisfies Object {
         throw;
     }
-
+    
 }

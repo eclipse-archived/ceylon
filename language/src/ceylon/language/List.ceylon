@@ -25,33 +25,32 @@ shared interface List<out Element>
                   Correspondence<Integer,Element> &
                   Ranged<Integer,List<Element>> &
                   Cloneable<List<Element>> {
-
+    
     doc "The index of the last element of the list, or
          null if the list is empty."
     see (size)
     shared formal Integer? lastIndex;
-
+    
     doc "The number of elements in this sequence, always
          `sequence.lastIndex+1`."
     see (lastIndex)
     shared actual default Integer size {
         return (lastIndex?-1) + 1;
     }
-
+    
     doc "Determines if the given index refers to an element
          of this sequence, that is, if
          `index<=sequence.lastIndex`."
-    shared actual default Boolean defines(Integer index) {
-        return index <= lastIndex?-1;
-    }
-
+    shared actual default Boolean defines(Integer index) = 
+            index <= lastIndex?-1;
+	
     doc "Returns the element of this sequence with the given
          index, or `null` if the given index is past the end
          of the sequence, that is, if
          `index>sequence.lastIndex`. The first element of
          the sequence has index `0`."
     shared actual formal Element? item(Integer index);
-
+    
     shared actual default Iterator<Element> iterator {
         object listIterator
                 satisfies Iterator<Element> {
@@ -75,10 +74,10 @@ shared interface List<out Element>
         }
         return listIterator;
     }
-
+    
     doc "Reverse this list, returning a new list."
     shared formal List<Element> reversed;
-
+    
     /*doc "Select the elements between the given indices. If 
          the start index is the same as the end index,
          return a list with a single element. If the start 
@@ -92,12 +91,12 @@ shared interface List<out Element>
          the start index to last element of the list."
     shared actual formal List<Element> span(Integer from,
                                         Integer? to);
-
+	
     doc "Returns a list containing the elements beginning 
          from the given index, with the given length."
     shared actual formal List<Element> segment(Integer from,
                                            Integer length);*/
-
+    
     doc "Two `List`s are considered equal iff they have the 
          same `size` and _entry sets_. The entry set of a 
          list `l` is the set of elements of `l.indexed`. 
@@ -135,7 +134,7 @@ shared interface List<out Element>
         }
         return false;
     }
-
+    
     shared actual default Integer hash {
         variable value hash := 1;
         for (elem in this) {
@@ -147,7 +146,8 @@ shared interface List<out Element>
         return hash;
     }
     
-    shared default actual Element? findLast(Boolean selecting(Element elem)) {
+    shared default actual Element? findLast(
+            Boolean selecting(Element elem)) {
         if (exists l=lastIndex) {
             variable value index := l;
             while (index >= 0) {
@@ -160,11 +160,12 @@ shared interface List<out Element>
         }
         return null;
     }
-
+    
     doc "Returns the first element of this List, if any."
     shared actual default Element? first {
         return this[0];
     }
+    
     doc "Returns the last element of this List, if any."
     shared actual default Element? last {
         if (exists i = lastIndex) {
@@ -172,10 +173,12 @@ shared interface List<out Element>
         }
         return null;
     }
-
+    
     doc "Returns a new `List` that starts with the specified
          element, followed by the elements of this `List`."
-    shared default Sequence<Element|Other> withLeading<Other>(Other element) {
+    shared default Sequence<Element|Other> withLeading<Other>(
+            doc "The first element of the resulting sequence."
+            Other element) {
         value sb = SequenceBuilder<Element|Other>();
         sb.append(element);
         if (exists lastIndex) {
@@ -186,11 +189,13 @@ shared interface List<out Element>
         }
         throw; //Can't happen
     }
-
+    
     doc "Returns a new `List` that contains the specified
          element appended to the end of this `List`s'
          elements."
-    shared default Sequence<Element|Other> withTrailing<Other>(Other element) {
+    shared default Sequence<Element|Other> withTrailing<Other>(
+            doc "The last element of the resulting sequence."
+            Other element) {
         value sb = SequenceBuilder<Element|Other>();
         if (exists lastIndex) {
             sb.appendAll(this...);

@@ -9,6 +9,5 @@ doc "Print a line to the standard output of the virtual
      and is intended mainly for debugging purposes."
 see (process.writeLine)
 by "Gavin"
-shared void print(Void line) {
-    process.writeLine(line?.string else "\{ab}null\{bb}");
-}
+shared void print(Void line) = 
+        process.writeLine(line?.string else "\{ab}null\{bb}");

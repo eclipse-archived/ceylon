@@ -35,10 +35,9 @@ shared interface Collection<out Element>
          string.)"
     shared actual default Boolean contains(Object element) {
         for (elem in this) {
-            if (is Object elem) {
-                if (elem==element) {
-                    return true;
-                }
+            if (is Object elem,
+                    elem==element) {
+                return true;
             }
         }
         else {

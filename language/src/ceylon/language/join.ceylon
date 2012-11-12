@@ -3,6 +3,8 @@ doc "Given a list of iterable objects, return a new sequence
      no arguments, or if none of the arguments contains any
      elements, return the empty sequence."
 see (SequenceBuilder)
-shared Element[] join<Element>(Iterable<Element>... iterables) {
-    return { for (it in iterables) for (val in it) val };
-}
+shared Element[] join<Element>(
+        doc "The iterable objects to join."
+        Iterable<Element>... iterables) = 
+    { for (it in iterables) 
+        for (val in it) val };

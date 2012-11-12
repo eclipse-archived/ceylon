@@ -25,7 +25,7 @@ shared interface Map<out Key,out Item>
                   Cloneable<Map<Key,Item>>
         given Key satisfies Object
         given Item satisfies Object {
-
+    
     doc "Two `Map`s are considered equal iff they have the 
          same _entry sets_. The entry set of a `Map` is the
          set of `Entry`s belonging to the map. Therefore, the
@@ -33,24 +33,26 @@ shared interface Map<out Key,out Item>
          for every key in the key set, the maps have equal
          items."
     shared actual default Boolean equals(Object that) {
-        if (is Map<Object,Object> that) {
-            if (that.size==size) {
-                for (entry in this) {
-                    if (exists item = that[entry.key]) {
-                        if (item==entry.item) {
-                            continue;
-                        }
-                    }
-                    return false;
+        if (is Map<Object,Object> that,
+                that.size==size) {
+            for (entry in this) {
+                if (exists item = that[entry.key],
+                        item==entry.item) {
+                    continue;
                 }
                 else {
-                    return true;
+                    return false;
                 }
             }
+            else {
+                return true;
+            }
         }
-        return false;
+        else {
+            return false;
+        }
     }
-
+    
     shared actual default Integer hash {
         variable Integer hashCode := 1;
         for(Entry<Key,Item> elem in this){
@@ -59,12 +61,12 @@ shared interface Map<out Key,out Item>
         }
         return hashCode;
     }
-
+    
     doc "Returns the set of keys contained in this `Map`."
     actual shared default Set<Key> keys {
         return LazySet(for (k->v in this) k);
     }
-
+    
     doc "Returns all the values stored in this `Map`. An 
          element can be stored under more than one key in 
          the map, and so it can be contained more than once 
@@ -72,7 +74,7 @@ shared interface Map<out Key,out Item>
     shared default Collection<Item> values {
         return LazyList(for (k->v in this) v);
     }
-
+    
     doc "Returns a `Map` in which every key is an `Item` in 
          this map, and every value is the set of keys that 
          stored the `Item` in this map."
@@ -83,11 +85,12 @@ shared interface Map<out Key,out Item>
             shared actual Map<Item,Set<Key>> clone {
                 return this;
             }
-            shared actual Set<Key>? item(Object key) {
-                return LazySet(for (k->v in outer) if (v==key) k);
-            }
+            shared actual Set<Key>? item(Object key) = 
+                LazySet(for (k->v in outer) if (v==key) k);
             shared actual Iterator<Entry<Item,Set<Key>>> iterator {
-                return outer.values.map((Item e) e->LazySet<Key>(for (k->v in outer) if (v==e) k)).iterator;
+                return outer.values.map((Item e) e ->
+                        LazySet<Key>(for (k->v in outer) if (v==e) k))
+                                .iterator;
             }
             shared actual Integer size {
                 return outer.size;
@@ -95,7 +98,7 @@ shared interface Map<out Key,out Item>
         }
         return inverse;
     }
-
+    
     doc "Returns a `Map` with the same keys as this map. For
          every key, the item is the result of applying the
          given transformation function."
@@ -112,16 +115,15 @@ shared interface Map<out Key,out Item>
                 return this;
             }
             shared actual Result? item(Object key) {
-                if (is Key key) {
-                    if (exists item=outer[key]) {
-                        return mapping(key, item);
-                    }
+                if (is Key key, 
+                        exists item=outer[key]) {
+                    return mapping(key, item);
                 }
                 return null;
             }
             shared actual Iterator<Key->Result> iterator {
                 return outer.map((Key->Item e) 
-                        e.key->mapping(e.key,e.item))
+                        e.key -> mapping(e.key,e.item))
                                 .iterator;
             }
             shared actual Integer size { 
@@ -130,4 +132,5 @@ shared interface Map<out Key,out Item>
         }
         return mapped;
     }
+    
 }

@@ -13,7 +13,8 @@ shared class LazyList<out Element>(Element... elems)
     shared actual Element? item(Integer index) {
         if (index == 0) {
             return elems.first;
-        } else {
+        } 
+        else {
             return elems.skipping(index).first;
         }
     }
@@ -42,11 +43,13 @@ shared class LazyList<out Element>(Element... elems)
                 value els = from > 0 then elems.skipping(from)
                     else elems;
                 return LazyList(els.taking(to-from+1)...);
-            } else {
+            } 
+            else {
                 //reversed
                 throw;
             }
-        } else {
+        } 
+        else {
             value els = from > 0 then elems.skipping(from)
                 else elems;
             return LazyList(els...);
@@ -57,9 +60,10 @@ shared class LazyList<out Element>(Element... elems)
             Integer from, Integer length) {
         if (length > 0) {
             value els = from > 0 then elems.skipping(from)
-                else elems;
+                    else elems;
             return LazyList(els.taking(length)...);
-        } else {
+        } 
+        else {
             return {};
         }
     }

@@ -14,7 +14,7 @@ shared abstract class Float()
         extends Object()
         satisfies Scalar<Float> & Exponentiable<Float,Float> & 
                   Castable<Float> {
-
+    
     doc "Determines whether this value is undefined (that is, Not a Number or NaN).
          The undefined value has the property that it is not equal (`==`) 
          to itself, as a consequence the undefined value cannot sensibly be 
@@ -22,7 +22,7 @@ shared abstract class Float()
     shared Boolean undefined {
         return this!=this;
     }
-
+    
     doc "Determines whether this value is infinite in magnitude
          Produces `true` for `infinity` and `-infinity`.
          Produces `false` for a finite number, `+0`, `-0`, or
@@ -60,12 +60,12 @@ shared abstract class Float()
          `+0`, or `infinity`. Produces `false` for a 
          negative number, `-0`, or undefined."
     shared formal Boolean strictlyPositive;
-
+    
     doc "Determines if this value is a negative number,
          `-0`, or `-infinity`. Produces `false` for a
          positive number, `+0`, or undefined."
     shared formal Boolean strictlyNegative;
-
+    
 }
 
 doc "The `Float` value of the given string representation of 
@@ -77,4 +77,3 @@ doc "The `Float` value of the given string representation of
      that it may optionally begin with a sign character (`+` or 
      `-`)."
 shared Float? parseFloat(String string) { throw; }
-

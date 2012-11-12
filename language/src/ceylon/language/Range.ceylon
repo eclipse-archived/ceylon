@@ -24,7 +24,7 @@ shared class Range<Element>(first, last)
     
     doc "The end of the range."
     shared actual Element last;
-
+    
     shared actual String string {
         return first.string + ".." + last.string;
     }
@@ -34,15 +34,16 @@ shared class Range<Element>(first, last)
         return last<first; 
     }
     
-    Element next(Element x) {
-        return decreasing then x.predecessor 
+    Element next(Element x) =
+        decreasing then x.predecessor 
                 else x.successor;
-    }
 
     value distance = last.distanceFrom(first);
 
     doc "The nonzero number of elements in the range."
-    shared actual Integer size = (distance.positive then distance else -distance)+1;
+    shared actual Integer size {
+        return distance.magnitude + 1;
+    }
     
     doc "The index of the end of the range."
     shared actual Integer lastIndex { 
@@ -122,10 +123,9 @@ shared class Range<Element>(first, last)
     }
     
     doc "Determines if the range includes the given value."
-    shared Boolean includes(Element x) {
-        return decreasing then x<=first && x>=last
+    shared Boolean includes(Element x) =
+        decreasing then x<=first && x>=last
                 else x>=first && x<=last;
-    }
     
     /*shared Element[] excludingLast {
         throw; //todo!
@@ -226,6 +226,7 @@ shared class Range<Element>(first, last)
         }
         return includes(e) then Range(e, last) else {};
     }
+    
     shared actual Range<Element>|Empty taking(Integer take) {
         if (take == 0) {
             return {};
