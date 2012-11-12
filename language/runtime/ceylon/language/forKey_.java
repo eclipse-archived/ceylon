@@ -15,10 +15,10 @@ public class forKey_ {
 
     @TypeParameters({@TypeParameter(value="Key", satisfies="ceylon.language::Object"),
     		        @TypeParameter(value="Result")})
-    @TypeInfo("ceylon.language::Callable<Result,ceylon.language::Entry<Key,ceylon.language::Object>>")
+    @TypeInfo("ceylon.language::Callable<Result,ceylon.language::Tuple<ceylon.language::Entry<Key,ceylon.language::Object>,ceylon.language::Entry<Key,ceylon.language::Object>,ceylon.language::Empty>>")
     public static 
     <Key,Result> Callable<? extends Result> forKey(
-            @Name("resulting") @TypeInfo("ceylon.language::Callable<Result,Key>")
+            @Name("resulting") @TypeInfo("ceylon.language::Callable<Result,ceylon.language::Tuple<Key,Key,ceylon.language::Empty>>")
             final Callable<? extends Result> resulting) {
         return new AbstractCallable<Result>("forKey"){
             public Result $call(java.lang.Object entry) {

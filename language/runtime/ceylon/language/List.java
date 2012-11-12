@@ -59,7 +59,7 @@ public interface List<Element>
     @Annotations({@Annotation("actual"), @Annotation("default")})
     @TypeInfo("Element|ceylon.language.Nothing")
     public Element findLast(@Name("selecting")
-        @TypeInfo("ceylon.language.Callable<ceylon.language.Boolean,Element>")
+        @TypeInfo("ceylon.language::Callable<ceylon.language.Boolean,ceylon.language::Tuple<Element,Element,ceylon.language::Empty>>")
         Callable<? extends Boolean> selecting);
 
     @Annotations({@Annotation("actual"), @Annotation("default")})

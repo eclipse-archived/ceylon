@@ -48,7 +48,7 @@ public interface Map<Key,Item>
     @TypeInfo("ceylon.language::Map<Key,Result>")
     @TypeParameters(@TypeParameter(value="Result", satisfies="ceylon.language::Object"))
     public <Result> Map<? extends Key, ? extends Result> mapItems(
-            @Name("mapping") @TypeInfo("ceylon.language::Callable<Result,Key,Item>")
+            @Name("mapping") @TypeInfo("ceylon.language::Callable<Result,ceylon.language::Tuple<Key|Item,Key,ceylon.language::Tuple<Item,Item,ceylon.language::Empty>>>")
             Callable<? extends Result> mapping);
 
 }

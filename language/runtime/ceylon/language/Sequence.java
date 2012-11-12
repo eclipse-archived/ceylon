@@ -60,14 +60,14 @@ public interface Sequence<Element>
     @Annotations(@Annotation("actual"))
     @TypeInfo("ceylon.language::Sequence<Element>")
     public Sequence<? extends Element> sort(@Name("comparing")
-            @TypeInfo("ceylon.language::Callable<ceylon.language::Nothing|ceylon.language::Comparison,Element,Element>")
+            @TypeInfo("ceylon.language::Callable<ceylon.language::Nothing|ceylon.language::Comparison,ceylon.language::Tuple<Element,Element,ceylon.language::Tuple<Element,Element,ceylon.language::Empty>>>")
             Callable<? extends Comparison> comparing);
 
     @Annotations(@Annotation("actual"))
     @TypeParameters(@TypeParameter("Result"))
     @TypeInfo("ceylon.language::Sequence<Result>")
     public <Result> Sequence<? extends Result> collect(@Name("collecting")
-            @TypeInfo("ceylon.language::Callable<Result,Element>")
+            @TypeInfo("ceylon.language::Callable<Result,ceylon.language::Tuple<Element,Element,ceylon.language::Empty>>")
             Callable<? extends Result> collecting);
 
 }

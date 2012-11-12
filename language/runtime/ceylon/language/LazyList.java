@@ -111,7 +111,7 @@ public class LazyList<Element> implements List<Element> {
     @Annotations({@Annotation("actual"), @Annotation("default")})
     @TypeInfo("ceylon.language::Nothing|Element")
     public Element findLast(
-            @TypeInfo("ceylon.language::Callable<ceylon.language::Boolean,Element>")
+            @TypeInfo("ceylon.language::Callable<ceylon.language::Boolean,ceylon.language::Tuple<Element,Element,ceylon.language::Empty>>")
             Callable<? extends Boolean> selecting) {
         return elems.findLast(selecting);
     }

@@ -14,7 +14,7 @@ public class greaterThan_ {
     private greaterThan_(){}
 
     @TypeParameters(@TypeParameter(value="Element", satisfies="ceylon.language::Comparable<Element>"))
-    @TypeInfo("ceylon.language::Callable<ceylon.language::Boolean,Element>")
+    @TypeInfo("ceylon.language::Callable<ceylon.language::Boolean,ceylon.language::Tuple<Element,Element,ceylon.language::Empty>>")
     public static <Element extends Comparable<? super Element>> Callable<? extends Boolean> greaterThan(
             @Name("val") @TypeInfo("Element")
             final Element val) {
