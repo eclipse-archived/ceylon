@@ -7,8 +7,8 @@ import com.redhat.ceylon.compiler.java.language.ArraySequence;
 import com.redhat.ceylon.compiler.java.language.FilterIterable;
 import com.redhat.ceylon.compiler.java.language.InternalMap;
 import com.redhat.ceylon.compiler.java.language.MapIterable;
-import com.redhat.ceylon.compiler.java.language.StringOfNone;
-import com.redhat.ceylon.compiler.java.language.StringOfSome;
+import com.redhat.ceylon.compiler.java.language.EmptyString;
+import com.redhat.ceylon.compiler.java.language.SequenceString;
 import com.redhat.ceylon.compiler.java.metadata.Ceylon;
 import com.redhat.ceylon.compiler.java.metadata.Class;
 import com.redhat.ceylon.compiler.java.metadata.Defaulted;
@@ -67,7 +67,7 @@ public abstract class String
     @Ignore
     public static ceylon.language.String instance(java.lang.String s) {
         if (s==null) return null;
-        return s.isEmpty() ? StringOfNone.instance : new StringOfSome(s);
+        return s.isEmpty() ? EmptyString.instance : new SequenceString(s);
     }
 
     @Ignore
