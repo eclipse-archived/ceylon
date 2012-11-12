@@ -145,7 +145,7 @@ public class Util {
     }
 
     private static boolean isSubclassOfString(java.lang.Class<?> klass) {
-        return klass.getName().equals("com.redhat.ceylon.compiler.java.language.StringOfNone") || klass.getName().equals("com.redhat.ceylon.compiler.java.language.StringOfSome");
+        return klass.getName().equals("com.redhat.ceylon.compiler.java.language.EmptyString") || klass.getName().equals("com.redhat.ceylon.compiler.java.language.SequenceString");
     }
 
     private static boolean lookForInterface(java.lang.Class<?> klass, String className, 
