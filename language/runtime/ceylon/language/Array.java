@@ -6,7 +6,7 @@ import java.util.Arrays;
 
 import com.redhat.ceylon.compiler.java.Util;
 import com.redhat.ceylon.compiler.java.language.EmptyArray;
-import com.redhat.ceylon.compiler.java.language.ArrayOfSome;
+import com.redhat.ceylon.compiler.java.language.NonemptyArray;
 import com.redhat.ceylon.compiler.java.language.FilterIterable;
 import com.redhat.ceylon.compiler.java.language.MapIterable;
 import com.redhat.ceylon.compiler.java.metadata.Annotation;
@@ -60,7 +60,7 @@ public abstract class Array<Element> implements List<Element>, FixedSized<Elemen
         if (array.length == 0) {
             return new EmptyArray<Character>(array);
         } else {
-            return new ArrayOfSome<Character>(array);
+            return new NonemptyArray<Character>(array);
         }
     }
 
@@ -72,7 +72,7 @@ public abstract class Array<Element> implements List<Element>, FixedSized<Elemen
         if (array.length == 0) {
             return new EmptyArray<Integer>(array);
         } else {
-            return new ArrayOfSome<Integer>(array);
+            return new NonemptyArray<Integer>(array);
         }
     }
 
@@ -84,7 +84,7 @@ public abstract class Array<Element> implements List<Element>, FixedSized<Elemen
         if (array.length == 0) {
             return new EmptyArray<Integer>(array);
         } else {
-            return new ArrayOfSome<Integer>(array);
+            return new NonemptyArray<Integer>(array);
         }
     }
 
@@ -96,7 +96,7 @@ public abstract class Array<Element> implements List<Element>, FixedSized<Elemen
         if (array.length == 0) {
             return new EmptyArray<Integer>(array);
         } else {
-            return new ArrayOfSome<Integer>(array);
+            return new NonemptyArray<Integer>(array);
         }
     }
 
@@ -108,7 +108,7 @@ public abstract class Array<Element> implements List<Element>, FixedSized<Elemen
         if (array.length == 0) {
             return new EmptyArray<Integer>(array);
         } else {
-            return new ArrayOfSome<Integer>(array);
+            return new NonemptyArray<Integer>(array);
         }
     }
 
@@ -120,7 +120,7 @@ public abstract class Array<Element> implements List<Element>, FixedSized<Elemen
         if (array.length == 0) {
             return new EmptyArray<Float>(array);
         } else {
-            return new ArrayOfSome<Float>(array);
+            return new NonemptyArray<Float>(array);
         }
     }
 
@@ -132,7 +132,7 @@ public abstract class Array<Element> implements List<Element>, FixedSized<Elemen
         if (array.length == 0) {
             return new EmptyArray<Float>(array);
         } else {
-            return new ArrayOfSome<Float>(array);
+            return new NonemptyArray<Float>(array);
         }
     }
 
@@ -144,7 +144,7 @@ public abstract class Array<Element> implements List<Element>, FixedSized<Elemen
         if (array.length == 0) {
             return new EmptyArray<Boolean>(array);
         } else {
-            return new ArrayOfSome<Boolean>(array);
+            return new NonemptyArray<Boolean>(array);
         }
     }
 
@@ -156,7 +156,7 @@ public abstract class Array<Element> implements List<Element>, FixedSized<Elemen
         if (array.length == 0) {
             return new EmptyArray<String>(array);
         } else {
-            return new ArrayOfSome<String>(array);
+            return new NonemptyArray<String>(array);
         }
     }
 
@@ -168,7 +168,7 @@ public abstract class Array<Element> implements List<Element>, FixedSized<Elemen
         if (array.length == 0) {
             return new EmptyArray<T>(array);
         } else {
-            return new ArrayOfSome<T>(array);
+            return new NonemptyArray<T>(array);
         }
     }
 
@@ -181,7 +181,7 @@ public abstract class Array<Element> implements List<Element>, FixedSized<Elemen
         if (length == 0) {
             return new EmptyArray<T>(array);
         } else {
-            return new ArrayOfSome<T>(array);
+            return new NonemptyArray<T>(array);
         }
     }
 
@@ -309,27 +309,27 @@ public abstract class Array<Element> implements List<Element>, FixedSized<Elemen
                 toIndex = fromIndex;
                 fromIndex = _tmp;
             }
-            ArrayOfSome<Element> rval;
+            NonemptyArray<Element> rval;
             if (typeClass == char.class) {
-                rval = new ArrayOfSome<Element>(Arrays.copyOfRange((char[])array, (int)fromIndex, (int)toIndex+1));
+                rval = new NonemptyArray<Element>(Arrays.copyOfRange((char[])array, (int)fromIndex, (int)toIndex+1));
             } else if (typeClass == byte.class) {
-                rval = new ArrayOfSome<Element>(Arrays.copyOfRange((byte[])array, (int)fromIndex, (int)toIndex+1));
+                rval = new NonemptyArray<Element>(Arrays.copyOfRange((byte[])array, (int)fromIndex, (int)toIndex+1));
             } else if (typeClass == short.class) {
-                rval = new ArrayOfSome<Element>(Arrays.copyOfRange((short[])array, (int)fromIndex, (int)toIndex+1));
+                rval = new NonemptyArray<Element>(Arrays.copyOfRange((short[])array, (int)fromIndex, (int)toIndex+1));
             } else if (typeClass == int.class) {
-                rval = new ArrayOfSome<Element>(Arrays.copyOfRange((int[])array, (int)fromIndex, (int)toIndex+1));
+                rval = new NonemptyArray<Element>(Arrays.copyOfRange((int[])array, (int)fromIndex, (int)toIndex+1));
             } else if (typeClass == long.class) {
-                rval = new ArrayOfSome<Element>(Arrays.copyOfRange((long[])array, (int)fromIndex, (int)toIndex+1));
+                rval = new NonemptyArray<Element>(Arrays.copyOfRange((long[])array, (int)fromIndex, (int)toIndex+1));
             } else if (typeClass == float.class) {
-                rval = new ArrayOfSome<Element>(Arrays.copyOfRange((float[])array, (int)fromIndex, (int)toIndex+1));
+                rval = new NonemptyArray<Element>(Arrays.copyOfRange((float[])array, (int)fromIndex, (int)toIndex+1));
             } else if (typeClass == double.class) {
-                rval = new ArrayOfSome<Element>(Arrays.copyOfRange((double[])array, (int)fromIndex, (int)toIndex+1));
+                rval = new NonemptyArray<Element>(Arrays.copyOfRange((double[])array, (int)fromIndex, (int)toIndex+1));
             } else if (typeClass == boolean.class) {
-                rval = new ArrayOfSome<Element>(Arrays.copyOfRange((boolean[])array, (int)fromIndex, (int)toIndex+1));
+                rval = new NonemptyArray<Element>(Arrays.copyOfRange((boolean[])array, (int)fromIndex, (int)toIndex+1));
             } else if (typeClass == java.lang.String.class) {
-                rval = new ArrayOfSome<Element>(Arrays.copyOfRange((java.lang.String[])array, (int)fromIndex, (int)toIndex+1));
+                rval = new NonemptyArray<Element>(Arrays.copyOfRange((java.lang.String[])array, (int)fromIndex, (int)toIndex+1));
             } else {
-                rval = new ArrayOfSome<Element>(Arrays.copyOfRange((Element[])array, (int)fromIndex, (int)toIndex+1));
+                rval = new NonemptyArray<Element>(Arrays.copyOfRange((Element[])array, (int)fromIndex, (int)toIndex+1));
             }
             return revert ? rval.getReversed() : rval;
         }
@@ -347,25 +347,25 @@ public abstract class Array<Element> implements List<Element>, FixedSized<Elemen
             return EmptyArray.instance(typeClass, null);
         } else {
             if (typeClass == char.class) {
-                return new ArrayOfSome<Element>(Arrays.copyOfRange((char[])array, (int)fromIndex, (int)(fromIndex + resultLength)));
+                return new NonemptyArray<Element>(Arrays.copyOfRange((char[])array, (int)fromIndex, (int)(fromIndex + resultLength)));
             } else if (typeClass == byte.class) {
-                return new ArrayOfSome<Element>(Arrays.copyOfRange((byte[])array, (int)fromIndex, (int)(fromIndex + resultLength)));
+                return new NonemptyArray<Element>(Arrays.copyOfRange((byte[])array, (int)fromIndex, (int)(fromIndex + resultLength)));
             } else if (typeClass == short.class) {
-                return new ArrayOfSome<Element>(Arrays.copyOfRange((short[])array, (int)fromIndex, (int)(fromIndex + resultLength)));
+                return new NonemptyArray<Element>(Arrays.copyOfRange((short[])array, (int)fromIndex, (int)(fromIndex + resultLength)));
             } else if (typeClass == int.class) {
-                return new ArrayOfSome<Element>(Arrays.copyOfRange((int[])array, (int)fromIndex, (int)(fromIndex + resultLength)));
+                return new NonemptyArray<Element>(Arrays.copyOfRange((int[])array, (int)fromIndex, (int)(fromIndex + resultLength)));
             } else if (typeClass == long.class) {
-                return new ArrayOfSome<Element>(Arrays.copyOfRange((long[])array, (int)fromIndex, (int)(fromIndex + resultLength)));
+                return new NonemptyArray<Element>(Arrays.copyOfRange((long[])array, (int)fromIndex, (int)(fromIndex + resultLength)));
             } else if (typeClass == float.class) {
-                return new ArrayOfSome<Element>(Arrays.copyOfRange((float[])array, (int)fromIndex, (int)(fromIndex + resultLength)));
+                return new NonemptyArray<Element>(Arrays.copyOfRange((float[])array, (int)fromIndex, (int)(fromIndex + resultLength)));
             } else if (typeClass == double.class) {
-                return new ArrayOfSome<Element>(Arrays.copyOfRange((double[])array, (int)fromIndex, (int)(fromIndex + resultLength)));
+                return new NonemptyArray<Element>(Arrays.copyOfRange((double[])array, (int)fromIndex, (int)(fromIndex + resultLength)));
             } else if (typeClass == boolean.class) {
-                return new ArrayOfSome<Element>(Arrays.copyOfRange((boolean[])array, (int)fromIndex, (int)(fromIndex + resultLength)));
+                return new NonemptyArray<Element>(Arrays.copyOfRange((boolean[])array, (int)fromIndex, (int)(fromIndex + resultLength)));
             } else if (typeClass == java.lang.String.class) {
-                return new ArrayOfSome<Element>(Arrays.copyOfRange((java.lang.String[])array, (int)fromIndex, (int)(fromIndex + resultLength)));
+                return new NonemptyArray<Element>(Arrays.copyOfRange((java.lang.String[])array, (int)fromIndex, (int)(fromIndex + resultLength)));
             } else {
-                return new ArrayOfSome<Element>(Arrays.copyOfRange((Element[])array, (int)fromIndex, (int)(fromIndex + resultLength)));
+                return new NonemptyArray<Element>(Arrays.copyOfRange((Element[])array, (int)fromIndex, (int)(fromIndex + resultLength)));
             }
         }
     }
