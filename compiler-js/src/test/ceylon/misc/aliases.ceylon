@@ -76,4 +76,6 @@ void testAliasing() {
     Object xxxxx2 = "XXXX";
     check(is String|Integer xxxxx1, "is String|Integer");
     check(is String&Some<Void> xxxxx2, "is String&Some");
+    function cualquiera(Boolean... bits) = any(bits...);
+    check(cualquiera(true,true,true), "seq arg method alias");
 }
