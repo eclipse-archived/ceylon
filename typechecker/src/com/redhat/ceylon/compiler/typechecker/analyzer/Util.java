@@ -15,6 +15,7 @@ import com.redhat.ceylon.compiler.typechecker.model.TypedDeclaration;
 import com.redhat.ceylon.compiler.typechecker.tree.Message;
 import com.redhat.ceylon.compiler.typechecker.tree.Node;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree;
+import com.redhat.ceylon.compiler.typechecker.tree.Tree.AttributeDeclaration;
 import com.redhat.ceylon.compiler.typechecker.tree.Visitor;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.Expression;
 
@@ -119,7 +120,9 @@ class Util {
             }
             else {
                 if (s instanceof Tree.AttributeDeclaration) {
-                    if ( ((Tree.AttributeDeclaration) s).getSpecifierOrInitializerExpression()!=null ) {
+                    AttributeDeclaration a = (Tree.AttributeDeclaration) s;
+					if ( !a.getDeclarationModel().isTransient() &&
+							a.getSpecifierOrInitializerExpression()!=null ) {
                         return s;
                     }
                 }

@@ -454,7 +454,7 @@ public class DeclarationVisitor extends Visitor {
         that.setDeclarationModel(v);
         visitDeclaration(that, v);
         super.visit(that);
-        if ( v.isInterfaceMember() && !v.isFormal()) {
+        if (v.isInterfaceMember() && !v.isFormal()) {
             if (that.getSpecifierOrInitializerExpression()==null) {
                 that.addError("interface attribute must be annotated formal", 1400);
             }
@@ -884,6 +884,27 @@ public class DeclarationVisitor extends Visitor {
                 that.addError("declaration is not a value, and may not be annotated variable", 1500);
             }
         }
+        if (hasAnnotation(al, "transient")) {
+            if (model instanceof Value) {
+            	((Value) model).setTransient(true);
+            }
+            else if (model instanceof ValueParameter) {
+                that.addError("parameter may not be annotated transient: " + model.getName());
+            }
+            else if (model instanceof Getter) {
+                that.addError("getter may not be annotated transient: " + model.getName());
+            }
+            else {
+                that.addError("declaration is not a value, and may not be annotated transient", 1500);
+            }
+        }
+        if (model instanceof Value) {
+        	Value value = (Value) model;
+        	if (value.isVariable() && value.isTransient()) {
+        		that.addError("value may not be annotated both variable and transient: " + model.getName());
+        	}
+        }
+        
         
         buildAnnotations(al, model.getAnnotations());        
     }

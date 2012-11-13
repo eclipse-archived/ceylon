@@ -478,8 +478,11 @@ public class ExpressionVisitor extends Visitor {
             if (d instanceof Getter) {
                 ref.addError("referenced value is a getter: " + d.getName(), 3100);
             }
-            if ( ( (TypedDeclaration) d ).isVariable() ) {
+            if ( ((TypedDeclaration) d).isVariable() ) {
                 ref.addError("referenced value is variable: " + d.getName(), 3100);
+            }
+            if ( (d instanceof MethodOrValue) && ((MethodOrValue) d).isTransient() ) {
+                ref.addError("referenced value is transient: " + d.getName(), 3100);
             }
             if ( d.isDefault() ) {
                 ref.addError("referenced value is default and may be refined: " + d.getName(), 3100);

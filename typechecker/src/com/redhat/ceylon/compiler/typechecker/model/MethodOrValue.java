@@ -26,4 +26,8 @@ public abstract class MethodOrValue extends TypedDeclaration {
         initializerParameter = d;
     }
 
+    public boolean isTransient() {
+        return true;
+    }
+
 }
