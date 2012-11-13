@@ -18,6 +18,16 @@ Directory structure:
 * `runtime/`      - the Java implementation
 * `test/`         - the tests
 
+Build the compiler and tools
+----------------------------
+
+First you must make sure you have built the 
+[ceylon-common](https://github.com/ceylon/ceylon-common) project.
+
+Go into `ceylon-common` and run
+
+    ant clean publish
+
 Repository
 ----------
 
