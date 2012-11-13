@@ -39,10 +39,15 @@ Directory structure:
 The type checker project depends on two projects that you need 
 to build locally:
 
+* [ceylon-common](https://github.com/ceylon/ceylon-common)
 * [ceylon.language](https://github.com/ceylon/ceylon.language)
 * [ceylon-module-resolver](https://github.com/ceylon/ceylon-module-resolver)
 
-Go into `ceylon.language` first and run
+Go into `ceylon-common` first and run
+
+    ant clean publish
+
+Then go into `ceylon.language` and run
 
     ant clean publish
 
