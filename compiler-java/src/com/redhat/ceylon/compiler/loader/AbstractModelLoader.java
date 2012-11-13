@@ -630,7 +630,8 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
             }
             ClassMirror classMirror = lookupClassMirror(typeName);
             if (classMirror == null) {
-                Declaration languageModuleDeclaration = typeFactory.getLanguageModuleDeclaration(typeName);
+                String simpleName = typeName.substring(typeName.lastIndexOf(".")+1);
+                Declaration languageModuleDeclaration = typeFactory.getLanguageModuleDeclaration(simpleName);
                 if (languageModuleDeclaration != null) {
                     return languageModuleDeclaration;
                 }
