@@ -96,7 +96,7 @@ public class ModuleVisitor extends Visitor {
         if (phase==Phase.REMAINING) {
             List<String> name = getNameAsList(that.getImportPath());
             if (name.isEmpty()) {
-                that.addError("missing packge name");
+                that.addError("missing package name");
             }
             else if (name.get(0).equals(Module.DEFAULT_MODULE_NAME)) {
                 that.getImportPath().addError("default is a reserved module name");
