@@ -134,7 +134,7 @@ public final class f5_ {
             let
             {
                 long $ceylontmp$n$15 = .com.redhat.ceylon.compiler.java.test.structure.toplevel.f5_.f5$n();
-                .ceylon.language.Iterable<? extends .ceylon.language.Integer> $ceylontmp$seq$16 = .com.redhat.ceylon.compiler.java.test.structure.toplevel.f5_.f5$seq($ceylontmp$n$15);
+                .ceylon.language.List<? extends .ceylon.language.Integer> $ceylontmp$seq$16 = .com.redhat.ceylon.compiler.java.test.structure.toplevel.f5_.f5$seq($ceylontmp$n$15);
                 f5($ceylontmp$n$15, $ceylontmp$seq$16);
             }
             returning null;
@@ -149,17 +149,17 @@ public final class f5_ {
         (
             let
             {
-                .ceylon.language.Iterable<? extends .ceylon.language.Integer> $ceylontmp$seq$18 = .com.redhat.ceylon.compiler.java.test.structure.toplevel.f5_.f5$seq(n);
+                .ceylon.language.List<? extends .ceylon.language.Integer> $ceylontmp$seq$18 = .com.redhat.ceylon.compiler.java.test.structure.toplevel.f5_.f5$seq(n);
                 f5(n, $ceylontmp$seq$18);
             }
             returning null;
         );
     }
     
-    public static final .ceylon.language.Iterable<? extends .ceylon.language.Integer> f5$seq(final long n) {
-        return (.ceylon.language.Iterable).ceylon.language.empty_.getEmpty$();
+    public static final .ceylon.language.List<? extends .ceylon.language.Integer> f5$seq(final long n) {
+        return (.ceylon.language.List).ceylon.language.empty_.getEmpty$();
     }
     
-    public static void f5(final long n, final .ceylon.language.Iterable<? extends .ceylon.language.Integer> seq) {
+    public static void f5(final long n, final .ceylon.language.List<? extends .ceylon.language.Integer> seq) {
     }
 }

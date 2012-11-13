@@ -9,18 +9,18 @@ final class sequencedTypeParamInvocation2_ {
         (
             let
             {
-                .ceylon.language.Iterable<? extends T> $ceylontmp$ts$1 = .com.redhat.ceylon.compiler.java.test.expression.invoke.sequencedTypeParamInvocation2_.sequencedTypeParamInvocation2$ts();
+                .ceylon.language.List<? extends T> $ceylontmp$ts$1 = .com.redhat.ceylon.compiler.java.test.expression.invoke.sequencedTypeParamInvocation2_.sequencedTypeParamInvocation2$ts();
                 sequencedTypeParamInvocation2($ceylontmp$ts$1);
             }
             returning null;
         );
     }
     
-    static final <T>.ceylon.language.Iterable<? extends T> sequencedTypeParamInvocation2$ts() {
-        return (.ceylon.language.Iterable).ceylon.language.empty_.getEmpty$();
+    static final <T>.ceylon.language.List<? extends T> sequencedTypeParamInvocation2$ts() {
+        return (.ceylon.language.List).ceylon.language.empty_.getEmpty$();
     }
     
-    static <T>void sequencedTypeParamInvocation2(final .ceylon.language.Iterable<? extends T> ts) {
+    static <T>void sequencedTypeParamInvocation2(final .ceylon.language.List<? extends T> ts) {
     }
 }
 final class sequencedTypeParamInvocation2_test_ {
@@ -32,7 +32,7 @@ final class sequencedTypeParamInvocation2_test_ {
         (
             let
             {
-                .ceylon.language.Iterable<? extends .ceylon.language.Integer> $arg$2$0 = new .com.redhat.ceylon.compiler.java.language.ArraySequence(.ceylon.language.Integer.instance(1L), .ceylon.language.Integer.instance(2L));
+                .ceylon.language.List<? extends .ceylon.language.Integer> $arg$2$0 = new .com.redhat.ceylon.compiler.java.language.ArraySequence(.ceylon.language.Integer.instance(1L), .ceylon.language.Integer.instance(2L));
                 .com.redhat.ceylon.compiler.java.test.expression.invoke.sequencedTypeParamInvocation2_.<.ceylon.language.Integer>sequencedTypeParamInvocation2($arg$2$0);
             }
             returning null;

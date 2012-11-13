@@ -3,7 +3,7 @@ package com.redhat.ceylon.compiler.java.test.expression.invoke;
 class IndirectInvoke<X> {
     
     IndirectInvoke() {
-        this.value1 = new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.java.lang.Object>("ceylon.language::Callable<ceylon.language::Void>"){
+        this.value1 = new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.java.lang.Object>("Void()"){
             
             @.java.lang.Override
             public .java.lang.Object $call() {
@@ -16,28 +16,28 @@ class IndirectInvoke<X> {
                 );
             }
         };
-        this.value2 = new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.ceylon.language.Integer>("ceylon.language::Callable<ceylon.language::Integer>"){
+        this.value2 = new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.ceylon.language.Integer>("Integer()"){
             
             @.java.lang.Override
             public .ceylon.language.Integer $call() {
                 return .ceylon.language.Integer.instance(mGetter2());
             }
         };
-        this.value3 = new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.ceylon.language.Boolean>("ceylon.language::Callable<ceylon.language::Boolean>"){
+        this.value3 = new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.ceylon.language.Boolean>("Boolean()"){
             
             @.java.lang.Override
             public .ceylon.language.Boolean $call() {
                 return .ceylon.language.Boolean.instance(mGetter3());
             }
         };
-        this.value4 = new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.ceylon.language.String>("ceylon.language::Callable<ceylon.language::String>"){
+        this.value4 = new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.ceylon.language.String>("String()"){
             
             @.java.lang.Override
             public .ceylon.language.String $call() {
                 return .ceylon.language.String.instance(mGetter4());
             }
         };
-        this.value5 = new .com.redhat.ceylon.compiler.java.language.AbstractCallable<X>("ceylon.language::Callable<X>"){
+        this.value5 = new .com.redhat.ceylon.compiler.java.language.AbstractCallable<X>("X()"){
             
             @.java.lang.Override
             public X $call() {

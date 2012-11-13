@@ -14,7 +14,19 @@ class MethodSpecifyingUnaryTopLevel {
     }
     
     private final void foo(final .java.lang.String s) {
-        .com.redhat.ceylon.compiler.java.test.structure.method.methodSpecifyingUnaryTopLevel_f_.methodSpecifyingUnaryTopLevel_f(s);
+        new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.java.lang.Object>("Void(String)"){
+            
+            @.java.lang.Override
+            public .java.lang.Object $call(final .java.lang.Object $param$0) {
+                return (
+                    let
+                    {
+                        .com.redhat.ceylon.compiler.java.test.structure.method.methodSpecifyingUnaryTopLevel_f_.methodSpecifyingUnaryTopLevel_f(((.ceylon.language.String)$param$0).toString());
+                    }
+                    returning null;
+                );
+            }
+        };
     }
     
     public static void main(.java.lang.String[] args) {

@@ -3,24 +3,19 @@ package com.redhat.ceylon.compiler.java.test.expression.lambda;
 class MethodSpecifyingLambda {
     
     MethodSpecifyingLambda() {
-    }
-    
-    public final .java.lang.String m() {
-        return (
-            let
-            {
-                .java.lang.String $ceylontmp$name$1 = m$name();
+        this.m = new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.ceylon.language.String>("String()"){
+            
+            @.java.lang.Override
+            public .ceylon.language.String $call(final .java.lang.Object $param$0) {
+                final .java.lang.String name2 = ((.ceylon.language.String)$param$0).toString();
+                return .ceylon.language.String.instance("hello " + name2);
             }
-            returning m($ceylontmp$name$1);
-        );
+        };
     }
+    private final .ceylon.language.Callable<? extends .ceylon.language.String> m;
     
-    public final .java.lang.String m$name() {
-        return "world";
-    }
-    
-    public final .java.lang.String m(final .java.lang.String name) {
-        return ("hello " + name).toString();
+    public final .ceylon.language.Callable<? extends .ceylon.language.String> getM() {
+        return m;
     }
     
     public static void main(.java.lang.String[] args) {

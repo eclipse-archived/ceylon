@@ -46,7 +46,7 @@ public class LocalKlass {
                 (
                     let
                     {
-                        .ceylon.language.Iterable<? extends T> $ceylontmp$t$1 = m2$t(arg1);
+                        .ceylon.language.List<? extends T> $ceylontmp$t$1 = m2$t(arg1);
                         m2(arg1, $ceylontmp$t$1);
                     }
                     returning null;
@@ -54,8 +54,8 @@ public class LocalKlass {
             }
             
             @.com.redhat.ceylon.compiler.java.metadata.Ignore
-            public final .ceylon.language.Iterable<? extends T> m2$t(final long arg1) {
-                return (.ceylon.language.Iterable).ceylon.language.empty_.getEmpty$();
+            public final .ceylon.language.List<? extends T> m2$t(final long arg1) {
+                return (.ceylon.language.List).ceylon.language.empty_.getEmpty$();
             }
             
             @.com.redhat.ceylon.compiler.java.metadata.Annotations({@.com.redhat.ceylon.compiler.java.metadata.Annotation("shared")})
@@ -64,8 +64,8 @@ public class LocalKlass {
             @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Integer")
             final long arg1, @.com.redhat.ceylon.compiler.java.metadata.Name("t")
             @.com.redhat.ceylon.compiler.java.metadata.Sequenced
-            @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Iterable<T>")
-            final .ceylon.language.Iterable<? extends T> t) {
+            @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Sequential<T>")
+            final .ceylon.language.List<? extends T> t) {
             }
             
             @.com.redhat.ceylon.compiler.java.metadata.Annotations({@.com.redhat.ceylon.compiler.java.metadata.Annotation("shared"), @.com.redhat.ceylon.compiler.java.metadata.Annotation("actual")})

@@ -19,7 +19,19 @@ class MethodSpecifierTopLevel {
     }
     
     private final void foo() {
-        .com.redhat.ceylon.compiler.java.test.structure.method.f_.f();
+        new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.java.lang.Object>("Void()"){
+            
+            @.java.lang.Override
+            public .java.lang.Object $call() {
+                return (
+                    let
+                    {
+                        .com.redhat.ceylon.compiler.java.test.structure.method.f_.f();
+                    }
+                    returning null;
+                );
+            }
+        };
     }
     
     public static void main(.java.lang.String[] args) {

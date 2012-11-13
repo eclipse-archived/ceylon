@@ -12,18 +12,18 @@ class Bug687 {
         (
             let
             {
-                .ceylon.language.Iterable<? extends T> $ceylontmp$elements$1 = sort$elements();
+                .ceylon.language.List<? extends T> $ceylontmp$elements$1 = sort$elements();
                 sort($ceylontmp$elements$1);
             }
             returning null;
         );
     }
     
-    public final <T extends .ceylon.language.Number>.ceylon.language.Iterable<? extends T> sort$elements() {
-        return (.ceylon.language.Iterable).ceylon.language.empty_.getEmpty$();
+    public final <T extends .ceylon.language.Number>.ceylon.language.List<? extends T> sort$elements() {
+        return (.ceylon.language.List).ceylon.language.empty_.getEmpty$();
     }
     
-    public final <T extends .ceylon.language.Number>void sort(final .ceylon.language.Iterable<? extends T> elements) {
+    public final <T extends .ceylon.language.Number>void sort(final .ceylon.language.List<? extends T> elements) {
     }
     
     public final <T extends .ceylon.language.Number>void sort3(final .ceylon.language.Iterable<? extends T> elements) {
@@ -33,26 +33,26 @@ class Bug687 {
         (
             let
             {
-                .ceylon.language.Iterable $ceylontmp$elements$3 = sort2$elements();
+                .ceylon.language.List $ceylontmp$elements$3 = sort2$elements();
                 sort2($ceylontmp$elements$3);
             }
             returning null;
         );
     }
     
-    public final .ceylon.language.Iterable sort2$elements() {
-        return (.ceylon.language.Iterable).ceylon.language.empty_.getEmpty$();
+    public final .ceylon.language.List sort2$elements() {
+        return (.ceylon.language.List).ceylon.language.empty_.getEmpty$();
     }
     
-    public final void sort2(final .ceylon.language.Iterable elements) {
+    public final void sort2(final .ceylon.language.List elements) {
     }
     
     private final void foo(final .ceylon.language.Callable<? extends .java.lang.Object> p) {
-        sort((.ceylon.language.Iterable).ceylon.language.empty_.getEmpty$());
+        sort((.ceylon.language.List).ceylon.language.empty_.getEmpty$());
         (
             let
             {
-                .ceylon.language.Iterable $arg$4$0 = .ceylon.language.empty_.getEmpty$();
+                .ceylon.language.List $arg$4$0 = .ceylon.language.empty_.getEmpty$();
                 sort($arg$4$0);
             }
             returning null;
@@ -61,7 +61,7 @@ class Bug687 {
         (
             let
             {
-                .ceylon.language.Iterable $arg$5$0 = .ceylon.language.empty_.getEmpty$();
+                .ceylon.language.List $arg$5$0 = .ceylon.language.empty_.getEmpty$();
                 sort2($arg$5$0);
             }
             returning null;
@@ -70,11 +70,11 @@ class Bug687 {
         (
             let
             {
-                .ceylon.language.Iterable $arg$6$0 = .ceylon.language.empty_.getEmpty$();
+                .ceylon.language.List $arg$6$0 = .ceylon.language.empty_.getEmpty$();
             }
             returning p.$call($arg$6$0);
         );
-        final .ceylon.language.Callable<? extends .java.lang.Object> f = new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.java.lang.Object>("ceylon.language::Callable<ceylon.language::Void,ceylon.language::Iterable<ceylon.language.Bottom>>"){
+        final .ceylon.language.Callable<? extends .java.lang.Object> f = new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.java.lang.Object>("Void(Iterable<Bottom>)"){
             
             @.java.lang.Override
             public .java.lang.Object $call(final .java.lang.Object $param$0) {

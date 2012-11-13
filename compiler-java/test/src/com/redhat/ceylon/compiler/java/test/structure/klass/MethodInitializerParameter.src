@@ -19,18 +19,18 @@ class MethodInitializerParameter<T> {
         (
             let
             {
-                .ceylon.language.Iterable<? extends .ceylon.language.Integer> $ceylontmp$seq$1 = m2$seq(i);
+                .ceylon.language.List<? extends .ceylon.language.Integer> $ceylontmp$seq$1 = m2$seq(i);
                 m2(i, $ceylontmp$seq$1);
             }
             returning null;
         );
     }
     
-    private final .ceylon.language.Iterable<? extends .ceylon.language.Integer> m2$seq(final long i) {
-        return (.ceylon.language.Iterable).ceylon.language.empty_.getEmpty$();
+    private final .ceylon.language.List<? extends .ceylon.language.Integer> m2$seq(final long i) {
+        return (.ceylon.language.List).ceylon.language.empty_.getEmpty$();
     }
     
-    private final void m2(final long i, final .ceylon.language.Iterable<? extends .ceylon.language.Integer> seq) {
+    private final void m2(final long i, final .ceylon.language.List<? extends .ceylon.language.Integer> seq) {
         m2.$call(i, seq);
     }
     private final .ceylon.language.Callable<? extends T> m3;

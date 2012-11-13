@@ -13,19 +13,24 @@ class KeywordInCallable {
             private enum_() {
             }
             
-            .java.lang.Object $enum() {
-                (
-                    let
-                    {
-                        $goto();
+            .ceylon.language.Callable<? extends .java.lang.Object> $enum() {
+                return new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.java.lang.Object>("Void()"){
+                    
+                    @.java.lang.Override
+                    public .java.lang.Object $call() {
+                        return (
+                            let
+                            {
+                                $goto();
+                            }
+                            returning null;
+                        );
                     }
-                    returning null;
-                );
-                return null;
+                };
             }
         }
         final enum_ enum = new enum_();
-        m(new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.java.lang.Object>("ceylon.language::Callable<ceylon.language::Void>"){
+        m(new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.java.lang.Object>("Void()"){
             
             @.java.lang.Override
             public .java.lang.Object $call() {
@@ -38,10 +43,10 @@ class KeywordInCallable {
                 );
             }
         });
-        m(new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.java.lang.Object>("ceylon.language::Callable<ceylon.language::Void>"){
+        m(new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.ceylon.language.Callable<? extends .java.lang.Object>>("Void()()"){
             
             @.java.lang.Override
-            public .java.lang.Object $call() {
+            public .ceylon.language.Callable<? extends .java.lang.Object> $call() {
                 return enum.$enum();
             }
         });

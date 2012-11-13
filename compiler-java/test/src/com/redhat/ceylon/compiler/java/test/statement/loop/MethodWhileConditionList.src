@@ -66,7 +66,7 @@ class MethodWhileConditionList {
         while (true) {
             .java.lang.Object $y$8;
             .ceylon.language.List<? extends .java.lang.Object> $x$6;
-            if (($x$6 = x) instanceof .ceylon.language.FixedSized && !((.ceylon.language.FixedSized)$x$6).getEmpty()) {
+            if (($x$6 = x) instanceof .ceylon.language.Sequence) {
                 final .ceylon.language.Sequence<? extends .java.lang.Object> $x$7 = (.ceylon.language.Sequence<? extends .java.lang.Object>)$x$6;
                 if (($y$8 = $x$7.item(.ceylon.language.Integer.instance(0L))) instanceof .ceylon.language.Integer) {
                     final long $y$9 = ((.ceylon.language.Integer)$y$8).longValue();

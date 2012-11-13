@@ -22,6 +22,6 @@ class MethodDefaultedParamCaptureInitParam {
     }
     
     private final .java.lang.String m(final .java.lang.String t) {
-        return t.toString();
+        return t;
     }
 }

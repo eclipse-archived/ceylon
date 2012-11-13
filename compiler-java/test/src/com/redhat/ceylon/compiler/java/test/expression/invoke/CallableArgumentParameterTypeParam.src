@@ -30,7 +30,7 @@ final class callableArgumentParameterTypeParam_m_ {
     }
     
     static void callableArgumentParameterTypeParam_m() {
-        .com.redhat.ceylon.compiler.java.test.expression.invoke.callableArgumentParameterTypeParam_f_.<.ceylon.language.String>callableArgumentParameterTypeParam_f(new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.java.lang.Object>("ceylon.language::Callable<ceylon.language::Void,ceylon.language::String>"){
+        .com.redhat.ceylon.compiler.java.test.expression.invoke.callableArgumentParameterTypeParam_f_.<.ceylon.language.String>callableArgumentParameterTypeParam_f(new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.java.lang.Object>("Void(String)"){
             
             @.java.lang.Override
             public .java.lang.Object $call(final .java.lang.Object $param$0) {
@@ -43,7 +43,7 @@ final class callableArgumentParameterTypeParam_m_ {
                 );
             }
         });
-        .com.redhat.ceylon.compiler.java.test.expression.invoke.callableArgumentParameterTypeParam_f_.<.ceylon.language.Integer>callableArgumentParameterTypeParam_f(new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.java.lang.Object>("ceylon.language::Callable<ceylon.language::Void,ceylon.language::Integer>"){
+        .com.redhat.ceylon.compiler.java.test.expression.invoke.callableArgumentParameterTypeParam_f_.<.ceylon.language.Integer>callableArgumentParameterTypeParam_f(new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.java.lang.Object>("Void(Integer)"){
             
             @.java.lang.Override
             public .java.lang.Object $call(final .java.lang.Object $param$0) {

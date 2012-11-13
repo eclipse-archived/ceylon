@@ -30,7 +30,7 @@ class ForIfNonEmptySequence {
                         while (true) {
                             if (!this.x()) break;
                             .ceylon.language.List<? extends .ceylon.language.Integer> $x$1 = null;
-                            if (($x$1 = x) instanceof .ceylon.language.FixedSized && !((.ceylon.language.FixedSized)$x$1).getEmpty()) {
+                            if (($x$1 = x) instanceof .ceylon.language.Sequence) {
                                 $x$2 = (.ceylon.language.Sequence<? extends .ceylon.language.Integer>)$x$1;
                                 break;
                             }
@@ -71,7 +71,7 @@ class ForIfNonEmptySequence {
                         while (true) {
                             if (!this.x()) break;
                             .ceylon.language.List<? extends .ceylon.language.Integer> $s$4 = null;
-                            if (($s$4 = x) instanceof .ceylon.language.FixedSized && !((.ceylon.language.FixedSized)$s$4).getEmpty()) {
+                            if (($s$4 = x) instanceof .ceylon.language.Sequence) {
                                 $s$5 = (.ceylon.language.Sequence<? extends .ceylon.language.Integer>)$s$4;
                                 break;
                             }

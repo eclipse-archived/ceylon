@@ -8,9 +8,9 @@ class MethodWhileNonEmptySequence {
     public final void m(final .java.lang.String s) {
         while (true) {
             .ceylon.language.String $s$0;
-            if (($s$0 = .ceylon.language.String.instance(s)) instanceof .ceylon.language.FixedSized && !((.ceylon.language.FixedSized)$s$0).getEmpty()) {
-                final .ceylon.language.List<? extends .ceylon.language.Character> $s$1 = (.ceylon.language.List<? extends .ceylon.language.Character>)$s$0;
-                .ceylon.language.print_.print(((.ceylon.language.Some<? extends .ceylon.language.Character>)$s$1).getFirst());
+            if (($s$0 = .ceylon.language.String.instance(s)) instanceof .ceylon.language.Sequence) {
+                final .ceylon.language.List<? extends .ceylon.language.Character> $s$1 = $s$0;
+                .ceylon.language.print_.print(((.ceylon.language.Sequence<? extends .ceylon.language.Character>)$s$1).getFirst());
             } else break;
         }
     }
@@ -18,9 +18,9 @@ class MethodWhileNonEmptySequence {
     public final void mvar(final .java.lang.String s) {
         while (true) {
             .ceylon.language.String $t$2;
-            if (($t$2 = .ceylon.language.String.instance(s)) instanceof .ceylon.language.FixedSized && !((.ceylon.language.FixedSized)$t$2).getEmpty()) {
-                final .ceylon.language.List<? extends .ceylon.language.Character> $t$3 = (.ceylon.language.List<? extends .ceylon.language.Character>)$t$2;
-                .ceylon.language.print_.print(((.ceylon.language.Some<? extends .ceylon.language.Character>)$t$3).getFirst());
+            if (($t$2 = .ceylon.language.String.instance(s)) instanceof .ceylon.language.Sequence) {
+                final .ceylon.language.List<? extends .ceylon.language.Character> $t$3 = $t$2;
+                .ceylon.language.print_.print(((.ceylon.language.Sequence<? extends .ceylon.language.Character>)$t$3).getFirst());
             } else break;
         }
     }

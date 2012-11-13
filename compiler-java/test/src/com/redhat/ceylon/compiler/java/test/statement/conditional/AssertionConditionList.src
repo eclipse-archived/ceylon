@@ -93,7 +93,7 @@ class AssertionConditionList {
         final long $y$14;
         final .ceylon.language.Sequence<? extends .java.lang.Object> $x$12;
         .ceylon.language.List<? extends .java.lang.Object> $x$11 = null;
-        if (($x$11 = x) instanceof .ceylon.language.FixedSized && !((.ceylon.language.FixedSized)$x$11).getEmpty()) {
+        if (($x$11 = x) instanceof .ceylon.language.Sequence) {
             $x$12 = (.ceylon.language.Sequence<? extends .java.lang.Object>)$x$11;
             .java.lang.Object $y$13 = null;
             if (($y$13 = $x$12.item(.ceylon.language.Integer.instance(0L))) instanceof .ceylon.language.Integer) {
