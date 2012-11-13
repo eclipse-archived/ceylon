@@ -8,9 +8,8 @@ shared interface Empty
                      Cloneable<Empty> {
     
     doc "Returns an iterator that is already exhausted."
-    shared actual Iterator<Bottom> iterator {
-        return emptyIterator;
-    }
+    shared actual transient Iterator<Bottom> iterator =
+            emptyIterator;
     
     doc "Returns `null` for any given index."
     shared actual Nothing item(Integer index) = null;
