@@ -75,13 +75,7 @@ public class ModuleValidator {
         for (ModuleImport moduleImport : moduleImports) {
             Module module = moduleImport.getModule();
             if (moduleManager.findModule(module, dependencyTree, true) != null) {
-                //circular dependency
-                StringBuilder error = new StringBuilder("Circular dependency between modules: ");
-                ModuleHelper.buildDependencyString(dependencyTree, module, error);
-                error.append(".");
-                //TODO is there a better place than the top level module triggering the error?
-                //nested modules might not have representations in the src tree
-                moduleManager.addErrorToModule( dependencyTree.getFirst(), error.toString() );
+                //circular dependency: stop right here
                 return;
             }
             Iterable<String> searchedArtifactExtensions = moduleManager.getSearchedArtifactExtensions();
