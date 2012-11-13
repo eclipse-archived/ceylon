@@ -1106,7 +1106,7 @@ public class StatementTransformer extends AbstractTransformer {
         JCExpression iter_elem = make().Apply(null, makeSelect(iter_id, "next"), List.<JCExpression> nil());
         JCExpression elem_assign = make().Assign(elem_name.makeIdent(), iter_elem);
         // !(($elem$X = $V$iter$X.next()) instanceof Finished)
-        JCExpression instof = make().TypeTest(elem_assign, make().Type(syms().ceylonFinishedType));
+        JCExpression instof = make().TypeTest(elem_assign, makeIdent(syms().ceylonFinishedType));
         JCExpression cond = make().Unary(JCTree.NOT, instof);
 
         // No step necessary

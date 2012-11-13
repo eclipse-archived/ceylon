@@ -1346,7 +1346,7 @@ public class ClassTransformer extends AbstractTransformer {
                 // cope with the possibility that it's never initialized
                 final JCBinary cond = make().Binary(JCTree.EQ, naming.makeName(model, Naming.NA_MEMBER), makeNull());
                 final JCStatement throw_ = make().Throw(make().NewClass(null, null, 
-                        make().Type(syms().ceylonUninitializedMethodErrorType), 
+                        makeIdent(syms().ceylonUninitializedMethodErrorType), 
                         List.<JCExpression>nil(), 
                         null));
                 result = make().If(cond, throw_, stmt);
