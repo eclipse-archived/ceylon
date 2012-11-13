@@ -3,4 +3,4 @@ doc "Given two `Comparable` values, return smallest of the
 see (Comparable, largest, min)
 shared Element smallest<Element>(Element x, Element y) 
         given Element satisfies Comparable<Element> = 
-    x<y then x else y;
+                x<y then x else y;

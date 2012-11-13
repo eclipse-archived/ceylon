@@ -25,14 +25,11 @@ shared class Range<Element>(first, last)
     doc "The end of the range."
     shared actual Element last;
     
-    shared actual String string {
-        return first.string + ".." + last.string;
-    }
+    shared actual transient String string = 
+            first.string + ".." + last.string;
     
     doc "Determines if the range is decreasing."
-    shared Boolean decreasing { 
-        return last<first; 
-    }
+    shared transient Boolean decreasing = last<first; 
     
     Element next(Element x) =
         decreasing then x.predecessor 
@@ -41,14 +38,11 @@ shared class Range<Element>(first, last)
     value distance = last.distanceFrom(first);
 
     doc "The nonzero number of elements in the range."
-    shared actual Integer size {
-        return distance.magnitude + 1;
-    }
+    shared actual transient Integer size =
+            distance.magnitude + 1;
     
     doc "The index of the end of the range."
-    shared actual Integer lastIndex { 
-        return size-1; 
-    }
+    shared actual transient Integer lastIndex = size-1; 
     
     doc "The rest of the range, without the start of the
          range."
@@ -162,9 +156,7 @@ shared class Range<Element>(first, last)
     
     doc "Returns the range itself, since ranges are 
          immutable."
-    shared actual Range<Element> clone {
-        return this;
-    }
+    shared actual transient Range<Element> clone = this;
     
     shared actual Range<Element>|Empty segment(
             Integer from, 
@@ -214,10 +206,8 @@ shared class Range<Element>(first, last)
     }
     
     doc "Reverse this range, returning a new range."
-    shared actual Range<Element> reversed {
-        return Range(last,first);
-    }
-
+    shared actual Range<Element> reversed = Range(last,first);
+    
     shared actual Range<Element>|Empty skipping(Integer skip) {
         variable value x:=0;
         variable value e := first;
@@ -241,8 +231,6 @@ shared class Range<Element>(first, last)
 
     doc "Returns the range itself, since a Range cannot
          contain nulls."
-    shared actual Range<Element> coalesced {
-        return this;
-    }
+    shared actual transient Range<Element> coalesced = this;
 
 }

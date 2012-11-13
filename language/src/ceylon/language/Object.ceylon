@@ -42,8 +42,7 @@ shared abstract class Object()
          instance. Subclasses are encouraged to refine this 
          implementation to produce a more meaningful 
          representation."
-    shared default String string {
-        return className(this) + "@" + hash.string;
-    }
+    shared default transient String string =
+            className(this) + "@" + hash.string;
     
 }

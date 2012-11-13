@@ -17,13 +17,11 @@ shared interface Collection<out Element>
         satisfies Iterable<Element> &
                   Sized & Category &
                   Cloneable<Collection<Element>> {
-
+    
     doc "Determine if the collection is empty, that is, if 
          it has no elements."
-    shared actual default Boolean empty {
-        return size==0;
-    }
-
+    shared actual default transient Boolean empty = size==0;
+    
     doc "Return `true` if the given object is an element of
          this collection. In this default implementation,
          and in most refining implementations, return `false`
@@ -44,10 +42,10 @@ shared interface Collection<out Element>
             return false;
         }
     }
-
-    value elementsString {
-        return ", ".join { for (elem in this) elem?.string else "null" };
-    }
+    
+    transient value elementsString =
+            ", ".join { for (elem in this) 
+                            elem?.string else "null" };
     
     doc "A string of form `\"{ x, y, z }\"` where `x`, `y`, 
          and `z` are the `string` representations of the 
@@ -56,9 +54,7 @@ shared interface Collection<out Element>
          if this collection is empty. If the collection 
          iterator produces the value `null`, the string
          representation contains the string `\"null\"`."
-    shared default actual String string {
-        return empty then "{}" 
-               else "{ " elementsString " }";
-    }
-
+    shared default actual transient String string =
+            empty then "{}" else "{ " elementsString " }";
+    
 }

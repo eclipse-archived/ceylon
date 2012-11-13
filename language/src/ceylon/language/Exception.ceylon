@@ -19,13 +19,11 @@ shared class Exception(description=null, cause=null)
          implementation returns the description, if any, or 
          otherwise the message of the cause, if any."
     see (description, cause)
-    shared default String message {
-        return description else cause?.message else "";
-    }
+    shared default transient String message =
+            description else cause?.message else "";
     
-    shared actual default String string {
-        return className(this) + " \"" message "\"";
-    }
+    shared actual default transient String string =
+            className(this) + " \"" message "\"";
     
     doc "Print the stack trace to the standard error of
          the virtual machine process."

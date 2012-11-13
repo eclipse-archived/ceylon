@@ -6,5 +6,4 @@ see (SequenceBuilder)
 shared Element[] join<Element>(
         doc "The iterable objects to join."
         Iterable<Element>... iterables) = 
-    { for (it in iterables) 
-        for (val in it) val };
+        { for (it in iterables) for (val in it) val };

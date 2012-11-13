@@ -9,8 +9,6 @@ doc "A value that indicates that an `Iterator`
      return."
 see (Iterator)
 shared object exhausted extends Finished() {
-    shared actual String string { 
-        return "exhausted";
-    }
+    shared actual transient String string = "exhausted";
 }
 

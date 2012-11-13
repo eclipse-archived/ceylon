@@ -25,9 +25,8 @@ shared class Tuple<out Element, out First, out Rest>(first, rest)
         }
     }
     
-    shared actual Sequence<Element> reversed {
-        return rest.reversed.withTrailing(first);
-    }
+    shared actual transient Sequence<Element> reversed =
+            rest.reversed.withTrailing(first);
     
     shared actual Element[] segment(Integer from, Integer length) {
         if (from<=0) {
@@ -43,7 +42,6 @@ shared class Tuple<out Element, out First, out Rest>(first, rest)
                 else this[end:from-end+1].reversed.sequence;
     }
     
-    shared actual Sequence<Element> clone { 
-        return this; 
-    }
+    shared actual transient Sequence<Element> clone = this;
+    
 }

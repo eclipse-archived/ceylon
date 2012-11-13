@@ -22,51 +22,33 @@ shared interface Empty
     shared actual Empty span(Integer from, Integer? to) = this;
     
     doc "Returns 0."
-    shared actual Integer size { 
-        return 0; 
-    }
+    shared actual transient Integer size = 0; 
     
     doc "Returns an `Empty`."
-    shared actual Empty reversed {
-	    return this;
-    }
+    shared actual transient Empty reversed = this;
     
     doc "Returns an `Empty`."
-    shared actual Empty sequence {
-        return this;
-    }
+    shared actual transient Empty sequence = this;
     
     doc "Returns a string description of the empty sequence: 
          `{}`."
-    shared actual String string {
-        return "{}";
-    }
+    shared actual transient String string = "{}";
     
     doc "Returns `null`."
-    shared actual Nothing lastIndex { 
-        return null; 
-    }
+    shared actual transient Nothing lastIndex = null; 
     
     doc "Returns `null`."
-    shared actual Nothing first { 
-        return null; 
-    }
+    shared actual transient Nothing first = null;
     
     doc "Returns `null`."
-    shared actual Nothing last { 
-        return null; 
-    }
+    shared actual transient Nothing last = null; 
     
     //shared actual Empty rest { return this; }
     
     doc "Returns an `Empty`."
-    shared actual Empty clone {
-        return this;
-    }
+    shared actual transient Empty clone = this;
     
-    shared actual Empty coalesced { 
-        return this; 
-    }
+    shared actual transient Empty coalesced = this; 
     
     doc "Returns `false` for any given element."
     shared actual Boolean contains(Object element) = false;
@@ -85,7 +67,7 @@ shared interface Empty
     
     shared actual Result fold<Result>(Result initial,
             Result accumulating(Result partial, Bottom element)) = 
-        initial;
+            initial;
     
     shared actual Nothing find
             (Boolean selecting(Bottom element)) = null;

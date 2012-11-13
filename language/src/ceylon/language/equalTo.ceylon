@@ -3,5 +3,4 @@ doc "Returns a partial function that will compare an element
      This is useful in conjunction with methods that receive
      a predicate function."
 shared Boolean equalTo<Element>(Element val)(Element element)
-        given Element satisfies Object = 
-    element==val;
+        given Element satisfies Object = element==val;

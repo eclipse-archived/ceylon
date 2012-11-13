@@ -56,9 +56,7 @@ shared interface Sequence<out Element>
     shared actual formal Sequence<Element> reversed;
     
     doc "This sequence."
-    shared actual Sequence<Element> sequence {
-        return this;
-    }
+    shared actual transient Sequence<Element> sequence = this;
     
     doc "A nonempty sequence containing the elements of this
          container, sorted according to a function 

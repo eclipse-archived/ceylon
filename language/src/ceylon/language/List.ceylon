@@ -34,9 +34,8 @@ shared interface List<out Element>
     doc "The number of elements in this sequence, always
          `sequence.lastIndex+1`."
     see (lastIndex)
-    shared actual default Integer size {
-        return (lastIndex?-1) + 1;
-    }
+    shared actual default transient Integer size =
+            (lastIndex?-1) + 1;
     
     doc "Determines if the given index refers to an element
          of this sequence, that is, if
@@ -162,9 +161,7 @@ shared interface List<out Element>
     }
     
     doc "Returns the first element of this List, if any."
-    shared actual default Element? first {
-        return this[0];
-    }
+    shared actual default Element? first = this[0];
     
     doc "Returns the last element of this List, if any."
     shared actual default Element? last {

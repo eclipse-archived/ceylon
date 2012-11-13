@@ -9,5 +9,7 @@ shared Comparison? byIncreasing<Element,Value>(Value? comparable(Element e))
         exists cy = comparable(y)) {
         return cx<=>cy;
     }
-    return null;
+    else {
+        return null;
+    }
 }

@@ -74,8 +74,6 @@ shared object process {
     doc "Returns the version of the operating system this process is running on."
     shared String osVersion { throw; }
     
-    shared actual String string {
-        return "process";
-    }
-
+    shared actual transient String string = "process";
+    
 }

@@ -1,8 +1,6 @@
 doc "An iterator which always returns `exhausted`."
 object emptyIterator satisfies Iterator<Bottom> {
-    shared actual Finished next() {
-        return exhausted;
-    }
+    shared actual Finished next() = exhausted;
 }
 
 doc "A fixed-size collection with no elements."
@@ -11,27 +9,19 @@ shared interface None<out Element>
                   ContainerWithFirstElement<Bottom,Nothing> {
 
     doc "Returns `null`."
-    shared actual default Nothing first {
-        return null;
-    }
+    shared actual default transient Nothing first = null;
+    
     doc "Returns `null`."
-    shared actual default Nothing last {
-        return null;
-    }
-
+    shared actual default transient Nothing last = null;
+    
     doc "Returns `emptyIterator`."
-    shared actual default Iterator<Element> iterator {
-        return emptyIterator;
-    }
-
+    shared actual default transient Iterator<Element> iterator = 
+            emptyIterator;
+    
     doc "Returns 0."
-    shared actual default Integer size {
-        return 0;
-    }
-
+    shared actual default transient Integer size = 0;
+    
     doc "Returns `true`."
-    shared actual Boolean empty {
-        return true;
-    }
-
+    shared actual transient Boolean empty = true;
+    
 }

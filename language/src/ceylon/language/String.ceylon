@@ -257,20 +257,17 @@ shared abstract class String()
     shared actual formal Integer hash;
     
     doc "Returns the string itself."
-    shared actual String string { 
-        return this;
-    }
+    shared actual transient String string = this;
     
     doc "Determines if this string has no characters, that
          is, if it has zero `size`. This is a more efficient 
          operation than `string.size==0`."
     see (size)
     shared actual formal Boolean empty;
-
+    
     doc "Returns this string."
-    shared actual String coalesced {
-        return this;
-    }
+    shared actual transient String coalesced = this;
+    
 }
 
 doc "Create a new string containing the given characters."

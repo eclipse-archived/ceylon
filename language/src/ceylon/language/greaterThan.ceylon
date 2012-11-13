@@ -4,5 +4,4 @@ doc "Returns a partial function that will compare an element
      This is useful in conjunction with methods that receive
      a predicate function."
 shared Boolean greaterThan<Element>(Element val)(Element element)
-        given Element satisfies Comparable<Element> = 
-    element>val;
+        given Element satisfies Comparable<Element> = element>val;

@@ -65,9 +65,8 @@ shared interface Iterable<out Element>
     
     doc "Determines if the iterable object is empty, that is
          to say, if the iterator returns no elements."
-    shared actual default Boolean empty {
-        return is Finished iterator.next();
-    }
+    shared actual default Boolean empty =
+            is Finished iterator.next();
     
     doc "The first element returned by the iterator, if any.
          This should produce the same value as
@@ -96,15 +95,11 @@ shared interface Iterable<out Element>
     
     doc "Returns an iterable object containing all but the 
          first element of this container."
-    shared default Iterable<Element> rest {
-        return skipping(1);
-    }
+    shared default transient Iterable<Element> rest = skipping(1);
     
     doc "A sequence containing the elements returned by the
          iterator."
-    shared default Element[] sequence {
-        return { this... };
-    }
+    shared default transient Element[] sequence = { this... };
     
     doc "An `Iterable` containing the results of applying
          the given mapping to the elements of to this 
@@ -113,7 +108,8 @@ shared interface Iterable<out Element>
     shared default Iterable<Result> map<Result>(
             doc "The mapping to apply to the elements."
             Result collecting(Element elem)) =
-        elements(for (elem in this) collecting(elem));
+                    elements(for (elem in this) 
+                            collecting(elem));
     
     doc "An `Iterable` containing the elements of this 
          container that satisfy the given predicate."
@@ -121,7 +117,8 @@ shared interface Iterable<out Element>
     shared default Iterable<Element> filter(
             doc "The predicate the elements must satisfy."
             Boolean selecting(Element elem)) =
-        elements(for (elem in this) if (selecting(elem)) elem);
+                    elements(for (elem in this) 
+                            if (selecting(elem)) elem);
     
     doc "The result of applying the accumulating function to 
          each element of this container in turn." 
@@ -188,7 +185,7 @@ shared interface Iterable<out Element>
     shared default Result[] collect<Result>(
             doc "The transformation applied to the elements."
             Result collecting(Element element)) = 
-        map(collecting).sequence;
+                    map(collecting).sequence;
     
     doc "A sequence containing the elements of this 
          container that satisfy the given predicate. An 
@@ -197,7 +194,7 @@ shared interface Iterable<out Element>
     shared default Element[] select(
             doc "The predicate the elements must satisfy."
             Boolean selecting(Element element)) =
-        filter(selecting).sequence;
+                    filter(selecting).sequence;
     
     doc "Return `true` if at least one element satisfies the
          predicate function."
@@ -329,9 +326,8 @@ shared interface Iterable<out Element>
          original order. For null elements of the original 
          `Iterable`, there is no entry in the resulting 
          iterable object."
-    shared default Iterable<Element&Object> coalesced {
-        return elements { for (e in this) if (exists e) e };
-    }
+    shared default transient Iterable<Element&Object> coalesced =
+            elements { for (e in this) if (exists e) e };
     
     doc "All entries of form `index->element` where `index` 
          is the position at which `element` occurs, for every

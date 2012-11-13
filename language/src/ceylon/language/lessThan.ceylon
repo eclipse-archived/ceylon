@@ -5,5 +5,5 @@ doc "Returns a partial function that will compare an element
      a predicate function."
 shared Boolean lessThan<Element>(Element val)(Element element)
         given Element satisfies Comparable<Element> = 
-    element<val;
+                element<val;
 
