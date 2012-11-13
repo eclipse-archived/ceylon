@@ -84,7 +84,6 @@ public class ModuleValidator {
                 moduleManager.addErrorToModule( dependencyTree.getFirst(), error.toString() );
                 return;
             }
-            Set<String> searchedArtifacts = new HashSet<String>();
             Iterable<String> searchedArtifactExtensions = moduleManager.getSearchedArtifactExtensions();
             
             if ( ! module.isAvailable() ) {
