@@ -35,13 +35,13 @@ shared class LazyList<out Element>(Element... elems)
     shared actual List<Element> clone {
         return this;
     }
-
-    shared actual List<Element> span(
-            Integer from, Integer? to) {
+    
+    shared actual List<Element> span
+            (Integer from, Integer? to) {
         if (exists to) {
             if (to >= from) {
                 value els = from > 0 then elems.skipping(from)
-                    else elems;
+                        else elems;
                 return LazyList(els.taking(to-from+1)...);
             } 
             else {
@@ -55,9 +55,9 @@ shared class LazyList<out Element>(Element... elems)
             return LazyList(els...);
         }
     }
-
-    shared actual List<Element> segment(
-            Integer from, Integer length) {
+    
+    shared actual List<Element> segment
+            (Integer from, Integer length) {
         if (length > 0) {
             value els = from > 0 then elems.skipping(from)
                     else elems;
@@ -67,7 +67,7 @@ shared class LazyList<out Element>(Element... elems)
             return {};
         }
     }
-
+    
     shared actual default Boolean equals(Object that) {
         if (is List<Void> that) {
             value s = elems.count((Element e) true);
@@ -96,7 +96,7 @@ shared class LazyList<out Element>(Element... elems)
         }
         return false;
     }
-
+    
     shared actual default Integer hash {
         variable value hash := 1;
         for (elem in elems) {
@@ -107,17 +107,17 @@ shared class LazyList<out Element>(Element... elems)
         }
         return hash;
     }
-
+    
     shared default actual Element? findLast(Boolean selecting(Element elem)) {
         return elems.findLast(selecting);
     }
-
+    
     shared actual default Element? first {
         return elems.first;
     }
-
+    
     shared actual default Element? last {
         return elems.last;
     }
-
+    
 }

@@ -17,9 +17,9 @@ import com.redhat.ceylon.compiler.java.metadata.Ignore;
 
 @Ignore
 @Ceylon(major = 3)
-public class ArrayOfSome<Element> extends Array<Element> implements Some<Element> {
+public class NonemptyArray<Element> extends Array<Element> implements Some<Element> {
 
-    public ArrayOfSome(java.lang.Object array) {
+    public NonemptyArray(java.lang.Object array) {
         super(array);
     }
     
@@ -29,25 +29,25 @@ public class ArrayOfSome<Element> extends Array<Element> implements Some<Element
             return arrayOfNone_.<Element>arrayOfNone();
         } else {
             if (array instanceof char[]) {
-                return new ArrayOfSome<Element>(Arrays.copyOfRange((char[])array, 1, (int)getSize()));
+                return new NonemptyArray<Element>(Arrays.copyOfRange((char[])array, 1, (int)getSize()));
             } else if (array instanceof byte[]) {
-                return new ArrayOfSome<Element>(Arrays.copyOfRange((byte[])array, 1, (int)getSize()));
+                return new NonemptyArray<Element>(Arrays.copyOfRange((byte[])array, 1, (int)getSize()));
             } else if (array instanceof short[]) {
-                return new ArrayOfSome<Element>(Arrays.copyOfRange((short[])array, 1, (int)getSize()));
+                return new NonemptyArray<Element>(Arrays.copyOfRange((short[])array, 1, (int)getSize()));
             } else if (array instanceof int[]) {
-                return new ArrayOfSome<Element>(Arrays.copyOfRange((int[])array, 1, (int)getSize()));
+                return new NonemptyArray<Element>(Arrays.copyOfRange((int[])array, 1, (int)getSize()));
             } else if (array instanceof long[]) {
-                return new ArrayOfSome<Element>(Arrays.copyOfRange((long[])array, 1, (int)getSize()));
+                return new NonemptyArray<Element>(Arrays.copyOfRange((long[])array, 1, (int)getSize()));
             } else if (array instanceof float[]) {
-                return new ArrayOfSome<Element>(Arrays.copyOfRange((float[])array, 1, (int)getSize()));
+                return new NonemptyArray<Element>(Arrays.copyOfRange((float[])array, 1, (int)getSize()));
             } else if (array instanceof double[]) {
-                return new ArrayOfSome<Element>(Arrays.copyOfRange((double[])array, 1, (int)getSize()));
+                return new NonemptyArray<Element>(Arrays.copyOfRange((double[])array, 1, (int)getSize()));
             } else if (array instanceof boolean[]) {
-                return new ArrayOfSome<Element>(Arrays.copyOfRange((boolean[])array, 1, (int)getSize()));
+                return new NonemptyArray<Element>(Arrays.copyOfRange((boolean[])array, 1, (int)getSize()));
             } else if (array instanceof java.lang.String[]) {
-                return new ArrayOfSome<Element>(Arrays.copyOfRange((java.lang.String[])array, 1, (int)getSize()));
+                return new NonemptyArray<Element>(Arrays.copyOfRange((java.lang.String[])array, 1, (int)getSize()));
             } else {
-                return new ArrayOfSome<Element>(Arrays.copyOfRange((Element[])array, 1, (int)getSize()));
+                return new NonemptyArray<Element>(Arrays.copyOfRange((Element[])array, 1, (int)getSize()));
             }
         }
     }
@@ -68,63 +68,63 @@ public class ArrayOfSome<Element> extends Array<Element> implements Some<Element
             for (int i = 0, j=__a.length-1; i < __a.length; i++, j--) {
                 rev[i] = __a[j];
             }
-            return new ArrayOfSome<Element>(rev);
+            return new NonemptyArray<Element>(rev);
         } else if (array instanceof byte[]) {
             byte[] __a = (byte[])array;
             byte[] rev = new byte[__a.length];
             for (int i = 0, j=__a.length-1; i < __a.length; i++, j--) {
                 rev[i] = __a[j];
             }
-            return new ArrayOfSome<Element>(rev);
+            return new NonemptyArray<Element>(rev);
         } else if (array instanceof short[]) {
             short[] __a = (short[])array;
             short[] rev = new short[__a.length];
             for (int i = 0, j=__a.length-1; i < __a.length; i++, j--) {
                 rev[i] = __a[j];
             }
-            return new ArrayOfSome<Element>(rev);
+            return new NonemptyArray<Element>(rev);
         } else if (array instanceof int[]) {
             int[] __a = (int[])array;
             int[] rev = new int[__a.length];
             for (int i = 0, j=__a.length-1; i < __a.length; i++, j--) {
                 rev[i] = __a[j];
             }
-            return new ArrayOfSome<Element>(rev);
+            return new NonemptyArray<Element>(rev);
         } else if (array instanceof long[]) {
             long[] __a = (long[])array;
             long[] rev = new long[__a.length];
             for (int i = 0, j=__a.length-1; i < __a.length; i++, j--) {
                 rev[i] = __a[j];
             }
-            return new ArrayOfSome<Element>(rev);
+            return new NonemptyArray<Element>(rev);
         } else if (array instanceof float[]) {
             float[] __a = (float[])array;
             float[] rev = new float[__a.length];
             for (int i = 0, j=__a.length-1; i < __a.length; i++, j--) {
                 rev[i] = __a[j];
             }
-            return new ArrayOfSome<Element>(rev);
+            return new NonemptyArray<Element>(rev);
         } else if (array instanceof double[]) {
             double[] __a = (double[])array;
             double[] rev = new double[__a.length];
             for (int i = 0, j=__a.length-1; i < __a.length; i++, j--) {
                 rev[i] = __a[j];
             }
-            return new ArrayOfSome<Element>(rev);
+            return new NonemptyArray<Element>(rev);
         } else if (array instanceof boolean[]) {
             boolean[] __a = (boolean[])array;
             boolean[] rev = new boolean[__a.length];
             for (int i = 0, j=__a.length-1; i < __a.length; i++, j--) {
                 rev[i] = __a[j];
             }
-            return new ArrayOfSome<Element>(rev);
+            return new NonemptyArray<Element>(rev);
         } else if (array instanceof java.lang.String[]) {
             java.lang.String[] __a = (java.lang.String[])array;
             java.lang.String[] rev = new java.lang.String[__a.length];
             for (int i = 0, j=__a.length-1; i < __a.length; i++, j--) {
                 rev[i] = __a[j];
             }
-            return new ArrayOfSome<Element>(rev);
+            return new NonemptyArray<Element>(rev);
         }
 
         Element[] __a = (Element[])array;
@@ -132,7 +132,7 @@ public class ArrayOfSome<Element> extends Array<Element> implements Some<Element
         for (int i = 0, j=__a.length-1; i < __a.length; i++, j--) {
             rev[i] = __a[j];
         }
-        return new ArrayOfSome<Element>((Element[])rev);
+        return new NonemptyArray<Element>((Element[])rev);
     }
 
     /*@Override

@@ -1,8 +1,8 @@
 package ceylon.language;
 
 import com.redhat.ceylon.compiler.java.language.AbstractIterable;
-import com.redhat.ceylon.compiler.java.language.ArrayOfNone;
-import com.redhat.ceylon.compiler.java.language.ArrayOfSome;
+import com.redhat.ceylon.compiler.java.language.EmptyArray;
+import com.redhat.ceylon.compiler.java.language.NonemptyArray;
 import com.redhat.ceylon.compiler.java.metadata.Ceylon;
 import com.redhat.ceylon.compiler.java.metadata.Ignore;
 import com.redhat.ceylon.compiler.java.metadata.Method;
@@ -38,8 +38,8 @@ public final class arrayOfSize_ {
         		//TODO: This is horribly inefficient. We should
         		//      create an empty array, and then use
         		//      Arrays.fill() to populate it!
-                ArrayOfSome.<Element>instance(typeClass, (int)size, element) :
-                ArrayOfNone.<Element>instance(typeClass, 0, null);
+                NonemptyArray.<Element>instance(typeClass, (int)size, element) :
+                EmptyArray.<Element>instance(typeClass, 0, null);
     }
     
     private static <Element> Iterable<Element> getIterable(final long size, 

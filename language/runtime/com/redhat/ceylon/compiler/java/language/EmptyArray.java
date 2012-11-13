@@ -20,10 +20,10 @@ import com.redhat.ceylon.compiler.java.metadata.Ignore;
 
 @Ignore
 @Ceylon(major = 3)
-public class ArrayOfNone<Element> extends Array<Element> implements None<Element> {
+public class EmptyArray<Element> extends Array<Element> implements None<Element> {
 
     @Ignore
-    public ArrayOfNone(java.lang.Object array) {
+    public EmptyArray(java.lang.Object array) {
         super(array);
     }
     
