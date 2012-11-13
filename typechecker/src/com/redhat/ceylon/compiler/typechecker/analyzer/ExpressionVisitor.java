@@ -874,7 +874,7 @@ public class ExpressionVisitor extends Visitor {
 
     @Override public void visit(Tree.MethodDeclaration that) {
         super.visit(that);
-        Tree.SpecifierExpression se = that.getSpecifierExpression();
+        Tree.ComputerExpression se = that.getComputerExpression();
         if (se!=null) {
             Tree.Expression e = se.getExpression();
             if (e!=null) {

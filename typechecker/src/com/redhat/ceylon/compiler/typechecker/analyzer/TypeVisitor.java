@@ -46,7 +46,6 @@ import com.redhat.ceylon.compiler.typechecker.parser.CeylonLexer;
 import com.redhat.ceylon.compiler.typechecker.tree.Node;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.LocalModifier;
-import com.redhat.ceylon.compiler.typechecker.tree.Tree.SpecifierExpression;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.SupertypeQualifier;
 import com.redhat.ceylon.compiler.typechecker.tree.Visitor;
 
@@ -765,7 +764,7 @@ public class TypeVisitor extends Visitor {
     @Override
     public void visit(Tree.MethodDeclaration that) {
         super.visit(that);
-        SpecifierExpression sie = that.getSpecifierExpression();
+        Tree.ComputerExpression sie = that.getComputerExpression();
         if (sie==null
                 && that.getType() instanceof Tree.FunctionModifier) {
             that.getType().addError("method must specify an explicit return type or definition");

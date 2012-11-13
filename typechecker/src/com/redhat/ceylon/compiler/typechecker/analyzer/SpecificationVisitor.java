@@ -379,7 +379,7 @@ public class SpecificationVisitor extends Visitor {
     public void visit(Tree.MethodDeclaration that) {
         super.visit(that);
         if (that.getDeclarationModel()==declaration) {
-            if (that.getSpecifierExpression()!=null) {
+            if (that.getComputerExpression()!=null) {
                 specify();
             }
             else if (declaration.isToplevel()) {

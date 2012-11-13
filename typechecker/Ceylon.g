@@ -354,8 +354,8 @@ voidOrInferredMethodDeclaration returns [AnyMethod declaration]
       //-> ^(METHOD_DEFINITION VOID_MODIFIER memberName methodParameters? block)   
       | 
         (
-          specifier
-          { dec.setSpecifierExpression($specifier.specifierExpression); }
+          computer
+          { dec.setComputerExpression($computer.computerExpression); }
         )?
         { expecting=SEMICOLON; }
         SEMICOLON
@@ -397,8 +397,11 @@ inferredAttributeDeclaration returns [AnyAttribute declaration]
         def.setIdentifier($memberNameDeclaration.identifier); }
       ( 
         (
-          specifier 
+          specifier
           { dec.setSpecifierOrInitializerExpression($specifier.specifierExpression); }
+        | 
+          computer
+          { dec.setSpecifierOrInitializerExpression($computer.computerExpression); }
         | 
           initializer
           { dec.setSpecifierOrInitializerExpression($initializer.initializerExpression); }
@@ -457,8 +460,8 @@ typedMethodOrAttributeDeclaration returns [TypedDeclaration declaration]
         //-> ^(METHOD_DEFINITION unionType memberName methodParameters memberBody)
         | 
           (
-            ms=specifier
-           { mdec.setSpecifierExpression($ms.specifierExpression); }
+            ms=computer
+           { mdec.setComputerExpression($ms.computerExpression); }
           )?
           { expecting=SEMICOLON; }
           s1=SEMICOLON
@@ -470,6 +473,9 @@ typedMethodOrAttributeDeclaration returns [TypedDeclaration declaration]
         (
           as=specifier 
           { adec.setSpecifierOrInitializerExpression($as.specifierExpression); }
+        | 
+          ac=computer 
+          { adec.setSpecifierOrInitializerExpression($ac.computerExpression); }
         | 
           initializer
           { adec.setSpecifierOrInitializerExpression($initializer.initializerExpression); }
@@ -551,7 +557,7 @@ classDeclaration returns [AnyClass declaration]
       { dec.setIdentifier($typeNameDeclaration.identifier); 
         def.setIdentifier($typeNameDeclaration.identifier); }
       (
-        typeParameters 
+        typeParameters
         { def.setTypeParameterList($typeParameters.typeParameterList); 
           dec.setTypeParameterList($typeParameters.typeParameterList); }
       )?
@@ -700,7 +706,7 @@ extendedType returns [ExtendedType extendedType]
     ;
 
 classSpecifier returns [ExtendedType extendedType]
-    : SPECIFY { $extendedType = new ExtendedType($SPECIFY); }
+    : COMPUTE { $extendedType = new ExtendedType($COMPUTE); }
       ci=classInstantiation
       { $extendedType.setType($ci.type);
         $extendedType.setInvocationExpression($ci.invocationExpression); }
@@ -1170,18 +1176,25 @@ continueDirective returns [Continue directive]
     ;
 
 typeSpecifier returns [TypeSpecifier typeSpecifier]
-    : SPECIFY 
-      { $typeSpecifier = new TypeSpecifier($SPECIFY); }
+    : COMPUTE 
+      { $typeSpecifier = new TypeSpecifier($COMPUTE); }
       type
       { $typeSpecifier.setType($type.type); }
     //-> ^(TYPE_SPECIFIER[$SPECIFY] type)
     ;
 
 specifier returns [SpecifierExpression specifierExpression]
-    : SPECIFY 
+    : SPECIFY
       { $specifierExpression = new SpecifierExpression($SPECIFY); }
       functionOrExpression
       { $specifierExpression.setExpression($functionOrExpression.expression); }
+    ;
+
+computer returns [ComputerExpression computerExpression]
+    : COMPUTE
+      { $computerExpression = new ComputerExpression($COMPUTE); }
+      functionOrExpression
+      { $computerExpression.setExpression($functionOrExpression.expression); }
     ;
 
 initializer returns [InitializerExpression initializerExpression]
@@ -1698,6 +1711,7 @@ functionOrExpression returns [Expression expression]
         p2=parameters
         { fa.addParameterList($p2.parameterList); }
       )*
+      COMPUTE?
       e1=expression
       { fa.setExpression($e1.expression); 
         $expression = new Expression(null); 
@@ -3350,6 +3364,10 @@ COMMA
     
 SPECIFY
     :   '='
+    ;
+
+COMPUTE
+    :   '=>'
     ;
 
 NOT_OP
