@@ -28,7 +28,6 @@ shared interface Identifiable {
          also refine `hash`, according to the general 
          contract defined by `Object`."
     see (identityHash)
-    shared default actual transient Integer hash =
-            identityHash(this);
+    shared default actual Integer hash => identityHash(this);
     
 }

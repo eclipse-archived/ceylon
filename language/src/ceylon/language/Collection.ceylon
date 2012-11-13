@@ -20,7 +20,7 @@ shared interface Collection<out Element>
     
     doc "Determine if the collection is empty, that is, if 
          it has no elements."
-    shared actual default transient Boolean empty = size==0;
+    shared actual default Boolean empty => size==0;
     
     doc "Return `true` if the given object is an element of
          this collection. In this default implementation,
@@ -43,7 +43,7 @@ shared interface Collection<out Element>
         }
     }
     
-    transient value elementsString =
+    value elementsString =>
             ", ".join { for (elem in this) 
                             elem?.string else "null" };
     
@@ -54,7 +54,7 @@ shared interface Collection<out Element>
          if this collection is empty. If the collection 
          iterator produces the value `null`, the string
          representation contains the string `\"null\"`."
-    shared default actual transient String string =
+    shared default actual String string =
             empty then "{}" else "{ " elementsString " }";
     
 }

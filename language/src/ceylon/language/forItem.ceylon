@@ -3,5 +3,5 @@ doc "A function that returns the result of the given `resulting()` function
 see(forKey)
 shared Result forItem<Item,Result>(Result resulting(Item item))
             (Object->Item entry) 
-        given Item satisfies Object = 
+        given Item satisfies Object =>
                 resulting(entry.item);

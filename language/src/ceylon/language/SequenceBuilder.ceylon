@@ -24,10 +24,10 @@ shared class SequenceBuilder<Element>() satisfies Sized {
     }
     
     doc "The size of the resulting sequence."
-    shared actual transient Integer size = sequence.size;
+    shared actual Integer size => sequence.size;
     
     doc "Determine if the resulting sequence is empty."
-    shared actual transient Boolean empty = size==0;
+    shared actual Boolean empty => size==0;
     
 }
 

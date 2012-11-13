@@ -9,19 +9,19 @@ shared interface None<out Element>
                   ContainerWithFirstElement<Bottom,Nothing> {
 
     doc "Returns `null`."
-    shared actual default transient Nothing first = null;
+    shared actual default Nothing first => null;
     
     doc "Returns `null`."
-    shared actual default transient Nothing last = null;
+    shared actual default Nothing last => null;
     
     doc "Returns `emptyIterator`."
-    shared actual default transient Iterator<Element> iterator = 
+    shared actual default Iterator<Element> iterator =>
             emptyIterator;
     
     doc "Returns 0."
-    shared actual default transient Integer size = 0;
+    shared actual default  Integer size => 0;
     
     doc "Returns `true`."
-    shared actual transient Boolean empty = true;
+    shared actual Boolean empty => true;
     
 }

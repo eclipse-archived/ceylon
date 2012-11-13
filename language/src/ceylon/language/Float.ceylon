@@ -19,20 +19,20 @@ shared abstract class Float()
          The undefined value has the property that it is not equal (`==`) 
          to itself, as a consequence the undefined value cannot sensibly be 
          used in most collections."
-    shared transient Boolean undefined = this!=this;
+    shared Boolean undefined => this!=this;
     
     doc "Determines whether this value is infinite in magnitude
          Produces `true` for `infinity` and `-infinity`.
          Produces `false` for a finite number, `+0`, `-0`, or
          undefined."
     see(infinity, finite)
-    shared transient Boolean infinite = 
+    shared Boolean infinite => 
             this==infinity || this==-infinity;
     
     doc "Determines whether this value is finite. Produces
          `false` for `infinity`, `-infinity`, and undefined."
     see(infinite, infinity)
-    shared transient Boolean finite =
+    shared Boolean finite =>
             this!=infinity && this!=-infinity 
                     && !this.undefined;
     

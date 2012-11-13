@@ -26,12 +26,12 @@ shared class Entry<out Key, out Item>(key, item)
         }
     }
     
-    shared actual Integer hash = (31 + key.hash) * 31 + item.hash;
+    shared actual Integer hash => 
+            (31 + key.hash) * 31 + item.hash;
     
     doc "Returns a description of the entry in the form 
          `key->item`."
-    shared actual String string {
-        return key.string + "->" + item.string;
-    }
+    shared actual String string =>
+            key.string + "->" + item.string;
     
 }

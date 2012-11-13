@@ -15,6 +15,6 @@ shared interface Some<out Element>
     
     doc "Returns `false`, since every `Some` contains at
          least one element."
-    shared actual transient Boolean empty = false;
+    shared actual Boolean empty => false;
     
 }

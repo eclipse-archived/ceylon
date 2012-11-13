@@ -8,11 +8,6 @@ doc "Annotation to mark an attribute as variable. A `variable`
      reassigned over time." 
 shared Nothing variable() { return null; }
 
-doc "Annotation to mark an attribute as transient. A `transient` 
-     attribute value is recomputed each time the attribute is 
-     evaluated." 
-shared Nothing transient() { return null; }
-
 doc "Annotation to mark a class as abstract. An `abstract` 
      class may not be directly instantiated. An `abstract`
      class may have enumerated cases."

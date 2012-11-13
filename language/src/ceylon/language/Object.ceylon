@@ -42,7 +42,7 @@ shared abstract class Object()
          instance. Subclasses are encouraged to refine this 
          implementation to produce a more meaningful 
          representation."
-    shared default transient String string =
+    shared default String string =>
             className(this) + "@" + hash.string;
     
 }

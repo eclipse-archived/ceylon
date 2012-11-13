@@ -28,7 +28,8 @@ shared interface Correspondence<in Key, out Item>
     doc "Determines if there is a value defined for the 
          given key."
     see (definesAny, definesEvery, keys)
-    shared default Boolean defines(Key key) = exists item(key);
+    shared default Boolean defines(Key key) => 
+            exists item(key);
     
     doc "The `Category` of all keys for which a value is 
          defined by this `Correspondence`."
@@ -91,14 +92,11 @@ shared interface Correspondence<in Key, out Item>
             extends Object()
             satisfies Sequence<Item?> {
     
-        shared actual transient Integer lastIndex = 
-                keys.lastIndex;
+        shared actual Integer lastIndex => keys.lastIndex;
         
-        shared actual transient Item? first = 
-                outer.item(keys.first);
+        shared actual Item? first => outer.item(keys.first);
         
-        shared actual Item?[] rest =
-                outer.items(keys.rest...);
+        shared actual Item?[] rest = outer.items(keys.rest...);
         
         shared actual Item? item(Integer index) {
             if (exists Key key = keys.item(index)) {
@@ -126,12 +124,12 @@ shared interface Correspondence<in Key, out Item>
             }
         }
         
-        shared actual transient Sequence<Item?> clone = this;
+        shared actual Sequence<Item?> clone => this;
         
-        shared actual transient Sequence<Item?> reversed =
+        shared actual Sequence<Item?> reversed =>
                 outer.Items(keys.reversed);
         
-        shared actual transient Integer hash = keys.hash;
+        shared actual Integer hash => keys.hash;
     }
     
 }

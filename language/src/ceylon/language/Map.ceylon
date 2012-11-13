@@ -55,7 +55,7 @@ shared interface Map<out Key,out Item>
     
     shared actual default Integer hash {
         variable Integer hashCode := 1;
-        for(Entry<Key,Item> elem in this){
+        for (Entry<Key,Item> elem in this) {
             hashCode *= 31;
             hashCode += elem.hash;
         }
@@ -63,14 +63,14 @@ shared interface Map<out Key,out Item>
     }
     
     doc "Returns the set of keys contained in this `Map`."
-    actual shared default transient Set<Key> keys =
+    actual shared default Set<Key> keys =>
             LazySet(for (k->v in this) k);
     
     doc "Returns all the values stored in this `Map`. An 
          element can be stored under more than one key in 
          the map, and so it can be contained more than once 
          in the resulting collection."
-    shared default transient Collection<Item> values =
+    shared default Collection<Item> values =>
             LazyList(for (k->v in this) v);
     
     doc "Returns a `Map` in which every key is an `Item` in 

@@ -121,10 +121,10 @@ shared abstract class String()
          the given length. If the portion of this string
          starting at the given index is shorter than 
          the given length, return the portion of this string
-         from the given index until the end of this string. Otherwise 
-         return a string of the given length. If the start
-         index is larger than the last index of the string,
-         return the empty string."
+         from the given index until the end of this string. 
+         Otherwise return a string of the given length. If 
+         the start index is larger than the last index of the 
+         string, return the empty string."
     shared formal actual String segment(Integer from, 
                                         Integer length);
     
@@ -257,7 +257,7 @@ shared abstract class String()
     shared actual formal Integer hash;
     
     doc "Returns the string itself."
-    shared actual transient String string = this;
+    shared actual String string => this;
     
     doc "Determines if this string has no characters, that
          is, if it has zero `size`. This is a more efficient 
@@ -266,7 +266,7 @@ shared abstract class String()
     shared actual formal Boolean empty;
     
     doc "Returns this string."
-    shared actual transient String coalesced = this;
+    shared actual String coalesced => this;
     
 }
 

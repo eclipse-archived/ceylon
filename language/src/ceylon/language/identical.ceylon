@@ -6,4 +6,5 @@ shared Boolean identical(
         doc "An object with well-defined identity."
         Identifiable x, 
         doc "A second object with well-defined identity."
-        Identifiable y) = x===y;
+        Identifiable y) 
+                => x===y;

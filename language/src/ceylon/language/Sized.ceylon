@@ -10,6 +10,6 @@ shared interface Sized
     
     doc "Determine if the sized container is empty, that is,
          if `sized.size==0`."
-    shared actual default transient Boolean empty = size==0;
+    shared actual default Boolean empty => size==0;
     
 }

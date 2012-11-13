@@ -19,10 +19,10 @@ shared class Exception(description=null, cause=null)
          implementation returns the description, if any, or 
          otherwise the message of the cause, if any."
     see (description, cause)
-    shared default transient String message =
+    shared default String message =>
             description else cause?.message else "";
     
-    shared actual default transient String string =
+    shared actual default String string =>
             className(this) + " \"" message "\"";
     
     doc "Print the stack trace to the standard error of
