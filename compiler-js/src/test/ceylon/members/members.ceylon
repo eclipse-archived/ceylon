@@ -78,17 +78,17 @@ class Util() {
 }
 class AliasMemberTest() {
     shared interface I1 {shared String s {return "A";} }
-    shared interface I1Alias = I1;
+    shared interface I1Alias => I1;
     interface I2 {shared String s {return "B";} }
-    interface I2Alias = I2;
+    interface I2Alias => I2;
     shared class A() satisfies I1Alias {}
     class B() satisfies I2Alias {}
-    shared class AliasA() = A();
-    class AliasB() = B();
+    shared class AliasA() => A();
+    class AliasB() => B();
     shared String b() { return AliasB().s; }
  
-    shared Util f1() = Util();   
-    shared A f2() = AliasA();
+    shared Util f1() => Util();   
+    shared A f2() => AliasA();
 }
 
 shared void test() {

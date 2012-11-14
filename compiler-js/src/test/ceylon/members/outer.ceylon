@@ -6,7 +6,7 @@ void test_outer_inner_safety() {
   }
   Outer? o = null;
   Outer.Inner? i1 = o?.Inner();
-  Outer.Inner? cons() = o?.Inner();
+  Outer.Inner? cons() => o?.Inner();
   if (exists i1) {
     fail("i1 should be null");
   }
