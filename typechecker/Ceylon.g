@@ -354,8 +354,8 @@ voidOrInferredMethodDeclaration returns [AnyMethod declaration]
       //-> ^(METHOD_DEFINITION VOID_MODIFIER memberName methodParameters? block)   
       | 
         (
-          computer
-          { dec.setComputerExpression($computer.computerExpression); }
+          lazySpecifier
+          { dec.setSpecifierExpression($lazySpecifier.specifierExpression); }
         )?
         { expecting=SEMICOLON; }
         SEMICOLON
@@ -400,8 +400,8 @@ inferredAttributeDeclaration returns [AnyAttribute declaration]
           specifier
           { dec.setSpecifierOrInitializerExpression($specifier.specifierExpression); }
         | 
-          computer
-          { dec.setSpecifierOrInitializerExpression($computer.computerExpression); }
+          lazySpecifier
+          { dec.setSpecifierOrInitializerExpression($lazySpecifier.specifierExpression); }
         | 
           initializer
           { dec.setSpecifierOrInitializerExpression($initializer.initializerExpression); }
@@ -460,8 +460,8 @@ typedMethodOrAttributeDeclaration returns [TypedDeclaration declaration]
         //-> ^(METHOD_DEFINITION unionType memberName methodParameters memberBody)
         | 
           (
-            ms=computer
-           { mdec.setComputerExpression($ms.computerExpression); }
+            ms=lazySpecifier
+           { mdec.setSpecifierExpression($ms.specifierExpression); }
           )?
           { expecting=SEMICOLON; }
           s1=SEMICOLON
@@ -474,8 +474,8 @@ typedMethodOrAttributeDeclaration returns [TypedDeclaration declaration]
           as=specifier 
           { adec.setSpecifierOrInitializerExpression($as.specifierExpression); }
         | 
-          ac=computer 
-          { adec.setSpecifierOrInitializerExpression($ac.computerExpression); }
+          ac=lazySpecifier 
+          { adec.setSpecifierOrInitializerExpression($ac.specifierExpression); }
         | 
           initializer
           { adec.setSpecifierOrInitializerExpression($initializer.initializerExpression); }
@@ -1111,7 +1111,11 @@ expressionOrSpecificationStatement returns [Statement statement]
       (
         specifier
         { ss.setSpecifierExpression($specifier.specifierExpression);
-          
+          ss.setBaseMemberExpression($expression.expression.getTerm()); 
+          $statement = ss; }
+      | 
+        lazySpecifier
+        { ss.setSpecifierExpression($lazySpecifier.specifierExpression);
           ss.setBaseMemberExpression($expression.expression.getTerm()); 
           $statement = ss; }
       )?
@@ -1190,11 +1194,11 @@ specifier returns [SpecifierExpression specifierExpression]
       { $specifierExpression.setExpression($functionOrExpression.expression); }
     ;
 
-computer returns [ComputerExpression computerExpression]
+lazySpecifier returns [SpecifierExpression specifierExpression]
     : COMPUTE
-      { $computerExpression = new ComputerExpression($COMPUTE); }
+      { $specifierExpression = new LazySpecifierExpression($COMPUTE); }
       functionOrExpression
-      { $computerExpression.setExpression($functionOrExpression.expression); }
+      { $specifierExpression.setExpression($functionOrExpression.expression); }
     ;
 
 initializer returns [InitializerExpression initializerExpression]
@@ -1309,7 +1313,7 @@ primary returns [Primary primary]
     ;
 
 specifierParametersStart
-    : LPAREN (compilerAnnotations annotatedDeclarationStart | RPAREN (SPECIFY|specifierParametersStart))
+    : LPAREN (compilerAnnotations annotatedDeclarationStart | RPAREN (SPECIFY|COMPUTE|specifierParametersStart))
     ;
 
 qualifiedReference returns [Identifier identifier, MemberOperator operator, 
@@ -1623,7 +1627,7 @@ namedArgumentStart
 
 //special rule for syntactic predicates
 specificationStart
-    : LIDENTIFIER '='
+    : LIDENTIFIER (SPECIFY|COMPUTE)
     ;
 
 parExpression returns [Expression expression] 
@@ -1700,10 +1704,21 @@ anonParametersStart
     : LPAREN (compilerAnnotations annotatedDeclarationStart | RPAREN)
     ;
 
+nonemptyParametersStart
+    : LPAREN compilerAnnotations annotatedDeclarationStart
+    ;
+
 functionOrExpression returns [Expression expression]
     @init { FunctionArgument fa = new FunctionArgument(null);
             fa.setType(new FunctionModifier(null)); }
-    : (anonParametersStart)=>
+    : (FUNCTION_MODIFIER? anonParametersStart |
+       comparableType (nonemptyParametersStart | LPAREN RPAREN COMPUTE))=>
+      (
+        FUNCTION_MODIFIER
+      |
+        comparableType
+        { fa.setType($comparableType.type); }
+      )?
       p1=parameters
       { fa.addParameterList($p1.parameterList); }
       ( 

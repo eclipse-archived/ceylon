@@ -452,7 +452,7 @@ public class DeclarationVisitor extends Visitor {
         Value v = new Value();
         that.setDeclarationModel(v);
         v.setTransient(that.getSpecifierOrInitializerExpression() 
-        		instanceof Tree.ComputerExpression);
+        		instanceof Tree.LazySpecifierExpression);
         visitDeclaration(that, v);
         super.visit(that);
         if (v.isInterfaceMember() && !v.isFormal()) {
@@ -488,7 +488,7 @@ public class DeclarationVisitor extends Visitor {
     @Override
     public void visit(Tree.MethodDeclaration that) {
         super.visit(that);
-        Tree.ComputerExpression sie = that.getComputerExpression();
+        Tree.SpecifierExpression sie = that.getSpecifierExpression();
         if ( that.getDeclarationModel().isFormal() && sie!=null ) {
             that.addError("formal methods may not have a method reference");
         }

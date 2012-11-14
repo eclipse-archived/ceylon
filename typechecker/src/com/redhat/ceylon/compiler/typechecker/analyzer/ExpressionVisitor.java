@@ -130,7 +130,13 @@ public class ExpressionVisitor extends Visitor {
             list.add(p.getType());
         }
         ProducedType ft = unit.getCallableDeclaration().getProducedType(null, list);*/
-        that.getType().setTypeModel(t);
+        if (that.getType() instanceof Tree.FunctionModifier) {
+        	that.getType().setTypeModel(t);
+        }
+        else {
+        	checkAssignable(t, that.getType().getTypeModel(), that.getExpression(), 
+        			"expression type must be assignable to specified return type");
+        }
         that.setTypeModel(that.getDeclarationModel()
                 .getProducedTypedReference(null, Collections.<ProducedType>emptyList())
                 .getFullType());
@@ -612,16 +618,18 @@ public class ExpressionVisitor extends Visitor {
     						checkAssignable(t.getTypeModel(), at, t, 
     								"declared parameter type must be a subtype of type declared in function declaration");
     					}
-						Tree.Parameter lastParam = params.get(params.size()-1);
-						boolean refSequenced = lastParam.getDeclarationModel().isSequenced();
-						if (refSequenced && !sequenced) {
-							lastParam.addError("parameter list in referenced declaration does not have a sequenced parameter");
-						}
-						if (!refSequenced && sequenced) {
-							lastParam.addError("parameter list in referenced declaration has a sequenced parameter");							
-						}
+    					if (!params.isEmpty()) {
+    						Tree.Parameter lastParam = params.get(params.size()-1);
+    						boolean refSequenced = lastParam.getDeclarationModel().isSequenced();
+    						if (refSequenced && !sequenced) {
+    							lastParam.addError("parameter list in referenced declaration does not have a sequenced parameter");
+    						}
+    						if (!refSequenced && sequenced) {
+    							lastParam.addError("parameter list in referenced declaration has a sequenced parameter");							
+    						}
+    					}
     					pt = ct.getTypeArgumentList().get(0);
-        				that.setTypeModel(pt);
+    					that.setTypeModel(pt);
     				}
     			}
     		}
@@ -631,10 +639,10 @@ public class ExpressionVisitor extends Visitor {
     @Override public void visit(Tree.SpecifierStatement that) {
         super.visit(that);
         Tree.Term me = that.getBaseMemberExpression();
-        Tree.SpecifierExpression sie = that.getSpecifierExpression();
         while (me instanceof Tree.ParameterizedExpression) {
         	me = ((Tree.ParameterizedExpression) me).getPrimary();
         }
+        Tree.SpecifierExpression sie = that.getSpecifierExpression();
         if (me instanceof Tree.BaseMemberExpression) {
             Tree.BaseMemberExpression bme = (Tree.BaseMemberExpression) me;
             Declaration d = bme.getDeclaration();
@@ -668,6 +676,16 @@ public class ExpressionVisitor extends Visitor {
                 }
 //            	checkType(bme.getTarget().getType(), d.getName(), sie, 2100);
             	checkType(that.getBaseMemberExpression().getTypeModel(), d.getName(), sie, 2100);
+            }
+            if (that.getBaseMemberExpression() instanceof Tree.ParameterizedExpression) {
+            	if (!(sie instanceof Tree.LazySpecifierExpression)) {
+            		that.addError("functions with parameters must be specified using =>");
+            	}
+            }
+            else {
+            	if (sie instanceof Tree.LazySpecifierExpression && d instanceof Method) {
+            		that.addError("functions without parameters must be specified using =");
+            	}
             }
         }
         else {
@@ -874,7 +892,7 @@ public class ExpressionVisitor extends Visitor {
 
     @Override public void visit(Tree.MethodDeclaration that) {
         super.visit(that);
-        Tree.ComputerExpression se = that.getComputerExpression();
+        Tree.SpecifierExpression se = that.getSpecifierExpression();
         if (se!=null) {
             Tree.Expression e = se.getExpression();
             if (e!=null) {

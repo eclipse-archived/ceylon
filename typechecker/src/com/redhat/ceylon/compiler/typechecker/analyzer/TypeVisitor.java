@@ -764,7 +764,7 @@ public class TypeVisitor extends Visitor {
     @Override
     public void visit(Tree.MethodDeclaration that) {
         super.visit(that);
-        Tree.ComputerExpression sie = that.getComputerExpression();
+        Tree.SpecifierExpression sie = that.getSpecifierExpression();
         if (sie==null
                 && that.getType() instanceof Tree.FunctionModifier) {
             that.getType().addError("method must specify an explicit return type or definition");

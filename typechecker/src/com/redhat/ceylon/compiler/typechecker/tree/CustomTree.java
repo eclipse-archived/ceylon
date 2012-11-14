@@ -112,8 +112,8 @@ public class CustomTree extends Tree {
                 Walker.walkTypedDeclaration(visitor, this);
                 for (Tree.ParameterList subnode: getParameterLists())
                     subnode.visit(visitor);
-                if (getComputerExpression()!=null)
-                	getComputerExpression().visit(visitor);
+                if (getSpecifierExpression()!=null)
+                	getSpecifierExpression().visit(visitor);
             }
         }
         @Override public String getNodeType() {
