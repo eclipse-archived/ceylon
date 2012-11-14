@@ -19,22 +19,18 @@ shared class LazyList<out Element>(Iterable<Element> elems)
         }
     }
 
-    shared actual Iterator<Element> iterator {
-        return elems.iterator;
-    }
+    shared actual Iterator<Element> iterator =>
+        elems.iterator;
 
     doc "Returns a `List` with the elements of this
          `List` in reverse order. This operation will
          create copy the elements to a new `List`,
          so changes to the original `Iterable` will
          no longer be reflected in the new `List`."
-    shared actual List<Element> reversed {
-        return elems.sequence.reversed;
-    }
+    shared actual List<Element> reversed =>
+        elems.sequence.reversed;
 
-    shared actual List<Element> clone {
-        return this;
-    }
+    shared actual List<Element> clone => this;
     
     shared actual List<Element> span
             (Integer from, Integer? to) {
@@ -108,16 +104,13 @@ shared class LazyList<out Element>(Iterable<Element> elems)
         return hash;
     }
     
-    shared default actual Element? findLast(Boolean selecting(Element elem)) {
-        return elems.findLast(selecting);
-    }
+    shared default actual Element? findLast(Boolean selecting(Element elem)) =>
+        elems.findLast(selecting);
     
-    shared actual default Element? first {
-        return elems.first;
-    }
+    shared actual default Element? first =>
+        elems.first;
     
-    shared actual default Element? last {
-        return elems.last;
-    }
+    shared actual default Element? last =>
+        elems.last;
     
 }
