@@ -3,7 +3,7 @@ void tuples() {
         return (a,b,c);
     }
     value t = returnTuple(1, "2", Singleton(`3`));
-    alias Triplet = <Integer,String,Singleton<Character>>;
+    alias Triplet => <Integer,String,Singleton<Character>>;
     Triplet? subt = t;
     check(is Triplet subt, "tuples");
     check(t.lastIndex == 2, "tuple lastIndex");
