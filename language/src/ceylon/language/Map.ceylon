@@ -80,19 +80,19 @@ shared interface Map<out Key,out Item>
         object inverse 
                 extends Object() 
                 satisfies Map<Item, Set<Key>> {
-            shared actual Map<Item,Set<Key>> clone {
-                return this;
-            }
-            shared actual Set<Key>? item(Object key) = 
-                LazySet(for (k->v in outer) if (v==key) k);
-            shared actual Iterator<Entry<Item,Set<Key>>> iterator {
-                return outer.values.map((Item e) e ->
-                        LazySet<Key>(for (k->v in outer) if (v==e) k))
-                                .iterator;
-            }
-            shared actual Integer size {
-                return outer.size;
-            }
+            
+            shared actual Map<Item,Set<Key>> clone => this;
+            
+            shared actual Set<Key>? item(Object key) => 
+                    LazySet(for (k->v in outer) if (v==key) k);
+            
+            shared actual Iterator<Entry<Item,Set<Key>>> iterator =>
+                    outer.values.map((Item e) e ->
+                            LazySet<Key>(for (k->v in outer) if (v==e) k))
+                                    .iterator;
+            
+            shared actual Integer size => outer.size;
+            
         }
         return inverse;
     }

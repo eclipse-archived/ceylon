@@ -54,7 +54,7 @@ shared interface Collection<out Element>
          if this collection is empty. If the collection 
          iterator produces the value `null`, the string
          representation contains the string `\"null\"`."
-    shared default actual String string =
+    shared default actual String string =>
             empty then "{}" else "{ " elementsString " }";
     
 }

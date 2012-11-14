@@ -1,6 +1,6 @@
 doc "An iterator which always returns `exhausted`."
 object emptyIterator satisfies Iterator<Bottom> {
-    shared actual Finished next() = exhausted;
+    shared actual Finished next() => exhausted;
 }
 
 doc "A fixed-size collection with no elements."
