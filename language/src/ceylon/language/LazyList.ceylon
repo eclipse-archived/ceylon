@@ -2,7 +2,7 @@ doc "An implementation of List that wraps an `Iterable` of
      elements. All operations on this List are performed
      on the Iterable."
 by "Enrique Zamudio"
-shared class LazyList<out Element>(Element... elems)
+shared class LazyList<out Element>(Iterable<Element> elems)
         satisfies List<Element> {
 
     shared actual Integer? lastIndex {
@@ -42,7 +42,7 @@ shared class LazyList<out Element>(Element... elems)
             if (to >= from) {
                 value els = from > 0 then elems.skipping(from)
                         else elems;
-                return LazyList(els.taking(to-from+1)...);
+                return LazyList(els.taking(to-from+1));
             } 
             else {
                 //reversed
@@ -52,7 +52,7 @@ shared class LazyList<out Element>(Element... elems)
         else {
             value els = from > 0 then elems.skipping(from)
                 else elems;
-            return LazyList(els...);
+            return LazyList(els);
         }
     }
     
@@ -61,7 +61,7 @@ shared class LazyList<out Element>(Element... elems)
         if (length > 0) {
             value els = from > 0 then elems.skipping(from)
                     else elems;
-            return LazyList(els.taking(length)...);
+            return LazyList(els.taking(length));
         } 
         else {
             return {};
