@@ -21,7 +21,7 @@ void callables() {
   check(ini4(1) == {"H", "W"}, "higher-class 4 (ceylon-js #53)");
   check("Callable" in className(ini2), "Spread Callable className");
   */
-  function ini5(Integer i) = TestCallable("Some string").something(i);
+  function ini5(Integer i) => TestCallable("Some string").something(i);
   check(ini5(4) == "Some", "higher-class 5");
   check(testCallable(TestCallable("Moar").something) == "M", "higher-class 6");
   value tc = TestCallable("Less").something;
