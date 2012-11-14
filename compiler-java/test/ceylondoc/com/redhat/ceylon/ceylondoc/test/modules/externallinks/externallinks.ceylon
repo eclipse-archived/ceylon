@@ -17,4 +17,21 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
  * MA  02110-1301, USA.
  */
-shared package com.redhat.ceylon.ceylondoc.test.modules.dependency.c;
+import ceylon.collection { HashMap }
+import ceylon.math.decimal { Decimal, zero }
+import com.redhat.ceylon.ceylondoc.test.modules.dependency.b { B }
+import com.redhat.ceylon.ceylondoc.test.modules.dependency.c { C }
+
+shared B b() { throw; }
+shared C c() { throw; }
+shared HashMap<B, C> fceWithMap() { throw; }
+
+doc "External links:
+     
+     - zero = [[zero]]
+     - Decimal = [[Decimal]]
+     - Decimal.divided = [[Decimal.divided]]
+     - ceylon.math.whole::one = [[ceylon.math.whole::one]]
+     - ceylon.math.whole::Whole = [[ceylon.math.whole::Whole]]
+     - ceylon.math.whole::Whole.power = [[ceylon.math.whole::Whole.power]]"
+shared void fceWithExternalLinksInDoc() {}

@@ -19,7 +19,7 @@
  */
 import com.redhat.ceylon.ceylondoc.test.modules.dependency.b { B }
 
-class C() extends B(){}
+shared class C() extends B(){}
 
 doc "The classic Hello World program"
 shared void helloworld() {

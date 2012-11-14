@@ -199,6 +199,47 @@ public class CeylonDocToolTest {
         assertBug691AbbreviatedOptionalType(destDir);
         assertBug839(destDir);
     }
+    
+    @Test
+    public void externalLinksWithModuleNamePattern() throws IOException {
+        List<String> links = new ArrayList<String>();
+        links.add("com.redhat=file://" + new File("").getAbsolutePath() + "/build/CeylonDocToolTest/" + name.getMethodName());
+        links.add("ceylon=https://modules.ceylon-lang.org/test/");
+        
+        externalLinks(links);
+    }
+    
+    @Test
+    public void externalLinksWithoutModuleNamePattern() throws IOException {
+        List<String> links = new ArrayList<String>();
+        links.add("file://not-existing-dir");
+        links.add("https://not-existing-url");        
+        links.add("file://" + new File("").getAbsolutePath() + "/build/CeylonDocToolTest/" + name.getMethodName());
+        links.add("https://modules.ceylon-lang.org/test/");
+        
+        externalLinks(links);
+    }    
+    
+    private void externalLinks(List<String> links) throws IOException {
+        compile("test/ceylondoc", "com.redhat.ceylon.ceylondoc.test.modules.dependency.b");
+        compile("test/ceylondoc", "com.redhat.ceylon.ceylondoc.test.modules.dependency.c");
+
+        List<String> modules = new ArrayList<String>();
+        modules.add("com.redhat.ceylon.ceylondoc.test.modules.dependency.b");
+        modules.add("com.redhat.ceylon.ceylondoc.test.modules.dependency.c");
+        modules.add("com.redhat.ceylon.ceylondoc.test.modules.externallinks");
+
+        CeylonDocTool tool = tool(Arrays.asList(new File("test/ceylondoc")), modules, true, "build/ceylon-cars");
+        tool.setLinks(links);
+        tool.makeDoc();
+
+        Module module = new Module();
+        module.setName(Arrays.asList("com.redhat.ceylon.ceylondoc.test.modules.externallinks"));
+        module.setVersion("1.0");        
+
+        File destDir = getOutputDir(tool, module);
+        assertExternalLinks(destDir);
+    }
 
     @Test
     public void dependentOnBinaryModule() throws IOException {
@@ -636,6 +677,31 @@ public class CeylonDocToolTest {
         assertNoMatchInFile(destDir, "object_caseSensitive.html", 
                 Pattern.compile("<table id='section-constructor'"));
     }
+    
+    private void assertExternalLinks(File destDir) throws IOException {
+        String url = "file://" + new File("").getAbsolutePath() + "/build/CeylonDocToolTest/" + name.getMethodName();
+        
+        assertMatchInFile(destDir, "index.html",
+                Pattern.compile("<a class='link' href='"+url+"/com/redhat/ceylon/ceylondoc/test/modules/dependency/b/1.0/module-doc/class_B.html'>B</a>"));
+        assertMatchInFile(destDir, "index.html",
+                Pattern.compile("<a class='link' href='"+url+"/com/redhat/ceylon/ceylondoc/test/modules/dependency/c/1.0/module-doc/class_C.html'>C</a>"));
+        assertMatchInFile(destDir, "index.html",
+                Pattern.compile("<a class='link' href='https://modules.ceylon-lang.org/test/ceylon/collection/0.4/module-doc/class_HashMap.html'>HashMap</a>&lt;"));
+        
+        assertMatchInFile(destDir, "index.html",
+                Pattern.compile("zero = <a class='link' href='https://modules.ceylon-lang.org/test/ceylon/math/0.4/module-doc/decimal/index.html#zero'>zero</a>"));
+        assertMatchInFile(destDir, "index.html",
+                Pattern.compile("Decimal = <a class='link' href='https://modules.ceylon-lang.org/test/ceylon/math/0.4/module-doc/decimal/interface_Decimal.html'>Decimal</a>"));
+        assertMatchInFile(destDir, "index.html",
+                Pattern.compile("Decimal.divided = <a class='link' href='https://modules.ceylon-lang.org/test/ceylon/math/0.4/module-doc/decimal/interface_Decimal.html#divided'>Decimal.divided</a>"));
+        
+        assertMatchInFile(destDir, "index.html",
+                Pattern.compile("ceylon.math.whole::one = <a class='link' href='https://modules.ceylon-lang.org/test/ceylon/math/0.4/module-doc/decimal/index.html#one'>ceylon.math.whole::one</a>"));
+        assertMatchInFile(destDir, "index.html",
+                Pattern.compile("ceylon.math.whole::Whole = <a class='link' href='https://modules.ceylon-lang.org/test/ceylon/math/0.4/module-doc/whole/interface_Whole.html'>ceylon.math.whole::Whole</a>"));
+        assertMatchInFile(destDir, "index.html",
+                Pattern.compile("ceylon.math.whole::Whole.power = <a class='link' href='https://modules.ceylon-lang.org/test/ceylon/math/0.4/module-doc/whole/interface_Whole.html#power'>ceylon.math.whole::Whole.power</a>"));
+    }    
 
     private void assertBug659ShowInheritedMembers(File destDir) throws IOException {
     	assertMatchInFile(destDir, "class_StubClass.html",

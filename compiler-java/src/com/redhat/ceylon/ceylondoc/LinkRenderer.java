@@ -19,9 +19,16 @@
  */
 package com.redhat.ceylon.ceylondoc;
 
+import static com.redhat.ceylon.ceylondoc.CeylondMessages.msg;
+
+import java.io.File;
 import java.io.IOException;
 import java.io.Writer;
+import java.net.HttpURLConnection;
+import java.net.URL;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import com.redhat.ceylon.compiler.typechecker.model.Class;
 import com.redhat.ceylon.compiler.typechecker.model.ClassOrInterface;
@@ -39,6 +46,7 @@ import com.redhat.ceylon.compiler.typechecker.model.Value;
 
 public class LinkRenderer {
     
+    private static final Map<String, Boolean> checkModuleUrlCache = new HashMap<String, Boolean>();
     private StringBuffer buffer = new StringBuffer();
     private Object to;
     private Object from;
@@ -146,12 +154,12 @@ public class LinkRenderer {
 
     private void processModule(Module module) {
         String moduleUrl = getUrl(module);
-        appendLinkElement(moduleUrl, module.getNameAsString());
+        buffer.append(buildLinkElement(moduleUrl, module.getNameAsString()));
     }
     
     private void processPackage(Package pkg) {
         String pkgUrl = getUrl(pkg);
-        appendLinkElement(pkgUrl, pkg.getNameAsString());
+        buffer.append(buildLinkElement(pkgUrl, pkg.getNameAsString()));
     }
 
     private void processProducedType(ProducedType producedType) {
@@ -210,9 +218,10 @@ public class LinkRenderer {
 
     private void processClassOrInterface(ClassOrInterface clazz, List<ProducedType> typeArguments) {
         String clazzName = clazz.getName();
-        if (isInCurrentModule(clazz)) {
-            String clazzUrl = getUrl(clazz);
-            appendLinkElement(clazzUrl, clazzName);
+        
+        String clazzUrl = getUrl(clazz);
+        if (clazzUrl != null) {
+            buffer.append(buildLinkElement(clazzUrl, clazzName));
         } else {
             buffer.append(clazzName);
         }
@@ -261,14 +270,20 @@ public class LinkRenderer {
     private void processDeclaration(Declaration decl) {
         String declName = decl.getName();
         Scope declContainer = decl.getContainer();
-
-        if (isInCurrentModule(declContainer)) {
-            if (anchor != null) {
-                throw new IllegalArgumentException();
-            }
-            anchor = decl;
-            String url = getUrl(declContainer);
-            appendLinkElement(url, declName);
+        
+        // TODO workaround https://github.com/ceylon/ceylon-compiler/issues/877
+        if( declContainer instanceof Package ) {
+            declContainer = getPackage_workaround_877(decl);
+        }
+        
+        if (anchor != null) {
+            throw new IllegalArgumentException();
+        }
+        anchor = decl;
+        
+        String url = getUrl(declContainer);
+        if( url != null ) {
+            buffer.append(buildLinkElement(url, declName));
         } else {
             buffer.append(declName);
         }
@@ -362,11 +377,21 @@ public class LinkRenderer {
                         unionType, unionType.getUnit().getSequenceDeclaration());
     }
 
-    private boolean isInCurrentModule(Scope scope) {
-        Module currentModule = ceylonDocTool.getCurrentModule();
-        if (currentModule != null) {
-            return currentModule.equals(getPackage(scope).getModule());
+    private boolean isInCurrentModule(Object obj) {
+        Module objModule = null;
+        if (obj instanceof Module) {
+            objModule = (Module) obj;
+        } else if (obj instanceof Scope) {
+            objModule = getPackage((Scope) obj).getModule();
+        } else if (obj instanceof Element) {
+            objModule = getPackage(((Element) obj).getScope()).getModule();
         }
+        
+        Module currentModule = ceylonDocTool.getCurrentModule();
+        if (currentModule != null && objModule != null) {
+            return currentModule.equals(objModule);
+        }
+        
         return false;
     }
     
@@ -397,31 +422,191 @@ public class LinkRenderer {
     }
 
     private String getUrl(Object to) {
+        String url;
+        
+        if (isInCurrentModule(to)) {
+            url = getLocalUrl(to);
+        } else {
+            url = getExternalUrl(to);
+        }        
+            
+        if (url != null && anchor != null) {
+            String sectionPackageAnchor = "#section-package";
+            if (url.endsWith(sectionPackageAnchor)) {
+                url = url.substring(0, url.length() - sectionPackageAnchor.length());
+            }
+            url = url + "#" + anchor.getName();
+        }            
+            
+        return url;
+    }
+    
+    private String getLocalUrl(Object to) {
         try {
-            String url = ceylonDocTool.getObjectUrl(from, to);
-            
-            if (anchor != null) {
-                String sectionPackageAnchor = "#section-package";
-                if (url.endsWith(sectionPackageAnchor)) {
-                    url = url.substring(0, url.length() - sectionPackageAnchor.length());
-                }
-                url = url + "#" + anchor.getName();
-            }            
-            
-            return url;
+            return ceylonDocTool.getObjectUrl(from, to);
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
     }
 
-    private void appendLinkElement(String url, String text) {
-        buffer.append("<a class='link' href='").append(url).append("'>");
-        if( customText != null ) {
-            buffer.append(customText);
-        } else {
-            buffer.append(text);
+    private String getExternalUrl(Object to) {
+        String url = null;
+        if (to instanceof Module) {
+            url = getExternalModuleUrl((Module)to);
+            if (url != null) {
+                url += "index.html";
+            }
+        } else if (to instanceof Package) {
+            Package pkg = (Package)to;
+            url = getExternalModuleUrl(pkg.getModule());
+            if (url != null) {
+                url += buildPackageUrlPath(pkg);
+                url += "index.html";
+            }
+        } else if (to instanceof ClassOrInterface) {
+            Package pkg = getPackage_workaround_877((ClassOrInterface)to);
+            url = getExternalModuleUrl(pkg.getModule());
+            if (url != null) {
+                url += buildPackageUrlPath(pkg);
+                url += ceylonDocTool.kind(to) + "_" + ceylonDocTool.getFileName((Scope)to) + ".html";
+            }
         }
-        buffer.append("</a>");
+        return url;
+    }
+    
+    private String getExternalModuleUrl(Module module) {
+        if( ceylonDocTool.getLinks() != null ) {
+            String moduleName = module.getNameAsString();
+            
+            for (String link : ceylonDocTool.getLinks()) {
+                String[] linkParts = divideToPatternAndUrl(link);
+                String moduleNamePattern = linkParts[0];
+                String moduleRepoUrl = linkParts[1];
+                
+                if (moduleNamePattern == null) {
+                    String moduleDocUrl = buildModuleUrl(moduleRepoUrl, module);
+                    if (isHttpProtocol(moduleDocUrl) && checkHttpUrlExist(moduleDocUrl)) {
+                        return moduleDocUrl;
+                    }
+                    if (isFileProtocol(moduleDocUrl) && checkFileUrlExist(moduleDocUrl)) {
+                        return moduleDocUrl;
+                    }
+                } else if (moduleName.startsWith(moduleNamePattern)) {
+                    return buildModuleUrl(moduleRepoUrl, module);
+                }
+            }
+        }
+        return null;
+    }
+    
+    private String buildLinkElement(String url, String text) {
+        StringBuilder linkBuilder = new StringBuilder();
+        linkBuilder.append("<a class='link' href='").append(url).append("'>");
+        if( customText != null ) {
+            linkBuilder.append(customText);
+        } else {
+            linkBuilder.append(text);
+        }
+        linkBuilder.append("</a>");
+        return linkBuilder.toString();
+    }    
+
+    private String buildModuleUrl(String moduleRepoUrl, Module module) {
+        StringBuilder moduleUrlBuilder = new StringBuilder();
+        moduleUrlBuilder.append(moduleRepoUrl);
+        if (!moduleRepoUrl.endsWith("/")) {
+            moduleUrlBuilder.append("/");
+        }
+        moduleUrlBuilder.append(Util.join("/", module.getName()));
+        moduleUrlBuilder.append("/");
+        moduleUrlBuilder.append(module.getVersion());
+        moduleUrlBuilder.append("/module-doc/");
+        return moduleUrlBuilder.toString();
+    }
+    
+    private String buildPackageUrlPath(Package pkg) {
+        List<String> packagePath = pkg.getName().subList(pkg.getModule().getName().size(), pkg.getName().size());
+        if (!packagePath.isEmpty()) {
+            return Util.join("/", packagePath) + "/";
+        }
+        return "";
+    }
+    
+    public static String[] divideToPatternAndUrl(String link) {
+        String moduleRepoUrl = null;
+        String moduleNamePattern = null;
+
+        int indexOfSeparator = link.indexOf("=");
+        if (indexOfSeparator != -1) {
+            moduleNamePattern = link.substring(0, indexOfSeparator);
+            moduleRepoUrl = link.substring(indexOfSeparator + 1);
+        } else {
+            moduleRepoUrl = link;
+        }
+
+        return new String[] { moduleNamePattern, moduleRepoUrl };
+    }
+    
+    public static boolean isHttpProtocol(String url) {
+        return url.startsWith("http://") || url.startsWith("https://");
     }
 
+    public static boolean isFileProtocol(String url) {
+        return url.startsWith("file://");
+    }
+
+    private boolean checkHttpUrlExist(String moduleUrl) {
+        Boolean result = checkModuleUrlCache.get(moduleUrl);
+        if( result == null ) {
+            try {
+                HttpURLConnection con = (HttpURLConnection) new URL(moduleUrl + "index.html").openConnection();
+                con.setRequestMethod("HEAD");
+                int responseCode = con.getResponseCode();
+    
+                if( responseCode == HttpURLConnection.HTTP_OK ) {
+                    result = Boolean.TRUE;                
+                } else {
+                    ceylonDocTool.getLogger().info(msg("info.urlDoesNotExist", moduleUrl));
+                    result = Boolean.FALSE;
+                }
+            }
+            catch (IOException e) {
+                ceylonDocTool.getLogger().info(msg("info.urlDoesNotExist", moduleUrl));
+                result = Boolean.FALSE;
+            }
+            checkModuleUrlCache.put(moduleUrl, result);
+        }
+        return result.booleanValue();
+    }
+    
+    private boolean checkFileUrlExist(String moduleUrl) {
+        Boolean result = checkModuleUrlCache.get(moduleUrl);
+        if( result == null ) {
+            File moduleDocDir = new File(moduleUrl.substring("file://".length()));
+            if (moduleDocDir.isDirectory() && moduleDocDir.exists()) {
+                result = Boolean.TRUE;
+            } else {
+                ceylonDocTool.getLogger().info(msg("info.urlDoesNotExist", moduleUrl));
+                result = Boolean.FALSE;
+            }
+        }
+        return result.booleanValue();
+    }
+
+    // TODO workaround https://github.com/ceylon/ceylon-compiler/issues/877
+    private Package getPackage_workaround_877(Declaration d) {
+        for (Module module : ceylonDocTool.getTypeChecker().getContext().getModules().getListOfModules()) {
+            for (Package pkg : module.getAllPackages()) {
+                if (pkg.getNameAsString().startsWith("java.lang")) {
+                    continue;
+                }
+                Declaration member = pkg.getMember(d.getName(), null, true);
+                if( member != null ) {
+                    return pkg;
+                }
+            }
+        }
+        return null;
+    }
+    
 }

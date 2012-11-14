@@ -44,6 +44,7 @@ import java.util.Map;
 import javax.annotation.PostConstruct;
 
 import com.redhat.ceylon.cmr.api.ArtifactContext;
+import com.redhat.ceylon.cmr.api.Logger;
 import com.redhat.ceylon.cmr.api.RepositoryManager;
 import com.redhat.ceylon.cmr.ceylon.CeylonUtils;
 import com.redhat.ceylon.cmr.impl.CMRException;
@@ -111,9 +112,9 @@ import com.redhat.ceylon.compiler.typechecker.util.ModuleManagerFactory;
 "the `~/projects/hibernate/src` directory to the " +
 "repository `~/projects/hibernate/build`:\n" +
 "\n" +
-"    ceylond org.hibernate/3.0.0.beta \\\n"+
-"        -src ~/projects/hibernate/src \\\n"+
-"        -out ~/projects/hibernate/build")
+"    ceylon doc org.hibernate/3.0.0.beta \\\n"+
+"        --src ~/projects/hibernate/src \\\n"+
+"        --out ~/projects/hibernate/build")
 public class CeylonDocTool implements Tool {
 
     private List<PhasedUnit> phasedUnits;
@@ -142,6 +143,8 @@ public class CeylonDocTool implements Tool {
     private String systemRepository;
     private List<String> moduleSpecs = new LinkedList<String>();
     private Module currentModule;
+    private List<String> links = new LinkedList<String>();
+    private TypeChecker typeChecker;
 
     public CeylonDocTool() {
     }
@@ -202,6 +205,38 @@ public class CeylonDocTool implements Tool {
     public void setModuleSpecs(List<String> moduleSpecs) {
         this.moduleSpecs = moduleSpecs;
     }
+    
+    public List<String> getLinks() {
+        return links;
+    }
+    
+    @OptionArgument(longName="link", argumentName="url")
+    @Description("The URL of a module repository containing documentation for external dependencies." +
+    		"\n\n" +
+    		"Parameter url must be one of supported protocols (http://, https:// or file://). " +
+            "Parameter url can be prefixed with module name pattern, separated by a '=' character, determine for which external modules will be use." +
+            "\n\n" +
+            "Examples:\n" +
+            "\n" +
+            "    --link https://modules.ceylon-lang.org/\n" +
+            "    --link ceylon.math=https://modules.ceylon-lang.org/\n")
+    public void setLinks(List<String> links) {
+        validateLinks(links);        
+        this.links = links;
+    }
+
+    private void validateLinks(List<String> links) {
+        if( links != null ) {
+            for(String link : links) {
+                String[] linkParts = LinkRenderer.divideToPatternAndUrl(link);
+                String moduleRepoUrl = linkParts[1];
+
+                if (!LinkRenderer.isHttpProtocol(moduleRepoUrl) && !LinkRenderer.isFileProtocol(moduleRepoUrl)) {
+                    throw new IllegalArgumentException(CeylondMessages.msg("error.unexpectedLinkProtocol", link));  
+                }
+            }
+        }
+    }
 
     @PostConstruct
     public void init() {
@@ -235,7 +270,7 @@ public class CeylonDocTool implements Tool {
         }
         builder.setModuleFilters(moduleFilters);
         
-        TypeChecker typeChecker = builder.getTypeChecker();
+        typeChecker = builder.getTypeChecker();
         // collect all units we are typechecking
         collectTypeCheckedUnits(typeChecker);
         typeChecker.process();
@@ -351,7 +386,7 @@ public class CeylonDocTool implements Tool {
         return includeSourceCode;
     }
 
-    private String getFileName(Scope klass) {
+    protected String getFileName(Scope klass) {
         List<String> name = new LinkedList<String>();
         while(klass instanceof Declaration){
             name.add(0, ((Declaration)klass).getName());
@@ -931,6 +966,14 @@ public class CeylonDocTool implements Tool {
     
     protected Module getCurrentModule() {
         return currentModule;
+    }
+    
+    protected TypeChecker getTypeChecker() {
+        return typeChecker;
+    }
+    
+    protected Logger getLogger() {
+        return log;
     }
     
 }
