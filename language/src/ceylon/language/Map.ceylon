@@ -88,7 +88,7 @@ shared interface Map<out Key,out Item>
             
             shared actual Iterator<Entry<Item,Set<Key>>> iterator =>
                     outer.values.map((Item e) e ->
-                            LazySet<Key>({for (k->v in outer) if (v==e) k}))
+                            LazySet(elements{for (k->v in outer) if (v==e) k}))
                                     .iterator;
             
             shared actual Integer size => outer.size;
