@@ -3434,7 +3434,7 @@ public class ExpressionVisitor extends Visitor {
 		for (int i=es.size()-1; i>=0; i--) {
 			ProducedType et = es.get(i).getTypeModel();
 			if (i==es.size()-1 && that.getEllipsis()!=null) {
-				ut = unit.getElementType(et);
+				ut = unit.getIteratedType(et);
 				result = unit.getSequentialType(ut);
 				if (!unit.isSequentialType(et)) {
 					that.getEllipsis().addError("last element expression is not a sequence: " +

@@ -1196,7 +1196,7 @@ public class ProducedType extends ProducedReference {
                             .getProducedTypeName() + "?";
                 }
                 if (abbreviateSequence()) {
-                    return unit.getElementType(this)
+                    return unit.getIteratedType(this)
                             .getProducedTypeName() + "[]";
                 }
                 /*if (abbreviateEntry()) {
@@ -1312,25 +1312,21 @@ public class ProducedType extends ProducedReference {
 
     private boolean abbreviateCallable() {
         return getDeclaration() instanceof Interface &&
-                getDeclaration().getQualifiedNameString()
-                        .equals("ceylon.language::Callable") &&
+                getDeclaration().equals(getDeclaration().getUnit().getCallableDeclaration()) &&
                 getTypeArgumentList().size()>0 && getTypeArgumentList().get(0)!=null &&
                 getTypeArgumentList().get(0).isPrimitiveAbbreviatedType() &&
                 getTypeArgumentList().size()==getDeclaration().getTypeParameters().size();
     }
 
     private boolean abbreviateSequence() {
-        if (getDeclaration() instanceof UnionType) {
-            Unit unit = getDeclaration().getUnit();
-            UnionType ut = (UnionType) getDeclaration();
-            return ut.getCaseTypes().size()==2 &&
-                    isElementOfUnion(ut, unit.getEmptyDeclaration()) &&
-                    isElementOfUnion(ut, unit.getSequenceDeclaration()) &&
-                        unit.getElementType(this).isPrimitiveAbbreviatedType();
-        }
-        else {
-            return false;
-        }
+    	if (getDeclaration() instanceof Interface) {
+    		Unit unit = getDeclaration().getUnit();
+    		if (getDeclaration().equals(unit.getSequentialDeclaration())) {
+    			ProducedType et = unit.getIteratedType(this);
+				return et!=null && et.isPrimitiveAbbreviatedType();
+    		}
+    	}
+    	return false;
     }
 
     private boolean abbreviateOptional() {

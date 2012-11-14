@@ -624,16 +624,6 @@ public class Unit {
                         .getDeclaration() instanceof BottomType);
     }
     
-    public ProducedType getElementType(ProducedType pt) {
-        ProducedType st = getNonemptySequenceType(pt);
-        if (st!=null && st.getTypeArguments().size()==1) {
-            return st.getTypeArgumentList().get(0);
-        }
-        else {
-            return null;
-        }
-    }
-    
     public BottomType getBottomDeclaration() {
         return new BottomType(this);
     }
