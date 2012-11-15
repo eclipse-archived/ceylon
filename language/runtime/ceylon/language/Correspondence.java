@@ -53,7 +53,7 @@ public interface Correspondence<Key,Item> {
     public Iterable<? extends Key> definesAny$keys();
 
     @Annotations(@Annotation("default"))
-    @TypeInfo("ceylon.language::Empty|ceylon.language::Sequence<Item|ceylon.language::Nothing>")
+    @TypeInfo("ceylon.language::Sequential<Item|ceylon.language::Nothing>")
     public List<? extends Item> items(@Sequenced @Name("keys")
     @TypeInfo("ceylon.language::Iterable<Key>")
     Iterable<? extends Key> keys);

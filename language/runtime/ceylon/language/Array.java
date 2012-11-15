@@ -588,7 +588,7 @@ public abstract class Array<Element> implements List<Element>, FixedSized<Elemen
     }
 
     @Override
-    public long count(@Name("selecting") @TypeInfo("ceylon.language::Callable<ceylon.language::Boolean,Element>")
+    public long count(@Name("selecting") @TypeInfo("ceylon.language::Callable<ceylon.language::Boolean,ceylon.language::Tuple<Element,Element,ceylon.language::Empty>>")
             Callable<? extends Boolean> selecting) {
         // FIXME Very inefficient for primitive types due to boxing
         int count=0;

@@ -43,13 +43,13 @@ public interface Iterable<Element> extends ContainerWithFirstElement<Element,Not
     @TypeInfo("ceylon.language::Iterable<Result>")
     @TypeParameters(@TypeParameter("Result"))
     public <Result> Iterable<? extends Result> map(@Name("collecting")
-        @TypeInfo("ceylon.language::Callable<Result,Element>")
+        @TypeInfo("ceylon.language::Callable<Result,ceylon.language::Tuple<Element,Element,ceylon.language::Empty>>")
         Callable<? extends Result> collecting);
 
     @Annotations(@Annotation("default"))
     @TypeInfo("ceylon.language::Iterable<Element>")
     public Iterable<? extends Element> filter(@Name("selecting")
-        @TypeInfo("ceylon.language::Callable<ceylon.language::Boolean,Element>")
+        @TypeInfo("ceylon.language::Callable<ceylon.language::Boolean,ceylon.language::Tuple<Element,Element,ceylon.language::Empty>>")
         Callable<? extends Boolean> selecting);
 
     @Annotations(@Annotation("default"))
@@ -58,50 +58,50 @@ public interface Iterable<Element> extends ContainerWithFirstElement<Element,Not
     public <Result> Result fold(@Name("initial")
 		@TypeInfo("Result") Result initial,
 		@Name("accumulating")
-        @TypeInfo("ceylon.language::Callable<Result,Result,Element>")
+        @TypeInfo("ceylon.language::Callable<Result,ceylon.language::Tuple<Result|Element,Result,ceylon.language::Tuple<Element,Element,ceylon.language::Empty>>>")
         Callable<? extends Result> accumulating);
 
     @Annotations(@Annotation("default"))
     @TypeInfo("Element|ceylon.language::Nothing")
     public Element find(@Name("selecting")
-        @TypeInfo("ceylon.language::Callable<ceylon.language::Boolean,Element>")
+        @TypeInfo("ceylon.language::Callable<ceylon.language::Boolean,ceylon.language::Tuple<Element,Element,ceylon.language::Empty>>")
         Callable<? extends Boolean> selecting);
 
     @Annotations(@Annotation("default"))
     @TypeInfo("Element|ceylon.language::Nothing")
     public Element findLast(@Name("selecting")
-        @TypeInfo("ceylon.language::Callable<ceylon.language::Boolean,Element>")
+        @TypeInfo("ceylon.language::Callable<ceylon.language::Boolean,ceylon.language::Tuple<Element,Element,ceylon.language::Empty>>")
         Callable<? extends Boolean> selecting);
 
     @Annotations(@Annotation("default"))
     @TypeInfo("ceylon.language::Empty|ceylon.language::Sequence<Element>")
     public List<? extends Element> sort(@Name("comparing")
-        @TypeInfo("ceylon.language::Callable<ceylon.language::Nothing|ceylon.language::Comparison,Element,Element>")
+        @TypeInfo("ceylon.language::Callable<ceylon.language::Nothing|ceylon.language::Comparison,ceylon.language::Tuple<Element,Element,ceylon.language::Tuple<Element,Element,ceylon.language::Empty>>>")
         Callable<? extends Comparison> comparing);
 
     @Annotations(@Annotation("default"))
     @TypeInfo("ceylon.language::Empty|ceylon.language::Sequence<Result>")
     @TypeParameters(@TypeParameter("Result"))
     public <Result> List<? extends Result> collect(@Name("collecting")
-        @TypeInfo("ceylon.language::Callable<Result,Element>")
+        @TypeInfo("ceylon.language::Callable<Result,ceylon.language::Tuple<Element,Element,ceylon.language::Empty>>")
         Callable<? extends Result> collecting);
 
     @Annotations(@Annotation("default"))
     @TypeInfo("ceylon.language::Empty|ceylon.language::Sequence<Element>")
     public List<? extends Element> select(@Name("selecting")
-        @TypeInfo("ceylon.language::Callable<ceylon.language::Boolean,Element>")
+        @TypeInfo("ceylon.language::Callable<ceylon.language::Boolean,ceylon.language::Tuple<Element,Element,ceylon.language::Empty>>")
         Callable<? extends Boolean> selecting);
 
     @Annotations(@Annotation("default"))
     @TypeInfo("ceylon.language::Boolean")
     public boolean any(@Name("selecting")
-        @TypeInfo("ceylon.language::Callable<ceylon.language::Boolean,Element>")
+        @TypeInfo("ceylon.language::Callable<ceylon.language::Boolean,ceylon.language::Tuple<Element,Element,ceylon.language::Empty>>")
         Callable<? extends Boolean> selecting);
 
     @Annotations(@Annotation("default"))
     @TypeInfo("ceylon.language::Boolean")
     public boolean every(@Name("selecting")
-        @TypeInfo("ceylon.language::Callable<ceylon.language::Boolean,Element>")
+        @TypeInfo("ceylon.language::Callable<ceylon.language::Boolean,ceylon.language::Tuple<Element,Element,ceylon.language::Empty>>")
         Callable<? extends Boolean> selecting);
 
     @Annotations(@Annotation("default"))
@@ -125,7 +125,7 @@ public interface Iterable<Element> extends ContainerWithFirstElement<Element,Not
     @Annotations(@Annotation("default"))
     @TypeInfo("ceylon.language::Integer")
     public long count(@Name("selecting")
-        @TypeInfo("ceylon.language::Callable<ceylon.language::Boolean,Element>")
+        @TypeInfo("ceylon.language::Callable<ceylon.language::Boolean,ceylon.language::Tuple<Element,Element,ceylon.language::Empty>>")
         Callable<? extends Boolean> selecting);
 
     @Annotations(@Annotation("default"))
@@ -147,7 +147,7 @@ public interface Iterable<Element> extends ContainerWithFirstElement<Element,Not
     @TypeParameters(@TypeParameter(value="Grouping",satisfies="ceylon.language::Object"))
     @TypeInfo("ceylon.language::Map<Grouping,ceylon.language::Sequence<Element>>")
     public <Key> Map<? extends Key, ? extends Sequence<? extends Element>> group(@Name("grouping")
-            @TypeInfo("ceylon.language::Callable<Grouping,Element>")
+            @TypeInfo("ceylon.language::Callable<Grouping,ceylon.language::Tuple<Element,Element,ceylon.language::Empty>>")
             Callable<? extends Key> grouping);
 
 }
