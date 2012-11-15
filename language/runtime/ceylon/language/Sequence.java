@@ -40,10 +40,12 @@ public interface Sequence<Element>
     
     @Annotations({@Annotation("actual"), @Annotation("formal")})
     @Override
+    @TypeInfo("ceylon.language::Sequence<Element>")
     public Sequence<? extends Element> getReversed();
     
     @Annotations({@Annotation("actual")})
     @Override
+    @TypeInfo("ceylon.language::Sequence<Element>")
     public Sequence<? extends Element> getSequence();
     
     /*@Override
