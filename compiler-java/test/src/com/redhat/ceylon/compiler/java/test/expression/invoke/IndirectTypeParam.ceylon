@@ -34,7 +34,7 @@ void indirectTypeParam<X>() {
         throw;
     }
     
-    function f3(Integer i)() = mpl<Integer>(i);
+    function f3(Integer i)() => mpl<Integer>(i);
     f3(1)();
     
     value j = join<Object>;

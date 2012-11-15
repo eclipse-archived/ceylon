@@ -19,10 +19,10 @@
  */
 @nomodel
 void bug832() {
-    alias Num = Integer|Float;
+    alias Num => Integer|Float;
     Num n =  2;
     value sign = n.sign;
-    alias L = List<Object>|Set<Object>;
+    alias L => List<Object>|Set<Object>;
     L l = {};
     value s = l.size;
 }

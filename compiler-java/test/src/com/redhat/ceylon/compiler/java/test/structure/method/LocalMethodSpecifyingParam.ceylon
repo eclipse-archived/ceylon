@@ -19,6 +19,6 @@
  */
 @nomodel
 void higher(Callable<String,<Integer>> ref){
-    function f(Integer i)=ref(i);
+    function f(Integer i)=>ref(i);
     f(2);
 }

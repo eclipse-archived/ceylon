@@ -29,5 +29,5 @@ class RefinedMethodSpecifyingTopLevel() {
 }
 @nomodel
 class RefinedMethodSpecifyingTopLevelSub() extends RefinedMethodSpecifyingTopLevel() {
-    actual shared Integer f(Boolean b) = foo(b); 
+    actual shared Integer f(Boolean b) => foo(b); 
 }

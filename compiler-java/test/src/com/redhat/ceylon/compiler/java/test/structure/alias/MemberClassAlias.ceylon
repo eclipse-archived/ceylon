@@ -1,7 +1,7 @@
 shared class MemberClassAlias_Foo(){
     shared class Member(){}
     
-    shared class MemberClassAlias() = Member();
+    shared class MemberClassAlias() => Member();
 
     void test(){
         value m = MemberClassAlias();

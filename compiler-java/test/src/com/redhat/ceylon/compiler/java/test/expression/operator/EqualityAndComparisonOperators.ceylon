@@ -81,8 +81,8 @@ shared class EqualityAndComparisonOperators() {
         // intersections
         sync := is BasicOperatorsA & BasicOperatorsB foo;
         // type aliases
-        alias Alias1 = BasicOperatorsA | BasicOperatorsB;
-        alias Alias2 = BasicOperatorsA & BasicOperatorsB;
+        alias Alias1 => BasicOperatorsA | BasicOperatorsB;
+        alias Alias2 => BasicOperatorsA & BasicOperatorsB;
         sync := is Alias1 foo;
         sync := is Alias2 foo;
         // erased types

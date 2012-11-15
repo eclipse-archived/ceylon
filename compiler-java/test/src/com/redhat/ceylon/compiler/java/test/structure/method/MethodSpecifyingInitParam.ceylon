@@ -19,5 +19,5 @@
  */
 @nomodel
 class MethodSpecifyingInitParam(Callable<Void, <>> x) {
-    void foo() = x;
+    void foo() => x;
 }

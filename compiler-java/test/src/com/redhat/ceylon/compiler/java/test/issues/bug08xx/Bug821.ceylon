@@ -18,7 +18,7 @@
  * MA  02110-1301, USA.
  */
 @nomodel
-alias Bug821Alias = Integer|Float;
+alias Bug821Alias => Integer|Float;
 @nomodel
 void bug821a(){
     Sequence<Bug821Alias> ns = { 1 };

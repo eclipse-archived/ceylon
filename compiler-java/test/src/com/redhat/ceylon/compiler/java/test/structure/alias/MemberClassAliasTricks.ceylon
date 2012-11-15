@@ -1,10 +1,10 @@
 shared class MemberClassAliasTricks_Foo(Integer a = 1, Integer b = 2){
     
-    shared class MemberClassAliasToToplevel(Integer a, Integer b) = MemberClassAliasTricks_Foo(a,b);
-    shared class MemberClassAliasToToplevel2(Integer a, Integer b) = MemberClassAliasToToplevel(a,b);
+    shared class MemberClassAliasToToplevel(Integer a, Integer b) => MemberClassAliasTricks_Foo(a,b);
+    shared class MemberClassAliasToToplevel2(Integer a, Integer b) => MemberClassAliasToToplevel(a,b);
 
     shared class Member(Integer a = 1, Integer b = 2){
-        shared class MemberClassAliasToEnclosingMemberClass(Integer a, Integer b) = Member(a,b);
+        shared class MemberClassAliasToEnclosingMemberClass(Integer a, Integer b) => Member(a,b);
 
         void test(){
             value m1 = MemberClassAliasToEnclosingMemberClass(1,2);

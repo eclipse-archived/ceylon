@@ -18,4 +18,4 @@
  * MA  02110-1301, USA.
  */
 @nomodel
-alias Bug797<T,S> = String|Integer|List<T>|S;
+alias Bug797<T,S> => String|Integer|List<T>|S;

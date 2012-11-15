@@ -20,5 +20,5 @@
 
 @nomodel
 class MethodSpecifierType() {
-    MethodSpecifierType foo() = MethodSpecifierType();
+    MethodSpecifierType foo() => MethodSpecifierType();
 }

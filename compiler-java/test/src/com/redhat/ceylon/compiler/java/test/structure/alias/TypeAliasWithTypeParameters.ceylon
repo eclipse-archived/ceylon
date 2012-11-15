@@ -4,10 +4,10 @@ shared class TypeAliasWithTypeParametersClass<T>(){}
 @nomodel
 shared interface TypeAliasWithTypeParametersInterface<T>{}
 
-alias TypeAliasWithTypeParameters1 = TypeAliasWithTypeParametersClass<Integer> & TypeAliasWithTypeParametersInterface<String>;
-alias TypeAliasWithTypeParameters2<T> = TypeAliasWithTypeParametersClass<T> | TypeAliasWithTypeParametersInterface<T>;
-alias TypeAliasWithTypeParameters3<T,V> = TypeAliasWithTypeParametersClass<T>;
-alias TypeAliasWithTypeParameters4<T,V> = TypeAliasWithTypeParametersInterface<V>;
+alias TypeAliasWithTypeParameters1 => TypeAliasWithTypeParametersClass<Integer> & TypeAliasWithTypeParametersInterface<String>;
+alias TypeAliasWithTypeParameters2<T> => TypeAliasWithTypeParametersClass<T> | TypeAliasWithTypeParametersInterface<T>;
+alias TypeAliasWithTypeParameters3<T,V> => TypeAliasWithTypeParametersClass<T>;
+alias TypeAliasWithTypeParameters4<T,V> => TypeAliasWithTypeParametersInterface<V>;
 
 TypeAliasWithTypeParameters1 typeAliasWithTypeParametersMethod1(TypeAliasWithTypeParameters1 f){
     return f;

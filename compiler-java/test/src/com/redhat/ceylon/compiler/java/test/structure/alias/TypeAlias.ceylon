@@ -2,10 +2,10 @@ shared class TypeAliasClass(){}
 
 shared interface TypeAliasInterface{}
 
-alias TypeAlias1 = TypeAliasClass & TypeAliasInterface;
-alias TypeAlias2 = TypeAliasClass | TypeAliasInterface;
-alias TypeAlias3 = TypeAliasClass;
-alias TypeAlias4 = TypeAliasInterface;
+alias TypeAlias1 => TypeAliasClass & TypeAliasInterface;
+alias TypeAlias2 => TypeAliasClass | TypeAliasInterface;
+alias TypeAlias3 => TypeAliasClass;
+alias TypeAlias4 => TypeAliasInterface;
 
 TypeAlias1 typeAliasMethod1(TypeAlias1 f){
     return f;
