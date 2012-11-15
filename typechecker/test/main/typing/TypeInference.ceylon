@@ -20,7 +20,7 @@ interface TypeInference {
             return "Hello";
         }
         
-        @error function brokenInferredAttribute = "Hello";
+        @error function brokenInferredAttribute => "Hello";
         
     }
     
@@ -76,7 +76,7 @@ interface TypeInference {
             @error return burp;
         }
         
-        @error @type["unknown"] function g() = burp;
+        @error @type["unknown"] function g() => burp;
         
         @type["Sequence<unknown>"] value seq = { @error burp };
         

@@ -1,1 +1,1 @@
-shared interface Alias = Sequence<String>;
+shared interface Alias => Sequence<String>;
