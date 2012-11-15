@@ -97,14 +97,17 @@ public class Runner {
         return f.exists() && f.canExecute();
     }
 
-    public static int run(List<String> repos, String module, String func, PrintStream output, boolean debug)
+    public static int run(List<String> repos, String module, String func, PrintStream output, boolean debug, String node)
             throws IOException, InterruptedException {
-        final String node;
-        try {
-            node = findNode();
-        } catch (FileNotFoundException ex) {
-            System.out.println(ex.getMessage());
-            return -1;
+        if (node == null) {
+            try {
+                node = findNode();
+            } catch (FileNotFoundException ex) {
+                System.out.println(ex.getMessage());
+                return -1;
+            }
+        } else if (!isExe(node)) {
+            throw new IllegalArgumentException("Specified node executable is invalid: " + node);
         }
         //The timeout is to have enough time to start reading on the process streams
         final boolean isDefault = "default".equals(module);
@@ -184,7 +187,7 @@ public class Runner {
             usage();
             return;
         }
-        int exitCode = run(repos, module, func, null, debug);
+        int exitCode = run(repos, module, func, null, debug, null);
         if (exitCode != 0) {
             System.err.println("Exit code: "+exitCode);
         }
