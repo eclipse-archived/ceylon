@@ -862,25 +862,27 @@ parameter returns [Parameter parameter]
       { vp.setIdentifier($memberName.identifier);
         fp.setIdentifier($memberName.identifier); }
       (
-        /*(
-          valueParameter
-        )?*/
-        //-> ^(VALUE_PARAMETER_DECLARATION parameterType memberName specifier?)
+        (
+          specifier
+          { DefaultArgument da = new DefaultArgument(null);
+            $parameter.setDefaultArgument(da);
+            da.setSpecifierExpression($specifier.specifierExpression); }
+        )?
       |
         (
           parameters
           { fp.addParameterList($parameters.parameterList); }
         )+
         { $parameter=fp; }
+        (
+          lazySpecifier
+          { DefaultArgument da = new DefaultArgument(null);
+            $parameter.setDefaultArgument(da);
+            da.setSpecifierExpression($lazySpecifier.specifierExpression); }
+        )?
           //for callable parameters
         //-> ^(FUNCTIONAL_PARAMETER_DECLARATION parameterType memberName parameters+ specifier?)
       )
-      (
-        specifier
-        { DefaultArgument da = new DefaultArgument(null);
-          $parameter.setDefaultArgument(da);
-          da.setSpecifierExpression($specifier.specifierExpression); }
-      )?
     ;
 
 parameterRef returns [Parameter parameter]

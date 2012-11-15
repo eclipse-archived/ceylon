@@ -780,12 +780,11 @@ public class ExpressionVisitor extends Visitor {
 
     @Override public void visit(Tree.Parameter that) {
         super.visit(that);
-        Tree.SpecifierExpression se = that.getDefaultArgument()==null ?
-                null :
-                that.getDefaultArgument().getSpecifierExpression();
-        ProducedType t = that.getDeclarationModel().getProducedTypedReference(null, 
-                Collections.<ProducedType>emptyList()).getFullType();
-        checkType(t, that.getDeclarationModel().getName(), se, 2100);
+        if (that.getDefaultArgument()!=null && that.getType()!=null) {
+        	Tree.SpecifierExpression se = that.getDefaultArgument().getSpecifierExpression();
+        	Tree.Type type = that.getType();
+        	checkType(type.getTypeModel(), that.getDeclarationModel().getName(), se, 2100);
+        }
     }
 
     @Override
