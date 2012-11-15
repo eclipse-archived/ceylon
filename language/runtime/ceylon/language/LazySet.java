@@ -29,7 +29,7 @@ public class LazySet<Element> implements Set<Element> {
     public LazySet() {
         this.elems = (Iterable<? extends Element>)empty_.getEmpty$();
     }
-    public LazySet(@Name("elems") @Sequenced
+    public LazySet(@Name("elems")
             @TypeInfo("ceylon.language::Iterable<Element>")
             Iterable<? extends Element> elems) {
         this.elems = elems;

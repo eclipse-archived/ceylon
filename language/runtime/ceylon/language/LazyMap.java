@@ -30,7 +30,7 @@ public class LazyMap<Key, Item> implements Map<Key, Item> {
     public LazyMap() {
         this.entries = (Iterable)empty_.getEmpty$();
     }
-    public LazyMap(@Name("entries") @Sequenced
+    public LazyMap(@Name("entries")
             @TypeInfo("ceylon.language::Iterable<ceylon.language::Entry<Key,Item>>")
             Iterable<? extends Entry<? extends Key,? extends Item>> entries) {
         this.entries = entries;
