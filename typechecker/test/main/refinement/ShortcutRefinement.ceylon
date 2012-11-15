@@ -126,3 +126,13 @@ void testxy() {
 	Y().fum();
 	Y().fo("x", "y", "z");
 }
+
+class FatArrowRefinement(name) 
+        extends Object() 
+        satisfies Comparable<FatArrowRefinement> {
+    String name;
+    hash => string.hash;
+    equals(Object that) => string==that.string;
+    shared actual String string => name;
+    compare(FatArrowRefinement other) => name<=>other.name;
+}

@@ -34,7 +34,8 @@ public class CustomTree extends Tree {
                 super.visit(visitor);
             }
             else {
-                if (getSpecifierOrInitializerExpression()!=null)
+                if (getSpecifierOrInitializerExpression()!=null &&
+                		!(getSpecifierOrInitializerExpression() instanceof LazySpecifierExpression))
                     getSpecifierOrInitializerExpression().visit(visitor);
                 super.visit(visitor);
             }
@@ -46,6 +47,8 @@ public class CustomTree extends Tree {
             }
             else {
                 Walker.walkAnyAttribute(visitor, this);
+                if (getSpecifierOrInitializerExpression() instanceof LazySpecifierExpression)
+                	getSpecifierOrInitializerExpression().visit(visitor);
             }
         }
         @Override public String getNodeType() {
@@ -96,6 +99,9 @@ public class CustomTree extends Tree {
                 super.visit(visitor);
             }
             else {
+                if (getSpecifierExpression()!=null &&
+                		!(getSpecifierExpression() instanceof LazySpecifierExpression))
+                    getSpecifierExpression().visit(visitor);
                 super.visit(visitor);
             }
         }
@@ -112,7 +118,7 @@ public class CustomTree extends Tree {
                 Walker.walkTypedDeclaration(visitor, this);
                 for (Tree.ParameterList subnode: getParameterLists())
                     subnode.visit(visitor);
-                if (getSpecifierExpression()!=null)
+                if (getSpecifierExpression() instanceof LazySpecifierExpression)
                 	getSpecifierExpression().visit(visitor);
             }
         }
