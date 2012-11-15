@@ -14,6 +14,9 @@ void test_singleton() {
         if (nonempty rest = singleton.rest) {
             fail("singleton rest empty");
         }
+        for (element in singleton.reversed) {
+        }
+        Sequence<String> s = singleton.sequence;
     }
     else {
         fail("singleton nonempty");
@@ -358,5 +361,7 @@ shared void sequences() {
     
     //collect
     check({ 1, 2, 3, 4, 5 }.collect((Integer i) i*2) == { 2, 4, 6, 8, 10 }, "Sequence<Integer>.collect");
-    check("hola".collect((Character c) c.uppercased) == {`H`, `O`, `L`, `A`}, "Sequence<String>.collect");    
+    check("hola".collect((Character c) c.uppercased) == {`H`, `O`, `L`, `A`}, "Sequence<String>.collect");
+    
+    
 }
