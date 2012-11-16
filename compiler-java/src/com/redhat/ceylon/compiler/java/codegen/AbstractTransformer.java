@@ -1386,12 +1386,8 @@ public abstract class AbstractTransformer implements Transformation {
         return !Decl.isCeylon(cls);
     }
 
-    private ProducedType getTypeForFunctionalParameter(FunctionalParameter fp) {
-        java.util.List<ProducedType> parameterTypes = new ArrayList<ProducedType>(fp.getTypeParameters().size());
-        for (Parameter parameter : fp.getParameterLists().get(0).getParameters()) {
-            parameterTypes.add(parameter.getType());
-        }
-        return typeFact().getCallableType(List.of(fp.getType(), typeFact().getTupleType(parameterTypes, false)));
+    ProducedType getTypeForFunctionalParameter(FunctionalParameter fp) {
+        return fp.getProducedTypedReference(null, java.util.Collections.<ProducedType>emptyList()).getFullType();
     }
     
     /*

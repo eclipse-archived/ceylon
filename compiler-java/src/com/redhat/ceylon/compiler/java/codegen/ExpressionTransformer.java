@@ -1334,7 +1334,15 @@ public class ExpressionTransformer extends AbstractTransformer {
         DefaultArgument defaultArgument = param.getDefaultArgument();
         if (defaultArgument != null) {
             SpecifierExpression spec = defaultArgument.getSpecifierExpression();
-            expr = expressionGen().transformExpression(spec.getExpression(), CodegenUtil.getBoxingStrategy(param.getDeclarationModel()), param.getDeclarationModel().getType());
+            if (spec.getScope() instanceof FunctionalParameter) {
+                FunctionalParameter fp = (FunctionalParameter)spec.getScope();
+                Tree.SpecifierExpression lazy = param.getDefaultArgument().getSpecifierExpression();
+                expr = CallableBuilder.anonymous(gen(), lazy.getExpression(), 
+                        fp.getParameterLists().get(0),
+                        getTypeForFunctionalParameter(fp)).build();
+            } else {
+                expr = expressionGen().transformExpression(spec.getExpression(), CodegenUtil.getBoxingStrategy(param.getDeclarationModel()), param.getDeclarationModel().getType());
+            }
         } else if (param.getDeclarationModel().isSequenced()) {
             expr = makeEmptyAsSequential(true);
         } else {
