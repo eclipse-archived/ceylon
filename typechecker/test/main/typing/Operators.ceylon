@@ -148,9 +148,11 @@ class Operators() {
     @type["Sequential<Operators.X>"] value x40 = sequence[1+1...];
     @type["Nothing|Operators.X"] value x41 = {nothing}[0];
     @type["Nothing|String"] value x42 = noSequence?[0];
+    @type["Sequential<Operators.X>"] value x39u = sequence[...1];
     
     @error value x43 = sequence["hello"];
     @error value x44 = sequence["hello"...];
+    @error value x44u = sequence[..."hello"];
     @error value x45 = sequence[1.."hello"];
     
     String? maybeString = null;

@@ -569,7 +569,7 @@ argument list."
 ^(ELEMENT:ELEMENT_OR_RANGE
     EXPRESSION)
 ^(ELEMENT_RANGE:ELEMENT_OR_RANGE
-    EXPRESSION lowerBound
+    EXPRESSION? lowerBound
     EXPRESSION? upperBound
     EXPRESSION? length)
 

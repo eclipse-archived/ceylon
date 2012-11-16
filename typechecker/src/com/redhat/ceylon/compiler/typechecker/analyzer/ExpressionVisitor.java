@@ -2273,9 +2273,11 @@ public class ExpressionVisitor extends Visitor {
                         ProducedType kt = args.get(0);
                         ProducedType rt = args.get(1);
                         Tree.ElementRange er = (Tree.ElementRange) that.getElementOrRange();
-                        checkAssignable(er.getLowerBound().getTypeModel(), kt,
-                                er.getLowerBound(), 
-                                "lower bound must be assignable to index type");
+                        if (er.getLowerBound()!=null) {
+                        	checkAssignable(er.getLowerBound().getTypeModel(), kt,
+                        			er.getLowerBound(), 
+                        			"lower bound must be assignable to index type");
+                        }
                         if (er.getUpperBound()!=null) {
                             checkAssignable(er.getUpperBound().getTypeModel(), kt,
                                     er.getUpperBound(), 

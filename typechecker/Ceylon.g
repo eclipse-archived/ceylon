@@ -1430,13 +1430,21 @@ indexOrIndexRange returns [IndexExpression indexExpression]
     : elementSelectionOperator
       { $indexExpression = new IndexExpression(null);
         $indexExpression.setIndexOperator($elementSelectionOperator.operator); }
+      (
+        e1=ELLIPSIS
+        { $indexExpression.setEndToken($e1); }
+      i=index
+      { ElementRange er0 = new ElementRange(null);
+        $indexExpression.setElementOrRange(er0);
+        er0.setUpperBound($i.expression); }
+      |
       l=index
       { Element e = new Element(null);
         $indexExpression.setElementOrRange(e);
         e.setExpression($l.expression); }
       (
-        ELLIPSIS
-        { $indexExpression.setEndToken($ELLIPSIS); }
+        e2=ELLIPSIS
+        { $indexExpression.setEndToken($e2); }
       { ElementRange er1 = new ElementRange(null);
         $indexExpression.setElementOrRange(er1);
         er1.setLowerBound($l.expression); }
@@ -1455,6 +1463,7 @@ indexOrIndexRange returns [IndexExpression indexExpression]
         er3.setLowerBound($l.expression); 
         er3.setLength($s.expression); }
       )?
+      )
       RBRACKET
       { $indexExpression.setEndToken($RBRACKET); }
     ;
