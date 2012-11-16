@@ -179,7 +179,7 @@ class Util {
             addTypeUnknownError(node, message);
             return false;
         }
-        else if (!type.isCallable()) {
+        else if (!type.getDeclaration().getUnit().isCallableType(type)) {
             if (!hasError(node)) {
                 node.addError(message + message(type, " is not a subtype of Callable"));
             }

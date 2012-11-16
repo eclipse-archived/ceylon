@@ -221,4 +221,7 @@ void sequencedParams() {
 void foo(Integer... seq) {}
 void bar(Integer... ints) => foo;
 
-
+alias CSI => Callable<String, <Integer>>;
+String callCSI(CSI csi) {
+    return csi(1);
+}

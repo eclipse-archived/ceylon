@@ -1770,8 +1770,10 @@ public class ExpressionVisitor extends Visitor {
         if (prf==null || !prf.isFunctional()) {
             ProducedType pt = that.getPrimary().getTypeModel();
             if (pt!=null) {
-                if (checkCallable(pt, that.getPrimary(), "invoked expression must be callable")) {
-                    List<ProducedType> typeArgs = pt.getTypeArgumentList();
+                if (checkCallable(pt, that.getPrimary(), 
+                		"invoked expression must be callable")) {
+                    List<ProducedType> typeArgs = pt.getSupertype(unit.getCallableDeclaration())
+                    		.getTypeArgumentList();
                     if (!typeArgs.isEmpty()) {
                         that.setTypeModel(typeArgs.get(0));
                     }

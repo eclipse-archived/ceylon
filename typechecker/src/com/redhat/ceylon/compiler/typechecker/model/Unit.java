@@ -624,6 +624,10 @@ public class Unit {
                         .getDeclaration() instanceof BottomType);
     }
     
+    public boolean isCallableType(ProducedType pt) {
+    	return pt!=null && pt.getSupertype(getCallableDeclaration())!=null;
+    }
+    
     public BottomType getBottomDeclaration() {
         return new BottomType(this);
     }

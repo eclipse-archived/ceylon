@@ -1563,13 +1563,6 @@ public class ProducedType extends ProducedReference {
             }
         }
     }
-
-    //TODO: we can remove this now!!
-    public boolean isCallable() {
-        return getDeclaration() instanceof Interface && 
-        		getDeclaration().getUnit().getCallableDeclaration()
-        			.equals(getDeclaration());
-    }
     
     public ProducedType withoutUnderlyingType() {
         ProducedType pt = new ProducedType();

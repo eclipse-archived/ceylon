@@ -919,7 +919,7 @@ public class TypeVisitor extends Visitor {
                             type.getProducedTypeName());
                     continue;
                 }
-                if (type.isCallable()) {
+                if (unit.isCallableType(type)) {
                     st.addError("directly satisfies Callable");
                 }
                 if (td instanceof TypeParameter) {
