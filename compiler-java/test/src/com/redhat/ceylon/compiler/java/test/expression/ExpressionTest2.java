@@ -426,6 +426,12 @@ public class ExpressionTest2 extends CompilerTest {
     }
     
     @Test
+    public void testFunctionalParameterMpl(){
+        compile("invoke/FunctionalParameterMpl.ceylon");
+        compile("invoke/FunctionalParameterMpl2.ceylon");
+    }
+    
+    @Test
     public void testInvSelfType(){
         compareWithJavaSource("invoke/SelfType");
     }
