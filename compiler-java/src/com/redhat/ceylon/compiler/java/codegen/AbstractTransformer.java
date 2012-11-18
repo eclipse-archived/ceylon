@@ -783,7 +783,7 @@ public abstract class AbstractTransformer implements Transformation {
     }
     
     boolean isCeylonCallable(ProducedType type) {
-        return type.isCallable();
+        return type.getDeclaration().getUnit().isCallableType(type);
     }
 
     /*
@@ -1248,12 +1248,12 @@ public abstract class AbstractTransformer implements Transformation {
      * @return The result type of the {@code Callable}.
      */
     ProducedType getReturnTypeOfCallable(ProducedType typeModel) {
-        Assert.that(typeModel.isCallable(), "Expected Callable<...>, but was " + typeModel);
+        Assert.that(isCeylonCallable(typeModel), "Expected Callable<...>, but was " + typeModel);
         return typeModel.getTypeArgumentList().get(0);
     }
     
     ProducedType getParameterTypeOfCallable(ProducedType callableType, int parameter) {
-        Assert.that(callableType.isCallable());
+        Assert.that(isCeylonCallable(callableType));
         ProducedType sequentialType = callableType.getTypeArgumentList().get(1);
         for (int ii = 0; ii < parameter; ii++) {
             sequentialType = sequentialType.getTypeArgumentList().get(2);
@@ -1269,7 +1269,7 @@ public abstract class AbstractTransformer implements Transformation {
         throw Assert.fail(""+decl);
     }
     int getNumParametersOfCallable(ProducedType callableType) {
-        Assert.that(callableType.isCallable());
+        Assert.that(isCeylonCallable(callableType));
         ProducedType sequentialType = callableType.getTypeArgumentList().get(1);
         int num = 0;
         while (sequentialType.getTypeArgumentList().size() == 3) {
