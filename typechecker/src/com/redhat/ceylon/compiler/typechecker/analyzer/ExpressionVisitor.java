@@ -2324,7 +2324,7 @@ public class ExpressionVisitor extends Visitor {
 			l = ((Tree.PositiveOp) l).getTerm();
 		}
 		if (u instanceof Tree.NegativeOp) {
-			u = ((Tree.NegativeOp) l).getTerm();
+			u = ((Tree.NegativeOp) u).getTerm();
 			unegated = true;
 		}
 		else if (u instanceof Tree.PositiveOp) {
@@ -2336,7 +2336,7 @@ public class ExpressionVisitor extends Visitor {
 				int lindex = Integer.parseInt(l.getText());
 				if (lnegated) lindex = -lindex;
 				int uindex = Integer.parseInt(u.getText());
-				if (unegated) lindex = -uindex;
+				if (unegated) uindex = -uindex;
 				List<ProducedType> elementTypes = argtypes(pt);
 				boolean sequenced = argsequenced(pt);
 				//TODO: handle terminating type of tuple type!
