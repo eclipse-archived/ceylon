@@ -77,6 +77,9 @@ class E1<out T>(T x, T y) given T satisfies Object => Entry<T,T>(x,y);
 
 class MemberClassAliasTricks_Foo(Integer a = 1, Integer b = 2){
     
+    String x=>y;
+    String y=>x;
+    
     class MemberClassAliasToToplevel(Integer a, Integer b) 
             => MemberClassAliasTricks_Foo(a,b);
     class MemberClassAliasToToplevel2(Integer a, Integer b) 
