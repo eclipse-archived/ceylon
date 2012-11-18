@@ -29,7 +29,7 @@ public class SelfReferenceVisitor extends Visitor {
     
     private void visitExtendedType(Tree.ExtendedTypeExpression that) {
         Declaration member = that.getDeclaration();
-        if (member!=null) {
+        if (member!=null && !typeDeclaration.isAlias()) {
             if ( !declarationSection && isInherited(that, member) ) {
                 that.addError("inherited member class may not be extended in initializer: " + 
                         member.getName());

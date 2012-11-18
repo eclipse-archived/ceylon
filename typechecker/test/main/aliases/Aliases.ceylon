@@ -74,3 +74,16 @@ class Si3<out T>(T t) given T satisfies Object => Singleton<T>(t);
 class E1<out T>(T x, T y) given T satisfies Object => Entry<T,T>(x,y);
 @error class E2<out T>(T x, T y) => Entry<T,T>(x,y);
 @error class E3<in T>(T x, T y) given T satisfies Object => Entry<T,T>(x,y);
+
+class MemberClassAliasTricks_Foo(Integer a = 1, Integer b = 2){
+    
+    class MemberClassAliasToToplevel(Integer a, Integer b) 
+            => MemberClassAliasTricks_Foo(a,b);
+    class MemberClassAliasToToplevel2(Integer a, Integer b) 
+            => MemberClassAliasToToplevel(a,b);
+
+    void test(){
+        MemberClassAliasToToplevel m1 = MemberClassAliasToToplevel(1,2);
+        MemberClassAliasToToplevel2 m2 = MemberClassAliasToToplevel2(1,2);
+    }
+}
