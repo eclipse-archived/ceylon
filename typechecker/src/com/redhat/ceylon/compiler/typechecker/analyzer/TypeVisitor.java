@@ -46,7 +46,6 @@ import com.redhat.ceylon.compiler.typechecker.parser.CeylonLexer;
 import com.redhat.ceylon.compiler.typechecker.tree.Node;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.LocalModifier;
-import com.redhat.ceylon.compiler.typechecker.tree.Tree.StaticType;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.SupertypeQualifier;
 import com.redhat.ceylon.compiler.typechecker.tree.Visitor;
 
@@ -618,11 +617,7 @@ public class TypeVisitor extends Visitor {
         }
         else if (!(type instanceof Tree.LocalModifier)) { //if the type declaration is missing, we do type inference later
             ProducedType t = type.getTypeModel();
-            if (t==null) {
-                //TODO: this case is temporary until we
-                //      add support for sequenced parameters
-            }
-            else {
+            if (t!=null) {
                 td.setType(t);
             }
         }

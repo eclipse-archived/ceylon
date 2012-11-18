@@ -3392,10 +3392,9 @@ public class ExpressionVisitor extends Visitor {
             TypeDeclaration type = that.getDeclarationModel();//pt.getDeclaration()
             Tree.TypeArgumentList tal = that.getTypeArgumentList();
             //No type inference for declarations
-            acceptsTypeArguments(type, 
-            		getTypeArguments(tal, 
-            				type.getTypeParameters()), 
-            		tal, that);
+            List<ProducedType> ta = getTypeArguments(tal, 
+    				type.getTypeParameters());
+            acceptsTypeArguments(type, ta, tal, that);
             //the type has already been set by TypeVisitor
         }
     }
@@ -3947,7 +3946,7 @@ public class ExpressionVisitor extends Visitor {
                                             + " not assignable to " + sts.getProducedTypeName());
                                 }
                                 else {
-                                    ( (Tree.TypeArgumentList) tal ).getTypes()
+                                    ((Tree.TypeArgumentList) tal).getTypes()
                                             .get(i).addError("type parameter " + param.getName() 
                                             + " of declaration " + member.getName()
                                             + " has argument " + argType.getProducedTypeName() 
@@ -3967,7 +3966,7 @@ public class ExpressionVisitor extends Visitor {
                                     + " not one of the enumerated cases");
                         }
                         else {
-                            ( (Tree.TypeArgumentList) tal ).getTypes()
+                            ((Tree.TypeArgumentList) tal).getTypes()
                             .get(i).addError("type parameter " + param.getName() 
                                     + " of declaration " + member.getName()
                                     + " has argument " + argType.getProducedTypeName() 

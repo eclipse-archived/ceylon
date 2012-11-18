@@ -5,6 +5,7 @@ import static com.redhat.ceylon.compiler.typechecker.analyzer.Util.checkAssignab
 import static com.redhat.ceylon.compiler.typechecker.analyzer.Util.checkAssignableToOneOf;
 import static com.redhat.ceylon.compiler.typechecker.analyzer.Util.checkIsExactly;
 import static com.redhat.ceylon.compiler.typechecker.analyzer.Util.checkIsExactlyOneOf;
+import static com.redhat.ceylon.compiler.typechecker.analyzer.Util.getTypeArguments;
 import static com.redhat.ceylon.compiler.typechecker.model.Util.intersectionType;
 import static java.util.Collections.singletonMap;
 
@@ -239,6 +240,17 @@ public class RefinementVisitor extends Visitor {
                         + td.getName());
         }
         super.visit(that);
+        //The type may have changed due to re-setting it
+        //to take into account default type arguments
+        //so re-set it here
+        //TODO: remove this when default type arguments
+        //      are handled in ProducedType
+        if (that.getType()!=null) {
+        	ProducedType t = that.getType().getTypeModel();
+        	if (t!=null) {
+        		that.getDeclarationModel().setType(t);
+        	}
+        }
     }
     
     @Override public void visit(Tree.Declaration that) {
@@ -553,6 +565,30 @@ public class RefinementVisitor extends Visitor {
             pl = ((Tree.AnyClass) that).getParameterList();
         }
         return pl;
+    }
+    
+    @Override public void visit(Tree.SimpleType that) {
+        //this one is a declaration, not an expression!
+        //we are only validating type arguments here
+        super.visit(that);
+        ProducedType pt = that.getTypeModel();
+        if (pt!=null) {
+            TypeDeclaration type = that.getDeclarationModel();//pt.getDeclaration()
+            Tree.TypeArgumentList tal = that.getTypeArgumentList();
+            //No type inference for declarations
+            List<ProducedType> ta = getTypeArguments(tal, 
+    				type.getTypeParameters());
+            //the type has already been set by TypeVisitor
+            //but re-set it here to take into account
+            //default type arguments
+            //TODO: do this lazily in ProducedType, not here!
+            if (tal!=null) {
+            	tal.setTypeModels(ta);
+                that.setTypeModel(that.getDeclarationModel()
+                		.getProducedType(that.getTypeModel().getQualifyingType(), 
+                				ta));
+            }
+        }
     }
     
 }
