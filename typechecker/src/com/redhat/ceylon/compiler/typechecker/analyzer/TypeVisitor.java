@@ -46,6 +46,7 @@ import com.redhat.ceylon.compiler.typechecker.parser.CeylonLexer;
 import com.redhat.ceylon.compiler.typechecker.tree.Node;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.LocalModifier;
+import com.redhat.ceylon.compiler.typechecker.tree.Tree.StaticType;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.SupertypeQualifier;
 import com.redhat.ceylon.compiler.typechecker.tree.Visitor;
 
@@ -552,7 +553,8 @@ public class TypeVisitor extends Visitor {
 
     private void visitSimpleType(Tree.SimpleType that, ProducedType ot, TypeDeclaration dec) {
         Tree.TypeArgumentList tal = that.getTypeArgumentList();
-        List<ProducedType> ta = getTypeArguments(tal);
+        List<ProducedType> ta = getTypeArguments(tal, 
+        		dec.getTypeParameters());
         if (tal!=null) tal.setTypeModels(ta);
         //if (acceptsTypeArguments(dec, ta, tal, that)) {
             ProducedType pt = dec.getProducedType(ot, ta);
@@ -675,6 +677,13 @@ public class TypeVisitor extends Visitor {
 		    that.getDeclarationModel().setExtendedType(vd.getType());
         }
         super.visit(that);
+        if (that.getTypeSpecifier()!=null) {
+        	Tree.StaticType type = that.getTypeSpecifier().getType();
+        	if (type!=null) {
+        		that.getDeclarationModel()
+        				.setDefaultTypeArgument(type.getTypeModel());
+        	}
+        }
     }
     
     @Override 

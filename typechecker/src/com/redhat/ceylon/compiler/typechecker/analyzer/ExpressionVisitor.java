@@ -3099,7 +3099,8 @@ public class ExpressionVisitor extends Visitor {
             }
             Tree.TypeArguments tal = that.getTypeArguments();
             if (explicitTypeArguments(member, tal, that)) {
-                List<ProducedType> ta = getTypeArguments(tal);
+                List<ProducedType> ta = getTypeArguments(tal, 
+                		getTypeParameters(member));
                 tal.setTypeModels(ta);
                 visitBaseMemberExpression(that, member, ta, tal);
                 //otherwise infer type arguments later
@@ -3116,6 +3117,12 @@ public class ExpressionVisitor extends Visitor {
             checkOverloadedReference(that);
         }
     }
+
+	private List<TypeParameter> getTypeParameters(Declaration member) {
+		return member instanceof Generic ? 
+				((Generic) member).getTypeParameters() : 
+				Collections.<TypeParameter>emptyList();
+	}
 
 	private static TypedDeclaration getSupertypeMemberDeclaration(
 			Tree.BaseMemberExpression that, SupertypeQualifier sq) {
@@ -3163,7 +3170,8 @@ public class ExpressionVisitor extends Visitor {
                 }
                 Tree.TypeArguments tal = that.getTypeArguments();
                 if (explicitTypeArguments(member,tal, that)) {
-                    List<ProducedType> ta = getTypeArguments(tal);
+                    List<ProducedType> ta = getTypeArguments(tal,
+                    		getTypeParameters(member));
                     tal.setTypeModels(ta);
                     visitQualifiedMemberExpression(that, member, ta, tal);
                     //otherwise infer type arguments later
@@ -3243,7 +3251,8 @@ public class ExpressionVisitor extends Visitor {
             }
             Tree.TypeArguments tal = that.getTypeArguments();
             if (explicitTypeArguments(type, tal, that)) {
-                List<ProducedType> ta = getTypeArguments(tal);
+                List<ProducedType> ta = getTypeArguments(tal, 
+                		type.getTypeParameters());
                 tal.setTypeModels(ta);
                 visitBaseTypeExpression(that, type, ta, tal);
                 //otherwise infer type arguments later
@@ -3335,7 +3344,8 @@ public class ExpressionVisitor extends Visitor {
                 }
                 Tree.TypeArguments tal = that.getTypeArguments();
                 if (explicitTypeArguments(type, tal, that)) {
-                    List<ProducedType> ta = getTypeArguments(tal);
+                    List<ProducedType> ta = getTypeArguments(tal,
+                    		type.getTypeParameters());
                     tal.setTypeModels(ta);
                     visitQualifiedTypeExpression(that, pt, type, ta, tal);
                     //otherwise infer type arguments later
@@ -3382,7 +3392,10 @@ public class ExpressionVisitor extends Visitor {
             TypeDeclaration type = that.getDeclarationModel();//pt.getDeclaration()
             Tree.TypeArgumentList tal = that.getTypeArgumentList();
             //No type inference for declarations
-            acceptsTypeArguments(type, getTypeArguments(tal), tal, that);
+            acceptsTypeArguments(type, 
+            		getTypeArguments(tal, 
+            				type.getTypeParameters()), 
+            		tal, that);
             //the type has already been set by TypeVisitor
         }
     }
