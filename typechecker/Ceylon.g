@@ -1722,13 +1722,13 @@ nonemptyParametersStart
 functionOrExpression returns [Expression expression]
     @init { FunctionArgument fa = new FunctionArgument(null);
             fa.setType(new FunctionModifier(null)); }
-    : (FUNCTION_MODIFIER? anonParametersStart |
-       comparableType (nonemptyParametersStart | LPAREN RPAREN COMPUTE))=>
+    : (FUNCTION_MODIFIER? anonParametersStart /*|
+       comparableType (nonemptyParametersStart | LPAREN RPAREN COMPUTE)*/)=>
       (
         FUNCTION_MODIFIER
-      |
+      /*|
         comparableType
-        { fa.setType($comparableType.type); }
+        { fa.setType($comparableType.type); }*/
       )?
       p1=parameters
       { fa.addParameterList($p1.parameterList); }
