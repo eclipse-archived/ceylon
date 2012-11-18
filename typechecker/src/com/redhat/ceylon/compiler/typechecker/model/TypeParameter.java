@@ -11,6 +11,7 @@ public class TypeParameter extends TypeDeclaration implements Functional {
     private ParameterList parameterList;
     private TypeDeclaration selfTypedDeclaration;
     private ProducedType defaultTypeArgument;
+    private boolean defaulted;
 
     public boolean isInvariant() {
     	return !covariant && !contravariant;
@@ -123,6 +124,14 @@ public class TypeParameter extends TypeDeclaration implements Functional {
     
     public void setDefaultTypeArgument(ProducedType defaultTypeArgument) {
 		this.defaultTypeArgument = defaultTypeArgument;
+	}
+    
+    public boolean isDefaulted() {
+		return defaulted;
+	}
+    
+    public void setDefaulted(boolean defaulted) {
+		this.defaulted = defaulted;
 	}
     
 }
