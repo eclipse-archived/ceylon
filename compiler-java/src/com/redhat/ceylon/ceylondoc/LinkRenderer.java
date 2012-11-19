@@ -42,6 +42,7 @@ import com.redhat.ceylon.compiler.typechecker.model.Scope;
 import com.redhat.ceylon.compiler.typechecker.model.TypeDeclaration;
 import com.redhat.ceylon.compiler.typechecker.model.TypeParameter;
 import com.redhat.ceylon.compiler.typechecker.model.UnionType;
+import com.redhat.ceylon.compiler.typechecker.model.Unit;
 import com.redhat.ceylon.compiler.typechecker.model.Value;
 
 public class LinkRenderer {
@@ -165,12 +166,21 @@ public class LinkRenderer {
     private void processProducedType(ProducedType producedType) {
         if (producedType != null) {
             TypeDeclaration typeDeclaration = producedType.getDeclaration();
+            Unit unit = typeDeclaration.getUnit();
             if (typeDeclaration instanceof IntersectionType) {
                 processIntersectionType((IntersectionType) typeDeclaration);
             } else if (typeDeclaration instanceof UnionType) {
                 processUnionType((UnionType) typeDeclaration);
             } else if (typeDeclaration instanceof ClassOrInterface) {
-                processClassOrInterface((ClassOrInterface) typeDeclaration, producedType.getTypeArgumentList());
+                // special sugar for Sequential<Foo>
+                if(typeDeclaration == unit.getSequentialDeclaration()){
+                    ProducedType iteratedType = unit.getIteratedType(producedType);
+                    // process the iterated type rather than this
+                    processProducedType(iteratedType);
+                    buffer.append("[]");
+                }else {
+                    processClassOrInterface((ClassOrInterface) typeDeclaration, producedType.getTypeArgumentList());
+                }
             } else if (typeDeclaration instanceof TypeParameter) {
                 buffer.append("<span class='type-parameter'>").append(typeDeclaration.getName()).append("</span>");
             } else {
@@ -196,12 +206,6 @@ public class LinkRenderer {
             ProducedType nonOptionalType = getNonOptionalTypeForDisplay(unionType);
             processProducedType(nonOptionalType);
             buffer.append("?");
-            return;
-        }
-        if( isSequenceTypeAbbreviation(unionType) ) {
-            ProducedType elementType = unionType.getUnit().getIteratedType(unionType.getType());
-            processProducedType(elementType);
-            buffer.append("[]");
             return;
         }
         
@@ -367,14 +371,6 @@ public class LinkRenderer {
         return unionType.getCaseTypes().size() == 2 &&
                 com.redhat.ceylon.compiler.typechecker.model.Util.isElementOfUnion(
                         unionType, unionType.getUnit().getNothingDeclaration());
-    }
-
-    private boolean isSequenceTypeAbbreviation(UnionType unionType) {
-        return unionType.getCaseTypes().size() == 2 &&
-                com.redhat.ceylon.compiler.typechecker.model.Util.isElementOfUnion(
-                        unionType, unionType.getUnit().getEmptyDeclaration()) &&
-                com.redhat.ceylon.compiler.typechecker.model.Util.isElementOfUnion(
-                        unionType, unionType.getUnit().getSequenceDeclaration());
     }
 
     private boolean isInCurrentModule(Object obj) {

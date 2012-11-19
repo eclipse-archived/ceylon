@@ -122,12 +122,9 @@ public abstract class ClassOrPackageDoc extends CeylonDoc {
                 Unit unit = value.getUnit();
                 TypeDeclaration type = value.getTypeDeclaration();
                 
-                if (type instanceof UnionType) {
-                    ProducedType nonemptySequenceType = unit.getNonemptySequenceType(value.getType());
-                    if (nonemptySequenceType != null) {
-                        ProducedType elementType = unit.getIteratedType(nonemptySequenceType);
-                        type = elementType.getDeclaration();
-                    }
+                if (type == unit.getSequentialDeclaration()) {
+                    ProducedType elementType = unit.getIteratedType(value.getType());
+                    type = elementType.getDeclaration();
                 }
 
                 if (unit.getStringDeclaration().equals(type)
