@@ -242,7 +242,6 @@ public class TestModuleManager {
         Assert.assertEquals("stack: " + stack, t0.getProducedTypeName(), t1.getProducedTypeName());
         Assert.assertEquals(t0.getUnderlyingType(), t1.getUnderlyingType());
         Assert.assertEquals(t0.getProducedTypeQualifiedName(), t1.getProducedTypeQualifiedName());
-        Assert.assertEquals(t0.isCallable(), t1.isCallable());
         Assert.assertEquals(t0.isFunctional(), t1.isFunctional());
         Assert.assertEquals(t0.isRaw(), t1.isRaw());
         Assert.assertEquals(t0.isWellDefined(), t1.isWellDefined());
