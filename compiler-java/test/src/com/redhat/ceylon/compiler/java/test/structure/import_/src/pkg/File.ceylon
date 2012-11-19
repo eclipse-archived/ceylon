@@ -21,4 +21,4 @@ import pkg.sub{ sameFileInternal = sameFile }
 
 shared interface File{}
 
-shared Boolean sameFile(File x, File y) = sameFileInternal;
+shared Boolean sameFile(File x, File y) => sameFileInternal(x, y);
