@@ -17,12 +17,14 @@ import com.redhat.ceylon.compiler.java.metadata.Variance;
 @Ceylon(major = 3)
 @TypeParameters({
     @TypeParameter(value = "Element", variance = Variance.OUT),
-    @TypeParameter(value = "First", variance = Variance.OUT),
-    @TypeParameter(value = "Rest", variance = Variance.OUT)
+    @TypeParameter(value = "First", variance = Variance.OUT, 
+            satisfies = "Element"),
+    @TypeParameter(value = "Rest", variance = Variance.OUT, 
+            satisfies = "ceylon.language::Sequential<Element>")
  })
 @Class(extendsType="ceylon.language::Object")
 @SatisfiedTypes("ceylon.language::Sequence<Element>")
-public class Tuple<Element, First, Rest> 
+public class Tuple<Element, First extends Element, Rest extends Sequential<Element>> 
         implements Sequence<Element> {
 
     private final Iterable$impl<Element> iterable$impl = new Iterable$impl<Element>(this);
@@ -34,7 +36,7 @@ public class Tuple<Element, First, Rest>
 	private final Element first;
 	private final List<Element> rest;
 	
-	public Tuple(@TypeInfo(value="First&Element", erased=true) 
+	public Tuple(@TypeInfo(value="First", erased=true) 
 	             @Name("first") Element first,
 	             @TypeInfo(value="Rest&Empty|Rest&Sequence<Element>", erased=true)
 			     @Name("rest") List<Element> rest) {
@@ -42,7 +44,7 @@ public class Tuple<Element, First, Rest>
 		this.rest = rest;
 	}
 	
-	@TypeInfo(value="First&Element", erased=true)
+	@TypeInfo(value="First", erased=true)
 	public Element getFirst() {
 		return first;
 	}
@@ -88,7 +90,7 @@ public class Tuple<Element, First, Rest>
 	@Annotations(@Annotation("actual"))
 	@TypeInfo("Element|ceylon.language::Nothing")
 	public Element findLast(
-	        @TypeInfo("ceylon.language::Callable<ceylon.language::Boolean,Element>")
+	        @TypeInfo("ceylon.language::Callable<ceylon.language::Boolean,ceylon.language::Tuple<Element,Element,ceylon.language::Empty>>")
 	        Callable<? extends Boolean> selecting) {
 		return iterable$impl.findLast(selecting);
 	}
@@ -130,7 +132,7 @@ public class Tuple<Element, First, Rest>
 	@TypeInfo("ceylon.language::Iterable<Result>")
 	@TypeParameters(@TypeParameter("Result"))
 	public <Result> Iterable<? extends Result> map(
-	        @TypeInfo("ceylon.language::Callable<Result,Element>")
+	        @TypeInfo("ceylon.language::Callable<Result,ceylon.language::Tuple<Element,Element,ceylon.language::Empty>>")
 			Callable<? extends Result> collecting) {
 		return iterable$impl.map(collecting);
 	}
@@ -139,7 +141,7 @@ public class Tuple<Element, First, Rest>
 	@Annotations(@Annotation("default"))
 	@TypeInfo("ceylon.language::Iterable<Element>")
 	public Iterable<? extends Element> filter(
-	        @TypeInfo("ceylon.language::Callable<ceylon.language::Boolean,Element>")
+	        @TypeInfo("ceylon.language::Callable<ceylon.language::Boolean,ceylon.language::Tuple<Element,Element,ceylon.language::Empty>>")
 			Callable<? extends Boolean> selecting) {
 		return iterable$impl.filter(selecting);
 	}
@@ -151,7 +153,7 @@ public class Tuple<Element, First, Rest>
 	public <Result> Result fold(@Name("initial")
             @TypeInfo("Result") Result initial,
             @Name("accumulating")
-            @TypeInfo("ceylon.language::Callable<Result,Result,Element>")
+            @TypeInfo("ceylon.language::Callable<Result,ceylon.language::Tuple<Result|Element,Result,ceylon.language::Tuple<Element,Element,ceylon.language::Empty>>>")
             Callable<? extends Result> accumulating) {
 		return iterable$impl.fold(initial, accumulating);
 	}
@@ -160,7 +162,7 @@ public class Tuple<Element, First, Rest>
 	@Annotations(@Annotation("default"))
 	@TypeInfo("Element|ceylon.language::Nothing")
 	public Element find(
-	        @TypeInfo("ceylon.language::Callable<ceylon.language::Boolean,Element>")
+	        @TypeInfo("ceylon.language::Callable<ceylon.language::Boolean,ceylon.language::Tuple<Element,Element,ceylon.language::Empty>>")
 	        Callable<? extends Boolean> selecting) {
 		return iterable$impl.find(selecting);
 	}
@@ -169,7 +171,7 @@ public class Tuple<Element, First, Rest>
 	@Annotations(@Annotation("default"))
 	@TypeInfo("ceylon.language::Empty|ceylon.language::Sequence<Element>")
 	public List<? extends Element> select(
-	        @TypeInfo("ceylon.language::Callable<ceylon.language::Boolean,Element>")
+	        @TypeInfo("ceylon.language::Callable<ceylon.language::Boolean,ceylon.language::Tuple<Element,Element,ceylon.language::Empty>>")
 	        Callable<? extends Boolean> selecting) {
 		return iterable$impl.select(selecting);
 	}
@@ -178,7 +180,7 @@ public class Tuple<Element, First, Rest>
 	@Annotations(@Annotation("default"))
 	@TypeInfo("ceylon.language::Boolean")
 	public boolean any(
-	        @TypeInfo("ceylon.language::Callable<ceylon.language::Boolean,Element>")
+	        @TypeInfo("ceylon.language::Callable<ceylon.language::Boolean,ceylon.language::Tuple<Element,Element,ceylon.language::Empty>>")
 	        Callable<? extends Boolean> selecting) {
 		return iterable$impl.any(selecting);
 	}
@@ -187,7 +189,7 @@ public class Tuple<Element, First, Rest>
 	@Annotations(@Annotation("default"))
 	@TypeInfo("ceylon.language::Boolean")
 	public boolean every(
-	        @TypeInfo("ceylon.language::Callable<ceylon.language::Boolean,Element>")
+	        @TypeInfo("ceylon.language::Callable<ceylon.language::Boolean,ceylon.language::Tuple<Element,Element,ceylon.language::Empty>>")
 	        Callable<? extends Boolean> selecting) {
 		return iterable$impl.every(selecting);
 	}
@@ -217,7 +219,7 @@ public class Tuple<Element, First, Rest>
 	@Annotations(@Annotation("default"))
 	@TypeInfo("ceylon.language::Integer")
 	public long count(
-	        @TypeInfo("ceylon.language::Callable<ceylon.language::Boolean,Element>")
+	        @TypeInfo("ceylon.language::Callable<ceylon.language::Boolean,ceylon.language::Tuple<Element,Element,ceylon.language::Empty>>")
 	        Callable<? extends Boolean> selecting) {
 		return iterable$impl.count(selecting);
 	}
@@ -251,7 +253,7 @@ public class Tuple<Element, First, Rest>
 	@TypeParameters(@TypeParameter(value = "Grouping", satisfies = "ceylon.language::Object"))
 	@TypeInfo("ceylon.language::Map<Grouping,ceylon.language::Sequence<Element>>")
 	public <Key> Map<? extends Key, ? extends Sequence<? extends Element>> group(@Name("grouping")
-	        @TypeInfo("ceylon.language::Callable<Grouping,Element>")
+	        @TypeInfo("ceylon.language::Callable<Grouping,ceylon.language::Tuple<Element,Element,ceylon.language::Empty>>")
 			Callable<? extends Key> grouping) {
 		return iterable$impl.group(grouping);
 	}
@@ -435,7 +437,7 @@ public class Tuple<Element, First, Rest>
 	@Annotations(@Annotation("actual"))
 	@TypeInfo("ceylon.language::Sequence<Element>")
 	public Sequence<? extends Element> sort(
-            @TypeInfo("ceylon.language::Callable<ceylon.language::Nothing|ceylon.language::Comparison,Element,Element>")
+            @TypeInfo("ceylon.language::Callable<ceylon.language::Nothing|ceylon.language::Comparison,ceylon.language::Tuple<Element,Element,ceylon.language::Tuple<Element,Element,ceylon.language::Empty>>>")
 			Callable<? extends Comparison> comparing) {
 		return sequence$impl.sort(comparing);
 	}
@@ -445,7 +447,7 @@ public class Tuple<Element, First, Rest>
 	@TypeParameters(@TypeParameter("Result"))
 	@TypeInfo("ceylon.language::Sequence<Result>")
 	public <Result> Sequence<? extends Result> collect(
-            @TypeInfo("ceylon.language::Callable<Result,Element>")
+            @TypeInfo("ceylon.language::Callable<Result,ceylon.language::Tuple<Element,Element,ceylon.language::Empty>>")
 			Callable<? extends Result> collecting) {
 	    return sequence$impl.collect(collecting);
 	}

@@ -7,8 +7,8 @@ import com.redhat.ceylon.compiler.java.language.ArraySequence;
 import com.redhat.ceylon.compiler.java.language.FilterIterable;
 import com.redhat.ceylon.compiler.java.language.InternalMap;
 import com.redhat.ceylon.compiler.java.language.MapIterable;
-import com.redhat.ceylon.compiler.java.language.StringOfNone;
-import com.redhat.ceylon.compiler.java.language.StringOfSome;
+import com.redhat.ceylon.compiler.java.language.EmptyString;
+import com.redhat.ceylon.compiler.java.language.SequenceString;
 import com.redhat.ceylon.compiler.java.metadata.Ceylon;
 import com.redhat.ceylon.compiler.java.metadata.Class;
 import com.redhat.ceylon.compiler.java.metadata.Defaulted;
@@ -21,7 +21,7 @@ import com.redhat.ceylon.compiler.java.metadata.ValueType;
 
 @Ceylon(major = 3)
 @Class(extendsType="ceylon.language::Object")
-@SatisfiedTypes({"ceylon.language::List<ceylon.language::Character>",
+@SatisfiedTypes({"ceylon.language::Sequential<ceylon.language::Character>",
                  "ceylon.language::Comparable<ceylon.language::String>",
                  "ceylon.language::Ranged<ceylon.language::Integer,ceylon.language::String>",
                  "ceylon.language::FixedSized<ceylon.language::Character>",
@@ -30,7 +30,7 @@ import com.redhat.ceylon.compiler.java.metadata.ValueType;
                  "ceylon.language::Cloneable<ceylon.language::String>"})
 @ValueType
 public abstract class String
-    implements Comparable<String>, List<Character>,
+    implements Comparable<String>, Sequential<Character>,
                Summable<String>, Castable<String>,
                FixedSized<Character> {
 
@@ -67,7 +67,7 @@ public abstract class String
     @Ignore
     public static ceylon.language.String instance(java.lang.String s) {
         if (s==null) return null;
-        return s.isEmpty() ? StringOfNone.instance : new StringOfSome(s);
+        return s.isEmpty() ? EmptyString.instance : new SequenceString(s);
     }
 
     @Ignore
@@ -839,7 +839,7 @@ public abstract class String
 
     @TypeInfo("ceylon.language::Iterable<ceylon.language::String>")
     public Iterable<? extends String> split(
-            @TypeInfo(value="ceylon.language::Iterable<ceylon.language::Character>|ceylon.language::Callable<ceylon.language::Boolean,ceylon.language::Character>", erased=true)
+            @TypeInfo(value="ceylon.language::Iterable<ceylon.language::Character>|ceylon.language::Callable<ceylon.language::Boolean,ceylon.language::Tuple<ceylon.language::Character,ceylon.language::Character,ceylon.language::Empty>>", erased=true)
             @Defaulted
             @Name("separator") java.lang.Object separator,
             @Defaulted

@@ -98,18 +98,18 @@ void testSets() {
     check(s1.complement(emptySet)==s1, "Set.complement 1");
     check(emptySet.complement(s1)==emptySet, "Set.complement 2");
     //LazySet
-    check(LazySet().size==0, "empty LazySet()");
-    value s2 = LazySet(3,4,5,"a");
-    value s3 = LazySet("a", "b", "c", 5);
+    check(LazySet({}).size==0, "empty LazySet()");
+    value s2 = LazySet({3,4,5,"a"});
+    value s3 = LazySet({"a", "b", "c", 5});
     value s4 = SetTest(5);
     check(s2.size==s3.size, "LazySet.size");
     check(4 in s2, "LazySet.contains");
-    check(s2|s1 == LazySet(1,2,3,4,5,"a"), "LazySet.union");
-    check(s2&s3 == LazySet("a", 5), "LazySet.intersection");
-    check(s2^s3 == LazySet(3,4,"b","c"), "LazySet.exclusiveUnion");
-    check(s2~s3 == LazySet(3, 4), "LazySet.complement 1");
-    check(s3~s2 == LazySet("b", "c"), "LazySet.complement 2");
+    check(s2|s1 == LazySet({1,2,3,4,5,"a"}), "LazySet.union");
+    check(s2&s3 == LazySet({"a", 5}), "LazySet.intersection");
+    check(s2^s3 == LazySet({3,4,"b","c"}), "LazySet.exclusiveUnion");
+    check(s2~s3 == LazySet({3, 4}), "LazySet.complement 1");
+    check(s3~s2 == LazySet({"b", "c"}), "LazySet.complement 2");
     check(s2.superset(s4), "LazySet.superset 1");
     check(s3.superset(s4), "LazySet.superset 2");
-    check(s2.subset(LazySet("a","b","c",3,4,5,"d","e",1,2,3)), "LazySet.subset");
+    check(s2.subset(LazySet({"a","b","c",3,4,5,"d","e",1,2,3})), "LazySet.subset");
 }

@@ -2,7 +2,7 @@ doc "An implementation of List that wraps an `Iterable` of
      elements. All operations on this List are performed
      on the Iterable."
 by "Enrique Zamudio"
-shared class LazyList<out Element>(Element... elems)
+shared class LazyList<out Element>(Iterable<Element> elems)
         satisfies List<Element> {
 
     shared actual Integer? lastIndex {
@@ -13,57 +13,57 @@ shared class LazyList<out Element>(Element... elems)
     shared actual Element? item(Integer index) {
         if (index == 0) {
             return elems.first;
-        } else {
+        } 
+        else {
             return elems.skipping(index).first;
         }
     }
 
-    shared actual Iterator<Element> iterator {
-        return elems.iterator;
-    }
+    shared actual Iterator<Element> iterator =>
+        elems.iterator;
 
     doc "Returns a `List` with the elements of this
          `List` in reverse order. This operation will
          create copy the elements to a new `List`,
          so changes to the original `Iterable` will
          no longer be reflected in the new `List`."
-    shared actual List<Element> reversed {
-        return elems.sequence.reversed;
-    }
+    shared actual List<Element> reversed =>
+        elems.sequence.reversed;
 
-    shared actual List<Element> clone {
-        return this;
-    }
-
-    shared actual List<Element> span(
-            Integer from, Integer? to) {
+    shared actual List<Element> clone => this;
+    
+    shared actual List<Element> span
+            (Integer from, Integer? to) {
         if (exists to) {
             if (to >= from) {
                 value els = from > 0 then elems.skipping(from)
-                    else elems;
-                return LazyList(els.taking(to-from+1)...);
-            } else {
+                        else elems;
+                return LazyList(els.taking(to-from+1));
+            } 
+            else {
                 //reversed
                 throw;
             }
-        } else {
+        } 
+        else {
             value els = from > 0 then elems.skipping(from)
                 else elems;
-            return LazyList(els...);
+            return LazyList(els);
         }
     }
-
-    shared actual List<Element> segment(
-            Integer from, Integer length) {
+    
+    shared actual List<Element> segment
+            (Integer from, Integer length) {
         if (length > 0) {
             value els = from > 0 then elems.skipping(from)
-                else elems;
-            return LazyList(els.taking(length)...);
-        } else {
+                    else elems;
+            return LazyList(els.taking(length));
+        } 
+        else {
             return {};
         }
     }
-
+    
     shared actual default Boolean equals(Object that) {
         if (is List<Void> that) {
             value s = elems.count((Element e) true);
@@ -92,7 +92,7 @@ shared class LazyList<out Element>(Element... elems)
         }
         return false;
     }
-
+    
     shared actual default Integer hash {
         variable value hash := 1;
         for (elem in elems) {
@@ -103,17 +103,14 @@ shared class LazyList<out Element>(Element... elems)
         }
         return hash;
     }
-
-    shared default actual Element? findLast(Boolean selecting(Element elem)) {
-        return elems.findLast(selecting);
-    }
-
-    shared actual default Element? first {
-        return elems.first;
-    }
-
-    shared actual default Element? last {
-        return elems.last;
-    }
-
+    
+    shared default actual Element? findLast(Boolean selecting(Element elem)) =>
+        elems.findLast(selecting);
+    
+    shared actual default Element? first =>
+        elems.first;
+    
+    shared actual default Element? last =>
+        elems.last;
+    
 }

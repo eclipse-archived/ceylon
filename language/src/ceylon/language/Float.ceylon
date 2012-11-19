@@ -14,31 +14,27 @@ shared abstract class Float()
         extends Object()
         satisfies Scalar<Float> & Exponentiable<Float,Float> & 
                   Castable<Float> {
-
+    
     doc "Determines whether this value is undefined (that is, Not a Number or NaN).
          The undefined value has the property that it is not equal (`==`) 
          to itself, as a consequence the undefined value cannot sensibly be 
          used in most collections."
-    shared Boolean undefined {
-        return this!=this;
-    }
-
+    shared Boolean undefined => this!=this;
+    
     doc "Determines whether this value is infinite in magnitude
          Produces `true` for `infinity` and `-infinity`.
          Produces `false` for a finite number, `+0`, `-0`, or
          undefined."
     see(infinity, finite)
-    shared Boolean infinite {
-        return this==infinity || this==-infinity;
-    }
+    shared Boolean infinite => 
+            this==infinity || this==-infinity;
     
     doc "Determines whether this value is finite. Produces
          `false` for `infinity`, `-infinity`, and undefined."
     see(infinite, infinity)
-    shared Boolean finite {
-        return this!=infinity && this!=-infinity 
-                && !this.undefined;
-    }
+    shared Boolean finite =>
+            this!=infinity && this!=-infinity 
+                    && !this.undefined;
     
     doc "The sign of this value. Produces `1` for a positive 
          number or `infinity`. Produces `-1` for a negative
@@ -60,12 +56,12 @@ shared abstract class Float()
          `+0`, or `infinity`. Produces `false` for a 
          negative number, `-0`, or undefined."
     shared formal Boolean strictlyPositive;
-
+    
     doc "Determines if this value is a negative number,
          `-0`, or `-infinity`. Produces `false` for a
          positive number, `+0`, or undefined."
     shared formal Boolean strictlyNegative;
-
+    
 }
 
 doc "The `Float` value of the given string representation of 
@@ -77,4 +73,3 @@ doc "The `Float` value of the given string representation of
      that it may optionally begin with a sign character (`+` or 
      `-`)."
 shared Float? parseFloat(String string) { throw; }
-

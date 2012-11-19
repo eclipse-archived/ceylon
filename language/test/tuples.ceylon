@@ -3,14 +3,13 @@ void tuples() {
         return (a,b,c);
     }
     value t = returnTuple(1, "2", Singleton(`3`));
-    alias Triplet = <Integer,String,Singleton<Character>>;
+    alias Triplet => <Integer,String,Singleton<Character>>;
     Triplet? subt = t;
     check(is Triplet subt, "tuples");
     check(t.lastIndex == 2, "tuple lastIndex");
-    check(is Integer t[0], "tuple[0]");
-    check(is String t[1], "tuple[1]");
-    check(is Singleton<Object> t[2], "tuple[2]");
-    check(!exists t[3], "tuple[3]");
+    Integer v1 = t[0];
+    String v2 = t[1];
+    Singleton<Object> v3 = t[2];
     Integer t1 = t.first;
     check(t1 == 1, "tuples first");
     String t2 = t.rest.first;

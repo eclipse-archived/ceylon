@@ -12,7 +12,7 @@ import com.redhat.ceylon.compiler.java.metadata.Variance;
 @Ceylon(major = 3)
 @TypeParameters(@TypeParameter(value = "Other", variance = Variance.IN,
     		satisfies="ceylon.language::Comparable<Other>"))
-@CaseTypes(of = "Other")
+@CaseTypes(of="Other")
 public interface Comparable<Other extends Comparable<? super Other>> {
     
     @Annotations(@Annotation("formal"))

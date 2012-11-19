@@ -12,8 +12,8 @@ class TestList<Element>(Element... items) satisfies List<Element> {
 
 void lists() {
     value a = TestList(1,2,3,4);
-    value b = LazyList(1,2,3,4,5,6,7,8);
-    check(LazyList().size==0, "empty LazyList()");
+    value b = LazyList({1,2,3,4,5,6,7,8});
+    check(LazyList({}).size==0, "empty LazyList()");
     //withLeading
     check({}.withLeading("A")=={"A"}, "Empty.withLeading(A)");
     check({}.withLeading("foo").size==1, "{}.withLeading.size");

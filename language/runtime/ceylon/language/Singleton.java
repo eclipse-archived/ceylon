@@ -294,14 +294,14 @@ public class Singleton<Element>
     @Override
     @TypeInfo("ceylon.language::Singleton<Element>")
     public Singleton<? extends Element> sort(@Name("comparing")
-            @TypeInfo("ceylon.language::Callable<ceylon.language::Comparison,Element,Element>")
+            @TypeInfo("ceylon.language::Callable<ceylon.language::Comparison,ceylon.language::Tuple<Element,Element,ceylon.language::Tuple<Element,Element,ceylon.language::Empty>>>")
             Callable<? extends Comparison> comparing) {
         return this;
     }
     @Override
     @TypeInfo("ceylon.language::Sequence<Result>")
     public <Result> Sequence<? extends Result> map(@Name("selecting")
-            @TypeInfo("ceylon.language::Callable<Result,Element>")
+            @TypeInfo("ceylon.language::Callable<Result,ceylon.language::Tuple<Element,Element,ceylon.language::Empty>>")
             Callable<? extends Result> selecting) {
         return new Singleton<Result>(selecting.$call(element));
     }
@@ -309,14 +309,14 @@ public class Singleton<Element>
     @TypeInfo("ceylon.language::Singleton<Element>|ceylon.language::Empty")
     @SuppressWarnings({"unchecked", "rawtypes"})
     public Iterable<? extends Element> filter(@Name("selecting")
-            @TypeInfo("ceylon.language::Callable<ceylon.language::Boolean,Element>")
+            @TypeInfo("ceylon.language::Callable<ceylon.language::Boolean,ceylon.language::Tuple<Element,Element,ceylon.language::Empty>>")
             Callable<? extends Boolean> selecting) {
         return selecting.$call(element).booleanValue() ? this : (Iterable)empty_.getEmpty$();
     }
     @Override
     @TypeInfo("ceylon.language::Sequence<Result>")
     public <Result> Sequence<? extends Result> collect(@Name("selecting")
-            @TypeInfo("ceylon.language::Callable<Result,Element>")
+            @TypeInfo("ceylon.language::Callable<Result,ceylon.language::Tuple<Element,Element,ceylon.language::Empty>>")
             Callable<? extends Result> selecting) {
         return new Singleton<Result>(selecting.$call(element));
     }
@@ -324,7 +324,7 @@ public class Singleton<Element>
     @TypeInfo("ceylon.language::Singleton<Element>|ceylon.language::Empty")
     @SuppressWarnings({"unchecked", "rawtypes"})
     public List<? extends Element> select(@Name("selecting")
-            @TypeInfo("ceylon.language::Callable<ceylon.language::Boolean,Element>")
+            @TypeInfo("ceylon.language::Callable<ceylon.language::Boolean,ceylon.language::Tuple<Element,Element,ceylon.language::Empty>>")
             Callable<? extends Boolean> selecting) {
         return selecting.$call(element).booleanValue() ? this : (List)empty_.getEmpty$();
     }

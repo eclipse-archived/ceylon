@@ -21,7 +21,7 @@ void callables() {
   check(ini4(1) == {"H", "W"}, "higher-class 4 (ceylon-js #53)");
   check("Callable" in className(ini2), "Spread Callable className");
   */
-  function ini5(Integer i) = TestCallable("Some string").something;
+  function ini5(Integer i) => TestCallable("Some string").something(i);
   check(ini5(4) == "Some", "higher-class 5");
   check(testCallable(TestCallable("Moar").something) == "M", "higher-class 6");
   value tc = TestCallable("Less").something;
@@ -42,7 +42,7 @@ void callables() {
     value which=g();
     check(which==2, "closures: callable returns " which " instead of 2");
   }
-  variable Callable<Integer>? f := null;
+  variable Callable<Integer,<>>? f := null;
   for (i in 1..2) {
     if (i > 0) {
       value j = i*2;

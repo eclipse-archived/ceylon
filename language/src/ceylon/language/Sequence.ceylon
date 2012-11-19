@@ -24,8 +24,8 @@ doc "A nonempty, immutable sequence of values. A sequence of
 see (Empty)
 by "Gavin"
 shared interface Sequence<out Element>
-        satisfies List<Element> & Some<Element> &
-                  Ranged<Integer,Element[]> &
+        satisfies Sequential<Element> & 
+                  Some<Element> &
                   Cloneable<Sequence<Element>> {
     
     doc "The index of the last element of the sequence."
@@ -57,9 +57,7 @@ shared interface Sequence<out Element>
     shared actual formal Sequence<Element> reversed;
     
     doc "This sequence."
-    shared actual Sequence<Element> sequence {
-        return this;
-    }
+    shared actual Sequence<Element> sequence => this;
     
     doc "A nonempty sequence containing the elements of this
          container, sorted according to a function 
@@ -75,10 +73,8 @@ shared interface Sequence<out Element>
             doc "The transformation applied to the elements."
             Result collecting(Element element)) {
         value s = map(collecting).sequence;
-        if (nonempty s) {
-            return s;
-        }
-        throw; //Should never happen in a well-behaved implementation
+        assert (nonempty s);
+        return s;
     }
 
     /*shared actual formal Element[] span(Integer from,

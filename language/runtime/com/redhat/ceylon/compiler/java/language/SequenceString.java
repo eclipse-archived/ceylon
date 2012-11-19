@@ -7,127 +7,127 @@ import ceylon.language.Comparison;
 import ceylon.language.Entry;
 import ceylon.language.Integer;
 import ceylon.language.Iterable;
+import ceylon.language.Iterable$impl;
 import ceylon.language.List;
 import ceylon.language.List$impl;
 import ceylon.language.Map;
-import ceylon.language.None;
 import ceylon.language.Sequence;
+import ceylon.language.Some;
 import ceylon.language.String;
-import ceylon.language.empty_;
+import ceylon.language.string_;
 
 import com.redhat.ceylon.compiler.java.metadata.Ceylon;
 import com.redhat.ceylon.compiler.java.metadata.Ignore;
 
 @Ignore
 @Ceylon(major = 3)
-public class StringOfNone extends String implements None<Character> {
+public class SequenceString extends String implements Some<Character> {
 
-    public static StringOfNone instance = new StringOfNone();
-
-    private StringOfNone() {
-        super("");
-    }
-
-    @Override
-    public long getSize() {
-        return 0;
+    public SequenceString(java.lang.String s) {
+        super(s);
     }
 
     @Override
     public boolean getEmpty() {
-        return true;
+        return false;
     }
 
     @Override
-    public Iterable<? extends Character> getRest() {
-        return this;
+    public List<? extends Character> getRest() {
+        return span(Integer.instance(1), null);
     }
 
     @Override
+    @Ignore
     public Character getFirst() {
-        return null;
+        return item(Integer.instance(0));
     }
-    @Override public Character getLast() {
-        return null;
+    @Override @Ignore
+    public Character getLast() {
+        return item(getLastIndex());
     }
 
     @Override
     @Ignore
     public List<? extends Character> getSequence() {
-        return this;
+        return Iterable$impl._getSequence(this);
     }
     @Override @Ignore
     public Character find(Callable<? extends Boolean> f) {
-        return null;
+        return Iterable$impl._find(this, f);
     }
     @Override @Ignore
     public Character findLast(Callable<? extends Boolean> f) {
-        return null;
+        return List$impl._findLast(this, f);
     }
     @Override
     @Ignore
     public List<? extends Character> sort(Callable<? extends Comparison> f) {
-        return this;
+        return String.instance(string_.string(Iterable$impl._sort(this, f)));
     }
     @Override
     @Ignore
     public Iterable<? extends Character> filter(Callable<? extends Boolean> f) {
-        return this;
+        return String.instance(string_.string(new FilterIterable<Character>(this, f)));
     }
-    @SuppressWarnings({"unchecked", "rawtypes"})
     @Override @Ignore
     public <Result> List<? extends Result> collect(Callable<? extends Result> f) {
-        return (List)empty_.getEmpty$();
+        return new MapIterable<Character,Result>(this, f).getSequence();
     }
     @Override @Ignore
     public List<? extends Character> select(Callable<? extends Boolean> f) {
-        return this;
+        return String.instance(string_.string(new FilterIterable<Character>(this, f)));
     }
     @Override
     @Ignore
     public <Result> Result fold(Result ini, Callable<? extends Result> f) {
-        return ini;
+        return Iterable$impl._fold(this, ini, f);
     }
     @Override @Ignore
     public boolean any(Callable<? extends Boolean> f) {
-        return false;
+        return Iterable$impl._any(this, f);
     }
     @Override @Ignore
     public boolean every(Callable<? extends Boolean> f) {
-        return false;
+        return Iterable$impl._every(this, f);
     }
     @Override @Ignore
     public Iterable<? extends Character> skipping(long skip) {
-        return this;
+        return this.segment(Integer.instance(skip), this.getSize());
     }
     @Override @Ignore
     public Iterable<? extends Character> taking(long take) {
-        return this;
+        return this.segment(Integer.instance(0), take);
     }
     @Override @Ignore
     public Iterable<? extends Character> by(long step) {
-        return this;
+        return String.instance(string_.string(Iterable$impl._by(this, step)));
     }
     @Override @Ignore
     public long count(Callable<? extends Boolean> f) {
-        return 0;
+        return Iterable$impl._count(this, f);
     }
     @Override @Ignore
-    @SuppressWarnings({"unchecked", "rawtypes"})
-    public Iterable<? extends Entry<? extends Integer, ? extends Character>> getIndexed() { return (Iterable)this; }
+    public Iterable<? extends Entry<? extends Integer, ? extends Character>> getIndexed() {
+        return Iterable$impl._getIndexed(this);
+    }
     @SuppressWarnings("rawtypes")
-    @Override @Ignore public <Other>Iterable chain(Iterable<? extends Other> other) { return other; }
+    @Override @Ignore public <Other>Iterable chain(Iterable<? extends Other> other) {
+        return Iterable$impl._chain(this, other);
+    }
     @Override @Ignore
     public <Key> Map<? extends Key, ? extends Sequence<? extends Character>> group(Callable<? extends Key> grouping) {
-        return new InternalMap<Key, Sequence<? extends Character>>(java.util.Collections.<Key,Sequence<Character>>emptyMap());
+        return Iterable$impl._group(this, grouping);
     }
 
+    @Override @Ignore
     @SuppressWarnings("rawtypes")
-    @Override @Ignore public <Other>Sequence withLeading(Other e) {
+    public <Other> Sequence withLeading(Other e) {
         return List$impl._withLeading(this, e);
     }
+    @Override @Ignore
     @SuppressWarnings("rawtypes")
-    @Override @Ignore public <Other>Sequence withTrailing(Other e) {
+    public <Other> Sequence withTrailing(Other e) {
         return List$impl._withTrailing(this, e);
     }
 }

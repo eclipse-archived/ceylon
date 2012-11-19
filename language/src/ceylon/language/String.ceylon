@@ -46,10 +46,11 @@ by "Gavin"
 see (string)
 shared abstract class String()
         extends Object()
-        satisfies List<Character> & Comparable<String> &
-                  Ranged<Integer,String> & 
-                  FixedSized<Character> &
-                  Summable<String> & Castable<String> &
+        satisfies Sequential<Character> & 
+                  Comparable<String> &
+                  Summable<String> & 
+                  Ranged<Integer,String> &
+                  Castable<String> &
                   Cloneable<String> {
     
     doc "The characters in this string."
@@ -69,7 +70,8 @@ shared abstract class String()
                  is a separator characters at which to split.
                  Default to split at any Unicode whitespace
                  character."
-            Iterable<Character>|Callable<Boolean,Character> separator = (Character ch) ch.whitespace,
+            Iterable<Character>|Boolean(Character) separator 
+                    = (Character ch) ch.whitespace,
             doc "Specifies that the separator characters
                  occurring in the string should be discarded.
                  If `false`, they will be included in the
@@ -119,10 +121,10 @@ shared abstract class String()
          the given length. If the portion of this string
          starting at the given index is shorter than 
          the given length, return the portion of this string
-         from the given index until the end of this string. Otherwise 
-         return a string of the given length. If the start
-         index is larger than the last index of the string,
-         return the empty string."
+         from the given index until the end of this string. 
+         Otherwise return a string of the given length. If 
+         the start index is larger than the last index of the 
+         string, return the empty string."
     shared formal actual String segment(Integer from, 
                                         Integer length);
     
@@ -255,20 +257,17 @@ shared abstract class String()
     shared actual formal Integer hash;
     
     doc "Returns the string itself."
-    shared actual String string { 
-        return this;
-    }
+    shared actual String string => this;
     
     doc "Determines if this string has no characters, that
          is, if it has zero `size`. This is a more efficient 
          operation than `string.size==0`."
     see (size)
     shared actual formal Boolean empty;
-
+    
     doc "Returns this string."
-    shared actual String coalesced {
-        return this;
-    }
+    shared actual String coalesced => this;
+    
 }
 
 doc "Create a new string containing the given characters."

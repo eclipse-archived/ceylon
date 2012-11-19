@@ -9,13 +9,13 @@ import com.redhat.ceylon.compiler.java.metadata.TypeInfo;
 
 @Ceylon(major = 3)
 @SatisfiedTypes({
-    "ceylon.language::List<ceylon.language::Bottom>",
+    "ceylon.language::Sequential<ceylon.language::Bottom>",
     "ceylon.language::None<ceylon.language::Bottom>",
     "ceylon.language::Ranged<ceylon.language::Integer,ceylon.language::Empty>",
     "ceylon.language::Cloneable<ceylon.language::Empty>"
 })
 public interface Empty 
-        extends List<java.lang.Object>, None<java.lang.Object> {
+        extends Sequential<java.lang.Object>, None<java.lang.Object> {
 	
     @Annotations(@Annotation("actual"))
     @Override

@@ -22,7 +22,7 @@ public class combine_ {
         @TypeParameter("Result"), @TypeParameter("Element"), @TypeParameter("OtherElement")
     })
     public static <Result,Element,OtherElement> Iterable<Result> combine(
-            @Name("combination") @TypeInfo("ceylon.language::Callable<Result,Element,OtherElement>")
+            @Name("combination") @TypeInfo("ceylon.language::Callable<Result,ceylon.language::Tuple<Element|OtherElement,Element,ceylon.language::Tuple<OtherElement,OtherElement,ceylon.language::Empty>>>")
             final Callable<? extends Result> combination,
             @Name("elements") @TypeInfo("ceylon.language::Iterable<Element>")
             final Iterable<? extends Element> elements,

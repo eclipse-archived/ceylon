@@ -28,9 +28,8 @@ shared interface Correspondence<in Key, out Item>
     doc "Determines if there is a value defined for the 
          given key."
     see (definesAny, definesEvery, keys)
-    shared default Boolean defines(Key key) {
-        return exists item(key);
-    }
+    shared default Boolean defines(Key key) => 
+            exists item(key);
     
     doc "The `Category` of all keys for which a value is 
          defined by this `Correspondence`."
@@ -93,15 +92,13 @@ shared interface Correspondence<in Key, out Item>
     class Items(Sequence<Key> keys)
             extends Object()
             satisfies Sequence<Item?> {
-        shared actual Integer lastIndex {
-            return keys.lastIndex;
-        }
-        shared actual Item? first {
-            return outer.item(keys.first);
-        }
-        shared actual Item?[] rest {
-            return outer.items(keys.rest...);
-        }
+    
+        shared actual Integer lastIndex => keys.lastIndex;
+        
+        shared actual Item? first => outer.item(keys.first);
+        
+        shared actual Item?[] rest = outer.items(keys.rest...);
+        
         shared actual Item? item(Integer index) {
             if (exists Key key = keys.item(index)) {
                 return outer.item(key);
@@ -127,16 +124,13 @@ shared interface Correspondence<in Key, out Item>
                 return {};
             }
         }
-        //shared actual String string { return "Entries"; }
-        shared actual Sequence<Item?> clone {
-            return this;
-        }
-        shared actual Sequence<Item?> reversed {
-            return outer.Items(keys.reversed);
-        }
-        shared actual Integer hash {
-            return keys.hash;
-        }
+        
+        shared actual Sequence<Item?> clone => this;
+        
+        shared actual Sequence<Item?> reversed =>
+                outer.Items(keys.reversed);
+        
+        shared actual Integer hash => keys.hash;
     }
     
 }

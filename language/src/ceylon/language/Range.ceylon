@@ -24,30 +24,24 @@ shared class Range<Element>(first, last)
     
     doc "The end of the range."
     shared actual Element last;
-
-    shared actual String string {
-        return first.string + ".." + last.string;
-    }
+    
+    shared actual String string => 
+            first.string + ".." + last.string;
     
     doc "Determines if the range is decreasing."
-    shared Boolean decreasing { 
-        return last<first; 
-    }
+    shared Boolean decreasing => last<first; 
     
-    Element next(Element x) {
-        return decreasing then x.predecessor 
+    Element next(Element x) =>
+        decreasing then x.predecessor 
                 else x.successor;
-    }
 
     value distance = last.distanceFrom(first);
 
     doc "The nonzero number of elements in the range."
-    shared actual Integer size = (distance.positive then distance else -distance)+1;
+    shared actual Integer size => distance.magnitude + 1;
     
     doc "The index of the end of the range."
-    shared actual Integer lastIndex { 
-        return size-1; 
-    }
+    shared actual Integer lastIndex => size-1; 
     
     doc "The rest of the range, without the start of the
          range."
@@ -123,10 +117,9 @@ shared class Range<Element>(first, last)
     }
     
     doc "Determines if the range includes the given value."
-    shared Boolean includes(Element x) {
-        return decreasing then x<=first && x>=last
-                else x>=first && x<=last;
-    }
+    shared Boolean includes(Element x) =>
+            decreasing then x<=first && x>=last
+                    else x>=first && x<=last;
     
     /*shared Element[] excludingLast {
         throw; //todo!
@@ -164,9 +157,7 @@ shared class Range<Element>(first, last)
     
     doc "Returns the range itself, since ranges are 
          immutable."
-    shared actual Range<Element> clone {
-        return this;
-    }
+    shared actual Range<Element> clone => this;
     
     shared actual Range<Element>|Empty segment(
             Integer from, 
@@ -216,10 +207,8 @@ shared class Range<Element>(first, last)
     }
     
     doc "Reverse this range, returning a new range."
-    shared actual Range<Element> reversed {
-        return Range(last,first);
-    }
-
+    shared actual Range<Element> reversed => Range(last,first);
+    
     shared actual Range<Element>|Empty skipping(Integer skip) {
         variable value x:=0;
         variable value e := first;
@@ -228,6 +217,7 @@ shared class Range<Element>(first, last)
         }
         return includes(e) then Range(e, last) else {};
     }
+    
     shared actual Range<Element>|Empty taking(Integer take) {
         if (take == 0) {
             return {};
@@ -242,8 +232,6 @@ shared class Range<Element>(first, last)
 
     doc "Returns the range itself, since a Range cannot
          contain nulls."
-    shared actual Range<Element> coalesced {
-        return this;
-    }
+    shared actual Range<Element> coalesced => this;
 
 }
