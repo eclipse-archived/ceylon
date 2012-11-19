@@ -26,7 +26,7 @@ interface Interfaces {
         return x.uppercased;
     }
     
-    String uppercase(String x) = upper;
+    String uppercase(String x) => upper(x);
     
     String str {
         @error return super.string;

@@ -130,7 +130,7 @@ class Primaries() {
         String s = o.string;
         @type["Sequence<Primaries.A|Primaries.B|String|Sequence<Integer>|Float>"] value p30 = {o, "foo", 3.1, A()};
     }
-    @type["Empty|Sequence<String>"] String[] noStrings = {};
+    @type["Sequential<String>"] String[] noStrings = {};
     @type["Empty"] value none = {};
     
     @type["Sequence<Boolean>"] value p100 = { true };

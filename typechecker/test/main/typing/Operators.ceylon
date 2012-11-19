@@ -144,24 +144,26 @@ class Operators() {
     String[] emp = {};
     
     @type["Nothing|Operators.X"] value x38 = sequence[0];
-    @type["Empty|Sequence<Operators.X>"] value x39 = sequence[0..1];
-    @type["Empty|Sequence<Operators.X>"] value x40 = sequence[1+1...];
+    @type["Sequential<Operators.X>"] value x39 = sequence[0..1];
+    @type["Sequential<Operators.X>"] value x40 = sequence[1+1...];
     @type["Nothing|Operators.X"] value x41 = {nothing}[0];
     @type["Nothing|String"] value x42 = noSequence?[0];
+    @type["Sequential<Operators.X>"] value x39u = sequence[...1];
     
     @error value x43 = sequence["hello"];
     @error value x44 = sequence["hello"...];
+    @error value x44u = sequence[..."hello"];
     @error value x45 = sequence[1.."hello"];
     
     String? maybeString = null;
-    @type["Callable<Nothing|Iterable<String>,Iterable<Character>|Callable<Boolean,Character>,Boolean,Boolean>"] value mss = maybeString?.split;
-    @type["Callable<Sequence<Iterable<String>>,Iterable<Character>|Callable<Boolean,Character>,Boolean,Boolean>"] value hws = {"hello", "world"}[].split;
+    Callable<Nothing|Iterable<String>,<Iterable<Character>|Callable<Boolean,<Character>>,Boolean,Boolean>> mss = maybeString?.split;
+    Callable<Sequence<Iterable<String>>,<Iterable<Character>|Callable<Boolean,<Character>>,Boolean,Boolean>> hws = {"hello", "world"}[].split;
     
-    @type["Empty|Sequence<String>"] value e45 = emp[].uppercased;
-    @type["Sequence<Empty|Sequence<Character>>"] value x46 = {"hello", "world"}[].characters;
+    @type["Sequential<String>"] value e45 = emp[].uppercased;
+    @type["Sequence<Sequential<Character>>"] value x46 = {"hello", "world"}[].characters;
     @type["Sequence<String>"] value x47 = {"hello", "world"}[].uppercased;
-    @type["Nothing|Empty|Sequence<Character>"] value x48 = {"hello", "world"}[0]?.characters;
-    @type["Sequence<Empty|Sequence<Character>>"] value x49 = {"hello", "world"}[].characters;
+    @type["Nothing|Sequential<Character>"] value x48 = {"hello", "world"}[0]?.characters;
+    @type["Sequence<Sequential<Character>>"] value x49 = {"hello", "world"}[].characters;
     @type["Sequence<Iterable<String>>"] value x50 = {"hello", "world"}[].lines;
     @type["Nothing|String"] value x51 = {"hello", "world"}[0]?.normalized;
     @type["Nothing|Iterable<String>"] value x512 = {"hello", "world"}[0]?.split((Character c) c==` `);

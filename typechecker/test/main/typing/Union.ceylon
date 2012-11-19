@@ -196,7 +196,7 @@ class Union() {
         shared Elem[] elements = them.sequence;
     }
     Sorted<Integer>|Sorted<String> sorted = Sorted(+1,-1);
-    @type["Empty|Sequence<Integer|String>"] value elems = sorted.elements;
+    @type["Sequential<Integer|String>"] value elems = sorted.elements;
     
     switch (xy)
     case (is X) {}

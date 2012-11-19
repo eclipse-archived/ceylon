@@ -293,11 +293,15 @@ public class SpecificationVisitor extends Visitor {
     @Override
     public void visit(Tree.SpecifierStatement that) {
         Tree.Term m = that.getBaseMemberExpression();
+        while (m instanceof Tree.ParameterizedExpression) {
+        	m = ((Tree.ParameterizedExpression) m).getPrimary();
+        }
         assign(m);
         if (m instanceof Tree.BaseMemberExpression) {
 	        Declaration member = getBaseDeclaration((Tree.BaseMemberExpression)m, null, false);
 	        if (member==declaration) {
-	            that.getSpecifierExpression().visit(this);
+            	boolean lazy = that.getSpecifierExpression() instanceof Tree.LazySpecifierExpression;
+	            if (!lazy) that.getSpecifierExpression().visit(this);
 	            /*if (!declared) {
 	                m.addError("not yet declared: " + 
 	                        m.getIdentifier().getText());
@@ -324,6 +328,7 @@ public class SpecificationVisitor extends Visitor {
 	                specify();
 	                m.visit(this);
 	            }
+	            if (lazy) that.getSpecifierExpression().visit(this);
 	        }
 	        else {
 	            super.visit(that);

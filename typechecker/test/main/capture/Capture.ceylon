@@ -276,7 +276,8 @@ class Capture() {
 }
 
 class MethodDefaultedParamCaptureInitParam1(@captured String s) {
-    String m(String t = s) = (String x) x;
+    String m(String t = s);
+    m = (String x) x;
 }
 
 class MethodDefaultedParamCaptureInitParam2(@captured String s) {
@@ -292,7 +293,8 @@ class MethodDefaultedParamCaptureInitParam4(@captured String s) {
 }
 
 void methodDefaultedParamCaptureInitParam1(@captured String s) {
-    String m(String t = s) = (String x) x;
+    String m(String t = s);
+    m = (String x) x;
 }
 
 void methodDefaultedParamCaptureInitParam2(@captured String s) {
@@ -316,23 +318,23 @@ String() cap2() {
     return () s;
 }
 
-class MethodSpecifyingInitParam(@uncaptured Callable<Void> x) {
-    void foo() = x;
+class MethodSpecifyingInitParam(@uncaptured Callable<Void,<>> x) {
+    void foo() => x;
 }
 
 class MethodSpecifyingInitParam2(@uncaptured void x()) {
-    void foo() = x;
+    void foo() => x;
 }
 
-void methodSpecifyingInitParam(@uncaptured Callable<Void> x) {
-    void foo() = x;
+void methodSpecifyingInitParam(@uncaptured Callable<Void,<>> x) {
+    void foo() => x;
 }
 
 void methodSpecifyingInitParam2(@uncaptured void x()) {
-    void foo() = x;
+    void foo() => x;
 }
 
-class MethodCapturingInitParam(@captured Callable<Void> x) {
+class MethodCapturingInitParam(@captured Callable<Void,<>> x) {
     void foo() { x(); }
 }
 
@@ -340,7 +342,7 @@ class MethodCapturingInitParam2(@captured void x()) {
     void foo() { x(); }
 }
 
-void methodCapturingInitParam(@captured Callable<Void> x) {
+void methodCapturingInitParam(@captured Callable<Void,<>> x) {
     void foo() { x(); }
 }
 

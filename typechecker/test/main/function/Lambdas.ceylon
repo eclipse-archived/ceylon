@@ -16,8 +16,8 @@ class Lambdas() {
     }
     
     repeat(10, (Integer n) print("Hello"));
-    repeat(10, void (Integer n) print("Hello"));
-    repeat(10, function (Integer n) print("Hello"));
+    repeat(10, (Integer n) print("Hello"));
+    repeat(10, (Integer n) print("Hello"));
 
     @error repeat(10, (Float n) print("Hello"));
     
@@ -26,9 +26,9 @@ class Lambdas() {
     }
     
     @type["Float"] foo((Float x)(Integer y) x+y);
-    @type["Float"] foo(function (Float x)(Integer y) x+y);
+    @type["Float"] foo((Float x)(Integer y) x+y);
     
-    @error foo(void (Float x)(Integer y) print((x+y).string));
+    @error foo((Float x)(Integer y) print((x+y).string));
     @error foo((Float x)(Float y) x+y);
     
     function baz(Float bar(Float qux(Float x))) {
@@ -36,7 +36,7 @@ class Lambdas() {
     }
     
     @type["Float"] baz((Float qux(Float x)) qux(1.0));
-    @type["Float"] baz(function (Float qux(Float x)) qux(1.0));
+    @type["Float"] baz((Float qux(Float x)) qux(1.0));
 
     @error baz((Float qux(Float x)) qux(1.0).integer);
     @error baz((Float qux(Integer x)) qux(1));
@@ -51,19 +51,19 @@ class Lambdas() {
     @type["Float"] apply(2.0)(sqrt);
     @type["Float"] apply<Float>(2.0)((Float x) x**3);
     
-    @type["Float"] function applyToTwo(Float f(Float x)) = apply(2.0);
+    @type["Float"] function applyToTwo(Float f(Float x)) => apply(2.0)(f);
     applyToTwo(sqrt);
     applyToTwo((Float x) x**3);
     
-    @type["Callable<Float,Callable<Float,Float>>"] value applyToOne = apply(1.0);
+    @type["Callable<Float,Tuple<Callable<Float,Tuple<Float,Float,Empty>>,Callable<Float,Tuple<Float,Float,Empty>>,Empty>>"] value applyToOne = apply(1.0);
     @type["Float"] applyToOne(sqrt);
     @type["Float"] applyToOne((Float x) x**3);
     
-    void exec(Callable<Void> run) {
+    void exec(Callable<Void,<>> run) {
         run();
     }
     
-    Callable<String> lazy(String s) {
+    Callable<String,<>> lazy(String s) {
         function result() {
             return s;
         }
@@ -74,32 +74,32 @@ class Lambdas() {
     function name(String first)(String middle)(String last) {
         return "" first " " middle " " last "";
     }
+    String n1(String middle)(String last) => name("Gavin")(middle)(last);
+    String n2(String last) => name("Gavin")("A")(last);
     String n3 = name("Gavin")("A")("King");
-    String n2(String last) = name("Gavin")("A");
-    String n1(String middle)(String last) = name("Gavin");
+    String(String) n4 = name("Gavin")("A");
+    String(String)(String) n5 = name("Gavin");
     
-    @type["String"] function nm2(String middle)(String last) = name("Gavin");
-    @type["String"] function nm1(String last) = name("Gavin")("A");
+    @type["String"] function nm2(String middle)(String last) => name("Gavin")(middle)(last);
+    @type["String"] function nm1(String last) => name("Gavin")("A")(last);
     
-    @type["Callable<Callable<String,String>,String>"] value nmv2 = name("Gavin");
-    @type["Callable<String,String>"] value nmv1 = name("Gavin")("A");
+    @type["Callable<Callable<String,Tuple<String,String,Empty>>,Tuple<String,String,Empty>>"] value nmv2 = name("Gavin");
+    @type["Callable<String,Tuple<String,String,Empty>>"] value nmv1 = name("Gavin")("A");
     
     void noop(String x)(Integer y)(Float z) {}
     noop("")(1)(1.0);
     @error noop("")(1.0)(1.0);
     @error noop("")(1)(1);
     
-    @type["Callable<String,String>"] function higher() {
-        return (String s) s.uppercased;
-    }
+    @type["Callable<String,Tuple<String,String,Empty>>"] 
+    function higher() => (String s) s.uppercased;
 
-    @type["Callable<Callable<Float,Float>,Float>"] function evenHigher(Float z) {
-        return (Float x)(Float y) x+y+z;
-    }
+    @type["Callable<Callable<Float,Tuple<Float,Float,Empty>>,Tuple<Float,Float,Empty>>"] 
+    function evenHigher(Float z) => (Float x)(Float y) x+y+z;
     
-    @type["String"] function l1(String s) = (String s) s.uppercased;
-    @type["Callable<String,String>"] value l2 = (String s) s.lowercased;
-    @error String l3(String s) = (String s) s.size;
-    @error Integer l4(String s, Integer i) = (String s) s.size;
+    @type["String"] function l1(String s) => ((String s) s.uppercased)(s);
+    @type["Callable<String,Tuple<String,String,Empty>>"] value l2 = (String s) s.lowercased;
+    @error String l3(String s) => (String s) s.size;
+    @error Integer l4(String s, Integer i) => (String s) s.size;
     
 }

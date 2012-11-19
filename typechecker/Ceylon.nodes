@@ -112,8 +112,7 @@
 ^(CLASS_DEFINITION:ANY_CLASS
     CLASS_BODY)
 
-^(CLASS_DECLARATION:ANY_CLASS
-    TYPE_SPECIFIER?)
+^(CLASS_DECLARATION:ANY_CLASS)
 
 ^(ANY_INTERFACE:CLASS_OR_INTERFACE
     Interface declarationModel;)
@@ -184,8 +183,7 @@
     TYPE_PARAMETER_DECLARATION*)
 ^(TYPE_PARAMETER_DECLARATION:DECLARATION
     TYPE_VARIANCE?
-    TypeParameter declarationModel;
-    boolean sequenced;)
+    TypeParameter declarationModel;)
 ^(TYPE_VARIANCE)
 
 ^(abstract BODY
@@ -234,7 +232,7 @@
 
 ^(FUNCTION_TYPE: STATIC_TYPE
     STATIC_TYPE returnType
-    STATIC_TYPE* argumentType)
+    TYPE* argumentType)
 
 ^(ENTRY_TYPE: STATIC_TYPE
     STATIC_TYPE keyType
@@ -513,7 +511,9 @@ argument list."
     POSITIONAL_ARGUMENT_LIST? 
     NAMED_ARGUMENT_LIST?)
 
-^(SYNTHETIC_INVOCATION_EXPRESSION:INVOCATION_EXPRESSION)
+^(PARAMETERIZED_EXPRESSION:PRIMARY
+    PRIMARY
+    PARAMETER_LIST*)
 
 ^(abstract MEMBER_OR_TYPE_EXPRESSION:PRIMARY
     ProducedReference target;
@@ -569,7 +569,7 @@ argument list."
 ^(ELEMENT:ELEMENT_OR_RANGE
     EXPRESSION)
 ^(ELEMENT_RANGE:ELEMENT_OR_RANGE
-    EXPRESSION lowerBound
+    EXPRESSION? lowerBound
     EXPRESSION? upperBound
     EXPRESSION? length)
 
@@ -635,10 +635,11 @@ argument list."
 "A specifier expression."
 ^(SPECIFIER_EXPRESSION:SPECIFIER_OR_INITIALIZER_EXPRESSION)
 
+"A shortcut getter or method body."
+^(LAZY_SPECIFIER_EXPRESSION:SPECIFIER_EXPRESSION)
+
 "An initializer expression."
 ^(INITIALIZER_EXPRESSION:SPECIFIER_OR_INITIALIZER_EXPRESSION)
-
-^(SYNTHETIC_SPECIFIER_EXPRESSION:SPECIFIER_EXPRESSION)
 
 "A member reference, type reference, literal, string template, or parenthesized expression."
 ^(abstract ATOM:PRIMARY)
@@ -662,7 +663,8 @@ argument list."
     COMPREHENSION?)
 
 ^(TUPLE:ATOM 
-    EXPRESSION*)
+    EXPRESSION*
+    ELLIPSIS?)
 
 "A string template."
 ^(STRING_TEMPLATE:ATOM 

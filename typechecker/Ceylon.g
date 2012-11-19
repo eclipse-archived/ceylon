@@ -354,8 +354,8 @@ voidOrInferredMethodDeclaration returns [AnyMethod declaration]
       //-> ^(METHOD_DEFINITION VOID_MODIFIER memberName methodParameters? block)   
       | 
         (
-          specifier
-          { dec.setSpecifierExpression($specifier.specifierExpression); }
+          lazySpecifier
+          { dec.setSpecifierExpression($lazySpecifier.specifierExpression); }
         )?
         { expecting=SEMICOLON; }
         SEMICOLON
@@ -397,8 +397,11 @@ inferredAttributeDeclaration returns [AnyAttribute declaration]
         def.setIdentifier($memberNameDeclaration.identifier); }
       ( 
         (
-          specifier 
+          specifier
           { dec.setSpecifierOrInitializerExpression($specifier.specifierExpression); }
+        | 
+          lazySpecifier
+          { dec.setSpecifierOrInitializerExpression($lazySpecifier.specifierExpression); }
         | 
           initializer
           { dec.setSpecifierOrInitializerExpression($initializer.initializerExpression); }
@@ -457,7 +460,7 @@ typedMethodOrAttributeDeclaration returns [TypedDeclaration declaration]
         //-> ^(METHOD_DEFINITION unionType memberName methodParameters memberBody)
         | 
           (
-            ms=specifier
+            ms=lazySpecifier
            { mdec.setSpecifierExpression($ms.specifierExpression); }
           )?
           { expecting=SEMICOLON; }
@@ -470,6 +473,9 @@ typedMethodOrAttributeDeclaration returns [TypedDeclaration declaration]
         (
           as=specifier 
           { adec.setSpecifierOrInitializerExpression($as.specifierExpression); }
+        | 
+          ac=lazySpecifier 
+          { adec.setSpecifierOrInitializerExpression($ac.specifierExpression); }
         | 
           initializer
           { adec.setSpecifierOrInitializerExpression($initializer.initializerExpression); }
@@ -551,7 +557,7 @@ classDeclaration returns [AnyClass declaration]
       { dec.setIdentifier($typeNameDeclaration.identifier); 
         def.setIdentifier($typeNameDeclaration.identifier); }
       (
-        typeParameters 
+        typeParameters
         { def.setTypeParameterList($typeParameters.typeParameterList); 
           dec.setTypeParameterList($typeParameters.typeParameterList); }
       )?
@@ -588,8 +594,8 @@ classDeclaration returns [AnyClass declaration]
       //-> ^(CLASS_DEFINITION typeName classParameters? classBody)
       | 
         (
-          typeSpecifier
-          { dec.setTypeSpecifier($typeSpecifier.typeSpecifier); }
+          classSpecifier
+          { dec.setExtendedType($classSpecifier.extendedType); }
         )?
         { expecting=SEMICOLON; }
         SEMICOLON
@@ -693,11 +699,23 @@ classBody returns [ClassBody classBody]
     ;
 
 extendedType returns [ExtendedType extendedType]
-    : EXTENDS
-      { $extendedType = new ExtendedType($EXTENDS); }
-      (
+    : EXTENDS { $extendedType = new ExtendedType($EXTENDS); }
+      ci=classInstantiation
+      { $extendedType.setType($ci.type);
+        $extendedType.setInvocationExpression($ci.invocationExpression); }
+    ;
+
+classSpecifier returns [ExtendedType extendedType]
+    : COMPUTE { $extendedType = new ExtendedType($COMPUTE); }
+      ci=classInstantiation
+      { $extendedType.setType($ci.type);
+        $extendedType.setInvocationExpression($ci.invocationExpression); }
+    ;
+
+classInstantiation returns [SimpleType type, InvocationExpression invocationExpression]
+    : (
         qualifiedType
-        { $extendedType.setType($qualifiedType.type); }
+        { $type=$qualifiedType.type; }
         //-> ^(EXTENDED_TYPE[$EXTENDS] type ^(INVOCATION_EXPRESSION ^(EXTENDED_TYPE_EXPRESSION) positionalArguments))
       | SUPER MEMBER_OP 
         typeReference 
@@ -707,7 +725,7 @@ extendedType returns [ExtendedType extendedType]
           qt.setIdentifier($typeReference.identifier);
           if ($typeReference.typeArgumentList!=null)
               qt.setTypeArgumentList($typeReference.typeArgumentList);
-          $extendedType.setType(qt); }
+          $type=qt; }
         //-> ^(EXTENDED_TYPE[$EXTENDS] ^(QUALIFIED_TYPE SUPER_TYPE[$SUPER] typeReference) ^(INVOCATION_EXPRESSION ^(EXTENDED_TYPE_EXPRESSION) positionalArguments))
       )
       (
@@ -715,11 +733,11 @@ extendedType returns [ExtendedType extendedType]
         { InvocationExpression ie = new InvocationExpression(null);
           ExtendedTypeExpression ete = new ExtendedTypeExpression(null);
           ie.setPrimary(ete);
-          ete.setExtendedType($extendedType.getType());
+          ete.setExtendedType($type);
           ie.setPositionalArgumentList($positionalArguments.positionalArgumentList);
-          $extendedType.setInvocationExpression(ie); }
-      | { displayRecognitionError(getTokenNames(),
-            new MismatchedTokenException(LPAREN, input)); }
+          $invocationExpression=ie; }
+      | /*{ displayRecognitionError(getTokenNames(),
+            new MismatchedTokenException(LPAREN, input)); }*/
       )
     ;
 
@@ -829,17 +847,6 @@ parameters returns [ParameterList parameterList]
       //-> ^(PARAMETER_LIST[$LPAREN] annotatedParameter*)
     ;
 
-//special rule for syntactic predicate
-//to distinguish between a formal 
-//parameter list and a parenthesized body 
-//of an inline callable argument
-//be careful with this one, since it 
-//matches "()", which can also be an 
-//argument list
-parametersStart
-    : LPAREN ( annotatedDeclarationStart | RPAREN )
-    ;
-    
 // FIXME: This accepts more than the language spec: named arguments
 // and varargs arguments can appear in any order.  We'll have to
 // enforce the rule that the ... appears at the end of the parapmeter
@@ -855,25 +862,27 @@ parameter returns [Parameter parameter]
       { vp.setIdentifier($memberName.identifier);
         fp.setIdentifier($memberName.identifier); }
       (
-        /*(
-          valueParameter
-        )?*/
-        //-> ^(VALUE_PARAMETER_DECLARATION parameterType memberName specifier?)
+        (
+          specifier
+          { DefaultArgument da = new DefaultArgument(null);
+            $parameter.setDefaultArgument(da);
+            da.setSpecifierExpression($specifier.specifierExpression); }
+        )?
       |
         (
           parameters
           { fp.addParameterList($parameters.parameterList); }
         )+
         { $parameter=fp; }
+        (
+          lazySpecifier
+          { DefaultArgument da = new DefaultArgument(null);
+            $parameter.setDefaultArgument(da);
+            da.setSpecifierExpression($lazySpecifier.specifierExpression); }
+        )?
           //for callable parameters
         //-> ^(FUNCTIONAL_PARAMETER_DECLARATION parameterType memberName parameters+ specifier?)
       )
-      (
-        specifier
-        { DefaultArgument da = new DefaultArgument(null);
-          $parameter.setDefaultArgument(da);
-          da.setSpecifierExpression($specifier.specifierExpression); }
-      )?
     ;
 
 parameterRef returns [Parameter parameter]
@@ -954,11 +963,6 @@ typeParameter returns [TypeParameterDeclaration typeParameter]
       )? 
       typeNameDeclaration
       { $typeParameter.setIdentifier($typeNameDeclaration.identifier); } 
-      (
-        ELLIPSIS
-        { $typeParameter.setSequenced(true);
-          $typeParameter.setEndToken($ELLIPSIS); }
-      )?
     //-> ^(TYPE_PARAMETER_DECLARATION variance? typeName)
     ;
 
@@ -1109,7 +1113,11 @@ expressionOrSpecificationStatement returns [Statement statement]
       (
         specifier
         { ss.setSpecifierExpression($specifier.specifierExpression);
-          
+          ss.setBaseMemberExpression($expression.expression.getTerm()); 
+          $statement = ss; }
+      | 
+        lazySpecifier
+        { ss.setSpecifierExpression($lazySpecifier.specifierExpression);
           ss.setBaseMemberExpression($expression.expression.getTerm()); 
           $statement = ss; }
       )?
@@ -1174,16 +1182,23 @@ continueDirective returns [Continue directive]
     ;
 
 typeSpecifier returns [TypeSpecifier typeSpecifier]
-    : SPECIFY 
-      { $typeSpecifier = new TypeSpecifier($SPECIFY); }
+    : COMPUTE 
+      { $typeSpecifier = new TypeSpecifier($COMPUTE); }
       type
       { $typeSpecifier.setType($type.type); }
     //-> ^(TYPE_SPECIFIER[$SPECIFY] type)
     ;
 
 specifier returns [SpecifierExpression specifierExpression]
-    : SPECIFY 
+    : SPECIFY
       { $specifierExpression = new SpecifierExpression($SPECIFY); }
+      functionOrExpression
+      { $specifierExpression.setExpression($functionOrExpression.expression); }
+    ;
+
+lazySpecifier returns [SpecifierExpression specifierExpression]
+    : COMPUTE
+      { $specifierExpression = new LazySpecifierExpression($COMPUTE); }
       functionOrExpression
       { $specifierExpression.setExpression($functionOrExpression.expression); }
     ;
@@ -1275,6 +1290,19 @@ primary returns [Primary primary]
         if ($qualifiedReference.typeArgumentList!=null)
             qe.setTypeArguments($qualifiedReference.typeArgumentList);
         $primary=qe; }
+      | indexOrIndexRange 
+        { $indexOrIndexRange.indexExpression.setPrimary($primary);
+          $primary = $indexOrIndexRange.indexExpression; }
+      | (specifierParametersStart)=> parameters
+        { ParameterizedExpression pe;
+          if ($primary instanceof ParameterizedExpression) {
+              pe = (ParameterizedExpression) $primary;
+          } else {
+              pe = new ParameterizedExpression(null);
+              pe.setPrimary($primary);
+          }
+          pe.addParameterList($parameters.parameterList);
+          $primary = pe; }
       | arguments
         { InvocationExpression ie = new InvocationExpression(null);
           ie.setPrimary($primary);
@@ -1283,10 +1311,11 @@ primary returns [Primary primary]
           if ($arguments.argumentList instanceof NamedArgumentList)
               ie.setNamedArgumentList((NamedArgumentList)$arguments.argumentList);
           $primary=ie; }
-      | indexOrIndexRange 
-        { $indexOrIndexRange.indexExpression.setPrimary($primary);
-          $primary = $indexOrIndexRange.indexExpression; }
     )*
+    ;
+
+specifierParametersStart
+    : LPAREN (compilerAnnotations annotatedDeclarationStart | RPAREN (SPECIFY|COMPUTE|specifierParametersStart))
     ;
 
 qualifiedReference returns [Identifier identifier, MemberOperator operator, 
@@ -1386,6 +1415,8 @@ typeArgumentsStart
       UIDENTIFIER ('.' UIDENTIFIER)* /*| 'subtype')*/ (DEFAULT_OP|ARRAY)*
       ((INTERSECTION_OP|UNION_OP|ENTRY_OP) UIDENTIFIER ('.' UIDENTIFIER)* (DEFAULT_OP|ARRAY)*)*
       (LARGER_OP|SMALLER_OP|COMMA|ELLIPSIS|LPAREN|RPAREN)
+    |
+      SMALLER_OP
     | 
       LARGER_OP //for IDE only!
     )
@@ -1399,13 +1430,21 @@ indexOrIndexRange returns [IndexExpression indexExpression]
     : elementSelectionOperator
       { $indexExpression = new IndexExpression(null);
         $indexExpression.setIndexOperator($elementSelectionOperator.operator); }
+      (
+        e1=ELLIPSIS
+        { $indexExpression.setEndToken($e1); }
+      i=index
+      { ElementRange er0 = new ElementRange(null);
+        $indexExpression.setElementOrRange(er0);
+        er0.setUpperBound($i.expression); }
+      |
       l=index
       { Element e = new Element(null);
         $indexExpression.setElementOrRange(e);
         e.setExpression($l.expression); }
       (
-        ELLIPSIS
-        { $indexExpression.setEndToken($ELLIPSIS); }
+        e2=ELLIPSIS
+        { $indexExpression.setEndToken($e2); }
       { ElementRange er1 = new ElementRange(null);
         $indexExpression.setElementOrRange(er1);
         er1.setLowerBound($l.expression); }
@@ -1424,6 +1463,7 @@ indexOrIndexRange returns [IndexExpression indexExpression]
         er3.setLowerBound($l.expression); 
         er3.setLength($s.expression); }
       )?
+      )
       RBRACKET
       { $indexExpression.setEndToken($RBRACKET); }
     ;
@@ -1598,14 +1638,15 @@ namedArgumentStart
 
 //special rule for syntactic predicates
 specificationStart
-    : LIDENTIFIER '='
+    : LIDENTIFIER (SPECIFY|COMPUTE)
     ;
 
 parExpression returns [Expression expression] 
     : LPAREN 
       { $expression = new Expression($LPAREN); }
       functionOrExpressionOrTuple
-      { $expression.setTerm($functionOrExpressionOrTuple.expression.getTerm()); }
+      { if ($functionOrExpressionOrTuple.expression!=null)
+            $expression.setTerm($functionOrExpressionOrTuple.expression.getTerm()); }
       RPAREN
       { $expression.setEndToken($RPAREN); }
     ;
@@ -1618,13 +1659,20 @@ functionOrExpressionOrTuple returns [Expression expression]
       { $expression=$fe1.expression;
         t.addExpression($fe1.expression); }
       (
-        c=COMMA 
-        { $expression = e;
-          t.setEndToken($c); }
-        fe2=functionOrExpression
-        { t.addExpression($fe2.expression);
-          t.setEndToken(null); }
-      )*
+        (
+          c=COMMA 
+          { $expression = e;
+            t.setEndToken($c); }
+          fe2=functionOrExpression
+          { t.addExpression($fe2.expression);
+            t.setEndToken(null); }
+        )+
+        (
+          ELLIPSIS
+          { t.setEllipsis(new Ellipsis($ELLIPSIS)); }
+        )?
+      )?
+    | { $expression = e; }
     ;
     
 positionalArguments returns [PositionalArgumentList positionalArgumentList]
@@ -1663,23 +1711,33 @@ positionalArgument returns [PositionalArgument positionalArgument]
       { $positionalArgument.setExpression($functionOrExpression.expression); }
     ;
 
+anonParametersStart
+    : LPAREN (compilerAnnotations annotatedDeclarationStart | RPAREN)
+    ;
+
+nonemptyParametersStart
+    : LPAREN compilerAnnotations annotatedDeclarationStart
+    ;
+
 functionOrExpression returns [Expression expression]
     @init { FunctionArgument fa = new FunctionArgument(null);
             fa.setType(new FunctionModifier(null)); }
-    : (FUNCTION_MODIFIER|VOID_MODIFIER|parametersStart)=>
+    : (FUNCTION_MODIFIER? anonParametersStart /*|
+       comparableType (nonemptyParametersStart | LPAREN RPAREN COMPUTE)*/)=>
       (
-        FUNCTION_MODIFIER 
-        { fa.setType(new FunctionModifier($FUNCTION_MODIFIER)); }
-      | VOID_MODIFIER
-         { fa.setType(new VoidModifier($VOID_MODIFIER)); }
+        FUNCTION_MODIFIER
+      /*|
+        comparableType
+        { fa.setType($comparableType.type); }*/
       )?
       p1=parameters
       { fa.addParameterList($p1.parameterList); }
       ( 
-        (parametersStart)=> 
+        (anonParametersStart)=> 
         p2=parameters
         { fa.addParameterList($p2.parameterList); }
       )*
+      COMPUTE?
       e1=expression
       { fa.setExpression($e1.expression); 
         $expression = new Expression(null); 
@@ -2133,14 +2191,14 @@ stringTemplate returns [StringTemplate stringTemplate]
 typeArguments returns [TypeArgumentList typeArgumentList]
     : SMALLER_OP
       { $typeArgumentList = new TypeArgumentList($SMALLER_OP); }
-      ta1=typeArgument 
+      ta1=type
       { if ($ta1.type!=null)
             $typeArgumentList.addType($ta1.type); }
       (
         c=COMMA
         { $typeArgumentList.setEndToken($c); }
         (
-          ta2=typeArgument
+          ta2=type
           { $typeArgumentList.addType($ta2.type); 
             $typeArgumentList.setEndToken(null); }
           | { displayRecognitionError(getTokenNames(), 
@@ -2151,7 +2209,7 @@ typeArguments returns [TypeArgumentList typeArgumentList]
       { $typeArgumentList.setEndToken($LARGER_OP); }
     ;
 
-typeArgument returns [Type type]
+tupleElementType returns [Type type]
     : t=type
       { $type = $t.type; }
       ( 
@@ -2171,15 +2229,17 @@ type returns [StaticType type]
 tupleType returns [TupleType type]
     : SMALLER_OP
       { $type = new TupleType($SMALLER_OP); }
-      t1=typeArgument 
-      { $type.addElementType($t1.type); }
       (
-        c=COMMA
-        { $type.setEndToken($c); }
-        t2=typeArgument
-        { $type.addElementType($t2.type);
-          $type.setEndToken(null); }
-      )*
+        t1=tupleElementType 
+        { $type.addElementType($t1.type); }
+        (
+          c=COMMA
+          { $type.setEndToken($c); }
+          t2=tupleElementType
+          { $type.addElementType($t2.type);
+            $type.setEndToken(null); }
+        )*
+      )?
       LARGER_OP
       { $type.setEndToken($LARGER_OP); }
     ;
@@ -2277,15 +2337,15 @@ abbreviatedType returns [StaticType type]
           bt.setReturnType($type);
           $type=bt; }
           (
-            t1=type
+            t1=tupleElementType
             { if ($t1.type!=null)
                   bt.addArgumentType($t1.type); }
             (
               COMMA
               { bt.setEndToken($COMMA); }
-              t2=type
+              t2=tupleElementType
               { if ($t2.type!=null)
-                  bt.getArgumentTypes().add($t2.type); }
+                    bt.addArgumentType($t2.type); }
             )*
           )?
         RPAREN
@@ -3330,6 +3390,10 @@ COMMA
     
 SPECIFY
     :   '='
+    ;
+
+COMPUTE
+    :   '=>'
     ;
 
 NOT_OP

@@ -7,9 +7,8 @@ import static com.redhat.ceylon.compiler.typechecker.analyzer.Util.getTypeArgume
 import static com.redhat.ceylon.compiler.typechecker.model.Util.addToIntersection;
 import static com.redhat.ceylon.compiler.typechecker.model.Util.addToUnion;
 import static com.redhat.ceylon.compiler.typechecker.model.Util.getContainingClassOrInterface;
-import static com.redhat.ceylon.compiler.typechecker.model.Util.unionType;
+import static com.redhat.ceylon.compiler.typechecker.model.Util.producedType;
 import static com.redhat.ceylon.compiler.typechecker.tree.Util.name;
-import static java.util.Arrays.asList;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -47,7 +46,6 @@ import com.redhat.ceylon.compiler.typechecker.parser.CeylonLexer;
 import com.redhat.ceylon.compiler.typechecker.tree.Node;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.LocalModifier;
-import com.redhat.ceylon.compiler.typechecker.tree.Tree.SpecifierExpression;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.SupertypeQualifier;
 import com.redhat.ceylon.compiler.typechecker.tree.Visitor;
 
@@ -390,7 +388,7 @@ public class TypeVisitor extends Visitor {
         super.visit(that);
         ProducedType et = that.getElementType().getTypeModel();
         if (et!=null) {
-            that.setTypeModel(unit.getEmptyType(unit.getSequenceType(et)));
+            that.setTypeModel(unit.getSequentialType(et));
         }
     }
     
@@ -417,38 +415,48 @@ public class TypeVisitor extends Visitor {
     public void visit(Tree.FunctionType that) {
         super.visit(that);
         List<ProducedType> args = new ArrayList<ProducedType>();
-        args.add(that.getReturnType().getTypeModel());
-        for (Tree.StaticType st: that.getArgumentTypes()) {
-            args.add(st.getTypeModel());
+        boolean sequenced = false;
+        List<Tree.Type> ats = that.getArgumentTypes();
+		for (int i=0; i<ats.size(); i++) {
+			Tree.Type st = ats.get(i);
+			ProducedType arg = st.getTypeModel();
+        	if (arg!=null && st instanceof Tree.SequencedType) {
+				if (i!=ats.size()-1) {
+					st.addError("variant element must occur last in a function type parameter list");
+				}
+				else {
+	        		sequenced = true;
+					arg = unit.getIteratedType(arg);
+				}
+        	}
+        	args.add(arg);
         }
-        that.setTypeModel(unit.getCallableDeclaration()
-                .getProducedType(null, args));
+        that.setTypeModel(producedType(unit.getCallableDeclaration(),
+        		that.getReturnType().getTypeModel(),
+        		unit.getTupleType(args, sequenced)));
     }
     
     @Override
     public void visit(Tree.TupleType that) {
         super.visit(that);
-        ProducedType result = unit.getEmptyDeclaration().getType();
-        ProducedType ut = unit.getBottomDeclaration().getType();
+        List<ProducedType> args = new ArrayList<ProducedType>();
+        boolean sequenced = false;
 		List<Tree.Type> ets = that.getElementTypes();
-		for (int i=ets.size()-1; i>=0; i--) {
+		for (int i=0; i<ets.size(); i++) {
 			Tree.Type st = ets.get(i);
-			if (st instanceof Tree.SequencedType) {
-				ProducedType et = ((Tree.SequencedType) st).getType().getTypeModel();
-				result = unit.getEmptyType(unit.getSequenceType(et));
-				ut = et;
+			ProducedType arg = st.getTypeModel();
+			if (arg!=null && st instanceof Tree.SequencedType) {
 				if (i!=ets.size()-1) {
 					st.addError("variant element must occur last in a tuple type");
 				}
+				else {
+					sequenced = true;
+					arg = unit.getIteratedType(arg);
+				}
 			}
-			else {
-				ProducedType et = st.getTypeModel();
-				ut = unionType(ut, et, unit);
-				result = unit.getTupleDeclaration().getProducedType(null, 
-	            				asList(ut, et, result));
-			}
+			args.add(arg);
         }
-        that.setTypeModel(result);
+        that.setTypeModel(unit.getTupleType(args, sequenced));
     }
     
     //TODO: copy/pasted from ExpressionVisitor
@@ -580,7 +588,7 @@ public class TypeVisitor extends Visitor {
         super.visit(that);
         ProducedType type = that.getType().getTypeModel();
         if (type!=null) {
-            that.setTypeModel(unit.getIterableType(type));
+            that.setTypeModel(unit.getSequentialType(type));
         }
     }
 
@@ -672,20 +680,20 @@ public class TypeVisitor extends Visitor {
     @Override 
     public void visit(Tree.ClassDeclaration that) {
         super.visit(that);
-        if (that.getTypeSpecifier()==null) {
+        if (that.getExtendedType()==null) {
             that.addError("missing class body or aliased class reference");
         }
         else {
-            Tree.StaticType et = that.getTypeSpecifier().getType();
+            Tree.StaticType et = that.getExtendedType().getType();
             if (et==null) {
                 that.addError("malformed aliased class");
             }
             else if (!(et instanceof Tree.StaticType)) {
-            	that.getTypeSpecifier()
+            	that.getExtendedType()
             			.addError("aliased type must be a class");
             }
             else if (et instanceof Tree.QualifiedType) {
-            	that.getTypeSpecifier()
+            	that.getExtendedType()
             	        .addError("aliased class may not be a qualified type");
         	}
             else {
@@ -756,7 +764,7 @@ public class TypeVisitor extends Visitor {
     @Override
     public void visit(Tree.MethodDeclaration that) {
         super.visit(that);
-        SpecifierExpression sie = that.getSpecifierExpression();
+        Tree.SpecifierExpression sie = that.getSpecifierExpression();
         if (sie==null
                 && that.getType() instanceof Tree.FunctionModifier) {
             that.getType().addError("method must specify an explicit return type or definition");
@@ -864,7 +872,8 @@ public class TypeVisitor extends Visitor {
         						type.getProducedTypeName());
         			}
         			else if (!etd.isExtendable() && 
-        					!inLanguageModule(that)) {
+        					!inLanguageModule(that) &&
+        					!td.isAlias()) {
         				et.addError("directly extends a special language type: " +
         						type.getProducedTypeName());
         			}
@@ -910,7 +919,7 @@ public class TypeVisitor extends Visitor {
                             type.getProducedTypeName());
                     continue;
                 }
-                if (type.isCallable()) {
+                if (unit.isCallableType(type)) {
                     st.addError("directly satisfies Callable");
                 }
                 if (td instanceof TypeParameter) {

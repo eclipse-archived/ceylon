@@ -92,6 +92,8 @@ public class TypeArgumentVisitor extends Visitor {
             checkSupertype(that.getExtendedType().getType());
         }
     }
+    
+    @Override public void visit(Tree.FunctionArgument that) {}
 
     private void check(Tree.Type that, boolean variable) {
         if (that!=null) {

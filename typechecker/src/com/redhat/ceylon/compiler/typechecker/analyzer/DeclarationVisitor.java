@@ -28,8 +28,8 @@ import com.redhat.ceylon.compiler.typechecker.model.Parameter;
 import com.redhat.ceylon.compiler.typechecker.model.ParameterList;
 import com.redhat.ceylon.compiler.typechecker.model.Scope;
 import com.redhat.ceylon.compiler.typechecker.model.Setter;
+import com.redhat.ceylon.compiler.typechecker.model.Specification;
 import com.redhat.ceylon.compiler.typechecker.model.TypeAlias;
-import com.redhat.ceylon.compiler.typechecker.model.TypeDeclaration;
 import com.redhat.ceylon.compiler.typechecker.model.TypeParameter;
 import com.redhat.ceylon.compiler.typechecker.model.TypedDeclaration;
 import com.redhat.ceylon.compiler.typechecker.model.Unit;
@@ -37,7 +37,6 @@ import com.redhat.ceylon.compiler.typechecker.model.Value;
 import com.redhat.ceylon.compiler.typechecker.model.ValueParameter;
 import com.redhat.ceylon.compiler.typechecker.tree.Node;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree;
-import com.redhat.ceylon.compiler.typechecker.tree.Tree.SpecifierExpression;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.SpecifierOrInitializerExpression;
 import com.redhat.ceylon.compiler.typechecker.tree.Visitor;
 
@@ -255,20 +254,7 @@ public class DeclarationVisitor extends Visitor {
         super.visit(that);
         ((Generic) declaration).setTypeParameters(getTypeParameters(that));
     }    
-    
-    @Override
-    public void visit(Tree.TypeDeclaration that) {
-        super.visit(that);
-        TypeDeclaration d = that.getDeclarationModel();
-        if (d.isClassOrInterfaceMember()) {
-            for (TypeParameter tp: d.getTypeParameters()) {
-                if (tp.isSequenced()) {
-                    that.addError("sequenced type parameters for nested types not yet supported");
-                }
-            }
-        }
-    }
-    
+        
     @Override
     public void visit(Tree.AnyClass that) {
         Class c = that instanceof Tree.ClassDefinition ?
@@ -330,7 +316,6 @@ public class DeclarationVisitor extends Visitor {
     @Override
     public void visit(Tree.TypeParameterDeclaration that) {
         TypeParameter p = new TypeParameter();
-        p.setSequenced(that.getSequenced());
         p.setDeclaration(declaration);
         if (that.getTypeVariance()!=null) {
             String v = that.getTypeVariance().getText();
@@ -354,11 +339,6 @@ public class DeclarationVisitor extends Visitor {
         m.setDeclaredVoid(that.getType() instanceof Tree.VoidModifier);
         if (that.getType() instanceof Tree.ValueModifier) {
             that.getType().addError("methods may not be declared using the keyword value");
-        }
-        for (TypeParameter tp: m.getTypeParameters()) {
-            if (tp.isSequenced()) {
-                that.addError("sequenced type parameters for methods not yet supported");
-            }
         }
     }
     
@@ -471,9 +451,11 @@ public class DeclarationVisitor extends Visitor {
     public void visit(Tree.AttributeDeclaration that) {
         Value v = new Value();
         that.setDeclarationModel(v);
+        v.setTransient(that.getSpecifierOrInitializerExpression() 
+        		instanceof Tree.LazySpecifierExpression);
         visitDeclaration(that, v);
         super.visit(that);
-        if ( v.isInterfaceMember() && !v.isFormal()) {
+        if (v.isInterfaceMember() && !v.isFormal()) {
             if (that.getSpecifierOrInitializerExpression()==null) {
                 that.addError("interface attribute must be annotated formal", 1400);
             }
@@ -506,7 +488,7 @@ public class DeclarationVisitor extends Visitor {
     @Override
     public void visit(Tree.MethodDeclaration that) {
         super.visit(that);
-        SpecifierExpression sie = that.getSpecifierExpression();
+        Tree.SpecifierExpression sie = that.getSpecifierExpression();
         if ( that.getDeclarationModel().isFormal() && sie!=null ) {
             that.addError("formal methods may not have a method reference");
         }
@@ -595,13 +577,19 @@ public class DeclarationVisitor extends Visitor {
         if (that.getDefaultArgument()!=null) {
             Tree.SpecifierExpression se = that.getDefaultArgument().getSpecifierExpression();
             if (se!=null) {
-                if (declaration.isActual()) {
-                    se.addError("parameter of actual declaration may not define default value: parameter " +
-                            name(that.getIdentifier()) + " of " + declaration.getName());
-                }
-                if (that.getDeclarationModel().getDeclaration() instanceof Parameter) {
-                    se.addError("parameter of callable parameter may not have default argument");
-                }
+            	if (that.getScope() instanceof Specification) {
+            		se.addError("parameter of specification statement may not define default value");
+            	}
+            	else {
+            		Declaration d = that.getDeclarationModel().getDeclaration();
+            		if (d.isActual()) {
+            			se.addError("parameter of actual declaration may not define default value: parameter " +
+            					name(that.getIdentifier()) + " of " + declaration.getName());
+            		}
+            		if (d instanceof Parameter) {
+            			se.addError("parameter of callable parameter may not have default argument");
+            		}
+            	}
                 /*if (declaration instanceof Method &&
                     !declaration.isToplevel() &&
                     !(declaration.isClassOrInterfaceMember() && 
@@ -663,7 +651,9 @@ public class DeclarationVisitor extends Visitor {
             }
         }
         else {
-            that.addError("may not have a parameter list");
+        	if (!(scope instanceof Specification)) {
+        		that.addError("may not have a parameter list");
+        	}
             first = true;
         }
         parameterList = pl;
@@ -682,6 +672,9 @@ public class DeclarationVisitor extends Visitor {
                     }
                 }
                 else if (p.getType() instanceof Tree.SequencedType) {
+                    if (foundSequenced) {
+                        p.addError("parameter list may have at most one sequenced parameter");
+                    }
                     foundSequenced = true;
                     if (!first) {
                         p.addError("only the first parameter list may have a sequenced parameter");
@@ -743,15 +736,6 @@ public class DeclarationVisitor extends Visitor {
         Scope o = enterScope(nal);
         super.visit(that);
         exitScope(o);
-    }
-    
-    @Override
-    public void visit(Tree.SyntheticInvocationExpression that) {
-        super.visit(that);
-        Tree.NamedArgumentList nal = that.getNamedArgumentList();
-        if (nal!=null) {
-            nal.getNamedArgumentList().setSynthetic(true);
-        }
     }
     
     @Override
@@ -901,6 +885,13 @@ public class DeclarationVisitor extends Visitor {
                 that.addError("declaration is not a value, and may not be annotated variable", 1500);
             }
         }
+        if (model instanceof Value) {
+        	Value value = (Value) model;
+        	if (value.isVariable() && value.isTransient()) {
+        		that.addError("value may not be annotated both variable and transient: " + model.getName());
+        	}
+        }
+        
         
         buildAnnotations(al, model.getAnnotations());        
     }
@@ -1004,6 +995,17 @@ public class DeclarationVisitor extends Visitor {
             that.addWarning("parameter bounds are not yet supported");
         }
     }
+    
+    @Override
+    public void visit(Tree.SpecifierStatement that) {
+    	Specification s = new Specification();
+    	visitElement(that, s);
+    	Scope o = enterScope(s);
+        super.visit(that);
+        exitScope(o);
+    }
+
+
     
     @Override
     public void visit(Tree.SatisfiesCondition that) {

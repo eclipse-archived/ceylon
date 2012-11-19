@@ -9,8 +9,8 @@ package com.redhat.ceylon.compiler.typechecker.model;
 public class Value extends MethodOrValue {
 
     private boolean variable;
-    //private boolean formal;
-    private boolean captured = false;
+    private boolean trans;
+    private boolean captured;
 
     /*public boolean isFormal() {
          return formal;
@@ -27,6 +27,15 @@ public class Value extends MethodOrValue {
 
     public void setVariable(boolean variable) {
         this.variable = variable;
+    }
+
+    @Override
+    public boolean isTransient() {
+        return trans;
+    }
+    
+    public void setTransient(boolean trans) {
+    	this.trans = trans;
     }
 
     @Override

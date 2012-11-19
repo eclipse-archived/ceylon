@@ -115,14 +115,14 @@ public class ControlFlowVisitor extends Visitor {
         }
     }
 
-    @Override
-    public void visit(Tree.MethodDeclaration that) {
-        if (that.getSpecifierExpression()!=null) {
-            //checkExecutableStatementAllowed(that.getSpecifierExpression());
-            super.visit(that);
-        }
-    }
-    
+//    @Override
+//    public void visit(Tree.MethodDeclaration that) {
+//        if (that.getSpecifierExpression()!=null) {
+//            checkExecutableStatementAllowed(that.getSpecifierExpression());
+//            super.visit(that);
+//        }
+//    }
+//    
     @Override
     public void visit(Tree.MethodDefinition that) {
         boolean c = beginReturnScope(true);
@@ -149,7 +149,8 @@ public class ControlFlowVisitor extends Visitor {
     
     @Override
     public void visit(Tree.AttributeDeclaration that) {
-        if (that.getSpecifierOrInitializerExpression()!=null) {
+        if (that.getSpecifierOrInitializerExpression()!=null &&
+        		!(that.getSpecifierOrInitializerExpression() instanceof Tree.LazySpecifierExpression)) {
             checkExecutableStatementAllowed(that.getSpecifierOrInitializerExpression());
             super.visit(that);
         }

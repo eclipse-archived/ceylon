@@ -1196,7 +1196,7 @@ public class ProducedType extends ProducedReference {
                             .getProducedTypeName() + "?";
                 }
                 if (abbreviateSequence()) {
-                    return unit.getElementType(this)
+                    return unit.getIteratedType(this)
                             .getProducedTypeName() + "[]";
                 }
                 /*if (abbreviateEntry()) {
@@ -1205,16 +1205,18 @@ public class ProducedType extends ProducedReference {
                 }*/
                 if (abbreviateCallable()) {
                     List<ProducedType> tal = getTypeArgumentList();
-                    String result = tal.get(0).getProducedTypeName() + "(";
-                    if (tal.size()>1) {
-                        ProducedType t = tal.get(1);
-                        result += t==null ? "unknown" : t.getProducedTypeName();
-                        for (int i=2; i<tal.size(); i++) {
-                            ProducedType ti = tal.get(i);
-                            result += ", " + (ti==null ? "unknown" : ti.getProducedTypeName());
-                        }
+                    ProducedType rt = tal.get(0);
+                    String argtypes = argtypes(tal.get(1));
+                    if (rt!=null && argtypes!=null) {
+                    	return rt.getProducedTypeName() + 
+                    			"(" + argtypes + ")";
                     }
-                    return result + ")";
+                }
+                if (abbreviateTuple(unit)) {
+                	String argtypes = argtypes(this);
+                	if (argtypes!=null) {
+                		return "<" + argtypes + ">";
+                	}
                 }
             }
             if (getDeclaration() instanceof UnionType) {
@@ -1249,6 +1251,49 @@ public class ProducedType extends ProducedReference {
         }
     }
 
+	private boolean abbreviateTuple(Unit unit) {
+		return getDeclaration() instanceof Class && 
+				getDeclaration().equals(unit.getTupleDeclaration());
+	}
+    
+    private static String argtypes(ProducedType args) {
+    	if (args!=null) {
+        	Unit unit = args.getDeclaration().getUnit();
+    		if (args.getDeclaration() instanceof ClassOrInterface) {
+    			if (args.getDeclaration().equals(unit.getTupleDeclaration())) {
+    				List<ProducedType> tal = args.getTypeArgumentList();
+    				if (tal.size()>=3) {
+    					ProducedType first = tal.get(1);
+    					ProducedType rest = tal.get(2);
+    					if (first!=null && rest!=null) {
+    						String argtype = first.getProducedTypeName();
+    						if (rest.getDeclaration() instanceof Interface &&
+    								rest.getDeclaration().equals(unit.getEmptyDeclaration())) {
+    							return argtype;
+    						}
+    						else {
+    							String argtypes = argtypes(rest);
+    							if (argtypes!=null) {
+    								return argtype + ", " + argtypes;
+    							}
+    						}
+    					}
+    				}
+    			}
+    			else if (args.getDeclaration().equals(unit.getEmptyDeclaration())) {
+    				return "";
+    			}
+        		else if (args.getDeclaration().equals(unit.getSequentialDeclaration())) {
+        			ProducedType elementType = unit.getIteratedType(args);
+        			if (elementType!=null) { 
+        				return elementType.getProducedTypeName() + "...";
+        			}
+        		}
+    		}
+    	}
+    	return null;
+    }
+
     private boolean abbreviateEntry() {
         Unit unit = getDeclaration().getUnit();
         if (getDeclaration() instanceof Class &&
@@ -1267,25 +1312,21 @@ public class ProducedType extends ProducedReference {
 
     private boolean abbreviateCallable() {
         return getDeclaration() instanceof Interface &&
-                getDeclaration().getQualifiedNameString()
-                        .equals("ceylon.language::Callable") &&
+                getDeclaration().equals(getDeclaration().getUnit().getCallableDeclaration()) &&
                 getTypeArgumentList().size()>0 && getTypeArgumentList().get(0)!=null &&
                 getTypeArgumentList().get(0).isPrimitiveAbbreviatedType() &&
                 getTypeArgumentList().size()==getDeclaration().getTypeParameters().size();
     }
 
     private boolean abbreviateSequence() {
-        if (getDeclaration() instanceof UnionType) {
-            Unit unit = getDeclaration().getUnit();
-            UnionType ut = (UnionType) getDeclaration();
-            return ut.getCaseTypes().size()==2 &&
-                    isElementOfUnion(ut, unit.getEmptyDeclaration()) &&
-                    isElementOfUnion(ut, unit.getSequenceDeclaration()) &&
-                        unit.getElementType(this).isPrimitiveAbbreviatedType();
-        }
-        else {
-            return false;
-        }
+    	if (getDeclaration() instanceof Interface) {
+    		Unit unit = getDeclaration().getUnit();
+    		if (getDeclaration().equals(unit.getSequentialDeclaration())) {
+    			ProducedType et = unit.getIteratedType(this);
+				return et!=null && et.isPrimitiveAbbreviatedType();
+    		}
+    	}
+    	return false;
     }
 
     private boolean abbreviateOptional() {
@@ -1521,12 +1562,6 @@ public class ProducedType extends ProducedReference {
                 return false;
             }
         }
-    }
-
-    public boolean isCallable() {
-        //TODO: yew, fix this:
-        return getDeclaration().getQualifiedNameString()
-                .equals("ceylon.language::Callable");
     }
     
     public ProducedType withoutUnderlyingType() {

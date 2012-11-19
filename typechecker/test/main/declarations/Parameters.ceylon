@@ -1,9 +1,9 @@
 class Parameters() {
     void x1(@type["String"] String s) {}
     void x2(@type["String"] String s, @type["Integer"] Integer n) {}
-    void x3(@type["Empty|Sequence<String>"] String[] s) {}
+    void x3(@type["Sequential<String>"] String[] s) {}
     void x4(@type["Nothing|String"] String? s) {}
-    void x5(@type["Iterable<String>"] String... s) {}
+    void x5(@type["Sequential<String>"] String... s) {}
     
     void x6(String s="hello", @error Integer n) {}
     void x7(String... s, @error Integer n) {}
@@ -39,5 +39,10 @@ class Parameters() {
     }
     
     void method()(@error String name="gavin")(@error String... names) {}
+    
+    void func(String... x, @error String... y) {}
+    
+    void withDefaultedCallableParams(Float f() => 0.5, Float g(Float x) => x) {}
+    void withDefaultedFunctionParams(Float() f = () 0.5, Float(Float) g = (Float x) x) {}
 
 }

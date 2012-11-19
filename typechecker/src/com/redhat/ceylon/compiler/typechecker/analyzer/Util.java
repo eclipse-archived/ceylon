@@ -12,11 +12,12 @@ import com.redhat.ceylon.compiler.typechecker.model.ProducedType;
 import com.redhat.ceylon.compiler.typechecker.model.Scope;
 import com.redhat.ceylon.compiler.typechecker.model.TypeDeclaration;
 import com.redhat.ceylon.compiler.typechecker.model.TypedDeclaration;
+import com.redhat.ceylon.compiler.typechecker.model.Unit;
 import com.redhat.ceylon.compiler.typechecker.tree.Message;
 import com.redhat.ceylon.compiler.typechecker.tree.Node;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree;
-import com.redhat.ceylon.compiler.typechecker.tree.Visitor;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.Expression;
+import com.redhat.ceylon.compiler.typechecker.tree.Visitor;
 
 /**
  * Bucket for some helper methods used by various
@@ -114,27 +115,36 @@ class Util {
         List<Tree.Statement> statements = that.getStatements();
         for (int i=statements.size()-1; i>=0; i--) {
             Tree.Statement s = statements.get(i);
-            if (s instanceof Tree.ExecutableStatement) {
+            if (s instanceof Tree.SpecifierStatement) {
+            	Tree.SpecifierStatement ss = (Tree.SpecifierStatement) s;
+				if (!(ss.getSpecifierExpression() instanceof Tree.LazySpecifierExpression) || 
+						!ss.getRefinement()) {
+            		return s;
+            	}
+            }
+            else if (s instanceof Tree.ExecutableStatement) {
                 return s;
             }
             else {
                 if (s instanceof Tree.AttributeDeclaration) {
-                    if ( ((Tree.AttributeDeclaration) s).getSpecifierOrInitializerExpression()!=null ) {
+                    Tree.SpecifierOrInitializerExpression sie = ((Tree.AttributeDeclaration) s).getSpecifierOrInitializerExpression();
+					if (sie!=null && !(sie instanceof Tree.LazySpecifierExpression)) {
                         return s;
                     }
                 }
-                if (s instanceof Tree.MethodDeclaration) {
+                /*if (s instanceof Tree.MethodDeclaration) {
                     if ( ((Tree.MethodDeclaration) s).getSpecifierExpression()!=null ) {
                         return s;
                     }
-                }
+                }*/
                 if (s instanceof Tree.ObjectDefinition) {
                     Tree.ObjectDefinition o = (Tree.ObjectDefinition) s;
                     if (o.getExtendedType()!=null) {
                         ProducedType et = o.getExtendedType().getType().getTypeModel();
-                        if (et!=null 
-                                && !et.getDeclaration().equals(that.getUnit().getObjectDeclaration())
-                                && !et.getDeclaration().equals(that.getUnit().getIdentifiableObjectDeclaration())) {
+                        Unit unit = that.getUnit();
+						if (et!=null 
+                                && !et.getDeclaration().equals(unit.getObjectDeclaration())
+                                && !et.getDeclaration().equals(unit.getIdentifiableObjectDeclaration())) {
                             return s;
                         }
                     }
@@ -169,7 +179,7 @@ class Util {
             addTypeUnknownError(node, message);
             return false;
         }
-        else if (!type.isCallable()) {
+        else if (!type.getDeclaration().getUnit().isCallableType(type)) {
             if (!hasError(node)) {
                 node.addError(message + message(type, " is not a subtype of Callable"));
             }
@@ -202,6 +212,16 @@ class Util {
         }
         else if (!type.isSubtypeOf(supertype)) {
         	node.addError(message + message(type, " is not assignable to ", supertype));
+        }
+    }
+
+    static void checkAssignableWithWarning(ProducedType type, ProducedType supertype, 
+            Node node, String message) {
+        if (isTypeUnknown(type) || isTypeUnknown(supertype)) {
+        	addTypeUnknownError(node, message);
+        }
+        else if (!type.isSubtypeOf(supertype)) {
+        	node.addWarning(message + message(type, " is not assignable to ", supertype));
         }
     }
 

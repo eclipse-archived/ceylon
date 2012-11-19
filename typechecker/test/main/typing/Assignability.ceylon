@@ -349,6 +349,8 @@ class Assignability() {
     w({"foo"}...);
     w("foo", "bar");
     w({"foo", "bar"}...);
+    Iterable<String> iterable = {"foo", "bar"};
+    @error w(iterable...);
     
     object o { shared String hello = "hello"; }
     @type["IdentifiableObject"] value oo = o;
@@ -380,7 +382,7 @@ class Assignability() {
     Sequence<Object> st1 = ut;
     Sequence<String|Integer> st2 = ut;
     @type["Nothing|String|Integer"] value item = ut[0];
-    @type["Empty|Sequence<String>|Sequence<Integer>"] value items = ut[1..2];
+    @type["Sequential<String>|Sequential<Integer>"] value items = ut[1..2];
     
     class Invariant<T>(T t) {}
     Ordinal<Integer> ii1 = +1;
@@ -412,10 +414,10 @@ class Assignability() {
     @error if (nonempty stringSet) {
         
     }
-    if (is FixedSized<String> stringSet) {
-        if (nonempty stringSet) {
-            @type["Set<String>&Some<String>"] value ness = stringSet;
-        }
-    }
+    //if (is FixedSized<String> stringSet) {
+    //    if (nonempty stringSet) {
+    //        @type["Set<String>&Some<String>"] value ness = stringSet;
+    //    }
+    //}
     
 }

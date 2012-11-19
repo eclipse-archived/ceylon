@@ -2,14 +2,14 @@ class Foo() {}
 class Bar() extends Foo() {}
 
 class Super() {
-    shared default class Inner() = Foo;
+    shared default class Inner() => Foo();
 }
 
 class Sub1() extends Super() {
-    shared actual class Inner() = Bar;
+    shared actual class Inner() => Bar();
 }
 class Sub2() extends Super() {
-    shared actual class Inner() = Foo;
+    shared actual class Inner() => Foo();
 }
 class Sub3() extends Super() {
     shared actual class Inner() extends super.Inner() {}

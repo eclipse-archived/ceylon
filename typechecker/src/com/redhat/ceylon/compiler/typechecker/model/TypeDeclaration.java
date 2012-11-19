@@ -131,34 +131,10 @@ public abstract class TypeDeclaration extends Declaration
         /*if (!acceptsArguments(this, typeArguments)) {
               return null;
           }*/
-        TypeDeclaration td = this;
-        if (!getTypeParameters().isEmpty()) {
-            int last = getTypeParameters().size()-1;
-            int lastArg = typeArguments.size()-1;
-            TypeParameter tp = getTypeParameters().get(last);
-            if (tp.isSequenced() && lastArg>last) {
-                //there are multiple args to sequenced param
-                td = clone();
-                td.typeParameters = new ArrayList<TypeParameter>();
-                td.typeParameters.addAll(getTypeParameters());
-                for (int i=1; i<=lastArg-last; i++) {
-                    TypeParameter tpc = (TypeParameter) tp.clone();
-                    tpc.setName(tp.getName()+i);
-                    td.getTypeParameters().add(tpc);
-                }
-            }
-            else if (tp.isSequenced() && lastArg==last-1) {
-                //there is no arg to sequenced param
-                td = clone();
-                td.typeParameters = new ArrayList<TypeParameter>();
-                td.typeParameters.addAll(getTypeParameters());
-                td.typeParameters.remove(tp);
-            }
-        }
         ProducedType pt = new ProducedType();
-        pt.setDeclaration(td);
+        pt.setDeclaration(this);
         pt.setQualifyingType(qualifyingType);
-        pt.setTypeArguments(arguments(td, qualifyingType, typeArguments));
+        pt.setTypeArguments(arguments(this, qualifyingType, typeArguments));
         return pt;
     }
     
