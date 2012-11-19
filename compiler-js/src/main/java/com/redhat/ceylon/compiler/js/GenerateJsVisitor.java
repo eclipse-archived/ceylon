@@ -1051,7 +1051,7 @@ public class GenerateJsVisitor extends Visitor
     }
 
     private void initParameters(ParameterList params, TypeDeclaration typeDecl) {
-        for (Parameter param : params.getParameters()) {
+        for (final Parameter param : params.getParameters()) {
             com.redhat.ceylon.compiler.typechecker.model.Parameter pd = param.getDeclarationModel();
             /*if (param instanceof ValueParameterDeclaration && ((ValueParameterDeclaration)param).getDeclarationModel().isHidden()) {
                 //TODO support new syntax for class and method parameters
@@ -1064,7 +1064,18 @@ public class GenerateJsVisitor extends Visitor
                 if (param.getDefaultArgument() == null) {
                     out(clAlias, ".empty");
                 } else {
-                    param.getDefaultArgument().getSpecifierExpression().getExpression().visit(this);
+                    final SpecifierExpression defaultExpr =
+                            param.getDefaultArgument().getSpecifierExpression();
+                    if ((param instanceof FunctionalParameterDeclaration)
+                            && (defaultExpr instanceof LazySpecifierExpression)) {
+                        // function parameter defaulted using "=>"
+                        singleExprFunction(
+                                ((FunctionalParameterDeclaration) param).getParameterLists(),
+                                defaultExpr.getExpression());
+                    }
+                    else {
+                        defaultExpr.visit(this);
+                    }
                 }
                 out(";}");
                 endLine();
@@ -3047,11 +3058,16 @@ public class GenerateJsVisitor extends Visitor
     /** Generates the code for an anonymous function defined inside an argument list. */
     @Override
     public void visit(final FunctionArgument that) {
-        generateParameterLists(that.getParameterLists(), new ParameterListCallback() {
+        singleExprFunction(that.getParameterLists(), that.getExpression());
+    }
+    
+    private void singleExprFunction(final List<ParameterList> paramLists,
+                                    final Expression expr) {
+        generateParameterLists(paramLists, new ParameterListCallback() {
             @Override
             public void completeFunction() {
                 out("{return ");
-                that.getExpression().visit(GenerateJsVisitor.this);
+                expr.visit(GenerateJsVisitor.this);
                 out("}");
             }
         });
