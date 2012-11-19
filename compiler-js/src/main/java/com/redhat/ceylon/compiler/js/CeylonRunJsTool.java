@@ -123,6 +123,7 @@ public class CeylonRunJsTool implements Tool {
     private List<String> repos = Collections.singletonList("modules");
     private String func = "run";
     private String module;
+    private String exepath;
     private List<String> args;
     private PrintStream output;
     private boolean debug;
@@ -161,6 +162,12 @@ public class CeylonRunJsTool implements Tool {
         this.args = args;
     }
 
+    @Argument(argumentName="node-exe", multiplicity="1")
+    @Description("The path to the node.js executable. Will be searched in standard locations if not specified.")
+    public void setNodeExe(String path) {
+        this.exepath=path;
+    }
+
     private static String getNodePath() {
         return getFromEnv("NODE_PATH", "node.path");
     }
@@ -183,7 +190,13 @@ public class CeylonRunJsTool implements Tool {
 
     @Override
     public void run() throws Exception {
-        final String node = findNode();
+        final String node = exepath == null ? findNode() : exepath;
+        if (exepath != null) {
+            File _f = new File(exepath);
+            if (!(_f.exists() && _f.canExecute())) {
+                throw new CeylonRunJsException("Specified node.js executable is invalid.");
+            }
+        }
 
         final boolean isDefault = "default".equals(module);
         String version = "";
