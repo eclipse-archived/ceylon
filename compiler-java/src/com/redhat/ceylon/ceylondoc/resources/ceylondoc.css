@@ -468,19 +468,15 @@ a:HOVER .icon-search {
 	background-position: -176px 0px;
 }
 
-a:HOVER .icon-filter {
-    vertical-align: text-bottom;
-    background-position: -208px 0px;
-}
+a:HOVER .icon-filter,
+a:FOCUS .icon-filter,
 .dropdown.open .icon-filter {
     vertical-align: text-bottom;
     background-position: -208px 0px;
 }
 
-a:HOVER .icon-info {
-    vertical-align: text-bottom;
-    background-position: -240px 0px;
-}
+a:HOVER .icon-info,
+a:FOCUS .icon-info,
 .dropdown.open .icon-info {
     vertical-align: text-bottom;
     background-position: -240px 0px;

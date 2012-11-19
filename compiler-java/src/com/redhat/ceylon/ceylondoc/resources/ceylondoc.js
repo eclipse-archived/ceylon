@@ -172,7 +172,7 @@ $(document).ready(function() {
             evt = evt || window.event;
             var keyCode = evt.keyCode || evt.which;
             if (keyCode == 102) {
-                $('#filterDropdown').toggleClass('open');
+                $('#filterDropdown > .dropdown-toggle').click();
             }
         });
         enableInfoKeybordShortcut('f');
@@ -424,7 +424,7 @@ jQuery("#q").each(function(){
         evt = evt || window.event;
         var keyCode = evt.keyCode || evt.which;
         if (keyCode == 63) {
-            $('#infoDropdown').toggleClass('open');
+            $('#infoDropdown > .dropdown-toggle').click();
         }
     });
 	

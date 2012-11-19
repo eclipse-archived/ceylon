@@ -227,7 +227,7 @@ public abstract class CeylonDoc extends Markup {
             write("  var keyCode = evt.keyCode || evt.which;\n");
             
             write("  if (keyCode == " + (int)'?' + ") {\n");
-            write("    $('#infoDropdown').toggleClass('open');\n");
+            write("    $('#infoDropdown > .dropdown-toggle').click();\n");
             write("  }\n");
 
             for(Map.Entry<Character, String> keyboardShortcut : keyboardShortcuts.entrySet()) {
