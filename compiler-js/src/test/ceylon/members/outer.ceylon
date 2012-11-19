@@ -6,11 +6,11 @@ void test_outer_inner_safety() {
   }
   Outer? o = null;
   Outer.Inner? i1 = o?.Inner();
-  Outer.Inner? cons() = o?.Inner;
+  Outer.Inner? cons() => o?.Inner();
   if (exists i1) {
     fail("i1 should be null");
   }
-  check(className(cons)=="ceylon.language::JsCallable", "cons is Callable");
+  check(className(cons)=="ceylon.language::JsCallable", "cons is Callable, " className(cons) "");
   Outer.Inner|Nothing i2 = cons();
   if (exists i2) {
     fail("i2 should not exist");

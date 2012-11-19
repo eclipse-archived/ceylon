@@ -51,11 +51,11 @@ public class TestModelClasses {
         Map<String,Object> cls = (Map<String,Object>)model.get("SimpleClass1");
         ModelUtils.checkMap(cls, MetamodelGenerator.KEY_NAME, "SimpleClass1");
         cls = (Map<String, Object>)cls.get("super");
-        ModelUtils.checkType(cls, "ceylon.language.IdentifiableObject");
+        ModelUtils.checkType(cls, "ceylon.language::IdentifiableObject");
 
         cls = (Map<String, Object>)model.get("SimpleClass2");
         ModelUtils.checkMap(cls, MetamodelGenerator.KEY_NAME, "SimpleClass2", "abstract", "1");
-        ModelUtils.checkParam(cls, 0, "name", "ceylon.language.String", false, false);
+        ModelUtils.checkParam(cls, 0, "name", "ceylon.language::String", false, false);
         cls = (Map<String, Object>)cls.get("super");
         ModelUtils.checkMap(cls, MetamodelGenerator.KEY_NAME, "IdentifiableObject",
                 MetamodelGenerator.KEY_MODULE, "ceylon.language");
@@ -64,8 +64,8 @@ public class TestModelClasses {
         ModelUtils.checkMap(cls, MetamodelGenerator.KEY_NAME, "SimpleClass4",
                 MetamodelGenerator.KEY_METATYPE, MetamodelGenerator.METATYPE_CLASS);
         ModelUtils.checkAnnotations(cls, "shared");
-        ModelUtils.checkType((Map<String,Object>)cls.get("super"), "t2.SimpleClass2");
-        ModelUtils.checkParam(cls, 0, "x", "ceylon.language.Integer", true, false);
+        ModelUtils.checkType((Map<String,Object>)cls.get("super"), "t2::SimpleClass2");
+        ModelUtils.checkParam(cls, 0, "x", "ceylon.language::Integer", true, false);
     }
 
     @Test @SuppressWarnings("unchecked")
@@ -78,44 +78,44 @@ public class TestModelClasses {
         ModelUtils.checkMap(m2.get("equals"), MetamodelGenerator.KEY_NAME, "equals",
                 MetamodelGenerator.KEY_METATYPE, MetamodelGenerator.METATYPE_METHOD);
         ModelUtils.checkAnnotations(m2.get("equals"), "shared", "actual");
-        ModelUtils.checkType(m2.get("equals"), "ceylon.language.Boolean");
+        ModelUtils.checkType(m2.get("equals"), "ceylon.language::Boolean");
         m2 = (Map<String,Map<String, Object>>)cls.get(MetamodelGenerator.KEY_ATTRIBUTES);
         Assert.assertEquals("SimpleClass3 should have 1 attribute", 1, m2.size());
         ModelUtils.checkMap(m2.get("hash"), MetamodelGenerator.KEY_NAME, "hash",
                 MetamodelGenerator.KEY_METATYPE, MetamodelGenerator.METATYPE_GETTER);
         ModelUtils.checkAnnotations(m2.get("hash"), "shared", "actual");
-        ModelUtils.checkType(m2.get("hash"), "ceylon.language.Integer");
+        ModelUtils.checkType(m2.get("hash"), "ceylon.language::Integer");
         cls = (Map<String, Object>)cls.get("super");
-        ModelUtils.checkType(cls, "ceylon.language.Object");
+        ModelUtils.checkType(cls, "ceylon.language::Object");
     }
 
     @Test @SuppressWarnings("unchecked")
     public void testSatisfies1() {
         Map<String,Object> cls = (Map<String,Object>)model.get("Satisfy1");
-        ModelUtils.checkType((Map<String, Object>)cls.get("super"), "ceylon.language.IdentifiableObject");
+        ModelUtils.checkType((Map<String, Object>)cls.get("super"), "ceylon.language::IdentifiableObject");
         List<Map<String, Object>> ps = (List<Map<String, Object>>)cls.get("satisfies");
         Assert.assertEquals("Satisfy1 should satisfy 1 interface", 1, ps.size());
-        ModelUtils.checkType(ps.get(0), "ceylon.language.Comparable<t2.Satisfy1>");
+        ModelUtils.checkType(ps.get(0), "ceylon.language::Comparable<t2::Satisfy1>");
         Map<String,Map<String,Object>> m2 = (Map<String,Map<String,Object>>)cls.get(MetamodelGenerator.KEY_METHODS);
         Assert.assertEquals("Satisfy1 should implement 1 method", 1, m2.size());
-        ModelUtils.checkType(m2.get("compare"), "ceylon.language.Comparison");
-        ModelUtils.checkParam(m2.get("compare"), 0, "other", "t2.Satisfy1", false, false);
+        ModelUtils.checkType(m2.get("compare"), "ceylon.language::Comparison");
+        ModelUtils.checkParam(m2.get("compare"), 0, "other", "t2::Satisfy1", false, false);
     }
 
     @Test @SuppressWarnings("unchecked")
     public void testSatisfies2() {
         Map<String,Object> cls = (Map<String, Object>)model.get("Satisfy2");
-        ModelUtils.checkType((Map<String, Object>)cls.get("super"), "ceylon.language.IdentifiableObject");
+        ModelUtils.checkType((Map<String, Object>)cls.get("super"), "ceylon.language::IdentifiableObject");
         List<Map<String, Object>> ps = (List<Map<String, Object>>)cls.get("satisfies");
         Assert.assertEquals("Satisfy1 should satisfy 2 interfaces", 2, ps.size());
-        ModelUtils.checkType(ps.get(0), "ceylon.language.Iterable<ceylon.language.Integer>");
-        ModelUtils.checkType(ps.get(1), "ceylon.language.Cloneable<t2.Satisfy2>");
+        ModelUtils.checkType(ps.get(0), "ceylon.language::Iterable<ceylon.language::Integer>");
+        ModelUtils.checkType(ps.get(1), "ceylon.language::Cloneable<t2::Satisfy2>");
         Map<String,Map<String,Object>> m2 = (Map<String,Map<String,Object>>)cls.get("methods");
         Assert.assertNull("Satisfy2 should have no methods", m2);
         m2 = (Map<String,Map<String,Object>>)cls.get(MetamodelGenerator.KEY_ATTRIBUTES);
         Assert.assertEquals("Satisfy2 should have 2 attributes", 2, m2.size());
-        ModelUtils.checkType(m2.get("iterator"), "ceylon.language.Iterator<ceylon.language.Integer>");
-        ModelUtils.checkType(m2.get("clone"), "t2.Satisfy2");
+        ModelUtils.checkType(m2.get("iterator"), "ceylon.language::Iterator<ceylon.language::Integer>");
+        ModelUtils.checkType(m2.get("clone"), "t2::Satisfy2");
     }
 
     @Test @SuppressWarnings("unchecked")
@@ -136,7 +136,7 @@ public class TestModelClasses {
         ModelUtils.checkMap(ps.get(0), "variance", "out");
         ModelUtils.checkParam(cls, 0, "x", "Element", false, true);
         ps = (List<Map<String, Object>>)ps.get(0).get("satisfies");
-        ModelUtils.checkType(((List<Map<String, Object>>)ps).get(0), "ceylon.language.Object");
+        ModelUtils.checkType(((List<Map<String, Object>>)ps).get(0), "ceylon.language::Object");
     }
 
     @Test @SuppressWarnings("unchecked")
@@ -149,10 +149,10 @@ public class TestModelClasses {
         ModelUtils.checkParam(cls, 0, "a1", "Type1", false, false);
         ModelUtils.checkParam(cls, 1, "a2", "Type2", false, false);
         List<Map<String, Object>> ptc = (List<Map<String, Object>>)ps.get(0).get("satisfies");
-        ModelUtils.checkType(ptc.get(0), "ceylon.language.Number");
+        ModelUtils.checkType(ptc.get(0), "ceylon.language::Number");
         ptc = (List<Map<String,Object>>)ps.get(1).get("of");
-        ModelUtils.checkType(ptc.get(0), "ceylon.language.String");
-        ModelUtils.checkType(ptc.get(1), "ceylon.language.Singleton<ceylon.language.String>");
+        ModelUtils.checkType(ptc.get(0), "ceylon.language::String");
+        ModelUtils.checkType(ptc.get(1), "ceylon.language::Singleton<ceylon.language::String>");
     }
 
     @Test @SuppressWarnings("unchecked")
@@ -165,9 +165,9 @@ public class TestModelClasses {
         ModelUtils.checkParam(cls, 0, "elems", "Element", false, true);
         ps = (List<Map<String, Object>>)cls.get("satisfies");
         Assert.assertEquals("ParmTypes4 should satisfy 1 interface", 1, ps.size());
-        ModelUtils.checkType(ps.get(0), "ceylon.language.Iterable<Element>");
+        ModelUtils.checkType(ps.get(0), "ceylon.language::Iterable<Element>");
         Map<String,Map<String,Object>> m2 = (Map<String,Map<String,Object>>)cls.get(MetamodelGenerator.KEY_ATTRIBUTES);
-        ModelUtils.checkType(m2.get("primero"), "ceylon.language.Nothing|Element");
+        ModelUtils.checkType(m2.get("primero"), "ceylon.language::Nothing|Element");
     }
 
     @Test @SuppressWarnings("unchecked")
@@ -180,10 +180,11 @@ public class TestModelClasses {
         ModelUtils.checkMap(cls, MetamodelGenerator.KEY_NAME, "Nested2",
                 MetamodelGenerator.KEY_METATYPE, MetamodelGenerator.METATYPE_CLASS);
         ModelUtils.checkAnnotations(cls, "shared");
+        System.out.println("clase " + cls);
         cls = ((Map<String,Map<String,Object>>)cls.get(MetamodelGenerator.KEY_METHODS)).get("innerMethod1");
         ModelUtils.checkMap(cls, MetamodelGenerator.KEY_NAME, "innerMethod1",
                 MetamodelGenerator.KEY_METATYPE, MetamodelGenerator.METATYPE_METHOD);
-        ModelUtils.checkType(cls, "ceylon.language.Void");
+        ModelUtils.checkType(cls, "ceylon.language::Void");
     }
 
     @Test @SuppressWarnings("unchecked")
@@ -193,19 +194,19 @@ public class TestModelClasses {
                 MetamodelGenerator.KEY_METATYPE, MetamodelGenerator.METATYPE_CLASS, "abstract", "1");
         ModelUtils.checkAnnotations(cls, "shared");
         //"name" is an initializer parameter...
-        ModelUtils.checkParam(cls, 0, "name", "ceylon.language.String", false, false);
+        ModelUtils.checkParam(cls, 0, "name", "ceylon.language::String", false, false);
         //and also a shared attribute
         Map<String, Map<String, Object>> m2 = (Map<String, Map<String, Object>>)cls.get(MetamodelGenerator.KEY_ATTRIBUTES);
         ModelUtils.checkMap(m2.get("name"), MetamodelGenerator.KEY_NAME, "name",
                 MetamodelGenerator.KEY_METATYPE, MetamodelGenerator.METATYPE_ATTRIBUTE);
         ModelUtils.checkAnnotations(m2.get("name"), "shared");
-        ModelUtils.checkType(m2.get("name"), "ceylon.language.String");
+        ModelUtils.checkType(m2.get("name"), "ceylon.language::String");
         List<Map<String, Object>> types = (List<Map<String, Object>>)cls.get("of");
         Assert.assertNotNull("Algebraic1 should have case types", types);
         Assert.assertEquals("Algebraic1 should have 3 case types", 3, types.size());
-        ModelUtils.checkType(types.get(0), "t2.AlgOne");
-        ModelUtils.checkType(types.get(1), "t2.AlgTwo");
-        ModelUtils.checkType(types.get(2), "t2.AlgThree");
+        ModelUtils.checkType(types.get(0), "t2::AlgOne");
+        ModelUtils.checkType(types.get(1), "t2::AlgTwo");
+        ModelUtils.checkType(types.get(2), "t2::AlgThree");
         for (Map<String, Object> m3 : types) {
             cls = (Map<String, Object>)model.get((String)m3.get(MetamodelGenerator.KEY_NAME));
             Assert.assertNotNull("Missing top-level class " + m3.get(MetamodelGenerator.KEY_NAME), cls);
@@ -213,7 +214,7 @@ public class TestModelClasses {
                     MetamodelGenerator.KEY_METATYPE, MetamodelGenerator.METATYPE_CLASS);
             ModelUtils.checkAnnotations(cls, "shared");
             cls = (Map<String,Object>)cls.get("super");
-            ModelUtils.checkType(cls, "t2.Algebraic1");
+            ModelUtils.checkType(cls, "t2::Algebraic1");
         }
     }
 
@@ -221,13 +222,13 @@ public class TestModelClasses {
     public void testAlgebraicObjects() {
         Map<String,Object> cls = (Map<String, Object>)model.get("Algebraic2");
         //"name" is an initializer parameter...
-        ModelUtils.checkParam(cls, 0, "name", "ceylon.language.String", false, false);
+        ModelUtils.checkParam(cls, 0, "name", "ceylon.language::String", false, false);
         //and also a shared attribute
         Map<String, Map<String, Object>> m2 = (Map<String, Map<String, Object>>)cls.get(MetamodelGenerator.KEY_ATTRIBUTES);
         ModelUtils.checkMap(m2.get("name"), MetamodelGenerator.KEY_NAME, "name",
                 MetamodelGenerator.KEY_METATYPE, MetamodelGenerator.METATYPE_ATTRIBUTE);
         ModelUtils.checkAnnotations(m2.get("name"), "shared");
-        ModelUtils.checkType(m2.get("name"), "ceylon.language.String");
+        ModelUtils.checkType(m2.get("name"), "ceylon.language::String");
         List<Map<String, Object>> types = (List<Map<String, Object>>)cls.get("of");
         Assert.assertNotNull("Algebraic2 should have case types", types);
         Assert.assertEquals("Algebraic2 should have 2 case types", 2, types.size());
@@ -239,13 +240,13 @@ public class TestModelClasses {
                     MetamodelGenerator.KEY_METATYPE, MetamodelGenerator.METATYPE_OBJECT);
             ModelUtils.checkAnnotations(cls, "shared");
             types = (List<Map<String,Object>>)cls.get("satisfies");
-            ModelUtils.checkType(types.get(0), "ceylon.language.Iterable<ceylon.language.Integer>");
-            ModelUtils.checkType((Map<String,Object>)cls.get("super"), "t2.Algebraic2");
+            ModelUtils.checkType(types.get(0), "ceylon.language::Iterable<ceylon.language::Integer>");
+            ModelUtils.checkType((Map<String,Object>)cls.get("super"), "t2::Algebraic2");
             m2 = (Map<String, Map<String, Object>>)cls.get(MetamodelGenerator.KEY_ATTRIBUTES);
             ModelUtils.checkMap(m2.get("iterator"), MetamodelGenerator.KEY_NAME, "iterator",
                     MetamodelGenerator.KEY_METATYPE, MetamodelGenerator.METATYPE_GETTER);
             ModelUtils.checkAnnotations(m2.get("iterator"), "shared", "actual");
-            ModelUtils.checkType(m2.get("iterator"), "ceylon.language.Iterator<ceylon.language.Integer>");
+            ModelUtils.checkType(m2.get("iterator"), "ceylon.language::Iterator<ceylon.language::Integer>");
         }
     }
 

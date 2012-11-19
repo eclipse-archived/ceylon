@@ -70,13 +70,13 @@ shared class Unwrapper() {
     }
 }
 
-Callable<Object> producer() {
+Callable<Object,<>> producer() {
     Object o = 123;
     function produce() { return o; }
     return produce;
 }
     
-Callable<Object> returner(Object o) {
+Callable<Object,<>> returner(Object o) {
     function produce() { return o; }
     return produce;
 }
@@ -229,7 +229,7 @@ shared void test() {
     check(Unwrapper().get().string=="23.56","unwrapper 1");
     check(Unwrapper().o.string=="23.56","unwrapper 2");
     check(Unwrapper().string=="23.56","unwrapper 3");
-    check(is Callable<Integer> producer(), "function 1");
+    check(is Callable<Integer,<>> producer(), "function 1");
     check(is Integer producer()(), "function 2");
     check(123==producer()(), "function 3");
     check("something"==returner("something")(), "function 4");

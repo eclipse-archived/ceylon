@@ -9,7 +9,7 @@ Element? find<Element>(Array<Element> a, Boolean f(Element x)) {
   return null;
 }
 
-Element? find2<Element>(Array<Element> a, Boolean f(Element x) = (Element elem) true) {
+Element? find2<Element>(Array<Element> a, Boolean f(Element x) => true) {
   for (Element e in a) {
     if (f(e)) {
       return e;
@@ -19,7 +19,7 @@ Element? find2<Element>(Array<Element> a, Boolean f(Element x) = (Element elem) 
   }
 }
 
-Callable<String, Integer> subtract(Integer howMuch) {
+Callable<String, <Integer>> subtract(Integer howMuch) {
   return (Integer i) (i-howMuch).string;
 }
 

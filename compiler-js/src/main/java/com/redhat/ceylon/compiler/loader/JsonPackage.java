@@ -295,7 +295,6 @@ public class JsonPackage extends com.redhat.ceylon.compiler.typechecker.model.Pa
                 }
             }
             if (tp.containsKey("satisfies")) {
-                if ("Some".equals(container.getName())) System.out.println(tparm + " satisfies " + tp.get("satisfies"));
                 tparm.setSatisfiedTypes(parseTypeList((List<Map<String,Object>>)tp.get("satisfies"), allparms));
             } else if (tp.containsKey("of")) {
                 tparm.setCaseTypes(parseTypeList((List<Map<String,Object>>)tp.get("of"), allparms));
@@ -658,12 +657,8 @@ public class JsonPackage extends com.redhat.ceylon.compiler.typechecker.model.Pa
                 Iterator<TypeParameter> viter = rval.getDeclaration().getTypeParameters().iterator();
                 @SuppressWarnings("unchecked")
                 List<Map<String,Object>> modelParms = (List<Map<String,Object>>)m.get(MetamodelGenerator.KEY_TYPE_PARAMS);
-                if (modelParms.size() != rval.getDeclaration().getTypeParameters().size()) {
-                    System.out.println("TODO!!! sequenced type arguments " + rval + " for " + rval.getDeclaration().getTypeParameters().size() + " vs " + modelParms);
-                }
-                TypeParameter _cparm = null;
                 for (Map<String,Object> ptparm : modelParms) {
-                    if (_cparm == null) _cparm = viter.next();
+                    TypeParameter _cparm = viter.next();
                     if (ptparm.containsKey(MetamodelGenerator.KEY_PACKAGE) || ptparm.containsKey(MetamodelGenerator.KEY_TYPES)) {
                         //Substitute for proper type
                         concretes.put(_cparm, getTypeFromJson(ptparm, typeParams));

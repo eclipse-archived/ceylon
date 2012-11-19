@@ -67,7 +67,6 @@ public class TestModuleManager {
         //Create a typechecker to compile the test module
         System.out.println("Compiling pass 1");
         TypeCheckerBuilder tcb = new TypeCheckerBuilder().usageWarnings(false);
-        //tcb.moduleManagerFactory(new JsModuleManagerFactory());
         tcb.addSrcDirectory(new java.io.File("src/test/resources/loader/pass1"));
         tcb.setRepositoryManager(repoman);
         tc = tcb.getTypeChecker();
@@ -191,16 +190,42 @@ public class TestModuleManager {
     @Test
     public void tmptest() {
         System.out.println("-----------------------");
-        ClassOrInterface d0 = (ClassOrInterface)srclang.getDirectMember("Sequence", null, false);
-        Assert.assertNotNull("Scalar from srclang", d0);
-        ClassOrInterface d1 = (ClassOrInterface)jslang.getDirectMember("Sequence", null, false);
-        Assert.assertNotNull("Scalar from jslang", d1);
-        System.out.println("src " + d0.getTypeParameters() + " vs " + d1.getTypeParameters());
+        ClassOrInterface d0 = (ClassOrInterface)srclang.getDirectMember("Empty", null, false);
+        Assert.assertNotNull("ContainerWithFirstElement from srclang", d0);
+        ClassOrInterface d1 = (ClassOrInterface)jslang.getDirectMember("Empty", null, false);
+        Assert.assertNotNull("ContainerWithFirstElement from jslang", d1);
+        ProducedType seq0 = null, seq1 = null;
+        for (ProducedType pt : d0.getSatisfiedTypes()) {
+            if (pt.getProducedTypeName().startsWith("Sequential")) {
+                seq0 = pt;
+                break;
+            }
+        }
+        for (ProducedType pt : d1.getSatisfiedTypes()) {
+            if (pt.getProducedTypeName().startsWith("Sequential")) {
+                seq1 = pt;
+                break;
+            }
+        }
+        for (ProducedType pt : seq0.getCaseTypes()) {
+            if (pt.getProducedTypeName().equals("Empty")) {
+                seq0 = pt;
+                break;
+            }
+        }
+        for (ProducedType pt : seq1.getCaseTypes()) {
+            if (pt.getProducedTypeName().equals("Empty")) {
+                seq1 = pt;
+                break;
+            }
+        }
+        compareTypes(seq0, seq1, new ArrayList<String>());
+        System.out.println("src " + seq0 + " - js " + seq1);
         compareTypeDeclarations(d0, d1);
-        MethodOrValue m0 = (MethodOrValue)d0.getDirectMember("sort", null, false);
-        MethodOrValue m1 = (MethodOrValue)d1.getDirectMember("sort", null, false);
-        System.out.println("Sequence.sort " + m0 + " vs " + m1);
-        System.out.println("refined member " + d0.getRefinedMember("sort", null, false).getContainer() + " vs " + d1.getRefinedMember("sort", null, false).getContainer());
+        MethodOrValue m0 = (MethodOrValue)d0.getDirectMember("first", null, false);
+        MethodOrValue m1 = (MethodOrValue)d1.getDirectMember("first", null, false);
+        System.out.println("ContainerWithFirstElement.first " + m0 + " vs " + m1);
+        System.out.println("refined member " + d0.getRefinedMember("first", null, false).getContainer() + " vs " + d1.getRefinedMember("first", null, false).getContainer());
         System.out.println("refined " + m0.getRefinedDeclaration().getContainer() + " vs " + m1.getRefinedDeclaration().getContainer());
     }
 
@@ -214,16 +239,15 @@ public class TestModuleManager {
         } else {
             Assert.assertNotNull(t1);
         }
-        Assert.assertEquals(t0.getProducedTypeName(), t1.getProducedTypeName());
+        Assert.assertEquals("stack: " + stack, t0.getProducedTypeName(), t1.getProducedTypeName());
         Assert.assertEquals(t0.getUnderlyingType(), t1.getUnderlyingType());
         Assert.assertEquals(t0.getProducedTypeQualifiedName(), t1.getProducedTypeQualifiedName());
-        Assert.assertEquals(t0.isCallable(), t1.isCallable());
         Assert.assertEquals(t0.isFunctional(), t1.isFunctional());
         Assert.assertEquals(t0.isRaw(), t1.isRaw());
         Assert.assertEquals(t0.isWellDefined(), t1.isWellDefined());
         final String t0ptqn = t0.getProducedTypeQualifiedName();
         stack.add(t0ptqn);
-        if ("ceylon.language.Void".equals(t0ptqn) || "ceylon.language.Bottom".equals(t0ptqn) || "ceylon.language.IdentifiableObject".equals(t0ptqn) || "ceylon.language.Nothing".equals(t0ptqn)) {
+        if ("ceylon.language::Void".equals(t0ptqn) || "ceylon.language::Bottom".equals(t0ptqn) || "ceylon.language::IdentifiableObject".equals(t0ptqn) || "ceylon.language::Nothing".equals(t0ptqn)) {
             return;
         }
         //Type arguments
@@ -261,8 +285,8 @@ public class TestModuleManager {
             Assert.assertNull(t1.getSupertypes());
         } else {
             if (t0.getSupertypes().size() != t1.getSupertypes().size()) {
-                System.out.println("SRC " + t0.getDeclaration().getContainer().getQualifiedNameString() + "." + t0ptqn + " supers " + t0.getSupertypes());
-                System.out.println("JS  " + t1.getDeclaration().getContainer().getQualifiedNameString() + "." + t1.getProducedTypeName() + " supers " + t1.getSupertypes());
+                System.out.println("SRC " + t0ptqn + "(" + t0.getDeclaration().getContainer().getQualifiedNameString() + ") supers " + t0.getSupertypes());
+                System.out.println("JS  " + t1.getProducedTypeQualifiedName() + "(" + t1.getDeclaration().getContainer().getQualifiedNameString() + ") supers " + t1.getSupertypes());
             }
             Assert.assertEquals("supertypes differ for " + t0 + ": " + t0.getSupertypes() + " vs " + t1.getSupertypes(),
                     t0.getSupertypes().size(), t1.getSupertypes().size());

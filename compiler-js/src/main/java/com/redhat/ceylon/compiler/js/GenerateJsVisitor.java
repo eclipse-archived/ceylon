@@ -12,6 +12,7 @@ import java.util.Stack;
 
 import org.antlr.runtime.CommonToken;
 
+import com.redhat.ceylon.compiler.typechecker.analyzer.AnalysisWarning;
 import com.redhat.ceylon.compiler.typechecker.model.Class;
 import com.redhat.ceylon.compiler.typechecker.model.ClassOrInterface;
 import com.redhat.ceylon.compiler.typechecker.model.Declaration;
@@ -372,22 +373,53 @@ public class GenerateJsVisitor extends Visitor
     @Override
     public void visit(ClassDeclaration that) {
         //Don't even bother with nodes that have errors
-        if (that.getErrors() != null && !that.getErrors().isEmpty()) return;
+        if (that.getErrors() != null && !that.getErrors().isEmpty()) {
+            //But warnings are ok
+            for (Message err : that.getErrors()) {
+                if (!(err instanceof AnalysisWarning)) {
+                    return;
+                }
+            }
+        }
         Class d = that.getDeclarationModel();
         if (prototypeStyle && d.isClassOrInterfaceMember()) return;
         comment(that);
-        var(d);
-        TypeDeclaration dec = that.getTypeSpecifier().getType().getTypeModel()
-                .getDeclaration();
-        qualify(that,dec);
-        out(names.name(dec), ";");
+        out(function, names.name(d), "(");
+        //Generate each parameter because we need to append one at the end
+        for (Parameter p: that.getParameterList().getParameters()) {
+            p.visit(this);
+            out(", ");
+        }
+        self(d);
+        out(")");
+        ExtendedType ext = that.getExtendedType();
+        TypeDeclaration aliased = ext.getType().getDeclarationModel();
+        out("{return ");
+        qualify(ext.getType(), aliased);
+        out(names.name(aliased), "(");
+        if (ext.getInvocationExpression().getPositionalArgumentList() != null) {
+            ext.getInvocationExpression().getPositionalArgumentList().visit(this);
+            if (!ext.getInvocationExpression().getPositionalArgumentList().getPositionalArguments().isEmpty()
+                    || ext.getInvocationExpression().getPositionalArgumentList().getComprehension()!=null) {
+                out(",");
+            }
+        } else {
+            out("/*PENDIENTE*/");
+        }
+        //aqui
+        self(d);
+        out(");}");
+        endLine();
+        out(names.name(d), ".$$=");
+        qualify(ext, aliased);
+        out(names.name(aliased), ".$$;");
         endLine();
         share(d);
     }
 
     private void addClassDeclarationToPrototype(TypeDeclaration outer, ClassDeclaration that) {
         comment(that);
-        TypeDeclaration dec = that.getTypeSpecifier().getType().getTypeModel().getDeclaration();
+        TypeDeclaration dec = that.getExtendedType().getType().getTypeModel().getDeclaration();
         String path = qualifiedPath(that, dec, true);
         if (path.length() > 0) {
             path += '.';
@@ -621,7 +653,6 @@ public class GenerateJsVisitor extends Visitor
         if (satisfiedTypes!=null) {
             for (SimpleType st: satisfiedTypes.getTypes()) {
                 TypeDeclaration typeDecl = st.getDeclarationModel();
-                //I'm starting to think this shouldn't be done
                 if (typeDecl.isAlias()) {
                     typeDecl = typeDecl.getExtendedTypeDeclaration();
                 }
@@ -941,15 +972,20 @@ public class GenerateJsVisitor extends Visitor
     public void visit(MethodDeclaration that) {
         //Don't even bother with nodes that have errors
         if (that.getErrors() != null && !that.getErrors().isEmpty()) return;
+        Method m = that.getDeclarationModel();
         if (that.getSpecifierExpression() != null) {
             comment(that);
-            out("var ", names.name(that.getDeclarationModel()), "=");
+            out("function ", names.name(m));
+            for (ParameterList plist : that.getParameterLists()) {
+                plist.visit(this);
+            }
+            out("{return ");
             that.getSpecifierExpression().getExpression().visit(this);
-            endLine(true);
-            share(that.getDeclarationModel(), false);
+            out(";}");
+            endLine();
+            share(m, false);
         } else {
             //Check for refinement of simple param declaration
-            Method m = that.getDeclarationModel();
             if (m == that.getScope()) {
                 if (m.getContainer() instanceof Class && m.isClassOrInterfaceMember()) {
                     //Declare the method just by pointing to the param function
@@ -1015,7 +1051,7 @@ public class GenerateJsVisitor extends Visitor
     }
 
     private void initParameters(ParameterList params, TypeDeclaration typeDecl) {
-        for (Parameter param : params.getParameters()) {
+        for (final Parameter param : params.getParameters()) {
             com.redhat.ceylon.compiler.typechecker.model.Parameter pd = param.getDeclarationModel();
             /*if (param instanceof ValueParameterDeclaration && ((ValueParameterDeclaration)param).getDeclarationModel().isHidden()) {
                 //TODO support new syntax for class and method parameters
@@ -1028,7 +1064,18 @@ public class GenerateJsVisitor extends Visitor
                 if (param.getDefaultArgument() == null) {
                     out(clAlias, ".empty");
                 } else {
-                    param.getDefaultArgument().getSpecifierExpression().getExpression().visit(this);
+                    final SpecifierExpression defaultExpr =
+                            param.getDefaultArgument().getSpecifierExpression();
+                    if ((param instanceof FunctionalParameterDeclaration)
+                            && (defaultExpr instanceof LazySpecifierExpression)) {
+                        // function parameter defaulted using "=>"
+                        singleExprFunction(
+                                ((FunctionalParameterDeclaration) param).getParameterLists(),
+                                defaultExpr.getExpression());
+                    }
+                    else {
+                        defaultExpr.visit(this);
+                    }
                 }
                 out(";}");
                 endLine();
@@ -3011,11 +3058,16 @@ public class GenerateJsVisitor extends Visitor
     /** Generates the code for an anonymous function defined inside an argument list. */
     @Override
     public void visit(final FunctionArgument that) {
-        generateParameterLists(that.getParameterLists(), new ParameterListCallback() {
+        singleExprFunction(that.getParameterLists(), that.getExpression());
+    }
+    
+    private void singleExprFunction(final List<ParameterList> paramLists,
+                                    final Expression expr) {
+        generateParameterLists(paramLists, new ParameterListCallback() {
             @Override
             public void completeFunction() {
                 out("{return ");
-                that.getExpression().visit(GenerateJsVisitor.this);
+                expr.visit(GenerateJsVisitor.this);
                 out("}");
             }
         });

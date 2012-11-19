@@ -17,7 +17,7 @@ lang$proto.getVersion=function() {
     return String$("0.5",3);
 }
 lang$proto.getMajorVersion=function() { return 0; }
-lang$proto.getMinorVersion=function() { return 4; }
+lang$proto.getMinorVersion=function() { return 5; }
 lang$proto.getReleaseVersion=function() { return 0; }
 lang$proto.getVersionName=function() { return String$("Analytical Engine",11); }
 lang$proto.getMajorVersionBinary=function() { return 3; }

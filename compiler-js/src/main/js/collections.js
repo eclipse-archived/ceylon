@@ -217,12 +217,18 @@ ListIterator.$$.prototype.next = function() {
     return $finished;
 }
 
+function Sequential($$sequential) {
+    return $$sequential;
+}
+initTypeProtoI(Sequential, 'ceylon.language::Sequential', List, FixedSized, Ranged, Cloneable);
+exports.Sequential=Sequential;
+
 function Empty() {
     var that = new Empty.$$;
     that.value = [];
     return that;
 }
-initTypeProtoI(Empty, 'ceylon.language::Empty', None, Ranged, Cloneable, List);
+initTypeProtoI(Empty, 'ceylon.language::Empty', Sequential, None, Ranged, Cloneable);
 var Empty$proto = Empty.$$.prototype;
 Empty$proto.getEmpty = function() { return true; }
 Empty$proto.defines = function(x) { return false; }

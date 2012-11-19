@@ -29,7 +29,7 @@ shared void test() {
     Integer[] g = {};
     if (nonempty f && nonempty g) {
         fail("WTF nonempty");
-    } else if (nonempty f, nonempty f.first) {
+    } else if (nonempty f, !f.first.empty) {
         check(f.first.uppercased=="A", "nonempty");
         count++;
     }
@@ -63,7 +63,7 @@ shared void test() {
     if (is String c, c.lowercased=="x") {
         check(true,"is,boolean");
     } else { fail("is,boolean"); }
-    if (exists c, nonempty c, exists zz5=c[0]) {
+    if (exists c, nonempty seq2, exists zz5=c[0]) {
         check(zz5==`X`,"exists,nonempty,boolean");
     } else { fail("exists,nonempty,boolean"); }
     results();
