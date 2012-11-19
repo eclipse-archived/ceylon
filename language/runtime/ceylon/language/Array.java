@@ -497,51 +497,51 @@ public abstract class Array<Element> implements List<Element>, FixedSized<Elemen
     @Override
     @Ignore
     public boolean definesEvery(@Sequenced @Name("keys")
-    @TypeInfo("ceylon.language::Iterable<ceylon.language::Integer>")
-    Iterable<? extends Integer> keys) {
+    @TypeInfo("ceylon.language::Sequential<ceylon.language::Integer>")
+    List<? extends Integer> keys) {
         return Correspondence$impl._definesEvery(this, keys);
     }
     @Ignore @SuppressWarnings({"unchecked", "rawtypes"})
     public boolean definesEvery() {
-        return Correspondence$impl._definesEvery(this, (Iterable)empty_.getEmpty$());
+        return Correspondence$impl._definesEvery(this, (List)empty_.getEmpty$());
     }
     @Ignore @SuppressWarnings({"unchecked", "rawtypes"})
-    public Iterable definesEvery$keys() {
+    public List definesEvery$keys() {
         return empty_.getEmpty$();
     }
 
     @Override
     @Ignore
     public boolean definesAny(@Sequenced @Name("keys")
-    @TypeInfo("ceylon.language::Iterable<ceylon.language::Integer>")
-    Iterable<? extends Integer> keys) {
+    @TypeInfo("ceylon.language::Sequential<ceylon.language::Integer>")
+    List<? extends Integer> keys) {
         return Correspondence$impl._definesAny(this, keys);
     }
     @Ignore @SuppressWarnings({"unchecked", "rawtypes"})
     public boolean definesAny() {
-        return Correspondence$impl._definesAny(this, (Iterable)empty_.getEmpty$());
+        return Correspondence$impl._definesAny(this, (List)empty_.getEmpty$());
     }
     @Ignore @SuppressWarnings({"unchecked", "rawtypes"})
-    public Iterable definesAny$keys() {
+    public List definesAny$keys() {
         return empty_.getEmpty$();
     }
 
     @Override
     @Ignore
     public List<? extends Element> items(@Sequenced @Name("keys")
-    @TypeInfo("ceylon.language::Iterable<ceylon.language::Integer>")
-    Iterable<? extends Integer> keys){
+    @TypeInfo("ceylon.language::Sequential<ceylon.language::Integer>")
+    List<? extends Integer> keys){
         return Correspondence$impl._items(this, keys);
     }
     @Override
     @Ignore @SuppressWarnings({"unchecked", "rawtypes"})
-    public Iterable<? extends Element> items() {
-        return Correspondence$impl._items(this, (Iterable)empty_.getEmpty$());
+    public List<? extends Element> items() {
+        return Correspondence$impl._items(this, (List)empty_.getEmpty$());
     }
     @Override
     @Ignore @SuppressWarnings({"unchecked", "rawtypes"})
-    public Iterable<? extends Integer> items$keys() {
-        return (Iterable)empty_.getEmpty$();
+    public List<? extends Integer> items$keys() {
+        return (List)empty_.getEmpty$();
     }
 
     @Override
@@ -605,8 +605,8 @@ public abstract class Array<Element> implements List<Element>, FixedSized<Elemen
     @Override
     @Ignore
     public boolean containsEvery(@Sequenced @Name("elements")
-    @TypeInfo("ceylon.language::Iterable<ceylon.language::Object>")
-    Iterable<?> elements) {
+    @TypeInfo("ceylon.language::Sequential<ceylon.language::Object>")
+    List<?> elements) {
         return Category$impl._containsEvery(this, elements);
     }
     @Override
@@ -616,15 +616,15 @@ public abstract class Array<Element> implements List<Element>, FixedSized<Elemen
     }
     @Override
     @Ignore
-    public Iterable<?> containsEvery$elements() {
+    public List<?> containsEvery$elements() {
         return empty_.getEmpty$();
     }
 
     @Override
     @Ignore
     public boolean containsAny(@Sequenced @Name("elements")
-    @TypeInfo("ceylon.language::Iterable<ceylon.language::Object>")
-    Iterable<?> elements) {
+    @TypeInfo("ceylon.language::Sequential<ceylon.language::Object>")
+    List<?> elements) {
         return Category$impl._containsAny(this, elements);
     }
     @Override
@@ -634,7 +634,7 @@ public abstract class Array<Element> implements List<Element>, FixedSized<Elemen
     }
     @Override
     @Ignore
-    public Iterable<?> containsAny$elements() {
+    public List<?> containsAny$elements() {
         return empty_.getEmpty$();
     }
 

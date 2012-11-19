@@ -234,52 +234,52 @@ public class ArraySequence<Element> implements Sequence<Element> {
 
     @Override
     @Ignore
-    public boolean definesEvery(Iterable<? extends Integer> keys) {
+    public boolean definesEvery(List<? extends Integer> keys) {
         return Correspondence$impl._definesEvery(this, keys);
     }
 
     @Override
     @Ignore @SuppressWarnings({"unchecked", "rawtypes"})
     public boolean definesEvery() {
-        return Correspondence$impl._definesEvery(this, (Iterable)empty_.getEmpty$());
+        return Correspondence$impl._definesEvery(this, (List)empty_.getEmpty$());
     }
     @Override
     @Ignore @SuppressWarnings({"unchecked", "rawtypes"})
-    public Iterable<? extends Integer> definesEvery$keys() {
-        return (Iterable)empty_.getEmpty$();
+    public List<? extends Integer> definesEvery$keys() {
+        return (List)empty_.getEmpty$();
     }
 
     @Override
     @Ignore
-    public boolean definesAny(Iterable<? extends Integer> keys) {
+    public boolean definesAny(List<? extends Integer> keys) {
         return Correspondence$impl._definesAny(this, keys);
     }
 
     @Override
     @Ignore @SuppressWarnings({"unchecked", "rawtypes"})
     public boolean definesAny() {
-        return Correspondence$impl._definesAny(this, (Iterable)empty_.getEmpty$());
+        return Correspondence$impl._definesAny(this, (List)empty_.getEmpty$());
     }
 
     @Override @SuppressWarnings({"unchecked", "rawtypes"})
-    public Iterable<? extends Integer> definesAny$keys() {
-        return (Iterable)empty_.getEmpty$();
+    public List<? extends Integer> definesAny$keys() {
+        return (List)empty_.getEmpty$();
     }
 
     @Override
     @Ignore
-    public ceylon.language.List<? extends Element> items(Iterable<? extends Integer> keys) {
+    public ceylon.language.List<? extends Element> items(List<? extends Integer> keys) {
         return Correspondence$impl._items(this, keys);
     }
 
     @Override
     @Ignore @SuppressWarnings({"unchecked", "rawtypes"})
     public ceylon.language.List<? extends Element> items() {
-        return Correspondence$impl._items(this, (Iterable)empty_.getEmpty$());
+        return Correspondence$impl._items(this, (List)empty_.getEmpty$());
     }
     @Override @SuppressWarnings({"unchecked", "rawtypes"})
-    public Iterable<? extends Integer> items$keys() {
-        return (Iterable)empty_.getEmpty$();
+    public List<? extends Integer> items$keys() {
+        return (List)empty_.getEmpty$();
     }
 
     @Override
@@ -324,7 +324,7 @@ public class ArraySequence<Element> implements Sequence<Element> {
 
     @Override
     @Ignore
-    public boolean containsEvery(Iterable<?> elements) {
+    public boolean containsEvery(List<?> elements) {
         return Category$impl._containsEvery(this, elements);
     }
 
@@ -342,7 +342,7 @@ public class ArraySequence<Element> implements Sequence<Element> {
 
     @Override
     @Ignore
-    public boolean containsAny(Iterable<?> elements) {
+    public boolean containsAny(List<?> elements) {
         return Category$impl._containsAny(this, elements);
     }
 

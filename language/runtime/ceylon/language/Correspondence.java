@@ -36,31 +36,31 @@ public interface Correspondence<Key,Item> {
 
     @Annotations(@Annotation("default"))
     public boolean definesEvery(@Sequenced @Name("keys")
-    @TypeInfo("ceylon.language::Iterable<Key>")
-    Iterable<? extends Key> keys);
+    @TypeInfo("ceylon.language::Sequential<Key>")
+    List<? extends Key> keys);
     @Ignore
     public boolean definesEvery();
     @Ignore
-    public Iterable<? extends Key> definesEvery$keys();
+    public List<? extends Key> definesEvery$keys();
 
     @Annotations(@Annotation("default"))
     public boolean definesAny(@Sequenced @Name("keys")
-    @TypeInfo("ceylon.language::Iterable<Key>")
-    Iterable<? extends Key> keys);
+    @TypeInfo("ceylon.language::Sequential<Key>")
+    List<? extends Key> keys);
     @Ignore
     public boolean definesAny();
     @Ignore
-    public Iterable<? extends Key> definesAny$keys();
+    public List<? extends Key> definesAny$keys();
 
     @Annotations(@Annotation("default"))
     @TypeInfo("ceylon.language::Sequential<Item|ceylon.language::Nothing>")
     public List<? extends Item> items(@Sequenced @Name("keys")
-    @TypeInfo("ceylon.language::Iterable<Key>")
-    Iterable<? extends Key> keys);
+    @TypeInfo("ceylon.language::Sequential<Key>")
+    List<? extends Key> keys);
     @Ignore
-    public Iterable<? extends Item> items();
+    public List<? extends Item> items();
     @Ignore
-    public Iterable<? extends Key> items$keys();
+    public List<? extends Key> items$keys();
 
     @Ignore
     public ceylon.language.Correspondence$impl<? super Key, ? extends Item> $ceylon$language$Correspondence$impl();

@@ -188,7 +188,7 @@ public class LazyList<Element> implements List<Element> {
 
     @Override @Ignore
     public boolean containsEvery(
-            @Sequenced @Name("elements") @TypeInfo("ceylon.language::Iterable<ceylon.language::Object>") Iterable<?> elements) {
+            @Sequenced @Name("elements") @TypeInfo("ceylon.language::Sequential<ceylon.language::Object>") List<?> elements) {
         return cat$impl.containsEvery(elements);
     }
 
@@ -206,7 +206,7 @@ public class LazyList<Element> implements List<Element> {
 
     @Override @Ignore
     public boolean containsAny(
-            @Sequenced @Name("elements") @TypeInfo("ceylon.language::Iterable<ceylon.language::Object>") Iterable<?> elements) {
+            @Sequenced @Name("elements") @TypeInfo("ceylon.language::Sequential<ceylon.language::Object>") List<?> elements) {
         return cat$impl.containsAny(elements);
     }
 
@@ -235,7 +235,7 @@ public class LazyList<Element> implements List<Element> {
     }
 
     @Override @Ignore
-    public boolean definesEvery(Iterable<? extends Integer> keys) {
+    public boolean definesEvery(List<? extends Integer> keys) {
         return corr$impl.definesEvery(keys);
     }
 
@@ -247,12 +247,12 @@ public class LazyList<Element> implements List<Element> {
 
     @Override
     @Ignore
-    public Iterable<? extends Integer> definesEvery$keys() {
+    public List<? extends Integer> definesEvery$keys() {
         return corr$impl.definesEvery$keys();
     }
 
     @Override @Ignore
-    public boolean definesAny(Iterable<? extends Integer> keys) {
+    public boolean definesAny(List<? extends Integer> keys) {
         return corr$impl.definesAny(keys);
     }
 
@@ -264,24 +264,24 @@ public class LazyList<Element> implements List<Element> {
 
     @Override
     @Ignore
-    public Iterable<? extends Integer> definesAny$keys() {
+    public List<? extends Integer> definesAny$keys() {
         return corr$impl.definesAny$keys();
     }
 
     @Override @Ignore
-    public List<? extends Element> items(Iterable<? extends Integer> keys) {
+    public List<? extends Element> items(List<? extends Integer> keys) {
         return corr$impl.items(keys);
     }
 
     @Override
     @Ignore
-    public Iterable<? extends Element> items() {
+    public List<? extends Element> items() {
         return corr$impl.items();
     }
 
     @Override
     @Ignore
-    public Iterable<? extends Integer> items$keys() {
+    public List<? extends Integer> items$keys() {
         return corr$impl.items$keys();
     }
 

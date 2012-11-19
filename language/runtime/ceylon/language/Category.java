@@ -16,8 +16,8 @@ public interface Category {
     
     @Annotations(@Annotation("default"))
     public boolean containsEvery(@Sequenced @Name("elements") 
-    @TypeInfo("ceylon.language::Iterable<ceylon.language::Object>")
-    Iterable<?> elements);
+    @TypeInfo("ceylon.language::Sequential<ceylon.language::Object>")
+    List<?> elements);
     @Ignore
     public boolean containsEvery();
     @Ignore
@@ -25,8 +25,8 @@ public interface Category {
 
     @Annotations(@Annotation("default"))
     public boolean containsAny(@Sequenced @Name("elements") 
-    @TypeInfo("ceylon.language::Iterable<ceylon.language::Object>")
-    Iterable<?> elements);
+    @TypeInfo("ceylon.language::Sequential<ceylon.language::Object>")
+    List<?> elements);
     @Ignore
     public boolean containsAny();
     @Ignore

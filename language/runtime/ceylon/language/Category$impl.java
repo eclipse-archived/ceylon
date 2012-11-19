@@ -9,7 +9,7 @@ public final class Category$impl {
     public Category$impl(Category $this) {
         this.$this = $this;
     }
-    public static boolean _containsEvery(Category $this, ceylon.language.Iterable<?> elements) {
+    public static boolean _containsEvery(Category $this, ceylon.language.List<?> elements) {
         java.lang.Object element;
         for (ceylon.language.Iterator<?> iter = elements.getIterator(); 
                 !((element = iter.next()) instanceof Finished);) {
@@ -19,17 +19,17 @@ public final class Category$impl {
         }
         return true;
     }
-    public boolean containsEvery(ceylon.language.Iterable<?> elements) {
+    public boolean containsEvery(ceylon.language.List<?> elements) {
         return _containsEvery($this, elements);
     }
     public boolean containsEvery() {
         return _containsEvery($this, empty_.getEmpty$());
     }
-    public ceylon.language.Iterable containsEvery$elements() {
+    public ceylon.language.List containsEvery$elements() {
         return empty_.getEmpty$();
     }
 
-    public static boolean _containsAny(Category $this, ceylon.language.Iterable<?> elements) {
+    public static boolean _containsAny(Category $this, ceylon.language.List<?> elements) {
         java.lang.Object element;
         for (ceylon.language.Iterator<?> iter = elements.getIterator(); 
                 !((element = iter.next()) instanceof Finished);) {
@@ -39,13 +39,13 @@ public final class Category$impl {
         }
         return false;
     }
-    public boolean containsAny(ceylon.language.Iterable<?> elements) {
+    public boolean containsAny(ceylon.language.List<?> elements) {
         return _containsAny($this, elements);
     }
     public boolean containsAny() {
         return _containsAny($this, empty_.getEmpty$());
     }
-    public ceylon.language.Iterable containsAny$elements() {
+    public ceylon.language.List containsAny$elements() {
         return empty_.getEmpty$();
     }
 }

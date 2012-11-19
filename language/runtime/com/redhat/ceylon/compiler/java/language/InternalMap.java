@@ -57,7 +57,7 @@ public class InternalMap<Key, Item> implements Map<Key, Item> {
 
     @Override
     @Annotations(@Annotation("default"))
-    public boolean definesEvery(Iterable<? extends java.lang.Object> keys) {
+    public boolean definesEvery(List<? extends java.lang.Object> keys) {
         return corr$impl.definesEvery(keys);
     }
 
@@ -69,13 +69,13 @@ public class InternalMap<Key, Item> implements Map<Key, Item> {
 
     @Override
     @Ignore
-    public Iterable<? extends Object> definesEvery$keys() {
+    public List<? extends Object> definesEvery$keys() {
         return corr$impl.definesEvery$keys();
     }
 
     @Override
     @Annotations(@Annotation("default"))
-    public boolean definesAny(Iterable<? extends Object> keys) {
+    public boolean definesAny(List<? extends Object> keys) {
         return corr$impl.definesAny(keys);
     }
 
@@ -87,26 +87,26 @@ public class InternalMap<Key, Item> implements Map<Key, Item> {
 
     @Override
     @Ignore
-    public Iterable<? extends Object> definesAny$keys() {
+    public List<? extends Object> definesAny$keys() {
         return corr$impl.definesAny$keys();
     }
 
     @Override
     @Annotations(@Annotation("default"))
-    @TypeInfo("ceylon.language::Empty|ceylon.language::Sequence<Item|ceylon.language::Nothing>")
-    public List<? extends Item> items(Iterable<? extends Object> keys) {
+    @TypeInfo("ceylon.language::Sequential<Item|ceylon.language::Nothing>")
+    public List<? extends Item> items(List<? extends Object> keys) {
         return corr$impl.items(keys);
     }
 
     @Override
     @Ignore
-    public Iterable<? extends Item> items() {
+    public List<? extends Item> items() {
         return corr$impl.items();
     }
 
     @Override
     @Ignore
-    public Iterable<? extends Object> items$keys() {
+    public List<? extends Object> items$keys() {
         return corr$impl.items$keys();
     }
 
@@ -315,7 +315,7 @@ public class InternalMap<Key, Item> implements Map<Key, Item> {
     @Override
     @Annotations(@Annotation("default"))
     public boolean containsEvery(
-            @Sequenced @Name("elements") @TypeInfo("ceylon.language::Iterable<ceylon.language::Object>") Iterable<?> elements) {
+            @Sequenced @Name("elements") @TypeInfo("ceylon.language::Sequential<ceylon.language::Object>") List<?> elements) {
         return cat$impl.containsEvery(elements);
     }
 
@@ -334,7 +334,7 @@ public class InternalMap<Key, Item> implements Map<Key, Item> {
     @Override
     @Annotations(@Annotation("default"))
     public boolean containsAny(
-            @Sequenced @Name("elements") @TypeInfo("ceylon.language::Iterable<ceylon.language::Object>") Iterable<?> elements) {
+            @Sequenced @Name("elements") @TypeInfo("ceylon.language::Sequential<ceylon.language::Object>") List<?> elements) {
         return cat$impl.containsAny(elements);
     }
 

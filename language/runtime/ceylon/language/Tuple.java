@@ -261,8 +261,8 @@ public class Tuple<Element, First extends Element, Rest extends Sequential<Eleme
 	@Override
 	@Annotations(@Annotation("default"))
 	public boolean containsEvery(@Sequenced @Name("elements")
-	        @TypeInfo("ceylon.language::Iterable<ceylon.language::Object>")
-			Iterable<?> elements) {
+	        @TypeInfo("ceylon.language::Sequential<ceylon.language::Object>")
+	List<?> elements) {
 		return category$impl.containsEvery(elements);
 	}
 
@@ -281,8 +281,8 @@ public class Tuple<Element, First extends Element, Rest extends Sequential<Eleme
 	@Override
 	@Annotations(@Annotation("default"))
 	public boolean containsAny(@Sequenced @Name("elements")
-	        @TypeInfo("ceylon.language::Iterable<ceylon.language::Object>")
-	        Iterable<?> elements) {
+	        @TypeInfo("ceylon.language::Sequential<ceylon.language::Object>")
+	List<?> elements) {
 		return category$impl.containsAny(elements);
 	}
 
@@ -314,8 +314,8 @@ public class Tuple<Element, First extends Element, Rest extends Sequential<Eleme
 	@Override
 	@Annotations(@Annotation("default"))
 	public boolean definesEvery(@Sequenced @Name("keys")
-            @TypeInfo("ceylon.language::Iterable<ceylon.language::Integer>")
-        	Iterable<? extends Integer> keys) {
+            @TypeInfo("ceylon.language::Sequential<ceylon.language::Integer>")
+	        List<? extends Integer> keys) {
 		return correspondence$impl.definesEvery(keys);
 	}
 
@@ -327,15 +327,15 @@ public class Tuple<Element, First extends Element, Rest extends Sequential<Eleme
 
 	@Override
 	@Ignore
-	public Iterable<? extends Integer> definesEvery$keys() {
+	public List<? extends Integer> definesEvery$keys() {
 		return correspondence$impl.definesEvery$keys();
 	}
 
 	@Override
 	@Annotations(@Annotation("default"))
 	public boolean definesAny(@Sequenced @Name("keys")
-            @TypeInfo("ceylon.language::Iterable<ceylon.language::Integer>")
-        	Iterable<? extends Integer> keys) {
+            @TypeInfo("ceylon.language::Sequential<ceylon.language::Integer>")
+	        List<? extends Integer> keys) {
 		return correspondence$impl.definesAny(keys);
 	}
 
@@ -347,28 +347,28 @@ public class Tuple<Element, First extends Element, Rest extends Sequential<Eleme
 
 	@Override
 	@Ignore
-	public Iterable<? extends Integer> definesAny$keys() {
+	public List<? extends Integer> definesAny$keys() {
 		return correspondence$impl.definesAny$keys();
 	}
 
 	@Override
 	@Annotations(@Annotation("default"))
-	@TypeInfo("ceylon.language::Empty|ceylon.language::Sequence<Element|ceylon.language::Nothing>")
+	@TypeInfo("ceylon.language::Sequential<Element|ceylon.language::Nothing>")
 	public List<? extends Element> items(@Sequenced @Name("keys")
-            @TypeInfo("ceylon.language::Iterable<ceylon.language::Integer>")
-        	Iterable<? extends Integer> keys) {
+            @TypeInfo("ceylon.language::Sequential<ceylon.language::Integer>")
+	        List<? extends Integer> keys) {
 		return correspondence$impl.items(keys);
 	}
 
 	@Override
 	@Ignore
-	public Iterable<? extends Element> items() {
+	public List<? extends Element> items() {
 		return correspondence$impl.items();
 	}
 
 	@Override
 	@Ignore
-	public Iterable<? extends Integer> items$keys() {
+	public List<? extends Integer> items$keys() {
 		return correspondence$impl.items$keys();
 	}
 

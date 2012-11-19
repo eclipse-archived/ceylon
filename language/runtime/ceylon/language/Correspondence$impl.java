@@ -42,7 +42,7 @@ public final class Correspondence$impl<Key,Item> {
 
             @Override
             @Ignore
-            public boolean containsEvery(ceylon.language.Iterable<?> elements) {
+            public boolean containsEvery(ceylon.language.List<?> elements) {
                 return Category$impl._containsEvery(this, elements);
             }
             @Override
@@ -52,13 +52,13 @@ public final class Correspondence$impl<Key,Item> {
             }
             @Override
             @Ignore
-            public ceylon.language.Iterable<?> containsEvery$elements() {
+            public ceylon.language.List<?> containsEvery$elements() {
                 return empty_.getEmpty$();
             }
 
             @Override
             @Ignore
-            public boolean containsAny(ceylon.language.Iterable<?> elements) {
+            public boolean containsAny(ceylon.language.List<?> elements) {
                 return Category$impl._containsAny(this, elements);
             }
             @Override
@@ -68,23 +68,23 @@ public final class Correspondence$impl<Key,Item> {
             }
             @Override
             @Ignore
-            public ceylon.language.Iterable<?> containsAny$elements() {
+            public ceylon.language.List<?> containsAny$elements() {
                 return empty_.getEmpty$();
             }
         };
         return keys;
     }
 
-    public boolean definesEvery(ceylon.language.Iterable<? extends Key> keys){
+    public boolean definesEvery(ceylon.language.List<? extends Key> keys){
         return Correspondence$impl.<Key,Item>_definesEvery(this.$this, keys);
     }
     public boolean definesEvery(){
-        return Correspondence$impl.<Key,Item>_definesEvery(this.$this, (Iterable)empty_.getEmpty$());
+        return Correspondence$impl.<Key,Item>_definesEvery(this.$this, (List)empty_.getEmpty$());
     }
-    public ceylon.language.Iterable<? extends Key> definesEvery$keys(){
-        return (Iterable)empty_.getEmpty$();
+    public ceylon.language.List<? extends Key> definesEvery$keys(){
+        return (List<? extends Key>) empty_.getEmpty$();
     }
-    public static <Key,Item> boolean _definesEvery(Correspondence<Key,Item> $this, ceylon.language.Iterable<? extends Key> keys){
+    public static <Key,Item> boolean _definesEvery(Correspondence<Key,Item> $this, ceylon.language.List<? extends Key> keys){
         java.lang.Object elem;
         for (ceylon.language.Iterator<? extends Key> $key$iter$0 = keys.getIterator(); !((elem = $key$iter$0.next()) instanceof Finished);) {
             final Key key = (Key) elem;
@@ -95,16 +95,16 @@ public final class Correspondence$impl<Key,Item> {
         return true;
     }
 
-    public boolean definesAny(ceylon.language.Iterable<? extends Key> keys) {
+    public boolean definesAny(ceylon.language.List<? extends Key> keys) {
         return Correspondence$impl.<Key,Item>_definesAny(this.$this, keys);
     }
     public boolean definesAny() {
-        return Correspondence$impl.<Key,Item>_definesAny(this.$this, (Iterable)empty_.getEmpty$());
+        return Correspondence$impl.<Key,Item>_definesAny(this.$this, (List)empty_.getEmpty$());
     }
-    public ceylon.language.Iterable<? extends Key> definesAny$keys() {
-        return (Iterable)empty_.getEmpty$();
+    public ceylon.language.List<? extends Key> definesAny$keys() {
+        return (List)empty_.getEmpty$();
     }
-    public static <Key,Item> boolean _definesAny(Correspondence<Key,Item> $this, ceylon.language.Iterable<? extends Key> keys) {
+    public static <Key,Item> boolean _definesAny(Correspondence<Key,Item> $this, ceylon.language.List<? extends Key> keys) {
         java.lang.Object elem;
         for (ceylon.language.Iterator<? extends Key> $key$iter$0 = keys.getIterator(); !((elem = $key$iter$0.next()) instanceof Finished);) {
             final Key key = (Key) elem;
@@ -115,16 +115,16 @@ public final class Correspondence$impl<Key,Item> {
         return false;
     }
 
-    public ceylon.language.List<? extends Item> items(ceylon.language.Iterable<? extends Key> keys) {
+    public ceylon.language.List<? extends Item> items(ceylon.language.List<? extends Key> keys) {
         return Correspondence$impl.<Key,Item>_items(this.$this, keys);
     }
     public ceylon.language.List<? extends Item> items() {
-        return Correspondence$impl.<Key,Item>_items(this.$this, (Iterable)empty_.getEmpty$());
+        return Correspondence$impl.<Key,Item>_items(this.$this, (List)empty_.getEmpty$());
     }
-    public ceylon.language.Iterable<? extends Key> items$keys() {
-        return (Iterable)empty_.getEmpty$();
+    public ceylon.language.List<? extends Key> items$keys() {
+        return (List)empty_.getEmpty$();
     }
-    public static <Key,Item> ceylon.language.List<? extends Item> _items(Correspondence<Key,Item> $this, ceylon.language.Iterable<? extends Key> keys) {
+    public static <Key,Item> ceylon.language.List<? extends Item> _items(Correspondence<Key,Item> $this, ceylon.language.List<? extends Key> keys) {
         if (keys instanceof Sequence) {
             final ceylon.language.Sequence<? extends Key> $keys$1 = (Sequence<? extends Key>)keys;
             return $this.Items$new((Sequence<? extends Key>)$keys$1.getClone());
@@ -188,48 +188,48 @@ public final class Correspondence$impl<Key,Item> {
         }
         @Override
         @Ignore
-        public boolean definesEvery(Iterable<? extends Integer> keys) {
+        public boolean definesEvery(List<? extends Integer> keys) {
             return Correspondence$impl._definesEvery(this, keys);
         }
         @Override @Ignore
         @SuppressWarnings({"rawtypes", "unchecked"})
         public boolean definesEvery() {
-            return Correspondence$impl._definesEvery(this, (Iterable)empty_.getEmpty$());
+            return Correspondence$impl._definesEvery(this, (List)empty_.getEmpty$());
         }
         @Override @Ignore
         @SuppressWarnings({"rawtypes", "unchecked"})
-        public Iterable<? extends Integer> definesEvery$keys() {
-            return (Iterable)empty_.getEmpty$();
+        public List<? extends Integer> definesEvery$keys() {
+            return (List)empty_.getEmpty$();
         }
         @Override
         @Ignore
-        public boolean definesAny(Iterable<? extends Integer> keys) {
+        public boolean definesAny(List<? extends Integer> keys) {
             return Correspondence$impl._definesAny(this, keys);
         }
         @Override @Ignore
         @SuppressWarnings({"rawtypes", "unchecked"})
         public boolean definesAny() {
-            return Correspondence$impl._definesAny(this, (Iterable)empty_.getEmpty$());
+            return Correspondence$impl._definesAny(this, (List)empty_.getEmpty$());
         }
         @Override @Ignore
         @SuppressWarnings({"rawtypes", "unchecked"})
-        public Iterable<? extends Integer> definesAny$keys() {
-            return (Iterable)empty_.getEmpty$();
+        public List<? extends Integer> definesAny$keys() {
+            return (List)empty_.getEmpty$();
         }
         @Override
         @Ignore
-        public List<? extends Item> items(Iterable<? extends Integer> keys) {
+        public List<? extends Item> items(List<? extends Integer> keys) {
             return Correspondence$impl._items(this, keys);
         }
         @Override @Ignore
         @SuppressWarnings({"rawtypes", "unchecked"})
         public List<? extends Item> items() {
-            return Correspondence$impl._items(this, (Iterable)empty_.getEmpty$());
+            return Correspondence$impl._items(this, (List)empty_.getEmpty$());
         }
         @Override @Ignore
         @SuppressWarnings({"rawtypes", "unchecked"})
-        public Iterable<? extends Integer> items$keys() {
-            return (Iterable)empty_.getEmpty$();
+        public List<? extends Integer> items$keys() {
+            return (List)empty_.getEmpty$();
         }
         @Override
         @Ignore
@@ -299,7 +299,7 @@ public final class Correspondence$impl<Key,Item> {
         }
         @Override
         @Ignore
-        public boolean containsEvery(Iterable<?> elements) {
+        public boolean containsEvery(List<?> elements) {
             return Category$impl._containsEvery(this, elements);
         }
         @Override
@@ -314,7 +314,7 @@ public final class Correspondence$impl<Key,Item> {
         }
         @Override
         @Ignore
-        public boolean containsAny(Iterable<?> elements) {
+        public boolean containsAny(List<?> elements) {
             return Category$impl._containsAny(this, elements);
         }
         @Override

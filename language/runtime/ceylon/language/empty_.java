@@ -32,7 +32,7 @@ public class empty_ {
 
         @Override
         @SuppressWarnings({"rawtypes"})
-        public boolean definesEvery(Iterable keys) {
+        public boolean definesEvery(List keys) {
             return false;
         }
         @Override
@@ -41,13 +41,13 @@ public class empty_ {
         }
         @Override
         @SuppressWarnings({"rawtypes", "unchecked"})
-        public Iterable definesEvery$keys() {
+        public List definesEvery$keys() {
             return this;
         }
 
         @Override
         @SuppressWarnings({"rawtypes"})
-        public boolean definesAny(Iterable keys) {
+        public boolean definesAny(List keys) {
             return false;
         }
         @Override
@@ -56,13 +56,13 @@ public class empty_ {
         }
         @Override
         @SuppressWarnings({"rawtypes", "unchecked"})
-        public Iterable definesAny$keys() {
+        public List definesAny$keys() {
             return this;
         }
 
         @Override
         @SuppressWarnings({"rawtypes"})
-        public List<? extends java.lang.Object> items(Iterable keys) {
+        public List<? extends java.lang.Object> items(List keys) {
             return this;
         }
         @Override
@@ -71,13 +71,13 @@ public class empty_ {
         }
         @Override
         @SuppressWarnings({"rawtypes", "unchecked"})
-        public Iterable items$keys() {
+        public List items$keys() {
             return this;
         }
         
         @Override
         @Ignore
-        public boolean containsEvery(ceylon.language.Iterable<?> elements) {
+        public boolean containsEvery(ceylon.language.List<?> elements) {
             return Category$impl._containsEvery(this, elements);
         }
         @Override
@@ -94,7 +94,7 @@ public class empty_ {
 
         @Override
         @Ignore
-        public boolean containsAny(ceylon.language.Iterable<?> elements) {
+        public boolean containsAny(ceylon.language.List<?> elements) {
             return Category$impl._containsAny(this, elements);
         }
         @Override

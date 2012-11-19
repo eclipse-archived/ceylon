@@ -70,8 +70,8 @@ public class LazyMap<Key, Item> implements Map<Key, Item> {
     }
 
     @Ignore @Override @SuppressWarnings("unchecked")
-    public boolean definesEvery(Iterable<? extends java.lang.Object> keys) {
-        return corr$impl.definesEvery((Iterable<? extends Key>)keys);
+    public boolean definesEvery(List<? extends java.lang.Object> keys) {
+        return corr$impl.definesEvery((List<? extends Key>)keys);
     }
 
     @Override @Ignore
@@ -80,13 +80,13 @@ public class LazyMap<Key, Item> implements Map<Key, Item> {
     }
 
     @Override @Ignore
-    public Iterable<? extends java.lang.Object> definesEvery$keys() {
+    public List<? extends java.lang.Object> definesEvery$keys() {
         return corr$impl.definesEvery$keys();
     }
 
     @Ignore @Override @SuppressWarnings("unchecked")
-    public boolean definesAny(Iterable<? extends java.lang.Object> keys) {
-        return corr$impl.definesAny((Iterable<? extends Key>)keys);
+    public boolean definesAny(List<? extends java.lang.Object> keys) {
+        return corr$impl.definesAny((List<? extends Key>)keys);
     }
 
     @Override @Ignore
@@ -95,23 +95,23 @@ public class LazyMap<Key, Item> implements Map<Key, Item> {
     }
 
     @Override @Ignore
-    public Iterable<? extends java.lang.Object> definesAny$keys() {
+    public List<? extends java.lang.Object> definesAny$keys() {
         return corr$impl.definesAny$keys();
     }
 
     @Ignore @Override @SuppressWarnings("unchecked")
     public List<? extends Item> items(
-            Iterable<? extends java.lang.Object> keys) {
-        return corr$impl.items((Iterable<? extends Key>)keys);
+            List<? extends java.lang.Object> keys) {
+        return corr$impl.items((List<? extends Key>)keys);
     }
 
     @Override @Ignore
-    public Iterable<? extends Item> items() {
+    public List<? extends Item> items() {
         return corr$impl.items();
     }
 
     @Override @Ignore
-    public Iterable<? extends java.lang.Object> items$keys() {
+    public List<? extends java.lang.Object> items$keys() {
         return corr$impl.items$keys();
     }
 
@@ -290,7 +290,7 @@ public class LazyMap<Key, Item> implements Map<Key, Item> {
     }
 
     @Ignore @Override
-    public boolean containsEvery(Iterable<?> elements) {
+    public boolean containsEvery(List<?> elements) {
         return cat$impl.containsEvery(elements);
     }
 
@@ -306,7 +306,7 @@ public class LazyMap<Key, Item> implements Map<Key, Item> {
 
     @Ignore @Override
     public boolean containsAny(
-            @Sequenced @Name("elements") @TypeInfo("ceylon.language::Iterable<ceylon.language::Object>") Iterable<?> elements) {
+            @Sequenced @Name("elements") @TypeInfo("ceylon.language::Sequential<ceylon.language::Object>") List<?> elements) {
         return cat$impl.containsAny(elements);
     }
 
