@@ -249,7 +249,7 @@ public abstract class Bug476<T> implements .ceylon.language.List<T> {
     private final .ceylon.language.Category$impl $ceylon$language$Category$this;
     
     @.java.lang.Override
-    public final .ceylon.language.Iterable<? extends .java.lang.Object> containsEvery$elements() {
+    public final .ceylon.language.List<? extends .java.lang.Object> containsEvery$elements() {
         return $ceylon$language$Category$this.containsEvery$elements();
     }
     
@@ -259,12 +259,12 @@ public abstract class Bug476<T> implements .ceylon.language.List<T> {
     }
     
     @.java.lang.Override
-    public boolean containsEvery(final .ceylon.language.Iterable<? extends .java.lang.Object> elements) {
+    public boolean containsEvery(final .ceylon.language.List<? extends .java.lang.Object> elements) {
         return $ceylon$language$Category$this.containsEvery(elements);
     }
     
     @.java.lang.Override
-    public final .ceylon.language.Iterable<? extends .java.lang.Object> containsAny$elements() {
+    public final .ceylon.language.List<? extends .java.lang.Object> containsAny$elements() {
         return $ceylon$language$Category$this.containsAny$elements();
     }
     
@@ -274,7 +274,7 @@ public abstract class Bug476<T> implements .ceylon.language.List<T> {
     }
     
     @.java.lang.Override
-    public boolean containsAny(final .ceylon.language.Iterable<? extends .java.lang.Object> elements) {
+    public boolean containsAny(final .ceylon.language.List<? extends .java.lang.Object> elements) {
         return $ceylon$language$Category$this.containsAny(elements);
     }
     private final .ceylon.language.Cloneable$impl<.ceylon.language.Collection<? extends T>> $ceylon$language$Cloneable$this;
@@ -296,7 +296,7 @@ public abstract class Bug476<T> implements .ceylon.language.List<T> {
     }
     
     @.java.lang.Override
-    public final .ceylon.language.Iterable<? extends .ceylon.language.Integer> definesEvery$keys() {
+    public final .ceylon.language.List<? extends .ceylon.language.Integer> definesEvery$keys() {
         return $ceylon$language$Correspondence$this.definesEvery$keys();
     }
     
@@ -306,12 +306,12 @@ public abstract class Bug476<T> implements .ceylon.language.List<T> {
     }
     
     @.java.lang.Override
-    public boolean definesEvery(final .ceylon.language.Iterable<? extends .ceylon.language.Integer> keys) {
+    public boolean definesEvery(final .ceylon.language.List<? extends .ceylon.language.Integer> keys) {
         return $ceylon$language$Correspondence$this.definesEvery(keys);
     }
     
     @.java.lang.Override
-    public final .ceylon.language.Iterable<? extends .ceylon.language.Integer> definesAny$keys() {
+    public final .ceylon.language.List<? extends .ceylon.language.Integer> definesAny$keys() {
         return $ceylon$language$Correspondence$this.definesAny$keys();
     }
     
@@ -321,12 +321,12 @@ public abstract class Bug476<T> implements .ceylon.language.List<T> {
     }
     
     @.java.lang.Override
-    public boolean definesAny(final .ceylon.language.Iterable<? extends .ceylon.language.Integer> keys) {
+    public boolean definesAny(final .ceylon.language.List<? extends .ceylon.language.Integer> keys) {
         return $ceylon$language$Correspondence$this.definesAny(keys);
     }
     
     @.java.lang.Override
-    public final .ceylon.language.Iterable<? extends .ceylon.language.Integer> items$keys() {
+    public final .ceylon.language.List<? extends .ceylon.language.Integer> items$keys() {
         return $ceylon$language$Correspondence$this.items$keys();
     }
     
@@ -336,7 +336,7 @@ public abstract class Bug476<T> implements .ceylon.language.List<T> {
     }
     
     @.java.lang.Override
-    public .ceylon.language.List<? extends T> items(final .ceylon.language.Iterable<? extends .ceylon.language.Integer> keys) {
+    public .ceylon.language.List<? extends T> items(final .ceylon.language.List<? extends .ceylon.language.Integer> keys) {
         return $ceylon$language$Correspondence$this.items(keys);
     }
     private final .ceylon.language.Ranged$impl<.ceylon.language.Integer, .ceylon.language.List<? extends T>> $ceylon$language$Ranged$this;
