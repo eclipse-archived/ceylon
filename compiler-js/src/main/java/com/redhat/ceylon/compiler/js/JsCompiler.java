@@ -183,6 +183,9 @@ public class JsCompiler {
                     String name = pu.getUnitFile().getName();
                     if (!"module.ceylon".equals(name) && !"package.ceylon".equals(name)) {
                         pu.getCompilationUnit().visit(getOutput(pu).mmg);
+                        if (opts.isVerbose()) {
+                            System.out.println(pu.getCompilationUnit());
+                        }
                     }
                 }
             }

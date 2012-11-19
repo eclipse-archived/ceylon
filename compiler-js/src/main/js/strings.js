@@ -12,21 +12,21 @@ function String$(value,size) {
     that.codePoints = size;
     return that;
 }
-initExistingType(String$, String, 'ceylon.language::String', Object$, Comparable,
-        Ranged, FixedSized, Summable, Castable, Cloneable, List);
+initExistingType(String$, String, 'ceylon.language::String', Object$, Sequential, Comparable,
+        Ranged, Summable, Castable, Cloneable);
 var origStrToString = String.prototype.toString;
-inheritProtoI(String$, Object$, Comparable, Ranged, FixedSized, Summable, Castable,
-        Cloneable, List);
-function StringOfSome() {}
-initType(StringOfSome, "ceylon.language::StringOfSome", String$, Some);
-function StringOfNone() {}
-initType(StringOfNone, "ceylon.language::StringOfNone", String$, None);
+inheritProtoI(String$, Object$, Sequential, Comparable, Ranged, Summable, Castable,
+        Cloneable);
+function SequenceString() {}
+initType(SequenceString, "ceylon.language::SequenceString", String$, Some);
+function EmptyString() {}
+initType(EmptyString, "ceylon.language::EmptyString", String$, None);
 var String$proto = String$.$$.prototype;
 String$proto.getT$name = function() {
-    return ((this.length!==0)?StringOfSome:StringOfNone).$$.T$name;
+    return ((this.length!==0)?SequenceString:EmptyString).$$.T$name;
 }
 String$proto.getT$all = function() {
-    return ((this.length!==0)?StringOfSome:StringOfNone).$$.T$all;
+    return ((this.length!==0)?SequenceString:EmptyString).$$.T$all;
 }
 String$proto.toString = origStrToString;
 String$proto.getString = function() { return this }

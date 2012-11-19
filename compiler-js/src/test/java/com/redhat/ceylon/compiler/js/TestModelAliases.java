@@ -53,30 +53,30 @@ public class TestModelAliases {
         Assert.assertNotNull("Missing alias Stringteger", ta);
         ModelUtils.checkMap(ta, MetamodelGenerator.KEY_NAME, "Strinteger");
         Map<String,Object> parent = (Map<String, Object>)ta.get("$alias");
-        ModelUtils.checkType(parent, "ceylon.language.String|ceylon.language.Integer");
+        ModelUtils.checkType(parent, "ceylon.language::String|ceylon.language::Integer");
 
         ta = (Map<String,Object>)model.get("Verbostring");
         Assert.assertNotNull("Missing alias Verbostring", ta);
         ModelUtils.checkMap(ta, MetamodelGenerator.KEY_NAME, "Verbostring");
         parent = (Map<String, Object>)ta.get("$alias");
-        ModelUtils.checkType(parent, "ceylon.language.Some<ceylon.language.Character>&ceylon.language.String");
+        ModelUtils.checkType(parent, "ceylon.language::Some<ceylon.language::Character>&ceylon.language::String");
 
         ta = (Map<String,Object>)model.get("Numbers");
         Assert.assertNotNull("Missing alias Numbers", ta);
         ModelUtils.checkMap(ta, MetamodelGenerator.KEY_NAME, "Numbers");
         parent = (Map<String, Object>)ta.get("$alias");
-        ModelUtils.checkType(parent, "ceylon.language.Empty|ceylon.language.Sequence<ceylon.language.Integer>");
+        ModelUtils.checkType(parent, "ceylon.language::Empty|ceylon.language::Sequence<ceylon.language::Integer>");
 
         ta = (Map<String,Object>)model.get("Objecton");
         Assert.assertNotNull("Missing alias Objecton", ta);
         ModelUtils.checkMap(ta, MetamodelGenerator.KEY_NAME, "Objecton");
         parent = (Map<String, Object>)ta.get("$alias");
-        ModelUtils.checkType(parent, "T|ceylon.language.Singleton<T>");
+        ModelUtils.checkType(parent, "T|ceylon.language::Singleton<T>");
         List<Map<String, Object>> ps = (List<Map<String, Object>>)ta.get(MetamodelGenerator.KEY_TYPE_PARAMS);
         Assert.assertEquals("Objecton must have 1 parameter type", 1, ps.size());
         ModelUtils.checkType(ps.get(0), "T");
         ps = (List<Map<String, Object>>)ps.get(0).get("satisfies");
-        ModelUtils.checkType(((List<Map<String, Object>>)ps).get(0), "ceylon.language.Object");
+        ModelUtils.checkType(((List<Map<String, Object>>)ps).get(0), "ceylon.language::Object");
     }
 
     @Test @SuppressWarnings("unchecked")
@@ -86,14 +86,14 @@ public class TestModelAliases {
         Assert.assertEquals("Not an alias", "1", ca.get("$alias"));
         ModelUtils.checkMap(ca, MetamodelGenerator.KEY_NAME, "LS");
         Map<String,Object> parent = (Map<String, Object>)ca.get("super");
-        ModelUtils.checkType(parent, "ceylon.language.LazyList<ceylon.language.Singleton<T>>");
-        ModelUtils.checkParam(ca, 0, "ss", "ceylon.language.Singleton<T>", false, true);
+        ModelUtils.checkType(parent, "ceylon.language::LazyList<ceylon.language::Singleton<T>>");
+        ModelUtils.checkParam(ca, 0, "ss", "ceylon.language::Singleton<T>", false, true);
         ModelUtils.checkAnnotations(ca, "shared");
         List<Map<String, Object>> ps = (List<Map<String, Object>>)ca.get(MetamodelGenerator.KEY_TYPE_PARAMS);
         Assert.assertEquals("LS must have 1 parameter type", 1, ps.size());
         ModelUtils.checkType(ps.get(0), "T");
         ps = (List<Map<String, Object>>)ps.get(0).get("satisfies");
-        ModelUtils.checkType(((List<Map<String, Object>>)ps).get(0), "ceylon.language.Object");
+        ModelUtils.checkType(((List<Map<String, Object>>)ps).get(0), "ceylon.language::Object");
     }
 
     @Test @SuppressWarnings("unchecked")
@@ -106,7 +106,7 @@ public class TestModelAliases {
         ModelUtils.checkType(ps.get(0), "Cell");
         ModelUtils.checkAnnotations(ia, "shared");
         Map<String,Object> parent = (Map<String, Object>)ia.get("$alias");
-        ModelUtils.checkType(parent, "ceylon.language.Sequence<ceylon.language.Sequence<Cell>>");
+        ModelUtils.checkType(parent, "ceylon.language::Sequence<ceylon.language::Sequence<Cell>>");
     }
 
 }

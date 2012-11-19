@@ -46,3 +46,5 @@ variable Float pi := 3.14;
 shared variable Sequence<Integer> seq := { 5 };
 variable Integer|String union := "five";
 ContainerWithFirstElement<String|Singleton<Integer>,Nothing> useq = { "a", Singleton(2) };
+shared Integer[] sequentialAttribute1 = { 0 };
+shared Integer[] sequentialAttribute2 = {};

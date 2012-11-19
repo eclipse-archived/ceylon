@@ -47,7 +47,7 @@ shared void test() {
     check(dt+1 == 6, "assert is [1]");
     assert(is Integer mt);
     assert(nonempty mseq, exists mseq[1]);
-    assert(exists ms2=ms, nonempty ms2.initial(1));
+    assert(exists ms2=ms, exists m2_1=ms);
     assert(is String ms3=ms, exists ms3[0]);
     try {
         assert(2+2==5);

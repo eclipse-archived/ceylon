@@ -193,14 +193,14 @@ void testNullsafeOperators() {
     NullsafeTest? obj = null;
     Integer? i = obj?.f();
     check(!exists i, "nullsafe invoke");
-    Callable<Integer?> f2 = obj?.f;
+    Callable<Integer?,<>> f2 = obj?.f;
     check(!exists nullsafeTest(f2), "nullsafe method ref");
-    Callable<Integer?>? f3 = obj?.f;
+    Callable<Integer?,<>>? f3 = obj?.f;
     check(exists f3, "nullsafe method ref 2");
     obj?.f();
     check(!exists obj?.f(), "nullsafe simple call");
     NullsafeTest? getNullsafe() { return obj; }
-    function f4() = getNullsafe()?.f;
+    function f4() => getNullsafe()?.f();
     Integer? result_f4 = f4();
     check(!exists result_f4, "nullsafe invoke 2");
     Integer? i2 = getNullsafe()?.f();
@@ -212,7 +212,7 @@ void testNullsafeOperators() {
     } else {
         fail("nullsafe invoke 4 (null)");
     }
-    Integer? obj2_f() = obj2?.f;
+    Integer? obj2_f() => obj2?.f();
     if (exists i3 = obj2_f()) {
         check(i3==1, "nullsafe method ref 4 (result)");
     } else {
