@@ -135,7 +135,7 @@ final class bug708extra4_ {
             {
                 .ceylon.language.FixedSized<? extends .com.redhat.ceylon.compiler.java.test.issues.bug07xx.Bug708<.ceylon.language.String>> $spreadTest$1 = (.ceylon.language.FixedSized<? extends .com.redhat.ceylon.compiler.java.test.issues.bug07xx.Bug708<.ceylon.language.String>>).com.redhat.ceylon.compiler.java.test.issues.bug07xx.bug708seq_.getBug708seq$();
             }
-            returning (.ceylon.language.List<? extends .ceylon.language.String>)(!$spreadTest$1.getEmpty() ? (
+            returning (.ceylon.language.List<? extends .ceylon.language.String>)($spreadTest$1 instanceof .ceylon.language.Sequence ? (
                 let
                 {
                     .ceylon.language.Sequence<? extends .com.redhat.ceylon.compiler.java.test.issues.bug07xx.Bug708<.ceylon.language.String>> $spread$2$0 = (.ceylon.language.Sequence<? extends .com.redhat.ceylon.compiler.java.test.issues.bug07xx.Bug708<.ceylon.language.String>>)$spreadTest$1;
@@ -625,7 +625,7 @@ public final class bug708_test2_ {
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Integer")
     final long key) {
         .ceylon.language.String $entry$20;
-        if (($entry$20 = (.ceylon.language.String).com.redhat.ceylon.compiler.java.test.issues.bug07xx.bug708_cache_.getBug708_cache$().item(.ceylon.language.Integer.instance(key))) != null) {
+        if (($entry$20 = (.ceylon.language.String)(.ceylon.language.String).com.redhat.ceylon.compiler.java.test.issues.bug07xx.bug708_cache_.getBug708_cache$().item(.ceylon.language.Integer.instance(key))) != null) {
             final .java.lang.String $entry$21 = $entry$20.toString();
         }
     }

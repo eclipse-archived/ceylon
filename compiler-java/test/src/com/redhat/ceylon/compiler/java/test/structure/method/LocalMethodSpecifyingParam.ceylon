@@ -18,7 +18,7 @@
  * MA  02110-1301, USA.
  */
 @nomodel
-void higher(Callable<String,Integer> ref){
-    function f(Integer i)=ref;
+void higher(Callable<String,<Integer>> ref){
+    function f(Integer i)=>ref(i);
     f(2);
 }

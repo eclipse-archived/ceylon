@@ -1,0 +1,28 @@
+package com.redhat.ceylon.compiler.java.test.expression.operator;
+
+class IndexingTuples {
+    
+    IndexingTuples() {
+    }
+    
+    private final void index() {
+        final .ceylon.language.Tuple<? extends .java.lang.Object, ? extends .ceylon.language.Integer, ? extends .ceylon.language.Tuple<? extends .ceylon.language.List<? extends .ceylon.language.Character>, ? extends .ceylon.language.String, ? extends .ceylon.language.Tuple<? extends .ceylon.language.Singleton<? extends .ceylon.language.Character>, ? extends .ceylon.language.Singleton<? extends .ceylon.language.Character>, ? extends .ceylon.language.Empty>>> t = new .ceylon.language.Tuple(.ceylon.language.Integer.instance(1L), new .ceylon.language.Tuple(.ceylon.language.String.instance("2"), new .ceylon.language.Tuple(new .ceylon.language.Singleton<.ceylon.language.Character>(.ceylon.language.Character.instance(51)), .ceylon.language.empty_.getEmpty$())));
+        final long v1 = ((.ceylon.language.Integer)t.item(.ceylon.language.Integer.instance(0L))).longValue();
+    }
+    
+    private final void safe() {
+        final .ceylon.language.Tuple<? extends .java.lang.Object, ? extends .ceylon.language.Integer, ? extends .ceylon.language.Tuple<? extends .ceylon.language.List<? extends .ceylon.language.Character>, ? extends .ceylon.language.String, ? extends .ceylon.language.Tuple<? extends .ceylon.language.List<? extends .ceylon.language.Character>, ? extends .ceylon.language.List<? extends .ceylon.language.Character>, ? extends .ceylon.language.Empty>>> t = new .ceylon.language.Tuple(.ceylon.language.Integer.instance(1L), new .ceylon.language.Tuple(.ceylon.language.String.instance("2"), new .ceylon.language.Tuple(new .ceylon.language.Singleton<.ceylon.language.Character>(.ceylon.language.Character.instance(51)), .ceylon.language.empty_.getEmpty$())));
+        final long v = (
+            let
+            {
+                .ceylon.language.Correspondence<? super .ceylon.language.Integer, ? extends .java.lang.Object> $ceylontmpsafeaccess0 = t;
+            }
+            returning $ceylontmpsafeaccess0 != null ? (.ceylon.language.Integer)$ceylontmpsafeaccess0.item(.ceylon.language.Integer.instance(0L)) : null;
+        ).longValue();
+    }
+    
+    public static void main(.java.lang.String[] args) {
+        .ceylon.language.process_.getProcess$().setupArguments(args);
+        new .com.redhat.ceylon.compiler.java.test.expression.operator.IndexingTuples();
+    }
+}

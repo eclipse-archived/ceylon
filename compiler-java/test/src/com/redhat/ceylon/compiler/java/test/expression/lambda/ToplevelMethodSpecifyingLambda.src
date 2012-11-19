@@ -4,22 +4,23 @@ final class toplevel_ {
     
     private toplevel_() {
     }
-    
-    static final .java.lang.String toplevel() {
-        return (
-            let
-            {
-                .java.lang.String $ceylontmp$name$1 = .com.redhat.ceylon.compiler.java.test.expression.lambda.toplevel_.toplevel$name();
+    private static final .ceylon.language.Callable<? extends .ceylon.language.String>[] value;
+    static {
+        value = new .ceylon.language.Callable[]{new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.ceylon.language.String>("String()"){
+            
+            @.java.lang.Override
+            public .ceylon.language.String $call(final .java.lang.Object $param$0) {
+                final .java.lang.String name2 = ((.ceylon.language.String)$param$0).toString();
+                return .ceylon.language.String.instance("hello " + name2);
             }
-            returning toplevel($ceylontmp$name$1);
-        );
+        }};
     }
     
-    static final .java.lang.String toplevel$name() {
-        return "world";
-    }
-    
-    static .java.lang.String toplevel(final .java.lang.String name) {
-        return ("hello " + name).toString();
+    static .ceylon.language.Callable<? extends .ceylon.language.String> getToplevel$() {
+        try {
+            return value[0];
+        } catch (.java.lang.NullPointerException ex) {
+            throw new .ceylon.language.RecursiveInitializationException();
+        }
     }
 }

@@ -21,7 +21,7 @@
 class KeywordInCallable() {
     void m(void do()) {
         do();
-        function enum() = goto;
+        function enum() => goto;
         m(goto);
         m(enum);
     }

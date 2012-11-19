@@ -1,1 +1,1 @@
-alias Bug825_Num = Integer|Float;
+alias Bug825_Num => Integer|Float;

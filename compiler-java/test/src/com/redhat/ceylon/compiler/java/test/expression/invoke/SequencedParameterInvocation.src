@@ -9,36 +9,36 @@ class SequencedParameterInvocation {
         (
             let
             {
-                .ceylon.language.Iterable<? extends .ceylon.language.Integer> $ceylontmp$i$1 = m$i(a);
+                .ceylon.language.List<? extends .ceylon.language.Integer> $ceylontmp$i$1 = m$i(a);
                 m(a, $ceylontmp$i$1);
             }
             returning null;
         );
     }
     
-    private final .ceylon.language.Iterable<? extends .ceylon.language.Integer> m$i(final .java.lang.String a) {
-        return (.ceylon.language.Iterable).ceylon.language.empty_.getEmpty$();
+    private final .ceylon.language.List<? extends .ceylon.language.Integer> m$i(final .java.lang.String a) {
+        return (.ceylon.language.List).ceylon.language.empty_.getEmpty$();
     }
     
-    private final void m(final .java.lang.String a, final .ceylon.language.Iterable<? extends .ceylon.language.Integer> i) {
+    private final void m(final .java.lang.String a, final .ceylon.language.List<? extends .ceylon.language.Integer> i) {
     }
     
     private final void m2(final .java.lang.String a) {
         (
             let
             {
-                .ceylon.language.Iterable<? extends .com.redhat.ceylon.compiler.java.test.expression.invoke.SequencedParameterInvocation> $ceylontmp$i$3 = m2$i(a);
+                .ceylon.language.List<? extends .com.redhat.ceylon.compiler.java.test.expression.invoke.SequencedParameterInvocation> $ceylontmp$i$3 = m2$i(a);
                 m2(a, $ceylontmp$i$3);
             }
             returning null;
         );
     }
     
-    private final .ceylon.language.Iterable<? extends .com.redhat.ceylon.compiler.java.test.expression.invoke.SequencedParameterInvocation> m2$i(final .java.lang.String a) {
-        return (.ceylon.language.Iterable).ceylon.language.empty_.getEmpty$();
+    private final .ceylon.language.List<? extends .com.redhat.ceylon.compiler.java.test.expression.invoke.SequencedParameterInvocation> m2$i(final .java.lang.String a) {
+        return (.ceylon.language.List).ceylon.language.empty_.getEmpty$();
     }
     
-    private final void m2(final .java.lang.String a, final .ceylon.language.Iterable<? extends .com.redhat.ceylon.compiler.java.test.expression.invoke.SequencedParameterInvocation> i) {
+    private final void m2(final .java.lang.String a, final .ceylon.language.List<? extends .com.redhat.ceylon.compiler.java.test.expression.invoke.SequencedParameterInvocation> i) {
     }
     
     private final void f() {

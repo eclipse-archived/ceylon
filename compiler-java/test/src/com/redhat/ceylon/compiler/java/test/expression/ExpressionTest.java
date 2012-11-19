@@ -300,6 +300,10 @@ public class ExpressionTest extends CompilerTest {
         compareWithJavaSource("operator/SequenceOperators");
     }
     @Test
+    public void testOprIndexingTuples(){
+        compareWithJavaSource("operator/IndexingTuples");
+    }
+    @Test
     public void testOprCreatorOperators(){
         compareWithJavaSource("operator/CreatorOperators");
     }

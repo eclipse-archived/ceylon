@@ -18,4 +18,4 @@
  * MA  02110-1301, USA.
  */
 @nomodel
-String defaultedParameter(String f() = () "bye") { return f(); }
+String defaultedParameter(String f() => "bye") { return f(); }

@@ -25,8 +25,8 @@ class C<X>() {
 }
 @nomodel
 class MethodSpecifyingTopLevelWithTypeParamMixed<S,T>() {
-    shared C<String> c = C<String>();
-    shared C<S> c2 = C<S>();
-    String foo(String s, Integer i) = c.f<Integer>;
-    S bar(S x, T y) = c2.f<T>;
+    shared C<String> c => C<String>();
+    shared C<S> c2 => C<S>();
+    String foo(String s, Integer i) => c.f<Integer>(s,i);
+    S bar(S x, T y) => c2.f<T>(x,y);
 }

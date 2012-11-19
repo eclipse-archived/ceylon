@@ -138,7 +138,7 @@ class MethodWithDefaultParams {
             let
             {
                 long $ceylontmp$n$17 = f6$n();
-                .ceylon.language.Iterable<? extends .ceylon.language.Integer> $ceylontmp$seq$18 = f6$seq($ceylontmp$n$17);
+                .ceylon.language.List<? extends .ceylon.language.Integer> $ceylontmp$seq$18 = f6$seq($ceylontmp$n$17);
                 f6($ceylontmp$n$17, $ceylontmp$seq$18);
             }
             returning null;
@@ -153,18 +153,18 @@ class MethodWithDefaultParams {
         (
             let
             {
-                .ceylon.language.Iterable<? extends .ceylon.language.Integer> $ceylontmp$seq$20 = f6$seq(n);
+                .ceylon.language.List<? extends .ceylon.language.Integer> $ceylontmp$seq$20 = f6$seq(n);
                 f6(n, $ceylontmp$seq$20);
             }
             returning null;
         );
     }
     
-    public final .ceylon.language.Iterable<? extends .ceylon.language.Integer> f6$seq(final long n) {
-        return (.ceylon.language.Iterable).ceylon.language.empty_.getEmpty$();
+    public final .ceylon.language.List<? extends .ceylon.language.Integer> f6$seq(final long n) {
+        return (.ceylon.language.List).ceylon.language.empty_.getEmpty$();
     }
     
-    public final void f6(final long n, final .ceylon.language.Iterable<? extends .ceylon.language.Integer> seq) {
+    public final void f6(final long n, final .ceylon.language.List<? extends .ceylon.language.Integer> seq) {
     }
     
     public static void main(.java.lang.String[] args) {
@@ -220,9 +220,9 @@ interface MethodWithDefaultParams2 {
     
     public abstract .java.lang.Object f6(final long n);
     
-    public abstract .ceylon.language.Iterable<? extends .ceylon.language.Integer> f6$seq(final long n);
+    public abstract .ceylon.language.List<? extends .ceylon.language.Integer> f6$seq(final long n);
     
-    public abstract .java.lang.Object f6(final long n, final .ceylon.language.Iterable<? extends .ceylon.language.Integer> seq);
+    public abstract .java.lang.Object f6(final long n, final .ceylon.language.List<? extends .ceylon.language.Integer> seq);
 }
 final class MethodWithDefaultParams2$impl {
     
@@ -340,7 +340,7 @@ final class MethodWithDefaultParams2$impl {
             let
             {
                 long $ceylontmp$n$54 = f6$n();
-                .ceylon.language.Iterable<? extends .ceylon.language.Integer> $ceylontmp$seq$55 = f6$seq($ceylontmp$n$54);
+                .ceylon.language.List<? extends .ceylon.language.Integer> $ceylontmp$seq$55 = f6$seq($ceylontmp$n$54);
             }
             returning $this.f6($ceylontmp$n$54, $ceylontmp$seq$55);
         );
@@ -354,13 +354,13 @@ final class MethodWithDefaultParams2$impl {
         return (
             let
             {
-                .ceylon.language.Iterable<? extends .ceylon.language.Integer> $ceylontmp$seq$57 = f6$seq(n);
+                .ceylon.language.List<? extends .ceylon.language.Integer> $ceylontmp$seq$57 = f6$seq(n);
             }
             returning $this.f6(n, $ceylontmp$seq$57);
         );
     }
     
-    public final .ceylon.language.Iterable<? extends .ceylon.language.Integer> f6$seq(final long n) {
-        return (.ceylon.language.Iterable).ceylon.language.empty_.getEmpty$();
+    public final .ceylon.language.List<? extends .ceylon.language.Integer> f6$seq(final long n) {
+        return (.ceylon.language.List).ceylon.language.empty_.getEmpty$();
     }
 }

@@ -23,7 +23,7 @@ X methodSpecifyingTopLevelWithTypeParam_f<X,Y>(Y y) {
 }
 @nomodel
 class MethodSpecifyingTopLevelWithTypeParam<S,T>() {
-    String foo(Integer i) = methodSpecifyingTopLevelWithTypeParam_f<String,Integer>;
-    S bar(T y) = methodSpecifyingTopLevelWithTypeParam_f<S,T>;
+    String foo(Integer i) => methodSpecifyingTopLevelWithTypeParam_f<String,Integer>(i);
+    S bar(T y) => methodSpecifyingTopLevelWithTypeParam_f<S,T>(y);
     //A baz<A,B>(B y) = f<A,B>;
 }

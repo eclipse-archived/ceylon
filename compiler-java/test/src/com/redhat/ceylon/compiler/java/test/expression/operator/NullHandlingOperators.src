@@ -71,30 +71,22 @@ public class NullHandlingOperators {
             {
                 .java.lang.Object $ceylontmp7 = .ceylon.language.String.getCharacters("");
             }
-            returning $ceylontmp7 instanceof .ceylon.language.FixedSized && !((.ceylon.language.FixedSized)$ceylontmp7).getEmpty();
-        );
-        final .ceylon.language.List<? extends .ceylon.language.String> iter = (.ceylon.language.List).ceylon.language.empty_.getEmpty$();
-        sync = (
-            let
-            {
-                .java.lang.Object $ceylontmp8 = iter;
-            }
-            returning $ceylontmp8 instanceof .ceylon.language.FixedSized && !((.ceylon.language.FixedSized)$ceylontmp8).getEmpty();
+            returning $ceylontmp7 instanceof .ceylon.language.Sequence;
         );
         final .ceylon.language.List<? extends .ceylon.language.String> seq = (.ceylon.language.List).ceylon.language.empty_.getEmpty$();
         sync = (
             let
             {
-                .java.lang.Object $ceylontmp9 = seq;
+                .java.lang.Object $ceylontmp8 = seq;
             }
-            returning $ceylontmp9 instanceof .ceylon.language.FixedSized && !((.ceylon.language.FixedSized)$ceylontmp9).getEmpty();
+            returning $ceylontmp8 instanceof .ceylon.language.Sequence;
         );
         final .ceylon.language.Boolean boxed = .ceylon.language.Boolean.instance((
             let
             {
-                .java.lang.Object $ceylontmp10 = seq;
+                .java.lang.Object $ceylontmp9 = seq;
             }
-            returning $ceylontmp10 instanceof .ceylon.language.FixedSized && !((.ceylon.language.FixedSized)$ceylontmp10).getEmpty();
+            returning $ceylontmp9 instanceof .ceylon.language.Sequence;
         ));
     }
     
@@ -111,31 +103,31 @@ public class NullHandlingOperators {
         final .ceylon.language.String bar = (
             let
             {
-                .ceylon.language.String $ceylontmp11 = foo;
+                .ceylon.language.String $ceylontmp10 = foo;
             }
-            returning $ceylontmp11 != null ? $ceylontmp11 : .ceylon.language.String.instance("yes");
+            returning $ceylontmp10 != null ? $ceylontmp10 : .ceylon.language.String.instance("yes");
         );
         final .ceylon.language.String baz = (
             let
             {
-                .ceylon.language.String $ceylontmp12 = n > 0L ? .ceylon.language.String.instance("yes") : null;
+                .ceylon.language.String $ceylontmp11 = n > 0L ? .ceylon.language.String.instance("yes") : null;
             }
-            returning $ceylontmp12 != null ? $ceylontmp12 : .ceylon.language.String.instance("no");
+            returning $ceylontmp11 != null ? $ceylontmp11 : .ceylon.language.String.instance("no");
         );
         final double x = 5.0;
         final double y = (
             let
             {
-                .ceylon.language.Float $ceylontmp13 = x > 0.0 ? .ceylon.language.Float.instance(x) : null;
+                .ceylon.language.Float $ceylontmp12 = x > 0.0 ? .ceylon.language.Float.instance(x) : null;
             }
-            returning $ceylontmp13 != null ? $ceylontmp13 : .ceylon.language.Float.instance(1.0);
+            returning $ceylontmp12 != null ? $ceylontmp12 : .ceylon.language.Float.instance(1.0);
         ).doubleValue();
         final .ceylon.language.List<? extends .ceylon.language.Integer> seq = (
             let
             {
-                .ceylon.language.List<? extends .ceylon.language.Integer> $ceylontmp14 = (.ceylon.language.List)(false ? .ceylon.language.empty_.getEmpty$() : null);
+                .ceylon.language.List<? extends .ceylon.language.Integer> $ceylontmp13 = (.ceylon.language.List)(false ? .ceylon.language.empty_.getEmpty$() : null);
             }
-            returning $ceylontmp14 != null ? $ceylontmp14 : new .ceylon.language.Range<.ceylon.language.Integer>(.ceylon.language.Integer.instance(0L), .ceylon.language.Integer.instance(2L));
+            returning $ceylontmp13 != null ? $ceylontmp13 : new .ceylon.language.Range<.ceylon.language.Integer>(.ceylon.language.Integer.instance(0L), .ceylon.language.Integer.instance(2L));
         );
     }
     

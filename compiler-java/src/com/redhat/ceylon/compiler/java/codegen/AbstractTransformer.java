@@ -730,6 +730,7 @@ public abstract class AbstractTransformer implements Transformation {
                 || decl == typeFact.getIdentifiableObjectDeclaration()
                 || decl == typeFact.getNothingDeclaration()
                 || decl == typeFact.getVoidDeclaration()
+                || decl == typeFact.getSequentialDeclaration()
                 || decl instanceof BottomType
                 || decl instanceof UnionType
                 || decl instanceof IntersectionType;
@@ -782,7 +783,7 @@ public abstract class AbstractTransformer implements Transformation {
     }
     
     boolean isCeylonCallable(ProducedType type) {
-        return type.isCallable();
+        return type.getDeclaration().getUnit().isCallableType(type);
     }
 
     /*
@@ -1247,10 +1248,35 @@ public abstract class AbstractTransformer implements Transformation {
      * @return The result type of the {@code Callable}.
      */
     ProducedType getReturnTypeOfCallable(ProducedType typeModel) {
-        if (!isCeylonCallable(typeModel)) {
-            throw new RuntimeException("Not a Callable<>: " + typeModel);
-        }
+        Assert.that(isCeylonCallable(typeModel), "Expected Callable<...>, but was " + typeModel);
         return typeModel.getTypeArgumentList().get(0);
+    }
+    
+    ProducedType getParameterTypeOfCallable(ProducedType callableType, int parameter) {
+        Assert.that(isCeylonCallable(callableType));
+        ProducedType sequentialType = callableType.getTypeArgumentList().get(1);
+        for (int ii = 0; ii < parameter; ii++) {
+            sequentialType = sequentialType.getTypeArgumentList().get(2);
+        }
+        TypeDeclaration decl = sequentialType.getDeclaration();
+        if (decl.equals(typeFact().getTupleDeclaration())) {
+            return sequentialType.getTypeArgumentList().get(1);    
+        } else if (decl.equals(typeFact().getEmptyDeclaration())) {
+            return decl.getType();
+        } else if (decl.equals(typeFact().getSequentialDeclaration())) {
+            return sequentialType;//Sequence|Empty (i.e. a ...)
+        }
+        throw Assert.fail(""+decl);
+    }
+    int getNumParametersOfCallable(ProducedType callableType) {
+        Assert.that(isCeylonCallable(callableType));
+        ProducedType sequentialType = callableType.getTypeArgumentList().get(1);
+        int num = 0;
+        while (sequentialType.getTypeArgumentList().size() == 3) {
+            num++;
+            sequentialType = sequentialType.getTypeArgumentList().get(2);
+        }
+        return num;
     }
     
     /**
@@ -1360,13 +1386,8 @@ public abstract class AbstractTransformer implements Transformation {
         return !Decl.isCeylon(cls);
     }
 
-    private ProducedType getTypeForFunctionalParameter(FunctionalParameter fp) {
-        java.util.List<ProducedType> typeArgs = new ArrayList<ProducedType>(fp.getTypeParameters().size());
-        typeArgs.add(fp.getType());
-        for (Parameter parameter : fp.getParameterLists().get(0).getParameters()) {
-            typeArgs.add(parameter.getType());
-        }
-        return typeFact().getCallableType(typeArgs);
+    ProducedType getTypeForFunctionalParameter(FunctionalParameter fp) {
+        return fp.getProducedTypedReference(null, java.util.Collections.<ProducedType>emptyList()).getFullType();
     }
     
     /*
@@ -1989,9 +2010,9 @@ public abstract class AbstractTransformer implements Transformation {
         return makeSequence(elems, typeFact().getObjectDeclaration().getType(), CeylonTransformer.JT_RAW);
     }
     
-    JCExpression makeEmptyAsIterable(boolean needsCast){
+    JCExpression makeEmptyAsSequential(boolean needsCast){
         if(needsCast)
-            return make().TypeCast(makeJavaType(typeFact().getIterableDeclaration().getType(), JT_RAW), makeEmpty());
+            return make().TypeCast(makeJavaType(typeFact().getSequentialDeclaration().getType(), JT_RAW), makeEmpty());
         return makeEmpty();
     }
     
@@ -2091,7 +2112,7 @@ public abstract class AbstractTransformer implements Transformation {
                         newArrayExpr),
                 List.of(klass2));
         
-        // since T[] is erased to Iterable<T> we probably need a cast to FixedSized<T>
+        // since T[] is erased to Sequential<T> we probably need a cast to FixedSized<T>
         JCExpression castedExpr = make().TypeCast(seqTypeExpr2, expr);
         
         return makeLetExpr(seqName, List.<JCStatement>nil(), seqTypeExpr1, castedExpr, sequenceToArrayExpr);
@@ -2152,18 +2173,10 @@ public abstract class AbstractTransformer implements Transformation {
         return result;
     }
 
-    JCExpression makeNonEmptyTest(JCExpression firstTimeExpr, Naming.SyntheticName varName) {
-        Interface fixedSize = typeFact().getFixedSizedDeclaration();
-        JCExpression test = makeTypeTest(firstTimeExpr, varName, fixedSize.getType());
-        JCExpression fixedSizeType = makeJavaType(fixedSize.getType(), JT_NO_PRIMITIVES | JT_RAW);
-        JCExpression nonEmpty = makeNonEmptyTest(make().TypeCast(fixedSizeType, varName.makeIdent()));
-        return make().Binary(JCTree.AND, test, nonEmpty);
-    }
-
-    JCExpression makeNonEmptyTest(JCExpression expr){
-        JCExpression getEmptyCall = make().Select(expr, names().fromString("getEmpty"));
-        JCExpression empty = make().Apply(List.<JCExpression>nil(), getEmptyCall, List.<JCExpression>nil());
-        return make().Unary(JCTree.NOT, empty);
+    JCExpression makeNonEmptyTest(JCExpression firstTimeExpr) {
+        Interface sequence = typeFact().getSequenceDeclaration();
+        JCExpression sequenceType = makeJavaType(sequence.getType(), JT_NO_PRIMITIVES | JT_RAW);
+        return make().TypeTest(firstTimeExpr, sequenceType);
     }
     
     /**

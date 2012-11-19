@@ -30,7 +30,7 @@ class ClassAliasedDefaultMemberClass() {
 }
 @nomodel
 class ClassAliasedDefaultMemberClass_sub() extends ClassAliasedDefaultMemberClass() {
-    shared class Alias() = ClassAliasedDefaultMemberClass::Member;
+    shared class Alias() => ClassAliasedDefaultMemberClass::Member();
     shared actual class Member() extends Alias() {
     }
     shared void m2(ClassAliasedDefaultMemberClass_sub qual) {

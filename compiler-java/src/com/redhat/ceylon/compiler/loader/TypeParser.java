@@ -123,7 +123,7 @@ public class TypeParser {
             qualifyingType = loadType(pkg, fullName, part, qualifyingType);
         }
         if(qualifyingType == null){
-            throw new ModelResolutionException("Could not find type "+fullName);
+            throw new ModelResolutionException("Could not find type '"+fullName+"'");
         }
         return qualifyingType;
     }

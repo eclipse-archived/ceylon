@@ -199,7 +199,7 @@ public class LinkRenderer {
             return;
         }
         if( isSequenceTypeAbbreviation(unionType) ) {
-            ProducedType elementType = unionType.getUnit().getElementType(unionType.getType());
+            ProducedType elementType = unionType.getUnit().getIteratedType(unionType.getType());
             processProducedType(elementType);
             buffer.append("[]");
             return;

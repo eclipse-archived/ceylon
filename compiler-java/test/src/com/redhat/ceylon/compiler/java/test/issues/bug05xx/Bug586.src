@@ -12,7 +12,7 @@ final class bug586_ {
             {
                 .ceylon.language.FixedSized<? extends .ceylon.language.String> $spreadTest$0 = (.ceylon.language.FixedSized<? extends .ceylon.language.String>)seq;
             }
-            returning (.ceylon.language.List<? extends .ceylon.language.String>)(!$spreadTest$0.getEmpty() ? (
+            returning (.ceylon.language.List<? extends .ceylon.language.String>)($spreadTest$0 instanceof .ceylon.language.Sequence ? (
                 let
                 {
                     .ceylon.language.Sequence<? extends .ceylon.language.String> $spread$1$0 = (.ceylon.language.Sequence<? extends .ceylon.language.String>)$spreadTest$0;

@@ -3,7 +3,7 @@ shared interface MemberInterfaceAliasTricks_Foo{
     shared class MemberClass(){}
 
     shared interface MemberInterface {
-        shared class MemberClassAliasToEnclosingMemberClass() = MemberClass;
+        shared class MemberClassAliasToEnclosingMemberClass() => MemberClass();
 
         void test(){
             value m1 = MemberClassAliasToEnclosingMemberClass();

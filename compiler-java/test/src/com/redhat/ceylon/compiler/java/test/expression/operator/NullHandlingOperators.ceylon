@@ -42,8 +42,6 @@ shared class NullHandlingOperators() {
     void testEmpty() {
         variable Boolean sync := false;
         sync := nonempty "".characters;
-        List<String>&FixedSized<String> iter = {};
-        sync := nonempty iter;
         String[] seq = {};
         sync := nonempty seq;
         // boxing

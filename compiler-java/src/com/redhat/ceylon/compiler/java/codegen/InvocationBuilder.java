@@ -60,6 +60,7 @@ import com.redhat.ceylon.compiler.typechecker.tree.Tree.BaseMemberExpression;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.ClassDefinition;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.Expression;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.FunctionArgument;
+import com.redhat.ceylon.compiler.typechecker.tree.Tree.InvocationExpression;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.Primary;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.QualifiedTypeExpression;
 import com.sun.tools.javac.tree.JCTree;
@@ -361,7 +362,12 @@ abstract class InvocationBuilder {
                         parameters);
             } else {
                 // indirect invocation
-                final java.util.List<ProducedType> tas = primary.getTypeModel().getTypeArgumentList();
+                final java.util.List<ProducedType> tas = new ArrayList<>();
+                tas.add(gen.getReturnTypeOfCallable(primary.getTypeModel()));
+                for (int ii = 0; ii < gen.getNumParametersOfCallable(primary.getTypeModel()); ii++) {
+                    tas.add(gen.getParameterTypeOfCallable(primary.getTypeModel(), ii));
+                }
+                //final java.util.List<ProducedType> tas = primary.getTypeModel().getTypeArgumentList();
                 final java.util.List<ProducedType> parameterTypes = tas.subList(1, tas.size());
                 final java.util.List<Tree.Expression> argumentExpressions = new ArrayList<Tree.Expression>(tas.size());
                 for (Tree.PositionalArgument argument : invocation.getPositionalArgumentList().getPositionalArguments()) {
@@ -413,6 +419,9 @@ abstract class InvocationBuilder {
             Method method) {
         Tree.Term primary = specifierExpression.getExpression().getTerm();
         InvocationBuilder builder;
+        if (primary instanceof InvocationExpression) {
+            primary = ((InvocationExpression)primary).getPrimary();
+        }
         if (primary instanceof Tree.MemberOrTypeExpression
                 && ((Tree.MemberOrTypeExpression)primary).getDeclaration() instanceof Functional) {
             Declaration primaryDeclaration = ((Tree.MemberOrTypeExpression)primary).getDeclaration();
@@ -431,7 +440,7 @@ abstract class InvocationBuilder {
                     specifierExpression, 
                     primary);
         } else {
-            throw new RuntimeException();
+            throw Assert.fail("Unhandled primary " + primary);
         }
         builder.handleBoxing(true);
         builder.compute();
@@ -867,9 +876,11 @@ class CallableInvocationBuilder extends DirectInvocationBuilder {
     @Override
     protected JCExpression getTransformedArgumentExpression(int argIndex) {
         Parameter param = callableParameters.get(argIndex);
-        ProducedType argType = primary.getTypeModel().getTypeArgumentList().get(argIndex+1);
+        ProducedType argType = gen.getParameterTypeOfCallable(primary.getTypeModel(), argIndex);
         return CallableBuilder.unpickCallableParameter(gen, producedReference, param, argType, argIndex, functionalParameters.size());
     }
+
+
     @Override
     protected Parameter getParameter(int index) {
         return functionalParameters.get(index);
@@ -1253,7 +1264,7 @@ class NamedArgumentInvocationBuilder extends InvocationBuilder {
                     } else {
                         if (primaryDeclaration instanceof FunctionalParameter) {
                             // honestly I don't know if it needs a cast but it can't hurt
-                            argExpr = gen.makeEmptyAsIterable(true);
+                            argExpr = gen.makeEmptyAsSequential(true);
                         } else {
                             argExpr = makeDefaultedArgumentMethodCall(param);
                             hasDefaulted |= true;

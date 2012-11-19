@@ -731,7 +731,7 @@ public class Naming implements LocalId {
             expr = makeQualIdent(expr, getGetterName(decl));
         } else if (decl instanceof Getter
                 || decl instanceof Value) {
-            if (decl.getType().isCallable()) {
+            if (gen().isCeylonCallable(decl.getType())) {
                 expr = makeQualIdent(expr, decl.getName());
             } else {
                 expr = makeQualIdent(expr, getGetterName(decl));

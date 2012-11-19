@@ -744,7 +744,7 @@ public class ExpressionTransformer extends AbstractTransformer {
         JCExpression expression = transformExpression(op.getTerm());
         at(op);
         Naming.SyntheticName varName = naming.temp();
-        JCExpression test = makeNonEmptyTest(null, varName);
+        JCExpression test = makeNonEmptyTest(varName.makeIdent());
         return makeLetExpr(varName, List.<JCStatement>nil(), make().Type(syms().objectType), expression, test);
     }
 
@@ -1334,9 +1334,17 @@ public class ExpressionTransformer extends AbstractTransformer {
         DefaultArgument defaultArgument = param.getDefaultArgument();
         if (defaultArgument != null) {
             SpecifierExpression spec = defaultArgument.getSpecifierExpression();
-            expr = expressionGen().transformExpression(spec.getExpression(), CodegenUtil.getBoxingStrategy(param.getDeclarationModel()), param.getDeclarationModel().getType());
+            if (spec.getScope() instanceof FunctionalParameter) {
+                FunctionalParameter fp = (FunctionalParameter)spec.getScope();
+                Tree.SpecifierExpression lazy = param.getDefaultArgument().getSpecifierExpression();
+                expr = CallableBuilder.anonymous(gen(), lazy.getExpression(), 
+                        fp.getParameterLists().get(0),
+                        getTypeForFunctionalParameter(fp)).build();
+            } else {
+                expr = expressionGen().transformExpression(spec.getExpression(), CodegenUtil.getBoxingStrategy(param.getDeclarationModel()), param.getDeclarationModel().getType());
+            }
         } else if (param.getDeclarationModel().isSequenced()) {
-            expr = makeEmptyAsIterable(true);
+            expr = makeEmptyAsSequential(true);
         } else {
             expr = makeErroneous(param, "No default and not sequenced");
         }
@@ -1424,8 +1432,8 @@ public class ExpressionTransformer extends AbstractTransformer {
         Naming.SyntheticName varBaseName = naming.alias("spread");
         // sequence
         Naming.SyntheticName srcSequenceName = varBaseName.suffixedBy("$0");
-        ProducedType srcSequenceType = typeFact().getNonemptySequenceType(expr.getPrimary().getTypeModel());
-        ProducedType srcElementType = typeFact().getElementType(srcSequenceType);
+        ProducedType srcSequenceType = typeFact().getNonemptyType(expr.getPrimary().getTypeModel());
+        ProducedType srcElementType = typeFact().getIteratedType(srcSequenceType);
         JCExpression srcSequenceTypeExpr = makeJavaType(srcSequenceType, JT_NO_PRIMITIVES);
         JCExpression srcSequenceExpr = make().TypeCast(srcSequenceTypeExpr, testVarName.makeIdent());
 
@@ -1795,26 +1803,39 @@ public class ExpressionTransformer extends AbstractTransformer {
             // do the index
             JCExpression index = transformExpression(element.getExpression(), BoxingStrategy.BOXED, rightType);
 
-            // look at the lhs
-            JCExpression lhs = transformExpression(access.getPrimary(), BoxingStrategy.BOXED, leftCorrespondenceType);
-
-            if(!safe)
-                // make a "lhs.item(index)" call
-                return at(access).Apply(List.<JCTree.JCExpression>nil(), 
-                        makeSelect(lhs, "item"), List.of(index));
-            // make a (let ArrayElem tmp = lhs in (tmp != null ? tmp.item(index) : null)) call
-            JCExpression arrayType = makeJavaType(leftCorrespondenceType);
-            Name varName = naming.tempName("safeaccess");
+            // How we transform the lhs depends whether this is a nullsafe index...
+            Name varName;
+            JCVariableDecl tmpVar;
+            JCExpression lhs;
+            if (safe) {
+                varName = naming.tempName("safeaccess");
+                // make a (let ArrayElem tmp = lhs in (tmp != null ? tmp.item(index) : null)) call
+                JCExpression arrayType = makeJavaType(leftCorrespondenceType);
+                // ArrayElem tmp = lhs
+                tmpVar = make().VarDef(make().Modifiers(0), varName, arrayType, 
+                        transformExpression(access.getPrimary(), BoxingStrategy.BOXED, leftCorrespondenceType));
+                lhs = make().Ident(varName);
+            } else {
+                varName = null;
+                tmpVar = null;
+                lhs = transformExpression(access.getPrimary(), BoxingStrategy.BOXED, leftCorrespondenceType);
+            }
             // tmpVar.item(index)
             JCExpression safeAccess = make().Apply(List.<JCTree.JCExpression>nil(), 
-                    makeSelect(make().Ident(varName), "item"), List.of(index));
-
+                    makeSelect(lhs, "item"), List.of(index));
+            // Because tuple index access has the type of the indexed element
+            // (not the union of types in the sequential) a typecast may be required.
+            safeAccess = applyErasureAndBoxing(safeAccess, 
+                    getTypeArgument(leftCorrespondenceType, 1), 
+                    true, BoxingStrategy.BOXED, access.getTypeModel());
+            if (!safe) {
+                return safeAccess;
+            }
             at(access.getPrimary());
             // (tmpVar != null ? safeAccess : null)
-            JCConditional conditional = make().Conditional(make().Binary(JCTree.NE, make().Ident(varName), makeNull()), 
+            JCConditional conditional = make().Conditional(
+                    make().Binary(JCTree.NE, make().Ident(varName), makeNull()), 
                     safeAccess, makeNull());
-            // ArrayElem tmp = lhs
-            JCVariableDecl tmpVar = make().VarDef(make().Modifiers(0), varName, arrayType, lhs);
             // (let tmpVar in conditional)
             return make().LetExpr(tmpVar, conditional);
         }else{

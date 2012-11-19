@@ -119,7 +119,7 @@ class DefaultedInitializerParameter5 {
             let
             {
                 long $ceylontmp$n$15 = .com.redhat.ceylon.compiler.java.test.structure.klass.DefaultedInitializerParameter5.$init$n();
-                .ceylon.language.Iterable<? extends .ceylon.language.Integer> $ceylontmp$seq$16 = .com.redhat.ceylon.compiler.java.test.structure.klass.DefaultedInitializerParameter5.$init$seq($ceylontmp$n$15);
+                .ceylon.language.List<? extends .ceylon.language.Integer> $ceylontmp$seq$16 = .com.redhat.ceylon.compiler.java.test.structure.klass.DefaultedInitializerParameter5.$init$seq($ceylontmp$n$15);
                 this($ceylontmp$n$15, $ceylontmp$seq$16);
             }
             returning null;
@@ -130,21 +130,21 @@ class DefaultedInitializerParameter5 {
         (
             let
             {
-                .ceylon.language.Iterable<? extends .ceylon.language.Integer> $ceylontmp$seq$18 = .com.redhat.ceylon.compiler.java.test.structure.klass.DefaultedInitializerParameter5.$init$seq(n);
+                .ceylon.language.List<? extends .ceylon.language.Integer> $ceylontmp$seq$18 = .com.redhat.ceylon.compiler.java.test.structure.klass.DefaultedInitializerParameter5.$init$seq(n);
                 this(n, $ceylontmp$seq$18);
             }
             returning null;
         );
     }
     
-    DefaultedInitializerParameter5(long n, .ceylon.language.Iterable<? extends .ceylon.language.Integer> seq) {
+    DefaultedInitializerParameter5(long n, .ceylon.language.List<? extends .ceylon.language.Integer> seq) {
     }
     
     static long $init$n() {
         return 5L;
     }
     
-    static .ceylon.language.Iterable<? extends .ceylon.language.Integer> $init$seq(final long n) {
-        return (.ceylon.language.Iterable).ceylon.language.empty_.getEmpty$();
+    static .ceylon.language.List<? extends .ceylon.language.Integer> $init$seq(final long n) {
+        return (.ceylon.language.List).ceylon.language.empty_.getEmpty$();
     }
 }

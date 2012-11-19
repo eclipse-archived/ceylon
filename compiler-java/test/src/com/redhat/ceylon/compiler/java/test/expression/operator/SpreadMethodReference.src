@@ -6,7 +6,7 @@ class SpreadMethodReference {
     }
     
     private final void m(final .ceylon.language.List<? extends .ceylon.language.String> seq) {
-        final .ceylon.language.Callable<? extends .ceylon.language.List<? extends .ceylon.language.String>> f = new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.ceylon.language.List<? extends .ceylon.language.String>>("ceylon.language::Callable<ceylon.language::Empty|ceylon.language::Sequence<ceylon.language::String>,ceylon.language::Integer>"){
+        final .ceylon.language.Callable<? extends .ceylon.language.List<? extends .ceylon.language.String>> f = new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.ceylon.language.List<? extends .ceylon.language.String>>("String[](Integer)"){
             
             @.java.lang.Override
             public .ceylon.language.List<? extends .ceylon.language.String> $call(final .java.lang.Object $param$0) {
@@ -15,7 +15,7 @@ class SpreadMethodReference {
                     {
                         .ceylon.language.FixedSized<? extends .ceylon.language.String> $spreadTest$3 = (.ceylon.language.FixedSized<? extends .ceylon.language.String>)seq;
                     }
-                    returning (.ceylon.language.List<? extends .ceylon.language.String>)(!$spreadTest$3.getEmpty() ? (
+                    returning (.ceylon.language.List<? extends .ceylon.language.String>)($spreadTest$3 instanceof .ceylon.language.Sequence ? (
                         let
                         {
                             .ceylon.language.Sequence<? extends .ceylon.language.String> $spread$4$0 = (.ceylon.language.Sequence<? extends .ceylon.language.String>)$spreadTest$3;

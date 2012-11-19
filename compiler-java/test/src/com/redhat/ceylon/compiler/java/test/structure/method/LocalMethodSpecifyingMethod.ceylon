@@ -23,6 +23,6 @@ class LocalMethodSpecifyingMethod() {
         return 1;
     }
     void m() {
-        function foo(String x) = bar;
+        function foo(String x) => bar(x);
     }
 }

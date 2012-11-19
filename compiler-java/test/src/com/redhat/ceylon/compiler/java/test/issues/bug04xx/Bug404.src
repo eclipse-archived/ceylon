@@ -23,7 +23,7 @@ class Bug404 {
                     {
                         .ceylon.language.FixedSized<? extends .ceylon.language.String> $spreadTest$1 = (.ceylon.language.FixedSized<? extends .ceylon.language.String>)empty;
                     }
-                    returning (.ceylon.language.List<? extends .ceylon.language.String>)(!$spreadTest$1.getEmpty() ? (
+                    returning (.ceylon.language.List<? extends .ceylon.language.String>)($spreadTest$1 instanceof .ceylon.language.Sequence ? (
                         let
                         {
                             .ceylon.language.Sequence<? extends .ceylon.language.String> $spread$2$0 = (.ceylon.language.Sequence<? extends .ceylon.language.String>)$spreadTest$1;
@@ -35,7 +35,7 @@ class Bug404 {
                     ) : .ceylon.language.empty_.getEmpty$());
                 );
             }
-            returning $ceylontmp4 instanceof .ceylon.language.FixedSized && !((.ceylon.language.FixedSized)$ceylontmp4).getEmpty();
+            returning $ceylontmp4 instanceof .ceylon.language.Sequence;
         );
         final .ceylon.language.List<? extends .ceylon.language.String> full = new .com.redhat.ceylon.compiler.java.language.ArraySequence<.ceylon.language.String>(.ceylon.language.String.instance("foo"));
         sync = (
@@ -46,7 +46,7 @@ class Bug404 {
                     {
                         .ceylon.language.FixedSized<? extends .ceylon.language.String> $spreadTest$5 = (.ceylon.language.FixedSized<? extends .ceylon.language.String>)full;
                     }
-                    returning (.ceylon.language.List<? extends .ceylon.language.String>)(!$spreadTest$5.getEmpty() ? (
+                    returning (.ceylon.language.List<? extends .ceylon.language.String>)($spreadTest$5 instanceof .ceylon.language.Sequence ? (
                         let
                         {
                             .ceylon.language.Sequence<? extends .ceylon.language.String> $spread$6$0 = (.ceylon.language.Sequence<? extends .ceylon.language.String>)$spreadTest$5;
@@ -58,14 +58,14 @@ class Bug404 {
                     ) : .ceylon.language.empty_.getEmpty$());
                 );
             }
-            returning $ceylontmp8 instanceof .ceylon.language.FixedSized && !((.ceylon.language.FixedSized)$ceylontmp8).getEmpty();
+            returning $ceylontmp8 instanceof .ceylon.language.Sequence;
         );
         final .ceylon.language.List<? extends .ceylon.language.String> spread1 = (
             let
             {
                 .ceylon.language.FixedSized<? extends .ceylon.language.String> $spreadTest$9 = (.ceylon.language.FixedSized<? extends .ceylon.language.String>)full;
             }
-            returning (.ceylon.language.List<? extends .ceylon.language.String>)(!$spreadTest$9.getEmpty() ? (
+            returning (.ceylon.language.List<? extends .ceylon.language.String>)($spreadTest$9 instanceof .ceylon.language.Sequence ? (
                 let
                 {
                     .ceylon.language.Sequence<? extends .ceylon.language.String> $spread$10$0 = (.ceylon.language.Sequence<? extends .ceylon.language.String>)$spreadTest$9;

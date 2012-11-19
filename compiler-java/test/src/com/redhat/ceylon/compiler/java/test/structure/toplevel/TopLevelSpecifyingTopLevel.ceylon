@@ -22,4 +22,4 @@ Integer f(Integer i) {
     return i;
 }
 @nomodel
-Integer g(Integer x) = f;
+Integer g(Integer x) => f(x);

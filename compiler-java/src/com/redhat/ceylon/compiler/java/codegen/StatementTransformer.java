@@ -880,7 +880,7 @@ public class StatementTransformer extends AbstractTransformer {
             // Assign the expression to test to the temporary variable
             JCExpression firstTimeTestExpr = make().Assign(testVar.makeIdent(), expr);
             // Test on the tmpVar in the following condition
-            return makeNonEmptyTest(firstTimeTestExpr, testVar);
+            return makeNonEmptyTest(firstTimeTestExpr);
         }
     }
     

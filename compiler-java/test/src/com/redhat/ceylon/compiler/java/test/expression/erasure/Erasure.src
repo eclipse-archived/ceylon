@@ -477,7 +477,7 @@ class Test {
         sync = ((.ceylon.language.List<? extends .java.lang.Object>)naturals).getSize();
         sync = ((.ceylon.language.List<? extends .java.lang.Object>)leftsAndRights).getSize();
         .ceylon.language.List $naturals$37;
-        if (($naturals$37 = naturals) instanceof .ceylon.language.FixedSized && !((.ceylon.language.FixedSized)$naturals$37).getEmpty()) {
+        if (($naturals$37 = naturals) instanceof .ceylon.language.Sequence) {
             final .ceylon.language.Sequence $naturals$38 = (.ceylon.language.Sequence<? extends .java.lang.Object>)$naturals$37;
         }
         boolean bSync;
@@ -486,7 +486,7 @@ class Test {
             {
                 .java.lang.Object $ceylontmp39 = naturals;
             }
-            returning $ceylontmp39 instanceof .ceylon.language.FixedSized && !((.ceylon.language.FixedSized)$ceylontmp39).getEmpty();
+            returning $ceylontmp39 instanceof .ceylon.language.Sequence;
         );
         final .ceylon.language.List spreadMember = (
             let
@@ -496,7 +496,7 @@ class Test {
             returning (
                 let
                 {
-                    .ceylon.language.Sequence $spread$41$0 = (.ceylon.language.Sequence)$spreadTest$40;
+                    .ceylon.language.List $spread$41$0 = (.ceylon.language.List)$spreadTest$40;
                     int $spread$41$2 = (int)$spread$41$0.getSize();
                     .java.lang.Object[] $spread$41$4 = new .java.lang.Object[$spread$41$2];
                     for (int $index$42 = 0; $index$42 < $spread$41$2; $index$42++) $spread$41$4[$index$42] = ((.com.redhat.ceylon.compiler.java.test.expression.erasure.Top)$spread$41$0.item(.ceylon.language.Integer.instance($index$42))).getLeftAndRightAttribute();
@@ -513,7 +513,7 @@ class Test {
             returning (
                 let
                 {
-                    .ceylon.language.Sequence $spread$44$0 = (.ceylon.language.Sequence)$spreadTest$43;
+                    .ceylon.language.List $spread$44$0 = (.ceylon.language.List)$spreadTest$43;
                     int $spread$44$2 = (int)$spread$44$0.getSize();
                     .java.lang.Object[] $spread$44$4 = new .java.lang.Object[$spread$44$2];
                     for (int $index$45 = 0; $index$45 < $spread$44$2; $index$45++) $spread$44$4[$index$45] = ((.com.redhat.ceylon.compiler.java.test.expression.erasure.Top)$spread$44$0.item(.ceylon.language.Integer.instance($index$45))).leftAndRightMethod(new .com.redhat.ceylon.compiler.java.test.expression.erasure.CMiddle());
@@ -529,7 +529,7 @@ class Test {
             returning (
                 let
                 {
-                    .ceylon.language.Sequence $spread$48$0 = (.ceylon.language.Sequence)$spreadTest$47;
+                    .ceylon.language.List $spread$48$0 = (.ceylon.language.List)$spreadTest$47;
                     int $spread$48$2 = (int)$spread$48$0.getSize();
                     .java.lang.Object[] $spread$48$4 = new .java.lang.Object[$spread$48$2];
                     for (int $index$49 = 0; $index$49 < $spread$48$2; $index$49++) $spread$48$4[$index$49] = (

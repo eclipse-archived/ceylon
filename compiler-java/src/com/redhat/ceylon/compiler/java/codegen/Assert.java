@@ -1,11 +1,11 @@
 package com.redhat.ceylon.compiler.java.codegen;
 
 class Assert {
-    static void fail(String message) {
+    static RuntimeException fail(String message) {
         throw new RuntimeException(message);
     }
-    static void fail() {
-        fail(null);
+    static RuntimeException fail() {
+        return fail(null);
     }
     static void that(boolean cond, String message) {
         if (!cond) {

@@ -24,15 +24,15 @@ interface InstantiatorDelegates<X> {
     
     public .com.redhat.ceylon.compiler.java.test.structure.mcr.InstantiatorDelegates$impl<X>.Binary2 Binary2$new(final boolean b);
     
-    public .com.redhat.ceylon.compiler.java.test.structure.mcr.InstantiatorDelegates$impl<X>.Sequenced Sequenced$new(final boolean b, final .ceylon.language.Iterable<? extends .ceylon.language.Integer> i);
+    public .com.redhat.ceylon.compiler.java.test.structure.mcr.InstantiatorDelegates$impl<X>.Sequenced Sequenced$new(final boolean b, final .ceylon.language.List<? extends .ceylon.language.Integer> i);
     
-    public abstract .ceylon.language.Iterable<? extends .ceylon.language.Integer> $Sequenced$init$i(final boolean b);
+    public abstract .ceylon.language.List<? extends .ceylon.language.Integer> $Sequenced$init$i(final boolean b);
     
     public .com.redhat.ceylon.compiler.java.test.structure.mcr.InstantiatorDelegates$impl<X>.Sequenced Sequenced$new(final boolean b);
     
-    public .com.redhat.ceylon.compiler.java.test.structure.mcr.InstantiatorDelegates$impl<X>.SequencedDefault SequencedDefault$new(final boolean b, final .ceylon.language.Iterable<? extends .ceylon.language.Integer> i);
+    public .com.redhat.ceylon.compiler.java.test.structure.mcr.InstantiatorDelegates$impl<X>.SequencedDefault SequencedDefault$new(final boolean b, final .ceylon.language.List<? extends .ceylon.language.Integer> i);
     
-    public abstract .ceylon.language.Iterable<? extends .ceylon.language.Integer> $SequencedDefault$init$i(final boolean b);
+    public abstract .ceylon.language.List<? extends .ceylon.language.Integer> $SequencedDefault$init$i(final boolean b);
     
     public .com.redhat.ceylon.compiler.java.test.structure.mcr.InstantiatorDelegates$impl<X>.SequencedDefault SequencedDefault$new(final boolean b);
     
@@ -128,19 +128,19 @@ final class InstantiatorDelegates$impl<X> {
         }
     }
     
-    public .com.redhat.ceylon.compiler.java.test.structure.mcr.InstantiatorDelegates$impl<X>.Sequenced Sequenced$new(final boolean b, final .ceylon.language.Iterable<? extends .ceylon.language.Integer> i) {
+    public .com.redhat.ceylon.compiler.java.test.structure.mcr.InstantiatorDelegates$impl<X>.Sequenced Sequenced$new(final boolean b, final .ceylon.language.List<? extends .ceylon.language.Integer> i) {
         return new Sequenced(b, i);
     }
     
-    public final .ceylon.language.Iterable<? extends .ceylon.language.Integer> $Sequenced$init$i(final boolean b) {
-        return (.ceylon.language.Iterable).ceylon.language.empty_.getEmpty$();
+    public final .ceylon.language.List<? extends .ceylon.language.Integer> $Sequenced$init$i(final boolean b) {
+        return (.ceylon.language.List).ceylon.language.empty_.getEmpty$();
     }
     
     public .com.redhat.ceylon.compiler.java.test.structure.mcr.InstantiatorDelegates$impl<X>.Sequenced Sequenced$new(final boolean b) {
         return (
             let
             {
-                .ceylon.language.Iterable<? extends .ceylon.language.Integer> $ceylontmp$i$27 = $Sequenced$init$i(b);
+                .ceylon.language.List<? extends .ceylon.language.Integer> $ceylontmp$i$27 = $Sequenced$init$i(b);
             }
             returning new Sequenced(b, $ceylontmp$i$27);
         );
@@ -148,15 +148,15 @@ final class InstantiatorDelegates$impl<X> {
     
     public class Sequenced {
         
-        protected Sequenced(boolean b, .ceylon.language.Iterable<? extends .ceylon.language.Integer> i) {
+        protected Sequenced(boolean b, .ceylon.language.List<? extends .ceylon.language.Integer> i) {
         }
     }
     
-    public .com.redhat.ceylon.compiler.java.test.structure.mcr.InstantiatorDelegates$impl<X>.SequencedDefault SequencedDefault$new(final boolean b, final .ceylon.language.Iterable<? extends .ceylon.language.Integer> i) {
+    public .com.redhat.ceylon.compiler.java.test.structure.mcr.InstantiatorDelegates$impl<X>.SequencedDefault SequencedDefault$new(final boolean b, final .ceylon.language.List<? extends .ceylon.language.Integer> i) {
         return new SequencedDefault(b, i);
     }
     
-    public final .ceylon.language.Iterable<? extends .ceylon.language.Integer> $SequencedDefault$init$i(final boolean b) {
+    public final .ceylon.language.List<? extends .ceylon.language.Integer> $SequencedDefault$init$i(final boolean b) {
         return new .com.redhat.ceylon.compiler.java.language.ArraySequence<.ceylon.language.Integer>(.ceylon.language.Integer.instance(1L));
     }
     
@@ -164,7 +164,7 @@ final class InstantiatorDelegates$impl<X> {
         return (
             let
             {
-                .ceylon.language.Iterable<? extends .ceylon.language.Integer> $ceylontmp$i$33 = $SequencedDefault$init$i(b);
+                .ceylon.language.List<? extends .ceylon.language.Integer> $ceylontmp$i$33 = $SequencedDefault$init$i(b);
             }
             returning new SequencedDefault(b, $ceylontmp$i$33);
         );
@@ -172,7 +172,7 @@ final class InstantiatorDelegates$impl<X> {
     
     public class SequencedDefault {
         
-        protected SequencedDefault(boolean b, .ceylon.language.Iterable<? extends .ceylon.language.Integer> i) {
+        protected SequencedDefault(boolean b, .ceylon.language.List<? extends .ceylon.language.Integer> i) {
         }
     }
     
@@ -249,7 +249,7 @@ class InstantiatorDelegatesImpl<X> implements .com.redhat.ceylon.compiler.java.t
     }
     
     @.java.lang.Override
-    public final .ceylon.language.Iterable<? extends .ceylon.language.Integer> $Sequenced$init$i(final boolean b) {
+    public final .ceylon.language.List<? extends .ceylon.language.Integer> $Sequenced$init$i(final boolean b) {
         return $com$redhat$ceylon$compiler$java$test$structure$mcr$InstantiatorDelegates$this.$Sequenced$init$i(b);
     }
     
@@ -259,12 +259,12 @@ class InstantiatorDelegatesImpl<X> implements .com.redhat.ceylon.compiler.java.t
     }
     
     @.java.lang.Override
-    public final .com.redhat.ceylon.compiler.java.test.structure.mcr.InstantiatorDelegates$impl<X>.Sequenced Sequenced$new(final boolean b, final .ceylon.language.Iterable<? extends .ceylon.language.Integer> i) {
+    public final .com.redhat.ceylon.compiler.java.test.structure.mcr.InstantiatorDelegates$impl<X>.Sequenced Sequenced$new(final boolean b, final .ceylon.language.List<? extends .ceylon.language.Integer> i) {
         return $com$redhat$ceylon$compiler$java$test$structure$mcr$InstantiatorDelegates$this.Sequenced$new(b, i);
     }
     
     @.java.lang.Override
-    public final .ceylon.language.Iterable<? extends .ceylon.language.Integer> $SequencedDefault$init$i(final boolean b) {
+    public final .ceylon.language.List<? extends .ceylon.language.Integer> $SequencedDefault$init$i(final boolean b) {
         return $com$redhat$ceylon$compiler$java$test$structure$mcr$InstantiatorDelegates$this.$SequencedDefault$init$i(b);
     }
     
@@ -274,7 +274,7 @@ class InstantiatorDelegatesImpl<X> implements .com.redhat.ceylon.compiler.java.t
     }
     
     @.java.lang.Override
-    public final .com.redhat.ceylon.compiler.java.test.structure.mcr.InstantiatorDelegates$impl<X>.SequencedDefault SequencedDefault$new(final boolean b, final .ceylon.language.Iterable<? extends .ceylon.language.Integer> i) {
+    public final .com.redhat.ceylon.compiler.java.test.structure.mcr.InstantiatorDelegates$impl<X>.SequencedDefault SequencedDefault$new(final boolean b, final .ceylon.language.List<? extends .ceylon.language.Integer> i) {
         return $com$redhat$ceylon$compiler$java$test$structure$mcr$InstantiatorDelegates$this.SequencedDefault$new(b, i);
     }
     
@@ -361,7 +361,7 @@ final class instantiatorDelegates_ {
             {
                 .com.redhat.ceylon.compiler.java.test.structure.mcr.InstantiatorDelegates<.ceylon.language.String> $arg$43$callable$ = a;
                 boolean $arg$43$0 = true;
-                .ceylon.language.Iterable<? extends .ceylon.language.Integer> $arg$43$1 = $arg$43$callable$.$Sequenced$init$i($arg$43$0);
+                .ceylon.language.List<? extends .ceylon.language.Integer> $arg$43$1 = $arg$43$callable$.$Sequenced$init$i($arg$43$0);
             }
             returning $arg$43$callable$.Sequenced$new($arg$43$0, $arg$43$1);
         );
@@ -371,7 +371,7 @@ final class instantiatorDelegates_ {
             {
                 .com.redhat.ceylon.compiler.java.test.structure.mcr.InstantiatorDelegates<.ceylon.language.String> $arg$44$callable$ = a;
                 boolean $arg$44$0 = true;
-                .ceylon.language.Iterable $arg$44$1 = new .com.redhat.ceylon.compiler.java.language.ArraySequence<.ceylon.language.Integer>(.ceylon.language.Integer.instance(1L));
+                .ceylon.language.List $arg$44$1 = new .com.redhat.ceylon.compiler.java.language.ArraySequence<.ceylon.language.Integer>(.ceylon.language.Integer.instance(1L));
             }
             returning $arg$44$callable$.Sequenced$new($arg$44$0, $arg$44$1);
         );
@@ -380,7 +380,7 @@ final class instantiatorDelegates_ {
             {
                 .com.redhat.ceylon.compiler.java.test.structure.mcr.InstantiatorDelegates<.ceylon.language.String> $arg$45$callable$ = a;
                 boolean $arg$45$0 = true;
-                .ceylon.language.Iterable<? extends .ceylon.language.Integer> $arg$45$1 = new .com.redhat.ceylon.compiler.java.language.ArraySequence(.ceylon.language.Integer.instance(1L));
+                .ceylon.language.List<? extends .ceylon.language.Integer> $arg$45$1 = new .com.redhat.ceylon.compiler.java.language.ArraySequence(.ceylon.language.Integer.instance(1L));
             }
             returning $arg$45$callable$.Sequenced$new($arg$45$0, $arg$45$1);
         );
@@ -390,7 +390,7 @@ final class instantiatorDelegates_ {
             {
                 .com.redhat.ceylon.compiler.java.test.structure.mcr.InstantiatorDelegates<.ceylon.language.String> $arg$46$callable$ = a;
                 boolean $arg$46$0 = true;
-                .ceylon.language.Iterable $arg$46$1 = new .com.redhat.ceylon.compiler.java.language.ArraySequence<.ceylon.language.Integer>(.ceylon.language.Integer.instance(1L), .ceylon.language.Integer.instance(2L));
+                .ceylon.language.List $arg$46$1 = new .com.redhat.ceylon.compiler.java.language.ArraySequence<.ceylon.language.Integer>(.ceylon.language.Integer.instance(1L), .ceylon.language.Integer.instance(2L));
             }
             returning $arg$46$callable$.Sequenced$new($arg$46$0, $arg$46$1);
         );
@@ -399,7 +399,7 @@ final class instantiatorDelegates_ {
             {
                 .com.redhat.ceylon.compiler.java.test.structure.mcr.InstantiatorDelegates<.ceylon.language.String> $arg$47$callable$ = a;
                 boolean $arg$47$0 = true;
-                .ceylon.language.Iterable<? extends .ceylon.language.Integer> $arg$47$1 = new .com.redhat.ceylon.compiler.java.language.ArraySequence(.ceylon.language.Integer.instance(1L), .ceylon.language.Integer.instance(2L));
+                .ceylon.language.List<? extends .ceylon.language.Integer> $arg$47$1 = new .com.redhat.ceylon.compiler.java.language.ArraySequence(.ceylon.language.Integer.instance(1L), .ceylon.language.Integer.instance(2L));
             }
             returning $arg$47$callable$.Sequenced$new($arg$47$0, $arg$47$1);
         );
@@ -409,7 +409,7 @@ final class instantiatorDelegates_ {
             {
                 .com.redhat.ceylon.compiler.java.test.structure.mcr.InstantiatorDelegates<.ceylon.language.String> $arg$48$callable$ = a;
                 boolean $arg$48$0 = true;
-                .ceylon.language.Iterable<? extends .ceylon.language.Integer> $arg$48$1 = $arg$48$callable$.$SequencedDefault$init$i($arg$48$0);
+                .ceylon.language.List<? extends .ceylon.language.Integer> $arg$48$1 = $arg$48$callable$.$SequencedDefault$init$i($arg$48$0);
             }
             returning $arg$48$callable$.SequencedDefault$new($arg$48$0, $arg$48$1);
         );

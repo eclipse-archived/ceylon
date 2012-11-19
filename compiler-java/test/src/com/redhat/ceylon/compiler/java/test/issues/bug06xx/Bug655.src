@@ -18,7 +18,7 @@ class Bug655 {
     }
     
     private final void get() {
-        select(new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.ceylon.language.String>("ceylon.language::Callable<ceylon.language::String>"){
+        select(new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.ceylon.language.String>("String()"){
             
             @.java.lang.Override
             public .ceylon.language.String $call() {

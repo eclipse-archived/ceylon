@@ -172,7 +172,7 @@ public class CallableBuilder {
         JCNewClass instance = gen.make().NewClass(null, 
                 null, 
                 gen.makeJavaType(typeModel, JT_EXTENDS | JT_CLASS_NEW), 
-                List.<JCExpression>of(gen.make().Literal(typeModel.getProducedTypeQualifiedName())), 
+                List.<JCExpression>of(gen.make().Literal(typeModel.getProducedTypeName(true))),
                 classDef);
         return instance;
     }

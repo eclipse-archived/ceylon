@@ -5,6 +5,7 @@ class EmptyImpl extends .java.lang.Object implements .ceylon.language.Empty {
     EmptyImpl() {
         super();
         this.$ceylon$language$Empty$this = new .ceylon.language.Empty$impl(this);
+        this.$ceylon$language$Sequential$this = new .ceylon.language.List$impl<.java.lang.Object>(this);
         this.$ceylon$language$List$this = new .ceylon.language.List$impl<.java.lang.Object>(this);
         this.$ceylon$language$Collection$this = new .ceylon.language.Collection$impl<.java.lang.Object>(this);
         this.$ceylon$language$Iterable$this = new .ceylon.language.Iterable$impl<.java.lang.Object>(this);
@@ -15,8 +16,8 @@ class EmptyImpl extends .java.lang.Object implements .ceylon.language.Empty {
         this.$ceylon$language$Cloneable$this = new .ceylon.language.Cloneable$impl<.ceylon.language.Collection<?>>((.ceylon.language.Cloneable<.ceylon.language.Collection<?>>)(.ceylon.language.Cloneable)this);
         this.$ceylon$language$Correspondence$this = new .ceylon.language.Correspondence$impl<.ceylon.language.Integer, .java.lang.Object>(this);
         this.$ceylon$language$Ranged$this = new .ceylon.language.Ranged$impl<.ceylon.language.Integer, .ceylon.language.List<?>>((.ceylon.language.Ranged<.ceylon.language.Integer, .ceylon.language.List<?>>)(.ceylon.language.Ranged)this);
-        this.$ceylon$language$None$this = new .ceylon.language.None$impl<.java.lang.Object>(this);
         this.$ceylon$language$FixedSized$this = new .ceylon.language.FixedSized$impl<.java.lang.Object>(this);
+        this.$ceylon$language$None$this = new .ceylon.language.None$impl<.java.lang.Object>(this);
     }
     private final .ceylon.language.Empty$impl $ceylon$language$Empty$this;
     
@@ -89,6 +90,7 @@ class EmptyImpl extends .java.lang.Object implements .ceylon.language.Empty {
     public final boolean defines(final .ceylon.language.Integer key) {
         return $ceylon$language$Empty$this.defines(key);
     }
+    private final .ceylon.language.List$impl<.java.lang.Object> $ceylon$language$Sequential$this;
     private final .ceylon.language.List$impl<.java.lang.Object> $ceylon$language$List$this;
     
     @.java.lang.Override
@@ -304,13 +306,13 @@ class EmptyImpl extends .java.lang.Object implements .ceylon.language.Empty {
         return $ceylon$language$Correspondence$this.items(keys);
     }
     private final .ceylon.language.Ranged$impl<.ceylon.language.Integer, .ceylon.language.List<?>> $ceylon$language$Ranged$this;
+    private final .ceylon.language.FixedSized$impl<.java.lang.Object> $ceylon$language$FixedSized$this;
     private final .ceylon.language.None$impl<.java.lang.Object> $ceylon$language$None$this;
     
     @.java.lang.Override
     public final boolean getEmpty() {
         return $ceylon$language$None$this.getEmpty();
     }
-    private final .ceylon.language.FixedSized$impl<.java.lang.Object> $ceylon$language$FixedSized$this;
     
     public static void main(.java.lang.String[] args) {
         .ceylon.language.process_.getProcess$().setupArguments(args);

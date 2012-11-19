@@ -18,12 +18,13 @@
  * MA  02110-1301, USA.
  */
 @nomodel
-void callableArgumentVarargs2_f(void foo(String... s)) {
-}
-@nomodel
-void callableArgumentVarargs2_g(Iterable<String> s) {
-}
-@nomodel
-void callableArgumentVarargs2_m() {
-    callableArgumentVarargs2_f(callableArgumentVarargs2_g);
+class IndexingTuples() {
+    void index() {
+        value t = (1, "2", Singleton(`3`));
+        Integer v1 = t[0];
+    }
+    void safe() {
+        <Integer, String, Character[]>? t = (1, "2", Singleton(`3`));
+        Integer v = t?[0];
+    }
 }

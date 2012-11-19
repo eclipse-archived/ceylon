@@ -9,21 +9,21 @@ class IterableMethodSpecifyingMethodWithVarargs {
         (
             let
             {
-                .ceylon.language.Iterable<? extends .ceylon.language.Integer> $ceylontmp$seq$1 = foo$seq();
+                .ceylon.language.List<? extends .ceylon.language.Integer> $ceylontmp$seq$1 = foo$seq();
                 foo($ceylontmp$seq$1);
             }
             returning null;
         );
     }
     
-    private final .ceylon.language.Iterable<? extends .ceylon.language.Integer> foo$seq() {
-        return (.ceylon.language.Iterable).ceylon.language.empty_.getEmpty$();
+    private final .ceylon.language.List<? extends .ceylon.language.Integer> foo$seq() {
+        return (.ceylon.language.List).ceylon.language.empty_.getEmpty$();
     }
     
-    private final void foo(final .ceylon.language.Iterable<? extends .ceylon.language.Integer> seq) {
+    private final void foo(final .ceylon.language.List<? extends .ceylon.language.Integer> seq) {
     }
     
-    private final void bar(final .ceylon.language.Iterable<? extends .ceylon.language.Integer> ints) {
+    private final void bar(final .ceylon.language.List<? extends .ceylon.language.Integer> ints) {
         foo(ints);
     }
     

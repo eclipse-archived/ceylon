@@ -8,7 +8,7 @@ class DefaultedParameterClassInstantiation {
             {
                 long $ceylontmp$m$1 = .com.redhat.ceylon.compiler.java.test.expression.instantiation.DefaultedParameterClassInstantiation.$init$m();
                 long $ceylontmp$n$2 = .com.redhat.ceylon.compiler.java.test.expression.instantiation.DefaultedParameterClassInstantiation.$init$n($ceylontmp$m$1);
-                .ceylon.language.Iterable<? extends .ceylon.language.Integer> $ceylontmp$seq$3 = .com.redhat.ceylon.compiler.java.test.expression.instantiation.DefaultedParameterClassInstantiation.$init$seq($ceylontmp$m$1, $ceylontmp$n$2);
+                .ceylon.language.List<? extends .ceylon.language.Integer> $ceylontmp$seq$3 = .com.redhat.ceylon.compiler.java.test.expression.instantiation.DefaultedParameterClassInstantiation.$init$seq($ceylontmp$m$1, $ceylontmp$n$2);
                 this($ceylontmp$m$1, $ceylontmp$n$2, $ceylontmp$seq$3);
             }
             returning null;
@@ -20,7 +20,7 @@ class DefaultedParameterClassInstantiation {
             let
             {
                 long $ceylontmp$n$5 = .com.redhat.ceylon.compiler.java.test.expression.instantiation.DefaultedParameterClassInstantiation.$init$n(m);
-                .ceylon.language.Iterable<? extends .ceylon.language.Integer> $ceylontmp$seq$6 = .com.redhat.ceylon.compiler.java.test.expression.instantiation.DefaultedParameterClassInstantiation.$init$seq(m, $ceylontmp$n$5);
+                .ceylon.language.List<? extends .ceylon.language.Integer> $ceylontmp$seq$6 = .com.redhat.ceylon.compiler.java.test.expression.instantiation.DefaultedParameterClassInstantiation.$init$seq(m, $ceylontmp$n$5);
                 this(m, $ceylontmp$n$5, $ceylontmp$seq$6);
             }
             returning null;
@@ -31,14 +31,14 @@ class DefaultedParameterClassInstantiation {
         (
             let
             {
-                .ceylon.language.Iterable<? extends .ceylon.language.Integer> $ceylontmp$seq$8 = .com.redhat.ceylon.compiler.java.test.expression.instantiation.DefaultedParameterClassInstantiation.$init$seq(m, n);
+                .ceylon.language.List<? extends .ceylon.language.Integer> $ceylontmp$seq$8 = .com.redhat.ceylon.compiler.java.test.expression.instantiation.DefaultedParameterClassInstantiation.$init$seq(m, n);
                 this(m, n, $ceylontmp$seq$8);
             }
             returning null;
         );
     }
     
-    DefaultedParameterClassInstantiation(long m, long n, .ceylon.language.Iterable<? extends .ceylon.language.Integer> seq) {
+    DefaultedParameterClassInstantiation(long m, long n, .ceylon.language.List<? extends .ceylon.language.Integer> seq) {
     }
     
     static long $init$m() {
@@ -49,8 +49,8 @@ class DefaultedParameterClassInstantiation {
         return m + 1L;
     }
     
-    static .ceylon.language.Iterable<? extends .ceylon.language.Integer> $init$seq(final long m, final long n) {
-        return (.ceylon.language.Iterable).ceylon.language.empty_.getEmpty$();
+    static .ceylon.language.List<? extends .ceylon.language.Integer> $init$seq(final long m, final long n) {
+        return (.ceylon.language.List).ceylon.language.empty_.getEmpty$();
     }
     
     public final void test() {
@@ -63,7 +63,7 @@ class DefaultedParameterClassInstantiation {
             {
                 long $arg$9$0 = .com.redhat.ceylon.compiler.java.test.expression.instantiation.DefaultedParameterClassInstantiation.$init$m();
                 long $arg$9$1 = .com.redhat.ceylon.compiler.java.test.expression.instantiation.DefaultedParameterClassInstantiation.$init$n($arg$9$0);
-                .ceylon.language.Iterable<? extends .ceylon.language.Integer> $arg$9$2 = .com.redhat.ceylon.compiler.java.test.expression.instantiation.DefaultedParameterClassInstantiation.$init$seq($arg$9$0, $arg$9$1);
+                .ceylon.language.List<? extends .ceylon.language.Integer> $arg$9$2 = .com.redhat.ceylon.compiler.java.test.expression.instantiation.DefaultedParameterClassInstantiation.$init$seq($arg$9$0, $arg$9$1);
             }
             returning new .com.redhat.ceylon.compiler.java.test.expression.instantiation.DefaultedParameterClassInstantiation($arg$9$0, $arg$9$1, $arg$9$2);
         );
@@ -72,7 +72,7 @@ class DefaultedParameterClassInstantiation {
             {
                 long $arg$10$0 = 6L;
                 long $arg$10$1 = .com.redhat.ceylon.compiler.java.test.expression.instantiation.DefaultedParameterClassInstantiation.$init$n($arg$10$0);
-                .ceylon.language.Iterable<? extends .ceylon.language.Integer> $arg$10$2 = .com.redhat.ceylon.compiler.java.test.expression.instantiation.DefaultedParameterClassInstantiation.$init$seq($arg$10$0, $arg$10$1);
+                .ceylon.language.List<? extends .ceylon.language.Integer> $arg$10$2 = .com.redhat.ceylon.compiler.java.test.expression.instantiation.DefaultedParameterClassInstantiation.$init$seq($arg$10$0, $arg$10$1);
             }
             returning new .com.redhat.ceylon.compiler.java.test.expression.instantiation.DefaultedParameterClassInstantiation($arg$10$0, $arg$10$1, $arg$10$2);
         );
@@ -81,7 +81,7 @@ class DefaultedParameterClassInstantiation {
             {
                 long $arg$11$0 = 6L;
                 long $arg$11$1 = 9L;
-                .ceylon.language.Iterable<? extends .ceylon.language.Integer> $arg$11$2 = .com.redhat.ceylon.compiler.java.test.expression.instantiation.DefaultedParameterClassInstantiation.$init$seq($arg$11$0, $arg$11$1);
+                .ceylon.language.List<? extends .ceylon.language.Integer> $arg$11$2 = .com.redhat.ceylon.compiler.java.test.expression.instantiation.DefaultedParameterClassInstantiation.$init$seq($arg$11$0, $arg$11$1);
             }
             returning new .com.redhat.ceylon.compiler.java.test.expression.instantiation.DefaultedParameterClassInstantiation($arg$11$0, $arg$11$1, $arg$11$2);
         );
@@ -90,7 +90,7 @@ class DefaultedParameterClassInstantiation {
             {
                 long $arg$12$0 = 6L;
                 long $arg$12$1 = 9L;
-                .ceylon.language.Iterable<? extends .ceylon.language.Integer> $arg$12$2 = new .com.redhat.ceylon.compiler.java.language.ArraySequence(.ceylon.language.Integer.instance(1L), .ceylon.language.Integer.instance(2L), .ceylon.language.Integer.instance(3L));
+                .ceylon.language.List<? extends .ceylon.language.Integer> $arg$12$2 = new .com.redhat.ceylon.compiler.java.language.ArraySequence(.ceylon.language.Integer.instance(1L), .ceylon.language.Integer.instance(2L), .ceylon.language.Integer.instance(3L));
             }
             returning new .com.redhat.ceylon.compiler.java.test.expression.instantiation.DefaultedParameterClassInstantiation($arg$12$0, $arg$12$1, $arg$12$2);
         );

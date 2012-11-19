@@ -27,14 +27,19 @@ class ActualMethodShortcutSub extends .com.redhat.ceylon.compiler.java.test.stru
     
     @.java.lang.Override
     public final .java.lang.Object print2(final .java.lang.String s) {
-        (
-            let
-            {
-                .ceylon.language.process_.getProcess$().writeLine(s);
+        return new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.java.lang.Object>("Void(String)"){
+            
+            @.java.lang.Override
+            public .java.lang.Object $call(final .java.lang.Object $param$0) {
+                return (
+                    let
+                    {
+                        .ceylon.language.process_.getProcess$().writeLine(((.ceylon.language.String)$param$0).toString());
+                    }
+                    returning null;
+                );
             }
-            returning null;
-        );
-        return null;
+        };
     }
     
     @.java.lang.Override

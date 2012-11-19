@@ -24,6 +24,7 @@ import java.util.Collections;
 
 import com.redhat.ceylon.compiler.java.tools.LanguageCompiler;
 import com.redhat.ceylon.compiler.typechecker.context.Context;
+import com.redhat.ceylon.compiler.typechecker.model.Interface;
 import com.redhat.ceylon.compiler.typechecker.model.IntersectionType;
 import com.redhat.ceylon.compiler.typechecker.model.ProducedType;
 import com.redhat.ceylon.compiler.typechecker.model.TypeDeclaration;
@@ -31,6 +32,7 @@ import com.redhat.ceylon.compiler.typechecker.model.UnionType;
 import com.redhat.ceylon.compiler.typechecker.model.Unit;
 import com.redhat.ceylon.compiler.typechecker.model.UnknownType;
 import com.redhat.ceylon.compiler.typechecker.model.Util;
+import com.sun.tools.javac.util.List;
 
 public class TypeFactory extends Unit {
     private Context context;
@@ -91,16 +93,28 @@ public class TypeFactory extends Unit {
         }
     }
     
+    public Interface getFixedSizedDeclaration() {
+        return (Interface) getLanguageModuleDeclaration("FixedSized");
+    }
+    
     public ProducedType getFixedSizedType(ProducedType pt) {
         return pt.getSupertype(getFixedSizedDeclaration());
     }
     
     public ProducedType getCallableType(java.util.List<ProducedType> typeArgs) {
+        if (typeArgs.size()!=2) {
+            throw new IllegalArgumentException("Callable type always has two arguments: " + typeArgs);
+        }
+        if (!typeArgs.get(1).isSubtypeOf(
+                getSequentialDeclaration().getProducedType(
+                        null, Collections.singletonList(getVoidDeclaration().getType())))) {
+            throw new IllegalArgumentException("Callable's second argument should be sequential " + typeArgs.get(1));
+        }
         return getCallableDeclaration().getProducedType(null, typeArgs);
     }
     
     public ProducedType getCallableType(ProducedType resultType) {
-        return getCallableType(Collections.<ProducedType>singletonList(resultType));
+        return getCallableType(List.<ProducedType>of(resultType,getEmptyDeclaration().getType()));
     }
 
     public ProducedType getUnknownType() {

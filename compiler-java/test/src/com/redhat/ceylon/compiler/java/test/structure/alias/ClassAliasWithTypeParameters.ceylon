@@ -1,7 +1,7 @@
 shared class ClassAliasWithTypeParameters_Foo<T>(T t){}
 
-shared class ClassAliasWithTypeParameters<T>(T t) = ClassAliasWithTypeParameters_Foo<T>;
-shared class ClassAliasWithTypeParameters2(Integer t) = ClassAliasWithTypeParameters_Foo<Integer>;
+shared class ClassAliasWithTypeParameters<T>(T t) => ClassAliasWithTypeParameters_Foo<T>(t);
+shared class ClassAliasWithTypeParameters2(Integer t) => ClassAliasWithTypeParameters_Foo<Integer>(t);
 
 @nomodel
 void classAliasWithTypeParametersMethod(){

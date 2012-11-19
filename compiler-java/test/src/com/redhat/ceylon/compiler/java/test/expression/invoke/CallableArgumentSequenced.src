@@ -17,18 +17,18 @@ final class callableArgumentSequenced_g_ {
         (
             let
             {
-                .ceylon.language.Iterable<? extends .ceylon.language.String> $ceylontmp$s$1 = .com.redhat.ceylon.compiler.java.test.expression.invoke.callableArgumentSequenced_g_.callableArgumentSequenced_g$s();
+                .ceylon.language.List<? extends .ceylon.language.String> $ceylontmp$s$1 = .com.redhat.ceylon.compiler.java.test.expression.invoke.callableArgumentSequenced_g_.callableArgumentSequenced_g$s();
                 callableArgumentSequenced_g($ceylontmp$s$1);
             }
             returning null;
         );
     }
     
-    static final .ceylon.language.Iterable<? extends .ceylon.language.String> callableArgumentSequenced_g$s() {
-        return (.ceylon.language.Iterable).ceylon.language.empty_.getEmpty$();
+    static final .ceylon.language.List<? extends .ceylon.language.String> callableArgumentSequenced_g$s() {
+        return (.ceylon.language.List).ceylon.language.empty_.getEmpty$();
     }
     
-    static void callableArgumentSequenced_g(final .ceylon.language.Iterable<? extends .ceylon.language.String> s) {
+    static void callableArgumentSequenced_g(final .ceylon.language.List<? extends .ceylon.language.String> s) {
     }
 }
 final class callableArgumentSequenced_m_ {
@@ -37,14 +37,14 @@ final class callableArgumentSequenced_m_ {
     }
     
     static void callableArgumentSequenced_m() {
-        .com.redhat.ceylon.compiler.java.test.expression.invoke.callableArgumentSequenced_f_.callableArgumentSequenced_f(new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.java.lang.Object>("ceylon.language::Callable<ceylon.language::Void,ceylon.language::Iterable<ceylon.language::String>>"){
+        .com.redhat.ceylon.compiler.java.test.expression.invoke.callableArgumentSequenced_f_.callableArgumentSequenced_f(new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.java.lang.Object>("Void(String...)"){
             
             @.java.lang.Override
             public .java.lang.Object $call(final .java.lang.Object $param$0) {
                 return (
                     let
                     {
-                        .com.redhat.ceylon.compiler.java.test.expression.invoke.callableArgumentSequenced_g_.callableArgumentSequenced_g((.ceylon.language.Iterable)$param$0);
+                        .com.redhat.ceylon.compiler.java.test.expression.invoke.callableArgumentSequenced_g_.callableArgumentSequenced_g((.ceylon.language.List)$param$0);
                     }
                     returning null;
                 );

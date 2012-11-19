@@ -23,5 +23,5 @@ Integer methodSpecifyingToplevelWithResult_f() {
 }
 @nomodel
 class MethodSpecifyingToplevelWithResult() {
-    Integer foo() = methodSpecifyingToplevelWithResult_f;
+    Integer foo() => methodSpecifyingToplevelWithResult_f();
 }

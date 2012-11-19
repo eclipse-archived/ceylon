@@ -258,14 +258,6 @@ public class ExpressionTest2 extends CompilerTest {
     public void testCallableArgumentSequenced(){
         compareWithJavaSource("invoke/CallableArgumentSequenced");
     }
-    @Test
-    public void testCallableArgumentVarargs(){
-        compareWithJavaSource("invoke/CallableArgumentVarargs");
-    }
-    @Test
-    public void testCallableArgumentVarargs2(){
-        compareWithJavaSource("invoke/CallableArgumentVarargs2");
-    }
     
     @Test
     public void testCallableArgumentParameterClass(){
@@ -431,6 +423,12 @@ public class ExpressionTest2 extends CompilerTest {
     @Test
     public void testDefaultFunctionReference(){
         compareWithJavaSource("invoke/DefaultFunctionReference");
+    }
+    
+    @Test
+    public void testFunctionalParameterMpl(){
+        compile("invoke/FunctionalParameterMpl.ceylon");
+        compile("invoke/FunctionalParameterMpl2.ceylon");
     }
     
     @Test

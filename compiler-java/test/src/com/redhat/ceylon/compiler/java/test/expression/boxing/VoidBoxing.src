@@ -95,7 +95,7 @@ class VoidBoxing {
         final .java.lang.Object v7 = (
             let
             {
-                callablevoid(new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.java.lang.Object>("ceylon.language::Callable<ceylon.language::Void,ceylon.language::Void>"){
+                callablevoid(new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.java.lang.Object>("Void(Void)"){
                     
                     @.java.lang.Override
                     public .java.lang.Object $call(final .java.lang.Object $param$0) {
@@ -114,7 +114,7 @@ class VoidBoxing {
         final .java.lang.Object v8 = (
             let
             {
-                callablevoid(new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.java.lang.Object>("ceylon.language::Callable<ceylon.language::Void,ceylon.language::Void>"){
+                callablevoid(new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.java.lang.Object>("Void(Void)"){
                     
                     @.java.lang.Override
                     public .java.lang.Object $call(final .java.lang.Object $param$0) {
@@ -124,7 +124,7 @@ class VoidBoxing {
             }
             returning null;
         );
-        final .java.lang.Object v9 = callableVoid(new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.java.lang.Object>("ceylon.language::Callable<ceylon.language::Void,ceylon.language::Void>"){
+        final .java.lang.Object v9 = callableVoid(new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.java.lang.Object>("Void(Void)"){
             
             @.java.lang.Override
             public .java.lang.Object $call(final .java.lang.Object $param$0) {
@@ -137,7 +137,7 @@ class VoidBoxing {
                 );
             }
         });
-        final .java.lang.Object v10 = callableVoid(new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.java.lang.Object>("ceylon.language::Callable<ceylon.language::Void,ceylon.language::Void>"){
+        final .java.lang.Object v10 = callableVoid(new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.java.lang.Object>("Void(Void)"){
             
             @.java.lang.Override
             public .java.lang.Object $call(final .java.lang.Object $param$0) {
@@ -147,7 +147,7 @@ class VoidBoxing {
         final .java.lang.Object v11 = (
             let
             {
-                callablevoid(new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.java.lang.Object>("ceylon.language::Callable<ceylon.language::Void>"){
+                callablevoid(new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.java.lang.Object>("Void()"){
                     
                     @.java.lang.Override
                     public .java.lang.Object $call(final .java.lang.Object $param$0) {
@@ -158,7 +158,7 @@ class VoidBoxing {
             }
             returning null;
         );
-        final .java.lang.Object v12 = callableVoid(new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.java.lang.Object>("ceylon.language::Callable<ceylon.language::Void>"){
+        final .java.lang.Object v12 = callableVoid(new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.java.lang.Object>("Void()"){
             
             @.java.lang.Override
             public .java.lang.Object $call(final .java.lang.Object $param$0) {
@@ -201,7 +201,7 @@ class VoidBoxing {
         v = (
             let
             {
-                callablevoid(new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.java.lang.Object>("ceylon.language::Callable<ceylon.language::Void,ceylon.language::Void>"){
+                callablevoid(new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.java.lang.Object>("Void(Void)"){
                     
                     @.java.lang.Override
                     public .java.lang.Object $call(final .java.lang.Object $param$0) {
@@ -220,7 +220,7 @@ class VoidBoxing {
         v = (
             let
             {
-                callablevoid(new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.java.lang.Object>("ceylon.language::Callable<ceylon.language::Void,ceylon.language::Void>"){
+                callablevoid(new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.java.lang.Object>("Void(Void)"){
                     
                     @.java.lang.Override
                     public .java.lang.Object $call(final .java.lang.Object $param$0) {
@@ -230,7 +230,7 @@ class VoidBoxing {
             }
             returning null;
         );
-        v = callableVoid(new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.java.lang.Object>("ceylon.language::Callable<ceylon.language::Void,ceylon.language::Void>"){
+        v = callableVoid(new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.java.lang.Object>("Void(Void)"){
             
             @.java.lang.Override
             public .java.lang.Object $call(final .java.lang.Object $param$0) {
@@ -243,7 +243,7 @@ class VoidBoxing {
                 );
             }
         });
-        v = callableVoid(new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.java.lang.Object>("ceylon.language::Callable<ceylon.language::Void,ceylon.language::Void>"){
+        v = callableVoid(new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.java.lang.Object>("Void(Void)"){
             
             @.java.lang.Override
             public .java.lang.Object $call(final .java.lang.Object $param$0) {
@@ -253,7 +253,7 @@ class VoidBoxing {
         v = (
             let
             {
-                callablevoid(new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.java.lang.Object>("ceylon.language::Callable<ceylon.language::Void>"){
+                callablevoid(new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.java.lang.Object>("Void()"){
                     
                     @.java.lang.Override
                     public .java.lang.Object $call(final .java.lang.Object $param$0) {
@@ -264,7 +264,7 @@ class VoidBoxing {
             }
             returning null;
         );
-        v = callableVoid(new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.java.lang.Object>("ceylon.language::Callable<ceylon.language::Void>"){
+        v = callableVoid(new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.java.lang.Object>("Void()"){
             
             @.java.lang.Override
             public .java.lang.Object $call(final .java.lang.Object $param$0) {

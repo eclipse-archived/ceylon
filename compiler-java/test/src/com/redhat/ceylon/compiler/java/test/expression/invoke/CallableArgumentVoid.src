@@ -21,7 +21,7 @@ class CallableArgumentVoid {
     }
     
     private final void callsite() {
-        f(new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.java.lang.Object>("ceylon.language::Callable<ceylon.language::Void>"){
+        f(new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.java.lang.Object>("Void()"){
             
             @.java.lang.Override
             public .java.lang.Object $call() {
@@ -34,14 +34,14 @@ class CallableArgumentVoid {
                 );
             }
         });
-        f(new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.java.lang.Object>("ceylon.language::Callable<ceylon.language::Void>"){
+        f(new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.java.lang.Object>("Void()"){
             
             @.java.lang.Override
             public .java.lang.Object $call() {
                 return m2();
             }
         });
-        f(new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.java.lang.Object>("ceylon.language::Callable<ceylon.language::Void>"){
+        f(new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.java.lang.Object>("Void()"){
             
             @.java.lang.Override
             public .java.lang.Object $call() {

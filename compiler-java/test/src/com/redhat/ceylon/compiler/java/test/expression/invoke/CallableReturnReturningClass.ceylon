@@ -21,6 +21,6 @@
 class CallableReturnReturningClass() {
 }
 @nomodel
-Callable<CallableReturnReturningClass> callableReturnReturningClass_bar() {
+Callable<CallableReturnReturningClass, <>> callableReturnReturningClass_bar() {
     return CallableReturnReturningClass;
 }

@@ -3,10 +3,10 @@ shared class MemberTypeAliasClass(){
     shared class TypeAliasClass(){}
     shared interface TypeAliasInterface{}
     
-    shared alias TypeAlias1 = TypeAliasClass & TypeAliasInterface;
-    shared alias TypeAlias2 = TypeAliasClass | TypeAliasInterface;
-    shared alias TypeAlias3 = TypeAliasClass;
-    shared alias TypeAlias4 = TypeAliasInterface;
+    shared alias TypeAlias1 => TypeAliasClass & TypeAliasInterface;
+    shared alias TypeAlias2 => TypeAliasClass | TypeAliasInterface;
+    shared alias TypeAlias3 => TypeAliasClass;
+    shared alias TypeAlias4 => TypeAliasInterface;
     
     TypeAlias1 classAliasMethod1(TypeAlias1 f){
         return f;
@@ -30,10 +30,10 @@ shared interface MemberTypeAliasInterface{
     shared class TypeAliasClass(){}
     shared interface TypeAliasInterface{}
     
-    shared alias TypeAlias1 = TypeAliasClass & TypeAliasInterface;
-    shared alias TypeAlias2 = TypeAliasClass | TypeAliasInterface;
-    shared alias TypeAlias3 = TypeAliasClass;
-    shared alias TypeAlias4 = TypeAliasInterface;
+    shared alias TypeAlias1 => TypeAliasClass & TypeAliasInterface;
+    shared alias TypeAlias2 => TypeAliasClass | TypeAliasInterface;
+    shared alias TypeAlias3 => TypeAliasClass;
+    shared alias TypeAlias4 => TypeAliasInterface;
     
     TypeAlias1 classAliasMethod1(TypeAlias1 f){
         return f;
