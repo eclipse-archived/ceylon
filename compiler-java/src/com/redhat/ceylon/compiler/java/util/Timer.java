@@ -59,8 +59,12 @@ public class Timer {
         // that time, so we fake it later on with the correct time
     }
 
+    /**
+     * Initializes this timer and {@linkplain #log(String) logs} a 
+     * "program start" message.
+     */
     public void init(){
-        programStart = System.currentTimeMillis();
+        programStart = System.nanoTime();
         if(verbose)
             log("Program start", programStart);
     }
@@ -71,32 +75,49 @@ public class Timer {
         log("Program end");
     }
 
+    /**
+     * {@linkplain #endTask() Ends} the current task (if any) and starts a 
+     * timed task with the given name, 
+     * {@linkplain #log(String) logging} the task name. 
+     * 
+     * @param name The name of the task to start.
+     */
     public void startTask(String name){
         if(!verbose)
             return;
         if(currentTask != null)
             endTask();
         currentTask = name;
-        currentTaskStart = System.currentTimeMillis();
+        currentTaskStart = System.nanoTime();
         log("Task "+currentTask+" start");
     }
-
+    
+    /**
+     * Logs a message, including the elapsed time since this Timer was 
+     * {@linkplain #init() initialized}.
+     * @param string The message
+     */
     public void log(String string) {
         if(!verbose)
             return;
-        log(string, System.currentTimeMillis());
+        log(string, System.nanoTime());
     }
 
     private void log(String string, long now) {
-        long delta = now - programStart;
+        long delta = (now - programStart)/1_000_000;
         System.err.println("["+delta+"ms] "+string);
     }
 
+    /**
+     * Ends the current task, {@linkplain #log(String) logging} the name of 
+     * the task and its elapsed time
+     * @see #startTask(String)
+     */
     public void endTask() {
         if(!verbose)
             return;
-        long time = System.currentTimeMillis();
-        long delta = time - currentTaskStart;
+        long time = System.nanoTime();
+        long delta = (time - currentTaskStart)/1_000_000L;
         log("Task "+currentTask+" end: "+delta+"ms");
         printIgnoredCategories();
         currentTask = null;
@@ -141,13 +162,13 @@ public class Timer {
         }
         public void start() {
             if(count++ == 0){
-                start = System.currentTimeMillis();
+                start = System.nanoTime();
             }
         }
         public void stop() {
             if(--count == 0){
-                long end = System.currentTimeMillis();
-                long delta = end - start;
+                long end = System.nanoTime();
+                long delta = (end - start)/1_000_000;
                 total += delta;
             }
         }
