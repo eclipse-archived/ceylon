@@ -26,6 +26,15 @@ class IndirectionTestChild() extends IndirectionTestParent() {
     }
 }
 
+interface RefineTestBase {
+    shared formal String s1;
+    shared formal String s2(Integer i);
+}
+class ShortcutRefineTest(String(Integer) f) satisfies RefineTestBase {
+    s1 = "s1";
+    s2 = f;
+}
+
 void testMisc() {
   check(TestSized(0).empty, "Sized.empty");
   check(!TestSized(1).empty, "!Sized.empty");
@@ -37,4 +46,7 @@ void testMisc() {
   check(testcat.containsAny(30,20,10,50), "Category.containsAny");
   check(!testcat.containsAny(0,20,30,40,50), "!Category.containsAny");
   check(IndirectionTestChild().x()=="x+y", "Inheritance");
+  value reftst = ShortcutRefineTest((Integer i) => "i="i"");
+  check(reftst.s1=="s1", "shortcut attribute refinement");
+  check(reftst.s2(123)=="i=123", "shortcut method refinement");
 }
