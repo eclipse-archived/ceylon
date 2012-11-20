@@ -27,6 +27,7 @@ public abstract class Declaration
     private Declaration refinedDeclaration = this;
     private boolean staticallyImportable;
     private boolean protectedVisibility;
+    private String qualifiedNameAsStringCache;
 
     public Scope getVisibleScope() {
         return visibleScope;
@@ -73,17 +74,20 @@ public abstract class Declaration
 
     @Override
     public String getQualifiedNameString() {
-        String qualifier = getContainer().getQualifiedNameString();
-        String name = getName();
-        if (qualifier.isEmpty()) {
-            return name; 
+        if(qualifiedNameAsStringCache == null){
+            String qualifier = getContainer().getQualifiedNameString();
+            String name = getName();
+            if (qualifier.isEmpty()) {
+                qualifiedNameAsStringCache = name; 
+            }
+            else if (getContainer() instanceof Package) {
+                qualifiedNameAsStringCache = qualifier + "::" + name;
+            }
+            else {
+                qualifiedNameAsStringCache = qualifier + "." + name;
+            }
         }
-        else if (getContainer() instanceof Package) {
-            return qualifier + "::" + name;
-        }
-        else {
-            return qualifier + "." + name;
-        }
+        return qualifiedNameAsStringCache;
     }
 
     public boolean isActual() {
