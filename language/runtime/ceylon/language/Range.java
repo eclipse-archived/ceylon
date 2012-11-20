@@ -452,10 +452,11 @@ public class Range<Element extends Comparable<? super Element> & Ordinal<? super
                         public java.lang.Object next() {
                             long result = current;
                             if (inverse) {
-                                if (current < lim) return exhausted_.getExhausted$();
+                                // avoid current < lim etc: possibility of overflow
+                                if (current-lim < 0) return exhausted_.getExhausted$();
                                 current-=step;
                             } else {
-                                if (current > lim) return exhausted_.getExhausted$();
+                                if (current-lim > 0) return exhausted_.getExhausted$();
                                 current+=step;
                             }
                             return Integer.instance(result);
