@@ -230,11 +230,13 @@ public abstract class Declaration
             return false;
         if (object instanceof Declaration) {
             Declaration that = (Declaration) object;
-            String myName = getQualifiedNameString();
-            String otherName = that.getQualifiedNameString();
+            String myName = getName();
+            String otherName = that.getName();
             return myName != null && otherName != null &&
                     myName.equals(otherName) &&
-                    that.getDeclarationKind()==getDeclarationKind();
+                    that.getDeclarationKind()==getDeclarationKind() &&
+                    (getContainer()==null && that.getContainer()==null ||
+                    that.getContainer().equals(getContainer()));
         }
         else {
             return false;
