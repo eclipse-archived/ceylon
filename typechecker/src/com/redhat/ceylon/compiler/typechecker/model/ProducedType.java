@@ -24,6 +24,7 @@ public class ProducedType extends ProducedReference {
     private String underlyingType;
     private boolean isRaw;
     private ProducedType resolvedAliases;
+    private Map<TypeDeclaration, ProducedType> superTypesCache = new HashMap<TypeDeclaration, ProducedType>();
 
     ProducedType() {}
 
@@ -494,6 +495,9 @@ public class ProducedType extends ProducedReference {
      *         there is no such supertype
      */
     public ProducedType getSupertype(final TypeDeclaration dec) {
+        if(superTypesCache.containsKey(dec)){
+            return superTypesCache.get(dec);
+        }
         Criteria c = new Criteria() {
             @Override
             public boolean satisfies(TypeDeclaration type) {
@@ -502,7 +506,9 @@ public class ProducedType extends ProducedReference {
                        type.equals(dec);
             }
         };
-        return getSupertype(c, new ArrayList<ProducedType>());
+        ProducedType superType = getSupertype(c, new ArrayList<ProducedType>());
+        superTypesCache.put(dec, superType);
+        return superType;
     }
     
     /**
