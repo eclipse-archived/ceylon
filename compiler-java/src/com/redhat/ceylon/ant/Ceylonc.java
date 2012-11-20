@@ -64,7 +64,7 @@ public class Ceylonc extends LazyTask {
     private File executable;
     private List<Module> modules = new LinkedList<Module>();
     private FileSet files;
-    private Boolean verbose;
+    private String verbose;
     private Boolean bootstrap;
     private String user;
     private String pass;
@@ -84,7 +84,7 @@ public class Ceylonc extends LazyTask {
         this.pass = pass;
     }
 
-    public void setVerbose(Boolean verbose){
+    public void setVerbose(String verbose){
         this.verbose = verbose;
     }
 
@@ -244,8 +244,16 @@ public class Ceylonc extends LazyTask {
         cmd.setExecutable(getCompiler());
         cmd.createArgument().setValue("compile");
         
-        if(verbose != null && verbose.booleanValue()){
-            cmd.createArgument().setValue("--verbose");
+        if(verbose != null){
+            if ("true".equals(verbose)
+                    || "yes".equals(verbose)
+                    || "on".equals(verbose)) {
+                // backward compat with verbose previously being a Boolean
+                cmd.createArgument().setValue("--verbose");
+            } else {
+                cmd.createArgument().setValue("--verbose="+verbose);
+            }
+            
         }
         if(bootstrap != null && bootstrap.booleanValue()){
             cmd.createArgument().setValue("--javac=-Xbootstrapceylon");
