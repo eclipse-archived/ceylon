@@ -20,6 +20,7 @@ public class Package
     private boolean shared = false;
     private List<Annotation> annotations = new ArrayList<Annotation>();
     private Unit unit;
+    private String nameAsStringCache;
     
     public Module getModule() {
         return module;
@@ -87,7 +88,10 @@ public class Package
     }
 
     public String getNameAsString() {
-        return formatPath(name);
+        if(nameAsStringCache == null){
+            nameAsStringCache = formatPath(name);
+        }
+        return nameAsStringCache;
     }
 
     @Override
