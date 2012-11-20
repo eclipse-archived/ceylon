@@ -216,12 +216,15 @@ public class CeylonEnter extends Enter {
         /*
          * Here we convert the ceylon tree to its javac AST, after the typechecker has run
          */
+        Timer nested = timer.nestedTimer();
         for (JCCompilationUnit tree : trees) {
             if (tree instanceof CeylonCompilationUnit) {
                 CeylonCompilationUnit ceylonTree = (CeylonCompilationUnit) tree;
                 gen.setMap(ceylonTree.lineMap);
                 gen.setFileObject(((CeylonPhasedUnit)ceylonTree.phasedUnit).getFileObject());
+                nested.startTask("Ceylon code generation for " + ((CeylonPhasedUnit)ceylonTree.phasedUnit).getUnitFile().getName());
                 ceylonTree.defs = gen.transformAfterTypeChecking(ceylonTree.ceylonTree).toList();
+                nested.endTask();
                 if(isVerbose("ast")){
                     System.err.println("Model tree for "+tree.getSourceFile());
                     System.err.println(ceylonTree.ceylonTree);

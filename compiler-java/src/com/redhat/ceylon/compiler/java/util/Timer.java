@@ -31,9 +31,15 @@ public class Timer {
     private String currentTask;
     private long currentTaskStart;
     private boolean verbose;
-    private final Map<String,IgnoredCategory> ignoredCategories = new HashMap<String,IgnoredCategory>();
+    private final Map<String,IgnoredCategory> ignoredCategories;
 
     private static final Context.Key<Timer> timerKey = new Context.Key<Timer>();
+    
+    private Timer(long programStart, boolean verbose, Map<String,IgnoredCategory> ignoredCategories) {
+        this.programStart = programStart;
+        this.verbose = verbose;
+        this.ignoredCategories = ignoredCategories;
+    }
     
     public static Timer instance(Context context) {
         Timer instance = (Timer)context.get(timerKey);
@@ -45,10 +51,12 @@ public class Timer {
     }
     
     public Timer(boolean verbose) {
+        ignoredCategories = new HashMap<String,IgnoredCategory>();
         setup(verbose);
     }
     
     private Timer(Context context) {
+        ignoredCategories = new HashMap<String,IgnoredCategory>();
         Options options = Options.instance(context);
         verbose = options.get(OptionName.VERBOSE) != null 
                 || options.get(OptionName.VERBOSE + ":benchmark" ) != null;
@@ -81,6 +89,8 @@ public class Timer {
      * {@linkplain #log(String) logging} the task name. 
      * 
      * @param name The name of the task to start.
+     * 
+     * @see #nestedTimer()
      */
     public void startTask(String name){
         if(!verbose)
@@ -179,5 +189,15 @@ public class Timer {
             count = 0;
             total = 0;
         }
+    }
+    
+    /**
+     * Creates and returns a new timer suitable for timing sub-tasks 
+     * without stopping the 'outer' timer. Necessary because 
+     * {@link #startTask(String)} stops the current timer. 
+     * @return The new timer
+     */
+    public Timer nestedTimer() {
+        return new Timer(programStart, verbose, ignoredCategories);
     }
 }
