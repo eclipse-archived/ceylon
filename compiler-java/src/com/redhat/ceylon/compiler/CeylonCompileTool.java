@@ -143,7 +143,7 @@ public class CeylonCompileTool implements Tool{
     @Description("Produce verbose output. " +
     		"If no `flags` are given then be verbose about everything, " +
     		"otherwise just be vebose about the flags which are present. " +
-    		"Allowed flags include: `loader`, `ast`, `code`, `cmr`.")
+    		"Allowed flags include: `loader`, `ast`, `code`, `cmr`, `benchmark`.")
     public void setVerbose(String verboseFlags) {
         this.verbose = true;
         this.verboseFlags = verboseFlags;
