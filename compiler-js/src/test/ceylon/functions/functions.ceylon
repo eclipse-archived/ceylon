@@ -135,6 +135,32 @@ void testNamedArguments() {
     check(issue105.i==1, "issue #105");
 }
 
+interface LazyExprBase {
+    shared formal String s1;
+    shared formal String s2(Integer i);
+}
+class LazyExprTest() satisfies LazyExprBase {
+    shared variable Integer x := 1000;
+    shared String f1(Integer i1, String f() => ""i1"."(++x)"") { return f(); }
+    shared Integer f2(Integer i) => 2*(++x)+i;
+    shared Integer i1 => ++x;
+    shared Integer i2;
+    i2 => ++x*2;
+    s1 => ""(++x)".1";
+    s2(Integer i) => ""(++x)"."i"";
+}
+
+void testLazyExpressions() {
+    value tst = LazyExprTest();
+    tst.x := 1;
+    check(tst.f1(3)=="3.2", "=> defaulted param");
+    check(tst.f2(3)==9, "=> method");
+    check(tst.i1==4, "=> attribute");
+    check(tst.i2==10, "=> attribute specifier");
+    check(tst.s1=="6.1", "=> attribute refinement");
+    check(tst.s2(5)=="7.5", "=> method refinement");
+}
+
 shared void test() {
     helloWorld();
     hello("test");
@@ -148,5 +174,6 @@ shared void test() {
     testMultipleParamLists();
     testAnonymous();
     testNamedArguments();
+    testLazyExpressions();
     results();
 }
