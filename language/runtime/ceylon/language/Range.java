@@ -378,7 +378,8 @@ public class Range<Element extends Comparable<? super Element> & Ordinal<? super
 
     @Annotations({@Annotation("actual")})
     @Override
-    public Sequence<? extends Element> getReversed() {
+    @TypeInfo("ceylon.language::Range<Element>")
+    public Range<? extends Element> getReversed() {
     	return new Range<Element>(last, first);
     }
 
