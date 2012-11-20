@@ -90,6 +90,21 @@ public class CeyloncAntTest extends AntBasedTest {
     }
     
     @Test
+    public void testCompileModuleFooVerboseFlag() throws Exception {
+        System.setProperty("arg.verbose", "benchmark");
+        
+        AntResult result = ant("foo-alone");
+        Assert.assertEquals(0, result.getStatusCode());
+        Assert.assertTrue(new File(result.getOut(), "com/example/foo/1.0/com.example.foo-1.0.car").exists());
+        Assert.assertTrue(new File(result.getOut(), "com/example/foo/1.0/com.example.foo-1.0.car.sha1").exists());
+        Assert.assertTrue(new File(result.getOut(), "com/example/foo/1.0/com.example.foo-1.0.src").exists());
+        Assert.assertTrue(new File(result.getOut(), "com/example/foo/1.0/com.example.foo-1.0.src.sha1").exists());
+        Assert.assertEquals(1, new File(result.getOut(), "com/example").list().length);
+        
+        assertContains(result.getStdout(), "[ceylonc] [0ms] Program start");
+    }
+    
+    @Test
     public void testNoModuleOrFiles() throws Exception {
         AntResult result = ant("no-module-or-files");
         Assert.assertEquals(1, result.getStatusCode());
