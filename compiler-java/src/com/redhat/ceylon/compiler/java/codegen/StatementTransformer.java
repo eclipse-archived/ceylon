@@ -50,10 +50,13 @@ import com.redhat.ceylon.compiler.typechecker.tree.Tree.ForIterator;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.IsCase;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.KeyValueIterator;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.MatchCase;
+import com.redhat.ceylon.compiler.typechecker.tree.Tree.PositionalArgument;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.SatisfiesCase;
+import com.redhat.ceylon.compiler.typechecker.tree.Tree.SpecifierExpression;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.SwitchCaseList;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.SwitchClause;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.SwitchStatement;
+import com.redhat.ceylon.compiler.typechecker.tree.Tree.Term;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.Throw;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.TryCatchStatement;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.TryClause;
@@ -68,6 +71,7 @@ import com.sun.tools.javac.tree.JCTree.JCBinary;
 import com.sun.tools.javac.tree.JCTree.JCBlock;
 import com.sun.tools.javac.tree.JCTree.JCBreak;
 import com.sun.tools.javac.tree.JCTree.JCCatch;
+import com.sun.tools.javac.tree.JCTree.JCConditional;
 import com.sun.tools.javac.tree.JCTree.JCExpression;
 import com.sun.tools.javac.tree.JCTree.JCExpressionStatement;
 import com.sun.tools.javac.tree.JCTree.JCIdent;
@@ -1014,7 +1018,99 @@ public class StatementTransformer extends AbstractTransformer {
     }
     
     List<JCStatement> transform(Tree.ForStatement stmt) {
-        return new ForStatementTransformation(stmt).transform();
+        ForStatementTransformation transformation = rangeOpIteration(stmt);
+        if (transformation == null) {
+            transformation = new ForStatementTransformation(stmt);
+        }
+        return transformation.transform();
+    }
+    
+    private boolean isRangeOf(Tree.RangeOp range, ProducedType ofType) {
+        ProducedType rangeType = range.getTypeModel();
+        return typeFact().getRangeType(ofType).isExactly(rangeType);
+    }
+
+    /**
+     * Returns a {@link RangeOpIterationOptimization} is that optimization applies
+     * to the given {@code for} statement, otherwise null.
+     * @param stmt The for statement
+     * @return a {@link RangeOpIterationOptimization} or null.
+     */
+    private ForStatementTransformation rangeOpIteration(Tree.ForStatement stmt) {
+        // TODO Should we log to an "optim" logging category why the optimization doesn't apply?
+        if (CodegenUtil.hasCompilerAnnotation(stmt, "disableOptimization")
+                || CodegenUtil.hasCompilerAnnotationWithArgument(stmt, 
+                        "disableOptimization", "RangeOpIteration")) {
+            return null; // optimization explicitly disabled
+        }
+        
+        ForIterator iterator = stmt.getForClause().getForIterator();
+        if (!(iterator instanceof ValueIterator)) {
+            return null; // optimization doesn't apply            
+        }
+        ValueIterator vi = (ValueIterator)iterator;
+        SpecifierExpression specifier = vi.getSpecifierExpression();
+        Term term = specifier.getExpression().getTerm();
+        final Tree.Term increment;
+        final Tree.RangeOp range;
+        if (term instanceof Tree.RangeOp) {
+            // So it's a for (i in (lhs..rhs)) { ... }
+            increment = null;
+            range = (Tree.RangeOp)term;
+        } else if (term instanceof Tree.InvocationExpression) {
+            Tree.InvocationExpression inv = (Tree.InvocationExpression)term;
+            if (inv.getPrimary() instanceof Tree.QualifiedMemberExpression) {
+                Tree.QualifiedMemberExpression prim = (Tree.QualifiedMemberExpression)inv.getPrimary();
+                if ("by".equals(prim.getIdentifier().getText())
+                        && prim.getPrimary() instanceof Tree.Expression
+                        && (((Tree.Expression)(prim.getPrimary())).getTerm() instanceof Tree.RangeOp)) {
+                    // So it's a for (i in (lhs..rhs).by(increment)) { ... }
+                    range = (Tree.RangeOp)((Tree.Expression)(prim.getPrimary())).getTerm();                    
+                    if (inv.getPositionalArgumentList() != null) {
+                        PositionalArgument a = inv.getPositionalArgumentList().getPositionalArguments().get(0);
+                        increment = a.getExpression().getTerm();
+                    } else if (inv.getNamedArgumentList() != null) {
+                        Tree.SpecifiedArgument sarg = null;
+                        for (Tree.NamedArgument arg : inv.getNamedArgumentList().getNamedArguments()) {
+                            if ("step".equals(arg.getIdentifier().getText())) {
+                                if (arg instanceof Tree.SpecifiedArgument) {
+                                    sarg = ((Tree.SpecifiedArgument)arg);
+                                    break;
+                                }
+                                // TODO In theory we could support Tree.AttributeArgument too
+                            }
+                        }
+                        if (sarg != null) {
+                            increment = sarg.getSpecifierExpression().getExpression().getTerm();
+                        } else {
+                            return null; // optimization doesn't apply
+                        }
+                    } else {
+                        return null; // optimization doesn't apply
+                    }
+                } else {
+                    return null; // optimization doesn't apply
+                }
+            } else {
+                return null; // optimization doesn't apply
+            }
+        } else {
+            return null; // optimization doesn't apply
+        }
+        
+        Type type;
+        ProducedType integerType = typeFact().getIntegerDeclaration().getType();
+        ProducedType characterType = typeFact().getCharacterDeclaration().getType();
+        if (isRangeOf(range, integerType)) {
+            type = syms().longType;
+        } else if (isRangeOf(range, characterType)) {
+            type = syms().intType;
+        } else {
+            return null; // optimization doesn't apply
+        }
+        return new RangeOpIterationOptimization(stmt, 
+                range.getLeftTerm(), range.getRightTerm(), 
+                increment, type);
     }
     
     class ForStatementTransformation {
@@ -1154,6 +1250,183 @@ public class StatementTransformer extends AbstractTransformer {
                 step, 
                 at(stmt).Block(0, for_loop)));
             return outer;
+        }
+    }
+    
+    /**
+     * <p>Transformation of {@code for} loops over {@code Range<Integer>} 
+     * or {@code Range<Character>} which avoids allocating a {@code Range} and
+     * using an {@code Iterator} like 
+     * {@link #ForStatementTransformation} but instead outputs a C-style 
+     * {@code for} loop. Because a Range is never empty we can also omit
+     * code for handling {@code else} clauses of {@code for} statements when 
+     * we know the {@code for} block returns normally</p>
+     * 
+     * <p>This is able to optimize statements like the following:</p>
+     * <ul>
+     * <li>{@code for (i in lhs..rhs) ... }</li>
+     * <li>{@code for (i in (lhs..rhs).by(increment)) ... }</li>
+     * <ul>
+     * <p>where {@code lhs}, {@code rhs} and {@code increment} are 
+     * expressions (not necessarily literals or compile-time constants).</p>
+     * 
+     * <p>Given a statement like {@code for (i in (lhs..rhs).by(increment) ...} 
+     * we generate something like this:</p>
+     * <pre>
+     *  long by$ = by;
+     *  if (by$ <= 0) {
+     *      throw new Exception(ceylon.language.String.instance("step size must be greater than zero"));
+     *  }
+     *  final long start$ = lhs;
+     *  final long end$ = rhs;
+     *  final boolean increasing$ = start <= end;
+     *  final long inc$ = (increasing$ ? by$ : -by$);
+     *  for (long i = start$; (increasing$ ? i-end$ <= 0 : i-end$ >= 0); i+=inc$) {
+     *      USERBLOCK
+     *  }
+     * </pre>
+     * 
+     * <p>In the case where we have a simple range with no {@code by()} 
+     * invocation then the test for negative step size is omitted.</p>
+     * 
+     * <p>The transformation is complicated by:</p>
+     * <ul>
+     *   <li>Not knowing at compile-time whether {@code lhs < rhs}, which 
+     *       complicated the {@code for} termination condition</li>
+     *   <li>Needing to worry about {@code int} or {@code long} overflow
+     *       (hence the {@code i-end$ <= 0} rather than the more natural
+     *       {@code i <= end}.</li>
+     * </ul>
+     */
+    class RangeOpIterationOptimization extends ForStatementTransformation {
+        private final Tree.Term lhs;
+        private final Tree.Term rhs;
+        private final Term increment;// if null then increment is +/-1
+        private final Type type;
+        private final ProducedType pt;
+        public RangeOpIterationOptimization(
+                Tree.ForStatement stmt,
+                Tree.Term lhs, Tree.Term rhs,
+                Tree.Term increment,
+                Type type) {
+            super(stmt);
+            this.lhs = lhs;
+            this.rhs = rhs;
+            this.increment = increment;
+            this.type = type;
+            if (type.tag == syms().intType.tag) {
+                this.pt = typeFact().getCharacterDeclaration().getType();
+            } else if (type.tag == syms().longType.tag) {
+                this.pt = typeFact().getIntegerDeclaration().getType();
+            } else {
+                throw new RuntimeException();
+            }
+        }
+        private Tree.Variable getVariable() {
+            return ((ValueIterator)stmt.getForClause().getForIterator()).getVariable();
+        }
+        private Tree.Block getBlock() {
+            return stmt.getForClause().getBlock();
+        }
+        private JCExpression makeType() {
+            return make().Type(type);
+        }
+        private ProducedType getType() {
+            return pt;
+        }
+        @Override
+        protected ListBuffer<JCStatement> transformForClause() {
+            ListBuffer<JCStatement> result = ListBuffer.<JCStatement>lb();
+            
+            // Note: Must invoke lhs, rhs and increment in the correct order!
+            // long start = <lhs>
+            SyntheticName start = naming.temp("start");
+            result.append(make().VarDef(make().Modifiers(FINAL), start.asName(), makeType(), 
+                    expressionGen().transformExpression(lhs, BoxingStrategy.UNBOXED, getType())));
+            // long end = <rhs>
+            SyntheticName end = naming.temp("end");
+            result.append(make().VarDef(make().Modifiers(FINAL), end.asName(), makeType(), 
+                    expressionGen().transformExpression(rhs, BoxingStrategy.UNBOXED, getType())));
+            
+            final SyntheticName by;
+            if (increment != null) {
+                by = naming.temp("by");
+                // by = increment;
+                result.append(make().VarDef(make().Modifiers(FINAL), by.asName(), makeType(), 
+                        expressionGen().transformExpression(increment, BoxingStrategy.UNBOXED, getType())));
+                // if (by <= 0) throw Exception("step size must be greater than zero");
+                result.append(make().If(
+                        make().Binary(JCTree.LE, by.makeIdent(), make().Literal(0)), 
+                        makeThrowException(syms().ceylonExceptionType, 
+                                make().Literal("step size must be greater than zero")),
+                        null));
+            } else {
+                by = null;
+            }
+            
+            SyntheticName increasing = naming.temp("increasing");
+            // boolean increasing = start < end;
+            result.append(make().VarDef(make().Modifiers(FINAL), increasing.asName(), make().Type(syms().booleanType), 
+                    make().Binary(JCTree.LE, start.makeIdent(), end.makeIdent())));
+            
+            SyntheticName incr = naming.temp("incr");
+            
+            result.append(make().VarDef(make().Modifiers(FINAL), incr.asName(), makeType(), 
+                    make().Conditional(
+                            increasing.makeIdent(), 
+                            makeIncreasingIncrement(by), makeDecreasingIncrement(by))));
+            
+            SyntheticName varname = naming.synthetic(getVariable().getIdentifier().getText());
+            JCVariableDecl init = make().VarDef(make().Modifiers(0), varname.asName(), makeType(), start.makeIdent());
+            List<JCStatement> blockStatements = transformStmts(getBlock().getStatements());
+            
+            // for (long i = start; (increasing ? i -end <= 0 : i -end >= 0); i+=inc) {
+            JCConditional cond = make().Conditional(increasing.makeIdent(), 
+                    make().Binary(JCTree.LE, make().Binary(JCTree.MINUS, varname.makeIdent(), end.makeIdent()), makeZero()), 
+                    make().Binary(JCTree.GE, make().Binary(JCTree.MINUS, varname.makeIdent(), end.makeIdent()), makeZero()));
+            List<JCExpressionStatement> step = List.<JCExpressionStatement>of(make().Exec(make().Assignop(JCTree.PLUS_ASG, varname.makeIdent(), incr.makeIdent())));
+            result.append(make().ForLoop(
+                    List.<JCStatement>of(init), 
+                    cond, 
+                    step, 
+                    make().Block(0, blockStatements)));
+            
+            return result;
+        }
+        private JCExpression makeIncreasingIncrement(SyntheticName by) {
+            if (increment != null) {
+                // long incr = increasing ? by : -by;
+                return by.makeIdent();
+            } else if (type.tag == syms().intType.tag) {
+                // long incr = start < end ? 1 : -1
+                return make().Literal(1);
+            } else if (type.tag == syms().longType.tag) {
+                return make().Literal(1L);
+            } else {
+                return make().Erroneous();
+            }
+        }
+        private JCExpression makeDecreasingIncrement(SyntheticName by) {
+            if (increment != null) {
+                // long incr = increasing ? by : -by;
+                return make().Unary(JCTree.NEG, by.makeIdent());
+            } else if (type.tag == syms().intType.tag) {
+                // long incr = start < end ? 1 : -1
+                return make().Literal(-1);
+            } else if (type.tag == syms().longType.tag) {
+                return make().Literal(-1L);
+            } else {
+                return make().Erroneous();
+            }
+        }
+        private JCExpression makeZero() {
+            if (type.tag == syms().intType.tag) {
+                return make().Literal(0);
+            } else if (type.tag == syms().longType.tag) {
+                return make().Literal(0L);
+            } else {
+                return make().Erroneous();
+            }
         }
     }
 
