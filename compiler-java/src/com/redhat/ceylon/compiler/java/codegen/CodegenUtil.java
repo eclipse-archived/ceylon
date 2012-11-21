@@ -84,10 +84,52 @@ class CodegenUtil {
         node.setTypeErased(true);
     }
 
-    static boolean hasCompilerAnnotation(Tree.Declaration decl, String name){
+    /**
+     * Determines if the given statement or argument has a compiler annotation 
+     * with the given name.
+     * 
+     * @param decl The statement or argument
+     * @param name The compiler annotation name
+     * @return true if the statement or argument has an annotation with the 
+     * given name
+     * 
+     * @see #hasCompilerAnnotationWithArgument(com.redhat.ceylon.compiler.typechecker.tree.Tree.Declaration, String, String)
+     */
+    static boolean hasCompilerAnnotation(Tree.StatementOrArgument decl, String name){
         for(CompilerAnnotation annotation : decl.getCompilerAnnotations()){
             if(annotation.getIdentifier().getText().equals(name))
                 return true;
+        }
+        return false;
+    }
+    
+    /**
+     * Determines if the given statement or argument has a compiler annotation 
+     * with the given name and with the given argument.
+     * 
+     * @param decl The statement or argument
+     * @param name The compiler annotation name
+     * @param argument The compiler annotation's argument
+     * @return true if the statement or argument has an annotation with the 
+     * given name and argument value
+     * 
+     * @see #hasCompilerAnnotation(com.redhat.ceylon.compiler.typechecker.tree.Tree.Declaration, String)
+     */
+    static boolean hasCompilerAnnotationWithArgument(Tree.StatementOrArgument decl, String name, String argument){
+        for (CompilerAnnotation annotation : decl.getCompilerAnnotations()) {
+            if (annotation.getIdentifier().getText().equals(name)) {
+                if (annotation.getStringLiteral() == null) {
+                    continue;
+                } 
+                String text = annotation.getStringLiteral().getText();
+                if (text == null) {
+                    continue;
+                }
+                text = text.substring(1, text.length()-1);//remove "";
+                if (text.equals(argument)) {
+                    return true;
+                }
+            }
         }
         return false;
     }
