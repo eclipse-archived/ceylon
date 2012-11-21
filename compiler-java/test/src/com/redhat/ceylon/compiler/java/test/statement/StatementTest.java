@@ -252,6 +252,17 @@ public class StatementTest extends CompilerTest {
         compareWithJavaSource("loop/MethodForElse");
     }
     
+    @Test
+    public void testLopRangeOpIterationOptimization(){
+        compareWithJavaSource("loop/RangeOpIterationOptimization");
+    }
+    
+    @Test
+    public void testLopRangeOpIterationOptimizationCorrect(){
+        compileAndRun("com.redhat.ceylon.compiler.java.test.statement.loop.rangeOpIterationOptimizationCorrect", 
+                "loop/RangeOpIterationOptimizationCorrect.ceylon");
+    }
+    
     //
     // [do] while
     
