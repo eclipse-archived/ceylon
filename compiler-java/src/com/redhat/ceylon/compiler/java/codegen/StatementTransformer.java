@@ -1014,123 +1014,147 @@ public class StatementTransformer extends AbstractTransformer {
     }
     
     List<JCStatement> transform(Tree.ForStatement stmt) {
-        Name tempForFailVariable = currentForFailVariable;
+        return new ForStatementTransformation(stmt).transform();
+    }
+    
+    class ForStatementTransformation {
         
-        at(stmt);
-        List<JCStatement> outer = List.<JCStatement> nil();
-        if (stmt.getExits() && stmt.getElseClause() != null) {
-            // boolean $doforelse$X = true;
-            JCVariableDecl failtest_decl = make().VarDef(make().Modifiers(0), naming.aliasName("doforelse"), make().TypeIdent(TypeTags.BOOLEAN), make().Literal(TypeTags.BOOLEAN, 1));
-            outer = outer.append(failtest_decl);
-            
-            currentForFailVariable = failtest_decl.getName();
-        } else {
-            currentForFailVariable = null;
-        }
-
-        // java.lang.Object $elem$X;
-        Naming.SyntheticName elem_name = naming.alias("elem");
-        JCVariableDecl elem_decl = make().VarDef(make().Modifiers(0), elem_name.asName(), make().Type(syms().objectType), null);
-        outer = outer.append(elem_decl);
+        protected Tree.ForStatement stmt; 
         
-        ForIterator iterDecl = stmt.getForClause().getForIterator();
-        Variable variable;
-        Variable variable2;
-        if (iterDecl instanceof ValueIterator) {
-            variable = ((ValueIterator) iterDecl).getVariable();
-            variable2 = null;
-        } else if (iterDecl instanceof KeyValueIterator) {
-            variable = ((KeyValueIterator) iterDecl).getKeyVariable();
-            variable2 = ((KeyValueIterator) iterDecl).getValueVariable();
-        } else {
-            throw new RuntimeException("Unknown ForIterator");
+        ForStatementTransformation(Tree.ForStatement stmt) {
+            this.stmt = stmt;
         }
         
-        String loop_var_name = variable.getIdentifier().getText();
-        Expression specifierExpression = iterDecl.getSpecifierExpression().getExpression();
-        ProducedType sequence_element_type;
-        if(variable2 == null)
-            sequence_element_type = variable.getType().getTypeModel();
-        else{
-            // Entry<V1,V2>
-            sequence_element_type = typeFact().getEntryType(variable.getType().getTypeModel(), 
-                    variable2.getType().getTypeModel());
-        }
-        ProducedType iter_type = typeFact().getIteratorType(sequence_element_type);
-        JCExpression iter_type_expr = makeJavaType(iter_type, CeylonTransformer.JT_TYPE_ARGUMENT);
-        JCExpression cast_elem = at(stmt).TypeCast(makeJavaType(sequence_element_type, CeylonTransformer.JT_NO_PRIMITIVES), elem_name.makeIdent());
-        List<JCAnnotation> annots = makeJavaTypeAnnotations(variable.getDeclarationModel());
-
-        // ceylon.language.Iterator<T> $V$iter$X = ITERABLE.getIterator();
-        // We don't need to unerase here as anything remotely a sequence will be erased to Iterable, which has getIterator()
-        JCExpression containment = expressionGen().transformExpression(specifierExpression, BoxingStrategy.BOXED, null);
-        JCExpression getIter = at(stmt).Apply(null, makeSelect(containment, "getIterator"), List.<JCExpression> nil());
-        getIter = gen().expressionGen().applyErasureAndBoxing(getIter, specifierExpression.getTypeModel(), true, BoxingStrategy.BOXED, iter_type);
-        JCVariableDecl iter_decl = at(stmt).VarDef(make().Modifiers(0), naming.aliasName(loop_var_name + "$iter"), iter_type_expr, getIter);
-        String iter_id = iter_decl.getName().toString();
+        protected List<JCStatement> transform() {
+            at(stmt);
+            ListBuffer<JCStatement> outer = ListBuffer.<JCStatement> lb();
+            Name tempForFailVariable = currentForFailVariable;
+            try {
+                if (needsFailVar()) {
+                    // boolean $doforelse$X = true;
+                    JCVariableDecl failtest_decl = make().VarDef(make().Modifiers(0), naming.aliasName("doforelse"), make().TypeIdent(TypeTags.BOOLEAN), make().Literal(TypeTags.BOOLEAN, 1));
+                    outer = outer.append(failtest_decl);
+                    currentForFailVariable = failtest_decl.getName();
+                } else {
+                    currentForFailVariable = null;
+                }
         
-        // final U n = $elem$X;
-        // or
-        // final U n = $elem$X.getKey();
-        JCExpression loop_var_init;
-        ProducedType loop_var_type;
-        if (variable2 == null) {
-            loop_var_type = sequence_element_type;
-            loop_var_init = cast_elem;
-        } else {
-            loop_var_type = actualType(variable);
-            loop_var_init = at(stmt).Apply(null, makeSelect(cast_elem, Naming.getGetterName("key")), List.<JCExpression> nil());
-        }
-        JCVariableDecl item_decl = at(stmt).VarDef(make().Modifiers(FINAL, annots), names().fromString(loop_var_name), makeJavaType(loop_var_type), 
-                boxUnboxIfNecessary(loop_var_init, true, loop_var_type, CodegenUtil.getBoxingStrategy(variable.getDeclarationModel())));
-        List<JCStatement> for_loop = List.<JCStatement> of(item_decl);
-
-        if (variable2 != null) {
-            // final V n = $elem$X.getElement();
-            ProducedType item_type2 = actualType(variable2);
-            JCExpression item_type_expr2 = makeJavaType(item_type2);
-            JCExpression loop_var_init2 = at(stmt).Apply(null, makeSelect(cast_elem, Naming.getGetterName("item")), List.<JCExpression> nil());
-            String loop_var_name2 = variable2.getIdentifier().getText();
-            JCVariableDecl item_decl2 = at(stmt).VarDef(make().Modifiers(FINAL, annots), names().fromString(loop_var_name2), item_type_expr2, 
-                    boxUnboxIfNecessary(loop_var_init2, true, item_type2, CodegenUtil.getBoxingStrategy(variable2.getDeclarationModel())));
-            for_loop = for_loop.append(item_decl2);
-        }
-
-        // The user-supplied contents of the loop
-        for_loop = for_loop.appendList(transformStmts(stmt.getForClause().getBlock().getStatements()));
+                outer = outer.appendList(transformForClause());
         
-        // $elem$X = $V$iter$X.next()
-        JCExpression iter_elem = make().Apply(null, makeSelect(iter_id, "next"), List.<JCExpression> nil());
-        JCExpression elem_assign = make().Assign(elem_name.makeIdent(), iter_elem);
-        // !(($elem$X = $V$iter$X.next()) instanceof Finished)
-        JCExpression instof = make().TypeTest(elem_assign, makeIdent(syms().ceylonFinishedType));
-        JCExpression cond = make().Unary(JCTree.NOT, instof);
-
-        // No step necessary
-        List<JCExpressionStatement> step = List.<JCExpressionStatement>nil();
-        
-        // for (.ceylon.language.Iterator<T> $V$iter$X = ITERABLE.iterator(); !(($elem$X = $V$iter$X.next()) instanceof Finished); ) {
-        outer = outer.append(at(stmt).ForLoop(
-            List.<JCStatement>of(iter_decl), 
-	        cond, 
-	        step, 
-	        at(stmt).Block(0, for_loop)));
-
-        if (stmt.getElseClause() != null) {
-            // The user-supplied contents of fail block
-            List<JCStatement> failblock = transformStmts(stmt.getElseClause().getBlock().getStatements());
-            
-            if (stmt.getExits()) {
-                // if ($doforelse$X) ...
-                JCIdent failtest_id = at(stmt).Ident(currentForFailVariable);
-                outer = outer.append(at(stmt).If(failtest_id, at(stmt).Block(0, failblock), null));
-            } else {
-                outer = outer.appendList(failblock);
+                if (stmt.getElseClause() != null) {
+                    // The user-supplied contents of fail block
+                    List<JCStatement> failblock = transformStmts(stmt.getElseClause().getBlock().getStatements());
+                    
+                    if (needsFailVar()) {
+                        // if ($doforelse$X) ...
+                        JCIdent failtest_id = at(stmt).Ident(currentForFailVariable);
+                        outer = outer.append(at(stmt).If(failtest_id, at(stmt).Block(0, failblock), null));
+                    } else {
+                        outer = outer.appendList(failblock);
+                    }
+                }
+            } finally {
+                currentForFailVariable = tempForFailVariable;
             }
+    
+            return outer.toList();
         }
-        currentForFailVariable = tempForFailVariable;
 
-        return outer;
+        private boolean needsFailVar() {
+            return stmt.getExits() && stmt.getElseClause() != null;
+        }
+
+        protected ListBuffer<JCStatement> transformForClause() {
+            ListBuffer<JCStatement> outer = ListBuffer.<JCStatement> lb();
+            // java.lang.Object $elem$X;
+            Naming.SyntheticName elem_name = naming.alias("elem");
+            JCVariableDecl elem_decl = make().VarDef(make().Modifiers(0), elem_name.asName(), make().Type(syms().objectType), null);
+            outer = outer.append(elem_decl);
+            
+            ForIterator iterDecl = stmt.getForClause().getForIterator();
+            Variable variable;
+            Variable variable2;
+            if (iterDecl instanceof ValueIterator) {
+                variable = ((ValueIterator) iterDecl).getVariable();
+                variable2 = null;
+            } else if (iterDecl instanceof KeyValueIterator) {
+                variable = ((KeyValueIterator) iterDecl).getKeyVariable();
+                variable2 = ((KeyValueIterator) iterDecl).getValueVariable();
+            } else {
+                throw new RuntimeException("Unknown ForIterator");
+            }
+            
+            String loop_var_name = variable.getIdentifier().getText();
+            Expression specifierExpression = iterDecl.getSpecifierExpression().getExpression();
+            ProducedType sequence_element_type;
+            if(variable2 == null)
+                sequence_element_type = variable.getType().getTypeModel();
+            else{
+                // Entry<V1,V2>
+                sequence_element_type = typeFact().getEntryType(variable.getType().getTypeModel(), 
+                        variable2.getType().getTypeModel());
+            }
+            ProducedType iter_type = typeFact().getIteratorType(sequence_element_type);
+            JCExpression iter_type_expr = makeJavaType(iter_type, CeylonTransformer.JT_TYPE_ARGUMENT);
+            JCExpression cast_elem = at(stmt).TypeCast(makeJavaType(sequence_element_type, CeylonTransformer.JT_NO_PRIMITIVES), elem_name.makeIdent());
+            List<JCAnnotation> annots = makeJavaTypeAnnotations(variable.getDeclarationModel());
+
+            // ceylon.language.Iterator<T> $V$iter$X = ITERABLE.getIterator();
+            // We don't need to unerase here as anything remotely a sequence will be erased to Iterable, which has getIterator()
+            JCExpression containment = expressionGen().transformExpression(specifierExpression, BoxingStrategy.BOXED, null);
+            JCExpression getIter = at(stmt).Apply(null, makeSelect(containment, "getIterator"), List.<JCExpression> nil());
+            getIter = gen().expressionGen().applyErasureAndBoxing(getIter, specifierExpression.getTypeModel(), true, BoxingStrategy.BOXED, iter_type);
+            JCVariableDecl iter_decl = at(stmt).VarDef(make().Modifiers(0), naming.aliasName(loop_var_name + "$iter"), iter_type_expr, getIter);
+            String iter_id = iter_decl.getName().toString();
+            
+            // final U n = $elem$X;
+            // or
+            // final U n = $elem$X.getKey();
+            JCExpression loop_var_init;
+            ProducedType loop_var_type;
+            if (variable2 == null) {
+                loop_var_type = sequence_element_type;
+                loop_var_init = cast_elem;
+            } else {
+                loop_var_type = actualType(variable);
+                loop_var_init = at(stmt).Apply(null, makeSelect(cast_elem, Naming.getGetterName("key")), List.<JCExpression> nil());
+            }
+            JCVariableDecl item_decl = at(stmt).VarDef(make().Modifiers(FINAL, annots), names().fromString(loop_var_name), makeJavaType(loop_var_type), 
+                    boxUnboxIfNecessary(loop_var_init, true, loop_var_type, CodegenUtil.getBoxingStrategy(variable.getDeclarationModel())));
+            List<JCStatement> for_loop = List.<JCStatement> of(item_decl);
+
+            if (variable2 != null) {
+                // final V n = $elem$X.getElement();
+                ProducedType item_type2 = actualType(variable2);
+                JCExpression item_type_expr2 = makeJavaType(item_type2);
+                JCExpression loop_var_init2 = at(stmt).Apply(null, makeSelect(cast_elem, Naming.getGetterName("item")), List.<JCExpression> nil());
+                String loop_var_name2 = variable2.getIdentifier().getText();
+                JCVariableDecl item_decl2 = at(stmt).VarDef(make().Modifiers(FINAL, annots), names().fromString(loop_var_name2), item_type_expr2, 
+                        boxUnboxIfNecessary(loop_var_init2, true, item_type2, CodegenUtil.getBoxingStrategy(variable2.getDeclarationModel())));
+                for_loop = for_loop.append(item_decl2);
+            }
+
+            // The user-supplied contents of the loop
+            for_loop = for_loop.appendList(transformStmts(stmt.getForClause().getBlock().getStatements()));
+            
+            // $elem$X = $V$iter$X.next()
+            JCExpression iter_elem = make().Apply(null, makeSelect(iter_id, "next"), List.<JCExpression> nil());
+            JCExpression elem_assign = make().Assign(elem_name.makeIdent(), iter_elem);
+            // !(($elem$X = $V$iter$X.next()) instanceof Finished)
+            JCExpression instof = make().TypeTest(elem_assign, makeIdent(syms().ceylonFinishedType));
+            JCExpression cond = make().Unary(JCTree.NOT, instof);
+
+            // No step necessary
+            List<JCExpressionStatement> step = List.<JCExpressionStatement>nil();
+            
+            // for (.ceylon.language.Iterator<T> $V$iter$X = ITERABLE.iterator(); !(($elem$X = $V$iter$X.next()) instanceof Finished); ) {
+            outer = outer.append(at(stmt).ForLoop(
+                List.<JCStatement>of(iter_decl), 
+                cond, 
+                step, 
+                at(stmt).Block(0, for_loop)));
+            return outer;
+        }
     }
 
     // FIXME There is a similar implementation in ClassGen!
