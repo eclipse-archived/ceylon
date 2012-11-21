@@ -162,7 +162,7 @@ public class CeylonRunJsTool implements Tool {
         this.args = args;
     }
 
-    @Argument(argumentName="node-exe", multiplicity="1")
+    @OptionArgument(argumentName="node-exe")
     @Description("The path to the node.js executable. Will be searched in standard locations if not specified.")
     public void setNodeExe(String path) {
         this.exepath=path;
