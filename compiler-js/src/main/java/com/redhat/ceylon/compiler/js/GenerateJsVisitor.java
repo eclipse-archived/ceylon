@@ -1264,7 +1264,10 @@ public class GenerateJsVisitor extends Visitor
                 // attribute is defined by a lazy expression ("=>" syntax)
                 initSelf();
                 out("return ");
-                that.getSpecifierOrInitializerExpression().getExpression().visit(this);
+                Expression expr = that.getSpecifierOrInitializerExpression().getExpression();
+                int boxType = boxStart(expr.getTerm());
+                expr.visit(this);
+                boxUnboxEnd(boxType);
                 out(";");
             }
             else {            
