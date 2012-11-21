@@ -329,11 +329,12 @@ public class GenerateJsVisitor extends Visitor
     }
 
     private void initSelf(Block block) {
-        if ((prototypeOwner!=null) && (block.getScope() instanceof MethodOrValue)) {
-            /*out("var ");
-            self();
-            out("=this;");
-            endLine();*/
+        if (block.getScope() instanceof MethodOrValue) {
+            initSelf();
+        }
+    }
+    private void initSelf() {
+        if (prototypeOwner != null) {
             out("var ");
             self(prototypeOwner);
             out("=this;");
@@ -809,7 +810,7 @@ public class GenerateJsVisitor extends Visitor
         } else if (s instanceof AttributeSetterDefinition) {
             addSetterToPrototype(d, (AttributeSetterDefinition)s);
         } else if (s instanceof AttributeDeclaration) {
-            addGetterAndSetterToPrototype(d, (AttributeDeclaration)s);
+            addGetterAndSetterToPrototype(d, (AttributeDeclaration) s);
         } else if (s instanceof ClassDefinition) {
             addClassToPrototype(d, (ClassDefinition) s);
         } else if (s instanceof InterfaceDefinition) {
@@ -1192,24 +1193,36 @@ public class GenerateJsVisitor extends Visitor
         }
         if (!d.isFormal()) {
             comment(that);
+            SpecifierOrInitializerExpression specInitExpr =
+                        that.getSpecifierOrInitializerExpression();
             if (prototypeStyle && d.isClassOrInterfaceMember()) {
-                if (that.getSpecifierOrInitializerExpression()!=null) {
+                if ((specInitExpr != null)
+                        && !(specInitExpr instanceof LazySpecifierExpression)) {
                     outerSelf(d);
                     out(".", names.name(d), "=");
                     super.visit(that);
                     endLine(true);
                 } else if (classParam != null) {
                     outerSelf(d);
-                    out(".", names.name(d), "=", classParam, ";");
-                    endLine();
+                    out(".", names.name(d), "=", classParam);
+                    endLine(true);
                 }
+            }
+            else if (specInitExpr instanceof LazySpecifierExpression) {
+                outerSelf(d);
+                out(".", names.getter(d), "=function(){return ");
+                int boxType = boxStart(specInitExpr.getExpression().getTerm());
+                specInitExpr.getExpression().visit(this);
+                boxUnboxEnd(boxType);
+                out(";}");
+                endLine(true);
             }
             else {
                 final String varName = names.name(d);
                 out("var ", varName);
-                if (that.getSpecifierOrInitializerExpression()!=null) {
+                if (specInitExpr != null) {
                     out("=");
-                    int boxType = boxStart(that.getSpecifierOrInitializerExpression().getExpression().getTerm());
+                    int boxType = boxStart(specInitExpr.getExpression().getTerm());
                     super.visit(that);
                     boxUnboxEnd(boxType);
                 } else if (classParam != null) {
@@ -1235,7 +1248,7 @@ public class GenerateJsVisitor extends Visitor
             }
         }
     }
-
+    
     private void addGetterAndSetterToPrototype(TypeDeclaration outer,
             AttributeDeclaration that) {
         Value d = that.getDeclarationModel();
@@ -1245,7 +1258,19 @@ public class GenerateJsVisitor extends Visitor
             out(names.self(outer), ".", names.getter(d), "=",
                     function, names.getter(d), "()");
             beginBlock();
-            out("return this.", names.name(d), ";");
+            
+            if (that.getSpecifierOrInitializerExpression()
+                            instanceof LazySpecifierExpression) {
+                // attribute is defined by a lazy expression ("=>" syntax)
+                initSelf();
+                out("return ");
+                that.getSpecifierOrInitializerExpression().getExpression().visit(this);
+                out(";");
+            }
+            else {            
+                out("return this.", names.name(d), ";");
+            }
+            
             endBlockNewLine(true);
             if (d.isVariable()) {
                 String paramVarName = names.createTempVariable(d.getName());
