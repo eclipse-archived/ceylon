@@ -60,6 +60,7 @@ import com.redhat.ceylon.compiler.typechecker.tree.Tree.TryClause;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.ValueIterator;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.Variable;
 import com.sun.tools.javac.code.Flags;
+import com.sun.tools.javac.code.Type;
 import com.sun.tools.javac.code.TypeTags;
 import com.sun.tools.javac.tree.JCTree;
 import com.sun.tools.javac.tree.JCTree.JCAnnotation;
@@ -144,6 +145,14 @@ public class StatementTransformer extends AbstractTransformer {
         return childDefs;
     }
 
+    private JCThrow makeThrowException(Type exceptionType, JCExpression expr) {
+        JCExpression exception = make().NewClass(null, null,
+                makeIdent(exceptionType),
+                List.<JCExpression>of(boxType(expr, typeFact().getStringDeclaration().getType()), makeNull()),
+                null);
+        return make().Throw(exception);
+    }
+    
     abstract class CondList {
         protected final Tree.Block thenPart;
         protected final java.util.List<Condition> conditions;
@@ -591,11 +600,7 @@ public class StatementTransformer extends AbstractTransformer {
         
         private JCThrow makeThrowAssertionFailure(JCExpression expr) {
             //TODO proper exception type
-            JCExpression exception = make().NewClass(null, null,
-                    makeIdent(syms().ceylonExceptionType),
-                    List.<JCExpression>of(boxType(expr, typeFact().getStringDeclaration().getType()), makeNull()),
-                    null);
-            return make().Throw(exception);
+            return makeThrowException(syms().ceylonExceptionType, expr);
         }
         
         @Override
