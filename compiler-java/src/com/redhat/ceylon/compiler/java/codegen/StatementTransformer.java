@@ -1031,22 +1031,55 @@ public class StatementTransformer extends AbstractTransformer {
     }
 
     /**
+     * Returns null but logs an error with the given reason if an optimization 
+     * asserted using {@code @requireOptimization["optName"]} couldn't be 
+     * performed.
+     * 
+     * @param stmt The thing with the {@code @requireOptimization} compiler 
+     * annotation 
+     * @param optName The name of the optimization
+     * @param reason The reason the optimization could not be used
+     * @return null
+     */
+    private <T,S extends Tree.StatementOrArgument> T optimizationFailed(S stmt, String optName, String reason) {
+        if (CodegenUtil.hasCompilerAnnotationWithArgument(stmt, 
+                        "requireOptimization", optName)) {
+            log.error(getPosition(stmt), "ceylon.optim.failed", optName, reason);
+        }
+        return null;
+    }
+    
+    /**
+     * Determines whether the given optimization has been disabled on the 
+     * given statement. 
+     * @param stmt The thing with the {@code @requireOptimization} compiler 
+     * annotation.
+     * @param optName The name of the optimization
+     * @return
+     */
+    private <S extends Tree.StatementOrArgument> boolean optimizationDisabled(S stmt, String optName) {
+        return CodegenUtil.hasCompilerAnnotation(stmt, "disableOptimization")
+                || CodegenUtil.hasCompilerAnnotationWithArgument(stmt, 
+                        "disableOptimization", optName);
+    }
+    
+    /**
      * Returns a {@link RangeOpIterationOptimization} is that optimization applies
      * to the given {@code for} statement, otherwise null.
      * @param stmt The for statement
      * @return a {@link RangeOpIterationOptimization} or null.
      */
     private ForStatementTransformation rangeOpIteration(Tree.ForStatement stmt) {
-        // TODO Should we log to an "optim" logging category why the optimization doesn't apply?
-        if (CodegenUtil.hasCompilerAnnotation(stmt, "disableOptimization")
-                || CodegenUtil.hasCompilerAnnotationWithArgument(stmt, 
-                        "disableOptimization", "RangeOpIteration")) {
-            return null; // optimization explicitly disabled
+        final String optName = RangeOpIterationOptimization.OPT_NAME;
+        if (optimizationDisabled(stmt, optName)) {
+            return optimizationFailed(stmt, optName, 
+                    "optimization explicitly disabled by @disableOptimization");
         }
         
         ForIterator iterator = stmt.getForClause().getForIterator();
         if (!(iterator instanceof ValueIterator)) {
-            return null; // optimization doesn't apply            
+            return optimizationFailed(stmt, optName, 
+                    "optimization applies only to ValueIterators");            
         }
         ValueIterator vi = (ValueIterator)iterator;
         SpecifierExpression specifier = vi.getSpecifierExpression();
@@ -1083,19 +1116,24 @@ public class StatementTransformer extends AbstractTransformer {
                         if (sarg != null) {
                             increment = sarg.getSpecifierExpression().getExpression().getTerm();
                         } else {
-                            return null; // optimization doesn't apply
+                            return optimizationFailed(stmt, optName, 
+                                    "Unable to determine expression for argument to by{}");
                         }
                     } else {
-                        return null; // optimization doesn't apply
+                        return optimizationFailed(stmt, optName, 
+                                "Unable to get arguments to by()");
                     }
                 } else {
-                    return null; // optimization doesn't apply
+                    return optimizationFailed(stmt, optName, 
+                            "Only applies to Iterables of the form 'lhs..rhs' or '(lhs..rhs).by(step)'");
                 }
             } else {
-                return null; // optimization doesn't apply
+                return optimizationFailed(stmt, optName, 
+                        "Only applies to Iterables of the form 'lhs..rhs' or '(lhs..rhs).by(step)'");
             }
         } else {
-            return null; // optimization doesn't apply
+            return optimizationFailed(stmt, optName, 
+                    "Only applies to Iterables of the form 'lhs..rhs' or '(lhs..rhs).by(step)'");
         }
         
         Type type;
@@ -1106,7 +1144,7 @@ public class StatementTransformer extends AbstractTransformer {
         } else if (isRangeOf(range, characterType)) {
             type = syms().intType;
         } else {
-            return null; // optimization doesn't apply
+            return optimizationFailed(stmt, optName, "The RangeOp doesn't produce a Range<Integer>/Range<Character>");
         }
         return new RangeOpIterationOptimization(stmt, 
                 range.getLeftTerm(), range.getRightTerm(), 
@@ -1299,6 +1337,7 @@ public class StatementTransformer extends AbstractTransformer {
      * </ul>
      */
     class RangeOpIterationOptimization extends ForStatementTransformation {
+        public static final String OPT_NAME = "RangeOpIteration";
         private final Tree.Term lhs;
         private final Tree.Term rhs;
         private final Term increment;// if null then increment is +/-1

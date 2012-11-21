@@ -2340,7 +2340,7 @@ public abstract class AbstractTransformer implements Transformation {
         return naming.getCompanionAccessorName(def);
     }
     
-    private int getPosition(Node node) {
+    protected int getPosition(Node node) {
         int pos = getMap().getStartPosition(node.getToken().getLine())
                 + node.getToken().getCharPositionInLine();
                 log.useSource(gen().getFileObject());
