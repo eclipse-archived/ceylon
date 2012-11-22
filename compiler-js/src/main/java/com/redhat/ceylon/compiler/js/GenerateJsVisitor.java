@@ -3112,6 +3112,29 @@ public class GenerateJsVisitor extends Visitor
         });
     }
 
+    @Override
+    public void visit(SegmentOp that) {
+        String rhs = names.createTempVariable();
+        out("(function(){var ", rhs, "=");
+        that.getRightTerm().visit(this);
+        endLine(true);
+        out("if (", rhs, ">0){");
+        endLine();
+        String lhs = names.createTempVariable();
+        String end = names.createTempVariable();
+        out("var ", lhs, "=");
+        that.getLeftTerm().visit(this);
+        endLine(true);
+        out("var ", end, "=", lhs);
+        endLine(true);
+        out("for (var i=1; i<", rhs, "; i++){", end, "=", end, ".getSuccessor();}");
+        endLine();
+        out("return ", clAlias, ".Range(");
+        out(lhs, ",", end, ")");
+        endLine();
+        out("}else return ", clAlias, ".empty;}())");
+    }
+
     /** Generates the code for single or multiple parameter lists, with a callback function to generate the function blocks. */
     private void generateParameterLists(List<ParameterList> plist, ParameterListCallback callback) {
         if (plist.size() == 1) {
