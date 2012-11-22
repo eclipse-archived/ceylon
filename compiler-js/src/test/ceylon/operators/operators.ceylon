@@ -395,7 +395,7 @@ void testSegments() {
         check(x == 0, "0:3 [2]");
     } else { fail("0:3 [2]"); }
     if (exists x=s2[2]) {
-        check(x == 3, "0:3 [3]");
+        check(x == 2, "0:3 [3]");
     } else { fail("0:3 [3]"); }
     check(s3.size == 5, "2:5 [1]");
     if (exists x=s3[0]) {
