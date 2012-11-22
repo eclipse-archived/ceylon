@@ -821,6 +821,8 @@ public class GenerateJsVisitor extends Visitor
             addClassDeclarationToPrototype(d, (ClassDeclaration) s);
         } else if (s instanceof InterfaceDeclaration) {
             addInterfaceDeclarationToPrototype(d, (InterfaceDeclaration) s);
+        } else if (s instanceof SpecifierStatement) {
+            addSpecifierToPrototype(d, (SpecifierStatement) s);
         }
         prototypeOwner = oldPrototypeOwner;
     }
@@ -1988,14 +1990,46 @@ public class GenerateJsVisitor extends Visitor
 
     @Override
     public void visit(SpecifierStatement that) {
-        BaseMemberExpression bme = (Tree.BaseMemberExpression) that.getBaseMemberExpression();
-        if (prototypeStyle) {
-            qualify(that, bme.getDeclaration());
+        if (that.getBaseMemberExpression() instanceof BaseMemberExpression) {
+            BaseMemberExpression bme = (BaseMemberExpression) that.getBaseMemberExpression();
+            Declaration bmeDecl = bme.getDeclaration();
+            if (that.getSpecifierExpression() instanceof LazySpecifierExpression) {
+                if (bmeDecl.isMember()) {
+                    if (prototypeStyle) { return; }
+                    qualify(that, bmeDecl);
+                }
+                out(names.getter(bmeDecl), "=function(){return ");
+                that.getSpecifierExpression().visit(this);
+                out(";};");
+            }
+            else {
+                if (prototypeStyle || bmeDecl.isMember()) {
+                    qualify(that, bmeDecl);
+                }
+                out(names.name(bmeDecl), "=");
+                that.getSpecifierExpression().visit(this);
+                out(";");
+            }
         }
-        String svar = names.name(bme.getDeclaration());
-        out(svar, "=");
-        that.getSpecifierExpression().visit(this);
-        out(";");
+        else if (that.getBaseMemberExpression() instanceof ParameterizedExpression) {
+            //TODO
+        }
+    }
+    
+    private void addSpecifierToPrototype(TypeDeclaration outer,
+                SpecifierStatement specStmt) {
+        if ((specStmt.getBaseMemberExpression() instanceof BaseMemberExpression)
+                    && (specStmt.getSpecifierExpression() instanceof LazySpecifierExpression)) {
+            BaseMemberExpression bme = (BaseMemberExpression) specStmt.getBaseMemberExpression();
+            out(names.self(outer), ".", names.getter(bme.getDeclaration()),
+                    "=function()");
+            beginBlock();
+            initSelf();
+            out("return ");
+            specStmt.getSpecifierExpression().visit(this);
+            out(";");
+            endBlockNewLine(true);
+        }
     }
 
     @Override
