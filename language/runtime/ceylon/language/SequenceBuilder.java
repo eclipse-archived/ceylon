@@ -31,14 +31,15 @@ public class SequenceBuilder<Element> implements Sized {
         }
     }
     
-    public final synchronized void append(@Name("element") Element element) {
+    public final synchronized SequenceBuilder<Element> append(@Name("element") Element element) {
     	if (list==null) {
     	    list = new ArrayList<Element>();
     	}
     	list.add(element);
+    	return this;
     }
     
-    public final synchronized void appendAll(@Sequenced @Name("elements") 
+    public final synchronized SequenceBuilder<Element> appendAll(@Sequenced @Name("elements") 
     @TypeInfo("ceylon.language::Iterable<Element>") 
     Iterable<? extends Element> elements) {
     	if (list==null) {
@@ -53,11 +54,13 @@ public class SequenceBuilder<Element> implements Sized {
     	for (Iterator<? extends Element> iter=elements.getIterator(); !((elem = iter.next()) instanceof Finished);) {
     	    list.add((Element) elem);
     	}
+    	return this;
     }
     
     @Ignore
-    public final void appendAll() {
+    public final SequenceBuilder<Element> appendAll() {
         appendAll((Iterable)empty_.getEmpty$());
+        return this;
     }
     
     @Override

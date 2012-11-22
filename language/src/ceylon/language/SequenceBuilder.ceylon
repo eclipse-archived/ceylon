@@ -11,16 +11,17 @@ shared class SequenceBuilder<Element>() satisfies Sized {
         throw;
     }
     
-    doc "Append an element to the sequence."
-    shared void append(Element element) {
+    doc "Append an element to the sequence and return this `SequenceBuilder`"
+    shared SequenceBuilder<Element> append(Element element) {
         throw;
     }
     
-    doc "Append multiple elements to the sequence."
-    default shared void appendAll(Element... elements) {
+    doc "Append multiple elements to the sequence and return this `SequenceBuilder`"
+    default shared SequenceBuilder<Element> appendAll(Element... elements) {
         for (element in elements) {
             append(element);
         }
+        return this;
     }
     
     doc "The size of the resulting sequence."
