@@ -388,6 +388,27 @@ void testSegments() {
     check(seq[3:5] == {"four", "five", "six", "seven", "eight"}, "seq[3:5] " seq[3:5] "");
     check("test"[1:2] == "es", "test[1:2] " ("test"[1:2]) "");
     check("hello"[2:2] == "ll", "hello[2:2] " ("hello"[2:2]) "");
+    value s2 = 0:3;
+    value s3 = 2:5;
+    check(s2.size == 3, "0:3 [1]");
+    if (exists x=s2[0]) {
+        check(x == 0, "0:3 [2]");
+    } else { fail("0:3 [2]"); }
+    if (exists x=s2[2]) {
+        check(x == 3, "0:3 [3]");
+    } else { fail("0:3 [3]"); }
+    check(s3.size == 5, "2:5 [1]");
+    if (exists x=s3[0]) {
+        check(x == 2, "2:5 [1]");
+    } else { fail("2:5 [1]"); }
+    if (exists x=s3[2]) {
+        check(x == 4, "2:5 [2]");
+    } else { fail("2:5 [2]"); }
+    if (exists x=s3[4]) {
+        check(x == 6, "2:5 [3]");
+    } else { fail("2:5 [3]"); }
+    check(!nonempty 1:0, "1:0 empty");
+    check(!nonempty 1:-1, "1:-1 empty");
 }
 
 shared void test() {
