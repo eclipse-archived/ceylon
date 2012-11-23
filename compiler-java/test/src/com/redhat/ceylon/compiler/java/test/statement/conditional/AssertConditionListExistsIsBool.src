@@ -24,7 +24,7 @@ class AssertConditionListExistsIsBool {
                 $ceylontmpassert0 = "\tunviolated " + "exists z=x[0]" + .java.lang.System.lineSeparator() + "\tviolated " + "is Integer y = z" + .java.lang.System.lineSeparator() + "\tuntested " + "y > 0" + .java.lang.System.lineSeparator();
             }
         } else {
-            $z$2 = 0L;
+            $z$2 = null;
             $y$4 = 0L;
             $ceylontmpassert0 = "\tviolated " + "exists z=x[0]" + .java.lang.System.lineSeparator() + "\tuntested " + "is Integer y = z" + .java.lang.System.lineSeparator() + "\tuntested " + "y > 0" + .java.lang.System.lineSeparator();
         }

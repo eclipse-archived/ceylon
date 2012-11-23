@@ -672,7 +672,21 @@ public class StatementTransformer extends AbstractTransformer {
             return makeJavaType(toType);
         }
         
-        protected abstract JCExpression makeDefaultExpr();
+        protected JCExpression makeDefaultExpr() {
+            at(cond);
+            if (canUnbox(toType)) {
+                if (isCeylonBoolean(toType)) {
+                    return makeBoolean(false);
+                } else if (isCeylonFloat(toType)) {
+                    return make().Literal(0.0);
+                } else if (isCeylonInteger(toType)) {
+                    return makeLong(0);
+                } else if (isCeylonCharacter(toType)) {
+                    return make().Literal(0);
+                }
+            }
+            return makeNull();
+        }
         
         @Override
         public JCStatement makeTestVarDecl(int flags, boolean init) {
@@ -763,23 +777,6 @@ public class StatementTransformer extends AbstractTransformer {
         }
         
         @Override
-        protected JCExpression makeDefaultExpr() {
-            at(cond);
-            if (canUnbox(toType)) {
-                if (isCeylonBoolean(toType)) {
-                    return makeBoolean(false);
-                } else if (isCeylonFloat(toType)) {
-                    return make().Literal(0.0);
-                } else if (isCeylonInteger(toType)) {
-                    return makeLong(0);
-                } else if (isCeylonCharacter(toType)) {
-                    return make().Literal(0);
-                }
-            }
-            return makeNull();
-        }
-        
-        @Override
         public JCExpression makeResultExpr() {
             at(cond);
             JCExpression expr = testVar.makeIdent();
@@ -826,11 +823,6 @@ public class StatementTransformer extends AbstractTransformer {
             return makeJavaType(tmpVarType, JT_NO_PRIMITIVES);
         }
         
-        @Override
-        protected JCExpression makeDefaultExpr() {
-            return makeLong(0);
-        }
-
         @Override
         public JCExpression makeTest() {
             // no need to cast for erasure here

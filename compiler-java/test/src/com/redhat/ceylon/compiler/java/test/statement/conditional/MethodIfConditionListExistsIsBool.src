@@ -23,7 +23,7 @@ class MethodIfConditionListExistsIsBool {
             }
         } else {
             $y$4 = 0L;
-            $z$2 = 0L;
+            $z$2 = null;
         }
         if ($ceylontmpif0) {
             return $y$4 == 1L;
