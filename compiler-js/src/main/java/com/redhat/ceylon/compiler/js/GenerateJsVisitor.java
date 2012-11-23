@@ -1325,15 +1325,19 @@ public class GenerateJsVisitor extends Visitor
         List<StringLiteral> literals = that.getStringLiterals();
         List<Expression> exprs = that.getExpressions();
         out(clAlias, ".StringBuilder().appendAll([");
+        boolean first = true;
         for (int i = 0; i < literals.size(); i++) {
             StringLiteral literal = literals.get(i);
-            boolean nonemptyLiteral = (literal.getText().length() > 2);
-            if (nonemptyLiteral) { literal.visit(this); }
+            if (literal.getText().length() > 2) {
+                if (!first) { out(","); }
+                first = false;
+                literal.visit(this);
+            }
             if (i < exprs.size()) {
-                if (nonemptyLiteral) { out(","); }
+                if (!first) { out(","); }
+                first = false;
                 exprs.get(i).visit(this);
                 out(".getString()");
-                out(",");
             }
         }
         out("]).getString()");
@@ -1989,11 +1993,12 @@ public class GenerateJsVisitor extends Visitor
 
 
     @Override
-    public void visit(SpecifierStatement that) {
+    public void visit(final SpecifierStatement that) {
         if (that.getBaseMemberExpression() instanceof BaseMemberExpression) {
             BaseMemberExpression bme = (BaseMemberExpression) that.getBaseMemberExpression();
             Declaration bmeDecl = bme.getDeclaration();
             if (that.getSpecifierExpression() instanceof LazySpecifierExpression) {
+                // attr => expr;
                 if (bmeDecl.isMember()) {
                     if (prototypeStyle) { return; }
                     qualify(that, bmeDecl);
@@ -2003,7 +2008,8 @@ public class GenerateJsVisitor extends Visitor
                 out(";};");
             }
             else {
-                if (prototypeStyle || bmeDecl.isMember()) {
+                // attr = expr;
+                if (prototypeStyle) {
                     qualify(that, bmeDecl);
                 }
                 out(names.name(bmeDecl), "=");
@@ -2011,15 +2017,37 @@ public class GenerateJsVisitor extends Visitor
                 out(";");
             }
         }
-        else if (that.getBaseMemberExpression() instanceof ParameterizedExpression) {
-            //TODO
+        else if ((that.getBaseMemberExpression() instanceof ParameterizedExpression)
+                    && (that.getSpecifierExpression() != null)) {
+            ParameterizedExpression paramExpr =
+                        (ParameterizedExpression) that.getBaseMemberExpression();
+            if (paramExpr.getPrimary() instanceof BaseMemberExpression) {
+                // func(params) => expr;
+                BaseMemberExpression bme = (BaseMemberExpression) paramExpr.getPrimary();
+                Declaration bmeDecl = bme.getDeclaration();
+                if (bmeDecl.isMember()) {
+                    if (prototypeStyle) { return; }
+                    qualify(that, bmeDecl);
+                }
+                out(names.name(bmeDecl), "=");
+                generateParameterLists(paramExpr.getParameterLists(),
+                        new ParameterListCallback() {
+                            @Override public void completeFunction() {
+                                out("{return ");
+                                that.getSpecifierExpression().visit(GenerateJsVisitor.this);
+                                out(";}");
+                            }
+                        });
+                out(";");
+            }
         }
     }
     
-    private void addSpecifierToPrototype(TypeDeclaration outer,
-                SpecifierStatement specStmt) {
+    private void addSpecifierToPrototype(final TypeDeclaration outer,
+                final SpecifierStatement specStmt) {
         if ((specStmt.getBaseMemberExpression() instanceof BaseMemberExpression)
                     && (specStmt.getSpecifierExpression() instanceof LazySpecifierExpression)) {
+            // attr => expr;
             BaseMemberExpression bme = (BaseMemberExpression) specStmt.getBaseMemberExpression();
             out(names.self(outer), ".", names.getter(bme.getDeclaration()),
                     "=function()");
@@ -2029,6 +2057,28 @@ public class GenerateJsVisitor extends Visitor
             specStmt.getSpecifierExpression().visit(this);
             out(";");
             endBlockNewLine(true);
+        }
+        else if ((specStmt.getBaseMemberExpression() instanceof ParameterizedExpression)
+                    && (specStmt.getSpecifierExpression() != null)) {
+            ParameterizedExpression paramExpr =
+                    (ParameterizedExpression) specStmt.getBaseMemberExpression();
+            if (paramExpr.getPrimary() instanceof BaseMemberExpression) {
+                // func(params) => expr;
+                BaseMemberExpression bme = (BaseMemberExpression) paramExpr.getPrimary();
+                out(names.self(outer), ".", names.name(bme.getDeclaration()), "=");
+                generateParameterLists(paramExpr.getParameterLists(),
+                        new ParameterListCallback() {
+                            @Override public void completeFunction() {
+                                beginBlock();
+                                initSelf();
+                                out("return ");
+                                specStmt.getSpecifierExpression().visit(GenerateJsVisitor.this);
+                                out(";");
+                                endBlock();
+                            }
+                        });
+                out(";");
+            }
         }
     }
 
