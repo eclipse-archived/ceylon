@@ -2881,6 +2881,9 @@ public class Lower extends TreeTranslator {
         boolean havePrimitive = tree.type.isPrimitive();
         if (havePrimitive == type.isPrimitive())
             return tree;
+        if (Context.isCeylon()) {
+            log.error(make_pos, "ceylon", "Java primitive boxing/unboxing in Ceylon-generated code!");
+        }
         if (havePrimitive) {
             Type unboxedTarget = types.unboxedType(type);
             if (unboxedTarget.tag != NONE) {
