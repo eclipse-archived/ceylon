@@ -188,8 +188,15 @@ public class CeylonRunJsTool implements Tool {
         return System.getProperty(prop);
     }
 
-    @Override
-    public void run() throws Exception {
+    /** Creates a ProcessBuilder ready to run the node.js executable with the specified parameters.
+     * @param module The module name and version (if it's not the default).
+     * @param func The function name to run (must be specified)
+     * @param args The optional command-line arguments to pass to the function
+     * @param exepath The full path to the node.js executable
+     * @param repos The list of repository paths (used as module paths for node.js)
+     * @param output An optional PrintStream to write the output of the node.js process to. */
+    static ProcessBuilder buildProcess(String module, String func, List<String> args,
+            String exepath, List<String> repos, PrintStream output) {
         final String node = exepath == null ? findNode() : exepath;
         if (exepath != null) {
             File _f = new File(exepath);
@@ -238,6 +245,13 @@ public class CeylonRunJsTool implements Tool {
         if (output != null) {
             proc.redirectErrorStream();
         }
+        return proc;
+    }
+
+    @Override
+    public void run() throws Exception {
+        //The timeout is to have enough time to start reading on the process streams
+        final ProcessBuilder proc = buildProcess(module, func, args, exepath, repos, output);
         Process nodeProcess = proc.start();
         //All this shit because inheritIO doesn't work on fucking Windows
         new ReadStream(nodeProcess.getInputStream(), output == null ? System.out : output).start();
