@@ -47,7 +47,6 @@ import com.redhat.ceylon.compiler.typechecker.model.Generic;
 import com.redhat.ceylon.compiler.typechecker.model.Getter;
 import com.redhat.ceylon.compiler.typechecker.model.Interface;
 import com.redhat.ceylon.compiler.typechecker.model.Method;
-import com.redhat.ceylon.compiler.typechecker.model.MethodOrValue;
 import com.redhat.ceylon.compiler.typechecker.model.Package;
 import com.redhat.ceylon.compiler.typechecker.model.Parameter;
 import com.redhat.ceylon.compiler.typechecker.model.ParameterList;
@@ -68,11 +67,11 @@ import com.redhat.ceylon.compiler.typechecker.tree.Tree.AttributeDeclaration;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.AttributeGetterDefinition;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.AttributeSetterDefinition;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.Block;
+import com.redhat.ceylon.compiler.typechecker.tree.Tree.LazySpecifierExpression;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.MethodDeclaration;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.MethodDefinition;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.SpecifierExpression;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.SpecifierStatement;
-import com.redhat.ceylon.compiler.typechecker.tree.Tree.TypeAliasDeclaration;
 import com.sun.tools.javac.tree.JCTree;
 import com.sun.tools.javac.tree.JCTree.JCAnnotation;
 import com.sun.tools.javac.tree.JCTree.JCBinary;
@@ -859,15 +858,14 @@ public class ClassTransformer extends AbstractTransformer {
         boolean useField = Strategy.useField(model);
         String attrName = decl.getIdentifier().getText();
 
-        // Only a non-formal attribute has a corresponding field
+        // Only a non-formal or a concrete-non-lazy attribute has a corresponding field
         // and if a captured class parameter exists with the same name we skip this part as well
         Parameter parameter = CodegenUtil.findParamForDecl(decl);
         boolean createField = Strategy.createField(parameter, model);
         boolean concrete = Decl.withinInterface(decl)
                 && decl.getSpecifierOrInitializerExpression() != null;
-        if (concrete || 
-                (!Decl.isFormal(decl) 
-                        && createField)) {
+        boolean lazy = decl.getSpecifierOrInitializerExpression() instanceof LazySpecifierExpression;
+        if ((concrete && !lazy) || (!Decl.isFormal(decl) && createField)) {
             JCExpression initialValue = null;
             if (decl.getSpecifierOrInitializerExpression() != null) {
                 Value declarationModel = model;
@@ -900,14 +898,18 @@ public class ClassTransformer extends AbstractTransformer {
             }
         }
 
-        if (useField) {
+        if (useField || Decl.withinInterface(decl)) {
+            // Generate getter in main class/interface
             classBuilder.attribute(makeGetter(decl, false));
             if (Decl.withinInterface(decl)) {
+                // Generate getter in companion class
                 classBuilder.getCompanionBuilder((Interface)decl.getDeclarationModel().getContainer()).attribute(makeGetter(decl, true));
             }
             if (Decl.isMutable(decl)) {
+                // Generate setter in main class/interface
                 classBuilder.attribute(makeSetter(decl, false));
                 if (Decl.withinInterface(decl)) {
+                    // Generate setter in companion class
                     classBuilder.getCompanionBuilder((Interface)decl.getDeclarationModel().getContainer()).attribute(makeSetter(decl, true));
                 }
             }
@@ -1048,8 +1050,8 @@ public class ClassTransformer extends AbstractTransformer {
         int result = 0;
 
         result |= tdecl.isShared() ? PUBLIC : PRIVATE;
-        result |= (tdecl.isFormal() && !tdecl.isDefault() && !forCompanion) ? ABSTRACT : 0;
-        result |= !(tdecl.isFormal() || tdecl.isDefault() || tdecl.getContainer() instanceof Interface) || forCompanion ? FINAL : 0;
+        result |= ((tdecl.isFormal() && !tdecl.isDefault()) && !forCompanion) ? ABSTRACT : 0;
+        result |= !(tdecl.isFormal() || tdecl.isDefault() || Decl.withinInterface(tdecl)) || forCompanion ? FINAL : 0;
 
         return result;
     }
@@ -1067,7 +1069,11 @@ public class ClassTransformer extends AbstractTransformer {
         at(decl);
         if (forCompanion) {
             if (decl.getSpecifierOrInitializerExpression() != null) {
-                builder.getterBlock(make().Block(0, List.<JCStatement>of(make().Return(makeErroneous()))));
+                Value declarationModel = decl.getDeclarationModel();
+                JCExpression expr = expressionGen().transformExpression(decl.getSpecifierOrInitializerExpression().getExpression(), 
+                        CodegenUtil.getBoxingStrategy(declarationModel), 
+                        declarationModel.getType());
+                builder.getterBlock(make().Block(0, List.<JCStatement>of(make().Return(expr))));
             } else {
                 JCExpression accessor = naming.makeQualifiedName(
                         naming.makeQuotedThis(), 
@@ -1095,7 +1101,7 @@ public class ClassTransformer extends AbstractTransformer {
             builder.notActual();
         return builder
             .modifiers(transformAttributeGetSetDeclFlags(decl.getDeclarationModel(), forCompanion))
-            .isFormal(Decl.isFormal(decl) && !forCompanion);
+            .isFormal((Decl.isFormal(decl) || Decl.withinInterface(decl)) && !forCompanion);
     }
     
     private AttributeDefinitionBuilder makeGetter(Tree.AttributeDeclaration decl, boolean forCompanion) {

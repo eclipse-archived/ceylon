@@ -25,7 +25,6 @@ import com.redhat.ceylon.compiler.typechecker.model.Declaration;
 import com.redhat.ceylon.compiler.typechecker.model.Method;
 import com.redhat.ceylon.compiler.typechecker.model.Parameter;
 import com.redhat.ceylon.compiler.typechecker.model.TypeDeclaration;
-import com.redhat.ceylon.compiler.typechecker.model.Util;
 import com.redhat.ceylon.compiler.typechecker.model.Value;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.MethodDeclaration;
@@ -166,12 +165,12 @@ class Strategy {
     }
     
     public static boolean useField(Value attr) {
-        return Decl.isCaptured(attr);
+        return !Decl.withinInterface(attr) && Decl.isCaptured(attr);
     }
     
     
     public static boolean createField(Parameter p, Value v) {
-        return (p == null) || (useField(v) && !p.isCaptured());
+        return !Decl.withinInterface(v) && ((p == null) || (useField(v) && !p.isCaptured()));
     }
     
     /**

@@ -19,13 +19,17 @@
  */
 @nomodel
 interface InterfaceWithConcreteMembers {
- @error
- shared default Integer foo(Boolean b){
-  return 1;
- }
+    shared default Integer foo(Boolean b) {
+        return 1;
+    }
+    shared default Integer foo2(Boolean b) => 1;
+    
+    shared default Integer bar {
+        return 1;
+    }
+    shared default Integer bar2 => 1;
 }
 
 @nomodel
-@error
-class Impl () satisfies InterfaceWithConcreteMembers {
+class InterfaceWithConcreteMembersImpl() satisfies InterfaceWithConcreteMembers {
 }

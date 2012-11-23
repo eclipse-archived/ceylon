@@ -3,6 +3,12 @@ package com.redhat.ceylon.compiler.java.test.structure.klass;
 interface InterfaceWithConcreteMembers {
     
     public long foo(final boolean b);
+    
+    public long foo2(final boolean b);
+    
+    public long getBar();
+    
+    public long getBar2();
 }
 final class InterfaceWithConcreteMembers$impl {
     
@@ -14,10 +20,22 @@ final class InterfaceWithConcreteMembers$impl {
     public long foo(final boolean b) {
         return 1L;
     }
-}
-class Impl implements .com.redhat.ceylon.compiler.java.test.structure.klass.InterfaceWithConcreteMembers {
     
-    Impl() {
+    public long foo2(final boolean b) {
+        return 1L;
+    }
+    
+    public final long getBar() {
+        return 1L;
+    }
+    
+    public final long getBar2() {
+        return 1L;
+    }
+}
+class InterfaceWithConcreteMembersImpl implements .com.redhat.ceylon.compiler.java.test.structure.klass.InterfaceWithConcreteMembers {
+    
+    InterfaceWithConcreteMembersImpl() {
         this.$com$redhat$ceylon$compiler$java$test$structure$klass$InterfaceWithConcreteMembers$this = new .com.redhat.ceylon.compiler.java.test.structure.klass.InterfaceWithConcreteMembers$impl(this);
     }
     private final .com.redhat.ceylon.compiler.java.test.structure.klass.InterfaceWithConcreteMembers$impl $com$redhat$ceylon$compiler$java$test$structure$klass$InterfaceWithConcreteMembers$this;
@@ -27,8 +45,23 @@ class Impl implements .com.redhat.ceylon.compiler.java.test.structure.klass.Inte
         return $com$redhat$ceylon$compiler$java$test$structure$klass$InterfaceWithConcreteMembers$this.foo(b);
     }
     
+    @.java.lang.Override
+    public long foo2(final boolean b) {
+        return $com$redhat$ceylon$compiler$java$test$structure$klass$InterfaceWithConcreteMembers$this.foo2(b);
+    }
+    
+    @.java.lang.Override
+    public long getBar() {
+        return $com$redhat$ceylon$compiler$java$test$structure$klass$InterfaceWithConcreteMembers$this.getBar();
+    }
+    
+    @.java.lang.Override
+    public long getBar2() {
+        return $com$redhat$ceylon$compiler$java$test$structure$klass$InterfaceWithConcreteMembers$this.getBar2();
+    }
+    
     public static void main(.java.lang.String[] args) {
         .ceylon.language.process_.getProcess$().setupArguments(args);
-        new .com.redhat.ceylon.compiler.java.test.structure.klass.Impl();
+        new .com.redhat.ceylon.compiler.java.test.structure.klass.InterfaceWithConcreteMembersImpl();
     }
 }
