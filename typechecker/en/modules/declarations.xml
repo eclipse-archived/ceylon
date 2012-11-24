@@ -2641,8 +2641,8 @@ shared assign name { firstName := first(name); lastName := last(name); }</progra
         <programlisting>doc "The user login action"
 by "Gavin King"
    "Andrew Haley"
-throws (DatabaseException 
-        -> "if database access fails")
+throws (DatabaseException,
+        "if database access fails")
 seeAlso (LogoutAction.logout)
 scope (session) 
 action { description="Log In"; url="/login"; }
