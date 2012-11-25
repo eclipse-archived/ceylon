@@ -141,7 +141,7 @@ interface LazyExprBase {
 }
 class LazyExprTest() satisfies LazyExprBase {
     shared variable Integer x := 1000;
-    shared String f1(Integer i1, String f() => ""i1"."(++x)"") { return f(); }
+    shared String f1(Integer i1, String f() => ""i1"."(++x)"") => f();
     shared Integer f2(Integer i) => 2*(++x)+i;
     shared Integer i1 => ++x;
     shared Integer i2;

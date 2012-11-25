@@ -28,6 +28,7 @@ import com.redhat.ceylon.compiler.typechecker.model.Package;
 import com.redhat.ceylon.compiler.typechecker.model.ProducedType;
 import com.redhat.ceylon.compiler.typechecker.model.Scope;
 import com.redhat.ceylon.compiler.typechecker.model.Setter;
+import com.redhat.ceylon.compiler.typechecker.model.Specification;
 import com.redhat.ceylon.compiler.typechecker.model.TypeDeclaration;
 import com.redhat.ceylon.compiler.typechecker.model.TypeParameter;
 import com.redhat.ceylon.compiler.typechecker.model.Util;
@@ -329,12 +330,13 @@ public class GenerateJsVisitor extends Visitor
     }
 
     private void initSelf(Block block) {
-        if (block.getScope() instanceof MethodOrValue) {
-            initSelf();
-        }
+        initSelf(block.getScope());
     }
-    private void initSelf() {
-        if (prototypeOwner != null) {
+    private void initSelf(Scope scope) {
+        if ((prototypeOwner != null) &&
+                    ((scope instanceof MethodOrValue)
+                     || (scope instanceof TypeDeclaration)
+                     || (scope instanceof Specification))) {
             out("var ");
             self(prototypeOwner);
             out("=this;");
@@ -805,6 +807,8 @@ public class GenerateJsVisitor extends Visitor
         prototypeOwner = d;
         if (s instanceof MethodDefinition) {
             addMethodToPrototype(d, (MethodDefinition)s);
+        } else if (s instanceof MethodDeclaration) {
+            addMethodDeclToPrototype(d, (MethodDeclaration) s);
         } else if (s instanceof AttributeGetterDefinition) {
             addGetterToPrototype(d, (AttributeGetterDefinition)s);
         } else if (s instanceof AttributeSetterDefinition) {
@@ -977,15 +981,12 @@ public class GenerateJsVisitor extends Visitor
         if (that.getErrors() != null && !that.getErrors().isEmpty()) return;
         Method m = that.getDeclarationModel();
         if (that.getSpecifierExpression() != null) {
+            if (prototypeStyle && m.isMember()) { return; }
             comment(that);
-            out("function ", names.name(m));
-            for (ParameterList plist : that.getParameterLists()) {
-                plist.visit(this);
-            }
-            out("{return ");
-            that.getSpecifierExpression().getExpression().visit(this);
-            out(";}");
-            endLine();
+            out("var ", names.name(m), "=");
+            singleExprFunction(that.getParameterLists(),
+                    that.getSpecifierExpression().getExpression(), that.getScope());
+            endLine(true);
             share(m, false);
         } else {
             //Check for refinement of simple param declaration
@@ -1007,6 +1008,16 @@ public class GenerateJsVisitor extends Visitor
                 }
             }
         }
+    }
+    
+    void addMethodDeclToPrototype(TypeDeclaration outer, MethodDeclaration that) {
+        if (that.getSpecifierExpression() == null) { return; }
+        comment(that);
+        Method decl = that.getDeclarationModel();
+        out(names.self(outer), ".", names.name(decl), "=");
+        singleExprFunction(that.getParameterLists(),
+                that.getSpecifierExpression().getExpression(), that.getScope());
+        endLine(true);
     }
 
     @Override
@@ -1074,7 +1085,7 @@ public class GenerateJsVisitor extends Visitor
                         // function parameter defaulted using "=>"
                         singleExprFunction(
                                 ((FunctionalParameterDeclaration) param).getParameterLists(),
-                                defaultExpr.getExpression());
+                                defaultExpr.getExpression(), null);
                     }
                     else {
                         defaultExpr.visit(this);
@@ -1190,8 +1201,8 @@ public class GenerateJsVisitor extends Visitor
         //Check if the attribute corresponds to a class parameter
         //This is because of the new initializer syntax
         String classParam = null;
-        if (that.getScope() instanceof Functional) {
-            classParam = names.name(((Functional)that.getScope()).getParameter(d.getName()));
+        if (d.getContainer() instanceof Functional) {
+            classParam = names.name(((Functional)d.getContainer()).getParameter(d.getName()));
         }
         if (!d.isFormal()) {
             comment(that);
@@ -1220,27 +1231,12 @@ public class GenerateJsVisitor extends Visitor
                 endLine(true);
             }
             else {
-                final String varName = names.name(d);
-                out("var ", varName);
-                if (specInitExpr != null) {
-                    out("=");
-                    int boxType = boxStart(specInitExpr.getExpression().getTerm());
-                    super.visit(that);
-                    boxUnboxEnd(boxType);
-                } else if (classParam != null) {
-                    out("=", classParam);
-                } else {
-                    super.visit(that);
+                if ((specInitExpr != null) || (classParam != null) || !d.isMember()
+                            || d.isVariable()) {
+                    generateAttributeGetter(d, specInitExpr, classParam);
                 }
-                endLine(true);
-                if (isCaptured(d)) {
-                    out("var ", names.getter(d),"=function(){return ", varName, ";};");
-                    endLine();
-                } else {
-                    directAccess.add(d);
-                }
-                shareGetter(d);
                 if (d.isVariable()) {
+                    final String varName = names.name(d);
                     String paramVarName = names.createTempVariable(d.getName());
                     out("var ", names.setter(d), "=function(", paramVarName, "){return ");
                     out(varName, "=", paramVarName, ";};");
@@ -1251,32 +1247,60 @@ public class GenerateJsVisitor extends Visitor
         }
     }
     
+    private void generateAttributeGetter(Value decl,
+                SpecifierOrInitializerExpression expr, String param) {
+        final String varName = names.name(decl);
+        out("var ", varName);
+        if (expr != null) {
+            out("=");
+            int boxType = boxStart(expr.getExpression().getTerm());
+            expr.visit(this);
+            boxUnboxEnd(boxType);
+        } else if (param != null) {
+            out("=", param);
+        }
+        endLine(true);
+        if (isCaptured(decl)) {
+            out("var ", names.getter(decl),"=function(){return ", varName, ";};");
+            endLine();
+        } else {
+            directAccess.add(decl);
+        }
+        shareGetter(decl);
+    }
+    
     private void addGetterAndSetterToPrototype(TypeDeclaration outer,
             AttributeDeclaration that) {
         Value d = that.getDeclarationModel();
         if (!prototypeStyle||d.isToplevel()) return;
         if (!d.isFormal()) {
             comment(that);
-            out(names.self(outer), ".", names.getter(d), "=",
-                    function, names.getter(d), "()");
-            beginBlock();
-            
-            if (that.getSpecifierOrInitializerExpression()
-                            instanceof LazySpecifierExpression) {
-                // attribute is defined by a lazy expression ("=>" syntax)
-                initSelf();
-                out("return ");
-                Expression expr = that.getSpecifierOrInitializerExpression().getExpression();
-                int boxType = boxStart(expr.getTerm());
-                expr.visit(this);
-                boxUnboxEnd(boxType);
-                out(";");
+            String classParam = null;
+            if (d.getContainer() instanceof Functional) {
+                classParam = names.name(((Functional)d.getContainer()).getParameter(d.getName()));
             }
-            else {            
-                out("return this.", names.name(d), ";");
+            if ((that.getSpecifierOrInitializerExpression() != null) || d.isVariable()
+                        || (classParam != null)) {
+                out(names.self(outer), ".", names.getter(d), "=",
+                        function, names.getter(d), "()");
+                beginBlock();
+                if (that.getSpecifierOrInitializerExpression()
+                                instanceof LazySpecifierExpression) {
+                    // attribute is defined by a lazy expression ("=>" syntax)
+                    initSelf(that.getScope());
+                    out("return ");
+                    Expression expr = that.getSpecifierOrInitializerExpression().getExpression();
+                    int boxType = boxStart(expr.getTerm());
+                    expr.visit(this);
+                    boxUnboxEnd(boxType);
+                    out(";");
+                }
+                else {            
+                    out("return this.", names.name(d), ";");
+                }
+                endBlockNewLine(true);
             }
-            
-            endBlockNewLine(true);
+
             if (d.isVariable()) {
                 String paramVarName = names.createTempVariable(d.getName());
                 out(names.self(outer), ".", names.setter(d), "=");
@@ -1994,27 +2018,41 @@ public class GenerateJsVisitor extends Visitor
 
     @Override
     public void visit(final SpecifierStatement that) {
+        if (prototypeStyle && (that.getSpecifierExpression() instanceof LazySpecifierExpression)
+                && (that.getScope().getContainer() instanceof TypeDeclaration)) {
+            // A lazy specifier expression in a class/interface. In prototype style
+            // these should go into the prototype, so don't generate them here.
+            return;
+        }
         if (that.getBaseMemberExpression() instanceof BaseMemberExpression) {
             BaseMemberExpression bme = (BaseMemberExpression) that.getBaseMemberExpression();
             Declaration bmeDecl = bme.getDeclaration();
             if (that.getSpecifierExpression() instanceof LazySpecifierExpression) {
                 // attr => expr;
-                if (bmeDecl.isMember()) {
-                    if (prototypeStyle) { return; }
-                    qualify(that, bmeDecl);
-                }
+                if (bmeDecl.isMember()) { qualify(that, bmeDecl); }
                 out(names.getter(bmeDecl), "=function(){return ");
                 that.getSpecifierExpression().visit(this);
                 out(";};");
             }
             else {
                 // attr = expr;
-                if (prototypeStyle) {
-                    qualify(that, bmeDecl);
+                if (bmeDecl.isMember() && (bmeDecl instanceof Value)) {
+                    // Specifier for a member attribute. This actually defines the
+                    // member (e.g. in shortcut refinement syntax the attribute
+                    // declaration itself can be omitted), so generate the attribute.
+                    generateAttributeGetter((Value) bmeDecl,
+                            that.getSpecifierExpression(), null);
                 }
-                out(names.name(bmeDecl), "=");
-                that.getSpecifierExpression().visit(this);
-                out(";");
+                else {
+                    // Specifier for some other attribute, or for a method.
+                    if (prototypeStyle 
+                            || (bmeDecl.isMember() && (bmeDecl instanceof Method))) {
+                        qualify(that, bmeDecl);
+                    }
+                    out(names.name(bmeDecl), "=");
+                    that.getSpecifierExpression().visit(this);
+                    out(";");
+                }
             }
         }
         else if ((that.getBaseMemberExpression() instanceof ParameterizedExpression)
@@ -2025,19 +2063,11 @@ public class GenerateJsVisitor extends Visitor
                 // func(params) => expr;
                 BaseMemberExpression bme = (BaseMemberExpression) paramExpr.getPrimary();
                 Declaration bmeDecl = bme.getDeclaration();
-                if (bmeDecl.isMember()) {
-                    if (prototypeStyle) { return; }
-                    qualify(that, bmeDecl);
-                }
+                if (bmeDecl.isMember()) { qualify(that, bmeDecl); }
                 out(names.name(bmeDecl), "=");
-                generateParameterLists(paramExpr.getParameterLists(),
-                        new ParameterListCallback() {
-                            @Override public void completeFunction() {
-                                out("{return ");
-                                that.getSpecifierExpression().visit(GenerateJsVisitor.this);
-                                out(";}");
-                            }
-                        });
+                singleExprFunction(paramExpr.getParameterLists(),
+                        that.getSpecifierExpression().getExpression(),
+                        that.getScope());
                 out(";");
             }
         }
@@ -2045,38 +2075,36 @@ public class GenerateJsVisitor extends Visitor
     
     private void addSpecifierToPrototype(final TypeDeclaration outer,
                 final SpecifierStatement specStmt) {
-        if ((specStmt.getBaseMemberExpression() instanceof BaseMemberExpression)
-                    && (specStmt.getSpecifierExpression() instanceof LazySpecifierExpression)) {
-            // attr => expr;
+        if (specStmt.getBaseMemberExpression() instanceof BaseMemberExpression) {
             BaseMemberExpression bme = (BaseMemberExpression) specStmt.getBaseMemberExpression();
-            out(names.self(outer), ".", names.getter(bme.getDeclaration()),
-                    "=function()");
-            beginBlock();
-            initSelf();
-            out("return ");
-            specStmt.getSpecifierExpression().visit(this);
-            out(";");
-            endBlockNewLine(true);
+            Declaration bmeDecl = bme.getDeclaration();
+            if (specStmt.getSpecifierExpression() instanceof LazySpecifierExpression) {
+                // attr => expr;
+                out(names.self(outer), ".", names.getter(bmeDecl), "=function()");
+                beginBlock();
+                initSelf(specStmt.getScope());
+                out("return ");
+                specStmt.getSpecifierExpression().visit(this);
+                out(";");
+                endBlockNewLine(true);
+            }
+            else if (bmeDecl.isMember() && (bmeDecl instanceof Value)) {
+                // attr = expr;
+                out(names.self(outer), ".", names.getter(bmeDecl),
+                        "=function(){return this.", names.name(bmeDecl), ";};");
+                endLine();
+            }
         }
         else if ((specStmt.getBaseMemberExpression() instanceof ParameterizedExpression)
                     && (specStmt.getSpecifierExpression() != null)) {
-            ParameterizedExpression paramExpr =
+            final ParameterizedExpression paramExpr =
                     (ParameterizedExpression) specStmt.getBaseMemberExpression();
             if (paramExpr.getPrimary() instanceof BaseMemberExpression) {
                 // func(params) => expr;
                 BaseMemberExpression bme = (BaseMemberExpression) paramExpr.getPrimary();
                 out(names.self(outer), ".", names.name(bme.getDeclaration()), "=");
-                generateParameterLists(paramExpr.getParameterLists(),
-                        new ParameterListCallback() {
-                            @Override public void completeFunction() {
-                                beginBlock();
-                                initSelf();
-                                out("return ");
-                                specStmt.getSpecifierExpression().visit(GenerateJsVisitor.this);
-                                out(";");
-                                endBlock();
-                            }
-                        });
+                singleExprFunction(paramExpr.getParameterLists(),
+                        specStmt.getSpecifierExpression().getExpression(), specStmt.getScope());
                 out(";");
             }
         }
@@ -3170,17 +3198,21 @@ public class GenerateJsVisitor extends Visitor
     /** Generates the code for an anonymous function defined inside an argument list. */
     @Override
     public void visit(final FunctionArgument that) {
-        singleExprFunction(that.getParameterLists(), that.getExpression());
+        singleExprFunction(that.getParameterLists(), that.getExpression(), that.getScope());
     }
     
     private void singleExprFunction(final List<ParameterList> paramLists,
-                                    final Expression expr) {
-        generateParameterLists(paramLists, new ParameterListCallback() {
+                                    final Expression expr, final Scope scope) {
+        generateParameterLists(paramLists, scope, new ParameterListCallback() {
             @Override
             public void completeFunction() {
-                out("{return ");
+                beginBlock();
+                if (paramLists.size() == 1) { initSelf(scope); }
+                initParameters(paramLists.get(paramLists.size()-1), null);
+                out("return ");
                 expr.visit(GenerateJsVisitor.this);
-                out("}");
+                out(";");
+                endBlock();
             }
         });
     }
@@ -3188,7 +3220,8 @@ public class GenerateJsVisitor extends Visitor
     /** Generates the code for a function in a named argument list. */
     @Override
     public void visit(final MethodArgument that) {
-        generateParameterLists(that.getParameterLists(), new ParameterListCallback() {
+        generateParameterLists(that.getParameterLists(), that.getScope(),
+                new ParameterListCallback() {
             @Override
             public void completeFunction() {
                 that.getBlock().visit(GenerateJsVisitor.this);
@@ -3220,7 +3253,8 @@ public class GenerateJsVisitor extends Visitor
     }
 
     /** Generates the code for single or multiple parameter lists, with a callback function to generate the function blocks. */
-    private void generateParameterLists(List<ParameterList> plist, ParameterListCallback callback) {
+    private void generateParameterLists(List<ParameterList> plist, Scope scope,
+                ParameterListCallback callback) {
         if (plist.size() == 1) {
             out(function);
             ParameterList paramList = plist.get(0);
@@ -3235,7 +3269,14 @@ public class GenerateJsVisitor extends Visitor
                     out("return function");
                 }
                 paramList.visit(this);
-                out("{");
+                if (count == 0) {
+                    beginBlock();
+                    initSelf(scope);
+                    initParameters(paramList, null);
+                }
+                else {
+                    out("{");
+                }
                 count++;
             }
             callback.completeFunction();
