@@ -1415,9 +1415,13 @@ public class StatementTransformer extends AbstractTransformer {
                             increasing.makeIdent(), 
                             makeIncreasingIncrement(by), makeDecreasingIncrement(by))));
             
-            SyntheticName varname = naming.synthetic(getVariable().getIdentifier().getText());
+            SyntheticName varname = naming.alias(getVariable().getIdentifier().getText());
             JCVariableDecl init = make().VarDef(make().Modifiers(0), varname.asName(), makeType(), start.makeIdent());
             List<JCStatement> blockStatements = transformStmts(getBlock().getStatements());
+            blockStatements = blockStatements.prepend(make().VarDef(make().Modifiers(FINAL), 
+                    names().fromString(getVariable().getIdentifier().getText()), 
+                    makeType(),
+                    varname.makeIdent()));
             
             // for (long i = start; (increasing ? i -end <= 0 : i -end >= 0); i+=inc) {
             JCConditional cond = make().Conditional(increasing.makeIdent(), 
