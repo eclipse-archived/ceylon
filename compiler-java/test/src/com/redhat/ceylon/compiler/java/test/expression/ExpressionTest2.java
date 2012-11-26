@@ -464,5 +464,6 @@ public class ExpressionTest2 extends CompilerTest {
     @Test
     public void testInvMultipleParameterLists(){
         compareWithJavaSource("invoke/MultipleParameterLists");
+        compareWithJavaSource("invoke/MultipleParameterLists_call");
     }
 }

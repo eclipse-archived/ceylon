@@ -17,11 +17,6 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
  * MA  02110-1301, USA.
  */
-shared String multipleParameterLists()(Integer x) {
-  return x.string;
+shared Boolean bug889<Element>(Element val)(Element element) {
+    return true;
 }
-
-shared String multipleParameterLists2(Integer a)(Float b)(Object c) {
-  return a.string + b.string + c.string;
-}
-

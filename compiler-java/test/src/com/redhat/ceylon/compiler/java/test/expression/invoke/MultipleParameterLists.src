@@ -2,14 +2,14 @@ package com.redhat.ceylon.compiler.java.test.expression.invoke;
 
 @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 3)
 @.com.redhat.ceylon.compiler.java.metadata.Method
-public final class f1_ {
+public final class multipleParameterLists_ {
     
-    private f1_() {
+    private multipleParameterLists_() {
     }
     
     @.com.redhat.ceylon.compiler.java.metadata.Annotations({@.com.redhat.ceylon.compiler.java.metadata.Annotation("shared")})
-    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Callable<ceylon.language::String,ceylon.language::Integer>")
-    public static .ceylon.language.Callable<? extends .ceylon.language.String> f1() {
+    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Callable<ceylon.language::String,ceylon.language::Tuple<ceylon.language::Integer,ceylon.language::Integer,ceylon.language::Empty>>")
+    public static .ceylon.language.Callable<? extends .ceylon.language.String> multipleParameterLists() {
         return new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.ceylon.language.String>("String()"){
             
             @.java.lang.Override
@@ -24,19 +24,19 @@ public final class f1_ {
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
     public static void main(.java.lang.String[] args) {
         .ceylon.language.process_.getProcess$().setupArguments(args);
-        .com.redhat.ceylon.compiler.java.test.expression.invoke.f1_.f1();
+        .com.redhat.ceylon.compiler.java.test.expression.invoke.multipleParameterLists_.multipleParameterLists();
     }
 }
 @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 3)
 @.com.redhat.ceylon.compiler.java.metadata.Method
-public final class f2_ {
+public final class multipleParameterLists2_ {
     
-    private f2_() {
+    private multipleParameterLists2_() {
     }
     
     @.com.redhat.ceylon.compiler.java.metadata.Annotations({@.com.redhat.ceylon.compiler.java.metadata.Annotation("shared")})
-    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Callable<ceylon.language::Callable<ceylon.language::String,ceylon.language::Object>,ceylon.language::Float>")
-    public static .ceylon.language.Callable<? extends .ceylon.language.Callable<? extends .ceylon.language.String>> f2(@.com.redhat.ceylon.compiler.java.metadata.Name("a")
+    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Callable<ceylon.language::Callable<ceylon.language::String,ceylon.language::Tuple<ceylon.language::Object,ceylon.language::Object,ceylon.language::Empty>>,ceylon.language::Tuple<ceylon.language::Float,ceylon.language::Float,ceylon.language::Empty>>")
+    public static .ceylon.language.Callable<? extends .ceylon.language.Callable<? extends .ceylon.language.String>> multipleParameterLists2(@.com.redhat.ceylon.compiler.java.metadata.Name("a")
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Integer")
     final long a) {
         return new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.ceylon.language.Callable<? extends .ceylon.language.String>>("String()()"){

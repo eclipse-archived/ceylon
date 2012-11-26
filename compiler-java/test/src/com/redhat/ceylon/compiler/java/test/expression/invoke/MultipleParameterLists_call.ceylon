@@ -17,11 +17,14 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
  * MA  02110-1301, USA.
  */
-shared String multipleParameterLists()(Integer x) {
-  return x.string;
+shared void multipleParameterLists_call() {
+    variable String s := multipleParameterLists()(1);
+    value c = multipleParameterLists();
+    s := c(1);
+    
+    s := multipleParameterLists2(1)(1.0)(s);
+    value c2 = multipleParameterLists2(1);
+    value c3 = c2(1.0);
+    s := c3(s);
+    
 }
-
-shared String multipleParameterLists2(Integer a)(Float b)(Object c) {
-  return a.string + b.string + c.string;
-}
-
