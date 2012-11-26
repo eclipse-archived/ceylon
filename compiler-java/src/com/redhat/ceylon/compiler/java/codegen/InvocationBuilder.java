@@ -437,11 +437,27 @@ abstract class InvocationBuilder {
             builder = new CallableSpecifierInvocationBuilder(
                     gen, 
                     method, 
-                    specifierExpression, 
+                    gen.expressionGen().transformExpression(primary),
                     primary);
         } else {
             throw Assert.fail("Unhandled primary " + primary);
         }
+        builder.handleBoxing(true);
+        builder.compute();
+        return builder;
+    }
+    
+    public static InvocationBuilder forMethodInitializer(
+            CeylonTransformer gen, 
+            JCExpression callableExpr,
+            Node node,
+            Method method) {
+        InvocationBuilder builder = new CallableSpecifierInvocationBuilder(
+                gen,
+                method,
+                callableExpr,
+                node);
+      
         builder.handleBoxing(true);
         builder.compute();
         return builder;
@@ -949,11 +965,11 @@ class CallableSpecifierInvocationBuilder extends InvocationBuilder {
     private final JCExpression callable;
     public CallableSpecifierInvocationBuilder(
             AbstractTransformer gen, 
-            Method method, 
-            Tree.SpecifierExpression specifierExpression,
-            Tree.Term term) {
-        super(gen, null, null, method.getType(), term);
-        this.callable = gen.expressionGen().transformExpression(term);
+            Method method,
+            JCExpression callableExpr,
+            Node node) {
+        super(gen, null, null, method.getType(), node);
+        this.callable = callableExpr;
         this.method = method;
         // Because we're calling a callable, and they always return a 
         // boxed result

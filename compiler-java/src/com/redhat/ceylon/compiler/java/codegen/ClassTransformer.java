@@ -1331,14 +1331,11 @@ public class ClassTransformer extends AbstractTransformer {
                 initialValue = makeNull();
             }
             current().field(mods, model.getName(), makeJavaType(typeFact().getCallableType(model.getType())), initialValue, false);
-            ListBuffer<JCExpression> args = ListBuffer.<JCExpression>lb();
-            for (Parameter param : model.getParameterLists().get(0).getParameters()) {
-                args.append(naming.makeName(param, Naming.NA_MEMBER));
-            }
-            JCExpression call = make().Apply(null, makeSelect(
-                    model.getName(), "$call"), args.toList());
-            call = gen().expressionGen().applyErasureAndBoxing(call, model.getType(), 
-                    true, BoxingStrategy.UNBOXED, model.getType());
+            JCExpression call = CallableInvocationBuilder.forMethodInitializer(gen(), 
+                    initializingParameter != null ? 
+                        naming.makeName(initializingParameter, Naming.NA_MEMBER) : 
+                        naming.makeName(model, Naming.NA_MEMBER), 
+                    def, model).build();
             JCStatement stmt;
             if (isVoid(def)) {
                 stmt = make().Exec(call);
