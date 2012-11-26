@@ -17,7 +17,7 @@ class MethodInitializerParameter<T> {
             private final .ceylon.language.Callable<? extends .java.lang.Object> m;
             
             void m(final long i) {
-                m.$call(i);
+                m.$call(.ceylon.language.Integer.instance(i));
             }
         }
         final m_ m = new m_();
@@ -42,7 +42,7 @@ class MethodInitializerParameter<T> {
             private final .ceylon.language.Callable<? extends .java.lang.Object> m;
             
             void m(final long i1, final long i2, final long i3, final long i4) {
-                m.$call(i1, i2, i3, i4);
+                m.$call(.ceylon.language.Integer.instance(i1), .ceylon.language.Integer.instance(i2), .ceylon.language.Integer.instance(i3), .ceylon.language.Integer.instance(i4));
             }
         }
         final m_ m = new m_();
@@ -85,7 +85,7 @@ class MethodInitializerParameter<T> {
             }
             
             void m(final long i, final .ceylon.language.List<? extends .ceylon.language.Integer> seq) {
-                m.$call(i, seq);
+                m.$call(.ceylon.language.Integer.instance(i), seq);
             }
         }
         final m_ m = new m_();
@@ -162,7 +162,7 @@ class MethodInitializerParameter<T> {
             }
             
             void m(final long i) {
-                m.$call(i);
+                m.$call(.ceylon.language.Integer.instance(i));
             }
         }
         final m_ m = new m_();

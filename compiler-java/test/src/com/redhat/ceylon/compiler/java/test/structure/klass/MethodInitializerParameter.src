@@ -11,7 +11,7 @@ class MethodInitializerParameter<T> {
     private final .ceylon.language.Callable<? extends .java.lang.Object> m;
     
     private final void m(final long i) {
-        m.$call(i);
+        m.$call(.ceylon.language.Integer.instance(i));
     }
     private final .ceylon.language.Callable<? extends .java.lang.Object> m2;
     
@@ -31,7 +31,7 @@ class MethodInitializerParameter<T> {
     }
     
     private final void m2(final long i, final .ceylon.language.List<? extends .ceylon.language.Integer> seq) {
-        m2.$call(i, seq);
+        m2.$call(.ceylon.language.Integer.instance(i), seq);
     }
     private final .ceylon.language.Callable<? extends T> m3;
     
@@ -56,6 +56,6 @@ class MethodInitializerParameter<T> {
     }
     
     private final void m4(final long i) {
-        m4.$call(i);
+        m4.$call(.ceylon.language.Integer.instance(i));
     }
 }

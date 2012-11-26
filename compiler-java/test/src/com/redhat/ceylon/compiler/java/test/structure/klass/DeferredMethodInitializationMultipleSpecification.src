@@ -33,6 +33,6 @@ class DeferredMethodInitializationMultipleSpecification {
     }
     
     private final .java.lang.String s(final .java.lang.String name) {
-        if (s == null) throw new .com.redhat.ceylon.compiler.java.language.UninitializedMethodError(); else return s.$call(name).toString();
+        if (s == null) throw new .com.redhat.ceylon.compiler.java.language.UninitializedMethodError(); else return s.$call(.ceylon.language.String.instance(name)).toString();
     }
 }
