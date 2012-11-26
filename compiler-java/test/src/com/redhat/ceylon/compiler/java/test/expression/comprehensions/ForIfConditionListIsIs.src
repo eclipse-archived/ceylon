@@ -128,7 +128,7 @@ class ForIfConditionListIsIs {
                             if (!this.y()) break;
                             .java.lang.Object $y$10 = null;
                             .java.lang.Object $x$8 = null;
-                            if (($x$8 = $x$9) instanceof .ceylon.language.Integer) {
+                            if (($x$8 = x) instanceof .ceylon.language.Integer) {
                                 $x$9 = ((.ceylon.language.Integer)$x$8).longValue();
                                 if (($y$10 = y) instanceof .ceylon.language.Integer) {
                                     $y$11 = ((.ceylon.language.Integer)$y$10).longValue();

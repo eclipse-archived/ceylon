@@ -30,7 +30,7 @@ class ForIfConditionListIsBool {
                         while (true) {
                             if (!this.x()) break;
                             .java.lang.Object $x$1 = null;
-                            if (($x$1 = $x$2) instanceof .ceylon.language.String) {
+                            if (($x$1 = x) instanceof .ceylon.language.String) {
                                 $x$2 = ((.ceylon.language.String)$x$1).toString();
                                 if (.ceylon.language.String.getUppercased($x$2).equals("S")) {
                                     break;

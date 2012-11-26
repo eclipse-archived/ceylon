@@ -55,7 +55,7 @@ class ForIfConditionListIsBoolBool {
                         while (true) {
                             if (!this.z()) break;
                             .java.lang.Object $x$2 = null;
-                            if (($x$2 = $x$3) instanceof .ceylon.language.Integer) {
+                            if (($x$2 = x) instanceof .ceylon.language.Integer) {
                                 $x$3 = ((.ceylon.language.Integer)$x$2).longValue();
                                 if ($x$3 > 0L) {
                                     if (z.compare(.ceylon.language.Integer.instance(10L)).smallerThan()) {
