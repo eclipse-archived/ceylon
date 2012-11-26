@@ -2084,8 +2084,8 @@ public class ExpressionTransformer extends AbstractTransformer {
             
             protected List<JCStatement> transformIntermediate(Condition condition, java.util.List<Condition> rest) {
                 Cond transformedCond = statementGen().transformCondition(condition, null);
-                SyntheticName resultVarName = addVarSubs(transformedCond);
                 JCExpression test = transformedCond.makeTest();
+                SyntheticName resultVarName = addVarSubs(transformedCond);
                 return transformCommon(transformedCond, test, transformList(rest), resultVarName);
             }
 
