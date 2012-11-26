@@ -25,7 +25,8 @@ public final class innerMethodInvocation_ {
         final long $ceylontmpend2 = 50L;
         final boolean $ceylontmpincreasing3 = $ceylontmpstart1 <= $ceylontmpend2;
         final long $ceylontmpincr4 = $ceylontmpincreasing3 ? 1L : -1L;
-        for (long n = $ceylontmpstart1; $ceylontmpincreasing3 ? n - $ceylontmpend2 <= 0L : n - $ceylontmpend2 >= 0L; n += $ceylontmpincr4) {
+        for (long $n$5 = $ceylontmpstart1; $ceylontmpincreasing3 ? $n$5 - $ceylontmpend2 <= 0L : $n$5 - $ceylontmpend2 >= 0L; $n$5 += $ceylontmpincr4) {
+            final long n = $n$5;
             .ceylon.language.print_.print(.ceylon.language.String.instance("n! = " + .ceylon.language.Integer.toString(fib.fib(n))));
         }
     }

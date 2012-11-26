@@ -116,6 +116,12 @@ class OptimizedForWithRange(start, end) {
         }
     }
     
-
+    void captured() {
+        for (i in 0..10) {
+            function x() {
+                return i + 10;
+            }
+        }
+    }
     
 }
