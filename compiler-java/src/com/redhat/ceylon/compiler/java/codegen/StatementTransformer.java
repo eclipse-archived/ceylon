@@ -681,7 +681,16 @@ public class StatementTransformer extends AbstractTransformer {
         public final JCExpression makeTypeExpr() {
             return makeJavaType(toType);
         }
-        
+
+        /**
+         * Generates a default value for result variables.
+         * When transforming {@code if/else if} the variable holding the 
+         * type-narrowed variable must be declared final so it can be captured
+         * but in the else blocks we don't have anything we can safely 
+         * initialise it with in the model. So we generate default values 
+         * here, which cannot actually be seen from the ceylon code.
+         * @return
+         */
         protected JCExpression makeDefaultExpr() {
             at(cond);
             if (canUnbox(toType)) {
@@ -695,6 +704,9 @@ public class StatementTransformer extends AbstractTransformer {
                     return make().Literal(0);
                 }
             }
+            // The default value cannot be seen from the Ceylon code, so it's
+            // OK to assign it to null even though it may not be an 
+            // optional type
             return makeNull();
         }
         
