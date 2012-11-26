@@ -692,15 +692,26 @@ public abstract class AbstractTransformer implements Transformation {
     }
 
     ProducedType nonWideningType(ProducedTypedReference declaration, ProducedTypedReference refinedDeclaration){
-        if(declaration == refinedDeclaration)
-            return declaration.getType();
-        ProducedType refinedType = refinedDeclaration.getType();
-        // if the refined type is a method TypeParam, use the original decl that will be more correct
-        if(refinedType.getDeclaration() instanceof TypeParameter
-                && refinedType.getDeclaration().getContainer() instanceof Method){
-            return declaration.getType();
+        final ProducedReference pr;
+        if (declaration == refinedDeclaration) {
+            pr = declaration;
+        } else {
+            ProducedType refinedType = refinedDeclaration.getType();
+            // if the refined type is a method TypeParam, use the original decl that will be more correct
+            if(refinedType.getDeclaration() instanceof TypeParameter
+                    && refinedType.getDeclaration().getContainer() instanceof Method){
+                pr = declaration;
+            } else {
+                pr = refinedType;
+            }
         }
-        return refinedType;
+        if (pr.getDeclaration() instanceof Functional
+                && Decl.isMpl((Functional)pr.getDeclaration())) {
+            // Methods with MPL have a Callable return type, not the type of 
+            // the innermost Callable.
+            return getReturnTypeOfCallable(pr.getFullType());
+        }
+        return pr.getType();
     }
 
     private ProducedType toPType(com.sun.tools.javac.code.Type t) {
@@ -1745,6 +1756,8 @@ public abstract class AbstractTransformer implements Transformation {
         ProducedType type;
         if (decl instanceof FunctionalParameter) {
             type = getTypeForFunctionalParameter((FunctionalParameter)decl);
+        } else if (decl instanceof Functional && Decl.isMpl((Functional)decl)) {
+            type = getReturnTypeOfCallable(decl.getProducedTypedReference(null, Collections.<ProducedType>emptyList()).getFullType());
         } else {
             type = decl.getType();
         }

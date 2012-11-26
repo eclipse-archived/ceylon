@@ -29,6 +29,7 @@ import com.redhat.ceylon.compiler.java.codegen.Naming.CName;
 import com.redhat.ceylon.compiler.java.codegen.Naming.SubstitutedName;
 import com.redhat.ceylon.compiler.java.codegen.Naming.Substitution;
 import com.redhat.ceylon.compiler.java.codegen.Naming.SyntheticName;
+import com.redhat.ceylon.compiler.typechecker.model.Functional;
 import com.redhat.ceylon.compiler.typechecker.model.Parameter;
 import com.redhat.ceylon.compiler.typechecker.model.ProducedType;
 import com.redhat.ceylon.compiler.typechecker.model.ProducedTypedReference;
@@ -1531,6 +1532,14 @@ public class StatementTransformer extends AbstractTransformer {
                 ProducedTypedReference typedRef = getTypedReference(declaration);
                 ProducedTypedReference nonWideningTypedRef = nonWideningTypeDecl(typedRef);
                 ProducedType nonWideningType = nonWideningType(typedRef, nonWideningTypedRef);
+                // If this is a return statement in a MPL method we want to know 
+                // the non-widening type of the innermost callable
+                if (declaration instanceof Functional
+                        && Decl.isMpl((Functional)declaration)) {
+                    for (int i = ((Functional)declaration).getParameterLists().size(); i > 1; i--) {
+                        nonWideningType = getReturnTypeOfCallable(nonWideningType);
+                    }
+                }
                 // respect the refining definition of optionality
                 nonWideningType = propagateOptionality(declaration.getType(), nonWideningType);
                 returnExpr = expressionGen().transformExpression(expr.getTerm(), 

@@ -26,20 +26,17 @@ import static com.sun.tools.javac.code.Flags.PUBLIC;
 import static com.sun.tools.javac.code.Flags.STATIC;
 import static com.sun.tools.javac.code.TypeTags.VOID;
 
-import com.redhat.ceylon.compiler.java.util.Util;
 import com.redhat.ceylon.compiler.typechecker.model.Annotation;
 import com.redhat.ceylon.compiler.typechecker.model.FunctionalParameter;
 import com.redhat.ceylon.compiler.typechecker.model.Method;
 import com.redhat.ceylon.compiler.typechecker.model.MethodOrValue;
 import com.redhat.ceylon.compiler.typechecker.model.Parameter;
-import com.redhat.ceylon.compiler.typechecker.model.ParameterList;
 import com.redhat.ceylon.compiler.typechecker.model.ProducedType;
 import com.redhat.ceylon.compiler.typechecker.model.ProducedTypedReference;
 import com.redhat.ceylon.compiler.typechecker.model.TypeDeclaration;
 import com.redhat.ceylon.compiler.typechecker.model.TypeParameter;
 import com.redhat.ceylon.compiler.typechecker.model.TypedDeclaration;
 import com.redhat.ceylon.compiler.typechecker.model.Value;
-import com.redhat.ceylon.compiler.typechecker.tree.Tree;
 import com.sun.tools.javac.code.Flags;
 import com.sun.tools.javac.tree.JCTree;
 import com.sun.tools.javac.tree.JCTree.JCAnnotation;
@@ -363,31 +360,10 @@ public class MethodDefinitionBuilder {
     }
 
     public MethodDefinitionBuilder resultType(Method method, int flags) {
-        if (Decl.isMpl(method)) {
-            //Create a String with the TypeInfo
-            StringBuilder sb = new StringBuilder();
-            //It's a bunch of nested callables (# of param lists - 1)
-            for (int i = 1; i < method.getParameterLists().size(); i++) {
-                sb.append("ceylon.language::Callable<");
-            }
-            //Then the return type as defined originally
-            sb.append(method.getType().getProducedTypeQualifiedName());
-            //And then the parameter types of each nested callable
-            for (int i = method.getParameterLists().size()-1; i>0; i--) {
-                ParameterList plist = method.getParameterLists().get(i);
-                for (Parameter p : plist.getParameters()) {
-                    sb.append(',');
-                    sb.append(p.getType().getProducedTypeQualifiedName());
-                }
-                sb.append('>');
-            }
-            return resultType(gen.makeAtType(sb.toString(), false), gen.makeJavaType(gen.functionalReturnType(method), flags));
-        } else {
-            ProducedTypedReference typedRef = gen.getTypedReference(method);
-            ProducedTypedReference nonWideningTypedRef = gen.nonWideningTypeDecl(typedRef);
-            ProducedType nonWideningType = gen.nonWideningType(typedRef, nonWideningTypedRef);
-            return resultType(makeResultType(nonWideningTypedRef.getDeclaration(), nonWideningType, flags), method);
-        }
+        ProducedTypedReference typedRef = gen.getTypedReference(method);
+        ProducedTypedReference nonWideningTypedRef = gen.nonWideningTypeDecl(typedRef);
+        ProducedType nonWideningType = gen.nonWideningType(typedRef, nonWideningTypedRef);
+        return resultType(makeResultType(nonWideningTypedRef.getDeclaration(), nonWideningType, flags), method);
     }
     
     public MethodDefinitionBuilder resultTypeNonWidening(ProducedTypedReference typedRef, ProducedType returnType, int flags){
