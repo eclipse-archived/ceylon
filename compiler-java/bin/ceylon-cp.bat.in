@@ -7,7 +7,7 @@ if "%HOME" == "" (
 )
 
 rem Find CEYLON_HOME
-if not "%CEYLON_HOME%" == "" goto ceylon_home_set
+if not "%CEYLON_HOME%" == "" goto :ceylon_home_set
 rem Get absolute value for CEYLON_HOME
 pushd "%~dp0.."
 set "CEYLON_HOME=%CD%"
@@ -36,7 +36,7 @@ if "%CEYLON_REPO%" == "" (
     )
 
     shift
-    goto loop_args
+    goto :loop_args
 
 :done_args
 )
