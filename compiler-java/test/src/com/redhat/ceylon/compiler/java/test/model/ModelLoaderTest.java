@@ -287,6 +287,11 @@ public class ModelLoaderTest extends CompilerTest {
         Assert.assertEquals("[Contravariant]", validDeclaration.isContravariant(), modelDeclaration.isContravariant());
         Assert.assertEquals("[Covariant]", validDeclaration.isCovariant(), modelDeclaration.isCovariant());
         Assert.assertEquals("[SelfType]", validDeclaration.isSelfType(), modelDeclaration.isSelfType());
+        if (validDeclaration.getDeclaration() != null && modelDeclaration.getDeclaration() != null) {
+            compareDeclarations(validDeclaration.getDeclaration(), modelDeclaration.getDeclaration());
+        } else if (!(validDeclaration.getDeclaration() == null && modelDeclaration.getDeclaration() == null)) {
+            Assert.fail("[Declaration] one has declaration the other not");
+        }
         if (validDeclaration.getSelfTypedDeclaration() != null && modelDeclaration.getSelfTypedDeclaration() != null) {
             compareDeclarations(validDeclaration.getSelfTypedDeclaration(), modelDeclaration.getSelfTypedDeclaration());
         } else if (!(validDeclaration.getSelfTypedDeclaration() == null && modelDeclaration.getSelfTypedDeclaration() == null)) {
