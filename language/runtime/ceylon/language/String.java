@@ -33,10 +33,14 @@ public abstract class String
     implements Comparable<String>, Sequential<Character>,
                Summable<String>, Castable<String>,
                FixedSized<Character> {
+    private final ceylon.language.Category$impl $ceylon$language$Category$this;
+    private final ceylon.language.Correspondence$impl $ceylon$language$Correspondence$this;
 
     public final java.lang.String value;
 
     protected String(java.lang.String s) {
+        this.$ceylon$language$Category$this = new ceylon.language.Category$impl(this);
+        this.$ceylon$language$Correspondence$this = new ceylon.language.Correspondence$impl(this);
         value = s;
     }
 
@@ -261,13 +265,13 @@ public abstract class String
     @Override
     @Ignore
     public Category getKeys() {
-        return Correspondence$impl._getKeys(this);
+        return $ceylon$language$Correspondence$this.getKeys();
     }
 
     @Ignore
     public static Category getKeys(java.lang.String value) {
         // TODO We're still boxing here!
-        return Correspondence$impl._getKeys(instance(value));
+        return instance(value).getKeys();
     }
 
     @Override
@@ -277,7 +281,7 @@ public abstract class String
     List<? extends Integer> keys) {
         //TODO: inefficient ... better to cache the result
         //      of getSize()
-        return Correspondence$impl._definesEvery(this, keys);
+        return $ceylon$language$Correspondence$this.definesEvery(keys);
     }
 
     @Ignore
@@ -285,19 +289,19 @@ public abstract class String
         //TODO: inefficient ... better to cache the result
         //      of getSize()
         // TODO We're still boxing here!
-        return Correspondence$impl._definesEvery(instance(value), keys);
+        return instance(value).definesEvery(keys);
     }
 
     @Override
     @Ignore
     public boolean definesEvery() {
-        return Correspondence$impl._definesEvery(this, (List)empty_.getEmpty$());
+        return $ceylon$language$Correspondence$this.definesEvery((List)empty_.getEmpty$());
     }
 
     @Ignore
     public static boolean definesEvery(java.lang.String value) {
         // TODO We're still boxing here!
-        return Correspondence$impl._definesEvery(instance(value), (List)empty_.getEmpty$());
+        return instance(value).definesEvery((List)empty_.getEmpty$());
     }
 
     @Override
@@ -313,7 +317,7 @@ public abstract class String
     List<? extends Integer> keys) {
         //TODO: inefficient ... better to cache the result
         //      of getSize()
-        return Correspondence$impl._definesAny(this, keys);
+        return $ceylon$language$Correspondence$this.definesAny(keys);
     }
 
     @Ignore
@@ -321,19 +325,19 @@ public abstract class String
         //TODO: inefficient ... better to cache the result
         //      of getSize()
         // TODO We're still boxing here!
-        return Correspondence$impl._definesAny(instance(value), keys);
+        return instance(value).definesAny(keys);
     }
 
     @Override
     @Ignore
     public boolean definesAny() {
-        return Correspondence$impl._definesAny(this, (List)empty_.getEmpty$());
+        return $ceylon$language$Correspondence$this.definesAny((List)empty_.getEmpty$());
     }
 
     @Ignore
     public static boolean definesAny(java.lang.String value) {
         // TODO We're still boxing here!
-        return Correspondence$impl._definesAny(instance(value), (List)empty_.getEmpty$());
+        return instance(value).definesAny((List)empty_.getEmpty$());
     }
 
     @Override
@@ -347,25 +351,25 @@ public abstract class String
     public List<? extends Character> items(@Name("keys")
     @TypeInfo("ceylon.language::Sequential<ceylon.language::Integer>")
     List<? extends Integer> keys) {
-        return Correspondence$impl._items(this, keys);
+        return $ceylon$language$Correspondence$this.items(keys);
     }
 
     @Ignore
     public static List<? extends Character> items(java.lang.String value, List<? extends Integer> keys) {
         // TODO We're still boxing here!
-        return Correspondence$impl._items(instance(value), keys);
+        return instance(value).items(keys);
     }
 
     @Override
     @Ignore
     public List<? extends Character> items() {
-        return Correspondence$impl._items(this, (List)empty_.getEmpty$());
+        return $ceylon$language$Correspondence$this.items((List)empty_.getEmpty$());
     }
 
     @Ignore
     public static List<? extends Character> items(java.lang.String value) {
         // TODO We're still boxing here!
-        return Correspondence$impl._items(instance(value), (List)empty_.getEmpty$());
+        return instance(value).items((List)empty_.getEmpty$());
     }
 
     @Override
@@ -521,25 +525,25 @@ public abstract class String
     public boolean containsAny(@Sequenced @Name("elements")
     @TypeInfo("ceylon.language::Sequential<ceylon.language::Object>")
     List<?> elements) {
-        return Category$impl._containsAny(this, elements);
+        return $ceylon$language$Category$this.containsAny(elements);
     }
 
     @Ignore
     public static boolean containsAny(java.lang.String value, List<?> elements) {
         // TODO We're still boxing here!
-        return Category$impl._containsAny(instance(value), elements);
+        return instance(value).containsAny(elements);
     }
 
     @Override
     @Ignore
     public boolean containsAny() {
-        return Category$impl._containsAny(this, empty_.getEmpty$());
+        return $ceylon$language$Category$this.containsAny(empty_.getEmpty$());
     }
 
     @Ignore
     public static boolean containsAny(java.lang.String value) {
         // TODO We're still boxing here!
-        return Category$impl._containsAny(instance(value), empty_.getEmpty$());
+        return instance(value).containsAny(empty_.getEmpty$());
     }
 
     @Override
@@ -553,25 +557,25 @@ public abstract class String
     public boolean containsEvery(@Sequenced @Name("elements")
     @TypeInfo("ceylon.language::Sequential<ceylon.language::Object>")
     List<?> elements) {
-        return Category$impl._containsEvery(this, elements);
+        return $ceylon$language$Category$this.containsEvery(elements);
     }
 
     @Ignore
     public static boolean containsEvery(java.lang.String value, List<?> elements) {
         // TODO We're still boxing here!
-        return Category$impl._containsEvery(instance(value), elements);
+        return instance(value).containsEvery(elements);
     }
 
     @Override
     @Ignore
     public boolean containsEvery() {
-        return Category$impl._containsEvery(this, empty_.getEmpty$());
+        return $ceylon$language$Category$this.containsEvery(empty_.getEmpty$());
     }
 
     @Ignore
     public static boolean containsEvery(java.lang.String value) {
         // TODO We're still boxing here!
-        return Category$impl._containsEvery(instance(value), empty_.getEmpty$());
+        return instance(value).containsEvery(empty_.getEmpty$());
     }
 
     @Override

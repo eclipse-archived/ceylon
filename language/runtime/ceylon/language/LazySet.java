@@ -20,6 +20,7 @@ import com.redhat.ceylon.compiler.java.metadata.Variance;
     satisfies="ceylon.language::Object"))
 @SatisfiedTypes("ceylon.language::Set<Element>")
 public class LazySet<Element> implements Set<Element> {
+    private final ceylon.language.Collection$impl $ceylon$language$Collection$this;
 
     private final Iterable<? extends Element> elems;
     private final Set$impl<Element> set$impl = new Set$impl<Element>(this);
@@ -27,11 +28,13 @@ public class LazySet<Element> implements Set<Element> {
 
     @Ignore @SuppressWarnings("unchecked")
     public LazySet() {
+        this.$ceylon$language$Collection$this = new ceylon.language.Collection$impl(this);
         this.elems = (Iterable<? extends Element>)empty_.getEmpty$();
     }
     public LazySet(@Name("elems")
             @TypeInfo("ceylon.language::Iterable<Element>")
             Iterable<? extends Element> elems) {
+        this.$ceylon$language$Collection$this = new ceylon.language.Collection$impl(this);
         this.elems = elems;
     }
 
@@ -320,6 +323,6 @@ public class LazySet<Element> implements Set<Element> {
 
     @Override @Ignore
     public java.lang.String toString() {
-        return Collection$impl._toString(this);
+        return $ceylon$language$Collection$this.toString();
     }
 }

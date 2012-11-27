@@ -7,8 +7,6 @@ import java.util.Arrays;
 import ceylon.language.Boolean;
 import ceylon.language.Callable;
 import ceylon.language.Category;
-import ceylon.language.Category$impl;
-import ceylon.language.Collection$impl;
 import ceylon.language.Comparison;
 import ceylon.language.Correspondence$impl;
 import ceylon.language.Entry;
@@ -37,6 +35,9 @@ import com.redhat.ceylon.compiler.java.metadata.TypeInfo;
 @Class(extendsType="ceylon.language::Object")
 @SatisfiedTypes("ceylon.language::Sequence<Element>")
 public class ArraySequence<Element> implements Sequence<Element> {
+    private final ceylon.language.Category$impl $ceylon$language$Category$this;
+    private final ceylon.language.Collection$impl $ceylon$language$Collection$this;
+    private final ceylon.language.Correspondence$impl $ceylon$language$Correspondence$this;
 
     protected final Element[] array;
     protected final long first;
@@ -47,6 +48,9 @@ public class ArraySequence<Element> implements Sequence<Element> {
 
     @Ignore
     public ArraySequence(Element[] array, long first) {
+        this.$ceylon$language$Category$this = new ceylon.language.Category$impl(this);
+        this.$ceylon$language$Collection$this = new ceylon.language.Collection$impl(this);
+        this.$ceylon$language$Correspondence$this = new ceylon.language.Correspondence$impl(this);
     	if (array.length==0 || array.length<=first) {
     		throw new IllegalArgumentException("ArraySequence may not have zero elements");
     	}
@@ -56,6 +60,9 @@ public class ArraySequence<Element> implements Sequence<Element> {
 
     @Ignore
     public ArraySequence(java.util.List<Element> list) {
+        this.$ceylon$language$Category$this = new ceylon.language.Category$impl(this);
+        this.$ceylon$language$Collection$this = new ceylon.language.Collection$impl(this);
+        this.$ceylon$language$Correspondence$this = new ceylon.language.Correspondence$impl(this);
     	if (list.size()==0) {
     		throw new IllegalArgumentException("ArraySequence may not have zero elements");
     	}
@@ -229,19 +236,19 @@ public class ArraySequence<Element> implements Sequence<Element> {
     @Override
     @Ignore
     public Category getKeys() {
-        return Correspondence$impl._getKeys(this);
+        return $ceylon$language$Correspondence$this.getKeys();
     }
 
     @Override
     @Ignore
     public boolean definesEvery(List<? extends Integer> keys) {
-        return Correspondence$impl._definesEvery(this, keys);
+        return $ceylon$language$Correspondence$this.definesEvery(keys);
     }
 
     @Override
     @Ignore @SuppressWarnings({"unchecked", "rawtypes"})
     public boolean definesEvery() {
-        return Correspondence$impl._definesEvery(this, (List)empty_.getEmpty$());
+        return $ceylon$language$Correspondence$this.definesEvery((List)empty_.getEmpty$());
     }
     @Override
     @Ignore @SuppressWarnings({"unchecked", "rawtypes"})
@@ -252,13 +259,13 @@ public class ArraySequence<Element> implements Sequence<Element> {
     @Override
     @Ignore
     public boolean definesAny(List<? extends Integer> keys) {
-        return Correspondence$impl._definesAny(this, keys);
+        return $ceylon$language$Correspondence$this.definesAny(keys);
     }
 
     @Override
     @Ignore @SuppressWarnings({"unchecked", "rawtypes"})
     public boolean definesAny() {
-        return Correspondence$impl._definesAny(this, (List)empty_.getEmpty$());
+        return $ceylon$language$Correspondence$this.definesAny((List)empty_.getEmpty$());
     }
 
     @Override @SuppressWarnings({"unchecked", "rawtypes"})
@@ -269,13 +276,13 @@ public class ArraySequence<Element> implements Sequence<Element> {
     @Override
     @Ignore
     public ceylon.language.List<? extends Element> items(List<? extends Integer> keys) {
-        return Correspondence$impl._items(this, keys);
+        return $ceylon$language$Correspondence$this.items(keys);
     }
 
     @Override
     @Ignore @SuppressWarnings({"unchecked", "rawtypes"})
     public ceylon.language.List<? extends Element> items() {
-        return Correspondence$impl._items(this, (List)empty_.getEmpty$());
+        return $ceylon$language$Correspondence$this.items((List)empty_.getEmpty$());
     }
     @Override @SuppressWarnings({"unchecked", "rawtypes"})
     public List<? extends Integer> items$keys() {
@@ -290,7 +297,7 @@ public class ArraySequence<Element> implements Sequence<Element> {
     @Override
     @Ignore
     public java.lang.String toString() {
-        return Collection$impl._toString(this);
+        return $ceylon$language$Collection$this.toString();
     }
 
     @Override
@@ -325,13 +332,13 @@ public class ArraySequence<Element> implements Sequence<Element> {
     @Override
     @Ignore
     public boolean containsEvery(List<?> elements) {
-        return Category$impl._containsEvery(this, elements);
+        return $ceylon$language$Category$this.containsEvery(elements);
     }
 
     @Override
     @Ignore
     public boolean containsEvery() {
-        return Category$impl._containsEvery(this, empty_.getEmpty$());
+        return $ceylon$language$Category$this.containsEvery(empty_.getEmpty$());
     }
 
     @Override
@@ -343,13 +350,13 @@ public class ArraySequence<Element> implements Sequence<Element> {
     @Override
     @Ignore
     public boolean containsAny(List<?> elements) {
-        return Category$impl._containsAny(this, elements);
+        return $ceylon$language$Category$this.containsAny(elements);
     }
 
     @Override
     @Ignore
     public boolean containsAny() {
-        return Category$impl._containsAny(this, empty_.getEmpty$());
+        return $ceylon$language$Category$this.containsAny(empty_.getEmpty$());
     }
 
     @Override

@@ -11,14 +11,14 @@ public final class Collection$impl<Element> {
     public boolean getEmpty(){
         return Collection$impl.<Element>_getEmpty(this.$this);
     }
-    static <Element> boolean _getEmpty(Collection<Element> $this){
+    private static <Element> boolean _getEmpty(Collection<Element> $this){
         return $this.getSize() == 0;
     }
     
     public boolean contains(java.lang.Object element){
         return Collection$impl.<Element>_contains(this.$this, element);
     }
-    static <Element> boolean _contains(Collection<Element> $this, java.lang.Object element){
+    private static <Element> boolean _contains(Collection<Element> $this, java.lang.Object element){
         java.lang.Object elem;
         for (ceylon.language.Iterator<?> $element$iter$1 = $this.getIterator(); !((elem = $element$iter$1.next()) instanceof Finished);) {
             if (elem!=null && element.equals(elem)) {
@@ -31,7 +31,7 @@ public final class Collection$impl<Element> {
     public java.lang.String toString() {
         return Collection$impl.<Element>_toString($this);
     }
-    public static <Element> java.lang.String _toString(Collection<Element> $this) {
+    private static <Element> java.lang.String _toString(Collection<Element> $this) {
         if ($this.getEmpty()) return "{}";
         java.lang.StringBuilder result = new java.lang.StringBuilder("{ ");
         java.lang.Object elem;
