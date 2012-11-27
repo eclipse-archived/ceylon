@@ -847,8 +847,13 @@ public class StatementTransformer extends AbstractTransformer {
         
         @Override
         public JCExpression makeTest() {
-            // no need to cast for erasure here
-            JCExpression expr = expressionGen().transformExpression(specifierExpr);
+            // for the purpose of checking if something is null, we need it boxed and optional, otherwise
+            // for some Java calls if we consider it non-optional we will get an unwanted null check
+            ProducedType specifierType = this.specifierExpr.getTypeModel();
+            if(!typeFact().isOptionalType(specifierType)){
+                specifierType = typeFact().getOptionalType(specifierType);
+            }
+            JCExpression expr = expressionGen().transformExpression(specifierExpr, BoxingStrategy.BOXED, specifierType);
             at(cond);
             // Assign the expression to test to the temporary variable
             JCExpression firstTimeTestExpr = make().Assign(testVar.makeIdent(), expr);

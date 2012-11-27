@@ -749,8 +749,13 @@ public class ExpressionTransformer extends AbstractTransformer {
     }
 
     public JCTree transform(Tree.Exists op) {
-        // we don't need any erasure type cast for an "exists" test
-        JCExpression expression = transformExpression(op.getTerm());
+        // for the purpose of checking if something is null, we need it boxed and optional, otherwise
+        // for some Java calls if we consider it non-optional we will get an unwanted null check
+        ProducedType termType = op.getTerm().getTypeModel();
+        if(!typeFact().isOptionalType(termType)){
+            termType = typeFact().getOptionalType(termType);
+        }
+        JCExpression expression = transformExpression(op.getTerm(), BoxingStrategy.BOXED, termType);
         at(op);
         return  make().Binary(JCTree.NE, expression, makeNull());
     }
