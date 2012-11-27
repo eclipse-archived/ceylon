@@ -19,7 +19,7 @@ public final class Map$impl<Key,Item> {
     public boolean equals(java.lang.Object that) {
         return _equals($this, that);
     }
-    static <Key,Item> boolean _equals(final Map<Key,Item> $this, java.lang.Object that) {
+    private static <Key,Item> boolean _equals(final Map<Key,Item> $this, java.lang.Object that) {
         if (that instanceof Map) {
             Map other = (Map) that;
             if (other.getSize()==$this.getSize()) {
@@ -43,7 +43,7 @@ public final class Map$impl<Key,Item> {
     public int hashCode() {
         return _hashCode($this);
     }
-    static <Key,Item> int _hashCode(final Map<Key,Item> $this) {
+    private static <Key,Item> int _hashCode(final Map<Key,Item> $this) {
         int hashCode = 1;
         java.lang.Object elem;
         for (Iterator<? extends Entry<? extends Key,? extends Item>> iter=$this.getIterator(); !((elem = iter.next()) instanceof Finished);) {
@@ -58,7 +58,7 @@ public final class Map$impl<Key,Item> {
     public Set<? extends Key> getKeys(){
         return _getKeys($this);
     }
-    static <Key,Item> Set<? extends Key> _getKeys(final Map<Key,Item> $this){
+    private static <Key,Item> Set<? extends Key> _getKeys(final Map<Key,Item> $this){
         class keySet implements Set<Key>{
             private final ceylon.language.Category$impl $ceylon$language$Category$this;
             private final ceylon.language.Collection$impl<Key> $ceylon$language$Collection$this;
@@ -295,7 +295,7 @@ public final class Map$impl<Key,Item> {
     public Collection<? extends Item> getValues(){
         return _getValues($this);
     }
-    static <Key,Item> Collection<? extends Item> _getValues(final Map<Key,Item> $this){
+    private static <Key,Item> Collection<? extends Item> _getValues(final Map<Key,Item> $this){
         class valueCollection implements Collection<Item> {
             private final ceylon.language.Category$impl $ceylon$language$Category$this;
             private final ceylon.language.Collection$impl<Item> $ceylon$language$Collection$this;
@@ -501,7 +501,7 @@ public final class Map$impl<Key,Item> {
     public Map<? extends Item, ? extends Set<? extends Key>> getInverse(){
         return _getInverse($this);
     }
-    static <Key,Item> Map<? extends Item, ? extends Set<? extends Key>> _getInverse(final Map<Key,Item> $this){
+    private static <Key,Item> Map<? extends Item, ? extends Set<? extends Key>> _getInverse(final Map<Key,Item> $this){
         class inverse implements Map<Item, Set<? extends Key>>{
 
             private Correspondence$impl<java.lang.Object, Set<? extends Key>> correspondence$impl = new Correspondence$impl(this);
@@ -830,7 +830,7 @@ public final class Map$impl<Key,Item> {
         return Map$impl._mapItems($this, mapping);
     }
 
-    static <Key,Item, Result> Map<? extends Key, ? extends Result> _mapItems(
+    private static <Key,Item, Result> Map<? extends Key, ? extends Result> _mapItems(
             final Map<? extends Key, ? extends Item> $this, final Callable<Result> mapping) {
         class mapItems implements Map<Key, Result> {
 
