@@ -51,7 +51,7 @@ if not exist "%CEYLON_REPO%" (
 )
 
 rem Find Java
-call %~dp0\java.bat
+call %CEYLON_HOME%\bin\java.bat
 
 if "%JAVA_HOME%" == "" (
     set "exit=true"
