@@ -152,11 +152,13 @@ public final class Correspondence$impl<Key,Item> {
         private Sequence<? extends Key> keys;
         private final Correspondence$impl<ceylon.language.Integer, Item> $ceylon$language$Correspondence$this;
         private final ceylon.language.Category$impl $ceylon$language$Category$this;
+        private final ceylon.language.Collection$impl<Item> $ceylon$language$Collection$this;
 
         Items(Sequence<? extends Key> keys){
             this.keys = keys;
             this.$ceylon$language$Correspondence$this = new Correspondence$impl<ceylon.language.Integer, Item>(this);
             this.$ceylon$language$Category$this = new ceylon.language.Category$impl(this);
+            this.$ceylon$language$Collection$this = new ceylon.language.Collection$impl<Item>(this);
         }
         public final Integer getLastIndex() {
             return keys.getLastIndex();
@@ -184,7 +186,7 @@ public final class Correspondence$impl<Key,Item> {
         @Override
         @Ignore
         public java.lang.String toString() {
-            return Collection$impl._toString(this);
+            return $ceylon$language$Collection$this.toString();
         }
         public final Sequence<Item> getClone() {
             return this;
@@ -303,7 +305,7 @@ public final class Correspondence$impl<Key,Item> {
         @Override
         @Ignore
         public boolean contains(java.lang.Object element) {
-            return Collection$impl._contains(this, element);
+            return $ceylon$language$Collection$this.contains(element);
         }
         @Override
         @Ignore

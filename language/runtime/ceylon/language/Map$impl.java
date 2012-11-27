@@ -14,7 +14,7 @@ public final class Map$impl<Key,Item> {
     }
 
     public java.lang.String toString() {
-        return Collection$impl._toString($this);
+        return (new ceylon.language.Collection$impl($this)).toString();
     }
     public boolean equals(java.lang.Object that) {
         return _equals($this, that);
@@ -61,9 +61,11 @@ public final class Map$impl<Key,Item> {
     static <Key,Item> Set<? extends Key> _getKeys(final Map<Key,Item> $this){
         class keySet implements Set<Key>{
             private final ceylon.language.Category$impl $ceylon$language$Category$this;
+            private final ceylon.language.Collection$impl<Key> $ceylon$language$Collection$this;
 
             private keySet() {
                 this.$ceylon$language$Category$this = new ceylon.language.Category$impl(this);
+                this.$ceylon$language$Collection$this = new ceylon.language.Collection$impl<Key>(this);
             }
 
             @Override
@@ -103,7 +105,7 @@ public final class Map$impl<Key,Item> {
 
             @Override
             public java.lang.String toString() {
-                return Collection$impl._toString(this);
+                return $ceylon$language$Collection$this.toString();
             }
 
             @Override
@@ -146,13 +148,13 @@ public final class Map$impl<Key,Item> {
             @Override
             @Ignore
             public boolean getEmpty() {
-                return Collection$impl._getEmpty(this);
+                return $ceylon$language$Collection$this.getEmpty();
             }
 
             @Override
             @Ignore
             public boolean contains(java.lang.Object element) {
-                return Collection$impl._contains(this, element);
+                return $ceylon$language$Collection$this.contains(element);
             }
 
             @Override
@@ -294,9 +296,11 @@ public final class Map$impl<Key,Item> {
     static <Key,Item> Collection<? extends Item> _getValues(final Map<Key,Item> $this){
         class valueCollection implements Collection<Item> {
             private final ceylon.language.Category$impl $ceylon$language$Category$this;
+            private final ceylon.language.Collection$impl<Item> $ceylon$language$Collection$this;
 
             private valueCollection() {
                 this.$ceylon$language$Category$this = new ceylon.language.Category$impl(this);
+                this.$ceylon$language$Collection$this = new ceylon.language.Collection$impl<Item>(this);
             }
 
             @Override
@@ -336,7 +340,7 @@ public final class Map$impl<Key,Item> {
 
             @Override
             public java.lang.String toString() {
-                return Collection$impl._toString(this);
+                return $ceylon$language$Collection$this.toString();
             }
 
             // concrete interface methods:
@@ -395,13 +399,13 @@ public final class Map$impl<Key,Item> {
             @Override
             @Ignore
             public boolean getEmpty() {
-                return Collection$impl._getEmpty(this);
+                return $ceylon$language$Collection$this.getEmpty();
             }
 
             @Override
             @Ignore
             public boolean contains(java.lang.Object element) {
-                return Collection$impl._contains(this, element);
+                return $ceylon$language$Collection$this.contains(element);
             }
 
             @Override
@@ -498,9 +502,11 @@ public final class Map$impl<Key,Item> {
 
             private Correspondence$impl<java.lang.Object, Set<? extends Key>> correspondence$impl = new Correspondence$impl(this);
             private final ceylon.language.Category$impl $ceylon$language$Category$this;
+            private final ceylon.language.Collection$impl<Item> $ceylon$language$Collection$this;
 
             private inverse() {
                 this.$ceylon$language$Category$this = new ceylon.language.Category$impl(this);
+                this.$ceylon$language$Collection$this = new ceylon.language.Collection$impl(this);
             }
             
             @Ignore
@@ -576,7 +582,7 @@ public final class Map$impl<Key,Item> {
 
             @Override
             public java.lang.String toString() {
-                return Collection$impl._toString(this);
+                return $ceylon$language$Collection$this.toString();
             }
 
             // concrete interface methods:
@@ -644,13 +650,13 @@ public final class Map$impl<Key,Item> {
             @Override
             @Ignore
             public boolean getEmpty() {
-                return Collection$impl._getEmpty(this);
+                return $ceylon$language$Collection$this.getEmpty();
             }
 
             @Override
             @Ignore
             public boolean contains(java.lang.Object element) {
-                return Collection$impl._contains(this, element);
+                return $ceylon$language$Collection$this.contains(element);
             }
 
             @Override
@@ -822,9 +828,11 @@ public final class Map$impl<Key,Item> {
 
             private Correspondence$impl<java.lang.Object, Result> correspondence$impl = new Correspondence$impl(this);
             private final ceylon.language.Category$impl $ceylon$language$Category$this;
+            private final ceylon.language.Collection$impl $ceylon$language$Collection$this;
 
             private mapItems() {
                 this.$ceylon$language$Category$this = new ceylon.language.Category$impl(this);
+                this.$ceylon$language$Collection$this = new ceylon.language.Collection$impl(this);
             }
             
             @Ignore
@@ -904,7 +912,7 @@ public final class Map$impl<Key,Item> {
 
             @Override
             public boolean contains(java.lang.Object element) {
-                return Collection$impl._contains(this, element);
+                return $ceylon$language$Collection$this.contains(element);
             }
 
             @Override
@@ -1097,7 +1105,7 @@ public final class Map$impl<Key,Item> {
 
             @Override
             public java.lang.String toString() {
-            	return Collection$impl._toString(this);
+            	return $ceylon$language$Collection$this.toString();
             }
 
         }

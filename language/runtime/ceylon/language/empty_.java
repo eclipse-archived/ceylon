@@ -10,9 +10,11 @@ import com.redhat.ceylon.compiler.java.metadata.Ignore;
 public class empty_ {
     private static final class EmptyValue implements Empty {
         private final ceylon.language.Category$impl $ceylon$language$Category$this;
+        private final ceylon.language.Collection$impl<java.lang.Object> $ceylon$language$Collection$this;
 
         private EmptyValue() {
             this.$ceylon$language$Category$this = new ceylon.language.Category$impl(this);
+            this.$ceylon$language$Collection$this = new ceylon.language.Collection$impl<java.lang.Object>(this);
         }
 
         private Correspondence$impl<Integer,java.lang.Object> correspondence$impl = new Correspondence$impl<Integer,java.lang.Object>(this);
@@ -123,7 +125,7 @@ public class empty_ {
         @Override
         @Ignore
         public boolean getEmpty() {
-            return Collection$impl._getEmpty(this);
+            return $ceylon$language$Collection$this.getEmpty();
         }
 
         @Override
