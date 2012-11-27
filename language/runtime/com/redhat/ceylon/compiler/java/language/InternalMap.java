@@ -1,14 +1,5 @@
 package com.redhat.ceylon.compiler.java.language;
 
-import com.redhat.ceylon.compiler.java.metadata.Annotation;
-import com.redhat.ceylon.compiler.java.metadata.Annotations;
-import com.redhat.ceylon.compiler.java.metadata.Ignore;
-import com.redhat.ceylon.compiler.java.metadata.Name;
-import com.redhat.ceylon.compiler.java.metadata.Sequenced;
-import com.redhat.ceylon.compiler.java.metadata.TypeInfo;
-import com.redhat.ceylon.compiler.java.metadata.TypeParameter;
-import com.redhat.ceylon.compiler.java.metadata.TypeParameters;
-
 import ceylon.language.Boolean;
 import ceylon.language.Callable;
 import ceylon.language.Collection;
@@ -17,12 +8,20 @@ import ceylon.language.Correspondence$impl;
 import ceylon.language.Entry;
 import ceylon.language.Integer;
 import ceylon.language.Iterable;
-import ceylon.language.Iterable$impl;
 import ceylon.language.Iterator;
 import ceylon.language.List;
 import ceylon.language.Map;
 import ceylon.language.Sequence;
 import ceylon.language.Set;
+
+import com.redhat.ceylon.compiler.java.metadata.Annotation;
+import com.redhat.ceylon.compiler.java.metadata.Annotations;
+import com.redhat.ceylon.compiler.java.metadata.Ignore;
+import com.redhat.ceylon.compiler.java.metadata.Name;
+import com.redhat.ceylon.compiler.java.metadata.Sequenced;
+import com.redhat.ceylon.compiler.java.metadata.TypeInfo;
+import com.redhat.ceylon.compiler.java.metadata.TypeParameter;
+import com.redhat.ceylon.compiler.java.metadata.TypeParameters;
 
 /** An immutable map returned by certain methods and functions of the language module.
  * This is only to avoid depending on ceylon.collection.
@@ -303,7 +302,7 @@ public class InternalMap<Key, Item> implements Map<Key, Item> {
     }
     @Override @Ignore
     public <Key2> Map<? extends Key2, ? extends Sequence<? extends Entry<? extends Key, ? extends Item>>> group(Callable<? extends Key2> grouping) {
-        return Iterable$impl._group(this, grouping);
+        return iter$impl.group(grouping);
     }
 
     @Override

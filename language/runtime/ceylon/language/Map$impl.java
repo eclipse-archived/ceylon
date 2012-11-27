@@ -62,10 +62,12 @@ public final class Map$impl<Key,Item> {
         class keySet implements Set<Key>{
             private final ceylon.language.Category$impl $ceylon$language$Category$this;
             private final ceylon.language.Collection$impl<Key> $ceylon$language$Collection$this;
+            private final ceylon.language.Iterable$impl<Key> $ceylon$language$Iterable$this;
 
             private keySet() {
                 this.$ceylon$language$Category$this = new ceylon.language.Category$impl(this);
                 this.$ceylon$language$Collection$this = new ceylon.language.Collection$impl<Key>(this);
+                this.$ceylon$language$Iterable$this = new ceylon.language.Iterable$impl<Key>(this);
             }
 
             @Override
@@ -133,16 +135,16 @@ public final class Map$impl<Key,Item> {
             @Override
             @Ignore
             public Iterable<? extends Key> getRest() {
-                return Iterable$impl._getRest(this);
+                return $ceylon$language$Iterable$this.getRest();
             }
 
             @Override
             @Ignore
             public Key getFirst() {
-                return Iterable$impl._getFirst(this);
+                return $ceylon$language$Iterable$this.getFirst();
             }
             @Override @Ignore public Key getLast() {
-                return Iterable$impl._getLast(this);
+                return $ceylon$language$Iterable$this.getLast();
             }
 
             @Override
@@ -207,20 +209,20 @@ public final class Map$impl<Key,Item> {
             @Override
             @Ignore
             public List<? extends Key> getSequence() {
-                return Iterable$impl._getSequence(this);
+                return $ceylon$language$Iterable$this.getSequence();
             }
             @Override @Ignore
             public Key find(Callable<? extends Boolean> f) {
-                return Iterable$impl._find(this, f);
+                return $ceylon$language$Iterable$this.find(f);
             }
             @Override @Ignore
             public Key findLast(Callable<? extends Boolean> f) {
-                return Iterable$impl._findLast(this, f);
+                return $ceylon$language$Iterable$this.findLast(f);
             }
             @Override
             @Ignore
             public List<? extends Key> sort(Callable<? extends Comparison> f) {
-                return Iterable$impl._sort(this, f);
+                return $ceylon$language$Iterable$this.sort(f);
             }
             @Override
             @Ignore
@@ -243,48 +245,48 @@ public final class Map$impl<Key,Item> {
             @Override
             @Ignore
             public <Result> Result fold(Result ini, Callable<? extends Result> f) {
-                return Iterable$impl._fold(this, ini, f);
+                return $ceylon$language$Iterable$this.fold(ini, f);
             }
             @Override @Ignore
             public boolean any(Callable<? extends Boolean> f) {
-                return Iterable$impl._any(this, f);
+                return $ceylon$language$Iterable$this.any(f);
             }
             @Override @Ignore
             public boolean every(Callable<? extends Boolean> f) {
-                return Iterable$impl._every(this, f);
+                return $ceylon$language$Iterable$this.every(f);
             }
 			@Override @Ignore
 			public Iterable<? extends Key> skipping(long skip) {
-				return Iterable$impl._skipping(this, skip);
+				return $ceylon$language$Iterable$this.skipping(skip);
 			}
 
 			@Override @Ignore
 			public Iterable<? extends Key> taking(long take) {
-				return Iterable$impl._taking(this, take);
+				return $ceylon$language$Iterable$this.taking(take);
 			}
 
 			@Override @Ignore
 			public Iterable<? extends Key> by(long step) {
-				return Iterable$impl._by(this, step);
+				return $ceylon$language$Iterable$this.by(step);
 			}
             @Override @Ignore
             public long count(Callable<? extends Boolean> f) {
-                return Iterable$impl._count(this, f);
+                return $ceylon$language$Iterable$this.count(f);
             }
             @Override @Ignore
             public Iterable<? extends Key> getCoalesced() {
-                return Iterable$impl._getCoalesced(this);
+                return $ceylon$language$Iterable$this.getCoalesced();
             }
             @Override @Ignore
             public Iterable<? extends Entry<? extends Integer, ? extends Key>> getIndexed() {
-                return Iterable$impl._getIndexed(this);
+                return $ceylon$language$Iterable$this.getIndexed();
             }
 			@Override @Ignore public <Other>Iterable chain(Iterable<? extends Other> other) {
-				return Iterable$impl._chain(this, other);
+				return $ceylon$language$Iterable$this.chain(other);
 			}
 		    @Override @Ignore
 		    public <Key2> Map<? extends Key2, ? extends Sequence<? extends Key>> group(Callable<? extends Key2> grouping) {
-		        return Iterable$impl._group(this, grouping);
+		        return $ceylon$language$Iterable$this.group(grouping);
 		    }
         }
         return new keySet();
@@ -297,10 +299,12 @@ public final class Map$impl<Key,Item> {
         class valueCollection implements Collection<Item> {
             private final ceylon.language.Category$impl $ceylon$language$Category$this;
             private final ceylon.language.Collection$impl<Item> $ceylon$language$Collection$this;
+            private final ceylon.language.Iterable$impl<Item> $ceylon$language$Iterable$this;
 
             private valueCollection() {
                 this.$ceylon$language$Category$this = new ceylon.language.Category$impl(this);
                 this.$ceylon$language$Collection$this = new ceylon.language.Collection$impl<Item>(this);
+                this.$ceylon$language$Iterable$this = new ceylon.language.Iterable$impl<Item>(this);
             }
 
             @Override
@@ -348,16 +352,16 @@ public final class Map$impl<Key,Item> {
             @Override
             @Ignore
             public Iterable<? extends Item> getRest() {
-                return Iterable$impl._getRest(this);
+                return $ceylon$language$Iterable$this.getRest();
             }
 
             @Override
             @Ignore
             public Item getFirst() {
-                return Iterable$impl._getFirst(this);
+                return $ceylon$language$Iterable$this.getFirst();
             }
             @Override @Ignore public Item getLast() {
-                return Iterable$impl._getLast(this);
+                return $ceylon$language$Iterable$this.getLast();
             }
 
             @Override
@@ -411,20 +415,20 @@ public final class Map$impl<Key,Item> {
             @Override
             @Ignore
             public List<? extends Item> getSequence() {
-                return Iterable$impl._getSequence(this);
+                return $ceylon$language$Iterable$this.getSequence();
             }
             @Override @Ignore
             public Item find(Callable<? extends Boolean> f) {
-                return Iterable$impl._find(this, f);
+                return $ceylon$language$Iterable$this.find(f);
             }
             @Override @Ignore
             public Item findLast(Callable<? extends Boolean> f) {
-                return Iterable$impl._findLast(this, f);
+                return $ceylon$language$Iterable$this.findLast(f);
             }
             @Override
             @Ignore
             public List<? extends Item> sort(Callable<? extends Comparison> f) {
-                return Iterable$impl._sort(this, f);
+                return $ceylon$language$Iterable$this.sort(f);
             }
             @Override
             @Ignore
@@ -447,48 +451,48 @@ public final class Map$impl<Key,Item> {
             @Override
             @Ignore
             public <Result> Result fold(Result ini, Callable<? extends Result> f) {
-                return Iterable$impl._fold(this, ini, f);
+                return $ceylon$language$Iterable$this.fold(ini, f);
             }
             @Override @Ignore
             public boolean any(Callable<? extends Boolean> f) {
-                return Iterable$impl._any(this, f);
+                return $ceylon$language$Iterable$this.any(f);
             }
             @Override @Ignore
             public boolean every(Callable<? extends Boolean> f) {
-                return Iterable$impl._every(this, f);
+                return $ceylon$language$Iterable$this.every(f);
             }
 			@Override @Ignore
 			public Iterable<? extends Item> skipping(long skip) {
-				return Iterable$impl._skipping(this, skip);
+				return $ceylon$language$Iterable$this.skipping(skip);
 			}
 
 			@Override @Ignore
 			public Iterable<? extends Item> taking(long take) {
-				return Iterable$impl._taking(this, take);
+				return $ceylon$language$Iterable$this.taking(take);
 			}
 
 			@Override @Ignore
 			public Iterable<? extends Item> by(long step) {
-				return Iterable$impl._by(this, step);
+				return $ceylon$language$Iterable$this.by(step);
 			}
             @Override @Ignore
             public long count(Callable<? extends Boolean> f) {
-                return Iterable$impl._count(this, f);
+                return $ceylon$language$Iterable$this.count(f);
             }
             @Override @Ignore
             public Iterable<? extends Item> getCoalesced() {
-                return Iterable$impl._getCoalesced(this);
+                return $ceylon$language$Iterable$this.getCoalesced();
             }
             @Override @Ignore
             public Iterable<? extends Entry<? extends Integer, ? extends Item>> getIndexed() {
-                return Iterable$impl._getIndexed(this);
+                return $ceylon$language$Iterable$this.getIndexed();
             }
 			@Override @Ignore public <Other>Iterable chain(Iterable<? extends Other> other) {
-				return Iterable$impl._chain(this, other);
+				return $ceylon$language$Iterable$this.chain(other);
 			}
 		    @Override @Ignore
 		    public <Key2> Map<? extends Key2, ? extends Sequence<? extends Item>> group(Callable<? extends Key2> grouping) {
-		        return Iterable$impl._group(this, grouping);
+		        return $ceylon$language$Iterable$this.group(grouping);
 		    }
         }
         return new valueCollection();
@@ -504,11 +508,13 @@ public final class Map$impl<Key,Item> {
             private final ceylon.language.Category$impl $ceylon$language$Category$this;
             private final ceylon.language.Collection$impl<Item> $ceylon$language$Collection$this;
             private final ceylon.language.Correspondence$impl $ceylon$language$Correspondence$this;
+            private final ceylon.language.Iterable$impl<Entry<? extends Item, ? extends Set<? extends Key>>> $ceylon$language$Iterable$this;
 
             private inverse() {
                 this.$ceylon$language$Category$this = new ceylon.language.Category$impl(this);
                 this.$ceylon$language$Collection$this = new ceylon.language.Collection$impl(this);
                 this.$ceylon$language$Correspondence$this = new ceylon.language.Correspondence$impl(this);
+                this.$ceylon$language$Iterable$this = new ceylon.language.Iterable$impl<Entry<? extends Item, ? extends Set<? extends Key>>>(this);
             }
             
             @Ignore
@@ -717,34 +723,34 @@ public final class Map$impl<Key,Item> {
             @Override
             @Ignore
             public List<? extends Entry<? extends Item, ? extends Set<? extends Key>>> getSequence() {
-                    return Iterable$impl._getSequence(this);
+                    return $ceylon$language$Iterable$this.getSequence();
             }
             @Override
             @Ignore
             public Iterable<? extends Entry<? extends Item, ? extends Set<? extends Key>>> getRest() {
-                return Iterable$impl._getRest(this);
+                return $ceylon$language$Iterable$this.getRest();
             }
             @Override
             @Ignore
             public Entry<? extends Item, ? extends Set<? extends Key>> getFirst() {
-                return Iterable$impl._getFirst(this);
+                return $ceylon$language$Iterable$this.getFirst();
             }
             @Override @Ignore
             public Entry<? extends Item, ? extends Set<? extends Key>> getLast() {
-                return Iterable$impl._getLast(this);
+                return $ceylon$language$Iterable$this.getLast();
             }
             @Override @Ignore
             public Entry<? extends Item, ? extends Set<? extends Key>> find(Callable<? extends Boolean> f) {
-                return Iterable$impl._find(this, f);
+                return $ceylon$language$Iterable$this.find(f);
             }
             @Override @Ignore
             public Entry<? extends Item, ? extends Set<? extends Key>> findLast(Callable<? extends Boolean> f) {
-                return Iterable$impl._findLast(this, f);
+                return $ceylon$language$Iterable$this.findLast(f);
             }
             @Override
             @Ignore
             public List<? extends Entry<? extends Item, ? extends Set<? extends Key>>> sort(Callable<? extends Comparison> f) {
-                return Iterable$impl._sort(this, f);
+                return $ceylon$language$Iterable$this.sort(f);
             }
             @Override
             @Ignore
@@ -768,48 +774,48 @@ public final class Map$impl<Key,Item> {
             @Override
             @Ignore
             public <Result> Result fold(Result ini, Callable<? extends Result> f) {
-                return Iterable$impl._fold(this, ini, f);
+                return $ceylon$language$Iterable$this.fold(ini, f);
             }
             @Override @Ignore
             public boolean any(Callable<? extends Boolean> f) {
-                return Iterable$impl._any(this, f);
+                return $ceylon$language$Iterable$this.any(f);
             }
             @Override @Ignore
             public boolean every(Callable<? extends Boolean> f) {
-                return Iterable$impl._every(this, f);
+                return $ceylon$language$Iterable$this.every(f);
             }
 			@Override @Ignore
 			public Iterable<? extends Entry<? extends Item, ? extends Set<? extends Key>>> skipping(long skip) {
-				return Iterable$impl._skipping(this, skip);
+				return $ceylon$language$Iterable$this.skipping(skip);
 			}
 
 			@Override @Ignore
 			public Iterable<? extends Entry<? extends Item, ? extends Set<? extends Key>>> taking(long take) {
-				return Iterable$impl._taking(this, take);
+				return $ceylon$language$Iterable$this.taking(take);
 			}
 
 			@Override @Ignore
 			public Iterable<? extends Entry<? extends Item, ? extends Set<? extends Key>>> by(long step) {
-				return Iterable$impl._by(this, step);
+				return $ceylon$language$Iterable$this.by(step);
 			}
             @Override @Ignore
             public long count(Callable<? extends Boolean> f) {
-                return Iterable$impl._count(this, f);
+                return $ceylon$language$Iterable$this.count(f);
             }
             @Override @Ignore
             public Iterable<? extends Entry<? extends Item, ? extends Set<? extends Key>>> getCoalesced() {
-                return Iterable$impl._getCoalesced(this);
+                return $ceylon$language$Iterable$this.getCoalesced();
             }
             @Override @Ignore
             public Iterable<? extends Entry<? extends Integer, ? extends Entry<? extends Item, ? extends Set<? extends Key>>>> getIndexed() {
-                return Iterable$impl._getIndexed(this);
+                return $ceylon$language$Iterable$this.getIndexed();
             }
             @Override @Ignore public <Other>Iterable chain(Iterable<? extends Other> other) {
-                return Iterable$impl._chain(this, other);
+                return $ceylon$language$Iterable$this.chain(other);
             }
             @Override @Ignore
             public <Key2> Map<? extends Key2, ? extends Sequence<? extends Entry<? extends Item, ? extends Set<? extends Key>>>> group(Callable<? extends Key2> grouping) {
-                return Iterable$impl._group(this, grouping);
+                return $ceylon$language$Iterable$this.group(grouping);
             }
 
 			@Override @Ignore
@@ -832,11 +838,13 @@ public final class Map$impl<Key,Item> {
             private final ceylon.language.Category$impl $ceylon$language$Category$this;
             private final ceylon.language.Collection$impl $ceylon$language$Collection$this;
             private final ceylon.language.Correspondence$impl $ceylon$language$Correspondence$this;
+            private final ceylon.language.Iterable$impl<Entry<? extends Key, ? extends Result>> $ceylon$language$Iterable$this;
 
             private mapItems() {
                 this.$ceylon$language$Category$this = new ceylon.language.Category$impl(this);
                 this.$ceylon$language$Collection$this = new ceylon.language.Collection$impl(this);
                 this.$ceylon$language$Correspondence$this = new ceylon.language.Correspondence$impl(this);
+                this.$ceylon$language$Iterable$this = new ceylon.language.Iterable$impl<Entry<? extends Key, ? extends Result>>(this);
             }
             
             @Ignore
@@ -934,23 +942,23 @@ public final class Map$impl<Key,Item> {
 
             @Override
             public List<? extends Entry<? extends Key, ? extends Result>> getSequence() {
-                return Iterable$impl._getSequence(this);
+                return $ceylon$language$Iterable$this.getSequence();
             }
 
             @Override
             @Ignore
             public Iterable<? extends Entry<? extends Key, ? extends Result>> getRest() {
-                return Iterable$impl._getRest(this);
+                return $ceylon$language$Iterable$this.getRest();
             }
 
             @Override
             @Ignore
             public Entry<? extends Key, ? extends Result> getFirst() {
-                return Iterable$impl._getFirst(this);
+                return $ceylon$language$Iterable$this.getFirst();
             }
             @Override @Ignore
             public Entry<? extends Key, ? extends Result> getLast() {
-                return Iterable$impl._getLast(this);
+                return $ceylon$language$Iterable$this.getLast();
             }
 
             @Override
@@ -978,72 +986,72 @@ public final class Map$impl<Key,Item> {
             @Override
             public <R2> R2 fold(R2 initial,
                     Callable<? extends R2> accumulating) {
-                return Iterable$impl._fold(this, initial, accumulating);
+                return $ceylon$language$Iterable$this.fold(initial, accumulating);
             }
 
             @Override @Ignore
             public Entry<? extends Key, ? extends Result> find(
                     Callable<? extends Boolean> selecting) {
-                return Iterable$impl._find(this, selecting);
+                return $ceylon$language$Iterable$this.find(selecting);
             }
 
             @Override @Ignore
             public Entry<? extends Key, ? extends Result> findLast(
                     Callable<? extends Boolean> selecting) {
-                return Iterable$impl._findLast(this, selecting);
+                return $ceylon$language$Iterable$this.findLast(selecting);
             }
 
             @Override
             public List<? extends Entry<? extends Key, ? extends Result>> sort(
                     Callable<? extends Comparison> comparing) {
-                return Iterable$impl._sort(this, comparing);
+                return $ceylon$language$Iterable$this.sort(comparing);
             }
 
             @Override
             public boolean any(Callable<? extends Boolean> selecting) {
-                return Iterable$impl._any(this, selecting);
+                return $ceylon$language$Iterable$this.any(selecting);
             }
 
             @Override
             public boolean every(Callable<? extends Boolean> selecting) {
-                return Iterable$impl._every(this, selecting);
+                return $ceylon$language$Iterable$this.every(selecting);
             }
 
             @Override
             public Iterable<? extends Entry<? extends Key, ? extends Result>> skipping(
                     long skip) {
-                return Iterable$impl._skipping(this, skip);
+                return $ceylon$language$Iterable$this.skipping(skip);
             }
 
             @Override
             public Iterable<? extends Entry<? extends Key, ? extends Result>> taking(
                     long take) {
-                return Iterable$impl._taking(this, take);
+                return $ceylon$language$Iterable$this.taking(take);
             }
 
             @Override
             public Iterable<? extends Entry<? extends Key, ? extends Result>> by(
                     long step) {
-                return Iterable$impl._by(this, step);
+                return $ceylon$language$Iterable$this.by(step);
             }
             @Override @Ignore
             public long count(Callable<? extends Boolean> f) {
-                return Iterable$impl._count(this, f);
+                return $ceylon$language$Iterable$this.count(f);
             }
             @Override @Ignore
             public Iterable<? extends Entry<? extends Key, ? extends Result>> getCoalesced() {
-                return Iterable$impl._getCoalesced(this);
+                return $ceylon$language$Iterable$this.getCoalesced();
             }
             @Override @Ignore
             public Iterable<? extends Entry<? extends Integer, ? extends Entry<? extends Key, ? extends Result>>> getIndexed() {
-                return Iterable$impl._getIndexed(this);
+                return $ceylon$language$Iterable$this.getIndexed();
             }
             @Override @Ignore public <Other>Iterable chain(Iterable<? extends Other> other) {
-                return Iterable$impl._chain(this, other);
+                return $ceylon$language$Iterable$this.chain(other);
             }
             @Override @Ignore
             public <Key2> Map<? extends Key2, ? extends Sequence<? extends Entry<? extends Key, ? extends Result>>> group(Callable<? extends Key2> grouping) {
-                return Iterable$impl._group(this, grouping);
+                return $ceylon$language$Iterable$this.group(grouping);
             }
 
             @Override

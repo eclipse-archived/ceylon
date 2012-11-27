@@ -3,7 +3,6 @@ package com.redhat.ceylon.compiler.java.language;
 import java.util.Arrays;
 
 import ceylon.language.Array;
-import ceylon.language.Iterable$impl;
 import ceylon.language.List;
 import ceylon.language.List$impl;
 import ceylon.language.Sequence;
@@ -155,7 +154,7 @@ public class NonemptyArray<Element> extends Array<Element> implements Some<Eleme
     @Override 
     @Ignore 
     public List<? extends Element> getSequence() { 
-        return Iterable$impl._getSequence(this); 
+        return $ceylon$language$Iterable$this.getSequence(); 
     }
 
     @Override @SuppressWarnings("rawtypes")

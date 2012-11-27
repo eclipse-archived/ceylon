@@ -35,12 +35,14 @@ public abstract class String
                FixedSized<Character> {
     private final ceylon.language.Category$impl $ceylon$language$Category$this;
     private final ceylon.language.Correspondence$impl $ceylon$language$Correspondence$this;
+    private final ceylon.language.Iterable$impl<Character> $ceylon$language$Iterable$this;
 
     public final java.lang.String value;
 
     protected String(java.lang.String s) {
         this.$ceylon$language$Category$this = new ceylon.language.Category$impl(this);
         this.$ceylon$language$Correspondence$this = new ceylon.language.Correspondence$impl(this);
+        this.$ceylon$language$Iterable$this = new ceylon.language.Iterable$impl<Character>(this);
         value = s;
     }
 
@@ -969,7 +971,7 @@ public abstract class String
         if (value.isEmpty()) {
             return instance(value);
         } else {
-            return Iterable$impl._getSequence(instance(value));
+            return instance(value).getRest();
         }
     }
 
@@ -996,7 +998,7 @@ public abstract class String
         if (value.isEmpty()) {
             return instance(value);
         } else {
-            return Iterable$impl._getSequence(instance(value));
+            return instance(value).getSequence();
         }
     }
 
@@ -1005,7 +1007,7 @@ public abstract class String
         if (value.isEmpty()) {
             return null;
         } else {
-            return Iterable$impl._find(instance(value), f);
+            return instance(value).find(f);
         }
     }
 
@@ -1014,7 +1016,7 @@ public abstract class String
         if (value.isEmpty()) {
             return null;
         } else {
-            return List$impl._findLast(instance(value), f);
+            return instance(value).findLast(f);
         }
     }
 
@@ -1023,7 +1025,7 @@ public abstract class String
         if (value.isEmpty()) {
             return instance(value);
         } else {
-            return instance(string_.string(Iterable$impl._sort(instance(value), f)));
+            return instance(string_.string(instance(value).sort(f)));
         }
     }
 
@@ -1069,7 +1071,7 @@ public abstract class String
         if (value.isEmpty()) {
             return ini;
         } else {
-            return Iterable$impl._fold(instance(value), ini, f);
+            return instance(value).fold(ini, f);
         }
     }
 
@@ -1078,7 +1080,7 @@ public abstract class String
         if (value.isEmpty()) {
             return false;
         } else {
-            return Iterable$impl._any(instance(value), f);
+            return instance(value).any(f);
         }
     }
 
@@ -1087,7 +1089,7 @@ public abstract class String
         if (value.isEmpty()) {
             return false;
         } else {
-            return Iterable$impl._every(instance(value), f);
+            return instance(value).every(f);
         }
     }
 
@@ -1114,7 +1116,7 @@ public abstract class String
         if (value.isEmpty()) {
             return instance(value);
         } else {
-            return instance(string_.string(Iterable$impl._by(instance(value), step).getSequence()));
+            return instance(string_.string(instance(value).by(step).getSequence()));
         }
     }
 
@@ -1123,7 +1125,7 @@ public abstract class String
         if (value.isEmpty()) {
             return 0;
         } else {
-            return Iterable$impl._count(instance(value), f);
+            return instance(value).count(f);
         }
     }
 
@@ -1143,7 +1145,7 @@ public abstract class String
         if (value.isEmpty()) {
             return (Iterable)instance(value);
         } else {
-            return Iterable$impl._getIndexed(instance(value));
+            return instance(value).getIndexed();
         }
     }
 
@@ -1152,7 +1154,7 @@ public abstract class String
         if (value.isEmpty()) {
             return other;
         } else {
-            return Iterable$impl._chain(instance(value), other);
+            return instance(value).chain(other);
         }
     }
     @Ignore
@@ -1160,7 +1162,7 @@ public abstract class String
         if (value.isEmpty()) {
             return new InternalMap<Key, Sequence<? extends Character>>(java.util.Collections.<Key,Sequence<Character>>emptyMap());
         } else {
-            return Iterable$impl._group(instance(value), grouping);
+            return instance(value).group(grouping);
         }
     }
 
@@ -1193,6 +1195,8 @@ public abstract class String
     }
 
     private static final class Tokens implements Iterable<String> {
+        private final ceylon.language.Iterable$impl<String> $ceylon$language$Iterable$this;
+        
         private final java.lang.String str;
         private final java.lang.Object separator;
         private final boolean keepSeparators;
@@ -1200,6 +1204,7 @@ public abstract class String
 
         public Tokens(java.lang.String str, java.lang.Object separator,
                 boolean keepSeparators, boolean groupSeparators) {
+            this.$ceylon$language$Iterable$this = new ceylon.language.Iterable$impl<String>(this);
             this.str = str;
             this.separator = separator;
             this.keepSeparators = keepSeparators;
@@ -1334,36 +1339,36 @@ public abstract class String
         @Override
         @Ignore
         public String getFirst() {
-        	return Iterable$impl._getFirst(this);
+        	return $ceylon$language$Iterable$this.getFirst();
         }
         @Override @Ignore
         public String getLast() {
-            return Iterable$impl._getLast(this);
+            return $ceylon$language$Iterable$this.getLast();
         }
 
         @Override
         @Ignore
         public Iterable<? extends String> getRest() {
-        	return Iterable$impl._getRest(this);
+        	return $ceylon$language$Iterable$this.getRest();
         }
 
         @Override
         @Ignore
         public List<? extends String> getSequence() {
-            return Iterable$impl._getSequence(this);
+            return $ceylon$language$Iterable$this.getSequence();
         }
         @Override @Ignore
         public String find(Callable<? extends Boolean> f) {
-            return Iterable$impl._find(this, f);
+            return $ceylon$language$Iterable$this.find(f);
         }
         @Override @Ignore
         public String findLast(Callable<? extends Boolean> f) {
-            return Iterable$impl._findLast(this, f);
+            return $ceylon$language$Iterable$this.findLast(f);
         }
         @Override
         @Ignore
         public List<? extends String> sort(Callable<? extends Comparison> f) {
-            return Iterable$impl._sort(this, f);
+            return $ceylon$language$Iterable$this.sort(f);
         }
         @Override
         @Ignore
@@ -1388,54 +1393,56 @@ public abstract class String
         @Override
         @Ignore
         public <Result> Result fold(Result ini, Callable<? extends Result> f) {
-            return Iterable$impl._fold(this, ini, f);
+            return $ceylon$language$Iterable$this.fold(ini, f);
         }
         @Override @Ignore
         public boolean any(Callable<? extends Boolean> f) {
-            return Iterable$impl._any(this, f);
+            return $ceylon$language$Iterable$this.any(f);
         }
         @Override @Ignore
         public boolean every(Callable<? extends Boolean> f) {
-            return Iterable$impl._every(this, f);
+            return $ceylon$language$Iterable$this.every(f);
         }
         @Override @Ignore
         public Iterable<? extends String> skipping(long n) {
-            return Iterable$impl._skipping(this, n);
+            return $ceylon$language$Iterable$this.skipping(n);
         }
         @Override @Ignore
         public Iterable<? extends String> taking(long n) {
-            return Iterable$impl._taking(this, n);
+            return $ceylon$language$Iterable$this.taking(n);
         }
         @Override @Ignore
         public Iterable<? extends String> by(long n) {
-            return Iterable$impl._by(this, n);
+            return $ceylon$language$Iterable$this.by(n);
         }
         @Override @Ignore
         public long count(Callable<? extends Boolean> f) {
-            return Iterable$impl._count(this, f);
+            return $ceylon$language$Iterable$this.count(f);
         }
         @Override @Ignore
         public Iterable<? extends String> getCoalesced() {
-            return Iterable$impl._getCoalesced(this);
+            return $ceylon$language$Iterable$this.getCoalesced();
         }
         @Override @Ignore
         public Iterable<? extends Entry<? extends Integer, ? extends String>> getIndexed() {
-            return Iterable$impl._getIndexed(this);
+            return $ceylon$language$Iterable$this.getIndexed();
         }
         @Override @Ignore public <Other>Iterable chain(Iterable<? extends Other> other) {
-            return Iterable$impl._chain(this, other);
+            return $ceylon$language$Iterable$this.chain(other);
         }
         @Override @Ignore
         public <Key> Map<? extends Key, ? extends Sequence<? extends String>> group(Callable<? extends Key> grouping) {
-            return Iterable$impl._group(this, grouping);
+            return $ceylon$language$Iterable$this.group(grouping);
         }
     }
 
     private static final class Occurs implements Iterable<Integer> {
+        private final ceylon.language.Iterable$impl<Integer> $ceylon$language$Iterable$this;
         private final java.lang.String str;
         private final java.lang.String oc;
 
         public Occurs(java.lang.String str, java.lang.String oc) {
+            this.$ceylon$language$Iterable$this = new ceylon.language.Iterable$impl<Integer>(this);
             this.str = str;
             this.oc = oc;
         }
@@ -1467,36 +1474,36 @@ public abstract class String
         @Override
         @Ignore
         public Integer getFirst() {
-        	return Iterable$impl._getFirst(this);
+        	return $ceylon$language$Iterable$this.getFirst();
         }
         @Override @Ignore
         public Integer getLast() {
-            return Iterable$impl._getLast(this);
+            return $ceylon$language$Iterable$this.getLast();
         }
 
         @Override
         @Ignore
         public Iterable<? extends Integer> getRest() {
-        	return Iterable$impl._getRest(this);
+        	return $ceylon$language$Iterable$this.getRest();
         }
 
         @Override
         @Ignore
         public List<? extends Integer> getSequence() {
-            return Iterable$impl._getSequence(this);
+            return $ceylon$language$Iterable$this.getSequence();
         }
         @Override @Ignore
         public Integer find(Callable<? extends Boolean> f) {
-            return Iterable$impl._find(this, f);
+            return $ceylon$language$Iterable$this.find(f);
         }
         @Override @Ignore
         public Integer findLast(Callable<? extends Boolean> f) {
-            return Iterable$impl._findLast(this, f);
+            return $ceylon$language$Iterable$this.findLast(f);
         }
         @Override
         @Ignore
         public List<? extends Integer> sort(Callable<? extends Comparison> f) {
-            return Iterable$impl._sort(this, f);
+            return $ceylon$language$Iterable$this.sort(f);
         }
         @Override
         @Ignore
@@ -1519,46 +1526,46 @@ public abstract class String
         @Override
         @Ignore
         public <Result> Result fold(Result ini, Callable<? extends Result> f) {
-            return Iterable$impl._fold(this, ini, f);
+            return $ceylon$language$Iterable$this.fold(ini, f);
         }
         @Override @Ignore
         public boolean any(Callable<? extends Boolean> f) {
-            return Iterable$impl._any(this, f);
+            return $ceylon$language$Iterable$this.any(f);
         }
         @Override @Ignore
         public boolean every(Callable<? extends Boolean> f) {
-            return Iterable$impl._every(this, f);
+            return $ceylon$language$Iterable$this.every(f);
         }
         @Override @Ignore
         public Iterable<? extends Integer> skipping(long n) {
-            return Iterable$impl._skipping(this, n);
+            return $ceylon$language$Iterable$this.skipping(n);
         }
         @Override @Ignore
         public Iterable<? extends Integer> taking(long n) {
-            return Iterable$impl._taking(this, n);
+            return $ceylon$language$Iterable$this.taking(n);
         }
         @Override @Ignore
         public Iterable<? extends Integer> by(long n) {
-            return Iterable$impl._by(this, n);
+            return $ceylon$language$Iterable$this.by(n);
         }
         @Override @Ignore
         public long count(Callable<? extends Boolean> f) {
-            return Iterable$impl._count(this, f);
+            return $ceylon$language$Iterable$this.count(f);
         }
         @Override @Ignore
         public Iterable<? extends Integer> getCoalesced() {
-            return Iterable$impl._getCoalesced(this);
+            return $ceylon$language$Iterable$this.getCoalesced();
         }
         @Override @Ignore
         public Iterable<? extends Entry<? extends Integer, ? extends Integer>> getIndexed() {
-            return Iterable$impl._getIndexed(this);
+            return $ceylon$language$Iterable$this.getIndexed();
         }
         @Override @Ignore public <Other>Iterable chain(Iterable<? extends Other> other) {
-            return Iterable$impl._chain(this, other);
+            return $ceylon$language$Iterable$this.chain(other);
         }
         @Override @Ignore
         public <Key> Map<? extends Key, ? extends Sequence<? extends Integer>> group(Callable<? extends Key> grouping) {
-            return Iterable$impl._group(this, grouping);
+            return $ceylon$language$Iterable$this.group(grouping);
         }
     }
 }

@@ -4,15 +4,17 @@ import com.redhat.ceylon.compiler.java.metadata.Ignore;
 
 @Ignore
 public final class Set$impl<Element> {
-    
+    private final ceylon.language.Iterable$impl<Element> $ceylon$language$Iterable$this;
+
     private final Set<Element> $this;
 
     public Set$impl(Set<Element> $this) {
+        this.$ceylon$language$Iterable$this = new ceylon.language.Iterable$impl<Element>($this);
         this.$this = $this;
     }
     
     public long count(Callable<? extends Boolean> f) {
-        return Iterable$impl._count($this, f);
+        return $ceylon$language$Iterable$this.count(f);
     }
 
     public boolean superset(Set<? extends java.lang.Object> set) {

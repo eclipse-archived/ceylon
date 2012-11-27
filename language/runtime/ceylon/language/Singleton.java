@@ -25,12 +25,14 @@ public class Singleton<Element>
         implements Sequence<Element> {
     private final ceylon.language.Category$impl $ceylon$language$Category$this;
     private final ceylon.language.Correspondence$impl $ceylon$language$Correspondence$this;
+    private final ceylon.language.Iterable$impl<Element> $ceylon$language$Iterable$this;
 
 	Element element;
 
 	public Singleton(Element element) {
         this.$ceylon$language$Category$this = new ceylon.language.Category$impl(this);
         this.$ceylon$language$Correspondence$this = new ceylon.language.Correspondence$impl(this);
+        this.$ceylon$language$Iterable$this = new ceylon.language.Iterable$impl<Element>(this);
 		this.element = element;
 	}
 
@@ -376,11 +378,11 @@ public class Singleton<Element>
     }
     @SuppressWarnings("rawtypes")
     @Override @Ignore public <Other>Iterable chain(Iterable<? extends Other> other) {
-        return Iterable$impl._chain(this, other);
+        return $ceylon$language$Iterable$this.chain(other);
     }
     @Override @Ignore
     public <Key> Map<? extends Key, ? extends Sequence<? extends Element>> group(Callable<? extends Key> grouping) {
-        return Iterable$impl._group(this, grouping);
+        return $ceylon$language$Iterable$this.group(grouping);
     }
 
     @Override @SuppressWarnings("rawtypes")

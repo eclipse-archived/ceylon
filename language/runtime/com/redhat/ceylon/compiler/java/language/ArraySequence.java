@@ -38,6 +38,7 @@ public class ArraySequence<Element> implements Sequence<Element> {
     private final ceylon.language.Category$impl $ceylon$language$Category$this;
     private final ceylon.language.Collection$impl $ceylon$language$Collection$this;
     private final ceylon.language.Correspondence$impl $ceylon$language$Correspondence$this;
+    private final ceylon.language.Iterable$impl<Element> $ceylon$language$Iterable$this;
 
     protected final Element[] array;
     protected final long first;
@@ -51,6 +52,7 @@ public class ArraySequence<Element> implements Sequence<Element> {
         this.$ceylon$language$Category$this = new ceylon.language.Category$impl(this);
         this.$ceylon$language$Collection$this = new ceylon.language.Collection$impl(this);
         this.$ceylon$language$Correspondence$this = new ceylon.language.Correspondence$impl(this);
+        this.$ceylon$language$Iterable$this = new ceylon.language.Iterable$impl<Element>(this);
     	if (array.length==0 || array.length<=first) {
     		throw new IllegalArgumentException("ArraySequence may not have zero elements");
     	}
@@ -63,6 +65,7 @@ public class ArraySequence<Element> implements Sequence<Element> {
         this.$ceylon$language$Category$this = new ceylon.language.Category$impl(this);
         this.$ceylon$language$Collection$this = new ceylon.language.Collection$impl(this);
         this.$ceylon$language$Correspondence$this = new ceylon.language.Correspondence$impl(this);
+        this.$ceylon$language$Iterable$this = new ceylon.language.Iterable$impl<Element>(this);
     	if (list.size()==0) {
     		throw new IllegalArgumentException("ArraySequence may not have zero elements");
     	}
@@ -367,7 +370,7 @@ public class ArraySequence<Element> implements Sequence<Element> {
 
     @Override @Ignore
     public Element find(Callable<? extends Boolean> f) {
-        return Iterable$impl._find(this, f);
+        return $ceylon$language$Iterable$this.find(f);
     }
     @Override @Ignore
     public Element findLast(Callable<? extends Boolean> f) {
@@ -400,43 +403,43 @@ public class ArraySequence<Element> implements Sequence<Element> {
     @Override
     @Ignore
     public <Result> Result fold(Result ini, Callable<? extends Result> f) {
-        return Iterable$impl._fold(this, ini, f);
+        return $ceylon$language$Iterable$this.fold(ini, f);
     }
     @Override @Ignore
     public boolean any(Callable<? extends Boolean> f) {
-        return Iterable$impl._any(this, f);
+        return $ceylon$language$Iterable$this.any(f);
     }
     @Override @Ignore
     public boolean every(Callable<? extends Boolean> f) {
-        return Iterable$impl._every(this, f);
+        return $ceylon$language$Iterable$this.every(f);
     }
     @Override @Ignore
     public Iterable<? extends Element> skipping(long skip) {
-        return Iterable$impl._skipping(this, skip);
+        return $ceylon$language$Iterable$this.skipping(skip);
     }
     @Override @Ignore
     public Iterable<? extends Element> taking(long take) {
-        return Iterable$impl._taking(this, take);
+        return $ceylon$language$Iterable$this.taking(take);
     }
     @Override @Ignore
     public Iterable<? extends Element> by(long step) {
-        return Iterable$impl._by(this, step);
+        return $ceylon$language$Iterable$this.by(step);
     }
     @Override @Ignore
     public Iterable<? extends Element> getCoalesced() {
-        return Iterable$impl._getCoalesced(this);
+        return $ceylon$language$Iterable$this.getCoalesced();
     }
     @Override @Ignore
     public Iterable<? extends Entry<? extends Integer, ? extends Element>> getIndexed() {
-        return Iterable$impl._getIndexed(this);
+        return $ceylon$language$Iterable$this.getIndexed();
     }
     @SuppressWarnings("rawtypes")
     @Override @Ignore public <Other>Iterable chain(Iterable<? extends Other> other) {
-        return Iterable$impl._chain(this, other);
+        return $ceylon$language$Iterable$this.chain(other);
     }
     @Override @Ignore
     public <Key> Map<? extends Key, ? extends Sequence<? extends Element>> group(Callable<? extends Key> grouping) {
-        return Iterable$impl._group(this, grouping);
+        return $ceylon$language$Iterable$this.group(grouping);
     }
 
     @Override

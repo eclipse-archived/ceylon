@@ -21,7 +21,7 @@ public final class Iterable$impl<Element> {
     public boolean getEmpty(){
         return Iterable$impl._getEmpty($this);
     }
-    static <Element> boolean _getEmpty(Iterable<Element> $this){
+    private static <Element> boolean _getEmpty(Iterable<Element> $this){
         return $this.getIterator().next() instanceof Finished;
     }
 
@@ -29,7 +29,7 @@ public final class Iterable$impl<Element> {
         return Iterable$impl.<Element>_getFirst($this);
     }
     @SuppressWarnings("unchecked")
-    public static <Element> Element _getFirst(Iterable<Element> $this){
+    private static <Element> Element _getFirst(Iterable<Element> $this){
         java.lang.Object first = $this.getIterator().next();
         if (first instanceof Finished) {
             return null;
@@ -42,7 +42,7 @@ public final class Iterable$impl<Element> {
         return Iterable$impl.<Element>_getLast($this);
     }
     @SuppressWarnings("unchecked")
-    public static <Element> Element _getLast(Iterable<Element> $this) {
+    private static <Element> Element _getLast(Iterable<Element> $this) {
         java.lang.Object last = null;
         java.lang.Object next = null;
         for (Iterator<? extends Element> iter = $this.getIterator(); (next = iter.next()) != exhausted_.getExhausted$();) {
@@ -54,13 +54,13 @@ public final class Iterable$impl<Element> {
     public Iterable<? extends Element> getRest() {
         return Iterable$impl._getRest($this);
     }
-    public static <Element> Iterable<? extends Element> _getRest(final Iterable<Element> $this) {
+    private static <Element> Iterable<? extends Element> _getRest(final Iterable<Element> $this) {
         return $this.skipping(1);
     }
     public List<? extends Element> getSequence() {
         return Iterable$impl._getSequence($this);
     }
-    public static <Element> List<? extends Element> _getSequence(Iterable<Element> $this) {
+    private static <Element> List<? extends Element> _getSequence(Iterable<Element> $this) {
         final SequenceBuilder<Element> sb = new SequenceBuilder<Element>();
         java.lang.Object next = null;
         for (Iterator<? extends Element> iter = $this.getIterator(); (next = iter.next()) != exhausted_.getExhausted$();) {
@@ -80,7 +80,7 @@ public final class Iterable$impl<Element> {
     public <Result> Result fold(Result initial, Callable<? extends Result> accumulating) {
         return Iterable$impl._fold($this, initial, accumulating);
     }
-    public static <Result> Result _fold(Iterable<?> $this, Result initial, Callable<? extends Result> accum) {
+    private static <Result> Result _fold(Iterable<?> $this, Result initial, Callable<? extends Result> accum) {
         java.lang.Object elem;
         for (Iterator<?> iter = $this.getIterator(); !((elem = iter.next()) instanceof Finished); ) {
             initial = accum.$call(initial, elem);
@@ -92,7 +92,7 @@ public final class Iterable$impl<Element> {
         return Iterable$impl._find($this, selecting);
     }
     @SuppressWarnings("unchecked")
-    public static <Element> Element _find(Iterable<? extends Element> $this, Callable<? extends Boolean> sel) {
+    private static <Element> Element _find(Iterable<? extends Element> $this, Callable<? extends Boolean> sel) {
         java.lang.Object elem;
         for (Iterator<? extends Element> iter = $this.getIterator(); !((elem = iter.next()) instanceof Finished);) {
             if (sel.$call(elem).booleanValue()) {
@@ -106,7 +106,7 @@ public final class Iterable$impl<Element> {
         return Iterable$impl._findLast($this, selecting);
     }
     @SuppressWarnings("unchecked")
-    public static <Element> Element _findLast(Iterable<? extends Element> $this, Callable<? extends Boolean> sel) {
+    private static <Element> Element _findLast(Iterable<? extends Element> $this, Callable<? extends Boolean> sel) {
         java.lang.Object elem;
         java.lang.Object last = null;
         for (Iterator<? extends Element> iter = $this.getIterator(); !((elem = iter.next()) instanceof Finished);) {
@@ -121,7 +121,7 @@ public final class Iterable$impl<Element> {
         return Iterable$impl._sort($this, comparing);
     }
     @SuppressWarnings("unchecked")
-    public static <Element> List<? extends Element> _sort(Iterable<? extends Element> $this, final Callable<? extends Comparison> comp) {
+    private static <Element> List<? extends Element> _sort(Iterable<? extends Element> $this, final Callable<? extends Comparison> comp) {
         if ($this.getEmpty()) {
             return (List<? extends Element>) empty_.getEmpty$();
         }
@@ -140,21 +140,21 @@ public final class Iterable$impl<Element> {
     public <Result> List<? extends Result> collect(Callable<? extends Result> collecting) {
         return Iterable$impl._collect($this, collecting);
     }
-    public static <Element,Result> List<? extends Result> _collect(Iterable<? extends Element> $this, Callable<? extends Result> f) {
+    private static <Element,Result> List<? extends Result> _collect(Iterable<? extends Element> $this, Callable<? extends Result> f) {
         return new MapIterable<Element, Result>($this, f).getSequence();
     }
 
     public List<? extends Element> select(Callable<? extends Boolean> selecting) {
         return Iterable$impl._select($this, selecting);
     }
-    public static <Element> List<? extends Element> _select(Iterable<? extends Element> $this, Callable<? extends Boolean> f) {
+    private static <Element> List<? extends Element> _select(Iterable<? extends Element> $this, Callable<? extends Boolean> f) {
         return new FilterIterable<Element>($this, f).getSequence();
     }
 
     public boolean any(Callable<? extends Boolean> selecting) {
         return Iterable$impl._any($this, selecting);
     }
-    public static <Element> boolean _any(Iterable<? extends Element> $this, Callable<? extends Boolean> sel) {
+    private static <Element> boolean _any(Iterable<? extends Element> $this, Callable<? extends Boolean> sel) {
         Iterator<? extends Element> iter = $this.getIterator();
         java.lang.Object elem;
         while (!((elem = iter.next()) instanceof Finished)) {
@@ -168,7 +168,7 @@ public final class Iterable$impl<Element> {
     public boolean every(Callable<? extends Boolean> selecting) {
         return Iterable$impl._every($this, selecting);
     }
-    public static <Element> boolean _every(Iterable<? extends Element> $this, Callable<? extends Boolean> sel) {
+    private static <Element> boolean _every(Iterable<? extends Element> $this, Callable<? extends Boolean> sel) {
         Iterator<? extends Element> iter = $this.getIterator();
         java.lang.Object elem;
         while (!((elem = iter.next()) instanceof Finished)) {
@@ -181,7 +181,7 @@ public final class Iterable$impl<Element> {
     public Iterable<? extends Element> skipping(long skip) {
         return Iterable$impl._skipping($this, skip);
     }
-    public static <Element> Iterable<? extends Element> _skipping(final Iterable<? extends Element> $this, final long skip) {
+    private static <Element> Iterable<? extends Element> _skipping(final Iterable<? extends Element> $this, final long skip) {
         return skip==0 ? $this : new AbstractIterable<Element>() {
             public final Iterator<? extends Element> getIterator() {
                 final Iterator<? extends Element> iter = $this.getIterator();
@@ -193,7 +193,7 @@ public final class Iterable$impl<Element> {
     public Iterable<? extends Element> taking(long take) {
         return Iterable$impl._taking($this, take);
     }
-    public static <Element> Iterable<? extends Element> _taking(final Iterable<? extends Element> $this, final long take) {
+    private static <Element> Iterable<? extends Element> _taking(final Iterable<? extends Element> $this, final long take) {
         if (take == 0) {
             return (Iterable)empty_.getEmpty$();
         }
@@ -217,7 +217,7 @@ public final class Iterable$impl<Element> {
     public Iterable<? extends Element> by(long step) {
         return Iterable$impl._by($this, step);
     }
-    public static <Element> Iterable<? extends Element> _by(final Iterable<? extends Element> $this, final long step) {
+    private static <Element> Iterable<? extends Element> _by(final Iterable<? extends Element> $this, final long step) {
         if (step == 1) {
             return $this;
         } else if (step <= 0) {
@@ -245,7 +245,7 @@ public final class Iterable$impl<Element> {
     public long count(Callable<? extends Boolean> f) {
         return Iterable$impl._count($this, f);
     }
-    public static <Element> long _count(final Iterable<? extends Element> $this, Callable<? extends Boolean> f) {
+    private static <Element> long _count(final Iterable<? extends Element> $this, Callable<? extends Boolean> f) {
         Iterator<? extends Element> iter = $this.getIterator();
         java.lang.Object elem;
         long c = 0;
@@ -260,7 +260,7 @@ public final class Iterable$impl<Element> {
     public Iterable<? extends Element> getCoalesced() {
         return Iterable$impl._getCoalesced($this);
     }
-    public static <Element> Iterable<? extends Element> _getCoalesced(final Iterable<? extends Element> $this) {
+    private static <Element> Iterable<? extends Element> _getCoalesced(final Iterable<? extends Element> $this) {
         final class NotNullIterator implements Iterator<Element> {
             private final Iterator<? extends Element> orig = $this.getIterator();
             @Override public java.lang.Object next() {
@@ -277,7 +277,7 @@ public final class Iterable$impl<Element> {
     public Iterable<? extends Entry<? extends Integer, ? extends Element>> getIndexed() {
         return Iterable$impl._getIndexed($this);
     }
-    public static <Element> Iterable<? extends Entry<? extends Integer, ? extends Element>> _getIndexed(final Iterable<? extends Element> $this) {
+    private static <Element> Iterable<? extends Entry<? extends Integer, ? extends Element>> _getIndexed(final Iterable<? extends Element> $this) {
         final class EntryIterator implements Iterator<Entry<? extends Integer, ? extends Element>> {
             private long i=0;
             private final Iterator<? extends Element> orig = $this.getIterator();
@@ -301,7 +301,7 @@ public final class Iterable$impl<Element> {
         return Iterable$impl._chain($this, other);
     }
     @SuppressWarnings("rawtypes")
-    public static <Element,Other> Iterable _chain(final Iterable<? extends Element> one, final Iterable<? extends Other> two) {
+    private static <Element,Other> Iterable _chain(final Iterable<? extends Element> one, final Iterable<? extends Other> two) {
         return new AbstractIterable() {
             @Override @SuppressWarnings("unchecked")
             @TypeInfo("ceylon.language::Iterator<Element|Other>")
@@ -314,7 +314,7 @@ public final class Iterable$impl<Element> {
     public <Key> Map<? extends Key, ? extends Sequence<? extends Element>> group(Callable<? extends Key> grouping) {
         return Iterable$impl._group($this, grouping);
     }
-    public static <Element,Key> Map<? extends Key, ? extends Sequence<? extends Element>> _group(Iterable<? extends Element> $this, Callable<? extends Key> grouping) {
+    private static <Element,Key> Map<? extends Key, ? extends Sequence<? extends Element>> _group(Iterable<? extends Element> $this, Callable<? extends Key> grouping) {
         java.util.HashMap<Key, SequenceBuilder<Element>> m = new java.util.HashMap<Key, SequenceBuilder<Element>>();
         java.lang.Object $tmp;
         for (Iterator<? extends Element> i = $this.getIterator(); !(($tmp = i.next()) instanceof Finished);) {

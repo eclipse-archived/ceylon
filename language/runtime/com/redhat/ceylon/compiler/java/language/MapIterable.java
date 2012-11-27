@@ -7,7 +7,6 @@ import ceylon.language.Entry;
 import ceylon.language.Finished;
 import ceylon.language.Integer;
 import ceylon.language.Iterable;
-import ceylon.language.Iterable$impl;
 import ceylon.language.Iterator;
 import ceylon.language.List;
 import ceylon.language.Map;
@@ -20,9 +19,13 @@ import com.redhat.ceylon.compiler.java.metadata.Ignore;
  * @author Enrique Zamudio
  */
 public class MapIterable<Element, Result> implements Iterable<Result> {
+    private final ceylon.language.Iterable$impl<Result> $ceylon$language$Iterable$this;
+    
     final Iterable<? extends Element> iterable;
     final Callable<? extends Result> sel;
+    
     public MapIterable(Iterable<? extends Element> iterable, Callable<? extends Result> collecting) {
+        this.$ceylon$language$Iterable$this = new ceylon.language.Iterable$impl<Result>(this);
         this.iterable = iterable;
         sel = collecting;
     }
@@ -44,43 +47,43 @@ public class MapIterable<Element, Result> implements Iterable<Result> {
     @Override
     @Ignore
     public Result getFirst() {
-    	return Iterable$impl._getFirst(this);
+    	return $ceylon$language$Iterable$this.getFirst();
     }
     @Override @Ignore public Result getLast(){
-        return Iterable$impl._getLast(this);
+        return $ceylon$language$Iterable$this.getLast();
     }
 
     @Override
     @Ignore
     public Iterable<? extends Result> getRest() {
-    	return Iterable$impl._getRest(this);
+    	return $ceylon$language$Iterable$this.getRest();
     }
 
     @Override
     @Ignore
     public List<? extends Result> getSequence() {
-        return Iterable$impl._getSequence(this);
+        return $ceylon$language$Iterable$this.getSequence();
     }
     @Override
     @Ignore
     public Result find(Callable<? extends Boolean> f) {
-        return Iterable$impl._find(this, f);
+        return $ceylon$language$Iterable$this.find(f);
     }
     @Override @Ignore
     public Result findLast(Callable<? extends Boolean> f) {
-        return Iterable$impl._findLast(this, f);
+        return $ceylon$language$Iterable$this.findLast(f);
     }
     @Override @Ignore
     public List<? extends Result> sort(Callable<? extends Comparison> f) {
-        return Iterable$impl._sort(this, f);
+        return $ceylon$language$Iterable$this.sort(f);
     }
     @Override @Ignore
     public <R2> List<? extends R2> collect(Callable<? extends R2> f) {
-        return Iterable$impl._collect(this, f);
+        return $ceylon$language$Iterable$this.collect(f);
     }
     @Override @Ignore
     public List<? extends Result> select(Callable<? extends Boolean> f) {
-        return Iterable$impl._select(this, f);
+        return $ceylon$language$Iterable$this.select(f);
     }
     @Override
     @Ignore
@@ -95,46 +98,46 @@ public class MapIterable<Element, Result> implements Iterable<Result> {
     @Override
     @Ignore
     public <R2> R2 fold(R2 ini, Callable<? extends R2> f) {
-        return Iterable$impl._fold(this, ini, f);
+        return (R2) $ceylon$language$Iterable$this.fold(ini, f);
     }
     @Override @Ignore
     public boolean any(Callable<? extends Boolean> f) {
-        return Iterable$impl._any(this, f);
+        return $ceylon$language$Iterable$this.any(f);
     }
     @Override @Ignore
     public boolean every(Callable<? extends Boolean> f) {
-        return Iterable$impl._every(this, f);
+        return $ceylon$language$Iterable$this.every(f);
     }
     @Override @Ignore
     public Iterable<? extends Result> skipping(long skip) {
-        return Iterable$impl._skipping(this, skip);
+        return $ceylon$language$Iterable$this.skipping(skip);
     }
     @Override @Ignore
     public Iterable<? extends Result> taking(long take) {
-        return Iterable$impl._taking(this, take);
+        return $ceylon$language$Iterable$this.taking(take);
     }
     @Override @Ignore
     public Iterable<? extends Result> by(long step) {
-        return Iterable$impl._by(this, step);
+        return $ceylon$language$Iterable$this.by(step);
     }
     @Override @Ignore
     public long count(Callable<? extends Boolean> f) {
-        return Iterable$impl._count(this, f);
+        return $ceylon$language$Iterable$this.count(f);
     }
     @Override @Ignore
     public Iterable<? extends Result> getCoalesced() {
-        return Iterable$impl._getCoalesced(this);
+        return $ceylon$language$Iterable$this.getCoalesced();
     }
     @Override @Ignore
     public Iterable<? extends Entry<? extends Integer, ? extends Result>> getIndexed() {
-        return Iterable$impl._getIndexed(this);
+        return $ceylon$language$Iterable$this.getIndexed();
     }
     @SuppressWarnings("rawtypes") @Override @Ignore
     public <Other> Iterable chain(Iterable<? extends Other> other) {
-        return Iterable$impl._chain(this, other);
+        return $ceylon$language$Iterable$this.chain(other);
     }
     @Override @Ignore
     public <Key> Map<? extends Key, ? extends Sequence<? extends Result>> group(Callable<? extends Key> grouping) {
-        return Iterable$impl._group(this, grouping);
+        return $ceylon$language$Iterable$this.group(grouping);
     }
 }

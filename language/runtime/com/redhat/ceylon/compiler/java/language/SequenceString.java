@@ -7,7 +7,6 @@ import ceylon.language.Comparison;
 import ceylon.language.Entry;
 import ceylon.language.Integer;
 import ceylon.language.Iterable;
-import ceylon.language.Iterable$impl;
 import ceylon.language.List;
 import ceylon.language.List$impl;
 import ceylon.language.Map;
@@ -22,9 +21,11 @@ import com.redhat.ceylon.compiler.java.metadata.Ignore;
 @Ignore
 @Ceylon(major = 3)
 public class SequenceString extends String implements Some<Character> {
+    private final ceylon.language.Iterable$impl<Character> $ceylon$language$Iterable$this;
 
     public SequenceString(java.lang.String s) {
         super(s);
+        this.$ceylon$language$Iterable$this = new ceylon.language.Iterable$impl<Character>(this);
     }
 
     @Override
@@ -50,11 +51,11 @@ public class SequenceString extends String implements Some<Character> {
     @Override
     @Ignore
     public List<? extends Character> getSequence() {
-        return Iterable$impl._getSequence(this);
+        return $ceylon$language$Iterable$this.getSequence();
     }
     @Override @Ignore
     public Character find(Callable<? extends Boolean> f) {
-        return Iterable$impl._find(this, f);
+        return $ceylon$language$Iterable$this.find(f);
     }
     @Override @Ignore
     public Character findLast(Callable<? extends Boolean> f) {
@@ -63,7 +64,7 @@ public class SequenceString extends String implements Some<Character> {
     @Override
     @Ignore
     public List<? extends Character> sort(Callable<? extends Comparison> f) {
-        return String.instance(string_.string(Iterable$impl._sort(this, f)));
+        return String.instance(string_.string($ceylon$language$Iterable$this.sort(f)));
     }
     @Override
     @Ignore
@@ -81,15 +82,15 @@ public class SequenceString extends String implements Some<Character> {
     @Override
     @Ignore
     public <Result> Result fold(Result ini, Callable<? extends Result> f) {
-        return Iterable$impl._fold(this, ini, f);
+        return $ceylon$language$Iterable$this.fold(ini, f);
     }
     @Override @Ignore
     public boolean any(Callable<? extends Boolean> f) {
-        return Iterable$impl._any(this, f);
+        return $ceylon$language$Iterable$this.any(f);
     }
     @Override @Ignore
     public boolean every(Callable<? extends Boolean> f) {
-        return Iterable$impl._every(this, f);
+        return $ceylon$language$Iterable$this.every(f);
     }
     @Override @Ignore
     public Iterable<? extends Character> skipping(long skip) {
@@ -101,23 +102,23 @@ public class SequenceString extends String implements Some<Character> {
     }
     @Override @Ignore
     public Iterable<? extends Character> by(long step) {
-        return String.instance(string_.string(Iterable$impl._by(this, step).getSequence()));
+        return String.instance(string_.string($ceylon$language$Iterable$this.by(step).getSequence()));
     }
     @Override @Ignore
     public long count(Callable<? extends Boolean> f) {
-        return Iterable$impl._count(this, f);
+        return $ceylon$language$Iterable$this.count(f);
     }
     @Override @Ignore
     public Iterable<? extends Entry<? extends Integer, ? extends Character>> getIndexed() {
-        return Iterable$impl._getIndexed(this);
+        return $ceylon$language$Iterable$this.getIndexed();
     }
     @SuppressWarnings("rawtypes")
     @Override @Ignore public <Other>Iterable chain(Iterable<? extends Other> other) {
-        return Iterable$impl._chain(this, other);
+        return $ceylon$language$Iterable$this.chain(other);
     }
     @Override @Ignore
     public <Key> Map<? extends Key, ? extends Sequence<? extends Character>> group(Callable<? extends Key> grouping) {
-        return Iterable$impl._group(this, grouping);
+        return $ceylon$language$Iterable$this.group(grouping);
     }
 
     @Override @Ignore

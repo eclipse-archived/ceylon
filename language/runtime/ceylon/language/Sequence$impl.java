@@ -4,9 +4,12 @@ import com.redhat.ceylon.compiler.java.metadata.Ignore;
 
 @Ignore
 public final class Sequence$impl<Element> {
+    private final ceylon.language.Iterable$impl<Element> $ceylon$language$Iterable$this;
     
     private final Sequence<Element> $this;
+    
     public Sequence$impl(Sequence<Element> $this) {
+        this.$ceylon$language$Iterable$this = new ceylon.language.Iterable$impl<Element>($this);
         this.$this = $this;
     }
 
@@ -32,19 +35,19 @@ public final class Sequence$impl<Element> {
     
     @SuppressWarnings({ "rawtypes", "unchecked" })
     public Sequence<? extends Element> sort(Callable<? extends Comparison> f) {
-        return (Sequence)Iterable$impl._sort($this, f).getSequence();
+        return (Sequence)$ceylon$language$Iterable$this.sort(f).getSequence();
     }
     @SuppressWarnings({ "rawtypes", "unchecked" })
     public static <Element> Sequence<? extends Element> _sort(Sequence<? extends Element> $this, Callable<? extends Comparison> f) {
-        return (Sequence)Iterable$impl._sort($this, f).getSequence();
+        return (new Sequence$impl($this)).sort(f).getSequence();
     }
     @SuppressWarnings({ "rawtypes", "unchecked" })
     public <Result> Sequence<? extends Result> collect(Callable<? extends Result> f) {
-        return (Sequence)Iterable$impl._collect($this, f);
+        return (Sequence)$ceylon$language$Iterable$this.collect(f);
     }
     @SuppressWarnings({ "rawtypes", "unchecked" })
     public static <Element,Result> Sequence<? extends Result> _collect(Sequence<? extends Element> $this, Callable<? extends Result> f) {
-        return (Sequence)Iterable$impl._collect($this, f);
+        return (new Sequence$impl($this)).collect(f);
     }
 
 }    

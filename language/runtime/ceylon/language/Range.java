@@ -28,6 +28,7 @@ public class Range<Element extends Comparable<? super Element> & Ordinal<? super
     implements Sequence<Element>, Category {
     private final ceylon.language.Category$impl $ceylon$language$Category$this;
     private final ceylon.language.Correspondence$impl $ceylon$language$Correspondence$this;
+    private final ceylon.language.Iterable$impl<Element> $ceylon$language$Iterable$this;
 
     private final Element first;
     private final Element last;
@@ -37,6 +38,7 @@ public class Range<Element extends Comparable<? super Element> & Ordinal<? super
     		     @Name("last") Element last) {
         this.$ceylon$language$Category$this = new ceylon.language.Category$impl(this);
         this.$ceylon$language$Correspondence$this = new ceylon.language.Correspondence$impl(this);
+        this.$ceylon$language$Iterable$this = new ceylon.language.Iterable$impl<Element>(this);
         this.first = first;
         this.last = last;
         this.size = Math.abs(last.distanceFrom(first))+1;
@@ -474,7 +476,7 @@ public class Range<Element extends Comparable<? super Element> & Ordinal<? super
                 }
             };
         }
-    	return Iterable$impl._by(this, step);
+    	return $ceylon$language$Iterable$this.by(step);
     }
 
     @Override
@@ -521,15 +523,15 @@ public class Range<Element extends Comparable<? super Element> & Ordinal<? super
     @Override
     @Ignore
     public <Result> Result fold(Result ini, Callable<? extends Result> f) {
-        return Iterable$impl._fold(this, ini, f);
+        return $ceylon$language$Iterable$this.fold(ini, f);
     }
     @Override @Ignore
     public boolean any(Callable<? extends Boolean> f) {
-        return Iterable$impl._any(this, f);
+        return $ceylon$language$Iterable$this.any(f);
     }
     @Override @Ignore
     public boolean every(Callable<? extends Boolean> f) {
-        return Iterable$impl._every(this, f);
+        return $ceylon$language$Iterable$this.every(f);
     }
     @Override @SuppressWarnings("unchecked")
     @TypeInfo("ceylon.language::Range<Element>|ceylon.language::Empty")
@@ -572,15 +574,15 @@ public class Range<Element extends Comparable<? super Element> & Ordinal<? super
     }
     @Override @Ignore
     public Iterable<? extends Entry<? extends Integer, ? extends Element>> getIndexed() {
-        return Iterable$impl._getIndexed(this);
+        return $ceylon$language$Iterable$this.getIndexed();
     }
     @SuppressWarnings("rawtypes")
     @Override @Ignore public <Other>Iterable chain(Iterable<? extends Other> other) {
-        return Iterable$impl._chain(this, other);
+        return $ceylon$language$Iterable$this.chain(other);
     }
     @Override @Ignore
     public <Key> Map<? extends Key, ? extends Sequence<? extends Element>> group(Callable<? extends Key> grouping) {
-        return Iterable$impl._group(this, grouping);
+        return $ceylon$language$Iterable$this.group(grouping);
     }
 
     @Annotations(@Annotation("actual"))

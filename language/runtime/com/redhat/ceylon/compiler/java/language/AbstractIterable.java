@@ -7,7 +7,6 @@ import ceylon.language.Comparison;
 import ceylon.language.Entry;
 import ceylon.language.Integer;
 import ceylon.language.Iterable;
-import ceylon.language.Iterable$impl;
 import ceylon.language.List;
 import ceylon.language.Map;
 import ceylon.language.Sequence;
@@ -26,7 +25,12 @@ import com.redhat.ceylon.compiler.java.metadata.SatisfiedTypes;
 @Class(extendsType="ceylon.language::Object")
 @SatisfiedTypes("ceylon.language::Iterable<Element>")
 public abstract class AbstractIterable<Element> implements Iterable<Element> {
+    private final ceylon.language.Iterable$impl<Element> $ceylon$language$Iterable$this;
 
+    public AbstractIterable() {
+        this.$ceylon$language$Iterable$this = new ceylon.language.Iterable$impl<Element>(this);
+    }
+    
     @Override
     public boolean getEmpty() {
         return getIterator().next() == exhausted_.getExhausted$();
@@ -35,22 +39,22 @@ public abstract class AbstractIterable<Element> implements Iterable<Element> {
     @Override
     @Ignore
     public List<? extends Element> getSequence() {
-        return Iterable$impl._getSequence(this);
+        return $ceylon$language$Iterable$this.getSequence();
     }
     
     @Override
     @Ignore
     public Element getFirst() {
-    	return Iterable$impl._getFirst(this);
+    	return $ceylon$language$Iterable$this.getFirst();
     }
     @Override @Ignore public Element getLast() {
-        return Iterable$impl._getLast(this);
+        return $ceylon$language$Iterable$this.getLast();
     }
 
     @Override
     @Ignore
     public Iterable<? extends Element> getRest() {
-    	return Iterable$impl._getRest(this);
+    	return $ceylon$language$Iterable$this.getRest();
     }
 
     @Override
@@ -69,71 +73,71 @@ public abstract class AbstractIterable<Element> implements Iterable<Element> {
     @Ignore
     public <Result> Result fold(Result initial,
             Callable<? extends Result> accumulating) {
-        return Iterable$impl._fold(this, initial, accumulating);
+        return $ceylon$language$Iterable$this.fold(initial, accumulating);
     }
 
     @Override @Ignore
     public Element find(Callable<? extends Boolean> selecting) {
-        return Iterable$impl._find(this, selecting);
+        return $ceylon$language$Iterable$this.find(selecting);
     }
 
     @Override @Ignore
     public Element findLast(Callable<? extends Boolean> selecting) {
-        return Iterable$impl._findLast(this, selecting);
+        return $ceylon$language$Iterable$this.findLast(selecting);
     }
 
     @Override 
     @Ignore
     public List<? extends Element> sort(Callable<? extends Comparison> f) { 
-        return Iterable$impl._sort(this, f); 
+        return $ceylon$language$Iterable$this.sort(f); 
     }
     @Override @Ignore
     public <Result> List<? extends Result> collect(Callable<? extends Result> f) {
-        return Iterable$impl._collect(this, f);
+        return $ceylon$language$Iterable$this.collect(f);
     }
     @Override @Ignore
     public List<? extends Element> select(Callable<? extends Boolean> f) {
-        return Iterable$impl._select(this, f);
+        return $ceylon$language$Iterable$this.select(f);
     }
     @Override @Ignore
     public boolean any(Callable<? extends Boolean> f) {
-        return Iterable$impl._any(this, f);
+        return $ceylon$language$Iterable$this.any(f);
     }
     @Override @Ignore
     public boolean every(Callable<? extends Boolean> f) {
-        return Iterable$impl._every(this, f);
+        return $ceylon$language$Iterable$this.every(f);
     }
     @Override @Ignore
     public Iterable<? extends Element> skipping(long skip) {
-        return Iterable$impl._skipping(this, skip);
+        return $ceylon$language$Iterable$this.skipping(skip);
     }
     @Override @Ignore
     public Iterable<? extends Element> taking(long take) {
-        return Iterable$impl._taking(this, take);
+        return $ceylon$language$Iterable$this.taking(take);
     }
     @Override @Ignore
     public Iterable<? extends Element> by(long step) {
-        return Iterable$impl._by(this, step);
+        return $ceylon$language$Iterable$this.by(step);
     }
     @Override @Ignore
     public long count(Callable<? extends Boolean> selecting) {
-        return Iterable$impl._count(this, selecting);
+        return $ceylon$language$Iterable$this.count(selecting);
     }
     @Override @Ignore
     public Iterable<? extends Element> getCoalesced() {
-        return Iterable$impl._getCoalesced(this);
+        return $ceylon$language$Iterable$this.getCoalesced();
     }
     @Override @Ignore
     public Iterable<? extends Entry<? extends Integer, ? extends Element>> getIndexed() {
-        return Iterable$impl._getIndexed(this);
+        return $ceylon$language$Iterable$this.getIndexed();
     }
     @Override @Ignore @SuppressWarnings("rawtypes")
     public <Other>Iterable chain(Iterable<? extends Other> other) {
-        return Iterable$impl._chain(this, other);
+        return $ceylon$language$Iterable$this.chain(other);
     }
     @Override @Ignore
     public <Key> Map<? extends Key, ? extends Sequence<? extends Element>> group(Callable<? extends Key> grouping) {
-        return Iterable$impl._group(this, grouping);
+        return $ceylon$language$Iterable$this.group(grouping);
     }
 
 }

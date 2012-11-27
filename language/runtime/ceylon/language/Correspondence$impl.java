@@ -153,12 +153,14 @@ public final class Correspondence$impl<Key,Item> {
         private final Correspondence$impl<ceylon.language.Integer, Item> $ceylon$language$Correspondence$this;
         private final ceylon.language.Category$impl $ceylon$language$Category$this;
         private final ceylon.language.Collection$impl<Item> $ceylon$language$Collection$this;
+        private final ceylon.language.Iterable$impl<Item> $ceylon$language$Iterable$this;
 
         Items(Sequence<? extends Key> keys){
             this.keys = keys;
             this.$ceylon$language$Correspondence$this = new Correspondence$impl<ceylon.language.Integer, Item>(this);
             this.$ceylon$language$Category$this = new ceylon.language.Category$impl(this);
             this.$ceylon$language$Collection$this = new ceylon.language.Collection$impl<Item>(this);
+            this.$ceylon$language$Iterable$this = new ceylon.language.Iterable$impl<Item>(this);
         }
         public final Integer getLastIndex() {
             return keys.getLastIndex();
@@ -268,17 +270,17 @@ public final class Correspondence$impl<Key,Item> {
         }
         @Override @Ignore
         public Iterable<? extends Item> skipping(long skip) {
-            return Iterable$impl._skipping(this, skip);
+            return $ceylon$language$Iterable$this.skipping(skip);
         }
 
         @Override @Ignore
         public Iterable<? extends Item> taking(long take) {
-            return Iterable$impl._taking(this, take);
+            return $ceylon$language$Iterable$this.taking(take);
         }
 
         @Override @Ignore
         public Iterable<? extends Item> by(long step) {
-            return Iterable$impl._by(this, step);
+            return $ceylon$language$Iterable$this.by(step);
         }
         @Override
         @SuppressWarnings({"rawtypes", "unchecked"})
@@ -354,7 +356,7 @@ public final class Correspondence$impl<Key,Item> {
         }
         @Override @Ignore
         public Item find(Callable<? extends Boolean> f) {
-            return Iterable$impl._find(this, f);
+            return $ceylon$language$Iterable$this.find(f);
         }
         @Override @Ignore
         public Item findLast(Callable<? extends Boolean> f) {
@@ -386,35 +388,35 @@ public final class Correspondence$impl<Key,Item> {
         @Override
         @Ignore
         public <Result> Result fold(Result ini, Callable<? extends Result> f) {
-            return Iterable$impl._fold(this, ini, f);
+            return $ceylon$language$Iterable$this.fold(ini, f);
         }
         @Override @Ignore
         public boolean any(Callable<? extends Boolean> f) {
-            return Iterable$impl._any(this, f);
+            return $ceylon$language$Iterable$this.any(f);
         }
         @Override @Ignore
         public boolean every(Callable<? extends Boolean> f) {
-            return Iterable$impl._every(this, f);
+            return $ceylon$language$Iterable$this.every(f);
         }
         @Override @Ignore
         public long count(Callable<? extends Boolean> f) {
-            return Iterable$impl._count(this, f);
+            return $ceylon$language$Iterable$this.count(f);
         }
         @Override @Ignore
         public Iterable<? extends Item> getCoalesced() {
-            return Iterable$impl._getCoalesced(this);
+            return $ceylon$language$Iterable$this.getCoalesced();
         }
         @Override @Ignore
         public Iterable<? extends Entry<? extends Integer, ? extends Item>> getIndexed() {
-            return Iterable$impl._getIndexed(this);
+            return $ceylon$language$Iterable$this.getIndexed();
         }
         @SuppressWarnings("rawtypes")
         @Override @Ignore public <Other>Iterable chain(Iterable<? extends Other> other) {
-            return Iterable$impl._chain(this, other);
+            return $ceylon$language$Iterable$this.chain(other);
         }
         @Override @Ignore
         public <Key> Map<? extends Key, ? extends Sequence<? extends Item>> group(Callable<? extends Key> grouping) {
-            return Iterable$impl._group(this, grouping);
+            return $ceylon$language$Iterable$this.group(grouping);
         }
         @SuppressWarnings("rawtypes")
         @Override @Ignore public <Other>Sequence withLeading(Other e) {
