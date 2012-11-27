@@ -11,7 +11,7 @@ public final class Sized$impl {
     public boolean getEmpty(){
         return _getEmpty($this);
     }
-    static final boolean _getEmpty(Sized $this){
+    private static final boolean _getEmpty(Sized $this){
         return $this.getSize() == 0;
     }
 }
