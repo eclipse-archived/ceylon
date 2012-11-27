@@ -1,3 +1,13 @@
+::
+:: Only check the registry if JAVA_HOME is not already set
+::
+IF NOT "%JAVA_HOME%" == "" (
+    exit /b 0
+)
+
+::
+:: Find Java in the registry
+::
 set "KEY_NAME=HKLM\SOFTWARE\JavaSoft\Java Runtime Environment"
 set "KEY_NAME2=HKLM\SOFTWARE\Wow6432Node\JavaSoft\Java Runtime Environment"
 
