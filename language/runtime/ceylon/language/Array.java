@@ -31,12 +31,10 @@ import com.redhat.ceylon.compiler.java.metadata.TypeParameters;
     "ceylon.language::Ranged<ceylon.language::Integer,ceylon.language::Array<Element>>"
 })
 public abstract class Array<Element> implements List<Element>, FixedSized<Element> {
-    private final ceylon.language.Category$impl $ceylon$language$Category$this;
 
     protected final java.lang.Object array;
 
     protected Array(java.lang.Object array) {
-        this.$ceylon$language$Category$this = new ceylon.language.Category$impl(this);
         this.array = array;
     }
 
@@ -609,12 +607,12 @@ public abstract class Array<Element> implements List<Element>, FixedSized<Elemen
     public boolean containsEvery(@Sequenced @Name("elements")
     @TypeInfo("ceylon.language::Sequential<ceylon.language::Object>")
     List<?> elements) {
-        return $ceylon$language$Category$this.containsEvery(elements);
+        return Category$impl._containsEvery(this, elements);
     }
     @Override
     @Ignore
     public boolean containsEvery() {
-        return $ceylon$language$Category$this.containsEvery(empty_.getEmpty$());
+        return Category$impl._containsEvery(this, empty_.getEmpty$());
     }
     @Override
     @Ignore
@@ -627,12 +625,12 @@ public abstract class Array<Element> implements List<Element>, FixedSized<Elemen
     public boolean containsAny(@Sequenced @Name("elements")
     @TypeInfo("ceylon.language::Sequential<ceylon.language::Object>")
     List<?> elements) {
-        return $ceylon$language$Category$this.containsAny(elements);
+        return Category$impl._containsAny(this, elements);
     }
     @Override
     @Ignore
     public boolean containsAny() {
-        return $ceylon$language$Category$this.containsAny(empty_.getEmpty$());
+        return Category$impl._containsAny(this, empty_.getEmpty$());
     }
     @Override
     @Ignore
