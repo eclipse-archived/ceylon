@@ -37,9 +37,8 @@ if "%CEYLON_REPO%" == "" (
 
     shift
     goto :loop_args
-
-:done_args
 )
+:done_args
 
 rem If it does not exist let's use the user repo
 if not exist "%CEYLON_REPO%" (
