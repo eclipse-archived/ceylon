@@ -23,6 +23,92 @@ class OptionalInterface implements .com.redhat.ceylon.compiler.java.test.interop
         .com.redhat.ceylon.compiler.java.test.interop.JavaOptionalInterface $x$1;
         if (($x$1 = x) != null) {
             final .com.redhat.ceylon.compiler.java.test.interop.JavaOptionalInterface $x$2 = $x$1;
+            .com.redhat.ceylon.compiler.java.test.interop.JavaOptionalInterface $z$4;
+            if (($z$4 = $x$2.getProp1()) != null) {
+                final .com.redhat.ceylon.compiler.java.test.interop.JavaOptionalInterface $z$5 = $z$4;
+            }
+            final boolean b1 = $x$2.getProp1() != null;
+            final .ceylon.language.List<? extends .com.redhat.ceylon.compiler.java.test.interop.JavaOptionalInterface> existsInComprehension1 = new .com.redhat.ceylon.compiler.java.language.AbstractIterable<.com.redhat.ceylon.compiler.java.test.interop.JavaOptionalInterface>(){
+                
+                public final .ceylon.language.Iterator<.com.redhat.ceylon.compiler.java.test.interop.JavaOptionalInterface> getIterator() {
+                    return new .ceylon.language.Iterator<.com.redhat.ceylon.compiler.java.test.interop.JavaOptionalInterface>(){
+                        private final .ceylon.language.Iterator<? extends .com.redhat.ceylon.compiler.java.test.interop.JavaOptionalInterface> iter$0 = new .com.redhat.ceylon.compiler.java.language.ArraySequence<.com.redhat.ceylon.compiler.java.test.interop.JavaOptionalInterface>($x$2).getIterator();
+                        private .com.redhat.ceylon.compiler.java.test.interop.JavaOptionalInterface obj;
+                        private boolean obj$exhausted;
+                        
+                        private final boolean obj() {
+                            final .java.lang.Object $ceylontmpitem6 = iter$0.next();
+                            obj$exhausted = $ceylontmpitem6 == .ceylon.language.exhausted_.getExhausted$();
+                            if (obj$exhausted) {
+                                return false;
+                            } else {
+                                obj = (.com.redhat.ceylon.compiler.java.test.interop.JavaOptionalInterface)$ceylontmpitem6;
+                            }
+                            return true;
+                        }
+                        private .com.redhat.ceylon.compiler.java.test.interop.JavaOptionalInterface $z$8;
+                        
+                        private final boolean next1() {
+                            while (true) {
+                                if (!this.obj()) break;
+                                .com.redhat.ceylon.compiler.java.test.interop.JavaOptionalInterface $z$7 = null;
+                                if (($z$7 = obj.getProp1()) != null) {
+                                    $z$8 = $z$7;
+                                    break;
+                                }
+                            }
+                            return !obj$exhausted;
+                        }
+                        
+                        public final .java.lang.Object next() {
+                            return this.next1() ? $z$8 : .ceylon.language.exhausted_.getExhausted$();
+                        }
+                    };
+                }
+            }.getSequence();
+            .com.redhat.ceylon.compiler.java.test.interop.JavaOptionalInterface $z$10;
+            if (($z$10 = $x$2.method($x$2)) != null) {
+                final .com.redhat.ceylon.compiler.java.test.interop.JavaOptionalInterface $z$11 = $z$10;
+            }
+            final boolean b2 = $x$2.method($x$2) != null;
+            final .ceylon.language.List<? extends .com.redhat.ceylon.compiler.java.test.interop.JavaOptionalInterface> existsInComprehension2 = new .com.redhat.ceylon.compiler.java.language.AbstractIterable<.com.redhat.ceylon.compiler.java.test.interop.JavaOptionalInterface>(){
+                
+                public final .ceylon.language.Iterator<.com.redhat.ceylon.compiler.java.test.interop.JavaOptionalInterface> getIterator() {
+                    return new .ceylon.language.Iterator<.com.redhat.ceylon.compiler.java.test.interop.JavaOptionalInterface>(){
+                        private final .ceylon.language.Iterator<? extends .com.redhat.ceylon.compiler.java.test.interop.JavaOptionalInterface> iter$0 = new .com.redhat.ceylon.compiler.java.language.ArraySequence<.com.redhat.ceylon.compiler.java.test.interop.JavaOptionalInterface>($x$2).getIterator();
+                        private .com.redhat.ceylon.compiler.java.test.interop.JavaOptionalInterface obj;
+                        private boolean obj$exhausted;
+                        
+                        private final boolean obj() {
+                            final .java.lang.Object $ceylontmpitem12 = iter$0.next();
+                            obj$exhausted = $ceylontmpitem12 == .ceylon.language.exhausted_.getExhausted$();
+                            if (obj$exhausted) {
+                                return false;
+                            } else {
+                                obj = (.com.redhat.ceylon.compiler.java.test.interop.JavaOptionalInterface)$ceylontmpitem12;
+                            }
+                            return true;
+                        }
+                        private .com.redhat.ceylon.compiler.java.test.interop.JavaOptionalInterface $z$14;
+                        
+                        private final boolean next1() {
+                            while (true) {
+                                if (!this.obj()) break;
+                                .com.redhat.ceylon.compiler.java.test.interop.JavaOptionalInterface $z$13 = null;
+                                if (($z$13 = obj.method($x$2)) != null) {
+                                    $z$14 = $z$13;
+                                    break;
+                                }
+                            }
+                            return !obj$exhausted;
+                        }
+                        
+                        public final .java.lang.Object next() {
+                            return this.next1() ? $z$14 : .ceylon.language.exhausted_.getExhausted$();
+                        }
+                    };
+                }
+            }.getSequence();
             return .com.redhat.ceylon.compiler.java.Util.checkNull($x$2.getProp1()).getProp1();
         }
         return null;
