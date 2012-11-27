@@ -1974,14 +1974,14 @@ public class GenerateJsVisitor extends Visitor
 
     @Override
     public void visit(SequencedArgument that) {
-        out("[");
+        if (that.getEllipsis() == null) { out("["); }
         boolean first=true;
         for (Expression arg: that.getExpressionList().getExpressions()) {
             if (!first) out(",");
             arg.visit(this);
             first = false;
         }
-        out("]");
+        if (that.getEllipsis() == null) { out("]"); }
     }
 
     @Override
