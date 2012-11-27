@@ -16,7 +16,6 @@ import ceylon.language.Iterator;
 import ceylon.language.List;
 import ceylon.language.Map;
 import ceylon.language.Sequence;
-import ceylon.language.Sequence$impl;
 import ceylon.language.empty_;
 import ceylon.language.exhausted_;
 
@@ -38,6 +37,7 @@ public class ArraySequence<Element> implements Sequence<Element> {
     private final ceylon.language.Correspondence$impl $ceylon$language$Correspondence$this;
     private final ceylon.language.Iterable$impl<Element> $ceylon$language$Iterable$this;
     private final ceylon.language.List$impl<Element> $ceylon$language$List$this;
+    private final ceylon.language.Sequence$impl<Element> $ceylon$language$Sequence$this;
 
     protected final Element[] array;
     protected final long first;
@@ -53,6 +53,7 @@ public class ArraySequence<Element> implements Sequence<Element> {
         this.$ceylon$language$Correspondence$this = new ceylon.language.Correspondence$impl(this);
         this.$ceylon$language$Iterable$this = new ceylon.language.Iterable$impl<Element>(this);
         this.$ceylon$language$List$this = new ceylon.language.List$impl<Element>(this);
+        this.$ceylon$language$Sequence$this = new ceylon.language.Sequence$impl<Element>(this);
     	if (array.length==0 || array.length<=first) {
     		throw new IllegalArgumentException("ArraySequence may not have zero elements");
     	}
@@ -67,6 +68,7 @@ public class ArraySequence<Element> implements Sequence<Element> {
         this.$ceylon$language$Correspondence$this = new ceylon.language.Correspondence$impl(this);
         this.$ceylon$language$Iterable$this = new ceylon.language.Iterable$impl<Element>(this);
         this.$ceylon$language$List$this = new ceylon.language.List$impl<Element>(this);
+        this.$ceylon$language$Sequence$this = new ceylon.language.Sequence$impl<Element>(this);
     	if (list.size()==0) {
     		throw new IllegalArgumentException("ArraySequence may not have zero elements");
     	}
@@ -366,7 +368,7 @@ public class ArraySequence<Element> implements Sequence<Element> {
     @Override
     @Ignore
     public Sequence<? extends Element> getSequence() {
-        return Sequence$impl._getSequence(this);
+        return $ceylon$language$Sequence$this.getSequence();
     }
 
     @Override @Ignore
@@ -380,7 +382,7 @@ public class ArraySequence<Element> implements Sequence<Element> {
     @Override
     @Ignore
     public Sequence<? extends Element> sort(Callable<? extends Comparison> f) {
-        return Sequence$impl._sort(this, f);
+        return $ceylon$language$Sequence$this.sort(f);
     }
 
     @Override
@@ -393,7 +395,7 @@ public class ArraySequence<Element> implements Sequence<Element> {
     }
     @Override
     public <Result> Sequence<? extends Result> collect(Callable<? extends Result> f) {
-        return Sequence$impl._collect(this, f);
+        return $ceylon$language$Sequence$this.collect(f);
     }
 
     @Override

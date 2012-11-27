@@ -155,6 +155,7 @@ public final class Correspondence$impl<Key,Item> {
         private final ceylon.language.Collection$impl<Item> $ceylon$language$Collection$this;
         private final ceylon.language.Iterable$impl<Item> $ceylon$language$Iterable$this;
         private final ceylon.language.List$impl<Item> $ceylon$language$List$this;
+        private final ceylon.language.Sequence$impl<Item> $ceylon$language$Sequence$this;
 
         Items(Sequence<? extends Key> keys){
             this.keys = keys;
@@ -163,6 +164,7 @@ public final class Correspondence$impl<Key,Item> {
             this.$ceylon$language$Collection$this = new ceylon.language.Collection$impl<Item>(this);
             this.$ceylon$language$Iterable$this = new ceylon.language.Iterable$impl<Item>(this);
             this.$ceylon$language$List$this = new ceylon.language.List$impl<Item>(this);
+            this.$ceylon$language$Sequence$this = new ceylon.language.Sequence$impl<Item>(this);
         }
         public final Integer getLastIndex() {
             return keys.getLastIndex();
@@ -258,7 +260,7 @@ public final class Correspondence$impl<Key,Item> {
         @Override
         @Ignore
         public Item getLast() {
-            return Sequence$impl._getLast(this);
+            return $ceylon$language$Sequence$this.getLast();
         }
         @Override
         @Ignore
@@ -354,7 +356,7 @@ public final class Correspondence$impl<Key,Item> {
         @Override
         @Ignore
         public Sequence<? extends Item> getSequence() {
-            return Sequence$impl._getSequence(this);
+            return $ceylon$language$Sequence$this.getSequence();
         }
         @Override @Ignore
         public Item find(Callable<? extends Boolean> f) {
@@ -367,7 +369,7 @@ public final class Correspondence$impl<Key,Item> {
         @Override
         @Ignore
         public Sequence<? extends Item> sort(Callable<? extends Comparison> f) {
-            return Sequence$impl._sort(this, f);
+            return $ceylon$language$Sequence$this.sort(f);
         }
         @Override
         @Ignore
@@ -381,7 +383,7 @@ public final class Correspondence$impl<Key,Item> {
         }
         @Override @Ignore
         public <Result> Sequence<? extends Result> collect(Callable<? extends Result> f) {
-            return Sequence$impl._collect(this, f);
+            return $ceylon$language$Sequence$this.collect(f);
         }
         @Override @Ignore
         public List<? extends Item> select(Callable<? extends Boolean> f) {

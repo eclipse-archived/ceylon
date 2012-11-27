@@ -27,6 +27,7 @@ public class Singleton<Element>
     private final ceylon.language.Correspondence$impl $ceylon$language$Correspondence$this;
     private final ceylon.language.Iterable$impl<Element> $ceylon$language$Iterable$this;
     private final ceylon.language.List$impl<Element> $ceylon$language$List$this;
+    private final ceylon.language.Sequence$impl<Element> $ceylon$language$Sequence$this;
 
 	Element element;
 
@@ -35,6 +36,7 @@ public class Singleton<Element>
         this.$ceylon$language$Correspondence$this = new ceylon.language.Correspondence$impl(this);
         this.$ceylon$language$Iterable$this = new ceylon.language.Iterable$impl<Element>(this);
         this.$ceylon$language$List$this = new ceylon.language.List$impl<Element>(this);
+        this.$ceylon$language$Sequence$this = new ceylon.language.Sequence$impl<Element>(this);
 		this.element = element;
 	}
 
@@ -289,7 +291,7 @@ public class Singleton<Element>
     @Ignore
     public
     Sequence<? extends Element> getSequence() {
-        return Sequence$impl._getSequence(this);
+        return $ceylon$language$Sequence$this.getSequence();
     }
     @Override @Ignore
     public Element find(Callable<? extends Boolean> f) {
