@@ -27,14 +27,18 @@ if "%CEYLON_REPO%" == "" (
         set "CEYLON_REPO=%~2"
         set "ARGS=%ARGS% %1 %2"
         shift
-    ) else if "%~1" == "--runtime" (
+        goto :end_if_args
+    )
+    if "%~1" == "--runtime" (
         rem --runtime overrides CEYLON_VERSION
         set "CEYLON_VERSION=%~2"
         shift
-    ) else (
-        set "ARGS=%ARGS% %1"
+        goto :end_if_args
     )
+    rem other argument
+    set "ARGS=%ARGS% %1"
 
+    :end_if_args
     shift
     goto :loop_args
 )
