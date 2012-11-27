@@ -15,7 +15,7 @@ public class Identifiable$impl {
     public boolean equals(java.lang.Object that) {
         return _equals($this, that);
     }
-    static boolean _equals(java.lang.Object $this, java.lang.Object that) {
+    private static boolean _equals(java.lang.Object $this, java.lang.Object that) {
         if (isIdentifiable(that)) {
             return $this == that;
         }
@@ -28,7 +28,7 @@ public class Identifiable$impl {
     public int hashCode() {
         return _hashCode($this);
     }
-    static int _hashCode(java.lang.Object $this) {
+    private static int _hashCode(java.lang.Object $this) {
         return System.identityHashCode($this);
     }
     
