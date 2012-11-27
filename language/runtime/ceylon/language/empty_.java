@@ -12,11 +12,13 @@ public class empty_ {
         private final ceylon.language.Category$impl $ceylon$language$Category$this;
         private final ceylon.language.Collection$impl $ceylon$language$Collection$this;
         private final ceylon.language.Correspondence$impl $ceylon$language$Correspondence$this;
+        private final ceylon.language.Empty$impl $ceylon$language$Empty$this;
 
         private EmptyValue() {
             this.$ceylon$language$Category$this = new ceylon.language.Category$impl(this);
             this.$ceylon$language$Collection$this = new ceylon.language.Collection$impl(this);
             this.$ceylon$language$Correspondence$this = new ceylon.language.Correspondence$impl(this);
+            this.$ceylon$language$Empty$this = new ceylon.language.Empty$impl(this);
         }
 
         private Correspondence$impl<Integer,java.lang.Object> correspondence$impl = new Correspondence$impl<Integer,java.lang.Object>(this);
@@ -121,7 +123,7 @@ public class empty_ {
         @Override
         @Ignore
         public long getSize() {
-            return Empty$impl._getSize(this);
+            return $ceylon$language$Empty$this.getSize();
         }
 
         @Override
@@ -146,7 +148,7 @@ public class empty_ {
         @Override
         @Ignore
         public java.lang.Object item(Integer key) {
-            return Empty$impl._item(this, key);
+            return $ceylon$language$Empty$this.item(key);
         }
 
         @Override
@@ -161,37 +163,37 @@ public class empty_ {
         @Override
         @Ignore
         public java.lang.String toString() {
-        	return Empty$impl._toString(this);
+        	return $ceylon$language$Empty$this.toString();
         }
         
         @Override
         @Ignore
         public boolean contains(java.lang.Object element) {
-            return Empty$impl._contains(this, element);
+            return $ceylon$language$Empty$this.contains(element);
         }
 
         @Override
         @Ignore
         public Empty getClone() {
-            return Empty$impl._getClone(this);
+            return $ceylon$language$Empty$this.getClone();
         }
 
         @Override
         @Ignore
         public Empty getReversed() {
-            return Empty$impl._getReversed(this);
+            return $ceylon$language$Empty$this.getReversed();
         }
 
         @Override
         @Ignore
         public Integer getLastIndex() {
-            return Empty$impl._getLastIndex(this);
+            return $ceylon$language$Empty$this.getLastIndex();
         }
 
         @Override
         @Ignore
         public boolean defines(Integer key) {
-            return Empty$impl._defines(this, key);
+            return $ceylon$language$Empty$this.defines(key);
         }
 
         @Override
@@ -208,13 +210,13 @@ public class empty_ {
         @Override
         @Ignore
         public Empty span(Integer from, Integer to) {
-            return Empty$impl._span(this, (Integer)from, (Integer)to);
+            return $ceylon$language$Empty$this.span((Integer)from, (Integer)to);
         }
 
         @Override
         @Ignore
         public Empty segment(Integer from, long length) {
-            return Empty$impl._segment(this, (Integer)from, length);
+            return $ceylon$language$Empty$this.segment((Integer)from, length);
         }
 
         @Override @Ignore public Empty getSequence() { return this; }
