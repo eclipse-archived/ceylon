@@ -26,6 +26,7 @@ public class Singleton<Element>
     private final ceylon.language.Category$impl $ceylon$language$Category$this;
     private final ceylon.language.Correspondence$impl $ceylon$language$Correspondence$this;
     private final ceylon.language.Iterable$impl<Element> $ceylon$language$Iterable$this;
+    private final ceylon.language.List$impl<Element> $ceylon$language$List$this;
 
 	Element element;
 
@@ -33,6 +34,7 @@ public class Singleton<Element>
         this.$ceylon$language$Category$this = new ceylon.language.Category$impl(this);
         this.$ceylon$language$Correspondence$this = new ceylon.language.Correspondence$impl(this);
         this.$ceylon$language$Iterable$this = new ceylon.language.Iterable$impl<Element>(this);
+        this.$ceylon$language$List$this = new ceylon.language.List$impl<Element>(this);
 		this.element = element;
 	}
 
@@ -390,14 +392,14 @@ public class Singleton<Element>
     @TypeParameters(@TypeParameter("Other"))
     @TypeInfo("ceylon.language::Sequence<Element|Other>")
     public <Other>Sequence withLeading(Other elem) {
-        return List$impl._withLeading(this, elem);
+        return $ceylon$language$List$this.withLeading(elem);
     }
     @Override @SuppressWarnings("rawtypes")
     @Annotations(@Annotation("actual"))
     @TypeParameters(@TypeParameter("Other"))
     @TypeInfo("ceylon.language::Sequence<Element|Other>")
     public <Other>Sequence withTrailing(Other elem) {
-        return List$impl._withTrailing(this, elem);
+        return $ceylon$language$List$this.withTrailing(elem);
     }
 
 }

@@ -154,6 +154,7 @@ public final class Correspondence$impl<Key,Item> {
         private final ceylon.language.Category$impl $ceylon$language$Category$this;
         private final ceylon.language.Collection$impl<Item> $ceylon$language$Collection$this;
         private final ceylon.language.Iterable$impl<Item> $ceylon$language$Iterable$this;
+        private final ceylon.language.List$impl<Item> $ceylon$language$List$this;
 
         Items(Sequence<? extends Key> keys){
             this.keys = keys;
@@ -161,6 +162,7 @@ public final class Correspondence$impl<Key,Item> {
             this.$ceylon$language$Category$this = new ceylon.language.Category$impl(this);
             this.$ceylon$language$Collection$this = new ceylon.language.Collection$impl<Item>(this);
             this.$ceylon$language$Iterable$this = new ceylon.language.Iterable$impl<Item>(this);
+            this.$ceylon$language$List$this = new ceylon.language.List$impl<Item>(this);
         }
         public final Integer getLastIndex() {
             return keys.getLastIndex();
@@ -251,7 +253,7 @@ public final class Correspondence$impl<Key,Item> {
         @Override
         @Ignore
         public long getSize() {
-            return List$impl.getSize(this);
+            return $ceylon$language$List$this.getSize();
         }
         @Override
         @Ignore
@@ -261,12 +263,12 @@ public final class Correspondence$impl<Key,Item> {
         @Override
         @Ignore
         public boolean defines(Integer key) {
-            return List$impl._defines(this, key);
+            return $ceylon$language$List$this.defines(key);
         }
         @Override
         @Ignore
         public Iterator<? extends Item> getIterator() {
-            return List$impl._getIterator(this);
+            return $ceylon$language$List$this.getIterator();
         }
         @Override @Ignore
         public Iterable<? extends Item> skipping(long skip) {
@@ -342,7 +344,7 @@ public final class Correspondence$impl<Key,Item> {
         @Override
         @Ignore
         public boolean equals(java.lang.Object obj) {
-            return List$impl._equals(this, obj);
+            return $ceylon$language$List$this.equals(obj);
         }
         @Override
         public int hashCode() {
@@ -360,7 +362,7 @@ public final class Correspondence$impl<Key,Item> {
         }
         @Override @Ignore
         public Item findLast(Callable<? extends Boolean> f) {
-            return List$impl._findLast(this, f);
+            return $ceylon$language$List$this.findLast(f);
         }
         @Override
         @Ignore
@@ -420,11 +422,11 @@ public final class Correspondence$impl<Key,Item> {
         }
         @SuppressWarnings("rawtypes")
         @Override @Ignore public <Other>Sequence withLeading(Other e) {
-            return List$impl._withLeading(this, e);
+            return $ceylon$language$List$this.withLeading(e);
         }
         @SuppressWarnings("rawtypes")
         @Override @Ignore public <Other>Sequence withTrailing(Other e) {
-            return List$impl._withTrailing(this, e);
+            return $ceylon$language$List$this.withTrailing(e);
         }
         @Override
         @Ignore

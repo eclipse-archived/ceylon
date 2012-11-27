@@ -124,10 +124,10 @@ public class EmptyString extends String implements None<Character> {
 
     @SuppressWarnings("rawtypes")
     @Override @Ignore public <Other>Sequence withLeading(Other e) {
-        return List$impl._withLeading(this, e);
+        return $ceylon$language$List$this.withLeading(e);
     }
     @SuppressWarnings("rawtypes")
     @Override @Ignore public <Other>Sequence withTrailing(Other e) {
-        return List$impl._withTrailing(this, e);
+        return $ceylon$language$List$this.withTrailing(e);
     }
 }

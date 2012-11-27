@@ -35,6 +35,7 @@ public abstract class Array<Element> implements List<Element>, FixedSized<Elemen
     private final ceylon.language.Collection$impl $ceylon$language$Collection$this;
     private final ceylon.language.Correspondence$impl $ceylon$language$Correspondence$this;
     protected final ceylon.language.Iterable$impl<Element> $ceylon$language$Iterable$this;
+    protected final ceylon.language.List$impl<Element> $ceylon$language$List$this;
 
     protected final java.lang.Object array;
 
@@ -43,6 +44,7 @@ public abstract class Array<Element> implements List<Element>, FixedSized<Elemen
         this.$ceylon$language$Collection$this = new ceylon.language.Collection$impl(this);
         this.$ceylon$language$Correspondence$this = new ceylon.language.Correspondence$impl(this);
         this.$ceylon$language$Iterable$this = new ceylon.language.Iterable$impl<Element>(this);
+        this.$ceylon$language$List$this = new ceylon.language.List$impl<Element>(this);
         this.array = array;
     }
 
@@ -572,13 +574,13 @@ public abstract class Array<Element> implements List<Element>, FixedSized<Elemen
     @Ignore
     public boolean equals(@Name("that") @TypeInfo("ceylon.language::Object")
     java.lang.Object that) {
-        return List$impl._equals(this, that);
+        return $ceylon$language$List$this.equals(that);
     }
 
     @Override
     @Ignore
     public int hashCode() {
-        return List$impl._hashCode(this);
+        return $ceylon$language$List$this.hashCode();
     }
 
     @Override
@@ -656,7 +658,7 @@ public abstract class Array<Element> implements List<Element>, FixedSized<Elemen
     }
     @Override @Ignore
     public Element findLast(Callable<? extends Boolean> f) {
-        return List$impl._findLast(this, f);
+        return $ceylon$language$List$this.findLast(f);
     }
     @Override
     @Ignore

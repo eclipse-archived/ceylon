@@ -12,10 +12,8 @@ import ceylon.language.Correspondence$impl;
 import ceylon.language.Entry;
 import ceylon.language.Integer;
 import ceylon.language.Iterable;
-import ceylon.language.Iterable$impl;
 import ceylon.language.Iterator;
 import ceylon.language.List;
-import ceylon.language.List$impl;
 import ceylon.language.Map;
 import ceylon.language.Sequence;
 import ceylon.language.Sequence$impl;
@@ -39,6 +37,7 @@ public class ArraySequence<Element> implements Sequence<Element> {
     private final ceylon.language.Collection$impl $ceylon$language$Collection$this;
     private final ceylon.language.Correspondence$impl $ceylon$language$Correspondence$this;
     private final ceylon.language.Iterable$impl<Element> $ceylon$language$Iterable$this;
+    private final ceylon.language.List$impl<Element> $ceylon$language$List$this;
 
     protected final Element[] array;
     protected final long first;
@@ -53,6 +52,7 @@ public class ArraySequence<Element> implements Sequence<Element> {
         this.$ceylon$language$Collection$this = new ceylon.language.Collection$impl(this);
         this.$ceylon$language$Correspondence$this = new ceylon.language.Correspondence$impl(this);
         this.$ceylon$language$Iterable$this = new ceylon.language.Iterable$impl<Element>(this);
+        this.$ceylon$language$List$this = new ceylon.language.List$impl<Element>(this);
     	if (array.length==0 || array.length<=first) {
     		throw new IllegalArgumentException("ArraySequence may not have zero elements");
     	}
@@ -66,6 +66,7 @@ public class ArraySequence<Element> implements Sequence<Element> {
         this.$ceylon$language$Collection$this = new ceylon.language.Collection$impl(this);
         this.$ceylon$language$Correspondence$this = new ceylon.language.Correspondence$impl(this);
         this.$ceylon$language$Iterable$this = new ceylon.language.Iterable$impl<Element>(this);
+        this.$ceylon$language$List$this = new ceylon.language.List$impl<Element>(this);
     	if (list.size()==0) {
     		throw new IllegalArgumentException("ArraySequence may not have zero elements");
     	}
@@ -306,13 +307,13 @@ public class ArraySequence<Element> implements Sequence<Element> {
     @Override
     @Ignore
     public boolean equals(java.lang.Object that) {
-        return List$impl._equals(this, that);
+        return $ceylon$language$List$this.equals(that);
     }
 
     @Override
     @Ignore
     public int hashCode() {
-        return List$impl._hashCode(this);
+        return $ceylon$language$List$this.hashCode();
     }
 
     @Override
@@ -374,7 +375,7 @@ public class ArraySequence<Element> implements Sequence<Element> {
     }
     @Override @Ignore
     public Element findLast(Callable<? extends Boolean> f) {
-        return List$impl._findLast(this, f);
+        return $ceylon$language$List$this.findLast(f);
     }
     @Override
     @Ignore
@@ -452,12 +453,12 @@ public class ArraySequence<Element> implements Sequence<Element> {
     @Annotations({ @Annotation("actual") })
     @SuppressWarnings("rawtypes")
     public <Other>Sequence withLeading(Other e) {
-        return List$impl._withLeading(this, e);
+        return $ceylon$language$List$this.withLeading(e);
     }
     @Override
     @Annotations({ @Annotation("actual") })
     @SuppressWarnings("rawtypes")
     public <Other>Sequence withTrailing(Other e) {
-        return List$impl._withTrailing(this, e);
+        return $ceylon$language$List$this.withTrailing(e);
     }
 }

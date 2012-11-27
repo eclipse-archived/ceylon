@@ -35,7 +35,8 @@ public abstract class String
                FixedSized<Character> {
     private final ceylon.language.Category$impl $ceylon$language$Category$this;
     private final ceylon.language.Correspondence$impl $ceylon$language$Correspondence$this;
-    private final ceylon.language.Iterable$impl<Character> $ceylon$language$Iterable$this;
+    protected final ceylon.language.Iterable$impl<Character> $ceylon$language$Iterable$this;
+    protected final ceylon.language.List$impl<Character> $ceylon$language$List$this;
 
     public final java.lang.String value;
 
@@ -43,6 +44,7 @@ public abstract class String
         this.$ceylon$language$Category$this = new ceylon.language.Category$impl(this);
         this.$ceylon$language$Correspondence$this = new ceylon.language.Correspondence$impl(this);
         this.$ceylon$language$Iterable$this = new ceylon.language.Iterable$impl<Character>(this);
+        this.$ceylon$language$List$this = new ceylon.language.List$impl<Character>(this);
         value = s;
     }
 
@@ -1181,7 +1183,7 @@ public abstract class String
         if (value.isEmpty()) {
             return new ArraySequence(e);
         } else {
-            return List$impl._withLeading(instance(value), e);
+            return instance(value).withLeading(e);
         }
     }
 
@@ -1190,7 +1192,7 @@ public abstract class String
         if (value.isEmpty()) {
             return new ArraySequence(e);
         } else {
-            return List$impl._withTrailing(instance(value), e);
+            return instance(value).withTrailing(e);
         }
     }
 

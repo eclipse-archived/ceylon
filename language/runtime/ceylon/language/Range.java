@@ -29,6 +29,7 @@ public class Range<Element extends Comparable<? super Element> & Ordinal<? super
     private final ceylon.language.Category$impl $ceylon$language$Category$this;
     private final ceylon.language.Correspondence$impl $ceylon$language$Correspondence$this;
     private final ceylon.language.Iterable$impl<Element> $ceylon$language$Iterable$this;
+    private final ceylon.language.List$impl<Element> $ceylon$language$List$this;
 
     private final Element first;
     private final Element last;
@@ -39,6 +40,7 @@ public class Range<Element extends Comparable<? super Element> & Ordinal<? super
         this.$ceylon$language$Category$this = new ceylon.language.Category$impl(this);
         this.$ceylon$language$Correspondence$this = new ceylon.language.Correspondence$impl(this);
         this.$ceylon$language$Iterable$this = new ceylon.language.Iterable$impl<Element>(this);
+        this.$ceylon$language$List$this = new ceylon.language.List$impl<Element>(this);
         this.first = first;
         this.last = last;
         this.size = Math.abs(last.distanceFrom(first))+1;
@@ -252,14 +254,14 @@ public class Range<Element extends Comparable<? super Element> & Ordinal<? super
             return $that.getFirst().equals(getFirst()) && $that.getLast().equals(getLast());
         }
         else {
-            return List$impl._equals(this, that);
+            return $ceylon$language$List$this.equals(that);
         }
     }
 
     @Override
     @Ignore
     public int hashCode(){
-        return List$impl._hashCode(this);
+        return $ceylon$language$List$this.hashCode();
     }
 
     @Override
@@ -379,7 +381,7 @@ public class Range<Element extends Comparable<? super Element> & Ordinal<? super
     @Override
     @Ignore
     public boolean defines(@Name("key") Integer key) {
-        return List$impl._defines(this, key);
+        return $ceylon$language$List$this.defines(key);
     }
 
     @Annotations({@Annotation("actual")})
@@ -590,14 +592,14 @@ public class Range<Element extends Comparable<? super Element> & Ordinal<? super
     @TypeInfo("ceylon.language::Sequence<Element|Other>")
     @Override @SuppressWarnings("rawtypes")
     public <Other>Sequence withLeading(Other e) {
-        return List$impl._withLeading(this, e);
+        return $ceylon$language$List$this.withLeading(e);
     }
     @Annotations(@Annotation("actual"))
     @TypeParameters(@TypeParameter("Other"))
     @TypeInfo("ceylon.language::Sequence<Element|Other>")
     @Override @SuppressWarnings("rawtypes")
     public <Other>Sequence withTrailing(Other e) {
-        return List$impl._withTrailing(this, e);
+        return $ceylon$language$List$this.withTrailing(e);
     }
 
 }

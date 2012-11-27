@@ -13,14 +13,14 @@ public final class List$impl<Element> {
     public boolean getEmpty(){
         return List$impl.<Element>getEmpty($this);
     }
-    static <Element> boolean getEmpty(List<Element> $this){
+    private static <Element> boolean getEmpty(List<Element> $this){
         return false;
     }
 
     public long getSize(){
         return List$impl.<Element>getSize($this);
     }
-    static <Element> long getSize(List<Element> $this){
+    private static <Element> long getSize(List<Element> $this){
         Integer lastIndex = $this.getLastIndex();
         return lastIndex==null ? 0 : lastIndex.longValue()+1;
     }
@@ -28,7 +28,7 @@ public final class List$impl<Element> {
     public boolean defines(Integer key){
         return List$impl.<Element>_defines($this, key);
     }
-    static <Element> boolean _defines(List<Element> $this, Integer key){
+    private static <Element> boolean _defines(List<Element> $this, Integer key){
         Integer lastIndex = $this.getLastIndex();
         return lastIndex==null ? false : key.longValue() <= lastIndex.longValue();
     }
@@ -36,7 +36,7 @@ public final class List$impl<Element> {
     public Iterator<? extends Element> getIterator(){
         return List$impl.<Element>_getIterator($this);
     }
-    static <Element> Iterator<? extends Element> _getIterator(final List<Element> $this){
+    private static <Element> Iterator<? extends Element> _getIterator(final List<Element> $this){
         class ListIterator implements Iterator<Element> {
             private long index=0;
             public final java.lang.Object next() { 
@@ -58,7 +58,7 @@ public final class List$impl<Element> {
     public boolean equals(java.lang.Object that) {
         return List$impl.<Element>_equals($this, that);
     }
-    public static <Element> boolean _equals(final List<Element> $this, java.lang.Object that) {
+    private static <Element> boolean _equals(final List<Element> $this, java.lang.Object that) {
         if (that instanceof List) {
             List other = (List) that;
             if (other.getSize()==$this.getSize()) {
@@ -78,7 +78,7 @@ public final class List$impl<Element> {
     public int hashCode() {
         return List$impl.<Element>_hashCode($this);
     }
-    public static <Element> int _hashCode(final List<Element> $this) {
+    private static <Element> int _hashCode(final List<Element> $this) {
         int hashCode = 1;
         java.lang.Object elem;
         for (Iterator<? extends Element> iter=$this.getIterator(); 
@@ -94,7 +94,7 @@ public final class List$impl<Element> {
     public Element findLast(Callable<? extends Boolean> sel) {
         return List$impl.<Element>_findLast($this, sel);
     }
-    public static <Element> Element _findLast(List<Element> $this, Callable<? extends Boolean> sel) {
+    private static <Element> Element _findLast(List<Element> $this, Callable<? extends Boolean> sel) {
         Integer last = $this.getLastIndex();
         if (last != null) {
             while (!last.getNegative()) {
@@ -112,7 +112,7 @@ public final class List$impl<Element> {
         return List$impl._getFirst($this);
     }
 
-    public static <Element> Element _getFirst(List<Element> $this){
+    private static <Element> Element _getFirst(List<Element> $this){
         return $this.item(Integer.instance(0));
     }
 
@@ -120,7 +120,7 @@ public final class List$impl<Element> {
         return List$impl._getLast($this);
     }
 
-    public static <Element> Element _getLast(List<Element> $this){
+    private static <Element> Element _getLast(List<Element> $this){
         Integer lastIndex = $this.getLastIndex();
         return lastIndex == null ? null : $this.item(lastIndex);
     }
@@ -130,7 +130,7 @@ public final class List$impl<Element> {
         return List$impl._withLeading($this, element);
     }
     @SuppressWarnings({"rawtypes", "unchecked"})
-    public static <Element,Other> Sequence _withLeading(List<? extends Element> orig, Other elem) {
+    private static <Element,Other> Sequence _withLeading(List<? extends Element> orig, Other elem) {
         SequenceBuilder sb = new SequenceBuilder();
         sb.append(elem);
         sb.appendAll(orig);
@@ -141,7 +141,7 @@ public final class List$impl<Element> {
         return List$impl._withTrailing($this, element);
     }
     @SuppressWarnings({"rawtypes", "unchecked"})
-    public static <Element,Other> Sequence _withTrailing(List<? extends Element> orig, Other elem) {
+    private static <Element,Other> Sequence _withTrailing(List<? extends Element> orig, Other elem) {
         SequenceBuilder sb = new SequenceBuilder();
         sb.appendAll(orig);
         sb.append(elem);

@@ -160,11 +160,11 @@ public class NonemptyArray<Element> extends Array<Element> implements Some<Eleme
     @Override @SuppressWarnings("rawtypes")
     @Annotations({ @Annotation("actual") })
     public <Other> Sequence withLeading(Other e) {
-        return List$impl._withLeading(this, e);
+        return $ceylon$language$List$this.withLeading(e);
     }
     @Override @SuppressWarnings("rawtypes")
     @Annotations({ @Annotation("actual") })
     public <Other> Sequence withTrailing(Other e) {
-        return List$impl._withTrailing(this, e);
+        return $ceylon$language$List$this.withTrailing(e);
     }
 }

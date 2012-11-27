@@ -21,11 +21,9 @@ import com.redhat.ceylon.compiler.java.metadata.Ignore;
 @Ignore
 @Ceylon(major = 3)
 public class SequenceString extends String implements Some<Character> {
-    private final ceylon.language.Iterable$impl<Character> $ceylon$language$Iterable$this;
 
     public SequenceString(java.lang.String s) {
         super(s);
-        this.$ceylon$language$Iterable$this = new ceylon.language.Iterable$impl<Character>(this);
     }
 
     @Override
@@ -59,7 +57,7 @@ public class SequenceString extends String implements Some<Character> {
     }
     @Override @Ignore
     public Character findLast(Callable<? extends Boolean> f) {
-        return List$impl._findLast(this, f);
+        return $ceylon$language$List$this.findLast(f);
     }
     @Override
     @Ignore
@@ -124,11 +122,11 @@ public class SequenceString extends String implements Some<Character> {
     @Override @Ignore
     @SuppressWarnings("rawtypes")
     public <Other> Sequence withLeading(Other e) {
-        return List$impl._withLeading(this, e);
+        return $ceylon$language$List$this.withLeading(e);
     }
     @Override @Ignore
     @SuppressWarnings("rawtypes")
     public <Other> Sequence withTrailing(Other e) {
-        return List$impl._withTrailing(this, e);
+        return $ceylon$language$List$this.withTrailing(e);
     }
 }
