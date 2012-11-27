@@ -70,7 +70,7 @@ public class Module {
     @TypeInfo("ceylon.language::Nothing|ceylon.language::String")
     java.lang.String license, @Name("dependencies")
     @Sequenced
-    @TypeInfo("ceylon.language::Empty|ceylon.language::Sequence<ceylon.language.descriptor::Import>")
+    @TypeInfo("ceylon.language::Sequential<ceylon.language.descriptor::Import>")
     List<? extends Import> dependencies) {
         this.name = name;
         this.version = version;

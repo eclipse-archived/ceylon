@@ -200,7 +200,7 @@ public class LazyList<Element> implements List<Element> {
 
     @Override
     @Ignore
-    public Iterable<?> containsEvery$elements() {
+    public List<?> containsEvery$elements() {
         return cat$impl.containsEvery$elements();
     }
 
@@ -218,7 +218,7 @@ public class LazyList<Element> implements List<Element> {
 
     @Override
     @Ignore
-    public Iterable<?> containsAny$elements() {
+    public List<?> containsAny$elements() {
         return cat$impl.containsAny$elements();
     }
 

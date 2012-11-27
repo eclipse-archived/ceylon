@@ -229,7 +229,7 @@ public class Singleton<Element>
     }
     @Override
     @Ignore
-    public Iterable<?> containsEvery$elements() {
+    public List<?> containsEvery$elements() {
         return empty_.getEmpty$();
     }
 
@@ -247,7 +247,7 @@ public class Singleton<Element>
 
     @Override
     @Ignore
-    public Iterable<?> containsAny$elements() {
+    public List<?> containsAny$elements() {
         return empty_.getEmpty$();
     }
 

@@ -40,8 +40,8 @@ public class SequenceBuilder<Element> implements Sized {
     }
     
     public final synchronized SequenceBuilder<Element> appendAll(@Sequenced @Name("elements") 
-    @TypeInfo("ceylon.language::Iterable<Element>") 
-    Iterable<? extends Element> elements) {
+    @TypeInfo("ceylon.language::Sequential<Element>") 
+    List<? extends Element> elements) {
     	if (list==null) {
     	    //we don't always receive a Sized
     	    if (elements instanceof Sized) {
@@ -59,7 +59,6 @@ public class SequenceBuilder<Element> implements Sized {
     
     @Ignore
     public final SequenceBuilder<Element> appendAll() {
-        appendAll((Iterable)empty_.getEmpty$());
         return this;
     }
     

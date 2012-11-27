@@ -342,7 +342,7 @@ public class Range<Element extends Comparable<? super Element> & Ordinal<? super
     }
     @Override
     @Ignore
-    public Iterable<?> containsEvery$elements() {
+    public List<?> containsEvery$elements() {
         return empty_.getEmpty$();
     }
 
@@ -360,7 +360,7 @@ public class Range<Element extends Comparable<? super Element> & Ordinal<? super
     }
     @Override
     @Ignore
-    public Iterable<?> containsAny$elements() {
+    public List<?> containsAny$elements() {
         return empty_.getEmpty$();
     }
 

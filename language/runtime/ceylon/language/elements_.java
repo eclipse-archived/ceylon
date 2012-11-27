@@ -19,12 +19,12 @@ public final class elements_ {
     @TypeInfo("ceylon.language::Iterable<Element>")
     @TypeParameters(@TypeParameter(value="Element"))
     public static <Element> Iterable<? extends Element> elements(@Name("elements") 
-    @Sequenced @TypeInfo("ceylon.language::Iterable<Element>")
-    final Iterable<? extends Element> elements) {
+    @Sequenced @TypeInfo("ceylon.language::Sequential<Element>")
+    final List<? extends Element> elements) {
         return elements;
     }
     @Ignore
-    public static <Element> Iterable<? extends Element> elements() {
-        return (Iterable<? extends Element>) empty_.getEmpty$();
+    public static <Element> List<? extends Element> elements() {
+        return (List<? extends Element>) empty_.getEmpty$();
     }
 }

@@ -62,7 +62,10 @@ public final class Iterable$impl<Element> {
     }
     public static <Element> List<? extends Element> _getSequence(Iterable<Element> $this) {
         final SequenceBuilder<Element> sb = new SequenceBuilder<Element>();
-        sb.appendAll($this);
+        java.lang.Object next = null;
+        for (Iterator<? extends Element> iter = $this.getIterator(); (next = iter.next()) != exhausted_.getExhausted$();) {
+            sb.append((Element) next);
+        }
         return sb.getSequence();
     }
 

@@ -12,8 +12,8 @@ import com.redhat.ceylon.compiler.java.metadata.TypeInfo;
 public class see_
 {
     public static Nothing see(@Name("programElements") @Sequenced
-            @TypeInfo("ceylon.language::Iterable<ceylon.language::Void>")
-            final ceylon.language.Iterable<? extends java.lang.Object> value) {
+            @TypeInfo("ceylon.language::Sequential<ceylon.language::Void>")
+            final ceylon.language.List<? extends java.lang.Object> value) {
         return null;
     }
     @Ignore

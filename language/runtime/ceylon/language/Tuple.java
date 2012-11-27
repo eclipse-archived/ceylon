@@ -274,7 +274,7 @@ public class Tuple<Element, First extends Element, Rest extends Sequential<Eleme
 
 	@Override
 	@Ignore
-	public Iterable<?> containsEvery$elements() {
+	public List<?> containsEvery$elements() {
 		return category$impl.containsEvery$elements();
 	}
 
@@ -294,7 +294,7 @@ public class Tuple<Element, First extends Element, Rest extends Sequential<Eleme
 
 	@Override
 	@Ignore
-	public Iterable<?> containsAny$elements() {
+	public List<?> containsAny$elements() {
 		return category$impl.containsAny$elements();
 	}
 

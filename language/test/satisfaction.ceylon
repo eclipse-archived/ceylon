@@ -85,10 +85,10 @@ class MyIterator() satisfies Iterator<Integer> {
 class MyRanged() satisfies Ranged<Integer, Iterable<Integer>> {
     shared actual Iterable<Integer> span(Integer from, Integer? to) {
         value end = to else from;
-        return elements(for (i in from..end) i);
+        return elements({for (i in from..end) i}...);
     }
     shared actual Iterable<Integer> segment(Integer from, Integer length) {
-        return elements(for (i in from..from+length-1) i);
+        return elements({for (i in from..from+length-1) i}...);
     }
 }
 class MyOrdinal(prev, next) satisfies Ordinal<MyOrdinal> {

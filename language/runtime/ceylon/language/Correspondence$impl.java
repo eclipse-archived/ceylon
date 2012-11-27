@@ -309,7 +309,7 @@ public final class Correspondence$impl<Key,Item> {
         }
         @Override
         @Ignore
-        public Iterable<?> containsEvery$elements() {
+        public List<?> containsEvery$elements() {
             return empty_.getEmpty$();
         }
         @Override
@@ -324,7 +324,7 @@ public final class Correspondence$impl<Key,Item> {
         }
         @Override
         @Ignore
-        public Iterable<?> containsAny$elements() {
+        public List<?> containsAny$elements() {
             return empty_.getEmpty$();
         }
         @Override

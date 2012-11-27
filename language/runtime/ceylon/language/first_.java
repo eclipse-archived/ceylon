@@ -19,8 +19,8 @@ public final class first_ {
     @TypeInfo("Element|ceylon.language::Nothing")
     @TypeParameters(@TypeParameter(value="Element"))
     public static <Element> Element first(@Name("elements") 
-    @Sequenced @TypeInfo("ceylon.language::Iterable<Element>")
-    final Iterable<? extends Element> elements) {
+    @Sequenced @TypeInfo("ceylon.language::Sequential<Element>")
+    final List<? extends Element> elements) {
         java.lang.Object first = elements.getIterator().next();
         if (first instanceof Finished) {
             return null;

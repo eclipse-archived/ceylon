@@ -12,8 +12,8 @@ import com.redhat.ceylon.compiler.java.metadata.TypeInfo;
 public final class tagged_
 {
     public static Nothing tagged(@Name("tags") @Sequenced
-            @TypeInfo("ceylon.language::Iterable<ceylon.language::String>")
-            final ceylon.language.Iterable<? extends ceylon.language.String> tags) {
+            @TypeInfo("ceylon.language::Sequential<ceylon.language::String>")
+            final ceylon.language.List<? extends ceylon.language.String> tags) {
         return null;
     }
     @Ignore

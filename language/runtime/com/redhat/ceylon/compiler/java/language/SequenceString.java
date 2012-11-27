@@ -68,7 +68,7 @@ public class SequenceString extends String implements Some<Character> {
     @Override
     @Ignore
     public Iterable<? extends Character> filter(Callable<? extends Boolean> f) {
-        return String.instance(string_.string(new FilterIterable<Character>(this, f)));
+        return String.instance(string_.string((new FilterIterable<Character>(this, f)).getSequence()));
     }
     @Override @Ignore
     public <Result> List<? extends Result> collect(Callable<? extends Result> f) {
@@ -76,7 +76,7 @@ public class SequenceString extends String implements Some<Character> {
     }
     @Override @Ignore
     public List<? extends Character> select(Callable<? extends Boolean> f) {
-        return String.instance(string_.string(new FilterIterable<Character>(this, f)));
+        return String.instance(string_.string((new FilterIterable<Character>(this, f)).getSequence()));
     }
     @Override
     @Ignore
@@ -101,7 +101,7 @@ public class SequenceString extends String implements Some<Character> {
     }
     @Override @Ignore
     public Iterable<? extends Character> by(long step) {
-        return String.instance(string_.string(Iterable$impl._by(this, step)));
+        return String.instance(string_.string(Iterable$impl._by(this, step).getSequence()));
     }
     @Override @Ignore
     public long count(Callable<? extends Boolean> f) {

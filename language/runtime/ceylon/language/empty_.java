@@ -88,7 +88,7 @@ public class empty_ {
         @Override
         @Ignore
         @SuppressWarnings({"rawtypes", "unchecked"})
-        public Iterable containsEvery$elements() {
+        public List containsEvery$elements() {
             return this;
         }
 
@@ -105,7 +105,7 @@ public class empty_ {
         @Override
         @Ignore
         @SuppressWarnings({"rawtypes", "unchecked"})
-        public Iterable containsAny$elements() {
+        public List containsAny$elements() {
             return this;
         }
 

@@ -164,7 +164,7 @@ public final class Map$impl<Key,Item> {
 
             @Override
             @Ignore
-            public Iterable<?> containsEvery$elements() {
+            public List<?> containsEvery$elements() {
                 return empty_.getEmpty$();
             }
 
@@ -182,7 +182,7 @@ public final class Map$impl<Key,Item> {
 
             @Override
             @Ignore
-            public Iterable<?> containsAny$elements() {
+            public List<?> containsAny$elements() {
                 return empty_.getEmpty$();
             }
 
@@ -360,7 +360,7 @@ public final class Map$impl<Key,Item> {
 
             @Override
             @Ignore
-            public Iterable<?> containsEvery$elements() {
+            public List<?> containsEvery$elements() {
                 return empty_.getEmpty$();
             }
 
@@ -378,7 +378,7 @@ public final class Map$impl<Key,Item> {
 
             @Override
             @Ignore
-            public Iterable<?> containsAny$elements() {
+            public List<?> containsAny$elements() {
                 return empty_.getEmpty$();
             }
 
@@ -652,7 +652,7 @@ public final class Map$impl<Key,Item> {
 
             @Override
             @Ignore
-            public Iterable<?> containsEvery$elements() {
+            public List<?> containsEvery$elements() {
                 return empty_.getEmpty$();
             }
 
@@ -670,7 +670,7 @@ public final class Map$impl<Key,Item> {
 
             @Override
             @Ignore
-            public Iterable<?> containsAny$elements() {
+            public List<?> containsAny$elements() {
                 return empty_.getEmpty$();
             }
 
@@ -1030,7 +1030,7 @@ public final class Map$impl<Key,Item> {
             }
 
             @Override
-            public Iterable<?> containsEvery$elements() {
+            public List<?> containsEvery$elements() {
                 return empty_.getEmpty$();
             }
 
@@ -1045,7 +1045,7 @@ public final class Map$impl<Key,Item> {
             }
 
             @Override
-            public Iterable<?> containsAny$elements() {
+            public List<?> containsAny$elements() {
                 return empty_.getEmpty$();
             }
 

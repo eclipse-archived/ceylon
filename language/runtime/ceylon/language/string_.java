@@ -15,8 +15,8 @@ public final class string_ {
     
     @TypeInfo("ceylon.language::String")
     public static java.lang.String string(@Name("characters") @Sequenced 
-    @TypeInfo("ceylon.language::Iterable<ceylon.language::Character>")
-    final Iterable<? extends Character> characters) {
+    @TypeInfo("ceylon.language::Sequential<ceylon.language::Character>")
+    final List<? extends Character> characters) {
         if (characters instanceof String) {
             return ((String)characters).toString();
         } else {

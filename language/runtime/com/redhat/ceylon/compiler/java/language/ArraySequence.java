@@ -336,7 +336,7 @@ public class ArraySequence<Element> implements Sequence<Element> {
 
     @Override
     @Ignore
-    public Iterable<?>containsEvery$elements() {
+    public List<?>containsEvery$elements() {
         return empty_.getEmpty$();
     }
 
@@ -434,7 +434,7 @@ public class ArraySequence<Element> implements Sequence<Element> {
 
     @Override
     @Ignore
-    public Iterable<?>containsAny$elements() {
+    public List<?>containsAny$elements() {
         return empty_.getEmpty$();
     }
 

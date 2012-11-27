@@ -544,7 +544,7 @@ public abstract class String
 
     @Override
     @Ignore
-    public Iterable<?> containsAny$elements() {
+    public List<?> containsAny$elements() {
         return empty_.getEmpty$();
     }
 
@@ -576,7 +576,7 @@ public abstract class String
 
     @Override
     @Ignore
-    public Iterable<?> containsEvery$elements() {
+    public List<?> containsEvery$elements() {
         return empty_.getEmpty$();
     }
 
@@ -696,8 +696,8 @@ public abstract class String
 
     @TypeInfo("ceylon.language::String")
     public java.lang.String join(@Name("strings") @Sequenced
-    @TypeInfo("ceylon.language::Iterable<ceylon.language::String>")
-    Iterable<? extends String> strings) {
+    @TypeInfo("ceylon.language::Sequential<ceylon.language::String>")
+    List<? extends String> strings) {
         return join(value, strings);
     }
 
@@ -717,7 +717,7 @@ public abstract class String
 
     @Ignore
     public java.lang.String join() {
-        return join((Iterable)empty_.getEmpty$());
+        return join((List)empty_.getEmpty$());
     }
 
     @Ignore
@@ -1047,7 +1047,7 @@ public abstract class String
         if (value.isEmpty()) {
             return instance(value);
         } else {
-            return String.instance(string_.string(new FilterIterable<Character>(instance(value), f)));
+            return String.instance(string_.string((new FilterIterable<Character>(instance(value), f)).getSequence()));
         }
     }
 
@@ -1110,7 +1110,7 @@ public abstract class String
         if (value.isEmpty()) {
             return instance(value);
         } else {
-            return instance(string_.string(Iterable$impl._by(instance(value), step)));
+            return instance(string_.string(Iterable$impl._by(instance(value), step).getSequence()));
         }
     }
 

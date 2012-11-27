@@ -16,8 +16,8 @@ public final class any_ {
     
     @TypeInfo("ceylon.language::Boolean")
     public static boolean any(@Name("values") @Sequenced
-    @TypeInfo("ceylon.language::Iterable<ceylon.language::Boolean>")
-    final Iterable<? extends Boolean> values) {
+    @TypeInfo("ceylon.language::Sequential<ceylon.language::Boolean>")
+    final List<? extends Boolean> values) {
         java.lang.Object $tmp;
         for (Iterator<? extends Boolean> $val$iter$0 = values.getIterator(); 
                 !(($tmp = $val$iter$0.next()) instanceof Finished);) {

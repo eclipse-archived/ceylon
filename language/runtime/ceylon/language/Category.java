@@ -21,7 +21,7 @@ public interface Category {
     @Ignore
     public boolean containsEvery();
     @Ignore
-    public Iterable<?> containsEvery$elements();
+    public List<?> containsEvery$elements();
 
     @Annotations(@Annotation("default"))
     public boolean containsAny(@Sequenced @Name("elements") 
@@ -30,6 +30,6 @@ public interface Category {
     @Ignore
     public boolean containsAny();
     @Ignore
-    public Iterable<?> containsAny$elements();
+    public List<?> containsAny$elements();
 
 }

@@ -19,12 +19,12 @@ public final class coalesce_ {
     @TypeInfo("ceylon.language::Iterable<Element&ceylon.language::Object>")
     public static <Element> Iterable<? extends Element> coalesce(
     @Name("values") @Sequenced
-    @TypeInfo("ceylon.language::Iterable<Element>")
-    final ceylon.language.Iterable<? extends Element> values) {
+    @TypeInfo("ceylon.language::Sequential<Element>")
+    final ceylon.language.List<? extends Element> values) {
         return values.getCoalesced();
     }
     @Ignore
-    public static <Element> Iterable<? extends Element> coalesce() {
-        return (Iterable<? extends Element>) empty_.getEmpty$();
+    public static <Element> List<? extends Element> coalesce() {
+        return (List<? extends Element>) empty_.getEmpty$();
     }
 }

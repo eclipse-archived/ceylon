@@ -24,8 +24,8 @@ public final class sort_ {
     public static <Element extends Comparable<? super Element>> List<? extends Element> sort(
         @Name("elements")
         @Sequenced
-        @TypeInfo("ceylon.language::Iterable<Element>")
-        final Iterable<? extends Element> elements) {
+        @TypeInfo("ceylon.language::Sequential<Element>")
+        final List<? extends Element> elements) {
         
         if( elements.getEmpty() ) {
             return (List)empty_.getEmpty$();   

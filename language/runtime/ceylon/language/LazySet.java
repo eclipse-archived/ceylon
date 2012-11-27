@@ -288,7 +288,7 @@ public class LazySet<Element> implements Set<Element> {
     }
 
     @Override @Ignore
-    public Iterable<?> containsEvery$elements() {
+    public List<?> containsEvery$elements() {
         return cat$impl.containsEvery$elements();
     }
 
@@ -304,7 +304,7 @@ public class LazySet<Element> implements Set<Element> {
     }
 
     @Override @Ignore
-    public Iterable<?> containsAny$elements() {
+    public List<?> containsAny$elements() {
         return cat$impl.containsAny$elements();
     }
 
