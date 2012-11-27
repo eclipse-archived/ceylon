@@ -31,6 +31,7 @@ public class Range<Element extends Comparable<? super Element> & Ordinal<? super
     private final ceylon.language.Iterable$impl<Element> $ceylon$language$Iterable$this;
     private final ceylon.language.List$impl<Element> $ceylon$language$List$this;
     private final ceylon.language.Sequence$impl<Element> $ceylon$language$Sequence$this;
+    private final ceylon.language.Some$impl<Element> $ceylon$language$Some$this;
 
     private final Element first;
     private final Element last;
@@ -43,6 +44,7 @@ public class Range<Element extends Comparable<? super Element> & Ordinal<? super
         this.$ceylon$language$Iterable$this = new ceylon.language.Iterable$impl<Element>(this);
         this.$ceylon$language$List$this = new ceylon.language.List$impl<Element>(this);
         this.$ceylon$language$Sequence$this = new ceylon.language.Sequence$impl<Element>(this);
+        this.$ceylon$language$Some$this = new ceylon.language.Some$impl<Element>(this);
         this.first = first;
         this.last = last;
         this.size = Math.abs(last.distanceFrom(first))+1;
@@ -377,7 +379,7 @@ public class Range<Element extends Comparable<? super Element> & Ordinal<? super
     @Override
     @Ignore
     public boolean getEmpty() {
-        return Some$impl._getEmpty(this);
+        return $ceylon$language$Some$this.getEmpty();
     }
 
     @Override

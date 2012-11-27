@@ -12,7 +12,7 @@ public final class Some$impl<Element> {
     public Element getFirst(){
         return _getFirst($this);
     }
-    static <Element> Element _getFirst(Some<Element> $this){
+    private static <Element> Element _getFirst(Some<Element> $this){
         java.lang.Object first = $this.getIterator().next();
         if (first instanceof Finished) {
             throw new Exception(null, null);
@@ -24,7 +24,7 @@ public final class Some$impl<Element> {
     public boolean getEmpty(){
         return _getEmpty($this);
     }
-    static <Element> boolean _getEmpty(Some<Element> $this){
+    private static <Element> boolean _getEmpty(Some<Element> $this){
         return false;
     }
 
