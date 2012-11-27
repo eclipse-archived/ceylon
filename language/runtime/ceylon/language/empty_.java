@@ -10,11 +10,13 @@ import com.redhat.ceylon.compiler.java.metadata.Ignore;
 public class empty_ {
     private static final class EmptyValue implements Empty {
         private final ceylon.language.Category$impl $ceylon$language$Category$this;
-        private final ceylon.language.Collection$impl<java.lang.Object> $ceylon$language$Collection$this;
+        private final ceylon.language.Collection$impl $ceylon$language$Collection$this;
+        private final ceylon.language.Correspondence$impl $ceylon$language$Correspondence$this;
 
         private EmptyValue() {
             this.$ceylon$language$Category$this = new ceylon.language.Category$impl(this);
-            this.$ceylon$language$Collection$this = new ceylon.language.Collection$impl<java.lang.Object>(this);
+            this.$ceylon$language$Collection$this = new ceylon.language.Collection$impl(this);
+            this.$ceylon$language$Correspondence$this = new ceylon.language.Correspondence$impl(this);
         }
 
         private Correspondence$impl<Integer,java.lang.Object> correspondence$impl = new Correspondence$impl<Integer,java.lang.Object>(this);
@@ -34,7 +36,7 @@ public class empty_ {
         @Override
         @Ignore
         public Category getKeys() {
-            return Correspondence$impl._getKeys(this);
+            return $ceylon$language$Correspondence$this.getKeys();
         }
 
         @Override

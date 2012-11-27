@@ -24,11 +24,13 @@ import com.redhat.ceylon.compiler.java.metadata.Variance;
 public class Singleton<Element>
         implements Sequence<Element> {
     private final ceylon.language.Category$impl $ceylon$language$Category$this;
+    private final ceylon.language.Correspondence$impl $ceylon$language$Correspondence$this;
 
 	Element element;
 
 	public Singleton(Element element) {
         this.$ceylon$language$Category$this = new ceylon.language.Category$impl(this);
+        this.$ceylon$language$Correspondence$this = new ceylon.language.Correspondence$impl(this);
 		this.element = element;
 	}
 
@@ -60,7 +62,7 @@ public class Singleton<Element>
 	@Override
 	@Ignore
 	public Category getKeys() {
-		return Correspondence$impl._getKeys(this);
+		return $ceylon$language$Correspondence$this.getKeys();
 	}
 
 	@Override
@@ -68,12 +70,12 @@ public class Singleton<Element>
 	public boolean definesEvery(@Sequenced @Name("keys")
     @TypeInfo("ceylon.language::Sequential<ceylon.language::Integer>")
 	List<? extends Integer> keys) {
-		return Correspondence$impl._definesEvery(this, keys);
+		return $ceylon$language$Correspondence$this.definesEvery(keys);
 	}
 	@Override @Ignore
     @SuppressWarnings({"rawtypes", "unchecked"})
     public boolean definesEvery() {
-	    return Correspondence$impl._definesEvery(this, (List)empty_.getEmpty$());
+	    return $ceylon$language$Correspondence$this.definesEvery((List)empty_.getEmpty$());
 	}
 	@Override @Ignore
     @SuppressWarnings({"rawtypes", "unchecked"})
@@ -86,12 +88,12 @@ public class Singleton<Element>
 	public boolean definesAny(@Sequenced @Name("keys")
     @TypeInfo("ceylon.language::Sequential<ceylon.language::Integer>")
 	List<? extends Integer> keys) {
-		return Correspondence$impl._definesAny(this, keys);
+		return $ceylon$language$Correspondence$this.definesAny(keys);
 	}
 	@Override @Ignore
     @SuppressWarnings({"rawtypes", "unchecked"})
     public boolean definesAny() {
-	    return Correspondence$impl._definesAny(this, (List)empty_.getEmpty$());
+	    return $ceylon$language$Correspondence$this.definesAny((List)empty_.getEmpty$());
 	}
 	@Override @Ignore
     @SuppressWarnings({"rawtypes", "unchecked"})
@@ -104,12 +106,12 @@ public class Singleton<Element>
 	public List<? extends Element> items(@Sequenced @Name("keys")
     @TypeInfo("ceylon.language::Sequential<ceylon.language::Integer>")
 	List<? extends Integer> keys) {
-		return Correspondence$impl._items(this, keys);
+		return $ceylon$language$Correspondence$this.items(keys);
 	}
 	@Override @Ignore
     @SuppressWarnings({"rawtypes", "unchecked"})
 	public List<? extends Element> items() {
-	    return Correspondence$impl._items(this, (List)empty_.getEmpty$());
+	    return $ceylon$language$Correspondence$this.items((List)empty_.getEmpty$());
 	}
 	@Override @Ignore
     @SuppressWarnings({"rawtypes", "unchecked"})

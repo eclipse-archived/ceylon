@@ -27,6 +27,7 @@ import com.redhat.ceylon.compiler.java.metadata.TypeParameters;
 public class Range<Element extends Comparable<? super Element> & Ordinal<? super Element>>
     implements Sequence<Element>, Category {
     private final ceylon.language.Category$impl $ceylon$language$Category$this;
+    private final ceylon.language.Correspondence$impl $ceylon$language$Correspondence$this;
 
     private final Element first;
     private final Element last;
@@ -35,6 +36,7 @@ public class Range<Element extends Comparable<? super Element> & Ordinal<? super
     public Range(@Name("first") Element first,
     		     @Name("last") Element last) {
         this.$ceylon$language$Category$this = new ceylon.language.Category$impl(this);
+        this.$ceylon$language$Correspondence$this = new ceylon.language.Correspondence$impl(this);
         this.first = first;
         this.last = last;
         this.size = Math.abs(last.distanceFrom(first))+1;
@@ -271,7 +273,7 @@ public class Range<Element extends Comparable<? super Element> & Ordinal<? super
     @Override
     @Ignore
     public Category getKeys() {
-        return Correspondence$impl._getKeys(this);
+        return $ceylon$language$Correspondence$this.getKeys();
     }
 
     @Override
@@ -279,12 +281,12 @@ public class Range<Element extends Comparable<? super Element> & Ordinal<? super
     public boolean definesEvery(@Sequenced @Name("keys")
     @TypeInfo("ceylon.language::Sequential<ceylon.language::Integer>")
     List<? extends Integer> keys) {
-        return Correspondence$impl._definesEvery(this, keys);
+        return $ceylon$language$Correspondence$this.definesEvery(keys);
     }
     @Override
     @Ignore @SuppressWarnings({"unchecked", "rawtypes"})
     public boolean definesEvery() {
-        return Correspondence$impl._definesEvery(this, (List)empty_.getEmpty$());
+        return $ceylon$language$Correspondence$this.definesEvery((List)empty_.getEmpty$());
     }
     @Override
     @Ignore @SuppressWarnings({"unchecked", "rawtypes"})
@@ -297,12 +299,12 @@ public class Range<Element extends Comparable<? super Element> & Ordinal<? super
     public boolean definesAny(@Sequenced @Name("keys")
     @TypeInfo("ceylon.language::Sequential<ceylon.language::Integer>")
     List<? extends Integer> keys) {
-        return Correspondence$impl._definesAny(this, keys);
+        return $ceylon$language$Correspondence$this.definesAny(keys);
     }
     @Override
     @Ignore @SuppressWarnings({"unchecked", "rawtypes"})
     public boolean definesAny() {
-        return Correspondence$impl._definesAny(this, (List)empty_.getEmpty$());
+        return $ceylon$language$Correspondence$this.definesAny((List)empty_.getEmpty$());
     }
     @Override
     @Ignore @SuppressWarnings({"unchecked", "rawtypes"})
@@ -315,13 +317,13 @@ public class Range<Element extends Comparable<? super Element> & Ordinal<? super
     public ceylon.language.List<? extends Element> items(@Sequenced @Name("keys")
     @TypeInfo("ceylon.language::Sequential<ceylon.language::Integer>")
     List<? extends Integer> keys) {
-        return Correspondence$impl._items(this, keys);
+        return $ceylon$language$Correspondence$this.items(keys);
     }
 
     @Override
     @Ignore @SuppressWarnings({"unchecked", "rawtypes"})
     public ceylon.language.List<? extends Element> items() {
-        return Correspondence$impl._items(this, (List)empty_.getEmpty$());
+        return $ceylon$language$Correspondence$this.items((List)empty_.getEmpty$());
     }
 
     @Override

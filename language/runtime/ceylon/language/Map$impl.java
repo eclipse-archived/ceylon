@@ -503,10 +503,12 @@ public final class Map$impl<Key,Item> {
             private Correspondence$impl<java.lang.Object, Set<? extends Key>> correspondence$impl = new Correspondence$impl(this);
             private final ceylon.language.Category$impl $ceylon$language$Category$this;
             private final ceylon.language.Collection$impl<Item> $ceylon$language$Collection$this;
+            private final ceylon.language.Correspondence$impl $ceylon$language$Correspondence$this;
 
             private inverse() {
                 this.$ceylon$language$Category$this = new ceylon.language.Category$impl(this);
                 this.$ceylon$language$Collection$this = new ceylon.language.Collection$impl(this);
+                this.$ceylon$language$Correspondence$this = new ceylon.language.Correspondence$impl(this);
             }
             
             @Ignore
@@ -590,19 +592,19 @@ public final class Map$impl<Key,Item> {
             @Override
             @Ignore
             public boolean defines(java.lang.Object key) {
-                return Correspondence$impl._defines(this, key);
+                return $ceylon$language$Correspondence$this.defines(key);
             }
 
             @Override
             @Ignore
             public boolean definesEvery(List<? extends java.lang.Object> keys) {
-                return Correspondence$impl._definesEvery(this, keys);
+                return $ceylon$language$Correspondence$this.definesEvery(keys);
             }
 
             @Override
             @Ignore
             public boolean definesEvery() {
-                return Correspondence$impl._definesEvery(this, empty_.getEmpty$());
+                return $ceylon$language$Correspondence$this.definesEvery(empty_.getEmpty$());
             }
 
             @Override
@@ -614,13 +616,13 @@ public final class Map$impl<Key,Item> {
             @Override
             @Ignore
             public boolean definesAny(List<? extends java.lang.Object> keys) {
-                return Correspondence$impl._definesAny(this, keys);
+                return $ceylon$language$Correspondence$this.definesAny(keys);
             }
 
             @Override
             @Ignore
             public boolean definesAny() {
-                return Correspondence$impl._definesAny(this, empty_.getEmpty$());
+                return $ceylon$language$Correspondence$this.definesAny(empty_.getEmpty$());
             }
 
             @Override
@@ -632,13 +634,13 @@ public final class Map$impl<Key,Item> {
             @Override
             @Ignore
             public List<? extends Set<? extends Key>> items(List<? extends java.lang.Object> keys) {
-                return Correspondence$impl._items(this, keys);
+                return $ceylon$language$Correspondence$this.items(keys);
             }
 
             @Override
             @Ignore
             public List<? extends Set<? extends Key>> items() {
-                return Correspondence$impl._items(this, empty_.getEmpty$());
+                return $ceylon$language$Correspondence$this.items(empty_.getEmpty$());
             }
 
             @Override
@@ -829,10 +831,12 @@ public final class Map$impl<Key,Item> {
             private Correspondence$impl<java.lang.Object, Result> correspondence$impl = new Correspondence$impl(this);
             private final ceylon.language.Category$impl $ceylon$language$Category$this;
             private final ceylon.language.Collection$impl $ceylon$language$Collection$this;
+            private final ceylon.language.Correspondence$impl $ceylon$language$Correspondence$this;
 
             private mapItems() {
                 this.$ceylon$language$Category$this = new ceylon.language.Category$impl(this);
                 this.$ceylon$language$Collection$this = new ceylon.language.Collection$impl(this);
+                this.$ceylon$language$Correspondence$this = new ceylon.language.Correspondence$impl(this);
             }
             
             @Ignore
@@ -892,12 +896,12 @@ public final class Map$impl<Key,Item> {
             @Override
             public List<? extends Result> items(
                     List<? extends java.lang.Object> keys) {
-                return Correspondence$impl._items(this, keys);
+                return $ceylon$language$Correspondence$this.items(keys);
             }
 
             @Override
             public List<? extends Result> items() {
-                return Correspondence$impl._items(this, empty_.getEmpty$());
+                return $ceylon$language$Correspondence$this.items(empty_.getEmpty$());
             }
 
             @Override
