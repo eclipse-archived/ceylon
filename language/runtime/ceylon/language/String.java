@@ -33,10 +33,12 @@ public abstract class String
     implements Comparable<String>, Sequential<Character>,
                Summable<String>, Castable<String>,
                FixedSized<Character> {
+    private final ceylon.language.Category$impl $ceylon$language$Category$this;
 
     public final java.lang.String value;
 
     protected String(java.lang.String s) {
+        this.$ceylon$language$Category$this = new ceylon.language.Category$impl(this);
         value = s;
     }
 
@@ -521,25 +523,25 @@ public abstract class String
     public boolean containsAny(@Sequenced @Name("elements")
     @TypeInfo("ceylon.language::Sequential<ceylon.language::Object>")
     List<?> elements) {
-        return Category$impl._containsAny(this, elements);
+        return $ceylon$language$Category$this.containsAny(elements);
     }
 
     @Ignore
     public static boolean containsAny(java.lang.String value, List<?> elements) {
         // TODO We're still boxing here!
-        return Category$impl._containsAny(instance(value), elements);
+        return instance(value).containsAny(elements);
     }
 
     @Override
     @Ignore
     public boolean containsAny() {
-        return Category$impl._containsAny(this, empty_.getEmpty$());
+        return $ceylon$language$Category$this.containsAny(empty_.getEmpty$());
     }
 
     @Ignore
     public static boolean containsAny(java.lang.String value) {
         // TODO We're still boxing here!
-        return Category$impl._containsAny(instance(value), empty_.getEmpty$());
+        return instance(value).containsAny(empty_.getEmpty$());
     }
 
     @Override
@@ -553,25 +555,25 @@ public abstract class String
     public boolean containsEvery(@Sequenced @Name("elements")
     @TypeInfo("ceylon.language::Sequential<ceylon.language::Object>")
     List<?> elements) {
-        return Category$impl._containsEvery(this, elements);
+        return $ceylon$language$Category$this.containsEvery(elements);
     }
 
     @Ignore
     public static boolean containsEvery(java.lang.String value, List<?> elements) {
         // TODO We're still boxing here!
-        return Category$impl._containsEvery(instance(value), elements);
+        return instance(value).containsEvery(elements);
     }
 
     @Override
     @Ignore
     public boolean containsEvery() {
-        return Category$impl._containsEvery(this, empty_.getEmpty$());
+        return $ceylon$language$Category$this.containsEvery(empty_.getEmpty$());
     }
 
     @Ignore
     public static boolean containsEvery(java.lang.String value) {
         // TODO We're still boxing here!
-        return Category$impl._containsEvery(instance(value), empty_.getEmpty$());
+        return instance(value).containsEvery(empty_.getEmpty$());
     }
 
     @Override

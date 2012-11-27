@@ -9,7 +9,7 @@ public final class Category$impl {
     public Category$impl(Category $this) {
         this.$this = $this;
     }
-    public static boolean _containsEvery(Category $this, ceylon.language.List<?> elements) {
+    private static boolean _containsEvery(Category $this, ceylon.language.List<?> elements) {
         java.lang.Object element;
         for (ceylon.language.Iterator<?> iter = elements.getIterator(); 
                 !((element = iter.next()) instanceof Finished);) {
@@ -29,7 +29,7 @@ public final class Category$impl {
         return empty_.getEmpty$();
     }
 
-    public static boolean _containsAny(Category $this, ceylon.language.List<?> elements) {
+    private static boolean _containsAny(Category $this, ceylon.language.List<?> elements) {
         java.lang.Object element;
         for (ceylon.language.Iterator<?> iter = elements.getIterator(); 
                 !((element = iter.next()) instanceof Finished);) {

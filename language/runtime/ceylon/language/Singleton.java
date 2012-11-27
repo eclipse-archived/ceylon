@@ -23,10 +23,12 @@ import com.redhat.ceylon.compiler.java.metadata.Variance;
 @SatisfiedTypes("ceylon.language::Sequence<Element>")
 public class Singleton<Element>
         implements Sequence<Element> {
+    private final ceylon.language.Category$impl $ceylon$language$Category$this;
 
 	Element element;
 
 	public Singleton(Element element) {
+        this.$ceylon$language$Category$this = new ceylon.language.Category$impl(this);
 		this.element = element;
 	}
 
@@ -219,13 +221,13 @@ public class Singleton<Element>
     @Override
     @Ignore
     public boolean containsEvery(List<?> elements) {
-        return Category$impl._containsEvery(this, elements);
+        return $ceylon$language$Category$this.containsEvery(elements);
     }
 
     @Override
     @Ignore
     public boolean containsEvery() {
-        return Category$impl._containsEvery(this, empty_.getEmpty$());
+        return $ceylon$language$Category$this.containsEvery(empty_.getEmpty$());
     }
     @Override
     @Ignore
@@ -236,13 +238,13 @@ public class Singleton<Element>
     @Override
     @Ignore
     public boolean containsAny(List<?> elements) {
-        return Category$impl._containsAny(this, elements);
+        return $ceylon$language$Category$this.containsAny(elements);
     }
 
     @Override
     @Ignore
     public boolean containsAny() {
-        return Category$impl._containsAny(this, empty_.getEmpty$());
+        return $ceylon$language$Category$this.containsAny(empty_.getEmpty$());
     }
 
     @Override

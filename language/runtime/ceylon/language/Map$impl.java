@@ -60,6 +60,11 @@ public final class Map$impl<Key,Item> {
     }
     static <Key,Item> Set<? extends Key> _getKeys(final Map<Key,Item> $this){
         class keySet implements Set<Key>{
+            private final ceylon.language.Category$impl $ceylon$language$Category$this;
+
+            private keySet() {
+                this.$ceylon$language$Category$this = new ceylon.language.Category$impl(this);
+            }
 
             @Override
             public Collection<? extends Key> getClone() {
@@ -153,13 +158,13 @@ public final class Map$impl<Key,Item> {
             @Override
             @Ignore
             public boolean containsEvery(List<?> elements) {
-                return Category$impl._containsEvery(this, elements);
+                return $ceylon$language$Category$this.containsEvery(elements);
             }
 
             @Override
             @Ignore
             public boolean containsEvery() {
-                return Category$impl._containsEvery(this, empty_.getEmpty$());
+                return $ceylon$language$Category$this.containsEvery(empty_.getEmpty$());
             }
 
             @Override
@@ -171,13 +176,13 @@ public final class Map$impl<Key,Item> {
             @Override
             @Ignore
             public boolean containsAny(List<?> elements) {
-                return Category$impl._containsAny(this, elements);
+                return $ceylon$language$Category$this.containsAny(elements);
             }
 
             @Override
             @Ignore
             public boolean containsAny() {
-                return Category$impl._containsAny(this, empty_.getEmpty$());
+                return $ceylon$language$Category$this.containsAny(empty_.getEmpty$());
             }
 
             @Override
@@ -288,6 +293,11 @@ public final class Map$impl<Key,Item> {
     }
     static <Key,Item> Collection<? extends Item> _getValues(final Map<Key,Item> $this){
         class valueCollection implements Collection<Item> {
+            private final ceylon.language.Category$impl $ceylon$language$Category$this;
+
+            private valueCollection() {
+                this.$ceylon$language$Category$this = new ceylon.language.Category$impl(this);
+            }
 
             @Override
             public Collection<? extends Item> getClone() {
@@ -349,13 +359,13 @@ public final class Map$impl<Key,Item> {
             @Override
             @Ignore
             public boolean containsEvery(List<?> elements) {
-                return Category$impl._containsEvery(this, elements);
+                return $ceylon$language$Category$this.containsEvery(elements);
             }
 
             @Override
             @Ignore
             public boolean containsEvery() {
-                return Category$impl._containsEvery(this, empty_.getEmpty$());
+                return $ceylon$language$Category$this.containsEvery(empty_.getEmpty$());
             }
 
             @Override
@@ -367,13 +377,13 @@ public final class Map$impl<Key,Item> {
             @Override
             @Ignore
             public boolean containsAny(List<?> elements) {
-                return Category$impl._containsAny(this, elements);
+                return $ceylon$language$Category$this.containsAny(elements);
             }
 
             @Override
             @Ignore
             public boolean containsAny() {
-                return Category$impl._containsAny(this, empty_.getEmpty$());
+                return $ceylon$language$Category$this.containsAny(empty_.getEmpty$());
             }
 
             @Override
@@ -487,6 +497,11 @@ public final class Map$impl<Key,Item> {
         class inverse implements Map<Item, Set<? extends Key>>{
 
             private Correspondence$impl<java.lang.Object, Set<? extends Key>> correspondence$impl = new Correspondence$impl(this);
+            private final ceylon.language.Category$impl $ceylon$language$Category$this;
+
+            private inverse() {
+                this.$ceylon$language$Category$this = new ceylon.language.Category$impl(this);
+            }
             
             @Ignore
             @Override
@@ -641,13 +656,13 @@ public final class Map$impl<Key,Item> {
             @Override
             @Ignore
             public boolean containsEvery(List<?> elements) {
-                return Category$impl._containsEvery(this, elements);
+                return $ceylon$language$Category$this.containsEvery(elements);
             }
 
             @Override
             @Ignore
             public boolean containsEvery() {
-                return Category$impl._containsEvery(this, empty_.getEmpty$());
+                return $ceylon$language$Category$this.containsEvery(empty_.getEmpty$());
             }
 
             @Override
@@ -659,13 +674,13 @@ public final class Map$impl<Key,Item> {
             @Override
             @Ignore
             public boolean containsAny(List<?> elements) {
-                return Category$impl._containsAny(this, elements);
+                return $ceylon$language$Category$this.containsAny(elements);
             }
 
             @Override
             @Ignore
             public boolean containsAny() {
-                return Category$impl._containsAny(this, empty_.getEmpty$());
+                return $ceylon$language$Category$this.containsAny(empty_.getEmpty$());
             }
 
             @Override
@@ -803,9 +818,14 @@ public final class Map$impl<Key,Item> {
 
     static <Key,Item, Result> Map<? extends Key, ? extends Result> _mapItems(
             final Map<? extends Key, ? extends Item> $this, final Callable<Result> mapping) {
-        return new Map<Key, Result>() {
+        class mapItems implements Map<Key, Result> {
 
             private Correspondence$impl<java.lang.Object, Result> correspondence$impl = new Correspondence$impl(this);
+            private final ceylon.language.Category$impl $ceylon$language$Category$this;
+
+            private mapItems() {
+                this.$ceylon$language$Category$this = new ceylon.language.Category$impl(this);
+            }
             
             @Ignore
             @Override
@@ -1021,12 +1041,12 @@ public final class Map$impl<Key,Item> {
 
             @Override
             public boolean containsEvery(List<?> elements) {
-                return Category$impl._containsEvery(this, elements);
+                return $ceylon$language$Category$this.containsEvery(elements);
             }
 
             @Override
             public boolean containsEvery() {
-                return Category$impl._containsEvery(this, empty_.getEmpty$());
+                return $ceylon$language$Category$this.containsEvery(empty_.getEmpty$());
             }
 
             @Override
@@ -1036,12 +1056,12 @@ public final class Map$impl<Key,Item> {
 
             @Override
             public boolean containsAny(List<?> elements) {
-                return Category$impl._containsAny(this, elements);
+                return $ceylon$language$Category$this.containsAny(elements);
             }
 
             @Override
             public boolean containsAny() {
-                return Category$impl._containsAny(this, empty_.getEmpty$());
+                return $ceylon$language$Category$this.containsAny(empty_.getEmpty$());
             }
 
             @Override
@@ -1080,6 +1100,7 @@ public final class Map$impl<Key,Item> {
             	return Collection$impl._toString(this);
             }
 
-        };
+        }
+        return new mapItems();
     }
 }

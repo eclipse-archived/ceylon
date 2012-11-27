@@ -26,6 +26,7 @@ import com.redhat.ceylon.compiler.java.metadata.TypeParameters;
 		       "ceylon.language::Ordinal<Element>"}))
 public class Range<Element extends Comparable<? super Element> & Ordinal<? super Element>>
     implements Sequence<Element>, Category {
+    private final ceylon.language.Category$impl $ceylon$language$Category$this;
 
     private final Element first;
     private final Element last;
@@ -33,6 +34,7 @@ public class Range<Element extends Comparable<? super Element> & Ordinal<? super
 
     public Range(@Name("first") Element first,
     		     @Name("last") Element last) {
+        this.$ceylon$language$Category$this = new ceylon.language.Category$impl(this);
         this.first = first;
         this.last = last;
         this.size = Math.abs(last.distanceFrom(first))+1;
@@ -333,12 +335,12 @@ public class Range<Element extends Comparable<? super Element> & Ordinal<? super
     public boolean containsEvery(@Sequenced @Name("elements")
     @TypeInfo("ceylon.language::Sequential<ceylon.language::Object>")
     List<?> elements) {
-        return Category$impl._containsEvery(this, elements);
+        return $ceylon$language$Category$this.containsEvery(elements);
     }
     @Override
     @Ignore
     public boolean containsEvery() {
-        return Category$impl._containsEvery(this, empty_.getEmpty$());
+        return $ceylon$language$Category$this.containsEvery(empty_.getEmpty$());
     }
     @Override
     @Ignore
@@ -351,12 +353,12 @@ public class Range<Element extends Comparable<? super Element> & Ordinal<? super
     public boolean containsAny(@Sequenced @Name("elements")
     @TypeInfo("ceylon.language::Sequential<ceylon.language::Object>")
     List<?> elements) {
-        return Category$impl._containsAny(this, elements);
+        return $ceylon$language$Category$this.containsAny(elements);
     }
     @Override
     @Ignore
     public boolean containsAny() {
-        return Category$impl._containsAny(this, empty_.getEmpty$());
+        return $ceylon$language$Category$this.containsAny(empty_.getEmpty$());
     }
     @Override
     @Ignore

@@ -8,7 +8,12 @@ import com.redhat.ceylon.compiler.java.metadata.Ignore;
 
 @Ceylon(major = 3) @Attribute
 public class empty_ {
-    private final static Empty value = new Empty() {
+    private static final class EmptyValue implements Empty {
+        private final ceylon.language.Category$impl $ceylon$language$Category$this;
+
+        private EmptyValue() {
+            this.$ceylon$language$Category$this = new ceylon.language.Category$impl(this);
+        }
 
         private Correspondence$impl<Integer,java.lang.Object> correspondence$impl = new Correspondence$impl<Integer,java.lang.Object>(this);
         
@@ -78,7 +83,7 @@ public class empty_ {
         @Override
         @Ignore
         public boolean containsEvery(ceylon.language.List<?> elements) {
-            return Category$impl._containsEvery(this, elements);
+            return $ceylon$language$Category$this.containsEvery(elements);
         }
         @Override
         @Ignore
@@ -95,7 +100,7 @@ public class empty_ {
         @Override
         @Ignore
         public boolean containsAny(ceylon.language.List<?> elements) {
-            return Category$impl._containsAny(this, elements);
+            return $ceylon$language$Category$this.containsAny(elements);
         }
         @Override
         @Ignore
@@ -249,6 +254,7 @@ public class empty_ {
             return new InternalMap<Key, Sequence<? extends java.lang.Object>>(java.util.Collections.<Key,Sequence<java.lang.Object>>emptyMap());
         }
     };
+    private final static Empty value = new EmptyValue();
     
     public static Empty getEmpty$(){
         return value;

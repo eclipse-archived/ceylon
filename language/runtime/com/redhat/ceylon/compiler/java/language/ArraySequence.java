@@ -37,6 +37,7 @@ import com.redhat.ceylon.compiler.java.metadata.TypeInfo;
 @Class(extendsType="ceylon.language::Object")
 @SatisfiedTypes("ceylon.language::Sequence<Element>")
 public class ArraySequence<Element> implements Sequence<Element> {
+    private final ceylon.language.Category$impl $ceylon$language$Category$this;
 
     protected final Element[] array;
     protected final long first;
@@ -47,6 +48,7 @@ public class ArraySequence<Element> implements Sequence<Element> {
 
     @Ignore
     public ArraySequence(Element[] array, long first) {
+        this.$ceylon$language$Category$this = new ceylon.language.Category$impl(this);
     	if (array.length==0 || array.length<=first) {
     		throw new IllegalArgumentException("ArraySequence may not have zero elements");
     	}
@@ -56,6 +58,7 @@ public class ArraySequence<Element> implements Sequence<Element> {
 
     @Ignore
     public ArraySequence(java.util.List<Element> list) {
+        this.$ceylon$language$Category$this = new ceylon.language.Category$impl(this);
     	if (list.size()==0) {
     		throw new IllegalArgumentException("ArraySequence may not have zero elements");
     	}
@@ -325,13 +328,13 @@ public class ArraySequence<Element> implements Sequence<Element> {
     @Override
     @Ignore
     public boolean containsEvery(List<?> elements) {
-        return Category$impl._containsEvery(this, elements);
+        return $ceylon$language$Category$this.containsEvery(elements);
     }
 
     @Override
     @Ignore
     public boolean containsEvery() {
-        return Category$impl._containsEvery(this, empty_.getEmpty$());
+        return $ceylon$language$Category$this.containsEvery(empty_.getEmpty$());
     }
 
     @Override
@@ -343,13 +346,13 @@ public class ArraySequence<Element> implements Sequence<Element> {
     @Override
     @Ignore
     public boolean containsAny(List<?> elements) {
-        return Category$impl._containsAny(this, elements);
+        return $ceylon$language$Category$this.containsAny(elements);
     }
 
     @Override
     @Ignore
     public boolean containsAny() {
-        return Category$impl._containsAny(this, empty_.getEmpty$());
+        return $ceylon$language$Category$this.containsAny(empty_.getEmpty$());
     }
 
     @Override

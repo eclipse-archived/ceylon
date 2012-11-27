@@ -29,7 +29,13 @@ public final class Correspondence$impl<Key,Item> {
         return Correspondence$impl.<Key,Item>_getKeys(this.$this);
     }
     public static <Key,Item> Category _getKeys(final Correspondence<Key,Item> $this){
-        Category keys = new Category() {
+        final class CategoryKeys implements Category {
+            private final ceylon.language.Category$impl $ceylon$language$Category$this;
+
+            private CategoryKeys() {
+                this.$ceylon$language$Category$this = new ceylon.language.Category$impl(this);
+            }
+            
             public boolean contains(java.lang.Object value) {
                 // FIXME
                 if (true/*value instanceof Key*/) {
@@ -43,12 +49,12 @@ public final class Correspondence$impl<Key,Item> {
             @Override
             @Ignore
             public boolean containsEvery(ceylon.language.List<?> elements) {
-                return Category$impl._containsEvery(this, elements);
+                return $ceylon$language$Category$this.containsEvery(elements);
             }
             @Override
             @Ignore
             public boolean containsEvery() {
-                return Category$impl._containsEvery(this, empty_.getEmpty$());
+                return $ceylon$language$Category$this.containsEvery(empty_.getEmpty$());
             }
             @Override
             @Ignore
@@ -59,12 +65,12 @@ public final class Correspondence$impl<Key,Item> {
             @Override
             @Ignore
             public boolean containsAny(ceylon.language.List<?> elements) {
-                return Category$impl._containsAny(this, elements);
+                return $ceylon$language$Category$this.containsAny(elements);
             }
             @Override
             @Ignore
             public boolean containsAny() {
-                return Category$impl._containsAny(this, empty_.getEmpty$());
+                return $ceylon$language$Category$this.containsAny(empty_.getEmpty$());
             }
             @Override
             @Ignore
@@ -72,7 +78,7 @@ public final class Correspondence$impl<Key,Item> {
                 return empty_.getEmpty$();
             }
         };
-        return keys;
+        return new CategoryKeys();
     }
 
     public boolean definesEvery(ceylon.language.List<? extends Key> keys){
@@ -145,10 +151,12 @@ public final class Correspondence$impl<Key,Item> {
     implements Sequence<Item> {
         private Sequence<? extends Key> keys;
         private final Correspondence$impl<ceylon.language.Integer, Item> $ceylon$language$Correspondence$this;
-        
+        private final ceylon.language.Category$impl $ceylon$language$Category$this;
+
         Items(Sequence<? extends Key> keys){
             this.keys = keys;
             this.$ceylon$language$Correspondence$this = new Correspondence$impl<ceylon.language.Integer, Item>(this);
+            this.$ceylon$language$Category$this = new ceylon.language.Category$impl(this);
         }
         public final Integer getLastIndex() {
             return keys.getLastIndex();
@@ -300,12 +308,12 @@ public final class Correspondence$impl<Key,Item> {
         @Override
         @Ignore
         public boolean containsEvery(List<?> elements) {
-            return Category$impl._containsEvery(this, elements);
+            return $ceylon$language$Category$this.containsEvery(elements);
         }
         @Override
         @Ignore
         public boolean containsEvery() {
-            return Category$impl._containsEvery(this, empty_.getEmpty$());
+            return $ceylon$language$Category$this.containsEvery(empty_.getEmpty$());
         }
         @Override
         @Ignore
@@ -315,12 +323,12 @@ public final class Correspondence$impl<Key,Item> {
         @Override
         @Ignore
         public boolean containsAny(List<?> elements) {
-            return Category$impl._containsAny(this, elements);
+            return $ceylon$language$Category$this.containsAny(elements);
         }
         @Override
         @Ignore
         public boolean containsAny() {
-            return Category$impl._containsAny(this, empty_.getEmpty$());
+            return $ceylon$language$Category$this.containsAny(empty_.getEmpty$());
         }
         @Override
         @Ignore
