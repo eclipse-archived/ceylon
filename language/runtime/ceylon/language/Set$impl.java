@@ -20,7 +20,7 @@ public final class Set$impl<Element> {
     public boolean superset(Set<? extends java.lang.Object> set) {
         return _superset($this, set);
     }
-    static <Element> boolean _superset(Set<Element> $this, Set<? extends java.lang.Object> set) {
+    private static <Element> boolean _superset(Set<Element> $this, Set<? extends java.lang.Object> set) {
         java.lang.Object elem;
         for (ceylon.language.Iterator<? extends java.lang.Object> iter = set.getIterator(); 
                 !((elem = iter.next()) instanceof Finished);) {
@@ -32,7 +32,7 @@ public final class Set$impl<Element> {
     public boolean subset(Set<? extends java.lang.Object> set) {
         return _subset($this, set);
     }
-    static <Element> boolean _subset(Set<Element> $this, Set<? extends java.lang.Object> set) {
+    private static <Element> boolean _subset(Set<Element> $this, Set<? extends java.lang.Object> set) {
         java.lang.Object elem;
         for (ceylon.language.Iterator<? extends Element> iter = $this.getIterator(); 
                 !((elem = iter.next()) instanceof Finished);) {
@@ -44,7 +44,7 @@ public final class Set$impl<Element> {
     public boolean equals(java.lang.Object that) {
         return _equals($this, that);
     }
-    static <Element> boolean _equals(final Set<Element> $this, java.lang.Object that) {
+    private static <Element> boolean _equals(final Set<Element> $this, java.lang.Object that) {
         if (that instanceof Set) {
             Set other = (Set) that;
             if (other.getSize()==$this.getSize()) {
@@ -62,7 +62,7 @@ public final class Set$impl<Element> {
     public int hashCode() {
         return _hashCode($this);
     }
-    static <Element> int _hashCode(final Set<Element> $this) {
+    private static <Element> int _hashCode(final Set<Element> $this) {
         int hashCode = 1;
         java.lang.Object elem;
         for (Iterator<? extends Element> iter=$this.getIterator(); !((elem = iter.next()) instanceof Finished);) {

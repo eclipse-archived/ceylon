@@ -63,11 +63,13 @@ public final class Map$impl<Key,Item> {
             private final ceylon.language.Category$impl $ceylon$language$Category$this;
             private final ceylon.language.Collection$impl<Key> $ceylon$language$Collection$this;
             private final ceylon.language.Iterable$impl<Key> $ceylon$language$Iterable$this;
+            private final ceylon.language.Set$impl<Key> $ceylon$language$Set$this;
 
             private keySet() {
                 this.$ceylon$language$Category$this = new ceylon.language.Category$impl(this);
                 this.$ceylon$language$Collection$this = new ceylon.language.Collection$impl<Key>(this);
                 this.$ceylon$language$Iterable$this = new ceylon.language.Iterable$impl<Key>(this);
+                this.$ceylon$language$Set$this = new ceylon.language.Set$impl<Key>(this);
             }
 
             @Override
@@ -198,13 +200,13 @@ public final class Map$impl<Key,Item> {
             @Override
             @Ignore
             public boolean superset(Set<? extends java.lang.Object> set) {
-                return Set$impl._superset(this, set);
+                return $ceylon$language$Set$this.superset(set);
             }
 
             @Override
             @Ignore
             public boolean subset(Set<? extends java.lang.Object> set) {
-                return Set$impl._subset(this, set);
+                return $ceylon$language$Set$this.subset(set);
             }
             @Override
             @Ignore
