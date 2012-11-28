@@ -44,7 +44,7 @@ class Bug476Bottom<T, U> extends .com.redhat.ceylon.compiler.java.test.issues.bu
     
     Bug476Bottom() {
         super();
-        this.attr = .ceylon.language.bottom_.getBottom$();
+        this.attr = (.com.redhat.ceylon.compiler.java.test.issues.bug04xx.Bug476A).ceylon.language.bottom_.getBottom$();
     }
     
     @.java.lang.Override

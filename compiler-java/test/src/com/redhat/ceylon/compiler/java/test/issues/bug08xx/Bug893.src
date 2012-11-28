@@ -1,0 +1,105 @@
+package com.redhat.ceylon.compiler.java.test.issues.bug08xx;
+
+public interface XIterable893<Element> {
+    
+    public .com.redhat.ceylon.compiler.java.test.issues.bug08xx.XIterable893<? extends Element> getSuccess();
+    
+    public .com.redhat.ceylon.compiler.java.test.issues.bug08xx.XIterable893<? extends Element> getFail1();
+    
+    public abstract .com.redhat.ceylon.compiler.java.test.issues.bug08xx.XIterable893<? extends Element> getFail2();
+}
+public final class XIterable893$impl<Element> {
+    
+    public XIterable893$impl(.com.redhat.ceylon.compiler.java.test.issues.bug08xx.XIterable893<? extends Element> $this) {
+        this.$this = $this;
+    }
+    private final .com.redhat.ceylon.compiler.java.test.issues.bug08xx.XIterable893<? extends Element> $this;
+    
+    public final .com.redhat.ceylon.compiler.java.test.issues.bug08xx.XIterable893<? extends Element> getSuccess() {
+        return (.com.redhat.ceylon.compiler.java.test.issues.bug08xx.XIterable893<? extends Element>).ceylon.language.bottom_.getBottom$();
+    }
+    
+    public final .com.redhat.ceylon.compiler.java.test.issues.bug08xx.XIterable893<? extends Element> getFail1() {
+        return (.com.redhat.ceylon.compiler.java.test.issues.bug08xx.XIterable893<? extends Element>).ceylon.language.bottom_.getBottom$();
+    }
+    
+    public final .com.redhat.ceylon.compiler.java.test.issues.bug08xx.XIterable893<? extends Element> getFail2() {
+        return $this.getFail2();
+    }
+}
+public interface XSequential893<Element> extends .com.redhat.ceylon.compiler.java.test.issues.bug08xx.XIterable893<Element> {
+}
+public final class XSequential893$impl<Element> {
+    
+    public XSequential893$impl(.com.redhat.ceylon.compiler.java.test.issues.bug08xx.XSequential893<? extends Element> $this) {
+        this.$this = $this;
+    }
+    private final .com.redhat.ceylon.compiler.java.test.issues.bug08xx.XSequential893<? extends Element> $this;
+}
+public interface XSequence893<Element> extends .com.redhat.ceylon.compiler.java.test.issues.bug08xx.XSequential893<Element> {
+    
+    @.java.lang.Override
+    public abstract .com.redhat.ceylon.compiler.java.test.issues.bug08xx.XIterable893<? extends Element> getSuccess();
+    
+    @.java.lang.Override
+    public abstract .com.redhat.ceylon.compiler.java.test.issues.bug08xx.XIterable893<? extends Element> getFail1();
+    
+    @.java.lang.Override
+    public abstract .com.redhat.ceylon.compiler.java.test.issues.bug08xx.XIterable893<? extends Element> getFail2();
+}
+public final class XSequence893$impl<Element> {
+    
+    public XSequence893$impl(.com.redhat.ceylon.compiler.java.test.issues.bug08xx.XSequence893<? extends Element> $this) {
+        this.$this = $this;
+    }
+    private final .com.redhat.ceylon.compiler.java.test.issues.bug08xx.XSequence893<? extends Element> $this;
+    
+    public final .com.redhat.ceylon.compiler.java.test.issues.bug08xx.XIterable893<? extends Element> getSuccess() {
+        return $this.getSuccess();
+    }
+    
+    public final .com.redhat.ceylon.compiler.java.test.issues.bug08xx.XIterable893<? extends Element> getFail1() {
+        return $this.getFail1();
+    }
+    
+    public final .com.redhat.ceylon.compiler.java.test.issues.bug08xx.XIterable893<? extends Element> getFail2() {
+        return $this.getFail2();
+    }
+}
+public interface XEmpty893 extends .com.redhat.ceylon.compiler.java.test.issues.bug08xx.XSequential893<.java.lang.Object> {
+}
+public final class XEmpty893$impl {
+    
+    public XEmpty893$impl(.com.redhat.ceylon.compiler.java.test.issues.bug08xx.XEmpty893 $this) {
+        this.$this = $this;
+    }
+    private final .com.redhat.ceylon.compiler.java.test.issues.bug08xx.XEmpty893 $this;
+}
+public abstract class XSingleton893<Element> extends .java.lang.Object implements .com.redhat.ceylon.compiler.java.test.issues.bug08xx.XSequence893<Element> {
+    
+    public XSingleton893(Element element) {
+        super();
+        this.$com$redhat$ceylon$compiler$java$test$issues$bug08xx$XSequence893$this = new .com.redhat.ceylon.compiler.java.test.issues.bug08xx.XSequence893$impl<Element>(this);
+        this.$com$redhat$ceylon$compiler$java$test$issues$bug08xx$XSequential893$this = new .com.redhat.ceylon.compiler.java.test.issues.bug08xx.XSequential893$impl<Element>(this);
+        this.$com$redhat$ceylon$compiler$java$test$issues$bug08xx$XIterable893$this = new .com.redhat.ceylon.compiler.java.test.issues.bug08xx.XIterable893$impl<Element>(this);
+        this.fail2 = (.com.redhat.ceylon.compiler.java.test.issues.bug08xx.XIterable893<? extends Element>).ceylon.language.bottom_.getBottom$();
+    }
+    protected final .com.redhat.ceylon.compiler.java.test.issues.bug08xx.XSequence893$impl<Element> $com$redhat$ceylon$compiler$java$test$issues$bug08xx$XSequence893$this;
+    protected final .com.redhat.ceylon.compiler.java.test.issues.bug08xx.XSequential893$impl<Element> $com$redhat$ceylon$compiler$java$test$issues$bug08xx$XSequential893$this;
+    protected final .com.redhat.ceylon.compiler.java.test.issues.bug08xx.XIterable893$impl<Element> $com$redhat$ceylon$compiler$java$test$issues$bug08xx$XIterable893$this;
+    
+    @.java.lang.Override
+    public final .com.redhat.ceylon.compiler.java.test.issues.bug08xx.XIterable893<? extends Element> getSuccess() {
+        return (.com.redhat.ceylon.compiler.java.test.issues.bug08xx.XIterable893<? extends Element>).ceylon.language.bottom_.getBottom$();
+    }
+    
+    public final .com.redhat.ceylon.compiler.java.test.issues.bug08xx.XIterable893<? extends Element> getFail1() {
+        return (.com.redhat.ceylon.compiler.java.test.issues.bug08xx.XIterable893<? extends Element>).ceylon.language.bottom_.getBottom$();
+    }
+    private final .com.redhat.ceylon.compiler.java.test.issues.bug08xx.XIterable893<? extends Element> fail2;
+    
+    @.java.lang.Override
+    public final .com.redhat.ceylon.compiler.java.test.issues.bug08xx.XIterable893<? extends Element> getFail2() {
+        return fail2;
+    }
+}
