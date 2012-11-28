@@ -353,12 +353,29 @@ public class ClassTransformer extends AbstractTransformer {
     private void satisfaction(final Class model, ClassDefinitionBuilder classBuilder) {
         final java.util.List<ProducedType> satisfiedTypes = model.getSatisfiedTypes();
         Set<Interface> satisfiedInterfaces = new HashSet<Interface>();
+        // start by saying that we already satisfied each interface from superclasses
+        Class superClass = model.getExtendedTypeDeclaration();
+        while(superClass != null){
+            for(TypeDeclaration interfaceDecl : superClass.getSatisfiedTypeDeclarations()){
+                collectInterfaces((Interface) interfaceDecl, satisfiedInterfaces);
+            }
+            superClass = superClass.getExtendedTypeDeclaration();
+        }
+        // now satisfy each new interface
         for (ProducedType satisfiedType : satisfiedTypes) {
             TypeDeclaration decl = satisfiedType.getDeclaration();
             if (!(decl instanceof Interface)) {
                 continue;
             }
             concreteMembersFromSuperinterfaces((Class)model, classBuilder, satisfiedType, satisfiedInterfaces);
+        }
+    }
+
+    private void collectInterfaces(Interface interfaceDecl, Set<Interface> satisfiedInterfaces) {
+        if(satisfiedInterfaces.add(interfaceDecl)){
+            for(TypeDeclaration newInterfaceDecl : interfaceDecl.getSatisfiedTypeDeclarations()){
+                collectInterfaces((Interface) newInterfaceDecl, satisfiedInterfaces);
+            }
         }
     }
 
