@@ -210,9 +210,6 @@ public class CeylonRunJsTool implements Tool {
         if (!isDefault && !module.contains("/")) {
             throw new CeylonRunJsException("Specified module is not default and is missing version.");
         }
-        if (args != null && !args.isEmpty()) {
-            throw new CeylonRunJsException("Command-line arguments not supported yet.");
-        }
         if (!isDefault) {
             version = module.substring(module.indexOf('/')+1);
             module = module.substring(0, module.indexOf('/'));
@@ -225,7 +222,15 @@ public class CeylonRunJsTool implements Tool {
                 module,
                 isDefault ? "" : "-" + version,
                 func);
-        ProcessBuilder proc = new ProcessBuilder(node, "-e", eval);
+        final ProcessBuilder proc;
+        if (args != null && !args.isEmpty()) {
+            args.add(0, node);
+            args.add(1, "-e");
+            args.add(2, eval);
+            proc = new ProcessBuilder(args.toArray(new String[0]));
+        } else {
+            proc = new ProcessBuilder(node, "-e", eval);
+        }
         String nodePath = getNodePath();
         String ceylonRepo = getCeylonRepo();
         if (nodePath == null || nodePath.isEmpty()) {
