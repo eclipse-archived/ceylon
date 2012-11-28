@@ -2150,7 +2150,7 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
                 for(TypeMirror typeArgument : javacTypeArguments){
                     // if a single type argument is a wildcard, we erase to Object
                     if(typeArgument.getKind() == TypeKind.WILDCARD){
-                        if(variance == VarianceLocation.CONTRAVARIANT){
+                        if(variance == VarianceLocation.CONTRAVARIANT || Decl.isCeylon(declaration)){
                             TypeMirror bound = typeArgument.getUpperBound();
                             if(bound == null)
                                 bound = typeArgument.getLowerBound();
