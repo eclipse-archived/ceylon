@@ -43,12 +43,8 @@ var argv = $empty;
 var namedArgs = {};
 if ((typeof process !== "undefined") && (process.argv !== undefined)) {
     // parse command line arguments
-    if (process.argv.length > 2) {
-        var args = process.argv.slice(2);
-        var argStrings = new Array(args.length);
-        for (var i in args) { argStrings[i] = String$(args[i]); }
-        argv = ArraySequence(argStrings);
-        
+    if (process.argv.length > 1) {
+        var args = process.argv.slice(1);
         for (var i=0; i<args.length; ++i) {
             var arg = args[i];
             if (arg.charAt(0) == '-') {
@@ -68,7 +64,9 @@ if ((typeof process !== "undefined") && (process.argv !== undefined)) {
                     }
                 }
             }
+            args[i] = String$(args[i]);
         }
+        argv = ArraySequence(args);
     }
 } else if (typeof window !== "undefined") {
     // parse URL parameters
