@@ -353,4 +353,9 @@ public class StructureTest2 extends CompilerTest {
     public void testCncMultipleInheritance(){
         compareWithJavaSource("concrete/MultipleInheritance");
     }
+    
+    @Test
+    public void testCncLazySpec(){
+        compareWithJavaSource("concrete/LazySpec");
+    }
 }

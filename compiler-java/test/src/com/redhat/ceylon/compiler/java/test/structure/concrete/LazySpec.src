@@ -1,0 +1,35 @@
+package com.redhat.ceylon.compiler.java.test.structure.concrete;
+
+public interface LazySpec {
+    
+    public .java.lang.Object a();
+    
+    public abstract .java.lang.Object b();
+}
+public final class LazySpec$impl {
+    
+    public LazySpec$impl(.com.redhat.ceylon.compiler.java.test.structure.concrete.LazySpec $this) {
+        this.$this = $this;
+    }
+    private final .com.redhat.ceylon.compiler.java.test.structure.concrete.LazySpec $this;
+    
+    public .java.lang.Object a() {
+        return $this.b();
+    }
+}
+public interface LazySpecSub extends .com.redhat.ceylon.compiler.java.test.structure.concrete.LazySpec {
+    
+    @.java.lang.Override
+    public .java.lang.Object a();
+}
+public final class LazySpecSub$impl {
+    
+    public LazySpecSub$impl(.com.redhat.ceylon.compiler.java.test.structure.concrete.LazySpecSub $this) {
+        this.$this = $this;
+    }
+    private final .com.redhat.ceylon.compiler.java.test.structure.concrete.LazySpecSub $this;
+    
+    public .java.lang.Object a() {
+        return .ceylon.language.bottom_.getBottom$();
+    }
+}
