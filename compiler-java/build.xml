@@ -541,4 +541,16 @@
           file="${build.dist}/${ceylon.compiler.jar}"
           tofile="../ceylon-ide-eclipse/plugins/com.redhat.ceylon.eclipse.ui/lib/com.redhat.ceylon.compiler.java-${module.com.redhat.ceylon.compiler.version}-ide.jar"/>
   </target>
+	<target name="ide-tests" depends="test.classes,gavin">
+
+        <jar destfile="../ceylon-ide-eclipse/tests/com.redhat.ceylon.eclipse.ui.test/lib/compiler-tests-${module.com.redhat.ceylon.compiler.version}.jar">
+          <fileset dir="${build.classes}">
+            <include name="com/redhat/ceylon/compiler/java/test/**"/>
+          </fileset>
+        </jar>
+	      <delete dir ="../ceylon-ide-eclipse/tests/com.redhat.ceylon.eclipse.ui.test/resources/model-loader-tests/declarations/src/declarations" excludes="module.ceylon,package.ceylon,run.ceylon"/>
+	      <copy todir="../ceylon-ide-eclipse/tests/com.redhat.ceylon.eclipse.ui.test/resources/model-loader-tests/declarations/src/declarations">
+	          <fileset dir="${test.src}/com/redhat/ceylon/compiler/java/test/model" includes="*.ceylon" excludes="*test.ceylon"/>
+	      </copy>
+	  </target>
 </project>
