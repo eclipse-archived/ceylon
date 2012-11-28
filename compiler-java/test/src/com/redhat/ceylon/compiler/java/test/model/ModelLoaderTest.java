@@ -79,7 +79,7 @@ public class ModelLoaderTest extends CompilerTest {
     
     private Map<Integer, Set<Integer>> alreadyCompared = new HashMap<Integer, Set<Integer>>();
     
-    private static String getQualifiedPrefixedName(Declaration decl){
+    protected static String getQualifiedPrefixedName(Declaration decl){
         String name = Decl.className(decl);
         String prefix;
         if(decl instanceof ClassOrInterface)
@@ -188,7 +188,7 @@ public class ModelLoaderTest extends CompilerTest {
         Assert.assertTrue("Compilation failed", success);
     }
 
-    private void compareDeclarations(Declaration validDeclaration, Declaration modelDeclaration) {
+    protected void compareDeclarations(Declaration validDeclaration, Declaration modelDeclaration) {
         if(alreadyCompared(validDeclaration, modelDeclaration))
             return;
         String name = validDeclaration.getQualifiedNameString();
