@@ -648,17 +648,22 @@ public class ExpressionTransformer extends AbstractTransformer {
     }
 
     public JCExpression transform(Tree.SequenceEnumeration value) {
+        return transform(value, null);
+    }
+    
+    private JCExpression transform(Tree.SequenceEnumeration value, ProducedType expectedType) {
         at(value);
         if (value.getComprehension() != null) {
-            return make().Apply(null, makeSelect(transformComprehension(value.getComprehension()), "getSequence"), 
+            return make().Apply(null, makeSelect(transformComprehension(value.getComprehension(), expectedType), "getSequence"), 
                     List.<JCExpression>nil());
         } else if (value.getSequencedArgument() != null) {
             java.util.List<Tree.Expression> list = value.getSequencedArgument().getExpressionList().getExpressions();
             if (value.getSequencedArgument().getEllipsis() == null) {
                 ProducedType seqElemType = typeFact().getIteratedType(value.getTypeModel());
+                seqElemType = wrapInOptionalForInterop(seqElemType, expectedType);
                 return makeSequence(list, seqElemType);
             } else {
-                return make().Apply(null, makeSelect(transformExpression(list.get(0)), "getSequence"), 
+                return make().Apply(null, makeSelect(transformExpression(list.get(0), BoxingStrategy.BOXED, expectedType), "getSequence"), 
                         List.<JCExpression>nil());
             }
         } else {
@@ -1980,9 +1985,26 @@ public class ExpressionTransformer extends AbstractTransformer {
     /** Creates an anonymous class that extends Iterable and implements the specified comprehension.
      */
     public JCExpression transformComprehension(Comprehension comp) {
-        return new ComprehensionTransformation(comp).transformComprehension();
+        return transformComprehension(comp, null);
     }
-    
+
+    private JCExpression transformComprehension(Comprehension comp, ProducedType expectedType) {
+        ProducedType elementType = comp.getForComprehensionClause().getTypeModel();
+        elementType = wrapInOptionalForInterop(elementType, expectedType);
+        return new ComprehensionTransformation(comp, elementType).transformComprehension();
+    }
+
+    private ProducedType wrapInOptionalForInterop(ProducedType elementType, ProducedType expectedType) {
+        if(expectedType != null && iteratesOverOptional(expectedType) && !typeFact().isOptionalType(elementType))
+            return typeFact().getOptionalType(elementType);
+        return elementType;
+    }
+
+    private boolean iteratesOverOptional(ProducedType iterableType) {
+        ProducedType seqElemType = typeFact().getIteratedType(iterableType);
+        return isOptional(seqElemType);
+    }
+
     class ComprehensionTransformation {
         private final Comprehension comp;
         final ProducedType targetIterType;
@@ -1995,9 +2017,9 @@ public class ExpressionTransformer extends AbstractTransformer {
         final HashSet<String> fieldNames = new HashSet<String>();
         final ListBuffer<Substitution> fieldSubst = new ListBuffer<Substitution>();
         private JCExpression error;
-        public ComprehensionTransformation(final Comprehension comp) {
+        public ComprehensionTransformation(final Comprehension comp, ProducedType elementType) {
             this.comp = comp;
-            targetIterType = typeFact().getIterableType(comp.getForComprehensionClause().getTypeModel());
+            targetIterType = typeFact().getIterableType(elementType);
         }
     
         public JCExpression transformComprehension() {

@@ -1990,8 +1990,7 @@ public abstract class AbstractTransformer implements Transformation {
         ListBuffer<JCExpression> elems = new ListBuffer<JCExpression>();
         if (list.size() != 1 || !isNothing(list.get(0).getTypeModel())) {
             for (Expression expr : list) {
-                // no need for erasure casts here
-                elems.append(expressionGen().transformExpression(expr));
+                elems.append(expressionGen().transformExpression(expr, BoxingStrategy.BOXED, seqElemType));
             }
         } else {
             // Resolve the ambiguous situation of being passed a single "null" argument
