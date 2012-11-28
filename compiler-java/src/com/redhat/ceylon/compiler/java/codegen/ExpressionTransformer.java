@@ -169,25 +169,30 @@ public class ExpressionTransformer extends AbstractTransformer {
             term = ((Tree.Expression)term).getTerm();
         }
         
-        CeylonVisitor v = gen().visitor;
-        final ListBuffer<JCTree> prevDefs = v.defs;
-        final boolean prevInInitializer = v.inInitializer;
-        final ClassDefinitionBuilder prevClassBuilder = v.classBuilder;
         JCExpression result;
-        try {
-            v.defs = new ListBuffer<JCTree>();
-            v.inInitializer = false;
-            v.classBuilder = gen().current();
-            term.visit(v);
-            if (v.hasResult()) {
-                result = v.getSingleResult();
-            } else {
-                result = makeErroneous();
+        if(term instanceof Tree.SequenceEnumeration){
+            // special case to be able to pass expected type to sequences
+            result = transform((Tree.SequenceEnumeration)term, expectedType);
+        }else{
+            CeylonVisitor v = gen().visitor;
+            final ListBuffer<JCTree> prevDefs = v.defs;
+            final boolean prevInInitializer = v.inInitializer;
+            final ClassDefinitionBuilder prevClassBuilder = v.classBuilder;
+            try {
+                v.defs = new ListBuffer<JCTree>();
+                v.inInitializer = false;
+                v.classBuilder = gen().current();
+                term.visit(v);
+                if (v.hasResult()) {
+                    result = v.getSingleResult();
+                } else {
+                    result = makeErroneous();
+                }
+            } finally {
+                v.classBuilder = prevClassBuilder;
+                v.inInitializer = prevInInitializer;
+                v.defs = prevDefs;
             }
-        } finally {
-            v.classBuilder = prevClassBuilder;
-            v.inInitializer = prevInInitializer;
-            v.defs = prevDefs;
         }
 
         result = applyErasureAndBoxing(result, expr, boxingStrategy, expectedType, flags);
