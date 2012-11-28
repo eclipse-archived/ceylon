@@ -724,8 +724,9 @@ public class ClassTransformer extends AbstractTransformer {
                 makeSelect("this", fieldName),// TODO Use qualified name for quoting? 
                 newInstance)));
         
-        classBuilder.field(PRIVATE | FINAL, fieldName, 
-                makeJavaType(satisfiedType, AbstractTransformer.JT_COMPANION | JT_SATISFIES), null, false);
+        classBuilder.field(PROTECTED | FINAL, fieldName, 
+                makeJavaType(satisfiedType, AbstractTransformer.JT_COMPANION | JT_SATISFIES), null, false,
+                makeAtIgnore());
 
         classBuilder.method(makeCompanionAccessor(iface, satisfiedType, true));
         
