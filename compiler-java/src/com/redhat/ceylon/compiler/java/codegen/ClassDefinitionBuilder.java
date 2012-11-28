@@ -534,10 +534,15 @@ public class ClassDefinitionBuilder {
     }
 
     public ClassDefinitionBuilder field(int modifiers, String attrName, JCExpression type, JCExpression initialValue, boolean isLocal) {
+        return field(modifiers, attrName, type, initialValue, isLocal, List.<JCTree.JCAnnotation>nil());
+    }
+    
+    public ClassDefinitionBuilder field(int modifiers, String attrName, JCExpression type, JCExpression initialValue, boolean isLocal, 
+            List<JCTree.JCAnnotation> annotations) {
         Name attrNameNm = gen.names().fromString(attrName);
         if (!isLocal) {
             // A shared or captured attribute gets turned into a class member
-            defs(gen.make().VarDef(gen.make().Modifiers(modifiers, List.<JCTree.JCAnnotation>nil()), attrNameNm, type, null));
+            defs(gen.make().VarDef(gen.make().Modifiers(modifiers, annotations), attrNameNm, type, null));
             if (initialValue != null) {
                 // The attribute's initializer gets moved to the constructor
                 // because it might be using locals of the initializer
@@ -545,7 +550,7 @@ public class ClassDefinitionBuilder {
             }
         } else {
             // Otherwise it's local to the constructor
-            init(gen.make().VarDef(gen.make().Modifiers(modifiers, List.<JCTree.JCAnnotation>nil()), attrNameNm, type, initialValue));
+            init(gen.make().VarDef(gen.make().Modifiers(modifiers, annotations), attrNameNm, type, initialValue));
         }
         return this;
     }
