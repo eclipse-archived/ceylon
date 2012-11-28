@@ -104,10 +104,6 @@ public class ClassTransformer extends AbstractTransformer {
         super(context);
     }
 
-
-    
-    // FIXME: figure out what insertOverloadedClassConstructors does and port it
-
     public List<JCTree> transform(final Tree.ClassOrInterface def) {
         final ClassOrInterface model = def.getDeclarationModel();
         
