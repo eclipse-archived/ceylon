@@ -1192,7 +1192,7 @@ public class ClassTransformer extends AbstractTransformer {
                 throw new RuntimeException();
             }
             boolean transformMethod = specifier != null || block != null;
-            boolean actualAndAnnotations = def instanceof MethodDeclaration;
+            boolean actualAndAnnotations = def instanceof MethodDeclaration  && ((MethodDeclaration)def).getSpecifierExpression() == null;
             List<JCStatement> cbody = specifier != null ? transformMplBody(model, body) 
                     : block != null ? transformMethodBlock(model, block) 
                     : null;
