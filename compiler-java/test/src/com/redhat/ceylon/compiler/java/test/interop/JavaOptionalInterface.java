@@ -31,4 +31,6 @@ public interface JavaOptionalInterface {
 
     JavaOptionalInterface getProp3();
     JavaOptionalInterface getProp4();
+    
+    ceylon.language.Correspondence<? super Object, ? extends Object> getCorrespondence();
 }

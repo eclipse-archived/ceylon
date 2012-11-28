@@ -38,6 +38,28 @@ class OptionalInterface(JavaOptionalInterface x) satisfies JavaOptionalInterface
             Boolean b2 = exists x.method(x);
             JavaOptionalInterface[] existsInComprehension2 = {for (obj in {x}) if (exists z = obj.method(x)) z};
 
+            JavaOptionalInterface elseOp1 = x.prop1 else x;
+            JavaOptionalInterface elseOp2 = x.method(x) else x;
+            // FIXME: depends on https://github.com/ceylon/ceylon-spec/issues/476
+            //JavaOptionalInterface elseOp = x.prop1 else x;
+            
+            // FIXME: depends on https://github.com/ceylon/ceylon-spec/issues/476
+            //JavaOptionalInterface? elvisOp1 = x.prop1?.prop1;
+            //JavaOptionalInterface? elvisOp2 = x.method(x)?.prop1;
+            
+            // FIXME: depends on https://github.com/ceylon/ceylon-spec/issues/476
+            //Object? correspondenceNoCheck = x.correspondence?[x];
+            Object? correspondenceCheck = x.correspondence[x];
+            
+            JavaOptionalInterface[] seqCheck = { x.prop1 };
+            JavaOptionalInterface?[] seqNoCheck = { x.prop1 };
+
+            JavaOptionalInterface[] seqCheckSpread = { {x.prop1}... };
+            JavaOptionalInterface?[] seqNoCheckSpread = { {x.prop1}... };
+
+            JavaOptionalInterface[] comprehensionCheck = { for (i in 1..2) x.prop1 };
+            JavaOptionalInterface?[] comprehensionNoCheck = { for (i in 1..2) x.prop1 };
+
             return x.prop1.prop1;
         }
         return null;
@@ -48,4 +70,6 @@ class OptionalInterface(JavaOptionalInterface x) satisfies JavaOptionalInterface
 
     shared actual JavaOptionalInterface prop3 = x;
     shared actual JavaOptionalInterface? prop4 = x;
+    
+    shared actual Correspondence<Object,Object> correspondence => bottom;
 }
