@@ -19,6 +19,9 @@
  */
 interface RVI_Covariant<out T> {
     shared formal T m();
+    T privateFinal(){ return m(); }
+    shared T sharedFinal(){ return m(); }
+    shared default T sharedDefault(){ return m(); }
 }
 class RVI_Covariant_Super() satisfies RVI_Covariant<Object> {
     shared actual default Object m() {
@@ -40,4 +43,10 @@ shared void rvi_run(){
     print(cov_super.m());
     RVI_Covariant_Sub cov_sub = RVI_Covariant_Sub();
     print(cov_sub.m());
+    
+    variable String s;
+    s := cov_string.sharedFinal();
+    s := cov_string.sharedDefault();
+    s := cov_sub.sharedFinal();
+    s := cov_sub.sharedDefault();
 }
