@@ -26,8 +26,8 @@ class Bug633EmptyImpl implements .com.redhat.ceylon.compiler.java.test.issues.bu
         this.$com$redhat$ceylon$compiler$java$test$issues$bug06xx$Bug633Empty$this = new .com.redhat.ceylon.compiler.java.test.issues.bug06xx.Bug633Empty$impl(this);
         this.$com$redhat$ceylon$compiler$java$test$issues$bug06xx$Bug633Ranged$this = new .com.redhat.ceylon.compiler.java.test.issues.bug06xx.Bug633Ranged$impl<.ceylon.language.Integer, .java.lang.Object>(this);
     }
-    private final .com.redhat.ceylon.compiler.java.test.issues.bug06xx.Bug633Empty$impl $com$redhat$ceylon$compiler$java$test$issues$bug06xx$Bug633Empty$this;
-    private final .com.redhat.ceylon.compiler.java.test.issues.bug06xx.Bug633Ranged$impl<.ceylon.language.Integer, .java.lang.Object> $com$redhat$ceylon$compiler$java$test$issues$bug06xx$Bug633Ranged$this;
+    protected final .com.redhat.ceylon.compiler.java.test.issues.bug06xx.Bug633Empty$impl $com$redhat$ceylon$compiler$java$test$issues$bug06xx$Bug633Empty$this;
+    protected final .com.redhat.ceylon.compiler.java.test.issues.bug06xx.Bug633Ranged$impl<.ceylon.language.Integer, .java.lang.Object> $com$redhat$ceylon$compiler$java$test$issues$bug06xx$Bug633Ranged$this;
     
     @.java.lang.Override
     public final .java.lang.Object span(final .ceylon.language.Integer from) {

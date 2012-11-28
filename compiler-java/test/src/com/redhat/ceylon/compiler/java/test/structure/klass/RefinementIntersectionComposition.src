@@ -49,7 +49,7 @@ abstract class RIC_Middle implements .com.redhat.ceylon.compiler.java.test.struc
     RIC_Middle() {
         this.$com$redhat$ceylon$compiler$java$test$structure$klass$RIC_Top$this = new .com.redhat.ceylon.compiler.java.test.structure.klass.RIC_Top$impl<.com.redhat.ceylon.compiler.java.test.structure.klass.RIC_A>(this);
     }
-    private final .com.redhat.ceylon.compiler.java.test.structure.klass.RIC_Top$impl<.com.redhat.ceylon.compiler.java.test.structure.klass.RIC_A> $com$redhat$ceylon$compiler$java$test$structure$klass$RIC_Top$this;
+    protected final .com.redhat.ceylon.compiler.java.test.structure.klass.RIC_Top$impl<.com.redhat.ceylon.compiler.java.test.structure.klass.RIC_A> $com$redhat$ceylon$compiler$java$test$structure$klass$RIC_Top$this;
 }
 interface RIC_Left extends .com.redhat.ceylon.compiler.java.test.structure.klass.RIC_Top<.com.redhat.ceylon.compiler.java.test.structure.klass.RIC_B> {
 }
@@ -74,12 +74,10 @@ class RIC_Bottom_From_Class extends .com.redhat.ceylon.compiler.java.test.struct
     RIC_Bottom_From_Class() {
         super();
         this.$com$redhat$ceylon$compiler$java$test$structure$klass$RIC_Left$this = new .com.redhat.ceylon.compiler.java.test.structure.klass.RIC_Left$impl(this);
-        this.$com$redhat$ceylon$compiler$java$test$structure$klass$RIC_Top$this = new .com.redhat.ceylon.compiler.java.test.structure.klass.RIC_Top$impl<.com.redhat.ceylon.compiler.java.test.structure.klass.RIC_B>((.com.redhat.ceylon.compiler.java.test.structure.klass.RIC_Top)this);
         this.$com$redhat$ceylon$compiler$java$test$structure$klass$RIC_Right$this = new .com.redhat.ceylon.compiler.java.test.structure.klass.RIC_Right$impl(this);
     }
-    private final .com.redhat.ceylon.compiler.java.test.structure.klass.RIC_Left$impl $com$redhat$ceylon$compiler$java$test$structure$klass$RIC_Left$this;
-    private final .com.redhat.ceylon.compiler.java.test.structure.klass.RIC_Top$impl<.com.redhat.ceylon.compiler.java.test.structure.klass.RIC_B> $com$redhat$ceylon$compiler$java$test$structure$klass$RIC_Top$this;
-    private final .com.redhat.ceylon.compiler.java.test.structure.klass.RIC_Right$impl $com$redhat$ceylon$compiler$java$test$structure$klass$RIC_Right$this;
+    protected final .com.redhat.ceylon.compiler.java.test.structure.klass.RIC_Left$impl $com$redhat$ceylon$compiler$java$test$structure$klass$RIC_Left$this;
+    protected final .com.redhat.ceylon.compiler.java.test.structure.klass.RIC_Right$impl $com$redhat$ceylon$compiler$java$test$structure$klass$RIC_Right$this;
     
     @.java.lang.Override
     public final .com.redhat.ceylon.compiler.java.test.structure.klass.RIC_A getVal() {
@@ -103,9 +101,9 @@ class RIC_Bottom_From_Interface implements .com.redhat.ceylon.compiler.java.test
         this.$com$redhat$ceylon$compiler$java$test$structure$klass$RIC_Top$this = new .com.redhat.ceylon.compiler.java.test.structure.klass.RIC_Top$impl<.com.redhat.ceylon.compiler.java.test.structure.klass.RIC_B>((.com.redhat.ceylon.compiler.java.test.structure.klass.RIC_Top)this);
         this.$com$redhat$ceylon$compiler$java$test$structure$klass$RIC_Right$this = new .com.redhat.ceylon.compiler.java.test.structure.klass.RIC_Right$impl(this);
     }
-    private final .com.redhat.ceylon.compiler.java.test.structure.klass.RIC_Left$impl $com$redhat$ceylon$compiler$java$test$structure$klass$RIC_Left$this;
-    private final .com.redhat.ceylon.compiler.java.test.structure.klass.RIC_Top$impl<.com.redhat.ceylon.compiler.java.test.structure.klass.RIC_B> $com$redhat$ceylon$compiler$java$test$structure$klass$RIC_Top$this;
-    private final .com.redhat.ceylon.compiler.java.test.structure.klass.RIC_Right$impl $com$redhat$ceylon$compiler$java$test$structure$klass$RIC_Right$this;
+    protected final .com.redhat.ceylon.compiler.java.test.structure.klass.RIC_Left$impl $com$redhat$ceylon$compiler$java$test$structure$klass$RIC_Left$this;
+    protected final .com.redhat.ceylon.compiler.java.test.structure.klass.RIC_Top$impl<.com.redhat.ceylon.compiler.java.test.structure.klass.RIC_B> $com$redhat$ceylon$compiler$java$test$structure$klass$RIC_Top$this;
+    protected final .com.redhat.ceylon.compiler.java.test.structure.klass.RIC_Right$impl $com$redhat$ceylon$compiler$java$test$structure$klass$RIC_Right$this;
     
     @.java.lang.Override
     public final .com.redhat.ceylon.compiler.java.test.structure.klass.RIC_B getVal() {

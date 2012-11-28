@@ -17,8 +17,8 @@ abstract class AbstractSatisfier<T> implements .com.redhat.ceylon.compiler.java.
         this.$ceylon$language$ContainerWithFirstElement$this = new .ceylon.language.ContainerWithFirstElement$impl<.java.lang.Object, .java.lang.Object>((.ceylon.language.ContainerWithFirstElement<.java.lang.Object, .java.lang.Object>)(.ceylon.language.ContainerWithFirstElement)this);
         this.$ceylon$language$Container$this = new .ceylon.language.Container$impl(this);
     }
-    private final .com.redhat.ceylon.compiler.java.test.structure.concrete.AbstractSatisfier_I$impl $com$redhat$ceylon$compiler$java$test$structure$concrete$AbstractSatisfier_I$this;
-    private final .ceylon.language.Iterable$impl<.java.lang.Object> $ceylon$language$Iterable$this;
+    protected final .com.redhat.ceylon.compiler.java.test.structure.concrete.AbstractSatisfier_I$impl $com$redhat$ceylon$compiler$java$test$structure$concrete$AbstractSatisfier_I$this;
+    protected final .ceylon.language.Iterable$impl<.java.lang.Object> $ceylon$language$Iterable$this;
     
     @.java.lang.Override
     public boolean getEmpty() {
@@ -134,6 +134,6 @@ abstract class AbstractSatisfier<T> implements .com.redhat.ceylon.compiler.java.
     public <Grouping>.ceylon.language.Map<? extends Grouping, ? extends .ceylon.language.Sequence<? extends .java.lang.Object>> group(final .ceylon.language.Callable<? extends Grouping> grouping) {
         return $ceylon$language$Iterable$this.group(grouping);
     }
-    private final .ceylon.language.ContainerWithFirstElement$impl<.java.lang.Object, .java.lang.Object> $ceylon$language$ContainerWithFirstElement$this;
-    private final .ceylon.language.Container$impl $ceylon$language$Container$this;
+    protected final .ceylon.language.ContainerWithFirstElement$impl<.java.lang.Object, .java.lang.Object> $ceylon$language$ContainerWithFirstElement$this;
+    protected final .ceylon.language.Container$impl $ceylon$language$Container$this;
 }

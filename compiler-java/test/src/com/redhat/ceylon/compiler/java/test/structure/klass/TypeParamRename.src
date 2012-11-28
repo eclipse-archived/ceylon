@@ -62,7 +62,7 @@ class TypeParamRenameKls<X, Y> implements .com.redhat.ceylon.compiler.java.test.
     TypeParamRenameKls() {
         this.$com$redhat$ceylon$compiler$java$test$structure$klass$TypeParamRename$this = new .com.redhat.ceylon.compiler.java.test.structure.klass.TypeParamRename$impl<X, Y>(this);
     }
-    private final .com.redhat.ceylon.compiler.java.test.structure.klass.TypeParamRename$impl<X, Y> $com$redhat$ceylon$compiler$java$test$structure$klass$TypeParamRename$this;
+    protected final .com.redhat.ceylon.compiler.java.test.structure.klass.TypeParamRename$impl<X, Y> $com$redhat$ceylon$compiler$java$test$structure$klass$TypeParamRename$this;
     
     @.java.lang.Override
     public final X m$t() {

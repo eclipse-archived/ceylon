@@ -14,7 +14,7 @@ class SatisfiesClass implements .com.redhat.ceylon.compiler.java.test.structure.
     SatisfiesClass() {
         this.$com$redhat$ceylon$compiler$java$test$structure$klass$Satisfies$this = new .com.redhat.ceylon.compiler.java.test.structure.klass.Satisfies$impl(this);
     }
-    private final .com.redhat.ceylon.compiler.java.test.structure.klass.Satisfies$impl $com$redhat$ceylon$compiler$java$test$structure$klass$Satisfies$this;
+    protected final .com.redhat.ceylon.compiler.java.test.structure.klass.Satisfies$impl $com$redhat$ceylon$compiler$java$test$structure$klass$Satisfies$this;
     
     public static void main(.java.lang.String[] args) {
         .ceylon.language.process_.getProcess$().setupArguments(args);

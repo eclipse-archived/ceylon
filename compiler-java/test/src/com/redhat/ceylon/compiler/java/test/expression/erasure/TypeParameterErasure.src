@@ -59,8 +59,8 @@ class TPECLeft implements .com.redhat.ceylon.compiler.java.test.expression.erasu
         this.topAttribute = 1L;
         this.leftAttribute = 1L;
     }
-    private final .com.redhat.ceylon.compiler.java.test.expression.erasure.TPELeft$impl $com$redhat$ceylon$compiler$java$test$expression$erasure$TPELeft$this;
-    private final .com.redhat.ceylon.compiler.java.test.expression.erasure.TPETop$impl $com$redhat$ceylon$compiler$java$test$expression$erasure$TPETop$this;
+    protected final .com.redhat.ceylon.compiler.java.test.expression.erasure.TPELeft$impl $com$redhat$ceylon$compiler$java$test$expression$erasure$TPELeft$this;
+    protected final .com.redhat.ceylon.compiler.java.test.expression.erasure.TPETop$impl $com$redhat$ceylon$compiler$java$test$expression$erasure$TPETop$this;
     
     @.java.lang.Override
     public final .java.lang.Object left() {
@@ -99,9 +99,9 @@ class TPECMiddle implements .com.redhat.ceylon.compiler.java.test.expression.era
         this.leftAttribute = 1L;
         this.rightAttribute = 1L;
     }
-    private final .com.redhat.ceylon.compiler.java.test.expression.erasure.TPELeft$impl $com$redhat$ceylon$compiler$java$test$expression$erasure$TPELeft$this;
-    private final .com.redhat.ceylon.compiler.java.test.expression.erasure.TPETop$impl $com$redhat$ceylon$compiler$java$test$expression$erasure$TPETop$this;
-    private final .com.redhat.ceylon.compiler.java.test.expression.erasure.TPERight$impl $com$redhat$ceylon$compiler$java$test$expression$erasure$TPERight$this;
+    protected final .com.redhat.ceylon.compiler.java.test.expression.erasure.TPELeft$impl $com$redhat$ceylon$compiler$java$test$expression$erasure$TPELeft$this;
+    protected final .com.redhat.ceylon.compiler.java.test.expression.erasure.TPETop$impl $com$redhat$ceylon$compiler$java$test$expression$erasure$TPETop$this;
+    protected final .com.redhat.ceylon.compiler.java.test.expression.erasure.TPERight$impl $com$redhat$ceylon$compiler$java$test$expression$erasure$TPERight$this;
     
     @.java.lang.Override
     public final .java.lang.Object left() {

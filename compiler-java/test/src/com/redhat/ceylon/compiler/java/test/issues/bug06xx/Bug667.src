@@ -53,7 +53,7 @@ class Bug667Class<Null> implements .com.redhat.ceylon.compiler.java.test.issues.
         this.$com$redhat$ceylon$compiler$java$test$issues$bug06xx$Bug667Interface$this = new .com.redhat.ceylon.compiler.java.test.issues.bug06xx.Bug667Interface$impl<.ceylon.language.String>(this);
     }
     private final Null n;
-    private final .com.redhat.ceylon.compiler.java.test.issues.bug06xx.Bug667Interface$impl<.ceylon.language.String> $com$redhat$ceylon$compiler$java$test$issues$bug06xx$Bug667Interface$this;
+    protected final .com.redhat.ceylon.compiler.java.test.issues.bug06xx.Bug667Interface$impl<.ceylon.language.String> $com$redhat$ceylon$compiler$java$test$issues$bug06xx$Bug667Interface$this;
     
     @.java.lang.Override
     public final .ceylon.language.String getGet() {
@@ -77,7 +77,7 @@ final class bug667Method_ {
             public final .ceylon.language.String getGet() {
                 return (.ceylon.language.String)n;
             }
-            private final .com.redhat.ceylon.compiler.java.test.issues.bug06xx.Bug667Interface$impl<.ceylon.language.String> $com$redhat$ceylon$compiler$java$test$issues$bug06xx$Bug667Interface$this;
+            protected final .com.redhat.ceylon.compiler.java.test.issues.bug06xx.Bug667Interface$impl<.ceylon.language.String> $com$redhat$ceylon$compiler$java$test$issues$bug06xx$Bug667Interface$this;
         }
         final x_ x = new x_();
     }

@@ -63,8 +63,8 @@ class Bug260_Intersection implements .com.redhat.ceylon.compiler.java.test.issue
         this.$com$redhat$ceylon$compiler$java$test$issues$bug02xx$Bug260_Interface2$this = new .com.redhat.ceylon.compiler.java.test.issues.bug02xx.Bug260_Interface2$impl(this);
         this.$com$redhat$ceylon$compiler$java$test$issues$bug02xx$Bug260_Interface3$this = new .com.redhat.ceylon.compiler.java.test.issues.bug02xx.Bug260_Interface3$impl(this);
     }
-    private final .com.redhat.ceylon.compiler.java.test.issues.bug02xx.Bug260_Interface2$impl $com$redhat$ceylon$compiler$java$test$issues$bug02xx$Bug260_Interface2$this;
-    private final .com.redhat.ceylon.compiler.java.test.issues.bug02xx.Bug260_Interface3$impl $com$redhat$ceylon$compiler$java$test$issues$bug02xx$Bug260_Interface3$this;
+    protected final .com.redhat.ceylon.compiler.java.test.issues.bug02xx.Bug260_Interface2$impl $com$redhat$ceylon$compiler$java$test$issues$bug02xx$Bug260_Interface2$this;
+    protected final .com.redhat.ceylon.compiler.java.test.issues.bug02xx.Bug260_Interface3$impl $com$redhat$ceylon$compiler$java$test$issues$bug02xx$Bug260_Interface3$this;
     
     public static void main(.java.lang.String[] args) {
         .ceylon.language.process_.getProcess$().setupArguments(args);
@@ -80,8 +80,8 @@ class Bug260 implements .com.redhat.ceylon.compiler.java.test.issues.bug02xx.Bug
         this.attr2 = .ceylon.language.bottom_.getBottom$();
         this.attr3 = new .com.redhat.ceylon.compiler.java.test.issues.bug02xx.Bug260_Intersection();
     }
-    private final .com.redhat.ceylon.compiler.java.test.issues.bug02xx.Bug260_Interface$impl $com$redhat$ceylon$compiler$java$test$issues$bug02xx$Bug260_Interface$this;
-    private final .com.redhat.ceylon.compiler.java.test.issues.bug02xx.Bug260_Interface2$impl $com$redhat$ceylon$compiler$java$test$issues$bug02xx$Bug260_Interface2$this;
+    protected final .com.redhat.ceylon.compiler.java.test.issues.bug02xx.Bug260_Interface$impl $com$redhat$ceylon$compiler$java$test$issues$bug02xx$Bug260_Interface$this;
+    protected final .com.redhat.ceylon.compiler.java.test.issues.bug02xx.Bug260_Interface2$impl $com$redhat$ceylon$compiler$java$test$issues$bug02xx$Bug260_Interface2$this;
     private final .ceylon.language.Integer attr;
     
     @.java.lang.Override

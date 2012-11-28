@@ -26,7 +26,7 @@ class Bug623Indirect extends .java.lang.Object implements .com.redhat.ceylon.com
         super();
         this.$com$redhat$ceylon$compiler$java$test$issues$bug06xx$Bug623$this = new .com.redhat.ceylon.compiler.java.test.issues.bug06xx.Bug623$impl(this);
     }
-    private final .com.redhat.ceylon.compiler.java.test.issues.bug06xx.Bug623$impl $com$redhat$ceylon$compiler$java$test$issues$bug06xx$Bug623$this;
+    protected final .com.redhat.ceylon.compiler.java.test.issues.bug06xx.Bug623$impl $com$redhat$ceylon$compiler$java$test$issues$bug06xx$Bug623$this;
     
     public static void main(.java.lang.String[] args) {
         .ceylon.language.process_.getProcess$().setupArguments(args);

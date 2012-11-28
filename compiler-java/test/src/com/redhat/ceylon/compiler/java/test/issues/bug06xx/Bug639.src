@@ -21,7 +21,7 @@ class Bug639WideningImpl implements .com.redhat.ceylon.compiler.java.test.issues
         this.$com$redhat$ceylon$compiler$java$test$issues$bug06xx$Bug639Widening$this = new .com.redhat.ceylon.compiler.java.test.issues.bug06xx.Bug639Widening$impl(this);
         this.implementation = .ceylon.language.String.instance(impl);
     }
-    private final .com.redhat.ceylon.compiler.java.test.issues.bug06xx.Bug639Widening$impl $com$redhat$ceylon$compiler$java$test$issues$bug06xx$Bug639Widening$this;
+    protected final .com.redhat.ceylon.compiler.java.test.issues.bug06xx.Bug639Widening$impl $com$redhat$ceylon$compiler$java$test$issues$bug06xx$Bug639Widening$this;
     private final .ceylon.language.String implementation;
     
     @.java.lang.Override
@@ -39,7 +39,7 @@ class Bug639WideningImpl2 implements .com.redhat.ceylon.compiler.java.test.issue
         this.$com$redhat$ceylon$compiler$java$test$issues$bug06xx$Bug639Widening$this = new .com.redhat.ceylon.compiler.java.test.issues.bug06xx.Bug639Widening$impl(this);
         this.implementation = .ceylon.language.Integer.instance(impl);
     }
-    private final .com.redhat.ceylon.compiler.java.test.issues.bug06xx.Bug639Widening$impl $com$redhat$ceylon$compiler$java$test$issues$bug06xx$Bug639Widening$this;
+    protected final .com.redhat.ceylon.compiler.java.test.issues.bug06xx.Bug639Widening$impl $com$redhat$ceylon$compiler$java$test$issues$bug06xx$Bug639Widening$this;
     private final .ceylon.language.Integer implementation;
     
     @.java.lang.Override

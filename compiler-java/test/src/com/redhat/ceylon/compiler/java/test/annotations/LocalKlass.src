@@ -20,8 +20,10 @@ public class LocalKlass {
                 this.$ceylon$language$Container$this = new .ceylon.language.Container$impl(this);
                 this.i1 = 1L;
             }
-            private final .ceylon.language.Sized$impl $ceylon$language$Sized$this;
-            private final .ceylon.language.Container$impl $ceylon$language$Container$this;
+            @.com.redhat.ceylon.compiler.java.metadata.Ignore
+            protected final .ceylon.language.Sized$impl $ceylon$language$Sized$this;
+            @.com.redhat.ceylon.compiler.java.metadata.Ignore
+            protected final .ceylon.language.Container$impl $ceylon$language$Container$this;
             private final long i1;
             
             @.com.redhat.ceylon.compiler.java.metadata.Annotations({@.com.redhat.ceylon.compiler.java.metadata.Annotation("shared")})

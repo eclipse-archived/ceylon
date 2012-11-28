@@ -41,7 +41,8 @@ final class localInterfaceAliasMethod_ {
             Class1() {
                 this.$com$redhat$ceylon$compiler$java$test$structure$alias$localInterfaceAliasMethod$InterfaceAlias_Foo$this = new InterfaceAlias_Foo$impl(this);
             }
-            private final InterfaceAlias_Foo$impl $com$redhat$ceylon$compiler$java$test$structure$alias$localInterfaceAliasMethod$InterfaceAlias_Foo$this;
+            @.com.redhat.ceylon.compiler.java.metadata.Ignore
+            protected final InterfaceAlias_Foo$impl $com$redhat$ceylon$compiler$java$test$structure$alias$localInterfaceAliasMethod$InterfaceAlias_Foo$this;
         }
         
         @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 3)
@@ -51,7 +52,8 @@ final class localInterfaceAliasMethod_ {
             Class2() {
                 this.$com$redhat$ceylon$compiler$java$test$structure$alias$LocalInterfaceAlias_Toplevel$this = new .com.redhat.ceylon.compiler.java.test.structure.alias.LocalInterfaceAlias_Toplevel$impl(this);
             }
-            private final .com.redhat.ceylon.compiler.java.test.structure.alias.LocalInterfaceAlias_Toplevel$impl $com$redhat$ceylon$compiler$java$test$structure$alias$LocalInterfaceAlias_Toplevel$this;
+            @.com.redhat.ceylon.compiler.java.metadata.Ignore
+            protected final .com.redhat.ceylon.compiler.java.test.structure.alias.LocalInterfaceAlias_Toplevel$impl $com$redhat$ceylon$compiler$java$test$structure$alias$LocalInterfaceAlias_Toplevel$this;
         }
         final Class1 foo1 = new Class1();
         final Class2 foo2 = new Class2();

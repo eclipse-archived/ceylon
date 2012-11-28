@@ -5,7 +5,7 @@ class Bug597 implements .com.redhat.ceylon.compiler.java.test.issues.bug05xx.Sup
     Bug597() {
         this.$com$redhat$ceylon$compiler$java$test$issues$bug05xx$Super$this = new .com.redhat.ceylon.compiler.java.test.issues.bug05xx.Super$impl(this);
     }
-    private final .com.redhat.ceylon.compiler.java.test.issues.bug05xx.Super$impl $com$redhat$ceylon$compiler$java$test$issues$bug05xx$Super$this;
+    protected final .com.redhat.ceylon.compiler.java.test.issues.bug05xx.Super$impl $com$redhat$ceylon$compiler$java$test$issues$bug05xx$Super$this;
     
     @.java.lang.Override
     public .java.lang.String getFoo() {

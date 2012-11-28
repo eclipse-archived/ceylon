@@ -38,7 +38,7 @@ class InterfaceWithConcreteMembersImpl implements .com.redhat.ceylon.compiler.ja
     InterfaceWithConcreteMembersImpl() {
         this.$com$redhat$ceylon$compiler$java$test$structure$klass$InterfaceWithConcreteMembers$this = new .com.redhat.ceylon.compiler.java.test.structure.klass.InterfaceWithConcreteMembers$impl(this);
     }
-    private final .com.redhat.ceylon.compiler.java.test.structure.klass.InterfaceWithConcreteMembers$impl $com$redhat$ceylon$compiler$java$test$structure$klass$InterfaceWithConcreteMembers$this;
+    protected final .com.redhat.ceylon.compiler.java.test.structure.klass.InterfaceWithConcreteMembers$impl $com$redhat$ceylon$compiler$java$test$structure$klass$InterfaceWithConcreteMembers$this;
     
     @.java.lang.Override
     public long foo(final boolean b) {

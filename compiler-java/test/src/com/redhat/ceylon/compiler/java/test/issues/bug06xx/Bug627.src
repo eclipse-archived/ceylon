@@ -54,7 +54,7 @@ class Bug627Concrete implements .com.redhat.ceylon.compiler.java.test.issues.bug
     Bug627Concrete() {
         this.$com$redhat$ceylon$compiler$java$test$issues$bug06xx$Bug627Abstract$this = new .com.redhat.ceylon.compiler.java.test.issues.bug06xx.Bug627Abstract$impl(this);
     }
-    private final .com.redhat.ceylon.compiler.java.test.issues.bug06xx.Bug627Abstract$impl $com$redhat$ceylon$compiler$java$test$issues$bug06xx$Bug627Abstract$this;
+    protected final .com.redhat.ceylon.compiler.java.test.issues.bug06xx.Bug627Abstract$impl $com$redhat$ceylon$compiler$java$test$issues$bug06xx$Bug627Abstract$this;
     
     @.java.lang.Override
     public final .ceylon.language.Iterable<? extends .com.redhat.ceylon.compiler.java.test.issues.bug06xx.Bug627Enum> elements() {

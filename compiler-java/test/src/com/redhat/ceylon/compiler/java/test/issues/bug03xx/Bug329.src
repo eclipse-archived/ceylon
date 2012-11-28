@@ -27,7 +27,7 @@ final class bug329_se_ implements .com.redhat.ceylon.compiler.java.test.issues.b
     public final .ceylon.language.String getSomething() {
         return something;
     }
-    private final .com.redhat.ceylon.compiler.java.test.issues.bug03xx.Bug329_Something$impl $com$redhat$ceylon$compiler$java$test$issues$bug03xx$Bug329_Something$this;
+    protected final .com.redhat.ceylon.compiler.java.test.issues.bug03xx.Bug329_Something$impl $com$redhat$ceylon$compiler$java$test$issues$bug03xx$Bug329_Something$this;
     private static final .com.redhat.ceylon.compiler.java.test.issues.bug03xx.bug329_se_[] value;
     static {
         value = new .com.redhat.ceylon.compiler.java.test.issues.bug03xx.bug329_se_[]{new .com.redhat.ceylon.compiler.java.test.issues.bug03xx.bug329_se_()};
@@ -51,7 +51,7 @@ final class bug329_se2_ implements .com.redhat.ceylon.compiler.java.test.issues.
     public final .ceylon.language.String getSomething() {
         return .ceylon.language.String.instance("somethingElse");
     }
-    private final .com.redhat.ceylon.compiler.java.test.issues.bug03xx.Bug329_Something$impl $com$redhat$ceylon$compiler$java$test$issues$bug03xx$Bug329_Something$this;
+    protected final .com.redhat.ceylon.compiler.java.test.issues.bug03xx.Bug329_Something$impl $com$redhat$ceylon$compiler$java$test$issues$bug03xx$Bug329_Something$this;
     private static final .com.redhat.ceylon.compiler.java.test.issues.bug03xx.bug329_se2_[] value;
     static {
         value = new .com.redhat.ceylon.compiler.java.test.issues.bug03xx.bug329_se2_[]{new .com.redhat.ceylon.compiler.java.test.issues.bug03xx.bug329_se2_()};

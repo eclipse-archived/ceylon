@@ -64,7 +64,7 @@ class ConcreteAttributeGetterImpl<B> implements .com.redhat.ceylon.compiler.java
     ConcreteAttributeGetterImpl() {
         this.$com$redhat$ceylon$compiler$java$test$structure$concrete$ConcreteAttribute$this = new .com.redhat.ceylon.compiler.java.test.structure.concrete.ConcreteAttribute$impl<B>(this);
     }
-    private final .com.redhat.ceylon.compiler.java.test.structure.concrete.ConcreteAttribute$impl<B> $com$redhat$ceylon$compiler$java$test$structure$concrete$ConcreteAttribute$this;
+    protected final .com.redhat.ceylon.compiler.java.test.structure.concrete.ConcreteAttribute$impl<B> $com$redhat$ceylon$compiler$java$test$structure$concrete$ConcreteAttribute$this;
     
     @.java.lang.Override
     public final B getAShared() {
@@ -125,7 +125,7 @@ class ConcreteAttributeValueImpl<C> implements .com.redhat.ceylon.compiler.java.
         this.aVariableFormal = null;
         this.aDefault = null;
     }
-    private final .com.redhat.ceylon.compiler.java.test.structure.concrete.ConcreteAttribute$impl<C> $com$redhat$ceylon$compiler$java$test$structure$concrete$ConcreteAttribute$this;
+    protected final .com.redhat.ceylon.compiler.java.test.structure.concrete.ConcreteAttribute$impl<C> $com$redhat$ceylon$compiler$java$test$structure$concrete$ConcreteAttribute$this;
     
     @.java.lang.Override
     public final C getAShared() {

@@ -14,7 +14,8 @@ class X implements .com.redhat.ceylon.compiler.java.test.expression.invoke.Self<
     X() {
         this.$com$redhat$ceylon$compiler$java$test$expression$invoke$Self$this = new .com.redhat.ceylon.compiler.java.test.expression.invoke.Self$impl<.com.redhat.ceylon.compiler.java.test.expression.invoke.X>(this);
     }
-    private final .com.redhat.ceylon.compiler.java.test.expression.invoke.Self$impl<.com.redhat.ceylon.compiler.java.test.expression.invoke.X> $com$redhat$ceylon$compiler$java$test$expression$invoke$Self$this;
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    protected final .com.redhat.ceylon.compiler.java.test.expression.invoke.Self$impl<.com.redhat.ceylon.compiler.java.test.expression.invoke.X> $com$redhat$ceylon$compiler$java$test$expression$invoke$Self$this;
     
     public static void main(.java.lang.String[] args) {
         .ceylon.language.process_.getProcess$().setupArguments(args);

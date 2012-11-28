@@ -35,7 +35,7 @@ class InterfaceAliasedFormalMemberClass_sub implements .com.redhat.ceylon.compil
     InterfaceAliasedFormalMemberClass_sub() {
         this.$com$redhat$ceylon$compiler$java$test$structure$mcr$InterfaceAliasedFormalMemberClass$this = new .com.redhat.ceylon.compiler.java.test.structure.mcr.InterfaceAliasedFormalMemberClass$impl(this);
     }
-    private final .com.redhat.ceylon.compiler.java.test.structure.mcr.InterfaceAliasedFormalMemberClass$impl $com$redhat$ceylon$compiler$java$test$structure$mcr$InterfaceAliasedFormalMemberClass$this;
+    protected final .com.redhat.ceylon.compiler.java.test.structure.mcr.InterfaceAliasedFormalMemberClass$impl $com$redhat$ceylon$compiler$java$test$structure$mcr$InterfaceAliasedFormalMemberClass$this;
     
     @.java.lang.Override
     public .com.redhat.ceylon.compiler.java.test.structure.mcr.InterfaceAliasedFormalMemberClass$impl $com$redhat$ceylon$compiler$java$test$structure$mcr$InterfaceAliasedFormalMemberClass$impl() {

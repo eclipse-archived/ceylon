@@ -9,7 +9,7 @@ class Bug626 implements .ceylon.language.Iterable<.ceylon.language.List<?>> {
         this.hash = (int)((.ceylon.language.Integer).ceylon.language.bottom_.getBottom$()).longValue();
         this.iterator = (.ceylon.language.Iterator<? extends .ceylon.language.List<?>>).ceylon.language.bottom_.getBottom$();
     }
-    private final .ceylon.language.Iterable$impl<.ceylon.language.List<?>> $ceylon$language$Iterable$this;
+    protected final .ceylon.language.Iterable$impl<.ceylon.language.List<?>> $ceylon$language$Iterable$this;
     
     @.java.lang.Override
     public boolean getEmpty() {
@@ -125,8 +125,8 @@ class Bug626 implements .ceylon.language.Iterable<.ceylon.language.List<?>> {
     public <Grouping>.ceylon.language.Map<? extends Grouping, ? extends .ceylon.language.Sequence<? extends .ceylon.language.List<?>>> group(final .ceylon.language.Callable<? extends Grouping> grouping) {
         return $ceylon$language$Iterable$this.group(grouping);
     }
-    private final .ceylon.language.ContainerWithFirstElement$impl<.ceylon.language.List<?>, .java.lang.Object> $ceylon$language$ContainerWithFirstElement$this;
-    private final .ceylon.language.Container$impl $ceylon$language$Container$this;
+    protected final .ceylon.language.ContainerWithFirstElement$impl<.ceylon.language.List<?>, .java.lang.Object> $ceylon$language$ContainerWithFirstElement$this;
+    protected final .ceylon.language.Container$impl $ceylon$language$Container$this;
     
     @.java.lang.Override
     public final boolean equals(final .java.lang.Object that) {

@@ -19,7 +19,7 @@ class EmptyImpl extends .java.lang.Object implements .ceylon.language.Empty {
         this.$ceylon$language$FixedSized$this = new .ceylon.language.FixedSized$impl<.java.lang.Object>(this);
         this.$ceylon$language$None$this = new .ceylon.language.None$impl<.java.lang.Object>(this);
     }
-    private final .ceylon.language.Empty$impl $ceylon$language$Empty$this;
+    protected final .ceylon.language.Empty$impl $ceylon$language$Empty$this;
     
     @.java.lang.Override
     public final long getSize() {
@@ -90,8 +90,8 @@ class EmptyImpl extends .java.lang.Object implements .ceylon.language.Empty {
     public final boolean defines(final .ceylon.language.Integer key) {
         return $ceylon$language$Empty$this.defines(key);
     }
-    private final .ceylon.language.List$impl<.java.lang.Object> $ceylon$language$Sequential$this;
-    private final .ceylon.language.List$impl<.java.lang.Object> $ceylon$language$List$this;
+    protected final .ceylon.language.List$impl<.java.lang.Object> $ceylon$language$Sequential$this;
+    protected final .ceylon.language.List$impl<.java.lang.Object> $ceylon$language$List$this;
     
     @.java.lang.Override
     public boolean equals(final .java.lang.Object that) {
@@ -117,8 +117,8 @@ class EmptyImpl extends .java.lang.Object implements .ceylon.language.Empty {
     public <Other>.ceylon.language.Sequence<? extends Other> withTrailing(final Other element) {
         return $ceylon$language$List$this.withTrailing(element);
     }
-    private final .ceylon.language.Collection$impl<.java.lang.Object> $ceylon$language$Collection$this;
-    private final .ceylon.language.Iterable$impl<.java.lang.Object> $ceylon$language$Iterable$this;
+    protected final .ceylon.language.Collection$impl<.java.lang.Object> $ceylon$language$Collection$this;
+    protected final .ceylon.language.Iterable$impl<.java.lang.Object> $ceylon$language$Iterable$this;
     
     @.java.lang.Override
     public .ceylon.language.Iterable<?> getRest() {
@@ -209,10 +209,10 @@ class EmptyImpl extends .java.lang.Object implements .ceylon.language.Empty {
     public <Grouping>.ceylon.language.Map<? extends Grouping, ? extends .ceylon.language.Sequence<?>> group(final .ceylon.language.Callable<? extends Grouping> grouping) {
         return $ceylon$language$Iterable$this.group(grouping);
     }
-    private final .ceylon.language.ContainerWithFirstElement$impl<.java.lang.Object, .java.lang.Object> $ceylon$language$ContainerWithFirstElement$this;
-    private final .ceylon.language.Container$impl $ceylon$language$Container$this;
-    private final .ceylon.language.Sized$impl $ceylon$language$Sized$this;
-    private final .ceylon.language.Category$impl $ceylon$language$Category$this;
+    protected final .ceylon.language.ContainerWithFirstElement$impl<.java.lang.Object, .java.lang.Object> $ceylon$language$ContainerWithFirstElement$this;
+    protected final .ceylon.language.Container$impl $ceylon$language$Container$this;
+    protected final .ceylon.language.Sized$impl $ceylon$language$Sized$this;
+    protected final .ceylon.language.Category$impl $ceylon$language$Category$this;
     
     @.java.lang.Override
     public final .ceylon.language.List<? extends .java.lang.Object> containsEvery$elements() {
@@ -243,8 +243,8 @@ class EmptyImpl extends .java.lang.Object implements .ceylon.language.Empty {
     public boolean containsAny(final .ceylon.language.List<? extends .java.lang.Object> elements) {
         return $ceylon$language$Category$this.containsAny(elements);
     }
-    private final .ceylon.language.Cloneable$impl<.ceylon.language.Collection<?>> $ceylon$language$Cloneable$this;
-    private final .ceylon.language.Correspondence$impl<.ceylon.language.Integer, .java.lang.Object> $ceylon$language$Correspondence$this;
+    protected final .ceylon.language.Cloneable$impl<.ceylon.language.Collection<?>> $ceylon$language$Cloneable$this;
+    protected final .ceylon.language.Correspondence$impl<.ceylon.language.Integer, .java.lang.Object> $ceylon$language$Correspondence$this;
     
     @.java.lang.Override
     public .ceylon.language.Correspondence$impl<? super .ceylon.language.Integer, ?> $ceylon$language$Correspondence$impl() {
@@ -305,9 +305,9 @@ class EmptyImpl extends .java.lang.Object implements .ceylon.language.Empty {
     public .ceylon.language.List<?> items(final .ceylon.language.List<? extends .ceylon.language.Integer> keys) {
         return $ceylon$language$Correspondence$this.items(keys);
     }
-    private final .ceylon.language.Ranged$impl<.ceylon.language.Integer, .ceylon.language.List<?>> $ceylon$language$Ranged$this;
-    private final .ceylon.language.FixedSized$impl<.java.lang.Object> $ceylon$language$FixedSized$this;
-    private final .ceylon.language.None$impl<.java.lang.Object> $ceylon$language$None$this;
+    protected final .ceylon.language.Ranged$impl<.ceylon.language.Integer, .ceylon.language.List<?>> $ceylon$language$Ranged$this;
+    protected final .ceylon.language.FixedSized$impl<.java.lang.Object> $ceylon$language$FixedSized$this;
+    protected final .ceylon.language.None$impl<.java.lang.Object> $ceylon$language$None$this;
     
     @.java.lang.Override
     public final boolean getEmpty() {

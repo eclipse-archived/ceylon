@@ -191,7 +191,7 @@ class InstantiatorDelegatesImpl<X> implements .com.redhat.ceylon.compiler.java.t
     InstantiatorDelegatesImpl() {
         this.$com$redhat$ceylon$compiler$java$test$structure$mcr$InstantiatorDelegates$this = new .com.redhat.ceylon.compiler.java.test.structure.mcr.InstantiatorDelegates$impl<X>(this);
     }
-    private final .com.redhat.ceylon.compiler.java.test.structure.mcr.InstantiatorDelegates$impl<X> $com$redhat$ceylon$compiler$java$test$structure$mcr$InstantiatorDelegates$this;
+    protected final .com.redhat.ceylon.compiler.java.test.structure.mcr.InstantiatorDelegates$impl<X> $com$redhat$ceylon$compiler$java$test$structure$mcr$InstantiatorDelegates$this;
     
     @.java.lang.Override
     public .com.redhat.ceylon.compiler.java.test.structure.mcr.InstantiatorDelegates$impl<X> $com$redhat$ceylon$compiler$java$test$structure$mcr$InstantiatorDelegates$impl() {

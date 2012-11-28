@@ -28,8 +28,8 @@ class Foo implements .com.redhat.ceylon.compiler.java.test.expression.comprehens
         this.$com$redhat$ceylon$compiler$java$test$expression$comprehensions$Common$this = new .com.redhat.ceylon.compiler.java.test.expression.comprehensions.Common$impl(this);
         this.$com$redhat$ceylon$compiler$java$test$expression$comprehensions$FooInterface$this = new .com.redhat.ceylon.compiler.java.test.expression.comprehensions.FooInterface$impl(this);
     }
-    private final .com.redhat.ceylon.compiler.java.test.expression.comprehensions.Common$impl $com$redhat$ceylon$compiler$java$test$expression$comprehensions$Common$this;
-    private final .com.redhat.ceylon.compiler.java.test.expression.comprehensions.FooInterface$impl $com$redhat$ceylon$compiler$java$test$expression$comprehensions$FooInterface$this;
+    protected final .com.redhat.ceylon.compiler.java.test.expression.comprehensions.Common$impl $com$redhat$ceylon$compiler$java$test$expression$comprehensions$Common$this;
+    protected final .com.redhat.ceylon.compiler.java.test.expression.comprehensions.FooInterface$impl $com$redhat$ceylon$compiler$java$test$expression$comprehensions$FooInterface$this;
     
     @.java.lang.Override
     public final .com.redhat.ceylon.compiler.java.test.expression.comprehensions.Common common() {
@@ -78,8 +78,8 @@ class Bar implements .com.redhat.ceylon.compiler.java.test.expression.comprehens
         this.$com$redhat$ceylon$compiler$java$test$expression$comprehensions$Common$this = new .com.redhat.ceylon.compiler.java.test.expression.comprehensions.Common$impl(this);
         this.$com$redhat$ceylon$compiler$java$test$expression$comprehensions$BarInterface$this = new .com.redhat.ceylon.compiler.java.test.expression.comprehensions.BarInterface$impl(this);
     }
-    private final .com.redhat.ceylon.compiler.java.test.expression.comprehensions.Common$impl $com$redhat$ceylon$compiler$java$test$expression$comprehensions$Common$this;
-    private final .com.redhat.ceylon.compiler.java.test.expression.comprehensions.BarInterface$impl $com$redhat$ceylon$compiler$java$test$expression$comprehensions$BarInterface$this;
+    protected final .com.redhat.ceylon.compiler.java.test.expression.comprehensions.Common$impl $com$redhat$ceylon$compiler$java$test$expression$comprehensions$Common$this;
+    protected final .com.redhat.ceylon.compiler.java.test.expression.comprehensions.BarInterface$impl $com$redhat$ceylon$compiler$java$test$expression$comprehensions$BarInterface$this;
     
     @.java.lang.Override
     public final .com.redhat.ceylon.compiler.java.test.expression.comprehensions.Common common() {

@@ -8,7 +8,7 @@ class UnionTypeArg implements .ceylon.language.Iterable<.java.lang.Object> {
         this.$ceylon$language$Container$this = new .ceylon.language.Container$impl(this);
         this.iterator = (.ceylon.language.Iterator<? extends .java.lang.Object>).ceylon.language.bottom_.getBottom$();
     }
-    private final .ceylon.language.Iterable$impl<.java.lang.Object> $ceylon$language$Iterable$this;
+    protected final .ceylon.language.Iterable$impl<.java.lang.Object> $ceylon$language$Iterable$this;
     
     @.java.lang.Override
     public boolean getEmpty() {
@@ -124,8 +124,8 @@ class UnionTypeArg implements .ceylon.language.Iterable<.java.lang.Object> {
     public .ceylon.language.Map group(final .ceylon.language.Callable grouping) {
         return $ceylon$language$Iterable$this.group(grouping);
     }
-    private final .ceylon.language.ContainerWithFirstElement$impl<.java.lang.Object, .java.lang.Object> $ceylon$language$ContainerWithFirstElement$this;
-    private final .ceylon.language.Container$impl $ceylon$language$Container$this;
+    protected final .ceylon.language.ContainerWithFirstElement$impl<.java.lang.Object, .java.lang.Object> $ceylon$language$ContainerWithFirstElement$this;
+    protected final .ceylon.language.Container$impl $ceylon$language$Container$this;
     private final .ceylon.language.Iterator iterator;
     
     @.java.lang.Override
@@ -146,7 +146,7 @@ class UnionTypeArgOverride implements .ceylon.language.Iterable<.java.lang.Objec
         this.$ceylon$language$Container$this = new .ceylon.language.Container$impl(this);
         this.iterator = (.ceylon.language.Iterator<? extends .java.lang.Object>).ceylon.language.bottom_.getBottom$();
     }
-    private final .ceylon.language.Iterable$impl<.java.lang.Object> $ceylon$language$Iterable$this;
+    protected final .ceylon.language.Iterable$impl<.java.lang.Object> $ceylon$language$Iterable$this;
     
     @.java.lang.Override
     public boolean getEmpty() {
@@ -252,8 +252,8 @@ class UnionTypeArgOverride implements .ceylon.language.Iterable<.java.lang.Objec
     public .ceylon.language.Map group(final .ceylon.language.Callable grouping) {
         return $ceylon$language$Iterable$this.group(grouping);
     }
-    private final .ceylon.language.ContainerWithFirstElement$impl<.java.lang.Object, .java.lang.Object> $ceylon$language$ContainerWithFirstElement$this;
-    private final .ceylon.language.Container$impl $ceylon$language$Container$this;
+    protected final .ceylon.language.ContainerWithFirstElement$impl<.java.lang.Object, .java.lang.Object> $ceylon$language$ContainerWithFirstElement$this;
+    protected final .ceylon.language.Container$impl $ceylon$language$Container$this;
     private final .ceylon.language.Iterator iterator;
     
     @.java.lang.Override

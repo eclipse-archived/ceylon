@@ -87,7 +87,8 @@ public class MemberInterfaceAliasTricksImpl implements .com.redhat.ceylon.compil
     public MemberInterfaceAliasTricksImpl() {
         this.$com$redhat$ceylon$compiler$java$test$structure$alias$MemberInterfaceAliasTricks_Foo$this = new .com.redhat.ceylon.compiler.java.test.structure.alias.MemberInterfaceAliasTricks_Foo$impl(this);
     }
-    private final .com.redhat.ceylon.compiler.java.test.structure.alias.MemberInterfaceAliasTricks_Foo$impl $com$redhat$ceylon$compiler$java$test$structure$alias$MemberInterfaceAliasTricks_Foo$this;
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    protected final .com.redhat.ceylon.compiler.java.test.structure.alias.MemberInterfaceAliasTricks_Foo$impl $com$redhat$ceylon$compiler$java$test$structure$alias$MemberInterfaceAliasTricks_Foo$this;
     
     @.java.lang.Override
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
@@ -115,7 +116,8 @@ public class MemberInterfaceAliasTricksImpl implements .com.redhat.ceylon.compil
         protected MemberInterfaceImpl() {
             this.$com$redhat$ceylon$compiler$java$test$structure$alias$MemberInterfaceAliasTricks_Foo$MemberInterface$this = .com.redhat.ceylon.compiler.java.test.structure.alias.MemberInterfaceAliasTricksImpl.this.$com$redhat$ceylon$compiler$java$test$structure$alias$MemberInterfaceAliasTricks_Foo$this.new MemberInterface$impl(this);
         }
-        private final .com.redhat.ceylon.compiler.java.test.structure.alias.MemberInterfaceAliasTricks_Foo$impl.MemberInterface$impl $com$redhat$ceylon$compiler$java$test$structure$alias$MemberInterfaceAliasTricks_Foo$MemberInterface$this;
+        @.com.redhat.ceylon.compiler.java.metadata.Ignore
+        protected final .com.redhat.ceylon.compiler.java.test.structure.alias.MemberInterfaceAliasTricks_Foo$impl.MemberInterface$impl $com$redhat$ceylon$compiler$java$test$structure$alias$MemberInterfaceAliasTricks_Foo$MemberInterface$this;
         
         @.java.lang.Override
         @.com.redhat.ceylon.compiler.java.metadata.Ignore
@@ -177,7 +179,8 @@ public class AImpl implements .com.redhat.ceylon.compiler.java.test.structure.al
     public AImpl() {
         this.$com$redhat$ceylon$compiler$java$test$structure$alias$A$this = new .com.redhat.ceylon.compiler.java.test.structure.alias.A$impl(this);
     }
-    private final .com.redhat.ceylon.compiler.java.test.structure.alias.A$impl $com$redhat$ceylon$compiler$java$test$structure$alias$A$this;
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    protected final .com.redhat.ceylon.compiler.java.test.structure.alias.A$impl $com$redhat$ceylon$compiler$java$test$structure$alias$A$this;
     
     @.java.lang.Override
     @.com.redhat.ceylon.compiler.java.metadata.Ignore

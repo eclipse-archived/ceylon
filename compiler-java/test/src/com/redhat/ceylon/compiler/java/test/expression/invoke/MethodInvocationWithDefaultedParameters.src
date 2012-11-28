@@ -542,7 +542,7 @@ class Barkls implements .com.redhat.ceylon.compiler.java.test.expression.invoke.
         this.$com$redhat$ceylon$compiler$java$test$expression$invoke$Barface$this = new .com.redhat.ceylon.compiler.java.test.expression.invoke.Barface$impl(this);
         this.prop = 42L;
     }
-    private final .com.redhat.ceylon.compiler.java.test.expression.invoke.Barface$impl $com$redhat$ceylon$compiler$java$test$expression$invoke$Barface$this;
+    protected final .com.redhat.ceylon.compiler.java.test.expression.invoke.Barface$impl $com$redhat$ceylon$compiler$java$test$expression$invoke$Barface$this;
     
     @.java.lang.Override
     public final long f1$n() {

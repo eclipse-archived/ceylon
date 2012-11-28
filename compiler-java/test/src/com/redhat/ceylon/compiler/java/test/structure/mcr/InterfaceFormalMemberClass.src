@@ -35,7 +35,7 @@ class InterfaceFormalMemberClass_sub implements .com.redhat.ceylon.compiler.java
     InterfaceFormalMemberClass_sub() {
         this.$com$redhat$ceylon$compiler$java$test$structure$mcr$InterfaceFormalMemberClass$this = new .com.redhat.ceylon.compiler.java.test.structure.mcr.InterfaceFormalMemberClass$impl(this);
     }
-    private final .com.redhat.ceylon.compiler.java.test.structure.mcr.InterfaceFormalMemberClass$impl $com$redhat$ceylon$compiler$java$test$structure$mcr$InterfaceFormalMemberClass$this;
+    protected final .com.redhat.ceylon.compiler.java.test.structure.mcr.InterfaceFormalMemberClass$impl $com$redhat$ceylon$compiler$java$test$structure$mcr$InterfaceFormalMemberClass$this;
     
     @.java.lang.Override
     public .com.redhat.ceylon.compiler.java.test.structure.mcr.InterfaceFormalMemberClass$impl $com$redhat$ceylon$compiler$java$test$structure$mcr$InterfaceFormalMemberClass$impl() {

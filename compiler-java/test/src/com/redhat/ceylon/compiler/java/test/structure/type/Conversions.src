@@ -110,7 +110,7 @@ class BarSats extends .com.redhat.ceylon.compiler.java.test.structure.type.Bar i
         super();
         this.$com$redhat$ceylon$compiler$java$test$structure$type$ISats$this = new .com.redhat.ceylon.compiler.java.test.structure.type.ISats$impl(this);
     }
-    private final .com.redhat.ceylon.compiler.java.test.structure.type.ISats$impl $com$redhat$ceylon$compiler$java$test$structure$type$ISats$this;
+    protected final .com.redhat.ceylon.compiler.java.test.structure.type.ISats$impl $com$redhat$ceylon$compiler$java$test$structure$type$ISats$this;
     
     @.java.lang.Override
     public final .java.lang.Object z() {

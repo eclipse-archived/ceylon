@@ -20,7 +20,7 @@ class ConcreteGetterImplementor implements .com.redhat.ceylon.compiler.java.test
     ConcreteGetterImplementor() {
         this.$com$redhat$ceylon$compiler$java$test$structure$concrete$ConcreteGetter$this = new .com.redhat.ceylon.compiler.java.test.structure.concrete.ConcreteGetter$impl(this);
     }
-    private final .com.redhat.ceylon.compiler.java.test.structure.concrete.ConcreteGetter$impl $com$redhat$ceylon$compiler$java$test$structure$concrete$ConcreteGetter$this;
+    protected final .com.redhat.ceylon.compiler.java.test.structure.concrete.ConcreteGetter$impl $com$redhat$ceylon$compiler$java$test$structure$concrete$ConcreteGetter$this;
     
     @.java.lang.Override
     public long getI() {
@@ -37,7 +37,7 @@ class ConcreteGetterOverrider implements .com.redhat.ceylon.compiler.java.test.s
     ConcreteGetterOverrider() {
         this.$com$redhat$ceylon$compiler$java$test$structure$concrete$ConcreteGetter$this = new .com.redhat.ceylon.compiler.java.test.structure.concrete.ConcreteGetter$impl(this);
     }
-    private final .com.redhat.ceylon.compiler.java.test.structure.concrete.ConcreteGetter$impl $com$redhat$ceylon$compiler$java$test$structure$concrete$ConcreteGetter$this;
+    protected final .com.redhat.ceylon.compiler.java.test.structure.concrete.ConcreteGetter$impl $com$redhat$ceylon$compiler$java$test$structure$concrete$ConcreteGetter$this;
     
     @.java.lang.Override
     public final long getI() {
@@ -54,7 +54,7 @@ class ConcreteGetterOverrider2 implements .com.redhat.ceylon.compiler.java.test.
     ConcreteGetterOverrider2() {
         this.$com$redhat$ceylon$compiler$java$test$structure$concrete$ConcreteGetter$this = new .com.redhat.ceylon.compiler.java.test.structure.concrete.ConcreteGetter$impl(this);
     }
-    private final .com.redhat.ceylon.compiler.java.test.structure.concrete.ConcreteGetter$impl $com$redhat$ceylon$compiler$java$test$structure$concrete$ConcreteGetter$this;
+    protected final .com.redhat.ceylon.compiler.java.test.structure.concrete.ConcreteGetter$impl $com$redhat$ceylon$compiler$java$test$structure$concrete$ConcreteGetter$this;
     
     @.java.lang.Override
     public long getI() {

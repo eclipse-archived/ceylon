@@ -110,7 +110,7 @@ class Local {
                     this.$com$redhat$ceylon$compiler$java$test$structure$nesting$Local$local$LC$LCI$this = new LC.LCI$impl(this);
                 }
                 private final long k;
-                private final LC.LCI$impl $com$redhat$ceylon$compiler$java$test$structure$nesting$Local$local$LC$LCI$this;
+                protected final LC.LCI$impl $com$redhat$ceylon$compiler$java$test$structure$nesting$Local$local$LC$LCI$this;
                 
                 @.java.lang.Override
                 public final long m() {
@@ -160,7 +160,7 @@ class Local {
                     this.$com$redhat$ceylon$compiler$java$test$structure$nesting$Local$local$LI$LII$this = LI$impl.this.new LII$impl(this);
                 }
                 private final long j;
-                private final LI$impl.LII$impl $com$redhat$ceylon$compiler$java$test$structure$nesting$Local$local$LI$LII$this;
+                protected final LI$impl.LII$impl $com$redhat$ceylon$compiler$java$test$structure$nesting$Local$local$LI$LII$this;
                 
                 @.java.lang.Override
                 public final long m() {
@@ -269,7 +269,7 @@ class Local {
                         this.$com$redhat$ceylon$compiler$java$test$structure$nesting$Local$C$local2$CL$LCI$this = new CL.LCI$impl(this);
                     }
                     private final long l;
-                    private final CL.LCI$impl $com$redhat$ceylon$compiler$java$test$structure$nesting$Local$C$local2$CL$LCI$this;
+                    protected final CL.LCI$impl $com$redhat$ceylon$compiler$java$test$structure$nesting$Local$C$local2$CL$LCI$this;
                     
                     @.java.lang.Override
                     public final long m() {
@@ -364,7 +364,7 @@ class Local {
                         this.$com$redhat$ceylon$compiler$java$test$structure$nesting$Local$I$local3$IL$ICI$this = new IL.ICI$impl(this);
                     }
                     private final long k;
-                    private final IL.ICI$impl $com$redhat$ceylon$compiler$java$test$structure$nesting$Local$I$local3$IL$ICI$this;
+                    protected final IL.ICI$impl $com$redhat$ceylon$compiler$java$test$structure$nesting$Local$I$local3$IL$ICI$this;
                     
                     @.java.lang.Override
                     public final long m() {

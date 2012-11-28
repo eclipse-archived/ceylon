@@ -37,7 +37,7 @@ class InterfaceMemberDefaultClass_sub implements .com.redhat.ceylon.compiler.jav
     InterfaceMemberDefaultClass_sub() {
         this.$com$redhat$ceylon$compiler$java$test$structure$mcr$InterfaceDefaultMemberClass$this = new .com.redhat.ceylon.compiler.java.test.structure.mcr.InterfaceDefaultMemberClass$impl(this);
     }
-    private final .com.redhat.ceylon.compiler.java.test.structure.mcr.InterfaceDefaultMemberClass$impl $com$redhat$ceylon$compiler$java$test$structure$mcr$InterfaceDefaultMemberClass$this;
+    protected final .com.redhat.ceylon.compiler.java.test.structure.mcr.InterfaceDefaultMemberClass$impl $com$redhat$ceylon$compiler$java$test$structure$mcr$InterfaceDefaultMemberClass$this;
     
     @.java.lang.Override
     public .com.redhat.ceylon.compiler.java.test.structure.mcr.InterfaceDefaultMemberClass$impl $com$redhat$ceylon$compiler$java$test$structure$mcr$InterfaceDefaultMemberClass$impl() {

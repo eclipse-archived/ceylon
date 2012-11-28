@@ -194,7 +194,7 @@ abstract class RefiningVoidMembersInterface_Boxed implements .com.redhat.ceylon.
     RefiningVoidMembersInterface_Boxed() {
         this.$com$redhat$ceylon$compiler$java$test$structure$klass$RefiningVoidMembersInterface$this = new .com.redhat.ceylon.compiler.java.test.structure.klass.RefiningVoidMembersInterface$impl<.java.lang.Object>(this);
     }
-    private final .com.redhat.ceylon.compiler.java.test.structure.klass.RefiningVoidMembersInterface$impl<.java.lang.Object> $com$redhat$ceylon$compiler$java$test$structure$klass$RefiningVoidMembersInterface$this;
+    protected final .com.redhat.ceylon.compiler.java.test.structure.klass.RefiningVoidMembersInterface$impl<.java.lang.Object> $com$redhat$ceylon$compiler$java$test$structure$klass$RefiningVoidMembersInterface$this;
     
     @.java.lang.Override
     public final void notRefinable() {
@@ -256,7 +256,7 @@ abstract class RefiningVoidMembersInterface_Unboxed implements .com.redhat.ceylo
     RefiningVoidMembersInterface_Unboxed() {
         this.$com$redhat$ceylon$compiler$java$test$structure$klass$RefiningVoidMembersInterface$this = new .com.redhat.ceylon.compiler.java.test.structure.klass.RefiningVoidMembersInterface$impl<.java.lang.Object>(this);
     }
-    private final .com.redhat.ceylon.compiler.java.test.structure.klass.RefiningVoidMembersInterface$impl<.java.lang.Object> $com$redhat$ceylon$compiler$java$test$structure$klass$RefiningVoidMembersInterface$this;
+    protected final .com.redhat.ceylon.compiler.java.test.structure.klass.RefiningVoidMembersInterface$impl<.java.lang.Object> $com$redhat$ceylon$compiler$java$test$structure$klass$RefiningVoidMembersInterface$this;
     
     @.java.lang.Override
     public final void notRefinable() {

@@ -36,7 +36,7 @@ class SatisfiesWithMembersClass implements .com.redhat.ceylon.compiler.java.test
         this.b = true;
         this.b2 = false;
     }
-    private final .com.redhat.ceylon.compiler.java.test.structure.klass.SatisfiesWithMembers$impl $com$redhat$ceylon$compiler$java$test$structure$klass$SatisfiesWithMembers$this;
+    protected final .com.redhat.ceylon.compiler.java.test.structure.klass.SatisfiesWithMembers$impl $com$redhat$ceylon$compiler$java$test$structure$klass$SatisfiesWithMembers$this;
     private final boolean b;
     
     @.java.lang.Override
