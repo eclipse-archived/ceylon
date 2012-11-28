@@ -880,18 +880,20 @@ public class ClassTransformer extends AbstractTransformer {
         boolean concrete = Decl.withinInterface(decl)
                 && decl.getSpecifierOrInitializerExpression() != null;
         if (!lazy && (concrete || (!Decl.isFormal(decl) && createField))) {
+            ProducedTypedReference typedRef = getTypedReference(model);
+            ProducedTypedReference nonWideningTypedRef = nonWideningTypeDecl(typedRef);
+            ProducedType nonWideningType = nonWideningType(typedRef, nonWideningTypedRef);
+            
             JCExpression initialValue = null;
             if (decl.getSpecifierOrInitializerExpression() != null) {
                 Value declarationModel = model;
                 initialValue = expressionGen().transformExpression(decl.getSpecifierOrInitializerExpression().getExpression(), 
                         CodegenUtil.getBoxingStrategy(declarationModel), 
-                        declarationModel.getType());
+                        nonWideningType);
             }
 
             int flags = 0;
-            ProducedTypedReference typedRef = getTypedReference(model);
-            ProducedTypedReference nonWideningTypedRef = nonWideningTypeDecl(typedRef);
-            ProducedType nonWideningType = nonWideningType(typedRef, nonWideningTypedRef);
+            
             if (!CodegenUtil.isUnBoxed(nonWideningTypedRef.getDeclaration())) {
                 flags |= JT_NO_PRIMITIVES;
             }
@@ -1085,9 +1087,13 @@ public class ClassTransformer extends AbstractTransformer {
         if (forCompanion) {
             if (decl.getSpecifierOrInitializerExpression() != null) {
                 Value declarationModel = decl.getDeclarationModel();
+                ProducedTypedReference typedRef = getTypedReference(declarationModel);
+                ProducedTypedReference nonWideningTypedRef = nonWideningTypeDecl(typedRef);
+                ProducedType nonWideningType = nonWideningType(typedRef, nonWideningTypedRef);
+                
                 JCExpression expr = expressionGen().transformExpression(decl.getSpecifierOrInitializerExpression().getExpression(), 
                         CodegenUtil.getBoxingStrategy(declarationModel), 
-                        declarationModel.getType());
+                        nonWideningType);
                 builder.getterBlock(make().Block(0, List.<JCStatement>of(make().Return(expr))));
             } else {
                 JCExpression accessor = naming.makeQualifiedName(
