@@ -21,7 +21,7 @@ public class SequenceBuilder<Element> implements Sized {
     
     public SequenceBuilder() {}
      
-    @TypeInfo("ceylon.language::Empty|ceylon.language::Sequence<Element>")
+    @TypeInfo("ceylon.language::Sequential<Element>")
     public synchronized List<? extends Element> getSequence() {
         if (list==null || list.isEmpty()) {
             return (List)empty_.getEmpty$();

@@ -103,7 +103,7 @@ public class Range<Element extends Comparable<? super Element> & Ordinal<? super
     }
 
     @Override @SuppressWarnings({ "unchecked", "rawtypes" })
-    @TypeInfo("ceylon.language::Empty|ceylon.language::Sequence<Element>")
+    @TypeInfo("ceylon.language::Sequential<Element>")
     public List<? extends Element> getRest() {
     	if (first.equals(last)) {
     	    return (List)empty_.getEmpty$();

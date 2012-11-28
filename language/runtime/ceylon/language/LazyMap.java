@@ -170,7 +170,7 @@ public class LazyMap<Key, Item> implements Map<Key, Item> {
     }
 
     @Ignore @Override
-    @TypeInfo("ceylon.language::Empty|ceylon.language::Sequence<Element>")
+    @TypeInfo("ceylon.language::Sequential<Element>")
     public List<? extends Entry<? extends Key, ? extends Item>> getSequence() {
         return entries.getSequence();
     }

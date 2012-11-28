@@ -169,7 +169,7 @@ public class Tuple<Element, First extends Element, Rest extends Sequential<Eleme
 
 	@Override
 	@Annotations(@Annotation("default"))
-	@TypeInfo("ceylon.language::Empty|ceylon.language::Sequence<Element>")
+	@TypeInfo("ceylon.language::Sequential<Element>")
 	public List<? extends Element> select(
 	        @TypeInfo("ceylon.language::Callable<ceylon.language::Boolean,ceylon.language::Tuple<Element,Element,ceylon.language::Empty>>")
 	        Callable<? extends Boolean> selecting) {

@@ -16,7 +16,7 @@ public final class zip_ {
     
     @TypeParameters({@TypeParameter(value="Key", satisfies="ceylon.language::Object"),
                      @TypeParameter(value="Item", satisfies="ceylon.language::Object")})
-    @TypeInfo("ceylon.language::Empty|ceylon.language::Sequence<ceylon.language::Entry<Key,Item>>")
+    @TypeInfo("ceylon.language::Sequential<ceylon.language::Entry<Key,Item>>")
     public static <Key,Item> List<? extends Entry<? extends Key, ? extends Item>> zip(
     @Name("keys")
     @TypeInfo("ceylon.language::Iterable<Key>")

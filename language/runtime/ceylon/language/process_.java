@@ -191,7 +191,7 @@ public final class process_ {
     @SuppressWarnings("unchecked")
     private List<? extends String> args = (List)empty_.getEmpty$();
     
-    @TypeInfo("ceylon.language::Empty|ceylon.language::Sequence<ceylon.language::String>")
+    @TypeInfo("ceylon.language::Sequential<ceylon.language::String>")
     public List<? extends String> getArguments() {
         return args;
     }

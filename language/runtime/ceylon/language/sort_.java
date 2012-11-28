@@ -20,7 +20,7 @@ public final class sort_ {
     private sort_() {}
     
     @TypeParameters(@TypeParameter(value="Element", satisfies="ceylon.language::Comparable<Element>"))
-    @TypeInfo("ceylon.language::Empty|ceylon.language::Sequence<Element>")
+    @TypeInfo("ceylon.language::Sequential<Element>")
     public static <Element extends Comparable<? super Element>> List<? extends Element> sort(
         @Name("elements")
         @Sequenced

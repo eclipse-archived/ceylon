@@ -26,7 +26,7 @@ public class Package {
     @TypeInfo("ceylon.language::String")
     java.lang.String doc, @Name("by")
     @Defaulted
-    @TypeInfo("ceylon.language::Empty|ceylon.language::Sequence<ceylon.language::String>")
+    @TypeInfo("ceylon.language::Sequential<ceylon.language::String>")
     List<? extends String> by) {
         this.name = name;
         this.shared = shared;
@@ -49,7 +49,7 @@ public class Package {
         return doc;
     }
     
-    @TypeInfo("ceylon.language::Empty|ceylon.language::Sequence<ceylon.language::String>")
+    @TypeInfo("ceylon.language::Sequential<ceylon.language::String>")
     public final List<? extends String> getBy() {
         return by;
     }

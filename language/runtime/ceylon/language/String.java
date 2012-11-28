@@ -410,7 +410,7 @@ public abstract class String
         return new StringIterator();
     }
 
-    @TypeInfo("ceylon.language::Empty|ceylon.language::Sequence<ceylon.language::Character>")
+    @TypeInfo("ceylon.language::Sequential<ceylon.language::Character>")
     public List<? extends Character> getCharacters() {
         return getCharacters(value);
     }

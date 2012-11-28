@@ -35,7 +35,7 @@ public class Module {
         return doc;
     }
     
-    @TypeInfo("ceylon.language::Empty|ceylon.language::Sequence<ceylon.language::String>")
+    @TypeInfo("ceylon.language::Sequential<ceylon.language::String>")
     public final List<? extends String> getBy() {
         return by;
     }
@@ -45,7 +45,7 @@ public class Module {
         return license;
     }
     
-    @TypeInfo("ceylon.language::Empty|ceylon.language::Sequence<ceylon.language.descriptor::Import>")
+    @TypeInfo("ceylon.language::Sequential<ceylon.language.descriptor::Import>")
     public final List<? extends Import> getDependencies() {
         return dependencies;
     }
@@ -64,7 +64,7 @@ public class Module {
     @TypeInfo("ceylon.language::String")
     java.lang.String doc, @Name("by")
     @Defaulted
-    @TypeInfo("ceylon.language::Empty|ceylon.language::Sequence<ceylon.language::String>")
+    @TypeInfo("ceylon.language::Sequential<ceylon.language::String>")
     List<? extends String> by, @Name("license")
     @Defaulted
     @TypeInfo("ceylon.language::Nothing|ceylon.language::String")

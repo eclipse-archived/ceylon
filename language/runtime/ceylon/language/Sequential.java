@@ -15,7 +15,7 @@ import com.redhat.ceylon.compiler.java.metadata.Variance;
 @SatisfiedTypes({
     "ceylon.language::List<Element>",
     "ceylon.language::FixedSized<Element>",
-    "ceylon.language::Ranged<ceylon.language::Integer,ceylon.language::Empty|ceylon.language::Sequence<Element>>",
+    "ceylon.language::Ranged<ceylon.language::Integer,ceylon.language::Sequential<Element>>",
     "ceylon.language::Cloneable<ceylon.language::Sequential<Element>>"
 })
 @CaseTypes({"ceylon.language::Empty", "ceylon.language::Sequence<Element>"})
@@ -24,7 +24,7 @@ public interface Sequential<Element>
 	
     @Annotations({@Annotation("actual"), @Annotation("formal")})
     @Override
-    @TypeInfo("ceylon.language::Empty|ceylon.language::Sequence<Element>")
+    @TypeInfo("ceylon.language::Sequential<Element>")
     public List<? extends Element> getReversed();
     
 }

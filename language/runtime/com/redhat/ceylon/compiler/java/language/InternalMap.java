@@ -163,7 +163,7 @@ public class InternalMap<Key, Item> implements Map<Key, Item> {
 
     @Override
     @Annotations(@Annotation("default"))
-    @TypeInfo("ceylon.language::Empty|ceylon.language::Sequence<Element>")
+    @TypeInfo("ceylon.language::Sequential<Element>")
     public List<? extends Entry<? extends Key, ? extends Item>> getSequence() {
         return iter$impl.getSequence();
     }
@@ -212,7 +212,7 @@ public class InternalMap<Key, Item> implements Map<Key, Item> {
 
     @Override
     @Annotations(@Annotation("default"))
-    @TypeInfo("ceylon.language::Empty|ceylon.language::Sequence<Element>")
+    @TypeInfo("ceylon.language::Sequential<Element>")
     public List<? extends Entry<? extends Key, ? extends Item>> sort(
             Callable<? extends Comparison> comparing) {
         return iter$impl.sort(comparing);
@@ -220,7 +220,7 @@ public class InternalMap<Key, Item> implements Map<Key, Item> {
 
     @Override
     @Annotations(@Annotation("default"))
-    @TypeInfo("ceylon.language::Empty|ceylon.language::Sequence<Result>")
+    @TypeInfo("ceylon.language::Sequential<Result>")
     @TypeParameters(@TypeParameter("Result"))
     public <Result> List<? extends Result> collect(
             Callable<? extends Result> collecting) {
@@ -229,7 +229,7 @@ public class InternalMap<Key, Item> implements Map<Key, Item> {
 
     @Override
     @Annotations(@Annotation("default"))
-    @TypeInfo("ceylon.language::Empty|ceylon.language::Sequence<Element>")
+    @TypeInfo("ceylon.language::Sequential<Element>")
     public List<? extends Entry<? extends Key, ? extends Item>> select(
             Callable<? extends Boolean> selecting) {
         return iter$impl.select(selecting);
