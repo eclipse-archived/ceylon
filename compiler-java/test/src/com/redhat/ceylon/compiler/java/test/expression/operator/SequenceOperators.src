@@ -27,7 +27,7 @@ public class SequenceOperators {
         return x;
     }
     
-    private final void testSequence(final .ceylon.language.Correspondence<? super .ceylon.language.Integer, ? extends .ceylon.language.String> c1, final .ceylon.language.Correspondence<? super .ceylon.language.Integer, ? extends .ceylon.language.String> c2) {
+    private final void testSequence(final .ceylon.language.Correspondence<? super .ceylon.language.Integer, ? extends .ceylon.language.String> c1, final .ceylon.language.Correspondence<? super .ceylon.language.Integer, ? extends .ceylon.language.String> c2, final .ceylon.language.List<? extends .ceylon.language.String> c3) {
         .ceylon.language.String s = c1.item(.ceylon.language.Integer.instance(1L));
         s = this.getC1().item(.ceylon.language.Integer.instance(1L));
         s = c1.item(<.ceylon.language.Integer>box(.ceylon.language.Integer.instance(1L)));

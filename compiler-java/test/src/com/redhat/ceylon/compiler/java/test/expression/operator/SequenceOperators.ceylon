@@ -26,18 +26,23 @@ shared class SequenceOperators() {
     
     T box<T>(T x){ return x; }
     
-    void testSequence(Correspondence<Integer, String> c1, Correspondence<Integer,String>? c2) {
+    void testSequence(Correspondence<Integer, String> c1, Correspondence<Integer,String>? c2, List<String>? c3) {
         variable String? s := c1[1];
         s := this.c1[1];
         s := c1[box(1)];
-// M2:
+// M5:
 //        if (c1 satisfies OpenCorrespondence<Integer, String>) {
 //            c1[n1] := s;
 //        }
         s :=  c2?[1];
         s :=  this.c2?[1];
         s :=  c2?[box(1)];
-// M2:        
+// see https://github.com/ceylon/ceylon-spec/issues/477
+        //variable List<String>? l;
+        //l := c3?[1..2];
+        //l := c3?[1...];
+        //l := c3?[1:2];
+// M?:        
 //        Integer[] indices = {1, 2, 3};
 //        variable String[] seq1 := c1[indices];
 //        variable Iterable<String> it1 := c1[indices.iterator];
