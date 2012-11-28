@@ -1,0 +1,406 @@
+package com.redhat.ceylon.compiler.java.test.issues.bug08xx;
+
+public interface Visitor {
+    
+    public .java.lang.Object openTag(final .java.lang.String name);
+    
+    public .java.lang.Object closeTag(final .java.lang.String name);
+    
+    public .java.lang.Object text(final .java.lang.String text);
+    
+    public void tag(final .java.lang.String name);
+}
+public final class Visitor$impl {
+    
+    public Visitor$impl(.com.redhat.ceylon.compiler.java.test.issues.bug08xx.Visitor $this) {
+        this.$this = $this;
+    }
+    private final .com.redhat.ceylon.compiler.java.test.issues.bug08xx.Visitor $this;
+    
+    public .java.lang.Object openTag(final .java.lang.String name) {
+        return null;
+    }
+    
+    public .java.lang.Object closeTag(final .java.lang.String name) {
+        return null;
+    }
+    
+    public .java.lang.Object text(final .java.lang.String text) {
+        return null;
+    }
+    
+    public void tag(final .java.lang.String name) {
+    }
+}
+public interface Visitable {
+    
+    public abstract .java.lang.Object visit(final .com.redhat.ceylon.compiler.java.test.issues.bug08xx.Visitor visitor);
+    
+    public void visitAroundText(final .com.redhat.ceylon.compiler.java.test.issues.bug08xx.Visitor visitor, final .java.lang.String name, final .java.lang.String text);
+    
+    public .java.lang.Object visitAroundText2(final .com.redhat.ceylon.compiler.java.test.issues.bug08xx.Visitor visitor, final .java.lang.String name, final .java.lang.String text);
+    
+    public void visitAroundTags(final .com.redhat.ceylon.compiler.java.test.issues.bug08xx.Visitor visitor, final .java.lang.String name);
+    
+    public abstract .ceylon.language.List visitAroundTags$tags(final .com.redhat.ceylon.compiler.java.test.issues.bug08xx.Visitor visitor, final .java.lang.String name);
+    
+    public void visitAroundTags(final .com.redhat.ceylon.compiler.java.test.issues.bug08xx.Visitor visitor, final .java.lang.String name, final .ceylon.language.List tags);
+}
+public final class Visitable$impl {
+    
+    public Visitable$impl(.com.redhat.ceylon.compiler.java.test.issues.bug08xx.Visitable $this) {
+        this.$this = $this;
+    }
+    private final .com.redhat.ceylon.compiler.java.test.issues.bug08xx.Visitable $this;
+    
+    public void visitAroundText(final .com.redhat.ceylon.compiler.java.test.issues.bug08xx.Visitor visitor, final .java.lang.String name, final .java.lang.String text) {
+    }
+    
+    public .java.lang.Object visitAroundText2(final .com.redhat.ceylon.compiler.java.test.issues.bug08xx.Visitor visitor, final .java.lang.String name, final .java.lang.String text) {
+        return null;
+    }
+    
+    public final void visitAroundTags(final .com.redhat.ceylon.compiler.java.test.issues.bug08xx.Visitor visitor, final .java.lang.String name) {
+        (
+            let
+            {
+                .ceylon.language.List $ceylontmp$tags$1 = visitAroundTags$tags(visitor, name);
+                visitAroundTags(visitor, name, $ceylontmp$tags$1);
+            }
+            returning null;
+        );
+    }
+    
+    public final .ceylon.language.List visitAroundTags$tags(final .com.redhat.ceylon.compiler.java.test.issues.bug08xx.Visitor visitor, final .java.lang.String name) {
+        return (.ceylon.language.List).ceylon.language.empty_.getEmpty$();
+    }
+    
+    public void visitAroundTags(final .com.redhat.ceylon.compiler.java.test.issues.bug08xx.Visitor visitor, final .java.lang.String name, final .ceylon.language.List tags) {
+    }
+}
+public class Html implements .com.redhat.ceylon.compiler.java.test.issues.bug08xx.Visitable {
+    
+    public Html() {
+        (
+            let
+            {
+                .com.redhat.ceylon.compiler.java.test.issues.bug08xx.Head $ceylontmp$head$5 = .com.redhat.ceylon.compiler.java.test.issues.bug08xx.Html.$init$head();
+                .com.redhat.ceylon.compiler.java.test.issues.bug08xx.Body $ceylontmp$body$6 = .com.redhat.ceylon.compiler.java.test.issues.bug08xx.Html.$init$body($ceylontmp$head$5);
+                this($ceylontmp$head$5, $ceylontmp$body$6);
+            }
+            returning null;
+        );
+    }
+    
+    public Html(final .com.redhat.ceylon.compiler.java.test.issues.bug08xx.Head head) {
+        (
+            let
+            {
+                .com.redhat.ceylon.compiler.java.test.issues.bug08xx.Body $ceylontmp$body$8 = .com.redhat.ceylon.compiler.java.test.issues.bug08xx.Html.$init$body(head);
+                this(head, $ceylontmp$body$8);
+            }
+            returning null;
+        );
+    }
+    
+    public Html(.com.redhat.ceylon.compiler.java.test.issues.bug08xx.Head head, .com.redhat.ceylon.compiler.java.test.issues.bug08xx.Body body) {
+        this.head = head;
+        this.body = body;
+        this.$com$redhat$ceylon$compiler$java$test$issues$bug08xx$Visitable$this = new .com.redhat.ceylon.compiler.java.test.issues.bug08xx.Visitable$impl(this);
+    }
+    
+    public static .com.redhat.ceylon.compiler.java.test.issues.bug08xx.Head $init$head() {
+        return null;
+    }
+    
+    public static .com.redhat.ceylon.compiler.java.test.issues.bug08xx.Body $init$body(final .com.redhat.ceylon.compiler.java.test.issues.bug08xx.Head head) {
+        return null;
+    }
+    protected final .com.redhat.ceylon.compiler.java.test.issues.bug08xx.Visitable$impl $com$redhat$ceylon$compiler$java$test$issues$bug08xx$Visitable$this;
+    
+    @.java.lang.Override
+    public final void visitAroundText(final .com.redhat.ceylon.compiler.java.test.issues.bug08xx.Visitor visitor, final .java.lang.String name, final .java.lang.String text) {
+        $com$redhat$ceylon$compiler$java$test$issues$bug08xx$Visitable$this.visitAroundText(visitor, name, text);
+    }
+    
+    @.java.lang.Override
+    public .java.lang.Object visitAroundText2(final .com.redhat.ceylon.compiler.java.test.issues.bug08xx.Visitor visitor, final .java.lang.String name, final .java.lang.String text) {
+        return $com$redhat$ceylon$compiler$java$test$issues$bug08xx$Visitable$this.visitAroundText2(visitor, name, text);
+    }
+    
+    @.java.lang.Override
+    public final .ceylon.language.List visitAroundTags$tags(final .com.redhat.ceylon.compiler.java.test.issues.bug08xx.Visitor visitor, final .java.lang.String name) {
+        return $com$redhat$ceylon$compiler$java$test$issues$bug08xx$Visitable$this.visitAroundTags$tags(visitor, name);
+    }
+    
+    @.java.lang.Override
+    public final void visitAroundTags(final .com.redhat.ceylon.compiler.java.test.issues.bug08xx.Visitor visitor, final .java.lang.String name) {
+        $com$redhat$ceylon$compiler$java$test$issues$bug08xx$Visitable$this.visitAroundTags(visitor, name);
+    }
+    
+    @.java.lang.Override
+    public final void visitAroundTags(final .com.redhat.ceylon.compiler.java.test.issues.bug08xx.Visitor visitor, final .java.lang.String name, final .ceylon.language.List tags) {
+        $com$redhat$ceylon$compiler$java$test$issues$bug08xx$Visitable$this.visitAroundTags(visitor, name, tags);
+    }
+    private final .com.redhat.ceylon.compiler.java.test.issues.bug08xx.Head head;
+    
+    public final .com.redhat.ceylon.compiler.java.test.issues.bug08xx.Head getHead() {
+        return head;
+    }
+    private final .com.redhat.ceylon.compiler.java.test.issues.bug08xx.Body body;
+    
+    public final .com.redhat.ceylon.compiler.java.test.issues.bug08xx.Body getBody() {
+        return body;
+    }
+    
+    @.java.lang.Override
+    public final .java.lang.Object visit(final .com.redhat.ceylon.compiler.java.test.issues.bug08xx.Visitor visitor) {
+        return null;
+    }
+}
+public class Head implements .com.redhat.ceylon.compiler.java.test.issues.bug08xx.Visitable {
+    
+    public Head() {
+        (
+            let
+            {
+                .ceylon.language.String $ceylontmp$title$10 = .com.redhat.ceylon.compiler.java.test.issues.bug08xx.Head.$init$title();
+                this($ceylontmp$title$10);
+            }
+            returning null;
+        );
+    }
+    
+    public Head(.ceylon.language.String title) {
+        this.title = title;
+        this.$com$redhat$ceylon$compiler$java$test$issues$bug08xx$Visitable$this = new .com.redhat.ceylon.compiler.java.test.issues.bug08xx.Visitable$impl(this);
+    }
+    
+    public static .ceylon.language.String $init$title() {
+        return null;
+    }
+    protected final .com.redhat.ceylon.compiler.java.test.issues.bug08xx.Visitable$impl $com$redhat$ceylon$compiler$java$test$issues$bug08xx$Visitable$this;
+    
+    @.java.lang.Override
+    public final void visitAroundText(final .com.redhat.ceylon.compiler.java.test.issues.bug08xx.Visitor visitor, final .java.lang.String name, final .java.lang.String text) {
+        $com$redhat$ceylon$compiler$java$test$issues$bug08xx$Visitable$this.visitAroundText(visitor, name, text);
+    }
+    
+    @.java.lang.Override
+    public .java.lang.Object visitAroundText2(final .com.redhat.ceylon.compiler.java.test.issues.bug08xx.Visitor visitor, final .java.lang.String name, final .java.lang.String text) {
+        return $com$redhat$ceylon$compiler$java$test$issues$bug08xx$Visitable$this.visitAroundText2(visitor, name, text);
+    }
+    
+    @.java.lang.Override
+    public final .ceylon.language.List visitAroundTags$tags(final .com.redhat.ceylon.compiler.java.test.issues.bug08xx.Visitor visitor, final .java.lang.String name) {
+        return $com$redhat$ceylon$compiler$java$test$issues$bug08xx$Visitable$this.visitAroundTags$tags(visitor, name);
+    }
+    
+    @.java.lang.Override
+    public final void visitAroundTags(final .com.redhat.ceylon.compiler.java.test.issues.bug08xx.Visitor visitor, final .java.lang.String name) {
+        $com$redhat$ceylon$compiler$java$test$issues$bug08xx$Visitable$this.visitAroundTags(visitor, name);
+    }
+    
+    @.java.lang.Override
+    public final void visitAroundTags(final .com.redhat.ceylon.compiler.java.test.issues.bug08xx.Visitor visitor, final .java.lang.String name, final .ceylon.language.List tags) {
+        $com$redhat$ceylon$compiler$java$test$issues$bug08xx$Visitable$this.visitAroundTags(visitor, name, tags);
+    }
+    private final .ceylon.language.String title;
+    
+    public final .ceylon.language.String getTitle() {
+        return title;
+    }
+    
+    @.java.lang.Override
+    public final .java.lang.Object visit(final .com.redhat.ceylon.compiler.java.test.issues.bug08xx.Visitor visitor) {
+        return null;
+    }
+}
+public interface Tag extends .com.redhat.ceylon.compiler.java.test.issues.bug08xx.Visitable {
+}
+public final class Tag$impl {
+    
+    public Tag$impl(.com.redhat.ceylon.compiler.java.test.issues.bug08xx.Tag $this) {
+        this.$this = $this;
+    }
+    private final .com.redhat.ceylon.compiler.java.test.issues.bug08xx.Tag $this;
+}
+public interface InlineTag extends .com.redhat.ceylon.compiler.java.test.issues.bug08xx.Tag {
+}
+public final class InlineTag$impl {
+    
+    public InlineTag$impl(.com.redhat.ceylon.compiler.java.test.issues.bug08xx.InlineTag $this) {
+        this.$this = $this;
+    }
+    private final .com.redhat.ceylon.compiler.java.test.issues.bug08xx.InlineTag $this;
+}
+public class Container<TagType extends .com.redhat.ceylon.compiler.java.test.issues.bug08xx.Tag> implements .com.redhat.ceylon.compiler.java.test.issues.bug08xx.Visitable {
+    
+    public Container(final .java.lang.String name) {
+        (
+            let
+            {
+                .ceylon.language.List $ceylontmp$initialTags$12 = .com.redhat.ceylon.compiler.java.test.issues.bug08xx.Container.<TagType>$init$initialTags(name);
+                this(name, $ceylontmp$initialTags$12);
+            }
+            returning null;
+        );
+    }
+    
+    public Container(.java.lang.String name, .ceylon.language.List initialTags) {
+        this.$com$redhat$ceylon$compiler$java$test$issues$bug08xx$Visitable$this = new .com.redhat.ceylon.compiler.java.test.issues.bug08xx.Visitable$impl(this);
+        this.tags = initialTags;
+    }
+    
+    public static <TagType extends .com.redhat.ceylon.compiler.java.test.issues.bug08xx.Tag>.ceylon.language.List $init$initialTags(final .java.lang.String name) {
+        return (.ceylon.language.List).ceylon.language.empty_.getEmpty$();
+    }
+    protected final .com.redhat.ceylon.compiler.java.test.issues.bug08xx.Visitable$impl $com$redhat$ceylon$compiler$java$test$issues$bug08xx$Visitable$this;
+    
+    @.java.lang.Override
+    public final void visitAroundText(final .com.redhat.ceylon.compiler.java.test.issues.bug08xx.Visitor visitor, final .java.lang.String name, final .java.lang.String text) {
+        $com$redhat$ceylon$compiler$java$test$issues$bug08xx$Visitable$this.visitAroundText(visitor, name, text);
+    }
+    
+    @.java.lang.Override
+    public .java.lang.Object visitAroundText2(final .com.redhat.ceylon.compiler.java.test.issues.bug08xx.Visitor visitor, final .java.lang.String name, final .java.lang.String text) {
+        return $com$redhat$ceylon$compiler$java$test$issues$bug08xx$Visitable$this.visitAroundText2(visitor, name, text);
+    }
+    
+    @.java.lang.Override
+    public final .ceylon.language.List visitAroundTags$tags(final .com.redhat.ceylon.compiler.java.test.issues.bug08xx.Visitor visitor, final .java.lang.String name) {
+        return $com$redhat$ceylon$compiler$java$test$issues$bug08xx$Visitable$this.visitAroundTags$tags(visitor, name);
+    }
+    
+    @.java.lang.Override
+    public final void visitAroundTags(final .com.redhat.ceylon.compiler.java.test.issues.bug08xx.Visitor visitor, final .java.lang.String name) {
+        $com$redhat$ceylon$compiler$java$test$issues$bug08xx$Visitable$this.visitAroundTags(visitor, name);
+    }
+    
+    @.java.lang.Override
+    public final void visitAroundTags(final .com.redhat.ceylon.compiler.java.test.issues.bug08xx.Visitor visitor, final .java.lang.String name, final .ceylon.language.List tags) {
+        $com$redhat$ceylon$compiler$java$test$issues$bug08xx$Visitable$this.visitAroundTags(visitor, name, tags);
+    }
+    private final .ceylon.language.List tags;
+    
+    public final .ceylon.language.List getTags() {
+        return tags;
+    }
+    
+    @.java.lang.Override
+    public final .java.lang.Object visit(final .com.redhat.ceylon.compiler.java.test.issues.bug08xx.Visitor visitor) {
+        visitAroundTags(visitor, "body", getTags());
+        return null;
+    }
+}
+public class Body extends .com.redhat.ceylon.compiler.java.test.issues.bug08xx.Container<.com.redhat.ceylon.compiler.java.test.issues.bug08xx.Tag> {
+    
+    public Body() {
+        (
+            let
+            {
+                .ceylon.language.List $ceylontmp$initialTags$14 = .com.redhat.ceylon.compiler.java.test.issues.bug08xx.Body.$init$initialTags();
+                this($ceylontmp$initialTags$14);
+            }
+            returning null;
+        );
+    }
+    
+    public Body(.ceylon.language.List initialTags) {
+        super("body", initialTags);
+    }
+    
+    public static .ceylon.language.List $init$initialTags() {
+        return (.ceylon.language.List).ceylon.language.empty_.getEmpty$();
+    }
+}
+public class Block extends .com.redhat.ceylon.compiler.java.test.issues.bug08xx.Container<.com.redhat.ceylon.compiler.java.test.issues.bug08xx.Tag> implements .com.redhat.ceylon.compiler.java.test.issues.bug08xx.Tag {
+    
+    public Block(final .java.lang.String name) {
+        (
+            let
+            {
+                .ceylon.language.List $ceylontmp$initialTags$16 = .com.redhat.ceylon.compiler.java.test.issues.bug08xx.Block.$init$initialTags(name);
+                this(name, $ceylontmp$initialTags$16);
+            }
+            returning null;
+        );
+    }
+    
+    public Block(.java.lang.String name, .ceylon.language.List initialTags) {
+        super(name, initialTags);
+        this.$com$redhat$ceylon$compiler$java$test$issues$bug08xx$Tag$this = new .com.redhat.ceylon.compiler.java.test.issues.bug08xx.Tag$impl(this);
+    }
+    
+    public static .ceylon.language.List $init$initialTags(final .java.lang.String name) {
+        return (.ceylon.language.List).ceylon.language.empty_.getEmpty$();
+    }
+    protected final .com.redhat.ceylon.compiler.java.test.issues.bug08xx.Tag$impl $com$redhat$ceylon$compiler$java$test$issues$bug08xx$Tag$this;
+}
+public class P extends .com.redhat.ceylon.compiler.java.test.issues.bug08xx.Block {
+    
+    public P() {
+        (
+            let
+            {
+                .ceylon.language.List $ceylontmp$tags$18 = .com.redhat.ceylon.compiler.java.test.issues.bug08xx.P.$init$tags();
+                this($ceylontmp$tags$18);
+            }
+            returning null;
+        );
+    }
+    
+    public P(.ceylon.language.List tags) {
+        super("p", tags);
+    }
+    
+    public static .ceylon.language.List $init$tags() {
+        return (.ceylon.language.List).ceylon.language.empty_.getEmpty$();
+    }
+}
+public class Inline extends .com.redhat.ceylon.compiler.java.test.issues.bug08xx.Container<.com.redhat.ceylon.compiler.java.test.issues.bug08xx.InlineTag> implements .com.redhat.ceylon.compiler.java.test.issues.bug08xx.InlineTag {
+    
+    public Inline(final .java.lang.String name) {
+        (
+            let
+            {
+                .ceylon.language.List $ceylontmp$initialTags$20 = .com.redhat.ceylon.compiler.java.test.issues.bug08xx.Inline.$init$initialTags(name);
+                this(name, $ceylontmp$initialTags$20);
+            }
+            returning null;
+        );
+    }
+    
+    public Inline(.java.lang.String name, .ceylon.language.List initialTags) {
+        super(name, initialTags);
+        this.$com$redhat$ceylon$compiler$java$test$issues$bug08xx$InlineTag$this = new .com.redhat.ceylon.compiler.java.test.issues.bug08xx.InlineTag$impl(this);
+        this.$com$redhat$ceylon$compiler$java$test$issues$bug08xx$Tag$this = new .com.redhat.ceylon.compiler.java.test.issues.bug08xx.Tag$impl(this);
+    }
+    
+    public static .ceylon.language.List $init$initialTags(final .java.lang.String name) {
+        return (.ceylon.language.List).ceylon.language.empty_.getEmpty$();
+    }
+    protected final .com.redhat.ceylon.compiler.java.test.issues.bug08xx.InlineTag$impl $com$redhat$ceylon$compiler$java$test$issues$bug08xx$InlineTag$this;
+    protected final .com.redhat.ceylon.compiler.java.test.issues.bug08xx.Tag$impl $com$redhat$ceylon$compiler$java$test$issues$bug08xx$Tag$this;
+}
+public class B extends .com.redhat.ceylon.compiler.java.test.issues.bug08xx.Inline {
+    
+    public B() {
+        (
+            let
+            {
+                .ceylon.language.List $ceylontmp$tags$22 = .com.redhat.ceylon.compiler.java.test.issues.bug08xx.B.$init$tags();
+                this($ceylontmp$tags$22);
+            }
+            returning null;
+        );
+    }
+    
+    public B(.ceylon.language.List tags) {
+        super("b", tags);
+    }
+    
+    public static .ceylon.language.List $init$tags() {
+        return (.ceylon.language.List).ceylon.language.empty_.getEmpty$();
+    }
+}
