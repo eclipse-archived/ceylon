@@ -7,7 +7,6 @@ class OptionalInterface implements .com.redhat.ceylon.compiler.java.test.interop
         this.prop2 = null;
         this.prop3 = x;
         this.prop4 = x;
-        this.correspondence = (.ceylon.language.Correspondence<? super .java.lang.Object, ? extends .java.lang.Object>).ceylon.language.bottom_.getBottom$();
     }
     
     @.java.lang.Override
@@ -217,10 +216,8 @@ class OptionalInterface implements .com.redhat.ceylon.compiler.java.test.interop
     public final .com.redhat.ceylon.compiler.java.test.interop.JavaOptionalInterface getProp4() {
         return prop4;
     }
-    private final .ceylon.language.Correspondence<? super .java.lang.Object, ? extends .java.lang.Object> correspondence;
     
-    @.java.lang.Override
     public final .ceylon.language.Correspondence<? super .java.lang.Object, ? extends .java.lang.Object> getCorrespondence() {
-        return correspondence;
+        return (.ceylon.language.Correspondence<? super .java.lang.Object, ? extends .java.lang.Object>).ceylon.language.bottom_.getBottom$();
     }
 }
