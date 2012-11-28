@@ -855,17 +855,17 @@ public class ClassTransformer extends AbstractTransformer {
     
     public void transform(AttributeDeclaration decl, ClassDefinitionBuilder classBuilder) {
         final Value model = decl.getDeclarationModel();
-        boolean useField = Strategy.useField(model);
+        boolean lazy = decl.getSpecifierOrInitializerExpression() instanceof LazySpecifierExpression;
+        boolean useField = Strategy.useField(model) && !lazy;
         String attrName = decl.getIdentifier().getText();
 
         // Only a non-formal or a concrete-non-lazy attribute has a corresponding field
         // and if a captured class parameter exists with the same name we skip this part as well
         Parameter parameter = CodegenUtil.findParamForDecl(decl);
-        boolean createField = Strategy.createField(parameter, model);
+        boolean createField = Strategy.createField(parameter, model) && !lazy;
         boolean concrete = Decl.withinInterface(decl)
                 && decl.getSpecifierOrInitializerExpression() != null;
-        boolean lazy = decl.getSpecifierOrInitializerExpression() instanceof LazySpecifierExpression;
-        if ((concrete && !lazy) || (!Decl.isFormal(decl) && createField)) {
+        if (!lazy && (concrete || (!Decl.isFormal(decl) && createField))) {
             JCExpression initialValue = null;
             if (decl.getSpecifierOrInitializerExpression() != null) {
                 Value declarationModel = model;
@@ -898,16 +898,17 @@ public class ClassTransformer extends AbstractTransformer {
             }
         }
 
-        if (useField || Decl.withinInterface(decl)) {
+        if (useField || Decl.withinInterface(decl) || lazy) {
+            boolean generateCodeAsIfForCompanion = lazy && !Decl.withinInterface(decl);
             // Generate getter in main class/interface
-            classBuilder.attribute(makeGetter(decl, false));
+            classBuilder.attribute(makeGetter(decl, generateCodeAsIfForCompanion));
             if (Decl.withinInterface(decl)) {
                 // Generate getter in companion class
                 classBuilder.getCompanionBuilder((Interface)decl.getDeclarationModel().getContainer()).attribute(makeGetter(decl, true));
             }
             if (Decl.isMutable(decl)) {
                 // Generate setter in main class/interface
-                classBuilder.attribute(makeSetter(decl, false));
+                classBuilder.attribute(makeSetter(decl, generateCodeAsIfForCompanion));
                 if (Decl.withinInterface(decl)) {
                     // Generate setter in companion class
                     classBuilder.getCompanionBuilder((Interface)decl.getDeclarationModel().getContainer()).attribute(makeSetter(decl, true));

@@ -25,6 +25,6 @@ public final class bug640gen_ {
     }
     
     public static <T>void bug640gen(final .ceylon.language.SequenceBuilder<T> sb) {
-        final .ceylon.language.Array<T> x = .ceylon.language.array_.<T>array(null, (.ceylon.language.Iterable<? extends T>)sb.getSequence());
+        final .ceylon.language.Array<T> x = .ceylon.language.array_.<T>array(null, sb.getSequence());
     }
 }

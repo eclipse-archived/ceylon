@@ -17,18 +17,14 @@ class C<X> {
 class MethodSpecifyingTopLevelWithTypeParamMixed<S, T> {
     
     MethodSpecifyingTopLevelWithTypeParamMixed() {
-        this.c = new .com.redhat.ceylon.compiler.java.test.structure.method.C<.ceylon.language.String>();
-        this.c2 = new .com.redhat.ceylon.compiler.java.test.structure.method.C<S>();
     }
-    private final .com.redhat.ceylon.compiler.java.test.structure.method.C<.ceylon.language.String> c;
     
     public final .com.redhat.ceylon.compiler.java.test.structure.method.C<.ceylon.language.String> getC() {
-        return c;
+        return new .com.redhat.ceylon.compiler.java.test.structure.method.C<.ceylon.language.String>();
     }
-    private final .com.redhat.ceylon.compiler.java.test.structure.method.C<S> c2;
     
     public final .com.redhat.ceylon.compiler.java.test.structure.method.C<S> getC2() {
-        return c2;
+        return new .com.redhat.ceylon.compiler.java.test.structure.method.C<S>();
     }
     
     private final .java.lang.String foo(final .java.lang.String s, final long i) {
