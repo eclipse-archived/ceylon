@@ -21,6 +21,7 @@ package com.redhat.ceylon.compiler.java.test.model;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
@@ -656,5 +657,37 @@ public class ModelLoaderTest extends CompilerTest {
                 }
             }
         }, Arrays.asList("-verbose:loader"));
+    }
+
+    @Test
+    public void javaModelLoading(){
+        compile("JavaType.java");
+        verifyClassLoading("Java.ceylon", new RunnableTest(){
+            @Override
+            public void test(ModelLoader loader) {
+                Module mod = loader.getLoadedModule(Module.DEFAULT_MODULE_NAME);
+                Assert.assertNotNull(mod);
+                Package p = mod.getDirectPackage("com.redhat.ceylon.compiler.java.test.model");
+                Assert.assertNotNull(p);
+                Declaration javaType = p.getDirectMember("JavaType", null, false);
+                Assert.assertNotNull(javaType);
+                
+                // check the method which returns a java list
+                Method javaListMethod = (Method) javaType.getDirectMember("javaList", null, false);
+                Assert.assertNotNull(javaListMethod);
+                Assert.assertEquals("Object", javaListMethod.getType().getProducedTypeName());
+                Parameter javaListParam = javaListMethod.getParameterLists().get(0).getParameters().get(0);
+                Assert.assertNotNull(javaListParam);
+                Assert.assertEquals("List<Object>?", javaListParam.getType().getProducedTypeName());
+
+                // check the method which returns a Ceylon list
+                Method ceylonListMethod = (Method) javaType.getDirectMember("ceylonList", null, false);
+                Assert.assertNotNull(ceylonListMethod);
+                Assert.assertEquals("List<Object>", ceylonListMethod.getType().getProducedTypeName());
+                Parameter ceylonListParam = ceylonListMethod.getParameterLists().get(0).getParameters().get(0);
+                Assert.assertNotNull(ceylonListParam);
+                Assert.assertEquals("List<Object>?", ceylonListParam.getType().getProducedTypeName());
+}
+        }, Collections.EMPTY_LIST);
     }
 }
