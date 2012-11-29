@@ -2,8 +2,10 @@ package com.redhat.ceylon.compiler.java.codegen;
 
 import com.redhat.ceylon.compiler.java.codegen.AbstractTransformer.BoxingStrategy;
 import com.redhat.ceylon.compiler.java.util.Util;
+import com.redhat.ceylon.compiler.typechecker.model.Class;
 import com.redhat.ceylon.compiler.typechecker.model.Declaration;
 import com.redhat.ceylon.compiler.typechecker.model.Functional;
+import com.redhat.ceylon.compiler.typechecker.model.Method;
 import com.redhat.ceylon.compiler.typechecker.model.MethodOrValue;
 import com.redhat.ceylon.compiler.typechecker.model.Parameter;
 import com.redhat.ceylon.compiler.typechecker.model.ProducedType;
@@ -204,5 +206,27 @@ class CodegenUtil {
     static boolean isVoid(ProducedType type) {
         return type != null && type.getDeclaration() != null
                 && type.getDeclaration().getUnit().getVoidDeclaration().getType().isExactly(type);    
+    }
+
+
+    public static boolean canOptimiseMethodSpecifier(Term expression, Method m) {
+        if(expression instanceof Tree.FunctionArgument)
+            return true;
+        if(expression instanceof Tree.BaseMemberOrTypeExpression == false)
+            return false;
+        Declaration declaration = ((Tree.BaseMemberOrTypeExpression)expression).getDeclaration();
+        // methods are fine because they are constant
+        if(declaration instanceof Method)
+            return true;
+        // toplevel constructors are fine
+        if(declaration instanceof Class)
+            return true;
+        // parameters are constant too
+        if(declaration instanceof Parameter)
+            return true;
+        // the rest we can't know: we can't trust attributes that could be getters or overridden
+        // we can't trust even toplevel attributes that could be made variable in the future because of
+        // binary compat.
+        return false;
     }
 }
