@@ -811,6 +811,7 @@ public class ClassTransformer extends AbstractTransformer {
             
             Tree.BaseMemberExpression expr = (BaseMemberExpression) baseMemberTerm;
             Declaration decl = expr.getDeclaration();
+            
             if (decl instanceof Value) {
                 // Now build a "fake" declaration for the attribute
                 Tree.AttributeDeclaration attrDecl = new Tree.AttributeDeclaration(null);
@@ -834,7 +835,23 @@ public class ClassTransformer extends AbstractTransformer {
                 methDecl.setDeclarationModel(m);
                 methDecl.setIdentifier(expr.getIdentifier());
                 methDecl.setScope(op.getScope());
-                methDecl.setSpecifierExpression(op.getSpecifierExpression());
+                
+                Tree.SpecifierExpression specifierExpression = op.getSpecifierExpression();
+                methDecl.setSpecifierExpression(specifierExpression);
+                
+                if(specifierExpression instanceof Tree.LazySpecifierExpression == false){
+                    Tree.Expression expression = specifierExpression.getExpression();
+                    Tree.Term expressionTerm = Decl.unwrapExpressionsUntilTerm(expression);
+                    // we can optimise lambdas and static method calls
+                    if(!CodegenUtil.canOptimiseMethodSpecifier(expressionTerm, m)){
+                        // we need a field to save the callable value
+                        String name = naming.getMethodSpecifierAttributeName(m);
+                        JCExpression specifierType = makeJavaType(expression.getTypeModel());
+                        JCExpression specifier = expressionGen().transformExpression(expression);
+                        classBuilder.field(PRIVATE | FINAL, name, specifierType, specifier, false);
+                    }
+                }
+                
                 for (ParameterList pl : m.getParameterLists()) {
                     Tree.ParameterList tpl = new Tree.ParameterList(null);
                     for (Parameter p : pl.getParameters()) {
@@ -859,7 +876,7 @@ public class ClassTransformer extends AbstractTransformer {
                 BoxingDeclarationVisitor v = new CompilerBoxingDeclarationVisitor(this);
                 v.visit(methDecl);
                 
-                // Generate the attribute
+                // Generate the method
                 classBuilder.method(methDecl);
             }
         } else {
