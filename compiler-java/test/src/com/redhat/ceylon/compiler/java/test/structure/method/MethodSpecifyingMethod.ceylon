@@ -22,5 +22,5 @@ class MethodSpecifierMethod() {
     MethodSpecifierMethod bar() {
         throw;
     }
-    void foo() => bar;
+    void foo() => bar();
 }

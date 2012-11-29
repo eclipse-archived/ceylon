@@ -24,19 +24,7 @@ class VarargsMethodSpecifyingMethodWithIterable {
     }
     
     private final void bar(final .ceylon.language.Sequential<? extends .ceylon.language.Integer> ints) {
-        new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.java.lang.Object>("Void(Iterable<Integer>)"){
-            
-            @.java.lang.Override
-            public .java.lang.Object $call(final .java.lang.Object $param$0) {
-                return (
-                    let
-                    {
-                        foo((.ceylon.language.Iterable)$param$0);
-                    }
-                    returning null;
-                );
-            }
-        };
+        foo((.ceylon.language.Iterable<? extends .ceylon.language.Integer>)ints);
     }
     
     public static void main(.java.lang.String[] args) {

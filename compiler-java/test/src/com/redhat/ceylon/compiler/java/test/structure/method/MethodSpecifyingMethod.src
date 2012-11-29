@@ -10,13 +10,7 @@ class MethodSpecifierMethod {
     }
     
     private final void foo() {
-        new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.com.redhat.ceylon.compiler.java.test.structure.method.MethodSpecifierMethod>("MethodSpecifierMethod()"){
-            
-            @.java.lang.Override
-            public .com.redhat.ceylon.compiler.java.test.structure.method.MethodSpecifierMethod $call() {
-                return bar();
-            }
-        };
+        bar();
     }
     
     public static void main(.java.lang.String[] args) {
