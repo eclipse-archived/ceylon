@@ -41,6 +41,8 @@ import com.redhat.ceylon.compiler.typechecker.model.TypeDeclaration;
 import com.redhat.ceylon.compiler.typechecker.model.TypedDeclaration;
 import com.redhat.ceylon.compiler.typechecker.model.Value;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree;
+import com.redhat.ceylon.compiler.typechecker.tree.Tree.Expression;
+import com.redhat.ceylon.compiler.typechecker.tree.Tree.Term;
 
 /**
  * Utility functions telling you about Ceylon declarations
@@ -383,5 +385,12 @@ public class Decl {
     
     public static String className(Declaration decl) {
         return com.redhat.ceylon.compiler.java.Util.declClassName(decl.getQualifiedNameString());
+    }
+
+    public static Tree.Term unwrapExpressionsUntilTerm(Tree.Term term) {
+        while (term instanceof Tree.Expression) {
+            term = ((Tree.Expression)term).getTerm();
+        }
+        return term;
     }
 }
