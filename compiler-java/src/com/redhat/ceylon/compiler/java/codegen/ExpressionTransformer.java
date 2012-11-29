@@ -260,9 +260,9 @@ public class ExpressionTransformer extends AbstractTransformer {
                         result = make().TypeCast(targetType, result);
                     }
                 }
-            }else if(!willEraseToObjectOrList(expectedType) // full type erasure 
+            }else if(!willEraseToObjectOrSequential(expectedType) // full type erasure 
                     && ((exprErased && !isFunctionalResult(exprType))
-                            || willEraseToObjectOrList(exprType) 
+                            || willEraseToObjectOrSequential(exprType) 
                             || (exprType.isRaw() && !hasErasedTypeParameters(expectedType, true)))){
                 // Set the new expression type to a "clean" copy of the expected type
                 // (without the underlying type, because the cast is always to a non-primitive)
@@ -299,7 +299,7 @@ public class ExpressionTransformer extends AbstractTransformer {
         if(exprType.isExactly(expectedType))
             return false;
         // we can't find a common type with a sequence since it's a union
-        if(willEraseToList(expectedType)){
+        if(willEraseToSequential(expectedType)){
             ProducedType commonType = exprType.getSupertype(typeFact().getIterableDeclaration());
             // something fishy
             if(commonType == null)

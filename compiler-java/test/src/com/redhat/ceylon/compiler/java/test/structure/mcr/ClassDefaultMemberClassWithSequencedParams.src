@@ -5,19 +5,19 @@ class ClassDefaultMemberClassWithSequencedParams {
     ClassDefaultMemberClassWithSequencedParams() {
     }
     
-    public .com.redhat.ceylon.compiler.java.test.structure.mcr.ClassDefaultMemberClassWithSequencedParams.Member Member$new(final .ceylon.language.List<? extends .ceylon.language.Integer> i) {
+    public .com.redhat.ceylon.compiler.java.test.structure.mcr.ClassDefaultMemberClassWithSequencedParams.Member Member$new(final .ceylon.language.Sequential<? extends .ceylon.language.Integer> i) {
         return new Member(i);
     }
     
-    public final .ceylon.language.List<? extends .ceylon.language.Integer> $Member$init$i() {
-        return (.ceylon.language.List).ceylon.language.empty_.getEmpty$();
+    public final .ceylon.language.Sequential<? extends .ceylon.language.Integer> $Member$init$i() {
+        return (.ceylon.language.Sequential).ceylon.language.empty_.getEmpty$();
     }
     
     public .com.redhat.ceylon.compiler.java.test.structure.mcr.ClassDefaultMemberClassWithSequencedParams.Member Member$new() {
         return (
             let
             {
-                .ceylon.language.List<? extends .ceylon.language.Integer> $ceylontmp$i$2 = $Member$init$i();
+                .ceylon.language.Sequential<? extends .ceylon.language.Integer> $ceylontmp$i$2 = $Member$init$i();
             }
             returning new Member($ceylontmp$i$2);
         );
@@ -25,7 +25,7 @@ class ClassDefaultMemberClassWithSequencedParams {
     
     public class Member {
         
-        protected Member(.ceylon.language.List<? extends .ceylon.language.Integer> i) {
+        protected Member(.ceylon.language.Sequential<? extends .ceylon.language.Integer> i) {
         }
     }
     
@@ -33,14 +33,14 @@ class ClassDefaultMemberClassWithSequencedParams {
         (
             let
             {
-                .ceylon.language.List $arg$3$0 = new .com.redhat.ceylon.compiler.java.language.ArraySequence<.ceylon.language.Integer>(.ceylon.language.Integer.instance(1L), .ceylon.language.Integer.instance(2L), .ceylon.language.Integer.instance(3L));
+                .ceylon.language.Sequential $arg$3$0 = new .com.redhat.ceylon.compiler.java.language.ArraySequence<.ceylon.language.Integer>(.ceylon.language.Integer.instance(1L), .ceylon.language.Integer.instance(2L), .ceylon.language.Integer.instance(3L));
             }
             returning Member$new($arg$3$0);
         );
         (
             let
             {
-                .ceylon.language.List<? extends .ceylon.language.Integer> $arg$4$0 = $Member$init$i();
+                .ceylon.language.Sequential<? extends .ceylon.language.Integer> $arg$4$0 = $Member$init$i();
             }
             returning Member$new($arg$4$0);
         );
@@ -60,7 +60,7 @@ class ClassDefaultMemberClassWithSequencedParams_sub extends .com.redhat.ceylon.
     }
     
     @.java.lang.Override
-    public .com.redhat.ceylon.compiler.java.test.structure.mcr.ClassDefaultMemberClassWithSequencedParams_sub.Member Member$new(final .ceylon.language.List<? extends .ceylon.language.Integer> i) {
+    public .com.redhat.ceylon.compiler.java.test.structure.mcr.ClassDefaultMemberClassWithSequencedParams_sub.Member Member$new(final .ceylon.language.Sequential<? extends .ceylon.language.Integer> i) {
         return new Member(i);
     }
     
@@ -69,7 +69,7 @@ class ClassDefaultMemberClassWithSequencedParams_sub extends .com.redhat.ceylon.
         return (
             let
             {
-                .ceylon.language.List<? extends .ceylon.language.Integer> $ceylontmp$i$7 = $Member$init$i();
+                .ceylon.language.Sequential<? extends .ceylon.language.Integer> $ceylontmp$i$7 = $Member$init$i();
             }
             returning new Member($ceylontmp$i$7);
         );
@@ -77,7 +77,7 @@ class ClassDefaultMemberClassWithSequencedParams_sub extends .com.redhat.ceylon.
     
     public class Member extends .com.redhat.ceylon.compiler.java.test.structure.mcr.ClassDefaultMemberClassWithSequencedParams.Member {
         
-        protected Member(.ceylon.language.List<? extends .ceylon.language.Integer> i) {
+        protected Member(.ceylon.language.Sequential<? extends .ceylon.language.Integer> i) {
             super(i);
         }
     }
@@ -86,14 +86,14 @@ class ClassDefaultMemberClassWithSequencedParams_sub extends .com.redhat.ceylon.
         (
             let
             {
-                .ceylon.language.List $arg$8$0 = new .com.redhat.ceylon.compiler.java.language.ArraySequence<.ceylon.language.Integer>(.ceylon.language.Integer.instance(2L), .ceylon.language.Integer.instance(3L), .ceylon.language.Integer.instance(4L));
+                .ceylon.language.Sequential $arg$8$0 = new .com.redhat.ceylon.compiler.java.language.ArraySequence<.ceylon.language.Integer>(.ceylon.language.Integer.instance(2L), .ceylon.language.Integer.instance(3L), .ceylon.language.Integer.instance(4L));
             }
             returning Member$new($arg$8$0);
         );
         (
             let
             {
-                .ceylon.language.List<? extends .ceylon.language.Integer> $arg$9$0 = $Member$init$i();
+                .ceylon.language.Sequential<? extends .ceylon.language.Integer> $arg$9$0 = $Member$init$i();
             }
             returning Member$new($arg$9$0);
         );

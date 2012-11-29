@@ -14,7 +14,7 @@ final class bug594_ {
         }
         .java.lang.Object $t$4;
         if (($t$4 = t) == null || $t$4 instanceof .ceylon.language.String) {
-            final .ceylon.language.List<? extends .ceylon.language.Character> $t$5 = (.ceylon.language.List)$t$4;
+            final .ceylon.language.Sequential<? extends .ceylon.language.Character> $t$5 = (.ceylon.language.Sequential)$t$4;
         }
     }
 }

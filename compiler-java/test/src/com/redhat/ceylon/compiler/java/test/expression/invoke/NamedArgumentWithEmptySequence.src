@@ -7,7 +7,7 @@ class NamedArgumentWithEmptySequence {
             let
             {
                 .com.redhat.ceylon.compiler.java.test.expression.invoke.NamedArgumentWithEmptySequence $arg$2$this$ = this;
-                .ceylon.language.List<? extends .ceylon.language.Integer> $arg$2$0 = $arg$2$this$.m$b();
+                .ceylon.language.Sequential<? extends .ceylon.language.Integer> $arg$2$0 = $arg$2$this$.m$b();
                 m($arg$2$0);
             }
             returning null;
@@ -18,18 +18,18 @@ class NamedArgumentWithEmptySequence {
         (
             let
             {
-                .ceylon.language.List<? extends .ceylon.language.Integer> $ceylontmp$b$1 = m$b();
+                .ceylon.language.Sequential<? extends .ceylon.language.Integer> $ceylontmp$b$1 = m$b();
                 m($ceylontmp$b$1);
             }
             returning null;
         );
     }
     
-    private final .ceylon.language.List<? extends .ceylon.language.Integer> m$b() {
-        return (.ceylon.language.List).ceylon.language.empty_.getEmpty$();
+    private final .ceylon.language.Sequential<? extends .ceylon.language.Integer> m$b() {
+        return (.ceylon.language.Sequential).ceylon.language.empty_.getEmpty$();
     }
     
-    private final void m(final .ceylon.language.List<? extends .ceylon.language.Integer> b) {
+    private final void m(final .ceylon.language.Sequential<? extends .ceylon.language.Integer> b) {
     }
     
     public static void main(.java.lang.String[] args) {

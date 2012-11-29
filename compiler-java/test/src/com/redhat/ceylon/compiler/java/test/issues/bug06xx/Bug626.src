@@ -1,15 +1,15 @@
 package com.redhat.ceylon.compiler.java.test.issues.bug06xx;
 
-class Bug626 implements .ceylon.language.Iterable<.ceylon.language.List<?>> {
+class Bug626 implements .ceylon.language.Iterable<.ceylon.language.Sequential<?>> {
     
     Bug626() {
-        this.$ceylon$language$Iterable$this = new .ceylon.language.Iterable$impl<.ceylon.language.List<?>>(this);
-        this.$ceylon$language$ContainerWithFirstElement$this = new .ceylon.language.ContainerWithFirstElement$impl<.ceylon.language.List<?>, .java.lang.Object>(this);
+        this.$ceylon$language$Iterable$this = new .ceylon.language.Iterable$impl<.ceylon.language.Sequential<?>>(this);
+        this.$ceylon$language$ContainerWithFirstElement$this = new .ceylon.language.ContainerWithFirstElement$impl<.ceylon.language.Sequential<?>, .java.lang.Object>(this);
         this.$ceylon$language$Container$this = new .ceylon.language.Container$impl(this);
         this.hash = (int)((.ceylon.language.Integer).ceylon.language.bottom_.getBottom$()).longValue();
-        this.iterator = (.ceylon.language.Iterator<? extends .ceylon.language.List<?>>).ceylon.language.bottom_.getBottom$();
+        this.iterator = (.ceylon.language.Iterator<? extends .ceylon.language.Sequential<?>>).ceylon.language.bottom_.getBottom$();
     }
-    protected final .ceylon.language.Iterable$impl<.ceylon.language.List<?>> $ceylon$language$Iterable$this;
+    protected final .ceylon.language.Iterable$impl<.ceylon.language.Sequential<?>> $ceylon$language$Iterable$this;
     
     @.java.lang.Override
     public boolean getEmpty() {
@@ -17,22 +17,22 @@ class Bug626 implements .ceylon.language.Iterable<.ceylon.language.List<?>> {
     }
     
     @.java.lang.Override
-    public .ceylon.language.List<?> getFirst() {
+    public .ceylon.language.Sequential<?> getFirst() {
         return $ceylon$language$Iterable$this.getFirst();
     }
     
     @.java.lang.Override
-    public .ceylon.language.List<?> getLast() {
+    public .ceylon.language.Sequential<?> getLast() {
         return $ceylon$language$Iterable$this.getLast();
     }
     
     @.java.lang.Override
-    public .ceylon.language.Iterable<? extends .ceylon.language.List<?>> getRest() {
+    public .ceylon.language.Iterable<? extends .ceylon.language.Sequential<?>> getRest() {
         return $ceylon$language$Iterable$this.getRest();
     }
     
     @.java.lang.Override
-    public .ceylon.language.List<? extends .ceylon.language.List<?>> getSequence() {
+    public .ceylon.language.Sequential<? extends .ceylon.language.Sequential<?>> getSequence() {
         return $ceylon$language$Iterable$this.getSequence();
     }
     
@@ -42,7 +42,7 @@ class Bug626 implements .ceylon.language.Iterable<.ceylon.language.List<?>> {
     }
     
     @.java.lang.Override
-    public .ceylon.language.Iterable<? extends .ceylon.language.List<?>> filter(final .ceylon.language.Callable<? extends .ceylon.language.Boolean> selecting) {
+    public .ceylon.language.Iterable<? extends .ceylon.language.Sequential<?>> filter(final .ceylon.language.Callable<? extends .ceylon.language.Boolean> selecting) {
         return $ceylon$language$Iterable$this.filter(selecting);
     }
     
@@ -52,27 +52,27 @@ class Bug626 implements .ceylon.language.Iterable<.ceylon.language.List<?>> {
     }
     
     @.java.lang.Override
-    public .ceylon.language.List<?> find(final .ceylon.language.Callable<? extends .ceylon.language.Boolean> selecting) {
+    public .ceylon.language.Sequential<?> find(final .ceylon.language.Callable<? extends .ceylon.language.Boolean> selecting) {
         return $ceylon$language$Iterable$this.find(selecting);
     }
     
     @.java.lang.Override
-    public .ceylon.language.List<?> findLast(final .ceylon.language.Callable<? extends .ceylon.language.Boolean> selecting) {
+    public .ceylon.language.Sequential<?> findLast(final .ceylon.language.Callable<? extends .ceylon.language.Boolean> selecting) {
         return $ceylon$language$Iterable$this.findLast(selecting);
     }
     
     @.java.lang.Override
-    public .ceylon.language.List<? extends .ceylon.language.List<?>> sort(final .ceylon.language.Callable<? extends .ceylon.language.Comparison> comparing) {
+    public .ceylon.language.Sequential<? extends .ceylon.language.Sequential<?>> sort(final .ceylon.language.Callable<? extends .ceylon.language.Comparison> comparing) {
         return $ceylon$language$Iterable$this.sort(comparing);
     }
     
     @.java.lang.Override
-    public <Result>.ceylon.language.List<? extends Result> collect(final .ceylon.language.Callable<? extends Result> collecting) {
+    public <Result>.ceylon.language.Sequential<? extends Result> collect(final .ceylon.language.Callable<? extends Result> collecting) {
         return $ceylon$language$Iterable$this.collect(collecting);
     }
     
     @.java.lang.Override
-    public .ceylon.language.List<? extends .ceylon.language.List<?>> select(final .ceylon.language.Callable<? extends .ceylon.language.Boolean> selecting) {
+    public .ceylon.language.Sequential<? extends .ceylon.language.Sequential<?>> select(final .ceylon.language.Callable<? extends .ceylon.language.Boolean> selecting) {
         return $ceylon$language$Iterable$this.select(selecting);
     }
     
@@ -87,17 +87,17 @@ class Bug626 implements .ceylon.language.Iterable<.ceylon.language.List<?>> {
     }
     
     @.java.lang.Override
-    public .ceylon.language.Iterable<? extends .ceylon.language.List<?>> skipping(final long skip) {
+    public .ceylon.language.Iterable<? extends .ceylon.language.Sequential<?>> skipping(final long skip) {
         return $ceylon$language$Iterable$this.skipping(skip);
     }
     
     @.java.lang.Override
-    public .ceylon.language.Iterable<? extends .ceylon.language.List<?>> taking(final long take) {
+    public .ceylon.language.Iterable<? extends .ceylon.language.Sequential<?>> taking(final long take) {
         return $ceylon$language$Iterable$this.taking(take);
     }
     
     @.java.lang.Override
-    public .ceylon.language.Iterable<? extends .ceylon.language.List<?>> by(final long step) {
+    public .ceylon.language.Iterable<? extends .ceylon.language.Sequential<?>> by(final long step) {
         return $ceylon$language$Iterable$this.by(step);
     }
     
@@ -107,12 +107,12 @@ class Bug626 implements .ceylon.language.Iterable<.ceylon.language.List<?>> {
     }
     
     @.java.lang.Override
-    public .ceylon.language.Iterable<? extends .ceylon.language.List<?>> getCoalesced() {
+    public .ceylon.language.Iterable<? extends .ceylon.language.Sequential<?>> getCoalesced() {
         return $ceylon$language$Iterable$this.getCoalesced();
     }
     
     @.java.lang.Override
-    public .ceylon.language.Iterable<? extends .ceylon.language.Entry<? extends .ceylon.language.Integer, ? extends .ceylon.language.List<?>>> getIndexed() {
+    public .ceylon.language.Iterable<? extends .ceylon.language.Entry<? extends .ceylon.language.Integer, ? extends .ceylon.language.Sequential<?>>> getIndexed() {
         return $ceylon$language$Iterable$this.getIndexed();
     }
     
@@ -122,10 +122,10 @@ class Bug626 implements .ceylon.language.Iterable<.ceylon.language.List<?>> {
     }
     
     @.java.lang.Override
-    public <Grouping>.ceylon.language.Map<? extends Grouping, ? extends .ceylon.language.Sequence<? extends .ceylon.language.List<?>>> group(final .ceylon.language.Callable<? extends Grouping> grouping) {
+    public <Grouping>.ceylon.language.Map<? extends Grouping, ? extends .ceylon.language.Sequence<? extends .ceylon.language.Sequential<?>>> group(final .ceylon.language.Callable<? extends Grouping> grouping) {
         return $ceylon$language$Iterable$this.group(grouping);
     }
-    protected final .ceylon.language.ContainerWithFirstElement$impl<.ceylon.language.List<?>, .java.lang.Object> $ceylon$language$ContainerWithFirstElement$this;
+    protected final .ceylon.language.ContainerWithFirstElement$impl<.ceylon.language.Sequential<?>, .java.lang.Object> $ceylon$language$ContainerWithFirstElement$this;
     protected final .ceylon.language.Container$impl $ceylon$language$Container$this;
     
     @.java.lang.Override
@@ -138,10 +138,10 @@ class Bug626 implements .ceylon.language.Iterable<.ceylon.language.List<?>> {
     public final int hashCode() {
         return hash;
     }
-    private final .ceylon.language.Iterator<? extends .ceylon.language.List<?>> iterator;
+    private final .ceylon.language.Iterator<? extends .ceylon.language.Sequential<?>> iterator;
     
     @.java.lang.Override
-    public final .ceylon.language.Iterator<? extends .ceylon.language.List<?>> getIterator() {
+    public final .ceylon.language.Iterator<? extends .ceylon.language.Sequential<?>> getIterator() {
         return iterator;
     }
     
@@ -159,10 +159,10 @@ final class bug626f_ {
         final .ceylon.language.Iterable<? extends .ceylon.language.Iterable<? extends .java.lang.Object>> i = f;
         final .ceylon.language.Iterable<? extends .ceylon.language.Iterable<? extends .java.lang.Object>> i2 = f2;
         final .ceylon.language.Iterable<? extends .ceylon.language.Iterable<? extends .java.lang.Object>> i3 = f3;
-        final .ceylon.language.List<?> temp = (
+        final .ceylon.language.Sequential<?> temp = (
             let
             {
-                .ceylon.language.List $arg$0$0 = (.ceylon.language.List)((.ceylon.language.List)new .com.redhat.ceylon.compiler.java.test.issues.bug06xx.Bug626()).getSequence();
+                .ceylon.language.Sequential $arg$0$0 = (.ceylon.language.Sequential)((.ceylon.language.Sequential)new .com.redhat.ceylon.compiler.java.test.issues.bug06xx.Bug626()).getSequence();
             }
             returning .ceylon.language.join_.join($arg$0$0);
         );

@@ -5,13 +5,13 @@ class ForIfConditionList {
     ForIfConditionList() {
     }
     
-    private final .ceylon.language.List<? extends .ceylon.language.Boolean> m(final .ceylon.language.List<? extends .ceylon.language.List<? extends .java.lang.Object>> xs) {
+    private final .ceylon.language.Sequential<? extends .ceylon.language.Boolean> m(final .ceylon.language.Sequential<? extends .ceylon.language.Sequential<? extends .java.lang.Object>> xs) {
         return new .com.redhat.ceylon.compiler.java.language.AbstractIterable<.ceylon.language.Boolean>(){
             
             public final .ceylon.language.Iterator<.ceylon.language.Boolean> getIterator() {
                 return new .ceylon.language.Iterator<.ceylon.language.Boolean>(){
-                    private final .ceylon.language.Iterator<? extends .ceylon.language.List<? extends .java.lang.Object>> iter$0 = xs.getIterator();
-                    private .ceylon.language.List<? extends .java.lang.Object> x;
+                    private final .ceylon.language.Iterator<? extends .ceylon.language.Sequential<? extends .java.lang.Object>> iter$0 = xs.getIterator();
+                    private .ceylon.language.Sequential<? extends .java.lang.Object> x;
                     private boolean x$exhausted;
                     
                     private final boolean x() {
@@ -20,7 +20,7 @@ class ForIfConditionList {
                         if (x$exhausted) {
                             return false;
                         } else {
-                            x = (.ceylon.language.List<? extends .java.lang.Object>)$ceylontmpitem0;
+                            x = (.ceylon.language.Sequential<? extends .java.lang.Object>)$ceylontmpitem0;
                         }
                         return true;
                     }
@@ -31,7 +31,7 @@ class ForIfConditionList {
                         while (true) {
                             if (!this.x()) break;
                             .java.lang.Object $y$3 = null;
-                            .ceylon.language.List<? extends .java.lang.Object> $x$1 = null;
+                            .ceylon.language.Sequential<? extends .java.lang.Object> $x$1 = null;
                             if (($x$1 = x) instanceof .ceylon.language.Sequence) {
                                 $x$2 = (.ceylon.language.Sequence<? extends .java.lang.Object>)$x$1;
                                 if (($y$3 = $x$2.item(.ceylon.language.Integer.instance(0L))) instanceof .ceylon.language.Integer) {

@@ -26,7 +26,7 @@ final class arr3_ {
         value = new .ceylon.language.Array[]{(
             let
             {
-                .ceylon.language.List<? extends .ceylon.language.Integer> $arg$0$0 = new .com.redhat.ceylon.compiler.java.language.ArraySequence(.ceylon.language.Integer.instance(1L), .ceylon.language.Integer.instance(2L), .ceylon.language.Integer.instance(3L));
+                .ceylon.language.Sequential<? extends .ceylon.language.Integer> $arg$0$0 = new .com.redhat.ceylon.compiler.java.language.ArraySequence(.ceylon.language.Integer.instance(1L), .ceylon.language.Integer.instance(2L), .ceylon.language.Integer.instance(3L));
             }
             returning .ceylon.language.array_.<.ceylon.language.Integer>array(long.class, $arg$0$0);
         )};

@@ -10,7 +10,7 @@ public class Klass {
             let
             {
                 .ceylon.language.Integer $ceylontmp$p2$1 = .com.redhat.ceylon.compiler.java.test.annotations.Klass.$init$p2(p1);
-                .ceylon.language.List<? extends .ceylon.language.Integer> $ceylontmp$p3$2 = .com.redhat.ceylon.compiler.java.test.annotations.Klass.$init$p3(p1, $ceylontmp$p2$1);
+                .ceylon.language.Sequential<? extends .ceylon.language.Integer> $ceylontmp$p3$2 = .com.redhat.ceylon.compiler.java.test.annotations.Klass.$init$p3(p1, $ceylontmp$p2$1);
                 this(p1, $ceylontmp$p2$1, $ceylontmp$p3$2);
             }
             returning null;
@@ -22,7 +22,7 @@ public class Klass {
         (
             let
             {
-                .ceylon.language.List<? extends .ceylon.language.Integer> $ceylontmp$p3$4 = .com.redhat.ceylon.compiler.java.test.annotations.Klass.$init$p3(p1, p2);
+                .ceylon.language.Sequential<? extends .ceylon.language.Integer> $ceylontmp$p3$4 = .com.redhat.ceylon.compiler.java.test.annotations.Klass.$init$p3(p1, p2);
                 this(p1, p2, $ceylontmp$p3$4);
             }
             returning null;
@@ -37,7 +37,7 @@ public class Klass {
     .ceylon.language.Integer p2, @.com.redhat.ceylon.compiler.java.metadata.Name("p3")
     @.com.redhat.ceylon.compiler.java.metadata.Defaulted
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Sequential<ceylon.language::Integer>")
-    .ceylon.language.List<? extends .ceylon.language.Integer> p3) {
+    .ceylon.language.Sequential<? extends .ceylon.language.Integer> p3) {
     }
     
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
@@ -46,8 +46,8 @@ public class Klass {
     }
     
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
-    public static .ceylon.language.List<? extends .ceylon.language.Integer> $init$p3(final long p1, final .ceylon.language.Integer p2) {
-        return (.ceylon.language.List).ceylon.language.empty_.getEmpty$();
+    public static .ceylon.language.Sequential<? extends .ceylon.language.Integer> $init$p3(final long p1, final .ceylon.language.Integer p2) {
+        return (.ceylon.language.Sequential).ceylon.language.empty_.getEmpty$();
     }
     
     @.com.redhat.ceylon.compiler.java.metadata.Annotations({@.com.redhat.ceylon.compiler.java.metadata.Annotation("shared")})
@@ -68,9 +68,9 @@ public class Klass {
     
     @.com.redhat.ceylon.compiler.java.metadata.Annotations({@.com.redhat.ceylon.compiler.java.metadata.Annotation("shared")})
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Sequential<ceylon.language::Integer>")
-    public final .ceylon.language.List<? extends .ceylon.language.Integer> m3(@.com.redhat.ceylon.compiler.java.metadata.Name("p3")
+    public final .ceylon.language.Sequential<? extends .ceylon.language.Integer> m3(@.com.redhat.ceylon.compiler.java.metadata.Name("p3")
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Sequential<ceylon.language::Integer>")
-    final .ceylon.language.List<? extends .ceylon.language.Integer> p3) {
+    final .ceylon.language.Sequential<? extends .ceylon.language.Integer> p3) {
         return new .com.redhat.ceylon.compiler.java.language.ArraySequence<.ceylon.language.Integer>(.ceylon.language.Integer.instance(1L));
     }
 }

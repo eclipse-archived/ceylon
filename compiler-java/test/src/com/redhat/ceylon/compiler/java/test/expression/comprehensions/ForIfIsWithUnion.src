@@ -5,7 +5,7 @@ class ForIfIsUnion {
     ForIfIsUnion() {
     }
     
-    public final void m(final .ceylon.language.List<? extends .java.lang.Object> xs) {
+    public final void m(final .ceylon.language.Sequential<? extends .java.lang.Object> xs) {
         .ceylon.language.print_.print(new .com.redhat.ceylon.compiler.java.language.AbstractIterable<.java.lang.Object>(){
             
             public final .ceylon.language.Iterator<.java.lang.Object> getIterator() {
@@ -43,7 +43,7 @@ class ForIfIsUnion {
         }.getSequence());
     }
     
-    public final void mvar(final .ceylon.language.List<? extends .java.lang.Object> ys) {
+    public final void mvar(final .ceylon.language.Sequential<? extends .java.lang.Object> ys) {
         .ceylon.language.print_.print(new .com.redhat.ceylon.compiler.java.language.AbstractIterable<.java.lang.Object>(){
             
             public final .ceylon.language.Iterator<.java.lang.Object> getIterator() {

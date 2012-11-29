@@ -5,9 +5,9 @@ class AssertNonEmptySequence {
     AssertNonEmptySequence() {
     }
     
-    public final long m(final .ceylon.language.List<? extends .ceylon.language.Integer> x) {
+    public final long m(final .ceylon.language.Sequential<? extends .ceylon.language.Integer> x) {
         final .ceylon.language.Sequence<? extends .ceylon.language.Integer> $x$2;
-        .ceylon.language.List<? extends .ceylon.language.Integer> $x$1 = null;
+        .ceylon.language.Sequential<? extends .ceylon.language.Integer> $x$1 = null;
         if (($x$1 = x) instanceof .ceylon.language.Sequence) {
             $x$2 = (.ceylon.language.Sequence<? extends .ceylon.language.Integer>)$x$1;
         } else throw new .ceylon.language.Exception(.ceylon.language.String.instance("Assertion failed" + .java.lang.System.lineSeparator() + ("\tviolated " + "nonempty x" + .java.lang.System.lineSeparator() + "\tat " + "AssertNonEmptySequence.ceylon:23:8-23:27")), null);
@@ -15,9 +15,9 @@ class AssertNonEmptySequence {
         return $x$2.getFirst().longValue();
     }
     
-    public final long mvar(final .ceylon.language.List<? extends .ceylon.language.Integer> x) {
+    public final long mvar(final .ceylon.language.Sequential<? extends .ceylon.language.Integer> x) {
         final .ceylon.language.Sequence<? extends .ceylon.language.Integer> $s$5;
-        .ceylon.language.List<? extends .ceylon.language.Integer> $s$4 = null;
+        .ceylon.language.Sequential<? extends .ceylon.language.Integer> $s$4 = null;
         if (($s$4 = x) instanceof .ceylon.language.Sequence) {
             $s$5 = (.ceylon.language.Sequence<? extends .ceylon.language.Integer>)$s$4;
         } else throw new .ceylon.language.Exception(.ceylon.language.String.instance("Assertion failed" + .java.lang.System.lineSeparator() + ("\tviolated " + "nonempty s=x" + .java.lang.System.lineSeparator() + "\tat " + "AssertNonEmptySequence.ceylon:28:8-28:29")), null);

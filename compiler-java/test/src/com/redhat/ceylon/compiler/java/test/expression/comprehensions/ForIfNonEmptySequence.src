@@ -5,13 +5,13 @@ class ForIfNonEmptySequence {
     ForIfNonEmptySequence() {
     }
     
-    public final void m(final .ceylon.language.List<? extends .ceylon.language.List<? extends .ceylon.language.Integer>> xs) {
+    public final void m(final .ceylon.language.Sequential<? extends .ceylon.language.Sequential<? extends .ceylon.language.Integer>> xs) {
         .ceylon.language.print_.print(new .com.redhat.ceylon.compiler.java.language.AbstractIterable<.ceylon.language.Integer>(){
             
             public final .ceylon.language.Iterator<.ceylon.language.Integer> getIterator() {
                 return new .ceylon.language.Iterator<.ceylon.language.Integer>(){
-                    private final .ceylon.language.Iterator<? extends .ceylon.language.List<? extends .ceylon.language.Integer>> iter$0 = xs.getIterator();
-                    private .ceylon.language.List<? extends .ceylon.language.Integer> x;
+                    private final .ceylon.language.Iterator<? extends .ceylon.language.Sequential<? extends .ceylon.language.Integer>> iter$0 = xs.getIterator();
+                    private .ceylon.language.Sequential<? extends .ceylon.language.Integer> x;
                     private boolean x$exhausted;
                     
                     private final boolean x() {
@@ -20,7 +20,7 @@ class ForIfNonEmptySequence {
                         if (x$exhausted) {
                             return false;
                         } else {
-                            x = (.ceylon.language.List<? extends .ceylon.language.Integer>)$ceylontmpitem0;
+                            x = (.ceylon.language.Sequential<? extends .ceylon.language.Integer>)$ceylontmpitem0;
                         }
                         return true;
                     }
@@ -29,7 +29,7 @@ class ForIfNonEmptySequence {
                     private final boolean next1() {
                         while (true) {
                             if (!this.x()) break;
-                            .ceylon.language.List<? extends .ceylon.language.Integer> $x$1 = null;
+                            .ceylon.language.Sequential<? extends .ceylon.language.Integer> $x$1 = null;
                             if (($x$1 = x) instanceof .ceylon.language.Sequence) {
                                 $x$2 = (.ceylon.language.Sequence<? extends .ceylon.language.Integer>)$x$1;
                                 break;
@@ -46,13 +46,13 @@ class ForIfNonEmptySequence {
         }.getSequence());
     }
     
-    public final void mvar(final .ceylon.language.List<? extends .ceylon.language.List<? extends .ceylon.language.Integer>> xs) {
+    public final void mvar(final .ceylon.language.Sequential<? extends .ceylon.language.Sequential<? extends .ceylon.language.Integer>> xs) {
         .ceylon.language.print_.print(new .com.redhat.ceylon.compiler.java.language.AbstractIterable<.ceylon.language.Integer>(){
             
             public final .ceylon.language.Iterator<.ceylon.language.Integer> getIterator() {
                 return new .ceylon.language.Iterator<.ceylon.language.Integer>(){
-                    private final .ceylon.language.Iterator<? extends .ceylon.language.List<? extends .ceylon.language.Integer>> iter$0 = xs.getIterator();
-                    private .ceylon.language.List<? extends .ceylon.language.Integer> x;
+                    private final .ceylon.language.Iterator<? extends .ceylon.language.Sequential<? extends .ceylon.language.Integer>> iter$0 = xs.getIterator();
+                    private .ceylon.language.Sequential<? extends .ceylon.language.Integer> x;
                     private boolean x$exhausted;
                     
                     private final boolean x() {
@@ -61,7 +61,7 @@ class ForIfNonEmptySequence {
                         if (x$exhausted) {
                             return false;
                         } else {
-                            x = (.ceylon.language.List<? extends .ceylon.language.Integer>)$ceylontmpitem3;
+                            x = (.ceylon.language.Sequential<? extends .ceylon.language.Integer>)$ceylontmpitem3;
                         }
                         return true;
                     }
@@ -70,7 +70,7 @@ class ForIfNonEmptySequence {
                     private final boolean next1() {
                         while (true) {
                             if (!this.x()) break;
-                            .ceylon.language.List<? extends .ceylon.language.Integer> $s$4 = null;
+                            .ceylon.language.Sequential<? extends .ceylon.language.Integer> $s$4 = null;
                             if (($s$4 = x) instanceof .ceylon.language.Sequence) {
                                 $s$5 = (.ceylon.language.Sequence<? extends .ceylon.language.Integer>)$s$4;
                                 break;

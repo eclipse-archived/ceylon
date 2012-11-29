@@ -22,7 +22,7 @@ public class LocalMethod {
                 (
                     let
                     {
-                        .ceylon.language.List<? extends .ceylon.language.String> $ceylontmp$s$1 = m2$s(i1);
+                        .ceylon.language.Sequential<? extends .ceylon.language.String> $ceylontmp$s$1 = m2$s(i1);
                         m2(i1, $ceylontmp$s$1);
                     }
                     returning null;
@@ -30,14 +30,14 @@ public class LocalMethod {
             }
             
             @.com.redhat.ceylon.compiler.java.metadata.Ignore
-            private final .ceylon.language.List<? extends .ceylon.language.String> m2$s(final long i1) {
-                return (.ceylon.language.List).ceylon.language.empty_.getEmpty$();
+            private final .ceylon.language.Sequential<? extends .ceylon.language.String> m2$s(final long i1) {
+                return (.ceylon.language.Sequential).ceylon.language.empty_.getEmpty$();
             }
             
             void m2(@.com.redhat.ceylon.compiler.java.metadata.Name("i1")
             final long i1, @.com.redhat.ceylon.compiler.java.metadata.Name("s")
             @.com.redhat.ceylon.compiler.java.metadata.Sequenced
-            final .ceylon.language.List<? extends .ceylon.language.String> s) {
+            final .ceylon.language.Sequential<? extends .ceylon.language.String> s) {
             }
         }
         final m2_ m2 = new m2_();

@@ -5,7 +5,7 @@ final class spread_ {
     private spread_() {
     }
     
-    static void spread(final .ceylon.language.List<? extends .ceylon.language.String> seq2) {
+    static void spread(final .ceylon.language.Sequential<? extends .ceylon.language.String> seq2) {
         final .ceylon.language.Sequence<? extends .ceylon.language.String> seq = new .com.redhat.ceylon.compiler.java.language.ArraySequence<.ceylon.language.String>(.ceylon.language.String.instance("Hello"), .ceylon.language.String.instance("World"));
         final .ceylon.language.Sequence<? extends .ceylon.language.Integer> ini = (
             let
@@ -23,12 +23,12 @@ final class spread_ {
                 returning new .com.redhat.ceylon.compiler.java.language.ArraySequence<.ceylon.language.Integer>($spread$1$4);
             );
         );
-        final .ceylon.language.List<? extends .ceylon.language.Integer> ini2 = (
+        final .ceylon.language.Sequential<? extends .ceylon.language.Integer> ini2 = (
             let
             {
                 .ceylon.language.FixedSized<? extends .ceylon.language.String> $spreadTest$3 = (.ceylon.language.FixedSized<? extends .ceylon.language.String>)seq2;
             }
-            returning (.ceylon.language.List<? extends .ceylon.language.Integer>)($spreadTest$3 instanceof .ceylon.language.Sequence ? (
+            returning (.ceylon.language.Sequential<? extends .ceylon.language.Integer>)($spreadTest$3 instanceof .ceylon.language.Sequence ? (
                 let
                 {
                     .ceylon.language.Sequence<? extends .ceylon.language.String> $spread$4$0 = (.ceylon.language.Sequence<? extends .ceylon.language.String>)$spreadTest$3;

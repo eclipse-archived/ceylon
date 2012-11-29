@@ -61,11 +61,11 @@ class MethodWhileConditionList {
         }
     }
     
-    private final void m5(final .ceylon.language.List<? extends .java.lang.Object> x) {
+    private final void m5(final .ceylon.language.Sequential<? extends .java.lang.Object> x) {
         long a = 0L;
         while (true) {
             .java.lang.Object $y$8;
-            .ceylon.language.List<? extends .java.lang.Object> $x$6;
+            .ceylon.language.Sequential<? extends .java.lang.Object> $x$6;
             if (($x$6 = x) instanceof .ceylon.language.Sequence) {
                 final .ceylon.language.Sequence<? extends .java.lang.Object> $x$7 = (.ceylon.language.Sequence<? extends .java.lang.Object>)$x$6;
                 if (($y$8 = $x$7.item(.ceylon.language.Integer.instance(0L))) instanceof .ceylon.language.Integer) {
@@ -78,7 +78,7 @@ class MethodWhileConditionList {
         }
     }
     
-    private final void m6(final .ceylon.language.List<? extends .java.lang.Object> x) {
+    private final void m6(final .ceylon.language.Sequential<? extends .java.lang.Object> x) {
         long a = 0L;
         .java.lang.Object $y$11;
         if (((.ceylon.language.Correspondence<? super .ceylon.language.Integer, ? extends .java.lang.Object>)x).item(.ceylon.language.Integer.instance(0L)) != null) {

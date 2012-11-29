@@ -5,7 +5,7 @@ class AssertExistsSequence {
     AssertExistsSequence() {
     }
     
-    public final long mvar(final .ceylon.language.List<? extends .ceylon.language.Integer> x) {
+    public final long mvar(final .ceylon.language.Sequential<? extends .ceylon.language.Integer> x) {
         final long $y$2;
         .ceylon.language.Integer $y$1 = null;
         if (($y$1 = ((.ceylon.language.Correspondence<? super .ceylon.language.Integer, ? extends .ceylon.language.Integer>)x).item(.ceylon.language.Integer.instance(0L))) != null) {

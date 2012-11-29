@@ -111,12 +111,12 @@ final class bug708seq_ {
     
     private bug708seq_() {
     }
-    private static final .ceylon.language.List<? extends .com.redhat.ceylon.compiler.java.test.issues.bug07xx.Bug708<.ceylon.language.String>>[] value;
+    private static final .ceylon.language.Sequential<? extends .com.redhat.ceylon.compiler.java.test.issues.bug07xx.Bug708<.ceylon.language.String>>[] value;
     static {
-        value = new .ceylon.language.List[]{new .com.redhat.ceylon.compiler.java.language.ArraySequence<.com.redhat.ceylon.compiler.java.test.issues.bug07xx.Bug708<.ceylon.language.String>>(new .com.redhat.ceylon.compiler.java.test.issues.bug07xx.Bug708<.ceylon.language.String>())};
+        value = new .ceylon.language.Sequential[]{new .com.redhat.ceylon.compiler.java.language.ArraySequence<.com.redhat.ceylon.compiler.java.test.issues.bug07xx.Bug708<.ceylon.language.String>>(new .com.redhat.ceylon.compiler.java.test.issues.bug07xx.Bug708<.ceylon.language.String>())};
     }
     
-    static .ceylon.language.List<? extends .com.redhat.ceylon.compiler.java.test.issues.bug07xx.Bug708<.ceylon.language.String>> getBug708seq$() {
+    static .ceylon.language.Sequential<? extends .com.redhat.ceylon.compiler.java.test.issues.bug07xx.Bug708<.ceylon.language.String>> getBug708seq$() {
         try {
             return value[0];
         } catch (.java.lang.NullPointerException ex) {
@@ -128,14 +128,14 @@ final class bug708extra4_ {
     
     private bug708extra4_() {
     }
-    private static final .ceylon.language.List<? extends .ceylon.language.String>[] value;
+    private static final .ceylon.language.Sequential<? extends .ceylon.language.String>[] value;
     static {
-        value = new .ceylon.language.List[]{(
+        value = new .ceylon.language.Sequential[]{(
             let
             {
                 .ceylon.language.FixedSized<? extends .com.redhat.ceylon.compiler.java.test.issues.bug07xx.Bug708<.ceylon.language.String>> $spreadTest$1 = (.ceylon.language.FixedSized<? extends .com.redhat.ceylon.compiler.java.test.issues.bug07xx.Bug708<.ceylon.language.String>>).com.redhat.ceylon.compiler.java.test.issues.bug07xx.bug708seq_.getBug708seq$();
             }
-            returning (.ceylon.language.List<? extends .ceylon.language.String>)($spreadTest$1 instanceof .ceylon.language.Sequence ? (
+            returning (.ceylon.language.Sequential<? extends .ceylon.language.String>)($spreadTest$1 instanceof .ceylon.language.Sequence ? (
                 let
                 {
                     .ceylon.language.Sequence<? extends .com.redhat.ceylon.compiler.java.test.issues.bug07xx.Bug708<.ceylon.language.String>> $spread$2$0 = (.ceylon.language.Sequence<? extends .com.redhat.ceylon.compiler.java.test.issues.bug07xx.Bug708<.ceylon.language.String>>)$spreadTest$1;
@@ -148,7 +148,7 @@ final class bug708extra4_ {
         )};
     }
     
-    static .ceylon.language.List<? extends .ceylon.language.String> getBug708extra4$() {
+    static .ceylon.language.Sequential<? extends .ceylon.language.String> getBug708extra4$() {
         try {
             return value[0];
         } catch (.java.lang.NullPointerException ex) {
@@ -300,7 +300,7 @@ public class Bug708Map<T> extends .java.lang.Object implements .ceylon.language.
     
     @.java.lang.Override
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
-    public .ceylon.language.List<? extends .ceylon.language.Entry<? extends .ceylon.language.Integer, ? extends .java.lang.Object>> getSequence() {
+    public .ceylon.language.Sequential<? extends .ceylon.language.Entry<? extends .ceylon.language.Integer, ? extends .java.lang.Object>> getSequence() {
         return $ceylon$language$Iterable$this.getSequence();
     }
     
@@ -336,19 +336,19 @@ public class Bug708Map<T> extends .java.lang.Object implements .ceylon.language.
     
     @.java.lang.Override
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
-    public .ceylon.language.List<? extends .ceylon.language.Entry<? extends .ceylon.language.Integer, ? extends .java.lang.Object>> sort(final .ceylon.language.Callable<? extends .ceylon.language.Comparison> comparing) {
+    public .ceylon.language.Sequential<? extends .ceylon.language.Entry<? extends .ceylon.language.Integer, ? extends .java.lang.Object>> sort(final .ceylon.language.Callable<? extends .ceylon.language.Comparison> comparing) {
         return $ceylon$language$Iterable$this.sort(comparing);
     }
     
     @.java.lang.Override
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
-    public <Result>.ceylon.language.List<? extends Result> collect(final .ceylon.language.Callable<? extends Result> collecting) {
+    public <Result>.ceylon.language.Sequential<? extends Result> collect(final .ceylon.language.Callable<? extends Result> collecting) {
         return $ceylon$language$Iterable$this.collect(collecting);
     }
     
     @.java.lang.Override
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
-    public .ceylon.language.List<? extends .ceylon.language.Entry<? extends .ceylon.language.Integer, ? extends .java.lang.Object>> select(final .ceylon.language.Callable<? extends .ceylon.language.Boolean> selecting) {
+    public .ceylon.language.Sequential<? extends .ceylon.language.Entry<? extends .ceylon.language.Integer, ? extends .java.lang.Object>> select(final .ceylon.language.Callable<? extends .ceylon.language.Boolean> selecting) {
         return $ceylon$language$Iterable$this.select(selecting);
     }
     
@@ -422,7 +422,7 @@ public class Bug708Map<T> extends .java.lang.Object implements .ceylon.language.
     
     @.java.lang.Override
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
-    public final .ceylon.language.List<? extends .java.lang.Object> containsEvery$elements() {
+    public final .ceylon.language.Sequential<? extends .java.lang.Object> containsEvery$elements() {
         return $ceylon$language$Category$this.containsEvery$elements();
     }
     
@@ -434,13 +434,13 @@ public class Bug708Map<T> extends .java.lang.Object implements .ceylon.language.
     
     @.java.lang.Override
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
-    public boolean containsEvery(final .ceylon.language.List<? extends .java.lang.Object> elements) {
+    public boolean containsEvery(final .ceylon.language.Sequential<? extends .java.lang.Object> elements) {
         return $ceylon$language$Category$this.containsEvery(elements);
     }
     
     @.java.lang.Override
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
-    public final .ceylon.language.List<? extends .java.lang.Object> containsAny$elements() {
+    public final .ceylon.language.Sequential<? extends .java.lang.Object> containsAny$elements() {
         return $ceylon$language$Category$this.containsAny$elements();
     }
     
@@ -452,7 +452,7 @@ public class Bug708Map<T> extends .java.lang.Object implements .ceylon.language.
     
     @.java.lang.Override
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
-    public boolean containsAny(final .ceylon.language.List<? extends .java.lang.Object> elements) {
+    public boolean containsAny(final .ceylon.language.Sequential<? extends .java.lang.Object> elements) {
         return $ceylon$language$Category$this.containsAny(elements);
     }
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
@@ -474,7 +474,7 @@ public class Bug708Map<T> extends .java.lang.Object implements .ceylon.language.
     
     @.java.lang.Override
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
-    public final .ceylon.language.List definesEvery$keys() {
+    public final .ceylon.language.Sequential definesEvery$keys() {
         return $ceylon$language$Correspondence$this.definesEvery$keys();
     }
     
@@ -486,13 +486,13 @@ public class Bug708Map<T> extends .java.lang.Object implements .ceylon.language.
     
     @.java.lang.Override
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
-    public boolean definesEvery(final .ceylon.language.List keys) {
+    public boolean definesEvery(final .ceylon.language.Sequential keys) {
         return $ceylon$language$Correspondence$this.definesEvery(keys);
     }
     
     @.java.lang.Override
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
-    public final .ceylon.language.List definesAny$keys() {
+    public final .ceylon.language.Sequential definesAny$keys() {
         return $ceylon$language$Correspondence$this.definesAny$keys();
     }
     
@@ -504,25 +504,25 @@ public class Bug708Map<T> extends .java.lang.Object implements .ceylon.language.
     
     @.java.lang.Override
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
-    public boolean definesAny(final .ceylon.language.List keys) {
+    public boolean definesAny(final .ceylon.language.Sequential keys) {
         return $ceylon$language$Correspondence$this.definesAny(keys);
     }
     
     @.java.lang.Override
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
-    public final .ceylon.language.List items$keys() {
+    public final .ceylon.language.Sequential items$keys() {
         return $ceylon$language$Correspondence$this.items$keys();
     }
     
     @.java.lang.Override
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
-    public final .ceylon.language.List items() {
+    public final .ceylon.language.Sequential items() {
         return $ceylon$language$Correspondence$this.items();
     }
     
     @.java.lang.Override
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
-    public .ceylon.language.List items(final .ceylon.language.List keys) {
+    public .ceylon.language.Sequential items(final .ceylon.language.Sequential keys) {
         return $ceylon$language$Correspondence$this.items(keys);
     }
     

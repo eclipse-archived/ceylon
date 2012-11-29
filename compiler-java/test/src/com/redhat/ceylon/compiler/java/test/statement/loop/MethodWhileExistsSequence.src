@@ -5,7 +5,7 @@ class MethodWhileExistsSequence {
     MethodWhileExistsSequence() {
     }
     
-    public final long mvar(final .ceylon.language.List<? extends .ceylon.language.Integer> x) {
+    public final long mvar(final .ceylon.language.Sequential<? extends .ceylon.language.Integer> x) {
         while (true) {
             .ceylon.language.Integer $y$0;
             if (($y$0 = ((.ceylon.language.Correspondence<? super .ceylon.language.Integer, ? extends .ceylon.language.Integer>)x).item(.ceylon.language.Integer.instance(0L))) != null) {

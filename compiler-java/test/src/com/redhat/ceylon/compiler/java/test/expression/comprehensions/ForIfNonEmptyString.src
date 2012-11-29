@@ -5,7 +5,7 @@ class ForIfNonEmptySequence {
     ForIfNonEmptySequence() {
     }
     
-    public final void m(final .ceylon.language.List<? extends .ceylon.language.String> ss) {
+    public final void m(final .ceylon.language.Sequential<? extends .ceylon.language.String> ss) {
         .ceylon.language.print_.print(new .com.redhat.ceylon.compiler.java.language.AbstractIterable<.ceylon.language.Character>(){
             
             public final .ceylon.language.Iterator<.ceylon.language.Character> getIterator() {
@@ -24,7 +24,7 @@ class ForIfNonEmptySequence {
                         }
                         return true;
                     }
-                    private .ceylon.language.List<? extends .ceylon.language.Character> $s$2;
+                    private .ceylon.language.Sequential<? extends .ceylon.language.Character> $s$2;
                     
                     private final boolean next1() {
                         while (true) {
@@ -46,7 +46,7 @@ class ForIfNonEmptySequence {
         }.getSequence());
     }
     
-    public final void mvar(final .ceylon.language.List<? extends .ceylon.language.String> ss) {
+    public final void mvar(final .ceylon.language.Sequential<? extends .ceylon.language.String> ss) {
         .ceylon.language.print_.print(new .com.redhat.ceylon.compiler.java.language.AbstractIterable<.ceylon.language.Character>(){
             
             public final .ceylon.language.Iterator<.ceylon.language.Character> getIterator() {
@@ -65,7 +65,7 @@ class ForIfNonEmptySequence {
                         }
                         return true;
                     }
-                    private .ceylon.language.List<? extends .ceylon.language.Character> $t$5;
+                    private .ceylon.language.Sequential<? extends .ceylon.language.Character> $t$5;
                     
                     private final boolean next1() {
                         while (true) {

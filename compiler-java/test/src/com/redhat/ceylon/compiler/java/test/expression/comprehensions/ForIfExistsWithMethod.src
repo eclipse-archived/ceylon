@@ -9,7 +9,7 @@ class ForIfExistsWithMethod {
         return .ceylon.language.Integer.instance(0L);
     }
     
-    public final .ceylon.language.List<? extends .ceylon.language.Integer> m(final .ceylon.language.List<? extends .com.redhat.ceylon.compiler.java.test.expression.comprehensions.ForIfExistsWithMethod> xs) {
+    public final .ceylon.language.Sequential<? extends .ceylon.language.Integer> m(final .ceylon.language.Sequential<? extends .com.redhat.ceylon.compiler.java.test.expression.comprehensions.ForIfExistsWithMethod> xs) {
         return new .com.redhat.ceylon.compiler.java.language.AbstractIterable<.ceylon.language.Integer>(){
             
             public final .ceylon.language.Iterator<.ceylon.language.Integer> getIterator() {

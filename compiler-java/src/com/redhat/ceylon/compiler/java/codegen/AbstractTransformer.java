@@ -629,8 +629,8 @@ public abstract class AbstractTransformer implements Transformation {
         }
         if(allowSubtypes){
             // if we don't erase to object and we refine something that does, we can't possibly be widening
-            if(willEraseToObjectOrList(refinedDeclType)
-                    && !willEraseToObjectOrList(declType))
+            if(willEraseToObjectOrSequential(refinedDeclType)
+                    && !willEraseToObjectOrSequential(declType))
                 return false;
 
             // if we have exactly the same type don't bother finding a common ancestor
@@ -728,10 +728,10 @@ public abstract class AbstractTransformer implements Transformation {
      * @return
      */
     boolean willEraseToObject(ProducedType type) {
-        return willEraseToObjectOrList(type) && !willEraseToList(type);
+        return willEraseToObjectOrSequential(type) && !willEraseToSequential(type);
     }
     
-    boolean willEraseToObjectOrList(ProducedType type) {
+    boolean willEraseToObjectOrSequential(ProducedType type) {
         if(type == null)
             return false;
         type = simplifyType(type);
@@ -756,8 +756,8 @@ public abstract class AbstractTransformer implements Transformation {
         return (sameType(syms().ceylonExceptionType, type));
     }
     
-    boolean willEraseToList(ProducedType type) {
-        return typeFact().getNonemptyListType(typeFact().getDefiniteType(type)) != null;
+    boolean willEraseToSequential(ProducedType type) {
+        return typeFact().getNonemptySequentialType(typeFact().getDefiniteType(type)) != null;
     }
 
     boolean isCeylonString(ProducedType type) {
@@ -873,16 +873,16 @@ public abstract class AbstractTransformer implements Transformation {
         }
         
         // ERASURE
-        if (willEraseToObjectOrList(type)) {
+        if (willEraseToObjectOrSequential(type)) {
             // For an erased type:
             // - Any of the Ceylon types Void, Object, Nothing,
             //   IdentifiableObject, and Bottom result in the Java type Object
             // For any other union type U|V (U nor V is Optional):
             // - The Ceylon type U|V results in the Java type Object
-            ProducedType listType = typeFact().getNonemptyListType(typeFact().getDefiniteType(type));
-            if (listType != null) {
+            ProducedType seqType = typeFact().getNonemptySequentialType(typeFact().getDefiniteType(type));
+            if (seqType != null) {
                 // We special case the erasure of X[] and X[]?
-                type = listType;
+                type = seqType;
             } else {
                 if ((flags & JT_SATISFIES) != 0) {
                     return null;
@@ -1087,7 +1087,7 @@ public abstract class AbstractTransformer implements Transformation {
                 // - The Ceylon type Foo<U|V> results in the raw Java type Foo.
                 // For any other intersection type U&V:
                 // - The Ceylon type Foo<U&V> results in the raw Java type Foo.
-                ProducedType listType = typeFact().getNonemptyListType(typeFact().getDefiniteType(ta));
+                ProducedType listType = typeFact().getNonemptySequentialType(typeFact().getDefiniteType(ta));
                 // don't break if the union type is erased to something better than Object
                 if(listType == null){
                     // use raw types if:

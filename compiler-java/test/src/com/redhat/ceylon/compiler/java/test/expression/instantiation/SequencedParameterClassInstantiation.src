@@ -6,18 +6,18 @@ class SequencedParameterClassInstantiation {
         (
             let
             {
-                .ceylon.language.List<? extends .ceylon.language.Integer> $ceylontmp$args$1 = .com.redhat.ceylon.compiler.java.test.expression.instantiation.SequencedParameterClassInstantiation.$init$args(a);
+                .ceylon.language.Sequential<? extends .ceylon.language.Integer> $ceylontmp$args$1 = .com.redhat.ceylon.compiler.java.test.expression.instantiation.SequencedParameterClassInstantiation.$init$args(a);
                 this(a, $ceylontmp$args$1);
             }
             returning null;
         );
     }
     
-    SequencedParameterClassInstantiation(long a, .ceylon.language.List<? extends .ceylon.language.Integer> args) {
+    SequencedParameterClassInstantiation(long a, .ceylon.language.Sequential<? extends .ceylon.language.Integer> args) {
     }
     
-    static .ceylon.language.List<? extends .ceylon.language.Integer> $init$args(final long a) {
-        return (.ceylon.language.List).ceylon.language.empty_.getEmpty$();
+    static .ceylon.language.Sequential<? extends .ceylon.language.Integer> $init$args(final long a) {
+        return (.ceylon.language.Sequential).ceylon.language.empty_.getEmpty$();
     }
     
     public final void m() {

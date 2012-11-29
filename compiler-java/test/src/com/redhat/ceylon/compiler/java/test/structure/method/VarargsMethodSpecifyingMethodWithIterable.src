@@ -12,18 +12,18 @@ class VarargsMethodSpecifyingMethodWithIterable {
         (
             let
             {
-                .ceylon.language.List<? extends .ceylon.language.Integer> $ceylontmp$ints$1 = bar$ints();
+                .ceylon.language.Sequential<? extends .ceylon.language.Integer> $ceylontmp$ints$1 = bar$ints();
                 bar($ceylontmp$ints$1);
             }
             returning null;
         );
     }
     
-    private final .ceylon.language.List<? extends .ceylon.language.Integer> bar$ints() {
-        return (.ceylon.language.List).ceylon.language.empty_.getEmpty$();
+    private final .ceylon.language.Sequential<? extends .ceylon.language.Integer> bar$ints() {
+        return (.ceylon.language.Sequential).ceylon.language.empty_.getEmpty$();
     }
     
-    private final void bar(final .ceylon.language.List<? extends .ceylon.language.Integer> ints) {
+    private final void bar(final .ceylon.language.Sequential<? extends .ceylon.language.Integer> ints) {
         new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.java.lang.Object>("Void(Iterable<Integer>)"){
             
             @.java.lang.Override

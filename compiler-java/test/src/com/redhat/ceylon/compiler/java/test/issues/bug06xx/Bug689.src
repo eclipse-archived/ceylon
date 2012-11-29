@@ -102,9 +102,9 @@ class Bug689<X, Y> {
     private final .ceylon.language.Sequence<? extends .ceylon.language.Sequence<? extends .java.lang.Object>> getAttributeWithUnionWithinTypeArg() {
         return attributeWithUnionWithinTypeArg;
     }
-    private final .ceylon.language.List attributeWithUnionErasedToIterable;
+    private final .ceylon.language.Sequential attributeWithUnionErasedToIterable;
     
-    private final .ceylon.language.List getAttributeWithUnionErasedToIterable() {
+    private final .ceylon.language.Sequential getAttributeWithUnionErasedToIterable() {
         return attributeWithUnionErasedToIterable;
     }
 }

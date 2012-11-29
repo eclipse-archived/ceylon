@@ -5,9 +5,9 @@ class MethodWhileNonEmptySequence {
     MethodWhileNonEmptySequence() {
     }
     
-    public final long m(final .ceylon.language.List<? extends .ceylon.language.Integer> x) {
+    public final long m(final .ceylon.language.Sequential<? extends .ceylon.language.Integer> x) {
         while (true) {
-            .ceylon.language.List<? extends .ceylon.language.Integer> $x$0;
+            .ceylon.language.Sequential<? extends .ceylon.language.Integer> $x$0;
             if (($x$0 = x) instanceof .ceylon.language.Sequence) {
                 final .ceylon.language.Sequence<? extends .ceylon.language.Integer> $x$1 = (.ceylon.language.Sequence<? extends .ceylon.language.Integer>)$x$0;
                 final .ceylon.language.Sequence<? extends .ceylon.language.Integer> s = $x$1;
@@ -17,9 +17,9 @@ class MethodWhileNonEmptySequence {
         return 0L;
     }
     
-    public final long mvar(final .ceylon.language.List<? extends .ceylon.language.Integer> x) {
+    public final long mvar(final .ceylon.language.Sequential<? extends .ceylon.language.Integer> x) {
         while (true) {
-            .ceylon.language.List<? extends .ceylon.language.Integer> $s$2;
+            .ceylon.language.Sequential<? extends .ceylon.language.Integer> $s$2;
             if (($s$2 = x) instanceof .ceylon.language.Sequence) {
                 final .ceylon.language.Sequence<? extends .ceylon.language.Integer> $s$3 = (.ceylon.language.Sequence<? extends .ceylon.language.Integer>)$s$2;
                 return $s$3.getFirst().longValue();

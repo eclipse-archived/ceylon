@@ -88,11 +88,11 @@ class AssertionConditionList {
         return $y$9 == 1L;
     }
     
-    private final boolean m5(final .ceylon.language.List<? extends .java.lang.Object> x) {
+    private final boolean m5(final .ceylon.language.Sequential<? extends .java.lang.Object> x) {
         .java.lang.String $ceylontmpassert10 = null;
         final long $y$14;
         final .ceylon.language.Sequence<? extends .java.lang.Object> $x$12;
-        .ceylon.language.List<? extends .java.lang.Object> $x$11 = null;
+        .ceylon.language.Sequential<? extends .java.lang.Object> $x$11 = null;
         if (($x$11 = x) instanceof .ceylon.language.Sequence) {
             $x$12 = (.ceylon.language.Sequence<? extends .java.lang.Object>)$x$11;
             .java.lang.Object $y$13 = null;
@@ -115,7 +115,7 @@ class AssertionConditionList {
         return $y$14 == 1L;
     }
     
-    private final boolean m6(final .ceylon.language.List<? extends .java.lang.Object> x) {
+    private final boolean m6(final .ceylon.language.Sequential<? extends .java.lang.Object> x) {
         .java.lang.String $ceylontmpassert15 = null;
         final long $y$17;
         if (((.ceylon.language.Correspondence<? super .ceylon.language.Integer, ? extends .java.lang.Object>)x).item(.ceylon.language.Integer.instance(0L)) != null) {

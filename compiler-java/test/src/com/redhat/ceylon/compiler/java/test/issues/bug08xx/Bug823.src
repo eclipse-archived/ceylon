@@ -5,11 +5,11 @@ final class bug823_ {
     private bug823_() {
     }
     
-    static void bug823(final .ceylon.language.List<? extends .java.lang.Object> xx) {
+    static void bug823(final .ceylon.language.Sequential<? extends .java.lang.Object> xx) {
         .java.lang.String $ceylontmpassert0 = null;
         final int $z$4;
         final .ceylon.language.Sequence<? extends .java.lang.Object> $xx$2;
-        .ceylon.language.List<? extends .java.lang.Object> $xx$1 = null;
+        .ceylon.language.Sequential<? extends .java.lang.Object> $xx$1 = null;
         if (($xx$1 = xx) instanceof .ceylon.language.Sequence) {
             $xx$2 = (.ceylon.language.Sequence<? extends .java.lang.Object>)$xx$1;
             .java.lang.Object $z$3 = null;

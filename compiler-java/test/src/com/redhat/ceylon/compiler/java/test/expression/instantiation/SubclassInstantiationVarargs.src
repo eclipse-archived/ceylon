@@ -6,18 +6,18 @@ class Foo {
         (
             let
             {
-                .ceylon.language.List<? extends .ceylon.language.String> $ceylontmp$name$1 = .com.redhat.ceylon.compiler.java.test.expression.instantiation.Foo.$init$name();
+                .ceylon.language.Sequential<? extends .ceylon.language.String> $ceylontmp$name$1 = .com.redhat.ceylon.compiler.java.test.expression.instantiation.Foo.$init$name();
                 this($ceylontmp$name$1);
             }
             returning null;
         );
     }
     
-    Foo(.ceylon.language.List<? extends .ceylon.language.String> name) {
+    Foo(.ceylon.language.Sequential<? extends .ceylon.language.String> name) {
     }
     
-    static .ceylon.language.List<? extends .ceylon.language.String> $init$name() {
-        return (.ceylon.language.List).ceylon.language.empty_.getEmpty$();
+    static .ceylon.language.Sequential<? extends .ceylon.language.String> $init$name() {
+        return (.ceylon.language.Sequential).ceylon.language.empty_.getEmpty$();
     }
 }
 class Bar extends .com.redhat.ceylon.compiler.java.test.expression.instantiation.Foo {

@@ -6,7 +6,7 @@ final class nonemptyCond_ {
     }
     
     static void nonemptyCond() {
-        final .ceylon.language.List<? extends .ceylon.language.Integer> ints = new .com.redhat.ceylon.compiler.java.language.ArraySequence<.ceylon.language.Integer>(.ceylon.language.Integer.instance(1L), .ceylon.language.Integer.instance(2L), .ceylon.language.Integer.instance(3L), .ceylon.language.Integer.instance(4L), .ceylon.language.Integer.instance(5L));
+        final .ceylon.language.Sequential<? extends .ceylon.language.Integer> ints = new .com.redhat.ceylon.compiler.java.language.ArraySequence<.ceylon.language.Integer>(.ceylon.language.Integer.instance(1L), .ceylon.language.Integer.instance(2L), .ceylon.language.Integer.instance(3L), .ceylon.language.Integer.instance(4L), .ceylon.language.Integer.instance(5L));
         .ceylon.language.print_.print(new .com.redhat.ceylon.compiler.java.language.AbstractIterable<.ceylon.language.Integer>(){
             
             public final .ceylon.language.Iterator<.ceylon.language.Integer> getIterator() {
@@ -30,7 +30,7 @@ final class nonemptyCond_ {
                     private final boolean next1() {
                         while (true) {
                             if (!this.x()) break;
-                            .ceylon.language.List<? extends .ceylon.language.Integer> $ints$1 = null;
+                            .ceylon.language.Sequential<? extends .ceylon.language.Integer> $ints$1 = null;
                             if (($ints$1 = ints) instanceof .ceylon.language.Sequence) {
                                 $ints$2 = (.ceylon.language.Sequence<? extends .ceylon.language.Integer>)$ints$1;
                                 break;

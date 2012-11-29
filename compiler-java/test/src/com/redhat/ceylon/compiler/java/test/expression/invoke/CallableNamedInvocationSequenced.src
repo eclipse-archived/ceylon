@@ -10,7 +10,7 @@ final class callableNamedInvocationSequenced_f_ {
             let
             {
                 .ceylon.language.Integer $arg$0$0 = .ceylon.language.Integer.instance(1L);
-                .ceylon.language.List<? extends .ceylon.language.String> $arg$0$1 = (.ceylon.language.List).ceylon.language.empty_.getEmpty$();
+                .ceylon.language.Sequential<? extends .ceylon.language.String> $arg$0$1 = (.ceylon.language.Sequential).ceylon.language.empty_.getEmpty$();
             }
             returning foo.$call($arg$0$0, $arg$0$1);
         );
@@ -18,7 +18,7 @@ final class callableNamedInvocationSequenced_f_ {
             let
             {
                 .ceylon.language.Integer $arg$1$0 = .ceylon.language.Integer.instance(1L);
-                .ceylon.language.List<? extends .ceylon.language.String> $arg$1$1 = new .com.redhat.ceylon.compiler.java.language.ArraySequence(.ceylon.language.String.instance(""));
+                .ceylon.language.Sequential<? extends .ceylon.language.String> $arg$1$1 = new .com.redhat.ceylon.compiler.java.language.ArraySequence(.ceylon.language.String.instance(""));
             }
             returning foo.$call($arg$1$0, $arg$1$1);
         );
@@ -26,14 +26,14 @@ final class callableNamedInvocationSequenced_f_ {
             let
             {
                 .ceylon.language.Integer $arg$2$0 = .ceylon.language.Integer.instance(1L);
-                .ceylon.language.List<? extends .ceylon.language.String> $arg$2$1 = new .com.redhat.ceylon.compiler.java.language.ArraySequence(.ceylon.language.String.instance(""), .ceylon.language.String.instance(""));
+                .ceylon.language.Sequential<? extends .ceylon.language.String> $arg$2$1 = new .com.redhat.ceylon.compiler.java.language.ArraySequence(.ceylon.language.String.instance(""), .ceylon.language.String.instance(""));
             }
             returning foo.$call($arg$2$0, $arg$2$1);
         );
         (
             let
             {
-                .ceylon.language.List $arg$3$1 = (.ceylon.language.List).ceylon.language.empty_.getEmpty$();
+                .ceylon.language.Sequential $arg$3$1 = (.ceylon.language.Sequential).ceylon.language.empty_.getEmpty$();
                 .ceylon.language.Integer $arg$3$0 = .ceylon.language.Integer.instance(1L);
             }
             returning foo.$call($arg$3$0, $arg$3$1);

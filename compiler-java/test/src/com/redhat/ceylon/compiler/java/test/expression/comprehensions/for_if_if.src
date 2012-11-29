@@ -4,9 +4,9 @@ final class forIfIf_ {
     
     private forIfIf_() {
     }
-    private static final .ceylon.language.List<? extends .ceylon.language.Integer>[] value;
+    private static final .ceylon.language.Sequential<? extends .ceylon.language.Integer>[] value;
     static {
-        value = new .ceylon.language.List[]{new .com.redhat.ceylon.compiler.java.language.AbstractIterable<.ceylon.language.Integer>(){
+        value = new .ceylon.language.Sequential[]{new .com.redhat.ceylon.compiler.java.language.AbstractIterable<.ceylon.language.Integer>(){
             
             public final .ceylon.language.Iterator<.ceylon.language.Integer> getIterator() {
                 return new .ceylon.language.Iterator<.ceylon.language.Integer>(){
@@ -53,7 +53,7 @@ final class forIfIf_ {
         }.getSequence()};
     }
     
-    static .ceylon.language.List<? extends .ceylon.language.Integer> getForIfIf$() {
+    static .ceylon.language.Sequential<? extends .ceylon.language.Integer> getForIfIf$() {
         try {
             return value[0];
         } catch (.java.lang.NullPointerException ex) {

@@ -4,9 +4,9 @@ final class comp1_ {
     
     private comp1_() {
     }
-    private static final .ceylon.language.List<? extends .ceylon.language.String>[] value;
+    private static final .ceylon.language.Sequential<? extends .ceylon.language.String>[] value;
     static {
-        value = new .ceylon.language.List[]{new .com.redhat.ceylon.compiler.java.language.AbstractIterable<.ceylon.language.String>(){
+        value = new .ceylon.language.Sequential[]{new .com.redhat.ceylon.compiler.java.language.AbstractIterable<.ceylon.language.String>(){
             
             public final .ceylon.language.Iterator<.ceylon.language.String> getIterator() {
                 return new .ceylon.language.Iterator<.ceylon.language.String>(){
@@ -33,7 +33,7 @@ final class comp1_ {
         }.getSequence()};
     }
     
-    static .ceylon.language.List<? extends .ceylon.language.String> getComp1$() {
+    static .ceylon.language.Sequential<? extends .ceylon.language.String> getComp1$() {
         try {
             return value[0];
         } catch (.java.lang.NullPointerException ex) {
