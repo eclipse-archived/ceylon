@@ -9,6 +9,7 @@ import com.redhat.ceylon.compiler.typechecker.tree.Tree;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.Expression;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.InvocationExpression;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.SpecifierExpression;
+import com.redhat.ceylon.compiler.typechecker.tree.Tree.SpecifierStatement;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.Term;
 import com.redhat.ceylon.compiler.typechecker.tree.Visitor;
 
@@ -225,4 +226,14 @@ public class ValueVisitor extends Visitor {
         visitReference(that.getExpression());
     }
 
+    @Override
+    public void visit(SpecifierStatement that) {
+        boolean cs = inCapturingScope;
+        // refining specifiers do capture, as opposed to regular constructor specifiers
+        if(that.getRefinement())
+            enterCapturingScope();
+        super.visit(that);
+        if(that.getRefinement())
+            exitCapturingScope(cs);
+    }
 }
