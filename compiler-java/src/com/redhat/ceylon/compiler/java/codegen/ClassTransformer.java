@@ -66,12 +66,16 @@ import com.redhat.ceylon.compiler.typechecker.tree.Tree;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.AttributeDeclaration;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.AttributeGetterDefinition;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.AttributeSetterDefinition;
+import com.redhat.ceylon.compiler.typechecker.tree.Tree.BaseMemberExpression;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.Block;
+import com.redhat.ceylon.compiler.typechecker.tree.Tree.Expression;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.LazySpecifierExpression;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.MethodDeclaration;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.MethodDefinition;
+import com.redhat.ceylon.compiler.typechecker.tree.Tree.PositionalArgumentList;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.SpecifierExpression;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.SpecifierStatement;
+import com.redhat.ceylon.compiler.typechecker.tree.Tree.Term;
 import com.sun.tools.javac.tree.JCTree;
 import com.sun.tools.javac.tree.JCTree.JCAnnotation;
 import com.sun.tools.javac.tree.JCTree.JCBinary;
@@ -801,7 +805,11 @@ public class ClassTransformer extends AbstractTransformer {
         List<JCStatement> result = List.<JCStatement>nil();
         // Check if this is a shortcut form of formal attribute refinement
         if (op.getRefinement()) {
-            Tree.BaseMemberExpression expr = (Tree.BaseMemberExpression)op.getBaseMemberExpression();
+            Tree.Term baseMemberTerm = op.getBaseMemberExpression();
+            if(baseMemberTerm instanceof Tree.ParameterizedExpression)
+                baseMemberTerm = ((Tree.ParameterizedExpression)baseMemberTerm).getPrimary();
+            
+            Tree.BaseMemberExpression expr = (BaseMemberExpression) baseMemberTerm;
             Declaration decl = expr.getDeclaration();
             if (decl instanceof Value) {
                 // Now build a "fake" declaration for the attribute
