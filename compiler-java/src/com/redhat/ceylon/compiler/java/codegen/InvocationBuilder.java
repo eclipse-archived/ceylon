@@ -417,12 +417,15 @@ abstract class InvocationBuilder {
     public static InvocationBuilder forSpecifierInvocation(
             CeylonTransformer gen, Tree.SpecifierExpression specifierExpression,
             Method method) {
-        Tree.Term primary = specifierExpression.getExpression().getTerm();
+        Tree.Term primary = Decl.unwrapExpressionsUntilTerm(specifierExpression.getExpression());
+        boolean lazy = specifierExpression instanceof Tree.LazySpecifierExpression;
+        boolean inlined = CodegenUtil.canOptimiseMethodSpecifier(primary, method);
         InvocationBuilder builder;
-        if (primary instanceof InvocationExpression) {
+        if (lazy && primary instanceof InvocationExpression) {
             primary = ((InvocationExpression)primary).getPrimary();
         }
-        if (primary instanceof Tree.MemberOrTypeExpression
+        if ((lazy || inlined)
+                && primary instanceof Tree.MemberOrTypeExpression
                 && ((Tree.MemberOrTypeExpression)primary).getDeclaration() instanceof Functional) {
             Declaration primaryDeclaration = ((Tree.MemberOrTypeExpression)primary).getDeclaration();
             ProducedReference producedReference = ((Tree.MemberOrTypeExpression)primary).getTarget();
@@ -433,6 +436,14 @@ abstract class InvocationBuilder {
                     producedReference,
                     method,
                     specifierExpression);
+        } else if (!lazy && !inlined) {
+            // must be a callable we stored
+            String name = gen.naming.getMethodSpecifierAttributeName(method);
+            builder = new CallableSpecifierInvocationBuilder(
+                    gen, 
+                    method, 
+                    gen.naming.makeUnquotedIdent(name),
+                    primary);
         } else if (gen.isCeylonCallable(primary.getTypeModel())) {
             builder = new CallableSpecifierInvocationBuilder(
                     gen, 
