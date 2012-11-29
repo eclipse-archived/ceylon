@@ -1461,6 +1461,11 @@ public class Naming implements LocalId {
         }
         return String.valueOf(id);
     }
-    
-    
+
+    /**
+     * Makes a name for a local attribute where we store a method specifier
+     */
+    public String getMethodSpecifierAttributeName(Method m) {
+        return m.getName()+"$specifier";
+    }
 }
