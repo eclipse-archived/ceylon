@@ -1444,6 +1444,7 @@ public class ClassTransformer extends AbstractTransformer {
         final Method model = def.getDeclarationModel();
         List<JCStatement> body;
         MethodDeclaration methodDecl = (MethodDeclaration)def;
+        boolean isLazy = specifierExpression instanceof Tree.LazySpecifierExpression;
         boolean returnNull = false;
         JCExpression bodyExpr;
         Tree.Term term = null;
@@ -1451,7 +1452,7 @@ public class ClassTransformer extends AbstractTransformer {
                 && specifierExpression.getExpression() != null) {
             term = specifierExpression.getExpression().getTerm();
         }
-        if (term instanceof Tree.FunctionArgument) {
+        if (!isLazy && term instanceof Tree.FunctionArgument) {
             // Method specified with lambda: Don't bother generating a 
             // Callable, just transform the expr to use as the method body.
             Tree.FunctionArgument fa = (Tree.FunctionArgument)term;
@@ -1472,7 +1473,7 @@ public class ClassTransformer extends AbstractTransformer {
             for (Substitution subs : substitutions) {
                 subs.close();
             }
-        } else if (term.getTypeModel() instanceof Functional) {
+        } else if (!isLazy && typeFact().isCallableType(term.getTypeModel())) {
             returnNull = isVoid(term.getTypeModel()) && term.getUnboxed();
             InvocationBuilder specifierBuilder = InvocationBuilder.forSpecifierInvocation(gen(), specifierExpression, methodDecl.getDeclarationModel());
             bodyExpr = specifierBuilder.build();
