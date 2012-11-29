@@ -1,0 +1,241 @@
+package com.redhat.ceylon.compiler.java.test.structure.method;
+
+interface MethodRefinementWithSpecifiers_Interface {
+    
+    public abstract .java.lang.Object f2();
+    
+    public abstract .java.lang.Object f3();
+    
+    public abstract .java.lang.Object f4();
+    
+    public abstract .java.lang.Object f5();
+    
+    public abstract .java.lang.Object f6();
+    
+    public abstract .java.lang.Object f7();
+    
+    public abstract .java.lang.Object f8();
+    
+    public abstract .java.lang.Object f9();
+    
+    public abstract .java.lang.Object f10();
+    
+    public abstract .java.lang.Object f11();
+    
+    public abstract .java.lang.Object f12();
+    
+    public abstract .java.lang.Object f13();
+    
+    public abstract .java.lang.Object f14(final long i);
+    
+    public abstract .java.lang.Object f15(final long i);
+    
+    public abstract .java.lang.Object f16();
+    
+    public abstract .java.lang.Object f17();
+    
+    public abstract .java.lang.Object f18();
+    
+    public abstract .java.lang.Object f19();
+}
+final class MethodRefinementWithSpecifiers_Interface$impl {
+    
+    MethodRefinementWithSpecifiers_Interface$impl(.com.redhat.ceylon.compiler.java.test.structure.method.MethodRefinementWithSpecifiers_Interface $this) {
+        this.$this = $this;
+    }
+    private final .com.redhat.ceylon.compiler.java.test.structure.method.MethodRefinementWithSpecifiers_Interface $this;
+}
+final class methodRefinementWithSpecifiers_returnsMethod_ {
+    
+    private methodRefinementWithSpecifiers_returnsMethod_() {
+    }
+    
+    static .ceylon.language.Callable<? extends .java.lang.Object> methodRefinementWithSpecifiers_returnsMethod() {
+        return new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.java.lang.Object>("Void()"){
+            
+            @.java.lang.Override
+            public .java.lang.Object $call() {
+                return null;
+            }
+        };
+    }
+    
+    public static void main(.java.lang.String[] args) {
+        .ceylon.language.process_.getProcess$().setupArguments(args);
+        .com.redhat.ceylon.compiler.java.test.structure.method.methodRefinementWithSpecifiers_returnsMethod_.methodRefinementWithSpecifiers_returnsMethod();
+    }
+}
+final class methodRefinementWithSpecifiers_attributeMethod_ {
+    
+    private methodRefinementWithSpecifiers_attributeMethod_() {
+    }
+    private static final .ceylon.language.Callable<? extends .java.lang.Object>[] value;
+    static {
+        value = new .ceylon.language.Callable[]{.com.redhat.ceylon.compiler.java.test.structure.method.methodRefinementWithSpecifiers_returnsMethod_.methodRefinementWithSpecifiers_returnsMethod()};
+    }
+    
+    static .ceylon.language.Callable<? extends .java.lang.Object> getMethodRefinementWithSpecifiers_attributeMethod$() {
+        try {
+            return value[0];
+        } catch (.java.lang.NullPointerException ex) {
+            throw new .ceylon.language.RecursiveInitializationException();
+        }
+    }
+}
+class MethodRefinementWithSpecifiers_ClassNoParam {
+    
+    MethodRefinementWithSpecifiers_ClassNoParam() {
+    }
+    
+    public static void main(.java.lang.String[] args) {
+        .ceylon.language.process_.getProcess$().setupArguments(args);
+        new .com.redhat.ceylon.compiler.java.test.structure.method.MethodRefinementWithSpecifiers_ClassNoParam();
+    }
+}
+class MethodRefinementWithSpecifiers_Class implements .com.redhat.ceylon.compiler.java.test.structure.method.MethodRefinementWithSpecifiers_Interface {
+    
+    MethodRefinementWithSpecifiers_Class(.ceylon.language.Callable<? extends .java.lang.Object> arg) {
+        this.arg = arg;
+        this.$com$redhat$ceylon$compiler$java$test$structure$method$MethodRefinementWithSpecifiers_Interface$this = new .com.redhat.ceylon.compiler.java.test.structure.method.MethodRefinementWithSpecifiers_Interface$impl(this);
+        this.f9$specifier = .com.redhat.ceylon.compiler.java.test.structure.method.methodRefinementWithSpecifiers_returnsMethod_.methodRefinementWithSpecifiers_returnsMethod();
+        this.f10$specifier = .com.redhat.ceylon.compiler.java.test.structure.method.methodRefinementWithSpecifiers_attributeMethod_.getMethodRefinementWithSpecifiers_attributeMethod$();
+    }
+    private final .ceylon.language.Callable<? extends .java.lang.Object> arg;
+    protected final .com.redhat.ceylon.compiler.java.test.structure.method.MethodRefinementWithSpecifiers_Interface$impl $com$redhat$ceylon$compiler$java$test$structure$method$MethodRefinementWithSpecifiers_Interface$this;
+    
+    class Inner {
+        
+        Inner() {
+        }
+    }
+    
+    public .com.redhat.ceylon.compiler.java.test.structure.method.MethodRefinementWithSpecifiers_Class.InnerShared InnerShared$new() {
+        return new InnerShared();
+    }
+    
+    public class InnerShared {
+        
+        protected InnerShared() {
+        }
+    }
+    
+    @.java.lang.Override
+    public final .java.lang.Object f2() {
+        return arg.$call();
+    }
+    
+    @.java.lang.Override
+    public final .java.lang.Object f3() {
+        return arg.$call();
+    }
+    
+    @.java.lang.Override
+    public final .java.lang.Object f4() {
+        return arg.$call();
+    }
+    
+    @.java.lang.Override
+    public final .java.lang.Object f5() {
+        return arg.$call();
+    }
+    
+    @.java.lang.Override
+    public final .java.lang.Object f6() {
+        arg.$call();
+        return null;
+    }
+    
+    @.java.lang.Override
+    public final .java.lang.Object f7() {
+        return f3();
+    }
+    
+    @.java.lang.Override
+    public final .java.lang.Object f8() {
+        return f3();
+    }
+    private final .ceylon.language.Callable<? extends .java.lang.Object> f9$specifier;
+    
+    @.java.lang.Override
+    public final .java.lang.Object f9() {
+        return f9$specifier.$call();
+    }
+    private final .ceylon.language.Callable<? extends .java.lang.Object> f10$specifier;
+    
+    @.java.lang.Override
+    public final .java.lang.Object f10() {
+        return f10$specifier.$call();
+    }
+    
+    @.java.lang.Override
+    public final .java.lang.Object f11() {
+        return new .com.redhat.ceylon.compiler.java.test.structure.method.MethodRefinementWithSpecifiers_ClassNoParam();
+    }
+    
+    @.java.lang.Override
+    public final .java.lang.Object f12() {
+        return new .com.redhat.ceylon.compiler.java.test.structure.method.MethodRefinementWithSpecifiers_Class.Inner();
+    }
+    
+    @.java.lang.Override
+    public final .java.lang.Object f13() {
+        return InnerShared$new();
+    }
+    
+    private final void takesParam(final long i) {
+    }
+    
+    @.java.lang.Override
+    public final .java.lang.Object f14(final long i) {
+        return (
+            let
+            {
+                takesParam(i);
+            }
+            returning null;
+        );
+    }
+    
+    @.java.lang.Override
+    public final .java.lang.Object f15(final long i) {
+        return f14(i);
+    }
+    
+    @.java.lang.Override
+    public final .java.lang.Object f16() {
+        return new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.java.lang.Object>("Void(Integer)"){
+            
+            @.java.lang.Override
+            public .java.lang.Object $call(final .java.lang.Object $param$0) {
+                return (
+                    let
+                    {
+                        takesParam(((.ceylon.language.Integer)$param$0).longValue());
+                    }
+                    returning null;
+                );
+            }
+        };
+    }
+    
+    @.java.lang.Override
+    public final .java.lang.Object f17() {
+        return new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.com.redhat.ceylon.compiler.java.test.structure.method.MethodRefinementWithSpecifiers_Class.Inner>("MethodRefinementWithSpecifiers_Class.Inner()"){
+            
+            @.java.lang.Override
+            public .com.redhat.ceylon.compiler.java.test.structure.method.MethodRefinementWithSpecifiers_Class.Inner $call() {
+                return new .com.redhat.ceylon.compiler.java.test.structure.method.MethodRefinementWithSpecifiers_Class.Inner();
+            }
+        };
+    }
+    
+    @.java.lang.Override
+    public final .java.lang.Object f18() {
+        return arg;
+    }
+    
+    @.java.lang.Override
+    public final .java.lang.Object f19() {
+        return arg;
+    }
+}

@@ -318,6 +318,10 @@ public class StructureTest extends CompilerTest {
         compareWithJavaSource("method/ActualMethodShortcut");
     }
     @Test
+    public void testMthMethodRefinementWithSpecifiers(){
+        compareWithJavaSource("method/MethodRefinementWithSpecifiers");
+    }
+    @Test
     public void testMthLocalMethod(){
         compareWithJavaSource("method/LocalMethod");
     }

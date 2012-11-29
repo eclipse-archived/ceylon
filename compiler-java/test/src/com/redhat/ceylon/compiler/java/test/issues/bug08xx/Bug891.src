@@ -1,0 +1,27 @@
+package com.redhat.ceylon.compiler.java.test.issues.bug08xx;
+
+interface Bug891_Interface {
+    
+    public abstract .java.lang.Object f();
+}
+final class Bug891_Interface$impl {
+    
+    Bug891_Interface$impl(.com.redhat.ceylon.compiler.java.test.issues.bug08xx.Bug891_Interface $this) {
+        this.$this = $this;
+    }
+    private final .com.redhat.ceylon.compiler.java.test.issues.bug08xx.Bug891_Interface $this;
+}
+class Bug891_Class implements .com.redhat.ceylon.compiler.java.test.issues.bug08xx.Bug891_Interface {
+    
+    Bug891_Class(.ceylon.language.Callable<? extends .java.lang.Object> arg) {
+        this.arg = arg;
+        this.$com$redhat$ceylon$compiler$java$test$issues$bug08xx$Bug891_Interface$this = new .com.redhat.ceylon.compiler.java.test.issues.bug08xx.Bug891_Interface$impl(this);
+    }
+    private final .ceylon.language.Callable<? extends .java.lang.Object> arg;
+    protected final .com.redhat.ceylon.compiler.java.test.issues.bug08xx.Bug891_Interface$impl $com$redhat$ceylon$compiler$java$test$issues$bug08xx$Bug891_Interface$this;
+    
+    @.java.lang.Override
+    public final .java.lang.Object f() {
+        return arg.$call();
+    }
+}
