@@ -14,18 +14,18 @@ public class StringBuilder {
     final java.lang.StringBuilder builder = new java.lang.StringBuilder();
     
     @Override
-    public final synchronized java.lang.String toString() {
+    public final java.lang.String toString() {
         return builder.toString();
     }
 
     @TypeInfo("ceylon.language::StringBuilder")
-    public final synchronized StringBuilder append(@Name("string") java.lang.String string) {
+    public final StringBuilder append(@Name("string") java.lang.String string) {
         builder.append(string);
         return this;
     }
     
     @TypeInfo("ceylon.language::StringBuilder")
-    public final synchronized StringBuilder appendAll(@Sequenced @Name("strings") 
+    public final StringBuilder appendAll(@Sequenced @Name("strings") 
     @TypeInfo("ceylon.language::Sequential<ceylon.language::String>")
     Sequential<? extends String> strings) {
         java.lang.Object elem;
@@ -35,37 +35,37 @@ public class StringBuilder {
         return this;
     }
     @Ignore
-    public final synchronized StringBuilder appendAll() {
+    public final StringBuilder appendAll() {
         return this;
     }
     
     @TypeInfo("ceylon.language::StringBuilder")
-    public final synchronized StringBuilder appendCharacter(@Name("character") 
+    public final StringBuilder appendCharacter(@Name("character") 
     @TypeInfo("ceylon.language::Character") int character) {
         builder.append(java.lang.Character.toChars(character));
         return this;
     }
     
     @TypeInfo("ceylon.language::StringBuilder")
-    public final synchronized StringBuilder appendNewline() {
+    public final StringBuilder appendNewline() {
     	builder.append('\n');
     	return this;
     }
     
     @TypeInfo("ceylon.language::StringBuilder")
-    public final synchronized StringBuilder appendSpace() {
+    public final StringBuilder appendSpace() {
     	builder.append(' ');
     	return this;
     }
 
     @TypeInfo("ceylon.language::StringBuilder")
-    public final synchronized StringBuilder reset() {
+    public final StringBuilder reset() {
         builder.setLength(0);
         return this;
     }
 
     @TypeInfo("ceylon.language::StringBuilder")
-    public final synchronized StringBuilder insert(
+    public final StringBuilder insert(
             @Name("pos") @TypeInfo("ceylon.language::Integer") int pos,
             @Name("content") @TypeInfo(value="ceylon.language::String|ceylon.language::Character", erased=true)
             java.lang.Object content) {
@@ -79,7 +79,7 @@ public class StringBuilder {
     }
 
     @TypeInfo("ceylon.language::StringBuilder")
-    public final synchronized StringBuilder delete(
+    public final StringBuilder delete(
             @Name("pos") @TypeInfo("ceylon.language::Integer") int pos,
             @Name("count") @TypeInfo("ceylon.language::Integer") int count) {
         if (pos < 0) pos = 0; else if (pos > builder.length()) return this;

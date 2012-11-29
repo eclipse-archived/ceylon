@@ -22,7 +22,7 @@ public class SequenceBuilder<Element> implements Sized {
     public SequenceBuilder() {}
      
     @TypeInfo("ceylon.language::Sequential<Element>")
-    public synchronized Sequential<? extends Element> getSequence() {
+    public Sequential<? extends Element> getSequence() {
         if (list==null || list.isEmpty()) {
             return (Sequential)empty_.getEmpty$();
         }
@@ -31,7 +31,7 @@ public class SequenceBuilder<Element> implements Sized {
         }
     }
     
-    public final synchronized SequenceBuilder<Element> append(@Name("element") Element element) {
+    public final SequenceBuilder<Element> append(@Name("element") Element element) {
     	if (list==null) {
     	    list = new ArrayList<Element>();
     	}
@@ -39,7 +39,7 @@ public class SequenceBuilder<Element> implements Sized {
     	return this;
     }
     
-    public final synchronized SequenceBuilder<Element> appendAll(@Sequenced @Name("elements") 
+    public final SequenceBuilder<Element> appendAll(@Sequenced @Name("elements") 
     @TypeInfo("ceylon.language::Sequential<Element>") 
     Sequential<? extends Element> elements) {
     	if (list==null) {
@@ -63,12 +63,12 @@ public class SequenceBuilder<Element> implements Sized {
     }
     
     @Override
-    public final synchronized long getSize() {
+    public final long getSize() {
         return list==null ? 0 : list.size();
     }
      
     @Override
-    public final synchronized boolean getEmpty() {
+    public final boolean getEmpty() {
         return list==null ? true : list.isEmpty();
     }
      
