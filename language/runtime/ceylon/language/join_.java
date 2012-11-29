@@ -18,11 +18,11 @@ public final class join_ {
     
     @TypeParameters(@TypeParameter(value="Element"))
     @TypeInfo("ceylon.language::Sequential<Element>")
-    public static <Element> List<? extends Element> join(
+    public static <Element> Sequential<? extends Element> join(
     @Name("iterables")
     @Sequenced
     @TypeInfo("ceylon.language::Sequential<ceylon.language::Iterable<Element>>")
-    final List<? extends Iterable<? extends Element>> iterables) {
+    final Sequential<? extends Iterable<? extends Element>> iterables) {
         java.util.List<Element> list = new java.util.ArrayList<Element>();
 		java.lang.Object $tmp1;
 		for (Iterator<? extends Iterable<? extends Element>> iter=iterables.getIterator(); 
@@ -36,14 +36,14 @@ public final class join_ {
 			}
 		}
         if (list.isEmpty()) {
-            return (List<? extends Element>) empty_.getEmpty$();
+            return (Sequential<? extends Element>) empty_.getEmpty$();
         }
         else {
             return new ArraySequence<Element>(list);
         }
     }
     @Ignore
-    public static <Element> List<? extends Element> join() {
-        return join((List)empty_.getEmpty$());
+    public static <Element> Sequential<? extends Element> join() {
+        return join((Sequential)empty_.getEmpty$());
     }
 }

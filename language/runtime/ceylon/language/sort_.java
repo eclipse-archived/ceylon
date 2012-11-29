@@ -21,14 +21,14 @@ public final class sort_ {
     
     @TypeParameters(@TypeParameter(value="Element", satisfies="ceylon.language::Comparable<Element>"))
     @TypeInfo("ceylon.language::Sequential<Element>")
-    public static <Element extends Comparable<? super Element>> List<? extends Element> sort(
+    public static <Element extends Comparable<? super Element>> Sequential<? extends Element> sort(
         @Name("elements")
         @Sequenced
         @TypeInfo("ceylon.language::Sequential<Element>")
-        final List<? extends Element> elements) {
+        final Sequential<? extends Element> elements) {
         
         if( elements.getEmpty() ) {
-            return (List)empty_.getEmpty$();   
+            return (Sequential)empty_.getEmpty$();   
         }
         
         java.util.List<Element> list = Util.collectIterable(elements);
@@ -46,8 +46,8 @@ public final class sort_ {
     }
     
     @Ignore
-    public static <Element> List<? extends Element> sort() {
-        return (List)empty_.getEmpty$();
+    public static <Element> Sequential<? extends Element> sort() {
+        return (Sequential)empty_.getEmpty$();
     }
     
 }

@@ -36,7 +36,7 @@ public interface Sequence<Element>
     @Annotations({@Annotation("actual"), @Annotation("formal")})
     @Override
     @TypeInfo("ceylon.language::Sequential<Element>")
-    public List<? extends Element> getRest();
+    public Sequential<? extends Element> getRest();
     
     @Annotations({@Annotation("actual"), @Annotation("formal")})
     @Override
@@ -50,13 +50,13 @@ public interface Sequence<Element>
     
     /*@Override
     @TypeInfo("ceylon.language::Sequential<Element>")
-    public List<? extends Element> span(@Name("from") Integer from, 
+    public Sequential<? extends Element> span(@Name("from") Integer from, 
             @TypeInfo("ceylon.language::Nothing|ceylon.language::Integer")
             @Name("to") Integer to);
     
     @Override
     @TypeInfo("ceylon.language::Sequential<Element>")
-    public List<? extends Element> segment(@Name("from") Integer from, 
+    public Sequential<? extends Element> segment(@Name("from") Integer from, 
             @Name("length") Integer length);*/
 
     @Annotations(@Annotation("actual"))

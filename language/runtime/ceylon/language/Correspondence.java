@@ -1,7 +1,5 @@
 package ceylon.language;
 
-import com.redhat.ceylon.compiler.java.language.FilterIterable;
-import com.redhat.ceylon.compiler.java.language.MapIterable;
 import com.redhat.ceylon.compiler.java.metadata.Annotation;
 import com.redhat.ceylon.compiler.java.metadata.Annotations;
 import com.redhat.ceylon.compiler.java.metadata.Ceylon;
@@ -37,30 +35,30 @@ public interface Correspondence<Key,Item> {
     @Annotations(@Annotation("default"))
     public boolean definesEvery(@Sequenced @Name("keys")
     @TypeInfo("ceylon.language::Sequential<Key>")
-    List<? extends Key> keys);
+    Sequential<? extends Key> keys);
     @Ignore
     public boolean definesEvery();
     @Ignore
-    public List<? extends Key> definesEvery$keys();
+    public Sequential<? extends Key> definesEvery$keys();
 
     @Annotations(@Annotation("default"))
     public boolean definesAny(@Sequenced @Name("keys")
     @TypeInfo("ceylon.language::Sequential<Key>")
-    List<? extends Key> keys);
+    Sequential<? extends Key> keys);
     @Ignore
     public boolean definesAny();
     @Ignore
-    public List<? extends Key> definesAny$keys();
+    public Sequential<? extends Key> definesAny$keys();
 
     @Annotations(@Annotation("default"))
     @TypeInfo("ceylon.language::Sequential<Item|ceylon.language::Nothing>")
-    public List<? extends Item> items(@Sequenced @Name("keys")
+    public Sequential<? extends Item> items(@Sequenced @Name("keys")
     @TypeInfo("ceylon.language::Sequential<Key>")
-    List<? extends Key> keys);
+    Sequential<? extends Key> keys);
     @Ignore
-    public List<? extends Item> items();
+    public Sequential<? extends Item> items();
     @Ignore
-    public List<? extends Key> items$keys();
+    public Sequential<? extends Key> items$keys();
 
     @Ignore
     public ceylon.language.Correspondence$impl<? super Key, ? extends Item> $ceylon$language$Correspondence$impl();

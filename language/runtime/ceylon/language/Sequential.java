@@ -25,6 +25,6 @@ public interface Sequential<Element>
     @Annotations({@Annotation("actual"), @Annotation("formal")})
     @Override
     @TypeInfo("ceylon.language::Sequential<Element>")
-    public List<? extends Element> getReversed();
+    public Sequential<? extends Element> getReversed();
     
 }

@@ -13,7 +13,7 @@ public final class tagged_
 {
     public static Nothing tagged(@Name("tags") @Sequenced
             @TypeInfo("ceylon.language::Sequential<ceylon.language::String>")
-            final ceylon.language.List<? extends ceylon.language.String> tags) {
+            final ceylon.language.Sequential<? extends ceylon.language.String> tags) {
         return null;
     }
     @Ignore

@@ -177,7 +177,7 @@ public class LazySet<Element> implements Set<Element> {
     }
 
     @Override @Ignore
-    public List<? extends Element> getSequence() {
+    public Sequential<? extends Element> getSequence() {
         return elems.getSequence();
     }
 
@@ -210,19 +210,19 @@ public class LazySet<Element> implements Set<Element> {
     }
 
     @Override @Ignore
-    public List<? extends Element> sort(
+    public Sequential<? extends Element> sort(
             Callable<? extends Comparison> comparing) {
         return elems.sort(comparing);
     }
 
     @Override @Ignore
-    public <Result> List<? extends Result> collect(
+    public <Result> Sequential<? extends Result> collect(
             Callable<? extends Result> collecting) {
         return elems.collect(collecting);
     }
 
     @Override @Ignore
-    public List<? extends Element> select(
+    public Sequential<? extends Element> select(
             Callable<? extends Boolean> selecting) {
         return elems.select(selecting);
     }
@@ -281,7 +281,9 @@ public class LazySet<Element> implements Set<Element> {
 
     @Override @Ignore
     public boolean containsEvery(
-            @Sequenced @Name("elements") @TypeInfo("ceylon.language::Sequential<ceylon.language::Object>") List<?> elements) {
+            @Sequenced @Name("elements")
+            @TypeInfo("ceylon.language::Sequential<ceylon.language::Object>")
+            Sequential<?> elements) {
         return cat$impl.containsEvery(elements);
     }
 
@@ -291,13 +293,15 @@ public class LazySet<Element> implements Set<Element> {
     }
 
     @Override @Ignore
-    public List<?> containsEvery$elements() {
+    public Sequential<?> containsEvery$elements() {
         return cat$impl.containsEvery$elements();
     }
 
     @Override @Ignore
     public boolean containsAny(
-            @Sequenced @Name("elements") @TypeInfo("ceylon.language::Sequential<ceylon.language::Object>") List<?> elements) {
+            @Sequenced @Name("elements")
+            @TypeInfo("ceylon.language::Sequential<ceylon.language::Object>")
+            Sequential<?> elements) {
         return cat$impl.containsAny(elements);
     }
 
@@ -307,7 +311,7 @@ public class LazySet<Element> implements Set<Element> {
     }
 
     @Override @Ignore
-    public List<?> containsAny$elements() {
+    public Sequential<?> containsAny$elements() {
         return cat$impl.containsAny$elements();
     }
 

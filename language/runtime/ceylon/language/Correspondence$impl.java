@@ -48,7 +48,7 @@ public final class Correspondence$impl<Key,Item> {
 
             @Override
             @Ignore
-            public boolean containsEvery(ceylon.language.List<?> elements) {
+            public boolean containsEvery(ceylon.language.Sequential<?> elements) {
                 return $ceylon$language$Category$this.containsEvery(elements);
             }
             @Override
@@ -58,13 +58,13 @@ public final class Correspondence$impl<Key,Item> {
             }
             @Override
             @Ignore
-            public ceylon.language.List<?> containsEvery$elements() {
+            public ceylon.language.Sequential<?> containsEvery$elements() {
                 return empty_.getEmpty$();
             }
 
             @Override
             @Ignore
-            public boolean containsAny(ceylon.language.List<?> elements) {
+            public boolean containsAny(ceylon.language.Sequential<?> elements) {
                 return $ceylon$language$Category$this.containsAny(elements);
             }
             @Override
@@ -74,23 +74,23 @@ public final class Correspondence$impl<Key,Item> {
             }
             @Override
             @Ignore
-            public ceylon.language.List<?> containsAny$elements() {
+            public ceylon.language.Sequential<?> containsAny$elements() {
                 return empty_.getEmpty$();
             }
         };
         return new CategoryKeys();
     }
 
-    public boolean definesEvery(ceylon.language.List<? extends Key> keys){
+    public boolean definesEvery(ceylon.language.Sequential<? extends Key> keys){
         return Correspondence$impl.<Key,Item>_definesEvery(this.$this, keys);
     }
     public boolean definesEvery(){
-        return Correspondence$impl.<Key,Item>_definesEvery(this.$this, (List)empty_.getEmpty$());
+        return Correspondence$impl.<Key,Item>_definesEvery(this.$this, (Sequential)empty_.getEmpty$());
     }
-    public ceylon.language.List<? extends Key> definesEvery$keys(){
-        return (List<? extends Key>) empty_.getEmpty$();
+    public ceylon.language.Sequential<? extends Key> definesEvery$keys(){
+        return (Sequential<? extends Key>) empty_.getEmpty$();
     }
-    private static <Key,Item> boolean _definesEvery(Correspondence<Key,Item> $this, ceylon.language.List<? extends Key> keys){
+    private static <Key,Item> boolean _definesEvery(Correspondence<Key,Item> $this, ceylon.language.Sequential<? extends Key> keys){
         java.lang.Object elem;
         for (ceylon.language.Iterator<? extends Key> $key$iter$0 = keys.getIterator(); !((elem = $key$iter$0.next()) instanceof Finished);) {
             final Key key = (Key) elem;
@@ -101,16 +101,16 @@ public final class Correspondence$impl<Key,Item> {
         return true;
     }
 
-    public boolean definesAny(ceylon.language.List<? extends Key> keys) {
+    public boolean definesAny(ceylon.language.Sequential<? extends Key> keys) {
         return Correspondence$impl.<Key,Item>_definesAny(this.$this, keys);
     }
     public boolean definesAny() {
-        return Correspondence$impl.<Key,Item>_definesAny(this.$this, (List)empty_.getEmpty$());
+        return Correspondence$impl.<Key,Item>_definesAny(this.$this, (Sequential)empty_.getEmpty$());
     }
-    public ceylon.language.List<? extends Key> definesAny$keys() {
-        return (List)empty_.getEmpty$();
+    public ceylon.language.Sequential<? extends Key> definesAny$keys() {
+        return (Sequential)empty_.getEmpty$();
     }
-    private static <Key,Item> boolean _definesAny(Correspondence<Key,Item> $this, ceylon.language.List<? extends Key> keys) {
+    private static <Key,Item> boolean _definesAny(Correspondence<Key,Item> $this, ceylon.language.Sequential<? extends Key> keys) {
         java.lang.Object elem;
         for (ceylon.language.Iterator<? extends Key> $key$iter$0 = keys.getIterator(); !((elem = $key$iter$0.next()) instanceof Finished);) {
             final Key key = (Key) elem;
@@ -121,22 +121,22 @@ public final class Correspondence$impl<Key,Item> {
         return false;
     }
 
-    public ceylon.language.List<? extends Item> items(ceylon.language.List<? extends Key> keys) {
+    public ceylon.language.Sequential<? extends Item> items(ceylon.language.Sequential<? extends Key> keys) {
         return Correspondence$impl.<Key,Item>_items(this.$this, keys);
     }
-    public ceylon.language.List<? extends Item> items() {
-        return Correspondence$impl.<Key,Item>_items(this.$this, (List)empty_.getEmpty$());
+    public ceylon.language.Sequential<? extends Item> items() {
+        return Correspondence$impl.<Key,Item>_items(this.$this, (Sequential)empty_.getEmpty$());
     }
-    public ceylon.language.List<? extends Key> items$keys() {
-        return (List)empty_.getEmpty$();
+    public ceylon.language.Sequential<? extends Key> items$keys() {
+        return (Sequential)empty_.getEmpty$();
     }
-    private static <Key,Item> ceylon.language.List<? extends Item> _items(Correspondence<Key,Item> $this, ceylon.language.List<? extends Key> keys) {
+    private static <Key,Item> ceylon.language.Sequential<? extends Item> _items(Correspondence<Key,Item> $this, ceylon.language.Sequential<? extends Key> keys) {
         if (keys instanceof Sequence) {
             final ceylon.language.Sequence<? extends Key> $keys$1 = (Sequence<? extends Key>)keys;
             return $this.Items$new((Sequence<? extends Key>)$keys$1.getClone());
         }
         else {
-            return (List)empty_.getEmpty$();
+            return (Sequential)empty_.getEmpty$();
         }
     }
 
@@ -174,8 +174,8 @@ public final class Correspondence$impl<Key,Item> {
         public final Item getFirst() {
             return $this.item((Key)keys.getFirst());
         }
-        public final List<? extends Item> getRest() {
-            return (List<? extends Item>) $this.items(keys.getRest());
+        public final Sequential<? extends Item> getRest() {
+            return (Sequential<? extends Item>) $this.items(keys.getRest());
         }
         public final Item item(Integer key) {
             Key keyFound = keys.item(key);
@@ -206,48 +206,48 @@ public final class Correspondence$impl<Key,Item> {
         }
         @Override
         @Ignore
-        public boolean definesEvery(List<? extends Integer> keys) {
+        public boolean definesEvery(Sequential<? extends Integer> keys) {
             return Correspondence$impl._definesEvery(this, keys);
         }
         @Override @Ignore
         @SuppressWarnings({"rawtypes", "unchecked"})
         public boolean definesEvery() {
-            return Correspondence$impl._definesEvery(this, (List)empty_.getEmpty$());
+            return Correspondence$impl._definesEvery(this, (Sequential)empty_.getEmpty$());
         }
         @Override @Ignore
         @SuppressWarnings({"rawtypes", "unchecked"})
-        public List<? extends Integer> definesEvery$keys() {
-            return (List)empty_.getEmpty$();
+        public Sequential<? extends Integer> definesEvery$keys() {
+            return (Sequential)empty_.getEmpty$();
         }
         @Override
         @Ignore
-        public boolean definesAny(List<? extends Integer> keys) {
+        public boolean definesAny(Sequential<? extends Integer> keys) {
             return Correspondence$impl._definesAny(this, keys);
         }
         @Override @Ignore
         @SuppressWarnings({"rawtypes", "unchecked"})
         public boolean definesAny() {
-            return Correspondence$impl._definesAny(this, (List)empty_.getEmpty$());
+            return Correspondence$impl._definesAny(this, (Sequential)empty_.getEmpty$());
         }
         @Override @Ignore
         @SuppressWarnings({"rawtypes", "unchecked"})
-        public List<? extends Integer> definesAny$keys() {
-            return (List)empty_.getEmpty$();
+        public Sequential<? extends Integer> definesAny$keys() {
+            return (Sequential)empty_.getEmpty$();
         }
         @Override
         @Ignore
-        public List<? extends Item> items(List<? extends Integer> keys) {
+        public Sequential<? extends Item> items(Sequential<? extends Integer> keys) {
             return Correspondence$impl._items(this, keys);
         }
         @Override @Ignore
         @SuppressWarnings({"rawtypes", "unchecked"})
-        public List<? extends Item> items() {
-            return Correspondence$impl._items(this, (List)empty_.getEmpty$());
+        public Sequential<? extends Item> items() {
+            return Correspondence$impl._items(this, (Sequential)empty_.getEmpty$());
         }
         @Override @Ignore
         @SuppressWarnings({"rawtypes", "unchecked"})
-        public List<? extends Integer> items$keys() {
-            return (List)empty_.getEmpty$();
+        public Sequential<? extends Integer> items$keys() {
+            return (Sequential)empty_.getEmpty$();
         }
         @Override
         @Ignore
@@ -290,10 +290,10 @@ public final class Correspondence$impl<Key,Item> {
         }
         @Override
         @SuppressWarnings({"rawtypes", "unchecked"})
-        public List<? extends Item> segment(Integer from, long length) {
+        public Sequential<? extends Item> segment(Integer from, long length) {
             Iterable<? extends Key> keys = (Iterable<? extends Key>) this.keys.segment(from, length);
             if (keys.getEmpty()) {
-                return (List)empty_.getEmpty$();
+                return (Sequential)empty_.getEmpty$();
             }
             else {
                 return new Items((Sequence<? extends Key>)keys);
@@ -301,10 +301,10 @@ public final class Correspondence$impl<Key,Item> {
         }
         @Override
         @SuppressWarnings({"rawtypes", "unchecked"})
-        public List<? extends Item> span(Integer from, Integer to) {
+        public Sequential<? extends Item> span(Integer from, Integer to) {
             Iterable<? extends Key> keys = (Iterable<? extends Key>) this.keys.span(from, to);
             if (keys.getEmpty()) {
-                return (List)empty_.getEmpty$();
+                return (Sequential)empty_.getEmpty$();
             }
             else {
                 return new Items((Sequence<? extends Key>)keys);
@@ -317,7 +317,7 @@ public final class Correspondence$impl<Key,Item> {
         }
         @Override
         @Ignore
-        public boolean containsEvery(List<?> elements) {
+        public boolean containsEvery(Sequential<?> elements) {
             return $ceylon$language$Category$this.containsEvery(elements);
         }
         @Override
@@ -327,12 +327,12 @@ public final class Correspondence$impl<Key,Item> {
         }
         @Override
         @Ignore
-        public List<?> containsEvery$elements() {
+        public Sequential<?> containsEvery$elements() {
             return empty_.getEmpty$();
         }
         @Override
         @Ignore
-        public boolean containsAny(List<?> elements) {
+        public boolean containsAny(Sequential<?> elements) {
             return $ceylon$language$Category$this.containsAny(elements);
         }
         @Override
@@ -342,7 +342,7 @@ public final class Correspondence$impl<Key,Item> {
         }
         @Override
         @Ignore
-        public List<?> containsAny$elements() {
+        public Sequential<?> containsAny$elements() {
             return empty_.getEmpty$();
         }
         @Override
@@ -388,7 +388,7 @@ public final class Correspondence$impl<Key,Item> {
             return $ceylon$language$Sequence$this.collect(f);
         }
         @Override @Ignore
-        public List<? extends Item> select(Callable<? extends Boolean> f) {
+        public Sequential<? extends Item> select(Callable<? extends Boolean> f) {
             return new FilterIterable<Item>(this, f).getSequence();
         }
         @Override

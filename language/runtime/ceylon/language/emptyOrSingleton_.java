@@ -15,12 +15,12 @@ public class emptyOrSingleton_ {
 
     @TypeParameters(@TypeParameter(value="Element", satisfies="ceylon.language::Object"))
     @TypeInfo("ceylon.language::Sequential<Element>")
-    public static <Element> List<Element> emptyOrSingleton(
+    public static <Element> Sequential<Element> emptyOrSingleton(
             @Name("element")
             @TypeInfo("ceylon.language::Nothing|Element")
             Element element) {
         return element==null ? 
-                (List)empty_.getEmpty$() : 
+                (Sequential)empty_.getEmpty$() : 
                 new Singleton<Element>(element);
     }
 }

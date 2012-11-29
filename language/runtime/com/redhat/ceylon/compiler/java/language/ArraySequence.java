@@ -13,7 +13,7 @@ import ceylon.language.Entry;
 import ceylon.language.Integer;
 import ceylon.language.Iterable;
 import ceylon.language.Iterator;
-import ceylon.language.List;
+import ceylon.language.Sequential;
 import ceylon.language.Map;
 import ceylon.language.Sequence;
 import ceylon.language.empty_;
@@ -96,9 +96,9 @@ public class ArraySequence<Element> implements Sequence<Element> {
     }
 
     @Override
-    public List<? extends Element> getRest() {
+    public Sequential<? extends Element> getRest() {
         if (first+1==array.length) {
-            return (List)empty_.getEmpty$();
+            return (Sequential)empty_.getEmpty$();
         }
         else {
             return new ArraySequence<Element>(array, first + 1);
@@ -116,7 +116,7 @@ public class ArraySequence<Element> implements Sequence<Element> {
     }
 
     @Override
-    public List<? extends Element> span(Integer from, Integer to) {
+    public Sequential<? extends Element> span(Integer from, Integer to) {
         long fromIndex = from.longValue();
         long toIndex = to==null ? MAX_VALUE : to.longValue();
         long lastIndex = getLastIndex().longValue();
@@ -124,7 +124,7 @@ public class ArraySequence<Element> implements Sequence<Element> {
         boolean reverse = toIndex<fromIndex;
         if (reverse) {
         	if (fromIndex<0 || toIndex>lastIndex) {
-        		return (List)empty_.getEmpty$();
+        		return (Sequential)empty_.getEmpty$();
         	}
         	if (toIndex<0) {
         		toIndex=0;
@@ -135,7 +135,7 @@ public class ArraySequence<Element> implements Sequence<Element> {
         }
         else {
         	if (toIndex<0 || fromIndex>lastIndex) {
-        		return (List)empty_.getEmpty$();
+        		return (Sequential)empty_.getEmpty$();
         	}
         	if (fromIndex<0) {
         		fromIndex=0;
@@ -161,13 +161,13 @@ public class ArraySequence<Element> implements Sequence<Element> {
     }
 
     @Override
-    public List<? extends Element> segment(Integer from, long length) {
+    public Sequential<? extends Element> segment(Integer from, long length) {
         long fromIndex = from.longValue();
         if (fromIndex<0) fromIndex=0;
         long resultLength = length;
         long lastIndex = getLastIndex().longValue();
         if (fromIndex>lastIndex||resultLength<=0) {
-            return (List)empty_.getEmpty$();
+            return (Sequential)empty_.getEmpty$();
         }
         else if (fromIndex+resultLength>lastIndex) {
             return new ArraySequence<Element>(array, fromIndex);
@@ -247,52 +247,52 @@ public class ArraySequence<Element> implements Sequence<Element> {
 
     @Override
     @Ignore
-    public boolean definesEvery(List<? extends Integer> keys) {
+    public boolean definesEvery(Sequential<? extends Integer> keys) {
         return $ceylon$language$Correspondence$this.definesEvery(keys);
     }
 
     @Override
     @Ignore @SuppressWarnings({"unchecked", "rawtypes"})
     public boolean definesEvery() {
-        return $ceylon$language$Correspondence$this.definesEvery((List)empty_.getEmpty$());
+        return $ceylon$language$Correspondence$this.definesEvery((Sequential)empty_.getEmpty$());
     }
     @Override
     @Ignore @SuppressWarnings({"unchecked", "rawtypes"})
-    public List<? extends Integer> definesEvery$keys() {
-        return (List)empty_.getEmpty$();
+    public Sequential<? extends Integer> definesEvery$keys() {
+        return (Sequential)empty_.getEmpty$();
     }
 
     @Override
     @Ignore
-    public boolean definesAny(List<? extends Integer> keys) {
+    public boolean definesAny(Sequential<? extends Integer> keys) {
         return $ceylon$language$Correspondence$this.definesAny(keys);
     }
 
     @Override
     @Ignore @SuppressWarnings({"unchecked", "rawtypes"})
     public boolean definesAny() {
-        return $ceylon$language$Correspondence$this.definesAny((List)empty_.getEmpty$());
+        return $ceylon$language$Correspondence$this.definesAny((Sequential)empty_.getEmpty$());
     }
 
     @Override @SuppressWarnings({"unchecked", "rawtypes"})
-    public List<? extends Integer> definesAny$keys() {
-        return (List)empty_.getEmpty$();
+    public Sequential<? extends Integer> definesAny$keys() {
+        return (Sequential)empty_.getEmpty$();
     }
 
     @Override
     @Ignore
-    public ceylon.language.List<? extends Element> items(List<? extends Integer> keys) {
+    public ceylon.language.Sequential<? extends Element> items(Sequential<? extends Integer> keys) {
         return $ceylon$language$Correspondence$this.items(keys);
     }
 
     @Override
     @Ignore @SuppressWarnings({"unchecked", "rawtypes"})
-    public ceylon.language.List<? extends Element> items() {
-        return $ceylon$language$Correspondence$this.items((List)empty_.getEmpty$());
+    public ceylon.language.Sequential<? extends Element> items() {
+        return $ceylon$language$Correspondence$this.items((Sequential)empty_.getEmpty$());
     }
     @Override @SuppressWarnings({"unchecked", "rawtypes"})
-    public List<? extends Integer> items$keys() {
-        return (List)empty_.getEmpty$();
+    public Sequential<? extends Integer> items$keys() {
+        return (Sequential)empty_.getEmpty$();
     }
 
     @Override
@@ -337,7 +337,7 @@ public class ArraySequence<Element> implements Sequence<Element> {
 
     @Override
     @Ignore
-    public boolean containsEvery(List<?> elements) {
+    public boolean containsEvery(Sequential<?> elements) {
         return $ceylon$language$Category$this.containsEvery(elements);
     }
 
@@ -349,13 +349,13 @@ public class ArraySequence<Element> implements Sequence<Element> {
 
     @Override
     @Ignore
-    public List<?>containsEvery$elements() {
+    public Sequential<?>containsEvery$elements() {
         return empty_.getEmpty$();
     }
 
     @Override
     @Ignore
-    public boolean containsAny(List<?> elements) {
+    public boolean containsAny(Sequential<?> elements) {
         return $ceylon$language$Category$this.containsAny(elements);
     }
 
@@ -399,7 +399,7 @@ public class ArraySequence<Element> implements Sequence<Element> {
     }
 
     @Override
-    public List<? extends Element> select(Callable<? extends Boolean> f) {
+    public Sequential<? extends Element> select(Callable<? extends Boolean> f) {
         return new FilterIterable<Element>(this, f).getSequence();
     }
 
@@ -447,7 +447,7 @@ public class ArraySequence<Element> implements Sequence<Element> {
 
     @Override
     @Ignore
-    public List<?>containsAny$elements() {
+    public Sequential<?>containsAny$elements() {
         return empty_.getEmpty$();
     }
 

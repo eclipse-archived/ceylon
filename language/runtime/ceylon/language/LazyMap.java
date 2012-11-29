@@ -70,8 +70,8 @@ public class LazyMap<Key, Item> implements Map<Key, Item> {
     }
 
     @Ignore @Override @SuppressWarnings("unchecked")
-    public boolean definesEvery(List<? extends java.lang.Object> keys) {
-        return corr$impl.definesEvery((List<? extends Key>)keys);
+    public boolean definesEvery(Sequential<? extends java.lang.Object> keys) {
+        return corr$impl.definesEvery((Sequential<? extends Key>)keys);
     }
 
     @Override @Ignore
@@ -80,13 +80,13 @@ public class LazyMap<Key, Item> implements Map<Key, Item> {
     }
 
     @Override @Ignore
-    public List<? extends java.lang.Object> definesEvery$keys() {
+    public Sequential<? extends java.lang.Object> definesEvery$keys() {
         return corr$impl.definesEvery$keys();
     }
 
     @Ignore @Override @SuppressWarnings("unchecked")
-    public boolean definesAny(List<? extends java.lang.Object> keys) {
-        return corr$impl.definesAny((List<? extends Key>)keys);
+    public boolean definesAny(Sequential<? extends java.lang.Object> keys) {
+        return corr$impl.definesAny((Sequential<? extends Key>)keys);
     }
 
     @Override @Ignore
@@ -95,23 +95,23 @@ public class LazyMap<Key, Item> implements Map<Key, Item> {
     }
 
     @Override @Ignore
-    public List<? extends java.lang.Object> definesAny$keys() {
+    public Sequential<? extends java.lang.Object> definesAny$keys() {
         return corr$impl.definesAny$keys();
     }
 
     @Ignore @Override @SuppressWarnings("unchecked")
-    public List<? extends Item> items(
-            List<? extends java.lang.Object> keys) {
-        return corr$impl.items((List<? extends Key>)keys);
+    public Sequential<? extends Item> items(
+            Sequential<? extends java.lang.Object> keys) {
+        return corr$impl.items((Sequential<? extends Key>)keys);
     }
 
     @Override @Ignore
-    public List<? extends Item> items() {
+    public Sequential<? extends Item> items() {
         return corr$impl.items();
     }
 
     @Override @Ignore
-    public List<? extends java.lang.Object> items$keys() {
+    public Sequential<? extends java.lang.Object> items$keys() {
         return corr$impl.items$keys();
     }
 
@@ -171,7 +171,7 @@ public class LazyMap<Key, Item> implements Map<Key, Item> {
 
     @Ignore @Override
     @TypeInfo("ceylon.language::Sequential<Element>")
-    public List<? extends Entry<? extends Key, ? extends Item>> getSequence() {
+    public Sequential<? extends Entry<? extends Key, ? extends Item>> getSequence() {
         return entries.getSequence();
     }
 
@@ -206,19 +206,19 @@ public class LazyMap<Key, Item> implements Map<Key, Item> {
     }
 
     @Ignore @Override
-    public List<? extends Entry<? extends Key, ? extends Item>> sort(
+    public Sequential<? extends Entry<? extends Key, ? extends Item>> sort(
             Callable<? extends Comparison> comparing) {
         return entries.sort(comparing);
     }
 
     @Ignore @Override
-    public <Result> List<? extends Result> collect(
+    public <Result> Sequential<? extends Result> collect(
             Callable<? extends Result> collecting) {
         return entries.collect(collecting);
     }
 
     @Ignore @Override
-    public List<? extends Entry<? extends Key, ? extends Item>> select(
+    public Sequential<? extends Entry<? extends Key, ? extends Item>> select(
             Callable<? extends Boolean> selecting) {
         return entries.select(selecting);
     }
@@ -290,7 +290,7 @@ public class LazyMap<Key, Item> implements Map<Key, Item> {
     }
 
     @Ignore @Override
-    public boolean containsEvery(List<?> elements) {
+    public boolean containsEvery(Sequential<?> elements) {
         return cat$impl.containsEvery(elements);
     }
 
@@ -300,13 +300,15 @@ public class LazyMap<Key, Item> implements Map<Key, Item> {
     }
 
     @Override @Ignore
-    public List<?> containsEvery$elements() {
+    public Sequential<?> containsEvery$elements() {
         return cat$impl.containsEvery$elements();
     }
 
     @Ignore @Override
     public boolean containsAny(
-            @Sequenced @Name("elements") @TypeInfo("ceylon.language::Sequential<ceylon.language::Object>") List<?> elements) {
+            @Sequenced @Name("elements")
+            @TypeInfo("ceylon.language::Sequential<ceylon.language::Object>")
+            Sequential<?> elements) {
         return cat$impl.containsAny(elements);
     }
 
@@ -316,7 +318,7 @@ public class LazyMap<Key, Item> implements Map<Key, Item> {
     }
 
     @Override @Ignore
-    public List<?> containsAny$elements() {
+    public Sequential<?> containsAny$elements() {
         return cat$impl.containsAny$elements();
     }
 

@@ -189,10 +189,10 @@ public final class process_ {
     }*/
 
     @SuppressWarnings("unchecked")
-    private List<? extends String> args = (List)empty_.getEmpty$();
+    private Sequential<? extends String> args = (Sequential)empty_.getEmpty$();
     
     @TypeInfo("ceylon.language::Sequential<ceylon.language::String>")
-    public List<? extends String> getArguments() {
+    public Sequential<? extends String> getArguments() {
         return args;
     }
     

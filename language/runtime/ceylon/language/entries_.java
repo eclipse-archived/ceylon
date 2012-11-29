@@ -19,11 +19,11 @@ public final class entries_ {
     @TypeInfo("ceylon.language::Iterable<ceylon.language::Entry<ceylon.language::Integer,Element&ceylon.language::Object>>")
     public static <Element> Iterable<? extends Entry<? extends Integer, ? extends Element>> entries(@Name("elements")
     @Sequenced @TypeInfo("ceylon.language::Sequential<Element>")
-    final ceylon.language.List<? extends Element> elements) {
+    final ceylon.language.Sequential<? extends Element> elements) {
         return elements.getIndexed();
     }
     @Ignore
-    public static <Element> List<? extends Entry<? extends Integer, ? extends Element>> entries() {
-        return (List) empty_.getEmpty$();
+    public static <Element> Sequential<? extends Entry<? extends Integer, ? extends Element>> entries() {
+        return (Sequential) empty_.getEmpty$();
     }
 }

@@ -282,14 +282,14 @@ public abstract class String
     @Ignore
     public boolean definesEvery(@Name("keys")
     @TypeInfo("ceylon.language::Sequential<ceylon.language::Integer>")
-    List<? extends Integer> keys) {
+    Sequential<? extends Integer> keys) {
         //TODO: inefficient ... better to cache the result
         //      of getSize()
         return $ceylon$language$Correspondence$this.definesEvery(keys);
     }
 
     @Ignore
-    public static boolean definesEvery(java.lang.String value, List<? extends Integer> keys) {
+    public static boolean definesEvery(java.lang.String value, Sequential<? extends Integer> keys) {
         //TODO: inefficient ... better to cache the result
         //      of getSize()
         // TODO We're still boxing here!
@@ -299,33 +299,33 @@ public abstract class String
     @Override
     @Ignore
     public boolean definesEvery() {
-        return $ceylon$language$Correspondence$this.definesEvery((List)empty_.getEmpty$());
+        return $ceylon$language$Correspondence$this.definesEvery((Sequential)empty_.getEmpty$());
     }
 
     @Ignore
     public static boolean definesEvery(java.lang.String value) {
         // TODO We're still boxing here!
-        return instance(value).definesEvery((List)empty_.getEmpty$());
+        return instance(value).definesEvery((Sequential)empty_.getEmpty$());
     }
 
     @Override
     @Ignore
-    public List<? extends Integer> definesEvery$keys() {
-        return (List)empty_.getEmpty$();
+    public Sequential<? extends Integer> definesEvery$keys() {
+        return (Sequential)empty_.getEmpty$();
     }
 
     @Override
     @Ignore
     public boolean definesAny(@Name("keys")
     @TypeInfo("ceylon.language::Sequential<ceylon.language::Integer>")
-    List<? extends Integer> keys) {
+    Sequential<? extends Integer> keys) {
         //TODO: inefficient ... better to cache the result
         //      of getSize()
         return $ceylon$language$Correspondence$this.definesAny(keys);
     }
 
     @Ignore
-    public static boolean definesAny(java.lang.String value, List<? extends Integer> keys) {
+    public static boolean definesAny(java.lang.String value, Sequential<? extends Integer> keys) {
         //TODO: inefficient ... better to cache the result
         //      of getSize()
         // TODO We're still boxing here!
@@ -335,51 +335,51 @@ public abstract class String
     @Override
     @Ignore
     public boolean definesAny() {
-        return $ceylon$language$Correspondence$this.definesAny((List)empty_.getEmpty$());
+        return $ceylon$language$Correspondence$this.definesAny((Sequential)empty_.getEmpty$());
     }
 
     @Ignore
     public static boolean definesAny(java.lang.String value) {
         // TODO We're still boxing here!
-        return instance(value).definesAny((List)empty_.getEmpty$());
+        return instance(value).definesAny((Sequential)empty_.getEmpty$());
     }
 
     @Override
     @Ignore
-    public List<? extends Integer> definesAny$keys() {
-        return (List)empty_.getEmpty$();
+    public Sequential<? extends Integer> definesAny$keys() {
+        return (Sequential)empty_.getEmpty$();
     }
 
     @Override
     @Ignore
-    public List<? extends Character> items(@Name("keys")
+    public Sequential<? extends Character> items(@Name("keys")
     @TypeInfo("ceylon.language::Sequential<ceylon.language::Integer>")
-    List<? extends Integer> keys) {
+    Sequential<? extends Integer> keys) {
         return $ceylon$language$Correspondence$this.items(keys);
     }
 
     @Ignore
-    public static List<? extends Character> items(java.lang.String value, List<? extends Integer> keys) {
+    public static Sequential<? extends Character> items(java.lang.String value, Sequential<? extends Integer> keys) {
         // TODO We're still boxing here!
         return instance(value).items(keys);
     }
 
     @Override
     @Ignore
-    public List<? extends Character> items() {
-        return $ceylon$language$Correspondence$this.items((List)empty_.getEmpty$());
+    public Sequential<? extends Character> items() {
+        return $ceylon$language$Correspondence$this.items((Sequential)empty_.getEmpty$());
     }
 
     @Ignore
-    public static List<? extends Character> items(java.lang.String value) {
+    public static Sequential<? extends Character> items(java.lang.String value) {
         // TODO We're still boxing here!
-        return instance(value).items((List)empty_.getEmpty$());
+        return instance(value).items((Sequential)empty_.getEmpty$());
     }
 
     @Override
     @Ignore
-    public List<? extends Integer> items$keys() {
-        return (List)empty_.getEmpty$();
+    public Sequential<? extends Integer> items$keys() {
+        return (Sequential)empty_.getEmpty$();
     }
 
     @Override
@@ -411,15 +411,15 @@ public abstract class String
     }
 
     @TypeInfo("ceylon.language::Sequential<ceylon.language::Character>")
-    public List<? extends Character> getCharacters() {
+    public Sequential<? extends Character> getCharacters() {
         return getCharacters(value);
     }
 
     @Ignore
-    public static List<? extends Character> getCharacters(java.lang.String value) {
+    public static Sequential<? extends Character> getCharacters(java.lang.String value) {
         int length = value.length();
         if (length == 0) {
-            return (List)empty_.getEmpty$();
+            return (Sequential)empty_.getEmpty$();
         }
         Character[] chars = new Character[(int)getSize(value)];
         for (int offset = 0, i = 0; offset < length; i++) {
@@ -528,12 +528,12 @@ public abstract class String
     @Ignore
     public boolean containsAny(@Sequenced @Name("elements")
     @TypeInfo("ceylon.language::Sequential<ceylon.language::Object>")
-    List<?> elements) {
+    Sequential<?> elements) {
         return $ceylon$language$Category$this.containsAny(elements);
     }
 
     @Ignore
-    public static boolean containsAny(java.lang.String value, List<?> elements) {
+    public static boolean containsAny(java.lang.String value, Sequential<?> elements) {
         // TODO We're still boxing here!
         return instance(value).containsAny(elements);
     }
@@ -552,7 +552,7 @@ public abstract class String
 
     @Override
     @Ignore
-    public List<?> containsAny$elements() {
+    public Sequential<?> containsAny$elements() {
         return empty_.getEmpty$();
     }
 
@@ -560,12 +560,12 @@ public abstract class String
     @Ignore
     public boolean containsEvery(@Sequenced @Name("elements")
     @TypeInfo("ceylon.language::Sequential<ceylon.language::Object>")
-    List<?> elements) {
+    Sequential<?> elements) {
         return $ceylon$language$Category$this.containsEvery(elements);
     }
 
     @Ignore
-    public static boolean containsEvery(java.lang.String value, List<?> elements) {
+    public static boolean containsEvery(java.lang.String value, Sequential<?> elements) {
         // TODO We're still boxing here!
         return instance(value).containsEvery(elements);
     }
@@ -584,7 +584,7 @@ public abstract class String
 
     @Override
     @Ignore
-    public List<?> containsEvery$elements() {
+    public Sequential<?> containsEvery$elements() {
         return empty_.getEmpty$();
     }
 
@@ -705,7 +705,7 @@ public abstract class String
     @TypeInfo("ceylon.language::String")
     public java.lang.String join(@Name("strings") @Sequenced
     @TypeInfo("ceylon.language::Sequential<ceylon.language::String>")
-    List<? extends String> strings) {
+    Sequential<? extends String> strings) {
         return join(value, strings);
     }
 
@@ -725,7 +725,7 @@ public abstract class String
 
     @Ignore
     public java.lang.String join() {
-        return join((List)empty_.getEmpty$());
+        return join((Sequential)empty_.getEmpty$());
     }
 
     @Ignore
@@ -1042,16 +1042,16 @@ public abstract class String
     }
 
     @Override @Ignore
-    public <Result> List<? extends Result> collect(Callable<? extends Result> f) {
+    public <Result> Sequential<? extends Result> collect(Callable<? extends Result> f) {
         return new MapIterable<Character, Result>(this, f).getSequence();
     }
     @Ignore
-    public static <Result> List<? extends Result> collect(java.lang.String value, Callable<? extends Result> f) {
+    public static <Result> Sequential<? extends Result> collect(java.lang.String value, Callable<? extends Result> f) {
         return new MapIterable<Character, Result>(instance(value), f).getSequence();
     }
 
     @Ignore
-    public static List<? extends Character> filter(java.lang.String value, Callable<? extends Boolean> f) {
+    public static Sequential<? extends Character> filter(java.lang.String value, Callable<? extends Boolean> f) {
         if (value.isEmpty()) {
             return instance(value);
         } else {
@@ -1060,11 +1060,11 @@ public abstract class String
     }
 
     @Override @Ignore
-    public List<? extends Character> select(Callable<? extends Boolean> f) {
+    public Sequential<? extends Character> select(Callable<? extends Boolean> f) {
         return filter(value, f);
     }
     @Ignore
-    public static List<? extends Character> select(java.lang.String value, Callable<? extends Boolean> f) {
+    public static Sequential<? extends Character> select(java.lang.String value, Callable<? extends Boolean> f) {
         return filter(value, f);
     }
 
@@ -1356,7 +1356,7 @@ public abstract class String
 
         @Override
         @Ignore
-        public List<? extends String> getSequence() {
+        public Sequential<? extends String> getSequence() {
             return $ceylon$language$Iterable$this.getSequence();
         }
         @Override @Ignore
@@ -1369,7 +1369,7 @@ public abstract class String
         }
         @Override
         @Ignore
-        public List<? extends String> sort(Callable<? extends Comparison> f) {
+        public Sequential<? extends String> sort(Callable<? extends Comparison> f) {
             return $ceylon$language$Iterable$this.sort(f);
         }
         @Override
@@ -1384,12 +1384,12 @@ public abstract class String
         }
         @Override
         @Ignore
-        public <Result> List<? extends Result> collect(Callable<? extends Result> f) {
+        public <Result> Sequential<? extends Result> collect(Callable<? extends Result> f) {
             return new MapIterable<String, Result>(this, f).getSequence();
         }
         @Override
         @Ignore
-        public List<? extends String> select(Callable<? extends Boolean> f) {
+        public Sequential<? extends String> select(Callable<? extends Boolean> f) {
             return new FilterIterable<String>(this, f).getSequence();
         }
         @Override
@@ -1491,7 +1491,7 @@ public abstract class String
 
         @Override
         @Ignore
-        public List<? extends Integer> getSequence() {
+        public Sequential<? extends Integer> getSequence() {
             return $ceylon$language$Iterable$this.getSequence();
         }
         @Override @Ignore
@@ -1504,7 +1504,7 @@ public abstract class String
         }
         @Override
         @Ignore
-        public List<? extends Integer> sort(Callable<? extends Comparison> f) {
+        public Sequential<? extends Integer> sort(Callable<? extends Comparison> f) {
             return $ceylon$language$Iterable$this.sort(f);
         }
         @Override
@@ -1518,11 +1518,11 @@ public abstract class String
             return new FilterIterable<Integer>(this, f);
         }
         @Override @Ignore
-        public <Result> List<? extends Result> collect(Callable<? extends Result> f) {
+        public <Result> Sequential<? extends Result> collect(Callable<? extends Result> f) {
             return new MapIterable<Integer, Result>(this, f).getSequence();
         }
         @Override @Ignore
-        public List<? extends Integer> select(Callable<? extends Boolean> f) {
+        public Sequential<? extends Integer> select(Callable<? extends Boolean> f) {
             return new FilterIterable<Integer>(this, f).getSequence();
         }
         @Override

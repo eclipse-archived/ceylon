@@ -21,14 +21,14 @@ public final class array_ {
     @Name("elements")
     @Sequenced
     @TypeInfo("ceylon.language::Sequential<Element>")
-    final ceylon.language.List<? extends Element> elements) {
+    final ceylon.language.Sequential<? extends Element> elements) {
         return array(null, elements);
     }
     
     @Ignore
     public static <Element> Array<Element> array(
             Class typeClass,
-            final ceylon.language.List<? extends Element> elements) {
+            final ceylon.language.Sequential<? extends Element> elements) {
         if (elements.getEmpty()) {
             return arrayOfNone_.<Element>arrayOfNone(typeClass);
         } else {

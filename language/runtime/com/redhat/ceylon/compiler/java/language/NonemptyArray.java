@@ -3,9 +3,9 @@ package com.redhat.ceylon.compiler.java.language;
 import java.util.Arrays;
 
 import ceylon.language.Array;
-import ceylon.language.List;
-import ceylon.language.List$impl;
+import ceylon.language.Iterable;
 import ceylon.language.Sequence;
+import ceylon.language.Sequential;
 import ceylon.language.Some;
 import ceylon.language.arrayOfNone_;
 
@@ -23,7 +23,7 @@ public class NonemptyArray<Element> extends Array<Element> implements Some<Eleme
     }
     
     @Override
-    public List<? extends Element> getRest() {
+    public Iterable<? extends Element> getRest() {
         if (getSize() == 1) {
             return arrayOfNone_.<Element>arrayOfNone();
         } else {
@@ -153,7 +153,7 @@ public class NonemptyArray<Element> extends Array<Element> implements Some<Eleme
     
     @Override 
     @Ignore 
-    public List<? extends Element> getSequence() { 
+    public Sequential<? extends Element> getSequence() { 
         return $ceylon$language$Iterable$this.getSequence(); 
     }
 

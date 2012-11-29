@@ -133,7 +133,7 @@ public final class List$impl<Element> {
     private static <Element,Other> Sequence _withLeading(List<? extends Element> orig, Other elem) {
         SequenceBuilder sb = new SequenceBuilder();
         sb.append(elem);
-        sb.appendAll(orig);
+        sb.appendAll(orig.getSequence());
         return (Sequence)sb.getSequence();
     }
     @SuppressWarnings("rawtypes")
@@ -143,7 +143,7 @@ public final class List$impl<Element> {
     @SuppressWarnings({"rawtypes", "unchecked"})
     private static <Element,Other> Sequence _withTrailing(List<? extends Element> orig, Other elem) {
         SequenceBuilder sb = new SequenceBuilder();
-        sb.appendAll(orig);
+        sb.appendAll(orig.getSequence());
         sb.append(elem);
         return (Sequence)sb.getSequence();
     }

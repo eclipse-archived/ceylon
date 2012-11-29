@@ -34,12 +34,12 @@ public class Tuple<Element, First extends Element, Rest extends Sequential<Eleme
     private final Category$impl category$impl = new Category$impl(this);
     private final Collection$impl<Element> collection$impl = new Collection$impl<Element>(this);
 	private final Element first;
-	private final List<Element> rest;
+	private final Sequential<Element> rest;
 	
 	public Tuple(@TypeInfo(value="First", erased=true) 
 	             @Name("first") Element first,
 	             @TypeInfo(value="Rest&Empty|Rest&Sequence<Element>", erased=true)
-			     @Name("rest") List<Element> rest) {
+			     @Name("rest") Sequential<Element> rest) {
 		this.first = first;
 		this.rest = rest;
 	}
@@ -50,7 +50,7 @@ public class Tuple<Element, First extends Element, Rest extends Sequential<Eleme
 	}
 	
 	@TypeInfo(value="Rest&Empty|Rest&Sequence<Element>", erased=true)
-	public List<Element> getRest() {
+	public Sequential<Element> getRest() {
 		return rest;
 	}
 
@@ -170,7 +170,7 @@ public class Tuple<Element, First extends Element, Rest extends Sequential<Eleme
 	@Override
 	@Annotations(@Annotation("default"))
 	@TypeInfo("ceylon.language::Sequential<Element>")
-	public List<? extends Element> select(
+	public Sequential<? extends Element> select(
 	        @TypeInfo("ceylon.language::Callable<ceylon.language::Boolean,ceylon.language::Tuple<Element,Element,ceylon.language::Empty>>")
 	        Callable<? extends Boolean> selecting) {
 		return iterable$impl.select(selecting);
@@ -262,7 +262,7 @@ public class Tuple<Element, First extends Element, Rest extends Sequential<Eleme
 	@Annotations(@Annotation("default"))
 	public boolean containsEvery(@Sequenced @Name("elements")
 	        @TypeInfo("ceylon.language::Sequential<ceylon.language::Object>")
-	List<?> elements) {
+	Sequential<?> elements) {
 		return category$impl.containsEvery(elements);
 	}
 
@@ -274,7 +274,7 @@ public class Tuple<Element, First extends Element, Rest extends Sequential<Eleme
 
 	@Override
 	@Ignore
-	public List<?> containsEvery$elements() {
+	public Sequential<?> containsEvery$elements() {
 		return category$impl.containsEvery$elements();
 	}
 
@@ -282,7 +282,7 @@ public class Tuple<Element, First extends Element, Rest extends Sequential<Eleme
 	@Annotations(@Annotation("default"))
 	public boolean containsAny(@Sequenced @Name("elements")
 	        @TypeInfo("ceylon.language::Sequential<ceylon.language::Object>")
-	List<?> elements) {
+	Sequential<?> elements) {
 		return category$impl.containsAny(elements);
 	}
 
@@ -294,7 +294,7 @@ public class Tuple<Element, First extends Element, Rest extends Sequential<Eleme
 
 	@Override
 	@Ignore
-	public List<?> containsAny$elements() {
+	public Sequential<?> containsAny$elements() {
 		return category$impl.containsAny$elements();
 	}
 
@@ -315,7 +315,7 @@ public class Tuple<Element, First extends Element, Rest extends Sequential<Eleme
 	@Annotations(@Annotation("default"))
 	public boolean definesEvery(@Sequenced @Name("keys")
             @TypeInfo("ceylon.language::Sequential<ceylon.language::Integer>")
-	        List<? extends Integer> keys) {
+	        Sequential<? extends Integer> keys) {
 		return correspondence$impl.definesEvery(keys);
 	}
 
@@ -327,7 +327,7 @@ public class Tuple<Element, First extends Element, Rest extends Sequential<Eleme
 
 	@Override
 	@Ignore
-	public List<? extends Integer> definesEvery$keys() {
+	public Sequential<? extends Integer> definesEvery$keys() {
 		return correspondence$impl.definesEvery$keys();
 	}
 
@@ -335,7 +335,7 @@ public class Tuple<Element, First extends Element, Rest extends Sequential<Eleme
 	@Annotations(@Annotation("default"))
 	public boolean definesAny(@Sequenced @Name("keys")
             @TypeInfo("ceylon.language::Sequential<ceylon.language::Integer>")
-	        List<? extends Integer> keys) {
+	        Sequential<? extends Integer> keys) {
 		return correspondence$impl.definesAny(keys);
 	}
 
@@ -347,28 +347,28 @@ public class Tuple<Element, First extends Element, Rest extends Sequential<Eleme
 
 	@Override
 	@Ignore
-	public List<? extends Integer> definesAny$keys() {
+	public Sequential<? extends Integer> definesAny$keys() {
 		return correspondence$impl.definesAny$keys();
 	}
 
 	@Override
 	@Annotations(@Annotation("default"))
 	@TypeInfo("ceylon.language::Sequential<Element|ceylon.language::Nothing>")
-	public List<? extends Element> items(@Sequenced @Name("keys")
+	public Sequential<? extends Element> items(@Sequenced @Name("keys")
             @TypeInfo("ceylon.language::Sequential<ceylon.language::Integer>")
-	        List<? extends Integer> keys) {
+	        Sequential<? extends Integer> keys) {
 		return correspondence$impl.items(keys);
 	}
 
 	@Override
 	@Ignore
-	public List<? extends Element> items() {
+	public Sequential<? extends Element> items() {
 		return correspondence$impl.items();
 	}
 
 	@Override
 	@Ignore
-	public List<? extends Integer> items$keys() {
+	public Sequential<? extends Integer> items$keys() {
 		return correspondence$impl.items$keys();
 	}
 
@@ -386,7 +386,7 @@ public class Tuple<Element, First extends Element, Rest extends Sequential<Eleme
 
 	@Override
 	@Annotations(@Annotation("default"))
-	public List<? extends Element> span(Integer from,
+	public Sequential<? extends Element> span(Integer from,
 	        @Name("to") @TypeInfo("ceylon.language::Nothing|ceylon.language::Integer") Integer to) {
 	    long end = to==null ? getSize() : to.value;
 	    long _from = from.value;
@@ -396,13 +396,13 @@ public class Tuple<Element, First extends Element, Rest extends Sequential<Eleme
 
     @Override @SuppressWarnings("unchecked")
 	@Annotations(@Annotation("default"))
-	public List<? extends Element> segment(Integer from, long length) {
+	public Sequential<? extends Element> segment(Integer from, long length) {
 	    long _from = from.value;
         if (_from <= 0) {
             return length==1 ? new ArraySequence<Element>(first)
                 : rest.segment(Integer.instance(0),length+_from-1).withLeading(first);
         }
-        return rest.segment(from.getPredecessor(),length);
+        return (Sequential<? extends Element>) rest.segment(from.getPredecessor(),length);
 	}
 
 	@Override

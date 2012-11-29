@@ -163,7 +163,7 @@ public final class Map$impl<Key,Item> {
 
             @Override
             @Ignore
-            public boolean containsEvery(List<?> elements) {
+            public boolean containsEvery(Sequential<?> elements) {
                 return $ceylon$language$Category$this.containsEvery(elements);
             }
 
@@ -175,13 +175,13 @@ public final class Map$impl<Key,Item> {
 
             @Override
             @Ignore
-            public List<?> containsEvery$elements() {
+            public Sequential<?> containsEvery$elements() {
                 return empty_.getEmpty$();
             }
 
             @Override
             @Ignore
-            public boolean containsAny(List<?> elements) {
+            public boolean containsAny(Sequential<?> elements) {
                 return $ceylon$language$Category$this.containsAny(elements);
             }
 
@@ -193,7 +193,7 @@ public final class Map$impl<Key,Item> {
 
             @Override
             @Ignore
-            public List<?> containsAny$elements() {
+            public Sequential<?> containsAny$elements() {
                 return empty_.getEmpty$();
             }
 
@@ -210,7 +210,7 @@ public final class Map$impl<Key,Item> {
             }
             @Override
             @Ignore
-            public List<? extends Key> getSequence() {
+            public Sequential<? extends Key> getSequence() {
                 return $ceylon$language$Iterable$this.getSequence();
             }
             @Override @Ignore
@@ -223,7 +223,7 @@ public final class Map$impl<Key,Item> {
             }
             @Override
             @Ignore
-            public List<? extends Key> sort(Callable<? extends Comparison> f) {
+            public Sequential<? extends Key> sort(Callable<? extends Comparison> f) {
                 return $ceylon$language$Iterable$this.sort(f);
             }
             @Override
@@ -237,11 +237,11 @@ public final class Map$impl<Key,Item> {
                 return new FilterIterable<Key>(this, f);
             }
             @Override @Ignore
-            public <Result> List<? extends Result> collect(Callable<? extends Result> f) {
+            public <Result> Sequential<? extends Result> collect(Callable<? extends Result> f) {
                 return new MapIterable<Key, Result>(this, f).getSequence();
             }
             @Override @Ignore
-            public List<? extends Key> select(Callable<? extends Boolean> f) {
+            public Sequential<? extends Key> select(Callable<? extends Boolean> f) {
                 return new FilterIterable<Key>(this, f).getSequence();
             }
             @Override
@@ -368,7 +368,7 @@ public final class Map$impl<Key,Item> {
 
             @Override
             @Ignore
-            public boolean containsEvery(List<?> elements) {
+            public boolean containsEvery(Sequential<?> elements) {
                 return $ceylon$language$Category$this.containsEvery(elements);
             }
 
@@ -380,13 +380,13 @@ public final class Map$impl<Key,Item> {
 
             @Override
             @Ignore
-            public List<?> containsEvery$elements() {
+            public Sequential<?> containsEvery$elements() {
                 return empty_.getEmpty$();
             }
 
             @Override
             @Ignore
-            public boolean containsAny(List<?> elements) {
+            public boolean containsAny(Sequential<?> elements) {
                 return $ceylon$language$Category$this.containsAny(elements);
             }
 
@@ -398,7 +398,7 @@ public final class Map$impl<Key,Item> {
 
             @Override
             @Ignore
-            public List<?> containsAny$elements() {
+            public Sequential<?> containsAny$elements() {
                 return empty_.getEmpty$();
             }
 
@@ -416,7 +416,7 @@ public final class Map$impl<Key,Item> {
 
             @Override
             @Ignore
-            public List<? extends Item> getSequence() {
+            public Sequential<? extends Item> getSequence() {
                 return $ceylon$language$Iterable$this.getSequence();
             }
             @Override @Ignore
@@ -429,7 +429,7 @@ public final class Map$impl<Key,Item> {
             }
             @Override
             @Ignore
-            public List<? extends Item> sort(Callable<? extends Comparison> f) {
+            public Sequential<? extends Item> sort(Callable<? extends Comparison> f) {
                 return $ceylon$language$Iterable$this.sort(f);
             }
             @Override
@@ -443,11 +443,11 @@ public final class Map$impl<Key,Item> {
                 return new FilterIterable<Item>(this, f);
             }
             @Override @Ignore
-            public <Result> List<? extends Result> collect(Callable<? extends Result> f) {
+            public <Result> Sequential<? extends Result> collect(Callable<? extends Result> f) {
                 return new MapIterable<Item, Result>(this, f).getSequence();
             }
             @Override @Ignore
-            public List<? extends Item> select(Callable<? extends Boolean> f) {
+            public Sequential<? extends Item> select(Callable<? extends Boolean> f) {
                 return new FilterIterable<Item>(this, f).getSequence();
             }
             @Override
@@ -605,7 +605,7 @@ public final class Map$impl<Key,Item> {
 
             @Override
             @Ignore
-            public boolean definesEvery(List<? extends java.lang.Object> keys) {
+            public boolean definesEvery(Sequential<? extends java.lang.Object> keys) {
                 return $ceylon$language$Correspondence$this.definesEvery(keys);
             }
 
@@ -617,13 +617,13 @@ public final class Map$impl<Key,Item> {
 
             @Override
             @Ignore
-            public List<? extends java.lang.Object> definesEvery$keys() {
+            public Sequential<? extends java.lang.Object> definesEvery$keys() {
                 return empty_.getEmpty$();
             }
 
             @Override
             @Ignore
-            public boolean definesAny(List<? extends java.lang.Object> keys) {
+            public boolean definesAny(Sequential<? extends java.lang.Object> keys) {
                 return $ceylon$language$Correspondence$this.definesAny(keys);
             }
 
@@ -635,25 +635,25 @@ public final class Map$impl<Key,Item> {
 
             @Override
             @Ignore
-            public List<? extends java.lang.Object> definesAny$keys() {
+            public Sequential<? extends java.lang.Object> definesAny$keys() {
                 return empty_.getEmpty$();
             }
 
             @Override
             @Ignore
-            public List<? extends Set<? extends Key>> items(List<? extends java.lang.Object> keys) {
+            public Sequential<? extends Set<? extends Key>> items(Sequential<? extends java.lang.Object> keys) {
                 return $ceylon$language$Correspondence$this.items(keys);
             }
 
             @Override
             @Ignore
-            public List<? extends Set<? extends Key>> items() {
+            public Sequential<? extends Set<? extends Key>> items() {
                 return $ceylon$language$Correspondence$this.items(empty_.getEmpty$());
             }
 
             @Override
             @Ignore
-            public List<? extends java.lang.Object> items$keys() {
+            public Sequential<? extends java.lang.Object> items$keys() {
                 return empty_.getEmpty$();
             }
 
@@ -671,7 +671,7 @@ public final class Map$impl<Key,Item> {
 
             @Override
             @Ignore
-            public boolean containsEvery(List<?> elements) {
+            public boolean containsEvery(Sequential<?> elements) {
                 return $ceylon$language$Category$this.containsEvery(elements);
             }
 
@@ -683,13 +683,13 @@ public final class Map$impl<Key,Item> {
 
             @Override
             @Ignore
-            public List<?> containsEvery$elements() {
+            public Sequential<?> containsEvery$elements() {
                 return empty_.getEmpty$();
             }
 
             @Override
             @Ignore
-            public boolean containsAny(List<?> elements) {
+            public boolean containsAny(Sequential<?> elements) {
                 return $ceylon$language$Category$this.containsAny(elements);
             }
 
@@ -701,7 +701,7 @@ public final class Map$impl<Key,Item> {
 
             @Override
             @Ignore
-            public List<?> containsAny$elements() {
+            public Sequential<?> containsAny$elements() {
                 return empty_.getEmpty$();
             }
 
@@ -724,7 +724,7 @@ public final class Map$impl<Key,Item> {
             }
             @Override
             @Ignore
-            public List<? extends Entry<? extends Item, ? extends Set<? extends Key>>> getSequence() {
+            public Sequential<? extends Entry<? extends Item, ? extends Set<? extends Key>>> getSequence() {
                     return $ceylon$language$Iterable$this.getSequence();
             }
             @Override
@@ -751,7 +751,7 @@ public final class Map$impl<Key,Item> {
             }
             @Override
             @Ignore
-            public List<? extends Entry<? extends Item, ? extends Set<? extends Key>>> sort(Callable<? extends Comparison> f) {
+            public Sequential<? extends Entry<? extends Item, ? extends Set<? extends Key>>> sort(Callable<? extends Comparison> f) {
                 return $ceylon$language$Iterable$this.sort(f);
             }
             @Override
@@ -765,12 +765,12 @@ public final class Map$impl<Key,Item> {
                 return new FilterIterable<Entry<? extends Item, ? extends Set<? extends Key>>>(this, f);
             }
             @Override @Ignore
-            public <Result> List<? extends Result> collect(Callable<? extends Result> f) {
+            public <Result> Sequential<? extends Result> collect(Callable<? extends Result> f) {
                 return new MapIterable<Entry<? extends Item, ? extends Set<? extends Key>>, Result>(this, f).getSequence();
             }
             @Override
             @Ignore
-            public List<? extends Entry<? extends Item, ? extends Set<? extends Key>>> select(Callable<? extends Boolean> f) {
+            public Sequential<? extends Entry<? extends Item, ? extends Set<? extends Key>>> select(Callable<? extends Boolean> f) {
                 return new FilterIterable<Entry<? extends Item, ? extends Set<? extends Key>>>(this, f).getSequence();
             }
             @Override
@@ -874,7 +874,7 @@ public final class Map$impl<Key,Item> {
 
             @Override @Ignore
             public boolean definesEvery(
-                    List<? extends java.lang.Object> keys) {
+                    Sequential<? extends java.lang.Object> keys) {
                 return $this.definesEvery(keys);
             }
 
@@ -884,12 +884,12 @@ public final class Map$impl<Key,Item> {
             }
 
             @Override @Ignore
-            public List<? extends java.lang.Object> definesEvery$keys() {
+            public Sequential<? extends java.lang.Object> definesEvery$keys() {
                 return $this.definesEvery$keys();
             }
 
             @Override @Ignore
-            public boolean definesAny(List<? extends java.lang.Object> keys) {
+            public boolean definesAny(Sequential<? extends java.lang.Object> keys) {
                 return $this.definesAny(keys);
             }
 
@@ -899,23 +899,23 @@ public final class Map$impl<Key,Item> {
             }
 
             @Override @Ignore
-            public List<? extends java.lang.Object> definesAny$keys() {
+            public Sequential<? extends java.lang.Object> definesAny$keys() {
                 return $this.definesAny$keys();
             }
 
             @Override
-            public List<? extends Result> items(
-                    List<? extends java.lang.Object> keys) {
+            public Sequential<? extends Result> items(
+                    Sequential<? extends java.lang.Object> keys) {
                 return $ceylon$language$Correspondence$this.items(keys);
             }
 
             @Override
-            public List<? extends Result> items() {
+            public Sequential<? extends Result> items() {
                 return $ceylon$language$Correspondence$this.items(empty_.getEmpty$());
             }
 
             @Override
-            public List<? extends java.lang.Object> items$keys() {
+            public Sequential<? extends java.lang.Object> items$keys() {
                 return empty_.getEmpty$();
             }
 
@@ -943,7 +943,7 @@ public final class Map$impl<Key,Item> {
             }
 
             @Override
-            public List<? extends Entry<? extends Key, ? extends Result>> getSequence() {
+            public Sequential<? extends Entry<? extends Key, ? extends Result>> getSequence() {
                 return $ceylon$language$Iterable$this.getSequence();
             }
 
@@ -975,12 +975,12 @@ public final class Map$impl<Key,Item> {
                 return new FilterIterable<Entry<? extends Key, ? extends Result>>(this, selecting);
             }
             @Override
-            public <R2> List<? extends R2> collect(
+            public <R2> Sequential<? extends R2> collect(
                     Callable<? extends R2> collecting) {
                 return new MapIterable<Entry<? extends Key, ? extends Result>, R2>(this, collecting).getSequence();
             }
             @Override
-            public List<? extends Entry<? extends Key, ? extends Result>> select(
+            public Sequential<? extends Entry<? extends Key, ? extends Result>> select(
                     Callable<? extends Boolean> selecting) {
                 return new FilterIterable<Entry<? extends Key, ? extends Result>>(this, selecting).getSequence();
             }
@@ -1004,7 +1004,7 @@ public final class Map$impl<Key,Item> {
             }
 
             @Override
-            public List<? extends Entry<? extends Key, ? extends Result>> sort(
+            public Sequential<? extends Entry<? extends Key, ? extends Result>> sort(
                     Callable<? extends Comparison> comparing) {
                 return $ceylon$language$Iterable$this.sort(comparing);
             }
@@ -1062,7 +1062,7 @@ public final class Map$impl<Key,Item> {
             }
 
             @Override
-            public boolean containsEvery(List<?> elements) {
+            public boolean containsEvery(Sequential<?> elements) {
                 return $ceylon$language$Category$this.containsEvery(elements);
             }
 
@@ -1072,12 +1072,12 @@ public final class Map$impl<Key,Item> {
             }
 
             @Override
-            public List<?> containsEvery$elements() {
+            public Sequential<?> containsEvery$elements() {
                 return empty_.getEmpty$();
             }
 
             @Override
-            public boolean containsAny(List<?> elements) {
+            public boolean containsAny(Sequential<?> elements) {
                 return $ceylon$language$Category$this.containsAny(elements);
             }
 
@@ -1087,7 +1087,7 @@ public final class Map$impl<Key,Item> {
             }
 
             @Override
-            public List<?> containsAny$elements() {
+            public Sequential<?> containsAny$elements() {
                 return empty_.getEmpty$();
             }
 

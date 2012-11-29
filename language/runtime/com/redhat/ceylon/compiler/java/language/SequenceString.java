@@ -7,10 +7,9 @@ import ceylon.language.Comparison;
 import ceylon.language.Entry;
 import ceylon.language.Integer;
 import ceylon.language.Iterable;
-import ceylon.language.List;
-import ceylon.language.List$impl;
 import ceylon.language.Map;
 import ceylon.language.Sequence;
+import ceylon.language.Sequential;
 import ceylon.language.Some;
 import ceylon.language.String;
 import ceylon.language.string_;
@@ -32,7 +31,7 @@ public class SequenceString extends String implements Some<Character> {
     }
 
     @Override
-    public List<? extends Character> getRest() {
+    public Sequential<? extends Character> getRest() {
         return span(Integer.instance(1), null);
     }
 
@@ -48,7 +47,7 @@ public class SequenceString extends String implements Some<Character> {
 
     @Override
     @Ignore
-    public List<? extends Character> getSequence() {
+    public Sequential<? extends Character> getSequence() {
         return $ceylon$language$Iterable$this.getSequence();
     }
     @Override @Ignore
@@ -61,7 +60,7 @@ public class SequenceString extends String implements Some<Character> {
     }
     @Override
     @Ignore
-    public List<? extends Character> sort(Callable<? extends Comparison> f) {
+    public Sequential<? extends Character> sort(Callable<? extends Comparison> f) {
         return String.instance(string_.string($ceylon$language$Iterable$this.sort(f)));
     }
     @Override
@@ -70,11 +69,11 @@ public class SequenceString extends String implements Some<Character> {
         return String.instance(string_.string((new FilterIterable<Character>(this, f)).getSequence()));
     }
     @Override @Ignore
-    public <Result> List<? extends Result> collect(Callable<? extends Result> f) {
+    public <Result> Sequential<? extends Result> collect(Callable<? extends Result> f) {
         return new MapIterable<Character,Result>(this, f).getSequence();
     }
     @Override @Ignore
-    public List<? extends Character> select(Callable<? extends Boolean> f) {
+    public Sequential<? extends Character> select(Callable<? extends Boolean> f) {
         return String.instance(string_.string((new FilterIterable<Character>(this, f)).getSequence()));
     }
     @Override

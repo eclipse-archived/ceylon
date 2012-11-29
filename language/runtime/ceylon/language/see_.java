@@ -13,7 +13,7 @@ public class see_
 {
     public static Nothing see(@Name("programElements") @Sequenced
             @TypeInfo("ceylon.language::Sequential<ceylon.language::Void>")
-            final ceylon.language.List<? extends java.lang.Object> value) {
+            final ceylon.language.Sequential<? extends java.lang.Object> value) {
         return null;
     }
     @Ignore

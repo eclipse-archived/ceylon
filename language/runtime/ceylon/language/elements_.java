@@ -20,11 +20,11 @@ public final class elements_ {
     @TypeParameters(@TypeParameter(value="Element"))
     public static <Element> Iterable<? extends Element> elements(@Name("elements") 
     @Sequenced @TypeInfo("ceylon.language::Sequential<Element>")
-    final List<? extends Element> elements) {
+    final Sequential<? extends Element> elements) {
         return elements;
     }
     @Ignore
-    public static <Element> List<? extends Element> elements() {
-        return (List<? extends Element>) empty_.getEmpty$();
+    public static <Element> Sequential<? extends Element> elements() {
+        return (Sequential<? extends Element>) empty_.getEmpty$();
     }
 }

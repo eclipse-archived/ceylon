@@ -17,7 +17,7 @@ public final class count_ {
     @TypeInfo("ceylon.language::Integer")
     public static long count(@Name("values") @Sequenced
     @TypeInfo("ceylon.language::Sequential<ceylon.language::Boolean>")
-    final List<? extends Boolean> values) {
+    final Sequential<? extends Boolean> values) {
         long count=0;
         java.lang.Object $tmp;
         for (Iterator<? extends Boolean> $val$iter$0 = values.getIterator(); 

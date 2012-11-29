@@ -508,15 +508,15 @@ public abstract class Array<Element> implements List<Element>, FixedSized<Elemen
     @Ignore
     public boolean definesEvery(@Sequenced @Name("keys")
     @TypeInfo("ceylon.language::Sequential<ceylon.language::Integer>")
-    List<? extends Integer> keys) {
+    Sequential<? extends Integer> keys) {
         return $ceylon$language$Correspondence$this.definesEvery(keys);
     }
     @Ignore @SuppressWarnings({"unchecked", "rawtypes"})
     public boolean definesEvery() {
-        return $ceylon$language$Correspondence$this.definesEvery((List)empty_.getEmpty$());
+        return $ceylon$language$Correspondence$this.definesEvery((Sequential)empty_.getEmpty$());
     }
     @Ignore @SuppressWarnings({"unchecked", "rawtypes"})
-    public List definesEvery$keys() {
+    public Sequential definesEvery$keys() {
         return empty_.getEmpty$();
     }
 
@@ -524,34 +524,34 @@ public abstract class Array<Element> implements List<Element>, FixedSized<Elemen
     @Ignore
     public boolean definesAny(@Sequenced @Name("keys")
     @TypeInfo("ceylon.language::Sequential<ceylon.language::Integer>")
-    List<? extends Integer> keys) {
+    Sequential<? extends Integer> keys) {
         return $ceylon$language$Correspondence$this.definesAny(keys);
     }
     @Ignore @SuppressWarnings({"unchecked", "rawtypes"})
     public boolean definesAny() {
-        return $ceylon$language$Correspondence$this.definesAny((List)empty_.getEmpty$());
+        return $ceylon$language$Correspondence$this.definesAny((Sequential)empty_.getEmpty$());
     }
     @Ignore @SuppressWarnings({"unchecked", "rawtypes"})
-    public List definesAny$keys() {
+    public Sequential definesAny$keys() {
         return empty_.getEmpty$();
     }
 
     @Override
     @Ignore
-    public List<? extends Element> items(@Sequenced @Name("keys")
+    public Sequential<? extends Element> items(@Sequenced @Name("keys")
     @TypeInfo("ceylon.language::Sequential<ceylon.language::Integer>")
-    List<? extends Integer> keys){
+    Sequential<? extends Integer> keys){
         return $ceylon$language$Correspondence$this.items(keys);
     }
     @Override
     @Ignore @SuppressWarnings({"unchecked", "rawtypes"})
-    public List<? extends Element> items() {
-        return $ceylon$language$Correspondence$this.items((List)empty_.getEmpty$());
+    public Sequential<? extends Element> items() {
+        return $ceylon$language$Correspondence$this.items((Sequential)empty_.getEmpty$());
     }
     @Override
     @Ignore @SuppressWarnings({"unchecked", "rawtypes"})
-    public List<? extends Integer> items$keys() {
-        return (List)empty_.getEmpty$();
+    public Sequential<? extends Integer> items$keys() {
+        return (Sequential)empty_.getEmpty$();
     }
 
     @Override
@@ -616,7 +616,7 @@ public abstract class Array<Element> implements List<Element>, FixedSized<Elemen
     @Ignore
     public boolean containsEvery(@Sequenced @Name("elements")
     @TypeInfo("ceylon.language::Sequential<ceylon.language::Object>")
-    List<?> elements) {
+    Sequential<?> elements) {
         return $ceylon$language$Category$this.containsEvery(elements);
     }
     @Override
@@ -626,7 +626,7 @@ public abstract class Array<Element> implements List<Element>, FixedSized<Elemen
     }
     @Override
     @Ignore
-    public List<?> containsEvery$elements() {
+    public Sequential<?> containsEvery$elements() {
         return empty_.getEmpty$();
     }
 
@@ -634,7 +634,7 @@ public abstract class Array<Element> implements List<Element>, FixedSized<Elemen
     @Ignore
     public boolean containsAny(@Sequenced @Name("elements")
     @TypeInfo("ceylon.language::Sequential<ceylon.language::Object>")
-    List<?> elements) {
+    Sequential<?> elements) {
         return $ceylon$language$Category$this.containsAny(elements);
     }
     @Override
@@ -644,7 +644,7 @@ public abstract class Array<Element> implements List<Element>, FixedSized<Elemen
     }
     @Override
     @Ignore
-    public List<?> containsAny$elements() {
+    public Sequential<?> containsAny$elements() {
         return empty_.getEmpty$();
     }
 
@@ -662,7 +662,7 @@ public abstract class Array<Element> implements List<Element>, FixedSized<Elemen
     }
     @Override
     @Ignore
-    public List<? extends Element> sort(Callable<? extends Comparison> f) {
+    public Sequential<? extends Element> sort(Callable<? extends Comparison> f) {
         return $ceylon$language$Iterable$this.sort(f);
     }
     @Override
@@ -676,11 +676,11 @@ public abstract class Array<Element> implements List<Element>, FixedSized<Elemen
         return new FilterIterable<Element>(this, f);
     }
     @Override @Ignore
-    public <Result> List<? extends Result> collect(Callable<? extends Result> f) {
+    public <Result> Sequential<? extends Result> collect(Callable<? extends Result> f) {
         return new MapIterable<Element, Result>(this, f).getSequence();
     }
     @Override @Ignore
-    public List<? extends Element> select(Callable<? extends Boolean> f) {
+    public Sequential<? extends Element> select(Callable<? extends Boolean> f) {
         return new FilterIterable<Element>(this, f).getSequence();
     }
     @Override

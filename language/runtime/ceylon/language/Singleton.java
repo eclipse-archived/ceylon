@@ -75,54 +75,54 @@ public class Singleton<Element>
 	@Ignore
 	public boolean definesEvery(@Sequenced @Name("keys")
     @TypeInfo("ceylon.language::Sequential<ceylon.language::Integer>")
-	List<? extends Integer> keys) {
+	Sequential<? extends Integer> keys) {
 		return $ceylon$language$Correspondence$this.definesEvery(keys);
 	}
 	@Override @Ignore
     @SuppressWarnings({"rawtypes", "unchecked"})
     public boolean definesEvery() {
-	    return $ceylon$language$Correspondence$this.definesEvery((List)empty_.getEmpty$());
+	    return $ceylon$language$Correspondence$this.definesEvery((Sequential)empty_.getEmpty$());
 	}
 	@Override @Ignore
     @SuppressWarnings({"rawtypes", "unchecked"})
-    public List<? extends Integer> definesEvery$keys() {
-        return (List)empty_.getEmpty$();
+    public Sequential<? extends Integer> definesEvery$keys() {
+        return (Sequential)empty_.getEmpty$();
     }
 
 	@Override
 	@Ignore
 	public boolean definesAny(@Sequenced @Name("keys")
     @TypeInfo("ceylon.language::Sequential<ceylon.language::Integer>")
-	List<? extends Integer> keys) {
+	Sequential<? extends Integer> keys) {
 		return $ceylon$language$Correspondence$this.definesAny(keys);
 	}
 	@Override @Ignore
     @SuppressWarnings({"rawtypes", "unchecked"})
     public boolean definesAny() {
-	    return $ceylon$language$Correspondence$this.definesAny((List)empty_.getEmpty$());
+	    return $ceylon$language$Correspondence$this.definesAny((Sequential)empty_.getEmpty$());
 	}
 	@Override @Ignore
     @SuppressWarnings({"rawtypes", "unchecked"})
-    public List<? extends Integer> definesAny$keys() {
-        return (List)empty_.getEmpty$();
+    public Sequential<? extends Integer> definesAny$keys() {
+        return (Sequential)empty_.getEmpty$();
     }
 
 	@Override
 	@Ignore
-	public List<? extends Element> items(@Sequenced @Name("keys")
+	public Sequential<? extends Element> items(@Sequenced @Name("keys")
     @TypeInfo("ceylon.language::Sequential<ceylon.language::Integer>")
-	List<? extends Integer> keys) {
+	Sequential<? extends Integer> keys) {
 		return $ceylon$language$Correspondence$this.items(keys);
 	}
 	@Override @Ignore
     @SuppressWarnings({"rawtypes", "unchecked"})
-	public List<? extends Element> items() {
-	    return $ceylon$language$Correspondence$this.items((List)empty_.getEmpty$());
+	public Sequential<? extends Element> items() {
+	    return $ceylon$language$Correspondence$this.items((Sequential)empty_.getEmpty$());
 	}
 	@Override @Ignore
     @SuppressWarnings({"rawtypes", "unchecked"})
-    public List<? extends Integer> items$keys() {
-        return (List)empty_.getEmpty$();
+    public Sequential<? extends Integer> items$keys() {
+        return (Sequential)empty_.getEmpty$();
     }
 
 	@Override
@@ -139,8 +139,8 @@ public class Singleton<Element>
 	@Override
 	@TypeInfo("ceylon.language::Empty")
     @SuppressWarnings({"rawtypes", "unchecked"})
-	public List<? extends Element> getRest() {
-		return (List)empty_.getEmpty$();
+	public Sequential<? extends Element> getRest() {
+		return (Sequential)empty_.getEmpty$();
 	}
 
 	@Override
@@ -188,15 +188,15 @@ public class Singleton<Element>
     @Override
     @TypeInfo("ceylon.language::Empty|ceylon.language::Singleton<Element>")
     @SuppressWarnings({"rawtypes", "unchecked"})
-    public List<? extends Element> segment(@Name("from") Integer from,
+    public Sequential<? extends Element> segment(@Name("from") Integer from,
     		@Name("length") long length) {
-    	return from.longValue()==0 && length>0 ? this : (List)empty_.getEmpty$();
+    	return from.longValue()==0 && length>0 ? this : (Sequential)empty_.getEmpty$();
     }
 
     @Override
     @TypeInfo("ceylon.language::Empty|ceylon.language::Singleton<Element>")
     @SuppressWarnings({"rawtypes", "unchecked"})
-    public List<? extends Element> span(@Name("from") Integer from,
+    public Sequential<? extends Element> span(@Name("from") Integer from,
     		@TypeInfo("ceylon.language::Nothing|ceylon.language::Integer")
     		@Name("to") Integer to) {
     	long lowest;
@@ -212,7 +212,7 @@ public class Singleton<Element>
     		lowest = to.longValue();
     		highest = from.longValue();
     	}
-    	return lowest>0 || highest<0 ? (List)empty_.getEmpty$(): this;
+    	return lowest>0 || highest<0 ? (Sequential)empty_.getEmpty$(): this;
     }
 
 	@Override
@@ -228,7 +228,7 @@ public class Singleton<Element>
 
     @Override
     @Ignore
-    public boolean containsEvery(List<?> elements) {
+    public boolean containsEvery(Sequential<?> elements) {
         return $ceylon$language$Category$this.containsEvery(elements);
     }
 
@@ -239,13 +239,13 @@ public class Singleton<Element>
     }
     @Override
     @Ignore
-    public List<?> containsEvery$elements() {
+    public Sequential<?> containsEvery$elements() {
         return empty_.getEmpty$();
     }
 
     @Override
     @Ignore
-    public boolean containsAny(List<?> elements) {
+    public boolean containsAny(Sequential<?> elements) {
         return $ceylon$language$Category$this.containsAny(elements);
     }
 
@@ -257,7 +257,7 @@ public class Singleton<Element>
 
     @Override
     @Ignore
-    public List<?> containsAny$elements() {
+    public Sequential<?> containsAny$elements() {
         return empty_.getEmpty$();
     }
 
@@ -269,9 +269,9 @@ public class Singleton<Element>
     
     @Override
     public boolean equals(java.lang.Object that) {
-        if (that instanceof List) {
+        if (that instanceof Sequential) {
             @SuppressWarnings("unchecked")
-            List<? extends java.lang.Object> other = (List<? extends java.lang.Object>)that;
+            Sequential<? extends java.lang.Object> other = (Sequential<? extends java.lang.Object>)that;
             if (other.getSize()==1) {
                 java.lang.Object elem = other.item(Integer.instance(0));
                 return element==elem ||
@@ -333,10 +333,10 @@ public class Singleton<Element>
     @Override
     @TypeInfo("ceylon.language::Singleton<Element>|ceylon.language::Empty")
     @SuppressWarnings({"unchecked", "rawtypes"})
-    public List<? extends Element> select(@Name("selecting")
+    public Sequential<? extends Element> select(@Name("selecting")
             @TypeInfo("ceylon.language::Callable<ceylon.language::Boolean,ceylon.language::Tuple<Element,Element,ceylon.language::Empty>>")
             Callable<? extends Boolean> selecting) {
-        return selecting.$call(element).booleanValue() ? this : (List)empty_.getEmpty$();
+        return selecting.$call(element).booleanValue() ? this : (Sequential)empty_.getEmpty$();
     }
     @Override
     @Ignore

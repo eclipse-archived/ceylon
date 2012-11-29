@@ -8,9 +8,9 @@ import ceylon.language.Finished;
 import ceylon.language.Integer;
 import ceylon.language.Iterable;
 import ceylon.language.Iterator;
-import ceylon.language.List;
 import ceylon.language.Map;
 import ceylon.language.Sequence;
+import ceylon.language.Sequential;
 
 import com.redhat.ceylon.compiler.java.metadata.Ignore;
 
@@ -61,7 +61,7 @@ public class MapIterable<Element, Result> implements Iterable<Result> {
 
     @Override
     @Ignore
-    public List<? extends Result> getSequence() {
+    public Sequential<? extends Result> getSequence() {
         return $ceylon$language$Iterable$this.getSequence();
     }
     @Override
@@ -74,15 +74,15 @@ public class MapIterable<Element, Result> implements Iterable<Result> {
         return $ceylon$language$Iterable$this.findLast(f);
     }
     @Override @Ignore
-    public List<? extends Result> sort(Callable<? extends Comparison> f) {
+    public Sequential<? extends Result> sort(Callable<? extends Comparison> f) {
         return $ceylon$language$Iterable$this.sort(f);
     }
     @Override @Ignore
-    public <R2> List<? extends R2> collect(Callable<? extends R2> f) {
+    public <R2> Sequential<? extends R2> collect(Callable<? extends R2> f) {
         return $ceylon$language$Iterable$this.collect(f);
     }
     @Override @Ignore
-    public List<? extends Result> select(Callable<? extends Boolean> f) {
+    public Sequential<? extends Result> select(Callable<? extends Boolean> f) {
         return $ceylon$language$Iterable$this.select(f);
     }
     @Override

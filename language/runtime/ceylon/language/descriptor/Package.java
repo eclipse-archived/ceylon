@@ -1,6 +1,6 @@
 package ceylon.language.descriptor;
 
-import ceylon.language.List;
+import ceylon.language.Sequential;
 import ceylon.language.String;
 
 import com.redhat.ceylon.compiler.java.metadata.Ceylon;
@@ -14,7 +14,7 @@ public class Package {
     private final java.lang.String name;
     private final boolean shared;
     private final java.lang.String doc;
-    private final List<? extends String> by;
+    private final Sequential<? extends String> by;
     
     public Package(@Name("name")
     @TypeInfo("ceylon.language::String")
@@ -27,7 +27,7 @@ public class Package {
     java.lang.String doc, @Name("by")
     @Defaulted
     @TypeInfo("ceylon.language::Sequential<ceylon.language::String>")
-    List<? extends String> by) {
+    Sequential<? extends String> by) {
         this.name = name;
         this.shared = shared;
         this.doc = doc;
@@ -50,7 +50,7 @@ public class Package {
     }
     
     @TypeInfo("ceylon.language::Sequential<ceylon.language::String>")
-    public final List<? extends String> getBy() {
+    public final Sequential<? extends String> getBy() {
         return by;
     }
  
@@ -73,10 +73,10 @@ public class Package {
     }
     
     @Ignore
-    public static List<? extends String> $init$by(
+    public static Sequential<? extends String> $init$by(
     final String name, 
     final boolean shared, 
     final java.lang.String doc) {
-        return (List)ceylon.language.empty_.getEmpty$();
+        return (Sequential)ceylon.language.empty_.getEmpty$();
     }
 }

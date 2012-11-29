@@ -17,19 +17,19 @@ public interface Category {
     @Annotations(@Annotation("default"))
     public boolean containsEvery(@Sequenced @Name("elements") 
     @TypeInfo("ceylon.language::Sequential<ceylon.language::Object>")
-    List<?> elements);
+    Sequential<?> elements);
     @Ignore
     public boolean containsEvery();
     @Ignore
-    public List<?> containsEvery$elements();
+    public Sequential<?> containsEvery$elements();
 
     @Annotations(@Annotation("default"))
     public boolean containsAny(@Sequenced @Name("elements") 
     @TypeInfo("ceylon.language::Sequential<ceylon.language::Object>")
-    List<?> elements);
+    Sequential<?> elements);
     @Ignore
     public boolean containsAny();
     @Ignore
-    public List<?> containsAny$elements();
+    public Sequential<?> containsAny$elements();
 
 }

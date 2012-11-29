@@ -57,10 +57,10 @@ public final class Iterable$impl<Element> {
     private static <Element> Iterable<? extends Element> _getRest(final Iterable<Element> $this) {
         return $this.skipping(1);
     }
-    public List<? extends Element> getSequence() {
+    public Sequential<? extends Element> getSequence() {
         return Iterable$impl._getSequence($this);
     }
-    private static <Element> List<? extends Element> _getSequence(Iterable<Element> $this) {
+    private static <Element> Sequential<? extends Element> _getSequence(Iterable<Element> $this) {
         final SequenceBuilder<Element> sb = new SequenceBuilder<Element>();
         java.lang.Object next = null;
         for (Iterator<? extends Element> iter = $this.getIterator(); (next = iter.next()) != exhausted_.getExhausted$();) {
@@ -117,13 +117,13 @@ public final class Iterable$impl<Element> {
         return (Element)last;
     }
 
-    public List<? extends Element> sort(Callable<? extends Comparison> comparing) {
+    public Sequential<? extends Element> sort(Callable<? extends Comparison> comparing) {
         return Iterable$impl._sort($this, comparing);
     }
     @SuppressWarnings("unchecked")
-    private static <Element> List<? extends Element> _sort(Iterable<? extends Element> $this, final Callable<? extends Comparison> comp) {
+    private static <Element> Sequential<? extends Element> _sort(Iterable<? extends Element> $this, final Callable<? extends Comparison> comp) {
         if ($this.getEmpty()) {
-            return (List<? extends Element>) empty_.getEmpty$();
+            return (Sequential<? extends Element>) empty_.getEmpty$();
         }
         Element[] array = Util.toArray($this, (Class<Element>) java.lang.Object.class);
         Arrays.sort(array, new Comparator<Element>() {
@@ -137,17 +137,17 @@ public final class Iterable$impl<Element> {
         return new ArraySequence<Element>(array,0);
     }
 
-    public <Result> List<? extends Result> collect(Callable<? extends Result> collecting) {
+    public <Result> Sequential<? extends Result> collect(Callable<? extends Result> collecting) {
         return Iterable$impl._collect($this, collecting);
     }
-    private static <Element,Result> List<? extends Result> _collect(Iterable<? extends Element> $this, Callable<? extends Result> f) {
+    private static <Element,Result> Sequential<? extends Result> _collect(Iterable<? extends Element> $this, Callable<? extends Result> f) {
         return new MapIterable<Element, Result>($this, f).getSequence();
     }
 
-    public List<? extends Element> select(Callable<? extends Boolean> selecting) {
+    public Sequential<? extends Element> select(Callable<? extends Boolean> selecting) {
         return Iterable$impl._select($this, selecting);
     }
-    private static <Element> List<? extends Element> _select(Iterable<? extends Element> $this, Callable<? extends Boolean> f) {
+    private static <Element> Sequential<? extends Element> _select(Iterable<? extends Element> $this, Callable<? extends Boolean> f) {
         return new FilterIterable<Element>($this, f).getSequence();
     }
 

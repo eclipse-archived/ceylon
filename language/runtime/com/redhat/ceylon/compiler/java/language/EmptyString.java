@@ -7,8 +7,7 @@ import ceylon.language.Comparison;
 import ceylon.language.Entry;
 import ceylon.language.Integer;
 import ceylon.language.Iterable;
-import ceylon.language.List;
-import ceylon.language.List$impl;
+import ceylon.language.Sequential;
 import ceylon.language.Map;
 import ceylon.language.None;
 import ceylon.language.Sequence;
@@ -53,8 +52,8 @@ public class EmptyString extends String implements None<Character> {
 
     @Override
     @Ignore
-    public List<? extends Character> getSequence() {
-        return this;
+    public Sequential<? extends Character> getSequence() {
+        return this.getSequence();
     }
     @Override @Ignore
     public Character find(Callable<? extends Boolean> f) {
@@ -66,8 +65,8 @@ public class EmptyString extends String implements None<Character> {
     }
     @Override
     @Ignore
-    public List<? extends Character> sort(Callable<? extends Comparison> f) {
-        return this;
+    public Sequential<? extends Character> sort(Callable<? extends Comparison> f) {
+        return (Sequential)empty_.getEmpty$();
     }
     @Override
     @Ignore
@@ -76,12 +75,12 @@ public class EmptyString extends String implements None<Character> {
     }
     @SuppressWarnings({"unchecked", "rawtypes"})
     @Override @Ignore
-    public <Result> List<? extends Result> collect(Callable<? extends Result> f) {
-        return (List)empty_.getEmpty$();
+    public <Result> Sequential<? extends Result> collect(Callable<? extends Result> f) {
+        return (Sequential)empty_.getEmpty$();
     }
     @Override @Ignore
-    public List<? extends Character> select(Callable<? extends Boolean> f) {
-        return this;
+    public Sequential<? extends Character> select(Callable<? extends Boolean> f) {
+        return (Sequential)empty_.getEmpty$();
     }
     @Override
     @Ignore

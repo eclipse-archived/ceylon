@@ -45,7 +45,7 @@ public class empty_ {
 
         @Override
         @SuppressWarnings({"rawtypes"})
-        public boolean definesEvery(List keys) {
+        public boolean definesEvery(Sequential keys) {
             return false;
         }
         @Override
@@ -54,13 +54,13 @@ public class empty_ {
         }
         @Override
         @SuppressWarnings({"rawtypes", "unchecked"})
-        public List definesEvery$keys() {
+        public Sequential definesEvery$keys() {
             return this;
         }
 
         @Override
         @SuppressWarnings({"rawtypes"})
-        public boolean definesAny(List keys) {
+        public boolean definesAny(Sequential keys) {
             return false;
         }
         @Override
@@ -69,28 +69,28 @@ public class empty_ {
         }
         @Override
         @SuppressWarnings({"rawtypes", "unchecked"})
-        public List definesAny$keys() {
+        public Sequential definesAny$keys() {
             return this;
         }
 
         @Override
         @SuppressWarnings({"rawtypes"})
-        public List<? extends java.lang.Object> items(List keys) {
+        public Sequential<? extends java.lang.Object> items(Sequential keys) {
             return this;
         }
         @Override
-        public List<? extends java.lang.Object> items() {
+        public Sequential<? extends java.lang.Object> items() {
             return this;
         }
         @Override
         @SuppressWarnings({"rawtypes", "unchecked"})
-        public List items$keys() {
+        public Sequential items$keys() {
             return this;
         }
         
         @Override
         @Ignore
-        public boolean containsEvery(ceylon.language.List<?> elements) {
+        public boolean containsEvery(ceylon.language.Sequential<?> elements) {
             return $ceylon$language$Category$this.containsEvery(elements);
         }
         @Override
@@ -101,13 +101,13 @@ public class empty_ {
         @Override
         @Ignore
         @SuppressWarnings({"rawtypes", "unchecked"})
-        public List containsEvery$elements() {
+        public Sequential containsEvery$elements() {
             return this;
         }
 
         @Override
         @Ignore
-        public boolean containsAny(ceylon.language.List<?> elements) {
+        public boolean containsAny(ceylon.language.Sequential<?> elements) {
             return $ceylon$language$Category$this.containsAny(elements);
         }
         @Override
@@ -118,7 +118,7 @@ public class empty_ {
         @Override
         @Ignore
         @SuppressWarnings({"rawtypes", "unchecked"})
-        public List containsAny$elements() {
+        public Sequential containsAny$elements() {
             return this;
         }
 
@@ -200,8 +200,8 @@ public class empty_ {
 
         @Override
         public boolean equals(java.lang.Object that) {
-            return that instanceof List ?
-                    ((List) that).getEmpty() : false;
+            return that instanceof Sequential ?
+                    ((Sequential) that).getEmpty() : false;
         }
         
         @Override

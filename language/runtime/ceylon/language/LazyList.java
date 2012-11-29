@@ -80,7 +80,7 @@ public class LazyList<Element> implements List<Element> {
     }
 
     @Override @Ignore
-    public List<? extends Element> getSequence() {
+    public Sequential<? extends Element> getSequence() {
         return elems.getSequence();
     }
 
@@ -117,19 +117,19 @@ public class LazyList<Element> implements List<Element> {
     }
 
     @Override @Ignore
-    public List<? extends Element> sort(
+    public Sequential<? extends Element> sort(
             Callable<? extends Comparison> comparing) {
         return elems.sort(comparing);
     }
 
     @Override @Ignore
-    public <Result> List<? extends Result> collect(
+    public <Result> Sequential<? extends Result> collect(
             Callable<? extends Result> collecting) {
         return elems.collect(collecting);
     }
 
     @Override @Ignore
-    public List<? extends Element> select(
+    public Sequential<? extends Element> select(
             Callable<? extends Boolean> selecting) {
         return elems.select(selecting);
     }
@@ -188,7 +188,9 @@ public class LazyList<Element> implements List<Element> {
 
     @Override @Ignore
     public boolean containsEvery(
-            @Sequenced @Name("elements") @TypeInfo("ceylon.language::Sequential<ceylon.language::Object>") List<?> elements) {
+            @Sequenced @Name("elements")
+            @TypeInfo("ceylon.language::Sequential<ceylon.language::Object>")
+            Sequential<?> elements) {
         return cat$impl.containsEvery(elements);
     }
 
@@ -200,13 +202,15 @@ public class LazyList<Element> implements List<Element> {
 
     @Override
     @Ignore
-    public List<?> containsEvery$elements() {
+    public Sequential<?> containsEvery$elements() {
         return cat$impl.containsEvery$elements();
     }
 
     @Override @Ignore
     public boolean containsAny(
-            @Sequenced @Name("elements") @TypeInfo("ceylon.language::Sequential<ceylon.language::Object>") List<?> elements) {
+            @Sequenced @Name("elements")
+            @TypeInfo("ceylon.language::Sequential<ceylon.language::Object>")
+            Sequential<?> elements) {
         return cat$impl.containsAny(elements);
     }
 
@@ -218,7 +222,7 @@ public class LazyList<Element> implements List<Element> {
 
     @Override
     @Ignore
-    public List<?> containsAny$elements() {
+    public Sequential<?> containsAny$elements() {
         return cat$impl.containsAny$elements();
     }
 
@@ -235,7 +239,7 @@ public class LazyList<Element> implements List<Element> {
     }
 
     @Override @Ignore
-    public boolean definesEvery(List<? extends Integer> keys) {
+    public boolean definesEvery(Sequential<? extends Integer> keys) {
         return corr$impl.definesEvery(keys);
     }
 
@@ -247,12 +251,12 @@ public class LazyList<Element> implements List<Element> {
 
     @Override
     @Ignore
-    public List<? extends Integer> definesEvery$keys() {
+    public Sequential<? extends Integer> definesEvery$keys() {
         return corr$impl.definesEvery$keys();
     }
 
     @Override @Ignore
-    public boolean definesAny(List<? extends Integer> keys) {
+    public boolean definesAny(Sequential<? extends Integer> keys) {
         return corr$impl.definesAny(keys);
     }
 
@@ -264,24 +268,24 @@ public class LazyList<Element> implements List<Element> {
 
     @Override
     @Ignore
-    public List<? extends Integer> definesAny$keys() {
+    public Sequential<? extends Integer> definesAny$keys() {
         return corr$impl.definesAny$keys();
     }
 
     @Override @Ignore
-    public List<? extends Element> items(List<? extends Integer> keys) {
+    public Sequential<? extends Element> items(Sequential<? extends Integer> keys) {
         return corr$impl.items(keys);
     }
 
     @Override
     @Ignore
-    public List<? extends Element> items() {
+    public Sequential<? extends Element> items() {
         return corr$impl.items();
     }
 
     @Override
     @Ignore
-    public List<? extends Integer> items$keys() {
+    public Sequential<? extends Integer> items$keys() {
         return corr$impl.items$keys();
     }
 

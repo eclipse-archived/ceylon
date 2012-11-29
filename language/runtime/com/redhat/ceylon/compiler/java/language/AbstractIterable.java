@@ -7,9 +7,9 @@ import ceylon.language.Comparison;
 import ceylon.language.Entry;
 import ceylon.language.Integer;
 import ceylon.language.Iterable;
-import ceylon.language.List;
 import ceylon.language.Map;
 import ceylon.language.Sequence;
+import ceylon.language.Sequential;
 import ceylon.language.exhausted_;
 
 import com.redhat.ceylon.compiler.java.metadata.Class;
@@ -38,7 +38,7 @@ public abstract class AbstractIterable<Element> implements Iterable<Element> {
 
     @Override
     @Ignore
-    public List<? extends Element> getSequence() {
+    public Sequential<? extends Element> getSequence() {
         return $ceylon$language$Iterable$this.getSequence();
     }
     
@@ -88,15 +88,15 @@ public abstract class AbstractIterable<Element> implements Iterable<Element> {
 
     @Override 
     @Ignore
-    public List<? extends Element> sort(Callable<? extends Comparison> f) { 
+    public Sequential<? extends Element> sort(Callable<? extends Comparison> f) { 
         return $ceylon$language$Iterable$this.sort(f); 
     }
     @Override @Ignore
-    public <Result> List<? extends Result> collect(Callable<? extends Result> f) {
+    public <Result> Sequential<? extends Result> collect(Callable<? extends Result> f) {
         return $ceylon$language$Iterable$this.collect(f);
     }
     @Override @Ignore
-    public List<? extends Element> select(Callable<? extends Boolean> f) {
+    public Sequential<? extends Element> select(Callable<? extends Boolean> f) {
         return $ceylon$language$Iterable$this.select(f);
     }
     @Override @Ignore

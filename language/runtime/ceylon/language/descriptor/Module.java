@@ -1,6 +1,6 @@
 package ceylon.language.descriptor;
 
-import ceylon.language.List;
+import ceylon.language.Sequential;
 import ceylon.language.String;
 import ceylon.language.empty_;
 
@@ -16,9 +16,9 @@ public class Module {
     private final java.lang.String name;
     private final java.lang.String version;
     private final java.lang.String doc;
-    private final List<? extends String> by;
+    private final Sequential<? extends String> by;
     private final java.lang.String license;
-    private final List<? extends Import> dependencies;
+    private final Sequential<? extends Import> dependencies;
     
     @TypeInfo("ceylon.language::String")
     public final java.lang.String getName() {
@@ -36,7 +36,7 @@ public class Module {
     }
     
     @TypeInfo("ceylon.language::Sequential<ceylon.language::String>")
-    public final List<? extends String> getBy() {
+    public final Sequential<? extends String> getBy() {
         return by;
     }
     
@@ -46,7 +46,7 @@ public class Module {
     }
     
     @TypeInfo("ceylon.language::Sequential<ceylon.language.descriptor::Import>")
-    public final List<? extends Import> getDependencies() {
+    public final Sequential<? extends Import> getDependencies() {
         return dependencies;
     }
     
@@ -65,13 +65,13 @@ public class Module {
     java.lang.String doc, @Name("by")
     @Defaulted
     @TypeInfo("ceylon.language::Sequential<ceylon.language::String>")
-    List<? extends String> by, @Name("license")
+    Sequential<? extends String> by, @Name("license")
     @Defaulted
     @TypeInfo("ceylon.language::Nothing|ceylon.language::String")
     java.lang.String license, @Name("dependencies")
     @Sequenced
     @TypeInfo("ceylon.language::Sequential<ceylon.language.descriptor::Import>")
-    List<? extends Import> dependencies) {
+    Sequential<? extends Import> dependencies) {
         this.name = name;
         this.version = version;
         this.doc = doc;
@@ -85,9 +85,9 @@ public class Module {
             java.lang.String name, 
             java.lang.String version, 
             java.lang.String doc, 
-            List<? extends String> by, 
+            Sequential<? extends String> by, 
             java.lang.String license) {
-        this(name, version, doc, by, license, (List)empty_.getEmpty$());
+        this(name, version, doc, by, license, (Sequential)empty_.getEmpty$());
     }
     
     @Ignore
@@ -95,8 +95,8 @@ public class Module {
             java.lang.String name, 
             java.lang.String version, 
             java.lang.String doc, 
-            List<? extends String> by) {
-        this(name, version, doc, by, null, (List)empty_.getEmpty$());
+            Sequential<? extends String> by) {
+        this(name, version, doc, by, null, (Sequential)empty_.getEmpty$());
     }
     
     @Ignore
@@ -104,14 +104,14 @@ public class Module {
             java.lang.String name, 
             java.lang.String version, 
             java.lang.String doc) {
-        this(name, version, doc, (List)empty_.getEmpty$(), null, (List)empty_.getEmpty$());
+        this(name, version, doc, (Sequential)empty_.getEmpty$(), null, (Sequential)empty_.getEmpty$());
     }
     
     @Ignore
     public Module(
             java.lang.String name, 
             java.lang.String version) {
-        this(name, version, "", (List)empty_.getEmpty$(), null, (List)empty_.getEmpty$());
+        this(name, version, "", (Sequential)empty_.getEmpty$(), null, (Sequential)empty_.getEmpty$());
     }
     
     @Ignore
@@ -122,11 +122,11 @@ public class Module {
     }
     
     @Ignore
-    public static final List<? extends String> $init$by(
+    public static final Sequential<? extends String> $init$by(
             final java.lang.String name, 
             final java.lang.String version, 
             final java.lang.String doc) {
-        return (List)empty_.getEmpty$();
+        return (Sequential)empty_.getEmpty$();
     }
     
     @Ignore
@@ -134,18 +134,18 @@ public class Module {
             final java.lang.String name, 
             final java.lang.String version, 
             final java.lang.String doc, 
-            final List<? extends String> by) {
+            final Sequential<? extends String> by) {
         return null;
     }
     
     @Ignore
-    public static final List<? extends Import> $init$dependencies(
+    public static final Sequential<? extends Import> $init$dependencies(
             final java.lang.String name, 
             final java.lang.String version, 
             final java.lang.String doc, 
-            final List<? extends String> by,
+            final Sequential<? extends String> by,
             String license) {
-        return (List)empty_.getEmpty$();
+        return (Sequential)empty_.getEmpty$();
     }
 
 }

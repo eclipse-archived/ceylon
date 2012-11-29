@@ -20,7 +20,7 @@ public final class first_ {
     @TypeParameters(@TypeParameter(value="Element"))
     public static <Element> Element first(@Name("elements") 
     @Sequenced @TypeInfo("ceylon.language::Sequential<Element>")
-    final List<? extends Element> elements) {
+    final Sequential<? extends Element> elements) {
         java.lang.Object first = elements.getIterator().next();
         if (first instanceof Finished) {
             return null;

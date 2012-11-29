@@ -13,7 +13,7 @@ public final class by_
 {
     public static Nothing by(@Name("authors") @Sequenced
             @TypeInfo("ceylon.language::Sequential<ceylon.language::String>")
-            final ceylon.language.List<? extends ceylon.language.String> authors) {
+            final ceylon.language.Sequential<? extends ceylon.language.String> authors) {
         return null;
     }
     @Ignore

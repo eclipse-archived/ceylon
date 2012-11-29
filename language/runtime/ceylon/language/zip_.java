@@ -17,7 +17,7 @@ public final class zip_ {
     @TypeParameters({@TypeParameter(value="Key", satisfies="ceylon.language::Object"),
                      @TypeParameter(value="Item", satisfies="ceylon.language::Object")})
     @TypeInfo("ceylon.language::Sequential<ceylon.language::Entry<Key,Item>>")
-    public static <Key,Item> List<? extends Entry<? extends Key, ? extends Item>> zip(
+    public static <Key,Item> Sequential<? extends Entry<? extends Key, ? extends Item>> zip(
     @Name("keys")
     @TypeInfo("ceylon.language::Iterable<Key>")
     final ceylon.language.Iterable<? extends Key> keys,
@@ -35,7 +35,7 @@ public final class zip_ {
 	        item = (Item) itemIter.next();
 		}
 		if (list.isEmpty()) {
-		    return (List) empty_.getEmpty$();
+		    return (Sequential) empty_.getEmpty$();
 		}
 		else {
 		    return new ArraySequence<Entry<? extends Key,? extends Item>>(list);

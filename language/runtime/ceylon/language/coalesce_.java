@@ -20,11 +20,11 @@ public final class coalesce_ {
     public static <Element> Iterable<? extends Element> coalesce(
     @Name("values") @Sequenced
     @TypeInfo("ceylon.language::Sequential<Element>")
-    final ceylon.language.List<? extends Element> values) {
+    final ceylon.language.Sequential<? extends Element> values) {
         return values.getCoalesced();
     }
     @Ignore
-    public static <Element> List<? extends Element> coalesce() {
-        return (List<? extends Element>) empty_.getEmpty$();
+    public static <Element> Sequential<? extends Element> coalesce() {
+        return (Sequential<? extends Element>) empty_.getEmpty$();
     }
 }
