@@ -751,7 +751,8 @@ public abstract class AbstractTransformer implements Transformation {
     }
     
     boolean willEraseToSequential(ProducedType type) {
-        return typeFact().getNonemptySequentialType(typeFact().getDefiniteType(type)) != null;
+        type = typeFact().getDefiniteType(type);
+        return typeFact().isSequentialType(type) && !isCeylonString(type);
     }
 
     boolean isCeylonString(ProducedType type) {
@@ -877,7 +878,7 @@ public abstract class AbstractTransformer implements Transformation {
             //   IdentifiableObject, and Bottom result in the Java type Object
             // For any other union type U|V (U nor V is Optional):
             // - The Ceylon type U|V results in the Java type Object
-            ProducedType seqType = typeFact().getNonemptySequentialType(typeFact().getDefiniteType(type));
+            ProducedType seqType = typeFact().getDefiniteType(type).getSupertype(typeFact().getSequentialDeclaration());
             if (seqType != null) {
                 // We special case the erasure of X[] and X[]?
                 type = seqType;
@@ -1085,7 +1086,7 @@ public abstract class AbstractTransformer implements Transformation {
                 // - The Ceylon type Foo<U|V> results in the raw Java type Foo.
                 // For any other intersection type U&V:
                 // - The Ceylon type Foo<U&V> results in the raw Java type Foo.
-                ProducedType listType = typeFact().getNonemptySequentialType(typeFact().getDefiniteType(ta));
+                ProducedType listType = typeFact().getDefiniteType(ta).getSupertype(typeFact().getSequentialDeclaration());
                 // don't break if the union type is erased to something better than Object
                 if(listType == null){
                     // use raw types if:
