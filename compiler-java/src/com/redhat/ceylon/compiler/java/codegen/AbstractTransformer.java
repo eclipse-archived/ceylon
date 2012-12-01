@@ -751,8 +751,10 @@ public abstract class AbstractTransformer implements Transformation {
     }
     
     boolean willEraseToSequential(ProducedType type) {
-        type = typeFact().getDefiniteType(type);
-        return typeFact().isSequentialType(type) && !isCeylonString(type);
+        type = simplifyType(type);
+        TypeDeclaration decl = type.getDeclaration();
+        return (decl instanceof UnionType || decl instanceof IntersectionType)
+                && typeFact().isSequentialType(type);
     }
 
     boolean isCeylonString(ProducedType type) {
