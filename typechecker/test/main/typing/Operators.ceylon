@@ -176,6 +176,7 @@ class Operators() {
     @type["Nothing|Sequential<String>"] value s1 = noSequence?[1...];
     @type["Nothing|Sequential<String>"] value s2 = noSequence?[...2];
     @type["Nothing|Sequential<String>"] value s3 = noSequence?[1..2];
+    @type["Nothing|Sequential<String>"] value s4 = noSequence?[1:2];
     
     variable Integer n := 0;
     @type["Integer"] n++;
