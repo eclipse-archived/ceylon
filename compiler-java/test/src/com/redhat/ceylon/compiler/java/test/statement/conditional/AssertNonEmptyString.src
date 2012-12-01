@@ -11,7 +11,7 @@ class AssertNonEmptySequence {
         if (($s$1 = .ceylon.language.String.instance(s)) instanceof .ceylon.language.Sequence) {
             $s$2 = $s$1;
         } else throw new .ceylon.language.Exception(.ceylon.language.String.instance("Assertion failed" + .java.lang.System.lineSeparator() + ("\tviolated " + "nonempty s" + .java.lang.System.lineSeparator() + "\tat " + "AssertNonEmptyString.ceylon:23:8-23:27")), null);
-        .ceylon.language.print_.print(((.ceylon.language.Sequence<? extends .ceylon.language.Character>)$s$2).getFirst());
+        .ceylon.language.print_.print(((.ceylon.language.Sequence<? extends .ceylon.language.Character>)(.ceylon.language.Sequence)$s$2).getFirst());
     }
     
     public final void mvar(final .java.lang.String s) {
@@ -20,7 +20,7 @@ class AssertNonEmptySequence {
         if (($t$4 = .ceylon.language.String.instance(s)) instanceof .ceylon.language.Sequence) {
             $t$5 = $t$4;
         } else throw new .ceylon.language.Exception(.ceylon.language.String.instance("Assertion failed" + .java.lang.System.lineSeparator() + ("\tviolated " + "nonempty t=s" + .java.lang.System.lineSeparator() + "\tat " + "AssertNonEmptyString.ceylon:27:8-27:29")), null);
-        .ceylon.language.print_.print(((.ceylon.language.Sequence<? extends .ceylon.language.Character>)$t$5).getFirst());
+        .ceylon.language.print_.print(((.ceylon.language.Sequence<? extends .ceylon.language.Character>)(.ceylon.language.Sequence)$t$5).getFirst());
     }
     
     public static void main(.java.lang.String[] args) {

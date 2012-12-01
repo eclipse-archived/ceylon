@@ -54,7 +54,7 @@ class Bug476Bottom<T, U> extends .com.redhat.ceylon.compiler.java.test.issues.bu
     
     @.java.lang.Override
     public final .com.redhat.ceylon.compiler.java.test.issues.bug04xx.Bug476Top<? extends .com.redhat.ceylon.compiler.java.test.issues.bug04xx.Bug476A> m2() {
-        return (.com.redhat.ceylon.compiler.java.test.issues.bug04xx.Bug476Top<? extends .com.redhat.ceylon.compiler.java.test.issues.bug04xx.Bug476A>).ceylon.language.bottom_.getBottom$();
+        return (.com.redhat.ceylon.compiler.java.test.issues.bug04xx.Bug476Top<? extends .com.redhat.ceylon.compiler.java.test.issues.bug04xx.Bug476A>)(.com.redhat.ceylon.compiler.java.test.issues.bug04xx.Bug476Top).ceylon.language.bottom_.getBottom$();
     }
     private .com.redhat.ceylon.compiler.java.test.issues.bug04xx.Bug476A attr;
     

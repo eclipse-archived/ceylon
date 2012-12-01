@@ -13,7 +13,7 @@ abstract class Bug477_1<T> implements .ceylon.language.List<T> {
         this.$ceylon$language$Cloneable$this = new .ceylon.language.Cloneable$impl<.ceylon.language.Collection<? extends T>>((.ceylon.language.Cloneable<.ceylon.language.Collection<? extends T>>)(.ceylon.language.Cloneable)this);
         this.$ceylon$language$Correspondence$this = new .ceylon.language.Correspondence$impl<.ceylon.language.Integer, T>(this);
         this.$ceylon$language$Ranged$this = new .ceylon.language.Ranged$impl<.ceylon.language.Integer, .ceylon.language.List<? extends T>>(this);
-        this.clone = (.com.redhat.ceylon.compiler.java.test.issues.bug04xx.Bug477_1<? extends T>).ceylon.language.bottom_.getBottom$();
+        this.clone = (.com.redhat.ceylon.compiler.java.test.issues.bug04xx.Bug477_1<? extends T>)(.com.redhat.ceylon.compiler.java.test.issues.bug04xx.Bug477_1).ceylon.language.bottom_.getBottom$();
         this.string = ((.ceylon.language.String).ceylon.language.bottom_.getBottom$()).toString();
         this.hash = (int)1L;
     }
@@ -299,7 +299,7 @@ abstract class Bug477_2<T> implements .ceylon.language.List<T> {
         this.$ceylon$language$Cloneable$this = new .ceylon.language.Cloneable$impl<.ceylon.language.Collection<? extends T>>((.ceylon.language.Cloneable<.ceylon.language.Collection<? extends T>>)(.ceylon.language.Cloneable)this);
         this.$ceylon$language$Correspondence$this = new .ceylon.language.Correspondence$impl<.ceylon.language.Integer, T>(this);
         this.$ceylon$language$Ranged$this = new .ceylon.language.Ranged$impl<.ceylon.language.Integer, .ceylon.language.List<? extends T>>(this);
-        this.clone = (.ceylon.language.List<? extends T>).ceylon.language.bottom_.getBottom$();
+        this.clone = (.ceylon.language.List<? extends T>)(.ceylon.language.List).ceylon.language.bottom_.getBottom$();
         this.string = ((.ceylon.language.String).ceylon.language.bottom_.getBottom$()).toString();
         this.hash = (int)1L;
     }

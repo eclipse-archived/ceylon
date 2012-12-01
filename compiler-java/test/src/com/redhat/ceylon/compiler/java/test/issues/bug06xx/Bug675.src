@@ -25,6 +25,6 @@ public final class bug675_ {
             final long k = ((.ceylon.language.Entry<? extends .ceylon.language.Integer, ? extends .ceylon.language.Integer>)$elem$0).getKey().longValue();
             final long v = ((.ceylon.language.Entry<? extends .ceylon.language.Integer, ? extends .ceylon.language.Integer>)$elem$0).getItem().longValue();
         }
-        return ((.ceylon.language.Iterable<? extends Element>)elements).getIndexed();
+        return ((.ceylon.language.Iterable<? extends Element>)(.ceylon.language.Iterable)elements).getIndexed();
     }
 }

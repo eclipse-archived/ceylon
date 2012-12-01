@@ -12,9 +12,7 @@ final class bug594_ {
         if (($s$1 = s) == null || $s$1 instanceof .ceylon.language.String) {
             final .ceylon.language.String $s$2 = (.ceylon.language.String)$s$1;
         }
-        .java.lang.Object $t$4;
-        if (($t$4 = t) == null || $t$4 instanceof .ceylon.language.String) {
-            final .ceylon.language.Sequential<? extends .ceylon.language.Character> $t$5 = (.ceylon.language.Sequential)$t$4;
+        if (t == null || t instanceof .ceylon.language.String) {
         }
     }
 }

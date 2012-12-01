@@ -8,7 +8,7 @@ public final class helloworld_ {
     public static void helloworld() {
         .ceylon.language.Sequential<? extends .ceylon.language.String> $args$1;
         if (($args$1 = .ceylon.language.process_.getProcess$().getArguments()) instanceof .ceylon.language.Sequence) {
-            final .ceylon.language.Sequence<? extends .ceylon.language.String> $args$2 = (.ceylon.language.Sequence<? extends .ceylon.language.String>)$args$1;
+            final .ceylon.language.Sequence<? extends .ceylon.language.String> $args$2 = (.ceylon.language.Sequence<? extends .ceylon.language.String>)(.ceylon.language.Sequence)$args$1;
             .ceylon.language.process_.getProcess$().write("Hello ");
             .ceylon.language.process_.getProcess$().writeLine($args$2.getFirst().toString());
         } else {

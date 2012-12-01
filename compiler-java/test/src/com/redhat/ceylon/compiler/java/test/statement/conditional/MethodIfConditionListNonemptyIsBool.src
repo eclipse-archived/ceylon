@@ -12,7 +12,7 @@ class MethodIfConditionList {
         .ceylon.language.Sequential<? extends .java.lang.Object> $x$1;
         final .ceylon.language.Sequence<? extends .java.lang.Object> $x$2;
         if (($x$1 = x) instanceof .ceylon.language.Sequence) {
-            $x$2 = (.ceylon.language.Sequence<? extends .java.lang.Object>)$x$1;
+            $x$2 = (.ceylon.language.Sequence<? extends .java.lang.Object>)(.ceylon.language.Sequence)$x$1;
             if (($y$3 = $x$2.item(.ceylon.language.Integer.instance(0L))) instanceof .ceylon.language.Integer) {
                 $y$4 = ((.ceylon.language.Integer)$y$3).longValue();
                 if ($y$4 > 0L) {

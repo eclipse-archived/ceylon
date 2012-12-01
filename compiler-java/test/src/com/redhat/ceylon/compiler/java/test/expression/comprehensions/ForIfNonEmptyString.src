@@ -39,7 +39,7 @@ class ForIfNonEmptySequence {
                     }
                     
                     public final .java.lang.Object next() {
-                        return this.next1() ? ((.ceylon.language.Sequence<? extends .ceylon.language.Character>)$s$2).getFirst() : .ceylon.language.exhausted_.getExhausted$();
+                        return this.next1() ? ((.ceylon.language.Sequence<? extends .ceylon.language.Character>)(.ceylon.language.Sequence)$s$2).getFirst() : .ceylon.language.exhausted_.getExhausted$();
                     }
                 };
             }
@@ -80,7 +80,7 @@ class ForIfNonEmptySequence {
                     }
                     
                     public final .java.lang.Object next() {
-                        return this.next1() ? ((.ceylon.language.Sequence<? extends .ceylon.language.Character>)$t$5).getFirst() : .ceylon.language.exhausted_.getExhausted$();
+                        return this.next1() ? ((.ceylon.language.Sequence<? extends .ceylon.language.Character>)(.ceylon.language.Sequence)$t$5).getFirst() : .ceylon.language.exhausted_.getExhausted$();
                     }
                 };
             }

@@ -31,7 +31,7 @@ class ForIfNonEmptySequence {
                             if (!this.x()) break;
                             .ceylon.language.Sequential<? extends .ceylon.language.Integer> $x$1 = null;
                             if (($x$1 = x) instanceof .ceylon.language.Sequence) {
-                                $x$2 = (.ceylon.language.Sequence<? extends .ceylon.language.Integer>)$x$1;
+                                $x$2 = (.ceylon.language.Sequence<? extends .ceylon.language.Integer>)(.ceylon.language.Sequence)$x$1;
                                 break;
                             }
                         }
@@ -72,7 +72,7 @@ class ForIfNonEmptySequence {
                             if (!this.x()) break;
                             .ceylon.language.Sequential<? extends .ceylon.language.Integer> $s$4 = null;
                             if (($s$4 = x) instanceof .ceylon.language.Sequence) {
-                                $s$5 = (.ceylon.language.Sequence<? extends .ceylon.language.Integer>)$s$4;
+                                $s$5 = (.ceylon.language.Sequence<? extends .ceylon.language.Integer>)(.ceylon.language.Sequence)$s$4;
                                 break;
                             }
                         }

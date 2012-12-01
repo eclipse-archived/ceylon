@@ -7,7 +7,7 @@ class Bug626 implements .ceylon.language.Iterable<.ceylon.language.Sequential<?>
         this.$ceylon$language$ContainerWithFirstElement$this = new .ceylon.language.ContainerWithFirstElement$impl<.ceylon.language.Sequential<?>, .java.lang.Object>(this);
         this.$ceylon$language$Container$this = new .ceylon.language.Container$impl(this);
         this.hash = (int)((.ceylon.language.Integer).ceylon.language.bottom_.getBottom$()).longValue();
-        this.iterator = (.ceylon.language.Iterator<? extends .ceylon.language.Sequential<?>>).ceylon.language.bottom_.getBottom$();
+        this.iterator = (.ceylon.language.Iterator<? extends .ceylon.language.Sequential<?>>)(.ceylon.language.Iterator).ceylon.language.bottom_.getBottom$();
     }
     protected final .ceylon.language.Iterable$impl<.ceylon.language.Sequential<?>> $ceylon$language$Iterable$this;
     
@@ -162,7 +162,7 @@ final class bug626f_ {
         final .ceylon.language.Sequential<?> temp = (
             let
             {
-                .ceylon.language.Sequential $arg$0$0 = (.ceylon.language.Sequential)((.ceylon.language.Sequential)new .com.redhat.ceylon.compiler.java.test.issues.bug06xx.Bug626()).getSequence();
+                .ceylon.language.Sequential $arg$0$0 = new .com.redhat.ceylon.compiler.java.test.issues.bug06xx.Bug626().getSequence();
             }
             returning .ceylon.language.join_.join($arg$0$0);
         );
