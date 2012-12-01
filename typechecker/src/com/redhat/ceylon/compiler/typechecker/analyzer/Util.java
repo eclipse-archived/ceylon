@@ -116,6 +116,7 @@ class Util {
         for (int i=statements.size()-1; i>=0; i--) {
             Tree.Statement s = statements.get(i);
             if (s instanceof Tree.SpecifierStatement) {
+            	//shortcut refinement statements with => aren't really "executable"
             	Tree.SpecifierStatement ss = (Tree.SpecifierStatement) s;
 				if (!(ss.getSpecifierExpression() instanceof Tree.LazySpecifierExpression) || 
 						!ss.getRefinement()) {

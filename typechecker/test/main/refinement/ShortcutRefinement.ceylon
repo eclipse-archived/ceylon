@@ -136,3 +136,24 @@ class FatArrowRefinement(name)
     shared actual String string => name;
     compare(FatArrowRefinement other) => name<=>other.name;
 }
+
+interface Above {
+    shared formal void f();
+    shared formal String s;
+}
+interface Below satisfies Above {
+    f() => print(s);
+    s => "";
+}
+interface Below2 satisfies Above {
+    shared actual void f() { print(s); }
+    shared actual String s { return ""; }
+}
+interface BrokenBelow satisfies Above {
+    void g() {}
+    @error f = g;
+    @error s = "";
+}
+object below satisfies Below {}
+object below2 satisfies Below2 {}
+@error object brokenBelow satisfies Below&Below2 {}

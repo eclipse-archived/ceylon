@@ -648,7 +648,7 @@ public class ExpressionVisitor extends Visitor {
             Declaration d = bme.getDeclaration();
             if (d!=null) { 
                 Scope cs = that.getScope().getContainer();
-				if (cs instanceof Class && 
+				if (cs instanceof ClassOrInterface && 
                         !d.isDefinedInScope(cs)) {
                     //then it must be inherited ... TODO: is this totally correct? 
                     //so it's actually a refinement of a formal declaration!
@@ -695,7 +695,7 @@ public class ExpressionVisitor extends Visitor {
 
     private void refine(Value sv, Tree.BaseMemberExpression bme,
             Tree.SpecifierStatement that) {
-        Class c = (Class) that.getScope().getContainer();
+    	ClassOrInterface c = (ClassOrInterface) that.getScope().getContainer();
         if (sv.isVariable()) {
             that.addError("attribute is variable: " + 
                     RefinementVisitor.message(sv));
@@ -725,14 +725,14 @@ public class ExpressionVisitor extends Visitor {
         that.setRefinement(true);
     }
 
-    private ProducedReference getRefinedMember(MethodOrValue sv, Class c) {
+    private ProducedReference getRefinedMember(MethodOrValue sv, ClassOrInterface c) {
         return sv.getProducedReference(c.getType().getSupertype((TypeDeclaration)sv.getContainer()), 
                 Collections.<ProducedType>emptyList());
     }
 
     private void refine(Method sm, Tree.BaseMemberExpression bme,
             Tree.SpecifierStatement that) {
-        Class c = (Class) that.getScope().getContainer();
+    	ClassOrInterface c = (ClassOrInterface) that.getScope().getContainer();
         if (!sm.isFormal()
                 && !sm.isShortcutRefinement()) { //this condition is here to squash a dupe message
             bme.addError("method is not formal: " + 

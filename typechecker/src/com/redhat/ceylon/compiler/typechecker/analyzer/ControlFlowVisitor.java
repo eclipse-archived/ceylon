@@ -223,7 +223,16 @@ public class ControlFlowVisitor extends Visitor {
     
     @Override
     public void visit(Tree.ExecutableStatement that) {
-        checkExecutableStatementAllowed(that);
+    	boolean executable = true;
+    	//shortcut refinement statements with => aren't really "executable"
+    	if (that instanceof Tree.SpecifierStatement) {
+    		Tree.SpecifierStatement s = (Tree.SpecifierStatement) that;
+    		executable = !(s.getSpecifierExpression() instanceof Tree.LazySpecifierExpression) ||
+    					!s.getRefinement();
+    	}
+		if (executable) {
+    		checkExecutableStatementAllowed(that);
+    	}
         super.visit(that);
     }
 
