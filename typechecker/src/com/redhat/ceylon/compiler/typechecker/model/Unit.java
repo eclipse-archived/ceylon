@@ -541,7 +541,7 @@ public class Unit {
         }
     }
 
-    public ProducedType getFixedSizedElementType(ProducedType type) {
+    public ProducedType getSequentialElementType(ProducedType type) {
         ProducedType st = type.getSupertype(getSequentialDeclaration());
         if (st!=null && st.getTypeArguments().size()==1) {
             return st.getTypeArgumentList().get(0);
@@ -564,7 +564,7 @@ public class Unit {
 
     public ProducedType getNonemptyType(ProducedType pt) {
         return intersectionType(producedType(getSequenceDeclaration(), 
-                getFixedSizedElementType(pt)), pt, 
+                getSequentialElementType(pt)), pt, 
                 pt.getDeclaration().getUnit());
         /*if (pt.getDeclaration().equals(getVoidDeclaration())) {
             return getObjectDeclaration().getType();
