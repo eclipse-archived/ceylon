@@ -304,32 +304,18 @@ public class ExpressionTransformer extends AbstractTransformer {
         // abort if both types are the same
         if(exprType.isExactly(expectedType))
             return false;
-        // we can't find a common type with a sequence since it's a union
-        if(willEraseToSequential(expectedType)){
-            ProducedType commonType = exprType.getSupertype(typeFact().getIterableDeclaration());
-            // something fishy
-            if(commonType == null)
+        ProducedType commonType = exprType.getSupertype(expectedType.getDeclaration());
+        if(commonType == null || !(commonType.getDeclaration() instanceof ClassOrInterface))
+            return false;
+        if(!expectedTypeNotRaw){
+            if(hasErasedTypeParameters(expectedType, false))
                 return false;
-            if(!expectedTypeNotRaw){
-                ProducedType expectedTypeErasure = typeFact().getNonemptyIterableType(typeFact().getDefiniteType(expectedType));
-                if(hasErasedTypeParameters(expectedTypeErasure, false))
-                    return false;
-            }
-            return hasErasedTypeParameters(commonType, true);
-        }else{
-            ProducedType commonType = exprType.getSupertype(expectedType.getDeclaration());
-            if(commonType == null || !(commonType.getDeclaration() instanceof ClassOrInterface))
-                return false;
-            if(!expectedTypeNotRaw){
-                if(hasErasedTypeParameters(expectedType, false))
-                    return false;
-            }
-            // Surely this is a sign of a really badly designed method but I (Stef) have a strong
-            // feeling that callables never need a raw cast
-            if(isCeylonCallable(commonType))
-                return false;
-            return hasErasedTypeParameters(commonType, false);
         }
+        // Surely this is a sign of a really badly designed method but I (Stef) have a strong
+        // feeling that callables never need a raw cast
+        if(isCeylonCallable(commonType))
+            return false;
+        return hasErasedTypeParameters(commonType, false);
     }
 
     private boolean hasErasedTypeParameters(ProducedType type, boolean keepRecursing) {
