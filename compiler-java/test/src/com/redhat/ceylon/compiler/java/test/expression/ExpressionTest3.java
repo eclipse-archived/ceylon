@@ -132,7 +132,7 @@ public class ExpressionTest3 extends CompilerTest {
     
     @Test
     // depends on https://github.com/ceylon/ceylon-spec/issues/441
-    public void testComprehensionForIfNonEmptyString_fail(){
+    public void testComprehensionForIfNonEmptyString(){
         compareWithJavaSource("comprehensions/ForIfNonEmptyString");
     }
     
