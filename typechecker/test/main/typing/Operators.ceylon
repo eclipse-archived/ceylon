@@ -173,6 +173,10 @@ class Operators() {
     @type["Nothing|Iterable<String>"] value x532 = noSequence?[0]?.split((Character c) c==` `);
     @type["Sequence<Operators.X>"] value x54 = {Operators()}[].X();
     
+    @type["Nothing|Sequential<String>"] value s1 = noSequence?[1...];
+    @type["Nothing|Sequential<String>"] value s2 = noSequence?[...2];
+    @type["Nothing|Sequential<String>"] value s3 = noSequence?[1..2];
+    
     variable Integer n := 0;
     @type["Integer"] n++;
     @type["Integer"] ++n;

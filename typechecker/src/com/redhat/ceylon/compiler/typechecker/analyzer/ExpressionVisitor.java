@@ -2258,6 +2258,9 @@ public class ExpressionVisitor extends Visitor {
                         	refineTypeForTupleOpenRange(that, pt, 
                         			er.getLowerBound().getTerm());
                         }
+                        if (that.getIndexOperator() instanceof Tree.SafeIndexOp) {
+                        	that.setTypeModel(unit.getOptionalType(that.getTypeModel()));
+                        }
                     }
                 }
             }
