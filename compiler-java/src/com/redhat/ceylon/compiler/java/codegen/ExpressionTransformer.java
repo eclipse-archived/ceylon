@@ -269,7 +269,12 @@ public class ExpressionTransformer extends AbstractTransformer {
                 // (without the underlying type, because the cast is always to a non-primitive)
                 expectedType = getTypeOrSelfType(expectedType);
                 exprType = simplifyType(expectedType).withoutUnderlyingType();
-                // Erased types need a type cast
+                // Erased types need a type cast, first we check if a raw cast is needed
+                if (!expectedType.getTypeArgumentList().isEmpty()) {
+                    JCExpression rawType = makeJavaType(expectedType, AbstractTransformer.JT_TYPE_ARGUMENT | AbstractTransformer.JT_RAW);
+                    result = make().TypeCast(rawType, result);
+                }
+                // then the actual cast
                 JCExpression targetType = makeJavaType(expectedType, AbstractTransformer.JT_TYPE_ARGUMENT);
                 result = make().TypeCast(targetType, result);
             }else if(needsRawCast(exprType, expectedType, (flags & EXPR_EXPECTED_TYPE_NOT_RAW) != 0)){
