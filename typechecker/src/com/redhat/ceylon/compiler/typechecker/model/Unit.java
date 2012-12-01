@@ -590,6 +590,10 @@ public class Unit {
         return pt.minus(getEmptyDeclaration()).getSupertype(getListDeclaration());
     }
     
+    public ProducedType getNonemptySequentialType(ProducedType pt) {
+        return pt.minus(getEmptyDeclaration()).getSupertype(getSequentialDeclaration());
+    }
+    
     public boolean isEntryType(ProducedType pt) {
         return pt.getSupertype(getEntryDeclaration())!=null;
     }
