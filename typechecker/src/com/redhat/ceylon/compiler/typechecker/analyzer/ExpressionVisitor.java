@@ -2249,12 +2249,13 @@ public class ExpressionVisitor extends Visitor {
                                     "length must be an integer");
                         }
                         that.setTypeModel(rt);
-                        if (er.getLowerBound()!=null && er.getUpperBound()!=null) {
-                        	refineTypeForTupleRange(that, pt, 
-                        			er.getLowerBound().getTerm(), 
-                        			er.getUpperBound().getTerm());
-                        }
-                        else if (er.getLowerBound()!=null) {
+//                        if (er.getLowerBound()!=null && er.getUpperBound()!=null) {
+//                        	refineTypeForTupleRange(that, pt, 
+//                        			er.getLowerBound().getTerm(), 
+//                        			er.getUpperBound().getTerm());
+//                        }
+//                        else if (er.getLowerBound()!=null) {
+                        if (er.getLowerBound()!=null && er.getUpperBound()==null) {
                         	refineTypeForTupleOpenRange(that, pt, 
                         			er.getLowerBound().getTerm());
                         }

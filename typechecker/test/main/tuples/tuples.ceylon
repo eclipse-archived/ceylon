@@ -50,18 +50,20 @@ void test() {
     Tuple<String,String,Tuple<String,String,<>>> unsugared = Tuple("hello",Tuple("goodbye",{}));
     <String,String> sugared = unsugared;
     
-    <String, Integer> t0 = 
-            (1, 2, "", 4, 5)[2..3];
+    //<String, Integer> t0 = 
+    //        (1, 2, "", 4, 5)[2..3];
     <String, Integer, Integer> t1 = 
             (1, 2, "", 4, 5)[2...];
-    <String, Integer> t2 = 
-            (1, 2, "", 4, 5, "hello"...)[2..3];
-    <String, Integer, Integer, Character> t3 = 
-            (1, 2, "", 4, 5, "hello"...)[2..5];
-    <String, Integer, Integer, Character, Character, Character, Character> t4 = 
-            (1, 2, "", 4, 5, "hello"...)[2..8];
+    //<String, Integer> t2 = 
+    //        (1, 2, "", 4, 5, "hello"...)[2..3];
+    //<String, Integer, Integer, Character> t3 = 
+    //        (1, 2, "", 4, 5, "hello"...)[2..5];
+    //<String, Integer, Integer, Character, Character, Character, Character> t4 = 
+    //        (1, 2, "", 4, 5, "hello"...)[2..8];
     <String, Integer, Integer, Character...> t5 = 
             (1, 2, "", 4, 5, "hello"...)[2...];
+    //<Integer, Integer, String, Integer, Integer> t6 = 
+    //        (1, 2, "", 4, 5)[-2..6];
     <Integer, Integer, String, Integer, Integer> t6 = 
-            (1, 2, "", 4, 5)[-2..6];
+            (1, 2, "", 4, 5)[-2...];
 }
