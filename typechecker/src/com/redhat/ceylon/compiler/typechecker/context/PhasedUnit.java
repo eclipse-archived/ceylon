@@ -16,15 +16,12 @@ import com.redhat.ceylon.compiler.typechecker.analyzer.SpecificationVisitor;
 import com.redhat.ceylon.compiler.typechecker.analyzer.TypeArgumentVisitor;
 import com.redhat.ceylon.compiler.typechecker.analyzer.TypeHierarchyVisitor;
 import com.redhat.ceylon.compiler.typechecker.analyzer.TypeVisitor;
-import com.redhat.ceylon.compiler.typechecker.analyzer.ValueVisitor;
 import com.redhat.ceylon.compiler.typechecker.io.VirtualFile;
 import com.redhat.ceylon.compiler.typechecker.io.impl.Helper;
 import com.redhat.ceylon.compiler.typechecker.model.Declaration;
 import com.redhat.ceylon.compiler.typechecker.model.Module;
 import com.redhat.ceylon.compiler.typechecker.model.Package;
-import com.redhat.ceylon.compiler.typechecker.model.Setter;
 import com.redhat.ceylon.compiler.typechecker.model.TypeDeclaration;
-import com.redhat.ceylon.compiler.typechecker.model.TypedDeclaration;
 import com.redhat.ceylon.compiler.typechecker.model.Unit;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree;
 import com.redhat.ceylon.compiler.typechecker.tree.Validator;
@@ -240,10 +237,10 @@ public class PhasedUnit {
             //System.out.println("Validate specification for " + fileName);
             for (Declaration d: unit.getDeclarations()) {
                 compilationUnit.visit(new SpecificationVisitor(d));
-                if (d instanceof TypedDeclaration && !(d instanceof Setter)) {
-                    compilationUnit.visit(new ValueVisitor((TypedDeclaration) d));
-                }
-                else if (d instanceof TypeDeclaration) {
+//                if (d instanceof TypedDeclaration && !(d instanceof Setter)) {
+//                    compilationUnit.visit(new ValueVisitor((TypedDeclaration) d));
+//                }
+                if (d instanceof TypeDeclaration) {
                     compilationUnit.visit(new SelfReferenceVisitor((TypeDeclaration) d));
                 }
             }

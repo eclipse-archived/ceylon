@@ -6,7 +6,6 @@ import java.util.List;
 import com.redhat.ceylon.compiler.typechecker.analyzer.AnalysisError;
 import com.redhat.ceylon.compiler.typechecker.analyzer.AnalysisWarning;
 import com.redhat.ceylon.compiler.typechecker.analyzer.UsageWarning;
-import com.redhat.ceylon.compiler.typechecker.model.Declaration;
 import com.redhat.ceylon.compiler.typechecker.model.ProducedType;
 import com.redhat.ceylon.compiler.typechecker.model.Unit;
 import com.redhat.ceylon.compiler.typechecker.parser.LexError;
@@ -89,24 +88,24 @@ public class AssertionVisitor extends Visitor implements NaturalVisitor {
     	super.visitAny(that);
     }
     
-    @Override
-    public void visit(Tree.Declaration that) {
-        super.visit(that);
-        for (Tree.CompilerAnnotation c: that.getCompilerAnnotations()) {
-            if (c.getIdentifier().getText().equals("captured")) {
-                Declaration d = that.getDeclarationModel();
-                if (!d.isCaptured() && !d.isShared()) {
-                    out(that, "not captured");
-                }
-            }
-            if (c.getIdentifier().getText().equals("uncaptured")) {
-                Declaration d = that.getDeclarationModel();
-                if (d.isCaptured() || d.isShared()) {
-                    out(that, "captured");
-                }
-            }
-        }
-    }
+//    @Override
+//    public void visit(Tree.Declaration that) {
+//        super.visit(that);
+//        for (Tree.CompilerAnnotation c: that.getCompilerAnnotations()) {
+//            if (c.getIdentifier().getText().equals("captured")) {
+//                Declaration d = that.getDeclarationModel();
+//                if (!d.isCaptured() && !d.isShared()) {
+//                    out(that, "not captured");
+//                }
+//            }
+//            if (c.getIdentifier().getText().equals("uncaptured")) {
+//                Declaration d = that.getDeclarationModel();
+//                if (d.isCaptured() || d.isShared()) {
+//                    out(that, "captured");
+//                }
+//            }
+//        }
+//    }
 
     protected void out(Node that, String message) {
         System.err.println(
