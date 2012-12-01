@@ -596,7 +596,7 @@ public class ClassTransformer extends AbstractTransformer {
             if (typeParam.getSatisfiedTypes().isEmpty()
                     && (typeFact().isIntersection(typeArg) || typeFact().isUnion(typeArg))) {
                 // Use the same hack that makeJavaType() does when handling iterables
-                if (typeFact().getNonemptyIterableType(typeFact().getDefiniteType(typeArg)) == null) {
+                if (!willEraseToSequential(typeArg)) {
                     rawifyParametersAndResults = true;
                     break;
                 }
