@@ -57,7 +57,6 @@ import com.redhat.ceylon.compiler.typechecker.model.Value;
 import com.redhat.ceylon.compiler.typechecker.tree.Node;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.BaseMemberExpression;
-import com.redhat.ceylon.compiler.typechecker.tree.Tree.ClassDefinition;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.Expression;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.FunctionArgument;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.InvocationExpression;
@@ -122,7 +121,7 @@ abstract class InvocationBuilder {
         if(typeArguments != null){
             for (ProducedType arg : typeArguments) {
                 // cancel type parameters and go raw if we can't specify them
-                if(gen.willEraseToObjectOrSequential(arg))
+                if(gen.willEraseToObject(arg) || gen.isExactlySequential(arg))
                     return List.nil();
                 result = result.append(gen.makeJavaType(arg, JT_TYPE_ARGUMENT));
             }

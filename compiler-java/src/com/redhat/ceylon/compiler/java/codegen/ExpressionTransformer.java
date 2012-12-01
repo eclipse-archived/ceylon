@@ -249,7 +249,7 @@ public class ExpressionTransformer extends AbstractTransformer {
                 // don't add cast to an erased type 
                 && !willEraseToObject(expectedType)) {
             // special case for returning Nothing expressions
-            if(isNothing(exprType)){
+            if (isNothing(exprType)){
                 // don't add cast for null
                 if(!isNull(exprType)){
                     // in some cases we may have an instance of Nothing, which is of type java.lang.Object, being
@@ -260,9 +260,10 @@ public class ExpressionTransformer extends AbstractTransformer {
                         result = make().TypeCast(targetType, result);
                     }
                 }
-            }else if(!willEraseToObjectOrSequential(expectedType) // full type erasure 
+            }else if(!isExactlySequential(expectedType)
                     && ((exprErased && !isFunctionalResult(exprType))
-                            || willEraseToObjectOrSequential(exprType) 
+                            || willEraseToObject(exprType)
+                            || isExactlySequential(exprType)
                             || (exprType.isRaw() && !hasErasedTypeParameters(expectedType, true)))){
                 // Set the new expression type to a "clean" copy of the expected type
                 // (without the underlying type, because the cast is always to a non-primitive)

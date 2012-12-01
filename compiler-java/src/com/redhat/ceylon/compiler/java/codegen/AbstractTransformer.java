@@ -22,7 +22,6 @@ package com.redhat.ceylon.compiler.java.codegen;
 
 import static com.sun.tools.javac.code.Flags.FINAL;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashSet;
@@ -629,8 +628,8 @@ public abstract class AbstractTransformer implements Transformation {
         }
         if(allowSubtypes){
             // if we don't erase to object and we refine something that does, we can't possibly be widening
-            if(willEraseToObjectOrSequential(refinedDeclType)
-                    && !willEraseToObjectOrSequential(declType))
+            if((willEraseToObject(refinedDeclType) || isExactlySequential(refinedDeclType))
+                    && !willEraseToObject(declType) && !isExactlySequential(declType))
                 return false;
 
             // if we have exactly the same type don't bother finding a common ancestor
@@ -728,10 +727,6 @@ public abstract class AbstractTransformer implements Transformation {
      * @return
      */
     boolean willEraseToObject(ProducedType type) {
-        return willEraseToObjectOrSequential(type) && !willEraseToSequential(type);
-    }
-    
-    boolean willEraseToObjectOrSequential(ProducedType type) {
         if(type == null)
             return false;
         type = simplifyType(type);
@@ -741,12 +736,11 @@ public abstract class AbstractTransformer implements Transformation {
                 || decl == typeFact.getIdentifiableObjectDeclaration()
                 || decl == typeFact.getNothingDeclaration()
                 || decl == typeFact.getVoidDeclaration()
-                || decl == typeFact.getSequentialDeclaration()
                 || decl instanceof BottomType
                 || decl instanceof UnionType
                 || decl instanceof IntersectionType;
     }
-
+    
     boolean willEraseToPrimitive(ProducedType type) {
         return (isCeylonBoolean(type) || isCeylonInteger(type) || isCeylonFloat(type) || isCeylonCharacter(type));
     }
@@ -797,6 +791,10 @@ public abstract class AbstractTransformer implements Transformation {
         return type.getDeclaration().getUnit().isCallableType(type);
     }
 
+    boolean isExactlySequential(ProducedType type) {
+        return typeFact().getDefiniteType(type).getDeclaration() == typeFact.getSequentialDeclaration();
+    }
+    
     /*
      * Java Type creation
      */
@@ -873,7 +871,7 @@ public abstract class AbstractTransformer implements Transformation {
         }
         
         // ERASURE
-        if (willEraseToObjectOrSequential(type)) {
+        if (willEraseToObject(type) || isExactlySequential(type)) {
             // For an erased type:
             // - Any of the Ceylon types Void, Object, Nothing,
             //   IdentifiableObject, and Bottom result in the Java type Object
