@@ -112,3 +112,24 @@ interface I1 { shared String name { return "Gavin"; } }
 interface I2 { shared String name { return "Tom"; } }
 
 @error class Broken() satisfies I1&I2 {}
+
+class MethodIfNonEmptySequence() {
+    shared void m1(String s) {
+        if (nonempty s) {
+            Character c = s.first;
+            Character[] chars = s.rest;
+        }
+    }
+    shared void m2(String[] s) {
+        if (nonempty s) {
+            String string = s.first;
+            String[] strings = s.rest; 
+        }
+    }
+    shared void m3(Empty|Range<Integer> s) {
+        if (nonempty s) {
+            Integer i = s.first;
+            Integer[] ints = s.rest;
+        }
+    }
+}
