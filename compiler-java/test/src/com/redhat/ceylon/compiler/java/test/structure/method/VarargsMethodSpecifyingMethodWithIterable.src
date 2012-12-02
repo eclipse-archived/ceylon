@@ -24,7 +24,7 @@ class VarargsMethodSpecifyingMethodWithIterable {
     }
     
     private final void bar(final .ceylon.language.Sequential<? extends .ceylon.language.Integer> ints) {
-        foo((.ceylon.language.Iterable<? extends .ceylon.language.Integer>)(.ceylon.language.Iterable)ints);
+        foo(ints);
     }
     
     public static void main(.java.lang.String[] args) {

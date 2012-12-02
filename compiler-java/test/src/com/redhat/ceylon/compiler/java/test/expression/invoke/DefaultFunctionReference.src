@@ -85,7 +85,7 @@ final class defaultFunctionReference2_ {
                 return (
                     let
                     {
-                        .ceylon.language.print_.print(.ceylon.language.String.instance(s + ((.ceylon.language.Collection<? extends .java.lang.Object>)(.ceylon.language.Collection)o).toString()));
+                        .ceylon.language.print_.print(.ceylon.language.String.instance(s + o.toString()));
                     }
                     returning null;
                 );

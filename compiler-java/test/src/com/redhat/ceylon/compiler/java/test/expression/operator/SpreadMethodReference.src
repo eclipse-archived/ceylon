@@ -13,7 +13,7 @@ class SpreadMethodReference {
                 return (
                     let
                     {
-                        .ceylon.language.FixedSized<? extends .ceylon.language.String> $spreadTest$3 = (.ceylon.language.FixedSized<? extends .ceylon.language.String>)(.ceylon.language.FixedSized)seq;
+                        .ceylon.language.FixedSized<? extends .ceylon.language.String> $spreadTest$3 = seq;
                     }
                     returning (.ceylon.language.Sequential<? extends .ceylon.language.String>)($spreadTest$3 instanceof .ceylon.language.Sequence ? (
                         let

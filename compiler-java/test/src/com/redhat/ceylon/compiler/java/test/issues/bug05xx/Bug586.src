@@ -7,10 +7,10 @@ final class bug586_ {
     
     static void bug586() {
         final .ceylon.language.Sequential<? extends .ceylon.language.String> seq = (.ceylon.language.Sequential).ceylon.language.empty_.getEmpty$();
-        final .ceylon.language.String s = ((.ceylon.language.List<? extends .ceylon.language.String>)(.ceylon.language.List)(
+        final .ceylon.language.String s = (
             let
             {
-                .ceylon.language.FixedSized<? extends .ceylon.language.String> $spreadTest$0 = (.ceylon.language.FixedSized<? extends .ceylon.language.String>)(.ceylon.language.FixedSized)seq;
+                .ceylon.language.FixedSized<? extends .ceylon.language.String> $spreadTest$0 = seq;
             }
             returning (.ceylon.language.Sequential<? extends .ceylon.language.String>)($spreadTest$0 instanceof .ceylon.language.Sequence ? (
                 let
@@ -22,7 +22,7 @@ final class bug586_ {
                 }
                 returning new .com.redhat.ceylon.compiler.java.language.ArraySequence<.ceylon.language.String>($spread$1$4);
             ) : .ceylon.language.empty_.getEmpty$());
-        )).getFirst();
+        ).getFirst();
     }
     
     public static void main(.java.lang.String[] args) {

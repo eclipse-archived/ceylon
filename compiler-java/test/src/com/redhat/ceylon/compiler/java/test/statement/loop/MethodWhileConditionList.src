@@ -81,8 +81,8 @@ class MethodWhileConditionList {
     private final void m6(final .ceylon.language.Sequential<? extends .java.lang.Object> x) {
         long a = 0L;
         .java.lang.Object $y$11;
-        if (((.ceylon.language.Correspondence<? super .ceylon.language.Integer, ? extends .java.lang.Object>)(.ceylon.language.Correspondence)x).item(.ceylon.language.Integer.instance(0L)) != null) {
-            if (($y$11 = ((.ceylon.language.Correspondence<? super .ceylon.language.Integer, ? extends .java.lang.Object>)(.ceylon.language.Correspondence)x).item(.ceylon.language.Integer.instance(0L))) instanceof .ceylon.language.Integer) {
+        if (x.item(.ceylon.language.Integer.instance(0L)) != null) {
+            if (($y$11 = x.item(.ceylon.language.Integer.instance(0L))) instanceof .ceylon.language.Integer) {
                 final long $y$12 = ((.ceylon.language.Integer)$y$11).longValue();
                 if ($y$12 > 0L) {
                     a += $y$12;

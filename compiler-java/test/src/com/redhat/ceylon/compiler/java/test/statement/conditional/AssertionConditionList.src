@@ -118,9 +118,9 @@ class AssertionConditionList {
     private final boolean m6(final .ceylon.language.Sequential<? extends .java.lang.Object> x) {
         .java.lang.String $ceylontmpassert15 = null;
         final long $y$17;
-        if (((.ceylon.language.Correspondence<? super .ceylon.language.Integer, ? extends .java.lang.Object>)(.ceylon.language.Correspondence)x).item(.ceylon.language.Integer.instance(0L)) != null) {
+        if (x.item(.ceylon.language.Integer.instance(0L)) != null) {
             .java.lang.Object $y$16 = null;
-            if (($y$16 = ((.ceylon.language.Correspondence<? super .ceylon.language.Integer, ? extends .java.lang.Object>)(.ceylon.language.Correspondence)x).item(.ceylon.language.Integer.instance(0L))) instanceof .ceylon.language.Integer) {
+            if (($y$16 = x.item(.ceylon.language.Integer.instance(0L))) instanceof .ceylon.language.Integer) {
                 $y$17 = ((.ceylon.language.Integer)$y$16).longValue();
                 if ($y$17 > 0L) {
                 } else {
