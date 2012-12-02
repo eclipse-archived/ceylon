@@ -200,8 +200,8 @@ public class empty_ {
 
         @Override
         public boolean equals(java.lang.Object that) {
-            return that instanceof Sequential ?
-                    ((Sequential) that).getEmpty() : false;
+            return that instanceof List ?
+                    ((List) that).getEmpty() : false;
         }
         
         @Override
