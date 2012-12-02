@@ -879,23 +879,19 @@ public abstract class AbstractTransformer implements Transformation {
         }
         
         // ERASURE
-        if (willEraseToObject(type) || isExactlySequential(type)) {
+        if (willEraseToObject(type)) {
             // For an erased type:
             // - Any of the Ceylon types Void, Object, Nothing,
             //   IdentifiableObject, and Bottom result in the Java type Object
             // For any other union type U|V (U nor V is Optional):
             // - The Ceylon type U|V results in the Java type Object
-            ProducedType seqType = typeFact().getDefiniteType(type).getSupertype(typeFact().getSequentialDeclaration());
-            if (seqType != null) {
-                // We special case the erasure of X[] and X[]?
-                type = seqType;
+            if ((flags & JT_SATISFIES) != 0) {
+                return null;
             } else {
-                if ((flags & JT_SATISFIES) != 0) {
-                    return null;
-                } else {
-                    return make().Type(syms().objectType);
-                }
+                return make().Type(syms().objectType);
             }
+        } else if (willEraseToSequential(type)) {
+            type = typeFact().getDefiniteType(type).getSupertype(typeFact().getSequentialDeclaration());
         } else if (willEraseToException(type)) {
             if ((flags & JT_CLASS_NEW) != 0
                     || (flags & JT_EXTENDS) != 0) {
