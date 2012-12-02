@@ -263,14 +263,17 @@ public class ExpressionTransformer extends AbstractTransformer {
             }else if(!isExactlySequential(expectedType)
                     && ((exprErased && !isFunctionalResult(exprType))
                             || willEraseToObject(exprType)
-                            || isExactlySequential(exprType)
-                            || (exprType.isRaw() && !hasErasedTypeParameters(expectedType, true)))){
+                            || (exprType.isRaw() && !hasErasedTypeParameters(expectedType, true)))
+                    || (typeFact().getNonemptySequenceType(typeFact().getDefiniteType(expectedType)) != null
+                            && (isExactlySequential(exprType)
+                                    || willEraseToSequential(exprType)
+                                    || typeFact().getDefiniteType(exprType).isSubtypeOf(typeFact().getEmptyDeclaration().getType())))){
                 // Set the new expression type to a "clean" copy of the expected type
                 // (without the underlying type, because the cast is always to a non-primitive)
                 expectedType = getTypeOrSelfType(expectedType);
                 exprType = simplifyType(expectedType).withoutUnderlyingType();
                 // Erased types need a type cast, first we check if a raw cast is needed
-                if (!expectedType.getTypeArgumentList().isEmpty()) {
+                if (hasTypeParameters(expectedType)) {
                     JCExpression rawType = makeJavaType(expectedType, AbstractTransformer.JT_TYPE_ARGUMENT | AbstractTransformer.JT_RAW);
                     result = make().TypeCast(rawType, result);
                 }
@@ -326,6 +329,20 @@ public class ExpressionTransformer extends AbstractTransformer {
                     && arg.getDeclaration() instanceof ClassOrInterface
                     && hasErasedTypeParameters(arg, true))
                 return true;
+        }
+        return false;
+    }
+
+    private boolean hasTypeParameters(ProducedType type) {
+        if (!type.getTypeArgumentList().isEmpty()) {
+            return true;
+        }
+        if (type.getCaseTypes() != null) {
+            for (ProducedType ct : type.getCaseTypes()) {
+                if (hasTypeParameters(ct)) {
+                    return true;
+                }
+            }
         }
         return false;
     }
