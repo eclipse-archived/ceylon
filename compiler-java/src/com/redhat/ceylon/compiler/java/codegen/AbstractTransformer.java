@@ -628,8 +628,8 @@ public abstract class AbstractTransformer implements Transformation {
         }
         if(allowSubtypes){
             // if we don't erase to object and we refine something that does, we can't possibly be widening
-            if((willEraseToObject(refinedDeclType) || isExactlySequential(refinedDeclType))
-                    && !willEraseToObject(declType) && !isExactlySequential(declType))
+            if((willEraseToObject(refinedDeclType) || willEraseToSequential(refinedDeclType))
+                    && !willEraseToObject(declType) && !willEraseToSequential(declType))
                 return false;
 
             // if we have exactly the same type don't bother finding a common ancestor
@@ -731,14 +731,19 @@ public abstract class AbstractTransformer implements Transformation {
             return false;
         type = simplifyType(type);
         TypeDeclaration decl = type.getDeclaration();
-        return decl == typeFact.getObjectDeclaration()
+        // All the following types either are Object or erase to Object
+        if (decl == typeFact.getObjectDeclaration()
                 || decl == typeFact.getIdentifiableDeclaration()
                 || decl == typeFact.getIdentifiableObjectDeclaration()
                 || decl == typeFact.getNothingDeclaration()
                 || decl == typeFact.getVoidDeclaration()
-                || decl instanceof BottomType
-                || decl instanceof UnionType
-                || decl instanceof IntersectionType;
+                || decl instanceof BottomType) {
+            return true;
+        }
+        // Any Unions and Intersections erase to Object as well
+        // except for the ones that erase to Sequential
+        return ((decl instanceof UnionType || decl instanceof IntersectionType)
+                && !typeFact().isSequentialType(type));
     }
     
     boolean willEraseToPrimitive(ProducedType type) {
