@@ -11,13 +11,13 @@ class MethodLocalAssign {
         
         final class b1_ {
             
+            b1_(boolean value) {
+                this.value = value;
+            }
+            
             private b1_() {
             }
             private boolean value;
-            
-            private b1_(boolean value) {
-                this.value = value;
-            }
             
             boolean getB1() {
                 return value;

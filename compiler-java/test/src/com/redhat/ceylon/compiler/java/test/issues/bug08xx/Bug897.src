@@ -14,13 +14,13 @@ class Bug897 {
         
         final class captured_ {
             
+            captured_(long value) {
+                this.value = value;
+            }
+            
             private captured_() {
             }
             private long value;
-            
-            private captured_(long value) {
-                this.value = value;
-            }
             
             long getCaptured() {
                 return value;

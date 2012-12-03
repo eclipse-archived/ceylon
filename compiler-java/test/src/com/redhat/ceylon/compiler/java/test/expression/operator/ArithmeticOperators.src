@@ -603,13 +603,13 @@ class ArithmeticOperators {
         
         final class n1_ {
             
+            n1_(long value) {
+                this.value = value;
+            }
+            
             private n1_() {
             }
             private long value;
-            
-            private n1_(long value) {
-                this.value = value;
-            }
             
             long getN1() {
                 return value;
@@ -623,13 +623,13 @@ class ArithmeticOperators {
         
         final class n2_ {
             
+            n2_(long value) {
+                this.value = value;
+            }
+            
             private n2_() {
             }
             private long value;
-            
-            private n2_(long value) {
-                this.value = value;
-            }
             
             long getN2() {
                 return value;
@@ -643,13 +643,13 @@ class ArithmeticOperators {
         
         final class i1_ {
             
+            i1_(long value) {
+                this.value = value;
+            }
+            
             private i1_() {
             }
             private long value;
-            
-            private i1_(long value) {
-                this.value = value;
-            }
             
             long getI1() {
                 return value;

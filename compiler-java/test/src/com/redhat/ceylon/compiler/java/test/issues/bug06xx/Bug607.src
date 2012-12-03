@@ -9,13 +9,13 @@ final class bug607mth_ {
         
         final class arg3_ {
             
+            arg3_(.java.lang.String value) {
+                this.value = value;
+            }
+            
             private arg3_() {
             }
             private .java.lang.String value;
-            
-            private arg3_(.java.lang.String value) {
-                this.value = value;
-            }
             
             .java.lang.String getArg3() {
                 return value;
@@ -49,13 +49,13 @@ class Bug607cls {
         
         final class arg3_ {
             
+            arg3_(.java.lang.String value) {
+                this.value = value;
+            }
+            
             private arg3_() {
             }
             private .java.lang.String value;
-            
-            private arg3_(.java.lang.String value) {
-                this.value = value;
-            }
             
             .java.lang.String getArg3() {
                 return value;
