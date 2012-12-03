@@ -286,6 +286,16 @@ class ListImplementor<X> implements .ceylon.language.List<X> {
     }
     
     @.java.lang.Override
+    public final .com.redhat.ceylon.compiler.java.test.structure.concrete.ListImplementor<X> spanFrom(final .ceylon.language.Integer from) {
+        throw new .ceylon.language.Exception(null, null);
+    }
+    
+    @.java.lang.Override
+    public final .com.redhat.ceylon.compiler.java.test.structure.concrete.ListImplementor<X> spanTo(final .ceylon.language.Integer to) {
+        throw new .ceylon.language.Exception(null, null);
+    }
+    
+    @.java.lang.Override
     public final int hashCode() {
         throw new .ceylon.language.Exception(null, null);
     }

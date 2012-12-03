@@ -32,7 +32,15 @@ class ListImplementor<X>() satisfies List<X> {
         throw;
     } 
     
-    shared actual ListImplementor<X> span(Integer from, Integer? to) {
+    shared actual ListImplementor<X> span(Integer from, Integer to) {
+        throw;
+    }
+    
+    shared actual ListImplementor<X> spanFrom(Integer from) {
+        throw;
+    }
+    
+    shared actual ListImplementor<X> spanTo(Integer to) {
         throw;
     }
     

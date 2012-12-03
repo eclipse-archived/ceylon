@@ -50,7 +50,13 @@ class Bug476Bottom<T,U>() extends Bug476Top<Bug476A>(){
 
 @nomodel
 shared abstract class Bug476<out T>() satisfies List<T> {
-    shared actual T[] span(Integer from, Integer? to) {
+    shared actual T[] span(Integer from, Integer to) {
+        return bottom;
+    }
+    shared actual T[] spanFrom(Integer from) {
+        return bottom;
+    }
+    shared actual T[] spanTo(Integer to) {
         return bottom;
     }
     shared actual T[] segment(Integer from, Integer length) {

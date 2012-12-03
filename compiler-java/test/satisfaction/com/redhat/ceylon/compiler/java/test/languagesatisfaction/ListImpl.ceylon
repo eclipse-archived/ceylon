@@ -3,7 +3,13 @@ class ListImpl<out Element>() extends Object() satisfies List<Element> {
     shared actual ListImpl<Element> segment(Integer element, Integer length) {
         return bottom;
     }
-    shared actual ListImpl<Element> span(Integer from, Integer? to) {
+    shared actual ListImpl<Element> span(Integer from, Integer to) {
+        return bottom;
+    }
+    shared actual ListImpl<Element> spanFrom(Integer from) {
+        return bottom;
+    }
+    shared actual ListImpl<Element> spanTo(Integer to) {
         return bottom;
     }
     shared actual Integer? lastIndex {
