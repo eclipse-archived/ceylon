@@ -2838,7 +2838,7 @@ public class GenerateJsVisitor extends Visitor
 
    //Don't know if we'll ever see this...
    @Override public void visit(ConditionList that) {
-       System.out.println("ZOMG condidion list in the wild! " + that.getLocation() + " of " + that.getUnit().getFilename());
+       System.out.println("ZOMG condition list in the wild! " + that.getLocation() + " of " + that.getUnit().getFilename());
        super.visit(that);
    }
 

@@ -39,8 +39,6 @@ public class MetamodelVisitor extends Visitor {
     @Override public void visit(Tree.MethodDefinition that) {
         if (errorFree(that)) {
             gen.encodeMethod(that.getDeclarationModel());
-        } else {
-            System.out.println("me saldo metodo " + that);
         }
     }
 

@@ -55,7 +55,7 @@ public class JsonModule extends Module {
     public com.redhat.ceylon.compiler.typechecker.model.Package getPackage(String name) {
         com.redhat.ceylon.compiler.typechecker.model.Package p = super.getPackage(name);
         if (p == null) {
-            System.out.println(this +" no tengo aun " + name);
+            System.out.println(this +" don't yet have " + name);
         }
         return p;
     }
