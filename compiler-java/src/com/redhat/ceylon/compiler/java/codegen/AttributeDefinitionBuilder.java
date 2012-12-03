@@ -23,6 +23,7 @@ package com.redhat.ceylon.compiler.java.codegen;
 import com.redhat.ceylon.compiler.typechecker.model.ProducedType;
 import com.redhat.ceylon.compiler.typechecker.model.ProducedTypedReference;
 import com.redhat.ceylon.compiler.typechecker.model.TypedDeclaration;
+import com.sun.tools.doclets.internal.toolkit.builders.MethodBuilder;
 import com.sun.tools.javac.code.Flags;
 import com.sun.tools.javac.tree.JCTree;
 import com.sun.tools.javac.tree.JCTree.JCVariableDecl;
@@ -60,6 +61,9 @@ public class AttributeDefinitionBuilder {
     private boolean toplevel = false;
     
     private boolean noAnnotations = false;
+    
+    // do we need a constructor that takes the initial value? 
+    private boolean valueConstructor;
 
     private AttributeDefinitionBuilder(AbstractTransformer owner, TypedDeclaration attrType, 
             String javaClassName, String attrName, String fieldName, boolean toplevel) {
@@ -147,6 +151,8 @@ public class AttributeDefinitionBuilder {
             defs.append(generateField());
             if(variableInit != null)
                 defs.append(generateFieldInit());
+            else if(valueConstructor)
+                defs.append(generateValueConstructor());
         }
 
         if (readable) {
@@ -162,6 +168,12 @@ public class AttributeDefinitionBuilder {
         }
     }
 
+    private JCTree generateValueConstructor() {
+        ParameterDefinitionBuilder paramBuilder = ParameterDefinitionBuilder.instance(owner, fieldName).type(attrType, null);
+        JCTree.JCAssign init = owner.make().Assign(owner.makeQualIdent(owner.makeUnquotedIdent("this"), fieldName), owner.makeUnquotedIdent(fieldName));
+        return MethodDefinitionBuilder.constructor(owner).modifiers(Flags.PRIVATE).parameter(paramBuilder).body(owner.make().Exec(init)).build();
+    }
+
     private long getGetSetModifiers() {
         return modifiers & (Flags.PUBLIC | Flags.PRIVATE | Flags.ABSTRACT | Flags.FINAL | Flags.STATIC);
     }
@@ -169,7 +181,7 @@ public class AttributeDefinitionBuilder {
     private JCTree generateField() {
         long flags = Flags.PRIVATE | (modifiers & Flags.STATIC);
         // only make it final if we have an init, otherwise we still have to initialise it
-        if (!writable && variableInit != null) {
+        if (!writable && (variableInit != null || valueConstructor)) {
             flags |= Flags.FINAL;
         }
 
@@ -336,6 +348,14 @@ public class AttributeDefinitionBuilder {
     public AttributeDefinitionBuilder notActual() {
         getterBuilder.isOverride(false);
         setterBuilder.isOverride(false);
+        return this;
+    }
+ 
+    /**
+     * Produces a constructor that receives the initial value for this attribute.
+     */
+    public AttributeDefinitionBuilder valueConstructor(){
+        valueConstructor = true;
         return this;
     }
 }

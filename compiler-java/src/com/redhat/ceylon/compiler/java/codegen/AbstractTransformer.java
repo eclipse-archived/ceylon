@@ -290,12 +290,17 @@ public abstract class AbstractTransformer implements Transformation {
         }
         return expr;
     }
-    
+
     // Creates a "foo foo = new foo();"
     JCTree.JCVariableDecl makeLocalIdentityInstance(String varName, String className, boolean isShared) {
+        return makeLocalIdentityInstance(varName, className, isShared, null);
+    }
+    
+    // Creates a "foo foo = new foo(parameter);"
+    JCTree.JCVariableDecl makeLocalIdentityInstance(String varName, String className, boolean isShared, JCTree.JCExpression parameter) {
         JCExpression name = makeQuotedIdent(className);
         
-        JCExpression initValue = makeNewClass(className, false);
+        JCExpression initValue = makeNewClass(className, false, parameter);
         List<JCAnnotation> annots = List.<JCAnnotation>nil();
 
         int modifiers = isShared ? 0 : FINAL;
@@ -309,9 +314,10 @@ public abstract class AbstractTransformer implements Transformation {
     }
     
     // Creates a "new foo();"
-    JCTree.JCNewClass makeNewClass(String className, boolean fullyQualified) {
+    JCTree.JCNewClass makeNewClass(String className, boolean fullyQualified, JCTree.JCExpression parameter) {
         JCExpression name = fullyQualified ? naming.makeQuotedFQIdent(className) : makeQuotedQualIdentFromString(className);
-        return makeNewClass(name, List.<JCTree.JCExpression>nil());
+        List<JCTree.JCExpression> params = parameter != null ? List.of(parameter) : List.<JCTree.JCExpression>nil();
+        return makeNewClass(name, params);
     }
     
     /** Creates a "new foo();" */

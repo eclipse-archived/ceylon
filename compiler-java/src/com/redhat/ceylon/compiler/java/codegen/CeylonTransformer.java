@@ -234,6 +234,7 @@ public class CeylonTransformer extends AbstractTransformer {
         AttributeDefinitionBuilder builder = AttributeDefinitionBuilder
             .wrapped(this, attrClassName, attrName, declarationModel, declarationModel.isToplevel())
             .is(Flags.PUBLIC, declarationModel.isShared());
+        JCTree.JCExpression initialValue = null;
 
         if (declarationModel instanceof Setter
                 || declarationModel instanceof Parameter) {
@@ -248,14 +249,14 @@ public class CeylonTransformer extends AbstractTransformer {
                     builder.immutable();
                 }
                 if (expression != null) {
-                    builder.initialValue(expressionGen().transformExpression(
+                    initialValue = expressionGen().transformExpression(
                             expression.getExpression(), 
                             CodegenUtil.getBoxingStrategy(declarationModel),
-                            declarationModel.getType()));
+                            declarationModel.getType());
                 } else {
                     Parameter p = CodegenUtil.findParamForDecl(attrName, declarationModel);
                     if (p != null) {
-                        builder.initialValue(naming.makeName(p, Naming.NA_MEMBER | Naming.NA_ALIASED));
+                        initialValue = naming.makeName(p, Naming.NA_MEMBER | Naming.NA_ALIASED);
                     }
                 }
             } else {
@@ -279,9 +280,13 @@ public class CeylonTransformer extends AbstractTransformer {
         }
         
         if (Decl.isLocal(declarationModel)) {
+            if(initialValue != null)
+                builder.valueConstructor();
             return builder.build().append(makeLocalIdentityInstance(attrClassName, 
-                    attrClassName, declarationModel.isShared()));
+                    attrClassName, declarationModel.isShared(), initialValue));
         } else {
+            if(initialValue != null)
+                builder.initialValue(initialValue);
             builder.is(Flags.STATIC, true);
             return builder.build();
         }
