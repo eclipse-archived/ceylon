@@ -14,8 +14,9 @@ class MethodLocalAssign {
             private b1_() {
             }
             private boolean value;
-            {
-                value = true;
+            
+            private b1_(boolean value) {
+                this.value = value;
             }
             
             boolean getB1() {
@@ -26,7 +27,7 @@ class MethodLocalAssign {
                 value = b1;
             }
         }
-        final b1_ b1_ = new b1_();
+        final b1_ b1_ = new b1_(true);
         b1_.setB1(false);
         
         final class b2$getter_ {

@@ -606,8 +606,9 @@ class ArithmeticOperators {
             private n1_() {
             }
             private long value;
-            {
-                value = 0L;
+            
+            private n1_(long value) {
+                this.value = value;
             }
             
             long getN1() {
@@ -618,15 +619,16 @@ class ArithmeticOperators {
                 value = n1;
             }
         }
-        final n1_ n1_ = new n1_();
+        final n1_ n1_ = new n1_(0L);
         
         final class n2_ {
             
             private n2_() {
             }
             private long value;
-            {
-                value = 0L;
+            
+            private n2_(long value) {
+                this.value = value;
             }
             
             long getN2() {
@@ -637,15 +639,16 @@ class ArithmeticOperators {
                 value = n2;
             }
         }
-        final n2_ n2_ = new n2_();
+        final n2_ n2_ = new n2_(0L);
         
         final class i1_ {
             
             private i1_() {
             }
             private long value;
-            {
-                value = 0L;
+            
+            private i1_(long value) {
+                this.value = value;
             }
             
             long getI1() {
@@ -656,7 +659,7 @@ class ArithmeticOperators {
                 value = i1;
             }
         }
-        final i1_ i1_ = new i1_();
+        final i1_ i1_ = new i1_(0L);
         
         final class getterN1$getter_ {
             
