@@ -3108,14 +3108,28 @@ public class GenerateJsVisitor extends Visitor
             ((Element)eor).getExpression().visit(this);
             out(")");
         } else {//range, or spread?
-            Expression sexpr = ((ElementRange)eor).getLength();
-            out(sexpr == null ? ".span(" : ".segment(");
-            ((ElementRange)eor).getLowerBound().visit(this);
-            if (((ElementRange)eor).getUpperBound() != null) {
-                out(",");
-                ((ElementRange)eor).getUpperBound().visit(this);
+            ElementRange er = (ElementRange)eor;
+            Expression sexpr = er.getLength();
+            if (sexpr == null) {
+                if (er.getLowerBound() == null) {
+                    out(".spanTo(");
+                } else if (er.getUpperBound() == null) {
+                    out(".spanFrom(");
+                } else {
+                    out(".span(");
+                }
+            } else {
+                out(".segment(");
+            }
+            if (er.getLowerBound() != null) {
+                er.getLowerBound().visit(this);
+                if (er.getUpperBound() != null || sexpr != null) {
+                    out(",");
+                }
+            }
+            if (er.getUpperBound() != null) {
+                er.getUpperBound().visit(this);
             } else if (sexpr != null) {
-                out(",");
                 sexpr.visit(this);
             }
             out(")");
