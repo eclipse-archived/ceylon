@@ -1884,22 +1884,35 @@ public class ExpressionTransformer extends AbstractTransformer {
             // do the indices
             Tree.ElementRange range = (Tree.ElementRange) elementOrRange;
             JCExpression start = transformExpression(range.getLowerBound(), BoxingStrategy.BOXED, rightType);
-            JCExpression end;
-            if(range.getUpperBound() != null)
-                end = transformExpression(range.getUpperBound(), BoxingStrategy.BOXED, rightType);
-            else if(range.getLength() != null)
-                end = transformExpression(range.getLength(), BoxingStrategy.UNBOXED, typeFact().getIntegerDeclaration().getType());
-            else
-                end = makeNull();
+
             // is this a span or segment?
             String method;
-            if(range.getLength() == null)
-                method = "span";
-            else
+            final List<JCExpression> args;
+            if (range.getLowerBound() != null 
+                    && range.getLength() != null) {
                 method = "segment";
+                JCExpression length = transformExpression(range.getLength(), BoxingStrategy.UNBOXED, typeFact().getIntegerDeclaration().getType());
+                args = List.of(start, length);
+            } else if (range.getLowerBound() == null) {
+                method = "spanTo";
+                JCExpression end = transformExpression(range.getUpperBound(), BoxingStrategy.BOXED, rightType);
+                args = List.of(end);
+            } else if (range.getUpperBound() == null) {
+                method = "spanFrom";
+                args = List.of(start);
+            } else if (range.getLowerBound() != null 
+                    && range.getUpperBound() != null) {
+                method = "span"; 
+                JCExpression end = transformExpression(range.getUpperBound(), BoxingStrategy.BOXED, rightType);
+                args = List.of(start, end);
+            } else {
+                method = "unknown";
+                args = List.<JCExpression>of(makeErroneous());
+            }
             // make a "lhs.<method>(start, end)" call
             safeAccess = at(access).Apply(List.<JCTree.JCExpression>nil(), 
-                                          makeSelect(lhs, method), List.of(start, end));
+                    makeSelect(lhs, method), args);
+
         }
 
         if (!safe) {
