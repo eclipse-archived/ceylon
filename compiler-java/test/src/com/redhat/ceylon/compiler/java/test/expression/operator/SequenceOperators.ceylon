@@ -62,6 +62,10 @@ shared class SequenceOperators() {
         upperRange := sequence[1...];
         upperRange := this.sequence[1...];
         upperRange := sequence[box(1)...];
+        variable String[] lowerRange;
+        lowerRange := sequence[...1];
+        lowerRange := this.sequence[...1];
+        lowerRange := sequence[...box(1)];
         
         Integer[] spreadMemberWithUnboxedType = sequence[].size;
         Integer[] intSequence = {1};
@@ -81,5 +85,6 @@ shared class SequenceOperators() {
         sync := string[0..1];
         sync := string[0:1];
         sync := string[0...];
+        sync := string[...1];
     }
 }

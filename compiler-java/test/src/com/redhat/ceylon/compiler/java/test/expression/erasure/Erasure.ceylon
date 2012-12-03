@@ -226,6 +226,7 @@ class Test(Integer&EmptyInterface n) {
         variable Empty|Sequence<Integer&EmptyInterface> subrange;
         subrange := naturals[p1..p1] of Empty|Sequence<Integer&EmptyInterface>;
         subrange := naturals[p1...] of Empty|Sequence<Integer&EmptyInterface>;
+        subrange := naturals[...p1] of Empty|Sequence<Integer&EmptyInterface>;
 
         // sequence expression
         Integer[] plainIntegers = {p1};
