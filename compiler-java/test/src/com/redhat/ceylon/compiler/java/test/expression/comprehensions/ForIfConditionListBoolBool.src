@@ -21,8 +21,8 @@ class ForIfConditionListBoolBool {
                             return false;
                         } else {
                             x = (.ceylon.language.Integer)$ceylontmpitem0;
+                            return true;
                         }
-                        return true;
                     }
                     
                     private final boolean next1() {

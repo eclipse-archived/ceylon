@@ -21,8 +21,8 @@ class ForIfConditionList {
                             return false;
                         } else {
                             x = (.ceylon.language.Sequential<? extends .java.lang.Object>)$ceylontmpitem0;
+                            return true;
                         }
-                        return true;
                     }
                     private long $y$4;
                     private .ceylon.language.Sequence<? extends .java.lang.Object> $x$2;

@@ -21,8 +21,8 @@ class ForIfIsNothing {
                             return false;
                         } else {
                             x = (.java.lang.Object)$ceylontmpitem0;
+                            return true;
                         }
-                        return true;
                     }
                     
                     private final boolean next1() {

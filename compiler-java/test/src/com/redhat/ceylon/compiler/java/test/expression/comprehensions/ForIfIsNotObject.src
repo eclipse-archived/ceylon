@@ -25,8 +25,8 @@ class ForIfIsNotObject {
                             return false;
                         } else {
                             x = (.java.lang.Object)$ceylontmpitem0;
+                            return true;
                         }
-                        return true;
                     }
                     
                     private final boolean next1() {
@@ -63,8 +63,8 @@ class ForIfIsNotObject {
                             return false;
                         } else {
                             y = (.java.lang.Object)$ceylontmpitem2;
+                            return true;
                         }
-                        return true;
                     }
                     private .java.lang.Object $x$4;
                     

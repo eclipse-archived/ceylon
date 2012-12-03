@@ -117,8 +117,8 @@ final class isCond_ {
                             return false;
                         } else {
                             x = (.com.redhat.ceylon.compiler.java.test.expression.comprehensions.Common)$ceylontmpitem0;
+                            return true;
                         }
-                        return true;
                     }
                     private .com.redhat.ceylon.compiler.java.test.expression.comprehensions.Foo $x$2;
                     
@@ -155,8 +155,8 @@ final class isCond_ {
                             return false;
                         } else {
                             x = (.com.redhat.ceylon.compiler.java.test.expression.comprehensions.Common)$ceylontmpitem3;
+                            return true;
                         }
-                        return true;
                     }
                     private .com.redhat.ceylon.compiler.java.test.expression.comprehensions.FooSub $x$5;
                     
@@ -193,8 +193,8 @@ final class isCond_ {
                             return false;
                         } else {
                             x = (.com.redhat.ceylon.compiler.java.test.expression.comprehensions.Common)$ceylontmpitem6;
+                            return true;
                         }
-                        return true;
                     }
                     
                     private final boolean next1() {
@@ -228,8 +228,8 @@ final class isCond_ {
                             return false;
                         } else {
                             x = (.com.redhat.ceylon.compiler.java.test.expression.comprehensions.Common)$ceylontmpitem8;
+                            return true;
                         }
-                        return true;
                     }
                     
                     private final boolean next1() {
@@ -263,8 +263,8 @@ final class isCond_ {
                             return false;
                         } else {
                             x = (.com.redhat.ceylon.compiler.java.test.expression.comprehensions.Common)$ceylontmpitem10;
+                            return true;
                         }
-                        return true;
                     }
                     
                     private final boolean next1() {
@@ -298,8 +298,8 @@ final class isCond_ {
                             return false;
                         } else {
                             x = (.com.redhat.ceylon.compiler.java.test.expression.comprehensions.Common)$ceylontmpitem12;
+                            return true;
                         }
-                        return true;
                     }
                     
                     private final boolean next1() {

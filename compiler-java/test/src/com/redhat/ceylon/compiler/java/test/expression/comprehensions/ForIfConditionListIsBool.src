@@ -21,8 +21,8 @@ class ForIfConditionListIsBool {
                             return false;
                         } else {
                             x = (.java.lang.Object)$ceylontmpitem0;
+                            return true;
                         }
-                        return true;
                     }
                     private .java.lang.String $x$2;
                     
@@ -64,8 +64,8 @@ class ForIfConditionListIsBool {
                             return false;
                         } else {
                             x = (.java.lang.Object)$ceylontmpitem3;
+                            return true;
                         }
-                        return true;
                     }
                     private .java.lang.String $z$5;
                     

@@ -21,8 +21,8 @@ class ForIfExistsSequence {
                             return false;
                         } else {
                             x = (.ceylon.language.Sequential<? extends .ceylon.language.Integer>)$ceylontmpitem0;
+                            return true;
                         }
-                        return true;
                     }
                     private long $y$2;
                     

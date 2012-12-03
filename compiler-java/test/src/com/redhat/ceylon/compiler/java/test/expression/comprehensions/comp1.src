@@ -21,8 +21,8 @@ final class comp1_ {
                             return false;
                         } else {
                             str = (.ceylon.language.String)$ceylontmpitem0;
+                            return true;
                         }
-                        return true;
                     }
                     
                     public final .java.lang.Object next() {

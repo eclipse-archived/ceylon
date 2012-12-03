@@ -21,8 +21,8 @@ class ForIfIsIntersection {
                             return false;
                         } else {
                             x = (.java.lang.Object)$ceylontmpitem0;
+                            return true;
                         }
-                        return true;
                     }
                     
                     private final boolean next1() {
@@ -56,8 +56,8 @@ class ForIfIsIntersection {
                             return false;
                         } else {
                             x = (.java.lang.Object)$ceylontmpitem2;
+                            return true;
                         }
-                        return true;
                     }
                     
                     private final boolean next1() {
@@ -91,8 +91,8 @@ class ForIfIsIntersection {
                             return false;
                         } else {
                             x = (.java.lang.Object)$ceylontmpitem4;
+                            return true;
                         }
-                        return true;
                     }
                     
                     private final boolean next1() {
@@ -129,8 +129,8 @@ class ForIfIsIntersection {
                             return false;
                         } else {
                             y = (.java.lang.Object)$ceylontmpitem6;
+                            return true;
                         }
-                        return true;
                     }
                     private .java.lang.Object $x$8;
                     
@@ -167,8 +167,8 @@ class ForIfIsIntersection {
                             return false;
                         } else {
                             y = (.java.lang.Object)$ceylontmpitem9;
+                            return true;
                         }
-                        return true;
                     }
                     private .java.lang.Object $x$11;
                     
@@ -205,8 +205,8 @@ class ForIfIsIntersection {
                             return false;
                         } else {
                             y = (.java.lang.Object)$ceylontmpitem12;
+                            return true;
                         }
-                        return true;
                     }
                     private .java.lang.Object $x$14;
                     

@@ -21,8 +21,8 @@ final class forIfIsBooleanConditions_ {
                             return false;
                         } else {
                             x = (.java.lang.Object)$ceylontmpitem0;
+                            return true;
                         }
-                        return true;
                     }
                     private long $y$2;
                     

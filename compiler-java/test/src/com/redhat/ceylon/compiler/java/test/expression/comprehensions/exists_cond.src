@@ -22,8 +22,8 @@ final class existsCond_ {
                             return false;
                         } else {
                             x = (.ceylon.language.String)$ceylontmpitem0;
+                            return true;
                         }
-                        return true;
                     }
                     private .java.lang.String $x$2;
                     

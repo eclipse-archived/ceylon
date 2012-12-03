@@ -21,8 +21,8 @@ class ForIfIsNullUnion {
                             return false;
                         } else {
                             x = (.java.lang.Object)$ceylontmpitem0;
+                            return true;
                         }
-                        return true;
                     }
                     private .ceylon.language.Character $x$2;
                     

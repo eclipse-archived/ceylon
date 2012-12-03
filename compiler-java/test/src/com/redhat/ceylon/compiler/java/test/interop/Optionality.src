@@ -43,8 +43,8 @@ class OptionalInterface implements .com.redhat.ceylon.compiler.java.test.interop
                                 return false;
                             } else {
                                 obj = (.com.redhat.ceylon.compiler.java.test.interop.JavaOptionalInterface)$ceylontmpitem6;
+                                return true;
                             }
-                            return true;
                         }
                         private .com.redhat.ceylon.compiler.java.test.interop.JavaOptionalInterface $z$8;
                         
@@ -86,8 +86,8 @@ class OptionalInterface implements .com.redhat.ceylon.compiler.java.test.interop
                                 return false;
                             } else {
                                 obj = (.com.redhat.ceylon.compiler.java.test.interop.JavaOptionalInterface)$ceylontmpitem12;
+                                return true;
                             }
-                            return true;
                         }
                         private .com.redhat.ceylon.compiler.java.test.interop.JavaOptionalInterface $z$14;
                         
@@ -143,8 +143,8 @@ class OptionalInterface implements .com.redhat.ceylon.compiler.java.test.interop
                                 return false;
                             } else {
                                 i = (.ceylon.language.Integer)$ceylontmpitem17;
+                                return true;
                             }
-                            return true;
                         }
                         
                         public final .java.lang.Object next() {
@@ -168,8 +168,8 @@ class OptionalInterface implements .com.redhat.ceylon.compiler.java.test.interop
                                 return false;
                             } else {
                                 i = (.ceylon.language.Integer)$ceylontmpitem18;
+                                return true;
                             }
-                            return true;
                         }
                         
                         public final .java.lang.Object next() {

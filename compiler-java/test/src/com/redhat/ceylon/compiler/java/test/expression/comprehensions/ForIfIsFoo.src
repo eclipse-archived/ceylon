@@ -21,8 +21,8 @@ class ForIfIsFoo {
                             return false;
                         } else {
                             x = (.java.lang.Object)$ceylontmpitem0;
+                            return true;
                         }
-                        return true;
                     }
                     private .com.redhat.ceylon.compiler.java.test.expression.comprehensions.Foo $x$2;
                     
@@ -62,8 +62,8 @@ class ForIfIsFoo {
                             return false;
                         } else {
                             y = (.java.lang.Object)$ceylontmpitem3;
+                            return true;
                         }
-                        return true;
                     }
                     private .com.redhat.ceylon.compiler.java.test.expression.comprehensions.Foo $x$5;
                     

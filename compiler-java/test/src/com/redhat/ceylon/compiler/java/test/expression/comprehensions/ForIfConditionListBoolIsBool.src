@@ -21,33 +21,33 @@ class ForIfConditionListBoolIsBool {
                             return false;
                         } else {
                             x = (.java.lang.Object)$ceylontmpitem0;
+                            return true;
                         }
-                        return true;
                     }
                     private .ceylon.language.Iterator<? extends .ceylon.language.Integer> iter$1;
                     
-                    private final .ceylon.language.Iterator<? extends .ceylon.language.Integer> iter$1() {
-                        if (iter$1 == null) this.x();
+                    private final boolean iter$1() {
+                        if (x$exhausted) return false;
+                        if (iter$1 != null) return true;
+                        if (!this.x()) return false;
                         iter$1 = zs.getIterator();
-                        return iter$1;
+                        return true;
                     }
                     private .ceylon.language.Integer z;
                     private boolean z$exhausted;
                     
                     private final boolean z() {
-                        if (iter$1 == null) this.iter$1();
-                        final .java.lang.Object $ceylontmpitem1 = iter$1.next();
-                        z$exhausted = $ceylontmpitem1 == .ceylon.language.exhausted_.getExhausted$();
-                        if (z$exhausted) {
-                            if (this.x()) {
-                                iter$1 = this.iter$1();
-                                return this.z();
+                        while (this.iter$1()) {
+                            final .java.lang.Object $ceylontmpitem1 = iter$1.next();
+                            z$exhausted = $ceylontmpitem1 == .ceylon.language.exhausted_.getExhausted$();
+                            if (z$exhausted) {
+                                iter$1 = null;
+                            } else {
+                                z = (.ceylon.language.Integer)$ceylontmpitem1;
+                                return true;
                             }
-                            return false;
-                        } else {
-                            z = (.ceylon.language.Integer)$ceylontmpitem1;
                         }
-                        return true;
+                        return false;
                     }
                     private long $x$3;
                     
@@ -91,33 +91,33 @@ class ForIfConditionListBoolIsBool {
                             return false;
                         } else {
                             x = (.java.lang.Object)$ceylontmpitem4;
+                            return true;
                         }
-                        return true;
                     }
                     private .ceylon.language.Iterator<? extends .ceylon.language.Integer> iter$1;
                     
-                    private final .ceylon.language.Iterator<? extends .ceylon.language.Integer> iter$1() {
-                        if (iter$1 == null) this.x();
+                    private final boolean iter$1() {
+                        if (x$exhausted) return false;
+                        if (iter$1 != null) return true;
+                        if (!this.x()) return false;
                         iter$1 = zs.getIterator();
-                        return iter$1;
+                        return true;
                     }
                     private .ceylon.language.Integer z;
                     private boolean z$exhausted;
                     
                     private final boolean z() {
-                        if (iter$1 == null) this.iter$1();
-                        final .java.lang.Object $ceylontmpitem5 = iter$1.next();
-                        z$exhausted = $ceylontmpitem5 == .ceylon.language.exhausted_.getExhausted$();
-                        if (z$exhausted) {
-                            if (this.x()) {
-                                iter$1 = this.iter$1();
-                                return this.z();
+                        while (this.iter$1()) {
+                            final .java.lang.Object $ceylontmpitem5 = iter$1.next();
+                            z$exhausted = $ceylontmpitem5 == .ceylon.language.exhausted_.getExhausted$();
+                            if (z$exhausted) {
+                                iter$1 = null;
+                            } else {
+                                z = (.ceylon.language.Integer)$ceylontmpitem5;
+                                return true;
                             }
-                            return false;
-                        } else {
-                            z = (.ceylon.language.Integer)$ceylontmpitem5;
                         }
-                        return true;
+                        return false;
                     }
                     private long $y$7;
                     

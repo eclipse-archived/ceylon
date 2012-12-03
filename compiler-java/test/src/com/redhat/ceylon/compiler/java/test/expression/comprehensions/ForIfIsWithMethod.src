@@ -29,8 +29,8 @@ class ForIfIsWithMethod {
                             return false;
                         } else {
                             x = (.com.redhat.ceylon.compiler.java.test.expression.comprehensions.ForIfIsWithMethod)$ceylontmpitem0;
+                            return true;
                         }
-                        return true;
                     }
                     private .com.redhat.ceylon.compiler.java.test.expression.comprehensions.FooSub $y$2;
                     
@@ -67,8 +67,8 @@ class ForIfIsWithMethod {
                             return false;
                         } else {
                             x = (.com.redhat.ceylon.compiler.java.test.expression.comprehensions.ForIfIsWithMethod)$ceylontmpitem3;
+                            return true;
                         }
-                        return true;
                     }
                     private .java.lang.Object $y$5;
                     

@@ -22,8 +22,8 @@ final class nonemptyCond_ {
                             return false;
                         } else {
                             x = (.ceylon.language.Integer)$ceylontmpitem0;
+                            return true;
                         }
-                        return true;
                     }
                     private .ceylon.language.Sequence<? extends .ceylon.language.Integer> $ints$2;
                     

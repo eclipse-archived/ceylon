@@ -29,8 +29,8 @@ class ForIfIsNothing {
                             return false;
                         } else {
                             x = (.ceylon.language.Integer)$ceylontmpitem0;
+                            return true;
                         }
-                        return true;
                     }
                     private long $x$2;
                     
@@ -70,8 +70,8 @@ class ForIfIsNothing {
                             return false;
                         } else {
                             x = (.ceylon.language.Integer)$ceylontmpitem3;
+                            return true;
                         }
-                        return true;
                     }
                     private long $y$5;
                     
@@ -111,8 +111,8 @@ class ForIfIsNothing {
                             return false;
                         } else {
                             x = (.ceylon.language.Integer)$ceylontmpitem6;
+                            return true;
                         }
-                        return true;
                     }
                     
                     private final boolean next1() {
@@ -149,8 +149,8 @@ class ForIfIsNothing {
                             return false;
                         } else {
                             x = (.ceylon.language.Integer)$ceylontmpitem8;
+                            return true;
                         }
-                        return true;
                     }
                     private .java.lang.Object $y$10;
                     

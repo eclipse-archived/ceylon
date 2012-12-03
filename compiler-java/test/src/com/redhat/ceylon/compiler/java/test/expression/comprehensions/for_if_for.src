@@ -21,8 +21,8 @@ final class forIfFor_ {
                             return false;
                         } else {
                             x = (.ceylon.language.Integer)$ceylontmpitem0;
+                            return true;
                         }
-                        return true;
                     }
                     
                     private final boolean next1() {
@@ -36,28 +36,28 @@ final class forIfFor_ {
                     }
                     private .ceylon.language.Iterator<? extends .ceylon.language.Integer> iter$2;
                     
-                    private final .ceylon.language.Iterator<? extends .ceylon.language.Integer> iter$2() {
-                        if (iter$2 == null) this.next1();
+                    private final boolean iter$2() {
+                        if (x$exhausted) return false;
+                        if (iter$2 != null) return true;
+                        if (!this.next1()) return false;
                         iter$2 = new .ceylon.language.Range<.ceylon.language.Integer>(.ceylon.language.Integer.instance(1L), .ceylon.language.Integer.instance(3L)).getIterator();
-                        return iter$2;
+                        return true;
                     }
                     private .ceylon.language.Integer y;
                     private boolean y$exhausted;
                     
                     private final boolean y() {
-                        if (iter$2 == null) this.iter$2();
-                        final .java.lang.Object $ceylontmpitem1 = iter$2.next();
-                        y$exhausted = $ceylontmpitem1 == .ceylon.language.exhausted_.getExhausted$();
-                        if (y$exhausted) {
-                            if (this.next1()) {
-                                iter$2 = this.iter$2();
-                                return this.y();
+                        while (this.iter$2()) {
+                            final .java.lang.Object $ceylontmpitem1 = iter$2.next();
+                            y$exhausted = $ceylontmpitem1 == .ceylon.language.exhausted_.getExhausted$();
+                            if (y$exhausted) {
+                                iter$2 = null;
+                            } else {
+                                y = (.ceylon.language.Integer)$ceylontmpitem1;
+                                return true;
                             }
-                            return false;
-                        } else {
-                            y = (.ceylon.language.Integer)$ceylontmpitem1;
                         }
-                        return true;
+                        return false;
                     }
                     
                     public final .java.lang.Object next() {

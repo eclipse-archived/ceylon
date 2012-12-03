@@ -21,33 +21,33 @@ final class comp2_ {
                             return false;
                         } else {
                             i = (.ceylon.language.Integer)$ceylontmpitem0;
+                            return true;
                         }
-                        return true;
                     }
                     private .ceylon.language.Iterator<? extends .ceylon.language.Integer> iter$1;
                     
-                    private final .ceylon.language.Iterator<? extends .ceylon.language.Integer> iter$1() {
-                        if (iter$1 == null) this.i();
+                    private final boolean iter$1() {
+                        if (i$exhausted) return false;
+                        if (iter$1 != null) return true;
+                        if (!this.i()) return false;
                         iter$1 = ints.getIterator();
-                        return iter$1;
+                        return true;
                     }
                     private .ceylon.language.Integer j;
                     private boolean j$exhausted;
                     
                     private final boolean j() {
-                        if (iter$1 == null) this.iter$1();
-                        final .java.lang.Object $ceylontmpitem1 = iter$1.next();
-                        j$exhausted = $ceylontmpitem1 == .ceylon.language.exhausted_.getExhausted$();
-                        if (j$exhausted) {
-                            if (this.i()) {
-                                iter$1 = this.iter$1();
-                                return this.j();
+                        while (this.iter$1()) {
+                            final .java.lang.Object $ceylontmpitem1 = iter$1.next();
+                            j$exhausted = $ceylontmpitem1 == .ceylon.language.exhausted_.getExhausted$();
+                            if (j$exhausted) {
+                                iter$1 = null;
+                            } else {
+                                j = (.ceylon.language.Integer)$ceylontmpitem1;
+                                return true;
                             }
-                            return false;
-                        } else {
-                            j = (.ceylon.language.Integer)$ceylontmpitem1;
                         }
-                        return true;
+                        return false;
                     }
                     
                     public final .java.lang.Object next() {

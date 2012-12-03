@@ -21,8 +21,8 @@ class ForIfNonEmptySequence {
                             return false;
                         } else {
                             s = (.ceylon.language.String)$ceylontmpitem0;
+                            return true;
                         }
-                        return true;
                     }
                     private .ceylon.language.Sequential<? extends .ceylon.language.Character> $s$2;
                     
@@ -62,8 +62,8 @@ class ForIfNonEmptySequence {
                             return false;
                         } else {
                             s = (.ceylon.language.String)$ceylontmpitem3;
+                            return true;
                         }
-                        return true;
                     }
                     private .ceylon.language.Sequential<? extends .ceylon.language.Character> $t$5;
                     

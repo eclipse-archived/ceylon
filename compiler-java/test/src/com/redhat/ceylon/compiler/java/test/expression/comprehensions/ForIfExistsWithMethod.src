@@ -25,8 +25,8 @@ class ForIfExistsWithMethod {
                             return false;
                         } else {
                             x = (.com.redhat.ceylon.compiler.java.test.expression.comprehensions.ForIfExistsWithMethod)$ceylontmpitem0;
+                            return true;
                         }
-                        return true;
                     }
                     private long $y$2;
                     

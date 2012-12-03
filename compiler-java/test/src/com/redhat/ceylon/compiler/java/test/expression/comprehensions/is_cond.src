@@ -22,8 +22,8 @@ final class isCond_ {
                             return false;
                         } else {
                             x = (.java.lang.Object)$ceylontmpitem0;
+                            return true;
                         }
-                        return true;
                     }
                     private long $x$2;
                     
