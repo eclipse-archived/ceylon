@@ -1,0 +1,32 @@
+package com.redhat.ceylon.compiler.java.test.issues.bug08xx;
+
+public final class bug899_ {
+    
+    private bug899_() {
+    }
+    
+    public static void bug899() {
+        
+        final class o_ {
+            
+            private o_() {
+                this.i = 1L;
+            }
+            private final long i;
+            
+            private final long getI() {
+                return i;
+            }
+            
+            public final long f() {
+                return getI() + 1L;
+            }
+        }
+        final o_ o = new o_();
+    }
+    
+    public static void main(.java.lang.String[] args) {
+        .ceylon.language.process_.getProcess$().setupArguments(args);
+        .com.redhat.ceylon.compiler.java.test.issues.bug08xx.bug899_.bug899();
+    }
+}
