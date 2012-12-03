@@ -29,20 +29,31 @@ shared void strings() {
     
     check("abcd".size==4, "string size 3");
     
-    check("http://foo.com".span(4,null)=="://foo.com", "string span 0");
+    check("http://foo.com".spanFrom(4)=="://foo.com", "string spanFrom 0");
+    check("http://foo.com".spanTo(3)=="http", "string spanTo 0");
+    check(hello.span(-2,-1)=="", "string span -2");
+    check(hello.span(-2,0)=="h", "string span -1");
     check(hello.span(1,3)=="ell", "string span 1");
-    check(hello.span(1,null)=="ello", "string span 2");
+    check(hello.spanFrom(1)=="ello", "string spanFrom 2");
+    check(hello.spanFrom(10)=="", "string spanFrom 3");
+    check(hello.spanTo(1)=="he", "string spanTo 2");
+    check(hello.spanTo(-1)=="", "string spanTo 3");
     check(hello.span(1,hello.size)=="ello", "string span 3");
     check(hello.span(1,10)=="ello", "string span 4");
     check(hello.span(2,1)=="le", "string span 5");
     check(hello.span(20,10)=="", "string span 6");
+    
     check(hello.segment(1,3)=="ell", "string segment 1");
     check(hello.segment(1,5)=="ello", "string segment 2");
     check(hello.segment(1,0)=="", "string segment 3");
     check(hello.segment(1,10)=="ello", "string segment 4");
     check(hello.segment(10,20)=="", "string segment 5");
+    
     check("".span(1,3)=="", "empty string span 1");
-    check("".span(1,null)=="", "empty string span 2");
+    check("".spanFrom(0)=="", "empty string spanFrom 0");
+    check("".spanFrom(1)=="", "empty string spanFrom 1");
+    check("".spanTo(0)=="", "empty string spanTo 0");
+    check("".spanTo(1)=="", "empty string spanTo 1");
     check("".segment(1,3)=="", "empty string segment");
         
     check(exists hello[0], "string first element exists 1");

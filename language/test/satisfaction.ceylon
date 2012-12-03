@@ -82,13 +82,19 @@ class MyIterator() satisfies Iterator<Integer> {
         return from==0 then this else {};
     }
 }*/
-class MyRanged() satisfies Ranged<Integer, Iterable<Integer>> {
-    shared actual Iterable<Integer> span(Integer from, Integer? to) {
-        value end = to else from;
-        return elements({for (i in from..end) i}...);
+class MyRanged() satisfies Ranged<Integer, Iterable<Character>> {
+    value contents = `a`..`z`;
+    shared actual Iterable<Character> span(Integer from, Integer to) {
+        return contents.span(from, to);
     }
-    shared actual Iterable<Integer> segment(Integer from, Integer length) {
-        return elements({for (i in from..from+length-1) i}...);
+    shared actual Iterable<Character> spanFrom(Integer from) {
+        return contents.spanFrom(from);
+    }
+    shared actual Iterable<Character> spanTo(Integer to) {
+        return contents.spanTo(to);
+    }
+    shared actual Iterable<Character> segment(Integer from, Integer length) {
+        return contents.segment(from, length);
     }
 }
 class MyOrdinal(prev, next) satisfies Ordinal<MyOrdinal> {
@@ -173,9 +179,10 @@ void testSatisfaction() {
     /*check(MySequence().last==MySequence().first, "Sequence[1]");
     check(!nonempty MySequence().rest, "Sequence[2]");
     check(MySequence().reversed==MySequence(), "Sequence[3]");*/
-    check(MyRanged().span(1,null).sequence=={1}, "Ranged[1]");
-    check(MyRanged().span(1,3).sequence=={1,2,3}, "Ranged[2]");
-    check(MyRanged().segment(10,1).sequence=={10}, "Ranged[3]");
+    check(MyRanged().spanFrom(23).sequence=={`x`, `y`, `z`}, "Ranged[1]");
+    check(MyRanged().spanTo(2).sequence=={`a`,`b`,`c`}, "Ranged[2]");
+    check(MyRanged().span(1,3).sequence=={`b`,`c`,`d`}, "Ranged[3]");
+    check(MyRanged().segment(3,1).sequence=={`d`}, "Ranged[4]");
 
     variable value ord1 := MyOrdinal(null,null);
     variable value ord2 := MyOrdinal(ord1, null);

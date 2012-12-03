@@ -4,7 +4,9 @@ class TestList<Element>(Element... elems) satisfies List<Element> {
     shared actual TestList<Element> reversed { return TestList(elems.reversed...); }
     shared actual Integer hash { return List::hash; }
     shared actual Integer? lastIndex { return elems.lastIndex; }
-    shared actual TestList<Element> span(Integer a, Integer? b) { return TestList(elems.span(a, b)...); }
+    shared actual TestList<Element> span(Integer a, Integer b) { return TestList(elems.span(a, b)...); }
+    shared actual TestList<Element> spanFrom(Integer a) { return TestList(elems.spanFrom(a)...); }
+    shared actual TestList<Element> spanTo(Integer b) { return TestList(elems.spanTo(b)...); }
     shared actual TestList<Element> segment(Integer a, Integer b) { return TestList(elems.segment(a, b)...); }
     shared actual TestList<Element> clone { return TestList(elems...); }
 }
@@ -49,7 +51,16 @@ void lists() {
     if (exists e=b[4]) {
         check(e==5, "LazyList.item");
     } else { fail("LazyList.item"); }
-    check(b.span(2,4)=={3,4,5}, "LazyList.span & equals");
+    check(b.span(-2,-1)=={}, "LazyList.span(-2,-1) & equals");
+    check(b.span(-1,-2)=={}, "LazyList.span(-1,-2) & equals");
+    check(b.span(-2,2)=={1,2,3}, "LazyList.span(-2,2) & equals");
+    check(b.span(2,-2)=={3,2,1}, "LazyList.span(2,-2) & equals");
+    check(b.span(2,4)=={3,4,5}, "LazyList.span(2,4) & equals");
+    check(b.span(6,10)=={7,8}, "LazyList.span(6,10) & equals");
+    check(b.spanFrom(4)=={5,6,7,8}, "LazyList.spanFrom(4) & equals");
+    check(b.spanFrom(10)=={}, "LazyList.spanFrom(10) & equals");
+    check(b.spanTo(4)=={1,2,3,4,5}, "LazyList.spanTo(4) & equals");
+    check(b.spanTo(-1)=={}, "LazyList.spanTo(-1) & equals");
     check(b.segment(2,3)=={3,4,5}, "LazyList.segment");
     if (exists e=b.findLast((Integer x) true)) {
         check(e==8, "LazyList.findLast");

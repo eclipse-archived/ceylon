@@ -48,12 +48,15 @@ void test_singleton() {
 
     check(nonempty singleton.span(0, 1), "nonempty singleton span(0,1)");
     check(nonempty singleton.span(0, 0), "nonempty singleton span(0,0)");
-    check(nonempty singleton.span(0, null), "nonempty singleton span(0, null)");
+    check(nonempty singleton.spanFrom(0), "nonempty singleton spanFrom(0)");
+    check(!nonempty singleton.spanFrom(1), "nonempty singleton spanFrom(1)");
+    check(nonempty singleton.spanTo(0), "nonempty singleton spanTo(0)");
+    check(nonempty singleton.spanTo(1), "nonempty singleton spanTo(1)");
     check(nonempty singleton.segment(0, 1), "nonempty singleton segment(0,1)");
     check(singleton.span(0, 3).string=="{ hello }", "singleton span(0,3).string");
     check(singleton.segment(0, 3).string=="{ hello }", "singleton segment(0,3).string");
     check(!nonempty singleton.span(1, 1), "!nonempty singleton span(1,1)");
-    check(!nonempty singleton.span(1, null), "!nonempty singleton span(1,null)");
+    check(!nonempty singleton.spanFrom(1), "!nonempty singleton spanFrom(1)");
     check(!nonempty singleton.segment(1, 1), "!nonempty singleton segment(1,1)");
     check(nonempty singleton.span(0, 0), "nonempty singleton span(0,0)");
     check(nonempty singleton.span(0, 10), "nonempty singleton span(0,10)");
@@ -134,7 +137,10 @@ shared void sequences() {
         fail("empty sequence");
     }
     check(!nonempty empty.span(1, 2), "empty.span(1,2)");
-    check(!nonempty empty.span(1, null), "empty.span(1,null)");
+    check(!nonempty empty.spanFrom(0), "empty.spanFrom(0)");
+    check(!nonempty empty.spanTo(0), "empty.spanTo(0)");
+    check(!nonempty empty.spanFrom(1), "empty.spanFrom(1)");
+    check(!nonempty empty.spanTo(1), "empty.spanTo(1)");
     check(!nonempty empty.segment(1, 2), "empty sequence segment");
     check(empty.string=="{}", "empty.string");
     check(empty.reversed==empty, "empty reversed");
@@ -167,8 +173,14 @@ shared void sequences() {
     check(result.string=="{ hello, world }", "sequence.string 1");
 
     //span
+    check(result.span(-2,-1).string=="{}", "sequence.span(-2,-1).string");
+    check(result.span(-2,0).string=="{ hello }", "sequence.span(-2,0).string");
     check(result.span(1,1).string=="{ world }", "sequence.span(1,1).string");
-    check(result.span(1,null).string=="{ world }", "sequence.span(1,null).string");
+    check(result.span(1,2).string=="{ world }", "sequence.span(1,2).string");
+    check(result.spanFrom(1).string=="{ world }", "sequence.spanFrom(1).string");
+    check(result.spanFrom(0).string=="{ hello, world }", "sequence.spanFrom(0).string");
+    check(result.spanTo(1).string=="{ hello, world }", "sequence.spanTo(1).string");
+    check(result.spanTo(0).string=="{ hello }", "sequence.spanTo(0).string");
     check(result.span(0,3).string=="{ hello, world }", "sequence.span(0,3).string");
     //check(result.span(1,0).string=="{ world, hello }", "sequence reverse span.string");
     check(nonempty result.span(1,1), "nonempty sequence.span(1,1)");

@@ -157,7 +157,8 @@ Range<Integer> range {
     check(r1.span(1, 3).string=="2..4", "range.span 1");
     check(r1.span(3, 1).string=="4..2", "range.span 2");
     check(r1.span(2, 2).string=="3..3", "range.span 3");
-    check(r1.span(3, null).string=="4..5", "range.span 4");
+    check(r1.spanFrom(3).string=="4..5", "range.spanFrom 4");
+    check(r1.spanTo(3).string=="1..4", "range.spanTo 4");
     check(r1.span(3, 1000).string=="4..5", "range.span 5");
     check(r1.span(0,0).string=="1..1", "range.span 6");
     check(!nonempty (1..2).span(4,5), "range.span (out of bounds)");
