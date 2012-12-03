@@ -2026,6 +2026,7 @@ public class ExpressionTransformer extends AbstractTransformer {
         ExpressionComprehensionClause excc = null;
         Naming.SyntheticName prevItemVar = null;
         Naming.SyntheticName ctxtName = null;
+        Naming.SyntheticName lastIteratorCtxtName = null;
         //Iterator fields
         final ListBuffer<JCTree> fields = new ListBuffer<JCTree>();
         final HashSet<String> fieldNames = new HashSet<String>();
@@ -2312,7 +2313,7 @@ public class ExpressionTransformer extends AbstractTransformer {
                 make().Block(0, elseBody.toList())));
             contextBody.add(make().Return(makeBoolean(true)));
             //Create the context method that returns the next item for this iterator
-            ctxtName = itemVar;
+            lastIteratorCtxtName = ctxtName = itemVar;
             fields.add(make().MethodDef(make().Modifiers(Flags.PRIVATE | Flags.FINAL), itemVar.asName(),
                 makeJavaType(typeFact().getBooleanDeclaration().getType()),
                 List.<JCTree.JCTypeParameter>nil(), List.<JCTree.JCVariableDecl>nil(), List.<JCExpression>nil(),
