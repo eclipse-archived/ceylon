@@ -1,0 +1,51 @@
+package com.redhat.ceylon.compiler.java.test.issues.bug08xx;
+
+class Bug897 {
+    
+    Bug897() {
+    }
+    
+    private final long m(final long i) {
+        return i;
+    }
+    
+    public final void bar() {
+        long index = 0L;
+        
+        final class captured_ {
+            
+            private captured_() {
+            }
+            private long value;
+            
+            private captured_(long value) {
+                this.value = value;
+            }
+            
+            long getCaptured() {
+                return value;
+            }
+            
+            void setCaptured(final long captured) {
+                value = captured;
+            }
+        }
+        final captured_ captured_ = new captured_(m(index));
+        
+        final class foo_ {
+            
+            private foo_() {
+            }
+            
+            long foo() {
+                return captured_.getCaptured();
+            }
+        }
+        final foo_ foo = new foo_();
+    }
+    
+    public static void main(.java.lang.String[] args) {
+        .ceylon.language.process_.getProcess$().setupArguments(args);
+        new .com.redhat.ceylon.compiler.java.test.issues.bug08xx.Bug897();
+    }
+}
