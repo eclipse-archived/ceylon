@@ -179,20 +179,10 @@ public class ValueVisitor extends Visitor {
     @Override public void visit(Tree.MethodDeclaration that) {
         super.visit(that);
         final SpecifierExpression specifier = that.getSpecifierExpression();
-        if (specifier != null) {
-            
-            final Expression expr = specifier.getExpression();
-            Term term = expr.getTerm();
-            if (term instanceof InvocationExpression) {
-                term = ((InvocationExpression)term).getPrimary();
-            }
-            if (term instanceof Tree.Primary) {
-                capture((Tree.Primary)term, true);
-            } 
-            if (term instanceof Tree.QualifiedTypeExpression) {
-                Tree.QualifiedTypeExpression qte = (Tree.QualifiedTypeExpression)term;
-                capture(qte.getPrimary(), true);
-            }
+        if (specifier != null && specifier instanceof Tree.LazySpecifierExpression) {
+            boolean cs = enterCapturingScope();
+            specifier.visit(this);
+            exitCapturingScope(cs);
         }   
         
     }
