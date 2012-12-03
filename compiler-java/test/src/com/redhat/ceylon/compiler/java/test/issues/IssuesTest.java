@@ -801,6 +801,11 @@ public class IssuesTest extends CompilerTest {
     }
 
     @Test
+    public void testBug871() {
+        compileAndRun("com.redhat.ceylon.compiler.java.test.issues.bug08xx.bug871", "bug08xx/Bug871.ceylon");
+    }
+
+    @Test
     public void testBug872() {
         compareWithJavaSource("bug08xx/Bug872");
     }
