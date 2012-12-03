@@ -129,14 +129,17 @@ public class AttributeDefinitionBuilder {
         ListBuffer<JCTree> defs = ListBuffer.lb();
         appendDefinitionsTo(defs);
         if (javaClassName != null) {
-            return ClassDefinitionBuilder
-                .klass(owner, javaClassName, null)
-                .modifiers(Flags.FINAL | (modifiers & (Flags.PUBLIC | Flags.PRIVATE)))
-                .constructorModifiers(Flags.PRIVATE)
-                .annotations(owner.makeAtAttribute())
-                .annotations(annotations.toList())
-                .defs(defs.toList())
-                .build();
+            ClassDefinitionBuilder classBuilder = 
+                    ClassDefinitionBuilder
+                    .klass(owner, javaClassName, null)
+                    .modifiers(Flags.FINAL | (modifiers & (Flags.PUBLIC | Flags.PRIVATE)))
+                    .constructorModifiers(Flags.PRIVATE)
+                    .annotations(owner.makeAtAttribute())
+                    .annotations(annotations.toList())
+                    .defs(defs.toList());
+            if(valueConstructor && hasField)
+                generateValueConstructor(classBuilder.addConstructor());
+            return classBuilder.build();
         } else {
             return defs.toList();
         }
@@ -151,8 +154,6 @@ public class AttributeDefinitionBuilder {
             defs.append(generateField());
             if(variableInit != null)
                 defs.append(generateFieldInit());
-            else if(valueConstructor)
-                defs.append(generateValueConstructor());
         }
 
         if (readable) {
@@ -168,10 +169,10 @@ public class AttributeDefinitionBuilder {
         }
     }
 
-    private JCTree generateValueConstructor() {
+    private void generateValueConstructor(MethodDefinitionBuilder methodDefinitionBuilder) {
         ParameterDefinitionBuilder paramBuilder = ParameterDefinitionBuilder.instance(owner, fieldName).type(attrType, null);
         JCTree.JCAssign init = owner.make().Assign(owner.makeQualIdent(owner.makeUnquotedIdent("this"), fieldName), owner.makeUnquotedIdent(fieldName));
-        return MethodDefinitionBuilder.constructor(owner).modifiers(Flags.PRIVATE).parameter(paramBuilder).body(owner.make().Exec(init)).build();
+        methodDefinitionBuilder.parameter(paramBuilder).body(owner.make().Exec(init));
     }
 
     private long getGetSetModifiers() {
