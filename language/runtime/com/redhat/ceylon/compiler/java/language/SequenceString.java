@@ -10,7 +10,6 @@ import ceylon.language.Iterable;
 import ceylon.language.Map;
 import ceylon.language.Sequence;
 import ceylon.language.Sequential;
-import ceylon.language.Some;
 import ceylon.language.String;
 import ceylon.language.string_;
 
@@ -19,7 +18,7 @@ import com.redhat.ceylon.compiler.java.metadata.Ignore;
 
 @Ignore
 @Ceylon(major = 3)
-public class SequenceString extends String implements Some<Character> {
+public class SequenceString extends String implements Sequence<Character> {
 
     public SequenceString(java.lang.String s) {
         super(s);
@@ -47,8 +46,8 @@ public class SequenceString extends String implements Some<Character> {
 
     @Override
     @Ignore
-    public Sequential<? extends Character> getSequence() {
-        return $ceylon$language$Iterable$this.getSequence();
+    public Sequence<? extends Character> getSequence() {
+        return (Sequence<Character>)$ceylon$language$Iterable$this.getSequence();
     }
     @Override @Ignore
     public Character find(Callable<? extends Boolean> f) {
@@ -60,8 +59,8 @@ public class SequenceString extends String implements Some<Character> {
     }
     @Override
     @Ignore
-    public Sequential<? extends Character> sort(Callable<? extends Comparison> f) {
-        return String.instance(string_.string($ceylon$language$Iterable$this.sort(f)));
+    public Sequence<? extends Character> sort(Callable<? extends Comparison> f) {
+        return (Sequence<Character>)String.instance(string_.string($ceylon$language$Iterable$this.sort(f)));
     }
     @Override
     @Ignore
@@ -69,8 +68,8 @@ public class SequenceString extends String implements Some<Character> {
         return String.instance(string_.string((new FilterIterable<Character>(this, f)).getSequence()));
     }
     @Override @Ignore
-    public <Result> Sequential<? extends Result> collect(Callable<? extends Result> f) {
-        return new MapIterable<Character,Result>(this, f).getSequence();
+    public <Result> Sequence<? extends Result> collect(Callable<? extends Result> f) {
+        return (Sequence<? extends Result>)new MapIterable<Character,Result>(this, f).getSequence();
     }
     @Override @Ignore
     public Sequential<? extends Character> select(Callable<? extends Boolean> f) {
@@ -127,5 +126,9 @@ public class SequenceString extends String implements Some<Character> {
     @SuppressWarnings("rawtypes")
     public <Other> Sequence withTrailing(Other e) {
         return $ceylon$language$List$this.withTrailing(e);
+    }
+    @Override @Ignore
+    public SequenceString getReversed() {
+        return (SequenceString)super.getReversed();
     }
 }
