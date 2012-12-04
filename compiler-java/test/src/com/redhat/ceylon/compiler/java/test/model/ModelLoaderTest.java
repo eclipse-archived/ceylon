@@ -275,12 +275,13 @@ public class ModelLoaderTest extends CompilerTest {
     }
 
     private boolean alreadyCompared(Declaration validDeclaration, Declaration modelDeclaration) {
-        Set<Integer> comparedDeclarations = alreadyCompared.get(modelDeclaration.hashCode());
+        int hashCode = System.identityHashCode(modelDeclaration);
+        Set<Integer> comparedDeclarations = alreadyCompared.get(hashCode);
         if(comparedDeclarations == null){
             comparedDeclarations = new HashSet<Integer>();
-            alreadyCompared.put(modelDeclaration.hashCode(), comparedDeclarations);
+            alreadyCompared.put(hashCode, comparedDeclarations);
         }
-        return !comparedDeclarations.add(validDeclaration.hashCode());
+        return !comparedDeclarations.add(System.identityHashCode(validDeclaration));
     }
 
     private void compareTypeParameters(TypeParameter validDeclaration, TypeParameter modelDeclaration) {
