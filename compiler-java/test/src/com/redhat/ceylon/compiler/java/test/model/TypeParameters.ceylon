@@ -129,3 +129,15 @@ shared O methodWithVariance<in I, out O>(I i)
  given I satisfies O{
  return i;
 }
+
+//
+// case types
+
+shared class ClassWithCaseTypes<T>() 
+ given T of Integer | String {
+ shared void methodWithCaseTypes<T>() 
+  given T of Integer | String {}
+}
+
+shared void methodWithCaseTypes<T>() 
+ given T of Integer | String {}
