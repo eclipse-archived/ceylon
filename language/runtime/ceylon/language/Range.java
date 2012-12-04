@@ -445,7 +445,7 @@ public class Range<Element extends Comparable<? super Element> & Ordinal<? super
     @TypeInfo("ceylon.language::Empty|ceylon.language::Range<Element>")
     public ceylon.language.Sequential<? extends Element> spanTo(
             @Name("to") Integer to) {
-        return span(Integer.instance(0), to);
+        return to.longValue() < 0 ? (Sequential)empty_.getEmpty$() : span(Integer.instance(0), to);
     }
 
     @TypeInfo("ceylon.language::Empty|ceylon.language::Range<Element>")
