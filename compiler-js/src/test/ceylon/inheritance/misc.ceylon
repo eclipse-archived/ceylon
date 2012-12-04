@@ -86,11 +86,11 @@ void testMisc() {
   //check(reftst1a.s2()=="i=7", "method refinement defaulted, with specifier");
   value reftst2 = ShortcutRefineTest2((Integer i) => "i="i"");
   check(reftst2.s1=="s1", "shortcut attribute refinement lazy");
-  //check(reftst2.s2(123)=="i=123", "shortcut method refinement parametrized");
+  check(reftst2.s2(123)=="i=123", "shortcut method refinement parametrized");
   //check(reftst2.s2()=="i=7", "shortcut method refinement parametrized, defaulted");
   value reftst2a = ShortcutRefineTest2a((Integer i) => "i="i"");
   check(reftst2a.s1=="s1", "attribute refinement lazy, with specifier");
-  //check(reftst2a.s2(123)=="i=123", "method refinement parametrized, with specifier");
+  check(reftst2a.s2(123)=="i=123", "method refinement parametrized, with specifier");
   //check(reftst2a.s2()=="i=7", "method refinement parametrized, defaulted, with specifier");
   value reftst3a = ShortcutRefineTest3((Integer i) => "i="i"", true);
   check(reftst3a.s1=="one", "attribute refinement with conditional specifier");
