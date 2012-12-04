@@ -114,7 +114,13 @@ shared abstract class String()
          larger than the last index in the sequence, return
          all characters from the start index to last 
          character of the string."
-    shared actual formal String span(Integer from, Integer? to);
+    shared actual formal String span(Integer from, Integer to);
+
+	shared actual String spanFrom(Integer from) =>
+        span(from, size);
+
+    shared actual String spanTo(Integer to) =>
+        to>0 then span(0, to) else "";
     
     doc "Select the characters of this string beginning at 
          the given index, returning a string no longer than 

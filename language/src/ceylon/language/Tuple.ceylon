@@ -36,11 +36,14 @@ shared class Tuple<out Element, out First, out Rest>(first, rest)
         return rest[from-1:length];
     }
     
-    shared actual Element[] span(Integer from, Integer? to) {
-        value end = to else size;
+    shared actual Element[] span(Integer from, Integer end) {
         return from<=end then this[from:end-from+1] 
                 else this[end:from-end+1].reversed.sequence;
     }
+    shared actual Element[] spanTo(Integer to) =>
+        to<0 then {} else span(0, to);
+    shared actual Element[] spanFrom(Integer from) =>
+        span(from, size);
     
     shared actual Sequence<Element> clone => this;
     

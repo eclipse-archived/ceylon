@@ -65,9 +65,15 @@ shared class Singleton<out Element>(Element element)
     doc "Returns a `Singleton` if the given starting index 
          is `0`. Otherwise, returns an instance of `Empty`."
     shared actual Empty|Singleton<Element> span
-            (Integer from, Integer? to) =>
+            (Integer from, Integer to) =>
                     from>0 then {} else this;
     
+    shared actual Empty|Singleton<Element> spanTo
+            (Integer to) => to<0 then {} else this;
+
+    shared actual Empty|Singleton<Element> spanFrom
+            (Integer from) => from>0 then {} else this;
+
     doc "Return this singleton."
     shared actual Singleton<Element> reversed => this;
     

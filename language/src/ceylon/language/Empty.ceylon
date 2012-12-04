@@ -17,7 +17,11 @@ shared interface Empty
     shared actual Empty segment(Integer from, Integer length) => this;
     
     doc "Returns an `Empty` for any given span."
-    shared actual Empty span(Integer from, Integer? to) => this;
+    shared actual Empty span(Integer from, Integer to) => this;
+    doc "Returns an `Empty` for any given span."
+    shared actual Empty spanTo(Integer to) => this;
+    doc "Returns an `Empty` for any given span."
+    shared actual Empty spanFrom(Integer from) => this;
     
     doc "Returns 0."
     shared actual Integer size => 0; 

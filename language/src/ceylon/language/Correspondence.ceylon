@@ -116,9 +116,25 @@ shared interface Correspondence<in Key, out Item>
                 return {};
             }
         }
-        shared actual Item?[] span(Integer from, Integer? to) {
+        shared actual Item?[] span(Integer from, Integer to) {
             if (nonempty k = keys.span(from,to)) {
-                return outer.Items(keys);
+                return outer.Items(k);
+            }
+            else {
+                return {};
+            }
+        }
+        shared actual Item?[] spanFrom(Integer from) {
+            if (nonempty k = keys.spanFrom(from)) {
+                return outer.Items(k);
+            }
+            else {
+                return {};
+            }
+        }
+        shared actual Item?[] spanTo(Integer to) {
+            if (nonempty k = keys.spanTo(to)) {
+                return outer.Items(k);
             }
             else {
                 return {};

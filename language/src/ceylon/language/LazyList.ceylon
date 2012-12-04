@@ -33,25 +33,27 @@ shared class LazyList<out Element>(Iterable<Element> elems)
     shared actual List<Element> clone => this;
     
     shared actual List<Element> span
-            (Integer from, Integer? to) {
-        if (exists to) {
-            if (to >= from) {
-                value els = from > 0 then elems.skipping(from)
-                        else elems;
-                return LazyList(els.taking(to-from+1));
-            } 
-            else {
-                //reversed
-                throw;
-            }
+            (Integer from, Integer to) {
+        if (to >= from) {
+            value els = from > 0 then elems.skipping(from)
+                    else elems;
+            return LazyList(els.taking(to-from+1));
         } 
         else {
-            value els = from > 0 then elems.skipping(from)
-                else elems;
-            return LazyList(els);
+            //reversed
+            throw;
         }
     }
-    
+
+    shared actual List<Element> spanTo(Integer to) {
+        return to > 0 then LazyList(elems.taking(to))
+            else this;
+    }
+    shared actual List<Element> spanFrom(Integer from) {
+        return from > 0 then LazyList(elems.skipping(from))
+            else this;
+    }
+   
     shared actual List<Element> segment
             (Integer from, Integer length) {
         if (length > 0) {

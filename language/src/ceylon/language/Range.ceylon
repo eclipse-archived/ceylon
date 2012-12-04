@@ -175,9 +175,8 @@ shared class Range<Element>(first, last)
     }
     
     shared actual Range<Element>|Empty span(
-            Integer from, 
-            Integer? to) {
-        variable value toIndex:=to else lastIndex;
+            Integer from, Integer to) {
+        variable value toIndex:=to;
         variable value fromIndex:=from;
         if (toIndex<0) {
             if (fromIndex<0) {
@@ -205,7 +204,13 @@ shared class Range<Element>(first, last)
         while (j++<toIndex) { y:=next(y); }
         return Range<Element>(x, y);
     }
-    
+    shared actual Range<Element>|Empty spanTo(Integer to) {
+        return to < 0 then {} else span(0, to);
+    }
+    shared actual Range<Element>|Empty spanFrom(Integer from) {
+        return span(from, size);
+    }
+
     doc "Reverse this range, returning a new range."
     shared actual Range<Element> reversed => Range(last,first);
     
