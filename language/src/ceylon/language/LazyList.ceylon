@@ -46,8 +46,9 @@ shared class LazyList<out Element>(Iterable<Element> elems)
     }
 
     shared actual List<Element> spanTo(Integer to) {
-        return to<0 then {} else LazyList(elems.taking(to))
+        return to<0 then {} else LazyList(elems.taking(to));
     }
+    
     shared actual List<Element> spanFrom(Integer from) {
         return from > 0 then LazyList(elems.skipping(from))
             else this;
