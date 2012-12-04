@@ -523,6 +523,7 @@ public abstract class AbstractTransformer implements Transformation {
         if(decl.getContainer() instanceof ClassOrInterface){
             // only try to find better if we're erasing to Object and we're not returning a type param
             if(willEraseToObject(typedReference.getType())
+                        || isWideningTypeArguments(decl.getType(), modelRefinedDecl.getType(), true)
                     && !isTypeParameter(typedReference.getType())){
                 ClassOrInterface declaringType = (ClassOrInterface) decl.getContainer();
                 Set<TypedDeclaration> refinedMembers = getRefinedMembers(declaringType, decl.getName(), 
@@ -542,7 +543,7 @@ public abstract class AbstractTransformer implements Transformation {
                         // get the type reference to see if any eventual type param is instantiated in our inheritance of this type/method
                         ProducedTypedReference refinedTypedReference = getRefinedTypedReference(typedReference, refinedDecl);
                         // if we're not erasing this one to Object let's select it
-                        if(!willEraseToObject(refinedTypedReference.getType()))
+                        if(!willEraseToObject(refinedTypedReference.getType()) && !isWideningTypeArguments(refinedDecl.getType(), modelRefinedDecl.getType(), true))
                             return refinedTypedReference;
                     }
                     // third case
