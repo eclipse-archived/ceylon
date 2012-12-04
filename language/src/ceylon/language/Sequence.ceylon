@@ -57,7 +57,7 @@ shared interface Sequence<out Element>
     shared actual formal Sequence<Element> reversed;
     
     doc "This sequence."
-    shared actual Sequence<Element> sequence => this;
+    shared default actual Sequence<Element> sequence => this;
     
     doc "A nonempty sequence containing the elements of this
          container, sorted according to a function 
@@ -69,7 +69,7 @@ shared interface Sequence<out Element>
     doc "A nonempty sequence containing the results of 
          applying the given mapping to the elements of this
          sequence."
-    shared actual Sequence<Result> collect<Result>(
+    shared default actual Sequence<Result> collect<Result>(
             doc "The transformation applied to the elements."
             Result collecting(Element element)) {
         value s = map(collecting).sequence;

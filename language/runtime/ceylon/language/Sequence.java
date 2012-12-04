@@ -43,7 +43,7 @@ public interface Sequence<Element>
     @TypeInfo("ceylon.language::Sequence<Element>")
     public Sequence<? extends Element> getReversed();
     
-    @Annotations({@Annotation("actual")})
+    @Annotations({@Annotation("actual"), @Annotation("default")})
     @Override
     @TypeInfo("ceylon.language::Sequence<Element>")
     public Sequence<? extends Element> getSequence();
@@ -59,13 +59,15 @@ public interface Sequence<Element>
     public Sequential<? extends Element> segment(@Name("from") Integer from, 
             @Name("length") Integer length);*/
 
-    @Annotations(@Annotation("actual"))
+    @Annotations({@Annotation("actual"), @Annotation("default")})
+    @Override
     @TypeInfo("ceylon.language::Sequence<Element>")
     public Sequence<? extends Element> sort(@Name("comparing")
             @TypeInfo("ceylon.language::Callable<ceylon.language::Nothing|ceylon.language::Comparison,ceylon.language::Tuple<Element,Element,ceylon.language::Tuple<Element,Element,ceylon.language::Empty>>>")
             Callable<? extends Comparison> comparing);
 
-    @Annotations(@Annotation("actual"))
+    @Annotations({@Annotation("actual"), @Annotation("default")})
+    @Override
     @TypeParameters(@TypeParameter("Result"))
     @TypeInfo("ceylon.language::Sequence<Result>")
     public <Result> Sequence<? extends Result> collect(@Name("collecting")
