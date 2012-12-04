@@ -66,7 +66,9 @@ class TestList() satisfies List<String> {
     shared actual Integer? lastIndex = null;
     shared actual List<String> reversed = {};
     shared actual List<String> segment(Integer from, Integer length) { return {}; }
-    shared actual List<String> span(Integer from, Integer? to) { return {}; }
+    shared actual List<String> span(Integer from, Integer to) { return {}; }
+    shared actual List<String> spanTo(Integer to) { return {}; }
+    shared actual List<String> spanFrom(Integer from) { return {}; }
     shared actual Boolean equals(Object that) { return List::equals(that); }
     shared actual Integer hash { return List::hash; }
 }

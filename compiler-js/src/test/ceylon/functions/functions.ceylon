@@ -28,7 +28,9 @@ class MySequence<out Element>(Sequence<Element> seq)
     shared actual Element first { return seq.first; }
     shared actual Element[] rest { return seq.rest; }
     shared actual Element? item(Integer index) { return seq[index]; }
-    shared actual Element[] span(Integer from, Integer? to) { return seq.span(from, to); }
+    shared actual Element[] span(Integer from, Integer to) { return seq.span(from, to); }
+    shared actual Element[] spanFrom(Integer from) { return seq.spanFrom(from); }
+    shared actual Element[] spanTo(Integer to) { return seq.spanTo(to); }
     shared actual Element[] segment(Integer from, Integer length) { return seq.segment(from, length); }
     shared actual MySequence<Element> clone { return this; }
     shared actual String string { return seq.string; }
