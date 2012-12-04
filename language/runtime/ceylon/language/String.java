@@ -765,15 +765,54 @@ public abstract class String
 
     @Override
     @TypeInfo("ceylon.language::String")
-    public String spanTo(@Name("to") final Integer to) {
-        return to.value <0 ? EmptyString.instance : instance(span(value, 0, to.longValue()));
+    public String spanFrom(@Name("from") final Integer from) {
+        return instance(spanFrom(value, from.longValue()));
     }
-
+    
+    @Ignore
+    public static java.lang.String spanFrom(java.lang.String value, long from) {
+        long len = getSize(value);
+        if (len == 0) {
+            return "";
+        }
+        if (from >= len) {
+            return "";
+        }
+        long toIndex = len - 1;
+        if (from < 0) {
+            from = 0;
+        }
+        int start = value.offsetByCodePoints(0, (int)from);
+        int end = value.offsetByCodePoints(start, (int)(toIndex - from + 1));
+        java.lang.String result = value.substring(start, end);
+        return result;
+    }
+    
     @Override
     @TypeInfo("ceylon.language::String")
-    public String spanFrom(@Name("from") final Integer from) {
-        return instance(span(value, from.longValue(), getSize()));
+    public String spanTo(@Name("to")  final Integer to) {
+        return instance(spanTo(value, to.longValue()));
     }
+     
+    @Ignore
+    public static java.lang.String spanTo(java.lang.String value, final long to) {
+        long len = getSize(value);
+        if (len == 0) {
+            return "";
+        }
+        long toIndex = to;
+        if (toIndex < 0) {
+            return "";
+        }
+        if (toIndex >= len) {
+            toIndex = len - 1;
+        }
+        int start = 0;
+        int end = value.offsetByCodePoints(start, (int)(toIndex + 1));
+        java.lang.String result = value.substring(start, end);
+        return result;
+    }
+    
 
     @Ignore
     public static java.lang.String span(java.lang.String value, long from, long toIndex) {
