@@ -1931,15 +1931,26 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
             TypeParameter param = paramsIterator.next();
             @SuppressWarnings("unchecked")
             List<String> satisfiesAttribute = (List<String>)typeParam.getValue("satisfies");
-            if(satisfiesAttribute != null){
-                for (String satisfy : satisfiesAttribute) {
-                    try{
-                        ProducedType satisfiesType = decodeType(satisfy, scope);
-                        param.getSatisfiedTypes().add(satisfiesType);
-                    }catch(TypeParserException x){
-                        logError("Invalid type signature for type parameter "+param.getName()+" of "+scope.getQualifiedNameString()+": "+x.getMessage());
-                        throw x;
-                    }
+            setListOfTypes(param.getSatisfiedTypes(), satisfiesAttribute, scope,
+                    "Invalid type signature for satisfies of type parameter "+param.getName()+" of "+scope.getQualifiedNameString()+": ");
+            @SuppressWarnings("unchecked")
+            List<String> caseTypesAttribute = (List<String>)typeParam.getValue("caseTypes");
+            if(caseTypesAttribute != null && !caseTypesAttribute.isEmpty())
+                param.setCaseTypes(new LinkedList<ProducedType>());
+            setListOfTypes(param.getCaseTypes(), caseTypesAttribute, scope,
+                    "Invalid type signature for case types of type parameter "+param.getName()+" of "+scope.getQualifiedNameString()+": ");
+        }
+    }
+
+    private void setListOfTypes(List<ProducedType> destinationTypeList, List<String> serialisedTypes, Scope scope, String errorPrefix) {
+        if(serialisedTypes != null){
+            for (String serialisedType : serialisedTypes) {
+                try{
+                    ProducedType decodedType = decodeType(serialisedType, scope);
+                    destinationTypeList.add(decodedType);
+                }catch(TypeParserException x){
+                    logError(errorPrefix+x.getMessage());
+                    throw x;
                 }
             }
         }
