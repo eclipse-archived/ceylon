@@ -152,6 +152,11 @@ class LazyExprTest() satisfies LazyExprBase {
     s2(Integer i) => ""(++x)"."i"";
 }
 
+variable Integer lx := 1000;
+String lazy_f1(Integer i1, String f() => ""i1"."(++lx)"") => f();
+Integer lazy_f2(Integer i) => 2*(++lx)+i;
+Integer lazy_i1 => ++lx;
+
 void testLazyExpressions() {
     value tst = LazyExprTest();
     tst.x := 1;
@@ -161,6 +166,24 @@ void testLazyExpressions() {
     check(tst.i2==10, "=> attribute specifier");
     check(tst.s1=="6.1", "=> attribute refinement");
     check(tst.s2(5)=="7.5", "=> method refinement");
+    
+    lx := 1;
+    check(lazy_f1(3)=="3.2", "=> defaulted param toplevel");
+    check(lazy_f2(3)==9, "=> method toplevel");
+    //check(lazy_i1==4, "=> attribute toplevel");
+    
+    variable Integer x := 1000;
+    String f1(Integer i1, String f() => ""i1"."(++x)"") => f();
+    Integer f2(Integer i) => 2*(++x)+i;
+    //Integer i1 => ++x;
+    Integer i2;
+    i2 => ++x*2;
+    
+    x := 1;
+    check(f1(3)=="3.2", "=> defaulted param local");
+    check(f2(3)==9, "=> method local");
+    //check(i1==4, "=> attribute local");
+    //check(i2==10, "=> attribute specifier local");
 }
 
 shared void test() {
