@@ -19,7 +19,13 @@ public interface Ranged<Index extends Comparable<? super Index>, Span> {
     
     @Annotations(@Annotation("formal"))
 	public Span span(@Name("from") Index from, 
-			@Name("to") @TypeInfo("ceylon.language::Nothing|Index") Index to);
+			@Name("to") Index to);
+    
+    @Annotations(@Annotation("formal"))
+	public Span spanFrom(@Name("to") Index from);
+    
+    @Annotations(@Annotation("formal"))
+	public Span spanTo(@Name("to") Index to);
     
     @Annotations(@Annotation("formal"))
 	public Span segment(@Name("from") Index from, @Name("length") long length);
