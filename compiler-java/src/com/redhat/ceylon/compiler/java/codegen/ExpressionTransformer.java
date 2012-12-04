@@ -394,10 +394,6 @@ public class ExpressionTransformer extends AbstractTransformer {
         return exprType; 
     }
     
-    private boolean isSelfType(ProducedType type) {
-        return type.getDeclaration().getSelfType() != null;
-    }
-    
     private JCExpression applySelfTypeCasts(JCExpression result, ProducedType exprType,
             boolean exprBoxed,
             BoxingStrategy boxingStrategy, ProducedType expectedType) {
@@ -416,26 +412,6 @@ public class ExpressionTransformer extends AbstractTransformer {
                 JCExpression targetType = makeJavaType(castType, resultBoxed ? AbstractTransformer.JT_TYPE_ARGUMENT : 0);
                 result = make().TypeCast(targetType, result);
             }
-        }
-        // Self type as a type arg:
-        for (ProducedType typeArgument : expectedType.getTypeArgumentList()) {
-            result = applyGenericSelfTypeCasts(result, expectedType, typeArgument);            
-        }
-        for (ProducedType typeArgument : exprType.getTypeArgumentList()) {
-            result = applyGenericSelfTypeCasts(result, expectedType, typeArgument);
-        }
-        
-        return result;
-    }
-
-    private JCExpression applyGenericSelfTypeCasts(JCExpression result, ProducedType expectedType,
-            ProducedType typeArgument) {
-        if (typeArgument.getDeclaration() != null 
-                && isSelfType(typeArgument)) {
-            JCExpression targetType = makeJavaType(expectedType, AbstractTransformer.JT_TYPE_ARGUMENT );
-            // Need a raw cast to cast away the type argument before casting its self type back
-            JCExpression rawType = makeJavaType(expectedType, AbstractTransformer.JT_RAW);
-            result = make().TypeCast(targetType, make().TypeCast(rawType, result));
         }
         return result;
     }
@@ -767,13 +743,7 @@ public class ExpressionTransformer extends AbstractTransformer {
         ProducedType exprType = op.getTerm().getTypeModel();
         ProducedType expectedType = op.getType().getTypeModel();
         // Self type as a type arg:
-        boolean selfTypeCast = isSelfType(exprType);
-        for (ProducedType type : expectedType.getTypeArgumentList()) {
-            selfTypeCast |= isSelfType(type);
-        }
-        for (ProducedType type : exprType.getTypeArgumentList()) {
-            selfTypeCast |= isSelfType(type);
-        }
+        boolean selfTypeCast = exprType.getDeclaration().getSelfType() != null;
         if (selfTypeCast) {
             return transformExpression(op.getTerm(), CodegenUtil.getBoxingStrategy(op), expectedType);
         } else {
