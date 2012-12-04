@@ -21,7 +21,7 @@ import com.redhat.ceylon.compiler.java.metadata.Variance;
 public interface Sequence<Element> 
         extends Sequential<Element>, Some<Element> {
     
-    @Annotations({@Annotation("actual"), @Annotation("default")})
+    @Annotations({@Annotation("actual"), @Annotation("formal")})
     @Override
     @TypeInfo("ceylon.language::Integer")
     public Integer getLastIndex();
