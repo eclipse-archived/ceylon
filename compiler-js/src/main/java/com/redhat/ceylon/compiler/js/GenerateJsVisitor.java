@@ -2029,7 +2029,12 @@ public class GenerateJsVisitor extends Visitor
             Declaration bmeDecl = bme.getDeclaration();
             if (that.getSpecifierExpression() instanceof LazySpecifierExpression) {
                 // attr => expr;
-                if (bmeDecl.isMember()) { qualify(that, bmeDecl); }
+                if (bmeDecl.isMember()) {
+                    qualify(that, bmeDecl);
+                }
+                else {
+                    out("var ");
+                }
                 out(names.getter(bmeDecl), "=function(){return ");
                 that.getSpecifierExpression().visit(this);
                 out(";};");
@@ -2063,7 +2068,12 @@ public class GenerateJsVisitor extends Visitor
                 // func(params) => expr;
                 BaseMemberExpression bme = (BaseMemberExpression) paramExpr.getPrimary();
                 Declaration bmeDecl = bme.getDeclaration();
-                if (bmeDecl.isMember()) { qualify(that, bmeDecl); }
+                if (bmeDecl.isMember()) {
+                    qualify(that, bmeDecl);
+                }
+                else {
+                    out("var ");
+                }
                 out(names.name(bmeDecl), "=");
                 singleExprFunction(paramExpr.getParameterLists(),
                         that.getSpecifierExpression().getExpression(),
