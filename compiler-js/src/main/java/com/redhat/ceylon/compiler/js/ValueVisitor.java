@@ -6,14 +6,8 @@ import com.redhat.ceylon.compiler.typechecker.model.Setter;
 import com.redhat.ceylon.compiler.typechecker.model.TypedDeclaration;
 import com.redhat.ceylon.compiler.typechecker.model.Value;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree;
-import com.redhat.ceylon.compiler.typechecker.tree.Tree.AttributeDeclaration;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.LazySpecifierExpression;
-import com.redhat.ceylon.compiler.typechecker.tree.Tree.SpecifierExpression;
-import com.redhat.ceylon.compiler.typechecker.tree.Tree.SpecifierOrInitializerExpression;
-import com.redhat.ceylon.compiler.typechecker.tree.Tree.SpecifierStatement;
 import com.redhat.ceylon.compiler.typechecker.tree.Visitor;
-import com.redhat.ceylon.compiler.typechecker.tree.Tree.MethodDeclaration;
-import com.redhat.ceylon.compiler.typechecker.tree.Tree.ParameterizedExpression;
 
 /**
  * Determines if a value is "captured" by 
@@ -134,12 +128,6 @@ public class ValueVisitor extends Visitor {
         boolean cs = enterCapturingScope();
         super.visit(that);
         exitCapturingScope(cs);
-    }
-    
-    @Override
-    public void visit(ParameterizedExpression that) {
-        // TODO Auto-generated method stub
-        super.visit(that);
     }
     
     @Override public void visit(Tree.ObjectArgument that) {
