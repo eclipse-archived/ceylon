@@ -30,9 +30,11 @@ import com.redhat.ceylon.compiler.typechecker.tree.AnalysisMessage;
 import com.redhat.ceylon.compiler.typechecker.analyzer.AnalysisWarning;
 import com.redhat.ceylon.compiler.typechecker.analyzer.AnalysisError;
 import com.redhat.ceylon.compiler.typechecker.model.Module;
+import com.redhat.ceylon.compiler.typechecker.model.TypedDeclaration;
 import com.redhat.ceylon.compiler.typechecker.parser.RecognitionError;
 import com.redhat.ceylon.compiler.typechecker.tree.Message;
 import com.redhat.ceylon.compiler.typechecker.tree.Node;
+import com.redhat.ceylon.compiler.typechecker.tree.Tree;
 import com.redhat.ceylon.compiler.typechecker.tree.Visitor;
 
 public class JsCompiler {
@@ -143,6 +145,11 @@ public class JsCompiler {
                 System.out.printf("%nCompiling %s to JS%n", pu.getUnitFile().getPath());
             }
             pu.getCompilationUnit().visit(unitVisitor);
+            for (com.redhat.ceylon.compiler.typechecker.model.Declaration d : pu.getDeclarations()) {
+                if (d instanceof TypedDeclaration && d instanceof com.redhat.ceylon.compiler.typechecker.model.Setter == false) {
+                    pu.getCompilationUnit().visit(new ValueVisitor((TypedDeclaration)d));
+                }
+            }
             GenerateJsVisitor jsv = new GenerateJsVisitor(getOutput(pu).getWriter(), opts.isOptimize(), names, pu.getTokens());
             jsv.setAddComments(opts.isComment());
             jsv.setIndent(opts.isIndent());
