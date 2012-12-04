@@ -35,8 +35,14 @@ Tuple$proto.segment = function(from, len) {
     return this.r$.segment(from-1,len);
 }
 Tuple$proto.span = function(from, to) {
-    var end = to === null ? this.getSize() : to;
-    return from<=end ? this.segment(from,end-from+1) : this.segment(end,from-end+1).getReversed().getSequence();
+    if (from < 0 && to < 0) {
+        return $empty;
+    } else if (from < 0) {
+        from = 0;
+    } else if (to < 0) {
+        to = 0;
+    }
+    return from<=to ? this.segment(from,to-from+1) : this.segment(to,from-to+1).getReversed().getSequence();
 }
 Tuple$proto.spanTo = function(to) {
     return to<0 ? $empty : this.span(0, to);
