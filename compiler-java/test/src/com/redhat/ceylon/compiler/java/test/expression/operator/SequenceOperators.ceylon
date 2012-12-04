@@ -26,7 +26,8 @@ shared class SequenceOperators() {
     
     T box<T>(T x){ return x; }
     
-    void testSequence(Correspondence<Integer, String> c1, Correspondence<Integer,String>? c2, List<String>? c3) {
+    void testSequence(Correspondence<Integer, String> c1, Correspondence<Integer,String>? c2, List<String>? c3, 
+                      Ranged<String, String> stringRange, Integer&List<String> integerAndList) {
         variable String? s := c1[1];
         s := this.c1[1];
         s := c1[box(1)];
@@ -37,11 +38,10 @@ shared class SequenceOperators() {
         s :=  c2?[1];
         s :=  this.c2?[1];
         s :=  c2?[box(1)];
-// see https://github.com/ceylon/ceylon-spec/issues/477
-        //variable List<String>? l;
-        //l := c3?[1..2];
-        //l := c3?[1...];
-        //l := c3?[1:2];
+        variable List<String>? l;
+        l := c3?[1..2];
+        l := c3?[1...];
+        l := c3?[1:2];
 // M?:        
 //        Integer[] indices = {1, 2, 3};
 //        variable String[] seq1 := c1[indices];
@@ -54,6 +54,10 @@ shared class SequenceOperators() {
         subrange := sequence[1:2];
         subrange := this.sequence[1:2];
         subrange := sequence[box(1):box(2)];
+        
+        // make sure the length is cast to Integer and not String
+        String stringRangeRet = stringRange["foo":integerAndList];
+        
         variable String[] upperRange;
         upperRange := sequence[1...];
         upperRange := this.sequence[1...];
