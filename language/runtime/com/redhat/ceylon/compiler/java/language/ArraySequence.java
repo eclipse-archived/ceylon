@@ -116,9 +116,18 @@ public class ArraySequence<Element> implements Sequence<Element> {
     }
 
     @Override
+    public Sequential<? extends Element> spanTo(Integer to) {
+        return to.longValue() < 0 ? (Sequential)empty_.getEmpty$() : span(Integer.instance(0), to);
+    }
+    @Override
+    public Sequential<? extends Element> spanFrom(Integer from) {
+        return span(from, Integer.instance(getSize()));
+    }
+
+    @Override
     public Sequential<? extends Element> span(Integer from, Integer to) {
         long fromIndex = from.longValue();
-        long toIndex = to==null ? MAX_VALUE : to.longValue();
+        long toIndex = to==null ? getSize() : to.longValue();
         long lastIndex = getLastIndex().longValue();
         
         boolean reverse = toIndex<fromIndex;
