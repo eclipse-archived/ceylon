@@ -38,6 +38,12 @@ Tuple$proto.span = function(from, to) {
     var end = to === null ? this.getSize() : to;
     return from<=end ? this.segment(from,end-from+1) : this.segment(end,from-end+1).getReversed().getSequence();
 }
+Tuple$proto.spanTo = function(to) {
+    return to<0 ? $empty : this.span(0, to);
+}
+Tuple$proto.spanFrom = function(from) {
+    return this.span(from, this.getSize());
+}
 Tuple$proto.getClone = function() { return this; }
 Tuple$proto.getString = function() {
     var sb = StringBuilder();

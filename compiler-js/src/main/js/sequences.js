@@ -87,11 +87,16 @@ Array$proto.segment = function(from, len) {
     return (seq.length > 0) ? ArraySequence(seq) : $empty;
 }
 Array$proto.span = function(from, to) {
-    var toIndex = (to===null || to===undefined) ? 0x7fffffff : to;
-    if (from > toIndex) {
-        return this.segment(toIndex, from-toIndex+1).getReversed();
+    if (from > to) {
+        return this.segment(to, from-to+1).getReversed();
     }
-    return this.segment(from, toIndex-from+1);
+    return this.segment(from, to-from+1);
+}
+Array$proto.spanTo = function(to) {
+    return to < 0 ? $empty : this.span(0, to);
+}
+Array$proto.spanFrom = function(from) {
+    return this.span(from, 0x7fffffff);
 }
 Array$proto.getRest = function() {
     return this.length<=1 ? $empty : ArraySequence(this.slice(1));
@@ -203,10 +208,13 @@ Singleton$proto.getRest = function() { return $empty; }
 Singleton$proto.defines = function(idx) { return idx.equals(0); }
 Singleton$proto.getKeys = function() { return TypeCategory(this, 'ceylon.language::Integer'); }
 Singleton$proto.span = function(from, to) {
-    if ((to === undefined) || (to === null)) {
-        return (from <= 0) ? this : $empty;
-    }
     return (((from <= 0) && (to >= 0)) || ((from >= 0) && (to <= 0))) ? this : $empty;
+}
+Singleton$proto.spanTo = function(to) {
+    return to < 0 ? $empty : this;
+}
+Singleton$proto.spanFrom = function(from) {
+    return from > 0 ? $empty : this;
 }
 Singleton$proto.segment = function(idx, len) {
     return ((idx <= 0) && ((idx+len) > 0)) ? this : $empty; 

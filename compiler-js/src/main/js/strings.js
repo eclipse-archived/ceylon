@@ -49,11 +49,16 @@ String$proto.getSize = function() {
 }
 String$proto.getLastIndex = function() { return this.getSize().equals(0) ? null : this.getSize().getPredecessor(); }
 String$proto.span = function(from, to) {
-    var toIndex = (to===null || to===undefined) ? 0x7fffffff : to;
-    if (from > toIndex) {
-        return this.segment(toIndex, from-toIndex+1).getReversed();
+    if (from > to) {
+        return this.segment(to, from-to+1).getReversed();
     }
-    return this.segment(from, toIndex-from+1);
+    return this.segment(from, to-from+1);
+}
+String$proto.spanFrom = function(from) {
+    return this.span(from, 0x7fffffff);
+}
+String$proto.spanTo = function(to) {
+    return to < 0 ? String$('') : this.span(0, to);
 }
 String$proto.segment = function(from, len) {
     var fromIndex = from;

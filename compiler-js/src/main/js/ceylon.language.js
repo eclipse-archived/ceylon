@@ -372,7 +372,6 @@ Range$proto.segment = function(from, len) {
 }
 Range$proto.span = function(from, to) {
     var li = this.getLastIndex();
-	to = (to==null || to==undefined) ? li : to;
     if (to<0) {
     	if (from<0) {
     		return $empty;
@@ -396,6 +395,12 @@ Range$proto.span = function(from, to) {
     var y = this.first;
     for (var i=0; i < to; i++) { y = this.next(y); }
     return Range(x, y);
+}
+Range$proto.spanTo = function(to) {
+    return to<0 ? $empty : this.span(0, to);
+}
+Range$proto.spanFrom = function(from) {
+    return this.span(from, this.getLastIndex());
 }
 Range$proto.definesEvery = function(keys) {
     for (var i = 0; i < keys.getSize(); i++) {

@@ -241,6 +241,8 @@ Empty$proto.item = function(x) { return null; }
 Empty$proto.getFirst = function() { return null; }
 Empty$proto.segment = function(a,b) { return this; }
 Empty$proto.span = function(a,b) { return this; }
+Empty$proto.spanTo = function(a) { return this; }
+Empty$proto.spanFrom = function(a) { return this; }
 Empty$proto.getIterator = function() { return emptyIterator; }
 Empty$proto.getString = function() { return String$("{}"); }
 Empty$proto.contains = function(x) { return false; }
@@ -384,9 +386,6 @@ LazyList$proto.segment = function(from, length) {
     return LazyList(seg.taking(length));
 }
 LazyList$proto.span = function(from, to) {
-    if ((to === undefined) || (to === null)) {
-        return (from > 0) ? LazyList(this.elems.skipping(from)) : this;
-    }
     if (to < 0) { to = 0; }
     if (from < 0) { from = 0; }
     if (to < from) {
@@ -395,5 +394,11 @@ LazyList$proto.span = function(from, to) {
     }
     var seq = (from > 0) ? this.elems.skipping(from) : this.elems;
     return LazyList(seq.taking(to-from+1));
+}
+LazyList$proto.spanFrom = function(from) {
+    return (from > 0) ? LazyList(this.elems.skipping(from)) : this;
+}
+LazyList$proto.spanTo = function(to) {
+    return (to < 0) ? $empty : LazyList(this.elems.taking(to));
 }
 exports.LazyList=LazyList;
