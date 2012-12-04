@@ -1868,7 +1868,7 @@ public class ExpressionTransformer extends AbstractTransformer {
             if(range.getUpperBound() != null)
                 end = transformExpression(range.getUpperBound(), BoxingStrategy.BOXED, rightType);
             else if(range.getLength() != null)
-                end = transformExpression(range.getLength(), BoxingStrategy.UNBOXED, rightType);
+                end = transformExpression(range.getLength(), BoxingStrategy.UNBOXED, typeFact().getIntegerDeclaration().getType());
             else
                 end = makeNull();
             // is this a span or segment?
