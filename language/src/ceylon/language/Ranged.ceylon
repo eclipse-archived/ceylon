@@ -13,10 +13,17 @@ shared interface Ranged<in Index, out Span>
         given Index satisfies Comparable<Index> {
     
     doc "Obtain a span containing the mapped values between 
-         the two given indices. If the second given index
-         is null, the span has no upper bound."
-    shared formal Span span(Index from, Index? to);
-    
+         the two given indices."
+    shared formal Span span(Index from, Index to);
+   
+    doc "Obtain a span containing the mapped values between
+         the starting index and the end of the receiver."
+    shared formal Span spanFrom(Index from);
+
+    doc "Obtain a span containing the mapped values between
+         the start of the receiver and the end index."
+    shared formal Span spanTo(Index to);
+ 
     doc "Obtain a segment containing the mapped values
          starting from the given index, with the given 
          length."
