@@ -1860,6 +1860,11 @@ public class ExpressionTransformer extends AbstractTransformer {
             // tmpVar.item(index)
             safeAccess = at(access).Apply(List.<JCTree.JCExpression>nil(), 
                                           makeSelect(lhs, "item"), List.of(index));
+            // Because tuple index access has the type of the indexed element
+            // (not the union of types in the sequential) a typecast may be required.
+            safeAccess = applyErasureAndBoxing(safeAccess, 
+                                               getTypeArgument(leftCorrespondenceOrRangeType, 1), 
+                                               true, BoxingStrategy.BOXED, access.getTypeModel());
         }else{
             // do the indices
             Tree.ElementRange range = (Tree.ElementRange) elementOrRange;
@@ -1882,11 +1887,6 @@ public class ExpressionTransformer extends AbstractTransformer {
                                           makeSelect(lhs, method), List.of(start, end));
         }
 
-        // Because tuple index access has the type of the indexed element
-        // (not the union of types in the sequential) a typecast may be required.
-        safeAccess = applyErasureAndBoxing(safeAccess, 
-                                           getTypeArgument(leftCorrespondenceOrRangeType, 1), 
-                                           true, BoxingStrategy.BOXED, access.getTypeModel());
         if (!safe) {
             return safeAccess;
         }
