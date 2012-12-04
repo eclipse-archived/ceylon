@@ -183,6 +183,9 @@ Range<Integer> range {
     check(!nonempty (1..5).span(-2,-1), "empty range [2]");
     check(!nonempty (1..5).span(6,8), "empty range [3]");
     check(!nonempty (1..5).span(8,6), "empty range [4]");
+    check(r1[...2] == { 1, 2, 3 }, "r1[...2]");
+    check(r1[3...] == { 4, 5 }, "r1[3...]");
+    check(r1[...-1] == {}, "r1[...-1] " r1[...-1] "");
 
     //non-Integer Ranges
     class TestRange(Integer number) satisfies Ordinal<TestRange> & Comparable<TestRange> {
