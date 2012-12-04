@@ -22,6 +22,13 @@ public @interface TypeParameter {
      */
     String[] satisfies() default {};
 
+    /** 
+     * String representation of the case types that this type parameter is 
+     * constrained to be (in the {@code given ... of ...} clause). 
+     * May contain fully-qualified type names and type parameter names 
+     */
+    String[] caseTypes() default {};
+
     /** The variance of this type parameter */
     Variance variance() default Variance.NONE;
 }
