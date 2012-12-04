@@ -19,11 +19,15 @@
  */
 package com.redhat.ceylon.compiler.java.codegen;
 
+import java.util.List;
+
 import com.redhat.ceylon.compiler.typechecker.model.Class;
 import com.redhat.ceylon.compiler.typechecker.model.ClassOrInterface;
 import com.redhat.ceylon.compiler.typechecker.model.Declaration;
+import com.redhat.ceylon.compiler.typechecker.model.Functional;
 import com.redhat.ceylon.compiler.typechecker.model.Method;
 import com.redhat.ceylon.compiler.typechecker.model.Parameter;
+import com.redhat.ceylon.compiler.typechecker.model.ParameterList;
 import com.redhat.ceylon.compiler.typechecker.model.TypeDeclaration;
 import com.redhat.ceylon.compiler.typechecker.model.Value;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree;
@@ -140,9 +144,28 @@ class Strategy {
         return def instanceof Tree.AnyClass 
                 && Decl.isToplevel(def) 
                 && !Decl.isAbstract(def)
-                && ((Class)def.getDeclarationModel()).getParameterList().getParameters().isEmpty();
+                && hasNoRequiredParameters((Class)def.getDeclarationModel());
     }
     
+    /**
+     * Returns true if the given functional takes no parameters or accepts only defaulted params
+     */
+    private static boolean hasNoRequiredParameters(Functional model) {
+        List<ParameterList> parameterLists = model.getParameterLists();
+        if(parameterLists == null || parameterLists.size() != 1)
+            return false;
+        ParameterList parameterList = parameterLists.get(0);
+        if(parameterList == null)
+            return false;
+        List<Parameter> parameters = parameterList.getParameters();
+        if(parameters == null)
+            return false;
+        if(parameters.isEmpty())
+            return true;
+        // if the first one is optional, all others have to be too
+        return parameters.get(0).isDefaulted();
+    }
+
     /**
      * Determines whether the given Method def should have a {@code main()} method generated.
      * I.e. it's a top level method without parameters
@@ -150,8 +173,7 @@ class Strategy {
      */
     public static boolean generateMain(Tree.AnyMethod def) {
         return  Decl.isToplevel(def) 
-                && !def.getParameterLists().isEmpty() 
-                && def.getParameterLists().get(0).getParameters().isEmpty();
+                && hasNoRequiredParameters(def.getDeclarationModel());
     }
     
     public static boolean generateThisDelegates(Tree.AnyMethod def) {
