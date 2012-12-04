@@ -575,6 +575,9 @@ public abstract class AbstractTransformer implements Transformation {
         return getRefinedTypedReference(typedReference, modelRefinedDecl);
     }
 
+    // Finds all member declarations (original and refinements) with the
+    // given name and signature within the given type and it's super
+    // classes and interfaces
     public Set<TypedDeclaration> getRefinedMembers(TypeDeclaration decl,
             String name, 
             java.util.List<ProducedType> signature, boolean ellipsis) {
