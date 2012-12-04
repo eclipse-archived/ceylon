@@ -175,14 +175,14 @@ void testLazyExpressions() {
     variable Integer x := 1000;
     String f1(Integer i1, String f() => ""i1"."(++x)"") => f();
     Integer f2(Integer i) => 2*(++x)+i;
-    //Integer i1 => ++x;
+    Integer i1 => ++x;
     Integer i2;
     i2 => ++x*2;
     
     x := 1;
     check(f1(3)=="3.2", "=> defaulted param local");
     check(f2(3)==9, "=> method local");
-    //check(i1==4, "=> attribute local");
+    check(i1==4, "=> attribute local");
     //check(i2==10, "=> attribute specifier local");
 }
 

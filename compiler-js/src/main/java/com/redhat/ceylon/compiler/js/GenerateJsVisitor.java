@@ -1222,13 +1222,13 @@ public class GenerateJsVisitor extends Visitor
                 }
             }
             else if (specInitExpr instanceof LazySpecifierExpression) {
-                outerSelf(d);
-                out(".", names.getter(d), "=function(){return ");
+                out("var ", names.getter(d), "=function(){return ");
                 int boxType = boxStart(specInitExpr.getExpression().getTerm());
                 specInitExpr.getExpression().visit(this);
                 boxUnboxEnd(boxType);
                 out(";}");
                 endLine(true);
+                shareGetter(d);
             }
             else {
                 if ((specInitExpr != null) || (classParam != null) || !d.isMember()
