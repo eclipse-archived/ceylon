@@ -394,6 +394,10 @@ public class ExpressionTransformer extends AbstractTransformer {
         return exprType; 
     }
     
+    private boolean isSelfType(ProducedType type) {
+        return type.getDeclaration().getSelfType() != null;
+    }
+    
     private JCExpression applySelfTypeCasts(JCExpression result, ProducedType exprType,
             boolean exprBoxed,
             BoxingStrategy boxingStrategy, ProducedType expectedType) {
@@ -427,7 +431,7 @@ public class ExpressionTransformer extends AbstractTransformer {
     private JCExpression applyGenericSelfTypeCasts(JCExpression result, ProducedType expectedType,
             ProducedType typeArgument) {
         if (typeArgument.getDeclaration() != null 
-                && typeArgument.getDeclaration().getSelfType() != null) {
+                && isSelfType(typeArgument)) {
             JCExpression targetType = makeJavaType(expectedType, AbstractTransformer.JT_TYPE_ARGUMENT );
             // Need a raw cast to cast away the type argument before casting its self type back
             JCExpression rawType = makeJavaType(expectedType, AbstractTransformer.JT_RAW);
@@ -760,8 +764,21 @@ public class ExpressionTransformer extends AbstractTransformer {
     }
 
     public JCExpression transform(Tree.OfOp op) {
-        ProducedType type = op.getType().getTypeModel();
-        return transformExpression(op.getTerm(), CodegenUtil.getBoxingStrategy(op), type);
+        ProducedType exprType = op.getTerm().getTypeModel();
+        ProducedType expectedType = op.getType().getTypeModel();
+        // Self type as a type arg:
+        boolean selfTypeCast = isSelfType(exprType);
+        for (ProducedType type : expectedType.getTypeArgumentList()) {
+            selfTypeCast |= isSelfType(type);
+        }
+        for (ProducedType type : exprType.getTypeArgumentList()) {
+            selfTypeCast |= isSelfType(type);
+        }
+        if (selfTypeCast) {
+            return transformExpression(op.getTerm(), CodegenUtil.getBoxingStrategy(op), expectedType);
+        } else {
+            return transformExpression(op.getTerm());
+        }
     }
 
     public JCExpression transform(Tree.IsOp op) {
