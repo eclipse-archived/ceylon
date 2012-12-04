@@ -1,0 +1,75 @@
+package com.redhat.ceylon.compiler.java.test.issues.bug08xx;
+
+interface Bug866_Visitable<Visited extends .com.redhat.ceylon.compiler.java.test.issues.bug08xx.Bug866_Visitable<Visited>> extends .ceylon.language.Iterable<.java.lang.Object> {
+    
+    public abstract .java.lang.String getDescription();
+    
+    public void visitPrefix(final .ceylon.language.Callable<? extends .java.lang.Object> f);
+    
+    public void visitPostfix(final .ceylon.language.Callable<? extends .java.lang.Object> f);
+}
+final class Bug866_Visitable$impl<Visited extends .com.redhat.ceylon.compiler.java.test.issues.bug08xx.Bug866_Visitable<Visited>> {
+    
+    Bug866_Visitable$impl(.com.redhat.ceylon.compiler.java.test.issues.bug08xx.Bug866_Visitable<Visited> $this) {
+        this.$this = $this;
+    }
+    private final .com.redhat.ceylon.compiler.java.test.issues.bug08xx.Bug866_Visitable<Visited> $this;
+    
+    public final .java.lang.String getDescription() {
+        return $this.getDescription();
+    }
+    
+    private void visitChildren(final .ceylon.language.Callable<? extends .java.lang.Object> f, final .ceylon.language.Callable<? extends .java.lang.Object> dispatcher) {
+        .java.lang.Object $elem$0;
+        for (.ceylon.language.Iterator<? extends .java.lang.Object> $child$iter$1 = $this.getIterator(); !(($elem$0 = $child$iter$1.next()) instanceof .ceylon.language.Finished); ) {
+            final .java.lang.Object child = (.java.lang.Object)$elem$0;
+            .java.lang.Object $child$3;
+            if (($child$3 = child) instanceof .ceylon.language.Integer) {
+                final long $child$7 = ((.ceylon.language.Integer)$child$3).longValue();
+                f.$call(.ceylon.language.Integer.instance($child$7));
+            } else {
+                .java.lang.Object $child$5;
+                if (!(($child$5 = child) instanceof .ceylon.language.Integer)) {
+                    final Visited $child$6 = (Visited)$child$5;
+                    dispatcher.$call($child$6);
+                }
+            }
+        }
+    }
+    
+    public void visitPrefix(final .ceylon.language.Callable<? extends .java.lang.Object> f) {
+        f.$call((Visited)$this);
+        visitChildren(f, new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.java.lang.Object>("Void()"){
+            
+            @.java.lang.Override
+            public .java.lang.Object $call(final .java.lang.Object $param$0) {
+                final Visited child = (Visited)$param$0;
+                return (
+                    let
+                    {
+                        child.visitPrefix(f);
+                    }
+                    returning null;
+                );
+            }
+        });
+    }
+    
+    public void visitPostfix(final .ceylon.language.Callable<? extends .java.lang.Object> f) {
+        visitChildren(f, new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.java.lang.Object>("Void()"){
+            
+            @.java.lang.Override
+            public .java.lang.Object $call(final .java.lang.Object $param$0) {
+                final Visited child = (Visited)$param$0;
+                return (
+                    let
+                    {
+                        child.visitPostfix(f);
+                    }
+                    returning null;
+                );
+            }
+        });
+        f.$call((Visited)$this);
+    }
+}
