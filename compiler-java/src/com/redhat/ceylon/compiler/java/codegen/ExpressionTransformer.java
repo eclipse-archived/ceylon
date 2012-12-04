@@ -318,7 +318,22 @@ public class ExpressionTransformer extends AbstractTransformer {
         // feeling that callables never need a raw cast
         if(isCeylonCallable(commonType))
             return false;
-        return hasErasedTypeParameters(commonType, false);
+        if(hasErasedTypeParameters(commonType, false))
+            return true;
+        // now see if the type parameters match
+        java.util.List<ProducedType> commonTypeArgs = commonType.getTypeArgumentList();
+        java.util.List<ProducedType> expectedTypeArgs = expectedType.getTypeArgumentList();
+        // check that we got them all otherwise we just don't know
+        if(commonTypeArgs.size() != expectedTypeArgs.size())
+            return false;
+        for(int i=0,n=commonTypeArgs.size(); i < n ; i++){
+            // apply the same logic to each type param: see if they would require a raw cast
+            ProducedType commonTypeArg = commonTypeArgs.get(i);
+            ProducedType expectedTypeArg = expectedTypeArgs.get(i);
+            if(needsRawCast(commonTypeArg, expectedTypeArg, expectedTypeNotRaw))
+                return true;
+        }
+        return false;
     }
 
     private boolean hasErasedTypeParameters(ProducedType type, boolean keepRecursing) {
