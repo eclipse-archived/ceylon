@@ -386,8 +386,13 @@ LazyList$proto.segment = function(from, length) {
     return LazyList(seg.taking(length));
 }
 LazyList$proto.span = function(from, to) {
-    if (to < 0) { to = 0; }
-    if (from < 0) { from = 0; }
+    if (from < 0 && to < 0) {
+        return $empty;
+    } else if (to < 0) {
+        to = 0;
+    } else if (from < 0) {
+        from = 0;
+    }
     if (to < from) {
         var seq = (to > 0) ? this.elems.skipping(to) : this.elems;
         return seq.taking(from-to+1).getSequence().getReversed();
@@ -399,6 +404,6 @@ LazyList$proto.spanFrom = function(from) {
     return (from > 0) ? LazyList(this.elems.skipping(from)) : this;
 }
 LazyList$proto.spanTo = function(to) {
-    return (to < 0) ? $empty : LazyList(this.elems.taking(to));
+    return (to < 0) ? $empty : LazyList(this.elems.taking(to+1));
 }
 exports.LazyList=LazyList;
