@@ -495,7 +495,8 @@ public class ProducedType extends ProducedReference {
      *         there is no such supertype
      */
     public ProducedType getSupertype(final TypeDeclaration dec) {
-        if(superTypesCache.containsKey(dec)){
+        boolean complexType = dec instanceof UnionType || dec instanceof IntersectionType;
+        if(!complexType && superTypesCache.containsKey(dec)){
             return superTypesCache.get(dec);
         }
         Criteria c = new Criteria() {
@@ -507,7 +508,7 @@ public class ProducedType extends ProducedReference {
             }
         };
         ProducedType superType = getSupertype(c, new ArrayList<ProducedType>());
-        superTypesCache.put(dec, superType);
+        if (!complexType) superTypesCache.put(dec, superType);
         return superType;
     }
     
