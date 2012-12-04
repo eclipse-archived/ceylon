@@ -22,6 +22,11 @@ public final class f1_ {
     
     public static void f1(final long n) {
     }
+    
+    public static void main(.java.lang.String[] args) {
+        .ceylon.language.process_.getProcess$().setupArguments(args);
+        .com.redhat.ceylon.compiler.java.test.structure.toplevel.f1_.f1();
+    }
 }
 public final class f2_ {
     
@@ -84,6 +89,11 @@ public final class f3_ {
     
     public static void f3(final long n, final long m) {
     }
+    
+    public static void main(.java.lang.String[] args) {
+        .ceylon.language.process_.getProcess$().setupArguments(args);
+        .com.redhat.ceylon.compiler.java.test.structure.toplevel.f3_.f3();
+    }
 }
 public final class f4_ {
     
@@ -123,6 +133,11 @@ public final class f4_ {
     
     public static void f4(final long n, final long m) {
     }
+    
+    public static void main(.java.lang.String[] args) {
+        .ceylon.language.process_.getProcess$().setupArguments(args);
+        .com.redhat.ceylon.compiler.java.test.structure.toplevel.f4_.f4();
+    }
 }
 public final class f5_ {
     
@@ -161,5 +176,10 @@ public final class f5_ {
     }
     
     public static void f5(final long n, final .ceylon.language.Sequential<? extends .ceylon.language.Integer> seq) {
+    }
+    
+    public static void main(.java.lang.String[] args) {
+        .ceylon.language.process_.getProcess$().setupArguments(args);
+        .com.redhat.ceylon.compiler.java.test.structure.toplevel.f5_.f5();
     }
 }

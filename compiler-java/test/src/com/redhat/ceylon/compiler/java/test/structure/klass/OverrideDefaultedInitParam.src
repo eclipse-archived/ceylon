@@ -19,6 +19,11 @@ class OverrideDefaultedInitParam {
     static .java.lang.String $init$id() {
         return "";
     }
+    
+    public static void main(.java.lang.String[] args) {
+        .ceylon.language.process_.getProcess$().setupArguments(args);
+        new .com.redhat.ceylon.compiler.java.test.structure.klass.OverrideDefaultedInitParam();
+    }
 }
 class OverrideDefaultedInitParamSub extends .com.redhat.ceylon.compiler.java.test.structure.klass.OverrideDefaultedInitParam {
     
@@ -39,5 +44,10 @@ class OverrideDefaultedInitParamSub extends .com.redhat.ceylon.compiler.java.tes
     
     static .java.lang.String $init$id() {
         return "";
+    }
+    
+    public static void main(.java.lang.String[] args) {
+        .ceylon.language.process_.getProcess$().setupArguments(args);
+        new .com.redhat.ceylon.compiler.java.test.structure.klass.OverrideDefaultedInitParamSub();
     }
 }

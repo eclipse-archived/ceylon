@@ -20,12 +20,6 @@ public final class multipleParameterLists_ {
             }
         };
     }
-    
-    @.com.redhat.ceylon.compiler.java.metadata.Ignore
-    public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.getProcess$().setupArguments(args);
-        .com.redhat.ceylon.compiler.java.test.expression.invoke.multipleParameterLists_.multipleParameterLists();
-    }
 }
 @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 3)
 @.com.redhat.ceylon.compiler.java.metadata.Method

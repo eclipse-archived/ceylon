@@ -157,6 +157,11 @@ public class Html implements .com.redhat.ceylon.compiler.java.test.issues.bug08x
     public final .java.lang.Object visit(final .com.redhat.ceylon.compiler.java.test.issues.bug08xx.Visitor visitor) {
         return null;
     }
+    
+    public static void main(.java.lang.String[] args) {
+        .ceylon.language.process_.getProcess$().setupArguments(args);
+        new .com.redhat.ceylon.compiler.java.test.issues.bug08xx.Html();
+    }
 }
 public class Head implements .com.redhat.ceylon.compiler.java.test.issues.bug08xx.Visitable {
     
@@ -214,6 +219,11 @@ public class Head implements .com.redhat.ceylon.compiler.java.test.issues.bug08x
     @.java.lang.Override
     public final .java.lang.Object visit(final .com.redhat.ceylon.compiler.java.test.issues.bug08xx.Visitor visitor) {
         return null;
+    }
+    
+    public static void main(.java.lang.String[] args) {
+        .ceylon.language.process_.getProcess$().setupArguments(args);
+        new .com.redhat.ceylon.compiler.java.test.issues.bug08xx.Head();
     }
 }
 public interface Tag extends .com.redhat.ceylon.compiler.java.test.issues.bug08xx.Visitable {

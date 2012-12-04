@@ -16,9 +16,4 @@ final class getOrder_ {
             }
         };
     }
-    
-    public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.getProcess$().setupArguments(args);
-        .com.redhat.ceylon.compiler.java.test.structure.method.getOrder_.getOrder();
-    }
 }

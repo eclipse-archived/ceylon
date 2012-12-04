@@ -22,6 +22,11 @@ final class f1_ {
     
     static void f1(final long i) {
     }
+    
+    public static void main(.java.lang.String[] args) {
+        .ceylon.language.process_.getProcess$().setupArguments(args);
+        .com.redhat.ceylon.compiler.java.test.structure.nesting.f1_.f1();
+    }
 }
 final class f2_ {
     
@@ -44,6 +49,11 @@ final class f2_ {
     
     static long f2(final long i) {
         return i;
+    }
+    
+    public static void main(.java.lang.String[] args) {
+        .ceylon.language.process_.getProcess$().setupArguments(args);
+        .com.redhat.ceylon.compiler.java.test.structure.nesting.f2_.f2();
     }
 }
 final class f3_ {
@@ -82,6 +92,11 @@ final class f3_ {
     
     static long f3(final long i, final long n) {
         return i;
+    }
+    
+    public static void main(.java.lang.String[] args) {
+        .ceylon.language.process_.getProcess$().setupArguments(args);
+        .com.redhat.ceylon.compiler.java.test.structure.nesting.f3_.f3();
     }
 }
 final class f4_ {

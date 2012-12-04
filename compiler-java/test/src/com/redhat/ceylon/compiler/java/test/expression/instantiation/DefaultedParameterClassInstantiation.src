@@ -95,4 +95,9 @@ class DefaultedParameterClassInstantiation {
             returning new .com.redhat.ceylon.compiler.java.test.expression.instantiation.DefaultedParameterClassInstantiation($arg$12$0, $arg$12$1, $arg$12$2);
         );
     }
+    
+    public static void main(.java.lang.String[] args) {
+        .ceylon.language.process_.getProcess$().setupArguments(args);
+        new .com.redhat.ceylon.compiler.java.test.expression.instantiation.DefaultedParameterClassInstantiation();
+    }
 }

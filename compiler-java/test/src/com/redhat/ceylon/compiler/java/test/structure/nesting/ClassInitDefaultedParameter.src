@@ -19,6 +19,11 @@ class C1 {
     static long $init$i() {
         return 1L;
     }
+    
+    public static void main(.java.lang.String[] args) {
+        .ceylon.language.process_.getProcess$().setupArguments(args);
+        new .com.redhat.ceylon.compiler.java.test.structure.nesting.C1();
+    }
 }
 class C3 {
     
@@ -54,6 +59,11 @@ class C3 {
     
     static long $init$n(final long i) {
         return 2L * i;
+    }
+    
+    public static void main(.java.lang.String[] args) {
+        .ceylon.language.process_.getProcess$().setupArguments(args);
+        new .com.redhat.ceylon.compiler.java.test.structure.nesting.C3();
     }
 }
 class C4 {

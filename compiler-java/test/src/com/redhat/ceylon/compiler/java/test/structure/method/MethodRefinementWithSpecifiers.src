@@ -59,11 +59,6 @@ final class methodRefinementWithSpecifiers_returnsMethod_ {
             }
         };
     }
-    
-    public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.getProcess$().setupArguments(args);
-        .com.redhat.ceylon.compiler.java.test.structure.method.methodRefinementWithSpecifiers_returnsMethod_.methodRefinementWithSpecifiers_returnsMethod();
-    }
 }
 final class methodRefinementWithSpecifiers_attributeMethod_ {
     

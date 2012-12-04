@@ -159,6 +159,12 @@ public class MemberClassAliasTricks_Foo {
         final .com.redhat.ceylon.compiler.java.test.structure.alias.MemberClassAliasTricks_Foo m2 = MemberClassAliasToToplevel2$new(1L, 2L);
         final .com.redhat.ceylon.compiler.java.test.structure.alias.MemberClassAliasTricks_Foo.Member m3 = Member$new(1L, 2L).MemberClassAliasToEnclosingMemberClass$new(3L, 4L);
     }
+    
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    public static void main(.java.lang.String[] args) {
+        .ceylon.language.process_.getProcess$().setupArguments(args);
+        new .com.redhat.ceylon.compiler.java.test.structure.alias.MemberClassAliasTricks_Foo();
+    }
 }
 final class memberClassAliasTricksMethod_ {
     
