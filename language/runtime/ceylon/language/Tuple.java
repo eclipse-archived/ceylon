@@ -393,6 +393,9 @@ public class Tuple<Element, First extends Element, Rest extends Sequential<Eleme
     @Override
     @Annotations(@Annotation("default"))
     public Sequential<? extends Element> spanTo(Integer to) {
+        if (to.longValue() < 0) {
+            return (Sequential<Element>)empty_.getEmpty$();
+        }
         return span(Integer.instance(0), to);
     }
 
@@ -400,8 +403,17 @@ public class Tuple<Element, First extends Element, Rest extends Sequential<Eleme
 	@Annotations(@Annotation("default"))
 	public Sequential<? extends Element> span(Integer from,
 	        @Name("to") Integer to) {
+        if (from.longValue() < 0 && to.longValue() < 0) {
+            return (Sequential<Element>)empty_.getEmpty$();
+        }
 	    long end = to.value;
 	    long _from = from.value;
+	    if (end < 0) {
+	        end = 0L;
+	    }
+	    if (_from < 0) {
+	        _from = 0L;
+	    }
         return _from<=end ? this.segment(from,end-_from+1)
                 : this.segment(Integer.instance(end),_from-end+1).getReversed().getSequence();
 	}
