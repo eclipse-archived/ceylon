@@ -300,6 +300,7 @@ public class ModelLoaderTest extends CompilerTest {
             Assert.fail("[SelfType] one has self typed declaration the other not");
         }
         compareSatisfiedTypes(name, validDeclaration.getSatisfiedTypeDeclarations(), modelDeclaration.getSatisfiedTypeDeclarations());
+        compareCaseTypes(name, validDeclaration.getCaseTypeDeclarations(), modelDeclaration.getCaseTypeDeclarations());
     }
 
     private void compareClassOrInterfaceDeclarations(ClassOrInterface validDeclaration, ClassOrInterface modelDeclaration) {
