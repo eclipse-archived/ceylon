@@ -1545,7 +1545,8 @@ public abstract class AbstractTransformer implements Transformation {
         return makeModelAnnotation(syms().ceylonAtTypeAliasType, List.<JCExpression>of(make().Literal(name)));
     }
 
-    final JCAnnotation makeAtTypeParameter(String name, java.util.List<ProducedType> satisfiedTypes, boolean covariant, boolean contravariant) {
+    final JCAnnotation makeAtTypeParameter(String name, java.util.List<ProducedType> satisfiedTypes, java.util.List<ProducedType> caseTypes, 
+                                           boolean covariant, boolean contravariant) {
         JCExpression nameAttribute = make().Assign(naming.makeUnquotedIdent("value"), make().Literal(name));
         // variance
         String variance = "NONE";
@@ -1563,9 +1564,19 @@ public abstract class AbstractTransformer implements Transformation {
         }
         JCExpression satisfiesAttribute = make().Assign(naming.makeUnquotedIdent("satisfies"), 
                 make().NewArray(null, null, upperBounds.toList()));
+        // case types
+        ListBuffer<JCExpression> caseTypesExpressions = new ListBuffer<JCTree.JCExpression>();
+        if(caseTypes != null){
+            for(ProducedType caseType : caseTypes){
+                String type = serialiseTypeSignature(caseType);
+                caseTypesExpressions.append(make().Literal(type));
+            }
+        }
+        JCExpression caseTypeAttribute = make().Assign(naming.makeUnquotedIdent("caseTypes"), 
+                make().NewArray(null, null, caseTypesExpressions.toList()));
         // all done
         return make().Annotation(makeIdent(syms().ceylonAtTypeParameter), 
-                List.<JCExpression>of(nameAttribute, varianceAttribute, satisfiesAttribute));
+                List.<JCExpression>of(nameAttribute, varianceAttribute, satisfiesAttribute, caseTypeAttribute));
     }
 
     List<JCAnnotation> makeAtTypeParameters(List<JCExpression> typeParameters) {
@@ -2309,6 +2320,7 @@ public abstract class AbstractTransformer implements Transformation {
     JCAnnotation makeAtTypeParameter(TypeParameter declarationModel) {
         return makeAtTypeParameter(declarationModel.getName(), 
                 declarationModel.getSatisfiedTypes(),
+                declarationModel.getCaseTypes(),
                 declarationModel.isCovariant(),
                 declarationModel.isContravariant());
     }

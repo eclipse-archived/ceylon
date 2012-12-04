@@ -312,9 +312,10 @@ public class ClassDefinitionBuilder {
         return this;
     }
 
-    public ClassDefinitionBuilder typeParameter(String name, java.util.List<ProducedType> satisfiedTypes, boolean covariant, boolean contravariant) {
+    public ClassDefinitionBuilder typeParameter(String name, java.util.List<ProducedType> satisfiedTypes, java.util.List<ProducedType> caseTypes, 
+                                                boolean covariant, boolean contravariant) {
         typeParams.append(typeParam(name, gen.makeTypeParameterBounds(satisfiedTypes)));
-        typeParamAnnotations.append(gen.makeAtTypeParameter(name, satisfiedTypes, covariant, contravariant));
+        typeParamAnnotations.append(gen.makeAtTypeParameter(name, satisfiedTypes, caseTypes, covariant, contravariant));
         return this;
     }
 
@@ -326,6 +327,7 @@ public class ClassDefinitionBuilder {
     public ClassDefinitionBuilder typeParameter(TypeParameter declarationModel) {
         return typeParameter(declarationModel.getName(), 
                 declarationModel.getSatisfiedTypes(),
+                declarationModel.getCaseTypes(),
                 declarationModel.isCovariant(),
                 declarationModel.isContravariant());
     }
