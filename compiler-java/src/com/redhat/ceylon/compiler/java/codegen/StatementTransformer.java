@@ -1255,7 +1255,7 @@ public class StatementTransformer extends AbstractTransformer {
             // We don't need to unerase here as anything remotely a sequence will be erased to Iterable, which has getIterator()
             JCExpression containment = expressionGen().transformExpression(specifierExpression, BoxingStrategy.BOXED, null);
             JCExpression getIter = at(stmt).Apply(null, makeSelect(containment, "getIterator"), List.<JCExpression> nil());
-            getIter = gen().expressionGen().applyErasureAndBoxing(getIter, specifierExpression.getTypeModel(), true, BoxingStrategy.BOXED, iter_type);
+            getIter = gen().expressionGen().applyErasureAndBoxing(getIter, iter_type, true, BoxingStrategy.BOXED, iter_type);
             JCVariableDecl iter_decl = at(stmt).VarDef(make().Modifiers(0), naming.aliasName(loop_var_name + "$iter"), iter_type_expr, getIter);
             String iter_id = iter_decl.getName().toString();
             
