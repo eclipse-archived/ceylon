@@ -1815,60 +1815,52 @@ public class ExpressionTransformer extends AbstractTransformer {
 
         // depends on the operator
         Tree.ElementOrRange elementOrRange = access.getElementOrRange();
-        if(elementOrRange instanceof Tree.Element){
+        boolean isElement = elementOrRange instanceof Tree.Element;
+        
+        // let's see what types there are
+        ProducedType leftType = access.getPrimary().getTypeModel();
+        if(safe)
+            leftType = access.getUnit().getDefiniteType(leftType);
+        // find the corresponding supertype
+        Interface leftSuperTypeDeclaration;
+        if(isElement)
+            leftSuperTypeDeclaration = typeFact().getCorrespondenceDeclaration();
+        else
+            leftSuperTypeDeclaration = typeFact().getRangedDeclaration();
+        ProducedType leftCorrespondenceOrRangeType = leftType.getSupertype(leftSuperTypeDeclaration);
+        ProducedType rightType = getTypeArgument(leftCorrespondenceOrRangeType, 0);
+        
+        // How we transform the lhs depends whether this is a nullsafe index...
+        Name varName;
+        JCVariableDecl tmpVar;
+        JCExpression lhs;
+        if (safe) {
+            varName = naming.tempName("safeaccess");
+            // make a (let ArrayElem tmp = lhs in (tmp != null ? tmp.item(index) : null)) call
+            JCExpression arrayType = makeJavaType(leftCorrespondenceOrRangeType);
+            // ArrayElem tmp = lhs
+            tmpVar = make().VarDef(make().Modifiers(0), varName, arrayType, 
+                    transformExpression(access.getPrimary(), BoxingStrategy.BOXED, leftCorrespondenceOrRangeType));
+            lhs = make().Ident(varName);
+        } else {
+            varName = null;
+            tmpVar = null;
+            lhs = transformExpression(access.getPrimary(), BoxingStrategy.BOXED, leftCorrespondenceOrRangeType);
+        }
+        
+        // now find the access code
+        JCExpression safeAccess;
+        
+        if(isElement){
             Tree.Element element = (Tree.Element) elementOrRange;
-            // let's see what types there are
-            ProducedType leftType = access.getPrimary().getTypeModel();
-            if(safe)
-                leftType = access.getUnit().getDefiniteType(leftType);
-            ProducedType leftCorrespondenceType = leftType.getSupertype(access.getUnit().getCorrespondenceDeclaration());
-            ProducedType rightType = getTypeArgument(leftCorrespondenceType, 0);
             
             // do the index
             JCExpression index = transformExpression(element.getExpression(), BoxingStrategy.BOXED, rightType);
 
-            // How we transform the lhs depends whether this is a nullsafe index...
-            Name varName;
-            JCVariableDecl tmpVar;
-            JCExpression lhs;
-            if (safe) {
-                varName = naming.tempName("safeaccess");
-                // make a (let ArrayElem tmp = lhs in (tmp != null ? tmp.item(index) : null)) call
-                JCExpression arrayType = makeJavaType(leftCorrespondenceType);
-                // ArrayElem tmp = lhs
-                tmpVar = make().VarDef(make().Modifiers(0), varName, arrayType, 
-                        transformExpression(access.getPrimary(), BoxingStrategy.BOXED, leftCorrespondenceType));
-                lhs = make().Ident(varName);
-            } else {
-                varName = null;
-                tmpVar = null;
-                lhs = transformExpression(access.getPrimary(), BoxingStrategy.BOXED, leftCorrespondenceType);
-            }
             // tmpVar.item(index)
-            JCExpression safeAccess = make().Apply(List.<JCTree.JCExpression>nil(), 
-                    makeSelect(lhs, "item"), List.of(index));
-            // Because tuple index access has the type of the indexed element
-            // (not the union of types in the sequential) a typecast may be required.
-            safeAccess = applyErasureAndBoxing(safeAccess, 
-                    getTypeArgument(leftCorrespondenceType, 1), 
-                    true, BoxingStrategy.BOXED, access.getTypeModel());
-            if (!safe) {
-                return safeAccess;
-            }
-            at(access.getPrimary());
-            // (tmpVar != null ? safeAccess : null)
-            JCConditional conditional = make().Conditional(
-                    make().Binary(JCTree.NE, make().Ident(varName), makeNull()), 
-                    safeAccess, makeNull());
-            // (let tmpVar in conditional)
-            return make().LetExpr(tmpVar, conditional);
+            safeAccess = at(access).Apply(List.<JCTree.JCExpression>nil(), 
+                                          makeSelect(lhs, "item"), List.of(index));
         }else{
-            // find the types
-            ProducedType leftType = access.getPrimary().getTypeModel();
-            ProducedType leftRangedType = leftType.getSupertype(access.getUnit().getRangedDeclaration());
-            ProducedType rightType = getTypeArgument(leftRangedType, 0);
-            // look at the lhs
-            JCExpression lhs = transformExpression(access.getPrimary(), BoxingStrategy.BOXED, leftRangedType);
             // do the indices
             Tree.ElementRange range = (Tree.ElementRange) elementOrRange;
             JCExpression start = transformExpression(range.getLowerBound(), BoxingStrategy.BOXED, rightType);
@@ -1886,9 +1878,24 @@ public class ExpressionTransformer extends AbstractTransformer {
             else
                 method = "segment";
             // make a "lhs.<method>(start, end)" call
-            return at(access).Apply(List.<JCTree.JCExpression>nil(), 
-                    makeSelect(lhs, method), List.of(start, end));
+            safeAccess = at(access).Apply(List.<JCTree.JCExpression>nil(), 
+                                          makeSelect(lhs, method), List.of(start, end));
         }
+
+        // Because tuple index access has the type of the indexed element
+        // (not the union of types in the sequential) a typecast may be required.
+        safeAccess = applyErasureAndBoxing(safeAccess, 
+                                           getTypeArgument(leftCorrespondenceOrRangeType, 1), 
+                                           true, BoxingStrategy.BOXED, access.getTypeModel());
+        if (!safe) {
+            return safeAccess;
+        }
+        // (tmpVar != null ? safeAccess : null)
+        JCConditional conditional = at(access.getPrimary()).Conditional(
+                make().Binary(JCTree.NE, make().Ident(varName), makeNull()), 
+                safeAccess, makeNull());
+        // (let tmpVar in conditional)
+        return make().LetExpr(tmpVar, conditional);
     }
 
     //
