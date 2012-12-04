@@ -45,8 +45,20 @@ public interface Empty
     @TypeInfo("ceylon.language::Empty")
     public Empty span(@Name("from") @TypeInfo("ceylon.language::Integer")
     Integer from,
-    @Name("to") @TypeInfo("ceylon.language::Integer|ceylon.language::Nothing")
+    @Name("to") @TypeInfo("ceylon.language::Integer")
     Integer length);
+    
+    @Annotations(@Annotation("actual"))
+    @Override
+    @TypeInfo("ceylon.language::Empty")
+    public Empty spanFrom(@Name("from") @TypeInfo("ceylon.language::Integer")
+    Integer from);
+    
+    @Annotations(@Annotation("actual"))
+    @Override
+    @TypeInfo("ceylon.language::Empty")
+    public Empty spanTo(@Name("to") @TypeInfo("ceylon.language::Integer")
+    Integer to);
 
     @Annotations(@Annotation("actual"))
     @Override
