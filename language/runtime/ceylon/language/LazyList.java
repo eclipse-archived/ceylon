@@ -295,13 +295,23 @@ public class LazyList<Element> implements List<Element> {
     public List<? extends Element> span(Integer from, Integer to) {
         long p0 = from.value;
         long p1 = to.value;
-        if (p1 >= p0) {
-            Iterable<? extends Element> els = p0>0 ? elems.skipping(p0) : elems;
-            return new LazyList<Element>(els.taking(p1-p0+1));
-        } else {
-            Iterable<? extends Element> els = p1>0 ? elems.skipping(p1) : elems;
-            return new LazyList<Element>(els.taking(p0-p1+1).getSequence().getReversed());
+        if (p0 < 0 && p1 < 0) {
+            return (List)empty_.getEmpty$();
+        } else if (p0 < 0) {
+            p0 = 0;
+        } else if (p1 < 0) {
+            p1 = 0;
         }
+        Iterable<? extends Element> els;
+        if (p1 >= p0) {
+            els = p0>0 ? elems.skipping(p0) : elems;
+            els = els.taking(p1-p0+1);
+            return new LazyList<Element>(els);
+        } else {
+            els = p1>0 ? elems.skipping(p1) : elems;
+            els = els.taking(p0-p1+1).getSequence().getReversed();
+        }
+        return new LazyList<Element>(els);
     }
 
     @Override @SuppressWarnings({"rawtypes", "unchecked"})
@@ -309,8 +319,10 @@ public class LazyList<Element> implements List<Element> {
     @TypeInfo("ceylon.language::List<Element>")
     public List<? extends Element> spanTo(Integer to) {
         long p1 = to.value;
-        if (p1<0) { return (List)empty_.getEmpty$(); }
-        return new LazyList<Element>(elems.taking(p1));
+        if (p1<0) { 
+            return (List)empty_.getEmpty$(); 
+        }
+        return new LazyList<Element>(elems.taking(p1+1));
     }
 
     @Override
