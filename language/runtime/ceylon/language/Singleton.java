@@ -1,7 +1,5 @@
 package ceylon.language;
 
-import static java.lang.Long.MAX_VALUE;
-
 import com.redhat.ceylon.compiler.java.metadata.Annotation;
 import com.redhat.ceylon.compiler.java.metadata.Annotations;
 import com.redhat.ceylon.compiler.java.metadata.Ceylon;
@@ -201,12 +199,9 @@ public class Singleton<Element>
     		@Name("to") Integer to) {
     	long lowest;
     	long highest;
-    	if (to==null) {
-    		to = Integer.instance(MAX_VALUE);
-    	}
-    	if (from.longValue()<=to.longValue()) {
+    	if (to == null || from.longValue()<=to.longValue()) {
     		lowest = from.longValue();
-    		highest = to.longValue();
+    		highest = to == null ? from.longValue()+1 : to.longValue();
     	}
     	else {
     		lowest = to.longValue();
@@ -215,7 +210,21 @@ public class Singleton<Element>
     	return lowest>0 || highest<0 ? (Sequential)empty_.getEmpty$(): this;
     }
 
-	@Override
+    @Override
+    @TypeInfo("ceylon.language::Empty|ceylon.language::Singleton<Element>")
+    @SuppressWarnings({"rawtypes", "unchecked"})
+    public Sequential<? extends Element> spanFrom(@Name("from") Integer from) {
+        return from.value > 0 ? (Sequential)empty_.getEmpty$() : this;
+    }
+
+    @Override
+    @TypeInfo("ceylon.language::Empty|ceylon.language::Singleton<Element>")
+    @SuppressWarnings({"rawtypes", "unchecked"})
+    public Sequential<? extends Element> spanTo(@Name("to") Integer to) {
+        return to.value < 0 ? (Sequential)empty_.getEmpty$() : this;
+    }
+
+    @Override
 	public java.lang.String toString() {
 		return "{ " + getFirst().toString() + " }";
 	}

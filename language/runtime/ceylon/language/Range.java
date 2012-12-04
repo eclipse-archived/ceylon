@@ -415,10 +415,8 @@ public class Range<Element extends Comparable<? super Element> & Ordinal<? super
     @TypeInfo("ceylon.language::Empty|ceylon.language::Range<Element>")
     public ceylon.language.Sequential<? extends Element> span(
     		@Name("from") Integer from,
-    		@TypeInfo("ceylon.language::Nothing|ceylon.language::Integer")
     		@Name("to") Integer to) {
         Integer lastIndex = getLastIndex();
-		to = to==null ? Integer.instance(MAX_VALUE) : to;
         if (to.value<0) {
         	if (from.value<0) {
         		return (Sequential)empty_.getEmpty$();
@@ -442,6 +440,18 @@ public class Range<Element extends Comparable<? super Element> & Ordinal<? super
         Element y = first;
         for (int i=0; i < to.value; i++) { y = next(y); }
         return new Range<Element>(x, y);
+    }
+
+    @TypeInfo("ceylon.language::Empty|ceylon.language::Range<Element>")
+    public ceylon.language.Sequential<? extends Element> spanTo(
+            @Name("to") Integer to) {
+        return span(Integer.instance(0), to);
+    }
+
+    @TypeInfo("ceylon.language::Empty|ceylon.language::Range<Element>")
+    public ceylon.language.Sequential<? extends Element> spanFrom(
+            @Name("from") Integer from) {
+        return span(from, Integer.instance(getSize()));
     }
 
     @Override

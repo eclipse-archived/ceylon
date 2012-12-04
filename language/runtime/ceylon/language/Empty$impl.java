@@ -54,6 +54,20 @@ public final class Empty$impl {
         return $this;
     }
 
+    public Empty spanTo(Integer to) {
+        return _spanTo($this, to);
+    }
+    private static Empty _spanTo(Empty $this, Integer to) {
+        return $this;
+    }
+
+    public Empty spanFrom(Integer from) {
+        return _spanFrom($this, from);
+    }
+    private static Empty _spanFrom(Empty $this, Integer from) {
+        return $this;
+    }
+
     public long count(java.lang.Object element) {
         return _count($this, element);
     }

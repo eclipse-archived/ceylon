@@ -384,11 +384,23 @@ public class Tuple<Element, First extends Element, Rest extends Sequential<Eleme
 		return correspondence$impl.Items$new(keys);
 	}
 
-	@Override
+    @Override
+    @Annotations(@Annotation("default"))
+    public Sequential<? extends Element> spanFrom(Integer from) {
+        return span(from, Integer.instance(getSize()));
+    }
+
+    @Override
+    @Annotations(@Annotation("default"))
+    public Sequential<? extends Element> spanTo(Integer to) {
+        return span(Integer.instance(0), to);
+    }
+
+    @Override
 	@Annotations(@Annotation("default"))
 	public Sequential<? extends Element> span(Integer from,
-	        @Name("to") @TypeInfo("ceylon.language::Nothing|ceylon.language::Integer") Integer to) {
-	    long end = to==null ? getSize() : to.value;
+	        @Name("to") Integer to) {
+	    long end = to.value;
 	    long _from = from.value;
         return _from<=end ? this.segment(from,end-_from+1)
                 : this.segment(Integer.instance(end),_from-end+1).getReversed().getSequence();

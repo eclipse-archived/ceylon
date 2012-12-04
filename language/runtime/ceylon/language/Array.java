@@ -303,11 +303,20 @@ public abstract class Array<Element> implements List<Element>, FixedSized<Elemen
     }*/
 
     @Override
+    public Array<? extends Element> spanFrom(@Name("from") Integer from) {
+        return span(from, Integer.instance(getSize()));
+    }
+    @Override
+    public Array<? extends Element> spanTo(@Name("to") Integer to) {
+        return to.value < 0 ? (Array)empty_.getEmpty$() : span(Integer.instance(0), to);
+    }
+
+    @Override
     public Array<? extends Element> span(@Name("from") Integer from,
-            @Name("to") @TypeInfo("ceylon.language::Nothing|ceylon.language::Integer") Integer to) {
+            @Name("to") Integer to) {
         long fromIndex = from.longValue();
         if (fromIndex<0) fromIndex=0;
-        long toIndex = to==null ? MAX_VALUE : to.longValue();
+        long toIndex = to.longValue();
         long lastIndex = getLastIndex().longValue();
         java.lang.Class<?> typeClass = array.getClass().getComponentType();
         if (fromIndex>lastIndex) {

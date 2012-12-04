@@ -217,6 +217,18 @@ public class empty_ {
 
         @Override
         @Ignore
+        public Empty spanTo(Integer to) {
+            return $ceylon$language$Empty$this.spanTo((Integer)to);
+        }
+
+        @Override
+        @Ignore
+        public Empty spanFrom(Integer from) {
+            return $ceylon$language$Empty$this.spanFrom((Integer)from);
+        }
+
+        @Override
+        @Ignore
         public Empty segment(Integer from, long length) {
             return $ceylon$language$Empty$this.segment((Integer)from, length);
         }

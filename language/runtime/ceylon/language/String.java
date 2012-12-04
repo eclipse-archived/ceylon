@@ -759,18 +759,28 @@ public abstract class String
     @Override
     @TypeInfo("ceylon.language::String")
     public String span(@Name("from") final Integer from,
-            @Name("to") @TypeInfo("ceylon.language::Nothing|ceylon.language::Integer")
-            final Integer to) {
-        return instance(span(value, from.longValue(), to));
+            @Name("to") final Integer to) {
+        return instance(span(value, from.longValue(), to.longValue()));
+    }
+
+    @Override
+    @TypeInfo("ceylon.language::String")
+    public String spanTo(@Name("to") final Integer to) {
+        return to.value <0 ? EmptyString.instance : instance(span(value, 0, to.longValue()));
+    }
+
+    @Override
+    @TypeInfo("ceylon.language::String")
+    public String spanFrom(@Name("from") final Integer from) {
+        return instance(span(value, from.longValue(), getSize()));
     }
 
     @Ignore
-    public static java.lang.String span(java.lang.String value, long from, final Integer to) {
+    public static java.lang.String span(java.lang.String value, long from, long toIndex) {
         long len = getSize(value);
         if (len == 0) {
             return "";
         }
-        long toIndex = to == null ? MAX_VALUE : to.longValue();
         boolean reverse = toIndex < from;
         if (reverse) {
             long _tmp = toIndex;

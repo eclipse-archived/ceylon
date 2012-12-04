@@ -311,6 +311,28 @@ public final class Correspondence$impl<Key,Item> {
             }
         }
         @Override
+        @SuppressWarnings({"rawtypes", "unchecked"})
+        public Sequential<? extends Item> spanTo(Integer to) {
+            Iterable<? extends Key> keys = (Iterable<? extends Key>) this.keys.spanTo(to);
+            if (keys.getEmpty()) {
+                return (Sequential)empty_.getEmpty$();
+            }
+            else {
+                return new Items((Sequence<? extends Key>)keys);
+            }
+        }
+        @Override
+        @SuppressWarnings({"rawtypes", "unchecked"})
+        public Sequential<? extends Item> spanFrom(Integer from) {
+            Iterable<? extends Key> keys = (Iterable<? extends Key>) this.keys.spanFrom(from);
+            if (keys.getEmpty()) {
+                return (Sequential)empty_.getEmpty$();
+            }
+            else {
+                return new Items((Sequence<? extends Key>)keys);
+            }
+        }
+        @Override
         @Ignore
         public boolean contains(java.lang.Object element) {
             return $ceylon$language$Collection$this.contains(element);
