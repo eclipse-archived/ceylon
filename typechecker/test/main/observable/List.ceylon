@@ -23,7 +23,13 @@ class List<T>()
     shared actual T first {
         throw;
     }
-    shared actual T[] span(Integer from, Integer? to) {
+    shared actual T[] span(Integer from, Integer to) {
+        return this;
+    }
+    shared actual T[] spanFrom(Integer from) {
+        return this;
+    }
+    shared actual T[] spanTo(Integer to) {
         return this;
     }
 }

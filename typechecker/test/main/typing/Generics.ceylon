@@ -102,7 +102,9 @@ class Generics() {
             shared actual X[] segment(Integer from, Integer length) { return this; }
             shared actual X first { throw; }
             shared actual Sequence<X> reversed { return this; }
-            shared actual X[] span(Integer from, Integer? to) { return this; }
+            shared actual X[] span(Integer from, Integer to) { return this; }
+            shared actual X[] spanTo(Integer to) { return this; }
+            shared actual X[] spanFrom(Integer from) { return this; }
         }
         @error class BadClassInheritance() satisfies Sequence<Y> {}
         class GoodClassInheritance2() extends Producer<X>() {}
