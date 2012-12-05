@@ -301,11 +301,10 @@ public abstract class AbstractTransformer implements Transformation {
         JCExpression name = makeQuotedIdent(className);
         
         JCExpression initValue = makeNewClass(className, false, parameter);
-        List<JCAnnotation> annots = List.<JCAnnotation>nil();
 
         int modifiers = isShared ? 0 : FINAL;
         JCTree.JCVariableDecl var = make().VarDef(
-                make().Modifiers(modifiers, annots), 
+                make().Modifiers(modifiers), 
                 names().fromString(varName), 
                 name, 
                 initValue);
