@@ -194,6 +194,11 @@ public class Symtab {
     public  Type ceylonUninitializedMethodErrorType;
     public  Type ceylonCallableType;
     public  Type ceylonAbstractCallableType;
+    public  Type ceylonVariableBoxType;
+    public  Type ceylonVariableBoxLongType;
+    public  Type ceylonVariableBoxIntType;
+    public  Type ceylonVariableBoxDoubleType;
+    public  Type ceylonVariableBoxBooleanType;
     
     public final Type ceylonAtCeylonType;
     public final Type ceylonAtModuleType;
@@ -817,5 +822,10 @@ public class Symtab {
         ceylonUninitializedMethodErrorType = enterClass("com.redhat.ceylon.compiler.java.language.UninitializedMethodError");
         ceylonCallableType = enterClass("ceylon.language.Callable");
         ceylonAbstractCallableType = enterClass("com.redhat.ceylon.compiler.java.language.AbstractCallable");
+        ceylonVariableBoxType = enterClass("com.redhat.ceylon.compiler.java.language.VariableBox");
+        ceylonVariableBoxLongType = enterClass("com.redhat.ceylon.compiler.java.language.VariableBoxLong");
+        ceylonVariableBoxIntType = enterClass("com.redhat.ceylon.compiler.java.language.VariableBoxInt");
+        ceylonVariableBoxDoubleType = enterClass("com.redhat.ceylon.compiler.java.language.VariableBoxDouble");
+        ceylonVariableBoxBooleanType = enterClass("com.redhat.ceylon.compiler.java.language.VariableBoxBoolean");
     }
 }
