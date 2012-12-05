@@ -92,7 +92,7 @@ public class ConditionGenerator {
     void specialConditionCheck(Condition condition, Tree.Term variableRHS, String varName) {
         if (condition instanceof ExistsOrNonemptyCondition) {
             if (condition instanceof NonemptyCondition) {
-                gen.out(GenerateJsVisitor.getClAlias(), ".nonempty(");
+                gen.out(GenerateJsVisitor.getClAlias(), "nonempty(");
                 specialConditionRHS(variableRHS, varName);
                 gen.out(")");
             } else { //exists

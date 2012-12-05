@@ -32,15 +32,17 @@ class ComprehensionGenerator {
 
     ComprehensionGenerator(GenerateJsVisitor gen, JsIdentifierNames names, Set<Declaration> directDeclarations) {
         this.gen = gen;
-        exhausted = String.format("%s.getExhausted()", GenerateJsVisitor.getClAlias());
+        exhausted = String.format("%sgetExhausted()", GenerateJsVisitor.getClAlias());
         this.names = names;
         directAccess = directDeclarations;
     }
 
     void generateComprehension(Comprehension that) {
-        gen.out(GenerateJsVisitor.getClAlias(), ".Comprehension(function()");
+        gen.out(GenerateJsVisitor.getClAlias(), "Comprehension(function()");
         gen.beginBlock();
-        gen.out("//Comprehension"); gen.location(that); gen.endLine();
+        if (gen.isAddComments()) {
+            gen.out("//Comprehension"); gen.location(that); gen.endLine();
+        }
 
         // gather information about all loops and conditions in the comprehension
         List<ComprehensionLoopInfo> loops = new ArrayList<ComprehensionLoopInfo>();
