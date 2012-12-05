@@ -260,66 +260,9 @@ class BitwiseOperators {
     }
     
     private final void unboxedLocalGetters() {
-        
-        final class n1_ {
-            
-            n1_(long value) {
-                this.value = value;
-            }
-            
-            private n1_() {
-            }
-            private long value;
-            
-            long getN1() {
-                return value;
-            }
-            
-            void setN1(final long n1) {
-                value = n1;
-            }
-        }
-        final n1_ n1_ = new n1_(0L);
-        
-        final class n2_ {
-            
-            n2_(long value) {
-                this.value = value;
-            }
-            
-            private n2_() {
-            }
-            private long value;
-            
-            long getN2() {
-                return value;
-            }
-            
-            void setN2(final long n2) {
-                value = n2;
-            }
-        }
-        final n2_ n2_ = new n2_(0L);
-        
-        final class i1_ {
-            
-            i1_(long value) {
-                this.value = value;
-            }
-            
-            private i1_() {
-            }
-            private long value;
-            
-            long getI1() {
-                return value;
-            }
-            
-            void setI1(final long i1) {
-                value = i1;
-            }
-        }
-        final i1_ i1_ = new i1_(0L);
+        final .com.redhat.ceylon.compiler.java.language.VariableBoxLong n1_ = new .com.redhat.ceylon.compiler.java.language.VariableBoxLong(0L);
+        final .com.redhat.ceylon.compiler.java.language.VariableBoxLong n2_ = new .com.redhat.ceylon.compiler.java.language.VariableBoxLong(0L);
+        final .com.redhat.ceylon.compiler.java.language.VariableBoxLong i1_ = new .com.redhat.ceylon.compiler.java.language.VariableBoxLong(0L);
         
         final class getterN1$getter_ {
             
@@ -327,7 +270,7 @@ class BitwiseOperators {
             }
             
             long getGetterN1() {
-                return n1_.getN1();
+                return n1_.ref;
             }
         }
         final getterN1$getter_ getterN1$getter_ = new getterN1$getter_();
@@ -339,7 +282,7 @@ class BitwiseOperators {
             private long value;
             
             void setGetterN1(final long getterN1) {
-                n1_.setN1(getterN1);
+                n1_.ref = getterN1;
             }
         }
         final getterN1$setter_ getterN1$setter_ = new getterN1$setter_();
@@ -350,7 +293,7 @@ class BitwiseOperators {
             }
             
             long getGetterN2() {
-                return n2_.getN2();
+                return n2_.ref;
             }
         }
         final getterN2$getter_ getterN2$getter_ = new getterN2$getter_();
@@ -362,7 +305,7 @@ class BitwiseOperators {
             private long value;
             
             void setGetterN2(final long getterN2) {
-                n2_.setN2(getterN2);
+                n2_.ref = getterN2;
             }
         }
         final getterN2$setter_ getterN2$setter_ = new getterN2$setter_();
@@ -373,7 +316,7 @@ class BitwiseOperators {
             }
             
             long getGetterI1() {
-                return i1_.getI1();
+                return i1_.ref;
             }
         }
         final getterI1$getter_ getterI1$getter_ = new getterI1$getter_();
@@ -385,7 +328,7 @@ class BitwiseOperators {
             private long value;
             
             void setGetterI1(final long getterI1) {
-                i1_.setI1(getterI1);
+                i1_.ref = getterI1;
             }
         }
         final getterI1$setter_ getterI1$setter_ = new getterI1$setter_();

@@ -8,27 +8,8 @@ class MethodLocalAssign {
     private final void m() {
         boolean b = true;
         b = false;
-        
-        final class b1_ {
-            
-            b1_(boolean value) {
-                this.value = value;
-            }
-            
-            private b1_() {
-            }
-            private boolean value;
-            
-            boolean getB1() {
-                return value;
-            }
-            
-            void setB1(final boolean b1) {
-                value = b1;
-            }
-        }
-        final b1_ b1_ = new b1_(true);
-        b1_.setB1(false);
+        final .com.redhat.ceylon.compiler.java.language.VariableBoxBoolean b1_ = new .com.redhat.ceylon.compiler.java.language.VariableBoxBoolean(true);
+        b1_.ref = false;
         
         final class b2$getter_ {
             
@@ -36,7 +17,7 @@ class MethodLocalAssign {
             }
             
             boolean getB2() {
-                return b1_.getB1();
+                return b1_.ref;
             }
         }
         final b2$getter_ b2$getter_ = new b2$getter_();
@@ -48,7 +29,7 @@ class MethodLocalAssign {
             private boolean value;
             
             void setB2(final boolean b2) {
-                b1_.setB1(b2);
+                b1_.ref = b2;
             }
         }
         final b2$setter_ b2$setter_ = new b2$setter_();

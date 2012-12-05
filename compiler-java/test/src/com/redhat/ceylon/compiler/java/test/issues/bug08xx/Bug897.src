@@ -11,26 +11,7 @@ class Bug897 {
     
     public final void bar() {
         long index = 0L;
-        
-        final class captured_ {
-            
-            captured_(long value) {
-                this.value = value;
-            }
-            
-            private captured_() {
-            }
-            private long value;
-            
-            long getCaptured() {
-                return value;
-            }
-            
-            void setCaptured(final long captured) {
-                value = captured;
-            }
-        }
-        final captured_ captured_ = new captured_(m(index));
+        final .com.redhat.ceylon.compiler.java.language.VariableBoxLong captured_ = new .com.redhat.ceylon.compiler.java.language.VariableBoxLong(m(index));
         
         final class foo_ {
             
@@ -38,7 +19,7 @@ class Bug897 {
             }
             
             long foo() {
-                return captured_.getCaptured();
+                return captured_.ref;
             }
         }
         final foo_ foo = new foo_();

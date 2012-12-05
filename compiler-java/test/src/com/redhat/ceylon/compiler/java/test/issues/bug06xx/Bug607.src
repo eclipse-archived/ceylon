@@ -6,26 +6,7 @@ final class bug607mth_ {
     }
     
     static void bug607mth(final .java.lang.String arg1, .java.lang.String arg2, final .java.lang.String arg3$) {
-        
-        final class arg3_ {
-            
-            arg3_(.java.lang.String value) {
-                this.value = value;
-            }
-            
-            private arg3_() {
-            }
-            private .java.lang.String value;
-            
-            .java.lang.String getArg3() {
-                return value;
-            }
-            
-            void setArg3(final .java.lang.String arg3) {
-                value = arg3;
-            }
-        }
-        final arg3_ arg3_ = new arg3_(arg3$);
+        final VariableBox<.java.lang.String> arg3_ = new VariableBox<.java.lang.String>(arg3$);
         arg2 = "foo";
         
         final class cap_ {
@@ -34,7 +15,7 @@ final class bug607mth_ {
             }
             
             void cap() {
-                arg3_.setArg3("bar");
+                arg3_.ref = "bar";
             }
         }
         final cap_ cap = new cap_();
@@ -46,26 +27,7 @@ class Bug607cls {
     }
     
     private final void mth(final .java.lang.String arg1, .java.lang.String arg2, final .java.lang.String arg3$) {
-        
-        final class arg3_ {
-            
-            arg3_(.java.lang.String value) {
-                this.value = value;
-            }
-            
-            private arg3_() {
-            }
-            private .java.lang.String value;
-            
-            .java.lang.String getArg3() {
-                return value;
-            }
-            
-            void setArg3(final .java.lang.String arg3) {
-                value = arg3;
-            }
-        }
-        final arg3_ arg3_ = new arg3_(arg3$);
+        final VariableBox<.java.lang.String> arg3_ = new VariableBox<.java.lang.String>(arg3$);
         arg2 = "bar";
         
         final class cap_ {
@@ -74,7 +36,7 @@ class Bug607cls {
             }
             
             void cap() {
-                arg3_.setArg3("bar");
+                arg3_.ref = "bar";
             }
         }
         final cap_ cap = new cap_();
