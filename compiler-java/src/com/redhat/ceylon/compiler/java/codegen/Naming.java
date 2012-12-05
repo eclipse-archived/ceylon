@@ -406,6 +406,8 @@ public class Naming implements LocalId {
         }
         if (Decl.withinClassOrInterface(decl)) {
             return getErasedGetterName(decl.getName());
+        } else if (decl instanceof TypedDeclaration && Decl.isBoxedVariable((TypedDeclaration)decl)) {
+            return "ref";
         } else {
             String getterName = getGetterName(decl.getName());
             if (decl.isToplevel()) {
@@ -429,7 +431,9 @@ public class Naming implements LocalId {
         }
         if (decl instanceof JavaBeanValue) {
             return ((JavaBeanValue)decl).getSetterName();
-        }
+        } else if (decl instanceof TypedDeclaration && Decl.isBoxedVariable((TypedDeclaration)decl)) {
+            return "ref";
+        } 
         return getSetterName(decl.getName());
     }
 
@@ -725,7 +729,7 @@ public class Naming implements LocalId {
             expr = makeQualIdent(expr, decl.getName());
         } else if ((namingOptions & NA_SETTER) != 0) {
             Assert.not(decl instanceof Method, "A method has no setter");
-            expr = makeQualIdent(expr, getSetterName(decl.getName()));
+            expr = makeQualIdent(expr, getSetterName(decl));
         } else if ((namingOptions & NA_GETTER) != 0) {
             Assert.not(decl instanceof Method, "A method has no getter");
             expr = makeQualIdent(expr, getGetterName(decl));
