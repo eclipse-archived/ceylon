@@ -1,0 +1,27 @@
+package com.redhat.ceylon.compiler.java.test.issues.bug08xx;
+
+class Bug843_1<Element, Rest> {
+    
+    Bug843_1(.ceylon.language.Sequential<? extends Element> rest) {
+    }
+}
+class Bug843_2<Rest> {
+    
+    Bug843_2(.ceylon.language.Sequential<? extends .ceylon.language.Integer> rest) {
+    }
+}
+final class bug843_test_ {
+    
+    private bug843_test_() {
+    }
+    
+    static void bug843_test() {
+        new .com.redhat.ceylon.compiler.java.test.issues.bug08xx.Bug843_1<.ceylon.language.Integer, .ceylon.language.Empty>((.ceylon.language.Sequential).ceylon.language.empty_.getEmpty$());
+        new .com.redhat.ceylon.compiler.java.test.issues.bug08xx.Bug843_2<.ceylon.language.Empty>((.ceylon.language.Sequential).ceylon.language.empty_.getEmpty$());
+    }
+    
+    public static void main(.java.lang.String[] args) {
+        .ceylon.language.process_.getProcess$().setupArguments(args);
+        .com.redhat.ceylon.compiler.java.test.issues.bug08xx.bug843_test_.bug843_test();
+    }
+}
