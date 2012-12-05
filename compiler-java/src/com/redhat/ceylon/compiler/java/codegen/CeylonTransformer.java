@@ -20,6 +20,8 @@
 
 package com.redhat.ceylon.compiler.java.codegen;
 
+import static com.sun.tools.javac.code.Flags.FINAL;
+
 import java.util.Iterator;
 
 import javax.tools.JavaFileObject;
@@ -30,15 +32,13 @@ import com.redhat.ceylon.compiler.typechecker.model.Setter;
 import com.redhat.ceylon.compiler.typechecker.model.TypedDeclaration;
 import com.redhat.ceylon.compiler.typechecker.model.Value;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree;
-import com.redhat.ceylon.compiler.typechecker.tree.Tree.BaseMemberExpression;
 import com.sun.tools.javac.code.Flags;
 import com.sun.tools.javac.tree.JCTree;
+import com.sun.tools.javac.tree.JCTree.JCAnnotation;
 import com.sun.tools.javac.tree.JCTree.JCBlock;
 import com.sun.tools.javac.tree.JCTree.JCCompilationUnit;
 import com.sun.tools.javac.tree.JCTree.JCExpression;
 import com.sun.tools.javac.tree.JCTree.JCImport;
-import com.sun.tools.javac.tree.JCTree.JCStatement;
-import com.sun.tools.javac.tree.JCTree.JCTypeParameter;
 import com.sun.tools.javac.util.Context;
 import com.sun.tools.javac.util.List;
 import com.sun.tools.javac.util.ListBuffer;
@@ -231,11 +231,28 @@ public class CeylonTransformer extends AbstractTransformer {
             final Tree.Block block,
             final Tree.SpecifierOrInitializerExpression expression, 
             final Tree.AttributeSetterDefinition setterDecl) {
+        
+        JCTree.JCExpression initialValue = transformValueInit(
+                declarationModel, attrName, expression);
+        
+        // For captured local variable Values, use a VariableBox
+        if (Decl.isBoxedVariable(declarationModel)) {
+            List<JCExpression> args = initialValue != null ? List.of(initialValue) : List.<JCExpression>nil();
+            JCExpression newBox = make().NewClass(
+                    null, List.<JCExpression>nil(), 
+                    makeVariableBox(declarationModel), args, null);
+            JCTree.JCVariableDecl var = make().VarDef(
+                    make().Modifiers(FINAL), 
+                    names().fromString(attrClassName), 
+                    makeVariableBox(declarationModel), 
+                    newBox);
+            return List.<JCTree>of(var);
+        }
+        // For everything else generate a getter/setter method
         AttributeDefinitionBuilder builder = AttributeDefinitionBuilder
             .wrapped(this, attrClassName, attrName, declarationModel, declarationModel.isToplevel())
             .is(Flags.PUBLIC, declarationModel.isShared());
-        JCTree.JCExpression initialValue = null;
-
+        
         if (declarationModel instanceof Setter
                 || declarationModel instanceof Parameter) {
             // For local setters
@@ -247,17 +264,6 @@ public class CeylonTransformer extends AbstractTransformer {
                 // For local and toplevel value attributes
                 if (!declarationModel.isVariable()) {
                     builder.immutable();
-                }
-                if (expression != null) {
-                    initialValue = expressionGen().transformExpression(
-                            expression.getExpression(), 
-                            CodegenUtil.getBoxingStrategy(declarationModel),
-                            declarationModel.getType());
-                } else {
-                    Parameter p = CodegenUtil.findParamForDecl(attrName, declarationModel);
-                    if (p != null) {
-                        initialValue = naming.makeName(p, Naming.NA_MEMBER | Naming.NA_ALIASED);
-                    }
                 }
             } else {
                 // For local and toplevel getters
@@ -290,5 +296,50 @@ public class CeylonTransformer extends AbstractTransformer {
             builder.is(Flags.STATIC, true);
             return builder.build();
         }
+    }
+
+    private JCTree.JCExpression transformValueInit(
+            TypedDeclaration declarationModel, String attrName,
+            final Tree.SpecifierOrInitializerExpression expression) {
+        JCTree.JCExpression initialValue = null;
+        if (declarationModel instanceof Value) {
+            if (expression != null) {
+                initialValue = expressionGen().transformExpression(
+                        expression.getExpression(), 
+                        CodegenUtil.getBoxingStrategy(declarationModel),
+                        declarationModel.getType());
+            } else {
+                Parameter p = CodegenUtil.findParamForDecl(attrName, declarationModel);
+                if (p != null) {
+                    initialValue = naming.makeName(p, Naming.NA_MEMBER | Naming.NA_ALIASED);
+                }
+            }
+        }
+        return initialValue;
+    }
+
+    /**
+     * Creates a {@code VariableBox<T>}, {@code VariableBoxBoolean}, 
+     * {@code VariableBoxLong} etc depending on the given declaration model.
+     */
+    private JCExpression makeVariableBox(TypedDeclaration declarationModel) {
+        JCExpression boxClass;
+        boolean unboxed = Boolean.TRUE.equals(declarationModel.getUnboxed());
+        if (Boolean.TRUE.equals(unboxed) && isCeylonBoolean(declarationModel.getType())) {
+            boxClass = make().Type(syms().ceylonVariableBoxBooleanType);
+        } else if (unboxed && isCeylonInteger(declarationModel.getType())) {
+            boxClass = make().Type(syms().ceylonVariableBoxLongType);
+        } else if (unboxed && isCeylonFloat(declarationModel.getType())) {
+            boxClass = make().Type(syms().ceylonVariableBoxDoubleType);
+        } else if (unboxed && isCeylonCharacter(declarationModel.getType())) {
+            boxClass = make().Type(syms().ceylonVariableBoxIntType);
+        } else {
+            boxClass = make().Ident(syms().ceylonVariableBoxType.tsym);
+            int flags = unboxed ? 0 : JT_TYPE_ARGUMENT;
+            boxClass = make().TypeApply(boxClass, 
+                    List.<JCExpression>of(
+                            makeJavaType(declarationModel.getType(), flags)));
+        }
+        return boxClass;
     }
 }
