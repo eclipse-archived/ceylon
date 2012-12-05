@@ -9,6 +9,7 @@ import com.redhat.ceylon.compiler.typechecker.tree.Tree;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.Expression;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.InvocationExpression;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.SpecifierExpression;
+import com.redhat.ceylon.compiler.typechecker.tree.Tree.SpecifierOrInitializerExpression;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.SpecifierStatement;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.Term;
 import com.redhat.ceylon.compiler.typechecker.tree.Visitor;
@@ -130,6 +131,16 @@ public class ValueVisitor extends Visitor {
         boolean cs = enterCapturingScope();
         super.visit(that);
         exitCapturingScope(cs);
+    }
+    
+    @Override public void visit(Tree.AttributeDeclaration that) {
+        super.visit(that);
+        final SpecifierOrInitializerExpression specifier = that.getSpecifierOrInitializerExpression();
+        if (specifier != null && specifier instanceof Tree.LazySpecifierExpression) {
+            boolean cs = enterCapturingScope();
+            specifier.visit(this);
+            exitCapturingScope(cs);
+        }   
     }
     
     @Override public void visit(Tree.AttributeGetterDefinition that) {
