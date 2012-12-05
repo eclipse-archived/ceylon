@@ -512,4 +512,5 @@ class Generics() {
 
     void unsatisfiable1<T>() @error given T satisfies Nothing&String {}
     void unsatisfiable2<T>() @error given T satisfies Nothing&Container {}
+    
 }

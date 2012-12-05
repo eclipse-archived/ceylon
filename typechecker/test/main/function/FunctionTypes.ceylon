@@ -37,7 +37,7 @@ String str(Float f) => f.string;
 
 Float curried(Integer x)(Float y) => x+y;
 
-[X,Y] generic<X,Y>(Y f(X x), X x()) 
+X->Y generic<X,Y>(Y f(X x), X x()) 
         given X satisfies Object 
         given Y satisfies Object { 
     X xx = x();

@@ -2201,8 +2201,8 @@ tupleElementType returns [Type type]
     
 type returns [StaticType type]
     @init { TupleType tt = new TupleType(null); }
-    : ut1=unionType 
-      { $type=$ut1.type; }
+    : t=entryType 
+      { $type=$t.type; }
     ;
 
 tupleType returns [TupleType type]
@@ -2241,9 +2241,9 @@ iterableType returns [IterableType type]
      RBRACE
    ;
 
-/*entryType returns [StaticType type]
+entryType returns [StaticType type]
     @init { EntryType bt=null; }
-    : t1=abbreviatedType
+    : t1=unionType
       { $type=$t1.type; }
       (
         ENTRY_OP
@@ -2252,14 +2252,14 @@ iterableType returns [IterableType type]
           bt.setEndToken($ENTRY_OP); 
           $type=bt; }
         (
-          t2=abbreviatedType
+          t2=unionType
           { bt.setValueType($t2.type);
             bt.setEndToken(null); }
 //        | { displayRecognitionError(getTokenNames(), 
 //                new MismatchedTokenException(UIDENTIFIER, input)); }
         )
       )?
-    ;*/
+    ;
 
 unionType returns [StaticType type]
     @init { UnionType ut=null; }
