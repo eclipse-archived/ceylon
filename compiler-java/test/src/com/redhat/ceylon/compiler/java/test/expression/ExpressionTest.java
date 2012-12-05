@@ -74,6 +74,10 @@ public class ExpressionTest extends CompilerTest {
         compareWithJavaSource("attribute/MethodLocalHidingAttribute");
     }
     @Test
+    public void testAtrBoxedLocalVariable(){
+        compareWithJavaSource("attribute/BoxedLocalVariable");
+    }
+    @Test
     public void testAtrMethodParamAccess(){
         compareWithJavaSource("attribute/MethodParamAccess");
     }

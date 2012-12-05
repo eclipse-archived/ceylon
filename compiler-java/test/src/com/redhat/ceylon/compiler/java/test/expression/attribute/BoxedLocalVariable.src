@@ -1,0 +1,60 @@
+package com.redhat.ceylon.compiler.java.test.expression.attribute;
+
+class BoxedLocalVariable<T> {
+    
+    BoxedLocalVariable() {
+    }
+    
+    public .java.lang.Object m2(final T t) {
+        final VariableBox<T> t2_ = new VariableBox<T>();
+        t2_.ref = t;
+        t2_.ref = t2_.ref;
+        
+        final class t3$getter_ {
+            
+            private t3$getter_() {
+            }
+            
+            T getT3() {
+                return t2_.ref;
+            }
+        }
+        final t3$getter_ t3$getter_ = new t3$getter_();
+        return null;
+    }
+    
+    public static void main(.java.lang.String[] args) {
+        .ceylon.language.process_.getProcess$().setupArguments(args);
+        new .com.redhat.ceylon.compiler.java.test.expression.attribute.BoxedLocalVariable();
+    }
+}
+class BoxedLocalVariable_sub extends .com.redhat.ceylon.compiler.java.test.expression.attribute.BoxedLocalVariable<.ceylon.language.String> {
+    
+    BoxedLocalVariable_sub() {
+        super();
+    }
+    
+    @.java.lang.Override
+    public final .java.lang.Object m2(final .ceylon.language.String t) {
+        final VariableBox<.java.lang.String> t2_ = new VariableBox<.java.lang.String>();
+        t2_.ref = t.toString();
+        t2_.ref = t2_.ref;
+        
+        final class t3$getter_ {
+            
+            private t3$getter_() {
+            }
+            
+            .java.lang.String getT3() {
+                return t2_.ref;
+            }
+        }
+        final t3$getter_ t3$getter_ = new t3$getter_();
+        return null;
+    }
+    
+    public static void main(.java.lang.String[] args) {
+        .ceylon.language.process_.getProcess$().setupArguments(args);
+        new .com.redhat.ceylon.compiler.java.test.expression.attribute.BoxedLocalVariable_sub();
+    }
+}
