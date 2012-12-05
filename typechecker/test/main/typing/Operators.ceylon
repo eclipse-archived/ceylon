@@ -312,11 +312,4 @@ class Operators() {
     @type:"Set<String>" vss|=ss;
     @type:"Set<String>" vss&=ss;
     
-    interface R<Element> satisfies Ranged<Integer,Element[]> {
-        shared actual Element[] spanTo(Integer to) {
-            value end = to;
-            return this[0:end+1];
-        }
-    }
-    
 }

@@ -2295,77 +2295,23 @@ public class ExpressionVisitor extends Visitor {
 					}
 					else if (index<elementTypes.size()-(sequenced?1:0)) {
 						ProducedType iet = elementTypes.get(index);
-						if (iet!=null) {
+						if (iet!=null && !(iet.getDeclaration() instanceof UnknownType)) {
 							that.setTypeModel(iet);
 						}
 					}
 					else {
-						if (sequenced) {
-							ProducedType iet = elementTypes.get(elementTypes.size()-1);
-							if (iet!=null) {
+						ProducedType iet = elementTypes.get(elementTypes.size()-1);
+						if (iet!=null && !(iet.getDeclaration() instanceof UnknownType)) {
+							if (sequenced) {
 								that.setTypeModel(unionType(unit.getIteratedType(iet), 
 										unit.getNothingDeclaration().getType(), 
 										unit));
 							}
-						}
-						else {
-							that.setTypeModel(unit.getNothingDeclaration().getType());
-						}
-					}
-				}
-			}
-		}
-	}
-
-	private void refineTypeForTupleRange(Tree.IndexExpression that,
-			ProducedType pt, Tree.Term l, Tree.Term u) {
-		boolean lnegated = false;
-		boolean unegated = false;
-		if (l instanceof Tree.NegativeOp) {
-			l = ((Tree.NegativeOp) l).getTerm();
-			lnegated = true;
-		}
-		else if (l instanceof Tree.PositiveOp) {
-			l = ((Tree.PositiveOp) l).getTerm();
-		}
-		if (u instanceof Tree.NegativeOp) {
-			u = ((Tree.NegativeOp) u).getTerm();
-			unegated = true;
-		}
-		else if (u instanceof Tree.PositiveOp) {
-			u = ((Tree.PositiveOp) u).getTerm();
-		}
-		if (pt.getDeclaration() instanceof Class &&
-				pt.getDeclaration().equals(unit.getTupleDeclaration())) {
-			if (l instanceof Tree.NaturalLiteral && u instanceof Tree.NaturalLiteral) {
-				int lindex = Integer.parseInt(l.getText());
-				if (lnegated) lindex = -lindex;
-				int uindex = Integer.parseInt(u.getText());
-				if (unegated) uindex = -uindex;
-				List<ProducedType> elementTypes = argtypes(pt);
-				boolean sequenced = argsequenced(pt);
-				//TODO: handle terminating type of tuple type!
-				List<ProducedType> list = new ArrayList<ProducedType>();
-				if (elementTypes!=null) {
-					if (lindex<0) {
-						lindex=0;
-					}
-					if (!sequenced && uindex>=elementTypes.size()) {
-						uindex=elementTypes.size()-1;
-					}
-					if (uindex<lindex) return;
-					for (int index=lindex; 
-							index<=uindex&&index<elementTypes.size()-(sequenced?1:0); 
-							index++) {
-						list.add(elementTypes.get(index));
-					}
-					if (sequenced) {
-						ProducedType rt = unit.getIteratedType(elementTypes.get(elementTypes.size()-1));
-						for (int index=elementTypes.size()-1; index<=uindex; index++) {
-							list.add(rt);
+							else {
+								that.setTypeModel(unit.getNothingDeclaration().getType());
+							}
 						}
 					}
-					that.setTypeModel(unit.getTupleType(list, false));
 				}
 			}
 		}
@@ -2397,10 +2343,14 @@ public class ExpressionVisitor extends Visitor {
 					for (int index=lindex; 
 							index<elementTypes.size()-(sequenced?1:0); 
 							index++) {
-						list.add(elementTypes.get(index));
+						ProducedType et = elementTypes.get(index);
+						if (et==null || et.getDeclaration() instanceof UnknownType) return;
+						list.add(et);
 					}
 					if (sequenced) {
-						ProducedType rt = unit.getIteratedType(elementTypes.get(elementTypes.size()-1));
+						ProducedType it = elementTypes.get(elementTypes.size()-1);
+						if (it==null || it.getDeclaration() instanceof UnknownType) return;
+						ProducedType rt = unit.getIteratedType(it);
 						list.add(rt);
 					}
 					that.setTypeModel(unit.getTupleType(list, sequenced));
