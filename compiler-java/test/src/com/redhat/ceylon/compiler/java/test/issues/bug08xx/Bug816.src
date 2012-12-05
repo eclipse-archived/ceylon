@@ -1,0 +1,46 @@
+package com.redhat.ceylon.compiler.java.test.issues.bug08xx;
+
+interface Bug816I<T> {
+}
+final class Bug816I$impl<T> {
+    
+    Bug816I$impl(.com.redhat.ceylon.compiler.java.test.issues.bug08xx.Bug816I<? extends T> $this) {
+        this.$this = $this;
+    }
+    private final .com.redhat.ceylon.compiler.java.test.issues.bug08xx.Bug816I<? extends T> $this;
+}
+class Bug816C<T1, T2> implements .com.redhat.ceylon.compiler.java.test.issues.bug08xx.Bug816I<.java.lang.Object> {
+    
+    Bug816C() {
+        this.$com$redhat$ceylon$compiler$java$test$issues$bug08xx$Bug816I$this = new .com.redhat.ceylon.compiler.java.test.issues.bug08xx.Bug816I$impl<.java.lang.Object>(this);
+    }
+    protected final .com.redhat.ceylon.compiler.java.test.issues.bug08xx.Bug816I$impl<.java.lang.Object> $com$redhat$ceylon$compiler$java$test$issues$bug08xx$Bug816I$this;
+    
+    public static void main(.java.lang.String[] args) {
+        .ceylon.language.process_.getProcess$().setupArguments(args);
+        new .com.redhat.ceylon.compiler.java.test.issues.bug08xx.Bug816C();
+    }
+}
+final class f_ {
+    
+    private f_() {
+    }
+    
+    static <X>void f(final .com.redhat.ceylon.compiler.java.test.issues.bug08xx.Bug816I<? extends X> set) {
+    }
+}
+final class test_ {
+    
+    private test_() {
+    }
+    
+    static void test() {
+        final .com.redhat.ceylon.compiler.java.test.issues.bug08xx.Bug816C<.ceylon.language.String, ?> x = new .com.redhat.ceylon.compiler.java.test.issues.bug08xx.Bug816C();
+        .com.redhat.ceylon.compiler.java.test.issues.bug08xx.f_.<.ceylon.language.String>f((.com.redhat.ceylon.compiler.java.test.issues.bug08xx.Bug816I)x);
+    }
+    
+    public static void main(.java.lang.String[] args) {
+        .ceylon.language.process_.getProcess$().setupArguments(args);
+        .com.redhat.ceylon.compiler.java.test.issues.bug08xx.test_.test();
+    }
+}
