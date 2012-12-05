@@ -214,7 +214,7 @@ class Operators() {
     @error nn+=1;
     @error nn++;
     
-    [String,Entry<Boolean,String>] ent = "hello"->(true->"hello");
+    String->Entry<Boolean,String> ent = "hello"->(true->"hello");
     
     @error X()[].doIt();
     @error X()?.doIt();
@@ -255,9 +255,19 @@ class Operators() {
     b4 &&= b3;
     b5 ||= b4;
     
-    @type:"Entry<String,Float>" [String,Float] esf = "hello"->1.0;
-    @type:"Sequence<Entry<String,Float>>" Sequence<[String,Float]> esfs = {esf};
+    @type:"Entry<String,Float>" String->Float esf = "hello"->1.0;
+    @type:"Sequence<Entry<String,Float>>" Sequence<String->Float> esfs = {esf};
     
+    String->Object okEntry;   
+    @error String->Void brokenEntry1;
+    @error Nothing->String brokenEntry2;
+    
+    @error value brokenEntry3 = "hello"->null;
+    @error value brokenEntry4 = null->"hello";
+    
+    @type:"Entry<String,Float|Integer>" 
+    String->Float|Integer okEntry2 = "hello"->(true then 1.0 else 1);
+
     Float x=1.0;
     Float result = x>0.0 then x else 0.0;
     
