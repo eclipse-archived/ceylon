@@ -30,30 +30,8 @@ function lessThan(v) {
     };
 }
 
-function byKey(/*Callable<Comparison,Key,Key>*/f) {
-    return function(a,b) {
-        return f(a.getKey(), b.getKey());
-    }
-}
-function byItem(/*Callable<Comparison,Key,Key*/f) {
-    return function(a,b) {
-        return f(a.getItem(), b.getItem());
-    }
-}
-
 function emptyOrSingleton(/*Element?*/elem) {
     return elem===null ? empty : Singleton(elem);
-}
-
-function forKey(/*Callable<Result,Key>*/f) {
-    return function(/*Key->Object*/ e) {
-        return f(e.getKey());
-    }
-}
-function forItem(/*Callable<Result,Item>*/f) {
-    return function(/*Key->Item*/e) {
-        return f(e.getItem());
-    }
 }
 
 function combine(/*Callable<Result,Element,Other>*/f, /*Iterable<Element>*/i1, /*Iterable<Other>*/i2) {
@@ -85,14 +63,10 @@ function sort(elems) {
     return ArraySequence(arr);
 }
 
-exports.forKey=forKey;
-exports.forItem=forItem;
 exports.emptyOrSingleton=emptyOrSingleton;
 exports.equalTo=equalTo;
 exports.greaterThan=greaterThan;
 exports.lessThan=lessThan;
 exports.string=string;
-exports.byKey=byKey;
-exports.byItem=byItem;
 exports.combine=combine;
 exports.sort=sort;

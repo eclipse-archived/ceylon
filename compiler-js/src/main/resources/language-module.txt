@@ -42,9 +42,10 @@ any
 #bottom
 byDecreasing
 byIncreasing
-#byItem
-#byKey
+byItem
+byKey
 coalesce
+#combine
 count
 elements
 #emptyOrSingleton
@@ -52,8 +53,8 @@ entries
 #equalTo
 every
 first
-#forItem
-#forKey
+forItem
+forKey
 #greaterThan
 #identical
 #join
