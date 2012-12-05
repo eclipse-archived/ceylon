@@ -120,7 +120,7 @@ public class GenerateJsVisitor extends Visitor
     private int indentLevel = 0;
 
     private static void setCLAlias(String alias) {
-        clAlias = alias;
+        clAlias = alias + ".";
     }
     /** Returns the module name for the language module. */
     static String getClAlias() { return clAlias; }
@@ -142,6 +142,7 @@ public class GenerateJsVisitor extends Visitor
 
     /** Tells the receiver whether to add comments to certain declarations. Default is true. */
     public void setAddComments(boolean flag) { comment = flag; }
+    public boolean isAddComments() { return comment; }
     /** Tells the receiver whether to indent the generated code. Default is true. */
     public void setIndent(boolean flag) { indent = flag; }
     /** Tells the receiver to be verbose (prints generated code to STDOUT in addition to writer) */
@@ -240,8 +241,10 @@ public class GenerateJsVisitor extends Visitor
         root = that;
         Module clm = that.getUnit().getPackage().getModule()
                 .getLanguageModule();
-        require(clm);
-        setCLAlias(names.moduleAlias(clm));
+        if (!JsCompiler.compilingLanguageModule) {
+            require(clm);
+            setCLAlias(names.moduleAlias(clm));
+        }
 
         for (CompilerAnnotation ca: that.getCompilerAnnotations()) {
             ca.visit(this);
@@ -364,10 +367,12 @@ public class GenerateJsVisitor extends Visitor
         boolean shared = false;
         if (!(excludeProtoMembers && prototypeStyle && d.isClassOrInterfaceMember())
                 && isCaptured(d)) {
-            beginNewLine();
-            outerSelf(d);
-            out(".", names.name(d), "=", names.name(d), ";");
-            endLine();
+            if (!JsCompiler.compilingLanguageModule) {
+                beginNewLine();
+                outerSelf(d);
+                out(".", names.name(d), "=", names.name(d), ";");
+                endLine();
+            }
             shared = true;
         }
         return shared;
@@ -722,13 +727,13 @@ public class GenerateJsVisitor extends Visitor
         beginBlock();
         out("if (", names.name(d), ".$$===undefined)");
         beginBlock();
-        out(clAlias, ".", initFuncName, "(", names.name(d), ",'",
+        out(clAlias, initFuncName, "(", names.name(d), ",'",
             d.getQualifiedNameString(), "'");
 
         if (extendedType != null) {
             out(",", typeFunctionName(extendedType.getType(), false));
         } else if (!isInterface) {
-            out(",", clAlias, ".IdentifiableObject");
+            out(",", clAlias, "IdentifiableObject");
         }
 
         if (satisfiedTypes != null) {
@@ -1076,7 +1081,7 @@ public class GenerateJsVisitor extends Visitor
             if (param.getDefaultArgument() != null || pd.isSequenced()) {
                 out("if(", paramName, "===undefined){", paramName, "=");
                 if (param.getDefaultArgument() == null) {
-                    out(clAlias, ".empty");
+                    out(clAlias, "empty");
                 } else {
                     final SpecifierExpression defaultExpr =
                             param.getDefaultArgument().getSpecifierExpression();
@@ -1314,7 +1319,7 @@ public class GenerateJsVisitor extends Visitor
 
     @Override
     public void visit(CharLiteral that) {
-        out(clAlias, ".Character(");
+        out(clAlias, "Character(");
         out(String.valueOf(that.getText().codePointAt(1)));
         out(")");
     }
@@ -1341,14 +1346,14 @@ public class GenerateJsVisitor extends Visitor
     @Override
     public void visit(StringLiteral that) {
         final int slen = that.getText().codePointCount(1, that.getText().length()-1);
-        out(clAlias, ".String(", escapeStringLiteral(that.getText()), ",", Integer.toString(slen), ")");
+        out(clAlias, "String(", escapeStringLiteral(that.getText()), ",", Integer.toString(slen), ")");
     }
 
     @Override
     public void visit(StringTemplate that) {
         List<StringLiteral> literals = that.getStringLiterals();
         List<Expression> exprs = that.getExpressions();
-        out(clAlias, ".StringBuilder().appendAll([");
+        out(clAlias, "StringBuilder().appendAll([");
         boolean first = true;
         for (int i = 0; i < literals.size(); i++) {
             StringLiteral literal = literals.get(i);
@@ -1369,7 +1374,7 @@ public class GenerateJsVisitor extends Visitor
 
     @Override
     public void visit(FloatLiteral that) {
-        out(clAlias, ".Float(", that.getText(), ")");
+        out(clAlias, "Float(", that.getText(), ")");
     }
 
     @Override
@@ -1473,7 +1478,7 @@ public class GenerateJsVisitor extends Visitor
         super.visit(that);
         out(",");
         if (isMethod) {
-            out(clAlias, ".JsCallable(", lhsVar, ",");
+            out(clAlias, "JsCallable(", lhsVar, ",");
         }
         out(lhsVar, "!==null?", lhsVar, ".", memberAccess(that), ":null)");
         if (isMethod) {
@@ -1522,7 +1527,7 @@ public class GenerateJsVisitor extends Visitor
         //Iterate
         String elem = names.createTempVariable("elem");
         out("var ", elem, ";"); endLine();
-        out("while ((", elem, "=", iter, ".next())!==", clAlias, ".getExhausted())");
+        out("while ((", elem, "=", iter, ".next())!==", clAlias, "getExhausted())");
         beginBlock();
         //Add value or reference to the array
         out(tmplist, ".push(");
@@ -1537,9 +1542,9 @@ public class GenerateJsVisitor extends Visitor
         //Return the array of values or a Callable with the arguments
         out("return ", clAlias);
         if (isMethod) {
-            out(".JsCallableList(", tmplist, ");");
+            out("JsCallableList(", tmplist, ");");
         } else {
-            out(".ArraySequence(", tmplist, ");");
+            out("ArraySequence(", tmplist, ");");
         }
         endBlock();
         out("())");
@@ -1549,7 +1554,7 @@ public class GenerateJsVisitor extends Visitor
         String primaryVar = createRetainedTempVar("opt");
         out("(", primaryVar, "=");
         that.getPrimary().visit(this);
-        out(",", clAlias, ".JsCallable(", primaryVar, ",", primaryVar, "!==null?",
+        out(",", clAlias, "JsCallable(", primaryVar, ",", primaryVar, "!==null?",
                 primaryVar, ".", (name == null) ? memberAccess(that) : name, ":null))");
     }
     
@@ -1812,7 +1817,7 @@ public class GenerateJsVisitor extends Visitor
                 boolean namedArgumentGiven = argNames.contains(p.getName());
                 if (p.isSequenced() && argList.getSequencedArgument()==null && !namedArgumentGiven) {
                     if (argList.getComprehension() == null) {
-                        out(clAlias, ".empty");
+                        out(clAlias, "empty");
                     } else {
                         out(argVarNames.get("$comp$"));
                     }
@@ -1884,15 +1889,15 @@ public class GenerateJsVisitor extends Visitor
             if (fromNative) {
                 // conversion from native value to Ceylon value
                 if (fromTypeName.equals("ceylon.language::String")) {
-                    out(clAlias, ".String(");
+                    out(clAlias, "String(");
                 } else if (fromTypeName.equals("ceylon.language::Integer")) {
                     out("(");
                 } else if (fromTypeName.equals("ceylon.language::Float")) {
-                    out(clAlias, ".Float(");
+                    out(clAlias, "Float(");
                 } else if (fromTypeName.equals("ceylon.language::Boolean")) {
                     out("(");
                 } else if (fromTypeName.equals("ceylon.language::Character")) {
-                    out(clAlias, ".Character(");
+                    out(clAlias, "Character(");
                 } else {
                     return 0;
                 }
@@ -2005,7 +2010,7 @@ public class GenerateJsVisitor extends Visitor
                 out(".getSequence()");
             }
         } else {
-            out(clAlias, ".empty");
+            out(clAlias, "empty");
         }
     }
 
@@ -2541,25 +2546,25 @@ public class GenerateJsVisitor extends Visitor
 
     @Override public void visit(SmallerOp that) {
         leftCompareRight(that);
-        out(".equals(", clAlias, ".getSmaller())");
+        out(".equals(", clAlias, "getSmaller())");
     }
 
     @Override public void visit(LargerOp that) {
         leftCompareRight(that);
-        out(".equals(", clAlias, ".getLarger())");
+        out(".equals(", clAlias, "getLarger())");
     }
 
     @Override public void visit(SmallAsOp that) {
         out("(");
         leftCompareRight(that);
-        out("!==", clAlias, ".getLarger()");
+        out("!==", clAlias, "getLarger()");
         out(")");
     }
 
     @Override public void visit(LargeAsOp that) {
         out("(");
         leftCompareRight(that);
-        out("!==", clAlias, ".getSmaller()");
+        out("!==", clAlias, "getSmaller()");
         out(")");
     }
     /** Outputs the CL equivalent of 'a==b' in JS. */
@@ -2661,7 +2666,7 @@ public class GenerateJsVisitor extends Visitor
        binaryOp(that, new BinaryOpGenerator() {
            @Override
            public void generate(BinaryOpTermGenerator termgen) {
-               out(clAlias, ".Entry(");
+               out(clAlias, "Entry(");
                termgen.left();
                out(",");
                termgen.right();
@@ -2829,7 +2834,7 @@ public class GenerateJsVisitor extends Visitor
        unaryOp(that, new UnaryOpGenerator() {
            @Override
            public void generate(UnaryOpTermGenerator termgen) {
-               out(clAlias, ".exists(");
+               out(clAlias, "exists(");
                termgen.term();
                out(")");
            }
@@ -2839,7 +2844,7 @@ public class GenerateJsVisitor extends Visitor
        unaryOp(that, new UnaryOpGenerator() {
            @Override
            public void generate(UnaryOpTermGenerator termgen) {
-               out(clAlias, ".nonempty(");
+               out(clAlias, "nonempty(");
                termgen.term();
                out(")");
            }
@@ -2922,9 +2927,9 @@ public class GenerateJsVisitor extends Visitor
         boolean unionIntersection = decl instanceof com.redhat.ceylon.compiler.typechecker.model.UnionType
                 || decl instanceof com.redhat.ceylon.compiler.typechecker.model.IntersectionType;
         if (unionIntersection)  {
-            out(clAlias, ".isOfTypes(");
+            out(clAlias, "isOfTypes(");
         } else {
-            out(clAlias, ".isOfType(");
+            out(clAlias, "isOfType(");
         }
         if (term != null) {
             conds.specialConditionRHS(term, tmpvar);
@@ -2988,7 +2993,7 @@ public class GenerateJsVisitor extends Visitor
        binaryOp(that, new BinaryOpGenerator() {
            @Override
            public void generate(BinaryOpTermGenerator termgen) {
-               out(clAlias, ".Range(");
+               out(clAlias, "Range(");
                termgen.left();
                out(",");
                termgen.right();
@@ -3012,7 +3017,7 @@ public class GenerateJsVisitor extends Visitor
         endBlock();
         if (hasElse) {
             endLine();
-            out("if (", clAlias, ".getExhausted() === ", itemVar, ")");
+            out("if (", clAlias, "getExhausted() === ", itemVar, ")");
             encloseBlockInFunction(that.getElseClause().getBlock());
         }
     }
@@ -3031,7 +3036,7 @@ public class GenerateJsVisitor extends Visitor
         iterable.visit(this);
         out(".getIterator();");
         endLine();
-        out("var ", itemVar, ";while ((", itemVar, "=", iterVar, ".next())!==", clAlias, ".getExhausted())");
+        out("var ", itemVar, ";while ((", itemVar, "=", iterVar, ".next())!==", clAlias, "getExhausted())");
         beginBlock();
         if (that instanceof ValueIterator) {
             directAccess.add(((ValueIterator)that).getVariable().getDeclarationModel());
@@ -3105,7 +3110,7 @@ public class GenerateJsVisitor extends Visitor
         if (that.getExpression() != null) {
             that.getExpression().visit(this);
         } else {
-            out(clAlias, ".Exception()");
+            out(clAlias, "Exception()");
         }
         out(";");
     }
@@ -3149,7 +3154,7 @@ public class GenerateJsVisitor extends Visitor
     public void visit(IndexExpression that) {
         IndexOperator op = that.getIndexOperator();
         if (op instanceof SafeIndexOp) {
-            out(clAlias, ".exists(");
+            out(clAlias, "exists(");
             that.getPrimary().visit(this);
             out(")?");
         }
@@ -3182,7 +3187,7 @@ public class GenerateJsVisitor extends Visitor
                 out(expvar, "==="); //TODO equality?
                 /*out(".equals(");*/
                 exp.visit(this);
-                //out(")==="); clAlias(); out(".getTrue()");
+                //out(")==="); clAlias(); out("getTrue()");
                 first = false;
             }
         } else {
@@ -3270,10 +3275,10 @@ public class GenerateJsVisitor extends Visitor
         endLine(true);
         out("for (var i=1; i<", rhs, "; i++){", end, "=", end, ".getSuccessor();}");
         endLine();
-        out("return ", clAlias, ".Range(");
+        out("return ", clAlias, "Range(");
         out(lhs, ",", end, ")");
         endLine();
-        out("}else return ", clAlias, ".empty;}())");
+        out("}else return ", clAlias, "empty;}())");
     }
 
     /** Generates the code for single or multiple parameter lists, with a callback function to generate the function blocks. */
@@ -3372,11 +3377,11 @@ public class GenerateJsVisitor extends Visitor
             if (count > 0) {
                 out(",");
             }
-            out(clAlias, ".Tuple(");
+            out(clAlias, "Tuple(");
             count++;
             expr.visit(this);
         }
-        out(",", clAlias, ".empty");
+        out(",", clAlias, "empty");
         for (int i = 0; i < count; i++) {
             out(")");
         }
@@ -3407,7 +3412,7 @@ public class GenerateJsVisitor extends Visitor
         conds.specialConditionsAndBlock(that.getConditionList(), null, "if (!");
         //escape
         custom = escapeStringLiteral(sb.toString());
-        out(") { throw ", clAlias, ".Exception('", custom, "'); }");
+        out(") { throw ", clAlias, "Exception('", custom, "'); }");
         endLine();
     }
 
