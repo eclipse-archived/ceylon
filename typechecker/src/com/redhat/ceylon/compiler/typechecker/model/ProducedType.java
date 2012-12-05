@@ -1258,16 +1258,8 @@ public class ProducedType extends ProducedReference {
     }
 
 	private boolean abbreviateTuple(Unit unit) {
-		if (getDeclaration() instanceof Class && 
-				getDeclaration().equals(unit.getTupleDeclaration()) &&
-				getTypeArgumentList().size()==3) {
-			TypeDeclaration d = getTypeArgumentList().get(2).getDeclaration();
-			return d.equals(unit.getTupleDeclaration()) || 
-					d.equals(unit.getSequentialDeclaration());
-		}
-		else {
-			return false;
-		}
+		return getDeclaration() instanceof Class && 
+				getDeclaration().equals(unit.getTupleDeclaration());
 	}
     
     private static String argtypes(ProducedType args) {
