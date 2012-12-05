@@ -2221,31 +2221,27 @@ tupleElementType returns [Type type]
     ;
     
 type returns [StaticType type]
+    @init { TupleType tt = new TupleType(null); }
     : ut1=unionType 
       { $type=$ut1.type; }
     ;
 
-tupleType returns [StaticType type]
-    @init { TupleType tt=null; }
+tupleType returns [TupleType type]
     : SMALLER_OP
-      { tt = new TupleType($SMALLER_OP); 
-        $type=tt; }
+      { $type = new TupleType($SMALLER_OP); }
       (
         t1=tupleElementType 
-        { tt.addElementType($t1.type);
-          if ($t1.type instanceof StaticType) 
-              $type=(StaticType) $t1.type; }
+        { $type.addElementType($t1.type); }
         (
           c=COMMA
-          { tt.setEndToken($c); 
-            $type=tt; }
+          { $type.setEndToken($c); }
           t2=tupleElementType
-          { tt.addElementType($t2.type);
-            tt.setEndToken(null); }
+          { $type.addElementType($t2.type);
+            $type.setEndToken(null); }
         )*
       )?
       LARGER_OP
-      { tt.setEndToken($LARGER_OP); }
+      { $type.setEndToken($LARGER_OP); }
     ;
 
 
