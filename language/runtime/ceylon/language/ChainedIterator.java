@@ -2,6 +2,7 @@ package ceylon.language;
 
 import com.redhat.ceylon.compiler.java.metadata.Ceylon;
 import com.redhat.ceylon.compiler.java.metadata.Class;
+import com.redhat.ceylon.compiler.java.metadata.SatisfiedTypes;
 import com.redhat.ceylon.compiler.java.metadata.TypeInfo;
 import com.redhat.ceylon.compiler.java.metadata.TypeParameter;
 import com.redhat.ceylon.compiler.java.metadata.TypeParameters;
@@ -9,6 +10,9 @@ import com.redhat.ceylon.compiler.java.metadata.TypeParameters;
 @Ceylon(major = 3)
 @Class(extendsType="ceylon.language::IdentifiableObject")
 @TypeParameters({@TypeParameter("Element"), @TypeParameter("Other")})
+@SatisfiedTypes({
+    "ceylon.language::Iterator<Element|Other>"
+})
 public class ChainedIterator<Element,Other> implements Iterator {
 
     private Iterator iter;
