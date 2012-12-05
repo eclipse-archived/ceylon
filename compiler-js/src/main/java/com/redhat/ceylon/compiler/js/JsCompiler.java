@@ -34,7 +34,6 @@ import com.redhat.ceylon.compiler.typechecker.model.TypedDeclaration;
 import com.redhat.ceylon.compiler.typechecker.parser.RecognitionError;
 import com.redhat.ceylon.compiler.typechecker.tree.Message;
 import com.redhat.ceylon.compiler.typechecker.tree.Node;
-import com.redhat.ceylon.compiler.typechecker.tree.Tree;
 import com.redhat.ceylon.compiler.typechecker.tree.Visitor;
 
 public class JsCompiler {
@@ -56,6 +55,7 @@ public class JsCompiler {
         private File outfile;
         private Writer writer;
         private final Set<String> s = new HashSet<String>();
+        final Map<String,String> requires = new HashMap<String,String>();
         private final MetamodelVisitor mmg;
         protected JsOutput(Module m) throws IOException {
             mmg = new MetamodelVisitor(m);
@@ -150,7 +150,9 @@ public class JsCompiler {
                     pu.getCompilationUnit().visit(new ValueVisitor((TypedDeclaration)d));
                 }
             }
-            GenerateJsVisitor jsv = new GenerateJsVisitor(getOutput(pu).getWriter(), opts.isOptimize(), names, pu.getTokens());
+            JsOutput jsout = getOutput(pu);
+            GenerateJsVisitor jsv = new GenerateJsVisitor(jsout.getWriter(), opts.isOptimize(), names,
+                    pu.getTokens(), jsout.requires);
             jsv.setAddComments(opts.isComment());
             jsv.setIndent(opts.isIndent());
             jsv.setVerbose(opts.isVerbose());

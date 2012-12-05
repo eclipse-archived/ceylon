@@ -47,7 +47,7 @@ public class GenerateJsVisitor extends Visitor
     private final JsIdentifierNames names;
     private final Set<Declaration> directAccess = new HashSet<Declaration>();
     private final RetainedVars retainedVars = new RetainedVars();
-    private final Set<Module> importedModules = new HashSet<Module>();
+    private final Map<String, String> importedModules;
     final ConditionGenerator conds;
     private final List<CommonToken> tokens;
 
@@ -130,12 +130,14 @@ public class GenerateJsVisitor extends Visitor
         that.addUnexpectedError(that.getMessage(e, this));
     }
 
-    public GenerateJsVisitor(Writer out, boolean prototypeStyle, JsIdentifierNames names, List<CommonToken> tokens) {
+    public GenerateJsVisitor(Writer out, boolean prototypeStyle, JsIdentifierNames names,
+            List<CommonToken> tokens, Map<String,String> imports) {
         this.out = out;
         this.prototypeStyle=prototypeStyle;
         this.names = names;
         conds = new ConditionGenerator(this, names, directAccess);
         this.tokens = tokens;
+        importedModules = imports;
     }
 
     /** Tells the receiver whether to add comments to certain declarations. Default is true. */
@@ -238,9 +240,8 @@ public class GenerateJsVisitor extends Visitor
         root = that;
         Module clm = that.getUnit().getPackage().getModule()
                 .getLanguageModule();
-        if (require(clm)) {
-            setCLAlias(names.moduleAlias(clm));
-        }
+        require(clm);
+        setCLAlias(names.moduleAlias(clm));
 
         for (CompilerAnnotation ca: that.getCompilerAnnotations()) {
             ca.visit(this);
@@ -259,14 +260,13 @@ public class GenerateJsVisitor extends Visitor
     	}
     }
 
-    private boolean require(Module mod) {
-        if (importedModules.contains(mod)) {
-            return false;
+    private void require(Module mod) {
+        final String path = scriptPath(mod);
+        final String modAlias = names.moduleAlias(mod);
+        if (importedModules.put(path, modAlias) == null) {
+            out("var ", modAlias, "=require('", path, "');");
+            endLine();
         }
-        out("var ", names.moduleAlias(mod), "=require('", scriptPath(mod), "');");
-        endLine();
-        importedModules.add(mod);
-        return true;
     }
 
     private String scriptPath(Module mod) {
