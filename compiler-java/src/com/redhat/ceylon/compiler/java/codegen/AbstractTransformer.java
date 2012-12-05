@@ -1380,7 +1380,7 @@ public abstract class AbstractTransformer implements Transformation {
         }
         if (type.getDeclaration() instanceof ClassOrInterface) {
             // Explicit type parameter
-            return producedTypedReference.getType();
+            return type;
         } else if (declTypeDecl instanceof ClassOrInterface) {
             return declType;
         } else if ((declTypeDecl instanceof TypeParameter)
