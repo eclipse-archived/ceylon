@@ -324,8 +324,8 @@ public class CeylonTransformer extends AbstractTransformer {
      */
     private JCExpression makeVariableBox(TypedDeclaration declarationModel) {
         JCExpression boxClass;
-        boolean unboxed = Boolean.TRUE.equals(declarationModel.getUnboxed());
-        if (Boolean.TRUE.equals(unboxed) && isCeylonBoolean(declarationModel.getType())) {
+        boolean unboxed = CodegenUtil.isUnBoxed(declarationModel);
+        if (unboxed && isCeylonBoolean(declarationModel.getType())) {
             boxClass = make().Type(syms().ceylonVariableBoxBooleanType);
         } else if (unboxed && isCeylonInteger(declarationModel.getType())) {
             boxClass = make().Type(syms().ceylonVariableBoxLongType);
