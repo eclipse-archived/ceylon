@@ -48,7 +48,7 @@ coalesce
 #combine
 count
 elements
-#emptyOrSingleton
+emptyOrSingleton
 entries
 equalTo
 every

@@ -14,10 +14,6 @@ function string(/*Iterable<Character>*/chars) {
     return s.getString();
 }
 
-function emptyOrSingleton(/*Element?*/elem) {
-    return elem===null ? empty : Singleton(elem);
-}
-
 function combine(/*Callable<Result,Element,Other>*/f, /*Iterable<Element>*/i1, /*Iterable<Other>*/i2) {
     return Comprehension(function(){
         var ei = i1.getIterator();
@@ -47,7 +43,6 @@ function sort(elems) {
     return ArraySequence(arr);
 }
 
-exports.emptyOrSingleton=emptyOrSingleton;
 exports.string=string;
 exports.combine=combine;
 exports.sort=sort;
