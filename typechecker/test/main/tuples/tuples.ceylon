@@ -67,4 +67,22 @@ void test() {
     //        (1, 2, "", 4, 5)[-2..6];
     [Integer, Integer, String, Integer, Integer] t6 = 
             [1, 2, "", 4, 5][-2...];
+    
+    interface R<Element> satisfies Ranged<Integer,Element[]> {
+        shared actual Element[] spanTo(Integer to) {
+            value end = to;
+            return this[0:end+1];
+        }
+    }
+    
+    void ft<Element, First, Rest>(Tuple<Element, First, Rest> t) 
+            given First satisfies Element
+            given Rest satisfies Sequential<Element>{
+        Integer end = 0;
+        Element[] s1 = t[0:end+1];
+        Element[] s2 = t[3:5];
+        First f = t[0];
+        Element? e = t[3];
+    }
+    
 }
