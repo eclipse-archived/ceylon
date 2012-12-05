@@ -71,10 +71,10 @@ class Optional() {
     Integer scs = somechars.size;
     value sci = somechars.iterator;
     
-    @type["Nothing|String|Integer|Sequence<Object>"] String? | String | String? | Integer | Sequence<Object> foobar1 = -1;
-    @type["Nothing|Sequential<String>|Integer"] String[]? | String[] | Sequence<String> | Integer foobar2 = 1.integer;
+    @type:"Nothing|String|Integer|Sequence<Object>" String? | String | String? | Integer | Sequence<Object> foobar1 = -1;
+    @type:"Nothing|Sequential<String>|Integer" String[]? | String[] | Sequence<String> | Integer foobar2 = 1.integer;
     
-    @type["Sequence<Nothing|String|Integer|Sequence<Object>|Sequential<String>>"] value xyz = { foobar1, foobar2 };
+    @type:"Sequence<Nothing|String|Integer|Sequence<Object>|Sequential<String>>" value xyz = { foobar1, foobar2 };
     
     //TODO: I think the type parameter X does
     //      not hide the X defined above - it
@@ -98,32 +98,32 @@ class Optional() {
     }
     
     if (exists s = WithOptional<String>("hello").val) {
-        @type["String"] value es = s;
+        @type:"String" value es = s;
     }
     
     if (exists seq = WithOptional<String>("goodbye").seq) {
-        @type["Sequential<String>"] value sseq = seq;
+        @type:"Sequential<String>" value sseq = seq;
     }
     
     if (nonempty seq = WithOptional<String>("hello again").seq) {
-        @type["Sequence<String>"] value sseq = seq;
+        @type:"Sequence<String>" value sseq = seq;
     }
     
     class WithOptionalString(String? val)
             extends WithOptional<String>(val) {
         
         if (exists val) {
-            @type["String"] value ss = val;
+            @type:"String" value ss = val;
         }
         
         void method() {
         
             if (exists seq = WithOptionalString("hello").seq) {
-                @type["Sequential<String>"] value sseq = seq;
+                @type:"Sequential<String>" value sseq = seq;
             }
             
             if (nonempty seq = WithOptionalString("hello").seq) {
-                @type["Sequence<String>"] value sseq = seq;
+                @type:"Sequence<String>" value sseq = seq;
             }
             
         }
@@ -132,11 +132,11 @@ class Optional() {
     
     
     if (exists seq = WithOptionalString("hello").seq) {
-        @type["Sequential<String>"] value sseq = seq;
+        @type:"Sequential<String>" value sseq = seq;
     }
     
     if (nonempty seq = WithOptionalString("hello").seq) {
-        @type["Sequence<String>"] value sseq = seq;
+        @type:"Sequence<String>" value sseq = seq;
     }
     
 }

@@ -32,23 +32,23 @@ void testSwitch(Number nn, C cc) {
 
 void testCanonicalization() {
     Integer|Float i = n;
-    @type["Sequence<Number>"] value ns = {n};
-    @type["Nothing|Number"] value temp = ns[0];
+    @type:"Sequence<Number>" value ns = {n};
+    @type:"Nothing|Number" value temp = ns[0];
     print(temp);
     Integer|Float|Nothing t = temp;
     Number? num = t;
-    @type["Number"] Number&Object no = t else 1.0;
-    @type["Number"] value noo = temp else 1.0;
+    @type:"Number" Number&Object no = t else 1.0;
+    @type:"Number" value noo = temp else 1.0;
     if (is Container num) {
-        @type["Number&Container"] value nnn = num;
+        @type:"Number&Container" value nnn = num;
         Integer&Container|Float&Container numif = num;
         Container&Number nnnn = numif;
         switch (num)
         case (is Integer) {
-            @type["Container&Integer"] value nn = num;
+            @type:"Container&Integer" value nn = num;
         }
         case (is Float) {
-            @type["Container&Float"] value nn = num;
+            @type:"Container&Float" value nn = num;
         }
     }
     List<Integer|Float> list = ns;

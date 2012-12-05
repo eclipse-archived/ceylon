@@ -17,7 +17,7 @@ class Super() satisfies Middle {}
 class Impl() extends Super() satisfies Top & Middle & Bottom {}
 
 void method() {
-	@type["String"] value id = Impl().id;
+	@type:"String" value id = Impl().id;
 }
 
 

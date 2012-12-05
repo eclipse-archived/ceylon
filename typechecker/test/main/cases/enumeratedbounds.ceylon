@@ -23,8 +23,8 @@ void testEnumeratedBounds() {
     qux("hello");
     @error qux(1.0);
     
-    @type["Foo<Integer>"] Foo<Integer>();
-    @type["Foo<Float>"] Foo(1.0, 2.0);
+    @type:"Foo<Integer>" Foo<Integer>();
+    @type:"Foo<Float>" Foo(1.0, 2.0);
     @error Foo("foo", "bar");
     @error Foo<Object>();
 }

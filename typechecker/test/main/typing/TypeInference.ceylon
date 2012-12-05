@@ -2,15 +2,15 @@ interface TypeInference {
     
     class Inference() {
     
-        @type["String"] function inferredMethod() {
+        @type:"String" function inferredMethod() {
             return "Hello";
         }
         
-        @type["String"] value inferredGetter {
+        @type:"String" value inferredGetter {
             return "Hello";
         }
         
-        @type["String"] value inferredAttribute = "Hello";
+        @type:"String" value inferredAttribute = "Hello";
         
         /*@error value brokenInferredMethod() {
             return "Hello";
@@ -29,18 +29,18 @@ interface TypeInference {
             return 0;    
         }
         void m(){
-            @type["Integer"] value n = test();
+            @type:"Integer" value n = test();
         }
-        @type["Integer"] function f() {
+        @type:"Integer" function f() {
             return test();
         }
     }
     
     class BackwardTypeInference(){
         void m(){
-            @type["unknown"] @error value n = test();
+            @type:"unknown" @error value n = test();
         }
-        @type["unknown"] function f() {
+        @type:"unknown" function f() {
             @error return test();
         }
         function test(){
@@ -66,29 +66,29 @@ interface TypeInference {
 
     class UnknownInference() {
         
-        @error @type["unknown"] value x = burp;
+        @error @type:"unknown" value x = burp;
         
-        @type["unknown"] value y {
+        @type:"unknown" value y {
             @error return burp;
         }
         
-        @type["unknown"] function f() {
+        @type:"unknown" function f() {
             @error return burp;
         }
         
-        @error @type["unknown"] function g() => burp;
+        @error @type:"unknown" function g() => burp;
         
-        @type["Sequence<unknown>"] value seq = { @error burp };
+        @type:"Sequence<unknown>" value seq = { @error burp };
         
-        @type["Sequence<unknown>"] function createSeq() {
-            @type["Sequence<unknown>"] return { @error hi };
+        @type:"Sequence<unknown>" function createSeq() {
+            @type:"Sequence<unknown>" return { @error hi };
         }
         
         Sequence<T> singleton<T>(T element) {
             return {element};
         }
         
-        @type["Sequence<unknown>"] @error value sing = singleton(hi);
+        @type:"Sequence<unknown>" @error value sing = singleton(hi);
         
         value hi = "hi";
         
@@ -96,7 +96,7 @@ interface TypeInference {
     
     class MultipleReturnTypeInference() {
         
-        @type["String|Float"] function inferredMethod() {
+        @type:"String|Float" function inferredMethod() {
             if (true) {
                 return "Hello";
             }
@@ -105,7 +105,7 @@ interface TypeInference {
             }
         }
         
-        @type["String|Integer"] value inferredGetter {
+        @type:"String|Integer" value inferredGetter {
             if (true) {
                 return "Hello";
             }
@@ -114,7 +114,7 @@ interface TypeInference {
             }
         }
         
-        @type["String|Float|Integer"] function method() {
+        @type:"String|Float|Integer" function method() {
             if (1==0) {
                 return inferredMethod();
             }
@@ -123,11 +123,11 @@ interface TypeInference {
             }
         }
         
-        @type["Bottom"] function f() {
+        @type:"Bottom" function f() {
             throw;
         }
         
-        @type["Bottom"] value v {
+        @type:"Bottom" value v {
             throw;
         }
         
@@ -137,12 +137,12 @@ interface TypeInference {
         function join(String x, String y, String f(String z)) {
             return f(x+" "+y);
         }
-        @type["String"] value hw = join {
+        @type:"String" value hw = join {
             value x { return "Hello"; }
             value y { return "Hello"; }
             function f(String z) { return z.uppercased; }
         };
-        @type["String"] value broken = join {
+        @type:"String" value broken = join {
             value x { return "Hello"; }
             @error value y { return 0; }
             @error function f(Integer z) { return z; }

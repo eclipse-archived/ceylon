@@ -56,6 +56,7 @@ import com.redhat.ceylon.compiler.typechecker.model.Value;
 import com.redhat.ceylon.compiler.typechecker.model.ValueParameter;
 import com.redhat.ceylon.compiler.typechecker.tree.Node;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree;
+import com.redhat.ceylon.compiler.typechecker.tree.Tree.Ellipsis;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.Expression;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.SupertypeQualifier;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.TypedArgument;
@@ -3545,22 +3546,28 @@ public class ExpressionVisitor extends Visitor {
         super.visit(that);
         ProducedType result = unit.getEmptyDeclaration().getType();
         ProducedType ut = unit.getBottomDeclaration().getType();
-        List<Expression> es = that.getExpressions();
-		for (int i=es.size()-1; i>=0; i--) {
-			ProducedType et = es.get(i).getTypeModel();
-			if (i==es.size()-1 && that.getEllipsis()!=null) {
-				ut = unit.getIteratedType(et);
-				result = unit.getSequentialType(ut);
-				if (!unit.isSequentialType(et)) {
-					that.getEllipsis().addError("last element expression is not a sequence: " +
-							et.getProducedTypeName() + " is not a sequence type");
-				}
-			}
-			else {
-				ut = unionType(ut, et, unit);
-				result = producedType(unit.getTupleDeclaration(), ut, et, result);
-			}
-		}
+        if (that.getSequencedArgument()!=null) {
+        	List<Expression> es = that.getSequencedArgument().getExpressionList().getExpressions();
+        	for (int i=es.size()-1; i>=0; i--) {
+        		ProducedType et = es.get(i).getTypeModel();
+        		Ellipsis ell = that.getSequencedArgument().getEllipsis();
+        		if (i==es.size()-1 && ell!=null) {
+        			ut = unit.getIteratedType(et);
+        			result = unit.getSequentialType(ut);
+        			if (!unit.isSequentialType(et)) {
+        				ell.addError("last element expression is not a sequence: " +
+        						et.getProducedTypeName() + " is not a sequence type");
+        			}
+        		}
+        		else {
+        			ut = unionType(ut, et, unit);
+        			result = producedType(unit.getTupleDeclaration(), ut, et, result);
+        		}
+        	}
+        }
+        else {
+        	//TODO: comprehensions!
+        }
         that.setTypeModel(result);
     }
     

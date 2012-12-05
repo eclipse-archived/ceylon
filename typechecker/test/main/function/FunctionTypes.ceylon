@@ -13,7 +13,7 @@ abstract class Z() {}
 
 void noop() {}
 
-void higher1(String[] strings, Callable<Void,<String>> f) {
+void higher1(String[] strings, Callable<Void,[String]> f) {
     void g(String str) => f;
     for (s in strings) {
         g(s);
@@ -37,7 +37,7 @@ String str(Float f) => f.string;
 
 Float curried(Integer x)(Float y) => x+y;
 
-X->Y generic<X,Y>(Y f(X x), X x()) 
+[X,Y] generic<X,Y>(Y f(X x), X x()) 
         given X satisfies Object 
         given Y satisfies Object { 
     X xx = x();
@@ -47,15 +47,15 @@ X->Y generic<X,Y>(Y f(X x), X x())
 T do<T>(T f()) { return f(); }
 
 void method() {
-    Callable<String,<String>> upperRef = upper;
-    Callable<Void,<String>> printRef = print;
-    Callable<Void,<Bottom>> printRefContra = print;
-    Callable<X,<String>> xRef = X;
+    Callable<String,[String]> upperRef = upper;
+    Callable<Void,[String]> printRef = print;
+    Callable<Void,[Bottom]> printRefContra = print;
+    Callable<X,[String]> xRef = X;
     Callable<Void,Bottom> xRefContra = X;
     X x = X("hello");
-    Callable<X.Y,<>> yRef = x.Y;
-    Callable<Void,<>> helloRef = x.hello;
-    Callable<Void,<>> noopRef = noop;
+    Callable<X.Y,[]> yRef = x.Y;
+    Callable<Void,[]> helloRef = x.hello;
+    Callable<Void,[]> noopRef = noop;
     
     higher1({"hello", "world"}, print);
     higher1({"hello", "world"}, upper);
@@ -69,24 +69,24 @@ void method() {
     @error higher2({"hello", "world"}, noop);
     @error higher2({"hello", "world"}, str);
     
-    @type["String"] function up(String s) => upper(s);
+    @type:"String" function up(String s) => upper(s);
     void pr(String s) => print;
     void np() => noop;
     
-    @type["String"] up("hello");
-    @type["Void"] pr("hello");
-    @type["Void"] np();
+    @type:"String" up("hello");
+    @type:"Void" pr("hello");
+    @type:"Void" np();
     
-    @type["X"] function good(String s) => X(s);
+    @type:"X" function good(String s) => X(s);
     X better(String s) => X(s);
-    @type["X"] @error function bad() => X();
-    @type["X"] @error function badder(Integer n) => X(n);
+    @type:"X" @error function bad() => X();
+    @type:"X" @error function badder(Integer n) => X(n);
     @error String worse(String s) => X;
     @error String worst() => X;
     void broke() => noop();
     @error Z moreBroke() => Z;
     @error do(Z);
-    @type["Void"] function z() => Z;
+    @type:"Void" function z() => Z;
     
     String s1 = pass((String s) s, "hello");
     String s2 = pass((Float f) f.string, 1.0);
@@ -114,9 +114,9 @@ void method() {
     
     @error print(s);
     
-    @type["Callable<Float,Tuple<Float,Float,Empty>>"] curried(1);
+    @type:"Callable<Float,Tuple<Float,Float,Empty>>" curried(1);
     Float plus1(Float x) => curried(1)(x);
-    @type["Callable<Float,Tuple<Float,Float,Empty>>"] value p1 = curried(1);
+    @type:"Callable<Float,Tuple<Float,Float,Empty>>" value p1 = curried(1);
     Float three = plus1(2.0);
     Float four = curried(2)(2.0);
     @error curried(2)("foo");
@@ -127,11 +127,11 @@ void method() {
     
     function str(Float f) => f.string;
     function zero() => 0.0;
-    @type["Entry<Float,String>"] generic(str,zero);
-    @type["Entry<Float,String>"] generic(str,bottom);
-    @type["Entry<Object,Object>"] generic((Object obj) obj, () "hello");
-    @type["Entry<Object,String>"] generic((Object obj) obj.string, () "hello");
-    @type["Entry<String,String>"] generic((String str) str, () "hello");
+    @type:"Entry<Float,String>" generic(str,zero);
+    @type:"Entry<Float,String>" generic(str,bottom);
+    @type:"Entry<Object,Object>" generic((Object obj) obj, () "hello");
+    @type:"Entry<Object,String>" generic((Object obj) obj.string, () "hello");
+    @type:"Entry<String,String>" generic((String str) str, () "hello");
     
     function fx(String g()) => do<String>;
     @error function fy(String g()) => do;
@@ -171,7 +171,7 @@ void testMultiCompare() {
     multiCompare()(1,1);
 }
 
-Callable<String,<>> tester() {
+Callable<String,[]> tester() {
     String f() { return "ok"; }
     return f;
 }
@@ -221,7 +221,7 @@ void sequencedParams() {
 void foo(Integer... seq) {}
 void bar(Integer... ints) => foo;
 
-alias CSI => Callable<String, <Integer>>;
+alias CSI => Callable<String,[Integer]>;
 String callCSI(CSI csi) {
     return csi(1);
 }

@@ -14,7 +14,7 @@ void thisSuperOuter() {
             @error print(outer.string);
             @error value ss = super;
             @error value oo = outer;
-            @type["OuterClass"] value tt = this;
+            @type:"OuterClass" value tt = this;
         }
         class InnerClass() {
             void method() {
@@ -22,8 +22,8 @@ void thisSuperOuter() {
                 print(this.string);
                 print(outer.string);
                 @error value ss = super;
-                @type["OuterClass"] value oo = outer;
-                @type["OuterClass.InnerClass"] value tt = this;
+                @type:"OuterClass" value oo = outer;
+                @type:"OuterClass.InnerClass" value tt = this;
             }
         }
     }

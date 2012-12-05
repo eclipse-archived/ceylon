@@ -94,10 +94,10 @@ class Union() {
         abc.hello();
     }
     
-    @type["Union.S|Union.A"] S|A|B|C sabc = S();
-    @type["Union.A|Union.S"] A|B|C|S abcs = S();
+    @type:"Union.S|Union.A" S|A|B|C sabc = S();
+    @type:"Union.A|Union.S" A|B|C|S abcs = S();
     
-    @type ["Nothing|Union.A|Union.B|Union.C"] A?|B?|C? oabc = null;
+    @type:"Nothing|Union.A|Union.B|Union.C" A?|B?|C? oabc = null;
     if (is A|B|C oabc) {
         @error if (exists oabc) {}
     }
@@ -137,8 +137,8 @@ class Union() {
             throw;
         }
     }
-    @type["String|Integer|Float"] value ff1 = first({"hello", "world"}, {+1, -1}, {1.0}).first;
-    @type["String|Integer|Float"] value ff2 = first({"hello", "world"}, {+1, -1, 1.0}).first;
+    @type:"String|Integer|Float" value ff1 = first({"hello", "world"}, {+1, -1}, {1.0}).first;
+    @type:"String|Integer|Float" value ff2 = first({"hello", "world"}, {+1, -1, 1.0}).first;
     
     class Outer<out T>() {
         shared default class Inner<out U>(u) {
@@ -161,42 +161,42 @@ class Union() {
     
     Outer<String>.Inner<Integer>|Outer<Float>.Inner<Float> foobar1 = Outer<String>().Inner<Integer>(1);
     String foobarhello1 = foobar1.hello;
-    @type["Integer|Float"] value foobaru1 = foobar1.u;
+    @type:"Integer|Float" value foobaru1 = foobar1.u;
     Outer<String|Float>.Inner<Integer|Float> foobart1 = foobar1;
-    @type["Union.Outer<String|Float>.Inner<Integer|Float>"] value foobarts1 = foobar1.get;
+    @type:"Union.Outer<String|Float>.Inner<Integer|Float>" value foobarts1 = foobar1.get;
     
     SubOuter<String>.Inner<Integer>|Outer<Float>.Inner<Float> foobar2 = SubOuter<String>().Inner<Integer>(1);
     String foobarhello2 = foobar2.hello;
-    @type["Integer|Float"] value foobaru2 = foobar2.u;
+    @type:"Integer|Float" value foobaru2 = foobar2.u;
     Outer<String|Float>.Inner<Integer|Float> foobart2 = foobar2;
-    @type["Union.Outer<String|Float>.Inner<Integer|Float>"] value foobarts2 = foobar2.get;
+    @type:"Union.Outer<String|Float>.Inner<Integer|Float>" value foobarts2 = foobar2.get;
     
     SubOuter<String>.Inner<Integer>|SpecialOuter<Float>.Inner<Float> foobar3 = SubOuter<String>().Inner<Integer>(1);
     String foobarhello3 = foobar3.hello;
-    @type["Integer|Float"] value foobaru3 = foobar3.u;
+    @type:"Integer|Float" value foobaru3 = foobar3.u;
     Outer<String|Float>.Inner<Integer|Float> foobart3 = foobar3;
-    @type["Union.Outer<String|Float>.Inner<Integer|Float>"] value foobarts3 = foobar3.get;
+    @type:"Union.Outer<String|Float>.Inner<Integer|Float>" value foobarts3 = foobar3.get;
     
     SubOuter<Object>.Inner<Integer>|SpecialOuter<Float>.Inner<Object> foobar4 = SubOuter<String>().Inner<Integer>(1);
-    @type["Union.SubOuter<Object>.Inner<Integer>|Union.SpecialOuter<Float>.Inner<Object>"] value foobar4check = foobar4;
+    @type:"Union.SubOuter<Object>.Inner<Integer>|Union.SpecialOuter<Float>.Inner<Object>" value foobar4check = foobar4;
     String foobarhello4 = foobar4.hello;
-    @type["Object"] value foobaru4 = foobar4.u;
+    @type:"Object" value foobaru4 = foobar4.u;
     Outer<Object>.Inner<Object> foobart4 = foobar4;
-    @type["Union.Outer<Object>.Inner<Object>"] value foobarts4 = foobar4.get;
+    @type:"Union.Outer<Object>.Inner<Object>" value foobarts4 = foobar4.get;
     
     SubOuter<Object>.Inner<Integer>|ReallySpecialOuter<Float>.Inner<Object> foobar5 = SubOuter<String>().Inner<Integer>(1);
-    @type["Union.SubOuter<Object>.Inner<Integer>|Union.ReallySpecialOuter<Float>.Inner<Object>"] value foobar5check = foobar5;
+    @type:"Union.SubOuter<Object>.Inner<Integer>|Union.ReallySpecialOuter<Float>.Inner<Object>" value foobar5check = foobar5;
     String foobarhello5 = foobar5.hello;
-    @type["Object"] value foobaru5 = foobar5.u;
+    @type:"Object" value foobaru5 = foobar5.u;
     Outer<Object>.Inner<Object> foobart5 = foobar5;
-    @type["Union.Outer<Object>.Inner<Object>"] value foobarts5 = foobar5.get;
+    @type:"Union.Outer<Object>.Inner<Object>" value foobarts5 = foobar5.get;
     
     class Sorted<out Elem>(Elem... them) 
             given Elem satisfies Comparable<Elem> {
         shared Elem[] elements = them.sequence;
     }
     Sorted<Integer>|Sorted<String> sorted = Sorted(+1,-1);
-    @type["Sequential<Integer|String>"] value elems = sorted.elements;
+    @type:"Sequential<Integer|String>" value elems = sorted.elements;
     
     switch (xy)
     case (is X) {}
@@ -219,7 +219,7 @@ class Union() {
     //@error 
     switch (maybe)
     case (is Object) {
-        @type["String"] value ms = maybe;
+        @type:"String" value ms = maybe;
     }
     case (is Nothing) {}
     
@@ -232,10 +232,10 @@ class Union() {
     
     /*Comparable<String> elem1 = "hello";
     String elem2 = "world";
-    @type["Sequence<String>"] value selfTypeSeq1 = { elem1, elem2 };
-    @type["Sequence<String>"] value selfTypeSeq2 = { elem2, elem1 };
-    @type["Sequence<String>"] value selfTypeSeq3 = true then selfTypeSeq1 else selfTypeSeq2;
-    @type["Sequence<String>"] value selfTypeSeq4 = true then selfTypeSeq2 else selfTypeSeq1;
+    @type:"Sequence<String>" value selfTypeSeq1 = { elem1, elem2 };
+    @type:"Sequence<String>" value selfTypeSeq2 = { elem2, elem1 };
+    @type:"Sequence<String>" value selfTypeSeq3 = true then selfTypeSeq1 else selfTypeSeq2;
+    @type:"Sequence<String>" value selfTypeSeq4 = true then selfTypeSeq2 else selfTypeSeq1;
     Sequence<String> selfTypeSeq5 = selfTypeSeq1;
     Sequence<String> selfTypeSeq6 = selfTypeSeq2;
     Sequence<Comparable<String>> selfTypeSeq7 = selfTypeSeq1;
@@ -247,16 +247,16 @@ class Union() {
     for (Comparable<String> s in {elem2, elem1}) {}
     
     for (s in {elem1, elem1}) {
-        @type["Comparable<String>"] value sss = s;
+        @type:"Comparable<String>" value sss = s;
     }
     for (s in {elem2, elem2}) {
-        @type["String"] value sss = s;
+        @type:"String" value sss = s;
     }
     for (s in {elem1, elem2}) {
-        @type["String"] value sss = s;
+        @type:"String" value sss = s;
     }
     for (s in {elem2, elem1}) {
-        @type["String"] value sss = s;
+        @type:"String" value sss = s;
     }*/
     
 }

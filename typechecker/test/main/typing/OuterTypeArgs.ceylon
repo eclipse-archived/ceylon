@@ -41,17 +41,17 @@ class OuterTypeArgs() {
 		}
 	}
 	Baz<String>.Bar<Integer> foobar = Baz<String>().Bar<Integer>();
-	@type["OuterTypeArgs.Foo<String>.Bar<Integer>"] value fbg = foobar.get();
-	@type["String"] value fbgt = foobar.getT();
+	@type:"OuterTypeArgs.Foo<String>.Bar<Integer>" value fbg = foobar.get();
+	@type:"String" value fbgt = foobar.getT();
 	Baz<Float>.Bar<String>.Qux<Object> foobarqux = Baz<Float>().Bar<String>().Qux<Object>();
-	@type["OuterTypeArgs.Foo<Float>.Bar<String>"] value fbqg = foobarqux.bar;
-	@type["Entry<Float,String>"] foobarqux.entry(1.0, "hello");
+	@type:"OuterTypeArgs.Foo<Float>.Bar<String>" value fbqg = foobarqux.bar;
+	@type:"Entry<Float,String>" foobarqux.entry(1.0, "hello");
 
 	Fum<String>.Bar<Integer> fumbar = Fum<String>().Bar<Integer>();
-	@type["OuterTypeArgs.Fum<String>.Bar<Integer>"] value fmbg = fumbar.get();
+	@type:"OuterTypeArgs.Fum<String>.Bar<Integer>" value fmbg = fumbar.get();
 	Fum<String>.Bar<Integer>.Qux<Integer> fumbarqux = Fum<String>().Bar<Integer>().Qux<Integer>();
-	@type["OuterTypeArgs.Foo<String>.Bar<Integer>"] value fmbqg = fumbarqux.bar;
-	@type["Entry<String,Integer>"] fumbarqux.entry("given", 30);
+	@type:"OuterTypeArgs.Foo<String>.Bar<Integer>" value fmbqg = fumbarqux.bar;
+	@type:"Entry<String,Integer>" fumbarqux.entry("given", 30);
 	
 	Foo<String>.Bar<Integer> fb1 = fmbg;
 	Foo<String>.Bar<Integer> fb2 = fbg; 
@@ -69,8 +69,8 @@ class OuterTypeArgs() {
 		}
 	}
 	
-	@type["OuterTypeArgs.Outer<String>.Inner<String>"] Outer("hello").Inner("world");
-	@type["OuterTypeArgs.Outer<String>.Inner<String>"] Outer("hello").Inner("world").bar();
+	@type:"OuterTypeArgs.Outer<String>.Inner<String>" Outer("hello").Inner("world");
+	@type:"OuterTypeArgs.Outer<String>.Inner<String>" Outer("hello").Inner("world").bar();
 	Outer<Object>.Inner<String> oiobj = Outer("hello").Inner("world");
 	Outer<String>.Inner<Object> oiobj2 = Outer("hello").Inner("world");
 	@error Outer<String>.Inner<String> oistr = oiobj;
@@ -82,8 +82,8 @@ class OuterTypeArgs() {
 		}
 	}
 	
-	@type["OuterTypeArgs.Consumer<String>.Inner<String>"] Consumer("hello").Inner("world");
-	@type["String"] Consumer("hello").Inner("world").foo("hello");
+	@type:"OuterTypeArgs.Consumer<String>.Inner<String>" Consumer("hello").Inner("world");
+	@type:"String" Consumer("hello").Inner("world").foo("hello");
 	Consumer<Bottom>.Inner<String> ciobj = Consumer("hello").Inner("world");
 	Consumer<String>.Inner<Object> ciobj2 = Consumer("hello").Inner("world");
 	@error Consumer<String>.Inner<String> cistr = ciobj;

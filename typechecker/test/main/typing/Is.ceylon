@@ -31,7 +31,7 @@ class Is() {
         String? s = c[0];
         Integer size = c.size;
         Boolean empty = c.empty;
-        @type["Correspondence<Integer,String>&Sized"] value cc = c;
+        @type:"Correspondence<Integer,String>&Sized" value cc = c;
     }
     
     Correspondence<Integer,String> d = strings;
@@ -39,7 +39,7 @@ class Is() {
         String? s = d[0];
         Integer size = d.size;
         Boolean empty = d.empty;
-        @type["Correspondence<Integer,String>&Sized"] value dd = d;
+        @type:"Correspondence<Integer,String>&Sized" value dd = d;
     }
 
     Correspondence<Integer,String> e = strings;
@@ -48,7 +48,7 @@ class Is() {
         Integer size = e.size;
         @error Boolean empty = e.empty;
         for (String str in e) {} 
-        @type["Correspondence<Integer,String>&Sized&Iterable<String>"] value ee = e;
+        @type:"Correspondence<Integer,String>&Sized&Iterable<String>" value ee = e;
     }
     
     String? s = null;

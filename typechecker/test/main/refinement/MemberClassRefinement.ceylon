@@ -48,9 +48,9 @@ class Singleton(String s)
 
 void testSin() {
     print(Singleton("hello").Iterator().next());
-    @type["Singleton.Iterator"] Singleton("hello").Iterator();
+    @type:"Singleton.Iterator" Singleton("hello").Iterator();
     Singleton.Iterator i1 = Singleton("hello").Iterator();
-    @type["Singleton.Alias"] Singleton("goodbye").Alias();
+    @type:"Singleton.Alias" Singleton("goodbye").Alias();
     Singleton.Iterator i2 = Singleton("goodbye").Alias();
 }
 

@@ -41,19 +41,19 @@ class Hiding() {
         class InnerWithAttribute() {
             String hello = "hello";
             void method() {
-                @type["String"] value s = hello;
+                @type:"String" value s = hello;
             }
         }
         
         class InnerWithSuper() extends Super() {
             void method() {
-                @type["String"] value s = hello;
+                @type:"String" value s = hello;
             }
         }
         
         class InnerWithParameter(String hello) {
             void method() {
-                @type["String"] value s = hello;
+                @type:"String" value s = hello;
             }
         }
     }

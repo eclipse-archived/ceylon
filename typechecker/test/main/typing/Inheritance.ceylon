@@ -52,38 +52,38 @@ class Inheritance() {
     X<String> ys = Y<String>("foo");
     ys.doIt("to a string");
     @error ys.doIt(1);
-    @type["String"] ys.getIt();
+    @type:"String" ys.getIt();
     I<String> iys = ys;
     Object oys = iys;
     
     X<Integer> yn = Y<Integer>(1);
     yn.doIt(6);
-    @type["Integer"] yn.getIt();
+    @type:"Integer" yn.getIt();
     I<Integer> iyn = yn;
     
     X<String> z = Z();
     z.doIt("to a string");
-    @type["String"] z.getIt();
+    @type:"String" z.getIt();
     I<String> iz = z;
     
     X<Float> w = W<String,Float>("amount", 1.3);
     w.doIt(4.5);
-    @type["Float"] w.getIt();
+    @type:"Float" w.getIt();
     I<Float> iw = w;
     
-    @type["String"] X<String>("goodbye").getIt();
+    @type:"String" X<String>("goodbye").getIt();
     
-    @type["Inheritance.Y<String>"] Y<String>("hello");
+    @type:"Inheritance.Y<String>" Y<String>("hello");
     
-    @type["String"] Y<String>("adios").getIt();
+    @type:"String" Y<String>("adios").getIt();
     
-    @type["Inheritance.Z"] Z();
+    @type:"Inheritance.Z" Z();
     
-    @type["String"] Z().getIt();
+    @type:"String" Z().getIt();
     
-    @type["Inheritance.W<Float,Integer>"] W<Float,Integer>(1.2, 1);
+    @type:"Inheritance.W<Float,Integer>" W<Float,Integer>(1.2, 1);
     
-    @type["Integer"] W<Float,Integer>(1.2, 1).getIt();
+    @type:"Integer" W<Float,Integer>(1.2, 1).getIt();
     
     /*object none satisfies Bottom[] {
         shared actual Integer? lastIndex = null;
