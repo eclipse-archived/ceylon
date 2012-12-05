@@ -367,12 +367,10 @@ public class GenerateJsVisitor extends Visitor
         boolean shared = false;
         if (!(excludeProtoMembers && prototypeStyle && d.isClassOrInterfaceMember())
                 && isCaptured(d)) {
-            if (!JsCompiler.compilingLanguageModule) {
-                beginNewLine();
-                outerSelf(d);
-                out(".", names.name(d), "=", names.name(d), ";");
-                endLine();
-            }
+            beginNewLine();
+            outerSelf(d);
+            out(".", names.name(d), "=", names.name(d), ";");
+            endLine();
             shared = true;
         }
         return shared;
