@@ -15,14 +15,10 @@ var smaller = Comparison("smaller");
 function getSmaller() { return smaller }
 var equal = Comparison("equal");
 function getEqual() { return equal }
-function largest(x, y) { return x.compare(y) === larger ? x : y }
-function smallest(x, y) { return x.compare(y) === smaller ? x : y }
 
 exports.getLarger=getLarger;
 exports.getSmaller=getSmaller;
 exports.getEqual=getEqual;
-exports.largest=largest;
-exports.smallest=smallest;
 
 //receives ArraySequence of ArraySequences, returns flat ArraySequence
 function join(seqs) {

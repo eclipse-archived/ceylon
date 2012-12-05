@@ -14,22 +14,6 @@ function string(/*Iterable<Character>*/chars) {
     return s.getString();
 }
 
-function equalTo(v) {
-    return function(e) {
-        return v.equals(e);
-    };
-}
-function greaterThan(v) {
-    return function(e) {
-        return e.compare(v) === larger;
-    };
-}
-function lessThan(v) {
-    return function(e) {
-        return e.compare(v) === smaller;
-    };
-}
-
 function emptyOrSingleton(/*Element?*/elem) {
     return elem===null ? empty : Singleton(elem);
 }
@@ -64,9 +48,6 @@ function sort(elems) {
 }
 
 exports.emptyOrSingleton=emptyOrSingleton;
-exports.equalTo=equalTo;
-exports.greaterThan=greaterThan;
-exports.lessThan=lessThan;
 exports.string=string;
 exports.combine=combine;
 exports.sort=sort;
