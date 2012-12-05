@@ -353,9 +353,9 @@ class Assignability() {
     @error w(iterable...);
     
     object o { shared String hello = "hello"; }
-    @type["IdentifiableObject"] value oo = o;
+    @type:"IdentifiableObject" value oo = o;
     Object ooo = o;
-    @type["String"] value so = o.hello;
+    @type:"String" value so = o.hello;
     @error value soo = oo.hello;
     
     object x extends X() {}
@@ -368,7 +368,7 @@ class Assignability() {
     }
     
     function foo() { throw; }
-    @type["Bottom"] foo();
+    @type:"Bottom" foo();
     
     function f<T>(T a, T b) {
         if (true) {
@@ -378,11 +378,11 @@ class Assignability() {
             return b;
         }
     }
-    @type["Sequence<String>|Sequence<Integer>"] value ut = f({ "aaa" },{ 1 });
+    @type:"Sequence<String>|Sequence<Integer>" value ut = f({ "aaa" },{ 1 });
     Sequence<Object> st1 = ut;
     Sequence<String|Integer> st2 = ut;
-    @type["Nothing|String|Integer"] value item = ut[0];
-    @type["Sequential<String>|Sequential<Integer>"] value items = ut[1..2];
+    @type:"Nothing|String|Integer" value item = ut[0];
+    @type:"Sequential<String>|Sequential<Integer>" value items = ut[1..2];
     
     class Invariant<T>(T t) {}
     Ordinal<Integer> ii1 = +1;
@@ -394,20 +394,20 @@ class Assignability() {
     
     Void v = null;
     if (exists v) {
-        @type["Object"] value val = v;
+        @type:"Object" value val = v;
         print(v.string);
     }
     if (is String v) {
-        @type["String"] value val = v;
+        @type:"String" value val = v;
         print(v.size.string);
     }
     
     Object? mo = null;
     if (exists mo) {
-        @type["Object"] value val = mo;
+        @type:"Object" value val = mo;
     }
     if (is String mo) {
-        @type["String"] value val = mo;
+        @type:"String" value val = mo;
     }
     
     Set<String>? stringSet = null;
@@ -416,7 +416,7 @@ class Assignability() {
     }
     //if (is FixedSized<String> stringSet) {
     //    if (nonempty stringSet) {
-    //        @type["Set<String>&Some<String>"] value ness = stringSet;
+    //        @type:"Set<String>&Some<String>" value ness = stringSet;
     //    }
     //}
     

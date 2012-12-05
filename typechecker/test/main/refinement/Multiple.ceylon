@@ -26,7 +26,7 @@ interface Multiple {
         }
         shared actual class Inner() 
                 extends X::Inner() {
-            //@type["Multiple.X.Inner"] X::Inner();
+            //@type:"Multiple.X.Inner" X::Inner();
         }
     }
     interface Silly { shared String name { return "Gavin"; }  }

@@ -4,11 +4,11 @@ void printTree<T>(Tree<T> tree)
     case (is Branch<T>) {
         printTree(tree.left);
         printTree(tree.right);
-        @type["Branch<T>"] value v = tree;
+        @type:"Branch<T>" value v = tree;
     }
     case (is Leaf<T>) {
         print(tree.val);
-        @type["Leaf<T>"] value v = tree;
+        @type:"Leaf<T>" value v = tree;
     }
 }
 

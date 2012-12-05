@@ -121,7 +121,7 @@ class Y() extends X<String>() {
 }
 
 void testxy() {
-	@type["String"] value b = Y().bar;
+	@type:"String" value b = Y().bar;
 	Y().foo("hello");
 	Y().fum();
 	Y().fo("x", "y", "z");

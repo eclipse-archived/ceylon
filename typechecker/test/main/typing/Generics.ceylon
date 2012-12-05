@@ -14,12 +14,12 @@ class Generics() {
         return Holder<W>(w);
     }
     
-    @type["Generics.Holder<String>"] Holder<String> hs;
+    @type:"Generics.Holder<String>" Holder<String> hs;
     
-    @type["Generics.Holder<String>"] Holder<String>("hello");
-    @type["String"] value shh = Holder<String>("hello").held;
+    @type:"Generics.Holder<String>" Holder<String>("hello");
+    @type:"String" value shh = Holder<String>("hello").held;
     
-    @type["Generics.Holder<String>"] Holder("hello");
+    @type:"Generics.Holder<String>" Holder("hello");
     
     Holder<String> h1 = Holder<String>("hello");
     String hello = h1.held;
@@ -31,11 +31,11 @@ class Generics() {
     Integer n = h2.add(1,2);
     @error String ehw = h2.add("hello", "world");
     
-    @type["Float"] h2.noop<Float>(1.0);
+    @type:"Float" h2.noop<Float>(1.0);
     String s1 = h2.noop<String>("Hi!");
     String s2 = h2.noop("Hi!");
     
-    @type["Generics.Holder<Integer>"] create<Integer>(3);
+    @type:"Generics.Holder<Integer>" create<Integer>(3);
     Integer nn = create<Integer>(5).held;
     
     X op<X>(X arg) {
@@ -172,7 +172,7 @@ class Generics() {
         shared String hello = "Hello";
     }
     class Foo<X>(X x) given X satisfies Bar {
-        @type["String"] value xh = x.hello;
+        @type:"String" value xh = x.hello;
     }
     
     class Outer<X>(X x) given X satisfies Object {
@@ -188,18 +188,18 @@ class Generics() {
         }
     }
         
-    @type["Generics.Outer<Integer>.Inner<String>"] Outer<Integer>(1).Inner<String>("hello");
-    @type["Generics.Outer<Integer>.Inner<String>"] Outer<Integer>(1).createInner("hello");
-    @type["Entry<Integer,String>"] Outer<Integer>(1).Inner<String>("hello").getIt();
-    @type["Entry<Integer,String>"] Outer<Integer>(1).createInner("hello").getIt();
+    @type:"Generics.Outer<Integer>.Inner<String>" Outer<Integer>(1).Inner<String>("hello");
+    @type:"Generics.Outer<Integer>.Inner<String>" Outer<Integer>(1).createInner("hello");
+    @type:"Entry<Integer,String>" Outer<Integer>(1).Inner<String>("hello").getIt();
+    @type:"Entry<Integer,String>" Outer<Integer>(1).createInner("hello").getIt();
 
     Outer<Integer>.Inner<String> aa = Outer<Integer>(1).Inner<String>("hello");
     @error Inner<String> bb = Outer<Integer>(1).Inner<String>("hello");
     @error Outer<Integer> dd = Outer<Integer>(1).Inner<String>("hello");
     @error Outer<Integer>.Inner<String> cc = Outer<Float>(1.3).Inner<String>("hello");
     
-    @type["Generics.Outer<Integer>.Inner<String>"] value aaa = aa;
-    @type["Entry<Integer,String>"] aa.getIt();
+    @type:"Generics.Outer<Integer>.Inner<String>" value aaa = aa;
+    @type:"Entry<Integer,String>" aa.getIt();
     
     class Num() satisfies Comparable<Num> {
         //fake implementation
@@ -251,8 +251,8 @@ class Generics() {
     class Lower<W>(W w) extends Upper<W>(w)
             given W satisfies Object {}
      
-    @type["Entry<String,Integer>"] Lower<String>("hello").method<Integer>("world",1);
-    @type["Generics.Upper<String>.Inner<Float>"] Lower<String>("hello").Inner<Float>("world", 2.3);
+    @type:"Entry<String,Integer>" Lower<String>("hello").method<Integer>("world",1);
+    @type:"Generics.Upper<String>.Inner<Float>" Lower<String>("hello").Inner<Float>("world", 2.3);
     
     interface Some<out X> {}
     class Foo1() satisfies Some<Object> {}
@@ -487,12 +487,12 @@ class Generics() {
         }
     }
     @error genericMethod1("hello");
-    @type["Integer"] genericMethod1(1);
-    @type["String"] genericMethod2("hello");
-    @type["String"] genericMethod2(true then "hello");
+    @type:"Integer" genericMethod1(1);
+    @type:"String" genericMethod2("hello");
+    @type:"String" genericMethod2(true then "hello");
     
-    @type["Iterable<String>"] coalesce(null, "hello");
-    @type["Sequential<String>"] join({}, {"hello", "world"}, {"goodbye"});
+    @type:"Iterable<String>" coalesce(null, "hello");
+    @type:"Sequential<String>" join({}, {"hello", "world"}, {"goodbye"});
     
     class ParamOuter<T>() {
         class Inner<Y>(){
@@ -504,11 +504,7 @@ class Generics() {
         @error ParamOuter<String>.Inner<Integer>();
         ParamOuter<T>.Inner<Integer>();
     }
-    
-    String->Object okEntry;
-    @error String->Void brokenEntry1;
-    @error Nothing->String brokenEntry2;
-    
+        
     void withParamOfMethod<T>(T t) { Void x = t; } 
     class WithParamOfClass<T>(T t) { Void x = t; } 
 

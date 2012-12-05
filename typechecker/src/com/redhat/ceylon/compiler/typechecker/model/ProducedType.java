@@ -1222,7 +1222,7 @@ public class ProducedType extends ProducedReference {
                 if (abbreviateTuple(unit)) {
                 	String argtypes = argtypes(this);
                 	if (argtypes!=null) {
-                		return "<" + argtypes + ">";
+                		return "[" + argtypes + "]";
                 	}
                 }
             }

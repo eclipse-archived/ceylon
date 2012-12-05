@@ -915,10 +915,6 @@ parameterDeclaration returns [Parameter parameter]
         $parameter.getCompilerAnnotations().addAll($compilerAnnotations.annotations); }
     ;
 
-valueParameter
-    : ENTRY_OP abbreviatedType memberName
-    ;
-
 parameterType returns [Type type]
     : type 
       { $type = $type.type; }
@@ -1080,7 +1076,7 @@ annotatedAssertionStart
 //expressions
 declarationStart
     : declarationKeyword 
-    | type (ELLIPSIS | LIDENTIFIER)
+    | type ELLIPSIS? LIDENTIFIER
     ;
 
 declarationKeyword
@@ -1224,6 +1220,8 @@ base returns [Primary primary]
       { $primary=$stringExpression.atom; }
     | enumeration
       { $primary=$enumeration.sequenceEnumeration; }
+    | tuple
+      { $primary=$tuple.tuple; }
     | selfReference
       { $primary=$selfReference.atom; }
     | parExpression
@@ -1368,6 +1366,19 @@ enumeration returns [SequenceEnumeration sequenceEnumeration]
       { $sequenceEnumeration.setEndToken($RBRACE); }
     ;
 
+tuple returns [Tuple tuple]
+    : INDEX_OP { $tuple = new Tuple($INDEX_OP); } 
+      (
+        sequencedArgument
+        { $tuple.setSequencedArgument($sequencedArgument.sequencedArgument); }
+      | 
+        comprehension
+        { $tuple.setComprehension($comprehension.comprehension); }
+      )?
+      RBRACKET
+      { $tuple.setEndToken($RBRACKET); }
+      | ARRAY { $tuple = new Tuple($ARRAY); } 
+    ;
 expressions returns [ExpressionList expressionList]
     : { $expressionList = new ExpressionList(null); }
       e1=expression 
@@ -1412,9 +1423,8 @@ typeReference returns [Identifier identifier,
 typeArgumentsStart
     : SMALLER_OP
     (
-      UIDENTIFIER ('.' UIDENTIFIER)* /*| 'subtype')*/ (DEFAULT_OP|ARRAY)*
-      ((INTERSECTION_OP|UNION_OP|ENTRY_OP) UIDENTIFIER ('.' UIDENTIFIER)* (DEFAULT_OP|ARRAY)*)*
-      (LARGER_OP|SMALLER_OP|COMMA|ELLIPSIS|LPAREN|RPAREN)
+      type
+      (LARGER_OP|SMALLER_OP|COMMA|ELLIPSIS)
     |
       SMALLER_OP
     | 
@@ -1632,8 +1642,16 @@ namedArgumentDeclaration returns [NamedArgument declaration]
 //to distinguish between a named argument
 //and a sequenced argument
 namedArgumentStart
-    : compilerAnnotation* 
+    : compilerAnnotations 
       (specificationStart | declarationStart)
+    ;
+
+namedAnnotationArgumentsStart
+    : LBRACE ((namedArgumentStart)=>namedArgumentStart | iterableArgumentStart | RBRACE)
+    ;
+
+iterableArgumentStart
+    : compilerAnnotations expression (COMMA|RBRACE)
     ;
 
 //special rule for syntactic predicates
@@ -1644,37 +1662,13 @@ specificationStart
 parExpression returns [Expression expression] 
     : LPAREN 
       { $expression = new Expression($LPAREN); }
-      functionOrExpressionOrTuple
-      { if ($functionOrExpressionOrTuple.expression!=null)
-            $expression.setTerm($functionOrExpressionOrTuple.expression.getTerm()); }
+      functionOrExpression
+      { if ($functionOrExpression.expression!=null)
+            $expression.setTerm($functionOrExpression.expression.getTerm()); }
       RPAREN
       { $expression.setEndToken($RPAREN); }
     ;
-    
-functionOrExpressionOrTuple returns [Expression expression]
-    @init { Expression e = new Expression(null);
-            Tuple t = new Tuple(null); 
-            e.setTerm(t); }
-    : fe1=functionOrExpression
-      { $expression=$fe1.expression;
-        t.addExpression($fe1.expression); }
-      (
-        (
-          c=COMMA 
-          { $expression = e;
-            t.setEndToken($c); }
-          fe2=functionOrExpression
-          { t.addExpression($fe2.expression);
-            t.setEndToken(null); }
-        )+
-        (
-          ELLIPSIS
-          { t.setEllipsis(new Ellipsis($ELLIPSIS)); }
-        )?
-      )?
-    | { $expression = e; }
-    ;
-    
+        
 positionalArguments returns [PositionalArgumentList positionalArgumentList]
     : LPAREN 
       { $positionalArgumentList = new PositionalArgumentList($LPAREN); }
@@ -1686,7 +1680,8 @@ positionalArguments returns [PositionalArgumentList positionalArgumentList]
           { $positionalArgumentList.setEndToken($c); }
           (
             pa2=positionalArgument
-            { $positionalArgumentList.addPositionalArgument($pa2.positionalArgument); 
+            { if ($pa2.positionalArgument!=null)
+                  $positionalArgumentList.addPositionalArgument($pa2.positionalArgument); 
               positionalArgumentList.setEndToken(null); }
           | { displayRecognitionError(getTokenNames(), 
                 new MismatchedTokenException(LIDENTIFIER, input)); }
@@ -2037,13 +2032,13 @@ additiveOperator returns [BinaryOperatorExpression operator]
     ;
 
 multiplicativeExpression returns [Term term]
-    : ne1=defaultExpression
+    : ne1=negationComplementExpression
       { $term = $ne1.term; }
       (
         multiplicativeOperator 
         { $multiplicativeOperator.operator.setLeftTerm($term);
           $term = $multiplicativeOperator.operator; }
-        ne2=defaultExpression
+        ne2=negationComplementExpression
         { $multiplicativeOperator.operator.setRightTerm($ne2.term); }
       )*
     ;
@@ -2057,23 +2052,6 @@ multiplicativeOperator returns [BinaryOperatorExpression operator]
       { $operator = new RemainderOp($REMAINDER_OP); }
     | INTERSECTION_OP
       { $operator = new IntersectionOp($INTERSECTION_OP); }
-    ;
-
-defaultExpression returns [Term term]
-    : rie1=negationComplementExpression
-      { $term = $rie1.term; }
-      (
-        defaultOperator 
-        { $defaultOperator.operator.setLeftTerm($term);
-          $term = $defaultOperator.operator; }
-        rie2=negationComplementExpression
-        { $defaultOperator.operator.setRightTerm($rie2.term); }
-      )*
-    ;
-
-defaultOperator returns [DefaultOp operator]
-    : DEFAULT_OP 
-      { $operator = new DefaultOp($DEFAULT_OP); }
     ;
 
 negationComplementExpression returns [Term term]
@@ -2199,7 +2177,8 @@ typeArguments returns [TypeArgumentList typeArgumentList]
         { $typeArgumentList.setEndToken($c); }
         (
           ta2=type
-          { $typeArgumentList.addType($ta2.type); 
+          { if ($ta2.type!=null)
+                $typeArgumentList.addType($ta2.type); 
             $typeArgumentList.setEndToken(null); }
           | { displayRecognitionError(getTokenNames(), 
                 new MismatchedTokenException(UIDENTIFIER, input)); }
@@ -2217,7 +2196,7 @@ tupleElementType returns [Type type]
         { SequencedType st = new SequencedType($ELLIPSIS);
           st.setType($t.type); 
           $type = st; }
-      )? 
+      )?
     ;
     
 type returns [StaticType type]
@@ -2227,8 +2206,8 @@ type returns [StaticType type]
     ;
 
 tupleType returns [TupleType type]
-    : SMALLER_OP
-      { $type = new TupleType($SMALLER_OP); }
+    : INDEX_OP
+      { $type = new TupleType($INDEX_OP); }
       (
         t1=tupleElementType 
         { $type.addElementType($t1.type); }
@@ -2240,12 +2219,29 @@ tupleType returns [TupleType type]
             $type.setEndToken(null); }
         )*
       )?
-      LARGER_OP
-      { $type.setEndToken($LARGER_OP); }
+      RBRACKET
+      { $type.setEndToken($RBRACKET); }
+    | ARRAY 
+      { $type = new TupleType($ARRAY); }
     ;
 
+groupedType returns [StaticType type]
+    : SMALLER_OP
+      t=type
+      { $type=$t.type; }
+      LARGER_OP
+    ;
 
-entryType returns [StaticType type]
+iterableType returns [IterableType type]
+   : LBRACE
+     { $type = new IterableType($LBRACE); }
+     t=type
+     { $type.setElementType($t.type); }
+     ELLIPSIS
+     RBRACE
+   ;
+
+/*entryType returns [StaticType type]
     @init { EntryType bt=null; }
     : t1=abbreviatedType
       { $type=$t1.type; }
@@ -2263,7 +2259,7 @@ entryType returns [StaticType type]
 //                new MismatchedTokenException(UIDENTIFIER, input)); }
         )
       )?
-    ;
+    ;*/
 
 unionType returns [StaticType type]
     @init { UnionType ut=null; }
@@ -2289,7 +2285,7 @@ unionType returns [StaticType type]
 
 intersectionType returns [StaticType type]
     @init { IntersectionType it=null; }
-    : at1=entryType
+    : at1=abbreviatedType
       { $type = $at1.type;
         it = new IntersectionType(null);
         it.addStaticType($type); }
@@ -2298,7 +2294,7 @@ intersectionType returns [StaticType type]
           i=INTERSECTION_OP
           { it.setEndToken($i); }
           (
-            at2=entryType
+            at2=abbreviatedType
             { it.addStaticType($at2.type);
               it.setEndToken(null); }
 //          | { displayRecognitionError(getTokenNames(), 
@@ -2314,6 +2310,10 @@ qualifiedOrTupleType returns [StaticType type]
       { $type=$qualifiedType.type; }
     | tupleType 
       { $type=$tupleType.type; }
+    | iterableType
+      { $type=$iterableType.type; }
+    | groupedType
+      { $type=$groupedType.type; }
     ;
 
 abbreviatedType returns [StaticType type]
@@ -2430,7 +2430,7 @@ typeNameWithArguments returns [Identifier identifier, TypeArgumentList typeArgum
     
 annotations returns [AnnotationList annotationList]
     : { $annotationList = new AnnotationList(null); }
-      ( 
+      (
         annotation 
         { $annotationList.addAnnotation($annotation.annotation); }
       )*
@@ -2451,9 +2451,12 @@ annotation returns [Annotation annotation]
     ;
 
 annotationArguments returns [ArgumentList argumentList]
-    : arguments 
-      { $argumentList=$arguments.argumentList; }
-    | literalArguments 
+    : positionalArguments 
+      { $argumentList = $positionalArguments.positionalArgumentList; }
+    | (namedAnnotationArgumentsStart) =>
+      namedArguments
+      { $argumentList = $namedArguments.namedArgumentList; }
+    | literalArguments
       { $argumentList=$literalArguments.argumentList; }
     ;
 
@@ -2516,10 +2519,9 @@ compilerAnnotation returns [CompilerAnnotation annotation]
       annotationName 
       { $annotation.setIdentifier($annotationName.identifier); }
       ( 
-          INDEX_OP
+          SEGMENT_OP
           stringLiteral
           { $annotation.setStringLiteral($stringLiteral.stringLiteral); }
-          RBRACKET
       )?
     ;
 

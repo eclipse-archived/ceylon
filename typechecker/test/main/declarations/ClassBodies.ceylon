@@ -143,7 +143,7 @@ class ClassBodies() {
     class Good3WithInner() {
         String name = "gavin";
         class Inner() {
-            @type["String"] outer.x();
+            @type:"String" outer.x();
             void x() {}
         }
         String x() { return "Hell"; }
@@ -163,7 +163,7 @@ class ClassBodies() {
         class Inner() {
             void x() {}
             void y() {
-                @type["String"] outer.x();
+                @type:"String" outer.x();
             }
         }
         String x() { return "Hell"; }
@@ -184,7 +184,7 @@ class ClassBodies() {
         String name = "gavin";
         object inner {
             void x() {
-                @type["String"] outer.x();
+                @type:"String" outer.x();
             }
         }
         String x() { return "Hell"; }
@@ -212,7 +212,7 @@ class ClassBodies() {
         String name = "gavin";
         object inner {
             void y() {
-                @type["String"] outer.x();
+                @type:"String" outer.x();
             }
             void x() {}
         }

@@ -392,6 +392,15 @@ public class TypeVisitor extends Visitor {
         }
     }
     
+    @Override 
+    public void visit(Tree.IterableType that) {
+        super.visit(that);
+        ProducedType et = that.getElementType().getTypeModel();
+        if (et!=null) {
+            that.setTypeModel(unit.getIterableType(et));
+        }
+    }
+    
     @Override
     public void visit(Tree.OptionalType that) {
         super.visit(that);

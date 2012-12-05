@@ -224,6 +224,9 @@
 ^(SEQUENCE_TYPE: STATIC_TYPE
     STATIC_TYPE elementType)
 
+^(ITERABLE_TYPE: STATIC_TYPE
+    STATIC_TYPE elementType)
+
 ^(OPTIONAL_TYPE: STATIC_TYPE
     STATIC_TYPE definiteType)
 
@@ -663,8 +666,8 @@ argument list."
     COMPREHENSION?)
 
 ^(TUPLE:ATOM 
-    EXPRESSION*
-    ELLIPSIS?)
+    SEQUENCED_ARGUMENT?
+    COMPREHENSION?)
 
 "A string template."
 ^(STRING_TEMPLATE:ATOM 

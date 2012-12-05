@@ -104,8 +104,8 @@ class ControlStructures() {
         print("hello");
     }
     catch (e) {
-        @type["String"] value msg = e.message;
-        @type["Nothing|Exception"] value cause = e.cause;
+        @type:"String" value msg = e.message;
+        @type:"Nothing|Exception" value cause = e.cause;
     }
 
     class Exception1() extends Exception() {}
@@ -114,9 +114,9 @@ class ControlStructures() {
     try {
         print("hello");
     }
-    catch (@type["ControlStructures.Exception1|ControlStructures.Exception2"] Exception1|Exception2 e) {
-        @type["String"] value msg = e.message;
-        @type["Nothing|Exception"] value cause = e.cause;
+    catch (@type:"ControlStructures.Exception1|ControlStructures.Exception2" Exception1|Exception2 e) {
+        @type:"String" value msg = e.message;
+        @type:"Nothing|Exception" value cause = e.cause;
     }
     catch (@error String s) {
         
@@ -128,7 +128,7 @@ class ControlStructures() {
     catch (Exception e) {}
     
     try {}
-    catch (@type["ControlStructures.Exception1"] Exception1 e1) {}
+    catch (@type:"ControlStructures.Exception1" Exception1 e1) {}
     catch (@error Exception1 e2) {}
     
     try {}

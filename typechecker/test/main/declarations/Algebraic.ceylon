@@ -184,7 +184,7 @@ object object1 extends Class1() {}
 void switchInterface(Interface i) {
     
     if (is Sized i) {
-        @type["Interface&Sized"] value ii = i;
+        @type:"Interface&Sized" value ii = i;
         print(i.size);
         switch(i)
         case (is Class1&Sized) {
@@ -291,7 +291,7 @@ void testHardCase(J4 i) {
     
     switch(i)
     case (is J2) {
-        @type["J4&J2"] value ii = i;
+        @type:"J4&J2" value ii = i;
     }
     case (is J3) {}
     
@@ -318,7 +318,7 @@ void testHardCase(J4 i) {
 
     switch(mi)
     case (is J2) {
-        @type["J4&J2"] value ii = mi;
+        @type:"J4&J2" value ii = mi;
     }
     case (is J3) {}
     case (is Nothing) {}

@@ -5,28 +5,28 @@ interface Hiding {
 	class Super1() {
 		shared class Hidden(String val) {}
 		shared Integer hidden(String val) { return 0; }
-		@type["Hiding.Super1.Hidden"] Hidden("hello");
-		@type["Integer"] hidden("hello");
+		@type:"Hiding.Super1.Hidden" Hidden("hello");
+		@type:"Integer" hidden("hello");
 	}
 	
 	class Sub1() extends Super1() {
 		void method() {
-			@type["Hiding.Super1.Hidden"] Hidden("hello");
-			@type["Integer"] hidden("hello");
+			@type:"Hiding.Super1.Hidden" Hidden("hello");
+			@type:"Integer" hidden("hello");
 		}
 	}
 
 	class Super2() {
 		class Hidden(String val) {}
 		Float hidden(String val) { return 0.0; }
-        @type["Hiding.Super2.Hidden"] Hidden("hello");
-        @type["Float"] hidden("hello");
+        @type:"Hiding.Super2.Hidden" Hidden("hello");
+        @type:"Float" hidden("hello");
 	}
 	
 	class Sub2() extends Super2() {
 		void method() {
-		    @type["Hiding.Hidden"] Hidden();
-		    @type["String"] hidden();
+		    @type:"Hiding.Hidden" Hidden();
+		    @type:"String" hidden();
 		}
 	}
 	
