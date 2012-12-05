@@ -1700,6 +1700,7 @@ public class ExpressionTransformer extends AbstractTransformer {
                 }
             } else if (decl.isCaptured() || decl.isShared()) {
                 TypeDeclaration typeDecl = ((Value)decl).getType().getDeclaration();
+                mustUseField = Decl.isBoxedVariable((Value)decl);
                 if (Decl.isLocal(typeDecl)
                         && typeDecl.isAnonymous()) {
                     // accessing a local 'object' declaration, so don't need a getter 
@@ -2000,7 +2001,9 @@ public class ExpressionTransformer extends AbstractTransformer {
             }
         } else if (variable && (decl.isCaptured() || decl.isShared())) {
             // must use the qualified setter
-            if (Decl.isLocal(decl)) {
+            if (Decl.isBoxedVariable(decl)) {
+                result = at(op).Assign(naming.makeQualifiedName(lhs, decl, Naming.NA_WRAPPER | Naming.NA_MEMBER | Naming.NA_SETTER), rhs);
+            } else if (Decl.isLocal(decl)) {
                 lhs = naming.makeQualifiedName(lhs, decl, Naming.NA_WRAPPER);
             } else {
                 lhs = naming.makeQualifiedName(lhs, decl, Naming.NA_IDENT);
