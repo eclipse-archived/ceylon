@@ -393,4 +393,23 @@ public class Decl {
         }
         return term;
     }
+    
+    /**
+     * Determines whether the given attribute should be accessed and assigned 
+     * via a {@code VariableBox}
+     */
+    public static boolean isBoxedVariable(Tree.AttributeDeclaration attr) {
+        return isBoxedVariable(attr.getDeclarationModel());
+    }
+    
+    /**
+     * Determines whether the given attribute should be accessed and assigned 
+     * via a {@code VariableBox}
+     */
+    public static boolean isBoxedVariable(TypedDeclaration attr) {
+        return attr instanceof Value
+                && isLocal(attr)
+                && attr.isVariable()
+                && attr.isCaptured();
+    }
 }
