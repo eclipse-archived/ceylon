@@ -4,13 +4,14 @@
 //the Ceylon language module
 //#METAMODEL
 
+//Hand-written implementations
 function exists(x){}//IGNORE
 function String$(x,y){}//IGNORE
 function ArraySequence(x){}//IGNORE
 function nonempty(x){}//IGNORE
 function className(x){}//IGNORE
 function isOfType(a,b){}//IGNORE
-var larger,smaller,Sequence,Category,$empty,equal; //IGNORE
+var larger,smaller,Sequence,Category,empty,equal; //IGNORE
 
 function getT$name() {return this.constructor.T$name;}
 function getT$all() {return this.constructor.T$all;}
@@ -199,12 +200,16 @@ Correspondence$proto.items = function(keys) {
         }
         return ArraySequence(r);
     }
-    return $empty;
+    return empty;
 }
 Correspondence$proto.keys = function() {
     return TypeCategory(this, 'ceylon.language::Integer');
 }
 exports.Correspondence=Correspondence;
+
+//Compiled from Ceylon sources
+//#COMPILED
+//Ends compiled from Ceylon sources
 
 //#include iterable.js
 //#include collections.js
@@ -355,14 +360,14 @@ Range$proto.contains = function(x) {
     return false;
 }
 Range$proto.getRest = function() {
-    if (this.first.equals(this.last)) return $empty;
+    if (this.first.equals(this.last)) return empty;
     var n = this.next(this.first);
     return Range(n, this.last);
 }
 Range$proto.segment = function(from, len) {
     //only positive length for now
-    if (len.compare(0) !== larger) return $empty;
-    if (!this.defines(from)) return $empty;
+    if (len.compare(0) !== larger) return empty;
+    if (!this.defines(from)) return empty;
     var x = this.first;
     for (var i=0; i < from; i++) { x = this.next(x); }
     var y = x;
@@ -374,13 +379,13 @@ Range$proto.span = function(from, to) {
     var li = this.getLastIndex();
     if (to<0) {
     	if (from<0) {
-    		return $empty;
+    		return empty;
     	}
     	to = 0;
     }
     else if (to > li) {
     	if (from > li) {
-    		return $empty;
+    		return empty;
     	}
     	to = li;
     }
@@ -397,7 +402,7 @@ Range$proto.span = function(from, to) {
     return Range(x, y);
 }
 Range$proto.spanTo = function(to) {
-    return to<0 ? $empty : this.span(0, to);
+    return to<0 ? empty : this.span(0, to);
 }
 Range$proto.spanFrom = function(from) {
     return this.span(from, this.getLastIndex());
@@ -432,11 +437,11 @@ Range$proto.skipping = function(skip) {
     while (x++<skip) {
         e=this.next(e);
     }
-    return this.includes(e) ? new Range(e, this.last) : $empty;
+    return this.includes(e) ? new Range(e, this.last) : empty;
 }
 Range$proto.taking = function(take) {
     if (take == 0) {
-        return $empty;
+        return empty;
     }
     var x=0;
     var e=this.first;

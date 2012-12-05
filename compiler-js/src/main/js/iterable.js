@@ -6,7 +6,7 @@ function ArraySequence(x){}//IGNORE
 function Comprehension(x){}//IGNORE
 function Exception(x){}//IGNORE
 function String$(x){}//IGNORE
-var Container,$finished,$empty,larger,smaller,exports;//IGNORE
+var Container,$finished,empty,larger,smaller,exports;//IGNORE
 
 function Iterator(wat) {
     return wat;
@@ -139,7 +139,7 @@ Iterable$proto.skipping = function(skip) {
     return skip$iter(this,skip);
 }
 Iterable$proto.taking = function(take) {
-    if (take <= 0) return $empty;
+    if (take <= 0) return empty;
     var iter = this;
     return Comprehension(function() {
         var it = iter.getIterator();

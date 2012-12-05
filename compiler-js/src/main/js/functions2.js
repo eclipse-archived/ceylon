@@ -78,7 +78,7 @@ function byItem(/*Callable<Comparison,Key,Key*/f) {
 }
 
 function emptyOrSingleton(/*Element?*/elem) {
-    return elem===null ? $empty : Singleton(elem);
+    return elem===null ? empty : Singleton(elem);
 }
 
 function forKey(/*Callable<Result,Key>*/f) {
@@ -108,12 +108,12 @@ function combine(/*Callable<Result,Element,Other>*/f, /*Iterable<Element>*/i1, /
 }
 
 function sort(elems) {
-    if (elems===undefined) {return $empty;}
+    if (elems===undefined) {return empty;}
     var arr = [];
     var it = elems.getIterator();
     var e;
     while ((e=it.next()) !== $finished) {arr.push(e);}
-    if (arr.length === 0) {return $empty;}
+    if (arr.length === 0) {return empty;}
     arr.sort(function(a, b) {
         var cmp = a.compare(b);
         return (cmp===larger) ? 1 : ((cmp===smaller) ? -1 : 0);

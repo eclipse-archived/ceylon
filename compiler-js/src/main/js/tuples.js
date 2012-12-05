@@ -36,7 +36,7 @@ Tuple$proto.segment = function(from, len) {
 }
 Tuple$proto.span = function(from, to) {
     if (from < 0 && to < 0) {
-        return $empty;
+        return empty;
     } else if (from < 0) {
         from = 0;
     } else if (to < 0) {
@@ -45,7 +45,7 @@ Tuple$proto.span = function(from, to) {
     return from<=to ? this.segment(from,to-from+1) : this.segment(to,from-to+1).getReversed().getSequence();
 }
 Tuple$proto.spanTo = function(to) {
-    return to<0 ? $empty : this.span(0, to);
+    return to<0 ? empty : this.span(0, to);
 }
 Tuple$proto.spanFrom = function(from) {
     return this.span(from, this.getSize());

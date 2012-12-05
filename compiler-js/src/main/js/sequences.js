@@ -6,7 +6,7 @@ function isOfType(a,b){}//IGNORE
 function smallest(x,y){}//IGNORE
 function largest(x,y){}//IGNORE
 function Exception(){}//IGNORE
-var List,Some,Cloneable,Ranged,exports,larger,smaller,equal,Object$,$empty,$finished,Iterator;//IGNORE
+var List,Some,Cloneable,Ranged,exports,larger,smaller,equal,Object$,empty,$finished,Iterator;//IGNORE
 var IdentifiableObject,Category,Sized;//IGNORE
 
 function Sequence($$sequence) {
@@ -81,10 +81,10 @@ Array$proto.chain = function(other) {
 Array$proto.getFirst = function() { return this.length>0 ? this[0] : null; }
 Array$proto.getLast = function() { return this.length>0 ? this[this.length-1] : null; }
 Array$proto.segment = function(from, len) {
-    if (len <= 0) { return $empty; }
+    if (len <= 0) { return empty; }
     var stop = from + len;
     var seq = this.slice((from>=0)?from:0, (stop>=0)?stop:0);
-    return (seq.length > 0) ? ArraySequence(seq) : $empty;
+    return (seq.length > 0) ? ArraySequence(seq) : empty;
 }
 Array$proto.span = function(from, to) {
     if (from > to) {
@@ -93,16 +93,16 @@ Array$proto.span = function(from, to) {
     return this.segment(from, to-from+1);
 }
 Array$proto.spanTo = function(to) {
-    return to < 0 ? $empty : this.span(0, to);
+    return to < 0 ? empty : this.span(0, to);
 }
 Array$proto.spanFrom = function(from) {
     return this.span(from, 0x7fffffff);
 }
 Array$proto.getRest = function() {
-    return this.length<=1 ? $empty : ArraySequence(this.slice(1));
+    return this.length<=1 ? empty : ArraySequence(this.slice(1));
 }
 Array$proto.items = function(keys) {
-    if (keys === undefined) return $empty;
+    if (keys === undefined) return empty;
     var seq = [];
     for (var i = 0; i < keys.getSize(); i++) {
         var key = keys.item(i);
@@ -167,7 +167,7 @@ function SequenceBuilder() {
 initTypeProto(SequenceBuilder, 'ceylon.language::SequenceBuilder', IdentifiableObject, Sized);
 var SequenceBuilder$proto = SequenceBuilder.$$.prototype;
 SequenceBuilder$proto.getSequence = function() {
-    return (this.seq.length > 0) ? ArraySequence(this.seq) : $empty;
+    return (this.seq.length > 0) ? ArraySequence(this.seq) : empty;
 }
 SequenceBuilder$proto.append = function(e) { this.seq.push(e); }
 SequenceBuilder$proto.appendAll = function(/*Iterable*/arr) {
@@ -204,20 +204,20 @@ Singleton$proto.getLastIndex = function() { return 0; }
 Singleton$proto.getFirst = function() { return this.elem; }
 Singleton$proto.getLast = function() { return this.elem; }
 Singleton$proto.getEmpty = function() { return false; }
-Singleton$proto.getRest = function() { return $empty; }
+Singleton$proto.getRest = function() { return empty; }
 Singleton$proto.defines = function(idx) { return idx.equals(0); }
 Singleton$proto.getKeys = function() { return TypeCategory(this, 'ceylon.language::Integer'); }
 Singleton$proto.span = function(from, to) {
-    return (((from <= 0) && (to >= 0)) || ((from >= 0) && (to <= 0))) ? this : $empty;
+    return (((from <= 0) && (to >= 0)) || ((from >= 0) && (to <= 0))) ? this : empty;
 }
 Singleton$proto.spanTo = function(to) {
-    return to < 0 ? $empty : this;
+    return to < 0 ? empty : this;
 }
 Singleton$proto.spanFrom = function(from) {
-    return from > 0 ? $empty : this;
+    return from > 0 ? empty : this;
 }
 Singleton$proto.segment = function(idx, len) {
-    return ((idx <= 0) && ((idx+len) > 0)) ? this : $empty; 
+    return ((idx <= 0) && ((idx+len) > 0)) ? this : empty; 
 }
 Singleton$proto.getIterator = function() { return SingletonIterator(this.elem); }
 Singleton$proto.getReversed = function() { return this; }
@@ -233,7 +233,7 @@ Singleton$proto.equals = function(other) {
 }
 Singleton$proto.$map = function(f) { return ArraySequence([ f(this.elem) ]); }
 Singleton$proto.$filter = function(f) {
-    return f(this.elem) ? this : $empty;
+    return f(this.elem) ? this : empty;
 }
 Singleton$proto.fold = function(v,f) {
     return f(v, this.elem);
@@ -251,10 +251,10 @@ Singleton$proto.$every = function(f) {
     return f(this.elem);
 }
 Singleton$proto.skipping = function(skip) {
-    return skip==0 ? this : $empty;
+    return skip==0 ? this : empty;
 }
 Singleton$proto.taking = function(take) {
-    return take>0 ? this : $empty;
+    return take>0 ? this : empty;
 }
 Singleton$proto.by = function(step) {
     return this;

@@ -1,4 +1,4 @@
-var exports,console,$finished,process$,$empty;//IGNORE
+var exports,console,$finished,process$,empty;//IGNORE
 function Comparison(x){}//IGNORE
 function ArraySequence(x){}//IGNORE
 function Entry(a,b){}//IGNORE
@@ -55,7 +55,7 @@ function sum(seq) {
 
 //receives ArraySequence of ArraySequences, returns flat ArraySequence
 function join(seqs) {
-    if (seqs === undefined) return $empty;
+    if (seqs === undefined) return empty;
     var builder = [];
     var it = seqs.getIterator();
     var seq;
@@ -77,33 +77,14 @@ function zip(keys, items) {
 }
 //receives and returns ArraySequence
 function coalesce(seq) {
-    if (seq === undefined) {return $empty}
+    if (seq === undefined) {return empty}
     return seq.getCoalesced();
 }
 
 //Receives Iterable, returns ArraySequence (with Entries)
 function entries(seq) {
-    if (seq === undefined) return $empty;
+    if (seq === undefined) return empty;
     return seq.getIndexed();
-}
-
-function any(/*Boolean...*/ values) {
-    if (values === undefined) return false;
-    var it = values.getIterator();
-    var v;
-    while ((v = it.next()) !== $finished) {
-        if (v) {return true;}
-    }
-    return false;
-}
-function every(/*Boolean...*/ values) {
-    if (values === undefined) return false;
-    var it = values.getIterator();
-    var v;
-    while ((v = it.next()) !== $finished) {
-        if (!v) {return false;}
-    }
-    return true;
 }
 
 function first(/*Element...*/ elements) {

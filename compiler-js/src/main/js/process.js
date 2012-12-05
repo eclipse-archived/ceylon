@@ -4,7 +4,7 @@ function IdentifiableObject(x){}//IGNORE
 function inheritProto(x,y){}//IGNORE
 function String$(x){}//IGNORE
 function ArraySequence(x){}//IGNORE
-var exports,$empty;//IGNORE
+var exports,empty;//IGNORE
 
 function languageClass() {
     var lang = new languageClass.$$;
@@ -39,7 +39,7 @@ function processClass() {
 initTypeProto(processClass, "ceylon.language::process", IdentifiableObject);
 var process$proto = processClass.$$.prototype;
 
-var argv = $empty;
+var argv = empty;
 var namedArgs = {};
 if ((typeof process !== "undefined") && (process.argv !== undefined)) {
     // parse command line arguments

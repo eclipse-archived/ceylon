@@ -5,7 +5,7 @@ function Singleton(x){}//IGNORE
 function largest(a,b){}//IGNORE
 function smallest(a,b){}//IGNORE
 var Object$,List,Comparable,Ranged,FixedSized,Summable,Castable,Cloneable,smaller,larger,equal;//IGNORE
-var $empty,$finished,IdentifiableObject,Iterator,exports;//IGNORE
+var empty,$finished,IdentifiableObject,Iterator,exports;//IGNORE
 
 function String$(value,size) {
     var that = new String(value);
@@ -269,13 +269,13 @@ String$proto.getCharacters = function() {
     //we can cheat and add the required behavior to String, avoiding the need to create a Sequence...
     //TODO: this probably doesn't work completely because String doesn't satisfy
     //      all required interfaces, so "if(is ...)" will be false when it shouldn't.
-    return this.length>0 ? this:$empty;
+    return this.length>0 ? this:empty;
 }
 String$proto.getFirst = function() { return this.getSize()>0?this.item(0):null; }
 String$proto.getLast = function() { return this.getSize()>0?this.item(this.getSize().getPredecessor()):null; }
 String$proto.getKeys = function() {
     //TODO implement!!!
-    return this.getSize() > 0 ? Range(0, this.getSize().getPredecessor()) : $empty;
+    return this.getSize() > 0 ? Range(0, this.getSize().getPredecessor()) : empty;
 }
 String$proto.join = function(strings) {
     if (strings === undefined) {return String$("", 0)}
@@ -447,7 +447,7 @@ String$proto.occurrences = function(sub) {
             i+=sub.length;
         } else if ((this.charCodeAt(i++)&0xfc00) === 0xd800) {++i;}
     }
-    return ocs.length > 0 ? ocs : $empty;
+    return ocs.length > 0 ? ocs : empty;
 }
 String$proto.$filter = function(f) {
     var r = Iterable.$$.prototype.$filter.apply(this, [f]);
@@ -458,7 +458,7 @@ String$proto.skipping = function(skip) {
     return this.segment(skip, this.getSize());
 }
 String$proto.taking = function(take) {
-    if (take==0) return $empty;
+    if (take==0) return empty;
     return this.segment(0, take);
 }
 String$proto.by = function(step) {

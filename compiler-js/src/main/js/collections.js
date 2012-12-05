@@ -271,7 +271,7 @@ Empty$proto.withTrailing = function(other) {
 }
 Empty$proto.chain = function(other) { return other; }
 
-var $empty = Empty();
+var empty = Empty();
 
 function EmptyIterator() {
     var that = new EmptyIterator.$$;
@@ -282,7 +282,7 @@ var EmptyIterator$proto = EmptyIterator.$$.prototype;
 EmptyIterator$proto.next = function() { return $finished; }
 var emptyIterator=EmptyIterator();
 
-exports.empty=$empty;
+exports.empty=empty;
 exports.Empty=Empty;
 exports.emptyIterator=emptyIterator;
 
@@ -332,7 +332,7 @@ exports.ChainedIterator=ChainedIterator;
 function LazyList(elems, lst) {
     if (lst===undefined) {lst = new LazyList.$$;}
     IdentifiableObject(lst);
-    lst.elems = elems===undefined?$empty:elems;
+    lst.elems = elems===undefined?empty:elems;
     return lst;
 }
 initTypeProto(LazyList, 'ceylon.language::LazyList', IdentifiableObject, List);
@@ -381,13 +381,13 @@ LazyList$proto.equals = function(other) {
     return it2.next()===$finished;
 }
 LazyList$proto.segment = function(from, length) {
-    if (length <= 0) { return $empty; }
+    if (length <= 0) { return empty; }
     var seg = (from > 0) ? this.elems.skipping(from) : this.elems;
     return LazyList(seg.taking(length));
 }
 LazyList$proto.span = function(from, to) {
     if (from < 0 && to < 0) {
-        return $empty;
+        return empty;
     } else if (to < 0) {
         to = 0;
     } else if (from < 0) {
@@ -404,6 +404,6 @@ LazyList$proto.spanFrom = function(from) {
     return (from > 0) ? LazyList(this.elems.skipping(from)) : this;
 }
 LazyList$proto.spanTo = function(to) {
-    return (to < 0) ? $empty : LazyList(this.elems.taking(to+1));
+    return (to < 0) ? empty : LazyList(this.elems.taking(to+1));
 }
 exports.LazyList=LazyList;
