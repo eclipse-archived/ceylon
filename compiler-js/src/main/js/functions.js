@@ -20,21 +20,6 @@ exports.getLarger=getLarger;
 exports.getSmaller=getSmaller;
 exports.getEqual=getEqual;
 
-//receives ArraySequence of ArraySequences, returns flat ArraySequence
-function join(seqs) {
-    if (seqs === undefined) return empty;
-    var builder = [];
-    var it = seqs.getIterator();
-    var seq;
-    while ((seq = it.next()) !== $finished) {
-        var it2 = seq.getIterator();
-        var elem;
-        while ((elem = it2.next()) != $finished) {builder.push(elem);}
-    }
-    return ArraySequence(builder);
-}
-exports.join=join;
-
 //These are operators for handling nulls
 function exists(value) {
     return value !== null && value !== undefined;
