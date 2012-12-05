@@ -3,14 +3,20 @@ package com.redhat.ceylon.compiler.js;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.FileReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
+import java.nio.channels.FileChannel;
+import java.util.ArrayList;
+import java.util.Arrays;
 
 import net.minidev.json.JSONObject;
 
 import com.redhat.ceylon.cmr.impl.JULLogger;
 import com.redhat.ceylon.cmr.impl.ShaSigner;
+import com.redhat.ceylon.compiler.Options;
 import com.redhat.ceylon.compiler.typechecker.TypeChecker;
 import com.redhat.ceylon.compiler.typechecker.TypeCheckerBuilder;
 import com.redhat.ceylon.compiler.typechecker.context.PhasedUnit;
@@ -20,6 +26,82 @@ import com.redhat.ceylon.compiler.typechecker.context.PhasedUnit;
  * @author Enrique Zamudio
  */
 public class Stitcher {
+
+    public static void copyFile(File sourceFile, File destFile) throws IOException {
+        if (!destFile.exists()) {
+            destFile.createNewFile();
+        }
+        FileInputStream fIn = null;
+        FileOutputStream fOut = null;
+        FileChannel source = null;
+        FileChannel destination = null;
+        try {
+            fIn = new FileInputStream(sourceFile);
+            source = fIn.getChannel();
+            fOut = new FileOutputStream(destFile);
+            destination = fOut.getChannel();
+            long transfered = 0;
+            long bytes = source.size();
+            while (transfered < bytes) {
+                transfered += destination.transferFrom(source, 0, source.size());
+                destination.position(transfered);
+            }
+        } finally {
+            if (source != null) {
+                source.close();
+            } else if (fIn != null) {
+                fIn.close();
+            }
+            if (destination != null) {
+                destination.close();
+            } else if (fOut != null) {
+                fOut.close();
+            }
+        }
+    }
+
+    private static void compileLanguageModuleFiles() throws IOException {
+        File srcdir = new File("src/main/resources/source");
+        srcdir.mkdirs();
+        //Erase all existing files except module and package
+        for (File f : srcdir.listFiles()) {
+            f.delete();
+        }
+
+        //Read the list of files to copy
+        BufferedReader listReader = new BufferedReader(new FileReader("src/main/resources/language-module.txt"));
+        try {
+            String line;
+            //Copy the files to a temporary dir
+            while ((line = listReader.readLine()) != null) {
+                if (!line.startsWith("#")) {
+                    //Compile this file
+                    File src = new File(String.format("../ceylon.language/src/ceylon/language/%s.ceylon", line));
+                    if (src.exists() && src.isFile() && src.canRead()) {
+                        File dst = new File(srcdir, src.getName());
+                        copyFile(src, dst);
+                    } else {
+                        throw new IllegalArgumentException("Invalid Ceylon language module source " + src);
+                    }
+                }
+            }
+            //Compile all that stuff
+            TypeCheckerBuilder tcb = new TypeCheckerBuilder().addSrcDirectory(srcdir);
+            TypeChecker tc = tcb.getTypeChecker();
+            tc.process();
+            if (tc.getErrors() > 0) {
+                System.exit(1);
+            }
+            Options opts = Options.parse(new ArrayList<String>(Arrays.asList(
+                    "-rep", "build/runtime", "-nocomments",
+                    "-out", "src/main/resources/modules", "-nomodule")));
+            JsCompiler jsc = new JsCompiler(tc, opts).stopOnErrors(false);
+            JsCompiler.compilingLanguageModule=true;
+            jsc.generate();
+        } finally {
+            listReader.close();
+        }
+    }
 
     private static void stitch(File infile, PrintWriter writer) throws IOException {
         BufferedReader reader = new BufferedReader(new InputStreamReader(new FileInputStream(infile), "UTF-8"));
@@ -52,6 +134,25 @@ public class Stitcher {
                         writer.print(JSONObject.toJSONString(mmg.getModel()));
                         writer.println(";");
                         writer.println("exports.$$metamodel$$=$$metamodel$$;");
+                    } else if (line.equals("//#COMPILED")) {
+                        System.out.println("Compiling language module sources");
+                        compileLanguageModuleFiles();
+                        File compsrc = new File("src/main/resources/modules/default/default.js");
+                        if (compsrc.exists() && compsrc.isFile() && compsrc.canRead()) {
+                            BufferedReader jsr = new BufferedReader(new FileReader(compsrc));
+                            try {
+                                String jsline = null;
+                                while ((jsline = jsr.readLine()) != null) {
+                                    writer.println(jsline);
+                                }
+                            } finally {
+                                jsr.close();
+                                compsrc.delete();
+                            }
+                        } else {
+                            System.out.println("WTF??? No generated default.js for language module!!!!");
+                            System.exit(1);
+                        }
                     } else if (!line.endsWith("//IGNORE")) {
                         writer.println(line);
                     }
