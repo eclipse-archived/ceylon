@@ -4,42 +4,6 @@ var $finished=null;//IGNORE
 function String$(a,b){}//IGNORE
 function StringBuilder(){}//IGNORE
 
-function byIncreasing/*<Element,Value>*/(/*Callable<Value?,Element>*/comp) {
-    return function(x, y) {
-        var a = comp(x);
-        if (a !== null) {
-            var b = comp(y);
-            if (b !== null) {
-                return a.compare(b);
-            }
-        }
-        return null;
-    };
-}
-
-function byDecreasing/*<Element,Value>*/(/*Callable<Value?,Element>*/comp) {
-    return function(x, y) {
-        var a = comp(x);
-        if (a !== null) {
-            var b = comp(y);
-            if (b !== null) {
-                return b.compare(a);
-            }
-        }
-        return null;
-    };
-}
-
-function count(/*Iterable<Boolean>*/truths) {
-    if (truths === undefined) return 0;
-    var c=0;
-    var iter = truths.getIterator();
-    var i; while ((i = iter.next()) !== $finished) {
-        if (i) c++;
-    }
-    return c;
-}
-
 function string(/*Iterable<Character>*/chars) {
     if (chars === undefined) return String$('',0);
     var s = StringBuilder();
@@ -127,9 +91,6 @@ exports.emptyOrSingleton=emptyOrSingleton;
 exports.equalTo=equalTo;
 exports.greaterThan=greaterThan;
 exports.lessThan=lessThan;
-exports.byIncreasing=byIncreasing;
-exports.byDecreasing=byDecreasing;
-exports.count=count;
 exports.string=string;
 exports.byKey=byKey;
 exports.byItem=byItem;

@@ -24,35 +24,6 @@ exports.getEqual=getEqual;
 exports.largest=largest;
 exports.smallest=smallest;
 
-//receives ArraySequence, returns element
-function min(seq) {
-    var v = seq.getFirst();
-    if (v === null) return null;
-    var iter = seq.getRest().getIterator();
-    var e; while ((e = iter.next()) !== $finished) {
-        v = smallest(v, e);
-    }
-    return v;
-}
-//receives ArraySequence, returns element 
-function max(/*ContainerWithFirstElement*/seq) {
-    var v = seq.getFirst();
-    if (v === null) return null;
-    var iter = seq.getRest().getIterator();
-    var e; while ((e = iter.next()) !== $finished) {
-        v = largest(v, e);
-    }
-    return v;
-}
-function sum(seq) {
-    var v = seq.getFirst();
-    var iter = seq.getRest().getIterator();
-    var e; while ((e = iter.next()) !== $finished) {
-        v = v.plus(e);
-    }
-    return v;
-}
-
 //receives ArraySequence of ArraySequences, returns flat ArraySequence
 function join(seqs) {
     if (seqs === undefined) return empty;
@@ -66,43 +37,7 @@ function join(seqs) {
     }
     return ArraySequence(builder);
 }
-//receives ArraySequences, returns ArraySequence
-function zip(keys, items) {
-    var entries = []
-    var numEntries = Math.min(keys.length, items.length);
-    for (var i = 0; i < numEntries; i++) {
-        entries[i] = Entry(keys[i], items[i]);
-    }
-    return ArraySequence(entries);
-}
-//receives and returns ArraySequence
-function coalesce(seq) {
-    if (seq === undefined) {return empty}
-    return seq.getCoalesced();
-}
-
-//Receives Iterable, returns ArraySequence (with Entries)
-function entries(seq) {
-    if (seq === undefined) return empty;
-    return seq.getIndexed();
-}
-
-function first(/*Element...*/ elements) {
-    if (elements === undefined) return null;
-    var e = elements.getIterator().next();
-    return (e !== $finished) ? e : null;
-}
-
-exports.min=min;
-exports.max=max;
-exports.sum=sum;
 exports.join=join;
-exports.zip=zip;
-exports.coalesce=coalesce;
-exports.entries=entries;
-exports.any=any;
-exports.every=every;
-exports.first=first;
 
 //These are operators for handling nulls
 function exists(value) {
@@ -153,11 +88,6 @@ function identityHash(obj) {
     return obj.identifiableObjectID;
 }
 
-//This is just so that you can pass a comprehension and return it as iterable
-function elements(iter) {
-    return iter;
-}
-exports.elements=elements;
 exports.exists=exists;
 exports.nonempty=nonempty;
 exports.isOfType=isOfType;
