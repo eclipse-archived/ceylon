@@ -147,6 +147,10 @@ public class JsIdentifierNames {
      * an alias for the given package.
      */
     public String moduleAlias(Module pkg) {
+        if (JsCompiler.compilingLanguageModule && pkg.getLanguageModule()==pkg) {
+            //If we're compiling the language module, omit the package name
+            return "";
+        }
         StringBuilder sb = new StringBuilder("$$$");
         for (String s: pkg.getName()) {
             sb.append(s.substring(0,1));
@@ -240,7 +244,7 @@ public class JsIdentifierNames {
             }
         } else {
             // The identifier might be accessed from other .js files, so it must
-            // be reliably reproducible. In most cases simply using the orignal
+            // be reliably reproducible. In most cases simply using the original
             // name is ok because otherwise it would result in a name collision in
             // Ceylon too. We just have to take care of a few exceptions:
             String suffix = nestingSuffix(decl);
