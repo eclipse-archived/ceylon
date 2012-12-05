@@ -1,0 +1,17 @@
+package com.redhat.ceylon.compiler.java.test.issues.bug09xx;
+
+public abstract class Bug902 {
+    
+    public Bug902() {
+        this.y = 5L;
+    }
+    private final long y;
+    
+    private final long getY() {
+        return y;
+    }
+    
+    public final long getZ() {
+        return getY();
+    }
+}
