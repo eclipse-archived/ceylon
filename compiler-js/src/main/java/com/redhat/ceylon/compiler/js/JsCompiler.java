@@ -49,6 +49,8 @@ public class JsCompiler {
     protected List<Message> unitErrors = new ArrayList<Message>();
     protected Set<String> files;
     private final Map<Module, JsOutput> output = new HashMap<Module, JsOutput>();
+    //You have to manually set this when compiling the language module
+    static boolean compilingLanguageModule;
 
     /** A container for things we need to keep per-module. */
     protected class JsOutput {
@@ -199,10 +201,12 @@ public class JsCompiler {
                 }
             }
             //Then write it out
-            for (Map.Entry<Module,JsOutput> e : output.entrySet()) {
-                e.getValue().getWriter().write("var $$metamodel$$=");
-                e.getValue().getWriter().write(JSONObject.toJSONString(e.getValue().mmg.getModel()));
-                e.getValue().getWriter().write(";\n");
+            if (!compilingLanguageModule) {
+                for (Map.Entry<Module,JsOutput> e : output.entrySet()) {
+                    e.getValue().getWriter().write("var $$metamodel$$=");
+                    e.getValue().getWriter().write(JSONObject.toJSONString(e.getValue().mmg.getModel()));
+                    e.getValue().getWriter().write(";\n");
+                }
             }
 
             //Then generate the JS code
