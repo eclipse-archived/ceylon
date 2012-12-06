@@ -13,6 +13,12 @@ function Sequence($$sequence) {
     return $$sequence;
 }
 initTypeProtoI(Sequence, 'ceylon.language::Sequence', Sequential, Some, Cloneable);
+function $init$Sequence() {
+    if (Sequence.$$===undefined) {
+        initTypeProtoI(Sequence, 'ceylon.language::Sequence', $init$Sequential(), $init$Some(), $init$Cloneable());
+    }
+    return Sequence;
+}
 var Sequence$proto = Sequence.$$.prototype;
 Sequence$proto.getLast = function() {
     var last = this.item(this.getLastIndex());

@@ -97,7 +97,7 @@ String$proto.shorterThan = function(length) {
     return this.codePoints<length;
 }
 String$proto.getIterator = function() {
-	return this.length === 0 ? emptyIterator$30 : StringIterator(this);
+	return this.length === 0 ? getEmptyIterator() : StringIterator(this);
 }
 String$proto.item = function(index) {
     if (index<0 || index>=this.length) {return null}

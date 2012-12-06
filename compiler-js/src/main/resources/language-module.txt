@@ -4,8 +4,7 @@ Binary,Castable,Cloneable,Closeable,Ranged
 Container,ContainerWithFirstElement,Iterator,Sized,Collection,Category
 ChainedIterator
 #Correspondence
-#Entry
-Comparable,Invertable,Summable,Ordinal,Numeric,Scalar,Exponentiable,Integral
+Entry,Comparable,Invertable,Summable,Ordinal,Numeric,Scalar,Exponentiable,Integral
 #Finished
 FixedSized,None,Some
 #Identifiable
@@ -20,8 +19,7 @@ Exception,NegativeNumberException,OverflowException,RecursiveInitializationExcep
 #Set
 #Range
 #Singleton
-any,byDecreasing,byIncreasing,byItem,byKey,coalesce,count,elements,emptyOrSingleton,entries,equalTo,every,first,forItem,forKey,greaterThan,join,largest,lessThan,max,min,smallest,sum,zip,print
-#bottom
+any,byDecreasing,byIncreasing,byItem,byKey,coalesce,count,elements,emptyOrSingleton,entries,equalTo,every,first,forItem,forKey,greaterThan,join,largest,lessThan,max,min,smallest,sum,zip,print,bottom
 #combine
 #identical
 #null

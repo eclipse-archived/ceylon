@@ -9,16 +9,16 @@ function getBottom(){}//IGNORE
 function String$(x,l){}//IGNORE
 function TypeCategory(a,b){}//IGNORE
 function ArraySequence(x){}//IGNORE
-var exports,Container,$finished,Cloneable,smaller,larger,Correspondence,Object$,IdentifiableObject;//IGNORE
+var exports,Container,$finished,Cloneable,smaller,larger,Object$,IdentifiableObject;//IGNORE
 var Iterable,Iterator;//IGNORE
 
 function List(wat) {
     return wat;
 }
-initTypeProtoI(List, 'ceylon.language::List', $init$Collection(), Correspondence, $init$Ranged(), $init$Cloneable());
+initTypeProtoI(List, 'ceylon.language::List', $init$Collection(), $init$Correspondence(), $init$Ranged(), $init$Cloneable());
 function $init$List() {
     if (List.$$===undefined) {
-        initTypeProtoI(List, 'ceylon.language::List', $init$Collection(), Correspondence, $init$Ranged(), $init$Cloneable());
+        initTypeProtoI(List, 'ceylon.language::List', $init$Collection(), $init$Correspondence(), $init$Ranged(), $init$Cloneable());
     }
     return List;
 }
@@ -110,6 +110,12 @@ function Sequential($$sequential) {
     return $$sequential;
 }
 initTypeProtoI(Sequential, 'ceylon.language::Sequential', List, $init$FixedSized(), $init$Ranged(), $init$Cloneable());
+function $init$Sequential() {
+    if (Sequential.$$===undefined) {
+        initTypeProtoI(Sequential, 'ceylon.language::Sequential', $init$List(), $init$FixedSized(), $init$Ranged(), $init$Cloneable());
+    }
+    return Sequential;
+}
 exports.Sequential=Sequential;
 
 function Empty() {
@@ -132,7 +138,7 @@ Empty$proto.segment = function(a,b) { return this; }
 Empty$proto.span = function(a,b) { return this; }
 Empty$proto.spanTo = function(a) { return this; }
 Empty$proto.spanFrom = function(a) { return this; }
-Empty$proto.getIterator = function() { return emptyIterator$30; }//might change
+Empty$proto.getIterator = function() { return getEmptyIterator(); }
 Empty$proto.getString = function() { return String$("{}"); }
 Empty$proto.contains = function(x) { return false; }
 Empty$proto.getLastIndex = function() { return null; }

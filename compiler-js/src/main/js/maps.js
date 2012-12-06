@@ -9,7 +9,7 @@ function getBottom(){}//IGNORE
 function String$(x,l){}//IGNORE
 function TypeCategory(a,b){}//IGNORE
 function ArraySequence(x){}//IGNORE
-var exports,Container,$finished,Cloneable,smaller,larger,Correspondence,Object$,IdentifiableObject;//IGNORE
+var exports,Container,$finished,Cloneable,smaller,larger,Object$,IdentifiableObject;//IGNORE
 var Iterable,Iterator;//IGNORE
 
 function Set(wat) {
@@ -63,7 +63,7 @@ exports.Set=Set;
 function Map(wat) {
     return wat;
 }
-initTypeProtoI(Map, 'ceylon.language::Map', Collection, Correspondence, Cloneable);
+initTypeProtoI(Map, 'ceylon.language::Map', Collection, $init$Correspondence(), Cloneable);
 var Map$proto = Map.$$.prototype;
 Map$proto.equals = function(other) {
     if (isOfType(other, 'ceylon.language::Map') && other.getSize().equals(this.getSize())) {

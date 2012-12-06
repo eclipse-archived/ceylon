@@ -125,6 +125,7 @@ function Correspondence(wat) {
     return wat;
 }
 initType(Correspondence, 'ceylon.language::Correspondence');
+function $init$Correspondence() { return Correspondence; }
 var Correspondence$proto=Correspondence.$$.prototype;
 Correspondence$proto.defines = function(key) {
     return exists(this.item(key));
@@ -175,7 +176,7 @@ function Number$(wat) {
 }
 initType(Number$, 'ceylon.language::Number');
 exports.Number=Number$;
-function $init$Number() {
+function $init$Number$() {
     if (Number$.$$===undefined) {
         initType(Number$, 'ceylon.language::Number');
     }
@@ -410,30 +411,6 @@ RangeIterator$backwardNext = function() {
     return rval;
 }
 
-function Entry(key, item) {
-    var that = new Entry.$$;
-    Object$(that);
-    Void(that);
-    that.key = key;
-    that.item = item;
-    return that;
-}
-initTypeProto(Entry, 'ceylon.language::Entry', Object$);
-var Entry$proto = Entry.$$.prototype;
-Entry$proto.getString = function() {
-    return String$(this.key.getString() + "->" + this.item.getString());
-}
-Entry$proto.getKey = function() { return this.key; }
-Entry$proto.getItem = function() { return this.item; }
-Entry$proto.equals = function(other) {
-    return other && isOfType(other, 'ceylon.language::Entry') && this.getKey().equals(other.getKey()) && this.getItem().equals(other.getItem());
-}
-Entry$proto.getHash = function() { (31 + this.key.getHash()) * 31 + this.item.getHash(); }
-
-function getBottom() {
-    throw Exception();
-}
-
 //#include tuples.js
 //#include annotations.js
 
@@ -449,8 +426,6 @@ exports.getFalse=getFalse;
 exports.Finished=Finished;
 exports.getExhausted=getExhausted;
 exports.Range=Range;
-exports.Entry=Entry;
-exports.getBottom=getBottom;
     });
 }(typeof define==='function' && define.amd ? 
     define : function (factory) {
