@@ -747,7 +747,7 @@ public class GenerateJsVisitor extends Visitor
                 }
                 String fname = typeFunctionName(satType, true);
                 //Actually it could be "if not in same module"
-                if (declaredInCL(tdec) && !JsCompiler.compilingLanguageModule) {
+                if (!JsCompiler.compilingLanguageModule && declaredInCL(tdec)) {
                     out(",", fname);
                 } else {
                     int idx = fname.lastIndexOf('.');
@@ -792,6 +792,10 @@ public class GenerateJsVisitor extends Visitor
             constr += '.';
         }
         constr += memberAccessBase(type, names.name(d), false);
+        //When compiling the language module we need to modify certain base type names
+        if (JsCompiler.compilingLanguageModule && (constr.equals("Object") || constr.equals("Number") || constr.equals("Array"))) {
+            constr += "$";
+        }
         return constr;
     }
 
@@ -2946,7 +2950,13 @@ public class GenerateJsVisitor extends Visitor
             out(")");
         } else {
             out("'");
-            out(decl.getQualifiedNameString());
+            String typename = decl.getQualifiedNameString();
+            if (JsCompiler.compilingLanguageModule && typename.indexOf("::") < 0) {
+                //Language module types are compiled in default module,
+                //we need to add this prefix manually
+                out("ceylon.language::");
+            }
+            out(typename);
             out("')");
             if (term != null && term.getTypeModel() != null && !term.getTypeModel().getTypeArguments().isEmpty()) {
                 out("/* REIFIED GENERICS SOON!!!");
