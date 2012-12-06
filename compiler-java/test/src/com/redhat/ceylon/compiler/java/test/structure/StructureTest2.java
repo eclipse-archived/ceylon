@@ -360,6 +360,11 @@ public class StructureTest2 extends CompilerTest {
     }
 
     @Test
+    public void testCncCapturedTypeParam_fail(){
+        compareWithJavaSource("concrete/CapturedTypeParam");
+    }
+    
+    @Test
     public void testCncInterfaceQualifiedMembers_fail(){
         compareWithJavaSource("concrete/InterfaceQualifiedMembers");
     }
