@@ -725,8 +725,13 @@ public class GenerateJsVisitor extends Visitor
         beginBlock();
         out("if (", names.name(d), ".$$===undefined)");
         beginBlock();
-        out(clAlias, initFuncName, "(", names.name(d), ",'",
-            d.getQualifiedNameString(), "'");
+        String qns = d.getQualifiedNameString();
+        if (JsCompiler.compilingLanguageModule && qns.indexOf("::") < 0) {
+            //Language module files get compiled in default module
+            //so they need to have this added to their qualified name
+            qns = "ceylon.language::" + qns;
+        }
+        out(clAlias, initFuncName, "(", names.name(d), ",'", qns, "'");
 
         if (extendedType != null) {
             out(",", typeFunctionName(extendedType.getType(), false));
