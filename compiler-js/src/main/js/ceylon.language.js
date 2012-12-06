@@ -162,11 +162,11 @@ Correspondence$proto.keys = function() {
 }
 exports.Correspondence=Correspondence;
 
+//#include iterable.js
 //Compiled from Ceylon sources
 //#COMPILED
 //Ends compiled from Ceylon sources
 
-//#include iterable.js
 //#include collections.js
 //#include maps.js
 
