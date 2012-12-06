@@ -138,7 +138,10 @@ class Union() {
         }
     }
     @type:"String|Integer|Float" value ff1 = first({"hello", "world"}, {+1, -1}, {1.0}).first;
-    @type:"String|Integer|Float" value ff2 = first({"hello", "world"}, {+1, -1, 1.0}).first;
+    @type:"String|Integer" value ff2 = first({"hello", "world"}, {+1, -1, 1.0}).first;
+    
+    @type:"String|Integer|Float" value ff3 = first({"hello", "world"}.sequence, {+1, -1}.sequence, {1.0}.sequence).first;
+    @type:"String|Integer|Float" value ff4 = first({"hello", "world"}.sequence, {+1, -1, 1.0}.sequence).first;
     
     class Outer<out T>() {
         shared default class Inner<out U>(u) {

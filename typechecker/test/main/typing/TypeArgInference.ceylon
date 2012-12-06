@@ -57,7 +57,7 @@ class TypeArgInference() {
         return matrix.first.first;
     }
     
-    @type:"Sequence<Sequence<Integer>>" value ints = {{-1}};
+    @type:"Sequence<Sequence<Integer>>" value ints = {{-1}.sequence}.sequence;
     @type:"Integer" value i = corner(ints);
     @type:"Integer" value ii = corner { matrix = ints; };
     
@@ -69,10 +69,10 @@ class TypeArgInference() {
         return args.sequence.first;
     }
     @type:"Nothing|String" firstElt("hello", "world");
-    @type:"Nothing|Sequence<String>" firstElt({"hello", "world"});
+    @type:"Nothing|Sequence<String>" firstElt({"hello", "world"}.sequence);
     @type:"Nothing|String" firstElt({"hello", "world"}...);
     @type:"Nothing|String" firstElt { "hello", "world" };
-    @type:"Nothing|Sequence<String>" firstElt {{"hello", "world"}};
+    @type:"Nothing|Sequence<String>" firstElt {{"hello", "world"}.sequence};
     @type:"Nothing|String" firstElt { args = {"hello", "world"}; };
     
     T? createNull<T>() {

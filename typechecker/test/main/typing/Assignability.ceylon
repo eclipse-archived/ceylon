@@ -158,7 +158,8 @@ class Assignability() {
         print(nothing.hello);
     }
     
-    if ({X()}[0] exists) {}
+    X[] sequenceofx = {X()};
+    if (sequenceofx[0] exists) {}
     
     //@error if (exists "Hello") {}
     @error if (exists something) {}
@@ -378,7 +379,7 @@ class Assignability() {
             return b;
         }
     }
-    @type:"Sequence<String>|Sequence<Integer>" value ut = f({ "aaa" },{ 1 });
+    @type:"Tuple<String,String,Empty>|Tuple<Integer,Integer,Empty>" value ut = f({ "aaa" },{ 1 });
     Sequence<Object> st1 = ut;
     Sequence<String|Integer> st2 = ut;
     @type:"Nothing|String|Integer" value item = ut[0];
