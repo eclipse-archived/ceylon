@@ -11,6 +11,7 @@ import java.io.PrintWriter;
 import java.nio.channels.FileChannel;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 
 import net.minidev.json.JSONObject;
 
@@ -60,13 +61,9 @@ public class Stitcher {
         }
     }
 
-    private static void compileLanguageModuleFiles() throws IOException {
+    private static void compileLanguageModule(PrintWriter writer) throws IOException {
         File srcdir = new File("src/main/resources/source");
         srcdir.mkdirs();
-        //Erase all existing files except module and package
-        for (File f : srcdir.listFiles()) {
-            f.delete();
-        }
 
         //Read the list of files to copy
         BufferedReader listReader = new BufferedReader(new FileReader("src/main/resources/language-module.txt"));
@@ -74,30 +71,53 @@ public class Stitcher {
             String line;
             //Copy the files to a temporary dir
             while ((line = listReader.readLine()) != null) {
-                if (!line.startsWith("#")) {
-                    //Compile this file
-                    File src = new File(String.format("../ceylon.language/src/ceylon/language/%s.ceylon", line));
-                    if (src.exists() && src.isFile() && src.canRead()) {
-                        File dst = new File(srcdir, src.getName());
-                        copyFile(src, dst);
+                if (!line.startsWith("#") && line.length() > 0) {
+                    //Erase all existing files
+                    for (File f : srcdir.listFiles()) {
+                        f.delete();
+                    }
+                    //Compile these files
+                    System.out.println("Compiling language module " + line);
+                    for (String filename : line.split(",")) {
+                        File src = new File(String.format("../ceylon.language/src/ceylon/language/%s.ceylon", filename.trim()));
+                        if (src.exists() && src.isFile() && src.canRead()) {
+                            File dst = new File(srcdir, src.getName());
+                            copyFile(src, dst);
+                        } else {
+                            throw new IllegalArgumentException("Invalid Ceylon language module source " + src);
+                        }
+                    }
+                    //Compile all that stuff
+                    TypeCheckerBuilder tcb = new TypeCheckerBuilder().addSrcDirectory(srcdir);
+                    TypeChecker tc = tcb.getTypeChecker();
+                    tc.process();
+                    if (tc.getErrors() > 0) {
+                        System.exit(1);
+                    }
+                    Options opts = Options.parse(new ArrayList<String>(Arrays.asList(
+                            "-rep", "build/runtime", "-nocomments",
+                            "-out", "src/main/resources/modules", "-nomodule")));
+                    JsCompiler jsc = new JsCompiler(tc, opts).stopOnErrors(false);
+                    JsCompiler.compilingLanguageModule=true;
+                    jsc.generate();
+                    File compsrc = new File("src/main/resources/modules/default/default.js");
+                    if (compsrc.exists() && compsrc.isFile() && compsrc.canRead()) {
+                        BufferedReader jsr = new BufferedReader(new FileReader(compsrc));
+                        try {
+                            String jsline = null;
+                            while ((jsline = jsr.readLine()) != null) {
+                                writer.println(jsline);
+                            }
+                        } finally {
+                            jsr.close();
+                            compsrc.delete();
+                        }
                     } else {
-                        throw new IllegalArgumentException("Invalid Ceylon language module source " + src);
+                        System.out.println("WTF??? No generated default.js for language module!!!!");
+                        System.exit(1);
                     }
                 }
             }
-            //Compile all that stuff
-            TypeCheckerBuilder tcb = new TypeCheckerBuilder().addSrcDirectory(srcdir);
-            TypeChecker tc = tcb.getTypeChecker();
-            tc.process();
-            if (tc.getErrors() > 0) {
-                System.exit(1);
-            }
-            Options opts = Options.parse(new ArrayList<String>(Arrays.asList(
-                    "-rep", "build/runtime", "-nocomments",
-                    "-out", "src/main/resources/modules", "-nomodule")));
-            JsCompiler jsc = new JsCompiler(tc, opts).stopOnErrors(false);
-            JsCompiler.compilingLanguageModule=true;
-            jsc.generate();
         } finally {
             listReader.close();
         }
@@ -136,23 +156,7 @@ public class Stitcher {
                         writer.println("exports.$$metamodel$$=$$metamodel$$;");
                     } else if (line.equals("//#COMPILED")) {
                         System.out.println("Compiling language module sources");
-                        compileLanguageModuleFiles();
-                        File compsrc = new File("src/main/resources/modules/default/default.js");
-                        if (compsrc.exists() && compsrc.isFile() && compsrc.canRead()) {
-                            BufferedReader jsr = new BufferedReader(new FileReader(compsrc));
-                            try {
-                                String jsline = null;
-                                while ((jsline = jsr.readLine()) != null) {
-                                    writer.println(jsline);
-                                }
-                            } finally {
-                                jsr.close();
-                                compsrc.delete();
-                            }
-                        } else {
-                            System.out.println("WTF??? No generated default.js for language module!!!!");
-                            System.exit(1);
-                        }
+                        compileLanguageModule(writer);
                     } else if (!line.endsWith("//IGNORE")) {
                         writer.println(line);
                     }
