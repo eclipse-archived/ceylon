@@ -34,19 +34,26 @@ shared class LazyList<out Element>(Iterable<Element> elems)
     
     shared actual List<Element> span
             (Integer from, Integer to) {
-        if (to >= from) {
-            value els = from > 0 then elems.skipping(from)
+        if (to < 0 && from < 0) {
+            return {};
+        }
+        Integer toIndex = largest(to,0);
+        Integer fromIndex = largest(from,0);
+        if (toIndex >= fromIndex) {
+            value els = fromIndex > 0 then elems.skipping(fromIndex)
                     else elems;
-            return LazyList(els.taking(to-from+1));
+            return LazyList(els.taking(toIndex-fromIndex+1));
         } 
         else {
             //reversed
-            throw;
+            value seq = toIndex>0 then elems.skipping(toIndex)
+                else elems;
+            return seq.taking(fromIndex-toIndex+1).sequence.reversed;
         }
     }
 
     shared actual List<Element> spanTo(Integer to) {
-        return to<0 then {} else LazyList(elems.taking(to));
+        return to<0 then {} else LazyList(elems.taking(to+1));
     }
     
     shared actual List<Element> spanFrom(Integer from) {
