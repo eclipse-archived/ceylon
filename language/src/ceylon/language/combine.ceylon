@@ -6,7 +6,7 @@ shared {Result...} combine<Result,Element,OtherElement>(
         {Element...} elements, 
         {OtherElement...} otherElements) {
     //Eventually we'll just do this
-    //return elements {
+    //return {
     //    let (oi=otherElements.iterator)
     //    for (e in elements)
     //        let (o=oi.next())
