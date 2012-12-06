@@ -637,7 +637,13 @@ public abstract class AbstractTransformer implements Transformation {
             TypeParameter tp = (TypeParameter) declType.getDeclaration();
             TypeParameter refinedTP = (TypeParameter) refinedDeclType.getDeclaration();
             
-            return !haveSameBounds(tp, refinedTP);
+            if(haveSameBounds(tp, refinedTP))
+                return false;
+            // if they don't have the same bounds and we don't allow subtypes then we're widening
+            if(!allowSubtypes)
+                return false;
+            // if we allow subtypes, we're widening if tp is not a subtype of refinedTP
+            return !tp.getType().isSubtypeOf(refinedTP.getType());
         }
         if(allowSubtypes){
             // if we don't erase to object and we refine something that does, we can't possibly be widening
