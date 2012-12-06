@@ -119,42 +119,7 @@ function IdentifiableObject(obj) {
 initTypeProto(IdentifiableObject, 'ceylon.language::IdentifiableObject', Object$, Identifiable);
 
 //INTERFACES
-function Cloneable(wat) {
-    return wat;
-}
-initType(Cloneable, 'ceylon.language::Cloneable');
-exports.Cloneable=Cloneable;
-
 //#include callable.js
-
-function Castable(wat) {
-    return wat;
-}
-initType(Castable, 'ceylon.language::Castable');
-exports.Castable=Castable;
-function Closeable(wat) {
-    return wat;
-}
-initType(Closeable, 'ceylon.language::Closeable');
-exports.Closeable=Closeable;
-function Comparable(wat) {
-    return wat;
-}
-initType(Comparable, 'ceylon.language::Comparable');
-/*var Comparable$proto = Comparable.$$.prototype;
-Comparable$proto.largerThan = function(other) {
-    return Boolean$(this.compare(other)===$larger);
-}
-Comparable$proto.smallerThan = function(other) {
-    return Boolean$(this.compare(other)===$smaller);
-}
-Comparable$proto.asLargeAs = function(other) {
-    return Boolean$(this.compare(other)!=$smaller);
-}
-Comparable$proto.asSmallAs = function(other) {
-    return Boolean$(this.compare(other)!=$larger);
-}*/
-exports.Comparable=Comparable;
 
 function Container(wat) {
     return wat;
@@ -215,31 +180,16 @@ exports.Correspondence=Correspondence;
 //#include collections.js
 //#include maps.js
 
-function Summable(wat) {
-    return wat;
-}
-initType(Summable, 'ceylon.language::Summable');
-exports.Summable=Summable;
 function Number$(wat) {
     return wat;
 }
 initType(Number$, 'ceylon.language::Number');
 exports.Number=Number$;
-function Invertable(wat) {
-    return wat;
-}
-initType(Invertable, 'ceylon.language::Invertable');
-exports.Invertable=Invertable;
 function Numeric(wat) {
     return wat;
 }
 initTypeProto(Numeric, 'ceylon.language::Numeric', Number$, Comparable, Summable, Invertable);
 exports.Numeric=Numeric;
-function Ordinal(wat) {
-    return wat;
-}
-initType(Ordinal, 'ceylon.language::Ordinal');
-exports.Ordinal=Ordinal;
 function Integral(wat) {
     return wat;
 }
