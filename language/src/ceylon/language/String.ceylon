@@ -88,7 +88,7 @@ shared abstract class String()
     shared formal String join(String... strings);
     
     doc "Split the string into lines of text."
-    shared formal Iterable<String> lines;
+    shared formal {String...} lines;
 
     doc "This string, after discarding whitespace from the 
          beginning and end of the string."
@@ -184,7 +184,7 @@ shared abstract class String()
     doc "The character indexes at which the given substring
          occurs within this string. Occurrences do not 
          overlap."
-    shared formal Iterable<Integer> occurrences(String substring);
+    shared formal {Integer...} occurrences(String substring);
     
     doc "The first index at which the given substring occurs
          within this string, or `null` if the substring does

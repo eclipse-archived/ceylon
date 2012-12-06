@@ -95,7 +95,7 @@ shared interface Iterable<out Element>
     
     doc "Returns an iterable object containing all but the 
          first element of this container."
-    shared default Iterable<Element> rest => skipping(1);
+    shared default {Element...} rest => skipping(1);
     
     doc "A sequence containing the elements returned by the
          iterator."
@@ -105,7 +105,7 @@ shared interface Iterable<out Element>
          the given mapping to the elements of to this 
          container."
     see (collect)
-    shared default Iterable<Result> map<Result>(
+    shared default {Result...} map<Result>(
             doc "The mapping to apply to the elements."
             Result collecting(Element elem)) =>
                     elements(for (elem in this) 
@@ -114,7 +114,7 @@ shared interface Iterable<out Element>
     doc "An `Iterable` containing the elements of this 
          container that satisfy the given predicate."
     see (select)
-    shared default Iterable<Element> filter(
+    shared default {Element...} filter(
             doc "The predicate the elements must satisfy."
             Boolean selecting(Element elem)) =>
                     elements(for (elem in this) 
@@ -229,7 +229,7 @@ shared interface Iterable<out Element>
          `skip` elements. If this iterable object does not 
          contain more elements than the specified number of 
          elements, the `Iterable` contains no elements."
-    shared default Iterable<Element> skipping(Integer skip) {
+    shared default {Element...} skipping(Integer skip) {
         if (skip <= 0) { return this; }
         object iterable satisfies Iterable<Element> {
             shared actual Iterator<Element> iterator {
@@ -247,7 +247,7 @@ shared interface Iterable<out Element>
          number of elements is larger than the number of 
          elements of this iterable object, the `Iterable` 
          contains the same elements as this iterable object."
-    shared default Iterable<Element> taking(Integer take) {
+    shared default {Element...} taking(Integer take) {
         if (take <= 0) { return {}; }
         object iterable satisfies Iterable<Element> {
             shared actual Iterator<Element> iterator {
@@ -278,7 +278,7 @@ shared interface Iterable<out Element>
          `0`, `3`, `6`, and `9` in that order."
     throws (Exception, "if the given step size is nonpositive, 
                         i.e. `step<1`") //TODO: better exception type
-    shared default Iterable<Element> by(Integer step) {
+    shared default {Element...} by(Integer step) {
         if (step <= 0) {
             throw Exception("step size must be greater than zero");
         }
@@ -326,7 +326,7 @@ shared interface Iterable<out Element>
          original order. For null elements of the original 
          `Iterable`, there is no entry in the resulting 
          iterable object."
-    shared default Iterable<Element&Object> coalesced =>
+    shared default {Element&Object...} coalesced =>
             elements { for (e in this) if (exists e) e };
     
     doc "All entries of form `index->element` where `index` 
@@ -341,7 +341,7 @@ shared interface Iterable<out Element>
              
          results in an iterable object with the entries
          `0->\"hello\"` and `2->\"world\"`."
-    shared default Iterable<Integer->Element&Object> indexed {
+    shared default {Integer->Element&Object...} indexed {
             object iterable satisfies Iterable<<Integer->Element&Object>?> {
                 shared actual Iterator<<Integer->Element&Object>?> iterator {
                     value outerIterable { return outer; }
@@ -374,8 +374,8 @@ shared interface Iterable<out Element>
          original order, followed by the elements of the 
          given iterable object also in their original
          order."
-    shared default Iterable<Element|Other> chain<Other>(
-            Iterable<Other> other) {
+    shared default {Element|Other...} chain<Other>(
+            {Other...} other) {
         object chained satisfies Iterable<Element|Other> {
             shared actual Iterator<Element|Other> iterator {
                 return ChainedIterator(outer, other);
