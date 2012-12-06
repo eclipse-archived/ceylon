@@ -175,22 +175,12 @@ function Number$(wat) {
 }
 initType(Number$, 'ceylon.language::Number');
 exports.Number=Number$;
-function Numeric(wat) {
-    return wat;
+function $init$Number() {
+    if (Number$.$$===undefined) {
+        initType(Number$, 'ceylon.language::Number');
+    }
+    return Number$;
 }
-initTypeProto(Numeric, 'ceylon.language::Numeric', Number$, Comparable, Summable, Invertable);
-exports.Numeric=Numeric;
-function Integral(wat) {
-    return wat;
-}
-initTypeProto(Integral, 'ceylon.language::Integral', Numeric, Ordinal);
-exports.Integral=Integral;
-function Scalar(scalar) { return scalar; }
-initTypeProto(Scalar, 'ceylon.language::Scalar', Numeric, Comparable, Number$);
-exports.Scalar=Scalar;
-function Exponentiable(exp) { return exp; }
-initTypeProto(Exponentiable, 'ceylon.language::Exponentiable', Numeric);
-exports.Exponentiable=Exponentiable;
 
 function Exception(description, cause, wat) {
     if (wat===undefined) {wat=new Exception.$$;}

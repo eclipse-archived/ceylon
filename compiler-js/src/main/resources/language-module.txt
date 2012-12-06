@@ -5,8 +5,7 @@ Container,ContainerWithFirstElement,Iterator,Sized,Collection,Category
 ChainedIterator
 #Correspondence
 #Entry
-Comparable,Invertable,Summable,Ordinal
-#Numeric,Scalar,Exponentiable,Integral
+Comparable,Invertable,Summable,Ordinal,Numeric,Scalar,Exponentiable,Integral
 #Finished
 FixedSized,None,Some
 #Identifiable
