@@ -64,6 +64,9 @@ public class Stitcher {
     private static void compileLanguageModule(PrintWriter writer) throws IOException {
         File srcdir = new File("src/main/resources/source");
         srcdir.mkdirs();
+        Options opts = Options.parse(new ArrayList<String>(Arrays.asList(
+                "-rep", "build/runtime", "-nocomments", "-optimize",
+                "-out", "src/main/resources/modules", "-nomodule")));
 
         //Read the list of files to copy
         BufferedReader listReader = new BufferedReader(new FileReader("src/main/resources/language-module.txt"));
@@ -94,9 +97,6 @@ public class Stitcher {
                     if (tc.getErrors() > 0) {
                         System.exit(1);
                     }
-                    Options opts = Options.parse(new ArrayList<String>(Arrays.asList(
-                            "-rep", "build/runtime", "-nocomments",
-                            "-out", "src/main/resources/modules", "-nomodule")));
                     JsCompiler jsc = new JsCompiler(tc, opts).stopOnErrors(false);
                     JsCompiler.compilingLanguageModule=true;
                     jsc.generate();
