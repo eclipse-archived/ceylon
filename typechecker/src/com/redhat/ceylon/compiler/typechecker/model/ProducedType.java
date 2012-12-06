@@ -1199,24 +1199,43 @@ public class ProducedType extends ProducedReference {
             if (abbreviate) {
                 Unit unit = getDeclaration().getUnit();
                 if (abbreviateOptional()) {
-                    return minus(unit.getNothingDeclaration())
-                            .getProducedTypeName() + "?";
+                	ProducedType dt = minus(unit.getNothingDeclaration());
+                	if (abbreviate && !dt.isPrimitiveAbbreviatedType()) {
+                		return "<" + dt.getProducedTypeName() + ">?";
+                	}
+                	else {
+                		return dt.getProducedTypeName() + "?";
+                	}
                 }
                 if (abbreviateSequence()) {
-                    return unit.getIteratedType(this)
-                            .getProducedTypeName() + "[]";
+                    ProducedType it = unit.getIteratedType(this);
+                    if (abbreviate && !it.isPrimitiveAbbreviatedType()) {
+                    	return "<" + it.getProducedTypeName() + ">[]";
+                    }
+                    else {
+                    	return it.getProducedTypeName() + "[]";
+                    }
                 }
-                /*if (abbreviateEntry()) {
+                if (abbreviateEmpty()) {
+                	return "[]";
+                }
+                if (abbreviateEntry()) {
                     return unit.getKeyType(this).getProducedTypeName() + "->"
                             + unit.getValueType(this).getProducedTypeName();
-                }*/
+                }
                 if (abbreviateCallable()) {
                     List<ProducedType> tal = getTypeArgumentList();
                     ProducedType rt = tal.get(0);
                     String argtypes = argtypes(tal.get(1));
                     if (rt!=null && argtypes!=null) {
-                    	return rt.getProducedTypeName() + 
-                    			"(" + argtypes + ")";
+                    	if (abbreviate && !rt.isPrimitiveAbbreviatedType()) {
+                        	return "<" + rt.getProducedTypeName() + ">" + 
+                        			"(" + argtypes + ")";
+                    	}
+                    	else {
+                    		return rt.getProducedTypeName() + 
+                    				"(" + argtypes + ")";
+                    	}
                     }
                 }
                 if (abbreviateTuple(unit)) {
@@ -1232,6 +1251,9 @@ public class ProducedType extends ProducedReference {
                     if (pt==null) {
                         name.append("unknown");
                     }
+                    else if (abbreviate && pt.abbreviateEntry()) {
+                        name.append("<").append(pt.getProducedTypeName()).append(">");
+                    }
                     else {
                         name.append(pt.getProducedTypeName(abbreviate));
                     }
@@ -1244,6 +1266,10 @@ public class ProducedType extends ProducedReference {
                 for (ProducedType pt: getSatisfiedTypes()) {
                     if (pt==null) {
                         name.append("unknown");
+                    }
+                    else if (abbreviate && pt.abbreviateEntry() || 
+                    		pt.getDeclaration() instanceof UnionType) {
+                        name.append("<").append(pt.getProducedTypeName(abbreviate)).append(">");
                     }
                     else {
                         name.append(pt.getProducedTypeName(abbreviate));
@@ -1308,9 +1334,9 @@ public class ProducedType extends ProducedReference {
                 getTypeArgumentList().size()==2) {
             ProducedType kt = unit.getKeyType(this);
             ProducedType vt = unit.getValueType(this);
-            return kt!=null && vt!=null &&
+            return kt!=null && vt!=null; /*&&
                     kt.isPrimitiveAbbreviatedType() && 
-                    vt.isPrimitiveAbbreviatedType();
+                    vt.isPrimitiveAbbreviatedType();*/
         }
         else {
             return false;
@@ -1321,7 +1347,7 @@ public class ProducedType extends ProducedReference {
         return getDeclaration() instanceof Interface &&
                 getDeclaration().equals(getDeclaration().getUnit().getCallableDeclaration()) &&
                 getTypeArgumentList().size()>0 && getTypeArgumentList().get(0)!=null &&
-                getTypeArgumentList().get(0).isPrimitiveAbbreviatedType() &&
+//                getTypeArgumentList().get(0).isPrimitiveAbbreviatedType() &&
                 getTypeArgumentList().size()==getDeclaration().getTypeParameters().size();
     }
 
@@ -1330,19 +1356,27 @@ public class ProducedType extends ProducedReference {
     		Unit unit = getDeclaration().getUnit();
     		if (getDeclaration().equals(unit.getSequentialDeclaration())) {
     			ProducedType et = unit.getIteratedType(this);
-				return et!=null && et.isPrimitiveAbbreviatedType();
+				return et!=null;// && et.isPrimitiveAbbreviatedType();
     		}
     	}
     	return false;
     }
 
+    private boolean abbreviateEmpty() {
+    	if (getDeclaration() instanceof Interface) {
+    		Unit unit = getDeclaration().getUnit();
+    		return getDeclaration().equals(unit.getEmptyDeclaration());
+    	}
+    	return false;
+    }
+    
     private boolean abbreviateOptional() {
         if (getDeclaration() instanceof UnionType) {
             Unit unit = getDeclaration().getUnit();
             UnionType ut = (UnionType) getDeclaration();
             return ut.getCaseTypes().size()==2 &&
-                    isElementOfUnion(ut, unit.getNothingDeclaration()) &&
-                    minus(unit.getNothingDeclaration()).isPrimitiveAbbreviatedType();
+                    isElementOfUnion(ut, unit.getNothingDeclaration()); /*&&
+                    minus(unit.getNothingDeclaration()).isPrimitiveAbbreviatedType();*/
         }
         else {
             return false;
@@ -1354,11 +1388,10 @@ public class ProducedType extends ProducedReference {
             return false;
         }
         else if (getDeclaration() instanceof UnionType) {
-            return abbreviateSequence() || 
-                    abbreviateOptional();
+            return abbreviateOptional();
         }
         else {
-            return true;//!abbreviateEntry();
+            return !abbreviateEntry();
         }
     }
     
