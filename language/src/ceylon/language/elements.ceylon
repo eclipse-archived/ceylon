@@ -1,6 +1,6 @@
 doc "The given elements (usually a comprehension), as an 
      instance of `Iterable`."
-shared Iterable<Element> elements<Element>(
+shared {Element...} elements<Element>(
         doc "The elements of the resulting `Iterable`, 
              usually expressed as a comprehension."
         Element... elements) => 

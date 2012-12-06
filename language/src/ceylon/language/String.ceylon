@@ -65,12 +65,12 @@ shared abstract class String()
     doc "Split the string into tokens, using the given
          predicate to determine which characters are 
          separator characters."
-    shared formal Iterable<String> split(
+    shared formal {String...} split(
             doc "A predicate that determines if a character
                  is a separator characters at which to split.
                  Default to split at any Unicode whitespace
                  character."
-            Iterable<Character>|Boolean(Character) separator 
+            {Character...}|Boolean(Character) separator 
                     = (Character ch) ch.whitespace,
             doc "Specifies that the separator characters
                  occurring in the string should be discarded.

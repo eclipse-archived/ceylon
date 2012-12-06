@@ -4,7 +4,7 @@ see (Sequence)
 shared interface Empty
            satisfies Sequential<Bottom> & 
                      None<Bottom> &
-                     Ranged<Integer,<>> &
+                     Ranged<Integer,[]> &
                      Cloneable<Empty> {
     
     doc "Returns an iterator that is already exhausted."
