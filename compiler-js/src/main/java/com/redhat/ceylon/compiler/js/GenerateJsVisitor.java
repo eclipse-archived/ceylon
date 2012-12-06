@@ -792,10 +792,6 @@ public class GenerateJsVisitor extends Visitor
             constr += '.';
         }
         constr += memberAccessBase(type, names.name(d), false);
-        //When compiling the language module we need to modify certain base type names
-        if (JsCompiler.compilingLanguageModule && (constr.equals("Object") || constr.equals("Number") || constr.equals("Array"))) {
-            constr += "$";
-        }
         return constr;
     }
 
@@ -1619,7 +1615,12 @@ public class GenerateJsVisitor extends Visitor
         if (!prototypeStyle && (scope != null)) {
             sb.append(names.scopeSuffix(scope));
         }
-        return sb.toString();
+        //When compiling the language module we need to modify certain base type names
+        String rval = sb.toString();
+        if (JsCompiler.compilingLanguageModule && (rval.equals("Object") || rval.equals("Number") || rval.equals("Array"))) {
+            rval = sb.append("$").toString();
+        }
+        return rval;
     }
     
     /**
