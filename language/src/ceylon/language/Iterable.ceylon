@@ -108,8 +108,7 @@ shared interface Iterable<out Element>
     shared default {Result...} map<Result>(
             doc "The mapping to apply to the elements."
             Result collecting(Element elem)) =>
-                    elements(for (elem in this) 
-                            collecting(elem));
+                    { for (elem in this) collecting(elem) };
     
     doc "An `Iterable` containing the elements of this 
          container that satisfy the given predicate."
@@ -117,8 +116,7 @@ shared interface Iterable<out Element>
     shared default {Element...} filter(
             doc "The predicate the elements must satisfy."
             Boolean selecting(Element elem)) =>
-                    elements(for (elem in this) 
-                            if (selecting(elem)) elem);
+                    { for (elem in this) if (selecting(elem)) elem };
     
     doc "The result of applying the accumulating function to 
          each element of this container in turn." 
@@ -335,7 +333,7 @@ shared interface Iterable<out Element>
          `Iterable`, there is no entry in the resulting 
          iterable object."
     shared default {Element&Object...} coalesced =>
-            elements { for (e in this) if (exists e) e };
+            { for (e in this) if (exists e) e };
     
     doc "All entries of form `index->element` where `index` 
          is the position at which `element` occurs, for every
