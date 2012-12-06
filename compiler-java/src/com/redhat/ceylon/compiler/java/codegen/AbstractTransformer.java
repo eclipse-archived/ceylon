@@ -627,6 +627,10 @@ public abstract class AbstractTransformer implements Transformation {
     }
 
     private boolean isWideningTypeArguments(ProducedType declType, ProducedType refinedDeclType, boolean allowSubtypes) {
+        // make sure we work on simplified types, to avoid stuff like optional or size-1 unions
+        declType = simplifyType(declType);
+        refinedDeclType = simplifyType(refinedDeclType);
+        // special case for type parameters
         if(declType.getDeclaration() instanceof TypeParameter
                 && refinedDeclType.getDeclaration() instanceof TypeParameter){
             // consider them equivalent if they have the same bounds
