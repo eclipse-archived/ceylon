@@ -358,4 +358,9 @@ public class StructureTest2 extends CompilerTest {
     public void testCncLazySpec(){
         compareWithJavaSource("concrete/LazySpec");
     }
+
+    @Test
+    public void testCncInterfaceQualifiedMembers_fail(){
+        compareWithJavaSource("concrete/InterfaceQualifiedMembers");
+    }
 }
