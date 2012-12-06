@@ -1,0 +1,56 @@
+package com.redhat.ceylon.compiler.java.test.expression.selfref;
+
+public interface BaseOuter {
+    
+    public .java.lang.Object getInverse();
+}
+public final class BaseOuter$impl {
+    
+    public BaseOuter$impl(.com.redhat.ceylon.compiler.java.test.expression.selfref.BaseOuter $this) {
+        this.$this = $this;
+    }
+    private final .com.redhat.ceylon.compiler.java.test.expression.selfref.BaseOuter $this;
+    
+    public final .java.lang.Object getInverse() {
+        
+        final class inverse_ {
+            
+            private inverse_() {
+            }
+            
+            public final .com.redhat.ceylon.compiler.java.test.expression.selfref.BaseOuter item() {
+                return $this;
+            }
+            
+            public final .com.redhat.ceylon.compiler.java.test.expression.selfref.BaseOuter item2() {
+                return $this;
+            }
+        }
+        final inverse_ inverse = new inverse_();
+        return inverse;
+    }
+}
+public abstract class BaseOuterClass {
+    
+    public BaseOuterClass() {
+    }
+    
+    public .java.lang.Object getInverse() {
+        
+        final class inverse_ {
+            
+            private inverse_() {
+            }
+            
+            public final .com.redhat.ceylon.compiler.java.test.expression.selfref.BaseOuterClass item() {
+                return .com.redhat.ceylon.compiler.java.test.expression.selfref.BaseOuterClass.this;
+            }
+            
+            public final .com.redhat.ceylon.compiler.java.test.expression.selfref.BaseOuterClass item2() {
+                return .com.redhat.ceylon.compiler.java.test.expression.selfref.BaseOuterClass.this;
+            }
+        }
+        final inverse_ inverse = new inverse_();
+        return inverse;
+    }
+}

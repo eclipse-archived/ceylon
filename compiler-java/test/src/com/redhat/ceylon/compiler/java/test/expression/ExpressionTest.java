@@ -203,6 +203,14 @@ public class ExpressionTest extends CompilerTest {
         compareWithJavaSource("selfref/OuterInterfaceFormal");
     }
     @Test
+    public void testSlfBaseOuter_fail() {
+        compareWithJavaSource("selfref/BaseOuter");
+    }
+    @Test
+    public void testSlfAssignOuter_fail() {
+        compareWithJavaSource("selfref/AssignOuter");
+    }
+    @Test
     public void testSlfSuperInterface(){
         compareWithJavaSource("selfref/SuperInterface");
     }
