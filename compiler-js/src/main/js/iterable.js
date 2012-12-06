@@ -12,6 +12,7 @@ function Iterable(wat) {
     return wat;
 }
 initTypeProtoI(Iterable, 'ceylon.language::Iterable', $init$ContainerWithFirstElement());
+function $init$Iterable() { return Iterable; }
 var Iterable$proto=Iterable.$$.prototype;
 Iterable$proto.getEmpty = function() {
     return this.getIterator().next() === $finished;
@@ -222,27 +223,6 @@ Iterable$proto.group = function(grouping) {
 
 exports.Iterable=Iterable;
 
-function ChainedIterator(i1, i2) {
-	var that = new ChainedIterator.$$;
-	that.i1=i1;
-	that.i2=i2;
-	that.more=true;
-	return that;
-}
-initTypeProto(ChainedIterator, 'ceylon.language::ChainedIterator', IdentifiableObject, $init$Iterator());
-ChainedIterator.$$.prototype.next = function() {
-	if (this.iter === undefined) {
-		this.iter = this.i1.getIterator();
-	}
-	var e = this.iter.next();
-	if (e === $finished && this.more) {
-		this.more=false;
-		this.iter=this.i2.getIterator();
-		e=this.iter.next();
-	}
-	return e;
-}
-exports.ChainedIterator=ChainedIterator;
 Iterable$proto.chain = function(other) {
     return ChainedIterable(this, other);
 }

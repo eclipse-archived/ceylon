@@ -1,9 +1,8 @@
 #This is the list of language module files that can be compiled from their Ceylon source
 #each line states a list of files to be compiled in one pass
-#Binary
-Castable,Cloneable,Closeable
-#ChainedIterator
+Binary,Castable,Cloneable,Closeable,Ranged
 Container,ContainerWithFirstElement,Iterator,Sized,Collection,Category
+ChainedIterator
 #Correspondence
 #Entry
 Comparable,Invertable,Summable,Ordinal
@@ -17,7 +16,6 @@ FixedSized,None,Some
 #Nothing
 #Number
 #OverflowException
-#Ranged
 #RecursiveInitializationException
 #Sequence
 #Sequential

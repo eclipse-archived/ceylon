@@ -5,16 +5,6 @@ function inheritProto(a,b,c,d,e,f,g);//IGNORE
 function Exception$(x){};//IGNORE
 var Object$,Castable,Integral,Numeric,Exponentiable,Scalar,equal,smaller,larger,exports;//IGNORE
 
-//New Binary interface
-function Binary(wat) {
-    return wat;
-}
-initTypeProtoI(Binary, 'ceylon.language::Binary');
-Binary.$$.prototype.clear = function(index) {
-    return this.set(index, false);
-}
-exports.Binary=Binary;
-
 function JSNumber(value) { return Number(value); }
 initExistingType(JSNumber, Number, 'ceylon.language::JSNumber');
 var origNumToString = Number.prototype.toString;
