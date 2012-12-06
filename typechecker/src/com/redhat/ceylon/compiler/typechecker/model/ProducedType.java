@@ -1200,7 +1200,7 @@ public class ProducedType extends ProducedReference {
                 Unit unit = getDeclaration().getUnit();
                 if (abbreviateOptional()) {
                 	ProducedType dt = minus(unit.getNothingDeclaration());
-                	if (abbreviate && !dt.isPrimitiveAbbreviatedType()) {
+                	if (!dt.isPrimitiveAbbreviatedType()) {
                 		return "<" + dt.getProducedTypeName() + ">?";
                 	}
                 	else {
@@ -1209,12 +1209,16 @@ public class ProducedType extends ProducedReference {
                 }
                 if (abbreviateSequence()) {
                     ProducedType it = unit.getIteratedType(this);
-                    if (abbreviate && !it.isPrimitiveAbbreviatedType()) {
+                    if (!it.isPrimitiveAbbreviatedType()) {
                     	return "<" + it.getProducedTypeName() + ">[]";
                     }
                     else {
                     	return it.getProducedTypeName() + "[]";
                     }
+                }
+                if (abbreviateIterable()) {
+                    ProducedType it = unit.getIteratedType(this);
+                    return "{" + it.getProducedTypeName() + "...}";
                 }
                 if (abbreviateEmpty()) {
                 	return "[]";
@@ -1228,7 +1232,7 @@ public class ProducedType extends ProducedReference {
                     ProducedType rt = tal.get(0);
                     String argtypes = argtypes(tal.get(1));
                     if (rt!=null && argtypes!=null) {
-                    	if (abbreviate && !rt.isPrimitiveAbbreviatedType()) {
+                    	if (!rt.isPrimitiveAbbreviatedType()) {
                         	return "<" + rt.getProducedTypeName() + ">" + 
                         			"(" + argtypes + ")";
                     	}
@@ -1355,6 +1359,17 @@ public class ProducedType extends ProducedReference {
     	if (getDeclaration() instanceof Interface) {
     		Unit unit = getDeclaration().getUnit();
     		if (getDeclaration().equals(unit.getSequentialDeclaration())) {
+    			ProducedType et = unit.getIteratedType(this);
+				return et!=null;// && et.isPrimitiveAbbreviatedType();
+    		}
+    	}
+    	return false;
+    }
+
+    private boolean abbreviateIterable() {
+    	if (getDeclaration() instanceof Interface) {
+    		Unit unit = getDeclaration().getUnit();
+    		if (getDeclaration().equals(unit.getIterableDeclaration())) {
     			ProducedType et = unit.getIteratedType(this);
 				return et!=null;// && et.isPrimitiveAbbreviatedType();
     		}
