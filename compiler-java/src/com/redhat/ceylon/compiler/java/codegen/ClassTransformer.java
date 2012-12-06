@@ -139,6 +139,11 @@ public class ClassTransformer extends AbstractTransformer {
                 .klass(this, javaClassName, ceylonClassName)
                 .forDefinition(def);
 
+        // Very special case for the remote possibility that we're compiling Void
+        if ("ceylon.language::Void".equals(model.getQualifiedNameString())) {
+            classBuilder.extending(null);
+        }
+        
         if (def instanceof Tree.AnyClass) {
             Tree.ParameterList paramList = ((Tree.AnyClass)def).getParameterList();
             Class cls = ((Tree.AnyClass)def).getDeclarationModel();

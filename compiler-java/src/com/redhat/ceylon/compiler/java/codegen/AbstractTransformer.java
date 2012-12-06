@@ -1612,9 +1612,14 @@ public abstract class AbstractTransformer implements Transformation {
 
     List<JCAnnotation> makeAtClass(ProducedType extendedType) {
         List<JCExpression> attributes = List.nil();
-        if(!extendedType.isExactly(typeFact.getIdentifiableObjectDeclaration().getType())){
-            JCExpression extendsAttribute = make().Assign(naming.makeUnquotedIdent("extendsType"), 
-                    make().Literal(serialiseTypeSignature(extendedType)));
+        JCExpression extendsValue = null;
+        if (extendedType == null) {
+            extendsValue = make().Literal("");
+        } else if (!extendedType.isExactly(typeFact.getIdentifiableObjectDeclaration().getType())){
+            extendsValue = make().Literal(serialiseTypeSignature(extendedType));
+        }
+        if (extendsValue != null) {
+            JCExpression extendsAttribute = make().Assign(naming.makeUnquotedIdent("extendsType"), extendsValue);
             attributes = attributes.prepend(extendsAttribute);
         }
         return makeModelAnnotation(syms().ceylonAtClassType, attributes);
