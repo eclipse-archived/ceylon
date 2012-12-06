@@ -1,0 +1,42 @@
+package com.redhat.ceylon.compiler.java.test.issues.bug09xx;
+
+public interface Bug903<Element> {
+    
+    public abstract Element item(final long index);
+    
+    public .java.lang.Object getFoo();
+}
+public final class Bug903$impl<Element> {
+    
+    public Bug903$impl(.com.redhat.ceylon.compiler.java.test.issues.bug09xx.Bug903<Element> $this) {
+        this.$this = $this;
+    }
+    private final .com.redhat.ceylon.compiler.java.test.issues.bug09xx.Bug903<Element> $this;
+    
+    public final .java.lang.Object getFoo() {
+        final Element e = $this.item(0L);
+        
+        final class foobj_ {
+            
+            private foobj_() {
+            }
+            
+            public final Element foom() {
+                return $this.item(0L);
+            }
+            
+            public final Element foom2() {
+                return (
+                    let
+                    {
+                        .com.redhat.ceylon.compiler.java.test.issues.bug09xx.Bug903<Element> $arg$0$callable$ = $this;
+                        long $arg$0$0 = 0L;
+                    }
+                    returning $arg$0$callable$.item($arg$0$0);
+                );
+            }
+        }
+        final foobj_ foobj = new foobj_();
+        return foobj;
+    }
+}
