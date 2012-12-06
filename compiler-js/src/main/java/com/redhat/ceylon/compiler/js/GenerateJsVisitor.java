@@ -747,7 +747,7 @@ public class GenerateJsVisitor extends Visitor
                 }
                 String fname = typeFunctionName(satType, true);
                 //Actually it could be "if not in same module"
-                if (declaredInCL(tdec)) {
+                if (declaredInCL(tdec) && !JsCompiler.compilingLanguageModule) {
                     out(",", fname);
                 } else {
                     int idx = fname.lastIndexOf('.');
