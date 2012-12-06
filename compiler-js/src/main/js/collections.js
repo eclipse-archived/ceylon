@@ -12,15 +12,6 @@ function ArraySequence(x){}//IGNORE
 var exports,Container,$finished,Cloneable,smaller,larger,Correspondence,Object$,IdentifiableObject;//IGNORE
 var Iterable,Iterator;//IGNORE
 
-function Sized(wat) {
-    return wat;
-}
-initTypeProtoI(Sized, 'ceylon.language::Sized', Container);
-Sized.$$.prototype.getEmpty = function() {
-    return this.getSize() == 0;
-}
-exports.Sized=Sized;
-
 function Category(wat) {
     return wat;
 }

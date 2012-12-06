@@ -121,16 +121,6 @@ initTypeProto(IdentifiableObject, 'ceylon.language::IdentifiableObject', Object$
 //INTERFACES
 //#include callable.js
 
-function Container(wat) {
-    return wat;
-}
-initType(Container, 'ceylon.language::Container');
-exports.Container=Container;
-function ContainerWithFirstElement(wat) {
-    return wat;
-}
-initType(ContainerWithFirstElement, 'ceylon.language::ContainerWithFirstElement');
-exports.ContainerWithFirstElement=ContainerWithFirstElement;
 function Correspondence(wat) {
     return wat;
 }

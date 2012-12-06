@@ -8,12 +8,6 @@ function Exception(x){}//IGNORE
 function String$(x){}//IGNORE
 var Container,$finished,empty,larger,smaller,exports;//IGNORE
 
-function Iterator(wat) {
-    return wat;
-}
-initType(Iterator, 'ceylon.language::Iterator');
-exports.Iterator=Iterator;
-
 function Iterable(wat) {
     return wat;
 }

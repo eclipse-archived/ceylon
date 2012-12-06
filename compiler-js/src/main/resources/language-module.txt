@@ -2,11 +2,10 @@
 #each line states a list of files to be compiled in one pass
 #Binary
 Castable,Cloneable,Closeable
-#Category
 #ChainedIterator
 #Collection
-#Container
-#ContainerWithFirstElement
+Container,ContainerWithFirstElement,Iterator,Sized
+#Category
 #Correspondence
 #Entry
 Comparable,Invertable,Summable,Ordinal
@@ -26,15 +25,12 @@ Comparable,Invertable,Summable,Ordinal
 #Sequence
 #Sequential
 #Set
-#Sized
 #Some
-#Iterator
 #Range
 #Singleton
-any,byDecreasing,byIncreasing,byItem,byKey,coalesce,count,elements,emptyOrSingleton,entries,equalTo,every,first,forItem,forKey,greaterThan,join,largest,lessThan,max,min,smallest,sum,zip
+any,byDecreasing,byIncreasing,byItem,byKey,coalesce,count,elements,emptyOrSingleton,entries,equalTo,every,first,forItem,forKey,greaterThan,join,largest,lessThan,max,min,smallest,sum,zip,print
 #bottom
 #combine
 #identical
 #null
-#print
 #sort

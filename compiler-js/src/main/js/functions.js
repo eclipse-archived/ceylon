@@ -6,9 +6,6 @@ function Singleton(x){}//IGNORE
 function SequenceBuilder(){}//IGNORE
 function String$(f,x){}//IGNORE
 
-function print(line) { process$.writeLine(line===null?"«null»":line.getString()); }
-exports.print=print;
-
 var larger = Comparison("larger");
 function getLarger() { return larger }
 var smaller = Comparison("smaller");
