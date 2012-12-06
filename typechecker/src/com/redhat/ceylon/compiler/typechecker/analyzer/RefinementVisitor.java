@@ -18,17 +18,21 @@ import com.redhat.ceylon.compiler.typechecker.model.BottomType;
 import com.redhat.ceylon.compiler.typechecker.model.Class;
 import com.redhat.ceylon.compiler.typechecker.model.ClassOrInterface;
 import com.redhat.ceylon.compiler.typechecker.model.Declaration;
+import com.redhat.ceylon.compiler.typechecker.model.Element;
 import com.redhat.ceylon.compiler.typechecker.model.Functional;
 import com.redhat.ceylon.compiler.typechecker.model.Generic;
 import com.redhat.ceylon.compiler.typechecker.model.Getter;
 import com.redhat.ceylon.compiler.typechecker.model.IntersectionType;
 import com.redhat.ceylon.compiler.typechecker.model.Method;
 import com.redhat.ceylon.compiler.typechecker.model.MethodOrValue;
+import com.redhat.ceylon.compiler.typechecker.model.Module;
+import com.redhat.ceylon.compiler.typechecker.model.ModuleImport;
 import com.redhat.ceylon.compiler.typechecker.model.Package;
 import com.redhat.ceylon.compiler.typechecker.model.Parameter;
 import com.redhat.ceylon.compiler.typechecker.model.ParameterList;
 import com.redhat.ceylon.compiler.typechecker.model.ProducedReference;
 import com.redhat.ceylon.compiler.typechecker.model.ProducedType;
+import com.redhat.ceylon.compiler.typechecker.model.Scope;
 import com.redhat.ceylon.compiler.typechecker.model.Setter;
 import com.redhat.ceylon.compiler.typechecker.model.TypeAlias;
 import com.redhat.ceylon.compiler.typechecker.model.TypeDeclaration;
@@ -36,6 +40,7 @@ import com.redhat.ceylon.compiler.typechecker.model.TypeParameter;
 import com.redhat.ceylon.compiler.typechecker.model.TypedDeclaration;
 import com.redhat.ceylon.compiler.typechecker.model.UnionType;
 import com.redhat.ceylon.compiler.typechecker.model.Value;
+import com.redhat.ceylon.compiler.typechecker.tree.Node;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree;
 import com.redhat.ceylon.compiler.typechecker.tree.Visitor;
 
@@ -59,10 +64,7 @@ public class RefinementVisitor extends Visitor {
             for (Tree.Parameter tp: list.getParameters()) {
                 if (tp!=null) {
                     Parameter p = tp.getDeclarationModel();
-                    if (p.getType()!=null && !isCompletelyVisible(td, p.getType())) {
-                        tp.getType().addError("type of parameter is not visible everywhere declaration is visible: " 
-                                + p.getName());
-                    }
+                    checkVisibility(tp, td, p.getType(), "declaration");
                 }
             }
         }
@@ -76,15 +78,116 @@ public class RefinementVisitor extends Visitor {
             for (Tree.Parameter tp: that.getParameterList().getParameters()) {
                 if (tp!=null) {
                     Parameter p = tp.getDeclarationModel();
-                    if (p.getType()!=null && !isCompletelyVisible(td, p.getType())) {
-                        tp.getType().addError("type of parameter is not visible everywhere declaration is visible: " 
-                                + p.getName());
-                    }
+                    checkVisibility(tp, td, p.getType(), "declaration");
                 }
             }
         }
     }
-    
+
+    private Module getModule(Element element){
+        Package typePackage = element.getUnit().getPackage();
+        return typePackage != null ? typePackage.getModule() : null;
+    }
+
+    private boolean inExportedScope(Declaration decl) {
+        // if it has a visible scope it's not exported outside the module
+        if(decl.getVisibleScope() != null)
+            return false;
+        // now perhaps its package is not shared
+        Package p = decl.getUnit().getPackage();
+        return p != null && p.isShared();
+    }
+
+    private boolean checkModuleVisibility(Declaration member, ProducedType pt) {
+        if(!inExportedScope(member))
+            return true;
+        Module declarationModule = getModule(member);
+        if(declarationModule == null)
+            return true;
+        return isCompletelyVisibleFromOtherModules(member, pt, declarationModule);
+    }
+
+    private boolean isCompletelyVisibleFromOtherModules(Declaration member, ProducedType pt, Module thisModule) {
+        if (pt.getDeclaration() instanceof UnionType) {
+            for (ProducedType ct: pt.getDeclaration().getCaseTypes()) {
+                if ( !isCompletelyVisibleFromOtherModules(member, ct.substitute(pt.getTypeArguments()), thisModule) ) {
+                    return false;
+                }
+            }
+            return true;
+        }
+        else if (pt.getDeclaration() instanceof IntersectionType) {
+            for (ProducedType ct: pt.getDeclaration().getSatisfiedTypes()) {
+                if ( !isCompletelyVisibleFromOtherModules(member, ct.substitute(pt.getTypeArguments()), thisModule) ) {
+                    return false;
+                }
+            }
+            return true;
+        }
+        else {
+            if (!isVisibleFromOtherModules(member, thisModule, pt.getDeclaration())) {
+                return false;
+            }
+            for (ProducedType at: pt.getTypeArgumentList()) {
+                if ( at!=null && !isCompletelyVisibleFromOtherModules(member, at, thisModule) ) {
+                    return false;
+                }
+            }
+            return true;
+        }
+    }
+
+    private boolean isVisibleFromOtherModules(Declaration member, Module thisModule, TypeDeclaration type) {
+        // type parameters are OK
+        if(type instanceof TypeParameter)
+            return true;
+        
+        Module typeModule = getModule(type);
+        if(typeModule != null && thisModule != null && thisModule != typeModule){
+            // find the module import, but only in exported imports, otherwise it's an error anyways
+
+            // language module stuff is automagically exported
+            if(typeModule == thisModule.getLanguageModule())
+                return true;
+            
+            // try to find a direct import first
+            for(ModuleImport imp : thisModule.getImports()){
+                if(imp.isExport() && imp.getModule() == typeModule){
+                    // found it
+                    return true;
+                }
+            }
+            // then try the more expensive implicit imports
+            Set<Module> visited = new HashSet<Module>();
+            visited.add(thisModule);
+            for(ModuleImport imp : thisModule.getImports()){
+                // now try implicit dependencies
+                if(imp.isExport() && includedImplicitely(imp.getModule(), typeModule, visited)){
+                    // found it
+                    return true;
+                }
+            }
+            // couldn't find it
+            return false;
+        }
+        // no module or it does not belong to a module? more likely an error was already reported
+        return true;
+    }
+
+    private boolean includedImplicitely(Module importedModule, Module targetModule, Set<Module> visited) {
+        // don't visit them twice
+        if(!visited.add(importedModule))
+            return false;
+        for(ModuleImport imp : importedModule.getImports()){
+            // only consider modules it exported back to us
+            if(imp.isExport()
+                    && (imp.getModule() == targetModule
+                        || includedImplicitely(imp.getModule(), targetModule, visited)))
+                return true;
+        }
+        return false;
+    }
+
     private boolean isCompletelyVisible(Declaration member, ProducedType pt) {
         if (pt.getDeclaration() instanceof UnionType) {
             for (ProducedType ct: pt.getDeclaration().getCaseTypes()) {
@@ -190,10 +293,18 @@ public class RefinementVisitor extends Visitor {
 		if (!broken) {
 		    Set<String> errors = new HashSet<String>();
 		    for (ProducedType st: supertypes) {
-		        if (that instanceof Tree.Declaration && //don't do this check for ObjectArguments
-		        		!isCompletelyVisible(td, st)) {
-		            that.addError("supertype of type is not visible everywhere type is visible: " + 
-		            		st.getProducedTypeName());
+		        // don't do this check for ObjectArguments
+		        if (that instanceof Tree.Declaration) {
+		            if(!isCompletelyVisible(td, st)) {
+		                that.addError("supertype of type is not visible everywhere type is visible: " + 
+		                        st.getProducedTypeName());
+		            }
+		            if(!checkModuleVisibility(td, st) ) {
+		                that.addError("supertype occurs in a type that is visible outside this module,"
+		                        +" but comes from an imported module that is not re-exported: " +
+		                        st.getProducedTypeName());
+		            }
+
 		        }
 		        if (td instanceof ClassOrInterface && 
 		                !((ClassOrInterface) td).isAbstract()) {
@@ -234,13 +345,24 @@ public class RefinementVisitor extends Visitor {
     
     @Override public void visit(Tree.TypedDeclaration that) {
         TypedDeclaration td = that.getDeclarationModel();
-        if ( td.getType()!=null && !isCompletelyVisible(td,td.getType()) ) {
-            that.getType().addError("type of declaration is not visible everywhere declaration is visible: " 
-                        + td.getName());
-        }
+        checkVisibility(that, td, td.getType(), "declaration");
         super.visit(that);
     }
-    
+
+    private void checkVisibility(Tree.TypedDeclaration that, Declaration td, ProducedType type, String typeName) {
+        if ( type !=null ) {
+            if(!isCompletelyVisible(td, type) ) {
+                that.getType().addError("type of " + typeName + " is not visible everywhere declaration is visible: " 
+                        + td.getName());
+            }
+            if(!checkModuleVisibility(td, type) ) {
+                that.getType().addError("type occurs in a " + typeName + " that is visible outside this module,"
+                        +" but comes from an imported module that is not re-exported: "
+                        + td.getName());
+            }
+        }
+    }
+
     @Override public void visit(Tree.Declaration that) {
         super.visit(that);
         Declaration dec = that.getDeclarationModel();
