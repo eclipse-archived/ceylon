@@ -11,7 +11,7 @@ doc "Given two sequences, form a new sequence consisting of
          zip(xs,ys)[i]==xs[i]->ys[i]
      
      for every `0<=i<min({xs.size,ys.size})`."
-shared Entry<Key,Item>[] zip<Key,Item>(Iterable<Key> keys, Iterable<Item> items)
+shared <Key->Item>[] zip<Key,Item>({Key...} keys, {Item...} items)
         given Key satisfies Object
         given Item satisfies Object {
     value iter = items.iterator;

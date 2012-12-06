@@ -55,7 +55,7 @@ shared interface Map<out Key,out Item>
     
     shared actual default Integer hash {
         variable Integer hashCode := 1;
-        for (Entry<Key,Item> elem in this) {
+        for (elem in this) {
             hashCode *= 31;
             hashCode += elem.hash;
         }
@@ -86,7 +86,7 @@ shared interface Map<out Key,out Item>
             shared actual Set<Key>? item(Object key) => 
                     LazySet(elements{for (k->v in outer) if (v==key) k});
             
-            shared actual Iterator<Entry<Item,Set<Key>>> iterator =>
+            shared actual Iterator<Item->Set<Key>> iterator =>
                     outer.values.map((Item e) e ->
                             LazySet(elements{for (k->v in outer) if (v==e) k}))
                                     .iterator;

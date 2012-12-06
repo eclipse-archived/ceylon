@@ -341,14 +341,14 @@ shared interface Iterable<out Element>
              
          results in an iterable object with the entries
          `0->\"hello\"` and `2->\"world\"`."
-    shared default Iterable<Entry<Integer,Element&Object>> indexed {
-            object iterable satisfies Iterable<Entry<Integer,Element&Object>?> {
-                shared actual Iterator<Entry<Integer,Element&Object>?> iterator {
+    shared default Iterable<Integer->Element&Object> indexed {
+            object iterable satisfies Iterable<<Integer->Element&Object>?> {
+                shared actual Iterator<<Integer->Element&Object>?> iterator {
                     value outerIterable { return outer; }
-                    object iterator satisfies Iterator<Entry<Integer,Element&Object>?> {
+                    object iterator satisfies Iterator<<Integer->Element&Object>?> {
                         value iter = outerIterable.iterator;
                         variable value i:=0;
-                        actual shared Entry<Integer,Element&Object>?|Finished next() {
+                        actual shared <Integer->Element&Object>?|Finished next() {
                             value next = iter.next();
                             if (!is Finished next) {
                                 if (exists next) {

@@ -34,13 +34,13 @@ shared interface List<out Element>
     doc "The number of elements in this sequence, always
          `sequence.lastIndex+1`."
     see (lastIndex)
-    shared actual default Integer size => (lastIndex?-1) + 1;
+    shared actual default Integer size => (lastIndex else -1) + 1;
     
     doc "Determines if the given index refers to an element
          of this sequence, that is, if
          `index<=sequence.lastIndex`."
     shared actual default Boolean defines(Integer index) => 
-            index <= lastIndex?-1;
+            index <= (lastIndex else -1);
 	
     doc "Returns the element of this sequence with the given
          index, or `null` if the given index is past the end
@@ -54,7 +54,7 @@ shared interface List<out Element>
                 satisfies Iterator<Element> {
             variable Integer index := 0;
             shared actual Element|Finished next() {
-                if (index < lastIndex?-1) {
+                if (index < (lastIndex else -1)) {
                     if (exists elem = item(index++)) {
                         return elem;
                     }
