@@ -11,11 +11,10 @@ FixedSized,None,Some
 #Identifiable
 #IdentifiableObject
 #List
-#NegativeNumberException
+LazyList
+Exception,NegativeNumberException,OverflowException,RecursiveInitializationException
 #Nothing
 #Number
-#OverflowException
-#RecursiveInitializationException
 #Sequence
 #Sequential
 #Set

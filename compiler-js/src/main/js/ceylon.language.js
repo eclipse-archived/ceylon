@@ -163,11 +163,11 @@ Correspondence$proto.keys = function() {
 exports.Correspondence=Correspondence;
 
 //#include iterable.js
+//#include collections.js
 //Compiled from Ceylon sources
 //#COMPILED
 //Ends compiled from Ceylon sources
 
-//#include collections.js
 //#include maps.js
 
 function Number$(wat) {
@@ -180,23 +180,6 @@ function $init$Number() {
         initType(Number$, 'ceylon.language::Number');
     }
     return Number$;
-}
-
-function Exception(description, cause, wat) {
-    if (wat===undefined) {wat=new Exception.$$;}
-    wat.description = description;
-    wat.cause = cause;
-    return wat;
-}
-initTypeProto(Exception, 'ceylon.language::Exception', IdentifiableObject);
-var Exception$proto = Exception.$$.prototype;
-Exception$proto.getCause = function() {return this.cause;}
-Exception$proto.getMessage = function() {
-    return this.description ? this.description
-           : (this.cause ? this.cause.getMessage() : String$("", 0));
-}
-Exception$proto.getString = function() {
-    return String$(className(this) + ' "' + this.getMessage() + '"');
 }
 
 //#include numbers.js
@@ -454,7 +437,6 @@ function getBottom() {
 //#include tuples.js
 //#include annotations.js
 
-exports.Exception=Exception;
 exports.Identifiable=Identifiable;
 exports.identityHash=$identityHash;
 exports.IdentifiableObject=IdentifiableObject;
@@ -469,7 +451,6 @@ exports.getExhausted=getExhausted;
 exports.Range=Range;
 exports.Entry=Entry;
 exports.getBottom=getBottom;
-exports.ContainerWithFirstElement=ContainerWithFirstElement;
     });
 }(typeof define==='function' && define.amd ? 
     define : function (factory) {
