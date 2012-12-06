@@ -17,8 +17,22 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
  * MA  02110-1301, USA.
  */
+// simplest test case
 @nomodel
-shared class Bug844_Tuple<out Element, out First, out Rest>(first, rest)
+shared class Bug844_Top<out Element>(){
+    shared default Element first(){ return bottom; }
+    shared default Element firstAttribute = bottom;
+}
+@nomodel
+shared class Bug844_Bottom<out Element, out First>(firstAttribute) extends Bug844_Top<Element>()
+    given First satisfies Element {
+    shared actual First first(){ return bottom; }
+    shared actual First firstAttribute;
+}
+
+// full error report
+@nomodel
+shared abstract class Bug844_Tuple<out Element, out First, out Rest>(first, rest)
         extends Object()
         satisfies Sequence<Element>
         given First satisfies Element
