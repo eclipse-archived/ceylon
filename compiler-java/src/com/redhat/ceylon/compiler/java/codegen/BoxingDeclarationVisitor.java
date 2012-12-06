@@ -279,6 +279,9 @@ public abstract class BoxingDeclarationVisitor extends Visitor {
         boxAttribute(declaration);
         rawTypedDeclaration(declaration);
         erasureToObject(declaration);
+        if (declaration.getContainer() instanceof TypeDeclaration && CodegenUtil.isSmall(declaration)) {
+            declaration.getType().setUnderlyingType("int");
+        }
     }
     
     @Override
