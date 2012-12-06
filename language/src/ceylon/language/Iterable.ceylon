@@ -99,7 +99,7 @@ shared interface Iterable<out Element>
     
     doc "A sequence containing the elements returned by the
          iterator."
-    shared default Element[] sequence => { this... };
+    shared default Element[] sequence => [ this... ];
     
     doc "An `Iterable` containing the results of applying
          the given mapping to the elements of to this 
