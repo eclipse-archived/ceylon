@@ -117,7 +117,9 @@ class Intersection() {
     @type:"Bottom" intersect(1, "hello");
     @type:"Bottom" intersect(null, {"hello"});
     @type:"Integer" intersect(1, 3);
-    @type:"Integer&Sequence<String>" intersect(1, {"hello"});
+    Sequence<String> onestring = {"hello"};
+    @type:"Integer&Sequence<String>" intersect(1, onestring);
+    @type:"Bottom" intersect(1, {"hello"});
     @type:"Bottom" intersect(I({"hello"}), I({}));
     
     interface I1 {} 

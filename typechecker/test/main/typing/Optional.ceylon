@@ -24,7 +24,7 @@ class Optional() {
     value sy = { Y() };
     value syn = { Y(), null };
     value sxy = { X(), Y() };
-    variable value ss := { X(), Y(), null };
+    variable <X|Y|Nothing>[] ss := { X(), Y(), null };
     ss:=sx;
     ss:=sy;
     ss:=sxy;
@@ -74,7 +74,7 @@ class Optional() {
     @type:"Nothing|String|Integer|Sequence<Object>" String? | String | String? | Integer | Sequence<Object> foobar1 = -1;
     @type:"Nothing|Sequential<String>|Integer" String[]? | String[] | Sequence<String> | Integer foobar2 = 1.integer;
     
-    @type:"Sequence<Nothing|String|Integer|Sequence<Object>|Sequential<String>>" value xyz = { foobar1, foobar2 };
+    @type:"Sequence<Nothing|String|Integer|Sequence<Object>|Sequential<String>>" value xyz = { foobar1, foobar2 }.sequence;
     
     //TODO: I think the type parameter X does
     //      not hide the X defined above - it

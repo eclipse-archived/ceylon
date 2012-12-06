@@ -159,16 +159,17 @@ class Operators() {
     Callable<Nothing|Iterable<String>,[Iterable<Character>|Callable<Boolean,[Character]>,Boolean,Boolean]> mss = maybeString?.split;
     Callable<Sequence<Iterable<String>>,[Iterable<Character>|Callable<Boolean,[Character]>,Boolean,Boolean]> hws = {"hello", "world"}[].split;
     
+    Sequence<String> helloworld = {"hello", "world"};
     @type:"Sequential<String>" value e45 = emp[].uppercased;
-    @type:"Sequence<Sequential<Character>>" value x46 = {"hello", "world"}[].characters;
-    @type:"Sequence<String>" value x47 = {"hello", "world"}[].uppercased;
-    @type:"Nothing|Sequential<Character>" value x48 = {"hello", "world"}[0]?.characters;
-    @type:"Sequence<Sequential<Character>>" value x49 = {"hello", "world"}[].characters;
-    @type:"Sequence<Iterable<String>>" value x50 = {"hello", "world"}[].lines;
-    @type:"Nothing|String" value x51 = {"hello", "world"}[0]?.normalized;
-    @type:"Nothing|Iterable<String>" value x512 = {"hello", "world"}[0]?.split((Character c) c==` `);
-    @type:"Sequence<String>" value x52 = {"hello", "world"}[].normalized;
-    @type:"Sequence<Iterable<String>>" value x522 = {"hello", "world"}[].split((Character c) c==` `);
+    @type:"Sequence<Sequential<Character>>" value x46 = helloworld[].characters;
+    @type:"Sequence<String>" value x47 = helloworld[].uppercased;
+    @type:"Nothing|Sequential<Character>" value x48 = helloworld[0]?.characters;
+    @type:"Sequence<Sequential<Character>>" value x49 = helloworld[].characters;
+    @type:"Sequence<Iterable<String>>" value x50 = helloworld[].lines;
+    @type:"Nothing|String" value x51 = helloworld[0]?.normalized;
+    @type:"Nothing|Iterable<String>" value x512 = helloworld[0]?.split((Character c) c==` `);
+    @type:"Sequence<String>" value x52 = helloworld[].normalized;
+    @type:"Sequence<Iterable<String>>" value x522 = helloworld[].split((Character c) c==` `);
     @type:"Nothing|String" value x53 = noSequence?[0]?.normalized;
     @type:"Nothing|Iterable<String>" value x532 = noSequence?[0]?.split((Character c) c==` `);
     @type:"Sequence<Operators.X>" value x54 = {Operators()}[].X();
@@ -214,7 +215,7 @@ class Operators() {
     @error nn+=1;
     @error nn++;
     
-    String->Entry<Boolean,String> ent = "hello"->(true->"hello");
+    String-><Boolean->String> ent = "hello"->(true->"hello");
     
     @error X()[].doIt();
     @error X()?.doIt();
@@ -224,12 +225,18 @@ class Operators() {
     @type:"Nothing" value nnnn = es[0];
     Nothing nnnn2 = nnnn;
     
-    @type:"Nothing|String" value ns = { null, "hello", "world" }[1];
+    String?[] nullhelloworld = { null, "hello", "world" };
+    @type:"Nothing|String" value ns = nullhelloworld[1];
     String? ns2 = ns;
     
-    @type:"Sequence<Integer|Float>" value ins = { -10, -1, 1.0, 3 };
-    @type:"Nothing|Integer|Float" value ion = ins[2];
-    @error String ions = ion.string;
+    <Nothing|String|Float>[] nullhelloone = { null, "hello", 1.0 };
+    @type:"Nothing|String|Float" value nsf = nullhelloone[1];
+    String|Float? nsf2 = ns;
+    
+    @type:"Tuple<Integer|Float,Integer,Tuple<Integer|Float,Integer,Tuple<Float|Integer,Float,Tuple<Integer,Integer,Empty>>>>" 
+    value ins = { -10, -1, 1.0, 3 };
+    @type:"Float" value ion = ins[2];
+    String ions = ion.string;
     Sequence<Integer|Float> ins2 = ins;
     Nothing|Integer|Float ion2 = ion;
     Integer?|Float? ion3 = ion;

@@ -32,7 +32,7 @@ void testSwitch(Number nn, C cc) {
 
 void testCanonicalization() {
     Integer|Float i = n;
-    @type:"Sequence<Number>" value ns = {n};
+    Number[] ns = [n];
     @type:"Nothing|Number" value temp = ns[0];
     print(temp);
     Integer|Float|Nothing t = temp;

@@ -12,8 +12,14 @@ class Literals() {
     @type:"Float" value fsi1 = 12u;
     @type:"Float" value fsi2 = 3.56M;
     @type:"Character" value c = `x`;
-    @type:"Sequence<String>" value ss = { "hello", "world" };
-    @type:"Sequence<Integer>" value ns = { 1, 2, 3, 4 };
+    @type:"Tuple<String,String,Tuple<String,String,Empty>>" 
+    value ss = { "hello", "world" };
+    @type:"Tuple<Integer,Integer,Tuple<Integer,Integer,Tuple<Integer,Integer,Tuple<Integer,Integer,Empty>>>>" 
+    value ns = { 1, 2, 3, 4 };
+    @type:"Tuple<String,String,Tuple<String,String,Empty>>" 
+    value ss2 = [ "hello", "world" ];
+    @type:"Tuple<Integer,Integer,Tuple<Integer,Integer,Tuple<Integer,Integer,Tuple<Integer,Integer,Empty>>>>" 
+    value ns2 = [ 1, 2, 3, 4 ];
     @type:"String" value st = "pi = " 3.1415 " approx";
     @type:"String" value q = 'hibernate.org';
     
