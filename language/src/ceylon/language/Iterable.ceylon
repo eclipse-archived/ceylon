@@ -230,16 +230,20 @@ shared interface Iterable<out Element>
          contain more elements than the specified number of 
          elements, the `Iterable` contains no elements."
     shared default {Element...} skipping(Integer skip) {
-        if (skip <= 0) { return this; }
-        object iterable satisfies Iterable<Element> {
-            shared actual Iterator<Element> iterator {
-                value iterator = outer.iterator;
-                variable value i:=0;
-                while (i++<skip && !is Finished iterator.next()) {}
-                return iterator;
-            }
+        if (skip <= 0) { 
+            return this;
         }
-        return iterable;
+        else {
+            object iterable satisfies Iterable<Element> {
+                shared actual Iterator<Element> iterator {
+                    value iterator = outer.iterator;
+                    variable value i:=0;
+                    while (i++<skip && !is Finished iterator.next()) {}
+                    return iterator;
+                }
+            }
+            return iterable;
+        }
     }
     
     doc "Produce an `Iterable` containing the first `take`
@@ -248,22 +252,26 @@ shared interface Iterable<out Element>
          elements of this iterable object, the `Iterable` 
          contains the same elements as this iterable object."
     shared default {Element...} taking(Integer take) {
-        if (take <= 0) { return {}; }
-        object iterable satisfies Iterable<Element> {
-            shared actual Iterator<Element> iterator {
-                value outerIterable { return outer; }
-                object iterator satisfies Iterator<Element> {
-                    value iter = outerIterable.iterator;
-                    variable value i:=0;
-                    actual shared Element|Finished next() {
-                        return ++i>take then exhausted 
-                                else iter.next();
-                    }
-                }
-                return iterator;
-            }
+        if (take <= 0) { 
+            return {}; 
         }
-        return iterable;
+        else {
+            object iterable satisfies Iterable<Element> {
+                shared actual Iterator<Element> iterator {
+                    value outerIterable { return outer; }
+                    object iterator satisfies Iterator<Element> {
+                        value iter = outerIterable.iterator;
+                        variable value i:=0;
+                        actual shared Element|Finished next() {
+                            return ++i>take then exhausted 
+                                    else iter.next();
+                        }
+                    }
+                    return iterator;
+                }
+            }
+            return iterable;
+        }
     }
     
     doc "Produce an `Iterable` containing every `step`th 
