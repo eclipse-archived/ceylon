@@ -686,4 +686,40 @@ public class Util {
         }
         return signature;
     }
+    
+    public static boolean isCompletelyVisible(Declaration member, ProducedType pt) {
+        if (pt.getDeclaration() instanceof UnionType) {
+            for (ProducedType ct: pt.getDeclaration().getCaseTypes()) {
+                if ( !isCompletelyVisible(member, ct.substitute(pt.getTypeArguments())) ) {
+                    return false;
+                }
+            }
+            return true;
+        }
+        else if (pt.getDeclaration() instanceof IntersectionType) {
+            for (ProducedType ct: pt.getDeclaration().getSatisfiedTypes()) {
+                if ( !isCompletelyVisible(member, ct.substitute(pt.getTypeArguments())) ) {
+                    return false;
+                }
+            }
+            return true;
+        }
+        else {
+            if (!isVisible(member, pt.getDeclaration())) {
+                return false;
+            }
+            for (ProducedType at: pt.getTypeArgumentList()) {
+                if ( at!=null && !isCompletelyVisible(member, at) ) {
+                    return false;
+                }
+            }
+            return true;
+        }
+    }
+
+    static boolean isVisible(Declaration member, TypeDeclaration type) {
+        return type instanceof TypeParameter || 
+                type.isVisible(member.getVisibleScope());
+    }
+
 }

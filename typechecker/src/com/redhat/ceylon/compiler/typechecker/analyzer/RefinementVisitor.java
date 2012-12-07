@@ -6,6 +6,7 @@ import static com.redhat.ceylon.compiler.typechecker.analyzer.Util.checkAssignab
 import static com.redhat.ceylon.compiler.typechecker.analyzer.Util.checkIsExactly;
 import static com.redhat.ceylon.compiler.typechecker.analyzer.Util.checkIsExactlyOneOf;
 import static com.redhat.ceylon.compiler.typechecker.model.Util.intersectionType;
+import static com.redhat.ceylon.compiler.typechecker.model.Util.isCompletelyVisible;
 import static java.util.Collections.singletonMap;
 
 import java.util.ArrayList;
@@ -32,7 +33,6 @@ import com.redhat.ceylon.compiler.typechecker.model.Parameter;
 import com.redhat.ceylon.compiler.typechecker.model.ParameterList;
 import com.redhat.ceylon.compiler.typechecker.model.ProducedReference;
 import com.redhat.ceylon.compiler.typechecker.model.ProducedType;
-import com.redhat.ceylon.compiler.typechecker.model.Scope;
 import com.redhat.ceylon.compiler.typechecker.model.Setter;
 import com.redhat.ceylon.compiler.typechecker.model.TypeAlias;
 import com.redhat.ceylon.compiler.typechecker.model.TypeDeclaration;
@@ -40,7 +40,6 @@ import com.redhat.ceylon.compiler.typechecker.model.TypeParameter;
 import com.redhat.ceylon.compiler.typechecker.model.TypedDeclaration;
 import com.redhat.ceylon.compiler.typechecker.model.UnionType;
 import com.redhat.ceylon.compiler.typechecker.model.Value;
-import com.redhat.ceylon.compiler.typechecker.tree.Node;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree;
 import com.redhat.ceylon.compiler.typechecker.tree.Visitor;
 
@@ -187,42 +186,7 @@ public class RefinementVisitor extends Visitor {
         }
         return false;
     }
-
-    private boolean isCompletelyVisible(Declaration member, ProducedType pt) {
-        if (pt.getDeclaration() instanceof UnionType) {
-            for (ProducedType ct: pt.getDeclaration().getCaseTypes()) {
-                if ( !isCompletelyVisible(member, ct.substitute(pt.getTypeArguments())) ) {
-                    return false;
-                }
-            }
-            return true;
-        }
-        else if (pt.getDeclaration() instanceof IntersectionType) {
-            for (ProducedType ct: pt.getDeclaration().getSatisfiedTypes()) {
-                if ( !isCompletelyVisible(member, ct.substitute(pt.getTypeArguments())) ) {
-                    return false;
-                }
-            }
-            return true;
-        }
-        else {
-            if (!isVisible(member, pt.getDeclaration())) {
-                return false;
-            }
-            for (ProducedType at: pt.getTypeArgumentList()) {
-                if ( at!=null && !isCompletelyVisible(member, at) ) {
-                    return false;
-                }
-            }
-            return true;
-        }
-    }
-
-    private boolean isVisible(Declaration member, TypeDeclaration type) {
-        return type instanceof TypeParameter || 
-                type.isVisible(member.getVisibleScope());
-    }
-
+    
     @Override public void visit(Tree.TypeDeclaration that) {
         boolean ob = broken;
         broken = false;
@@ -350,7 +314,7 @@ public class RefinementVisitor extends Visitor {
     }
 
     private void checkVisibility(Tree.TypedDeclaration that, Declaration td, ProducedType type, String typeName) {
-        if ( type !=null ) {
+        if (type!=null) {
             if(!isCompletelyVisible(td, type) ) {
                 that.getType().addError("type of " + typeName + " is not visible everywhere declaration is visible: " 
                         + td.getName());

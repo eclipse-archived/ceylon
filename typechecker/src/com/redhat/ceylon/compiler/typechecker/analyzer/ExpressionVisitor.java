@@ -15,6 +15,7 @@ import static com.redhat.ceylon.compiler.typechecker.model.Util.getContainingCla
 import static com.redhat.ceylon.compiler.typechecker.model.Util.getOuterClassOrInterface;
 import static com.redhat.ceylon.compiler.typechecker.model.Util.intersectionType;
 import static com.redhat.ceylon.compiler.typechecker.model.Util.isAbstraction;
+import static com.redhat.ceylon.compiler.typechecker.model.Util.isCompletelyVisible;
 import static com.redhat.ceylon.compiler.typechecker.model.Util.isTypeUnknown;
 import static com.redhat.ceylon.compiler.typechecker.model.Util.producedType;
 import static com.redhat.ceylon.compiler.typechecker.model.Util.unionType;
@@ -198,41 +199,6 @@ public class ExpressionVisitor extends Visitor {
         }
     }
     
-    private boolean isCompletelyVisible(Declaration member, ProducedType pt) {
-        if (pt.getDeclaration() instanceof UnionType) {
-            for (ProducedType ct: pt.getDeclaration().getCaseTypes()) {
-                if ( !isCompletelyVisible(member, ct.substitute(pt.getTypeArguments())) ) {
-                    return false;
-                }
-            }
-            return true;
-        }
-        else if (pt.getDeclaration() instanceof IntersectionType) {
-            for (ProducedType ct: pt.getDeclaration().getSatisfiedTypes()) {
-                if ( !isCompletelyVisible(member, ct.substitute(pt.getTypeArguments())) ) {
-                    return false;
-                }
-            }
-            return true;
-        }
-        else {
-            if (!isVisible(member, pt.getDeclaration())) {
-                return false;
-            }
-            for (ProducedType at: pt.getTypeArgumentList()) {
-                if ( at!=null && !isCompletelyVisible(member, at) ) {
-                    return false;
-                }
-            }
-            return true;
-        }
-    }
-
-    private boolean isVisible(Declaration member, TypeDeclaration type) {
-        return type instanceof TypeParameter || 
-                type.isVisible(member.getVisibleScope());
-    }
-
     @Override public void visit(Tree.Variable that) {
         super.visit(that);
         if (that.getSpecifierExpression()!=null) {
