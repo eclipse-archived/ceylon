@@ -6,4 +6,7 @@ shared interface Sequential<out Element>
     
     shared actual formal Element[] reversed;
     
+    doc "This sequence."
+    shared actual default Element[] sequence => this;
+    
 }
