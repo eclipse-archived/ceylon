@@ -59,7 +59,7 @@ public class ModuleValidator {
         for (Module module : modules) {
             dependencyTree.addLast(module);
             //we don't care about propagated dependency here as top modules are independent from one another
-            verifyModuleDependencyTree(module.getImports(), dependencyTree, new ArrayList<Module>());
+            verifyModuleDependencyTree(module.getImports(), dependencyTree, new ArrayList<Module>(), true);
             dependencyTree.pollLast();
         }
         moduleManager.addImplicitImports();
@@ -69,7 +69,8 @@ public class ModuleValidator {
     private void verifyModuleDependencyTree(
             Collection<ModuleImport> moduleImports,
             LinkedList<Module> dependencyTree,
-            List<Module> propagatedDependencies) {
+            List<Module> propagatedDependencies, 
+            boolean forCompiledModule) {
         List<Module> visibleDependencies = new ArrayList<Module>();
         visibleDependencies.add(dependencyTree.getLast()); //first addition => no possible conflict
         for (ModuleImport moduleImport : moduleImports) {
@@ -102,12 +103,12 @@ public class ModuleValidator {
                 }
                 else {
                     //parse module units and build module dependency and carry on
-                    moduleManager.resolveModule(artifact, module, moduleImport, dependencyTree, phasedUnitsOfDependencies);
+                    moduleManager.resolveModule(artifact, module, moduleImport, dependencyTree, phasedUnitsOfDependencies, forCompiledModule);
                 }
             }
             dependencyTree.addLast(module);
             List<Module> subModulePropagatedDependencies = new ArrayList<Module>();
-            verifyModuleDependencyTree( module.getImports(), dependencyTree, subModulePropagatedDependencies );
+            verifyModuleDependencyTree( module.getImports(), dependencyTree, subModulePropagatedDependencies, forCompiledModule & moduleImport.isExport() );
             //visible dependency += subModule + subModulePropagatedDependencies
             checkAndAddDependency(visibleDependencies, module, dependencyTree);
             for (Module submodule : subModulePropagatedDependencies) {
