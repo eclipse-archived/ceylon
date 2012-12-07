@@ -97,5 +97,7 @@ void test() {
     function func(String s, Integer i=0, Float f=0.0) => 1+i;
     Integer(String, Integer=, Float=) ref1 = func;
     Integer(String, Integer, Float) ref2 = func;
+    Integer(String, Integer) ref3 = func;
+    Integer(String) ref4 = func;
     
 }
