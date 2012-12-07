@@ -94,4 +94,9 @@ public class ReflectionModuleManager extends LazyModuleManager {
             getModelLoader().setupWithNoStandardModules();
         }
     }
+    
+    @Override
+    protected boolean shouldLoadTransitiveDependencies() {
+        return true;
+    }
 }

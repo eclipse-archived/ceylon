@@ -82,7 +82,7 @@ public abstract class LazyModuleManager extends ModuleManager {
         
         if(moduleLoadedFromSource){
             super.resolveModule(artifact, module, moduleImport, dependencyTree, phasedUnitsOfDependencies, forCompiledModule);
-        }else if(forCompiledModule || isLanguageModule){
+        }else if(forCompiledModule || isLanguageModule || shouldLoadTransitiveDependencies()){
             // we only add stuff to the classpath and load the modules if we need them to compile our modules
             getModelLoader().addModuleToClassPath(module, artifact); // To be able to load it from the corresponding archive
             Module compiledModule = getModelLoader().loadCompiledModule(moduleName);
@@ -117,6 +117,15 @@ public abstract class LazyModuleManager extends ModuleManager {
         }
     }
 
+    /**
+     * To be overriden by reflection module manager, because reflection requires even types of private members
+     * of imported modules to be in the classpath, and those could be of unimported modules (since they're private
+     * that's allowed).
+     */
+    protected boolean shouldLoadTransitiveDependencies(){
+        return false;
+    }
+    
     @Override
     protected abstract Module createModule(List<String> moduleName, String version);
     
