@@ -543,6 +543,20 @@ public class CMRTest extends CompilerTest {
     }
 
     @Test
+    public void testMdlAetherIgnoreRecursiveDependencies() throws IOException{
+        // Try to compile the ceylon module
+        CeyloncTaskImpl ceylonTask = getCompilerTask(Arrays.asList("-out", destDir, "-rep", "aether", "-verbose:cmr"), 
+                (DiagnosticListener<? super FileObject>)null, 
+                "modules/aetherIgnoreDependencies/module.ceylon", "modules/aetherIgnoreDependencies/foo.ceylon");
+        assertEquals(Boolean.TRUE, ceylonTask.call());
+        // We're assuming a standard Maven configuration here!
+        File camelJar = new File(System.getProperty("user.home"), ".m2/repository/org/apache/camel/camel-core/2.9.4/camel-core-2.9.4.jar");
+        assertTrue(camelJar.exists());
+        File camelJettyJar = new File(System.getProperty("user.home"), ".m2/repository/org/apache/camel/camel-jetty/2.9.4/camel-jetty-2.9.4.jar");
+        assertTrue(camelJettyJar.exists());
+    }
+
+    @Test
     public void testMdlAetherDependencyCustom() throws IOException{
         // Try to compile the ceylon module
         File settingsFile = new File(getPackagePath(), "modules/aethercustom/settings.xml");
@@ -586,7 +600,7 @@ public class CMRTest extends CompilerTest {
     }
 
     @Test
-    public void testMdlMultipleVersions(){
+    public void testMdlMultipleVersionsOnSameCompilation(){
         // Compile module A/1
         Boolean result = getCompilerTask(Arrays.asList("-src", getPackagePath()+"/modules/multiversion/a1"),
                 "modules/multiversion/a1/a/module.ceylon", "modules/multiversion/a1/a/package.ceylon", "modules/multiversion/a1/a/A.ceylon").call();
@@ -603,6 +617,82 @@ public class CMRTest extends CompilerTest {
         compareErrors(collector.get(Diagnostic.Kind.ERROR), new CompilerError(-1, "Trying to import or compile two different versions of the same module: a (1 and 2)"));
     }
 
+    @Test
+    public void testMdlMultipleVersionsDuringImport(){
+        // Compile module A/1
+        Boolean result = getCompilerTask(Arrays.asList("-src", getPackagePath()+"/modules/multiversion/a1"),
+                "modules/multiversion/a1/a/module.ceylon", "modules/multiversion/a1/a/package.ceylon", "modules/multiversion/a1/a/A.ceylon").call();
+        Assert.assertEquals(Boolean.TRUE, result);
+
+        // Compile module A/2
+        result = getCompilerTask(Arrays.asList("-src", getPackagePath()+"/modules/multiversion/a2"),
+                "modules/multiversion/a2/a/module.ceylon", "modules/multiversion/a2/a/package.ceylon", "modules/multiversion/a2/a/A.ceylon").call();
+        Assert.assertEquals(Boolean.TRUE, result);
+
+        ErrorCollector collector = new ErrorCollector();
+        // Compile module cImportsATwice which imports both A/1 and A/2
+        result = getCompilerTask(Arrays.asList("-src", getPackagePath()+"/modules/multiversion/c"),
+                collector,
+                "modules/multiversion/c/cImportsATwice/module.ceylon", "modules/multiversion/c/cImportsATwice/C.ceylon").call();
+        Assert.assertEquals(Boolean.FALSE, result);
+        
+        compareErrors(collector.get(Diagnostic.Kind.ERROR), new CompilerError(-1, "Trying to import or compile two different versions of the same module: a (1 and 2)"));
+    }
+
+    @Test
+    public void testMdlMultipleVersionsDuringDependencyImport(){
+        // Compile module A/1
+        Boolean result = getCompilerTask(Arrays.asList("-src", getPackagePath()+"/modules/multiversion/a1"),
+                "modules/multiversion/a1/a/module.ceylon", "modules/multiversion/a1/a/package.ceylon", "modules/multiversion/a1/a/A.ceylon").call();
+        Assert.assertEquals(Boolean.TRUE, result);
+
+        // Compile module A/2
+        result = getCompilerTask(Arrays.asList("-src", getPackagePath()+"/modules/multiversion/a2"),
+                "modules/multiversion/a2/a/module.ceylon", "modules/multiversion/a2/a/package.ceylon", "modules/multiversion/a2/a/A.ceylon").call();
+        Assert.assertEquals(Boolean.TRUE, result);
+
+        // Compile module B/1
+        result = getCompilerTask(Arrays.asList("-src", getPackagePath()+"/modules/multiversion/b"),
+                "modules/multiversion/b/b/module.ceylon", "modules/multiversion/b/b/package.ceylon", "modules/multiversion/b/b/B.ceylon").call();
+        Assert.assertEquals(Boolean.TRUE, result);
+
+        // Compile module cImportsABIndirectlyOK which imports both A/1 and A/2
+        result = getCompilerTask(Arrays.asList("-src", getPackagePath()+"/modules/multiversion/c"),
+                "modules/multiversion/c/cImportsABIndirectlyOK/module.ceylon", "modules/multiversion/c/cImportsABIndirectlyOK/C.ceylon").call();
+        Assert.assertEquals(Boolean.TRUE, result);
+    }
+
+    @Test
+    public void testMdlMultipleVersionsDuringImplicitImport(){
+        // Compile module A/1
+        Boolean result = getCompilerTask(Arrays.asList("-src", getPackagePath()+"/modules/multiversion/a1"),
+                "modules/multiversion/a1/a/module.ceylon", "modules/multiversion/a1/a/package.ceylon", "modules/multiversion/a1/a/A.ceylon").call();
+        Assert.assertEquals(Boolean.TRUE, result);
+
+        // Compile module A/2
+        result = getCompilerTask(Arrays.asList("-src", getPackagePath()+"/modules/multiversion/a2"),
+                "modules/multiversion/a2/a/module.ceylon", "modules/multiversion/a2/a/package.ceylon", "modules/multiversion/a2/a/A.ceylon").call();
+        Assert.assertEquals(Boolean.TRUE, result);
+
+        // Compile module bExportsA1/1
+        result = getCompilerTask(Arrays.asList("-src", getPackagePath()+"/modules/multiversion/b"),
+                "modules/multiversion/b/bExportsA1/module.ceylon", "modules/multiversion/b/bExportsA1/package.ceylon", "modules/multiversion/b/bExportsA1/B.ceylon").call();
+        Assert.assertEquals(Boolean.TRUE, result);
+
+        // Compile module cImportsABIndirectlyFail which imports both A/1 and A/2
+        ErrorCollector collector = new ErrorCollector();
+        result = getCompilerTask(Arrays.asList("-src", getPackagePath()+"/modules/multiversion/c"),
+                collector,
+                "modules/multiversion/c/cImportsABIndirectlyFail/module.ceylon", "modules/multiversion/c/cImportsABIndirectlyFail/C.ceylon").call();
+        Assert.assertEquals(Boolean.FALSE, result);
+        
+        compareErrors(collector.get(Diagnostic.Kind.ERROR),
+                new CompilerError(1, "Module (transitively) imports conflicting versions of a. Version 1 and version 2 found and visible at the same time."),
+                new CompilerError(21, "package not found in dependent modules: b"),
+                new CompilerError(23, "type declaration does not exist or is ambiguous: B"));
+    }
+
+    
     private int countEntries(JarFile jar) {
         int count = 0;
         Enumeration<JarEntry> entries = jar.entries();
