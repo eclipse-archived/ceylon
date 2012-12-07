@@ -946,15 +946,19 @@ public class ClassTransformer extends AbstractTransformer {
 
         if (useField || Decl.withinInterface(decl) || lazy) {
             boolean generateCodeAsIfForCompanion = lazy && !Decl.withinInterface(decl);
-            // Generate getter in main class/interface
-            classBuilder.attribute(makeGetter(decl, generateCodeAsIfForCompanion));
+            if (!Decl.withinInterface(decl) || model.isShared()) {
+                // Generate getter in main class or interface (when shared)
+                classBuilder.attribute(makeGetter(decl, generateCodeAsIfForCompanion));
+            }
             if (Decl.withinInterface(decl)) {
                 // Generate getter in companion class
                 classBuilder.getCompanionBuilder((Interface)decl.getDeclarationModel().getContainer()).attribute(makeGetter(decl, true));
             }
             if (Decl.isMutable(decl)) {
-                // Generate setter in main class/interface
-                classBuilder.attribute(makeSetter(decl, generateCodeAsIfForCompanion));
+                if (!Decl.withinInterface(decl) || model.isShared()) {
+                    // Generate setter in main class or interface (when shared)
+                    classBuilder.attribute(makeSetter(decl, generateCodeAsIfForCompanion));
+                }
                 if (Decl.withinInterface(decl)) {
                     // Generate setter in companion class
                     classBuilder.getCompanionBuilder((Interface)decl.getDeclarationModel().getContainer()).attribute(makeSetter(decl, true));
