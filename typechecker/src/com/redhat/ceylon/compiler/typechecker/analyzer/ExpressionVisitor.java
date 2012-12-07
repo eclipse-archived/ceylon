@@ -2305,7 +2305,6 @@ private void checkPositionalArguments(ParameterList pl, ProducedReference pr,
 				if (lnegated) lindex = -lindex;
 				List<ProducedType> elementTypes = argtypes(pt);
 				boolean sequenced = argsequenced(pt);
-				//TODO: handle terminating type of tuple type!
 				List<ProducedType> list = new ArrayList<ProducedType>();
 				if (elementTypes!=null) {
 					if (lindex<0) {
@@ -2324,7 +2323,7 @@ private void checkPositionalArguments(ParameterList pl, ProducedReference pr,
 						ProducedType rt = unit.getIteratedType(it);
 						list.add(rt);
 					}
-					that.setTypeModel(unit.getTupleType(list, sequenced));
+					that.setTypeModel(unit.getTupleType(list, sequenced, -1)); //TODO: handle defaulted elements
 				}
 			}
 		}

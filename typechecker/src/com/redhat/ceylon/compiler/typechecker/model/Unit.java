@@ -362,7 +362,7 @@ public class Unit {
     }
     
     ProducedType getCallableType(ProducedReference ref, ProducedType rt) {
-    	if ( isTypeUnknown(ref.getType())) {
+    	if (isTypeUnknown(ref.getType())) {
     		//special case for forward reference to member
     		//with inferred type TODO: something better
     		return new UnknownType(this).getType();
@@ -370,12 +370,19 @@ public class Unit {
     	ProducedType result = rt;
     	if (ref.getDeclaration() instanceof Functional) {
     	    List<ParameterList> pls = ((Functional) ref.getDeclaration()).getParameterLists();
-    	    boolean hasSequenced = false;
             for (int i=pls.size()-1; i>=0; i--) {
+        	    boolean hasSequenced = false;
+        	    int firstDefaulted = -1;
     	        List<ProducedType> args = new ArrayList<ProducedType>();
-    	    	for (Parameter p: pls.get(i).getParameters()) {
+    	    	List<Parameter> ps = pls.get(i).getParameters();
+				for (int j=0; j<ps.size(); j++) {
+					Parameter p = ps.get(j);
     	    		ProducedTypedReference np = ref.getTypedParameter(p);
     	    		ProducedType npt = np.getType();
+    	    		if (p.isDefaulted() && 
+    	    				firstDefaulted==-1) {
+    	    			firstDefaulted = j;
+    	    		}
 					if (np.getDeclaration() instanceof Functional) {
     	    			args.add(getCallableType(np, npt));
     	    		}
@@ -388,13 +395,14 @@ public class Unit {
     	    		}
     	    	}
     	    	result = producedType(getCallableDeclaration(), result,
-    	    			getTupleType(args, hasSequenced));
+    	    			getTupleType(args, hasSequenced, firstDefaulted));
     	    }
     	}
     	return result;
     }
     
-    public ProducedType getTupleType(List<ProducedType> elemTypes, boolean sequenced) {
+    public ProducedType getTupleType(List<ProducedType> elemTypes, 
+    		boolean sequenced, int firstDefaulted) {
     	ProducedType result = getEmptyDeclaration().getType();
     	ProducedType union = getBottomDeclaration().getType();
     	int last = elemTypes.size()-1;
@@ -406,6 +414,9 @@ public class Unit {
     		}
     		else {
     			result = producedType(getTupleDeclaration(), union, elemType, result);
+    			if (firstDefaulted>=0 && i>=firstDefaulted) {
+    				result = unionType(result, getEmptyDeclaration().getType(), this);
+    			}
     		}
     	}
     	return result;

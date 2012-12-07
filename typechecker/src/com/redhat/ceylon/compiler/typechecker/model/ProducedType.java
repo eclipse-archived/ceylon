@@ -1296,6 +1296,24 @@ public class ProducedType extends ProducedReference {
     private static String argtypes(ProducedType args) {
     	if (args!=null) {
         	Unit unit = args.getDeclaration().getUnit();
+			boolean defaulted=false;
+			if (args.getDeclaration() instanceof UnionType) {
+	        	List<ProducedType> cts = args.getDeclaration().getCaseTypes();
+	        	if (cts.size()==2) {
+	        		TypeDeclaration lc = cts.get(0).getDeclaration();
+					if (lc instanceof Interface && 
+							lc.equals(unit.getEmptyDeclaration())) {
+						args = cts.get(1);
+	        			defaulted = true;
+	        		}
+	        		TypeDeclaration rc = cts.get(1).getDeclaration();
+					if (lc instanceof Interface &&
+							rc.equals(unit.getEmptyDeclaration())) {
+						args = cts.get(0);
+	        			defaulted = true;
+	        		}
+	        	}
+			}
     		if (args.getDeclaration() instanceof ClassOrInterface) {
     			if (args.getDeclaration().equals(unit.getTupleDeclaration())) {
     				List<ProducedType> tal = args.getTypeArgumentList();
@@ -1306,26 +1324,26 @@ public class ProducedType extends ProducedReference {
     						String argtype = first.getProducedTypeName();
     						if (rest.getDeclaration() instanceof Interface &&
     								rest.getDeclaration().equals(unit.getEmptyDeclaration())) {
-    							return argtype;
+    							return defaulted ? argtype + "=" : argtype;
     						}
-    						else {
-    							String argtypes = argtypes(rest);
-    							if (argtypes!=null) {
-    								return argtype + ", " + argtypes;
-    							}
+    						String argtypes = argtypes(rest);
+    						if (argtypes!=null) {
+    							return defaulted ? 
+    									argtype + "=, " + argtypes : 
+    									argtype + ", " + argtypes;
     						}
     					}
     				}
     			}
     			else if (args.getDeclaration().equals(unit.getEmptyDeclaration())) {
-    				return "";
+    				return defaulted ? "=" : "";
     			}
-        		else if (args.getDeclaration().equals(unit.getSequentialDeclaration())) {
-        			ProducedType elementType = unit.getIteratedType(args);
-        			if (elementType!=null) { 
-        				return elementType.getProducedTypeName() + "...";
-        			}
-        		}
+    			else if (!defaulted && args.getDeclaration().equals(unit.getSequentialDeclaration())) {
+    				ProducedType elementType = unit.getIteratedType(args);
+    				if (elementType!=null) { 
+    					return elementType.getProducedTypeName() + "...";
+    				}
+    			}
     		}
     	}
     	return null;
