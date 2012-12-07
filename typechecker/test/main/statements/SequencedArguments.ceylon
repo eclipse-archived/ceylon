@@ -22,11 +22,14 @@ class SequencedArguments() {
     
     print(" ", "hello", "world");
     print(" ", names...);
+    print(" ", "hello", "world", names...);
     printSum(1,2,3);
     printSum({1,2,3}...);
     @error print(" ", names);
+    @error print(" ", "hello", names, "world");
     @error print(" ", "hello"...);
     @error print(" ", "hello", "world"...);
+    @error print(" ", "hello", names, "world", names...);
     @error print(" "...);
     @error printSum(1...);
     printAll(names);
