@@ -61,21 +61,29 @@ public abstract class LazyModuleManager extends ModuleManager {
 
     @Override
     public void resolveModule(ArtifactResult artifact, Module module, ModuleImport moduleImport, 
-            LinkedList<Module> dependencyTree, List<PhasedUnits> phasedUnitsOfDependencies) {
+            LinkedList<Module> dependencyTree, List<PhasedUnits> phasedUnitsOfDependencies, boolean forCompiledModule) {
         String moduleName = module.getNameAsString();
-        // check for an already loaded module with the same name but different version
-        for(Module loadedModule : getContext().getModules().getListOfModules()){
-            if(loadedModule.getNameAsString().equals(moduleName)
-                    && !loadedModule.getVersion().equals(module.getVersion())){
-                getModelLoader().logDuplicateModuleError(module, loadedModule);
-                // abort
-                return;
+        boolean moduleLoadedFromSource = isModuleLoadedFromSource(moduleName);
+        boolean isLanguageModule = module == module.getLanguageModule();
+        
+        // if this is for a module we're compiling, or for an indirectly imported module, we need to check because the
+        // module in question will be in the classpath
+        if(moduleLoadedFromSource || forCompiledModule){
+            // check for an already loaded module with the same name but different version
+            for(Module loadedModule : getContext().getModules().getListOfModules()){
+                if(loadedModule.getNameAsString().equals(moduleName)
+                        && !loadedModule.getVersion().equals(module.getVersion())){
+                    getModelLoader().logDuplicateModuleError(module, loadedModule);
+                    // abort
+                    return;
+                }
             }
         }
         
-        if(isModuleLoadedFromSource(moduleName)){
-            super.resolveModule(artifact, module, moduleImport, dependencyTree, phasedUnitsOfDependencies);
-        }else{
+        if(moduleLoadedFromSource){
+            super.resolveModule(artifact, module, moduleImport, dependencyTree, phasedUnitsOfDependencies, forCompiledModule);
+        }else if(forCompiledModule || isLanguageModule){
+            // we only add stuff to the classpath and load the modules if we need them to compile our modules
             getModelLoader().addModuleToClassPath(module, artifact); // To be able to load it from the corresponding archive
             Module compiledModule = getModelLoader().loadCompiledModule(moduleName);
             if(compiledModule == null && !module.isDefault()){
