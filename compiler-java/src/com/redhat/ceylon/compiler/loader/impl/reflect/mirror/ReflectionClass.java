@@ -79,7 +79,7 @@ public class ReflectionClass implements ClassMirror {
     public PackageMirror getPackage() {
         if(pkg != null)
             return pkg;
-        pkg = new ReflectionPackage(klass.getPackage());
+        pkg = new ReflectionPackage(klass);
         return pkg;
     }
 

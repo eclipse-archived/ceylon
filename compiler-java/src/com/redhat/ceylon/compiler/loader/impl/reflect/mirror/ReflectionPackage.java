@@ -24,16 +24,33 @@ import com.redhat.ceylon.compiler.loader.mirror.PackageMirror;
 
 public class ReflectionPackage implements PackageMirror {
 
-    private Package pkg;
+    private String pkg;
 
-    public ReflectionPackage(Package pkg) {
-        this.pkg = pkg;
+    public ReflectionPackage(Class<?> klass) {
+        if(klass.isPrimitive() || klass.isArray()){
+            // primitives and arrays don't have a package, so we pretend they come from java.lang
+            pkg = "java.lang";
+        }else if(klass.getPackage() != null){
+            // short road
+            pkg = klass.getPackage().getName();
+        }else{
+            // long road
+            while(klass.getEnclosingClass() != null){
+                klass = klass.getEnclosingClass();
+            }
+            String name = klass.getName();
+            int lastDot = name.lastIndexOf('.');
+            if(lastDot == -1)
+                pkg = name;
+            else
+                pkg = name.substring(0, lastDot);
+        }
+        
     }
 
     @Override
     public String getQualifiedName() {
-        // primitives and arrays don't have a package, so we pretend they come from java.lang
-        return pkg == null ? "java.lang" : pkg.getName();
+        return pkg;
     }
 
 }
