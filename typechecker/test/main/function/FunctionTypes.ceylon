@@ -225,3 +225,15 @@ alias CSI => Callable<String,[Integer]>;
 String callCSI(CSI csi) {
     return csi(1);
 }
+
+void handle(String s, Float x=0.0, Boolean b=false) {}
+void useHandle() {
+    value f = handle;
+    @error handle();
+    handle("");
+    @error handle(1);
+    handle("", 1.0);
+    @error handle("", 1);
+    handle("", 1.0, true);
+    @error handle("", 1.0, 1);
+}
