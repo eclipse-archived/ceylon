@@ -100,11 +100,7 @@ shared interface Iterable<out Element>
     doc "A sequence containing the elements returned by the
          iterator."
     shared default Element[] sequence {
-        value builder = SequenceBuilder<Element>();
-        for (x in this) {
-            builder.append(x);
-        }
-        return builder.sequence;
+        return [ for (x in this) x ];
     }
     
     doc "An `Iterable` containing the results of applying
