@@ -1,0 +1,22 @@
+package com.redhat.ceylon.compiler.java.test.issues.bug09xx;
+
+interface Bug911 {
+    
+    @.java.lang.Override
+    public .java.lang.String toString();
+}
+final class Bug911$impl {
+    
+    Bug911$impl(.com.redhat.ceylon.compiler.java.test.issues.bug09xx.Bug911 $this) {
+        this.$this = $this;
+    }
+    private final .com.redhat.ceylon.compiler.java.test.issues.bug09xx.Bug911 $this;
+    
+    private final .java.lang.String getText() {
+        return "bar";
+    }
+    
+    public final .java.lang.String toString() {
+        return getText();
+    }
+}
