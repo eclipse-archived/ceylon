@@ -2193,13 +2193,15 @@ tupleElementType returns [Type type]
       { $type = $t.type; }
       (
         SPECIFY 
-        { DefaultedType st = new DefaultedType($SPECIFY);
+        { DefaultedType st = new DefaultedType(null);
           st.setType($t.type); 
+          st.setEndToken($SPECIFY);
           $type = st; }
       |
         ELLIPSIS
-        { SequencedType st = new SequencedType($ELLIPSIS);
+        { SequencedType st = new SequencedType(null);
           st.setType($t.type); 
+          st.setEndToken($SPECIFY);
           $type = st; }
       )?
     ;
@@ -2243,7 +2245,9 @@ iterableType returns [IterableType type]
      t=type
      { $type.setElementType($t.type); }
      ELLIPSIS
+     { $type.setEndToken($ELLIPSIS); }
      RBRACE
+     { $type.setEndToken($RBRACE); }
    ;
 
 entryType returns [StaticType type]

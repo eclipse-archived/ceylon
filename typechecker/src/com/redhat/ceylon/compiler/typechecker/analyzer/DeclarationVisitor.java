@@ -37,6 +37,7 @@ import com.redhat.ceylon.compiler.typechecker.model.Value;
 import com.redhat.ceylon.compiler.typechecker.model.ValueParameter;
 import com.redhat.ceylon.compiler.typechecker.tree.Node;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree;
+import com.redhat.ceylon.compiler.typechecker.tree.Tree.SequencedType;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.SpecifierOrInitializerExpression;
 import com.redhat.ceylon.compiler.typechecker.tree.Visitor;
 
@@ -664,25 +665,28 @@ public class DeclarationVisitor extends Visitor {
             if (p!=null) {
                 if (p.getDefaultArgument()!=null) {
                     if (foundSequenced) {
-                        p.addError("default parameter must occur before sequenced parameter");
+                    	p.getDefaultArgument()
+                            .addError("defaulted parameter must occur before sequenced parameter");
                     }
                     foundDefault = true;
                     if (!first) {
-                        p.addError("only the first parameter list may have default parameters");
+                        p.getDefaultArgument()
+                            .addError("only the first parameter list may have defaulted parameters");
                     }
                 }
                 else if (p.getType() instanceof Tree.SequencedType) {
+                    SequencedType st = (Tree.SequencedType) p.getType();
                     if (foundSequenced) {
-                        p.addError("parameter list may have at most one sequenced parameter");
+						st.addError("parameter list may have at most one sequenced parameter");
                     }
                     foundSequenced = true;
                     if (!first) {
-                        p.addError("only the first parameter list may have a sequenced parameter");
+                    	st.addError("only the first parameter list may have a sequenced parameter");
                     }
                 }
                 else {
                     if (foundDefault) {
-                        p.addError("required parameter must occur before default parameters");
+                        p.addError("required parameter must occur before defaulted parameters");
                     }
                     if (foundSequenced) {
                         p.addError("required parameter must occur before sequenced parameter");
