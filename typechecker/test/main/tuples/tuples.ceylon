@@ -100,4 +100,11 @@ void test() {
     Integer(String, Integer) ref3 = func;
     Integer(String) ref4 = func;
     
+    function var(Float... xs) => 1;
+    Integer(Float...) ref5 = var;
+    Integer() ref6 = var;
+    Integer(Float) ref7 = var;
+    Integer(Float, Float) ref8 = var;
+    Integer(Float, Float...) ref9 = var;
+    
 }
