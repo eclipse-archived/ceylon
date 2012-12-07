@@ -15,13 +15,13 @@ var Iterable,Iterator;//IGNORE
 function List(wat) {
     return wat;
 }
-initTypeProtoI(List, 'ceylon.language::List', $init$Collection(), $init$Correspondence(), $init$Ranged(), $init$Cloneable());
 function $init$List() {
     if (List.$$===undefined) {
         initTypeProtoI(List, 'ceylon.language::List', $init$Collection(), $init$Correspondence(), $init$Ranged(), $init$Cloneable());
     }
     return List;
 }
+$init$List();
 var List$proto = List.$$.prototype;
 List$proto.getSize = function() {
     var li = this.getLastIndex();
@@ -109,13 +109,13 @@ ListIterator.$$.prototype.next = function() {
 function Sequential($$sequential) {
     return $$sequential;
 }
-initTypeProtoI(Sequential, 'ceylon.language::Sequential', List, $init$FixedSized(), $init$Ranged(), $init$Cloneable());
 function $init$Sequential() {
     if (Sequential.$$===undefined) {
         initTypeProtoI(Sequential, 'ceylon.language::Sequential', $init$List(), $init$FixedSized(), $init$Ranged(), $init$Cloneable());
     }
     return Sequential;
 }
+$init$Sequential();
 exports.Sequential=Sequential;
 
 function Empty() {

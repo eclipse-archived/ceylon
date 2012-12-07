@@ -31,10 +31,10 @@ function Array$() {
     return that;
 }
 initExistingType(Array$, Array, 'ceylon.language::Array', Object$, FixedSized,
-        Cloneable, Ranged, List);
+        Cloneable, Ranged, $init$List());
 var Array$proto = Array.prototype;
 var origArrToString = Array$proto.toString;
-inheritProtoI(Array$, Object$, FixedSized, Cloneable, Ranged, List);
+inheritProtoI(Array$, Object$, FixedSized, Cloneable, Ranged, $init$List());
 Array$proto.toString = origArrToString;
 exports.Array=Array$;
 
@@ -45,7 +45,7 @@ initTypeProto(EmptyArray, 'ceylon.language::EmptyArray', Array$, None);
 function ArrayList(items) {
     return items;
 }
-initTypeProto(ArrayList, 'ceylon.language::ArrayList', Array$, List);
+initTypeProto(ArrayList, 'ceylon.language::ArrayList', Array$, $init$List());
 function ArraySequence(/* js array */value) {
     value.$seq = true;
     return value;

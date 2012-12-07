@@ -12,58 +12,16 @@ function ArraySequence(x){}//IGNORE
 var exports,Container,$finished,Cloneable,smaller,larger,Object$,IdentifiableObject;//IGNORE
 var Iterable,Iterator;//IGNORE
 
-function Set(wat) {
-    return wat;
-}
-initTypeProtoI(Set, 'ceylon.language::Set', Collection, Cloneable);
-var Set$proto = Set.$$.prototype;
-Set$proto.superset = function(set) {
-    var iter = set.getIterator();
-    var elem; while ((elem = iter.next()) !== $finished) {
-        if (!this.contains(elem)) {
-            return false;
-        }
-    }
-    return true;
-}
-Set$proto.subset = function(set) {
-    var iter = this.getIterator();
-    var elem; while ((elem = iter.next()) !== $finished) {
-        if (!set.contains(elem)) {
-            return false;
-        }
-    }
-    return true;
-}
-Set$proto.equals = function(other) {
-    if (isOfType(other, 'ceylon.language::Set')) {
-        if (other.getSize().equals(this.getSize())) {
-            var iter = this.getIterator();
-            var elem; while ((elem = iter.next()) !== $finished) {
-                if (!other.contains(elem)) {
-                    return false;
-                }
-            }
-            return true;
-        }
-    }
-    return false;
-}
-Set$proto.getHash = function() {
-    var hc = 1;
-    var iter=this.getIterator();
-    var elem;while((elem=iter.next())!=$finished) {
-        hc*=31;
-        hc+=elem.getHash();
-    }
-    return hc;
-}
-exports.Set=Set;
-
 function Map(wat) {
     return wat;
 }
-initTypeProtoI(Map, 'ceylon.language::Map', Collection, $init$Correspondence(), Cloneable);
+function $init$Map() {
+    if (Map.$$===undefined) {
+        initTypeProtoI(Map, 'ceylon.language::Map', Collection, $init$Correspondence(), Cloneable);
+    }
+    return Map;
+}
+$init$Map();
 var Map$proto = Map.$$.prototype;
 Map$proto.equals = function(other) {
     if (isOfType(other, 'ceylon.language::Map') && other.getSize().equals(this.getSize())) {
@@ -381,44 +339,6 @@ HashSetIterator.$$.prototype.next = function() {
     var entry = this.mapIt.next();
     return (entry !== $finished) ? entry.getKey() : $finished;
 }
-
-function LazyMap(entries, map) {
-    if (map===undefined) {map = new LazyMap.$$;}
-    IdentifiableObject(map);
-    map.entries = entries===undefined?empty:entries;
-    return map;
-}
-initTypeProto(LazyMap, 'ceylon.language::LazyMap', IdentifiableObject, Map);
-var LazyMap$proto = LazyMap.$$.prototype;
-LazyMap$proto.getEmpty = function() { return this.entries.getEmpty(); }
-LazyMap$proto.getSize = function() {
-    var it = this.entries.getIterator();
-    var count = 0;
-    while (it.next() !== $finished) { ++count; }
-    return count;
-}
-LazyMap$proto.getClone = function() { return this; }
-LazyMap$proto.getIterator = function() { return this.entries.getIterator(); }
-LazyMap$proto.item = function(key) {
-    var it = this.entries.getIterator();
-    var entry;
-    while ((entry=it.next()) !== $finished) {
-        if (entry.getKey().equals(key)) { return entry.getItem(); }
-    }
-    return null;
-}
-LazyMap$proto.equals = function(other) {
-    var hmap = HashMap(this.entries);
-    var it = other.getIterator();
-    var count = 0;
-    var entry;
-    while ((entry=it.next()) !== $finished) {
-        if (!hmap.contains(entry)) { return false; }
-        ++count;
-    }
-    return count==hmap.getSize();
-}
-exports.LazyMap=LazyMap;
 
 function LazySet(elems, set) {
     if (set===undefined) {set = new LazySet.$$;}

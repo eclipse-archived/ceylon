@@ -1,22 +1,22 @@
 #This is the list of language module files that can be compiled from their Ceylon source
 #each line states a list of files to be compiled in one pass
+#Correspondence
 Binary,Castable,Cloneable,Closeable,Ranged
 Container,ContainerWithFirstElement,Iterator,Sized,Collection,Category
 ChainedIterator
-#Correspondence
 Entry,Comparable,Invertable,Summable,Ordinal,Numeric,Scalar,Exponentiable,Integral
 #Finished
 FixedSized,None,Some
 #Identifiable
 #IdentifiableObject
+#Iterable
 #List
-LazyList
 Exception,NegativeNumberException,OverflowException,RecursiveInitializationException
 #Nothing
 #Number
 #Sequence
 #Sequential
-#Set
+Set,LazyMap,LazyList
 #Range
 #Singleton
 any,byDecreasing,byIncreasing,byItem,byKey,coalesce,count,elements,emptyOrSingleton,entries,equalTo,every,first,forItem,forKey,greaterThan,join,largest,lessThan,max,min,smallest,sum,zip,print,bottom
