@@ -99,9 +99,7 @@ shared interface Iterable<out Element>
     
     doc "A sequence containing the elements returned by the
          iterator."
-    shared default Element[] sequence {
-        return [ for (x in this) x ];
-    }
+    shared default Element[] sequence => [ for (x in this) x ];
     
     doc "An `Iterable` containing the results of applying
          the given mapping to the elements of to this 
