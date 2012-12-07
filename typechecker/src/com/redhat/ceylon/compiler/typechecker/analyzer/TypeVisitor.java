@@ -423,38 +423,33 @@ public class TypeVisitor extends Visitor {
     @Override
     public void visit(Tree.FunctionType that) {
         super.visit(that);
-        List<ProducedType> args = new ArrayList<ProducedType>();
-        boolean sequenced = false;
-        List<Tree.Type> ats = that.getArgumentTypes();
-		for (int i=0; i<ats.size(); i++) {
-			Tree.Type st = ats.get(i);
-			ProducedType arg = st.getTypeModel();
-        	if (arg!=null && st instanceof Tree.SequencedType) {
-				if (i!=ats.size()-1) {
-					st.addError("variant element must occur last in a function type parameter list");
-				}
-				else {
-	        		sequenced = true;
-					arg = unit.getIteratedType(arg);
-				}
-        	}
-        	args.add(arg);
-        }
-        that.setTypeModel(producedType(unit.getCallableDeclaration(),
+		that.setTypeModel(producedType(unit.getCallableDeclaration(),
         		that.getReturnType().getTypeModel(),
-        		unit.getTupleType(args, sequenced)));
+        		getTupleType(that.getArgumentTypes())));
     }
     
     @Override
     public void visit(Tree.TupleType that) {
         super.visit(that);
-        List<ProducedType> args = new ArrayList<ProducedType>();
+		that.setTypeModel(getTupleType(that.getElementTypes()));
+    }
+
+	private ProducedType getTupleType(List<Tree.Type> ets) {
+		List<ProducedType> args = new ArrayList<ProducedType>();
         boolean sequenced = false;
-		List<Tree.Type> ets = that.getElementTypes();
+		int firstDefaulted = -1;
 		for (int i=0; i<ets.size(); i++) {
 			Tree.Type st = ets.get(i);
-			ProducedType arg = st.getTypeModel();
-			if (arg!=null && st instanceof Tree.SequencedType) {
+			ProducedType arg = st==null ? null : st.getTypeModel();
+			if (arg==null) {
+				arg = new UnknownType(unit).getType();
+			}
+			else if (st instanceof Tree.DefaultedType) {
+				if (firstDefaulted==-1) {
+					firstDefaulted = i;
+				}
+			}
+			else if (st instanceof Tree.SequencedType) {
 				if (i!=ets.size()-1) {
 					st.addError("variant element must occur last in a tuple type");
 				}
@@ -465,8 +460,8 @@ public class TypeVisitor extends Visitor {
 			}
 			args.add(arg);
         }
-        that.setTypeModel(unit.getTupleType(args, sequenced));
-    }
+        return unit.getTupleType(args, sequenced, firstDefaulted);
+	}
     
     //TODO: copy/pasted from ExpressionVisitor
 	private static TypeDeclaration getSupertypeDeclaration(Tree.BaseType that, 
@@ -598,6 +593,14 @@ public class TypeVisitor extends Visitor {
         ProducedType type = that.getType().getTypeModel();
         if (type!=null) {
             that.setTypeModel(unit.getSequentialType(type));
+        }
+    }
+
+    public void visit(Tree.DefaultedType that) {
+        super.visit(that);
+        ProducedType type = that.getType().getTypeModel();
+        if (type!=null) {
+            that.setTypeModel(type);
         }
     }
 

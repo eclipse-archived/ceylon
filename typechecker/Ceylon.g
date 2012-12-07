@@ -2191,7 +2191,12 @@ typeArguments returns [TypeArgumentList typeArgumentList]
 tupleElementType returns [Type type]
     : t=type
       { $type = $t.type; }
-      ( 
+      (
+        SPECIFY 
+        { DefaultedType st = new DefaultedType($SPECIFY);
+          st.setType($t.type); 
+          $type = st; }
+      |
         ELLIPSIS
         { SequencedType st = new SequencedType($ELLIPSIS);
           st.setType($t.type); 

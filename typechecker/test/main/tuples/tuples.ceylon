@@ -85,4 +85,17 @@ void test() {
         Element? e = t[3];
     }
     
+    [String,Float=,Integer=] tupWithOptionals1 = ["hello"];
+    [String,Float=,Integer=] tupWithOptionals2 = ["hello", 1.0];
+    [String,Float=,Integer=] tupWithOptionals3 = ["hello", 1.0, 1];
+    @error [String,Float=,Integer=] tupWithOptionals4 = [];
+    @error [String,Float,Integer=] tupWithOptionals4 = ["hello"];
+
+    [Integer=] noint = [];
+    [Integer=] int = [2];
+
+    function func(String s, Integer i=0, Float f=0.0) => 1+i;
+    Integer(String, Integer=, Float=) ref1 = func;
+    Integer(String, Integer, Float) ref2 = func;
+    
 }
