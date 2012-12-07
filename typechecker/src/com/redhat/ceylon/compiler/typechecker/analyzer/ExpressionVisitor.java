@@ -1857,7 +1857,7 @@ public class ExpressionVisitor extends Visitor {
             int i=0;
             for (; i<(invokeAsSequenced?paramCount-1:paramCount) && i<argCount; i++) {
                 Tree.PositionalArgument arg = args.get(i);
-                checkAssignable(getPositionalArgumentType(arg, sequenced && i==paramCount), 
+                checkAssignable(getPositionalArgumentType(arg, sequenced && i==paramCount-1), 
                         typeArgs.get(i), arg, 
                         "argument must be assignable to parameter type");
             }
