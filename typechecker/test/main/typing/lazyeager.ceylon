@@ -47,6 +47,7 @@ void lazyeager() {
     @error f(` `, sequential...); //TODO!!!
     value g = f;
     g("hello"...);
+    g(sequential...);
     @error g(` `, sequential...); //TODO!!!
 
 }
