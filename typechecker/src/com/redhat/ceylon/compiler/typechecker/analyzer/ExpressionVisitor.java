@@ -56,6 +56,7 @@ import com.redhat.ceylon.compiler.typechecker.model.Value;
 import com.redhat.ceylon.compiler.typechecker.model.ValueParameter;
 import com.redhat.ceylon.compiler.typechecker.tree.Node;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree;
+import com.redhat.ceylon.compiler.typechecker.tree.Tree.Ellipsis;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.Expression;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.SupertypeQualifier;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.TypedArgument;
@@ -1839,35 +1840,39 @@ public class ExpressionVisitor extends Visitor {
                     .getPositionalArguments();
             int argCount = args.size();
             int paramCount = typeArgs.size();
-            boolean invokeAsSequenced = sequenced && ellipsis==null;
             if (ellipsis!=null) {
             	if (!sequenced) {
             		ellipsis.addError("no matching sequenced parameter");
             	}
             }
-            if (argCount>paramCount && !invokeAsSequenced) {
+            if (argCount>paramCount && !sequenced) {
             	that.addError("too many arguments: " + 
             			paramCount + " arguments required");
             }
-            if (argCount<paramCount-1 || 
-            		argCount<paramCount && !invokeAsSequenced) {
+            if (argCount<paramCount-(sequenced?1:0)) {
             		that.addError("not enough arguments: " + 
             				paramCount + " arguments required");
             }
             int i=0;
-            for (; i<(invokeAsSequenced?paramCount-1:paramCount) && i<argCount; i++) {
+            for (; i<paramCount-(sequenced?1:0) && i<argCount; i++) {
                 Tree.PositionalArgument arg = args.get(i);
                 checkAssignable(getPositionalArgumentType(arg), 
                         typeArgs.get(i), arg, 
                         "argument must be assignable to parameter type");
             }
-            if (invokeAsSequenced) {
-                ProducedType type = unit.getIteratedType(typeArgs.get(typeArgs.size()-1));
-            	for (; i<argCount; i++) {
+            if (sequenced) {
+                ProducedType spt = typeArgs.get(typeArgs.size()-1);
+				ProducedType spit = unit.getIteratedType(spt);
+            	for (; i<argCount-(ellipsis==null?0:1); i++) {
             		Tree.PositionalArgument arg = args.get(i);
-					checkAssignable(getPositionalArgumentType(arg), type, arg, 
+					checkAssignable(getPositionalArgumentType(arg), spit, arg, 
                             "argument must be assignable to sequenced parameter type");
             	}
+                if (ellipsis!=null) {
+                    Tree.PositionalArgument arg = args.get(i);
+                    checkAssignable(getPositionalArgumentType(arg), spt, arg, 
+                            "argument must be assignable to sequenced parameter type");
+                }
             }
         }
     }
@@ -2062,7 +2067,7 @@ public class ExpressionVisitor extends Visitor {
         }
     }
 
-    private void checkPositionalArguments(ParameterList pl, ProducedReference pr, 
+private void checkPositionalArguments(ParameterList pl, ProducedReference pr, 
             Tree.PositionalArgumentList pal) {
         List<Tree.PositionalArgument> args = pal.getPositionalArguments();
         List<Parameter> params = pl.getParameters();
@@ -2081,8 +2086,11 @@ public class ExpressionVisitor extends Visitor {
             } 
             else {
                 ProducedType paramType = pr.getTypedParameter(p).getFullType();
-                if (p.isSequenced() && ell==null) {
+                if (p.isSequenced()) {
                     checkSequencedPositionalArgument(p, pr, pal, i, paramType);
+            		if (ell!=null) {
+            			checkPositionalArgument(p, pr, args.get(args.size()-1), paramType);
+            		}
                     if (pal.getComprehension()!=null) {
                         pal.getComprehension().addError("sequenced parameter already has arguments");
                     }
@@ -2090,9 +2098,6 @@ public class ExpressionVisitor extends Visitor {
                 }
                 else {
                     checkPositionalArgument(p, pr, args.get(i), paramType);
-                    if (p.isSequenced() && pal.getComprehension()!=null) {
-                        pal.getComprehension().addError("sequenced parameter already has arguments");
-                    }
                 }
             }
         }
@@ -2141,7 +2146,8 @@ public class ExpressionVisitor extends Visitor {
         List<Tree.PositionalArgument> args = pal.getPositionalArguments();
         ProducedType at = paramType==null ? null : 
                 unit.getIteratedType(paramType);
-        for (int j=from; j<args.size(); j++) {
+        Ellipsis ell = pal.getEllipsis();
+		for (int j=from; j<args.size()-(ell==null?0:1); j++) {
             Tree.PositionalArgument a = args.get(j);
             a.setParameter(p);
             Tree.Expression e = a.getExpression();
