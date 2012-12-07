@@ -379,19 +379,24 @@ public class Unit {
 					Parameter p = ps.get(j);
     	    		ProducedTypedReference np = ref.getTypedParameter(p);
     	    		ProducedType npt = np.getType();
-    	    		if (p.isDefaulted() && 
-    	    				firstDefaulted==-1) {
-    	    			firstDefaulted = j;
-    	    		}
-					if (np.getDeclaration() instanceof Functional) {
-    	    			args.add(getCallableType(np, npt));
-    	    		}
-    	    		else if (p.isSequenced()) {
-    	    			args.add(getIteratedType(npt));
-    	    			hasSequenced = true;
+    	    		if (npt==null) {
+    	    			args.add(new UnknownType(this).getType());
     	    		}
     	    		else {
-					    args.add(npt);
+    	    			if (p.isDefaulted() && 
+    	    					firstDefaulted==-1) {
+    	    				firstDefaulted = j;
+    	    			}
+    	    			if (np.getDeclaration() instanceof Functional) {
+    	    				args.add(getCallableType(np, npt));
+    	    			}
+    	    			else if (p.isSequenced()) {
+    	    				args.add(getIteratedType(npt));
+    	    				hasSequenced = true;
+    	    			}
+    	    			else {
+    	    				args.add(npt);
+    	    			}
     	    		}
     	    	}
     	    	result = producedType(getCallableDeclaration(), result,
