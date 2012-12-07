@@ -641,8 +641,18 @@ public class ExpressionVisitor extends Visitor {
                 else if (d.isToplevel()) {
                     me.addError("toplevel declarations may not be specified");
                 }
-//            	checkType(bme.getTarget().getType(), d.getName(), sie, 2100);
-            	checkType(that.getBaseMemberExpression().getTypeModel(), d.getName(), sie, 2100);
+            	ProducedType t = that.getBaseMemberExpression().getTypeModel();
+            	if (that.getBaseMemberExpression()==me && d instanceof Method) {
+            		//if the declaration of the method has
+            		//defaulted parameters, we should ignore
+            		//that when determining if the RHS is
+            		//an acceptable implementation of the
+            		//method
+            		//TODO: this is a pretty nasty way to
+            		//      handle the problem
+                    t = eraseDefaultedParameters(t);
+            	}
+             	checkType(t, d.getName(), sie, 2100);
             }
             if (that.getBaseMemberExpression() instanceof Tree.ParameterizedExpression) {
             	if (!(sie instanceof Tree.LazySpecifierExpression)) {
@@ -659,6 +669,26 @@ public class ExpressionVisitor extends Visitor {
             me.addError("illegal specification statement");
         }
     }
+
+	private ProducedType eraseDefaultedParameters(ProducedType t) {
+		ProducedType ct = t.getSupertype(unit.getCallableDeclaration());
+		if (ct!=null) {
+			List<ProducedType> typeArgs = ct.getTypeArgumentList();
+			if (typeArgs.size()>=2) {
+				ProducedType rt = typeArgs.get(0);
+				ProducedType pts = typeArgs.get(1);
+				List<ProducedType> argtypes = argtypes(pts);
+				boolean argsequenced = argsequenced(pts);
+				if (argsequenced) {
+					ProducedType spt = argtypes.get(argtypes.size()-1);
+					argtypes.set(argtypes.size()-1, unit.getIteratedType(spt));
+				}
+				return producedType(unit.getCallableDeclaration(), rt, 
+						unit.getTupleType(argtypes, argsequenced, -1));
+			}
+		}
+		return t;
+	}
 
     private void refine(Value sv, Tree.BaseMemberExpression bme,
             Tree.SpecifierStatement that) {
@@ -1689,6 +1719,24 @@ public class ExpressionVisitor extends Visitor {
     
     private List<ProducedType> argtypes(ProducedType args) {
 		if (args!=null) {
+//			boolean defaulted=false;
+			if (args.getDeclaration() instanceof UnionType) {
+	        	List<ProducedType> cts = args.getDeclaration().getCaseTypes();
+	        	if (cts.size()==2) {
+	        		TypeDeclaration lc = cts.get(0).getDeclaration();
+					if (lc instanceof Interface && 
+							lc.equals(unit.getEmptyDeclaration())) {
+						args = cts.get(1);
+//	        			defaulted = true;
+	        		}
+	        		TypeDeclaration rc = cts.get(1).getDeclaration();
+					if (lc instanceof Interface &&
+							rc.equals(unit.getEmptyDeclaration())) {
+						args = cts.get(0);
+//	        			defaulted = true;
+	        		}
+	        	}
+			}
     		if (args.getDeclaration() instanceof ClassOrInterface) {
     			if (args.getDeclaration().equals(unit.getTupleDeclaration())) {
     				List<ProducedType> tal = args.getTypeArgumentList();
@@ -4118,6 +4166,7 @@ private void checkPositionalArguments(ParameterList pl, ProducedReference pr,
                 TypeParameter param = params.get(i);
                 if ( param.isSelfType() && args.size()>i ) {
                     ProducedType arg = args.get(i);
+                    if (arg==null) arg = new UnknownType(unit).getType();
                     TypeDeclaration std = param.getSelfTypedDeclaration();
                     ProducedType at;
                     if (param.getContainer().equals(std)) {

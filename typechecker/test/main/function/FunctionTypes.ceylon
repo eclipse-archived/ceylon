@@ -237,3 +237,29 @@ void useHandle() {
     handle("", 1.0, true);
     @error handle("", 1.0, 1);
 }
+
+void lazySpec() {
+    String lazy1(String s, Float x=0.0, Boolean b=false);
+    lazy1 = (String s, Float x, Boolean b) b then s else x.string;
+    String lazy2(String s, Float... x);
+    lazy2 = (String s, Float... x) s;
+    String lazy3(String s, Float x=0.0);
+    lazy3 = (String s, Float x, Boolean b=true) b then s else x.string;
+    String lazy4(String s, Float x, Float y);
+    lazy4 = (String s, Float... x) s;
+    void x(String s="")(Integer i);
+    x = (String s)(Integer i) bottom;
+}
+
+void lazyLazySpec() {
+    String lazy1(String s, Float x=0.0, Boolean b=false);
+    lazy1(String s, Float x, Boolean b) => b then s else x.string;
+    String lazy2(String s, Float... x);
+    lazy2(String s, Float... x) => s;
+    String lazy3(String s, Float x=0.0);
+    @error lazy3(String s, Float x, @error Boolean b=true) => b then s else x.string;
+    String lazy4(String s, Float x, Float y);
+    @error lazy4(String s, @error Float... x) => s;
+    void x(String s="")(Integer i);
+    x(String s)(Integer i) => bottom;
+}
