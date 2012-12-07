@@ -5,9 +5,9 @@ import com.redhat.ceylon.compiler.java.metadata.Method;
 
 @Ceylon(major = 3)
 @Method
-public final class export {
+public final class export_ {
     public static Nothing export(){
         return null;
     }
-    private export(){}
+    private export_(){}
 }
