@@ -19,4 +19,6 @@
  */
 import a { A }
 
-shared class B(A a){}
+shared class B(){
+    A a = bottom;
+}
