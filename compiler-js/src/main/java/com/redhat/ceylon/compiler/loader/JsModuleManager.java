@@ -36,7 +36,7 @@ public class JsModuleManager extends ModuleManager {
     @Override
     public void resolveModule(ArtifactResult artifact, Module module,
             ModuleImport moduleImport, LinkedList<Module> dependencyTree,
-            List<PhasedUnits> phasedUnitsOfDependencies) {
+            List<PhasedUnits> phasedUnitsOfDependencies, boolean forCompiledModule) {
         if (!clLoaded) {
             clLoaded = true;
             ArtifactContext ac = new ArtifactContext("ceylon.language", module.getLanguageModule().getVersion());
@@ -45,7 +45,7 @@ public class JsModuleManager extends ModuleManager {
             ac.setSuffix(".js");
             ArtifactResult lmar = getContext().getRepositoryManager().getArtifactResult(ac);
             resolveModule(lmar, module.getLanguageModule(), null, dependencyTree,
-                    phasedUnitsOfDependencies);
+                    phasedUnitsOfDependencies, true);
         }
         //Create a similar artifact but with .js extension
         File js = artifact.artifact();
@@ -94,7 +94,7 @@ public class JsModuleManager extends ModuleManager {
                                 ac.setSuffix(".js");
                                 artifact = getContext().getRepositoryManager().getArtifactResult(ac);
                                 if (artifact != null) {
-                                    resolveModule(artifact, imp.getModule(), imp, dependencyTree, phasedUnitsOfDependencies);
+                                    resolveModule(artifact, imp.getModule(), imp, dependencyTree, phasedUnitsOfDependencies, forCompiledModule & imp.isExport());
                                 }
                             }
                         }
@@ -116,7 +116,7 @@ public class JsModuleManager extends ModuleManager {
             }
         }
         super.resolveModule(artifact, module, moduleImport, dependencyTree,
-                phasedUnitsOfDependencies);
+                phasedUnitsOfDependencies, forCompiledModule);
     }
 
     @Override
