@@ -351,7 +351,9 @@ class Assignability() {
     w("foo", "bar");
     w({"foo", "bar"}...);
     {String...} iterable = {"foo", "bar"};
-    w(iterable...);
+    [String...] sequential = ["foo", "bar"];
+    @error w(iterable...);
+    w(sequential...);
     
     object o { shared String hello = "hello"; }
     @type:"IdentifiableObject" value oo = o;

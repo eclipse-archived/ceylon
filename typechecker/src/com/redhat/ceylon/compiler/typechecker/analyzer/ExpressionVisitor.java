@@ -1574,7 +1574,7 @@ public class ExpressionVisitor extends Visitor {
                         ProducedType pt = pr.getTypedParameter(parameter)
                                 .getFullType();
                         addToUnion(inferredTypes, inferTypeArg(tp, pt, 
-                                getPositionalArgumentType(a, parameter.isSequenced()), 
+                                getPositionalArgumentType(a), 
                                 new ArrayList<TypeParameter>()));
                     }
                 }
@@ -1857,7 +1857,7 @@ public class ExpressionVisitor extends Visitor {
             int i=0;
             for (; i<(invokeAsSequenced?paramCount-1:paramCount) && i<argCount; i++) {
                 Tree.PositionalArgument arg = args.get(i);
-                checkAssignable(getPositionalArgumentType(arg, sequenced && i==paramCount-1), 
+                checkAssignable(getPositionalArgumentType(arg), 
                         typeArgs.get(i), arg, 
                         "argument must be assignable to parameter type");
             }
@@ -1865,7 +1865,7 @@ public class ExpressionVisitor extends Visitor {
                 ProducedType type = unit.getIteratedType(typeArgs.get(typeArgs.size()-1));
             	for (; i<argCount; i++) {
             		Tree.PositionalArgument arg = args.get(i);
-					checkAssignable(getPositionalArgumentType(arg, false), type, arg, 
+					checkAssignable(getPositionalArgumentType(arg), type, arg, 
                             "argument must be assignable to sequenced parameter type");
             	}
             }
@@ -2157,29 +2157,16 @@ public class ExpressionVisitor extends Visitor {
             Tree.PositionalArgument a, ProducedType paramType) {
         a.setParameter(p);
         if (a.getExpression()!=null) {
-            checkAssignable(getPositionalArgumentType(a, p.isSequenced()), paramType, a, 
+            checkAssignable(getPositionalArgumentType(a), paramType, a, 
                     "argument must be assignable to parameter " + 
                     p.getName() + " of " + pr.getDeclaration().getName(), 
                     2100);
         }
     }
 
-    private ProducedType getPositionalArgumentType(Tree.PositionalArgument a, boolean spread) {
+    private ProducedType getPositionalArgumentType(Tree.PositionalArgument a) {
         Tree.Expression e = a.getExpression();
-        if (e==null) {
-        	return null;
-        }
-        else {
-        	ProducedType t = e.getTypeModel();
-        	if (spread && unit.isIterableType(t)) {
-        		//iterables get automatically wrapped into a 
-        		//sequence by the ... postfix
-        		return unit.getSequentialType(unit.getIteratedType(t));
-        	}
-        	else {
-        		return t;
-        	}
-        }
+        return e==null ? null : e.getTypeModel();
     }
         
     @Override public void visit(Tree.Annotation that) {
@@ -3514,9 +3501,9 @@ public class ExpressionVisitor extends Visitor {
 				if (i==es.size()-1 && ell!=null) {
 					ut = unit.getIteratedType(et);
 					result = unit.getSequentialType(ut);
-					if (!unit.isIterableType(et)) {
-						ell.addError("last element expression is not iterable: " +
-								et.getProducedTypeName() + " is not an iterable type");
+					if (!unit.isSequentialType(et)) {
+						ell.addError("last element expression is not sequential: " +
+								et.getProducedTypeName() + " is not a sequence type");
 					}
 				}
 				else {

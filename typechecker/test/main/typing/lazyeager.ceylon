@@ -32,22 +32,31 @@ void lazyeager() {
     @type:"Tuple<String,String,Sequential<String>>" 
     value y4 = [ "hello", sequence... ];         //type [String, String...]
     @type:"Tuple<String,String,Sequential<String>>"
-    value y5 = [ "hello", iterable... ];         //type [String, String...]
+    value y5 = [ @error "hello", iterable... ];         //type [String, String...]
+    @type:"Tuple<String,String,Sequential<String>>"
+    value y9 = [ "hello", iterable.sequence... ];         //type [String, String...]
     @type:"Sequential<String>" 
     value y6 = [ sequence... ];                  //type [String, String...]
     @type:"Sequential<String>" 
-    value y7 = [ iterable... ];                  //type [String, String...]
+    value y7 = [ @error iterable... ];                  //type [String, String...]
+    @type:"Sequential<String>" 
+    value y10 = [ iterable.sequence... ];                  //type [String, String...]
     
-    {Character...} sequential = {"hello"...};
+    {Character...} chariter = {"hello"...};
+    [Character...] charseq = ["hello"...];
     void f(Character... strings) {
         value val = strings;
     }
     f("hello"...);
-    f(sequential...);
-    @error f(` `, sequential...); //TODO!!!
+    f(charseq...);
+    f(` `, charseq...); //TODO!!!
+    @error f(chariter...);
+    @error f(` `, chariter...);
     value g = f;
     g("hello"...);
-    g(sequential...);
-    @error g(` `, sequential...); //TODO!!!
+    g(charseq...);
+    g(` `, charseq...); //TODO!!!
+    @error g(chariter...);
+    @error g(` `, chariter...);
 
 }
