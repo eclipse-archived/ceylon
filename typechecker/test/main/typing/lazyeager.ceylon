@@ -37,4 +37,16 @@ void lazyeager() {
     value y6 = [ sequence... ];                  //type [String, String...]
     @type:"Sequential<String>" 
     value y7 = [ iterable... ];                  //type [String, String...]
+    
+    {Character...} sequential = {"hello"...};
+    void f(Character... strings) {
+        value val = strings;
+    }
+    f("hello"...);
+    f(sequential...);
+    @error f(` `, sequential...); //TODO!!!
+    value g = f;
+    g("hello"...);
+    @error g(` `, sequential...); //TODO!!!
+
 }
