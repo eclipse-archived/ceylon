@@ -1924,20 +1924,15 @@ comparisonExpression returns [Term term]
       | to1=typeOperator
         { $to1.operator.setTerm($ee1.term); 
           $term = $to1.operator;}
-        t1=comparableType
+        t1=type
         { $to1.operator.setType($t1.type); }
       )?
     | to2=typeOperator
       { $term = $to2.operator; }
-      t2=comparableType //TODO: support "type" here, using a predicate
+      t2=type
       { $to2.operator.setType($t2.type); }
       ee3=existenceEmptinessExpression
       { $to2.operator.setTerm($ee3.term); }
-    ;
-
-comparableType returns [StaticType type]
-    : unionTypeExpression 
-      { $type=$unionTypeExpression.type; }
     ;
 
 comparisonOperator returns [BinaryOperatorExpression operator]
@@ -2327,10 +2322,21 @@ qualifiedOrTupleType returns [StaticType type]
       { $type=$groupedType.type; }
     ;
 
+typeAbbreviationStart
+    : DEFAULT_OP
+    | ARRAY
+    | LPAREN tupleElementType? (COMMA|RPAREN)
+    ;
+
 abbreviatedType returns [StaticType type]
     @init { FunctionType bt=null; }
     : qualifiedOrTupleType
       { $type=$qualifiedOrTupleType.type; }
+      (
+      //syntactic predicate to resolve an
+      //ambiguity in the grammar of the
+      //prefix "is Type" operator
+      (typeAbbreviationStart)=>
       (
         DEFAULT_OP 
         { OptionalType ot = new OptionalType(null);
@@ -2361,53 +2367,10 @@ abbreviatedType returns [StaticType type]
           )?
         RPAREN
         { bt.setEndToken($RPAREN); }
+      )
       )*
     ;
     
-unionTypeExpression returns [StaticType type]
-    @init { UnionType ut=null; }
-    : it1=intersectionTypeExpression
-      { $type = $it1.type;
-        ut = new UnionType(null);
-        ut.addStaticType($type); }
-      ( 
-        (
-          u=UNION_OP
-          { ut.setEndToken($u); }
-          (
-            it2=intersectionTypeExpression
-            { ut.addStaticType($it2.type);
-              ut.setEndToken(null); }
-//          | { displayRecognitionError(getTokenNames(), 
-//                new MismatchedTokenException(UIDENTIFIER, input)); }
-          )
-        )+
-        { $type = ut; }
-      )?
-    ;
-
-intersectionTypeExpression returns [StaticType type]
-    @init { IntersectionType it=null; }
-    : at1=qualifiedOrTupleType
-      { $type = $at1.type;
-        it = new IntersectionType(null);
-        it.addStaticType($type); }
-      ( 
-        (
-          i=INTERSECTION_OP
-          { it.setEndToken($i); }
-          (
-            at2=qualifiedOrTupleType
-            { it.addStaticType($at2.type);
-              it.setEndToken(null); }
-//          | { displayRecognitionError(getTokenNames(), 
-//                new MismatchedTokenException(UIDENTIFIER, input)); }
-          )
-        )+
-        { $type = it; }
-      )?
-    ;
-
 qualifiedType returns [SimpleType type]
     : supertypeQualifier?
       ot=typeNameWithArguments

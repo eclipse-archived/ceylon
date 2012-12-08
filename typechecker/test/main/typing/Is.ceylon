@@ -84,22 +84,24 @@ class Is() {
     Boolean b3 = is Sized&{String...} e;
     Boolean b4 = is <Sized|Category>&Iterable<Object> e;
     Boolean b5 = is [String...] e;
-    Boolean b6 = is <String[]> e;
+    Boolean b6 = is String[] e;
     Boolean b7 = is [String,Integer] e;
-    Boolean b8 = is <String()> e;
-    Boolean b9 = is <String(Integer)> e;
-    Boolean b10 = is <String?> e;
+    Boolean b8 = is String() e;
+    Boolean b9 = is String(Integer) e;
+    Boolean b10 = is String? e;
+    Boolean b11 = is <Sized|Category> e;
     
     Boolean c1 = e is Sized&Iterable<String>;
     Boolean c2 = e is Sized|Category;
     Boolean c3 = e is Sized&{String...};
     Boolean c4 = e is <Sized|Category>&Iterable<Object>;
     Boolean c5 = e is [String...];
-    Boolean c6 = e is <String[]>;
+    Boolean c6 = e is String[];
     Boolean c7 = e is [String,Integer];
-    Boolean c8 = e is <String()>;
-    Boolean c9 = e is <String(Integer)>;
-    Boolean c10 = e is <String?>;
+    Boolean c8 = e is String();
+    Boolean c9 = e is String(Integer);
+    Boolean c10 = e is String?;
+    Boolean c11 = e is <Sized|Category>;
     
     String? s = null;
     
