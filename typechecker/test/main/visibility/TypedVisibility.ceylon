@@ -92,3 +92,10 @@ shared void vscz(SharedClass.Z scz) {}
 
 @error shared X getX() { return X(); }
 @error shared Class.Z getZ() { return Class().Z(); }
+
+class Private() {}
+@error shared alias Public1 => Private;
+@error shared alias Public2 => Private|String;
+@error shared alias Public3 => Private&String;
+@error shared Private public1 = Private();
+@error shared Private|String public2 = "";
