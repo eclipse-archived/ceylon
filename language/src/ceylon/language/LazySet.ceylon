@@ -33,13 +33,13 @@ shared class LazySet<out Element>({Element...} elems)
     shared actual Set<Element&Other> intersection<Other>(Set<Other> set)
             given Other satisfies Object =>
         LazySet({for (e in set) if (is Element e)
-                       if (exists elems.find((Element o) e==o)) e});
+                       if (elems.find((Element o) e==o) exists) e});
     
     shared actual Set<Element|Other> exclusiveUnion<Other>(Set<Other> other)
             given Other satisfies Object {
         value hereNotThere = { for (e in elems) if (!e in other) e };
         value thereNotHere = { for (e in other)
-            if (!exists elems.find((Element o) e==o)) e };
+            if (!elems.find((Element o) e==o) exists) e };
         return LazySet(hereNotThere.chain(thereNotHere));
     }
     
