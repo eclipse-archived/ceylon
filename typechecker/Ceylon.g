@@ -744,17 +744,19 @@ classInstantiation returns [SimpleType type, InvocationExpression invocationExpr
 satisfiedTypes returns [SatisfiedTypes satisfiedTypes]
     : SATISFIES 
       { $satisfiedTypes = new SatisfiedTypes($SATISFIES); }
-      t1=qualifiedType 
-      { $satisfiedTypes.addType($t1.type); }
+      ( 
+        t1=abbreviatedType 
+        { $satisfiedTypes.addType($t1.type); }
+      )
       (
         i=INTERSECTION_OP
         { $satisfiedTypes.setEndToken($i); }
         (
-          t2=qualifiedType
+          t2=abbreviatedType
           { $satisfiedTypes.addType($t2.type); 
             $satisfiedTypes.setEndToken(null); }
-        | { displayRecognitionError(getTokenNames(),
-              new MismatchedTokenException(UIDENTIFIER, input)); }
+        /*| { displayRecognitionError(getTokenNames(),
+              new MismatchedTokenException(UIDENTIFIER, input)); }*/
         )
       )*
     //-> ^(SATISFIED_TYPES[$SATISFIES] type+)
@@ -799,14 +801,14 @@ caseTypes returns [CaseTypes caseTypes]
           { if ($ct2.type!=null) $caseTypes.addType($ct2.type); 
             if ($ct2.instance!=null) $caseTypes.addBaseMemberExpression($ct2.instance); 
             $caseTypes.setEndToken(null); }
-        | { displayRecognitionError(getTokenNames(),
-              new MismatchedTokenException(UIDENTIFIER, input)); }
+        /*| { displayRecognitionError(getTokenNames(),
+              new MismatchedTokenException(UIDENTIFIER, input)); }*/
         )
       )*
     ;
 
-caseType returns [SimpleType type, BaseMemberExpression instance]
-    : t=qualifiedType 
+caseType returns [StaticType type, BaseMemberExpression instance]
+    : t=abbreviatedType 
       { $type=$t.type;}
     | memberName //-> ^(BASE_MEMBER_EXPRESSION memberName)
       { $instance = new BaseMemberExpression(null);

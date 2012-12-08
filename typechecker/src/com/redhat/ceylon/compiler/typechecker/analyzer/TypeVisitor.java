@@ -914,13 +914,9 @@ public class TypeVisitor extends Visitor {
         boolean foundClass = false;
         boolean foundInterface = false;
         for (Tree.StaticType st: that.getTypes()) {
-        	if (!(st instanceof Tree.SimpleType)) {
-        		st.addError("satisfied type must be an interface");  //actually this case never occurs due to grammar
-        		continue;
-        	}
             ProducedType type = st.getTypeModel();
             if (type!=null) {
-                TypeDeclaration std = ((Tree.SimpleType) st).getDeclarationModel();
+                TypeDeclaration std = type.getDeclaration();
 				if (std==td) {
                     //TODO: handle indirect circularities!
                     st.addError("directly extends itself: " + td.getName());
@@ -944,15 +940,19 @@ public class TypeVisitor extends Visitor {
                 		}
                 		foundTypeParam = true;
                 	}
-                	if (std instanceof Class) {
+            		else if (std instanceof Class) {
                 		if (foundClass) {
                             st.addWarning("multiple class upper bounds are not yet supported");
                 		}
                 		foundClass = true;
                 	}
-                	if (std instanceof Interface) {
+            		else if (std instanceof Interface) {
                 		foundInterface = true;
                 	}
+            		else {
+            			st.addError("upper bound must be a class, interface, or type parameter");
+            			continue;
+            		}
                 } 
                 else {
                     if (std instanceof TypeParameter) {
@@ -960,11 +960,15 @@ public class TypeVisitor extends Visitor {
                                 type.getProducedTypeName());
                         continue;
                     }
-                    if (std instanceof Class) {
+                    else if (std instanceof Class) {
                         st.addError("satisfies a class: " + 
                                 type.getProducedTypeName());
                         continue;
                     }
+            		else if (!(std instanceof Interface)) {
+            			st.addError("satisfied type must be an interface");
+            			continue;
+            		}
                     if (st instanceof Tree.QualifiedType) {
                         checkTypeBelongsToContainingScope(type, td.getContainer(), st);
                     }
@@ -1024,7 +1028,7 @@ public class TypeVisitor extends Visitor {
                     }
                 }
             }
-            for (Tree.SimpleType st: that.getTypes()) {
+            for (Tree.StaticType st: that.getTypes()) {
                 ProducedType type = st.getTypeModel();
                 if (type!=null) {
                     if (type.getDeclaration() instanceof TypeParameter) {
@@ -1044,6 +1048,10 @@ public class TypeVisitor extends Visitor {
                         else {
                             //TODO: error?!
                         }
+                    }
+                    else if (!(type.getDeclaration() instanceof ClassOrInterface)) {
+                    	st.addError("case type must be a class, interface, or self type");
+                    	continue;
                     }
                     list.add(type);
                     /*if (type.getDeclaration() instanceof Interface) {
