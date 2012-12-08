@@ -79,13 +79,13 @@
     TypeAlias declarationModel;)
 
 ^(SATISFIED_TYPES 
-    SIMPLE_TYPE* type)
+    STATIC_TYPE* type)
 ^(ABSTRACTED_TYPE 
     SIMPLE_TYPE type)
 ^(ADAPTED_TYPES 
     SIMPLE_TYPE* type)
 ^(CASE_TYPES 
-    SIMPLE_TYPE* type
+    STATIC_TYPE* type
     BASE_MEMBER_EXPRESSION*)
 ^(EXTENDED_TYPE 
     SIMPLE_TYPE type
