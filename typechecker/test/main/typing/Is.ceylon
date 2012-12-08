@@ -31,25 +31,75 @@ class Is() {
         String? s = c[0];
         Integer size = c.size;
         Boolean empty = c.empty;
+        @error if ("hello" in c) {}
+        //@error for (String str in c) {}
         @type:"Correspondence<Integer,String>&Sized" value cc = c;
     }
-    
     Correspondence<Integer,String> d = strings;
     if (is Sized&Container d) {
         String? s = d[0];
         Integer size = d.size;
         Boolean empty = d.empty;
+        @error if ("hello" in d) {}
+        //@error for (String str in d) {}
         @type:"Correspondence<Integer,String>&Sized" value dd = d;
     }
-
+    
     Correspondence<Integer,String> e = strings;
     if (is Sized&Iterable<String> e) {
         String? s = e[0];
         Integer size = e.size;
         @error Boolean empty = e.empty;
+        @error if ("hello" in e) {}
+        for (String str in e) {}
+        @type:"Correspondence<Integer,String>&Sized&Iterable<String>" value ee = e;
+    }
+    if (is Sized&Category e) {
+        String? s = e[0];
+        Integer size = e.size;
+        Boolean empty = e.empty;
+        if ("hello" in e) {}
+        //@error for (String str in e) {} 
+        @type:"Correspondence<Integer,String>&Sized&Category" value ee = e;
+    }
+    if (is Sized&{String...} e) {
+        String? s = e[0];
+        Integer size = e.size;
+        @error Boolean empty = e.empty;
+        @error if ("hello" in e) {}
         for (String str in e) {} 
         @type:"Correspondence<Integer,String>&Sized&Iterable<String>" value ee = e;
     }
+    if (is String[] e) {
+        String? s = e[0];
+        Integer size = e.size;
+        Boolean empty = e.empty;
+        if ("hello" in e) {} 
+        for (String str in e) {}
+        @type:"Sequential<String>" value ee = e;
+    }
+    
+    Boolean b1 = is Sized&Iterable<String> e;
+    Boolean b2 = is Sized|Category e;
+    Boolean b3 = is Sized&{String...} e;
+    Boolean b4 = is <Sized|Category>&Iterable<Object> e;
+    Boolean b5 = is [String...] e;
+    Boolean b6 = is <String[]> e;
+    Boolean b7 = is [String,Integer] e;
+    Boolean b8 = is <String()> e;
+    Boolean b9 = is <String(Integer)> e;
+    Boolean b10 = is <String?> e;
+    
+    Boolean c1 = e is Sized&Iterable<String>;
+    Boolean c2 = e is Sized|Category;
+    Boolean c3 = e is Sized&{String...};
+    Boolean c4 = e is <Sized|Category>&Iterable<Object>;
+    Boolean c5 = e is [String...];
+    Boolean c6 = e is <String[]>;
+    Boolean c7 = e is [String,Integer];
+    Boolean c8 = e is <String()>;
+    Boolean c9 = e is <String(Integer)>;
+    Boolean c10 = e is <String?>;
     
     String? s = null;
     

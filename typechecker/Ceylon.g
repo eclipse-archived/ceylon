@@ -2388,7 +2388,7 @@ unionTypeExpression returns [StaticType type]
 
 intersectionTypeExpression returns [StaticType type]
     @init { IntersectionType it=null; }
-    : at1=qualifiedType
+    : at1=qualifiedOrTupleType
       { $type = $at1.type;
         it = new IntersectionType(null);
         it.addStaticType($type); }
@@ -2397,7 +2397,7 @@ intersectionTypeExpression returns [StaticType type]
           i=INTERSECTION_OP
           { it.setEndToken($i); }
           (
-            at2=qualifiedType
+            at2=qualifiedOrTupleType
             { it.addStaticType($at2.type);
               it.setEndToken(null); }
 //          | { displayRecognitionError(getTokenNames(), 
