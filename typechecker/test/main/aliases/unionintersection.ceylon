@@ -54,3 +54,5 @@ void testCanonicalization() {
     List<Integer|Float> list = ns;
     List<Number> nums = list;
 }
+
+alias ItFun<T> => {T()...}&Category;

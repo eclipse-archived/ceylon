@@ -56,6 +56,10 @@ class Aliases() {
     
     //@error class X() => String|Integer;
     @error interface Y => Container&Identifiable;
+    
+    interface Seq<T> => T[];
+    interface It<T> => {T...};
+    interface Fun<T> => T(Object);
 }
 
 interface Li0<U,V> => List<U>;
