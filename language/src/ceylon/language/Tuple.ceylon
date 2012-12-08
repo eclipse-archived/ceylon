@@ -4,7 +4,7 @@ shared class Tuple<out Element, out First, out Rest>(first, rest)
         extends Object()
         satisfies Sequence<Element>
         given First satisfies Element
-        given Rest satisfies Sequential<Element> {
+        given Rest satisfies Element[] {
         
     shared actual First first;
     shared actual Rest&Element[] rest;

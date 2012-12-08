@@ -24,7 +24,7 @@ doc "A nonempty, immutable sequence of values. A sequence of
 see (Empty)
 by "Gavin"
 shared interface Sequence<out Element>
-        satisfies Sequential<Element> & 
+        satisfies Element[] & 
                   Some<Element> &
                   Cloneable<Sequence<Element>> {
     

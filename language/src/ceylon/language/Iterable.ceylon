@@ -232,7 +232,7 @@ shared interface Iterable<out Element>
             return this;
         }
         else {
-            object iterable satisfies Iterable<Element> {
+            object iterable satisfies {Element...} {
                 shared actual Iterator<Element> iterator {
                     value iterator = outer.iterator;
                     variable value i:=0;
@@ -254,7 +254,7 @@ shared interface Iterable<out Element>
             return {}; 
         }
         else {
-            object iterable satisfies Iterable<Element> {
+            object iterable satisfies {Element...} {
                 shared actual Iterator<Element> iterator {
                     value outerIterable { return outer; }
                     object iterator satisfies Iterator<Element> {
@@ -292,7 +292,7 @@ shared interface Iterable<out Element>
             return this;
         } 
         else {
-            object iterable satisfies Iterable<Element> {
+            object iterable satisfies {Element...} {
                 shared actual Iterator<Element> iterator {
                     value outerIterable { return outer; }
                     object iterator satisfies Iterator<Element> {
@@ -348,7 +348,7 @@ shared interface Iterable<out Element>
          results in an iterable object with the entries
          `0->\"hello\"` and `2->\"world\"`."
     shared default {Integer->Element&Object...} indexed {
-            object iterable satisfies Iterable<<Integer->Element&Object>?> {
+            object iterable satisfies {<Integer->Element&Object>?...} {
                 shared actual Iterator<<Integer->Element&Object>?> iterator {
                     value outerIterable { return outer; }
                     object iterator satisfies Iterator<<Integer->Element&Object>?> {
@@ -382,7 +382,7 @@ shared interface Iterable<out Element>
          order."
     shared default {Element|Other...} chain<Other>(
             {Other...} other) {
-        object chained satisfies Iterable<Element|Other> {
+        object chained satisfies {Element|Other...} {
             shared actual Iterator<Element|Other> iterator {
                 return ChainedIterator(outer, other);
             }

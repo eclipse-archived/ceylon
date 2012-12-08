@@ -46,7 +46,7 @@ by "Gavin"
 see (string)
 shared abstract class String()
         extends Object()
-        satisfies Sequential<Character> & 
+        satisfies Character[] & 
                   Comparable<String> &
                   Summable<String> & 
                   Ranged<Integer,String> &
