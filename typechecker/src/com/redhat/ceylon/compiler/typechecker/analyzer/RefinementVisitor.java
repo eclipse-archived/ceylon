@@ -222,6 +222,9 @@ public class RefinementVisitor extends Visitor {
 
 	private void validateRefinement(Tree.StatementOrArgument that, TypeDeclaration td) {
 		List<ProducedType> supertypes = td.getType().getSupertypes();
+		if (td instanceof TypeAlias) {
+			supertypes.add(td.getExtendedType());
+		}
 		for (int i=0; i<supertypes.size(); i++) {
 		    ProducedType st1 = supertypes.get(i);
 		    for (int j=i+1; j<supertypes.size(); j++) {
@@ -259,7 +262,7 @@ public class RefinementVisitor extends Visitor {
 		    for (ProducedType st: supertypes) {
 		        // don't do this check for ObjectArguments
 		        if (that instanceof Tree.Declaration) {
-		            if(!isCompletelyVisible(td, st)) {
+		            if (!isCompletelyVisible(td, st)) {
 		                that.addError("supertype of type is not visible everywhere type is visible: " + 
 		                        st.getProducedTypeName());
 		            }
