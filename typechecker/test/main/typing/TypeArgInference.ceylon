@@ -145,11 +145,11 @@ class TypeArgInference() {
     @type:"Iterable<Integer>" { "hello", "world" }.map((String s) s.size);
     @type:"Iterable<String>" { "hello", "world" }.filter((String s) !s.empty);
     @type:"String" { "hello", "world" }.fold("", (String result, String s) result+" "+s);
-    @type:"Nothing|String" { null, "hello", "world" }.find((String? s) exists s);
+    @type:"Nothing|String" { null, "hello", "world" }.find((String? s) s exists);
 
     @type:"Iterable<Integer>" { "hello", "world" }.map { function collecting(String s) { return s.size; } };
     @type:"Iterable<String>" { "hello", "world" }.filter { function selecting(String s) { return !s.empty; } };
     @type:"String" { "hello", "world" }.fold { initial=""; function accumulating(String result, String s) { return result+" "+s; } };
-    @type:"Nothing|String" { null, "hello", "world" }.find { function selecting(String? s) { return exists s; } };
+    @type:"Nothing|String" { null, "hello", "world" }.find { function selecting(String? s) { return s exists; } };
 
 }

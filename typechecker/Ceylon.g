@@ -1927,12 +1927,12 @@ comparisonExpression returns [Term term]
         t1=type
         { $to1.operator.setType($t1.type); }
       )?
-    | to2=typeOperator
+    /*| to2=typeOperator
       { $term = $to2.operator; }
       t2=type
       { $to2.operator.setType($t2.type); }
       ee3=existenceEmptinessExpression
-      { $to2.operator.setTerm($ee3.term); }
+      { $to2.operator.setTerm($ee3.term); }*/
     ;
 
 comparisonOperator returns [BinaryOperatorExpression operator]
@@ -1969,10 +1969,10 @@ existenceEmptinessExpression returns [Term term]
         { $term = $eno1.operator;
           $eno1.operator.setTerm($de1.term); }
       )?
-    | eno2=existsNonemptyOperator
+    /*| eno2=existsNonemptyOperator
       { $term = $eno2.operator; }
       de2=rangeIntervalEntryExpression
-      { $eno2.operator.setTerm($de2.term); }
+      { $eno2.operator.setTerm($de2.term); }*/
     ;
 
 existsNonemptyOperator returns [UnaryOperatorExpression operator]
@@ -2322,11 +2322,11 @@ qualifiedOrTupleType returns [StaticType type]
       { $type=$groupedType.type; }
     ;
 
-typeAbbreviationStart
+/*typeAbbreviationStart
     : DEFAULT_OP
     | ARRAY
     | LPAREN tupleElementType? (COMMA|RPAREN)
-    ;
+    ;*/
 
 abbreviatedType returns [StaticType type]
     @init { FunctionType bt=null; }
@@ -2336,7 +2336,7 @@ abbreviatedType returns [StaticType type]
       //syntactic predicate to resolve an
       //ambiguity in the grammar of the
       //prefix "is Type" operator
-      (typeAbbreviationStart)=>
+      //(typeAbbreviationStart)=>
       (
         DEFAULT_OP 
         { OptionalType ot = new OptionalType(null);
@@ -2504,12 +2504,14 @@ conditions returns [ConditionList conditionList]
       { $conditionList = new ConditionList($LPAREN); }
       (
       c1=condition
-      { $conditionList.addCondition($c1.condition); }
+      { if ($c1.condition!=null) 
+            $conditionList.addCondition($c1.condition); }
       ( c=COMMA 
         { $conditionList.setEndToken($c); }
         (
           c2=condition 
-          { $conditionList.addCondition($c2.condition);
+          { if ($c2.condition!=null) 
+                $conditionList.addCondition($c2.condition);
             $conditionList.setEndToken(null); }
         | { displayRecognitionError(getTokenNames(), 
               new MismatchedTokenException(LIDENTIFIER, input)); } //TODO: sometimes it should be RPAREN!
