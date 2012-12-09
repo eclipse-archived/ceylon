@@ -1538,10 +1538,10 @@ sequencedArgument returns [SequencedArgument sequencedArgument]
 
 namedArgument returns [NamedArgument namedArgument]
     : compilerAnnotations 
-    ( 
+    (  
       namedSpecifiedArgument
       { $namedArgument = $namedSpecifiedArgument.specifiedArgument; }
-    | 
+    |
       namedArgumentDeclaration
       { $namedArgument = $namedArgumentDeclaration.declaration; }
     )
@@ -1550,11 +1550,14 @@ namedArgument returns [NamedArgument namedArgument]
     ;
 
 namedSpecifiedArgument returns [SpecifiedArgument specifiedArgument]
-    : memberNameDeclaration 
+    : memberName
       { $specifiedArgument = new SpecifiedArgument(null); 
-        $specifiedArgument.setIdentifier($memberNameDeclaration.identifier); }
-      specifier 
-      { $specifiedArgument.setSpecifierExpression($specifier.specifierExpression); }
+        $specifiedArgument.setIdentifier($memberName.identifier); }
+      (
+        specifier 
+        { $specifiedArgument.setSpecifierExpression($specifier.specifierExpression); }
+      )?
+      { expecting=SEMICOLON; }
       SEMICOLON
       { $specifiedArgument.setEndToken($SEMICOLON); }
     ;
@@ -1599,8 +1602,19 @@ voidOrInferredMethodArgument returns [MethodArgument declaration]
         parameters
         { $declaration.addParameterList($parameters.parameterList); }
       )*
-      block
-      { $declaration.setBlock($block.block); }
+      (
+        block
+        { $declaration.setBlock($block.block); }
+      | 
+        (
+          lazySpecifier
+          { $declaration.setSpecifierExpression($lazySpecifier.specifierExpression); }
+        )?
+        { expecting=SEMICOLON; }
+        SEMICOLON
+        { expecting=-1; }
+        { $declaration.setEndToken($SEMICOLON); }
+      )
     //-> ^(METHOD_ARGUMENT VOID_MODIFIER memberName parameters* block)
     ;
 
@@ -1610,8 +1624,19 @@ inferredGetterArgument returns [AttributeArgument declaration]
       { $declaration.setType(new ValueModifier($VALUE_MODIFIER)); }
       memberNameDeclaration 
       { $declaration.setIdentifier($memberNameDeclaration.identifier); }
-      block
-      { $declaration.setBlock($block.block); }
+      (
+        block
+        { $declaration.setBlock($block.block); }
+      | 
+        (
+          lazySpecifier
+          { $declaration.setSpecifierExpression($lazySpecifier.specifierExpression); }
+        )?
+        { expecting=SEMICOLON; }
+        SEMICOLON
+        { expecting=-1; }
+        { $declaration.setEndToken($SEMICOLON); }
+      )
       //-> ^(ATTRIBUTE_ARGUMENT VALUE_MODIFIER memberName block)      
     ;
 
@@ -1632,9 +1657,48 @@ typedMethodOrGetterArgument returns [TypedArgument declaration]
           { marg.addParameterList($parameters.parameterList); }
         )+
       )?
-      block
-      { marg.setBlock($block.block); 
-        aarg.setBlock($block.block); }
+      (
+        block
+        { marg.setBlock($block.block);
+          aarg.setBlock($block.block); }
+      | 
+        (
+          lazySpecifier
+          { marg.setSpecifierExpression($lazySpecifier.specifierExpression);
+            aarg.setSpecifierExpression($lazySpecifier.specifierExpression); }
+        )?
+        { expecting=SEMICOLON; }
+        SEMICOLON
+        { expecting=-1; }
+        { $declaration.setEndToken($SEMICOLON); }
+      )
+      //-> ^(METHOD_ARGUMENT unionType memberName parameters+ memberBody)
+      //-> ^(ATTRIBUTE_ARGUMENT unionType memberName memberBody)      
+    ;
+
+untypedMethodOrGetterArgument returns [TypedArgument declaration]
+    @init { MethodArgument marg = new MethodArgument(null);
+            marg.setType(new FunctionModifier(null));
+            AttributeArgument aarg = new AttributeArgument(null);
+            aarg.setType(new ValueModifier(null));
+            $declaration=aarg; }
+    : memberName
+      { marg.setIdentifier($memberName.identifier);
+        aarg.setIdentifier($memberName.identifier); }
+      ( 
+        { $declaration = marg; }
+        (
+          parameters
+          { marg.addParameterList($parameters.parameterList); }
+        )+
+      )?
+      lazySpecifier
+      { marg.setSpecifierExpression($lazySpecifier.specifierExpression);
+        aarg.setSpecifierExpression($lazySpecifier.specifierExpression); }
+      { expecting=SEMICOLON; }
+      SEMICOLON
+      { expecting=-1; }
+      { $declaration.setEndToken($SEMICOLON); }
       //-> ^(METHOD_ARGUMENT unionType memberName parameters+ memberBody)
       //-> ^(ATTRIBUTE_ARGUMENT unionType memberName memberBody)      
     ;
@@ -1648,6 +1712,8 @@ namedArgumentDeclaration returns [NamedArgument declaration]
       { $declaration=$voidOrInferredMethodArgument.declaration; }
     | inferredGetterArgument
       { $declaration=$inferredGetterArgument.declaration; }
+    | untypedMethodOrGetterArgument
+      { $declaration=$untypedMethodOrGetterArgument.declaration; }
     ;
 
 //special rule for syntactic predicate
@@ -1668,7 +1734,7 @@ iterableArgumentStart
 
 //special rule for syntactic predicates
 specificationStart
-    : LIDENTIFIER (SPECIFY|COMPUTE)
+    : LIDENTIFIER parameters* (SPECIFY|COMPUTE)
     ;
 
 parExpression returns [Expression expression] 

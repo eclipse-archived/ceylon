@@ -871,11 +871,23 @@ public class ExpressionVisitor extends Visitor {
     }
 
     @Override public void visit(Tree.AttributeArgument that) {
-        Tree.Type rt = beginReturnScope(that.getType());
-        Declaration od = beginReturnDeclaration(that.getDeclarationModel());
-        super.visit(that);
-        endReturnDeclaration(od);
-        endReturnScope(rt, that.getDeclarationModel());
+        Tree.SpecifierExpression se = that.getSpecifierExpression();
+    	if (se==null) {
+    		Tree.Type rt = beginReturnScope(that.getType());
+    		Declaration od = beginReturnDeclaration(that.getDeclarationModel());
+    		super.visit(that);
+    		endReturnDeclaration(od);
+    		endReturnScope(rt, that.getDeclarationModel());
+    	}
+    	else {
+    		super.visit(that);
+            inferType(that, se);
+            if (that.getType()!=null) {
+                checkType(that.getType().getTypeModel(), 
+                        that.getDeclarationModel().getName(),
+                        se, 2100);
+            }
+    	}
     }
 
     @Override public void visit(Tree.AttributeSetterDefinition that) {
@@ -910,11 +922,25 @@ public class ExpressionVisitor extends Visitor {
     }
 
     @Override public void visit(Tree.MethodArgument that) {
-        Tree.Type rt = beginReturnScope(that.getType());           
-        Declaration od = beginReturnDeclaration(that.getDeclarationModel());
-        super.visit(that);
-        endReturnDeclaration(od);
-        endReturnScope(rt, that.getDeclarationModel());
+        Tree.SpecifierExpression se = that.getSpecifierExpression();
+    	if (se==null) {
+    		Tree.Type rt = beginReturnScope(that.getType());           
+    		Declaration od = beginReturnDeclaration(that.getDeclarationModel());
+    		super.visit(that);
+    		endReturnDeclaration(od);
+    		endReturnScope(rt, that.getDeclarationModel());
+    	}
+    	else {
+    		super.visit(that);
+    		Tree.Expression e = se.getExpression();
+    		if (e!=null) {
+                ProducedType returnType = e.getTypeModel();
+                inferFunctionType(that, returnType);
+    			if (that.getType()!=null) {
+            		checkFunctionType(returnType, that.getType());
+            	}
+            }
+    	}
     }
 
     @Override public void visit(Tree.ClassDefinition that) {
@@ -1005,7 +1031,30 @@ public class ExpressionVisitor extends Visitor {
         }
     }
 
+    private void inferType(Tree.AttributeArgument that, 
+            Tree.SpecifierOrInitializerExpression spec) {
+        if (that.getType() instanceof Tree.LocalModifier) {
+            Tree.LocalModifier local = (Tree.LocalModifier) that.getType();
+            if (spec!=null) {
+                setType(local, spec, that);
+            }
+            else {
+//                local.addError("could not infer type of: " + 
+//                        name(that.getIdentifier()));
+            }
+        }
+    }
+
     private void inferFunctionType(Tree.TypedDeclaration that, ProducedType et) {
+        if (that.getType() instanceof Tree.FunctionModifier) {
+            Tree.FunctionModifier local = (Tree.FunctionModifier) that.getType();
+            if (et!=null) {
+                setFunctionType(local, et, that);
+            }
+        }
+    }
+    
+    private void inferFunctionType(Tree.MethodArgument that, ProducedType et) {
         if (that.getType() instanceof Tree.FunctionModifier) {
             Tree.FunctionModifier local = (Tree.FunctionModifier) that.getType();
             if (et!=null) {
@@ -1207,8 +1256,29 @@ public class ExpressionVisitor extends Visitor {
         }
     }
         
+    private void setType(Tree.LocalModifier local, 
+            Tree.SpecifierOrInitializerExpression s, 
+            Tree.AttributeArgument that) {
+        Expression e = s.getExpression();
+		if (e!=null) {
+			ProducedType type = e.getTypeModel();
+			if (type!=null) {
+				ProducedType t = unit.denotableType(type);
+				local.setTypeModel(t);
+				that.getDeclarationModel().setType(t);
+			}
+        }
+    }
+        
     private void setFunctionType(Tree.FunctionModifier local, 
             ProducedType et, Tree.TypedDeclaration that) {
+        ProducedType t = unit.denotableType(et);
+        local.setTypeModel(t);
+        that.getDeclarationModel().setType(t);
+    }
+        
+    private void setFunctionType(Tree.FunctionModifier local, 
+            ProducedType et, Tree.MethodArgument that) {
         ProducedType t = unit.denotableType(et);
         local.setTypeModel(t);
         that.getDeclarationModel().setType(t);
@@ -1910,7 +1980,7 @@ public class ExpressionVisitor extends Visitor {
                 checkPositionalArguments(pl, prf, that.getPositionalArgumentList());
             }
             if ( that.getNamedArgumentList()!=null ) {
-                if(pl.isNamedParametersSupported()) {
+                if (pl.isNamedParametersSupported()) {
                     that.getNamedArgumentList().getNamedArgumentList().setParameterList(pl);
                     checkNamedArguments(pl, prf, that.getNamedArgumentList());
                 }

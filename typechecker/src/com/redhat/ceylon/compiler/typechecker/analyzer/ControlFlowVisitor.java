@@ -100,12 +100,17 @@ public class ControlFlowVisitor extends Visitor {
 
     @Override
     public void visit(Tree.AttributeArgument that) {
-        boolean c = beginReturnScope(true);
-        boolean d = beginDefiniteReturnScope();
-        super.visit(that);
-        checkDefiniteReturn(that, name(that.getIdentifier()));
-        endDefiniteReturnScope(d);
-        endReturnScope(c);
+        if (that.getSpecifierExpression()==null) {
+            boolean c = beginReturnScope(true);
+            boolean d = beginDefiniteReturnScope();
+            super.visit(that);
+            checkDefiniteReturn(that, name(that.getIdentifier()));
+            endDefiniteReturnScope(d);
+            endReturnScope(c);
+        }
+        else {
+        	super.visit(that);
+        }
     }
 
     private void checkDefiniteReturn(Node that, String name) {
@@ -137,14 +142,19 @@ public class ControlFlowVisitor extends Visitor {
     
     @Override
     public void visit(Tree.MethodArgument that) {
-        boolean c = beginReturnScope(true);
-        boolean d = beginDefiniteReturnScope();
-        super.visit(that);
-        if (!(that.getType() instanceof Tree.VoidModifier)) {
-            checkDefiniteReturn(that, name(that.getIdentifier()));
+        if (that.getSpecifierExpression()==null) {
+        	boolean c = beginReturnScope(true);
+        	boolean d = beginDefiniteReturnScope();
+        	super.visit(that);
+        	if (!(that.getType() instanceof Tree.VoidModifier)) {
+        		checkDefiniteReturn(that, name(that.getIdentifier()));
+        	}
+        	endDefiniteReturnScope(d);
+        	endReturnScope(c);
         }
-        endDefiniteReturnScope(d);
-        endReturnScope(c);
+        else {
+        	super.visit(that);
+        }
     }
     
     @Override
@@ -153,6 +163,9 @@ public class ControlFlowVisitor extends Visitor {
         		!(that.getSpecifierOrInitializerExpression() instanceof Tree.LazySpecifierExpression)) {
             checkExecutableStatementAllowed(that.getSpecifierOrInitializerExpression());
             super.visit(that);
+        }
+        else {
+        	super.visit(that);
         }
     }
     
