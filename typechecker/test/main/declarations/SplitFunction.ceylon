@@ -62,4 +62,12 @@ void splitFunction() {
     void printit(String s);
     printit(@error String s="hello") => print(s);
     
+    void higher1(void f(String s), String g(Integer i));
+    higher1(void f(String s), String g(Integer i)) => print(f(g(0)));
+    
+    void higher2(void f(String s), String g(Integer i));
+    higher2(void f(String s), @error String g(Float i)) => print(f(g(0.0)));
+    
+    void higher3(void f(String s), String g(Integer i));
+    higher3(void f(String s), String g(Object i)) => print(f(g(0.0)));
 }
