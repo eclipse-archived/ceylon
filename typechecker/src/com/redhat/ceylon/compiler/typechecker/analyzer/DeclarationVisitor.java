@@ -1009,7 +1009,14 @@ public class DeclarationVisitor extends Visitor {
         exitScope(o);
     }
 
-
+    /*@Override
+    public void visit(Tree.SpecifiedArgument that) {
+    	Specification s = new Specification();
+    	visitElement(that, s);
+    	Scope o = enterScope(s);
+        super.visit(that);
+        exitScope(o);
+    }*/
     
     @Override
     public void visit(Tree.SatisfiesCondition that) {
