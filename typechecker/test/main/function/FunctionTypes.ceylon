@@ -33,6 +33,8 @@ void higher2(String[] strings, void f(String str)) {
     @error f("hello", 2);
 }
 
+Integer higher3(Integer f(Float x)) => f(0.0);
+
 String str(Float f) => f.string;
 
 Float curried(Integer x)(Float y) => x+y;
@@ -111,6 +113,78 @@ void method() {
     };
     higher2({"goodbye"}, (String s) print(s));
     higher2({"goodbye"}, (String s) print(s));
+    
+    higher2 { 
+        strings = {"goodbye"};
+        function f(String s) => s.size;
+    };
+    higher2 { 
+        strings = {"goodbye"};
+        Integer f(String s) => s.size;
+    };
+    
+    higher2 { 
+        strings = {"goodbye"};
+        void f(String s) => print(s);
+    };
+    higher2 { 
+        strings = {"goodbye"};
+        function f(String s) => print(s);
+    };
+    higher2 { 
+        strings = {"goodbye"};
+        String f(String s) => s;
+    };
+    higher2 {
+        strings = {"goodbye"};
+        Integer f(String s) => s.size;
+    };
+    higher2 {
+        strings = {"goodbye"};
+        @error Integer f(String s) => print(s);
+    };
+    higher2 { 
+        strings = {"goodbye"};
+        @error Integer f(Integer i) => i;
+    };
+    higher2 { 
+        strings = {"goodbye"};
+        @error function f(Integer i) => print(i);
+    };
+    
+    higher2 { 
+        strings = {"goodbye"};
+        f(String s) => s.size;
+    };
+    
+    
+    higher3 {
+        function f(Float f) { return f.integer; }
+    };
+    higher3 {
+        function f(Float f) => f.integer;
+    };
+    higher3 {
+        Integer f(Float f) => f.integer;
+    };
+    higher3 {
+        @error void f(Float f) {}
+    };
+    higher3 {
+        @error function f(Float f) { return f; }
+    };
+    higher3 {
+        @error function f(Float f) => f;
+    };
+    higher3 {
+        @error Float f(Float f) => f;
+    };
+    higher3 {
+        @error Integer f(Float f, String s) => f.integer;
+    };
+    higher3 {
+        @error Integer f(String s) => s.size;
+    };
     
     @error print(s);
     

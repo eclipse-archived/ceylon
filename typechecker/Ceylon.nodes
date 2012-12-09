@@ -608,7 +608,7 @@ argument list."
     EXPRESSION
     Parameter parameter;)
     
-^(FUNCTION_ARGUMENT: TERM
+^(FUNCTION_ARGUMENT:TERM
     TYPE type
     PARAMETER_LIST*
     EXPRESSION
@@ -624,10 +624,12 @@ argument list."
     abstract TypedDeclaration declarationModel;)
 ^(METHOD_ARGUMENT:TYPED_ARGUMENT
     PARAMETER_LIST*
-    BLOCK
+    BLOCK? 
+    SPECIFIER_EXPRESSION?
     Method declarationModel;)
 ^(ATTRIBUTE_ARGUMENT:TYPED_ARGUMENT
-    BLOCK
+    BLOCK? 
+    SPECIFIER_EXPRESSION?
     Getter declarationModel;)
 ^(OBJECT_ARGUMENT:TYPED_ARGUMENT
     EXTENDED_TYPE?
