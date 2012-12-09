@@ -1194,6 +1194,16 @@ specifier returns [SpecifierExpression specifierExpression]
       { $specifierExpression.setExpression($functionOrExpression.expression); }
     ;
 
+conditionSpecifier returns [SpecifierExpression specifierExpression]
+    : SPECIFY
+      { $specifierExpression = new SpecifierExpression($SPECIFY); }
+      //disjunctionExpression
+      entryRangeExpression
+      { Expression e = new Expression(null);
+        e.setTerm($entryRangeExpression.term);
+        $specifierExpression.setExpression(e); }
+    ;
+
 lazySpecifier returns [SpecifierExpression specifierExpression]
     : COMPUTE
       { $specifierExpression = new LazySpecifierExpression($COMPUTE); }
@@ -1828,12 +1838,17 @@ thenElseExpression returns [Term term]
     : de1=disjunctionExpression
       { $term = $de1.term; }
       (
-        thenElseOperator 
+        thenElseOperator
         { $thenElseOperator.operator.setLeftTerm($term);
           $term = $thenElseOperator.operator; }
         de2=disjunctionExpression
         { $thenElseOperator.operator.setRightTerm($de2.term); }
       )*
+    | 
+      ( existsCondition | nonemptyCondition | isCondition | 
+        TYPE_CONSTRAINT specifiedConditionVariable )+
+      THEN_CLAUSE disjunctionExpression 
+      (ELSE_CLAUSE disjunctionExpression)?
     ;
 
 thenElseOperator returns [BinaryOperatorExpression operator]
@@ -1962,7 +1977,7 @@ typeOperator returns [TypeOperatorExpression operator]
     ;
 
 existenceEmptinessExpression returns [Term term]
-    : de1=rangeIntervalEntryExpression
+    : de1=entryRangeExpression
       { $term = $de1.term; }
       (
         eno1=existsNonemptyOperator
@@ -1982,7 +1997,7 @@ existsNonemptyOperator returns [UnaryOperatorExpression operator]
       { $operator = new Nonempty($NONEMPTY); }
     ;
 
-rangeIntervalEntryExpression returns [Term term]
+entryRangeExpression returns [Term term]
     : ae1=additiveExpression
       { $term = $ae1.term; }
       (
@@ -2544,60 +2559,45 @@ booleanCondition returns [BooleanCondition condition]
     
 existsCondition returns [Condition condition]
     @init { ExistsCondition ec = null; }
-    : (EXISTS LIDENTIFIER (RPAREN|COMMA))
-      => e1=EXISTS
+    : (EXISTS compilerAnnotations (declarationStart|specificationStart)) =>
+      e2=EXISTS 
+      { ec = new ExistsCondition($e2); 
+        $condition = ec; }
+      specifiedConditionVariable 
+      { ec.setVariable($specifiedConditionVariable.variable); }
+    //-> ^(EXISTS_CONDITION[$EXISTS] specifiedVariable2)
+    | //(EXISTS LIDENTIFIER (RPAREN|COMMA)) =>
+      e1=EXISTS
       { ec = new ExistsCondition($e1); 
         $condition = ec; }
       impliedVariable
       { ec.setVariable($impliedVariable.variable); }
     //-> ^(EXISTS_CONDITION[$EXISTS] impliedVariable)
-    | (EXISTS compilerAnnotations (declarationStart|specificationStart))
-      => e2=EXISTS 
-      { ec = new ExistsCondition($e2); 
-        $condition = ec; }
-      specifiedVariable 
-      { ec.setVariable($specifiedVariable.variable); }
-    //-> ^(EXISTS_CONDITION[$EXISTS] specifiedVariable2)
-    | booleanCondition
-      { $condition=$booleanCondition.condition; }
     ;
     
 nonemptyCondition returns [Condition condition]
     @init { NonemptyCondition nc = null; }
-    : (NONEMPTY LIDENTIFIER (RPAREN|COMMA)) 
-      => n1=NONEMPTY 
+    : (NONEMPTY compilerAnnotations (declarationStart|specificationStart)) =>
+      n2=NONEMPTY 
+      { nc = new NonemptyCondition($n2); 
+        $condition = nc; }
+      specifiedConditionVariable 
+      { nc.setVariable($specifiedConditionVariable.variable); }
+    //-> ^(NONEMPTY_CONDITION[$NONEMPTY] specifiedVariable2)
+    | //(NONEMPTY LIDENTIFIER (RPAREN|COMMA)) =>
+      n1=NONEMPTY 
       { nc = new NonemptyCondition($n1); 
         $condition = nc; }
       impliedVariable 
       { nc.setVariable($impliedVariable.variable); }
     //-> ^(NONEMPTY_CONDITION[$NONEMPTY] impliedVariable)
-    | (NONEMPTY compilerAnnotations (declarationStart|specificationStart))
-      => n2=NONEMPTY 
-      { nc = new NonemptyCondition($n2); 
-        $condition = nc; }
-      specifiedVariable 
-      { nc.setVariable($specifiedVariable.variable); }
-    //-> ^(NONEMPTY_CONDITION[$NONEMPTY] specifiedVariable2)
-    | booleanCondition
-      { $condition=$booleanCondition.condition; }
     ;
 
 isCondition returns [Condition condition]
     @init { IsCondition ic = null;
             boolean not = false; }
-    : (NOT_OP? IS_OP type LIDENTIFIER (RPAREN|COMMA)) 
-      => (n1=NOT_OP { not=true; })?
-      i1=IS_OP
-      { ic = new IsCondition($i1); 
-        ic.setNot(not);
-        $condition = ic; }
-      t1=type 
-      { ic.setType($t1.type); }
-      impliedVariable 
-      { ic.setVariable($impliedVariable.variable); }
-    //-> ^(IS_CONDITION[$IS_OP] unionType ^(VARIABLE SYNTHETIC_VARIABLE memberName ^(SPECIFIER_EXPRESSION ^(EXPRESSION ^(BASE_MEMBER_EXPRESSION memberName)))))
-    | (NOT_OP? IS_OP type LIDENTIFIER SPECIFY)
-      => (n2=NOT_OP { not=true; })?
+    : (NOT_OP? IS_OP type LIDENTIFIER SPECIFY) =>
+      (n2=NOT_OP { not=true; })?
       i2=IS_OP 
       { ic = new IsCondition($i2);
         ic.setNot(not); 
@@ -2609,11 +2609,20 @@ isCondition returns [Condition condition]
         ic.setVariable(v); }
       memberName
       { ic.getVariable().setIdentifier($memberName.identifier); }
-      specifier
-      { ic.getVariable().setSpecifierExpression($specifier.specifierExpression); }
+      conditionSpecifier
+      { ic.getVariable().setSpecifierExpression($conditionSpecifier.specifierExpression); }
     //-> ^(IS_CONDITION[$IS_OP] unionType ^(VARIABLE unionType memberName specifier))
-    | booleanCondition
-      { $condition=$booleanCondition.condition; }
+    | //(NOT_OP? IS_OP type LIDENTIFIER (RPAREN|COMMA)) =>
+      (n1=NOT_OP { not=true; })?
+      i1=IS_OP
+      { ic = new IsCondition($i1); 
+        ic.setNot(not);
+        $condition = ic; }
+      t1=type
+      { ic.setType($t1.type); }
+      impliedVariable 
+      { ic.setVariable($impliedVariable.variable); }
+    //-> ^(IS_CONDITION[$IS_OP] unionType ^(VARIABLE SYNTHETIC_VARIABLE memberName ^(SPECIFIER_EXPRESSION ^(EXPRESSION ^(BASE_MEMBER_EXPRESSION memberName)))))
     ;
 
 satisfiesCondition returns [SatisfiesCondition condition]
@@ -2956,6 +2965,15 @@ specifiedVariable returns [Variable variable]
       (
         specifier
         { $variable.setSpecifierExpression($specifier.specifierExpression); }
+      )?
+    ;
+
+specifiedConditionVariable returns [Variable variable]
+    : v=variable 
+      { $variable = $v.variable; }
+      (
+        conditionSpecifier
+        { $variable.setSpecifierExpression($conditionSpecifier.specifierExpression); }
       )?
     ;
 
