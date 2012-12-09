@@ -581,8 +581,9 @@ public class ExpressionVisitor extends Visitor {
     					for (int i=0; i<argTypes.size()&&i<params.size(); i++) {
     						ProducedType at = argTypes.get(i);
     						Tree.Parameter param = params.get(i);
-							Tree.Type t = param.getType();
-    						checkAssignable(t.getTypeModel(), at, t, 
+							ProducedType t = param.getDeclarationModel()
+    								.getProducedTypedReference(null, Collections.<ProducedType>emptyList()).getFullType();
+    						checkAssignable(t, at, param.getType(), 
     								"declared parameter type must be a subtype of type declared in function declaration");
     					}
     					if (!params.isEmpty()) {
