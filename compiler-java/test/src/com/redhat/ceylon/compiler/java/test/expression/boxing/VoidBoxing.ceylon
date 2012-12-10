@@ -33,10 +33,10 @@ class VoidBoxing() {
     Void returnsVoid(Void v){
         return v;
     }
-    void callablevoid(Callable<Void, <Void>> f){
+    void callablevoid(Callable<Void, [Void]> f){
         f(valueVoid);
     }
-    Void callableVoid(Callable<Void, <Void>> f){
+    Void callableVoid(Callable<Void, [Void]> f){
         return f(valueVoid);
     }
         

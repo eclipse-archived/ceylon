@@ -22,13 +22,13 @@ class CallableReturnMethod() {
     Integer f() {
         return 1;
     }
-    Callable<Integer,<>> m() {
+    Callable<Integer,[]> m() {
         return f;
     }
-    Callable<Integer, <>> m2() {
+    Callable<Integer, []> m2() {
         return this.f;
     }
-    Callable<Integer, <>> m3(CallableReturnMethod c) {
+    Callable<Integer, []> m3(CallableReturnMethod c) {
         return c.f;
     }
     

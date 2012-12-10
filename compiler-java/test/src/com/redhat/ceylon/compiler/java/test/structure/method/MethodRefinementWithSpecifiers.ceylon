@@ -43,7 +43,7 @@ interface MethodRefinementWithSpecifiers_Interface {
 void methodRefinementWithSpecifiers_returnsMethod()(){}
 
 @nomodel
-Callable<Void,<>> methodRefinementWithSpecifiers_attributeMethod = methodRefinementWithSpecifiers_returnsMethod();
+Callable<Void,[]> methodRefinementWithSpecifiers_attributeMethod = methodRefinementWithSpecifiers_returnsMethod();
 
 @nomodel
 class MethodRefinementWithSpecifiers_ClassNoParam(){}

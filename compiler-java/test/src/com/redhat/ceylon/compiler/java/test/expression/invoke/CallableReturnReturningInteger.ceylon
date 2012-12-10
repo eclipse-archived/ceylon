@@ -22,6 +22,6 @@ Integer callableReturnReturningInteger_foo() {
     return 1;
 }
 @nomodel
-Callable<Integer, <>> callableReturnReturningInteger_bar() {
+Callable<Integer, []> callableReturnReturningInteger_bar() {
     return callableReturnReturningInteger_foo;
 }

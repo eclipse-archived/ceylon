@@ -18,7 +18,7 @@
  * MA  02110-1301, USA.
  */
 @nomodel
-Callable<String,<Integer>> methodSpecifyingCallable_f() {
+Callable<String,[Integer]> methodSpecifyingCallable_f() {
     throw;
 }
 @nomodel

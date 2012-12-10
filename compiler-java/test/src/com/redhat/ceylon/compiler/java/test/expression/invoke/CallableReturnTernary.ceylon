@@ -21,6 +21,6 @@
 void callableReturnTernary_foo(Integer i, String s, Boolean b) {
 }
 @nomodel
-Callable<Void, <Integer, String, Boolean>> callableReturnTernary_bar() {
+Callable<Void, [Integer, String, Boolean]> callableReturnTernary_bar() {
     return callableReturnTernary_foo;
 }
