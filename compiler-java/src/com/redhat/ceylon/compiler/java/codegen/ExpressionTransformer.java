@@ -60,6 +60,7 @@ import com.redhat.ceylon.compiler.typechecker.tree.Tree.InvocationExpression;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.KeyValueIterator;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.PositionalArgument;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.QualifiedMemberExpression;
+import com.redhat.ceylon.compiler.typechecker.tree.Tree.SequencedArgument;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.SpecifierExpression;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.Super;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.Term;
@@ -681,17 +682,33 @@ public class ExpressionTransformer extends AbstractTransformer {
     }
 
     public JCExpression transform(Tree.Tuple value) {
-        return makeTuple(value.getExpressions().iterator());
+        SequencedArgument sequencedArgument = value.getSequencedArgument();
+        if(sequencedArgument != null){
+            boolean ellipsis = sequencedArgument.getEllipsis() != null;
+            return makeTuple(sequencedArgument.getExpressionList().getExpressions().iterator(), ellipsis);
+        }else if(value.getComprehension() != null){
+            return make().Apply(null, makeSelect(transformComprehension(value.getComprehension()), "getSequence"), 
+                    List.<JCExpression>nil());
+        }
+        // nothing in there
+        return makeEmpty();
     }
 
-    private JCExpression makeTuple(Iterator<Expression> iter) {
+    private JCExpression makeTuple(Iterator<Expression> iter, boolean ellipsis) {
         if (iter.hasNext()) {
+            // no erasure here? really?
             JCExpression first = transformExpression(iter.next());
-            JCExpression rest = makeTuple(iter);
+            // last one with ellipsis is just a sequence
+            if(!iter.hasNext() && ellipsis)
+                return first;
+            // get the rest of the tuple
+            JCExpression rest = makeTuple(iter, ellipsis);
+            // make the tuple
             ProducedType tupleType = typeFact().getTupleDeclaration().getType();
             JCExpression typeExpr = makeJavaType(tupleType, CeylonTransformer.JT_CLASS_NEW | CeylonTransformer.JT_RAW);
             return makeNewClass(typeExpr, List.of(first, rest));
         } else {
+            // nothing in there
             return makeEmpty();
         }
     }
