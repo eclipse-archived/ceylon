@@ -45,7 +45,7 @@ class OptimizedForWithRange(start, end) {
         for (i in 1..10) {
             sum += i;
         }
-        @disableOptimization["RangeIteration"]
+        @disableOptimization:"RangeIteration"
         for (i in 1..10) {
             sum += i;
         }

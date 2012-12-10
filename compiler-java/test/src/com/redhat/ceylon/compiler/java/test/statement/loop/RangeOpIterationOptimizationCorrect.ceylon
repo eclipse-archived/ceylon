@@ -87,7 +87,7 @@ void rangeOpIterationOptimizationCorrect() {
         }
         
         value optimized = SequenceBuilder<Integer>();
-        @requireOptimization["RangeOpIteration"]
+        @requireOptimization:"RangeOpIteration"
         for (i in start..end) {
             //print("optimized " i "");
             optimized.append(i);
@@ -124,7 +124,7 @@ void rangeOpIterationOptimizationCorrect() {
         }
         
         value optimized = SequenceBuilder<Integer>();
-        @requireOptimization["RangeOpIteration"]
+        @requireOptimization:"RangeOpIteration"
         for (i in (start..end).by(step)) {
             //print("optimized " i "");
             optimized.append(i);
@@ -172,7 +172,7 @@ void rangeOpIterationOptimizationCorrect() {
     // unoptimized versions 
     for (step in {0, -3}) {
         try {
-            @requireOptimization["RangeOpIteration"]
+            @requireOptimization:"RangeOpIteration"
             for (i in (0..10).by(step)) {
                 fail("Range.by(" step " didn't throw");
             }
@@ -190,20 +190,20 @@ void rangeOpIterationOptimizationCorrect() {
     }  
     
     // With else block
-    @disableOptimization["RangeOpIteration"]
+    @disableOptimization:"RangeOpIteration"
     for (i in 0..10) {
         break;    
     } else {
         fail("else with with unconditional break");
     }
-    @requireOptimization["RangeOpIteration"]
+    @requireOptimization:"RangeOpIteration"
     for (i in 0..10) {
         break;    
     } else {
         fail("else with with unconditional break");
     }
     
-    @disableOptimization["RangeOpIteration"]
+    @disableOptimization:"RangeOpIteration"
     for (i in 0..10) {
         if (i == 1) {
             break;
@@ -211,7 +211,7 @@ void rangeOpIterationOptimizationCorrect() {
     } else {
         fail("else with conditional break");
     }
-    @requireOptimization["RangeOpIteration"]
+    @requireOptimization:"RangeOpIteration"
     for (i in 0..10) {
         if (i == 1) {
             break;
@@ -220,7 +220,7 @@ void rangeOpIterationOptimizationCorrect() {
         fail("else with conditional break");
     }
     
-    @disableOptimization["RangeOpIteration"]
+    @disableOptimization:"RangeOpIteration"
     for (i in 0..10) {
         if (i == 11) {
             fail("else with conditional break (2)");
@@ -229,7 +229,7 @@ void rangeOpIterationOptimizationCorrect() {
     } else {
         
     }
-    @requireOptimization["RangeOpIteration"]
+    @requireOptimization:"RangeOpIteration"
     for (i in 0..10) {
         if (i == 11) {
             fail("else with conditional break (2)");

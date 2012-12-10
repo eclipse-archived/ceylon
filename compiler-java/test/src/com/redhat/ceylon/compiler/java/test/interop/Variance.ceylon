@@ -25,18 +25,18 @@ void variance() {
     //Class<Object> klass = var;
     //Interface<Object> interf = var;
     
-    @type["Callable<Object,Tuple<Nothing|Interface<Object>,Nothing|Interface<Object>,Empty>>"]
+    @type:"Callable<Object,Tuple<Nothing|Interface<Object>,Nothing|Interface<Object>,Empty>>"
     value interfaceMethod = var.interfaceMethod;
-    @type["Object"] value ret1 = var.interfaceMethod(var);
+    @type:"Object" value ret1 = var.interfaceMethod(var);
 
-    @type["Callable<Object,Tuple<Nothing|Class<Object>,Nothing|Class<Object>,Empty>>"]
+    @type:"Callable<Object,Tuple<Nothing|Class<Object>,Nothing|Class<Object>,Empty>>"
     value classMethod = var.classMethod;
-    @type["Object"] value ret2 = var.classMethod(var);
+    @type:"Object" value ret2 = var.classMethod(var);
     
-    @type["JavaVariance"] value m = var.method(var);
+    @type:"JavaVariance" value m = var.method(var);
     
-    @type["Object"] value v1 = var.roField;
-    @type["Object"] value v2 = var.rwField;
-    @type["Object"] value v3 = var.roProperty;
-    @type["Object"] value v4 = var.rwProperty;
+    @type:"Object" value v1 = var.roField;
+    @type:"Object" value v2 = var.rwField;
+    @type:"Object" value v3 = var.roProperty;
+    @type:"Object" value v4 = var.rwProperty;
 }

@@ -20,7 +20,7 @@
 @nomodel
 class MethodForRange(){
     shared void m(){
-        @disableOptimization["RangeOpIteration"]
+        @disableOptimization:"RangeOpIteration"
         for (Integer i in 1..10) {
             // Empty
         }
