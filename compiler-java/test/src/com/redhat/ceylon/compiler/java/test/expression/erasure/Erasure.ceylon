@@ -167,8 +167,8 @@ class Test(Integer&EmptyInterface n) {
         variable Boolean bSync;
         bSync := exists p1OrNothing;
         
-        value p2 = p1OrNothing ? p1;
-        Integer n = p1OrNothing ? p1;
+        value p2 = p1OrNothing else p1;
+        Integer n = p1OrNothing else p1;
         
         // FIXME: those operators are not yet supported
         //value p3 = p1OrNothing?.remainder(p1);

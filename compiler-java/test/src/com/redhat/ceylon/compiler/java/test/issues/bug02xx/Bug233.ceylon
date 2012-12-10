@@ -20,6 +20,6 @@
 @nomodel
 class Bug233_Ceylon(Bug233_Type? arg) extends Bug233_Java(arg){
     shared actual Bug233_Type f(Bug233_Type? arg){
-        return arg ? Bug233_Type();
+        return arg else Bug233_Type();
     }
 }

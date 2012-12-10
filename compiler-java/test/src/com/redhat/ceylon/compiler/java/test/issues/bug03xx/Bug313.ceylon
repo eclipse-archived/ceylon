@@ -35,5 +35,5 @@ void bug310() {
 @nomodel
 void bug310_2() {
     String? s1 = null;
-    Boolean b = s1?.equals("") ? false;
+    Boolean b = s1?.equals("") else false;
 }

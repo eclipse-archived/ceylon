@@ -27,8 +27,8 @@ shared class NullHandlingOperators() {
     void nullHandling() {
         Integer? natOrNothing1 = 0;
         Integer? intOrNothing = +0;
-        Integer n = natOrNothing1 ? 2;
-        Integer? nBoxed = natOrNothing1 ? box(0); 
+        Integer n = natOrNothing1 else 2;
+        Integer? nBoxed = natOrNothing1 else box(0); 
         variable Integer? nullSafeMember := intOrNothing?.negativeValue;
         variable Integer? nullSafeInvoke := intOrNothing?.plus(+1);
         nullSafeInvoke := intOrNothing?.plus{
@@ -36,7 +36,7 @@ shared class NullHandlingOperators() {
         };
         
         String[]? s1 = null;
-        String[] s2 = s1 ? {};
+        String[] s2 = s1 else {};
     }
     
     void testEmpty() {

@@ -28,18 +28,18 @@ shared class ComparisonFailed(String message,
 }
 
 shared void fail(String? message = null) {
-    throw AssertionFailed(message ? "fail");
+    throw AssertionFailed(message else "fail");
 }
 
 shared void assertTrue(Boolean got, String? message = null) {
     if (!got) {
-        throw AssertionFailed(message ? "Expected true");
+        throw AssertionFailed(message else "Expected true");
     }
 }
 
 shared void assertFalse(Boolean got, String? message = null) {
     if (got) {
-        throw AssertionFailed(message ? "Expected false");
+        throw AssertionFailed(message else "Expected false");
     }
 }
 
@@ -47,16 +47,16 @@ shared void assertEquals(Object? expect, Object? got, String? message = null) {
     if (exists expect) {
         if (exists got) {
             if (expect != got) {
-                throw ComparisonFailed(message ? "Expected " expect " but got " got "", 
+                throw ComparisonFailed(message else "Expected " expect " but got " got "", 
                     expect, got);
             } else {
                 return;
             }
         }
-        throw ComparisonFailed(message ? "Expected " expect " but got null", 
+        throw ComparisonFailed(message else "Expected " expect " but got null", 
             expect, got);
     } else if (exists got) {
-        throw ComparisonFailed(message ? "Expected null but got " got "", 
+        throw ComparisonFailed(message else "Expected null but got " got "", 
             expect, got);
     }
 }
@@ -65,16 +65,16 @@ shared void assertApproximatelyEquals(Float? expect, Float? got, Float tolerance
     if (exists expect) {
         if (exists got) {
             if ((expect - got).magnitude > tolerance) {
-                throw ComparisonFailed(message ? "Expected " expect " but got " got " (to within " tolerance ")", 
+                throw ComparisonFailed(message else "Expected " expect " but got " got " (to within " tolerance ")", 
                     expect, got);
             } else {
                 return;
             }
         }
-        throw ComparisonFailed(message ? "Expected " expect " but got null", 
+        throw ComparisonFailed(message else "Expected " expect " but got null", 
             expect, got);
     } else if (exists got) {
-        throw ComparisonFailed(message ? "Expected null but got " got "", 
+        throw ComparisonFailed(message else "Expected null but got " got "", 
             expect, got);
     }
 }
