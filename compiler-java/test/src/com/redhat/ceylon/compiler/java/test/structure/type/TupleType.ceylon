@@ -18,12 +18,12 @@
  * MA  02110-1301, USA.
  */
 @nomodel
-<String, Integer, Float> triple(String s, Integer i, Float f) {
-    return (s, i, f);
+[String, Integer, Float] triple(String s, Integer i, Float f) {
+    return [s, i, f];
 }
 
 @nomodel
-Float add(<Float,Float> floats=(1.0, 2.0)) {
+Float add([Float,Float] floats=[1.0, 2.0]) {
     return floats.first+floats.rest.first;
 }
 
@@ -34,12 +34,21 @@ void tupleTypeTest() {
     Integer b = tup.rest.first;
     Float c = tup.rest.rest.first;
 
-    <String, String> hibye = ("hello", "goodbye");
-    <String, String> fun() {
+    [String, String] hibye = ["hello", "goodbye"];
+    [String, String] fun() {
         return hibye;
     }
     Sequence<String> strings = hibye;
-    <String, String...> hibye1 = hibye;
-    <String...> hibye2 = hibye;
-    <String, Integer, Object...> trip = triple("", 0, 0.0);
+    [String, String...] hibye1 = hibye;
+    [String...] hibye2 = hibye;
+    [String, Integer, Object...] trip = triple("", 0, 0.0);
+    
+    [] emptyTuple = [];
+    [String] oneTuple = ["a"];
+    [String, Integer] twoTuple = ["a", 2];
+    [String, Integer, String] threeTuple = ["a", 2, "c"];
+    [String...] oneTupleEllipsis = [strings...];
+    [Integer, String...] twoTupleEllipsis = [1, strings...];
+    [String, Integer, String...] threeTupleEllipsis = ["a", 1, strings...];
+    [String...] comprehensionTuple = [for (s in strings) s];
 }

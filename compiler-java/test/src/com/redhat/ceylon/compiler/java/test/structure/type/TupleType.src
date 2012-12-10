@@ -63,6 +63,38 @@ final class tupleTypeTest_ {
         final .ceylon.language.Tuple<? extends .ceylon.language.String, ? extends .ceylon.language.String, ? extends .ceylon.language.Sequential<? extends .ceylon.language.String>> hibye1 = hibye;
         final .ceylon.language.Sequential<? extends .ceylon.language.String> hibye2 = hibye;
         final .ceylon.language.Tuple<? extends .java.lang.Object, ? extends .ceylon.language.String, ? extends .ceylon.language.Tuple<? extends .java.lang.Object, ? extends .ceylon.language.Integer, ? extends .ceylon.language.Sequential<? extends .java.lang.Object>>> trip = .com.redhat.ceylon.compiler.java.test.structure.type.triple_.triple("", 0L, 0.0);
+        final .ceylon.language.Empty emptyTuple = .ceylon.language.empty_.getEmpty$();
+        final .ceylon.language.Tuple<? extends .ceylon.language.String, ? extends .ceylon.language.String, ? extends .ceylon.language.Empty> oneTuple = new .ceylon.language.Tuple(.ceylon.language.String.instance("a"), .ceylon.language.empty_.getEmpty$());
+        final .ceylon.language.Tuple<? extends .java.lang.Object, ? extends .ceylon.language.String, ? extends .ceylon.language.Tuple<? extends .ceylon.language.Integer, ? extends .ceylon.language.Integer, ? extends .ceylon.language.Empty>> twoTuple = new .ceylon.language.Tuple(.ceylon.language.String.instance("a"), new .ceylon.language.Tuple(.ceylon.language.Integer.instance(2L), .ceylon.language.empty_.getEmpty$()));
+        final .ceylon.language.Tuple<? extends .java.lang.Object, ? extends .ceylon.language.String, ? extends .ceylon.language.Tuple<? extends .java.lang.Object, ? extends .ceylon.language.Integer, ? extends .ceylon.language.Tuple<? extends .ceylon.language.String, ? extends .ceylon.language.String, ? extends .ceylon.language.Empty>>> threeTuple = new .ceylon.language.Tuple(.ceylon.language.String.instance("a"), new .ceylon.language.Tuple(.ceylon.language.Integer.instance(2L), new .ceylon.language.Tuple(.ceylon.language.String.instance("c"), .ceylon.language.empty_.getEmpty$())));
+        final .ceylon.language.Sequential<? extends .ceylon.language.String> oneTupleEllipsis = strings;
+        final .ceylon.language.Tuple<? extends .java.lang.Object, ? extends .ceylon.language.Integer, ? extends .ceylon.language.Sequential<? extends .ceylon.language.String>> twoTupleEllipsis = new .ceylon.language.Tuple(.ceylon.language.Integer.instance(1L), strings);
+        final .ceylon.language.Tuple<? extends .java.lang.Object, ? extends .ceylon.language.String, ? extends .ceylon.language.Tuple<? extends .java.lang.Object, ? extends .ceylon.language.Integer, ? extends .ceylon.language.Sequential<? extends .ceylon.language.String>>> threeTupleEllipsis = new .ceylon.language.Tuple(.ceylon.language.String.instance("a"), new .ceylon.language.Tuple(.ceylon.language.Integer.instance(1L), strings));
+        final .ceylon.language.Sequential<? extends .ceylon.language.String> comprehensionTuple = new .com.redhat.ceylon.compiler.java.language.AbstractIterable<.ceylon.language.String>(){
+            
+            public final .ceylon.language.Iterator<.ceylon.language.String> getIterator() {
+                return new .ceylon.language.Iterator<.ceylon.language.String>(){
+                    private final .ceylon.language.Iterator<? extends .ceylon.language.String> iter$0 = strings.getIterator();
+                    private .ceylon.language.String s;
+                    private boolean s$exhausted;
+                    
+                    private final boolean s() {
+                        final .java.lang.Object $ceylontmpitem2 = iter$0.next();
+                        s$exhausted = $ceylontmpitem2 == .ceylon.language.exhausted_.getExhausted$();
+                        if (s$exhausted) {
+                            return false;
+                        } else {
+                            s = (.ceylon.language.String)$ceylontmpitem2;
+                            return true;
+                        }
+                    }
+                    
+                    public final .java.lang.Object next() {
+                        return this.s() ? s : .ceylon.language.exhausted_.getExhausted$();
+                    }
+                };
+            }
+        }.getSequence();
     }
     
     public static void main(.java.lang.String[] args) {
