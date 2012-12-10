@@ -170,7 +170,7 @@ void testLazyExpressions() {
     lx := 1;
     check(lazy_f1(3)=="3.2", "=> defaulted param toplevel");
     check(lazy_f2(3)==9, "=> method toplevel");
-    //check(lazy_i1==4, "=> attribute toplevel");
+    check(lazy_i1==4, "=> attribute toplevel");
     
     variable Integer x := 1000;
     String f1(Integer i1, String f() => ""i1"."(++x)"") => f();
