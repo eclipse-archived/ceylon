@@ -2051,6 +2051,7 @@ public class GenerateJsVisitor extends Visitor
                 out(names.getter(bmeDecl), "=function(){return ");
                 that.getSpecifierExpression().visit(this);
                 out(";};");
+                directAccess.remove(bmeDecl);
             }
             else {
                 // attr = expr;

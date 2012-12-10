@@ -183,7 +183,7 @@ void testLazyExpressions() {
     check(f1(3)=="3.2", "=> defaulted param local");
     check(f2(3)==9, "=> method local");
     check(i1==4, "=> attribute local");
-    //check(i2==10, "=> attribute specifier local");
+    check(i2==10, "=> attribute specifier local");
 }
 
 shared void test() {
