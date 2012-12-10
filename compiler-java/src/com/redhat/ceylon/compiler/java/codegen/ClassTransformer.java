@@ -1487,7 +1487,10 @@ public class ClassTransformer extends AbstractTransformer {
             InvocationBuilder specifierBuilder = InvocationBuilder.forSpecifierInvocation(gen(), specifierExpression, methodDecl.getDeclarationModel());
             bodyExpr = specifierBuilder.build();
         } else {
-            bodyExpr = expressionGen().transformExpression(term, CodegenUtil.getBoxingStrategy(model), term.getTypeModel());
+            ProducedTypedReference typedRef = getTypedReference(model);
+            ProducedTypedReference nonWideningTypedRef = nonWideningTypeDecl(typedRef);
+            ProducedType nonWideningType = nonWideningType(typedRef, nonWideningTypedRef);
+            bodyExpr = expressionGen().transformExpression(term, CodegenUtil.getBoxingStrategy(model), nonWideningType);
         }
         if (!Decl.isUnboxedVoid(model) || Strategy.useBoxedVoid(model)) {
             if (returnNull) {
