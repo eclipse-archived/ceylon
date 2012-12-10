@@ -691,10 +691,18 @@ public class ExpressionTransformer extends AbstractTransformer {
             boolean ellipsis = sequencedArgument.getEllipsis() != null;
             return makeTuple(sequencedArgument.getExpressionList().getExpressions().iterator(), ellipsis);
         }else if(value.getComprehension() != null){
+            // FIXME: do we need to deal with erasure?
             return iterableToSequence(transformComprehension(value.getComprehension())); 
         }
         // nothing in there
         return makeEmpty();
+    }
+
+    public JCExpression comprehensionAsSequential(Comprehension comprehension, ProducedType expectedType) {
+        JCExpression sequential = iterableToSequence(transformComprehension(comprehension));
+        ProducedType elementType = comprehension.getForComprehensionClause().getTypeModel();
+        ProducedType sequentialType = typeFact().getSequentialType(elementType);
+        return applyErasureAndBoxing(sequential, sequentialType, true, BoxingStrategy.BOXED, expectedType);
     }
 
     private JCExpression makeTuple(Iterator<Expression> iter, boolean ellipsis) {
@@ -2578,5 +2586,4 @@ public class ExpressionTransformer extends AbstractTransformer {
         }
         return null;
     }
-
 }

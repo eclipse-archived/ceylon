@@ -772,7 +772,8 @@ class PositionalInvocationBuilder extends DirectInvocationBuilder {
     @Override
     protected JCExpression getTransformedArgumentExpression(int argIndex) {
         if (argIndex == positional.getPositionalArguments().size() && positional.getComprehension() != null) {
-            return gen.expressionGen().transformComprehension(positional.getComprehension());
+            ProducedType type = getParameterType(argIndex);
+            return gen.expressionGen().comprehensionAsSequential(positional.getComprehension(), type); 
         }
         Tree.Expression expr = getArgumentExpression(argIndex);
         if (expr.getTerm() instanceof FunctionArgument) {
@@ -782,6 +783,9 @@ class PositionalInvocationBuilder extends DirectInvocationBuilder {
         return transformArg(argIndex);
     }
     protected Parameter getParameter(int argIndex) {
+        // last parameter can be a comprehension which is not counted as part of positional arguments
+        if(argIndex == positional.getPositionalArguments().size() && positional.getComprehension() != null)
+            return parameters.get(argIndex);
         return positional.getPositionalArguments().get(argIndex).getParameter();
     }
     @Override
@@ -1286,7 +1290,7 @@ class NamedArgumentInvocationBuilder extends InvocationBuilder {
                             argExpr = gen.expressionGen().transformExpression(sequencedArgument.getExpressionList().getExpressions().get(0));
                         }
                     } else if (namedArgumentList.getComprehension() != null) {
-                        argExpr = gen.expressionGen().transformComprehension(namedArgumentList.getComprehension());
+                        argExpr = gen.expressionGen().comprehensionAsSequential(namedArgumentList.getComprehension(), param.getType());
                     } else {
                         if (primaryDeclaration instanceof FunctionalParameter) {
                             // honestly I don't know if it needs a cast but it can't hurt
