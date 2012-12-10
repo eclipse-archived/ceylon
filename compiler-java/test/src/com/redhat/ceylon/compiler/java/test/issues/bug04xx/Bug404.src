@@ -12,7 +12,7 @@ class Bug404 {
             {
                 .ceylon.language.String $ceylontmp0 = .ceylon.language.String.instance(.ceylon.language.Float.toString(1.0));
             }
-            returning new .com.redhat.ceylon.compiler.java.language.ArraySequence<.ceylon.language.String>(.ceylon.language.String.instance("1"), .ceylon.language.String.instance("1.0")).contains($ceylontmp0);
+            returning new .ceylon.language.Tuple(.ceylon.language.String.instance("1"), new .ceylon.language.Tuple(.ceylon.language.String.instance("1.0"), .ceylon.language.empty_.getEmpty$())).contains($ceylontmp0);
         );
         final .ceylon.language.Sequential<? extends .ceylon.language.String> empty = (.ceylon.language.Sequential).ceylon.language.empty_.getEmpty$();
         sync = !(
@@ -37,7 +37,7 @@ class Bug404 {
             }
             returning $ceylontmp4 instanceof .ceylon.language.Sequence;
         );
-        final .ceylon.language.Sequential<? extends .ceylon.language.String> full = new .com.redhat.ceylon.compiler.java.language.ArraySequence<.ceylon.language.String>(.ceylon.language.String.instance("foo"));
+        final .ceylon.language.Sequential<? extends .ceylon.language.String> full = new .ceylon.language.Tuple(.ceylon.language.String.instance("foo"), .ceylon.language.empty_.getEmpty$());
         sync = (
             let
             {

@@ -8,10 +8,10 @@ public final class bug898_ {
     public static void bug898() {
         final .ceylon.language.Iterable<? extends .ceylon.language.Iterable<? extends .ceylon.language.String>> fooForced = (.ceylon.language.Iterable).ceylon.language.empty_.getEmpty$();
         final .ceylon.language.Empty fooInferred = .ceylon.language.empty_.getEmpty$();
-        final .ceylon.language.Iterable<? extends .ceylon.language.Iterable<? extends .ceylon.language.String>> barForced = (.ceylon.language.Iterable)new .com.redhat.ceylon.compiler.java.language.ArraySequence<.ceylon.language.Empty>(.ceylon.language.empty_.getEmpty$());
-        final .ceylon.language.Sequence<? extends .ceylon.language.Empty> barInferred = new .com.redhat.ceylon.compiler.java.language.ArraySequence<.ceylon.language.Empty>(.ceylon.language.empty_.getEmpty$());
-        final .ceylon.language.Iterable<? extends .ceylon.language.Iterable<? extends .ceylon.language.String>> geeForced = new .com.redhat.ceylon.compiler.java.language.ArraySequence<.ceylon.language.Sequence<? extends .ceylon.language.String>>(new .com.redhat.ceylon.compiler.java.language.ArraySequence<.ceylon.language.String>(.ceylon.language.String.instance("")));
-        final .ceylon.language.Sequence<? extends .ceylon.language.Sequence<? extends .ceylon.language.String>> geeInferred = new .com.redhat.ceylon.compiler.java.language.ArraySequence<.ceylon.language.Sequence<? extends .ceylon.language.String>>(new .com.redhat.ceylon.compiler.java.language.ArraySequence<.ceylon.language.String>(.ceylon.language.String.instance("")));
+        final .ceylon.language.Iterable<? extends .ceylon.language.Iterable<? extends .ceylon.language.String>> barForced = (.ceylon.language.Iterable)new .ceylon.language.Tuple(.ceylon.language.empty_.getEmpty$(), .ceylon.language.empty_.getEmpty$());
+        final .ceylon.language.Tuple<? extends .ceylon.language.Empty, ? extends .ceylon.language.Empty, ? extends .ceylon.language.Empty> barInferred = new .ceylon.language.Tuple(.ceylon.language.empty_.getEmpty$(), .ceylon.language.empty_.getEmpty$());
+        final .ceylon.language.Iterable<? extends .ceylon.language.Iterable<? extends .ceylon.language.String>> geeForced = new .ceylon.language.Tuple(new .ceylon.language.Tuple(.ceylon.language.String.instance(""), .ceylon.language.empty_.getEmpty$()), .ceylon.language.empty_.getEmpty$());
+        final .ceylon.language.Tuple<? extends .ceylon.language.Tuple<? extends .ceylon.language.String, ? extends .ceylon.language.String, ? extends .ceylon.language.Empty>, ? extends .ceylon.language.Tuple<? extends .ceylon.language.String, ? extends .ceylon.language.String, ? extends .ceylon.language.Empty>, ? extends .ceylon.language.Empty> geeInferred = new .ceylon.language.Tuple(new .ceylon.language.Tuple(.ceylon.language.String.instance(""), .ceylon.language.empty_.getEmpty$()), .ceylon.language.empty_.getEmpty$());
     }
     
     public static void main(.java.lang.String[] args) {

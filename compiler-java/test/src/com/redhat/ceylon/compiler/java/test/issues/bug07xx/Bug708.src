@@ -113,7 +113,7 @@ final class bug708seq_ {
     }
     private static final .ceylon.language.Sequential<? extends .com.redhat.ceylon.compiler.java.test.issues.bug07xx.Bug708<.ceylon.language.String>>[] value;
     static {
-        value = new .ceylon.language.Sequential[]{new .com.redhat.ceylon.compiler.java.language.ArraySequence<.com.redhat.ceylon.compiler.java.test.issues.bug07xx.Bug708<.ceylon.language.String>>(new .com.redhat.ceylon.compiler.java.test.issues.bug07xx.Bug708<.ceylon.language.String>())};
+        value = new .ceylon.language.Sequential[]{new .ceylon.language.Tuple(new .com.redhat.ceylon.compiler.java.test.issues.bug07xx.Bug708<.ceylon.language.String>(), .ceylon.language.empty_.getEmpty$())};
     }
     
     static .ceylon.language.Sequential<? extends .com.redhat.ceylon.compiler.java.test.issues.bug07xx.Bug708<.ceylon.language.String>> getBug708seq$() {

@@ -44,7 +44,7 @@ class ForIfIsNotObject {
                     }
                 };
             }
-        }.getSequence());
+        });
     }
     
     public final void mvar(final .ceylon.language.Sequential<? extends .java.lang.Object> ys) {
@@ -85,7 +85,7 @@ class ForIfIsNotObject {
                     }
                 };
             }
-        }.getSequence());
+        });
     }
     
     public static void main(.java.lang.String[] args) {

@@ -60,14 +60,14 @@ class CallableArgumentParameterTypeParamMixed<X> {
                 return .com.redhat.ceylon.compiler.java.test.expression.invoke.callableArgumentParameterTypeParamMixed_bar_.<X, Y>callableArgumentParameterTypeParamMixed_bar((X)$param$0, (Y)$param$1);
             }
         });
-        .com.redhat.ceylon.compiler.java.test.expression.invoke.callableArgumentParameterTypeParamMixed_f_.callableArgumentParameterTypeParamMixed_f(new .com.redhat.ceylon.compiler.java.language.AbstractCallable("Callable<X&Y,<X&Y, Y>>"){
+        .com.redhat.ceylon.compiler.java.test.expression.invoke.callableArgumentParameterTypeParamMixed_f_.callableArgumentParameterTypeParamMixed_f(new .com.redhat.ceylon.compiler.java.language.AbstractCallable("<X&Y>(X&Y, Y)"){
             
             @.java.lang.Override
             public .java.lang.Object $call(final .java.lang.Object $param$0, final .java.lang.Object $param$1) {
                 return .com.redhat.ceylon.compiler.java.test.expression.invoke.callableArgumentParameterTypeParamMixed_bar_.callableArgumentParameterTypeParamMixed_bar($param$0, (Y)$param$1);
             }
         });
-        .com.redhat.ceylon.compiler.java.test.expression.invoke.callableArgumentParameterTypeParamMixed_f_.callableArgumentParameterTypeParamMixed_f(new .com.redhat.ceylon.compiler.java.language.AbstractCallable("Callable<X|Y,<X|Y, Y>>"){
+        .com.redhat.ceylon.compiler.java.test.expression.invoke.callableArgumentParameterTypeParamMixed_f_.callableArgumentParameterTypeParamMixed_f(new .com.redhat.ceylon.compiler.java.language.AbstractCallable("<X|Y>(X|Y, Y)"){
             
             @.java.lang.Override
             public .java.lang.Object $call(final .java.lang.Object $param$0, final .java.lang.Object $param$1) {

@@ -43,7 +43,7 @@ class ForIfNonEmptySequence {
                     }
                 };
             }
-        }.getSequence());
+        });
     }
     
     public final void mvar(final .ceylon.language.Sequential<? extends .ceylon.language.Sequential<? extends .ceylon.language.Integer>> xs) {
@@ -84,7 +84,7 @@ class ForIfNonEmptySequence {
                     }
                 };
             }
-        }.getSequence());
+        });
     }
     
     public static void main(.java.lang.String[] args) {

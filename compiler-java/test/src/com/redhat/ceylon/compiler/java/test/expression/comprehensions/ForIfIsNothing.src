@@ -51,7 +51,7 @@ class ForIfIsNothing {
                     }
                 };
             }
-        }.getSequence());
+        });
     }
     
     private final void m2(final .ceylon.language.Sequence<? extends .ceylon.language.Integer> xs) {
@@ -92,7 +92,7 @@ class ForIfIsNothing {
                     }
                 };
             }
-        }.getSequence());
+        });
     }
     
     private final void m3(final .ceylon.language.Sequence<? extends .ceylon.language.Integer> xs) {
@@ -130,7 +130,7 @@ class ForIfIsNothing {
                     }
                 };
             }
-        }.getSequence());
+        });
     }
     
     private final void m4(final .ceylon.language.Sequence<? extends .ceylon.language.Integer> xs) {
@@ -171,7 +171,7 @@ class ForIfIsNothing {
                     }
                 };
             }
-        }.getSequence());
+        });
     }
     
     public static void main(.java.lang.String[] args) {

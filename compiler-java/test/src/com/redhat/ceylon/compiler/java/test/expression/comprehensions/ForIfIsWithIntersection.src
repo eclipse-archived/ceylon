@@ -40,7 +40,7 @@ class ForIfIsIntersection {
                     }
                 };
             }
-        }.getSequence());
+        });
         .ceylon.language.print_.print(new .com.redhat.ceylon.compiler.java.language.AbstractIterable<.ceylon.language.String>(){
             
             public final .ceylon.language.Iterator<.ceylon.language.String> getIterator() {
@@ -75,7 +75,7 @@ class ForIfIsIntersection {
                     }
                 };
             }
-        }.getSequence());
+        });
         .ceylon.language.print_.print(new .com.redhat.ceylon.compiler.java.language.AbstractIterable<.ceylon.language.String>(){
             
             public final .ceylon.language.Iterator<.ceylon.language.String> getIterator() {
@@ -110,7 +110,7 @@ class ForIfIsIntersection {
                     }
                 };
             }
-        }.getSequence());
+        });
     }
     
     public final void mvar(final .ceylon.language.Sequential<? extends .java.lang.Object> ys) {
@@ -151,7 +151,7 @@ class ForIfIsIntersection {
                     }
                 };
             }
-        }.getSequence());
+        });
         .ceylon.language.print_.print(new .com.redhat.ceylon.compiler.java.language.AbstractIterable<.ceylon.language.String>(){
             
             public final .ceylon.language.Iterator<.ceylon.language.String> getIterator() {
@@ -189,7 +189,7 @@ class ForIfIsIntersection {
                     }
                 };
             }
-        }.getSequence());
+        });
         .ceylon.language.print_.print(new .com.redhat.ceylon.compiler.java.language.AbstractIterable<.ceylon.language.String>(){
             
             public final .ceylon.language.Iterator<.ceylon.language.String> getIterator() {
@@ -227,7 +227,7 @@ class ForIfIsIntersection {
                     }
                 };
             }
-        }.getSequence());
+        });
     }
     
     public static void main(.java.lang.String[] args) {

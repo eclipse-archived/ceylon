@@ -51,7 +51,7 @@ class ForIfIsWithMethod {
                     }
                 };
             }
-        }.getSequence());
+        });
         .ceylon.language.print_.print(new .com.redhat.ceylon.compiler.java.language.AbstractIterable<.java.lang.Object>(){
             
             public final .ceylon.language.Iterator<.java.lang.Object> getIterator() {
@@ -89,7 +89,7 @@ class ForIfIsWithMethod {
                     }
                 };
             }
-        }.getSequence());
+        });
     }
     
     public static void main(.java.lang.String[] args) {

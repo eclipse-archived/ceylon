@@ -7,7 +7,7 @@ final class bug608_ {
     
     static void bug608() {
         final .java.lang.ProcessBuilder b = new .java.lang.ProcessBuilder();
-        final .ceylon.language.Iterable<? extends .ceylon.language.String> args = new .com.redhat.ceylon.compiler.java.language.ArraySequence<.ceylon.language.String>(.ceylon.language.String.instance("a"), .ceylon.language.String.instance("b"));
+        final .ceylon.language.Iterable<? extends .ceylon.language.String> args = new .ceylon.language.Tuple(.ceylon.language.String.instance("a"), new .ceylon.language.Tuple(.ceylon.language.String.instance("b"), .ceylon.language.empty_.getEmpty$()));
         b.command(.com.redhat.ceylon.compiler.java.Util.toJavaStringArray(args));
         final .ceylon.language.Iterable<? extends .ceylon.language.String> commandWithArgs = (
             let

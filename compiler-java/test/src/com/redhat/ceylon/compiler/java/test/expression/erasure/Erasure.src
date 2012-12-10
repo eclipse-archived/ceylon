@@ -389,10 +389,10 @@ class Test {
     }
     
     private final void testSequences(final .java.lang.Object p1, final .ceylon.language.Sequential leftsAndRights, final .ceylon.language.Sequential leftsAndRightsEntries, final .ceylon.language.Sequential topsOrNothing) {
-        final .ceylon.language.Sequential naturals = new .com.redhat.ceylon.compiler.java.language.ArraySequence(p1);
+        final .ceylon.language.Sequential naturals = new .ceylon.language.Tuple(p1, .ceylon.language.empty_.getEmpty$());
         final .ceylon.language.Integer n5 = (.ceylon.language.Integer)((.ceylon.language.Correspondence<? super .ceylon.language.Integer, ? extends .java.lang.Object>)(.ceylon.language.Correspondence)naturals).item((.ceylon.language.Integer)p1);
         final .com.redhat.ceylon.compiler.java.test.expression.erasure.Top t = (.com.redhat.ceylon.compiler.java.test.expression.erasure.Top)((.ceylon.language.Correspondence<? super .ceylon.language.Integer, ? extends .java.lang.Object>)(.ceylon.language.Correspondence)leftsAndRights).item((.ceylon.language.Integer)p1);
-        final .ceylon.language.Sequential naturalsOrNothing = new .com.redhat.ceylon.compiler.java.language.ArraySequence(p1);
+        final .ceylon.language.Sequential naturalsOrNothing = new .ceylon.language.Tuple(p1, .ceylon.language.empty_.getEmpty$());
         final .ceylon.language.Integer n52 = (.ceylon.language.Integer)(
             let
             {
@@ -411,7 +411,7 @@ class Test {
         subrange = (.ceylon.language.Sequential<? extends .java.lang.Object>)(.ceylon.language.Sequential)((.ceylon.language.Ranged<? super .ceylon.language.Integer, ? extends .ceylon.language.Sequential<? extends .java.lang.Object>>)(.ceylon.language.Ranged)naturals).span((.ceylon.language.Integer)p1, (.ceylon.language.Integer)p1);
         subrange = (.ceylon.language.Sequential<? extends .java.lang.Object>)(.ceylon.language.Sequential)((.ceylon.language.Ranged<? super .ceylon.language.Integer, ? extends .ceylon.language.Sequential<? extends .java.lang.Object>>)(.ceylon.language.Ranged)naturals).spanFrom((.ceylon.language.Integer)p1);
         subrange = (.ceylon.language.Sequential<? extends .java.lang.Object>)(.ceylon.language.Sequential)((.ceylon.language.Ranged<? super .ceylon.language.Integer, ? extends .ceylon.language.Sequential<? extends .java.lang.Object>>)(.ceylon.language.Ranged)naturals).spanTo((.ceylon.language.Integer)p1);
-        final .ceylon.language.Sequential<? extends .ceylon.language.Integer> plainIntegers = (.ceylon.language.Sequential)new .com.redhat.ceylon.compiler.java.language.ArraySequence(p1);
+        final .ceylon.language.Sequential<? extends .ceylon.language.Integer> plainIntegers = (.ceylon.language.Sequential)new .ceylon.language.Tuple(p1, .ceylon.language.empty_.getEmpty$());
         .java.lang.Object $elem$20;
         for (.ceylon.language.Iterator<? extends .java.lang.Object> $it$iter$21 = naturals.getIterator(); !(($elem$20 = $it$iter$21.next()) instanceof .ceylon.language.Finished); ) {
             final .java.lang.Object it = (.java.lang.Object)$elem$20;
@@ -468,7 +468,7 @@ class Test {
             ((.com.redhat.ceylon.compiler.java.test.expression.erasure.Left)itErasedValue2).left();
             ((.com.redhat.ceylon.compiler.java.test.expression.erasure.Right)itErasedValue2).right();
         }
-        final .ceylon.language.Sequence<? extends .com.redhat.ceylon.compiler.java.test.expression.erasure.Top> topSequence = new .com.redhat.ceylon.compiler.java.language.ArraySequence<.com.redhat.ceylon.compiler.java.test.expression.erasure.CMiddle>(new .com.redhat.ceylon.compiler.java.test.expression.erasure.CMiddle());
+        final .ceylon.language.Sequence<? extends .com.redhat.ceylon.compiler.java.test.expression.erasure.Top> topSequence = new .ceylon.language.Tuple(new .com.redhat.ceylon.compiler.java.test.expression.erasure.CMiddle(), .ceylon.language.empty_.getEmpty$());
         .java.lang.Object $elem$34;
         for (.ceylon.language.Iterator<? extends .com.redhat.ceylon.compiler.java.test.expression.erasure.Top> $it$iter$35 = topSequence.getIterator(); !(($elem$34 = $it$iter$35.next()) instanceof .ceylon.language.Finished); ) {
             final .com.redhat.ceylon.compiler.java.test.expression.erasure.Top it = (.com.redhat.ceylon.compiler.java.test.expression.erasure.Top)$elem$34;

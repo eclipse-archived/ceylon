@@ -736,7 +736,7 @@ final class methodInvocationWithDefaultedParameters_ {
         f.fa(6L);
         f.fa(6L);
         f.fa(6L, new .com.redhat.ceylon.compiler.java.language.ArraySequence<.ceylon.language.Integer>(.ceylon.language.Integer.instance(1L), .ceylon.language.Integer.instance(2L), .ceylon.language.Integer.instance(3L)));
-        f.fa(6L, new .com.redhat.ceylon.compiler.java.language.ArraySequence<.ceylon.language.Integer>(.ceylon.language.Integer.instance(1L), .ceylon.language.Integer.instance(2L), .ceylon.language.Integer.instance(3L)));
+        f.fa(6L, new .ceylon.language.Tuple(.ceylon.language.Integer.instance(1L), new .ceylon.language.Tuple(.ceylon.language.Integer.instance(2L), new .ceylon.language.Tuple(.ceylon.language.Integer.instance(3L), .ceylon.language.empty_.getEmpty$()))));
         (
             let
             {
@@ -984,7 +984,7 @@ final class methodInvocationWithDefaultedParameters_ {
             {
                 .com.redhat.ceylon.compiler.java.test.expression.invoke.Fookls $arg$103$callable$ = f;
                 long $arg$103$0 = 6L;
-                .ceylon.language.Sequential $arg$103$1 = new .com.redhat.ceylon.compiler.java.language.ArraySequence<.ceylon.language.Integer>(.ceylon.language.Integer.instance(1L), .ceylon.language.Integer.instance(2L), .ceylon.language.Integer.instance(3L));
+                .ceylon.language.Sequential $arg$103$1 = new .ceylon.language.Tuple(.ceylon.language.Integer.instance(1L), new .ceylon.language.Tuple(.ceylon.language.Integer.instance(2L), new .ceylon.language.Tuple(.ceylon.language.Integer.instance(3L), .ceylon.language.empty_.getEmpty$())));
                 $arg$103$callable$.fa($arg$103$0, $arg$103$1);
             }
             returning null;
@@ -994,7 +994,7 @@ final class methodInvocationWithDefaultedParameters_ {
             {
                 .com.redhat.ceylon.compiler.java.test.expression.invoke.Fookls $arg$104$callable$ = f;
                 long $arg$104$0 = 6L;
-                .ceylon.language.Sequential<? extends .ceylon.language.Integer> $arg$104$1 = new .com.redhat.ceylon.compiler.java.language.ArraySequence<.ceylon.language.Integer>(.ceylon.language.Integer.instance(1L), .ceylon.language.Integer.instance(2L), .ceylon.language.Integer.instance(3L));
+                .ceylon.language.Sequential<? extends .ceylon.language.Integer> $arg$104$1 = new .ceylon.language.Tuple(.ceylon.language.Integer.instance(1L), new .ceylon.language.Tuple(.ceylon.language.Integer.instance(2L), new .ceylon.language.Tuple(.ceylon.language.Integer.instance(3L), .ceylon.language.empty_.getEmpty$())));
                 $arg$104$callable$.fa($arg$104$0, $arg$104$1);
             }
             returning null;
@@ -1024,7 +1024,7 @@ final class methodInvocationWithDefaultedParameters_ {
         f2.fa(6L);
         f2.fa(6L);
         f2.fa(6L, new .com.redhat.ceylon.compiler.java.language.ArraySequence<.ceylon.language.Integer>(.ceylon.language.Integer.instance(1L), .ceylon.language.Integer.instance(2L), .ceylon.language.Integer.instance(3L)));
-        f2.fa(6L, new .com.redhat.ceylon.compiler.java.language.ArraySequence<.ceylon.language.Integer>(.ceylon.language.Integer.instance(1L), .ceylon.language.Integer.instance(2L), .ceylon.language.Integer.instance(3L)));
+        f2.fa(6L, new .ceylon.language.Tuple(.ceylon.language.Integer.instance(1L), new .ceylon.language.Tuple(.ceylon.language.Integer.instance(2L), new .ceylon.language.Tuple(.ceylon.language.Integer.instance(3L), .ceylon.language.empty_.getEmpty$()))));
         (
             let
             {
@@ -1272,7 +1272,7 @@ final class methodInvocationWithDefaultedParameters_ {
             {
                 .com.redhat.ceylon.compiler.java.test.expression.invoke.Foosubkls $arg$129$callable$ = f2;
                 long $arg$129$0 = 6L;
-                .ceylon.language.Sequential $arg$129$1 = new .com.redhat.ceylon.compiler.java.language.ArraySequence<.ceylon.language.Integer>(.ceylon.language.Integer.instance(1L), .ceylon.language.Integer.instance(2L), .ceylon.language.Integer.instance(3L));
+                .ceylon.language.Sequential $arg$129$1 = new .ceylon.language.Tuple(.ceylon.language.Integer.instance(1L), new .ceylon.language.Tuple(.ceylon.language.Integer.instance(2L), new .ceylon.language.Tuple(.ceylon.language.Integer.instance(3L), .ceylon.language.empty_.getEmpty$())));
                 $arg$129$callable$.fa($arg$129$0, $arg$129$1);
             }
             returning null;
@@ -1282,7 +1282,7 @@ final class methodInvocationWithDefaultedParameters_ {
             {
                 .com.redhat.ceylon.compiler.java.test.expression.invoke.Foosubkls $arg$130$callable$ = f2;
                 long $arg$130$0 = 6L;
-                .ceylon.language.Sequential<? extends .ceylon.language.Integer> $arg$130$1 = new .com.redhat.ceylon.compiler.java.language.ArraySequence<.ceylon.language.Integer>(.ceylon.language.Integer.instance(1L), .ceylon.language.Integer.instance(2L), .ceylon.language.Integer.instance(3L));
+                .ceylon.language.Sequential<? extends .ceylon.language.Integer> $arg$130$1 = new .ceylon.language.Tuple(.ceylon.language.Integer.instance(1L), new .ceylon.language.Tuple(.ceylon.language.Integer.instance(2L), new .ceylon.language.Tuple(.ceylon.language.Integer.instance(3L), .ceylon.language.empty_.getEmpty$())));
                 $arg$130$callable$.fa($arg$130$0, $arg$130$1);
             }
             returning null;
@@ -1307,7 +1307,7 @@ final class methodInvocationWithDefaultedParameters_ {
         b.fa(6L);
         b.fa(6L);
         b.fa(6L, new .com.redhat.ceylon.compiler.java.language.ArraySequence<.ceylon.language.Integer>(.ceylon.language.Integer.instance(1L), .ceylon.language.Integer.instance(2L), .ceylon.language.Integer.instance(3L)));
-        b.fa(6L, new .com.redhat.ceylon.compiler.java.language.ArraySequence<.ceylon.language.Integer>(.ceylon.language.Integer.instance(1L), .ceylon.language.Integer.instance(2L), .ceylon.language.Integer.instance(3L)));
+        b.fa(6L, new .ceylon.language.Tuple(.ceylon.language.Integer.instance(1L), new .ceylon.language.Tuple(.ceylon.language.Integer.instance(2L), new .ceylon.language.Tuple(.ceylon.language.Integer.instance(3L), .ceylon.language.empty_.getEmpty$()))));
         (
             let
             {
@@ -1517,7 +1517,7 @@ final class methodInvocationWithDefaultedParameters_ {
             {
                 .com.redhat.ceylon.compiler.java.test.expression.invoke.Barface $arg$151$callable$ = b;
                 long $arg$151$0 = 6L;
-                .ceylon.language.Sequential $arg$151$1 = new .com.redhat.ceylon.compiler.java.language.ArraySequence<.ceylon.language.Integer>(.ceylon.language.Integer.instance(1L), .ceylon.language.Integer.instance(2L), .ceylon.language.Integer.instance(3L));
+                .ceylon.language.Sequential $arg$151$1 = new .ceylon.language.Tuple(.ceylon.language.Integer.instance(1L), new .ceylon.language.Tuple(.ceylon.language.Integer.instance(2L), new .ceylon.language.Tuple(.ceylon.language.Integer.instance(3L), .ceylon.language.empty_.getEmpty$())));
                 $arg$151$callable$.fa($arg$151$0, $arg$151$1);
             }
             returning null;
@@ -1527,7 +1527,7 @@ final class methodInvocationWithDefaultedParameters_ {
             {
                 .com.redhat.ceylon.compiler.java.test.expression.invoke.Barface $arg$152$callable$ = b;
                 long $arg$152$0 = 6L;
-                .ceylon.language.Sequential<? extends .ceylon.language.Integer> $arg$152$1 = new .com.redhat.ceylon.compiler.java.language.ArraySequence<.ceylon.language.Integer>(.ceylon.language.Integer.instance(1L), .ceylon.language.Integer.instance(2L), .ceylon.language.Integer.instance(3L));
+                .ceylon.language.Sequential<? extends .ceylon.language.Integer> $arg$152$1 = new .ceylon.language.Tuple(.ceylon.language.Integer.instance(1L), new .ceylon.language.Tuple(.ceylon.language.Integer.instance(2L), new .ceylon.language.Tuple(.ceylon.language.Integer.instance(3L), .ceylon.language.empty_.getEmpty$())));
                 $arg$152$callable$.fa($arg$152$0, $arg$152$1);
             }
             returning null;
@@ -1552,7 +1552,7 @@ final class methodInvocationWithDefaultedParameters_ {
         b2.fa(6L);
         b2.fa(6L);
         b2.fa(6L, new .com.redhat.ceylon.compiler.java.language.ArraySequence<.ceylon.language.Integer>(.ceylon.language.Integer.instance(1L), .ceylon.language.Integer.instance(2L), .ceylon.language.Integer.instance(3L)));
-        b2.fa(6L, new .com.redhat.ceylon.compiler.java.language.ArraySequence<.ceylon.language.Integer>(.ceylon.language.Integer.instance(1L), .ceylon.language.Integer.instance(2L), .ceylon.language.Integer.instance(3L)));
+        b2.fa(6L, new .ceylon.language.Tuple(.ceylon.language.Integer.instance(1L), new .ceylon.language.Tuple(.ceylon.language.Integer.instance(2L), new .ceylon.language.Tuple(.ceylon.language.Integer.instance(3L), .ceylon.language.empty_.getEmpty$()))));
         (
             let
             {
@@ -1762,7 +1762,7 @@ final class methodInvocationWithDefaultedParameters_ {
             {
                 .com.redhat.ceylon.compiler.java.test.expression.invoke.Barkls $arg$173$callable$ = b2;
                 long $arg$173$0 = 6L;
-                .ceylon.language.Sequential $arg$173$1 = new .com.redhat.ceylon.compiler.java.language.ArraySequence<.ceylon.language.Integer>(.ceylon.language.Integer.instance(1L), .ceylon.language.Integer.instance(2L), .ceylon.language.Integer.instance(3L));
+                .ceylon.language.Sequential $arg$173$1 = new .ceylon.language.Tuple(.ceylon.language.Integer.instance(1L), new .ceylon.language.Tuple(.ceylon.language.Integer.instance(2L), new .ceylon.language.Tuple(.ceylon.language.Integer.instance(3L), .ceylon.language.empty_.getEmpty$())));
                 $arg$173$callable$.fa($arg$173$0, $arg$173$1);
             }
             returning null;
@@ -1772,7 +1772,7 @@ final class methodInvocationWithDefaultedParameters_ {
             {
                 .com.redhat.ceylon.compiler.java.test.expression.invoke.Barkls $arg$174$callable$ = b2;
                 long $arg$174$0 = 6L;
-                .ceylon.language.Sequential<? extends .ceylon.language.Integer> $arg$174$1 = new .com.redhat.ceylon.compiler.java.language.ArraySequence<.ceylon.language.Integer>(.ceylon.language.Integer.instance(1L), .ceylon.language.Integer.instance(2L), .ceylon.language.Integer.instance(3L));
+                .ceylon.language.Sequential<? extends .ceylon.language.Integer> $arg$174$1 = new .ceylon.language.Tuple(.ceylon.language.Integer.instance(1L), new .ceylon.language.Tuple(.ceylon.language.Integer.instance(2L), new .ceylon.language.Tuple(.ceylon.language.Integer.instance(3L), .ceylon.language.empty_.getEmpty$())));
                 $arg$174$callable$.fa($arg$174$0, $arg$174$1);
             }
             returning null;

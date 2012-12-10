@@ -43,7 +43,7 @@ class ForIfIsFoo {
                     }
                 };
             }
-        }.getSequence());
+        });
     }
     
     public final void mvar(final .ceylon.language.Sequential<? extends .java.lang.Object> ys) {
@@ -84,7 +84,7 @@ class ForIfIsFoo {
                     }
                 };
             }
-        }.getSequence());
+        });
     }
     
     public static void main(.java.lang.String[] args) {

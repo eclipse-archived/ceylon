@@ -15,7 +15,7 @@ final class bug193_ {
     }
     
     static void bug193() {
-        final .ceylon.language.Sequential<? extends .ceylon.language.String> arr = new .com.redhat.ceylon.compiler.java.language.ArraySequence<.ceylon.language.String>(.ceylon.language.String.instance("hello"));
+        final .ceylon.language.Sequential<? extends .ceylon.language.String> arr = new .ceylon.language.Tuple(.ceylon.language.String.instance("hello"), .ceylon.language.empty_.getEmpty$());
         .com.redhat.ceylon.compiler.java.test.issues.bug01xx.x_.<.ceylon.language.Sequential<? extends .ceylon.language.String>>x(arr);
         .ceylon.language.print_.print(.ceylon.language.Integer.instance(arr.getSize()));
     }

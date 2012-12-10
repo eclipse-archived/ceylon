@@ -40,7 +40,7 @@ class ForIfIsUnion {
                     }
                 };
             }
-        }.getSequence());
+        });
     }
     
     public final void mvar(final .ceylon.language.Sequential<? extends .java.lang.Object> ys) {
@@ -81,7 +81,7 @@ class ForIfIsUnion {
                     }
                 };
             }
-        }.getSequence());
+        });
     }
     
     public static void main(.java.lang.String[] args) {

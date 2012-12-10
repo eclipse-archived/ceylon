@@ -40,7 +40,7 @@ class ForIfIsNothing {
                     }
                 };
             }
-        }.getSequence());
+        });
     }
     
     public static void main(.java.lang.String[] args) {

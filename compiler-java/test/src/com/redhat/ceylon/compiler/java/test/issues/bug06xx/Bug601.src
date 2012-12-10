@@ -6,9 +6,9 @@ final class bug601_ {
     }
     
     static void bug601() {
-        .ceylon.language.first_.<.ceylon.language.Sequence<? extends .ceylon.language.String>>first(new .com.redhat.ceylon.compiler.java.language.ArraySequence<.ceylon.language.Sequence<? extends .ceylon.language.String>>(new .com.redhat.ceylon.compiler.java.language.ArraySequence<.ceylon.language.String>(.ceylon.language.String.instance("hello"), .ceylon.language.String.instance("world")), new .com.redhat.ceylon.compiler.java.language.ArraySequence<.ceylon.language.String>(.ceylon.language.String.instance(""))));
-        .ceylon.language.first_.<.ceylon.language.Sequential<? extends .ceylon.language.String>>first(new .com.redhat.ceylon.compiler.java.language.ArraySequence<.ceylon.language.Sequential<? extends .ceylon.language.String>>(.ceylon.language.String.split("hello world").getSequence(), new .com.redhat.ceylon.compiler.java.language.ArraySequence<.ceylon.language.String>(.ceylon.language.String.instance(""))));
-        .ceylon.language.first_.<.ceylon.language.Sequential<? extends .ceylon.language.String>>first(new .com.redhat.ceylon.compiler.java.language.ArraySequence<.ceylon.language.Sequential<? extends .ceylon.language.String>>(new .com.redhat.ceylon.compiler.java.language.AbstractIterable<.ceylon.language.String>(){
+        .ceylon.language.first_.first(new .com.redhat.ceylon.compiler.java.language.ArraySequence<.ceylon.language.Sequential<? extends .ceylon.language.String>>(new .ceylon.language.Tuple(.ceylon.language.String.instance("hello"), new .ceylon.language.Tuple(.ceylon.language.String.instance("world"), .ceylon.language.empty_.getEmpty$())), new .ceylon.language.Tuple(.ceylon.language.String.instance(""), .ceylon.language.empty_.getEmpty$())));
+        .ceylon.language.first_.<.ceylon.language.Iterable<? extends .ceylon.language.String>>first(new .com.redhat.ceylon.compiler.java.language.ArraySequence<.ceylon.language.Iterable<? extends .ceylon.language.String>>(.com.redhat.ceylon.compiler.java.language.ArrayIterable.<.ceylon.language.String>instance(.ceylon.language.String.split("hello world")), new .ceylon.language.Tuple(.ceylon.language.String.instance(""), .ceylon.language.empty_.getEmpty$())));
+        .ceylon.language.first_.<.ceylon.language.Iterable<? extends .ceylon.language.String>>first(new .com.redhat.ceylon.compiler.java.language.ArraySequence<.ceylon.language.Iterable<? extends .ceylon.language.String>>(new .com.redhat.ceylon.compiler.java.language.AbstractIterable<.ceylon.language.String>(){
             
             public final .ceylon.language.Iterator<.ceylon.language.String> getIterator() {
                 return new .ceylon.language.Iterator<.ceylon.language.String>(){
@@ -32,7 +32,7 @@ final class bug601_ {
                     }
                 };
             }
-        }.getSequence(), new .com.redhat.ceylon.compiler.java.language.ArraySequence<.ceylon.language.String>(.ceylon.language.String.instance(""))));
+        }, new .ceylon.language.Tuple(.ceylon.language.String.instance(""), .ceylon.language.empty_.getEmpty$())));
     }
     
     public static void main(.java.lang.String[] args) {

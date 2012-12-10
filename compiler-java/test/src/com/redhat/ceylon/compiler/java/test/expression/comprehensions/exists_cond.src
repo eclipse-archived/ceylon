@@ -6,7 +6,7 @@ final class existsCond_ {
     }
     
     static void existsCond() {
-        final .ceylon.language.Sequence<? extends .ceylon.language.String> seq = new .com.redhat.ceylon.compiler.java.language.ArraySequence<.ceylon.language.String>(null, .ceylon.language.String.instance("a"), null, .ceylon.language.String.instance("b"), null);
+        final .ceylon.language.Sequence<? extends .ceylon.language.String> seq = new .ceylon.language.Tuple(null, new .ceylon.language.Tuple(.ceylon.language.String.instance("a"), new .ceylon.language.Tuple(null, new .ceylon.language.Tuple(.ceylon.language.String.instance("b"), new .ceylon.language.Tuple(null, .ceylon.language.empty_.getEmpty$())))));
         .ceylon.language.print_.print(new .com.redhat.ceylon.compiler.java.language.AbstractIterable<.ceylon.language.Character>(){
             
             public final .ceylon.language.Iterator<.ceylon.language.Character> getIterator() {
@@ -57,7 +57,7 @@ final class existsCond_ {
                     }
                 };
             }
-        }.getSequence());
+        });
     }
     
     public static void main(.java.lang.String[] args) {

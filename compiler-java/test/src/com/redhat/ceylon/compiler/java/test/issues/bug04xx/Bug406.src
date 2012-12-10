@@ -6,7 +6,7 @@ class Bug406 {
     }
     
     private final void test() {
-        final .ceylon.language.Sequential<? extends .ceylon.language.String> full = new .com.redhat.ceylon.compiler.java.language.ArraySequence<.ceylon.language.String>(.ceylon.language.String.instance("hello"), .ceylon.language.String.instance("world"));
+        final .ceylon.language.Sequential<? extends .ceylon.language.String> full = new .ceylon.language.Tuple(.ceylon.language.String.instance("hello"), new .ceylon.language.Tuple(.ceylon.language.String.instance("world"), .ceylon.language.empty_.getEmpty$()));
         final .ceylon.language.Sequential<? extends .ceylon.language.String> spread1 = (
             let
             {
