@@ -691,8 +691,7 @@ public class ExpressionTransformer extends AbstractTransformer {
             boolean ellipsis = sequencedArgument.getEllipsis() != null;
             return makeTuple(sequencedArgument.getExpressionList().getExpressions().iterator(), ellipsis);
         }else if(value.getComprehension() != null){
-            return make().Apply(null, makeSelect(transformComprehension(value.getComprehension()), "getSequence"), 
-                    List.<JCExpression>nil());
+            return iterableToSequence(transformComprehension(value.getComprehension())); 
         }
         // nothing in there
         return makeEmpty();

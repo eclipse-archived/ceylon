@@ -2007,6 +2007,13 @@ public abstract class AbstractTransformer implements Transformation {
      */
     
     /**
+     * Invokes getSequence() on an Iterable to get a Sequential
+     */
+    JCExpression iterableToSequence(JCExpression iterable){
+        return make().Apply(null, makeSelect(iterable, "getSequence"), List.<JCExpression>nil());
+    }
+    
+    /**
      * Returns a JCExpression along the lines of 
      * {@code new ArraySequence<seqElemType>(list...)}
      * @param elems The elements in the sequence
