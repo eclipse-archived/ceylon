@@ -63,7 +63,7 @@ public class TypeParser {
     }
 
     /*
-     * unionType: intersectionType (& intersectionType)*
+     * unionType: intersectionType (| intersectionType)*
      */
     private ProducedType parseUnionType() {
         UnionType type = new UnionType(unit);
@@ -78,7 +78,7 @@ public class TypeParser {
     }
 
     /*
-     * intersectionType: qualifiedType (| qualifiedType)*
+     * intersectionType: qualifiedType (& qualifiedType)*
      */
     private ProducedType parseIntersectionType() {
         IntersectionType type = new IntersectionType(unit);
