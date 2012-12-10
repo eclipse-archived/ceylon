@@ -25,6 +25,10 @@ import com.redhat.ceylon.compiler.java.test.CompilerTest;
 
 public class AnnotationsTest extends CompilerTest {
     @Test
+    public void testTypeGrouping(){
+        compareWithJavaSource("typeGrouping");
+    }
+    @Test
     public void testUnionTypeInfo(){
         compareWithJavaSource("UnionTypeInfo");
     }
