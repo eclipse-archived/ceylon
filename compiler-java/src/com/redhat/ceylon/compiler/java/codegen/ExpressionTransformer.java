@@ -664,17 +664,21 @@ public class ExpressionTransformer extends AbstractTransformer {
     private JCExpression transform(Tree.SequenceEnumeration value, ProducedType expectedType) {
         at(value);
         if (value.getComprehension() != null) {
-            return make().Apply(null, makeSelect(transformComprehension(value.getComprehension(), expectedType), "getSequence"), 
-                    List.<JCExpression>nil());
+            return transformComprehension(value.getComprehension(), expectedType);
         } else if (value.getSequencedArgument() != null) {
-            java.util.List<Tree.Expression> list = value.getSequencedArgument().getExpressionList().getExpressions();
-            if (value.getSequencedArgument().getEllipsis() == null) {
+            SequencedArgument sequencedArgument = value.getSequencedArgument();
+            boolean ellipsis = sequencedArgument.getEllipsis() != null;
+            // we are only an Iterable literal if the last expression is Iterable and has ellipsis
+            java.util.List<Tree.Expression> list = sequencedArgument.getExpressionList().getExpressions();
+            if(list.isEmpty())
+                return makeErroneous(value, "Empty iterable literal with sequenced arguments: "+value);
+            Expression lastExpression = list.get(list.size()-1);
+            if (ellipsis && !typeFact().isSequentialType(lastExpression.getTypeModel())) {
                 ProducedType seqElemType = typeFact().getIteratedType(value.getTypeModel());
                 seqElemType = wrapInOptionalForInterop(seqElemType, expectedType);
-                return makeSequence(list, seqElemType);
+                return makeIterable(list, seqElemType);
             } else {
-                return make().Apply(null, makeSelect(transformExpression(list.get(0), BoxingStrategy.BOXED, expectedType), "getSequence"), 
-                        List.<JCExpression>nil());
+                return makeTuple(list.iterator(), ellipsis);
             }
         } else {
             return makeEmpty();

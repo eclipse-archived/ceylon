@@ -2042,7 +2042,41 @@ public abstract class AbstractTransformer implements Transformation {
         }
         return makeSequence(elems.toList(), seqElemType, CeylonTransformer.JT_CLASS_NEW);
     }
-    
+
+    /**
+     * Makes an iterable literal, where the last element of `list` is a spread Iterable.
+     */
+    JCExpression makeIterable(java.util.List<Expression> list, ProducedType seqElemType) {
+        ListBuffer<JCExpression> elems = new ListBuffer<JCExpression>();
+        int i = list.size();
+        for (Expression expr : list) {
+            i--;
+            ProducedType type;
+            // last expression is always an Iterable<seqElemType>
+            if(i == 0)
+                type = typeFact().getIterableType(seqElemType);
+            else
+                type = seqElemType;
+            JCExpression jcExpression = expressionGen().transformExpression(expr, BoxingStrategy.BOXED, type);
+            // the last iterable goes first
+            if(i == 0)
+                elems.prepend(jcExpression);
+            else
+                elems.append(jcExpression);
+        }
+        return makeIterable(elems.toList(), seqElemType, CeylonTransformer.JT_CLASS_NEW);
+    }
+
+    /**
+     * Makes an iterable literal, where the first element of elems is an Iterable, and the rest are the start of the
+     * iterable.
+     */
+    JCExpression makeIterable(List<JCExpression> elems, ProducedType seqElemType, int makeJavaTypeOpts) {
+        JCExpression elemTypeExpr = makeJavaType(seqElemType, makeJavaTypeOpts);
+        // we delegate to ArrayIterable.instance() so that we can filter out empty Iterables
+        return make().Apply(List.<JCExpression>of(elemTypeExpr), makeSelect(makeIdent(syms().ceylonArrayIterableType), "instance"), elems);
+    }
+
     /**
      * Returns a JCExpression along the lines of 
      * {@code new ArraySequence(list...)}
