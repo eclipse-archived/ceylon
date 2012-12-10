@@ -179,6 +179,7 @@ public class Symtab {
     public  Type ceylonSequenceType;
     public  Type ceylonArrayType;
     public  Type ceylonArraySequenceType;
+    public  Type ceylonArrayIterableType;
     public  Type ceylonAbstractIterableType;
     public  Type ceylonCharacterType;
     public  Type ceylonBooleanType;
@@ -807,6 +808,7 @@ public class Symtab {
         ceylonSequenceType = enterClass("ceylon.language.Sequence");
         ceylonArrayType = enterClass("ceylon.language.Array");
         ceylonArraySequenceType = enterClass("com.redhat.ceylon.compiler.java.language.ArraySequence");
+        ceylonArrayIterableType = enterClass("com.redhat.ceylon.compiler.java.language.ArrayIterable");
         ceylonAbstractIterableType = enterClass("com.redhat.ceylon.compiler.java.language.AbstractIterable");
         ceylonCharacterType = enterClass("ceylon.language.Character");
         ceylonBooleanType = enterClass("ceylon.language.Boolean");
