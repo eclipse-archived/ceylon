@@ -32,11 +32,11 @@ class OptionalInterface(JavaOptionalInterface x) satisfies JavaOptionalInterface
         if(exists x){
             if (exists z = x.prop1) {}
             Boolean b1 = exists x.prop1;
-            JavaOptionalInterface[] existsInComprehension1 = {for (obj in {x}) if (exists z = obj.prop1) z};
+            JavaOptionalInterface[] existsInComprehension1 = [for (obj in {x}) if (exists z = obj.prop1) z];
 
             if (exists z = x.method(x)) {}
             Boolean b2 = exists x.method(x);
-            JavaOptionalInterface[] existsInComprehension2 = {for (obj in {x}) if (exists z = obj.method(x)) z};
+            JavaOptionalInterface[] existsInComprehension2 = [for (obj in {x}) if (exists z = obj.method(x)) z];
 
             JavaOptionalInterface elseOp1 = x.prop1 else x;
             JavaOptionalInterface elseOp2 = x.method(x) else x;
@@ -57,8 +57,8 @@ class OptionalInterface(JavaOptionalInterface x) satisfies JavaOptionalInterface
             JavaOptionalInterface[] seqCheckSpread = { {x.prop1}... };
             JavaOptionalInterface?[] seqNoCheckSpread = { {x.prop1}... };
 
-            JavaOptionalInterface[] comprehensionCheck = { for (i in 1..2) x.prop1 };
-            JavaOptionalInterface?[] comprehensionNoCheck = { for (i in 1..2) x.prop1 };
+            JavaOptionalInterface[] comprehensionCheck = [ for (i in 1..2) x.prop1 ];
+            JavaOptionalInterface?[] comprehensionNoCheck = [ for (i in 1..2) x.prop1 ];
 
             return x.prop1.prop1;
         }

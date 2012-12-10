@@ -20,10 +20,10 @@
 @nomodel
 class ForIfConditionListIsIs() {
     Boolean[] m(Void[] xs, Void[] ys) {
-        return { for (x in xs) for (y in ys) if (is Integer x1=x, is Integer y1=y) x1 == y1 };
+        return [ for (x in xs) for (y in ys) if (is Integer x1=x, is Integer y1=y) x1 == y1 ];
         
     }
     Boolean[] synthetic(Void[] xs, Void[] ys) {
-        return { for (x in xs) for (y in ys) if (is Integer x, is Integer y) x == y };
+        return [ for (x in xs) for (y in ys) if (is Integer x, is Integer y) x == y ];
     }
 }

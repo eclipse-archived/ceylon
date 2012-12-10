@@ -20,6 +20,6 @@
 @nomodel
 class ForIfConditionList() {
     Boolean[] m(Void[][] xs) {
-        return { for (x in xs) if (nonempty x, is Integer y = x[0], y > 0) y == 1 };
+        return [ for (x in xs) if (nonempty x, is Integer y = x[0], y > 0) y == 1 ];
     }
 }

@@ -19,5 +19,5 @@
  */
 @nomodel
 void forIfIsBooleanConditions(Void[] xs) {
-    Integer[] z = { for (x in xs) if (is Integer y = x, y > 0) y+1 };
+    Integer[] z = [ for (x in xs) if (is Integer y = x, y > 0) y+1 ];
 }

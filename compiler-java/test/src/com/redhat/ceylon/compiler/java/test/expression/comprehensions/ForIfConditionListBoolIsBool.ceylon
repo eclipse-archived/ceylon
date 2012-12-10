@@ -20,9 +20,9 @@
 @nomodel
 class ForIfConditionListBoolIsBool() {
     Boolean[] m(Void[] xs, Integer[] zs) {
-        return { for (x in xs) for (z in zs) if (z < 10, is Integer x, x > 0) x == 1 };
+        return [ for (x in xs) for (z in zs) if (z < 10, is Integer x, x > 0) x == 1 ];
     }
     Boolean[] synthetic(Void[] xs, Integer[] zs) {
-        return { for (x in xs) for (z in zs) if (z < 10, is Integer y = x, y > 0) y == 1 };
+        return [ for (x in xs) for (z in zs) if (z < 10, is Integer y = x, y > 0) y == 1 ];
     }
 }

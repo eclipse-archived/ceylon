@@ -20,9 +20,9 @@
 @nomodel
 class ForIfConditionListIsBool() {
    String[] m(Sequence<String|Integer> xs) {
-        return { for (x in xs) if (is String x, x.uppercased=="S") x.uppercased};
+        return [ for (x in xs) if (is String x, x.uppercased=="S") x.uppercased ];
     }
     String[] synthetic(Sequence<String|Integer> xs) {
-        return { for (x in xs) if (is String z=x, z.uppercased=="S") z.uppercased};
+        return [ for (x in xs) if (is String z=x, z.uppercased=="S") z.uppercased ];
     }
 }

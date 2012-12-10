@@ -20,6 +20,6 @@
 @nomodel
 class ForIfExistsSequence() {
     shared Integer[] mvar(Integer[][] xs) {
-        return { for (x in xs) if (exists y=x[0]) y };
+        return [ for (x in xs) if (exists y=x[0]) y ];
     }
 }

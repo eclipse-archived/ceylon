@@ -23,6 +23,6 @@ class ForIfExistsWithMethod() {
         return 0;
     }
     shared Integer[] m(ForIfExistsWithMethod[] xs) {
-        return { for (x in xs) if (exists y=x.give()) y };
+        return [ for (x in xs) if (exists y=x.give()) y ];
     }
 }

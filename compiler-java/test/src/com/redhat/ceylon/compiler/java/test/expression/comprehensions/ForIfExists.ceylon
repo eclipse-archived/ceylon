@@ -20,9 +20,9 @@
 @nomodel
 class ForIfExists() {
     shared Integer[] m(Integer?[] xs) {
-        return { for (x in xs) if (exists x) x };
+        return [ for (x in xs) if (exists x) x ];
     }
     shared Integer[] m2(Integer?[] xs) {
-        return { for (x in xs) if (exists y = x) y };
+        return [ for (x in xs) if (exists y = x) y ];
     }
 }
