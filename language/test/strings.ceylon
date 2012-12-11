@@ -245,19 +245,19 @@ shared void strings() {
     check(!"hello".split((Character c) c.whitespace, true).empty, "hello.split((Character c) c.whitespace,true) is empty");
     check("hello world".split((Character c) c.whitespace, true).iterator.next()=="hello", "string split first 3.1");
     check("hello world".split(" ", true).iterator.next()=="hello", "string split first 3.2");
-    check({"hello world".split((Character c) c==` `)...}.size==2, "string split discarding [1]");
-    check({"hello world".split((Character c) c==` `, false)...}.size==3, "string split including [1]");
-    check({"hello world".split()...}.size==2, "string split default");
-    check({"hello world".split((Character c) c==`l`, true)...}.size==3, "string split discarding [2]");
-    check({"hello world".split("l", true)...}.size==3, "string split discarding [3]");
-    check({"hello world".split((Character c) c==`l`, false)...}.size==5, "string split including [2]");
-    check({"hello world".split((Character c) c==`l`, false, false)...}=={"he","l","","l","o wor","l","d"}, "string split including [3]");
-    check({"hello world".split((Character c) c==`l`, false, true)...}=={"he","ll","o wor", "l", "d"}, "string split including [4]");
-    check({"hello world".split("l", false, false)...}=={"he","l","","l","o wor","l","d"}, "string split including [5]");
-    check({"hello world".split("l", false, true)...}=={"he","ll","o wor", "l", "d"}, "string split including [6]");
+    check("hello world".split((Character c) c==` `).sequence.size==2, "string split discarding [1]");
+    check("hello world".split((Character c) c==` `, false).sequence.size==3, "string split including [1]");
+    check("hello world".split().sequence.size==2, "string split default");
+    check("hello world".split((Character c) c==`l`, true).sequence.size==3, "string split discarding [2]");
+    check("hello world".split("l", true).sequence.size==3, "string split discarding [3]");
+    check("hello world".split((Character c) c==`l`, false).sequence.size==5, "string split including [2]");
+    check("hello world".split((Character c) c==`l`, false, false).sequence=={"he","l","","l","o wor","l","d"}, "string split including [3]");
+    check("hello world".split((Character c) c==`l`, false, true).sequence=={"he","ll","o wor", "l", "d"}, "string split including [4]");
+    check("hello world".split("l", false, false).sequence=={"he","l","","l","o wor","l","d"}, "string split including [5]");
+    check("hello world".split("l", false, true).sequence=={"he","ll","o wor", "l", "d"}, "string split including [6]");
     //With strings
-    check({"hello world".split("eo")...}=={"hello world".split({`e`,`o`})...}, "string split chars [1]");
-    check({"hello world".split("eo")...}=={"hello world".split(StringBuilder().append("o").append("e").string) ...}, "string split chars");
+    check("hello world".split("eo").sequence == "hello world".split({`e`,`o`}).sequence, "string split chars [1]");
+    check("hello world".split("eo").sequence == "hello world".split(StringBuilder().append("o").append("e").string).sequence, "string split chars");
     variable value count:=0;
     for (tok in "hello world goodbye".split()) {
         count++;

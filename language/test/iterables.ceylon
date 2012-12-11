@@ -51,8 +51,8 @@ void testIterables() {
         check(c == `a`, "String.findLast");
     } else { fail("String.findLast"); }
 
-    check({ (1..10).map((Integer i) i.float)... }=={1.0, 2.0, 3.0, 4.0, 5.0, 6.0, 7.0, 8.0, 9.0, 10.0}, "map 1");
-    check({ (1..10).filter((Integer i) i>5)... }=={6, 7, 8, 9, 10}, "filter 1");
+    check((1..10).map((Integer i) i.float).sequence == {1.0, 2.0, 3.0, 4.0, 5.0, 6.0, 7.0, 8.0, 9.0, 10.0}, "map 1");
+    check((1..10).filter((Integer i) i>5).sequence == {6, 7, 8, 9, 10}, "filter 1");
     check(((1..10).find((Integer i) i>5) else -1)==6, "find 1");
     check(((1..10).findLast((Integer i) i>5) else -1)==10, "findLast 1");
     check((1..10).fold(0, (Integer i, Integer j) i+j)==55, "fold 1");
@@ -120,7 +120,7 @@ void testIterables() {
     check(!nonempty (1..5).skipping(9).sequence, "skipping [4]");
     check((5..1).skipping(2)==3..1, "Range.skipping [5]");
     check("hola".skipping(2)=="la", "String.skipping");
-    check(elements({for(i in 1..10) i}...).skipping(8).sequence=={9,10}, "comprehension.skipping");
+    check({for(i in 1..10) i}.skipping(8).sequence=={9,10}, "comprehension.skipping");
 
     //Taking
     check({1,2,3,4,5}.taking(3).sequence=={1,2,3}, "taking [1]");
@@ -131,7 +131,7 @@ void testIterables() {
     check({1,2,3,4,5}.taking(100).sequence=={1,2,3,4,5}, "taking [6]");
     check((5..1).taking(3)==5..3, "Range.taking [7]");
     check("hola".taking(2)=="ho", "String.taking");
-    check(elements({for (i in 1..10) i}...).taking(2).sequence=={1,2}, "comprehension.taking");
+    check({for (i in 1..10) i}.taking(2).sequence=={1,2}, "comprehension.taking");
 
     //By
     check({1,2,3,4,5}.by(1).sequence=={1,2,3,4,5}, "by [1]");
@@ -149,13 +149,13 @@ void testIterables() {
     check((10..1).by(2).sequence=={10,8,6,4,2}, "Range.by [2]");
     check((1..10).by(6).sequence=={1,7}, "Range.by [3]");
     check((1..10).by(100).sequence=={1}, "Range.by [4]");
-    check(elements({for(i in 1..10) i}...).by(4).sequence=={1,5,9}, "comprehension.by");
+    check({for(i in 1..10) i}.by(4).sequence=={1,5,9}, "comprehension.by");
 
     //Count
     check((1..10).count((Integer x) x%2==0)==5, "Range.count");
     check({1,2,3,4,5}.count((Integer x) x%2==0)==2, "Sequence.count");
-    check(elements({for (i in 1..10) i}...).count(greaterThan(7))==3, "Iterable.count (greaterThan)");
-    check(elements({for (i in 1..10) i}...).count(lessThan(7))==6, "Iterable.count (lessThan)");
+    check({for (i in 1..10) i}.count(greaterThan(7))==3, "Iterable.count (greaterThan)");
+    check({for (i in 1..10) i}.count(lessThan(7))==6, "Iterable.count (lessThan)");
     check(array(1,2,3,4,5).count((Integer x) x%2==1)==3, "Array.count");
     check("AbcdEfghIjklmnOp".count((Character c) c.uppercase)==4, "String.count");
     check(Singleton(1).count(equalTo(1))==1, "Singleton.count (equalTo)");
@@ -163,7 +163,7 @@ void testIterables() {
     //coalesced
     check((1..10).coalesced == 1..10, "Range.coalesced");
     check({1,2,3,null,4,5}.coalesced.sequence=={1,2,3,4,5}, "Sequence.coalesced");
-    check(string(elements({for (c in "HoLa") c.uppercase then c else null}...).coalesced.sequence...)=="HL", "Iterable.coalesced");
+    check(string({for (c in "HoLa") c.uppercase then c else null}.coalesced.sequence...)=="HL", "Iterable.coalesced");
     check(array(1,2,3,null,5).coalesced.sequence=={1,2,3,5}, "Array.coalesced");
     check(Singleton("X").coalesced==Singleton("X"), "Singleton.coalesced [1]");
     check("ABC".coalesced=="ABC", "String.coalesced");
@@ -176,7 +176,7 @@ void testIterables() {
     check(array(0, 1, 2).indexed.sequence=={0->0, 1->1, 2->2}, "Array.indexed");
     check(Singleton("A").indexed.sequence=={0->"A"}, "Singleton.indexed");
     check({}.indexed=={}, "Empty.indexed");
-    check(elements({for (c in "abc") c}...).indexed.sequence=={0->`a`, 1->`b`, 2->`c`}, "Iterable.indexed");
+    check({for (c in "abc") c}.indexed.sequence=={0->`a`, 1->`b`, 2->`c`}, "Iterable.indexed");
     check("abc".indexed.sequence=={0->`a`, 1->`b`, 2->`c`}, "String.indexed");
     check({1,null,2}.indexed.sequence == {0->1, 2->2}, "indexed with nulls");
 
@@ -193,7 +193,7 @@ void testIterables() {
     if (exists "".last) {
         fail("String.last [2]");
     }
-    if (exists l=elements({for(i in 1..1000) i}...).last) {
+    if (exists l={for(i in 1..1000) i}.last) {
         check(l==1000, "Iterable.last");
     } else { fail("Iterable.last"); }
 
