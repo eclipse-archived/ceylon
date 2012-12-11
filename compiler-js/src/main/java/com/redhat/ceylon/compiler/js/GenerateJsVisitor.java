@@ -657,8 +657,8 @@ public class GenerateJsVisitor extends Visitor
     private void callInterfaces(SatisfiedTypes satisfiedTypes, ClassOrInterface d, Node that,
             final List<Declaration> superDecs) {
         if (satisfiedTypes!=null) {
-            for (SimpleType st: satisfiedTypes.getTypes()) {
-                TypeDeclaration typeDecl = st.getDeclarationModel();
+            for (StaticType st: satisfiedTypes.getTypes()) {
+                TypeDeclaration typeDecl = st.getTypeModel().getDeclaration();
                 if (typeDecl.isAlias()) {
                     typeDecl = typeDecl.getExtendedTypeDeclaration();
                 }
@@ -740,8 +740,8 @@ public class GenerateJsVisitor extends Visitor
         }
 
         if (satisfiedTypes != null) {
-            for (SimpleType satType : satisfiedTypes.getTypes()) {
-                TypeDeclaration tdec = satType.getDeclarationModel();
+            for (StaticType satType : satisfiedTypes.getTypes()) {
+                TypeDeclaration tdec = satType.getTypeModel().getDeclaration();
                 if (tdec.isAlias()) {
                     tdec = tdec.getExtendedTypeDeclaration();
                 }
@@ -780,8 +780,8 @@ public class GenerateJsVisitor extends Visitor
         endLine();
     }
 
-    private String typeFunctionName(SimpleType type, boolean removeAlias) {
-        TypeDeclaration d = type.getDeclarationModel();
+    private String typeFunctionName(StaticType type, boolean removeAlias) {
+        TypeDeclaration d = type.getTypeModel().getDeclaration();
         if (removeAlias && d.isAlias()) {
             d = d.getExtendedTypeDeclaration();
         }
@@ -3388,17 +3388,34 @@ public class GenerateJsVisitor extends Visitor
     @Override
     public void visit(Tuple that) {
         int count = 0;
-        for (Expression expr : that.getExpressions()) {
-            if (count > 0) {
-                out(",");
+        if (that.getComprehension() == null) {
+            SequencedArgument sarg = that.getSequencedArgument();
+            if (sarg.getParameter() == null) {
+                for (Expression expr : sarg.getExpressionList().getExpressions()) {
+                    if (count > 0) {
+                        out(",");
+                    }
+                    out(clAlias, "Tuple(");
+                    count++;
+                    expr.visit(this);
+                }
+                out(",", clAlias, "empty");
+                for (int i = 0; i < count; i++) {
+                    out(")");
+                }
+            } else {
+                out("/*TUPLE PARAM*/");
             }
-            out(clAlias, "Tuple(");
-            count++;
-            expr.visit(this);
-        }
-        out(",", clAlias, "empty");
-        for (int i = 0; i < count; i++) {
-            out(")");
+        } else {
+            out("(function()"); beginBlock();
+            String vcompr = names.createTempVariable();
+            out("var ", vcompr, "=");
+            new ComprehensionGenerator(this, names, directAccess).generateComprehension(that.getComprehension());
+            out(";var ", vcompr, "$first=", vcompr, ".getFirst();");
+            out("var ", vcompr, "$rest=", vcompr, ".getRest().getSequence();");
+            out("return ", clAlias, "Tuple(", vcompr, "$first,", vcompr, "$rest);");
+            endBlock();
+            out(")()");
         }
     }
 
