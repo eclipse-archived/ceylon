@@ -68,12 +68,17 @@ class TypeArgInference() {
     T? firstElt<T>(T... args) {
         return args.sequence.first;
     }
+    T? firstElt0<T>({T...} args) {
+        return args.sequence.first;
+    }
     @type:"Nothing|String" firstElt("hello", "world");
     @type:"Nothing|Sequence<String>" firstElt({"hello", "world"}.sequence);
     @type:"Nothing|String" firstElt({"hello", "world"}...);
-    @type:"Nothing|String" firstElt { "hello", "world" };
-    @type:"Nothing|Sequence<String>" firstElt {{"hello", "world"}.sequence};
-    @type:"Nothing|String" firstElt { args = {"hello", "world"}; };
+    @type:"Nothing|String" firstElt0 { "hello", "world" };
+    @type:"Nothing|Sequence<String>" firstElt0 {{"hello", "world"}.sequence};
+    @type:"Nothing|String" firstElt { args = "hello"; args="world"; };
+    @type:"Nothing|Tuple<String,String,Tuple<String,String,Empty>>" firstElt { args = {"hello", "world"}; };
+    @type:"Nothing|String" firstElt0 { args = {"hello", "world"}; };
     
     T? createNull<T>() {
         return null;

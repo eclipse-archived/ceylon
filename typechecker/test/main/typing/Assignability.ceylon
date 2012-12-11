@@ -304,14 +304,23 @@ class Assignability() {
     //for (@error x -> y in 12) {}
     
     void printStrings(String... strings) {}
+    void printStrings0({String...} strings) {}
     
     printStrings("Hello", "World");
+    @error printStrings0("Hello", "World");
 
-    printStrings { "Hello", "World" };
+    printStrings { @error "Hello", "World" };
+    printStrings0 { "Hello", "World" };
 
-    printStrings { strings={"Hello", "World"}; };
+    printStrings0 {  strings={"Hello", "World"}; };
+    printStrings0 { @error strings="Hello"; @error strings="World"; };
+    printStrings {  @error strings={"Hello", "World"}; };
+    printStrings { strings="Hello"; strings="World"; };
 
-    printStrings { strings={"Hello", "World"}; @error "Hello", "World" };
+    printStrings { @error strings={"Hello", "World"}; @error "Hello", "World" };
+    printStrings { strings="Hello"; strings="World"; @error "Hello", "World" };
+    printStrings0 { @error strings="Hello"; @error strings="World"; @error "Hello", "World" };
+    printStrings0 {  strings={"Hello", "World"}; @error "Hello", "World" };
 
     @error printStrings(1, 2);
 
@@ -327,13 +336,21 @@ class Assignability() {
     
     
     String joinStrings(Character char, String... strings) { throw; }
+    String joinStrings0(Character char, {String...} strings) { throw; }
     
     joinStrings(`.`, "Hello", "World");
 
-    joinStrings { char=` `; "Hello", "World" };
+    joinStrings { char=` `; @error "Hello", "World" };
 
-    joinStrings { char=` `; strings={"Hello", "World"}; };
+    joinStrings0 { char=` `; "Hello", "World" };
 
+    joinStrings { char=` `; @error strings={"Hello", "World"}; };
+
+    joinStrings0 { char=` `; strings={"Hello", "World"}; };
+
+    joinStrings { char=` `; strings="Hello"; strings="World"; };
+
+    joinStrings0 { char=` `; @error strings="Hello"; @error strings="World"; };
 
     @error joinStrings(`.`, 1, 2);
 
