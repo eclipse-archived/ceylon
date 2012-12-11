@@ -1822,7 +1822,9 @@ functionOrExpression returns [Expression expression]
 
 comprehension returns [Comprehension comprehension]
     @init { $comprehension = new Comprehension(null); }
-    : forComprehensionClause
+    : compilerAnnotations
+      { $comprehension.getCompilerAnnotations().addAll($compilerAnnotations.annotations); }
+      forComprehensionClause
       { $comprehension.setForComprehensionClause($forComprehensionClause.comprehensionClause); }
     ;
 

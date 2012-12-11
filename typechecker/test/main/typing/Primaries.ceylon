@@ -173,7 +173,9 @@ class Primaries() {
     
     {B...} beez = p2[].b;
     {String...} stringz = {"hello", "world"}.map((String s) s.uppercased);
-    
-    see {Float} shared {Float...} floats = {};
+        
+    ann {Float} shared {Float...} floats = {};
     
 }
+
+void ann({Void...} elements) {}
