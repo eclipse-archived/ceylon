@@ -35,7 +35,7 @@ class Listleton<T>(List<T> l) => Singleton<List<T>>(l);
 class MiMatrix(Integer gridSize) satisfies Matrix<Integer> {
     value sb = SequenceBuilder<Sequence<Integer>>();
     for (i in 1..gridSize) {
-        assert(nonempty row={ for (j in 1..gridSize) j });
+        assert(nonempty row=[ for (j in 1..gridSize) j ]);
         sb.append(row);
     }
     Matrix<Integer> grid;

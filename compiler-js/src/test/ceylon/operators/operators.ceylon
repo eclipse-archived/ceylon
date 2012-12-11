@@ -154,12 +154,12 @@ void testOtherOperators() {
 
 void testCollectionOperators() {
     value seq1 = { "one", "two" };
-    String s1 = seq1[0]?"null";
+    String s1 = seq1[0]; //not optional anymore!
     check(s1=="one", "lookup");
-    String s2 = seq1[2]?"null";
-    check(s2=="null", "lookup");
-    String s3 = seq1[-1]?"null";
-    check(s3=="null", "lookup");
+    String|Nothing s2 = seq1[2]; //not optional anymore!
+    check(!exists s2, "lookup");
+    String|Nothing s3 = seq1[-1]; //not optional anymore!
+    check(!exists s3, "lookup");
     variable Sequence<String>? unsafe := seq1;
     check(exists unsafe?[0], "safe index");
     unsafe := null;
@@ -179,23 +179,23 @@ Integer? nullsafeTest(Integer? f()) {
 
 void testNullsafeOperators() {
     String[] seq = { "hi" };
-    String s1 = seq[0]?"null";
+    String s1 = seq[0] else "null";
     check(s1=="hi", "default 1");
-    String s2 = seq[1]?"null";
+    String s2 = seq[1] else "null";
     check(s2=="null", "default 2");
     
     String? s3 = null;
     String? s4 = "test";
-    String s5 = s3?.uppercased ? "null";
-    String s6 = s4?.uppercased ? "null";
+    String s5 = s3?.uppercased else "null";
+    String s6 = s4?.uppercased else "null";
     check(s5=="null", "nullsafe member 1");
     check(s6=="TEST", "nullsafe member 2");
     NullsafeTest? obj = null;
     Integer? i = obj?.f();
     check(!exists i, "nullsafe invoke");
-    Callable<Integer?,<>> f2 = obj?.f;
+    Callable<Integer?,[]> f2 = obj?.f;
     check(!exists nullsafeTest(f2), "nullsafe method ref");
-    Callable<Integer?,<>>? f3 = obj?.f;
+    Callable<Integer?,[]>? f3 = obj?.f;
     check(exists f3, "nullsafe method ref 2");
     obj?.f();
     check(!exists obj?.f(), "nullsafe simple call");

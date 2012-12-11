@@ -19,7 +19,7 @@ Element? find2<Element>(Array<Element> a, Boolean f(Element x) => true) {
   }
 }
 
-Callable<String, <Integer>> subtract(Integer howMuch) {
+Callable<String, [Integer]> subtract(Integer howMuch) {
   return (Integer i) (i-howMuch).string;
 }
 

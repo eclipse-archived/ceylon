@@ -47,7 +47,8 @@ shared void test() {
     case(is Integer) {}
     else { fail("FLOAT? WTF?"); }
 
-    value e1 = enums[1];
+    value old_e1 = enums[1]; //This is now a Float
+    Integer|Float e1 = enums[1];
     switch(e1)
     case(is Integer) { fail("INTEGER? WTF?"); }
     case(is Float) {}
