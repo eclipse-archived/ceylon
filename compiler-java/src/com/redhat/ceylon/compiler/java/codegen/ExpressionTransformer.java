@@ -678,7 +678,7 @@ public class ExpressionTransformer extends AbstractTransformer {
                 seqElemType = wrapInOptionalForInterop(seqElemType, expectedType);
                 return makeIterable(list, seqElemType);
             } else {
-                return makeTuple(list.iterator(), ellipsis);
+                return makeTuple(list, ellipsis);
             }
         } else {
             return makeEmpty();
@@ -689,7 +689,7 @@ public class ExpressionTransformer extends AbstractTransformer {
         SequencedArgument sequencedArgument = value.getSequencedArgument();
         if(sequencedArgument != null){
             boolean ellipsis = sequencedArgument.getEllipsis() != null;
-            return makeTuple(sequencedArgument.getExpressionList().getExpressions().iterator(), ellipsis);
+            return makeTuple(sequencedArgument.getExpressionList().getExpressions(), ellipsis);
         }else if(value.getComprehension() != null){
             // FIXME: do we need to deal with erasure?
             return iterableToSequence(transformComprehension(value.getComprehension())); 
@@ -704,19 +704,36 @@ public class ExpressionTransformer extends AbstractTransformer {
         ProducedType sequentialType = typeFact().getSequentialType(elementType);
         return applyErasureAndBoxing(sequential, sequentialType, true, BoxingStrategy.BOXED, expectedType);
     }
-
-    private JCExpression makeTuple(Iterator<Expression> iter, boolean ellipsis) {
+    
+    private JCExpression makeTuple(java.util.List<Tree.Expression> expressions, boolean ellipsis) {
+        java.util.List<ProducedType> expressionTypes = new LinkedList<ProducedType>();
+        for(Tree.Expression expr : expressions){
+            expressionTypes.add(expr.getTypeModel());
+        }
+        // turn the last type from a sequence to its element type
+        if(ellipsis && !expressionTypes.isEmpty()){
+            int lastIndex = expressionTypes.size()-1;
+            ProducedType lastType = expressionTypes.get(lastIndex);
+            expressionTypes.set(lastIndex, typeFact().getIteratedType(lastType));
+        }
+        return makeTuple(expressions.iterator(), expressionTypes, ellipsis);
+    }
+    
+    private JCExpression makeTuple(Iterator<Tree.Expression> iter, java.util.List<ProducedType> expressionTypes, boolean ellipsis) {
         if (iter.hasNext()) {
             // no erasure here? really?
-            JCExpression first = transformExpression(iter.next());
+            Expression expr = iter.next();
+            JCExpression first = transformExpression(expr);
             // last one with ellipsis is just a sequence
             if(!iter.hasNext() && ellipsis)
                 return first;
+            // make the tuple type
+            ProducedType tupleType = typeFact().getTupleType(expressionTypes, ellipsis, -1);
+            JCExpression typeExpr = makeJavaType(tupleType, CeylonTransformer.JT_CLASS_NEW);
             // get the rest of the tuple
-            JCExpression rest = makeTuple(iter, ellipsis);
+            expressionTypes.remove(0);
+            JCExpression rest = makeTuple(iter, expressionTypes, ellipsis);
             // make the tuple
-            ProducedType tupleType = typeFact().getTupleDeclaration().getType();
-            JCExpression typeExpr = makeJavaType(tupleType, CeylonTransformer.JT_CLASS_NEW | CeylonTransformer.JT_RAW);
             return makeNewClass(typeExpr, List.of(first, rest));
         } else {
             // nothing in there
