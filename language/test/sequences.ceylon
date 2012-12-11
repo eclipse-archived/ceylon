@@ -269,10 +269,10 @@ shared void sequences() {
 
     value seq = { 1, 2, 3, 4 };
     check(seq.size==4, "sequence size");
-    check(seq.string=="{ 1, 2, 3, 4 }", "sequence.string 4");
+    check(seq.string=="[ 1, 2, 3, 4 ]", "sequence.string 4: " + seq.string);
     check(seq.reversed=={4, 3, 2, 1}, "sequence reversed");
     check(seq.first==1, "sequence first");
-    check(seq.rest.string=="{ 2, 3, 4 }", "sequence.rest.string");
+    check(seq.rest.string=="[ 2, 3, 4 ]", "sequence.rest.string");
     variable value i:=0;
     for (s in seq) {
         if (exists it=seq[i]) {
@@ -306,10 +306,10 @@ shared void sequences() {
 
     test_singleton();
 
-    value nulls = { null, "hello", null, "world" };
+    Sequential<String?> nulls = { null, "hello", null, "world" };
     if (exists n0 = nulls[0]) { fail("sequence with nulls"); }
     if (exists n1 = nulls[1]) {} else { fail("sequence with nulls"); }
-    check(nulls.string=="{ null, hello, null, world }", "sequence with nulls.string");
+    check(nulls.string=="[ null, hello, null, world ]", "sequence with nulls.string");
     variable value nonnull:=0;
     for (o in nulls) {
         if (exists o) { nonnull++; }
@@ -325,7 +325,7 @@ shared void sequences() {
     check(coalesced.defines(0)&&coalesced.defines(1)&&!coalesced.defines(2),
            "coalesce defines");
     check(nonempty coalesced, "nonempty coalesced");
-    value coal2 = coalesce({for (c in "hElLo") null}...).sequence;
+    value coal2 = coalesce{for (c in "hElLo") null}.sequence;
     check(!nonempty coal2, "nonempty coalesced2");
     check(coal2.size == 0, "coalesced2.size");
     check(!`h` in coal2, "coalesced2.contains");

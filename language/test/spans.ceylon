@@ -27,6 +27,7 @@ void spansegments() {
   
   check("hello"[-1..1]=="he", "string span neg start");
   check("hello".sequence[-1..1]=={ `h`, `e` }, "string sequence span neg start");
+  print({1,2,3}[-1..1]);
   check({1,2,3}[-1..1]=={1,2}, "sequence span neg start");
   check((1..5)[-1..1]==1..2, "range span neg start");
   check(Singleton(0)[-1..1]==Singleton(0), "singleton span neg start");
