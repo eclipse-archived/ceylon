@@ -4,6 +4,7 @@
 Binary,Castable,Cloneable,Closeable,Ranged
 Container,ContainerWithFirstElement,Iterator,Sized,Collection,Category
 #Iterable
+#List
 Tuple
 ChainedIterator
 #Sequential,Sequence,Empty
@@ -12,7 +13,6 @@ Entry,Comparable,Invertable,Summable,Ordinal,Numeric,Scalar,Exponentiable,Integr
 FixedSized,None,Some
 #Identifiable
 #IdentifiableObject
-List
 Exception,NegativeNumberException,OverflowException,RecursiveInitializationException
 #Nothing
 #Number
