@@ -305,60 +305,60 @@ shared void numbers() {
         check(true, "ArithmeticException");
     }    
     // parseInteger()
-    check(parseInteger("-123")?0==-123, "parse integer");
+    check((parseInteger("-123") else 0)==-123, "parse integer");
     
-    check(1_000==parseInteger("1_000")?"", "parseInteger(1_000)");
-    check(1000==parseInteger("1000")?"", "parseInteger(1000)");
-    check(1k==parseInteger("1k")?"", "parseInteger(1k)");
-    check(+1_000==parseInteger("+1_000")?"", "parseInteger(+1_000)");
-    check(+1000==parseInteger("+1000")?"", "parseInteger(+1000)");
-    check(+1k==parseInteger("+1k")?"", "parseInteger(+1k)");
-    check(-1_000==parseInteger("-1_000")?"", "parseInteger(-1_000)");
-    check(-1000==parseInteger("-1000")?"", "parseInteger(-1000)");
-    check(-1k==parseInteger("-1k")?"", "parseInteger(-1k)");
+    check(1_000==(parseInteger("1_000") else ""), "parseInteger(1_000)");
+    check(1000==(parseInteger("1000") else ""), "parseInteger(1000)");
+    check(1k==(parseInteger("1k") else ""), "parseInteger(1k)");
+    check(+1_000==(parseInteger("+1_000") else ""), "parseInteger(+1_000)");
+    check(+1000==(parseInteger("+1000") else ""), "parseInteger(+1000)");
+    check(+1k==(parseInteger("+1k") else ""), "parseInteger(+1k)");
+    check(-1_000==(parseInteger("-1_000") else ""), "parseInteger(-1_000)");
+    check(-1000==(parseInteger("-1000") else ""), "parseInteger(-1000)");
+    check(-1k==(parseInteger("-1k") else ""), "parseInteger(-1k)");
     
-    check(0==parseInteger("0")?"", "parseInteger(0)");
-    check(00==parseInteger("00")?"", "parseInteger(00)");
-    check(0_000==parseInteger("0_000")?"", "parseInteger(0_000)");
-    check(-00==parseInteger("-00")?"", "parseInteger(-00)");
-    check(+00==parseInteger("+00")?"", "parseInteger(+00)");
-    check(0k==parseInteger("0k")?"", "parseInteger(0k)");
+    check(0==(parseInteger("0") else ""), "parseInteger(0)");
+    check(00==(parseInteger("00") else ""), "parseInteger(00)");
+    check(0_000==(parseInteger("0_000") else ""), "parseInteger(0_000)");
+    check(-00==(parseInteger("-00") else ""), "parseInteger(-00)");
+    check(+00==(parseInteger("+00") else ""), "parseInteger(+00)");
+    check(0k==(parseInteger("0k") else ""), "parseInteger(0k)");
     
-    check(1==parseInteger("1")?"", "parseInteger(1)");
-    check(01==parseInteger("01")?"", "parseInteger(01)");
-    check(0_001==parseInteger("0_001")?"", "parseInteger(0_001)");
-    check(+1==parseInteger("+1")?"", "parseInteger(+1)");
-    check(+01==parseInteger("+01")?"", "parseInteger(+01)");
-    check(+0_001==parseInteger("+0_001")?"", "parseInteger(+0_001)");
+    check(1==(parseInteger("1") else ""), "parseInteger(1)");
+    check(01==(parseInteger("01") else ""), "parseInteger(01)");
+    check(0_001==(parseInteger("0_001") else ""), "parseInteger(0_001)");
+    check(+1==(parseInteger("+1") else ""), "parseInteger(+1)");
+    check(+01==(parseInteger("+01") else ""), "parseInteger(+01)");
+    check(+0_001==(parseInteger("+0_001") else ""), "parseInteger(+0_001)");
     
-    check(-1==parseInteger("-1")?"", "parseInteger(-1)");
-    check(-01==parseInteger("-01")?"", "parseInteger(-01)");
-    check(-0_001==parseInteger("-0_001")?"", "parseInteger(-0_001)");
+    check(-1==(parseInteger("-1") else ""), "parseInteger(-1)");
+    check(-01==(parseInteger("-01") else ""), "parseInteger(-01)");
+    check(-0_001==(parseInteger("-0_001") else ""), "parseInteger(-0_001)");
     
-    check(1k==parseInteger("1k")?"", "parseInteger(1k)");
-    check(1M==parseInteger("1M")?"", "parseInteger(1M)");
-    check(1G==parseInteger("1G")?"", "parseInteger(1G)");
-    check(1T==parseInteger("1T")?"", "parseInteger(1T)");
-    check(1P==parseInteger("1P")?"", "parseInteger(1P)");
-    check(-1k==parseInteger("-1k")?"", "parseInteger(-1k)");
-    check(-1M==parseInteger("-1M")?"", "parseInteger(-1M)");
-    check(-1G==parseInteger("-1G")?"", "parseInteger(-1G)");
-    check(-1T==parseInteger("-1T")?"", "parseInteger(-1T)");
-    check(-1P==parseInteger("-1P")?"", "parseInteger(-1P)");
+    check(1k==(parseInteger("1k") else ""), "parseInteger(1k)");
+    check(1M==(parseInteger("1M") else ""), "parseInteger(1M)");
+    check(1G==(parseInteger("1G") else ""), "parseInteger(1G)");
+    check(1T==(parseInteger("1T") else ""), "parseInteger(1T)");
+    check(1P==(parseInteger("1P") else ""), "parseInteger(1P)");
+    check(-1k==(parseInteger("-1k") else ""), "parseInteger(-1k)");
+    check(-1M==(parseInteger("-1M") else ""), "parseInteger(-1M)");
+    check(-1G==(parseInteger("-1G") else ""), "parseInteger(-1G)");
+    check(-1T==(parseInteger("-1T") else ""), "parseInteger(-1T)");
+    check(-1P==(parseInteger("-1P") else ""), "parseInteger(-1P)");
 
     print("Testing " 0.size "-bit integers");
     if (0.size == 64) {
-        check(9223372036854775807==parseInteger("9223372036854775807")?"", "parseInteger(9223372036854775807)");
-        check(9_223_372_036_854_775_807==parseInteger("9_223_372_036_854_775_807")?"", "parseInteger(9_223_372_036_854_775_807)");
-        check(-9223372036854775808==parseInteger("-9223372036854775808")?"", "parseInteger(-9223372036854775808)");
-        check(-9_223_372_036_854_775_808==parseInteger("-9_223_372_036_854_775_808")?"", "parseInteger(-9_223_372_036_854_775_808)");
+        check(9223372036854775807==(parseInteger("9223372036854775807") else ""), "parseInteger(9223372036854775807)");
+        check(9_223_372_036_854_775_807==(parseInteger("9_223_372_036_854_775_807") else ""), "parseInteger(9_223_372_036_854_775_807)");
+        check(-9223372036854775808==(parseInteger("-9223372036854775808") else ""), "parseInteger(-9223372036854775808)");
+        check(-9_223_372_036_854_775_808==(parseInteger("-9_223_372_036_854_775_808") else ""), "parseInteger(-9_223_372_036_854_775_808)");
         check(!exists parseInteger("9223372036854775808"), "parseInteger(9223372036854775808)");
         check(!exists parseInteger("-9223372036854775809"), "parseInteger(-9223372036854775809)");
     } else if (0.size == 53) {
-        check(9007199254740992==parseInteger("9007199254740992")?"", "parseInteger(9007199254740992)");
-        check(9_007_199_254_740_992==parseInteger("9_007_199_254_740_992")?"", "parseInteger(9_007_199_254_740_992)");
-        check(-9007199254740992==parseInteger("-9007199254740992")?"", "parseInteger(-9007199254740992)");
-        check(-9_007_199_254_740_992==parseInteger("-9_007_199_254_740_992")?"", "parseInteger(-9_007_199_254_740_992)");
+        check(9007199254740992==(parseInteger("9007199254740992") else ""), "parseInteger(9007199254740992)");
+        check(9_007_199_254_740_992==(parseInteger("9_007_199_254_740_992") else ""), "parseInteger(9_007_199_254_740_992)");
+        check(-9007199254740992==(parseInteger("-9007199254740992") else ""), "parseInteger(-9007199254740992)");
+        check(-9_007_199_254_740_992==(parseInteger("-9_007_199_254_740_992") else ""), "parseInteger(-9_007_199_254_740_992)");
         check(!exists parseInteger("9007199254740993"), "parseInteger(9007199254740993)");
         check(!exists parseInteger("-9007199254740993"), "parseInteger(-9007199254740993)");
     } else {
@@ -389,20 +389,20 @@ shared void numbers() {
     check(!exists parseInteger("0000_000"), "parseInteger(0000_000)");
     
     // parseFloat
-    check(parseFloat("12.34e3")?0.0==12.34e3, "parseFloat(12.34e3)");
-    check(parseFloat("12.340e3")?0.0==12.34e3, "parseFloat(12.340e3)");
-    check(parseFloat("123.4e2")?0.0==12.34e3, "parseFloat(123.4e2)");
-    check(parseFloat("1234.0e1")?0.0==12.34e3, "parseFloat(1234.0e1)");
-    check(parseFloat("1234.0e+1")?0.0==12.34e3, "parseFloat(1234.0e+1)");
-    check(parseFloat("12340.0e0")?0.0==12.34e3, "parseFloat(12340.0e0)");
-    check(parseFloat("12340.0")?0.0==12.34e3, "parseFloat(12340.0)");
-    check(parseFloat("12340.0")?0.0==12.34e3, "parseFloat(12340.0)");
-    check(parseFloat("123400.0e-1")?0.0==12.34e3, "parseFloat(123400.0e-1)");
+    check((parseFloat("12.34e3") else 0.0)==12.34e3, "parseFloat(12.34e3)");
+    check((parseFloat("12.340e3") else 0.0)==12.34e3, "parseFloat(12.340e3)");
+    check((parseFloat("123.4e2") else 0.0)==12.34e3, "parseFloat(123.4e2)");
+    check((parseFloat("1234.0e1") else 0.0)==12.34e3, "parseFloat(1234.0e1)");
+    check((parseFloat("1234.0e+1") else 0.0)==12.34e3, "parseFloat(1234.0e+1)");
+    check((parseFloat("12340.0e0") else 0.0)==12.34e3, "parseFloat(12340.0e0)");
+    check((parseFloat("12340.0") else 0.0)==12.34e3, "parseFloat(12340.0)");
+    check((parseFloat("12340.0") else 0.0)==12.34e3, "parseFloat(12340.0)");
+    check((parseFloat("123400.0e-1") else 0.0)==12.34e3, "parseFloat(123400.0e-1)");
     
-    check(parseFloat("012340.0")?0.0==12.34e3, "parseFloat(012340.0)");
-    check(parseFloat("+12340.0")?0.0==12.34e3, "parseFloat(+12340.0)");
+    check((parseFloat("012340.0") else 0.0)==12.34e3, "parseFloat(012340.0)");
+    check((parseFloat("+12340.0") else 0.0)==12.34e3, "parseFloat(+12340.0)");
     
-    check(parseFloat("-12340.0")?0.0==-12.34e3, "parseFloat(-12340.0)");
+    check((parseFloat("-12340.0") else 0.0)==-12.34e3, "parseFloat(-12340.0)");
 
     //type safety
     check(is Integer obj(1+1), "int+int Integer");
