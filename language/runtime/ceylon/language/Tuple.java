@@ -480,4 +480,25 @@ public class Tuple<Element, First extends Element, Rest extends Sequential<Eleme
 	    return sequence$impl.collect(collecting);
 	}
 
+	@Override @Ignore
+	public boolean equals(java.lang.Object obj) {
+	    return list$impl.equals(obj);
+	}
+	
+    @Override
+	public java.lang.String toString() {
+	    StringBuilder b = new StringBuilder().append("[ ");
+	    boolean first = true;
+	    Iterator<? extends Element> iterator = getIterator();
+	    java.lang.Object elem;
+	    while((elem = iterator.next()) != exhausted_.getExhausted$()){
+	        if(first){
+	            first = false;
+	        }else{
+	            b.append(", ");
+	        }
+	        b.append(elem != null ? elem.toString() : "null");
+	    }
+	    return b.append(" ]").toString();
+	}
 }
