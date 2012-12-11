@@ -112,6 +112,7 @@ JSNum$proto.clear = function(index) {
     return this.set(index, false);
 }
 JSNum$proto.getSize = function() { return 53; }
+JSNum$proto.getMagnitude = function() { return Math.abs(this); }
 
 function $parseInteger(s) {
     //xkcd.com/208/
