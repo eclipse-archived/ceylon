@@ -29,16 +29,21 @@ shared class Tuple<out Element, out First, out Rest>(first, rest)
             rest.reversed.withTrailing(first);
     
     shared actual Element[] segment(Integer from, Integer length) {
-        if (from<=0) {
-            return length==1 then {first}
-                else rest[0:length+from-1].withLeading(first);
+        if(length < 0){
+            return {};
         }
-        return rest[from-1:length];
+        Integer realFrom = from < 0 then 0 else from;
+        if (realFrom==0) {
+            return length==1 then {first}
+                else rest[0:length+realFrom-1].withLeading(first);
+        }
+        return rest[realFrom-1:length];
     }
     
     shared actual Element[] span(Integer from, Integer end) {
-        return from<=end then this[from:end-from+1] 
-                else this[end:from-end+1].reversed.sequence;
+        Integer realFrom = from < 0 then 0 else from;
+        return realFrom<=end then this[from:end-realFrom+1] 
+                else this[end:realFrom-end+1].reversed.sequence;
     }
     shared actual Element[] spanTo(Integer to) =>
         to<0 then {} else span(0, to);
@@ -46,5 +51,22 @@ shared class Tuple<out Element, out First, out Rest>(first, rest)
         span(from, size);
     
     shared actual Sequence<Element> clone => this;
-    
+
+    shared actual String string {
+        StringBuilder b = StringBuilder().append("[ ");
+        variable Boolean first := true;
+        for(Element el in this){
+            if(first){
+                first := false;
+            }else{
+                b.append(", ");
+            }
+            if(exists el){
+                b.append(el.string);
+            }else{
+                b.append("null");
+            }
+        }
+        return b.append(" ]").string;
+    }
 }

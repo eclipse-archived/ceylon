@@ -421,8 +421,12 @@ public class Tuple<Element, First extends Element, Rest extends Sequential<Eleme
     @Override @SuppressWarnings("unchecked")
 	@Annotations(@Annotation("default"))
 	public Sequential<? extends Element> segment(Integer from, long length) {
+        if(length < 0)
+            return (Sequential<? extends Element>) empty_.getEmpty$();
 	    long _from = from.value;
-        if (_from <= 0) {
+	    if(_from < 0)
+	        _from = 0;
+        if (_from == 0) {
             return length==1 ? new ArraySequence<Element>(first)
                 : rest.segment(Integer.instance(0),length+_from-1).withLeading(first);
         }
@@ -476,4 +480,25 @@ public class Tuple<Element, First extends Element, Rest extends Sequential<Eleme
 	    return sequence$impl.collect(collecting);
 	}
 
+	@Override @Ignore
+	public boolean equals(java.lang.Object obj) {
+	    return list$impl.equals(obj);
+	}
+	
+    @Override
+	public java.lang.String toString() {
+	    StringBuilder b = new StringBuilder().append("[ ");
+	    boolean first = true;
+	    Iterator<? extends Element> iterator = getIterator();
+	    java.lang.Object elem;
+	    while((elem = iterator.next()) != exhausted_.getExhausted$()){
+	        if(first){
+	            first = false;
+	        }else{
+	            b.append(", ");
+	        }
+	        b.append(elem != null ? elem.toString() : "null");
+	    }
+	    return b.append(" ]").toString();
+	}
 }

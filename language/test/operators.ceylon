@@ -13,8 +13,8 @@ void operators() {
     String? maybeNot = null;
     check(exists maybe?.uppercased, "?.");
     check(!exists maybeNot?.uppercased, "?.");
-    check(maybe?"goodbye"=="hello", "?");
-    check(maybeNot?"goodbye"=="goodbye", "?");
+    check((maybe else "goodbye")=="hello", "?");
+    check((maybeNot else "goodbye")=="goodbye", "?");
     check(exists maybe?[0], "?[]");
     check(exists maybe?[4], "?[]");
     check(!exists maybe?[10], "?[]");
