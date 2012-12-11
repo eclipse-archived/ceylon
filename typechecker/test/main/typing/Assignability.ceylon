@@ -306,6 +306,11 @@ class Assignability() {
     void printStrings(String... strings) {}
     void printStrings0({String...} strings) {}
     
+    printStrings();
+    @error printStrings0();
+    printStrings {};
+    @error printStrings0 {};
+    
     printStrings("Hello", "World");
     @error printStrings0("Hello", "World");
 
