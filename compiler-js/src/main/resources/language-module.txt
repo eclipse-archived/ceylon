@@ -1,26 +1,47 @@
 #This is the list of language module files that can be compiled from their Ceylon source
 #each line states a list of files to be compiled in one pass
+
+#this requires impl of keys requires reified generics
 #Correspondence
+
 Binary,Castable,Cloneable,Closeable,Ranged
 Container,ContainerWithFirstElement,Iterator,Sized,Collection,Category
+
+#this requires native impl of sort
 #Iterable
-#List
-Tuple
-ChainedIterator
-#Sequential,Sequence,Empty
-Entry,Comparable,Invertable,Summable,Ordinal,Numeric,Scalar,Exponentiable,Integral
 #Finished
+
+#its iterator impl can't handle null elements
+#List
+
+Tuple,ChainedIterator
+
+#syntactic sugar prevents Sequential from compiling
+#Sequential,Sequence,Empty
+
+Entry,Comparable,Invertable,Summable,Ordinal,Numeric,Scalar,Exponentiable,Integral
+
 FixedSized,None,Some
+
 #Identifiable
 #IdentifiableObject
+
 Exception,NegativeNumberException,OverflowException,RecursiveInitializationException
+
 #Nothing
 #Number
+
 Set,LazyMap,LazyList
+
+#this one has native impls due to reified generics
 #Range
+
+#this one has native impls due to reified generics
 #Singleton
-any,byDecreasing,byIncreasing,byItem,byKey,coalesce,count,elements,emptyOrSingleton,entries,equalTo,every,first,forItem,forKey,greaterThan,join,largest,lessThan,max,min,smallest,sum,zip,print,bottom
+
+any,byDecreasing,byIncreasing,byItem,byKey,coalesce,count,elements,emptyOrSingleton,entries,equalTo,every,first,forItem,forKey,greaterThan,join,largest,lessThan,max,min,smallest,sum,zip,print,bottom,identical
+
+#this function needs stuff that's not been implemented yet at the language level
 #combine
-#identical
 #null
 #sort
