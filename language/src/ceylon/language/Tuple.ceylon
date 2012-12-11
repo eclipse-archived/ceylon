@@ -29,16 +29,20 @@ shared class Tuple<out Element, out First, out Rest>(first, rest)
             rest.reversed.withTrailing(first);
     
     shared actual Element[] segment(Integer from, Integer length) {
-        if (from<=0) {
+        if(length < 0)
+            return {};
+        Integer realFrom = max(0, from);
+        if (realFrom==0) {
             return length==1 then {first}
-                else rest[0:length+from-1].withLeading(first);
+                else rest[0:length+realFrom-1].withLeading(first);
         }
-        return rest[from-1:length];
+        return rest[realFrom-1:length];
     }
     
     shared actual Element[] span(Integer from, Integer end) {
-        return from<=end then this[from:end-from+1] 
-                else this[end:from-end+1].reversed.sequence;
+        Integer realFrom = max(0, from);
+        return realFrom<=end then this[from:end-realFrom+1] 
+                else this[end:realFrom-end+1].reversed.sequence;
     }
     shared actual Element[] spanTo(Integer to) =>
         to<0 then {} else span(0, to);
