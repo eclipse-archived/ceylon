@@ -129,9 +129,15 @@ public class ExpressionTest2 extends CompilerTest {
     public void testInvNamedArgumentInvocationLocal(){
         compareWithJavaSource("invoke/NamedArgumentInvocationLocal");
     }
+    
     @Test
     public void testInvNamedArgumentWithSequence(){
         compareWithJavaSource("invoke/NamedArgumentWithSequence");
+    }
+    
+    @Test
+    public void testInvInvocationWithVarargsAndComprehensions(){
+        compareWithJavaSource("invoke/InvocationWithVarargsAndComprehensions");
     }
     
     @Test
