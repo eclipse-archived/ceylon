@@ -29,9 +29,10 @@ shared class Tuple<out Element, out First, out Rest>(first, rest)
             rest.reversed.withTrailing(first);
     
     shared actual Element[] segment(Integer from, Integer length) {
-        if(length < 0)
+        if(length < 0){
             return {};
-        Integer realFrom = max(0, from);
+        }
+        Integer realFrom = from < 0 then 0 else from;
         if (realFrom==0) {
             return length==1 then {first}
                 else rest[0:length+realFrom-1].withLeading(first);
@@ -40,7 +41,7 @@ shared class Tuple<out Element, out First, out Rest>(first, rest)
     }
     
     shared actual Element[] span(Integer from, Integer end) {
-        Integer realFrom = max(0, from);
+        Integer realFrom = from < 0 then 0 else from;
         return realFrom<=end then this[from:end-realFrom+1] 
                 else this[end:realFrom-end+1].reversed.sequence;
     }
