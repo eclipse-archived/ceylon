@@ -71,7 +71,7 @@ void testAliasing() {
     Strinteger xxxxx = 5;
     check(is Integer xxxxx, "Type alias");
     check(Listleton({{1},{2},{3}}.first).string=="{ { 1 } }", "class alias");
-    check(MiMatrix(2).string=="{ { 1, 2 }, { 1, 2 } }", "interface alias");
+    check(MiMatrix(2).string=="{ [ 1, 2 ], [ 1, 2 ] }", "interface alias");
     Object xxxxx1 = 6;
     Object xxxxx2 = "XXXX";
     check(is String|Integer xxxxx1, "is String|Integer");
