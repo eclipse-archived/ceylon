@@ -3391,31 +3391,45 @@ public class GenerateJsVisitor extends Visitor
         if (that.getComprehension() == null) {
             SequencedArgument sarg = that.getSequencedArgument();
             if (sarg.getParameter() == null) {
-                for (Expression expr : sarg.getExpressionList().getExpressions()) {
-                    if (count > 0) {
-                        out(",");
-                    }
-                    out(clAlias, "Tuple(");
-                    count++;
-                    expr.visit(this);
-                }
-                out(",", clAlias, "empty");
-                for (int i = 0; i < count; i++) {
+                int lim = sarg.getExpressionList().getExpressions().size()-1;
+                if (lim == 0) {
+                    //TODO check if it's already a Tuple
+                    //otherwise just do this
+                    out(clAlias, "toTuple(");
+                    sarg.getExpressionList().getExpressions().get(0).visit(this);
                     out(")");
+                } else {
+                    for (Expression expr : sarg.getExpressionList().getExpressions()) {
+                        if (count > 0) {
+                            out(",");
+                        }
+                        if (count==lim && sarg.getEllipsis() != null) {
+                            out(clAlias, "toTuple(");
+                            expr.visit(this);
+                            out(")");
+                        } else {
+                            out(clAlias, "Tuple(");
+                            expr.visit(this);
+                        }
+                        count++;
+                    }
+                    if (sarg.getEllipsis() == null) {
+                        out(",", clAlias, "empty");
+                    } else {
+                        count--;
+                    }
+                    for (int i = 0; i < count; i++) {
+                        out(")");
+                    }
                 }
             } else {
+                //TODO WTF is this supposed to be?
                 out("/*TUPLE PARAM*/");
             }
         } else {
-            out("(function()"); beginBlock();
-            String vcompr = names.createTempVariable();
-            out("var ", vcompr, "=");
+            out(clAlias, "toTuple(");
             new ComprehensionGenerator(this, names, directAccess).generateComprehension(that.getComprehension());
-            out(";var ", vcompr, "$first=", vcompr, ".getFirst();");
-            out("var ", vcompr, "$rest=", vcompr, ".getRest().getSequence();");
-            out("return ", clAlias, "Tuple(", vcompr, "$first,", vcompr, "$rest);");
-            endBlock();
-            out(")()");
+            out(")");
         }
     }
 
