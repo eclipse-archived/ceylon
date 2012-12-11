@@ -50,5 +50,22 @@ shared class Tuple<out Element, out First, out Rest>(first, rest)
         span(from, size);
     
     shared actual Sequence<Element> clone => this;
-    
+
+    shared actual String string {
+        StringBuilder b = StringBuilder().append("[ ");
+        variable Boolean first := true;
+        for(Element el in this){
+            if(first){
+                first := false;
+            }else{
+                b.append(", ");
+            }
+            if(exists el){
+                b.append(el.string);
+            }else{
+                b.append("null");
+            }
+        }
+        return b.append(" ]").string;
+    }
 }
