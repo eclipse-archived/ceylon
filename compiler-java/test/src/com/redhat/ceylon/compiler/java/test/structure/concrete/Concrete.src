@@ -67,7 +67,7 @@ final class Concrete$impl<A> {
     }
     
     private final .ceylon.language.Sequential<? extends A> mNonShared$aseq(final A a) {
-        return new .ceylon.language.Tuple(a, .ceylon.language.empty_.getEmpty$());
+        return new .ceylon.language.Tuple<A, A, .ceylon.language.Empty>(a, .ceylon.language.empty_.getEmpty$());
     }
     
     private void mNonShared(final A a, final .ceylon.language.Sequential<? extends A> aseq) {
@@ -101,7 +101,7 @@ final class Concrete$impl<A> {
     }
     
     public final .ceylon.language.Sequential<? extends A> mShared$aseq(final A a) {
-        return new .ceylon.language.Tuple(a, .ceylon.language.empty_.getEmpty$());
+        return new .ceylon.language.Tuple<A, A, .ceylon.language.Empty>(a, .ceylon.language.empty_.getEmpty$());
     }
     
     public void mShared(final A a, final .ceylon.language.Sequential<? extends A> aseq) {
@@ -134,7 +134,7 @@ final class Concrete$impl<A> {
     }
     
     public final .ceylon.language.Sequential<? extends A> mFormal$aseq(final A a) {
-        return new .ceylon.language.Tuple(a, .ceylon.language.empty_.getEmpty$());
+        return new .ceylon.language.Tuple<A, A, .ceylon.language.Empty>(a, .ceylon.language.empty_.getEmpty$());
     }
     
     public final .java.lang.Object mDefault() {
@@ -163,7 +163,7 @@ final class Concrete$impl<A> {
     }
     
     public final .ceylon.language.Sequential<? extends A> mDefault$aseq(final A a) {
-        return new .ceylon.language.Tuple(a, .ceylon.language.empty_.getEmpty$());
+        return new .ceylon.language.Tuple<A, A, .ceylon.language.Empty>(a, .ceylon.language.empty_.getEmpty$());
     }
     
     public .java.lang.Object mDefault(final A a, final .ceylon.language.Sequential<? extends A> aseq) {

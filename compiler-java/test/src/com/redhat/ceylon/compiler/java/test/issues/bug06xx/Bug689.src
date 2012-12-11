@@ -3,12 +3,12 @@ package com.redhat.ceylon.compiler.java.test.issues.bug06xx;
 class Bug689<X, Y> {
     
     Bug689(X x, Y y, .java.lang.Object xy) {
-        this.attributeWithUnion = new .ceylon.language.Tuple(x, new .ceylon.language.Tuple(y, .ceylon.language.empty_.getEmpty$()));
+        this.attributeWithUnion = new .ceylon.language.Tuple(x, new .ceylon.language.Tuple<Y, Y, .ceylon.language.Empty>(y, .ceylon.language.empty_.getEmpty$()));
         this.attributeWithIntersection = new .ceylon.language.Tuple(xy, .ceylon.language.empty_.getEmpty$());
-        this.variableWithUnion = new .ceylon.language.Tuple(x, new .ceylon.language.Tuple(y, .ceylon.language.empty_.getEmpty$()));
+        this.variableWithUnion = new .ceylon.language.Tuple(x, new .ceylon.language.Tuple<Y, Y, .ceylon.language.Empty>(y, .ceylon.language.empty_.getEmpty$()));
         this.variableWithIntersection = new .ceylon.language.Tuple(xy, .ceylon.language.empty_.getEmpty$());
-        this.attributeWithUnionWithinTypeArg = new .ceylon.language.Tuple(new .ceylon.language.Tuple(x, new .ceylon.language.Tuple(y, .ceylon.language.empty_.getEmpty$())), .ceylon.language.empty_.getEmpty$());
-        this.attributeWithUnionErasedToIterable = new .ceylon.language.Tuple(x, new .ceylon.language.Tuple(y, .ceylon.language.empty_.getEmpty$()));
+        this.attributeWithUnionWithinTypeArg = new .ceylon.language.Tuple<.ceylon.language.Tuple<.java.lang.Object, ? extends X, ? extends .ceylon.language.Tuple<Y, ? extends Y, ? extends .ceylon.language.Empty>>, .ceylon.language.Tuple<.java.lang.Object, ? extends X, ? extends .ceylon.language.Tuple<Y, ? extends Y, ? extends .ceylon.language.Empty>>, .ceylon.language.Empty>(new .ceylon.language.Tuple(x, new .ceylon.language.Tuple<Y, Y, .ceylon.language.Empty>(y, .ceylon.language.empty_.getEmpty$())), .ceylon.language.empty_.getEmpty$());
+        this.attributeWithUnionErasedToIterable = new .ceylon.language.Tuple(x, new .ceylon.language.Tuple<Y, Y, .ceylon.language.Empty>(y, .ceylon.language.empty_.getEmpty$()));
         .ceylon.language.Number sync;
         sync = ((.ceylon.language.Sequence<? extends .ceylon.language.Integer>)(.ceylon.language.Sequence)<.ceylon.language.Integer, .ceylon.language.Integer>parameterisedMethodWithUnion(.ceylon.language.Integer.instance(1L), .ceylon.language.Integer.instance(2L))).getFirst();
         sync = ((.ceylon.language.Sequence<? extends .ceylon.language.Integer>)(.ceylon.language.Sequence)<.ceylon.language.Integer, .ceylon.language.Integer>parameterisedMethodWithIntersection(.ceylon.language.Integer.instance(1L))).getFirst();
@@ -22,7 +22,7 @@ class Bug689<X, Y> {
             let
             {
                 .com.redhat.ceylon.compiler.java.test.issues.bug06xx.Bug689<.ceylon.language.Integer, .ceylon.language.Integer> $ceylontmpopE0 = new .com.redhat.ceylon.compiler.java.test.issues.bug06xx.Bug689<.ceylon.language.Integer, .ceylon.language.Integer>(.ceylon.language.Integer.instance(1L), .ceylon.language.Integer.instance(2L), .ceylon.language.Integer.instance(3L));
-                .ceylon.language.Sequence<? extends .ceylon.language.Integer> $ceylontmpopV1 = new .ceylon.language.Tuple(.ceylon.language.Integer.instance(1L), new .ceylon.language.Tuple(.ceylon.language.Integer.instance(2L), .ceylon.language.empty_.getEmpty$()));
+                .ceylon.language.Sequence<? extends .ceylon.language.Integer> $ceylontmpopV1 = new .ceylon.language.Tuple<.ceylon.language.Integer, .ceylon.language.Integer, .ceylon.language.Tuple<.ceylon.language.Integer, ? extends .ceylon.language.Integer, ? extends .ceylon.language.Empty>>(.ceylon.language.Integer.instance(1L), new .ceylon.language.Tuple<.ceylon.language.Integer, .ceylon.language.Integer, .ceylon.language.Empty>(.ceylon.language.Integer.instance(2L), .ceylon.language.empty_.getEmpty$()));
                 $ceylontmpopE0.setVariableWithUnion($ceylontmpopV1);
             }
             returning $ceylontmpopV1;
@@ -31,7 +31,7 @@ class Bug689<X, Y> {
             let
             {
                 .com.redhat.ceylon.compiler.java.test.issues.bug06xx.Bug689<.ceylon.language.Integer, .ceylon.language.Integer> $ceylontmpopE2 = new .com.redhat.ceylon.compiler.java.test.issues.bug06xx.Bug689<.ceylon.language.Integer, .ceylon.language.Integer>(.ceylon.language.Integer.instance(1L), .ceylon.language.Integer.instance(2L), .ceylon.language.Integer.instance(3L));
-                .ceylon.language.Sequence<? extends .ceylon.language.Integer> $ceylontmpopV3 = new .ceylon.language.Tuple(.ceylon.language.Integer.instance(1L), .ceylon.language.empty_.getEmpty$());
+                .ceylon.language.Sequence<? extends .ceylon.language.Integer> $ceylontmpopV3 = new .ceylon.language.Tuple<.ceylon.language.Integer, .ceylon.language.Integer, .ceylon.language.Empty>(.ceylon.language.Integer.instance(1L), .ceylon.language.empty_.getEmpty$());
                 $ceylontmpopE2.setVariableWithIntersection($ceylontmpopV3);
             }
             returning $ceylontmpopV3;
@@ -46,7 +46,7 @@ class Bug689<X, Y> {
             let
             {
                 .com.redhat.ceylon.compiler.java.test.issues.bug06xx.Bug689_ModelLoader<.ceylon.language.Integer, .ceylon.language.Integer> $ceylontmpopE4 = new .com.redhat.ceylon.compiler.java.test.issues.bug06xx.Bug689_ModelLoader<.ceylon.language.Integer, .ceylon.language.Integer>(.ceylon.language.Integer.instance(1L), .ceylon.language.Integer.instance(2L), .ceylon.language.Integer.instance(3L));
-                .ceylon.language.Sequence<? extends .ceylon.language.Integer> $ceylontmpopV5 = new .ceylon.language.Tuple(.ceylon.language.Integer.instance(1L), new .ceylon.language.Tuple(.ceylon.language.Integer.instance(2L), .ceylon.language.empty_.getEmpty$()));
+                .ceylon.language.Sequence<? extends .ceylon.language.Integer> $ceylontmpopV5 = new .ceylon.language.Tuple<.ceylon.language.Integer, .ceylon.language.Integer, .ceylon.language.Tuple<.ceylon.language.Integer, ? extends .ceylon.language.Integer, ? extends .ceylon.language.Empty>>(.ceylon.language.Integer.instance(1L), new .ceylon.language.Tuple<.ceylon.language.Integer, .ceylon.language.Integer, .ceylon.language.Empty>(.ceylon.language.Integer.instance(2L), .ceylon.language.empty_.getEmpty$()));
                 $ceylontmpopE4.setVariableWithUnion($ceylontmpopV5);
             }
             returning $ceylontmpopV5;
@@ -55,7 +55,7 @@ class Bug689<X, Y> {
     }
     
     private final <X, Y>.ceylon.language.Sequence parameterisedMethodWithUnion(final X x, final Y y) {
-        return new .ceylon.language.Tuple(x, new .ceylon.language.Tuple(y, .ceylon.language.empty_.getEmpty$()));
+        return new .ceylon.language.Tuple(x, new .ceylon.language.Tuple<Y, Y, .ceylon.language.Empty>(y, .ceylon.language.empty_.getEmpty$()));
     }
     
     private final <X, Y>.ceylon.language.Sequence parameterisedMethodWithIntersection(final .java.lang.Object xy) {
@@ -63,7 +63,7 @@ class Bug689<X, Y> {
     }
     
     private final .ceylon.language.Sequence methodWithUnion(final X x, final Y y) {
-        return new .ceylon.language.Tuple(x, new .ceylon.language.Tuple(y, .ceylon.language.empty_.getEmpty$()));
+        return new .ceylon.language.Tuple(x, new .ceylon.language.Tuple<Y, Y, .ceylon.language.Empty>(y, .ceylon.language.empty_.getEmpty$()));
     }
     
     private final .ceylon.language.Sequence methodWithIntersection(final .java.lang.Object xy) {

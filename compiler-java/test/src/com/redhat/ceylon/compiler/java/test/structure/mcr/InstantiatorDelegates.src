@@ -157,7 +157,7 @@ final class InstantiatorDelegates$impl<X> {
     }
     
     public final .ceylon.language.Sequential<? extends .ceylon.language.Integer> $SequencedDefault$init$i(final boolean b) {
-        return new .ceylon.language.Tuple(.ceylon.language.Integer.instance(1L), .ceylon.language.empty_.getEmpty$());
+        return new .ceylon.language.Tuple<.ceylon.language.Integer, .ceylon.language.Integer, .ceylon.language.Empty>(.ceylon.language.Integer.instance(1L), .ceylon.language.empty_.getEmpty$());
     }
     
     public .com.redhat.ceylon.compiler.java.test.structure.mcr.InstantiatorDelegates$impl<X>.SequencedDefault SequencedDefault$new(final boolean b) {
@@ -371,7 +371,7 @@ final class instantiatorDelegates_ {
             {
                 .com.redhat.ceylon.compiler.java.test.structure.mcr.InstantiatorDelegates<.ceylon.language.String> $arg$44$callable$ = a;
                 boolean $arg$44$0 = true;
-                .ceylon.language.Sequential $arg$44$1 = new .ceylon.language.Tuple(.ceylon.language.Integer.instance(1L), .ceylon.language.empty_.getEmpty$());
+                .ceylon.language.Sequential $arg$44$1 = new .ceylon.language.Tuple<.ceylon.language.Integer, .ceylon.language.Integer, .ceylon.language.Empty>(.ceylon.language.Integer.instance(1L), .ceylon.language.empty_.getEmpty$());
             }
             returning $arg$44$callable$.Sequenced$new($arg$44$0, $arg$44$1);
         );
@@ -390,7 +390,7 @@ final class instantiatorDelegates_ {
             {
                 .com.redhat.ceylon.compiler.java.test.structure.mcr.InstantiatorDelegates<.ceylon.language.String> $arg$46$callable$ = a;
                 boolean $arg$46$0 = true;
-                .ceylon.language.Sequential $arg$46$1 = new .ceylon.language.Tuple(.ceylon.language.Integer.instance(1L), new .ceylon.language.Tuple(.ceylon.language.Integer.instance(2L), .ceylon.language.empty_.getEmpty$()));
+                .ceylon.language.Sequential $arg$46$1 = new .ceylon.language.Tuple<.ceylon.language.Integer, .ceylon.language.Integer, .ceylon.language.Tuple<.ceylon.language.Integer, ? extends .ceylon.language.Integer, ? extends .ceylon.language.Empty>>(.ceylon.language.Integer.instance(1L), new .ceylon.language.Tuple<.ceylon.language.Integer, .ceylon.language.Integer, .ceylon.language.Empty>(.ceylon.language.Integer.instance(2L), .ceylon.language.empty_.getEmpty$()));
             }
             returning $arg$46$callable$.Sequenced$new($arg$46$0, $arg$46$1);
         );

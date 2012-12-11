@@ -57,7 +57,7 @@ final class namedArgumentInvocationWithDefaultedSequence_ {
             }
             
             private final .ceylon.language.Sequential<? extends .ceylon.language.Character> callFunction$c(final long i, final .java.lang.String s) {
-                return new .ceylon.language.Tuple(.ceylon.language.Character.instance(97), new .ceylon.language.Tuple(.ceylon.language.Character.instance(98), .ceylon.language.empty_.getEmpty$()));
+                return new .ceylon.language.Tuple<.ceylon.language.Character, .ceylon.language.Character, .ceylon.language.Tuple<.ceylon.language.Character, ? extends .ceylon.language.Character, ? extends .ceylon.language.Empty>>(.ceylon.language.Character.instance(97), new .ceylon.language.Tuple<.ceylon.language.Character, .ceylon.language.Character, .ceylon.language.Empty>(.ceylon.language.Character.instance(98), .ceylon.language.empty_.getEmpty$()));
             }
             
             void callFunction(final long i, final .java.lang.String s, final .ceylon.language.Sequential<? extends .ceylon.language.Character> c) {
