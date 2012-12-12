@@ -51,6 +51,7 @@ public class JsCompiler {
     private final Map<Module, JsOutput> output = new HashMap<Module, JsOutput>();
     //You have to manually set this when compiling the language module
     static boolean compilingLanguageModule;
+    private TypeUtils types;
 
     /** A container for things we need to keep per-module. */
     protected class JsOutput {
@@ -110,6 +111,7 @@ public class JsCompiler {
         		}
         	}
         }
+        types = new TypeUtils(tc.getPhasedUnits().getPhasedUnits().iterator().next().getPackage().getModule().getLanguageModule());
     }
 
     private boolean isURL(String path) {
@@ -154,7 +156,7 @@ public class JsCompiler {
             }
             JsOutput jsout = getOutput(pu);
             GenerateJsVisitor jsv = new GenerateJsVisitor(jsout.getWriter(), opts.isOptimize(), names,
-                    pu.getTokens(), jsout.requires);
+                    pu.getTokens(), jsout.requires, types);
             jsv.setAddComments(opts.isComment());
             jsv.setIndent(opts.isIndent());
             jsv.setVerbose(opts.isVerbose());

@@ -111,6 +111,7 @@ public class GenerateJsVisitor extends Visitor
         }
     }
 
+    private final TypeUtils types;
     private final Writer out;
     private final boolean prototypeStyle;
     private CompilationUnit root;
@@ -131,13 +132,14 @@ public class GenerateJsVisitor extends Visitor
     }
 
     public GenerateJsVisitor(Writer out, boolean prototypeStyle, JsIdentifierNames names,
-            List<CommonToken> tokens, Map<String,String> imports) {
+            List<CommonToken> tokens, Map<String,String> imports, TypeUtils typeUtils) {
         this.out = out;
         this.prototypeStyle=prototypeStyle;
         this.names = names;
         conds = new ConditionGenerator(this, names, directAccess);
         this.tokens = tokens;
         importedModules = imports;
+        types = typeUtils;
     }
 
     /** Tells the receiver whether to add comments to certain declarations. Default is true. */
@@ -2016,26 +2018,56 @@ public class GenerateJsVisitor extends Visitor
 
     @Override
     public void visit(SequenceEnumeration that) {
-        if (that.getComprehension() != null) {
-            that.getComprehension().visit(this);
-            out(".getSequence()");
-        } else if (that.getSequencedArgument() != null) {
+        if (that.getComprehension() == null) {
             SequencedArgument sarg = that.getSequencedArgument();
-            if (sarg.getEllipsis() == null) {
-                out("[");
-                boolean first=true;
-                for (Expression arg: sarg.getExpressionList().getExpressions()) {
-                    if (!first) out(",");
-                    arg.visit(this);
-                    first = false;
+            if (sarg == null) {
+                out(clAlias, "empty");
+            } else if (sarg.getParameter() == null) {
+                int lim = sarg.getExpressionList().getExpressions().size()-1;
+                int count=0;
+                boolean lastIsSeq = sarg.getEllipsis() != null &&
+                        sarg.getExpressionList().getExpressions().get(lim).getTypeModel().getDeclaration().inherits(types.sequential);
+                boolean tupleize = sarg.getEllipsis() == null || lastIsSeq;
+                if (!tupleize && lim>0) {
+                    out("[");
                 }
-                out("]");
+                for (Expression expr : sarg.getExpressionList().getExpressions()) {
+                    if (count==lim && sarg.getEllipsis() != null) {
+                        if (tupleize) {
+                            if (count > 0) {
+                                out(",");
+                            }
+                            if (!lastIsSeq) {
+                                out(clAlias,"toTuple(");
+                            }
+                        } else {
+                            if (lim > 0) {
+                                out("].chain(");
+                            }
+                        }
+                        count--;
+                    } else {
+                        if (count > 0) {
+                            out(",");
+                        }
+                        if (tupleize) {
+                            out(clAlias, "Tuple(");
+                        }
+                    }
+                    expr.visit(this);
+                    count++;
+                }
+                if (sarg.getEllipsis() == null) {
+                    out(",", clAlias, "empty");
+                }
+                for (int i = 0; i < count; i++) {
+                    out(")");
+                }
             } else {
-                sarg.getExpressionList().getExpressions().get(0).visit(this);
-                out(".getSequence()");
+                out("WTF IS A SEQUENCED ENUM ARG PARAMETER?");
             }
         } else {
-            out(clAlias, "empty");
+            that.getComprehension().visit(this);
         }
     }
 
@@ -3407,37 +3439,35 @@ public class GenerateJsVisitor extends Visitor
         int count = 0;
         if (that.getComprehension() == null) {
             SequencedArgument sarg = that.getSequencedArgument();
-            if (sarg.getParameter() == null) {
+            if (sarg == null) {
+                out(",", clAlias, "empty");
+            } else if (sarg.getParameter() == null) {
                 int lim = sarg.getExpressionList().getExpressions().size()-1;
-                if (lim == 0) {
-                    //TODO check if it's already a Tuple
-                    //otherwise just do this
-                    out(clAlias, "toTuple(");
-                    sarg.getExpressionList().getExpressions().get(0).visit(this);
-                    out(")");
-                } else {
-                    for (Expression expr : sarg.getExpressionList().getExpressions()) {
-                        if (count > 0) {
-                            out(",");
-                        }
-                        if (count==lim && sarg.getEllipsis() != null) {
+                for (Expression expr : sarg.getExpressionList().getExpressions()) {
+                    if (count > 0) {
+                        out(",");
+                    }
+                    if (count==lim && sarg.getEllipsis() != null) {
+                        if (expr.getTypeModel().getDeclaration().inherits(types.tuple)) {
+                            expr.visit(this);
+                        } else {
                             out(clAlias, "toTuple(");
                             expr.visit(this);
                             out(")");
-                        } else {
-                            out(clAlias, "Tuple(");
-                            expr.visit(this);
                         }
-                        count++;
-                    }
-                    if (sarg.getEllipsis() == null) {
-                        out(",", clAlias, "empty");
                     } else {
-                        count--;
+                        out(clAlias, "Tuple(");
+                        expr.visit(this);
                     }
-                    for (int i = 0; i < count; i++) {
-                        out(")");
-                    }
+                    count++;
+                }
+                if (sarg.getEllipsis() == null) {
+                    out(",", clAlias, "empty");
+                } else {
+                    count--;
+                }
+                for (int i = 0; i < count; i++) {
+                    out(")");
                 }
             } else {
                 //TODO WTF is this supposed to be?
@@ -3445,7 +3475,7 @@ public class GenerateJsVisitor extends Visitor
             }
         } else {
             out(clAlias, "toTuple(");
-            new ComprehensionGenerator(this, names, directAccess).generateComprehension(that.getComprehension());
+            that.getComprehension().visit(this);
             out(")");
         }
     }
