@@ -423,5 +423,6 @@ shared void test() {
     testArithmeticAssignOperators();
     testAssignmentOperator();
     testSegments();
+    testEnumerations();
     results();
 }
