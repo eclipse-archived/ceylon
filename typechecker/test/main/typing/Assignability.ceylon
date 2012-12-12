@@ -339,6 +339,13 @@ class Assignability() {
     
     printStrings { @error strings={"hello", 1}; };
     
+    {String...} strings1 = { "hello" };
+    [String...] strings2 = [ "hello" ];
+    
+    @error printStrings(strings1...);
+    printStrings0 { strings1... };
+    printStrings(strings2...);
+    printStrings0 {strings2...};
     
     String joinStrings(Character char, String... strings) { throw; }
     String joinStrings0(Character char, {String...} strings) { throw; }
