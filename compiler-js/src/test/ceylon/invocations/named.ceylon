@@ -1,7 +1,7 @@
 import check {...}
 
 //Tests for named argument invocations with objects, methods, and getter arguments.
-String namedFunc(Iterable<Integer> iter, String desc, Boolean match(Integer i)) {
+String namedFunc({Integer...} iter, String desc, Boolean match(Integer i)) {
   for (i in iter) {
     if (match(i)) {
       return "" desc ": " i "";
@@ -35,4 +35,14 @@ void testNamedArguments() {
     }
     match = (Integer x) x%2==1;
   } == "Odd: 9", "named arguments 2");
+  check(namedFunc {
+    desc="Even";
+    match=(Integer x)x==2;
+    1, 5, 4, 3, 2, 9
+  } == "Even: 2", "named arguments 3");
+  check(namedFunc {
+    desc="Even";
+    match=(Integer x)x==2;
+    for (i in 10..1) i
+  } == "Even: 2", "named arguments 4");
 }
