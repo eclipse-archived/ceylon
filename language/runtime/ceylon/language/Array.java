@@ -1,14 +1,12 @@
 package ceylon.language;
 
-import static java.lang.Long.MAX_VALUE;
-
 import java.util.Arrays;
 
 import com.redhat.ceylon.compiler.java.Util;
 import com.redhat.ceylon.compiler.java.language.EmptyArray;
-import com.redhat.ceylon.compiler.java.language.NonemptyArray;
 import com.redhat.ceylon.compiler.java.language.FilterIterable;
 import com.redhat.ceylon.compiler.java.language.MapIterable;
+import com.redhat.ceylon.compiler.java.language.NonemptyArray;
 import com.redhat.ceylon.compiler.java.metadata.Annotation;
 import com.redhat.ceylon.compiler.java.metadata.Annotations;
 import com.redhat.ceylon.compiler.java.metadata.Ceylon;
@@ -308,7 +306,7 @@ public abstract class Array<Element> implements List<Element>, FixedSized<Elemen
     }
     @Override
     public Array<? extends Element> spanTo(@Name("to") Integer to) {
-        return to.value < 0 ? (Array)empty_.getEmpty$() : span(Integer.instance(0), to);
+        return (Array<? extends Element>) (to.value < 0 ? empty_.getEmpty$() : span(Integer.instance(0), to));
     }
 
     @Override

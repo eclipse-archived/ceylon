@@ -99,6 +99,17 @@ public interface Empty
     public Empty getCoalesced();
     
     @Annotations(@Annotation("actual"))
+    @TypeInfo("ceylon.language::Empty")
+    public Iterable getIndexed();
+
+    @Annotations(@Annotation("actual"))
+    @TypeInfo("ceylon.language::Iterable<Other>")
+    @TypeParameters(@TypeParameter("Other"))
+    public <Other> Iterable chain(@Name("other")
+            @TypeInfo("ceylon.language::Iterable<Other>")
+            Iterable<? extends Other> other);
+    
+    @Annotations(@Annotation("actual"))
     @Override
     public boolean contains(@Name("element") @TypeInfo("ceylon.language::Object")
     java.lang.Object element);

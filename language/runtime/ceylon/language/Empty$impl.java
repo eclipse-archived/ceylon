@@ -71,6 +71,16 @@ public final class Empty$impl {
         return $this;
     }
 
+    @SuppressWarnings("rawtypes")
+    public Iterable getIndexed() {
+        return $this;
+    }
+    
+    @SuppressWarnings("rawtypes")
+    public <Other> Iterable chain(Iterable<? extends Other> other) {
+        return other;
+    }
+    
     public boolean contains(java.lang.Object element) {
         return false;
     }

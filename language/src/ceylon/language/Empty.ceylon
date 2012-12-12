@@ -50,7 +50,14 @@ shared interface Empty
     doc "Returns an `Empty`."
     shared actual Empty clone => this;
     
+    doc "Returns an `Empty`."
     shared actual Empty coalesced => this; 
+    
+    doc "Returns an `Empty`."
+    shared actual Empty indexed => this;
+    
+    doc "Returns `other`."
+    shared actual Iterable<Other> chain<Other>(Iterable<Other> other) => other;
     
     doc "Returns `false` for any given element."
     shared actual Boolean contains(Object element) => false;
