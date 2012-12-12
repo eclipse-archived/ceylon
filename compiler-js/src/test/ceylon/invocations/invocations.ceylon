@@ -7,7 +7,7 @@ shared void test() {
     hello("world");
     hello { name="world"; };
     helloAll("someone", "someone else");
-    helloAll { "someone", "someone else" };
+    helloAll { names="someone"; names="someone else";};
     String s1 = toString(99);
     String s2 = toString { obj=99; };    
     Float f1 = add(1.0, -1.0);
