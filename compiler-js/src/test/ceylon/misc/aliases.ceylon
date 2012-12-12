@@ -70,7 +70,7 @@ void testAliasing() {
     check(use(AliasingSub2().iface), "Aliased member interface");
     Strinteger xxxxx = 5;
     check(is Integer xxxxx, "Type alias");
-    check(Listleton({{1},{2},{3}}.first).string=="{ { 1 } }", "class alias");
+    check(Listleton({{1},{2},{3}}.first).string=="{ [ 1 ] }", "class alias");
     check(MiMatrix(2).string=="{ [ 1, 2 ], [ 1, 2 ] }", "interface alias");
     Object xxxxx1 = 6;
     Object xxxxx2 = "XXXX";
