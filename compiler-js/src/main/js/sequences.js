@@ -128,8 +128,13 @@ Array$proto.contains = function(elem) {
 
 exports.ArrayList=ArrayList;
 exports.arrayOfNone=function() { return []; }
-exports.arrayOfSome=function(/*Sequence*/elems) { //In practice it's an ArraySequence
-    return elems;
+exports.arrayOfSome=function(/*Sequence|Tuple*/elems) {
+    var arr = [];
+    var iter = elems.getIterator();
+    var e;while ((e=iter.next())!==$finished) {
+        arr.push(e);
+    }
+    return ArraySequence(arr);
 }
 exports.array=function(elems) {
     if (elems === null || elems === undefined) {
