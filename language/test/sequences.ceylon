@@ -272,7 +272,7 @@ shared void sequences() {
     check(seq.string=="[ 1, 2, 3, 4 ]", "sequence.string 4: " + seq.string);
     check(seq.reversed=={4, 3, 2, 1}, "sequence reversed");
     check(seq.first==1, "sequence first");
-    check(seq.rest.string=="[ 2, 3, 4 ]", "sequence.rest.string");
+    check(seq.rest.string=="[ 2, 3, 4 ]", "sequence.rest.string " + seq.rest.string);
     variable value i:=0;
     for (s in seq) {
         if (exists it=seq[i]) {
@@ -309,7 +309,7 @@ shared void sequences() {
     Sequential<String?> nulls = { null, "hello", null, "world" };
     if (exists n0 = nulls[0]) { fail("sequence with nulls"); }
     if (exists n1 = nulls[1]) {} else { fail("sequence with nulls"); }
-    check(nulls.string=="[ null, hello, null, world ]", "sequence with nulls.string");
+    check(nulls.string=="[ null, hello, null, world ]", "sequence with nulls.string " + nulls.string);
     variable value nonnull:=0;
     for (o in nulls) {
         if (exists o) { nonnull++; }
