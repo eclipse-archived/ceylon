@@ -39,7 +39,8 @@ shared void test() {
     check(zz2==1, "special -> boolean");
     //and now some comprehensions
     Sequence<Integer?> seq1 = { 1, 2, 3, null, 4, 5, null, 6, 7, null, 10};
-    check({ for (i in seq1) if (exists i, i%2==0) i*10 }=={20,40,60,100},"comprehension [1]");
+    check({ for (i in seq1) if (exists i, i%2==0) i*10 }.sequence=={20,40,60,100},"comprehension [1]");
+    check([ for (i in seq1) if (exists i, i%2==0) i*10 ]==[20,40,60,100],"comprehension [2]");
     // !is
     if (!is String zz) {
         check(zz>0, "!is");
