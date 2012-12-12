@@ -1777,13 +1777,30 @@ public class GenerateJsVisitor extends Visitor
 
     private Map<String, String> defineNamedArguments(NamedArgumentList argList) {
         Map<String, String> argVarNames = new HashMap<String, String>();
+        boolean seqDeclared=false;
         for (NamedArgument arg: argList.getNamedArguments()) {
             String paramName = arg.getParameter().getName();
-            String varName = names.createTempVariable(paramName);
-            argVarNames.put(paramName, varName);
-            retainedVars.add(varName);
-            out(varName, "=");
-            arg.visit(this);
+            if (arg.getParameter().isSequenced()) {
+                if (seqDeclared) {
+                    String varName = argVarNames.get(paramName);
+                    out(varName, ".push(");
+                    arg.visit(this);
+                    out(")");
+                } else {
+                    String varName = names.createTempVariable(paramName);
+                    argVarNames.put(paramName, varName);
+                    out(varName,"=[");
+                    arg.visit(this);
+                    out("]");
+                }
+                seqDeclared=true;
+            } else {
+                String varName = names.createTempVariable(paramName);
+                argVarNames.put(paramName, varName);
+                retainedVars.add(varName);
+                out(varName, "=");
+                arg.visit(this);
+            }
             out(",");
         }
         SequencedArgument sarg = argList.getSequencedArgument();
@@ -1823,13 +1840,15 @@ public class GenerateJsVisitor extends Visitor
             for (com.redhat.ceylon.compiler.typechecker.model.Parameter p : plist.getParameters()) {
                 if (!first) out(",");
                 boolean namedArgumentGiven = argNames.contains(p.getName());
-                if (p.isSequenced() && argList.getSequencedArgument()==null && !namedArgumentGiven) {
+                if (namedArgumentGiven) {
+                    out(argVarNames.get(p.getName()));
+                } else if (p.isSequenced()) {
                     if (argList.getComprehension() == null) {
                         out(clAlias, "empty");
                     } else {
                         out(argVarNames.get("$comp$"));
                     }
-                } else if (p.isSequenced() || namedArgumentGiven) {
+                } else if (argList.getSequencedArgument()!=null) {
                     out(argVarNames.get(p.getName()));
                 } else {
                     out("undefined");
