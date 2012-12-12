@@ -78,6 +78,14 @@
         <echo file="${file}.sha1" message="${value}"/>
     </target>
 
+    <target name="ceylonc">
+        <taskdef name="ceylonc" classname="com.redhat.ceylon.ant.Ceylonc" >
+            <classpath>
+                <pathelement location="${ceylon.ant.lib}"/>
+            </classpath>
+        </taskdef>
+    </target>
+
     <!-- Rule to clean everything up -->
     <target name="clean" description="Clean up everything">
         <delete dir="${build.dir}"/>
@@ -143,18 +151,6 @@
     <!-- Tasks related to building the runtime -->
     <!-- Rule to build runtime classes from their Java and Ceylon sources -->
     <target name="runtime.classes" >
-<!--
-    depends="compiler.jar">
-    <taskdef name="ceylonc" classname="com.redhat.ceylon.compiler.ant.Ceylonc">
-      <classpath>
-        <pathelement location="${compiler.jar}"/>
-      </classpath>
-    </taskdef>
-    <ceylonc
-       compiler="bin/ceylonc"
-       srcdir="${runtime.src}"
-       destdir="${build.classes}"/>
--->
         <mkdir dir="${build.classes}"/>
         <javac debug="true"
             srcdir="${runtime.src}"
@@ -174,18 +170,88 @@
         </jar>
     </target>
 
+    <!-- Rule to build the language module -->
+    <target name="ceylon.sdk" depends="ceylonc">
+        <!-- toplevel types -->
+        <ceylonc
+            executable="${ceylon.compiler.loc}/dist/bin/ceylon"
+            verbose="false"
+            bootstrap="true"
+            noMtimeCheck="true"
+            src="${module.language.src}:${runtime.src}"
+            out="${build.repo}">
+            <files>
+                <include name="**/*.ceylon"/>
+                <include name="com/ceylon/**/*.java"/>
+                <!-- We swap the nativily implemented files for their Java counter parts -->
+                <exclude name="ceylon/language/Array.ceylon"/>
+                <include name="ceylon/language/Array.java"/>
+                <exclude name="ceylon/language/Boolean.ceylon"/>
+                <include name="ceylon/language/Boolean.java"/>
+                <exclude name="ceylon/language/Callable.ceylon"/>
+                <include name="ceylon/language/Callable.java"/>
+                <exclude name="ceylon/language/Character.ceylon"/>
+                <include name="ceylon/language/Character.java"/>
+                <exclude name="ceylon/language/className.ceylon"/>
+                <include name="ceylon/language/className_.java"/>
+                <exclude name="ceylon/language/Comparison.ceylon"/>
+                <include name="ceylon/language/Comparison.java"/>
+                <exclude name="ceylon/language/Exception.ceylon"/>
+                <include name="ceylon/language/Exception.java"/>
+                <exclude name="ceylon/language/Float.ceylon"/>
+                <include name="ceylon/language/Float.java"/>
+                <exclude name="ceylon/language/identityHash.ceylon"/>
+                <include name="ceylon/language/identityHash_.java"/>
+                <exclude name="ceylon/language/Integer.ceylon"/>
+                <include name="ceylon/language/Integer.java"/>
+                <exclude name="ceylon/language/language.ceylon"/>
+                <include name="ceylon/language/language_.java"/>
+                <exclude name="ceylon/language/process.ceylon"/>
+                <include name="ceylon/language/process_.java"/>
+                <exclude name="ceylon/language/SequenceBuilder.ceylon"/>
+                <include name="ceylon/language/SequenceBuilder.java"/>
+                <exclude name="ceylon/language/sort.ceylon"/>
+                <include name="ceylon/language/sort_.java"/>
+                <exclude name="ceylon/language/String.ceylon"/>
+                <include name="ceylon/language/String.java"/>
+                <exclude name="ceylon/language/StringBuilder.ceylon"/>
+                <include name="ceylon/language/StringBuilder.java"/>
+                <!-- These are problem files we hope to be able to compile some day -->
+                <exclude name="ceylon/language/combine.ceylon"/>
+                <include name="ceylon/language/combine_.java"/>
+                <exclude name="ceylon/language/Correspondence.ceylon"/>
+                <include name="ceylon/language/Correspondence.java"/>
+                <include name="ceylon/language/Correspondence$impl.java"/>
+                <exclude name="ceylon/language/Iterable.ceylon"/>
+                <include name="ceylon/language/Iterable.java"/>
+                <include name="ceylon/language/Iterable$impl.java"/>
+                <exclude name="ceylon/language/LazySet.ceylon"/>
+                <include name="ceylon/language/LazySet.java"/>
+                <exclude name="ceylon/language/List.ceylon"/>
+                <include name="ceylon/language/List.java"/>
+                <include name="ceylon/language/List$impl.java"/>
+                <exclude name="ceylon/language/Map.ceylon"/>
+                <include name="ceylon/language/Map.java"/>
+                <include name="ceylon/language/Map$impl.java"/>
+                <exclude name="ceylon/language/Range.ceylon"/>
+                <include name="ceylon/language/Range.java"/>
+                <exclude name="ceylon/language/Sequence.ceylon"/>
+                <include name="ceylon/language/Sequence.java"/>
+                <include name="ceylon/language/Sequence$impl.java"/>
+                <exclude name="ceylon/language/Singleton.ceylon"/>
+                <include name="ceylon/language/Singleton.java"/>
+                <exclude name="ceylon/language/Tuple.ceylon"/>
+                <include name="ceylon/language/Tuple.java"/>
+            	<!-- Some files that seem to be missing from the Ceylon sources -->
+                <include name="ceylon/language/descriptor/*.java"/>
+            </files>
+        </ceylonc>
+    </target>
+
     <!-- Rule to compile and test -->
     <target name="build" depends="runtime.jar"/>
 	
-    <target name="ceylonc" depends="build">
-        <taskdef name="ceylonc" classname="com.redhat.ceylon.ant.Ceylonc" >
-            <classpath>
-                <pathelement location="${ceylon.ant.lib}"/>
-            </classpath>
-        </taskdef>
-    </target>
-
-    <target name="compile.tests" depends="ceylonc">
+    <target name="compile.tests" depends="build,ceylonc">
         <delete dir="${build.test}"/>
         <mkdir dir="${build.test}"/>
         <ceylonc
