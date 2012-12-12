@@ -1843,13 +1843,11 @@ public class GenerateJsVisitor extends Visitor
                 if (namedArgumentGiven) {
                     out(argVarNames.get(p.getName()));
                 } else if (p.isSequenced()) {
-                    if (argList.getComprehension() == null) {
-                        out(clAlias, "empty");
-                    } else {
-                        out(argVarNames.get("$comp$"));
-                    }
+                    out(clAlias, "empty");
                 } else if (argList.getSequencedArgument()!=null) {
                     out(argVarNames.get(p.getName()));
+                } else if (argList.getComprehension() != null) {
+                    out(argVarNames.get("$comp$"));
                 } else {
                     out("undefined");
                 }
