@@ -22,11 +22,6 @@ class EmptyImpl extends .java.lang.Object implements .ceylon.language.Empty {
     protected final .ceylon.language.Empty$impl $ceylon$language$Empty$this;
     
     @.java.lang.Override
-    public final long getSize() {
-        return $ceylon$language$Empty$this.getSize();
-    }
-    
-    @.java.lang.Override
     public final .ceylon.language.Iterator<?> getIterator() {
         return $ceylon$language$Empty$this.getIterator();
     }
@@ -47,13 +42,28 @@ class EmptyImpl extends .java.lang.Object implements .ceylon.language.Empty {
     }
     
     @.java.lang.Override
+    public final .ceylon.language.Empty spanTo(final .ceylon.language.Integer to) {
+        return $ceylon$language$Empty$this.spanTo(to);
+    }
+    
+    @.java.lang.Override
     public final .ceylon.language.Empty spanFrom(final .ceylon.language.Integer from) {
         return $ceylon$language$Empty$this.spanFrom(from);
     }
     
     @.java.lang.Override
-    public final .ceylon.language.Empty spanTo(final .ceylon.language.Integer to) {
-        return $ceylon$language$Empty$this.spanTo(to);
+    public final long getSize() {
+        return $ceylon$language$Empty$this.getSize();
+    }
+    
+    @.java.lang.Override
+    public final .ceylon.language.Empty getReversed() {
+        return $ceylon$language$Empty$this.getReversed();
+    }
+    
+    @.java.lang.Override
+    public final .ceylon.language.Empty getSequence() {
+        return $ceylon$language$Empty$this.getSequence();
     }
     
     @.java.lang.Override
@@ -77,18 +87,13 @@ class EmptyImpl extends .java.lang.Object implements .ceylon.language.Empty {
     }
     
     @.java.lang.Override
-    public final .ceylon.language.Empty getReversed() {
-        return $ceylon$language$Empty$this.getReversed();
-    }
-    
-    @.java.lang.Override
     public final .ceylon.language.Empty getClone() {
         return $ceylon$language$Empty$this.getClone();
     }
     
     @.java.lang.Override
-    public final .ceylon.language.Empty getSequence() {
-        return $ceylon$language$Empty$this.getSequence();
+    public final .ceylon.language.Empty getCoalesced() {
+        return $ceylon$language$Empty$this.getCoalesced();
     }
     
     @.java.lang.Override
@@ -97,8 +102,83 @@ class EmptyImpl extends .java.lang.Object implements .ceylon.language.Empty {
     }
     
     @.java.lang.Override
+    public final long count(final .ceylon.language.Callable<? extends .ceylon.language.Boolean> selecting) {
+        return $ceylon$language$Empty$this.count(selecting);
+    }
+    
+    @.java.lang.Override
     public final boolean defines(final .ceylon.language.Integer key) {
         return $ceylon$language$Empty$this.defines(key);
+    }
+    
+    @.java.lang.Override
+    public final <Result>.ceylon.language.Iterable<? extends Result> map(final .ceylon.language.Callable<? extends Result> collecting) {
+        return $ceylon$language$Empty$this.map(collecting);
+    }
+    
+    @.java.lang.Override
+    public final .ceylon.language.Empty filter(final .ceylon.language.Callable<? extends .ceylon.language.Boolean> selecting) {
+        return $ceylon$language$Empty$this.filter(selecting);
+    }
+    
+    @.java.lang.Override
+    public final <Result>Result fold(final Result initial, final .ceylon.language.Callable<? extends Result> accumulating) {
+        return $ceylon$language$Empty$this.fold(initial, accumulating);
+    }
+    
+    @.java.lang.Override
+    public final .java.lang.Object find(final .ceylon.language.Callable<? extends .ceylon.language.Boolean> selecting) {
+        return $ceylon$language$Empty$this.find(selecting);
+    }
+    
+    @.java.lang.Override
+    public final .ceylon.language.Empty sort(final .ceylon.language.Callable<? extends .ceylon.language.Comparison> comparing) {
+        return $ceylon$language$Empty$this.sort(comparing);
+    }
+    
+    @.java.lang.Override
+    public final <Result>.ceylon.language.Sequential<? extends Result> collect(final .ceylon.language.Callable<? extends Result> collecting) {
+        return $ceylon$language$Empty$this.collect(collecting);
+    }
+    
+    @.java.lang.Override
+    public final .ceylon.language.Empty select(final .ceylon.language.Callable<? extends .ceylon.language.Boolean> selecting) {
+        return $ceylon$language$Empty$this.select(selecting);
+    }
+    
+    @.java.lang.Override
+    public final boolean any(final .ceylon.language.Callable<? extends .ceylon.language.Boolean> selecting) {
+        return $ceylon$language$Empty$this.any(selecting);
+    }
+    
+    @.java.lang.Override
+    public final boolean every(final .ceylon.language.Callable<? extends .ceylon.language.Boolean> selecting) {
+        return $ceylon$language$Empty$this.every(selecting);
+    }
+    
+    @.java.lang.Override
+    public final .ceylon.language.Empty skipping(final long skip) {
+        return $ceylon$language$Empty$this.skipping(skip);
+    }
+    
+    @.java.lang.Override
+    public final .ceylon.language.Empty taking(final long take) {
+        return $ceylon$language$Empty$this.taking(take);
+    }
+    
+    @.java.lang.Override
+    public final .ceylon.language.Empty by(final long step) {
+        return $ceylon$language$Empty$this.by(step);
+    }
+    
+    @.java.lang.Override
+    public final <Other>.ceylon.language.Sequence<? extends Other> withLeading(final Other element) {
+        return $ceylon$language$Empty$this.withLeading(element);
+    }
+    
+    @.java.lang.Override
+    public final <Other>.ceylon.language.Sequence<? extends Other> withTrailing(final Other element) {
+        return $ceylon$language$Empty$this.withTrailing(element);
     }
     protected final .ceylon.language.Sequential$impl<.java.lang.Object> $ceylon$language$Sequential$this;
     protected final .ceylon.language.List$impl<.java.lang.Object> $ceylon$language$List$this;
@@ -117,92 +197,12 @@ class EmptyImpl extends .java.lang.Object implements .ceylon.language.Empty {
     public .java.lang.Object findLast(final .ceylon.language.Callable<? extends .ceylon.language.Boolean> selecting) {
         return $ceylon$language$List$this.findLast(selecting);
     }
-    
-    @.java.lang.Override
-    public <Other>.ceylon.language.Sequence<? extends Other> withLeading(final Other element) {
-        return $ceylon$language$List$this.withLeading(element);
-    }
-    
-    @.java.lang.Override
-    public <Other>.ceylon.language.Sequence<? extends Other> withTrailing(final Other element) {
-        return $ceylon$language$List$this.withTrailing(element);
-    }
     protected final .ceylon.language.Collection$impl<.java.lang.Object> $ceylon$language$Collection$this;
     protected final .ceylon.language.Iterable$impl<.java.lang.Object> $ceylon$language$Iterable$this;
     
     @.java.lang.Override
     public .ceylon.language.Iterable<?> getRest() {
         return $ceylon$language$Iterable$this.getRest();
-    }
-    
-    @.java.lang.Override
-    public <Result>.ceylon.language.Iterable<? extends Result> map(final .ceylon.language.Callable<? extends Result> collecting) {
-        return $ceylon$language$Iterable$this.map(collecting);
-    }
-    
-    @.java.lang.Override
-    public .ceylon.language.Iterable<?> filter(final .ceylon.language.Callable<? extends .ceylon.language.Boolean> selecting) {
-        return $ceylon$language$Iterable$this.filter(selecting);
-    }
-    
-    @.java.lang.Override
-    public <Result>Result fold(final Result initial, final .ceylon.language.Callable<? extends Result> accumulating) {
-        return $ceylon$language$Iterable$this.fold(initial, accumulating);
-    }
-    
-    @.java.lang.Override
-    public .java.lang.Object find(final .ceylon.language.Callable<? extends .ceylon.language.Boolean> selecting) {
-        return $ceylon$language$Iterable$this.find(selecting);
-    }
-    
-    @.java.lang.Override
-    public .ceylon.language.Sequential<?> sort(final .ceylon.language.Callable<? extends .ceylon.language.Comparison> comparing) {
-        return $ceylon$language$Iterable$this.sort(comparing);
-    }
-    
-    @.java.lang.Override
-    public <Result>.ceylon.language.Sequential<? extends Result> collect(final .ceylon.language.Callable<? extends Result> collecting) {
-        return $ceylon$language$Iterable$this.collect(collecting);
-    }
-    
-    @.java.lang.Override
-    public .ceylon.language.Sequential<?> select(final .ceylon.language.Callable<? extends .ceylon.language.Boolean> selecting) {
-        return $ceylon$language$Iterable$this.select(selecting);
-    }
-    
-    @.java.lang.Override
-    public boolean any(final .ceylon.language.Callable<? extends .ceylon.language.Boolean> selecting) {
-        return $ceylon$language$Iterable$this.any(selecting);
-    }
-    
-    @.java.lang.Override
-    public boolean every(final .ceylon.language.Callable<? extends .ceylon.language.Boolean> selecting) {
-        return $ceylon$language$Iterable$this.every(selecting);
-    }
-    
-    @.java.lang.Override
-    public .ceylon.language.Iterable<?> skipping(final long skip) {
-        return $ceylon$language$Iterable$this.skipping(skip);
-    }
-    
-    @.java.lang.Override
-    public .ceylon.language.Iterable<?> taking(final long take) {
-        return $ceylon$language$Iterable$this.taking(take);
-    }
-    
-    @.java.lang.Override
-    public .ceylon.language.Iterable<?> by(final long step) {
-        return $ceylon$language$Iterable$this.by(step);
-    }
-    
-    @.java.lang.Override
-    public long count(final .ceylon.language.Callable<? extends .ceylon.language.Boolean> selecting) {
-        return $ceylon$language$Iterable$this.count(selecting);
-    }
-    
-    @.java.lang.Override
-    public .ceylon.language.Iterable<?> getCoalesced() {
-        return $ceylon$language$Iterable$this.getCoalesced();
     }
     
     @.java.lang.Override
