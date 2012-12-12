@@ -1,5 +1,7 @@
 import functions { ... }
-import check { results }
+import check { check, results }
+
+String mixseqs({Character...} chars, Integer... nums) => "C:" (chars.first else "?") " #" (nums[0] else "?")"";
 
 shared void test() {
     helloWorld();
@@ -18,5 +20,13 @@ shared void test() {
     repeat(10,p);
     testNamedArguments();
     testQualified();
+    check(mixseqs([`a`,`b`],1,2,3)=="C:a #1");
+    check(mixseqs({`b`,`c`},2,3,4)=="C:b #2");
+    check(mixseqs(["hola"...],3,4,5)=="C:h #3");
+    check(mixseqs{for (c in "hola") c.uppercased}=="C:H #?");
+    check(mixseqs{nums=2;chars="hola";nums=1;}=="C:h #2");
+    check(mixseqs{nums=4; for (c in "hola") c}=="C:h #4");
+    check(mixseqs{"hola"...}=="C:h #?");
+    check(mixseqs{`H`,`I`}=="C:H #?");
     results();
 }
