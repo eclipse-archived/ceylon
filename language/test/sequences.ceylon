@@ -325,7 +325,7 @@ shared void sequences() {
     check(coalesced.defines(0)&&coalesced.defines(1)&&!coalesced.defines(2),
            "coalesce defines");
     check(nonempty coalesced, "nonempty coalesced");
-    value coal2 = coalesce{for (c in "hElLo") null}.sequence;
+    value coal2 = coalesce(for (c in "hElLo") null).sequence;
     check(!nonempty coal2, "nonempty coalesced2");
     check(coal2.size == 0, "coalesced2.size");
     check(!`h` in coal2, "coalesced2.contains");
