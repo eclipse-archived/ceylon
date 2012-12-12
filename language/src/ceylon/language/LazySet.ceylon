@@ -31,9 +31,10 @@ shared class LazySet<out Element>(Iterable<Element> elems)
         LazySet(elems.chain(set));
 
     shared actual Set<Element&Other> intersection<Other>(Set<Other> set)
-            given Other satisfies Object =>
-        LazySet(elements{for (e in set) if (is Element e)
-                       if (exists elems.find((Element o) e==o)) e});
+            given Other satisfies Object => bottom;
+        //-- Must wait for reified generics
+        //LazySet(elements{for (e in set) if (is Element e)
+        //               if (exists elems.find((Element o) e==o)) e});
 
     shared actual Set<Element|Other> exclusiveUnion<Other>(Set<Other> other)
             given Other satisfies Object {
