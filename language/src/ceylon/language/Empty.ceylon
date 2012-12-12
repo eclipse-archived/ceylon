@@ -2,10 +2,10 @@ doc "A sequence with no elements. The type of the expression
      `{}`."
 see (Sequence)
 shared interface Empty
-           satisfies Sequential<Bottom> & 
-                     None<Bottom> &
-                     Ranged<Integer,<>> &
-                     Cloneable<Empty> {
+            satisfies Sequential<Bottom> & 
+                    None<Bottom> &
+                    Ranged<Integer,<>> &
+                    Cloneable<Empty> {
     
     doc "Returns an iterator that is already exhausted."
     shared actual Iterator<Bottom> iterator => emptyIterator;
@@ -100,5 +100,9 @@ shared interface Empty
     
     shared actual Sequence<Element> withTrailing<Element>
             (Element element) => { element };
-    
+}
+
+doc "The value representing a sequence with no elements. The instance of `{}`"
+//by "Tako Schotanus"
+shared object empty extends Object() satisfies Empty {
 }
