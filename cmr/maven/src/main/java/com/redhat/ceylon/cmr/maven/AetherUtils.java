@@ -85,24 +85,29 @@ public class AetherUtils {
     }
 
     private ArtifactResult fetchDependencies(String groupId, String artifactId, String version, boolean fetchSingleArtifact) {
-        final String name = groupId + ":" + artifactId;
-        final String coordinates = name + ":" + version;
+        final String name = toCanonicalForm(groupId, artifactId);
+        final String coordinates = toCanonicalForm(name, version);
         try {
             final MavenStrategyStage mss = getResolver().resolve(coordinates);
             final MavenFormatStage mfs = fetchSingleArtifact ? mss.withoutTransitivity() : mss.withTransitivity();
 
-            MavenResolvedArtifact info = mfs.asSingleResolvedArtifact();
-            File file = info.asFile();
-
-            MavenArtifactInfo[] deps = info.getDependencies();
-            if (deps == null || deps.length == 0) {
-                return new SingleArtifactResult(name, version, file);
+            MavenResolvedArtifact[] infos = mfs.asResolvedArtifact();
+            if (infos == null || infos.length == 0) {
+                log.debug("No artifact found: " + coordinates);
+                return null;
+            } else if (infos.length == 1) {
+                return new SingleArtifactResult(name, version, infos[0].asFile());
             } else {
-                List<ArtifactResult> dependencies = new ArrayList<ArtifactResult>();
-                for (MavenArtifactInfo dep : deps) {
+                List<ArtifactResult> dependencies = new ArrayList<ArtifactResult>(infos.length - 1);
+                for (MavenArtifactInfo dep : infos) {
                     final MavenCoordinate dCo = dep.getCoordinate();
-                    final String dName = dCo.getGroupId() + ":" + dCo.getArtifactId();
+                    final String dName = toCanonicalForm(dCo.getGroupId(), dCo.getArtifactId());
                     final String dVersion = dCo.getVersion();
+
+                    if (name.equals(dName) && version.equals(dVersion)) {
+                        continue;
+                    }
+
                     ArtifactResult dr = new MavenArtifactResult(dName, dVersion) {
                         private ArtifactResult result;
 
@@ -123,12 +128,16 @@ public class AetherUtils {
                     };
                     dependencies.add(dr);
                 }
-                return new AetherArtifactResult(name, version, file, dependencies);
+                return new AetherArtifactResult(name, version, infos[0].asFile(), dependencies);
             }
         } catch (ResolutionException e) {
             log.debug("Could not resolve artifact [" + coordinates + "] : " + e);
             return null;
         }
+    }
+
+    private static String toCanonicalForm(String groupId, String artifactId) {
+        return groupId + ":" + artifactId;
     }
 
     public static String getDefaultMavenSettings() {

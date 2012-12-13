@@ -82,12 +82,29 @@ public class AetherTestCase {
     }
 
     @Test
+    public void testScopes() throws Throwable {
+        Repository repository = AetherRepository.createRepository(log);
+        RepositoryManager manager = new SimpleRepositoryManager(repository, log);
+        ArtifactResult artifact = manager.getArtifactResult("org.jboss.xnio:xnio-api", "3.1.0.Beta7");
+        File file = null;
+        try {
+            Assert.assertNotNull(artifact);
+            file = artifact.artifact();
+            Assert.assertTrue(file.exists());
+        } finally {
+            if (file != null && file.exists()) {
+                Assert.assertTrue(file.delete()); // delete this one
+            }
+        }
+    }
+
+    @Test
     public void testAetherWithExternalSettings() throws Throwable {
         Repository repository = createAetherRepository();
         RepositoryManager manager = new SimpleRepositoryManager(repository, log);
         ArtifactResult result = manager.getArtifactResult("org.apache.camel.camel-core", "2.9.2");
         Assert.assertNotNull(result);
-        Assert.assertEquals(result.name(), "org.apache.camel.camel-core");
+        Assert.assertEquals(result.name(), "org.apache.camel:camel-core");
         File artifact = result.artifact();
         boolean exists = false;
         try {
