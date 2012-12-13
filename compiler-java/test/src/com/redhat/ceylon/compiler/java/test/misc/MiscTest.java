@@ -22,6 +22,7 @@ package com.redhat.ceylon.compiler.java.test.misc;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashSet;
 
 import javax.tools.JavaFileObject;
 
@@ -70,19 +71,65 @@ public class MiscTest extends CompilerTest {
         compareWithJavaSource("equalshashoverriding/EqualsHashOverriding");
     }
 
-    @Ignore("M5: requires more bootstrap work, current support dates from summer 2011")
     @Test
-    public void compileRuntime(){
-        String sourcePath = "../ceylon.language/src";
-        String[] packages = {"ceylon.language", "ceylon.language.descriptor"};
+    public void compileRuntime_fail(){
         java.util.List<File> sourceFiles = new ArrayList<File>();
-        for(String pkg : packages){
-            File pkgDir = new File(sourcePath, pkg.replaceAll("\\.", "/"));
-            for(File src : pkgDir.listFiles()){
-                if(src.isFile() && src.getName().toLowerCase().endsWith(".ceylon"))
-                    sourceFiles.add(src);
+        
+        String ceylonSourcePath = "../ceylon.language/src";
+        String javaSourcePath = "../ceylon.language/runtime";
+        
+        String[] ceylonPackages = {"ceylon.language", "ceylon.language.descriptor"};
+        HashSet exceptions = new HashSet();
+        for (String ex : new String[] {
+                // Native files
+                "Array", "Boolean", "Callable", "Character", "className", "Comparison",
+                "Exception", "Float", "identityHash", "Integer", "language", "process",
+                "SequenceBuidler", "sort", "String", "StringBuilder",
+                // Problem files
+                "combine", "Correspondence", "Iterable", "LazySet", "List", "Map",
+                "Range", "Sequence", "Singleton", "Tuple"
+                }) {
+            exceptions.add(ex);
+        }
+        for(String pkg : ceylonPackages){
+            File pkgDir = new File(ceylonSourcePath, pkg.replaceAll("\\.", "/"));
+            File javaPkgDir = new File(javaSourcePath, pkg.replaceAll("\\.", "/"));
+            File[] files = pkgDir.listFiles();
+            if (files != null) {
+                for(File src : files) {
+                    if(src.isFile() && src.getName().toLowerCase().endsWith(".ceylon")) {
+                        String baseName = src.getName().substring(0, src.getName().length() - 7);
+                        if (!exceptions.contains(baseName)) {
+                            sourceFiles.add(src);
+                        } else {
+                            if (Character.isLowerCase(baseName.charAt(0))) {
+                                sourceFiles.add(new File(javaPkgDir, baseName + "_.java"));
+                            } else {
+                                sourceFiles.add(new File(javaPkgDir, baseName + ".java"));
+                                File impl = new File(javaPkgDir, baseName + "$impl.java");
+                                if (impl.exists()) {
+                                    sourceFiles.add(impl);
+                                }
+                            }
+                        }
+                    }
+                }
             }
         }
+        
+        String[] javaPackages = {"ceylon.language.descriptor", "com/redhat/ceylon/compiler/java", "com/redhat/ceylon/compiler/java/language", "com/redhat/ceylon/compiler/java/metadata"};
+        for(String pkg : javaPackages){
+            File pkgDir = new File(javaSourcePath, pkg.replaceAll("\\.", "/"));
+            File[] files = pkgDir.listFiles();
+            if (files != null) {
+                for(File src : files) {
+                    if(src.isFile() && src.getName().toLowerCase().endsWith(".java")) {
+                        sourceFiles.add(src);
+                    }
+                }
+            }
+        }
+        
         CeyloncTool compiler;
         try {
             compiler = new CeyloncTool();
@@ -93,8 +140,9 @@ public class MiscTest extends CompilerTest {
         CeyloncFileManager fileManager = (CeyloncFileManager)compiler.getStandardFileManager(null, null, null);
         Iterable<? extends JavaFileObject> compilationUnits1 =
             fileManager.getJavaFileObjectsFromFiles(sourceFiles);
+        String compilerSourcePath = ceylonSourcePath + File.pathSeparator + javaSourcePath;
         CeyloncTaskImpl task = (CeyloncTaskImpl) compiler.getTask(null, fileManager, null, 
-                Arrays.asList("-sourcepath", sourcePath, "-d", "build/classes-runtime", "-Xbootstrapceylon", "-verbose"), 
+                Arrays.asList("-sourcepath", compilerSourcePath, "-d", "build/classes-runtime", "-Xbootstrapceylon", "-verbose"/*, "-Xceylonallowduplicates"*/), 
                 null, compilationUnits1);
         Boolean result = task.call();
         Assert.assertEquals("Compilation failed", Boolean.TRUE, result);
