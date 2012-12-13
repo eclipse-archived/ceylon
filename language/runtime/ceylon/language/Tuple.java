@@ -24,7 +24,7 @@ import com.redhat.ceylon.compiler.java.metadata.Variance;
  })
 @Class(extendsType="ceylon.language::Object")
 @SatisfiedTypes("ceylon.language::Sequence<Element>")
-public class Tuple<Element, First extends Element, Rest extends Sequential<Element>> 
+public class Tuple<Element, First extends Element, Rest extends Sequential<? extends Element>> 
         implements Sequence<Element> {
 
     private final Iterable$impl<Element> iterable$impl = new Iterable$impl<Element>(this);
@@ -33,24 +33,24 @@ public class Tuple<Element, First extends Element, Rest extends Sequential<Eleme
     private final Correspondence$impl<Integer,Element> correspondence$impl = new Correspondence$impl<Integer,Element>(this);
     private final Category$impl category$impl = new Category$impl(this);
     private final Collection$impl<Element> collection$impl = new Collection$impl<Element>(this);
-	private final Element first;
-	private final Sequential<Element> rest;
+	private final First first;
+	private final Rest rest;
 	
-	public Tuple(@TypeInfo(value="First", erased=true) 
-	             @Name("first") Element first,
-	             @TypeInfo(value="Rest&Empty|Rest&Sequence<Element>", erased=true)
-			     @Name("rest") Sequential<Element> rest) {
+	public Tuple(@TypeInfo(value="First") 
+	             @Name("first") First first,
+	             @TypeInfo(value="Rest")
+			     @Name("rest") Rest rest) {
 		this.first = first;
 		this.rest = rest;
 	}
 	
-	@TypeInfo(value="First", erased=true)
-	public Element getFirst() {
+	@TypeInfo(value="First")
+	public First getFirst() {
 		return first;
 	}
 	
-	@TypeInfo(value="Rest&Empty|Rest&Sequence<Element>", erased=true)
-	public Sequential<Element> getRest() {
+	@TypeInfo(value="Rest")
+	public Rest getRest() {
 		return rest;
 	}
 
