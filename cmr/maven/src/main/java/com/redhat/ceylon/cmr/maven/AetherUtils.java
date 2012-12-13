@@ -17,16 +17,25 @@
 package com.redhat.ceylon.cmr.maven;
 
 import java.io.File;
-
-import org.jboss.shrinkwrap.resolver.api.ResolutionException;
-import org.jboss.shrinkwrap.resolver.api.maven.Maven;
-import org.jboss.shrinkwrap.resolver.api.maven.MavenFormatStage;
-import org.jboss.shrinkwrap.resolver.api.maven.MavenResolverSystem;
-import org.jboss.shrinkwrap.resolver.api.maven.MavenStrategyStage;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 
 import com.redhat.ceylon.cmr.api.ArtifactContext;
+import com.redhat.ceylon.cmr.api.ArtifactResult;
+import com.redhat.ceylon.cmr.api.ArtifactResultType;
 import com.redhat.ceylon.cmr.api.Logger;
+import com.redhat.ceylon.cmr.api.RepositoryException;
+import com.redhat.ceylon.cmr.impl.AbstractArtifactResult;
 import com.redhat.ceylon.cmr.spi.Node;
+import org.jboss.shrinkwrap.resolver.api.ResolutionException;
+import org.jboss.shrinkwrap.resolver.api.maven.Maven;
+import org.jboss.shrinkwrap.resolver.api.maven.MavenArtifactInfo;
+import org.jboss.shrinkwrap.resolver.api.maven.MavenFormatStage;
+import org.jboss.shrinkwrap.resolver.api.maven.MavenResolvedArtifact;
+import org.jboss.shrinkwrap.resolver.api.maven.MavenResolverSystem;
+import org.jboss.shrinkwrap.resolver.api.maven.MavenStrategyStage;
+import org.jboss.shrinkwrap.resolver.api.maven.coordinate.MavenCoordinate;
 
 /**
  * Aether utils.
@@ -50,11 +59,15 @@ public class AetherUtils {
     }
 
     File findDependency(Node node) {
-        final File[] files = findDependencies(node);
-        return (files != null) ? files[0] : null;
+        final ArtifactResult result = findDependencies(node, true);
+        return (result != null) ? result.artifact() : null;
     }
 
-    File[] findDependencies(Node node) {
+    ArtifactResult findDependencies(Node node) {
+        return findDependencies(node, null);
+    }
+
+    private ArtifactResult findDependencies(Node node, Boolean fetchSingleArtifact) {
         final ArtifactContext ac = ArtifactContext.fromNode(node);
         if (ac == null)
             return null;
@@ -68,15 +81,50 @@ public class AetherUtils {
         final String artifactId = name.substring(p + 1);
         final String version = ac.getVersion();
 
-        return fetchDependencies(groupId, artifactId, version, ac.isFetchSingleArtifact());
+        return fetchDependencies(groupId, artifactId, version, fetchSingleArtifact != null ? fetchSingleArtifact : ac.isFetchSingleArtifact());
     }
 
-    private File[] fetchDependencies(String groupId, String artifactId, String version, boolean fetchSingleArtifact) {
-        final String coordinates = groupId + ":" + artifactId + ":" + version;
+    private ArtifactResult fetchDependencies(String groupId, String artifactId, String version, boolean fetchSingleArtifact) {
+        final String name = groupId + ":" + artifactId;
+        final String coordinates = name + ":" + version;
         try {
             final MavenStrategyStage mss = getResolver().resolve(coordinates);
             final MavenFormatStage mfs = fetchSingleArtifact ? mss.withoutTransitivity() : mss.withTransitivity();
-            return mfs.as(File.class);
+
+            MavenResolvedArtifact info = mfs.asSingleResolvedArtifact();
+            File file = info.asFile();
+
+            MavenArtifactInfo[] deps = info.getDependencies();
+            if (deps == null || deps.length == 0) {
+                return new SingleArtifactResult(name, version, file);
+            } else {
+                List<ArtifactResult> dependencies = new ArrayList<ArtifactResult>();
+                for (MavenArtifactInfo dep : deps) {
+                    final MavenCoordinate dCo = dep.getCoordinate();
+                    final String dName = dCo.getGroupId() + ":" + dCo.getArtifactId();
+                    final String dVersion = dCo.getVersion();
+                    ArtifactResult dr = new MavenArtifactResult(dName, dVersion) {
+                        private ArtifactResult result;
+
+                        private synchronized ArtifactResult getResult() {
+                            if (result == null) {
+                                result = fetchDependencies(dCo.getGroupId(), dCo.getArtifactId(), dVersion, false);
+                            }
+                            return result;
+                        }
+
+                        public File artifact() throws RepositoryException {
+                            return getResult().artifact();
+                        }
+
+                        public List<ArtifactResult> dependencies() throws RepositoryException {
+                            return getResult().dependencies();
+                        }
+                    };
+                    dependencies.add(dr);
+                }
+                return new AetherArtifactResult(name, version, file, dependencies);
+            }
         } catch (ResolutionException e) {
             log.debug("Could not resolve artifact [" + coordinates + "] : " + e);
             return null;
@@ -109,8 +157,48 @@ public class AetherUtils {
     }
 
     private MavenResolverSystem getResolver() {
-        if(settingsXml.startsWith("classpath:"))
+        if (settingsXml.startsWith("classpath:"))
             return Maven.configureResolver().fromClassloaderResource(settingsXml.substring(10));
         return Maven.configureResolver().fromFile(settingsXml);
+    }
+
+    private static abstract class MavenArtifactResult extends AbstractArtifactResult {
+        protected MavenArtifactResult(String name, String version) {
+            super(name, version);
+        }
+
+        public ArtifactResultType type() {
+            return ArtifactResultType.MAVEN;
+        }
+    }
+
+    private static class SingleArtifactResult extends MavenArtifactResult {
+        private File file;
+
+        private SingleArtifactResult(String name, String version, File file) {
+            super(name, version);
+            this.file = file;
+        }
+
+        public File artifact() throws RepositoryException {
+            return file;
+        }
+
+        public List<ArtifactResult> dependencies() throws RepositoryException {
+            return Collections.emptyList();
+        }
+    }
+
+    private static class AetherArtifactResult extends SingleArtifactResult {
+        private List<ArtifactResult> dependencies;
+
+        private AetherArtifactResult(String name, String version, File file, List<ArtifactResult> dependencies) {
+            super(name, version, file);
+            this.dependencies = dependencies;
+        }
+
+        public List<ArtifactResult> dependencies() throws RepositoryException {
+            return Collections.unmodifiableList(dependencies);
+        }
     }
 }

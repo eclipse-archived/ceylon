@@ -29,7 +29,7 @@
         <version.ceylon.common>0.5</version.ceylon.common>
         <version.jboss.jandex>1.0.3.Final</version.jboss.jandex>
         <version.sardine.webdav>314</version.sardine.webdav>
-        <version.shrinkwrap.resolver>2.0.0-alpha-4</version.shrinkwrap.resolver>
+        <version.shrinkwrap.resolver>2.0.0-alpha-6</version.shrinkwrap.resolver>
         <version.junit>4.10</version.junit>
     </properties>
 
