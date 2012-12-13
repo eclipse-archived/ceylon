@@ -31,22 +31,20 @@ shared class LazySet<out Element>({Element...} elems)
         LazySet(elems.chain(set));
     
     shared actual Set<Element&Other> intersection<Other>(Set<Other> set)
-            given Other satisfies Object => bottom;
-        //-- Must wait for reified generics
-        //LazySet({for (e in set) if (is Element e)
-        //               if (exists elems.find((Element o) e==o)) e});
-
+            given Other satisfies Object { throw; }
+        //requires support for reified generics!
+        //LazySet({ for (e in set) if (e is Other, e in this) e });
+    
     shared actual Set<Element|Other> exclusiveUnion<Other>(Set<Other> other)
             given Other satisfies Object {
         value hereNotThere = { for (e in elems) if (!e in other) e };
-        value thereNotHere = { for (e in other)
-            if (!exists elems.find((Element o) e==o)) e };
+        value thereNotHere = { for (e in other) if (!e in this) e };
         return LazySet(hereNotThere.chain(thereNotHere));
     }
     
     shared actual Set<Element> complement<Other>(Set<Other> set)
             given Other satisfies Object =>
-        LazySet({for (e in this) if (!e in set) e});
+        LazySet({ for (e in this) if (!e in set) e });
     
     shared actual default Boolean equals(Object that) {
         if (is Set<Object> that) {
