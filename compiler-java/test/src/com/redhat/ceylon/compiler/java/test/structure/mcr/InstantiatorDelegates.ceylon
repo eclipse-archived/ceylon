@@ -64,12 +64,10 @@ void instantiatorDelegates(InstantiatorDelegates<String> a) {
     a.Sequenced{ b=true; };
     
     a.Sequenced(true, 1);
-    a.Sequenced{ b=true; i={1}; };
-    a.Sequenced{ b=true; 1 };
+    a.Sequenced{ b=true; i=1; };
     
     a.Sequenced(true, 1, 2);
-    a.Sequenced{ b=true; i={1, 2}; };
-    a.Sequenced{ b=true; 1, 2};
+    a.Sequenced{ b=true; i=1; i=2; };
     
     a.SequencedDefault(true);
     a.SequencedDefault{b=true; };

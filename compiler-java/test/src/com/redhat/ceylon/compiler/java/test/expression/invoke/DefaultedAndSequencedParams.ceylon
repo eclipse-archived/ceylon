@@ -56,12 +56,12 @@ class DefaultedAndSequenced() {
         m{
             s="";
             i=2;
-            b={false};
+            b=false;
         };
         m{
             s=""; 
             i=2; 
-            true, true
+            b=true; b=true;
         };
     }
     void qmeNamedArgs() {
@@ -75,12 +75,12 @@ class DefaultedAndSequenced() {
         self().m{
             s="";
             i=2;
-            b={false};
+            b=false;
         };
         self().m{
             s=""; 
             i=2; 
-            true, true
+            b=true; b=true;
         };
     }
     void qteNamedArgs() {
@@ -94,12 +94,12 @@ class DefaultedAndSequenced() {
         DefaultedAndSequenced().m{
             s="";
             i=2;
-            b={false};
+            b=false;
         };
         DefaultedAndSequenced().m{
             s=""; 
             i=2; 
-            true, true
+            b=true; b=true;
         };
     }
 }

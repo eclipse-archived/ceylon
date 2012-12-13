@@ -25,12 +25,12 @@ class NamedArgumentInvocationInitWithSequence(String a, Integer... b) {
     void m() {
         NamedArgumentInvocationInitWithSequence{
             a="a";
-            1, 2, 3
+            b=1; b=2; b=3;
         }.m();
         Inner {
             y="";
             x=true;
-            +4, +5, +6
+            z=+4; z=+5; z=+6;
         }.m2();
     }
 }

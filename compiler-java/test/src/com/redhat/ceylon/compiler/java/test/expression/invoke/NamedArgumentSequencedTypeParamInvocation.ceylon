@@ -23,5 +23,5 @@ class NamedArgumentSequencedTypeParamInvocation<T>() {
 }
 @nomodel
 void foo() {
-    NamedArgumentSequencedTypeParamInvocation<String>().algo{"x", "y"};
+    NamedArgumentSequencedTypeParamInvocation<String>().algo{strings="x"; strings="y";};
 }
