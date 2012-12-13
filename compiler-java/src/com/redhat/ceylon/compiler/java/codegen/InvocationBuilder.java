@@ -27,12 +27,14 @@ import static com.sun.tools.javac.code.Flags.FINAL;
 
 import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.LinkedList;
 import java.util.Map;
 import java.util.Set;
 import java.util.TreeMap;
 
 import com.redhat.ceylon.compiler.java.codegen.AbstractTransformer.BoxingStrategy;
 import com.redhat.ceylon.compiler.java.codegen.ExpressionTransformer.TermTransformer;
+import com.redhat.ceylon.compiler.java.codegen.Naming.SyntheticName;
 import com.redhat.ceylon.compiler.loader.model.LazyMethod;
 import com.redhat.ceylon.compiler.typechecker.model.Class;
 import com.redhat.ceylon.compiler.typechecker.model.ClassAlias;
@@ -1033,7 +1035,9 @@ class NamedArgumentInvocationBuilder extends InvocationBuilder {
     private final Set<String> argNames = new HashSet<String>();
     private final TreeMap<Integer, Naming.SyntheticName> argsNamesByIndex = new TreeMap<Integer, Naming.SyntheticName>();
     private final Set<Parameter> bound = new HashSet<Parameter>();
+    private final java.util.List<Naming.SyntheticName> sequencedElements = new LinkedList<Naming.SyntheticName>();
     private ProducedReference producedReference;
+    private int sequencedParamIndex = 0;
     
     public NamedArgumentInvocationBuilder(
             AbstractTransformer gen, Tree.Primary primary,
@@ -1113,7 +1117,10 @@ class NamedArgumentInvocationBuilder extends InvocationBuilder {
         //if (this.argNames.isEmpty()) {
             //this.argNames.addAll(Collections.<String>nCopies(parameterList(param).size(), null));
         //}
-        final Naming.SyntheticName argName = varBaseName.suffixedBy("$" + paramIndex);
+        String suffix = "$" + paramIndex;
+        if(param.isSequenced())
+            suffix += "$" + sequencedParamIndex ++;
+        final Naming.SyntheticName argName = varBaseName.suffixedBy(suffix);
         if (this.argsNamesByIndex.containsValue(argName)) {
             throw new RuntimeException();
         }
@@ -1133,7 +1140,12 @@ class NamedArgumentInvocationBuilder extends InvocationBuilder {
     }
 
     private ProducedType parameterType(Parameter declaredParam, ProducedType pt, int flags) {
-        return (declaredParam == null) ? pt : gen.getTypeForParameter(declaredParam, producedReference, flags);        
+        if(declaredParam == null)
+            return pt;
+        ProducedType paramType = gen.getTypeForParameter(declaredParam, producedReference, flags);
+        if(declaredParam.isSequenced())
+            paramType = gen.typeFact().getSequentialElementType(paramType);
+        return paramType;
     }
     
     private void appendVarsForNamedArguments(
@@ -1231,6 +1243,9 @@ class NamedArgumentInvocationBuilder extends InvocationBuilder {
         this.vars.appendList(statements);
         this.argsNamesByIndex.put(parameterIndex(param), argName);
         this.bound.add(param);
+        if(param.isSequenced()){
+            this.sequencedElements.add(argName);
+        }
     }
     
     private ListBuffer<JCStatement> toStmts(Tree.NamedArgument namedArg, final List<JCTree> listOfStatements) {
@@ -1273,7 +1288,7 @@ class NamedArgumentInvocationBuilder extends InvocationBuilder {
         if (!Decl.isOverloaded(primaryDeclaration)) {
             // append any arguments for defaulted parameters
             for (Parameter param : declaredParams) {
-                if (bound.contains(param)) {
+                if (bound.contains(param) && !param.isSequenced()) {
                     continue;
                 }
                 final JCExpression argExpr;
@@ -1281,14 +1296,12 @@ class NamedArgumentInvocationBuilder extends InvocationBuilder {
                     argExpr = makeDefaultedArgumentMethodCall(param);
                     hasDefaulted |= true;
                 } else if (param.isSequenced()) {
-                    Tree.SequencedArgument sequencedArgument = namedArgumentList.getSequencedArgument();
-                    if (sequencedArgument != null) {
-                        gen.at(sequencedArgument);
-                        if (sequencedArgument.getEllipsis() == null) {
-                            argExpr = gen.makeSequenceRaw(sequencedArgument.getExpressionList().getExpressions());
-                        } else {
-                            argExpr = gen.expressionGen().transformExpression(sequencedArgument.getExpressionList().getExpressions().get(0));
+                    if (!sequencedElements.isEmpty()) {
+                        ListBuffer<JCExpression> sequencedExpressions = new ListBuffer<JCExpression>();
+                        for(SyntheticName name : sequencedElements){
+                            sequencedExpressions.append(name.makeIdent());
                         }
+                        argExpr = gen.makeSequenceRaw(sequencedExpressions.toList());
                     } else if (namedArgumentList.getComprehension() != null) {
                         argExpr = gen.expressionGen().comprehensionAsSequential(namedArgumentList.getComprehension(), param.getType());
                     } else {
