@@ -68,6 +68,11 @@ shared interface Iterable<out Element>
     shared actual default Boolean empty =>
             is Finished iterator.next();
     
+    shared default Integer size => count((Element e) true);
+    
+    shared actual default Boolean contains(Object element) => 
+            any(ifExists(element.equals));
+    
     doc "The first element returned by the iterator, if any.
          This should produce the same value as
          `ordered.iterator.head`."
@@ -401,4 +406,13 @@ shared interface Iterable<out Element>
         throw;
     }
     
+}
+
+Boolean ifExists(Boolean predicate(Object val))(Void val) {
+    if (exists val) {
+        return predicate(val);
+    }
+    else {
+        return false;
+    }
 }
