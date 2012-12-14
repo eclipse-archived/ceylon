@@ -59,13 +59,13 @@ public class TestModelAliases {
         Assert.assertNotNull("Missing alias Verbostring", ta);
         ModelUtils.checkMap(ta, MetamodelGenerator.KEY_NAME, "Verbostring");
         parent = (Map<String, Object>)ta.get("$alias");
-        ModelUtils.checkType(parent, "ceylon.language::Some<ceylon.language::Character>&ceylon.language::String");
+        ModelUtils.checkType(parent, "ceylon.language::Sequence<ceylon.language::Character>&ceylon.language::String");
 
         ta = (Map<String,Object>)model.get("Numbers");
         Assert.assertNotNull("Missing alias Numbers", ta);
         ModelUtils.checkMap(ta, MetamodelGenerator.KEY_NAME, "Numbers");
         parent = (Map<String, Object>)ta.get("$alias");
-        ModelUtils.checkType(parent, "ceylon.language::Empty|ceylon.language::Sequence<ceylon.language::Integer>");
+        ModelUtils.checkType(parent, "ceylon.language::Sequential<ceylon.language::Integer>");
 
         ta = (Map<String,Object>)model.get("Objecton");
         Assert.assertNotNull("Missing alias Objecton", ta);

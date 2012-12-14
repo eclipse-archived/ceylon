@@ -54,7 +54,7 @@ public class ModelUtils {
                     name, method.get(MetamodelGenerator.KEY_NAME)),
                     "1", parm.get("seq"));
             Assert.assertEquals("Sequenced parameter should be last", params.size()-1, pos);
-            Assert.assertEquals("ceylon.language::Iterable", String.format("%s::%s", tmap.get(MetamodelGenerator.KEY_PACKAGE),
+            Assert.assertEquals("ceylon.language::Sequential", String.format("%s::%s", tmap.get(MetamodelGenerator.KEY_PACKAGE),
                     tmap.get(MetamodelGenerator.KEY_NAME)));
             List<Map<String, Object>> pts = (List<Map<String, Object>>)tmap.get(MetamodelGenerator.KEY_TYPE_PARAMS);
             checkTypeParameters(0, pts, type);

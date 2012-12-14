@@ -162,7 +162,7 @@ public class TestModelMethodsAndAttributes {
         attrib = (Map<String, Object>)model.get("union");
         ModelUtils.checkType(attrib, "ceylon.language::Integer|ceylon.language::String");
         attrib = (Map<String, Object>)model.get("useq");
-        ModelUtils.checkType(attrib, "ceylon.language::ContainerWithFirstElement<ceylon.language::Singleton<ceylon.language::Integer>|ceylon.language::String,ceylon.language::Nothing>");
+        ModelUtils.checkType(attrib, "ceylon.language::Container<ceylon.language::Singleton<ceylon.language::Integer>|ceylon.language::String>");
     }
 
     @Test @SuppressWarnings("unchecked")
