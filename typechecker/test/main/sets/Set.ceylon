@@ -2,7 +2,7 @@
             satisfies Iterable<Element> 
             given Other satisfies Set<Element,Other> {
         shared formal void add(Element elem);
-        shared formal Boolean contains(Element elem);
+        shared formal Boolean contains1(Element elem);
         shared formal Boolean equals1(Other that);
         shared formal void addAll(Other set);
     }
@@ -13,7 +13,7 @@
             given Element satisfies Object {
         shared actual Iterator<Element> iterator = bottom;
         actual shared void add(Element elem) {}
-        actual shared Boolean contains(Element elem) { 
+        actual shared Boolean contains1(Element elem) { 
             for (e in this) {
                 if (elem==e) {
                     return true;

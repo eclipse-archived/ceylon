@@ -1,9 +1,17 @@
+interface Emptyish {
+    shared formal Boolean isEmpty;
+}
+
+interface Sized satisfies Emptyish&Category { 
+    shared formal Integer elementCount;
+}
+
 class Is() {
     
     interface SimpleContainer<T> 
         given T satisfies Number {}
     
-    String[] strings = { "hello", "world" };
+    String[]&Sized strings = bottom;
     
     if (is Sequence<String> strings) {
         print(strings.first);
@@ -29,18 +37,44 @@ class Is() {
     Correspondence<Integer,String> c = strings;
     if (is Sized c) {
         String? s = c[0];
-        Integer size = c.size;
-        Boolean empty = c.empty;
-        @error if ("hello" in c) {}
+        Integer elementCount = c.elementCount;
+        Boolean isEmpty = c.isEmpty;
+        if ("hello" in c) {}
         //@error for (String str in c) {}
         @type:"Correspondence<Integer,String>&Sized" value cc = c;
     }
     Correspondence<Integer,String> d = strings;
     if (is Sized&Container<Void> d) {
         String? s = d[0];
-        Integer size = d.size;
-        Boolean empty = d.empty;
-        @error if ("hello" in d) {}
+        @error Object? f1 = d.first;
+        Void f2 = d.first;
+        @error Integer size = e.size;
+        @error Boolean empty = e.empty;
+        Integer elementCount = d.elementCount;
+        Boolean isEmpty = d.isEmpty;
+        if ("hello" in d) {}
+        //@error for (String str in d) {}
+        @type:"Correspondence<Integer,String>&Sized&Container<Void>" value dd = d;
+    }
+    if (is Emptyish&Container<String> d) {
+        String? s = d[0];
+        String? f1 = d.first;
+        Void f2 = d.first;
+        @error Integer size = e.size;
+        @error Boolean empty = e.empty;
+        @error Integer elementCount = d.elementCount;
+        Boolean isEmpty = d.isEmpty;
+        if ("hello" in d) {}
+        //@error for (String str in d) {}
+        @type:"Correspondence<Integer,String>&Emptyish&Container<String>" value dd = d;
+    }
+    if (is Sized&Category d) {
+        String? s = d[0];
+        @error Integer size = e.size;
+        @error Boolean empty = e.empty;
+        Integer elementCount = d.elementCount;
+        Boolean isEmpty = d.isEmpty;
+        if ("hello" in d) {}
         //@error for (String str in d) {}
         @type:"Correspondence<Integer,String>&Sized" value dd = d;
     }
@@ -48,25 +82,27 @@ class Is() {
     Correspondence<Integer,String> e = strings;
     if (is Sized&Iterable<String> e) {
         String? s = e[0];
-        Integer size = e.size;
-        @error Boolean empty = e.empty;
-        @error if ("hello" in e) {}
+        Integer elementCount = e.elementCount;
+        Boolean isEmpty = e.isEmpty;
+        if ("hello" in e) {}
         for (String str in e) {}
         @type:"Correspondence<Integer,String>&Sized&Iterable<String>" value ee = e;
     }
     if (is Sized&Category e) {
         String? s = e[0];
-        Integer size = e.size;
-        Boolean empty = e.empty;
+        Integer elementCount = e.elementCount;
+        Boolean isEmpty = e.isEmpty;
         if ("hello" in e) {}
         //@error for (String str in e) {} 
-        @type:"Correspondence<Integer,String>&Sized&Category" value ee = e;
+        @type:"Correspondence<Integer,String>&Sized" value ee = e;
     }
     if (is Sized&{String...} e) {
         String? s = e[0];
         Integer size = e.size;
-        @error Boolean empty = e.empty;
-        @error if ("hello" in e) {}
+        Boolean empty = e.empty;
+        Integer elementCount = e.elementCount;
+        Boolean isEmpty = e.isEmpty;
+        if ("hello" in e) {}
         for (String str in e) {} 
         @type:"Correspondence<Integer,String>&Sized&Iterable<String>" value ee = e;
     }
@@ -74,6 +110,8 @@ class Is() {
         String? s = e[0];
         Integer size = e.size;
         Boolean empty = e.empty;
+        @error Integer elementCount = e.elementCount;
+        @error Boolean isEmpty = e.isEmpty;
         if ("hello" in e) {} 
         for (String str in e) {}
         @type:"Sequential<String>" value ee = e;

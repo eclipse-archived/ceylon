@@ -1,3 +1,8 @@
+interface Sized { 
+    shared formal Integer size;
+    shared default Boolean empty => size==0;  
+}
+
 abstract class X<out T>() of Y<T> | Z<T> | W {}
 class Y<out T>() extends X<T>() satisfies Sized {
     shared actual Integer size = 0;

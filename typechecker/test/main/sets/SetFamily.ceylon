@@ -4,7 +4,7 @@ abstract class SetFamily<Element,in S>()
     shared interface Set of S
             satisfies Iterable<Element> {
         shared formal void add(Element elem);
-        shared formal Boolean contains(Element elem);
+        shared formal Boolean contains1(Element elem);
         shared formal Boolean equals1(S that);
     } 
 
@@ -16,7 +16,7 @@ class TreeSetFamily<Element>()
     shared class TreeSet()
             satisfies Set {
         actual shared void add(Element elem) {}
-        actual shared Boolean contains(Element elem) { 
+        actual shared Boolean contains1(Element elem) { 
             return bottom; 
         }
         actual shared Boolean equals1(TreeSet that) {

@@ -1,3 +1,8 @@
+interface Sized { 
+    shared formal Integer size;
+    shared default Boolean empty => size==0;  
+}
+
 abstract class Algebraic() of concrete | Concrete {}
 class Concrete() extends Algebraic() {}
 object concrete extends Algebraic() {}
