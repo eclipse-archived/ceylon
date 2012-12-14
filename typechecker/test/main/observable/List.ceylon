@@ -23,6 +23,9 @@ class List<T>()
     shared actual T first {
         throw;
     }
+    shared actual T last {
+        throw;
+    }
     shared actual T[] span(Integer from, Integer to) {
         return this;
     }
