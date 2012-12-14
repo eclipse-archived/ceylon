@@ -12,5 +12,6 @@
 @error class SubclassWithExtraSuperTypeArgs() extends SequenceBuilder<String,Integer>() {}
 
 @error interface SubWithoutSuperTypeArgs satisfies Comparable {}
-@error interface SubWithSuperTypeArgs satisfies Container<String> {}
+@error interface SubWithSuperTypeArgs satisfies Sized<String> {}
+@error interface SubWithSuperTypeArgs satisfies Container<String,String> {}
 @error interface SubWithExtraSuperTypeArgs satisfies Comparable<SubWithExtraSuperTypeArgs,Integer> {}

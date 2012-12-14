@@ -1,6 +1,8 @@
+interface Cntnr => Container<Void>; 
+
 alias Number => Integer|Float;
 alias ListLike<T> given T satisfies Object => List<T>|Map<Integer,T>;
-alias C => Container&Category;
+alias C => Cntnr&Category;
 
 Number n = 1;
 Number x = 2.0;
@@ -39,16 +41,16 @@ void testCanonicalization() {
     Number? num = t;
     @type:"Number" Number&Object no = t else 1.0;
     @type:"Number" value noo = temp else 1.0;
-    if (is Container num) {
-        @type:"Number&Container" value nnn = num;
-        Integer&Container|Float&Container numif = num;
-        Container&Number nnnn = numif;
+    if (is Cntnr num) {
+        @type:"Number&Cntnr" value nnn = num;
+        Integer&Cntnr|Float&Cntnr numif = num;
+        Cntnr&Number nnnn = numif;
         switch (num)
         case (is Integer) {
-            @type:"Container&Integer" value nn = num;
+            @type:"Cntnr&Integer" value nn = num;
         }
         case (is Float) {
-            @type:"Container&Float" value nn = num;
+            @type:"Cntnr&Float" value nn = num;
         }
     }
     List<Integer|Float> list = ns;

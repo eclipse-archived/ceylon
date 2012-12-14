@@ -36,7 +36,7 @@ class Is() {
         @type:"Correspondence<Integer,String>&Sized" value cc = c;
     }
     Correspondence<Integer,String> d = strings;
-    if (is Sized&Container d) {
+    if (is Sized&Container<Void> d) {
         String? s = d[0];
         Integer size = d.size;
         Boolean empty = d.empty;
