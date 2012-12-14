@@ -25,6 +25,15 @@ shared class Tuple<out Element, out First, out Rest>(first, rest)
         }
     }
     
+    shared actual Element last {
+        if (nonempty rest) {
+            return rest.last;
+        }
+        else {
+            return first;
+        }
+    }
+    
     shared actual Sequence<Element> reversed =>
             rest.reversed.withTrailing(first);
     

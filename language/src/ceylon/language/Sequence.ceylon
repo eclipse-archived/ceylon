@@ -25,7 +25,7 @@ see (Empty)
 by "Gavin"
 shared interface Sequence<out Element>
         satisfies Element[] & 
-                  Some<Element> &
+                  ContainerWithFirstElement<Element,Bottom> &
                   Cloneable<Sequence<Element>> {
     
     doc "The index of the last element of the sequence."
@@ -38,20 +38,16 @@ shared interface Sequence<out Element>
 
     doc "The last element of the sequence, that is, the
          element with index `sequence.lastIndex`."
-    shared actual default Element last {
-        throw;
-        //if (is Element last = this[lastIndex]) {
-        //    return last;
-        //}
-        //else {
-        //    throw; //never occurs for well-behaved implementations
-        //} 
-    }
+    shared actual formal Element last;
     
     doc "The rest of the sequence, without the first 
          element."
     shared actual formal Element[] rest;
         
+    doc "Returns `false`, since every `Some` contains at
+         least one element."
+    shared actual Boolean empty => false;
+    
     doc "Reverse this sequence, returning a new nonempty
          sequence."
     shared actual formal Sequence<Element> reversed;

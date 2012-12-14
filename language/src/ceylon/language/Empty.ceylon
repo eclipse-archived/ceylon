@@ -3,7 +3,7 @@ doc "A sequence with no elements. The type of the expression
 see (Sequence)
 shared interface Empty
            satisfies Bottom[] & 
-                     None<Bottom> &
+                     ContainerWithFirstElement<Bottom,Nothing> &
                      Ranged<Integer,[]> &
                      Cloneable<Empty> {
     
@@ -22,6 +22,9 @@ shared interface Empty
     shared actual Empty spanTo(Integer to) => this;
     doc "Returns an `Empty` for any given span."
     shared actual Empty spanFrom(Integer from) => this;
+    
+    doc "Returns `true`."
+    shared actual Boolean empty => true;
     
     doc "Returns 0."
     shared actual Integer size => 0; 
@@ -109,7 +112,12 @@ shared interface Empty
             (Element element) => { element };
 }
 
-doc "The value representing a sequence with no elements. The instance of `{}`"
+doc "The value representing a sequence with no elements. The 
+     instance of `{}`"
 //by "Tako Schotanus"
-shared object empty extends Object() satisfies Empty {
+shared object empty extends Object() satisfies Empty {}
+
+doc "An iterator that returns no elements."
+shared object emptyIterator satisfies Iterator<Bottom> {
+    next() => exhausted;
 }

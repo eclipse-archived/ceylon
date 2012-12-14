@@ -7,8 +7,7 @@ doc "A fixed-size array of elements. An array may have zero
      programming tasks."
 shared abstract class Array<Element>() 
         extends Object()
-        satisfies List<Element> & 
-                  FixedSized<Element> &
+        satisfies List<Element> &
                   Cloneable<Array<Element>> &
                   Ranged<Integer, Array<Element>> {
 
@@ -31,15 +30,6 @@ doc "Create an array containing the given elements. If no
      elements are provided, create an empty array of the
      given element type."
 shared Array<Element> array<Element>(Element... elements) { throw; }
-
-doc "Create an empty array of the given element type."
-shared Array<Element>&None<Element> arrayOfNone<Element>() { throw; }
-
-doc "Create a nonempty array with the elements of the given
-     sequence."
-shared Array<Element>&Some<Element> arrayOfSome<Element>(
-        doc "A nonempty sequence containing the elements."
-        Sequence<Element> elements) { throw; }
 
 doc "Create an array of the specified size, populating every 
      index with the given element. If the specified size is
