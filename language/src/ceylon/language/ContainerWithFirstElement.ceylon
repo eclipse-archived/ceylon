@@ -21,3 +21,9 @@ shared interface ContainerWithFirstElement<out Element, out Null>
     shared formal Null|Element last;    
     
 }
+
+shared interface EmptyContainer => 
+        ContainerWithFirstElement<Bottom,Nothing>;
+
+shared interface NonemptyContainer<out Element> => 
+        ContainerWithFirstElement<Element,Bottom>;

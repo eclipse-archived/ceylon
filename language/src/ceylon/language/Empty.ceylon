@@ -3,7 +3,7 @@ doc "A sequence with no elements. The type of the expression
 see (Sequence)
 shared interface Empty
            satisfies Bottom[] & 
-                     ContainerWithFirstElement<Bottom,Nothing> &
+                     EmptyContainer &
                      Ranged<Integer,[]> &
                      Cloneable<Empty> {
     

@@ -25,7 +25,7 @@ see (Empty)
 by "Gavin"
 shared interface Sequence<out Element>
         satisfies Element[] & 
-                  ContainerWithFirstElement<Element,Bottom> &
+                  NonemptyContainer<Element> &
                   Cloneable<Sequence<Element>> {
     
     doc "The index of the last element of the sequence."
