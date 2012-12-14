@@ -157,10 +157,10 @@ shared interface List<out Element>
         return null;
     }
     
-    doc "Returns the first element of this List, if any."
+    doc "Returns the first element of this `List`, if any."
     shared actual default Element? first => this[0];
     
-    doc "Returns the last element of this List, if any."
+    doc "Returns the last element of this `List`, if any."
     shared actual default Element? last {
         if (exists i = lastIndex) {
             return this[i];

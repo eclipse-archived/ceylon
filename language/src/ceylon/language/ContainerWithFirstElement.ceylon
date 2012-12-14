@@ -7,8 +7,11 @@ doc "Abstract supertype of containers which provide an
      which is never empty is a 
      `ContainerWithFirstElement<Element,Bottom>`."
 shared interface ContainerWithFirstElement<out Element, out Null>
-        satisfies Container
         given Null satisfies Nothing {
+    
+    doc "Determine if the container is empty, that is, if
+         it has no elements."
+    shared formal Boolean empty;
     
     doc "The first element. Should produce `null` if the 
          container is empty, that is, for any instance for
@@ -22,8 +25,20 @@ shared interface ContainerWithFirstElement<out Element, out Null>
     
 }
 
-shared interface EmptyContainer => 
+doc "Abstract supertype of objects which may or may not
+     contain one of more other values, called *elements*.
+     `Container` does not satisfy `Category`, because it is
+     conceptually possible to have a container where the
+     `contains()` operation is prohibitively inefficient.
+     `Container` does not define a size, since it is possible
+     to have a container of infinite or uncomputable size."
+see (Sized, Category)
+by "Gavin"
+shared interface Container<Element> =>
+        ContainerWithFirstElement<Element,Nothing>;
+
+shared interface EmptyContainer =>
         ContainerWithFirstElement<Bottom,Nothing>;
 
-shared interface NonemptyContainer<out Element> => 
+shared interface NonemptyContainer<out Element> =>
         ContainerWithFirstElement<Element,Bottom>;

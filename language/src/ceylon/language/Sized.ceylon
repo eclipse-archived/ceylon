@@ -2,7 +2,7 @@ doc "Abstract supertype of `Container`s with a finite number
      of elements, where the number of elements can be 
      efficiently determined."
 shared interface Sized 
-        satisfies Container {
+        satisfies Container<Void> {
         
     doc "The number of elements or entries belonging to the 
          container."
