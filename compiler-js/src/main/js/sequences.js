@@ -6,16 +6,16 @@ function isOfType(a,b){}//IGNORE
 function smallest(x,y){}//IGNORE
 function largest(x,y){}//IGNORE
 function Exception(){}//IGNORE
-var List,Some,Cloneable,Ranged,exports,larger,smaller,equal,Object$,empty,$finished,Iterator;//IGNORE
-var IdentifiableObject,Category,Sized;//IGNORE
+var List,Cloneable,Ranged,exports,larger,smaller,equal,Object$,empty,$finished,Iterator;//IGNORE
+var IdentifiableObject,Category;//IGNORE
 
 function Sequence($$sequence) {
     return $$sequence;
 }
-initTypeProtoI(Sequence, 'ceylon.language::Sequence', Sequential, Some, Cloneable);
+initTypeProtoI(Sequence, 'ceylon.language::Sequence', Sequential, Cloneable);
 function $init$Sequence() {
     if (Sequence.$$===undefined) {
-        initTypeProtoI(Sequence, 'ceylon.language::Sequence', $init$Sequential(), $init$Some(), $init$Cloneable());
+        initTypeProtoI(Sequence, 'ceylon.language::Sequence', $init$Sequential(), $init$Cloneable());
     }
     return Sequence;
 }
@@ -30,18 +30,18 @@ function Array$() {
     var that = new Array$.$$;
     return that;
 }
-initExistingType(Array$, Array, 'ceylon.language::Array', Object$, FixedSized,
+initExistingType(Array$, Array, 'ceylon.language::Array', Object$,
         Cloneable, Ranged, $init$List());
 var Array$proto = Array.prototype;
 var origArrToString = Array$proto.toString;
-inheritProtoI(Array$, Object$, FixedSized, Cloneable, Ranged, $init$List());
+inheritProtoI(Array$, Object$, Cloneable, Ranged, $init$List());
 Array$proto.toString = origArrToString;
 exports.Array=Array$;
 
 function EmptyArray() {
     return [];
 }
-initTypeProto(EmptyArray, 'ceylon.language::EmptyArray', Array$, None);
+initTypeProto(EmptyArray, 'ceylon.language::EmptyArray', Array$);
 function ArrayList(items) {
     return items;
 }
@@ -127,15 +127,6 @@ Array$proto.contains = function(elem) {
 }
 
 exports.ArrayList=ArrayList;
-exports.arrayOfNone=function() { return []; }
-exports.arrayOfSome=function(/*Sequence|Tuple*/elems) {
-    var arr = [];
-    var iter = elems.getIterator();
-    var e;while ((e=iter.next())!==$finished) {
-        arr.push(e);
-    }
-    return ArraySequence(arr);
-}
 exports.array=function(elems) {
     if (elems === null || elems === undefined) {
         return [];
@@ -175,7 +166,7 @@ function SequenceBuilder() {
     that.seq = [];
     return that;
 }
-initTypeProto(SequenceBuilder, 'ceylon.language::SequenceBuilder', IdentifiableObject, Sized);
+initTypeProto(SequenceBuilder, 'ceylon.language::SequenceBuilder', IdentifiableObject);
 var SequenceBuilder$proto = SequenceBuilder.$$.prototype;
 SequenceBuilder$proto.getSequence = function() {
     return (this.seq.length > 0) ? ArraySequence(this.seq) : empty;

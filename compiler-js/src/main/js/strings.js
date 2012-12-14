@@ -4,7 +4,7 @@ function ArraySequence(x){}//IGNORE
 function Singleton(x){}//IGNORE
 function largest(a,b){}//IGNORE
 function smallest(a,b){}//IGNORE
-var Object$,List,Comparable,Ranged,FixedSized,Summable,Castable,Cloneable,smaller,larger,equal;//IGNORE
+var Object$,List,Comparable,Ranged,Summable,Castable,Cloneable,smaller,larger,equal;//IGNORE
 var empty,$finished,IdentifiableObject,Iterator,exports;//IGNORE
 
 function String$(value,size) {
@@ -18,9 +18,9 @@ var origStrToString = String.prototype.toString;
 inheritProtoI(String$, Object$, Sequential, Comparable, Ranged, Summable, Castable,
         Cloneable);
 function SequenceString() {}
-initType(SequenceString, "ceylon.language::SequenceString", String$, Some);
+initType(SequenceString, "ceylon.language::SequenceString", String$);
 function EmptyString() {}
-initType(EmptyString, "ceylon.language::EmptyString", String$, None);
+initType(EmptyString, "ceylon.language::EmptyString", String$);
 var String$proto = String$.$$.prototype;
 String$proto.getT$name = function() {
     return ((this.length!==0)?SequenceString:EmptyString).$$.T$name;

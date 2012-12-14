@@ -111,7 +111,7 @@ function Sequential($$sequential) {
 }
 function $init$Sequential() {
     if (Sequential.$$===undefined) {
-        initTypeProtoI(Sequential, 'ceylon.language::Sequential', $init$List(), $init$FixedSized(), $init$Ranged(), $init$Cloneable());
+        initTypeProtoI(Sequential, 'ceylon.language::Sequential', $init$List(), $init$Ranged(), $init$Cloneable());
     }
     return Sequential;
 }
@@ -123,7 +123,7 @@ function Empty() {
     that.value = [];
     return that;
 }
-initTypeProtoI(Empty, 'ceylon.language::Empty', Sequential, $init$None(), $init$Ranged(), $init$Cloneable());
+initTypeProtoI(Empty, 'ceylon.language::Empty', Sequential, $init$Ranged(), $init$Cloneable());
 var Empty$proto = Empty.$$.prototype;
 Empty$proto.getEmpty = function() { return true; }
 Empty$proto.defines = function(x) { return false; }
