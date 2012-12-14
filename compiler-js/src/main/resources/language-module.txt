@@ -5,7 +5,7 @@
 #Correspondence
 
 Binary,Castable,Cloneable,Closeable,Ranged
-Container,ContainerWithFirstElement,Iterator,Sized,Collection,Category
+ContainerWithFirstElement,Iterator,Collection,Category
 
 #this requires native impl of sort
 #Iterable
@@ -20,8 +20,6 @@ Tuple,ChainedIterator
 #Sequential,Sequence,Empty
 
 Entry,Comparable,Invertable,Summable,Ordinal,Numeric,Scalar,Exponentiable,Integral
-
-FixedSized,None,Some
 
 #Identifiable
 #IdentifiableObject
