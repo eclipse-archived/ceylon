@@ -171,6 +171,30 @@ var empty = Empty();
 exports.empty=empty;
 exports.Empty=Empty;
 
+function emptyIterator(){
+    var $$emptyIterator=new emptyIterator.$$;
+    Iterator($$emptyIterator);
+    return $$emptyIterator;
+}
+function $init$emptyIterator(){
+    if (emptyIterator.$$===undefined){
+        initTypeProto(emptyIterator,'ceylon.language::emptyIterator',IdentifiableObject,$init$Iterator());
+    }
+    return emptyIterator;
+}
+exports.$init$emptyIterator=$init$emptyIterator;
+$init$emptyIterator();
+(function($$emptyIterator){
+    $$emptyIterator.next=function (){
+    var $$emptyIterator=this;
+    return $finished;
+};
+})(emptyIterator.$$.prototype);
+var emptyIterator$2=emptyIterator(new emptyIterator.$$);
+var getEmptyIterator=function(){
+    return emptyIterator$2;
+}
+
 function Comprehension(makeNextFunc, compr) {
     if (compr===undefined) {compr = new Comprehension.$$;}
     IdentifiableObject(compr);
