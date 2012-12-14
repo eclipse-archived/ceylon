@@ -196,13 +196,14 @@ public class TestModuleManager {
         Assert.assertNotNull("ContainerWithFirstElement from jslang", d1);
         ProducedType seq0 = null, seq1 = null;
         for (ProducedType pt : d0.getSatisfiedTypes()) {
-            if (pt.getProducedTypeName().startsWith("Sequential")) {
+            System.out.println(d0 + " satisfies " + pt);
+            if (pt.getProducedTypeName().startsWith("Bottom[]")) {
                 seq0 = pt;
                 break;
             }
         }
         for (ProducedType pt : d1.getSatisfiedTypes()) {
-            if (pt.getProducedTypeName().startsWith("Sequential")) {
+            if (pt.getProducedTypeName().startsWith("Bottom[]")) {
                 seq1 = pt;
                 break;
             }
