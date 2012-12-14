@@ -1,10 +1,6 @@
 import check {...}
 
 //Miscellaneous inheritance tests (for very simple interfaces)
-class TestSized(size) satisfies Sized {
-  shared actual Integer size;
-}
-
 class TestCategory() satisfies Category {
   shared actual Boolean contains(Object x) {
     if (is Integer x) {
@@ -64,8 +60,6 @@ class ShortcutRefineTest3(String f(Integer i), Boolean flag) satisfies RefineTes
 }
 
 void testMisc() {
-  check(TestSized(0).empty, "Sized.empty");
-  check(!TestSized(1).empty, "!Sized.empty");
   value testcat = TestCategory();
   check(testcat.contains(1), "Category.contains");
   check(!testcat.contains(0), "!Category.contains");

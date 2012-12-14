@@ -5,7 +5,6 @@ shared void test() {
   testCorrespondence();
   testMisc();
   testCollection();
-  testFixedSized();
   test_concrete_members();
   testMultipleInheritance();
   bug135();

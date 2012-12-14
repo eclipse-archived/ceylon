@@ -37,6 +37,7 @@ class MySequence<out Element>(Sequence<Element> seq)
     shared actual Integer hash { return seq.hash; }
     shared actual Boolean equals(Object other) { return seq.equals(other); }
     shared actual Sequence<Element> reversed { return seq.reversed; }
+    shared actual Element last => seq.last;
 }
 
 class RefHelper() {
