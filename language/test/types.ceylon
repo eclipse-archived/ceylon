@@ -206,8 +206,8 @@ void types() {
     if (is Boolean|Character|T nothing) { fail("union type 4"); } else {}
     if (is Object&Castable<Bottom> one) {} else { fail("intersection type 1"); }
     if (is Object&Castable<Bottom> bool) { fail("intersection type 2"); } else {}
-    if (is Sized&Category&Iterable<Void> str) {} else { fail("intersection type 3"); }
-    if (is Sized&Category&Iterable<Void> t) { fail("intersection type 4"); } else {}
+    if (is Category&Iterable<Void> str) {} else { fail("intersection type 3"); }
+    if (is Category&Iterable<Void> t) { fail("intersection type 4"); } else {}
     //if (is String[] empty) {} else { fail("sequence type 1"); }
     //if (is String[] seq) {} else { fail("sequence type 2"); }
     //if (is String[]? seq) {} else { fail("sequence type 3"); }

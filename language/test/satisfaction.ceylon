@@ -42,20 +42,6 @@ class MyCloseable() satisfies Closeable {
 class MyContainer() satisfies Container {
     shared actual Boolean empty = true;
 }
-class MySized(Integer s) satisfies Sized {
-    shared actual Integer size { return s; }
-}
-/*class MyNone() satisfies None<Integer> {
-    shared actual Nothing last { return null; }
-    shared actual MyNone clone { return this; }
-}*/
-class MySome() satisfies Some<Integer> {
-    shared actual Integer last = 1;
-    shared actual Integer size = 2;
-    shared actual List<Integer> rest { return {1}; }
-    shared actual MySome clone { return this; }
-    shared actual Iterator<Integer> iterator { return {2,1}.iterator; }
-}
 class MyIterator() satisfies Iterator<Integer> {
     variable value done := false;
     shared actual Integer|Finished next() {
@@ -163,8 +149,6 @@ void testSatisfaction() {
     clsbl.close(null);
     check(!clsbl.opened, "Closeable [3]");
     check(MyContainer().empty, "Container");
-    check(MySized(0).empty, "Sized [1]");
-    check(!MySized(1).empty, "Sized [2]");
     variable Sequential<Integer> myfixed := {};//MyNone();
     check(!nonempty myfixed, "None");
     myfixed := {1};//MySome();
