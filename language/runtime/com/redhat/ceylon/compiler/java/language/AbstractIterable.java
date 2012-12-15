@@ -32,6 +32,11 @@ public abstract class AbstractIterable<Element> implements Iterable<Element> {
     }
     
     @Override
+    public long getSize() {
+        return $ceylon$language$Iterable$this.getSize();
+    }
+    
+    @Override
     public boolean getEmpty() {
         return getIterator().next() == exhausted_.getExhausted$();
     }

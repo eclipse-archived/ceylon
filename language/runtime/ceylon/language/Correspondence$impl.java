@@ -156,7 +156,6 @@ public final class Correspondence$impl<Key,Item> {
         private final ceylon.language.Iterable$impl<Item> $ceylon$language$Iterable$this;
         private final ceylon.language.List$impl<Item> $ceylon$language$List$this;
         private final ceylon.language.Sequence$impl<Item> $ceylon$language$Sequence$this;
-        private final ceylon.language.Some$impl<Item> $ceylon$language$Some$this;
 
         Items(Sequence<? extends Key> keys){
             this.keys = keys;
@@ -166,7 +165,6 @@ public final class Correspondence$impl<Key,Item> {
             this.$ceylon$language$Iterable$this = new ceylon.language.Iterable$impl<Item>(this);
             this.$ceylon$language$List$this = new ceylon.language.List$impl<Item>(this);
             this.$ceylon$language$Sequence$this = new ceylon.language.Sequence$impl<Item>(this);
-            this.$ceylon$language$Some$this = new ceylon.language.Some$impl<Item>(this);
         }
         public final Integer getLastIndex() {
             return keys.getLastIndex();
@@ -252,7 +250,7 @@ public final class Correspondence$impl<Key,Item> {
         @Override
         @Ignore
         public boolean getEmpty() {
-            return $ceylon$language$Some$this.getEmpty();
+            return $ceylon$language$List$this.getEmpty();
         }
         @Override
         @Ignore

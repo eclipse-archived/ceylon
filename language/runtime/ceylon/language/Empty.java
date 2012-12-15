@@ -12,12 +12,12 @@ import com.redhat.ceylon.compiler.java.metadata.TypeParameters;
 @Ceylon(major = 3)
 @SatisfiedTypes({
     "ceylon.language::Sequential<ceylon.language::Bottom>",
-    "ceylon.language::None<ceylon.language::Bottom>",
+    "ceylon.language::ContainerWithFirstElement<ceylon.language::Bottom,ceylon.language::Nothing>",
     "ceylon.language::Ranged<ceylon.language::Integer,ceylon.language::Empty>",
     "ceylon.language::Cloneable<ceylon.language::Empty>"
 })
 public interface Empty 
-        extends Sequential<java.lang.Object>, None<java.lang.Object> {
+        extends Sequential<java.lang.Object> {
     
     @Annotations(@Annotation("actual"))
     @Override

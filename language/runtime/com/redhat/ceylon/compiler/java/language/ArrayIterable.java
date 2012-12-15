@@ -59,6 +59,11 @@ public class ArrayIterable<Element> implements Iterable<Element> {
     }
     
     @Override
+    public long getSize() {
+        return array.length;
+    }
+    
+    @Override
     public boolean getEmpty() {
         return false;
     }

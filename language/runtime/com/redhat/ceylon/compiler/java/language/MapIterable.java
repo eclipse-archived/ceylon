@@ -43,6 +43,12 @@ public class MapIterable<Element, Result> implements Iterable<Result> {
     }
     public Iterator<? extends Result> getIterator() { return new MapIterator(); }
     public boolean getEmpty() { return getIterator().next() instanceof Finished; }
+    
+    @Override
+    @Ignore
+    public long getSize() {
+        return $ceylon$language$Iterable$this.getSize();
+    }
 
     @Override
     @Ignore

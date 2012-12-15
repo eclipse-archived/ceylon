@@ -9,7 +9,6 @@ import ceylon.language.Integer;
 import ceylon.language.Iterable;
 import ceylon.language.Sequential;
 import ceylon.language.Map;
-import ceylon.language.None;
 import ceylon.language.Sequence;
 import ceylon.language.String;
 import ceylon.language.empty_;
@@ -19,7 +18,7 @@ import com.redhat.ceylon.compiler.java.metadata.Ignore;
 
 @Ignore
 @Ceylon(major = 3)
-public class EmptyString extends String implements None<Character> {
+public class EmptyString extends String {
 
     public static EmptyString instance = new EmptyString();
 

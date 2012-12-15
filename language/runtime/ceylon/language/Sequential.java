@@ -14,13 +14,12 @@ import com.redhat.ceylon.compiler.java.metadata.Variance;
 @TypeParameters(@TypeParameter(value = "Element", variance = Variance.OUT))
 @SatisfiedTypes({
     "ceylon.language::List<Element>",
-    "ceylon.language::FixedSized<Element>",
     "ceylon.language::Ranged<ceylon.language::Integer,ceylon.language::Sequential<Element>>",
     "ceylon.language::Cloneable<ceylon.language::Sequential<Element>>"
 })
 @CaseTypes({"ceylon.language::Empty", "ceylon.language::Sequence<Element>"})
 public interface Sequential<Element> 
-        extends List<Element>, FixedSized<Element> {
+        extends List<Element> {
 	
     @Annotations({@Annotation("actual"), @Annotation("formal")})
     @Override

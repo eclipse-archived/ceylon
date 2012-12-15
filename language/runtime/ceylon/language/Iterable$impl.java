@@ -18,6 +18,13 @@ public final class Iterable$impl<Element> {
     public Iterable$impl(Iterable<Element> $this) {
         this.$this = $this;
     }
+    public long getSize() {
+        long count = 0;
+        for (Iterator<? extends Element> iter = $this.getIterator(); iter.next() != exhausted_.getExhausted$();) {
+            count++;
+        }
+        return count;
+    }
     public boolean getEmpty(){
         return Iterable$impl._getEmpty($this);
     }

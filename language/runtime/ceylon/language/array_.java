@@ -29,21 +29,17 @@ public final class array_ {
     public static <Element> Array<Element> array(
             Class typeClass,
             final ceylon.language.Sequential<? extends Element> elements) {
-        if (elements.getEmpty()) {
-            return arrayOfNone_.<Element>arrayOfNone(typeClass);
-        } else {
-            return arrayOfSome_.arrayOfSome(typeClass, elements);
-        }
+        return Array.<Element>instance(typeClass, elements);
     }
     
     @Ignore
     public static <Element> Array<Element> array() {
-        return arrayOfNone_.<Element>arrayOfNone(null);
+        return Array.<Element>instance((Class)null);
     }
     
     @Ignore
     public static <Element> Array<Element> array(Class typeClass) {
-        return arrayOfNone_.<Element>arrayOfNone(typeClass);
+        return Array.<Element>instance(typeClass);
     }
             
 }

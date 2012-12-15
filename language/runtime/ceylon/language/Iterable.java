@@ -15,6 +15,9 @@ import com.redhat.ceylon.compiler.java.metadata.Variance;
 @SatisfiedTypes("ceylon.language::ContainerWithFirstElement<Element,ceylon.language::Nothing>")
 public interface Iterable<Element> extends ContainerWithFirstElement<Element,Nothing> {
 
+    @Annotations(@Annotation("default"))
+    public long getSize();
+
     @Annotations({@Annotation("actual"), @Annotation("default")})
     @Override
     public boolean getEmpty();

@@ -46,6 +46,11 @@ public class FilterIterable<Element> implements Iterable<Element> {
     public boolean getEmpty() { return getIterator().next() instanceof Finished; }
     @Override
     @Ignore
+    public long getSize() {
+        return $ceylon$language$Iterable$this.getSize();
+    }
+    @Override
+    @Ignore
     public Element getFirst() {
     	return $ceylon$language$Iterable$this.getFirst();
     }

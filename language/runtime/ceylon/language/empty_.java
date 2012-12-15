@@ -19,14 +19,12 @@ public final class empty_ implements Empty {
     private final ceylon.language.Collection$impl $ceylon$language$Collection$this;
     private final ceylon.language.Correspondence$impl $ceylon$language$Correspondence$this;
     private final ceylon.language.Empty$impl $ceylon$language$Empty$this;
-    private final ceylon.language.None$impl $ceylon$language$None$this;
 
     private empty_() {
         this.$ceylon$language$Category$this = new ceylon.language.Category$impl(this);
         this.$ceylon$language$Collection$this = new ceylon.language.Collection$impl(this);
         this.$ceylon$language$Correspondence$this = new ceylon.language.Correspondence$impl(this);
         this.$ceylon$language$Empty$this = new ceylon.language.Empty$impl(this);
-        this.$ceylon$language$None$this = new ceylon.language.None$impl(this);
     }
 
     private Correspondence$impl<Integer,java.lang.Object> correspondence$impl = new Correspondence$impl<Integer,java.lang.Object>(this);
@@ -150,7 +148,7 @@ public final class empty_ implements Empty {
     @Ignore
     @SuppressWarnings({"rawtypes", "unchecked"})
     public Iterator getIterator() {
-        return $ceylon$language$None$this.getIterator();
+        return $ceylon$language$Empty$this.getIterator();
     }
 
     @Override
@@ -162,10 +160,10 @@ public final class empty_ implements Empty {
     @Override
     @Ignore
     public java.lang.Object getFirst() {
-        return $ceylon$language$None$this.getFirst();
+        return $ceylon$language$Empty$this.getFirst();
     }
     @Override @Ignore public java.lang.Object getLast() {
-        return $ceylon$language$None$this.getLast();
+        return $ceylon$language$Empty$this.getLast();
     }
 
     @Override

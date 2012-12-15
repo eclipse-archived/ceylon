@@ -1,13 +1,11 @@
 package ceylon.language;
 
-import static java.lang.Long.MAX_VALUE;
-
 import com.redhat.ceylon.compiler.java.language.AbstractCallable;
 import com.redhat.ceylon.compiler.java.language.ArraySequence;
+import com.redhat.ceylon.compiler.java.language.EmptyString;
 import com.redhat.ceylon.compiler.java.language.FilterIterable;
 import com.redhat.ceylon.compiler.java.language.InternalMap;
 import com.redhat.ceylon.compiler.java.language.MapIterable;
-import com.redhat.ceylon.compiler.java.language.EmptyString;
 import com.redhat.ceylon.compiler.java.language.SequenceString;
 import com.redhat.ceylon.compiler.java.metadata.Ceylon;
 import com.redhat.ceylon.compiler.java.metadata.Class;
@@ -23,16 +21,14 @@ import com.redhat.ceylon.compiler.java.metadata.ValueType;
 @Class(extendsType="ceylon.language::Object")
 @SatisfiedTypes({"ceylon.language::Sequential<ceylon.language::Character>",
                  "ceylon.language::Comparable<ceylon.language::String>",
-                 "ceylon.language::Ranged<ceylon.language::Integer,ceylon.language::String>",
-                 "ceylon.language::FixedSized<ceylon.language::Character>",
                  "ceylon.language::Summable<ceylon.language::String>",
+                 "ceylon.language::Ranged<ceylon.language::Integer,ceylon.language::String>",
                  "ceylon.language::Castable<ceylon.language::String>",
                  "ceylon.language::Cloneable<ceylon.language::String>"})
 @ValueType
 public abstract class String
     implements Comparable<String>, Sequential<Character>,
-               Summable<String>, Castable<String>,
-               FixedSized<Character> {
+               Summable<String>, Castable<String> {
     private final ceylon.language.Category$impl $ceylon$language$Category$this;
     private final ceylon.language.Correspondence$impl $ceylon$language$Correspondence$this;
     protected final ceylon.language.Iterable$impl<Character> $ceylon$language$Iterable$this;
@@ -1383,6 +1379,11 @@ public abstract class String
         }
 
         @Override
+        public long getSize() {
+            return $ceylon$language$Iterable$this.getSize();
+        }
+
+        @Override
         public boolean getEmpty() {
             return getIterator().next() == exhausted_.getExhausted$();
         }
@@ -1515,6 +1516,11 @@ public abstract class String
             }
 
             return new OccurrenceIterator();
+        }
+
+        @Override
+        public long getSize() {
+            return $ceylon$language$Iterable$this.getSize();
         }
 
         @Override
