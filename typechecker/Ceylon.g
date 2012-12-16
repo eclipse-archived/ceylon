@@ -1745,11 +1745,17 @@ positionalArguments returns [PositionalArgumentList positionalArgumentList]
               $positionalArgumentList.addPositionalArgument($pa1.positionalArgument); }
         (
           c=COMMA 
-          { $positionalArgumentList.setEndToken($c); }
+          { if ($positionalArgumentList.getComprehension()!=null)
+                displayRecognitionError(getTokenNames(), 
+                    new MismatchedTokenException(RPAREN, input));
+            $positionalArgumentList.setEndToken($c); }
           (
             pa2=positionalArgument
             { if ($pa2.positionalArgument!=null)
                   $positionalArgumentList.addPositionalArgument($pa2.positionalArgument); 
+              positionalArgumentList.setEndToken(null); }
+          | c1=comprehension
+            { $positionalArgumentList.setComprehension($c1.comprehension);
               positionalArgumentList.setEndToken(null); }
           | { displayRecognitionError(getTokenNames(), 
                 new MismatchedTokenException(LIDENTIFIER, input)); }
@@ -1757,12 +1763,15 @@ positionalArguments returns [PositionalArgumentList positionalArgumentList]
         )* 
         (
           ELLIPSIS
-          { $positionalArgumentList.setEllipsis( new Ellipsis($ELLIPSIS) ); }
+          { if ($positionalArgumentList.getComprehension()==null)
+                $positionalArgumentList.setEllipsis( new Ellipsis($ELLIPSIS) );
+            else
+                displayRecognitionError(getTokenNames(), 
+                    new MismatchedTokenException(RPAREN, input)); }
         )?
-      )? 
-      (
-        comprehension
-        { $positionalArgumentList.setComprehension($comprehension.comprehension); }
+      |
+        c2=comprehension
+        { $positionalArgumentList.setComprehension($c2.comprehension); }
       )?
       RPAREN
       { $positionalArgumentList.setEndToken($RPAREN); }
