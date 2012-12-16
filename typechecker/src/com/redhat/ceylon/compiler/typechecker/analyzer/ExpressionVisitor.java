@@ -1701,6 +1701,31 @@ public class ExpressionVisitor extends Visitor {
                     paramType.getDeclaration().equals(tp)) {
                 return unit.denotableType(argType);
             }
+            else if (paramType.getDeclaration() instanceof TypeParameter) {
+                TypeParameter tp2 = (TypeParameter) paramType.getDeclaration();
+                if (!visited.contains(tp2)) {
+                    visited.add(tp2);
+                    List<ProducedType> list = new ArrayList<ProducedType>();
+                    for (ProducedType pt: tp2.getSatisfiedTypes()) {
+                        addToUnion(list, inferTypeArg(tp, pt, argType, visited) );
+                        ProducedType st = argType.getSupertype(pt.getDeclaration());
+                        if (st!=null) {
+                            for (int j=0; j<pt.getTypeArgumentList().size(); j++) {
+                                if (st.getTypeArgumentList().size()>j) {
+                                    addToUnion(list, inferTypeArg(tp, 
+                                            pt.getTypeArgumentList().get(j), 
+                                            st.getTypeArgumentList().get(j), 
+                                            visited));
+                                }
+                            }
+                        }
+                    }
+                    return union(list);
+                }
+                else {
+                    return null;
+                }
+            }
             else if (paramType.getDeclaration() instanceof UnionType) {
                 List<ProducedType> list = new ArrayList<ProducedType>();
                 //If there is more than one type parameter in
@@ -1746,31 +1771,6 @@ public class ExpressionVisitor extends Visitor {
                             visited), unit);
                 }
                 return intersection(list);
-            }
-            else if (paramType.getDeclaration() instanceof TypeParameter) {
-                TypeParameter tp2 = (TypeParameter) paramType.getDeclaration();
-                if (!visited.contains(tp2)) {
-                    visited.add(tp2);
-                    List<ProducedType> list = new ArrayList<ProducedType>();
-                    for (ProducedType pt: tp2.getSatisfiedTypes()) {
-                        addToUnion(list, inferTypeArg(tp, pt, argType, visited) );
-                        ProducedType st = argType.getSupertype(pt.getDeclaration());
-                        if (st!=null) {
-                            for (int j=0; j<pt.getTypeArgumentList().size(); j++) {
-                                if (st.getTypeArgumentList().size()>j) {
-                                    addToUnion(list, inferTypeArg(tp, 
-                                            pt.getTypeArgumentList().get(j), 
-                                            st.getTypeArgumentList().get(j), 
-                                            visited));
-                                }
-                            }
-                        }
-                    }
-                    return union(list);
-                }
-                else {
-                    return null;
-                }
             }
             else {
                 ProducedType st = argType.getSupertype(paramType.getDeclaration());

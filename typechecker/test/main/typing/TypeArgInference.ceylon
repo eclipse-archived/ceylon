@@ -122,12 +122,8 @@ class TypeArgInference() {
     object test1 satisfies One<Integer> & Two<Float> {}
     object test2 satisfies One<Number> & Two<Integer&String> {}
     
-    T? acceptOneTwo<T>(One<T>&Two<T> arg) {
-    	return null;
-    }
-    T? acceptOneOrTwo<T>(One<T>|Two<T> arg) {
-    	return null;
-    }
+    T? acceptOneTwo<T>(One<T>&Two<T> arg) => null;
+    T? acceptOneOrTwo<T>(One<T>|Two<T> arg) => null;
     
     @type:"Nothing|TypeArgInference.A|TypeArgInference.B" acceptOneTwo(test0);
     @type:"Nothing|Integer|Float" acceptOneTwo(test1);
@@ -141,10 +137,10 @@ class TypeArgInference() {
     higherVoid((String x) print(x));
     higherVoid { void f(String x) { print(x); } };
 
-    X|Y higher<X,Y>(X f(Y? y)) given Y satisfies Object { return f(null); }
+    X|Y higher<X,Y>(X f(Y? y)) given Y satisfies Object => f(null);
     @type:"Integer|String" higher((String? y) 1);
-    @type:"Float|String" higher { function f(String? y) { return 1.0; } };
-    function argfun(Integer? x) { return x?.float; }
+    @type:"Float|String" higher { function f(String? y) => 1.0; };
+    function argfun(Integer? x) => x?.float;
     @type:"Nothing|Float|Integer" higher(argfun);
     
     @type:"Iterable<Integer>" { "hello", "world" }.map((String s) s.size);
@@ -152,9 +148,19 @@ class TypeArgInference() {
     @type:"String" { "hello", "world" }.fold("", (String result, String s) result+" "+s);
     @type:"Nothing|String" { null, "hello", "world" }.find((String? s) exists s);
 
-    @type:"Iterable<Integer>" { "hello", "world" }.map { function collecting(String s) { return s.size; } };
-    @type:"Iterable<String>" { "hello", "world" }.filter { function selecting(String s) { return !s.empty; } };
-    @type:"String" { "hello", "world" }.fold { initial=""; function accumulating(String result, String s) { return result+" "+s; } };
-    @type:"Nothing|String" { null, "hello", "world" }.find { function selecting(String? s) { return exists s; } };
+    @type:"Iterable<Integer>" { "hello", "world" }.map { function collecting(String s) => s.size; };
+    @type:"Iterable<String>" { "hello", "world" }.filter { function selecting(String s) => !s.empty; };
+    @type:"String" { "hello", "world" }.fold { initial=""; function accumulating(String result, String s) => result+" "+s; };
+    @type:"Nothing|String" { null, "hello", "world" }.find { function selecting(String? s) => exists s; };
+    
+    @type:"Tuple<Integer|String,Integer|String,Empty>" Tuple(true then "" else 1, {});
+    @type:"Tuple<Integer|String|Float,Integer|String,Tuple<Float,Float,Empty>>" Tuple(true then "" else 1, [1.0]);
+    
+    class Something<X,Y,Z>(Y y, Z z) 
+            given Y satisfies X 
+            given Z satisfies X {}
+    @type:"TypeArgInference.Something<String|Integer,String,Integer>" Something("",1); 
+    @type:"TypeArgInference.Something<String|Float|Integer,String,Float|Integer>" Something("",true then 1 else 1.0); 
+    @type:"TypeArgInference.Something<String|Nothing|Float|Integer,String,Nothing|Float|Integer>" Something("",false then (true then 1 else 1.0)); 
 
 }
