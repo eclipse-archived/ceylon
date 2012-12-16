@@ -147,7 +147,7 @@ public class Util {
                         if (pdt==null) return false;
                         if (ellipsis){
                             // we must have exactly one spread param
-                            if (signature.size() > size+1) return false;
+                            if (signature.size() != size+1) return false;
                             ProducedType sdt = signature.get(size);
                             ProducedType isdt = d.getUnit().getIteratedType(sdt);
                             ProducedType ipdt = d.getUnit().getIteratedType(pdt);
