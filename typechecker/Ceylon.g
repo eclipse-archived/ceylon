@@ -1740,9 +1740,15 @@ parExpression returns [Expression expression]
 positionalArguments returns [PositionalArgumentList positionalArgumentList]
     : LPAREN 
       { $positionalArgumentList = new PositionalArgumentList($LPAREN); }
-      ( pa1=positionalArgument
-        { if ($pa1.positionalArgument!=null)
-              $positionalArgumentList.addPositionalArgument($pa1.positionalArgument); }
+      ( 
+        (
+          pa1=positionalArgument
+          { if ($pa1.positionalArgument!=null)
+                $positionalArgumentList.addPositionalArgument($pa1.positionalArgument); }
+        |
+          c2=comprehension
+          { $positionalArgumentList.setComprehension($c2.comprehension); }
+        )
         (
           c=COMMA 
           { if ($positionalArgumentList.getComprehension()!=null)
@@ -1769,9 +1775,6 @@ positionalArguments returns [PositionalArgumentList positionalArgumentList]
                 displayRecognitionError(getTokenNames(), 
                     new MismatchedTokenException(RPAREN, input)); }
         )?
-      |
-        c2=comprehension
-        { $positionalArgumentList.setComprehension($c2.comprehension); }
       )?
       RPAREN
       { $positionalArgumentList.setEndToken($RPAREN); }
