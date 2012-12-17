@@ -35,6 +35,7 @@ import org.jboss.shrinkwrap.resolver.api.maven.MavenFormatStage;
 import org.jboss.shrinkwrap.resolver.api.maven.MavenResolvedArtifact;
 import org.jboss.shrinkwrap.resolver.api.maven.MavenResolverSystem;
 import org.jboss.shrinkwrap.resolver.api.maven.MavenStrategyStage;
+import org.jboss.shrinkwrap.resolver.api.maven.ScopeType;
 import org.jboss.shrinkwrap.resolver.api.maven.coordinate.MavenCoordinate;
 
 /**
@@ -45,6 +46,8 @@ import org.jboss.shrinkwrap.resolver.api.maven.coordinate.MavenCoordinate;
  * @author <a href="mailto:ales.justin@jboss.org">Ales Justin</a>
  */
 public class AetherUtils {
+    private static final ScopeType[] SCOPES = new ScopeType[]{ScopeType.COMPILE, ScopeType.PROVIDED, ScopeType.RUNTIME};
+    private static final SingleScopedStrategy SCOPED_STRATEGY = new SingleScopedStrategy(SCOPES);
 
     private Logger log;
     private String settingsXml;
@@ -89,24 +92,22 @@ public class AetherUtils {
         final String coordinates = toCanonicalForm(name, version);
         try {
             final MavenStrategyStage mss = getResolver().resolve(coordinates);
-            final MavenFormatStage mfs = fetchSingleArtifact ? mss.withoutTransitivity() : mss.withTransitivity();
-
-            MavenResolvedArtifact[] infos = mfs.asResolvedArtifact();
-            if (infos == null || infos.length == 0) {
+            final MavenFormatStage mfs = mss.using(SCOPED_STRATEGY);
+            final MavenResolvedArtifact info = mfs.asSingleResolvedArtifact();
+            if (info == null) {
                 log.debug("No artifact found: " + coordinates);
                 return null;
-            } else if (infos.length == 1) {
-                return new SingleArtifactResult(name, version, infos[0].asFile());
+            }
+
+            if (fetchSingleArtifact) {
+                return new SingleArtifactResult(name, version, info.asFile());
             } else {
-                List<ArtifactResult> dependencies = new ArrayList<ArtifactResult>(infos.length - 1);
+                final MavenArtifactInfo[] infos = info.getDependencies();
+                final List<ArtifactResult> dependencies = new ArrayList<ArtifactResult>(infos.length);
                 for (MavenArtifactInfo dep : infos) {
                     final MavenCoordinate dCo = dep.getCoordinate();
                     final String dName = toCanonicalForm(dCo.getGroupId(), dCo.getArtifactId());
                     final String dVersion = dCo.getVersion();
-
-                    if (name.equals(dName) && version.equals(dVersion)) {
-                        continue;
-                    }
 
                     ArtifactResult dr = new MavenArtifactResult(dName, dVersion) {
                         private ArtifactResult result;
@@ -128,7 +129,7 @@ public class AetherUtils {
                     };
                     dependencies.add(dr);
                 }
-                return new AetherArtifactResult(name, version, infos[0].asFile(), dependencies);
+                return new AetherArtifactResult(name, version, info.asFile(), dependencies);
             }
         } catch (ResolutionException e) {
             log.debug("Could not resolve artifact [" + coordinates + "] : " + e);
