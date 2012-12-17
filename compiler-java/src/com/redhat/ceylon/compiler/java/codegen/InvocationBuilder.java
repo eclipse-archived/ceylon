@@ -670,13 +670,17 @@ class IndirectInvocationBuilder extends SimpleInvocationBuilder {
     
     @Override
     protected boolean isParameterSequenced(int argIndex) {
-        return false;
+        return variadic && argIndex >= parameterTypes.size() - 1;
     }
 
     @Override
     protected ProducedType getParameterType(int argIndex) {
         // in the Java code, all Callable.call() params are of type Object so let's not
         // pretend they are typed, this saves a lot of casting.
+        // except for sequenced parameters where we do care about the iterated type
+        if(isParameterSequenced(argIndex)){
+            return parameterTypes.get(parameterTypes.size()-1);
+        }
         return gen.typeFact().getObjectDeclaration().getType();
     }
 
@@ -702,12 +706,12 @@ class IndirectInvocationBuilder extends SimpleInvocationBuilder {
 
     @Override
     protected int getNumArguments() {
-        return parameterTypes.size() + (comprehension != null ? 1 : 0);
+        return argumentExpressions.size() + (comprehension != null ? 1 : 0);
     }
 
     @Override
     protected boolean dontBoxSequence() {
-        return true;
+        return comprehension != null || spread;
     }
 
     @Override
@@ -717,7 +721,7 @@ class IndirectInvocationBuilder extends SimpleInvocationBuilder {
     
     @Override
     protected JCExpression getTransformedArgumentExpression(int argIndex) {
-        if (argIndex == parameterTypes.size() && comprehension != null) {
+        if (argIndex == argumentExpressions.size() && comprehension != null) {
             ProducedType type = getParameterType(argIndex);
             return gen.expressionGen().comprehensionAsSequential(comprehension, type); 
         }
