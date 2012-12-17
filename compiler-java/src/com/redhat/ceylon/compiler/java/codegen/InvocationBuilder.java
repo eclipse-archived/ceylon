@@ -1018,7 +1018,7 @@ class CallableInvocationBuilder extends DirectInvocationBuilder {
  * InvocationBuilder for methods specified with a method reference. This builds the specifier invocation
  * within the body of the specified method.
  * 
- * For example for {@code void foo() => f();} we generate: {@code f()} that you would then place into
+ * For example for {@code void foo(); foo = f;} we generate: {@code f()} that you would then place into
  * the generated method for {@code foo}.
  */
 class MethodReferenceSpecifierInvocationBuilder extends DirectInvocationBuilder {
@@ -1068,10 +1068,10 @@ class MethodReferenceSpecifierInvocationBuilder extends DirectInvocationBuilder 
 }
 
 /**
- * InvocationBuilder for methods specified with a Callable. This builds the Callable invocation
+ * InvocationBuilder for methods specified eagerly with a Callable. This builds the Callable invocation
  * within the body of the specified method.
  * 
- * For example for {@code void foo() => f();} we generate: {@code f.$call()} that you would then place into
+ * For example for {@code void foo(); foo = f;} we generate: {@code f.$call()} that you would then place into
  * the generated method for {@code foo}.
  */
 class CallableSpecifierInvocationBuilder extends InvocationBuilder {
