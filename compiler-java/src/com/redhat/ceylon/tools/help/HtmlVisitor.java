@@ -35,7 +35,7 @@ public class HtmlVisitor implements Visitor {
     
     @Override
     public void start(Doc doc) {
-    	this.doc = doc;
+        this.doc = doc;
         ResourceBundle bundle = ResourceBundle.getBundle("com.redhat.ceylon.tools.help.resources.sections");
         html.doctype("html").text("\n");
         html.open("html", "head");
@@ -91,26 +91,26 @@ public class HtmlVisitor implements Visitor {
     }
 
     private static void addTableStart(Html html, String section, String title, int cols) {
-    	addTableStart(html, section, Markdown.markdown("##" + title), cols);
+        addTableStart(html, section, Markdown.markdown("##" + title), cols);
     }
     
     private static void addTableStart(Html html, String sectionId, Node title, int cols) {
         html.open("table class='table table-condensed table-bordered'").text("\n");
-    	html.open("thead").text("\n");
-    	html.open("tr class='table-header' title='Click for expand/collapse'");
-    	html.open("td colspan='" + cols + "'" + (sectionId != null ? " id='" + sectionId + "'" : ""));
-    	html.open("i class='icon-expand'").close("i");
-    	html.markdown(title).close("td", "tr").text("\n");
-    	html.close("thead").text("\n");
-    	html.open("tbody").text("\n");
+        html.open("thead").text("\n");
+        html.open("tr class='table-header' title='Click for expand/collapse'");
+        html.open("td colspan='" + cols + "'" + (sectionId != null ? " id='" + sectionId + "'" : ""));
+        html.open("i class='icon-expand'").close("i");
+        html.markdown(title).close("td", "tr").text("\n");
+        html.close("thead").text("\n");
+        html.open("tbody").text("\n");
     }
 
     private static void addTableRow(Html html, Node body) {
-    	html.open("tr", "td").markdown(body).close("td", "tr");
+        html.open("tr", "td").markdown(body).close("td", "tr");
     }
 
     private static void addTableEnd(Html html) {
-    	html.close("tbody", "table");
+        html.close("tbody", "table");
     }
     
     @Override
@@ -119,23 +119,23 @@ public class HtmlVisitor implements Visitor {
     }
 
     private void describedSection(DescribedSection describedSection) {
-    	String sectionId = null;
-    	if (describedSection.getRole() == Role.DESCRIPTION) {
-    		html.open("div class='section section-description'").text("\n");
-    		sectionId = "section-description";
-    	} else {
-    		html.open("div class='section'").text("\n");
-    	}
-    	addTableStart(html, sectionId, describedSection.getTitle(), 1);
-    	addTableRow(html, describedSection.getDescription());
-    	addTableEnd(html);
-    	html.close("div").text("\n");
+        String sectionId = null;
+        if (describedSection.getRole() == Role.DESCRIPTION) {
+            html.open("div class='section section-description'").text("\n");
+            sectionId = "section-description";
+        } else {
+            html.open("div class='section'").text("\n");
+        }
+        addTableStart(html, sectionId, describedSection.getTitle(), 1);
+        addTableRow(html, describedSection.getDescription());
+        addTableEnd(html);
+        html.close("div").text("\n");
     }
 
     @Override
     public void startOptions(OptionsSection optionsSection) {
         html.open("div class='section section-options'").text("\n");
-    	addTableStart(html, "section-options", optionsSection.getTitle(), 2);
+        addTableStart(html, "section-options", optionsSection.getTitle(), 2);
     }
 
     @Override
@@ -180,18 +180,18 @@ public class HtmlVisitor implements Visitor {
 
     @Override
     public void endOptions(OptionsSection optionsSection) {
-    	addTableEnd(html);
-    	html.close("div");
+        addTableEnd(html);
+        html.close("div");
     }
 
     @Override
     public void visitSummary(SummarySection summarySection) {
-    	html.open("div class='sub-navbar'").text("\n");
-    	html.open("div class='sub-navbar-inner'");
-    	html.open("div", "code class='sub-navbar-tool'").text(doc.getInvocation()).close("code", "div").text("\n");
-    	html.open("div class='sub-navbar-summary'").markdown(Markdown.markdown(summarySection.getSummary())).close("div").text("\n");
-    	html.close("div");
-    	html.open("div class='sub-navbar-menu'").text("\n");
+        html.open("div class='sub-navbar'").text("\n");
+        html.open("div class='sub-navbar-inner'");
+        html.open("div", "code class='sub-navbar-tool'").text(doc.getInvocation()).close("code", "div").text("\n");
+        html.open("div class='sub-navbar-summary'").markdown(Markdown.markdown(summarySection.getSummary())).close("div").text("\n");
+        html.close("div");
+        html.open("div class='sub-navbar-menu'").text("\n");
         addShortcutKey(html, "index.html", "Jump to tool index", "I", "ndex");
         addShortcutKey(html, "#section-synopsis", "Jump to tool synopsis", "S", "ynopsis");
         addShortcutKey(html, "#section-description", "Jump to tool description", "D", "escription");
@@ -211,7 +211,7 @@ public class HtmlVisitor implements Visitor {
     @Override
     public void startSynopses(SynopsesSection synopsesSection) {
         html.open("div class='section section-synopsis'").text("\n");
-    	addTableStart(html, "section-synopsis", synopsesSection.getTitle(), 1);
+        addTableStart(html, "section-synopsis", synopsesSection.getTitle(), 1);
     }
     
     private void longOptionSynopsis(String string) {
@@ -238,7 +238,7 @@ public class HtmlVisitor implements Visitor {
     public void startSynopsis(Synopsis synopsis) {
         hadFirstArgument = false;
         hadOptions = false;
-    	html.open("tr", "td");
+        html.open("tr", "td");
         html.open("div class='synopsis'", "code");
         html.text(synopsis.getInvocation() + " ");
     }
@@ -246,7 +246,7 @@ public class HtmlVisitor implements Visitor {
     @Override
     public void endSynopsis(Synopsis synopsis) {
         html.close("code", "div").text("\n");   
-    	html.close("td", "tr");
+        html.close("td", "tr");
     }
 
     @Override

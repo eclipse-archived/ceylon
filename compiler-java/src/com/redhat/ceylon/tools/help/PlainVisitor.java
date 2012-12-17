@@ -200,7 +200,7 @@ public class PlainVisitor implements Visitor {
 
     private void describedSection(DescribedSection describedSection) {
         markdown(describedSection.getTitle());
-       	markdown(describedSection.getDescription());
+        markdown(describedSection.getDescription());
         out.setIndent(0);
         out.newline();
     }
@@ -208,7 +208,7 @@ public class PlainVisitor implements Visitor {
     @Override
     public void visitSummary(SummarySection summarySection) {
         markdown(summarySection.getTitle());
-       	markdown(Markdown.markdown("`" + ceylonName + "` - " + summarySection.getSummary()));
+        markdown(Markdown.markdown("`" + ceylonName + "` - " + summarySection.getSummary()));
         out.setIndent(0);
         out.newline();
     }

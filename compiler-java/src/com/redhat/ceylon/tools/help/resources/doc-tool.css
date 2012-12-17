@@ -108,7 +108,6 @@
 
 code {
 	padding: 0px;
-/*	font-weight: bold; */
 	border: 0px;
 	color: #333; /* default bootstrap color is red */
 	background-color: inherit;
@@ -117,12 +116,7 @@ code {
 .table-header:HOVER {
 	background-color: rgb(232, 232, 232);
 }
-/*
-.link {
-	font-family: monospace;
-	color: #005580;
-}
-*/
+
 a code {
 	color: inherit;
 }

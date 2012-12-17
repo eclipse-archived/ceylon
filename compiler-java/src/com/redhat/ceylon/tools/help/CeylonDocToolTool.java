@@ -51,13 +51,13 @@ public class CeylonDocToolTool implements Tool {
             @Override
             URL[] supportingResources() {
                 return new URL[]{getClass().getResource("resources/doc-tool.css"),
-                		getClass().getResource("resources/bootstrap.min.css"),
-                		getClass().getResource("resources/bootstrap.min.js"),
-                		getClass().getResource("resources/jquery-1.8.2.min.js"),
-                		getClass().getResource("resources/NOTICE.txt"),
-                		getClass().getResource("resources/doc-tool.js"),
-                		getClass().getResource("resources/ceylondoc-icons.png"),
-                		getClass().getResource("resources/ceylondoc-logo.png")};
+                        getClass().getResource("resources/bootstrap.min.css"),
+                        getClass().getResource("resources/bootstrap.min.js"),
+                        getClass().getResource("resources/jquery-1.8.2.min.js"),
+                        getClass().getResource("resources/NOTICE.txt"),
+                        getClass().getResource("resources/doc-tool.js"),
+                        getClass().getResource("resources/ceylondoc-icons.png"),
+                        getClass().getResource("resources/ceylondoc-logo.png")};
             }
         }, 
         txt(".txt") {
@@ -101,7 +101,7 @@ public class CeylonDocToolTool implements Tool {
     
     @Option
     @Description("Generate documentation about all low level tools, in " +
-    		"addition to the tools named by the `<tool>` argument")
+            "addition to the tools named by the `<tool>` argument")
     public void setAllPlumbing(boolean allPlumbing) {
         this.allPlumbing = allPlumbing;
     }
@@ -121,21 +121,21 @@ public class CeylonDocToolTool implements Tool {
     
     @OptionArgument(shortName='o', argumentName="dir")
     @Description("Directory to generate the output files in " +
-    		"(default: The current directory)")
+            "(default: The current directory)")
     public void setOutput(File dir) {
         this.dir = dir;
     }
     
     @OptionArgument(argumentName="format")
     @Description("The format to generate the documentation in " +
-    		"(allowable values: `html` or `txt`, default: `html`)")
+            "(allowable values: `html` or `txt`, default: `html`)")
     public void setFormat(Format format) {
         this.format = format;
     }
     
     @OptionArgument(argumentName="cols")
     @Description("The line length to use for word wrapping " +
-    		"when `--format=txt` " +
+            "when `--format=txt` " +
             "(default: 80)")
     public void setWidth(int width) {
         if (width <= 0) {
@@ -236,7 +236,7 @@ public class CeylonDocToolTool implements Tool {
     }
 
     private void indexHeader(Html html, String title, String overview) {
-    	html.doctype("html").text("\n");
+        html.doctype("html").text("\n");
         html.open("html", "head").text("\n");
         html.tag("meta charset='UTF-8'").text("\n");
         html.open("title").text(title).close("title").text("\n");
@@ -250,7 +250,6 @@ public class CeylonDocToolTool implements Tool {
         html.open("i class='tool-logo'").close("i").text("\n");
         html.open("span class='tool-label'").text(title).close("span").text("\n");
         html.open("span class='tool-name'").text(overview).close("span").text("\n");
-        //html.open("span class='tool-version'").text(version).close("span").text("\n");
         html.close("a").text("\n");
         html.close("div").text("\n");
         html.close("div").text("\n");
@@ -263,26 +262,26 @@ public class CeylonDocToolTool implements Tool {
     }
     
     private void generateToolList(List<Doc> docs, Html html, String title) {
-    	html.open("table class='table table-condensed table-bordered table-hover'").text("\n");
-    	html.open("thead").text("\n");
-    	html.open("tr class='table-header'");
-    	html.open("td colspan='2'").text(title).close("td");
-    	html.close("tr").text("\n");
-    	html.close("thead").text("\n");
+        html.open("table class='table table-condensed table-bordered table-hover'").text("\n");
+        html.open("thead").text("\n");
+        html.open("tr class='table-header'");
+        html.open("td colspan='2'").text(title).close("td");
+        html.close("tr").text("\n");
+        html.close("thead").text("\n");
 
-    	html.open("tbody");
+        html.open("tbody");
         for (Doc doc : docs) {
-        	html.open("tr");
-        	html.open("td class='span3'", "a class='link' href='" + filename(doc) + "'");
-        	html.open("code").text(Tools.progName() + " " + doc.getName()).close("code");
-        	html.close("a", "td").text("\n");
-        	html.open("td", "p");
-        	html.text(doc.getSummary().getSummary());
-        	html.close("p", "td");
-        	html.close("tr").text("\n");
-        }    	
-    	html.close("tbody").text("\n");
-    	html.close("table").text("\n");
+            html.open("tr");
+            html.open("td class='span3'", "a class='link' href='" + filename(doc) + "'");
+            html.open("code").text(Tools.progName() + " " + doc.getName()).close("code");
+            html.close("a", "td").text("\n");
+            html.open("td", "p");
+            html.text(doc.getSummary().getSummary());
+            html.close("p", "td");
+            html.close("tr").text("\n");
+        }
+        html.close("tbody").text("\n");
+        html.close("table").text("\n");
     }
 
     private void prepareDirectory() {
