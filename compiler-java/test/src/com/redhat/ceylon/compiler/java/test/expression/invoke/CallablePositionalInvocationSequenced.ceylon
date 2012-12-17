@@ -22,4 +22,5 @@ void callablePositionalInvocationSequenced_f(void foo(Integer i, String... s)) {
     foo(1);
     foo(1, "");
     foo(1, "", "");
+    foo(1, {}...);
 }
