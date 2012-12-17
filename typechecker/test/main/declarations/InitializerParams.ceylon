@@ -88,4 +88,36 @@ interface InitializerParams {
         @error print(i);
     }
     
+    class WithSharedParams(shared String message, 
+            shared Float fun(Float x)) {
+        print(message + fun(0.0).string);
+    }
+    class WithSharedDefaultParams(shared default String message, 
+            shared default Float fun(Float x)) {
+        @error print(message + fun(0.0).string);
+    }
+    class WithSharedActualParams(shared actual String message, 
+            shared actual Float fun(Float x)) 
+            extends WithSharedDefaultParams(message, fun) {
+        print(message + fun(0.0).string);
+    }
+    class WithSharedActualAtts() 
+            extends WithSharedDefaultParams("goodbye", (Float y)=>-y) {
+        shared actual String message => "bye";
+        shared actual Float fun(Float x)=>-x;
+    }
+    abstract class WithSharedFormalParams(@error shared formal String message, 
+            @error shared formal Float fun(Float x)) {}
+    void testWithSharedParams() {
+        WithSharedParams wsp = WithSharedParams("hello", (Float x)=>x*2.0);
+        print(wsp.message);
+        print(wsp.fun(1.0));
+        WithSharedDefaultParams wsdp = WithSharedDefaultParams("hello", (Float x)=>x*2.0);
+        print(wsdp.message);
+        print(wsdp.fun(1.0));
+        WithSharedActualParams wsap = WithSharedActualParams("hello", (Float x)=>x*2.0);
+        print(wsap.message);
+        print(wsap.fun(1.0));
+    }
+    
 }

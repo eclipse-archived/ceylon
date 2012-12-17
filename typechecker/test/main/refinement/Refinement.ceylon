@@ -271,3 +271,18 @@ interface DefinesHashAndEq {
 object doesntHaveToRefineHash extends Object() satisfies DefinesHashAndEq {}
 @error class HasToRefineHash() satisfies DefinesHashAndEq {}
 class DoesntHaveToRefineHash() extends Object() satisfies DefinesHashAndEq {}
+
+
+class WithPrivate() {
+    String message = "hello";
+}
+
+interface OtherPrivate {
+    String message => "hi";
+}
+
+class ExtendsWithPrivate() 
+        extends WithPrivate() 
+        satisfies OtherPrivate {
+    String message = "goodbye";
+}

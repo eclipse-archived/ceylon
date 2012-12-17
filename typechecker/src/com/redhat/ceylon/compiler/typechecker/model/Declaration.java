@@ -260,7 +260,7 @@ public abstract class Declaration
                 ClassOrInterface type = (ClassOrInterface) getContainer();
                 return other.getName()!=null && getName()!=null &&
                         other.getName().equals(getName()) && 
-                        other.getDeclarationKind()==getDeclarationKind() &&
+                        //other.getDeclarationKind()==getDeclarationKind() &&
                         type.isMember(other);
             }
             else {

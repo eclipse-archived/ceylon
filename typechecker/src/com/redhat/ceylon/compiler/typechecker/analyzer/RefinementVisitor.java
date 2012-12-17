@@ -5,6 +5,7 @@ import static com.redhat.ceylon.compiler.typechecker.analyzer.Util.checkAssignab
 import static com.redhat.ceylon.compiler.typechecker.analyzer.Util.checkAssignableToOneOf;
 import static com.redhat.ceylon.compiler.typechecker.analyzer.Util.checkIsExactly;
 import static com.redhat.ceylon.compiler.typechecker.analyzer.Util.checkIsExactlyOneOf;
+import static com.redhat.ceylon.compiler.typechecker.model.Util.getSignature;
 import static com.redhat.ceylon.compiler.typechecker.model.Util.intersectionType;
 import static com.redhat.ceylon.compiler.typechecker.model.Util.isCompletelyVisible;
 import static java.util.Collections.singletonMap;
@@ -21,6 +22,7 @@ import com.redhat.ceylon.compiler.typechecker.model.ClassOrInterface;
 import com.redhat.ceylon.compiler.typechecker.model.Declaration;
 import com.redhat.ceylon.compiler.typechecker.model.Element;
 import com.redhat.ceylon.compiler.typechecker.model.Functional;
+import com.redhat.ceylon.compiler.typechecker.model.FunctionalParameter;
 import com.redhat.ceylon.compiler.typechecker.model.Generic;
 import com.redhat.ceylon.compiler.typechecker.model.Getter;
 import com.redhat.ceylon.compiler.typechecker.model.IntersectionType;
@@ -335,8 +337,8 @@ public class RefinementVisitor extends Visitor {
         Declaration dec = that.getDeclarationModel();
         if (dec!=null) {
             boolean toplevel = dec.getContainer() instanceof Package;
-            boolean member = dec.isClassOrInterfaceMember() && 
-                    !(dec instanceof Parameter) &&
+            boolean member = dec.isClassOrInterfaceMember() &&
+                    !(dec instanceof Parameter && !dec.isShared()) &&
                     !(dec instanceof TypeParameter); //TODO: what about nested interfaces and abstract classes?!
             
             if (!toplevel && !member) {
@@ -348,7 +350,8 @@ public class RefinementVisitor extends Visitor {
             boolean mayBeShared = 
                     dec instanceof MethodOrValue || 
                     dec instanceof ClassOrInterface ||
-                    dec instanceof TypeAlias;
+                    dec instanceof TypeAlias ||
+                    dec instanceof Parameter;
             if (!mayBeShared) {
                 if (dec.isShared()) {
                     that.addError("shared member is not a method, attribute, class, or interface", 1200);
@@ -359,7 +362,8 @@ public class RefinementVisitor extends Visitor {
                     dec instanceof Getter || 
                     dec instanceof Value || 
                     dec instanceof Method ||
-                    dec instanceof Class;
+                    dec instanceof Class ||
+                    dec instanceof Parameter && dec.isShared();
             if (!mayBeRefined) {
                 checkNonrefinableDeclaration(that, dec);
             }
@@ -377,7 +381,8 @@ public class RefinementVisitor extends Visitor {
                     checkMember(that, dec);
                 }
                 ClassOrInterface declaringType = (ClassOrInterface) dec.getContainer();
-                Declaration refined = declaringType.getRefinedMember(dec.getName(), com.redhat.ceylon.compiler.typechecker.model.Util.getSignature(dec), false);
+                Declaration refined = declaringType.getRefinedMember(dec.getName(), 
+                		getSignature(dec), false);
                 dec.setRefinedDeclaration(refined);
             }
 
@@ -401,8 +406,10 @@ public class RefinementVisitor extends Visitor {
         }
         else {
             for (Declaration refined: others) {
-                if (dec instanceof Method) {
-                    if (!(refined instanceof Method)) {
+                if (dec instanceof Method || 
+                		dec instanceof FunctionalParameter) {
+                    if (!(refined instanceof Method) && 
+                    		!(refined instanceof FunctionalParameter)) {
                         that.addError("refined declaration is not a method: " + 
                                 message(refined));
                     }
@@ -414,7 +421,9 @@ public class RefinementVisitor extends Visitor {
                     }
                 }
                 else if (dec instanceof TypedDeclaration) {
-                    if (refined instanceof Class || refined instanceof Method) {
+                    if (refined instanceof Class || 
+                    	refined instanceof Method ||
+                    	refined instanceof FunctionalParameter) {
                         that.addError("refined declaration is not an attribute: " + 
                                 message(refined));
                     }
@@ -634,12 +643,15 @@ public class RefinementVisitor extends Visitor {
     }
 
     private static Tree.ParameterList getParameterList(Tree.Declaration that, int i) {
-        Tree.ParameterList pl;
+        Tree.ParameterList pl=null;
         if (that instanceof Tree.AnyMethod) {
             pl = ((Tree.AnyMethod) that).getParameterLists().get(i);
         }
-        else {
+        else if (that instanceof Tree.AnyClass) {
             pl = ((Tree.AnyClass) that).getParameterList();
+        }
+        else if (that instanceof Tree.FunctionalParameterDeclaration) {
+            pl = ((Tree.FunctionalParameterDeclaration) that).getParameterLists().get(i);
         }
         return pl;
     }

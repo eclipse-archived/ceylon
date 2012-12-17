@@ -855,6 +855,9 @@ public class DeclarationVisitor extends Visitor {
             if (that instanceof Tree.ObjectDefinition) {
                 that.addError("object declaration may not be annotated formal", 1312);
             }
+            if (that instanceof Tree.Parameter) {
+            	that.addError("parameters may not be annotated formal", 1312);
+            }
             else {
                 model.setFormal(true);
             }
@@ -936,7 +939,7 @@ public class DeclarationVisitor extends Visitor {
 
     private static void checkFormalMember(Tree.Declaration that, Declaration d) {
         
-        if ( d.isFormal() ) {
+        if (d.isFormal()) {
             if (d.getContainer() instanceof ClassOrInterface) {
             	ClassOrInterface ci = (ClassOrInterface) d.getContainer();
 				if (!ci.isAbstract() && !ci.isFormal()) {
@@ -946,14 +949,13 @@ public class DeclarationVisitor extends Visitor {
             else {
                 that.addError("formal member does not belong to an interface or abstract class", 1100);
             }
-        }
-        
-        if ( d.isFormal() && 
-                !(that instanceof Tree.AttributeDeclaration) && 
-                !(that instanceof Tree.MethodDeclaration) &&
-                !(that instanceof Tree.ClassDefinition)) {
-            that.addError("formal member may not have a body", 1100);
-        }
+            if (!(that instanceof Tree.AttributeDeclaration) && 
+            	!(that instanceof Tree.MethodDeclaration) &&
+            	!(that instanceof Tree.ClassDefinition) &&
+            	!(that instanceof Tree.Parameter)) {
+            	that.addError("formal member may not have a body", 1100);
+            }
+        }        
         
         /*if ( !d.isFormal() && 
                 d.getContainer() instanceof Interface && 
