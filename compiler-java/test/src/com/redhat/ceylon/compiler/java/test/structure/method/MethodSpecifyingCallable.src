@@ -17,10 +17,158 @@ final class methodSpecifyingCallable_f_ {
 class MethodSpecifyingCallable {
     
     MethodSpecifyingCallable() {
+        this.noParam = new .com.redhat.ceylon.compiler.java.language.AbstractCallable("Bottom()"){
+            
+            @.java.lang.Override
+            public .java.lang.Object $call() {
+                return .ceylon.language.bottom_.getBottom$();
+            }
+        };
+        this.oneParam = new .com.redhat.ceylon.compiler.java.language.AbstractCallable("Bottom()"){
+            
+            @.java.lang.Override
+            public .java.lang.Object $call(final .java.lang.Object $param$0) {
+                final long i = ((.ceylon.language.Integer)$param$0).longValue();
+                return .ceylon.language.bottom_.getBottom$();
+            }
+        };
+        this.oneSequencedParam = new .com.redhat.ceylon.compiler.java.language.AbstractCallable("Bottom()"){
+            
+            @.java.lang.Override
+            public .java.lang.Object $call(final .java.lang.Object $param$0) {
+                final .ceylon.language.Sequential<? extends .ceylon.language.Integer> i = (.ceylon.language.Sequential)$param$0;
+                return .ceylon.language.bottom_.getBottom$();
+            }
+        };
+        this.secondSequencedParam = new .com.redhat.ceylon.compiler.java.language.AbstractCallable("Bottom()"){
+            
+            @.java.lang.Override
+            public .java.lang.Object $call(final .java.lang.Object $param$0, final .java.lang.Object $param$1) {
+                final .ceylon.language.Sequential<? extends .ceylon.language.Integer> i = (.ceylon.language.Sequential)$param$1;
+                final long a = ((.ceylon.language.Integer)$param$0).longValue();
+                return .ceylon.language.bottom_.getBottom$();
+            }
+        };
     }
     
     private final .java.lang.String foo(final long i) {
         return .com.redhat.ceylon.compiler.java.test.structure.method.methodSpecifyingCallable_f_.methodSpecifyingCallable_f().$call(.ceylon.language.Integer.instance(i)).toString();
+    }
+    private final .ceylon.language.Callable<?> noParam;
+    
+    private final .ceylon.language.Callable<?> getNoParam() {
+        return noParam;
+    }
+    
+    private final void noParam1() {
+        getNoParam().$call();
+    }
+    private final .ceylon.language.Callable<?> oneParam;
+    
+    private final .ceylon.language.Callable<?> getOneParam() {
+        return oneParam;
+    }
+    
+    private final void oneParam1() {
+        getOneParam().$call(.ceylon.language.Integer.instance(1L));
+    }
+    private final .ceylon.language.Callable<?> oneSequencedParam;
+    
+    private final .ceylon.language.Callable<?> getOneSequencedParam() {
+        return oneSequencedParam;
+    }
+    
+    private final void oneSequencedParam0() {
+        getOneSequencedParam().$call(.ceylon.language.empty_.getEmpty$());
+    }
+    
+    private final void oneSequencedParam1() {
+        getOneSequencedParam().$call(new .com.redhat.ceylon.compiler.java.language.ArraySequence<.ceylon.language.Integer>(.ceylon.language.Integer.instance(1L)));
+    }
+    
+    private final void oneSequencedParam2() {
+        getOneSequencedParam().$call(new .com.redhat.ceylon.compiler.java.language.ArraySequence<.ceylon.language.Integer>(.ceylon.language.Integer.instance(1L), .ceylon.language.Integer.instance(2L)));
+    }
+    
+    private final void oneSequencedParam3() {
+        getOneSequencedParam().$call((.ceylon.language.Sequential)new .com.redhat.ceylon.compiler.java.language.AbstractIterable<.java.lang.Object>(){
+            
+            public final .ceylon.language.Iterator getIterator() {
+                return new .ceylon.language.Iterator(){
+                    private final .ceylon.language.Iterator<?> iter$0 = .ceylon.language.empty_.getEmpty$().getIterator();
+                    private .java.lang.Object i;
+                    private boolean i$exhausted;
+                    
+                    private final boolean i() {
+                        final .java.lang.Object $ceylontmpitem0 = iter$0.next();
+                        i$exhausted = $ceylontmpitem0 == .ceylon.language.exhausted_.getExhausted$();
+                        if (i$exhausted) {
+                            return false;
+                        } else {
+                            i = (.java.lang.Object)$ceylontmpitem0;
+                            return true;
+                        }
+                    }
+                    
+                    public final .java.lang.Object next() {
+                        return this.i() ? i : .ceylon.language.exhausted_.getExhausted$();
+                    }
+                };
+            }
+        }.getSequence());
+    }
+    
+    private final void oneSequencedParam4() {
+        getOneSequencedParam().$call((.ceylon.language.Sequential).ceylon.language.empty_.getEmpty$());
+    }
+    private final .ceylon.language.Callable<?> secondSequencedParam;
+    
+    private final .ceylon.language.Callable<?> getSecondSequencedParam() {
+        return secondSequencedParam;
+    }
+    
+    private final void secondSequencedParam0() {
+        getSecondSequencedParam().$call(.ceylon.language.Integer.instance(1L), .ceylon.language.empty_.getEmpty$());
+    }
+    
+    private final void secondSequencedParam1() {
+        getSecondSequencedParam().$call(.ceylon.language.Integer.instance(1L), new .com.redhat.ceylon.compiler.java.language.ArraySequence<.ceylon.language.Integer>(.ceylon.language.Integer.instance(2L)));
+    }
+    
+    private final void secondSequencedParam2() {
+        getSecondSequencedParam().$call(.ceylon.language.Integer.instance(1L), new .com.redhat.ceylon.compiler.java.language.ArraySequence<.ceylon.language.Integer>(.ceylon.language.Integer.instance(2L), .ceylon.language.Integer.instance(3L)));
+    }
+    
+    private final void secondSequencedParam3() {
+        getSecondSequencedParam().$call(.ceylon.language.Integer.instance(1L), (.ceylon.language.Sequential)new .com.redhat.ceylon.compiler.java.language.AbstractIterable<.java.lang.Object>(){
+            
+            public final .ceylon.language.Iterator getIterator() {
+                return new .ceylon.language.Iterator(){
+                    private final .ceylon.language.Iterator<?> iter$0 = .ceylon.language.empty_.getEmpty$().getIterator();
+                    private .java.lang.Object i;
+                    private boolean i$exhausted;
+                    
+                    private final boolean i() {
+                        final .java.lang.Object $ceylontmpitem1 = iter$0.next();
+                        i$exhausted = $ceylontmpitem1 == .ceylon.language.exhausted_.getExhausted$();
+                        if (i$exhausted) {
+                            return false;
+                        } else {
+                            i = (.java.lang.Object)$ceylontmpitem1;
+                            return true;
+                        }
+                    }
+                    
+                    public final .java.lang.Object next() {
+                        return this.i() ? i : .ceylon.language.exhausted_.getExhausted$();
+                    }
+                };
+            }
+        }.getSequence());
+    }
+    
+    private final void secondSequencedParam4() {
+        getSecondSequencedParam().$call(.ceylon.language.Integer.instance(1L), (.ceylon.language.Sequential).ceylon.language.empty_.getEmpty$());
     }
     
     public static void main(.java.lang.String[] args) {

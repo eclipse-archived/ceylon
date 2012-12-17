@@ -19,8 +19,28 @@
  */
 @nomodel
 class MethodSpecifierMethod() {
-    MethodSpecifierMethod bar() {
+    MethodSpecifierMethod noParam() {
         throw;
     }
-    void foo() => bar();
+    void noParam1() => noParam();
+    void noParam2() => noParam{};
+
+    MethodSpecifierMethod oneParam(Integer i) {
+        throw;
+    }
+    void oneParam1() => oneParam(1);
+    void oneParam2() => oneParam{i = 1;};
+
+    MethodSpecifierMethod oneDefaultedParam(Integer i = 2) {
+        throw;
+    }
+    void oneDefaultedParam1() => oneDefaultedParam();
+    void oneDefaultedParam2() => oneDefaultedParam{};
+
+    MethodSpecifierMethod oneSequencedParam(Integer... i) {
+        throw;
+    }
+    void oneSequencedParam1() => oneSequencedParam(1,2);
+    void oneSequencedParam2() => oneSequencedParam{i=2;i=3;};
+    void oneSequencedParam3() => oneSequencedParam(for (i in {}) i);
 }

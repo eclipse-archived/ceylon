@@ -5,12 +5,129 @@ class MethodSpecifierMethod {
     MethodSpecifierMethod() {
     }
     
-    private final .com.redhat.ceylon.compiler.java.test.structure.method.MethodSpecifierMethod bar() {
+    private final .com.redhat.ceylon.compiler.java.test.structure.method.MethodSpecifierMethod noParam() {
         throw new .ceylon.language.Exception(null, null);
     }
     
-    private final void foo() {
-        bar();
+    private final void noParam1() {
+        noParam();
+    }
+    
+    private final void noParam2() {
+        noParam();
+    }
+    
+    private final .com.redhat.ceylon.compiler.java.test.structure.method.MethodSpecifierMethod oneParam(final long i) {
+        throw new .ceylon.language.Exception(null, null);
+    }
+    
+    private final void oneParam1() {
+        oneParam(1L);
+    }
+    
+    private final void oneParam2() {
+        (
+            let
+            {
+                long $arg$1$0 = 1L;
+            }
+            returning oneParam($arg$1$0);
+        );
+    }
+    
+    private final .com.redhat.ceylon.compiler.java.test.structure.method.MethodSpecifierMethod oneDefaultedParam() {
+        return (
+            let
+            {
+                long $ceylontmp$i$3 = oneDefaultedParam$i();
+            }
+            returning oneDefaultedParam($ceylontmp$i$3);
+        );
+    }
+    
+    private final long oneDefaultedParam$i() {
+        return 2L;
+    }
+    
+    private final .com.redhat.ceylon.compiler.java.test.structure.method.MethodSpecifierMethod oneDefaultedParam(final long i) {
+        throw new .ceylon.language.Exception(null, null);
+    }
+    
+    private final void oneDefaultedParam1() {
+        oneDefaultedParam();
+    }
+    
+    private final void oneDefaultedParam2() {
+        (
+            let
+            {
+                .com.redhat.ceylon.compiler.java.test.structure.method.MethodSpecifierMethod $arg$4$this$ = this;
+                long $arg$4$0 = $arg$4$this$.oneDefaultedParam$i();
+            }
+            returning oneDefaultedParam($arg$4$0);
+        );
+    }
+    
+    private final .com.redhat.ceylon.compiler.java.test.structure.method.MethodSpecifierMethod oneSequencedParam() {
+        return (
+            let
+            {
+                .ceylon.language.Sequential<? extends .ceylon.language.Integer> $ceylontmp$i$6 = oneSequencedParam$i();
+            }
+            returning oneSequencedParam($ceylontmp$i$6);
+        );
+    }
+    
+    private final .ceylon.language.Sequential<? extends .ceylon.language.Integer> oneSequencedParam$i() {
+        return (.ceylon.language.Sequential).ceylon.language.empty_.getEmpty$();
+    }
+    
+    private final .com.redhat.ceylon.compiler.java.test.structure.method.MethodSpecifierMethod oneSequencedParam(final .ceylon.language.Sequential<? extends .ceylon.language.Integer> i) {
+        throw new .ceylon.language.Exception(null, null);
+    }
+    
+    private final void oneSequencedParam1() {
+        oneSequencedParam(new .com.redhat.ceylon.compiler.java.language.ArraySequence<.ceylon.language.Integer>(.ceylon.language.Integer.instance(1L), .ceylon.language.Integer.instance(2L)));
+    }
+    
+    private final void oneSequencedParam2() {
+        (
+            let
+            {
+                .ceylon.language.Integer $arg$7$0$0 = .ceylon.language.Integer.instance(2L);
+                .ceylon.language.Integer $arg$7$0$1 = .ceylon.language.Integer.instance(3L);
+                .ceylon.language.Sequential<? extends .ceylon.language.Integer> $arg$7$0$2 = new .com.redhat.ceylon.compiler.java.language.ArraySequence($arg$7$0$0, $arg$7$0$1);
+            }
+            returning oneSequencedParam($arg$7$0$2);
+        );
+    }
+    
+    private final void oneSequencedParam3() {
+        oneSequencedParam((.ceylon.language.Sequential)new .com.redhat.ceylon.compiler.java.language.AbstractIterable<.java.lang.Object>(){
+            
+            public final .ceylon.language.Iterator getIterator() {
+                return new .ceylon.language.Iterator(){
+                    private final .ceylon.language.Iterator<?> iter$0 = .ceylon.language.empty_.getEmpty$().getIterator();
+                    private .java.lang.Object i;
+                    private boolean i$exhausted;
+                    
+                    private final boolean i() {
+                        final .java.lang.Object $ceylontmpitem8 = iter$0.next();
+                        i$exhausted = $ceylontmpitem8 == .ceylon.language.exhausted_.getExhausted$();
+                        if (i$exhausted) {
+                            return false;
+                        } else {
+                            i = (.java.lang.Object)$ceylontmpitem8;
+                            return true;
+                        }
+                    }
+                    
+                    public final .java.lang.Object next() {
+                        return this.i() ? i : .ceylon.language.exhausted_.getExhausted$();
+                    }
+                };
+            }
+        }.getSequence());
     }
     
     public static void main(.java.lang.String[] args) {
