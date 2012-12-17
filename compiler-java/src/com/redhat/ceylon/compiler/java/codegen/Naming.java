@@ -446,6 +446,9 @@ public class Naming implements LocalId {
             } else {
                 return "$" + decl.getName() + "$init$" + param.getName();
             }
+        } else if (decl == null) {
+            // for Callables, we get a double dollar to not walk on $call methods if we have a "call" parameter
+            return "$$" + param.getName();
         } else {
             // Should never happen (for now at least)
             return null;

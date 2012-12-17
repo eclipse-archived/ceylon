@@ -48,7 +48,7 @@ public class CallableBuilder {
     private ProducedType typeModel;
     private List<JCStatement> body;
     private ParameterList paramLists;
-    private List<JCExpression> defaultValues;
+    private Tree.ParameterList parameterListTree;
     
     private CallableBuilder(CeylonTransformer gen) {
         this.gen = gen;
@@ -95,18 +95,11 @@ public class CallableBuilder {
             Tree.ParameterList parameterListTree, 
             List<JCStatement> stmts) {
         
-        ListBuffer<JCExpression> defaultValues = new ListBuffer<JCExpression>();
-        for(Tree.Parameter p : parameterListTree.getParameters()){
-            if(p.getDefaultArgument() != null){
-                defaultValues.append(gen.expressionGen().transformExpression(p.getDefaultArgument().getSpecifierExpression().getExpression()));
-            }
-        }
-
         CallableBuilder cb = new CallableBuilder(gen);
         cb.paramLists = parameterList;
         cb.typeModel = callableTypeModel;
         cb.body = prependVarsForArgs(gen, parameterListTree, stmts);
-        cb.defaultValues = defaultValues.toList();
+        cb.parameterListTree = parameterListTree;
         return cb;
     }
     
@@ -130,6 +123,7 @@ public class CallableBuilder {
         body = prependVarsForArgs(gen, parameterListTree, body);
 
         cb.body = body;
+        cb.parameterListTree = parameterListTree;
         return cb;
     }
 
@@ -165,6 +159,14 @@ public class CallableBuilder {
                 break;
             minimumParams++;
         }
+        // generate a method for each defaulted param
+        for(Tree.Parameter p : parameterListTree.getParameters()){
+            if(p.getDefaultArgument() != null){
+                MethodDefinitionBuilder methodBuilder = gen.classGen().makeParamDefaultValueMethod(false, null, parameterListTree, p);
+                classBody.append(methodBuilder.build());
+            }
+        }
+        
 //        int minimumParams = gen.getMinimumParameterCountForCallable(typeModel);
         for(int i=minimumParams,max = Math.min(numParams,4);i<max;i++)
             classBody.append(makeDefaultedCall(i));
@@ -184,10 +186,34 @@ public class CallableBuilder {
         // chain to n+1 param method
         List<JCExpression> args = List.nil();
         // add the default value
-        args = args.prepend(defaultValues.get(i));
+        Parameter param = paramLists.getParameters().get(i);
+        List<JCExpression> defaultMethodArgs = List.nil();
+        // pass all the previous values
+        for(int a=i-1;a>=0;a--){
+            // unbox them all if required
+            Parameter previousParameter = paramLists.getParameters().get(a);
+            JCExpression previousValue = gen.makeUnquotedIdent(getParamName(a));
+            // make sure we box/unbox it if required
+            previousValue = gen.expressionGen().applyErasureAndBoxing(previousValue, 
+                    gen.typeFact().getObjectDeclaration().getType(), // it came in as Object 
+                    true, // it came in boxed
+                    CodegenUtil.getBoxingStrategy(previousParameter), 
+                    previousParameter.getType());
+            defaultMethodArgs = defaultMethodArgs.prepend(previousValue);
+        }
+        // now call the default value method
+        JCExpression defaultValueCall = gen.make().Apply(null, gen.makeUnquotedIdent(Naming.getDefaultedParamMethodName(null, param)), defaultMethodArgs);
+        // make sure it's boxed properly
+        defaultValueCall = gen.expressionGen().applyErasureAndBoxing(defaultValueCall, 
+                param.getType(), // that's what comes out of the default call
+                !CodegenUtil.isUnBoxed(param), // that's what comes out of the default call
+                BoxingStrategy.BOXED, // we want it boxed 
+                gen.typeFact().getObjectDeclaration().getType()); // it goes into an Object param
+        args = args.prepend(defaultValueCall);
         // pass along the other parameters
-        for(int a=i-1;a>=0;a--)
+        for(int a=i-1;a>=0;a--){
             args = args.prepend(gen.makeUnquotedIdent(getParamName(a)));
+        }
         JCMethodInvocation chain = gen.make().Apply(null, gen.makeUnquotedIdent(Naming.getCallableMethodName()), args);
         List<JCStatement> body = List.<JCStatement>of(gen.make().Return(chain));
         return makeCallMethod(body, i);

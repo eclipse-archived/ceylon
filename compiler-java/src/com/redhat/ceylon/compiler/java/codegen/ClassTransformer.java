@@ -1763,7 +1763,7 @@ public class ClassTransformer extends AbstractTransformer {
      * Creates a (possibly abstract) method for retrieving the value for a 
      * defaulted parameter
      */
-    private MethodDefinitionBuilder makeParamDefaultValueMethod(boolean noBody, Declaration container, 
+    MethodDefinitionBuilder makeParamDefaultValueMethod(boolean noBody, Declaration container, 
             Tree.ParameterList params, Tree.Parameter currentParam) {
         at(currentParam);
         Parameter parameter = currentParam.getDeclarationModel();
@@ -1773,15 +1773,16 @@ public class ClassTransformer extends AbstractTransformer {
         int modifiers = 0;
         if (noBody) {
             modifiers |= PUBLIC | ABSTRACT;
-        } else if (!(container instanceof Class 
-                && Strategy.defaultParameterMethodStatic(container))) {
+        } else if (container == null
+                || !(container instanceof Class 
+                        && Strategy.defaultParameterMethodStatic(container))) {
             // initializers can override parameter defaults
             modifiers |= FINAL;
         }
-        if (container.isShared()) {
+        if (container != null && container.isShared()) {
             modifiers |= PUBLIC;
-        } else if (!container.isToplevel()
-                && !noBody){
+        } else if (container == null || (!container.isToplevel()
+                && !noBody)){
             modifiers |= PRIVATE;
         }
         if (Strategy.defaultParameterMethodStatic(container)) {
@@ -1791,7 +1792,8 @@ public class ClassTransformer extends AbstractTransformer {
         
         if (container instanceof Method) {
             copyTypeParameters((Method)container, methodBuilder);
-        } else if (Decl.isToplevel(container)
+        } else if (container != null
+                && Decl.isToplevel(container)
                 && container instanceof Class) {
             copyTypeParameters((Class)container, methodBuilder);
         }
