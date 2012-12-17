@@ -1324,7 +1324,8 @@ public abstract class AbstractTransformer implements Transformation {
         Assert.that(isCeylonCallable(callableType));
         ProducedType sequentialType = callableType.getTypeArgumentList().get(1);
         int num = 0;
-        while (sequentialType.getTypeArgumentList().size() == 3) {
+        while (sequentialType.getSupertype(typeFact().getTupleDeclaration()) != null
+                && sequentialType.getTypeArgumentList().size() == 3) {
             num++;
             sequentialType = sequentialType.getTypeArgumentList().get(2);
         }
