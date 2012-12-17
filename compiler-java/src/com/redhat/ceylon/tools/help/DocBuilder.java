@@ -32,6 +32,7 @@ import com.redhat.ceylon.tools.help.model.DescribedSection.Role;
 import com.redhat.ceylon.tools.help.model.Doc;
 import com.redhat.ceylon.tools.help.model.Option;
 import com.redhat.ceylon.tools.help.model.OptionsSection;
+import com.redhat.ceylon.tools.help.model.SummarySection;
 import com.redhat.ceylon.tools.help.model.SynopsesSection;
 import com.redhat.ceylon.tools.help.model.Synopsis;
 
@@ -339,13 +340,11 @@ public class DocBuilder {
         return options;
     }
 
-    private DescribedSection buildSummary(ToolModel<?> model) {
-        DescribedSection summary = new DescribedSection();
-        summary.setRole(Role.SUMMARY);
+    private SummarySection buildSummary(ToolModel<?> model) {
+        SummarySection summary = new SummarySection();
         summary.setTitle(
                 Markdown.markdown("##" + sectionsBundle.getString("section.NAME") + "\n"));
-        summary.setDescription(
-                Markdown.markdown("`" + getCeylonInvocation(model) + "` - " + getSummaryValue(model)));
+        summary.setSummary(getSummaryValue(model));
         return summary;
     }
     

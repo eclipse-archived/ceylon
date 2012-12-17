@@ -6,6 +6,7 @@ import com.redhat.ceylon.tools.help.model.DescribedSection;
 import com.redhat.ceylon.tools.help.model.Doc;
 import com.redhat.ceylon.tools.help.model.Option;
 import com.redhat.ceylon.tools.help.model.OptionsSection;
+import com.redhat.ceylon.tools.help.model.SummarySection;
 import com.redhat.ceylon.tools.help.model.SynopsesSection;
 import com.redhat.ceylon.tools.help.model.Synopsis;
 import com.redhat.ceylon.tools.help.model.Synopsis.NameAndSubtool;
@@ -64,7 +65,7 @@ public class SynopsisOnlyVisitor implements Visitor {
         // Only visiting synopsis
     }
 
-    public void visitSummary(DescribedSection summarySection) {
+    public void visitSummary(SummarySection summarySection) {
         // Only visiting synopsis
     }
 

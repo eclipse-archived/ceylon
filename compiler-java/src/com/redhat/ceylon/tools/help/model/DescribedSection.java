@@ -5,7 +5,6 @@ import org.tautua.markdownpapers.ast.Node;
 public class DescribedSection implements Documentation {
 
     public static enum Role {
-        SUMMARY,
         DESCRIPTION,
         ADDITIONAL
     }
@@ -43,9 +42,6 @@ public class DescribedSection implements Documentation {
     @Override
     public void accept(Visitor visitor) {
         switch (role) {
-        case SUMMARY:
-            visitor.visitSummary(this);
-            break;
         case DESCRIPTION:
             visitor.visitDescription(this);
             break;

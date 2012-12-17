@@ -15,7 +15,7 @@ public class Doc implements Documentation {
     
     private String invocation;
     
-    private DescribedSection summary;
+    private SummarySection summary;
     
     private SynopsesSection synopses;
     
@@ -68,11 +68,11 @@ public class Doc implements Documentation {
         return result;
     }
 
-    public DescribedSection getSummary() {
+    public SummarySection getSummary() {
         return summary;
     }
 
-    public void setSummary(DescribedSection summary) {
+    public void setSummary(SummarySection summary) {
         this.summary = summary;
     }
 
