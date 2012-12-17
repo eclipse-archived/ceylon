@@ -91,6 +91,9 @@ public class AetherTestCase {
             Assert.assertNotNull(artifact);
             file = artifact.artifact();
             Assert.assertTrue(file.exists());
+            // http://search.maven.org/remotecontent?filepath=org/jboss/xnio/xnio-api/3.1.0.Beta7/xnio-api-3.1.0.Beta7.pom
+            // there should be org.jboss.logging:jboss-logging
+            Assert.assertTrue(artifact.dependencies().size() > 0);
         } finally {
             if (file != null && file.exists()) {
                 Assert.assertTrue(file.delete()); // delete this one
