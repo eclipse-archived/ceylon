@@ -96,30 +96,30 @@ class Operators() {
     @error value x28 = 0->nothing;
     
     @type:"Boolean" value x29 = nothing exists;
-    @type:"Boolean" value x29n = exists nothing;
+    //@type:"Boolean" value x29n = exists nothing;
     
     @error @type:"Boolean" value x30 = 1 exists;
-    @error @type:"Boolean" value x30n = exists 1;
+    //@error @type:"Boolean" value x30n = exists 1;
     
     @error @type:"Boolean" value x73 = null exists;
-    @error @type:"Boolean" value x73n = exists null;
+    //@error @type:"Boolean" value x73n = exists null;
     
     @error @type:"Boolean" value x70 = {} nonempty;
-    @error @type:"Boolean" value x70n = nonempty {};
+    //@error @type:"Boolean" value x70n = nonempty {};
     @error @type:"Boolean" value x71 = {"hello"} nonempty;
-    @error @type:"Boolean" value x71n = nonempty {"hello"};
+    //@error @type:"Boolean" value x71n = nonempty {"hello"};
     String[] strs = {};
     @type:"Boolean" value x72 = strs nonempty;
-    @type:"Boolean" value x72n = nonempty strs;
+    //@type:"Boolean" value x72n = nonempty strs;
     
     Object one = 1;
     @type:"Boolean" value x31 = one is Integer;
-    @type:"Boolean" value x31n = is Integer one;
-    @error value x31e = is Integer 1;
+    //@type:"Boolean" value x31n = is Integer one;
+    @error value x31e = 1 is Integer;
     
     @type:"Boolean" value x32 = nothing is X;
-    @type:"Boolean" value x32n = is X nothing;    
-    @error value x32e = is Integer nothing;
+    //@type:"Boolean" value x32n = is X nothing;    
+    @error value x32e = nothing is Integer;
     
     @type:"Boolean" value x33 = "hello" in "hello world";
     

@@ -117,17 +117,17 @@ class Is() {
         @type:"Sequential<String>" value ee = e;
     }
     
-    Boolean b1 = is Sized&Iterable<String> e;
-    Boolean b2 = is Sized|Category e;
-    Boolean b3 = is Sized&{String...} e;
-    Boolean b4 = is <Sized|Category>&Iterable<Object> e;
-    Boolean b5 = is [String...] e;
-    Boolean b6 = is String[] e;
-    Boolean b7 = is [String,Integer] e;
-    Boolean b8 = is String() e;
-    Boolean b9 = is String(Integer) e;
-    Boolean b10 = is String? e;
-    Boolean b11 = is <Sized|Category> e;
+    //Boolean b1 = is Sized&Iterable<String> e;
+    //Boolean b2 = is Sized|Category e;
+    //Boolean b3 = is Sized&{String...} e;
+    //Boolean b4 = is <Sized|Category>&Iterable<Object> e;
+    //Boolean b5 = is [String...] e;
+    //Boolean b6 = is String[] e;
+    //Boolean b7 = is [String,Integer] e;
+    //Boolean b8 = is String() e;
+    //Boolean b9 = is String(Integer) e;
+    //Boolean b10 = is String? e;
+    //Boolean b11 = is <Sized|Category> e;
     
     Boolean c1 = e is Sized&Iterable<String>;
     Boolean c2 = e is Sized|Category;
@@ -158,8 +158,8 @@ class Is() {
     void m(String s) {
         @error if (is String s) { }
         @error if (is Integer s) { }
-        @error value b = is String s;
-        @error value c = is Integer s;
+        @error value b = s is String;
+        @error value c = s is Integer;
     }
     
     value next = "hello".iterator.next();

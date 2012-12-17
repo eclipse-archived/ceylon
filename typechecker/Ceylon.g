@@ -1194,6 +1194,16 @@ specifier returns [SpecifierExpression specifierExpression]
       { $specifierExpression.setExpression($functionOrExpression.expression); }
     ;
 
+conditionSpecifier returns [SpecifierExpression specifierExpression]
+    : SPECIFY
+      { $specifierExpression = new SpecifierExpression($SPECIFY); }
+      //disjunctionExpression
+      entryRangeExpression
+      { Expression e = new Expression(null);
+        e.setTerm($entryRangeExpression.term);
+        $specifierExpression.setExpression(e); }
+    ;
+
 lazySpecifier returns [SpecifierExpression specifierExpression]
     : COMPUTE
       { $specifierExpression = new LazySpecifierExpression($COMPUTE); }
@@ -1908,12 +1918,17 @@ thenElseExpression returns [Term term]
     : de1=disjunctionExpression
       { $term = $de1.term; }
       (
-        thenElseOperator 
+        thenElseOperator
         { $thenElseOperator.operator.setLeftTerm($term);
           $term = $thenElseOperator.operator; }
         de2=disjunctionExpression
         { $thenElseOperator.operator.setRightTerm($de2.term); }
       )*
+    | 
+      ( existsCondition | nonemptyCondition | isCondition | 
+        TYPE_CONSTRAINT specifiedConditionVariable )+
+      THEN_CLAUSE disjunctionExpression 
+      (ELSE_CLAUSE disjunctionExpression)?
     ;
 
 thenElseOperator returns [BinaryOperatorExpression operator]
@@ -2007,12 +2022,12 @@ comparisonExpression returns [Term term]
         t1=type
         { $to1.operator.setType($t1.type); }
       )?
-    | to2=typeOperator
+    /*| to2=typeOperator
       { $term = $to2.operator; }
       t2=type
       { $to2.operator.setType($t2.type); }
       ee3=existenceEmptinessExpression
-      { $to2.operator.setTerm($ee3.term); }
+      { $to2.operator.setTerm($ee3.term); }*/
     ;
 
 comparisonOperator returns [BinaryOperatorExpression operator]
@@ -2042,17 +2057,17 @@ typeOperator returns [TypeOperatorExpression operator]
     ;
 
 existenceEmptinessExpression returns [Term term]
-    : de1=rangeIntervalEntryExpression
+    : de1=entryRangeExpression
       { $term = $de1.term; }
       (
         eno1=existsNonemptyOperator
         { $term = $eno1.operator;
           $eno1.operator.setTerm($de1.term); }
       )?
-    | eno2=existsNonemptyOperator
+    /*| eno2=existsNonemptyOperator
       { $term = $eno2.operator; }
       de2=rangeIntervalEntryExpression
-      { $eno2.operator.setTerm($de2.term); }
+      { $eno2.operator.setTerm($de2.term); }*/
     ;
 
 existsNonemptyOperator returns [UnaryOperatorExpression operator]
@@ -2062,7 +2077,7 @@ existsNonemptyOperator returns [UnaryOperatorExpression operator]
       { $operator = new Nonempty($NONEMPTY); }
     ;
 
-rangeIntervalEntryExpression returns [Term term]
+entryRangeExpression returns [Term term]
     : ae1=additiveExpression
       { $term = $ae1.term; }
       (
@@ -2402,11 +2417,11 @@ qualifiedOrTupleType returns [StaticType type]
       { $type=$groupedType.type; }
     ;
 
-typeAbbreviationStart
+/*typeAbbreviationStart
     : DEFAULT_OP
     | ARRAY
     | LPAREN tupleElementType? (COMMA|RPAREN)
-    ;
+    ;*/
 
 abbreviatedType returns [StaticType type]
     @init { FunctionType bt=null; }
@@ -2416,7 +2431,7 @@ abbreviatedType returns [StaticType type]
       //syntactic predicate to resolve an
       //ambiguity in the grammar of the
       //prefix "is Type" operator
-      (typeAbbreviationStart)=>
+      //(typeAbbreviationStart)=>
       (
         DEFAULT_OP 
         { OptionalType ot = new OptionalType(null);
@@ -2584,12 +2599,14 @@ conditions returns [ConditionList conditionList]
       { $conditionList = new ConditionList($LPAREN); }
       (
       c1=condition
-      { $conditionList.addCondition($c1.condition); }
+      { if ($c1.condition!=null) 
+            $conditionList.addCondition($c1.condition); }
       ( c=COMMA 
         { $conditionList.setEndToken($c); }
         (
           c2=condition 
-          { $conditionList.addCondition($c2.condition);
+          { if ($c2.condition!=null) 
+                $conditionList.addCondition($c2.condition);
             $conditionList.setEndToken(null); }
         | { displayRecognitionError(getTokenNames(), 
               new MismatchedTokenException(LIDENTIFIER, input)); } //TODO: sometimes it should be RPAREN!
@@ -2622,60 +2639,45 @@ booleanCondition returns [BooleanCondition condition]
     
 existsCondition returns [Condition condition]
     @init { ExistsCondition ec = null; }
-    : (EXISTS LIDENTIFIER (RPAREN|COMMA))
-      => e1=EXISTS
+    : (EXISTS compilerAnnotations (declarationStart|specificationStart)) =>
+      e2=EXISTS 
+      { ec = new ExistsCondition($e2); 
+        $condition = ec; }
+      specifiedConditionVariable 
+      { ec.setVariable($specifiedConditionVariable.variable); }
+    //-> ^(EXISTS_CONDITION[$EXISTS] specifiedVariable2)
+    | //(EXISTS LIDENTIFIER (RPAREN|COMMA)) =>
+      e1=EXISTS
       { ec = new ExistsCondition($e1); 
         $condition = ec; }
       impliedVariable
       { ec.setVariable($impliedVariable.variable); }
     //-> ^(EXISTS_CONDITION[$EXISTS] impliedVariable)
-    | (EXISTS compilerAnnotations (declarationStart|specificationStart))
-      => e2=EXISTS 
-      { ec = new ExistsCondition($e2); 
-        $condition = ec; }
-      specifiedVariable 
-      { ec.setVariable($specifiedVariable.variable); }
-    //-> ^(EXISTS_CONDITION[$EXISTS] specifiedVariable2)
-    | booleanCondition
-      { $condition=$booleanCondition.condition; }
     ;
     
 nonemptyCondition returns [Condition condition]
     @init { NonemptyCondition nc = null; }
-    : (NONEMPTY LIDENTIFIER (RPAREN|COMMA)) 
-      => n1=NONEMPTY 
+    : (NONEMPTY compilerAnnotations (declarationStart|specificationStart)) =>
+      n2=NONEMPTY 
+      { nc = new NonemptyCondition($n2); 
+        $condition = nc; }
+      specifiedConditionVariable 
+      { nc.setVariable($specifiedConditionVariable.variable); }
+    //-> ^(NONEMPTY_CONDITION[$NONEMPTY] specifiedVariable2)
+    | //(NONEMPTY LIDENTIFIER (RPAREN|COMMA)) =>
+      n1=NONEMPTY 
       { nc = new NonemptyCondition($n1); 
         $condition = nc; }
       impliedVariable 
       { nc.setVariable($impliedVariable.variable); }
     //-> ^(NONEMPTY_CONDITION[$NONEMPTY] impliedVariable)
-    | (NONEMPTY compilerAnnotations (declarationStart|specificationStart))
-      => n2=NONEMPTY 
-      { nc = new NonemptyCondition($n2); 
-        $condition = nc; }
-      specifiedVariable 
-      { nc.setVariable($specifiedVariable.variable); }
-    //-> ^(NONEMPTY_CONDITION[$NONEMPTY] specifiedVariable2)
-    | booleanCondition
-      { $condition=$booleanCondition.condition; }
     ;
 
 isCondition returns [Condition condition]
     @init { IsCondition ic = null;
             boolean not = false; }
-    : (NOT_OP? IS_OP type LIDENTIFIER (RPAREN|COMMA)) 
-      => (n1=NOT_OP { not=true; })?
-      i1=IS_OP
-      { ic = new IsCondition($i1); 
-        ic.setNot(not);
-        $condition = ic; }
-      t1=type 
-      { ic.setType($t1.type); }
-      impliedVariable 
-      { ic.setVariable($impliedVariable.variable); }
-    //-> ^(IS_CONDITION[$IS_OP] unionType ^(VARIABLE SYNTHETIC_VARIABLE memberName ^(SPECIFIER_EXPRESSION ^(EXPRESSION ^(BASE_MEMBER_EXPRESSION memberName)))))
-    | (NOT_OP? IS_OP type LIDENTIFIER SPECIFY)
-      => (n2=NOT_OP { not=true; })?
+    : (NOT_OP? IS_OP type LIDENTIFIER SPECIFY) =>
+      (n2=NOT_OP { not=true; })?
       i2=IS_OP 
       { ic = new IsCondition($i2);
         ic.setNot(not); 
@@ -2687,11 +2689,20 @@ isCondition returns [Condition condition]
         ic.setVariable(v); }
       memberName
       { ic.getVariable().setIdentifier($memberName.identifier); }
-      specifier
-      { ic.getVariable().setSpecifierExpression($specifier.specifierExpression); }
+      conditionSpecifier
+      { ic.getVariable().setSpecifierExpression($conditionSpecifier.specifierExpression); }
     //-> ^(IS_CONDITION[$IS_OP] unionType ^(VARIABLE unionType memberName specifier))
-    | booleanCondition
-      { $condition=$booleanCondition.condition; }
+    | //(NOT_OP? IS_OP type LIDENTIFIER (RPAREN|COMMA)) =>
+      (n1=NOT_OP { not=true; })?
+      i1=IS_OP
+      { ic = new IsCondition($i1); 
+        ic.setNot(not);
+        $condition = ic; }
+      t1=type
+      { ic.setType($t1.type); }
+      impliedVariable 
+      { ic.setVariable($impliedVariable.variable); }
+    //-> ^(IS_CONDITION[$IS_OP] unionType ^(VARIABLE SYNTHETIC_VARIABLE memberName ^(SPECIFIER_EXPRESSION ^(EXPRESSION ^(BASE_MEMBER_EXPRESSION memberName)))))
     ;
 
 satisfiesCondition returns [SatisfiesCondition condition]
@@ -3034,6 +3045,15 @@ specifiedVariable returns [Variable variable]
       (
         specifier
         { $variable.setSpecifierExpression($specifier.specifierExpression); }
+      )?
+    ;
+
+specifiedConditionVariable returns [Variable variable]
+    : v=variable 
+      { $variable = $v.variable; }
+      (
+        conditionSpecifier
+        { $variable.setSpecifierExpression($conditionSpecifier.specifierExpression); }
       )?
     ;
 

@@ -197,8 +197,8 @@ class Assignability() {
         @error print(y.name);
     }
     
-    @error if (is Y X()) {}
-    @error if (is Object X()) {}
+    @error if (X() is Y) {}
+    @error if (X() is Object ) {}
     @error if (is Y x = X()) {}
     @error if (is Object x = X()) {}
     
