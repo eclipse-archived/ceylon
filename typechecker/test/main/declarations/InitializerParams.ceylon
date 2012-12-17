@@ -124,4 +124,10 @@ interface InitializerParams {
         shared default Integer count;
     }
     
+    class Super() {
+        shared String str = "str";
+    }
+    class SubWithParam(String str) extends Super() {}
+    class SubWithAtt() extends Super() { String str=""; }
+    
 }

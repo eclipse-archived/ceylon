@@ -338,13 +338,11 @@ public class RefinementVisitor extends Visitor {
         if (dec!=null) {
             boolean toplevel = dec.getContainer() instanceof Package;
             boolean member = dec.isClassOrInterfaceMember() &&
-                    !(dec instanceof Parameter && !dec.isShared()) &&
+                    dec.isShared() &&
                     !(dec instanceof TypeParameter); //TODO: what about nested interfaces and abstract classes?!
             
-            if (!toplevel && !member) {
-                if (dec.isShared()) {
-                    that.addError("shared declaration is not a member of a class, interface, or package", 1200);
-                }
+            if (!toplevel && !member && dec.isShared()) {
+                that.addError("shared declaration is not a member of a class, interface, or package", 1200);
             }
             
             boolean mayBeShared = 
@@ -352,10 +350,8 @@ public class RefinementVisitor extends Visitor {
                     dec instanceof ClassOrInterface ||
                     dec instanceof TypeAlias ||
                     dec instanceof Parameter;
-            if (!mayBeShared) {
-                if (dec.isShared()) {
-                    that.addError("shared member is not a method, attribute, class, or interface", 1200);
-                }
+            if (!mayBeShared && dec.isShared()) {
+                that.addError("shared member is not a method, attribute, class, or interface", 1200);
             }
             
             boolean mayBeRefined = 
@@ -372,7 +368,7 @@ public class RefinementVisitor extends Visitor {
                 checkNonMember(that, dec);
             }
             
-            if ( !dec.isShared() ) {
+            if (!dec.isShared()) {
                 checkUnshared(that, dec);
             }
             
@@ -385,9 +381,9 @@ public class RefinementVisitor extends Visitor {
                 		getSignature(dec), false);
                 dec.setRefinedDeclaration(refined);
             }
-
+            
         }
-
+        
     }
 
     private void checkMember(Tree.Declaration that, Declaration dec) {

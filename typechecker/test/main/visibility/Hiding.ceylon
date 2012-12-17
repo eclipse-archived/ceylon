@@ -6,7 +6,7 @@ class Hiding() {
     }
     
     class Hider() extends Hidden() {
-        @error String hello = "hi"; //language spec says this is illegal!
+        String hello = "hi";
         shared void helloWorld() {}
     }
     
