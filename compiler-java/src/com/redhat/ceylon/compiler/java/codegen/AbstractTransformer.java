@@ -1320,6 +1320,7 @@ public abstract class AbstractTransformer implements Transformation {
         }
         throw Assert.fail(""+decl);
     }
+    
     int getNumParametersOfCallable(ProducedType callableType) {
         Assert.that(isCeylonCallable(callableType));
         ProducedType sequentialType = callableType.getTypeArgumentList().get(1);
@@ -1329,6 +1330,10 @@ public abstract class AbstractTransformer implements Transformation {
             num++;
             sequentialType = sequentialType.getTypeArgumentList().get(2);
         }
+        // is is sequential?
+        if(sequentialType.getSupertype(typeFact().getTupleDeclaration()) == null
+                && sequentialType.getSupertype(typeFact().getEmptyDeclaration()) == null)
+            num++;
         return num;
     }
     
