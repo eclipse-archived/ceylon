@@ -59,9 +59,11 @@ import com.redhat.ceylon.compiler.typechecker.model.Value;
 import com.redhat.ceylon.compiler.typechecker.tree.Node;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.BaseMemberExpression;
+import com.redhat.ceylon.compiler.typechecker.tree.Tree.Comprehension;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.Expression;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.FunctionArgument;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.InvocationExpression;
+import com.redhat.ceylon.compiler.typechecker.tree.Tree.PositionalArgumentList;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.Primary;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.QualifiedTypeExpression;
 import com.sun.tools.javac.tree.JCTree;
@@ -363,21 +365,9 @@ abstract class InvocationBuilder {
                         parameters);
             } else {
                 // indirect invocation
-                final java.util.List<ProducedType> tas = new ArrayList<>();
-                tas.add(gen.getReturnTypeOfCallable(primary.getTypeModel()));
-                for (int ii = 0; ii < gen.getNumParametersOfCallable(primary.getTypeModel()); ii++) {
-                    tas.add(gen.getParameterTypeOfCallable(primary.getTypeModel(), ii));
-                }
-                //final java.util.List<ProducedType> tas = primary.getTypeModel().getTypeArgumentList();
-                final java.util.List<ProducedType> parameterTypes = tas.subList(1, tas.size());
-                final java.util.List<Tree.Expression> argumentExpressions = new ArrayList<Tree.Expression>(tas.size());
-                for (Tree.PositionalArgument argument : invocation.getPositionalArgumentList().getPositionalArguments()) {
-                    argumentExpressions.add(argument.getExpression());
-                }
                 builder = new IndirectInvocationBuilder(gen, 
                         primary, primaryDeclaration,
-                        invocation,
-                        parameterTypes, argumentExpressions);
+                        invocation);
             }
             
         } else if (invocation.getNamedArgumentList() != null) {
@@ -616,20 +606,40 @@ class IndirectInvocationBuilder extends SimpleInvocationBuilder {
 
     private final java.util.List<ProducedType> parameterTypes;
     private final java.util.List<Tree.Expression> argumentExpressions;
+    private Comprehension comprehension;
 
     public IndirectInvocationBuilder(
             AbstractTransformer gen, 
             Tree.Primary primary,
             Declaration primaryDeclaration,
-            Tree.InvocationExpression invocation,
-            java.util.List<ProducedType> parameterTypes,
-            java.util.List<Tree.Expression> argumentExpressions) {
+            Tree.InvocationExpression invocation) {
         super(gen, primary, primaryDeclaration, invocation.getTypeModel(), invocation);
+
+        // find the parameter types
+        final java.util.List<ProducedType> tas = new ArrayList<>();
+        tas.add(gen.getReturnTypeOfCallable(primary.getTypeModel()));
+        for (int ii = 0, l = gen.getNumParametersOfCallable(primary.getTypeModel()); ii < l; ii++) {
+            tas.add(gen.getParameterTypeOfCallable(primary.getTypeModel(), ii));
+        }
+        //final java.util.List<ProducedType> tas = primary.getTypeModel().getTypeArgumentList();
+        final java.util.List<ProducedType> parameterTypes = tas.subList(1, tas.size());
+        
+        PositionalArgumentList positionalArgumentList = invocation.getPositionalArgumentList();
+        final java.util.List<Tree.Expression> argumentExpressions = new ArrayList<Tree.Expression>(tas.size());
+        for (Tree.PositionalArgument argument : positionalArgumentList.getPositionalArguments()) {
+            argumentExpressions.add(argument.getExpression());
+        }
         if (parameterTypes.size() != argumentExpressions.size()) {
             throw new RuntimeException();
         }
-        this.parameterTypes = parameterTypes;
         this.argumentExpressions = argumentExpressions;
+        this.parameterTypes = parameterTypes;
+        
+        if(positionalArgumentList.getComprehension() != null) {
+            this.comprehension = positionalArgumentList.getComprehension();
+        }else{
+            this.comprehension = null;
+        }
     }
     
 
@@ -667,7 +677,7 @@ class IndirectInvocationBuilder extends SimpleInvocationBuilder {
 
     @Override
     protected int getNumArguments() {
-        return parameterTypes.size();
+        return parameterTypes.size() + (comprehension != null ? 1 : 0);
     }
 
     @Override
@@ -675,12 +685,25 @@ class IndirectInvocationBuilder extends SimpleInvocationBuilder {
         return true;
     }
 
-
     @Override
     protected Tree.Expression getArgumentExpression(int argIndex) {
         return argumentExpressions.get(argIndex);
     }
     
+    @Override
+    protected JCExpression getTransformedArgumentExpression(int argIndex) {
+        if (argIndex == parameterTypes.size() && comprehension != null) {
+            ProducedType type = getParameterType(argIndex);
+            return gen.expressionGen().comprehensionAsSequential(comprehension, type); 
+        }
+        Tree.Expression expr = getArgumentExpression(argIndex);
+        if (expr.getTerm() instanceof FunctionArgument) {
+            FunctionArgument farg = (FunctionArgument)expr.getTerm();
+            return gen.expressionGen().transform(farg);
+        }
+        return transformArg(argIndex);
+    }
+
 }
 
 /**
