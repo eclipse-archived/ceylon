@@ -1337,6 +1337,18 @@ public abstract class AbstractTransformer implements Transformation {
         return num;
     }
     
+    boolean isVariadicCallable(ProducedType callableType) {
+        Assert.that(isCeylonCallable(callableType));
+        ProducedType sequentialType = callableType.getTypeArgumentList().get(1);
+        while (sequentialType.getSupertype(typeFact().getTupleDeclaration()) != null
+                && sequentialType.getTypeArgumentList().size() == 3) {
+            sequentialType = sequentialType.getTypeArgumentList().get(2);
+        }
+        // it's variadic if it's not a Tuple and not empty
+        return sequentialType.getSupertype(typeFact().getTupleDeclaration()) == null
+                && sequentialType.getSupertype(typeFact().getEmptyDeclaration()) == null;
+    }
+
     /**
      * <p>Gets the type of the given functional
      * (ignoring parameter types) according to 
