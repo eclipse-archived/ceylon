@@ -31,6 +31,7 @@ import com.redhat.ceylon.compiler.typechecker.model.ProducedType;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree;
 import com.sun.tools.javac.code.Flags;
 import com.sun.tools.javac.tree.JCTree;
+import com.sun.tools.javac.tree.JCTree.JCBinary;
 import com.sun.tools.javac.tree.JCTree.JCClassDecl;
 import com.sun.tools.javac.tree.JCTree.JCExpression;
 import com.sun.tools.javac.tree.JCTree.JCMethodInvocation;
@@ -93,26 +94,19 @@ public class CallableBuilder {
             ParameterList parameterList,
             Tree.ParameterList parameterListTree, 
             List<JCStatement> stmts) {
+        
         ListBuffer<JCExpression> defaultValues = new ListBuffer<JCExpression>();
         for(Tree.Parameter p : parameterListTree.getParameters()){
             if(p.getDefaultArgument() != null){
                 defaultValues.append(gen.expressionGen().transformExpression(p.getDefaultArgument().getSpecifierExpression().getExpression()));
             }
         }
-        return methodArgument(gen, callableTypeModel, parameterList, defaultValues.toList(), stmts);
-    }
-    
-    public static CallableBuilder methodArgument(
-            CeylonTransformer gen,
-            ProducedType callableTypeModel,
-            ParameterList parameterList,
-            List<JCExpression> defaultValues, 
-            List<JCStatement> stmts) {
+
         CallableBuilder cb = new CallableBuilder(gen);
         cb.paramLists = parameterList;
         cb.typeModel = callableTypeModel;
-        cb.body = prependVarsForArgs(gen, parameterList, stmts);
-        cb.defaultValues = defaultValues;
+        cb.body = prependVarsForArgs(gen, parameterListTree, stmts);
+        cb.defaultValues = defaultValues.toList();
         return cb;
     }
     
@@ -124,6 +118,7 @@ public class CallableBuilder {
             CeylonTransformer gen,
             ProducedType typeModel,
             ParameterList parameterList,
+            Tree.ParameterList parameterListTree,
             List<JCStatement> body) {
 
         CallableBuilder cb = new CallableBuilder(gen);
@@ -132,7 +127,7 @@ public class CallableBuilder {
         if (body == null) {
             body = List.<JCStatement>nil();
         }
-        body = prependVarsForArgs(gen, parameterList, body);
+        body = prependVarsForArgs(gen, parameterListTree, body);
 
         cb.body = body;
         return cb;
@@ -144,12 +139,14 @@ public class CallableBuilder {
      * method work.
      */
     private static List<JCStatement> prependVarsForArgs(CeylonTransformer gen,
-            ParameterList parameterList, List<JCStatement> body) {
+            Tree.ParameterList parameterListTree, List<JCStatement> body) {
         int ii =0;
-        for (Parameter p : parameterList.getParameters()) {
-            JCExpression init = unpickCallableParameter(gen, null, p, null, ii, parameterList.getParameters().size());
+        for (Tree.Parameter tp : parameterListTree.getParameters()) {
+            Parameter p = tp.getDeclarationModel();
+            JCExpression init = unpickCallableParameter(gen, null, tp, null, ii, parameterListTree.getParameters().size());
             JCVariableDecl varDef = gen.make().VarDef(gen.make().Modifiers(Flags.FINAL), 
-                    gen.names().fromString(p.getName()), 
+                    gen.names().fromString(p.getName()),
+                    // FIXME: unboxed
                     gen.makeJavaType(p.getType(), Boolean.TRUE.equals(p.getUnboxed()) ? 0 : JT_NO_PRIMITIVES), 
                     init);
             body = body.prepend(varDef);
@@ -169,7 +166,7 @@ public class CallableBuilder {
             minimumParams++;
         }
 //        int minimumParams = gen.getMinimumParameterCountForCallable(typeModel);
-        for(int i=minimumParams;i<numParams;i++)
+        for(int i=minimumParams,max = Math.min(numParams,4);i<max;i++)
             classBody.append(makeDefaultedCall(i));
         classBody.append(makeCallMethod(body, numParams));
         
@@ -249,10 +246,11 @@ public class CallableBuilder {
     
     public static JCExpression unpickCallableParameter(AbstractTransformer gen,
             ProducedReference producedReference,
-            Parameter param,
+            Tree.Parameter parameterTree,
             ProducedType argType, 
             int argIndex,
             int numParameters) {
+        Parameter param = parameterTree.getDeclarationModel();
         JCExpression argExpr;
         if (numParameters <= 3) {
             // The Callable has overridden one of the non-varargs call() 
@@ -265,6 +263,12 @@ public class CallableBuilder {
             argExpr = gen.make().Indexed(
                     gen.make().Ident(makeParamName(gen, 0)), 
                     gen.make().Literal(argIndex));
+            if(parameterTree.getDefaultArgument() != null && argIndex > 3){
+                // insert default value for parameters defaulted after the call-3 method
+                JCBinary test = gen.make().Binary(JCTree.GT, gen.makeSelect(makeParamName(gen, 0).toString(), "length"), gen.makeInteger(argIndex));
+                JCExpression defaultExpr = gen.expressionGen().transformExpression(parameterTree.getDefaultArgument().getSpecifierExpression().getExpression());
+                argExpr = gen.make().Conditional(test, argExpr, defaultExpr);
+            }
         }
         ProducedType castType;
         if (argType != null) {

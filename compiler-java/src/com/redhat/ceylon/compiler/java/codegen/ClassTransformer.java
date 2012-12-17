@@ -1227,7 +1227,7 @@ public class ClassTransformer extends AbstractTransformer {
             }
             boolean transformMethod = specifier != null || block != null;
             boolean actualAndAnnotations = def instanceof MethodDeclaration  && ((MethodDeclaration)def).getSpecifierExpression() == null;
-            List<JCStatement> cbody = specifier != null ? transformMplBody(model, body) 
+            List<JCStatement> cbody = specifier != null ? transformMplBody(def.getParameterLists(), model, body) 
                     : block != null ? transformMethodBlock(model, block) 
                     : null;
                     
@@ -1250,7 +1250,7 @@ public class ClassTransformer extends AbstractTransformer {
         List<MethodDefinitionBuilder> result = List.<MethodDefinitionBuilder>nil();
         if (!Strategy.onlyOnCompanion(model)) {
             // Transform it for the interface/class
-            List<JCStatement> cbody = !model.isInterfaceMember() ? transformMplBody(model, body) : null;
+            List<JCStatement> cbody = !model.isInterfaceMember() ? transformMplBody(def.getParameterLists(), model, body) : null;
             result = transformMethod(def, model, methodName, true, true, 
                     cbody, 
                     true,
@@ -1351,12 +1351,13 @@ public class ClassTransformer extends AbstractTransformer {
      * @param model The {@code Method} model
      * @param body The inner-most body
      */
-    List<JCStatement> transformMplBody(Method model,
+    List<JCStatement> transformMplBody(java.util.List<Tree.ParameterList> parameterListsTree,
+            Method model,
             List<JCStatement> body) {
         ProducedType resultType = model.getType();
         for (int index = model.getParameterLists().size() - 1; index >  0; index--) {
             resultType = gen().typeFact().getCallableType(resultType);
-            CallableBuilder cb = CallableBuilder.mpl(gen(), resultType, model.getParameterLists().get(index), body);
+            CallableBuilder cb = CallableBuilder.mpl(gen(), resultType, model.getParameterLists().get(index), parameterListsTree.get(index), body);
             body = List.<JCStatement>of(make().Return(cb.build()));
         }
         return body;

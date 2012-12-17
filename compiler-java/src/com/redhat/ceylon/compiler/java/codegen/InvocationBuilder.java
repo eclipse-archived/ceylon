@@ -1294,7 +1294,7 @@ class NamedArgumentInvocationBuilder extends InvocationBuilder {
                         callableType, 
                         model.getParameterLists().get(0),
                         methodArg.getParameterLists().get(0),
-                        gen.classGen().transformMplBody(model, body));
+                        gen.classGen().transformMplBody(methodArg.getParameterLists(), model, body));
                 JCNewClass callable = callableBuilder.build();
                 JCExpression typeExpr = gen.makeJavaType(callableType);
                 JCVariableDecl varDecl = gen.makeVar(argName, typeExpr, callable);

@@ -55,6 +55,7 @@ import com.redhat.ceylon.compiler.typechecker.tree.Tree.Expression;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.ExpressionComprehensionClause;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.ForComprehensionClause;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.FunctionArgument;
+import com.redhat.ceylon.compiler.typechecker.tree.Tree.FunctionalParameterDeclaration;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.IfComprehensionClause;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.InvocationExpression;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.KeyValueIterator;
@@ -1407,10 +1408,12 @@ public class ExpressionTransformer extends AbstractTransformer {
         if (defaultArgument != null) {
             SpecifierExpression spec = defaultArgument.getSpecifierExpression();
             if (spec.getScope() instanceof FunctionalParameter) {
+                Tree.FunctionalParameterDeclaration fpTree = (FunctionalParameterDeclaration) param;
                 FunctionalParameter fp = (FunctionalParameter)spec.getScope();
                 Tree.SpecifierExpression lazy = param.getDefaultArgument().getSpecifierExpression();
                 expr = CallableBuilder.anonymous(gen(), lazy.getExpression(), 
                         fp.getParameterLists().get(0),
+                        fpTree.getParameterLists().get(0),
                         getTypeForFunctionalParameter(fp)).build();
             } else {
                 expr = expressionGen().transformExpression(spec.getExpression(), CodegenUtil.getBoxingStrategy(param.getDeclarationModel()), param.getDeclarationModel().getType());
