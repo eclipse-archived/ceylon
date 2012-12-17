@@ -602,6 +602,10 @@ abstract class SimpleInvocationBuilder extends InvocationBuilder {
     
 }
 
+/**
+ * Generates calls to Callable methods. This is for regular {@code Callable<T>} objects and not
+ * functional parameters, which have more info like parameter names and default values.
+ */
 class IndirectInvocationBuilder extends SimpleInvocationBuilder {
 
     private final java.util.List<ProducedType> parameterTypes;
@@ -901,7 +905,18 @@ class SuperInvocationBuilder extends PositionalInvocationBuilder {
 
 /**
  * InvocationBuilder for constructing the invocation of a method reference 
- * used when implementing {@code Callable.call()}
+ * used when implementing {@code Callable.call()}.
+ * 
+ * This will be used when you do:
+ * <p>
+ * <code>
+ * void f(){
+ *   value callable = f;
+ * }
+ * </code>
+ * </p>
+ * And will generate the code required to put inside the Callable's {@code $call} method to
+ * invoke {@code f}: {@code f();}. The generation of the Callable or its methods is not done here.
  */
 class CallableInvocationBuilder extends DirectInvocationBuilder {
     
@@ -947,7 +962,11 @@ class CallableInvocationBuilder extends DirectInvocationBuilder {
 }
 
 /**
- * InvocationBuilder for methods specifierd with a method reference. 
+ * InvocationBuilder for methods specified with a method reference. This builds the specifier invocation
+ * within the body of the specified method.
+ * 
+ * For example for {@code void foo() => f();} we generate: {@code f()} that you would then place into
+ * the generated method for {@code foo}.
  */
 class MethodReferenceSpecifierInvocationBuilder extends DirectInvocationBuilder {
     
@@ -996,7 +1015,11 @@ class MethodReferenceSpecifierInvocationBuilder extends DirectInvocationBuilder 
 }
 
 /**
- * InvocationBuilder for methods specified with a Callable 
+ * InvocationBuilder for methods specified with a Callable. This builds the Callable invocation
+ * within the body of the specified method.
+ * 
+ * For example for {@code void foo() => f();} we generate: {@code f.$call()} that you would then place into
+ * the generated method for {@code foo}.
  */
 class CallableSpecifierInvocationBuilder extends InvocationBuilder {
     
@@ -1047,7 +1070,7 @@ class CallableSpecifierInvocationBuilder extends InvocationBuilder {
 
 /**
  * InvocationBuilder for 'normal' method and initializer invocations
- * using named arguments
+ * using named arguments.
  */
 class NamedArgumentInvocationBuilder extends InvocationBuilder {
     
