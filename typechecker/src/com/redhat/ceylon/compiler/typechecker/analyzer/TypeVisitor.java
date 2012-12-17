@@ -45,7 +45,6 @@ import com.redhat.ceylon.compiler.typechecker.model.ValueParameter;
 import com.redhat.ceylon.compiler.typechecker.parser.CeylonLexer;
 import com.redhat.ceylon.compiler.typechecker.tree.Node;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree;
-import com.redhat.ceylon.compiler.typechecker.tree.Tree.LocalModifier;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.SupertypeQualifier;
 import com.redhat.ceylon.compiler.typechecker.tree.Visitor;
 
@@ -1073,7 +1072,7 @@ public class TypeVisitor extends Visitor {
     @Override
     public void visit(Tree.ValueParameterDeclaration that) {
         super.visit(that);
-        if (that.getType() instanceof LocalModifier) {
+        if (that.getType() instanceof Tree.LocalModifier) {
             //i.e. an attribute initializer parameter
             ValueParameter d = that.getDeclarationModel();
             Declaration a = that.getScope().getDirectMember(d.getName(), null, false);
@@ -1085,6 +1084,10 @@ public class TypeVisitor extends Visitor {
             }
             else if (a.isFormal()) {
                 that.addError("initializer parameter refers to a formal attribute: " + 
+                        d.getName());
+            }
+            else if (a.isDefault()) {
+                that.addError("initializer parameter refers to a default attribute: " + 
                         d.getName());
             }
             else {

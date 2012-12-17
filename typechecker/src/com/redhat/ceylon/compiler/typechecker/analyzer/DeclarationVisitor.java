@@ -847,6 +847,9 @@ public class DeclarationVisitor extends Visitor {
             if (that instanceof Tree.ObjectDefinition) {
                 that.addError("object declaration may not be annotated default", 1313);
             }
+            else if (that instanceof Tree.Parameter) {
+            	that.addError("parameters may not be annotated default", 1313);
+            }
             else {
                 model.setDefault(true);
             }
@@ -855,7 +858,7 @@ public class DeclarationVisitor extends Visitor {
             if (that instanceof Tree.ObjectDefinition) {
                 that.addError("object declaration may not be annotated formal", 1312);
             }
-            if (that instanceof Tree.Parameter) {
+            else if (that instanceof Tree.Parameter) {
             	that.addError("parameters may not be annotated formal", 1312);
             }
             else {
