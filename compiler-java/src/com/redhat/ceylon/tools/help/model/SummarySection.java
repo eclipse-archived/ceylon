@@ -17,14 +17,14 @@ public class SummarySection implements Documentation {
     }
 
     public String getSummary() {
-		return summary;
-	}
+        return summary;
+    }
 
-	public void setSummary(String summary) {
-		this.summary = summary;
-	}
+    public void setSummary(String summary) {
+        this.summary = summary;
+    }
 
-	@Override
+    @Override
     public void accept(Visitor visitor) {
         visitor.visitSummary(this);
     }
