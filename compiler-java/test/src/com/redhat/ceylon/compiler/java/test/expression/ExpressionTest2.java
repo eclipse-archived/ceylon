@@ -387,6 +387,11 @@ public class ExpressionTest2 extends CompilerTest {
     }
     
     @Test
+    public void testCallablePositionalInvocationSequencedComprehension(){
+        compareWithJavaSource("invoke/CallablePositionalInvocationSequencedComprehension");
+    }
+    
+    @Test
     public void testCallablePositionalInvocationQualified(){
         compareWithJavaSource("invoke/CallablePositionalInvocationQualified");
     }
