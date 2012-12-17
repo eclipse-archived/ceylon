@@ -19,7 +19,7 @@ public interface Visitor {
     
     public void endOptions(OptionsSection optionsSection);
     
-    public void visitSummary(DescribedSection summarySection);
+    public void visitSummary(SummarySection summarySection);
 
     public void startSynopses(SynopsesSection synopsesSection);
     

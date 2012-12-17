@@ -36,7 +36,11 @@ class Html {
         }
         return this;
     }
-    
+
+    public Html doctype(String type) {
+    	return append("<!DOCTYPE ").append(type).append('>');
+    }
+    	
     public Html open(String... tags) {
         for (String tag : tags) {
             open(tag);

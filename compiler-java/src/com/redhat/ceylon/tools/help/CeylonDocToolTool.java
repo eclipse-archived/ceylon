@@ -50,7 +50,14 @@ public class CeylonDocToolTool implements Tool {
 
             @Override
             URL[] supportingResources() {
-                return new URL[]{getClass().getResource("resources/doc-tool.css")};
+                return new URL[]{getClass().getResource("resources/doc-tool.css"),
+                		getClass().getResource("resources/bootstrap.min.css"),
+                		getClass().getResource("resources/bootstrap.min.js"),
+                		getClass().getResource("resources/jquery-1.8.2.min.js"),
+                		getClass().getResource("resources/NOTICE.txt"),
+                		getClass().getResource("resources/doc-tool.js"),
+                		getClass().getResource("resources/ceylondoc-icons.png"),
+                		getClass().getResource("resources/ceylondoc-logo.png")};
             }
         }, 
         txt(".txt") {
@@ -188,8 +195,8 @@ public class CeylonDocToolTool implements Tool {
         for (Doc doc : docs) {
             File out = new File(dir, filename(doc));
             try (FileWriter writer = new FileWriter(out)) {
-                Visitor htmlOutput = format.newOutput(this, writer);
-                doc.accept(htmlOutput);
+                Visitor visitor = format.newOutput(this, writer);
+                doc.accept(visitor);
             }
         }
         if (index && format == Format.html) {
@@ -207,7 +214,7 @@ public class CeylonDocToolTool implements Tool {
         try (FileWriter writer = new FileWriter(indexFile)) {
             HtmlVisitor htmlOutput = (HtmlVisitor)Format.html.newOutput(this, writer);
             Html html = htmlOutput.getHtml();
-            indexHeader(html, bundle.getString("index.title"));
+            indexHeader(html, bundle.getString("index.title"), bundle.getString("index.overview"));
             
             List<Doc> porcelain = new ArrayList<>();
             List<Doc> plumbing = new ArrayList<>();
@@ -219,39 +226,63 @@ public class CeylonDocToolTool implements Tool {
                 }
             }
             if (!porcelain.isEmpty()) {
-                html.open("p").text(bundle.getString("index.porcelain.tools")).close("p");
-                generateToolList(porcelain, html);
+                generateToolList(porcelain, html, bundle.getString("index.porcelain.tools"));
             }
             if (!plumbing.isEmpty()) {
-                html.open("p").text(bundle.getString("index.plumbing.tools")).close("p");
-                generateToolList(plumbing, html);
+                generateToolList(plumbing, html, bundle.getString("index.plumbing.tools"));
             }
             indexFooter(html);
         }
     }
 
-    private void indexHeader(Html html, String title) {
-        html.open("html", "head");
+    private void indexHeader(Html html, String title, String overview) {
+    	html.doctype("html").text("\n");
+        html.open("html", "head").text("\n");
+        html.tag("meta charset='UTF-8'").text("\n");
         html.open("title").text(title).close("title").text("\n");
-        html.tag("link rel='stylesheet'type='text/css' href='doc-tool.css'").text("\n");
+        html.tag("link rel='stylesheet' type='text/css' href='bootstrap.min.css'").text("\n");
+        html.tag("link rel='stylesheet' type='text/css' href='doc-tool.css'").text("\n");
         html.close("head").text("\n");
         html.open("body").text("\n");
-        html.open("h1").text(title).close("h1");
+        html.open("div class='navbar navbar-inverse navbar-static-top'").text("\n");
+        html.open("div class='navbar-inner'").text("\n");
+        html.open("a class='tool-header' href='index.html'").text("\n");
+        html.open("i class='tool-logo'").close("i").text("\n");
+        html.open("span class='tool-label'").text(title).close("span").text("\n");
+        html.open("span class='tool-name'").text(overview).close("span").text("\n");
+        //html.open("span class='tool-version'").text(version).close("span").text("\n");
+        html.close("a").text("\n");
+        html.close("div").text("\n");
+        html.close("div").text("\n");
+        html.tag("div class='tool-description'").text("\n");
+        html.open("div class='container-fluid'").text("\n");
     }
     
     private void indexFooter(Html html) {
-        html.close("body", "html");
+        html.close("div", "body", "html");
     }
+    
+    private void generateToolList(List<Doc> docs, Html html, String title) {
+    	html.open("table class='table table-condensed table-bordered table-hover'").text("\n");
+    	html.open("thead").text("\n");
+    	html.open("tr class='table-header'");
+    	html.open("td colspan='2'").text(title).close("td");
+    	html.close("tr").text("\n");
+    	html.close("thead").text("\n");
 
-    private void generateToolList(List<Doc> docs, Html html) {
-        html.open("dl");
+    	html.open("tbody");
         for (Doc doc : docs) {
-            html.open("dt", "code", "a href='" + filename(doc) + "'");
-            html.text(Tools.progName() +" " + doc.getName());
-            html.close("a", "code", "dt");
-            html.open("dd").markdown(doc.getSummary().getDescription()).close("dd");
-        }
-        html.close("dl");
+        	html.open("tr");
+        	html.open("td class='span3'", "a class='link' href='" + filename(doc) + "'");
+        	html.open("code").text(Tools.progName() + " " + doc.getName()).close("code");
+        	html.close("a", "td").text("\n");
+        	html.open("td", "p");
+        	html.text(doc.getSummary().getSummary());
+        	html.close("p", "td");
+        	html.close("tr").text("\n");
+        }    	
+    	html.close("tbody").text("\n");
+    	html.close("table").text("\n");
     }
 
     private void prepareDirectory() {
