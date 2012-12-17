@@ -19,27 +19,27 @@
  */
 package com.redhat.ceylon.compiler.java.codegen;
 
+import static com.redhat.ceylon.compiler.java.codegen.AbstractTransformer.JT_CLASS_NEW;
+import static com.redhat.ceylon.compiler.java.codegen.AbstractTransformer.JT_EXTENDS;
+import static com.redhat.ceylon.compiler.java.codegen.AbstractTransformer.JT_NO_PRIMITIVES;
+
 import com.redhat.ceylon.compiler.java.codegen.AbstractTransformer.BoxingStrategy;
 import com.redhat.ceylon.compiler.typechecker.model.Parameter;
 import com.redhat.ceylon.compiler.typechecker.model.ParameterList;
 import com.redhat.ceylon.compiler.typechecker.model.ProducedReference;
 import com.redhat.ceylon.compiler.typechecker.model.ProducedType;
-import com.redhat.ceylon.compiler.typechecker.model.TypeParameter;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree;
 import com.sun.tools.javac.code.Flags;
 import com.sun.tools.javac.tree.JCTree;
 import com.sun.tools.javac.tree.JCTree.JCClassDecl;
 import com.sun.tools.javac.tree.JCTree.JCExpression;
+import com.sun.tools.javac.tree.JCTree.JCMethodInvocation;
 import com.sun.tools.javac.tree.JCTree.JCNewClass;
 import com.sun.tools.javac.tree.JCTree.JCStatement;
-import com.sun.tools.javac.tree.JCTree.JCTypeCast;
 import com.sun.tools.javac.tree.JCTree.JCVariableDecl;
 import com.sun.tools.javac.util.List;
+import com.sun.tools.javac.util.ListBuffer;
 import com.sun.tools.javac.util.Name;
-
-import static com.redhat.ceylon.compiler.java.codegen.AbstractTransformer.JT_EXTENDS;
-import static com.redhat.ceylon.compiler.java.codegen.AbstractTransformer.JT_NO_PRIMITIVES;
-import static com.redhat.ceylon.compiler.java.codegen.AbstractTransformer.JT_CLASS_NEW;
 
 public class CallableBuilder {
 
@@ -47,6 +47,7 @@ public class CallableBuilder {
     private ProducedType typeModel;
     private List<JCStatement> body;
     private ParameterList paramLists;
+    private List<JCExpression> defaultValues;
     
     private CallableBuilder(CeylonTransformer gen) {
         this.gen = gen;
@@ -75,25 +76,43 @@ public class CallableBuilder {
     
     /**
      * Constructs an {@code AbstractCallable} suitable for an anonymous function.
+     * @param parameterList2 
      */
     public static CallableBuilder anonymous(
             CeylonTransformer gen, Tree.Expression expr, ParameterList parameterList, 
+            Tree.ParameterList parameterListTree, 
             ProducedType callableTypeModel) {
         JCExpression transformedExpr = gen.expressionGen().transformExpression(expr);
         final List<JCStatement> stmts = List.<JCStatement>of(gen.make().Return(transformedExpr));
-        
-        return methodArgument(gen, callableTypeModel, parameterList, stmts);
+        return methodArgument(gen, callableTypeModel, parameterList, parameterListTree, stmts);
+    }
+
+    public static CallableBuilder methodArgument(
+            CeylonTransformer gen,
+            ProducedType callableTypeModel,
+            ParameterList parameterList,
+            Tree.ParameterList parameterListTree, 
+            List<JCStatement> stmts) {
+        ListBuffer<JCExpression> defaultValues = new ListBuffer<JCExpression>();
+        for(Tree.Parameter p : parameterListTree.getParameters()){
+            if(p.getDefaultArgument() != null){
+                defaultValues.append(gen.expressionGen().transformExpression(p.getDefaultArgument().getSpecifierExpression().getExpression()));
+            }
+        }
+        return methodArgument(gen, callableTypeModel, parameterList, defaultValues.toList(), stmts);
     }
     
     public static CallableBuilder methodArgument(
             CeylonTransformer gen,
             ProducedType callableTypeModel,
             ParameterList parameterList,
+            List<JCExpression> defaultValues, 
             List<JCStatement> stmts) {
         CallableBuilder cb = new CallableBuilder(gen);
         cb.paramLists = parameterList;
         cb.typeModel = callableTypeModel;
         cb.body = prependVarsForArgs(gen, parameterList, stmts);
+        cb.defaultValues = defaultValues;
         return cb;
     }
     
@@ -141,13 +160,49 @@ public class CallableBuilder {
     
     public JCNewClass build() {
         // Generate a subclass of Callable
+        ListBuffer<JCTree> classBody = new ListBuffer<JCTree>();
+        int numParams = paramLists.getParameters().size();
+        int minimumParams = 0;
+        for(Parameter p : paramLists.getParameters()){
+            if(p.isDefaulted())
+                break;
+            minimumParams++;
+        }
+//        int minimumParams = gen.getMinimumParameterCountForCallable(typeModel);
+        for(int i=minimumParams;i<numParams;i++)
+            classBody.append(makeDefaultedCall(i));
+        classBody.append(makeCallMethod(body, numParams));
+        
+        JCClassDecl classDef = gen.make().AnonymousClassDef(gen.make().Modifiers(0), classBody.toList());
+        
+        JCNewClass instance = gen.make().NewClass(null, 
+                null, 
+                gen.makeJavaType(typeModel, JT_EXTENDS | JT_CLASS_NEW), 
+                List.<JCExpression>of(gen.make().Literal(typeModel.getProducedTypeName(true))),
+                classDef);
+        return instance;
+    }
+    
+    private JCTree makeDefaultedCall(int i) {
+        // chain to n+1 param method
+        List<JCExpression> args = List.nil();
+        // add the default value
+        args = args.prepend(defaultValues.get(i));
+        // pass along the other parameters
+        for(int a=i-1;a>=0;a--)
+            args = args.prepend(gen.makeUnquotedIdent(getParamName(a)));
+        JCMethodInvocation chain = gen.make().Apply(null, gen.makeUnquotedIdent(Naming.getCallableMethodName()), args);
+        List<JCStatement> body = List.<JCStatement>of(gen.make().Return(chain));
+        return makeCallMethod(body, i);
+    }
+
+    private JCTree makeCallMethod(List<JCStatement> body, int numParams) {
         MethodDefinitionBuilder callMethod = MethodDefinitionBuilder.callable(gen);
         callMethod.isOverride(true);
         callMethod.modifiers(Flags.PUBLIC);
         ProducedType returnType = gen.getReturnTypeOfCallable(typeModel);
         callMethod.resultType(gen.makeJavaType(returnType, JT_NO_PRIMITIVES), null);
         // Now append formal parameters
-        int numParams = paramLists.getParameters().size();
         switch (numParams) {
         case 3:
             callMethod.parameter(makeCallableCallParam(0, numParams-3));
@@ -166,17 +221,9 @@ public class CallableBuilder {
         
         // Return the call result, or null if a void method
         callMethod.body(body);
-        
-        JCClassDecl classDef = gen.make().AnonymousClassDef(gen.make().Modifiers(0), List.<JCTree>of(callMethod.build()));
-        
-        JCNewClass instance = gen.make().NewClass(null, 
-                null, 
-                gen.makeJavaType(typeModel, JT_EXTENDS | JT_CLASS_NEW), 
-                List.<JCExpression>of(gen.make().Literal(typeModel.getProducedTypeName(true))),
-                classDef);
-        return instance;
+        return callMethod.build();
     }
-    
+
     private static Name makeParamName(AbstractTransformer gen, int paramIndex) {
         return gen.names().fromString(getParamName(paramIndex));
     }

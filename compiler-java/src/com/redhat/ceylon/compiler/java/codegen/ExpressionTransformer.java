@@ -213,6 +213,7 @@ public class ExpressionTransformer extends AbstractTransformer {
                 gen(),
                 farg.getExpression(),
                 model.getParameterLists().get(0),
+                farg.getParameterLists().get(0),
                 callableType);
         return callableBuilder.build();
     }
