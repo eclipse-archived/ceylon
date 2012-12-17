@@ -611,6 +611,8 @@ class IndirectInvocationBuilder extends SimpleInvocationBuilder {
     private final java.util.List<ProducedType> parameterTypes;
     private final java.util.List<Tree.Expression> argumentExpressions;
     private Comprehension comprehension;
+    private boolean variadic;
+    private boolean spread;
 
     public IndirectInvocationBuilder(
             AbstractTransformer gen, 
@@ -621,10 +623,12 @@ class IndirectInvocationBuilder extends SimpleInvocationBuilder {
 
         // find the parameter types
         final java.util.List<ProducedType> tas = new ArrayList<>();
-        tas.add(gen.getReturnTypeOfCallable(primary.getTypeModel()));
-        for (int ii = 0, l = gen.getNumParametersOfCallable(primary.getTypeModel()); ii < l; ii++) {
-            tas.add(gen.getParameterTypeOfCallable(primary.getTypeModel(), ii));
+        ProducedType callableType = primary.getTypeModel();
+        tas.add(gen.getReturnTypeOfCallable(callableType));
+        for (int ii = 0, l = gen.getNumParametersOfCallable(callableType); ii < l; ii++) {
+            tas.add(gen.getParameterTypeOfCallable(callableType, ii));
         }
+        this.variadic = gen.isVariadicCallable(callableType);
         //final java.util.List<ProducedType> tas = primary.getTypeModel().getTypeArgumentList();
         final java.util.List<ProducedType> parameterTypes = tas.subList(1, tas.size());
         
@@ -635,6 +639,7 @@ class IndirectInvocationBuilder extends SimpleInvocationBuilder {
         }
         this.argumentExpressions = argumentExpressions;
         this.parameterTypes = parameterTypes;
+        this.spread = positionalArgumentList.getEllipsis() != null;
         
         if(positionalArgumentList.getComprehension() != null) {
             this.comprehension = positionalArgumentList.getComprehension();
