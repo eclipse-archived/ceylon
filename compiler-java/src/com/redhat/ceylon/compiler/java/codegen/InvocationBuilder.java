@@ -503,7 +503,7 @@ abstract class SimpleInvocationBuilder extends InvocationBuilder {
     protected abstract boolean dontBoxSequence();
 
     @Override
-    protected final void compute() {
+    protected void compute() {
         int numArguments = getNumArguments();
         boolean wrapIntoArray = false;
         ListBuffer<JCExpression> arrayWrap = new ListBuffer<JCExpression>();
@@ -633,9 +633,6 @@ class IndirectInvocationBuilder extends SimpleInvocationBuilder {
         for (Tree.PositionalArgument argument : positionalArgumentList.getPositionalArguments()) {
             argumentExpressions.add(argument.getExpression());
         }
-        if (parameterTypes.size() != argumentExpressions.size()) {
-            throw new RuntimeException();
-        }
         this.argumentExpressions = argumentExpressions;
         this.parameterTypes = parameterTypes;
         
@@ -646,7 +643,26 @@ class IndirectInvocationBuilder extends SimpleInvocationBuilder {
         }
     }
     
+    @Override
+    protected void compute(){
+        // don't try to work on broken stuff
+        if ((!variadic && parameterTypes.size() != argumentExpressions.size())
+                || (variadic && parameterTypes.size() > argumentExpressions.size()+1)) {
+            return;
+        }
+        super.compute();
+    }
 
+    @Override
+    protected JCExpression makeInvocation(List<JCExpression> argExprs) {
+        // don't try to work on broken stuff
+        if ((!variadic && parameterTypes.size() != argumentExpressions.size())
+                || (variadic && parameterTypes.size() > argumentExpressions.size()+1)) {
+            return gen.makeErroneous(node, "Invalid number of parameters");
+        }
+        return super.makeInvocation(argExprs);
+    }
+    
     @Override
     protected boolean isParameterSequenced(int argIndex) {
         return false;
