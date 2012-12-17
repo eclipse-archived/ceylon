@@ -92,7 +92,7 @@ public class MethodDefinitionBuilder {
     }
     
     public static MethodDefinitionBuilder callable(AbstractTransformer gen) {
-        return systemMethod(gen, "$call");
+        return systemMethod(gen, Naming.getCallableMethodName());
     }
     
     public static MethodDefinitionBuilder systemMethod(AbstractTransformer gen, String name) {

@@ -1472,4 +1472,8 @@ public class Naming implements LocalId {
     public String getMethodSpecifierAttributeName(Method m) {
         return m.getName()+"$specifier";
     }
+    
+    public static String getCallableMethodName() {
+        return "$call";
+    }
 }

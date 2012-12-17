@@ -225,7 +225,7 @@ abstract class InvocationBuilder {
                 actualPrimExpr = gen.make().Apply(null, 
                         gen.naming.makeQualIdent(primaryExpr, selector), 
                         List.<JCExpression>nil());
-                selector = "$call";
+                selector = Naming.getCallableMethodName();
             } else if (primaryDeclaration instanceof FunctionalParameter
                     || (this instanceof IndirectInvocationBuilder)) {
                 if (selector != null) {
@@ -236,7 +236,7 @@ abstract class InvocationBuilder {
                 if (!gen.isCeylonCallable(primary.getTypeModel())) {                    
                     actualPrimExpr = gen.make().Apply(null, actualPrimExpr, List.<JCExpression>nil());
                 }
-                selector = "$call";
+                selector = Naming.getCallableMethodName();
             }
             if (onValueType) {
                 JCExpression primTypeExpr = gen.makeJavaType(qmePrimary.getTypeModel(), JT_NO_PRIMITIVES);
@@ -1113,7 +1113,7 @@ class CallableSpecifierInvocationBuilder extends InvocationBuilder {
     @Override
     protected JCExpression makeInvocation(List<JCExpression> args) {
         gen.at(node);
-        JCExpression result = gen.make().Apply(primaryTypeArguments, gen.naming.makeQuotedQualIdent(callable, "$call"), args);
+        JCExpression result = gen.make().Apply(primaryTypeArguments, gen.naming.makeQuotedQualIdent(callable, Naming.getCallableMethodName()), args);
         if(handleBoxing)
             result = gen.expressionGen().applyErasureAndBoxing(result, returnType, 
                     !unboxed, boxingStrategy, returnType);
