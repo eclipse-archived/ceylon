@@ -1479,4 +1479,8 @@ public class Naming implements LocalId {
     public static String getCallableMethodName() {
         return "$call";
     }
+
+    public static String getCallableTypedMethodName() {
+        return "$call$typed";
+    }
 }

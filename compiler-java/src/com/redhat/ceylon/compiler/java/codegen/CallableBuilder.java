@@ -98,7 +98,7 @@ public class CallableBuilder {
         CallableBuilder cb = new CallableBuilder(gen);
         cb.paramLists = parameterList;
         cb.typeModel = callableTypeModel;
-        cb.body = prependVarsForArgs(gen, parameterListTree, stmts);
+        cb.body = stmts;
         cb.parameterListTree = parameterListTree;
         return cb;
     }
@@ -120,35 +120,11 @@ public class CallableBuilder {
         if (body == null) {
             body = List.<JCStatement>nil();
         }
-        body = prependVarsForArgs(gen, parameterListTree, body);
-
         cb.body = body;
         cb.parameterListTree = parameterListTree;
         return cb;
     }
 
-    /**
-     * Prepends variable declarations for the callable arguments arg0, arg1 
-     * etc so that references to the actual variables in the body of the 
-     * method work.
-     */
-    private static List<JCStatement> prependVarsForArgs(CeylonTransformer gen,
-            Tree.ParameterList parameterListTree, List<JCStatement> body) {
-        int ii =0;
-        for (Tree.Parameter tp : parameterListTree.getParameters()) {
-            Parameter p = tp.getDeclarationModel();
-            JCExpression init = unpickCallableParameter(gen, null, tp, null, ii, parameterListTree.getParameters().size());
-            JCVariableDecl varDef = gen.make().VarDef(gen.make().Modifiers(Flags.FINAL), 
-                    gen.names().fromString(p.getName()),
-                    // FIXME: unboxed
-                    gen.makeJavaType(p.getType(), Boolean.TRUE.equals(p.getUnboxed()) ? 0 : JT_NO_PRIMITIVES), 
-                    init);
-            body = body.prepend(varDef);
-            ii++;
-        }
-        return body;
-    }
-    
     public JCNewClass build() {
         // Generate a subclass of Callable
         ListBuffer<JCTree> classBody = new ListBuffer<JCTree>();
@@ -168,9 +144,12 @@ public class CallableBuilder {
         }
         
 //        int minimumParams = gen.getMinimumParameterCountForCallable(typeModel);
-        for(int i=minimumParams,max = Math.min(numParams,4);i<max;i++)
+        for(int i=minimumParams,max = Math.min(numParams,4);i<max;i++){
             classBody.append(makeDefaultedCall(i));
-        classBody.append(makeCallMethod(body, numParams));
+            classBody.append(makeDefaultedTypedCall(i));
+        }
+        classBody.append(makeDefaultedCall(numParams));
+        classBody.append(makeCallTypedMethod(body));
         
         JCClassDecl classDef = gen.make().AnonymousClassDef(gen.make().Modifiers(0), classBody.toList());
         
@@ -182,41 +161,81 @@ public class CallableBuilder {
         return instance;
     }
     
+    private JCExpression getTypedParameter(Parameter param, int argIndex, boolean varargs){
+        JCExpression argExpr;
+        if (!varargs) {
+            // The Callable has overridden one of the non-varargs call() 
+            // methods
+            argExpr = gen.make().Ident(
+                    makeParamName(gen, argIndex));
+        } else {
+            // The Callable has overridden the varargs call() method
+            // so we need to index into the varargs array
+            argExpr = gen.make().Indexed(
+                    gen.make().Ident(makeParamName(gen, 0)), 
+                    gen.make().Literal(argIndex));
+        }
+        // make sure we unbox it if required
+        argExpr = gen.expressionGen().applyErasureAndBoxing(argExpr, 
+                gen.typeFact().getObjectDeclaration().getType(), // it came in as Object 
+                true, // it came in boxed
+                CodegenUtil.getBoxingStrategy(param), // see if we need to box 
+                param.getType()); // see what type we need
+        return argExpr;
+    }
+    
     private JCTree makeDefaultedCall(int i) {
+        // chain to n param typed method
+        List<JCExpression> args = List.nil();
+        // pass along the parameters
+        for(int a=i-1;a>=0;a--){
+            Parameter param = paramLists.getParameters().get(a);
+            args = args.prepend(getTypedParameter(param, a, false));
+        }
+        JCMethodInvocation chain = gen.make().Apply(null, gen.makeUnquotedIdent(Naming.getCallableTypedMethodName()), args);
+        List<JCStatement> body = List.<JCStatement>of(gen.make().Return(chain));
+        return makeCallMethod(body, i);
+    }
+
+    private JCTree makeDefaultedTypedCall(int i) {
         // chain to n+1 param method
         List<JCExpression> args = List.nil();
         // add the default value
-        Parameter param = paramLists.getParameters().get(i);
         List<JCExpression> defaultMethodArgs = List.nil();
         // pass all the previous values
         for(int a=i-1;a>=0;a--){
-            // unbox them all if required
-            Parameter previousParameter = paramLists.getParameters().get(a);
-            JCExpression previousValue = gen.makeUnquotedIdent(getParamName(a));
-            // make sure we box/unbox it if required
-            previousValue = gen.expressionGen().applyErasureAndBoxing(previousValue, 
-                    gen.typeFact().getObjectDeclaration().getType(), // it came in as Object 
-                    true, // it came in boxed
-                    CodegenUtil.getBoxingStrategy(previousParameter), 
-                    previousParameter.getType());
+            Parameter param = paramLists.getParameters().get(a);
+            JCExpression previousValue = gen.makeUnquotedIdent(param.getName());
             defaultMethodArgs = defaultMethodArgs.prepend(previousValue);
         }
         // now call the default value method
-        JCExpression defaultValueCall = gen.make().Apply(null, gen.makeUnquotedIdent(Naming.getDefaultedParamMethodName(null, param)), defaultMethodArgs);
-        // make sure it's boxed properly
-        defaultValueCall = gen.expressionGen().applyErasureAndBoxing(defaultValueCall, 
-                param.getType(), // that's what comes out of the default call
-                !CodegenUtil.isUnBoxed(param), // that's what comes out of the default call
-                BoxingStrategy.BOXED, // we want it boxed 
-                gen.typeFact().getObjectDeclaration().getType()); // it goes into an Object param
+        Parameter defaultedParam = paramLists.getParameters().get(i);
+        JCExpression defaultValueCall = gen.make().Apply(null, gen.makeUnquotedIdent(Naming.getDefaultedParamMethodName(null, defaultedParam)), defaultMethodArgs);
         args = args.prepend(defaultValueCall);
         // pass along the other parameters
         for(int a=i-1;a>=0;a--){
-            args = args.prepend(gen.makeUnquotedIdent(getParamName(a)));
+            Parameter param = paramLists.getParameters().get(a);
+            args = args.prepend(gen.makeUnquotedIdent(param.getName()));
         }
-        JCMethodInvocation chain = gen.make().Apply(null, gen.makeUnquotedIdent(Naming.getCallableMethodName()), args);
+        JCMethodInvocation chain = gen.make().Apply(null, gen.makeUnquotedIdent(Naming.getCallableTypedMethodName()), args);
         List<JCStatement> body = List.<JCStatement>of(gen.make().Return(chain));
-        return makeCallMethod(body, i);
+
+        // make the method
+        MethodDefinitionBuilder methodBuilder = MethodDefinitionBuilder.method(gen, false, Naming.getCallableTypedMethodName());
+        methodBuilder.modifiers(Flags.PRIVATE);
+        ProducedType returnType = gen.getReturnTypeOfCallable(typeModel);
+        methodBuilder.resultType(gen.makeJavaType(returnType, JT_NO_PRIMITIVES), null);
+        // add all parameters
+        for(int a=0;a<i;a++){
+            Parameter param = paramLists.getParameters().get(a);
+            ParameterDefinitionBuilder parameterBuilder = ParameterDefinitionBuilder.instance(gen, param.getName());
+            JCExpression paramType = gen.makeJavaType(param.getType());
+            parameterBuilder.type(paramType, null);
+            methodBuilder.parameter(parameterBuilder);
+        }
+        // Return the call result, or null if a void method
+        methodBuilder.body(body);
+        return methodBuilder.build();
     }
 
     private JCTree makeCallMethod(List<JCStatement> body, int numParams) {
@@ -247,6 +266,24 @@ public class CallableBuilder {
         return callMethod.build();
     }
 
+    private JCTree makeCallTypedMethod(List<JCStatement> body) {
+        // make the method
+        MethodDefinitionBuilder methodBuilder = MethodDefinitionBuilder.method(gen, false, Naming.getCallableTypedMethodName());
+        methodBuilder.modifiers(Flags.PRIVATE);
+        ProducedType returnType = gen.getReturnTypeOfCallable(typeModel);
+        methodBuilder.resultType(gen.makeJavaType(returnType, JT_NO_PRIMITIVES), null);
+        // add all parameters
+        for(Parameter param : paramLists.getParameters()){
+            ParameterDefinitionBuilder parameterBuilder = ParameterDefinitionBuilder.instance(gen, param.getName());
+            JCExpression paramType = gen.makeJavaType(param.getType());
+            parameterBuilder.type(paramType, null);
+            methodBuilder.parameter(parameterBuilder);
+        }
+        // Return the call result, or null if a void method
+        methodBuilder.body(body);
+        return methodBuilder.build();
+    }
+
     private static Name makeParamName(AbstractTransformer gen, int paramIndex) {
         return gen.names().fromString(getParamName(paramIndex));
     }
@@ -269,59 +306,4 @@ public class CallableBuilder {
                 makeParamName(gen, ii), type, null);
                 */
     }
-    
-    public static JCExpression unpickCallableParameter(AbstractTransformer gen,
-            ProducedReference producedReference,
-            Tree.Parameter parameterTree,
-            ProducedType argType, 
-            int argIndex,
-            int numParameters) {
-        Parameter param = parameterTree.getDeclarationModel();
-        JCExpression argExpr;
-        if (numParameters <= 3) {
-            // The Callable has overridden one of the non-varargs call() 
-            // methods
-            argExpr = gen.make().Ident(
-                    makeParamName(gen, argIndex));
-        } else {
-            // The Callable has overridden the varargs call() method
-            // so we need to index into the varargs array
-            argExpr = gen.make().Indexed(
-                    gen.make().Ident(makeParamName(gen, 0)), 
-                    gen.make().Literal(argIndex));
-            if(parameterTree.getDefaultArgument() != null && argIndex > 3){
-                // insert default value for parameters defaulted after the call-3 method
-                JCBinary test = gen.make().Binary(JCTree.GT, gen.makeSelect(makeParamName(gen, 0).toString(), "length"), gen.makeInteger(argIndex));
-                JCExpression defaultExpr = gen.expressionGen().transformExpression(parameterTree.getDefaultArgument().getSpecifierExpression().getExpression());
-                argExpr = gen.make().Conditional(test, argExpr, defaultExpr);
-            }
-        }
-        ProducedType castType;
-        if (argType != null) {
-            castType = argType;
-        } else {
-            castType = gen.getTypeForParameter(param, producedReference, gen.TP_TO_BOUND);
-        }
-        JCExpression cast;
-        // let's not cast to Object there's no point
-        if(gen.willEraseToObject(castType))
-            cast = argExpr;
-        else{
-            // make it raw: it can't hurt and it may even be required if the target method's param is raw
-            cast = gen.make().TypeCast(gen.makeJavaType(castType, JT_NO_PRIMITIVES | gen.JT_RAW), argExpr);
-        }
-        // TODO Should this be calling applyErasureAndBoxing() instead?
-        BoxingStrategy boxingStrategy;
-        if (param.getUnboxed() == null) {
-            boxingStrategy = BoxingStrategy.INDIFFERENT;
-        } else if (param.getUnboxed()) {
-            boxingStrategy = BoxingStrategy.UNBOXED; 
-        } else {
-            boxingStrategy = BoxingStrategy.BOXED;
-        }
-        JCExpression boxed = gen.boxUnboxIfNecessary(cast, true, 
-                param.getType(), boxingStrategy);
-        return boxed;
-    }
-    
 }
