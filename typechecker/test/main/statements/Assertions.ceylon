@@ -19,6 +19,10 @@ void assertions() {
         print(y=="goodbye");
     }
     @error print(y=="goodbye");
+    Integer[] ints = 0..10;
+    assert (exists int0 = ints[0], is Integer int1 = ints[1]);
+    print(int0+1);
+    print(int1-1);
 }
 
 class Assertions(String? nameOrNull) {
