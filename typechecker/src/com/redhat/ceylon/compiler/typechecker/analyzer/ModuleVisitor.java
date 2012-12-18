@@ -79,7 +79,8 @@ public class ModuleVisitor extends Visitor {
                 that.getImportPath().setModel(mainModule);
                 mainModule.setUnit(unit.getUnit());
                 mainModule.setVersion(version);
-                if ( !mainModule.getNameAsString().equals(formatPath(that.getImportPath().getIdentifiers())) ) {
+                if ( !unit.getUnit().getPackage().getNameAsString()
+                		.equals(formatPath(that.getImportPath().getIdentifiers())) ) {
                     that.getImportPath()
                         .addError("module name does not match descriptor location");
                 }
