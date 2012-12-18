@@ -30,7 +30,7 @@ shared void run() {
     print("Miscellaneous");
     misc();
     testSort();
-    print("Array/Collection/FixedSized");
+    print("Array/Collection");
     testArrays();
     print("Map & Set tests");
     testMaps();
