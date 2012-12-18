@@ -150,6 +150,9 @@ public class GenerateJsVisitor extends Visitor
     /** Tells the receiver to be verbose (prints generated code to STDOUT in addition to writer) */
     public void setVerbose(boolean flag) { verbose = flag; }
 
+    /** Returns the helper component to handle naming. */
+    JsIdentifierNames getNames() { return names; }
+
     /** Print generated code to the Writer specified at creation time.
      * Automatically prints indentation first if necessary.
      * @param code The main code
@@ -174,7 +177,7 @@ public class GenerateJsVisitor extends Visitor
             }
         }
         catch (IOException ioe) {
-            ioe.printStackTrace();
+            throw new RuntimeException("Generating JS code", ioe);
         }
     }
 
@@ -557,7 +560,6 @@ public class GenerateJsVisitor extends Visitor
     private void classDefinition(ClassDefinition that) {
         Class d = that.getDeclarationModel();
         comment(that);
-
         out(function, names.name(d), "(");
         for (Parameter p: that.getParameterList().getParameters()) {
             p.visit(this);
@@ -565,7 +567,6 @@ public class GenerateJsVisitor extends Visitor
         }
         self(d);
         out(")");
-        beginBlock();
         if (!d.getTypeParameters().isEmpty()) {
             //out(",");
             //selfTypeParameters(d);
@@ -574,8 +575,9 @@ public class GenerateJsVisitor extends Visitor
                 comment(tp);
             }
             out("*/");
-            endLine();
+            //endLine();
         }
+        beginBlock();
         //This takes care of top-level attributes defined before the class definition
         out("$init$", names.name(d), "();");
         endLine();
@@ -1693,14 +1695,15 @@ public class GenerateJsVisitor extends Visitor
     
     @Override
     public void visit(BaseTypeExpression that) {
+        if (!that.getTypeArguments().getTypeModels().isEmpty()) {
+            out(clAlias, "reify(");
+        }
         qualify(that, that.getDeclaration());
         out(names.name(that.getDeclaration()));
         if (!that.getTypeArguments().getTypeModels().isEmpty()) {
-            out("/* REIFIED GENERICS SOON!! ");
-            for (ProducedType pt : that.getTypeArguments().getTypeModels()) {
-                comment(pt);
-            }
-            out("*/");
+            out(",");
+            TypeUtils.printTypeArguments(that, that.getTypeArguments().getTypeModels(), this);
+            out(")");
         }
     }
 
@@ -2227,7 +2230,7 @@ public class GenerateJsVisitor extends Visitor
         out(")");
     }
 
-    private void qualify(Node that, Declaration d) {
+    void qualify(Node that, Declaration d) {
         String path = qualifiedPath(that, d);
         out(path);
         if (path.length() > 0) {
@@ -2300,6 +2303,7 @@ public class GenerateJsVisitor extends Visitor
         return "";
     }
 
+    /** Tells whether a declaration is in the same package as a node. */
     private boolean isImported(Node that, Declaration d) {
         if (d == null) {
             return false;
@@ -2720,14 +2724,17 @@ public class GenerateJsVisitor extends Visitor
        });
    }
 
-   @Override public void visit(EntryOp that) {
+   @Override public void visit(final EntryOp that) {
        binaryOp(that, new BinaryOpGenerator() {
            @Override
            public void generate(BinaryOpTermGenerator termgen) {
-               out(clAlias, "Entry(");
+               out(clAlias, "reify2(", clAlias, "Entry(");
                termgen.left();
                out(",");
                termgen.right();
+               out("),");
+               TypeUtils.printTypeArguments(that, that.getTypeModel().getTypeArgumentList(),
+                       GenerateJsVisitor.this);
                out(")");
            }
        });
@@ -2929,42 +2936,6 @@ public class GenerateJsVisitor extends Visitor
        conds.generateWhile(that);
    }
 
-    /** Appends an object with the type's type and list of union/intersection types. */
-    private void getTypeList(TypeDeclaration type) {
-        out("{ t:'");
-        final List<TypeDeclaration> subs;
-        if (type instanceof com.redhat.ceylon.compiler.typechecker.model.IntersectionType) {
-            out("i");
-            subs = type.getSatisfiedTypeDeclarations();
-        } else {
-            out("u");
-            subs = type.getCaseTypeDeclarations();
-        }
-        out("', l:[");
-        boolean first = true;
-        for (TypeDeclaration t : subs) {
-            if (!first) out(",");
-            typeNameOrList(t);
-            first = false;
-        }
-        out("]}");
-    }
-
-    private void typeNameOrList(TypeDeclaration type) {
-        if (type.isAlias()) {
-            type = type.getExtendedTypeDeclaration();
-        }
-        boolean unionIntersection = type instanceof com.redhat.ceylon.compiler.typechecker.model.UnionType
-                || type instanceof com.redhat.ceylon.compiler.typechecker.model.IntersectionType;
-        if (unionIntersection) {
-            getTypeList(type);
-        } else {
-            out("'");
-            out(type.getQualifiedNameString());
-            out("'");
-        }
-    }
-
     /** Generates js code to check if a term is of a certain type. We solve this in JS by
      * checking against all types that Type satisfies (in the case of union types, matching any
      * type will do, and in case of intersection types, all types must be matched).
@@ -2997,7 +2968,7 @@ public class GenerateJsVisitor extends Visitor
         out(",");
 
         if (unionIntersection) {
-            getTypeList(decl);
+            TypeUtils.outputTypeList(term, decl, this, false);
             out(")");
         } else {
             out("'");
