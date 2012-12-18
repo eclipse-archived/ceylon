@@ -3,14 +3,14 @@ void testProcess() {
     Void args = process.arguments;
     if (is Void[] args) {
         for (arg in args) {
-            check(is String arg, "process.arguments");
+            check(arg is String, "process.arguments");
         }
     } else {
         fail("process.arguments is no sequence");
     }
     Void argPresent = process.namedArgumentPresent("");
-    check(is Boolean argPresent, "process.namedArgumentPresent");
-    check(!(exists process.namedArgumentValue("")), "process.namedArgumentValue");
+    check(argPresent is Boolean, "process.namedArgumentPresent");
+    check(!process.namedArgumentValue("") exists, "process.namedArgumentValue");
     String? filesep = process.propertyValue("file.separator");
     if (exists filesep) {
         check((filesep=="/")||(filesep=="\\"), "process.propertyValue");

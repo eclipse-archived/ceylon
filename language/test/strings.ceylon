@@ -23,11 +23,11 @@ shared void strings() {
     
     check(hello.size==5, "string size 1");
     check("".size==0, "empty string size 2");
-    check(!nonempty "");
-    check(nonempty "a");
-    check(!exists "".lastIndex, "empty string last index");
-    check(!exists ""[0], "empty string first element exists");
-    check(!(is Identifiable hello), "string is Identifiable");
+    check(!"" nonempty);
+    check("a" nonempty);
+    check(!"".lastIndex exists, "empty string last index");
+    check(!""[0] exists, "empty string first element exists");
+    check(!hello  is Identifiable, "string is Identifiable");
     
     check("abcd".size==4, "string size 3");
     
@@ -58,14 +58,14 @@ shared void strings() {
     check("".spanTo(1)=="", "empty string spanTo 1");
     check("".segment(1,3)=="", "empty string segment");
         
-    check(exists hello[0], "string first element exists 1");
+    check(hello[0] exists, "string first element exists 1");
     if (exists li = hello.lastIndex) {
-        check(exists hello[li], "string first element exists 2");
+        check(hello[li] exists, "string first element exists 2");
     }
     else {
         fail("string last index");
     }
-    check(!exists hello[hello.size], "string element not exists");
+    check(!hello[hello.size] exists, "string element not exists");
     if (exists c = hello[0]) {
         check(c==`h`, "string first element value");
     }
@@ -327,10 +327,10 @@ shared void strings() {
     if (is Integer p=occurs.next()) {
         check(p==3, "occurrences[1]");
     } else { fail("occurrences 2"); }
-    if (!is Finished occurs.next()) {
+    if (!occurs.next() is Finished) {
         fail("occurrences 3");
     }
-    if (!is Finished hello.occurrences("X").iterator.next()) {
+    if (!hello.occurrences("X").iterator.next() is Finished) {
         fail("occurrences 4");
     }
     //Unicode escapes

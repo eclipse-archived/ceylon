@@ -88,7 +88,7 @@ void testSets() {
     check(!(4 in s1), "Set.contains 3");
     check(s1.clone == s1, "Set.clone/equals");
     check(s1 != 5, "Set.equals");
-    check(!(is Finished s1.iterator.next()), "Set.iterator");
+    check(!s1.iterator.next() is Finished, "Set.iterator");
     check(emptySet.subset(s1), "Set.subset 1");
     check(!s1.subset(emptySet), "Set.subset 2");
     check(!emptySet.superset(s1), "Set.superset 1");

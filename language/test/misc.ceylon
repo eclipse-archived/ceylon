@@ -22,7 +22,7 @@ void misc() {
     while (exists y = x) { 
         x := null; 
     }
-    check(!exists x, "while exists");
+    check(!x exists, "while exists");
     
     variable value s := "hello";
     while (nonempty chars = s.characters) { 

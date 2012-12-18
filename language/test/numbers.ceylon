@@ -35,10 +35,10 @@ shared void numbers() {
     check(-1.5*+2==-3.0, "integer times float");
     
     Object? obj(Object? x) { return x; }
-    check(is Integer obj(1+1), "natural addition");
-    check(is Integer obj(1-2), "natural subtraction");
-    check(is Integer obj(+1+1), "integer addition");
-    check(is Integer obj(+1-2), "integer subtraction");
+    check(obj(1+1)  is Integer, "natural addition");
+    check(obj(1-2)  is Integer, "natural subtraction");
+    check(obj(+1+1) is Integer, "integer addition");
+    check(obj(+1-2) is Integer, "integer subtraction");
     
     check(1.negativeValue==-1, "natural negative");
     check(-1.negativeValue==+1, "integer negative");
@@ -352,41 +352,41 @@ shared void numbers() {
         check(9_223_372_036_854_775_807==(parseInteger("9_223_372_036_854_775_807") else ""), "parseInteger(9_223_372_036_854_775_807)");
         check(-9223372036854775808==(parseInteger("-9223372036854775808") else ""), "parseInteger(-9223372036854775808)");
         check(-9_223_372_036_854_775_808==(parseInteger("-9_223_372_036_854_775_808") else ""), "parseInteger(-9_223_372_036_854_775_808)");
-        check(!exists parseInteger("9223372036854775808"), "parseInteger(9223372036854775808)");
-        check(!exists parseInteger("-9223372036854775809"), "parseInteger(-9223372036854775809)");
+        check(!parseInteger("9223372036854775808") exists, "parseInteger(9223372036854775808)");
+        check(!parseInteger("-9223372036854775809") exists, "parseInteger(-9223372036854775809)");
     } else if (0.size == 53) {
         check(9007199254740992==(parseInteger("9007199254740992") else ""), "parseInteger(9007199254740992)");
         check(9_007_199_254_740_992==(parseInteger("9_007_199_254_740_992") else ""), "parseInteger(9_007_199_254_740_992)");
         check(-9007199254740992==(parseInteger("-9007199254740992") else ""), "parseInteger(-9007199254740992)");
         check(-9_007_199_254_740_992==(parseInteger("-9_007_199_254_740_992") else ""), "parseInteger(-9_007_199_254_740_992)");
-        check(!exists parseInteger("9007199254740993"), "parseInteger(9007199254740993)");
-        check(!exists parseInteger("-9007199254740993"), "parseInteger(-9007199254740993)");
+        check(!parseInteger("9007199254740993") exists, "parseInteger(9007199254740993)");
+        check(!parseInteger("-9007199254740993") exists, "parseInteger(-9007199254740993)");
     } else {
         fail("UNKNOWN INTEGER SIZE " 0.size " - please add number tests for this platform");
     }
 
-    check(!exists parseInteger(""), "parseInteger()");
-    check(!exists parseInteger("+"), "parseInteger(+)");
-    check(!exists parseInteger("-"), "parseInteger(-)");
-    check(!exists parseInteger("foo"), "parseInteger(foo)");
-    check(!exists parseInteger(" 0"), "parseInteger( 0)");
-    check(!exists parseInteger("0 "), "parseInteger(0 )");
-    check(!exists parseInteger("0+0"), "parseInteger(0+0)");
-    check(!exists parseInteger("0-0"), "parseInteger(0-0)");
-    check(!exists parseInteger("0+"), "parseInteger(0+)");
-    check(!exists parseInteger("0-"), "parseInteger(0-)");
-    check(!exists parseInteger("k"), "parseInteger(k)");
-    check(!exists parseInteger("k1"), "parseInteger(k1)");
-    check(!exists parseInteger("+k"), "parseInteger(+k)");
-    check(!exists parseInteger("-k"), "parseInteger(-k)");
-    check(!exists parseInteger("1kk"), "parseInteger(1kk)");
-    check(!exists parseInteger("0_"), "parseInteger(0_)");
-    check(!exists parseInteger("_0"), "parseInteger(_0)");
-    check(!exists parseInteger("0_0"), "parseInteger(0_0)");
-    check(!exists parseInteger("0_00"), "parseInteger(0_00)");
-    check(!exists parseInteger("0_0000"), "parseInteger(0_0000)");
-    check(!exists parseInteger("0_000_0"), "parseInteger(0_000_0)");
-    check(!exists parseInteger("0000_000"), "parseInteger(0000_000)");
+    check(!parseInteger("") exists, "parseInteger()");
+    check(!parseInteger("+") exists, "parseInteger(+)");
+    check(!parseInteger("-") exists, "parseInteger(-)");
+    check(!parseInteger("foo") exists, "parseInteger(foo)");
+    check(!parseInteger(" 0") exists, "parseInteger( 0)");
+    check(!parseInteger("0 ") exists, "parseInteger(0 )");
+    check(!parseInteger("0+0") exists, "parseInteger(0+0)");
+    check(!parseInteger("0-0") exists, "parseInteger(0-0)");
+    check(!parseInteger("0+") exists, "parseInteger(0+)");
+    check(!parseInteger("0-") exists, "parseInteger(0-)");
+    check(!parseInteger("k") exists, "parseInteger(k)");
+    check(!parseInteger("k1") exists, "parseInteger(k1)");
+    check(!parseInteger("+k") exists, "parseInteger(+k)");
+    check(!parseInteger("-k") exists, "parseInteger(-k)");
+    check(!parseInteger("1kk") exists, "parseInteger(1kk)");
+    check(!parseInteger("0_") exists, "parseInteger(0_)");
+    check(!parseInteger("_0") exists, "parseInteger(_0)");
+    check(!parseInteger("0_0") exists, "parseInteger(0_0)");
+    check(!parseInteger("0_00") exists, "parseInteger(0_00)");
+    check(!parseInteger("0_0000") exists, "parseInteger(0_0000)");
+    check(!parseInteger("0_000_0") exists, "parseInteger(0_000_0)");
+    check(!parseInteger("0000_000") exists, "parseInteger(0000_000)");
     
     // parseFloat
     check((parseFloat("12.34e3") else 0.0)==12.34e3, "parseFloat(12.34e3)");
@@ -405,17 +405,17 @@ shared void numbers() {
     check((parseFloat("-12340.0") else 0.0)==-12.34e3, "parseFloat(-12340.0)");
 
     //type safety
-    check(is Integer obj(1+1), "int+int Integer");
-    check(is Float   obj(1+1.0), "int+float Float");
-    check(is Integer obj(1-1), "int-int Integer");
-    check(is Float   obj(1-1.0), "int-float Float");
-    check(is Integer obj(1*1), "int*int Integer");
-    check(is Float   obj(1*1.0), "int*float Float");
-    check(is Integer obj(1/1), "int/int Integer");
-    check(is Float   obj(1/1.0), "int/float Float");
-    check(is Integer obj(2**2), "2**2 Integer");
+    check(obj(1+1)    is Integer, "int+int Integer");
+    check(obj(1+1.0)  is Float  , "int+float Float");
+    check(obj(1-1)    is Integer, "int-int Integer");
+    check(obj(1-1.0)  is Float  , "int-float Float");
+    check(obj(1*1)    is Integer, "int*int Integer");
+    check(obj(1*1.0)  is Float  , "int*float Float");
+    check(obj(1/1)    is Integer, "int/int Integer");
+    check(obj(1/1.0)  is Float  , "int/float Float");
+    check(obj(2**2)   is Integer, "2**2 Integer");
     //check(is Float   obj(2**2.0), "2**2.0 Float");
-    check(is Float   obj(2.0**2), "2.0**2 Float");
+    check(obj(2.0**2) is Float  , "2.0**2 Float");
     
     check(0.0.strictlyPositive, "positive zero strictly positive");
     check(!(-0.0).strictlyPositive, "negative zero not strictly positive");

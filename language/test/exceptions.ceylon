@@ -12,7 +12,7 @@ void exceptions() {
     catch (MyException me) {
         caught:=true;
         check(me.message=="my exception", "exception message");
-        check(!exists me.cause, "exception cause");
+        check(!me.cause exists, "exception cause");
     }
     check(caught, "caught");
 
@@ -26,7 +26,7 @@ void exceptions() {
     catch (Exception me) {
         caught:=true;
         check(me.message=="my exception", "exception message");
-        check(!exists me.cause, "exception cause");
+        check(!me.cause exists, "exception cause");
     }
     check(caught, "caught");
     
@@ -37,7 +37,7 @@ void exceptions() {
     catch (OtherException|MyException e) {
         caught:=true;
         check(e.message=="my exception", "exception message");
-        check(!exists e.cause, "exception cause");
+        check(!e.cause exists, "exception cause");
     }
     catch (Exception me) {
         fail("any exception");
@@ -63,8 +63,8 @@ void exceptions() {
     catch (Exception e) {
         caught:=true;
         check(e.message=="hello", "exception message");
-        check(exists e.cause, "exception cause");
-        check(is MyException e.cause, "exception cause");
+        check(e.cause exists, "exception cause");
+        check(e.cause is MyException, "exception cause");
     }
     check(caught, "caught");
     

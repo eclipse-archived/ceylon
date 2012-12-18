@@ -36,10 +36,10 @@ void testMaps() {
     check(m1.defines(4), "Map.defines(4) should be true");
     check(!m1.defines(5), "Map.defines 2");
     check(!m1.defines("hi"), "Map.defines 3");
-    check(exists m1[4], "Map.item(4) should exist");
-    check(!exists m1[5], "Map.item 2");
-    check(!exists m1["hi"], "Map.item 3");
-    check(!(is Finished m1.iterator.next()), "Map.iterator");
+    check(m1[4] exists, "Map.item(4) should exist");
+    check(!m1[5] exists, "Map.item 2");
+    check(!m1["hi"] exists, "Map.item 3");
+    check(!m1.iterator.next() is Finished, "Map.iterator");
     check(m1.values.size==m1.size, "Map.values 1");
     for (e in m1) {
         check(e.item in m1.values, "Map.values 2");

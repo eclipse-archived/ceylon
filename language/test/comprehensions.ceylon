@@ -17,7 +17,7 @@ void comprehensions() {
   check([for (x in 1..6) if (x % 2 == 0) for (y in 1..3) if ((x*y)%3==0) x*y]=={6,12,6,12,18}, "comprehensions 8");
   check([for (x in 1..10) if (x%2==0) if (x>5) x]=={6,8,10}, "comprehensions 9");
   variable Object varcomp := s1;
-  check(is Iterable<Void> varcomp, "comprehension is Iterable");
+  check(varcomp is Iterable<Void>, "comprehension is Iterable");
   check([for (x in {null, "hello", "goodbye"}) if (exists x) if (x.size>5) x]=={"goodbye"}, "comprehensions w/exists 1");
   check([for (x in {"a", "", "c"}) if (exists c=x[0]) c.uppercased]=={`A`, `C`}, "comprehensions w/exists 2");
   check([for (x in {"a", "", "c"}) if (!x.empty) x.uppercased]=={"A", "C"}, "comprehensions w/nonempty 1");
@@ -34,7 +34,7 @@ void comprehensions() {
   if (exists ff=first(for (x in 1..5) if (x>3) x)) {
     check(ff==4, "first [1]");
   } else { fail("first [1]"); }
-  check(!exists first(for (x in 1..5) if (x%6==0) x), "first [2]");
+  check(!first(for (x in 1..5) if (x%6==0) x) exists, "first [2]");
   check(count([for (x in 1..5) x>4]...) == 1, "count [1]");
   check(count([for (x in 1..5) x>0]...) == 5, "count [2]");
 

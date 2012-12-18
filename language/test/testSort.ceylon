@@ -1,6 +1,6 @@
 shared void testSort() {
-    check(!nonempty sort(), "sort()");
-    check(!nonempty sort({}...), "sort({}...)");
+    check(!sort() nonempty, "sort()");
+    check(!sort({}...) nonempty, "sort({}...)");
     check(sort(3, 2, 1) == {1, 2, 3}, "Sort integers");
     check(sort(3.3, 2.2, 1.1) == {1.1, 2.2, 3.3}, "Sort floats");
     check(sort(`c`, `b`, `a`) == {`a`, `b`, `c`}, "Sort characters");
