@@ -11,7 +11,7 @@ void testArrays() {
         check(i==10, "array.setItem");
     } else { fail("array.setItem"); }
     value a2=array(1,2,3);
-    value a3=arrayOfSome({1,2,3});
+    value a3=array({1,2,3}...);
     check(a2==a3, "array.equals");
     check(a2.size==a3.size, "array.size");
     a2.setItem(0,10);
@@ -33,7 +33,7 @@ void testArrays() {
     if (exists i=a6[0]) {
         fail("array.setItem (null)");
     }
-    value a7=arrayOfSome<Integer?>({1,2,3});
+    value a7=array<Integer?>(1,2,3);
     a7.setItem(0,null);
     if (exists i=a7[0]) {
         fail("array.setItem (null) 2");
