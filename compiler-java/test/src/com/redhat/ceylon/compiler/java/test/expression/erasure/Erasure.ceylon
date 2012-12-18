@@ -165,7 +165,7 @@ class Test(Integer&EmptyInterface n) {
         // conditions
         if(exists p1OrNothing){}
         variable Boolean bSync;
-        bSync := exists p1OrNothing;
+        bSync := p1OrNothing exists;
         
         value p2 = p1OrNothing else p1;
         Integer n = p1OrNothing else p1;
@@ -208,7 +208,7 @@ class Test(Integer&EmptyInterface n) {
         
         // is
         if(is Category p1){}
-        sync := is Category p1;
+        sync := p1 is Category;
     }
 
     void testSequences(Integer&EmptyInterface p1,
@@ -286,7 +286,7 @@ class Test(Integer&EmptyInterface n) {
         // nonempty tests
         if(nonempty naturals){}
         variable Boolean bSync;
-        bSync := nonempty naturals;
+        bSync := naturals nonempty;
         
         // spread op
         Left[]&Right[] spreadMember = leftsAndRights[].leftAndRightAttribute;

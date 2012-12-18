@@ -31,11 +31,11 @@ class OptionalInterface(JavaOptionalInterface x) satisfies JavaOptionalInterface
     shared actual JavaOptionalInterface? method2(JavaOptionalInterface? x){
         if(exists x){
             if (exists z = x.prop1) {}
-            Boolean b1 = exists x.prop1;
+            Boolean b1 = x.prop1 exists;
             JavaOptionalInterface[] existsInComprehension1 = [for (obj in {x}) if (exists z = obj.prop1) z];
 
             if (exists z = x.method(x)) {}
-            Boolean b2 = exists x.method(x);
+            Boolean b2 = x.method(x) exists;
             JavaOptionalInterface[] existsInComprehension2 = [for (obj in {x}) if (exists z = obj.method(x)) z];
 
             JavaOptionalInterface elseOp1 = x.prop1 else x;

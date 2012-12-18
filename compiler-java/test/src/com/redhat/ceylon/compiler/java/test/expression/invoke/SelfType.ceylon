@@ -56,5 +56,5 @@ interface D satisfies Comparable<D> {}
 void selfTypeTest(Comparable<D> d) {
     value temp = d of D;
     value v = print("");
-    print(of Object|Nothing v);
+    print(v of Object|Nothing);
 }

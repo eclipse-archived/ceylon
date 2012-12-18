@@ -24,7 +24,7 @@ Boolean bug669_eq(Object? expected, Object? got) {
             return expected==got;
         }
     }
-    return exists got == exists expected;
+    return got exists == expected exists;
 }
 
 doc "Fails the test if the two objects are not equal"

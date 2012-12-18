@@ -124,15 +124,15 @@ class AssertionConditionList {
                 $y$17 = ((.ceylon.language.Integer)$y$16).longValue();
                 if ($y$17 > 0L) {
                 } else {
-                    $ceylontmpassert15 = "\tunviolated " + "exists x[0]" + .java.lang.System.lineSeparator() + "\tunviolated " + "is Integer y = x[0]" + .java.lang.System.lineSeparator() + "\tviolated " + "y > 0" + .java.lang.System.lineSeparator();
+                    $ceylontmpassert15 = "\tunviolated " + "x[0] exists" + .java.lang.System.lineSeparator() + "\tunviolated " + "is Integer y = x[0]" + .java.lang.System.lineSeparator() + "\tviolated " + "y > 0" + .java.lang.System.lineSeparator();
                 }
             } else {
                 $y$17 = 0L;
-                $ceylontmpassert15 = "\tunviolated " + "exists x[0]" + .java.lang.System.lineSeparator() + "\tviolated " + "is Integer y = x[0]" + .java.lang.System.lineSeparator() + "\tuntested " + "y > 0" + .java.lang.System.lineSeparator();
+                $ceylontmpassert15 = "\tunviolated " + "x[0] exists" + .java.lang.System.lineSeparator() + "\tviolated " + "is Integer y = x[0]" + .java.lang.System.lineSeparator() + "\tuntested " + "y > 0" + .java.lang.System.lineSeparator();
             }
         } else {
             $y$17 = 0L;
-            $ceylontmpassert15 = "\tviolated " + "exists x[0]" + .java.lang.System.lineSeparator() + "\tuntested " + "is Integer y = x[0]" + .java.lang.System.lineSeparator() + "\tuntested " + "y > 0" + .java.lang.System.lineSeparator();
+            $ceylontmpassert15 = "\tviolated " + "x[0] exists" + .java.lang.System.lineSeparator() + "\tuntested " + "is Integer y = x[0]" + .java.lang.System.lineSeparator() + "\tuntested " + "y > 0" + .java.lang.System.lineSeparator();
         }
         if ($ceylontmpassert15 != null) throw new .ceylon.language.Exception(.ceylon.language.String.instance("Assertion failed" + .java.lang.System.lineSeparator() + ($ceylontmpassert15 + "\tat " + "AssertionConditionList.ceylon:47:8-47:56")), null);
         return $y$17 == 1L;

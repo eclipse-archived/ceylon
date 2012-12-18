@@ -22,5 +22,5 @@ import java.lang {JString = String }
 @nomodel
 void bug410(){
     Collection<Character> s = "foo";
-    Boolean b = is JString s;
+    Boolean b = s is JString;
 }

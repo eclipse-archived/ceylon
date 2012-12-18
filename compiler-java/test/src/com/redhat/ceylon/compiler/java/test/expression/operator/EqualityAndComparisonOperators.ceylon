@@ -72,22 +72,22 @@ shared class EqualityAndComparisonOperators() {
         variable Boolean sync := false;
         Object foo = sync; 
         // boxing test
-        sync := is Empty sync;
-        Boolean? dest = is Empty true;
+        sync := sync is Empty;
+        Boolean? dest = true is Empty;
         // normal test
-        sync := is Boolean foo;
+        sync := foo is Boolean;
         // unions
-        sync := is BasicOperatorsA | BasicOperatorsB foo;
+        sync := foo is BasicOperatorsA | BasicOperatorsB;
         // intersections
-        sync := is BasicOperatorsA & BasicOperatorsB foo;
+        sync := foo is BasicOperatorsA & BasicOperatorsB;
         // type aliases
         alias Alias1 => BasicOperatorsA | BasicOperatorsB;
         alias Alias2 => BasicOperatorsA & BasicOperatorsB;
-        sync := is Alias1 foo;
-        sync := is Alias2 foo;
+        sync := foo is Alias1;
+        sync := foo is Alias2;
         // erased types
-        sync := is IdentifiableObject foo;
-        sync := is Exception foo;
+        sync := foo is IdentifiableObject;
+        sync := foo is Exception;
         // type parameters
         //M5: sync := is Sequence<Boolean> foo;
     }

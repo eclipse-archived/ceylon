@@ -41,20 +41,20 @@ shared class NullHandlingOperators() {
     
     void testEmpty() {
         variable Boolean sync := false;
-        sync := nonempty "".characters;
+        sync := "".characters nonempty;
         String[] seq = {};
-        sync := nonempty seq;
+        sync := seq nonempty;
         // boxing
-        Boolean? boxed = nonempty seq;
+        Boolean? boxed = seq nonempty;
     }
 
 
     void testExists() {
         variable Boolean sync := false;
         Object? foo = sync; 
-        sync := exists foo;
+        sync := foo exists;
         // boxing
-        Boolean? boxed = exists foo;
+        Boolean? boxed = foo exists;
     }
     
     void testThenElse() {

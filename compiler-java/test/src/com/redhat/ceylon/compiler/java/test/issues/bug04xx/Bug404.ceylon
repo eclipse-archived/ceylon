@@ -23,9 +23,9 @@ class Bug404() {
         variable Boolean sync;
         sync := (1.0).string in {"1", "1.0"};
         String[] empty = {};
-        sync := !nonempty empty[].uppercased;
+        sync := !empty[].uppercased nonempty;
         String[] full = {"foo"};
-        sync := nonempty full[].uppercased;
+        sync := full[].uppercased nonempty;
         value spread1 = full[].uppercased;
     }
 }
