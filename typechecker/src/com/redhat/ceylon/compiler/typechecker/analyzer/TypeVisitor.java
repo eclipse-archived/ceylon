@@ -1086,10 +1086,10 @@ public class TypeVisitor extends Visitor {
                 that.addError("initializer parameter refers to a formal attribute: " + 
                         d.getName());
             }
-            else if (a.isDefault()) {
+            /*else if (a.isDefault()) {
                 that.addError("initializer parameter refers to a default attribute: " + 
                         d.getName());
-            }
+            }*/
             else {
                 ((MethodOrValue) a).setInitializerParameter(d);
             }

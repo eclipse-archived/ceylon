@@ -82,7 +82,7 @@ interface InitializerParams {
         @error func(print);
     }
     
-    class A(@error i) {
+    class A(i) {
         @error print(i);
         shared default Integer i;
         @error print(i);
@@ -108,8 +108,15 @@ interface InitializerParams {
     }
     abstract class WithSharedFormalParams(@error shared formal String message, 
             @error shared formal Float fun(Float x)) {}
-    class WithSharedDefaultParams(@error shared default String message, 
-            @error shared default Float fun(Float x)) {}
+    class WithSharedDefaultParams(shared default String message, 
+            shared default Float fun(Float x)) {
+        @error print(message + fun(0.0).string);
+    }
+    class WithSharedActualParams2(shared actual String message, 
+            shared actual Float fun(Float x)) 
+            extends WithSharedDefaultParams(message, fun) {
+        print(message + fun(0.0).string);
+    }
     void testWithSharedParams() {
         WithSharedParams wsp = WithSharedParams("hello", (Float x)=>x*2.0);
         print(wsp.message);
@@ -117,9 +124,12 @@ interface InitializerParams {
         WithSharedActualParams wsap = WithSharedActualParams("hello", (Float x)=>x*2.0);
         print(wsap.message);
         print(wsap.fun(1.0));
+        WithSharedActualParams2 wsap2 = WithSharedActualParams2("hello", (Float x)=>x*2.0);
+        print(wsap2.message);
+        print(wsap2.fun(1.0));
     }
     
-    abstract class WithFormalDefaultParams(@error name, @error count) {
+    abstract class WithFormalDefaultParams(@error name, count) {
         shared formal String name;
         shared default Integer count;
     }
@@ -130,7 +140,7 @@ interface InitializerParams {
     class SubWithParam(String str) extends Super() {}
     class SubWithAtt() extends Super() { String str=""; }
     
-    class XX(@error shared default Float x) {}
-    class YY(@error x) { shared default Float x; }
+    class XX(shared default Float x) {}
+    class YY(x) { shared default Float x; }
     
 }

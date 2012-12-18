@@ -354,12 +354,12 @@ public class RefinementVisitor extends Visitor {
                 that.addError("shared member is not a method, attribute, class, or interface", 1200);
             }
             
-            boolean mayBeRefined = 
-                    dec instanceof Getter || 
+            boolean mayBeRefined = dec.isShared() &&
+                    (dec instanceof Getter || 
                     dec instanceof Value || 
                     dec instanceof Method ||
                     dec instanceof Class ||
-                    dec instanceof Parameter && dec.isShared();
+                    dec instanceof Parameter);
             if (!mayBeRefined) {
                 checkNonrefinableDeclaration(that, dec);
             }
