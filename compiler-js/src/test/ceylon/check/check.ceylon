@@ -46,9 +46,9 @@ shared void test() {
     assert(is Integer dt=mt);
     check(dt+1 == 6, "assert is [1]");
     assert(is Integer mt);
-    assert(nonempty mseq, exists mseq[1]);
+    assert(nonempty mseq, mseq[1] exists);
     assert(exists ms2=ms, exists m2_1=ms);
-    assert(is String ms3=ms, exists ms3[0]);
+    assert(is String ms3=ms, ms3[0] exists);
     try {
         assert(2+2==5);
         fail("check assert [1]");
@@ -57,10 +57,10 @@ shared void test() {
     }
     try {
         doc "ms is a looong String"
-        assert(is String ms, exists ms[1100]);
+        assert(is String ms, ms[1100] exists);
         fail("check assert [2]");
     } catch (Exception ex) {
-        check("ms is a looong String: 'is String ms, exists ms[1100]'" in ex.message, "custom assert message");
+        check("ms is a looong String: 'is String ms, ms[1100] exists'" in ex.message, "custom assert message");
     }
     check(ms2==ms3, "assertion values");
     results();

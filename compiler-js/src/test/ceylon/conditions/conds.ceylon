@@ -12,22 +12,22 @@ shared void test() {
     }
     String? c = "X";
     String? d = null;
-    if (exists c && exists d) {
+    if (c exists && d exists) {
         fail("WTF exists");
-    } else if (exists c1=c, exists c1[0]) {
+    } else if (exists c1=c, c1[0] exists) {
         check(c1 == "X", "exists");
         count++;
     }
     String|Integer e = 1;
-    if (is Integer e && exists d) {
+    if (e is Integer && d exists) {
         fail("WTF is");
-    } else if (is Integer e, exists c) {
+    } else if (is Integer e, c exists) {
         check(e>0, "is");
         count++;
     }
     String[] f = {"a","b","c"};
     Integer[] g = {};
-    if (nonempty f && nonempty g) {
+    if (f nonempty && g nonempty) {
         fail("WTF nonempty");
     } else if (nonempty f, !f.first.empty) {
         check(f.first.uppercased=="A", "nonempty");

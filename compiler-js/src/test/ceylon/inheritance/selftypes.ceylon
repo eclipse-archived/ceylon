@@ -24,5 +24,5 @@ void testSelfTypes() {
     Bar141 bar141 = testOf of Bar141;
     Void v141 = testOf;
     Object? o141 = v141 of Object|Nothing;
-    check(is Bar141 o141, "self types");
+    check(o141 is Bar141, "self types");
 }

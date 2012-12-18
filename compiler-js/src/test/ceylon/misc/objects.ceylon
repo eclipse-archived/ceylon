@@ -32,7 +32,7 @@ void test_objects() {
   if (is Integer i=t1.next()) {
     check(i==3, "objects 4");
   }
-  check(is Finished t1.next(), "objects 5");
+  check(t1.next() is Finished, "objects 5");
   if (is Integer i=t2.next()) {
     check(i==2, "objects 6");
   }

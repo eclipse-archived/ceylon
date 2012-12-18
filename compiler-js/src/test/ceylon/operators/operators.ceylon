@@ -157,13 +157,13 @@ void testCollectionOperators() {
     String s1 = seq1[0]; //not optional anymore!
     check(s1=="one", "lookup");
     String|Nothing s2 = seq1[2]; //not optional anymore!
-    check(!exists s2, "lookup");
+    check(!s2 exists, "lookup");
     String|Nothing s3 = seq1[-1]; //not optional anymore!
-    check(!exists s3, "lookup");
+    check(!s3 exists, "lookup");
     variable Sequence<String>? unsafe := seq1;
-    check(exists unsafe?[0], "safe index");
+    check(unsafe?[0] exists, "safe index");
     unsafe := null;
-    check(!exists unsafe?[0], "safe index");
+    check(!unsafe?[0] exists, "safe index");
 }
 
 class NullsafeTest() {
@@ -192,20 +192,20 @@ void testNullsafeOperators() {
     check(s6=="TEST", "nullsafe member 2");
     NullsafeTest? obj = null;
     Integer? i = obj?.f();
-    check(!exists i, "nullsafe invoke");
+    check(!i exists, "nullsafe invoke");
     Callable<Integer?,[]> f2 = obj?.f;
-    check(!exists nullsafeTest(f2), "nullsafe method ref");
+    check(!nullsafeTest(f2) exists, "nullsafe method ref");
     Callable<Integer?,[]>? f3 = obj?.f;
-    check(exists f3, "nullsafe method ref 2");
+    check(f3 exists, "nullsafe method ref 2");
     obj?.f();
-    check(!exists obj?.f(), "nullsafe simple call");
+    check(!obj?.f() exists, "nullsafe simple call");
     NullsafeTest? getNullsafe() { return obj; }
     function f4() => getNullsafe()?.f();
     Integer? result_f4 = f4();
-    check(!exists result_f4, "nullsafe invoke 2");
+    check(!result_f4 exists, "nullsafe invoke 2");
     Integer? i2 = getNullsafe()?.f();
-    check(!exists i2, "nullsafe invoke 3");
-    check(!exists NullsafeTest().f2(getNullsafe()?.f), "nullsafe method ref 3");
+    check(!i2 exists, "nullsafe invoke 3");
+    check(!NullsafeTest().f2(getNullsafe()?.f) exists, "nullsafe method ref 3");
     NullsafeTest? obj2 = NullsafeTest();
     if (exists i3 = obj2?.f()) {
         check(i3==1, "nullsafe invoke 4 (result)");
@@ -407,8 +407,8 @@ void testSegments() {
     if (exists x=s3[4]) {
         check(x == 6, "2:5 [3]");
     } else { fail("2:5 [3]"); }
-    check(!nonempty 1:0, "1:0 empty");
-    check(!nonempty 1:-1, "1:-1 empty");
+    check(!1:0 nonempty, "1:0 empty");
+    check(!1:-1 nonempty, "1:-1 empty");
 }
 
 shared void test() {

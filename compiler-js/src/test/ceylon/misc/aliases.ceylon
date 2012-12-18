@@ -69,13 +69,13 @@ void testAliasing() {
     Boolean use(AliasedIface2 aif) { return aif.aliasingIface(); }
     check(use(AliasingSub2().iface), "Aliased member interface");
     Strinteger xxxxx = 5;
-    check(is Integer xxxxx, "Type alias");
+    check(xxxxx is Integer, "Type alias");
     check(Listleton({{1},{2},{3}}.first).string=="{ [ 1 ] }", "class alias");
     check(MiMatrix(2).string=="{ [ 1, 2 ], [ 1, 2 ] }", "interface alias");
     Object xxxxx1 = 6;
     Object xxxxx2 = "XXXX";
-    check(is String|Integer xxxxx1, "is String|Integer");
-    check(is String&Sequence<Void> xxxxx2, "is String&Sequence");
+    check(xxxxx1 is String|Integer, "is String|Integer");
+    check(xxxxx2 is String&Sequence<Void>, "is String&Sequence");
     function cualquiera(Boolean... bits) => any(bits...);
     check(cualquiera(true,true,true), "seq arg method alias");
 }

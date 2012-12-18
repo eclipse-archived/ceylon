@@ -229,8 +229,8 @@ shared void test() {
     check(Unwrapper().get().string=="23.56","unwrapper 1");
     check(Unwrapper().o.string=="23.56","unwrapper 2");
     check(Unwrapper().string=="23.56","unwrapper 3");
-    check(is Callable<Integer,[]> producer(), "function 1");
-    check(is Integer producer()(), "function 2");
+    check(producer() is Callable<Integer,[]>, "function 1");
+    check(producer()() is Integer, "function 2");
     check(123==producer()(), "function 3");
     check("something"==returner("something")(), "function 4");
     check(A().B().C().foobar()=="foo", "foobar");
