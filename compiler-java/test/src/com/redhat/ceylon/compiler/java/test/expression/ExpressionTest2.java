@@ -229,7 +229,12 @@ public class ExpressionTest2 extends CompilerTest {
         compileAndRun("com.redhat.ceylon.compiler.java.test.expression.invoke.callableArgumentWithDefaulted_main", 
                 "invoke/CallableArgumentWithDefaulted");
     }
-    
+
+    @Test
+    public void testCallableWithDefaultedArguments(){
+        compareWithJavaSource("invoke/CallableWithDefaulted");
+    }
+
     @Test
     public void testCallableArgumentVoid(){
         compareWithJavaSource("invoke/CallableArgumentVoid");

@@ -1,0 +1,348 @@
+package com.redhat.ceylon.compiler.java.test.expression.invoke;
+
+final class callableWithDefaulted_ {
+    
+    private callableWithDefaulted_() {
+    }
+    
+    static void callableWithDefaulted() {
+        final .ceylon.language.Callable<? extends .java.lang.Object> defaultedVariadic = new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.ceylon.language.Integer>("Integer()"){
+            
+            private final .java.lang.String $$b(final long a) {
+                return "b";
+            }
+            
+            private final .ceylon.language.Sequential<? extends .ceylon.language.Integer> $$args(final long a, final .java.lang.String b) {
+                return (.ceylon.language.Sequential).ceylon.language.empty_.getEmpty$();
+            }
+            
+            @.java.lang.Override
+            public .ceylon.language.Integer $call(final .java.lang.Object $param$0) {
+                final long a = ((.ceylon.language.Integer)$param$0).longValue();
+                final .java.lang.String b = $$b(a);
+                final .ceylon.language.Sequential<? extends .ceylon.language.Integer> args = $$args(a, b);
+                return $call$typed(a, b, args);
+            }
+            
+            @.java.lang.Override
+            public .ceylon.language.Integer $call(final .java.lang.Object $param$0, final .java.lang.Object $param$1) {
+                final long a = ((.ceylon.language.Integer)$param$0).longValue();
+                final .java.lang.String b = ((.ceylon.language.String)$param$1).toString();
+                final .ceylon.language.Sequential<? extends .ceylon.language.Integer> args = $$args(a, b);
+                return $call$typed(a, b, args);
+            }
+            
+            @.java.lang.Override
+            public .ceylon.language.Integer $call(final .java.lang.Object $param$0, final .java.lang.Object $param$1, final .java.lang.Object $param$2) {
+                final long a = ((.ceylon.language.Integer)$param$0).longValue();
+                final .java.lang.String b = ((.ceylon.language.String)$param$1).toString();
+                final .ceylon.language.Sequential<? extends .ceylon.language.Integer> args = (.ceylon.language.Sequential<? extends .ceylon.language.Integer>)(.ceylon.language.Sequential)$param$2;
+                return $call$typed(a, b, args);
+            }
+            
+            private .ceylon.language.Integer $call$typed(long a, .java.lang.String b, .ceylon.language.Sequential<? extends .ceylon.language.Integer> args) {
+                return .ceylon.language.Integer.instance(a);
+            }
+        };
+        defaultedVariadic.$call(.ceylon.language.Integer.instance(1L));
+        defaultedVariadic.$call(.ceylon.language.Integer.instance(1L), .ceylon.language.String.instance("a"));
+        defaultedVariadic.$call(.ceylon.language.Integer.instance(1L), .ceylon.language.String.instance("a"), new .com.redhat.ceylon.compiler.java.language.ArraySequence<.ceylon.language.Integer>(.ceylon.language.Integer.instance(1L)));
+        defaultedVariadic.$call(.ceylon.language.Integer.instance(1L), .ceylon.language.String.instance("a"), new .com.redhat.ceylon.compiler.java.language.ArraySequence<.ceylon.language.Integer>(.ceylon.language.Integer.instance(1L), .ceylon.language.Integer.instance(2L)));
+        defaultedVariadic.$call(.ceylon.language.Integer.instance(1L), .ceylon.language.String.instance("a"), (.ceylon.language.Sequential).ceylon.language.empty_.getEmpty$());
+        final .ceylon.language.Callable<? extends .java.lang.Object> notDefaulted = new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.ceylon.language.Integer>("Integer(Integer, String)"){
+            
+            @.java.lang.Override
+            public .ceylon.language.Integer $call(final .java.lang.Object $param$0, final .java.lang.Object $param$1) {
+                final long goto = ((.ceylon.language.Integer)$param$0).longValue();
+                final .java.lang.String b = ((.ceylon.language.String)$param$1).toString();
+                return .ceylon.language.Integer.instance(goto);
+            }
+        };
+        notDefaulted.$call(.ceylon.language.Integer.instance(1L), .ceylon.language.String.instance("a"));
+        final .ceylon.language.Callable<? extends .java.lang.Object> foo = new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.ceylon.language.Integer>("Integer(Integer=, String=)"){
+            
+            private final long $$goto() {
+                return 2L;
+            }
+            
+            private final .java.lang.String $$b(final long goto) {
+                return "foo" + .ceylon.language.Integer.toString(goto);
+            }
+            
+            @.java.lang.Override
+            public .ceylon.language.Integer $call() {
+                final long goto = $$goto();
+                final .java.lang.String b = $$b(goto);
+                return $call$typed(goto, b);
+            }
+            
+            @.java.lang.Override
+            public .ceylon.language.Integer $call(final .java.lang.Object $param$0) {
+                final long goto = ((.ceylon.language.Integer)$param$0).longValue();
+                final .java.lang.String b = $$b(goto);
+                return $call$typed(goto, b);
+            }
+            
+            @.java.lang.Override
+            public .ceylon.language.Integer $call(final .java.lang.Object $param$0, final .java.lang.Object $param$1) {
+                final long goto = ((.ceylon.language.Integer)$param$0).longValue();
+                final .java.lang.String b = ((.ceylon.language.String)$param$1).toString();
+                return $call$typed(goto, b);
+            }
+            
+            private .ceylon.language.Integer $call$typed(long goto, .java.lang.String b) {
+                return .ceylon.language.Integer.instance(goto);
+            }
+        };
+        foo.$call();
+        foo.$call(.ceylon.language.Integer.instance(1L));
+        foo.$call(.ceylon.language.Integer.instance(1L), .ceylon.language.String.instance("a"));
+        final .ceylon.language.Callable<? extends .java.lang.Object> bar = new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.ceylon.language.Integer>("Integer(Integer=, String=, Integer=, String=, Integer=, String=)"){
+            
+            private final long $$goto() {
+                return 2L;
+            }
+            
+            private final .java.lang.String $$b(final long goto) {
+                return "foo";
+            }
+            
+            private final long $$c(final long goto, final .java.lang.String b) {
+                return 2L;
+            }
+            
+            private final .java.lang.String $$d(final long goto, final .java.lang.String b, final long c) {
+                return "foo";
+            }
+            
+            private final long $$e(final long goto, final .java.lang.String b, final long c, final .java.lang.String d) {
+                return 2L;
+            }
+            
+            private final .java.lang.String $$f(final long goto, final .java.lang.String b, final long c, final .java.lang.String d, final long e) {
+                return "foo" + .ceylon.language.Integer.toString(goto);
+            }
+            
+            @.java.lang.Override
+            public .ceylon.language.Integer $call() {
+                final long goto = $$goto();
+                final .java.lang.String b = $$b(goto);
+                final long c = $$c(goto, b);
+                final .java.lang.String d = $$d(goto, b, c);
+                final long e = $$e(goto, b, c, d);
+                final .java.lang.String f = $$f(goto, b, c, d, e);
+                return $call$typed(goto, b, c, d, e, f);
+            }
+            
+            @.java.lang.Override
+            public .ceylon.language.Integer $call(final .java.lang.Object $param$0) {
+                final long goto = ((.ceylon.language.Integer)$param$0).longValue();
+                final .java.lang.String b = $$b(goto);
+                final long c = $$c(goto, b);
+                final .java.lang.String d = $$d(goto, b, c);
+                final long e = $$e(goto, b, c, d);
+                final .java.lang.String f = $$f(goto, b, c, d, e);
+                return $call$typed(goto, b, c, d, e, f);
+            }
+            
+            @.java.lang.Override
+            public .ceylon.language.Integer $call(final .java.lang.Object $param$0, final .java.lang.Object $param$1) {
+                final long goto = ((.ceylon.language.Integer)$param$0).longValue();
+                final .java.lang.String b = ((.ceylon.language.String)$param$1).toString();
+                final long c = $$c(goto, b);
+                final .java.lang.String d = $$d(goto, b, c);
+                final long e = $$e(goto, b, c, d);
+                final .java.lang.String f = $$f(goto, b, c, d, e);
+                return $call$typed(goto, b, c, d, e, f);
+            }
+            
+            @.java.lang.Override
+            public .ceylon.language.Integer $call(final .java.lang.Object $param$0, final .java.lang.Object $param$1, final .java.lang.Object $param$2) {
+                final long goto = ((.ceylon.language.Integer)$param$0).longValue();
+                final .java.lang.String b = ((.ceylon.language.String)$param$1).toString();
+                final long c = ((.ceylon.language.Integer)$param$2).longValue();
+                final .java.lang.String d = $$d(goto, b, c);
+                final long e = $$e(goto, b, c, d);
+                final .java.lang.String f = $$f(goto, b, c, d, e);
+                return $call$typed(goto, b, c, d, e, f);
+            }
+            
+            @.java.lang.Override
+            public .ceylon.language.Integer $call(final .java.lang.Object... $param$0) {
+                final long goto = $param$0.length > 0 ? ((.ceylon.language.Integer)$param$0[0]).longValue() : $$goto();
+                final .java.lang.String b = $param$0.length > 1 ? ((.ceylon.language.String)$param$0[1]).toString() : $$b(goto);
+                final long c = $param$0.length > 2 ? ((.ceylon.language.Integer)$param$0[2]).longValue() : $$c(goto, b);
+                final .java.lang.String d = $param$0.length > 3 ? ((.ceylon.language.String)$param$0[3]).toString() : $$d(goto, b, c);
+                final long e = $param$0.length > 4 ? ((.ceylon.language.Integer)$param$0[4]).longValue() : $$e(goto, b, c, d);
+                final .java.lang.String f = $param$0.length > 5 ? ((.ceylon.language.String)$param$0[5]).toString() : $$f(goto, b, c, d, e);
+                return $call$typed(goto, b, c, d, e, f);
+            }
+            
+            private .ceylon.language.Integer $call$typed(long goto, .java.lang.String b, long c, .java.lang.String d, long e, .java.lang.String f) {
+                return .ceylon.language.Integer.instance(goto);
+            }
+        };
+        bar.$call();
+        bar.$call(.ceylon.language.Integer.instance(1L));
+        bar.$call(.ceylon.language.Integer.instance(1L), .ceylon.language.String.instance("a"), .ceylon.language.Integer.instance(2L), .ceylon.language.String.instance("b"), .ceylon.language.Integer.instance(3L), .ceylon.language.String.instance("c"));
+    }
+    
+    public static void main(.java.lang.String[] args) {
+        .ceylon.language.process_.getProcess$().setupArguments(args);
+        .com.redhat.ceylon.compiler.java.test.expression.invoke.callableWithDefaulted_.callableWithDefaulted();
+    }
+}
+class CallableWithDefaulted {
+    
+    CallableWithDefaulted() {
+    }
+    
+    private final void defaultedVariadic(final long a) {
+        (
+            let
+            {
+                .java.lang.String $ceylontmp$b$1 = defaultedVariadic$b(a);
+                .ceylon.language.Sequential<? extends .ceylon.language.Integer> $ceylontmp$args$2 = defaultedVariadic$args(a, $ceylontmp$b$1);
+                defaultedVariadic(a, $ceylontmp$b$1, $ceylontmp$args$2);
+            }
+            returning null;
+        );
+    }
+    
+    private final .java.lang.String defaultedVariadic$b(final long a) {
+        return "b";
+    }
+    
+    private final void defaultedVariadic(final long a, final .java.lang.String b) {
+        (
+            let
+            {
+                .ceylon.language.Sequential<? extends .ceylon.language.Integer> $ceylontmp$args$4 = defaultedVariadic$args(a, b);
+                defaultedVariadic(a, b, $ceylontmp$args$4);
+            }
+            returning null;
+        );
+    }
+    
+    private final .ceylon.language.Sequential<? extends .ceylon.language.Integer> defaultedVariadic$args(final long a, final .java.lang.String b) {
+        return (.ceylon.language.Sequential).ceylon.language.empty_.getEmpty$();
+    }
+    
+    private final void defaultedVariadic(final long a, final .java.lang.String b, final .ceylon.language.Sequential<? extends .ceylon.language.Integer> args) {
+    }
+    
+    private final void test() {
+        final .ceylon.language.Callable<? extends .java.lang.Object> f = new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.java.lang.Object>("Void(Integer, String=, Integer...)"){
+            
+            @.java.lang.Override
+            public .java.lang.Object $call(final .java.lang.Object $param$0) {
+                final long $$a = ((.ceylon.language.Integer)$param$0).longValue();
+                return (
+                    let
+                    {
+                        defaultedVariadic($$a);
+                    }
+                    returning null;
+                );
+            }
+            
+            @.java.lang.Override
+            public .java.lang.Object $call(final .java.lang.Object $param$0, final .java.lang.Object $param$1) {
+                final long $$a = ((.ceylon.language.Integer)$param$0).longValue();
+                final .java.lang.String $$b = ((.ceylon.language.String)$param$1).toString();
+                return (
+                    let
+                    {
+                        defaultedVariadic($$a, $$b);
+                    }
+                    returning null;
+                );
+            }
+            
+            @.java.lang.Override
+            public .java.lang.Object $call(final .java.lang.Object $param$0, final .java.lang.Object $param$1, final .java.lang.Object $param$2) {
+                final long $$a = ((.ceylon.language.Integer)$param$0).longValue();
+                final .java.lang.String $$b = ((.ceylon.language.String)$param$1).toString();
+                final .ceylon.language.Sequential<? extends .ceylon.language.Integer> $$args = (.ceylon.language.Sequential<? extends .ceylon.language.Integer>)(.ceylon.language.Sequential)$param$2;
+                return (
+                    let
+                    {
+                        defaultedVariadic($$a, $$b, $$args);
+                    }
+                    returning null;
+                );
+            }
+        };
+    }
+    
+    private final void methodWithDefaultCallableParam() {
+        (
+            let
+            {
+                .ceylon.language.Callable<? extends .ceylon.language.Integer> $ceylontmp$bar$7 = methodWithDefaultCallableParam$bar();
+                methodWithDefaultCallableParam($ceylontmp$bar$7);
+            }
+            returning null;
+        );
+    }
+    
+    private final .ceylon.language.Callable<? extends .ceylon.language.Integer> methodWithDefaultCallableParam$bar() {
+        return new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.ceylon.language.Integer>("Integer(Integer, Integer)"){
+            
+            @.java.lang.Override
+            public .ceylon.language.Integer $call(final .java.lang.Object $param$0, final .java.lang.Object $param$1) {
+                final .ceylon.language.Integer a = (.ceylon.language.Integer)$param$0;
+                final .ceylon.language.Integer b = (.ceylon.language.Integer)$param$1;
+                return a.plus(b);
+            }
+        };
+    }
+    
+    private final void methodWithDefaultCallableParam(final .ceylon.language.Callable<? extends .ceylon.language.Integer> bar) {
+        (
+            let
+            {
+                .ceylon.language.Callable<? extends .ceylon.language.Integer> $arg$5$0 = new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.ceylon.language.Integer>("Integer()"){
+                    
+                    @.java.lang.Override
+                    public .ceylon.language.Integer $call(final .java.lang.Object $param$0, final .java.lang.Object $param$1) {
+                        final .ceylon.language.Integer a = (.ceylon.language.Integer)$param$0;
+                        final .ceylon.language.Integer b = (.ceylon.language.Integer)$param$1;
+                        return a.plus(b);
+                    }
+                };
+                methodWithDefaultCallableParam($arg$5$0);
+            }
+            returning null;
+        );
+    }
+    
+    private final void methodWithDefaultCallableParam2() {
+        (
+            let
+            {
+                .ceylon.language.Callable<? extends .ceylon.language.Integer> $ceylontmp$bar$9 = methodWithDefaultCallableParam2$bar();
+                methodWithDefaultCallableParam2($ceylontmp$bar$9);
+            }
+            returning null;
+        );
+    }
+    
+    private final .ceylon.language.Callable<? extends .ceylon.language.Integer> methodWithDefaultCallableParam2$bar() {
+        return new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.ceylon.language.Integer>("Integer()"){
+            
+            @.java.lang.Override
+            public .ceylon.language.Integer $call() {
+                return .ceylon.language.Integer.instance(2L);
+            }
+        };
+    }
+    
+    private final void methodWithDefaultCallableParam2(final .ceylon.language.Callable<? extends .ceylon.language.Integer> bar) {
+    }
+    
+    public static void main(.java.lang.String[] args) {
+        .ceylon.language.process_.getProcess$().setupArguments(args);
+        new .com.redhat.ceylon.compiler.java.test.expression.invoke.CallableWithDefaulted();
+    }
+}
