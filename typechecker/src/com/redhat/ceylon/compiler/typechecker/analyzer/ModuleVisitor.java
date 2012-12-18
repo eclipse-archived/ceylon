@@ -79,10 +79,11 @@ public class ModuleVisitor extends Visitor {
                 that.getImportPath().setModel(mainModule);
                 mainModule.setUnit(unit.getUnit());
                 mainModule.setVersion(version);
-                if ( !unit.getUnit().getPackage().getNameAsString()
-                		.equals(formatPath(that.getImportPath().getIdentifiers())) ) {
+                String nameString = formatPath(that.getImportPath().getIdentifiers());
+				if ( !pkg.getNameAsString().equals(nameString) ) {
                     that.getImportPath()
-                        .addError("module name does not match descriptor location");
+                        .addError("module name does not match descriptor location: " + 
+                        		nameString + " should be " + pkg.getNameAsString());
                 }
                 moduleManager.addLinkBetweenModuleAndNode(mainModule, unit);
                 mainModule.setAvailable(true);
@@ -105,9 +106,11 @@ public class ModuleVisitor extends Visitor {
             else {
                 that.getImportPath().setModel(pkg);
                 pkg.setUnit(unit.getUnit());
-                if ( !pkg.getNameAsString().equals(formatPath(that.getImportPath().getIdentifiers())) ) {
+                String nameString = formatPath(that.getImportPath().getIdentifiers());
+				if ( !pkg.getNameAsString().equals(nameString) ) {
                     that.getImportPath()
-                        .addError("package name does not match descriptor location");
+                        .addError("package name does not match descriptor location: " + 
+                        		nameString + " should be " + pkg.getNameAsString());
                 }
                 if (hasAnnotation(that.getAnnotationList(), "shared")) {
                     pkg.setShared(true);
