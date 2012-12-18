@@ -130,4 +130,7 @@ interface InitializerParams {
     class SubWithParam(String str) extends Super() {}
     class SubWithAtt() extends Super() { String str=""; }
     
+    class XX(@error shared default Float x) {}
+    class YY(@error x) { shared default Float x; }
+    
 }
