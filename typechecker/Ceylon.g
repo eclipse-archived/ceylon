@@ -1194,16 +1194,6 @@ specifier returns [SpecifierExpression specifierExpression]
       { $specifierExpression.setExpression($functionOrExpression.expression); }
     ;
 
-conditionSpecifier returns [SpecifierExpression specifierExpression]
-    : SPECIFY
-      { $specifierExpression = new SpecifierExpression($SPECIFY); }
-      //disjunctionExpression
-      entryRangeExpression
-      { Expression e = new Expression(null);
-        e.setTerm($entryRangeExpression.term);
-        $specifierExpression.setExpression(e); }
-    ;
-
 lazySpecifier returns [SpecifierExpression specifierExpression]
     : COMPUTE
       { $specifierExpression = new LazySpecifierExpression($COMPUTE); }
@@ -1924,11 +1914,19 @@ thenElseExpression returns [Term term]
         de2=disjunctionExpression
         { $thenElseOperator.operator.setRightTerm($de2.term); }
       )*
-    | 
-      ( existsCondition | nonemptyCondition | isCondition | 
-        TYPE_CONSTRAINT specifiedConditionVariable )+
-      THEN_CLAUSE disjunctionExpression 
-      (ELSE_CLAUSE disjunctionExpression)?
+    //TODO: enable this to add support for if (...) and 
+    //      given (...) expressions
+    //TODO: when enabling this, we'll need something
+    //      to distinguish between "if (...) then" and 
+    //      the control structure "if (...) { ... }"
+    /*| 
+      ( 
+        IF_CLAUSE LPAREN ( existsCondition | nonemptyCondition | isCondition ) RPAREN
+      | 
+        TYPE_CONSTRAINT LPAREN specifiedConditionVariable RPAREN 
+      )+
+      THEN_CLAUSE disjunctionExpression
+      (ELSE_CLAUSE disjunctionExpression)?*/
     ;
 
 thenElseOperator returns [BinaryOperatorExpression operator]
@@ -2643,8 +2641,8 @@ existsCondition returns [Condition condition]
       e2=EXISTS 
       { ec = new ExistsCondition($e2); 
         $condition = ec; }
-      specifiedConditionVariable 
-      { ec.setVariable($specifiedConditionVariable.variable); }
+      specifiedVariable 
+      { ec.setVariable($specifiedVariable.variable); }
     //-> ^(EXISTS_CONDITION[$EXISTS] specifiedVariable2)
     | //(EXISTS LIDENTIFIER (RPAREN|COMMA)) =>
       e1=EXISTS
@@ -2661,8 +2659,8 @@ nonemptyCondition returns [Condition condition]
       n2=NONEMPTY 
       { nc = new NonemptyCondition($n2); 
         $condition = nc; }
-      specifiedConditionVariable 
-      { nc.setVariable($specifiedConditionVariable.variable); }
+      specifiedVariable 
+      { nc.setVariable($specifiedVariable.variable); }
     //-> ^(NONEMPTY_CONDITION[$NONEMPTY] specifiedVariable2)
     | //(NONEMPTY LIDENTIFIER (RPAREN|COMMA)) =>
       n1=NONEMPTY 
@@ -2689,8 +2687,8 @@ isCondition returns [Condition condition]
         ic.setVariable(v); }
       memberName
       { ic.getVariable().setIdentifier($memberName.identifier); }
-      conditionSpecifier
-      { ic.getVariable().setSpecifierExpression($conditionSpecifier.specifierExpression); }
+      specifier
+      { ic.getVariable().setSpecifierExpression($specifier.specifierExpression); }
     //-> ^(IS_CONDITION[$IS_OP] unionType ^(VARIABLE unionType memberName specifier))
     | //(NOT_OP? IS_OP type LIDENTIFIER (RPAREN|COMMA)) =>
       (n1=NOT_OP { not=true; })?
@@ -3045,15 +3043,6 @@ specifiedVariable returns [Variable variable]
       (
         specifier
         { $variable.setSpecifierExpression($specifier.specifierExpression); }
-      )?
-    ;
-
-specifiedConditionVariable returns [Variable variable]
-    : v=variable 
-      { $variable = $v.variable; }
-      (
-        conditionSpecifier
-        { $variable.setSpecifierExpression($conditionSpecifier.specifierExpression); }
       )?
     ;
 
