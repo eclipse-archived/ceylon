@@ -23,6 +23,8 @@ import static com.redhat.ceylon.compiler.java.codegen.AbstractTransformer.JT_CLA
 import static com.redhat.ceylon.compiler.java.codegen.AbstractTransformer.JT_EXTENDS;
 import static com.redhat.ceylon.compiler.java.codegen.AbstractTransformer.JT_NO_PRIMITIVES;
 
+import java.util.ArrayList;
+
 import com.redhat.ceylon.compiler.java.codegen.AbstractTransformer.BoxingStrategy;
 import com.redhat.ceylon.compiler.typechecker.model.Parameter;
 import com.redhat.ceylon.compiler.typechecker.model.ParameterList;
@@ -137,18 +139,23 @@ public class CallableBuilder {
                 }
             }
         }
+
+        // collect each parameter type from the callable type model rather than the declarations to get them all bound
+        java.util.List<ProducedType> parameterTypes = new ArrayList<ProducedType>(numParams);
+        for(int i=0;i<numParams;i++)
+            parameterTypes.add(gen.getParameterTypeOfCallable(typeModel, i));
         
         // now generate a method for each supported minimum number of parameters below 4
         // which delegates to the $call$typed method if required
         for(int i=minimumParams,max = Math.min(numParams,4);i<max;i++){
-            classBody.append(makeDefaultedCall(i, isVariadic));
+            classBody.append(makeDefaultedCall(i, isVariadic, parameterTypes));
         }
         // generate the $call method for the max number of parameters,
         // which delegates to the $call$typed method if required
-        classBody.append(makeDefaultedCall(numParams, isVariadic));
+        classBody.append(makeDefaultedCall(numParams, isVariadic, parameterTypes));
         // generate the $call$typed method if required
         if(isVariadic && forwardCallTo == null)
-            classBody.append(makeCallTypedMethod(body));
+            classBody.append(makeCallTypedMethod(body, parameterTypes));
         
         JCClassDecl classDef = gen.make().AnonymousClassDef(gen.make().Modifiers(0), classBody.toList());
         
@@ -160,7 +167,7 @@ public class CallableBuilder {
         return instance;
     }
     
-    private JCExpression getTypedParameter(Parameter param, int argIndex, boolean varargs){
+    private JCExpression getTypedParameter(Parameter param, int argIndex, boolean varargs, java.util.List<ProducedType> parameterTypes){
         JCExpression argExpr;
         if (!varargs) {
             // The Callable has overridden one of the non-varargs call() 
@@ -180,12 +187,12 @@ public class CallableBuilder {
                 true, // it's completely erased
                 true, // it came in boxed
                 CodegenUtil.getBoxingStrategy(param), // see if we need to box 
-                param.getType(), // see what type we need
+                parameterTypes.get(argIndex), // see what type we need
                 0); // no flags
         return argExpr;
     }
     
-    private JCTree makeDefaultedCall(int i, boolean isVariadic) {
+    private JCTree makeDefaultedCall(int i, boolean isVariadic, java.util.List<ProducedType> parameterTypes) {
         // collect every parameter
         int a = 0;
         ListBuffer<JCStatement> stmts = new ListBuffer<JCStatement>();
@@ -194,7 +201,7 @@ public class CallableBuilder {
             if(forwardCallTo != null && i == a)
                 break;
             // read the value
-            JCExpression paramExpression = getTypedParameter(param, a, i>3);
+            JCExpression paramExpression = getTypedParameter(param, a, i>3, parameterTypes);
             JCExpression varInitialExpression;
             if(param.isDefaulted() || param.isSequenced()){
                 if(i > 3){
@@ -215,7 +222,7 @@ public class CallableBuilder {
             // store it in a local var
             JCStatement var = gen.make().VarDef(gen.make().Modifiers(Flags.FINAL), 
                     gen.naming.makeUnquotedName(getCallableTempVarName(param)), 
-                    gen.makeJavaType(param.getType(), CodegenUtil.isUnBoxed(param) ? 0 : gen.JT_NO_PRIMITIVES),
+                    gen.makeJavaType(parameterTypes.get(a), CodegenUtil.isUnBoxed(param) ? 0 : gen.JT_NO_PRIMITIVES),
                     varInitialExpression);
             stmts.append(var);
             a++;
@@ -292,18 +299,20 @@ public class CallableBuilder {
         return callMethod.build();
     }
 
-    private JCTree makeCallTypedMethod(List<JCStatement> body) {
+    private JCTree makeCallTypedMethod(List<JCStatement> body, java.util.List<ProducedType> parameterTypes) {
         // make the method
         MethodDefinitionBuilder methodBuilder = MethodDefinitionBuilder.method(gen, false, Naming.getCallableTypedMethodName());
         methodBuilder.modifiers(Flags.PRIVATE);
         ProducedType returnType = gen.getReturnTypeOfCallable(typeModel);
         methodBuilder.resultType(gen.makeJavaType(returnType, JT_NO_PRIMITIVES), null);
         // add all parameters
+        int i=0;
         for(Parameter param : paramLists.getParameters()){
             ParameterDefinitionBuilder parameterBuilder = ParameterDefinitionBuilder.instance(gen, param.getName());
-            JCExpression paramType = gen.makeJavaType(param.getType());
+            JCExpression paramType = gen.makeJavaType(parameterTypes.get(i));
             parameterBuilder.type(paramType, null);
             methodBuilder.parameter(parameterBuilder);
+            i++;
         }
         // Return the call result, or null if a void method
         methodBuilder.body(body);
