@@ -18,10 +18,12 @@ final class callableReturnBinary_bar_ {
             
             @.java.lang.Override
             public .java.lang.Object $call(final .java.lang.Object $param$0, final .java.lang.Object $param$1) {
+                final long $$i = ((.ceylon.language.Integer)$param$0).longValue();
+                final .java.lang.String $$s = ((.ceylon.language.String)$param$1).toString();
                 return (
                     let
                     {
-                        .com.redhat.ceylon.compiler.java.test.expression.invoke.callableReturnBinary_foo_.callableReturnBinary_foo(((.ceylon.language.Integer)$param$0).longValue(), ((.ceylon.language.String)$param$1).toString());
+                        .com.redhat.ceylon.compiler.java.test.expression.invoke.callableReturnBinary_foo_.callableReturnBinary_foo($$i, $$s);
                     }
                     returning null;
                 );

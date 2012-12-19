@@ -39,7 +39,7 @@ final class Bug866_Visitable$impl<Visited extends .com.redhat.ceylon.compiler.ja
     
     public void visitPrefix(final .ceylon.language.Callable<? extends .java.lang.Object> f) {
         f.$call((Visited)$this);
-        visitChildren(f, new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.java.lang.Object>("Void()"){
+        visitChildren(f, new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.java.lang.Object>("Void(Visited)"){
             
             @.java.lang.Override
             public .java.lang.Object $call(final .java.lang.Object $param$0) {
@@ -56,7 +56,7 @@ final class Bug866_Visitable$impl<Visited extends .com.redhat.ceylon.compiler.ja
     }
     
     public void visitPostfix(final .ceylon.language.Callable<? extends .java.lang.Object> f) {
-        visitChildren(f, new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.java.lang.Object>("Void()"){
+        visitChildren(f, new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.java.lang.Object>("Void(Visited)"){
             
             @.java.lang.Override
             public .java.lang.Object $call(final .java.lang.Object $param$0) {

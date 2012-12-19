@@ -40,11 +40,23 @@ final class callableArgumentSequenced_m_ {
         .com.redhat.ceylon.compiler.java.test.expression.invoke.callableArgumentSequenced_f_.callableArgumentSequenced_f(new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.java.lang.Object>("Void(String...)"){
             
             @.java.lang.Override
-            public .java.lang.Object $call(final .java.lang.Object $param$0) {
+            public .java.lang.Object $call() {
                 return (
                     let
                     {
-                        .com.redhat.ceylon.compiler.java.test.expression.invoke.callableArgumentSequenced_g_.callableArgumentSequenced_g((.ceylon.language.Sequential)$param$0);
+                        .com.redhat.ceylon.compiler.java.test.expression.invoke.callableArgumentSequenced_g_.callableArgumentSequenced_g();
+                    }
+                    returning null;
+                );
+            }
+            
+            @.java.lang.Override
+            public .java.lang.Object $call(final .java.lang.Object $param$0) {
+                final .ceylon.language.Sequential<? extends .ceylon.language.String> $$s = (.ceylon.language.Sequential<? extends .ceylon.language.String>)(.ceylon.language.Sequential)$param$0;
+                return (
+                    let
+                    {
+                        .com.redhat.ceylon.compiler.java.test.expression.invoke.callableArgumentSequenced_g_.callableArgumentSequenced_g($$s);
                     }
                     returning null;
                 );

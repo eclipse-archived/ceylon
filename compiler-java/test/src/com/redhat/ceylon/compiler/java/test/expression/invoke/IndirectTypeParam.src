@@ -19,7 +19,8 @@ final class indirectTypeParam_ {
             
             @.java.lang.Override
             public .ceylon.language.Integer $call(final .java.lang.Object $param$0) {
-                return .com.redhat.ceylon.compiler.java.test.expression.invoke.indirectTypeParam_topLevel_.<.ceylon.language.Integer>indirectTypeParam_topLevel((.ceylon.language.Integer)$param$0);
+                final .ceylon.language.Integer $$t = (.ceylon.language.Integer)$param$0;
+                return .com.redhat.ceylon.compiler.java.test.expression.invoke.indirectTypeParam_topLevel_.<.ceylon.language.Integer>indirectTypeParam_topLevel($$t);
             }
         };
         long i = f1.$call(.ceylon.language.Integer.instance(1L)).longValue();
@@ -38,7 +39,8 @@ final class indirectTypeParam_ {
             
             @.java.lang.Override
             public .ceylon.language.Integer $call(final .java.lang.Object $param$0) {
-                return local.<.ceylon.language.Integer>local((.ceylon.language.Integer)$param$0);
+                final .ceylon.language.Integer $$t = (.ceylon.language.Integer)$param$0;
+                return local.<.ceylon.language.Integer>local($$t);
             }
         };
         i = f2.$call(.ceylon.language.Integer.instance(1L)).longValue();
@@ -80,15 +82,27 @@ final class indirectTypeParam_ {
         final .ceylon.language.Callable<? extends .ceylon.language.Sequential<? extends .java.lang.Object>> j = new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.ceylon.language.Sequential<? extends .java.lang.Object>>("Object[]({Object...}...)"){
             
             @.java.lang.Override
+            public .ceylon.language.Sequential<? extends .java.lang.Object> $call() {
+                return .ceylon.language.join_.join();
+            }
+            
+            @.java.lang.Override
             public .ceylon.language.Sequential<? extends .java.lang.Object> $call(final .java.lang.Object $param$0) {
-                return .ceylon.language.join_.join((.ceylon.language.Sequential)$param$0);
+                final .ceylon.language.Sequential<? extends .ceylon.language.Iterable<? extends .java.lang.Object>> $$iterables = (.ceylon.language.Sequential<? extends .ceylon.language.Iterable<? extends .java.lang.Object>>)(.ceylon.language.Sequential)$param$0;
+                return .ceylon.language.join_.join($$iterables);
             }
         };
         final .ceylon.language.Callable<? extends .ceylon.language.Sequential<? extends X>> j2 = new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.ceylon.language.Sequential<? extends X>>("X[]({X...}...)"){
             
             @.java.lang.Override
+            public .ceylon.language.Sequential<? extends X> $call() {
+                return .ceylon.language.join_.<X>join();
+            }
+            
+            @.java.lang.Override
             public .ceylon.language.Sequential<? extends X> $call(final .java.lang.Object $param$0) {
-                return .ceylon.language.join_.<X>join((.ceylon.language.Sequential)$param$0);
+                final .ceylon.language.Sequential<? extends .ceylon.language.Iterable<? extends X>> $$iterables = (.ceylon.language.Sequential<? extends .ceylon.language.Iterable<? extends X>>)(.ceylon.language.Sequential)$param$0;
+                return .ceylon.language.join_.<X>join($$iterables);
             }
         };
     }

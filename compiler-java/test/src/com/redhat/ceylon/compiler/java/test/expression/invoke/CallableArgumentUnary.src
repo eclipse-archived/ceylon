@@ -26,10 +26,11 @@ final class callableArgumentUnary_m_ {
             
             @.java.lang.Override
             public .java.lang.Object $call(final .java.lang.Object $param$0) {
+                final long $$i = ((.ceylon.language.Integer)$param$0).longValue();
                 return (
                     let
                     {
-                        .com.redhat.ceylon.compiler.java.test.expression.invoke.callableArgumentUnary_bar_.callableArgumentUnary_bar(((.ceylon.language.Integer)$param$0).longValue());
+                        .com.redhat.ceylon.compiler.java.test.expression.invoke.callableArgumentUnary_bar_.callableArgumentUnary_bar($$i);
                     }
                     returning null;
                 );

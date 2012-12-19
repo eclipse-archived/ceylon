@@ -26,10 +26,13 @@ final class callableArgumentTernary_m_ {
             
             @.java.lang.Override
             public .java.lang.Object $call(final .java.lang.Object $param$0, final .java.lang.Object $param$1, final .java.lang.Object $param$2) {
+                final long $$i = ((.ceylon.language.Integer)$param$0).longValue();
+                final .java.lang.String $$s = ((.ceylon.language.String)$param$1).toString();
+                final boolean $$b = ((.ceylon.language.Boolean)$param$2).booleanValue();
                 return (
                     let
                     {
-                        .com.redhat.ceylon.compiler.java.test.expression.invoke.callableArgumentTernary_bar_.callableArgumentTernary_bar(((.ceylon.language.Integer)$param$0).longValue(), ((.ceylon.language.String)$param$1).toString(), ((.ceylon.language.Boolean)$param$2).booleanValue());
+                        .com.redhat.ceylon.compiler.java.test.expression.invoke.callableArgumentTernary_bar_.callableArgumentTernary_bar($$i, $$s, $$b);
                     }
                     returning null;
                 );

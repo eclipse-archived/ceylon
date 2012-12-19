@@ -36,42 +36,54 @@ class CallableArgumentParameterTypeParamMixed<X> {
             
             @.java.lang.Override
             public .ceylon.language.Integer $call(final .java.lang.Object $param$0, final .java.lang.Object $param$1) {
-                return .ceylon.language.Integer.instance(.com.redhat.ceylon.compiler.java.test.expression.invoke.callableArgumentParameterTypeParamMixed_baz_.callableArgumentParameterTypeParamMixed_baz(((.ceylon.language.Integer)$param$0).longValue(), ((.ceylon.language.Boolean)$param$1).booleanValue()));
+                final long $$i = ((.ceylon.language.Integer)$param$0).longValue();
+                final boolean $$b = ((.ceylon.language.Boolean)$param$1).booleanValue();
+                return .ceylon.language.Integer.instance(.com.redhat.ceylon.compiler.java.test.expression.invoke.callableArgumentParameterTypeParamMixed_baz_.callableArgumentParameterTypeParamMixed_baz($$i, $$b));
             }
         });
         .com.redhat.ceylon.compiler.java.test.expression.invoke.callableArgumentParameterTypeParamMixed_f_.<.ceylon.language.Boolean, .ceylon.language.Integer>callableArgumentParameterTypeParamMixed_f(new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.ceylon.language.Boolean>("Boolean(Boolean, Integer)"){
             
             @.java.lang.Override
             public .ceylon.language.Boolean $call(final .java.lang.Object $param$0, final .java.lang.Object $param$1) {
-                return .com.redhat.ceylon.compiler.java.test.expression.invoke.callableArgumentParameterTypeParamMixed_bar_.<.ceylon.language.Boolean, .ceylon.language.Integer>callableArgumentParameterTypeParamMixed_bar((.ceylon.language.Boolean)$param$0, (.ceylon.language.Integer)$param$1);
+                final .ceylon.language.Boolean $$u = (.ceylon.language.Boolean)$param$0;
+                final .ceylon.language.Integer $$v = (.ceylon.language.Integer)$param$1;
+                return .com.redhat.ceylon.compiler.java.test.expression.invoke.callableArgumentParameterTypeParamMixed_bar_.<.ceylon.language.Boolean, .ceylon.language.Integer>callableArgumentParameterTypeParamMixed_bar($$u, $$v);
             }
         });
         .com.redhat.ceylon.compiler.java.test.expression.invoke.callableArgumentParameterTypeParamMixed_f_.<X, .ceylon.language.Integer>callableArgumentParameterTypeParamMixed_f(new .com.redhat.ceylon.compiler.java.language.AbstractCallable<X>("X(X, Integer)"){
             
             @.java.lang.Override
             public X $call(final .java.lang.Object $param$0, final .java.lang.Object $param$1) {
-                return .com.redhat.ceylon.compiler.java.test.expression.invoke.callableArgumentParameterTypeParamMixed_bar_.<X, .ceylon.language.Integer>callableArgumentParameterTypeParamMixed_bar((X)$param$0, (.ceylon.language.Integer)$param$1);
+                final X $$u = (X)$param$0;
+                final .ceylon.language.Integer $$v = (.ceylon.language.Integer)$param$1;
+                return .com.redhat.ceylon.compiler.java.test.expression.invoke.callableArgumentParameterTypeParamMixed_bar_.<X, .ceylon.language.Integer>callableArgumentParameterTypeParamMixed_bar($$u, $$v);
             }
         });
         .com.redhat.ceylon.compiler.java.test.expression.invoke.callableArgumentParameterTypeParamMixed_f_.<X, Y>callableArgumentParameterTypeParamMixed_f(new .com.redhat.ceylon.compiler.java.language.AbstractCallable<X>("X(X, Y)"){
             
             @.java.lang.Override
             public X $call(final .java.lang.Object $param$0, final .java.lang.Object $param$1) {
-                return .com.redhat.ceylon.compiler.java.test.expression.invoke.callableArgumentParameterTypeParamMixed_bar_.<X, Y>callableArgumentParameterTypeParamMixed_bar((X)$param$0, (Y)$param$1);
+                final X $$u = (X)$param$0;
+                final Y $$v = (Y)$param$1;
+                return .com.redhat.ceylon.compiler.java.test.expression.invoke.callableArgumentParameterTypeParamMixed_bar_.<X, Y>callableArgumentParameterTypeParamMixed_bar($$u, $$v);
             }
         });
         .com.redhat.ceylon.compiler.java.test.expression.invoke.callableArgumentParameterTypeParamMixed_f_.callableArgumentParameterTypeParamMixed_f(new .com.redhat.ceylon.compiler.java.language.AbstractCallable("<X&Y>(X&Y, Y)"){
             
             @.java.lang.Override
             public .java.lang.Object $call(final .java.lang.Object $param$0, final .java.lang.Object $param$1) {
-                return .com.redhat.ceylon.compiler.java.test.expression.invoke.callableArgumentParameterTypeParamMixed_bar_.callableArgumentParameterTypeParamMixed_bar($param$0, (Y)$param$1);
+                final .java.lang.Object $$u = $param$0;
+                final Y $$v = (Y)$param$1;
+                return .com.redhat.ceylon.compiler.java.test.expression.invoke.callableArgumentParameterTypeParamMixed_bar_.callableArgumentParameterTypeParamMixed_bar($$u, $$v);
             }
         });
         .com.redhat.ceylon.compiler.java.test.expression.invoke.callableArgumentParameterTypeParamMixed_f_.callableArgumentParameterTypeParamMixed_f(new .com.redhat.ceylon.compiler.java.language.AbstractCallable("<X|Y>(X|Y, Y)"){
             
             @.java.lang.Override
             public .java.lang.Object $call(final .java.lang.Object $param$0, final .java.lang.Object $param$1) {
-                return .com.redhat.ceylon.compiler.java.test.expression.invoke.callableArgumentParameterTypeParamMixed_bar_.callableArgumentParameterTypeParamMixed_bar($param$0, (Y)$param$1);
+                final .java.lang.Object $$u = $param$0;
+                final Y $$v = (Y)$param$1;
+                return .com.redhat.ceylon.compiler.java.test.expression.invoke.callableArgumentParameterTypeParamMixed_bar_.callableArgumentParameterTypeParamMixed_bar($$u, $$v);
             }
         });
     }

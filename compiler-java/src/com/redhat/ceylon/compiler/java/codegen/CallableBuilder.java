@@ -142,9 +142,15 @@ public class CallableBuilder {
 
         // collect each parameter type from the callable type model rather than the declarations to get them all bound
         java.util.List<ProducedType> parameterTypes = new ArrayList<ProducedType>(numParams);
-        for(int i=0;i<numParams;i++)
-            parameterTypes.add(gen.getParameterTypeOfCallable(typeModel, i));
-        
+        if(forwardCallTo != null){
+            for(int i=0;i<numParams;i++)
+                parameterTypes.add(gen.getParameterTypeOfCallable(typeModel, i));
+        }else{
+            // get them from our declaration
+            for(Parameter p : paramLists.getParameters())
+                parameterTypes.add(p.getType());
+        }
+            
         // now generate a method for each supported minimum number of parameters below 4
         // which delegates to the $call$typed method if required
         for(int i=minimumParams,max = Math.min(numParams,4);i<max;i++){

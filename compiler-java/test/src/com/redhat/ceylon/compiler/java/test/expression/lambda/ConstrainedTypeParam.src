@@ -9,7 +9,7 @@ class ConstrainedTypeParam<T> {
     }
     
     private final void test() {
-        method(new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.java.lang.Object>("Void()"){
+        method(new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.java.lang.Object>("Void(T)"){
             
             @.java.lang.Override
             public .java.lang.Object $call(final .java.lang.Object $param$0) {

@@ -3,7 +3,7 @@ package com.redhat.ceylon.compiler.java.test.expression.lambda;
 class MethodSpecifyingLambda {
     
     MethodSpecifyingLambda() {
-        this.m = new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.ceylon.language.String>("String()"){
+        this.m = new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.ceylon.language.String>("String(String)"){
             
             @.java.lang.Override
             public .ceylon.language.String $call(final .java.lang.Object $param$0) {

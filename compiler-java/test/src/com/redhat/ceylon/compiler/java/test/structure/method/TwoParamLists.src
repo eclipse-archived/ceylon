@@ -10,8 +10,8 @@ final class getOrder_ {
             
             @.java.lang.Override
             public .ceylon.language.Comparison $call(final .java.lang.Object $param$0, final .java.lang.Object $param$1) {
-                final long y = ((.ceylon.language.Integer)$param$1).longValue();
                 final long x = ((.ceylon.language.Integer)$param$0).longValue();
+                final long y = ((.ceylon.language.Integer)$param$1).longValue();
                 return .ceylon.language.Integer.instance(x).compare(.ceylon.language.Integer.instance(y));
             }
         };

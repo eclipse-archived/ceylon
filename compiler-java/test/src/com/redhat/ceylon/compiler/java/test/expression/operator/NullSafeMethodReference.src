@@ -10,12 +10,13 @@ final class nullSafeMethodReference_ {
             
             @.java.lang.Override
             public .ceylon.language.String $call(final .java.lang.Object $param$0) {
+                final long $$length = ((.ceylon.language.Integer)$param$0).longValue();
                 return (
                     let
                     {
                         .ceylon.language.String $safe$1 = s;
                     }
-                    returning $safe$1 != null ? .ceylon.language.String.instance($safe$1.initial(((.ceylon.language.Integer)$param$0).longValue())) : null;
+                    returning $safe$1 != null ? .ceylon.language.String.instance($safe$1.initial($$length)) : null;
                 );
             }
         };

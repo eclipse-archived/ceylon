@@ -6,7 +6,7 @@ final class toplevel_ {
     }
     private static final .ceylon.language.Callable<? extends .ceylon.language.String>[] value;
     static {
-        value = new .ceylon.language.Callable[]{new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.ceylon.language.String>("String()"){
+        value = new .ceylon.language.Callable[]{new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.ceylon.language.String>("String(String)"){
             
             @.java.lang.Override
             public .ceylon.language.String $call(final .java.lang.Object $param$0) {

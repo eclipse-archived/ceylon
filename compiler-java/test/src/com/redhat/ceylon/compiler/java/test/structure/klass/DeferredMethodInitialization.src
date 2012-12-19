@@ -4,7 +4,7 @@ class DeferredInitializedMethod {
     
     DeferredInitializedMethod() {
         this.s = null;
-        s = new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.ceylon.language.String>("String()"){
+        s = new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.ceylon.language.String>("String(String)"){
             
             @.java.lang.Override
             public .ceylon.language.String $call(final .java.lang.Object $param$0) {

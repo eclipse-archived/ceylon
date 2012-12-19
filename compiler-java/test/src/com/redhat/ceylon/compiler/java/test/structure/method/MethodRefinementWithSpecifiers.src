@@ -202,10 +202,11 @@ class MethodRefinementWithSpecifiers_Class implements .com.redhat.ceylon.compile
             
             @.java.lang.Override
             public .java.lang.Object $call(final .java.lang.Object $param$0) {
+                final long $$i = ((.ceylon.language.Integer)$param$0).longValue();
                 return (
                     let
                     {
-                        takesParam(((.ceylon.language.Integer)$param$0).longValue());
+                        takesParam($$i);
                     }
                     returning null;
                 );

@@ -21,10 +21,11 @@ class ActualMethodShortcutSub extends .com.redhat.ceylon.compiler.java.test.stru
             
             @.java.lang.Override
             public .java.lang.Object $call(final .java.lang.Object $param$0) {
+                final .java.lang.String $$line = ((.ceylon.language.String)$param$0).toString();
                 return (
                     let
                     {
-                        .ceylon.language.process_.getProcess$().writeLine(((.ceylon.language.String)$param$0).toString());
+                        .ceylon.language.process_.getProcess$().writeLine($$line);
                     }
                     returning null;
                 );
