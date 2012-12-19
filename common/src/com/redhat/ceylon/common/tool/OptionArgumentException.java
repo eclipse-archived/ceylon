@@ -7,7 +7,7 @@ import java.util.List;
  * Exception for problems parsing options and arguments.
  */
 @NonFatal
-public class OptionArgumentException extends ToolException {
+public abstract class OptionArgumentException extends ToolException {
 
     private static String getToolName(ArgumentModel<?> argumentModel) {
         return getToolName(argumentModel.getToolModel());
@@ -38,6 +38,13 @@ public class OptionArgumentException extends ToolException {
         super(cause);
     }
 
+    @NonFatal
+    public static class ToolInitializationException extends OptionArgumentException {
+        public ToolInitializationException(Throwable cause) {
+            super(cause.getLocalizedMessage(), cause);
+        }
+    }
+    
     @NonFatal
     public static class OptionWithoutArgumentException extends OptionArgumentException {
         private final OptionModel<?> optionModel;

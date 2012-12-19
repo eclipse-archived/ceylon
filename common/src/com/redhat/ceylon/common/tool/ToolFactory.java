@@ -9,7 +9,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.TreeSet;
 
-import com.redhat.ceylon.common.tool.OptionArgumentException.UnknownOptionException;
+import com.redhat.ceylon.common.tool.OptionArgumentException.*;
 import com.redhat.ceylon.common.tool.OptionModel.ArgumentType;
 
 
@@ -332,7 +332,7 @@ public class ToolFactory {
                 try {
                     toolModel.getRest().invoke(tool, rest);
                 } catch (InvocationTargetException e) {
-                    throw new OptionArgumentException(e.getCause());
+                    throw new ToolInitializationException(e.getCause());
                 }
             } else {
                 for (String arg : rest) {
@@ -346,7 +346,7 @@ public class ToolFactory {
                 try {
                     m.invoke(tool);
                 } catch (InvocationTargetException e) {
-                    throw new OptionArgumentException(e.getCause());
+                    throw new ToolInitializationException(e.getCause());
                 }
             }
         }
