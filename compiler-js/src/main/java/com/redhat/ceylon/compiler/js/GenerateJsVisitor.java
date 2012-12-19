@@ -513,21 +513,6 @@ public class GenerateJsVisitor extends Visitor
         typeInitialization(that);
     }
 
-    /** Add a comment to the generated code with info about the type parameters. */
-    private void comment(TypeParameter tp) {
-        if (!comment) return;
-        out("<");
-        if (tp.isCovariant()) {
-            out("out ");
-        } else if (tp.isContravariant()) {
-            out("in ");
-        }
-        out(tp.getQualifiedNameString());
-        for (TypeParameter st : tp.getTypeParameters()) {
-            comment(st);
-        }
-        out("> ");
-    }
     /** Add a comment to the generated code with info about the produced type parameters. */
     private void comment(ProducedType pt) {
         if (!comment) return;
@@ -567,16 +552,6 @@ public class GenerateJsVisitor extends Visitor
         }
         self(d);
         out(")");
-        if (!d.getTypeParameters().isEmpty()) {
-            //out(",");
-            //selfTypeParameters(d);
-            out("/* REIFIED GENERICS SOON! ");
-            for (TypeParameter tp : d.getTypeParameters()) {
-                comment(tp);
-            }
-            out("*/");
-            //endLine();
-        }
         beginBlock();
         //This takes care of top-level attributes defined before the class definition
         out("$init$", names.name(d), "();");

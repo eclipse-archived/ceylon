@@ -2,9 +2,11 @@ package com.redhat.ceylon.compiler.js;
 
 import java.util.List;
 
+import com.redhat.ceylon.compiler.typechecker.model.ClassOrInterface;
 import com.redhat.ceylon.compiler.typechecker.model.IntersectionType;
 import com.redhat.ceylon.compiler.typechecker.model.Module;
 import com.redhat.ceylon.compiler.typechecker.model.ProducedType;
+import com.redhat.ceylon.compiler.typechecker.model.Scope;
 import com.redhat.ceylon.compiler.typechecker.model.TypeDeclaration;
 import com.redhat.ceylon.compiler.typechecker.model.TypeParameter;
 import com.redhat.ceylon.compiler.typechecker.model.UnionType;
@@ -33,16 +35,25 @@ public class TypeUtils {
             } else {
                 gen.out(",");
             }
-            if (pt.getDeclaration() instanceof UnionType || pt.getDeclaration() instanceof IntersectionType) {
-                outputTypeList(node, pt.getDeclaration(), gen, true);
-            } else if (pt.getDeclaration() instanceof TypeParameter) {
-                gen.out("/*TYPE PARAM PENDING*/'", pt.getProducedTypeQualifiedName(), "'");
+            TypeDeclaration d = pt.getDeclaration();
+            boolean composite = d instanceof UnionType || d instanceof IntersectionType;
+            boolean hasParams = pt.getTypeArgumentList() != null && !pt.getTypeArgumentList().isEmpty();
+            if (composite) {
+                outputTypeList(node, d, gen, true);
+            } else if (d instanceof TypeParameter) {
+                resolveTypeParameter(node, (TypeParameter)d, gen);
             } else {
-                outputQualifiedTypename(node, pt.getDeclaration(), gen);
+                if (hasParams) {
+                    gen.out("{r:");
+                }
+                outputQualifiedTypename(node, d, gen);
             }
-            if (pt.getTypeArgumentList() != null && !pt.getTypeArgumentList().isEmpty()) {
-                gen.out(",");
+            if (hasParams) {
+                gen.out(",a:");
                 printTypeArguments(node, pt.getTypeArgumentList(), gen);
+            }
+            if (hasParams) {
+                gen.out("}");
             }
         }
         gen.out("]");
@@ -68,7 +79,7 @@ public class TypeUtils {
             outputTypeList(node, type, gen, typeReferences);
         } else if (typeReferences) {
             if (type instanceof TypeParameter) {
-                gen.out("/*TYPE PARAM PENDING*/'", type.getQualifiedNameString(), "'");
+                resolveTypeParameter(node, (TypeParameter)type, gen);
             } else {
                 outputQualifiedTypename(node, type, gen);
             }
@@ -96,6 +107,31 @@ public class TypeUtils {
             first = false;
         }
         gen.out("]}");
+    }
+
+    /** Finds the owner of the type parameter and outputs a reference to the corresponding type argument. */
+    static void resolveTypeParameter(Node node, TypeParameter tp, GenerateJsVisitor gen) {
+        Scope parent = node.getScope();
+        while (parent != null && parent != tp.getContainer()) {
+            parent = parent.getScope();
+        }
+        if (tp.getContainer() instanceof ClassOrInterface) {
+            int pos = ((ClassOrInterface)tp.getContainer()).getTypeParameters().indexOf(tp);
+            if (parent == tp.getContainer()) {
+                gen.out("this.$$targs$$[", Integer.toString(pos), "]");
+            } else {
+                gen.out("/*TYPE TYPEPARM ", Integer.toString(pos), parent.getQualifiedNameString(), "*/'", tp.getQualifiedNameString(), "'");
+            }
+        } else {
+            //it has to be a method, right?
+            //We need to find the index of the parameter where the argument occurs
+            //...and it could be null...
+            if (tp.getContainer() == parent) {
+                gen.out("/*SAME METHOD TYPEPARM*/'", tp.getQualifiedNameString(), "'");
+            } else {
+                gen.out("/*METHOD TYPEPARM*/'", tp.getQualifiedNameString(), "'");
+            }
+        }
     }
 
 }
