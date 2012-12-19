@@ -626,6 +626,7 @@ class IndirectInvocationBuilder extends SimpleInvocationBuilder {
     private Comprehension comprehension;
     private boolean variadic;
     private boolean spread;
+    private int minimumParameters;
 
     public IndirectInvocationBuilder(
             AbstractTransformer gen, 
@@ -642,6 +643,7 @@ class IndirectInvocationBuilder extends SimpleInvocationBuilder {
             tas.add(gen.getParameterTypeOfCallable(callableType, ii));
         }
         this.variadic = gen.isVariadicCallable(callableType);
+        this.minimumParameters = gen.getMinimumParameterCountForCallable(callableType);
         //final java.util.List<ProducedType> tas = primary.getTypeModel().getTypeArgumentList();
         final java.util.List<ProducedType> parameterTypes = tas.subList(1, tas.size());
         
@@ -664,13 +666,23 @@ class IndirectInvocationBuilder extends SimpleInvocationBuilder {
     @Override
     protected void compute(){
         // don't try to work on broken stuff
-        if ((!variadic && parameterTypes.size() != argumentExpressions.size())
-                || (variadic && parameterTypes.size() > argumentExpressions.size()+1)) {
+        if (!validNumberOfParameters()) {
             return;
         }
         super.compute();
     }
     
+    private boolean validNumberOfParameters() {
+        int argumentCount = argumentExpressions.size();
+        // check that we have enough
+        if(argumentCount < minimumParameters)
+            return false;
+        // check that we don't have too many
+        if(variadic)
+            return true;
+        return argumentCount <= parameterTypes.size();
+    }
+
     @Override
     protected boolean requiresEmptyForVariadic() {
         return variadic && getNumArguments() < parameterTypes.size();
@@ -679,8 +691,7 @@ class IndirectInvocationBuilder extends SimpleInvocationBuilder {
     @Override
     protected JCExpression makeInvocation(List<JCExpression> argExprs) {
         // don't try to work on broken stuff
-        if ((!variadic && parameterTypes.size() != argumentExpressions.size())
-                || (variadic && parameterTypes.size() > argumentExpressions.size()+1)) {
+        if (!validNumberOfParameters()) {
             return gen.makeErroneous(node, "Invalid number of parameters");
         }
         return super.makeInvocation(argExprs);
