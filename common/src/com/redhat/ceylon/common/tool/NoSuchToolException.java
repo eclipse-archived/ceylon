@@ -6,7 +6,7 @@ public class NoSuchToolException extends OptionArgumentException.InvalidArgument
     private String toolName;
 
     public NoSuchToolException(ArgumentModel<?> argumentModel, String toolName) {
-        super(argumentModel, toolName);
+        super(null, argumentModel, toolName);
         this.toolName = toolName;
     }
     

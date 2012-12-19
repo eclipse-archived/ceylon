@@ -1,10 +1,7 @@
 package com.redhat.ceylon.common.tool;
 
-import java.lang.reflect.InvocationTargetException;
 import java.util.Collections;
 import java.util.List;
-
-import com.redhat.ceylon.common.tool.OptionArgumentException.UnknownOptionException;
 
 /**
  * Exception for problems parsing options and arguments.
@@ -32,9 +29,13 @@ public class OptionArgumentException extends ToolException {
     private OptionArgumentException(String message) {
         super(message);
     }
+    
+    private OptionArgumentException(String message, Throwable cause) {
+        super(message, cause);
+    }
 
-    OptionArgumentException(InvocationTargetException e) {
-        super(e.getCause().getLocalizedMessage(), e);
+    OptionArgumentException(Throwable cause) {
+        super(cause);
     }
 
     @NonFatal
@@ -69,10 +70,10 @@ public class OptionArgumentException extends ToolException {
         private final String givenOption;
         private final String badValue;
 
-        public InvalidOptionValueException(OptionModel<?> optionModel, String givenOption, String badValue) {
+        public InvalidOptionValueException(Throwable cause, OptionModel<?> optionModel, String givenOption, String badValue) {
             super(ToolMessages.msg("option.invalid.value", givenOption,
                     getToolName(optionModel),
-                    badValue));
+                    badValue), cause);
             this.optionModel = optionModel;
             this.givenOption = givenOption;
             this.badValue = badValue;
@@ -101,10 +102,10 @@ public class OptionArgumentException extends ToolException {
         private final ArgumentModel<?> argumentModel;
         private final String badValue;
 
-        public InvalidArgumentValueException(ArgumentModel<?> argumentModel, String badValue) {
+        public InvalidArgumentValueException(Throwable cause, ArgumentModel<?> argumentModel, String badValue) {
             super(ToolMessages.msg("argument.invalid.value", argumentModel.getName(),
                     getToolName(argumentModel),
-                    badValue));
+                    badValue), cause);
             this.argumentModel = argumentModel;
             this.badValue = badValue;
         }

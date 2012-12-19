@@ -103,9 +103,9 @@ public class ToolFactory {
             final Object[] args = new Object[3];
             final String badValue = unparsedArgumentValue != null ? unparsedArgumentValue : String.valueOf(value);
             if (optionModel != null) {
-                throw new OptionArgumentException.InvalidOptionValueException(optionModel, givenOption, badValue);   
+                throw new OptionArgumentException.InvalidOptionValueException(throwable, optionModel, givenOption, badValue);   
             } else {
-                throw new OptionArgumentException.InvalidArgumentValueException(argumentModel, badValue);
+                throw new OptionArgumentException.InvalidArgumentValueException(throwable, argumentModel, badValue);
             }
         }
     }
@@ -113,6 +113,12 @@ public class ToolFactory {
     /**
      * Parses the given arguments binding them to a new instance of the 
      * tool model.
+     * @throws OptionArgumentException.InvalidOptionValueException If the value given for an option was not legal
+     * @throws OptionArgumentException.InvalidArgumentValueException If the value given for an argument was not legal
+     * @throws OptionArgumentException.OptionWithoutArgumentException If there was an option argument without its argument
+     * @throws OptionArgumentException.UnexpectedArgumentException If there were additional arguments
+     * @throws OptionArgumentException.OptionMultiplicityException If there were too many or too few occurances of an option
+     * @throws OptionArgumentException.ArgumentMultiplicityException If there were too many or too few occurances of an argument
      */
     public <T extends Tool> T bindArguments(ToolModel<T> toolModel, Iterable<String> args) {
         T tool = newInstance(toolModel);
@@ -326,7 +332,7 @@ public class ToolFactory {
                 try {
                     toolModel.getRest().invoke(tool, rest);
                 } catch (InvocationTargetException e) {
-                    throw new OptionArgumentException(e);
+                    throw new OptionArgumentException(e.getCause());
                 }
             } else {
                 for (String arg : rest) {
@@ -340,7 +346,7 @@ public class ToolFactory {
                 try {
                     m.invoke(tool);
                 } catch (InvocationTargetException e) {
-                    throw new OptionArgumentException(e);
+                    throw new OptionArgumentException(e.getCause());
                 }
             }
         }
@@ -379,6 +385,13 @@ public class ToolFactory {
      * the tool model.
      * You should probably be using {@link #bindArguments(ToolModel, Iterable)}, 
      * there are few tools which need to call this method directly.
+     * 
+     * @throws OptionArgumentException.InvalidOptionValueException If the value given for an option was not legal
+     * @throws OptionArgumentException.InvalidArgumentValueException If the value given for an argument was not legal
+     * @throws OptionArgumentException.OptionWithoutArgumentException If there was an option argument without its argument
+     * @throws OptionArgumentException.UnexpectedArgumentException If there were additional arguments
+     * @throws OptionArgumentException.OptionMultiplicityException If there were too many or too few occurances of an option
+     * @throws OptionArgumentException.ArgumentMultiplicityException If there were too many or too few occurances of an argument
      */
     public <T extends Tool> T bindArguments(ToolModel<T> toolModel, T tool, Iterable<String> args) {
             setToolLoaderAndModel(toolModel, tool);
