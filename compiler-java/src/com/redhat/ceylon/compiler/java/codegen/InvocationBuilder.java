@@ -1000,7 +1000,8 @@ class CallableInvocationBuilder extends DirectInvocationBuilder {
     protected JCExpression getTransformedArgumentExpression(int argIndex) {
         Parameter param = callableParameters.get(argIndex);
         ProducedType argType = gen.getParameterTypeOfCallable(primary.getTypeModel(), argIndex);
-        return CallableBuilder.unpickCallableParameter(gen, producedReference, param, argType, argIndex, functionalParameters.size());
+        // FIXME
+        return null;//CallableBuilder.unpickCallableParameter(gen, producedReference, null, argType, argIndex, functionalParameters.size());
     }
 
 
