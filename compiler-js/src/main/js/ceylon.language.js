@@ -79,12 +79,12 @@ function inheritProto(type) {
 function reify(t, params) {
     return function() {
         var o = t.apply(this, [].slice.call(arguments,0));
-        o.$$ptypes$$=params;
+        o.$$targs$$=params;
         return o;
     }
 }
 function reify2(obj, params) {
-    obj.$$ptypes$$=params;
+    obj.$$targs$$=params;
     return obj;
 }
 var inheritProtoI = inheritProto;
