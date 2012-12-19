@@ -201,8 +201,13 @@ class PlaintextMarkdownVisitor extends AbstractMarkdownVisitor {
     @Override
     public void visit(Line node) {
         node.childrenAccept(this);
-        if (!node.isEmpty() && !node.isEnding() ) {
-            out.append(" ");
+        if (!node.isEmpty() && !node.isEnding()) {
+            if (inCode 
+                    && Markdown.getNext(node) != null) {
+                out.append("");
+            } else if (!inCode) {
+                out.append(" ");
+            }
         }
         if (node.isEmpty() && inCode) {
             out.newline();

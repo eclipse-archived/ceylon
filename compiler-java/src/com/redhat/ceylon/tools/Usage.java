@@ -13,6 +13,7 @@ import com.redhat.ceylon.common.tool.OptionArgumentException.InvalidArgumentValu
 import com.redhat.ceylon.common.tool.OptionArgumentException.InvalidOptionValueException;
 import com.redhat.ceylon.common.tool.OptionArgumentException.OptionMultiplicityException;
 import com.redhat.ceylon.common.tool.OptionArgumentException.OptionWithoutArgumentException;
+import com.redhat.ceylon.common.tool.OptionArgumentException.ToolInitializationException;
 import com.redhat.ceylon.common.tool.OptionArgumentException.UnknownOptionException;
 import com.redhat.ceylon.common.tool.OptionModel;
 import com.redhat.ceylon.common.tool.ToolModel;
@@ -195,7 +196,14 @@ class Usage {
         }
         if (t.getLocalizedMessage() != null) {
             sb.append(t.getLocalizedMessage());
+            if ((t instanceof InvalidOptionValueException 
+                    || t instanceof InvalidArgumentValueException
+                    || t instanceof ToolInitializationException)
+                    && t.getCause() instanceof IllegalArgumentException) {
+                sb.append(": ").append(t.getCause().getLocalizedMessage());
+            }
         }
+        
         return sb.toString();
     }
     
