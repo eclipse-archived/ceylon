@@ -34,6 +34,7 @@ public class TestExampleTool implements Tool {
     private boolean run;
     private String verbose;
     private List<String> verbosities;
+    private String throwableClassName;
     
 
     public boolean isInited() {
@@ -143,8 +144,11 @@ public class TestExampleTool implements Tool {
     }
 
     @Argument(argumentName="args", multiplicity="*", order=0)
-    public void setListArgument(List<String> bazes) {
+    public void setListArgument(List<String> bazes) throws Throwable {
         this.listArgument = bazes;
+        if (throwableClassName != null) {
+            throw (Throwable)Class.forName(throwableClassName).newInstance();
+        }
     }
     
     public File getFile() {
@@ -164,14 +168,32 @@ public class TestExampleTool implements Tool {
     public void setThreadState(Thread.State threadState) {
         this.threadState = threadState;
     }
+    
+    @OptionArgument
+    public void setThrowableClassName(String throwableClassName) throws Throwable {
+        this.throwableClassName = throwableClassName;
+    }
+    
+    @OptionArgument
+    public void setOptionArgumentThrow(String s) throws Throwable {
+        throw (Throwable)Class.forName(throwableClassName).newInstance();
+    }
+    
+    @Option
+    public void setOptionThrow(boolean b) throws Throwable {
+        throw (Throwable)Class.forName(throwableClassName).newInstance();
+    }
 
     /**
      * Tools can have zero or more public no-arg @PostConstruct-annotated
      * methods which will be called before {@link #run()}.
      */
     @PostConstruct
-    public void init() {
+    public void init() throws Throwable {
         this.inited = true;
+        if (throwableClassName != null) {
+            throw (Throwable)Class.forName(throwableClassName).newInstance();
+        }
     }
     
     /**

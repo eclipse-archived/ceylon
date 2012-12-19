@@ -8,6 +8,8 @@ import junit.framework.Assert;
 
 import org.junit.Test;
 
+import com.redhat.ceylon.common.tool.OptionArgumentException.InvalidArgumentValueException;
+import com.redhat.ceylon.common.tool.OptionArgumentException.InvalidOptionValueException;
 import com.redhat.ceylon.common.tool.example.TestExampleTool;
 import com.redhat.ceylon.common.tool.example.TestMinimumsTool;
 import com.redhat.ceylon.common.tool.example.TestSubtoolTool;
@@ -287,6 +289,74 @@ public class ToolFactoryTest {
             Assert.assertTrue(message, message.startsWith("Invalid value 'subtool3' given for argument 'action'"));
             //Assert.assertTrue(message, message.contains("subtool1"));
             //Assert.assertTrue(message, message.contains("subtool2"));
+        }
+    }
+    
+    @Test
+    public void testInitThrows() {
+        ToolModel<TestExampleTool> model = pluginLoader.loadToolModel("example");
+        try {
+            pluginFactory.bindArguments(model, Arrays.asList("--throwable-class-name=java.lang.Exception"));
+            Assert.fail();
+        } catch (OptionArgumentException e) {
+            Assert.assertEquals("java.lang.Exception", e.getCause().getClass().getName());
+        }
+        try {
+            pluginFactory.bindArguments(model, Arrays.asList("--throwable-class-name=java.lang.RuntimeException"));
+            Assert.fail();
+        } catch (OptionArgumentException e) {
+            Assert.assertEquals("java.lang.RuntimeException", e.getCause().getClass().getName());
+        }
+    }
+    
+    @Test
+    public void testOptionThrows() {
+        ToolModel<TestExampleTool> model = pluginLoader.loadToolModel("example");
+        try {
+            pluginFactory.bindArguments(model, Arrays.asList("--throwable-class-name=java.lang.Exception", "--option-throw"));
+            Assert.fail();
+        } catch (InvalidOptionValueException e) {
+            Assert.assertEquals("java.lang.Exception", e.getCause().getClass().getName());
+        }
+        try {
+            pluginFactory.bindArguments(model, Arrays.asList("--throwable-class-name=java.lang.RuntimeException", "--option-throw"));
+            Assert.fail();
+        } catch (InvalidOptionValueException e) {
+            Assert.assertEquals("java.lang.RuntimeException", e.getCause().getClass().getName());
+        }
+    }
+    
+    @Test
+    public void testOptionArgumentThrows() {
+        ToolModel<TestExampleTool> model = pluginLoader.loadToolModel("example");
+        try {
+            pluginFactory.bindArguments(model, Arrays.asList("--throwable-class-name=java.lang.Exception", "--option-argument-throw=s"));
+            Assert.fail();
+        } catch (InvalidOptionValueException e) {
+            Assert.assertEquals("java.lang.Exception", e.getCause().getClass().getName());
+        }
+        try {
+            pluginFactory.bindArguments(model, Arrays.asList("--throwable-class-name=java.lang.RuntimeException", "--option-argument-throw=s"));
+            Assert.fail();
+        } catch (InvalidOptionValueException e) {
+            Assert.assertEquals("java.lang.RuntimeException", e.getCause().getClass().getName());
+        }
+    }
+    
+    @Test
+    public void testArgumentThrows() {
+        ToolModel<TestExampleTool> model = pluginLoader.loadToolModel("example");
+        try {
+            pluginFactory.bindArguments(model, Arrays.asList("--throwable-class-name=java.lang.Exception", "argument"));
+            Assert.fail();
+        } catch (InvalidArgumentValueException e) {
+            Assert.assertEquals("java.lang.Exception", e.getCause().getClass().getName());
+        }
+        try {
+            pluginFactory.bindArguments(model, Arrays.asList("--throwable-class-name=java.lang.RuntimeException", "argument"));
+            Assert.fail();
+        } catch (InvalidArgumentValueException e) {
+            Assert.assertEquals("java.lang.RuntimeException", e.getCause().getClass().getName());
         }
     }
 
