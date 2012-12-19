@@ -1501,4 +1501,8 @@ public class Naming implements LocalId {
     public static String getCallableTypedMethodName() {
         return "$call$typed";
     }
+    
+    public static String getCallableTempVarName(Parameter param){
+        return "$$" + param.getName();
+    }
 }

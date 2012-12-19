@@ -29,6 +29,7 @@ import com.redhat.ceylon.compiler.typechecker.model.ParameterList;
 import com.redhat.ceylon.compiler.typechecker.model.ProducedReference;
 import com.redhat.ceylon.compiler.typechecker.model.ProducedType;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree;
+import com.redhat.ceylon.compiler.typechecker.tree.Tree.Term;
 import com.sun.tools.javac.code.Flags;
 import com.sun.tools.javac.tree.JCTree;
 import com.sun.tools.javac.tree.JCTree.JCBinary;
@@ -49,6 +50,7 @@ public class CallableBuilder {
     private List<JCStatement> body;
     private ParameterList paramLists;
     private Tree.ParameterList parameterListTree;
+    private Term forwardCallTo;
     
     private CallableBuilder(CeylonTransformer gen) {
         this.gen = gen;
@@ -58,20 +60,10 @@ public class CallableBuilder {
      * Constructs an {@code AbstractCallable} suitable for wrapping a method reference.
      */
     public static CallableBuilder methodReference(CeylonTransformer gen, Tree.Term expr, ParameterList parameterList) {
-        JCExpression fnCall;
-        InvocationBuilder invocationBuilder = InvocationBuilder.forCallableInvocation(gen, expr, parameterList);
-        boolean prevCallableInv = gen.expressionGen().withinCallableInvocation(true);
-        try {
-            fnCall = invocationBuilder.build();
-        } finally {
-            gen.expressionGen().withinCallableInvocation(prevCallableInv);
-        }
-        
         CallableBuilder cb = new CallableBuilder(gen);
         cb.paramLists = parameterList;
         cb.typeModel = expr.getTypeModel();
-        cb.body = List.<JCStatement>of(gen.make().Return(fnCall));    
-        
+        cb.forwardCallTo = expr;
         return cb;
     }
     
@@ -136,11 +128,13 @@ public class CallableBuilder {
             minimumParams++;
         }
         boolean isVariadic = minimumParams != numParams;
-        // generate a method for each defaulted param
-        for(Tree.Parameter p : parameterListTree.getParameters()){
-            if(p.getDefaultArgument() != null || p.getDeclarationModel().isSequenced()){
-                MethodDefinitionBuilder methodBuilder = gen.classGen().makeParamDefaultValueMethod(false, null, parameterListTree, p);
-                classBody.append(methodBuilder.build());
+        if(parameterListTree != null){
+            // generate a method for each defaulted param
+            for(Tree.Parameter p : parameterListTree.getParameters()){
+                if(p.getDefaultArgument() != null || p.getDeclarationModel().isSequenced()){
+                    MethodDefinitionBuilder methodBuilder = gen.classGen().makeParamDefaultValueMethod(false, null, parameterListTree, p);
+                    classBody.append(methodBuilder.build());
+                }
             }
         }
         
@@ -153,7 +147,7 @@ public class CallableBuilder {
         // which delegates to the $call$typed method if required
         classBody.append(makeDefaultedCall(numParams, isVariadic));
         // generate the $call$typed method if required
-        if(isVariadic)
+        if(isVariadic && forwardCallTo == null)
             classBody.append(makeCallTypedMethod(body));
         
         JCClassDecl classDef = gen.make().AnonymousClassDef(gen.make().Modifiers(0), classBody.toList());
@@ -196,6 +190,9 @@ public class CallableBuilder {
         int a = 0;
         ListBuffer<JCStatement> stmts = new ListBuffer<JCStatement>();
         for(Parameter param : paramLists.getParameters()){
+            // don't read default parameter values for forwarded calls
+            if(forwardCallTo != null && i == a)
+                break;
             // read the value
             JCExpression paramExpression = getTypedParameter(param, a, i>3);
             JCExpression varInitialExpression;
@@ -217,19 +214,27 @@ public class CallableBuilder {
             }
             // store it in a local var
             JCStatement var = gen.make().VarDef(gen.make().Modifiers(0), 
-                    gen.naming.makeUnquotedName(param.getName()), 
+                    gen.naming.makeUnquotedName(Naming.getCallableTempVarName(param)), 
                     gen.makeJavaType(param.getType()),
                     varInitialExpression);
             stmts.append(var);
             a++;
         }
-        if(isVariadic){
+        if(forwardCallTo != null){
+            InvocationBuilder invocationBuilder = InvocationBuilder.forCallableInvocation(gen, forwardCallTo, paramLists, i);
+            boolean prevCallableInv = gen.expressionGen().withinCallableInvocation(true);
+            try {
+                stmts.append(gen.make().Return(invocationBuilder.build()));
+            } finally {
+                gen.expressionGen().withinCallableInvocation(prevCallableInv);
+            }
+        }else if(isVariadic){
             // chain to n param typed method
             List<JCExpression> args = List.nil();
             // pass along the parameters
             for(a=paramLists.getParameters().size()-1;a>=0;a--){
                 Parameter param = paramLists.getParameters().get(a);
-                args = args.prepend(gen.makeUnquotedIdent(param.getName()));
+                args = args.prepend(gen.makeUnquotedIdent(Naming.getCallableTempVarName(param)));
             }
             JCMethodInvocation chain = gen.make().Apply(null, gen.makeUnquotedIdent(Naming.getCallableTypedMethodName()), args);
             stmts.append(gen.make().Return(chain));
@@ -247,7 +252,7 @@ public class CallableBuilder {
         // pass all the previous values
         for(int a=i-1;a>=0;a--){
             Parameter param = paramLists.getParameters().get(a);
-            JCExpression previousValue = gen.makeUnquotedIdent(param.getName());
+            JCExpression previousValue = gen.makeUnquotedIdent(Naming.getCallableTempVarName(param));
             defaultMethodArgs = defaultMethodArgs.prepend(previousValue);
         }
         // now call the default value method

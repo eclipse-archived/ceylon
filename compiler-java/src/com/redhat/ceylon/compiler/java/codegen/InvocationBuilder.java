@@ -384,7 +384,7 @@ abstract class InvocationBuilder {
     }
     
     public static InvocationBuilder forCallableInvocation(
-            AbstractTransformer gen, Tree.Term expr, final ParameterList parameterList) {
+            AbstractTransformer gen, Tree.Term expr, final ParameterList parameterList, int parameterCount) {
         final Tree.MemberOrTypeExpression primary;
         if (expr instanceof Tree.MemberOrTypeExpression) {
             primary = (Tree.MemberOrTypeExpression)expr;
@@ -399,7 +399,8 @@ abstract class InvocationBuilder {
                 primary.getTarget(),
                 gen.getReturnTypeOfCallable(expr.getTypeModel()),
                 expr, 
-                parameterList);
+                parameterList,
+                parameterCount);
         builder.handleBoxing(true);
         builder.compute();
         return builder;
@@ -968,20 +969,23 @@ class CallableInvocationBuilder extends DirectInvocationBuilder {
     
     private final java.util.List<Parameter> functionalParameters;
 
+    private int parameterCount;
+
     public CallableInvocationBuilder(
             AbstractTransformer gen, Tree.MemberOrTypeExpression primary,
             Declaration primaryDeclaration, ProducedReference producedReference, ProducedType returnType,
-            Tree.Term expr, ParameterList parameterList) {
+            Tree.Term expr, ParameterList parameterList, int parameterCount) {
         super(gen, primary, primaryDeclaration, producedReference, returnType, expr);
         callableParameters = ((Functional)primary.getDeclaration()).getParameterLists().get(0).getParameters();
         functionalParameters = parameterList.getParameters();
+        this.parameterCount = parameterCount;
         setUnboxed(expr.getUnboxed());
         setBoxingStrategy(BoxingStrategy.BOXED);// Must be boxed because non-primitive return type
     }
 
     @Override
     protected int getNumArguments() {
-        return functionalParameters.size();
+        return parameterCount;
     }
     @Override
     protected boolean dontBoxSequence() {
@@ -990,9 +994,7 @@ class CallableInvocationBuilder extends DirectInvocationBuilder {
     @Override
     protected JCExpression getTransformedArgumentExpression(int argIndex) {
         Parameter param = callableParameters.get(argIndex);
-        ProducedType argType = gen.getParameterTypeOfCallable(primary.getTypeModel(), argIndex);
-        // FIXME
-        return null;//CallableBuilder.unpickCallableParameter(gen, producedReference, null, argType, argIndex, functionalParameters.size());
+        return gen.makeUnquotedIdent(Naming.getCallableTempVarName(param));
     }
 
 
