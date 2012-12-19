@@ -143,12 +143,15 @@ public class CallableBuilder {
             }
         }
         
-//        int minimumParams = gen.getMinimumParameterCountForCallable(typeModel);
+        // now generate a method for each supported minimum number of parameters below 4
+        // which delegates to the $call$typed method
         for(int i=minimumParams,max = Math.min(numParams,4);i<max;i++){
             classBody.append(makeDefaultedCall(i));
-            classBody.append(makeDefaultedTypedCall(i));
         }
+        // generate the $call method for the max number of parameters,
+        // which delegates to the $call$typed method
         classBody.append(makeDefaultedCall(numParams));
+        // generate the $call$typed method
         classBody.append(makeCallTypedMethod(body));
         
         JCClassDecl classDef = gen.make().AnonymousClassDef(gen.make().Modifiers(0), classBody.toList());
@@ -185,21 +188,51 @@ public class CallableBuilder {
     }
     
     private JCTree makeDefaultedCall(int i) {
+        // collect every parameter
+        int a = 0;
+        ListBuffer<JCStatement> stmts = new ListBuffer<JCStatement>();
+        for(Parameter param : paramLists.getParameters()){
+            // read the value
+            JCExpression paramExpression = getTypedParameter(param, a, i>3);
+            JCExpression varInitialExpression;
+            if(param.isDefaulted()){
+                if(i > 3){
+                    // must check if it's defined
+                    JCExpression test = gen.make().Binary(JCTree.GT, gen.makeSelect(getParamName(0), "length"), gen.makeInteger(a));
+                    JCExpression elseBranch = makeDefaultValueCall(param, a);
+                    varInitialExpression = gen.make().Conditional(test, paramExpression, elseBranch);
+                }else if(a >= i){
+                    // get its default value because we don't have it
+                    varInitialExpression = makeDefaultValueCall(param, a);
+                }else{
+                    // we must have it
+                    varInitialExpression = paramExpression;
+                }
+            }else{
+                varInitialExpression = paramExpression;
+            }
+            // store it in a local var
+            JCStatement var = gen.make().VarDef(gen.make().Modifiers(0), 
+                    gen.naming.makeUnquotedName(param.getName()), 
+                    gen.makeJavaType(param.getType()),
+                    varInitialExpression);
+            stmts.append(var);
+            a++;
+        }
         // chain to n param typed method
         List<JCExpression> args = List.nil();
         // pass along the parameters
-        for(int a=i-1;a>=0;a--){
+        for(a=paramLists.getParameters().size()-1;a>=0;a--){
             Parameter param = paramLists.getParameters().get(a);
-            args = args.prepend(getTypedParameter(param, a, false));
+            args = args.prepend(gen.makeUnquotedIdent(param.getName()));
         }
         JCMethodInvocation chain = gen.make().Apply(null, gen.makeUnquotedIdent(Naming.getCallableTypedMethodName()), args);
-        List<JCStatement> body = List.<JCStatement>of(gen.make().Return(chain));
+        stmts.append(gen.make().Return(chain));
+        List<JCStatement> body = stmts.toList();
         return makeCallMethod(body, i);
     }
 
-    private JCTree makeDefaultedTypedCall(int i) {
-        // chain to n+1 param method
-        List<JCExpression> args = List.nil();
+    private JCExpression makeDefaultValueCall(Parameter defaultedParam, int i){
         // add the default value
         List<JCExpression> defaultMethodArgs = List.nil();
         // pass all the previous values
@@ -209,35 +242,9 @@ public class CallableBuilder {
             defaultMethodArgs = defaultMethodArgs.prepend(previousValue);
         }
         // now call the default value method
-        Parameter defaultedParam = paramLists.getParameters().get(i);
-        JCExpression defaultValueCall = gen.make().Apply(null, gen.makeUnquotedIdent(Naming.getDefaultedParamMethodName(null, defaultedParam)), defaultMethodArgs);
-        args = args.prepend(defaultValueCall);
-        // pass along the other parameters
-        for(int a=i-1;a>=0;a--){
-            Parameter param = paramLists.getParameters().get(a);
-            args = args.prepend(gen.makeUnquotedIdent(param.getName()));
-        }
-        JCMethodInvocation chain = gen.make().Apply(null, gen.makeUnquotedIdent(Naming.getCallableTypedMethodName()), args);
-        List<JCStatement> body = List.<JCStatement>of(gen.make().Return(chain));
-
-        // make the method
-        MethodDefinitionBuilder methodBuilder = MethodDefinitionBuilder.method(gen, false, Naming.getCallableTypedMethodName());
-        methodBuilder.modifiers(Flags.PRIVATE);
-        ProducedType returnType = gen.getReturnTypeOfCallable(typeModel);
-        methodBuilder.resultType(gen.makeJavaType(returnType, JT_NO_PRIMITIVES), null);
-        // add all parameters
-        for(int a=0;a<i;a++){
-            Parameter param = paramLists.getParameters().get(a);
-            ParameterDefinitionBuilder parameterBuilder = ParameterDefinitionBuilder.instance(gen, param.getName());
-            JCExpression paramType = gen.makeJavaType(param.getType());
-            parameterBuilder.type(paramType, null);
-            methodBuilder.parameter(parameterBuilder);
-        }
-        // Return the call result, or null if a void method
-        methodBuilder.body(body);
-        return methodBuilder.build();
+        return gen.make().Apply(null, gen.makeUnquotedIdent(Naming.getDefaultedParamMethodName(null, defaultedParam)), defaultMethodArgs);
     }
-
+    
     private JCTree makeCallMethod(List<JCStatement> body, int numParams) {
         MethodDefinitionBuilder callMethod = MethodDefinitionBuilder.callable(gen);
         callMethod.isOverride(true);
