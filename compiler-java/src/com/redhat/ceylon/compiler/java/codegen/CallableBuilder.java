@@ -214,8 +214,8 @@ public class CallableBuilder {
             }
             // store it in a local var
             JCStatement var = gen.make().VarDef(gen.make().Modifiers(0), 
-                    gen.naming.makeUnquotedName(Naming.getCallableTempVarName(param)), 
-                    gen.makeJavaType(param.getType()),
+                    gen.naming.makeUnquotedName(getCallableTempVarName(param)), 
+                    gen.makeJavaType(param.getType(), CodegenUtil.isUnBoxed(param) ? 0 : gen.JT_NO_PRIMITIVES),
                     varInitialExpression);
             stmts.append(var);
             a++;
