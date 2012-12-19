@@ -131,14 +131,14 @@ public class CallableBuilder {
         int numParams = paramLists.getParameters().size();
         int minimumParams = 0;
         for(Parameter p : paramLists.getParameters()){
-            if(p.isDefaulted())
+            if(p.isDefaulted() || p.isSequenced())
                 break;
             minimumParams++;
         }
         boolean isVariadic = minimumParams != numParams;
         // generate a method for each defaulted param
         for(Tree.Parameter p : parameterListTree.getParameters()){
-            if(p.getDefaultArgument() != null){
+            if(p.getDefaultArgument() != null || p.getDeclarationModel().isSequenced()){
                 MethodDefinitionBuilder methodBuilder = gen.classGen().makeParamDefaultValueMethod(false, null, parameterListTree, p);
                 classBody.append(methodBuilder.build());
             }
@@ -197,7 +197,7 @@ public class CallableBuilder {
             // read the value
             JCExpression paramExpression = getTypedParameter(param, a, i>3);
             JCExpression varInitialExpression;
-            if(param.isDefaulted()){
+            if(param.isDefaulted() || param.isSequenced()){
                 if(i > 3){
                     // must check if it's defined
                     JCExpression test = gen.make().Binary(JCTree.GT, gen.makeSelect(getParamName(0), "length"), gen.makeInteger(a));
