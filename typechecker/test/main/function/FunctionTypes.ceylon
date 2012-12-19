@@ -337,3 +337,13 @@ void lazyLazySpec() {
     void x(String s="")(Integer i);
     x(String s)(Integer i) => bottom;
 }
+
+void bug() {
+    Callable<Void, [Integer, String=, Integer...]> defaultedVariadic = 
+            function (Integer a, String b = "b", Integer... args) a;
+    defaultedVariadic(1);
+    defaultedVariadic(1, "a");
+    defaultedVariadic(1, "a", 1); // error
+    defaultedVariadic(1, "a", 1, 2); // error
+    defaultedVariadic(1, "a", {}...); // error
+}
