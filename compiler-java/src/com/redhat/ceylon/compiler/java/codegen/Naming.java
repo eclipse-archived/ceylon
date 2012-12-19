@@ -514,7 +514,16 @@ public class Naming implements LocalId {
      * @return The ident
      */
     JCIdent makeUnquotedIdent(String ident) {
-        return make().Ident(names().fromString(ident));
+        return make().Ident(makeUnquotedName(ident));
+    }
+
+    /** 
+     * Makes an <strong>unquoted</strong> simple name
+     * @param ident The identifier
+     * @return The name
+     */
+    Name makeUnquotedName(String ident) {
+        return names().fromString(ident);
     }
 
     /** 
@@ -523,9 +532,18 @@ public class Naming implements LocalId {
      * @return The ident
      */
     JCIdent makeQuotedIdent(String ident) {
-        return make().Ident(names().fromString(Naming.quoteIfJavaKeyword(ident)));
+        return make().Ident(makeQuotedName(ident));
     }
-    
+
+    /** 
+     * Makes an <strong>quoted</strong> simple name
+     * @param ident The identifier
+     * @return The name
+     */
+    Name makeQuotedName(String ident) {
+        return names().fromString(Naming.quoteIfJavaKeyword(ident));
+    }
+
     /** 
      * Makes a <strong>quoted</strong> qualified (compound) identifier from 
      * the given qualified name. Each part of the name will be 
