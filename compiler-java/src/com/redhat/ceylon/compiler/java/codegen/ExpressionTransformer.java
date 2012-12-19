@@ -263,10 +263,13 @@ public class ExpressionTransformer extends AbstractTransformer {
                         result = make().TypeCast(targetType, result);
                     }
                 }
-            }else if(!isExactlySequential(expectedType)
-                    && ((exprErased && !isFunctionalResult(exprType))
+            }else if(
+                    // if we don't expect exactly a sequential, or if we have a sequential we erased to Object
+                    ((!isExactlySequential(expectedType) 
+                            || (exprErased && exprType.isExactly(typeFact().getObjectDeclaration().getType())))
+                       && ((exprErased && !isFunctionalResult(exprType))
                             || willEraseToObject(exprType)
-                            || (exprType.isRaw() && !hasErasedTypeParameters(expectedType, true)))
+                            || (exprType.isRaw() && !hasErasedTypeParameters(expectedType, true))))
                     || (typeFact().getNonemptySequenceType(typeFact().getDefiniteType(expectedType)) != null
                             && (isExactlySequential(exprType)
                                     || willEraseToSequential(exprType)

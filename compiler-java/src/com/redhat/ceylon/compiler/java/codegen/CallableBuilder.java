@@ -182,10 +182,12 @@ public class CallableBuilder {
         }
         // make sure we unbox it if required
         argExpr = gen.expressionGen().applyErasureAndBoxing(argExpr, 
-                gen.typeFact().getObjectDeclaration().getType(), // it came in as Object 
+                gen.typeFact().getObjectDeclaration().getType(), // it came in as Object
+                true, // it's completely erased
                 true, // it came in boxed
                 CodegenUtil.getBoxingStrategy(param), // see if we need to box 
-                param.getType()); // see what type we need
+                param.getType(), // see what type we need
+                0); // no flags
         return argExpr;
     }
     
