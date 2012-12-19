@@ -135,6 +135,7 @@ public class CallableBuilder {
                 break;
             minimumParams++;
         }
+        boolean isVariadic = minimumParams != numParams;
         // generate a method for each defaulted param
         for(Tree.Parameter p : parameterListTree.getParameters()){
             if(p.getDefaultArgument() != null){
@@ -144,15 +145,16 @@ public class CallableBuilder {
         }
         
         // now generate a method for each supported minimum number of parameters below 4
-        // which delegates to the $call$typed method
+        // which delegates to the $call$typed method if required
         for(int i=minimumParams,max = Math.min(numParams,4);i<max;i++){
-            classBody.append(makeDefaultedCall(i));
+            classBody.append(makeDefaultedCall(i, isVariadic));
         }
         // generate the $call method for the max number of parameters,
-        // which delegates to the $call$typed method
-        classBody.append(makeDefaultedCall(numParams));
-        // generate the $call$typed method
-        classBody.append(makeCallTypedMethod(body));
+        // which delegates to the $call$typed method if required
+        classBody.append(makeDefaultedCall(numParams, isVariadic));
+        // generate the $call$typed method if required
+        if(isVariadic)
+            classBody.append(makeCallTypedMethod(body));
         
         JCClassDecl classDef = gen.make().AnonymousClassDef(gen.make().Modifiers(0), classBody.toList());
         
@@ -187,7 +189,7 @@ public class CallableBuilder {
         return argExpr;
     }
     
-    private JCTree makeDefaultedCall(int i) {
+    private JCTree makeDefaultedCall(int i, boolean isVariadic) {
         // collect every parameter
         int a = 0;
         ListBuffer<JCStatement> stmts = new ListBuffer<JCStatement>();
@@ -219,15 +221,20 @@ public class CallableBuilder {
             stmts.append(var);
             a++;
         }
-        // chain to n param typed method
-        List<JCExpression> args = List.nil();
-        // pass along the parameters
-        for(a=paramLists.getParameters().size()-1;a>=0;a--){
-            Parameter param = paramLists.getParameters().get(a);
-            args = args.prepend(gen.makeUnquotedIdent(param.getName()));
+        if(isVariadic){
+            // chain to n param typed method
+            List<JCExpression> args = List.nil();
+            // pass along the parameters
+            for(a=paramLists.getParameters().size()-1;a>=0;a--){
+                Parameter param = paramLists.getParameters().get(a);
+                args = args.prepend(gen.makeUnquotedIdent(param.getName()));
+            }
+            JCMethodInvocation chain = gen.make().Apply(null, gen.makeUnquotedIdent(Naming.getCallableTypedMethodName()), args);
+            stmts.append(gen.make().Return(chain));
+        }else{
+            // insert the method body directly
+            stmts.appendList(this.body);
         }
-        JCMethodInvocation chain = gen.make().Apply(null, gen.makeUnquotedIdent(Naming.getCallableTypedMethodName()), args);
-        stmts.append(gen.make().Return(chain));
         List<JCStatement> body = stmts.toList();
         return makeCallMethod(body, i);
     }
