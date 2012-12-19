@@ -1670,6 +1670,7 @@ public class GenerateJsVisitor extends Visitor
     
     @Override
     public void visit(BaseTypeExpression that) {
+        if (that.getErrors() != null && !that.getErrors().isEmpty()) return;
         if (!that.getTypeArguments().getTypeModels().isEmpty()) {
             out(clAlias, "reify(");
         }
