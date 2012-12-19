@@ -234,7 +234,7 @@ public class CallableBuilder {
             // pass along the parameters
             for(a=paramLists.getParameters().size()-1;a>=0;a--){
                 Parameter param = paramLists.getParameters().get(a);
-                args = args.prepend(gen.makeUnquotedIdent(Naming.getCallableTempVarName(param)));
+                args = args.prepend(gen.makeUnquotedIdent(getCallableTempVarName(param)));
             }
             JCMethodInvocation chain = gen.make().Apply(null, gen.makeUnquotedIdent(Naming.getCallableTypedMethodName()), args);
             stmts.append(gen.make().Return(chain));
@@ -246,13 +246,18 @@ public class CallableBuilder {
         return makeCallMethod(body, i);
     }
 
+    private String getCallableTempVarName(Parameter param) {
+        // prefix them with $$ if we only forward, otherwise we need them to have the proper names
+        return forwardCallTo != null ? Naming.getCallableTempVarName(param) : param.getName();
+    }
+
     private JCExpression makeDefaultValueCall(Parameter defaultedParam, int i){
         // add the default value
         List<JCExpression> defaultMethodArgs = List.nil();
         // pass all the previous values
         for(int a=i-1;a>=0;a--){
             Parameter param = paramLists.getParameters().get(a);
-            JCExpression previousValue = gen.makeUnquotedIdent(Naming.getCallableTempVarName(param));
+            JCExpression previousValue = gen.makeUnquotedIdent(getCallableTempVarName(param));
             defaultMethodArgs = defaultMethodArgs.prepend(previousValue);
         }
         // now call the default value method
