@@ -208,7 +208,7 @@ public class ExpressionTransformer extends AbstractTransformer {
     
     JCExpression transform(FunctionArgument farg) {
         Method model = farg.getDeclarationModel();
-        ProducedType callableType = typeFact().getCallableType(model.getType());
+        ProducedType callableType = farg.getTypeModel();
         // TODO MPL
         CallableBuilder callableBuilder = CallableBuilder.anonymous(
                 gen(),

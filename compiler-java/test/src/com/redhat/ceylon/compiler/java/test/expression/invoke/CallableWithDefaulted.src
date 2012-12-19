@@ -6,7 +6,7 @@ final class callableWithDefaulted_ {
     }
     
     static void callableWithDefaulted() {
-        final .ceylon.language.Callable<? extends .java.lang.Object> defaultedVariadic = new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.ceylon.language.Integer>("Integer()"){
+        final .ceylon.language.Callable<? extends .java.lang.Object> defaultedVariadic = new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.ceylon.language.Integer>("Integer(Integer, String=, Integer...)"){
             
             private final .java.lang.String $$b(final long a) {
                 return "b";
