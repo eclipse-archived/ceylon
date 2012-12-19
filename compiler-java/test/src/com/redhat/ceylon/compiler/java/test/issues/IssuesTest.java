@@ -799,7 +799,7 @@ public class IssuesTest extends CompilerTest {
     }
     
     @Test
-    public void testBug844_fail() {
+    public void testBug844() {
         compareWithJavaSource("bug08xx/Bug844");
     }
 
