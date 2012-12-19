@@ -580,22 +580,47 @@ public class RefinementVisitor extends Visitor {
     }
 
     private void checkNonMember(Tree.Declaration that, Declaration dec) {
-        if (dec.isActual()) {
-            that.addError("actual declaration is not a member of a class or interface", 1301);
-        }
-        if (dec.isFormal()) {
-            that.addError("formal declaration is not a member of a class or interface", 1302);
-        }
-        if (dec.isDefault()) {
-            that.addError("default declaration is not a member of a class or interface", 1303);
-        }
+    	if (!dec.isClassOrInterfaceMember()) {
+            if (dec.isActual()) {
+                that.addError("actual declaration is not a member of a class or interface: " + dec.getName(), 1301);
+            }
+            if (dec.isFormal()) {
+                that.addError("formal declaration is not a member of a class or interface: " + dec.getName(), 1302);
+            }
+            if (dec.isDefault()) {
+                that.addError("default declaration is not a member of a class or interface: " + dec.getName(), 1303);
+            }
+    	}
+    	else if (!dec.isShared()) {
+    		if (dec.isActual()) {
+    			that.addError("actual declaration is not shared: " + dec.getName(), 1301);
+    		}
+    		if (dec.isFormal()) {
+    			that.addError("formal declaration is not shared: " + dec.getName(), 1302);
+    		}
+    		if (dec.isDefault()) {
+    			that.addError("default declaration is not shared: " + dec.getName(), 1303);
+    		}
+    	}
+    	else {
+    		if (dec.isActual()) {
+    			that.addError("declaration may not be actual: " + dec.getName(), 1301);
+    		}
+    		if (dec.isFormal()) {
+    			that.addError("declaration may not be formal: " + dec.getName(), 1302);
+    		}
+    		if (dec.isDefault()) {
+    			that.addError("declaration may not be default: " + dec.getName(), 1303);
+    		}
+    	}
     }
 
     private void checkParameterTypes(Tree.Declaration that, Tree.ParameterList pl,
             ProducedReference member, ProducedReference refinedMember,
             ParameterList params, ParameterList refinedParams) {
         if (params.getParameters().size()!=refinedParams.getParameters().size()) {
-           that.addError("member does not have the same number of parameters as the member it refines");
+           that.addError("member does not have the same number of parameters as the member it refines: " + 
+        		   member.getDeclaration().getName());
         }
         else {
             for (int i=0; i<params.getParameters().size(); i++) {
@@ -608,16 +633,18 @@ public class RefinementVisitor extends Visitor {
                     Tree.Type type = p.getType(); //some kind of syntax error
                     if (type!=null) {
                         if (refinedParameterType==null || parameterType==null) {
-                            type.addError("could not determine if parameter type is the same as the corresponding parameter of refined member");
+                            type.addError("could not determine if parameter type is the same as the corresponding parameter of refined member: " +
+                            		param.getName() + " of " + member.getDeclaration().getName());
                         }
                         else {
                             //TODO: consider type parameter substitution!!!
                             checkIsExactlyForInterop(refinedMember, 
                                     refinedParams.isNamedParametersSupported(), 
                                     parameterType, refinedParameterType, type,
-                                    "type of parameter " + 
-                                            param.getName() + " is different to type of corresponding parameter " +
-                                            rparam.getName() + " of refined member");
+                                    "type of parameter " + param.getName() + " of " + 
+                                    member.getDeclaration().getName() +
+                                    " is different to type of corresponding parameter " +
+                                    rparam.getName() + " of refined member");
                         }
                     }
                 }
