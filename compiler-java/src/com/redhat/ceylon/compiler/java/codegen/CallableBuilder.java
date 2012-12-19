@@ -213,7 +213,7 @@ public class CallableBuilder {
                 varInitialExpression = paramExpression;
             }
             // store it in a local var
-            JCStatement var = gen.make().VarDef(gen.make().Modifiers(0), 
+            JCStatement var = gen.make().VarDef(gen.make().Modifiers(Flags.FINAL), 
                     gen.naming.makeUnquotedName(getCallableTempVarName(param)), 
                     gen.makeJavaType(param.getType(), CodegenUtil.isUnBoxed(param) ? 0 : gen.JT_NO_PRIMITIVES),
                     varInitialExpression);
