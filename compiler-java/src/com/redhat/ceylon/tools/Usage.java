@@ -331,8 +331,8 @@ class Usage {
                     if (model.getShortName() != null) {
                         suggestions.add("-"+model.getShortName());
                     }
-                    if (getLevenshteinDistance(model.getLongName(), e.getShortName().toString()) == 1) {
-                        suggestions.add("--"+model.getShortName());
+                    if (getLevenshteinDistance(model.getLongName(), e.getShortName().toString()) <= 1) {
+                        suggestions.add("--"+model.getLongName());
                     }
                 }
             }
