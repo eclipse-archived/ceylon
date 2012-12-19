@@ -536,11 +536,6 @@ abstract class SimpleInvocationBuilder extends InvocationBuilder {
             else
                 arrayWrap.append(expr);
         }
-        // since we have no support for default values, we must explicitely pass empty sequenced arguments
-        if(requiresEmptyForVariadic()){
-            // no need to cast since Callable methods take Object
-            appendArgument(gen.makeEmpty());
-        }
         if(wrapIntoArray){
             // must have at least one arg, so take the last one
             ProducedType parameterType = getParameterType(numArguments-1);
@@ -681,11 +676,6 @@ class IndirectInvocationBuilder extends SimpleInvocationBuilder {
         if(variadic)
             return true;
         return argumentCount <= parameterTypes.size();
-    }
-
-    @Override
-    protected boolean requiresEmptyForVariadic() {
-        return variadic && getNumArguments() < parameterTypes.size();
     }
 
     @Override
@@ -885,16 +875,6 @@ class PositionalInvocationBuilder extends DirectInvocationBuilder {
     @Override
     protected boolean dontBoxSequence() {
         return positional.getEllipsis() != null || positional.getComprehension() != null;
-    }
-    
-    @Override
-    protected boolean requiresEmptyForVariadic() {
-        // only for Callables
-        if(primaryDeclaration instanceof FunctionalParameter == false
-                || parameters.isEmpty())
-            return false;
-        boolean variadic = parameters.get(parameters.size()-1).isSequenced();
-        return variadic && getNumArguments() < parameters.size();
     }
     
     @Override
