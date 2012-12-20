@@ -315,8 +315,8 @@ public class HtmlVisitor implements Visitor {
 
     @Override
     public void visitSynopsisSubtool(NameAndSubtool option) {
-        // TODO Auto-generated method stub
-        
+        html.text(" ");
+        html.text(option.getName());    
     }
 
 }
