@@ -1,3 +1,3 @@
-module com.redhat.ceylon.compiler.java.test.issues '1' {
+module com.redhat.ceylon.compiler.java.test.statement.trycatch '1' {
     import java.base '7';
 }

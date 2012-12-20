@@ -20,4 +20,4 @@
 @nomodel
 doc "A JSON parser / serialiser"
 by "Stéphane Épardaud"
-module com.redhat.ceylon.compiler.java.test.issues.bug493 '1' {}
+module com.redhat.ceylon.compiler.java.test.issues.bug04xx.bug493 '1' {}
