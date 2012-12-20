@@ -113,6 +113,10 @@ code {
     background-color: inherit;
 }
 
+h3 code {
+	font-size: 22px;
+}
+
 .table-header:HOVER {
     background-color: rgb(232, 232, 232);
 }

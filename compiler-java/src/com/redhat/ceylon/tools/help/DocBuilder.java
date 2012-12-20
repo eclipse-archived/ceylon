@@ -225,8 +225,36 @@ public class DocBuilder {
     }
 
     private DescribedSection buildDescription(ToolModel<?> model) {
-        return buildDescription(model, getDescription(model));
+        
+        final StringBuilder description = new StringBuilder();
+        new SubtoolVisitor(model) {            
+            @Override
+            protected void visit(ToolModel<?> model, SubtoolModel<?> subtoolModel) {
+                if (model == root) {
+                    description.append(getDescription(model)).append("\n\n");
+                } else if (model.getSubtoolModel() == null) {// leaf
+                    description.append("\n\n")
+                    .append("### The `");
+                    for (SubtoolVisitor.ToolModelAndSubtoolModel xxx : ancestors.subList(1, ancestors.size())) {
+                        description.append(xxx.getModel().getName()).append(" ");
+                    }
+                    description.append(model.getName());
+                    description.append("` subcommand\n\n");
+                    description.append(getDescription(model)).append("\n\n");
+                }
+                if (model != root) {
+                    if (getSummary(model) != null) {
+                        System.err.println("@Summary not supported on subtools: " + model.getToolClass());
+                    }
+                    if (!getSections(model).isEmpty()) {
+                        System.err.println("@RemainingSections not supported on subtools: " + model.getToolClass());
+                    }
+                }
+            }
+        }.accept();
+        return buildDescription(model, description.toString());
     }
+    
     private DescribedSection buildDescription(ToolModel<?> model, String description) {
         DescribedSection section = null;
         if (!description.isEmpty()) {
