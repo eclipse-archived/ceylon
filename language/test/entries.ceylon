@@ -57,10 +57,10 @@ Range<Integer> range {
     check(range.last==+10, "range last");
     check(!range.decreasing, "range decreasing");
     check(range==-3..+10, "range equals");
-    check(exists range[5], "range element");
-    check(!exists range[14], "range element");
+    check(range[5] exists, "range element");
+    check(!range[14] exists, "range element");
     Integer[] r = range;
-    check(nonempty r, "range nonempty");
+    check(r nonempty, "range nonempty");
     
     if (exists el=r[0]) {
         check(el==-3, "range first element");
@@ -106,10 +106,10 @@ Range<Integer> range {
     check((0..10).span(2, 5).string=="2..5", "range span");
     check((2..10).segment(1, 3).string=="3..5", "range segment");
     check((2..10).span(2, 7).string=="4..9", "range span");
-    check(!nonempty (0..9).segment(11,10), "(0..9).segment(11,10) is empty");
-    check(!nonempty (0..9).segment(3,0), "(0..9).segment(3,0) is empty");
-    check(!nonempty (0..9).span(11,12), "(0..9).span(11,12) is NOT empty");
-    check(nonempty (0..9).span(5,3), "(0..9).span(5,3) is empty");
+    check(!(0..9).segment(11,10) nonempty, "(0..9).segment(11,10) is empty");
+    check(!(0..9).segment(3,0) nonempty, "(0..9).segment(3,0) is empty");
+    check(!(0..9).span(11,12) nonempty, "(0..9).span(11,12) is NOT empty");
+    check((0..9).span(5,3) nonempty, "(0..9).span(5,3) is empty");
     
     check((1..1).by(5).sequence.string=="{ 1 }", "range by 5");
     check((0..9).by(1).sequence.string=="0..9", "range by 1");
@@ -141,7 +141,7 @@ Range<Integer> range {
     check(r2r.size==r2.size-1, "range.rest.size 2");
     check((r1r.first else 0) == (r1.item(1) else 1), "range.rest.first 1");
     check((r2r.first else 0) == (r2.item(1) else 1), "range.rest.first 2");
-    check(!nonempty r4.rest, "nonempty range.rest");
+    check(!r4.rest nonempty, "nonempty range.rest");
     check(r1.lastIndex==4, "range.lastIndex 1");
     check(r2.lastIndex==3, "range.lastIndex 2");
     check(r1.by(2).sequence.string=="{ 1, 3, 5 }", "range.by 1");
@@ -150,7 +150,7 @@ Range<Integer> range {
     check(r2.by(3).sequence.string=="{ 7, 4 }", "range.by 4");
     check(r4.by(10).sequence.string=="{ 123 }", "range.by 5");
     check(r1.segment(2,2).string=="3..4", "range.segment 1");
-    check(!nonempty r1.segment(1,0), "range.segment 2");
+    check(!r1.segment(1,0) nonempty, "range.segment 2");
     check(r1.segment(1,-1).empty, "range.segment 3");
     check(r1.segment(3,1).string=="4..4", "range.segment 4");
     check(r1.segment(0,1).string=="1..1", "range.segment 5");
@@ -161,7 +161,7 @@ Range<Integer> range {
     check(r1.spanTo(3).string=="1..4", "range.spanTo 4");
     check(r1.span(3, 1000).string=="4..5", "range.span 5");
     check(r1.span(0,0).string=="1..1", "range.span 6");
-    check(!nonempty (1..2).span(4,5), "range.span (out of bounds)");
+    check(!(1..2).span(4,5) nonempty, "range.span (out of bounds)");
     check(r1.definesEvery(1,2,3), "range.definesEvery 1");
     check(!r1.definesEvery(4,5,6,7), "range.definesEvery 2");
     check(r1.definesAny(1,2,3), "range.definesAny 1");
@@ -179,10 +179,10 @@ Range<Integer> range {
     check(!6 in 1..5, "range in 5");
     check(!2..3 in 1..5, "range in 6");
     
-    check(!nonempty (1..5).span(-1,-2), "empty range [1]");
-    check(!nonempty (1..5).span(-2,-1), "empty range [2]");
-    check(!nonempty (1..5).span(6,8), "empty range [3]");
-    check(!nonempty (1..5).span(8,6), "empty range [4]");
+    check(!(1..5).span(-1,-2) nonempty, "empty range [1]");
+    check(!(1..5).span(-2,-1) nonempty, "empty range [2]");
+    check(!(1..5).span(6,8) nonempty, "empty range [3]");
+    check(!(1..5).span(8,6) nonempty, "empty range [4]");
     check(r1[...2] == { 1, 2, 3 }, "r1[...2]");
     check(r1[3...] == { 4, 5 }, "r1[3...]");
     check(r1[...-1] == {}, "r1[...-1] " r1[...-1] "");

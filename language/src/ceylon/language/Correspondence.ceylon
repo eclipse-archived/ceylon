@@ -29,7 +29,7 @@ shared interface Correspondence<in Key, out Item>
          given key."
     see (definesAny, definesEvery, keys)
     shared default Boolean defines(Key key) => 
-            exists item(key);
+            item(key) exists;
     
     doc "The `Category` of all keys for which a value is 
          defined by this `Correspondence`."

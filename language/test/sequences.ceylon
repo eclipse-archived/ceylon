@@ -6,11 +6,11 @@ void test_singleton() {
     check(!singleton.defines(1), "singleton defines");
     check(singleton.string=="{ hello }", "singleton string");
     check(singleton.reversed==singleton, "singleton reversed");
-    check(nonempty singleton, "singleton nonempty");
+    check(singleton nonempty, "singleton nonempty");
     if (nonempty singleton) {
         check(singleton.first=="hello", "singleton first");
         check(singleton.lastIndex==0, "sequence last index");
-        check(!nonempty singleton.rest, "singleton rest empty");
+        check(!singleton.rest nonempty, "singleton rest empty");
         if (nonempty rest = singleton.rest) {
             fail("singleton rest empty");
         }
@@ -46,22 +46,22 @@ void test_singleton() {
         fail("singleton item");
     }
 
-    check(nonempty singleton.span(0, 1), "nonempty singleton span(0,1)");
-    check(nonempty singleton.span(0, 0), "nonempty singleton span(0,0)");
-    check(nonempty singleton.spanFrom(0), "nonempty singleton spanFrom(0)");
-    check(!nonempty singleton.spanFrom(1), "nonempty singleton spanFrom(1)");
-    check(nonempty singleton.spanTo(0), "nonempty singleton spanTo(0)");
-    check(nonempty singleton.spanTo(1), "nonempty singleton spanTo(1)");
-    check(nonempty singleton.segment(0, 1), "nonempty singleton segment(0,1)");
+    check(singleton.span(0, 1) nonempty, "nonempty singleton span(0,1)");
+    check(singleton.span(0, 0) nonempty, "nonempty singleton span(0,0)");
+    check(singleton.spanFrom(0) nonempty, "nonempty singleton spanFrom(0)");
+    check(!singleton.spanFrom(1) nonempty, "nonempty singleton spanFrom(1)");
+    check(singleton.spanTo(0) nonempty, "nonempty singleton spanTo(0)");
+    check(singleton.spanTo(1) nonempty, "nonempty singleton spanTo(1)");
+    check(singleton.segment(0, 1) nonempty, "nonempty singleton segment(0,1)");
     check(singleton.span(0, 3).string=="{ hello }", "singleton span(0,3).string");
     check(singleton.segment(0, 3).string=="{ hello }", "singleton segment(0,3).string");
-    check(!nonempty singleton.span(1, 1), "!nonempty singleton span(1,1)");
-    check(!nonempty singleton.spanFrom(1), "!nonempty singleton spanFrom(1)");
-    check(!nonempty singleton.segment(1, 1), "!nonempty singleton segment(1,1)");
-    check(nonempty singleton.span(0, 0), "nonempty singleton span(0,0)");
-    check(nonempty singleton.span(0, 10), "nonempty singleton span(0,10)");
-    check(!nonempty singleton.segment(0, 0), "!nonempty singleton segment(0,0)");
-    check(!nonempty singleton.segment(0, -1), "!nonempty singleton segment(0,-1)");
+    check(!singleton.span(1, 1) nonempty, "!nonempty singleton span(1,1)");
+    check(!singleton.spanFrom(1) nonempty, "!nonempty singleton spanFrom(1)");
+    check(!singleton.segment(1, 1) nonempty, "!nonempty singleton segment(1,1)");
+    check(singleton.span(0, 0) nonempty, "nonempty singleton span(0,0)");
+    check(singleton.span(0, 10) nonempty, "nonempty singleton span(0,10)");
+    check(!singleton.segment(0, 0) nonempty, "!nonempty singleton segment(0,0)");
+    check(!singleton.segment(0, -1) nonempty, "!nonempty singleton segment(0,-1)");
 
     check(singleton.keys.contains(0), "singleton keys.contains(0)");
     check(!singleton.keys.contains(1), "!singleton keys.contains(1)");
@@ -99,14 +99,14 @@ void test_exists_nonempty() {
     String? yes = "yes";
     String? no = null;
     variable Integer[]? empties := Singleton(1);
-    value t1 = exists yes then "yes exists" else "WTF";
+    value t1 = yes exists then "yes exists" else "WTF";
     check(t1 == "yes exists", "exists 1");
-    value t2 = exists no then "WTF" else "no doesn't exist";
+    value t2 = no exists then "WTF" else "no doesn't exist";
     check(t2 == "no doesn't exist", "exists 2");
-    value t3 = nonempty empties then "nonempty works" else "nonempty broken";
+    value t3 = empties nonempty then "nonempty works" else "nonempty broken";
     check(t3 == "nonempty works", "nonempty 1");
     Integer[] _t4 = {};
-    value t4 = nonempty _t4 then "nonempty is broken" else "works";
+    value t4 = _t4 nonempty then "nonempty is broken" else "works";
     check(t4 == "works", "nonempty 2");
 }
 
@@ -132,16 +132,16 @@ shared void sequences() {
     value builder = SequenceBuilder<String>();
     value empty = builder.sequence;
     check(empty.size==0, "empty sequence");
-    check(!nonempty empty, "empty sequence");
-    if (nonempty empty) {
+    check(!empty nonempty, "empty sequence");
+    if (empty nonempty) {
         fail("empty sequence");
     }
-    check(!nonempty empty.span(1, 2), "empty.span(1,2)");
-    check(!nonempty empty.spanFrom(0), "empty.spanFrom(0)");
-    check(!nonempty empty.spanTo(0), "empty.spanTo(0)");
-    check(!nonempty empty.spanFrom(1), "empty.spanFrom(1)");
-    check(!nonempty empty.spanTo(1), "empty.spanTo(1)");
-    check(!nonempty empty.segment(1, 2), "empty sequence segment");
+    check(!empty.span(1, 2) nonempty, "empty.span(1,2)");
+    check(!empty.spanFrom(0) nonempty, "empty.spanFrom(0)");
+    check(!empty.spanTo(0) nonempty, "empty.spanTo(0)");
+    check(!empty.spanFrom(1) nonempty, "empty.spanFrom(1)");
+    check(!empty.spanTo(1) nonempty, "empty.spanTo(1)");
+    check(!empty.segment(1, 2) nonempty, "empty sequence segment");
     check(empty.string=="{}", "empty.string");
     check(empty.reversed==empty, "empty reversed");
     check(empty.sequence==empty, "empty.sequence");
@@ -150,7 +150,7 @@ shared void sequences() {
     builder.append("world");
     value result = builder.sequence;
     check(result.size==2, "sequence size");
-    check(nonempty result, "nonempty sequence");
+    check(result nonempty, "nonempty sequence");
     if (nonempty result) {
         check(result.lastIndex==1, "sequence last index");
     }
@@ -183,15 +183,15 @@ shared void sequences() {
     check(result.spanTo(0).string=="{ hello }", "sequence.spanTo(0).string");
     check(result.span(0,3).string=="{ hello, world }", "sequence.span(0,3).string");
     //check(result.span(1,0).string=="{ world, hello }", "sequence reverse span.string");
-    check(nonempty result.span(1,1), "nonempty sequence.span(1,1)");
-    check(nonempty result.span(0,0), "nonempty sequence.span(0,0)");
+    check(result.span(1,1) nonempty, "nonempty sequence.span(1,1)");
+    check(result.span(0,0) nonempty, "nonempty sequence.span(0,0)");
 
     //segment
     check(result.segment(1,1).string=="{ world }", "sequence.segment(1,1).string");
     check(result.segment(0,3).string=="{ hello, world }", "sequence.segment(0,3).string");
-    check(nonempty result.segment(1,1), "nonempty sequence.segment(1,1)");
-    check(!nonempty result.segment(0,0), "!nonempty sequence.segment(0,0)");
-    //check(!nonempty result.segment(1,-1), "!nonempty sequence.segment(1,-1)");
+    check(result.segment(1,1) nonempty, "nonempty sequence.segment(1,1)");
+    check(!result.segment(0,0) nonempty, "!nonempty sequence.segment(0,0)");
+    //check(!result.segment(1,-1) nonempty, "!nonempty sequence.segment(1,-1)");
     
     check(result.reversed=={"world", "hello"}, "sequence.reversed");
 
@@ -238,13 +238,13 @@ shared void sequences() {
         if (exists str = rest[1]) {
             fail("rest item");
         }
-        check(nonempty rest, "empty rest");
+        check(rest nonempty, "empty rest");
         if (nonempty rest) {
             check(rest.first=="world", "rest first");
             if (nonempty rr = rest.rest) {
                 fail("rest rest");
             }
-            check(!nonempty rest.rest, "empty rest");
+            check(!rest.rest nonempty, "empty rest");
         }
         else {
             fail("rest nonempty");
@@ -295,10 +295,10 @@ shared void sequences() {
     variable value s:=0;
     variable value f:=0;
     for (e in useq) {
-        if (is String e) {
+        if (e is String) {
             s:=s+1;
         }
-        if (is Float e) {
+        if (e is Float) {
             f:=f+1;
         }
     }
@@ -324,9 +324,9 @@ shared void sequences() {
     check(!coalesced.keys.contains(2), "coalesced keys");
     check(coalesced.defines(0)&&coalesced.defines(1)&&!coalesced.defines(2),
            "coalesce defines");
-    check(nonempty coalesced, "nonempty coalesced");
+    check(coalesced nonempty, "nonempty coalesced");
     value coal2 = coalesce(for (c in "hElLo") null).sequence;
-    check(!nonempty coal2, "nonempty coalesced2");
+    check(!coal2 nonempty, "nonempty coalesced2");
     check(coal2.size == 0, "coalesced2.size");
     check(!`h` in coal2, "coalesced2.contains");
     value entriesBuilder = SequenceBuilder<Integer->String>();
@@ -348,7 +348,7 @@ shared void sequences() {
 
     value sequenceEntries = entries("X1", "X2", "X3");
     check(sequenceEntries.sequence.size==3, "entries size");
-    check(nonempty sequenceEntries.sequence, "nonempty entries");
+    check(sequenceEntries.sequence nonempty, "nonempty entries");
     if (exists primero=sequenceEntries.first) {
         check(primero==Entry(0, "X1"), "entries first");
     }
@@ -365,8 +365,8 @@ shared void sequences() {
     test_exists_nonempty();
     test_max_min();
     
-    check(nonempty emptyOrSingleton(1), "emptyOrSingleton [1]");
-    check(!nonempty emptyOrSingleton(null), "emptyOrSingleton [2]");
+    check(emptyOrSingleton(1) nonempty, "emptyOrSingleton [1]");
+    check(!emptyOrSingleton(null) nonempty, "emptyOrSingleton [2]");
     
     check({"hello"}.withTrailing("world").first=="hello", "sequence with trailing");
     check({"world"}.withLeading("hello").first=="hello", "sequence with trailing");

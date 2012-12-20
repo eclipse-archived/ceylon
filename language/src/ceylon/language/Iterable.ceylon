@@ -66,7 +66,7 @@ shared interface Iterable<out Element>
     doc "Determines if the iterable object is empty, that is
          to say, if the iterator returns no elements."
     shared actual default Boolean empty =>
-            is Finished iterator.next();
+            iterator.next() is Finished;
     
     shared default Integer size => count((Element e) true);
     
@@ -241,7 +241,7 @@ shared interface Iterable<out Element>
                 shared actual Iterator<Element> iterator {
                     value iterator = outer.iterator;
                     variable value i:=0;
-                    while (i++<skip && !is Finished iterator.next()) {}
+                    while (i++<skip && !iterator.next() is Finished) {}
                     return iterator;
                 }
             }
@@ -305,7 +305,7 @@ shared interface Iterable<out Element>
                         actual shared Element|Finished next() {
                             value next = iter.next();
                             variable value i:=0;
-                            while (++i<step && !is Finished iterator.next()) {}
+                            while (++i<step && !iterator.next() is Finished) {}
                             return next;
                         }
                     }

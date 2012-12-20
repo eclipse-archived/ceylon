@@ -104,101 +104,102 @@ void types() {
     Void seq = {"hello"};
     Void empty = {};
     
-    check(is Object bool, "boolean type is object");
-    check(is IdentifiableObject bool, "boolean type is identifiable");
-    //check(is Equality bool, "boolean type is equality");
-    check(!is Nothing bool, "not null boolean type is not nothing");
-    check(is Boolean bool, "boolean type 1");
-    //check(is Void bool, "boolean type 2");
-    //check(is Nothing|Boolean bool, "boolean type 3");
+    check(bool is Object, "boolean type is object");
+    check(bool is IdentifiableObject, "boolean type is identifiable");
+    //check(bool is Equality, "boolean type is equality");
+    check(!bool is Nothing, "not null boolean type is not nothing");
+    check(bool is Boolean, "boolean type 1");
+    //check(bool is Void, "boolean type 2");
+    //check(bool is Nothing|Boolean, "boolean type 3");
     
-    check(is Nothing nothing, "null type 1");
-    //check(!is Equality nothing, "null type 2");
-    check(!is Object nothing, "null type 3");
-    check(!is IdentifiableObject nothing, "null type 4");
-    //check(is Void nothing, "null type 5");
+    check(nothing is Nothing, "null type 1");
+    //check(!nothing is Equality, "null type 2");
+    check(!nothing is Object, "null type 3");
+    check(!nothing is IdentifiableObject, "null type 4");
+    //check(nothing is Void, "null type 5");
         
-    check(is Object entry, "entry type 1");
-    check(!is IdentifiableObject entry, "not entry type");
-    //check(is Equality entry, "entry type 2");
-    check(!is Nothing entry, "not null entry type");
-    check(is Entry<Object,Object> entry, "entry type 3");
-    //check(is Entry<Integer,Integer> entry, "entry type 3");
-    //check(is Void entry, "entry type 4");
+    check(entry is Object, "entry type 1");
+    check(!entry is IdentifiableObject, "not entry type");
+    //check(entry is Equality, "entry type 2");
+    check(!entry is Nothing, "not null entry type");
+    check(entry is Entry<Object,Object>, "entry type 3");
+    //check(entry is Entry<Integer,Integer>, "entry type 3");
+    //check(entry is Void, "entry type 4");
         
-    check(is Object one, "not natural type 1");
-    check(!is IdentifiableObject one, "not natural type 2");
-    //check(is Equality one, "natural type 1");
-    check(!is Nothing one, "not null natural type");
-    check(is Integer one, "natural type 2");
-    //check(is Void nothing, "natural type 3");
+    check(one is Object, "not natural type 1");
+    check(!one is IdentifiableObject, "not natural type 2");
+    //check(one is Equality, "natural type 1");
+    check(!one is Nothing, "not null natural type");
+    check(one is Integer, "natural type 2");
+    //check(nothing is Void, "natural type 3");
         
-    check(is Object c, "not char type 1");
-    check(!is IdentifiableObject c, "not char type 1");
-    //check(is Equality c, "char type 1");
-    check(!is Nothing c, "not null char type");
-    check(is Character c, "char type 2");
-    //check(is Void c, "char type 3");
+    check(c is Object, "not char type 1");
+    check(!c is IdentifiableObject, "not char type 1");
+    //check(c is Equality, "char type 1");
+    check(!c is Nothing, "not null char type");
+    check(c is Character, "char type 2");
+    //check(c is Void, "char type 3");
         
-    check(is Object str, "not string type 1");
-    check(!is IdentifiableObject str, "not string type 1");
-    //check(is Equality str, "string type 1");
-    check(!is Nothing str, "not null string type");
-    check(is String str, "string type 2");
-    //check(is Void str, "string type 3");
+    check(str is Object, "not string type 1");
+    check(!str is IdentifiableObject, "not string type 1");
+    //check(str is Equality, "string type 1");
+    check(!str is Nothing, "not null string type");
+    check(str is String, "string type 2");
+    //check(str is Void, "string type 3");
             
-    //check(!is Equality t, "not eq custom type");
-    check(!is IdentifiableObject t, "not id custom type");
-    check(!is Nothing t, "custom type 1");
-    check(is Object t, "custom type 2");
-    check(is T t, "custom type 3");
+    //check(!t is Equality, "not eq custom type");
+    check(!t is IdentifiableObject, "not id custom type");
+    check(!t is Nothing, "custom type 1");
+    check(t is Object, "custom type 2");
+    check(t is T, "custom type 3");
     //check(is Void t, "custom type 4");
                 
-    //if (is Equality bool) {} else { fail("boolean type 4"); }
-    if (is IdentifiableObject bool) {} else { fail("boolean type 5"); }
-    if (is Object bool) {} else { fail("boolean type 6"); }
-    if (is Nothing bool) { fail("null type 6"); }
-    if (is Boolean? bool) {} else { fail("optional boolean type 7"); }
+    //if (bool is Equality) {} else { fail("boolean type 4"); }
+    if (bool is IdentifiableObject) {} else { fail("boolean type 5"); }
+    if (bool is Object) {} else { fail("boolean type 6"); }
+    if (bool is Nothing) { fail("null type 6"); }
+    if (bool is Boolean?) {} else { fail("optional boolean type 7"); }
 
-    //if (is Equality one) {} else { fail("natural type 4"); }
-    if (is IdentifiableObject one) { fail("natural type 5"); }
-    if (is Object one) {} else { fail("natural type 6"); }
-    if (is Nothing one) { fail("null type 7"); }
-    if (is Integer one) {} else { fail("natural type 7"); }
-    if (is Integer? one) {} else { fail("optional natural type 8"); }
+    //if (one is Equality) {} else { fail("natural type 4"); }
+    if (one is IdentifiableObject) { fail("natural type 5"); }
+    if (one is Object) {} else { fail("natural type 6"); }
+    if (one is Nothing) { fail("null type 7"); }
+    if (one is Integer) {} else { fail("natural type 7"); }
+    if (one is Integer?) {} else { fail("optional natural type 8"); }
 
-    //if (is Equality c) {} else { fail("character type 1"); }
-    if (is IdentifiableObject c) { fail("character type 2"); }
-    if (is Object c) {} else { fail("character type 3"); }
-    if (is Nothing c) { fail("null type 8"); }
-    if (is Character c) {} else { fail("character type 4"); }
-    if (is Character? c) {} else { fail("optional character type 5"); }
+    //if (c is Equality) {} else { fail("character type 1"); }
+    if (c is IdentifiableObject) { fail("character type 2"); }
+    if (c is Object) {} else { fail("character type 3"); }
+    if (c is Nothing) { fail("null type 8"); }
+    if (c is Character) {} else { fail("character type 4"); }
+    if (c is Character?) {} else { fail("optional character type 5"); }
 
-    //if (is Equality str) {} else { fail("string type 4"); }
-    if (is IdentifiableObject str) { fail("string type 5"); }
-    if (is Object str) {} else { fail("string type 6"); }
-    if (is Nothing str) { fail("null type 9"); }
-    if (is String? str) {} else { fail("optional string type 7"); }
+    //if (str is Equality) {} else { fail("string type 4"); }
+    if (str is IdentifiableObject) { fail("string type 5"); }
+    if (str is Object) {} else { fail("string type 6"); }
+    if (str is Nothing) { fail("null type 9"); }
+    if (str is String?) {} else { fail("optional string type 7"); }
 
-    //if (is Equality t) { fail("custom type 5"); }
-    if (is IdentifiableObject t) { fail("custom type 6"); }
-    if (is Object t) {} else { fail("custom type 7"); }
-    if (is Nothing t) { fail("null type 10"); }
-    if (is T? t) {} else { fail("optional custom type 8"); }
+    //if (t is Equality) { fail("custom type 5"); }
+    if (t is IdentifiableObject) { fail("custom type 6"); }
+    if (t is Object) {} else { fail("custom type 7"); }
+    if (t is Nothing) { fail("null type 10"); }
+    if (t is T?) {} else { fail("optional custom type 8"); }
 
-    //if (is Equality entry) {} else { fail("entry type 5"); }
-    if (is IdentifiableObject entry) { fail("entry type 6"); }
-    if (is Object entry) {} else { fail("entry type 7"); }
-    if (is Nothing entry) { fail("null type 11"); }
-    if (is Entry<Object,Object> entry) {} else { fail("entry type 8"); }
+    //if (entry is Equality) {} else { fail("entry type 5"); }
+    if (entry is IdentifiableObject) { fail("entry type 6"); }
+    if (entry is Object) {} else { fail("entry type 7"); }
+    if (entry is Nothing) { fail("null type 11"); }
+    if (entry is Entry<Object,Object>) {} else { fail("entry type 8"); }
     //if (is Entry<Integer,Integer> entry) {} else { fail("entry type 8"); }
     //if (is Entry<Integer,String> entry) { fail("entry type 9 (required reified gens)"); }
     
     //if (is Equality nothing) { fail("null type 12"); }
-    if (is IdentifiableObject nothing) { fail("null type 13"); }
-    if (is Object nothing) { fail("null type 14"); }
-    if (is Nothing nothing) {} else { fail("null type 15"); }
-    if (is Character? nothing) {} else { fail("null is optional type"); }
+    if (nothing is IdentifiableObject) { fail("null type 13"); }
+    if (nothing is Object) { fail("null type 14"); }
+    if (nothing is Nothing) {} else { fail("null type 15"); }
+    if (!nothing is Nothing) { fail("null type 15"); }
+    if (nothing is Character?) {} else { fail("null is optional type"); }
     
     if (is Boolean|Character|T bool) {} else { fail("union type 1"); }
     if (is Boolean|Character|T t) {} else { fail("union type 2"); }
@@ -226,7 +227,7 @@ void types() {
     value pair = TypesPair("hello", "world");
     check(pair.string=="(hello, world)", "pair.string");
     Object pairObj = pair;
-    check(is TypesPair<Object, Object> pairObj, "pair type");
+    check(pairObj is TypesPair<Object, Object>, "pair type");
     //check(is TypesPair<String, String> pairObj, "pair type");
     value almostZero = TypesComplex(0.1, 0.1);
     check(almostZero.string=="0.1+0.1i", "complex.string: expected '0.1+0.1i' got " almostZero.string "");

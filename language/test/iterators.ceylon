@@ -111,5 +111,5 @@ void iterators() {
     if (is Integer ii=chained.next()) {
         check(ii==2, "ChainedIterator [2]");
     } else { fail("ChainedIterator [2]");}
-    check(is Finished chained.next(), "ChainedIterator [3]");
+    check(chained.next() is Finished, "ChainedIterator [3]");
 }

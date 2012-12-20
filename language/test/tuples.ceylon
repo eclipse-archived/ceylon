@@ -5,7 +5,7 @@ void tuples() {
     value t = returnTuple(1, "2", Singleton(`3`));
     alias Triplet => [Integer,String,Singleton<Character>];
     Triplet? subt = t;
-    check(is Triplet subt, "tuples");
+    check(subt is Triplet, "tuples");
     check(t.lastIndex == 2, "tuple lastIndex");
     Integer v1 = t[0];
     String v2 = t[1];
@@ -44,8 +44,8 @@ void tuples() {
     check(t[...3] == {1, "2", {`3`}}, "tuple[...3] " t[...3] "...");
     //Check inherited methods work
     check(1 in t, "tuple contains");
-    check(exists t.find((Object x) is Integer x), "tuple find");
-    check(t.any((Object x) is String x), "tuple any");
+    check(t.find((Object x) x is Integer) exists, "tuple find");
+    check(t.any((Object x) x is String), "tuple any");
     check(t.every((Object x) true), "tuple every");
-    check(t.count((Object x) is String x) == 1, "tuple count");
+    check(t.count((Object x) x is String) == 1, "tuple count");
 }

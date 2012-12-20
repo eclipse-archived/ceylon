@@ -23,23 +23,26 @@ class MyContainerWithLastElement() satisfies ContainerWithFirstElement<Integer,N
     shared actual Integer? first { return 1; }
     shared actual Integer? last { return 2; }
     shared actual Boolean empty { return false; }
+    shared actual Boolean contains(Object element) => element == 1 || element == 2;
 }
 class MyContainerWithoutFirstElement() satisfies ContainerWithFirstElement<Integer,Nothing> {
     shared actual Integer? first { return null; }
     shared actual Integer? last { return 2; }
     shared actual Boolean empty { return false; }
+    shared actual Boolean contains(Object element) => element == 2;
 }
 class MyContainerWithoutLastElement() satisfies ContainerWithFirstElement<Integer,Nothing> {
     shared actual Integer? first { return 1; }
     shared actual Integer? last { return null; }
     shared actual Boolean empty { return false; }
+    shared actual Boolean contains(Object element) => element == 1;
 }
 class MyCloseable() satisfies Closeable {
     shared variable Boolean opened := false;
     shared actual void open() { opened:=true;}
     shared actual void close(Exception? e) {opened:=false;}
 }
-class MyContainer() satisfies Container {
+class MyContainer() satisfies EmptyContainer {
     shared actual Boolean empty = true;
 }
 class MyIterator() satisfies Iterator<Integer> {
@@ -134,14 +137,14 @@ void testSatisfaction() {
     check(collection.string == "{ h, e, l, l, o }", "Collection.string");
     check(MyComparable() <= MyComparable(), "Comparable.compare");
     variable ContainerWithFirstElement<Integer,Nothing> cwfe := MyContainerWithLastElement();
-    check(exists cwfe.first, "ContainerWithFirstElement.first [1]");
-    check(exists cwfe.last,  "ContainerWithFirstElement.last  [1]");
+    check(cwfe.first exists, "ContainerWithFirstElement.first [1]");
+    check(cwfe.last exists,  "ContainerWithFirstElement.last  [1]");
     cwfe := MyContainerWithoutFirstElement();
-    check(!exists cwfe.first, "ContainerWithFirstElement.first [2]");
-    check(exists cwfe.last, "ContainerWithFirstElement.last [2]");
+    check(!cwfe.first exists, "ContainerWithFirstElement.first [2]");
+    check(cwfe.last exists, "ContainerWithFirstElement.last [2]");
     cwfe := MyContainerWithoutLastElement();
-    check(exists cwfe.first, "ContainerWithFirstElement.first [1]");
-    check(!exists cwfe.last, "ContainerWithFirstElement.first [2]");
+    check(cwfe.first exists, "ContainerWithFirstElement.first [1]");
+    check(!cwfe.last exists, "ContainerWithFirstElement.first [2]");
     value clsbl = MyCloseable();
     check(!clsbl.opened, "Closeable [1]");
     clsbl.open();
@@ -157,7 +160,7 @@ void testSatisfaction() {
     if (is Integer ii=myiter.next()) {
         check(ii==1, "Iterator [1]");
     } else { fail("Iterator [1]"); }
-    if (!is Finished myiter.next()) {
+    if (!myiter.next() is Finished) {
         fail("Iterator [2]");
     }
     /*check(MySequence().last==MySequence().first, "Sequence[1]");
@@ -188,8 +191,8 @@ void testSatisfaction() {
     check(MyInvertable(-1)==-MyInvertable(1), "Invertable");
 
     value corr = MyCorrespondence();
-    check(exists corr[0], "Correspondence[1]");
-    check(!exists corr[100], "Correspondence[2]");
+    check(corr[0] exists, "Correspondence[1]");
+    check(!corr[100] exists, "Correspondence[2]");
     check(corr.defines(3), "Correspondence[3]");
-    check(is Character corr[4], "Correspondence[4]");
+    check(corr[4] is Character, "Correspondence[4]");
 }

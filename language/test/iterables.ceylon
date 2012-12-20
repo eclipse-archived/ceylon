@@ -67,8 +67,8 @@ void testIterables() {
     Integer[] vacio = {};
     check(vacio.map((Integer i) i).empty, "empty.map");
     check(vacio.filter((Integer i) true).empty, "empty.filter");
-    check(!exists vacio.find((Integer i) i>5), "find 3");
-    check(!exists vacio.findLast((Integer i) i>5), "findLast 3");
+    check(!vacio.find((Integer i) i>5) exists, "find 3");
+    check(!vacio.findLast((Integer i) i>5) exists, "findLast 3");
     check(vacio.fold(0, (Integer i, Integer j) i)==0, "empty.fold");
     check(vacio.sort((Integer a, Integer b) larger).sequence=={}, "empty.sort");
     check(!vacio.every((Integer x) true), "empty.every");
@@ -79,8 +79,8 @@ void testIterables() {
     //Singleton optimized implementations 
     check(Singleton(5).map((Integer i) i.float).sequence=={5.0}, "Singleton.map");
     check(Singleton(5).filter((Integer i) i>5).sequence=={}, "Singleton.filter");
-    check(!exists Singleton(5).find((Integer i) i>5), "Singleton.find");
-    check(!exists Singleton(5).findLast((Integer i) i>5), "Singleton.findLast");
+    check(!Singleton(5).find((Integer i) i>5) exists, "Singleton.find");
+    check(!Singleton(5).findLast((Integer i) i>5) exists, "Singleton.findLast");
     check(Singleton(5).fold(0, (Integer i, Integer j) i+j)==5, "Singleton.fold");
     check(Singleton(5).sort((Integer x, Integer y) x<=>y) == Singleton(5), "Singleton.sort");
     check(Singleton(1).any((Integer x) x == 1), "Singleton.any");
@@ -115,18 +115,18 @@ void testIterables() {
 
     //Skipping
     check({1,2,3,4,5}.skipping(3).sequence=={4,5}, "skipping [1]");
-    check(!nonempty {1,2,3,4,5}.skipping(9).sequence, "skipping [2]");
+    check(!{1,2,3,4,5}.skipping(9).sequence nonempty, "skipping [2]");
     check((1..10).skipping(5)==6..10, "Range.skipping [3]");
-    check(!nonempty (1..5).skipping(9).sequence, "skipping [4]");
+    check(!(1..5).skipping(9).sequence nonempty, "skipping [4]");
     check((5..1).skipping(2)==3..1, "Range.skipping [5]");
     check("hola".skipping(2)=="la", "String.skipping");
     check({for(i in 1..10) i}.skipping(8).sequence=={9,10}, "comprehension.skipping");
 
     //Taking
     check({1,2,3,4,5}.taking(3).sequence=={1,2,3}, "taking [1]");
-    check(!nonempty {1,2,3,4,5}.taking(0).sequence, "taking [2]");
+    check(!{1,2,3,4,5}.taking(0).sequence nonempty, "taking [2]");
     check((1..10).taking(5)==1..5, "Range.taking [3]");
-    check(!nonempty (1..5).taking(0).sequence, "Range.taking [4]");
+    check(!(1..5).taking(0).sequence nonempty, "Range.taking [4]");
     check((1..10).taking(100)==1..10, "Range.taking [5]");
     check({1,2,3,4,5}.taking(100).sequence=={1,2,3,4,5}, "taking [6]");
     check((5..1).taking(3)==5..3, "Range.taking [7]");
@@ -187,7 +187,7 @@ void testIterables() {
     if (exists l="The very last character".last) {
         check(l==`r`, "String.last [1]");
     } else { fail("String.last [1]"); }
-    if (exists "".last) {
+    if ("".last exists) {
         fail("String.last [2]");
     }
     if (exists l={for(i in 1..1000) i}.last) {

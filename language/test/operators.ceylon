@@ -11,20 +11,20 @@ class Spread2() satisfies SpreadTest {
 void operators() {
     String? maybe = "hello";
     String? maybeNot = null;
-    check(exists maybe?.uppercased, "?.");
-    check(!exists maybeNot?.uppercased, "?.");
+    check(maybe?.uppercased exists, "?.");
+    check(!maybeNot?.uppercased exists, "?.");
     check((maybe else "goodbye")=="hello", "?");
     check((maybeNot else "goodbye")=="goodbye", "?");
-    check(exists maybe?[0], "?[]");
-    check(exists maybe?[4], "?[]");
-    check(!exists maybe?[10], "?[]");
-    check(!exists maybeNot?[0], "?[]");
-    check(!exists maybeNot?[10], "?[]");
+    check(maybe?[0] exists, "?[]");
+    check(maybe?[4] exists, "?[]");
+    check(!maybe?[10] exists, "?[]");
+    check(!maybeNot?[0] exists, "?[]");
+    check(!maybeNot?[10] exists, "?[]");
 
     String[] empty = {};
     String[] full = { "hello", "world" };
-    check(!nonempty empty[].uppercased, "spread 1");
-    check(nonempty full[].uppercased, "spread 2");
+    check(!empty[].uppercased nonempty, "spread 1");
+    check(full[].uppercased nonempty, "spread 2");
     value spread1 = full[].uppercased;
     value spread2 = full[].item(1);
 	if (exists s1s=spread1[0]) {
@@ -56,14 +56,14 @@ void operators() {
     value spreadList = { Spread1(), Spread2() };
     value spread13 = spreadList[].x();
     check(spread13.size == 2, "spread 13 size");
-    check(is String spread13[0], "spread 13 item 0");
+    check(spread13[0] is String, "spread 13 item 0");
     if (is String s13_1 = spread13[1]) {
         check(s13_1 == "S2", "spread 13 item 1");
     } else { fail("spread 13 item 1"); }
     /*
     function spread14() = spreadList[].x;
     check(spread14().size == 2, "spread 14 size");
-    check(is String spread14()[0], "spread 14 item 0");
+    check(spread14()[0] is String, "spread 14 item 0");
     if (is String s14_1 = spread14()[1]) {
         check(s14_1 == "S2", "spread 14 item 1");
     } else { fail("spread 14 item 1");}
@@ -73,20 +73,20 @@ void operators() {
     check("world" in "hello world", "in 2");
 
     Correspondence<Integer, String> c1 = {};
-    check(!exists c1[0], "empty correspondence");
+    check(!c1[0] exists, "empty correspondence");
     
     Ranged<Integer,String[]> sequence = {"foo", "bar"};
     String[] subrange = sequence[1..2];
     check(subrange.size==1, "subrange size");
-    check(nonempty subrange, "subrange nonempty");
+    check(subrange nonempty, "subrange nonempty");
     check(sequence[1...].size==1, "open subrange size 1");
     check(sequence[0...].size==2, "open subrange size 2");
-    check(nonempty sequence[1...], "open subrange nonempty");
-    check(!nonempty sequence[2...], "open subrange empty");
+    check(sequence[1...] nonempty, "open subrange nonempty");
+    check(!sequence[2...] nonempty, "open subrange empty");
                                 
     Float x = 0.5;
-    check(exists (x>0.0 then x), "then not null");
-    check(!exists (x<0.0 then x), "then null");
+    check((x>0.0 then x) exists, "then not null");
+    check(!(x<0.0 then x) exists, "then null");
     check((x<0.0 then x else 1.0) == 1.0, "then else");
     check((x>0.0 then x else 1.0) == 0.5, "then");
     
@@ -96,8 +96,8 @@ void operators() {
     class X() {}
     X? xx = X();
     Object? obj(Object? x) { return x; }
-    check(is X obj(xx else X()), "something");
-    check(is X obj(true then X()), "something");
-    check(is X obj(true then X() else X()), "something");
+    check(obj(xx else X()) is X, "something");
+    check(obj(true then X()) is X, "something");
+    check(obj(true then X() else X()) is X, "something");
 
 }
