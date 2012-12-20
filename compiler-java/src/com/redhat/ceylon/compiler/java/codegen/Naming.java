@@ -904,7 +904,11 @@ public class Naming implements LocalId {
             }
         } else if (decl instanceof Method) {
             if (decl.isClassMember()) {
-                return getErasedMethodName(quoteMethodNameIfProperty((Method) decl));
+                String quotedName = quoteMethodNameIfProperty((Method) decl);
+                // don't try to be smart with interop calls 
+                if(decl instanceof JavaMethod)
+                    return ((JavaMethod)decl).getRealName();
+                return getErasedMethodName(quotedName);
             }
             return quoteMethodName(decl);
         }
