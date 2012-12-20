@@ -32,6 +32,7 @@ import com.redhat.ceylon.tools.help.model.DescribedSection.Role;
 import com.redhat.ceylon.tools.help.model.Doc;
 import com.redhat.ceylon.tools.help.model.Option;
 import com.redhat.ceylon.tools.help.model.OptionsSection;
+import com.redhat.ceylon.tools.help.model.SubtoolVisitor;
 import com.redhat.ceylon.tools.help.model.SummarySection;
 import com.redhat.ceylon.tools.help.model.SynopsesSection;
 import com.redhat.ceylon.tools.help.model.Synopsis;
@@ -270,23 +271,40 @@ public class DocBuilder {
         // form groups, or should we just have a @Synopses({@Synopsis(""), ...})
         SynopsesSection synopsesSection = new SynopsesSection();
         synopsesSection.setTitle(sectionsBundle.getString("section.SYNOPSIS"));
-        List<Synopsis> synopsisList = new ArrayList<>();
+        final List<Synopsis> synopsisList = new ArrayList<>();
         
-        if (model.getSubtoolModel() != null) {
-            for (List<?> optionsAndArguments : buildSubtoolSynopsis(model.getSubtoolModel())) {
-                List<Object> l = optionsAndArguments(model);
-                l.addAll(optionsAndArguments);
-                Synopsis synopsis = new Synopsis();
-                synopsis.setInvocation(getCeylonInvocation(model));
-                synopsis.setOptionsAndArguments(l);
-                synopsisList.add(synopsis);
+        new SubtoolVisitor(model) {
+            
+            @Override
+            protected void visit(ToolModel<?> model, 
+                    SubtoolModel<?> subtoolModel) {
+                if (model.getSubtoolModel() == null) {// a leaf
+                    Synopsis synopsis = new Synopsis();
+                    synopsis.setInvocation(getCeylonInvocation(root));
+                    List<?> optionsAndArguments;
+                    if (ancestors.isEmpty()) {
+                        optionsAndArguments = optionsAndArguments(model);
+                    } else {
+                        optionsAndArguments = new ArrayList<>();
+                        for (SubtoolVisitor.ToolModelAndSubtoolModel ancestor : ancestors) {
+                            List subOptAndArgs = optionsAndArguments(ancestor.getModel());
+                            if (ancestor.getModel() != root) {
+                                // Don't treat the foo in `ceylon foo` as a subtool 
+                                subOptAndArgs.add(0, new Synopsis.NameAndSubtool(ancestor.getModel().getName(), ancestor.getSubtoolModel()));
+                            }
+                            optionsAndArguments.addAll((List)subOptAndArgs);
+                        }
+                        List subOptAndArgs = optionsAndArguments(model);
+                        subOptAndArgs.add(0, new Synopsis.NameAndSubtool(model.getName(), subtoolModel));
+                        optionsAndArguments.addAll((List)subOptAndArgs);
+                    }
+                    synopsis.setOptionsAndArguments(optionsAndArguments);
+                    synopsisList.add(synopsis);
+                }
+                
             }
-        } else {
-            Synopsis synopsis = new Synopsis();
-            synopsis.setInvocation(getCeylonInvocation(model));
-            synopsis.setOptionsAndArguments(optionsAndArguments(model));
-            synopsisList.add(synopsis);
-        }
+        }.accept();
+
         synopsesSection.setSynopses(synopsisList);
         return synopsesSection;
     }
@@ -295,27 +313,6 @@ public class DocBuilder {
         List<E> optionsAndArguments = (List)sortedOptions(model.getOptions());
         optionsAndArguments.addAll((List)model.getArguments());
         return optionsAndArguments;
-    }
-
-    private List<List<?>> buildSubtoolSynopsis(SubtoolModel<?> subtoolModel) {
-        List<List<?>> result = new ArrayList<List<?>>();
-        ToolLoader subtoolLoader = subtoolModel.getToolLoader();
-        for (String toolName : subtoolLoader.getToolNames()) {
-            ToolModel<?> model = subtoolLoader.loadToolModel(toolName);
-            if (model.getSubtoolModel() != null) {
-                for (List subOptAndArgs : buildSubtoolSynopsis(model.getSubtoolModel())) {
-                    List optionsAndArguments = optionsAndArguments(model);
-                    optionsAndArguments.add(0, new Synopsis.NameAndSubtool(toolName, subtoolModel));
-                    optionsAndArguments.addAll((List)subOptAndArgs);
-                    result.add(optionsAndArguments);
-                }
-            } else {
-                List<Object> optionsAndArguments = optionsAndArguments(model);
-                optionsAndArguments.add(0, new Synopsis.NameAndSubtool(toolName, subtoolModel));
-                result.add(optionsAndArguments);
-            }
-        }
-        return result;
     }
 
     private boolean skipHiddenOption(OptionModel<?> option) {
