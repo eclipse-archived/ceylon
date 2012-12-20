@@ -57,6 +57,7 @@ public class DocBuilder {
     }
 
     public Doc buildDoc(ToolModel<?> model, boolean specialRoot) {
+        checkModel(model);
         boolean rootHack = specialRoot && CeylonTool.class.isAssignableFrom(model.getToolClass());
         Doc doc = new Doc();
         doc.setVersion(Versions.CEYLON_VERSION);
@@ -73,6 +74,22 @@ public class DocBuilder {
         return doc;
     }
     
+    private void checkModel(ToolModel<?> model) {
+        new SubtoolVisitor(model) {            
+            @Override
+            protected void visit(ToolModel<?> model, SubtoolModel<?> subtoolModel) {
+                if (model != root) {
+                    if (getSummary(model) != null) {
+                        System.err.println("@Summary not supported on subtools: " + model.getToolClass());
+                    }
+                    if (!getSections(model).isEmpty()) {
+                        System.err.println("@RemainingSections not supported on subtools: " + model.getToolClass());
+                    }
+                }
+            }
+        }.accept();
+    }
+
     private SynopsesSection buildRootSynopsis(ToolModel<?> model) {
 
         SynopsesSection synopsis = new SynopsesSection();
