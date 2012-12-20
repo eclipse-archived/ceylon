@@ -185,6 +185,54 @@ final class callableWithDefaulted_ {
         bar.$call();
         bar.$call(.ceylon.language.Integer.instance(1L));
         bar.$call(.ceylon.language.Integer.instance(1L), .ceylon.language.String.instance("a"), .ceylon.language.Integer.instance(2L), .ceylon.language.String.instance("b"), .ceylon.language.Integer.instance(3L), .ceylon.language.String.instance("c"));
+        final .ceylon.language.Callable<? extends .java.lang.Object> oneOrTwo = new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.ceylon.language.Integer>("Integer(Integer, Integer=)"){
+            
+            private final long $$b(final long a) {
+                return 2L;
+            }
+            
+            @.java.lang.Override
+            public .ceylon.language.Integer $call(final .java.lang.Object $param$0) {
+                final long a = ((.ceylon.language.Integer)$param$0).longValue();
+                final long b = $$b(a);
+                return $call$typed(a, b);
+            }
+            
+            @.java.lang.Override
+            public .ceylon.language.Integer $call(final .java.lang.Object $param$0, final .java.lang.Object $param$1) {
+                final long a = ((.ceylon.language.Integer)$param$0).longValue();
+                final long b = ((.ceylon.language.Integer)$param$1).longValue();
+                return $call$typed(a, b);
+            }
+            
+            private .ceylon.language.Integer $call$typed(long a, long b) {
+                return .ceylon.language.Integer.instance(a);
+            }
+        };
+        final .ceylon.language.Callable<? extends .java.lang.Object> one = oneOrTwo;
+        final .ceylon.language.Callable<? extends .java.lang.Object> oneOrPlenty = new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.ceylon.language.Sequential<? extends .ceylon.language.Integer>>("Integer[](Integer...)"){
+            
+            private final .ceylon.language.Sequential<? extends .ceylon.language.Integer> $$a() {
+                return (.ceylon.language.Sequential).ceylon.language.empty_.getEmpty$();
+            }
+            
+            @.java.lang.Override
+            public .ceylon.language.Sequential<? extends .ceylon.language.Integer> $call() {
+                final .ceylon.language.Sequential<? extends .ceylon.language.Integer> a = $$a();
+                return $call$typed(a);
+            }
+            
+            @.java.lang.Override
+            public .ceylon.language.Sequential<? extends .ceylon.language.Integer> $call(final .java.lang.Object $param$0) {
+                final .ceylon.language.Sequential<? extends .ceylon.language.Integer> a = (.ceylon.language.Sequential<? extends .ceylon.language.Integer>)(.ceylon.language.Sequential)$param$0;
+                return $call$typed(a);
+            }
+            
+            private .ceylon.language.Sequential<? extends .ceylon.language.Integer> $call$typed(.ceylon.language.Sequential<? extends .ceylon.language.Integer> a) {
+                return a;
+            }
+        };
+        final .ceylon.language.Callable<? extends .java.lang.Object> oneAgain = oneOrPlenty;
     }
     
     public static void main(.java.lang.String[] args) {

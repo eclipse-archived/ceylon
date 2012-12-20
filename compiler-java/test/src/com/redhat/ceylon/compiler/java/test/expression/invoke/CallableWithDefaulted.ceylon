@@ -39,6 +39,11 @@ void callableWithDefaulted() {
     bar();
     bar(1);
     bar(1, "a", 2, "b", 3, "c");
+    
+    Callable<Void, [Integer, Integer=]> oneOrTwo = function (Integer a, Integer b = 2) a;
+    Callable<Void, [Integer]> one = oneOrTwo;
+    Callable<Void, [Integer...]> oneOrPlenty = function (Integer... a) a;
+    Callable<Void, [Integer]> oneAgain = oneOrPlenty;
 }
 
 @nomodel
