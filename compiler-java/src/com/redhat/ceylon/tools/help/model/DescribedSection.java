@@ -1,5 +1,8 @@
 package com.redhat.ceylon.tools.help.model;
 
+import java.util.Collections;
+import java.util.List;
+
 import org.tautua.markdownpapers.ast.Node;
 
 public class DescribedSection implements Documentation {
@@ -13,7 +16,11 @@ public class DescribedSection implements Documentation {
     
     private Node title;
     
+    private Object about;
+    
     private Node description;
+    
+    private List<DescribedSection> subsections = Collections.emptyList();
 
     public Role getRole() {
         return role;
@@ -37,6 +44,22 @@ public class DescribedSection implements Documentation {
 
     public void setDescription(Node content) {
         this.description = content;
+    }
+
+    public Object getAbout() {
+        return about;
+    }
+
+    public void setAbout(Object about) {
+        this.about = about;
+    }
+
+    public List<DescribedSection> getSubsections() {
+        return subsections;
+    }
+
+    public void setSubsections(List<DescribedSection> subsections) {
+        this.subsections = subsections;
     }
 
     @Override

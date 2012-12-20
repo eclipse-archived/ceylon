@@ -10,10 +10,10 @@ import com.redhat.ceylon.tools.help.model.DescribedSection;
 import com.redhat.ceylon.tools.help.model.Doc;
 import com.redhat.ceylon.tools.help.model.Option;
 import com.redhat.ceylon.tools.help.model.OptionsSection;
+import com.redhat.ceylon.tools.help.model.SubtoolVisitor;
 import com.redhat.ceylon.tools.help.model.SummarySection;
 import com.redhat.ceylon.tools.help.model.SynopsesSection;
 import com.redhat.ceylon.tools.help.model.Synopsis;
-import com.redhat.ceylon.tools.help.model.Synopsis.NameAndSubtool;
 import com.redhat.ceylon.tools.help.model.Visitor;
 
 public class PlainVisitor implements Visitor {
@@ -23,6 +23,7 @@ public class PlainVisitor implements Visitor {
     protected String ceylonName;
     boolean hadFirstArgument = false;
     private boolean hadOptions;
+    private boolean suboptions;
 
     public PlainVisitor(WordWrap wrap) {
         super();
@@ -90,8 +91,8 @@ public class PlainVisitor implements Visitor {
     }
 
     @Override
-    public void visitSynopsisSubtool(NameAndSubtool option) {
-        out.append(" " + option.getName());
+    public void visitSynopsisSubtool(SubtoolVisitor.ToolModelAndSubtoolModel option) {
+        out.append(" " + option.getModel().getName());
     }
     
     @Override
@@ -140,8 +141,12 @@ public class PlainVisitor implements Visitor {
     
     @Override
     public void startOptions(OptionsSection optionsSection) {
-        out.append(optionsSection.getTitle().toUpperCase()).newline().newline();
+        if (suboptions) {
+            out.setIndent(3);
+        }
+        markdown(optionsSection.getTitle());
         out.setIndent(8);
+        suboptions = true;
     }
 
     @Override
@@ -201,6 +206,11 @@ public class PlainVisitor implements Visitor {
     private void describedSection(DescribedSection describedSection) {
         markdown(describedSection.getTitle());
         markdown(describedSection.getDescription());
+        
+        for (DescribedSection subsection : describedSection.getSubsections()) {
+            describedSection(subsection);
+        }
+        
         out.setIndent(0);
         out.newline();
     }

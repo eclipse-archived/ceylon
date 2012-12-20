@@ -7,15 +7,16 @@ import org.tautua.markdownpapers.ast.Node;
 import com.redhat.ceylon.common.tool.ArgumentModel;
 import com.redhat.ceylon.common.tool.OptionModel;
 import com.redhat.ceylon.common.tool.OptionModel.ArgumentType;
+import com.redhat.ceylon.common.tool.ToolModel;
 import com.redhat.ceylon.tools.help.model.DescribedSection;
 import com.redhat.ceylon.tools.help.model.DescribedSection.Role;
 import com.redhat.ceylon.tools.help.model.Doc;
 import com.redhat.ceylon.tools.help.model.Option;
 import com.redhat.ceylon.tools.help.model.OptionsSection;
+import com.redhat.ceylon.tools.help.model.SubtoolVisitor;
 import com.redhat.ceylon.tools.help.model.SummarySection;
 import com.redhat.ceylon.tools.help.model.SynopsesSection;
 import com.redhat.ceylon.tools.help.model.Synopsis;
-import com.redhat.ceylon.tools.help.model.Synopsis.NameAndSubtool;
 import com.redhat.ceylon.tools.help.model.Visitor;
 
 public class HtmlVisitor implements Visitor {
@@ -24,6 +25,7 @@ public class HtmlVisitor implements Visitor {
     private boolean hadFirstArgument;
     private boolean hadOptions;
     private Doc doc;
+    private int optionsDepth = 0;
     
     HtmlVisitor(Appendable out) {
         this.html = new Html(out);
@@ -105,39 +107,76 @@ public class HtmlVisitor implements Visitor {
         html.open("tbody").text("\n");
     }
 
-    private static void addTableRow(Html html, Node body) {
-        html.open("tr", "td").markdown(body).close("td", "tr");
-    }
-
     private static void addTableEnd(Html html) {
         html.close("tbody", "table");
     }
     
     @Override
     public void visitAdditionalSection(DescribedSection describedSection) {
-        describedSection(describedSection);
+        describedSection(0, describedSection);
     }
 
-    private void describedSection(DescribedSection describedSection) {
+    private void describedSection(int depth, DescribedSection describedSection) {
         String sectionId = null;
-        if (describedSection.getRole() == Role.DESCRIPTION) {
-            html.open("div class='section section-description'").text("\n");
-            sectionId = "section-description";
+        if (depth == 0) {
+            if (describedSection.getRole() == Role.DESCRIPTION) {
+                html.open("div class='section section-description'").text("\n");
+                sectionId = "section-description";
+            } else {
+                html.open("div class='section'").text("\n");
+            }
+            addTableStart(html, sectionId, describedSection.getTitle(), 1);
+            html.open("tr", "td").markdown(describedSection.getDescription());
         } else {
-            html.open("div class='section'").text("\n");
+            if (describedSection.getAbout() instanceof ToolModel) {
+                html.open("div id='" + idSubtool((ToolModel<?>)describedSection.getAbout()) + "'");
+            } else {
+                html.open("div");
+            }
+            html.markdown(describedSection.getTitle());
+            html.markdown(describedSection.getDescription());
         }
-        addTableStart(html, sectionId, describedSection.getTitle(), 1);
-        addTableRow(html, describedSection.getDescription());
-        addTableEnd(html);
-        html.close("div").text("\n");
+        for (DescribedSection subsection : describedSection.getSubsections()) {
+            describedSection(depth+1, subsection);
+        }
+        
+        if (depth != 0) {
+            html.close("div");
+        } else {
+            html.close("td", "tr");
+            addTableEnd(html);
+            html.close("div").text("\n");
+        }
     }
 
     @Override
     public void startOptions(OptionsSection optionsSection) {
-        html.open("div class='section section-options'").text("\n");
-        addTableStart(html, "section-options", optionsSection.getTitle(), 2);
+        if (optionsDepth == 0) {
+            html.open("div class='section section-options'").text("\n");
+            addTableStart(html, "section-options", optionsSection.getTitle(), 2);
+        } else {
+            html.open("tr class='table-header'", "td colspan='2'");
+            html.markdown(optionsSection.getTitle());
+            html.close("td", "tr");
+        }
+        optionsDepth++;
     }
 
+    private String idLongOption(OptionModel<?> option) {
+        // TODO Could be ambiguous need to use whole path from root
+        return "option--" + option.getLongName();
+    }
+    
+    private String idShortOption(OptionModel<?> option) {
+        // TODO Could be ambiguous need to use whole path from root
+        return "option-" + option.getShortName();
+    }
+
+    private String idSubtool(ToolModel<?> model) {
+        // TODO Could be ambiguous need to use whole path from root
+        return "subtool-" + model.getName();
+    }
+    
     @Override
     public void visitOption(Option option) {
         String longName = option.getLongName();
@@ -145,7 +184,7 @@ public class HtmlVisitor implements Visitor {
         String argumentName = option.getArgumentName();
         ArgumentType argumentType = option.getOption().getArgumentType();
         html.open("tr");
-        html.open("td class='span3' id='long" + longName + "'", "code").text(longName);
+        html.open("td class='span3' id='" + idLongOption(option.getOption()) + "'", "code").text(longName);
         if (argumentType == ArgumentType.OPTIONAL) {
             html.text("[");
         }
@@ -158,7 +197,7 @@ public class HtmlVisitor implements Visitor {
         html.close("code");
         if (shortName != null) {
             html.text(", ");
-            html.open("code id='short" + shortName +"'").text(shortName);
+            html.open("code id='" + idShortOption(option.getOption()) + "'").text(shortName);
             if (argumentType != ArgumentType.NOT_ALLOWED) {
                 html.text(" ");
                 if (argumentType == ArgumentType.OPTIONAL) {
@@ -180,8 +219,11 @@ public class HtmlVisitor implements Visitor {
 
     @Override
     public void endOptions(OptionsSection optionsSection) {
-        addTableEnd(html);
-        html.close("div");
+        optionsDepth--;
+        if (optionsDepth == 0) {
+            addTableEnd(html);
+            html.close("div");
+        }
     }
 
     @Override
@@ -214,18 +256,29 @@ public class HtmlVisitor implements Visitor {
         addTableStart(html, "section-synopsis", synopsesSection.getTitle(), 1);
     }
     
-    private void longOptionSynopsis(String string) {
-        html.link(string, "#long" + string);
+    private void longOptionSynopsis(OptionModel<?> option) {
+        String string = "--" + option.getLongName();
+        html.link(string, "#" + idLongOption(option));
     }
     
-    private void shortOptionSynopsis(String string) {
-        html.link(string, "#short" + string);
+    private void shortOptionSynopsis(OptionModel<?> option) {
+        String string = "-" + option.getShortName();
+        html.link(string, "#" + idShortOption(option));
     }
 
     private void argumentSynopsis(String name) {
         html.link(name, "#arg" + name);
     }
     
+    private void subtoolSynopsis(SubtoolVisitor.ToolModelAndSubtoolModel nast) {
+        String name = nast.getName();
+        if (nast.getModel().getSubtoolModel() == null) {
+            html.link(name, "#" + idSubtool(nast.getModel()));
+        } else {
+            html.text(name);
+        }
+    }
+
     private String multiplicity(ArgumentModel<?> argument, String name) {
         name = "<" + name + ">";
         if (argument.getMultiplicity().isMultivalued()) {
@@ -281,7 +334,7 @@ public class HtmlVisitor implements Visitor {
             html.text("[");
         }
         if (option.getLongName() != null) {
-            longOptionSynopsis("--" + option.getLongName());
+            longOptionSynopsis(option);
             if (option.getArgumentType() == ArgumentType.REQUIRED) {
                 html.text("=");
                 html.text(multiplicity(argument, argument.getName()));
@@ -291,7 +344,7 @@ public class HtmlVisitor implements Visitor {
                 html.text("]");
             }
         } else {
-            shortOptionSynopsis("-" + option.getShortName());
+            shortOptionSynopsis(option);
             if (option.getArgumentType() != ArgumentType.NOT_ALLOWED) {
                 html.text(" ");
                 html.text(multiplicity(argument, argument.getName()));
@@ -310,13 +363,14 @@ public class HtmlVisitor implements Visitor {
 
     @Override
     public void visitDescription(DescribedSection descriptionSection) {
-        describedSection(descriptionSection);
+        describedSection(0, descriptionSection);
     }
 
     @Override
-    public void visitSynopsisSubtool(NameAndSubtool option) {
+    public void visitSynopsisSubtool(SubtoolVisitor.ToolModelAndSubtoolModel option) {
         html.text(" ");
-        html.text(option.getName());    
+        subtoolSynopsis(option);
+            
     }
 
 }

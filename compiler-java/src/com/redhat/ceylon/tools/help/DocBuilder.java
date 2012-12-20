@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.MissingResourceException;
@@ -21,7 +22,6 @@ import com.redhat.ceylon.common.tool.OptionModel.ArgumentType;
 import com.redhat.ceylon.common.tool.RemainingSections;
 import com.redhat.ceylon.common.tool.SubtoolModel;
 import com.redhat.ceylon.common.tool.Summary;
-import com.redhat.ceylon.common.tool.Tool;
 import com.redhat.ceylon.common.tool.ToolLoader;
 import com.redhat.ceylon.common.tool.ToolModel;
 import com.redhat.ceylon.common.tool.Tools;
@@ -39,7 +39,6 @@ import com.redhat.ceylon.tools.help.model.Synopsis;
 
 public class DocBuilder {
 
-    protected final ResourceBundle sectionsBundle = ResourceBundle.getBundle("com.redhat.ceylon.tools.help.resources.sections");
     protected ToolLoader toolLoader;
     protected boolean includeHidden = false;
 
@@ -93,7 +92,7 @@ public class DocBuilder {
     private SynopsesSection buildRootSynopsis(ToolModel<?> model) {
 
         SynopsesSection synopsis = new SynopsesSection();
-        synopsis.setTitle(sectionsBundle.getString("section.SYNOPSIS"));
+        synopsis.setTitle(HelpMessages.msg("section.SYNOPSIS"));
         List<Synopsis> synopsisList = new ArrayList<>();
         {
             Synopsis s1 = new Synopsis();
@@ -207,52 +206,72 @@ public class DocBuilder {
     }
 
     private OptionsSection buildOptions(ToolModel<?> model) {
-        OptionsSection optionsSection = new OptionsSection();
-        optionsSection.setTitle(sectionsBundle.getString("section.OPTIONS"));
-        List<Option> options = new ArrayList<>();
-        for (OptionModel<?> opt : sortedOptions(model.getOptions())) {
-            Option option = new Option();
-            option.setOption(opt);
-            String descriptionMd = getOptionDescription(model, opt);
-            if (descriptionMd == null || descriptionMd.isEmpty()) {
-                descriptionMd = sectionsBundle.getString("option.undocumented");
+        final HashMap<ToolModel<?>, OptionsSection> map = new HashMap<>();
+        new SubtoolVisitor(model) {
+            @Override
+            protected void visit(ToolModel<?> model,
+                    SubtoolModel<?> subtoolModel) {
+                OptionsSection optionsSection = new OptionsSection();
+                map.put(model, optionsSection);
+                if (model==root) {
+                    optionsSection.setTitle(
+                            Markdown.markdown("##" + HelpMessages.msg("section.OPTIONS")));
+                } else {
+                    optionsSection.setTitle(
+                            Markdown.markdown("###" + HelpMessages.msg("section.OPTIONS.sub", model.getName())));
+                }
+                List<Option> options = new ArrayList<>();
+                for (OptionModel<?> opt : sortedOptions(model.getOptions())) {
+                    Option option = new Option();
+                    option.setOption(opt);
+                    String descriptionMd = getOptionDescription(model, opt);
+                    if (descriptionMd == null || descriptionMd.isEmpty()) {
+                        descriptionMd = HelpMessages.msg("option.undocumented");
+                    }
+                    option.setDescription(Markdown.markdown(descriptionMd));
+                    options.add(option);
+                }
+                optionsSection.setOptions(options);
+                if (model != root && !options.isEmpty()) {
+                    OptionsSection parent = map.get(ancestors.lastElement().getModel());
+                    ArrayList<OptionsSection> parentSubsections = new ArrayList<OptionsSection>(parent.getSubsections());
+                    parentSubsections.add(optionsSection);
+                    parent.setSubsections(parentSubsections);
+                }
             }
-            option.setDescription(Markdown.markdown(descriptionMd));
-            options.add(option);
-        }
-        optionsSection.setOptions(options);
-        return optionsSection;
+            
+        }.accept();
+        return map.get(model);
     }
 
     private DescribedSection buildDescription(ToolModel<?> model) {
-        
-        final StringBuilder description = new StringBuilder();
+        final HashMap<ToolModel<?>, DescribedSection> map = new HashMap<ToolModel<?>, DescribedSection>();
         new SubtoolVisitor(model) {            
             @Override
             protected void visit(ToolModel<?> model, SubtoolModel<?> subtoolModel) {
                 if (model == root) {
-                    description.append(getDescription(model)).append("\n\n");
+                    map.put(model, buildDescription(model, getDescription(model)));
                 } else if (model.getSubtoolModel() == null) {// leaf
-                    description.append("\n\n")
-                    .append("### The `");
-                    for (SubtoolVisitor.ToolModelAndSubtoolModel xxx : ancestors.subList(1, ancestors.size())) {
-                        description.append(xxx.getModel().getName()).append(" ");
+                    
+                    DescribedSection section = new DescribedSection();
+                    section.setRole(Role.DESCRIPTION);
+                    
+                    StringBuilder sb = new StringBuilder();
+                    for (SubtoolVisitor.ToolModelAndSubtoolModel subtool : ancestors.subList(1, ancestors.size())) {
+                        sb.append(subtool.getModel().getName()).append(" ");
                     }
-                    description.append(model.getName());
-                    description.append("` subcommand\n\n");
-                    description.append(getDescription(model)).append("\n\n");
-                }
-                if (model != root) {
-                    if (getSummary(model) != null) {
-                        System.err.println("@Summary not supported on subtools: " + model.getToolClass());
-                    }
-                    if (!getSections(model).isEmpty()) {
-                        System.err.println("@RemainingSections not supported on subtools: " + model.getToolClass());
-                    }
+                    sb.append(model.getName());
+                    section.setTitle(Markdown.markdown("###" + HelpMessages.msg("section.DESCRIPTION.sub", sb.toString())));
+                    section.setDescription(Markdown.markdown(getDescription(model)));
+                    section.setAbout(model);
+                    
+                    List<DescribedSection> rootSubsections = new ArrayList<>(map.get(root).getSubsections());
+                    rootSubsections.add(section);
+                    map.get(root).setSubsections(rootSubsections);
                 }
             }
         }.accept();
-        return buildDescription(model, description.toString());
+        return map.get(model);
     }
     
     private DescribedSection buildDescription(ToolModel<?> model, String description) {
@@ -261,7 +280,7 @@ public class DocBuilder {
             section = new DescribedSection();
             section.setRole(Role.DESCRIPTION);
             section.setTitle(
-                    Markdown.markdown("##" + sectionsBundle.getString("section.DESCRIPTION") + "\n"));
+                    Markdown.markdown("## " + HelpMessages.msg("section.DESCRIPTION") + "\n"));
             section.setDescription(Markdown.markdown(description));
         }
         return section;
@@ -315,7 +334,7 @@ public class DocBuilder {
         // TODO Make auto generated SYNOPSIS better -- we need to know which options
         // form groups, or should we just have a @Synopses({@Synopsis(""), ...})
         SynopsesSection synopsesSection = new SynopsesSection();
-        synopsesSection.setTitle(sectionsBundle.getString("section.SYNOPSIS"));
+        synopsesSection.setTitle(HelpMessages.msg("section.SYNOPSIS"));
         final List<Synopsis> synopsisList = new ArrayList<>();
         
         new SubtoolVisitor(model) {
@@ -335,12 +354,12 @@ public class DocBuilder {
                             List subOptAndArgs = optionsAndArguments(ancestor.getModel());
                             if (ancestor.getModel() != root) {
                                 // Don't treat the foo in `ceylon foo` as a subtool 
-                                subOptAndArgs.add(0, new Synopsis.NameAndSubtool(ancestor.getModel().getName(), ancestor.getSubtoolModel()));
+                                subOptAndArgs.add(0, ancestor);
                             }
                             optionsAndArguments.addAll((List)subOptAndArgs);
                         }
                         List subOptAndArgs = optionsAndArguments(model);
-                        subOptAndArgs.add(0, new Synopsis.NameAndSubtool(model.getName(), subtoolModel));
+                        subOptAndArgs.add(0, new SubtoolVisitor.ToolModelAndSubtoolModel(model, subtoolModel));
                         optionsAndArguments.addAll((List)subOptAndArgs);
                     }
                     synopsis.setOptionsAndArguments(optionsAndArguments);
@@ -385,7 +404,7 @@ public class DocBuilder {
     private SummarySection buildSummary(ToolModel<?> model) {
         SummarySection summary = new SummarySection();
         summary.setTitle(
-                Markdown.markdown("##" + sectionsBundle.getString("section.NAME") + "\n"));
+                Markdown.markdown("##" + HelpMessages.msg("section.NAME") + "\n"));
         summary.setSummary(getSummaryValue(model));
         return summary;
     }

@@ -2,8 +2,6 @@ package com.redhat.ceylon.tools.help.model;
 
 import com.redhat.ceylon.common.tool.ArgumentModel;
 import com.redhat.ceylon.common.tool.OptionModel;
-import com.redhat.ceylon.common.tool.SubtoolModel;
-import com.redhat.ceylon.tools.help.model.Synopsis.NameAndSubtool;
 
 public interface Visitor {
 
@@ -29,7 +27,7 @@ public interface Visitor {
     
     public void visitSynopsisArgument(ArgumentModel<?> option);
     
-    public void visitSynopsisSubtool(NameAndSubtool option);
+    public void visitSynopsisSubtool(SubtoolVisitor.ToolModelAndSubtoolModel option);
     
     public void endSynopsis(Synopsis synopsis);
     

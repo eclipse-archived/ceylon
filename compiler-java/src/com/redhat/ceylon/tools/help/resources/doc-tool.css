@@ -114,7 +114,11 @@ code {
 }
 
 h3 code {
-	font-size: 22px;
+	font-size: 12px;
+}
+
+table h3 {
+    font-size: 14px;
 }
 
 .table-header:HOVER {

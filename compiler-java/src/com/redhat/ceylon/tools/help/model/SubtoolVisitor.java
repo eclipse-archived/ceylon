@@ -12,11 +12,15 @@ public abstract class SubtoolVisitor {
         private final ToolModel<?> model;
         private final SubtoolModel<?> subtoolModel;
 
-        ToolModelAndSubtoolModel(ToolModel<?> model, SubtoolModel<?> subtoolModel) {
+        public ToolModelAndSubtoolModel(ToolModel<?> model, SubtoolModel<?> subtoolModel) {
             this.model = model;
             this.subtoolModel = subtoolModel;
         }
 
+        public String getName() {
+            return model.getName();
+        }
+        
         public ToolModel<?> getModel() {
             return model;
         }
@@ -52,10 +56,10 @@ public abstract class SubtoolVisitor {
         ToolLoader subtoolLoader = subtoolModel.getToolLoader();
         for (String toolName : subtoolLoader.getToolNames()) {
             ToolModel<?> model = subtoolLoader.loadToolModel(toolName);
+            visit(model, subtoolModel);
             if (model.getSubtoolModel() != null) {
                 accept(model, model.getSubtoolModel());
             }
-            visit(model, subtoolModel);
         }
         ancestors.pop();
     }
