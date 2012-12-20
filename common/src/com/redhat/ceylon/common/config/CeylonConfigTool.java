@@ -65,7 +65,7 @@ public class CeylonConfigTool implements Tool {
         }
     }
     
-    @Summary("Lists configuration values")
+    @Description("Lists configuration values")
     public class List implements Tool {
     
         @Override
@@ -75,9 +75,7 @@ public class CeylonConfigTool implements Tool {
         }
     }
 
-    @Summary("Gets a configuration value")
-    @Description(
-            "Get the value defined for <key>")
+    @Description("Get the value defined for `<key>` in the config file")
     public class Get implements Tool {
     
         private String key;
@@ -99,35 +97,66 @@ public class CeylonConfigTool implements Tool {
         }
     }
     
-    @Summary("Sets a value in a config file")
+    @Description("Set the value of the `<key>` to `<value>` in the config file")
     public class Set implements Tool {
+        @Argument(argumentName="key", multiplicity="1", order=1)
+        public void setKey(String key) {
+            
+        }
+        
+        @Argument(argumentName="value", multiplicity="1", order=2)
+        public void setValue(String value) {
+            
+        }
+        
         @Override
         public void run() {
         }
     }
     
-    @Summary("Unsets a value in a config file")
+    @Description("Unsets the value of the `<key>` in the config file")
     public class Unset implements Tool {
+        
+        @Argument(argumentName="key", multiplicity="1")
+        public void setKey(String key) {
+            
+        }
         @Override
         public void run() {
         }
     }
     
-    @Summary("Renames a section in a config file")
+    @Description("Renames the section `<old-name>` in the config file to `<new-name>`")
     public class RenameSection implements Tool {
+        
+        @Argument(argumentName="old-name", multiplicity="1", order=1)
+        public void setOldName(String oldName) {
+            
+        }
+        
+        @Argument(argumentName="new-name", multiplicity="1", order=2)
+        public void setNewName(String newName) {
+            
+        }
+        
         @Override
         public void run() {
         }
     }
     
-    @Summary("Removes a section from a config file")
+    @Description("Removes the named `<section>` from the config file")
     public class RemoveSection implements Tool {
+        @Argument(argumentName="name", multiplicity="1", order=1)
+        public void setSection(String section) {
+            
+        }
+        
         @Override
         public void run() {
         }
     }
     
-    @Summary("Modifies keystores")
+    @Description("Modifies keystores")
     public class Keystore implements Tool {
         private Tool tool;
 
@@ -135,11 +164,12 @@ public class CeylonConfigTool implements Tool {
         
         @OptionArgument
         @Option
+        @Description("The password for accessing the keystore")
         public void setStorePassword(String storePassword) {
             this.storePassword = storePassword;
         }
         
-        @Summary("Gets a password in a keystore")
+        @Description("Gets the password for `<alias>` in the keystore")
         public class GetPassword implements Tool {
             
             private String alias;
@@ -156,7 +186,8 @@ public class CeylonConfigTool implements Tool {
             }
         }
         
-        @Summary("Sets a password in a keystore")
+        @Description("Sets the password for `<alias>` in the keystore. " +
+        		"The program will issue a password prompt if `<password>` is omitted.")
         public class SetPassword implements Tool {
             
             private String alias;
@@ -180,7 +211,8 @@ public class CeylonConfigTool implements Tool {
             }
         }
         
-        @Summary("Unsets a password in a keystore")
+        @Description("Unsets the password for `<alias>` in the keystore, " +
+        		"removing the alias and its corresponding password.")
         public class UnsetPassword implements Tool {
             
             private String alias;
