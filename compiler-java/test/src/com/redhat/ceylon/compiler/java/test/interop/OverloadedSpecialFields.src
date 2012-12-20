@@ -1,0 +1,23 @@
+package com.redhat.ceylon.compiler.java.test.interop;
+
+final class overloadedSpecialFields_ {
+    
+    private overloadedSpecialFields_() {
+    }
+    
+    static void overloadedSpecialFields() {
+        final .com.redhat.ceylon.compiler.java.test.interop.JavaOverloadedSpecialFields java = new .com.redhat.ceylon.compiler.java.test.interop.JavaOverloadedSpecialFields();
+        .java.lang.Object sync;
+        sync = .ceylon.language.Integer.instance(java.hashCode());
+        sync = .ceylon.language.Integer.instance(java.hashCode((int)0L));
+        sync = .ceylon.language.Integer.instance(java.hashCode(.ceylon.language.Integer.instance(0L), .ceylon.language.Integer.instance(0L)));
+        sync = .ceylon.language.String.instance(java.toString());
+        sync = .com.redhat.ceylon.compiler.java.Util.checkNull(.ceylon.language.String.instance(java.toString((int)1L)));
+        sync = .com.redhat.ceylon.compiler.java.Util.checkNull(.ceylon.language.String.instance(java.toString(.ceylon.language.Integer.instance(1L), .ceylon.language.Integer.instance(2L))));
+    }
+    
+    public static void main(.java.lang.String[] args) {
+        .ceylon.language.process_.getProcess$().setupArguments(args);
+        .com.redhat.ceylon.compiler.java.test.interop.overloadedSpecialFields_.overloadedSpecialFields();
+    }
+}

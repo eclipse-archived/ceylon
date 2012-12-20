@@ -89,6 +89,12 @@ public class InteropTest extends CompilerTest {
     }
 
     @Test
+    public void testIopOverloadedSpecialFields(){
+        compile("JavaOverloadedSpecialFields.java");
+        compareWithJavaSource("OverloadedSpecialFields");
+    }
+
+    @Test
     public void testIopAttributes(){
         compile("JavaBean.java");
         compareWithJavaSource("Attributes");
