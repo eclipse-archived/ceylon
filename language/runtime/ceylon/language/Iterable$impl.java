@@ -339,4 +339,14 @@ public final class Iterable$impl<Element> {
         return new InternalMap<Key, Sequence<? extends Element>>(m2);
     }
 
+    public boolean contains(java.lang.Object element) {
+        Iterator<? extends Element> iter = $this.getIterator();
+        java.lang.Object elem;
+        while (!((elem = iter.next()) instanceof Finished)) {
+            if (elem.equals(element)) {
+                return true;
+            }
+        }
+        return false;
+    }
 }

@@ -153,4 +153,8 @@ public interface Iterable<Element> extends ContainerWithFirstElement<Element,Not
             @TypeInfo("ceylon.language::Callable<Grouping,ceylon.language::Tuple<Element,Element,ceylon.language::Empty>>")
             Callable<? extends Key> grouping);
 
+    @Override
+    @Annotations({@Annotation("actual"), @Annotation("default")})
+    public boolean contains(@Name("element") java.lang.Object element);
+
 }
