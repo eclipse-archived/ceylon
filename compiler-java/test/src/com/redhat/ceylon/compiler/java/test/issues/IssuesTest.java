@@ -479,8 +479,9 @@ public class IssuesTest extends CompilerTest {
         compareWithJavaSource("bug06xx/Bug623");
     }
     
+    // fails pending figuring out https://github.com/ceylon/ceylon-spec/issues/465
     @Test
-    public void testBug626(){
+    public void testBug626_fail(){
         compareWithJavaSource("bug06xx/Bug626");
     }
 
@@ -583,8 +584,9 @@ public class IssuesTest extends CompilerTest {
         compareWithJavaSource("bug06xx/Bug676");
     }
     
+    // fails pending figuring out https://github.com/ceylon/ceylon-spec/issues/465
     @Test
-    public void testBug687() {
+    public void testBug687_fail() {
         compareWithJavaSource("bug06xx/Bug687");
     }
     
