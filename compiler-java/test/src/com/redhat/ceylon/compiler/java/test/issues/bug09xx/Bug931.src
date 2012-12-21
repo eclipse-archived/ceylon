@@ -1,0 +1,19 @@
+package com.redhat.ceylon.compiler.java.test.issues.bug09xx;
+
+class Bug931BinaryOperator {
+    
+    Bug931BinaryOperator(.ceylon.language.Callable<? extends .ceylon.language.Integer> f) {
+        this.f = f;
+    }
+    private final .ceylon.language.Callable<? extends .ceylon.language.Integer> f;
+    
+    public final long evaluate2() {
+        return (
+            let
+            {
+                .ceylon.language.Integer $arg$0$0 = .ceylon.language.Integer.instance(1L);
+            }
+            returning f.$call($arg$0$0);
+        ).longValue();
+    }
+}
