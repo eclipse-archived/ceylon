@@ -9,7 +9,7 @@ import com.redhat.ceylon.compiler.java.metadata.TypeParameters;
 import com.redhat.ceylon.compiler.java.metadata.Variance;
 
 @Ceylon(major = 3)
-@Alias("test::ContainerWithFirstElement<Element,ceylon.language::Nothing>")
+@Alias("ceylon.language::ContainerWithFirstElement<Element,ceylon.language::Nothing>")
 @Annotations({@Annotation(value = "doc", arguments = {"\"Abstract supertype of objects which may or may not\ncontain one of more other values, called *elements*.\""}), @Annotation(value = "see", arguments = {"Category"}), @Annotation(value = "by", arguments = {"\"Gavin\""}), @Annotation("shared")})
 @TypeParameters({@TypeParameter(value = "Element", variance = Variance.OUT, satisfies = {}, caseTypes = {})})
 public interface Container<Element> {
