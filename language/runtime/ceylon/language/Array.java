@@ -25,16 +25,17 @@ import com.redhat.ceylon.compiler.java.metadata.TypeParameters;
     "ceylon.language::Cloneable<ceylon.language::Array<Element>>",
     "ceylon.language::Ranged<ceylon.language::Integer,ceylon.language::Array<Element>>"
 })
-public class Array<Element> implements List<Element> {
+public final class Array<Element> implements List<Element> {
     private final ceylon.language.Category$impl $ceylon$language$Category$this;
     private final ceylon.language.Collection$impl $ceylon$language$Collection$this;
     private final ceylon.language.Correspondence$impl $ceylon$language$Correspondence$this;
-    protected final ceylon.language.Iterable$impl<Element> $ceylon$language$Iterable$this;
-    protected final ceylon.language.List$impl<Element> $ceylon$language$List$this;
+    private final ceylon.language.Iterable$impl<Element> $ceylon$language$Iterable$this;
+    private final ceylon.language.List$impl<Element> $ceylon$language$List$this;
 
-    protected final java.lang.Object array;
+    private final java.lang.Object array;
 
-    protected Array(java.lang.Object array) {
+    private Array(java.lang.Object array) {
+        assert(array.getClass().isArray());
         this.$ceylon$language$Category$this = new ceylon.language.Category$impl(this);
         this.$ceylon$language$Collection$this = new ceylon.language.Collection$impl(this);
         this.$ceylon$language$Correspondence$this = new ceylon.language.Correspondence$impl(this);
@@ -398,7 +399,7 @@ public class Array<Element> implements List<Element> {
     }
 
     @SuppressWarnings("unchecked")
-    protected Element unsafeItem(int index) {
+    private Element unsafeItem(int index) {
         java.lang.Class<?> typeClass = array.getClass().getComponentType();
         if (typeClass == char.class) {
             return (Element) Character.instance(((char[])array)[index]);
