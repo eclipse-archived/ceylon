@@ -2268,8 +2268,8 @@ public abstract class AbstractTransformer implements Transformation {
 
     private JCExpression objectVariadicToJavaArray(ProducedType type,
             ProducedType sequenceType, JCExpression expr, ProducedType exprType) {
-        if(typeFact().getFixedSizedType(exprType) != null){
-            return objectFixedSizedToJavaArray(type, expr);
+        if(typeFact().getSequentialType(exprType) != null){
+            return objectSequentialToJavaArray(type, expr);
         }
         return objectIterableToJavaArray(type, typeFact().getIterableType(sequenceType), expr);
     }
@@ -2281,14 +2281,14 @@ public abstract class AbstractTransformer implements Transformation {
         return makeUtilInvocation("toArray", List.of(expr, klassLiteral), null);
     }
     
-    private JCExpression objectFixedSizedToJavaArray(ProducedType type, JCExpression expr) {
+    private JCExpression objectSequentialToJavaArray(ProducedType type, JCExpression expr) {
         JCExpression klass1 = makeJavaType(type, AbstractTransformer.JT_CLASS_NEW | AbstractTransformer.JT_NO_PRIMITIVES);
         JCExpression klass2 = makeJavaType(type, AbstractTransformer.JT_CLASS_NEW | AbstractTransformer.JT_NO_PRIMITIVES);
         Naming.SyntheticName seqName = naming.temp().suffixedBy("$0");
 
-        ProducedType fixedSizedType = typeFact().getFixedSizedDeclaration().getProducedType(null, Arrays.asList(type));
+        ProducedType fixedSizedType = typeFact().getSequentialDeclaration().getProducedType(null, Arrays.asList(type));
         JCExpression seqTypeExpr1 = makeJavaType(fixedSizedType);
-        JCExpression seqTypeExpr2 = makeJavaType(fixedSizedType);
+        //JCExpression seqTypeExpr2 = makeJavaType(fixedSizedType);
 
         JCExpression sizeExpr = make().Apply(List.<JCExpression>nil(), 
                 make().Select(seqName.makeIdent(), names().fromString("getSize")),
@@ -2302,9 +2302,9 @@ public abstract class AbstractTransformer implements Transformation {
                 List.of(klass2));
         
         // since T[] is erased to Sequential<T> we probably need a cast to FixedSized<T>
-        JCExpression castedExpr = make().TypeCast(seqTypeExpr2, expr);
+        //JCExpression castedExpr = make().TypeCast(seqTypeExpr2, expr);
         
-        return makeLetExpr(seqName, List.<JCStatement>nil(), seqTypeExpr1, castedExpr, sequenceToArrayExpr);
+        return makeLetExpr(seqName, List.<JCStatement>nil(), seqTypeExpr1, expr, sequenceToArrayExpr);
     }
 
     // Creates comparisons of expressions against types

@@ -93,14 +93,6 @@ public class TypeFactory extends Unit {
         }
     }
     
-    public Interface getFixedSizedDeclaration() {
-        return (Interface) getLanguageModuleDeclaration("FixedSized");
-    }
-    
-    public ProducedType getFixedSizedType(ProducedType pt) {
-        return pt.getSupertype(getFixedSizedDeclaration());
-    }
-    
     public ProducedType getCallableType(java.util.List<ProducedType> typeArgs) {
         if (typeArgs.size()!=2) {
             throw new IllegalArgumentException("Callable type always has two arguments: " + typeArgs);

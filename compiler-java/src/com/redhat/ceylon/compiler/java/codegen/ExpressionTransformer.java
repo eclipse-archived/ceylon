@@ -1499,7 +1499,7 @@ public class ExpressionTransformer extends AbstractTransformer {
 
         // this holds the ternary test for empty
         Naming.SyntheticName testVarName = naming.alias("spreadTest");
-        ProducedType testSequenceType = typeFact().getFixedSizedType(expr.getPrimary().getTypeModel());
+        ProducedType testSequenceType = expr.getPrimary().getTypeModel();
         JCExpression testSequenceTypeExpr = makeJavaType(testSequenceType, JT_NO_PRIMITIVES);
         JCExpression testSequenceExpr = transformExpression(expr.getPrimary(), BoxingStrategy.BOXED, testSequenceType);
 
