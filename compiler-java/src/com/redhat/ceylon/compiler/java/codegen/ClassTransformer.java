@@ -394,10 +394,7 @@ public class ClassTransformer extends AbstractTransformer {
     private void concreteMembersFromSuperinterfaces(final Class model,
             ClassDefinitionBuilder classBuilder, 
             ProducedType satisfiedType, Set<Interface> satisfiedInterfaces) {
-        while (satisfiedType.getDeclaration().isAlias()) {
-            // resolve alias if there is one.
-            satisfiedType = satisfiedType.getDeclaration().getExtendedType();
-        }
+        satisfiedType = satisfiedType.resolveAliases();
         Interface iface = (Interface)satisfiedType.getDeclaration();
         if (satisfiedInterfaces.contains(iface)
                 || iface.getType().isExactly(typeFact().getIdentifiableDeclaration().getType())) {
