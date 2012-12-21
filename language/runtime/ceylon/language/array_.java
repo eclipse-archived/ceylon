@@ -34,12 +34,12 @@ public final class array_ {
     
     @Ignore
     public static <Element> Array<Element> array() {
-        return Array.<Element>instance((Class)null);
+        return Array.<Element>instance((Class)null, 0, null);
     }
     
     @Ignore
     public static <Element> Array<Element> array(Class typeClass) {
-        return Array.<Element>instance(typeClass);
+        return Array.<Element>instance(typeClass, 0, null);
     }
             
 }
