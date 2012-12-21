@@ -18,9 +18,9 @@ var origStrToString = String.prototype.toString;
 inheritProtoI(String$, Object$, Sequential, Comparable, Ranged, Summable, Castable,
         Cloneable);
 function SequenceString() {}
-initType(SequenceString, "ceylon.language::SequenceString", String$);
+initType(SequenceString, "ceylon.language::SequenceString", String$, Sequence);
 function EmptyString() {}
-initType(EmptyString, "ceylon.language::EmptyString", String$);
+initType(EmptyString, "ceylon.language::EmptyString", String$, Empty);
 var String$proto = String$.$$.prototype;
 String$proto.getT$name = function() {
     return ((this.length!==0)?SequenceString:EmptyString).$$.T$name;
