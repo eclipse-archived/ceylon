@@ -1663,8 +1663,8 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
                             optionalType.setUnderlyingType(type.getUnderlyingType());
                             type = optionalType;
                         }
-                        // turn it into an Iterable<T>
-                        type = typeFactory.getIterableType(type);
+                        // turn it into a Sequential<T>
+                        type = typeFactory.getSequentialType(type);
                     }
                 }else{
                     // variadic params may technically be null in Java, but it Ceylon sequenced params may not
