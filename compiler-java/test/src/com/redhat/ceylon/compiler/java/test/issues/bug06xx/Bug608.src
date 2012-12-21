@@ -7,7 +7,7 @@ final class bug608_ {
     
     static void bug608() {
         final .java.lang.ProcessBuilder b = new .java.lang.ProcessBuilder();
-        final .ceylon.language.Iterable<? extends .ceylon.language.String> args = new .ceylon.language.Tuple<.ceylon.language.String, .ceylon.language.String, .ceylon.language.Tuple<.ceylon.language.String, ? extends .ceylon.language.String, ? extends .ceylon.language.Empty>>(.ceylon.language.String.instance("a"), new .ceylon.language.Tuple<.ceylon.language.String, .ceylon.language.String, .ceylon.language.Empty>(.ceylon.language.String.instance("b"), .ceylon.language.empty_.getEmpty$()));
+        final .ceylon.language.Sequential<? extends .ceylon.language.String> args = new .ceylon.language.Tuple<.ceylon.language.String, .ceylon.language.String, .ceylon.language.Tuple<.ceylon.language.String, ? extends .ceylon.language.String, ? extends .ceylon.language.Empty>>(.ceylon.language.String.instance("a"), new .ceylon.language.Tuple<.ceylon.language.String, .ceylon.language.String, .ceylon.language.Empty>(.ceylon.language.String.instance("b"), .ceylon.language.empty_.getEmpty$()));
         b.command(.com.redhat.ceylon.compiler.java.Util.toJavaStringArray(args));
         final .ceylon.language.Iterable<? extends .ceylon.language.String> commandWithArgs = (
             let
@@ -20,8 +20,8 @@ final class bug608_ {
             }
             returning .ceylon.language.String.split($arg$0$callable$, $arg$0$0, $arg$0$1, $arg$0$2);
         );
-        final .java.lang.ProcessBuilder builder = new .java.lang.ProcessBuilder(.com.redhat.ceylon.compiler.java.Util.toJavaStringArray(commandWithArgs));
-        builder.command(.com.redhat.ceylon.compiler.java.Util.toJavaStringArray(commandWithArgs));
+        final .java.lang.ProcessBuilder builder = new .java.lang.ProcessBuilder(.com.redhat.ceylon.compiler.java.Util.toJavaStringArray(commandWithArgs.getSequence()));
+        builder.command(.com.redhat.ceylon.compiler.java.Util.toJavaStringArray(commandWithArgs.getSequence()));
     }
     
     public static void main(.java.lang.String[] args) {

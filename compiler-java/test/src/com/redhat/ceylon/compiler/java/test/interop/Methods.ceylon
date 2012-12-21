@@ -199,9 +199,9 @@ void variadicMethods() {
     java.variadicT<Integer>({}...);
     @error
     java.variadicT<Integer>({1, box(2), 3}...);
-    Iterable<Integer> iterable = {1, box(2), 3};
+    Integer[] sequence = [1, box(2), 3];
     @error
-    java.variadicT<Integer>(iterable...);
+    java.variadicT<Integer>(sequence...);
 
     @error
     java.variadicT<String>("a", box("b"), "c");

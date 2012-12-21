@@ -22,10 +22,10 @@ import java.lang { ProcessBuilder }
 @nomodel
 void bug608() {
     value b = ProcessBuilder();
-    Iterable<String> args = {"a", "b"};
+    String[] args = ["a", "b"];
     b.command(args...);
 
     value commandWithArgs = "".split { discardSeparators=true; };
-    value builder = ProcessBuilder(commandWithArgs...);
-    builder.command(commandWithArgs...);
+    value builder = ProcessBuilder(commandWithArgs.sequence...);
+    builder.command(commandWithArgs.sequence...);
 }

@@ -99,46 +99,46 @@ final class variadicMethods_ {
         final box_ box = new box_();
         final .com.redhat.ceylon.compiler.java.test.interop.TypesJava java = new .com.redhat.ceylon.compiler.java.test.interop.TypesJava();
         java.variadicBoolean(new boolean[]{true, box.<.ceylon.language.Boolean>box(.ceylon.language.Boolean.instance(false)).booleanValue(), true});
-        java.variadicBoolean(.com.redhat.ceylon.compiler.java.Util.toBooleanArray((.ceylon.language.Iterable).ceylon.language.empty_.getEmpty$()));
+        java.variadicBoolean(.com.redhat.ceylon.compiler.java.Util.toBooleanArray((.ceylon.language.Sequential).ceylon.language.empty_.getEmpty$()));
         java.variadicBoolean(.com.redhat.ceylon.compiler.java.Util.toBooleanArray(new .ceylon.language.Tuple<.ceylon.language.Boolean, .ceylon.language.Boolean, .ceylon.language.Tuple<.ceylon.language.Boolean, ? extends .ceylon.language.Boolean, ? extends .ceylon.language.Tuple<.ceylon.language.Boolean, ? extends .ceylon.language.Boolean, ? extends .ceylon.language.Empty>>>(.ceylon.language.Boolean.instance(true), new .ceylon.language.Tuple<.ceylon.language.Boolean, .ceylon.language.Boolean, .ceylon.language.Tuple<.ceylon.language.Boolean, ? extends .ceylon.language.Boolean, ? extends .ceylon.language.Empty>>(box.<.ceylon.language.Boolean>box(.ceylon.language.Boolean.instance(false)), new .ceylon.language.Tuple<.ceylon.language.Boolean, .ceylon.language.Boolean, .ceylon.language.Empty>(.ceylon.language.Boolean.instance(true), .ceylon.language.empty_.getEmpty$())))));
         java.variadicCeylonBoolean(.ceylon.language.Boolean.instance(true), box.<.ceylon.language.Boolean>box(.ceylon.language.Boolean.instance(false)), .ceylon.language.Boolean.instance(true));
         java.variadicCeylonBoolean((
             let
             {
-                .ceylon.language.FixedSized<? extends .ceylon.language.Boolean> $ceylontmp0$0 = (.ceylon.language.FixedSized<? extends .ceylon.language.Boolean>)(.ceylon.language.Iterable).ceylon.language.empty_.getEmpty$();
+                .ceylon.language.Sequential<? extends .ceylon.language.Boolean> $ceylontmp0$0 = (.ceylon.language.Sequential).ceylon.language.empty_.getEmpty$();
             }
             returning .com.redhat.ceylon.compiler.java.Util.<.ceylon.language.Boolean>toArray($ceylontmp0$0, new .ceylon.language.Boolean[(int)$ceylontmp0$0.getSize()]);
         ));
         java.variadicCeylonBoolean((
             let
             {
-                .ceylon.language.FixedSized<? extends .ceylon.language.Boolean> $ceylontmp1$0 = (.ceylon.language.FixedSized<? extends .ceylon.language.Boolean>)new .ceylon.language.Tuple<.ceylon.language.Boolean, .ceylon.language.Boolean, .ceylon.language.Tuple<.ceylon.language.Boolean, ? extends .ceylon.language.Boolean, ? extends .ceylon.language.Tuple<.ceylon.language.Boolean, ? extends .ceylon.language.Boolean, ? extends .ceylon.language.Empty>>>(.ceylon.language.Boolean.instance(true), new .ceylon.language.Tuple<.ceylon.language.Boolean, .ceylon.language.Boolean, .ceylon.language.Tuple<.ceylon.language.Boolean, ? extends .ceylon.language.Boolean, ? extends .ceylon.language.Empty>>(box.<.ceylon.language.Boolean>box(.ceylon.language.Boolean.instance(false)), new .ceylon.language.Tuple<.ceylon.language.Boolean, .ceylon.language.Boolean, .ceylon.language.Empty>(.ceylon.language.Boolean.instance(true), .ceylon.language.empty_.getEmpty$())));
+                .ceylon.language.Sequential<? extends .ceylon.language.Boolean> $ceylontmp1$0 = new .ceylon.language.Tuple<.ceylon.language.Boolean, .ceylon.language.Boolean, .ceylon.language.Tuple<.ceylon.language.Boolean, ? extends .ceylon.language.Boolean, ? extends .ceylon.language.Tuple<.ceylon.language.Boolean, ? extends .ceylon.language.Boolean, ? extends .ceylon.language.Empty>>>(.ceylon.language.Boolean.instance(true), new .ceylon.language.Tuple<.ceylon.language.Boolean, .ceylon.language.Boolean, .ceylon.language.Tuple<.ceylon.language.Boolean, ? extends .ceylon.language.Boolean, ? extends .ceylon.language.Empty>>(box.<.ceylon.language.Boolean>box(.ceylon.language.Boolean.instance(false)), new .ceylon.language.Tuple<.ceylon.language.Boolean, .ceylon.language.Boolean, .ceylon.language.Empty>(.ceylon.language.Boolean.instance(true), .ceylon.language.empty_.getEmpty$())));
             }
             returning .com.redhat.ceylon.compiler.java.Util.<.ceylon.language.Boolean>toArray($ceylontmp1$0, new .ceylon.language.Boolean[(int)$ceylontmp1$0.getSize()]);
         ));
         java.variadicChar(new char[]{(char)97, (char)box.<.ceylon.language.Character>box(.ceylon.language.Character.instance(98)).intValue(), (char)99});
-        java.variadicChar(.com.redhat.ceylon.compiler.java.Util.toCharArray((.ceylon.language.Iterable).ceylon.language.empty_.getEmpty$()));
+        java.variadicChar(.com.redhat.ceylon.compiler.java.Util.toCharArray((.ceylon.language.Sequential).ceylon.language.empty_.getEmpty$()));
         java.variadicChar(.com.redhat.ceylon.compiler.java.Util.toCharArray(new .ceylon.language.Tuple<.ceylon.language.Character, .ceylon.language.Character, .ceylon.language.Tuple<.ceylon.language.Character, ? extends .ceylon.language.Character, ? extends .ceylon.language.Tuple<.ceylon.language.Character, ? extends .ceylon.language.Character, ? extends .ceylon.language.Empty>>>(.ceylon.language.Character.instance(97), new .ceylon.language.Tuple<.ceylon.language.Character, .ceylon.language.Character, .ceylon.language.Tuple<.ceylon.language.Character, ? extends .ceylon.language.Character, ? extends .ceylon.language.Empty>>(box.<.ceylon.language.Character>box(.ceylon.language.Character.instance(98)), new .ceylon.language.Tuple<.ceylon.language.Character, .ceylon.language.Character, .ceylon.language.Empty>(.ceylon.language.Character.instance(99), .ceylon.language.empty_.getEmpty$())))));
         java.variadicByte(new byte[]{(byte)1L, (byte)box.<.ceylon.language.Integer>box(.ceylon.language.Integer.instance(2L)).longValue(), (byte)3L});
-        java.variadicByte(.com.redhat.ceylon.compiler.java.Util.toByteArray((.ceylon.language.Iterable).ceylon.language.empty_.getEmpty$()));
+        java.variadicByte(.com.redhat.ceylon.compiler.java.Util.toByteArray((.ceylon.language.Sequential).ceylon.language.empty_.getEmpty$()));
         java.variadicByte(.com.redhat.ceylon.compiler.java.Util.toByteArray(new .ceylon.language.Tuple<.ceylon.language.Integer, .ceylon.language.Integer, .ceylon.language.Tuple<.ceylon.language.Integer, ? extends .ceylon.language.Integer, ? extends .ceylon.language.Tuple<.ceylon.language.Integer, ? extends .ceylon.language.Integer, ? extends .ceylon.language.Empty>>>(.ceylon.language.Integer.instance(1L), new .ceylon.language.Tuple<.ceylon.language.Integer, .ceylon.language.Integer, .ceylon.language.Tuple<.ceylon.language.Integer, ? extends .ceylon.language.Integer, ? extends .ceylon.language.Empty>>(box.<.ceylon.language.Integer>box(.ceylon.language.Integer.instance(2L)), new .ceylon.language.Tuple<.ceylon.language.Integer, .ceylon.language.Integer, .ceylon.language.Empty>(.ceylon.language.Integer.instance(3L), .ceylon.language.empty_.getEmpty$())))));
-        java.variadicShort(.com.redhat.ceylon.compiler.java.Util.toShortArray((.ceylon.language.Iterable).ceylon.language.empty_.getEmpty$()));
+        java.variadicShort(.com.redhat.ceylon.compiler.java.Util.toShortArray((.ceylon.language.Sequential).ceylon.language.empty_.getEmpty$()));
         java.variadicShort(.com.redhat.ceylon.compiler.java.Util.toShortArray(new .ceylon.language.Tuple<.ceylon.language.Integer, .ceylon.language.Integer, .ceylon.language.Tuple<.ceylon.language.Integer, ? extends .ceylon.language.Integer, ? extends .ceylon.language.Tuple<.ceylon.language.Integer, ? extends .ceylon.language.Integer, ? extends .ceylon.language.Empty>>>(.ceylon.language.Integer.instance(1L), new .ceylon.language.Tuple<.ceylon.language.Integer, .ceylon.language.Integer, .ceylon.language.Tuple<.ceylon.language.Integer, ? extends .ceylon.language.Integer, ? extends .ceylon.language.Empty>>(box.<.ceylon.language.Integer>box(.ceylon.language.Integer.instance(2L)), new .ceylon.language.Tuple<.ceylon.language.Integer, .ceylon.language.Integer, .ceylon.language.Empty>(.ceylon.language.Integer.instance(3L), .ceylon.language.empty_.getEmpty$())))));
-        java.variadicInt(.com.redhat.ceylon.compiler.java.Util.toIntArray((.ceylon.language.Iterable).ceylon.language.empty_.getEmpty$()));
+        java.variadicInt(.com.redhat.ceylon.compiler.java.Util.toIntArray((.ceylon.language.Sequential).ceylon.language.empty_.getEmpty$()));
         java.variadicInt(.com.redhat.ceylon.compiler.java.Util.toIntArray(new .ceylon.language.Tuple<.ceylon.language.Integer, .ceylon.language.Integer, .ceylon.language.Tuple<.ceylon.language.Integer, ? extends .ceylon.language.Integer, ? extends .ceylon.language.Tuple<.ceylon.language.Integer, ? extends .ceylon.language.Integer, ? extends .ceylon.language.Empty>>>(.ceylon.language.Integer.instance(1L), new .ceylon.language.Tuple<.ceylon.language.Integer, .ceylon.language.Integer, .ceylon.language.Tuple<.ceylon.language.Integer, ? extends .ceylon.language.Integer, ? extends .ceylon.language.Empty>>(box.<.ceylon.language.Integer>box(.ceylon.language.Integer.instance(2L)), new .ceylon.language.Tuple<.ceylon.language.Integer, .ceylon.language.Integer, .ceylon.language.Empty>(.ceylon.language.Integer.instance(3L), .ceylon.language.empty_.getEmpty$())))));
         java.variadicLong(new long[]{1L, box.<.ceylon.language.Integer>box(.ceylon.language.Integer.instance(2L)).longValue(), 3L});
         java.variadicLong(new long[]{1L});
         java.variadicLong(new long[]{box.<.ceylon.language.Integer>box(.ceylon.language.Integer.instance(1L)).longValue()});
         java.variadicLong();
-        java.variadicLong(.com.redhat.ceylon.compiler.java.Util.toLongArray((.ceylon.language.Iterable).ceylon.language.empty_.getEmpty$()));
+        java.variadicLong(.com.redhat.ceylon.compiler.java.Util.toLongArray((.ceylon.language.Sequential).ceylon.language.empty_.getEmpty$()));
         java.variadicLong(.com.redhat.ceylon.compiler.java.Util.toLongArray(new .ceylon.language.Tuple<.ceylon.language.Integer, .ceylon.language.Integer, .ceylon.language.Tuple<.ceylon.language.Integer, ? extends .ceylon.language.Integer, ? extends .ceylon.language.Tuple<.ceylon.language.Integer, ? extends .ceylon.language.Integer, ? extends .ceylon.language.Empty>>>(.ceylon.language.Integer.instance(1L), new .ceylon.language.Tuple<.ceylon.language.Integer, .ceylon.language.Integer, .ceylon.language.Tuple<.ceylon.language.Integer, ? extends .ceylon.language.Integer, ? extends .ceylon.language.Empty>>(box.<.ceylon.language.Integer>box(.ceylon.language.Integer.instance(2L)), new .ceylon.language.Tuple<.ceylon.language.Integer, .ceylon.language.Integer, .ceylon.language.Empty>(.ceylon.language.Integer.instance(3L), .ceylon.language.empty_.getEmpty$())))));
         final .ceylon.language.Sequential<? extends .ceylon.language.Integer> empty = (.ceylon.language.Sequential).ceylon.language.empty_.getEmpty$();
         final .ceylon.language.Sequential<? extends .ceylon.language.Integer> full = new .ceylon.language.Tuple<.ceylon.language.Integer, .ceylon.language.Integer, .ceylon.language.Tuple<.ceylon.language.Integer, ? extends .ceylon.language.Integer, ? extends .ceylon.language.Empty>>(.ceylon.language.Integer.instance(1L), new .ceylon.language.Tuple<.ceylon.language.Integer, .ceylon.language.Integer, .ceylon.language.Empty>(.ceylon.language.Integer.instance(2L), .ceylon.language.empty_.getEmpty$()));
         java.variadicLong(.com.redhat.ceylon.compiler.java.Util.toLongArray(empty));
         java.variadicLong(.com.redhat.ceylon.compiler.java.Util.toLongArray(full));
-        java.variadicFloat(.com.redhat.ceylon.compiler.java.Util.toFloatArray((.ceylon.language.Iterable).ceylon.language.empty_.getEmpty$()));
+        java.variadicFloat(.com.redhat.ceylon.compiler.java.Util.toFloatArray((.ceylon.language.Sequential).ceylon.language.empty_.getEmpty$()));
         java.variadicFloat(.com.redhat.ceylon.compiler.java.Util.toFloatArray(new .ceylon.language.Tuple<.ceylon.language.Float, .ceylon.language.Float, .ceylon.language.Tuple<.ceylon.language.Float, ? extends .ceylon.language.Float, ? extends .ceylon.language.Tuple<.ceylon.language.Float, ? extends .ceylon.language.Float, ? extends .ceylon.language.Empty>>>(.ceylon.language.Float.instance(1.0), new .ceylon.language.Tuple<.ceylon.language.Float, .ceylon.language.Float, .ceylon.language.Tuple<.ceylon.language.Float, ? extends .ceylon.language.Float, ? extends .ceylon.language.Empty>>(box.<.ceylon.language.Float>box(.ceylon.language.Float.instance(2.0)), new .ceylon.language.Tuple<.ceylon.language.Float, .ceylon.language.Float, .ceylon.language.Empty>(.ceylon.language.Float.instance(3.0), .ceylon.language.empty_.getEmpty$())))));
-        java.variadicDouble(.com.redhat.ceylon.compiler.java.Util.toDoubleArray((.ceylon.language.Iterable).ceylon.language.empty_.getEmpty$()));
+        java.variadicDouble(.com.redhat.ceylon.compiler.java.Util.toDoubleArray((.ceylon.language.Sequential).ceylon.language.empty_.getEmpty$()));
         java.variadicDouble(.com.redhat.ceylon.compiler.java.Util.toDoubleArray(new .ceylon.language.Tuple<.ceylon.language.Float, .ceylon.language.Float, .ceylon.language.Tuple<.ceylon.language.Float, ? extends .ceylon.language.Float, ? extends .ceylon.language.Tuple<.ceylon.language.Float, ? extends .ceylon.language.Float, ? extends .ceylon.language.Empty>>>(.ceylon.language.Float.instance(1.0), new .ceylon.language.Tuple<.ceylon.language.Float, .ceylon.language.Float, .ceylon.language.Tuple<.ceylon.language.Float, ? extends .ceylon.language.Float, ? extends .ceylon.language.Empty>>(box.<.ceylon.language.Float>box(.ceylon.language.Float.instance(2.0)), new .ceylon.language.Tuple<.ceylon.language.Float, .ceylon.language.Float, .ceylon.language.Empty>(.ceylon.language.Float.instance(3.0), .ceylon.language.empty_.getEmpty$())))));
         java.variadicJavaString("a", box.<.ceylon.language.String>box(.ceylon.language.String.instance("b")).toString(), "c");
         java.variadicJavaString("a");
@@ -152,20 +152,20 @@ final class variadicMethods_ {
             }
             returning $ceylontmp2 != null ? $ceylontmp2.toString() : null;
         ));
-        java.variadicJavaString(.com.redhat.ceylon.compiler.java.Util.toJavaStringArray((.ceylon.language.Iterable).ceylon.language.empty_.getEmpty$()));
+        java.variadicJavaString(.com.redhat.ceylon.compiler.java.Util.toJavaStringArray((.ceylon.language.Sequential).ceylon.language.empty_.getEmpty$()));
         java.variadicJavaString(.com.redhat.ceylon.compiler.java.Util.toJavaStringArray(new .ceylon.language.Tuple<.ceylon.language.String, .ceylon.language.String, .ceylon.language.Tuple<.ceylon.language.String, ? extends .ceylon.language.String, ? extends .ceylon.language.Tuple<.ceylon.language.String, ? extends .ceylon.language.String, ? extends .ceylon.language.Empty>>>(.ceylon.language.String.instance("a"), new .ceylon.language.Tuple<.ceylon.language.String, .ceylon.language.String, .ceylon.language.Tuple<.ceylon.language.String, ? extends .ceylon.language.String, ? extends .ceylon.language.Empty>>(box.<.ceylon.language.String>box(.ceylon.language.String.instance("b")), new .ceylon.language.Tuple<.ceylon.language.String, .ceylon.language.String, .ceylon.language.Empty>(.ceylon.language.String.instance("c"), .ceylon.language.empty_.getEmpty$())))));
         java.variadicCeylonString(.ceylon.language.String.instance("a"), box.<.ceylon.language.String>box(.ceylon.language.String.instance("b")), .ceylon.language.String.instance("c"));
         java.variadicCeylonString((
             let
             {
-                .ceylon.language.FixedSized<? extends .ceylon.language.String> $ceylontmp3$0 = (.ceylon.language.FixedSized<? extends .ceylon.language.String>)(.ceylon.language.Iterable).ceylon.language.empty_.getEmpty$();
+                .ceylon.language.Sequential<? extends .ceylon.language.String> $ceylontmp3$0 = (.ceylon.language.Sequential).ceylon.language.empty_.getEmpty$();
             }
             returning .com.redhat.ceylon.compiler.java.Util.<.ceylon.language.String>toArray($ceylontmp3$0, new .ceylon.language.String[(int)$ceylontmp3$0.getSize()]);
         ));
         java.variadicCeylonString((
             let
             {
-                .ceylon.language.FixedSized<? extends .ceylon.language.String> $ceylontmp4$0 = (.ceylon.language.FixedSized<? extends .ceylon.language.String>)new .ceylon.language.Tuple<.ceylon.language.String, .ceylon.language.String, .ceylon.language.Tuple<.ceylon.language.String, ? extends .ceylon.language.String, ? extends .ceylon.language.Tuple<.ceylon.language.String, ? extends .ceylon.language.String, ? extends .ceylon.language.Empty>>>(.ceylon.language.String.instance("a"), new .ceylon.language.Tuple<.ceylon.language.String, .ceylon.language.String, .ceylon.language.Tuple<.ceylon.language.String, ? extends .ceylon.language.String, ? extends .ceylon.language.Empty>>(box.<.ceylon.language.String>box(.ceylon.language.String.instance("b")), new .ceylon.language.Tuple<.ceylon.language.String, .ceylon.language.String, .ceylon.language.Empty>(.ceylon.language.String.instance("c"), .ceylon.language.empty_.getEmpty$())));
+                .ceylon.language.Sequential<? extends .ceylon.language.String> $ceylontmp4$0 = new .ceylon.language.Tuple<.ceylon.language.String, .ceylon.language.String, .ceylon.language.Tuple<.ceylon.language.String, ? extends .ceylon.language.String, ? extends .ceylon.language.Tuple<.ceylon.language.String, ? extends .ceylon.language.String, ? extends .ceylon.language.Empty>>>(.ceylon.language.String.instance("a"), new .ceylon.language.Tuple<.ceylon.language.String, .ceylon.language.String, .ceylon.language.Tuple<.ceylon.language.String, ? extends .ceylon.language.String, ? extends .ceylon.language.Empty>>(box.<.ceylon.language.String>box(.ceylon.language.String.instance("b")), new .ceylon.language.Tuple<.ceylon.language.String, .ceylon.language.String, .ceylon.language.Empty>(.ceylon.language.String.instance("c"), .ceylon.language.empty_.getEmpty$())));
             }
             returning .com.redhat.ceylon.compiler.java.Util.<.ceylon.language.String>toArray($ceylontmp4$0, new .ceylon.language.String[(int)$ceylontmp4$0.getSize()]);
         ));
@@ -174,14 +174,14 @@ final class variadicMethods_ {
         java.variadicCeylonString((
             let
             {
-                .ceylon.language.FixedSized<? extends .ceylon.language.String> $ceylontmp5$0 = (.ceylon.language.FixedSized<? extends .ceylon.language.String>)emptyString;
+                .ceylon.language.Sequential<? extends .ceylon.language.String> $ceylontmp5$0 = emptyString;
             }
             returning .com.redhat.ceylon.compiler.java.Util.<.ceylon.language.String>toArray($ceylontmp5$0, new .ceylon.language.String[(int)$ceylontmp5$0.getSize()]);
         ));
         java.variadicCeylonString((
             let
             {
-                .ceylon.language.FixedSized<? extends .ceylon.language.String> $ceylontmp6$0 = (.ceylon.language.FixedSized<? extends .ceylon.language.String>)fullString;
+                .ceylon.language.Sequential<? extends .ceylon.language.String> $ceylontmp6$0 = fullString;
             }
             returning .com.redhat.ceylon.compiler.java.Util.<.ceylon.language.String>toArray($ceylontmp6$0, new .ceylon.language.String[(int)$ceylontmp6$0.getSize()]);
         ));
@@ -189,14 +189,14 @@ final class variadicMethods_ {
         java.variadicObject((
             let
             {
-                .ceylon.language.FixedSized<? extends .java.lang.Object> $ceylontmp7$0 = (.ceylon.language.FixedSized<? extends .java.lang.Object>)(.ceylon.language.Iterable).ceylon.language.empty_.getEmpty$();
+                .ceylon.language.Sequential<? extends .java.lang.Object> $ceylontmp7$0 = (.ceylon.language.Sequential).ceylon.language.empty_.getEmpty$();
             }
             returning .com.redhat.ceylon.compiler.java.Util.<.java.lang.Object>toArray($ceylontmp7$0, new .java.lang.Object[(int)$ceylontmp7$0.getSize()]);
         ));
         java.variadicObject((
             let
             {
-                .ceylon.language.FixedSized<? extends .java.lang.Object> $ceylontmp8$0 = (.ceylon.language.FixedSized<? extends .java.lang.Object>)(.ceylon.language.Iterable)new .ceylon.language.Tuple(.ceylon.language.String.instance("a"), new .ceylon.language.Tuple(box.<.ceylon.language.String>box(.ceylon.language.String.instance("b")), new .ceylon.language.Tuple<.ceylon.language.Integer, .ceylon.language.Integer, .ceylon.language.Tuple<.ceylon.language.Integer, ? extends .ceylon.language.Integer, ? extends .ceylon.language.Empty>>(.ceylon.language.Integer.instance(1L), new .ceylon.language.Tuple<.ceylon.language.Integer, .ceylon.language.Integer, .ceylon.language.Empty>(box.<.ceylon.language.Integer>box(.ceylon.language.Integer.instance(2L)), .ceylon.language.empty_.getEmpty$()))));
+                .ceylon.language.Sequential<? extends .java.lang.Object> $ceylontmp8$0 = (.ceylon.language.Sequential)new .ceylon.language.Tuple(.ceylon.language.String.instance("a"), new .ceylon.language.Tuple(box.<.ceylon.language.String>box(.ceylon.language.String.instance("b")), new .ceylon.language.Tuple<.ceylon.language.Integer, .ceylon.language.Integer, .ceylon.language.Tuple<.ceylon.language.Integer, ? extends .ceylon.language.Integer, ? extends .ceylon.language.Empty>>(.ceylon.language.Integer.instance(1L), new .ceylon.language.Tuple<.ceylon.language.Integer, .ceylon.language.Integer, .ceylon.language.Empty>(box.<.ceylon.language.Integer>box(.ceylon.language.Integer.instance(2L)), .ceylon.language.empty_.getEmpty$()))));
             }
             returning .com.redhat.ceylon.compiler.java.Util.<.java.lang.Object>toArray($ceylontmp8$0, new .java.lang.Object[(int)$ceylontmp8$0.getSize()]);
         ));
@@ -204,7 +204,7 @@ final class variadicMethods_ {
         java.variadicObject((
             let
             {
-                .ceylon.language.FixedSized<? extends .java.lang.Object> $ceylontmp9$0 = (.ceylon.language.FixedSized<? extends .java.lang.Object>)(.ceylon.language.Iterable)new .ceylon.language.Tuple(new .java.lang.String("a"), new .ceylon.language.Tuple<.java.lang.Integer, .java.lang.Integer, .ceylon.language.Empty>(new .java.lang.Integer((int)1L), .ceylon.language.empty_.getEmpty$()));
+                .ceylon.language.Sequential<? extends .java.lang.Object> $ceylontmp9$0 = (.ceylon.language.Sequential)new .ceylon.language.Tuple(new .java.lang.String("a"), new .ceylon.language.Tuple<.java.lang.Integer, .java.lang.Integer, .ceylon.language.Empty>(new .java.lang.Integer((int)1L), .ceylon.language.empty_.getEmpty$()));
             }
             returning .com.redhat.ceylon.compiler.java.Util.<.java.lang.Object>toArray($ceylontmp9$0, new .java.lang.Object[(int)$ceylontmp9$0.getSize()]);
         ));
@@ -212,19 +212,25 @@ final class variadicMethods_ {
         java.<.ceylon.language.Integer>variadicT((
             let
             {
-                .ceylon.language.FixedSized<? extends .ceylon.language.Integer> $ceylontmp10$0 = (.ceylon.language.FixedSized<? extends .ceylon.language.Integer>)(.ceylon.language.Iterable).ceylon.language.empty_.getEmpty$();
+                .ceylon.language.Sequential<? extends .ceylon.language.Integer> $ceylontmp10$0 = (.ceylon.language.Sequential).ceylon.language.empty_.getEmpty$();
             }
             returning .com.redhat.ceylon.compiler.java.Util.<.ceylon.language.Integer>toArray($ceylontmp10$0, new .ceylon.language.Integer[(int)$ceylontmp10$0.getSize()]);
         ));
         java.<.ceylon.language.Integer>variadicT((
             let
             {
-                .ceylon.language.FixedSized<? extends .ceylon.language.Integer> $ceylontmp11$0 = (.ceylon.language.FixedSized<? extends .ceylon.language.Integer>)new .ceylon.language.Tuple<.ceylon.language.Integer, .ceylon.language.Integer, .ceylon.language.Tuple<.ceylon.language.Integer, ? extends .ceylon.language.Integer, ? extends .ceylon.language.Tuple<.ceylon.language.Integer, ? extends .ceylon.language.Integer, ? extends .ceylon.language.Empty>>>(.ceylon.language.Integer.instance(1L), new .ceylon.language.Tuple<.ceylon.language.Integer, .ceylon.language.Integer, .ceylon.language.Tuple<.ceylon.language.Integer, ? extends .ceylon.language.Integer, ? extends .ceylon.language.Empty>>(box.<.ceylon.language.Integer>box(.ceylon.language.Integer.instance(2L)), new .ceylon.language.Tuple<.ceylon.language.Integer, .ceylon.language.Integer, .ceylon.language.Empty>(.ceylon.language.Integer.instance(3L), .ceylon.language.empty_.getEmpty$())));
+                .ceylon.language.Sequential<? extends .ceylon.language.Integer> $ceylontmp11$0 = new .ceylon.language.Tuple<.ceylon.language.Integer, .ceylon.language.Integer, .ceylon.language.Tuple<.ceylon.language.Integer, ? extends .ceylon.language.Integer, ? extends .ceylon.language.Tuple<.ceylon.language.Integer, ? extends .ceylon.language.Integer, ? extends .ceylon.language.Empty>>>(.ceylon.language.Integer.instance(1L), new .ceylon.language.Tuple<.ceylon.language.Integer, .ceylon.language.Integer, .ceylon.language.Tuple<.ceylon.language.Integer, ? extends .ceylon.language.Integer, ? extends .ceylon.language.Empty>>(box.<.ceylon.language.Integer>box(.ceylon.language.Integer.instance(2L)), new .ceylon.language.Tuple<.ceylon.language.Integer, .ceylon.language.Integer, .ceylon.language.Empty>(.ceylon.language.Integer.instance(3L), .ceylon.language.empty_.getEmpty$())));
             }
             returning .com.redhat.ceylon.compiler.java.Util.<.ceylon.language.Integer>toArray($ceylontmp11$0, new .ceylon.language.Integer[(int)$ceylontmp11$0.getSize()]);
         ));
-        final .ceylon.language.Iterable<? extends .ceylon.language.Integer> iterable = new .ceylon.language.Tuple<.ceylon.language.Integer, .ceylon.language.Integer, .ceylon.language.Tuple<.ceylon.language.Integer, ? extends .ceylon.language.Integer, ? extends .ceylon.language.Tuple<.ceylon.language.Integer, ? extends .ceylon.language.Integer, ? extends .ceylon.language.Empty>>>(.ceylon.language.Integer.instance(1L), new .ceylon.language.Tuple<.ceylon.language.Integer, .ceylon.language.Integer, .ceylon.language.Tuple<.ceylon.language.Integer, ? extends .ceylon.language.Integer, ? extends .ceylon.language.Empty>>(box.<.ceylon.language.Integer>box(.ceylon.language.Integer.instance(2L)), new .ceylon.language.Tuple<.ceylon.language.Integer, .ceylon.language.Integer, .ceylon.language.Empty>(.ceylon.language.Integer.instance(3L), .ceylon.language.empty_.getEmpty$())));
-        java.<.ceylon.language.Integer>variadicT(.com.redhat.ceylon.compiler.java.Util.toArray(iterable, .ceylon.language.Integer.class));
+        final .ceylon.language.Sequential<? extends .ceylon.language.Integer> sequence = new .ceylon.language.Tuple<.ceylon.language.Integer, .ceylon.language.Integer, .ceylon.language.Tuple<.ceylon.language.Integer, ? extends .ceylon.language.Integer, ? extends .ceylon.language.Tuple<.ceylon.language.Integer, ? extends .ceylon.language.Integer, ? extends .ceylon.language.Empty>>>(.ceylon.language.Integer.instance(1L), new .ceylon.language.Tuple<.ceylon.language.Integer, .ceylon.language.Integer, .ceylon.language.Tuple<.ceylon.language.Integer, ? extends .ceylon.language.Integer, ? extends .ceylon.language.Empty>>(box.<.ceylon.language.Integer>box(.ceylon.language.Integer.instance(2L)), new .ceylon.language.Tuple<.ceylon.language.Integer, .ceylon.language.Integer, .ceylon.language.Empty>(.ceylon.language.Integer.instance(3L), .ceylon.language.empty_.getEmpty$())));
+        java.<.ceylon.language.Integer>variadicT((
+            let
+            {
+                .ceylon.language.Sequential<? extends .ceylon.language.Integer> $ceylontmp12$0 = sequence;
+            }
+            returning .com.redhat.ceylon.compiler.java.Util.<.ceylon.language.Integer>toArray($ceylontmp12$0, new .ceylon.language.Integer[(int)$ceylontmp12$0.getSize()]);
+        ));
         java.<.ceylon.language.String>variadicT(.ceylon.language.String.instance("a"), box.<.ceylon.language.String>box(.ceylon.language.String.instance("b")), .ceylon.language.String.instance("c"));
     }
     
