@@ -752,6 +752,13 @@ public class TransTypes extends TreeTranslator {
         result = clazz;
     }
 
+    @Override
+    public void visitLetExpr(LetExpr tree) {
+        super.visitLetExpr(tree);
+        // make sure we inherit the new type
+        tree.type = tree.expr.type;
+    }
+    
 /**************************************************************************
  * utility methods
  *************************************************************************/
