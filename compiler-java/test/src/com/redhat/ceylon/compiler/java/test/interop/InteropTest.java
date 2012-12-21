@@ -233,8 +233,9 @@ public class InteropTest extends CompilerTest {
                 new CompilerError(22, "defaultAccessMethod() in com.redhat.ceylon.compiler.java.test.interop.access.RefinesDefaultAccessMethod cannot override defaultAccessMethod() in com.redhat.ceylon.compiler.java.test.interop.access.JavaAccessModifiers\n  attempting to assign weaker access privileges; was package"));
     }
 
+    // Pending https://github.com/ceylon/ceylon-spec/issues/507
     @Test
-    public void testIopRefinesDefaultAccessMethodWithActual(){
+    public void testIopRefinesDefaultAccessMethodWithActual_fail(){
         compile("access/JavaAccessModifiers.java");
         assertErrors("access/RefinesDefaultAccessMethodWithActual",
                 new CompilerError(22, "actual member does not refine any inherited member"),
