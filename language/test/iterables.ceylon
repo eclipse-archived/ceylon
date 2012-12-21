@@ -201,7 +201,7 @@ void testIterables() {
     check("abc".chain({1,2}).sequence=={`a`, `b`, `c`, 1, 2}, "String.chain");
     check("".chain(Singleton(1)).sequence=={1}, "\"\".chain");
     check({}.chain({1,2})=={1,2}, "Empty.chain");
-    check(array().chain({1,2})=={1,2}, "EmptyArray.chain");
+    check(array().chain({1,2}).sequence==[1,2], "EmptyArray.chain");
     check(array(1,2).chain({3,4}).sequence=={1,2,3,4}, "NonemptyArray.chain");
     check(Singleton(1).chain(Singleton(2)).chain(Singleton("3")).sequence=={1,2,"3"}, "Singletons.chain");
 
