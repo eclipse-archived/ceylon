@@ -43,7 +43,10 @@ class MyCloseable() satisfies Closeable {
     shared actual void close(Exception? e) {opened:=false;}
 }
 class MyContainer() satisfies EmptyContainer {
+    shared actual Nothing first { return null; }
+    shared actual Nothing last { return null; }
     shared actual Boolean empty = true;
+    shared actual Boolean contains(Object element) => false;
 }
 class MyIterator() satisfies Iterator<Integer> {
     variable value done := false;
@@ -153,9 +156,9 @@ void testSatisfaction() {
     check(!clsbl.opened, "Closeable [3]");
     check(MyContainer().empty, "Container");
     variable Sequential<Integer> myfixed := {};//MyNone();
-    check(!nonempty myfixed, "None");
+    check(!myfixed nonempty, "None");
     myfixed := {1};//MySome();
-    check(nonempty myfixed, "Some");
+    check(myfixed nonempty, "Some");
     value myiter = MyIterator();
     if (is Integer ii=myiter.next()) {
         check(ii==1, "Iterator [1]");
