@@ -10,13 +10,15 @@ import ceylon.language.Iterator;
 import ceylon.language.Map;
 import ceylon.language.Sequence;
 import ceylon.language.Sequential;
-import ceylon.language.empty_;
 import ceylon.language.exhausted_;
 
 import com.redhat.ceylon.compiler.java.metadata.Ceylon;
 import com.redhat.ceylon.compiler.java.metadata.Class;
 import com.redhat.ceylon.compiler.java.metadata.Ignore;
+import com.redhat.ceylon.compiler.java.metadata.Name;
 import com.redhat.ceylon.compiler.java.metadata.SatisfiedTypes;
+import com.redhat.ceylon.compiler.java.metadata.Sequenced;
+import com.redhat.ceylon.compiler.java.metadata.TypeInfo;
 
 @Ignore
 @Ceylon(major = 3)
@@ -24,6 +26,7 @@ import com.redhat.ceylon.compiler.java.metadata.SatisfiedTypes;
 @SatisfiedTypes("ceylon.language::Iterable<Element>")
 public class ArrayIterable<Element> implements Iterable<Element> {
     private final ceylon.language.Iterable$impl<Element> $ceylon$language$Iterable$this;
+    private final ceylon.language.Category$impl $ceylon$language$Category$this;
 
     protected final Element[] array;
     protected final Iterable<? extends Element> rest;
@@ -36,6 +39,7 @@ public class ArrayIterable<Element> implements Iterable<Element> {
     @Ignore
     public ArrayIterable(Iterable<? extends Element> rest, Element[] array, long first) {
         this.$ceylon$language$Iterable$this = new ceylon.language.Iterable$impl<Element>(this);
+        this.$ceylon$language$Category$this = new ceylon.language.Category$impl(this);
     	if (array.length==0 || array.length<=first) {
     		throw new IllegalArgumentException("ArrayIterable may not have zero elements (array)");
     	}
@@ -281,5 +285,36 @@ public class ArrayIterable<Element> implements Iterable<Element> {
             hash = 31 * hash + (elem != null ? elem.hashCode() : 0);
         }
         return hash;
+    }
+    
+    @Override @Ignore
+    public boolean contains(@Name("element") java.lang.Object element) {
+        return $ceylon$language$Iterable$this.contains(element);
+    }
+    @Override @Ignore
+    public boolean containsEvery(
+            @Sequenced @Name("elements") @TypeInfo("ceylon.language::Sequential<ceylon.language::Object>") Sequential<?> elements) {
+        return $ceylon$language$Category$this.containsEvery(elements);
+    }
+    @Override @Ignore
+    public boolean containsEvery() {
+        return $ceylon$language$Category$this.containsEvery();
+    }
+    @Override @Ignore
+    public Sequential<?> containsEvery$elements() {
+        return $ceylon$language$Category$this.containsEvery$elements();
+    }
+    @Override @Ignore
+    public boolean containsAny(
+            @Sequenced @Name("elements") @TypeInfo("ceylon.language::Sequential<ceylon.language::Object>") Sequential<?> elements) {
+        return $ceylon$language$Category$this.containsAny(elements);
+    }
+    @Override @Ignore
+    public boolean containsAny() {
+        return $ceylon$language$Category$this.containsAny();
+    }
+    @Override @Ignore
+    public Sequential<?> containsAny$elements() {
+        return $ceylon$language$Category$this.containsAny$elements();
     }
 }

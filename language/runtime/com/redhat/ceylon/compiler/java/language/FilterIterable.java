@@ -13,6 +13,9 @@ import ceylon.language.Sequence;
 import ceylon.language.Sequential;
 
 import com.redhat.ceylon.compiler.java.metadata.Ignore;
+import com.redhat.ceylon.compiler.java.metadata.Name;
+import com.redhat.ceylon.compiler.java.metadata.Sequenced;
+import com.redhat.ceylon.compiler.java.metadata.TypeInfo;
 
 /** A convenience class for the Iterable.filter() method.
  * 
@@ -20,12 +23,14 @@ import com.redhat.ceylon.compiler.java.metadata.Ignore;
  */
 public class FilterIterable<Element> implements Iterable<Element> {
     private final ceylon.language.Iterable$impl<Element> $ceylon$language$Iterable$this;
+    private final ceylon.language.Category$impl $ceylon$language$Category$this;
     
     final Iterable<? extends Element> iterable;
     final Callable<? extends Boolean> f;
     
     public FilterIterable(Iterable<? extends Element> iterable, Callable<? extends Boolean> selecting) {
         this.$ceylon$language$Iterable$this = new ceylon.language.Iterable$impl<Element>(this);
+        this.$ceylon$language$Category$this = new ceylon.language.Category$impl(this);
         this.iterable = iterable;
         f = selecting;
     }
@@ -142,5 +147,35 @@ public class FilterIterable<Element> implements Iterable<Element> {
     @Override @Ignore
     public <Key> Map<? extends Key, ? extends Sequence<? extends Element>> group(Callable<? extends Key> grouping) {
         return $ceylon$language$Iterable$this.group(grouping);
+    }
+    @Override @Ignore
+    public boolean contains(@Name("element") java.lang.Object element) {
+        return $ceylon$language$Iterable$this.contains(element);
+    }
+    @Override @Ignore
+    public boolean containsEvery(
+            @Sequenced @Name("elements") @TypeInfo("ceylon.language::Sequential<ceylon.language::Object>") Sequential<?> elements) {
+        return $ceylon$language$Category$this.containsEvery(elements);
+    }
+    @Override @Ignore
+    public boolean containsEvery() {
+        return $ceylon$language$Category$this.containsEvery();
+    }
+    @Override @Ignore
+    public Sequential<?> containsEvery$elements() {
+        return $ceylon$language$Category$this.containsEvery$elements();
+    }
+    @Override @Ignore
+    public boolean containsAny(
+            @Sequenced @Name("elements") @TypeInfo("ceylon.language::Sequential<ceylon.language::Object>") Sequential<?> elements) {
+        return $ceylon$language$Category$this.containsAny(elements);
+    }
+    @Override @Ignore
+    public boolean containsAny() {
+        return $ceylon$language$Category$this.containsAny();
+    }
+    @Override @Ignore
+    public Sequential<?> containsAny$elements() {
+        return $ceylon$language$Category$this.containsAny$elements();
     }
 }

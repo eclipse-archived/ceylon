@@ -7,6 +7,8 @@ import com.redhat.ceylon.compiler.java.language.FilterIterable;
 import com.redhat.ceylon.compiler.java.language.InternalMap;
 import com.redhat.ceylon.compiler.java.language.MapIterable;
 import com.redhat.ceylon.compiler.java.language.SequenceString;
+import com.redhat.ceylon.compiler.java.metadata.Annotation;
+import com.redhat.ceylon.compiler.java.metadata.Annotations;
 import com.redhat.ceylon.compiler.java.metadata.Ceylon;
 import com.redhat.ceylon.compiler.java.metadata.Class;
 import com.redhat.ceylon.compiler.java.metadata.Defaulted;
@@ -1243,6 +1245,7 @@ public abstract class String
 
     private static final class Tokens implements Iterable<String> {
         private final ceylon.language.Iterable$impl<String> $ceylon$language$Iterable$this;
+        private final ceylon.language.Category$impl $ceylon$language$Category$this;
         
         private final java.lang.String str;
         private final java.lang.Object separator;
@@ -1252,6 +1255,7 @@ public abstract class String
         public Tokens(java.lang.String str, java.lang.Object separator,
                 boolean keepSeparators, boolean groupSeparators) {
             this.$ceylon$language$Iterable$this = new ceylon.language.Iterable$impl<String>(this);
+            this.$ceylon$language$Category$this = new ceylon.language.Category$impl(this);
             this.str = str;
             this.separator = separator;
             this.keepSeparators = keepSeparators;
@@ -1486,15 +1490,48 @@ public abstract class String
         public <Key> Map<? extends Key, ? extends Sequence<? extends String>> group(Callable<? extends Key> grouping) {
             return $ceylon$language$Iterable$this.group(grouping);
         }
+        @Override @Ignore
+        public boolean contains(@Name("element") java.lang.Object element) {
+            return $ceylon$language$Iterable$this.contains(element);
+        }
+        @Override @Ignore
+        public boolean containsEvery(
+                @Sequenced @Name("elements") @TypeInfo("ceylon.language::Sequential<ceylon.language::Object>") Sequential<?> elements) {
+            return $ceylon$language$Category$this.containsEvery(elements);
+        }
+        @Override @Ignore
+        public boolean containsEvery() {
+            return $ceylon$language$Category$this.containsEvery();
+        }
+        @Override @Ignore
+        public Sequential<?> containsEvery$elements() {
+            return $ceylon$language$Category$this.containsEvery$elements();
+        }
+        @Override @Ignore
+        public boolean containsAny(
+                @Sequenced @Name("elements") @TypeInfo("ceylon.language::Sequential<ceylon.language::Object>") Sequential<?> elements) {
+            return $ceylon$language$Category$this.containsAny(elements);
+        }
+        @Override @Ignore
+        public boolean containsAny() {
+            return $ceylon$language$Category$this.containsAny();
+        }
+        @Override @Ignore
+        public Sequential<?> containsAny$elements() {
+            return $ceylon$language$Category$this.containsAny$elements();
+        }
     }
 
     private static final class Occurs implements Iterable<Integer> {
         private final ceylon.language.Iterable$impl<Integer> $ceylon$language$Iterable$this;
+        private final ceylon.language.Category$impl $ceylon$language$Category$this;
+        
         private final java.lang.String str;
         private final java.lang.String oc;
 
         public Occurs(java.lang.String str, java.lang.String oc) {
             this.$ceylon$language$Iterable$this = new ceylon.language.Iterable$impl<Integer>(this);
+            this.$ceylon$language$Category$this = new ceylon.language.Category$impl(this);
             this.str = str;
             this.oc = oc;
         }
@@ -1623,6 +1660,36 @@ public abstract class String
         @Override @Ignore
         public <Key> Map<? extends Key, ? extends Sequence<? extends Integer>> group(Callable<? extends Key> grouping) {
             return $ceylon$language$Iterable$this.group(grouping);
+        }
+        @Override @Ignore
+        public boolean contains(@Name("element") java.lang.Object element) {
+            return $ceylon$language$Iterable$this.contains(element);
+        }
+        @Override @Ignore
+        public boolean containsEvery(
+                @Sequenced @Name("elements") @TypeInfo("ceylon.language::Sequential<ceylon.language::Object>") Sequential<?> elements) {
+            return $ceylon$language$Category$this.containsEvery(elements);
+        }
+        @Override @Ignore
+        public boolean containsEvery() {
+            return $ceylon$language$Category$this.containsEvery();
+        }
+        @Override @Ignore
+        public Sequential<?> containsEvery$elements() {
+            return $ceylon$language$Category$this.containsEvery$elements();
+        }
+        @Override @Ignore
+        public boolean containsAny(
+                @Sequenced @Name("elements") @TypeInfo("ceylon.language::Sequential<ceylon.language::Object>") Sequential<?> elements) {
+            return $ceylon$language$Category$this.containsAny(elements);
+        }
+        @Override @Ignore
+        public boolean containsAny() {
+            return $ceylon$language$Category$this.containsAny();
+        }
+        @Override @Ignore
+        public Sequential<?> containsAny$elements() {
+            return $ceylon$language$Category$this.containsAny$elements();
         }
     }
 }
