@@ -212,7 +212,7 @@ public class Util {
         return ret;
     }
     
-    private static boolean[] toBooleanArray(ceylon.language.List<? extends ceylon.language.Boolean> sequence){
+    public static boolean[] toBooleanArray(ceylon.language.List<? extends ceylon.language.Boolean> sequence){
         boolean[] ret = new boolean[(int) sequence.getSize()];
         int i=0;
         while(!sequence.getEmpty()){
@@ -234,7 +234,7 @@ public class Util {
         return ret;
     }
 
-    private  static byte[] toByteArray(ceylon.language.List<? extends ceylon.language.Integer> sequence){
+    public static byte[] toByteArray(ceylon.language.List<? extends ceylon.language.Integer> sequence){
         byte[] ret = new byte[(int) sequence.getSize()];
         int i=0;
         while(!sequence.getEmpty()){
@@ -256,7 +256,7 @@ public class Util {
         return ret;
     }
 
-    private static short[] toShortArray(ceylon.language.List<? extends ceylon.language.Integer> sequence){
+    public static short[] toShortArray(ceylon.language.List<? extends ceylon.language.Integer> sequence){
         short[] ret = new short[(int) sequence.getSize()];
         int i=0;
         while(!sequence.getEmpty()){
@@ -278,7 +278,7 @@ public class Util {
         return ret;
     }
 
-    private static int[] toIntArray(ceylon.language.List<? extends ceylon.language.Integer> sequence){
+    public static int[] toIntArray(ceylon.language.List<? extends ceylon.language.Integer> sequence){
         int[] ret = new int[(int) sequence.getSize()];
         int i=0;
         while(!sequence.getEmpty()){
@@ -300,7 +300,7 @@ public class Util {
         return ret;
     }
 
-    private static long[] toLongArray(ceylon.language.List<? extends ceylon.language.Integer> sequence){
+    public static long[] toLongArray(ceylon.language.List<? extends ceylon.language.Integer> sequence){
         long[] ret = new long[(int) sequence.getSize()];
         int i=0;
         while(!sequence.getEmpty()){
@@ -322,7 +322,7 @@ public class Util {
         return ret;
     }
 
-    private static float[] toFloatArray(ceylon.language.List<? extends ceylon.language.Float> sequence){
+    public static float[] toFloatArray(ceylon.language.List<? extends ceylon.language.Float> sequence){
         float[] ret = new float[(int) sequence.getSize()];
         int i=0;
         while(!sequence.getEmpty()){
@@ -344,7 +344,7 @@ public class Util {
         return ret;
     }
 
-    private static double[] toDoubleArray(ceylon.language.List<? extends ceylon.language.Float> sequence){
+    public static double[] toDoubleArray(ceylon.language.List<? extends ceylon.language.Float> sequence){
         double[] ret = new double[(int) sequence.getSize()];
         int i=0;
         while(!sequence.getEmpty()){
@@ -367,7 +367,7 @@ public class Util {
         return ret;
     }
 
-    private static char[] toCharArray(ceylon.language.List<? extends ceylon.language.Character> sequence){
+    public static char[] toCharArray(ceylon.language.List<? extends ceylon.language.Character> sequence){
         char[] ret = new char[(int) sequence.getSize()];
         int i=0;
         // FIXME: this is invalid and should yield a larger array by splitting chars > 16 bits in two
@@ -390,7 +390,7 @@ public class Util {
         return ret;
     }
 
-    private static int[] toCodepointArray(ceylon.language.List<? extends ceylon.language.Character> sequence){
+    public static int[] toCodepointArray(ceylon.language.List<? extends ceylon.language.Character> sequence){
         int[] ret = new int[(int) sequence.getSize()];
         int i=0;
         while(!sequence.getEmpty()){
@@ -412,7 +412,7 @@ public class Util {
         return ret;
     }
 
-    private static java.lang.String[] toJavaStringArray(ceylon.language.List<? extends ceylon.language.String> sequence){
+    public static java.lang.String[] toJavaStringArray(ceylon.language.List<? extends ceylon.language.String> sequence){
         java.lang.String[] ret = new java.lang.String[(int) sequence.getSize()];
         int i=0;
         while(!sequence.getEmpty()){
