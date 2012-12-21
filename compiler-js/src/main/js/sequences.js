@@ -94,7 +94,9 @@ Array$proto.segment = function(from, len) {
 }
 Array$proto.span = function(from, to) {
     if (from > to) {
-        return this.segment(to, from-to+1).getReversed();
+        var arr = this.segment(to, from-to+1);
+        arr.reverse();
+        return arr;
     }
     return this.segment(from, to-from+1);
 }

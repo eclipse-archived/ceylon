@@ -58,7 +58,7 @@ String$proto.spanFrom = function(from) {
     return this.span(from, 0x7fffffff);
 }
 String$proto.spanTo = function(to) {
-    return to < 0 ? String$('') : this.span(0, to);
+    return to < 0 ? String$('', 0) : this.span(0, to);
 }
 String$proto.segment = function(from, len) {
     var fromIndex = from;
