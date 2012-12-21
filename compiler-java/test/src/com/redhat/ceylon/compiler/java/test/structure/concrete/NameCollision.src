@@ -9,20 +9,67 @@ final class Container$impl {
     }
     private final .com.redhat.ceylon.compiler.java.test.structure.concrete.Container $this;
 }
-class NameCollision implements .com.redhat.ceylon.compiler.java.test.structure.concrete.Container, .ceylon.language.Container {
+class NameCollision implements .com.redhat.ceylon.compiler.java.test.structure.concrete.Container, .ceylon.language.ContainerWithFirstElement<.ceylon.language.Integer, .java.lang.Object> {
     
     NameCollision() {
         this.$com$redhat$ceylon$compiler$java$test$structure$concrete$Container$this = new .com.redhat.ceylon.compiler.java.test.structure.concrete.Container$impl(this);
-        this.$ceylon$language$Container$this = new .ceylon.language.Container$impl(this);
+        this.$ceylon$language$ContainerWithFirstElement$this = new .ceylon.language.ContainerWithFirstElement$impl<.ceylon.language.Integer, .java.lang.Object>(this);
+        this.$ceylon$language$Category$this = new .ceylon.language.Category$impl(this);
         this.empty = true;
     }
     protected final .com.redhat.ceylon.compiler.java.test.structure.concrete.Container$impl $com$redhat$ceylon$compiler$java$test$structure$concrete$Container$this;
-    protected final .ceylon.language.Container$impl $ceylon$language$Container$this;
+    protected final .ceylon.language.ContainerWithFirstElement$impl<.ceylon.language.Integer, .java.lang.Object> $ceylon$language$ContainerWithFirstElement$this;
+    protected final .ceylon.language.Category$impl $ceylon$language$Category$this;
+    
+    @.java.lang.Override
+    public final .ceylon.language.Sequential<? extends .java.lang.Object> containsEvery$elements() {
+        return $ceylon$language$Category$this.containsEvery$elements();
+    }
+    
+    @.java.lang.Override
+    public final boolean containsEvery() {
+        return $ceylon$language$Category$this.containsEvery();
+    }
+    
+    @.java.lang.Override
+    public boolean containsEvery(final .ceylon.language.Sequential<? extends .java.lang.Object> elements) {
+        return $ceylon$language$Category$this.containsEvery(elements);
+    }
+    
+    @.java.lang.Override
+    public final .ceylon.language.Sequential<? extends .java.lang.Object> containsAny$elements() {
+        return $ceylon$language$Category$this.containsAny$elements();
+    }
+    
+    @.java.lang.Override
+    public final boolean containsAny() {
+        return $ceylon$language$Category$this.containsAny();
+    }
+    
+    @.java.lang.Override
+    public boolean containsAny(final .ceylon.language.Sequential<? extends .java.lang.Object> elements) {
+        return $ceylon$language$Category$this.containsAny(elements);
+    }
     private final boolean empty;
     
     @.java.lang.Override
     public final boolean getEmpty() {
         return empty;
+    }
+    
+    @.java.lang.Override
+    public final boolean contains(final .java.lang.Object element) {
+        return false;
+    }
+    
+    @.java.lang.Override
+    public final .ceylon.language.Integer getFirst() {
+        return (.ceylon.language.Integer).ceylon.language.bottom_.getBottom$();
+    }
+    
+    @.java.lang.Override
+    public final .ceylon.language.Integer getLast() {
+        return (.ceylon.language.Integer).ceylon.language.bottom_.getBottom$();
     }
     
     public static void main(.java.lang.String[] args) {
