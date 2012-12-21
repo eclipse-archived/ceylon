@@ -73,16 +73,16 @@ shared class SetOperators() {
         variable Set<Integer> x2 := b & c | a;
     }
     
-    void testSetOperatorsWithErasedTypes(Set<String> setOfString, Set<Integer | Float> setOfUnionType, Set<Sized & Empty> setOfIntersectionType, Set<Bottom> setOfBottom) {
+    void testSetOperatorsWithErasedTypes(Set<String> setOfString, Set<Integer | Float> setOfUnionType, Set<Summable<Integer> & Empty> setOfIntersectionType, Set<Bottom> setOfBottom) {
         variable Set<Integer | Float | String> x1 := setOfUnionType | setOfString;
         variable Set<Integer | Float & String> x2 := setOfUnionType & setOfString;
         variable Set<Integer | Float | String> x3 := setOfUnionType ^ setOfString;
         variable Set<Integer | Float> x4 := setOfUnionType ~ setOfString;
         
-        variable Set<Sized & Empty | String> y1 := setOfIntersectionType | setOfString;
-        variable Set<Sized & Empty & String> y2 := setOfIntersectionType & setOfString;
-        variable Set<Sized & Empty | String> y3 := setOfIntersectionType ^ setOfString;
-        variable Set<Sized & Empty> y4 := setOfIntersectionType ~ setOfString;
+        variable Set<Summable<Integer> & Empty | String> y1 := setOfIntersectionType | setOfString;
+        variable Set<Summable<Integer> & Empty & String> y2 := setOfIntersectionType & setOfString;
+        variable Set<Summable<Integer> & Empty | String> y3 := setOfIntersectionType ^ setOfString;
+        variable Set<Summable<Integer> & Empty> y4 := setOfIntersectionType ~ setOfString;
         
         variable Set<Bottom | String> z1 := setOfBottom | setOfString;
         variable Set<Bottom & String> z2 := setOfBottom & setOfString;

@@ -22,6 +22,6 @@ import ceylon.language{C=Container}
 interface Container {
 }
 @nomodel
-class NameCollision() satisfies Container&C {
+class NameCollision() satisfies Container&C<Integer> {
     shared actual Boolean empty = true;
 }

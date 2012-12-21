@@ -12,14 +12,10 @@ class Bug837<Element extends .ceylon.language.Ordinal<Element>> extends .java.la
         this.$ceylon$language$Collection$this = new .ceylon.language.Collection$impl<Element>(this);
         this.$ceylon$language$Iterable$this = new .ceylon.language.Iterable$impl<Element>(this);
         this.$ceylon$language$ContainerWithFirstElement$this = new .ceylon.language.ContainerWithFirstElement$impl<Element, .java.lang.Object>((.ceylon.language.ContainerWithFirstElement<Element, .java.lang.Object>)(.ceylon.language.ContainerWithFirstElement)this);
-        this.$ceylon$language$Container$this = new .ceylon.language.Container$impl(this);
-        this.$ceylon$language$Sized$this = new .ceylon.language.Sized$impl(this);
         this.$ceylon$language$Category$this = new .ceylon.language.Category$impl(this);
         this.$ceylon$language$Cloneable$this = new .ceylon.language.Cloneable$impl<.ceylon.language.Collection<? extends Element>>((.ceylon.language.Cloneable<.ceylon.language.Collection<? extends Element>>)(.ceylon.language.Cloneable)this);
         this.$ceylon$language$Correspondence$this = new .ceylon.language.Correspondence$impl<.ceylon.language.Integer, Element>(this);
         this.$ceylon$language$Ranged$this = new .ceylon.language.Ranged$impl<.ceylon.language.Integer, .ceylon.language.List<? extends Element>>((.ceylon.language.Ranged<.ceylon.language.Integer, .ceylon.language.List<? extends Element>>)(.ceylon.language.Ranged)this);
-        this.$ceylon$language$FixedSized$this = new .ceylon.language.FixedSized$impl<Element>(this);
-        this.$ceylon$language$Some$this = new .ceylon.language.Some$impl<Element>(this);
     }
     private final long length;
     protected final .ceylon.language.Sequence$impl<Element> $ceylon$language$Sequence$this;
@@ -173,8 +169,6 @@ class Bug837<Element extends .ceylon.language.Ordinal<Element>> extends .java.la
         return $ceylon$language$Iterable$this.group(grouping);
     }
     protected final .ceylon.language.ContainerWithFirstElement$impl<Element, .java.lang.Object> $ceylon$language$ContainerWithFirstElement$this;
-    protected final .ceylon.language.Container$impl $ceylon$language$Container$this;
-    protected final .ceylon.language.Sized$impl $ceylon$language$Sized$this;
     protected final .ceylon.language.Category$impl $ceylon$language$Category$this;
     
     @.java.lang.Override
@@ -269,18 +263,16 @@ class Bug837<Element extends .ceylon.language.Ordinal<Element>> extends .java.la
         return $ceylon$language$Correspondence$this.items(keys);
     }
     protected final .ceylon.language.Ranged$impl<.ceylon.language.Integer, .ceylon.language.List<? extends Element>> $ceylon$language$Ranged$this;
-    protected final .ceylon.language.FixedSized$impl<Element> $ceylon$language$FixedSized$this;
-    protected final .ceylon.language.Some$impl<Element> $ceylon$language$Some$this;
-    
-    @.java.lang.Override
-    public final boolean getEmpty() {
-        return $ceylon$language$Some$this.getEmpty();
-    }
     private final Element first;
     
     @.java.lang.Override
     public final Element getFirst() {
         return first;
+    }
+    
+    @.java.lang.Override
+    public final boolean getEmpty() {
+        throw new .ceylon.language.Exception(null, null);
     }
     
     @.java.lang.Override

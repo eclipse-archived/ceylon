@@ -15,7 +15,7 @@ final class bug241_ {
     private bug241_() {
     }
     
-    static <Key extends .ceylon.language.Sized, Item extends .ceylon.language.Sized>void bug241() {
+    static <Key extends .ceylon.language.Summable<.ceylon.language.Integer>, Item extends .ceylon.language.Summable<.ceylon.language.Integer>>void bug241() {
         final .com.redhat.ceylon.compiler.java.test.issues.bug02xx.Bug241<.ceylon.language.Entry<? extends Key, ? extends Item>> builder = new .com.redhat.ceylon.compiler.java.test.issues.bug02xx.Bug241<.ceylon.language.Entry<? extends Key, ? extends Item>>();
     }
     

@@ -19,8 +19,8 @@
  */
 @nomodel
 class KlassTypeParamsSatisfies<U,V,W>()
-    given U satisfies Container
-    given V satisfies Sized
-    given W satisfies Container & Sized
+    given U satisfies Container<Integer>
+    given V satisfies Summable<Integer>
+    given W satisfies Container<Integer> & Summable<Integer>
 {
 }

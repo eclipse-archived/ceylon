@@ -11,19 +11,16 @@ public class LocalKlass {
     private final void m() {
         
         @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 3)
-        @.com.redhat.ceylon.compiler.java.metadata.SatisfiedTypes({"ceylon.language::Sized"})
+        @.com.redhat.ceylon.compiler.java.metadata.SatisfiedTypes({"ceylon.language::Summable<com.redhat.ceylon.compiler.java.test.annotations::LocalKlass.m.Local<T>>"})
         @.com.redhat.ceylon.compiler.java.metadata.TypeParameters({@.com.redhat.ceylon.compiler.java.metadata.TypeParameter(value = "T", variance = .com.redhat.ceylon.compiler.java.metadata.Variance.NONE, satisfies = {}, caseTypes = {})})
-        class Local<T> implements .ceylon.language.Sized {
+        class Local<T> implements .ceylon.language.Summable<Local<T>> {
             
             Local() {
-                this.$ceylon$language$Sized$this = new .ceylon.language.Sized$impl(this);
-                this.$ceylon$language$Container$this = new .ceylon.language.Container$impl(this);
+                this.$ceylon$language$Summable$this = new .ceylon.language.Summable$impl<Local<T>>(this);
                 this.i1 = 1L;
             }
             @.com.redhat.ceylon.compiler.java.metadata.Ignore
-            protected final .ceylon.language.Sized$impl $ceylon$language$Sized$this;
-            @.com.redhat.ceylon.compiler.java.metadata.Ignore
-            protected final .ceylon.language.Container$impl $ceylon$language$Container$this;
+            protected final .ceylon.language.Summable$impl<Local<T>> $ceylon$language$Summable$this;
             private final long i1;
             
             @.com.redhat.ceylon.compiler.java.metadata.Annotations({@.com.redhat.ceylon.compiler.java.metadata.Annotation("shared")})
@@ -72,16 +69,11 @@ public class LocalKlass {
             
             @.com.redhat.ceylon.compiler.java.metadata.Annotations({@.com.redhat.ceylon.compiler.java.metadata.Annotation("shared"), @.com.redhat.ceylon.compiler.java.metadata.Annotation("actual")})
             @.java.lang.Override
-            @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Integer")
-            public final long getSize() {
-                return 0L;
-            }
-            
-            @.com.redhat.ceylon.compiler.java.metadata.Annotations({@.com.redhat.ceylon.compiler.java.metadata.Annotation("shared"), @.com.redhat.ceylon.compiler.java.metadata.Annotation("actual")})
-            @.java.lang.Override
-            @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Boolean")
-            public final boolean getEmpty() {
-                return true;
+            @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("com.redhat.ceylon.compiler.java.test.annotations::LocalKlass.m.Local<T>")
+            public final Local<T> plus(@.com.redhat.ceylon.compiler.java.metadata.Name("other")
+            @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("com.redhat.ceylon.compiler.java.test.annotations::LocalKlass.m.Local<T>")
+            final Local<T> other) {
+                return (Local<T>)(Local).ceylon.language.bottom_.getBottom$();
             }
         }
     }

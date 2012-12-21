@@ -11,7 +11,7 @@ final class bug568_ {
         for (.ceylon.language.Iterator<? extends .ceylon.language.String> $s$iter$4 = (
             let
             {
-                .ceylon.language.FixedSized<? extends .ceylon.language.Integer> $spreadTest$1 = childPaths;
+                .ceylon.language.Sequential<? extends .ceylon.language.Integer> $spreadTest$1 = childPaths;
             }
             returning (.ceylon.language.Sequential<? extends .ceylon.language.String>)($spreadTest$1 instanceof .ceylon.language.Sequence ? (
                 let

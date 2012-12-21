@@ -6,6 +6,10 @@ class Bug837<Element>(first, Integer length)
 
     shared actual Element first;
 
+    shared actual Boolean empty {
+        throw;
+    }
+
     shared actual Element? item(Integer index) {
         throw;
     }

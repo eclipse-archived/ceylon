@@ -492,7 +492,7 @@ class Test {
         final .ceylon.language.Sequential spreadMember = (
             let
             {
-                .ceylon.language.FixedSized $spreadTest$40 = (.ceylon.language.FixedSized<? extends .java.lang.Object>)(.ceylon.language.FixedSized)leftsAndRights;
+                .ceylon.language.Sequential $spreadTest$40 = (.ceylon.language.Sequential<? extends .java.lang.Object>)leftsAndRights;
             }
             returning (
                 let
@@ -509,7 +509,7 @@ class Test {
         spreadInvocation = (
             let
             {
-                .ceylon.language.FixedSized $spreadTest$43 = (.ceylon.language.FixedSized<? extends .java.lang.Object>)(.ceylon.language.FixedSized)leftsAndRights;
+                .ceylon.language.Sequential $spreadTest$43 = (.ceylon.language.Sequential<? extends .java.lang.Object>)leftsAndRights;
             }
             returning (
                 let
@@ -525,7 +525,7 @@ class Test {
         spreadInvocation = (
             let
             {
-                .ceylon.language.FixedSized $spreadTest$47 = (.ceylon.language.FixedSized<? extends .java.lang.Object>)(.ceylon.language.FixedSized)leftsAndRights;
+                .ceylon.language.Sequential $spreadTest$47 = (.ceylon.language.Sequential<? extends .java.lang.Object>)leftsAndRights;
             }
             returning (
                 let

@@ -22,6 +22,8 @@
 // cannot be applied to <ceylon.language.Iterable<? extends ceylon.language.String>>
 // (ceylon.language.ArraySequence<ceylon.language.String>)
 
+/* The current version of this issue just doesn't make sense anymore now that Sized is gone.
+   Not sure if we should find another example of this or just remove this test.
 @nomodel
 void x<X>(X x) given X satisfies Sized { 
     print(x.size);
@@ -32,3 +34,4 @@ void bug193(){
     x(arr);
     print(arr.size);
 }
+*/

@@ -94,7 +94,7 @@ public class SequenceOperators {
         final .ceylon.language.Sequential<? extends .ceylon.language.Integer> spreadMemberWithUnboxedType = (
             let
             {
-                .ceylon.language.FixedSized<? extends .ceylon.language.String> $spreadTest$6 = sequence;
+                .ceylon.language.Sequential<? extends .ceylon.language.String> $spreadTest$6 = sequence;
             }
             returning (.ceylon.language.Sequential<? extends .ceylon.language.Integer>)($spreadTest$6 instanceof .ceylon.language.Sequence ? (
                 let
@@ -111,7 +111,7 @@ public class SequenceOperators {
         final .ceylon.language.Sequential<? extends .ceylon.language.Integer> spreadMemberWithBoxedType = (
             let
             {
-                .ceylon.language.FixedSized<? extends .ceylon.language.Integer> $spreadTest$9 = intSequence;
+                .ceylon.language.Sequential<? extends .ceylon.language.Integer> $spreadTest$9 = intSequence;
             }
             returning (.ceylon.language.Sequential<? extends .ceylon.language.Integer>)($spreadTest$9 instanceof .ceylon.language.Sequence ? (
                 let
@@ -128,7 +128,7 @@ public class SequenceOperators {
         spreadInvoke = (
             let
             {
-                .ceylon.language.FixedSized<? extends .ceylon.language.String> $spreadTest$12 = sequence;
+                .ceylon.language.Sequential<? extends .ceylon.language.String> $spreadTest$12 = sequence;
             }
             returning (.ceylon.language.Sequential<? extends .ceylon.language.Character>)($spreadTest$12 instanceof .ceylon.language.Sequence ? (
                 let
@@ -144,7 +144,7 @@ public class SequenceOperators {
         spreadInvoke = (
             let
             {
-                .ceylon.language.FixedSized<? extends .ceylon.language.String> $spreadTest$16 = sequence;
+                .ceylon.language.Sequential<? extends .ceylon.language.String> $spreadTest$16 = sequence;
             }
             returning (.ceylon.language.Sequential<? extends .ceylon.language.Character>)($spreadTest$16 instanceof .ceylon.language.Sequence ? (
                 let
@@ -168,7 +168,7 @@ public class SequenceOperators {
         final .ceylon.language.Sequential<? extends .ceylon.language.String> upperCasedEmpty = (
             let
             {
-                .ceylon.language.FixedSized<? extends .ceylon.language.String> $spreadTest$19 = empty;
+                .ceylon.language.Sequential<? extends .ceylon.language.String> $spreadTest$19 = empty;
             }
             returning (.ceylon.language.Sequential<? extends .ceylon.language.String>)($spreadTest$19 instanceof .ceylon.language.Sequence ? (
                 let

@@ -10,7 +10,7 @@ class Bug406 {
         final .ceylon.language.Sequential<? extends .ceylon.language.String> spread1 = (
             let
             {
-                .ceylon.language.FixedSized<? extends .ceylon.language.String> $spreadTest$0 = full;
+                .ceylon.language.Sequential<? extends .ceylon.language.String> $spreadTest$0 = full;
             }
             returning (.ceylon.language.Sequential<? extends .ceylon.language.String>)($spreadTest$0 instanceof .ceylon.language.Sequence ? (
                 let

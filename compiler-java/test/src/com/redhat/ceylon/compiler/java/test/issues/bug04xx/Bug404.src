@@ -21,7 +21,7 @@ class Bug404 {
                 .java.lang.Object $ceylontmp4 = (
                     let
                     {
-                        .ceylon.language.FixedSized<? extends .ceylon.language.String> $spreadTest$1 = empty;
+                        .ceylon.language.Sequential<? extends .ceylon.language.String> $spreadTest$1 = empty;
                     }
                     returning (.ceylon.language.Sequential<? extends .ceylon.language.String>)($spreadTest$1 instanceof .ceylon.language.Sequence ? (
                         let
@@ -44,7 +44,7 @@ class Bug404 {
                 .java.lang.Object $ceylontmp8 = (
                     let
                     {
-                        .ceylon.language.FixedSized<? extends .ceylon.language.String> $spreadTest$5 = full;
+                        .ceylon.language.Sequential<? extends .ceylon.language.String> $spreadTest$5 = full;
                     }
                     returning (.ceylon.language.Sequential<? extends .ceylon.language.String>)($spreadTest$5 instanceof .ceylon.language.Sequence ? (
                         let
@@ -63,7 +63,7 @@ class Bug404 {
         final .ceylon.language.Sequential<? extends .ceylon.language.String> spread1 = (
             let
             {
-                .ceylon.language.FixedSized<? extends .ceylon.language.String> $spreadTest$9 = full;
+                .ceylon.language.Sequential<? extends .ceylon.language.String> $spreadTest$9 = full;
             }
             returning (.ceylon.language.Sequential<? extends .ceylon.language.String>)($spreadTest$9 instanceof .ceylon.language.Sequence ? (
                 let

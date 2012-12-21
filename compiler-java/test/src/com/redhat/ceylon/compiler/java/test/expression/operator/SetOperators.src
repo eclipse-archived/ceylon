@@ -109,7 +109,7 @@ public class SetOperators {
         .ceylon.language.Set<? extends .ceylon.language.Integer> x2 = b.intersection(c).union(a);
     }
     
-    private final void testSetOperatorsWithErasedTypes(final .ceylon.language.Set<? extends .ceylon.language.String> setOfString, final .ceylon.language.Set setOfUnionType, final .ceylon.language.Set<? extends .ceylon.language.Empty> setOfIntersectionType, final .ceylon.language.Set<?> setOfBottom) {
+    private final void testSetOperatorsWithErasedTypes(final .ceylon.language.Set<? extends .ceylon.language.String> setOfString, final .ceylon.language.Set setOfUnionType, final .ceylon.language.Set<? extends .ceylon.language.Sequential<?>> setOfIntersectionType, final .ceylon.language.Set<?> setOfBottom) {
         .ceylon.language.Set x1 = setOfUnionType.union(setOfString);
         .ceylon.language.Set<? extends .ceylon.language.Integer> x2 = (.ceylon.language.Set)setOfUnionType.intersection(setOfString);
         .ceylon.language.Set x3 = setOfUnionType.exclusiveUnion(setOfString);
@@ -117,7 +117,7 @@ public class SetOperators {
         .ceylon.language.Set<? extends .ceylon.language.Sequential<? extends .ceylon.language.Character>> y1 = setOfIntersectionType.union(setOfString);
         .ceylon.language.Set<? extends .ceylon.language.Sequential<?>> y2 = setOfIntersectionType.intersection(setOfString);
         .ceylon.language.Set<? extends .ceylon.language.Sequential<? extends .ceylon.language.Character>> y3 = setOfIntersectionType.exclusiveUnion(setOfString);
-        .ceylon.language.Set<? extends .ceylon.language.Empty> y4 = setOfIntersectionType.complement(setOfString);
+        .ceylon.language.Set<? extends .ceylon.language.Sequential<?>> y4 = setOfIntersectionType.complement(setOfString);
         .ceylon.language.Set<? extends .ceylon.language.String> z1 = setOfBottom.union(setOfString);
         .ceylon.language.Set<?> z2 = setOfBottom.intersection(setOfString);
         .ceylon.language.Set<? extends .ceylon.language.String> z3 = setOfBottom.exclusiveUnion(setOfString);

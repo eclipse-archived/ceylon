@@ -133,7 +133,7 @@ final class bug708extra4_ {
         value = new .ceylon.language.Sequential[]{(
             let
             {
-                .ceylon.language.FixedSized<? extends .com.redhat.ceylon.compiler.java.test.issues.bug07xx.Bug708<.ceylon.language.String>> $spreadTest$1 = .com.redhat.ceylon.compiler.java.test.issues.bug07xx.bug708seq_.getBug708seq$();
+                .ceylon.language.Sequential<? extends .com.redhat.ceylon.compiler.java.test.issues.bug07xx.Bug708<.ceylon.language.String>> $spreadTest$1 = .com.redhat.ceylon.compiler.java.test.issues.bug07xx.bug708seq_.getBug708seq$();
             }
             returning (.ceylon.language.Sequential<? extends .ceylon.language.String>)($spreadTest$1 instanceof .ceylon.language.Sequence ? (
                 let
@@ -237,8 +237,6 @@ public class Bug708Map<T> extends .java.lang.Object implements .ceylon.language.
         this.$ceylon$language$Collection$this = new .ceylon.language.Collection$impl<.ceylon.language.Entry<? extends .ceylon.language.Integer, ? extends .java.lang.Object>>(this);
         this.$ceylon$language$Iterable$this = new .ceylon.language.Iterable$impl<.ceylon.language.Entry<? extends .ceylon.language.Integer, ? extends .java.lang.Object>>(this);
         this.$ceylon$language$ContainerWithFirstElement$this = new .ceylon.language.ContainerWithFirstElement$impl<.ceylon.language.Entry<? extends .ceylon.language.Integer, ? extends .java.lang.Object>, .java.lang.Object>(this);
-        this.$ceylon$language$Container$this = new .ceylon.language.Container$impl(this);
-        this.$ceylon$language$Sized$this = new .ceylon.language.Sized$impl(this);
         this.$ceylon$language$Category$this = new .ceylon.language.Category$impl(this);
         this.$ceylon$language$Cloneable$this = new .ceylon.language.Cloneable$impl<.ceylon.language.Collection<? extends .ceylon.language.Entry<? extends .ceylon.language.Integer, ? extends .java.lang.Object>>>((.ceylon.language.Cloneable<.ceylon.language.Collection<? extends .ceylon.language.Entry<? extends .ceylon.language.Integer, ? extends .java.lang.Object>>>)(.ceylon.language.Cloneable)this);
         this.$ceylon$language$Correspondence$this = new .ceylon.language.Correspondence$impl<.java.lang.Object, .java.lang.Object>(this);
@@ -413,10 +411,6 @@ public class Bug708Map<T> extends .java.lang.Object implements .ceylon.language.
     }
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
     protected final .ceylon.language.ContainerWithFirstElement$impl<.ceylon.language.Entry<? extends .ceylon.language.Integer, ? extends .java.lang.Object>, .java.lang.Object> $ceylon$language$ContainerWithFirstElement$this;
-    @.com.redhat.ceylon.compiler.java.metadata.Ignore
-    protected final .ceylon.language.Container$impl $ceylon$language$Container$this;
-    @.com.redhat.ceylon.compiler.java.metadata.Ignore
-    protected final .ceylon.language.Sized$impl $ceylon$language$Sized$this;
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
     protected final .ceylon.language.Category$impl $ceylon$language$Category$this;
     

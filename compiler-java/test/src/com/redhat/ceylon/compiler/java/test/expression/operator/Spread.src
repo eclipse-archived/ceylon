@@ -10,7 +10,7 @@ final class spread_ {
         final .ceylon.language.Sequence<? extends .ceylon.language.Integer> ini = (
             let
             {
-                .ceylon.language.FixedSized<? extends .ceylon.language.String> $spreadTest$0 = seq;
+                .ceylon.language.Tuple<.ceylon.language.String, ? extends .ceylon.language.String, ? extends .ceylon.language.Tuple<.ceylon.language.String, ? extends .ceylon.language.String, ? extends .ceylon.language.Empty>> $spreadTest$0 = seq;
             }
             returning (
                 let
@@ -26,7 +26,7 @@ final class spread_ {
         final .ceylon.language.Sequential<? extends .ceylon.language.Integer> ini2 = (
             let
             {
-                .ceylon.language.FixedSized<? extends .ceylon.language.String> $spreadTest$3 = seq2;
+                .ceylon.language.Sequential<? extends .ceylon.language.String> $spreadTest$3 = seq2;
             }
             returning (.ceylon.language.Sequential<? extends .ceylon.language.Integer>)($spreadTest$3 instanceof .ceylon.language.Sequence ? (
                 let
@@ -42,7 +42,7 @@ final class spread_ {
         final .ceylon.language.Sequence<? extends .ceylon.language.String> ini3 = (
             let
             {
-                .ceylon.language.FixedSized<? extends .ceylon.language.String> $spreadTest$6 = seq;
+                .ceylon.language.Tuple<.ceylon.language.String, ? extends .ceylon.language.String, ? extends .ceylon.language.Tuple<.ceylon.language.String, ? extends .ceylon.language.String, ? extends .ceylon.language.Empty>> $spreadTest$6 = seq;
             }
             returning (
                 let

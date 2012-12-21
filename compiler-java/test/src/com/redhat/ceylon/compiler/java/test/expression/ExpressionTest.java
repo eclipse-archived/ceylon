@@ -258,7 +258,7 @@ public class ExpressionTest extends CompilerTest {
         compareWithJavaSource("instantiation/EntryInstantiation");
     }
     @Test
-    public void testInsNestedGenericClassInstantiation(){
+    public void testInsNestedGenericEntryInstantiation(){
         compareWithJavaSource("instantiation/NestedGenericEntryInstantiation");
     }
     @Test

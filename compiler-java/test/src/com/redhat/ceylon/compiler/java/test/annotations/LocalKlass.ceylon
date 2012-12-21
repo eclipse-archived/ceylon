@@ -19,7 +19,7 @@
  */
 shared class LocalKlass() {
     void m() {
-        class Local<T>() satisfies Sized {
+        class Local<T>() satisfies Summable<Local<T>> {
             shared Integer i1 = 1;
             shared Integer i2 {
                 return 1;
@@ -28,11 +28,8 @@ shared class LocalKlass() {
             }
             shared void m2(Integer arg1, T... t) {
             }
-            shared actual Integer size {
-                return 0;
-            }
-            shared actual Boolean empty {
-                return true;
+            shared actual Local<T> plus(Local<T> other) {
+                return bottom;
             }
         }
     }

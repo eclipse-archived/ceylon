@@ -10,7 +10,7 @@ final class bug586_ {
         final .ceylon.language.String s = (
             let
             {
-                .ceylon.language.FixedSized<? extends .ceylon.language.String> $spreadTest$0 = seq;
+                .ceylon.language.Sequential<? extends .ceylon.language.String> $spreadTest$0 = seq;
             }
             returning (.ceylon.language.Sequential<? extends .ceylon.language.String>)($spreadTest$0 instanceof .ceylon.language.Sequence ? (
                 let

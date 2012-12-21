@@ -1,3 +1,3 @@
-class ContainerImpl() satisfies Container {
+class ContainerImpl() satisfies Container<Integer> {
     shared actual Boolean empty = true;
 }

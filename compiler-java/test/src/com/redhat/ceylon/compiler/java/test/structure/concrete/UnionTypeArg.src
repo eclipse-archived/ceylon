@@ -5,10 +5,15 @@ class UnionTypeArg implements .ceylon.language.Iterable<.java.lang.Object> {
     UnionTypeArg() {
         this.$ceylon$language$Iterable$this = new .ceylon.language.Iterable$impl<.java.lang.Object>(this);
         this.$ceylon$language$ContainerWithFirstElement$this = new .ceylon.language.ContainerWithFirstElement$impl<.java.lang.Object, .java.lang.Object>(this);
-        this.$ceylon$language$Container$this = new .ceylon.language.Container$impl(this);
+        this.$ceylon$language$Category$this = new .ceylon.language.Category$impl(this);
         this.iterator = (.ceylon.language.Iterator<? extends .java.lang.Object>)(.ceylon.language.Iterator).ceylon.language.bottom_.getBottom$();
     }
     protected final .ceylon.language.Iterable$impl<.java.lang.Object> $ceylon$language$Iterable$this;
+    
+    @.java.lang.Override
+    public long getSize() {
+        return $ceylon$language$Iterable$this.getSize();
+    }
     
     @.java.lang.Override
     public boolean getEmpty() {
@@ -124,8 +129,43 @@ class UnionTypeArg implements .ceylon.language.Iterable<.java.lang.Object> {
     public .ceylon.language.Map group(final .ceylon.language.Callable grouping) {
         return $ceylon$language$Iterable$this.group(grouping);
     }
+    
+    @.java.lang.Override
+    public boolean contains(final .java.lang.Object element) {
+        return $ceylon$language$Iterable$this.contains(element);
+    }
     protected final .ceylon.language.ContainerWithFirstElement$impl<.java.lang.Object, .java.lang.Object> $ceylon$language$ContainerWithFirstElement$this;
-    protected final .ceylon.language.Container$impl $ceylon$language$Container$this;
+    protected final .ceylon.language.Category$impl $ceylon$language$Category$this;
+    
+    @.java.lang.Override
+    public final .ceylon.language.Sequential<? extends .java.lang.Object> containsEvery$elements() {
+        return $ceylon$language$Category$this.containsEvery$elements();
+    }
+    
+    @.java.lang.Override
+    public final boolean containsEvery() {
+        return $ceylon$language$Category$this.containsEvery();
+    }
+    
+    @.java.lang.Override
+    public boolean containsEvery(final .ceylon.language.Sequential<? extends .java.lang.Object> elements) {
+        return $ceylon$language$Category$this.containsEvery(elements);
+    }
+    
+    @.java.lang.Override
+    public final .ceylon.language.Sequential<? extends .java.lang.Object> containsAny$elements() {
+        return $ceylon$language$Category$this.containsAny$elements();
+    }
+    
+    @.java.lang.Override
+    public final boolean containsAny() {
+        return $ceylon$language$Category$this.containsAny();
+    }
+    
+    @.java.lang.Override
+    public boolean containsAny(final .ceylon.language.Sequential<? extends .java.lang.Object> elements) {
+        return $ceylon$language$Category$this.containsAny(elements);
+    }
     private final .ceylon.language.Iterator iterator;
     
     @.java.lang.Override
@@ -143,10 +183,15 @@ class UnionTypeArgOverride implements .ceylon.language.Iterable<.java.lang.Objec
     UnionTypeArgOverride() {
         this.$ceylon$language$Iterable$this = new .ceylon.language.Iterable$impl<.java.lang.Object>(this);
         this.$ceylon$language$ContainerWithFirstElement$this = new .ceylon.language.ContainerWithFirstElement$impl<.java.lang.Object, .java.lang.Object>(this);
-        this.$ceylon$language$Container$this = new .ceylon.language.Container$impl(this);
+        this.$ceylon$language$Category$this = new .ceylon.language.Category$impl(this);
         this.iterator = (.ceylon.language.Iterator<? extends .java.lang.Object>)(.ceylon.language.Iterator).ceylon.language.bottom_.getBottom$();
     }
     protected final .ceylon.language.Iterable$impl<.java.lang.Object> $ceylon$language$Iterable$this;
+    
+    @.java.lang.Override
+    public long getSize() {
+        return $ceylon$language$Iterable$this.getSize();
+    }
     
     @.java.lang.Override
     public boolean getEmpty() {
@@ -252,8 +297,43 @@ class UnionTypeArgOverride implements .ceylon.language.Iterable<.java.lang.Objec
     public .ceylon.language.Map group(final .ceylon.language.Callable grouping) {
         return $ceylon$language$Iterable$this.group(grouping);
     }
+    
+    @.java.lang.Override
+    public boolean contains(final .java.lang.Object element) {
+        return $ceylon$language$Iterable$this.contains(element);
+    }
     protected final .ceylon.language.ContainerWithFirstElement$impl<.java.lang.Object, .java.lang.Object> $ceylon$language$ContainerWithFirstElement$this;
-    protected final .ceylon.language.Container$impl $ceylon$language$Container$this;
+    protected final .ceylon.language.Category$impl $ceylon$language$Category$this;
+    
+    @.java.lang.Override
+    public final .ceylon.language.Sequential<? extends .java.lang.Object> containsEvery$elements() {
+        return $ceylon$language$Category$this.containsEvery$elements();
+    }
+    
+    @.java.lang.Override
+    public final boolean containsEvery() {
+        return $ceylon$language$Category$this.containsEvery();
+    }
+    
+    @.java.lang.Override
+    public boolean containsEvery(final .ceylon.language.Sequential<? extends .java.lang.Object> elements) {
+        return $ceylon$language$Category$this.containsEvery(elements);
+    }
+    
+    @.java.lang.Override
+    public final .ceylon.language.Sequential<? extends .java.lang.Object> containsAny$elements() {
+        return $ceylon$language$Category$this.containsAny$elements();
+    }
+    
+    @.java.lang.Override
+    public final boolean containsAny() {
+        return $ceylon$language$Category$this.containsAny();
+    }
+    
+    @.java.lang.Override
+    public boolean containsAny(final .ceylon.language.Sequential<? extends .java.lang.Object> elements) {
+        return $ceylon$language$Category$this.containsAny(elements);
+    }
     private final .ceylon.language.Iterator iterator;
     
     @.java.lang.Override

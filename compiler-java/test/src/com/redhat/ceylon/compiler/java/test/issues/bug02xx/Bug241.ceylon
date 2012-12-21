@@ -23,6 +23,6 @@ class Bug241<T>() {
 }
 
 @nomodel
-void bug241<Key,Item>() given Key satisfies Sized given Item satisfies Sized  {
+void bug241<Key,Item>() given Key satisfies Summable<Integer> given Item satisfies Summable<Integer>  {
     value builder = Bug241<Entry<Key,Item>>();   
 }

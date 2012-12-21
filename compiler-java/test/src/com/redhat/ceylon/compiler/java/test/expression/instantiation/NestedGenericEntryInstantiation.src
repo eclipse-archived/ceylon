@@ -5,7 +5,7 @@ public final class nestedGenericEntryInstantiation_ {
     private nestedGenericEntryInstantiation_() {
     }
     
-    public static <T extends .ceylon.language.Sized>void nestedGenericEntryInstantiation(final T t) {
+    public static <T extends .ceylon.language.Summable<T>>void nestedGenericEntryInstantiation(final T t) {
         final .ceylon.language.Entry<? extends .ceylon.language.Integer, ? extends .ceylon.language.Entry<? extends T, ? extends .ceylon.language.String>> entry = new .ceylon.language.Entry<.ceylon.language.Integer, .ceylon.language.Entry<? extends T, ? extends .ceylon.language.String>>(.ceylon.language.Integer.instance(1L), new .ceylon.language.Entry<T, .ceylon.language.String>(t, .ceylon.language.String.instance("")));
         final .java.lang.Throwable e = new .ceylon.language.Exception(.ceylon.language.String.instance(""), null);
         final .ceylon.language.Entry<? extends .java.lang.Throwable, ? extends .ceylon.language.Entry<? extends T, ? extends .java.lang.Throwable>> entry2 = new .ceylon.language.Entry<.java.lang.Throwable, .ceylon.language.Entry<? extends T, ? extends .java.lang.Throwable>>(e, new .ceylon.language.Entry<T, .java.lang.Throwable>(t, e));
