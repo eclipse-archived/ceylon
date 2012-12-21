@@ -266,9 +266,6 @@ String$proto.lastCharacterOccurrence = function(subc) {
     return null;
 }
 String$proto.getCharacters = function() {
-    //we can cheat and add the required behavior to String, avoiding the need to create a Sequence...
-    //TODO: this probably doesn't work completely because String doesn't satisfy
-    //      all required interfaces, so "if(is ...)" will be false when it shouldn't.
     return this.length>0 ? this:empty;
 }
 String$proto.getFirst = function() { return this.getSize()>0?this.item(0):null; }
