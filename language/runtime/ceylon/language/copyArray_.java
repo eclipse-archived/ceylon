@@ -30,7 +30,7 @@ public final class copyArray_ {
     @Name("length")
     @TypeInfo("ceylon.language::Integer")
     final long length) {
-        System.arraycopy(source.array, (int) from, target.array, (int) to, (int) length);
+        System.arraycopy(source.toArray(), (int) from, target.toArray(), (int) to, (int) length);
     }
     
     //TODO: stuff for defaulted parameters!
