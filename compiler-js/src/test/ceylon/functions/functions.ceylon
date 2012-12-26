@@ -158,6 +158,20 @@ String lazy_f1(Integer i1, String f() => ""i1"."(++lx)"") => f();
 Integer lazy_f2(Integer i) => 2*(++lx)+i;
 Integer lazy_i1 => ++lx;
 
+class LazyExprTest2() satisfies LazyExprBase {
+    shared variable Integer x:= 1000;
+    shared actual default String s1 => (++x).string;
+    shared actual default String s2(Integer i) => ""++x"-"i"";
+}
+class LazyExprTest3() extends LazyExprTest2() {
+    shared actual variable String s1 := "s1";
+}
+class LazyExprTest4() extends LazyExprTest2() {
+    shared variable String assigned := "";
+    shared actual String s1 { return "s1-"super.s1""; }
+    assign s1 { assigned := s1; }
+}
+
 void testLazyExpressions() {
     value tst = LazyExprTest();
     tst.x := 1;
@@ -185,6 +199,18 @@ void testLazyExpressions() {
     check(f2(3)==9, "=> method local");
     check(i1==4, "=> attribute local");
     check(i2==10, "=> attribute specifier local");
+
+    value tst3 = LazyExprTest3();
+    tst3.x := 1;
+    check(tst3.s1=="s1", "=> override variable 1");
+    tst3.s1 := "abc";
+    check(tst3.s1=="abc", "=> override variable 2");
+    value tst4 = LazyExprTest4();
+    tst4.x := 1;
+    check(tst4.s1=="s1-2", "=> override getter/setter 1");
+    tst4.s1 := "abc";
+    check(tst4.s1=="s1-4", "=> override getter/setter 2");
+    check(tst4.assigned=="abc", "=> override getter/setter 3");
 }
 
 shared void test() {
