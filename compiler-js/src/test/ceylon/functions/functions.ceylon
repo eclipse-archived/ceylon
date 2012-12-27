@@ -144,17 +144,19 @@ interface LazyExprBase {
 }
 class LazyExprTest() satisfies LazyExprBase {
     shared variable Integer x := 1000;
-    shared String f1(Integer i1, String f() => ""i1"."(++x)"") => f();
+    shared String f1(Integer i, String f() => ""i"."(++x)"") => ""i":"f()"";
     shared Integer f2(Integer i) => 2*(++x)+i;
     shared Integer i1 => ++x;
     shared Integer i2;
     i2 => ++x*2;
     s1 => ""(++x)".1";
     s2(Integer i) => ""(++x)"."i"";
+    
+    shared String f3(String f(Integer i)) => f(++x);
 }
 
 variable Integer lx := 1000;
-String lazy_f1(Integer i1, String f() => ""i1"."(++lx)"") => f();
+String lazy_f1(Integer i, String f() => ""i"."(++lx)"") => f();
 Integer lazy_f2(Integer i) => 2*(++lx)+i;
 Integer lazy_i1 => ++lx;
 
@@ -175,7 +177,7 @@ class LazyExprTest4() extends LazyExprTest2() {
 void testLazyExpressions() {
     value tst = LazyExprTest();
     tst.x := 1;
-    check(tst.f1(3)=="3.2", "=> defaulted param");
+    check(tst.f1(3)=="3:3.2", "=> defaulted param");
     check(tst.f2(3)==9, "=> method");
     check(tst.i1==4, "=> attribute");
     check(tst.i2==10, "=> attribute specifier");
@@ -188,7 +190,7 @@ void testLazyExpressions() {
     check(lazy_i1==4, "=> attribute toplevel");
     
     variable Integer x := 1000;
-    String f1(Integer i1, String f() => ""i1"."(++x)"") => f();
+    String f1(Integer i, String f() => ""i"."(++x)"") => f();
     Integer f2(Integer i) => 2*(++x)+i;
     Integer i1 => ++x;
     Integer i2;
@@ -211,6 +213,12 @@ void testLazyExpressions() {
     tst4.s1 := "abc";
     check(tst4.s1=="s1-4", "=> override getter/setter 2");
     check(tst4.assigned=="abc", "=> override getter/setter 3");
+    
+    tst.x := 1;
+    x := 10;
+    check(tst.f1{i=>++x;}=="11:11.2", "=> named arg");
+    check(tst.f1{i=>++x; f()=>(++x).string;}=="12:13", "=> named arg function");
+    check(tst.f3{f(Integer i)=>""i"-"++x"";}=="3-14", "=> named arg function with param");
 }
 
 shared void test() {
