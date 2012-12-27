@@ -1999,7 +1999,18 @@ public class GenerateJsVisitor extends Visitor
         out("//AttributeArgument ", that.getParameter().getName());
         location(that);
         endLine();
-        visitStatements(that.getBlock().getStatements());
+        
+        Block block = that.getBlock();
+        SpecifierExpression specExpr = that.getSpecifierExpression();
+        if (specExpr != null) {
+            out("return ");
+            specExpr.getExpression().visit(this);
+            out(";");
+        }
+        else if (block != null) {
+            visitStatements(block.getStatements());
+        }
+        
         endBlock();
         out("())");
     }
@@ -3317,7 +3328,16 @@ public class GenerateJsVisitor extends Visitor
                 new ParameterListCallback() {
             @Override
             public void completeFunction() {
-                that.getBlock().visit(GenerateJsVisitor.this);
+                Block block = that.getBlock();
+                SpecifierExpression specExpr = that.getSpecifierExpression();
+                if (specExpr != null) {
+                    out("{return ");
+                    specExpr.getExpression().visit(GenerateJsVisitor.this);
+                    out(";}");
+                }
+                else if (block != null) {
+                    block.visit(GenerateJsVisitor.this);
+                }
             }
         });
     }
