@@ -818,7 +818,7 @@ public class GenerateJsVisitor extends Visitor
         if (s instanceof MethodDefinition) {
             addMethodToPrototype(d, (MethodDefinition)s);
         } else if (s instanceof MethodDeclaration) {
-            addMethodDeclToPrototype(d, (MethodDeclaration) s);
+            methodDeclaration(d, (MethodDeclaration) s);
         } else if (s instanceof AttributeGetterDefinition) {
             addGetterToPrototype(d, (AttributeGetterDefinition)s);
         } else if (s instanceof AttributeSetterDefinition) {
@@ -989,16 +989,32 @@ public class GenerateJsVisitor extends Visitor
     public void visit(MethodDeclaration that) {
         //Don't even bother with nodes that have errors
         if (that.getErrors() != null && !that.getErrors().isEmpty()) return;
+        methodDeclaration(null, that);
+    }
+    
+    private void methodDeclaration(TypeDeclaration outer, MethodDeclaration that) {
         Method m = that.getDeclarationModel();
         if (that.getSpecifierExpression() != null) {
-            if (prototypeStyle && m.isMember()) { return; }
-            comment(that);
-            out("var ", names.name(m), "=");
+            // method(params) => expr
+            if (outer == null) {
+                // Not in a prototype definition. Nothing to do here if it's a
+                // member in prototype style.
+                if (prototypeStyle && m.isMember()) { return; }
+                comment(that);
+                out("var ");
+            }
+            else {
+                // prototype definition
+                comment(that);
+                out(names.self(outer), ".");
+            }
+            out(names.name(m), "=");            
             singleExprFunction(that.getParameterLists(),
                     that.getSpecifierExpression().getExpression(), that.getScope());
             endLine(true);
-            share(m, false);
-        } else {
+            share(m);
+        }
+        else if (outer == null) { // don't do the following in a prototype definition
             //Check for refinement of simple param declaration
             if (m == that.getScope()) {
                 if (m.getContainer() instanceof Class && m.isClassOrInterfaceMember()) {
@@ -1018,16 +1034,6 @@ public class GenerateJsVisitor extends Visitor
                 }
             }
         }
-    }
-    
-    void addMethodDeclToPrototype(TypeDeclaration outer, MethodDeclaration that) {
-        if (that.getSpecifierExpression() == null) { return; }
-        comment(that);
-        Method decl = that.getDeclarationModel();
-        out(names.self(outer), ".", names.name(decl), "=");
-        singleExprFunction(that.getParameterLists(),
-                that.getSpecifierExpression().getExpression(), that.getScope());
-        endLine(true);
     }
 
     @Override
