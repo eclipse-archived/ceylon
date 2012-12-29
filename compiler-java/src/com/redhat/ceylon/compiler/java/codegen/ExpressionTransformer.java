@@ -1537,10 +1537,21 @@ public class ExpressionTransformer extends AbstractTransformer {
             returnArrayTypeExpr = make().TypeApply(returnArrayIdent, List.of(returnArrayType));
         else // go raw
             returnArrayTypeExpr = returnArrayIdent;
-        JCNewClass returnArray = make().NewClass(null, null, 
+        
+        JCExpression returnArray = make().NewClass(null, null, 
                 returnArrayTypeExpr, 
                 List.<JCExpression>of(newArrayName.makeIdent()), null);
-
+        // Add a conditional, if we don't statically know that the source 
+        // sequence is nonempty
+        if (!srcSequenceType.isSubtypeOf(
+                typeFact().getSequenceType(typeFact().getVoidDeclaration().getType()).getType())) {
+            returnArray = make().Conditional(
+                    make().Binary(JCTree.NE, 
+                            naming.makeSelect(newArrayName.makeIdent(), "length"),
+                                make().Literal(0)), 
+                            returnArray, makeEmpty());
+        }
+        
         // for loop
         Name indexVarName = naming.aliasName("index");
         // int index = 0
