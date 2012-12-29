@@ -35,6 +35,7 @@ import org.antlr.runtime.Token;
 import com.redhat.ceylon.ceylondoc.Util;
 import com.redhat.ceylon.common.Versions;
 import com.redhat.ceylon.compiler.java.codegen.Naming.DeclNameFlag;
+import com.redhat.ceylon.compiler.java.codegen.Naming.SyntheticName;
 import com.redhat.ceylon.compiler.java.loader.CeylonModelLoader;
 import com.redhat.ceylon.compiler.java.loader.TypeFactory;
 import com.redhat.ceylon.compiler.java.tools.CeylonLog;
@@ -85,6 +86,7 @@ import com.sun.tools.javac.util.Context;
 import com.sun.tools.javac.util.List;
 import com.sun.tools.javac.util.ListBuffer;
 import com.sun.tools.javac.util.Log;
+import com.sun.tools.javac.util.Name;
 import com.sun.tools.javac.util.Names;
 import com.sun.tools.javac.util.Position;
 import com.sun.tools.javac.util.Position.LineMap;
@@ -2121,7 +2123,19 @@ public abstract class AbstractTransformer implements Transformation {
         ProducedType arraySequenceType = toPType(syms().ceylonArraySequenceType);
         ProducedType sequenceType = arraySequenceType.getDeclaration().getProducedType(null, Arrays.asList(seqElemType));
         JCExpression typeExpr = makeJavaType(sequenceType, makeJavaTypeOpts);
-        return makeNewClass(typeExpr, elems);
+        // We can't just return makeNewClass(typeExpr, elems); here because that
+        // can leave uninitialized objects on the stack during a loop see #929
+        // TODO Only use a let if we really need to
+        SyntheticName tempName = naming.temp();
+        return make().LetExpr(
+                List.of(make().VarDef(make().Modifiers(0), 
+                        tempName.asName(), 
+                        make().TypeArray(makeJavaType(seqElemType, makeJavaTypeOpts)), 
+                        make().NewArray(makeJavaType(seqElemType, makeJavaTypeOpts), 
+                                List.<JCExpression>nil(), 
+                                elems))), 
+                List.<JCStatement>nil(), 
+                makeNewClass(typeExpr, List.<JCExpression>of(tempName.makeIdent())));
     }
     
     /**
