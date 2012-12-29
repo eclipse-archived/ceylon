@@ -23,6 +23,12 @@ class Foo {
 class Bar extends .com.redhat.ceylon.compiler.java.test.expression.instantiation.Foo {
     
     Bar(.java.lang.String name1, .java.lang.String name2) {
-        super(new .com.redhat.ceylon.compiler.java.language.ArraySequence<.ceylon.language.String>(.ceylon.language.String.instance(name1), .ceylon.language.String.instance(name2)));
+        super((
+            let
+            {
+                .ceylon.language.String[] $ceylontmp2 = new .ceylon.language.String[]{.ceylon.language.String.instance(name1), .ceylon.language.String.instance(name2)};
+            }
+            returning new .com.redhat.ceylon.compiler.java.language.ArraySequence<.ceylon.language.String>($ceylontmp2);
+        ));
     }
 }

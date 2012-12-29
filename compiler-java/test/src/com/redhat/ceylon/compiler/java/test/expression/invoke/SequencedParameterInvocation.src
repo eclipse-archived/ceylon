@@ -43,8 +43,20 @@ class SequencedParameterInvocation {
     
     private final void f() {
         m("foo");
-        m("foo", new .com.redhat.ceylon.compiler.java.language.ArraySequence<.ceylon.language.Integer>(.ceylon.language.Integer.instance(1L), .ceylon.language.Integer.instance(2L), .ceylon.language.Integer.instance(3L)));
-        m2("foo", new .com.redhat.ceylon.compiler.java.language.ArraySequence<.com.redhat.ceylon.compiler.java.test.expression.invoke.SequencedParameterInvocation>(this, this, this));
+        m("foo", (
+            let
+            {
+                .ceylon.language.Integer[] $ceylontmp4 = new .ceylon.language.Integer[]{.ceylon.language.Integer.instance(1L), .ceylon.language.Integer.instance(2L), .ceylon.language.Integer.instance(3L)};
+            }
+            returning new .com.redhat.ceylon.compiler.java.language.ArraySequence<.ceylon.language.Integer>($ceylontmp4);
+        ));
+        m2("foo", (
+            let
+            {
+                .com.redhat.ceylon.compiler.java.test.expression.invoke.SequencedParameterInvocation[] $ceylontmp5 = new .com.redhat.ceylon.compiler.java.test.expression.invoke.SequencedParameterInvocation[]{this, this, this};
+            }
+            returning new .com.redhat.ceylon.compiler.java.language.ArraySequence<.com.redhat.ceylon.compiler.java.test.expression.invoke.SequencedParameterInvocation>($ceylontmp5);
+        ));
     }
     
     public static void main(.java.lang.String[] args) {

@@ -112,11 +112,23 @@ class MethodSpecifyingCallable {
     }
     
     private final void oneSequencedParam1() {
-        getOneSequencedParam().$call(new .com.redhat.ceylon.compiler.java.language.ArraySequence<.ceylon.language.Integer>(.ceylon.language.Integer.instance(1L)));
+        getOneSequencedParam().$call((
+            let
+            {
+                .ceylon.language.Integer[] $ceylontmp0 = new .ceylon.language.Integer[]{.ceylon.language.Integer.instance(1L)};
+            }
+            returning new .com.redhat.ceylon.compiler.java.language.ArraySequence<.ceylon.language.Integer>($ceylontmp0);
+        ));
     }
     
     private final void oneSequencedParam2() {
-        getOneSequencedParam().$call(new .com.redhat.ceylon.compiler.java.language.ArraySequence<.ceylon.language.Integer>(.ceylon.language.Integer.instance(1L), .ceylon.language.Integer.instance(2L)));
+        getOneSequencedParam().$call((
+            let
+            {
+                .ceylon.language.Integer[] $ceylontmp1 = new .ceylon.language.Integer[]{.ceylon.language.Integer.instance(1L), .ceylon.language.Integer.instance(2L)};
+            }
+            returning new .com.redhat.ceylon.compiler.java.language.ArraySequence<.ceylon.language.Integer>($ceylontmp1);
+        ));
     }
     
     private final void oneSequencedParam3() {
@@ -129,12 +141,12 @@ class MethodSpecifyingCallable {
                     private boolean i$exhausted;
                     
                     private final boolean i() {
-                        final .java.lang.Object $ceylontmpitem0 = iter$0.next();
-                        i$exhausted = $ceylontmpitem0 == .ceylon.language.exhausted_.getExhausted$();
+                        final .java.lang.Object $ceylontmpitem2 = iter$0.next();
+                        i$exhausted = $ceylontmpitem2 == .ceylon.language.exhausted_.getExhausted$();
                         if (i$exhausted) {
                             return false;
                         } else {
-                            i = (.java.lang.Object)$ceylontmpitem0;
+                            i = (.java.lang.Object)$ceylontmpitem2;
                             return true;
                         }
                     }
@@ -161,11 +173,23 @@ class MethodSpecifyingCallable {
     }
     
     private final void secondSequencedParam1() {
-        getSecondSequencedParam().$call(.ceylon.language.Integer.instance(1L), new .com.redhat.ceylon.compiler.java.language.ArraySequence<.ceylon.language.Integer>(.ceylon.language.Integer.instance(2L)));
+        getSecondSequencedParam().$call(.ceylon.language.Integer.instance(1L), (
+            let
+            {
+                .ceylon.language.Integer[] $ceylontmp3 = new .ceylon.language.Integer[]{.ceylon.language.Integer.instance(2L)};
+            }
+            returning new .com.redhat.ceylon.compiler.java.language.ArraySequence<.ceylon.language.Integer>($ceylontmp3);
+        ));
     }
     
     private final void secondSequencedParam2() {
-        getSecondSequencedParam().$call(.ceylon.language.Integer.instance(1L), new .com.redhat.ceylon.compiler.java.language.ArraySequence<.ceylon.language.Integer>(.ceylon.language.Integer.instance(2L), .ceylon.language.Integer.instance(3L)));
+        getSecondSequencedParam().$call(.ceylon.language.Integer.instance(1L), (
+            let
+            {
+                .ceylon.language.Integer[] $ceylontmp4 = new .ceylon.language.Integer[]{.ceylon.language.Integer.instance(2L), .ceylon.language.Integer.instance(3L)};
+            }
+            returning new .com.redhat.ceylon.compiler.java.language.ArraySequence<.ceylon.language.Integer>($ceylontmp4);
+        ));
     }
     
     private final void secondSequencedParam3() {
@@ -178,12 +202,12 @@ class MethodSpecifyingCallable {
                     private boolean i$exhausted;
                     
                     private final boolean i() {
-                        final .java.lang.Object $ceylontmpitem1 = iter$0.next();
-                        i$exhausted = $ceylontmpitem1 == .ceylon.language.exhausted_.getExhausted$();
+                        final .java.lang.Object $ceylontmpitem5 = iter$0.next();
+                        i$exhausted = $ceylontmpitem5 == .ceylon.language.exhausted_.getExhausted$();
                         if (i$exhausted) {
                             return false;
                         } else {
-                            i = (.java.lang.Object)$ceylontmpitem1;
+                            i = (.java.lang.Object)$ceylontmpitem5;
                             return true;
                         }
                     }

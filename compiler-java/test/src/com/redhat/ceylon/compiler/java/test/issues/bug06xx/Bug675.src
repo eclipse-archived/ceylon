@@ -9,9 +9,9 @@ public final class bug675_ {
         return (
             let
             {
-                .ceylon.language.Sequential<? extends Element> $ceylontmp$elements$3 = .com.redhat.ceylon.compiler.java.test.issues.bug06xx.bug675_.bug675$elements();
+                .ceylon.language.Sequential<? extends Element> $ceylontmp$elements$4 = .com.redhat.ceylon.compiler.java.test.issues.bug06xx.bug675_.bug675$elements();
             }
-            returning bug675($ceylontmp$elements$3);
+            returning bug675($ceylontmp$elements$4);
         );
     }
     
@@ -21,7 +21,13 @@ public final class bug675_ {
     
     public static <Element>.ceylon.language.Iterable<? extends .ceylon.language.Entry<? extends .ceylon.language.Integer, ? extends Element>> bug675(final .ceylon.language.Sequential<? extends Element> elements) {
         .java.lang.Object $elem$0;
-        for (.ceylon.language.Iterator<? extends .ceylon.language.Entry<? extends .ceylon.language.Integer, ? extends .ceylon.language.Integer>> $k$iter$1 = .com.redhat.ceylon.compiler.java.test.issues.bug06xx.bug675_.<.ceylon.language.Integer>bug675(new .com.redhat.ceylon.compiler.java.language.ArraySequence<.ceylon.language.Integer>(.ceylon.language.Integer.instance(1L), .ceylon.language.Integer.instance(2L))).getIterator(); !(($elem$0 = $k$iter$1.next()) instanceof .ceylon.language.Finished); ) {
+        for (.ceylon.language.Iterator<? extends .ceylon.language.Entry<? extends .ceylon.language.Integer, ? extends .ceylon.language.Integer>> $k$iter$2 = .com.redhat.ceylon.compiler.java.test.issues.bug06xx.bug675_.<.ceylon.language.Integer>bug675((
+            let
+            {
+                .ceylon.language.Integer[] $ceylontmp1 = new .ceylon.language.Integer[]{.ceylon.language.Integer.instance(1L), .ceylon.language.Integer.instance(2L)};
+            }
+            returning new .com.redhat.ceylon.compiler.java.language.ArraySequence<.ceylon.language.Integer>($ceylontmp1);
+        )).getIterator(); !(($elem$0 = $k$iter$2.next()) instanceof .ceylon.language.Finished); ) {
             final long k = ((.ceylon.language.Entry<? extends .ceylon.language.Integer, ? extends .ceylon.language.Integer>)$elem$0).getKey().longValue();
             final long v = ((.ceylon.language.Entry<? extends .ceylon.language.Integer, ? extends .ceylon.language.Integer>)$elem$0).getItem().longValue();
         }

@@ -29,7 +29,13 @@ final class arr3_ {
                 .ceylon.language.Integer $arg$0$0$0 = .ceylon.language.Integer.instance(1L);
                 .ceylon.language.Integer $arg$0$0$1 = .ceylon.language.Integer.instance(2L);
                 .ceylon.language.Integer $arg$0$0$2 = .ceylon.language.Integer.instance(3L);
-                .ceylon.language.Sequential<? extends .ceylon.language.Integer> $arg$0$0$3 = new .com.redhat.ceylon.compiler.java.language.ArraySequence($arg$0$0$0, $arg$0$0$1, $arg$0$0$2);
+                .ceylon.language.Sequential<? extends .ceylon.language.Integer> $arg$0$0$3 = (
+                    let
+                    {
+                        .java.lang.Object[] $ceylontmp1 = new .java.lang.Object[]{$arg$0$0$0, $arg$0$0$1, $arg$0$0$2};
+                    }
+                    returning new .com.redhat.ceylon.compiler.java.language.ArraySequence($ceylontmp1);
+                );
             }
             returning .ceylon.language.array_.<.ceylon.language.Integer>array(long.class, $arg$0$0$3);
         )};

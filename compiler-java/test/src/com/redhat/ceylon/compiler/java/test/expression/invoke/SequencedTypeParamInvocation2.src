@@ -34,7 +34,13 @@ final class sequencedTypeParamInvocation2_test_ {
             {
                 .ceylon.language.Integer $arg$2$0$0 = .ceylon.language.Integer.instance(1L);
                 .ceylon.language.Integer $arg$2$0$1 = .ceylon.language.Integer.instance(2L);
-                .ceylon.language.Sequential<? extends .ceylon.language.Integer> $arg$2$0$2 = new .com.redhat.ceylon.compiler.java.language.ArraySequence($arg$2$0$0, $arg$2$0$1);
+                .ceylon.language.Sequential<? extends .ceylon.language.Integer> $arg$2$0$2 = (
+                    let
+                    {
+                        .java.lang.Object[] $ceylontmp3 = new .java.lang.Object[]{$arg$2$0$0, $arg$2$0$1};
+                    }
+                    returning new .com.redhat.ceylon.compiler.java.language.ArraySequence($ceylontmp3);
+                );
                 .com.redhat.ceylon.compiler.java.test.expression.invoke.sequencedTypeParamInvocation2_.<.ceylon.language.Integer>sequencedTypeParamInvocation2($arg$2$0$2);
             }
             returning null;

@@ -57,32 +57,38 @@ class DefaultedVariableAttribute {
     }
     
     public final .java.lang.String getFullName() {
-        return .ceylon.language.String.join(" ", new .com.redhat.ceylon.compiler.java.language.ArraySequence<.ceylon.language.String>((
+        return .ceylon.language.String.join(" ", (
             let
             {
-                .ceylon.language.String $ceylontmp5 = getFirstName();
+                .ceylon.language.String[] $ceylontmp7 = new .ceylon.language.String[]{(
+                    let
+                    {
+                        .ceylon.language.String $ceylontmp5 = getFirstName();
+                    }
+                    returning $ceylontmp5 != null ? $ceylontmp5 : .ceylon.language.String.instance("");
+                ), (
+                    let
+                    {
+                        .ceylon.language.String $ceylontmp6 = getLastName();
+                    }
+                    returning $ceylontmp6 != null ? $ceylontmp6 : .ceylon.language.String.instance("");
+                )};
             }
-            returning $ceylontmp5 != null ? $ceylontmp5 : .ceylon.language.String.instance("");
-        ), (
-            let
-            {
-                .ceylon.language.String $ceylontmp6 = getLastName();
-            }
-            returning $ceylontmp6 != null ? $ceylontmp6 : .ceylon.language.String.instance("");
-        )));
+            returning new .com.redhat.ceylon.compiler.java.language.ArraySequence<.ceylon.language.String>($ceylontmp7);
+        ));
     }
     
     public final void setFullName(final .java.lang.String fullName) {
         final .ceylon.language.Iterator<? extends .ceylon.language.String> tokens = .ceylon.language.String.split(fullName).getIterator();
-        .java.lang.Object $first$8;
-        if (($first$8 = tokens.next()) instanceof .ceylon.language.String) {
-            final .java.lang.String $first$9 = ((.ceylon.language.String)$first$8).toString();
-            setFirstName(.ceylon.language.String.instance($first$9));
+        .java.lang.Object $first$9;
+        if (($first$9 = tokens.next()) instanceof .ceylon.language.String) {
+            final .java.lang.String $first$10 = ((.ceylon.language.String)$first$9).toString();
+            setFirstName(.ceylon.language.String.instance($first$10));
         }
-        .java.lang.Object $last$11;
-        if (($last$11 = tokens.next()) instanceof .ceylon.language.String) {
-            final .java.lang.String $last$12 = ((.ceylon.language.String)$last$11).toString();
-            setLastName(.ceylon.language.String.instance($last$12));
+        .java.lang.Object $last$12;
+        if (($last$12 = tokens.next()) instanceof .ceylon.language.String) {
+            final .java.lang.String $last$13 = ((.ceylon.language.String)$last$12).toString();
+            setLastName(.ceylon.language.String.instance($last$13));
         }
     }
     

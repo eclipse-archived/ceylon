@@ -6,7 +6,13 @@ public final class bug671_ {
     }
     
     public static void bug671() {
-        final .ceylon.language.Array<.ceylon.language.Integer> a6 = .ceylon.language.array_.<.ceylon.language.Integer>array(.ceylon.language.Integer.class, new .com.redhat.ceylon.compiler.java.language.ArraySequence<.ceylon.language.Integer>(.ceylon.language.Integer.instance(1L)));
+        final .ceylon.language.Array<.ceylon.language.Integer> a6 = .ceylon.language.array_.<.ceylon.language.Integer>array(.ceylon.language.Integer.class, (
+            let
+            {
+                .ceylon.language.Integer[] $ceylontmp0 = new .ceylon.language.Integer[]{.ceylon.language.Integer.instance(1L)};
+            }
+            returning new .com.redhat.ceylon.compiler.java.language.ArraySequence<.ceylon.language.Integer>($ceylontmp0);
+        ));
         a6.setItem(0L, null);
     }
     
