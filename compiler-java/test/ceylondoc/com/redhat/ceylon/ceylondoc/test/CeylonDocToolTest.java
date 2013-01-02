@@ -360,7 +360,7 @@ public class CeylonDocToolTest {
         List<String> fullModuleNames = new ArrayList<String>(moduleNames.length);
         List<File> path = new ArrayList<File>(moduleNames.length);
         for(String moduleName : moduleNames){
-            path.add(new File("../ceylon-sdk/"+moduleName+"/source"));
+            path.add(new File("../ceylon-sdk/source"));
             fullModuleNames.add("ceylon." + moduleName);
         }
         CeylonDocTool tool = tool(path, fullModuleNames, true);

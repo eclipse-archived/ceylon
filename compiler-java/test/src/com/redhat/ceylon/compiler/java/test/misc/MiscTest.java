@@ -161,19 +161,17 @@ public class MiscTest extends CompilerTest {
                 "net",
                 "process",
         };
-        String sourcePrefix = "../ceylon-sdk/";
+        String sourceDir = "../ceylon-sdk/source";
         // don't run this if the SDK is not checked out
-        File sdkFile = new File(sourcePrefix);
+        File sdkFile = new File(sourceDir);
         if(!sdkFile.exists())
             return;
-        StringBuilder sourcePath = new StringBuilder();
+        
         java.util.List<String> moduleNames = new ArrayList<String>(modules.length);
         for(String module : modules){
             moduleNames.add("ceylon." + module);
-            if(sourcePath.length() > 0)
-                sourcePath.append(File.pathSeparator);
-            sourcePath.append(sourcePrefix).append(module).append(File.separator).append("source");
         }
+        
         CeyloncTool compiler;
         try {
             compiler = new CeyloncTool();
@@ -183,7 +181,7 @@ public class MiscTest extends CompilerTest {
         }
         CeyloncFileManager fileManager = (CeyloncFileManager)compiler.getStandardFileManager(null, null, null);
         CeyloncTaskImpl task = (CeyloncTaskImpl) compiler.getTask(null, fileManager, null, 
-                Arrays.asList("-sourcepath", sourcePath.toString(), "-d", "build/classes-sdk"), 
+                Arrays.asList("-sourcepath", sourceDir, "-d", "build/classes-sdk"), 
                 moduleNames, null);
         Boolean result = task.call();
         Assert.assertEquals("Compilation failed", Boolean.TRUE, result);
