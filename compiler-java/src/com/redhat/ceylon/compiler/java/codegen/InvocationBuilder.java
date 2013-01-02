@@ -540,7 +540,7 @@ abstract class SimpleInvocationBuilder extends InvocationBuilder {
         if(wrapIntoArray){
             // must have at least one arg, so take the last one
             ProducedType parameterType = getParameterType(numArguments-1);
-            JCExpression arrayType = gen.makeJavaType(parameterType);
+            JCExpression arrayType = gen.makeJavaType(parameterType, JT_RAW);
             appendArgument(gen.make().NewArray(arrayType, List.<JCExpression>nil(), arrayWrap.toList()));
         }
     }

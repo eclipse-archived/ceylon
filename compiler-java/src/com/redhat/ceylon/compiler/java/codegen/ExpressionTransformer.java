@@ -1524,7 +1524,7 @@ public class ExpressionTransformer extends AbstractTransformer {
 
         // new array
         Naming.SyntheticName newArrayName = varBaseName.suffixedBy("$4");
-        JCExpression arrayElementType = makeJavaType(expr.getTarget().getType(), JT_NO_PRIMITIVES);
+        JCExpression arrayElementType = makeJavaType(expr.getTarget().getType(), JT_RAW | JT_NO_PRIMITIVES);
         JCExpression newArrayType = make().TypeArray(arrayElementType);
         JCNewArray newArrayExpr = make().NewArray(arrayElementType, List.<JCExpression>of(sizeName.makeIdent()), null);
 

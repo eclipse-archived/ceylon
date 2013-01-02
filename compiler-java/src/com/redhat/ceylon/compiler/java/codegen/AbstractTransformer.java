@@ -2131,7 +2131,7 @@ public abstract class AbstractTransformer implements Transformation {
                 List.of(make().VarDef(make().Modifiers(0), 
                         tempName.asName(), 
                         make().TypeArray(makeJavaType(seqElemType, makeJavaTypeOpts)), 
-                        make().NewArray(makeJavaType(seqElemType, makeJavaTypeOpts), 
+                        make().NewArray(makeJavaType(seqElemType, JT_NO_PRIMITIVES | JT_RAW),
                                 List.<JCExpression>nil(), 
                                 elems))), 
                 List.<JCStatement>nil(), 
@@ -2290,14 +2290,14 @@ public abstract class AbstractTransformer implements Transformation {
 
     private JCExpression objectIterableToJavaArray(ProducedType type,
             ProducedType iterableType, JCExpression expr) {
-        JCExpression klass = makeJavaType(type, AbstractTransformer.JT_CLASS_NEW | AbstractTransformer.JT_NO_PRIMITIVES);
+        JCExpression klass = makeJavaType(type, JT_CLASS_NEW | JT_NO_PRIMITIVES);
         JCExpression klassLiteral = make().Select(klass, names().fromString("class"));
         return makeUtilInvocation("toArray", List.of(expr, klassLiteral), null);
     }
     
     private JCExpression objectSequentialToJavaArray(ProducedType type, JCExpression expr) {
-        JCExpression klass1 = makeJavaType(type, AbstractTransformer.JT_CLASS_NEW | AbstractTransformer.JT_NO_PRIMITIVES);
-        JCExpression klass2 = makeJavaType(type, AbstractTransformer.JT_CLASS_NEW | AbstractTransformer.JT_NO_PRIMITIVES);
+        JCExpression klass1 = makeJavaType(type, JT_RAW | JT_NO_PRIMITIVES);
+        JCExpression klass2 = makeJavaType(type, JT_CLASS_NEW | JT_NO_PRIMITIVES);
         Naming.SyntheticName seqName = naming.temp().suffixedBy("$0");
 
         ProducedType fixedSizedType = typeFact().getSequentialDeclaration().getProducedType(null, Arrays.asList(type));
