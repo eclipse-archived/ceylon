@@ -354,12 +354,12 @@ public class RefinementVisitor extends Visitor {
                 that.addError("shared member is not a method, attribute, class, or interface", 1200);
             }
             
-            boolean mayBeRefined = dec.isShared() &&
-                    (dec instanceof Getter || 
+            boolean mayBeRefined = 
+                    dec instanceof Getter || 
                     dec instanceof Value || 
                     dec instanceof Method ||
                     dec instanceof Class ||
-                    dec instanceof Parameter);
+                    dec instanceof Parameter;
             if (!mayBeRefined) {
                 checkNonrefinableDeclaration(that, dec);
             }
@@ -368,9 +368,9 @@ public class RefinementVisitor extends Visitor {
                 checkNonMember(that, dec);
             }
             
-            if (!dec.isShared()) {
+            /*if (!dec.isShared()) {
                 checkUnshared(that, dec);
-            }
+            }*/
             
             if (member) {
                 if (!(dec instanceof Setter)) {
@@ -554,7 +554,7 @@ public class RefinementVisitor extends Visitor {
                 && ((TypedDeclaration)member.getDeclaration()).hasUncheckedNullType();
     }
 
-    private void checkUnshared(Tree.Declaration that, Declaration dec) {
+    /*private void checkUnshared(Tree.Declaration that, Declaration dec) {
         if (dec.isActual()) {
             that.addError("actual member is not shared", 701);
         }
@@ -564,18 +564,18 @@ public class RefinementVisitor extends Visitor {
         if (dec.isDefault()) {
             that.addError("default member is not shared", 703);
         }
-    }
+    }*/
 
     private void checkNonrefinableDeclaration(Tree.Declaration that,
             Declaration dec) {
         if (dec.isActual()) {
-            that.addError("actual declaration is not a getter, simple attribute, or class", 1301);
+            that.addError("actual declaration is not a method, getter, simple attribute, or class", 1301);
         }
         if (dec.isFormal()) {
-            that.addError("formal declaration is not a getter, simple attribute, or class", 1302);
+            that.addError("formal declaration is not a method, getter, simple attribute, or class", 1302);
         }
         if (dec.isDefault()) {
-            that.addError("default declaration is not a getter, simple attribute, or class", 1303);
+            that.addError("default declaration is not a method, getter, simple attribute, or class", 1303);
         }
     }
 
@@ -593,13 +593,13 @@ public class RefinementVisitor extends Visitor {
     	}
     	else if (!dec.isShared()) {
     		if (dec.isActual()) {
-    			that.addError("actual declaration is not shared: " + dec.getName(), 1301);
+    			that.addError("actual declaration must be shared: " + dec.getName(), 1301);
     		}
     		if (dec.isFormal()) {
-    			that.addError("formal declaration is not shared: " + dec.getName(), 1302);
+    			that.addError("formal declaration must be shared: " + dec.getName(), 1302);
     		}
     		if (dec.isDefault()) {
-    			that.addError("default declaration is not shared: " + dec.getName(), 1303);
+    			that.addError("default declaration must be shared: " + dec.getName(), 1303);
     		}
     	}
     	else {
