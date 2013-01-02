@@ -894,7 +894,7 @@ public class IssuesTest extends CompilerTest {
     }
 
     @Test
-    public void testBug929() {
+    public void testBug929_fail() {
         compile("bug09xx/Bug929.ceylon");
         run("com.redhat.ceylon.compiler.java.test.issues.bug09xx.bug929_1");
         run("com.redhat.ceylon.compiler.java.test.issues.bug09xx.bug929_2");
