@@ -36,7 +36,7 @@ public class CeyloncAntTest extends AntBasedTest {
         System.setProperty("script.cey", "some/nonsense/path");
         AntResult result = ant("foo-alone");
         Assert.assertEquals(1, result.getStatusCode());
-        assertContains(result.getStdout(), "Failed to find 'cey' executable in some/nonsense/path");
+        assertContains(result.getStdout(), "Failed to find 'ceylon' executable in some/nonsense/path");
     }
     
     @Test
@@ -108,7 +108,7 @@ public class CeyloncAntTest extends AntBasedTest {
     public void testNoModuleOrFiles() throws Exception {
         AntResult result = ant("no-module-or-files");
         Assert.assertEquals(1, result.getStatusCode());
-        assertContains(result.getStdout(), "You must specify a <module> and/or <files>");
+        assertContains(result.getStdout(), "You must specify a <module>, <moduleset> and/or <files>");
     }
     
     @Test

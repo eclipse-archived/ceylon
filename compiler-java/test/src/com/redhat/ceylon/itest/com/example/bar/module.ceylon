@@ -18,5 +18,5 @@
  * MA  02110-1301, USA.
  */
 module com.example.bar '1.0' {
-    import com.example.foo '1.0';
+    export import com.example.foo '1.0';
 }
