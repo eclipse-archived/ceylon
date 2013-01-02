@@ -365,71 +365,47 @@ final class instantiatorDelegates_ {
             }
             returning $arg$43$callable$.Sequenced$new($arg$43$0, $arg$43$1$0);
         );
-        a.Sequenced$new(true, (
+        a.Sequenced$new(true, new .com.redhat.ceylon.compiler.java.language.ArraySequence<.ceylon.language.Integer>(.ceylon.language.Integer.instance(1L)));
+        (
             let
             {
-                .ceylon.language.Integer[] $ceylontmp44 = new .ceylon.language.Integer[]{.ceylon.language.Integer.instance(1L)};
+                .com.redhat.ceylon.compiler.java.test.structure.mcr.InstantiatorDelegates<.ceylon.language.String> $arg$44$callable$ = a;
+                boolean $arg$44$0 = true;
+                .ceylon.language.Integer $arg$44$1$0 = .ceylon.language.Integer.instance(1L);
+                .ceylon.language.Sequential<? extends .ceylon.language.Integer> $arg$44$1$1 = new .com.redhat.ceylon.compiler.java.language.ArraySequence($arg$44$1$0);
             }
-            returning new .com.redhat.ceylon.compiler.java.language.ArraySequence<.ceylon.language.Integer>($ceylontmp44);
-        ));
+            returning $arg$44$callable$.Sequenced$new($arg$44$0, $arg$44$1$1);
+        );
+        a.Sequenced$new(true, new .com.redhat.ceylon.compiler.java.language.ArraySequence<.ceylon.language.Integer>(.ceylon.language.Integer.instance(1L), .ceylon.language.Integer.instance(2L)));
         (
             let
             {
                 .com.redhat.ceylon.compiler.java.test.structure.mcr.InstantiatorDelegates<.ceylon.language.String> $arg$45$callable$ = a;
                 boolean $arg$45$0 = true;
                 .ceylon.language.Integer $arg$45$1$0 = .ceylon.language.Integer.instance(1L);
-                .ceylon.language.Sequential<? extends .ceylon.language.Integer> $arg$45$1$1 = (
-                    let
-                    {
-                        .java.lang.Object[] $ceylontmp46 = new .java.lang.Object[]{$arg$45$1$0};
-                    }
-                    returning new .com.redhat.ceylon.compiler.java.language.ArraySequence($ceylontmp46);
-                );
+                .ceylon.language.Integer $arg$45$1$1 = .ceylon.language.Integer.instance(2L);
+                .ceylon.language.Sequential<? extends .ceylon.language.Integer> $arg$45$1$2 = new .com.redhat.ceylon.compiler.java.language.ArraySequence($arg$45$1$0, $arg$45$1$1);
             }
-            returning $arg$45$callable$.Sequenced$new($arg$45$0, $arg$45$1$1);
-        );
-        a.Sequenced$new(true, (
-            let
-            {
-                .ceylon.language.Integer[] $ceylontmp47 = new .ceylon.language.Integer[]{.ceylon.language.Integer.instance(1L), .ceylon.language.Integer.instance(2L)};
-            }
-            returning new .com.redhat.ceylon.compiler.java.language.ArraySequence<.ceylon.language.Integer>($ceylontmp47);
-        ));
-        (
-            let
-            {
-                .com.redhat.ceylon.compiler.java.test.structure.mcr.InstantiatorDelegates<.ceylon.language.String> $arg$48$callable$ = a;
-                boolean $arg$48$0 = true;
-                .ceylon.language.Integer $arg$48$1$0 = .ceylon.language.Integer.instance(1L);
-                .ceylon.language.Integer $arg$48$1$1 = .ceylon.language.Integer.instance(2L);
-                .ceylon.language.Sequential<? extends .ceylon.language.Integer> $arg$48$1$2 = (
-                    let
-                    {
-                        .java.lang.Object[] $ceylontmp49 = new .java.lang.Object[]{$arg$48$1$0, $arg$48$1$1};
-                    }
-                    returning new .com.redhat.ceylon.compiler.java.language.ArraySequence($ceylontmp49);
-                );
-            }
-            returning $arg$48$callable$.Sequenced$new($arg$48$0, $arg$48$1$2);
+            returning $arg$45$callable$.Sequenced$new($arg$45$0, $arg$45$1$2);
         );
         a.SequencedDefault$new(true);
         (
             let
             {
-                .com.redhat.ceylon.compiler.java.test.structure.mcr.InstantiatorDelegates<.ceylon.language.String> $arg$50$callable$ = a;
-                boolean $arg$50$0 = true;
-                .ceylon.language.Sequential<? extends .ceylon.language.Integer> $arg$50$1$0 = $arg$50$callable$.$SequencedDefault$init$i($arg$50$0);
+                .com.redhat.ceylon.compiler.java.test.structure.mcr.InstantiatorDelegates<.ceylon.language.String> $arg$46$callable$ = a;
+                boolean $arg$46$0 = true;
+                .ceylon.language.Sequential<? extends .ceylon.language.Integer> $arg$46$1$0 = $arg$46$callable$.$SequencedDefault$init$i($arg$46$0);
             }
-            returning $arg$50$callable$.SequencedDefault$new($arg$50$0, $arg$50$1$0);
+            returning $arg$46$callable$.SequencedDefault$new($arg$46$0, $arg$46$1$0);
         );
         a.TypeArg$new(.ceylon.language.String.instance(""));
         (
             let
             {
-                .com.redhat.ceylon.compiler.java.test.structure.mcr.InstantiatorDelegates<.ceylon.language.String> $arg$51$callable$ = a;
-                .ceylon.language.String $arg$51$0 = .ceylon.language.String.instance("");
+                .com.redhat.ceylon.compiler.java.test.structure.mcr.InstantiatorDelegates<.ceylon.language.String> $arg$47$callable$ = a;
+                .ceylon.language.String $arg$47$0 = .ceylon.language.String.instance("");
             }
-            returning $arg$51$callable$.TypeArg$new($arg$51$0);
+            returning $arg$47$callable$.TypeArg$new($arg$47$0);
         );
     }
 }

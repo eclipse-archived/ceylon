@@ -22,19 +22,7 @@ class SequencedParameterClassInstantiation {
     
     public final void m() {
         final .com.redhat.ceylon.compiler.java.test.expression.instantiation.SequencedParameterClassInstantiation a = new .com.redhat.ceylon.compiler.java.test.expression.instantiation.SequencedParameterClassInstantiation(1L);
-        final .com.redhat.ceylon.compiler.java.test.expression.instantiation.SequencedParameterClassInstantiation b = new .com.redhat.ceylon.compiler.java.test.expression.instantiation.SequencedParameterClassInstantiation(1L, (
-            let
-            {
-                .ceylon.language.Integer[] $ceylontmp2 = new .ceylon.language.Integer[]{.ceylon.language.Integer.instance(2L)};
-            }
-            returning new .com.redhat.ceylon.compiler.java.language.ArraySequence<.ceylon.language.Integer>($ceylontmp2);
-        ));
-        final .com.redhat.ceylon.compiler.java.test.expression.instantiation.SequencedParameterClassInstantiation c = new .com.redhat.ceylon.compiler.java.test.expression.instantiation.SequencedParameterClassInstantiation(1L, (
-            let
-            {
-                .ceylon.language.Integer[] $ceylontmp3 = new .ceylon.language.Integer[]{.ceylon.language.Integer.instance(2L), .ceylon.language.Integer.instance(3L)};
-            }
-            returning new .com.redhat.ceylon.compiler.java.language.ArraySequence<.ceylon.language.Integer>($ceylontmp3);
-        ));
+        final .com.redhat.ceylon.compiler.java.test.expression.instantiation.SequencedParameterClassInstantiation b = new .com.redhat.ceylon.compiler.java.test.expression.instantiation.SequencedParameterClassInstantiation(1L, new .com.redhat.ceylon.compiler.java.language.ArraySequence<.ceylon.language.Integer>(.ceylon.language.Integer.instance(2L)));
+        final .com.redhat.ceylon.compiler.java.test.expression.instantiation.SequencedParameterClassInstantiation c = new .com.redhat.ceylon.compiler.java.test.expression.instantiation.SequencedParameterClassInstantiation(1L, new .com.redhat.ceylon.compiler.java.language.ArraySequence<.ceylon.language.Integer>(.ceylon.language.Integer.instance(2L), .ceylon.language.Integer.instance(3L)));
     }
 }

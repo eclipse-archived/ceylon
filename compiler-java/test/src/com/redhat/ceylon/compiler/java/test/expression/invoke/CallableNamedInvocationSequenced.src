@@ -19,31 +19,19 @@ final class callableNamedInvocationSequenced_f_ {
             {
                 .ceylon.language.Integer $arg$1$0 = .ceylon.language.Integer.instance(1L);
                 .ceylon.language.String $arg$1$1$0 = .ceylon.language.String.instance("");
-                .ceylon.language.Sequential<? extends .ceylon.language.String> $arg$1$1$1 = (
-                    let
-                    {
-                        .java.lang.Object[] $ceylontmp2 = new .java.lang.Object[]{$arg$1$1$0};
-                    }
-                    returning new .com.redhat.ceylon.compiler.java.language.ArraySequence($ceylontmp2);
-                );
+                .ceylon.language.Sequential<? extends .ceylon.language.String> $arg$1$1$1 = new .com.redhat.ceylon.compiler.java.language.ArraySequence($arg$1$1$0);
             }
             returning foo.$call($arg$1$0, $arg$1$1$1);
         );
         (
             let
             {
-                .ceylon.language.Integer $arg$3$0 = .ceylon.language.Integer.instance(1L);
-                .ceylon.language.String $arg$3$1$0 = .ceylon.language.String.instance("");
-                .ceylon.language.String $arg$3$1$1 = .ceylon.language.String.instance("");
-                .ceylon.language.Sequential<? extends .ceylon.language.String> $arg$3$1$2 = (
-                    let
-                    {
-                        .java.lang.Object[] $ceylontmp4 = new .java.lang.Object[]{$arg$3$1$0, $arg$3$1$1};
-                    }
-                    returning new .com.redhat.ceylon.compiler.java.language.ArraySequence($ceylontmp4);
-                );
+                .ceylon.language.Integer $arg$2$0 = .ceylon.language.Integer.instance(1L);
+                .ceylon.language.String $arg$2$1$0 = .ceylon.language.String.instance("");
+                .ceylon.language.String $arg$2$1$1 = .ceylon.language.String.instance("");
+                .ceylon.language.Sequential<? extends .ceylon.language.String> $arg$2$1$2 = new .com.redhat.ceylon.compiler.java.language.ArraySequence($arg$2$1$0, $arg$2$1$1);
             }
-            returning foo.$call($arg$3$0, $arg$3$1$2);
+            returning foo.$call($arg$2$0, $arg$2$1$2);
         );
     }
 }

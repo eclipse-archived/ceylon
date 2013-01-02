@@ -40,13 +40,7 @@ final class foo_ {
                 .com.redhat.ceylon.compiler.java.test.expression.invoke.NamedArgumentSequencedTypeParamInvocation<.ceylon.language.String> $arg$2$callable$ = new .com.redhat.ceylon.compiler.java.test.expression.invoke.NamedArgumentSequencedTypeParamInvocation<.ceylon.language.String>();
                 .ceylon.language.String $arg$2$0$0 = .ceylon.language.String.instance("x");
                 .ceylon.language.String $arg$2$0$1 = .ceylon.language.String.instance("y");
-                .ceylon.language.Sequential<? extends .ceylon.language.String> $arg$2$0$2 = (
-                    let
-                    {
-                        .java.lang.Object[] $ceylontmp3 = new .java.lang.Object[]{$arg$2$0$0, $arg$2$0$1};
-                    }
-                    returning new .com.redhat.ceylon.compiler.java.language.ArraySequence($ceylontmp3);
-                );
+                .ceylon.language.Sequential<? extends .ceylon.language.String> $arg$2$0$2 = new .com.redhat.ceylon.compiler.java.language.ArraySequence($arg$2$0$0, $arg$2$0$1);
                 $arg$2$callable$.algo($arg$2$0$2);
             }
             returning null;
