@@ -50,7 +50,7 @@ public class MainForJsTest {
         if (jsc.generate()) {
             validateOutput(typeChecker, opts);
         } else {
-            jsc.printErrors(System.out);
+            jsc.printErrorsAndCount(System.out);
             System.out.println("Skipping output validation.");
         }
         System.out.println("Compiling with optimization");

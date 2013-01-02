@@ -306,7 +306,7 @@ public class JsCompiler {
     }
 
     /** Print all the errors found during compilation to the specified stream. */
-    public void printErrors(PrintStream out) {
+    public int printErrors(PrintStream out) {
         int count = 0;
         for (Message err: errors) {
             if (err instanceof AnalysisWarning && !(err instanceof AnalysisError)) {
@@ -325,6 +325,11 @@ public class JsCompiler {
             out.println();
             count++;
         }
+        return count;
+    }
+    
+    public void printErrorsAndCount(PrintStream out) {
+        int count = printErrors(out);
         out.printf("%d errors.%n", count);
     }
 
