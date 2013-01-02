@@ -43,6 +43,14 @@ public class CeylonCompileAntTask extends LazyCeylonAntTask  {
 
     static final String FAIL_MSG = "Compile failed; see the compiler error output for details.";
 
+    public static class JavacOption {
+        String javacOption;
+        public void addText(String javacOption) {
+            this.javacOption = javacOption;
+        }
+        
+    }
+    
     private static final FileFilter ARTIFACT_FILTER = new FileFilter() {
         @Override
         public boolean accept(File pathname) {
@@ -58,9 +66,9 @@ public class CeylonCompileAntTask extends LazyCeylonAntTask  {
     private final ModuleSet moduleSet = new ModuleSet();
     private FileSet files;
     private String verbose;
-    private Boolean bootstrap;
     private String user;
     private String pass;
+    private List<String> javacOptions = new ArrayList<String>(0);
 
     public CeylonCompileAntTask() {
         super("compile");
@@ -82,10 +90,6 @@ public class CeylonCompileAntTask extends LazyCeylonAntTask  {
 
     public void setVerbose(String verbose){
         this.verbose = verbose;
-    }
-
-    public void setBootstrap(Boolean bootstrap){
-        this.bootstrap = bootstrap;
     }
 
     /**
@@ -140,6 +144,11 @@ public class CeylonCompileAntTask extends LazyCeylonAntTask  {
         this.files = fileset;
     }
 
+    /** Adds an option to be passed to javac via a {@code --javac=...} option */
+    public void addConfiguredJavacOption(JavacOption javacOption) {
+        this.javacOptions.add(javacOption.javacOption);
+    }
+    
     /**
      * Clear the list of files to be compiled and copied..
      */
@@ -213,8 +222,8 @@ public class CeylonCompileAntTask extends LazyCeylonAntTask  {
     protected void completeCommandline(Commandline cmd) {
         
         appendVerboseOption(cmd, verbose);
-        if(bootstrap != null && bootstrap.booleanValue()){
-            cmd.createArgument().setValue("--javac=-Xbootstrapceylon");
+        for (String javacOption : javacOptions) {
+            appendOptionArgument(cmd, "--javac", javacOption);
         }
         
         appendUserOption(cmd, user);
