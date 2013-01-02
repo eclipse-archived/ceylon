@@ -1,0 +1,15 @@
+<?xml version="1.0"?>
+<antlib>
+    <typedef name="moduleset" classname="com.redhat.ceylon.ant.ModuleSet"/>
+    <typedef name="sourcemodules" classname="com.redhat.ceylon.ant.SourceModules"/>
+    <typedef name="reposet" classname="com.redhat.ceylon.ant.RepoSet"/>
+    
+    <typedef name="ceylon-compile" classname="com.redhat.ceylon.ant.CeylonCompileAntTask"/>
+    <typedef name="ceylon-compile-js" classname="com.redhat.ceylon.ant.CeylonCompileJsAntTask"/>
+    
+    <typedef name="ceylon-run" classname="com.redhat.ceylon.ant.CeylonRunAntTask"/>
+    <typedef name="ceylon-run-js" classname="com.redhat.ceylon.ant.CeylonRunJsAntTask"/>
+    
+    <typedef name="ceylon-doc" classname="com.redhat.ceylon.ant.CeylonDocAntTask"/>
+    <typedef name="ceylon-import-jar" classname="com.redhat.ceylon.ant.CeylonImportJarAntTask"/>
+</antlib>

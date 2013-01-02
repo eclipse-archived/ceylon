@@ -333,6 +333,7 @@
       <fileset dir="${ceylonc.src}">
         <include name="com/redhat/**/resources/**"/>
       	<include name="com/redhat/**/*.properties"/>
+      	<include name="com/redhat/ceylon/ant/antlib.xml"/>
         <include name="META-INF/**"/>
       </fileset>
   	</copy>

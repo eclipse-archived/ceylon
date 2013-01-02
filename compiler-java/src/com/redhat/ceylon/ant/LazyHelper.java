@@ -23,21 +23,25 @@ import java.io.File;
 import java.io.FileFilter;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.util.Collection;
 import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
 
 import org.apache.tools.ant.Project;
 
-
+/**
+ * Encapsulates file modification time logic for figuring out whether a tool 
+ * execution is actually required: Are any sources newer than the output.
+ * @author tom
+ */
 abstract class LazyHelper {
-
-    private final LazyTask task;
     
-    public LazyHelper(LazyTask task) {
+    private final Lazy task;
+    
+    public LazyHelper(Lazy task) {
         this.task = task;
     }
-
     
     long newestSourceFile(long mtime, File file) {
         if (file.isDirectory()) {
@@ -70,11 +74,11 @@ abstract class LazyHelper {
      * compilation based on comparison of file modification times
      * @return true if everything was filtered out 
      */
-    protected <M extends Module> boolean filterModules(List<M> modules) {
+    protected boolean filterModules(Collection<Module> modules) {
         if (task.getNoMtimeCheck() || isOutputRepositoryURL()) {
             return false;
         }
-        Iterator<M> iterator = modules.iterator();
+        Iterator<Module> iterator = modules.iterator();
         while (iterator.hasNext()) {
             Module module = iterator.next();
             long newest = Long.MIN_VALUE;

@@ -52,7 +52,7 @@ class ModuleDescriptorReader {
             pu.visitSrcModulePhase();
         }
         ModuleManager moduleManager = pus.getModuleManager();
-        List<String> name = ModuleManager.splitModuleName(module.name);
+        List<String> name = ModuleManager.splitModuleName(module.getName());
         this.moduleDescriptor = moduleManager.getOrCreateModule(name, null);
     }
     

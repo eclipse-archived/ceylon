@@ -4,6 +4,11 @@ import org.apache.tools.ant.BuildException;
 import org.apache.tools.ant.Project;
 import org.apache.tools.ant.Task;
 
+/**
+ * Utility for managing task exit according to a tasks' 
+ * {@code failonerror} and {@code errorproperty} attributes.
+ * @author tom
+ */
 class ExitHandler {
 
     private String errorProperty;

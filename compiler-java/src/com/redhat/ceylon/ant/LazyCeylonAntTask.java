@@ -3,8 +3,8 @@ package com.redhat.ceylon.ant;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.LinkedList;
 import java.util.List;
+import java.util.Set;
 
 import org.apache.tools.ant.Task;
 import org.apache.tools.ant.types.Path;
@@ -13,16 +13,21 @@ import org.apache.tools.ant.types.Path;
 /**
  * Baseclass for tasks which only do something if source files are newer than
  * corresponding module artifacts in the output repository.
+ * @see LazyHelper
  * @author tom
  */
-abstract class LazyTask extends Task {
+abstract class LazyCeylonAntTask extends CeylonAntTask implements Lazy {
 
     private Path src;
     private String out;
     private Boolean noMtimeCheck = false;
     private String systemRepository;
-    private List<Rep> repositories = new LinkedList<Rep>();
+    private RepoSet reposet = new RepoSet();
     private final Task task = this;
+    
+    protected LazyCeylonAntTask(String toolName) {
+        super(toolName);
+    }
     
     /**
      * Sets whether a file modification time check should be performed
@@ -48,7 +53,7 @@ abstract class LazyTask extends Task {
         }
     }
 
-    protected List<File> getSrc() {
+    public List<File> getSrc() {
         if (this.src == null) {
             return Collections.singletonList(task.getProject().resolveFile("source"));
         }
@@ -61,14 +66,21 @@ abstract class LazyTask extends Task {
     }
 
     /**
-     * Adds a module repository
+     * Adds a module repository for a {@code <rep>} nested element
      * @param rep the new module repository
      */
-    public void addRep(Rep rep) {
-        repositories.add(rep);
+    public void addConfiguredRep(Repo rep) {
+        reposet.addConfiguredRepo(rep);
     }
-    protected List<Rep> getRepositories() {
-        return repositories;
+    /**
+     * Adds a set of module repositories for a {@code <reposet>} nested element
+     * @param reposet the new module repository
+     */
+    public void addConfiguredReposet(RepoSet reposet) {
+        this.reposet.addConfiguredRepoSet(reposet);
+    }
+    protected Set<Repo> getReposet() {
+        return reposet.getRepos();
     }
 
     protected String getSystemRepository() {
@@ -92,7 +104,7 @@ abstract class LazyTask extends Task {
         this.out = out;
     }
 
-    protected String getOut() {
+    public String getOut() {
         if (this.out == null) {
             return new File(task.getProject().getBaseDir(), "modules").getPath();
         }
