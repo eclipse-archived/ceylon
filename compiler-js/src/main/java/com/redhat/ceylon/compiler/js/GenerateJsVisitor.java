@@ -1696,6 +1696,7 @@ public class GenerateJsVisitor extends Visitor
     @Override
     public void visit(InvocationExpression that) {
         if (that.getPrimary() instanceof BaseMemberExpression && that.getPositionalArgumentList() != null) {
+            //This is just for hex() and bin() literals
             List<PositionalArgument> args = that.getPositionalArgumentList().getPositionalArguments();
             if (args.size() == 1 && args.get(0).getExpression() != null) {
                 Term term = args.get(0).getExpression().getTerm();
@@ -1728,12 +1729,25 @@ public class GenerateJsVisitor extends Visitor
 
             Map<String, String> argVarNames = defineNamedArguments(argList);
 
+            TypeArguments targs = that.getPrimary() instanceof BaseTypeExpression ? ((BaseTypeExpression)that.getPrimary()).getTypeArguments() : null;
+            if (targs != null && targs.getTypeModels() != null && !targs.getTypeModels().isEmpty()) {
+                out(clAlias, "reify(");
+            }
             that.getPrimary().visit(this);
             if (that.getPrimary() instanceof Tree.MemberOrTypeExpression) {
                 Tree.MemberOrTypeExpression mte = (Tree.MemberOrTypeExpression) that.getPrimary();
                 if (mte.getDeclaration() instanceof Functional) {
                     Functional f = (Functional) mte.getDeclaration();
-                    applyNamedArguments(argList, f, argVarNames, getSuperMemberScope(mte)!=null);
+                    TypeArguments _targs = null;
+                    if (targs == null && mte instanceof BaseMemberExpression) {
+                        _targs = ((BaseMemberExpression)mte).getTypeArguments();
+                    }
+                    applyNamedArguments(argList, f, argVarNames, getSuperMemberScope(mte)!=null, _targs);
+                    if (targs != null && targs.getTypeModels() != null && !targs.getTypeModels().isEmpty()) {
+                        out(",");
+                        TypeUtils.printTypeArguments(that, targs.getTypeModels(), this);
+                        out(")");
+                    }
                 }
             }
             out(")");
@@ -1756,9 +1770,30 @@ public class GenerateJsVisitor extends Visitor
                 out("(");
             }
             argList.visit(this);
-            out(")");
+            if (targs == null && that.getPrimary() instanceof BaseMemberExpression) {
+                targs = ((BaseMemberExpression)that.getPrimary()).getTypeArguments();
+                if (targs == null || targs.getTypeModels() == null || targs.getTypeModels().isEmpty()) {
+                    out(")");
+                    targs = null;
+                } else {
+                    if (argList.getPositionalArguments().size() > 0 || argList.getComprehension() != null) {
+                        out(",");
+                    }
+                    Declaration bmed = ((BaseMemberExpression)that.getPrimary()).getDeclaration();
+                    if (bmed instanceof Functional) {
+                        if (((Functional) bmed).getParameterLists().get(0).getParameters().size() > argList.getPositionalArguments().size()) {
+                            out("undefined,");
+                        }
+                    }
+                }
+            } else {
+                out(")");
+                //Output a comma only for type initializers with type arguments
+                if (targs != null && targs.getTypeModels() != null && !targs.getTypeModels().isEmpty()) {
+                    out(",");
+                }
+            }
             if (targs != null && targs.getTypeModels() != null && !targs.getTypeModels().isEmpty()) {
-                out(",");
                 TypeUtils.printTypeArguments(that, targs.getTypeModels(), this);
                 out(")");
             }
@@ -1815,7 +1850,7 @@ public class GenerateJsVisitor extends Visitor
     }
 
     private void applyNamedArguments(NamedArgumentList argList, Functional func,
-                Map<String, String> argVarNames, boolean superAccess) {
+                Map<String, String> argVarNames, boolean superAccess, TypeArguments targs) {
         boolean firstList = true;
         for (com.redhat.ceylon.compiler.typechecker.model.ParameterList plist : func.getParameterLists()) {
             List<String> argNames = argList.getNamedArgumentList().getArgumentNames();
@@ -1842,6 +1877,10 @@ public class GenerateJsVisitor extends Visitor
                     out("undefined");
                 }
                 first = false;
+            }
+            if (targs != null) {
+                if (!first) out(",");
+                TypeUtils.printTypeArguments(argList, targs.getTypeModels(), this);
             }
             out(")");
             firstList = false;
