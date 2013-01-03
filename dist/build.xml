@@ -66,6 +66,12 @@ Some more basic ant tasks:
             description="Sets up a new clean environment for development">
     </target>
 
+    <target name="setup-admins"
+            description="Sets up a new clean environment for developers with write access to the core repositories">
+        <property name="github-url" value="git@github.com:"/>
+        <antcall target="setup" />
+    </target>
+
     <target name="publish-all" depends="siblings,clean-projects,install-all"
             description="Publishes all sibling projects">
         <foreach list="${modules}"
@@ -122,6 +128,7 @@ Used with another target such as 'package'.">
         <property name="ceylon-runtime.dir" value="${projects.base.dir}/ceylon-runtime"/>
         <property name="ceylon-js.dir" value="${projects.base.dir}/ceylon-js"/>
         <property name="dist.name" value="ceylon-${ceylon.version}"/>
+        <property name="github-url" value="git://github.com/"/>
     </target>
 
     <target name="siblings"
@@ -136,6 +143,7 @@ Used with another target such as 'package'">
         <property name="ceylon-runtime.dir" value="${projects.base.dir}/ceylon-runtime"/>
         <property name="ceylon-js.dir" value="${projects.base.dir}/ceylon-js"/>
         <property name="dist.name" value="ceylon-${ceylon.version}-custom-${NOW}"/>
+        <property name="github-url" value="git://github.com/"/>
     </target>
 
     <target name="package" 
@@ -404,7 +412,7 @@ or you can go straight to the package building:
 		<echo>Cloning ${project.item.name}:</echo>
                 <exec executable="git" dir="${projects.base.dir}" failonerror="yes">
                     <arg value="clone"/>
-                    <arg value="git@github.com:ceylon/${project.item.name}.git"/>
+                    <arg value="${github-url}ceylon/${project.item.name}.git"/>
                 </exec>
             </else>
         </if>
@@ -427,7 +435,7 @@ or you can go straight to the package building:
 		<echo>Cloning ${project.item.name}:</echo>
                 <exec executable="git" dir="${projects.base.dir}" failonerror="yes">
                     <arg value="clone"/>
-                    <arg value="git@github.com:ceylon/${project.item.name}.git"/>
+                    <arg value="${github-url}ceylon/${project.item.name}.git"/>
                 </exec>
             </else>
         </if>
