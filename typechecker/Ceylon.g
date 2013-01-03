@@ -1011,11 +1011,12 @@ declarationOrStatement returns [Statement statement]
     options {memoize=true;}
     : compilerAnnotations
       ( 
-        (annotatedDeclarationStart) => declaration
-        { $statement=$declaration.declaration; }
-      | (annotatedAssertionStart) =>
-        assertion
+        (annotatedDeclarationStart) => d=declaration
+        { $statement=$d.declaration; }
+      | (annotatedAssertionStart) => assertion
         { $statement = $assertion.assertion; }
+      | (annotation LIDENTIFIER) => d1=declaration
+        { $statement=$d1.declaration; }
       | s=statement
         { $statement=$s.statement; }
       )
