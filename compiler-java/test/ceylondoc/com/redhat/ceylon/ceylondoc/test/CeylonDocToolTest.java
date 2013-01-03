@@ -198,8 +198,9 @@ public class CeylonDocToolTest {
         assertBug659ShowInheritedMembers(destDir);
         assertBug691AbbreviatedOptionalType(destDir);
         assertBug839(destDir);
+        assertBug927LoadingAndSortingInheritedMembers(destDir);
     }
-    
+
     @Test
     public void externalLinksWithModuleNamePattern() throws IOException {
         List<String> links = new ArrayList<String>();
@@ -707,7 +708,7 @@ public class CeylonDocToolTest {
     	assertMatchInFile(destDir, "class_StubClass.html",
     			Pattern.compile("Inherited Methods"));
     	assertMatchInFile(destDir, "class_StubClass.html",
-    			Pattern.compile("<td>Methods inherited from: <i class='icon-interface'></i><a class='link' href='interface_StubInterface.html'>StubInterface</a><div class='inherited-members'><a class='link' href='interface_StubInterface.html#formalMethodFromStubInterface'>formalMethodFromStubInterface</a>, <a class='link' href='interface_StubInterface.html#defaultDeprecatedMethodFromStubInterface'>defaultDeprecatedMethodFromStubInterface</a>"));
+    			Pattern.compile("<td>Methods inherited from: <i class='icon-interface'></i><a class='link' href='interface_StubInterface.html'>StubInterface</a><div class='inherited-members'><a class='link' href='interface_StubInterface.html#defaultDeprecatedMethodFromStubInterface'>defaultDeprecatedMethodFromStubInterface</a>, <a class='link' href='interface_StubInterface.html#formalMethodFromStubInterface'>formalMethodFromStubInterface</a>"));
     }
 
     private void assertBug691AbbreviatedOptionalType(File destDir) throws IOException {
@@ -720,6 +721,15 @@ public class CeylonDocToolTest {
     private void assertBug839(File destDir) throws IOException {
         assertMatchInFile(destDir, "class_StubClass.html",
                 Pattern.compile("<div class='signature'><span class='modifiers'>shared</span> Iterable&lt;Entry&lt;Integer,<span class='type-parameter'>Element</span>&amp;Object&gt;&gt; bug839&lt;Element&gt;\\(\\)</div>"));
+    }
+    
+    private void assertBug927LoadingAndSortingInheritedMembers(File destDir) throws IOException {
+        assertMatchInFile(destDir, "class_StubClass.html",
+                Pattern.compile("Inherited Attributes"));
+        assertMatchInFile(destDir, "class_StubClass.html",
+                Pattern.compile("<td>Attributes inherited from: <i class='icon-class'></i>Object<div class='inherited-members'>hash, string</div></td>"));
+        assertMatchInFile(destDir, "class_StubClass.html",
+                Pattern.compile("<td>Attributes inherited from: <i class='icon-interface'></i><a class='link' href='interface_StubInterface.html'>StubInterface</a><div class='inherited-members'><a class='link' href='interface_StubInterface.html#string'>string</a></div></td>"));
     }
     
     private File getOutputDir(CeylonDocTool tool, Module module) {

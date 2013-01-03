@@ -27,5 +27,8 @@ shared interface StubInterface {
   deprecated "Deprecated in StubInterface.defaultDeprecatedMethodFromStubInterface"
   doc "Description of StubInterface.defaultDeprecatedMethodFromStubInterface"
   shared default void defaultDeprecatedMethodFromStubInterface() {}
+  
+  doc "bug #927 in loading inherited members"
+  shared actual default String string { return ""; }
     
 }

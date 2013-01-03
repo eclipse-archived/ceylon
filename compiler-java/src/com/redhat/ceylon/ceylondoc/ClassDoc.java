@@ -181,13 +181,15 @@ public class ClassDoc extends ClassOrPackageDoc {
             for (Declaration member : members) {
                 
                 Declaration refined = member.getRefinedDeclaration();
-                if (refined == null || refined == member || refined.getContainer() instanceof Class) {
-                    List<Declaration> r = result.get(refined.getContainer());
+                if (refined == null
+                        || refined == member
+                        || (refined.getContainer() instanceof Class && refined.getContainer() != klass)) {
+                    List<Declaration> r = result.get(member.getContainer());
                     if (r == null) {
                         r = new ArrayList<Declaration>();
-                        result.put((TypeDeclaration)refined.getContainer(), r);
+                        result.put((TypeDeclaration)member.getContainer(), r);
                     }
-                    r.add(refined);
+                    r.add(member);
                 }
             }
         }
@@ -429,25 +431,32 @@ public class ClassDoc extends ClassOrPackageDoc {
 
     private void writeInheritedMembers(MemberSpecification specification, String tableTitle, String rowTitle) throws IOException {
         boolean first = true;
-
-        Map<TypeDeclaration, List<Declaration>> inheritedMembers = superclassInheritedMembers.get(specification);
-        for (Map.Entry<TypeDeclaration, List<Declaration>> entry : inheritedMembers.entrySet()) {
-            TypeDeclaration superClass = entry.getKey();
-            List<Declaration> notRefined = entry.getValue();
+        
+        Map<TypeDeclaration, List<Declaration>> superClassInheritedMembersMap = superclassInheritedMembers.get(specification);
+        List<TypeDeclaration> superClasses = new ArrayList<TypeDeclaration>(superclassInheritedMembers.get(specification).keySet());
+        Collections.sort(superClasses, DeclarationComparatorByName.INSTANCE);
+        
+        for (TypeDeclaration superClass : superClasses) {
+            List<Declaration> inheritedMembers = superClassInheritedMembersMap.get(superClass);
+            Collections.sort(inheritedMembers, DeclarationComparatorByName.INSTANCE);
 
             if (first) {
                 first = false;
                 openTable(null, tableTitle, 1, false);
             }
-            writeInheritedMembersRow(rowTitle, superClass, notRefined);
+            writeInheritedMembersRow(rowTitle, superClass, inheritedMembers);
         }
 
-        Map<TypeDeclaration, List<Declaration>> inheritedMembers2 = interfaceInheritedMembers.get(specification);
-        for (TypeDeclaration superInterface : inheritedMembers2.keySet()) {
-            List<Declaration> members = inheritedMembers2.get(superInterface);
+        Map<TypeDeclaration, List<Declaration>> superInterfaceInheritedMembersMap = interfaceInheritedMembers.get(specification);
+        List<TypeDeclaration> superInterfaces = new ArrayList<TypeDeclaration>(superInterfaceInheritedMembersMap.keySet());
+        Collections.sort(superInterfaces, DeclarationComparatorByName.INSTANCE);
+        
+        for (TypeDeclaration superInterface : superInterfaces) {
+            List<Declaration> members = superInterfaceInheritedMembersMap.get(superInterface);
             if (members == null || members.isEmpty()) {
                 continue;
             }
+            Collections.sort(members, DeclarationComparatorByName.INSTANCE);
 
             if (first) {
                 first = false;
