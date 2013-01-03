@@ -64,7 +64,7 @@ abstract class AlsoAbstract() {
 
 class AlsoBroken() extends AlsoAbstract() {
     @error x = "hello";
-    @error y = "goodbye";
+    y = "goodbye";
 }
 
 Float sq(Float x) {
@@ -157,3 +157,14 @@ interface BrokenBelow satisfies Above {
 object below satisfies Below {}
 object below2 satisfies Below2 {}
 @error object brokenBelow satisfies Below&Below2 {}
+
+class Count1(Integer x) {
+    string = "Count " x "";
+    equals(Object that) => that is Count1|Count2;
+    hash => x;
+}
+class Count2(Integer x) extends Object() {
+    string = "Count " x "";
+    equals(Object that) => that is Count1|Count2;
+    hash => x;
+}

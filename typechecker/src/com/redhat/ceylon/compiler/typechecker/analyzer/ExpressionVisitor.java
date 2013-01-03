@@ -698,7 +698,7 @@ public class ExpressionVisitor extends Visitor {
             that.addError("attribute is variable: " + 
                     RefinementVisitor.message(sv));
         }
-        if (!sv.isFormal()
+        if (!sv.isFormal() && !sv.isDefault()
                 && !sv.isShortcutRefinement()) { //this condition is here to squash a dupe message
             bme.addError("attribute is not formal: " + 
                     RefinementVisitor.message(sv));
@@ -731,7 +731,7 @@ public class ExpressionVisitor extends Visitor {
     private void refine(Method sm, Tree.BaseMemberExpression bme,
             Tree.SpecifierStatement that) {
     	ClassOrInterface c = (ClassOrInterface) that.getScope().getContainer();
-        if (!sm.isFormal()
+        if (!sm.isFormal() && !sm.isDefault()
                 && !sm.isShortcutRefinement()) { //this condition is here to squash a dupe message
             bme.addError("method is not formal: " + 
                     RefinementVisitor.message(sm));
