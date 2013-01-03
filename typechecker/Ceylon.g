@@ -1077,19 +1077,15 @@ annotatedAssertionStart
 //that distinguish declarations from
 //expressions
 declarationStart
-    : declarationKeyword 
-    | type ELLIPSIS? LIDENTIFIER
-    ;
-
-declarationKeyword
     : VALUE_MODIFIER
-    | FUNCTION_MODIFIER
+    | FUNCTION_MODIFIER LIDENTIFIER //to disambiguate anon functions
     | ASSIGN
     | VOID_MODIFIER
     | INTERFACE_DEFINITION
     | CLASS_DEFINITION
     | OBJECT_DEFINITION
-    | ALIAS
+    | ALIAS 
+    | type ELLIPSIS? LIDENTIFIER
     ;
 
 statement returns [Statement statement]
@@ -1797,13 +1793,10 @@ nonemptyParametersStart
 functionOrExpression returns [Expression expression]
     @init { FunctionArgument fa = new FunctionArgument(null);
             fa.setType(new FunctionModifier(null)); }
-    : (FUNCTION_MODIFIER? anonParametersStart /*|
-       comparableType (nonemptyParametersStart | LPAREN RPAREN COMPUTE)*/)=>
+    : (FUNCTION_MODIFIER | anonParametersStart) =>
       (
         FUNCTION_MODIFIER
-      /*|
-        comparableType
-        { fa.setType($comparableType.type); }*/
+        { fa.setType(new FunctionModifier($FUNCTION_MODIFIER)); }
       )?
       p1=parameters
       { fa.addParameterList($p1.parameterList); }
@@ -1813,7 +1806,7 @@ functionOrExpression returns [Expression expression]
         { fa.addParameterList($p2.parameterList); }
       )*
       COMPUTE?
-      e1=expression
+      e1=functionOrExpression
       { fa.setExpression($e1.expression); 
         $expression = new Expression(null); 
         $expression.setTerm(fa); }
@@ -2563,6 +2556,7 @@ interpolatedExpressionStart
     | selfReference
     | nonstringLiteral
     | prefixOperatorStart
+    | STRING_LITERAL
     ;
 
 prefixOperatorStart
