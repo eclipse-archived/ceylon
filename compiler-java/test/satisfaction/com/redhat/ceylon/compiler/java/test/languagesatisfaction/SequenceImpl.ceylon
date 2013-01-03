@@ -25,4 +25,36 @@ class SequenceImpl<out Element>() satisfies Sequence<Element> {
 
     shared actual Element[] rest = bottom;
 
+    shared actual SequenceImpl<Element> clone = bottom;
+
+    shared actual Integer hash = bottom;
+
+    shared actual Boolean equals(Object other) {
+        throw;
+    }
+    
+    shared actual Element last {
+        return bottom;
+    }
+    
+    shared actual Element[] segment(Integer from, Integer len) {
+        return bottom;
+    }
+    
+    shared actual Element[] spanTo(Integer index) {
+        return bottom;
+    }
+    
+    shared actual Element[] spanFrom(Integer index) {
+        return bottom;
+    }
+    
+    shared actual Element[] span(Integer from, Integer to) {
+        return bottom;
+    }
+    shared actual Sequence<Element> reversed = bottom;
+    shared actual Element? item(Integer index) {
+        return bottom;
+    }
+    
 }

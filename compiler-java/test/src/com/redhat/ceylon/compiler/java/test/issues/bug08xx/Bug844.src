@@ -68,6 +68,11 @@ public abstract class Bug844_Tuple<Element, First extends Element, Rest> extends
     }
     
     @.java.lang.Override
+    public final boolean getEmpty() {
+        return $ceylon$language$Sequence$this.getEmpty();
+    }
+    
+    @.java.lang.Override
     public .ceylon.language.Sequence<? extends Element> sort(final .ceylon.language.Callable<? extends .ceylon.language.Comparison> comparing) {
         return $ceylon$language$Sequence$this.sort(comparing);
     }
