@@ -1,4 +1,4 @@
-/* Based on the javac task from apache-ant-1.7.1.
+/* Originally based on the javac task from apache-ant-1.7.1.
  * The license in that file is as follows:
  *
  *   Licensed to the Apache Software Foundation (ASF) under one or
@@ -23,7 +23,6 @@
  * Copyright Red Hat Inc. and/or its affiliates and other contributors
  * as indicated by the authors tag. All rights reserved.
  */
-
 package com.redhat.ceylon.ant;
 
 import org.apache.tools.ant.BuildException;
