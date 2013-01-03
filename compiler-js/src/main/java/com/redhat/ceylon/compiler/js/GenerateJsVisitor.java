@@ -559,18 +559,12 @@ public class GenerateJsVisitor extends Visitor
             out(", ");
         }
         self(d);
-        if (d.getTypeParameters() != null && !d.getTypeParameters().isEmpty()) {
-            out(",$$$ptypes");
-        }
         out(")");
         beginBlock();
         //This takes care of top-level attributes defined before the class definition
         out("$init$", names.name(d), "();");
         endLine();
         declareSelf(d);
-        if (d.getTypeParameters() != null && !d.getTypeParameters().isEmpty()) {
-            self(d); out(".$$targs$$=$$$ptypes;"); endLine();
-        }
         referenceOuter(d);
         initParameters(that.getParameterList(), d);
         
