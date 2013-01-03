@@ -1403,8 +1403,8 @@ public class ExpressionVisitor extends Visitor {
             //note: the following is nice, even though
             //      it is not actually blessed by the
             //      language spec!
-            return unit.isEmptyType(receivingType) ?
-                    unit.getSequentialType(pt) : 
+            return receivingType.getSupertype(unit.getSequenceDeclaration())==null ?
+                    unit.getSequentialType(pt) :
                     unit.getSequenceType(pt);
         }
         else {
