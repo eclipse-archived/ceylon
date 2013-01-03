@@ -17,8 +17,12 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
  * MA  02110-1301, USA.
  */
-package com.redhat.ceylon.compiler.java.test.issues.bug08xx.bug850;
+class SequenceImpl<out Element>() satisfies Sequence<Element> {
 
-public class Bug850<T> {
-    public String foo() { return null; }
+    shared actual Integer lastIndex = bottom;
+    
+    shared actual Element first = bottom;
+
+    shared actual Element[] rest = bottom;
+
 }

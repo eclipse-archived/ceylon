@@ -1,9 +1,0 @@
-class SequenceImpl<out Element>() satisfies Sequence<Element> {
-
-    shared actual Integer lastIndex = bottom;
-    
-    shared actual Element first = bottom;
-
-    shared actual Element[] rest = bottom;
-
-}

@@ -1,5 +1,3 @@
-package com.redhat.ceylon.compiler.java.test.cmr.modules.mixed;
-
 /*
  * Copyright Red Hat Inc. and/or its affiliates and other contributors
  * as indicated by the authors tag. All rights reserved.
@@ -19,4 +17,6 @@ package com.redhat.ceylon.compiler.java.test.cmr.modules.mixed;
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
  * MA  02110-1301, USA.
  */
+package com.redhat.ceylon.compiler.java.test.cmr.modules.mixed;
+
 public class JavaClass{}

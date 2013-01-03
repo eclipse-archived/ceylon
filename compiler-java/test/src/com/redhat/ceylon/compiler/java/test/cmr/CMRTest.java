@@ -687,7 +687,7 @@ public class CMRTest extends CompilerTest {
         Assert.assertEquals(Boolean.FALSE, result);
         
         compareErrors(collector.get(Diagnostic.Kind.ERROR),
-                new CompilerError(1, "Module (transitively) imports conflicting versions of a. Version 1 and version 2 found and visible at the same time."),
+                new CompilerError(20, "Module (transitively) imports conflicting versions of a. Version 1 and version 2 found and visible at the same time."),
                 new CompilerError(21, "package not found in dependent modules: b"),
                 new CompilerError(23, "type declaration does not exist or is ambiguous: B"));
     }
