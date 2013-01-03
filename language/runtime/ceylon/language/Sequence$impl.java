@@ -33,6 +33,10 @@ public final class Sequence$impl<Element> {
         return $this;
     }
     
+    public boolean getEmpty() {
+        return false;
+    }
+    
     @SuppressWarnings({ "rawtypes", "unchecked" })
     public Sequence<? extends Element> sort(Callable<? extends Comparison> f) {
         return (Sequence)$ceylon$language$Iterable$this.sort(f).getSequence();

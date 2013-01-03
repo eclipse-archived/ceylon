@@ -48,6 +48,11 @@ public interface Sequence<Element>
     @TypeInfo("ceylon.language::Sequence<Element>")
     public Sequence<? extends Element> getSequence();
     
+    @Annotations({@Annotation("actual")})
+    @Override
+    @TypeInfo("ceylon.language::Boolean")
+    public boolean getEmpty();
+    
     /*@Override
     @TypeInfo("ceylon.language::Sequential<Element>")
     public Sequential<? extends Element> span(@Name("from") Integer from, 
