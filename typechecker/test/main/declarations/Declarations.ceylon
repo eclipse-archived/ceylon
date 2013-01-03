@@ -51,7 +51,7 @@ interface Declarations {
     @error void () {}
     @error interface {}
     @error value { return Y(); }
-    @error function () { return Y(); }
+    //@error function () { return Y(); }
     
     class XXX() {
         object x {
