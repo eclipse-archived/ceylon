@@ -621,9 +621,7 @@ public class Unit {
     
     public boolean isEmptyType(ProducedType pt) {
         //must be a subtype of Sequential<Void>
-        return getOptionalType(producedType(getSequentialDeclaration(), 
-                    getVoidDeclaration().getType()))
-                .isSupertypeOf(pt) &&
+        return isSequentialType(getDefiniteType(pt)) &&
         //must have non-empty intersection with Empty
         //and non-empty intersection with Sequence<Bottom>
                !(intersectionType(getEmptyDeclaration().getType(), pt, this)
