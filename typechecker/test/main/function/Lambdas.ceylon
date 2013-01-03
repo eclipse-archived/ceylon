@@ -46,7 +46,7 @@ class Lambdas() {
         return f(x);
     }
     
-    function sqrt(Float x) { return x**0.5; }
+    function sqrt(Float x) => x**0.5;
     
     @type:"Float" apply(2.0)(sqrt);
     @type:"Float" apply<Float>(2.0)((Float x) x**3);
@@ -102,4 +102,12 @@ class Lambdas() {
     @error String l3(String s) => (String s) s.size;
     @error Integer l4(String s, Integer i) => (String s) s.size;
     
+    String()(String) lambdalambda0 = (String s) () s;
+    String()(String) lambdalambda1 = function (String s) => function () => s;  
+    String()(String) lambdalambda2 = function (String s)() => s;
+    
+    String() lambdafun0(String s) => () s;
+    String() lambdafun1(String s) => function () => s;  
+    String() lambdafun2(String s) { return () s; }
+    String() lambdafun3(String s) { return function () => s; }
 }
