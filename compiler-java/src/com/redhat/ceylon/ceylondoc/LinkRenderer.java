@@ -275,11 +275,6 @@ public class LinkRenderer {
         String declName = decl.getName();
         Scope declContainer = decl.getContainer();
         
-        // TODO workaround https://github.com/ceylon/ceylon-compiler/issues/877
-        if( declContainer instanceof Package ) {
-            declContainer = getPackage_workaround_877(decl);
-        }
-        
         if (anchor != null) {
             throw new IllegalArgumentException();
         }
@@ -460,7 +455,7 @@ public class LinkRenderer {
                 url += "index.html";
             }
         } else if (to instanceof ClassOrInterface) {
-            Package pkg = getPackage_workaround_877((ClassOrInterface)to);
+            Package pkg = getPackage(((ClassOrInterface) to));
             url = getExternalModuleUrl(pkg.getModule());
             if (url != null) {
                 url += buildPackageUrlPath(pkg);
@@ -587,22 +582,6 @@ public class LinkRenderer {
             }
         }
         return result.booleanValue();
-    }
-
-    // TODO workaround https://github.com/ceylon/ceylon-compiler/issues/877
-    private Package getPackage_workaround_877(Declaration d) {
-        for (Module module : ceylonDocTool.getTypeChecker().getContext().getModules().getListOfModules()) {
-            for (Package pkg : module.getAllPackages()) {
-                if (pkg.getNameAsString().startsWith("java.lang")) {
-                    continue;
-                }
-                Declaration member = pkg.getMember(d.getName(), null, true);
-                if( member != null ) {
-                    return pkg;
-                }
-            }
-        }
-        return null;
     }
     
 }

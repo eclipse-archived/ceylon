@@ -696,7 +696,7 @@ public class CeylonDocToolTest {
                 Pattern.compile("Decimal.divided = <a class='link' href='https://modules.ceylon-lang.org/test/ceylon/math/0.4/module-doc/decimal/interface_Decimal.html#divided'>Decimal.divided</a>"));
         
         assertMatchInFile(destDir, "index.html",
-                Pattern.compile("ceylon.math.whole::one = <a class='link' href='https://modules.ceylon-lang.org/test/ceylon/math/0.4/module-doc/decimal/index.html#one'>ceylon.math.whole::one</a>"));
+                Pattern.compile("ceylon.math.whole::one = <a class='link' href='https://modules.ceylon-lang.org/test/ceylon/math/0.4/module-doc/whole/index.html#one'>ceylon.math.whole::one</a>"));
         assertMatchInFile(destDir, "index.html",
                 Pattern.compile("ceylon.math.whole::Whole = <a class='link' href='https://modules.ceylon-lang.org/test/ceylon/math/0.4/module-doc/whole/interface_Whole.html'>ceylon.math.whole::Whole</a>"));
         assertMatchInFile(destDir, "index.html",
