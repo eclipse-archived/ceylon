@@ -2557,7 +2557,6 @@ interpolatedExpressionStart
     | selfReference
     | nonstringLiteral
     | prefixOperatorStart
-    | STRING_LITERAL
     ;
 
 prefixOperatorStart
