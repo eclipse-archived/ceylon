@@ -7,8 +7,11 @@ import java.util.Set;
 
 import ceylon.language.Iterable;
 import ceylon.language.Iterator;
+import ceylon.language.Sequential;
+import ceylon.language.empty_;
 import ceylon.language.exhausted_;
 
+import com.redhat.ceylon.compiler.java.language.ArraySequence;
 import com.redhat.ceylon.compiler.java.metadata.Ceylon;
 import com.redhat.ceylon.compiler.java.metadata.Class;
 import com.redhat.ceylon.compiler.java.metadata.SatisfiedTypes;
@@ -444,5 +447,19 @@ public class Util {
         if(t == null)
             throw new NullPointerException();
         return t;
+    }
+    
+    /**
+     * Return {@link empty_#getEmpty$ empty} or an {@link ArraySequence}
+     * wrapping the given elements, depending on whether the given array is 
+     * empty
+     * @param elements The elements
+     * @return A Sequential
+     */
+    public static <T> Sequential<T> sequentialInstance(T[] elements) {
+        if (elements.length == 0) {
+            return (Sequential)empty_.getEmpty$();
+        }
+        return new ArraySequence<T>(elements);
     }
 }
