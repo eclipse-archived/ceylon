@@ -298,10 +298,18 @@ public class GenerateJsVisitor extends Visitor
     public void visit(ParameterList that) {
         out("(");
         boolean first=true;
+        boolean ptypes = false;
         for (Parameter param: that.getParameters()) {
             if (!first) out(",");
             out(names.name(param.getDeclarationModel()));
             first = false;
+            if (param.getDeclarationModel().getTypeDeclaration() instanceof TypeParameter) {
+                ptypes = true;
+            }
+        }
+        if (ptypes) {
+            if (!first) out(",");
+            out("$$$mptypes");
         }
         out(")");
     }
@@ -551,12 +559,18 @@ public class GenerateJsVisitor extends Visitor
             out(", ");
         }
         self(d);
+        if (d.getTypeParameters() != null && !d.getTypeParameters().isEmpty()) {
+            out(",$$$ptypes");
+        }
         out(")");
         beginBlock();
         //This takes care of top-level attributes defined before the class definition
         out("$init$", names.name(d), "();");
         endLine();
         declareSelf(d);
+        if (d.getTypeParameters() != null && !d.getTypeParameters().isEmpty()) {
+            self(d); out(".$$targs$$=$$$ptypes;"); endLine();
+        }
         referenceOuter(d);
         initParameters(that.getParameterList(), d);
         
@@ -1671,16 +1685,8 @@ public class GenerateJsVisitor extends Visitor
     @Override
     public void visit(BaseTypeExpression that) {
         if (that.getErrors() != null && !that.getErrors().isEmpty()) return;
-        if (!that.getTypeArguments().getTypeModels().isEmpty()) {
-            out(clAlias, "reify(");
-        }
         qualify(that, that.getDeclaration());
         out(names.name(that.getDeclaration()));
-        if (!that.getTypeArguments().getTypeModels().isEmpty()) {
-            out(",");
-            TypeUtils.printTypeArguments(that, that.getTypeArguments().getTypeModels(), this);
-            out(")");
-        }
     }
 
     @Override
@@ -1740,6 +1746,10 @@ public class GenerateJsVisitor extends Visitor
         }
         else {
             PositionalArgumentList argList = that.getPositionalArgumentList();
+            TypeArguments targs = that.getPrimary() instanceof BaseTypeExpression ? ((BaseTypeExpression)that.getPrimary()).getTypeArguments() : null;
+            if (targs != null && targs.getTypeModels() != null && !targs.getTypeModels().isEmpty()) {
+                out(clAlias, "reify(");
+            }
             that.getPrimary().visit(this);
             if (prototypeStyle && (getSuperMemberScope(that.getPrimary()) != null)) {
                 out(".call(this");
@@ -1753,6 +1763,11 @@ public class GenerateJsVisitor extends Visitor
             }
             argList.visit(this);
             out(")");
+            if (targs != null && targs.getTypeModels() != null && !targs.getTypeModels().isEmpty()) {
+                out(",");
+                TypeUtils.printTypeArguments(that, targs.getTypeModels(), this);
+                out(")");
+            }
         }
     }
 
@@ -2704,7 +2719,7 @@ public class GenerateJsVisitor extends Visitor
        binaryOp(that, new BinaryOpGenerator() {
            @Override
            public void generate(BinaryOpTermGenerator termgen) {
-               out(clAlias, "reify2(", clAlias, "Entry(");
+               out(clAlias, "reify(", clAlias, "Entry(");
                termgen.left();
                out(",");
                termgen.right();
