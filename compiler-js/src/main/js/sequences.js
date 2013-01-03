@@ -127,17 +127,16 @@ Array$proto.contains = function(elem) {
 }
 
 exports.ArrayList=ArrayList;
-exports.array=function(elems) {
-    if (elems === null || elems === undefined) {
-        return [];
-    } else {
-        var e=[];
+exports.array=function(elems, $$$ptypes) {
+    var e=[];
+    if (!(elems === null || elems === undefined)) {
         var iter=elems.getIterator();
         var item;while((item=iter.next())!==$finished) {
             e.push(item);
         }
-        return e;
     }
+    e.$$targs$$=$$$ptypes;
+    return e;
 }
 exports.arrayOfSize=function(size, elem) {
     if (size > 0) {

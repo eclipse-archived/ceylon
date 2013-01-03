@@ -77,7 +77,9 @@ function inheritProto(type) {
     }
 }
 function reify(obj, params) {
-    obj.$$targs$$=params;
+    if (obj) {
+        obj.$$targs$$=params;
+    }
     return obj;
 }
 var inheritProtoI = inheritProto;
