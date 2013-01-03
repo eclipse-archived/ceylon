@@ -76,14 +76,7 @@ function inheritProto(type) {
         for (var $ in superProto) {proto[$] = superProto[$]}
     }
 }
-function reify(t, params) {
-    return function() {
-        var o = t.apply(this, [].slice.call(arguments,0));
-        o.$$targs$$=params;
-        return o;
-    }
-}
-function reify2(obj, params) {
+function reify(obj, params) {
     obj.$$targs$$=params;
     return obj;
 }
@@ -96,7 +89,6 @@ exports.initExistingTypeProto=initExistingTypeProto;
 exports.inheritProto=inheritProto;
 exports.inheritProtoI=inheritProtoI;
 exports.reify=reify;
-exports.reify2=reify2;
 
 function Void(wat) {
     return wat;
