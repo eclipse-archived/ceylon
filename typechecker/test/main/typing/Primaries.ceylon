@@ -176,6 +176,8 @@ class Primaries() {
         
     ann {Float} shared {Float...} floats = {};
     
+    String interpolated = "hello" "ABC123".count(function (Character c) c.digit) "world";
+    
 }
 
 void ann({Void...} elements) {}
