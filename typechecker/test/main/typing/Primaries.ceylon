@@ -176,7 +176,11 @@ class Primaries() {
         
     ann {Float} shared {Float...} floats = {};
     
-    String interpolated = "hello" "ABC123".count(function (Character c) c.digit) "world";
+    //String interpolated = "hello" "ABC123".count(function (Character c) c.digit) "world";
+    
+    List<Character> list={` `};
+    @type:"Sequential<Integer>" value xxxx = list[].integer;
+    Exception("Expecting an Array but got: " true then "x" else "null" "");    
     
 }
 
