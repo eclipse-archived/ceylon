@@ -84,9 +84,7 @@ abstract class InvocationBuilder {
     protected final ProducedType returnType;
     protected boolean handleBoxing;
     protected boolean unboxed;
-    protected BoxingStrategy boxingStrategy;
-    protected final CallBuilder callBuilder;
-    
+    protected BoxingStrategy boxingStrategy;    
     protected final Tree.Primary qmePrimary;
     protected final boolean onValueType;
     
@@ -94,17 +92,11 @@ abstract class InvocationBuilder {
             Tree.Primary primary, Declaration primaryDeclaration,
             ProducedType returnType, Node node) {
         this.gen = gen;
-        this.callBuilder = CallBuilder.instance(gen);
         this.primary = primary;
         this.primaryDeclaration = primaryDeclaration;
         this.returnType = returnType;
         this.node = node;
         
-        if (primary instanceof Tree.StaticMemberOrTypeExpression){
-            transformTypeArguments(gen, ((Tree.StaticMemberOrTypeExpression)primary).getTypeArguments().getTypeModels());
-        } else {
-            transformTypeArguments(gen, null);
-        }
         if (primary instanceof Tree.QualifiedMemberOrTypeExpression){
             this.qmePrimary = ((Tree.QualifiedMemberOrTypeExpression) primary).getPrimary();
             this.onValueType = Decl.isValueTypeDecl(qmePrimary);
@@ -115,16 +107,16 @@ abstract class InvocationBuilder {
     }
 
     private void transformTypeArguments(
-            AbstractTransformer gen,
+            AbstractTransformer gen, CallBuilder callBuilder,
             java.util.List<ProducedType> typeArguments) {
         if(typeArguments != null){
             for (ProducedType arg : typeArguments) {
                 // cancel type parameters and go raw if we can't specify them
                 if(gen.willEraseToObject(arg) || gen.willEraseToSequential(arg)) {
-                    this.callBuilder.typeArguments(List.<JCExpression>nil());
+                    callBuilder.typeArguments(List.<JCExpression>nil());
                     return;
                 }
-                this.callBuilder.typeArgument(gen.makeJavaType(arg, JT_TYPE_ARGUMENT));
+                callBuilder.typeArgument(gen.makeJavaType(arg, JT_TYPE_ARGUMENT));
             }
         }
     }
@@ -133,7 +125,7 @@ abstract class InvocationBuilder {
      * Makes calls to {@link CallBuilder#argument(JCExpression)} ready for a 
      * call to {@link #build()}
      */
-    protected abstract void compute();
+    protected abstract void compute(CallBuilder callBuilder);
     
     public final void setUnboxed(boolean unboxed) {
         this.unboxed = unboxed;
@@ -147,14 +139,14 @@ abstract class InvocationBuilder {
         this.boxingStrategy = boxingStrategy;
     }
 
-    protected JCExpression transformInvocationOrInstantiation(TransformedInvocationPrimary transformedPrimary) {
+    protected JCExpression transformInvocationOrInstantiation(CallBuilder callBuilder, TransformedInvocationPrimary transformedPrimary) {
         JCExpression resultExpr;
         if (primary instanceof Tree.BaseTypeExpression) {
-            resultExpr = transformBaseInstantiation(transformedPrimary);
+            resultExpr = transformBaseInstantiation(callBuilder, transformedPrimary);
         } else if (primary instanceof Tree.QualifiedTypeExpression) {
-            resultExpr = transformQualifiedInstantiation(transformedPrimary);
+            resultExpr = transformQualifiedInstantiation(callBuilder, transformedPrimary);
         } else {   
-            resultExpr = transformInvocation(transformedPrimary);
+            resultExpr = transformInvocation(callBuilder, transformedPrimary);
         }
         
         if(handleBoxing)
@@ -163,7 +155,7 @@ abstract class InvocationBuilder {
         return resultExpr;
     }
 
-    private JCExpression transformInvocation(
+    private JCExpression transformInvocation(CallBuilder callBuilder,
             TransformedInvocationPrimary transformedPrimary) {
         if (onValueType) {
             JCExpression primTypeExpr = gen.makeJavaType(qmePrimary.getTypeModel(), JT_NO_PRIMITIVES);
@@ -174,7 +166,7 @@ abstract class InvocationBuilder {
         return callBuilder.build();
     }
 
-    private JCExpression transformQualifiedInstantiation(
+    private JCExpression transformQualifiedInstantiation(CallBuilder callBuilder,
             TransformedInvocationPrimary transformedPrimary) {
         
         Tree.QualifiedTypeExpression qte = (Tree.QualifiedTypeExpression)primary;
@@ -209,7 +201,7 @@ abstract class InvocationBuilder {
         return callBuilder.build();
     }
 
-    private JCExpression transformBaseInstantiation(
+    private JCExpression transformBaseInstantiation(CallBuilder callBuilder,
             TransformedInvocationPrimary transformedPrimary) {
         JCExpression resultExpr;
         Tree.BaseTypeExpression type = (Tree.BaseTypeExpression)primary;
@@ -231,19 +223,20 @@ abstract class InvocationBuilder {
         return resultExpr;
     }
 
-    protected void transformArgumentList(TransformedInvocationPrimary transformedPrimary) {
+    protected void transformArgumentList(CallBuilder callBuilder,
+            TransformedInvocationPrimary transformedPrimary) {
         gen.expressionGen().withinInvocation(false);
-        compute();
+        compute(callBuilder);
         
         if (needsTypeInfoArgument()) {
             JCExpression infoArg = makeTypeInfoArgument();
-            this.callBuilder.prependArgument(infoArg);
+            callBuilder.prependArgument(infoArg);
         }
         if (!(primary instanceof Tree.BaseTypeExpression)
                 && !(primary instanceof Tree.QualifiedTypeExpression)
                 && onValueType 
                 && transformedPrimary != null) {
-            this.callBuilder.prependArgument(transformedPrimary.expr);   
+            callBuilder.prependArgument(transformedPrimary.expr);   
         }
         gen.expressionGen().withinInvocation(true);
     }
@@ -304,15 +297,15 @@ abstract class InvocationBuilder {
         return new TransformedInvocationPrimary(actualPrimExpr, selector);
     }
     
-    protected JCExpression makeInvocation() {
+    protected JCExpression makeInvocation(final CallBuilder callBuilder) {
         gen.at(node);
         
         JCExpression result = gen.expressionGen().transformPrimary(primary, new TermTransformer() {
             @Override
             public JCExpression transform(JCExpression primaryExpr, String selector) {
                 TransformedInvocationPrimary transformedPrimary = transformPrimary(primaryExpr, selector);
-                transformArgumentList(transformedPrimary);
-                JCExpression resultExpr = transformInvocationOrInstantiation(transformedPrimary);
+                transformArgumentList(callBuilder, transformedPrimary);
+                JCExpression resultExpr = transformInvocationOrInstantiation(callBuilder, transformedPrimary);
                 return resultExpr;
             }
         });
@@ -348,7 +341,12 @@ abstract class InvocationBuilder {
     public final JCExpression build() {
         boolean prevFnCall = gen.expressionGen().withinInvocation(true);
         try {
-            return makeInvocation();
+            CallBuilder callBuilder = CallBuilder.instance(gen);
+            if (primary instanceof Tree.StaticMemberOrTypeExpression){
+                transformTypeArguments(gen, callBuilder, ((Tree.StaticMemberOrTypeExpression)primary).getTypeArguments().getTypeModels());
+            }
+             
+            return makeInvocation(callBuilder);
         } finally {
             gen.expressionGen().withinInvocation(prevFnCall);
         }
@@ -522,7 +520,7 @@ abstract class SimpleInvocationBuilder extends InvocationBuilder {
     protected abstract boolean dontBoxSequence();
 
     @Override
-    protected void compute() {
+    protected void compute(CallBuilder callBuilder) {
         int numArguments = getNumArguments();
         boolean wrapIntoArray = false;
         ListBuffer<JCExpression> arrayWrap = new ListBuffer<JCExpression>();
@@ -551,7 +549,7 @@ abstract class SimpleInvocationBuilder extends InvocationBuilder {
                 expr = gen.makeSequence(x, iteratedType, JT_TYPE_ARGUMENT);
             }
             if(!wrapIntoArray)
-                this.callBuilder.argument(expr);
+                callBuilder.argument(expr);
             else
                 arrayWrap.append(expr);
         }
@@ -559,7 +557,7 @@ abstract class SimpleInvocationBuilder extends InvocationBuilder {
             // must have at least one arg, so take the last one
             ProducedType parameterType = getParameterType(numArguments-1);
             JCExpression arrayType = gen.makeJavaType(parameterType, JT_RAW);
-            this.callBuilder.argument(gen.make().NewArray(arrayType, List.<JCExpression>nil(), arrayWrap.toList()));
+            callBuilder.argument(gen.make().NewArray(arrayType, List.<JCExpression>nil(), arrayWrap.toList()));
         }
     }
 
@@ -678,12 +676,12 @@ class IndirectInvocationBuilder extends SimpleInvocationBuilder {
     }
     
     @Override
-    protected void compute(){
+    protected void transformArgumentList(CallBuilder callBuilder, TransformedInvocationPrimary transformedPrimary) {
         // don't try to work on broken stuff
         if (!validNumberOfParameters()) {
             return;
         }
-        super.compute();
+        super.transformArgumentList(callBuilder, transformedPrimary);
     }
     
     private boolean validNumberOfParameters() {
@@ -698,12 +696,12 @@ class IndirectInvocationBuilder extends SimpleInvocationBuilder {
     }
 
     @Override
-    protected JCExpression makeInvocation() {
+    protected JCExpression makeInvocation(CallBuilder callBuilder) {
         // don't try to work on broken stuff
         if (!validNumberOfParameters()) {
             return gen.makeErroneous(node, "Invalid number of parameters");
         }
-        return super.makeInvocation();
+        return super.makeInvocation(callBuilder);
     }
     
     @Override
@@ -937,16 +935,16 @@ class SuperInvocationBuilder extends PositionalInvocationBuilder {
         this.sub = sub;
     }
     
-    public void compute() {
+    public void compute(CallBuilder callBuilder) {
         // Because super() invocations cannot be nested there's no need to 
         // keep and restore the old withinSuperInvocation state.
         gen.expressionGen().withinSuperInvocation(sub);
-        super.compute();
+        super.compute(callBuilder);
         gen.expressionGen().withinSuperInvocation(null);
     }
     
     @Override
-    protected JCExpression makeInvocation() {
+    protected JCExpression makeInvocation(CallBuilder callBuilder) {
         gen.at(node);
         JCExpression expr = null;
         if (Strategy.generateInstantiator(primaryDeclaration)
@@ -969,9 +967,9 @@ class SuperInvocationBuilder extends PositionalInvocationBuilder {
         } else {
             expr = gen.naming.makeSuper();
         }
-        this.callBuilder.invoke(expr);
+        callBuilder.invoke(expr);
         // We could create a TransformedPrimary(expr, "super") here if needed
-        transformArgumentList(null);
+        transformArgumentList(callBuilder, null);
         return callBuilder.build();
     }
 }
@@ -1115,7 +1113,7 @@ class CallableSpecifierInvocationBuilder extends InvocationBuilder {
         setBoxingStrategy(method.getUnboxed() ? BoxingStrategy.UNBOXED : BoxingStrategy.BOXED);
     }
     @Override
-    protected void compute() {
+    protected void compute(CallBuilder callBuilder) {
         int argIndex = 0;
         for(Parameter parameter : method.getParameterLists().get(0).getParameters()) {
             ProducedType exprType = gen.expressionGen().getTypeForParameter(parameter, null, gen.TP_TO_BOUND);
@@ -1129,19 +1127,19 @@ class CallableSpecifierInvocationBuilder extends InvocationBuilder {
                     !parameter.getUnboxed(), 
                     BoxingStrategy.BOXED,// Callables always have boxed params 
                     declaredParameter.getType());
-            this.callBuilder.argument(result);
+            callBuilder.argument(result);
             argIndex++;
         }
     }
     @Override
-    protected JCExpression makeInvocation() {
+    protected JCExpression makeInvocation(CallBuilder callBuilder) {
         gen.at(node);
         
-        this.callBuilder
+        callBuilder
             .invoke(gen.naming.makeQuotedQualIdent(callable, Naming.getCallableMethodName()));
         
-        transformArgumentList(null);
-        JCExpression result = this.callBuilder.build();
+        transformArgumentList(callBuilder, null);
+        JCExpression result = callBuilder.build();
         if(handleBoxing)
             result = gen.expressionGen().applyErasureAndBoxing(result, returnType, 
                     !unboxed, boxingStrategy, returnType);
@@ -1183,9 +1181,9 @@ class NamedArgumentInvocationBuilder extends InvocationBuilder {
      * {@link #buildVars()}
      */
     @Override
-    protected void compute() {
+    protected void compute(CallBuilder callBuilder) {
         for (Naming.SyntheticName argName : this.argsNamesByIndex.values()) {
-            this.callBuilder.argument(argName.makeIdent());
+            callBuilder.argument(argName.makeIdent());
         }
     }
     
@@ -1509,9 +1507,9 @@ class NamedArgumentInvocationBuilder extends InvocationBuilder {
     }
 
     @Override
-    protected JCExpression transformInvocationOrInstantiation(
+    protected JCExpression transformInvocationOrInstantiation(CallBuilder callBuilder,
             TransformedInvocationPrimary transformedPrimary) {
-        JCExpression resultExpr = super.transformInvocationOrInstantiation(transformedPrimary);
+        JCExpression resultExpr = super.transformInvocationOrInstantiation(callBuilder, transformedPrimary);
         // apply the default parameters
         if (vars != null && !vars.isEmpty()) {
             if (returnType == null || Decl.isUnboxedVoid(primaryDeclaration)) {
