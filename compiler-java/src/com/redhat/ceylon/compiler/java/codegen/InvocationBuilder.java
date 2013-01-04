@@ -163,8 +163,11 @@ abstract class InvocationBuilder {
         return this.typeArguments;
     }
     
-    protected JCExpression transformInvocation(JCExpression primaryExpr, String selector, List<JCExpression> argExprs) {
+    protected JCExpression transformInvocation(JCExpression primaryExpr, String selector) {
         JCExpression actualPrimExpr = transformInvocationPrimary(primaryExpr, selector);
+        
+        List<JCExpression> argExprs = transformArgumentList();
+        
         JCExpression resultExpr;
         if (primary instanceof Tree.BaseTypeExpression) {
             Tree.BaseTypeExpression type = (Tree.BaseTypeExpression)primary;
@@ -257,6 +260,19 @@ abstract class InvocationBuilder {
         return resultExpr;
     }
 
+    protected List<JCExpression> transformArgumentList() {
+        gen.expressionGen().withinInvocation(false);
+        compute();
+        List<JCExpression> args = this.args.toList();
+        if (needsTypeInfoArgument()) {
+            JCExpression infoArg = makeTypeInfoArgument();
+            args = args.prepend(infoArg);
+        }
+        List<JCExpression> argExprs = args;
+        gen.expressionGen().withinInvocation(true);
+        return argExprs;
+    }
+
     protected JCExpression transformInvocationPrimary(JCExpression primaryExpr,
             String selector) {
         JCExpression actualPrimExpr;
@@ -269,13 +285,13 @@ abstract class InvocationBuilder {
         return actualPrimExpr;
     }
     
-    protected JCExpression makeInvocation(final List<JCExpression> argExprs) {
+    protected JCExpression makeInvocation() {
         gen.at(node);
         
         JCExpression result = gen.expressionGen().transformPrimary(primary, new TermTransformer() {
             @Override
             public JCExpression transform(JCExpression primaryExpr, String selector) {
-                return transformInvocation(primaryExpr, selector, argExprs);
+                return transformInvocation(primaryExpr, selector);
             }
         });
 
@@ -308,15 +324,15 @@ abstract class InvocationBuilder {
     }
 
     public final JCExpression build() {
-        compute();
+        /*compute();
         List<JCExpression> args = this.args.toList();
         if (needsTypeInfoArgument()) {
             JCExpression infoArg = makeTypeInfoArgument();
             args = args.prepend(infoArg);
-        }
+        }*/
         boolean prevFnCall = gen.expressionGen().withinInvocation(true);
         try {
-            return makeInvocation(args);
+            return makeInvocation();
         } finally {
             gen.expressionGen().withinInvocation(prevFnCall);
         }
@@ -666,12 +682,12 @@ class IndirectInvocationBuilder extends SimpleInvocationBuilder {
     }
 
     @Override
-    protected JCExpression makeInvocation(List<JCExpression> argExprs) {
+    protected JCExpression makeInvocation() {
         // don't try to work on broken stuff
         if (!validNumberOfParameters()) {
             return gen.makeErroneous(node, "Invalid number of parameters");
         }
-        return super.makeInvocation(argExprs);
+        return super.makeInvocation();
     }
     
     @Override
@@ -914,7 +930,7 @@ class SuperInvocationBuilder extends PositionalInvocationBuilder {
     }
     
     @Override
-    protected JCExpression makeInvocation(List<JCExpression> args) {
+    protected JCExpression makeInvocation() {
         gen.at(node);
         JCExpression expr = null;
         if (Strategy.generateInstantiator(primaryDeclaration)
@@ -937,7 +953,7 @@ class SuperInvocationBuilder extends PositionalInvocationBuilder {
         } else {
             expr = gen.naming.makeSuper();
         }
-        JCExpression result = gen.make().Apply(List.<JCExpression> nil(), expr, args);
+        JCExpression result = gen.make().Apply(List.<JCExpression> nil(), expr, transformArgumentList());
         return result;
     }
 }
@@ -1100,9 +1116,9 @@ class CallableSpecifierInvocationBuilder extends InvocationBuilder {
         }
     }
     @Override
-    protected JCExpression makeInvocation(List<JCExpression> args) {
+    protected JCExpression makeInvocation() {
         gen.at(node);
-        JCExpression result = gen.make().Apply(primaryTypeArguments, gen.naming.makeQuotedQualIdent(callable, Naming.getCallableMethodName()), args);
+        JCExpression result = gen.make().Apply(primaryTypeArguments, gen.naming.makeQuotedQualIdent(callable, Naming.getCallableMethodName()), transformArgumentList());
         if(handleBoxing)
             result = gen.expressionGen().applyErasureAndBoxing(result, returnType, 
                     !unboxed, boxingStrategy, returnType);
@@ -1139,8 +1155,21 @@ class NamedArgumentInvocationBuilder extends InvocationBuilder {
         callVarName = varBaseName.suffixedBy("$callable$");
     }
     
+    /**
+     * The args are just the synthetic arg names bound by the Let expr produced by 
+     * {@link #buildVars()}
+     */
     @Override
     protected void compute() {
+        for (Naming.SyntheticName argName : this.argsNamesByIndex.values()) {
+            appendArgument(argName.makeIdent());
+        }
+    }
+    
+    /**
+     * Constructs the vars used in the Let expression
+     */
+    private void buildVars() {
         if (primaryDeclaration == null) {
             return;
         }
@@ -1149,9 +1178,7 @@ class NamedArgumentInvocationBuilder extends InvocationBuilder {
         java.util.List<Parameter> declaredParams = paramLists.get(0).getParameters();
         appendVarsForNamedArguments(namedArguments, declaredParams);
         boolean hasDefaulted = appendVarsForDefaulted(declaredParams);
-        for (Naming.SyntheticName argName : this.argsNamesByIndex.values()) {
-            appendArgument(argName.makeIdent());
-        }
+        
         if (hasDefaulted 
                 && !Strategy.defaultParameterMethodStatic(primaryDeclaration)
                 && !Strategy.defaultParameterMethodOnOuter(primaryDeclaration)) {
@@ -1459,8 +1486,10 @@ class NamedArgumentInvocationBuilder extends InvocationBuilder {
     }
     
     @Override
-    protected JCExpression transformInvocation(JCExpression primaryExpr, String selector, List<JCExpression> argExprs) {
-        JCExpression resultExpr = super.transformInvocation(primaryExpr, selector, argExprs);
+    protected JCExpression transformInvocation(JCExpression primaryExpr, String selector) {
+        // We need to build the vars before transforming the primary, because the primary is just a var
+        buildVars();
+        JCExpression resultExpr = super.transformInvocation(primaryExpr, selector);
         // apply the default parameters
         if (vars != null && !vars.isEmpty()) {
             if (returnType == null || Decl.isUnboxedVoid(primaryDeclaration)) {
