@@ -299,53 +299,53 @@ class ClassBodies() {
     class Good4WithThis() {
         String name = "gavin";
         void member() {
-            variable value t := this;
+            variable value t = this;
         }
     }
     
     object good4WithThis {
         String name = "gavin";
         void member() {
-            variable value t := this;
+            variable value t = this;
         }
     }
     
     class Bad4WithThis() {
         String name = "gavin";
-        @error variable value t := this;
+        @error variable value t = this;
     }
     
     object bad4WithThis {
         String name = "gavin";
-        @error variable value t := this;
+        @error variable value t = this;
     }
     
     class Good5WithThis() {
         String name = "gavin";
-        variable Good5WithThis? t := null;
+        variable Good5WithThis? t = null;
         void member() {
-            t := this;
+            t = this;
         }
     }
     
     object good5WithThis {
         String name = "gavin";
-        variable Object? t := null;
+        variable Object? t = null;
         void member() {
-            t := this;
+            t = this;
         }
     }
     
     class Bad5WithThis() {
         String name = "gavin";
-        variable Bad5WithThis? t := null;
-        @error t := this;
+        variable Bad5WithThis? t = null;
+        @error t = this;
     }
     
     object bad5WithThis {
         String name = "gavin";
-        variable Object? t := null;
-        @error t := this;
+        variable Object? t = null;
+        @error t = this;
     }
     
     class GoodWithOuter() {
@@ -460,42 +460,42 @@ class ClassBodies() {
     
     class Good4WithOuter() {
         String name = "gavin";
-        variable Object? o := null;
+        variable Object? o = null;
         class Inner() {
-            o := outer;
+            o = outer;
         }
     }
     
     class Bad4WithOuter() {
-        variable Object? o := null;
+        variable Object? o = null;
         class Inner() {
-            @error o := outer;
+            @error o = outer;
         }
         String name = "gavin";
     }
     
     object good4WithOuter {
         String name = "gavin";
-        variable Object? o := null;
+        variable Object? o = null;
         object inner {
             void method() {
-                o := outer;
+                o = outer;
             }
         }
     }
     
     object bad7WithOuter {
         String name = "gavin";
-        variable Object? o := null;
+        variable Object? o = null;
         object inner {
-            @error o := outer;
+            @error o = outer;
         }
     }
     
     object bad4WithOuter {
-        variable Object? o := null;
+        variable Object? o = null;
         object inner {
-            @error o := outer;
+            @error o = outer;
         }
         String name = "gavin";
     }

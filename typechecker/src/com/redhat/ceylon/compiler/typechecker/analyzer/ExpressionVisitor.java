@@ -631,17 +631,17 @@ public class ExpressionVisitor extends Visitor {
                         bme.addError("not a reference to a formal attribute: " + d.getName());
                     }
                 }
-                else if (d instanceof MethodOrValue && 
-                        ((MethodOrValue)d).isShortcutRefinement()) {
-                    bme.addError("already specified: " + d.getName());
+                else if (d instanceof MethodOrValue) {
+                	MethodOrValue mv = (MethodOrValue) d;
+                	if (mv.isShortcutRefinement()) {
+                        bme.addError("already specified: " + d.getName());
+                    }
+    	            else if (d.isToplevel() && !mv.isVariable()) {
+    	                that.addError("cannot specify non-variable toplevel value here: " + 
+    	                        d.getName(), 803);
+    	            }
                 }
-                if (d instanceof Value && ((Value) d).isVariable()) {
-                    sie.addError("variable values must be assigned using \":=\": " +
-                                d.getName(), 802);
-                }
-                else if (d.isToplevel()) {
-                    me.addError("toplevel declarations may not be specified");
-                }
+                
             	ProducedType t = that.getBaseMemberExpression().getTypeModel();
             	if (that.getBaseMemberExpression()==me && d instanceof Method) {
             		//if the declaration of the method has

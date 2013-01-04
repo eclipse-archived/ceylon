@@ -28,7 +28,7 @@ interface ParameterHiding {
     
     class AdvancedHiding(Float x, Float y) {
         @error shared String x = x.string;
-        @error shared variable Float y := y;
+        @error shared variable Float y = y;
         @type:"Float" value f = x;
     }
     
@@ -75,7 +75,7 @@ interface NewParameterHiding {
     
     void methodHiding(line) {
         variable String line;
-        line:=line.uppercased;
+        line=line.uppercased;
         print(line);
     }
     
@@ -98,13 +98,13 @@ interface NewParameterHiding {
     class Broken() {
         @error x = 1.0;
         @error y = 0.0;
-        @error z := 2.0;
+        @error z = 2.0;
         @error print(x);
         shared Float x;
         @error shared Float y;
         shared variable Float z;
         x = 2.0;
-        z := 0.0;
+        z = 0.0;
     }
     
 }

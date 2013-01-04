@@ -49,7 +49,7 @@ class Refinement() {
         
         class X() {
             shared default String hello = "Hello";
-            shared default variable Integer count := 0;
+            shared default variable Integer count = 0;
             shared default void print(String s) {}
             shared default String getHello() { return hello; }
             shared default class Z() {}
@@ -77,7 +77,7 @@ class Refinement() {
         
         class Y() extends X() {
             shared actual Integer something = 1;
-            shared actual variable Integer count := 0;
+            shared actual variable Integer count = 0;
             shared actual void print(Object o) {}
             shared actual Integer getSomething() { return something; }
             shared actual class Z() extends super.Z() {}
@@ -155,7 +155,7 @@ class Refinement() {
 
 class RefinedAsVariableSetterBase() {
     shared default String attr = "";
-    shared variable default String vattr := "";
+    shared variable default String vattr = "";
     shared default String bar {
         return "";
     }
@@ -188,15 +188,15 @@ class ConcreteRefinement() extends AbstractRefined() {
 }
 
 class VariableSuper() {
-    shared default variable Object i:=0;
+    shared default variable Object i=0;
     shared default Object j=0;
-    shared default variable Object k:=0;
+    shared default variable Object k=0;
 }
 
 class VariableSub() extends VariableSuper() {
-    @error shared actual variable Integer i:=1;
-    shared actual variable Integer j:=1;
-    @error shared actual variable Void k:=0;
+    @error shared actual variable Integer i=1;
+    shared actual variable Integer j=1;
+    @error shared actual variable Void k=0;
 }
 
 abstract class WithRefinedMethod() {

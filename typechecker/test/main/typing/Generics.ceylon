@@ -145,9 +145,9 @@ class Generics() {
         
         Z methodWithNonvariant(Z z) { return z; }
         Z attributeWithNonvariant;
-        variable Z variableAtt := z;
-        @error variable X badVariableAtt := x;
-        @error variable Y badVariableAtt2 := y;
+        variable Z variableAtt = z;
+        @error variable X badVariableAtt = x;
+        @error variable Y badVariableAtt2 = y;
         Z goodGetter { return z; }
         assign goodGetter { }
         @error X badGetter { return x; }

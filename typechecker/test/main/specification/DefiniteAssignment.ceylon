@@ -9,15 +9,6 @@ interface DefiniteAssignment {
     
     //void methods:
     
-    void badMethodWithImmutableSpec() {
-        @error variable X x = X();
-    }
-    
-    void badMethodWithImmutableSpec2() {
-        variable X x;
-        @error x = X();
-    }
-    
     void goodMethodWithNoSpec() {
         variable X x;
         doSomething();
@@ -34,7 +25,7 @@ interface DefiniteAssignment {
     void goodMethodWithSpec() {
         variable X x;
         doSomething();
-        x := X();
+        x = X();
         doSomethingElse();
         use(x);
     }
@@ -44,34 +35,34 @@ interface DefiniteAssignment {
         doSomething();
         @error use(x);
         doSomethingElse();
-        x := X();
+        x = X();
     }
     
     void badMethodWithRepeatedSpec() {
         variable X x;
         doSomething();
-        x := X();
+        x = X();
         doSomethingElse();
-        x := X();
+        x = X();
     }
         
     void badMethodWithRecursiveSpec() {
         variable X x;
         doSomething();
-        @error x := x;
+        @error x = x;
         doSomethingElse();
         use(x);
     }
     
     void badMethodWithRecursiveSpec2() {
-        @error variable X x := x;
+        @error variable X x = x;
         doSomething();
         use(x);
     }
     
     void goodMethodWithRecursiveSpec3() {
-        variable X y := X();
-        variable X x := y;
+        variable X y = X();
+        variable X x = y;
         use(x);
     }
     
@@ -79,7 +70,7 @@ interface DefiniteAssignment {
         variable X x;
         if (testSomething()) {
             doSomething();
-            x := X();
+            x = X();
             doSomethingElse();
             use(x);
         }
@@ -90,7 +81,7 @@ interface DefiniteAssignment {
         variable X x;
         if (testSomething()) {
             doSomething();
-            x := X();
+            x = X();
             doSomethingElse();
         }
         doNothing();
@@ -100,7 +91,7 @@ interface DefiniteAssignment {
     void goodMethodWithSpecInIf2() {
         variable X x;
         if (testSomething()) {
-            x := X();
+            x = X();
             doSomething();
             use(x);
         }
@@ -114,7 +105,7 @@ interface DefiniteAssignment {
         variable X x;
         if (testSomething()) {
             doSomething();
-            x := X();
+            x = X();
         }
         else {
             doSomethingElse();
@@ -127,39 +118,39 @@ interface DefiniteAssignment {
         variable X x;
         if (testSomething()) {
             doSomething();
-            x := X();
+            x = X();
             use(x);
         }
         else {
             doSomethingElse();
         }
         doNothing();
-        x := X();
+        x = X();
     }
     
     void badMethodWithSpecInIf4() {
-        variable X x := X();
+        variable X x = X();
         doNothing();
         if (testSomething()) {
             doSomething();
-            x := X();
+            x = X();
         }
     }
     
     void badMethodWithSpecInIf5() {
         variable X x;
         doNothing();
-        x := X();
+        x = X();
         if (testSomething()) {
             doSomething();
-            x := X();
+            x = X();
         }
     }
     
     void goodMethodWithSpecInNestedIf() {
         variable X x;
         if (testSomething()) {
-            x := X();
+            x = X();
             if (testSomething()) {
                 doSomething();
                 use(x);
@@ -177,7 +168,7 @@ interface DefiniteAssignment {
         variable X x;
         if (testSomething()) {
             if (testSomething()) {
-                x := X();
+                x = X();
                 doSomething();
                 use(x);
             }
@@ -196,7 +187,7 @@ interface DefiniteAssignment {
             doSomething();
         }
         else {
-            x := X();
+            x = X();
             doNothing();
             use(x);
         }
@@ -210,7 +201,7 @@ interface DefiniteAssignment {
             @error use(x);
         }
         else {
-            x := X();
+            x = X();
             doNothing();
             use(x);
         }
@@ -223,22 +214,22 @@ interface DefiniteAssignment {
             doSomething();
         }
         else {
-            x := X();
+            x = X();
             doNothing();
             use(x);
         }
         doSomethingElse();
-        x := X();
+        x = X();
     }
     
     void badMethodWithSpecInElse3() {
-        variable X x := X();
+        variable X x = X();
         doSomethingElse();
         if (testSomething()) {
             doSomething();
         }
         else {
-            x := X();
+            x = X();
             doNothing();
         }
     }
@@ -246,12 +237,12 @@ interface DefiniteAssignment {
     void badMethodWithSpecInElse4() {
         variable X x;
         doSomethingElse();
-        x := X();
+        x = X();
         if (testSomething()) {
             doSomething();
         }
         else {
-            x := X();
+            x = X();
             doNothing();
         }
     }
@@ -259,12 +250,12 @@ interface DefiniteAssignment {
     void goodMethodWithSpecInIfAndElse() {
         variable X x;
         if (testSomething()) {
-            x := X();
+            x = X();
             doSomething();
             use(x);
         }
         else {
-            x := X();
+            x = X();
             doSomethingElse();
             use(x);
         }
@@ -274,11 +265,11 @@ interface DefiniteAssignment {
         variable X x;
         if (testSomething()) {
             doSomething();
-            x := X();
+            x = X();
         }
         else {
             doSomethingElse();
-            x := X();
+            x = X();
         }
         use(x);
     }
@@ -286,29 +277,29 @@ interface DefiniteAssignment {
     void goodMethodWithRecursiveSpecInIfAndElse() {
         variable X y;
         if (testSomething()) {
-            y := X();
+            y = X();
         }
         else {
-            y := X();
+            y = X();
             use(y);
         }
-        variable X x := y;
+        variable X x = y;
         use(x);
     }
     
     void badMethodWithRecursiveSpecInIf() {
         variable X y;
         if (testSomething()) {
-            y := X();
+            y = X();
         }
-        @error variable X x := y;
+        @error variable X x = y;
     }
     
     void goodMethodWithSpecInFor() {
         for (X x in {X()}) {
             variable X y;
             doSomething();
-            y := x;
+            y = x;
         }
         doNothing();
     }
@@ -317,7 +308,7 @@ interface DefiniteAssignment {
         variable X y;
         for (X x in {X()}) {
             doSomething();
-            y := x;
+            y = x;
         }
         doNothing();
     }
@@ -329,7 +320,7 @@ interface DefiniteAssignment {
         }
         else {
             doSomethingElse();
-            y := X();
+            y = X();
         }
         doNothing();
         use (y);
@@ -339,11 +330,11 @@ interface DefiniteAssignment {
         variable X y;
         for (X x in {X()}) {
             doSomething();
-            y := X();
+            y = X();
         }
         else {
             doSomethingElse();
-            y := X();
+            y = X();
         }
         doNothing();
         use (y);
@@ -356,7 +347,7 @@ interface DefiniteAssignment {
         }
         else {
             doSomethingElse();
-            @error y := X();
+            @error y = X();
         }
         doNothing();
     }
@@ -369,7 +360,7 @@ interface DefiniteAssignment {
         }
         else {
             doSomethingElse();
-            y := X();
+            y = X();
         }
         doNothing();
         @error use (y);
@@ -379,7 +370,7 @@ interface DefiniteAssignment {
         while (testSomething()) {
             variable X x;
             doSomething();
-            x := X();
+            x = X();
         }
         doSomethingElse();
     }
@@ -388,7 +379,7 @@ interface DefiniteAssignment {
         variable X x;
         while (testSomething()) {
             doSomething();
-            x := X();
+            x = X();
         }
         doSomethingElse();
         @error use (x);
@@ -398,9 +389,9 @@ interface DefiniteAssignment {
         variable X x;
         while (testSomething()) {
             doSomething();
-            x := X();
+            x = X();
         }
-        x := X();
+        x = X();
         doSomethingElse();
         use (x);
     }
@@ -409,7 +400,7 @@ interface DefiniteAssignment {
         do {
             variable X x;
             doSomething();
-            x := X();
+            x = X();
         }
         while (testSomething());
     }
@@ -418,7 +409,7 @@ interface DefiniteAssignment {
         variable X x;
         do {
             doSomething();
-            x := X();
+            x = X();
         }
         while (testSomething());
     }*/
@@ -428,7 +419,7 @@ interface DefiniteAssignment {
     void try1() {
         variable X x;
         try {
-            x := X();
+            x = X();
         }
         use(x);
     }
@@ -436,11 +427,11 @@ interface DefiniteAssignment {
     void tryCatch1() {
         variable X x;
         try {
-            x := X();
+            x = X();
             use(x);
         }
         catch (Exception e) {
-            x := X();
+            x = X();
             use(x);
         }
         use(x);
@@ -451,7 +442,7 @@ interface DefiniteAssignment {
         try {
         }
         catch (Exception e) {
-            x := X();
+            x = X();
             use(x);
         }
         @error use(x);
@@ -460,7 +451,7 @@ interface DefiniteAssignment {
     void tryCatch3() {
         variable X x;
         try {
-            x := X();
+            x = X();
             use(x);
         }
         catch (Exception e) {
@@ -471,13 +462,13 @@ interface DefiniteAssignment {
     void tryCatchCatch1() {
         variable X x;
         try {
-            x := X();
+            x = X();
         }
         catch (E e) {
-            x := X();
+            x = X();
         }
         catch (Exception e) {
-            x := X();
+            x = X();
         }
         use(x);
     }
@@ -485,10 +476,10 @@ interface DefiniteAssignment {
     void tryCatchCatch2() {
         variable X x;
         try {
-            x := X();
+            x = X();
         }
         catch (E e) {
-            x := X();
+            x = X();
         }
         catch (Exception e) {
         }
@@ -500,7 +491,7 @@ interface DefiniteAssignment {
         try {
         }
         finally {
-            x := X();
+            x = X();
         }
         use(x);
     }
@@ -508,10 +499,10 @@ interface DefiniteAssignment {
     void tryFinally2() {
         variable X x;
         try {
-            x := X();
+            x = X();
         }
         finally {
-            x := X();
+            x = X();
         }
         use(x);
     }
@@ -519,7 +510,7 @@ interface DefiniteAssignment {
     void tryFinally3() {
         variable X x;
         try {
-            x := X();
+            x = X();
         }
         finally {
             @error use(x);
@@ -534,7 +525,7 @@ interface DefiniteAssignment {
         catch (Exception e) {
         }
         finally {
-            x := X();
+            x = X();
         }
         use(x);
     }
@@ -544,10 +535,10 @@ interface DefiniteAssignment {
         try {
         }
         catch (Exception e) {
-            x := X();
+            x = X();
         }
         finally {
-            x := X();
+            x = X();
         }
         use(x);
     }
@@ -557,15 +548,15 @@ interface DefiniteAssignment {
         variable String s;
         switch (b)
         case (true) {
-            s := "hello";
+            s = "hello";
         }
         case (false) {
-            s := "there";
+            s = "there";
             print(s);
         }
         //TODO: remove
         else {
-            s := "world";
+            s = "world";
         }
         print(s);
     }
@@ -575,14 +566,14 @@ interface DefiniteAssignment {
         variable String s;
         switch (b)
         case (true) {
-            s := "hello";
+            s = "hello";
         }
         case (false) {
             return;
         }
         //TODO: remove
         else {
-            s := "world";
+            s = "world";
         }
         print(s);
     }
@@ -592,13 +583,13 @@ interface DefiniteAssignment {
         variable String s;
         switch (b)
         case (true) {
-            s := "hello";
+            s = "hello";
         }
         case (false) {
         }
         //TODO: remove
         else {
-            s := "world";
+            s = "world";
         }
         @error print(s);
     }
@@ -608,10 +599,10 @@ interface DefiniteAssignment {
         variable String s;
         switch (b)
         case (true) {
-            s := "hello";
+            s = "hello";
         }
         case (false) {
-            s := "world";
+            s = "world";
         }
         //TODO: remove
         else {

@@ -1,15 +1,15 @@
-variable Integer n:=0;
+variable Integer n=0;
 
 class Capture() {
     
-    n:=12;
+    n=12;
     
     void use(Object o) {}
     
     class X() {}
     
     void methodWithVariable() {
-        @captured variable X x := X();
+        @captured variable X x = X();
         void innerMethod() {
             use(x);
         }
@@ -17,11 +17,11 @@ class Capture() {
             return x;
         }
         assign innerGetter {
-            x:=innerGetter;
+            x=innerGetter;
         }
         void containingMethod() {
             void nestedMethod() {
-                x:=X();
+                x=X();
             }
         }
     }
@@ -35,7 +35,7 @@ class Capture() {
             return x;
         }
         assign innerGetter {
-            @error x:=innerGetter;
+            @error x=innerGetter;
         }
         void containingMethod() {
             void nestedMethod() {
@@ -52,7 +52,7 @@ class Capture() {
             return x;
         }
         assign innerGetter {
-            @error x:=innerGetter;
+            @error x=innerGetter;
         }
         void containingMethod() {
             void nestedMethod() {
@@ -62,7 +62,7 @@ class Capture() {
     }
     
     X getterWithVariable {
-        @captured variable X x := X();
+        @captured variable X x = X();
         void innerMethod() {
             use(x);
         }
@@ -70,20 +70,20 @@ class Capture() {
             return x;
         }
         assign innerGetter {
-            x:=innerGetter;
+            x=innerGetter;
         }
         void containingMethod() {
             void nestedMethod() {
-                x:=X();
+                x=X();
             }
         }
         return x;
     }
     
     class ClassWithVariable() {
-        @captured variable X x := X();
-        @uncaptured variable X y := X();
-        @captured shared variable X z := X();
+        @captured variable X x = X();
+        @uncaptured variable X y = X();
+        @captured shared variable X z = X();
         void innerMethod() {
             use(x);
         }
@@ -91,11 +91,11 @@ class Capture() {
             return x;
         }
         assign innerGetter {
-            x:=innerGetter;
+            x=innerGetter;
         }
         void containingMethod() {
             void nestedMethod() {
-                x:=X();
+                x=X();
             }
         }
     }
@@ -108,7 +108,7 @@ class Capture() {
             return x;
         }
         assign innerGetter {
-            @error x:=innerGetter;
+            @error x=innerGetter;
         }
         void containingMethod() {
             void nestedMethod() {
@@ -221,7 +221,7 @@ class Capture() {
     
     class QualifiedAttributeAccess(){
         @captured Boolean b = true;
-        @captured variable Boolean b2 := true;
+        @captured variable Boolean b2 = true;
         @captured QualifiedAttributeAccess q = QualifiedAttributeAccess();
         
         Boolean m(){

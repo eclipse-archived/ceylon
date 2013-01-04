@@ -1,6 +1,6 @@
 abstract class Classes() {
     
-    variable Integer count := 0;
+    variable Integer count = 0;
     
     count++;
     
@@ -26,7 +26,7 @@ abstract class Classes() {
     printLine("Hi!");
     
     @error x = 0;
-    @error y := 0.0;
+    @error y = 0.0;
     
     interface NestedInterface {
         shared formal String hello;
@@ -39,15 +39,15 @@ abstract class Classes() {
     
     class MemberClass() {
         shared String goodbye = upper("goodbye");
-        shared variable Integer times := 1;
+        shared variable Integer times = 1;
     }
     
     MemberClass();
         
     printLine(MemberClass().goodbye);
-    @error MemberClass().goodbye := "Foo";
-    @error MemberClass().times := "Foo";
-    MemberClass().times := 5;
+    @error MemberClass().goodbye = "Foo";
+    @error MemberClass().times = "Foo";
+    MemberClass().times = 5;
     
     MemberClass create() {
         return MemberClass();

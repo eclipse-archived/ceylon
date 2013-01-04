@@ -25,7 +25,7 @@ interface InitializerParams {
         }
         variable String xarol;
         if (true) {
-            xarol := "something else";
+            xarol = "something else";
         }
     }
 
@@ -52,7 +52,7 @@ interface InitializerParams {
         }
         variable String xarol;
         if (true) {
-            xarol := "something else";
+            xarol = "something else";
         }
     }
     

@@ -77,13 +77,13 @@ class Assignability() {
     X x4;
     @error x4 = Y();
     
-    variable X var := X(); 
+    variable X var = X(); 
     
     X attx { return var; }
-    assign attx { var := attx; }
+    assign attx { var = attx; }
     
     Y atty { @error return var; }
-    assign atty { @error var := atty; }
+    assign atty { @error var = atty; }
     
     X methx { return var; }
     Y methy { @error return var; }

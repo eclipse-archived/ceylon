@@ -19,7 +19,7 @@ class ControlStructures() {
     @error if (is String s = "hello") {}
     @error if (is Object s = "hello") {}
     
-    variable String? var := "gavin"; 
+    variable String? var = "gavin"; 
     @error if (exists var) {}
     if (exists v = var) {}
     
@@ -37,7 +37,7 @@ class ControlStructures() {
         }
     }
     
-    variable String[] varseq := {};
+    variable String[] varseq = {};
     @error if (nonempty varseq) {}
     if (nonempty vs = varseq) {}
     
@@ -49,7 +49,7 @@ class ControlStructures() {
         print(string);
     }
     
-    variable Object o := "hello";
+    variable Object o = "hello";
     @error if (is String o) {}
     
     if (name exists && true) {}
@@ -171,7 +171,7 @@ class ControlStructures() {
     
     /*variable Boolean test;
     do {
-        test := false;
+        test = false;
     }
     while (test);*/
 

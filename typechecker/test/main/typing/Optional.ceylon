@@ -24,14 +24,14 @@ class Optional() {
     value sy = { Y() };
     value syn = { Y(), null };
     value sxy = { X(), Y() };
-    variable <X|Y|Nothing>[] ss := { X(), Y(), null };
-    ss:=sx;
-    ss:=sy;
-    ss:=sxy;
-    ss:=sxn;
-    ss:=syn;
+    variable <X|Y|Nothing>[] ss = { X(), Y(), null };
+    ss=sx;
+    ss=sy;
+    ss=sxy;
+    ss=sxn;
+    ss=syn;
     value bs = { X(), "foo" };
-    @error ss:=bs;
+    @error ss=bs;
     
     class Foo<T>() {
         shared T? optional = null;

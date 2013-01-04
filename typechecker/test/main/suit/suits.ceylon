@@ -77,7 +77,7 @@ void test() {
     case (clubs) {}
     case (spades) {}
     
-    variable Suit ss := clubs;
+    variable Suit ss = clubs;
     
     switch (ss)
     case (hearts) {}
@@ -85,7 +85,7 @@ void test() {
     case (clubs) {}
     case (spades) {}
     
-    variable Suit? mss := null;
+    variable Suit? mss = null;
     
     @error switch (mss)
     case (is Suit) {}

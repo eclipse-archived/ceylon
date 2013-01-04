@@ -402,9 +402,6 @@ inferredAttributeDeclaration returns [AnyAttribute declaration]
         | 
           lazySpecifier
           { dec.setSpecifierOrInitializerExpression($lazySpecifier.specifierExpression); }
-        | 
-          initializer
-          { dec.setSpecifierOrInitializerExpression($initializer.initializerExpression); }
         )?
         { expecting=SEMICOLON; }
         SEMICOLON
@@ -476,9 +473,6 @@ typedMethodOrAttributeDeclaration returns [TypedDeclaration declaration]
         | 
           ac=lazySpecifier 
           { adec.setSpecifierOrInitializerExpression($ac.specifierExpression); }
-        | 
-          initializer
-          { adec.setSpecifierOrInitializerExpression($initializer.initializerExpression); }
         )?
         { expecting=SEMICOLON; }
         s2=SEMICOLON
@@ -1102,15 +1096,29 @@ expressionOrSpecificationStatement returns [Statement statement]
     @init { SpecifierStatement ss=new SpecifierStatement(null); 
             ExpressionStatement es=new ExpressionStatement(null); }
     : expression
-      { if ($expression.expression!=null) 
+      { $statement = es;
+        if ($expression.expression!=null)
             es.setExpression($expression.expression);
-        $statement = es; }
+        if ($expression.expression.getTerm() instanceof AssignOp) {
+            AssignOp a = (AssignOp) $expression.expression.getTerm();
+            if (a.getLeftTerm() instanceof BaseMemberExpression ||
+                a.getLeftTerm() instanceof ParameterizedExpression) {
+                SpecifierExpression se = new SpecifierExpression(null);
+                Expression e = new Expression(null);
+                se.setExpression(e);
+                e.setTerm(a.getRightTerm());
+                ss.setSpecifierExpression(se);
+                ss.setBaseMemberExpression(a.getLeftTerm());
+                $statement = ss;
+            }
+        }
+      }
       (
-        specifier
+        /*specifier
         { ss.setSpecifierExpression($specifier.specifierExpression);
-          ss.setBaseMemberExpression($expression.expression.getTerm()); 
+          ss.setBaseMemberExpression($expression.expression.getTerm());
           $statement = ss; }
-      | 
+      | */
         lazySpecifier
         { ss.setSpecifierExpression($lazySpecifier.specifierExpression);
           ss.setBaseMemberExpression($expression.expression.getTerm()); 
@@ -1196,14 +1204,6 @@ lazySpecifier returns [SpecifierExpression specifierExpression]
       { $specifierExpression = new LazySpecifierExpression($COMPUTE); }
       functionOrExpression
       { $specifierExpression.setExpression($functionOrExpression.expression); }
-    ;
-
-initializer returns [InitializerExpression initializerExpression]
-    : ASSIGN_OP 
-      { $initializerExpression = new InitializerExpression($ASSIGN_OP); }
-      functionOrExpression
-      { $initializerExpression.setExpression($functionOrExpression.expression); }
-    //-> ^(INITIALIZER_EXPRESSION[$ASSIGN_OP] expression)
     ;
 
 expression returns [Expression expression]
@@ -1878,26 +1878,26 @@ assignmentExpression returns [Term term]
         assignmentOperator 
         { $assignmentOperator.operator.setLeftTerm($term);
           $term = $assignmentOperator.operator; }
-        ee2=assignmentExpression
-        { $assignmentOperator.operator.setRightTerm($ee2.term); }
+        ee2=functionOrExpression
+        { $assignmentOperator.operator.setRightTerm($ee2.expression.getTerm()); }
       )?
     ;
 
 assignmentOperator returns [AssignmentOp operator]
-    : ASSIGN_OP { $operator = new AssignOp($ASSIGN_OP); }
+    : SPECIFY { $operator = new AssignOp($SPECIFY); }
     //| APPLY_OP 
-    | ADD_ASSIGN_OP { $operator = new AddAssignOp($ADD_ASSIGN_OP); }
-    | SUBTRACT_ASSIGN_OP { $operator = new SubtractAssignOp($SUBTRACT_ASSIGN_OP); }
-    | MULTIPLY_ASSIGN_OP { $operator = new MultiplyAssignOp($MULTIPLY_ASSIGN_OP); }
-    | DIVIDE_ASSIGN_OP { $operator = new DivideAssignOp($DIVIDE_ASSIGN_OP); }
-    | REMAINDER_ASSIGN_OP { $operator = new RemainderAssignOp($REMAINDER_ASSIGN_OP); }
-    | INTERSECT_ASSIGN_OP { $operator = new IntersectAssignOp($INTERSECT_ASSIGN_OP); }
-    | UNION_ASSIGN_OP { $operator = new UnionAssignOp($UNION_ASSIGN_OP); }
-    | XOR_ASSIGN_OP { $operator = new XorAssignOp($XOR_ASSIGN_OP); }
-    | COMPLEMENT_ASSIGN_OP { $operator = new ComplementAssignOp($COMPLEMENT_ASSIGN_OP); }
-    | AND_ASSIGN_OP { $operator = new AndAssignOp($AND_ASSIGN_OP); }
-    | OR_ASSIGN_OP { $operator = new OrAssignOp($OR_ASSIGN_OP); }
-    //| DEFAULT_ASSIGN_OP { $operator = new DefaultAssignOp($DEFAULT_ASSIGN_OP); }
+    | ADD_SPECIFY { $operator = new AddAssignOp($ADD_SPECIFY); }
+    | SUBTRACT_SPECIFY { $operator = new SubtractAssignOp($SUBTRACT_SPECIFY); }
+    | MULTIPLY_SPECIFY { $operator = new MultiplyAssignOp($MULTIPLY_SPECIFY); }
+    | DIVIDE_SPECIFY { $operator = new DivideAssignOp($DIVIDE_SPECIFY); }
+    | REMAINDER_SPECIFY { $operator = new RemainderAssignOp($REMAINDER_SPECIFY); }
+    | INTERSECT_SPECIFY { $operator = new IntersectAssignOp($INTERSECT_SPECIFY); }
+    | UNION_SPECIFY { $operator = new UnionAssignOp($UNION_SPECIFY); }
+    | XOR_SPECIFY { $operator = new XorAssignOp($XOR_SPECIFY); }
+    | COMPLEMENT_SPECIFY { $operator = new ComplementAssignOp($COMPLEMENT_SPECIFY); }
+    | AND_SPECIFY { $operator = new AndAssignOp($AND_SPECIFY); }
+    | OR_SPECIFY { $operator = new OrAssignOp($OR_SPECIFY); }
+    //| DEFAULT_SPECIFY { $operator = new DefaultAssignOp($DEFAULT_SPECIFY); }
     ;
 
 thenElseExpression returns [Term term]
@@ -3466,9 +3466,9 @@ COMPLEMENT_OP
     :   '~'
     ;
 
-ASSIGN_OP
+/*SPECIFY
     :   ':='
-    ;
+    ;*/
 
 EQUAL_OP
     :   '=='
@@ -3566,47 +3566,47 @@ POWER_OP
     :    '**'
     ;
 
-ADD_ASSIGN_OP
+ADD_SPECIFY
     :   '+='
     ;
 
-SUBTRACT_ASSIGN_OP
+SUBTRACT_SPECIFY
     :   '-='
     ;
 
-MULTIPLY_ASSIGN_OP
+MULTIPLY_SPECIFY
     :   '*='
     ;
 
-DIVIDE_ASSIGN_OP
+DIVIDE_SPECIFY
     :   '/='
     ;
 
-INTERSECT_ASSIGN_OP
+INTERSECT_SPECIFY
     :   '&='
     ;
 
-UNION_ASSIGN_OP
+UNION_SPECIFY
     :   '|='
     ;
 
-XOR_ASSIGN_OP
+XOR_SPECIFY
     :   '^='
     ;
 
-COMPLEMENT_ASSIGN_OP
+COMPLEMENT_SPECIFY
     :   '~='
     ;
     
-REMAINDER_ASSIGN_OP
+REMAINDER_SPECIFY
     :   '%='
     ;
 
-AND_ASSIGN_OP
+AND_SPECIFY
     :   '&&='
     ;
 
-OR_ASSIGN_OP
+OR_SPECIFY
     :   '||='
     ;
 

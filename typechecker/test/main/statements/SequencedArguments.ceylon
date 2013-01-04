@@ -1,15 +1,15 @@
 class Assignment() {
-    variable String name:="gavin";
-    this.name:="stef";
-    name:="tako";
-    Assignment().name:="emmanuel";
+    variable String name="gavin";
+    this.name="stef";
+    name="tako";
+    Assignment().name="emmanuel";
     value count { return 0; }
     assign count {}
-    count:=1;
+    count=1;
     function hello() { return "hello"; }
-    @error hello:="goodbye";
+    @error hello="goodbye";
     value org { return "JBoss"; }
-    @error org:="Red Hat";
+    @error org="Red Hat";
 }
 
 class SequencedArguments() {

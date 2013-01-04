@@ -40,8 +40,8 @@ interface GettersSetters {
     }
     
     void test() {
-        SharedGetterSetter().name := "world";
-        @error SharedGetterSetter().greeting := "hi";
+        SharedGetterSetter().name = "world";
+        @error SharedGetterSetter().greeting = "hi";
     }
     
 }

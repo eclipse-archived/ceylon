@@ -278,7 +278,7 @@ public class SpecificationVisitor extends Visitor {
             if (member==declaration) {
                 if (!isVariable()) {
                     if (node instanceof Tree.AssignOp) {
-                        node.addError("non-variable values must be specified using \"=\": " +
+                        node.addError("cannot specify non-variable value here: " +
                                         member.getName(), 803);
                     }
                     else {
@@ -302,27 +302,17 @@ public class SpecificationVisitor extends Visitor {
 	        if (member==declaration) {
             	boolean lazy = that.getSpecifierExpression() instanceof Tree.LazySpecifierExpression;
 	            if (!lazy) that.getSpecifierExpression().visit(this);
-	            /*if (!declared) {
-	                m.addError("not yet declared: " + 
-	                        m.getIdentifier().getText());
-	            }
-	            else*/ if (isVariable()) {
-	                //don't do it here!
-	                /*that.getSpecifierExpression()
-	                        .addError("variable values must be assigned using \":=\": " +
-	                            member.getName(), 802);*/
-	            }
-	            else if (!declared) {
+	            if (!declared) {
                     that.addError("specified value is not yet declared: " + 
                             member.getName());
 	            }
-	            else if (cannotSpecify) {
-	                that.addError("cannot specify non-variable value from here: " + 
-	                        member.getName());
+	            else if (cannotSpecify && !isVariable()) {
+	                that.addError("cannot specify non-variable value here: " + 
+	                        member.getName(), 803);
 	            }
-	            else if (specified.possibly) {
-	                that.addError("specified value is not definitely unspecified: " + 
-	                        member.getName());
+	            else if (specified.possibly && !isVariable()) {
+	                that.addError("specified non-variable value is not definitely unspecified: " + 
+	                        member.getName(), 803);
 	            }
 	            else {
 	                specify();
@@ -456,18 +446,6 @@ public class SpecificationVisitor extends Visitor {
         if (that.getDeclarationModel()==declaration) {
             SpecifierOrInitializerExpression sie = that.getSpecifierOrInitializerExpression();
             if (sie!=null) {
-                if (isVariable()) {
-                    if (sie instanceof Tree.SpecifierExpression) {
-                        sie.addError("variable values must be initialized using \":=\": " + 
-                                declaration.getName(), 802);
-                    }
-                }
-                else {
-                    if (sie instanceof Tree.InitializerExpression) {
-                        sie.addError("non-variable values must be specified using \"=\": " + 
-                                declaration.getName(), 801);
-                    }
-                }
                 specify();
             }
             else if (declaration.isToplevel()) {

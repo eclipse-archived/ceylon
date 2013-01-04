@@ -164,8 +164,8 @@ class Inheritance() {
         @error Void sup1 = super;
         Void sup2;
         @error sup2 = super;
-        variable Void sup3 := null;
-        @error sup3 := super;
+        variable Void sup3 = null;
+        @error sup3 = super;
         void accept(Void v) {}
         @error accept(super);
         Void supe() {

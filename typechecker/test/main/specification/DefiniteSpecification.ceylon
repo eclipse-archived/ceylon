@@ -9,15 +9,6 @@ interface DefiniteSpecification {
     
     //void methods:
     
-    void badMethodWithAssign() {
-        @error X x := X();
-    }
-    
-    void badMethodWithAssign2() {
-        X x;
-        @error x := X();
-    }
-    
     void goodMethodWithNoSpec() {
         X x;
         doSomething();

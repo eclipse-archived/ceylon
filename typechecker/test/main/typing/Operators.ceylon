@@ -179,7 +179,7 @@ class Operators() {
     @type:"Nothing|Sequential<String>" value s3 = noSequence?[1..2];
     @type:"Nothing|Sequential<String>" value s4 = noSequence?[1:2];
     
-    variable Integer n := 0;
+    variable Integer n = 0;
     @type:"Integer" n++;
     @type:"Integer" ++n;
     @type:"Integer" n+=1;
@@ -190,7 +190,7 @@ class Operators() {
     n+=-1;
     n-=1;
     
-    variable Float f:=0.0;
+    variable Float f=0.0;
     @type:"Float" f+=1.0;
     @type:"Float" f+=1;
     @type:"Float" f-=4;
@@ -199,7 +199,7 @@ class Operators() {
     @type:"Float" f/=-2;
     @type:"Float" f+=-1;
     
-    variable Boolean bb := false;
+    variable Boolean bb = false;
     @type:"Boolean" bb||=false;
     @type:"Boolean" bb&&=true;
     
@@ -257,8 +257,8 @@ class Operators() {
     Boolean b1 = true;
     Boolean b2 = false;
     Boolean b3 = b1 && b2;
-    variable Boolean b4 := b2 || b3;
-    variable Boolean b5 := !b4;
+    variable Boolean b4 = b2 || b3;
+    variable Boolean b5 = !b4;
     b4 &&= b3;
     b5 ||= b4;
     
@@ -295,23 +295,23 @@ class Operators() {
     //Float ff = nof?1.0 + nof?2.0;
     Float ff = (nof else 1.0) + (nof else 2.0);
     
-    variable Ordinal<Integer> oi:=0;
+    variable Ordinal<Integer> oi=0;
     oi++;
     --oi;
-    variable Numeric<Integer> ai:=0;
+    variable Numeric<Integer> ai=0;
     ai+=1;
-    ai:=ai+1;
-    ai:=ai-1;
+    ai=ai+1;
+    ai=ai-1;
     
     void testStef<T>(T t) given T satisfies Integer {
 
-        variable T oi:=t;
+        variable T oi=t;
         @error oi++;
         @error --oi;
-        variable T ai:=t;
+        variable T ai=t;
         @error ai+=1;
-        @error ai:=ai+1;
-        @error ai:=ai-1;
+        @error ai=ai+1;
+        @error ai=ai-1;
 
     }
     
@@ -325,7 +325,7 @@ class Operators() {
     @type:"Set<String>" value sr4 = ss&so;
     @type:"Set<Object>" value sr5 = ss|so;
     
-    variable Set<String> vss := ss;
+    variable Set<String> vss = ss;
     @type:"Set<String>" vss|=ss;
     @type:"Set<String>" vss&=ss;
     
