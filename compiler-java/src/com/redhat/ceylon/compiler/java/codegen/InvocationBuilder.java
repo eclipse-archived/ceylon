@@ -34,6 +34,7 @@ import java.util.TreeMap;
 
 import com.redhat.ceylon.compiler.java.codegen.AbstractTransformer.BoxingStrategy;
 import com.redhat.ceylon.compiler.java.codegen.ExpressionTransformer.TermTransformer;
+import com.redhat.ceylon.compiler.java.codegen.InvocationBuilder.TransformedInvocationPrimary;
 import com.redhat.ceylon.compiler.java.codegen.Naming.SyntheticName;
 import com.redhat.ceylon.compiler.loader.model.LazyMethod;
 import com.redhat.ceylon.compiler.typechecker.model.Class;
@@ -164,12 +165,12 @@ abstract class InvocationBuilder {
     }
     
     protected final JCExpression transformPrimaryTerm(JCExpression primaryExpr, String selector) {
-        JCExpression actualPrimExpr = transformPrimary(primaryExpr, selector);
+        TransformedInvocationPrimary transformedPrimExpr = transformPrimary(primaryExpr, selector);
         
         List<JCExpression> argExprs = transformArgumentList();
         
-        JCExpression resultExpr = transformInvocation(primaryExpr, selector,
-                actualPrimExpr, argExprs);
+        JCExpression resultExpr = transformInvocation(primaryExpr, transformedPrimExpr.selector,
+                transformedPrimExpr.expr, argExprs);
 
         return resultExpr;
     }
@@ -230,26 +231,7 @@ abstract class InvocationBuilder {
                 resultExpr = gen.make().NewClass(actualPrimExpr, null, type, argExprs, null);
             }
         } else {
-            if (this instanceof IndirectInvocationBuilder
-                    && (primaryDeclaration instanceof Getter
-                            || (primaryDeclaration instanceof Value)
-                            && !Decl.isLocal(primaryDeclaration))) {
-                actualPrimExpr = gen.make().Apply(null, 
-                        gen.naming.makeQualIdent(primaryExpr, selector), 
-                        List.<JCExpression>nil());
-                selector = Naming.getCallableMethodName();
-            } else if (primaryDeclaration instanceof FunctionalParameter
-                    || (this instanceof IndirectInvocationBuilder)) {
-                if (selector != null) {
-                    actualPrimExpr = gen.naming.makeQualIdent(primaryExpr, selector);
-                } else {
-                    actualPrimExpr = gen.naming.makeQualifiedName(primaryExpr, (TypedDeclaration)primaryDeclaration, Naming.NA_MEMBER);
-                }
-                if (!gen.isCeylonCallable(primary.getTypeModel())) {                    
-                    actualPrimExpr = gen.make().Apply(null, actualPrimExpr, List.<JCExpression>nil());
-                }
-                selector = Naming.getCallableMethodName();
-            }
+            
             if (onValueType) {
                 JCExpression primTypeExpr = gen.makeJavaType(qmePrimary.getTypeModel(), JT_NO_PRIMITIVES);
                 resultExpr = gen.make().Apply(primaryTypeArguments, 
@@ -281,7 +263,16 @@ abstract class InvocationBuilder {
         return argExprs;
     }
 
-    protected JCExpression transformPrimary(JCExpression primaryExpr,
+    class TransformedInvocationPrimary {
+        final JCExpression expr;
+        final String selector;
+        TransformedInvocationPrimary(JCExpression expr, String selector) {
+            this.expr = expr;
+            this.selector = selector;
+        }
+    }
+    
+    protected TransformedInvocationPrimary transformPrimary(JCExpression primaryExpr,
             String selector) {
         JCExpression actualPrimExpr;
         if (primary instanceof Tree.QualifiedTypeExpression
@@ -290,7 +281,33 @@ abstract class InvocationBuilder {
         } else {
             actualPrimExpr = primaryExpr;
         }
-        return actualPrimExpr;
+        
+        if (primary instanceof Tree.BaseTypeExpression) {
+        } else if (primary instanceof Tree.QualifiedTypeExpression) {
+        } else {
+            if (this instanceof IndirectInvocationBuilder
+                    && (primaryDeclaration instanceof Getter
+                            || (primaryDeclaration instanceof Value)
+                            && !Decl.isLocal(primaryDeclaration))) {
+                actualPrimExpr = gen.make().Apply(null, 
+                        gen.naming.makeQualIdent(primaryExpr, selector), 
+                        List.<JCExpression>nil());
+                selector = Naming.getCallableMethodName();
+            } else if (primaryDeclaration instanceof FunctionalParameter
+                    || (this instanceof IndirectInvocationBuilder)) {
+                if (selector != null) {
+                    actualPrimExpr = gen.naming.makeQualIdent(primaryExpr, selector);
+                } else {
+                    actualPrimExpr = gen.naming.makeQualifiedName(primaryExpr, (TypedDeclaration)primaryDeclaration, Naming.NA_MEMBER);
+                }
+                if (!gen.isCeylonCallable(primary.getTypeModel())) {                    
+                    actualPrimExpr = gen.make().Apply(null, actualPrimExpr, List.<JCExpression>nil());
+                }
+                selector = Naming.getCallableMethodName();
+            }
+        }
+        
+        return new TransformedInvocationPrimary(actualPrimExpr, selector);
     }
     
     protected JCExpression makeInvocation() {
@@ -1510,11 +1527,13 @@ class NamedArgumentInvocationBuilder extends InvocationBuilder {
     }
     
     @Override
-    protected JCExpression transformPrimary(JCExpression primaryExpr,
+    protected TransformedInvocationPrimary transformPrimary(JCExpression primaryExpr,
             String selector) {
         // We need to build the vars before transforming the primary, because the primary is just a var
         buildVars();
-        JCExpression actualPrimExpr = super.transformPrimary(primaryExpr, selector);
+        JCExpression result;
+        TransformedInvocationPrimary actualPrimExpr = super.transformPrimary(primaryExpr, selector);
+        result = actualPrimExpr.expr;
         if (vars != null 
                 && !vars.isEmpty() 
                 && primaryExpr != null
@@ -1532,9 +1551,9 @@ class NamedArgumentInvocationBuilder extends InvocationBuilder {
                     varType = gen.makeJavaType(type, JT_NO_PRIMITIVES);
                 }
             }
-            vars.prepend(gen.makeVar(callVarName, varType, actualPrimExpr));
-            actualPrimExpr = callVarName.makeIdent();
+            vars.prepend(gen.makeVar(callVarName, varType, result));
+            result = callVarName.makeIdent();
         }
-        return actualPrimExpr;
+        return new TransformedInvocationPrimary(result, actualPrimExpr.selector);
     }
 }
