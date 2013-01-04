@@ -43,38 +43,52 @@ public class TypeUtils {
             TypeDeclaration d = pt.getDeclaration();
             boolean composite = d instanceof UnionType || d instanceof IntersectionType;
             boolean hasParams = pt.getTypeArgumentList() != null && !pt.getTypeArgumentList().isEmpty();
+            boolean closeBracket = false;
             if (composite) {
                 outputTypeList(node, d, gen, true);
             } else if (d instanceof TypeParameter) {
                 resolveTypeParameter(node, (TypeParameter)d, gen);
             } else {
-                if (hasParams) {
-                    gen.out("{r:");
-                }
-                outputQualifiedTypename(node, d, gen);
+                gen.out("{t:");
+                outputQualifiedTypename(node, pt, gen);
+                closeBracket = true;
             }
             if (hasParams) {
                 gen.out(",a:");
                 printTypeArguments(node, pt.getTypeArgumentList(), gen);
             }
-            if (hasParams) {
+            if (closeBracket) {
                 gen.out("}");
             }
         }
         gen.out("]");
     }
 
-    static void outputQualifiedTypename(Node node, TypeDeclaration t, GenerateJsVisitor gen) {
+    static void outputQualifiedTypename(Node node, ProducedType pt, GenerateJsVisitor gen) {
+        TypeDeclaration t = pt.getDeclaration();
         if (t.getName().equals("Bottom")) {
             //Hack in the model means hack here as well
             gen.out(GenerateJsVisitor.getClAlias(), "Bottom");
         } else {
-            gen.qualify(node, t);
-            gen.out(gen.getNames().name(t));
+            if (t.isAlias()) {
+                t = t.getExtendedTypeDeclaration();
+            }
+            boolean qual = gen.qualify(node, t);
+            String tname = gen.getNames().name(t);
+            if (!qual && isReservedTypename(tname)) {
+                gen.out(tname, "$");
+            } else {
+                gen.out(tname);
+            }
         }
     }
 
-    static void typeNameOrList(Node node, TypeDeclaration type, GenerateJsVisitor gen, boolean typeReferences) {
+    /** Prints out an object with a type constructor under the property "t" and its type arguments under
+     * the property "a", or a union/intersection type with "u" or "i" under property "t" and the list
+     * of types that compose it in an array under the property "l", or a type parameter as a reference to
+     * already existing params. */
+    static void typeNameOrList(Node node, ProducedType pt, GenerateJsVisitor gen, boolean typeReferences) {
+        TypeDeclaration type = pt.getDeclaration();
         if (type.isAlias()) {
             type = type.getExtendedTypeDeclaration();
         }
@@ -86,7 +100,13 @@ public class TypeUtils {
             if (type instanceof TypeParameter) {
                 resolveTypeParameter(node, (TypeParameter)type, gen);
             } else {
-                outputQualifiedTypename(node, type, gen);
+                gen.out("{t:");
+                outputQualifiedTypename(node, pt, gen);
+                if (!pt.getTypeArgumentList().isEmpty()) {
+                    gen.out(",a:");
+                    printTypeArguments(node, pt.getTypeArgumentList(), gen);
+                }
+                gen.out("}");
             }
         } else {
             gen.out("'", type.getQualifiedNameString(), "'");
@@ -96,17 +116,17 @@ public class TypeUtils {
     /** Appends an object with the type's type and list of union/intersection types. */
     static void outputTypeList(Node node, TypeDeclaration type, GenerateJsVisitor gen, boolean typeReferences) {
         gen.out("{ t:'");
-        final List<TypeDeclaration> subs;
+        final List<ProducedType> subs;
         if (type instanceof IntersectionType) {
             gen.out("i");
-            subs = type.getSatisfiedTypeDeclarations();
+            subs = type.getSatisfiedTypes();
         } else {
             gen.out("u");
-            subs = type.getCaseTypeDeclarations();
+            subs = type.getCaseTypes();
         }
         gen.out("', l:[");
         boolean first = true;
-        for (TypeDeclaration t : subs) {
+        for (ProducedType t : subs) {
             if (!first) gen.out(",");
             typeNameOrList(node, t, gen, typeReferences);
             first = false;
@@ -176,6 +196,11 @@ public class TypeUtils {
             }
         }
         return null;
+    }
+
+    static boolean isReservedTypename(String typeName) {
+        return JsCompiler.compilingLanguageModule && (typeName.equals("Object") || typeName.equals("Number")
+                || typeName.equals("Array")) || typeName.equals("String");
     }
 
 }

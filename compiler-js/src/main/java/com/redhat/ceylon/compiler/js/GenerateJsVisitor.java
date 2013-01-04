@@ -521,19 +521,6 @@ public class GenerateJsVisitor extends Visitor
         typeInitialization(that);
     }
 
-    /** Add a comment to the generated code with info about the produced type parameters. */
-    private void comment(ProducedType pt) {
-        if (!comment) return;
-        out("<");
-        out(pt.getProducedTypeQualifiedName());
-        //This is useful to iterate into the types of this type
-        //but for comment it's unnecessary
-        /*for (ProducedType spt : pt.getTypeArgumentList()) {
-            comment(spt);
-        }*/
-        out("> ");
-    }
-
     private void addClassToPrototype(ClassOrInterface type, ClassDefinition classDef) {
         classDefinition(classDef);
         Class d = classDef.getDeclarationModel();
@@ -1604,12 +1591,12 @@ public class GenerateJsVisitor extends Visitor
         }
         //When compiling the language module we need to modify certain base type names
         String rval = sb.toString();
-        if (JsCompiler.compilingLanguageModule && (rval.equals("Object") || rval.equals("Number") || rval.equals("Array"))) {
+        if (TypeUtils.isReservedTypename(rval)) {
             rval = sb.append("$").toString();
         }
         return rval;
     }
-    
+
     /**
      * Returns a string representing a read access to a member, as represented by
      * the given expression. If the expression is a QualifiedMemberOrTypeExpression
@@ -2254,12 +2241,16 @@ public class GenerateJsVisitor extends Visitor
         out(")");
     }
 
-    void qualify(Node that, Declaration d) {
-        String path = qualifiedPath(that, d);
-        out(path);
-        if (path.length() > 0) {
-            out(".");
+    /** Outputs the module name for the specified declaration. Returns true if something was output. */
+    boolean qualify(Node that, Declaration d) {
+        if (d.getUnit().getPackage().getModule().isDefault()) {
+            return false;
         }
+        String path = qualifiedPath(that, d);
+        if (path.length() > 0) {
+            out(path, ".");
+        }
+        return path.length() > 0;
     }
 
     private String qualifiedPath(Node that, Declaration d) {
@@ -2333,7 +2324,7 @@ public class GenerateJsVisitor extends Visitor
             return false;
         }
         Package p1 = d.getUnit().getPackage();
-        Package p2 = that.getUnit().getPackage();
+        Package p2 = that == null ? null : that.getUnit().getPackage();
         return !p1.equals(p2);
     }
 
@@ -2973,17 +2964,7 @@ public class GenerateJsVisitor extends Visitor
         if (negate) {
             out("!");
         }
-        TypeDeclaration decl = type.getTypeModel().getDeclaration();
-        if (decl.isAlias()) {
-            decl = decl.getExtendedTypeDeclaration();
-        }
-        boolean unionIntersection = decl instanceof com.redhat.ceylon.compiler.typechecker.model.UnionType
-                || decl instanceof com.redhat.ceylon.compiler.typechecker.model.IntersectionType;
-        if (unionIntersection)  {
-            out(clAlias, "isOfTypes(");
-        } else {
-            out(clAlias, "isOfType(");
-        }
+        out(clAlias, "isOfType(");
         if (term != null) {
             conds.specialConditionRHS(term, tmpvar);
         } else {
@@ -2991,29 +2972,8 @@ public class GenerateJsVisitor extends Visitor
         }
         out(",");
 
-        if (unionIntersection) {
-            TypeUtils.outputTypeList(term, decl, this, false);
-            out(")");
-        } else {
-            out("'");
-            String typename = decl.getQualifiedNameString();
-            if (JsCompiler.compilingLanguageModule && typename.indexOf("::") < 0) {
-                //Language module types are compiled in default module,
-                //we need to add this prefix manually
-                out("ceylon.language::");
-            }
-            out(typename);
-            out("')");
-            if (term != null && term.getTypeModel() != null && !term.getTypeModel().getTypeArguments().isEmpty()) {
-                out("/* REIFIED GENERICS SOON!!!");
-                out(" term " + term.getTypeModel());
-                out(" model " + term.getTypeModel().getTypeArguments());
-                for (ProducedType pt : term.getTypeModel().getTypeArgumentList()) {
-                    comment(pt);
-                }
-                out("*/");
-            }
-        }
+        TypeUtils.typeNameOrList(term, type.getTypeModel(), this, true);
+        out(")");
     }
 
     @Override
