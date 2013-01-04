@@ -1768,7 +1768,8 @@ public class GenerateJsVisitor extends Visitor
                     }
                     Declaration bmed = ((BaseMemberExpression)that.getPrimary()).getDeclaration();
                     if (bmed instanceof Functional) {
-                        if (((Functional) bmed).getParameterLists().get(0).getParameters().size() > argList.getPositionalArguments().size()) {
+                        if (((Functional) bmed).getParameterLists().get(0).getParameters().size() > argList.getPositionalArguments().size()
+                                && argList.getComprehension() == null) {
                             out("undefined,");
                         }
                     }
