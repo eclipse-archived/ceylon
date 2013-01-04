@@ -35,9 +35,9 @@ function isOfType(obj, type) {
         }
         var typeName = type.t.$$.T$name;
         if (obj.getT$all && typeName in obj.getT$all()) {
-            if (type.a) {
+            if (type.a && obj.$$targs$$) {
                 for (var i=0; i<type.a.length; i++) {
-                    if (!extendsType(obj.$$targs$$[i].t, type.a[i].t)) {
+                    if (!extendsType(obj.$$targs$$[i], type.a[i])) {
                         return false;
                     }
                 }
@@ -72,8 +72,16 @@ function isOfTypes(obj, types) {
 }
 function extendsType(t1, t2) {
     //TODO deal with union/intersection types
-    for (t in t1.$$.T$all) {
-        if (t === t2.$$.T$name) {
+    if (t1.t == 'u' || t1.t == 'i') {
+        console.log("WAIT!!!! I don't know how to compare union/intersection types yet");
+        return false;
+    }
+    if (t2.t == 'u' || t2.t == 'i') {
+        console.log("WAIT!!!! I don't know how to compare against union/intersection types yet");
+        return false;
+    }
+    for (t in t1.t.$$.T$all) {
+        if (t === t2.t.$$.T$name) {
             return true;
         }
     }

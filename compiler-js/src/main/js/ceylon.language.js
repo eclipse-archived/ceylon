@@ -100,6 +100,11 @@ function Nothing(wat) {
     return null;
 }
 initType(Nothing, 'ceylon.language::Nothing', Void);
+function Bottom(wat) {
+    throw "Bottom";
+}
+initType(Bottom, 'ceylon.language::Bottom');
+
 function Object$(wat) {
     return wat;
 }
@@ -430,6 +435,7 @@ exports.IdentifiableObject=IdentifiableObject;
 exports.Object=Object$;
 exports.Void=Void;
 exports.Nothing=Nothing;
+exports.Bottom=Bottom;
 exports.Boolean=Boolean$;
 exports.Comparison=Comparison;
 exports.getNull=getNull;
