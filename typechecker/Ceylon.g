@@ -1510,7 +1510,7 @@ namedArguments returns [NamedArgumentList namedArgumentList]
         => namedArgument
         { if ($namedArgument.namedArgument!=null) 
               $namedArgumentList.addNamedArgument($namedArgument.namedArgument); }
-      )* 
+      )*
       ( 
         sequencedArgument
         { $namedArgumentList.setSequencedArgument($sequencedArgument.sequencedArgument); }
@@ -2251,7 +2251,7 @@ stringLiteral returns [StringLiteral stringLiteral]
 // to distinguish an interpolated expression
 // in a string template this includes every 
 // token that could be the beginning of an 
-// expression, except for '['
+// expression, except for '[', '+', and '-'
 interpolatedExpressionStart
     : LPAREN
     | LBRACE
@@ -2261,6 +2261,11 @@ interpolatedExpressionStart
     | nonstringLiteral
     | prefixOperatorStart
     | STRING_LITERAL
+    //now a special case to with a big
+    //lookahead to disambiguate a tuple 
+    //or negated expression from an index
+    //operator (this is super-nasty!)
+    | expression STRING_LITERAL
     ;
 
 stringExpression returns [Atom atom]
