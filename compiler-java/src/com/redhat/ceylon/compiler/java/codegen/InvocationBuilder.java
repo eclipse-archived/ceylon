@@ -122,6 +122,7 @@ abstract class InvocationBuilder {
                 // cancel type parameters and go raw if we can't specify them
                 if(gen.willEraseToObject(arg) || gen.willEraseToSequential(arg)) {
                     this.callBuilder.typeArguments(List.<JCExpression>nil());
+                    return;
                 }
                 this.callBuilder.typeArgument(gen.makeJavaType(arg, JT_TYPE_ARGUMENT));
             }
@@ -203,6 +204,7 @@ abstract class InvocationBuilder {
             //resultExpr = gen.make().NewClass(qualifier, null, type, argExprs, null);
             callBuilder.instantiate(qualifier, type);
         } else {
+            callBuilder.typeArguments(List.<JCExpression>nil());
             callBuilder.invoke(gen.naming.makeInstantiatorMethodName(transformedPrimary.expr, (Class)declaration));
         }
         return callBuilder.build();
@@ -214,6 +216,7 @@ abstract class InvocationBuilder {
         Tree.BaseTypeExpression type = (Tree.BaseTypeExpression)primary;
         Declaration declaration = type.getDeclaration();
         if (Strategy.generateInstantiator(declaration)) {
+            callBuilder.typeArguments(List.<JCExpression>nil());
             callBuilder.invoke(gen.naming.makeInstantiatorMethodName(transformedPrimary.expr, (Class)declaration));
             resultExpr = callBuilder.build();
             if (Decl.isAncestorLocal(primaryDeclaration)) {
