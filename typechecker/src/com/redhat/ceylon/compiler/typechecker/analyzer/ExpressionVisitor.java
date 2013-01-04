@@ -1810,42 +1810,27 @@ public class ExpressionVisitor extends Visitor {
     
     private List<ProducedType> argtypes(ProducedType args) {
 		if (args!=null) {
-//			boolean defaulted=false;
-			if (args.getDeclaration() instanceof UnionType) {
-	        	List<ProducedType> cts = args.getDeclaration().getCaseTypes();
-	        	if (cts.size()==2) {
-	        		TypeDeclaration lc = cts.get(0).getDeclaration();
-					if (lc instanceof Interface && 
-							lc.equals(unit.getEmptyDeclaration())) {
-						args = cts.get(1);
-//	        			defaulted = true;
-	        		}
-	        		TypeDeclaration rc = cts.get(1).getDeclaration();
-					if (lc instanceof Interface &&
-							rc.equals(unit.getEmptyDeclaration())) {
-						args = cts.get(0);
-//	        			defaulted = true;
-	        		}
-	        	}
+			if (args.getDeclaration() instanceof Interface &&
+					args.getDeclaration().equals(unit.getSequentialDeclaration())) {
+				LinkedList<ProducedType> sequenced = new LinkedList<ProducedType>();
+				sequenced.add(args);
+				return sequenced;
 			}
-    		if (args.getDeclaration() instanceof ClassOrInterface) {
-    			if (args.getDeclaration().equals(unit.getTupleDeclaration())) {
-    				List<ProducedType> tal = args.getTypeArgumentList();
-    				if (tal.size()>=3) {
-    					List<ProducedType> result = argtypes(tal.get(2));
-    					result.add(0, tal.get(1));
-    					return result;
-    				}
-        		}
-        		else if (args.getDeclaration().equals(unit.getEmptyDeclaration())) {
-        			return new LinkedList<ProducedType>();
-        		}
-        		else if (args.getDeclaration().equals(unit.getSequentialDeclaration())) {
-    				LinkedList<ProducedType> sequenced = new LinkedList<ProducedType>();
-    				sequenced.add(args);
-        			return sequenced;
-        		}
-    		}
+			if (unit.isEmptyType(args)) {
+				args = unit.getNonemptyType(args);
+			}
+			ProducedType tst = args.getSupertype(unit.getTupleDeclaration());
+			if (tst!=null) {
+				List<ProducedType> tal = tst.getTypeArgumentList();
+				if (tal.size()>=3) {
+					List<ProducedType> result = argtypes(tal.get(2));
+					result.add(0, tal.get(1));
+					return result;
+				}
+			}
+			else if (args.getSupertype(unit.getEmptyDeclaration())!=null) {
+				return new LinkedList<ProducedType>();
+			}
     	}
     	LinkedList<ProducedType> unknown = new LinkedList<ProducedType>();
     	unknown.add(new UnknownType(unit).getType());
@@ -1854,22 +1839,48 @@ public class ExpressionVisitor extends Visitor {
 
     private boolean argsequenced(ProducedType args) {
 		if (args!=null) {
-    		if (args.getDeclaration() instanceof ClassOrInterface) {
-    			if (args.getDeclaration().equals(unit.getTupleDeclaration())) {
-    				List<ProducedType> tal = args.getTypeArgumentList();
-    				if (tal.size()>=3) {
-    					return argsequenced(tal.get(2));
-    				}
-        		}
-        		else if (args.getDeclaration().equals(unit.getEmptyDeclaration())) {
-        			return false;
-        		}
-        		else if (args.getDeclaration().equals(unit.getSequentialDeclaration())) {
-        			return true;
-        		}
-    		}
+			if (args.getDeclaration() instanceof Interface &&
+					args.getDeclaration().equals(unit.getSequentialDeclaration())) {
+				return true;
+			}
+			if (unit.isEmptyType(args)) {
+				args = unit.getNonemptyType(args);
+			}
+			ProducedType tst = args.getSupertype(unit.getTupleDeclaration());
+			if (tst!=null) {
+				List<ProducedType> tal = tst.getTypeArgumentList();
+				if (tal.size()>=3) {
+					return argsequenced(tal.get(2));
+				}
+			}
+			else if (args.getSupertype(unit.getEmptyDeclaration())!=null) {
+				return false;
+			}
     	}
     	return false;
+    }
+
+    private int argmin(ProducedType args) {
+		if (args!=null) {
+			if (args.getDeclaration() instanceof Interface &&
+					args.getDeclaration().equals(unit.getSequentialDeclaration())) {
+				return 0;
+			}
+			if (unit.isEmptyType(args)) {
+				return 0;
+			}
+			ProducedType tst = args.getSupertype(unit.getTupleDeclaration());
+			if (tst!=null) {
+				List<ProducedType> tal = tst.getTypeArgumentList();
+				if (tal.size()>=3) {
+					return argmin(tal.get(2))+1;
+				}
+			}
+			else if (args.getSupertype(unit.getEmptyDeclaration())!=null) {
+				return 0;
+			}
+    	}
+    	return 0;
     }
 
     private void visitInvocation(Tree.InvocationExpression that, ProducedReference prf) {
@@ -1885,9 +1896,11 @@ public class ExpressionVisitor extends Visitor {
                     }
                     //typecheck arguments using the type args of Callable
                     if (typeArgs.size()>=2) {
-                    	checkIndirectInvocationArguments(that, 
-                    			argtypes(typeArgs.get(1)),
-                    			argsequenced(typeArgs.get(1)));
+                    	ProducedType tt = typeArgs.get(1);
+						checkIndirectInvocationArguments(that, 
+                    			argtypes(tt),
+                    			argsequenced(tt),
+                    			argmin(tt));
                     }
                 }
             }
@@ -1935,7 +1948,7 @@ public class ExpressionVisitor extends Visitor {
     }
 
     private void checkIndirectInvocationArguments(Tree.InvocationExpression that, 
-    		List<ProducedType> typeArgs, boolean sequenced) {
+    		List<ProducedType> typeArgs, boolean sequenced, int min) {
         if (that.getNamedArgumentList() != null) {
             that.addError("named arguments not supported for indirect invocations");
         }
@@ -1954,7 +1967,8 @@ public class ExpressionVisitor extends Visitor {
             	that.addError("too many arguments: " + 
             			paramCount + " arguments required");
             }
-            if (argCount<paramCount-(sequenced?1:0)) {
+            //TODO: take into account defaulted parameters!!
+            if (argCount<min) {
             		that.addError("not enough arguments: " + 
             				paramCount + " arguments required");
             }
@@ -3628,6 +3642,7 @@ private void checkPositionalArguments(ParameterList pl, ProducedReference pr,
 				ProducedType et = e.getTypeModel();
 				if (i==es.size()-1 && ell!=null) {
 					ut = unit.getIteratedType(et);
+					//result = unit.denotableType(et);
 					result = unit.getSequentialType(ut);
 					if (!unit.isSequentialType(et)) {
 						ell.addError("last element expression is not sequential: " +
