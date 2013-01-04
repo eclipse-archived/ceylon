@@ -190,7 +190,7 @@ abstract class InvocationBuilder {
             JCExpression primTypeExpr = gen.makeJavaType(qmePrimary.getTypeModel(), JT_NO_PRIMITIVES);
             resultExpr = gen.make().Apply(primaryTypeArguments, 
                     gen.naming.makeQuotedQualIdent(primTypeExpr, transformedPrimary.selector), 
-                    argExprs.prepend(transformedPrimary.expr));
+                    argExprs);
         } else {
             resultExpr = gen.make().Apply(primaryTypeArguments, 
                     gen.naming.makeQuotedQualIdent(transformedPrimary.expr, transformedPrimary.selector), 
@@ -257,13 +257,19 @@ abstract class InvocationBuilder {
         return resultExpr;
     }
 
-    protected List<JCExpression> transformArgumentList() {
+    protected List<JCExpression> transformArgumentList(TransformedInvocationPrimary transformedPrimary) {
         gen.expressionGen().withinInvocation(false);
         compute();
         List<JCExpression> args = this.args.toList();
         if (needsTypeInfoArgument()) {
             JCExpression infoArg = makeTypeInfoArgument();
             args = args.prepend(infoArg);
+        }
+        if (!(primary instanceof Tree.BaseTypeExpression)
+                && !(primary instanceof Tree.QualifiedTypeExpression)
+                && onValueType 
+                && transformedPrimary != null) {
+            args = args.prepend(transformedPrimary.expr);   
         }
         List<JCExpression> argExprs = args;
         gen.expressionGen().withinInvocation(true);
@@ -333,7 +339,7 @@ abstract class InvocationBuilder {
             @Override
             public JCExpression transform(JCExpression primaryExpr, String selector) {
                 TransformedInvocationPrimary transformedPrimary = transformPrimary(primaryExpr, selector);
-                List<JCExpression> argExprs = transformArgumentList();
+                List<JCExpression> argExprs = transformArgumentList(transformedPrimary);
                 JCExpression resultExpr = transformInvocationOrInstantiation(transformedPrimary, argExprs);
                 return resultExpr;
             }
@@ -991,7 +997,9 @@ class SuperInvocationBuilder extends PositionalInvocationBuilder {
         } else {
             expr = gen.naming.makeSuper();
         }
-        JCExpression result = gen.make().Apply(List.<JCExpression> nil(), expr, transformArgumentList());
+        JCExpression result = gen.make().Apply(List.<JCExpression> nil(), expr,
+                // We could create a TransformedPrimary(expr, "super") here if needed
+                transformArgumentList(null));
         return result;
     }
 }
@@ -1156,7 +1164,9 @@ class CallableSpecifierInvocationBuilder extends InvocationBuilder {
     @Override
     protected JCExpression makeInvocation() {
         gen.at(node);
-        JCExpression result = gen.make().Apply(primaryTypeArguments, gen.naming.makeQuotedQualIdent(callable, Naming.getCallableMethodName()), transformArgumentList());
+        JCExpression result = gen.make().Apply(primaryTypeArguments, 
+                gen.naming.makeQuotedQualIdent(callable, Naming.getCallableMethodName()), 
+                transformArgumentList(null));
         if(handleBoxing)
             result = gen.expressionGen().applyErasureAndBoxing(result, returnType, 
                     !unboxed, boxingStrategy, returnType);
