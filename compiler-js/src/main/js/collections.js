@@ -127,7 +127,7 @@ initTypeProtoI(Empty, 'ceylon.language::Empty', Sequential, $init$Ranged(), $ini
 var Empty$proto = Empty.$$.prototype;
 Empty$proto.getEmpty = function() { return true; }
 Empty$proto.defines = function(x) { return false; }
-Empty$proto.getKeys = function() { return TypeCategory(this, 'ceylon.language::Integer'); }
+Empty$proto.getKeys = function() { return TypeCategory(this, {t:Integer}); }
 Empty$proto.definesEvery = function(x) { return false; }
 Empty$proto.definesAny = function(x) { return false; }
 Empty$proto.items = function(x) { return this; }

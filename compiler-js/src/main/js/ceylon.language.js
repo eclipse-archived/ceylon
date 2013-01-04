@@ -170,7 +170,7 @@ Correspondence$proto.items = function(keys) {
     return empty;
 }
 Correspondence$proto.keys = function() {
-    return TypeCategory(this, 'ceylon.language::Integer');
+    return TypeCategory(this, {t:Integer});
 }
 exports.Correspondence=Correspondence;
 

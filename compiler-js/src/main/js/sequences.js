@@ -116,7 +116,7 @@ Array$proto.items = function(keys) {
     }
     return ArraySequence(seq);
 }
-Array$proto.getKeys = function() { return TypeCategory(this, 'ceylon.language::Integer'); }
+Array$proto.getKeys = function() { return TypeCategory(this, {t:Integer}); }
 Array$proto.contains = function(elem) {
     for (var i=0; i<this.length; i++) {
         if (elem.equals(this[i])) {
@@ -157,7 +157,6 @@ function TypeCategory(seq, type) {
 initTypeProto(TypeCategory, 'ceylon.language::TypeCategory', IdentifiableObject, Category);
 var TypeCategory$proto = TypeCategory.$$.prototype;
 TypeCategory$proto.contains = function(k) {
-    //TODO fix this isOfType
     return isOfType(k, this.type) && this.seq.defines(k);
 }
 
@@ -208,7 +207,7 @@ Singleton$proto.getLast = function() { return this.elem; }
 Singleton$proto.getEmpty = function() { return false; }
 Singleton$proto.getRest = function() { return empty; }
 Singleton$proto.defines = function(idx) { return idx.equals(0); }
-Singleton$proto.getKeys = function() { return TypeCategory(this, 'ceylon.language::Integer'); }
+Singleton$proto.getKeys = function() { return TypeCategory(this, {t:Integer}); }
 Singleton$proto.span = function(from, to) {
     return (((from <= 0) && (to >= 0)) || ((from >= 0) && (to <= 0))) ? this : empty;
 }

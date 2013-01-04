@@ -42,7 +42,10 @@ function isOfType(obj, type) {
 }
 function isOfTypes(obj, types) {
     if (obj===null) {
-        return types.l.indexOf({t:Nothing})>=0 || types.l.indexOf({t:Void})>=0;
+        for (var i=0; i < types.l.length; i++) {
+            if(types.l[i].t===Nothing || types.l[i].t===Void) return true;
+        }
+        return false;
     }
     var unions = false;
     var inters = true;
