@@ -165,32 +165,24 @@ abstract class InvocationBuilder {
     }
     
     protected final JCExpression transformPrimaryTerm(JCExpression primaryExpr, String selector) {
-        TransformedInvocationPrimary transformedPrimExpr = transformPrimary(primaryExpr, selector);
+        TransformedInvocationPrimary transformedPrimary = transformPrimary(primaryExpr, selector);
         
         List<JCExpression> argExprs = transformArgumentList();
         
-        JCExpression resultExpr = transformInvocation(primaryExpr, transformedPrimExpr.selector,
-                transformedPrimExpr.expr, argExprs);
+        JCExpression resultExpr = transformInvocation(transformedPrimary, argExprs);
 
         return resultExpr;
     }
 
-    protected JCExpression transformInvocation(JCExpression primaryExpr,
-            String selector, JCExpression actualPrimExpr,
+    protected JCExpression transformInvocation(TransformedInvocationPrimary transformedPrimary,
             List<JCExpression> argExprs) {
         JCExpression resultExpr;
         if (primary instanceof Tree.BaseTypeExpression) {
             Tree.BaseTypeExpression type = (Tree.BaseTypeExpression)primary;
             Declaration declaration = type.getDeclaration();
             if (Strategy.generateInstantiator(declaration)) {
-                JCExpression qual;
-                if (Decl.withinInterface(declaration)) {
-                    qual = primaryExpr != null ? primaryExpr : gen.naming.makeQuotedThis();
-                } else { 
-                    qual = null;
-                }
                 resultExpr = gen.make().Apply(null, 
-                        gen.naming.makeInstantiatorMethodName(qual, (Class)declaration), 
+                        gen.naming.makeInstantiatorMethodName(transformedPrimary.expr, (Class)declaration), 
                         argExprs);
                 if (Decl.isAncestorLocal(primaryDeclaration)) {
                     // $new method declared to return Object, so needs typecast
@@ -206,40 +198,41 @@ abstract class InvocationBuilder {
             // to get the companion.
             Tree.QualifiedTypeExpression qte = (Tree.QualifiedTypeExpression)primary;
             Declaration declaration = qte.getDeclaration();
+            resultExpr = transformedPrimary.expr;
             if (declaration.getContainer() instanceof Interface
                     && !Strategy.generateInstantiator(declaration)
                     && !(qte.getPrimary() instanceof Tree.Outer)) {
                 Interface qualifyingInterface = (Interface)declaration.getContainer();
-                actualPrimExpr = gen.make().Apply(null, 
-                        gen.makeSelect(actualPrimExpr, gen.getCompanionAccessorName(qualifyingInterface)), 
+                resultExpr = gen.make().Apply(null, 
+                        gen.makeSelect(transformedPrimary.expr, gen.getCompanionAccessorName(qualifyingInterface)), 
                         List.<JCExpression>nil());
                 // But when the interface is local the accessor returns Object
                 // so we need to cast it to the type of the companion
                 if (Decl.isAncestorLocal(declaration)) {
-                    actualPrimExpr = gen.make().TypeCast(gen.makeJavaType(qualifyingInterface.getType(), JT_COMPANION), actualPrimExpr);
+                    resultExpr = gen.make().TypeCast(gen.makeJavaType(qualifyingInterface.getType(), JT_COMPANION), resultExpr);
                 }
             }
             if (Strategy.generateInstantiator(declaration)) {
                 resultExpr = gen.make().Apply(null, 
-                        gen.naming.makeInstantiatorMethodName(actualPrimExpr, (Class)declaration), 
+                        gen.naming.makeInstantiatorMethodName(resultExpr, (Class)declaration), 
                         argExprs);
             } else {
                 ProducedType classType = (ProducedType)qte.getTarget();
                 // Note: here we're not fully qualifying the class name because the JLS says that if "new" is qualified the class name
                 // is qualified relative to it
                 JCExpression type = gen.makeJavaType(classType, AbstractTransformer.JT_CLASS_NEW | AbstractTransformer.JT_NON_QUALIFIED);
-                resultExpr = gen.make().NewClass(actualPrimExpr, null, type, argExprs, null);
+                resultExpr = gen.make().NewClass(resultExpr, null, type, argExprs, null);
             }
         } else {
             
             if (onValueType) {
                 JCExpression primTypeExpr = gen.makeJavaType(qmePrimary.getTypeModel(), JT_NO_PRIMITIVES);
                 resultExpr = gen.make().Apply(primaryTypeArguments, 
-                        gen.naming.makeQuotedQualIdent(primTypeExpr, selector), 
-                        argExprs.prepend(actualPrimExpr));
+                        gen.naming.makeQuotedQualIdent(primTypeExpr, transformedPrimary.selector), 
+                        argExprs.prepend(transformedPrimary.expr));
             } else {
                 resultExpr = gen.make().Apply(primaryTypeArguments, 
-                        gen.naming.makeQuotedQualIdent(actualPrimExpr, selector), 
+                        gen.naming.makeQuotedQualIdent(transformedPrimary.expr, transformedPrimary.selector), 
                         argExprs);
             }
         }
@@ -283,6 +276,15 @@ abstract class InvocationBuilder {
         }
         
         if (primary instanceof Tree.BaseTypeExpression) {
+            Tree.BaseTypeExpression type = (Tree.BaseTypeExpression)primary;
+            Declaration declaration = type.getDeclaration();
+            if (Strategy.generateInstantiator(declaration)) {
+                if (Decl.withinInterface(declaration)) {
+                    actualPrimExpr = primaryExpr != null ? primaryExpr : gen.naming.makeQuotedThis();
+                } else { 
+                    actualPrimExpr = null;
+                }
+            }
         } else if (primary instanceof Tree.QualifiedTypeExpression) {
         } else {
             if (this instanceof IndirectInvocationBuilder
@@ -1505,10 +1507,10 @@ class NamedArgumentInvocationBuilder extends InvocationBuilder {
     }
 
     @Override
-    protected JCExpression transformInvocation(JCExpression primaryExpr,
-            String selector, JCExpression actualPrimExpr,
+    protected JCExpression transformInvocation(
+            TransformedInvocationPrimary transformedPrimary,
             List<JCExpression> argExprs) {
-        JCExpression resultExpr = super.transformInvocation(primaryExpr, selector, actualPrimExpr, argExprs);
+        JCExpression resultExpr = super.transformInvocation(transformedPrimary, argExprs);
         // apply the default parameters
         if (vars != null && !vars.isEmpty()) {
             if (returnType == null || Decl.isUnboxedVoid(primaryDeclaration)) {
