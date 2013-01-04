@@ -7,10 +7,10 @@ shared Null|Value min<Value,Null>({Value...}&ContainerWithFirstElement<Value,Nul
     ContainerWithFirstElement<Value,Null> cwfe = values;
     value first = cwfe.first;
     if (exists first) {
-        variable value min:=first;
+        variable value min=first;
         for (val in values.rest) {
             if (val<min) {
-                min:=val;
+                min=val;
             }
         }
         return min;

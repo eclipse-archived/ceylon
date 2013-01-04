@@ -63,10 +63,10 @@ shared class Tuple<out Element, out First, out Rest>(first, rest)
 
     shared actual String string {
         StringBuilder b = StringBuilder().append("[ ");
-        variable Boolean first := true;
+        variable Boolean first = true;
         for(Element el in this){
             if(first){
-                first := false;
+                first = false;
             }else{
                 b.append(", ");
             }

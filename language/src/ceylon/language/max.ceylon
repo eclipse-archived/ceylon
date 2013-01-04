@@ -7,10 +7,10 @@ shared Null|Value max<Value,Null>({Value...}&ContainerWithFirstElement<Value,Nul
     ContainerWithFirstElement<Value,Null> cwfe = values;
     value first = cwfe.first;
     if (exists first) {
-        variable value max:=first;
+        variable value max=first;
         for (val in values.rest) {
             if (val>max) {
-                max:=val;
+                max=val;
             }
         }
         return max;

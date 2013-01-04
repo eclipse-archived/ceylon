@@ -38,7 +38,7 @@ shared class LazyMap<out Key,out Item>({Key->Item...} entries)
     }
     
     shared actual default Integer hash {
-        variable Integer hashCode := 1;
+        variable Integer hashCode = 1;
         for(elem in entries) {
             hashCode *= 31;
             hashCode += elem.hash;

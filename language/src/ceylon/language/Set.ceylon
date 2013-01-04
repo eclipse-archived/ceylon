@@ -58,7 +58,7 @@ shared interface Set<out Element>
     }
     
     shared actual default Integer hash {
-        variable Integer hashCode := 1;
+        variable Integer hashCode = 1;
         for (Element elem in this){
             hashCode *= 31;
             hashCode += elem.hash;

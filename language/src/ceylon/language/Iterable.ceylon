@@ -91,9 +91,9 @@ shared interface Iterable<out Element>
          iterate through all the elements, which might be
          very time-consuming."
     shared actual default Element? last {
-        variable Element? e := null;
+        variable Element? e = null;
         for (x in this) {
-            e := x;
+            e = x;
         }
         return e;
     }
@@ -129,9 +129,9 @@ shared interface Iterable<out Element>
             doc "The accumulating function that accepts an
                  intermediate result, and the next element."
             Result accumulating(Result partial, Element elem)) {
-        variable value r := initial;
+        variable value r = initial;
         for (e in this) {
-            r := accumulating(r, e);
+            r = accumulating(r, e);
         }
         return r;
     }
@@ -154,10 +154,10 @@ shared interface Iterable<out Element>
     shared default Element? findLast(
             doc "The predicate the element must satisfy."
             Boolean selecting(Element elem)) {
-        variable Element? last := null;
+        variable Element? last = null;
         for (e in this) {
             if (selecting(e)) {
-                last := e;
+                last = e;
             }
         }
         return last;
@@ -240,7 +240,7 @@ shared interface Iterable<out Element>
             object iterable satisfies {Element...} {
                 shared actual Iterator<Element> iterator {
                     value iterator = outer.iterator;
-                    variable value i:=0;
+                    variable value i=0;
                     while (i++<skip && !iterator.next() is Finished) {}
                     return iterator;
                 }
@@ -264,7 +264,7 @@ shared interface Iterable<out Element>
                     value outerIterable { return outer; }
                     object iterator satisfies Iterator<Element> {
                         value iter = outerIterable.iterator;
-                        variable value i:=0;
+                        variable value i=0;
                         actual shared Element|Finished next() {
                             return ++i>take then exhausted 
                                     else iter.next();
@@ -304,7 +304,7 @@ shared interface Iterable<out Element>
                         value iter = outerIterable.iterator;
                         actual shared Element|Finished next() {
                             value next = iter.next();
-                            variable value i:=0;
+                            variable value i=0;
                             while (++i<step && !iterator.next() is Finished) {}
                             return next;
                         }
@@ -322,7 +322,7 @@ shared interface Iterable<out Element>
             doc "The predicate satisfied by the elements to
                  be counted."
             Boolean selecting(Element element)) {
-        variable value count:=0;
+        variable value count=0;
         for (elem in this) {
             if (is Object elem) {
                 if (selecting(elem)) {
@@ -358,7 +358,7 @@ shared interface Iterable<out Element>
                     value outerIterable { return outer; }
                     object iterator satisfies Iterator<<Integer->Element&Object>?> {
                         value iter = outerIterable.iterator;
-                        variable value i:=0;
+                        variable value i=0;
                         actual shared <Integer->Element&Object>?|Finished next() {
                             value next = iter.next();
                             if (!is Finished next) {

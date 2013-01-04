@@ -4,7 +4,7 @@ doc "Annotation to mark a type or member as shared. A `shared`
 shared Nothing shared() { return null; }
 
 doc "Annotation to mark an attribute as variable. A `variable` 
-     attribute must be assigned with `:=` and may be 
+     attribute must be assigned with `=` and may be 
      reassigned over time." 
 shared Nothing variable() { return null; }
 

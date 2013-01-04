@@ -9,15 +9,15 @@ shared class LazySet<out Element>({Element...} elems)
     shared actual LazySet<Element> clone => this;
     
     shared actual Integer size {
-        variable value c:=0;
+        variable value c=0;
         value sorted = elems.sort(byIncreasing((Element e) e.hash));
         if (exists l=sorted.first) {
-            c:=1;
-            variable Element last := l;
+            c=1;
+            variable Element last = l;
             for (e in sorted.rest) {
                 if (e!=last) {
                     c++;
-                    last:=e;
+                    last=e;
                 }
             }
         }
@@ -63,7 +63,7 @@ shared class LazySet<out Element>({Element...} elems)
     }
     
     shared actual default Integer hash {
-        variable Integer hashCode := 1;
+        variable Integer hashCode = 1;
         for(elem in elems){
             hashCode *= 31;
             hashCode += elem.hash;

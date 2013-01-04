@@ -55,15 +55,15 @@ shared class Range<Element>(first, last)
          is inefficient for large ranges."
     shared actual Element? item(Integer n) {
         //optimize this for numbers!
-        variable Integer index:=0;
-        variable Element x:=first;
+        variable Integer index=0;
+        variable Element x=first;
         while (index<n) {
             if (x==last) {
                 return null;
             }
             else {
                 ++index;
-                x:=next(x);
+                x=next(x);
             }
         }
         return x;
@@ -73,15 +73,15 @@ shared class Range<Element>(first, last)
     shared actual Iterator<Element> iterator {
         class RangeIterator()
                 satisfies Iterator<Element> {
-            variable Element|Finished current := first;
+            variable Element|Finished current = first;
             shared actual Element|Finished next() {
                 Element|Finished result = current;
                 if (!is Finished curr = current) {
                     if (curr == last) {
-                        current := exhausted;
+                        current = exhausted;
                     } 
                     else {
-                        current := outer.next(curr);
+                        current = outer.next(curr);
                     }
                 }
                 return result;
@@ -105,13 +105,13 @@ shared class Range<Element>(first, last)
     }
     
     shared actual Integer count(Boolean selecting(Element element)) {
-        variable value e := first;
-        variable value c := 0;
+        variable value e = first;
+        variable value c = 0;
         while (includes(e)) {
             if (selecting(e)) {
                 c++;
             }
-            e := next(e);
+            e = next(e);
         }
         return c;
     }
@@ -131,8 +131,8 @@ shared class Range<Element>(first, last)
     }
     else {
         //optimize this for numbers!
-        variable Integer index:=0;
-        variable Element value:=first;
+        variable Integer index=0;
+        variable Element value=first;
         while (value<x) {
             ++index;
             ++value;
@@ -165,43 +165,43 @@ shared class Range<Element>(first, last)
         if (length<=0 || from>lastIndex) {
             return {};
         }
-        variable value x:=first;
-        variable value i:=0;
-        while (i++<from) { x:=next(x); }
-        variable value y:=x;
-        variable value j:=1;
-        while (j++<length && y<last) { y:=next(y); }
+        variable value x=first;
+        variable value i=0;
+        while (i++<from) { x=next(x); }
+        variable value y=x;
+        variable value j=1;
+        while (j++<length && y<last) { y=next(y); }
         return Range<Element>(x, y);
     }
     
     shared actual Range<Element>|Empty span(
             Integer from, Integer to) {
-        variable value toIndex:=to;
-        variable value fromIndex:=from;
+        variable value toIndex=to;
+        variable value fromIndex=from;
         if (toIndex<0) {
             if (fromIndex<0) {
                 return {};
             }
-            toIndex:=0;
+            toIndex=0;
         }
         else if (toIndex>lastIndex) {
             if (fromIndex>lastIndex) {
                 return {};
             }
-            toIndex:=lastIndex;
+            toIndex=lastIndex;
         }
         if (fromIndex<0) {
-            fromIndex:=0;
+            fromIndex=0;
         }
         else if (fromIndex>lastIndex) {
-            fromIndex:=lastIndex;
+            fromIndex=lastIndex;
         }
-        variable value x:=first;
-        variable value i:=0;
-        while (i++<fromIndex) { x:=next(x); }
-        variable value y:=first;
-        variable value j:=0;
-        while (j++<toIndex) { y:=next(y); }
+        variable value x=first;
+        variable value i=0;
+        while (i++<fromIndex) { x=next(x); }
+        variable value y=first;
+        variable value j=0;
+        while (j++<toIndex) { y=next(y); }
         return Range<Element>(x, y);
     }
     shared actual Range<Element>|Empty spanTo(Integer to) {
@@ -215,10 +215,10 @@ shared class Range<Element>(first, last)
     shared actual Range<Element> reversed => Range(last,first);
     
     shared actual Range<Element>|Empty skipping(Integer skip) {
-        variable value x:=0;
-        variable value e := first;
+        variable value x=0;
+        variable value e = first;
         while (x++<skip) {
-            e:=next(e);
+            e=next(e);
         }
         return includes(e) then Range(e, last) else {};
     }
@@ -227,10 +227,10 @@ shared class Range<Element>(first, last)
         if (take == 0) {
             return {};
         }
-        variable value x:=0;
-        variable value e:=first;
+        variable value x=0;
+        variable value e=first;
         while (++x<take) {
-            e:=next(e);
+            e=next(e);
         }
         return includes(e) then Range(first, e) else this;
     }

@@ -103,7 +103,7 @@ shared class LazyList<out Element>({Element...} elems)
     }
     
     shared actual default Integer hash {
-        variable value hash := 1;
+        variable value hash = 1;
         for (elem in elems) {
             hash *= 31;
             if (is Object elem) {

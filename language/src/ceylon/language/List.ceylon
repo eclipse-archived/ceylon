@@ -52,7 +52,7 @@ shared interface List<out Element>
     shared actual default Iterator<Element> iterator {
         object listIterator
                 satisfies Iterator<Element> {
-            variable Integer index := 0;
+            variable Integer index = 0;
             shared actual Element|Finished next() {
                 if (index < (lastIndex else -1)) {
                     if (exists elem = item(index++)) {
@@ -132,7 +132,7 @@ shared interface List<out Element>
     }
     
     shared actual default Integer hash {
-        variable value hash := 1;
+        variable value hash = 1;
         for (elem in this) {
             hash *= 31;
             if (is Object elem) {
@@ -145,7 +145,7 @@ shared interface List<out Element>
     shared default actual Element? findLast(
             Boolean selecting(Element elem)) {
         if (exists l=lastIndex) {
-            variable value index := l;
+            variable value index = l;
             while (index >= 0) {
                 if (exists elem = item(index--)) {
                     if (selecting(elem)) {

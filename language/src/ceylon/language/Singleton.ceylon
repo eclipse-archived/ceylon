@@ -36,13 +36,13 @@ shared class Singleton<out Element>(Element element)
     shared actual default Iterator<Element> iterator {
         class SingletonIterator()
                 satisfies Iterator<Element> {
-            variable Boolean done := false;
+            variable Boolean done = false;
             shared actual Element|Finished next() {
                 if (done) {
                     return exhausted;
                 }
                 else {
-                    done:=true;
+                    done=true;
                     return element;
                 }
             }

@@ -54,7 +54,7 @@ shared interface Map<out Key,out Item>
     }
     
     shared actual default Integer hash {
-        variable Integer hashCode := 1;
+        variable Integer hashCode = 1;
         for (elem in this) {
             hashCode *= 31;
             hashCode += elem.hash;
