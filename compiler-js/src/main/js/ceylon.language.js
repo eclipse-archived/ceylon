@@ -76,6 +76,12 @@ function inheritProto(type) {
         for (var $ in superProto) {proto[$] = superProto[$]}
     }
 }
+function reify(obj, params) {
+    if (obj) {
+        obj.$$targs$$=params;
+    }
+    return obj;
+}
 var inheritProtoI = inheritProto;
 exports.initType=initType;
 exports.initTypeProto=initTypeProto;
@@ -84,11 +90,21 @@ exports.initExistingType=initExistingType;
 exports.initExistingTypeProto=initExistingTypeProto;
 exports.inheritProto=inheritProto;
 exports.inheritProtoI=inheritProtoI;
+exports.reify=reify;
 
 function Void(wat) {
     return wat;
 }
 initType(Void, 'ceylon.language::Void');
+function Nothing(wat) {
+    return null;
+}
+initType(Nothing, 'ceylon.language::Nothing', Void);
+function Bottom(wat) {
+    throw "Bottom";
+}
+initType(Bottom, 'ceylon.language::Bottom');
+
 function Object$(wat) {
     return wat;
 }
@@ -109,7 +125,7 @@ function Identifiable(obj) {}
 initType(Identifiable, "ceylon.language::Identifiable");
 var Identifiable$proto = Identifiable.$$.prototype;
 Identifiable$proto.equals = function(that) {
-    return isOfType(that, 'ceylon.language::Identifiable') && (that===this);
+    return isOfType(that, {t:Identifiable}) && (that===this);
 }
 Identifiable$proto.getHash = function() { return $identityHash(this); }
 
@@ -159,7 +175,7 @@ Correspondence$proto.items = function(keys) {
     return empty;
 }
 Correspondence$proto.keys = function() {
-    return TypeCategory(this, 'ceylon.language::Integer');
+    return TypeCategory(this, {t:Integer});
 }
 exports.Correspondence=Correspondence;
 
@@ -417,6 +433,9 @@ exports.Identifiable=Identifiable;
 exports.identityHash=$identityHash;
 exports.IdentifiableObject=IdentifiableObject;
 exports.Object=Object$;
+exports.Void=Void;
+exports.Nothing=Nothing;
+exports.Bottom=Bottom;
 exports.Boolean=Boolean$;
 exports.Comparison=Comparison;
 exports.getNull=getNull;

@@ -118,7 +118,7 @@ Array$proto.items = function(keys) {
     }
     return ArraySequence(seq);
 }
-Array$proto.getKeys = function() { return TypeCategory(this, 'ceylon.language::Integer'); }
+Array$proto.getKeys = function() { return TypeCategory(this, {t:Integer}); }
 Array$proto.contains = function(elem) {
     for (var i=0; i<this.length; i++) {
         if (elem.equals(this[i])) {
@@ -129,17 +129,16 @@ Array$proto.contains = function(elem) {
 }
 
 exports.ArrayList=ArrayList;
-exports.array=function(elems) {
-    if (elems === null || elems === undefined) {
-        return [];
-    } else {
-        var e=[];
+exports.array=function(elems, $$$ptypes) {
+    var e=[];
+    if (!(elems === null || elems === undefined)) {
         var iter=elems.getIterator();
         var item;while((item=iter.next())!==$finished) {
             e.push(item);
         }
-        return e;
     }
+    e.$$targs$$=$$$ptypes;
+    return e;
 }
 exports.arrayOfSize=function(size, elem) {
     if (size > 0) {
@@ -210,7 +209,7 @@ Singleton$proto.getLast = function() { return this.elem; }
 Singleton$proto.getEmpty = function() { return false; }
 Singleton$proto.getRest = function() { return empty; }
 Singleton$proto.defines = function(idx) { return idx.equals(0); }
-Singleton$proto.getKeys = function() { return TypeCategory(this, 'ceylon.language::Integer'); }
+Singleton$proto.getKeys = function() { return TypeCategory(this, {t:Integer}); }
 Singleton$proto.span = function(from, to) {
     return (((from <= 0) && (to >= 0)) || ((from >= 0) && (to <= 0))) ? this : empty;
 }
@@ -226,7 +225,7 @@ Singleton$proto.segment = function(idx, len) {
 Singleton$proto.getIterator = function() { return SingletonIterator(this.elem); }
 Singleton$proto.getReversed = function() { return this; }
 Singleton$proto.equals = function(other) {
-    if (isOfType(other, 'ceylon.language::List')) {
+    if (isOfType(other, {t:List})) {
         if (other.getSize() !== 1) {
             return false;
         }

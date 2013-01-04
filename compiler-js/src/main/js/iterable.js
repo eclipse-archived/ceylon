@@ -244,6 +244,6 @@ ChainedIterable$proto.getIterator = function() {
 
 function toTuple(iterable) {
   var seq = iterable.getSequence();
-  return Tuple(seq.getFirst(), seq.getRest().getSequence());
+  return reify(Tuple(seq.getFirst(), seq.getRest().getSequence()), seq.$$targs$$);
 }
 exports.toTuple=toTuple;

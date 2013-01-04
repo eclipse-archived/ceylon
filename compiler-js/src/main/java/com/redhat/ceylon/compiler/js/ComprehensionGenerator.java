@@ -1,6 +1,7 @@
 package com.redhat.ceylon.compiler.js;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Set;
 
@@ -38,7 +39,7 @@ class ComprehensionGenerator {
     }
 
     void generateComprehension(Comprehension that) {
-        gen.out(GenerateJsVisitor.getClAlias(), "Comprehension(function()");
+        gen.out(GenerateJsVisitor.getClAlias(), "reify(", GenerateJsVisitor.getClAlias(), "Comprehension(function()");
         gen.beginBlock();
         if (gen.isAddComments()) {
             gen.out("//Comprehension"); gen.location(that); gen.endLine();
@@ -196,7 +197,9 @@ class ComprehensionGenerator {
 
         gen.out("return ", exhausted, ";");
         gen.endBlockNewLine();
-        gen.endBlock(); gen.out(")");
+        gen.endBlock(); gen.out("),");
+        TypeUtils.printTypeArguments(that, Collections.singletonList(expression.getTypeModel()), gen);
+        gen.out(")");
     }
 
     /** Represents one of the for loops of a comprehension including the associated conditions */

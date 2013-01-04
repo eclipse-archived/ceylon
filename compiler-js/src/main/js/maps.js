@@ -24,7 +24,7 @@ function $init$Map() {
 $init$Map();
 var Map$proto = Map.$$.prototype;
 Map$proto.equals = function(other) {
-    if (isOfType(other, 'ceylon.language::Map') && other.getSize().equals(this.getSize())) {
+    if (isOfType(other, {t:Map}) && other.getSize().equals(this.getSize())) {
         var iter = this.getIterator();
         var entry; while ((entry = iter.next()) !== $finished) {
             var oi = other.item(entry.getKey());
@@ -236,7 +236,7 @@ HashMap$proto.item = function(key) {
     return null;
 }
 HashMap$proto.contains = function(elem) {
-    if (isOfType(elem, 'ceylon.language::Entry')) {
+    if (isOfType(elem, {t:Entry})) {
         var item = this.item(elem.getKey());
         if (item !== null) { return item.equals(elem.getItem()); }
     }

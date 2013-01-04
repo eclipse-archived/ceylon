@@ -150,6 +150,9 @@ public class GenerateJsVisitor extends Visitor
     /** Tells the receiver to be verbose (prints generated code to STDOUT in addition to writer) */
     public void setVerbose(boolean flag) { verbose = flag; }
 
+    /** Returns the helper component to handle naming. */
+    JsIdentifierNames getNames() { return names; }
+
     /** Print generated code to the Writer specified at creation time.
      * Automatically prints indentation first if necessary.
      * @param code The main code
@@ -174,7 +177,7 @@ public class GenerateJsVisitor extends Visitor
             }
         }
         catch (IOException ioe) {
-            ioe.printStackTrace();
+            throw new RuntimeException("Generating JS code", ioe);
         }
     }
 
@@ -295,10 +298,18 @@ public class GenerateJsVisitor extends Visitor
     public void visit(ParameterList that) {
         out("(");
         boolean first=true;
+        boolean ptypes = false;
         for (Parameter param: that.getParameters()) {
             if (!first) out(",");
             out(names.name(param.getDeclarationModel()));
             first = false;
+            if (param.getDeclarationModel().getTypeDeclaration() instanceof TypeParameter) {
+                ptypes = true;
+            }
+        }
+        if (ptypes) {
+            if (!first) out(",");
+            out("$$$mptypes");
         }
         out(")");
     }
@@ -510,34 +521,6 @@ public class GenerateJsVisitor extends Visitor
         typeInitialization(that);
     }
 
-    /** Add a comment to the generated code with info about the type parameters. */
-    private void comment(TypeParameter tp) {
-        if (!comment) return;
-        out("<");
-        if (tp.isCovariant()) {
-            out("out ");
-        } else if (tp.isContravariant()) {
-            out("in ");
-        }
-        out(tp.getQualifiedNameString());
-        for (TypeParameter st : tp.getTypeParameters()) {
-            comment(st);
-        }
-        out("> ");
-    }
-    /** Add a comment to the generated code with info about the produced type parameters. */
-    private void comment(ProducedType pt) {
-        if (!comment) return;
-        out("<");
-        out(pt.getProducedTypeQualifiedName());
-        //This is useful to iterate into the types of this type
-        //but for comment it's unnecessary
-        /*for (ProducedType spt : pt.getTypeArgumentList()) {
-            comment(spt);
-        }*/
-        out("> ");
-    }
-
     private void addClassToPrototype(ClassOrInterface type, ClassDefinition classDef) {
         classDefinition(classDef);
         Class d = classDef.getDeclarationModel();
@@ -557,7 +540,6 @@ public class GenerateJsVisitor extends Visitor
     private void classDefinition(ClassDefinition that) {
         Class d = that.getDeclarationModel();
         comment(that);
-
         out(function, names.name(d), "(");
         for (Parameter p: that.getParameterList().getParameters()) {
             p.visit(this);
@@ -566,16 +548,6 @@ public class GenerateJsVisitor extends Visitor
         self(d);
         out(")");
         beginBlock();
-        if (!d.getTypeParameters().isEmpty()) {
-            //out(",");
-            //selfTypeParameters(d);
-            out("/* REIFIED GENERICS SOON! ");
-            for (TypeParameter tp : d.getTypeParameters()) {
-                comment(tp);
-            }
-            out("*/");
-            endLine();
-        }
         //This takes care of top-level attributes defined before the class definition
         out("$init$", names.name(d), "();");
         endLine();
@@ -1625,12 +1597,12 @@ public class GenerateJsVisitor extends Visitor
         }
         //When compiling the language module we need to modify certain base type names
         String rval = sb.toString();
-        if (JsCompiler.compilingLanguageModule && (rval.equals("Object") || rval.equals("Number") || rval.equals("Array"))) {
+        if (TypeUtils.isReservedTypename(rval)) {
             rval = sb.append("$").toString();
         }
         return rval;
     }
-    
+
     /**
      * Returns a string representing a read access to a member, as represented by
      * the given expression. If the expression is a QualifiedMemberOrTypeExpression
@@ -1699,15 +1671,9 @@ public class GenerateJsVisitor extends Visitor
     
     @Override
     public void visit(BaseTypeExpression that) {
+        if (that.getErrors() != null && !that.getErrors().isEmpty()) return;
         qualify(that, that.getDeclaration());
         out(names.name(that.getDeclaration()));
-        if (!that.getTypeArguments().getTypeModels().isEmpty()) {
-            out("/* REIFIED GENERICS SOON!! ");
-            for (ProducedType pt : that.getTypeArguments().getTypeModels()) {
-                comment(pt);
-            }
-            out("*/");
-        }
     }
 
     @Override
@@ -1723,6 +1689,7 @@ public class GenerateJsVisitor extends Visitor
     @Override
     public void visit(InvocationExpression that) {
         if (that.getPrimary() instanceof BaseMemberExpression && that.getPositionalArgumentList() != null) {
+            //This is just for hex() and bin() literals
             List<PositionalArgument> args = that.getPositionalArgumentList().getPositionalArguments();
             if (args.size() == 1 && args.get(0).getExpression() != null) {
                 Term term = args.get(0).getExpression().getTerm();
@@ -1755,18 +1722,35 @@ public class GenerateJsVisitor extends Visitor
 
             Map<String, String> argVarNames = defineNamedArguments(argList);
 
+            TypeArguments targs = that.getPrimary() instanceof BaseTypeExpression ? ((BaseTypeExpression)that.getPrimary()).getTypeArguments() : null;
+            if (targs != null && targs.getTypeModels() != null && !targs.getTypeModels().isEmpty()) {
+                out(clAlias, "reify(");
+            }
             that.getPrimary().visit(this);
             if (that.getPrimary() instanceof Tree.MemberOrTypeExpression) {
                 Tree.MemberOrTypeExpression mte = (Tree.MemberOrTypeExpression) that.getPrimary();
                 if (mte.getDeclaration() instanceof Functional) {
                     Functional f = (Functional) mte.getDeclaration();
-                    applyNamedArguments(argList, f, argVarNames, getSuperMemberScope(mte)!=null);
+                    TypeArguments _targs = null;
+                    if (targs == null && mte instanceof BaseMemberExpression) {
+                        _targs = ((BaseMemberExpression)mte).getTypeArguments();
+                    }
+                    applyNamedArguments(argList, f, argVarNames, getSuperMemberScope(mte)!=null, _targs);
+                    if (targs != null && targs.getTypeModels() != null && !targs.getTypeModels().isEmpty()) {
+                        out(",");
+                        TypeUtils.printTypeArguments(that, targs.getTypeModels(), this);
+                        out(")");
+                    }
                 }
             }
             out(")");
         }
         else {
             PositionalArgumentList argList = that.getPositionalArgumentList();
+            TypeArguments targs = that.getPrimary() instanceof BaseTypeExpression ? ((BaseTypeExpression)that.getPrimary()).getTypeArguments() : null;
+            if (targs != null && targs.getTypeModels() != null && !targs.getTypeModels().isEmpty()) {
+                out(clAlias, "reify(");
+            }
             that.getPrimary().visit(this);
             if (prototypeStyle && (getSuperMemberScope(that.getPrimary()) != null)) {
                 out(".call(this");
@@ -1779,7 +1763,34 @@ public class GenerateJsVisitor extends Visitor
                 out("(");
             }
             argList.visit(this);
-            out(")");
+            if (targs == null && that.getPrimary() instanceof BaseMemberExpression) {
+                targs = ((BaseMemberExpression)that.getPrimary()).getTypeArguments();
+                if (targs == null || targs.getTypeModels() == null || targs.getTypeModels().isEmpty()) {
+                    out(")");
+                    targs = null;
+                } else {
+                    if (argList.getPositionalArguments().size() > 0 || argList.getComprehension() != null) {
+                        out(",");
+                    }
+                    Declaration bmed = ((BaseMemberExpression)that.getPrimary()).getDeclaration();
+                    if (bmed instanceof Functional) {
+                        if (((Functional) bmed).getParameterLists().get(0).getParameters().size() > argList.getPositionalArguments().size()
+                                && argList.getComprehension() == null) {
+                            out("undefined,");
+                        }
+                    }
+                }
+            } else {
+                out(")");
+                //Output a comma only for type initializers with type arguments
+                if (targs != null && targs.getTypeModels() != null && !targs.getTypeModels().isEmpty()) {
+                    out(",");
+                }
+            }
+            if (targs != null && targs.getTypeModels() != null && !targs.getTypeModels().isEmpty()) {
+                TypeUtils.printTypeArguments(that, targs.getTypeModels(), this);
+                out(")");
+            }
         }
     }
 
@@ -1833,7 +1844,7 @@ public class GenerateJsVisitor extends Visitor
     }
 
     private void applyNamedArguments(NamedArgumentList argList, Functional func,
-                Map<String, String> argVarNames, boolean superAccess) {
+                Map<String, String> argVarNames, boolean superAccess, TypeArguments targs) {
         boolean firstList = true;
         for (com.redhat.ceylon.compiler.typechecker.model.ParameterList plist : func.getParameterLists()) {
             List<String> argNames = argList.getNamedArgumentList().getArgumentNames();
@@ -1860,6 +1871,10 @@ public class GenerateJsVisitor extends Visitor
                     out("undefined");
                 }
                 first = false;
+            }
+            if (targs != null) {
+                if (!first) out(",");
+                TypeUtils.printTypeArguments(argList, targs.getTypeModels(), this);
             }
             out(")");
             firstList = false;
@@ -2244,12 +2259,16 @@ public class GenerateJsVisitor extends Visitor
         out(")");
     }
 
-    private void qualify(Node that, Declaration d) {
-        String path = qualifiedPath(that, d);
-        out(path);
-        if (path.length() > 0) {
-            out(".");
+    /** Outputs the module name for the specified declaration. Returns true if something was output. */
+    boolean qualify(Node that, Declaration d) {
+        if (d.getUnit().getPackage().getModule().isDefault()) {
+            return false;
         }
+        String path = qualifiedPath(that, d);
+        if (path.length() > 0) {
+            out(path, ".");
+        }
+        return path.length() > 0;
     }
 
     private String qualifiedPath(Node that, Declaration d) {
@@ -2317,12 +2336,13 @@ public class GenerateJsVisitor extends Visitor
         return "";
     }
 
+    /** Tells whether a declaration is in the same package as a node. */
     private boolean isImported(Node that, Declaration d) {
         if (d == null) {
             return false;
         }
         Package p1 = d.getUnit().getPackage();
-        Package p2 = that.getUnit().getPackage();
+        Package p2 = that == null ? null : that.getUnit().getPackage();
         return !p1.equals(p2);
     }
 
@@ -2737,14 +2757,17 @@ public class GenerateJsVisitor extends Visitor
        });
    }
 
-   @Override public void visit(EntryOp that) {
+   @Override public void visit(final EntryOp that) {
        binaryOp(that, new BinaryOpGenerator() {
            @Override
            public void generate(BinaryOpTermGenerator termgen) {
-               out(clAlias, "Entry(");
+               out(clAlias, "reify(", clAlias, "Entry(");
                termgen.left();
                out(",");
                termgen.right();
+               out("),");
+               TypeUtils.printTypeArguments(that, that.getTypeModel().getTypeArgumentList(),
+                       GenerateJsVisitor.this);
                out(")");
            }
        });
@@ -2946,42 +2969,6 @@ public class GenerateJsVisitor extends Visitor
        conds.generateWhile(that);
    }
 
-    /** Appends an object with the type's type and list of union/intersection types. */
-    private void getTypeList(TypeDeclaration type) {
-        out("{ t:'");
-        final List<TypeDeclaration> subs;
-        if (type instanceof com.redhat.ceylon.compiler.typechecker.model.IntersectionType) {
-            out("i");
-            subs = type.getSatisfiedTypeDeclarations();
-        } else {
-            out("u");
-            subs = type.getCaseTypeDeclarations();
-        }
-        out("', l:[");
-        boolean first = true;
-        for (TypeDeclaration t : subs) {
-            if (!first) out(",");
-            typeNameOrList(t);
-            first = false;
-        }
-        out("]}");
-    }
-
-    private void typeNameOrList(TypeDeclaration type) {
-        if (type.isAlias()) {
-            type = type.getExtendedTypeDeclaration();
-        }
-        boolean unionIntersection = type instanceof com.redhat.ceylon.compiler.typechecker.model.UnionType
-                || type instanceof com.redhat.ceylon.compiler.typechecker.model.IntersectionType;
-        if (unionIntersection) {
-            getTypeList(type);
-        } else {
-            out("'");
-            out(type.getQualifiedNameString());
-            out("'");
-        }
-    }
-
     /** Generates js code to check if a term is of a certain type. We solve this in JS by
      * checking against all types that Type satisfies (in the case of union types, matching any
      * type will do, and in case of intersection types, all types must be matched).
@@ -2995,17 +2982,7 @@ public class GenerateJsVisitor extends Visitor
         if (negate) {
             out("!");
         }
-        TypeDeclaration decl = type.getTypeModel().getDeclaration();
-        if (decl.isAlias()) {
-            decl = decl.getExtendedTypeDeclaration();
-        }
-        boolean unionIntersection = decl instanceof com.redhat.ceylon.compiler.typechecker.model.UnionType
-                || decl instanceof com.redhat.ceylon.compiler.typechecker.model.IntersectionType;
-        if (unionIntersection)  {
-            out(clAlias, "isOfTypes(");
-        } else {
-            out(clAlias, "isOfType(");
-        }
+        out(clAlias, "isOfType(");
         if (term != null) {
             conds.specialConditionRHS(term, tmpvar);
         } else {
@@ -3013,29 +2990,8 @@ public class GenerateJsVisitor extends Visitor
         }
         out(",");
 
-        if (unionIntersection) {
-            getTypeList(decl);
-            out(")");
-        } else {
-            out("'");
-            String typename = decl.getQualifiedNameString();
-            if (JsCompiler.compilingLanguageModule && typename.indexOf("::") < 0) {
-                //Language module types are compiled in default module,
-                //we need to add this prefix manually
-                out("ceylon.language::");
-            }
-            out(typename);
-            out("')");
-            if (term != null && term.getTypeModel() != null && !term.getTypeModel().getTypeArguments().isEmpty()) {
-                out("/* REIFIED GENERICS SOON!!!");
-                out(" term " + term.getTypeModel());
-                out(" model " + term.getTypeModel().getTypeArguments());
-                for (ProducedType pt : term.getTypeModel().getTypeArgumentList()) {
-                    comment(pt);
-                }
-                out("*/");
-            }
-        }
+        TypeUtils.typeNameOrList(term, type.getTypeModel(), this, true);
+        out(")");
     }
 
     @Override
