@@ -169,6 +169,11 @@ class Operators() {
     @type:"Nothing|String" value x53 = noSequence?[0]?.normalized;
     @type:"Nothing|Iterable<String>" value x532 = noSequence?[0]?.split((Character c) c==` `);
     @type:"Sequence<Operators.X>" value x54 = [Operators()][].X();
+
+    {String...} onetwo = {"one", "two"};
+    @type:"Sequential<String>" value x61 = onetwo[].uppercased;
+    @type:"Sequential<Sequential<Character>>" value x62 = onetwo[].characters;
+    @type:"Sequential<Iterable<String>>" value x63 = onetwo[].split((Character c) c==` `);
     
     @type:"Nothing|Sequential<String>" value s1 = noSequence?[1...];
     @type:"Nothing|Sequential<String>" value s2 = noSequence?[...2];
