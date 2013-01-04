@@ -77,6 +77,9 @@ public class ErrorCollector implements DiagnosticListener<FileObject> {
     
     public String toString() {
         StringBuilder sb = new StringBuilder();
+        if (actualErrors.isEmpty()) {
+            return "Unknown errors (was a stacktrace dumped?)";
+        }
         for (CompilerError e : actualErrors) {
             sb.append(e).append(System.lineSeparator());
         }
