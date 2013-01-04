@@ -184,6 +184,7 @@ class Primaries() {
     String interpolated5 = "hello" ["ABC" 1+1 "123"] "world";
     String interpolated6 = "hello" -10 "world";
     String interpolated7 = "hello" +10 "world";
+    String interpolated8 = "hello" "ABC123".size "world";
     
     List<Character> list={` `};
     @type:"Sequential<Integer>" value xxxx = list[].integer;
