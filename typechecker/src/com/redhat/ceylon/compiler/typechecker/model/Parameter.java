@@ -57,7 +57,7 @@ public abstract class Parameter extends TypedDeclaration {
 
     @Override
     public String toString() {
-        return super.toString().replace("[", 
+        return super.toString().replaceFirst("\\[", 
         		"[" + declaration.getName() + "#");
     }
     
