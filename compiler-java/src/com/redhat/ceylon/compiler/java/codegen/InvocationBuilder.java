@@ -134,14 +134,6 @@ abstract class InvocationBuilder {
      */
     protected abstract void compute();
     
-    /**
-     * Appends an argument
-     * @param argExpr
-     */
-    protected final void appendArgument(JCExpression argExpr) {
-        this.callBuilder.argument(argExpr);
-    }
-    
     public final void setUnboxed(boolean unboxed) {
         this.unboxed = unboxed;
     }
@@ -557,7 +549,7 @@ abstract class SimpleInvocationBuilder extends InvocationBuilder {
                 expr = gen.makeSequence(x, iteratedType, JT_TYPE_ARGUMENT);
             }
             if(!wrapIntoArray)
-                appendArgument(expr);
+                this.callBuilder.argument(expr);
             else
                 arrayWrap.append(expr);
         }
@@ -565,7 +557,7 @@ abstract class SimpleInvocationBuilder extends InvocationBuilder {
             // must have at least one arg, so take the last one
             ProducedType parameterType = getParameterType(numArguments-1);
             JCExpression arrayType = gen.makeJavaType(parameterType, JT_RAW);
-            appendArgument(gen.make().NewArray(arrayType, List.<JCExpression>nil(), arrayWrap.toList()));
+            this.callBuilder.argument(gen.make().NewArray(arrayType, List.<JCExpression>nil(), arrayWrap.toList()));
         }
     }
 
@@ -1135,7 +1127,7 @@ class CallableSpecifierInvocationBuilder extends InvocationBuilder {
                     !parameter.getUnboxed(), 
                     BoxingStrategy.BOXED,// Callables always have boxed params 
                     declaredParameter.getType());
-            appendArgument(result);
+            this.callBuilder.argument(result);
             argIndex++;
         }
     }
@@ -1191,7 +1183,7 @@ class NamedArgumentInvocationBuilder extends InvocationBuilder {
     @Override
     protected void compute() {
         for (Naming.SyntheticName argName : this.argsNamesByIndex.values()) {
-            appendArgument(argName.makeIdent());
+            this.callBuilder.argument(argName.makeIdent());
         }
     }
     
