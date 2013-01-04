@@ -35,6 +35,13 @@ function isOfType(obj, type) {
         }
         var typeName = type.t.$$.T$name;
         if (obj.getT$all && typeName in obj.getT$all()) {
+            if (type.a) {
+                for (var i=0; i<type.a.length; i++) {
+                    if (!extendsType(obj.$$targs$$[i].t, type.a[i].t)) {
+                        return false;
+                    }
+                }
+            }
             return true;
         }
     }
@@ -62,6 +69,15 @@ function isOfTypes(obj, types) {
         }
     }
     return _ints ? inters||unions : unions;
+}
+function extendsType(t1, t2) {
+    //TODO deal with union/intersection types
+    for (t in t1.$$.T$all) {
+        if (t === t2.$$.T$name) {
+            return true;
+        }
+    }
+    return false;
 }
 
 function className(obj) {
