@@ -6,9 +6,12 @@ import static java.lang.Integer.parseInt;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import org.antlr.runtime.Token;
+
 import com.redhat.ceylon.compiler.typechecker.tree.Node;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.CharLiteral;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.FloatLiteral;
+import com.redhat.ceylon.compiler.typechecker.tree.Tree.Literal;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.NaturalLiteral;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.QuotedLiteral;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.StringLiteral;
@@ -19,18 +22,23 @@ public class LiteralVisitor extends Visitor {
     @Override
     public void visit(StringLiteral that) {
         StringBuilder result = new StringBuilder();
-        stripIndent(that.getText(), that.getToken().getCharPositionInLine()+1, result);
+        stripIndent(that.getText(), getIndentPosition(that), result);
         interpolateEscapes(result, that);
         that.setText(result.toString());
     }
-    
+
     @Override
     public void visit(QuotedLiteral that) {
         StringBuilder result = new StringBuilder();
-        stripIndent(that.getText(), that.getToken().getCharPositionInLine()+1, result);
+        stripIndent(that.getText(), getIndentPosition(that), result);
         //interpolateEscapes(result, that);
         that.setText(result.toString());
     }
+    
+	private int getIndentPosition(Literal that) {
+		Token token = that.getToken();
+		return token==null ? 0 : token.getCharPositionInLine()+1;
+	}
     
     @Override
     public void visit(CharLiteral that) {
