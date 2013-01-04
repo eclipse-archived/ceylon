@@ -82,12 +82,12 @@ abstract class InvocationBuilder {
     protected final Tree.Primary primary;
     protected final Declaration primaryDeclaration;
     protected final ProducedType returnType;
-    protected final List<JCExpression> primaryTypeArguments;
     protected boolean handleBoxing;
     protected boolean unboxed;
     protected BoxingStrategy boxingStrategy;
     private final ListBuffer<JCExpression> args = ListBuffer.lb();
-    protected final Map<TypeParameter, ProducedType> typeArguments;
+    protected final List<JCExpression> primaryTypeArguments;
+
     protected final Tree.Primary qmePrimary;
     protected final boolean onValueType;
     
@@ -99,11 +99,7 @@ abstract class InvocationBuilder {
         this.primaryDeclaration = primaryDeclaration;
         this.returnType = returnType;
         this.node = node;
-        if (primary instanceof Tree.MemberOrTypeExpression){
-            this.typeArguments = ((Tree.MemberOrTypeExpression) primary).getTarget().getTypeArguments();
-        } else {
-            this.typeArguments = null;
-        }
+        
         if (primary instanceof Tree.StaticMemberOrTypeExpression){
             this.primaryTypeArguments = transformTypeArguments(gen, ((Tree.StaticMemberOrTypeExpression)primary).getTypeArguments().getTypeModels());
         } else {
@@ -157,10 +153,6 @@ abstract class InvocationBuilder {
 
     public final void setBoxingStrategy(BoxingStrategy boxingStrategy) {
         this.boxingStrategy = boxingStrategy;
-    }
-
-    protected final Map<TypeParameter, ProducedType> getTypeArguments() {
-        return this.typeArguments;
     }
 
     protected JCExpression transformInvocationOrInstantiation(TransformedInvocationPrimary transformedPrimary,
