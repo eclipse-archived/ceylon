@@ -36,7 +36,7 @@ void test() {
     @type:"Sequential<String>"
     [String...] hibye2 = hibye;
     [String, Integer, Object...] trip = triple("", 0, 0.0);
-    value ints = {1,2,3};
+    value ints = [1,2,3];
     [String,Integer,Integer...] vartup = ["hello", 4, ints...];
     @type:"Nothing" value v0 = vartup[-1];
     @type:"String" value v1 = vartup[0];

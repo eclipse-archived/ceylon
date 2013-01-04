@@ -6,7 +6,7 @@ class DefiningClass() {
 }
 
 class DefaultedAndSequenced() {
-    void m(String s, Integer i = 1, Boolean... b = {true, false}) {}
+    void m(String s, Integer i = 1, Boolean... b = [true, false]) {}
     m("hello");
     m("hello", 2);
     m("hello", 2, {}...);

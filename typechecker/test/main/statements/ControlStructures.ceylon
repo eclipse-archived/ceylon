@@ -2,7 +2,7 @@ class ControlStructures() {
     Object something = "hello";
     String? name = null;
     String[] names = {};
-    Entry<String,String>[] entries = { Entry("hello", "world") };
+    Entry<String,String>[] entries = [ "hello" -> "world" ];
     
     void print(String name) {}
     

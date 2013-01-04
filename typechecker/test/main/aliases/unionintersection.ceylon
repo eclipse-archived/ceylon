@@ -6,19 +6,19 @@ alias C => Cntnr&Category;
 
 Number n = 1;
 Number x = 2.0;
-ListLike<Float> list = { 1.0, 2.0 };
+ListLike<Float> list = [ 1.0, 2.0 ];
 C c = list;
 
 shared alias Strings => List<String>;
 
 void local() {
     alias Numbers => List<Number>;
-    Numbers ns = { 1, 3.0 };
+    Numbers ns = [ 1, 3.0 ];
 }
 
 class Outer() {
     shared alias Cs => List<C>;
-    shared Cs cs = { c, c };
+    shared Cs cs = [ c, c ];
 }
 
 Outer.Cs cs = Outer().cs;

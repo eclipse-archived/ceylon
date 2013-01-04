@@ -6,7 +6,7 @@ interface ParameterHiding {
             @type:"Sequence<Character>" value n = name;
         }
         class Nested2() {
-            Sequence<Character> name = { `g`, `a`, `v` };
+            Sequence<Character> name = [ `g`, `a`, `v` ];
             @type:"Sequence<Character>" value n = name;
         }
     }
@@ -47,7 +47,7 @@ interface NewParameterHiding {
             @type:"Sequence<Character>" value n = name;
         }
         class Nested2() {
-            Sequence<Character> name = { `g`, `a`, `v` };
+            Sequence<Character> name = [ `g`, `a`, `v` ];
             @type:"Sequence<Character>" value n = name;
         }
     }

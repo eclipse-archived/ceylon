@@ -70,7 +70,7 @@ class Intersection() {
     @error consumer.consume(xOnly);
     @error Consumer<X>&Consumer<Y> errc = c;
     
-    Sequence<X&Y> seqxy = { XY(), XY() };
+    Sequence<X&Y> seqxy = [ XY(), XY() ];
     Sequence<X>&Sequence<Y> useq = seqxy;
     
     Consumer<X|Y> consxy = Consumer<X|Y>();
@@ -95,7 +95,7 @@ class Intersection() {
     object one satisfies One {}
     object onetwo satisfies One&Two {}
     
-    @type:"Sequence<Intersection.One&Intersection.Two>" Sequence<One>&Sequence<Two> seq = { onetwo };
+    @type:"Sequence<Intersection.One&Intersection.Two>" Sequence<One>&Sequence<Two> seq = [ onetwo ];
     @type:"Nothing|Intersection.One&Intersection.Two" value item = seq[0];
     @type:"Intersection.One&Intersection.Two" value fst = seq.first;
     @type:"Iterator<Intersection.One&Intersection.Two>" value itr = seq.iterator;
@@ -117,9 +117,9 @@ class Intersection() {
     @type:"Bottom" intersect(1, "hello");
     @type:"Bottom" intersect(null, {"hello"});
     @type:"Integer" intersect(1, 3);
-    Sequence<String> onestring = {"hello"};
+    Sequence<String> onestring = ["hello"];
     @type:"Integer&Sequence<String>" intersect(1, onestring);
-    @type:"Bottom" intersect(1, {"hello"});
+    @type:"Bottom" intersect(1, ["hello"]);
     @type:"Bottom" intersect(I({"hello"}), I({}));
     
     interface I1 {} 
@@ -129,13 +129,13 @@ class Intersection() {
         @type:"Nothing|Intersection.I1&Intersection.I2" value item = seq[4];
     }
     
-    Integer m1 = max({1, 2, 3});
-    Nothing m2 = max({});
-    Integer? m3 = max(join({},{1, 2, 3}));
+    Integer m1 = max([1, 2, 3]);
+    Nothing m2 = max([]);
+    Integer? m3 = max(join([],[1, 2, 3]));
     Integer? m4 = max({1, 2, 3}.filter((Integer i) i>0));
-    @type:"Integer" max({1, 2, 3});
-    @type:"Nothing" max({});
-    @type:"Nothing|Integer" max(join({},{1, 2, 3}));
+    @type:"Integer" max([1, 2, 3]);
+    @type:"Nothing" max([]);
+    @type:"Nothing|Integer" max(join([],[1, 2, 3]));
     @type:"Nothing|Integer" max({1, 2, 3}.filter((Integer i) i>0));
     
 }

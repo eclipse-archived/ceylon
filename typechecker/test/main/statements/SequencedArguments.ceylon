@@ -6,9 +6,9 @@ class Assignment() {
     value count { return 0; }
     assign count {}
     count=1;
-    function hello() { return "hello"; }
+    function hello() => "hello";
     @error hello="goodbye";
-    value org { return "JBoss"; }
+    value org => "JBoss";
     @error org="Red Hat";
 }
 
@@ -18,13 +18,13 @@ class SequencedArguments() {
     void printAll(String[] strings) {}
     void printSum(Integer... n) {}
     
-    String[] names = { "stef", "tako" };
+    String[] names = [ "stef", "tako" ];
     
     print(" ", "hello", "world");
     print(" ", names...);
     print(" ", "hello", "world", names...);
     printSum(1,2,3);
-    printSum({1,2,3}...);
+    printSum([1,2,3]...);
     @error print(" ", names);
     @error print(" ", "hello", names, "world");
     @error print(" ", "hello"...);

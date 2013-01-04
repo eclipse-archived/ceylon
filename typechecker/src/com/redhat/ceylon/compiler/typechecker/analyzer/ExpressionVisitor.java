@@ -3687,25 +3687,8 @@ private void checkPositionalArguments(ParameterList pl, ProducedReference pr,
             if (el!=null) {
             	List<Tree.Expression> es = el.getExpressions();
             	Tree.Ellipsis ell = that.getSequencedArgument().getEllipsis();
-            	if (ell==null) {
-            		st = getTupleType(es, ell);
-            	}
-            	else {
-            		Tree.Expression e = es.get(es.size()-1);
-            		ProducedType et = e.getTypeModel();
-            		if (et!=null) {
-            			ProducedType it = unit.getIteratedType(et);
-            			if (it!=null) {
-            				if (unit.isSequentialType(et)) {
-            					st = getTupleType(es, ell);
-            				}
-            				else {
-            					ProducedType rt = getGenericElementType(es, ell);
-            					st = unit.getIterableType(rt);
-            				}
-            			}
-            		}
-            	}
+            	ProducedType rt = getGenericElementType(es, ell);
+            	st = unit.getIterableType(rt);
             }
         }
         else {

@@ -158,7 +158,7 @@ class Assignability() {
         print(nothing.hello);
     }
     
-    X[] sequenceofx = {X()};
+    X[] sequenceofx = [X()];
     if (sequenceofx[0] exists) {}
     
     //@error if (exists "Hello") {}
@@ -244,10 +244,10 @@ class Assignability() {
         print(i.string);
     }
     @error if ({} nonempty) {}
-    @error if ({-2,+0,+1} nonempty) {}
+    @error if ([-2,+0,+1] nonempty) {}
     if (nonempty @error e = {}) {}
-    if (nonempty @error s = {-2,+0,+1}) {}
-    Integer[] ints = {-2,+0,+1};
+    if (nonempty @error s = [-2,+0,+1]) {}
+    Integer[] ints = [-2,+0,+1];
     if (nonempty ints) {
         Integer i = ints.first;
     }
@@ -275,7 +275,7 @@ class Assignability() {
     
     for (@error X x -> Y y in 12) {}
     
-    for (Integer i->String s in entries<String>({"hello", "world", "!"}...)) {
+    for (Integer i->String s in entries<String>(["hello", "world", "!"]...)) {
         print(i.string + ": " + s);
     }
     
@@ -283,7 +283,7 @@ class Assignability() {
         print(i.string + ": " + s);
     }
     
-    for (i->s in entries({"hello", "world", "!"}...)) {
+    for (i->s in entries(["hello", "world", "!"]...)) {
         print(i.string + ": " + s);
     }
     
@@ -372,13 +372,16 @@ class Assignability() {
     
     void w<W>(W... ws) {}
     w<String>("foo");
-    w<String>({"foo"}...);
+    w<String>(["foo"]...);
+    @error w<String>({"foo"}...);
     w<String>("foo", "bar");
-    w<String>({"foo", "bar"}...);
+    w<String>(["foo", "bar"]...);
     w("foo");
-    w({"foo"}...);
+    w(["foo"]...);
+    @error w({"foo"}...);
     w("foo", "bar");
-    w({"foo", "bar"}...);
+    w(["foo", "bar"]...);
+    @error w({"foo", "bar"}...);
     {String...} iterable = {"foo", "bar"};
     [String...] sequential = ["foo", "bar"];
     @error w(iterable...);
@@ -410,7 +413,7 @@ class Assignability() {
             return b;
         }
     }
-    @type:"Tuple<String,String,Empty>|Tuple<Integer,Integer,Empty>" value ut = f({ "aaa" },{ 1 });
+    @type:"Tuple<String,String,Empty>|Tuple<Integer,Integer,Empty>" value ut = f(["aaa"],[1]);
     Sequence<Object> st1 = ut;
     Sequence<String|Integer> st2 = ut;
     @type:"Nothing|String|Integer" value item = ut[0];

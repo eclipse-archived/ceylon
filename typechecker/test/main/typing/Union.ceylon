@@ -64,7 +64,7 @@ class Union() {
     Bar f = Bar("hello");
     String fh = f.hello("hi");
     
-    T?[] method<T>() { return {null}; }
+    T?[] method<T>() { return [null]; }
     
     String?[] mr = method<String>();
     
@@ -117,7 +117,7 @@ class Union() {
         if (is Sequence<String> strs) {}
     }
     
-    String?[] ostrs = {null};
+    String?[] ostrs = [null];
     
     if (is Sequence<String?> strs) {
         for (s in strs) {
@@ -126,7 +126,7 @@ class Union() {
         }
     }
     
-    Sequence<String>|Sequence<Integer> sssn = { "hello" };
+    Sequence<String>|Sequence<Integer> sssn = [ "hello" ];
     String|Integer sssnf = sssn.first;
     
     function first<T>(T... args) {
@@ -137,11 +137,14 @@ class Union() {
             throw;
         }
     }
-    @type:"String|Integer|Float" value ff1 = first({"hello", "world"}, {+1, -1}, {1.0}).first;
-    @type:"String|Integer" value ff2 = first({"hello", "world"}, {+1, -1, 1.0}).first;
+    @type:"String|Integer|Float" value ff1 = first(["hello", "world"], [+1, -1], [1.0]).first;
+    @type:"String|Integer" value ff2 = first(["hello", "world"], [+1, -1, 1.0]).first;
     
-    @type:"String|Integer|Float" value ff3 = first({"hello", "world"}.sequence, {+1, -1}.sequence, {1.0}.sequence).first;
-    @type:"String|Integer|Float" value ff4 = first({"hello", "world"}.sequence, {+1, -1, 1.0}.sequence).first;
+    @type:"String|Integer|Float" value ff3 = first(["hello", "world"].sequence, [+1, -1].sequence, [1.0].sequence).first;
+    @type:"String|Integer|Float" value ff4 = first(["hello", "world"].sequence, [+1, -1, 1.0].sequence).first;
+    
+    @type:"Nothing|String|Integer|Float" value ff5 = first({"hello", "world"}.sequence, {+1, -1}.sequence, {1.0}.sequence).first;
+    @type:"Nothing|String|Integer|Float" value ff6 = first({"hello", "world"}.sequence, {+1, -1, 1.0}.sequence).first;
     
     class Outer<out T>() {
         shared default class Inner<out U>(u) {

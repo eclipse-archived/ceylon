@@ -59,17 +59,17 @@ void method() {
     Callable<Void,[]> helloRef = x.hello;
     Callable<Void,[]> noopRef = noop;
     
-    higher1({"hello", "world"}, print);
-    higher1({"hello", "world"}, upper);
-    higher1({"hello", "world"}, X);
-    @error higher1({"hello", "world"}, noop);
-    @error higher1({"hello", "world"}, str);
+    higher1(["hello", "world"], print);
+    higher1(["hello", "world"], upper);
+    higher1(["hello", "world"], X);
+    @error higher1(["hello", "world"], noop);
+    @error higher1(["hello", "world"], str);
     
-    higher2({"hello", "world"}, print);
-    higher2({"hello", "world"}, upper);
-    higher2({"hello", "world"}, X);
-    @error higher2({"hello", "world"}, noop);
-    @error higher2({"hello", "world"}, str);
+    higher2(["hello", "world"], print);
+    higher2(["hello", "world"], upper);
+    higher2(["hello", "world"], X);
+    @error higher2(["hello", "world"], noop);
+    @error higher2(["hello", "world"], str);
     
     @type:"String" function up(String s) => upper(s);
     void pr(String s) => print;
@@ -95,65 +95,65 @@ void method() {
     @error String s3 = pass((Float f) f.string, "hello");
     
     higher2 { 
-        strings = {"goodbye"};
+        strings = ["goodbye"];
         void f(String s) { print(s); }
     };
     higher2 { 
-        strings = {"goodbye"};
+        strings = ["goodbye"];
         Integer f(String s) { print(s); return s.size; }
     };
     higher2 { 
-        strings = {"goodbye"};
+        strings = ["goodbye"];
         @error void f(Integer n) { print(n.string); }
     };
     
     higher2 { 
-        strings = {"goodbye"};
+        strings = ["goodbye"];
         function f(String s) { print(s); return s.size; }
     };
-    higher2({"goodbye"}, (String s) print(s));
-    higher2({"goodbye"}, (String s) print(s));
+    higher2(["goodbye"], (String s) print(s));
+    higher2(["goodbye"], (String s) print(s));
     
     higher2 { 
-        strings = {"goodbye"};
+        strings = ["goodbye"];
         function f(String s) => s.size;
     };
     higher2 { 
-        strings = {"goodbye"};
+        strings = ["goodbye"];
         Integer f(String s) => s.size;
     };
     
     higher2 { 
-        strings = {"goodbye"};
+        strings = ["goodbye"];
         void f(String s) => print(s);
     };
     higher2 { 
-        strings = {"goodbye"};
+        strings = ["goodbye"];
         function f(String s) => print(s);
     };
     higher2 { 
-        strings = {"goodbye"};
+        strings = ["goodbye"];
         String f(String s) => s;
     };
     higher2 {
-        strings = {"goodbye"};
+        strings = ["goodbye"];
         Integer f(String s) => s.size;
     };
     higher2 {
-        strings = {"goodbye"};
+        strings = ["goodbye"];
         @error Integer f(String s) => print(s);
     };
     higher2 { 
-        strings = {"goodbye"};
+        strings = ["goodbye"];
         @error Integer f(Integer i) => i;
     };
     higher2 { 
-        strings = {"goodbye"};
+        strings = ["goodbye"];
         @error function f(Integer i) => print(i);
     };
     
     higher2 { 
-        strings = {"goodbye"};
+        strings = ["goodbye"];
         f(String s) => s.size;
     };
     

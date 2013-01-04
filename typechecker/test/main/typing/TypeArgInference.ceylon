@@ -49,7 +49,7 @@ class TypeArgInference() {
         }
     }
     
-    @type:"Nothing|Sequential<String>" String[]? strings = {"hello", "goodbye"};
+    @type:"Nothing|Sequential<String>" String[]? strings = ["hello", "goodbye"];
     @type:"Nothing|String" value s = firstElem(strings);
     @type:"Nothing|String" value ss = firstElem { sequence=strings; };
 
@@ -57,13 +57,14 @@ class TypeArgInference() {
         return matrix.first.first;
     }
     
-    @type:"Sequence<Sequence<Integer>>" value ints = {{-1}.sequence}.sequence;
+    @type:"Sequence<Sequence<Integer>>" value ints = [[-1].sequence].sequence;
     @type:"Integer" value i = corner(ints);
     @type:"Integer" value ii = corner { matrix = ints; };
     
     T method<T>(String|Sequence<T> s) { throw; }
-    @type:"String" method({"hello"});
+    @type:"String" method(["hello"]);
     @type:"Bottom" method("hello");
+    @error:"String" method([]);
     
     T? firstElt<T>(T... args) {
         return args.sequence.first;
@@ -72,12 +73,13 @@ class TypeArgInference() {
         return args.sequence.first;
     }
     @type:"Nothing|String" firstElt("hello", "world");
-    @type:"Nothing|Sequence<String>" firstElt({"hello", "world"}.sequence);
-    @type:"Nothing|String" firstElt({"hello", "world"}...);
+    @type:"Nothing|Sequence<String>" firstElt(["hello", "world"].sequence);
+    @type:"Nothing|Tuple<String,String,Tuple<String,String,Empty>>" firstElt (["hello", "world"]);
+    @type:"Nothing|String" firstElt(["hello", "world"]...);
     @type:"Nothing|String" firstElt0 { "hello", "world" };
-    @type:"Nothing|Sequence<String>" firstElt0 {{"hello", "world"}.sequence};
+    @type:"Nothing|Sequence<String>" firstElt0 {["hello", "world"].sequence};
     @type:"Nothing|String" firstElt { args = "hello"; args="world"; };
-    @type:"Nothing|Tuple<String,String,Tuple<String,String,Empty>>" firstElt { args = {"hello", "world"}; };
+    @type:"Nothing|Tuple<String,String,Tuple<String,String,Empty>>" firstElt { args = ["hello", "world"]; };
     @type:"Nothing|String" firstElt0 { args = {"hello", "world"}; };
     
     T? createNull<T>() {
@@ -100,7 +102,7 @@ class TypeArgInference() {
     }
     
     @type:"String" f1("hello");
-    @type:"Integer" f2({1,2,3});
+    @type:"Integer" f2([1,2,3]);
     
     interface Z {}
     interface W {}

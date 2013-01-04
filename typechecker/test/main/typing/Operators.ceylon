@@ -7,12 +7,8 @@ class Operators() {
     class Z() extends Object() {
         //fake impl
         shared actual String string = "Z()";
-        shared actual Boolean equals(Object that) {
-            return true;
-        }
-        shared actual Integer hash {
-            return 0;
-        }
+        shared actual Boolean equals(Object that) => true;
+        shared actual Integer hash => 0;
     }
     
     @type:"String" value x0 = "Hello" + " " + "World";
@@ -131,7 +127,7 @@ class Operators() {
     
     @type:"Boolean" value x55 = 1 in cat;
     
-    Sequence<Integer?> seqopt2 = { null, 1 };    
+    Sequence<Integer?> seqopt2 = [ null, 1 ];    
     value x56 = "foo" in seqopt2;
     
     @type:"Comparison" value x34 = 1<=>3;
@@ -139,14 +135,14 @@ class Operators() {
     @error value x36 = X()<=>X();
     @error value x37 = 1<=>"hello";
     
-    X[] sequence = {X(), X()};
+    X[] sequence = [X(), X()];
     String[]? noSequence = null;
     String[] emp = {};
     
     @type:"Nothing|Operators.X" value x38 = sequence[0];
     @type:"Sequential<Operators.X>" value x39 = sequence[0..1];
     @type:"Sequential<Operators.X>" value x40 = sequence[1+1...];
-    @type:"Nothing|Operators.X" value x41 = {nothing}[0];
+    @type:"Nothing|Operators.X" value x41 = [nothing][0];
     @type:"Nothing|String" value x42 = noSequence?[0];
     @type:"Sequential<Operators.X>" value x39u = sequence[...1];
     
@@ -157,9 +153,9 @@ class Operators() {
     
     String? maybeString = null;
     Callable<Nothing|Iterable<String>,[Iterable<Character>|Callable<Boolean,[Character]>,Boolean,Boolean]> mss = maybeString?.split;
-    Callable<Sequence<Iterable<String>>,[Iterable<Character>|Callable<Boolean,[Character]>,Boolean,Boolean]> hws = {"hello", "world"}[].split;
+    Callable<Sequence<Iterable<String>>,[Iterable<Character>|Callable<Boolean,[Character]>,Boolean,Boolean]> hws = ["hello", "world"][].split;
     
-    Sequence<String> helloworld = {"hello", "world"};
+    Sequence<String> helloworld = ["hello", "world"];
     @type:"Sequential<String>" value e45 = emp[].uppercased;
     @type:"Sequence<Sequential<Character>>" value x46 = helloworld[].characters;
     @type:"Sequence<String>" value x47 = helloworld[].uppercased;
@@ -172,7 +168,7 @@ class Operators() {
     @type:"Sequence<Iterable<String>>" value x522 = helloworld[].split((Character c) c==` `);
     @type:"Nothing|String" value x53 = noSequence?[0]?.normalized;
     @type:"Nothing|Iterable<String>" value x532 = noSequence?[0]?.split((Character c) c==` `);
-    @type:"Sequence<Operators.X>" value x54 = {Operators()}[].X();
+    @type:"Sequence<Operators.X>" value x54 = [Operators()][].X();
     
     @type:"Nothing|Sequential<String>" value s1 = noSequence?[1...];
     @type:"Nothing|Sequential<String>" value s2 = noSequence?[...2];
@@ -225,16 +221,16 @@ class Operators() {
     @type:"Nothing" value nnnn = es[0];
     Nothing nnnn2 = nnnn;
     
-    String?[] nullhelloworld = { null, "hello", "world" };
+    String?[] nullhelloworld = [ null, "hello", "world" ];
     @type:"Nothing|String" value ns = nullhelloworld[1];
     String? ns2 = ns;
     
-    <Nothing|String|Float>[] nullhelloone = { null, "hello", 1.0 };
+    <Nothing|String|Float>[] nullhelloone = [ null, "hello", 1.0 ];
     @type:"Nothing|String|Float" value nsf = nullhelloone[1];
     String|Float? nsf2 = ns;
     
     @type:"Tuple<Integer|Float,Integer,Tuple<Integer|Float,Integer,Tuple<Float|Integer,Float,Tuple<Integer,Integer,Empty>>>>" 
-    value ins = { -10, -1, 1.0, 3 };
+    value ins = [ -10, -1, 1.0, 3 ];
     @type:"Float" value ion = ins[2];
     String ions = ion.string;
     Sequence<Integer|Float> ins2 = ins;
@@ -263,7 +259,7 @@ class Operators() {
     b5 ||= b4;
     
     @type:"Entry<String,Float>" String->Float esf = "hello"->1.0;
-    @type:"Sequence<Entry<String,Float>>" Sequence<String->Float> esfs = {esf};
+    @type:"Sequence<Entry<String,Float>>" Sequence<String->Float> esfs = [esf];
     
     String->Object okEntry;   
     @error String->Void brokenEntry1;

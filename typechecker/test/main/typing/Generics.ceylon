@@ -69,12 +69,12 @@ class Generics() {
             given Y satisfies Object {
         X goodAtt = x;
         @error Y badAtt = y;
-        X[] goodAtt2 { return {x}; }
-        @error Y[] badAtt2 { return {y}; }
+        X[] goodAtt2 { return [x]; }
+        @error Y[] badAtt2 { return [y]; }
         X goodMethod() { return goodAtt; }
         @error Y badMethod() { return badAtt; }
-        X[] goodMethod2() { return {goodAtt}; }
-        @error Y[] badMethod2() { return {badAtt}; }
+        X[] goodMethod2() { return [goodAtt]; }
+        @error Y[] badMethod2() { return [badAtt]; }
         Producer<X> goodMethod3() { return Producer<X>(); }
         @error Consumer<X> badMethod3() { return Consumer<X>(); }
         Consumer<Y> goodMethod4() { return Consumer<Y>(); }

@@ -13,9 +13,9 @@ class Literals() {
     @type:"Float" value fsi2 = 3.56M;
     @type:"Character" value c = `x`;
     @type:"Tuple<String,String,Tuple<String,String,Empty>>" 
-    value ss = { "hello", "world" };
+    value ss = [ "hello", "world" ];
     @type:"Tuple<Integer,Integer,Tuple<Integer,Integer,Tuple<Integer,Integer,Tuple<Integer,Integer,Empty>>>>" 
-    value ns = { 1, 2, 3, 4 };
+    value ns = [ 1, 2, 3, 4 ];
     @type:"Tuple<String,String,Tuple<String,String,Empty>>" 
     value ss2 = [ "hello", "world" ];
     @type:"Tuple<Integer,Integer,Tuple<Integer,Integer,Tuple<Integer,Integer,Tuple<Integer,Integer,Empty>>>>" 
@@ -25,7 +25,7 @@ class Literals() {
     
     Boolean b = true;
     
-    String[] strings = { "Hello", "World" };
+    String[] strings = [ "Hello", "World" ];
     
     String? maybeString = null;
     

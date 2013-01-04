@@ -6,8 +6,8 @@ void inference() {
     S<String> s4 = S { t="hello"; };
     
     class SL<T>(List<T> list) given T satisfies Object => Singleton<List<T>>(list);
-    SL<Float> sl1 = SL({1.0, 2.0});
-    SL<Float> sl2 = SL { list={1.0, 2.0}; };
+    SL<Float> sl1 = SL([1.0, 2.0]);
+    SL<Float> sl2 = SL { list=[1.0, 2.0]; };
     
     class SSS<T>(Singleton<Singleton<T>> sing) given T satisfies Object => Singleton<Singleton<Singleton<T>>>(sing);
     SSS<Float> sss1 = SSS(Singleton(Singleton(1.0)));
@@ -17,8 +17,8 @@ void inference() {
     E<String,Integer> e = E(1, "hello");
     
     class ESL<T>(SSS<T> sss, SL<T> sl) given T satisfies Object => E<SL<T>, SSS<T>>(sss,sl);
-    @type:"ESL<String>" value esl1 = ESL(SSS(Singleton(Singleton("hello"))), SL({"goodbye"}));
-    ESL<Integer> esl2 = ESL(SSS(Singleton(Singleton(1))), SL({2,3}));
+    @type:"ESL<String>" value esl1 = ESL(SSS(Singleton(Singleton("hello"))), SL(["goodbye"]));
+    ESL<Integer> esl2 = ESL(SSS(Singleton(Singleton(1))), SL([2,3]));
     Entry<Singleton<Singleton<Singleton<String>>>,Singleton<List<String>>> esl3 = 
-            ESL(SSS(Singleton(Singleton("hello"))), SL({"goodbye"}));
+            ESL(SSS(Singleton(Singleton("hello"))), SL(["goodbye"]));
 }

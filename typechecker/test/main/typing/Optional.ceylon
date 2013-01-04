@@ -19,18 +19,18 @@ class Optional() {
     
     if (exists @error Y xxx = x) {}
     
-    value sx = { X() };
-    value sxn = { X(), null };
-    value sy = { Y() };
-    value syn = { Y(), null };
-    value sxy = { X(), Y() };
-    variable <X|Y|Nothing>[] ss = { X(), Y(), null };
+    value sx = [ X() ];
+    value sxn = [ X(), null ];
+    value sy = [ Y() ];
+    value syn = [ Y(), null ];
+    value sxy = [ X(), Y() ];
+    variable <X|Y|Nothing>[] ss = [ X(), Y(), null ];
     ss=sx;
     ss=sy;
     ss=sxy;
     ss=sxn;
     ss=syn;
-    value bs = { X(), "foo" };
+    value bs = [ X(), "foo" ];
     @error ss=bs;
     
     class Foo<T>() {
@@ -58,7 +58,7 @@ class Optional() {
         Integer li = strings.lastIndex;
     }
     
-    Sequence<String> stuff = { "foo" };
+    Sequence<String> stuff = [ "foo" ];
     Character[][] chars = stuff[].characters;
 
     String[] nostuff = {};
@@ -74,7 +74,8 @@ class Optional() {
     @type:"Nothing|String|Integer|Sequence<Object>" String? | String | String? | Integer | Sequence<Object> foobar1 = -1;
     @type:"Nothing|Sequential<String>|Integer" String[]? | String[] | Sequence<String> | Integer foobar2 = 1.integer;
     
-    @type:"Sequence<Nothing|String|Integer|Sequence<Object>|Sequential<String>>" value xyz = { foobar1, foobar2 }.sequence;
+    @type:"Sequence<Nothing|String|Integer|Sequence<Object>|Sequential<String>>" value xyz1 = [ foobar1, foobar2 ].sequence;
+    @type:"Sequential<Nothing|String|Integer|Sequence<Object>|Sequential<String>>" value xyz2 = { foobar1, foobar2 }.sequence;
     
     //TODO: I think the type parameter X does
     //      not hide the X defined above - it
@@ -90,7 +91,7 @@ class Optional() {
         shared T? val;
         shared T[]? seq;
         if (exists val) {
-            seq = {val};
+            seq = [val];
         }
         else {
             seq = null;

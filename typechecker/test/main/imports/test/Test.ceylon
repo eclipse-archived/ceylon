@@ -13,7 +13,7 @@ class Test() {
     d.hello();
     String hello = attribute;
     @error d.goodbye();
-    Alias strings = { "hello", "world" };
+    Alias strings = [ "hello", "world" ];
     for (String s in strings) {}
     String hi = singleton.hello;
 }
