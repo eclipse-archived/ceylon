@@ -23,6 +23,7 @@ options {
         return errors;
     }
     int expecting=-1;
+    boolean template=false;
 }
 
 @lexer::members {
@@ -1353,7 +1354,10 @@ elementSelectionOperator returns [IndexOperator operator]
     ;
 
 enumeration returns [SequenceEnumeration sequenceEnumeration]
-    : LBRACE { $sequenceEnumeration = new SequenceEnumeration($LBRACE); } 
+    @init { boolean t = template; }
+    : LBRACE 
+      { $sequenceEnumeration = new SequenceEnumeration($LBRACE); } 
+      { template=false; }
       (
         sequencedArgument
         { $sequenceEnumeration.setSequencedArgument($sequencedArgument.sequencedArgument); }
@@ -1363,10 +1367,14 @@ enumeration returns [SequenceEnumeration sequenceEnumeration]
       )?
       RBRACE
       { $sequenceEnumeration.setEndToken($RBRACE); }
+      { template=t; }
     ;
 
 tuple returns [Tuple tuple]
-    : INDEX_OP { $tuple = new Tuple($INDEX_OP); } 
+    @init { boolean t = template; }
+    : INDEX_OP 
+      { $tuple = new Tuple($INDEX_OP); }
+      { template=false; }
       (
         sequencedArgument
         { $tuple.setSequencedArgument($sequencedArgument.sequencedArgument); }
@@ -1376,6 +1384,7 @@ tuple returns [Tuple tuple]
       )?
       RBRACKET
       { $tuple.setEndToken($RBRACKET); }
+      { template=t; }
       | ARRAY { $tuple = new Tuple($ARRAY); } 
     ;
 expressions returns [ExpressionList expressionList]
@@ -1491,8 +1500,10 @@ arguments returns [ArgumentList argumentList]
     ;
 
 namedArguments returns [NamedArgumentList namedArgumentList]
+    @init { boolean t = template; }
     : LBRACE 
       { $namedArgumentList = new NamedArgumentList($LBRACE); }
+      { template=false; }
       ( //TODO: get rid of the predicate and use the approach
         //      in expressionOrSpecificationStatement
         (namedArgumentStart) 
@@ -1509,6 +1520,7 @@ namedArguments returns [NamedArgumentList namedArgumentList]
       )?
       RBRACE
       { $namedArgumentList.setEndToken($RBRACE); }
+      { template=t; }
     ;
 
 sequencedArgument returns [SequencedArgument sequencedArgument]
@@ -1725,18 +1737,23 @@ specificationStart
     ;
 
 parExpression returns [Expression expression] 
+    @init { boolean t = template; }
     : LPAREN 
       { $expression = new Expression($LPAREN); }
+      { template=false; }
       functionOrExpression
       { if ($functionOrExpression.expression!=null)
             $expression.setTerm($functionOrExpression.expression.getTerm()); }
       RPAREN
       { $expression.setEndToken($RPAREN); }
+      { template=t; }
     ;
         
 positionalArguments returns [PositionalArgumentList positionalArgumentList]
+    @init { boolean t = template; }
     : LPAREN 
       { $positionalArgumentList = new PositionalArgumentList($LPAREN); }
+      { template=false; }
       ( 
         (
           pa1=positionalArgument
@@ -1775,6 +1792,7 @@ positionalArguments returns [PositionalArgumentList positionalArgumentList]
       )?
       RPAREN
       { $positionalArgumentList.setEndToken($RPAREN); }
+      { template=t; }
     ;
 
 positionalArgument returns [PositionalArgument positionalArgument]
@@ -2224,30 +2242,45 @@ nonstringLiteral returns [Literal literal]
       { $literal = new CharLiteral($CHAR_LITERAL); }
     ;
 
-stringExpression returns [Atom atom]
-    : (STRING_LITERAL interpolatedExpressionStart) 
-       => stringTemplate 
-      { $atom = $stringTemplate.stringTemplate; }
-    | stringLiteral 
-      { $atom = $stringLiteral.stringLiteral; }
-    ;
-
 stringLiteral returns [StringLiteral stringLiteral]
     : STRING_LITERAL 
       { $stringLiteral = new StringLiteral($STRING_LITERAL); }
     ;
 
-stringTemplate returns [StringTemplate stringTemplate]
-    : sl1=stringLiteral 
-      { $stringTemplate = new StringTemplate($sl1.stringLiteral.getToken()); 
-        $stringTemplate.addStringLiteral($sl1.stringLiteral); }
-      (
-        (interpolatedExpressionStart) 
-         => e=expression sl2=stringLiteral
-        { $stringTemplate.addExpression($e.expression);
-          if (sl2!=null) 
-              $stringTemplate.addStringLiteral($sl2.stringLiteral); }
-      )+
+// special rule for syntactic predicate
+// to distinguish an interpolated expression
+// in a string template this includes every 
+// token that could be the beginning of an 
+// expression, except for '['
+interpolatedExpressionStart
+    : LPAREN
+    | LBRACE
+    | LIDENTIFIER 
+    | UIDENTIFIER 
+    | selfReference
+    | nonstringLiteral
+    | prefixOperatorStart
+    | STRING_LITERAL
+    ;
+
+stringExpression returns [Atom atom]
+    @init { StringTemplate st=null; }
+    : sl1=stringLiteral
+      { $atom=$sl1.stringLiteral;
+        st = new StringTemplate($sl1.stringLiteral.getToken());
+        st.addStringLiteral($sl1.stringLiteral); }
+      ( (interpolatedExpressionStart)=>
+        { !template }?
+        { template=true; }
+        e1=expression
+        { template=false; }
+        { if ($e1.expression!=null) 
+              st.addExpression($e1.expression);
+          $atom=st; }
+        sl2=stringLiteral
+        { if ($sl2.stringLiteral!=null) 
+              st.addStringLiteral($sl2.stringLiteral); }
+      )*
     ;
 
 typeArguments returns [TypeArgumentList typeArgumentList]
@@ -2541,22 +2574,6 @@ literalArgument returns [PositionalArgument positionalArgument]
         e.setTerm($stringLiteral.stringLiteral);
         $positionalArgument.setExpression(e); 
         $stringLiteral.stringLiteral.getToken().setType(ASTRING_LITERAL); }
-    ;
-
-//special rule for syntactic predicate
-//to distinguish an interpolated expression
-//in a string template
-//this includes every token that could be 
-//the beginning of an expression, except 
-//for SIMPLESTRINGLITERAL and '['
-interpolatedExpressionStart
-    : LPAREN
-    | LBRACE
-    | LIDENTIFIER 
-    | UIDENTIFIER 
-    | selfReference
-    | nonstringLiteral
-    | prefixOperatorStart
     ;
 
 prefixOperatorStart

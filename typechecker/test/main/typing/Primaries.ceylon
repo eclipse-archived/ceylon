@@ -176,7 +176,11 @@ class Primaries() {
         
     ann {Float} shared {Float...} floats = {};
     
-    //String interpolated = "hello" "ABC123".count(function (Character c) c.digit) "world";
+    String interpolated0 = "hello" "ABC123".count(function (Character c) c.digit) "world";
+    String interpolated1 = "hello" { "ABC" 1+1 "123" } "world";
+    String interpolated2 = "hello" Singleton("ABC" 1+1 "123") "world";
+    String interpolated3 = "hello" Singleton { element="ABC" 1+1 "123"; } "world";
+    String interpolated4 = "hello" ("ABC" 1+1 "123") "world";
     
     List<Character> list={` `};
     @type:"Sequential<Integer>" value xxxx = list[].integer;
