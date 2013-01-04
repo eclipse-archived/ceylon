@@ -130,7 +130,7 @@ abstract class InvocationBuilder {
     }
     
     /**
-     * Makes calls to {@link #appendArgument(JCExpression)} ready for a 
+     * Makes calls to {@link CallBuilder#argument(JCExpression)} ready for a 
      * call to {@link #build()}
      */
     protected abstract void compute();
@@ -201,7 +201,6 @@ abstract class InvocationBuilder {
             // Note: here we're not fully qualifying the class name because the JLS says that if "new" is qualified the class name
             // is qualified relative to it
             JCExpression type = gen.makeJavaType(classType, AbstractTransformer.JT_CLASS_NEW | AbstractTransformer.JT_NON_QUALIFIED);
-            //resultExpr = gen.make().NewClass(qualifier, null, type, argExprs, null);
             callBuilder.instantiate(qualifier, type);
         } else {
             callBuilder.typeArguments(List.<JCExpression>nil());
