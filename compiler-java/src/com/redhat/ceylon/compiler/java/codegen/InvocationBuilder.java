@@ -316,6 +316,7 @@ abstract class InvocationBuilder {
     }
 
     public final JCExpression build() {
+        compute();
         boolean prevFnCall = gen.expressionGen().withinInvocation(true);
         try {
             return makeInvocation(args.toList());
@@ -327,21 +328,13 @@ abstract class InvocationBuilder {
     public static InvocationBuilder forSuperInvocation(AbstractTransformer gen,
             Tree.InvocationExpression invocation, 
             com.redhat.ceylon.compiler.typechecker.tree.Tree.ClassOrInterface forDefinition) {
-        // Because super() invocations cannot be nested there's no need to 
-        // keep and restore the old withinSuperInvocation state.
-        gen.expressionGen().withinSuperInvocation(forDefinition);
-        try {
-            Declaration primaryDeclaration = ((Tree.MemberOrTypeExpression)invocation.getPrimary()).getDeclaration();
-            java.util.List<ParameterList> paramLists = ((Functional)primaryDeclaration).getParameterLists();
-            SuperInvocationBuilder builder = new SuperInvocationBuilder(gen,
-                    forDefinition,
-                    invocation,
-                    paramLists.get(0));
-            builder.compute();
-            return builder;
-        } finally {
-            gen.expressionGen().withinSuperInvocation(null);
-        }
+        Declaration primaryDeclaration = ((Tree.MemberOrTypeExpression)invocation.getPrimary()).getDeclaration();
+        java.util.List<ParameterList> paramLists = ((Functional)primaryDeclaration).getParameterLists();
+        SuperInvocationBuilder builder = new SuperInvocationBuilder(gen,
+                forDefinition,
+                invocation,
+                paramLists.get(0));
+        return builder;
     }
     
     public static InvocationBuilder forInvocation(AbstractTransformer gen, 
@@ -379,7 +372,6 @@ abstract class InvocationBuilder {
         } else {
             throw new RuntimeException("Illegal State");
         }
-        builder.compute();
         return builder;
     }
     
@@ -402,7 +394,6 @@ abstract class InvocationBuilder {
                 parameterList,
                 parameterCount);
         builder.handleBoxing(true);
-        builder.compute();
         return builder;
     }
     
@@ -446,7 +437,6 @@ abstract class InvocationBuilder {
             throw Assert.fail("Unhandled primary " + primary);
         }
         builder.handleBoxing(true);
-        builder.compute();
         return builder;
     }
     
@@ -462,7 +452,6 @@ abstract class InvocationBuilder {
                 node);
       
         builder.handleBoxing(true);
-        builder.compute();
         return builder;
     }
 }
@@ -918,6 +907,15 @@ class SuperInvocationBuilder extends PositionalInvocationBuilder {
                 parameterList.getParameters());
         this.sub = sub;
     }
+    
+    public void compute() {
+        // Because super() invocations cannot be nested there's no need to 
+        // keep and restore the old withinSuperInvocation state.
+        gen.expressionGen().withinSuperInvocation(sub);
+        super.compute();
+        gen.expressionGen().withinSuperInvocation(null);
+    }
+    
     @Override
     protected JCExpression makeInvocation(List<JCExpression> args) {
         gen.at(node);
