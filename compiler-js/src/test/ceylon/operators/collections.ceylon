@@ -1,7 +1,7 @@
 import check { check }
 
 void testEnumerations() {
-    value seq={1,2,3}; //should be [1,2,3]
+    value seq=[1,2,3]; //should be [1,2,3]
     value lcomp={for (c in "hola") c};//should be {Character...}
     value ecomp=[for (c in "hola") c];//should be [Character...]
     value s2 = {0, seq...};//[Integer,Integer...]

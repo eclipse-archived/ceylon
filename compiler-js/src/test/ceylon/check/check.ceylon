@@ -1,9 +1,9 @@
-variable Integer assertions:=0;
-variable Integer failures:=0;
+variable Integer assertions=0;
+variable Integer failures=0;
 
 shared void initAssert() {
-  assertions:=0;
-  failures:=0;
+  assertions=0;
+  failures=0;
 }
 
 shared void check(Boolean assertion, String message="") {
@@ -39,7 +39,7 @@ shared void test() {
     assert(exists ds = ms);
     check(ds.uppercased=="X", "assert exists");
     assert(2+2==4);
-    Integer[] mseq = { 1, 2, 3 };
+    Integer[] mseq = [ 1, 2, 3 ];
     assert(nonempty dseq = mseq);
     check(dseq.first == 1, "assert nonempty [1]");
     String|Integer mt = 5;

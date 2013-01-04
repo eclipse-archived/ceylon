@@ -28,9 +28,9 @@ class TestIs2(Integer|String x) {
     Integer|String y = x;
     variable shared String z;
     switch (y)
-    case (is Integer) { z := (y+1).string; }
-    case (is String) { z := y.uppercased; }
-    else { z := ""; }
+    case (is Integer) { z = (y+1).string; }
+    case (is String) { z = y.uppercased; }
+    else { z = ""; }
     shared String f() {
         switch (y)
         case (is Integer) { return (y+1).string; }
@@ -40,7 +40,7 @@ class TestIs2(Integer|String x) {
 }
 
 shared void test() {
-    value enums = {1, 2.0};
+    value enums = [1, 2.0];
     //is cases
     value e0 = enums[0];
     switch(e0)

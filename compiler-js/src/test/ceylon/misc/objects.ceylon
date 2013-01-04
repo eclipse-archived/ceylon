@@ -3,7 +3,7 @@ import check {...}
 class TestObjects(Integer a, Integer b, Integer c) satisfies Iterable<Integer> {
   shared actual Iterator<Integer> iterator {
     object iter satisfies Iterator<Integer> {
-      variable Integer index:=0;
+      variable Integer index=0;
       shared actual Integer|Finished next() {
         index++;
         if (index == 1) { return a; }

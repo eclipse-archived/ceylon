@@ -59,10 +59,10 @@ void testString() {
     checkEqual("abc".longerThan(3), false, "String.longerThan");
     checkEqual("abc".longerThan(2), true, "String.longerThan");
     
-    variable Integer cnt := 0;
-    variable String s4 := "";
+    variable Integer cnt = 0;
+    variable String s4 = "";
     for (c in s3) {
-        s4 := c.string + s4;
+        s4 = c.string + s4;
         ++cnt;
     }
     checkEqual(cnt, 5, "String.iterator");

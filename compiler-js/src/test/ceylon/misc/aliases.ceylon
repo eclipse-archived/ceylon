@@ -42,7 +42,7 @@ class MiMatrix(Integer gridSize) satisfies Matrix<Integer> {
     if (nonempty g=sb.sequence) {
         grid=g;
     } else {
-        grid={{1}};
+        grid=[[1]];
     }
     shared actual Iterator<Sequence<Integer>> iterator { return grid.iterator; }
     shared actual String string = grid.string;
@@ -70,7 +70,7 @@ void testAliasing() {
     check(use(AliasingSub2().iface), "Aliased member interface");
     Strinteger xxxxx = 5;
     check(xxxxx is Integer, "Type alias");
-    check(Listleton({{1},{2},{3}}.first).string=="{ [ 1 ] }", "class alias");
+    check(Listleton([[1],[2],[3]].first).string=="{ [ 1 ] }", "class alias");
     check(MiMatrix(2).string=="{ [ 1, 2 ], [ 1, 2 ] }", "interface alias");
     Object xxxxx1 = 6;
     Object xxxxx2 = "XXXX";

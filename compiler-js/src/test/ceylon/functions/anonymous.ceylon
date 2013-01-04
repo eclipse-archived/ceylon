@@ -27,12 +27,12 @@ void testAnonymous() {
   print("Testing anonymous functions...");
   value nums = array(1,2,3,4,5);
   //Test positional argument call
-  variable value found := find(nums, (Integer i) i%2==0);
+  variable value found = find(nums, (Integer i) i%2==0);
   if (exists i=found) {
     check(i == 2, "anonfunc positional");
   } else { fail("anonfunc positional"); }
   //Named argument call
-  found := find{
+  found = find{
     function f(Integer i) {
       return i%2==0;
     }
@@ -65,11 +65,11 @@ void testAnonymous() {
   callFunction(f2, "-10");
   callFunction(subtract(5), "-5");
   //As defaulted param
-  found := find2(nums, (Integer i) i>2);
+  found = find2(nums, (Integer i) i>2);
   if (exists i=found) {
     check(i==3, "anonfunc i>2 [1]");
   } else { fail("anonfunc i>2 [2]"); }
-  found := find2(nums);
+  found = find2(nums);
   if (exists i=found) {
     check(i==1, "anonfunc defaulted param [1]");
   } else { fail("anonfunc defaulted param [2]"); }

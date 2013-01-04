@@ -47,10 +47,10 @@ class QualifyAmbiguousSupertypes(Boolean one)
 }
 
 class QualifiedA() {
-  shared default variable Integer a:=0;
+  shared default variable Integer a=0;
 }
 class QualifiedB() extends QualifiedA() {
-  shared actual variable Integer a:=0;
+  shared actual variable Integer a=0;
   shared void f() {
     QualifiedA::a++;
   }

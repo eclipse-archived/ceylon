@@ -1,12 +1,12 @@
 import check {...}
 
 shared class Counter(Integer initCount=0) {
-    variable value currentCount:=initCount;
+    variable value currentCount=initCount;
     shared Integer count {
         return currentCount;
     }
     shared void inc() {
-        currentCount:=currentCount+1; 
+        currentCount=currentCount+1; 
     }
     shared Integer initialCount {
         return initCount;
@@ -63,9 +63,9 @@ void testIssue10() {
 }
 
 class AssignTest() {
-    shared variable Integer x := 1;
+    shared variable Integer x = 1;
     shared Integer y { return x; }
-    assign y { x := y; }
+    assign y { x = y; }
 }
 
 class Issue50() {
@@ -101,9 +101,9 @@ shared void test() {
     testIssue10();
     
     value at = AssignTest();
-    at.x := 5;
+    at.x = 5;
     check(at.x==5, "assign to member");
-    at.y := 2;
+    at.y = 2;
     check(at.y==2, "assign using setter");
     check(Issue50().z=="ok", "Issue #50");
     test_outer_inner_safety();

@@ -46,7 +46,7 @@ class RefHelper() {
 
 void testMethodReference() {
     value obj1 = RefHelper();
-    value obj2 = MySequence<String>({"hi"});
+    value obj2 = MySequence<String>(["hi"]);
     Boolean tst(Boolean x(Integer i)) {
         return x(0);
     }
@@ -101,7 +101,7 @@ void testDefaultedParams() {
 
 shared void testGetterMethodDefinitions() {
   class GetterTest() {
-    variable Integer i:=0;
+    variable Integer i=0;
     shared Integer x { return ++i; }
   }
   value gt = GetterTest();
@@ -111,7 +111,7 @@ shared void testGetterMethodDefinitions() {
 }
 
 String namedArgFunc(String x="x", String y=x+"y", String... z) {
-    variable String result := x + "," + y;
+    variable String result = x + "," + y;
     for (s in z) { result += "," + s; }
     return result;
 }
@@ -143,7 +143,7 @@ interface LazyExprBase {
     shared formal String s2(Integer i);
 }
 class LazyExprTest() satisfies LazyExprBase {
-    shared variable Integer x := 1000;
+    shared variable Integer x = 1000;
     shared String f1(Integer i, String f() => ""i"."(++x)"") => ""i":"f()"";
     shared Integer f2(Integer i) => 2*(++x)+i;
     shared Integer i1 => ++x;
@@ -155,28 +155,28 @@ class LazyExprTest() satisfies LazyExprBase {
     shared String f3(String f(Integer i)) => f(++x);
 }
 
-variable Integer lx := 1000;
+variable Integer lx = 1000;
 String lazy_f1(Integer i, String f() => ""i"."(++lx)"") => f();
 Integer lazy_f2(Integer i) => 2*(++lx)+i;
 Integer lazy_i1 => ++lx;
 
 class LazyExprTest2() satisfies LazyExprBase {
-    shared variable Integer x:= 1000;
+    shared variable Integer x= 1000;
     shared actual default String s1 => (++x).string;
     shared actual default String s2(Integer i) => ""++x"-"i"";
 }
 class LazyExprTest3() extends LazyExprTest2() {
-    shared actual variable String s1 := "s1";
+    shared actual variable String s1 = "s1";
 }
 class LazyExprTest4() extends LazyExprTest2() {
-    shared variable String assigned := "";
+    shared variable String assigned = "";
     shared actual String s1 { return "s1-"super.s1""; }
-    assign s1 { assigned := s1; }
+    assign s1 { assigned = s1; }
 }
 
 void testLazyExpressions() {
     value tst = LazyExprTest();
-    tst.x := 1;
+    tst.x = 1;
     check(tst.f1(3)=="3:3.2", "=> defaulted param");
     check(tst.f2(3)==9, "=> method");
     check(tst.i1==4, "=> attribute");
@@ -184,38 +184,38 @@ void testLazyExpressions() {
     check(tst.s1=="6.1", "=> attribute refinement");
     check(tst.s2(5)=="7.5", "=> method refinement");
     
-    lx := 1;
+    lx = 1;
     check(lazy_f1(3)=="3.2", "=> defaulted param toplevel");
     check(lazy_f2(3)==9, "=> method toplevel");
     check(lazy_i1==4, "=> attribute toplevel");
     
-    variable Integer x := 1000;
+    variable Integer x = 1000;
     String f1(Integer i, String f() => ""i"."(++x)"") => f();
     Integer f2(Integer i) => 2*(++x)+i;
     Integer i1 => ++x;
     Integer i2;
     i2 => ++x*2;
     
-    x := 1;
+    x = 1;
     check(f1(3)=="3.2", "=> defaulted param local");
     check(f2(3)==9, "=> method local");
     check(i1==4, "=> attribute local");
     check(i2==10, "=> attribute specifier local");
 
     value tst3 = LazyExprTest3();
-    tst3.x := 1;
+    tst3.x = 1;
     check(tst3.s1=="s1", "=> override variable 1");
-    tst3.s1 := "abc";
+    tst3.s1 = "abc";
     check(tst3.s1=="abc", "=> override variable 2");
     value tst4 = LazyExprTest4();
-    tst4.x := 1;
+    tst4.x = 1;
     check(tst4.s1=="s1-2", "=> override getter/setter 1");
-    tst4.s1 := "abc";
+    tst4.s1 = "abc";
     check(tst4.s1=="s1-4", "=> override getter/setter 2");
     check(tst4.assigned=="abc", "=> override getter/setter 3");
     
-    tst.x := 1;
-    x := 10;
+    tst.x = 1;
+    x = 10;
     check(tst.f1{i=>++x;}=="11:11.2", "=> named arg");
     check(tst.f1{i=>++x; f()=>(++x).string;}=="12:13", "=> named arg function");
     check(tst.f3{f(Integer i)=>""i"-"++x"";}=="3-14", "=> named arg function with param");

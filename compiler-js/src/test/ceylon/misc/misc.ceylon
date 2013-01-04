@@ -6,9 +6,9 @@ shared interface X {
 
 shared class Foo(name) {
     shared String name;
-    variable value counter:=0;
+    variable value counter=0;
     shared Integer count { return counter; }
-    shared void inc() { counter:=counter+1; }
+    shared void inc() { counter=counter+1; }
     shared default void printName() {
         print("foo name = " + name);
     }

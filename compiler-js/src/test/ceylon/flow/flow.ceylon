@@ -41,13 +41,13 @@ void test_if() {
 }
 
 void test_while() {
-    variable Integer i := 0;
+    variable Integer i = 0;
     while (i < 2) {
-        i := i+1;
+        i = i+1;
     }
     check(i==2, "while");
     while (i >= 2 && i < 4) {
-        i := i+1;
+        i = i+1;
     }
     check(i==4,"while");
 }
@@ -86,7 +86,7 @@ void testIfExists() {
     } else {
         fail("if (exists x=expr)");
     }
-    variable Integer cnt := 0;
+    variable Integer cnt = 0;
     String? s5 { ++cnt; return "ok"; }
     if (exists x = s5) {
         check(x=="ok", "if (exists x=y) with getter [value: " x "]");
@@ -99,39 +99,39 @@ void testIfExists() {
 void testWhileExists() {
     String? s1 = null;
     String? s2 = "";
-    variable Integer i1 := 0;
+    variable Integer i1 = 0;
     while (exists s1) {
         ++i1;
         break;
     }
     check(i1==0, "while (exists x)");
-    i1 := 0;
+    i1 = 0;
     while (exists s2) {
         if (++i1 >= 2) {
             break;
         }
     }
     check(i1==2, "while (exists x)");
-    i1 := 0;
+    i1 = 0;
     while (exists s3 = s1) {
         ++i1;
         break;
     }
     check(i1==0, "while (exists x=y)");
-    variable String? s4 := "hi";
-    i1 := 0;
+    variable String? s4 = "hi";
+    i1 = 0;
     while (exists s3 = s4) {
         ++i1;
-        s4 := null;
+        s4 = null;
     }
     check(i1==1, "while (exists x=y)");
-    i1 := 0;
+    i1 = 0;
     while (exists s3 = s2) {
-        s4 := "hi";
-        variable Integer i2 := 0;
+        s4 = "hi";
+        variable Integer i2 = 0;
         while (exists s5 = s4) {
             if (++i2 == 2) {
-                s4 := null;
+                s4 = null;
             }
             ++i1;
         }
@@ -140,11 +140,11 @@ void testWhileExists() {
         }
     } 
     check(i1==4, "while (exists x=y) nested");
-    s4 := "hi";
-    i1 := 0;
+    s4 = "hi";
+    i1 = 0;
     while (exists len = s4?.size) {
         check(len==2, "while (exists x=expr)");
-        s4 := null;
+        s4 = null;
         ++i1;
     }
     check(i1==1, "while (exists x=expr)");
@@ -170,7 +170,7 @@ class MySequence<out Element>(Sequence<Element> seq)
 
 void testIfNonempty() {
     String[] s1 = {};
-    String[] s2 = { "abc" };
+    String[] s2 = [ "abc" ];
     if (nonempty s1) {
         fail("if (nonempty x)");
     }
@@ -181,7 +181,7 @@ void testIfNonempty() {
     if (nonempty s3 = s1) {
         fail("if (nonempty x=y)");
     }
-    String[] s4 = { "hi" };
+    String[] s4 = [ "hi" ];
     if (nonempty s3 = s4) {
         check(s3.first=="hi", "if (nonempty x=y)");
     } else {
@@ -202,7 +202,7 @@ void testIfNonempty() {
     } else {
         fail("if (nonempty x=expr)");
     }
-    String[] s = MySequence<String>({"hi"});
+    String[] s = MySequence<String>(["hi"]);
     if (nonempty s) {
     } else {
         fail("if (nonempty x) custom sequence");

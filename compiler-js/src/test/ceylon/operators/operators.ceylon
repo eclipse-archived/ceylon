@@ -2,72 +2,72 @@ import check {...}
 
 void testIntegerOperators() {
     
-    variable Integer i1 := -4;
-    i1 := -i1;
+    variable Integer i1 = -4;
+    i1 = -i1;
     check(i1==4, "negation");
-    i1 := + (-987654);
+    i1 = + (-987654);
     check(i1==-987654, "positive");
-    i1 := +0;
+    i1 = +0;
     check(i1==0, "+0=0");
-    i1 := -0;
+    i1 = -0;
     check(i1==0, "+0=0");
         
-    variable Integer i2 := 123 + 456;
+    variable Integer i2 = 123 + 456;
     check(i2==579, "addition");
-    i1 := i2 - 16;
+    i1 = i2 - 16;
     check(i1==563, "subtraction");
-    i2 := -i1 + i2 - 1;
+    i2 = -i1 + i2 - 1;
     check(i2==15, "-i1+i2-1");
         
-    i1 := 3 * 7;
+    i1 = 3 * 7;
     check(i1==21, "multiplication");
-    i2 := i1 * 2;
+    i2 = i1 * 2;
     check(i2==42, "multiplication");
-    i2 := 17 / 4;
+    i2 = 17 / 4;
     check(i2==4, "integer division");
-    i1 := i2 * 516 / -i1;
+    i1 = i2 * 516 / -i1;
     check(i1==-98, "i2*516/-i1");
     
-    i1 := 15 % 4;
+    i1 = 15 % 4;
     check(i1==3, "modulo");
-    i2 := 312 % 12;
+    i2 = 312 % 12;
     check(i2==0, "modulo");
 
-    i1 := 2 ** 10;
+    i1 = 2 ** 10;
     check(i1==1024, "power");
-    i2 := 10 ** 6;
+    i2 = 10 ** 6;
     check(i2==1000000, "power");
 }
 
 void testFloatOperators() {
     
-    variable Float f1 := -4.2;
-    f1 := -f1;
+    variable Float f1 = -4.2;
+    f1 = -f1;
     check(f1==4.2, "negation");
-    f1 := + (-987654.9925567);
+    f1 = + (-987654.9925567);
     check(f1==-987654.9925567, "positive");
-    f1 := +0.0;
+    f1 = +0.0;
     check(f1==0.0, "+0.0=0.0");
-    f1 := -0.0;
+    f1 = -0.0;
     check(f1==0.0, "-0.0=0.0");
         
-    variable Float f2 := 3.14159265 + 456.0;
+    variable Float f2 = 3.14159265 + 456.0;
     check(f2==459.14159265, "addition");
-    f1 := f2 - 0.0016;
+    f1 = f2 - 0.0016;
     check(f1==459.13999265, "subtraction");
-    f2 := -f1 + f2 - 1.2;
+    f2 = -f1 + f2 - 1.2;
     check(f2==-1.1984000000000037, "-f1+f2-1.2");
     
-    f1 := 3.0 * 0.79;
+    f1 = 3.0 * 0.79;
     check(f1==2.37, "multiplication");
-    f2 := f1 * 2.0e13;
+    f2 = f1 * 2.0e13;
     check(f2==47400000000000.0, "multiplication");
-    f2 := 17.1 / 4.0E-18;
+    f2 = 17.1 / 4.0E-18;
     check(f2==4275000000000000000.0, "division");
-    f1 := f2 * 51.6e2 / -f1;
+    f1 = f2 * 51.6e2 / -f1;
     check(f2==4275000000000000000.0, "f2*51.6e2/-f1");
         
-    f1 := 150.0 ** 0.5;
+    f1 = 150.0 ** 0.5;
     check(f1==12.24744871391589, "power");
 }
 
@@ -76,33 +76,33 @@ class OpTest1() {}
 void testBooleanOperators() {
     value o1 = OpTest1();
     value o2 = OpTest1();
-    variable Boolean b1 := o1 === o2;
+    variable Boolean b1 = o1 === o2;
     check(!b1, "identity");
-    variable Boolean b2 := o1 === o1;
+    variable Boolean b2 = o1 === o1;
     check(b2, "identity");
 
-    b1 := o1 == o2;
+    b1 = o1 == o2;
     check(!b1, "equals");
-    b2 := o1 == o1;    
+    b2 = o1 == o1;    
     check(b2, "equals");
-    b1 := 1 == 2;
+    b1 = 1 == 2;
     check(!b1, "equals");
-    b2 := 1 != 2;
+    b2 = 1 != 2;
     check(b2, "not equal");
-    variable Boolean b3 := !b2;
+    variable Boolean b3 = !b2;
     check(!b3, "not");
         
-    b1 := true && false;
+    b1 = true && false;
     check(!b1, "and");
-    b2 := b1 && true;
+    b2 = b1 && true;
     check(!b2, "and");
-    b3 := true && true;
+    b3 = true && true;
     check(b3, "and");
-    b1 := true || false;
+    b1 = true || false;
     check(b1, "or");
-    b2 := false || b1;
+    b2 = false || b1;
     check(b2, "or");
-    b3 := false || false;
+    b3 = false || false;
     check(!b3, "or");
 }
 
@@ -120,21 +120,21 @@ void testComparisonOperators() {
     Comparison c6 = "" <=> "str2";
     check(c6==smaller, "compare");
     
-    variable Boolean b1 := "str1" < "str2";
+    variable Boolean b1 = "str1" < "str2";
     check(b1, "smaller");
-    variable Boolean b2 := "str1" > "str2";
+    variable Boolean b2 = "str1" > "str2";
     check(!b2, "larger");
-    variable Boolean b3 := "str1" <= "str2";
+    variable Boolean b3 = "str1" <= "str2";
     check(b3, "small as");
-    variable Boolean b4 := "str1" >= "str2";
+    variable Boolean b4 = "str1" >= "str2";
     check(!b4, "large as");
-    b1 := "str1" < "str1";
+    b1 = "str1" < "str1";
     check(!b1, "smaller");
-    b2 := "str1" > "str1";
+    b2 = "str1" > "str1";
     check(!b2, "larger");
-    b3 := "str1" <= "str1";
+    b3 = "str1" <= "str1";
     check(b3, "small as");
-    b4 := "str1" >= "str1";
+    b4 = "str1" >= "str1";
     check(b4, "large as");
 }
 
@@ -153,16 +153,16 @@ void testOtherOperators() {
 }
 
 void testCollectionOperators() {
-    value seq1 = { "one", "two" };
+    value seq1 = [ "one", "two" ];
     String s1 = seq1[0]; //not optional anymore!
     check(s1=="one", "lookup");
     String|Nothing s2 = seq1[2]; //not optional anymore!
     check(!s2 exists, "lookup");
     String|Nothing s3 = seq1[-1]; //not optional anymore!
     check(!s3 exists, "lookup");
-    variable Sequence<String>? unsafe := seq1;
+    variable Sequence<String>? unsafe = seq1;
     check(unsafe?[0] exists, "safe index");
-    unsafe := null;
+    unsafe = null;
     check(!unsafe?[0] exists, "safe index");
 }
 
@@ -178,7 +178,7 @@ Integer? nullsafeTest(Integer? f()) {
 }
 
 void testNullsafeOperators() {
-    String[] seq = { "hi" };
+    String[] seq = [ "hi" ];
     String s1 = seq[0] else "null";
     check(s1=="hi", "default 1");
     String s2 = seq[1] else "null";
@@ -221,10 +221,10 @@ void testNullsafeOperators() {
 }
 
 void testIncDecOperators() {
-    variable Integer x0 := 1;
-    Integer x { return x0; } assign x { x0 := x; }
+    variable Integer x0 = 1;
+    Integer x { return x0; } assign x { x0 = x; }
     
-    variable Integer i1 := 1;
+    variable Integer i1 = 1;
     void f1() {
         Integer i2 = ++i1;
         Integer x2 = ++x;
@@ -236,12 +236,12 @@ void testIncDecOperators() {
     f1();
     
     class C1() {
-        shared variable Integer i := 1;
-        variable Integer x0 := 1;
-        shared Integer x { return x0; } assign x { x0 := x; }
+        shared variable Integer i = 1;
+        variable Integer x0 = 1;
+        shared Integer x { return x0; } assign x { x0 = x; }
     }
     C1 c1 = C1();
-    variable Integer i3 := 0;
+    variable Integer i3 = 0;
     C1 f2() {
         ++i3;
         return c1;
@@ -298,94 +298,94 @@ void testIncDecOperators() {
 }
 
 void testArithmeticAssignOperators() {
-    variable Integer i1 := 1;
-    variable Integer x0 := 1;
-    Integer x { return x0; } assign x { x0:=x; } 
+    variable Integer i1 = 1;
+    variable Integer x0 = 1;
+    Integer x { return x0; } assign x { x0=x; } 
     i1 += 10;
     x += 10;
     check(i1==11, "+= operator 1");
     check(x==11, "+= operator 2");
     
-    variable Integer i2 := (i1 += -5);
-    variable Integer x2 := (x += -5);
+    variable Integer i2 = (i1 += -5);
+    variable Integer x2 = (x += -5);
     check(i2==6, "+= operator 3");
     check(i1==6, "+= operator 4");
     check(x2==6, "+= operator 5");
     check(x==6, "+= operator 6");
     
     class C1() {
-        shared variable Integer i := 1;
-        variable Integer x0 := 1;
-        shared Integer x { return x0; } assign x { x0:=x; }
+        shared variable Integer i = 1;
+        variable Integer x0 = 1;
+        shared Integer x { return x0; } assign x { x0=x; }
     }
     C1 c1 = C1();
-    variable Integer i3 := 0;
+    variable Integer i3 = 0;
     C1 f() {
         ++i3;
         return c1;
     }
     
-    i2 := (f().i += 11);
-    x2 := (f().x += 11);
+    i2 = (f().i += 11);
+    x2 = (f().x += 11);
     check(i2==12, "+= operator 7");
     check(c1.i==12, "+= operator 8");
     check(x2==12, "+= operator 9");
     check(c1.x==12, "+= operator 10");
     check(i3==2, "+= operator 11");
     
-    i2 := (i1 -= 14);
+    i2 = (i1 -= 14);
     check(i1==-8, "-= operator");
     check(i2==-8, "-= operator");
     
-    i2 := (i1 *= -3);
+    i2 = (i1 *= -3);
     check(i1==24, "*= operator");
     check(i2==24, "*= operator");
     
-    i2 := (i1 /= 5);
+    i2 = (i1 /= 5);
     check(i1==4, "/= operator");
     check(i2==4, "/= operator");
     
-    i2 := (i1 %= 3);
+    i2 = (i1 %= 3);
     check(i1==1, "%= operator");
     check(i2==1, "%= operator");
 }
 
 void testAssignmentOperator() {
-    variable Integer i1 := 1;
-    variable Integer i2 := 2;
-    variable Integer i3 := 3;
-    check((i1:=i2:=i3)==3, "assignment 1");
+    variable Integer i1 = 1;
+    variable Integer i2 = 2;
+    variable Integer i3 = 3;
+    check((i1=i2=i3)==3, "assignment 1");
     check(i1==3, "assignment 2");
     check(i2==3, "assignment 3");
     
-    Integer x1 { return i1; } assign x1 { i1 := x1; }
-    Integer x2 { return i2; } assign x2 { i2 := x2; }
-    Integer x3 { return i3; } assign x3 { i3 := x3; }
-    i1 := 1;
-    i2 := 2;
-    check((x1:=x2:=x3)==3, "assignment 4");
+    Integer x1 { return i1; } assign x1 { i1 = x1; }
+    Integer x2 { return i2; } assign x2 { i2 = x2; }
+    Integer x3 { return i3; } assign x3 { i3 = x3; }
+    i1 = 1;
+    i2 = 2;
+    check((x1=x2=x3)==3, "assignment 4");
     check(x1==3, "assignment 5");
     check(x2==3, "assignment 6");
     
     class C() {
-        shared variable Integer i := 1;
-        variable Integer x0 := 1;
-        shared Integer x { return x0; } assign x { x0:=x; }
+        shared variable Integer i = 1;
+        variable Integer x0 = 1;
+        shared Integer x { return x0; } assign x { x0=x; }
     }
     C o1 = C();
     C o2 = C();
-    check((o1.i:=o2.i:=3)==3, "assignment 7");
+    check((o1.i=o2.i=3)==3, "assignment 7");
     check(o1.i==3, "assignment 8");
     check(o2.i==3, "assignment 9");
-    check((o1.x:=o2.x:=3)==3, "assignment 10");
+    check((o1.x=o2.x=3)==3, "assignment 10");
     check(o1.x==3, "assignment 11");
     check(o2.x==3, "assignment 12");
 }
 
 void testSegments() {
-    value seq = { "one", "two", "three", "four", "five", "six", "seven", "eight", "nine", "ten" };
-    check(seq[1:2] == {"two", "three" }, "seq[1:2] " seq[1:2] "");
-    check(seq[3:5] == {"four", "five", "six", "seven", "eight"}, "seq[3:5] " seq[3:5] "");
+    value seq = [ "one", "two", "three", "four", "five", "six", "seven", "eight", "nine", "ten" ];
+    check(seq[1:2] == ["two", "three" ], "seq[1:2] " seq[1:2] "");
+    check(seq[3:5] == ["four", "five", "six", "seven", "eight"], "seq[3:5] " seq[3:5] "");
     check("test"[1:2] == "es", "test[1:2] " ("test"[1:2]) "");
     check("hello"[2:2] == "ll", "hello[2:2] " ("hello"[2:2]) "");
     value s2 = 0:3;
