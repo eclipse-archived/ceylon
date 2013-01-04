@@ -60,13 +60,15 @@ public class CallBuilder {
         return this;
     }
     
-    public CallBuilder prependArgument(JCExpression expr) {
-        this.args.prepend(expr);
+    public CallBuilder argument(JCExpression expr) {
+        this.args.append(expr);
         return this;
     }
     
-    public CallBuilder argument(JCExpression expr) {
-        this.args.append(expr);
+    public CallBuilder arguments(List<JCExpression> args) {
+        for (JCExpression arg : args) {
+            this.args.append(arg);
+        }
         return this;
     }
     

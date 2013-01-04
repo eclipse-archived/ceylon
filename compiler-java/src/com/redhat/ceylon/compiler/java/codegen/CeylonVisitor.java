@@ -20,13 +20,18 @@
 
 package com.redhat.ceylon.compiler.java.codegen;
 
+import com.redhat.ceylon.compiler.typechecker.model.Declaration;
+import com.redhat.ceylon.compiler.typechecker.model.Functional;
 import com.redhat.ceylon.compiler.typechecker.model.Interface;
+import com.redhat.ceylon.compiler.typechecker.model.ParameterList;
 import com.redhat.ceylon.compiler.typechecker.model.TypeDeclaration;
 import com.redhat.ceylon.compiler.typechecker.tree.NaturalVisitor;
 import com.redhat.ceylon.compiler.typechecker.tree.Node;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree;
+import com.redhat.ceylon.compiler.typechecker.tree.Tree.InvocationExpression;
 import com.redhat.ceylon.compiler.typechecker.tree.Visitor;
 import com.sun.tools.javac.tree.JCTree;
+import com.sun.tools.javac.tree.JCTree.JCExpression;
 import com.sun.tools.javac.util.List;
 import com.sun.tools.javac.util.ListBuffer;
 
@@ -212,8 +217,14 @@ public class CeylonVisitor extends Visitor implements NaturalVisitor {
 
     public void visit(Tree.ExtendedType extendedType) {
         if (extendedType.getInvocationExpression().getPositionalArgumentList() != null) {
-            InvocationBuilder builder = InvocationBuilder.forSuperInvocation(gen, extendedType.getInvocationExpression(), classBuilder.getForDefinition());
-            classBuilder.superCall(gen.at(extendedType).Exec(builder.build()));
+            InvocationExpression invocation = extendedType.getInvocationExpression();
+            Declaration primaryDeclaration = ((Tree.MemberOrTypeExpression)invocation.getPrimary()).getDeclaration();
+            java.util.List<ParameterList> paramLists = ((Functional)primaryDeclaration).getParameterLists();
+            SuperInvocation builder = new SuperInvocation(gen,
+                    classBuilder.getForDefinition(),
+                    invocation,
+                    paramLists.get(0));
+            classBuilder.superCall(gen.at(extendedType).Exec(gen.expressionGen().transformSuperInvocation(builder)));
         }
         classBuilder.extending(extendedType.getType().getTypeModel());
     }

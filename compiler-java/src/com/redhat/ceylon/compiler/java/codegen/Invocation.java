@@ -33,9 +33,7 @@ import java.util.Set;
 import java.util.TreeMap;
 
 import com.redhat.ceylon.compiler.java.codegen.AbstractTransformer.BoxingStrategy;
-import com.redhat.ceylon.compiler.java.codegen.ExpressionTransformer.TermTransformer;
 import com.redhat.ceylon.compiler.java.codegen.Naming.SyntheticName;
-import com.redhat.ceylon.compiler.loader.model.LazyMethod;
 import com.redhat.ceylon.compiler.typechecker.model.Class;
 import com.redhat.ceylon.compiler.typechecker.model.ClassAlias;
 import com.redhat.ceylon.compiler.typechecker.model.ClassOrInterface;
@@ -45,24 +43,20 @@ import com.redhat.ceylon.compiler.typechecker.model.FunctionalParameter;
 import com.redhat.ceylon.compiler.typechecker.model.Getter;
 import com.redhat.ceylon.compiler.typechecker.model.Interface;
 import com.redhat.ceylon.compiler.typechecker.model.Method;
-import com.redhat.ceylon.compiler.typechecker.model.Package;
 import com.redhat.ceylon.compiler.typechecker.model.Parameter;
 import com.redhat.ceylon.compiler.typechecker.model.ParameterList;
 import com.redhat.ceylon.compiler.typechecker.model.ProducedReference;
 import com.redhat.ceylon.compiler.typechecker.model.ProducedType;
 import com.redhat.ceylon.compiler.typechecker.model.ProducedTypedReference;
-import com.redhat.ceylon.compiler.typechecker.model.Scope;
 import com.redhat.ceylon.compiler.typechecker.model.TypeDeclaration;
 import com.redhat.ceylon.compiler.typechecker.model.TypeParameter;
 import com.redhat.ceylon.compiler.typechecker.model.TypedDeclaration;
 import com.redhat.ceylon.compiler.typechecker.model.Value;
 import com.redhat.ceylon.compiler.typechecker.tree.Node;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree;
-import com.redhat.ceylon.compiler.typechecker.tree.Tree.BaseMemberExpression;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.Comprehension;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.Expression;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.FunctionArgument;
-import com.redhat.ceylon.compiler.typechecker.tree.Tree.InvocationExpression;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.PositionalArgumentList;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.Primary;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.QualifiedTypeExpression;
@@ -75,20 +69,20 @@ import com.sun.tools.javac.tree.JCTree.JCVariableDecl;
 import com.sun.tools.javac.util.List;
 import com.sun.tools.javac.util.ListBuffer;
 
-abstract class InvocationBuilder {
+abstract class Invocation {
 
     protected final AbstractTransformer gen;
-    protected final Node node;
-    protected final Tree.Primary primary;
-    protected final Declaration primaryDeclaration;
-    protected final ProducedType returnType;
+    private final Node node;
+    private final Tree.Primary primary;
+    private final Declaration primaryDeclaration;
+    private final ProducedType returnType;
     protected boolean handleBoxing;
     protected boolean unboxed;
-    protected BoxingStrategy boxingStrategy;    
-    protected final Tree.Primary qmePrimary;
-    protected final boolean onValueType;
+    protected BoxingStrategy boxingStrategy;
+    private final Tree.Primary qmePrimary;
+    private final boolean onValueType;
     
-    protected InvocationBuilder(AbstractTransformer gen, 
+    protected Invocation(AbstractTransformer gen, 
             Tree.Primary primary, Declaration primaryDeclaration,
             ProducedType returnType, Node node) {
         this.gen = gen;
@@ -99,39 +93,42 @@ abstract class InvocationBuilder {
         
         if (primary instanceof Tree.QualifiedMemberOrTypeExpression){
             this.qmePrimary = ((Tree.QualifiedMemberOrTypeExpression) primary).getPrimary();
-            this.onValueType = Decl.isValueTypeDecl(qmePrimary);
+            this.onValueType = Decl.isValueTypeDecl(getQmePrimary());
         } else {
             this.qmePrimary = null;
             this.onValueType = false;
         }
     }
-
-    private void transformTypeArguments(
-            AbstractTransformer gen, CallBuilder callBuilder,
-            java.util.List<ProducedType> typeArguments) {
-        if(typeArguments != null){
-            for (ProducedType arg : typeArguments) {
-                // cancel type parameters and go raw if we can't specify them
-                if(gen.willEraseToObject(arg) || gen.willEraseToSequential(arg)) {
-                    callBuilder.typeArguments(List.<JCExpression>nil());
-                    return;
-                }
-                callBuilder.typeArgument(gen.makeJavaType(arg, JT_TYPE_ARGUMENT));
-            }
-        }
+    
+    Node getNode() {
+        return node;
     }
-    
-    /**
-     * Makes calls to {@link CallBuilder#argument(JCExpression)} ready for a 
-     * call to {@link #build()}
-     */
-    protected abstract void compute(CallBuilder callBuilder);
-    
+
+    Tree.Primary getPrimary() {
+        return primary;
+    }
+
+    Declaration getPrimaryDeclaration() {
+        return primaryDeclaration;
+    }
+
+    ProducedType getReturnType() {
+        return returnType;
+    }
+
+    Tree.Primary getQmePrimary() {
+        return qmePrimary;
+    }
+
+    boolean isOnValueType() {
+        return onValueType;
+    }
+
     public final void setUnboxed(boolean unboxed) {
         this.unboxed = unboxed;
     }
 
-    public void handleBoxing(boolean b) {
+    public final void handleBoxing(boolean b) {
         handleBoxing = b;
     }
 
@@ -141,24 +138,24 @@ abstract class InvocationBuilder {
 
     protected JCExpression transformInvocationOrInstantiation(CallBuilder callBuilder, TransformedInvocationPrimary transformedPrimary) {
         JCExpression resultExpr;
-        if (primary instanceof Tree.BaseTypeExpression) {
+        if (getPrimary() instanceof Tree.BaseTypeExpression) {
             resultExpr = transformBaseInstantiation(callBuilder, transformedPrimary);
-        } else if (primary instanceof Tree.QualifiedTypeExpression) {
+        } else if (getPrimary() instanceof Tree.QualifiedTypeExpression) {
             resultExpr = transformQualifiedInstantiation(callBuilder, transformedPrimary);
         } else {   
             resultExpr = transformInvocation(callBuilder, transformedPrimary);
         }
         
         if(handleBoxing)
-            resultExpr = gen.expressionGen().applyErasureAndBoxing(resultExpr, returnType, 
-                    !unboxed, boxingStrategy, returnType);
+            resultExpr = gen.expressionGen().applyErasureAndBoxing(resultExpr, getReturnType(), 
+                    !unboxed, boxingStrategy, getReturnType());
         return resultExpr;
     }
 
     private JCExpression transformInvocation(CallBuilder callBuilder,
             TransformedInvocationPrimary transformedPrimary) {
-        if (onValueType) {
-            JCExpression primTypeExpr = gen.makeJavaType(qmePrimary.getTypeModel(), JT_NO_PRIMITIVES);
+        if (isOnValueType()) {
+            JCExpression primTypeExpr = gen.makeJavaType(getQmePrimary().getTypeModel(), JT_NO_PRIMITIVES);
             callBuilder.invoke(gen.naming.makeQuotedQualIdent(primTypeExpr, transformedPrimary.selector));
         } else {
             callBuilder.invoke(gen.naming.makeQuotedQualIdent(transformedPrimary.expr, transformedPrimary.selector));
@@ -169,7 +166,7 @@ abstract class InvocationBuilder {
     private JCExpression transformQualifiedInstantiation(CallBuilder callBuilder,
             TransformedInvocationPrimary transformedPrimary) {
         
-        Tree.QualifiedTypeExpression qte = (Tree.QualifiedTypeExpression)primary;
+        Tree.QualifiedTypeExpression qte = (Tree.QualifiedTypeExpression)getPrimary();
         Declaration declaration = qte.getDeclaration();
         if (!Strategy.generateInstantiator(declaration)) {
             // When doing qualified invocation through an interface we need
@@ -204,41 +201,29 @@ abstract class InvocationBuilder {
     private JCExpression transformBaseInstantiation(CallBuilder callBuilder,
             TransformedInvocationPrimary transformedPrimary) {
         JCExpression resultExpr;
-        Tree.BaseTypeExpression type = (Tree.BaseTypeExpression)primary;
+        Tree.BaseTypeExpression type = (Tree.BaseTypeExpression)getPrimary();
         Declaration declaration = type.getDeclaration();
         if (Strategy.generateInstantiator(declaration)) {
-            callBuilder.typeArguments(List.<JCExpression>nil());
-            callBuilder.invoke(gen.naming.makeInstantiatorMethodName(transformedPrimary.expr, (Class)declaration));
-            resultExpr = callBuilder.build();
-            if (Decl.isAncestorLocal(primaryDeclaration)) {
+            resultExpr = callBuilder
+                    .typeArguments(List.<JCExpression>nil())
+                    .invoke(gen.naming.makeInstantiatorMethodName(transformedPrimary.expr, (Class)declaration))
+                    .build();
+            if (Decl.isAncestorLocal(getPrimaryDeclaration())) {
                 // $new method declared to return Object, so needs typecast
                 resultExpr = gen.make().TypeCast(gen.makeJavaType(
                         ((TypeDeclaration)declaration).getType()), resultExpr);
             }
         } else {
             ProducedType classType = (ProducedType)type.getTarget();
-            callBuilder.instantiate(gen.makeJavaType(classType, AbstractTransformer.JT_CLASS_NEW));
-            resultExpr = callBuilder.build();
+            resultExpr = callBuilder
+                    .instantiate(gen.makeJavaType(classType, AbstractTransformer.JT_CLASS_NEW))
+                    .build();
         }
         return resultExpr;
     }
-
-    protected void transformArgumentList(CallBuilder callBuilder,
-            TransformedInvocationPrimary transformedPrimary) {
-        gen.expressionGen().withinInvocation(false);
-        compute(callBuilder);
-        
-        if (needsTypeInfoArgument()) {
-            JCExpression infoArg = makeTypeInfoArgument();
-            callBuilder.prependArgument(infoArg);
-        }
-        if (!(primary instanceof Tree.BaseTypeExpression)
-                && !(primary instanceof Tree.QualifiedTypeExpression)
-                && onValueType 
-                && transformedPrimary != null) {
-            callBuilder.prependArgument(transformedPrimary.expr);   
-        }
-        gen.expressionGen().withinInvocation(true);
+    
+    protected boolean validNumberOfParameters() {
+        return true;
     }
 
     class TransformedInvocationPrimary {
@@ -253,15 +238,15 @@ abstract class InvocationBuilder {
     protected TransformedInvocationPrimary transformPrimary(JCExpression primaryExpr,
             String selector) {
         JCExpression actualPrimExpr;
-        if (primary instanceof Tree.QualifiedTypeExpression
-                && ((Tree.QualifiedTypeExpression)primary).getPrimary() instanceof Tree.BaseTypeExpression) {
+        if (getPrimary() instanceof Tree.QualifiedTypeExpression
+                && ((Tree.QualifiedTypeExpression)getPrimary()).getPrimary() instanceof Tree.BaseTypeExpression) {
             actualPrimExpr = gen.makeSelect(primaryExpr, "this");
         } else {
             actualPrimExpr = primaryExpr;
         }
         
-        if (primary instanceof Tree.BaseTypeExpression) {
-            Tree.BaseTypeExpression type = (Tree.BaseTypeExpression)primary;
+        if (getPrimary() instanceof Tree.BaseTypeExpression) {
+            Tree.BaseTypeExpression type = (Tree.BaseTypeExpression)getPrimary();
             Declaration declaration = type.getDeclaration();
             if (Strategy.generateInstantiator(declaration)) {
                 if (Decl.withinInterface(declaration)) {
@@ -270,24 +255,24 @@ abstract class InvocationBuilder {
                     actualPrimExpr = null;
                 }
             }
-        } else if (primary instanceof Tree.QualifiedTypeExpression) {
+        } else if (getPrimary() instanceof Tree.QualifiedTypeExpression) {
         } else {
             if (this instanceof IndirectInvocationBuilder
-                    && (primaryDeclaration instanceof Getter
-                            || (primaryDeclaration instanceof Value)
-                            && !Decl.isLocal(primaryDeclaration))) {
+                    && (getPrimaryDeclaration() instanceof Getter
+                            || (getPrimaryDeclaration() instanceof Value)
+                            && !Decl.isLocal(getPrimaryDeclaration()))) {
                 actualPrimExpr = gen.make().Apply(null, 
                         gen.naming.makeQualIdent(primaryExpr, selector), 
                         List.<JCExpression>nil());
                 selector = Naming.getCallableMethodName();
-            } else if (primaryDeclaration instanceof FunctionalParameter
+            } else if (getPrimaryDeclaration() instanceof FunctionalParameter
                     || (this instanceof IndirectInvocationBuilder)) {
                 if (selector != null) {
                     actualPrimExpr = gen.naming.makeQualIdent(primaryExpr, selector);
                 } else {
-                    actualPrimExpr = gen.naming.makeQualifiedName(primaryExpr, (TypedDeclaration)primaryDeclaration, Naming.NA_MEMBER);
+                    actualPrimExpr = gen.naming.makeQualifiedName(primaryExpr, (TypedDeclaration)getPrimaryDeclaration(), Naming.NA_MEMBER);
                 }
-                if (!gen.isCeylonCallable(primary.getTypeModel())) {                    
+                if (!gen.isCeylonCallable(getPrimary().getTypeModel())) {                    
                     actualPrimExpr = gen.make().Apply(null, actualPrimExpr, List.<JCExpression>nil());
                 }
                 selector = Naming.getCallableMethodName();
@@ -296,196 +281,12 @@ abstract class InvocationBuilder {
         
         return new TransformedInvocationPrimary(actualPrimExpr, selector);
     }
-    
-    protected JCExpression makeInvocation(final CallBuilder callBuilder) {
-        gen.at(node);
-        
-        JCExpression result = gen.expressionGen().transformPrimary(primary, new TermTransformer() {
-            @Override
-            public JCExpression transform(JCExpression primaryExpr, String selector) {
-                TransformedInvocationPrimary transformedPrimary = transformPrimary(primaryExpr, selector);
-                transformArgumentList(callBuilder, transformedPrimary);
-                JCExpression resultExpr = transformInvocationOrInstantiation(callBuilder, transformedPrimary);
-                return resultExpr;
-            }
-        });
 
-        return result;
-    }
-
-    private boolean needsTypeInfoArgument() {
-        if (primaryDeclaration instanceof LazyMethod) {
-            if ("ceylon.language".equals(primaryDeclaration.getContainer().getQualifiedNameString())) {
-                String name = primaryDeclaration.getName();
-                return ("array".equals(name) || "arrayOfSize".equals(name));
-            }
-        }
-        return false;
-    }
-
-    private JCExpression makeTypeInfoArgument() {
-        Tree.BaseMemberExpression bme = (BaseMemberExpression) primary;
-        ProducedType type = bme.getTypeArguments().getTypeModels().get(0);
-        ProducedType simpleType = gen.simplifyType(type);
-        JCExpression typeExpr;
-        if (simpleType.getDeclaration() instanceof TypeParameter
-                || gen.typeFact().isUnion(simpleType)
-                || gen.typeFact().isIntersection(simpleType)) {
-            return gen.makeNull();
-        } else {
-            typeExpr = gen.makeJavaType(type, JT_RAW);
-            return gen.makeSelect(typeExpr, "class");
-        }
-    }
-
-    public final JCExpression build() {
-        boolean prevFnCall = gen.expressionGen().withinInvocation(true);
-        try {
-            CallBuilder callBuilder = CallBuilder.instance(gen);
-            if (primary instanceof Tree.StaticMemberOrTypeExpression){
-                transformTypeArguments(gen, callBuilder, ((Tree.StaticMemberOrTypeExpression)primary).getTypeArguments().getTypeModels());
-            }
-             
-            return makeInvocation(callBuilder);
-        } finally {
-            gen.expressionGen().withinInvocation(prevFnCall);
-        }
-    }
-    
-    public static InvocationBuilder forSuperInvocation(AbstractTransformer gen,
-            Tree.InvocationExpression invocation, 
-            com.redhat.ceylon.compiler.typechecker.tree.Tree.ClassOrInterface forDefinition) {
-        Declaration primaryDeclaration = ((Tree.MemberOrTypeExpression)invocation.getPrimary()).getDeclaration();
-        java.util.List<ParameterList> paramLists = ((Functional)primaryDeclaration).getParameterLists();
-        SuperInvocationBuilder builder = new SuperInvocationBuilder(gen,
-                forDefinition,
-                invocation,
-                paramLists.get(0));
-        return builder;
-    }
-    
-    public static InvocationBuilder forInvocation(AbstractTransformer gen, 
-            final Tree.InvocationExpression invocation) {
-        
-        Tree.Primary primary = invocation.getPrimary();
-        Declaration primaryDeclaration = null;
-        ProducedReference producedReference = null;
-        if (primary instanceof Tree.MemberOrTypeExpression) {
-            producedReference = ((Tree.MemberOrTypeExpression)primary).getTarget();
-            primaryDeclaration = ((Tree.MemberOrTypeExpression)primary).getDeclaration();
-        }
-        InvocationBuilder builder;
-        if (invocation.getPositionalArgumentList() != null) {
-            if (primaryDeclaration instanceof Functional){
-                // direct invocation
-                java.util.List<Parameter> parameters = ((Functional)primaryDeclaration).getParameterLists().get(0).getParameters();
-                builder = new PositionalInvocationBuilder(gen, 
-                        primary, primaryDeclaration,producedReference,
-                        invocation,
-                        parameters);
-            } else {
-                // indirect invocation
-                builder = new IndirectInvocationBuilder(gen, 
-                        primary, primaryDeclaration,
-                        invocation);
-            }
-            
-        } else if (invocation.getNamedArgumentList() != null) {
-            builder = new NamedArgumentInvocationBuilder(gen, 
-                    primary, 
-                    primaryDeclaration,
-                    producedReference,
-                    invocation);
-        } else {
-            throw new RuntimeException("Illegal State");
-        }
-        return builder;
-    }
-    
-    public static InvocationBuilder forCallableInvocation(
-            AbstractTransformer gen, Tree.Term expr, final ParameterList parameterList, int parameterCount) {
-        final Tree.MemberOrTypeExpression primary;
-        if (expr instanceof Tree.MemberOrTypeExpression) {
-            primary = (Tree.MemberOrTypeExpression)expr;
-        } else {
-            throw new RuntimeException(expr+"");
-        }
-        TypeDeclaration primaryDeclaration = expr.getTypeModel().getDeclaration();
-        CallableInvocationBuilder builder = new CallableInvocationBuilder (
-                gen,
-                primary,
-                primaryDeclaration,
-                primary.getTarget(),
-                gen.getReturnTypeOfCallable(expr.getTypeModel()),
-                expr, 
-                parameterList,
-                parameterCount);
-        builder.handleBoxing(true);
-        return builder;
-    }
-    
-    public static InvocationBuilder forSpecifierInvocation(
-            CeylonTransformer gen, Tree.SpecifierExpression specifierExpression,
-            Method method) {
-        Tree.Term primary = Decl.unwrapExpressionsUntilTerm(specifierExpression.getExpression());
-        boolean lazy = specifierExpression instanceof Tree.LazySpecifierExpression;
-        boolean inlined = CodegenUtil.canOptimiseMethodSpecifier(primary, method);
-        InvocationBuilder builder;
-        if (lazy && primary instanceof InvocationExpression) {
-            primary = ((InvocationExpression)primary).getPrimary();
-        }
-        if ((lazy || inlined)
-                && primary instanceof Tree.MemberOrTypeExpression
-                && ((Tree.MemberOrTypeExpression)primary).getDeclaration() instanceof Functional) {
-            Declaration primaryDeclaration = ((Tree.MemberOrTypeExpression)primary).getDeclaration();
-            ProducedReference producedReference = ((Tree.MemberOrTypeExpression)primary).getTarget();
-            builder = new MethodReferenceSpecifierInvocationBuilder(
-                    gen, 
-                    (Tree.MemberOrTypeExpression)primary, 
-                    primaryDeclaration,
-                    producedReference,
-                    method,
-                    specifierExpression);
-        } else if (!lazy && !inlined) {
-            // must be a callable we stored
-            String name = gen.naming.getMethodSpecifierAttributeName(method);
-            builder = new CallableSpecifierInvocationBuilder(
-                    gen, 
-                    method, 
-                    gen.naming.makeUnquotedIdent(name),
-                    primary);
-        } else if (gen.isCeylonCallable(primary.getTypeModel())) {
-            builder = new CallableSpecifierInvocationBuilder(
-                    gen, 
-                    method, 
-                    gen.expressionGen().transformExpression(primary),
-                    primary);
-        } else {
-            throw Assert.fail("Unhandled primary " + primary);
-        }
-        builder.handleBoxing(true);
-        return builder;
-    }
-    
-    public static InvocationBuilder forMethodInitializer(
-            CeylonTransformer gen, 
-            JCExpression callableExpr,
-            Node node,
-            Method method) {
-        InvocationBuilder builder = new CallableSpecifierInvocationBuilder(
-                gen,
-                method,
-                callableExpr,
-                node);
-      
-        builder.handleBoxing(true);
-        return builder;
-    }
 }
 
-abstract class SimpleInvocationBuilder extends InvocationBuilder {
+abstract class SimpleInvocation extends Invocation {
 
-    public SimpleInvocationBuilder(AbstractTransformer gen, Primary primary,
+    public SimpleInvocation(AbstractTransformer gen, Primary primary,
             Declaration primaryDeclaration, ProducedType returnType, Node node) {
         super(gen, primary, primaryDeclaration, returnType, node);
     }
@@ -519,48 +320,6 @@ abstract class SimpleInvocationBuilder extends InvocationBuilder {
 
     protected abstract boolean dontBoxSequence();
 
-    @Override
-    protected void compute(CallBuilder callBuilder) {
-        int numArguments = getNumArguments();
-        boolean wrapIntoArray = false;
-        ListBuffer<JCExpression> arrayWrap = new ListBuffer<JCExpression>();
-        for (int argIndex = 0; argIndex < numArguments; argIndex++) {
-            final JCExpression expr;
-            // for Java methods of variadic primitives, it's better to wrap them ourselves into an array
-            // to avoid ambiguity of foo(1,2) for foo(int...) and foo(Object...) methods
-            if(!wrapIntoArray
-                    && isParameterSequenced(argIndex)
-                    && isJavaMethod()
-                    && getParameterBoxingStrategy(argIndex) == BoxingStrategy.UNBOXED
-                    && gen.willEraseToPrimitive(gen.typeFact().getDefiniteType(getParameterType(argIndex)))
-                    && !dontBoxSequence())
-                wrapIntoArray = true;
-            if (!isParameterSequenced(argIndex)
-                    || dontBoxSequence()
-                    || isJavaMethod()) {
-                expr = this.getTransformedArgumentExpression(argIndex);
-            } else {
-                // box with an ArraySequence<T>
-                List<JCExpression> x = List.<JCExpression>nil();
-                final ProducedType iteratedType = gen.typeFact().getIteratedType(getParameterType(argIndex));
-                for ( ; argIndex < numArguments; argIndex++) {
-                    x = x.append(this.getTransformedArgumentExpression(argIndex));
-                }
-                expr = gen.makeSequence(x, iteratedType, JT_TYPE_ARGUMENT);
-            }
-            if(!wrapIntoArray)
-                callBuilder.argument(expr);
-            else
-                arrayWrap.append(expr);
-        }
-        if(wrapIntoArray){
-            // must have at least one arg, so take the last one
-            ProducedType parameterType = getParameterType(numArguments-1);
-            JCExpression arrayType = gen.makeJavaType(parameterType, JT_RAW);
-            callBuilder.argument(gen.make().NewArray(arrayType, List.<JCExpression>nil(), arrayWrap.toList()));
-        }
-    }
-
     /**
      * For subclasses if the target method doesn't support default values for variadic
      * using overloading.
@@ -570,60 +329,17 @@ abstract class SimpleInvocationBuilder extends InvocationBuilder {
     }
 
     protected boolean isJavaMethod() {
-        if(primaryDeclaration instanceof Method) {
-            return gen.isJavaMethod((Method) primaryDeclaration);
-        } else if (primaryDeclaration instanceof Class) {
-            return gen.isJavaCtor((Class) primaryDeclaration);
+        if(getPrimaryDeclaration() instanceof Method) {
+            return gen.isJavaMethod((Method) getPrimaryDeclaration());
+        } else if (getPrimaryDeclaration() instanceof Class) {
+            return gen.isJavaCtor((Class) getPrimaryDeclaration());
         }
         return false;
     }
 
     protected abstract Tree.Expression getArgumentExpression(int argIndex);
     
-    protected JCExpression getTransformedArgumentExpression(int argIndex) {
-        Tree.Expression expr = getArgumentExpression(argIndex);
-        if (expr.getTerm() instanceof FunctionArgument) {
-            FunctionArgument farg = (FunctionArgument)expr.getTerm();
-            return gen.expressionGen().transform(farg);
-        }
-        return transformArg(argIndex);
-    }
-    
-    protected final JCExpression transformArg(int argIndex) {
-        final Tree.Term expr = getArgumentExpression(argIndex);
-        if (hasParameter(argIndex)) {
-            ProducedType type = getParameterType(argIndex);
-            if (isParameterSequenced(argIndex)
-                    && !isJavaMethod()
-                    && !dontBoxSequence()) {
-                // If the parameter is sequenced and the argument is not ...
-                // then the expected type of the *argument* is the type arg to Iterator
-                type = gen.typeFact().getIteratedType(type);
-            }
-            BoxingStrategy boxingStrategy = getParameterBoxingStrategy(argIndex);
-            int flags = 0;
-            if(!isParameterRaw(argIndex))
-                flags |= ExpressionTransformer.EXPR_EXPECTED_TYPE_NOT_RAW;
-            JCExpression ret = gen.expressionGen().transformExpression(expr, 
-                    boxingStrategy, 
-                    type, flags);
-            if(isParameterSequenced(argIndex)
-                    && isJavaMethod()
-                    && dontBoxSequence()){
-                // must translate it into a Util call
-                ret = gen.sequenceToJavaArray(ret, type, boxingStrategy, expr.getTypeModel());
-            }
-            return ret;
-        } else {
-            // Overloaded methods don't have a reference to a parameter
-            // so we have to treat them differently. Also knowing it's
-            // overloaded we know we're dealing with Java code so we unbox
-            ProducedType type = expr.getTypeModel();
-            return gen.expressionGen().transformExpression(expr, 
-                    BoxingStrategy.UNBOXED, 
-                    type);
-        }
-    }
+    protected abstract JCExpression getTransformedArgumentExpression(int argIndex);
     
 }
 
@@ -631,14 +347,14 @@ abstract class SimpleInvocationBuilder extends InvocationBuilder {
  * Generates calls to Callable methods. This is for regular {@code Callable<T>} objects and not
  * functional parameters, which have more info like parameter names and default values.
  */
-class IndirectInvocationBuilder extends SimpleInvocationBuilder {
+class IndirectInvocationBuilder extends SimpleInvocation {
 
     private final java.util.List<ProducedType> parameterTypes;
     private final java.util.List<Tree.Expression> argumentExpressions;
-    private Comprehension comprehension;
-    private boolean variadic;
-    private boolean spread;
-    private int minimumParameters;
+    private final Comprehension comprehension;
+    private final boolean variadic;
+    private final boolean spread;
+    private final int minimumParameters;
 
     public IndirectInvocationBuilder(
             AbstractTransformer gen, 
@@ -676,15 +392,7 @@ class IndirectInvocationBuilder extends SimpleInvocationBuilder {
     }
     
     @Override
-    protected void transformArgumentList(CallBuilder callBuilder, TransformedInvocationPrimary transformedPrimary) {
-        // don't try to work on broken stuff
-        if (!validNumberOfParameters()) {
-            return;
-        }
-        super.transformArgumentList(callBuilder, transformedPrimary);
-    }
-    
-    private boolean validNumberOfParameters() {
+    protected boolean validNumberOfParameters() {
         int argumentCount = argumentExpressions.size();
         // check that we have enough
         if(argumentCount < minimumParameters)
@@ -693,15 +401,6 @@ class IndirectInvocationBuilder extends SimpleInvocationBuilder {
         if(variadic)
             return true;
         return argumentCount <= parameterTypes.size();
-    }
-
-    @Override
-    protected JCExpression makeInvocation(CallBuilder callBuilder) {
-        // don't try to work on broken stuff
-        if (!validNumberOfParameters()) {
-            return gen.makeErroneous(node, "Invalid number of parameters");
-        }
-        return super.makeInvocation(callBuilder);
     }
     
     @Override
@@ -766,7 +465,7 @@ class IndirectInvocationBuilder extends SimpleInvocationBuilder {
             FunctionArgument farg = (FunctionArgument)expr.getTerm();
             return gen.expressionGen().transform(farg);
         }
-        return transformArg(argIndex);
+        return gen.expressionGen().transformArg(this, argIndex);
     }
 
 }
@@ -776,11 +475,11 @@ class IndirectInvocationBuilder extends SimpleInvocationBuilder {
  * via positional arguments. Supports with sequenced arguments but not 
  * defaulted arguments.
  */
-abstract class DirectInvocationBuilder extends SimpleInvocationBuilder {
+abstract class DirectInvocation extends SimpleInvocation {
 
-    protected final ProducedReference producedReference;
+    private final ProducedReference producedReference;
 
-    protected DirectInvocationBuilder(
+    protected DirectInvocation(
             AbstractTransformer gen,
             Tree.Primary primary,
             Declaration primaryDeclaration,
@@ -788,6 +487,10 @@ abstract class DirectInvocationBuilder extends SimpleInvocationBuilder {
             Node node) {
         super(gen, primary, primaryDeclaration, returnType, node);
         this.producedReference = producedReference;
+    }
+
+    protected ProducedReference getProducedReference() {
+        return producedReference;
     }
 
     /**
@@ -809,7 +512,7 @@ abstract class DirectInvocationBuilder extends SimpleInvocationBuilder {
                 && isJavaMethod()
                 && dontBoxSequence())
             flags |= AbstractTransformer.TP_SEQUENCED_TYPE;
-        return gen.expressionGen().getTypeForParameter(getParameter(argIndex), producedReference, flags);
+        return gen.expressionGen().getTypeForParameter(getParameter(argIndex), getProducedReference(), flags);
     }
     
     @Override
@@ -825,7 +528,7 @@ abstract class DirectInvocationBuilder extends SimpleInvocationBuilder {
     @Override
     protected BoxingStrategy getParameterBoxingStrategy(int argIndex) {
         Parameter param = getParameter(argIndex);
-        if (onValueType && Decl.isValueTypeDecl(param)) {
+        if (isOnValueType() && Decl.isValueTypeDecl(param)) {
             return BoxingStrategy.UNBOXED;
         }
         return CodegenUtil.getBoxingStrategy(param);
@@ -841,12 +544,12 @@ abstract class DirectInvocationBuilder extends SimpleInvocationBuilder {
  * InvocationBuilder used for 'normal' method and initializer invocations via 
  * positional arguments. Supports sequenced and defaulted arguments.
  */
-class PositionalInvocationBuilder extends DirectInvocationBuilder {
+class PositionalInvocation extends DirectInvocation {
 
     private final Tree.PositionalArgumentList positional;
     private final java.util.List<Parameter> parameters;
 
-    public PositionalInvocationBuilder(
+    public PositionalInvocation(
             AbstractTransformer gen, 
             Tree.Primary primary,
             Declaration primaryDeclaration,
@@ -856,42 +559,50 @@ class PositionalInvocationBuilder extends DirectInvocationBuilder {
         positional = invocation.getPositionalArgumentList();
         this.parameters = parameters;    
     }
+    java.util.List<Parameter> getParameters() {
+        return parameters;
+    }
+    Tree.PositionalArgumentList getPositional() {
+        return positional;
+    }
+    @Override
     protected Tree.Expression getArgumentExpression(int argIndex) {
-        return positional.getPositionalArguments().get(argIndex).getExpression();
+        return getPositional().getPositionalArguments().get(argIndex).getExpression();
     }
     @Override
     protected JCExpression getTransformedArgumentExpression(int argIndex) {
-        if (argIndex == positional.getPositionalArguments().size() && positional.getComprehension() != null) {
+        if (argIndex == getPositional().getPositionalArguments().size() && getPositional().getComprehension() != null) {
             ProducedType type = getParameterType(argIndex);
-            return gen.expressionGen().comprehensionAsSequential(positional.getComprehension(), type); 
+            return gen.expressionGen().comprehensionAsSequential(getPositional().getComprehension(), type); 
         }
         Tree.Expression expr = getArgumentExpression(argIndex);
         if (expr.getTerm() instanceof FunctionArgument) {
             FunctionArgument farg = (FunctionArgument)expr.getTerm();
             return gen.expressionGen().transform(farg);
         }
-        return transformArg(argIndex);
+        return gen.expressionGen().transformArg(this, argIndex);
     }
+    @Override
     protected Parameter getParameter(int argIndex) {
         // last parameter can be a comprehension which is not counted as part of positional arguments
-        if(argIndex == positional.getPositionalArguments().size() && positional.getComprehension() != null)
-            return parameters.get(argIndex);
-        return positional.getPositionalArguments().get(argIndex).getParameter();
+        if(argIndex == getPositional().getPositionalArguments().size() && getPositional().getComprehension() != null)
+            return getParameters().get(argIndex);
+        return getPositional().getPositionalArguments().get(argIndex).getParameter();
     }
     @Override
     protected int getNumArguments() {
-        return positional.getPositionalArguments().size() + (positional.getComprehension()==null?0:1);
+        return getPositional().getPositionalArguments().size() + (getPositional().getComprehension()==null?0:1);
     }
     @Override
     protected boolean isParameterSequenced(int argIndex) {
-        if (argIndex == positional.getPositionalArguments().size() && positional.getComprehension() != null) {
+        if (argIndex == getPositional().getPositionalArguments().size() && getPositional().getComprehension() != null) {
             return true;
         }
         return super.isParameterSequenced(argIndex);
     }
     @Override
     protected boolean dontBoxSequence() {
-        return positional.getEllipsis() != null || positional.getComprehension() != null;
+        return getPositional().getEllipsis() != null || getPositional().getComprehension() != null;
     }
     
     @Override
@@ -902,7 +613,7 @@ class PositionalInvocationBuilder extends DirectInvocationBuilder {
     }
     
     protected boolean hasDefaultArgument(int ii) {
-        return parameters.get(ii).isDefaulted();
+        return getParameters().get(ii).isDefaulted();
     }
 }
 
@@ -910,7 +621,7 @@ class PositionalInvocationBuilder extends DirectInvocationBuilder {
  * InvocationBuilder used for constructing invocations of {@code super()}
  * when creating constructors.
  */
-class SuperInvocationBuilder extends PositionalInvocationBuilder {
+class SuperInvocation extends PositionalInvocation {
     
     static Declaration unaliasedPrimaryDeclaration(Tree.InvocationExpression invocation) {
         Declaration declaration = ((Tree.MemberOrTypeExpression)invocation.getPrimary()).getDeclaration();
@@ -920,9 +631,9 @@ class SuperInvocationBuilder extends PositionalInvocationBuilder {
         return declaration;
     }
     
-    private Tree.ClassOrInterface sub;
+    private final Tree.ClassOrInterface sub;
     
-    SuperInvocationBuilder(AbstractTransformer gen,
+    SuperInvocation(AbstractTransformer gen,
             Tree.ClassOrInterface sub,
             Tree.InvocationExpression invocation,
             ParameterList parameterList) {
@@ -934,44 +645,12 @@ class SuperInvocationBuilder extends PositionalInvocationBuilder {
                 parameterList.getParameters());
         this.sub = sub;
     }
-    
-    public void compute(CallBuilder callBuilder) {
-        // Because super() invocations cannot be nested there's no need to 
-        // keep and restore the old withinSuperInvocation state.
-        gen.expressionGen().withinSuperInvocation(sub);
-        super.compute(callBuilder);
-        gen.expressionGen().withinSuperInvocation(null);
+
+    Tree.ClassOrInterface getSub() {
+        return sub;
     }
-    
-    @Override
-    protected JCExpression makeInvocation(CallBuilder callBuilder) {
-        gen.at(node);
-        JCExpression expr = null;
-        if (Strategy.generateInstantiator(primaryDeclaration)
-                && primaryDeclaration.getContainer() instanceof Interface) {
-            // If the subclass is inner to an interface then it will be 
-            // generated inner to the companion and we need to qualify the 
-            // super(), *unless* the subclass is nested within the same 
-            // interface as it's superclass.
-            Scope outer = sub.getDeclarationModel().getContainer();
-            while (!(outer instanceof Package)) {
-                if (outer == primaryDeclaration.getContainer()) {
-                    expr = gen.naming.makeSuper();
-                    break;
-                }
-                outer = outer.getContainer();
-            }
-            if (expr == null) {
-                expr = gen.naming.makeQualifiedSuper(gen.naming.makeCompanionFieldName((Interface)primaryDeclaration.getContainer()));
-            }
-        } else {
-            expr = gen.naming.makeSuper();
-        }
-        callBuilder.invoke(expr);
-        // We could create a TransformedPrimary(expr, "super") here if needed
-        transformArgumentList(callBuilder, null);
-        return callBuilder.build();
-    }
+
+
 }
 
 
@@ -990,15 +669,15 @@ class SuperInvocationBuilder extends PositionalInvocationBuilder {
  * And will generate the code required to put inside the Callable's {@code $call} method to
  * invoke {@code f}: {@code f();}. The generation of the Callable or its methods is not done here.
  */
-class CallableInvocationBuilder extends DirectInvocationBuilder {
+class CallableInvocation extends DirectInvocation {
     
     private final java.util.List<Parameter> callableParameters;
     
     private final java.util.List<Parameter> functionalParameters;
 
-    private int parameterCount;
+    private final int parameterCount;
 
-    public CallableInvocationBuilder(
+    public CallableInvocation(
             AbstractTransformer gen, Tree.MemberOrTypeExpression primary,
             Declaration primaryDeclaration, ProducedReference producedReference, ProducedType returnType,
             Tree.Term expr, ParameterList parameterList, int parameterCount) {
@@ -1008,6 +687,7 @@ class CallableInvocationBuilder extends DirectInvocationBuilder {
         this.parameterCount = parameterCount;
         setUnboxed(expr.getUnboxed());
         setBoxingStrategy(BoxingStrategy.BOXED);// Must be boxed because non-primitive return type
+        handleBoxing(true);
     }
 
     @Override
@@ -1042,11 +722,11 @@ class CallableInvocationBuilder extends DirectInvocationBuilder {
  * For example for {@code void foo(); foo = f;} we generate: {@code f()} that you would then place into
  * the generated method for {@code foo}.
  */
-class MethodReferenceSpecifierInvocationBuilder extends DirectInvocationBuilder {
+class MethodReferenceSpecifierInvocation extends DirectInvocation {
     
     private final Method method;
 
-    public MethodReferenceSpecifierInvocationBuilder(
+    public MethodReferenceSpecifierInvocation(
             AbstractTransformer gen, Tree.Primary primary,
             Declaration primaryDeclaration,
             ProducedReference producedReference, Method method, Tree.SpecifierExpression node) {
@@ -1064,7 +744,7 @@ class MethodReferenceSpecifierInvocationBuilder extends DirectInvocationBuilder 
     @Override
     protected JCExpression getTransformedArgumentExpression(int argIndex) {
         ProducedType exprType = getParameterType(argIndex);
-        Parameter declaredParameter = ((Functional)primaryDeclaration).getParameterLists().get(0).getParameters().get(argIndex);
+        Parameter declaredParameter = ((Functional)getPrimaryDeclaration()).getParameterLists().get(0).getParameters().get(argIndex);
         JCExpression result = getParameterExpression(argIndex);
         result = gen.expressionGen().applyErasureAndBoxing(
                 result, 
@@ -1095,11 +775,11 @@ class MethodReferenceSpecifierInvocationBuilder extends DirectInvocationBuilder 
  * For example for {@code void foo(); foo = f;} we generate: {@code f.$call()} that you would then place into
  * the generated method for {@code foo}.
  */
-class CallableSpecifierInvocationBuilder extends InvocationBuilder {
+class CallableSpecifierInvocation extends Invocation {
     
     private final Method method;
     private final JCExpression callable;
-    public CallableSpecifierInvocationBuilder(
+    public CallableSpecifierInvocation(
             AbstractTransformer gen, 
             Method method,
             JCExpression callableExpr,
@@ -1112,46 +792,23 @@ class CallableSpecifierInvocationBuilder extends InvocationBuilder {
         setUnboxed(false);
         setBoxingStrategy(method.getUnboxed() ? BoxingStrategy.UNBOXED : BoxingStrategy.BOXED);
     }
-    @Override
-    protected void compute(CallBuilder callBuilder) {
-        int argIndex = 0;
-        for(Parameter parameter : method.getParameterLists().get(0).getParameters()) {
-            ProducedType exprType = gen.expressionGen().getTypeForParameter(parameter, null, gen.TP_TO_BOUND);
-            Parameter declaredParameter = method.getParameterLists().get(0).getParameters().get(argIndex);
-            
-            JCExpression result = gen.naming.makeName(parameter, Naming.NA_MEMBER);
-            
-            result = gen.expressionGen().applyErasureAndBoxing(
-                    result, 
-                    exprType, 
-                    !parameter.getUnboxed(), 
-                    BoxingStrategy.BOXED,// Callables always have boxed params 
-                    declaredParameter.getType());
-            callBuilder.argument(result);
-            argIndex++;
-        }
+
+    JCExpression getCallable() {
+        return callable;
     }
-    @Override
-    protected JCExpression makeInvocation(CallBuilder callBuilder) {
-        gen.at(node);
-        
-        callBuilder
-            .invoke(gen.naming.makeQuotedQualIdent(callable, Naming.getCallableMethodName()));
-        
-        transformArgumentList(callBuilder, null);
-        JCExpression result = callBuilder.build();
-        if(handleBoxing)
-            result = gen.expressionGen().applyErasureAndBoxing(result, returnType, 
-                    !unboxed, boxingStrategy, returnType);
-        return result;
+
+    Method getMethod() {
+        return method;
     }
+
+
 }
 
 /**
  * InvocationBuilder for 'normal' method and initializer invocations
  * using named arguments.
  */
-class NamedArgumentInvocationBuilder extends InvocationBuilder {
+class NamedArgumentInvocation extends Invocation {
     
     private final Tree.NamedArgumentList namedArgumentList;
     private final ListBuffer<JCStatement> vars = ListBuffer.lb();
@@ -1164,7 +821,7 @@ class NamedArgumentInvocationBuilder extends InvocationBuilder {
     private ProducedReference producedReference;
     private int sequencedParamIndex = 0;
     
-    public NamedArgumentInvocationBuilder(
+    public NamedArgumentInvocation(
             AbstractTransformer gen, Tree.Primary primary,
             Declaration primaryDeclaration,
             ProducedReference producedReference,
@@ -1176,33 +833,26 @@ class NamedArgumentInvocationBuilder extends InvocationBuilder {
         callVarName = varBaseName.suffixedBy("$callable$");
     }
     
-    /**
-     * The args are just the synthetic arg names bound by the Let expr produced by 
-     * {@link #buildVars()}
-     */
-    @Override
-    protected void compute(CallBuilder callBuilder) {
-        for (Naming.SyntheticName argName : this.argsNamesByIndex.values()) {
-            callBuilder.argument(argName.makeIdent());
-        }
+    Iterable<Naming.SyntheticName> getArgsNamesByIndex() {
+        return argsNamesByIndex.values();
     }
-    
+
     /**
      * Constructs the vars used in the Let expression
      */
     private void buildVars() {
-        if (primaryDeclaration == null) {
+        if (getPrimaryDeclaration() == null) {
             return;
         }
         java.util.List<Tree.NamedArgument> namedArguments = namedArgumentList.getNamedArguments();
-        java.util.List<ParameterList> paramLists = ((Functional)primaryDeclaration).getParameterLists();
+        java.util.List<ParameterList> paramLists = ((Functional)getPrimaryDeclaration()).getParameterLists();
         java.util.List<Parameter> declaredParams = paramLists.get(0).getParameters();
         appendVarsForNamedArguments(namedArguments, declaredParams);
         boolean hasDefaulted = appendVarsForDefaulted(declaredParams);
         
         if (hasDefaulted 
-                && !Strategy.defaultParameterMethodStatic(primaryDeclaration)
-                && !Strategy.defaultParameterMethodOnOuter(primaryDeclaration)) {
+                && !Strategy.defaultParameterMethodStatic(getPrimaryDeclaration())
+                && !Strategy.defaultParameterMethodOnOuter(getPrimaryDeclaration())) {
             vars.prepend(makeThis());
         }
     }
@@ -1219,13 +869,13 @@ class NamedArgumentInvocationBuilder extends InvocationBuilder {
             break;
         case INIT_COMPANION:
             thisExpr = varBaseName.suffixedBy("$this$").makeIdent();
-            if (onValueType) {
-                thisExpr = gen.boxType(thisExpr, qmePrimary.getTypeModel());
+            if (isOnValueType()) {
+                thisExpr = gen.boxType(thisExpr, getQmePrimary().getTypeModel());
             }
             break;
         }
         JCExpression defaultValueMethodName = gen.naming.makeDefaultedParamMethod(thisExpr, param);
-        JCExpression argExpr = gen.at(node).Apply(null, 
+        JCExpression argExpr = gen.at(getNode()).Apply(null, 
                 defaultValueMethodName, 
                 makeVarRefArgumentList(param));
         return argExpr;
@@ -1235,7 +885,7 @@ class NamedArgumentInvocationBuilder extends InvocationBuilder {
     // or ($arg$this$, $arg0, $arg1, ... , $argN)
     private List<JCExpression> makeVarRefArgumentList(Parameter param) {
         ListBuffer<JCExpression> names = ListBuffer.<JCExpression> lb();
-        if (!Strategy.defaultParameterMethodStatic(primaryDeclaration)
+        if (!Strategy.defaultParameterMethodStatic(getPrimaryDeclaration())
                 && Strategy.defaultParameterMethodTakesThis(param)) {
             names.append(varBaseName.suffixedBy("$this$").makeIdent());
         }
@@ -1411,7 +1061,7 @@ class NamedArgumentInvocationBuilder extends InvocationBuilder {
     
     private BoxingStrategy getNamedParameterBoxingStrategy(Parameter param) {
         if (param != null) {
-            if (onValueType && Decl.isValueTypeDecl(param)) {
+            if (isOnValueType() && Decl.isValueTypeDecl(param)) {
                 return BoxingStrategy.UNBOXED;
             }
             return CodegenUtil.getBoxingStrategy(param);
@@ -1422,7 +1072,7 @@ class NamedArgumentInvocationBuilder extends InvocationBuilder {
     
     private boolean appendVarsForDefaulted(java.util.List<Parameter> declaredParams) {
         boolean hasDefaulted = false;
-        if (!Decl.isOverloaded(primaryDeclaration)) {
+        if (!Decl.isOverloaded(getPrimaryDeclaration())) {
             // append any arguments for defaulted parameters
             for (Parameter param : declaredParams) {
                 if (bound.contains(param) && !param.isSequenced()) {
@@ -1442,7 +1092,7 @@ class NamedArgumentInvocationBuilder extends InvocationBuilder {
                     } else if (namedArgumentList.getComprehension() != null) {
                         argExpr = gen.expressionGen().comprehensionAsSequential(namedArgumentList.getComprehension(), param.getType());
                     } else {
-                        if (primaryDeclaration instanceof FunctionalParameter) {
+                        if (getPrimaryDeclaration() instanceof FunctionalParameter) {
                             // honestly I don't know if it needs a cast but it can't hurt
                             argExpr = gen.makeEmptyAsSequential(true);
                         } else {
@@ -1451,7 +1101,7 @@ class NamedArgumentInvocationBuilder extends InvocationBuilder {
                         }
                     }
                 } else {
-                    argExpr = gen.makeErroneous(this.node, "Missing argument, and parameter is not defaulted");
+                    argExpr = gen.makeErroneous(this.getNode(), "Missing argument, and parameter is not defaulted");
                 }
                 appendDefaulted(param, argExpr);
             }
@@ -1466,26 +1116,26 @@ class NamedArgumentInvocationBuilder extends InvocationBuilder {
         // handle type parameters correctly
         // we used to use thisType = gen.getThisType(getPrimaryDeclaration());
         final JCExpression thisType;
-        ProducedReference target = ((Tree.MemberOrTypeExpression)primary).getTarget();
-        if (primary instanceof Tree.BaseMemberExpression) {
-            if (Decl.withinClassOrInterface(primaryDeclaration)) {
+        ProducedReference target = ((Tree.MemberOrTypeExpression)getPrimary()).getTarget();
+        if (getPrimary() instanceof Tree.BaseMemberExpression) {
+            if (Decl.withinClassOrInterface(getPrimaryDeclaration())) {
                 // a member method
                 thisType = gen.makeJavaType(target.getQualifyingType(), JT_NO_PRIMITIVES);
                 defaultedParameterInstance = gen.naming.makeThis();
             } else {
                 // a local or toplevel function
-                thisType = gen.naming.makeName((TypedDeclaration)primaryDeclaration, Naming.NA_WRAPPER);
-                defaultedParameterInstance = gen.naming.makeName((TypedDeclaration)primaryDeclaration, Naming.NA_MEMBER);
+                thisType = gen.naming.makeName((TypedDeclaration)getPrimaryDeclaration(), Naming.NA_WRAPPER);
+                defaultedParameterInstance = gen.naming.makeName((TypedDeclaration)getPrimaryDeclaration(), Naming.NA_MEMBER);
             }
-        } else if (primary instanceof Tree.BaseTypeExpression
-                || primary instanceof Tree.QualifiedTypeExpression) {
+        } else if (getPrimary() instanceof Tree.BaseTypeExpression
+                || getPrimary() instanceof Tree.QualifiedTypeExpression) {
             Map<TypeParameter, ProducedType> typeA = target.getTypeArguments();
             ListBuffer<JCExpression> typeArgs = ListBuffer.<JCExpression>lb();
             for (TypeParameter tp : ((TypeDeclaration)target.getDeclaration()).getTypeParameters()) {
                 ProducedType producedType = typeA.get(tp);
                 typeArgs.append(gen.makeJavaType(producedType, JT_TYPE_ARGUMENT));
             }
-            ClassOrInterface declaration = (ClassOrInterface)((Tree.MemberOrTypeExpression) primary).getDeclaration();
+            ClassOrInterface declaration = (ClassOrInterface)((Tree.MemberOrTypeExpression) getPrimary()).getDeclaration();
             thisType = gen.makeJavaType(declaration.getType(), JT_COMPANION);
             defaultedParameterInstance = gen.make().NewClass(
                     null, 
@@ -1493,7 +1143,7 @@ class NamedArgumentInvocationBuilder extends InvocationBuilder {
                     gen.makeJavaType(declaration.getType(), JT_COMPANION), 
                     List.<JCExpression>nil(), null);
         } else {
-            if (onValueType) {
+            if (isOnValueType()) {
                 thisType = gen.makeJavaType(target.getQualifyingType());
             } else {
                 thisType = gen.makeJavaType(target.getQualifyingType(), JT_NO_PRIMITIVES);
@@ -1512,7 +1162,7 @@ class NamedArgumentInvocationBuilder extends InvocationBuilder {
         JCExpression resultExpr = super.transformInvocationOrInstantiation(callBuilder, transformedPrimary);
         // apply the default parameters
         if (vars != null && !vars.isEmpty()) {
-            if (returnType == null || Decl.isUnboxedVoid(primaryDeclaration)) {
+            if (getReturnType() == null || Decl.isUnboxedVoid(getPrimaryDeclaration())) {
                 // void methods get wrapped like (let $arg$1=expr, $arg$0=expr in call($arg$0, $arg$1); null)
                 resultExpr = gen.make().LetExpr( 
                         vars.append(gen.make().Exec(resultExpr)).toList(), 
@@ -1540,13 +1190,13 @@ class NamedArgumentInvocationBuilder extends InvocationBuilder {
                 && primaryExpr != null
                 && selector != null) {
             // Prepare the first argument holding the primary for the call
-            ProducedType type = ((Tree.MemberOrTypeExpression)primary).getTarget().getQualifyingType();
+            ProducedType type = ((Tree.MemberOrTypeExpression)getPrimary()).getTarget().getQualifyingType();
             JCExpression varType;
-            if (onValueType) {
+            if (isOnValueType()) {
                 varType = gen.makeJavaType(type);
             } else {
-                if (primary instanceof QualifiedTypeExpression
-                        && (((QualifiedTypeExpression)primary).getPrimary() instanceof Tree.Outer)) {
+                if (getPrimary() instanceof QualifiedTypeExpression
+                        && (((QualifiedTypeExpression)getPrimary()).getPrimary() instanceof Tree.Outer)) {
                     varType = gen.makeJavaType(type, JT_NO_PRIMITIVES | JT_COMPANION);
                 } else {
                     varType = gen.makeJavaType(type, JT_NO_PRIMITIVES);

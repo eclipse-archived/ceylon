@@ -68,14 +68,12 @@ import com.redhat.ceylon.compiler.typechecker.tree.Tree.AttributeGetterDefinitio
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.AttributeSetterDefinition;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.BaseMemberExpression;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.Block;
-import com.redhat.ceylon.compiler.typechecker.tree.Tree.Expression;
+import com.redhat.ceylon.compiler.typechecker.tree.Tree.InvocationExpression;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.LazySpecifierExpression;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.MethodDeclaration;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.MethodDefinition;
-import com.redhat.ceylon.compiler.typechecker.tree.Tree.PositionalArgumentList;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.SpecifierExpression;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.SpecifierStatement;
-import com.redhat.ceylon.compiler.typechecker.tree.Tree.Term;
 import com.sun.tools.javac.tree.JCTree;
 import com.sun.tools.javac.tree.JCTree.JCAnnotation;
 import com.sun.tools.javac.tree.JCTree.JCBinary;
@@ -1384,11 +1382,15 @@ public class ClassTransformer extends AbstractTransformer {
                 initialValue = makeNull();
             }
             current().field(mods, model.getName(), makeJavaType(typeFact().getCallableType(model.getType())), initialValue, false);
-            JCExpression call = CallableInvocationBuilder.forMethodInitializer(gen(), 
+            Invocation invocation = new CallableSpecifierInvocation(
+                    this,
+                    model,
                     initializingParameter != null ? 
-                        naming.makeName(initializingParameter, Naming.NA_MEMBER) : 
-                        naming.makeName(model, Naming.NA_MEMBER), 
-                    def, model).build();
+                                            naming.makeName(initializingParameter, Naming.NA_MEMBER) : 
+                                            naming.makeName(model, Naming.NA_MEMBER),
+                    def);
+            invocation.handleBoxing(true);
+            JCExpression call = expressionGen().transformInvocation(invocation);
             JCStatement stmt;
             if (isVoid(def)) {
                 stmt = make().Exec(call);
@@ -1482,8 +1484,45 @@ public class ClassTransformer extends AbstractTransformer {
             }
         } else if (!isLazy && typeFact().isCallableType(term.getTypeModel())) {
             returnNull = isVoid(term.getTypeModel()) && term.getUnboxed();
-            InvocationBuilder specifierBuilder = InvocationBuilder.forSpecifierInvocation(gen(), specifierExpression, methodDecl.getDeclarationModel());
-            bodyExpr = specifierBuilder.build();
+            Method method = methodDecl.getDeclarationModel();
+            Tree.Term primary = Decl.unwrapExpressionsUntilTerm(specifierExpression.getExpression());
+            boolean lazy = specifierExpression instanceof Tree.LazySpecifierExpression;
+            boolean inlined = CodegenUtil.canOptimiseMethodSpecifier(primary, method);
+            Invocation invocation;
+            if (lazy && primary instanceof InvocationExpression) {
+                primary = ((InvocationExpression)primary).getPrimary();
+            }
+            if ((lazy || inlined)
+                    && primary instanceof Tree.MemberOrTypeExpression
+                    && ((Tree.MemberOrTypeExpression)primary).getDeclaration() instanceof Functional) {
+                Declaration primaryDeclaration = ((Tree.MemberOrTypeExpression)primary).getDeclaration();
+                ProducedReference producedReference = ((Tree.MemberOrTypeExpression)primary).getTarget();
+                invocation = new MethodReferenceSpecifierInvocation(
+                        this, 
+                        (Tree.MemberOrTypeExpression)primary, 
+                        primaryDeclaration,
+                        producedReference,
+                        method,
+                        specifierExpression);
+            } else if (!lazy && !inlined) {
+                // must be a callable we stored
+                String name = naming.getMethodSpecifierAttributeName(method);
+                invocation = new CallableSpecifierInvocation(
+                        this, 
+                        method, 
+                        naming.makeUnquotedIdent(name),
+                        primary);
+            } else if (isCeylonCallable(primary.getTypeModel())) {
+                invocation = new CallableSpecifierInvocation(
+                        this, 
+                        method, 
+                        expressionGen().transformExpression(primary),
+                        primary);
+            } else {
+                throw Assert.fail("Unhandled primary " + primary);
+            }
+            invocation.handleBoxing(true);
+            bodyExpr = expressionGen().transformInvocation(invocation);
         } else {
             ProducedTypedReference typedRef = getTypedReference(model);
             ProducedTypedReference nonWideningTypedRef = nonWideningTypeDecl(typedRef);

@@ -25,22 +25,19 @@ import static com.redhat.ceylon.compiler.java.codegen.AbstractTransformer.JT_NO_
 
 import java.util.ArrayList;
 
-import com.redhat.ceylon.compiler.java.codegen.AbstractTransformer.BoxingStrategy;
 import com.redhat.ceylon.compiler.typechecker.model.Parameter;
 import com.redhat.ceylon.compiler.typechecker.model.ParameterList;
-import com.redhat.ceylon.compiler.typechecker.model.ProducedReference;
 import com.redhat.ceylon.compiler.typechecker.model.ProducedType;
+import com.redhat.ceylon.compiler.typechecker.model.TypeDeclaration;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.Term;
 import com.sun.tools.javac.code.Flags;
 import com.sun.tools.javac.tree.JCTree;
-import com.sun.tools.javac.tree.JCTree.JCBinary;
 import com.sun.tools.javac.tree.JCTree.JCClassDecl;
 import com.sun.tools.javac.tree.JCTree.JCExpression;
 import com.sun.tools.javac.tree.JCTree.JCMethodInvocation;
 import com.sun.tools.javac.tree.JCTree.JCNewClass;
 import com.sun.tools.javac.tree.JCTree.JCStatement;
-import com.sun.tools.javac.tree.JCTree.JCVariableDecl;
 import com.sun.tools.javac.util.List;
 import com.sun.tools.javac.util.ListBuffer;
 import com.sun.tools.javac.util.Name;
@@ -234,10 +231,25 @@ public class CallableBuilder {
             a++;
         }
         if(forwardCallTo != null){
-            InvocationBuilder invocationBuilder = InvocationBuilder.forCallableInvocation(gen, forwardCallTo, paramLists, i);
+            final Tree.MemberOrTypeExpression primary;
+            if (forwardCallTo instanceof Tree.MemberOrTypeExpression) {
+                primary = (Tree.MemberOrTypeExpression)forwardCallTo;
+            } else {
+                throw new RuntimeException(forwardCallTo+"");
+            }
+            TypeDeclaration primaryDeclaration = forwardCallTo.getTypeModel().getDeclaration();
+            CallableInvocation invocationBuilder = new CallableInvocation (
+                    gen,
+                    primary,
+                    primaryDeclaration,
+                    primary.getTarget(),
+                    gen.getReturnTypeOfCallable(forwardCallTo.getTypeModel()),
+                    forwardCallTo, 
+                    paramLists,
+                    i);
             boolean prevCallableInv = gen.expressionGen().withinCallableInvocation(true);
             try {
-                stmts.append(gen.make().Return(invocationBuilder.build()));
+                stmts.append(gen.make().Return(gen.expressionGen().transformInvocation(invocationBuilder)));
             } finally {
                 gen.expressionGen().withinCallableInvocation(prevCallableInv);
             }
