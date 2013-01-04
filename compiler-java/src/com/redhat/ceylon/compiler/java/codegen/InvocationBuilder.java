@@ -269,21 +269,13 @@ abstract class InvocationBuilder {
         return actualPrimExpr;
     }
     
-    protected JCExpression makeInvocation(List<JCExpression> argExprs) {
+    protected JCExpression makeInvocation(final List<JCExpression> argExprs) {
         gen.at(node);
-        
-        final List<JCExpression> args;
-        if (needsTypeInfoArgument()) {
-            JCExpression infoArg = makeTypeInfoArgument();
-            args = argExprs.prepend(infoArg);
-        } else {
-            args = argExprs;
-        }
         
         JCExpression result = gen.expressionGen().transformPrimary(primary, new TermTransformer() {
             @Override
             public JCExpression transform(JCExpression primaryExpr, String selector) {
-                return transformInvocation(primaryExpr, selector, args);
+                return transformInvocation(primaryExpr, selector, argExprs);
             }
         });
 
@@ -317,9 +309,14 @@ abstract class InvocationBuilder {
 
     public final JCExpression build() {
         compute();
+        List<JCExpression> args = this.args.toList();
+        if (needsTypeInfoArgument()) {
+            JCExpression infoArg = makeTypeInfoArgument();
+            args = args.prepend(infoArg);
+        }
         boolean prevFnCall = gen.expressionGen().withinInvocation(true);
         try {
-            return makeInvocation(args.toList());
+            return makeInvocation(args);
         } finally {
             gen.expressionGen().withinInvocation(prevFnCall);
         }
