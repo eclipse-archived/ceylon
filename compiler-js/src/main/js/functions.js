@@ -72,13 +72,35 @@ function isOfTypes(obj, types) {
 }
 function extendsType(t1, t2) {
     //TODO deal with union/intersection types
-    if (t1.t == 'u' || t1.t == 'i') {
-        console.log("WAIT!!!! I don't know how to compare union/intersection types yet");
-        return false;
+    if (t1.t === 'u' || t1.t === 'i') {
+        var unions = false;
+        var inters = true;
+        var _ints = false;
+        for (var i = 0; i < t1.l.length; i++) {
+            var partial = extendsType(t1.l[i], t2);
+            if (t1.t==='u') {
+                unions = partial||unions;
+            } else {
+                inters = partial&&inters;
+                _ints=true;
+            }
+        }
+        return _ints ? inters||unions : unions;
     }
     if (t2.t == 'u' || t2.t == 'i') {
-        console.log("WAIT!!!! I don't know how to compare against union/intersection types yet");
-        return false;
+        var unions = false;
+        var inters = true;
+        var _ints = false;
+        for (var i = 0; i < t2.l.length; i++) {
+            var partial = extendsType(t1, t2.l[i]);
+            if (t2.t==='u') {
+                unions = partial||unions;
+            } else {
+                inters = partial&&inters;
+                _ints=true;
+            }
+        }
+        return _ints ? inters||unions : unions;
     }
     for (t in t1.t.$$.T$all) {
         if (t === t2.t.$$.T$name) {
