@@ -46,7 +46,6 @@ import com.redhat.ceylon.compiler.typechecker.model.ParameterList;
 import com.redhat.ceylon.compiler.typechecker.model.ProducedType;
 import com.redhat.ceylon.compiler.typechecker.model.TypeDeclaration;
 import com.redhat.ceylon.compiler.typechecker.model.TypeParameter;
-import com.redhat.ceylon.compiler.typechecker.model.UnionType;
 import com.redhat.ceylon.compiler.typechecker.model.Unit;
 import com.redhat.ceylon.compiler.typechecker.model.Value;
 import com.redhat.ceylon.compiler.typechecker.tree.Node;
@@ -106,7 +105,7 @@ public abstract class ClassOrPackageDoc extends CeylonDoc {
         }
         if( d instanceof Method ) {
             Method m = (Method) d;
-            writeTypeParameters(m);
+            writeTypeParameters(m.getTypeParameters());
             writeParameterList(m);
         }
         close("div");
@@ -258,19 +257,27 @@ public abstract class ClassOrPackageDoc extends CeylonDoc {
         }
     }
 
-    private void writeTypeParameters(Method m) throws IOException {
-        List<TypeParameter> typeParameters = m.getTypeParameters();
-        if (!typeParameters.isEmpty()) {
+    protected final void writeTypeParameters(List<TypeParameter> typeParameters) throws IOException {
+        if (typeParameters != null && !typeParameters.isEmpty()) {
+            write("<span class='type-parameter'>");
             write("&lt;");
             boolean first = true;
-            for (TypeParameter type : typeParameters) {
-                if (first)
+            for (TypeParameter typeParam : typeParameters) {
+                if (first) {
                     first = false;
-                else
+                } else {
                     write(", ");
-                write(type.getName());
+                }
+                if (typeParam.isContravariant()) {
+                    write("<span class='type-parameter-variance'>in </span>");
+                }
+                if (typeParam.isCovariant()) {
+                    write("<span class='type-parameter-variance'>out </span>");
+                }
+                write(typeParam.getName());
             }
             write("&gt;");
+            write("</span>");
         }
     }
 

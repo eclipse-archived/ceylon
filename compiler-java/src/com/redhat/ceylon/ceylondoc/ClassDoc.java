@@ -47,7 +47,6 @@ import com.redhat.ceylon.compiler.typechecker.model.MethodOrValue;
 import com.redhat.ceylon.compiler.typechecker.model.Package;
 import com.redhat.ceylon.compiler.typechecker.model.ProducedType;
 import com.redhat.ceylon.compiler.typechecker.model.TypeDeclaration;
-import com.redhat.ceylon.compiler.typechecker.model.TypeParameter;
 import com.redhat.ceylon.compiler.typechecker.model.Value;
 
 public class ClassDoc extends ClassOrPackageDoc {
@@ -241,27 +240,6 @@ public class ClassDoc extends ClassOrPackageDoc {
         }
     }
 
-    private String getClassName() throws IOException {
-        StringBuilder sb = new StringBuilder();
-        sb.append(klass.getName());
-        if (isNullOrEmpty(klass.getTypeParameters()) == false) {
-            sb.append("<span class='type-parameter'>");
-            sb.append("&lt;");
-            boolean first = true;
-            for (TypeParameter typeParam : klass.getTypeParameters()) {
-                if (first) {
-                    first = false;
-                } else {
-                    sb.append(",");
-                }
-                sb.append(typeParam.getName());
-            }
-            sb.append("&gt;");
-            sb.append("</span>");
-        }
-        return sb.toString();
-    }
-
     public void generate() throws IOException {
         writeHeader(Util.capitalize(getClassLabel()) + " " + klass.getName());
         writeNavBar();
@@ -309,9 +287,7 @@ public class ClassDoc extends ClassOrPackageDoc {
         
         around("a class='sub-navbar-package' href='"+ linkRenderer().to(pkg).getUrl() +"'", pkg.getNameAsString());
         write("<br/>");
-        around("span class='sub-navbar-label'", getClassLabel());
-        writeIcon(klass);
-        around("span class='sub-navbar-name'", getClassName());
+        writeClassName();
         close("div"); // sub-navbar-inner
         
         open("div class='sub-navbar-menu'");
@@ -343,6 +319,17 @@ public class ClassDoc extends ClassOrPackageDoc {
         
         close("div"); // sub-navbar
     }
+    
+    private void writeClassName() throws IOException {
+        open("span class='sub-navbar-label'");
+        write(getClassLabel());
+        close("span");
+        writeIcon(klass);
+        open("span class='sub-navbar-name'");
+        write(klass.getName());
+        writeTypeParameters(klass.getTypeParameters());
+        close("span");
+    }    
 
     private void writeDescription() throws IOException {
         open("div class='class-description'");

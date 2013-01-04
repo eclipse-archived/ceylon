@@ -157,6 +157,18 @@
 	font-style: italic;
 }
 
+.type-parameter-variance {
+	color: rgb(120, 120, 120);
+}
+
+.sub-navbar .type-parameter {
+	color: rgb(120, 120, 120);
+}
+
+.sub-navbar .type-parameter-variance {
+	color: rgb(160, 160, 160);
+}
+
 .specifier-operator,
 .specifier-semicolon {
 	color: rgb(120, 120, 120);

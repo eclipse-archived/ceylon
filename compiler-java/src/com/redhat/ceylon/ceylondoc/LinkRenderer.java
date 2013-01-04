@@ -232,42 +232,51 @@ public class LinkRenderer {
 
         if (!skipTypeArguments) {
             if (typeArguments != null) {
-                processTypeArgumentList(typeArguments);
+                processTypeParameterList(typeArguments);
             } else {
                 processTypeParameterList(clazz.getTypeParameters());
             }
         }
     }
-    
-    private void processTypeArgumentList(List<ProducedType> typeArguments) {
-        if (typeArguments != null && !typeArguments.isEmpty()) {
-            buffer.append("&lt;");
-            boolean first = true;
-            for (ProducedType typeArgument : typeArguments) {
-                if (first) {
-                    first = false;
-                } else {
-                    buffer.append(",");
-                }
-                processProducedType(typeArgument);
-            }
-            buffer.append("&gt;");
-        }
-    }
 
-    private void processTypeParameterList(List<TypeParameter> typeParameters) {
+    private void processTypeParameterList(List</*TypeParameter|ProducedType*/ ?> typeParameters) {
         if (typeParameters != null && !typeParameters.isEmpty()) {
+            buffer.append("<span class='type-parameter'>");
             buffer.append("&lt;");
             boolean first = true;
-            for (TypeParameter typeParam : typeParameters) {
+            for (Object element : typeParameters) {
+                TypeParameter typeParam = null;
+                ProducedType typeParamType = null;
+                
+                if (element instanceof TypeParameter) {
+                    typeParam = (TypeParameter) element;
+                    typeParamType = typeParam.getType();
+                } else {
+                    typeParamType = (ProducedType) element;
+                    if (typeParamType.getDeclaration() instanceof TypeParameter) {
+                        typeParam = (TypeParameter) typeParamType.getDeclaration();
+                    }
+                }
+
                 if (first) {
                     first = false;
                 } else {
-                    buffer.append(",");
+                    buffer.append(", ");
                 }
-                processProducedType(typeParam.getType());
+
+                if (typeParam != null) {
+                    if (typeParam.isContravariant()) {
+                        buffer.append("<span class='type-parameter-variance'>in </span>");
+                    }
+                    if (typeParam.isCovariant()) {
+                        buffer.append("<span class='type-parameter-variance'>out </span>");
+                    }
+                }
+                
+                processProducedType(typeParamType);
             }
             buffer.append("&gt;");
+            buffer.append("</span>");
         }
     }
     
