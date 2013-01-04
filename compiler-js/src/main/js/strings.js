@@ -312,7 +312,7 @@ String$proto.$split = function(sep, discard, group) {
     function pushToken(tokenEnd) {
         tokens.push(String$(value.substring(tokenBegin, tokenEnd), count-tokenBeginCount));
     }
-    if (isOfType(sep, 'ceylon.language::Iterable')) {
+    if (isOfType(sep, {t:Iterable})) {
         var sepChars = {}
         var it = sep.getIterator();
         var c; while ((c=it.next()) !== $finished) {sepChars[c.value] = true}

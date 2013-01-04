@@ -25,15 +25,24 @@ function nonempty(value) {
     return value !== null && value !== undefined && !value.getEmpty();
 }
 
-function isOfType(obj, typeName) {
-    if (obj === null) {
-        return typeName==="ceylon.language::Nothing" || typeName==="ceylon.language::Void";
+function isOfType(obj, type) {
+    if (type && type.t) {
+        if (type.t == 'i' || type.t == 'u') {
+            return isOfTypes(obj, type);
+        }
+        if (obj === null) {
+            return type.t===Nothing || type.t===Void;
+        }
+        var typeName = type.t.$$.T$name;
+        if (obj.getT$all && typeName in obj.getT$all()) {
+            return true;
+        }
     }
-    return obj.getT$all && typeName in obj.getT$all();
+    return false;
 }
 function isOfTypes(obj, types) {
     if (obj===null) {
-        return types.l.indexOf('ceylon.language::Nothing')>=0 || types.l.indexOf('ceylon.language::Void')>=0;
+        return types.l.indexOf({t:Nothing})>=0 || types.l.indexOf({t:Void})>=0;
     }
     var unions = false;
     var inters = true;
@@ -41,12 +50,7 @@ function isOfTypes(obj, types) {
     var objTypes = obj.getT$all();
     for (var i = 0; i < types.l.length; i++) {
         var t = types.l[i];
-        var partial = false;
-        if (typeof t === 'string') {
-            partial = t in objTypes;
-        } else {
-            partial = isOfTypes(obj, t);
-        }
+        var partial = isOfType(obj, t);
         if (types.t==='u') {
             unions = partial || unions;
         } else {
@@ -69,6 +73,5 @@ function identityHash(obj) {
 exports.exists=exists;
 exports.nonempty=nonempty;
 exports.isOfType=isOfType;
-exports.isOfTypes=isOfTypes;
 exports.className=className;
 exports.identityHash=identityHash;

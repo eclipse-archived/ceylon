@@ -36,7 +36,7 @@ List$proto.getIterator = function() {
     return ListIterator(this);
 }
 List$proto.equals = function(other) {
-    if (isOfType(other, 'ceylon.language::List') && other.getSize().equals(this.getSize())) {
+    if (isOfType(other, {t:List}) && other.getSize().equals(this.getSize())) {
         for (var i = 0; i < this.getSize(); i++) {
             var mine = this.item(i);
             var theirs = other.item(i);

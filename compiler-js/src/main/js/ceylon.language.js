@@ -96,6 +96,10 @@ function Void(wat) {
     return wat;
 }
 initType(Void, 'ceylon.language::Void');
+function Nothing(wat) {
+    return null;
+}
+initType(Nothing, 'ceylon.language::Nothing', Void);
 function Object$(wat) {
     return wat;
 }
@@ -116,7 +120,7 @@ function Identifiable(obj) {}
 initType(Identifiable, "ceylon.language::Identifiable");
 var Identifiable$proto = Identifiable.$$.prototype;
 Identifiable$proto.equals = function(that) {
-    return isOfType(that, 'ceylon.language::Identifiable') && (that===this);
+    return isOfType(that, {t:Identifiable}) && (that===this);
 }
 Identifiable$proto.getHash = function() { return $identityHash(this); }
 
@@ -424,6 +428,8 @@ exports.Identifiable=Identifiable;
 exports.identityHash=$identityHash;
 exports.IdentifiableObject=IdentifiableObject;
 exports.Object=Object$;
+exports.Void=Void;
+exports.Nothing=Nothing;
 exports.Boolean=Boolean$;
 exports.Comparison=Comparison;
 exports.getNull=getNull;

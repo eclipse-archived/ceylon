@@ -157,6 +157,7 @@ function TypeCategory(seq, type) {
 initTypeProto(TypeCategory, 'ceylon.language::TypeCategory', IdentifiableObject, Category);
 var TypeCategory$proto = TypeCategory.$$.prototype;
 TypeCategory$proto.contains = function(k) {
+    //TODO fix this isOfType
     return isOfType(k, this.type) && this.seq.defines(k);
 }
 
@@ -223,7 +224,7 @@ Singleton$proto.segment = function(idx, len) {
 Singleton$proto.getIterator = function() { return SingletonIterator(this.elem); }
 Singleton$proto.getReversed = function() { return this; }
 Singleton$proto.equals = function(other) {
-    if (isOfType(other, 'ceylon.language::List')) {
+    if (isOfType(other, {t:List})) {
         if (other.getSize() !== 1) {
             return false;
         }
