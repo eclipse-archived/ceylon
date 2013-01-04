@@ -163,16 +163,6 @@ abstract class InvocationBuilder {
     protected final Map<TypeParameter, ProducedType> getTypeArguments() {
         return this.typeArguments;
     }
-    
-    protected final JCExpression transformPrimaryTerm(JCExpression primaryExpr, String selector) {
-        TransformedInvocationPrimary transformedPrimary = transformPrimary(primaryExpr, selector);
-        
-        List<JCExpression> argExprs = transformArgumentList();
-        
-        JCExpression resultExpr = transformInvocation(transformedPrimary, argExprs);
-
-        return resultExpr;
-    }
 
     protected JCExpression transformInvocation(TransformedInvocationPrimary transformedPrimary,
             List<JCExpression> argExprs) {
@@ -318,7 +308,10 @@ abstract class InvocationBuilder {
         JCExpression result = gen.expressionGen().transformPrimary(primary, new TermTransformer() {
             @Override
             public JCExpression transform(JCExpression primaryExpr, String selector) {
-                return transformPrimaryTerm(primaryExpr, selector);
+                TransformedInvocationPrimary transformedPrimary = transformPrimary(primaryExpr, selector);
+                List<JCExpression> argExprs = transformArgumentList();
+                JCExpression resultExpr = transformInvocation(transformedPrimary, argExprs);
+                return resultExpr;
             }
         });
 
