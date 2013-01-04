@@ -113,7 +113,7 @@ shared class Singleton<out Element>(Element element)
     
     shared actual Sequence<Result> map<Result>
             (Result selecting(Element e)) =>
-                    { selecting(element) };
+                    [ selecting(element) ];
     
     shared actual Singleton<Element>|Empty filter
             (Boolean selecting(Element e)) => 

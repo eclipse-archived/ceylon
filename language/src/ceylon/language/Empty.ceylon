@@ -106,10 +106,10 @@ shared interface Empty
     shared actual Empty by(Integer step) => this;
     
     shared actual Sequence<Element> withLeading<Element>
-            (Element element) => { element };
+            (Element element) => [ element ];
     
     shared actual Sequence<Element> withTrailing<Element>
-            (Element element) => { element };
+            (Element element) => [ element ];
 }
 
 doc "The value representing a sequence with no elements. The 
