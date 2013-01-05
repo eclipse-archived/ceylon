@@ -1235,7 +1235,7 @@ public class GenerateJsVisitor extends Visitor
         }
     }
     
-    private void generateAttributeGetter(Value decl,
+    private void generateAttributeGetter(MethodOrValue decl,
                 SpecifierOrInitializerExpression expr, String param) {
         final String varName = names.name(decl);
         out("var ", varName);
@@ -1248,13 +1248,22 @@ public class GenerateJsVisitor extends Visitor
             out("=", param);
         }
         endLine(true);
-        if (isCaptured(decl)) {
-            out("var ", names.getter(decl),"=function(){return ", varName, ";};");
-            endLine();
+        if (decl instanceof Method) {
+            if (decl.isClassOrInterfaceMember() && isCaptured(decl)) {
+                beginNewLine();
+                outerSelf(decl);
+                out(".", names.name(decl), "=", names.name(decl), ";");
+                endLine();
+            }
         } else {
-            directAccess.add(decl);
+            if (isCaptured(decl)) {
+                out("var ", names.getter(decl),"=function(){return ", varName, ";};");
+                endLine();
+            } else {
+                directAccess.add(decl);
+            }
+            shareGetter(decl);
         }
-        shareGetter(decl);
     }
     
     private void addGetterAndSetterToPrototype(TypeDeclaration outer,
@@ -2136,22 +2145,44 @@ public class GenerateJsVisitor extends Visitor
             }
             else {
                 // attr = expr;
-                if (bmeDecl.isMember() && (bmeDecl instanceof Value)) {
-                    // Specifier for a member attribute. This actually defines the
-                    // member (e.g. in shortcut refinement syntax the attribute
-                    // declaration itself can be omitted), so generate the attribute.
-                    generateAttributeGetter((Value) bmeDecl,
-                            that.getSpecifierExpression(), null);
-                }
-                else {
-                    // Specifier for some other attribute, or for a method.
-                    if (prototypeStyle 
-                            || (bmeDecl.isMember() && (bmeDecl instanceof Method))) {
-                        qualify(that, bmeDecl);
+                if (bmeDecl instanceof MethodOrValue) {
+                    final MethodOrValue moval = (MethodOrValue)bmeDecl;
+                    if (moval.isVariable()) {
+                        out("(");
+                        //Copied from AssignOp
+                        String returnValue = null;
+                        
+                        boolean simpleSetter = hasSimpleGetterSetter(bmeDecl);
+                        if (!simpleSetter) {
+                            returnValue = memberAccess(bme);
+                        }
+                        generateMemberAccess(bme, new MemberAccessCallback() {
+                            @Override public void generateValue() {
+                                int boxType = boxUnboxStart(that.getSpecifierExpression().getExpression().getTerm(),
+                                        moval);
+                                that.getSpecifierExpression().getExpression().visit(GenerateJsVisitor.this);
+                                boxUnboxEnd(boxType);
+                            }
+                        }, true);
+                        
+                        if (returnValue != null) { out(",", returnValue); }
+                        out(");");
+                    } else if (moval.isMember()) {
+                        // Specifier for a member attribute. This actually defines the
+                        // member (e.g. in shortcut refinement syntax the attribute
+                        // declaration itself can be omitted), so generate the attribute.
+                        generateAttributeGetter(moval,
+                                that.getSpecifierExpression(), null);
+                    } else {
+                        // Specifier for some other attribute, or for a method.
+                        if (prototypeStyle 
+                                || (bmeDecl.isMember() && (bmeDecl instanceof Method))) {
+                            qualify(that, bmeDecl);
+                        }
+                        out(names.name(bmeDecl), "=");
+                        that.getSpecifierExpression().visit(this);
+                        out(";");
                     }
-                    out(names.name(bmeDecl), "=");
-                    that.getSpecifierExpression().visit(this);
-                    out(";");
                 }
             }
         }
@@ -2219,8 +2250,8 @@ public class GenerateJsVisitor extends Visitor
     public void visit(final AssignOp that) {
         String returnValue = null;
         MemberOrTypeExpression lhsExpr = null;
-        out("(");
         
+        out("(");
         if (that.getLeftTerm() instanceof BaseMemberExpression) {
             BaseMemberExpression bme = (BaseMemberExpression) that.getLeftTerm();
             lhsExpr = bme;
