@@ -13,7 +13,6 @@ class Assignment() {
 }
 
 class SequencedArguments() {
-    
     void print(String s, String... strings) {}
     void printAll(String[] strings) {}
     void printSum(Integer... n) {}
@@ -34,4 +33,14 @@ class SequencedArguments() {
     @error printSum(1...);
     printAll(names);
     @error printAll(names...);
+}
+
+class SequencedArgumentsAgain() {
+    String[] strings = ["world", "moon"];
+    void printAll(Integer i, String... strings) {}
+    printAll(1, "hello", "goodbye", strings...);
+    @error printAll();
+    printAll(2);
+    printAll(1, "hello", "goodbye", strings...);
+    @error printAll(1, 0, "goodbye", strings...);
 }
