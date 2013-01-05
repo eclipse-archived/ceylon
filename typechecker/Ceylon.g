@@ -1786,13 +1786,23 @@ nonemptyParametersStart
     ;
 
 functionOrExpression returns [Expression expression]
-    @init { FunctionArgument fa = new FunctionArgument(null);
-            fa.setType(new FunctionModifier(null)); }
     : (FUNCTION_MODIFIER | anonParametersStart) =>
-      (
+      f=anonymousFunction
+      { $expression = $f.expression; }
+    | e=expression
+      { $expression = $e.expression; }
+    ;
+
+anonymousFunction returns [Expression expression]
+    @init { FunctionArgument fa = new FunctionArgument(null);
+            fa.setType(new FunctionModifier(null)); 
+            Expression e = new Expression(null);
+            e.setTerm(fa); }
+    : (
         FUNCTION_MODIFIER
         { fa.setType(new FunctionModifier($FUNCTION_MODIFIER)); }
       )?
+      { $expression=e; }
       p1=parameters
       { fa.addParameterList($p1.parameterList); }
       ( 
@@ -1802,23 +1812,14 @@ functionOrExpression returns [Expression expression]
       )*
       COMPUTE?
       e1=functionOrExpression
-      { fa.setExpression($e1.expression); 
-        $expression = new Expression(null); 
-        $expression.setTerm(fa); }
+      { fa.setExpression($e1.expression); }
     /*| VALUE_MODIFIER
       { fa.setType(new FunctionModifier($VALUE_MODIFIER)); } 
       e1=expression
       { fa.addParameterList(new ParameterList(null));
         fa.setExpression($e1.expression); 
         $positionalArgument = fa; }*/
-    | e2=expression
-      { $expression = $e2.expression; }
     ;
-    
-/*inlineFunctionalArgument
-    : memberName ((parametersStart) => parameters)? 
-      (LPAREN expression RPAREN | block)
-    ;*/
 
 comprehension returns [Comprehension comprehension]
     @init { $comprehension = new Comprehension(null); }
