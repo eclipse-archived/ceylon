@@ -1879,7 +1879,8 @@ assignmentExpression returns [Term term]
         { $assignmentOperator.operator.setLeftTerm($term);
           $term = $assignmentOperator.operator; }
         ee2=functionOrExpression
-        { $assignmentOperator.operator.setRightTerm($ee2.expression.getTerm()); }
+        { if ($ee2.expression!=null)
+              $assignmentOperator.operator.setRightTerm($ee2.expression.getTerm()); }
       )?
     ;
 
