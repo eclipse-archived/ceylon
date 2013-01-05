@@ -59,7 +59,7 @@ shared class Tuple<out Element, out First, out Rest>(first, rest)
     shared actual Element[] spanFrom(Integer from) =>
         span(from, size);
     
-    shared actual Sequence<Element> clone => this;
+    shared actual Tuple<Element,First,Rest> clone => this;
 
     shared actual String string {
         StringBuilder b = StringBuilder().append("[ ");
