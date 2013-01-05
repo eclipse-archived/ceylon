@@ -107,4 +107,30 @@ void test() {
     Integer(Float, Float) ref8 = var;
     Integer(Float, Float...) ref9 = var;
     
+    value tail = [1, "goodbye", 2];
+    value headTail = [0, "hello", tail...];
+    [Integer,String,Integer,String,Integer] result = headTail;
+    value strange = [0, "hello"...];
+    
+    [String,Integer=,Float...] varlen = ["hello"];
+    @type:"String" value elem0 = varlen[0];
+    @type:"Nothing|Integer" value elem1 = varlen[1];
+    @type:"Nothing|Float" value elem2 = varlen[2];
+    @type:"Nothing|Float" value elem3 = varlen[3];
+    [String,Integer=,Float...] range0 = varlen[0...];
+    [Integer=,Float...] range1 = varlen[1...];
+    [Float...] range2 = varlen[2...];
+    [Float...] range3 = varlen[3...];
+    @error [String,Integer,Float...] rangeError0 = varlen[0...];
+
+    [String,Integer=,Float=] fixedlen = ["hello"];
+    @type:"String" value elem0x = fixedlen[0];
+    @type:"Nothing|Integer" value elem1x = fixedlen[1];
+    @type:"Nothing|Float" value elem2x = fixedlen[2];
+    @type:"Nothing" value elem3x = fixedlen[3];
+    [String,Integer=,Float=] range0x = fixedlen[0...];
+    [Integer=,Float=] range1x = fixedlen[1...];
+    [Float=] range2x = fixedlen[2...];
+    [] range3x = fixedlen[3...];
+    @error [String,Integer,Float=] rangeError0x = fixedlen[0...];
 }

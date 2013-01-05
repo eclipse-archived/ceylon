@@ -1837,6 +1837,34 @@ public class ExpressionVisitor extends Visitor {
 		return unknown;
     }
 
+    private List<ProducedType> tupletypes(ProducedType args) {
+		if (args!=null) {
+			if (unit.isEmptyType(args)) {
+				args = unit.getNonemptyType(args);
+			}
+			ProducedType tst = args.getSupertype(unit.getTupleDeclaration());
+			if (tst!=null) {
+				List<ProducedType> tal = tst.getTypeArgumentList();
+				if (tal.size()>=3) {
+					List<ProducedType> result = tupletypes(tal.get(2));
+					result.add(0, tal.get(1));
+					return result;
+				}
+			}
+			else if (args.getSupertype(unit.getEmptyDeclaration())!=null) {
+				return new LinkedList<ProducedType>();
+			}
+			else if (args.getSupertype(unit.getSequentialDeclaration())!=null) {
+				LinkedList<ProducedType> sequenced = new LinkedList<ProducedType>();
+				sequenced.add(args);
+				return sequenced;
+			}
+    	}
+    	LinkedList<ProducedType> unknown = new LinkedList<ProducedType>();
+    	unknown.add(new UnknownType(unit).getType());
+		return unknown;
+    }
+
     private boolean argsequenced(ProducedType args) {
 		if (args!=null) {
 			if (args.getDeclaration() instanceof Interface &&
@@ -1860,6 +1888,28 @@ public class ExpressionVisitor extends Visitor {
     	return false;
     }
 
+    private boolean tuplesequenced(ProducedType args) {
+		if (args!=null) {
+			if (unit.isEmptyType(args)) {
+				args = unit.getNonemptyType(args);
+			}
+			ProducedType tst = args.getSupertype(unit.getTupleDeclaration());
+			if (tst!=null) {
+				List<ProducedType> tal = tst.getTypeArgumentList();
+				if (tal.size()>=3) {
+					return tuplesequenced(tal.get(2));
+				}
+			}
+			else if (args.getSupertype(unit.getEmptyDeclaration())!=null) {
+				return false;
+			}
+			else if (args.getSupertype(unit.getSequentialDeclaration())!=null) {
+				return true;
+			}
+    	}
+    	return false;
+    }
+
     private int argmin(ProducedType args) {
 		if (args!=null) {
 			if (args.getDeclaration() instanceof Interface &&
@@ -1877,6 +1927,28 @@ public class ExpressionVisitor extends Visitor {
 				}
 			}
 			else if (args.getSupertype(unit.getEmptyDeclaration())!=null) {
+				return 0;
+			}
+    	}
+    	return 0;
+    }
+
+    private int tuplemin(ProducedType args) {
+		if (args!=null) {
+			if (unit.isEmptyType(args)) {
+				return 0;
+			}
+			ProducedType tst = args.getSupertype(unit.getTupleDeclaration());
+			if (tst!=null) {
+				List<ProducedType> tal = tst.getTypeArgumentList();
+				if (tal.size()>=3) {
+					return tuplemin(tal.get(2))+1;
+				}
+			}
+			else if (args.getSupertype(unit.getEmptyDeclaration())!=null) {
+				return 0;
+			}
+			else if (args.getSupertype(unit.getSequentialDeclaration())!=null) {
 				return 0;
 			}
     	}
@@ -2428,9 +2500,9 @@ private void checkPositionalArguments(ParameterList pl, ProducedReference pr,
 			if (t instanceof Tree.NaturalLiteral) {
 				int index = Integer.parseInt(t.getText());
 				if (negated) index = -index;
-				List<ProducedType> elementTypes = argtypes(pt);
-				boolean sequenced = argsequenced(pt);
-				//TODO: handle terminating type of tuple type!
+				List<ProducedType> elementTypes = tupletypes(pt);
+				boolean sequenced = tuplesequenced(pt);
+				int min = tuplemin(pt);
 				if (elementTypes!=null) {
 					if (index<0) {
 						that.setTypeModel(unit.getNothingDeclaration().getType());
@@ -2438,6 +2510,11 @@ private void checkPositionalArguments(ParameterList pl, ProducedReference pr,
 					else if (index<elementTypes.size()-(sequenced?1:0)) {
 						ProducedType iet = elementTypes.get(index);
 						if (iet!=null && !(iet.getDeclaration() instanceof UnknownType)) {
+							if (index>=min) {
+								iet = unionType(iet, 
+										unit.getNothingDeclaration().getType(), 
+										unit);
+							}
 							that.setTypeModel(iet);
 						}
 					}
@@ -2474,8 +2551,9 @@ private void checkPositionalArguments(ParameterList pl, ProducedReference pr,
 			if (l instanceof Tree.NaturalLiteral) {
 				int lindex = Integer.parseInt(l.getText());
 				if (lnegated) lindex = -lindex;
-				List<ProducedType> elementTypes = argtypes(pt);
-				boolean sequenced = argsequenced(pt);
+				List<ProducedType> elementTypes = tupletypes(pt);
+				boolean sequenced = tuplesequenced(pt);
+				int min = tuplemin(pt);
 				List<ProducedType> list = new ArrayList<ProducedType>();
 				if (elementTypes!=null) {
 					if (lindex<0) {
@@ -2494,7 +2572,7 @@ private void checkPositionalArguments(ParameterList pl, ProducedReference pr,
 						ProducedType rt = unit.getIteratedType(it);
 						list.add(rt);
 					}
-					that.setTypeModel(unit.getTupleType(list, sequenced, -1)); //TODO: handle defaulted elements
+					that.setTypeModel(unit.getTupleType(list, sequenced, min-lindex));
 				}
 			}
 		}
@@ -3642,8 +3720,8 @@ private void checkPositionalArguments(ParameterList pl, ProducedReference pr,
 				ProducedType et = e.getTypeModel();
 				if (i==es.size()-1 && ell!=null) {
 					ut = unit.getIteratedType(et);
-					//result = unit.denotableType(et);
-					result = unit.getSequentialType(ut);
+					result = unit.denotableType(et);
+					//result = unit.getSequentialType(ut);
 					if (!unit.isSequentialType(et)) {
 						ell.addError("last element expression is not sequential: " +
 								et.getProducedTypeName() + " is not a sequence type");
