@@ -43,6 +43,6 @@ class Parameters() {
     void func(String... x, @error String... y) {}
     
     void withDefaultedCallableParams(Float f() => 0.5, Float g(Float x) => x) {}
-    void withDefaultedFunctionParams(Float() f = () 0.5, Float(Float) g = (Float x) x) {}
+    void withDefaultedFunctionParams(Float() f = () => 0.5, Float(Float) g = (Float x) => x) {}
 
 }

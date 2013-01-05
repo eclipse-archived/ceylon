@@ -175,11 +175,11 @@ class Primaries() {
     value f11 = 1.123_123;
     
     {B...} beez = p2[].b;
-    {String...} stringz = {"hello", "world"}.map((String s) s.uppercased);
+    {String...} stringz = {"hello", "world"}.map((String s) => s.uppercased);
         
     ann {Float} shared {Float...} floats = {};
     
-    String interpolated0 = "hello" "ABC123".count(function (Character c) c.digit) "world";
+    String interpolated0 = "hello" "ABC123".count(function (Character c) => c.digit) "world";
     String interpolated1 = "hello" { "ABC" 1+1 "123" } "world";
     String interpolated2 = "hello" Singleton("ABC" 1+1 "123") "world";
     String interpolated3 = "hello" Singleton { element="ABC" 1+1 "123"; } "world";

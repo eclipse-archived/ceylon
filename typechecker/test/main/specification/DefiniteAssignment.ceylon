@@ -612,12 +612,12 @@ interface DefiniteAssignment {
     
     class GoodWithAnonFunction() {
         String name = "hello";
-        value x = () name;
+        value x = () => name;
     }
 
     class BadWithAnonFunction() {
         String name;
-        @error value x = () name;
+        @error value x = () => name;
     }
     
 }

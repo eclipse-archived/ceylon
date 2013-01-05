@@ -1066,8 +1066,8 @@ annotatedAssertionStart
 declarationStart
     : VALUE_MODIFIER
     | FUNCTION_MODIFIER LIDENTIFIER //to disambiguate anon functions
+    | VOID_MODIFIER LIDENTIFIER //to disambiguate anon functions
     | ASSIGN
-    | VOID_MODIFIER
     | INTERFACE_DEFINITION
     | CLASS_DEFINITION
     | OBJECT_DEFINITION
@@ -1786,7 +1786,7 @@ nonemptyParametersStart
     ;
 
 functionOrExpression returns [Expression expression]
-    : (FUNCTION_MODIFIER | anonParametersStart) =>
+    : (FUNCTION_MODIFIER|VOID_MODIFIER|anonParametersStart) =>
       f=anonymousFunction
       { $expression = $f.expression; }
     | e=expression
@@ -1801,18 +1801,26 @@ anonymousFunction returns [Expression expression]
     : (
         FUNCTION_MODIFIER
         { fa.setType(new FunctionModifier($FUNCTION_MODIFIER)); }
+      |
+        VOID_MODIFIER
+        { fa.setType(new VoidModifier($VOID_MODIFIER)); }
       )?
       { $expression=e; }
       p1=parameters
       { fa.addParameterList($p1.parameterList); }
       ( 
-        (anonParametersStart)=> 
+        //(anonParametersStart)=> 
         p2=parameters
         { fa.addParameterList($p2.parameterList); }
       )*
-      COMPUTE?
-      e1=functionOrExpression
-      { fa.setExpression($e1.expression); }
+      ( 
+        COMPUTE
+        fe=functionOrExpression
+        { fa.setExpression($fe.expression); }
+      |
+        block
+        { fa.setBlock($block.block); }
+      )
     /*| VALUE_MODIFIER
       { fa.setType(new FunctionModifier($VALUE_MODIFIER)); } 
       e1=expression

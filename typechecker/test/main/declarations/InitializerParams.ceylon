@@ -77,8 +77,8 @@ interface InitializerParams {
         @error Baz(0);
         @error baz(0);
         Func(print);
-        func(() "hello");
-        @error Func(() "hello");
+        func(() => "hello");
+        @error Func(() => "hello");
         @error func(print);
     }
     

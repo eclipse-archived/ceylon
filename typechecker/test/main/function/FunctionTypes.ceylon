@@ -90,9 +90,9 @@ void method() {
     @error do(Z);
     @type:"Void" function z() => Z;
     
-    String s1 = pass((String s) s, "hello");
-    String s2 = pass((Float f) f.string, 1.0);
-    @error String s3 = pass((Float f) f.string, "hello");
+    String s1 = pass((String s) => s, "hello");
+    String s2 = pass((Float f) => f.string, 1.0);
+    @error String s3 = pass((Float f) => f.string, "hello");
     
     higher2 { 
         strings = ["goodbye"];
@@ -111,8 +111,8 @@ void method() {
         strings = ["goodbye"];
         function f(String s) { print(s); return s.size; }
     };
-    higher2(["goodbye"], (String s) print(s));
-    higher2(["goodbye"], (String s) print(s));
+    higher2(["goodbye"], (String s) => print(s));
+    higher2(["goodbye"], (String s) => print(s));
     
     higher2 { 
         strings = ["goodbye"];
@@ -203,9 +203,9 @@ void method() {
     function zero() => 0.0;
     @type:"Entry<Float,String>" generic(str,zero);
     @type:"Entry<Float,String>" generic(str,bottom);
-    @type:"Entry<Object,Object>" generic((Object obj) obj, () "hello");
-    @type:"Entry<Object,String>" generic((Object obj) obj.string, () "hello");
-    @type:"Entry<String,String>" generic((String str) str, () "hello");
+    @type:"Entry<Object,Object>" generic((Object obj) => obj, () => "hello");
+    @type:"Entry<Object,String>" generic((Object obj) => obj.string, () => "hello");
+    @type:"Entry<String,String>" generic((String str) => str, () => "hello");
     
     function fx(String g()) => do<String>;
     @error function fy(String g()) => do;
@@ -259,7 +259,7 @@ void moreTests() {
     }
     function f(Integer i) => (i+12).string;
     callFunction(f);
-    callFunction((Integer i) (i*3).string);
+    callFunction((Integer i) => (i*3).string);
     callFunction {
         function f(Integer i) { 
             return (i**2).string;
@@ -267,8 +267,8 @@ void moreTests() {
     };
 }
 
-Sequence<String()> singletonStringFunc = Singleton<String()>(()"hello");
-Sequence<Boolean()(String)> singletonBooleanFunc = Singleton<Boolean()(String)>((String s)()s=="hello");
+Sequence<String()> singletonStringFunc = Singleton<String()>(()=>"hello");
+Sequence<Boolean()(String)> singletonBooleanFunc = Singleton<Boolean()(String)>((String s)()=>s=="hello");
 
 void sequencedParams() {
     value str = string;
@@ -314,15 +314,15 @@ void useHandle() {
 
 void lazySpec() {
     String lazy1(String s, Float x=0.0, Boolean b=false);
-    lazy1 = (String s, Float x, Boolean b) b then s else x.string;
+    lazy1 = (String s, Float x, Boolean b) => b then s else x.string;
     String lazy2(String s, Float... x);
-    lazy2 = (String s, Float... x) s;
+    lazy2 = (String s, Float... x) => s;
     String lazy3(String s, Float x=0.0);
-    lazy3 = (String s, Float x, Boolean b=true) b then s else x.string;
+    lazy3 = (String s, Float x, Boolean b=true) => b then s else x.string;
     String lazy4(String s, Float x, Float y);
-    lazy4 = (String s, Float... x) s;
+    lazy4 = (String s, Float... x) => s;
     void x(String s="")(Integer i);
-    x = (String s)(Integer i) bottom;
+    x = (String s)(Integer i) => bottom;
 }
 
 void lazyLazySpec() {
@@ -356,7 +356,7 @@ void defaulted() {
 
 void bug() {
     Callable<Void, [Integer, String=, Integer...]> defaultedVariadic = 
-            function (Integer a, String b = "b", Integer... args) a;
+            function (Integer a, String b = "b", Integer... args) => a;
     defaultedVariadic(1);
     defaultedVariadic(1, "a");
     defaultedVariadic(1, "a", 1); // error

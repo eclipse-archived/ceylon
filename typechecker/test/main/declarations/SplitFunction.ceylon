@@ -20,7 +20,7 @@ void splitFunction() {
     add(Float x)(Float y) => x+y;
 
     Float add1(Float x)(Integer y);
-    add1(Float x) => (Integer y) x+y.float;
+    add1(Float x) => (Integer y) => x+y.float;
 
     Float add2(Float x)(Integer y);
     add2(Float x)(Integer y) => x+y.float;

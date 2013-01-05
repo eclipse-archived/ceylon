@@ -611,7 +611,8 @@ argument list."
 ^(FUNCTION_ARGUMENT:TERM
     TYPE type
     PARAMETER_LIST*
-    EXPRESSION
+    EXPRESSION?
+    BLOCK?
     Method declarationModel;)
 
 ^(abstract NAMED_ARGUMENT:STATEMENT_OR_ARGUMENT

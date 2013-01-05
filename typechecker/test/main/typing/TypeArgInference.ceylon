@@ -136,19 +136,19 @@ class TypeArgInference() {
     @type:"Nothing" acceptOneOrTwo(test2);
     
     void higherVoid<X>(void f(X x)) {}
-    higherVoid((String x) print(x));
+    higherVoid((String x) => print(x));
     higherVoid { void f(String x) { print(x); } };
 
     X|Y higher<X,Y>(X f(Y? y)) given Y satisfies Object => f(null);
-    @type:"Integer|String" higher((String? y) 1);
+    @type:"Integer|String" higher((String? y) => 1);
     @type:"Float|String" higher { function f(String? y) => 1.0; };
     function argfun(Integer? x) => x?.float;
     @type:"Nothing|Float|Integer" higher(argfun);
     
-    @type:"Iterable<Integer>" { "hello", "world" }.map((String s) s.size);
-    @type:"Iterable<String>" { "hello", "world" }.filter((String s) !s.empty);
-    @type:"String" { "hello", "world" }.fold("", (String result, String s) result+" "+s);
-    @type:"Nothing|String" { null, "hello", "world" }.find((String? s) s exists);
+    @type:"Iterable<Integer>" { "hello", "world" }.map((String s) => s.size);
+    @type:"Iterable<String>" { "hello", "world" }.filter((String s) => !s.empty);
+    @type:"String" { "hello", "world" }.fold("", (String result, String s) => result+" "+s);
+    @type:"Nothing|String" { null, "hello", "world" }.find((String? s) => s exists);
 
     @type:"Iterable<Integer>" { "hello", "world" }.map { function collecting(String s) => s.size; };
     @type:"Iterable<String>" { "hello", "world" }.filter { function selecting(String s) => !s.empty; };

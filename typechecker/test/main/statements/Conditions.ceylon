@@ -9,7 +9,7 @@ class Conditions(String... elems) {
     
     void y(Object that) {
         if (is Conditions that) {
-            value s = elems.count((String e) true);
+            value s = elems.count((String e) => true);
             if (1==s) {}
         }
     }

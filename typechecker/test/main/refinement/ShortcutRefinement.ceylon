@@ -112,12 +112,12 @@ abstract class X<T>() {
 }
 
 class Y() extends X<String>() {
-    foo = (String s) print(s.uppercased);
+    foo = (String s) => print(s.uppercased);
     bar = "hello";
-    baz = (String(Integer) s) s(0);
-    @error qux = () "hello";
-    fum = (String s) print(s);
-    fo = (String... ss) print(", ".join(ss...));
+    baz = (String(Integer) s) => s(0);
+    @error qux = () => "hello";
+    fum = (String s) => print(s);
+    fo = (String... ss) => print(", ".join(ss...));
 }
 
 void testxy() {
