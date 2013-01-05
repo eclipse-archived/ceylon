@@ -2148,14 +2148,7 @@ public class GenerateJsVisitor extends Visitor
                 if (bmeDecl instanceof MethodOrValue) {
                     final MethodOrValue moval = (MethodOrValue)bmeDecl;
                     if (moval.isVariable()) {
-                        out("(");
-                        //Copied from AssignOp
-                        String returnValue = null;
-                        
-                        boolean simpleSetter = hasSimpleGetterSetter(bmeDecl);
-                        if (!simpleSetter) {
-                            returnValue = memberAccess(bme);
-                        }
+                        // simple assignment to a variable attribute
                         generateMemberAccess(bme, new MemberAccessCallback() {
                             @Override public void generateValue() {
                                 int boxType = boxUnboxStart(that.getSpecifierExpression().getExpression().getTerm(),
@@ -2164,9 +2157,7 @@ public class GenerateJsVisitor extends Visitor
                                 boxUnboxEnd(boxType);
                             }
                         }, true);
-                        
-                        if (returnValue != null) { out(",", returnValue); }
-                        out(");");
+                        out(";");
                     } else if (moval.isMember()) {
                         // Specifier for a member attribute. This actually defines the
                         // member (e.g. in shortcut refinement syntax the attribute
