@@ -2905,8 +2905,8 @@ private void checkPositionalArguments(ParameterList pl, ProducedReference pr,
                     "assigned expression must be assignable to declared type", 
                     2100);
         }
-        //that.setTypeModel(rhst); //stef requests lhst to make it easier on backend
-        that.setTypeModel(lhst);
+        that.setTypeModel(rhst);
+//      that.setTypeModel(lhst); //this version is easier on backend
     }
 
     private static void checkAssignability(Tree.Term that, Node node) {

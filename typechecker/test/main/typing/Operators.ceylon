@@ -330,4 +330,9 @@ class Operators() {
     @type:"Set<String>" vss|=ss;
     @type:"Set<String>" vss&=ss;
     
+    variable Object anythingAtAll = 0;
+    @type:"Integer" value somethingSpecial = anythingAtAll = 1;
+    @type:"Singleton<Float>" Singleton(anythingAtAll = 1.0);
+    
+    
 }
