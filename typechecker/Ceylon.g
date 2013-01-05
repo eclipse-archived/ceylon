@@ -422,11 +422,11 @@ typedMethodOrAttributeDeclaration returns [TypedDeclaration declaration]
             MethodDefinition mdef=new MethodDefinition(null);
             MethodDeclaration mdec=new MethodDeclaration(null); 
             $declaration = adec; }
-    : type
-      { adef.setType($type.type);
-        adec.setType($type.type); 
-        mdef.setType($type.type);
-        mdec.setType($type.type); }
+    : variadicType
+      { adef.setType($variadicType.type);
+        adec.setType($variadicType.type); 
+        mdef.setType($variadicType.type);
+        mdec.setType($variadicType.type); }
       memberNameDeclaration
       { adef.setIdentifier($memberNameDeclaration.identifier);
         adec.setIdentifier($memberNameDeclaration.identifier); 
@@ -851,9 +851,14 @@ parameter returns [Parameter parameter]
     @init { ValueParameterDeclaration vp = new ValueParameterDeclaration(null); 
             FunctionalParameterDeclaration fp = new FunctionalParameterDeclaration(null); 
             $parameter = vp; }
-    : parameterType
-      { vp.setType($parameterType.type);
-        fp.setType($parameterType.type); }
+    : ( 
+        variadicType
+        { vp.setType($variadicType.type);
+          fp.setType($variadicType.type); }
+      | VOID_MODIFIER
+        { fp.setType(new VoidModifier($VOID_MODIFIER));
+          $parameter=fp; }
+      )
       memberName
       { vp.setIdentifier($memberName.identifier);
         fp.setIdentifier($memberName.identifier); }
@@ -909,19 +914,6 @@ parameterDeclaration returns [Parameter parameter]
       )
       { if ($parameter!=null)
         $parameter.getCompilerAnnotations().addAll($compilerAnnotations.annotations); }
-    ;
-
-parameterType returns [Type type]
-    : type 
-      { $type = $type.type; }
-      ( 
-        ELLIPSIS
-        { SequencedType st = new SequencedType($ELLIPSIS);
-          st.setType($type);
-          $type = st; }
-      )?
-    | VOID_MODIFIER
-      { $type = new VoidModifier($VOID_MODIFIER); }
     ;
 
 typeParameters returns [TypeParameterList typeParameterList]
@@ -1080,7 +1072,7 @@ declarationStart
     | CLASS_DEFINITION
     | OBJECT_DEFINITION
     | ALIAS 
-    | type ELLIPSIS? LIDENTIFIER
+    | variadicType LIDENTIFIER
     ;
 
 statement returns [Statement statement]
@@ -1425,7 +1417,7 @@ typeArgumentsStart
     : SMALLER_OP
     (
       type
-      (LARGER_OP|SMALLER_OP|COMMA|ELLIPSIS)
+      (LARGER_OP|SMALLER_OP|COMMA)
     |
       SMALLER_OP
     | 
@@ -2305,15 +2297,20 @@ tupleElementType returns [Type type]
         ELLIPSIS
         { SequencedType st = new SequencedType(null);
           st.setType($t.type); 
-          st.setEndToken($SPECIFY);
+          st.setEndToken($ELLIPSIS);
           $type = st; }
       )?
     ;
-    
-type returns [StaticType type]
-    @init { TupleType tt = new TupleType(null); }
-    : t=entryType 
+
+variadicType returns [Type type]
+    : t=type 
       { $type=$t.type; }
+      ( 
+        ELLIPSIS
+        { SequencedType st = new SequencedType($ELLIPSIS);
+          st.setType($t.type);
+          $type = st; }
+      )?
     ;
 
 tupleType returns [TupleType type]
@@ -2354,7 +2351,7 @@ iterableType returns [IterableType type]
      { $type.setEndToken($RBRACE); }
    ;
 
-entryType returns [StaticType type]
+type returns [StaticType type]
     @init { EntryType bt=null; }
     : t1=unionType
       { $type=$t1.type; }

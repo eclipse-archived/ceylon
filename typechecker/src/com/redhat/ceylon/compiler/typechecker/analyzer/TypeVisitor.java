@@ -1105,4 +1105,27 @@ public class TypeVisitor extends Visitor {
         }
     }
     
+    @Override
+    public void visit(Tree.AnyAttribute that) {
+    	super.visit(that);
+    	if (that.getType() instanceof Tree.SequencedType) {
+    		Value v = (Value) that.getDeclarationModel();
+			ValueParameter p = v.getInitializerParameter();
+			if (p==null) {
+				that.getType().addError("attribute has no matching initializer parameter, so may not be sequenced: " +
+						v.getName());
+			}
+			else {
+				p.setSequenced(true);
+			}
+    	}
+    }
+
+    @Override
+    public void visit(Tree.AnyMethod that) {
+    	super.visit(that);
+    	if (that.getType() instanceof Tree.SequencedType) {
+    		that.getType().addError("method may not be sequenced");
+    	}
+    }
 }

@@ -619,7 +619,7 @@ public class DeclarationVisitor extends Visitor {
         visitDeclaration(that, p);
         super.visit(that);
         parameterList.getParameters().add(p);
-        if (p.isSequenced()&&p.isDefaulted()) {
+        if (p.isSequenced() && p.isDefaulted()) {
         	that.getDefaultArgument()
         	    .addError("sequenced parameter may not specify default argument");
         }
@@ -637,6 +637,9 @@ public class DeclarationVisitor extends Visitor {
         super.visit(that);
         exitScope(o);
         parameterList.getParameters().add(p);
+        if (that.getType() instanceof Tree.SequencedType) {
+        	that.getType().addError("functional parameter may not be sequenced");
+        }
     }
 
     @Override
