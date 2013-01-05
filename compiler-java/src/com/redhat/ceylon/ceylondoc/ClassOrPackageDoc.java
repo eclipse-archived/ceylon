@@ -383,7 +383,7 @@ public abstract class ClassOrPackageDoc extends CeylonDoc {
         Annotation deprecated = Util.findAnnotation(decl, "deprecated");
         if (deprecated != null) {
             open("div class='deprecated section'");
-            String text = "__Deprecated:__ ";
+            String text = "<span class='title'>Deprecated: </span>";
             if (!deprecated.getPositionalArguments().isEmpty()) {
                 String reason = deprecated.getPositionalArguments().get(0);
                 if (reason != null) {
