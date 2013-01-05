@@ -73,4 +73,11 @@ void splitFunction() {
     
     void myvoid();
     @error myvoid() => "hello";
+    
+    void higher(Void f(), void g()) { f(); g(); }
+    higher { f()=>0; @error g()=>0; };
+    //higher { @error f()=0; @error g()=0; };
+    higher { function f()=>0; @error void g()=>0; };
+    higher { function f()=>0; @error function g()=>0; };
+    higher { function f()=>0; Integer g()=>0; };
 }

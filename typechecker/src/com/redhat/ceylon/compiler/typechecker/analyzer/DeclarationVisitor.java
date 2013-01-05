@@ -361,6 +361,9 @@ public class DeclarationVisitor extends Visitor {
         exitScope(o);
         checkMethodArgumentParameters(that);
         m.setDeclaredVoid(that.getType() instanceof Tree.VoidModifier);
+        if (m.isDeclaredVoid() && that.getSpecifierExpression()!=null) {
+        	that.addError("void functional argument may not evaluate to a value");
+        }
     }
 
     @Override
@@ -645,6 +648,9 @@ public class DeclarationVisitor extends Visitor {
         parameterList.getParameters().add(p);
         if (that.getType() instanceof Tree.SequencedType) {
         	that.getType().addError("functional parameter may not be sequenced");
+        }
+        if (p.isDeclaredVoid() && that.getDefaultArgument()!=null) {
+        	that.addError("void functional parameter may not have a default value");
         }
     }
 

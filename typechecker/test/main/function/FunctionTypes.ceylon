@@ -110,14 +110,14 @@ void method() {
     
     higher2 { 
         strings = ["goodbye"];
-        function f(String s) { print(s); return s.size; }
+        Integer f(String s) { print(s); return s.size; }
     };
     higher2(["goodbye"], (String s) => print(s));
     higher2(["goodbye"], (String s) => print(s));
     
     higher2 { 
         strings = ["goodbye"];
-        function f(String s) => s.size;
+        Integer f(String s) => s.size;
     };
     higher2 { 
         strings = ["goodbye"];
@@ -126,11 +126,11 @@ void method() {
     
     higher2 { 
         strings = ["goodbye"];
-        void f(String s) => print(s);
+        @error void f(String s) => print(s);
     };
     higher2 { 
         strings = ["goodbye"];
-        function f(String s) => print(s);
+        Void f(String s) => print(s);
     };
     higher2 { 
         strings = ["goodbye"];
@@ -155,7 +155,7 @@ void method() {
     
     higher2 { 
         strings = ["goodbye"];
-        f(String s) => s.size;
+        @error f(String s) => s.size;
     };
     
     

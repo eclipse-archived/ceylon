@@ -34,6 +34,7 @@ import com.redhat.ceylon.compiler.typechecker.model.Class;
 import com.redhat.ceylon.compiler.typechecker.model.ClassOrInterface;
 import com.redhat.ceylon.compiler.typechecker.model.Declaration;
 import com.redhat.ceylon.compiler.typechecker.model.Functional;
+import com.redhat.ceylon.compiler.typechecker.model.FunctionalParameter;
 import com.redhat.ceylon.compiler.typechecker.model.Generic;
 import com.redhat.ceylon.compiler.typechecker.model.Getter;
 import com.redhat.ceylon.compiler.typechecker.model.Interface;
@@ -2116,6 +2117,13 @@ public class ExpressionVisitor extends Visitor {
                      //assuming an argument can't have type params 
                     Collections.<ProducedType>emptyList()).getFullType();
             //argType = ta.getType().getTypeModel();
+            if (p instanceof FunctionalParameter &&
+            		((FunctionalParameter) p).isDeclaredVoid() &&
+            		ta.getType() instanceof Tree.FunctionModifier) {
+            	//TODO: check that it is really the "shortcut" form
+            	a.addError("functional parameter is declared void: " +
+            			p.getName());
+            }
         }
         ProducedType pt = pr.getTypedParameter(p).getFullType();
 //      if (p.isSequenced()) pt = unit.getIteratedType(pt);

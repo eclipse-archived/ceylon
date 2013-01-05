@@ -21,3 +21,9 @@ interface Barface {
     shared formal void f3(Integer n = 5, Integer m = n);
     shared formal void f4(Integer n = 5, Integer m = n + 1);
 }
+
+class FunctionalParameterDefaults(
+    Integer f(Integer i)=>i,
+    @error Integer h(Float f)=>f, 
+    @error void g()=>"hello") {
+}
