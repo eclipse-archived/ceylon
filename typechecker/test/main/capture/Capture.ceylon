@@ -319,19 +319,19 @@ String() cap2() {
 }
 
 class MethodSpecifyingInitParam(@uncaptured Callable<Void,[]> x) {
-    void foo() => x;
+    Void foo() => x();
 }
 
 class MethodSpecifyingInitParam2(@uncaptured void x()) {
-    void foo() => x;
+    Void foo() => x();
 }
 
 void methodSpecifyingInitParam(@uncaptured Callable<Void,[]> x) {
-    void foo() => x;
+    Void foo() => x();
 }
 
 void methodSpecifyingInitParam2(@uncaptured void x()) {
-    void foo() => x;
+    Void foo() => x();
 }
 
 class MethodCapturingInitParam(@captured Callable<Void,[]> x) {

@@ -376,6 +376,9 @@ public class DeclarationVisitor extends Visitor {
         checkFunctionArgumentParameters(that);
         m.setDeclaredVoid(that.getType() instanceof Tree.VoidModifier);
         //that.addWarning("inline functions not yet supported");
+        if (that.getType() instanceof Tree.VoidModifier && that.getExpression()!=null) {
+        	that.getExpression().addError("void function may not evaluate to a value");
+        }
     }
 
     private static void checkMethodParameters(Tree.AnyMethod that) {
@@ -506,6 +509,9 @@ public class DeclarationVisitor extends Visitor {
             else if (m.isShared()) {
                 that.getType().addError("shared method must explicitly specify a return type", 200);
             }
+        }
+        if (that.getType() instanceof Tree.VoidModifier && sie!=null) {
+        	that.getSpecifierExpression().addError("void method may not evaluate to a value");
         }
     }
             

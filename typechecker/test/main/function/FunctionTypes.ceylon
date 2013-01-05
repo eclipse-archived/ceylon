@@ -14,9 +14,10 @@ abstract class Z() {}
 void noop() {}
 
 void higher1(String[] strings, Callable<Void,[String]> f) {
-    void g(String str) => f;
+    value g = f;
+    Void h(String s) => f(s);
     for (s in strings) {
-        g(s);
+        g(s); h(s);
     }
 }
 
@@ -72,8 +73,8 @@ void method() {
     @error higher2(["hello", "world"], str);
     
     @type:"String" function up(String s) => upper(s);
-    void pr(String s) => print;
-    void np() => noop;
+    Void pr(String s) => print(s);
+    Void np() => noop();
     
     @type:"String" up("hello");
     @type:"Void" pr("hello");
@@ -85,7 +86,7 @@ void method() {
     @type:"X" @error function badder(Integer n) => X(n);
     @error String worse(String s) => X;
     @error String worst() => X;
-    void broke() => noop();
+    @error void broke() => noop();
     @error Z moreBroke() => Z;
     @error do(Z);
     @type:"Void" function z() => Z;
@@ -292,8 +293,13 @@ void sequencedParams() {
  Outer1.Inner? i1 = o?.Inner();
  Outer1.Inner? cons() => o?.Inner();
  
-void foo(Integer... seq) {}
-void bar(Integer... ints) => foo;
+void foo1(Integer... seq) {}
+void bar1(Integer... ints) { foo1(ints...); }
+Void(Integer...) baz1 = bar1; 
+
+Boolean foo2(Integer... seq) => true;
+Boolean bar2(Integer... ints) => foo2(ints...);
+Boolean(Integer...) baz2 = bar2; 
 
 alias CSI => Callable<String,[Integer]>;
 String callCSI(CSI csi) {
