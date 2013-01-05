@@ -619,6 +619,10 @@ public class DeclarationVisitor extends Visitor {
         visitDeclaration(that, p);
         super.visit(that);
         parameterList.getParameters().add(p);
+        if (p.isSequenced()&&p.isDefaulted()) {
+        	that.getDefaultArgument()
+        	    .addError("sequenced parameter may not specify default argument");
+        }
     }
 
     @Override
