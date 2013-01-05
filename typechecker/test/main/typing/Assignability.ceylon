@@ -320,10 +320,12 @@ class Assignability() {
     printStrings0 {  strings={"Hello", "World"}; };
     printStrings0 { @error strings="Hello"; @error strings="World"; };
     printStrings {  @error strings={"Hello", "World"}; };
-    printStrings { strings="Hello"; strings="World"; };
+    printStrings { @error strings="Hello"; @error strings="World"; };
+    printStrings { strings=["Hello", "World"]; };
 
     printStrings { @error strings={"Hello", "World"}; @error "Hello", "World" };
-    printStrings { strings="Hello"; strings="World"; @error "Hello", "World" };
+    printStrings { @error strings="Hello"; @error strings="World"; @error "Hello", "World" };
+    printStrings { strings=["Hello", "World"]; @error "Hello", "World" };
     printStrings0 { @error strings="Hello"; @error strings="World"; @error "Hello", "World" };
     printStrings0 {  strings={"Hello", "World"}; @error "Hello", "World" };
 
@@ -360,7 +362,9 @@ class Assignability() {
 
     joinStrings0 { char=` `; strings={"Hello", "World"}; };
 
-    joinStrings { char=` `; strings="Hello"; strings="World"; };
+    joinStrings { char=` `; @error strings="Hello"; @error strings="World"; };
+
+    joinStrings { char=` `; strings=["Hello", "World"]; };
 
     joinStrings0 { char=` `; @error strings="Hello"; @error strings="World"; };
 

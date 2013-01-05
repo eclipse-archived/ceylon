@@ -1631,7 +1631,7 @@ public class ExpressionVisitor extends Visitor {
             	foundParameters.add(parameter);
                 ProducedType pt = pr.getTypedParameter(parameter)
                 		.getFullType();
-                if (parameter.isSequenced()) pt = unit.getIteratedType(pt);
+//              if (parameter.isSequenced()) pt = unit.getIteratedType(pt);
                 addToUnion(inferredTypes, inferTypeArg(tp, pt, type, 
                 		new ArrayList<TypeParameter>()));
             }
@@ -2078,7 +2078,7 @@ public class ExpressionVisitor extends Visitor {
                     pr.getDeclaration().getName(), 101);
         }
         else {
-            if (!p.isSequenced() && !foundParameters.add(p)) {
+            if (!foundParameters.add(p)) {
                 a.addError("duplicate argument for parameter: " +
                         p.getName());
             }
@@ -2105,7 +2105,7 @@ public class ExpressionVisitor extends Visitor {
             //argType = ta.getType().getTypeModel();
         }
         ProducedType pt = pr.getTypedParameter(p).getFullType();
-        if (p.isSequenced()) pt = unit.getIteratedType(pt);
+//      if (p.isSequenced()) pt = unit.getIteratedType(pt);
 		checkAssignable(argType, pt, a,
                 "named argument must be assignable to parameter " + 
                 p.getName() + " of " + pr.getDeclaration().getName(), 
