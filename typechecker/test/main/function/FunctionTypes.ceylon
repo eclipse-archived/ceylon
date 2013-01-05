@@ -327,7 +327,7 @@ void lazySpec() {
     lazy3 = (String s, Float x, Boolean b=true) => b then s else x.string;
     String lazy4(String s, Float x, Float y);
     lazy4 = (String s, Float... x) => s;
-    void x(String s="")(Integer i);
+    Void x(String s="")(Integer i);
     x = (String s)(Integer i) => bottom;
 }
 
@@ -340,7 +340,7 @@ void lazyLazySpec() {
     @error lazy3(String s, Float x, @error Boolean b=true) => b then s else x.string;
     String lazy4(String s, Float x, Float y);
     @error lazy4(String s, @error Float... x) => s;
-    void x(String s="")(Integer i);
+    Void x(String s="")(Integer i);
     x(String s)(Integer i) => bottom;
 }
 

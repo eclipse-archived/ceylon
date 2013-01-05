@@ -44,30 +44,33 @@ void splitFunction() {
         add0(Float x)(@error Integer y) => x+y.float;
     }
 
-    void func0(String[] x, String... y);
+    Void func0(String[] x, String... y);
     func0(String[] x, String... y) => bottom;
     
-    void func1(String[] x, String[] y);
+    Void func1(String[] x, String[] y);
     func1(String... x, @error String... y) => bottom;
     
-    void func2(String... x, @error String... y);
+    Void func2(String... x, @error String... y);
     //func2(String[] x, String[] y) = bottom;
     
-    void func3(String[] x, String[] y);
+    Void func3(String[] x, String[] y);
     func3(String[] x, @error String... y) => bottom;
     
-    void func4(String[] x, String... y);
+    Void func4(String[] x, String... y);
     func4(String[] x, @error String[] y) => bottom;
     
-    void printit(String s);
+    Void printit(String s);
     printit(@error String s="hello") => print(s);
     
-    void higher1(void f(String s), String g(Integer i));
+    Void higher1(void f(String s), String g(Integer i));
     higher1(void f(String s), String g(Integer i)) => print(f(g(0)));
     
-    void higher2(void f(String s), String g(Integer i));
+    Void higher2(void f(String s), String g(Integer i));
     higher2(void f(String s), @error String g(Float i)) => print(f(g(0.0)));
     
-    void higher3(void f(String s), String g(Integer i));
+    Void higher3(void f(String s), String g(Integer i));
     higher3(void f(String s), String g(Object i)) => print(f(g(0.0)));
+    
+    void myvoid();
+    @error myvoid() => "hello";
 }

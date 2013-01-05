@@ -649,6 +649,9 @@ public class ExpressionVisitor extends Visitor {
                                 d.getName(), 803);
                     }
                 }
+                if (d instanceof Method && ((Method) d).isDeclaredVoid()) {
+                	that.addError("cannot specify void method: " + d.getName());
+                }
                 
                 ProducedType t = that.getBaseMemberExpression().getTypeModel();
                 if (that.getBaseMemberExpression()==me && d instanceof Method) {
