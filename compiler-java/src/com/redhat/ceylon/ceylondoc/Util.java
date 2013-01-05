@@ -86,7 +86,7 @@ public class Util {
     
     public static List<String> getTags(Declaration decl) {
         List<String> tags = new ArrayList<String>();
-        Annotation tagged = Util.getAnnotation(decl, "tagged");
+        Annotation tagged = Util.getAnnotation(decl.getAnnotations(), "tagged");
         if (tagged != null) {
             for (String tag : tagged.getPositionalArguments()) {
                 tags.add(Util.unquote(tag));
@@ -166,18 +166,20 @@ public class Util {
         return null;
     }
     
-    public static Annotation getAnnotation(Declaration decl, String name) {
-        for (Annotation a : decl.getAnnotations()) {
-            if (a.getName().equals(name))
-                return a;
+    public static Annotation getAnnotation(List<Annotation> annotations, String name) {
+        if (annotations != null) {
+            for (Annotation a : annotations) {
+                if (a.getName().equals(name))
+                    return a;
+            }
         }
         return null;
     }
     
     public static Annotation findAnnotation(Declaration decl, String name) {
-        Annotation a = getAnnotation(decl, name);
+        Annotation a = getAnnotation(decl.getAnnotations(), name);
         if (a == null && decl.isActual()) {
-            a = getAnnotation(decl.getRefinedDeclaration(), name);
+            a = getAnnotation(decl.getRefinedDeclaration().getAnnotations(), name);
         }
         return a;
     }

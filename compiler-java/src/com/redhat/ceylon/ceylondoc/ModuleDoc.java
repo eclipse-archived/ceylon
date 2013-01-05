@@ -21,11 +21,13 @@
 package com.redhat.ceylon.ceylondoc;
 
 import static com.redhat.ceylon.ceylondoc.Util.getDoc;
+import static com.redhat.ceylon.ceylondoc.Util.unquote;
 
 import java.io.IOException;
 import java.io.Writer;
 import java.util.List;
 
+import com.redhat.ceylon.compiler.typechecker.model.Annotation;
 import com.redhat.ceylon.compiler.typechecker.model.Module;
 import com.redhat.ceylon.compiler.typechecker.model.Package;
 
@@ -73,7 +75,23 @@ public class ModuleDoc extends CeylonDoc {
         around("div class='doc section'", getDoc(module, linkRenderer()));
 
         writeBy(module);
+        writeLicense(module);
 
+        close("div");
+    }
+
+    private void writeLicense(Module module) throws IOException {
+        Annotation annotation = Util.getAnnotation(module.getAnnotations(),"license");
+        if (annotation == null)
+            return;
+
+        String license = annotation.getPositionalArguments().get(0);
+        if (license == null || license.isEmpty())
+            return;
+
+        open("div class='license section'");
+        around("span class='title'", "License: ");
+        around("span class='value'", unquote(license));
         close("div");
     }
 

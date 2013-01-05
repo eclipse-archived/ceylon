@@ -396,7 +396,7 @@ public abstract class ClassOrPackageDoc extends CeylonDoc {
     }
     
     protected final void writeSee(Declaration decl) throws IOException {
-        Annotation see = Util.getAnnotation(decl, "see");
+        Annotation see = Util.getAnnotation(decl.getAnnotations(), "see");
         if(see == null)
             return;
 

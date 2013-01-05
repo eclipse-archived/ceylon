@@ -180,6 +180,7 @@ public class CeylonDocToolTest {
         assertFileExists(destDir, includeNonShared);
         assertBasicContent(destDir, includeNonShared);
         assertBy(destDir);
+        assertLicense(destDir);
         assertParametersDocumentation(destDir);
         assertThrows(destDir);
         assertSee(destDir);
@@ -461,6 +462,11 @@ public class CeylonDocToolTest {
                 Pattern.compile("<span class='title'>By: </span><span class='value'>Tom Bentley</span>"));
         assertMatchInFile(destDir, "interface_Types.html", 
                 Pattern.compile("<span class='title'>By: </span><span class='value'>Tom Bentley</span>"));
+    }
+    
+    private void assertLicense(File destDir) throws IOException {
+        assertMatchInFile(destDir, "index.html", 
+                Pattern.compile("<span class='title'>License: </span><span class='value'>http://www.gnu.org/licenses/gpl.html</span>"));
     }
 
     private void assertParametersDocumentation(File destDir) throws IOException {
