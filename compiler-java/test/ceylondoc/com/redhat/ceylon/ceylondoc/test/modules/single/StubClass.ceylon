@@ -22,6 +22,7 @@ import com.redhat.ceylon.ceylondoc.test.modules.single.a { A1, AliasA2 = A2 }
 doc "This is `StubClass`"
 see(StubInterface, stubTopLevelAttribute, stubTopLevelMethod)
 tagged("stubTag1", "stubTag2")
+throws (StubException)
 shared class StubClass(
   doc "Constructor parameter `a`" Integer a,
   doc "Constructor parameter `b`" Integer b) 

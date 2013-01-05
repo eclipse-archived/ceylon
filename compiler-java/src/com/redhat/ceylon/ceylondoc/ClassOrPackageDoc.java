@@ -347,7 +347,7 @@ public abstract class ClassOrPackageDoc extends CeylonDoc {
     	}
     }
 
-	private void writeThrows(Declaration decl) throws IOException {
+	protected final void writeThrows(Declaration decl) throws IOException {
         boolean first = true;
         for (Annotation annotation : decl.getAnnotations()) {
             if (annotation.getName().equals("throws")) {

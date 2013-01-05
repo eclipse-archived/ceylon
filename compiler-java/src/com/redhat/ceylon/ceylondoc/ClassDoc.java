@@ -499,6 +499,7 @@ public class ClassDoc extends ClassOrPackageDoc {
         
         open("div class='description'");
         writeParameters(klass);
+        writeThrows(klass);
         close("div");
         
         close("td", "tr");
