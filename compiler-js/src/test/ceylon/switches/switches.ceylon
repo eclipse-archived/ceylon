@@ -52,7 +52,7 @@ shared void test() {
     switch(e1)
     case(is Integer) { fail("INTEGER? WTF?"); }
     case(is Float) {}
-    else { fail("Nothing!!! WTF?"); }
+    else { fail("Null!!! WTF?"); }
 
     //is+continue
     for (e in enums) {

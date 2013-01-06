@@ -42,7 +42,7 @@ public class TestDocVisitor {
         m1.put("void", Arrays.asList("4:0-4:3", "31:0-31:3"));
         m1.put("String", Arrays.asList("4:11-4:16", "9:0-9:5", "9:24-9:29", "17:16-17:21",
                 "22:0-22:5", "22:24-22:29", "27:11-27:16", "34:16-34:21"));
-        m1.put("Nothing", Collections.singletonList("4:17-4:17"));
+        m1.put("Null", Collections.singletonList("4:17-4:17"));
         m1.put("print", Arrays.asList("6:4-6:8", "36:4-36:8"));
         m1.put("smaller", Collections.singletonList("13:10-13:16"));
         m1.put("larger", Collections.singletonList("14:10-14:15"));

@@ -22,7 +22,7 @@ class Bar141() satisfies Comp141<Bar141> {
 void testSelfTypes() {
     Comp141<Bar141> testOf = Bar141();
     Bar141 bar141 = testOf of Bar141;
-    Void v141 = testOf;
-    Object? o141 = v141 of Object|Nothing;
+    Anything v141 = testOf;
+    Object? o141 = v141 of Object|Null;
     check(o141 is Bar141, "self types");
 }

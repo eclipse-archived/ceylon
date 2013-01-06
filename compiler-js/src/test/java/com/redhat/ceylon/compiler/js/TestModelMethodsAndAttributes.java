@@ -64,7 +64,7 @@ public class TestModelMethodsAndAttributes {
         Assert.assertNotNull(method);
         ModelUtils.checkMap(method, MetamodelGenerator.KEY_NAME, "simple1",
                 MetamodelGenerator.KEY_METATYPE, MetamodelGenerator.METATYPE_METHOD);
-        ModelUtils.checkType(method, "ceylon.language::Void");
+        ModelUtils.checkType(method, "ceylon.language::Anything");
 
         method = (Map<String, Object>)model.get("simple2");
         ModelUtils.checkMap(method, MetamodelGenerator.KEY_NAME, "simple2",
@@ -75,7 +75,7 @@ public class TestModelMethodsAndAttributes {
         method = (Map<String, Object>)model.get("simple3");
         ModelUtils.checkMap(method, MetamodelGenerator.KEY_NAME, "simple3",
                 MetamodelGenerator.KEY_METATYPE, MetamodelGenerator.METATYPE_METHOD);
-        ModelUtils.checkType(method, "ceylon.language::Void");
+        ModelUtils.checkType(method, "ceylon.language::Anything");
         ModelUtils.checkParam(method, 0, "p1", "ceylon.language::Integer", false, false);
         ModelUtils.checkParam(method, 1, "p2", "ceylon.language::String", false, false);
     }

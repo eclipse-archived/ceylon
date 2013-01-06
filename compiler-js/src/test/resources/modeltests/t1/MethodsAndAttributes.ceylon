@@ -36,8 +36,8 @@ shared void parmtypes5<Value>(Value x)
     given Value of Integer|Float {
 }
 
-void intersector1(Container<Void>&Category inters) {}
-void intersector2(Iterable<Container<Void>>&Category beast){}
+void intersector1(Container<Anything>&Category inters) {}
+void intersector2(Iterable<Container<Anything>>&Category beast){}
 
 //attributes
 Integer i1 = 5;

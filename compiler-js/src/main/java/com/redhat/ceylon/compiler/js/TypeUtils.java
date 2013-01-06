@@ -66,9 +66,9 @@ public class TypeUtils {
 
     static void outputQualifiedTypename(Node node, ProducedType pt, GenerateJsVisitor gen) {
         TypeDeclaration t = pt.getDeclaration();
-        if (t.getName().equals("Bottom")) {
+        if (t.getName().equals("Nothing")) {
             //Hack in the model means hack here as well
-            gen.out(GenerateJsVisitor.getClAlias(), "Bottom");
+            gen.out(GenerateJsVisitor.getClAlias(), "Nothing");
         } else {
             if (t.isAlias()) {
                 t = t.getExtendedTypeDeclaration();

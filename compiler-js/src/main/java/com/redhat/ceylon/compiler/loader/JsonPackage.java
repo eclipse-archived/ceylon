@@ -9,7 +9,7 @@ import java.util.Map;
 
 import com.redhat.ceylon.compiler.typechecker.analyzer.ModuleManager;
 import com.redhat.ceylon.compiler.typechecker.model.Annotation;
-import com.redhat.ceylon.compiler.typechecker.model.BottomType;
+import com.redhat.ceylon.compiler.typechecker.model.NothingType;
 import com.redhat.ceylon.compiler.typechecker.model.ClassOrInterface;
 import com.redhat.ceylon.compiler.typechecker.model.Declaration;
 import com.redhat.ceylon.compiler.typechecker.model.FunctionalParameter;
@@ -43,7 +43,7 @@ public class JsonPackage extends com.redhat.ceylon.compiler.typechecker.model.Pa
     private final Unit unit = new Unit();
     private final String pkgname;
     private boolean loaded = false;
-    private BottomType bottom;
+    private NothingType bottom;
 
     static {
         idobj.put(MetamodelGenerator.KEY_NAME, "IdentifiableObject");
@@ -52,7 +52,7 @@ public class JsonPackage extends com.redhat.ceylon.compiler.typechecker.model.Pa
         objclass.put(MetamodelGenerator.KEY_NAME, "Object");
         objclass.put(MetamodelGenerator.KEY_PACKAGE, "ceylon.language");
         objclass.put(MetamodelGenerator.KEY_MODULE, "ceylon.language");
-        voidclass.put(MetamodelGenerator.KEY_NAME, "Void");
+        voidclass.put(MetamodelGenerator.KEY_NAME, "Anything");
         voidclass.put(MetamodelGenerator.KEY_PACKAGE, "ceylon.language");
         voidclass.put(MetamodelGenerator.KEY_MODULE, "ceylon.language");
     }
@@ -73,8 +73,8 @@ public class JsonPackage extends com.redhat.ceylon.compiler.typechecker.model.Pa
         if (getModule().getLanguageModule() == getModule() && "ceylon.language".equals(pkgname)) {
             //Mark the language module as immediately available to bypass certain validations
             getModule().setAvailable(true);
-            //Ugly ass hack - add Bottom to the model
-            bottom = new BottomType(unit);
+            //Ugly ass hack - add Nothing to the model
+            bottom = new NothingType(unit);
             bottom.setContainer(this);
             bottom.setUnit(unit);
         }
@@ -154,7 +154,7 @@ public class JsonPackage extends com.redhat.ceylon.compiler.typechecker.model.Pa
             }
         }
         //This is to avoid circularity
-        if (!(getModule().getLanguageModule()==getModule() && ("Bottom".equals(name) || "Void".equals(name)))) {
+        if (!(getModule().getLanguageModule()==getModule() && ("Nothing".equals(name) || "Anything".equals(name)))) {
             if (m.containsKey("super")) {
                 cls.setExtendedType(getTypeFromJson((Map<String,Object>)m.get("super"), allparms));
             } else {
@@ -676,7 +676,7 @@ public class JsonPackage extends com.redhat.ceylon.compiler.typechecker.model.Pa
         @SuppressWarnings("unchecked")
         Map<String,Object> map = (Map<String,Object>)model.get(name);
         if (map == null) {
-            if ("Bottom".equals(name) && "ceylon.language".equals(pkgname)) {
+            if ("Nothing".equals(name) && "ceylon.language".equals(pkgname)) {
                 return bottom;
             }
             throw new IllegalStateException("Cannot find " + name + " in " + model.keySet());

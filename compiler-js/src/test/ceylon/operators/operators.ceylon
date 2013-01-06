@@ -156,9 +156,9 @@ void testCollectionOperators() {
     value seq1 = [ "one", "two" ];
     String s1 = seq1[0]; //not optional anymore!
     check(s1=="one", "lookup");
-    String|Nothing s2 = seq1[2]; //not optional anymore!
+    String|Null s2 = seq1[2]; //not optional anymore!
     check(!s2 exists, "lookup");
-    String|Nothing s3 = seq1[-1]; //not optional anymore!
+    String|Null s3 = seq1[-1]; //not optional anymore!
     check(!s3 exists, "lookup");
     variable Sequence<String>? unsafe = seq1;
     check(unsafe?[0] exists, "safe index");

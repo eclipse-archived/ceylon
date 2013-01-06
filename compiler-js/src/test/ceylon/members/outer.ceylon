@@ -11,7 +11,7 @@ void test_outer_inner_safety() {
     fail("i1 should be null");
   }
   check(className(cons)=="ceylon.language::JsCallable", "cons is Callable, " className(cons) "");
-  Outer.Inner|Nothing i2 = cons();
+  Outer.Inner|Null i2 = cons();
   if (exists i2) {
     fail("i2 should not exist");
   }

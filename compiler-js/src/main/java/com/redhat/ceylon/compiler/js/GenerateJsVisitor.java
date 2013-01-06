@@ -969,7 +969,7 @@ public class GenerateJsVisitor extends Visitor
         if (that.getSpecifierExpression() != null) {
             // method(params) => expr
             if (outer == null) {
-                // Not in a prototype definition. Nothing to do here if it's a
+                // Not in a prototype definition. Null to do here if it's a
                 // member in prototype style.
                 if (prototypeStyle && m.isMember()) { return; }
                 comment(that);

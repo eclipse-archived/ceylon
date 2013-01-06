@@ -167,7 +167,7 @@ public class TestModelClasses {
         Assert.assertEquals("ParmTypes4 should satisfy 1 interface", 1, ps.size());
         ModelUtils.checkType(ps.get(0), "ceylon.language::Iterable<Element>");
         Map<String,Map<String,Object>> m2 = (Map<String,Map<String,Object>>)cls.get(MetamodelGenerator.KEY_ATTRIBUTES);
-        ModelUtils.checkType(m2.get("primero"), "ceylon.language::Nothing|Element");
+        ModelUtils.checkType(m2.get("primero"), "ceylon.language::Null|Element");
     }
 
     @Test @SuppressWarnings("unchecked")
@@ -184,7 +184,7 @@ public class TestModelClasses {
         cls = ((Map<String,Map<String,Object>>)cls.get(MetamodelGenerator.KEY_METHODS)).get("innerMethod1");
         ModelUtils.checkMap(cls, MetamodelGenerator.KEY_NAME, "innerMethod1",
                 MetamodelGenerator.KEY_METATYPE, MetamodelGenerator.METATYPE_METHOD);
-        ModelUtils.checkType(cls, "ceylon.language::Void");
+        ModelUtils.checkType(cls, "ceylon.language::Anything");
     }
 
     @Test @SuppressWarnings("unchecked")

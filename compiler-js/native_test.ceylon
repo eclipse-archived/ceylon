@@ -1,5 +1,5 @@
 
-shared Nothing nativejs() { return null; }
+shared Null nativejs() { return null; }
 
 shared nativejs interface Foo {
 	shared formal variable Integer num;
