@@ -163,11 +163,20 @@ abstract class InvocationBuilder {
         return this.typeArguments;
     }
     
-    protected JCExpression transformInvocation(JCExpression primaryExpr, String selector) {
-        JCExpression actualPrimExpr = transformInvocationPrimary(primaryExpr, selector);
+    protected final JCExpression transformPrimaryTerm(JCExpression primaryExpr, String selector) {
+        JCExpression actualPrimExpr = transformPrimary(primaryExpr, selector);
         
         List<JCExpression> argExprs = transformArgumentList();
         
+        JCExpression resultExpr = transformInvocation(primaryExpr, selector,
+                actualPrimExpr, argExprs);
+
+        return resultExpr;
+    }
+
+    protected JCExpression transformInvocation(JCExpression primaryExpr,
+            String selector, JCExpression actualPrimExpr,
+            List<JCExpression> argExprs) {
         JCExpression resultExpr;
         if (primary instanceof Tree.BaseTypeExpression) {
             Tree.BaseTypeExpression type = (Tree.BaseTypeExpression)primary;
@@ -256,7 +265,6 @@ abstract class InvocationBuilder {
         if(handleBoxing)
             resultExpr = gen.expressionGen().applyErasureAndBoxing(resultExpr, returnType, 
                     !unboxed, boxingStrategy, returnType);
-
         return resultExpr;
     }
 
@@ -273,7 +281,7 @@ abstract class InvocationBuilder {
         return argExprs;
     }
 
-    protected JCExpression transformInvocationPrimary(JCExpression primaryExpr,
+    protected JCExpression transformPrimary(JCExpression primaryExpr,
             String selector) {
         JCExpression actualPrimExpr;
         if (primary instanceof Tree.QualifiedTypeExpression
@@ -291,7 +299,7 @@ abstract class InvocationBuilder {
         JCExpression result = gen.expressionGen().transformPrimary(primary, new TermTransformer() {
             @Override
             public JCExpression transform(JCExpression primaryExpr, String selector) {
-                return transformInvocation(primaryExpr, selector);
+                return transformPrimaryTerm(primaryExpr, selector);
             }
         });
 
@@ -324,12 +332,6 @@ abstract class InvocationBuilder {
     }
 
     public final JCExpression build() {
-        /*compute();
-        List<JCExpression> args = this.args.toList();
-        if (needsTypeInfoArgument()) {
-            JCExpression infoArg = makeTypeInfoArgument();
-            args = args.prepend(infoArg);
-        }*/
         boolean prevFnCall = gen.expressionGen().withinInvocation(true);
         try {
             return makeInvocation();
@@ -1484,12 +1486,12 @@ class NamedArgumentInvocationBuilder extends InvocationBuilder {
                 defaultedParameterInstance);
         return thisDecl;
     }
-    
+
     @Override
-    protected JCExpression transformInvocation(JCExpression primaryExpr, String selector) {
-        // We need to build the vars before transforming the primary, because the primary is just a var
-        buildVars();
-        JCExpression resultExpr = super.transformInvocation(primaryExpr, selector);
+    protected JCExpression transformInvocation(JCExpression primaryExpr,
+            String selector, JCExpression actualPrimExpr,
+            List<JCExpression> argExprs) {
+        JCExpression resultExpr = super.transformInvocation(primaryExpr, selector, actualPrimExpr, argExprs);
         // apply the default parameters
         if (vars != null && !vars.isEmpty()) {
             if (returnType == null || Decl.isUnboxedVoid(primaryDeclaration)) {
@@ -1504,14 +1506,15 @@ class NamedArgumentInvocationBuilder extends InvocationBuilder {
                         resultExpr);
             }
         }
-        
         return resultExpr;
     }
     
     @Override
-    protected JCExpression transformInvocationPrimary(JCExpression primaryExpr,
+    protected JCExpression transformPrimary(JCExpression primaryExpr,
             String selector) {
-        JCExpression actualPrimExpr = super.transformInvocationPrimary(primaryExpr, selector);
+        // We need to build the vars before transforming the primary, because the primary is just a var
+        buildVars();
+        JCExpression actualPrimExpr = super.transformPrimary(primaryExpr, selector);
         if (vars != null 
                 && !vars.isEmpty() 
                 && primaryExpr != null
