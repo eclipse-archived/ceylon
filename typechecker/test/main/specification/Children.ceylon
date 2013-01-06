@@ -21,7 +21,7 @@ class Graph7() {
 }
 
 class Graph5() {
-    void do(void exp) {}
+    void do(Void exp) {}
     List<Node> nodes = List<Node>();
     class Node() {
         @error do(nodes.add(this));    //compiler error (this reference in initializer)
@@ -39,7 +39,7 @@ class Graph2() {
 }
 
 class Graph6() {
-    void do(void exp) {}
+    void do(Void exp) {}
     class Node() {}
     Node createNode() {
         Node node = Node();

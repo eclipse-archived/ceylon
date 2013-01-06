@@ -655,7 +655,11 @@ public class DeclarationVisitor extends Visitor {
         	that.getType().addError("functional parameter may not be sequenced");
         }
         if (p.isDeclaredVoid() && p.isDefaulted()) {
-        	that.addError("void functional parameter may not have a default value");
+        	that.getDefaultArgument()
+        	    .addError("void functional parameter may not have a default value");
+        }
+        if (that.getParameterLists().isEmpty()) {
+        	that.addError("missing parameter list");
         }
     }
 
