@@ -828,13 +828,12 @@ parameters returns [ParameterList parameterList]
           c=COMMA
           { $parameterList.setEndToken($c); }
           (
-            (~(COMPILER_ANNOTATION | LIDENTIFIER | UIDENTIFIER)) => 
-            { displayRecognitionError(getTokenNames(),
-                new MismatchedTokenException(UIDENTIFIER, input)); }
-          | 
             ap2=parameterDeclaration
             { $parameterList.addParameter($ap2.parameter); 
               $parameterList.setEndToken(null); }
+          |
+            { displayRecognitionError(getTokenNames(),
+                new MismatchedTokenException(UIDENTIFIER, input)); }
           )
         )*
       )?
@@ -1756,10 +1755,12 @@ positionalArguments returns [PositionalArgumentList positionalArgumentList]
             { if ($pa2.positionalArgument!=null)
                   $positionalArgumentList.addPositionalArgument($pa2.positionalArgument); 
               positionalArgumentList.setEndToken(null); }
-          | c1=comprehension
+          | 
+            c1=comprehension
             { $positionalArgumentList.setComprehension($c1.comprehension);
               positionalArgumentList.setEndToken(null); }
-          | { displayRecognitionError(getTokenNames(), 
+          | 
+            { displayRecognitionError(getTokenNames(), 
                 new MismatchedTokenException(LIDENTIFIER, input)); }
           )
         )* 
