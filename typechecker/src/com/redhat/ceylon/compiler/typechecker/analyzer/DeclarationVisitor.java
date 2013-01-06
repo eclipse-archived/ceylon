@@ -337,7 +337,7 @@ public class DeclarationVisitor extends Visitor {
         super.visit(that);
         exitScope(o);
         checkMethodParameters(that);
-        m.setDeclaredVoid(that.getType() instanceof Tree.VoidModifier);
+        m.setDeclaredAnything(that.getType() instanceof Tree.VoidModifier);
         if (that.getType() instanceof Tree.ValueModifier) {
             that.getType().addError("methods may not be declared using the keyword value");
         }
@@ -360,7 +360,7 @@ public class DeclarationVisitor extends Visitor {
         super.visit(that);
         exitScope(o);
         checkMethodArgumentParameters(that);
-        m.setDeclaredVoid(that.getType() instanceof Tree.VoidModifier);
+        m.setDeclaredAnything(that.getType() instanceof Tree.VoidModifier);
         if (m.isDeclaredVoid() && that.getSpecifierExpression()!=null) {
         	that.addError("void functional argument may not evaluate to a value");
         }
@@ -377,7 +377,7 @@ public class DeclarationVisitor extends Visitor {
         endDeclaration(d);
         exitScope(o);
         checkFunctionArgumentParameters(that);
-        m.setDeclaredVoid(that.getType() instanceof Tree.VoidModifier);
+        m.setDeclaredAnything(that.getType() instanceof Tree.VoidModifier);
         //that.addWarning("inline functions not yet supported");
         if (that.getType() instanceof Tree.VoidModifier && that.getExpression()!=null) {
         	that.getExpression().addError("void function may not evaluate to a value");
@@ -617,7 +617,7 @@ public class DeclarationVisitor extends Visitor {
         }
         if (that.getType() instanceof Tree.LocalModifier && 
         		!(that instanceof Tree.InitializerParameter)) {
-        	that.getType().setTypeModel(unit.getVoidDeclaration().getType());
+        	that.getType().setTypeModel(unit.getAnythingDeclaration().getType());
         	that.getType().addError("parameter may not have inferred type");
         }
     }
@@ -644,7 +644,7 @@ public class DeclarationVisitor extends Visitor {
         FunctionalParameter p = new FunctionalParameter();
         p.setDeclaration(declaration);
         p.setDefaulted(that.getDefaultArgument()!=null);
-        p.setDeclaredVoid(that.getType() instanceof Tree.VoidModifier);
+        p.setDeclaredAnything(that.getType() instanceof Tree.VoidModifier);
         that.setDeclarationModel(p);
         visitDeclaration(that, p);
         Scope o = enterScope(p);
@@ -817,9 +817,11 @@ public class DeclarationVisitor extends Visitor {
         */
         
         if (that.getParameterLists().isEmpty()) {
-            if (that.getType() instanceof Tree.FunctionModifier ||
-                that.getType() instanceof Tree.VoidModifier) {
+            if (that.getType() instanceof Tree.FunctionModifier) {
                 that.getType().addError("variables with no parameters may not be declared using the keyword function");
+            }
+            if (that.getType() instanceof Tree.VoidModifier) {
+                that.getType().addError("variables with no parameters may not be declared using the keyword void");
             }
         }
         else {

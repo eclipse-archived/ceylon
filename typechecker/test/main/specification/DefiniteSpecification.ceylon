@@ -3,7 +3,7 @@ interface DefiniteSpecification {
     class X() {}
     void doSomething() {}
     void doSomethingElse() {}
-    void doNothing() {}
+    void doNull() {}
     void use(X x) {}
     Boolean testSomething()  { return 1>100; }
     
@@ -104,7 +104,7 @@ interface DefiniteSpecification {
             doSomethingElse();
             use(x);
         }
-        doNothing();
+        doNull();
     }
     
     void badMethodWithSpecInIf() {
@@ -114,7 +114,7 @@ interface DefiniteSpecification {
             x = X();
             doSomethingElse();
         }
-        doNothing();
+        doNull();
         @error use(x);
     }
     
@@ -128,7 +128,7 @@ interface DefiniteSpecification {
         else {
             doSomethingElse();
         }
-        doNothing();
+        doNull();
     }
     
     void badMethodWithSpecInIf2() {
@@ -141,7 +141,7 @@ interface DefiniteSpecification {
             doSomethingElse();
             @error use(x);
         }
-        doNothing();
+        doNull();
     }
     
     void badMethodWithSpecInIf3() {
@@ -154,13 +154,13 @@ interface DefiniteSpecification {
         else {
             doSomethingElse();
         }
-        doNothing();
+        doNull();
         @error x = X();
     }
     
     void badMethodWithSpecInIf4() {
         X x = X();
-        doNothing();
+        doNull();
         if (testSomething()) {
             doSomething();
             @error x = X();
@@ -169,7 +169,7 @@ interface DefiniteSpecification {
     
     void badMethodWithSpecInIf5() {
         X x;
-        doNothing();
+        doNull();
         x = X();
         if (testSomething()) {
             doSomething();
@@ -248,7 +248,7 @@ interface DefiniteSpecification {
         }
         else {
             x = X();
-            doNothing();
+            doNull();
             use(x);
         }
         doSomethingElse();
@@ -262,7 +262,7 @@ interface DefiniteSpecification {
         }
         else {
             x = X();
-            doNothing();
+            doNull();
             use(x);
         }
         doSomethingElse();
@@ -275,7 +275,7 @@ interface DefiniteSpecification {
         }
         else {
             x = X();
-            doNothing();
+            doNull();
             use(x);
         }
         doSomethingElse();
@@ -290,7 +290,7 @@ interface DefiniteSpecification {
         }
         else {
             @error x = X();
-            doNothing();
+            doNull();
         }
     }
     
@@ -303,7 +303,7 @@ interface DefiniteSpecification {
         }
         else {
             @error x = X();
-            doNothing();
+            doNull();
         }
     }
     
@@ -377,7 +377,7 @@ interface DefiniteSpecification {
             doSomething();
             y=X();
         }
-        doNothing();
+        doNull();
     }
     
     void badMethodWithSpecInFor() {
@@ -386,7 +386,7 @@ interface DefiniteSpecification {
             doSomething();
             @error y=X();
         }
-        doNothing();
+        doNull();
     }
     
     void goodMethodWithSpecInFail() {
@@ -398,7 +398,7 @@ interface DefiniteSpecification {
             doSomethingElse();
             y = X();
         }
-        doNothing();
+        doNull();
         use (y);
     }
         
@@ -411,7 +411,7 @@ interface DefiniteSpecification {
             doSomethingElse();
             @error y = X();
         }
-        doNothing();
+        doNull();
     }
     
     void badMethodWithSpecInFail2() {
@@ -424,7 +424,7 @@ interface DefiniteSpecification {
             doSomethingElse();
             y = X();
         }
-        doNothing();
+        doNull();
         @error use (y);
     }
     

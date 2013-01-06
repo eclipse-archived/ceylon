@@ -1,3 +1,5 @@
+import ceylon.language { Anything }
+
 void splitFunction() {
     Float f(Float x);
     Float g(Float x);
@@ -44,37 +46,37 @@ void splitFunction() {
         add0(Float x)(@error Integer y) => x+y.float;
     }
 
-    Void func0(String[] x, String... y);
+    Anything func0(String[] x, String... y);
     func0(String[] x, String... y) => bottom;
     
-    Void func1(String[] x, String[] y);
+    Anything func1(String[] x, String[] y);
     func1(String... x, @error String... y) => bottom;
     
-    Void func2(String... x, @error String... y);
+    Anything func2(String... x, @error String... y);
     //func2(String[] x, String[] y) = bottom;
     
-    Void func3(String[] x, String[] y);
+    Anything func3(String[] x, String[] y);
     func3(String[] x, @error String... y) => bottom;
     
-    Void func4(String[] x, String... y);
+    Anything func4(String[] x, String... y);
     func4(String[] x, @error String[] y) => bottom;
     
-    Void printit(String s);
+    Anything printit(String s);
     printit(@error String s="hello") => print(s);
     
-    Void higher1(void f(String s), String g(Integer i));
+    Anything higher1(void f(String s), String g(Integer i));
     higher1(void f(String s), String g(Integer i)) => print(f(g(0)));
     
-    Void higher2(void f(String s), String g(Integer i));
+    Anything higher2(void f(String s), String g(Integer i));
     higher2(void f(String s), @error String g(Float i)) => print(f(g(0.0)));
     
-    Void higher3(void f(String s), String g(Integer i));
+    Anything higher3(void f(String s), String g(Integer i));
     higher3(void f(String s), String g(Object i)) => print(f(g(0.0)));
     
     void myvoid();
     @error myvoid() => "hello";
     
-    void higher(Void f(), void g()) { f(); g(); }
+    void higher(Anything f(), void g()) { f(); g(); }
     higher { f()=>0; @error g()=>0; };
     //higher { @error f()=0; @error g()=0; };
     higher { function f()=>0; @error void g()=>0; };

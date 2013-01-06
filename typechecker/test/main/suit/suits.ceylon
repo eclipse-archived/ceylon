@@ -55,7 +55,7 @@ void test() {
     case (diamonds) {}
     case (clubs) {}
     case (spades) {}
-    case (is Nothing) {}
+    case (is Null) {}
     
     switch (maybe)
     case (hearts) {}
@@ -89,7 +89,7 @@ void test() {
     
     @error switch (mss)
     case (is Suit) {}
-    case (is Nothing) {}
+    case (is Null) {}
     
     Suit sss { return spades; }
     
@@ -103,7 +103,7 @@ void test() {
     
     @error switch (msss)
     case (is Suit) {}
-    case (is Nothing) {}
+    case (is Null) {}
     
     switch (s!=hearts then s)
     case (hearts) {}
@@ -117,7 +117,7 @@ void test() {
     case (diamonds) {}
     case (clubs) {}
     case (spades) {}
-    case (is Nothing) {}
+    case (is Null) {}
     
     
 }

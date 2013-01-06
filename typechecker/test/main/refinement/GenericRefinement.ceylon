@@ -152,12 +152,12 @@ class GenericRefinement() {
 		}
     }
     
-    void meth<Null>(Null n) 
-            given Null satisfies Nothing {
+    void meth<Absent>(Absent n) 
+            given Absent satisfies Null {
         @error
         object obj 
             extends Object()
             satisfies Empty & 
-                ContainerWithFirstElement<Bottom,Null> {}
+                ContainerWithFirstElement<Nothing,Absent> {}
     }
 }

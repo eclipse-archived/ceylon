@@ -29,7 +29,7 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
 
-import com.redhat.ceylon.compiler.typechecker.model.BottomType;
+import com.redhat.ceylon.compiler.typechecker.model.NothingType;
 import com.redhat.ceylon.compiler.typechecker.model.Class;
 import com.redhat.ceylon.compiler.typechecker.model.ClassOrInterface;
 import com.redhat.ceylon.compiler.typechecker.model.Declaration;
@@ -104,7 +104,7 @@ public class ExpressionVisitor extends Visitor {
         returnType = t;
         if (returnType instanceof Tree.FunctionModifier || 
                 returnType instanceof Tree.ValueModifier) {
-            returnType.setTypeModel( unit.getBottomDeclaration().getType() );
+            returnType.setTypeModel( unit.getNothingDeclaration().getType() );
         }
         return ort;
     }
@@ -145,7 +145,7 @@ public class ExpressionVisitor extends Visitor {
             }*/
         }
         if (that.getType() instanceof Tree.VoidModifier) {
-        	ProducedType vt = unit.getVoidDeclaration().getType();
+        	ProducedType vt = unit.getAnythingDeclaration().getType();
 			that.getDeclarationModel().setType(vt);        	
         }
         that.setTypeModel(that.getDeclarationModel()
@@ -268,7 +268,7 @@ public class ExpressionVisitor extends Visitor {
                 //TODO: what to do here in case of !is
                 if (knownType!=null) {
                     if (that.getNot()) {
-                        if (intersectionType(type,knownType, unit).getDeclaration() instanceof BottomType) {
+                        if (intersectionType(type,knownType, unit).getDeclaration() instanceof NothingType) {
                             that.addError("does not narrow type: intersection of " + type.getProducedTypeName() + 
                                     " and " + knownType.getProducedTypeName() + " is empty ");
                         }
@@ -281,9 +281,9 @@ public class ExpressionVisitor extends Visitor {
                     }
                 }
             }
-            defaultTypeToVoid(v);
+            defaultTypeToAnything(v);
             if (knownType==null) {
-                knownType = unit.getVoidDeclaration().getType(); //or should we use unknown?
+                knownType = unit.getAnythingDeclaration().getType(); //or should we use unknown?
             }
             ProducedType it;
             if (that.getNot()) {
@@ -303,14 +303,14 @@ public class ExpressionVisitor extends Visitor {
                 //and the type specified in the condition
                 it = intersectionType(type, knownType, that.getUnit());
             }
-            if (it.getDeclaration() instanceof BottomType) {
+            if (it.getDeclaration() instanceof NothingType) {
                 if (that.getNot()) {
-                    that.addError("tests assignability to Bottom type: " +
+                    that.addError("tests assignability to Nothing type: " +
                             knownType.getProducedTypeName() + " is a subtype of " + 
                             type.getProducedTypeName());
                 }
                 else {
-                    that.addError("tests assignability to Bottom type: intersection of " +
+                    that.addError("tests assignability to Nothing type: intersection of " +
                             knownType.getProducedTypeName() + " and " + 
                             type.getProducedTypeName() + " is empty");
                 }
@@ -353,7 +353,7 @@ public class ExpressionVisitor extends Visitor {
                         if (ta!=null) {
                             if (tp.isCovariant()) {
                                 List<ProducedType> list = new ArrayList<ProducedType>();
-                                addToIntersection(list, unit.getVoidDeclaration().getType(), unit);
+                                addToIntersection(list, unit.getAnythingDeclaration().getType(), unit);
                                 for (ProducedType st: tp.getSatisfiedTypes()) {
                                     addToIntersection(list, st, unit);
                                 }
@@ -365,8 +365,8 @@ public class ExpressionVisitor extends Visitor {
                                 }
                             }
                             else if (tp.isContravariant()) {
-                                if (!(ta.getDeclaration() instanceof BottomType)) {
-                                    that.addWarning("type argument to contravariant type parameter in assignability condition must be Bottom (until we implement reified generics)");
+                                if (!(ta.getDeclaration() instanceof NothingType)) {
+                                    that.addWarning("type argument to contravariant type parameter in assignability condition must be Nothing (until we implement reified generics)");
                                 }
                             }
                             else {
@@ -397,7 +397,7 @@ public class ExpressionVisitor extends Visitor {
         Tree.Variable v = that.getVariable();
         if (v!=null) {
             //v.getType().visit(this);
-            defaultTypeToVoid(v);
+            defaultTypeToAnything(v);
             Tree.SpecifierExpression se = v.getSpecifierExpression();
             if (se!=null && se.getExpression()!=null) {
                 se.visit(this);
@@ -437,9 +437,9 @@ public class ExpressionVisitor extends Visitor {
         }
     }
 
-    private void defaultTypeToVoid(Tree.Variable v) {
+    private void defaultTypeToAnything(Tree.Variable v) {
         /*if (v.getType().getTypeModel()==null) {
-            v.getType().setTypeModel( getVoidDeclaration().getType() );
+            v.getType().setTypeModel( getAnythingDeclaration().getType() );
         }*/
         v.getType().visit(this);
         if (v.getDeclarationModel().getType()==null) {
@@ -780,7 +780,7 @@ public class ExpressionVisitor extends Visitor {
         m.setUnit(unit);
         m.setContainer(c);
         m.setShortcutRefinement(true);
-        m.setDeclaredVoid(sm.isDeclaredVoid());
+        m.setDeclaredAnything(sm.isDeclaredVoid());
         DeclarationVisitor.setVisibleScope(m);
         c.getMembers().add(m);
         bme.setDeclaration(m);
@@ -2438,14 +2438,14 @@ private void checkPositionalArguments(ParameterList pl, ProducedReference pr,
                 int min = getTupleMinimumLength(pt);
                 if (elementTypes!=null) {
                     if (index<0) {
-                        that.setTypeModel(unit.getNothingDeclaration().getType());
+                        that.setTypeModel(unit.getNullDeclaration().getType());
                     }
                     else if (index<elementTypes.size()-(sequenced?1:0)) {
                         ProducedType iet = elementTypes.get(index);
                         if (iet!=null && !(iet.getDeclaration() instanceof UnknownType)) {
                             if (index>=min) {
                                 iet = unionType(iet, 
-                                        unit.getNothingDeclaration().getType(), 
+                                        unit.getNullDeclaration().getType(), 
                                         unit);
                             }
                             that.setTypeModel(iet);
@@ -2456,11 +2456,11 @@ private void checkPositionalArguments(ParameterList pl, ProducedReference pr,
                         if (iet!=null && !(iet.getDeclaration() instanceof UnknownType)) {
                             if (sequenced) {
                                 that.setTypeModel(unionType(unit.getIteratedType(iet), 
-                                        unit.getNothingDeclaration().getType(), 
+                                        unit.getNullDeclaration().getType(), 
                                         unit));
                             }
                             else {
-                                that.setTypeModel(unit.getNothingDeclaration().getType());
+                                that.setTypeModel(unit.getNullDeclaration().getType());
                             }
                         }
                     }
@@ -2901,8 +2901,8 @@ private void checkPositionalArguments(ParameterList pl, ProducedReference pr,
                     }
                     else {
                         ProducedType it = intersectionType(t, pt, unit);
-                        if (it.getDeclaration() instanceof BottomType) {
-                            that.addError("tests assignability to Bottom type: intersection of " +
+                        if (it.getDeclaration() instanceof NothingType) {
+                            that.addError("tests assignability to Nothing type: intersection of " +
                                     pt.getProducedTypeName() + " and " + 
                                     t.getProducedTypeName() +
                                     " is empty");
@@ -3213,7 +3213,7 @@ private void checkPositionalArguments(ParameterList pl, ProducedReference pr,
             }
             else {
                 //TODO: set the correct metatype
-                that.setTypeModel(unit.getVoidDeclaration().getType());
+                that.setTypeModel(unit.getAnythingDeclaration().getType());
             }
             /*if (defaultArgument) {
                 if (member.isClassOrInterfaceMember()) {
@@ -3277,7 +3277,7 @@ private void checkPositionalArguments(ParameterList pl, ProducedReference pr,
                 }
                 else {
                     //TODO: set the correct metatype
-                    that.setTypeModel(unit.getVoidDeclaration().getType());
+                    that.setTypeModel(unit.getAnythingDeclaration().getType());
                 }
                 checkOverloadedReference(that);
             }
@@ -3357,7 +3357,7 @@ private void checkPositionalArguments(ParameterList pl, ProducedReference pr,
             }
             else {
                 //TODO: set the correct metatype
-                that.setTypeModel(unit.getVoidDeclaration().getType());
+                that.setTypeModel(unit.getAnythingDeclaration().getType());
             }
             checkOverloadedReference(that);
         }
@@ -3449,7 +3449,7 @@ private void checkPositionalArguments(ParameterList pl, ProducedReference pr,
                 }
                 else {
                     //TODO: set the correct metatype
-                    that.setTypeModel(unit.getVoidDeclaration().getType());
+                    that.setTypeModel(unit.getAnythingDeclaration().getType());
                 }
                 checkOverloadedReference(that);
             }
@@ -3509,7 +3509,7 @@ private void checkPositionalArguments(ParameterList pl, ProducedReference pr,
         if (acceptsTypeArguments(receiverType, type, typeArgs, tal, that)) {
             ProducedType t = receiverType.getTypeMember(type, typeArgs);
             ProducedType ft = isAbstractType(t) ?
-                    unit.getVoidDeclaration().getType() : //TODO: set the correct metatype
+                    unit.getAnythingDeclaration().getType() : //TODO: set the correct metatype
                     t.getFullType(wrap(t, receivingType, that));
             that.setTypeModel(ft);
             that.setTarget(t);
@@ -3528,7 +3528,7 @@ private void checkPositionalArguments(ParameterList pl, ProducedReference pr,
 //        }
         if ( acceptsTypeArguments(type, typeArgs, tal, that) ) {
             ProducedType ft = isAbstractType(t) ?
-                    unit.getVoidDeclaration().getType() : //TODO: set the correct metatype
+                    unit.getAnythingDeclaration().getType() : //TODO: set the correct metatype
                     t.getFullType();
             that.setTypeModel(ft);
             that.setTarget(t);
@@ -3646,7 +3646,7 @@ private void checkPositionalArguments(ParameterList pl, ProducedReference pr,
     
     private ProducedType getTupleType(List<Tree.Expression> es, Tree.Ellipsis ell) {
         ProducedType result = unit.getEmptyDeclaration().getType();
-        ProducedType ut = unit.getBottomDeclaration().getType();
+        ProducedType ut = unit.getNothingDeclaration().getType();
         for (int i=es.size()-1; i>=0; i--) {
             Tree.Expression e = es.get(i);
             if (e.getTypeModel()!=null) {
@@ -3866,8 +3866,8 @@ private void checkPositionalArguments(ParameterList pl, ProducedReference pr,
                 checkReified(that, pt);
                 ProducedType it = intersectionType(pt, st, unit);
                 if (!hasUncheckedNulls(switchExpression.getTerm()) || !isNullCase(pt)) {
-                    if (it.isExactly(unit.getBottomDeclaration().getType())) {
-                        that.addError("narrows to Bottom type: " + 
+                    if (it.isExactly(unit.getNothingDeclaration().getType())) {
+                        that.addError("narrows to Nothing type: " + 
                                 pt.getProducedTypeName() + " has empty intersection with " + 
                                 st.getProducedTypeName());
                     }
@@ -3909,7 +3909,7 @@ private void checkPositionalArguments(ParameterList pl, ProducedReference pr,
                         if (!isTypeUnknown(oct)) {
                             //TODO: the following test doesn't work for cases of an interface!
                             if (!intersectionType(ct, oct, unit)
-                                    .isExactly(unit.getBottomDeclaration().getType())) {
+                                    .isExactly(unit.getNothingDeclaration().getType())) {
                                 cc.getCaseItem().addError("cases are not disjoint: " + 
                                     ct.getProducedTypeName() + " and " + 
                                         oct.getProducedTypeName());
@@ -3962,7 +3962,7 @@ private void checkPositionalArguments(ParameterList pl, ProducedReference pr,
     private boolean isNullCase(ProducedType ct) {
         TypeDeclaration d = ct.getDeclaration();
         return d!=null &&
-                d.equals(unit.getNothingDeclaration()) &&
+                d.equals(unit.getNullDeclaration()) &&
                 d.equals(unit.getNullDeclaration());
     }
 
@@ -4396,16 +4396,16 @@ private void checkPositionalArguments(ParameterList pl, ProducedReference pr,
             }
         }
         else if (p.isCovariant()) {
-            if (!(td instanceof BottomType)) {
+            if (!(td instanceof NothingType)) {
                 //TODO: let it be the union of the lower bounds on p
-                that.addError("argument to covariant type parameter of enumerated supertype must be a type parameter or Bottom: " + 
+                that.addError("argument to covariant type parameter of enumerated supertype must be a type parameter or Nothing: " + 
                         p.getName() + " of "+ supertype.getDeclaration().getName());
             }
         }
         else if (p.isContravariant()) {
-            if (!(td.equals(unit.getVoidDeclaration()))) {
+            if (!(td.equals(unit.getAnythingDeclaration()))) {
                 //TODO: let it be the intersection of the upper bounds on p
-                that.addError("argument to contravariant type parameter of enumerated supertype must be a type parameter or Void" + 
+                that.addError("argument to contravariant type parameter of enumerated supertype must be a type parameter or Anything" + 
                         p.getName() + " of "+ supertype.getProducedTypeName());
             }
         }
@@ -4431,7 +4431,7 @@ private void checkPositionalArguments(ParameterList pl, ProducedReference pr,
 
     private ProducedType defaultType() {
         TypeDeclaration ut = new UnknownType(unit);
-        ut.setExtendedType(unit.getVoidDeclaration().getType());
+        ut.setExtendedType(unit.getAnythingDeclaration().getType());
         return ut.getType();
     }
     

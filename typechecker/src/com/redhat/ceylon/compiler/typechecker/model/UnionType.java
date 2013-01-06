@@ -33,7 +33,7 @@ public class UnionType extends TypeDeclaration {
     @Override
     public ProducedType getType() {
         if (getCaseTypes().size()==0) {
-            return unit.getBottomDeclaration().getType();
+            return unit.getNothingDeclaration().getType();
         }
         else if (getCaseTypes().size()==1) {
             return getCaseTypes().get(0).getType();

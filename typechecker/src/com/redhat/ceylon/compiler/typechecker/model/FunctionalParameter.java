@@ -14,7 +14,7 @@ import java.util.List;
 public class FunctionalParameter extends Parameter implements Scope, Functional {
     
     private List<ParameterList> parameterLists = new ArrayList<ParameterList>();
-    private boolean declaredVoid;
+    private boolean declaredAnything;
     
     @Override
     public List<ParameterList> getParameterLists() {
@@ -53,11 +53,11 @@ public class FunctionalParameter extends Parameter implements Scope, Functional 
     
     @Override
     public boolean isDeclaredVoid() {
-        return declaredVoid;
+        return declaredAnything;
     }
     
-    public void setDeclaredVoid(boolean declaredVoid) {
-        this.declaredVoid = declaredVoid;
+    public void setDeclaredAnything(boolean declaredAnything) {
+        this.declaredAnything = declaredAnything;
     }
 
 }

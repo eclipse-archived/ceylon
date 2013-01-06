@@ -22,7 +22,7 @@ public class Method extends MethodOrValue implements Generic, Scope, Functional 
     private boolean overloaded;
     private boolean abstraction;
     private List<Declaration> overloads;
-    private boolean declaredVoid;
+    private boolean declaredAnything;
 
     /*public boolean isFormal() {
          return formal;
@@ -75,11 +75,11 @@ public class Method extends MethodOrValue implements Generic, Scope, Functional 
     
     @Override
     public boolean isDeclaredVoid() {
-        return declaredVoid;
+        return declaredAnything;
     }
     
-    public void setDeclaredVoid(boolean declaredVoid) {
-        this.declaredVoid = declaredVoid;
+    public void setDeclaredAnything(boolean declaredAnything) {
+        this.declaredAnything = declaredAnything;
     }
     
     @Override

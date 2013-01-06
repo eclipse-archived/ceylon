@@ -123,8 +123,8 @@ class Primaries() {
     //Object[] stuff = [A(),B(),"Hello",[1,2,3]];
     value objects = [A(),B(),"Hello",[1,2,3].sequence].sequence;
     //Object[] things = objects;
-    @type:"Nothing|Primaries.A|Primaries.B|String|Sequence<Integer>" value p27 = objects[1];
-    @type:"Nothing|String" value p28 = objects[1]?.string;
+    @type:"Null|Primaries.A|Primaries.B|String|Sequence<Integer>" value p27 = objects[1];
+    @type:"Null|String" value p28 = objects[1]?.string;
     if (exists o = objects[1]) {
         @type:"Primaries.A|Primaries.B|String|Sequence<Integer>" value p29 = o;
         String s = o.string;
@@ -135,10 +135,10 @@ class Primaries() {
     
     @type:"Sequential<Boolean>" value p100 = { true }.sequence;
     @type:"Sequential<Boolean>" value p101 = { true, false }.sequence;
-    @type:"Sequential<Nothing|Boolean>" value p102 = { null, true, false }.sequence;
+    @type:"Sequential<Null|Boolean>" value p102 = { null, true, false }.sequence;
     @type:"Sequence<Boolean>" value p100s = [ true ].sequence;
     @type:"Sequence<Boolean>" value p101s = [ true, false ].sequence;
-    @type:"Sequence<Nothing|Boolean>" value p102s = [ null, true, false ].sequence;
+    @type:"Sequence<Null|Boolean>" value p102s = [ null, true, false ].sequence;
     
     object idobj satisfies G&H {}
     object obj extends Object() satisfies G&H {
@@ -195,4 +195,4 @@ class Primaries() {
     
 }
 
-void ann({Void...} elements) {}
+void ann({Anything...} elements) {}

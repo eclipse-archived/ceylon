@@ -16,7 +16,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import com.redhat.ceylon.compiler.typechecker.model.BottomType;
+import com.redhat.ceylon.compiler.typechecker.model.NothingType;
 import com.redhat.ceylon.compiler.typechecker.model.Class;
 import com.redhat.ceylon.compiler.typechecker.model.ClassOrInterface;
 import com.redhat.ceylon.compiler.typechecker.model.Declaration;
@@ -234,7 +234,7 @@ public class RefinementVisitor extends Visitor {
 		        if (st1.getDeclaration().equals(st2.getDeclaration()) /*&& !st1.isExactly(st2)*/) {
 		            boolean ok = true;
 		            if (intersectionType(st1, st2, that.getUnit())
-		                    .getDeclaration() instanceof BottomType) {
+		                    .getDeclaration() instanceof NothingType) {
 		                ok = false;
 		            }
 		            else {

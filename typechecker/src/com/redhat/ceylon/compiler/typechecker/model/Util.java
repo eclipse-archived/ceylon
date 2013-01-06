@@ -184,7 +184,7 @@ public class Util {
         ProducedType sigType = d.getUnit().getDefiniteType(sdt);
         ProducedType ast = sigType.getSupertype(d.getUnit().getArrayDeclaration());
         if (ast!=null) sigType = ast;
-        if (sigType.isSubtypeOf(d.getUnit().getNothingDeclaration().getType())) {
+        if (sigType.isSubtypeOf(d.getUnit().getNullDeclaration().getType())) {
             return true;
         }
         if (isTypeUnknown(sigType) || isTypeUnknown(paramType)) return false;
@@ -393,7 +393,7 @@ public class Util {
             }
         }
         else {
-            //implement the rule that Foo&Bar==Bottom if 
+            //implement the rule that Foo&Bar==Nothing if 
             //there exists some Baz of Foo | Bar
             //i.e. the intersection of disjoint types is
             //empty
@@ -414,7 +414,7 @@ public class Util {
                                 for (ProducedType t: list) {
                                     if (t.getSupertype(ct)!=null) {
                                         list.clear();
-                                        list.add( new BottomType(unit).getType() );
+                                        list.add( new NothingType(unit).getType() );
                                         return;
                                     }
                                 }
@@ -465,15 +465,15 @@ public class Util {
                                     //TODO: this is too weak, we should really
                                     //      recursively search for type parameter
                                     //      arguments and if we don't find any
-                                    //      we can reduce to Bottom
+                                    //      we can reduce to Nothing
                                     list.clear();
-                                    args.add( new BottomType(unit).getType() );
+                                    args.add( new NothingType(unit).getType() );
                                     return;
                                 }
                                 else {
                                     //TODO: this is not correct: the intersection
                                     //      of two different instantiations of an
-                                    //      invariant type is actually Bottom
+                                    //      invariant type is actually Nothing
                                     //      unless the type arguments are equivalent
                                     //      or are type parameters that might 
                                     //      represent equivalent types at runtime.
@@ -495,23 +495,23 @@ public class Util {
                     }
                     else {
                         //Unit unit = pt.getDeclaration().getUnit();
-                        TypeDeclaration nd = unit.getNothingDeclaration();
+                        TypeDeclaration nd = unit.getNullDeclaration();
                         if (pt.getDeclaration() instanceof Class &&
                                 t.getDeclaration() instanceof Class ||
                             pt.getDeclaration() instanceof Interface &&
                                 t.getDeclaration() instanceof Class &&
                                 t.getDeclaration().equals(nd) ||
-                                //t.getDeclaration().getQualifiedNameString().equals("ceylon.language.Nothing") ||
+                                //t.getDeclaration().getQualifiedNameString().equals("ceylon.language.Null") ||
                             t.getDeclaration() instanceof Interface &&
                             pt.getDeclaration() instanceof Class &&
                                 pt.getDeclaration().equals(nd)) {
-                                //pt.getDeclaration().getQualifiedNameString().equals("ceylon.language.Nothing")) {
+                                //pt.getDeclaration().getQualifiedNameString().equals("ceylon.language.Null")) {
                             if (t.getSupertype(pt.getDeclaration())==null &&
                             		pt.getSupertype(t.getDeclaration())==null) {
                             	//the meet of two classes unrelated by inheritance, or
-                            	//of Nothing with an interface type is empty
+                            	//of Null with an interface type is empty
                             	list.clear();
-                            	list.add( unit.getBottomDeclaration().getType() );
+                            	list.add( unit.getNothingDeclaration().getType() );
                             	return;
                             }
                         }

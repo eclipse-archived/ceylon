@@ -10,7 +10,7 @@ class Y<out T>() extends X<T>() satisfies Sized {
 class Z<out T>() extends X<T>() {
     shared String name = "gavin";
 }
-class W() extends X<Bottom>() {}
+class W() extends X<Nothing>() {}
 
 @error class A<T>() extends X<T>() {} 
 

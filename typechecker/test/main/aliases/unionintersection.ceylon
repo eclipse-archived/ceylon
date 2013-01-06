@@ -1,4 +1,4 @@
-interface Cntnr => Container<Void>; 
+interface Cntnr => Container<Anything>; 
 
 alias Number => Integer|Float;
 alias ListLike<T> given T satisfies Object => List<T>|Map<Integer,T>;
@@ -35,9 +35,9 @@ void testSwitch(Number nn, C cc) {
 void testCanonicalization() {
     Integer|Float i = n;
     Number[] ns = [n];
-    @type:"Nothing|Number" value temp = ns[0];
+    @type:"Null|Number" value temp = ns[0];
     print(temp);
-    Integer|Float|Nothing t = temp;
+    Integer|Float|Null t = temp;
     Number? num = t;
     @type:"Number" Number&Object no = t else 1.0;
     @type:"Number" value noo = temp else 1.0;

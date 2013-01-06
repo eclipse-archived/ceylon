@@ -44,22 +44,22 @@ class Is() {
         @type:"Correspondence<Integer,String>&Sized" value cc = c;
     }
     Correspondence<Integer,String> d = strings;
-    if (is Sized&Container<Void> d) {
+    if (is Sized&Container<Anything> d) {
         String? s = d[0];
         @error Object? f1 = d.first;
-        Void f2 = d.first;
+        Anything f2 = d.first;
         @error Integer size = e.size;
         @error Boolean empty = e.empty;
         Integer elementCount = d.elementCount;
         Boolean isEmpty = d.isEmpty;
         if ("hello" in d) {}
         //@error for (String str in d) {}
-        @type:"Correspondence<Integer,String>&Sized&Container<Void>" value dd = d;
+        @type:"Correspondence<Integer,String>&Sized&Container<Anything>" value dd = d;
     }
     if (is Emptyish&Container<String> d) {
         String? s = d[0];
         String? f1 = d.first;
-        Void f2 = d.first;
+        Anything f2 = d.first;
         @error Integer size = e.size;
         @error Boolean empty = e.empty;
         @error Integer elementCount = d.elementCount;
@@ -170,7 +170,7 @@ class Is() {
         Character char = ch;
     }
     @error if (!is Object next) {}
-    @error if (!is Nothing next) {}
+    @error if (!is Null next) {}
     
     Identifiable? i = null;
     if (is Category cat = i) {

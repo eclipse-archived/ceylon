@@ -2,7 +2,7 @@ interface DefiniteReturn {
     
     void doSomething() {}
     void doSomethingElse() {}
-    void doNothing() {}
+    void doNull() {}
     Boolean testSomething()  { return 1<2; }
     class X() {}
     
@@ -47,7 +47,7 @@ interface DefiniteReturn {
         else {
             doSomethingElse();
         }
-        doNothing();
+        doNull();
     }
     
     void voidMethodWithThrowInIf2() {
@@ -58,7 +58,7 @@ interface DefiniteReturn {
         else {
             doSomethingElse();
         }
-        doNothing();
+        doNull();
     }
     
     void voidMethodWithReturnInNestedIf() {
@@ -94,7 +94,7 @@ interface DefiniteReturn {
                 return;
             }
             else {
-                doNothing();
+                doNull();
                 return;
             }
         }
@@ -109,7 +109,7 @@ interface DefiniteReturn {
             doSomething();
         }
         else {
-            doNothing();
+            doNull();
             return;
         }
         doSomethingElse();
@@ -120,7 +120,7 @@ interface DefiniteReturn {
             doSomething();
         }
         else {
-            doNothing();
+            doNull();
             throw;
         }
         doSomethingElse();
@@ -157,7 +157,7 @@ interface DefiniteReturn {
             doSomethingElse();
             return;
         }
-        @error doNothing();
+        @error doNull();
     }
     
     void voidMethodWithStatementAfterDefiniteThrow() {
@@ -169,7 +169,7 @@ interface DefiniteReturn {
             doSomethingElse();
             throw;
         }
-        @error doNothing();
+        @error doNull();
     }
     
     void voidMethodWithReturnInFor() {
@@ -177,7 +177,7 @@ interface DefiniteReturn {
             doSomething();
             return;
         }
-        doNothing();
+        doNull();
     }
     
     void voidMethodWithReturnInFor2() {
@@ -188,7 +188,7 @@ interface DefiniteReturn {
         else {
             doSomethingElse();
         }
-        doNothing();
+        doNull();
     }
     
     void voidMethodWithReturnInForAndFail() {
@@ -277,7 +277,7 @@ interface DefiniteReturn {
         else {
             doSomethingElse();
         }
-        doNothing();
+        doNull();
     }
     
     @error X methodWithThrowInIf2() {
@@ -288,7 +288,7 @@ interface DefiniteReturn {
         else {
             doSomethingElse();
         }
-        doNothing();
+        doNull();
     }
     
     X methodWithReturnInIf3() {
@@ -299,7 +299,7 @@ interface DefiniteReturn {
         else {
             doSomethingElse();
         }
-        doNothing();
+        doNull();
         return X();
     }
     
@@ -311,7 +311,7 @@ interface DefiniteReturn {
         else {
             doSomethingElse();
         }
-        doNothing();
+        doNull();
         throw;
     }
     
@@ -348,7 +348,7 @@ interface DefiniteReturn {
                 return X();
             }
             else {
-                doNothing();
+                doNull();
                 return X();
             }
         }
@@ -363,7 +363,7 @@ interface DefiniteReturn {
             doSomething();
         }
         else {
-            doNothing();
+            doNull();
             return X();
         }
         doSomethingElse();
@@ -374,7 +374,7 @@ interface DefiniteReturn {
             doSomething();
         }
         else {
-            doNothing();
+            doNull();
             throw;
         }
         doSomethingElse();
@@ -451,7 +451,7 @@ interface DefiniteReturn {
             doSomethingElse();
             return X();
         }
-        @error doNothing();
+        @error doNull();
     }
     
     X methodWithStatementAfterDefiniteThrow() {
@@ -463,7 +463,7 @@ interface DefiniteReturn {
             doSomethingElse();
             throw;
         }
-        @error doNothing();
+        @error doNull();
     }
     
     @error X methodWithReturnInFor() {
@@ -471,7 +471,7 @@ interface DefiniteReturn {
             doSomething();
             return X();
         }
-        doNothing();
+        doNull();
     }
     
     X methodWithReturnInFail() {
@@ -479,7 +479,7 @@ interface DefiniteReturn {
             doSomething();
         }
         else {
-            doNothing();
+            doNull();
             return X();
         }
     }
@@ -492,7 +492,7 @@ interface DefiniteReturn {
         else {
             return X();
         }
-        doNothing();
+        doNull();
     }
     
     @error X methodWithReturnInFor2() {
@@ -503,7 +503,7 @@ interface DefiniteReturn {
         else {
             doSomethingElse();
         }
-        doNothing();
+        doNull();
     }
     
     X methodWithReturnInFor3() {
@@ -514,7 +514,7 @@ interface DefiniteReturn {
         else {
             doSomethingElse();
         }
-        doNothing();
+        doNull();
         return X();
     }
     
@@ -604,7 +604,7 @@ interface DefiniteReturn {
         else {
             doSomethingElse();
         }
-        doNothing();
+        doNull();
     }
     
     @error X getterWithThrowInIf2 {
@@ -615,7 +615,7 @@ interface DefiniteReturn {
         else {
             doSomethingElse();
         }
-        doNothing();
+        doNull();
     }
     
     @error X getterWithReturnInNestedIf {
@@ -651,7 +651,7 @@ interface DefiniteReturn {
                 return X();
             }
             else {
-                doNothing();
+                doNull();
                 return X();
             }
         }
@@ -666,7 +666,7 @@ interface DefiniteReturn {
             doSomething();
         }
         else {
-            doNothing();
+            doNull();
             return X();
         }
         doSomethingElse();
@@ -677,7 +677,7 @@ interface DefiniteReturn {
             doSomething();
         }
         else {
-            doNothing();
+            doNull();
             throw;
         }
         doSomethingElse();
@@ -714,7 +714,7 @@ interface DefiniteReturn {
             doSomethingElse();
             return X();
         }
-        @error doNothing();
+        @error doNull();
     }
     
     X getterWithStatementAfterDefiniteThrow {
@@ -726,7 +726,7 @@ interface DefiniteReturn {
             doSomethingElse();
             throw;
         }
-        @error doNothing();
+        @error doNull();
     }
     
     @error X getterWithReturnInFor {
@@ -734,7 +734,7 @@ interface DefiniteReturn {
             doSomething();
             return X();
         }
-        doNothing();
+        doNull();
     }
     
     @error X getterWithReturnInFor2 {
@@ -745,7 +745,7 @@ interface DefiniteReturn {
         else {
             doSomethingElse();
         }
-        doNothing();
+        doNull();
     }
     
     X getterWithReturnInFor3 {
@@ -756,7 +756,7 @@ interface DefiniteReturn {
         else {
             doSomethingElse();
         }
-        doNothing();
+        doNull();
         return X();
     }
     
@@ -846,7 +846,7 @@ interface DefiniteReturn {
         else {
             doSomethingElse();
         }
-        doNothing();
+        doNull();
     }
     
     assign getterWithThrowInIf2 {
@@ -857,7 +857,7 @@ interface DefiniteReturn {
         else {
             doSomethingElse();
         }
-        doNothing();
+        doNull();
     }
     
     assign getterWithReturnInNestedIf {
@@ -893,7 +893,7 @@ interface DefiniteReturn {
                 return;
             }
             else {
-                doNothing();
+                doNull();
                 return;
             }
         }
@@ -908,7 +908,7 @@ interface DefiniteReturn {
             doSomething();
         }
         else {
-            doNothing();
+            doNull();
             return;
         }
         doSomethingElse();
@@ -919,7 +919,7 @@ interface DefiniteReturn {
             doSomething();
         }
         else {
-            doNothing();
+            doNull();
             throw;
         }
         doSomethingElse();
@@ -956,7 +956,7 @@ interface DefiniteReturn {
             doSomethingElse();
             return;
         }
-        @error doNothing();
+        @error doNull();
     }
     
     assign getterWithStatementAfterDefiniteThrow {
@@ -968,7 +968,7 @@ interface DefiniteReturn {
             doSomethingElse();
             throw;
         }
-        @error doNothing();
+        @error doNull();
     }
     
     assign getterWithReturnInFor {
@@ -976,7 +976,7 @@ interface DefiniteReturn {
             doSomething();
             return;
         }
-        doNothing();
+        doNull();
     }
     
     assign getterWithReturnInFor2 {
@@ -987,7 +987,7 @@ interface DefiniteReturn {
         else {
             doSomethingElse();
         }
-        doNothing();
+        doNull();
     }
     
     assign getterWithReturnInForAndFail {

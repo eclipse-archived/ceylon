@@ -512,8 +512,8 @@ public abstract class TypeDeclaration extends Declaration
                 !equals(unit.getEntryDeclaration()) &&
                 !equals(unit.getRangeDeclaration()) &&
                 !equals(unit.getStringDeclaration()) &&
-                !equals(unit.getNothingDeclaration()) &&
-                !equals(unit.getBottomDeclaration());
+                !equals(unit.getNullDeclaration()) &&
+                !equals(unit.getNothingDeclaration());
     }
     
     /**

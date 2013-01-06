@@ -1,5 +1,5 @@
-Nothing table(String name, String schema) { return null; }
-Nothing persistent(String column, Void type, Boolean update) { return null; }
+Null table(String name, String schema) { return null; }
+Null persistent(String column, Anything type, Boolean update) { return null; }
 
 class Annotations() {
     

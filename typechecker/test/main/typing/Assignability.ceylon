@@ -407,7 +407,7 @@ class Assignability() {
     }
     
     function foo() { throw; }
-    @type:"Bottom" foo();
+    @type:"Nothing" foo();
     
     function f<T>(T a, T b) {
         if (true) {
@@ -420,7 +420,7 @@ class Assignability() {
     @type:"Tuple<String,String,Empty>|Tuple<Integer,Integer,Empty>" value ut = f(["aaa"],[1]);
     Sequence<Object> st1 = ut;
     Sequence<String|Integer> st2 = ut;
-    @type:"Nothing|String|Integer" value item = ut[0];
+    @type:"Null|String|Integer" value item = ut[0];
     @type:"Sequential<String>|Sequential<Integer>" value items = ut[1..2];
     
     class Invariant<T>(T t) {}
@@ -431,7 +431,7 @@ class Assignability() {
 //    Invariant<Integer> iii2 = iii1;
 //    Invariant<Ordinal<Integer>> iii3 = iii2;
     
-    Void v = null;
+    Anything v = null;
     if (exists v) {
         @type:"Object" value val = v;
         print(v.string);

@@ -16,7 +16,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-import com.redhat.ceylon.compiler.typechecker.model.BottomType;
+import com.redhat.ceylon.compiler.typechecker.model.NothingType;
 import com.redhat.ceylon.compiler.typechecker.model.Class;
 import com.redhat.ceylon.compiler.typechecker.model.ClassOrInterface;
 import com.redhat.ceylon.compiler.typechecker.model.Declaration;
@@ -585,7 +585,7 @@ public class TypeVisitor extends Visitor {
         
     @Override 
     public void visit(Tree.VoidModifier that) {
-        Class vtd = unit.getVoidDeclaration();
+        Class vtd = unit.getAnythingDeclaration();
         if (vtd!=null) {
 		    that.setTypeModel(vtd.getType());
         }
@@ -667,7 +667,7 @@ public class TypeVisitor extends Visitor {
     @Override 
     public void visit(Tree.ClassDefinition that) {
         Class c = that.getDeclarationModel();
-        Class vd = unit.getVoidDeclaration();
+        Class vd = unit.getAnythingDeclaration();
         if (c!=vd) {
             defaultSuperclass(that.getExtendedType(), c);
         }
@@ -685,7 +685,7 @@ public class TypeVisitor extends Visitor {
 
     @Override
     public void visit(Tree.TypeParameterDeclaration that) {
-        Class vd = unit.getVoidDeclaration();
+        Class vd = unit.getAnythingDeclaration();
         if (vd!=null) {
 		    that.getDeclarationModel().setExtendedType(vd.getType());
         }
@@ -986,8 +986,8 @@ public class TypeVisitor extends Visitor {
         	}
         	IntersectionType it = new IntersectionType(unit);
         	it.setSatisfiedTypes(l);
-        	if (it.getType().getDeclaration() instanceof BottomType) {
-        		that.addError("upper bound constraints cannot be satisfied by any type except Bottom");
+        	if (it.getType().getDeclaration() instanceof NothingType) {
+        		that.addError("upper bound constraints cannot be satisfied by any type except Nothing");
         	}
         }
         td.setSatisfiedTypes(list);

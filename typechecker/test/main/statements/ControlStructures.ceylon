@@ -14,7 +14,7 @@ class ControlStructures() {
         print(n);
     }
     
-    @error if (is Void something) {}
+    @error if (is Anything something) {}
     @error if (is Object something) {}
     @error if (is String s = "hello") {}
     @error if (is Object s = "hello") {}
@@ -105,7 +105,7 @@ class ControlStructures() {
     }
     catch (e) {
         @type:"String" value msg = e.message;
-        @type:"Nothing|Exception" value cause = e.cause;
+        @type:"Null|Exception" value cause = e.cause;
     }
 
     class Exception1() extends Exception() {}
@@ -116,7 +116,7 @@ class ControlStructures() {
     }
     catch (@type:"ControlStructures.Exception1|ControlStructures.Exception2" Exception1|Exception2 e) {
         @type:"String" value msg = e.message;
-        @type:"Nothing|Exception" value cause = e.cause;
+        @type:"Null|Exception" value cause = e.cause;
     }
     catch (@error String s) {
         
@@ -181,11 +181,11 @@ class ControlStructures() {
     }
     while (test2);*/
     
-    Void v = null;
+    Anything v = null;
     
     switch (v)
     case (is Object) {}
-    case (is Nothing) {}
+    case (is Null) {}
     
     switch (v)
     case (is Object) {}
@@ -196,18 +196,18 @@ class ControlStructures() {
     else {}
 
     switch (v)
-    case (is Object|Nothing) {}
+    case (is Object|Null) {}
 
     @error switch (v)
-    case (is Object|Nothing) {}
+    case (is Object|Null) {}
     case (null) {}
 
     @error switch (v)
-    case (is Object|Nothing) {}
-    case (is Nothing) {}
+    case (is Object|Null) {}
+    case (is Null) {}
 
     switch (v)
-    case (is Void) {}
+    case (is Anything) {}
 
     @error switch (v)
     case (is Object) {}
@@ -235,19 +235,19 @@ class ControlStructures() {
     
     switch (s)
     case (is String) {}
-    case (is Nothing) {}
+    case (is Null) {}
     
     //@error 
     switch (s)
     case (is Object) {}
-    case (is Nothing) {}
+    case (is Null) {}
     
     switch (s)
     case (is String) {}
     case (null) {}
     
     @error switch (s)
-    case (is Nothing) {}
+    case (is Null) {}
     case (is String) {}
     case (null) {}
     

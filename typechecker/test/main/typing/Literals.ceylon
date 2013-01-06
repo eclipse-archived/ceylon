@@ -31,7 +31,7 @@ class Literals() {
     
     Iterable<String> istrings = strings;
     
-    //@type:"Nothing|String" value sw = process.switches["file";
+    //@type:"Null|String" value sw = process.switches["file";
     
     @type:"Float" value ff = 1.float;
     @type:"Integer" value ii = 1.0.integer;

@@ -24,7 +24,7 @@ class Optional() {
     value sy = [ Y() ];
     value syn = [ Y(), null ];
     value sxy = [ X(), Y() ];
-    variable <X|Y|Nothing>[] ss = [ X(), Y(), null ];
+    variable <X|Y|Null>[] ss = [ X(), Y(), null ];
     ss=sx;
     ss=sy;
     ss=sxy;
@@ -71,11 +71,11 @@ class Optional() {
     Integer scs = somechars.size;
     value sci = somechars.iterator;
     
-    @type:"Nothing|String|Integer|Sequence<Object>" String? | String | String? | Integer | Sequence<Object> foobar1 = -1;
-    @type:"Nothing|Sequential<String>|Integer" String[]? | String[] | Sequence<String> | Integer foobar2 = 1.integer;
+    @type:"Null|String|Integer|Sequence<Object>" String? | String | String? | Integer | Sequence<Object> foobar1 = -1;
+    @type:"Null|Sequential<String>|Integer" String[]? | String[] | Sequence<String> | Integer foobar2 = 1.integer;
     
-    @type:"Sequence<Nothing|String|Integer|Sequence<Object>|Sequential<String>>" value xyz1 = [ foobar1, foobar2 ].sequence;
-    @type:"Sequential<Nothing|String|Integer|Sequence<Object>|Sequential<String>>" value xyz2 = { foobar1, foobar2 }.sequence;
+    @type:"Sequence<Null|String|Integer|Sequence<Object>|Sequential<String>>" value xyz1 = [ foobar1, foobar2 ].sequence;
+    @type:"Sequential<Null|String|Integer|Sequence<Object>|Sequential<String>>" value xyz2 = { foobar1, foobar2 }.sequence;
     
     //TODO: I think the type parameter X does
     //      not hide the X defined above - it

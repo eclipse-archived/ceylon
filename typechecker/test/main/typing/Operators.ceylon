@@ -65,7 +65,7 @@ class Operators() {
     
     X? nothing = null;
     
-    //@type:"Nothing|Operators.X" value x20 = nothing ? nothing;
+    //@type:"Null|Operators.X" value x20 = nothing ? nothing;
     //
     //@type:"Operators.X" value x21 = nothing ? X();
     //
@@ -139,11 +139,11 @@ class Operators() {
     String[]? noSequence = null;
     String[] emp = {};
     
-    @type:"Nothing|Operators.X" value x38 = sequence[0];
+    @type:"Null|Operators.X" value x38 = sequence[0];
     @type:"Sequential<Operators.X>" value x39 = sequence[0..1];
     @type:"Sequential<Operators.X>" value x40 = sequence[1+1...];
-    @type:"Nothing|Operators.X" value x41 = [nothing][0];
-    @type:"Nothing|String" value x42 = noSequence?[0];
+    @type:"Null|Operators.X" value x41 = [nothing][0];
+    @type:"Null|String" value x42 = noSequence?[0];
     @type:"Sequential<Operators.X>" value x39u = sequence[...1];
     
     @error value x43 = sequence["hello"];
@@ -152,22 +152,22 @@ class Operators() {
     @error value x45 = sequence[1.."hello"];
     
     String? maybeString = null;
-    Callable<Nothing|Iterable<String>,[Iterable<Character>|Callable<Boolean,[Character]>,Boolean,Boolean]> mss = maybeString?.split;
+    Callable<Null|Iterable<String>,[Iterable<Character>|Callable<Boolean,[Character]>,Boolean,Boolean]> mss = maybeString?.split;
     Callable<Sequence<Iterable<String>>,[Iterable<Character>|Callable<Boolean,[Character]>,Boolean,Boolean]> hws = ["hello", "world"][].split;
     
     Sequence<String> helloworld = ["hello", "world"];
     @type:"Sequential<String>" value e45 = emp[].uppercased;
     @type:"Sequence<Sequential<Character>>" value x46 = helloworld[].characters;
     @type:"Sequence<String>" value x47 = helloworld[].uppercased;
-    @type:"Nothing|Sequential<Character>" value x48 = helloworld[0]?.characters;
+    @type:"Null|Sequential<Character>" value x48 = helloworld[0]?.characters;
     @type:"Sequence<Sequential<Character>>" value x49 = helloworld[].characters;
     @type:"Sequence<Iterable<String>>" value x50 = helloworld[].lines;
-    @type:"Nothing|String" value x51 = helloworld[0]?.normalized;
-    @type:"Nothing|Iterable<String>" value x512 = helloworld[0]?.split((Character c) => c==` `);
+    @type:"Null|String" value x51 = helloworld[0]?.normalized;
+    @type:"Null|Iterable<String>" value x512 = helloworld[0]?.split((Character c) => c==` `);
     @type:"Sequence<String>" value x52 = helloworld[].normalized;
     @type:"Sequence<Iterable<String>>" value x522 = helloworld[].split((Character c) => c==` `);
-    @type:"Nothing|String" value x53 = noSequence?[0]?.normalized;
-    @type:"Nothing|Iterable<String>" value x532 = noSequence?[0]?.split((Character c) => c==` `);
+    @type:"Null|String" value x53 = noSequence?[0]?.normalized;
+    @type:"Null|Iterable<String>" value x532 = noSequence?[0]?.split((Character c) => c==` `);
     @type:"Sequence<Operators.X>" value x54 = [Operators()][].X();
 
     {String...} onetwo = {"one", "two"};
@@ -175,10 +175,10 @@ class Operators() {
     @type:"Sequential<Sequential<Character>>" value x62 = onetwo[].characters;
     @type:"Sequential<Iterable<String>>" value x63 = onetwo[].split((Character c) => c==` `);
     
-    @type:"Nothing|Sequential<String>" value s1 = noSequence?[1...];
-    @type:"Nothing|Sequential<String>" value s2 = noSequence?[...2];
-    @type:"Nothing|Sequential<String>" value s3 = noSequence?[1..2];
-    @type:"Nothing|Sequential<String>" value s4 = noSequence?[1:2];
+    @type:"Null|Sequential<String>" value s1 = noSequence?[1...];
+    @type:"Null|Sequential<String>" value s2 = noSequence?[...2];
+    @type:"Null|Sequential<String>" value s3 = noSequence?[1..2];
+    @type:"Null|Sequential<String>" value s4 = noSequence?[1:2];
     
     variable Integer n = 0;
     @type:"Integer" n++;
@@ -223,15 +223,15 @@ class Operators() {
     
     @type:"Empty" value es = {};
     
-    @type:"Nothing" value nnnn = es[0];
-    Nothing nnnn2 = nnnn;
+    @type:"Null" value nnnn = es[0];
+    Null nnnn2 = nnnn;
     
     String?[] nullhelloworld = [ null, "hello", "world" ];
-    @type:"Nothing|String" value ns = nullhelloworld[1];
+    @type:"Null|String" value ns = nullhelloworld[1];
     String? ns2 = ns;
     
-    <Nothing|String|Float>[] nullhelloone = [ null, "hello", 1.0 ];
-    @type:"Nothing|String|Float" value nsf = nullhelloone[1];
+    <Null|String|Float>[] nullhelloone = [ null, "hello", 1.0 ];
+    @type:"Null|String|Float" value nsf = nullhelloone[1];
     String|Float? nsf2 = ns;
     
     @type:"Tuple<Integer|Float,Integer,Tuple<Integer|Float,Integer,Tuple<Float|Integer,Float,Tuple<Integer,Integer,Empty>>>>" 
@@ -239,11 +239,11 @@ class Operators() {
     @type:"Float" value ion = ins[2];
     String ions = ion.string;
     Sequence<Integer|Float> ins2 = ins;
-    Nothing|Integer|Float ion2 = ion;
+    Null|Integer|Float ion2 = ion;
     Integer?|Float? ion3 = ion;
-    Nothing|Integer|Float ion4 { return ion2; }
-    Nothing|Integer|Float ion5 { return ion3; }
-    Integer|Float defaultIon(Nothing|Integer|Float x) {
+    Null|Integer|Float ion4 { return ion2; }
+    Null|Integer|Float ion5 { return ion3; }
+    Integer|Float defaultIon(Null|Integer|Float x) {
         if (exists x) {
             return x;
         }
@@ -251,7 +251,7 @@ class Operators() {
             return 0;
         }
     }
-    Integer|Float defaultIon2(Nothing|Integer|Float x) {
+    Integer|Float defaultIon2(Null|Integer|Float x) {
         return x else 0;
     }
 
@@ -267,8 +267,8 @@ class Operators() {
     @type:"Sequence<Entry<String,Float>>" Sequence<String->Float> esfs = [esf];
     
     String->Object okEntry;   
-    @error String->Void brokenEntry1;
-    @error Nothing->String brokenEntry2;
+    @error String->Anything brokenEntry1;
+    @error Null->String brokenEntry2;
     
     @error value brokenEntry3 = "hello"->null;
     @error value brokenEntry4 = null->"hello";
@@ -286,7 +286,7 @@ class Operators() {
     //@type:"String" value str3 = nostring ? nostring ? "hello";
     @type:"String" value str4 = nostring else nostring else "hello";
     
-    Void vd = null;
+    Anything vd = null;
     //@type:"Object" value vd1 = vd ? 1;
     //@type:"Object" value vd2 = vd ? "hello";
     @type:"Object" value vd1 = vd else 1;
@@ -321,7 +321,7 @@ class Operators() {
     Set<Object> so = bottom;
     @type:"Set<String|Integer>" value sr0 = ss|si;
     @type:"Set<String|Integer>" value sr1 = ss^si;
-    @type:"Set<Bottom>" value sr2 = ss&si;
+    @type:"Set<Nothing>" value sr2 = ss&si;
     @type:"Set<String>" value sr3 = ss~si;
     @type:"Set<String>" value sr4 = ss&so;
     @type:"Set<Object>" value sr5 = ss|so;

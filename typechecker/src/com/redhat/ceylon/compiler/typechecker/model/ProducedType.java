@@ -42,8 +42,8 @@ public class ProducedType extends ProducedReference {
     }
     
     public boolean isExactlyInternal(ProducedType type) {
-        if (getDeclaration() instanceof BottomType) {
-            return type.getDeclaration() instanceof BottomType;
+        if (getDeclaration() instanceof NothingType) {
+            return type.getDeclaration() instanceof NothingType;
         }
         else if (getDeclaration() instanceof UnionType) {
             List<ProducedType> cases = getCaseTypes();
@@ -193,10 +193,10 @@ public class ProducedType extends ProducedReference {
      * a certain self type constraint.
      */
     public boolean isSubtypeOfInternal(ProducedType type) {
-        if (getDeclaration() instanceof BottomType) {
+        if (getDeclaration() instanceof NothingType) {
             return true;
         }
-        else if (type.getDeclaration() instanceof BottomType) {
+        else if (type.getDeclaration() instanceof NothingType) {
             return false;
         }
         else if (getDeclaration() instanceof UnionType) {
@@ -306,7 +306,7 @@ public class ProducedType extends ProducedReference {
     public ProducedType minus(ClassOrInterface ci) {
         if ((getDeclaration() instanceof ClassOrInterface && getDeclaration().equals(ci)) 
                 || getSupertype(ci) != null) {
-            return getDeclaration().getUnit().getBottomDeclaration().getType();
+            return getDeclaration().getUnit().getNothingDeclaration().getType();
         }
         else if (getDeclaration() instanceof UnionType) {
             List<ProducedType> types = new ArrayList<ProducedType>();
@@ -1199,7 +1199,7 @@ public class ProducedType extends ProducedReference {
             if (abbreviate) {
                 Unit unit = getDeclaration().getUnit();
                 if (abbreviateOptional()) {
-                	ProducedType dt = minus(unit.getNothingDeclaration());
+                	ProducedType dt = minus(unit.getNullDeclaration());
                 	if (!dt.isPrimitiveAbbreviatedType()) {
                 		return "<" + dt.getProducedTypeName() + ">?";
                 	}
@@ -1408,8 +1408,8 @@ public class ProducedType extends ProducedReference {
             Unit unit = getDeclaration().getUnit();
             UnionType ut = (UnionType) getDeclaration();
             return ut.getCaseTypes().size()==2 &&
-                    isElementOfUnion(ut, unit.getNothingDeclaration()); /*&&
-                    minus(unit.getNothingDeclaration()).isPrimitiveAbbreviatedType();*/
+                    isElementOfUnion(ut, unit.getNullDeclaration()); /*&&
+                    minus(unit.getNullDeclaration()).isPrimitiveAbbreviatedType();*/
         }
         else {
             return false;

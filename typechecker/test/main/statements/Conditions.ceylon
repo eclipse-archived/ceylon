@@ -1,6 +1,6 @@
 class Conditions(String... elems) {
 
-    void x(Void o) {
+    void x(Anything o) {
         if (is Object o) {
             value n = 1;
             if (o.string.size==n) {}
@@ -14,7 +14,7 @@ class Conditions(String... elems) {
         }
     }
     
-    void z(Void o) {
+    void z(Anything o) {
         if (is Object o) {
             class Inner() {
                 Object x = o;

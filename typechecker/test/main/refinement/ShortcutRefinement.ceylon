@@ -103,12 +103,12 @@ class OtherBadlyDuped() extends OtherAbstract() {
 }
 
 abstract class X<T>() {
-    shared formal Void foo(T s);
+    shared formal Anything foo(T s);
     shared formal T bar;
     shared formal Object baz(String s(Integer i));
     shared formal String qux<S>();
-    shared formal Void fum(String string = "hello");
-    shared formal Void fo(String... strings);
+    shared formal Anything fum(String string = "hello");
+    shared formal Anything fo(String... strings);
     shared formal void fee();
 }
 

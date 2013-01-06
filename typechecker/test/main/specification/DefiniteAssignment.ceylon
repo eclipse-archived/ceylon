@@ -3,7 +3,7 @@ interface DefiniteAssignment {
     class X() {}
     void doSomething() {}
     void doSomethingElse() {}
-    void doNothing() {}
+    void doNull() {}
     void use(X x) {}
     Boolean testSomething()  { return 1>100; }
     
@@ -74,7 +74,7 @@ interface DefiniteAssignment {
             doSomethingElse();
             use(x);
         }
-        doNothing();
+        doNull();
     }
     
     void badMethodWithSpecInIf() {
@@ -84,7 +84,7 @@ interface DefiniteAssignment {
             x = X();
             doSomethingElse();
         }
-        doNothing();
+        doNull();
         @error use(x);
     }
     
@@ -98,7 +98,7 @@ interface DefiniteAssignment {
         else {
             doSomethingElse();
         }
-        doNothing();
+        doNull();
     }
     
     void badMethodWithSpecInIf2() {
@@ -111,7 +111,7 @@ interface DefiniteAssignment {
             doSomethingElse();
             @error use(x);
         }
-        doNothing();
+        doNull();
     }
     
     void badMethodWithSpecInIf3() {
@@ -124,13 +124,13 @@ interface DefiniteAssignment {
         else {
             doSomethingElse();
         }
-        doNothing();
+        doNull();
         x = X();
     }
     
     void badMethodWithSpecInIf4() {
         variable X x = X();
-        doNothing();
+        doNull();
         if (testSomething()) {
             doSomething();
             x = X();
@@ -139,7 +139,7 @@ interface DefiniteAssignment {
     
     void badMethodWithSpecInIf5() {
         variable X x;
-        doNothing();
+        doNull();
         x = X();
         if (testSomething()) {
             doSomething();
@@ -188,7 +188,7 @@ interface DefiniteAssignment {
         }
         else {
             x = X();
-            doNothing();
+            doNull();
             use(x);
         }
         doSomethingElse();
@@ -202,7 +202,7 @@ interface DefiniteAssignment {
         }
         else {
             x = X();
-            doNothing();
+            doNull();
             use(x);
         }
         doSomethingElse();
@@ -215,7 +215,7 @@ interface DefiniteAssignment {
         }
         else {
             x = X();
-            doNothing();
+            doNull();
             use(x);
         }
         doSomethingElse();
@@ -230,7 +230,7 @@ interface DefiniteAssignment {
         }
         else {
             x = X();
-            doNothing();
+            doNull();
         }
     }
     
@@ -243,7 +243,7 @@ interface DefiniteAssignment {
         }
         else {
             x = X();
-            doNothing();
+            doNull();
         }
     }
     
@@ -301,7 +301,7 @@ interface DefiniteAssignment {
             doSomething();
             y = x;
         }
-        doNothing();
+        doNull();
     }
     
     void badMethodWithSpecInFor() {
@@ -310,7 +310,7 @@ interface DefiniteAssignment {
             doSomething();
             y = x;
         }
-        doNothing();
+        doNull();
     }
     
     void goodMethodWithSpecInFail() {
@@ -322,7 +322,7 @@ interface DefiniteAssignment {
             doSomethingElse();
             y = X();
         }
-        doNothing();
+        doNull();
         use (y);
     }
     
@@ -336,7 +336,7 @@ interface DefiniteAssignment {
             doSomethingElse();
             y = X();
         }
-        doNothing();
+        doNull();
         use (y);
     }
     
@@ -349,7 +349,7 @@ interface DefiniteAssignment {
             doSomethingElse();
             @error y = X();
         }
-        doNothing();
+        doNull();
     }
     
     void badMethodWithSpecInFail3() {
@@ -362,7 +362,7 @@ interface DefiniteAssignment {
             doSomethingElse();
             y = X();
         }
-        doNothing();
+        doNull();
         @error use (y);
     }
     
