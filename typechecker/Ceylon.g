@@ -908,7 +908,7 @@ parameterRef returns [InitializerParameter parameter]
 parameterDeclaration returns [Parameter parameter]
     : compilerAnnotations
       (
-        (LIDENTIFIER (SPECIFY|COMMA|RPAREN)) =>
+        //(LIDENTIFIER (SPECIFY|COMMA|RPAREN)) =>
         r=parameterRef
         { $parameter=$r.parameter; }
       | 
