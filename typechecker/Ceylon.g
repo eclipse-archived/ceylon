@@ -3110,6 +3110,16 @@ Digits
     : Digit ('_' | Digit)*
     ;
 
+fragment
+HexDigits
+    : HexDigit ('_' | HexDigit)*
+    ;
+
+fragment
+BinaryDigits
+    : BinaryDigit ('_' | BinaryDigit)*
+    ;
+
 fragment 
 Exponent    
     : ( 'e' | 'E' ) ( '+' | '-' )? Digit*
@@ -3137,6 +3147,8 @@ NATURAL_LITERAL
       | FractionalMagnitude { $type = FLOAT_LITERAL; }
       | Magnitude?
       )
+    | '#' HexDigits
+    | '$' BinaryDigits
     ;
     
 fragment SPREAD_OP: '[].';
@@ -3673,4 +3685,14 @@ Letter
 fragment
 Digit
     : '0'..'9'
+    ;
+
+fragment
+HexDigit
+    : '0'..'9' | 'A'..'F' | 'a'..'f'
+    ;
+
+fragment
+BinaryDigit
+    : '0'|'1'
     ;

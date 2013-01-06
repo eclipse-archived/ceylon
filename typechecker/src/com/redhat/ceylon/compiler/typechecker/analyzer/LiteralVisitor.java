@@ -101,7 +101,7 @@ public class LiteralVisitor extends Visitor {
         result.setLength(result.length()-1);
     }
     
-    private static Pattern re = Pattern.compile("\\\\(\\{([^}]*)\\}|(.))");
+    private static Pattern re = Pattern.compile("\\\\(\\{#([^}]*)\\}|(.))");
     
     private static void interpolateEscapes(final StringBuilder result, Node node) {
         Matcher m;
