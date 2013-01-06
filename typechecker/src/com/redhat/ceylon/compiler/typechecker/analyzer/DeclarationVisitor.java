@@ -40,6 +40,7 @@ import com.redhat.ceylon.compiler.typechecker.tree.Tree;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.SequencedType;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.SpecifierOrInitializerExpression;
 import com.redhat.ceylon.compiler.typechecker.tree.Visitor;
+import com.sun.xml.internal.messaging.saaj.util.TeeInputStream;
 
 /**
  * First phase of type analysis.
@@ -615,6 +616,11 @@ public class DeclarationVisitor extends Visitor {
                 }*/
             }
         }
+        if (that.getType() instanceof Tree.LocalModifier && 
+        		!(that instanceof Tree.InitializerParameter)) {
+        	that.getType().setTypeModel(unit.getVoidDeclaration().getType());
+        	that.getType().addError("parameter may not have inferred type");
+        }
     }
     
     @Override
@@ -649,7 +655,7 @@ public class DeclarationVisitor extends Visitor {
         if (that.getType() instanceof Tree.SequencedType) {
         	that.getType().addError("functional parameter may not be sequenced");
         }
-        if (p.isDeclaredVoid() && that.getDefaultArgument()!=null) {
+        if (p.isDeclaredVoid() && p.isDefaulted()) {
         	that.addError("void functional parameter may not have a default value");
         }
     }

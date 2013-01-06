@@ -858,6 +858,12 @@ parameter returns [Parameter parameter]
       | VOID_MODIFIER
         { fp.setType(new VoidModifier($VOID_MODIFIER));
           $parameter=fp; }
+      | FUNCTION_MODIFIER
+        { fp.setType(new FunctionModifier($FUNCTION_MODIFIER));
+          $parameter=fp; }
+      | VALUE_MODIFIER
+        { fp.setType(new ValueModifier($VALUE_MODIFIER));
+          $parameter=fp; }
       )
       memberName
       { vp.setIdentifier($memberName.identifier);
@@ -872,9 +878,9 @@ parameter returns [Parameter parameter]
       |
         (
           parameters
-          { fp.addParameterList($parameters.parameterList); }
+          { fp.addParameterList($parameters.parameterList);
+            $parameter=fp; }
         )+
-        { $parameter=fp; }
         (
           lazySpecifier
           { DefaultArgument da = new DefaultArgument(null);
@@ -886,17 +892,16 @@ parameter returns [Parameter parameter]
       )
     ;
 
-parameterRef returns [Parameter parameter]
-    @init { ValueParameterDeclaration vp = new ValueParameterDeclaration(null);
-            vp.setType(new ValueModifier(null));
-            $parameter = vp; }
+parameterRef returns [InitializerParameter parameter]
     : memberName
-      { vp.setIdentifier($memberName.identifier); }
+      { $parameter = new InitializerParameter(null);
+        $parameter.setType(new ValueModifier(null));
+        $parameter.setIdentifier($memberName.identifier); }
       (
         specifier
         { DefaultArgument da = new DefaultArgument(null);
-          $parameter.setDefaultArgument(da);
-          da.setSpecifierExpression($specifier.specifierExpression); }
+          da.setSpecifierExpression($specifier.specifierExpression);
+          $parameter.setDefaultArgument(da); }
       )?
     ;
 
@@ -1572,10 +1577,10 @@ voidOrInferredMethodArgument returns [MethodArgument declaration]
     : { $declaration=new MethodArgument(null); }
       (
         VOID_MODIFIER
-      { $declaration.setType(new VoidModifier($VOID_MODIFIER)); }
+        { $declaration.setType(new VoidModifier($VOID_MODIFIER)); }
       |
         FUNCTION_MODIFIER
-      { $declaration.setType(new FunctionModifier($FUNCTION_MODIFIER)); }
+        { $declaration.setType(new FunctionModifier($FUNCTION_MODIFIER)); }
       ) 
       memberNameDeclaration 
       { $declaration.setIdentifier($memberNameDeclaration.identifier); }

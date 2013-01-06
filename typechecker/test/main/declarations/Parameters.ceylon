@@ -8,6 +8,12 @@ class Parameters() {
     void x6(String s="hello", @error Integer n) {}
     void x7(String... s, @error Integer n) {}
     void x8(String... s, @error Integer n=0) {}
+
+    void x9(@error String... s=[]) {}
+    void x10(@type:"Integer" Integer f(Integer i)=>i) {}
+    void x11(@error function f(Integer i)=>i) {}
+    void x12(@error void f(Integer i)=>i) {}
+    void x13(@error value s="hello") {}
     
     void d1(String name="World") {}
     void d2(Integer count=0) {}
