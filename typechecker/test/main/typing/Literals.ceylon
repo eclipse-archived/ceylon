@@ -43,4 +43,9 @@ class Literals() {
     
     @type:"String" @error value st2 = "( " null " )";
     
+    @type:"Integer" value hex1 = #FF12;
+    @type:"Integer" value hex2 = #FF12_A0E9;
+    @type:"Integer" value bin1 = $0101001101;
+    @type:"Integer" value bin2 = $0101_0011;
+    
 }

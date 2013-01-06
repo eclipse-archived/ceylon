@@ -153,7 +153,7 @@ class Primaries() {
     @type:"Sequence<Primaries.G&Primaries.H>" value p104 = [ obj ].sequence;
     @type:"Sequence<Primaries.G&Primaries.H>" value p105 = [ obj, idobj ].sequence;
     
-    String angstroms = "\{00E5}ngstr\{00F6}ms";
+    String angstroms = "\{#00E5}ngstr\{#00F6}ms";
     
     value i1 = 1_123;
     @error value i2 = 1_12;

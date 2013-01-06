@@ -1080,11 +1080,19 @@ public class DeclarationVisitor extends Visitor {
 	static final String fractionalMagnitude = "m|u|n|p|f";
 	static final String exponent = "(e|E)(\\+|-)?" + digits;
 
+	static final String hexDigits = "(\\d|[a-f]|[A-F])+";
+	static final String hexGroups = "(\\d|[a-f]|[A-F]){1,4}(_(\\d|[a-f]|[A-F]){4})+";
+	
+	static final String binDigits = "(0|1)+";
+	static final String binGroups = "(0|1){1,4}(_(0|1){4})+";
+	
 	@Override
     public void visit(Tree.NaturalLiteral that) {
         super.visit(that);
     	String text = that.getToken().getText();
-		if (!text.matches("^(" + digits + "|" + groups + ")(" + magnitude + ")?$")) {
+		if (!text.matches("^(" + digits + "|" + groups + ")(" + magnitude + ")?$") &&
+			!text.matches("#(" + hexDigits + "|" + hexGroups + ")") &&
+			!text.matches("\\$(" + binDigits + "|" + binGroups + ")")) {
     		that.addError("illegal integer literal format");
     	}    	
     }
