@@ -136,6 +136,13 @@ public class Todo extends AbstractQueue<Env<AttrContext>> {
     LinkedList<Queue<Env<AttrContext>>> contentsByFile;
     Map<JavaFileObject, FileQueue> fileMap;
 
+    // Ceylon
+    public void reset(){
+        contents.clear();
+        contentsByFile = null;
+        fileMap = null;
+    }
+    
     class FileQueue extends AbstractQueue<Env<AttrContext>> {
         @Override
         public Iterator<Env<AttrContext>> iterator() {

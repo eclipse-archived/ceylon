@@ -395,7 +395,10 @@ public class Types {
         return isSubtype.visit(capture ? capture(t) : t, s);
     }
     // where
-        private TypeRelation isSubtype = new TypeRelation()
+    // Ceylon: turned this from an anonymous class to a real class
+        private IsSubTypeTypeRelation isSubtype = new IsSubTypeTypeRelation();
+        
+        private class IsSubTypeTypeRelation extends TypeRelation
         {
             public Boolean visitType(Type t, Type s) {
                 switch (t.tag) {
@@ -422,6 +425,11 @@ public class Types {
 
             private Set<TypePair> cache = new HashSet<TypePair>();
 
+            // Ceylon
+            private void reset(){
+                cache.clear();
+            }
+            
             private boolean containsTypeRecursive(Type t, Type s) {
                 TypePair pair = new TypePair(t, s);
                 if (cache.add(pair)) {
@@ -1182,10 +1190,19 @@ public class Types {
         return disjointType.visit(t, s);
     }
     // where
-        private TypeRelation disjointType = new TypeRelation() {
+    // Ceylon: turned this from an anonymous class to a real class
+        private DisjointTypeTypeRelation disjointType = new DisjointTypeTypeRelation();
+        
+        private class DisjointTypeTypeRelation extends TypeRelation
+        {
 
             private Set<TypePair> cache = new HashSet<TypePair>();
 
+            // Ceylon
+            private void reset(){
+                cache.clear();
+            }
+            
             public Boolean visitType(Type t, Type s) {
                 if (s.tag == WILDCARD)
                     return visit(s, t);
@@ -2087,6 +2104,11 @@ public class Types {
                 }
             }
             return null;
+        }
+        
+        // Ceylon
+        private void reset(){
+            _map.clear();
         }
     }
 
@@ -3826,4 +3848,12 @@ public class Types {
         return vis;
     }
     // </editor-fold>
+
+    // Ceylon
+    public void reset(){
+        implCache.reset();
+        disjointType.reset();
+        isSubtype.reset();
+        closureCache.clear();
+    }
 }

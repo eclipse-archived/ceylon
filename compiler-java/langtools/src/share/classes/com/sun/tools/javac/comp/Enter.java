@@ -404,6 +404,12 @@ public class Enter extends JCTree.Visitor {
         c.members_field = new Scope(c);
 
         ClassType ct = (ClassType)c.type;
+        // Ceylon: make sure everything is reset if we Enter twice for bootstrap
+        ct.interfaces_field = null;
+        ct.allparams_field = null;
+        ct.supertype_field = null;
+        ct.all_interfaces_field = null;
+        // End Ceylon
         if (owner.kind != PCK && (c.flags_field & STATIC) == 0) {
             // We are seeing a local or inner class.
             // Set outer_field of this class to closest enclosing class
@@ -516,5 +522,10 @@ public class Enter extends JCTree.Visitor {
             uncompleted = prevUncompleted;
             annotate.enterDone();
         }
+    }
+
+    // Ceylon
+    public void reset(){
+        typeEnvs.clear();
     }
 }
