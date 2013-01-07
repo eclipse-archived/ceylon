@@ -472,7 +472,7 @@ public class DeclarationVisitor extends Visitor {
         }
         SpecifierOrInitializerExpression sie = that.getSpecifierOrInitializerExpression();
         if ( v.isFormal() && sie!=null ) {
-            that.addError("formal attributes may not have a value");
+            that.addError("formal attributes may not have a value", 1307);
         }
         if (that.getType() instanceof Tree.ValueModifier) {
             if (v.isToplevel()) {
@@ -497,7 +497,7 @@ public class DeclarationVisitor extends Visitor {
         super.visit(that);
         Tree.SpecifierExpression sie = that.getSpecifierExpression();
         if ( that.getDeclarationModel().isFormal() && sie!=null ) {
-            that.addError("formal methods may not have a method reference");
+            that.addError("formal methods may not have a method reference", 1307);
         }
         Method m = that.getDeclarationModel();
         if (that.getType() instanceof Tree.FunctionModifier) {
