@@ -166,3 +166,12 @@ class TypeArgInference() {
     @type:"TypeArgInference.Something<String|Null|Float|Integer,String,Null|Float|Integer>" Something("",false then (true then 1 else 1.0)); 
 
 }
+
+class QualifiedTypeArgInference() {
+    class Outer<T>(T t) {
+        shared class Inner<S>(S s) {}
+    }
+    function id<T,S>(Outer<T>.Inner<S> val) => val;
+    @type:"QualifiedTypeArgInference.Outer<String>.Inner<Integer>"
+    id(Outer("").Inner(1));
+}
