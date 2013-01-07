@@ -97,7 +97,7 @@ public abstract class CeylonAntTask extends Task {
             Execute exe = new Execute(new LogStreamHandler(this, Project.MSG_INFO, Project.MSG_WARN));
             exe.setAntRun(getProject());
             exe.setWorkingDirectory(getProject().getBaseDir());
-            log("Command line " + Arrays.toString(cmd.getCommandline()));
+            log("Command line " + Arrays.toString(cmd.getCommandline()), Project.MSG_VERBOSE);
             exe.setCommandline(cmd.getCommandline());
             exe.execute();
             if (exe.getExitValue() != 0) {
