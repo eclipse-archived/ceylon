@@ -60,6 +60,7 @@ import com.redhat.ceylon.compiler.typechecker.tree.Node;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.Ellipsis;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.Expression;
+import com.redhat.ceylon.compiler.typechecker.tree.Tree.SpecifierOrInitializerExpression;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.SupertypeQualifier;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.TypedArgument;
 import com.redhat.ceylon.compiler.typechecker.tree.Visitor;
@@ -558,12 +559,12 @@ public class ExpressionVisitor extends Visitor {
     
     @Override public void visit(Tree.AttributeDeclaration that) {
         super.visit(that);
-        inferType(that, that.getSpecifierOrInitializerExpression());
+        SpecifierOrInitializerExpression sie = that.getSpecifierOrInitializerExpression();
+		inferType(that, sie);
         if (that.getType()!=null) {
             checkType(that.getType().getTypeModel(), 
                     that.getDeclarationModel().getName(),
-                    that.getSpecifierOrInitializerExpression(), 
-                    2100);
+                    sie, 2100);
         }
     }
     
@@ -825,9 +826,10 @@ public class ExpressionVisitor extends Visitor {
         }
     }
 
-    private void checkFunctionType(ProducedType et, Tree.Type that) {
+    private void checkFunctionType(ProducedType et, Tree.Type that, 
+    		Tree.SpecifierExpression se) {
         if (et!=null) {
-            checkAssignable(et, that.getTypeModel(), that, 
+            checkAssignable(et, that.getTypeModel(), se, 
                     "specified expression type must be assignable to declared return type");
         }
     }
@@ -920,7 +922,7 @@ public class ExpressionVisitor extends Visitor {
                 ProducedType returnType = e.getTypeModel();
                 inferFunctionType(that, returnType);
                 if (that.getType()!=null) {
-                    checkFunctionType(returnType, that.getType());
+                    checkFunctionType(returnType, that.getType(), se);
                 }
             }
         }
@@ -950,7 +952,7 @@ public class ExpressionVisitor extends Visitor {
                 ProducedType returnType = e.getTypeModel();
                 inferFunctionType(that, returnType);
                 if (that.getType()!=null) {
-                    checkFunctionType(returnType, that.getType());
+                    checkFunctionType(returnType, that.getType(), se);
                 }
             }
         }
