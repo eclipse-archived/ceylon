@@ -75,6 +75,7 @@ import com.sun.tools.javac.tree.JCTree.JCCatch;
 import com.sun.tools.javac.tree.JCTree.JCConditional;
 import com.sun.tools.javac.tree.JCTree.JCExpression;
 import com.sun.tools.javac.tree.JCTree.JCExpressionStatement;
+import com.sun.tools.javac.tree.JCTree.JCForLoop;
 import com.sun.tools.javac.tree.JCTree.JCIdent;
 import com.sun.tools.javac.tree.JCTree.JCStatement;
 import com.sun.tools.javac.tree.JCTree.JCThrow;
@@ -1217,11 +1218,7 @@ public class StatementTransformer extends AbstractTransformer {
         }
 
         protected ListBuffer<JCStatement> transformForClause() {
-            ListBuffer<JCStatement> outer = ListBuffer.<JCStatement> lb();
-            // java.lang.Object $elem$X;
-            Naming.SyntheticName elem_name = naming.alias("elem");
-            JCVariableDecl elem_decl = make().VarDef(make().Modifiers(0), elem_name.asName(), make().Type(syms().objectType), null);
-            outer = outer.append(elem_decl);
+            Naming.SyntheticName elem_name = naming.alias("elem");    
             
             ForIterator iterDecl = stmt.getForClause().getForIterator();
             Variable variable;
@@ -1236,7 +1233,7 @@ public class StatementTransformer extends AbstractTransformer {
                 throw new RuntimeException("Unknown ForIterator");
             }
             
-            String loop_var_name = variable.getIdentifier().getText();
+            final Naming.SyntheticName loop_var_name = naming.synthetic(variable.getIdentifier().getText());
             Expression specifierExpression = iterDecl.getSpecifierExpression().getExpression();
             ProducedType sequence_element_type;
             if(variable2 == null)
@@ -1246,18 +1243,12 @@ public class StatementTransformer extends AbstractTransformer {
                 sequence_element_type = typeFact().getEntryType(variable.getType().getTypeModel(), 
                         variable2.getType().getTypeModel());
             }
-            ProducedType iter_type = typeFact().getIteratorType(sequence_element_type);
-            JCExpression iter_type_expr = makeJavaType(iter_type, CeylonTransformer.JT_TYPE_ARGUMENT);
             JCExpression cast_elem = at(stmt).TypeCast(makeJavaType(sequence_element_type, CeylonTransformer.JT_NO_PRIMITIVES), elem_name.makeIdent());
             List<JCAnnotation> annots = makeJavaTypeAnnotations(variable.getDeclarationModel());
 
             // ceylon.language.Iterator<T> $V$iter$X = ITERABLE.getIterator();
             // We don't need to unerase here as anything remotely a sequence will be erased to Iterable, which has getIterator()
             JCExpression containment = expressionGen().transformExpression(specifierExpression, BoxingStrategy.BOXED, null);
-            JCExpression getIter = at(stmt).Apply(null, makeSelect(containment, "getIterator"), List.<JCExpression> nil());
-            getIter = gen().expressionGen().applyErasureAndBoxing(getIter, iter_type, true, BoxingStrategy.BOXED, iter_type);
-            JCVariableDecl iter_decl = at(stmt).VarDef(make().Modifiers(0), naming.aliasName(loop_var_name + "$iter"), iter_type_expr, getIter);
-            String iter_id = iter_decl.getName().toString();
             
             // final U n = $elem$X;
             // or
@@ -1271,9 +1262,10 @@ public class StatementTransformer extends AbstractTransformer {
                 loop_var_type = actualType(variable);
                 loop_var_init = at(stmt).Apply(null, makeSelect(cast_elem, Naming.getGetterName("key")), List.<JCExpression> nil());
             }
-            JCVariableDecl item_decl = at(stmt).VarDef(make().Modifiers(FINAL, annots), names().fromString(loop_var_name), makeJavaType(loop_var_type), 
+            JCVariableDecl item_decl = at(stmt).VarDef(make().Modifiers(FINAL, annots), loop_var_name.asName(), makeJavaType(loop_var_type), 
                     boxUnboxIfNecessary(loop_var_init, true, loop_var_type, CodegenUtil.getBoxingStrategy(variable.getDeclarationModel())));
-            List<JCStatement> for_loop = List.<JCStatement> of(item_decl);
+            final SyntheticName iterator_var_name = loop_var_name.suffixedBy("$iter").alias();
+            List<JCStatement> itemDecls = List.<JCStatement> of(item_decl);
 
             if (variable2 != null) {
                 // final V n = $elem$X.getElement();
@@ -1283,31 +1275,91 @@ public class StatementTransformer extends AbstractTransformer {
                 String loop_var_name2 = variable2.getIdentifier().getText();
                 JCVariableDecl item_decl2 = at(stmt).VarDef(make().Modifiers(FINAL, annots), names().fromString(loop_var_name2), item_type_expr2, 
                         boxUnboxIfNecessary(loop_var_init2, true, item_type2, CodegenUtil.getBoxingStrategy(variable2.getDeclarationModel())));
-                for_loop = for_loop.append(item_decl2);
+                itemDecls = itemDecls.append(item_decl2);
             }
 
-            // The user-supplied contents of the loop
-            for_loop = for_loop.appendList(transformStmts(stmt.getForClause().getBlock().getStatements()));
-            
-            // $elem$X = $V$iter$X.next()
-            JCExpression iter_elem = make().Apply(null, makeSelect(iter_id, "next"), List.<JCExpression> nil());
-            JCExpression elem_assign = make().Assign(elem_name.makeIdent(), iter_elem);
-            // !(($elem$X = $V$iter$X.next()) instanceof Finished)
-            JCExpression instof = make().TypeTest(elem_assign, makeIdent(syms().ceylonFinishedType));
-            JCExpression cond = make().Unary(JCTree.NOT, instof);
-
-            // No step necessary
-            List<JCExpressionStatement> step = List.<JCExpressionStatement>nil();
-            
-            // for (.ceylon.language.Iterator<T> $V$iter$X = ITERABLE.iterator(); !(($elem$X = $V$iter$X.next()) instanceof Finished); ) {
-            outer = outer.append(at(stmt).ForLoop(
-                List.<JCStatement>of(iter_decl), 
-                cond, 
-                step, 
-                at(stmt).Block(0, for_loop)));
-            return outer;
+            return ListBuffer.<JCStatement>lb().appendList(transformIterableIteration(stmt,
+                    elem_name, 
+                    iterator_var_name,
+                    sequence_element_type,
+                    containment,
+                    itemDecls,
+                    transformStmts(stmt.getForClause().getBlock().getStatements())));
         }
     }
+    
+    /**
+     * The transformation of a ceylon {@code for} loop:
+     * 
+     * <pre>
+     *     java.lang.Object ITERATION_VAR_NAME;
+     *     for (Iterator<ITERATOR_ELEMENT_TYPE> ITERATOR_VAR_NAME = ITERABLE.getIterator();
+     *             !((ITERATION_VAR_NAME = ITERATOR_VAR_NAME.getNext()) instanceof ceylon.language.Finished;
+     *         ) {
+     *         ITEM_DECLS;
+     *         BODY_STMTS;
+     *     }
+     * </pre>
+     * 
+     * @param iterationVarName The iteration variable (which recieves the value of {@code Iterator.next()})
+     * @param iteratorVarName The name of the {@code Iterator} variable
+     * @param iteratorElementType The type argument of the {@code Iterator}
+     * @param iterableExpr The {@code Iterable} expression
+     * @param itemDecls variable declarations for the iteration variables which 
+     * begin the loop body (these depend on {@code iterationVarName} and may 
+     * typecast or destructure it). May be null.
+     * @param bodyStmts Other statements in the loop body
+     * @return
+     */
+    List<JCStatement> transformIterableIteration(Node node,
+            Naming.SyntheticName iterationVarName,
+            Naming.SyntheticName iteratorVarName,
+            ProducedType iteratorElementType,
+            JCExpression iterableExpr,
+            List<JCStatement> itemDecls,
+            List<JCStatement> bodyStmts) {
+        ListBuffer<JCStatement> result = ListBuffer.<JCStatement> lb();
+        // java.lang.Object ELEM_NAME;
+        JCVariableDecl elem_decl = make().VarDef(make().Modifiers(0), iterationVarName.asName(), make().Type(syms().objectType), null);
+        result = result.append(elem_decl);
+        
+        SyntheticName iterName = iteratorVarName;
+        
+        ProducedType iter_type = typeFact().getIteratorType(iteratorElementType);
+        JCExpression iter_type_expr = makeJavaType(iter_type, CeylonTransformer.JT_TYPE_ARGUMENT);
+        
+        // ceylon.language.Iterator<T> LOOP_VAR_NAME$iter$X = ITERABLE.getIterator();
+        // We don't need to unerase here as anything remotely a sequence will be erased to Iterable, which has getIterator()
+        JCExpression getIter = at(node).Apply(null, makeSelect(iterableExpr, "getIterator"), List.<JCExpression> nil());
+        getIter = gen().expressionGen().applyErasureAndBoxing(getIter, iter_type, true, BoxingStrategy.BOXED, iter_type);
+        JCVariableDecl iter_decl = at(node).VarDef(make().Modifiers(0), iterName.asName(), iter_type_expr, getIter);
+        
+        List<JCStatement> for_loop = List.<JCStatement>nil();
+        if (itemDecls != null) {
+            for_loop = for_loop.appendList(itemDecls);
+        }
+
+        // The user-supplied contents of the loop
+        for_loop = for_loop.appendList(bodyStmts);
+        
+        // ELEM_NAME = LOOP_VAR_NAME$iter$X.next()
+        JCExpression iter_elem = make().Apply(null, makeSelect(iterName.makeIdent(), "next"), List.<JCExpression> nil());
+        JCExpression elem_assign = make().Assign(iterationVarName.makeIdent(), iter_elem);
+        // !((ELEM_NAME = LOOP_VAR_NAME$iter$X.next()) instanceof Finished)
+        JCExpression instof = make().TypeTest(elem_assign, makeIdent(syms().ceylonFinishedType));
+        JCExpression cond = make().Unary(JCTree.NOT, instof);
+
+        // for (.ceylon.language.Iterator<T> LOOP_VAR_NAME$iter$X = ITERABLE.getIterator(); 
+        //         !(($elem$X = $V$iter$X.next()) instanceof Finished); ) {
+        JCForLoop forLoop = at(node).ForLoop(
+            List.<JCStatement>of(iter_decl), 
+            cond, 
+            List.<JCExpressionStatement>nil(), // No step necessary
+            at(node).Block(0, for_loop));
+        result = result.append(forLoop);
+        return result.toList();
+    }
+    
     
     /**
      * <p>Transformation of {@code for} loops over {@code Range<Integer>} 
