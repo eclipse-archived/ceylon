@@ -437,8 +437,8 @@ shared void numbers() {
     check(#ff == 255, "xff value");
     check($11111111 == 255, "b11111111 value");
     //TODO this is still unsupported
-    //check(#ff_ff == 65535, "ff_ff");
-    //check($1111_1111 == 255, "1111_1111");
+    check(#ffff_ffff == 4294967295, "ffff_ffff");
+    check($1111_1111 == 255, "1111_1111");
 
     if (0.size == 64) {
         check(#ff.not == #ffffffffffffff00, "~xff == xffffffffffffff00");
