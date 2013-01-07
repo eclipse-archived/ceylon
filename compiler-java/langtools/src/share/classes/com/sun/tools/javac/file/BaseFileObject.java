@@ -74,7 +74,8 @@ public abstract class BaseFileObject implements JavaFileObject {
     protected abstract String inferBinaryName(Iterable<? extends File> path);
 
     protected JavaFileObject.Kind getKind(String filename) {
-        return fileManager.getKind(filename);
+        // Ceylon: got rid of NPE on fileManager when null
+        return fileManager != null ? fileManager.getKind(filename) : OTHER;
     }
 
     protected static String removeExtension(String fileName) {
