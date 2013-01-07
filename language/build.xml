@@ -8,6 +8,7 @@
     <property name="build.dist" location="${build.dir}/dist"/>
     <property name="build.lib" location="${build.dir}/lib"/>
     <property name="build.test" location="${build.dir}/test"/>
+    <property name="build.test.repo" location="${build.dir}/test-repo"/>
 	
     <!-- The Java and Ceylon source files for the runtime -->
     <property name="runtime.src" location="runtime"/> 
@@ -53,31 +54,17 @@
     </path>
 	
     <path id="test.compile.classpath">
-        <pathelement path="${build.classes}"/>
+        <pathelement path="${build.dist}/${ceylon.language.car}"/>
         <pathelement path="${junit.lib}"/>
     </path>
 	
     <path id="test.run.classpath">
         <pathelement path="${junit.lib}"/>
-        <pathelement path="${build.classes}"/>
+        <pathelement path="${build.dist}/${ceylon.language.car}"/>
         <pathelement path="${build.test}"/>
         <pathelement path="${ceylon.common.lib}"/>
     </path>
 	
-    <!-- ################################################################## -->
-    <!-- constant to declare a file binary for checksumsum -->
-    <property name="checksum.binary-prefix" value=" *" />
-    <!-- Helper target, used to create a sha1 checksum file  -->
-    <!-- Requires 'file' as a parameter. -->
-    <target name="sha1sum">
-        <fail unless="file"/>
-        <fail if="filename"/>
-        <fail if="value"/>
-        <basename file="${file}" property="filename"/>
-        <checksum file="${file}" property="value" algorithm="sha1"/>
-        <echo file="${file}.sha1" message="${value}"/>
-    </target>
-
     <target name="ceylonc">
         <taskdef name="ceylonc" classname="com.redhat.ceylon.ant.Ceylonc" >
             <classpath>
@@ -105,25 +92,9 @@
     	</copy>
     </target>
 	
-  <target name="dist"
+    <target name="dist"
             depends="build"
             description="Create Ceylon language distribution">
-        <mkdir dir="${ceylon.language.dist}"/>
-        <zip destfile="${build.dist}/${ceylon.language.src}">
-            <fileset dir="${module.language.src}">
-                <include name="ceylon/language/**/*.ceylon"/>
-            </fileset>
-            <fileset dir="${module.language.runtime}">
-                <include name="**/*.java"/>
-            </fileset>
-        </zip>
-        <antcall target="sha1sum">
-            <param name="file" value="${build.dist}/${ceylon.language.src}" />
-        </antcall>
-        <copy file="${runtime.jar}" tofile="${build.dist}/${ceylon.language.car}"/>
-        <antcall target="sha1sum">
-            <param name="file" value="${build.dist}/${ceylon.language.car}" />
-        </antcall>
     </target>
 
     <!-- Repository targets -->
@@ -148,30 +119,9 @@
         <delete dir="${ceylon.language.repo}"/>
     </target>
 
-    <!-- Tasks related to building the runtime -->
+    <!-- Tasks related to building the ceylon.language module -->
     <!-- Rule to build runtime classes from their Java and Ceylon sources -->
-    <target name="runtime.classes" >
-        <mkdir dir="${build.classes}"/>
-        <javac debug="true"
-            srcdir="${runtime.src}"
-            destdir="${build.classes}"
-            classpathref="compile.classpath"
-            includeantruntime="false"/>
-    </target>
-
-    <!-- Rule to build runtime jar -->
-    <target name="runtime.jar" depends="runtime.classes">
-        <mkdir dir="${build.lib}"/>
-        <jar destfile="${runtime.jar}">
-            <fileset dir="${build.classes}">
-                <include name="ceylon/**"/>
-                <include name="com/redhat/ceylon/compiler/java/**"/>
-            </fileset>
-        </jar>
-    </target>
-
-    <!-- Rule to build the language module -->
-    <target name="ceylon.sdk" depends="ceylonc">
+    <target name="ceylon.language" depends="ceylonc">
         <!-- toplevel types -->
         <ceylonc
             executable="${ceylon.compiler.loc}/dist/bin/ceylon"
@@ -182,12 +132,17 @@
         	<javacoption>-Xbootstrapceylon</javacoption>
             <files>
                 <include name="**/*.ceylon"/>
-                <include name="com/ceylon/**/*.java"/>
+                <include name="com/redhat/**/*.java"/>
                 <!-- We swap the nativily implemented files for their Java counter parts -->
                 <exclude name="ceylon/language/Array.ceylon"/>
                 <include name="ceylon/language/Array.java"/>
+                <include name="ceylon/language/array_.java"/>
+                <include name="ceylon/language/arrayOfSize_.java"/>
+                <include name="ceylon/language/copyArray_.java"/>
                 <exclude name="ceylon/language/Boolean.ceylon"/>
                 <include name="ceylon/language/Boolean.java"/>
+                <include name="ceylon/language/true_.java"/>
+                <include name="ceylon/language/false_.java"/>
                 <exclude name="ceylon/language/Callable.ceylon"/>
                 <include name="ceylon/language/Callable.java"/>
                 <exclude name="ceylon/language/Character.ceylon"/>
@@ -196,24 +151,32 @@
                 <include name="ceylon/language/className_.java"/>
                 <exclude name="ceylon/language/Comparison.ceylon"/>
                 <include name="ceylon/language/Comparison.java"/>
+                <include name="ceylon/language/smaller_.java"/>
+                <include name="ceylon/language/equal_.java"/>
+                <include name="ceylon/language/larger_.java"/>
                 <exclude name="ceylon/language/Exception.ceylon"/>
                 <include name="ceylon/language/Exception.java"/>
                 <exclude name="ceylon/language/Float.ceylon"/>
                 <include name="ceylon/language/Float.java"/>
+                <include name="ceylon/language/parseFloat_.java"/>
+                <include name="ceylon/language/infinity_.java"/>
                 <exclude name="ceylon/language/identityHash.ceylon"/>
                 <include name="ceylon/language/identityHash_.java"/>
                 <exclude name="ceylon/language/Integer.ceylon"/>
                 <include name="ceylon/language/Integer.java"/>
+                <include name="ceylon/language/parseInteger_.java"/>
                 <exclude name="ceylon/language/language.ceylon"/>
                 <include name="ceylon/language/language_.java"/>
                 <exclude name="ceylon/language/process.ceylon"/>
                 <include name="ceylon/language/process_.java"/>
                 <exclude name="ceylon/language/SequenceBuilder.ceylon"/>
                 <include name="ceylon/language/SequenceBuilder.java"/>
+                <include name="ceylon/language/SequenceAppender.java"/>
                 <exclude name="ceylon/language/sort.ceylon"/>
                 <include name="ceylon/language/sort_.java"/>
                 <exclude name="ceylon/language/String.ceylon"/>
                 <include name="ceylon/language/String.java"/>
+                <include name="ceylon/language/string_.java"/>
                 <exclude name="ceylon/language/StringBuilder.ceylon"/>
                 <include name="ceylon/language/StringBuilder.java"/>
                 <!-- These are problem files we hope to be able to compile some day -->
@@ -242,21 +205,32 @@
                 <include name="ceylon/language/Singleton.java"/>
                 <exclude name="ceylon/language/Tuple.ceylon"/>
                 <include name="ceylon/language/Tuple.java"/>
-            	<!-- Some files that seem to be missing from the Ceylon sources -->
-                <include name="ceylon/language/descriptor/*.java"/>
             </files>
         </ceylonc>
     </target>
 
     <!-- Rule to compile and test -->
-    <target name="build" depends="runtime.jar"/>
+    <target name="build" depends="ceylon.language"/>
 	
-    <target name="compile.tests" depends="ceylon.sdk,ceylonc">
+    <target name="compile.tests" depends="build,ceylonc">
+        <delete dir="${build.test.repo}"/>
+        <mkdir dir="${build.test.repo}"/>
+    	<copy todir="${build.test.repo}">
+            <fileset dir="${ceylon.compiler.loc}/dist/repo">
+                <exclude name="ceylon/language/**"/>
+            </fileset>
+        </copy>
+        <copy todir="${build.test.repo}">
+            <fileset dir="${build.dist}">
+                <include name="ceylon/language/**"/>
+            </fileset>
+        </copy>
         <delete dir="${build.test}"/>
         <mkdir dir="${build.test}"/>
         <ceylonc
             executable="${ceylon.compiler.loc}/dist/bin/ceylon"
             src="${test.src}"
+        	sysrep="${build.test.repo}"
             out="${build.test}">
             <files>
                 <include name="**/*.ceylon"/>
