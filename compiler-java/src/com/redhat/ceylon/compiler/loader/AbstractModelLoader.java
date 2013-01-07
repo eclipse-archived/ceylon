@@ -2231,12 +2231,24 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
             // we're looking for type declarations, so anything else doesn't work for us
             return null;
         }
-            
+        
+        // make sure we don't return anything for ceylon.language
+        if(name.equals(CEYLON_LANGUAGE))
+            return null;
+        
         // we're bootstrapping ceylon.language so we need to return the ProducedTypes straight from the model we're compiling
         Module languageModule = modules.getLanguageModule();
         String simpleName = name.substring(name.lastIndexOf(".")+1);
+        // Bottom is a special case with no real decl
+        if(name.equals("ceylon.language.Bottom"))
+            return typeFactory.getBottomDeclaration().getType();
         for(Package pkg : languageModule.getPackages()){
             Declaration member = pkg.getDirectMember(simpleName, null, false);
+            // if we get a value, we want its type
+            if(member instanceof Value
+                    && ((Value)member).getTypeDeclaration().getName().equals(simpleName)){
+                member = ((Value)member).getTypeDeclaration();
+            }
             if(member instanceof TypeDeclaration)
                 return ((TypeDeclaration)member).getType();
         }
