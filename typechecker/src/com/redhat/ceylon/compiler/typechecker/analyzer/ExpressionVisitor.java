@@ -269,14 +269,14 @@ public class ExpressionVisitor extends Visitor {
                 if (knownType!=null) {
                     if (that.getNot()) {
                         if (intersectionType(type,knownType, unit).getDeclaration() instanceof NothingType) {
-                            that.addError("does not narrow type: intersection of " + type.getProducedTypeName() + 
-                                    " and " + knownType.getProducedTypeName() + " is empty ");
+                            that.addError("does not narrow type: intersection of " + type.getProducedTypeName(unit) + 
+                                    " and " + knownType.getProducedTypeName(unit) + " is empty ");
                         }
                     } 
                     else {
                         if (knownType.isSubtypeOf(type)) {
-                            that.addError("does not narrow type: " + knownType.getProducedTypeName() + 
-                                    " is a subtype of " + type.getProducedTypeName());
+                            that.addError("does not narrow type: " + knownType.getProducedTypeName(unit) + 
+                                    " is a subtype of " + type.getProducedTypeName(unit));
                         }
                     }
                 }
@@ -306,13 +306,13 @@ public class ExpressionVisitor extends Visitor {
             if (it.getDeclaration() instanceof NothingType) {
                 if (that.getNot()) {
                     that.addError("tests assignability to Nothing type: " +
-                            knownType.getProducedTypeName() + " is a subtype of " + 
-                            type.getProducedTypeName());
+                            knownType.getProducedTypeName(unit) + " is a subtype of " + 
+                            type.getProducedTypeName(unit));
                 }
                 else {
                     that.addError("tests assignability to Nothing type: intersection of " +
-                            knownType.getProducedTypeName() + " and " + 
-                            type.getProducedTypeName() + " is empty");
+                            knownType.getProducedTypeName(unit) + " and " + 
+                            type.getProducedTypeName(unit) + " is empty");
                 }
             }
             v.getType().setTypeModel(it);
@@ -361,7 +361,7 @@ public class ExpressionVisitor extends Visitor {
                                 ut.setSatisfiedTypes(list);
                                 if (!ta.isExactly(ut.getType())) {
                                     that.addWarning("type argument to covariant type parameter in assignability condition must be " +
-                                            ut.getType().getProducedTypeName() + " (until we implement reified generics)");
+                                            ut.getType().getProducedTypeName(unit) + " (until we implement reified generics)");
                                 }
                             }
                             else if (tp.isContravariant()) {
@@ -458,16 +458,16 @@ public class ExpressionVisitor extends Visitor {
         Declaration d = ref.getDeclaration();
         if (d!=null) {
             if (d instanceof Getter) {
-                ref.addError("referenced value is a getter: " + d.getName(), 3100);
+                ref.addError("referenced value is a getter: " + d.getName(unit), 3100);
             }
             if ( ((TypedDeclaration) d).isVariable() ) {
-                ref.addError("referenced value is variable: " + d.getName(), 3100);
+                ref.addError("referenced value is variable: " + d.getName(unit), 3100);
             }
             if ( (d instanceof MethodOrValue) && ((MethodOrValue) d).isTransient() ) {
-                ref.addError("referenced value is transient: " + d.getName(), 3100);
+                ref.addError("referenced value is transient: " + d.getName(unit), 3100);
             }
             if ( d.isDefault() ) {
-                ref.addError("referenced value is default and may be refined: " + d.getName(), 3100);
+                ref.addError("referenced value is default and may be refined: " + d.getName(unit), 3100);
             }
         }
     }
@@ -478,7 +478,7 @@ public class ExpressionVisitor extends Visitor {
         }
         else*/ if (t!=null && !unit.isEmptyType(t)) {
             term.addError("expression must be a possibly-empty type: " + 
-                    t.getProducedTypeName() + " is not possibly-empty");
+                    t.getProducedTypeName(unit) + " is not possibly-empty");
         }
     }
     
@@ -489,7 +489,7 @@ public class ExpressionVisitor extends Visitor {
         else*/ if (t!=null && !unit.isOptionalType(t) && 
                 !hasUncheckedNulls(term)) {
             term.addError("expression must be of optional type: " +
-                    t.getProducedTypeName() + " is not optional");
+                    t.getProducedTypeName(unit) + " is not optional");
         }
     }
 
@@ -637,21 +637,21 @@ public class ExpressionVisitor extends Visitor {
                     }
                     else {
                         //TODO!
-                        bme.addError("not a reference to a formal attribute: " + d.getName());
+                        bme.addError("not a reference to a formal attribute: " + d.getName(unit));
                     }
                 }
                 else if (d instanceof MethodOrValue) {
                     MethodOrValue mv = (MethodOrValue) d;
                     if (mv.isShortcutRefinement()) {
-                        bme.addError("already specified: " + d.getName());
+                        bme.addError("already specified: " + d.getName(unit));
                     }
                     else if (d.isToplevel() && !mv.isVariable()) {
                         that.addError("cannot specify non-variable toplevel value here: " + 
-                                d.getName(), 803);
+                                d.getName(unit), 803);
                     }
                 }
                 if (d instanceof Method && ((Method) d).isDeclaredVoid()) {
-                	that.addError("cannot specify void method: " + d.getName());
+                	that.addError("cannot specify void method: " + d.getName(unit));
                 }
                 
                 ProducedType t = that.getBaseMemberExpression().getTypeModel();
@@ -665,7 +665,7 @@ public class ExpressionVisitor extends Visitor {
                     //      handle the problem
                     t = eraseDefaultedParameters(t);
                 }
-                 checkType(t, d.getName(), sie, 2100);
+                checkType(t, d.getName(unit), sie, 2100);
             }
             if (that.getBaseMemberExpression() instanceof Tree.ParameterizedExpression) {
                 if (!(sie instanceof Tree.LazySpecifierExpression)) {
@@ -1908,7 +1908,7 @@ public class ExpressionVisitor extends Visitor {
             Functional dec = (Functional) mte.getDeclaration();
             if (!(that.getPrimary() instanceof Tree.ExtendedTypeExpression)) {
                 if (dec instanceof Class && ((Class) dec).isAbstract()) {
-                    that.addError("abstract classes may not be instantiated");
+                    that.addError("abstract class may not be instantiated: " + dec.getName(unit));
                 }
             }
             if (that.getNamedArgumentList()!=null && 
@@ -1918,7 +1918,7 @@ public class ExpressionVisitor extends Visitor {
                 //      meaningful parameter names that is the
                 //      real problem, not the overload
                 that.addError("overloaded declarations may not be called using named arguments: " +
-                        dec.getName());
+                        dec.getName(unit));
             }
             //that.setTypeModel(prf.getType());
             ProducedType ct = that.getPrimary().getTypeModel();
@@ -2000,11 +2000,11 @@ public class ExpressionVisitor extends Visitor {
         if (pls.isEmpty()) {
             if (dec instanceof TypeDeclaration) {
                 that.addError("type cannot be instantiated: " + 
-                        dec.getName() + " (or return statement is missing)");
+                        dec.getName(unit) + " (or return statement is missing)");
             }
             else {
                 that.addError("member cannot be invoked: " +
-                        dec.getName());
+                        dec.getName(unit));
             }
         }
         else /*if (!dec.isOverloaded())*/ {
@@ -2044,7 +2044,7 @@ public class ExpressionVisitor extends Visitor {
             if (!foundParameters.contains(p) && 
                     !p.isDefaulted() && !p.isSequenced()) {
                 nal.addError("missing named argument to parameter " + 
-                        p.getName() + " of " + pr.getDeclaration().getName());
+                        p.getName() + " of " + pr.getDeclaration().getName(unit));
             }
         }
     }
@@ -2054,13 +2054,13 @@ public class ExpressionVisitor extends Visitor {
         Parameter sp = getUnspecifiedParameter(pr, pl, foundParameters);
         if (sp==null) {
             ch.addError("all iterable parameters specified by name: " + 
-                    pr.getDeclaration().getName() + 
+                    pr.getDeclaration().getName(unit) + 
                     " does not declare any additional parameters of type Iterable");
         }
         else {
             if (!foundParameters.add(sp)) {
                 ch.addError("duplicate argument for parameter: " +
-                        sp.getName());
+                        sp.getName() + " of " + pr.getDeclaration().getName(unit));
             }
             checkComprehensionArgument(ch, pr, sp);
         }
@@ -2071,13 +2071,13 @@ public class ExpressionVisitor extends Visitor {
         Parameter sp = getUnspecifiedParameter(pr, pl, foundParameters);
         if (sp==null) {
             sa.addError("all iterable parameters specified by name: " + 
-                    pr.getDeclaration().getName() +
+                    pr.getDeclaration().getName(unit) +
                     " does not declare any additional parameters of type Iterable");
         }
         else {
             if (!foundParameters.add(sp)) {
                 sa.addError("duplicate argument for parameter: " +
-                        sp.getName());
+                        sp + " of " + pr.getDeclaration().getName(unit));
             }
             checkSequencedArgument(sa, pr, sp);
         }
@@ -2089,12 +2089,12 @@ public class ExpressionVisitor extends Visitor {
         if (p==null) {
             a.addError("no matching parameter for named argument " + 
                     name(a.getIdentifier()) + " declared by " + 
-                    pr.getDeclaration().getName(), 101);
+                    pr.getDeclaration().getName(unit), 101);
         }
         else {
             if (!foundParameters.add(p)) {
                 a.addError("duplicate argument for parameter: " +
-                        p.getName());
+                        p + " of " + pr.getDeclaration().getName(unit));
             }
             checkNamedArgument(a, pr, p);
         }
@@ -2129,7 +2129,7 @@ public class ExpressionVisitor extends Visitor {
 //      if (p.isSequenced()) pt = unit.getIteratedType(pt);
         checkAssignable(argType, pt, a,
                 "named argument must be assignable to parameter " + 
-                p.getName() + " of " + pr.getDeclaration().getName(), 
+                p.getName() + " of " + pr.getDeclaration().getName(unit), 
                 2100);
     }
     
@@ -2148,12 +2148,12 @@ public class ExpressionVisitor extends Visitor {
                 if (ell==null || i!=es.size()-1) {
                     checkAssignable(e.getTypeModel(), unit.getIteratedType(paramType), a, 
                             "argument must be assignable to iterable parameter " + 
-                            p.getName() + " of " + pr.getDeclaration().getName());
+                            p.getName() + " of " + pr.getDeclaration().getName(unit));
                 }
                 else {
                     checkAssignable(e.getTypeModel(), paramType, a, 
                             "argument must be assignable to iterable parameter " + 
-                            p.getName() + " of " + pr.getDeclaration().getName());
+                            p.getName() + " of " + pr.getDeclaration().getName(unit));
                 }
             }
         }
@@ -2169,7 +2169,7 @@ public class ExpressionVisitor extends Visitor {
         ProducedType ct = ch.getForComprehensionClause().getTypeModel();
         checkAssignable(ct, unit.getIteratedType(paramType), ch, 
                 "argument must be assignable to iterable parameter " + 
-                p.getName() + " of " + pr.getDeclaration().getName());
+                p.getName() + " of " + pr.getDeclaration().getName(unit));
     }
     
     private Parameter getMatchingParameter(ParameterList pl, Tree.NamedArgument na) {
@@ -2219,11 +2219,11 @@ private void checkPositionalArguments(ParameterList pl, ProducedReference pr,
             if (i>=args.size()) {
                 if (!p.isDefaulted() && !p.isSequenced()) {
                     pal.addError("missing argument to parameter " + 
-                            p.getName() + " of " + pr.getDeclaration().getName());
+                            p.getName() + " of " + pr.getDeclaration().getName(unit));
                 }
                 if (p.isSequenced() && ell!=null) {
                     pal.addError("missing argument to sequenced parameter " + 
-                            p.getName() + " of " + pr.getDeclaration().getName());
+                            p.getName() + " of " + pr.getDeclaration().getName(unit));
                 }
             } 
             else {
@@ -2245,8 +2245,8 @@ private void checkPositionalArguments(ParameterList pl, ProducedReference pr,
         }
         for (int i=params.size(); i<args.size(); i++) {
             args.get(i).addError("no matching parameter declared by " +
-                    pr.getDeclaration().getName() + ": " + 
-                    pr.getDeclaration().getName() + " has " + args.size() + " parameters", 2000);
+                    pr.getDeclaration().getName(unit) + ": " + 
+                    pr.getDeclaration().getName(unit) + " has " + args.size() + " parameters", 2000);
         }
 
         Tree.Comprehension ch = pal.getComprehension();
@@ -2262,11 +2262,11 @@ private void checkPositionalArguments(ParameterList pl, ProducedReference pr,
         if (!pl.hasSequencedParameter()) {
             if (ell!=null) {
                 ell.addError("no matching sequenced parameter declared by " +
-                        pr.getDeclaration().getName());
+                        pr.getDeclaration().getName(unit));
             }
             if (ch!=null) {
                 ch.addError("no matching sequenced parameter declared by " +
-                        pr.getDeclaration().getName());
+                        pr.getDeclaration().getName(unit));
             }
         }
         
@@ -2280,7 +2280,7 @@ private void checkPositionalArguments(ParameterList pl, ProducedReference pr,
         ProducedType ct = ch.getForComprehensionClause().getTypeModel();
         checkAssignable(ct, at, ch, 
                 "argument must be assignable to sequenced parameter " + 
-                p.getName()+ " of " + pr.getDeclaration().getName());
+                p.getName()+ " of " + pr.getDeclaration().getName(unit));
     }
 
     private void checkSequencedPositionalArgument(Parameter p, ProducedReference pr,
@@ -2296,7 +2296,7 @@ private void checkPositionalArguments(ParameterList pl, ProducedReference pr,
             if (e!=null) {
                 checkAssignable(e.getTypeModel(), at, a, 
                         "argument must be assignable to sequenced parameter " + 
-                        p.getName()+ " of " + pr.getDeclaration().getName(), 2101);
+                        p.getName()+ " of " + pr.getDeclaration().getName(unit), 2101);
             }
         }
     }
@@ -2307,7 +2307,7 @@ private void checkPositionalArguments(ParameterList pl, ProducedReference pr,
         if (a.getExpression()!=null) {
             checkAssignable(getPositionalArgumentType(a), paramType, a, 
                     "argument must be assignable to parameter " + 
-                    p.getName() + " of " + pr.getDeclaration().getName(), 
+                    p.getName() + " of " + pr.getDeclaration().getName(unit), 
                     2100);
         }
     }
@@ -2338,7 +2338,7 @@ private void checkPositionalArguments(ParameterList pl, ProducedReference pr,
                 }
                 else {
                     that.getPrimary().addError("receiving type not of optional type: " +
-                            pt.getDeclaration().getName() + " is not a subtype of Optional");
+                            pt.getDeclaration().getName(unit) + " is not a subtype of Optional");
                 }
             }
             if (that.getElementOrRange()==null) {
@@ -2349,7 +2349,7 @@ private void checkPositionalArguments(ParameterList pl, ProducedReference pr,
                     ProducedType cst = pt.getSupertype(unit.getCorrespondenceDeclaration());
                     if (cst==null) {
                         that.getPrimary().addError("illegal receiving type for index expression: " +
-                                pt.getDeclaration().getName() + " is not a subtype of Correspondence");
+                                pt.getDeclaration().getName(unit) + " is not a subtype of Correspondence");
                     }
                     else {
                         List<ProducedType> args = cst.getTypeArgumentList();
@@ -2373,7 +2373,7 @@ private void checkPositionalArguments(ParameterList pl, ProducedReference pr,
                     ProducedType rst = pt.getSupertype(unit.getRangedDeclaration());
                     if (rst==null) {
                         that.getPrimary().addError("illegal receiving type for index range expression: " +
-                                pt.getDeclaration().getName() + " is not a subtype of Ranged");
+                                pt.getDeclaration().getName(unit) + " is not a subtype of Ranged");
                     }
                     else {
                         List<ProducedType> args = rst.getTypeArgumentList();
@@ -2669,8 +2669,8 @@ private void checkPositionalArguments(ParameterList pl, ProducedReference pr,
                 }
                 else {
                     that.addError("operand expressions must be promotable to common numeric type: " + 
-                            lhst.getProducedTypeName() + " and " + 
-                            rhst.getProducedTypeName());
+                            lhst.getProducedTypeName(unit) + " and " + 
+                            rhst.getProducedTypeName(unit));
                     return;
                 }
                 checkAssignable(rt, producedType(type, rt), that, 
@@ -2696,8 +2696,8 @@ private void checkPositionalArguments(ParameterList pl, ProducedReference pr,
                 if (!rhst.isSubtypeOf(unit.getCastableType(powt)) &&
                         !rhst.isSubtypeOf(powt)) { //note the language spec does not actually bless this
                     that.getRightTerm().addError("operand expression must be promotable to exponent type: " + 
-                            rhst.getProducedTypeName() + " is not promotable to " +
-                            powt.getProducedTypeName());
+                            rhst.getProducedTypeName(unit) + " is not promotable to " +
+                            powt.getProducedTypeName(unit));
                 }
             }
         }
@@ -2717,8 +2717,8 @@ private void checkPositionalArguments(ParameterList pl, ProducedReference pr,
                 if (!rhst.isSubtypeOf(unit.getCastableType(t)) &&
                         !rhst.isSubtypeOf(lhst)) { //note the language spec does not actually bless this
                     that.getRightTerm().addError("operand expression must be promotable to declared type: " + 
-                            rhst.getProducedTypeName() + " is not promotable to " +
-                            nt.getProducedTypeName());
+                            rhst.getProducedTypeName(unit) + " is not promotable to " +
+                            nt.getProducedTypeName(unit));
                 }
                 checkAssignable(t, lhst, that, 
                         "result type must be assignable to declared type");
@@ -2806,7 +2806,7 @@ private void checkPositionalArguments(ParameterList pl, ProducedReference pr,
             }
             if (!lhst.isSubtypeOf(ot)) {
                 that.getLeftTerm().addError("must be of type: " + 
-                        ot.getProducedTypeName());
+                        ot.getProducedTypeName(unit));
             }*/
         }
     }
@@ -2873,7 +2873,7 @@ private void checkPositionalArguments(ParameterList pl, ProducedReference pr,
                         if (pt!=null) {
                             if (!t.covers(pt)) {
                                 that.addError("specified type does not cover the cases of the operand expression: " +
-                                        t.getProducedTypeName() + " does not cover " + pt.getProducedTypeName());
+                                        t.getProducedTypeName(unit) + " does not cover " + pt.getProducedTypeName(unit));
                             }
                         }
                     }
@@ -2896,15 +2896,15 @@ private void checkPositionalArguments(ParameterList pl, ProducedReference pr,
                     ProducedType pt = that.getTerm().getTypeModel();
                     if (pt!=null && pt.isSubtypeOf(t)) {
                         that.addError("expression type is a subtype of the type: " +
-                                pt.getProducedTypeName() + " is assignable to " +
-                                t.getProducedTypeName());
+                                pt.getProducedTypeName(unit) + " is assignable to " +
+                                t.getProducedTypeName(unit));
                     }
                     else {
                         ProducedType it = intersectionType(t, pt, unit);
                         if (it.getDeclaration() instanceof NothingType) {
                             that.addError("tests assignability to Nothing type: intersection of " +
-                                    pt.getProducedTypeName() + " and " + 
-                                    t.getProducedTypeName() +
+                                    pt.getProducedTypeName(unit) + " and " + 
+                                    t.getProducedTypeName(unit) +
                                     " is empty");
                         }
                     }
@@ -2930,7 +2930,7 @@ private void checkPositionalArguments(ParameterList pl, ProducedReference pr,
 //      that.setTypeModel(lhst); //this version is easier on backend
     }
 
-    private static void checkAssignability(Tree.Term that, Node node) {
+    private void checkAssignability(Tree.Term that, Node node) {
         if (that instanceof Tree.BaseMemberExpression ||
                 that instanceof Tree.QualifiedMemberExpression) {
             ProducedReference pr = ((Tree.MemberOrTypeExpression) that).getTarget();
@@ -2938,11 +2938,11 @@ private void checkPositionalArguments(ParameterList pl, ProducedReference pr,
                 Declaration dec = pr.getDeclaration();
                 if (!(dec instanceof Value | dec instanceof Getter)) {
                     that.addError("member cannot be assigned: " 
-                            + dec.getName());
+                            + dec.getName(unit));
                 }
                 else if ( !((TypedDeclaration) dec).isVariable() ) {
                     that.addError("value is not variable: " 
-                            + dec.getName(), 800);
+                            + dec.getName(unit), 800);
                 }
             }
         }
@@ -3137,7 +3137,7 @@ private void checkPositionalArguments(ParameterList pl, ProducedReference pr,
         if (isAbstraction(that.getDeclaration()) &&
                 that.getSignature() != null) {
             that.addError("ambiguous reference to overloaded method or class: " +
-                    that.getDeclaration().getName());
+                    that.getDeclaration().getName(unit));
         }
     }
     
@@ -3251,7 +3251,7 @@ private void checkPositionalArguments(ParameterList pl, ProducedReference pr,
             if (member==null) {
                 that.addError("member method or attribute does not exist or is ambiguous: " +
                         name(that.getIdentifier()) + 
-                        " in type " + d.getName(), 100);
+                        " in type " + d.getName(unit), 100);
                 unit.getUnresolvedReferences().add(that.getIdentifier());
             }
             else {
@@ -3259,14 +3259,14 @@ private void checkPositionalArguments(ParameterList pl, ProducedReference pr,
                 if (!member.isVisible(that.getScope())) {
                     that.addError("member method or attribute is not visible: " +
                             name(that.getIdentifier()) + 
-                            " of type " + d.getName(), 400);
+                            " of type " + d.getName(unit), 400);
                 }
                 if (member.isProtectedVisibility() &&
                         !(that.getPrimary() instanceof Tree.This) &&
                         !(that.getPrimary() instanceof Tree.Super)) {
                     that.addError("member method or attribute is not visible: " +
                             name(that.getIdentifier()) + 
-                            " of type " + d.getName());
+                            " of type " + d.getName(unit));
                 }
                 Tree.TypeArguments tal = that.getTypeArguments();
                 if (explicitTypeArguments(member,tal, that)) {
@@ -3297,8 +3297,8 @@ private void checkPositionalArguments(ParameterList pl, ProducedReference pr,
             ProducedTypedReference ptr = receiverType.getTypedMember(member, typeArgs);
             /*if (ptr==null) {
                 that.addError("member method or attribute does not exist: " + 
-                        member.getName() + " of type " + 
-                        receiverType.getDeclaration().getName());
+                        member.getName(unit) + " of type " + 
+                        receiverType.getDeclaration().getName(unit));
             }
             else {*/
                 ProducedType t = ptr.getFullType(wrap(ptr.getType(), receivingType, that));
@@ -3423,7 +3423,7 @@ private void checkPositionalArguments(ParameterList pl, ProducedReference pr,
             if (type==null) {
                 that.addError("member type does not exist or is ambiguous: " +
                         name(that.getIdentifier()) +
-                        " in type " + d.getName(), 100);
+                        " in type " + d.getName(unit), 100);
                 unit.getUnresolvedReferences().add(that.getIdentifier());
             }
             else {
@@ -3431,14 +3431,14 @@ private void checkPositionalArguments(ParameterList pl, ProducedReference pr,
                 if (!type.isVisible(that.getScope())) {
                     that.addError("member type is not visible: " +
                             name(that.getIdentifier()) +
-                            " of type " + d.getName(), 400);
+                            " of type " + d.getName(unit), 400);
                 }
                 if (type.isProtectedVisibility() &&
                         !(that.getPrimary() instanceof Tree.This) &&
                         !(that.getPrimary() instanceof Tree.Super)) {
                     that.addError("member type is not visible: " +
                             name(that.getIdentifier()) +
-                            " of type " + d.getName());
+                            " of type " + d.getName(unit));
                 }
                 Tree.TypeArguments tal = that.getTypeArguments();
                 if (explicitTypeArguments(type, tal, that)) {
@@ -3577,7 +3577,7 @@ private void checkPositionalArguments(ParameterList pl, ProducedReference pr,
                 if (isGeneric(smte.getDeclaration())) {
                     if (smte.getTypeArguments() instanceof Tree.InferredTypeArguments) {
                         smte.addError("missing type arguments to: " + 
-                                smte.getDeclaration().getName());
+                                smte.getDeclaration().getName(unit));
                     }
                 }
             }
@@ -3657,7 +3657,7 @@ private void checkPositionalArguments(ParameterList pl, ProducedReference pr,
                     //result = unit.getSequentialType(ut);
                     if (!unit.isSequentialType(et)) {
                         ell.addError("last element expression is not sequential: " +
-                                et.getProducedTypeName() + " is not a sequence type");
+                                et.getProducedTypeName(unit) + " is not a sequence type");
                     }
                 }
                 else {
@@ -3735,7 +3735,7 @@ private void checkPositionalArguments(ParameterList pl, ProducedReference pr,
                     ProducedType it = unit.getIteratedType(et);
                     if (it==null) {
                         ell.addError("last element expression is not iterable: " +
-                                et.getProducedTypeName() + " is not an iterable type");
+                                et.getProducedTypeName(unit) + " is not an iterable type");
                     }
                     else {
                         addToUnion(list, it);
@@ -3868,8 +3868,8 @@ private void checkPositionalArguments(ParameterList pl, ProducedReference pr,
                 if (!hasUncheckedNulls(switchExpression.getTerm()) || !isNullCase(pt)) {
                     if (it.isExactly(unit.getNothingDeclaration().getType())) {
                         that.addError("narrows to Nothing type: " + 
-                                pt.getProducedTypeName() + " has empty intersection with " + 
-                                st.getProducedTypeName());
+                                pt.getProducedTypeName(unit) + " has empty intersection with " + 
+                                st.getProducedTypeName(unit));
                     }
                     /*checkAssignable(ct, switchType, cc.getCaseItem(), 
                         "case type must be a case of the switch type");*/
@@ -3911,8 +3911,8 @@ private void checkPositionalArguments(ParameterList pl, ProducedReference pr,
                             if (!intersectionType(ct, oct, unit)
                                     .isExactly(unit.getNothingDeclaration().getType())) {
                                 cc.getCaseItem().addError("cases are not disjoint: " + 
-                                    ct.getProducedTypeName() + " and " + 
-                                        oct.getProducedTypeName());
+                                    ct.getProducedTypeName(unit) + " and " + 
+                                        oct.getProducedTypeName(unit));
                             }
                         }
                     }
@@ -3952,7 +3952,7 @@ private void checkPositionalArguments(ParameterList pl, ProducedReference pr,
                 if (!ut.getType().covers(st) && 
                         !(st.getDeclaration() instanceof UnknownType)) {
                     that.addError("case types must cover all cases of the switch type or an else clause must appear: " +
-                            ut.getType().getProducedTypeName() + " does not cover " + st.getProducedTypeName());
+                            ut.getType().getProducedTypeName(unit) + " does not cover " + st.getProducedTypeName(unit));
                 }
             }
         }
@@ -4012,14 +4012,14 @@ private void checkPositionalArguments(ParameterList pl, ProducedReference pr,
                                 if (ct.isSubtypeOf(ect)) {
                                     cc.getCatchVariable().getVariable().getType()
                                             .addError("exception type is already handled by earlier catch clause:" 
-                                                    + ct.getProducedTypeName());
+                                                    + ct.getProducedTypeName(unit));
                                 }
                                 if (ct.getDeclaration() instanceof UnionType) {
                                     for (ProducedType ut: ct.getDeclaration().getCaseTypes()) {
                                         if ( ut.substitute(ct.getTypeArguments()).isSubtypeOf(ect) ) {
                                             cc.getCatchVariable().getVariable().getType()
                                                     .addError("exception type is already handled by earlier catch clause: "
-                                                            + ut.getProducedTypeName());
+                                                            + ut.getProducedTypeName(unit));
                                         }
                                     }
                                 }
@@ -4031,7 +4031,7 @@ private void checkPositionalArguments(ParameterList pl, ProducedReference pr,
         }
     }
 
-    private static boolean acceptsTypeArguments(Declaration member, List<ProducedType> typeArguments, 
+    private boolean acceptsTypeArguments(Declaration member, List<ProducedType> typeArguments, 
             Tree.TypeArguments tal, Node parent) {
         return acceptsTypeArguments(null, member, typeArguments, tal, parent);
     }
@@ -4041,7 +4041,7 @@ private void checkPositionalArguments(ParameterList pl, ProducedReference pr,
             !((Generic) member).getTypeParameters().isEmpty();
     }
     
-    private static boolean acceptsTypeArguments(ProducedType receiver, Declaration member, 
+    private boolean acceptsTypeArguments(ProducedType receiver, Declaration member, 
             List<ProducedType> typeArguments, Tree.TypeArguments tal, Node parent) {
         if (member==null) return false;
         if (isGeneric(member)) {
@@ -4057,17 +4057,17 @@ private void checkPositionalArguments(ParameterList pl, ProducedReference pr,
                         if (argType!=null) {
                             if (!argType.isSubtypeOf(sts)) {
                                 if (tal instanceof Tree.InferredTypeArguments) {
-                                    parent.addError("inferred type argument " + argType.getProducedTypeName()
+                                    parent.addError("inferred type argument " + argType.getProducedTypeName(unit)
                                             + " to type parameter " + param.getName()
-                                            + " of declaration " + member.getName()
-                                            + " not assignable to " + sts.getProducedTypeName());
+                                            + " of declaration " + member.getName(unit)
+                                            + " not assignable to " + sts.getProducedTypeName(unit));
                                 }
                                 else {
                                     ( (Tree.TypeArgumentList) tal ).getTypes()
                                             .get(i).addError("type parameter " + param.getName() 
-                                            + " of declaration " + member.getName()
-                                            + " has argument " + argType.getProducedTypeName() 
-                                            + " not assignable to " + sts.getProducedTypeName(), 2102);
+                                            + " of declaration " + member.getName(unit)
+                                            + " has argument " + argType.getProducedTypeName(unit) 
+                                            + " not assignable to " + sts.getProducedTypeName(unit), 2102);
                                 }
                                 return false;
                             }
@@ -4077,16 +4077,16 @@ private void checkPositionalArguments(ParameterList pl, ProducedReference pr,
                             typeArguments, argType, param);
                     if (!asec) {
                         if (tal instanceof Tree.InferredTypeArguments) {
-                            parent.addError("inferred type argument " + argType.getProducedTypeName()
+                            parent.addError("inferred type argument " + argType.getProducedTypeName(unit)
                                     + " to type parameter " + param.getName()
-                                    + " of declaration " + member.getName()
+                                    + " of declaration " + member.getName(unit)
                                     + " not one of the enumerated cases");
                         }
                         else {
                             ( (Tree.TypeArgumentList) tal ).getTypes()
                             .get(i).addError("type parameter " + param.getName() 
-                                    + " of declaration " + member.getName()
-                                    + " has argument " + argType.getProducedTypeName() 
+                                    + " of declaration " + member.getName(unit)
+                                    + " has argument " + argType.getProducedTypeName(unit) 
                                     + " not one of the enumerated cases");
                         }
                         return false;
@@ -4096,10 +4096,10 @@ private void checkPositionalArguments(ParameterList pl, ProducedReference pr,
             }
             else {
                 if (tal==null || tal instanceof Tree.InferredTypeArguments) {
-                    parent.addError("requires type arguments: " + member.getName());
+                    parent.addError("requires type arguments: " + member.getName(unit));
                 }
                 else {
-                    tal.addError("wrong number of type arguments to: " + member.getName());
+                    tal.addError("wrong number of type arguments to: " + member.getName(unit));
                 }
                 return false;
             }
@@ -4108,7 +4108,7 @@ private void checkPositionalArguments(ParameterList pl, ProducedReference pr,
             boolean empty = typeArguments.isEmpty();
             if (!empty) {
                 tal.addError("does not accept type arguments: " + 
-                        member.getName());
+                        member.getName(unit));
             }
             return empty;
         }
@@ -4208,7 +4208,7 @@ private void checkPositionalArguments(ParameterList pl, ProducedReference pr,
                 }
             }
             t.addError("not a case of supertype: " + 
-                    type.getDeclaration().getName());
+                    type.getDeclaration().getName(unit));
         }
     }*/
 
@@ -4299,9 +4299,9 @@ private void checkPositionalArguments(ParameterList pl, ProducedReference pr,
                             !(td.getSelfType()!=null && 
                                 td.getSelfType().isExactly(arg))) {
                         that.addError("type argument does not satisfy self type constraint on type parameter " +
-                                param.getName() + " of " + type.getDeclaration().getName() + ": " +
-                                arg.getProducedTypeName() + " is not a supertype or self type of " + 
-                                td.getName());
+                                param.getName() + " of " + type.getDeclaration().getName(unit) + ": " +
+                                arg.getProducedTypeName(unit) + " is not a supertype or self type of " + 
+                                td.getName(unit));
                     }
                 }
             }
@@ -4327,16 +4327,16 @@ private void checkPositionalArguments(ParameterList pl, ProducedReference pr,
                     }
                     if (types.isEmpty()) {
                         that.addError("concrete type is not a subtype of any case of enumerated supertype: " + 
-                                d.getName() + " is a subtype of " + std.getName());
+                                d.getName(unit) + " is a subtype of " + std.getName(unit));
                     }
                     else if (types.size()>1) {
                         StringBuilder sb = new StringBuilder();
                         for (ProducedType pt: types) {
-                            sb.append(pt.getProducedTypeName()).append(" and ");
+                            sb.append(pt.getProducedTypeName(unit)).append(" and ");
                         }
                         sb.setLength(sb.length()-5);
                         that.addError("concrete type is a subtype of multiple cases of enumerated supertype: " + 
-                                d.getName() + " is a subtype of " + sb);
+                                d.getName(unit) + " is a subtype of " + sb);
                     }
                 }
             }
@@ -4383,35 +4383,35 @@ private void checkPositionalArguments(ParameterList pl, ProducedReference pr,
                 //the same as the type parameter of the enumerated supertype
                 if (p.isCovariant() && !tp.isCovariant()) {
                     that.addError("argument to covariant type parameter of supertype must be covariant: " + 
-                            p.getName() + " of "+ supertype.getDeclaration().getName());
+                            p.getName() + " of "+ supertype.getDeclaration().getName(unit));
                 }
                 if (p.isContravariant() && !tp.isContravariant()) {
                     that.addError("argument to contravariant type parameter of supertype must be contravariant: " + 
-                            p.getName() + " of "+ supertype.getDeclaration().getName());
+                            p.getName() + " of "+ supertype.getDeclaration().getName(unit));
                 }
             }
             else {
                 that.addError("argument to type parameter of enumerated supertype must be a type parameter of " +
-                        d.getName() + ": " + p.getName() + " of "+ supertype.getDeclaration().getName());
+                        d.getName() + ": " + p.getName() + " of "+ supertype.getDeclaration().getName(unit));
             }
         }
         else if (p.isCovariant()) {
             if (!(td instanceof NothingType)) {
                 //TODO: let it be the union of the lower bounds on p
                 that.addError("argument to covariant type parameter of enumerated supertype must be a type parameter or Nothing: " + 
-                        p.getName() + " of "+ supertype.getDeclaration().getName());
+                        p.getName() + " of "+ supertype.getDeclaration().getName(unit));
             }
         }
         else if (p.isContravariant()) {
             if (!(td.equals(unit.getAnythingDeclaration()))) {
                 //TODO: let it be the intersection of the upper bounds on p
                 that.addError("argument to contravariant type parameter of enumerated supertype must be a type parameter or Anything" + 
-                        p.getName() + " of "+ supertype.getProducedTypeName());
+                        p.getName() + " of "+ supertype.getDeclaration().getName(unit));
             }
         }
         else {
             that.addError("argument to type parameter of enumerated supertype must be a type parameter: " + 
-                    p.getName() + " of "+ supertype.getDeclaration().getName());
+                    p.getName() + " of "+ supertype.getDeclaration().getName(unit));
         }
     }
     

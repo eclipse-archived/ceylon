@@ -1188,62 +1188,72 @@ public class ProducedType extends ProducedReference {
     }
     
     public String getProducedTypeName() {
-        return getProducedTypeName(true);
+        return getProducedTypeName(true, 
+        		getDeclaration().getUnit());
     }
 
+    public String getProducedTypeName(Unit unit) {
+        return getProducedTypeName(true, unit);
+    }
+    
     public String getProducedTypeName(boolean abbreviate) {
+        return getProducedTypeName(abbreviate, 
+        		getDeclaration().getUnit());
+    }
+
+    public String getProducedTypeName(boolean abbreviate, Unit unit) {
         if (getDeclaration()==null) {
             return "unknown";
         }
         else {
             if (abbreviate) {
-                Unit unit = getDeclaration().getUnit();
+                //Unit unit = getDeclaration().getUnit();
                 if (abbreviateOptional()) {
                 	ProducedType dt = minus(unit.getNullDeclaration());
                 	if (!dt.isPrimitiveAbbreviatedType()) {
-                		return "<" + dt.getProducedTypeName() + ">?";
+                		return "<" + dt.getProducedTypeName(unit) + ">?";
                 	}
                 	else {
-                		return dt.getProducedTypeName() + "?";
+                		return dt.getProducedTypeName(unit) + "?";
                 	}
                 }
                 if (abbreviateSequence()) {
                     ProducedType it = unit.getIteratedType(this);
                     if (!it.isPrimitiveAbbreviatedType()) {
-                    	return "<" + it.getProducedTypeName() + ">[]";
+                    	return "<" + it.getProducedTypeName(unit) + ">[]";
                     }
                     else {
-                    	return it.getProducedTypeName() + "[]";
+                    	return it.getProducedTypeName(unit) + "[]";
                     }
                 }
                 if (abbreviateIterable()) {
                     ProducedType it = unit.getIteratedType(this);
-                    return "{" + it.getProducedTypeName() + "...}";
+                    return "{" + it.getProducedTypeName(unit) + "...}";
                 }
                 if (abbreviateEmpty()) {
                 	return "[]";
                 }
                 if (abbreviateEntry()) {
-                    return unit.getKeyType(this).getProducedTypeName() + "->"
-                            + unit.getValueType(this).getProducedTypeName();
+                    return unit.getKeyType(this).getProducedTypeName(unit) + "->"
+                            + unit.getValueType(this).getProducedTypeName(unit);
                 }
                 if (abbreviateCallable()) {
                     List<ProducedType> tal = getTypeArgumentList();
                     ProducedType rt = tal.get(0);
-                    String argtypes = argtypes(tal.get(1));
+                    String argtypes = argtypes(tal.get(1), unit);
                     if (rt!=null && argtypes!=null) {
                     	if (!rt.isPrimitiveAbbreviatedType()) {
-                        	return "<" + rt.getProducedTypeName() + ">" + 
+                        	return "<" + rt.getProducedTypeName(unit) + ">" + 
                         			"(" + argtypes + ")";
                     	}
                     	else {
-                    		return rt.getProducedTypeName() + 
+                    		return rt.getProducedTypeName(unit) + 
                     				"(" + argtypes + ")";
                     	}
                     }
                 }
                 if (abbreviateTuple(unit)) {
-                	String argtypes = argtypes(this);
+                	String argtypes = argtypes(this, unit);
                 	if (argtypes!=null) {
                 		return "[" + argtypes + "]";
                 	}
@@ -1256,10 +1266,10 @@ public class ProducedType extends ProducedReference {
                         name.append("unknown");
                     }
                     else if (abbreviate && pt.abbreviateEntry()) {
-                        name.append("<").append(pt.getProducedTypeName()).append(">");
+                        name.append("<").append(pt.getProducedTypeName(unit)).append(">");
                     }
                     else {
-                        name.append(pt.getProducedTypeName(abbreviate));
+                        name.append(pt.getProducedTypeName(abbreviate, unit));
                     }
                     name.append("|");
                 }
@@ -1273,17 +1283,17 @@ public class ProducedType extends ProducedReference {
                     }
                     else if (abbreviate && pt.abbreviateEntry() || 
                     		pt.getDeclaration() instanceof UnionType) {
-                        name.append("<").append(pt.getProducedTypeName(abbreviate)).append(">");
+                        name.append("<").append(pt.getProducedTypeName(abbreviate, unit)).append(">");
                     }
                     else {
-                        name.append(pt.getProducedTypeName(abbreviate));
+                        name.append(pt.getProducedTypeName(abbreviate, unit));
                     }
                     name.append("&");
                 }
                 return name.substring(0,name.length()>0?name.length()-1:0);
             }
             else {            
-                return getSimpleProducedTypeName(abbreviate);
+                return getSimpleProducedTypeName(abbreviate, unit);
             }
         }
     }
@@ -1293,9 +1303,9 @@ public class ProducedType extends ProducedReference {
 				getDeclaration().equals(unit.getTupleDeclaration());
 	}
     
-    private static String argtypes(ProducedType args) {
+    private static String argtypes(ProducedType args, Unit unit) {
     	if (args!=null) {
-        	Unit unit = args.getDeclaration().getUnit();
+//        	Unit unit = args.getDeclaration().getUnit();
 			boolean defaulted=false;
 			if (args.getDeclaration() instanceof UnionType) {
 	        	List<ProducedType> cts = args.getDeclaration().getCaseTypes();
@@ -1321,12 +1331,12 @@ public class ProducedType extends ProducedReference {
     					ProducedType first = tal.get(1);
     					ProducedType rest = tal.get(2);
     					if (first!=null && rest!=null) {
-    						String argtype = first.getProducedTypeName();
+    						String argtype = first.getProducedTypeName(unit);
     						if (rest.getDeclaration() instanceof Interface &&
     								rest.getDeclaration().equals(unit.getEmptyDeclaration())) {
     							return defaulted ? argtype + "=" : argtype;
     						}
-    						String argtypes = argtypes(rest);
+    						String argtypes = argtypes(rest, unit);
     						if (argtypes!=null) {
     							return defaulted ? 
     									argtype + "=, " + argtypes : 
@@ -1428,16 +1438,16 @@ public class ProducedType extends ProducedReference {
         }
     }
     
-    private String getSimpleProducedTypeName(boolean abbreviate) {
+    private String getSimpleProducedTypeName(boolean abbreviate, Unit unit) {
         StringBuilder ptn = new StringBuilder();
         //if (getDeclaration().isMember()) {
         ProducedType qt = getQualifyingType();
         if (qt!=null) {
-            ptn.append(qt.getProducedTypeName(abbreviate))
-            .append(".");
+            ptn.append(qt.getProducedTypeName(abbreviate, unit))
+                .append(".");
         }
         //}
-        ptn.append(getDeclaration().getName());
+        ptn.append(getDeclaration().getName(unit));
         if (!getTypeArgumentList().isEmpty()) {
             ptn.append("<");
             boolean first = true;
@@ -1452,7 +1462,7 @@ public class ProducedType extends ProducedReference {
                     ptn.append("unknown");
                 }
                 else {
-                    ptn.append(t.getProducedTypeName(abbreviate));
+                    ptn.append(t.getProducedTypeName(abbreviate, unit));
                 }
             }
             ptn.append(">");

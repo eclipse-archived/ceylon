@@ -110,6 +110,15 @@ public class Unit {
         return null;
     }
     
+    public String getAliasedName(Declaration dec) {
+        for (Import i: getImports()) {
+            if (i.getDeclaration().equals(dec)) {
+                return i.getAlias();
+            }
+        }
+		return dec.getName();
+    }
+    
     /**
      * Search the imports of a compilation unit
      * for the named toplevel declaration.
