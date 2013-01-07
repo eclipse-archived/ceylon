@@ -114,22 +114,22 @@ public final class Map$impl<Key,Item> {
 
             @Override
             public <Other> Set<? extends Object> union(Set<? extends Other> set) {
-                return bottom_.getBottom$();
+                return (Set)bottom_.getBottom$();
             }
 
             @Override
             public <Other> Set<? extends Object> intersection(Set<? extends Other> set) {
-                return bottom_.getBottom$();
+                return (Set)bottom_.getBottom$();
             }
 
             @Override
             public <Other> Set<? extends Object> exclusiveUnion(Set<? extends Other> set) {
-                return bottom_.getBottom$();
+                return (Set)bottom_.getBottom$();
             }
 
             @Override
             public <Other> Set<? extends Key> complement(Set<? extends Other> set) {
-                return bottom_.getBottom$();
+                return (Set)bottom_.getBottom$();
             }
 
             // concrete interface methods:

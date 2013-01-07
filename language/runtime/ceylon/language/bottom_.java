@@ -7,7 +7,7 @@ import com.redhat.ceylon.compiler.java.metadata.TypeInfo;
 @Ceylon(major = 3) @Attribute
 public class bottom_ {
     @TypeInfo("ceylon.language::Bottom")
-    public static <T> T getBottom$(){
+    public static java.lang.Object getBottom$(){
         throw new Exception(null, null);
     }
 }
