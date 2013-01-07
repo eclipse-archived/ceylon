@@ -361,13 +361,13 @@ public class ExpressionVisitor extends Visitor {
                                 IntersectionType ut = new IntersectionType(unit);
                                 ut.setSatisfiedTypes(list);
                                 if (!ta.isExactly(ut.getType())) {
-                                    that.addWarning("type argument to covariant type parameter in assignability condition must be " +
+                                    that.addWarning("type argument to covariant (out) type parameter in assignability condition must be " +
                                             ut.getType().getProducedTypeName(unit) + " (until we implement reified generics)");
                                 }
                             }
                             else if (tp.isContravariant()) {
                                 if (!(ta.getDeclaration() instanceof NothingType)) {
-                                    that.addWarning("type argument to contravariant type parameter in assignability condition must be Nothing (until we implement reified generics)");
+                                    that.addWarning("type argument to contravariant (in) type parameter in assignability condition must be Nothing (until we implement reified generics)");
                                 }
                             }
                             else {

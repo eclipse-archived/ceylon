@@ -108,11 +108,11 @@ public class TypeArgumentVisitor extends Visitor {
             for (TypeParameter td: errors) {
             	String var; String loc;
             	if ( td.isContravariant() ) {
-            		var = "contravariant";
+            		var = "contravariant (in)";
             		loc = "covariant";
             	}
             	else if ( td.isCovariant() ) {
-            		var = "covariant";
+            		var = "covariant (out)";
             		loc = "contravariant";
             	}
             	else {
