@@ -144,7 +144,7 @@ class Util {
                         ProducedType et = o.getExtendedType().getType().getTypeModel();
                         Unit unit = that.getUnit();
 						if (et!=null 
-                                && !et.getDeclaration().equals(unit.getValueDeclaration())
+                                && !et.getDeclaration().equals(unit.getObjectDeclaration())
                                 && !et.getDeclaration().equals(unit.getBasicDeclaration())) {
                             return s;
                         }

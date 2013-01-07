@@ -10,8 +10,8 @@ interface Declarations {
     
     Y something { return createSomething(); }
     
-    class WithValueArg(@error Value value) {}
-    void withValueArg(@error Value value) {}
+    class WithValueArg(@error Object value) {}
+    void withValueArg(@error Object value) {}
     
     //@error class value() {}
     //@error void object() {}

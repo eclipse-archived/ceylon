@@ -1,7 +1,7 @@
 interface SelfReference {
     
-    void use(Value o) {}
-    class Super(Value o) {}
+    void use(Object o) {}
+    class Super(Object o) {}
     
     class Good() extends Super("hello") {
         use("hello");
@@ -85,7 +85,7 @@ interface SelfReference {
         shared String hello = "hello";
         /*if (is Concrete conc = this) {}
         void method() {
-            if (is Value sup = super) {}
+            if (is Object sup = super) {}
         }*/
     }
     

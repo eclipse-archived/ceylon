@@ -120,9 +120,9 @@ class Primaries() {
     //H[] hs = [S(), T()];
     //G[] gs = [T(), S()];
     @type:"Sequence<Primaries.A|Primaries.B|String|Sequence<Integer>>" value p26 = [A(),B(),"Hello",A(),[1,2,3].sequence,S()].sequence;
-    //Value[] stuff = [A(),B(),"Hello",[1,2,3]];
+    //Object[] stuff = [A(),B(),"Hello",[1,2,3]];
     value objects = [A(),B(),"Hello",[1,2,3].sequence].sequence;
-    //Value[] things = objects;
+    //Object[] things = objects;
     @type:"Null|Primaries.A|Primaries.B|String|Sequence<Integer>" value p27 = objects[1];
     @type:"Null|String" value p28 = objects[1]?.string;
     if (exists o = objects[1]) {
@@ -141,8 +141,8 @@ class Primaries() {
     @type:"Sequence<Null|Boolean>" value p102s = [ null, true, false ].sequence;
     
     object idobj satisfies G&H {}
-    object obj extends Value() satisfies G&H {
-        shared actual Boolean equals(Value other) {
+    object obj extends Object() satisfies G&H {
+        shared actual Boolean equals(Object other) {
             return false;
         }
         shared actual Integer hash = 0;

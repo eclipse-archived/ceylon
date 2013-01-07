@@ -12,10 +12,10 @@ void assertions() {
     @error assert ();
     print(Assertions("hello").name);
     Anything x = null;
-    assert (is Value x, x=="hello");
+    assert (is Object x, x=="hello");
     print(x=="goodbye");
     Anything y = null;
-    if (is Value y, y=="hello") {
+    if (is Object y, y=="hello") {
         print(y=="goodbye");
     }
     @error print(y=="goodbye");

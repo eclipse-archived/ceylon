@@ -58,7 +58,7 @@ interface Multiple {
         shared actual Integer hash {
             return List::hash;
         }
-        shared actual Boolean equals(Value that) {
+        shared actual Boolean equals(Object that) {
             return List::equals(that);
         }
     }
@@ -67,9 +67,9 @@ interface Multiple {
             @error return Basic::string;
         }
         shared actual Integer hash {
-            @error return Value::hash;
+            @error return Object::hash;
         }
-        shared actual Boolean equals(Value that) {
+        shared actual Boolean equals(Object that) {
             return Identifiable::equals(that);
         }
     }

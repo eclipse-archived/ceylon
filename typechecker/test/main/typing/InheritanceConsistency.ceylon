@@ -101,7 +101,7 @@ interface Inter<T> {
 }
 
 void accept<T>(Inter<T> inter) 
-        given T satisfies Value {
+        given T satisfies Object {
     print(inter.get());
 }
 

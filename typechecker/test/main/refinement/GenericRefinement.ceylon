@@ -156,7 +156,7 @@ class GenericRefinement() {
             given Absent satisfies Null {
         @error
         object obj 
-            extends Value()
+            extends Object()
             satisfies Empty & 
                 ContainerWithFirstElement<Nothing,Absent> {}
     }

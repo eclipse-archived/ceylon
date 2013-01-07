@@ -24,7 +24,7 @@ class Intersection() {
     
     @error X&Y xyError = xOnly;
     
-    @type:"Intersection.X&Intersection.Y" X&Value&Y xo = XY();
+    @type:"Intersection.X&Intersection.Y" X&Object&Y xo = XY();
     @type:"Nothing" X&Nothing&Y xb;
     
     @type:"Intersection.X&Intersection.Y" function f(X&Y xy) {
@@ -35,27 +35,27 @@ class Intersection() {
     @error f(xOnly);
     
     class Super() {
-        shared default X&Y get(X&Y&Value xy) {
+        shared default X&Y get(X&Y&Object xy) {
             return xy;
         }
     }
     
     class Good1() extends Super() {
-        shared actual X&Y get(X&Y&Value xy) {
+        shared actual X&Y get(X&Y&Object xy) {
             print(xy.hello);
             return xy;
         }
     }
     
     class Good2() extends Super() {
-        shared actual X&Y&Value get(X&Y xy) {
+        shared actual X&Y&Object get(X&Y xy) {
             print(xy.goodbye);
             return xy;
         }
     }
     
     class Bad() extends Super() {
-        @error shared actual X get(@error X&Value xy) {
+        @error shared actual X get(@error X&Object xy) {
             return xy;
         }
     }

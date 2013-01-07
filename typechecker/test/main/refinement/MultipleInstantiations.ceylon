@@ -6,13 +6,13 @@ interface Co<out T> {
     formal shared T get();
 }
 
-class SuperCo() satisfies Co<Value> {
-    default shared actual Value get() { return 1; }
+class SuperCo() satisfies Co<Object> {
+    default shared actual Object get() { return 1; }
 }
 class SubCo() extends SuperCo() satisfies Co<String> {
     default shared actual String get() { return ""; }
     void m() {
-        @type:"Value" super.get();
+        @type:"Object" super.get();
     }
 } 
 @error class SubCoBroken() extends SuperCo() satisfies Co<String> {}
@@ -20,20 +20,20 @@ void testSubCo() {
     value inst = SubCo();
     @type:"String" inst.get();
     Co<String> cog = inst;
-    Co<Value> coo = inst;
+    Co<Object> coo = inst;
     @type:"String" infer(inst);
 }
 
 class SuperCoOk() satisfies Co<String> {
     default shared actual String get() { return ""; }
 }
-class SubCoOk() extends SuperCoOk() satisfies Co<Value> {
+class SubCoOk() extends SuperCoOk() satisfies Co<Object> {
 } 
 void testSubCoOk() {
     value inst = SubCoOk();
     @type:"String" inst.get();
     Co<String> cog = inst;
-    Co<Value> coo = inst;
+    Co<Object> coo = inst;
     @type:"String" infer(inst);
 }
 
@@ -52,7 +52,7 @@ void testSubCoGood() {
     @type:"H&G" inst.get();
     Co<G> cog = inst;
     Co<H> coh = inst;
-    Co<Value> coo = inst;
+    Co<Object> coo = inst;
     Co<G&H> cogh = inst;
     @type:"G&H" infer(inst);
 }
@@ -61,7 +61,7 @@ interface InterCoG satisfies Co<G> {
     default shared actual G get() { return bottom; }
 }
 interface InterCoH satisfies Co<H> {}
-interface InterCo satisfies Co<Value> {}
+interface InterCo satisfies Co<Object> {}
 
 @error class SatCoBroken() satisfies InterCoG&InterCoH {}
 
@@ -73,7 +73,7 @@ void testSatCoOK() {
     @type:"G&H" inst.get();
     Co<G> cog = inst;
     Co<H> coh = inst;
-    Co<Value> coo = inst;
+    Co<Object> coo = inst;
     Co<G&H> cogh = inst;
     @type:"G&H" infer(inst);
 }
@@ -83,7 +83,7 @@ void testSatCoGood() {
     value inst = SatCoGood();
     @type:"G" inst.get();
     Co<G> cog = inst;
-    Co<Value> coo = inst;
+    Co<Object> coo = inst;
     @type:"G" infer(inst);
 }
 class SatCoFine() satisfies InterCo&InterCoH {
@@ -93,7 +93,7 @@ void testSatCoFine() {
     value inst = SatCoFine();
     @type:"H" inst.get();
     Co<H> cog = inst;
-    Co<Value> coo = inst;
+    Co<Object> coo = inst;
     @type:"H" infer(inst);
 }
 
@@ -105,7 +105,7 @@ class SuperContra() satisfies Contra<String> {
     shared actual void accept(String t) {}
 }
 
-@error class SubContra() extends SuperContra() satisfies Contra<Value> {} 
+@error class SubContra() extends SuperContra() satisfies Contra<Object> {} 
 
 
 interface I1 { shared String name { return "Gavin"; } } 

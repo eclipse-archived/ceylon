@@ -139,7 +139,7 @@ class TypeArgInference() {
     higherAnything((String x) => print(x));
     higherAnything { void f(String x) { print(x); } };
 
-    X|Y higher<X,Y>(X f(Y? y)) given Y satisfies Value => f(null);
+    X|Y higher<X,Y>(X f(Y? y)) given Y satisfies Object => f(null);
     @type:"Integer|String" higher((String? y) => 1);
     @type:"Float|String" higher { function f(String? y) => 1.0; };
     function argfun(Integer? x) => x?.float;

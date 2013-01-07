@@ -105,7 +105,7 @@ class OtherBadlyDuped() extends OtherAbstract() {
 abstract class X<T>() {
     shared formal Anything foo(T s);
     shared formal T bar;
-    shared formal Value baz(String s(Integer i));
+    shared formal Object baz(String s(Integer i));
     shared formal String qux<S>();
     shared formal Anything fum(String string = "hello");
     shared formal Anything fo(String... strings);
@@ -130,11 +130,11 @@ void testxy() {
 }
 
 class FatArrowRefinement(name) 
-        extends Value() 
+        extends Object() 
         satisfies Comparable<FatArrowRefinement> {
     String name;
     hash => string.hash;
-    equals(Value that) => string==that.string;
+    equals(Object that) => string==that.string;
     shared actual String string => name;
     compare(FatArrowRefinement other) => name<=>other.name;
 }
@@ -162,11 +162,11 @@ object below2 satisfies Below2 {}
 
 class Count1(Integer x) {
     string = "Count " x "";
-    equals(Value that) => that is Count1|Count2;
+    equals(Object that) => that is Count1|Count2;
     hash => x;
 }
-class Count2(Integer x) extends Value() {
+class Count2(Integer x) extends Object() {
     string = "Count " x "";
-    equals(Value that) => that is Count1|Count2;
+    equals(Object that) => that is Count1|Count2;
     hash => x;
 }

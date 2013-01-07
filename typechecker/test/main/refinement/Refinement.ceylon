@@ -58,7 +58,7 @@ class Refinement() {
         class Y() extends X() {
             @error shared actual Integer hello = 1;
             @error shared actual Integer count { return 1; }
-            shared actual void print(@error Value o) {}
+            shared actual void print(@error Object o) {}
             @error shared actual Integer getHello() { return hello; }
             @error shared actual class Z() {}
         }
@@ -68,17 +68,17 @@ class Refinement() {
     interface GoodTypes {
         
         class X() {
-            shared default Value something = "Hello";
+            shared default Object something = "Hello";
             shared default Integer count = 0;
-            shared default void print(Value o) {}
-            shared default Value getSomething() { return something; }
+            shared default void print(Object o) {}
+            shared default Object getSomething() { return something; }
             shared default class Z() {}
         }
         
         class Y() extends X() {
             shared actual Integer something = 1;
             shared actual variable Integer count = 0;
-            shared actual void print(Value o) {}
+            shared actual void print(Object o) {}
             shared actual Integer getSomething() { return something; }
             shared actual class Z() extends super.Z() {}
         }
@@ -188,9 +188,9 @@ class ConcreteRefinement() extends AbstractRefined() {
 }
 
 class VariableSuper() {
-    shared default variable Value i=0;
-    shared default Value j=0;
-    shared default variable Value k=0;
+    shared default variable Object i=0;
+    shared default Object j=0;
+    shared default variable Object k=0;
 }
 
 class VariableSub() extends VariableSuper() {
@@ -265,12 +265,12 @@ void testQux() {
 
 interface DefinesHashAndEq {
     shared actual Integer hash { return 0; }
-    shared actual Boolean equals(Value that) { return false; }
+    shared actual Boolean equals(Object that) { return false; }
 }
 @error object hasToRefineHash satisfies DefinesHashAndEq {}
-object doesntHaveToRefineHash extends Value() satisfies DefinesHashAndEq {}
+object doesntHaveToRefineHash extends Object() satisfies DefinesHashAndEq {}
 @error class HasToRefineHash() satisfies DefinesHashAndEq {}
-class DoesntHaveToRefineHash() extends Value() satisfies DefinesHashAndEq {}
+class DoesntHaveToRefineHash() extends Object() satisfies DefinesHashAndEq {}
 
 
 class WithPrivate() {

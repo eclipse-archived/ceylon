@@ -3,7 +3,7 @@ interface Something satisfies Anything {
     shared formal String something;
 }
 interface SomethingElse satisfies Anything {
-    shared formal Value somethingElse;
+    shared formal Object somethingElse;
 }
 
 void switchAnything(Anything any) {

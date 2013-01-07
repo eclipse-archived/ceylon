@@ -198,9 +198,9 @@ class Assignability() {
     }
     
     @error if (X() is Y) {}
-    @error if (X() is Value ) {}
+    @error if (X() is Object ) {}
     @error if (is Y x = X()) {}
-    @error if (is Value x = X()) {}
+    @error if (is Object x = X()) {}
     
     X[]? seq = null;
     
@@ -393,7 +393,7 @@ class Assignability() {
     
     object o { shared String hello = "hello"; }
     @type:"Basic" value oo = o;
-    Value ooo = o;
+    Object ooo = o;
     @type:"String" value so = o.hello;
     @error value soo = oo.hello;
     
@@ -418,7 +418,7 @@ class Assignability() {
         }
     }
     @type:"Tuple<String,String,Empty>|Tuple<Integer,Integer,Empty>" value ut = f(["aaa"],[1]);
-    Sequence<Value> st1 = ut;
+    Sequence<Object> st1 = ut;
     Sequence<String|Integer> st2 = ut;
     @type:"Null|String|Integer" value item = ut[0];
     @type:"Sequential<String>|Sequential<Integer>" value items = ut[1..2];
@@ -433,7 +433,7 @@ class Assignability() {
     
     Anything v = null;
     if (exists v) {
-        @type:"Value" value val = v;
+        @type:"Object" value val = v;
         print(v.string);
     }
     if (is String v) {
@@ -441,9 +441,9 @@ class Assignability() {
         print(v.size.string);
     }
     
-    Value? mo = null;
+    Object? mo = null;
     if (exists mo) {
-        @type:"Value" value val = mo;
+        @type:"Object" value val = mo;
     }
     if (is String mo) {
         @type:"String" value val = mo;

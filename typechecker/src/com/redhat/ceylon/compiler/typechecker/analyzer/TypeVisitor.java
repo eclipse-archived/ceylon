@@ -676,7 +676,7 @@ public class TypeVisitor extends Visitor {
 
     @Override 
     public void visit(Tree.InterfaceDefinition that) {
-        Class od = unit.getValueDeclaration();
+        Class od = unit.getObjectDeclaration();
         if (od!=null) {
 		    that.getDeclarationModel().setExtendedType(od.getType());
         }

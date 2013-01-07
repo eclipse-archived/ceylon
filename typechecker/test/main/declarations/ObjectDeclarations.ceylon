@@ -37,7 +37,7 @@ void method2() {
 
 
 interface Something {
-    shared formal Value something;
+    shared formal Object something;
 }
 
 object se1 satisfies Something {
@@ -51,7 +51,7 @@ object se2 satisfies Something {
 }
 
 void testSomething(Something s) {
-    @type:"Value" value ss = s.something;
+    @type:"Object" value ss = s.something;
     @type:"String" value ss1 = se1.something;
     @type:"String" value ss2 = se2.something;
 }

@@ -1,6 +1,6 @@
 class OuterTypeArgs() {
-	class Foo<T>() given T satisfies Value {
-		shared default class Bar<S>() given S satisfies Value {
+	class Foo<T>() given T satisfies Object {
+		shared default class Bar<S>() given S satisfies Object {
 			Bar<S> b0 = Bar<S>();
 			@error Bar<S> b1 = Foo<Integer>().Bar<S>();
 			Bar<S> b2 = Foo<T>().Bar<S>();
@@ -31,10 +31,10 @@ class OuterTypeArgs() {
 			}
 		}
 	}
-	class Baz<F>() extends Foo<F>() given F satisfies Value {}
-	class Fum<T>() extends Foo<T>() given T satisfies Value {
+	class Baz<F>() extends Foo<F>() given F satisfies Object {}
+	class Fum<T>() extends Foo<T>() given T satisfies Object {
 		shared actual class Bar<S>() extends super.Bar<S>() 
-		        given S satisfies Value {
+		        given S satisfies Object {
 			shared actual Bar<S> get() {
 				return this;
 			}
@@ -43,7 +43,7 @@ class OuterTypeArgs() {
 	Baz<String>.Bar<Integer> foobar = Baz<String>().Bar<Integer>();
 	@type:"OuterTypeArgs.Foo<String>.Bar<Integer>" value fbg = foobar.get();
 	@type:"String" value fbgt = foobar.getT();
-	Baz<Float>.Bar<String>.Qux<Value> foobarqux = Baz<Float>().Bar<String>().Qux<Value>();
+	Baz<Float>.Bar<String>.Qux<Object> foobarqux = Baz<Float>().Bar<String>().Qux<Object>();
 	@type:"OuterTypeArgs.Foo<Float>.Bar<String>" value fbqg = foobarqux.bar;
 	@type:"Entry<Float,String>" foobarqux.entry(1.0, "hello");
 
@@ -60,7 +60,7 @@ class OuterTypeArgs() {
 	Baz<String>.Bar<Integer> fb5 = fmbg;
 	Baz<String>.Bar<Integer> fb6 = fbg;
 	
-	Baz<Value>.Bar<String> bazbarobj = Baz<Value>().Bar<String>();
+	Baz<Object>.Bar<String> bazbarobj = Baz<Object>().Bar<String>();
 	@error Baz<Integer>.Bar<String> bazbarnat = bazbarobj;
 	
 	class Outer<out T>(T t) {
@@ -71,8 +71,8 @@ class OuterTypeArgs() {
 	
 	@type:"OuterTypeArgs.Outer<String>.Inner<String>" Outer("hello").Inner("world");
 	@type:"OuterTypeArgs.Outer<String>.Inner<String>" Outer("hello").Inner("world").bar();
-	Outer<Value>.Inner<String> oiobj = Outer("hello").Inner("world");
-	Outer<String>.Inner<Value> oiobj2 = Outer("hello").Inner("world");
+	Outer<Object>.Inner<String> oiobj = Outer("hello").Inner("world");
+	Outer<String>.Inner<Object> oiobj2 = Outer("hello").Inner("world");
 	@error Outer<String>.Inner<String> oistr = oiobj;
 	@error Outer<Integer>.Inner<String> oinat = Outer("hello").Inner("world");
 
@@ -85,7 +85,7 @@ class OuterTypeArgs() {
 	@type:"OuterTypeArgs.Consumer<String>.Inner<String>" Consumer("hello").Inner("world");
 	@type:"String" Consumer("hello").Inner("world").foo("hello");
 	Consumer<Nothing>.Inner<String> ciobj = Consumer("hello").Inner("world");
-	Consumer<String>.Inner<Value> ciobj2 = Consumer("hello").Inner("world");
+	Consumer<String>.Inner<Object> ciobj2 = Consumer("hello").Inner("world");
 	@error Consumer<String>.Inner<String> cistr = ciobj;
 	@error Consumer<Integer>.Inner<String> cinat = Consumer("hello").Inner("world");
 

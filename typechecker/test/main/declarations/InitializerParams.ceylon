@@ -62,7 +62,7 @@ interface InitializerParams {
     }
     
     class Func(f) {
-        void f(Value o);
+        void f(Object o);
         f(0);
     }
 

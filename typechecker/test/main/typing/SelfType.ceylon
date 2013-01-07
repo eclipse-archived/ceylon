@@ -83,7 +83,7 @@ interface C satisfies Comparable<C|A> {}
 
 void testOf(Comparable<C|A> comp, Anything vd) {
     A|C ac = comp of C|A;
-    Value? maybe = vd of Value|Null;
+    Object? maybe = vd of Object|Null;
 }
 
 interface Comp<in T> of T

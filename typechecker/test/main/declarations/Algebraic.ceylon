@@ -105,7 +105,7 @@ void switchit(XXX<String> x) {
     }
     
     switch (x) 
-    case (is YYY<Value>) { 
+    case (is YYY<Object>) { 
         print("yyy"); 
     }
     case (is ZZZ<String>) { 
@@ -164,7 +164,7 @@ interface SomethingUsual satisfies Anything {
     shared formal String something;
 }
 interface SomethingElse satisfies Anything {
-    shared formal Value somethingElse;
+    shared formal Object somethingElse;
 }
 
 void switchAnything(Anything any) {

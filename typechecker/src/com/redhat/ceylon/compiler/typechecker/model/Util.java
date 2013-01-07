@@ -281,7 +281,7 @@ public class Util {
             //TODO: this is pretty sucky, cos in theory a
             //      union or intersection might be assignable
             //      to the parameter type with a typecast
-            return paramType.getUnit().getValueDeclaration();
+            return paramType.getUnit().getObjectDeclaration();
         }
         else {
             return paramType;

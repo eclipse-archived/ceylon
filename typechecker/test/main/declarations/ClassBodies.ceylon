@@ -250,7 +250,7 @@ class ClassBodies() {
         String name = "gavin";
     }
     
-    void print(Value o) {}
+    void print(Object o) {}
     
     class Good2WithThis() {
         String name = "gavin";
@@ -330,7 +330,7 @@ class ClassBodies() {
     
     object good5WithThis {
         String name = "gavin";
-        variable Value? t = null;
+        variable Object? t = null;
         void member() {
             t = this;
         }
@@ -344,7 +344,7 @@ class ClassBodies() {
     
     object bad5WithThis {
         String name = "gavin";
-        variable Value? t = null;
+        variable Object? t = null;
         @error t = this;
     }
     
@@ -460,14 +460,14 @@ class ClassBodies() {
     
     class Good4WithOuter() {
         String name = "gavin";
-        variable Value? o = null;
+        variable Object? o = null;
         class Inner() {
             o = outer;
         }
     }
     
     class Bad4WithOuter() {
-        variable Value? o = null;
+        variable Object? o = null;
         class Inner() {
             @error o = outer;
         }
@@ -476,7 +476,7 @@ class ClassBodies() {
     
     object good4WithOuter {
         String name = "gavin";
-        variable Value? o = null;
+        variable Object? o = null;
         object inner {
             void method() {
                 o = outer;
@@ -486,14 +486,14 @@ class ClassBodies() {
     
     object bad7WithOuter {
         String name = "gavin";
-        variable Value? o = null;
+        variable Object? o = null;
         object inner {
             @error o = outer;
         }
     }
     
     object bad4WithOuter {
-        variable Value? o = null;
+        variable Object? o = null;
         object inner {
             @error o = outer;
         }
@@ -507,7 +507,7 @@ class ClassBodies() {
     class BadWithSuper() extends Super() {
         void inner() {
             String n = super.name;
-            @error Value o = super;
+            @error Object o = super;
             @error print(super);
             @error return super;
         }

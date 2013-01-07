@@ -4,7 +4,7 @@ class Capture() {
     
     n=12;
     
-    void use(Value o) {}
+    void use(Object o) {}
     
     class X() {}
     
