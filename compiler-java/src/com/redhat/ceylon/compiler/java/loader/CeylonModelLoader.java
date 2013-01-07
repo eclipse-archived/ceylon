@@ -42,8 +42,11 @@ import com.redhat.ceylon.compiler.loader.mirror.ClassMirror;
 import com.redhat.ceylon.compiler.loader.mirror.MethodMirror;
 import com.redhat.ceylon.compiler.typechecker.context.PhasedUnits;
 import com.redhat.ceylon.compiler.typechecker.model.Module;
+import com.redhat.ceylon.compiler.typechecker.tree.Tree;
+import com.redhat.ceylon.compiler.typechecker.tree.Tree.ClassOrInterface;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.CompilationUnit;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.Declaration;
+import com.sun.tools.javac.code.Scope;
 import com.sun.tools.javac.code.Scope.Entry;
 import com.sun.tools.javac.code.Symbol;
 import com.sun.tools.javac.code.Symbol.ClassSymbol;
@@ -51,6 +54,7 @@ import com.sun.tools.javac.code.Symbol.CompletionFailure;
 import com.sun.tools.javac.code.Symbol.MethodSymbol;
 import com.sun.tools.javac.code.Symbol.PackageSymbol;
 import com.sun.tools.javac.code.Symbol.TypeSymbol;
+import com.sun.tools.javac.code.Flags;
 import com.sun.tools.javac.code.Symtab;
 import com.sun.tools.javac.code.Type;
 import com.sun.tools.javac.code.Types;
@@ -59,6 +63,7 @@ import com.sun.tools.javac.main.OptionName;
 import com.sun.tools.javac.util.Abort;
 import com.sun.tools.javac.util.Context;
 import com.sun.tools.javac.util.Convert;
+import com.sun.tools.javac.util.ListBuffer;
 import com.sun.tools.javac.util.Log;
 import com.sun.tools.javac.util.Name;
 import com.sun.tools.javac.util.Names;
@@ -126,7 +131,9 @@ public class CeylonModelLoader extends AbstractModelLoader {
                 public void loadFromSource(Declaration decl) {
                     String fqn = Naming.toplevelClassName(pkgName, decl);
                     try{
-                        reader.enterClass(names.fromString(fqn), tree.getSourceFile());
+                        ClassSymbol classSymbol = reader.enterClass(names.fromString(fqn), tree.getSourceFile());
+                        if(isBootstrap)
+                            generateFakeClassAST(decl, classSymbol);
                     }catch(AssertionError error){
                         // this happens when we have already registered a source file for this decl, so let's
                         // print out a helpful message
@@ -144,6 +151,34 @@ public class CeylonModelLoader extends AbstractModelLoader {
             symtab.loadCeylonSymbols();
     }
     
+    /**
+     * Generates a fake class/interface for bootstrapping, which contains only a name and list of unbounded type parameters.
+     * We don't need supertype, implemented interfaces or members for bootstrap.
+     */
+    protected void generateFakeClassAST(Declaration decl, ClassSymbol classSymbol) {
+        // proceed to fake the class temporarily for Java files in Enter's first phase until we replace
+        // it with real Java AST
+        classSymbol.completer = null;
+        classSymbol.members_field = new Scope(classSymbol);
+        // this is good enough, it will be set correctly later and rechecked
+        classSymbol.flags_field = Flags.PUBLIC;
+        if(decl instanceof Tree.AnyInterface)
+            classSymbol.flags_field |= Flags.INTERFACE;
+        if(decl instanceof Tree.ClassOrInterface){
+            Tree.ClassOrInterface classDecl = (ClassOrInterface) decl;
+            if(classDecl.getTypeParameterList() != null){
+                Type.ClassType classType = (Type.ClassType) classSymbol.type;
+                ListBuffer<Type> types = new ListBuffer<Type>();
+                for(Tree.TypeParameterDeclaration typeParamDecl : classDecl.getTypeParameterList().getTypeParameterDeclarations()){
+                    // we don't need a valid name, just a name, and making it BOGUS helps us find it later if it turns out
+                    // we failed to reset everything properly
+                    types.append(new Type.TypeVar(names.fromString("BOGUS"), classSymbol, null));
+                }
+                classType.typarams_field = types.toList();
+            }
+        }
+    }
+
     @Override
     public synchronized boolean loadPackage(String packageName, boolean loadDeclarations) {
         // abort if we already loaded it, but only record that we loaded it if we want
