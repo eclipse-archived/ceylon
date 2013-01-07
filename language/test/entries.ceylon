@@ -213,8 +213,8 @@ Range<Integer> range {
     test_entries_function();
     //Test comparisons by Key and Item
     value e1 = entries("a", "B", "c", "D");
-    value k1 = e1.sort(byKey((Integer a, Integer b) b<=>a)).sequence;
-    value k2 = e1.sort(byItem((String a, String b) a<=>b)).sequence;
+    value k1 = e1.sort(byKey((Integer a, Integer b) => b<=>a)).sequence;
+    value k2 = e1.sort(byItem((String a, String b) => a<=>b)).sequence;
     if (exists x=k1[0]) {
         check(x==3->"D", "byKey[1]");
     } else { fail("byKey[1]"); }
@@ -227,12 +227,12 @@ Range<Integer> range {
     if (exists x=k2[3]) {
         check(x==2->"c", "byItem[2]");
     } else { fail("byItem[2]"); }
-    if (exists x=e1.find(forKey((Integer k) k==2))) {
+    if (exists x=e1.find(forKey((Integer k) => k==2))) {
         check(x == 2->"c", "forKey [1]");
     } else { fail("forKey [2]"); }
-    if (exists x=e1.find(forItem((String s) s=="B"))) {
+    if (exists x=e1.find(forItem((String s) => s=="B"))) {
         check(x == 1->"B", "forItem [1]");
     } else { fail("forItem [2]"); }
-    check(e1.count(forItem((String s) s<"a"))==2, "forItem [3]");
-    check(e1.map(forKey((Integer k) k.string.repeat(3))).sequence == {"000","111","222","333"}, "forKey [3]");
+    check(e1.count(forItem((String s) => s<"a"))==2, "forItem [3]");
+    check(e1.map(forKey((Integer k) => k.string.repeat(3))).sequence == {"000","111","222","333"}, "forKey [3]");
 }

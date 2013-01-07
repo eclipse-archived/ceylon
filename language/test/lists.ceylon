@@ -63,7 +63,7 @@ void lists() {
     check(b.spanTo(4)=={1,2,3,4,5}, "LazyList.spanTo(4) & equals");
     check(b.spanTo(-1)=={}, "LazyList.spanTo(-1) & equals");
     check(b.segment(2,3)=={3,4,5}, "LazyList.segment");
-    if (exists e=b.findLast((Integer x) true)) {
+    if (exists e=b.findLast((Integer x) => true)) {
         check(e==8, "LazyList.findLast");
     } else { fail("LazyList.findLast"); }
     if (exists e=b.first) {

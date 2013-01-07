@@ -44,8 +44,8 @@ void tuples() {
     check(t[...3] == {1, "2", {`3`}}, "tuple[...3] " t[...3] "...");
     //Check inherited methods work
     check(1 in t, "tuple contains");
-    check(t.find((Object x) x is Integer) exists, "tuple find");
-    check(t.any((Object x) x is String), "tuple any");
-    check(t.every((Object x) true), "tuple every");
-    check(t.count((Object x) x is String) == 1, "tuple count");
+    check(t.find((Object x) => x is Integer) exists, "tuple find");
+    check(t.any((Object x) => x is String), "tuple any");
+    check(t.every((Object x) => true), "tuple every");
+    check(t.count((Object x) => x is String) == 1, "tuple count");
 }

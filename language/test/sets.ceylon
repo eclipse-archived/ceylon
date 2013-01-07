@@ -43,7 +43,7 @@ class SetTest<Element>(Element... element) extends Object()
         //    }
         //}
         //return SetTest(sb.sequence...);
-        return bottom;
+        return nothing;
     }
     shared actual Set<Element|Other> exclusiveUnion<Other>(Set<Other> set)
                 given Other satisfies Object {
@@ -81,8 +81,8 @@ class SetTest<Element>(Element... element) extends Object()
 void testSets() {
     value s1 = SetTest<Integer>(1, 2, 3);
     value emptySet = SetTest<Nothing>();
-    check(s1.count((Integer x) x==2)==1, "Set.count 1");
-    check(s1.count((Integer x) x==100)==0, "Set.count 2");
+    check(s1.count((Integer x) => x==2)==1, "Set.count 1");
+    check(s1.count((Integer x) => x==100)==0, "Set.count 2");
     check(2 in s1, "Set.contains 1");
     check(!(4.2 in s1), "Set.contains 2");
     check(!(4 in s1), "Set.contains 3");

@@ -26,8 +26,8 @@ class MapTest<Key, Item>(Key->Item... entry)
 
 void testMaps() {
     value m1 = MapTest<Integer, String>(1->"A", 2->"B", 3->"C", 4->"B");
-    check(m1.count((Entry<Integer,String> x) x.key==2)==1, "Map.count(2->B) is " m1.count((Entry<Integer,String> x) x.key==2) " instead of 1");
-    check(m1.count((Entry<Integer,String> x) x.key==100)==0, "Map.count 2");
+    check(m1.count((Entry<Integer,String> x) => x.key==2)==1, "Map.count(2->B) is " m1.count((Entry<Integer,String> x) => x.key==2) " instead of 1");
+    check(m1.count((Entry<Integer,String> x) => x.key==100)==0, "Map.count 2");
     check(2->"B" in m1, "Map.contains(2->B) should be true");
     check(!(4.2 in m1), "Map.contains 2");
     check(!(1->"C" in m1), "Map.contains 3");
@@ -50,7 +50,7 @@ void testMaps() {
     }
     check("B"->SetTest(2, 4) in m1.inverse, "Map.inverse should contain B->Set(2,4)");
     check(m1.inverse.size==m1.size, "Map.inverse 1");
-    value m2 = m1.mapItems((Integer k, String v) k*100);
+    value m2 = m1.mapItems((Integer k, String v) => k*100);
     check(1->100 in m2, "Map.mapItems");
     for (k->v in m2) {
         if (v%100 != 0) { fail("Map.mapItems [2]"); }
@@ -62,7 +62,7 @@ void testMaps() {
     if (exists v=m["a"]) {
         check(v==1, "LazyMap item");
     } else { fail("LazyMap item"); }
-    check(m.fold(0, (Integer x, String->Integer e) x+e.item)==6, "LazyMap fold");
-    check(m.every((String->Integer e) e.key in "abc"), "LazyMap every");
+    check(m.fold(0, (Integer x, String->Integer e) => x+e.item)==6, "LazyMap fold");
+    check(m.every((String->Integer e) => e.key in "abc"), "LazyMap every");
     check("b"->2 in m, "LazyMap contains");
 }

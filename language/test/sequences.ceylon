@@ -116,7 +116,7 @@ void test_max_min() {
     Null mx2 = max({});
     Integer? mx3 = max(join({},{1, 2, 3}));
     check((mx3 else 10)==3, "max joined seq");
-    Integer? mx4 = max({1, 2, 3}.filter((Integer i) i>0));
+    Integer? mx4 = max({1, 2, 3}.filter((Integer i) => i>0));
     check((mx4 else 10)==3, "max filtered seq");
     
     Integer mn1 = min([1, 2, 3]);
@@ -124,7 +124,7 @@ void test_max_min() {
     Null mn2 = min({});
     Integer? mn3 = min(join({},{1, 2, 3}));
     check((mn3 else 10)==1, "min joined seq");
-    Integer? mn4 = min({1, 2, 3}.filter((Integer i) i>0));
+    Integer? mn4 = min({1, 2, 3}.filter((Integer i) => i>0));
     check((mn4 else 10)==1, "min filtered seq");
 }
 
@@ -372,8 +372,8 @@ shared void sequences() {
     check(["world"].withLeading("hello").first=="hello", "sequence with trailing");
     
     //collect
-    check({ 1, 2, 3, 4, 5 }.collect((Integer i) i*2) == { 2, 4, 6, 8, 10 }, "Sequence<Integer>.collect");
-    check("hola".collect((Character c) c.uppercased) == {`H`, `O`, `L`, `A`}, "Sequence<String>.collect");
+    check({ 1, 2, 3, 4, 5 }.collect((Integer i) => i*2) == { 2, 4, 6, 8, 10 }, "Sequence<Integer>.collect");
+    check("hola".collect((Character c) => c.uppercased) == {`H`, `O`, `L`, `A`}, "Sequence<String>.collect");
     
     
 }
