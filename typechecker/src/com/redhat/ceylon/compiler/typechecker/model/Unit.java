@@ -230,12 +230,12 @@ public class Unit {
         return (Interface) getLanguageModuleDeclaration("Sequence");
     }
 
-    public Class getObjectDeclaration() {
-        return (Class) getLanguageModuleDeclaration("Object");
+    public Class getValueDeclaration() {
+        return (Class) getLanguageModuleDeclaration("Value");
     }
     
-    public Class getIdentifiableObjectDeclaration() {
-        return (Class) getLanguageModuleDeclaration("IdentifiableObject");
+    public Class getBasicDeclaration() {
+        return (Class) getLanguageModuleDeclaration("Basic");
     }
     
     public Interface getIdentifiableDeclaration() {
@@ -577,7 +577,7 @@ public class Unit {
     }
 
     public ProducedType getDefiniteType(ProducedType pt) {
-        return intersectionType(getObjectDeclaration().getType(), 
+        return intersectionType(getValueDeclaration().getType(), 
                 pt, pt.getDeclaration().getUnit());
         /*if (pt.getDeclaration().equals(getAnythingDeclaration())) {
             return getObjectDeclaration().getType();
@@ -621,10 +621,10 @@ public class Unit {
     
     public boolean isOptionalType(ProducedType pt) {
         //must have non-empty intersection with Null
-        //and non-empty intersection with Object
+        //and non-empty intersection with Value
         return !(intersectionType(getNullDeclaration().getType(), pt, this)
                         .getDeclaration() instanceof NothingType) &&
-               !(intersectionType(getObjectDeclaration().getType(), pt, this)
+               !(intersectionType(getValueDeclaration().getType(), pt, this)
                         .getDeclaration() instanceof NothingType);
     }
     

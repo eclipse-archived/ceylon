@@ -60,13 +60,13 @@ class Generics() {
     class Producer<out X>() {}
     class Consumer<in X>() {}
     
-    Producer<Object> p = Producer<String>();
-    Consumer<String> c = Consumer<Object>();
-    Producer<Consumer<Producer<String>>> o = Producer<Consumer<Producer<Object>>>();
+    Producer<Value> p = Producer<String>();
+    Consumer<String> c = Consumer<Value>();
+    Producer<Consumer<Producer<String>>> o = Producer<Consumer<Producer<Value>>>();
     
     class Variances<out X, in Y, Z>(X x, Y y, Z z) 
-            given X satisfies Object
-            given Y satisfies Object {
+            given X satisfies Value
+            given Y satisfies Value {
         X goodAtt = x;
         @error Y badAtt = y;
         X[] goodAtt2 { return [x]; }
@@ -92,7 +92,7 @@ class Generics() {
         class GoodClass2(Y[] y) {}
         class BadClass2(@error X[] x) {}
         class GoodClassInheritance() 
-                extends Object() 
+                extends Value() 
                 satisfies Sequence<X> {
             //fake implementations
             shared actual Integer lastIndex = 0;
@@ -126,7 +126,7 @@ class Generics() {
         class GoodParameterizedClass2<out T>(Producer<T> t) {}
         class GoodParameterizedClass3<out T>(Consumer<T> t) {}
         class GoodParameterizedClass4<out T>(void get(T t)) {}
-        class GoodParameterizedClass5<out T>(void get(T[] t)) given T satisfies Object {}
+        class GoodParameterizedClass5<out T>(void get(T[] t)) given T satisfies Value {}
         class GoodParameterizedClass6<out T>(void get(Producer<T> t)) {}
         class GoodParameterizedClass7<in T>(T t) {}
         class GoodParameterizedClass8<in T>(void get(Consumer<T> t)) {}
@@ -134,7 +134,7 @@ class Generics() {
         class GoodParameterizedClass10<in T>(Consumer<T> t) {}
         class BadParameterizedClass<out T>(void get(Consumer<T> t)) {}
         class BadParameterizedClass2<in T>(void get(T t)) {}
-        class BadParameterizedClass3<in T>(void get(T[] t)) given T satisfies Object {}
+        class BadParameterizedClass3<in T>(void get(T[] t)) given T satisfies Value {}
         class BadParameterizedClass4<in T>(void get(Producer<T> t)) {}
         void goodHigherOrderMethod(void get(X x)) {}
         void badHigherOrderMethod(void get(@error Y x)) {}
@@ -178,9 +178,9 @@ class Generics() {
         @type:"String" value xh = x.hello;
     }
     
-    class Outer<X>(X x) given X satisfies Object {
+    class Outer<X>(X x) given X satisfies Value {
         //shared X x = x;
-        shared class Inner<Y>(Y y) given Y satisfies Object {
+        shared class Inner<Y>(Y y) given Y satisfies Value {
             //shared Y y = y;
             shared Entry<X,Y> getIt() {
                 return x->y;
@@ -212,7 +212,7 @@ class Generics() {
     }
     
     abstract class SortedList<T>(T... elements) 
-        extends Object()
+        extends Value()
         satisfies Sequence<T> 
         given T satisfies Comparable<T> {
         shared actual formal String string;
@@ -234,45 +234,45 @@ class Generics() {
     
     interface SequenceSequence<out T, out X> 
             satisfies Sequence<T>
-            given T satisfies Sequence<X> & Object
-            given X satisfies Object {}
+            given T satisfies Sequence<X> & Value
+            given X satisfies Value {}
     
     interface BadSequenceSequence<out T> 
             satisfies Sequence<T>
-            /*@error*/ given T/*<out X>*/ satisfies Sequence<X> & Object
-            @error given X satisfies Object {}
+            /*@error*/ given T/*<out X>*/ satisfies Sequence<X> & Value
+            @error given X satisfies Value {}
     
     class Upper<X>(X x)
-            given X satisfies Object {
+            given X satisfies Value {
         shared Entry<X,Y> method<Y>(X x, Y y) 
-                given Y satisfies Object { 
+                given Y satisfies Value { 
             return x->y; 
         }
         shared class Inner<Y>(X x, Y y) {}
     }
     
     class Lower<W>(W w) extends Upper<W>(w)
-            given W satisfies Object {}
+            given W satisfies Value {}
      
     @type:"Entry<String,Integer>" Lower<String>("hello").method<Integer>("world",1);
     @type:"Generics.Upper<String>.Inner<Float>" Lower<String>("hello").Inner<Float>("world", 2.3);
     
     interface Some<out X> {}
-    class Foo1() satisfies Some<Object> {}
+    class Foo1() satisfies Some<Value> {}
     class Bar1() extends Foo1() satisfies Some<String> {}
     Some<String> bar1 = Bar1();
     class Foo2() satisfies Some<String> {}
-    class Bar2() extends Foo2() satisfies Some<Object> {}
+    class Bar2() extends Foo2() satisfies Some<Value> {}
     Some<String> bar2 = Bar2();
-    interface Foo3 satisfies Some<Object> {}
+    interface Foo3 satisfies Some<Value> {}
     interface Bar3 satisfies Some<String> {}
     class Baz3() satisfies Foo3 & Bar3 {}
     Some<String> baz3 = Baz3();
-    class Foo4() satisfies Some<Object> {}
+    class Foo4() satisfies Some<Value> {}
     class Baz4() extends Foo4() satisfies Some<String> {}
     Some<String> baz4 = Baz4();
     class Foo5() satisfies Some<String> {}
-    class Baz5() extends Foo5() satisfies Some<Object> {}
+    class Baz5() extends Foo5() satisfies Some<Value> {}
     Some<String> baz5 = Baz5();
     
     interface Self<out T> of T {
@@ -377,7 +377,7 @@ class Generics() {
     Number getFirstNumber(Sequence<Number> nums) {
         return getFirst(nums);
     } 
-    Object getFirstNonEmpty(Sequence<String> strs, Sequence<Object> obs) {
+    Value getFirstNonEmpty(Sequence<String> strs, Sequence<Value> obs) {
         return getFirst(choose(true, strs, obs));
     	/*if (nonempty strs) {
             return getFirst(strs);
@@ -386,7 +386,7 @@ class Generics() {
             return getFirst(obs);
         }*/
     }
-    Object getFirstNonEmpty2(Sequence<String> strs, Sequence<Integer> ints) {
+    Value getFirstNonEmpty2(Sequence<String> strs, Sequence<Integer> ints) {
         return getFirst(choose(false, strs, ints));
         /*if (nonempty strs) {
             return getFirst(strs);
@@ -415,7 +415,7 @@ class Generics() {
     }
 
     interface Super1 satisfies Inter1<Nothing> & Inter2<String> {}
-    interface Super2 satisfies Inter1<Integer> & Inter2<Object> {}
+    interface Super2 satisfies Inter1<Integer> & Inter2<Value> {}
     @error class Impl() satisfies Super1 & Super2 {}
     value impl = Impl();
     String implget1 = impl.get();
@@ -425,9 +425,9 @@ class Generics() {
     Inter1<Integer> inter1 = impl;
     Inter2<String> inter2 = impl;
     Inter1<Nothing> inter1b = impl;
-    Inter2<Object> inter2o = impl;
+    Inter2<Value> inter2o = impl;
 
-    interface Super3 satisfies Inter1<Object> & Inter2<String> {}
+    interface Super3 satisfies Inter1<Value> & Inter2<String> {}
     interface Super4 satisfies Inter1<Integer> & Inter2<Nothing> {}
     @error class Conc() satisfies Super3 & Super4 {}
     value conc = Conc();
@@ -438,7 +438,7 @@ class Generics() {
     Inter1<Integer> inter3 = conc;
     Inter2<String> inter4 = conc;
     Inter1<Nothing> inter3b = conc;
-    Inter2<Object> inter4o = conc;
+    Inter2<Value> inter4o = conc;
     
     abstract class Co1<out T>(T t) {
         shared class Foo() {
@@ -481,7 +481,7 @@ class Generics() {
     T genericMethod1<T>(T t) given T satisfies Numeric<T> {
         return t;
     }
-    T genericMethod2<T>(T? t) given T satisfies Object {
+    T genericMethod2<T>(T? t) given T satisfies Value {
         if (exists t) {
             return t;
         }

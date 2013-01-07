@@ -21,5 +21,5 @@ class Sub5() extends Super() {
     shared actual class Inner() extends Bar() {}
 }
 class Sub6() extends Super() {
-    @error shared actual class Inner() extends IdentifiableObject() {}
+    @error shared actual class Inner() extends Basic() {}
 }

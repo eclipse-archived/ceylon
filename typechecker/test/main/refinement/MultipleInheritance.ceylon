@@ -1,11 +1,11 @@
 class MultipleInheritance() {
 
 interface Top {
-	shared formal Object id;
+	shared formal Value id;
 }
 
 interface Middle satisfies Top {
-	shared actual default Object id { return "hello"; }
+	shared actual default Value id { return "hello"; }
 }
 
 interface Nothing satisfies Middle {

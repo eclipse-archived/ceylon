@@ -59,7 +59,7 @@ class Aliases() {
     
     interface Seq<T> => T[];
     interface It<T> => {T...};
-    interface Fun<T> => T(Object);
+    interface Fun<T> => T(Value);
 }
 
 interface Li0<U,V> => List<U>;
@@ -71,13 +71,13 @@ interface LL1<out E> => List<List<E>>;
 @error interface LL2<out E> => List<SequenceBuilder<E>>;
 @error interface LL3<out E> => SequenceBuilder<List<E>>;
 
-class Si1<T>(T t) given T satisfies Object => Singleton<T>(t); 
-@error class Si2<in T>(T t) given T satisfies Object => Singleton<T>(t); 
-class Si3<out T>(T t) given T satisfies Object => Singleton<T>(t);
+class Si1<T>(T t) given T satisfies Value => Singleton<T>(t); 
+@error class Si2<in T>(T t) given T satisfies Value => Singleton<T>(t); 
+class Si3<out T>(T t) given T satisfies Value => Singleton<T>(t);
 
-class E1<out T>(T x, T y) given T satisfies Object => Entry<T,T>(x,y);
+class E1<out T>(T x, T y) given T satisfies Value => Entry<T,T>(x,y);
 @error class E2<out T>(T x, T y) => Entry<T,T>(x,y);
-@error class E3<in T>(T x, T y) given T satisfies Object => Entry<T,T>(x,y);
+@error class E3<in T>(T x, T y) given T satisfies Value => Entry<T,T>(x,y);
 
 class MemberClassAliasTricks_Foo(Integer a = 1, Integer b = 2){
     

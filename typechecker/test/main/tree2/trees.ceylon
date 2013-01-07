@@ -1,5 +1,5 @@
 void printTree<T>(Tree<T> tree) 
-        given T satisfies Object {
+        given T satisfies Value {
     switch (tree)
     case (is Branch<T>) {
         printTree(tree.left);

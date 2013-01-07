@@ -23,7 +23,7 @@ class TypeArgInference() {
     @type:"String" first{ u="hello"; v="world"; };
     @type:"Integer|TypeArgInference.X<String>" first{ u=+1; v=X{ t="hello"; s="world"; }; };
     
-    @type:"TypeArgInference.X<IdentifiableObject>" X { object t {} object s {} }; 
+    @type:"TypeArgInference.X<Basic>" X { object t {} object s {} }; 
     @type:"TypeArgInference.X<Float>" X { Float t { return 1.0; } Float s { return -1.0; } }; 
     @type:"TypeArgInference.X<Boolean>" X(true, false);
     
@@ -139,7 +139,7 @@ class TypeArgInference() {
     higherAnything((String x) => print(x));
     higherAnything { void f(String x) { print(x); } };
 
-    X|Y higher<X,Y>(X f(Y? y)) given Y satisfies Object => f(null);
+    X|Y higher<X,Y>(X f(Y? y)) given Y satisfies Value => f(null);
     @type:"Integer|String" higher((String? y) => 1);
     @type:"Float|String" higher { function f(String? y) => 1.0; };
     function argfun(Integer? x) => x?.float;

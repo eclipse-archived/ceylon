@@ -4,7 +4,7 @@ class Capture() {
     
     n=12;
     
-    void use(Object o) {}
+    void use(Value o) {}
     
     class X() {}
     
@@ -192,7 +192,7 @@ class Capture() {
         };
     }
     
-    class WithObjectArgument() {
+    class WithValueArgument() {
         @captured String hello = "hello";
         use {
             object o {

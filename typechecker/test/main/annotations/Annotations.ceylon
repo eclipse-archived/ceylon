@@ -31,7 +31,7 @@ class Annotations() {
     @error print "hello" class Broken() {}
     
     class TypeDescription(String desc) 
-        satisfies OptionalAnnotation<TypeDescription,Type<Object>> {}
+        satisfies OptionalAnnotation<TypeDescription,Type<Value>> {}
     
     class SequencedDescription(String desc) 
         satisfies SequencedAnnotation<SequencedDescription,Annotated> {}
@@ -40,7 +40,7 @@ class Annotations() {
     @error Type<Annotations> at = Annotations;
     @error Type<TypeDescription> tdt = TypeDescription;
     @error Type<SequencedDescription> sdt = SequencedDescription;
-    TypeDescription? d = annotations<TypeDescription,TypeDescription?,Type<Object>>(tdt, at);
-    SequencedDescription[] ds = annotations<SequencedDescription,SequencedDescription[],Type<Object>>(sdt, at);
+    TypeDescription? d = annotations<TypeDescription,TypeDescription?,Type<Value>>(tdt, at);
+    SequencedDescription[] ds = annotations<SequencedDescription,SequencedDescription[],Type<Value>>(sdt, at);
     
 }

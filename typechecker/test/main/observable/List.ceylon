@@ -1,5 +1,5 @@
 class List<T>() 
-        extends Object()
+        extends Value()
         satisfies Sequence<T> {
     shared void add(T t) {}
     shared actual Integer lastIndex {

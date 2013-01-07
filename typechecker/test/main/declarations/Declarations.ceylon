@@ -10,8 +10,8 @@ interface Declarations {
     
     Y something { return createSomething(); }
     
-    class WithValueArg(@error Object value) {}
-    void withValueArg(@error Object value) {}
+    class WithValueArg(@error Value value) {}
+    void withValueArg(@error Value value) {}
     
     //@error class value() {}
     //@error void object() {}
@@ -32,7 +32,7 @@ interface Declarations {
     
     @error class WithoutClassDef();
     @error interface WithoutInterfaceDef;
-    @error object withoutObjectDef;
+    @error object withoutValueDef;
 
     /*class Foo(String bar) {}
     @error Foo getFoo() {}

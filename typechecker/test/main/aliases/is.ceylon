@@ -1,5 +1,5 @@
 void testis() {
-    Object baz = Qux();
+    Value baz = Qux();
     if (is Bar baz) {
         @type:"Bar" value b = baz;
     }

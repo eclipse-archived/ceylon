@@ -4,10 +4,10 @@ class Operators() {
     class X() {}
     class Y() {}
     
-    class Z() extends Object() {
+    class Z() extends Value() {
         //fake impl
         shared actual String string = "Z()";
-        shared actual Boolean equals(Object that) => true;
+        shared actual Boolean equals(Value that) => true;
         shared actual Integer hash => 0;
     }
     
@@ -108,7 +108,7 @@ class Operators() {
     @type:"Boolean" value x72 = strs nonempty;
     //@type:"Boolean" value x72n = nonempty strs;
     
-    Object one = 1;
+    Value one = 1;
     @type:"Boolean" value x31 = one is Integer;
     //@type:"Boolean" value x31n = is Integer one;
     @error value x31e = 1 is Integer;
@@ -120,7 +120,7 @@ class Operators() {
     @type:"Boolean" value x33 = "hello" in "hello world";
     
     object cat satisfies Category {
-        shared actual Boolean contains(Object element) {
+        shared actual Boolean contains(Value element) {
             return true;
         }
     }
@@ -266,7 +266,7 @@ class Operators() {
     @type:"Entry<String,Float>" String->Float esf = "hello"->1.0;
     @type:"Sequence<Entry<String,Float>>" Sequence<String->Float> esfs = [esf];
     
-    String->Object okEntry;   
+    String->Value okEntry;   
     @error String->Anything brokenEntry1;
     @error Null->String brokenEntry2;
     
@@ -287,10 +287,10 @@ class Operators() {
     @type:"String" value str4 = nostring else nostring else "hello";
     
     Anything vd = null;
-    //@type:"Object" value vd1 = vd ? 1;
-    //@type:"Object" value vd2 = vd ? "hello";
-    @type:"Object" value vd1 = vd else 1;
-    @type:"Object" value vd2 = vd else "hello";
+    //@type:"Value" value vd1 = vd ? 1;
+    //@type:"Value" value vd2 = vd ? "hello";
+    @type:"Value" value vd1 = vd else 1;
+    @type:"Value" value vd2 = vd else "hello";
     
     Float? nof = null;
     //Float ff = nof?1.0 + nof?2.0;
@@ -318,19 +318,19 @@ class Operators() {
     
     Set<String> ss = bottom;
     Set<Integer> si = bottom;
-    Set<Object> so = bottom;
+    Set<Value> so = bottom;
     @type:"Set<String|Integer>" value sr0 = ss|si;
     @type:"Set<String|Integer>" value sr1 = ss^si;
     @type:"Set<Nothing>" value sr2 = ss&si;
     @type:"Set<String>" value sr3 = ss~si;
     @type:"Set<String>" value sr4 = ss&so;
-    @type:"Set<Object>" value sr5 = ss|so;
+    @type:"Set<Value>" value sr5 = ss|so;
     
     variable Set<String> vss = ss;
     @type:"Set<String>" vss|=ss;
     @type:"Set<String>" vss&=ss;
     
-    variable Object anythingAtAll = 0;
+    variable Value anythingAtAll = 0;
     @type:"Integer" value somethingSpecial = anythingAtAll = 1;
     @type:"Singleton<Float>" Singleton(anythingAtAll = 1.0);
     

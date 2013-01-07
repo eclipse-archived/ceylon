@@ -58,7 +58,7 @@ abstract class Classes() {
     }
     
     void usesSuperAndThis() {
-        void use(Object o) {}
+        void use(Value o) {}
         @error use(super);
         use(this);
     }

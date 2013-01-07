@@ -183,19 +183,19 @@ class Union() {
     Outer<String|Float>.Inner<Integer|Float> foobart3 = foobar3;
     @type:"Union.Outer<String|Float>.Inner<Integer|Float>" value foobarts3 = foobar3.get;
     
-    SubOuter<Object>.Inner<Integer>|SpecialOuter<Float>.Inner<Object> foobar4 = SubOuter<String>().Inner<Integer>(1);
-    @type:"Union.SubOuter<Object>.Inner<Integer>|Union.SpecialOuter<Float>.Inner<Object>" value foobar4check = foobar4;
+    SubOuter<Value>.Inner<Integer>|SpecialOuter<Float>.Inner<Value> foobar4 = SubOuter<String>().Inner<Integer>(1);
+    @type:"Union.SubOuter<Value>.Inner<Integer>|Union.SpecialOuter<Float>.Inner<Value>" value foobar4check = foobar4;
     String foobarhello4 = foobar4.hello;
-    @type:"Object" value foobaru4 = foobar4.u;
-    Outer<Object>.Inner<Object> foobart4 = foobar4;
-    @type:"Union.Outer<Object>.Inner<Object>" value foobarts4 = foobar4.get;
+    @type:"Value" value foobaru4 = foobar4.u;
+    Outer<Value>.Inner<Value> foobart4 = foobar4;
+    @type:"Union.Outer<Value>.Inner<Value>" value foobarts4 = foobar4.get;
     
-    SubOuter<Object>.Inner<Integer>|ReallySpecialOuter<Float>.Inner<Object> foobar5 = SubOuter<String>().Inner<Integer>(1);
-    @type:"Union.SubOuter<Object>.Inner<Integer>|Union.ReallySpecialOuter<Float>.Inner<Object>" value foobar5check = foobar5;
+    SubOuter<Value>.Inner<Integer>|ReallySpecialOuter<Float>.Inner<Value> foobar5 = SubOuter<String>().Inner<Integer>(1);
+    @type:"Union.SubOuter<Value>.Inner<Integer>|Union.ReallySpecialOuter<Float>.Inner<Value>" value foobar5check = foobar5;
     String foobarhello5 = foobar5.hello;
-    @type:"Object" value foobaru5 = foobar5.u;
-    Outer<Object>.Inner<Object> foobart5 = foobar5;
-    @type:"Union.Outer<Object>.Inner<Object>" value foobarts5 = foobar5.get;
+    @type:"Value" value foobaru5 = foobar5.u;
+    Outer<Value>.Inner<Value> foobart5 = foobar5;
+    @type:"Union.Outer<Value>.Inner<Value>" value foobarts5 = foobar5.get;
     
     class Sorted<out Elem>(Elem... them) 
             given Elem satisfies Comparable<Elem> {
@@ -224,7 +224,7 @@ class Union() {
 
     //@error 
     switch (maybe)
-    case (is Object) {
+    case (is Value) {
         @type:"String" value ms = maybe;
     }
     case (is Null) {}

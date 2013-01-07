@@ -46,7 +46,7 @@ class Is() {
     Correspondence<Integer,String> d = strings;
     if (is Sized&Container<Anything> d) {
         String? s = d[0];
-        @error Object? f1 = d.first;
+        @error Value? f1 = d.first;
         Anything f2 = d.first;
         @error Integer size = e.size;
         @error Boolean empty = e.empty;
@@ -120,7 +120,7 @@ class Is() {
     //Boolean b1 = is Sized&Iterable<String> e;
     //Boolean b2 = is Sized|Category e;
     //Boolean b3 = is Sized&{String...} e;
-    //Boolean b4 = is <Sized|Category>&Iterable<Object> e;
+    //Boolean b4 = is <Sized|Category>&Iterable<Value> e;
     //Boolean b5 = is [String...] e;
     //Boolean b6 = is String[] e;
     //Boolean b7 = is [String,Integer] e;
@@ -132,7 +132,7 @@ class Is() {
     Boolean c1 = e is Sized&Iterable<String>;
     Boolean c2 = e is Sized|Category;
     Boolean c3 = e is Sized&{String...};
-    Boolean c4 = e is <Sized|Category>&Iterable<Object>;
+    Boolean c4 = e is <Sized|Category>&Iterable<Value>;
     Boolean c5 = e is [String...];
     Boolean c6 = e is String[];
     Boolean c7 = e is [String,Integer];
@@ -169,7 +169,7 @@ class Is() {
     if (!is Finished ch = next) {
         Character char = ch;
     }
-    @error if (!is Object next) {}
+    @error if (!is Value next) {}
     @error if (!is Null next) {}
     
     Identifiable? i = null;

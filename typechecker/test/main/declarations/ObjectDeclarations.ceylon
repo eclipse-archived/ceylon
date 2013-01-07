@@ -26,18 +26,18 @@ String method() {
 }
 
 shared class TypeParameterResolving<A>(A a) {
-    shared object innerObject {
+    shared object innerValue {
         shared A val = a;
     }
 }
 
 void method2() {
-    String s = TypeParameterResolving("hello").innerObject.val;
+    String s = TypeParameterResolving("hello").innerValue.val;
 }
 
 
 interface Something {
-    shared formal Object something;
+    shared formal Value something;
 }
 
 object se1 satisfies Something {
@@ -51,7 +51,7 @@ object se2 satisfies Something {
 }
 
 void testSomething(Something s) {
-    @type:"Object" value ss = s.something;
+    @type:"Value" value ss = s.something;
     @type:"String" value ss1 = se1.something;
     @type:"String" value ss2 = se2.something;
 }

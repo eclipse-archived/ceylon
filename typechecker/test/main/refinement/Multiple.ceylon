@@ -58,18 +58,18 @@ interface Multiple {
         shared actual Integer hash {
             return List::hash;
         }
-        shared actual Boolean equals(Object that) {
+        shared actual Boolean equals(Value that) {
             return List::equals(that);
         }
     }
     abstract class MyAltList() satisfies List<Integer> {
         shared actual String string {
-            @error return IdentifiableObject::string;
+            @error return Basic::string;
         }
         shared actual Integer hash {
-            @error return Object::hash;
+            @error return Value::hash;
         }
-        shared actual Boolean equals(Object that) {
+        shared actual Boolean equals(Value that) {
             return Identifiable::equals(that);
         }
     }

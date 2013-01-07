@@ -250,7 +250,7 @@ class ClassBodies() {
         String name = "gavin";
     }
     
-    void print(Object o) {}
+    void print(Value o) {}
     
     class Good2WithThis() {
         String name = "gavin";
@@ -330,7 +330,7 @@ class ClassBodies() {
     
     object good5WithThis {
         String name = "gavin";
-        variable Object? t = null;
+        variable Value? t = null;
         void member() {
             t = this;
         }
@@ -344,7 +344,7 @@ class ClassBodies() {
     
     object bad5WithThis {
         String name = "gavin";
-        variable Object? t = null;
+        variable Value? t = null;
         @error t = this;
     }
     
@@ -460,14 +460,14 @@ class ClassBodies() {
     
     class Good4WithOuter() {
         String name = "gavin";
-        variable Object? o = null;
+        variable Value? o = null;
         class Inner() {
             o = outer;
         }
     }
     
     class Bad4WithOuter() {
-        variable Object? o = null;
+        variable Value? o = null;
         class Inner() {
             @error o = outer;
         }
@@ -476,7 +476,7 @@ class ClassBodies() {
     
     object good4WithOuter {
         String name = "gavin";
-        variable Object? o = null;
+        variable Value? o = null;
         object inner {
             void method() {
                 o = outer;
@@ -486,14 +486,14 @@ class ClassBodies() {
     
     object bad7WithOuter {
         String name = "gavin";
-        variable Object? o = null;
+        variable Value? o = null;
         object inner {
             @error o = outer;
         }
     }
     
     object bad4WithOuter {
-        variable Object? o = null;
+        variable Value? o = null;
         object inner {
             @error o = outer;
         }
@@ -507,7 +507,7 @@ class ClassBodies() {
     class BadWithSuper() extends Super() {
         void inner() {
             String n = super.name;
-            @error Object o = super;
+            @error Value o = super;
             @error print(super);
             @error return super;
         }
@@ -652,7 +652,7 @@ class ClassBodies() {
         }
     }
     
-    class GoodClassWithObject() {
+    class GoodClassWithValue() {
         object foo {
             void method() {
                 bar();
@@ -661,14 +661,14 @@ class ClassBodies() {
         void bar() {}
     }
     
-    class BadClassWithObject() {
+    class BadClassWithValue() {
         object foo {
             @error bar();
         }
         void bar() {}
     }
     
-    class BadClassWithObject2() {
+    class BadClassWithValue2() {
         object foo {
             void method() {
                 @error bar();
@@ -678,7 +678,7 @@ class ClassBodies() {
         void bar() {}
     }
     
-    class BadClassWithObject3() {
+    class BadClassWithValue3() {
         object foo {
             print("hello");
             void method() {

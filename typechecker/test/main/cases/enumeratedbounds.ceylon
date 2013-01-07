@@ -26,5 +26,5 @@ void testEnumeratedBounds() {
     @type:"Foo<Integer>" Foo<Integer>();
     @type:"Foo<Float>" Foo(1.0, 2.0);
     @error Foo("foo", "bar");
-    @error Foo<Object>();
+    @error Foo<Value>();
 }

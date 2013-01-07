@@ -32,6 +32,6 @@ interface CircularConstraints<P,Q,R>
         given R satisfies P {}
 
 class Good1WithCircularConstraints() satisfies CircularConstraints<String,String,String> {}
-class Good2WithCircularConstraints() satisfies CircularConstraints<Object,Object,Object> {}
-@error class Bad1WithCircularConstraints() satisfies CircularConstraints<Object,Object,String> {}
-@error class Bad2WithCircularConstraints() satisfies CircularConstraints<String,String,Object> {}
+class Good2WithCircularConstraints() satisfies CircularConstraints<Value,Value,Value> {}
+@error class Bad1WithCircularConstraints() satisfies CircularConstraints<Value,Value,String> {}
+@error class Bad2WithCircularConstraints() satisfies CircularConstraints<String,String,Value> {}

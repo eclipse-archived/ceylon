@@ -71,11 +71,11 @@ class Optional() {
     Integer scs = somechars.size;
     value sci = somechars.iterator;
     
-    @type:"Null|String|Integer|Sequence<Object>" String? | String | String? | Integer | Sequence<Object> foobar1 = -1;
+    @type:"Null|String|Integer|Sequence<Value>" String? | String | String? | Integer | Sequence<Value> foobar1 = -1;
     @type:"Null|Sequential<String>|Integer" String[]? | String[] | Sequence<String> | Integer foobar2 = 1.integer;
     
-    @type:"Sequence<Null|String|Integer|Sequence<Object>|Sequential<String>>" value xyz1 = [ foobar1, foobar2 ].sequence;
-    @type:"Sequential<Null|String|Integer|Sequence<Object>|Sequential<String>>" value xyz2 = { foobar1, foobar2 }.sequence;
+    @type:"Sequence<Null|String|Integer|Sequence<Value>|Sequential<String>>" value xyz1 = [ foobar1, foobar2 ].sequence;
+    @type:"Sequential<Null|String|Integer|Sequence<Value>|Sequential<String>>" value xyz2 = { foobar1, foobar2 }.sequence;
     
     //TODO: I think the type parameter X does
     //      not hide the X defined above - it

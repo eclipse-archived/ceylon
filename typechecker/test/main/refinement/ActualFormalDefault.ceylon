@@ -11,7 +11,7 @@ abstract class Formal() {
     shared formal String s;
     shared formal void x();
     shared formal class C() {}
-    shared formal Object o;
+    shared formal Value o;
 }
 
 abstract class BadFormal() {

@@ -10,7 +10,7 @@
 
     class TreeSet<Element>()
             satisfies Set<Element,TreeSet<Element>> 
-            given Element satisfies Object {
+            given Element satisfies Value {
         shared actual Iterator<Element> iterator = bottom;
         actual shared void add(Element elem) {}
         actual shared Boolean contains1(Element elem) { 

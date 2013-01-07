@@ -23,6 +23,6 @@ void test() {
     @error bar1(foo2);
     @error bar2(foo1);
     
-    Bar<[String,String]> bar = Bar<[Object,Object]>();
-    @error Foo<[String,String]> bar = Foo<[Object,Object]>();
+    Bar<[String,String]> bar = Bar<[Value,Value]>();
+    @error Foo<[String,String]> bar = Foo<[Value,Value]>();
 }

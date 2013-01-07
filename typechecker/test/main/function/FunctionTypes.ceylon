@@ -41,8 +41,8 @@ String str(Float f) => f.string;
 Float curried(Integer x)(Float y) => x+y;
 
 X->Y generic<X,Y>(Y f(X x), X x()) 
-        given X satisfies Object 
-        given Y satisfies Object { 
+        given X satisfies Value 
+        given Y satisfies Value { 
     X xx = x();
     return xx->f(xx);
 }
@@ -204,8 +204,8 @@ void method() {
     function zero() => 0.0;
     @type:"Entry<Float,String>" generic(str,zero);
     @type:"Entry<Float,String>" generic(str,bottom);
-    @type:"Entry<Object,Object>" generic((Object obj) => obj, () => "hello");
-    @type:"Entry<Object,String>" generic((Object obj) => obj.string, () => "hello");
+    @type:"Entry<Value,Value>" generic((Value obj) => obj, () => "hello");
+    @type:"Entry<Value,String>" generic((Value obj) => obj.string, () => "hello");
     @type:"Entry<String,String>" generic((String str) => str, () => "hello");
     
     function fx(String g()) => do<String>;

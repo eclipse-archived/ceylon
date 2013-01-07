@@ -5,7 +5,7 @@ void splitFunction() {
     Float g(Float x);
     Integer h(Float x);
     Float i(Float x);
-    Float j(Object x);
+    Float j(Value x);
     Float k(Float x);
     Float l(Float x);
     
@@ -15,7 +15,7 @@ void splitFunction() {
     @error g(Float y, Float x) => x**0.5;
     h(@error Integer x) => x**2;
     @error i() => 0.5;
-    k(@error Object x) => 1.0;
+    k(@error Value x) => 1.0;
     @error l(Float x) => 3;
     
     Float add(Float x)(Float y);
@@ -71,7 +71,7 @@ void splitFunction() {
     higher2(void f(String s), @error String g(Float i)) => print(f(g(0.0)));
     
     Anything higher3(void f(String s), String g(Integer i));
-    higher3(void f(String s), String g(Object i)) => print(f(g(0.0)));
+    higher3(void f(String s), String g(Value i)) => print(f(g(0.0)));
     
     void myvoid();
     @error myvoid() => "hello";

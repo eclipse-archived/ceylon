@@ -1,5 +1,5 @@
 class ControlStructures() {
-    Object something = "hello";
+    Value something = "hello";
     String? name = null;
     String[] names = {};
     Entry<String,String>[] entries = [ "hello" -> "world" ];
@@ -15,9 +15,9 @@ class ControlStructures() {
     }
     
     @error if (is Anything something) {}
-    @error if (is Object something) {}
+    @error if (is Value something) {}
     @error if (is String s = "hello") {}
-    @error if (is Object s = "hello") {}
+    @error if (is Value s = "hello") {}
     
     variable String? var = "gavin"; 
     @error if (exists var) {}
@@ -49,7 +49,7 @@ class ControlStructures() {
         print(string);
     }
     
-    variable Object o = "hello";
+    variable Value o = "hello";
     @error if (is String o) {}
     
     if (name exists && true) {}
@@ -148,7 +148,7 @@ class ControlStructures() {
     @error try (Exception()) {}
     try (@error s = "hello") {}
     try (@error e = Exception()) {}
-    try (@error Object t = Transaction()) {}
+    try (@error Value t = Transaction()) {}
     try (@error Transaction trx) {}
     
     try (t = Transaction()) {
@@ -184,33 +184,33 @@ class ControlStructures() {
     Anything v = null;
     
     switch (v)
-    case (is Object) {}
+    case (is Value) {}
     case (is Null) {}
     
     switch (v)
-    case (is Object) {}
+    case (is Value) {}
     case (null) {}
     
     switch (v)
-    case (is Object) {}
+    case (is Value) {}
     else {}
 
     switch (v)
-    case (is Object|Null) {}
+    case (is Value|Null) {}
 
     @error switch (v)
-    case (is Object|Null) {}
+    case (is Value|Null) {}
     case (null) {}
 
     @error switch (v)
-    case (is Object|Null) {}
+    case (is Value|Null) {}
     case (is Null) {}
 
     switch (v)
     case (is Anything) {}
 
     @error switch (v)
-    case (is Object) {}
+    case (is Value) {}
     
     Boolean b = true;
     
@@ -239,7 +239,7 @@ class ControlStructures() {
     
     //@error 
     switch (s)
-    case (is Object) {}
+    case (is Value) {}
     case (is Null) {}
     
     switch (s)

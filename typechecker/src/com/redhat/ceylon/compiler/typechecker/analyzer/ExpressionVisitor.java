@@ -2622,10 +2622,10 @@ private void checkPositionalArguments(ParameterList pl, ProducedReference pr,
         ProducedType lhst = leftType(that);
         ProducedType rhst = rightType(that);
         if ( rhst!=null && lhst!=null ) {
-            checkSupertype(lhst, unit.getObjectDeclaration(), that.getLeftTerm(), 
-                    "operand expression must support equality");
-            checkSupertype(rhst, unit.getObjectDeclaration(), that.getRightTerm(), 
-                    "operand expression must support equality");
+            checkSupertype(lhst, unit.getValueDeclaration(), that.getLeftTerm(), 
+                    "operand expression must not be an optional type");
+            checkSupertype(rhst, unit.getValueDeclaration(), that.getRightTerm(), 
+                    "operand expression must not be an optional type");
             ProducedType et = unit.getEntryType(lhst, rhst);
             that.setTypeModel(et);
         }
@@ -2731,9 +2731,9 @@ private void checkPositionalArguments(ParameterList pl, ProducedReference pr,
         ProducedType lhst = leftType(that);
         ProducedType rhst = rightType(that);
         if ( rhst!=null && lhst!=null ) {
-            checkAssignable(lhst, unit.getSetType(unit.getObjectDeclaration().getType()), 
+            checkAssignable(lhst, unit.getSetType(unit.getValueDeclaration().getType()), 
                     that.getLeftTerm(), "set operand expression must be a set");
-            checkAssignable(lhst, unit.getSetType(unit.getObjectDeclaration().getType()), 
+            checkAssignable(lhst, unit.getSetType(unit.getValueDeclaration().getType()), 
                     that.getRightTerm(), "set operand expression must be a set");
             ProducedType lhset = unit.getSetElementType(lhst);
             ProducedType rhset = unit.getSetElementType(rhst);
@@ -2756,9 +2756,9 @@ private void checkPositionalArguments(ParameterList pl, ProducedReference pr,
         ProducedType lhst = leftType(that);
         ProducedType rhst = rightType(that);
         if ( rhst!=null && lhst!=null ) {
-            checkAssignable(lhst, unit.getSetType(unit.getObjectDeclaration().getType()), 
+            checkAssignable(lhst, unit.getSetType(unit.getValueDeclaration().getType()), 
                     that.getLeftTerm(), "set operand expression must be a set");
-            checkAssignable(lhst, unit.getSetType(unit.getObjectDeclaration().getType()), 
+            checkAssignable(lhst, unit.getSetType(unit.getValueDeclaration().getType()), 
                     that.getRightTerm(), "set operand expression must be a set");
             ProducedType lhset = unit.getSetElementType(lhst);
             ProducedType rhset = unit.getSetElementType(rhst);
@@ -2819,7 +2819,7 @@ private void checkPositionalArguments(ParameterList pl, ProducedReference pr,
                     "operand expression must be a boolean value");
         }
         if ( rhst!=null ) {
-            checkAssignable(rhst, unit.getObjectDeclaration().getType(), that.getRightTerm(),
+            checkAssignable(rhst, unit.getValueDeclaration().getType(), that.getRightTerm(),
                     "operand expression may not be an optional type");
             that.setTypeModel(unit.getOptionalType(unit.denotableType(rhst)));
         }
@@ -2829,7 +2829,7 @@ private void checkPositionalArguments(ParameterList pl, ProducedReference pr,
         ProducedType lhst = leftType(that);
         ProducedType rhst = rightType(that);
         if ( rhst!=null && lhst!=null ) {
-            checkAssignable(lhst, unit.getObjectDeclaration().getType(), that.getLeftTerm(), 
+            checkAssignable(lhst, unit.getValueDeclaration().getType(), that.getLeftTerm(), 
                     "operand expression must support equality");
             checkAssignable(rhst, unit.getCategoryDeclaration().getType(), that.getRightTerm(), 
                     "operand expression must be a category");
@@ -3013,7 +3013,7 @@ private void checkPositionalArguments(ParameterList pl, ProducedReference pr,
 
     @Override public void visit(Tree.EqualityOp that) {
         super.visit(that);
-        visitComparisonOperator(that, unit.getObjectDeclaration());
+        visitComparisonOperator(that, unit.getValueDeclaration());
     }
 
     @Override public void visit(Tree.ComparisonOp that) {
@@ -3496,9 +3496,9 @@ private void checkPositionalArguments(ParameterList pl, ProducedReference pr,
     
     @Override public void visit(Tree.EntryType that) {
         super.visit(that);
-        checkAssignable(that.getKeyType().getTypeModel(), unit.getObjectDeclaration().getType(), 
+        checkAssignable(that.getKeyType().getTypeModel(), unit.getValueDeclaration().getType(), 
                 that.getKeyType(), "entry key type must not be an optional type");
-        checkAssignable(that.getValueType().getTypeModel(), unit.getObjectDeclaration().getType(), 
+        checkAssignable(that.getValueType().getTypeModel(), unit.getValueDeclaration().getType(), 
                 that.getValueType(), "entry item type must not be an optional type");
     }
 
@@ -3754,7 +3754,7 @@ private void checkPositionalArguments(ParameterList pl, ProducedReference pr,
         }
         else {
             UnionType ut = new UnionType(unit);
-            ut.setExtendedType( unit.getObjectDeclaration().getType() );
+            ut.setExtendedType( unit.getValueDeclaration().getType() );
             ut.setCaseTypes(list);
             return ut.getType(); 
         }
@@ -3780,8 +3780,10 @@ private void checkPositionalArguments(ParameterList pl, ProducedReference pr,
     @Override public void visit(Tree.StringTemplate that) {
         super.visit(that);
         for (Tree.Expression e: that.getExpressions()) {
-            checkAssignable(e.getTypeModel(), unit.getObjectDeclaration().getType(), e, 
-                    "interpolated expression must be assignable to Object");
+            checkAssignable(e.getTypeModel(), unit.getValueDeclaration().getType(), e, 
+                    "interpolated expression must not be an optional type: " + 
+                    		e.getTypeModel().getProducedTypeName(unit) + 
+                    		" is not assignable to Value");
         }
         setLiteralType(that, unit.getStringDeclaration());
     }

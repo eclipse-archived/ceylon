@@ -1,12 +1,12 @@
 class Primaries() {
     
-    class C() extends IdentifiableObject() {}
+    class C() extends Basic() {}
     
-    class B() extends IdentifiableObject() {
+    class B() extends Basic() {
         shared C c() { return C(); }
     }
     
-    class A() extends IdentifiableObject() {
+    class A() extends Basic() {
         shared B b = B();
     }
 
@@ -107,7 +107,7 @@ class Primaries() {
         shared void doIt() {}
     }
     class S() extends B() satisfies G & H {}
-    class T() extends IdentifiableObject() satisfies G & H {}
+    class T() extends Basic() satisfies G & H {}
     
     @type:"Sequence<Primaries.B>" value p21 = [S(), B()].sequence;
     @type:"Sequence<Primaries.B>" value p22 = [B(), S()].sequence;
@@ -120,9 +120,9 @@ class Primaries() {
     //H[] hs = [S(), T()];
     //G[] gs = [T(), S()];
     @type:"Sequence<Primaries.A|Primaries.B|String|Sequence<Integer>>" value p26 = [A(),B(),"Hello",A(),[1,2,3].sequence,S()].sequence;
-    //Object[] stuff = [A(),B(),"Hello",[1,2,3]];
+    //Value[] stuff = [A(),B(),"Hello",[1,2,3]];
     value objects = [A(),B(),"Hello",[1,2,3].sequence].sequence;
-    //Object[] things = objects;
+    //Value[] things = objects;
     @type:"Null|Primaries.A|Primaries.B|String|Sequence<Integer>" value p27 = objects[1];
     @type:"Null|String" value p28 = objects[1]?.string;
     if (exists o = objects[1]) {
@@ -141,15 +141,15 @@ class Primaries() {
     @type:"Sequence<Null|Boolean>" value p102s = [ null, true, false ].sequence;
     
     object idobj satisfies G&H {}
-    object obj extends Object() satisfies G&H {
-        shared actual Boolean equals(Object other) {
+    object obj extends Value() satisfies G&H {
+        shared actual Boolean equals(Value other) {
             return false;
         }
         shared actual Integer hash = 0;
         shared actual String string = "";
     }
     
-    @type:"Sequence<IdentifiableObject&Primaries.G&Primaries.H>" value p103 = [ idobj ].sequence;
+    @type:"Sequence<Basic&Primaries.G&Primaries.H>" value p103 = [ idobj ].sequence;
     @type:"Sequence<Primaries.G&Primaries.H>" value p104 = [ obj ].sequence;
     @type:"Sequence<Primaries.G&Primaries.H>" value p105 = [ obj, idobj ].sequence;
     

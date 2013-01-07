@@ -36,7 +36,7 @@ class Hiding() {
     
     class OuterWithParameter() {
         
-        Object hello = "hello";
+        Value hello = "hello";
         
         class InnerWithAttribute() {
             String hello = "hello";

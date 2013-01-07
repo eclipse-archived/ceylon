@@ -54,7 +54,7 @@ class Inheritance() {
     @error ys.doIt(1);
     @type:"String" ys.getIt();
     I<String> iys = ys;
-    Object oys = iys;
+    Value oys = iys;
     
     X<Integer> yn = Y<Integer>(1);
     yn.doIt(6);
@@ -134,7 +134,7 @@ class Inheritance() {
     Outer.Inner2 oi4 = Outer().inner1;
     @error Outer.Inner2 oi5 = Outer.Inner3();
     @error Inheritance.Outer.Inner2 oi6 = Inheritance.Outer.Inner3();
-    @error Object foo = Outer.Foo.Bar();
+    @error Value foo = Outer.Foo.Bar();
     
     void method<T>(T x) 
             given T satisfies Outer.Inner2 {
@@ -181,6 +181,6 @@ class Inheritance() {
 }
 
 interface MyIdentif satisfies Identifiable {}
-class MyClass() extends Object() satisfies MyIdentif {}
+class MyClass() extends Value() satisfies MyIdentif {}
 
 @error class MyNothing() extends Nothing() {}

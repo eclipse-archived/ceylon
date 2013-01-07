@@ -643,7 +643,7 @@ public class TypeVisitor extends Visitor {
     
     private void defaultSuperclass(Tree.ExtendedType et, TypeDeclaration c) {
         if (et==null) {
-            Class iotd = unit.getIdentifiableObjectDeclaration();
+            Class iotd = unit.getBasicDeclaration();
             if (iotd!=null) {
 			    c.setExtendedType(iotd.getType());
             }
@@ -676,7 +676,7 @@ public class TypeVisitor extends Visitor {
 
     @Override 
     public void visit(Tree.InterfaceDefinition that) {
-        Class od = unit.getObjectDeclaration();
+        Class od = unit.getValueDeclaration();
         if (od!=null) {
 		    that.getDeclarationModel().setExtendedType(od.getType());
         }
