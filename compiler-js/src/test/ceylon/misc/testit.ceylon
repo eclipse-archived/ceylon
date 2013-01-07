@@ -29,7 +29,7 @@ shared void test() {
     b.Inner().incOuter();
     check(b.count == 4, "Bar.count");
     printAll("hello", "world");
-    printAll{strings="hello"; strings="world";};
+    printAll{strings=["hello","world"];};
     
     Counter c = Counter(0);
     c.inc(); c.inc();

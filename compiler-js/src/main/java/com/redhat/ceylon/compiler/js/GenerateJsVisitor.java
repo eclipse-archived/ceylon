@@ -1787,30 +1787,13 @@ public class GenerateJsVisitor extends Visitor
 
     private Map<String, String> defineNamedArguments(NamedArgumentList argList) {
         Map<String, String> argVarNames = new HashMap<String, String>();
-        boolean seqDeclared=false;
         for (NamedArgument arg: argList.getNamedArguments()) {
             String paramName = arg.getParameter().getName();
-            if (arg.getParameter().isSequenced()) {
-                if (seqDeclared) {
-                    String varName = argVarNames.get(paramName);
-                    out(varName, ".push(");
-                    arg.visit(this);
-                    out(")");
-                } else {
-                    String varName = names.createTempVariable(paramName);
-                    argVarNames.put(paramName, varName);
-                    out(varName,"=[");
-                    arg.visit(this);
-                    out("]");
-                }
-                seqDeclared=true;
-            } else {
                 String varName = names.createTempVariable(paramName);
                 argVarNames.put(paramName, varName);
                 retainedVars.add(varName);
                 out(varName, "=");
                 arg.visit(this);
-            }
             out(",");
         }
         SequencedArgument sarg = argList.getSequencedArgument();
@@ -1863,7 +1846,7 @@ public class GenerateJsVisitor extends Visitor
                 }
                 first = false;
             }
-            if (targs != null) {
+            if (targs != null && !targs.getTypeModels().isEmpty()) {
                 if (!first) out(",");
                 TypeUtils.printTypeArguments(argList, targs.getTypeModels(), this);
             }

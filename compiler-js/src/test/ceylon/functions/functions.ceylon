@@ -124,17 +124,17 @@ void testNamedArguments() {
     check(namedArgFunc{}=="x,xy", "named arguments 1");
     check(namedArgFunc{x="a";}=="a,ay", "named arguments 2");
     check(namedArgFunc{y="b";}=="x,b", "named arguments 3");
-    check(namedArgFunc{z="c";}=="x,xy,c", "named arguments 4");
-    check(namedArgFunc{x="a";y="b";z="c";}=="a,b,c", "named arguments 5");
-    check(namedArgFunc{y="b";x="a";z="c";z="d";}=="a,b,c,d", "named arguments 6");
-    check(namedArgFunc{x="a";z="c";}=="a,ay,c", "named arguments 7");
-    check(namedArgFunc{y="b";z="c";}=="x,b,c", "named arguments 8");
+    check(namedArgFunc{z=["c"];}=="x,xy,c", "named arguments 4");
+    check(namedArgFunc{x="a";y="b";z=["c"];}=="a,b,c", "named arguments 5");
+    check(namedArgFunc{y="b";x="a";z=["c","d"];}=="a,b,c,d", "named arguments 6");
+    check(namedArgFunc{x="a";z=["c"];}=="a,ay,c", "named arguments 7");
+    check(namedArgFunc{y="b";z=["c"];}=="x,b,c", "named arguments 8");
     check(namedArgFunc{y="b";x="a";}=="a,b", "named arguments 9");
     //doesn't apply anymore check(namedArgFunc{z={};}=="x,xy", "named arguments 10");
-    check(namedArgFunc{z="c"; z="d";}=="x,xy,c,d", "named arguments 11");
-    check(namedArgFunc{y="b";z="c";x="a";}=="a,b,c", "named arguments 12");
+    check(namedArgFunc{z=["c","d"];}=="x,xy,c,d", "named arguments 11");
+    check(namedArgFunc{y="b";z=["c"];x="a";}=="a,b,c", "named arguments 12");
     
-    value issue105 = Issue105 { i=1; more=Issue105 { i=2; }; };
+    value issue105 = Issue105 { i=1; more=[Issue105 { i=2; }]; };
     check(issue105.i==1, "issue #105");
 }
 

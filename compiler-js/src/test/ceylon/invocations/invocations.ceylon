@@ -9,7 +9,7 @@ shared void test() {
     hello("world");
     hello { name="world"; };
     helloAll("someone", "someone else");
-    helloAll { names="someone"; names="someone else";};
+    helloAll { names=["someone","someone else"];};
     String s1 = toString(99);
     String s2 = toString { obj=99; };    
     Float f1 = add(1.0, -1.0);
@@ -24,8 +24,8 @@ shared void test() {
     check(mixseqs({`b`,`c`},2,3,4)=="C:b #2");
     check(mixseqs(["hola"...],3,4,5)=="C:h #3");
     check(mixseqs{for (c in "hola") c.uppercased}=="C:H #?");
-    check(mixseqs{nums=2;chars="hola";nums=1;}=="C:h #2");
-    check(mixseqs{nums=4; for (c in "hola") c}=="C:h #4");
+    check(mixseqs{nums=[2,1];"hola"...}=="C:h #2");
+    check(mixseqs{nums=[4]; for (c in "hola") c}=="C:h #4");
     check(mixseqs{"hola"...}=="C:h #?");
     check(mixseqs{`H`,`I`}=="C:H #?");
     results();
