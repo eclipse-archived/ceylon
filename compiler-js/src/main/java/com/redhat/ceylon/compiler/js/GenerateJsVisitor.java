@@ -1371,7 +1371,17 @@ public class GenerateJsVisitor extends Visitor
 
     @Override
     public void visit(NaturalLiteral that) {
-        out("(", that.getText(), ")");
+        char prefix = that.getText().charAt(0);
+        if (prefix == '$' || prefix == '#') {
+            int radix= prefix == '$' ? 2 : 16;
+            try {
+                out("(", new java.math.BigInteger(that.getText().substring(1), radix).toString(), ")");
+            } catch (NumberFormatException ex) {
+                that.addError("Invalid numeric literal " + that.getText());
+            }
+        } else {
+            out("(", that.getText(), ")");
+        }
     }
 
     @Override
@@ -1697,34 +1707,6 @@ public class GenerateJsVisitor extends Visitor
 
     @Override
     public void visit(InvocationExpression that) {
-        if (that.getPrimary() instanceof BaseMemberExpression && that.getPositionalArgumentList() != null) {
-            //This is just for hex() and bin() literals
-            List<PositionalArgument> args = that.getPositionalArgumentList().getPositionalArguments();
-            if (args.size() == 1 && args.get(0).getExpression() != null) {
-                Term term = args.get(0).getExpression().getTerm();
-                if (term instanceof QuotedLiteral) {
-                    Declaration decl = ((BaseMemberExpression)that.getPrimary()).getDeclaration();
-                    if (decl instanceof Method) {
-                        String name = decl.getQualifiedNameString();
-                        int radix=0;
-                        if ("ceylon.language::hex".equals(name)) {
-                            radix = 16;
-                        } else if ("ceylon.language::bin".equals(name)) {
-                            radix = 2;
-                        }
-                        if (radix > 0) {
-                            String lit = term.getText().substring(1, term.getText().length()-1);
-                            try {
-                                out("(", new java.math.BigInteger(lit, radix).toString(), ")");
-                            } catch (NumberFormatException ex) {
-                                that.addError("Invalid numeric literal " + lit);
-                            }
-                            return;
-                        }
-                    }
-                }
-            }
-        }
         if (that.getNamedArgumentList()!=null) {
             NamedArgumentList argList = that.getNamedArgumentList();
             out("(");
@@ -1805,30 +1787,13 @@ public class GenerateJsVisitor extends Visitor
 
     private Map<String, String> defineNamedArguments(NamedArgumentList argList) {
         Map<String, String> argVarNames = new HashMap<String, String>();
-        boolean seqDeclared=false;
         for (NamedArgument arg: argList.getNamedArguments()) {
             String paramName = arg.getParameter().getName();
-            if (arg.getParameter().isSequenced()) {
-                if (seqDeclared) {
-                    String varName = argVarNames.get(paramName);
-                    out(varName, ".push(");
-                    arg.visit(this);
-                    out(")");
-                } else {
-                    String varName = names.createTempVariable(paramName);
-                    argVarNames.put(paramName, varName);
-                    out(varName,"=[");
-                    arg.visit(this);
-                    out("]");
-                }
-                seqDeclared=true;
-            } else {
                 String varName = names.createTempVariable(paramName);
                 argVarNames.put(paramName, varName);
                 retainedVars.add(varName);
                 out(varName, "=");
                 arg.visit(this);
-            }
             out(",");
         }
         SequencedArgument sarg = argList.getSequencedArgument();
@@ -1881,7 +1846,7 @@ public class GenerateJsVisitor extends Visitor
                 }
                 first = false;
             }
-            if (targs != null) {
+            if (targs != null && !targs.getTypeModels().isEmpty()) {
                 if (!first) out(",");
                 TypeUtils.printTypeArguments(argList, targs.getTypeModels(), this);
             }
