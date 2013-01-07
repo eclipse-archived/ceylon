@@ -18,11 +18,16 @@
  * MA  02110-1301, USA.
  */
 @nomodel
-void spread(String[] seq2) {
-    value seq = ["Hello", "World"];
-    value ini = seq[].size;
-    value ini2 = seq2[].size;
-    value ini3 = seq[].replace(x, x);
+void spread(Sequence<String> seq, String x) {
+    Sequence<Integer> ini1 = seq[].size;
+    Sequence<String> ini2 = seq[].replace(x, x);
+    
+    Iterable<String> seq2 = seq;
+    Sequential<Integer> ini3 = seq2[].size;
+    Sequential<String> ini4 = seq2[].replace(x, x);
+    
+    List<String> seq3 = seq;
+    Sequential<Integer> ini5 = seq3[].size;
+    Sequential<String> ini6 = seq3[].replace(x, x);
+
 }
-@nomodel
-String x = "x";
