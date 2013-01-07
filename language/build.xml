@@ -251,7 +251,7 @@
     <!-- Rule to compile and test -->
     <target name="build" depends="runtime.jar"/>
 	
-    <target name="compile.tests" depends="build,ceylonc">
+    <target name="compile.tests" depends="ceylon.sdk,ceylonc">
         <delete dir="${build.test}"/>
         <mkdir dir="${build.test}"/>
         <ceylonc
@@ -275,7 +275,7 @@
       
     <target name="test" depends="compile.tests"
         description="compile and run the tests">
-        <java classname="runAndExit_" classpath="${tests.car};${runtime.jar}"
+        <java classname="runAndExit_" classpath="${tests.car};${build.dist}/${ceylon.language.car}"
             resultproperty="test.ceylon.result"/>
     	
     	<condition property="test.fail.ceylon">
