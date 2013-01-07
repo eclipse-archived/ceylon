@@ -690,7 +690,7 @@ public class Util {
     public static boolean isCompletelyVisible(Declaration member, ProducedType pt) {
         if (pt.getDeclaration() instanceof UnionType) {
             for (ProducedType ct: pt.getDeclaration().getCaseTypes()) {
-                if ( !isCompletelyVisible(member, ct) ) {
+                if ( !isCompletelyVisible(member, ct.substitute(pt.getTypeArguments())) ) {
                     return false;
                 }
             }
@@ -698,7 +698,7 @@ public class Util {
         }
         else if (pt.getDeclaration() instanceof IntersectionType) {
             for (ProducedType ct: pt.getDeclaration().getSatisfiedTypes()) {
-                if ( !isCompletelyVisible(member, ct) ) {
+                if ( !isCompletelyVisible(member, ct.substitute(pt.getTypeArguments())) ) {
                     return false;
                 }
             }
