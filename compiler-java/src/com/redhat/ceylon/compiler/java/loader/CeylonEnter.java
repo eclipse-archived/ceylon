@@ -23,6 +23,7 @@ package com.redhat.ceylon.compiler.java.loader;
 import java.io.File;
 
 import javax.tools.JavaFileManager;
+import javax.tools.JavaFileObject.Kind;
 import javax.tools.StandardLocation;
 
 import com.redhat.ceylon.cmr.api.ArtifactContext;
@@ -42,6 +43,7 @@ import com.redhat.ceylon.compiler.java.tools.CeyloncFileManager;
 import com.redhat.ceylon.compiler.java.tools.LanguageCompiler;
 import com.redhat.ceylon.compiler.java.tools.LanguageCompiler.PhasedUnitsManager;
 import com.redhat.ceylon.compiler.java.util.Timer;
+import com.redhat.ceylon.compiler.java.util.Util;
 import com.redhat.ceylon.compiler.loader.AbstractModelLoader;
 import com.redhat.ceylon.compiler.typechecker.TypeChecker;
 import com.redhat.ceylon.compiler.typechecker.analyzer.AnalysisError;
@@ -59,10 +61,17 @@ import com.redhat.ceylon.compiler.typechecker.tree.Tree.CompilationUnit;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.CompilerAnnotation;
 import com.redhat.ceylon.compiler.typechecker.tree.UnexpectedError;
 import com.redhat.ceylon.compiler.typechecker.util.AssertionVisitor;
+import com.sun.tools.javac.code.Symbol;
+import com.sun.tools.javac.code.Symbol.ClassSymbol;
+import com.sun.tools.javac.code.Symtab;
 import com.sun.tools.javac.code.Type;
+import com.sun.tools.javac.code.Type.ClassType;
+import com.sun.tools.javac.code.Types;
 import com.sun.tools.javac.comp.AttrContext;
+import com.sun.tools.javac.comp.Check;
 import com.sun.tools.javac.comp.Enter;
 import com.sun.tools.javac.comp.Env;
+import com.sun.tools.javac.comp.Todo;
 import com.sun.tools.javac.file.Paths;
 import com.sun.tools.javac.main.JavaCompiler;
 import com.sun.tools.javac.main.OptionName;
@@ -99,6 +108,11 @@ public class CeylonEnter extends Enter {
     private JavaCompiler compiler;
     private boolean allowWarnings;
     private boolean verbose;
+    private Check chk;
+    private Types types;
+    private Symtab symtab;
+    private Todo todo;
+    private boolean isBootstrap;
     
     protected CeylonEnter(Context context) {
         super(context);
@@ -122,7 +136,12 @@ public class CeylonEnter extends Enter {
         compiler = LanguageCompiler.instance(context);
         allowWarnings = com.redhat.ceylon.compiler.Util.allowWarnings(context);
         verbose = options.get(OptionName.VERBOSE) != null;
-        
+        isBootstrap = options.get(OptionName.BOOTSTRAPCEYLON) != null;
+        chk = Check.instance(context);
+        types = Types.instance(context);
+        symtab = Symtab.instance(context);
+        todo = Todo.instance(context);
+
         // now superclass init
         init(context);
     }
@@ -145,19 +164,84 @@ public class CeylonEnter extends Enter {
             }
             timer.startTask("Enter on Java trees");
             // enter java trees first to set up their ClassSymbol objects for ceylon trees to use during type-checking
-            if(!javaTrees.isEmpty())
+            if(!javaTrees.isEmpty()){
                 super.main(javaTrees);
+            }
             // now we can type-check the Ceylon code
             completeCeylonTrees(trees);
-            timer.startTask("Enter on Ceylon trees");
-            // and complete their new trees
-            super.main(ceylonTrees);
-            timer.endTask();
+            
+            if(isBootstrap){
+                // bootstrapping the language module is a bit more complex
+                resetAndRunEnterAgain(trees);
+            }else{
+                timer.startTask("Enter on Ceylon trees");
+                // and complete their new trees
+                super.main(ceylonTrees);
+                timer.endTask();
+            }
         }
         else {
             completeCeylonTrees(trees);
             super.main(trees);
         }
+    }
+
+    private void resetAndRunEnterAgain(List<JCCompilationUnit> trees) {
+        timer.startTask("Resetting all trees for bootstrap");
+        
+        // get rid of some caches and state
+        chk.compiled.clear();
+        types.reset();
+        super.reset();
+        
+        // reset all class symbols
+        for(ClassSymbol classSymbol : symtab.classes.values()){
+            if(Util.isLoadedFromSource(classSymbol) 
+                    || (classSymbol.sourcefile != null && classSymbol.sourcefile.getKind() == Kind.SOURCE)){
+                resetClassSymbol(classSymbol);
+            }
+        }
+        
+        // reset the trees
+        JCTypeResetter jcTypeResetter = new JCTypeResetter();
+        for(JCCompilationUnit tree : trees){
+            tree.accept(jcTypeResetter);
+        }
+        
+        // and reset the list of things to compile, because we got rid of the Env key we used to look them up
+        // so they'd appear as extra things to compile when we do Enter
+        todo.reset();
+        timer.endTask();
+        
+        timer.startTask("Enter on Java+Ceylon trees");
+        // now do Enter on all the java+ceylon code
+        super.main(trees);
+        timer.endTask();
+    }
+
+    /**
+     * This resets a ClassSymbol recursively, for bootstrap
+     */
+    private void resetClassSymbol(ClassSymbol classSymbol) {
+        // look for inner classes
+        if(classSymbol.members_field != null){
+            for(Symbol member : classSymbol.getEnclosedElements()){
+                if(member instanceof ClassSymbol){
+                    resetClassSymbol((ClassSymbol)member);
+                }
+            }
+        }
+        
+        // reset its type, we need to keep it
+        Type.ClassType classType = (ClassType) classSymbol.type;
+        classType.all_interfaces_field = null;
+        classType.interfaces_field = null;
+        classType.supertype_field = null;
+        classType.typarams_field = null;
+        
+        // reset its members and completer
+        classSymbol.members_field = null;
+        classSymbol.completer = null;
     }
 
     @Override
