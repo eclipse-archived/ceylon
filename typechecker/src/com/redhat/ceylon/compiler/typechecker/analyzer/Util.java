@@ -75,7 +75,7 @@ class Util {
             scope=scope.getContainer();
         }
         that.addError("illegal use of qualified type outside scope of qualifying type: " + 
-                type.getProducedTypeName());
+                type.getProducedTypeName(that.getUnit()));
     }
 
     static List<ProducedType> getTypeArguments(Tree.TypeArguments tal) {

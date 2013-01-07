@@ -281,6 +281,6 @@ public abstract class Declaration
     }
     
     public String getName(Unit unit) {
-    	return unit.getAliasedName(this);
+    	return unit==null ? getName() : unit.getAliasedName(this);
     }
 }

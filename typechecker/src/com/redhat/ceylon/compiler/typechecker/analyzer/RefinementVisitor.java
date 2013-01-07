@@ -253,7 +253,8 @@ public class RefinementVisitor extends Visitor {
 		            if (!ok) {
 		                that.addError("type " + td.getName() +
 		                        " has the same supertype twice with incompatible type arguments: " +
-		                        st1.getProducedTypeName() + " and " + st2.getProducedTypeName());
+		                        st1.getProducedTypeName(that.getUnit()) + " and " + 
+		                        st2.getProducedTypeName(that.getUnit()));
 		                broken = true;
 		            }
 		        }
@@ -266,12 +267,12 @@ public class RefinementVisitor extends Visitor {
 		        if (that instanceof Tree.Declaration) {
 		            if (!isCompletelyVisible(td, st)) {
 		                that.addError("supertype of type is not visible everywhere type is visible: " + 
-		                        st.getProducedTypeName());
+		                        st.getProducedTypeName(that.getUnit()));
 		            }
 		            if(!checkModuleVisibility(td, st) ) {
 		                that.addError("supertype occurs in a type that is visible outside this module,"
 		                        +" but comes from an imported module that is not re-exported: " +
-		                        st.getProducedTypeName());
+		                        st.getProducedTypeName(that.getUnit()));
 		            }
 
 		        }
@@ -451,7 +452,8 @@ public class RefinementVisitor extends Visitor {
     }
     
     static String message(Declaration refined) {
-        return refined.getName() + " in " + ((Declaration) refined.getContainer()).getName();
+        return refined.getName() + " in " + 
+        		((Declaration) refined.getContainer()).getName();
     }
 
     private void checkRefinedTypeAndParameterTypes(Tree.Declaration that,
@@ -469,9 +471,6 @@ public class RefinementVisitor extends Visitor {
             for (int i=0; i<(refiningSize<=refinedSize ? refiningSize : refinedSize); i++) {
                 TypeParameter refinedTypeParam = refinedTypeParams.get(i);
                 TypeParameter refiningTypeParam = refiningTypeParams.get(i);
-                if (refiningTypeParam.getName().equals("TT")) {
-                	refiningTypeParam.getName();
-                }
                 ProducedType refinedProducedType = refinedTypeParam.getType();
 				for (ProducedType t: refiningTypeParam.getSatisfiedTypes()) {
                 	ProducedType bound = t.substitute(singletonMap(refiningTypeParam, refinedProducedType));
@@ -488,7 +487,7 @@ public class RefinementVisitor extends Visitor {
                 		that.addError("member type parameter " + refiningTypeParam.getName() +
                 				" has upper bound which refined member type parameter " + 
                 				refinedTypeParam.getName() + " of " + message(refined) + 
-                				" does not satisfy: " + t.getProducedTypeName());
+                				" does not satisfy: " + t.getProducedTypeName(that.getUnit()));
                 	}
                 }
                 typeArgs.add(refinedProducedType);

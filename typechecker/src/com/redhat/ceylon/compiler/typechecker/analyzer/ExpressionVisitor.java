@@ -4269,8 +4269,8 @@ private void checkPositionalArguments(ParameterList pl, ProducedReference pr,
                     }
                 }
             }
-            that.addError("containing type " + qt.getDeclaration().getName() + 
-                    " of supertype " + type.getDeclaration().getName() + 
+            that.addError("containing type " + qt.getDeclaration().getName(unit) + 
+                    " of supertype " + type.getDeclaration().getName(unit) + 
                     " is not an outer type or supertype of any outer type of " +
                     td.getName());
         }
