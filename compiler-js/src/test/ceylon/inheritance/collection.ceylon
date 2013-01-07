@@ -12,7 +12,7 @@ void testCollection() {
   value t1 = TestColl();
   //Test actual methods
   check(t1.size == 0, "Collection.size 1");
-  check(t1.iterator.next() == exhausted, "Collection.iterator 1");
+  check(t1.iterator.next() == finished, "Collection.iterator 1");
   //Now test inherited concrete methods
   check(t1.empty, "Collection.empty 1");
   check(!(1 in t1), "Collection.contains 1");

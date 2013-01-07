@@ -28,12 +28,12 @@ class ComprehensionGenerator {
     private final GenerateJsVisitor gen;
     private final JsIdentifierNames names;
     private final RetainedVars retainedVars = new RetainedVars();
-    private final String exhausted;
+    private final String finished;
     private final Set<Declaration> directAccess;
 
     ComprehensionGenerator(GenerateJsVisitor gen, JsIdentifierNames names, Set<Declaration> directDeclarations) {
         this.gen = gen;
-        exhausted = String.format("%sgetExhausted()", GenerateJsVisitor.getClAlias());
+        finished = String.format("%sgetFinished()", GenerateJsVisitor.getClAlias());
         this.names = names;
         directAccess = directDeclarations;
     }
@@ -87,7 +87,7 @@ class ComprehensionGenerator {
 
             // value or key/value variables
             if (loop.keyVarName == null) {
-                gen.out("var ", loop.valueVarName, "=", exhausted, ";");
+                gen.out("var ", loop.valueVarName, "=", finished, ";");
                 gen.endLine();
             } else {
                 gen.out("var ", loop.keyVarName, ",", loop.valueVarName, ";");
@@ -123,7 +123,7 @@ class ComprehensionGenerator {
 
                 // if/while ((elemVar=it.next()!==$finished)
                 gen.out(loop.conditions.isEmpty()?"if":"while", "((", elemVarName, "=",
-                        loop.itVarName, ".next())!==", exhausted, ")");
+                        loop.itVarName, ".next())!==", finished, ")");
                 gen.beginBlock();
 
                 // get key/value if necessary
@@ -156,7 +156,7 @@ class ComprehensionGenerator {
                     gen.out(loop.valueVarName, "=undefined;"); gen.endLine();
                 }
 
-                gen.out("return ", exhausted, ";");
+                gen.out("return ", finished, ";");
                 gen.endBlockNewLine();
             }
         }
@@ -177,7 +177,7 @@ class ComprehensionGenerator {
         // If yes, evaluate the expression, advance the iterator and return the result.
         ComprehensionLoopInfo lastLoop = loops.get(loops.size()-1);
         gen.out("if(", lastLoop.valueVarName, "!==", (lastLoop.keyVarName==null)
-                ? exhausted : "undefined", ")");
+                ? finished : "undefined", ")");
         gen.beginBlock();
         String tempVarName = names.createTempVariable();
         gen.out("var ", tempVarName, "=");
@@ -191,11 +191,11 @@ class ComprehensionGenerator {
         // "while" part of the do-while loops
         for (int i=loops.size()-2; i>=0; i--) {
             gen.endBlock();
-            gen.out("while(next$", loops.get(i).valueVarName, "()!==", exhausted, ");");
+            gen.out("while(next$", loops.get(i).valueVarName, "()!==", finished, ");");
             gen.endLine();
         }
 
-        gen.out("return ", exhausted, ";");
+        gen.out("return ", finished, ";");
         gen.endBlockNewLine();
         gen.endBlock(); gen.out("),");
         TypeUtils.printTypeArguments(that, Collections.singletonList(expression.getTypeModel()), gen);

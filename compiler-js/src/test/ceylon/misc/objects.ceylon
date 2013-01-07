@@ -9,7 +9,7 @@ class TestObjects(Integer a, Integer b, Integer c) satisfies Iterable<Integer> {
         if (index == 1) { return a; }
         else if (index == 2) { return b; }
         else if (index == 3) { return c; }
-        return exhausted;
+        return finished;
       }
     }
     return iter;

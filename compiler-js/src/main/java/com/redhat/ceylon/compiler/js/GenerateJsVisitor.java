@@ -1519,7 +1519,7 @@ public class GenerateJsVisitor extends Visitor
         //Iterate
         String elem = names.createTempVariable("elem");
         out("var ", elem, ";"); endLine();
-        out("while ((", elem, "=", iter, ".next())!==", clAlias, "getExhausted())");
+        out("while ((", elem, "=", iter, ".next())!==", clAlias, "getFinished())");
         beginBlock();
         //Add value or reference to the array
         out(tmplist, ".push(");
@@ -3076,7 +3076,7 @@ public class GenerateJsVisitor extends Visitor
         endBlock();
         if (hasElse) {
             endLine();
-            out("if (", clAlias, "getExhausted() === ", itemVar, ")");
+            out("if (", clAlias, "getFinished() === ", itemVar, ")");
             encloseBlockInFunction(that.getElseClause().getBlock());
         }
     }
@@ -3095,7 +3095,7 @@ public class GenerateJsVisitor extends Visitor
         iterable.visit(this);
         out(".getIterator();");
         endLine();
-        out("var ", itemVar, ";while ((", itemVar, "=", iterVar, ".next())!==", clAlias, "getExhausted())");
+        out("var ", itemVar, ";while ((", itemVar, "=", iterVar, ".next())!==", clAlias, "getFinished())");
         beginBlock();
         if (that instanceof ValueIterator) {
             directAccess.add(((ValueIterator)that).getVariable().getDeclarationModel());
