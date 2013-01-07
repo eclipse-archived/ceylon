@@ -106,3 +106,12 @@ class CompBar() satisfies Comp<CompBar> {
         return bottom;
     }
 }
+
+@error class Broken<T>() of T 
+        satisfies Comparable<T> 
+        given T satisfies Comparable<T>{
+    shared actual Comparison compare(T other) {
+        return bottom;
+    }
+}
+
