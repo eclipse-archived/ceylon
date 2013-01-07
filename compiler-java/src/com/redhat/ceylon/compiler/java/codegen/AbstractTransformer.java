@@ -344,14 +344,21 @@ public abstract class AbstractTransformer implements Transformation {
         return make().VarDef(make().Modifiers(0), varName.asName(), typeExpr, valueExpr);
     }
     
-    // Creates a "( let var1=expr1,var2=expr2,...,varN=exprN in varN; )"
-    // or a "( let var1=expr1,var2=expr2,...,varN=exprN,exprO in exprO; )"
+    /** 
+     * Creates a {@code ( let var1=expr1,var2=expr2,...,varN=exprN in varN; )}
+     * or a {@code ( let var1=expr1,var2=expr2,...,varN=exprN,exprO in exprO; )}
+     * @param args
+     * @return
+     */
     JCExpression makeLetExpr(JCExpression... args) {
         return makeLetExpr(naming.temp(), null, args);
     }
 
-    // Creates a "( let var1=expr1,var2=expr2,...,varN=exprN in statements; varN; )"
-    // or a "( let var1=expr1,var2=expr2,...,varN=exprN in statements; exprO; )"
+    /** Creates a 
+     * {@code ( let var1=expr1,var2=expr2,...,varN=exprN in statements; varN; )}
+     * or a {@code ( let var1=expr1,var2=expr2,...,varN=exprN in statements; exprO; )}
+     * 
+     */
     JCExpression makeLetExpr(Naming.SyntheticName varBaseName, List<JCStatement> statements, JCExpression... args) {
         return makeLetExpr(varBaseName.getName(), statements, args);
     }
