@@ -1723,7 +1723,7 @@ public class ExpressionVisitor extends Visitor {
                     visited.add(tp2);
                     List<ProducedType> list = new ArrayList<ProducedType>();
                     for (ProducedType pt: tp2.getSatisfiedTypes()) {
-                        addToUnion(list, inferTypeArg(tp, pt, argType, visited) );
+                        addToUnion(list, inferTypeArg(tp, pt, argType, visited));
                         ProducedType st = argType.getSupertype(pt.getDeclaration());
                         if (st!=null) {
                             for (int j=0; j<pt.getTypeArgumentList().size(); j++) {
@@ -1792,6 +1792,13 @@ public class ExpressionVisitor extends Visitor {
                 ProducedType st = argType.getSupertype(paramType.getDeclaration());
                 if (st!=null) {
                     List<ProducedType> list = new ArrayList<ProducedType>();
+                    if (paramType.getQualifyingType()!=null && 
+                    		st.getQualifyingType()!=null) {
+                    	addToUnion(list, inferTypeArg(tp, 
+                                    paramType.getQualifyingType(), 
+                                    st.getQualifyingType(), 
+                                    visited));
+                    }
                     for (int j=0; j<paramType.getTypeArgumentList().size(); j++) {
                         if (st.getTypeArgumentList().size()>j) {
                             addToUnion(list, inferTypeArg(tp, 
