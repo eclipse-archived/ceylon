@@ -5,9 +5,9 @@ import com.redhat.ceylon.compiler.java.metadata.Method;
 
 @Ceylon(major = 3)
 @Method
-public final class optional {
+public final class optional_ {
     public static Nothing optional(){
         return null;
     }
-    private optional(){}
+    private optional_(){}
 }
