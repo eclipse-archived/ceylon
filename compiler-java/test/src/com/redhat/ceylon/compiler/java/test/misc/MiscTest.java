@@ -82,7 +82,7 @@ public class MiscTest extends CompilerTest {
         HashSet exceptions = new HashSet();
         for (String ex : new String[] {
                 // Native files
-                "Array", "Boolean", "Callable", "Character", "className", "Comparison",
+                "Array", "Boolean", "true", "false", "Callable", "Character", "className", "Comparison",
                 "Exception", "Float", "identityHash", "Integer", "language", "process",
                 "SequenceBuidler", "sort", "String", "StringBuilder",
                 // Problem files
