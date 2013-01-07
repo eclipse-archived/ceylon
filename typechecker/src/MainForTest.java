@@ -24,7 +24,7 @@ public class MainForTest {
                 .addSrcDirectory( new File("test/main") )
                 .getTypeChecker();
         typeChecker.process();
-        Tree.CompilationUnit compilationUnit = typeChecker.getPhasedUnitFromRelativePath("ceylon/language/Object.ceylon").getCompilationUnit();
+        Tree.CompilationUnit compilationUnit = typeChecker.getPhasedUnitFromRelativePath("ceylon/language/Value.ceylon").getCompilationUnit();
         if ( compilationUnit == null ) {
             throw new RuntimeException("Failed to pass getCompilationUnitFromRelativePath for files in .src");
         }
