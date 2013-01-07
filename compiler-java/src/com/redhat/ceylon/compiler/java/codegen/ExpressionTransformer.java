@@ -79,11 +79,8 @@ import com.sun.tools.javac.tree.JCTree;
 import com.sun.tools.javac.tree.JCTree.JCBlock;
 import com.sun.tools.javac.tree.JCTree.JCConditional;
 import com.sun.tools.javac.tree.JCTree.JCExpression;
-import com.sun.tools.javac.tree.JCTree.JCExpressionStatement;
-import com.sun.tools.javac.tree.JCTree.JCForLoop;
 import com.sun.tools.javac.tree.JCTree.JCLiteral;
 import com.sun.tools.javac.tree.JCTree.JCMethodInvocation;
-import com.sun.tools.javac.tree.JCTree.JCNewArray;
 import com.sun.tools.javac.tree.JCTree.JCStatement;
 import com.sun.tools.javac.tree.JCTree.JCUnary;
 import com.sun.tools.javac.tree.JCTree.JCVariableDecl;
@@ -1801,86 +1798,35 @@ public class ExpressionTransformer extends AbstractTransformer {
 
     private JCExpression transformSpreadOperator(Tree.QualifiedMemberExpression expr, TermTransformer transformer) {
         at(expr);
-
-        // this holds the ternary test for empty
-        Naming.SyntheticName testVarName = naming.alias("spreadTest");
-        ProducedType testSequenceType = expr.getPrimary().getTypeModel();
-        JCExpression testSequenceTypeExpr = makeJavaType(testSequenceType, JT_NO_PRIMITIVES);
-        JCExpression testSequenceExpr = transformExpression(expr.getPrimary(), BoxingStrategy.BOXED, testSequenceType);
-
+        
+        // this holds the whole spread operation
+        Naming.SyntheticName varBaseName = naming.alias("spread");
+        
         // reset back here after transformExpression
         at(expr);
 
-        // this holds the whole spread operation
-        Naming.SyntheticName varBaseName = naming.alias("spread");
-        // sequence
-        Naming.SyntheticName srcSequenceName = varBaseName.suffixedBy("$0");
-        ProducedType srcSequenceType = typeFact().getNonemptyType(expr.getPrimary().getTypeModel());
-        ProducedType srcElementType = typeFact().getIteratedType(srcSequenceType);
-        JCExpression srcSequenceTypeExpr = makeJavaType(srcSequenceType, JT_NO_PRIMITIVES);
-        JCExpression srcSequenceExpr = make().TypeCast(srcSequenceTypeExpr, testVarName.makeIdent());
+        // iterable
+        ProducedType srcType = expr.getPrimary().getTypeModel();
+        Naming.SyntheticName srcIterableName = varBaseName.suffixedBy("$iterable");
+        ProducedType t = typeFact().getNonemptyType(expr.getPrimary().getTypeModel());
+        ProducedType srcElementType = typeFact().getIteratedType(t);
+        JCExpression srcIterableTypeExpr = makeJavaType(typeFact().getIterableType(typeFact().getIteratedType(t)), JT_NO_PRIMITIVES);
+        JCExpression srcIterableExpr = transformExpression(expr.getPrimary(), BoxingStrategy.BOXED, srcType);
 
-        // size, getSize() always unboxed, but we need to cast to int for Java array access
-        Naming.SyntheticName sizeName = varBaseName.suffixedBy("$2");
-        JCExpression sizeType = make().TypeIdent(TypeTags.INT);
-        JCExpression sizeExpr = make().TypeCast(syms().intType, make().Apply(null, 
-                makeSelect(srcSequenceName.makeIdent(), "getSize"), 
-                List.<JCTree.JCExpression>nil()));
+        // sequenceBuilder
+        Naming.SyntheticName builderVar = varBaseName.suffixedBy("$sequenceBuilder");
+        ProducedType builderType = typeFact().getSequenceBuilderType(expr.getTarget().getType()).getType();
+        JCExpression builderTypeExpr = makeJavaType(builderType);
+        JCExpression builderInitExpr = make().NewClass(null, List.<JCExpression>nil(), makeJavaType(builderType), 
+                List.<JCExpression>nil(), null);
 
-        // new array
-        Naming.SyntheticName newArrayName = varBaseName.suffixedBy("$4");
-        JCExpression arrayElementType = makeJavaType(expr.getTarget().getType(), JT_RAW | JT_NO_PRIMITIVES);
-        JCExpression newArrayType = make().TypeArray(arrayElementType);
-        JCNewArray newArrayExpr = make().NewArray(arrayElementType, List.<JCExpression>of(sizeName.makeIdent()), null);
-
-        // return the new array
-        JCExpression returnArrayType = makeJavaType(expr.getTarget().getType(), JT_SATISFIES);
-        JCExpression returnArrayIdent = make().QualIdent(syms().ceylonArraySequenceType.tsym);
-        JCExpression returnArrayTypeExpr;
-        // avoid putting type parameters such as j.l.Object
-        if(returnArrayType != null)
-            returnArrayTypeExpr = make().TypeApply(returnArrayIdent, List.of(returnArrayType));
-        else // go raw
-            returnArrayTypeExpr = returnArrayIdent;
-        
-        JCExpression returnArray = make().NewClass(null, null, 
-                returnArrayTypeExpr, 
-                List.<JCExpression>of(newArrayName.makeIdent()), null);
-        // Add a conditional, if we don't statically know that the source 
-        // sequence is nonempty
-        if (!srcSequenceType.isSubtypeOf(
-                typeFact().getSequenceType(typeFact().getAnythingDeclaration().getType()).getType())) {
-            returnArray = make().Conditional(
-                    make().Binary(JCTree.NE, 
-                            naming.makeSelect(newArrayName.makeIdent(), "length"),
-                                make().Literal(0)), 
-                            returnArray, makeEmpty());
-        }
-        
-        // for loop
-        Name indexVarName = naming.aliasName("index");
-        // int index = 0
-        JCStatement initVarDef = make().VarDef(make().Modifiers(0), indexVarName, make().TypeIdent(TypeTags.INT), makeInteger(0));
-        List<JCStatement> init = List.of(initVarDef);
-        // index < size
-        JCExpression cond = make().Binary(JCTree.LT, make().Ident(indexVarName), sizeName.makeIdent());
-        // index++
-        JCExpression stepExpr = make().Unary(JCTree.POSTINC, make().Ident(indexVarName));
-        List<JCExpressionStatement> step = List.of(make().Exec(stepExpr));
-
-        // newArray[index]
-        JCExpression dstArrayExpr = make().Indexed(newArrayName.makeIdent(), make().Ident(indexVarName));
-        // srcSequence.item(box(index))
-        // index is always boxed
-        JCExpression boxedIndex = boxType(make().Ident(indexVarName), typeFact().getIntegerDeclaration().getType());
-        JCExpression sequenceItemExpr = make().Apply(null, 
-                makeSelect(srcSequenceName.makeIdent(), "item"),
-                List.<JCExpression>of(boxedIndex));
-        // item.member
-        sequenceItemExpr = applyErasureAndBoxing(sequenceItemExpr, srcElementType, CodegenUtil.hasTypeErased(expr),
+        // element.member
+        final SyntheticName elementVar = varBaseName.suffixedBy("$element");
+        JCExpression elementExpr = elementVar.makeIdent();
+        elementExpr = applyErasureAndBoxing(elementExpr, srcElementType, CodegenUtil.hasTypeErased(expr),
                 true, BoxingStrategy.BOXED, 
                 expr.getTarget().getQualifyingType(), 0);
-        JCExpression appliedExpr = transformMemberExpression(expr, sequenceItemExpr, transformer);
+        JCExpression appliedExpr = transformMemberExpression(expr, elementExpr, transformer);
         
         // This short-circuit is here for spread invocations
         // The code has been called recursively and the part after this if-statement will
@@ -1891,38 +1837,56 @@ public class ExpressionTransformer extends AbstractTransformer {
         
         // reset back here after transformMemberExpression
         at(expr);
-        // we always need to box to put in array
-        appliedExpr = applyErasureAndBoxing(appliedExpr, expr.getTarget().getType(), CodegenUtil.hasTypeErased(expr), !CodegenUtil.isUnBoxed(expr), BoxingStrategy.BOXED, expr.getTarget().getType(), 0);
-        // newArray[index] = box(srcSequence.item(box(index)).member)
-        JCStatement body = make().Exec(make().Assign(dstArrayExpr, appliedExpr));
         
-        // for
-        JCForLoop forStmt = make().ForLoop(init, cond , step , body);
+        // SRC_ELEMENT_TYPE element = (SRC_ELEMENT_TYPE)iteration;
+        final SyntheticName iterationVar = varBaseName.suffixedBy("$iteration");
+        JCExpression iteration = iterationVar.makeIdent();
+        if (!willEraseToObject(srcElementType)) {
+            iteration = make().TypeCast(makeJavaType(srcElementType, JT_NO_PRIMITIVES), 
+                    iteration);
+        }
+        JCVariableDecl elementVarDecl = makeVar(elementVar, 
+                makeJavaType(srcElementType, JT_NO_PRIMITIVES), 
+                iteration);
+        
+        // we always need to box to put in SequenceBuilder
+        appliedExpr = applyErasureAndBoxing(appliedExpr, expr.getTarget().getType(), CodegenUtil.hasTypeErased(expr), !CodegenUtil.isUnBoxed(expr), BoxingStrategy.BOXED, expr.getTarget().getType(), 0);
+        // sequenceBuilder.append(APPLIED_EXPR)
+        JCStatement body = make().Exec(make().Apply(List.<JCExpression>nil(), 
+                naming.makeQualIdent(builderVar.makeIdent(), "append"), 
+                List.<JCExpression>of(appliedExpr)));
+        
+        // The for loop
+        final Naming.SyntheticName srcIteratorName = varBaseName.suffixedBy("$iterator");
+        List<JCStatement> forStmt = statementGen().transformIterableIteration(expr, 
+                iterationVar, srcIteratorName, 
+                srcElementType, srcIterableName.makeIdent(), 
+                List.<JCStatement>of(elementVarDecl), 
+                List.<JCStatement>of(body));
         
         // build the whole spread operation
-        JCExpression spread = makeLetExpr(varBaseName, 
-                List.<JCStatement>of(forStmt), 
-                srcSequenceTypeExpr, srcSequenceExpr,
-                sizeType, sizeExpr,
-                newArrayType, newArrayExpr,
-                returnArray);
+        List<JCStatement> stmts = List.<JCStatement>of(
+                makeVar(srcIterableName, srcIterableTypeExpr, srcIterableExpr),
+                makeVar(builderVar, builderTypeExpr, builderInitExpr));
+        stmts = stmts.appendList(forStmt);
+        JCExpression spread = make().LetExpr(stmts, 
+                make().Apply(
+                        List.<JCExpression>nil(), 
+                        naming.makeQualIdent(builderVar.makeIdent(), "getSequence"), 
+                        List.<JCExpression>nil()));
         
-        JCExpression resultExpr;
-
-        if (typeFact().isEmptyType(expr.getPrimary().getTypeModel())) {
-            ProducedType emptyOrSequence = typeFact().getEmptyType(typeFact().getSequenceType(expr.getTarget().getType()));
-            // no need to call makeEmptyAsIterable() here as we always cast the result anyways
-            resultExpr = make().TypeCast(makeJavaType(emptyOrSequence), 
-                    make().Conditional(makeNonEmptyTest(testVarName.makeIdent()), 
-                        spread, makeEmpty()));
-        } else {
-            resultExpr = spread;
-        }
+        // Do we *statically* know the result must be a Sequence 
+        final boolean primaryIsSequence = expr.getPrimary().getTypeModel().isSubtypeOf(
+                typeFact().getSequenceType(typeFact().getAnythingDeclaration().getType()).getType());
+        spread = applyErasureAndBoxing(spread, 
+                typeFact().getSequentialType(srcElementType),// the type of SequenceBuilder.getSequence();
+                true,
+                BoxingStrategy.BOXED, 
+                primaryIsSequence ? 
+                        typeFact().getSequenceType(expr.getTarget().getType()) 
+                        : typeFact().getSequentialType(expr.getTarget().getType()));
         
-        // now surround it with the test
-        return makeLetExpr(testVarName, List.<JCStatement>nil(),
-                testSequenceTypeExpr, testSequenceExpr,
-                resultExpr);
+        return spread;
     }
 
     private JCExpression transformQualifiedMemberPrimary(Tree.QualifiedMemberOrTypeExpression expr) {

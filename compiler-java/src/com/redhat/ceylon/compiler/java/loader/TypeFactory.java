@@ -20,6 +20,8 @@
 
 package com.redhat.ceylon.compiler.java.loader;
 
+import static com.redhat.ceylon.compiler.typechecker.model.Util.producedType;
+
 import java.util.Collections;
 
 import com.redhat.ceylon.compiler.java.tools.LanguageCompiler;
@@ -111,5 +113,13 @@ public class TypeFactory extends Unit {
 
     public ProducedType getUnknownType() {
         return new UnknownType(this).getType();
+    }
+    
+    public ProducedType getSequenceBuilderType(ProducedType et) {
+        return producedType(getSequenceBuilderDeclaration(), et);
+    }
+
+    public TypeDeclaration getSequenceBuilderDeclaration() {
+        return (TypeDeclaration)getLanguageModuleDeclaration("SequenceBuilder");
     }
 }
