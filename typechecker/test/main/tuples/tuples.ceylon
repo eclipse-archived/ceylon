@@ -14,14 +14,14 @@ void test() {
     @type:"Integer" value second = tup.rest.first;
     @type:"Float" value third = tup.rest.rest.first;
     @type:"Empty" value nuthin = tup.rest.rest.rest;
-    @type:"Nothing" value fourth = tup.rest.rest.rest.first;
+    @type:"Null" value fourth = tup.rest.rest.rest.first;
     
-    @type:"Nothing" value before1 = tup[-1];
+    @type:"Null" value before1 = tup[-1];
     @type:"String" value first1 = tup[0];
     @type:"Integer" value second1 = tup[1];
     @type:"Float" value third1 = tup[2];
-    @type:"Nothing" value fourth1 = tup[3];
-    @type:"Nothing" value fifth1 = tup[4];
+    @type:"Null" value fourth1 = tup[3];
+    @type:"Null" value fifth1 = tup[4];
     
     [String, String] hibye = ["hello", "goodbye"];
     [String, String] fun() {
@@ -38,12 +38,12 @@ void test() {
     [String, Integer, Object...] trip = triple("", 0, 0.0);
     value ints = [1,2,3];
     [String,Integer,Integer...] vartup = ["hello", 4, ints...];
-    @type:"Nothing" value v0 = vartup[-1];
+    @type:"Null" value v0 = vartup[-1];
     @type:"String" value v1 = vartup[0];
     @type:"Integer" value v2 = vartup[1];
-    @type:"Nothing|Integer" value v3 = vartup[2];
-    @type:"Nothing|Integer" value v4 = vartup[3];
-    @type:"Nothing|Integer" value v5 = vartup[4];
+    @type:"Null|Integer" value v3 = vartup[2];
+    @type:"Null|Integer" value v4 = vartup[3];
+    @type:"Null|Integer" value v5 = vartup[4];
     [] emp1 = {};
     [] emp2 = [];
     Tuple<Integer|Float,Integer,Tuple<Float,Float,[]>> unsugared1 = Tuple(0,Tuple(1.0,[]));
@@ -115,9 +115,9 @@ void test() {
     
     [String,Integer=,Float...] varlen = ["hello"];
     @type:"String" value elem0 = varlen[0];
-    @type:"Nothing|Integer" value elem1 = varlen[1];
-    @type:"Nothing|Float" value elem2 = varlen[2];
-    @type:"Nothing|Float" value elem3 = varlen[3];
+    @type:"Null|Integer" value elem1 = varlen[1];
+    @type:"Null|Float" value elem2 = varlen[2];
+    @type:"Null|Float" value elem3 = varlen[3];
     [String,Integer=,Float...] range0 = varlen[0...];
     [Integer=,Float...] range1 = varlen[1...];
     [Float...] range2 = varlen[2...];
@@ -126,9 +126,9 @@ void test() {
 
     [String,Integer=,Float=] fixedlen = ["hello"];
     @type:"String" value elem0x = fixedlen[0];
-    @type:"Nothing|Integer" value elem1x = fixedlen[1];
-    @type:"Nothing|Float" value elem2x = fixedlen[2];
-    @type:"Nothing" value elem3x = fixedlen[3];
+    @type:"Null|Integer" value elem1x = fixedlen[1];
+    @type:"Null|Float" value elem2x = fixedlen[2];
+    @type:"Null" value elem3x = fixedlen[3];
     [String,Integer=,Float=] range0x = fixedlen[0...];
     [Integer=,Float=] range1x = fixedlen[1...];
     [Float=] range2x = fixedlen[2...];

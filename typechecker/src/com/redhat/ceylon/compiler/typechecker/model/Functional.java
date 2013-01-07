@@ -23,6 +23,7 @@ public interface Functional {
     public ProducedType getType();
 
     public String getName();
+    public String getName(Unit unit);
     
     public Parameter getParameter(String name);
 

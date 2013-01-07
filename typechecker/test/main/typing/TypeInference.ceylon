@@ -123,11 +123,11 @@ interface TypeInference {
             }
         }
         
-        @type:"Bottom" function f() {
+        @type:"Nothing" function f() {
             throw;
         }
         
-        @type:"Bottom" value v {
+        @type:"Nothing" value v {
             throw;
         }
         

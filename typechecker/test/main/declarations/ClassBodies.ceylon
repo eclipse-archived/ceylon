@@ -652,7 +652,7 @@ class ClassBodies() {
         }
     }
     
-    class GoodClassWithObject() {
+    class GoodClassWithValue() {
         object foo {
             void method() {
                 bar();
@@ -661,14 +661,14 @@ class ClassBodies() {
         void bar() {}
     }
     
-    class BadClassWithObject() {
+    class BadClassWithValue() {
         object foo {
             @error bar();
         }
         void bar() {}
     }
     
-    class BadClassWithObject2() {
+    class BadClassWithValue2() {
         object foo {
             void method() {
                 @error bar();
@@ -678,7 +678,7 @@ class ClassBodies() {
         void bar() {}
     }
     
-    class BadClassWithObject3() {
+    class BadClassWithValue3() {
         object foo {
             print("hello");
             void method() {

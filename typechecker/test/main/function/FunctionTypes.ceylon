@@ -13,10 +13,11 @@ abstract class Z() {}
 
 void noop() {}
 
-void higher1(String[] strings, Callable<Void,[String]> f) {
-    void g(String str) => f;
+void higher1(String[] strings, Callable<Anything,[String]> f) {
+    value g = f;
+    Anything h(String s) => f(s);
     for (s in strings) {
-        g(s);
+        g(s); h(s);
     }
 }
 
@@ -50,14 +51,14 @@ T do<T>(T f()) { return f(); }
 
 void method() {
     Callable<String,[String]> upperRef = upper;
-    Callable<Void,[String]> printRef = print;
-    Callable<Void,[Bottom]> printRefContra = print;
+    Callable<Anything,[String]> printRef = print;
+    Callable<Anything,[Nothing]> printRefContra = print;
     Callable<X,[String]> xRef = X;
-    Callable<Void,Bottom> xRefContra = X;
+    Callable<Anything,Nothing> xRefContra = X;
     X x = X("hello");
     Callable<X.Y,[]> yRef = x.Y;
-    Callable<Void,[]> helloRef = x.hello;
-    Callable<Void,[]> noopRef = noop;
+    Callable<Anything,[]> helloRef = x.hello;
+    Callable<Anything,[]> noopRef = noop;
     
     higher1(["hello", "world"], print);
     higher1(["hello", "world"], upper);
@@ -72,12 +73,12 @@ void method() {
     @error higher2(["hello", "world"], str);
     
     @type:"String" function up(String s) => upper(s);
-    void pr(String s) => print;
-    void np() => noop;
+    Anything pr(String s) => print(s);
+    Anything np() => noop();
     
     @type:"String" up("hello");
-    @type:"Void" pr("hello");
-    @type:"Void" np();
+    @type:"Anything" pr("hello");
+    @type:"Anything" np();
     
     @type:"X" function good(String s) => X(s);
     X better(String s) => X(s);
@@ -85,14 +86,14 @@ void method() {
     @type:"X" @error function badder(Integer n) => X(n);
     @error String worse(String s) => X;
     @error String worst() => X;
-    void broke() => noop();
+    @error void broke() => noop();
     @error Z moreBroke() => Z;
     @error do(Z);
-    @type:"Void" function z() => Z;
+    @type:"Anything" function z() => Z;
     
-    String s1 = pass((String s) s, "hello");
-    String s2 = pass((Float f) f.string, 1.0);
-    @error String s3 = pass((Float f) f.string, "hello");
+    String s1 = pass((String s) => s, "hello");
+    String s2 = pass((Float f) => f.string, 1.0);
+    @error String s3 = pass((Float f) => f.string, "hello");
     
     higher2 { 
         strings = ["goodbye"];
@@ -109,14 +110,14 @@ void method() {
     
     higher2 { 
         strings = ["goodbye"];
-        function f(String s) { print(s); return s.size; }
+        Integer f(String s) { print(s); return s.size; }
     };
-    higher2(["goodbye"], (String s) print(s));
-    higher2(["goodbye"], (String s) print(s));
+    higher2(["goodbye"], (String s) => print(s));
+    higher2(["goodbye"], (String s) => print(s));
     
     higher2 { 
         strings = ["goodbye"];
-        function f(String s) => s.size;
+        Integer f(String s) => s.size;
     };
     higher2 { 
         strings = ["goodbye"];
@@ -125,11 +126,11 @@ void method() {
     
     higher2 { 
         strings = ["goodbye"];
-        void f(String s) => print(s);
+        @error void f(String s) => print(s);
     };
     higher2 { 
         strings = ["goodbye"];
-        function f(String s) => print(s);
+        Anything f(String s) => print(s);
     };
     higher2 { 
         strings = ["goodbye"];
@@ -154,7 +155,7 @@ void method() {
     
     higher2 { 
         strings = ["goodbye"];
-        f(String s) => s.size;
+        @error f(String s) => s.size;
     };
     
     
@@ -203,9 +204,9 @@ void method() {
     function zero() => 0.0;
     @type:"Entry<Float,String>" generic(str,zero);
     @type:"Entry<Float,String>" generic(str,bottom);
-    @type:"Entry<Object,Object>" generic((Object obj) obj, () "hello");
-    @type:"Entry<Object,String>" generic((Object obj) obj.string, () "hello");
-    @type:"Entry<String,String>" generic((String str) str, () "hello");
+    @type:"Entry<Object,Object>" generic((Object obj) => obj, () => "hello");
+    @type:"Entry<Object,String>" generic((Object obj) => obj.string, () => "hello");
+    @type:"Entry<String,String>" generic((String str) => str, () => "hello");
     
     function fx(String g()) => do<String>;
     @error function fy(String g()) => do;
@@ -216,21 +217,21 @@ void method() {
     value temp = sqrt;
     Float root(Float x) => temp(x);
     
-    @error Callable<Void> reallyBroken(void foo()) {
+    @error Callable<Anything> reallyBroken(void foo()) {
         @error return foo;
     }
     
-    Nothing foo(Integer... seq) => null;
-    Nothing bar(Integer... ints) => foo(ints...);
-    Nothing baz(Integer... seq); baz = foo;
-    Nothing qux(Integer... ints) => baz(ints...);
-    Nothing ok(Integer ints) => foo(ints);
-    @error Nothing broke(Integer ints) => foo(ints...);
-    Nothing notBroke(Integer ints); notBroke = foo;
-    Nothing alsoBroke(Integer... ints); @error alsoBroke = ok;
-    Nothing reallyBroke(Integer... ints); reallyBroke(@error Integer[] ints) => foo(ints...);
-    Nothing badlyBroke(Integer... ints); badlyBroke(@error Integer[] ints) => ok(ints.first else 0);
-    Nothing terrible(Integer... ints); @error terrible(Integer... ints) => foo;    
+    Null foo(Integer... seq) => null;
+    Null bar(Integer... ints) => foo(ints...);
+    Null baz(Integer... seq); baz = foo;
+    Null qux(Integer... ints) => baz(ints...);
+    Null ok(Integer ints) => foo(ints);
+    @error Null broke(Integer ints) => foo(ints...);
+    Null notBroke(Integer ints); notBroke = foo;
+    Null alsoBroke(Integer... ints); @error alsoBroke = ok;
+    Null reallyBroke(Integer... ints); reallyBroke(@error Integer[] ints) => foo(ints...);
+    Null badlyBroke(Integer... ints); badlyBroke(@error Integer[] ints) => ok(ints.first else 0);
+    Null terrible(Integer... ints); @error terrible(Integer... ints) => foo;    
 }
 
 class Outer() {
@@ -259,7 +260,7 @@ void moreTests() {
     }
     function f(Integer i) => (i+12).string;
     callFunction(f);
-    callFunction((Integer i) (i*3).string);
+    callFunction((Integer i) => (i*3).string);
     callFunction {
         function f(Integer i) { 
             return (i**2).string;
@@ -267,15 +268,15 @@ void moreTests() {
     };
 }
 
-Sequence<String()> singletonStringFunc = Singleton<String()>(()"hello");
-Sequence<Boolean()(String)> singletonBooleanFunc = Singleton<Boolean()(String)>((String s)()s=="hello");
+Sequence<String()> singletonStringFunc = Singleton<String()>(()=>"hello");
+Sequence<Boolean()(String)> singletonBooleanFunc = Singleton<Boolean()(String)>((String s)()=>s=="hello");
 
 void sequencedParams() {
     value str = string;
-    Void(Character...) str0 = str;
-    Void(Character...) str0p = string;
-    Void(Character) str1 = str;
-    Void(Character, Character) str2 = str;
+    Anything(Character...) str0 = str;
+    Anything(Character...) str0p = string;
+    Anything(Character) str1 = str;
+    Anything(Character, Character) str2 = str;
     str("hello".characters...);
     str();
     str(`X`);
@@ -292,8 +293,13 @@ void sequencedParams() {
  Outer1.Inner? i1 = o?.Inner();
  Outer1.Inner? cons() => o?.Inner();
  
-void foo(Integer... seq) {}
-void bar(Integer... ints) => foo;
+void foo1(Integer... seq) {}
+void bar1(Integer... ints) { foo1(ints...); }
+Anything(Integer...) baz1 = bar1; 
+
+Boolean foo2(Integer... seq) => true;
+Boolean bar2(Integer... ints) => foo2(ints...);
+Boolean(Integer...) baz2 = bar2; 
 
 alias CSI => Callable<String,[Integer]>;
 String callCSI(CSI csi) {
@@ -314,15 +320,15 @@ void useHandle() {
 
 void lazySpec() {
     String lazy1(String s, Float x=0.0, Boolean b=false);
-    lazy1 = (String s, Float x, Boolean b) b then s else x.string;
+    lazy1 = (String s, Float x, Boolean b) => b then s else x.string;
     String lazy2(String s, Float... x);
-    lazy2 = (String s, Float... x) s;
+    lazy2 = (String s, Float... x) => s;
     String lazy3(String s, Float x=0.0);
-    lazy3 = (String s, Float x, Boolean b=true) b then s else x.string;
+    lazy3 = (String s, Float x, Boolean b=true) => b then s else x.string;
     String lazy4(String s, Float x, Float y);
-    lazy4 = (String s, Float... x) s;
-    void x(String s="")(Integer i);
-    x = (String s)(Integer i) bottom;
+    lazy4 = (String s, Float... x) => s;
+    Anything x(String s="")(Integer i);
+    x = (String s)(Integer i) => bottom;
 }
 
 void lazyLazySpec() {
@@ -334,7 +340,7 @@ void lazyLazySpec() {
     @error lazy3(String s, Float x, @error Boolean b=true) => b then s else x.string;
     String lazy4(String s, Float x, Float y);
     @error lazy4(String s, @error Float... x) => s;
-    void x(String s="")(Integer i);
+    Anything x(String s="")(Integer i);
     x(String s)(Integer i) => bottom;
 }
 
@@ -355,8 +361,8 @@ void defaulted() {
 }
 
 void bug() {
-    Callable<Void, [Integer, String=, Integer...]> defaultedVariadic = 
-            function (Integer a, String b = "b", Integer... args) a;
+    Callable<Anything, [Integer, String=, Integer...]> defaultedVariadic = 
+            function (Integer a, String b = "b", Integer... args) => a;
     defaultedVariadic(1);
     defaultedVariadic(1, "a");
     defaultedVariadic(1, "a", 1); // error

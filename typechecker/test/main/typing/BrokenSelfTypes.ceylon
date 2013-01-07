@@ -5,13 +5,14 @@
     shared formal Integer evaluate();
 }
 
-class BinaryOperator(Tree|Integer left, Tree|Integer right, Integer f(Integer a, Integer b)) extends Tree(){
-    Integer resolve(Tree|Integer node){
+class BinaryOperator(Tree|Integer left, Tree|Integer right, Integer f(Integer a, Integer b)) 
+        extends Tree() {
+    Integer resolve(Tree|Integer node) {
         switch(node)
-        case (is Tree){
+        case (is Tree) {
             return node.evaluate();
         }
-        case (is Integer){
+        case (is Integer) {
             return node;
         }
     }
@@ -23,10 +24,12 @@ class BinaryOperator(Tree|Integer left, Tree|Integer right, Integer f(Integer a,
     shared actual default String string = "Binary(" left ", " right ")";
 }
 
-class Multiplication(Tree|Integer left, Tree|Integer right) extends BinaryOperator(left, right, (Integer a, Integer b) a * b) {
+class Multiplication(Tree|Integer left, Tree|Integer right) 
+        extends BinaryOperator(left, right, (Integer a, Integer b) => a * b) {
     shared actual default String string = "(" left " * " right ")";
 }
 
-class Addition(Tree|Integer left, Tree|Integer right) extends BinaryOperator(left, right, (Integer a, Integer b) a + b) {
+class Addition(Tree|Integer left, Tree|Integer right) 
+        extends BinaryOperator(left, right, (Integer a, Integer b) => a + b) {
     shared actual default String string = "(" left " + " right ")";
 }

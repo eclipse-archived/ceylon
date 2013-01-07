@@ -84,7 +84,7 @@ class OuterTypeArgs() {
 	
 	@type:"OuterTypeArgs.Consumer<String>.Inner<String>" Consumer("hello").Inner("world");
 	@type:"String" Consumer("hello").Inner("world").foo("hello");
-	Consumer<Bottom>.Inner<String> ciobj = Consumer("hello").Inner("world");
+	Consumer<Nothing>.Inner<String> ciobj = Consumer("hello").Inner("world");
 	Consumer<String>.Inner<Object> ciobj2 = Consumer("hello").Inner("world");
 	@error Consumer<String>.Inner<String> cistr = ciobj;
 	@error Consumer<Integer>.Inner<String> cinat = Consumer("hello").Inner("world");

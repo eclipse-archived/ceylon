@@ -72,7 +72,7 @@ class BreakContinue() {
         return;
     }
     
-    object returnFromObject {
+    object returnFromValue {
         return;
     }
     
@@ -83,7 +83,7 @@ class BreakContinue() {
         return;
     }
     
-    void returnFromObjectInMethod() {
+    void returnFromValueInMethod() {
         object good {
             return;
         }

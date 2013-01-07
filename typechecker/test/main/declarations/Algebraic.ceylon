@@ -1,3 +1,5 @@
+import ceylon.language { Any=Anything }
+
 interface Sized { 
     shared formal Integer size;
     shared default Boolean empty => size==0;  
@@ -72,7 +74,7 @@ abstract class XXX<out T>() of YYY<T> | ZZZ<T> | WWW {}
 
 class YYY<out T>() extends XXX<T>() {}
 class ZZZ<out T>() extends XXX<T>() {}
-class WWW() extends XXX<Bottom>() {}
+class WWW() extends XXX<Nothing>() {}
 
 object yyy extends YYY<String>() {}
 
@@ -114,7 +116,7 @@ void switchit(XXX<String> x) {
     }
 
     @error switch (x) 
-    case (is YYY<Bottom>) { 
+    case (is YYY<Nothing>) { 
         print("yyy"); 
     }
     case (is ZZZ<String>) { 
@@ -303,7 +305,7 @@ void testHardCase(J4 i) {
     @error switch(i)
     case (is J2) {}
     case (is J3) {}
-    case (is Nothing) {}
+    case (is Null) {}
 
     @error switch(i)
     case (is J2) {}
@@ -326,7 +328,7 @@ void testHardCase(J4 i) {
         @type:"J4&J2" value ii = mi;
     }
     case (is J3) {}
-    case (is Nothing) {}
+    case (is Null) {}
 }
 
 interface Rsrc of File|Dir|Link {}
@@ -365,6 +367,9 @@ shared class Succeeded<out Failure>()
 
 shared void case2(Status<String> arg) {
     switch (arg)
-    case (is Failed<Void>) {  }
-    case (is Succeeded<Void>) {  }
+    case (is Failed<Any>) {  }
+    case (is Succeeded<Any>) {  }
+    switch (arg)
+    case (is Failed<String>) {  }
+    case (is Succeeded<String>) {  }
 }

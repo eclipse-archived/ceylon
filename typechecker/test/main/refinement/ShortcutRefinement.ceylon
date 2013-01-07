@@ -103,21 +103,23 @@ class OtherBadlyDuped() extends OtherAbstract() {
 }
 
 abstract class X<T>() {
-    shared formal void foo(T s);
+    shared formal Anything foo(T s);
     shared formal T bar;
     shared formal Object baz(String s(Integer i));
     shared formal String qux<S>();
-    shared formal void fum(String string = "hello");
-    shared formal void fo(String... strings);
+    shared formal Anything fum(String string = "hello");
+    shared formal Anything fo(String... strings);
+    shared formal void fee();
 }
 
 class Y() extends X<String>() {
-    foo = (String s) print(s.uppercased);
+    foo = (String s) => print(s.uppercased);
     bar = "hello";
-    baz = (String(Integer) s) s(0);
-    @error qux = () "hello";
-    fum = (String s) print(s);
-    fo = (String... ss) print(", ".join(ss...));
+    baz = (String(Integer) s) => s(0);
+    @error qux = () => "hello";
+    fum = (String s) => print(s);
+    fo = (String... ss) => print(", ".join(ss...));
+    @error fee() => 0;
 }
 
 void testxy() {
@@ -138,15 +140,15 @@ class FatArrowRefinement(name)
 }
 
 interface Above {
-    shared formal void f();
+    shared formal Integer f();
     shared formal String s;
 }
 interface Below satisfies Above {
-    f() => print(s);
+    f() => 1;
     s => "";
 }
 interface Below2 satisfies Above {
-    shared actual void f() { print(s); }
+    shared actual Integer f() { return 1; }
     shared actual String s { return ""; }
 }
 interface BrokenBelow satisfies Above {

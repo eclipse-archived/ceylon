@@ -18,6 +18,11 @@ public class IntersectionType extends TypeDeclaration {
     }
     
     @Override
+    public String getName(Unit unit) {
+    	return getType().getProducedTypeName(unit);
+    }
+    
+    @Override
     public String getQualifiedNameString() {
         return getType().getProducedTypeQualifiedName();
     }
@@ -35,7 +40,7 @@ public class IntersectionType extends TypeDeclaration {
     @Override
     public ProducedType getType() {
         if (getSatisfiedTypes().isEmpty()) {
-            return unit.getVoidDeclaration().getType();
+            return unit.getAnythingDeclaration().getType();
         }
         else if (getSatisfiedTypes().size()==1) {
             return getSatisfiedTypes().get(0).getType();
@@ -53,11 +58,11 @@ public class IntersectionType extends TypeDeclaration {
 	public TypeDeclaration canonicalize() {
 	    List<ProducedType> sts = getSatisfiedTypes();
 		if (sts.isEmpty()) {
-	        return unit.getBottomDeclaration();
+	        return unit.getNothingDeclaration();
 	    }
 	    else if (sts.size()==1) {
 	    	TypeDeclaration d = sts.get(0).getDeclaration();
-	    	if (d instanceof BottomType) {
+	    	if (d instanceof NothingType) {
 	    		return d;
 	    	}
 	    }

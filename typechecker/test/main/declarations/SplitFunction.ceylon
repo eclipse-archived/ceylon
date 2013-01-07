@@ -1,3 +1,5 @@
+import ceylon.language { Anything }
+
 void splitFunction() {
     Float f(Float x);
     Float g(Float x);
@@ -20,7 +22,7 @@ void splitFunction() {
     add(Float x)(Float y) => x+y;
 
     Float add1(Float x)(Integer y);
-    add1(Float x) => (Integer y) x+y.float;
+    add1(Float x) => (Integer y) => x+y.float;
 
     Float add2(Float x)(Integer y);
     add2(Float x)(Integer y) => x+y.float;
@@ -44,30 +46,40 @@ void splitFunction() {
         add0(Float x)(@error Integer y) => x+y.float;
     }
 
-    void func0(String[] x, String... y);
+    Anything func0(String[] x, String... y);
     func0(String[] x, String... y) => bottom;
     
-    void func1(String[] x, String[] y);
+    Anything func1(String[] x, String[] y);
     func1(String... x, @error String... y) => bottom;
     
-    void func2(String... x, @error String... y);
+    Anything func2(String... x, @error String... y);
     //func2(String[] x, String[] y) = bottom;
     
-    void func3(String[] x, String[] y);
+    Anything func3(String[] x, String[] y);
     func3(String[] x, @error String... y) => bottom;
     
-    void func4(String[] x, String... y);
+    Anything func4(String[] x, String... y);
     func4(String[] x, @error String[] y) => bottom;
     
-    void printit(String s);
+    Anything printit(String s);
     printit(@error String s="hello") => print(s);
     
-    void higher1(void f(String s), String g(Integer i));
+    Anything higher1(void f(String s), String g(Integer i));
     higher1(void f(String s), String g(Integer i)) => print(f(g(0)));
     
-    void higher2(void f(String s), String g(Integer i));
+    Anything higher2(void f(String s), String g(Integer i));
     higher2(void f(String s), @error String g(Float i)) => print(f(g(0.0)));
     
-    void higher3(void f(String s), String g(Integer i));
+    Anything higher3(void f(String s), String g(Integer i));
     higher3(void f(String s), String g(Object i)) => print(f(g(0.0)));
+    
+    void myvoid();
+    @error myvoid() => "hello";
+    
+    void higher(Anything f(), void g()) { f(); g(); }
+    higher { f()=>0; @error g()=>0; };
+    //higher { @error f()=0; @error g()=0; };
+    higher { function f()=>0; @error void g()=>0; };
+    higher { function f()=>0; @error function g()=>0; };
+    higher { function f()=>0; Integer g()=>0; };
 }

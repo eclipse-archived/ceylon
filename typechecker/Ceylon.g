@@ -828,13 +828,12 @@ parameters returns [ParameterList parameterList]
           c=COMMA
           { $parameterList.setEndToken($c); }
           (
-            (~(COMPILER_ANNOTATION | LIDENTIFIER | UIDENTIFIER)) => 
-            { displayRecognitionError(getTokenNames(),
-                new MismatchedTokenException(UIDENTIFIER, input)); }
-          | 
             ap2=parameterDeclaration
             { $parameterList.addParameter($ap2.parameter); 
               $parameterList.setEndToken(null); }
+          |
+            { displayRecognitionError(getTokenNames(),
+                new MismatchedTokenException(UIDENTIFIER, input)); }
           )
         )*
       )?
@@ -858,6 +857,12 @@ parameter returns [Parameter parameter]
       | VOID_MODIFIER
         { fp.setType(new VoidModifier($VOID_MODIFIER));
           $parameter=fp; }
+      | FUNCTION_MODIFIER
+        { fp.setType(new FunctionModifier($FUNCTION_MODIFIER));
+          $parameter=fp; }
+      | VALUE_MODIFIER
+        { fp.setType(new ValueModifier($VALUE_MODIFIER));
+          $parameter=fp; }
       )
       memberName
       { vp.setIdentifier($memberName.identifier);
@@ -872,9 +877,9 @@ parameter returns [Parameter parameter]
       |
         (
           parameters
-          { fp.addParameterList($parameters.parameterList); }
+          { fp.addParameterList($parameters.parameterList);
+            $parameter=fp; }
         )+
-        { $parameter=fp; }
         (
           lazySpecifier
           { DefaultArgument da = new DefaultArgument(null);
@@ -886,24 +891,23 @@ parameter returns [Parameter parameter]
       )
     ;
 
-parameterRef returns [Parameter parameter]
-    @init { ValueParameterDeclaration vp = new ValueParameterDeclaration(null);
-            vp.setType(new ValueModifier(null));
-            $parameter = vp; }
+parameterRef returns [InitializerParameter parameter]
     : memberName
-      { vp.setIdentifier($memberName.identifier); }
+      { $parameter = new InitializerParameter(null);
+        $parameter.setType(new ValueModifier(null));
+        $parameter.setIdentifier($memberName.identifier); }
       (
         specifier
         { DefaultArgument da = new DefaultArgument(null);
-          $parameter.setDefaultArgument(da);
-          da.setSpecifierExpression($specifier.specifierExpression); }
+          da.setSpecifierExpression($specifier.specifierExpression);
+          $parameter.setDefaultArgument(da); }
       )?
     ;
 
 parameterDeclaration returns [Parameter parameter]
     : compilerAnnotations
       (
-        (LIDENTIFIER (SPECIFY|COMMA|RPAREN)) =>
+        //(LIDENTIFIER (SPECIFY|COMMA|RPAREN)) =>
         r=parameterRef
         { $parameter=$r.parameter; }
       | 
@@ -1066,8 +1070,8 @@ annotatedAssertionStart
 declarationStart
     : VALUE_MODIFIER
     | FUNCTION_MODIFIER LIDENTIFIER //to disambiguate anon functions
+    | VOID_MODIFIER LIDENTIFIER //to disambiguate anon functions
     | ASSIGN
-    | VOID_MODIFIER
     | INTERFACE_DEFINITION
     | CLASS_DEFINITION
     | OBJECT_DEFINITION
@@ -1572,10 +1576,10 @@ voidOrInferredMethodArgument returns [MethodArgument declaration]
     : { $declaration=new MethodArgument(null); }
       (
         VOID_MODIFIER
-      { $declaration.setType(new VoidModifier($VOID_MODIFIER)); }
+        { $declaration.setType(new VoidModifier($VOID_MODIFIER)); }
       |
         FUNCTION_MODIFIER
-      { $declaration.setType(new FunctionModifier($FUNCTION_MODIFIER)); }
+        { $declaration.setType(new FunctionModifier($FUNCTION_MODIFIER)); }
       ) 
       memberNameDeclaration 
       { $declaration.setIdentifier($memberNameDeclaration.identifier); }
@@ -1751,10 +1755,12 @@ positionalArguments returns [PositionalArgumentList positionalArgumentList]
             { if ($pa2.positionalArgument!=null)
                   $positionalArgumentList.addPositionalArgument($pa2.positionalArgument); 
               positionalArgumentList.setEndToken(null); }
-          | c1=comprehension
+          | 
+            c1=comprehension
             { $positionalArgumentList.setComprehension($c1.comprehension);
               positionalArgumentList.setEndToken(null); }
-          | { displayRecognitionError(getTokenNames(), 
+          | 
+            { displayRecognitionError(getTokenNames(), 
                 new MismatchedTokenException(LIDENTIFIER, input)); }
           )
         )* 
@@ -1786,7 +1792,7 @@ nonemptyParametersStart
     ;
 
 functionOrExpression returns [Expression expression]
-    : (FUNCTION_MODIFIER | anonParametersStart) =>
+    : (FUNCTION_MODIFIER|VOID_MODIFIER|anonParametersStart) =>
       f=anonymousFunction
       { $expression = $f.expression; }
     | e=expression
@@ -1801,18 +1807,26 @@ anonymousFunction returns [Expression expression]
     : (
         FUNCTION_MODIFIER
         { fa.setType(new FunctionModifier($FUNCTION_MODIFIER)); }
+      |
+        VOID_MODIFIER
+        { fa.setType(new VoidModifier($VOID_MODIFIER)); }
       )?
       { $expression=e; }
       p1=parameters
       { fa.addParameterList($p1.parameterList); }
       ( 
-        (anonParametersStart)=> 
+        //(anonParametersStart)=> 
         p2=parameters
         { fa.addParameterList($p2.parameterList); }
       )*
-      COMPUTE?
-      e1=functionOrExpression
-      { fa.setExpression($e1.expression); }
+      ( 
+        COMPUTE
+        fe=functionOrExpression
+        { fa.setExpression($fe.expression); }
+      |
+        block
+        { fa.setBlock($block.block); }
+      )
     /*| VALUE_MODIFIER
       { fa.setType(new FunctionModifier($VALUE_MODIFIER)); } 
       e1=expression

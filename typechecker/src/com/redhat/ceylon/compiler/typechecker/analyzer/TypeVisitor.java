@@ -16,7 +16,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-import com.redhat.ceylon.compiler.typechecker.model.BottomType;
+import com.redhat.ceylon.compiler.typechecker.model.NothingType;
 import com.redhat.ceylon.compiler.typechecker.model.Class;
 import com.redhat.ceylon.compiler.typechecker.model.ClassOrInterface;
 import com.redhat.ceylon.compiler.typechecker.model.Declaration;
@@ -385,18 +385,22 @@ public class TypeVisitor extends Visitor {
     @Override 
     public void visit(Tree.SequenceType that) {
         super.visit(that);
-        ProducedType et = that.getElementType().getTypeModel();
-        if (et!=null) {
-            that.setTypeModel(unit.getSequentialType(et));
+        if (that.getElementType()!=null) {
+        	ProducedType et = that.getElementType().getTypeModel();
+        	if (et!=null) {
+        		that.setTypeModel(unit.getSequentialType(et));
+        	}
         }
     }
     
     @Override 
     public void visit(Tree.IterableType that) {
         super.visit(that);
-        ProducedType et = that.getElementType().getTypeModel();
-        if (et!=null) {
-            that.setTypeModel(unit.getIterableType(et));
+        if (that.getElementType()!=null) {
+        	ProducedType et = that.getElementType().getTypeModel();
+        	if (et!=null) {
+        		that.setTypeModel(unit.getIterableType(et));
+        	}
         }
     }
     
@@ -581,7 +585,7 @@ public class TypeVisitor extends Visitor {
         
     @Override 
     public void visit(Tree.VoidModifier that) {
-        Class vtd = unit.getVoidDeclaration();
+        Class vtd = unit.getAnythingDeclaration();
         if (vtd!=null) {
 		    that.setTypeModel(vtd.getType());
         }
@@ -639,7 +643,7 @@ public class TypeVisitor extends Visitor {
     
     private void defaultSuperclass(Tree.ExtendedType et, TypeDeclaration c) {
         if (et==null) {
-            Class iotd = unit.getIdentifiableObjectDeclaration();
+            Class iotd = unit.getBasicDeclaration();
             if (iotd!=null) {
 			    c.setExtendedType(iotd.getType());
             }
@@ -663,7 +667,7 @@ public class TypeVisitor extends Visitor {
     @Override 
     public void visit(Tree.ClassDefinition that) {
         Class c = that.getDeclarationModel();
-        Class vd = unit.getVoidDeclaration();
+        Class vd = unit.getAnythingDeclaration();
         if (c!=vd) {
             defaultSuperclass(that.getExtendedType(), c);
         }
@@ -681,7 +685,7 @@ public class TypeVisitor extends Visitor {
 
     @Override
     public void visit(Tree.TypeParameterDeclaration that) {
-        Class vd = unit.getVoidDeclaration();
+        Class vd = unit.getAnythingDeclaration();
         if (vd!=null) {
 		    that.getDeclarationModel().setExtendedType(vd.getType());
         }
@@ -715,7 +719,7 @@ public class TypeVisitor extends Visitor {
                     } 
                     else {
                         et.addError("not a class: " + 
-                                type.getDeclaration().getName());
+                                type.getDeclaration().getName(unit));
                     }
                 }
             }
@@ -745,7 +749,7 @@ public class TypeVisitor extends Visitor {
                     } 
                     else {
                         et.addError("not an interface: " + 
-                                type.getDeclaration().getName());
+                                type.getDeclaration().getName(unit));
                     }
                 }
             }
@@ -791,7 +795,8 @@ public class TypeVisitor extends Visitor {
                             Collections.<ProducedType>emptyList()).getFullType();
                     param.setType(ft);
                     if (sie!=null) {
-                        sie.addError("function is an initializer parameter and may not have an initial value: " + dec.getName());
+                        sie.addError("function is an initializer parameter and may not have an initial value: " + 
+                        		dec.getName());
                     }
                 }
             }
@@ -811,7 +816,8 @@ public class TypeVisitor extends Visitor {
                         ((ValueParameter) param).isHidden()) {
                     param.setType(dec.getType());
                     if (sie!=null) {
-                        sie.addError("attribute is an initializer parameter and may not have an initial value: " + dec.getName());
+                        sie.addError("attribute is an initializer parameter and may not have an initial value: " + 
+                        		dec.getName());
                     }
                 }
             }
@@ -872,21 +878,21 @@ public class TypeVisitor extends Visitor {
         			}
         			if (etd instanceof TypeParameter) {
         				et.addError("directly extends a type parameter: " + 
-        						type.getProducedTypeName());
+        						type.getDeclaration().getName(unit));
         			}
         			else if (etd instanceof Interface) {
         				et.addError("extends an interface: " + 
-        						type.getProducedTypeName());
+        						type.getDeclaration().getName(unit));
         			}
         			else if (etd instanceof TypeAlias) {
         				et.addError("extends a type alias: " + 
-        						type.getProducedTypeName());
+        						type.getDeclaration().getName(unit));
         			}
         			else if (!etd.isExtendable() && 
         					!inLanguageModule(that) &&
         					!td.isAlias()) {
         				et.addError("directly extends a special language type: " +
-        						type.getProducedTypeName());
+        						type.getDeclaration().getName(unit));
         			}
         			else {
         				td.setExtendedType(type);
@@ -923,7 +929,7 @@ public class TypeVisitor extends Visitor {
                 }
                 if (std instanceof TypeAlias) {
                     st.addError("satisfies a type alias: " + 
-                            type.getProducedTypeName());
+                    		type.getDeclaration().getName(unit));
                     continue;
                 }
                 if (unit.isCallableType(type)) {
@@ -956,12 +962,12 @@ public class TypeVisitor extends Visitor {
                 else {
                     if (std instanceof TypeParameter) {
                         st.addError("directly satisfies type parameter: " + 
-                                type.getProducedTypeName());
+                        		type.getDeclaration().getName(unit));
                         continue;
                     }
                     else if (std instanceof Class) {
                         st.addError("satisfies a class: " + 
-                                type.getProducedTypeName());
+                        		type.getDeclaration().getName(unit));
                         continue;
                     }
             		else if (!(std instanceof Interface)) {
@@ -982,8 +988,8 @@ public class TypeVisitor extends Visitor {
         	}
         	IntersectionType it = new IntersectionType(unit);
         	it.setSatisfiedTypes(l);
-        	if (it.getType().getDeclaration() instanceof BottomType) {
-        		that.addError("upper bound constraints cannot be satisfied by any type except Bottom");
+        	if (it.getType().getDeclaration() instanceof NothingType) {
+        		that.addError("upper bound constraints cannot be satisfied by any type except Nothing");
         	}
         }
         td.setSatisfiedTypes(list);
@@ -1059,7 +1065,13 @@ public class TypeVisitor extends Visitor {
                 }
             }
             if (!list.isEmpty()) {
-            	if (list.size()!=1 || !list.get(0).getDeclaration().isSelfType()) {
+            	if (list.size() == 1 && list.get(0).getDeclaration().isSelfType()) {
+            		Scope s = list.get(0).getDeclaration().getContainer();
+            		if (s instanceof ClassOrInterface && !((ClassOrInterface) s).isAbstract()) {
+            			that.addError("non-abstract class parameterized by self type: " + td.getName());
+            		}
+            	}
+            	else {
             		if (td instanceof ClassOrInterface && !((ClassOrInterface) td).isAbstract()) {
             			that.addError("non-abstract class has enumerated subtypes: " + td.getName(), 905);
             		}

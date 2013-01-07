@@ -17,7 +17,7 @@ void testBrokenAssignmentInExpression() {
 }
 void testAnotherBrokenAssignmentInExpression() {
     variable Boolean b;
-    value x = (String s) (b=true);
+    value x = (String s) => (b=true);
     @error print(b);
 }
 

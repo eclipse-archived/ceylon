@@ -158,6 +158,23 @@ public class ControlFlowVisitor extends Visitor {
     }
     
     @Override
+    public void visit(Tree.FunctionArgument that) {
+        if (that.getExpression()==null) {
+        	boolean c = beginReturnScope(true);
+        	boolean d = beginDefiniteReturnScope();
+        	super.visit(that);
+        	if (!(that.getType() instanceof Tree.VoidModifier)) {
+        		checkDefiniteReturn(that, "anonymous function");
+        	}
+        	endDefiniteReturnScope(d);
+        	endReturnScope(c);
+        }
+        else {
+        	super.visit(that);
+        }
+    }
+    
+    @Override
     public void visit(Tree.AttributeDeclaration that) {
         if (that.getSpecifierOrInitializerExpression()!=null &&
         		!(that.getSpecifierOrInitializerExpression() instanceof Tree.LazySpecifierExpression)) {

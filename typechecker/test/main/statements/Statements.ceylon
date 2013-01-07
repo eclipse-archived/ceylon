@@ -34,7 +34,7 @@ void statements() {
     abstract class Z(String z) {}
     
     @error Z("hello");
-    @error IdentifiableObject();
+    @error Basic();
     @error Equality();
     @error process();
     

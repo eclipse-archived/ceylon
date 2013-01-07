@@ -178,6 +178,7 @@
 ^(FUNCTIONAL_PARAMETER_DECLARATION:PARAMETER
     PARAMETER_LIST*
     FunctionalParameter declarationModel;)
+^(INITIALIZER_PARAMETER:VALUE_PARAMETER_DECLARATION)
 
 ^(TYPE_PARAMETER_LIST 
     TYPE_PARAMETER_DECLARATION*)
@@ -192,8 +193,6 @@
 "A method or attribute body containing statements and declarations."
 ^(BLOCK:BODY
     boolean definitelyReturns;)
-
-^(SYNTHETIC_BLOCK:BLOCK)
 
 "A class body."
 ^(CLASS_BODY:BODY)
@@ -611,7 +610,8 @@ argument list."
 ^(FUNCTION_ARGUMENT:TERM
     TYPE type
     PARAMETER_LIST*
-    EXPRESSION
+    EXPRESSION?
+    BLOCK?
     Method declarationModel;)
 
 ^(abstract NAMED_ARGUMENT:STATEMENT_OR_ARGUMENT

@@ -24,7 +24,7 @@ class Union() {
     class U() satisfies Container<String> {
         shared actual String hello = "hello";
     }
-    class V() satisfies Container<Bottom> {
+    class V() satisfies Container<Nothing> {
         shared actual String hello = "hola";
     }
     class W<T>() satisfies Container<T> {
@@ -36,7 +36,7 @@ class Union() {
     String uvs = uv.hello;
     Container<String> c = uv;
     
-    Container<Bottom> cb = V();
+    Container<Nothing> cb = V();
     Container<String> ss  = cb;
 
     interface BadContainer<T> {
@@ -45,7 +45,7 @@ class Union() {
     class BadU() satisfies BadContainer<String> {
         shared actual String hello = "hello";
     }
-    class BadV() satisfies BadContainer<Bottom> {
+    class BadV() satisfies BadContainer<Nothing> {
         shared actual String hello = "hola";
     }
     
@@ -54,7 +54,7 @@ class Union() {
     @error String buvs = buv.hello;
     @error Container<String> bc = buv;
     
-    BadContainer<Bottom> bcb = BadV();
+    BadContainer<Nothing> bcb = BadV();
     @error BadContainer<String> bss  = bcb;
     
     class Foo<T>(T t) {
@@ -97,7 +97,7 @@ class Union() {
     @type:"Union.S|Union.A" S|A|B|C sabc = S();
     @type:"Union.A|Union.S" A|B|C|S abcs = S();
     
-    @type:"Nothing|Union.A|Union.B|Union.C" A?|B?|C? oabc = null;
+    @type:"Null|Union.A|Union.B|Union.C" A?|B?|C? oabc = null;
     if (is A|B|C oabc) {
         @error if (exists oabc) {}
     }
@@ -143,8 +143,8 @@ class Union() {
     @type:"String|Integer|Float" value ff3 = first(["hello", "world"].sequence, [+1, -1].sequence, [1.0].sequence).first;
     @type:"String|Integer|Float" value ff4 = first(["hello", "world"].sequence, [+1, -1, 1.0].sequence).first;
     
-    @type:"Nothing|String|Integer|Float" value ff5 = first({"hello", "world"}.sequence, {+1, -1}.sequence, {1.0}.sequence).first;
-    @type:"Nothing|String|Integer|Float" value ff6 = first({"hello", "world"}.sequence, {+1, -1, 1.0}.sequence).first;
+    @type:"Null|String|Integer|Float" value ff5 = first({"hello", "world"}.sequence, {+1, -1}.sequence, {1.0}.sequence).first;
+    @type:"Null|String|Integer|Float" value ff6 = first({"hello", "world"}.sequence, {+1, -1, 1.0}.sequence).first;
     
     class Outer<out T>() {
         shared default class Inner<out U>(u) {
@@ -220,21 +220,21 @@ class Union() {
     String? maybe = null;
     switch (maybe)
     case (is String) {}
-    case (is Nothing) {}
+    case (is Null) {}
 
     //@error 
     switch (maybe)
     case (is Object) {
         @type:"String" value ms = maybe;
     }
-    case (is Nothing) {}
+    case (is Null) {}
     
     switch (maybe)
-    case (is String|Nothing) {}
+    case (is String|Null) {}
     
     @error switch (maybe)
     case (is String) {}
-    case (is String|Nothing) {}
+    case (is String|Null) {}
     
     /*Comparable<String> elem1 = "hello";
     String elem2 = "world";

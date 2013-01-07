@@ -108,11 +108,11 @@ public class TypeArgumentVisitor extends Visitor {
             for (TypeParameter td: errors) {
             	String var; String loc;
             	if ( td.isContravariant() ) {
-            		var = "contravariant";
+            		var = "contravariant (in)";
             		loc = "covariant";
             	}
             	else if ( td.isCovariant() ) {
-            		var = "covariant";
+            		var = "covariant (out)";
             		loc = "contravariant";
             	}
             	else {
@@ -120,7 +120,7 @@ public class TypeArgumentVisitor extends Visitor {
             	}
                 that.addError(var + " type parameter " + td.getName() + 
                 		" appears in " + loc + " location in type: " + 
-                		type.getProducedTypeName());
+                		type.getProducedTypeName(that.getUnit()));
             }
         }
     }
@@ -137,7 +137,7 @@ public class TypeArgumentVisitor extends Visitor {
             for (TypeDeclaration td: errors) {
                 that.addError("type with contravariant type parameter " + td.getName() + 
                 		" appears in contravariant location in supertype: " + 
-                		type.getProducedTypeName());
+                		type.getProducedTypeName(that.getUnit()));
             }
         }
     }

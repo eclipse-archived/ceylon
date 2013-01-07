@@ -1,5 +1,5 @@
 void assertions() {
-    Void name = "gavin";
+    Anything name = "gavin";
     doc "name is required" 
     assert (exists o = name);
     assert (o=="gavin");
@@ -11,10 +11,10 @@ void assertions() {
             arg=="gavin");
     @error assert ();
     print(Assertions("hello").name);
-    Void x = null;
+    Anything x = null;
     assert (is Object x, x=="hello");
     print(x=="goodbye");
-    Void y = null;
+    Anything y = null;
     if (is Object y, y=="hello") {
         print(y=="goodbye");
     }

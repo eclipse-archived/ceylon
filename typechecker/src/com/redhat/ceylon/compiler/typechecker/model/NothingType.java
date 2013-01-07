@@ -3,30 +3,30 @@ package com.redhat.ceylon.compiler.typechecker.model;
 import java.util.Arrays;
 import java.util.List;
 
-public class BottomType extends TypeDeclaration {
+public class NothingType extends TypeDeclaration {
     
-    public BottomType(Unit unit) {
+    public NothingType(Unit unit) {
         this.unit = unit;
     }
     
     @Override
     public String getName() {
-        return "Bottom";
+        return "Nothing";
     }
     
     @Override
     public Scope getContainer() {
-    	return unit.getVoidDeclaration().getContainer();
+    	return unit.getAnythingDeclaration().getContainer();
     }
     
     @Override @Deprecated
     public List<String> getQualifiedName() {
-        return Arrays.asList("ceylon","language","Bottom");
+        return Arrays.asList("ceylon","language","Nothing");
     }
 
     @Override
     public String getQualifiedNameString() {
-        return "ceylon.language::Bottom";
+        return "ceylon.language::Nothing";
     }
 
     @Override
@@ -46,7 +46,7 @@ public class BottomType extends TypeDeclaration {
     
     @Override
     public boolean equals(Object object) {
-    	return object instanceof BottomType;
+    	return object instanceof NothingType;
     }
 
 }

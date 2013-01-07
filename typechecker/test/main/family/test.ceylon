@@ -21,8 +21,17 @@ void testGraph() {
         return n.touches(e);
     }
     
+    Edge createMethod<Node,Edge>(Graph<Node,Edge> g, Node n1, Node n2) 
+            given Node satisfies Graph<Node,Edge>.Node 
+            given Edge satisfies Graph<Node,Edge>.Edge {
+        return g.Edge(n1,n2) of Edge;
+    }
+    
     Boolean b = method(bn1,be);
     @error method(bn1,oe);
+    
+    alias BasicEdge => BasicGraph.Edge;
+    BasicEdge nbe = createMethod(bg,bn1,bn2);
     
     Edge method2<Node,Edge>(Graph<Node, Edge> g) 
             given Node satisfies Graph<Node,Edge>.Node 

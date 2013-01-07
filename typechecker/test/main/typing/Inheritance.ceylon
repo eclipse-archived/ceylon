@@ -85,9 +85,9 @@ class Inheritance() {
     
     @type:"Integer" W<Float,Integer>(1.2, 1).getIt();
     
-    /*object none satisfies Bottom[] {
+    /*object none satisfies Nothing[] {
         shared actual Integer? lastIndex = null;
-        shared actual Nothing value(Integer n) {
+        shared actual Null value(Integer n) {
             return null;
         }
     }*/
@@ -161,14 +161,14 @@ class Inheritance() {
     }
     
     class D() {
-        @error Void sup1 = super;
-        Void sup2;
+        @error Anything sup1 = super;
+        Anything sup2;
         @error sup2 = super;
-        variable Void sup3 = null;
+        variable Anything sup3 = null;
         @error sup3 = super;
-        void accept(Void v) {}
+        void accept(Anything v) {}
         @error accept(super);
-        Void supe() {
+        Anything supe() {
             @error return super;
         }
     }
@@ -183,4 +183,4 @@ class Inheritance() {
 interface MyIdentif satisfies Identifiable {}
 class MyClass() extends Object() satisfies MyIdentif {}
 
-@error class MyBottom() extends Bottom() {}
+@error class MyNothing() extends Nothing() {}

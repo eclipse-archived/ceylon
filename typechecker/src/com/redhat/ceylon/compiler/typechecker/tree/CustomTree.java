@@ -17,6 +17,8 @@ public class CustomTree extends Tree {
                 pl.visit(visitor);
             if (getExpression()!=null)
                 getExpression().visit(visitor);
+            if (getBlock()!=null)
+                getBlock().visit(visitor);
         }
         @Override public String getNodeType() {
             return FunctionArgument.class.getSimpleName();

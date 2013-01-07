@@ -4,7 +4,7 @@ class InheritanceConsistency() {
         shared String nick() { return name; }
     }
 
-    abstract class Animal() extends IdentifiableObject() {
+    abstract class Animal() extends Basic() {
         shared formal Boolean mammal;
     }
 
@@ -105,7 +105,7 @@ void accept<T>(Inter<T> inter)
     print(inter.get());
 }
 
-void testObjectArgs() {
+void testValueArgs() {
     accept {
         object inter satisfies Inter<String> {
             shared actual String get() {

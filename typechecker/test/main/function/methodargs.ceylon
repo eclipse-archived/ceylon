@@ -5,7 +5,7 @@ void testShortcutMethodSpec(){
         g(Float x) => x*2.0;
     };
     f {
-        g = (Float x) x*2.0;
+        g = (Float x) => x*2.0;
     };
     f {
         function g(Float x) => x*2.0;
@@ -20,7 +20,7 @@ void testShortcutMethodSpec(){
         @error g(Integer x) => x*2.0;
     };
     f {
-        @error g = (Integer x) x*2.0;
+        @error g = (Integer x) => x*2.0;
     };
     f {
         @error function g(Integer x) => x*2.0;
@@ -29,7 +29,7 @@ void testShortcutMethodSpec(){
         @error g(Float x) => x.integer*2;
     };
     f {
-        @error g = (Float x) x.integer*2;
+        @error g = (Float x) => x.integer*2;
     };
     f {
         @error function g(Float x) => x.integer*2;

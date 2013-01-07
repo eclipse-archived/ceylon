@@ -26,13 +26,13 @@ String method() {
 }
 
 shared class TypeParameterResolving<A>(A a) {
-    shared object innerObject {
+    shared object innerValue {
         shared A val = a;
     }
 }
 
 void method2() {
-    String s = TypeParameterResolving("hello").innerObject.val;
+    String s = TypeParameterResolving("hello").innerValue.val;
 }
 
 

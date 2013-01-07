@@ -1,12 +1,12 @@
 class Primaries() {
     
-    class C() extends IdentifiableObject() {}
+    class C() extends Basic() {}
     
-    class B() extends IdentifiableObject() {
+    class B() extends Basic() {
         shared C c() { return C(); }
     }
     
-    class A() extends IdentifiableObject() {
+    class A() extends Basic() {
         shared B b = B();
     }
 
@@ -107,7 +107,7 @@ class Primaries() {
         shared void doIt() {}
     }
     class S() extends B() satisfies G & H {}
-    class T() extends IdentifiableObject() satisfies G & H {}
+    class T() extends Basic() satisfies G & H {}
     
     @type:"Sequence<Primaries.B>" value p21 = [S(), B()].sequence;
     @type:"Sequence<Primaries.B>" value p22 = [B(), S()].sequence;
@@ -123,8 +123,8 @@ class Primaries() {
     //Object[] stuff = [A(),B(),"Hello",[1,2,3]];
     value objects = [A(),B(),"Hello",[1,2,3].sequence].sequence;
     //Object[] things = objects;
-    @type:"Nothing|Primaries.A|Primaries.B|String|Sequence<Integer>" value p27 = objects[1];
-    @type:"Nothing|String" value p28 = objects[1]?.string;
+    @type:"Null|Primaries.A|Primaries.B|String|Sequence<Integer>" value p27 = objects[1];
+    @type:"Null|String" value p28 = objects[1]?.string;
     if (exists o = objects[1]) {
         @type:"Primaries.A|Primaries.B|String|Sequence<Integer>" value p29 = o;
         String s = o.string;
@@ -135,10 +135,10 @@ class Primaries() {
     
     @type:"Sequential<Boolean>" value p100 = { true }.sequence;
     @type:"Sequential<Boolean>" value p101 = { true, false }.sequence;
-    @type:"Sequential<Nothing|Boolean>" value p102 = { null, true, false }.sequence;
+    @type:"Sequential<Null|Boolean>" value p102 = { null, true, false }.sequence;
     @type:"Sequence<Boolean>" value p100s = [ true ].sequence;
     @type:"Sequence<Boolean>" value p101s = [ true, false ].sequence;
-    @type:"Sequence<Nothing|Boolean>" value p102s = [ null, true, false ].sequence;
+    @type:"Sequence<Null|Boolean>" value p102s = [ null, true, false ].sequence;
     
     object idobj satisfies G&H {}
     object obj extends Object() satisfies G&H {
@@ -149,7 +149,7 @@ class Primaries() {
         shared actual String string = "";
     }
     
-    @type:"Sequence<IdentifiableObject&Primaries.G&Primaries.H>" value p103 = [ idobj ].sequence;
+    @type:"Sequence<Basic&Primaries.G&Primaries.H>" value p103 = [ idobj ].sequence;
     @type:"Sequence<Primaries.G&Primaries.H>" value p104 = [ obj ].sequence;
     @type:"Sequence<Primaries.G&Primaries.H>" value p105 = [ obj, idobj ].sequence;
     
@@ -175,11 +175,11 @@ class Primaries() {
     value f11 = 1.123_123;
     
     {B...} beez = p2[].b;
-    {String...} stringz = {"hello", "world"}.map((String s) s.uppercased);
+    {String...} stringz = {"hello", "world"}.map((String s) => s.uppercased);
         
     ann {Float} shared {Float...} floats = {};
     
-    String interpolated0 = "hello" "ABC123".count(function (Character c) c.digit) "world";
+    String interpolated0 = "hello" "ABC123".count(function (Character c) => c.digit) "world";
     String interpolated1 = "hello" { "ABC" 1+1 "123" } "world";
     String interpolated2 = "hello" Singleton("ABC" 1+1 "123") "world";
     String interpolated3 = "hello" Singleton { element="ABC" 1+1 "123"; } "world";
@@ -195,4 +195,4 @@ class Primaries() {
     
 }
 
-void ann({Void...} elements) {}
+void ann({Anything...} elements) {}

@@ -110,6 +110,15 @@ public class Unit {
         return null;
     }
     
+    public String getAliasedName(Declaration dec) {
+        for (Import i: getImports()) {
+            if (i.getDeclaration().equals(dec)) {
+                return i.getAlias();
+            }
+        }
+		return dec.getName();
+    }
+    
     /**
      * Search the imports of a compilation unit
      * for the named toplevel declaration.
@@ -184,8 +193,8 @@ public class Unit {
         //traverse all default module packages provided they have not been traversed yet
         Module languageModule = getPackage().getModule().getLanguageModule();
         if ( languageModule != null && languageModule.isAvailable() ) {
-            if ("Bottom".equals(name)) {
-                return getBottomDeclaration();
+            if ("Nothing".equals(name)) {
+                return getNothingDeclaration();
             }
             for (Package languageScope : languageModule.getPackages() ) {
                 Declaration d = languageScope.getMember(name, null, false);
@@ -201,15 +210,15 @@ public class Unit {
         return (Interface) getLanguageModuleDeclaration("Correspondence");
     }
 
-    public Class getVoidDeclaration() {
-        return (Class) getLanguageModuleDeclaration("Void");
+    public Class getAnythingDeclaration() {
+        return (Class) getLanguageModuleDeclaration("Anything");
     }
     
-    public Class getNothingDeclaration() {
-        return (Class) getLanguageModuleDeclaration("Nothing");
+    public Class getNullDeclaration() {
+        return (Class) getLanguageModuleDeclaration("Null");
     }
 
-    public Value getNullDeclaration() {
+    public Value getNullValueDeclaration() {
         return (Value) getLanguageModuleDeclaration("null");
     }
 
@@ -225,8 +234,8 @@ public class Unit {
         return (Class) getLanguageModuleDeclaration("Object");
     }
     
-    public Class getIdentifiableObjectDeclaration() {
-        return (Class) getLanguageModuleDeclaration("IdentifiableObject");
+    public Class getBasicDeclaration() {
+        return (Class) getLanguageModuleDeclaration("Basic");
     }
     
     public Interface getIdentifiableDeclaration() {
@@ -409,7 +418,7 @@ public class Unit {
     public ProducedType getTupleType(List<ProducedType> elemTypes, 
     		boolean sequenced, int firstDefaulted) {
     	ProducedType result = getEmptyDeclaration().getType();
-    	ProducedType union = getBottomDeclaration().getType();
+    	ProducedType union = getNothingDeclaration().getType();
     	int last = elemTypes.size()-1;
     	for (int i=last; i>=0; i--) {
     		ProducedType elemType = elemTypes.get(i);
@@ -431,11 +440,11 @@ public class Unit {
         return pt==null ? null :
             unionType(pt, getEmptyDeclaration().getType(), this);
         /*else if (isEmptyType(pt)) {
-            //Nothing|Nothing|T == Nothing|T
+            //Null|Null|T == Null|T
             return pt;
         }
-        else if (pt.getDeclaration() instanceof BottomType) {
-            //Nothing|0 == Nothing
+        else if (pt.getDeclaration() instanceof NothingType) {
+            //Null|0 == Null
             return getEmptyDeclaration().getType();
         }
         else {
@@ -451,24 +460,24 @@ public class Unit {
     public ProducedType getPossiblyNoneType(ProducedType pt) {
         return pt==null ? null :
             unionType(pt, producedType(getSequentialDeclaration(),
-                    getVoidDeclaration().getType()), this);
+                    getAnythingDeclaration().getType()), this);
     }
     
     public ProducedType getOptionalType(ProducedType pt) {
         return pt==null ? null :
-            unionType(pt, getNothingDeclaration().getType(), this);
+            unionType(pt, getNullDeclaration().getType(), this);
         /*else if (isOptionalType(pt)) {
-            //Nothing|Nothing|T == Nothing|T
+            //Null|Null|T == Null|T
             return pt;
         }
-        else if (pt.getDeclaration() instanceof BottomType) {
-            //Nothing|0 == Nothing
-            return getNothingDeclaration().getType();
+        else if (pt.getDeclaration() instanceof NothingType) {
+            //Null|0 == Null
+            return getNullDeclaration().getType();
         }
         else {
             UnionType ut = new UnionType();
             List<ProducedType> types = new ArrayList<ProducedType>();
-            addToUnion(types,getNothingDeclaration().getType());
+            addToUnion(types,getNullDeclaration().getType());
             addToUnion(types,pt);
             ut.setCaseTypes(types);
             return ut.getType();
@@ -570,11 +579,11 @@ public class Unit {
     public ProducedType getDefiniteType(ProducedType pt) {
         return intersectionType(getObjectDeclaration().getType(), 
                 pt, pt.getDeclaration().getUnit());
-        /*if (pt.getDeclaration().equals(getVoidDeclaration())) {
+        /*if (pt.getDeclaration().equals(getAnythingDeclaration())) {
             return getObjectDeclaration().getType();
         }
         else {
-            return pt.minus(getNothingDeclaration());
+            return pt.minus(getNullDeclaration());
         }*/
     }
 
@@ -582,11 +591,11 @@ public class Unit {
         return intersectionType(producedType(getSequenceDeclaration(), 
                 getSequentialElementType(pt)), pt, 
                 pt.getDeclaration().getUnit());
-        /*if (pt.getDeclaration().equals(getVoidDeclaration())) {
+        /*if (pt.getDeclaration().equals(getAnythingDeclaration())) {
             return getObjectDeclaration().getType();
         }
         else {
-            return pt.minus(getNothingDeclaration());
+            return pt.minus(getNullDeclaration());
         }*/
     }
 
@@ -611,31 +620,31 @@ public class Unit {
     }
     
     public boolean isOptionalType(ProducedType pt) {
-        //must have non-empty intersection with Nothing
-        //and non-empty intersection with Object
-        return !(intersectionType(getNothingDeclaration().getType(), pt, this)
-                        .getDeclaration() instanceof BottomType) &&
+        //must have non-empty intersection with Null
+        //and non-empty intersection with Value
+        return !(intersectionType(getNullDeclaration().getType(), pt, this)
+                        .getDeclaration() instanceof NothingType) &&
                !(intersectionType(getObjectDeclaration().getType(), pt, this)
-                        .getDeclaration() instanceof BottomType);
+                        .getDeclaration() instanceof NothingType);
     }
     
     public boolean isEmptyType(ProducedType pt) {
-        //must be a subtype of Sequential<Void>
+        //must be a subtype of Sequential<Anything>
         return isSequentialType(getDefiniteType(pt)) &&
         //must have non-empty intersection with Empty
-        //and non-empty intersection with Sequence<Bottom>
+        //and non-empty intersection with Sequence<Nothing>
                !(intersectionType(getEmptyDeclaration().getType(), pt, this)
-                        .getDeclaration() instanceof BottomType) &&
-               !(intersectionType(getSequenceType(getBottomDeclaration().getType()), pt, this)
-                        .getDeclaration() instanceof BottomType);
+                        .getDeclaration() instanceof NothingType) &&
+               !(intersectionType(getSequenceType(getNothingDeclaration().getType()), pt, this)
+                        .getDeclaration() instanceof NothingType);
     }
     
     public boolean isCallableType(ProducedType pt) {
     	return pt!=null && pt.getSupertype(getCallableDeclaration())!=null;
     }
     
-    public BottomType getBottomDeclaration() {
-        return new BottomType(this);
+    public NothingType getNothingDeclaration() {
+        return new NothingType(this);
     }
 
     public ProducedType denotableType(ProducedType pt) {

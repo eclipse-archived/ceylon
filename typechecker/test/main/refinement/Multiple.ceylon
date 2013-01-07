@@ -64,7 +64,7 @@ interface Multiple {
     }
     abstract class MyAltList() satisfies List<Integer> {
         shared actual String string {
-            @error return IdentifiableObject::string;
+            @error return Basic::string;
         }
         shared actual Integer hash {
             @error return Object::hash;

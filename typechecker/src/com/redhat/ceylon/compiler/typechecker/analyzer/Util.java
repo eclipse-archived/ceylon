@@ -75,7 +75,7 @@ class Util {
             scope=scope.getContainer();
         }
         that.addError("illegal use of qualified type outside scope of qualifying type: " + 
-                type.getProducedTypeName());
+                type.getProducedTypeName(that.getUnit()));
     }
 
     static List<ProducedType> getTypeArguments(Tree.TypeArguments tal) {
@@ -145,7 +145,7 @@ class Util {
                         Unit unit = that.getUnit();
 						if (et!=null 
                                 && !et.getDeclaration().equals(unit.getObjectDeclaration())
-                                && !et.getDeclaration().equals(unit.getIdentifiableObjectDeclaration())) {
+                                && !et.getDeclaration().equals(unit.getBasicDeclaration())) {
                             return s;
                         }
                     }
@@ -160,9 +160,9 @@ class Util {
         return null;
     }
     
-    private static String message(ProducedType type, String problem, ProducedType otherType) {
-        String typeName = type.getProducedTypeName();
-        String otherTypeName = otherType.getProducedTypeName();
+    private static String message(ProducedType type, String problem, ProducedType otherType, Unit unit) {
+        String typeName = type.getProducedTypeName(unit);
+        String otherTypeName = otherType.getProducedTypeName(unit);
         if (otherTypeName.equals(typeName)) {
             typeName = type.getProducedTypeQualifiedName();
             otherTypeName = otherType.getProducedTypeQualifiedName();
@@ -170,8 +170,8 @@ class Util {
         return ": " + typeName + problem + otherTypeName;
     }
     
-    private static String message(ProducedType type, String problem) {
-        String typeName = type.getProducedTypeName();
+    private static String message(ProducedType type, String problem, Unit unit) {
+        String typeName = type.getProducedTypeName(unit);
         return ": " + typeName + problem;
     }
     
@@ -182,7 +182,7 @@ class Util {
         }
         else if (!type.getDeclaration().getUnit().isCallableType(type)) {
             if (!hasError(node)) {
-                node.addError(message + message(type, " is not a subtype of Callable"));
+                node.addError(message + message(type, " is not a subtype of Callable", node.getUnit()));
             }
             return false;
         }
@@ -200,7 +200,7 @@ class Util {
         else {
             ProducedType supertype = pt.getSupertype(td);
             if (supertype==null) {
-                node.addError(message + message(pt, " is not a subtype of " + td.getName()));
+                node.addError(message + message(pt, " is not a subtype of " + td.getName(), node.getUnit()));
             }
             return supertype;
         }
@@ -212,7 +212,7 @@ class Util {
         	addTypeUnknownError(node, message);
         }
         else if (!type.isSubtypeOf(supertype)) {
-        	node.addError(message + message(type, " is not assignable to ", supertype));
+        	node.addError(message + message(type, " is not assignable to ", supertype, node.getUnit()));
         }
     }
 
@@ -222,7 +222,7 @@ class Util {
         	addTypeUnknownError(node, message);
         }
         else if (!type.isSubtypeOf(supertype)) {
-        	node.addWarning(message + message(type, " is not assignable to ", supertype));
+        	node.addWarning(message + message(type, " is not assignable to ", supertype, node.getUnit()));
         }
     }
 
@@ -233,7 +233,7 @@ class Util {
         }
         else if (!type.isSubtypeOf(supertype1)
                 && !type.isSubtypeOf(supertype2)) {
-            node.addError(message + message(type, " is not assignable to ", supertype1));
+            node.addError(message + message(type, " is not assignable to ", supertype1, node.getUnit()));
         }
     }
 
@@ -243,7 +243,7 @@ class Util {
             addTypeUnknownError(node, message);
         }
         else if (!type.isSubtypeOf(supertype)) {
-            node.addError(message + message(type, " is not assignable to ", supertype), code);
+            node.addError(message + message(type, " is not assignable to ", supertype, node.getUnit()), code);
         }
     }
 
@@ -253,7 +253,7 @@ class Util {
             addTypeUnknownError(node, message);
         }
         else if (!type.isSubtypeOf(supertype)) {
-            node.addError(message + message(type, " is not assignable to ", supertype));
+            node.addError(message + message(type, " is not assignable to ", supertype, node.getUnit()));
         }
     }
 
@@ -263,7 +263,7 @@ class Util {
             addTypeUnknownError(node, message);
         }
         else if (!type.isExactly(supertype)) {
-            node.addError(message + message(type, " is not exactly ", supertype));
+            node.addError(message + message(type, " is not exactly ", supertype, node.getUnit()));
         }
     }
 
@@ -274,7 +274,7 @@ class Util {
         }
         else if (!type.isExactly(supertype1)
                 && !type.isExactly(supertype2)) {
-            node.addError(message + message(type, " is not exactly ", supertype1));
+            node.addError(message + message(type, " is not exactly ", supertype1, node.getUnit()));
         }
     }
 

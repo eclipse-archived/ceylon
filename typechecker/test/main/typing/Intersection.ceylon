@@ -25,7 +25,7 @@ class Intersection() {
     @error X&Y xyError = xOnly;
     
     @type:"Intersection.X&Intersection.Y" X&Object&Y xo = XY();
-    @type:"Bottom" X&Bottom&Y xb;
+    @type:"Nothing" X&Nothing&Y xb;
     
     @type:"Intersection.X&Intersection.Y" function f(X&Y xy) {
         return xy;
@@ -96,7 +96,7 @@ class Intersection() {
     object onetwo satisfies One&Two {}
     
     @type:"Sequence<Intersection.One&Intersection.Two>" Sequence<One>&Sequence<Two> seq = [ onetwo ];
-    @type:"Nothing|Intersection.One&Intersection.Two" value item = seq[0];
+    @type:"Null|Intersection.One&Intersection.Two" value item = seq[0];
     @type:"Intersection.One&Intersection.Two" value fst = seq.first;
     @type:"Iterator<Intersection.One&Intersection.Two>" value itr = seq.iterator;
     
@@ -114,28 +114,28 @@ class Intersection() {
     class I<T>(T t) {} 
     
     A&B intersect<A,B>(A a, B b) { throw; }
-    @type:"Bottom" intersect(1, "hello");
-    @type:"Bottom" intersect(null, {"hello"});
+    @type:"Nothing" intersect(1, "hello");
+    @type:"Nothing" intersect(null, {"hello"});
     @type:"Integer" intersect(1, 3);
     Sequence<String> onestring = ["hello"];
     @type:"Integer&Sequence<String>" intersect(1, onestring);
-    @type:"Bottom" intersect(1, ["hello"]);
-    @type:"Bottom" intersect(I({"hello"}), I({}));
+    @type:"Nothing" intersect(1, ["hello"]);
+    @type:"Nothing" intersect(I({"hello"}), I({}));
     
     interface I1 {} 
     interface I2 {}
 
     void meth(I1[]&I2[] seq) {
-        @type:"Nothing|Intersection.I1&Intersection.I2" value item = seq[4];
+        @type:"Null|Intersection.I1&Intersection.I2" value item = seq[4];
     }
     
     Integer m1 = max([1, 2, 3]);
-    Nothing m2 = max([]);
+    Null m2 = max([]);
     Integer? m3 = max(join([],[1, 2, 3]));
-    Integer? m4 = max({1, 2, 3}.filter((Integer i) i>0));
+    Integer? m4 = max({1, 2, 3}.filter((Integer i) => i>0));
     @type:"Integer" max([1, 2, 3]);
-    @type:"Nothing" max([]);
-    @type:"Nothing|Integer" max(join([],[1, 2, 3]));
-    @type:"Nothing|Integer" max({1, 2, 3}.filter((Integer i) i>0));
+    @type:"Null" max([]);
+    @type:"Null|Integer" max(join([],[1, 2, 3]));
+    @type:"Null|Integer" max({1, 2, 3}.filter((Integer i) => i>0));
     
 }

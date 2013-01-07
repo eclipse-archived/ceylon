@@ -32,7 +32,7 @@ interface Declarations {
     
     @error class WithoutClassDef();
     @error interface WithoutInterfaceDef;
-    @error object withoutObjectDef;
+    @error object withoutValueDef;
 
     /*class Foo(String bar) {}
     @error Foo getFoo() {}
@@ -48,7 +48,7 @@ interface Declarations {
     void withoutDupeParam(X x(Y y), X y(Y y)) {}
     
     @error class () {}
-    @error void () {}
+    //@error void () {}
     @error interface {}
     @error value { return Y(); }
     //@error function () { return Y(); }

@@ -137,7 +137,7 @@ class Refinement() {
 
     class BadSubclassWithParamMember3() 
             extends WithParamMember() {
-        @error shared actual Void[] seq<T>(T t) { return [t]; }
+        @error shared actual Anything[] seq<T>(T t) { return [t]; }
         @error shared actual class Inner<T>(T t) 
                 extends super.Inner<String>("hello") {}
     }
@@ -196,7 +196,7 @@ class VariableSuper() {
 class VariableSub() extends VariableSuper() {
     @error shared actual variable Integer i=1;
     shared actual variable Integer j=1;
-    @error shared actual variable Void k=0;
+    @error shared actual variable Anything k=0;
 }
 
 abstract class WithRefinedMethod() {

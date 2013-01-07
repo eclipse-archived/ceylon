@@ -2,12 +2,19 @@ class Parameters() {
     void x1(@type:"String" String s) {}
     void x2(@type:"String" String s, @type:"Integer" Integer n) {}
     void x3(@type:"Sequential<String>" String[] s) {}
-    void x4(@type:"Nothing|String" String? s) {}
+    void x4(@type:"Null|String" String? s) {}
     void x5(@type:"Sequential<String>" String... s) {}
     
     void x6(String s="hello", @error Integer n) {}
     void x7(String... s, @error Integer n) {}
     void x8(String... s, @error Integer n=0) {}
+
+    void x9(@error String... s=[]) {}
+    void x10(@type:"Integer" Integer f(Integer i)=>i) {}
+    void x11(@error function f(Integer i)=>i) {}
+    void x12(@error void f(Integer i)=>i) {}
+    void x13(@error value s="hello") {}
+    void x14(@error void f) {}
     
     void d1(String name="World") {}
     void d2(Integer count=0) {}
@@ -43,6 +50,6 @@ class Parameters() {
     void func(String... x, @error String... y) {}
     
     void withDefaultedCallableParams(Float f() => 0.5, Float g(Float x) => x) {}
-    void withDefaultedFunctionParams(Float() f = () 0.5, Float(Float) g = (Float x) x) {}
+    void withDefaultedFunctionParams(Float() f = () => 0.5, Float(Float) g = (Float x) => x) {}
 
 }

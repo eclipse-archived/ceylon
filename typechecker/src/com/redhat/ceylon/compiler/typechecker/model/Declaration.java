@@ -279,5 +279,8 @@ public abstract class Declaration
     public String getNameAsString() {
     	return getName();
     }
-
+    
+    public String getName(Unit unit) {
+    	return unit==null ? getName() : unit.getAliasedName(this);
+    }
 }

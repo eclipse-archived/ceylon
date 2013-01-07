@@ -1,5 +1,5 @@
-class Foo<Arg>() given Arg satisfies Sequential<Void> {}
-class Bar<in Arg>() given Arg satisfies Sequential<Void> {}
+class Foo<Arg>() given Arg satisfies Sequential<Anything> {}
+class Bar<in Arg>() given Arg satisfies Sequential<Anything> {}
 
 void test() {
     Foo<Empty> foo0 = Foo<Empty>();

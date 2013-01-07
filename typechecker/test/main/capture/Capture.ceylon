@@ -192,7 +192,7 @@ class Capture() {
         };
     }
     
-    class WithObjectArgument() {
+    class WithValueArgument() {
         @captured String hello = "hello";
         use {
             object o {
@@ -277,7 +277,7 @@ class Capture() {
 
 class MethodDefaultedParamCaptureInitParam1(@captured String s) {
     String m(String t = s);
-    m = (String x) x;
+    m = (String x) => x;
 }
 
 class MethodDefaultedParamCaptureInitParam2(@captured String s) {
@@ -294,7 +294,7 @@ class MethodDefaultedParamCaptureInitParam4(@captured String s) {
 
 void methodDefaultedParamCaptureInitParam1(@captured String s) {
     String m(String t = s);
-    m = (String x) x;
+    m = (String x) => x;
 }
 
 void methodDefaultedParamCaptureInitParam2(@captured String s) {
@@ -310,31 +310,31 @@ void methodDefaultedParamCaptureInitParam4(@captured String s) {
 }
 
 String() cap1(@captured String s) {
-    return () s;
+    return () => s;
 }
 
 String() cap2() {
     @captured String s="hello";
-    return () s;
+    return () => s;
 }
 
-class MethodSpecifyingInitParam(@uncaptured Callable<Void,[]> x) {
-    void foo() => x;
+class MethodSpecifyingInitParam(@uncaptured Callable<Anything,[]> x) {
+    Anything foo() => x();
 }
 
 class MethodSpecifyingInitParam2(@uncaptured void x()) {
-    void foo() => x;
+    Anything foo() => x();
 }
 
-void methodSpecifyingInitParam(@uncaptured Callable<Void,[]> x) {
-    void foo() => x;
+void methodSpecifyingInitParam(@uncaptured Callable<Anything,[]> x) {
+    Anything foo() => x();
 }
 
 void methodSpecifyingInitParam2(@uncaptured void x()) {
-    void foo() => x;
+    Anything foo() => x();
 }
 
-class MethodCapturingInitParam(@captured Callable<Void,[]> x) {
+class MethodCapturingInitParam(@captured Callable<Anything,[]> x) {
     void foo() { x(); }
 }
 
@@ -342,7 +342,7 @@ class MethodCapturingInitParam2(@captured void x()) {
     void foo() { x(); }
 }
 
-void methodCapturingInitParam(@captured Callable<Void,[]> x) {
+void methodCapturingInitParam(@captured Callable<Anything,[]> x) {
     void foo() { x(); }
 }
 

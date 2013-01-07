@@ -81,9 +81,9 @@ interface Aa {}
 interface A satisfies Comparable<C|A> {}
 interface C satisfies Comparable<C|A> {}
 
-void testOf(Comparable<C|A> comp, Void vd) {
+void testOf(Comparable<C|A> comp, Anything vd) {
     A|C ac = comp of C|A;
-    Object? maybe = vd of Object|Nothing;
+    Object? maybe = vd of Object|Null;
 }
 
 interface Comp<in T> of T
@@ -106,3 +106,12 @@ class CompBar() satisfies Comp<CompBar> {
         return bottom;
     }
 }
+
+@error class Broken<T>() of T 
+        satisfies Comparable<T> 
+        given T satisfies Comparable<T>{
+    shared actual Comparison compare(T other) {
+        return bottom;
+    }
+}
+
