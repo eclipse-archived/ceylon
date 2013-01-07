@@ -2,7 +2,7 @@ class MyException() extends Exception("my exception", null) {}
 class OtherException() extends Exception("other exception", null) {}
 
 void exceptions() {
-    variable Boolean caught:=false;
+    variable Boolean caught=false;
     try {
         throw MyException();
     }
@@ -10,13 +10,13 @@ void exceptions() {
         fail("other exception");
     }
     catch (MyException me) {
-        caught:=true;
+        caught=true;
         check(me.message=="my exception", "exception message");
         check(!me.cause exists, "exception cause");
     }
     check(caught, "caught");
 
-    caught:=false;
+    caught=false;
     try {
         throw MyException();
     }
@@ -24,18 +24,18 @@ void exceptions() {
         fail("other exception");
     }
     catch (Exception me) {
-        caught:=true;
+        caught=true;
         check(me.message=="my exception", "exception message");
         check(!me.cause exists, "exception cause");
     }
     check(caught, "caught");
     
-    caught:=false;
+    caught=false;
     try {
         throw MyException();
     }
     catch (OtherException|MyException e) {
-        caught:=true;
+        caught=true;
         check(e.message=="my exception", "exception message");
         check(!e.cause exists, "exception cause");
     }
@@ -44,7 +44,7 @@ void exceptions() {
     }
     check(caught, "caught");
     
-    caught:=false;
+    caught=false;
     try {
         throw Exception("hello", null);
     }
@@ -52,29 +52,29 @@ void exceptions() {
         fail("any exception");
     }
     catch (Exception me) {
-        caught:=true;
+        caught=true;
     }
     check(caught, "caught");
     
-    caught:=false;
+    caught=false;
     try {
         throw Exception("hello", MyException());
     }
     catch (Exception e) {
-        caught:=true;
+        caught=true;
         check(e.message=="hello", "exception message");
         check(e.cause exists, "exception cause");
         check(e.cause is MyException, "exception cause");
     }
     check(caught, "caught");
     
-    caught:=false;
+    caught=false;
     try {
         try {
             throw Exception(null, null);
         }
         catch (MyException me) {
-            caught:=true;
+            caught=true;
         }
     }
     catch (Exception e) {}

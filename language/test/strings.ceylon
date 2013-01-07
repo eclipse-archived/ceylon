@@ -82,7 +82,7 @@ shared void strings() {
         fail("string element out of range");
     }
     
-    variable value i:=0;
+    variable value i=0;
     for (c in hello) {
         value hc = hello[i];
         if (exists hc) {
@@ -258,7 +258,7 @@ shared void strings() {
     //With strings
     check("hello world".split("eo").sequence == "hello world".split({`e`,`o`}).sequence, "string split chars [1]");
     check("hello world".split("eo").sequence == "hello world".split(StringBuilder().append("o").append("e").string).sequence, "string split chars");
-    variable value count:=0;
+    variable value count=0;
     for (tok in "hello world goodbye".split()) {
         count++;
         check(tok.size>4, "string token");
@@ -334,20 +334,20 @@ shared void strings() {
         fail("occurrences 4");
     }
     //Unicode escapes
-    value ucs = "\{00E5}";
+    value ucs = "\{#00E5}";
     check(ucs.size==1, "Unicode escape 0");
     if (exists c=ucs[0]) {
         check(c.integer==229, "Unicode escape 1.1");
     } else { fail("Unicode escape 1.2"); }
-    check("\{0008}"=="\b", "Unicode escape 2");
-    check("\{0009}"=="\t", "Unicode escape 3");
-    check("\{000A}"=="\n", "Unicode escape 4");
-    check("\{000C}"=="\f", "Unicode escape 5");
-    check("\{000D}"=="\r", "Unicode escape 6");
-    check("\{005C}"=="\\", "Unicode escape 7");
-    check("\{0060}"=="\`", "Unicode escape 8");
-    check("\{0022}"=="\"", "Unicode escape 9");
-    check("\{0027}"=="\'", "Unicode escape 10");
+    check("\{#0008}"=="\b", "Unicode escape 2");
+    check("\{#0009}"=="\t", "Unicode escape 3");
+    check("\{#000A}"=="\n", "Unicode escape 4");
+    check("\{#000C}"=="\f", "Unicode escape 5");
+    check("\{#000D}"=="\r", "Unicode escape 6");
+    check("\{#005C}"=="\\", "Unicode escape 7");
+    check("\{#0060}"=="\`", "Unicode escape 8");
+    check("\{#0022}"=="\"", "Unicode escape 9");
+    check("\{#0027}"=="\'", "Unicode escape 10");
 
     check(string() == "", "string()");
     check(string(`h`, `i`)=="hi", "string(h,i)");

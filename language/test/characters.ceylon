@@ -23,21 +23,21 @@ void characters() {
     check(`\``.integer==96, "escaped chars 7");
     check(`\"`.integer==34, "escaped chars 8");
     check(`\'`.integer==39, "escaped chars 9");
-    check(`\{00E5}`.integer==229, "Unicode escape 1");
-    check(`\{0008}`==`\b`, "Unicode escape 2");
-    check(`\{0009}`==`\t`, "Unicode escape 3");
-    check(`\{000A}`==`\n`, "Unicode escape 4");
-    check(`\{000C}`==`\f`, "Unicode escape 5");
-    check(`\{000D}`==`\r`, "Unicode escape 6");
-    check(`\{005C}`==`\\`, "Unicode escape 7");
-    //print(`\{005C}`.integer);
-    check(`\{0060}`==`\``, "Unicode escape 8");
-    check(`\{0022}`==`\"`, "Unicode escape 9");
-    check(`\{0027}`==`\'`, "Unicode escape 10");
+    check(`\{#00E5}`.integer==229, "Unicode escape 1");
+    check(`\{#0008}`==`\b`, "Unicode escape 2");
+    check(`\{#0009}`==`\t`, "Unicode escape 3");
+    check(`\{#000A}`==`\n`, "Unicode escape 4");
+    check(`\{#000C}`==`\f`, "Unicode escape 5");
+    check(`\{#000D}`==`\r`, "Unicode escape 6");
+    check(`\{#005C}`==`\\`, "Unicode escape 7");
+    //print(`\{#005C}`.integer);
+    check(`\{#0060}`==`\``, "Unicode escape 8");
+    check(`\{#0022}`==`\"`, "Unicode escape 9");
+    check(`\{#0027}`==`\'`, "Unicode escape 10");
     
-    variable value i:=0;
+    variable value i=0;
     for (x in `a`..`z`) {
-        i:=i+1;
+        i=i+1;
         check(x>=`a`&&x<=`z`, "character range");
     }
     check(i==26, "character range");   

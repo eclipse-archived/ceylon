@@ -58,22 +58,22 @@ class JsIssue9C1() {
     shared default String test() { return "1"; }
 }
 class JsIssue9C2() extends JsIssue9C1() {
-    variable Boolean flag1 := false;
+    variable Boolean flag1 = false;
     shared actual default String test() {
         if (flag1) {
             return "ERR1";
         }
-        flag1 := true;
+        flag1 = true;
         return super.test() + "2";
     }
 }
 class JsIssue9C3() extends JsIssue9C2() {
-    variable Boolean flag2 := false;
+    variable Boolean flag2 = false;
     shared actual default String test() {
         if (flag2) {
             return "ERR2";
         }
-        flag2 := true;
+        flag2 = true;
         return super.test() + "3";
     }
 }

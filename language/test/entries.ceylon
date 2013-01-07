@@ -87,13 +87,13 @@ Range<Integer> range {
         fail("out of range element");
     }
     
-    variable value j:=0;
+    variable value j=0;
     for (i in range) {
         check(i+3==j++, "range iteration");
     }
     check(j==14, "range iteration");
     
-    j:=+10;
+    j=+10;
     for (i in 10..0) {
         check(i==j--, "decreasing range iteration");
     }
@@ -167,7 +167,7 @@ Range<Integer> range {
     check(r1.definesAny(1,2,3), "range.definesAny 1");
     check(!r1.definesAny(7,6,5), "range.definesAny 2");
     check(r1.definesAny(6,5,4), "range.definesAny 3");
-    variable Integer sum := 0;
+    variable Integer sum = 0;
     for (Integer x in r1) {
         sum += x;
     }
@@ -199,7 +199,7 @@ Range<Integer> range {
         }
         shared actual String string { return "TestRange(" number ")"; }
     }
-    sum:=0;
+    sum=0;
     for (t in TestRange(1)..TestRange(5)) {
         sum++;
     }

@@ -16,7 +16,7 @@ void comprehensions() {
   check([for (x in 1..6) if (x % 2 == 0) for (y in 1..3) x*y]=={2,4,6,4,8,12,6,12,18}, "comprehensions 7");
   check([for (x in 1..6) if (x % 2 == 0) for (y in 1..3) if ((x*y)%3==0) x*y]=={6,12,6,12,18}, "comprehensions 8");
   check([for (x in 1..10) if (x%2==0) if (x>5) x]=={6,8,10}, "comprehensions 9");
-  variable Object varcomp := s1;
+  variable Object varcomp = s1;
   check(varcomp is Iterable<Void>, "comprehension is Iterable");
   check([for (x in {null, "hello", "goodbye"}) if (exists x) if (x.size>5) x]=={"goodbye"}, "comprehensions w/exists 1");
   check([for (x in {"a", "", "c"}) if (exists c=x[0]) c.uppercased]=={`A`, `C`}, "comprehensions w/exists 2");

@@ -18,15 +18,15 @@ void misc() {
     check(stringify()=="", "no args");
     check(stringify{}=="", "no named args");
             
-    variable Integer? x := 0;
+    variable Integer? x = 0;
     while (exists y = x) { 
-        x := null; 
+        x = null; 
     }
     check(!x exists, "while exists");
     
-    variable value s := "hello";
+    variable value s = "hello";
     while (nonempty chars = s.characters) { 
-        s:=""; 
+        s=""; 
     }
     check(s=="", "while nonempty");
     

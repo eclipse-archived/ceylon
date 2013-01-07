@@ -38,9 +38,9 @@ class MyContainerWithoutLastElement() satisfies ContainerWithFirstElement<Intege
     shared actual Boolean contains(Object element) => element == 1;
 }
 class MyCloseable() satisfies Closeable {
-    shared variable Boolean opened := false;
-    shared actual void open() { opened:=true;}
-    shared actual void close(Exception? e) {opened:=false;}
+    shared variable Boolean opened = false;
+    shared actual void open() { opened=true;}
+    shared actual void close(Exception? e) {opened=false;}
 }
 class MyContainer() satisfies EmptyContainer {
     shared actual Nothing first { return null; }
@@ -49,10 +49,10 @@ class MyContainer() satisfies EmptyContainer {
     shared actual Boolean contains(Object element) => false;
 }
 class MyIterator() satisfies Iterator<Integer> {
-    variable value done := false;
+    variable value done = false;
     shared actual Integer|Finished next() {
         value r = done then exhausted else 1;
-        done := true;
+        done = true;
         return r;
     }
 }
@@ -139,13 +139,13 @@ void testSatisfaction() {
     check(`l` in collection, "Collection.contains");
     check(collection.string == "{ h, e, l, l, o }", "Collection.string");
     check(MyComparable() <= MyComparable(), "Comparable.compare");
-    variable ContainerWithFirstElement<Integer,Nothing> cwfe := MyContainerWithLastElement();
+    variable ContainerWithFirstElement<Integer,Nothing> cwfe = MyContainerWithLastElement();
     check(cwfe.first exists, "ContainerWithFirstElement.first [1]");
     check(cwfe.last exists,  "ContainerWithFirstElement.last  [1]");
-    cwfe := MyContainerWithoutFirstElement();
+    cwfe = MyContainerWithoutFirstElement();
     check(!cwfe.first exists, "ContainerWithFirstElement.first [2]");
     check(cwfe.last exists, "ContainerWithFirstElement.last [2]");
-    cwfe := MyContainerWithoutLastElement();
+    cwfe = MyContainerWithoutLastElement();
     check(cwfe.first exists, "ContainerWithFirstElement.first [1]");
     check(!cwfe.last exists, "ContainerWithFirstElement.first [2]");
     value clsbl = MyCloseable();
@@ -155,9 +155,9 @@ void testSatisfaction() {
     clsbl.close(null);
     check(!clsbl.opened, "Closeable [3]");
     check(MyContainer().empty, "Container");
-    variable Sequential<Integer> myfixed := {};//MyNone();
+    variable Sequential<Integer> myfixed = {};//MyNone();
     check(!myfixed nonempty, "None");
-    myfixed := {1};//MySome();
+    myfixed = {1};//MySome();
     check(myfixed nonempty, "Some");
     value myiter = MyIterator();
     if (is Integer ii=myiter.next()) {
@@ -174,11 +174,11 @@ void testSatisfaction() {
     check(MyRanged().span(1,3).sequence=={`b`,`c`,`d`}, "Ranged[3]");
     check(MyRanged().segment(3,1).sequence=={`d`}, "Ranged[4]");
 
-    variable value ord1 := MyOrdinal(null,null);
-    variable value ord2 := MyOrdinal(ord1, null);
-    variable value ord3 := MyOrdinal(ord2, ord1);
-    ord1.next := ord2;
-    ord2.next := ord3;
+    variable value ord1 = MyOrdinal(null,null);
+    variable value ord2 = MyOrdinal(ord1, null);
+    variable value ord3 = MyOrdinal(ord2, ord1);
+    ord1.next = ord2;
+    ord2.next = ord3;
     check(++ord1==ord2, "Ordinal [1]");
     check(--ord3==ord2, "Ordinal [2]");
     ord3++;

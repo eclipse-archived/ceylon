@@ -21,10 +21,10 @@ void test_singleton() {
     else {
         fail("singleton nonempty");
     }
-    variable value j:=0;
+    variable value j=0;
     for (x in singleton) {
         check(x=="hello", "singleton iteration");
-        j:=j+1;
+        j=j+1;
     }
     check(j==1, "singleton iteration");
     if (exists str=singleton[0]) {
@@ -98,7 +98,7 @@ void test_zip() {
 void test_exists_nonempty() {
     String? yes = "yes";
     String? no = null;
-    variable Integer[]? empties := Singleton(1);
+    variable Integer[]? empties = Singleton(1);
     value t1 = yes exists then "yes exists" else "WTF";
     check(t1 == "yes exists", "exists 1");
     value t2 = no exists then "WTF" else "no doesn't exist";
@@ -273,7 +273,7 @@ shared void sequences() {
     check(seq.reversed=={4, 3, 2, 1}, "sequence reversed");
     check(seq.first==1, "sequence first");
     check(seq.rest.string=="[ 2, 3, 4 ]", "sequence.rest.string " + seq.rest.string);
-    variable value i:=0;
+    variable value i=0;
     for (s in seq) {
         if (exists it=seq[i]) {
             check(it==s, "sequence iteration");
@@ -281,7 +281,7 @@ shared void sequences() {
         else {
             fail("sequence iteration");
         }
-        i:=i+1;
+        i=i+1;
     }
     check(i==4, "sequence iteration");
 
@@ -292,14 +292,14 @@ shared void sequences() {
     value useq = union.sequence;
     check(useq.size==4, "union sequence builder");
     check(useq.string=="{ x, 5.1, y, -1.2 }", "union sequence builder.string");
-    variable value s:=0;
-    variable value f:=0;
+    variable value s=0;
+    variable value f=0;
     for (e in useq) {
         if (e is String) {
-            s:=s+1;
+            s=s+1;
         }
         if (e is Float) {
-            f:=f+1;
+            f=f+1;
         }
     }
     check(s==2&&f==2, "union sequence iteration");
@@ -310,7 +310,7 @@ shared void sequences() {
     if (exists n0 = nulls[0]) { fail("sequence with nulls"); }
     if (exists n1 = nulls[1]) {} else { fail("sequence with nulls"); }
     check(nulls.string=="[ null, hello, null, world ]", "sequence with nulls.string " + nulls.string);
-    variable value nonnull:=0;
+    variable value nonnull=0;
     for (o in nulls) {
         if (exists o) { nonnull++; }
     }
@@ -334,7 +334,7 @@ shared void sequences() {
     entriesBuilder.append(2->"world");
     value entrySequence = entriesBuilder.sequence;
     check(entrySequence.string=="{ 1->hello, 2->world }", "entries sequence.string");
-    variable value cntr:=0;
+    variable value cntr=0;
     for (nat->str in entrySequence) {
         cntr++;
         check(nat==1||nat==2, "entry key iteration");

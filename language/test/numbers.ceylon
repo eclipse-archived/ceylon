@@ -183,16 +183,16 @@ shared void numbers() {
     
     check(1.plus { other=2; }.equals { that=3; }, "natural named args");
                 
-    variable value i:=0;
+    variable value i=0;
     for (x in 1..10) {
-        i:=i+1;
+        i=i+1;
         check(x>=1&&x<=10, "natural range");
     }
     check(i==10, "natural range");
 
-    i:=0;
+    i=0;
     for (x in -5..+5) {
-        i:=i+1;
+        i=i+1;
         check(x>=-5&&x<=+5, "integer range");
     }
     check(i==11, "integer range");
@@ -215,7 +215,7 @@ shared void numbers() {
     check(largest(-100, 100)==100,   "largest integers");
     check(largest(-1.5, 5.2)==5.2,   "largest floats");
 
-    variable value count := 0;
+    variable value count = 0;
     count++;
     ++count;
     count+=2;
@@ -224,7 +224,7 @@ shared void numbers() {
     check(--count==11, "natural decrement");
     check(count--==11, "natural decrement");
     
-    variable value intcount := +0;
+    variable value intcount = +0;
     intcount++;
     ++intcount;
     intcount+=2;
@@ -234,28 +234,28 @@ shared void numbers() {
     check(--intcount==-14, "integer decrement");
     check(intcount--==-14, "integer decrement");
     
-    variable value floatcount := 0.0;
+    variable value floatcount = 0.0;
     floatcount+=2.0;
     floatcount*=3.0;
     floatcount/=1.5;
     check(floatcount==4.0, "float increment");
     check((floatcount*=2.5)==10.0, "float scale");
     check((floatcount/=2.0)==5.0, "float scale");
-    check((floatcount:=-2.0)==-2.0, "float assign");
+    check((floatcount=-2.0)==-2.0, "float assign");
     
     variable Integer vi;
     variable Integer vj;
-    vi:=vj:=2;
+    vi=vj=2;
     check(vi==2&&vj==2, "multi assign");
     vi+=1;
     vj*=2;
     
     class Inner() {
-        shared variable Integer vi:=0;
-        shared variable Integer vj:=0;
+        shared variable Integer vi=0;
+        shared variable Integer vj=0;
     }
     value inner = Inner();
-    inner.vi:=inner.vj:=2;
+    inner.vi=inner.vj=2;
     inner.vi+=1;
     inner.vj*=2;
     

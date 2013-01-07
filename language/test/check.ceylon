@@ -1,5 +1,5 @@
-variable Integer assertionCount:=0;
-variable Integer failureCount:=0;
+variable Integer assertionCount=0;
+variable Integer failureCount=0;
 
 shared void check(Boolean assertion, String message="") {
     assertionCount+=1;

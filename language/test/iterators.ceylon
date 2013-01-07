@@ -1,6 +1,6 @@
 class Pair(String one, String two) satisfies Iterable<String> {
     shared actual object iterator satisfies Iterator<String> {
-        variable Integer i:=0;
+        variable Integer i=0;
         shared actual String|Finished next() {
             i++;
             if (i==1) { return one; }
@@ -13,16 +13,16 @@ class Pair(String one, String two) satisfies Iterable<String> {
 
 void test_foreach() {
     value list = { 1 ,2 ,3 ,4 ,5 };
-    variable Integer sum := 0;
+    variable Integer sum = 0;
     for (Integer i in list) {
         sum += i;
     }
     check(sum==15, "simple foreach");
     Boolean hasEvens(Sequence<Integer> l) {
-        variable Boolean found := false;
+        variable Boolean found = false;
         for (i in l) {
             if (i % 2 == 0) {
-                found := true;
+                found = true;
                 break;
             }
         } else {
@@ -36,7 +36,7 @@ void test_foreach() {
     check(hasEvens({1,3,5,2}),"for/else 3");
     check(hasEvens({1,3,2,5}),"for/else 4");
     //nested
-    sum := 0;
+    sum = 0;
     for (i in odds) {
       sum += i;
       for (Integer j in { 2, 4, 6 }) {
@@ -45,7 +45,7 @@ void test_foreach() {
     }
     check(sum==45, "nested foreach");
     //key-value
-    sum := 0;
+    sum = 0;
     value _entries = { 1->10, 2->20, 3->30 };
     for (idx -> elem in _entries) {
       sum += idx;
@@ -53,25 +53,25 @@ void test_foreach() {
     }
     check(sum==66, "key-value foreach");
     //with iterator
-    sum := 0;
-    variable Boolean did_else := false;
+    sum = 0;
+    variable Boolean did_else = false;
     for (idx -> elem in entries(2,4,6)) {
         sum += idx + elem;
     } else {
-        did_else := true;
+        did_else = true;
     }
     check(sum==15, "foreach with iterator");
     check(did_else, "for/else with iterator");
     for (idx -> elem in entries(2,4,6)) {
         if (idx == 0) { break; }
     } else {
-        sum := 0;
+        sum = 0;
     }
     check(sum==15, "for/else with iterator");
 }
 
 void iterators() {
-    variable value i:=0;
+    variable value i=0;
     for (s in Pair("hello", "world")) {
         if (i==0) { check(s=="hello", "iterator iteration"); }
         if (i==1) { check(s=="world", "iterator iteration"); }

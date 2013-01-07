@@ -42,13 +42,13 @@ void callables() {
     value which=g();
     check(which==2, "closures: callable returns " which " instead of 2");
   }
-  variable Callable<Integer,[]>? f := null;
+  variable Callable<Integer,[]>? f = null;
   for (i in 1..2) {
     if (i > 0) {
       value j = i*2;
       if (i == 1) {
         Integer g() { return j; }
-        f := g;
+        f = g;
       }
     }
   }
@@ -57,15 +57,15 @@ void callables() {
   } else {
     fail("WTF this should never happen!");
   }
-  f:=null;
+  f=null;
   for (i in 1..5) {
     if (i > 0) {
-      variable value j := 0;
+      variable value j = 0;
       if (i == 2) {
         Integer g() { return j/2; }
-        f := g;
+        f = g;
       }
-      j := i*2;
+      j = i*2;
     }
   }
   if (exists g=f) { resolve(g); }
