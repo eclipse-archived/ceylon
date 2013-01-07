@@ -194,8 +194,6 @@
 ^(BLOCK:BODY
     boolean definitelyReturns;)
 
-^(SYNTHETIC_BLOCK:BLOCK)
-
 "A class body."
 ^(CLASS_BODY:BODY)
 
