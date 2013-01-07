@@ -176,10 +176,10 @@
         <ceylonc
             executable="${ceylon.compiler.loc}/dist/bin/ceylon"
             verbose="false"
-            bootstrap="true"
             noMtimeCheck="true"
             src="${module.language.src}:${runtime.src}"
-            out="${build.repo}">
+            out="${build.dist}">
+        	<javacoption>-Xbootstrapceylon</javacoption>
             <files>
                 <include name="**/*.ceylon"/>
                 <include name="com/ceylon/**/*.java"/>
