@@ -60,7 +60,7 @@ public class SequenceString extends String implements Sequence<Character> {
     @Override
     @Ignore
     public Sequence<? extends Character> sort(Callable<? extends Comparison> f) {
-        return (Sequence<Character>)String.instance(string_.string($ceylon$language$Iterable$this.sort(f)));
+        return (Sequence)String.instance(string_.string($ceylon$language$Iterable$this.sort(f)));
     }
     @Override
     @Ignore

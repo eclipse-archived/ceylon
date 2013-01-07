@@ -73,7 +73,7 @@ public final class Map$impl<Key,Item> {
             }
 
             @Override
-            public Collection<? extends Key> getClone() {
+            public Set<? extends Key> getClone() {
                 return this;
             }
 

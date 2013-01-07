@@ -41,7 +41,7 @@ public class LazySet<Element> implements Set<Element> {
     @Override
     @Annotations(@Annotation("actual"))
     @TypeInfo("ceylon.language::Set<Element>")
-    public Collection<? extends Element> getClone() {
+    public Set<? extends Element> getClone() {
         return new LazySet<Element>(elems);
     }
 
