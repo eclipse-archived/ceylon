@@ -115,6 +115,7 @@ public class LanguageCompiler extends JavaCompiler {
     private Options options;
     
     private Timer timer;
+    private boolean isBootstrap;
 
     /** Get the PhasedUnits instance for this context. */
     public static PhasedUnits getPhasedUnitsInstance(final Context context) {
@@ -212,6 +213,7 @@ public class LanguageCompiler extends JavaCompiler {
         modelLoader = CeylonModelLoader.instance(context);
         ceylonEnter = CeylonEnter.instance(context);
         options = Options.instance(context);
+        isBootstrap = options.get(OptionName.BOOTSTRAPCEYLON) != null;
         timer = Timer.instance(context);
     }
 
@@ -525,7 +527,7 @@ public class LanguageCompiler extends JavaCompiler {
     }
 
     public Env<AttrContext> attribute(Env<AttrContext> env) {
-        if (env.toplevel.sourcefile instanceof CeylonFileObject) {
+        if (env.toplevel.sourcefile instanceof CeylonFileObject || isBootstrap) {
             try {
                 Context.SourceLanguage.push(Language.CEYLON);
                 return super.attribute(env);
