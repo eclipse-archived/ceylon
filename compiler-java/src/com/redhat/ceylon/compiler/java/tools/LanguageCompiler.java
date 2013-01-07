@@ -392,8 +392,12 @@ public class LanguageCompiler extends JavaCompiler {
             }
 
             if(module == null){
-                // no declaration for it, must be the default module
-                module = modules.getDefaultModule();
+                // no declaration for it, must be the default module, unless we're bootstrapping the language module,
+                // because we have some com.redhat.ceylon packages that must go in the language module
+                if(isBootstrap)
+                    module = modules.getLanguageModule();
+                else
+                    module = modules.getDefaultModule();
             }
         }
         // bind module and package together
