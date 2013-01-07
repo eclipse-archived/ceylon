@@ -33,16 +33,16 @@ void testNamedArguments() {
     String desc {
       return "Odd";
     }
-    match = (Integer x) x%2==1;
+    match = (Integer x) => x%2==1;
   } == "Odd: 9", "named arguments 2");
   check(namedFunc {
     desc="Even";
-    match=(Integer x)x==2;
+    match=(Integer x)=>x==2;
     1, 5, 4, 3, 2, 9
   } == "Even: 2", "named arguments 3");
   check(namedFunc {
     desc="Even";
-    match=(Integer x)x==2;
+    match=(Integer x)=>x==2;
     for (i in 10..1) i
   } == "Even: 2", "named arguments 4");
 }

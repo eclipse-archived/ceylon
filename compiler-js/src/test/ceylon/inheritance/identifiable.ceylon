@@ -1,7 +1,7 @@
 import check {...}
 
-class SubIdent1() extends IdentifiableObject(){}
-class SubIdent2(Integer x) extends IdentifiableObject(){
+class SubIdent1() extends Basic(){}
+class SubIdent2(Integer x) extends Basic(){
   shared actual String string = "subident2";
   shared actual Boolean equals(Object other) {
     if (is SubIdent2 other) {

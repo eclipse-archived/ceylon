@@ -20,14 +20,14 @@ Element? find2<Element>(Array<Element> a, Boolean f(Element x) => true) {
 }
 
 Callable<String, [Integer]> subtract(Integer howMuch) {
-  return (Integer i) (i-howMuch).string;
+  return (Integer i) => (i-howMuch).string;
 }
 
 void testAnonymous() {
   print("Testing anonymous functions...");
   value nums = array(1,2,3,4,5);
   //Test positional argument call
-  variable value found = find(nums, (Integer i) i%2==0);
+  variable value found = find(nums, (Integer i) => i%2==0);
   if (exists i=found) {
     check(i == 2, "anonfunc positional");
   } else { fail("anonfunc positional"); }
@@ -52,7 +52,7 @@ void testAnonymous() {
   }
   callFunction(f, "12");
 
-  callFunction((Integer i) (i*3).string, "0");
+  callFunction((Integer i) => (i*3).string, "0");
 
   callFunction {
     expect = "0";
@@ -61,11 +61,11 @@ void testAnonymous() {
     }
   };
 
-  value f2 = (Integer i) (i-10).string;
+  value f2 = (Integer i) => (i-10).string;
   callFunction(f2, "-10");
   callFunction(subtract(5), "-5");
   //As defaulted param
-  found = find2(nums, (Integer i) i>2);
+  found = find2(nums, (Integer i) => i>2);
   if (exists i=found) {
     check(i==3, "anonfunc i>2 [1]");
   } else { fail("anonfunc i>2 [2]"); }

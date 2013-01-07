@@ -37,7 +37,7 @@ Set,LazyMap,LazyList
 #this one has native impls due to reified generics
 #Singleton
 
-any,byDecreasing,byIncreasing,byItem,byKey,coalesce,count,elements,emptyOrSingleton,entries,equalTo,every,first,forItem,forKey,greaterThan,join,largest,lessThan,max,min,smallest,sum,zip,print,bottom,identical
+any,byDecreasing,byIncreasing,byItem,byKey,coalesce,count,elements,emptyOrSingleton,entries,equalTo,every,first,forItem,forKey,greaterThan,join,largest,lessThan,max,min,smallest,sum,zip,print,nothing,identical
 
 #this function needs stuff that's not been implemented yet at the language level
 #combine
