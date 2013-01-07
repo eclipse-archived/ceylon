@@ -183,7 +183,7 @@ void testIterables() {
     //last (defined in ContainerWithFirst but tested here)
     check((1..5000000000).last == 5000000000, "Range.last");
     check(Singleton(1).last == 1, "Singleton.last");
-    check({1,2,3,4,5,6,7,8,9,10}.last==10, "Sequence.last");
+    check([1,2,3,4,5,6,7,8,9,10].last==10, "Sequence.last");
     if (exists l="The very last character".last) {
         check(l==`r`, "String.last [1]");
     } else { fail("String.last [1]"); }

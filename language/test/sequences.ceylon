@@ -111,7 +111,7 @@ void test_exists_nonempty() {
 }
 
 void test_max_min() {
-    Integer mx1 = max({1, 2, 3});
+    Integer mx1 = max([1, 2, 3]);
     check(mx1==3, "max nonempty seq");
     Nothing mx2 = max({});
     Integer? mx3 = max(join({},{1, 2, 3}));
@@ -119,7 +119,7 @@ void test_max_min() {
     Integer? mx4 = max({1, 2, 3}.filter((Integer i) i>0));
     check((mx4 else 10)==3, "max filtered seq");
     
-    Integer mn1 = min({1, 2, 3});
+    Integer mn1 = min([1, 2, 3]);
     check(mn1==1, "min nonempty seq");
     Nothing mn2 = min({});
     Integer? mn3 = min(join({},{1, 2, 3}));
@@ -267,7 +267,7 @@ shared void sequences() {
         check(evenMore.string=="{ hello, world, goodbye, everyone, good luck! }", "sequence.string 3");
     }
 
-    value seq = { 1, 2, 3, 4 };
+    value seq = [ 1, 2, 3, 4 ];
     check(seq.size==4, "sequence size");
     check(seq.string=="[ 1, 2, 3, 4 ]", "sequence.string 4: " + seq.string);
     check(seq.reversed=={4, 3, 2, 1}, "sequence reversed");
@@ -306,7 +306,7 @@ shared void sequences() {
 
     test_singleton();
 
-    Sequential<String?> nulls = { null, "hello", null, "world" };
+    Sequential<String?> nulls = [ null, "hello", null, "world" ];
     if (exists n0 = nulls[0]) { fail("sequence with nulls"); }
     if (exists n1 = nulls[1]) {} else { fail("sequence with nulls"); }
     check(nulls.string=="[ null, hello, null, world ]", "sequence with nulls.string " + nulls.string);
@@ -368,8 +368,8 @@ shared void sequences() {
     check(emptyOrSingleton(1) nonempty, "emptyOrSingleton [1]");
     check(!emptyOrSingleton(null) nonempty, "emptyOrSingleton [2]");
     
-    check({"hello"}.withTrailing("world").first=="hello", "sequence with trailing");
-    check({"world"}.withLeading("hello").first=="hello", "sequence with trailing");
+    check(["hello"].withTrailing("world").first=="hello", "sequence with trailing");
+    check(["world"].withLeading("hello").first=="hello", "sequence with trailing");
     
     //collect
     check({ 1, 2, 3, 4, 5 }.collect((Integer i) i*2) == { 2, 4, 6, 8, 10 }, "Sequence<Integer>.collect");

@@ -12,7 +12,7 @@ class Pair(String one, String two) satisfies Iterable<String> {
 }
 
 void test_foreach() {
-    value list = { 1 ,2 ,3 ,4 ,5 };
+    value list = [ 1 ,2 ,3 ,4 ,5 ];
     variable Integer sum = 0;
     for (Integer i in list) {
         sum += i;
@@ -30,11 +30,11 @@ void test_foreach() {
         }
         return found;
     }
-    value odds = { 1, 3, 5 };
+    value odds = [ 1, 3, 5 ];
     check(hasEvens(list), "for/else 1");
     check(!hasEvens(odds), "for/else 2");
-    check(hasEvens({1,3,5,2}),"for/else 3");
-    check(hasEvens({1,3,2,5}),"for/else 4");
+    check(hasEvens([1,3,5,2]),"for/else 3");
+    check(hasEvens([1,3,2,5]),"for/else 4");
     //nested
     sum = 0;
     for (i in odds) {

@@ -224,8 +224,8 @@ shared void strings() {
     check("hello world".initial(11)=="hello world", "string initial 6");
     check("hello world".terminal(11)=="hello world", "string terminal 6");
     
-    check(min({"abc", "xyz", "foo", "bar"})=="abc", "strings min");
-    check(max({"abc", "xyz", "foo", "bar"})=="xyz", "strings max");
+    check(min(["abc", "xyz", "foo", "bar"])=="abc", "strings min");
+    check(max(["abc", "xyz", "foo", "bar"])=="xyz", "strings max");
     
     check(", ".join()=="", "string join no strings");
     check(", ".join("foo")=="foo", "string join one string");

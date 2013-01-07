@@ -157,7 +157,7 @@ void testSatisfaction() {
     check(MyContainer().empty, "Container");
     variable Sequential<Integer> myfixed = {};//MyNone();
     check(!myfixed nonempty, "None");
-    myfixed = {1};//MySome();
+    myfixed = [1];//MySome();
     check(myfixed nonempty, "Some");
     value myiter = MyIterator();
     if (is Integer ii=myiter.next()) {

@@ -197,15 +197,15 @@ shared void numbers() {
     }
     check(i==11, "integer range");
     
-    check(min({1, 5})==1, "min naturals");
-    check(min({-1, +5})==-1, "min integers");
-    check(min({-1.5, 5.2})==-1.5, "min floats");
-    check(max({1, 5})==5, "max naturals");
-    check(max({-1, +5})==+5, "max integers");
-    check(max({-1.5, 5.2})==5.2, "max floats");
+    check(min([1, 5])==1, "min naturals");
+    check(min([-1, +5])==-1, "min integers");
+    check(min([-1.5, 5.2])==-1.5, "min floats");
+    check(max([1, 5])==5, "max naturals");
+    check(max([-1, +5])==+5, "max integers");
+    check(max([-1.5, 5.2])==5.2, "max floats");
     //eZL
-    check(max({ 2, 4, 6, 8, 7, 250, 5, 3, 1 })==250, "max");
-    check(min({ 200, 400, 600, 800, 700, 500, 300, 150 })==150, "min");
+    check(max([ 2, 4, 6, 8, 7, 250, 5, 3, 1 ])==250, "max");
+    check(min([ 200, 400, 600, 800, 700, 500, 300, 150 ])==150, "min");
 
     //eZL
     check(smallest(1,2)==1,          "smallest naturals");
@@ -423,9 +423,9 @@ shared void numbers() {
     check(!(-1.0).strictlyPositive, "negative one not strictly positive");
 
     //number-related functions
-    check(sum({1,2,3})==6, "sum()");
-    check(max({1,3,2})==3, "max()");
-    check(min({3,1,2})==1, "min()");
+    check(sum([1,2,3])==6, "sum()");
+    check(max([1,3,2])==3, "max()");
+    check(min([3,1,2])==1, "min()");
 
     //Ordinals
     check(10.distanceFrom(2) == 10-2, "Integer.distanceFrom");

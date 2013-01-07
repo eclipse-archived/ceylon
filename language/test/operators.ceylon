@@ -22,7 +22,7 @@ void operators() {
     check(!maybeNot?[10] exists, "?[]");
 
     String[] empty = {};
-    String[] full = { "hello", "world" };
+    String[] full = [ "hello", "world" ];
     check(!empty[].uppercased nonempty, "spread 1");
     check(full[].uppercased nonempty, "spread 2");
     value spread1 = full[].uppercased;
@@ -53,7 +53,7 @@ void operators() {
         check(s4s == `o`, "spread 12");
     } else { fail("spread 12"); }
     */
-    value spreadList = { Spread1(), Spread2() };
+    value spreadList = [ Spread1(), Spread2() ];
     value spread13 = spreadList[].x();
     check(spread13.size == 2, "spread 13 size");
     check(spread13[0] is String, "spread 13 item 0");
@@ -75,7 +75,7 @@ void operators() {
     Correspondence<Integer, String> c1 = {};
     check(!c1[0] exists, "empty correspondence");
     
-    Ranged<Integer,String[]> sequence = {"foo", "bar"};
+    Ranged<Integer,String[]> sequence = ["foo", "bar"];
     String[] subrange = sequence[1..2];
     check(subrange.size==1, "subrange size");
     check(subrange nonempty, "subrange nonempty");
