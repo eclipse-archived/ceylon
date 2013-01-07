@@ -503,13 +503,13 @@ public final class Integer
     }
 
     @Override
-    public Integer getSize() {
-        return instance(Long.SIZE);
+    public long getSize() {
+        return 64;
     }
     
     @Ignore
     public static long getSize(long value){
-        return Long.SIZE;
+        return 64;
     }
 
     @Override

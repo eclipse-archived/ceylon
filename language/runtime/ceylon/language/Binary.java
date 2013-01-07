@@ -20,7 +20,7 @@ public interface Binary<Other extends Binary<Other>> {
     public Other getNot();
 
     @Annotations({@Annotation("shared"), @Annotation("formal")})
-    public Other getSize();
+    public long getSize();
 
     @Annotations({@Annotation("shared"), @Annotation("formal")})
     public Other leftLogicalShift(@Name("shift") long shift);
