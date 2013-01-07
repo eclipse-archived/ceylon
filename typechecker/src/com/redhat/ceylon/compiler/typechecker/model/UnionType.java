@@ -16,6 +16,11 @@ public class UnionType extends TypeDeclaration {
     }
     
     @Override
+    public String getName(Unit unit) {
+    	return getType().getProducedTypeName(unit);
+    }
+    
+    @Override
     public String getQualifiedNameString() {
         return getType().getProducedTypeQualifiedName();
     }
