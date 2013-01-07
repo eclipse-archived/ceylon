@@ -10,22 +10,19 @@ class Bug406 {
         final .ceylon.language.Sequential<? extends .ceylon.language.String> spread1 = (
             let
             {
-                .ceylon.language.Sequential<? extends .ceylon.language.String> $spreadTest$0 = full;
-            }
-            returning (.ceylon.language.Sequential<? extends .ceylon.language.String>)($spreadTest$0 instanceof .ceylon.language.Sequence ? (
-                let
-                {
-                    .ceylon.language.Sequence<? extends .ceylon.language.String> $spread$1$0 = (.ceylon.language.Sequence<? extends .ceylon.language.String>)$spreadTest$0;
-                    int $spread$1$2 = (int)$spread$1$0.getSize();
-                    .ceylon.language.String[] $spread$1$4 = new .ceylon.language.String[$spread$1$2];
-                    for (int $index$2 = 0; $index$2 < $spread$1$2; $index$2++) $spread$1$4[$index$2] = .ceylon.language.String.instance($spread$1$0.item(.ceylon.language.Integer.instance($index$2)).getUppercased());
+                .ceylon.language.Iterable<? extends .ceylon.language.String> $spread$0$iterable = full;
+                .ceylon.language.SequenceBuilder<.ceylon.language.String> $spread$0$sequenceBuilder = new .ceylon.language.SequenceBuilder<.ceylon.language.String>();
+                .java.lang.Object $spread$0$iteration;
+                for (.ceylon.language.Iterator<? extends .ceylon.language.String> $spread$0$iterator = $spread$0$iterable.getIterator(); !(($spread$0$iteration = $spread$0$iterator.next()) instanceof .ceylon.language.Finished); ) {
+                    .ceylon.language.String $spread$0$element = (.ceylon.language.String)$spread$0$iteration;
+                    $spread$0$sequenceBuilder.append(.ceylon.language.String.instance($spread$0$element.getUppercased()));
                 }
-                returning new .com.redhat.ceylon.compiler.java.language.ArraySequence<.ceylon.language.String>($spread$1$4);
-            ) : .ceylon.language.empty_.getEmpty$());
+            }
+            returning $spread$0$sequenceBuilder.getSequence();
         );
-        .ceylon.language.String $s1s$4;
-        if (($s1s$4 = spread1.item(.ceylon.language.Integer.instance(0L))) != null) {
-            final .java.lang.String $s1s$5 = $s1s$4.toString();
+        .ceylon.language.String $s1s$2;
+        if (($s1s$2 = spread1.item(.ceylon.language.Integer.instance(0L))) != null) {
+            final .java.lang.String $s1s$3 = $s1s$2.toString();
         }
     }
     

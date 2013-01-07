@@ -133,18 +133,15 @@ final class bug708extra4_ {
         value = new .ceylon.language.Sequential[]{(
             let
             {
-                .ceylon.language.Sequential<? extends .com.redhat.ceylon.compiler.java.test.issues.bug07xx.Bug708<.ceylon.language.String>> $spreadTest$1 = .com.redhat.ceylon.compiler.java.test.issues.bug07xx.bug708seq_.getBug708seq$();
-            }
-            returning (.ceylon.language.Sequential<? extends .ceylon.language.String>)($spreadTest$1 instanceof .ceylon.language.Sequence ? (
-                let
-                {
-                    .ceylon.language.Sequence<? extends .com.redhat.ceylon.compiler.java.test.issues.bug07xx.Bug708<.ceylon.language.String>> $spread$2$0 = (.ceylon.language.Sequence<? extends .com.redhat.ceylon.compiler.java.test.issues.bug07xx.Bug708<.ceylon.language.String>>)$spreadTest$1;
-                    int $spread$2$2 = (int)$spread$2$0.getSize();
-                    .ceylon.language.String[] $spread$2$4 = new .ceylon.language.String[$spread$2$2];
-                    for (int $index$3 = 0; $index$3 < $spread$2$2; $index$3++) $spread$2$4[$index$3] = (.ceylon.language.String)((.com.redhat.ceylon.compiler.java.test.issues.bug07xx.Bug708<.ceylon.language.String>)(.com.redhat.ceylon.compiler.java.test.issues.bug07xx.Bug708)$spread$2$0.item(.ceylon.language.Integer.instance($index$3))).test();
+                .ceylon.language.Iterable<? extends .com.redhat.ceylon.compiler.java.test.issues.bug07xx.Bug708<.ceylon.language.String>> $spread$1$iterable = .com.redhat.ceylon.compiler.java.test.issues.bug07xx.bug708seq_.getBug708seq$();
+                .ceylon.language.SequenceBuilder<.ceylon.language.String> $spread$1$sequenceBuilder = new .ceylon.language.SequenceBuilder<.ceylon.language.String>();
+                .java.lang.Object $spread$1$iteration;
+                for (.ceylon.language.Iterator<? extends .com.redhat.ceylon.compiler.java.test.issues.bug07xx.Bug708<.ceylon.language.String>> $spread$1$iterator = $spread$1$iterable.getIterator(); !(($spread$1$iteration = $spread$1$iterator.next()) instanceof .ceylon.language.Finished); ) {
+                    .com.redhat.ceylon.compiler.java.test.issues.bug07xx.Bug708<.ceylon.language.String> $spread$1$element = (.com.redhat.ceylon.compiler.java.test.issues.bug07xx.Bug708<.ceylon.language.String>)$spread$1$iteration;
+                    $spread$1$sequenceBuilder.append((.ceylon.language.String)((.com.redhat.ceylon.compiler.java.test.issues.bug07xx.Bug708<.ceylon.language.String>)(.com.redhat.ceylon.compiler.java.test.issues.bug07xx.Bug708)$spread$1$element).test());
                 }
-                returning new .com.redhat.ceylon.compiler.java.language.ArraySequence<.ceylon.language.String>($spread$2$4);
-            ) : .ceylon.language.empty_.getEmpty$());
+            }
+            returning $spread$1$sequenceBuilder.getSequence();
         )};
     }
     
@@ -162,9 +159,9 @@ final class bug708_test_ {
     }
     
     static void bug708_test() {
-        .ceylon.language.String $s$5;
-        if (($s$5 = (.ceylon.language.String).com.redhat.ceylon.compiler.java.test.issues.bug07xx.bug708_.<.ceylon.language.String>bug708()) != null) {
-            final .java.lang.String $s$6 = $s$5.toString();
+        .ceylon.language.String $s$3;
+        if (($s$3 = (.ceylon.language.String).com.redhat.ceylon.compiler.java.test.issues.bug07xx.bug708_.<.ceylon.language.String>bug708()) != null) {
+            final .java.lang.String $s$4 = $s$3.toString();
         }
     }
     
@@ -185,21 +182,21 @@ class Bug708_Class<T> {
         this.param = param;
         this.param2 = param2;
         this.attr = param;
-        .ceylon.language.String $s$8;
-        if (($s$8 = (.ceylon.language.String)new .com.redhat.ceylon.compiler.java.test.issues.bug07xx.Bug708_Class<.ceylon.language.String>(.ceylon.language.String.instance(""), .ceylon.language.String.instance("")).param) != null) {
-            final .java.lang.String $s$9 = $s$8.toString();
+        .ceylon.language.String $s$6;
+        if (($s$6 = (.ceylon.language.String)new .com.redhat.ceylon.compiler.java.test.issues.bug07xx.Bug708_Class<.ceylon.language.String>(.ceylon.language.String.instance(""), .ceylon.language.String.instance("")).param) != null) {
+            final .java.lang.String $s$7 = $s$6.toString();
         }
-        .ceylon.language.String $s$11;
-        if (($s$11 = (.ceylon.language.String)new .com.redhat.ceylon.compiler.java.test.issues.bug07xx.Bug708_Class<.ceylon.language.String>(.ceylon.language.String.instance(""), .ceylon.language.String.instance("")).getParam2()) != null) {
-            final .java.lang.String $s$12 = $s$11.toString();
+        .ceylon.language.String $s$9;
+        if (($s$9 = (.ceylon.language.String)new .com.redhat.ceylon.compiler.java.test.issues.bug07xx.Bug708_Class<.ceylon.language.String>(.ceylon.language.String.instance(""), .ceylon.language.String.instance("")).getParam2()) != null) {
+            final .java.lang.String $s$10 = $s$9.toString();
         }
-        .ceylon.language.String $s$14;
-        if (($s$14 = (.ceylon.language.String)new .com.redhat.ceylon.compiler.java.test.issues.bug07xx.Bug708_Class<.ceylon.language.String>(.ceylon.language.String.instance(""), .ceylon.language.String.instance("")).getAttr()) != null) {
-            final .java.lang.String $s$15 = $s$14.toString();
+        .ceylon.language.String $s$12;
+        if (($s$12 = (.ceylon.language.String)new .com.redhat.ceylon.compiler.java.test.issues.bug07xx.Bug708_Class<.ceylon.language.String>(.ceylon.language.String.instance(""), .ceylon.language.String.instance("")).getAttr()) != null) {
+            final .java.lang.String $s$13 = $s$12.toString();
         }
-        .ceylon.language.String $s$17;
-        if (($s$17 = (.ceylon.language.String)new .com.redhat.ceylon.compiler.java.test.issues.bug07xx.Bug708_Class<.ceylon.language.String>(.ceylon.language.String.instance(""), .ceylon.language.String.instance("")).getGetter()) != null) {
-            final .java.lang.String $s$18 = $s$17.toString();
+        .ceylon.language.String $s$15;
+        if (($s$15 = (.ceylon.language.String)new .com.redhat.ceylon.compiler.java.test.issues.bug07xx.Bug708_Class<.ceylon.language.String>(.ceylon.language.String.instance(""), .ceylon.language.String.instance("")).getGetter()) != null) {
+            final .java.lang.String $s$16 = $s$15.toString();
         }
     }
     private final .java.lang.Object param;
@@ -627,9 +624,9 @@ public final class bug708_test2_ {
     public static void bug708_test2(@.com.redhat.ceylon.compiler.java.metadata.Name("key")
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Integer")
     final long key) {
-        .ceylon.language.String $entry$20;
-        if (($entry$20 = (.ceylon.language.String).com.redhat.ceylon.compiler.java.test.issues.bug07xx.bug708_cache_.getBug708_cache$().item(.ceylon.language.Integer.instance(key))) != null) {
-            final .java.lang.String $entry$21 = $entry$20.toString();
+        .ceylon.language.String $entry$18;
+        if (($entry$18 = (.ceylon.language.String).com.redhat.ceylon.compiler.java.test.issues.bug07xx.bug708_cache_.getBug708_cache$().item(.ceylon.language.Integer.instance(key))) != null) {
+            final .java.lang.String $entry$19 = $entry$18.toString();
         }
     }
 }

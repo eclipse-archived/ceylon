@@ -489,61 +489,52 @@ class Test {
             }
             returning $ceylontmp39 instanceof .ceylon.language.Sequence;
         );
-        final .ceylon.language.Sequential spreadMember = (
+        final .ceylon.language.Sequential spreadMember = (.ceylon.language.Sequence<? extends .java.lang.Object>)(.ceylon.language.Sequence)(
             let
             {
-                .ceylon.language.Sequential $spreadTest$40 = (.ceylon.language.Sequential<? extends .java.lang.Object>)leftsAndRights;
-            }
-            returning (
-                let
-                {
-                    .ceylon.language.Sequential $spread$41$0 = (.ceylon.language.Sequential)$spreadTest$40;
-                    int $spread$41$2 = (int)$spread$41$0.getSize();
-                    .java.lang.Object[] $spread$41$4 = new .java.lang.Object[$spread$41$2];
-                    for (int $index$42 = 0; $index$42 < $spread$41$2; $index$42++) $spread$41$4[$index$42] = ((.com.redhat.ceylon.compiler.java.test.expression.erasure.Top)$spread$41$0.item(.ceylon.language.Integer.instance($index$42))).getLeftAndRightAttribute();
+                .ceylon.language.Iterable $spread$40$iterable = (.ceylon.language.Sequential<? extends .java.lang.Object>)leftsAndRights;
+                .ceylon.language.SequenceBuilder $spread$40$sequenceBuilder = new .ceylon.language.SequenceBuilder();
+                .java.lang.Object $spread$40$iteration;
+                for (.ceylon.language.Iterator<? extends .java.lang.Object> $spread$40$iterator = $spread$40$iterable.getIterator(); !(($spread$40$iteration = $spread$40$iterator.next()) instanceof .ceylon.language.Finished); ) {
+                    .java.lang.Object $spread$40$element = $spread$40$iteration;
+                    $spread$40$sequenceBuilder.append(((.com.redhat.ceylon.compiler.java.test.expression.erasure.Top)$spread$40$element).getLeftAndRightAttribute());
                 }
-                returning new .com.redhat.ceylon.compiler.java.language.ArraySequence($spread$41$4);
-            );
+            }
+            returning $spread$40$sequenceBuilder.getSequence();
         );
         .ceylon.language.Sequential spreadInvocation;
-        spreadInvocation = (
+        spreadInvocation = (.ceylon.language.Sequence<? extends .java.lang.Object>)(.ceylon.language.Sequence)(
             let
             {
-                .ceylon.language.Sequential $spreadTest$43 = (.ceylon.language.Sequential<? extends .java.lang.Object>)leftsAndRights;
-            }
-            returning (
-                let
-                {
-                    .ceylon.language.Sequential $spread$44$0 = (.ceylon.language.Sequential)$spreadTest$43;
-                    int $spread$44$2 = (int)$spread$44$0.getSize();
-                    .java.lang.Object[] $spread$44$4 = new .java.lang.Object[$spread$44$2];
-                    for (int $index$45 = 0; $index$45 < $spread$44$2; $index$45++) $spread$44$4[$index$45] = ((.com.redhat.ceylon.compiler.java.test.expression.erasure.Top)$spread$44$0.item(.ceylon.language.Integer.instance($index$45))).leftAndRightMethod(new .com.redhat.ceylon.compiler.java.test.expression.erasure.CMiddle());
+                .ceylon.language.Iterable $spread$41$iterable = (.ceylon.language.Sequential<? extends .java.lang.Object>)leftsAndRights;
+                .ceylon.language.SequenceBuilder $spread$41$sequenceBuilder = new .ceylon.language.SequenceBuilder();
+                .java.lang.Object $spread$41$iteration;
+                for (.ceylon.language.Iterator<? extends .java.lang.Object> $spread$41$iterator = $spread$41$iterable.getIterator(); !(($spread$41$iteration = $spread$41$iterator.next()) instanceof .ceylon.language.Finished); ) {
+                    .java.lang.Object $spread$41$element = $spread$41$iteration;
+                    $spread$41$sequenceBuilder.append(((.com.redhat.ceylon.compiler.java.test.expression.erasure.Top)$spread$41$element).leftAndRightMethod(new .com.redhat.ceylon.compiler.java.test.expression.erasure.CMiddle()));
                 }
-                returning new .com.redhat.ceylon.compiler.java.language.ArraySequence($spread$44$4);
-            );
+            }
+            returning $spread$41$sequenceBuilder.getSequence();
         );
-        spreadInvocation = (
+        spreadInvocation = (.ceylon.language.Sequence<? extends .java.lang.Object>)(.ceylon.language.Sequence)(
             let
             {
-                .ceylon.language.Sequential $spreadTest$47 = (.ceylon.language.Sequential<? extends .java.lang.Object>)leftsAndRights;
-            }
-            returning (
-                let
-                {
-                    .ceylon.language.Sequential $spread$48$0 = (.ceylon.language.Sequential)$spreadTest$47;
-                    int $spread$48$2 = (int)$spread$48$0.getSize();
-                    .java.lang.Object[] $spread$48$4 = new .java.lang.Object[$spread$48$2];
-                    for (int $index$49 = 0; $index$49 < $spread$48$2; $index$49++) $spread$48$4[$index$49] = (
+                .ceylon.language.Iterable $spread$43$iterable = (.ceylon.language.Sequential<? extends .java.lang.Object>)leftsAndRights;
+                .ceylon.language.SequenceBuilder $spread$43$sequenceBuilder = new .ceylon.language.SequenceBuilder();
+                .java.lang.Object $spread$43$iteration;
+                for (.ceylon.language.Iterator<? extends .java.lang.Object> $spread$43$iterator = $spread$43$iterable.getIterator(); !(($spread$43$iteration = $spread$43$iterator.next()) instanceof .ceylon.language.Finished); ) {
+                    .java.lang.Object $spread$43$element = $spread$43$iteration;
+                    $spread$43$sequenceBuilder.append((
                         let
                         {
-                            .com.redhat.ceylon.compiler.java.test.expression.erasure.Top $arg$46$callable$ = (.com.redhat.ceylon.compiler.java.test.expression.erasure.Top)$spread$48$0.item(.ceylon.language.Integer.instance($index$49));
-                            .java.lang.Object $arg$46$0 = new .com.redhat.ceylon.compiler.java.test.expression.erasure.CMiddle();
+                            .com.redhat.ceylon.compiler.java.test.expression.erasure.Top $arg$42$callable$ = (.com.redhat.ceylon.compiler.java.test.expression.erasure.Top)$spread$43$element;
+                            .java.lang.Object $arg$42$0 = new .com.redhat.ceylon.compiler.java.test.expression.erasure.CMiddle();
                         }
-                        returning $arg$46$callable$.leftAndRightMethod($arg$46$0);
-                    );
+                        returning $arg$42$callable$.leftAndRightMethod($arg$42$0);
+                    ));
                 }
-                returning new .com.redhat.ceylon.compiler.java.language.ArraySequence($spread$48$4);
-            );
+            }
+            returning $spread$43$sequenceBuilder.getSequence();
         );
     }
 }

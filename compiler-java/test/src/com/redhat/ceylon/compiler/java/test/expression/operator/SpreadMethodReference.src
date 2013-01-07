@@ -14,18 +14,15 @@ class SpreadMethodReference {
                 return (
                     let
                     {
-                        .ceylon.language.Sequential<? extends .ceylon.language.String> $spreadTest$3 = seq;
-                    }
-                    returning (.ceylon.language.Sequential<? extends .ceylon.language.String>)($spreadTest$3 instanceof .ceylon.language.Sequence ? (
-                        let
-                        {
-                            .ceylon.language.Sequence<? extends .ceylon.language.String> $spread$4$0 = (.ceylon.language.Sequence<? extends .ceylon.language.String>)$spreadTest$3;
-                            int $spread$4$2 = (int)$spread$4$0.getSize();
-                            .ceylon.language.String[] $spread$4$4 = new .ceylon.language.String[$spread$4$2];
-                            for (int $index$5 = 0; $index$5 < $spread$4$2; $index$5++) $spread$4$4[$index$5] = .ceylon.language.String.instance($spread$4$0.item(.ceylon.language.Integer.instance($index$5)).initial($$length));
+                        .ceylon.language.Iterable<? extends .ceylon.language.String> $spread$1$iterable = seq;
+                        .ceylon.language.SequenceBuilder<.ceylon.language.String> $spread$1$sequenceBuilder = new .ceylon.language.SequenceBuilder<.ceylon.language.String>();
+                        .java.lang.Object $spread$1$iteration;
+                        for (.ceylon.language.Iterator<? extends .ceylon.language.String> $spread$1$iterator = $spread$1$iterable.getIterator(); !(($spread$1$iteration = $spread$1$iterator.next()) instanceof .ceylon.language.Finished); ) {
+                            .ceylon.language.String $spread$1$element = (.ceylon.language.String)$spread$1$iteration;
+                            $spread$1$sequenceBuilder.append(.ceylon.language.String.instance($spread$1$element.initial($$length)));
                         }
-                        returning new .com.redhat.ceylon.compiler.java.language.ArraySequence<.ceylon.language.String>($spread$4$4);
-                    ) : .ceylon.language.empty_.getEmpty$());
+                    }
+                    returning $spread$1$sequenceBuilder.getSequence();
                 );
             }
         };
