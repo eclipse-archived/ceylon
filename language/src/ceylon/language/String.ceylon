@@ -71,7 +71,7 @@ shared abstract class String()
                  Default to split at any Unicode whitespace
                  character."
             {Character...}|Boolean(Character) separator 
-                    = (Character ch) ch.whitespace,
+                    = (Character ch) => ch.whitespace,
             doc "Specifies that the separator characters
                  occurring in the string should be discarded.
                  If `false`, they will be included in the

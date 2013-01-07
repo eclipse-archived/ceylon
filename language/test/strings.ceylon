@@ -11,11 +11,11 @@ void compareIterables<T>(Iterable<T> aIterable, Iterable<T> bIterable, String me
     Iterator<T> bIterator = bIterable.iterator;
     for(T a in aIterable){
         T|Finished b = bIterator.next();
-        check(b != exhausted, "" message ": Iterator B empty while expecting '" a "'");
+        check(b != finished, "" message ": Iterator B empty while expecting '" a "'");
         check(a == b, "" message ": Element '" a "' != '" b "'");
     }
     T|Finished b = bIterator.next();
-    check(b == exhausted, "" message ": Iterator B not empty: extra '" b "'");
+    check(b == finished, "" message ": Iterator B not empty: extra '" b "'");
 }
 
 shared void strings() {

@@ -50,7 +50,7 @@ void misc() {
     ",".join(); sort();
     StringBuilder().appendAll();
     SequenceBuilder().appendAll();
-    //LazyList<Bottom>(); LazyMap<Bottom,Bottom>(); LazySet<Bottom>();
+    //LazyList<Nothing>(); LazyMap<Nothing,Nothing>(); LazySet<Nothing>();
     [1,2,3].items();
     [1,2,3].definesAny();
     [1,2,3].definesEvery();

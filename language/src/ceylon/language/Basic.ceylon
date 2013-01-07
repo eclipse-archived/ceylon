@@ -3,5 +3,5 @@ doc "The default superclass when no superclass is explicitly
      this class inherits a default definition of value
      equality from `Identifiable`."
 by "Gavin"
-shared abstract class IdentifiableObject() 
+shared abstract class Basic() 
         extends Object() satisfies Identifiable {}

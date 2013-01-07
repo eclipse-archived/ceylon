@@ -4,8 +4,7 @@ doc "The supertype of all exceptions. A subclass represents
      problems of that kind."
 by "Gavin"
    "Tom"
-shared class Exception(description=null, cause=null) 
-        extends IdentifiableObject() {
+shared class Exception(description=null, cause=null) {
     
     doc "The underlying cause of this exception."
     shared Exception? cause;

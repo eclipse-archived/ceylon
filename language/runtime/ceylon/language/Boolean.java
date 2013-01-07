@@ -7,7 +7,7 @@ import com.redhat.ceylon.compiler.java.metadata.Ignore;
 import com.redhat.ceylon.compiler.java.metadata.ValueType;
 
 @Ceylon(major = 3)
-@Class(extendsType = "ceylon.language::IdentifiableObject")
+@Class
 @CaseTypes({"ceylon.language::true", "ceylon.language::false"})
 @ValueType
 public abstract class Boolean {

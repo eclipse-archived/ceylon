@@ -12,5 +12,5 @@ import java.lang.annotation.Target;
 @Target(ElementType.TYPE)
 public @interface Class {
     /** The Ceylon superclass of the {@code @Class}-annotated Ceylon type */
-    String extendsType() default "ceylon.language::IdentifiableObject";
+    String extendsType() default "ceylon.language::Basic";
 }

@@ -6,7 +6,7 @@ import com.redhat.ceylon.compiler.java.metadata.Class;
 import com.redhat.ceylon.compiler.java.metadata.Ignore;
 
 @Ceylon(major = 3)
-@Class(extendsType = "ceylon.language::IdentifiableObject")
+@Class
 @CaseTypes({"ceylon.language::equal", 
 	        "ceylon.language::smaller", 
 	        "ceylon.language::larger"})

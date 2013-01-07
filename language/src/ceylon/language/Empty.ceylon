@@ -2,16 +2,16 @@ doc "A sequence with no elements. The type of the expression
      `{}`."
 see (Sequence)
 shared interface Empty
-           satisfies Bottom[] & 
+           satisfies Nothing[] & 
                      EmptyContainer &
                      Ranged<Integer,[]> &
                      Cloneable<Empty> {
     
     doc "Returns an iterator that is already exhausted."
-    shared actual Iterator<Bottom> iterator => emptyIterator;
+    shared actual Iterator<Nothing> iterator => emptyIterator;
     
     doc "Returns `null` for any given index."
-    shared actual Nothing item(Integer index) => null;
+    shared actual Null item(Integer index) => null;
     
     doc "Returns an `Empty` for any given segment."
     shared actual Empty segment(Integer from, Integer length) => this;
@@ -40,13 +40,13 @@ shared interface Empty
     shared actual String string => "{}";
     
     doc "Returns `null`."
-    shared actual Nothing lastIndex => null; 
+    shared actual Null lastIndex => null; 
     
     doc "Returns `null`."
-    shared actual Nothing first => null;
+    shared actual Null first => null;
     
     doc "Returns `null`."
-    shared actual Nothing last => null; 
+    shared actual Null last => null; 
     
     //shared actual Empty rest { return this; }
     
@@ -67,37 +67,37 @@ shared interface Empty
     
     doc "Returns 0 for any given predicate."
     shared actual Integer count(
-            Boolean selecting(Bottom element)) => 0;
+            Boolean selecting(Nothing element)) => 0;
     
     shared actual Boolean defines(Integer index) => false;
     
     shared actual Empty map<Result>(
-            Result collecting(Bottom element)) => this;
+            Result collecting(Nothing element)) => this;
     
     shared actual Empty filter
-            (Boolean selecting(Bottom element)) => this;
+            (Boolean selecting(Nothing element)) => this;
     
     shared actual Result fold<Result>(Result initial,
-            Result accumulating(Result partial, Bottom element)) => 
+            Result accumulating(Result partial, Nothing element)) => 
                     initial;
     
-    shared actual Nothing find
-            (Boolean selecting(Bottom element)) => null;
+    shared actual Null find
+            (Boolean selecting(Nothing element)) => null;
     
     shared actual Empty sort
-            (Comparison? comparing(Bottom a, Bottom b)) => this;
+            (Comparison? comparing(Nothing a, Nothing b)) => this;
     
     shared actual Empty collect<Result>
-            (Result collecting(Bottom element)) => this;
+            (Result collecting(Nothing element)) => this;
     
     shared actual Empty select
-            (Boolean selecting(Bottom element)) => this;
+            (Boolean selecting(Nothing element)) => this;
     
     shared actual Boolean any
-            (Boolean selecting(Bottom element)) => false;
+            (Boolean selecting(Nothing element)) => false;
     
     shared actual Boolean every
-            (Boolean selecting(Bottom element)) => false;
+            (Boolean selecting(Nothing element)) => false;
     
     shared actual Empty skipping(Integer skip) => this;
     
@@ -118,6 +118,6 @@ doc "The value representing a sequence with no elements. The
 shared object empty extends Object() satisfies Empty {}
 
 doc "An iterator that returns no elements."
-shared object emptyIterator satisfies Iterator<Bottom> {
-    next() => exhausted;
+shared object emptyIterator satisfies Iterator<Nothing> {
+    next() => finished;
 }

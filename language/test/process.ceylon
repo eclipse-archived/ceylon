@@ -1,14 +1,14 @@
 void testProcess() {
     // basically just test if everything can be called without error
-    Void args = process.arguments;
-    if (is Void[] args) {
+    Anything args = process.arguments;
+    if (is Anything[] args) {
         for (arg in args) {
             check(arg is String, "process.arguments");
         }
     } else {
         fail("process.arguments is no sequence");
     }
-    Void argPresent = process.namedArgumentPresent("");
+    Anything argPresent = process.namedArgumentPresent("");
     check(argPresent is Boolean, "process.namedArgumentPresent");
     check(!process.namedArgumentValue("") exists, "process.namedArgumentValue");
     String? filesep = process.propertyValue("file.separator");

@@ -39,7 +39,7 @@ shared class Singleton<out Element>(Element element)
             variable Boolean done = false;
             shared actual Element|Finished next() {
                 if (done) {
-                    return exhausted;
+                    return finished;
                 }
                 else {
                     done=true;

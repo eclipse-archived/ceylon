@@ -5,7 +5,7 @@ class Pair(String one, String two) satisfies Iterable<String> {
             i++;
             if (i==1) { return one; }
             if (i==2) { return two; }
-            return exhausted;
+            return finished;
         }
     }
     shared actual Boolean empty = false;
@@ -89,16 +89,16 @@ void iterators() {
     check(iter1.next()==1, "seq.iter");
     iter1.next(); iter1.next(); iter1.next();
     check(iter1.next()==5, "seq.iter");
-    check(iter1.next()==exhausted, "seq.iter");
-    check(iter1.next()==exhausted, "seq.iter");
+    check(iter1.next()==finished, "seq.iter");
+    check(iter1.next()==finished, "seq.iter");
     check(iter2.next()==95, "range.iter");
     iter2.next(); iter2.next(); iter2.next(); iter2.next();
     check(iter2.next()==100, "range.iter");
-    check(iter2.next()==exhausted, "range.iter");
-    check(iter2.next()==exhausted, "range.iter");
+    check(iter2.next()==finished, "range.iter");
+    check(iter2.next()==finished, "range.iter");
     check(iter3.next()==10, "singleton.iter");
-    check(iter3.next()==exhausted, "singleton.iter");
-    check(iter3.next()==exhausted, "singleton.iter");
+    check(iter3.next()==finished, "singleton.iter");
+    check(iter3.next()==finished, "singleton.iter");
 
     print("Testing for/else loops");
     test_foreach();

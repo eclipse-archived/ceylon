@@ -19,19 +19,19 @@ class MyComparable() satisfies Comparable<MyComparable> {
         return p <=> other.p;
     }
 }
-class MyContainerWithLastElement() satisfies ContainerWithFirstElement<Integer,Nothing> {
+class MyContainerWithLastElement() satisfies ContainerWithFirstElement<Integer,Null> {
     shared actual Integer? first { return 1; }
     shared actual Integer? last { return 2; }
     shared actual Boolean empty { return false; }
     shared actual Boolean contains(Object element) => element == 1 || element == 2;
 }
-class MyContainerWithoutFirstElement() satisfies ContainerWithFirstElement<Integer,Nothing> {
+class MyContainerWithoutFirstElement() satisfies ContainerWithFirstElement<Integer,Null> {
     shared actual Integer? first { return null; }
     shared actual Integer? last { return 2; }
     shared actual Boolean empty { return false; }
     shared actual Boolean contains(Object element) => element == 2;
 }
-class MyContainerWithoutLastElement() satisfies ContainerWithFirstElement<Integer,Nothing> {
+class MyContainerWithoutLastElement() satisfies ContainerWithFirstElement<Integer,Null> {
     shared actual Integer? first { return 1; }
     shared actual Integer? last { return null; }
     shared actual Boolean empty { return false; }
@@ -43,15 +43,15 @@ class MyCloseable() satisfies Closeable {
     shared actual void close(Exception? e) {opened=false;}
 }
 class MyContainer() satisfies EmptyContainer {
-    shared actual Nothing first { return null; }
-    shared actual Nothing last { return null; }
+    shared actual Null first { return null; }
+    shared actual Null last { return null; }
     shared actual Boolean empty = true;
     shared actual Boolean contains(Object element) => false;
 }
 class MyIterator() satisfies Iterator<Integer> {
     variable value done = false;
     shared actual Integer|Finished next() {
-        value r = done then exhausted else 1;
+        value r = done then finished else 1;
         done = true;
         return r;
     }
@@ -139,7 +139,7 @@ void testSatisfaction() {
     check(`l` in collection, "Collection.contains");
     check(collection.string == "{ h, e, l, l, o }", "Collection.string");
     check(MyComparable() <= MyComparable(), "Comparable.compare");
-    variable ContainerWithFirstElement<Integer,Nothing> cwfe = MyContainerWithLastElement();
+    variable ContainerWithFirstElement<Integer,Null> cwfe = MyContainerWithLastElement();
     check(cwfe.first exists, "ContainerWithFirstElement.first [1]");
     check(cwfe.last exists,  "ContainerWithFirstElement.last  [1]");
     cwfe = MyContainerWithoutFirstElement();

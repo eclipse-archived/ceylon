@@ -87,7 +87,7 @@ shared interface Map<out Key,out Item>
                     LazySet({for (k->v in outer) if (v==key) k});
             
             shared actual Iterator<Item->Set<Key>> iterator =>
-                    outer.values.map((Item e) e ->
+                    outer.values.map((Item e) => e ->
                             LazySet({for (k->v in outer) if (v==e) k}))
                                     .iterator;
             
@@ -122,7 +122,7 @@ shared interface Map<out Key,out Item>
                 //return null;
             }
             shared actual Iterator<Key->Result> iterator {
-                return outer.map((Key->Item e) 
+                return outer.map((Key->Item e) =>
                         e.key -> mapping(e.key,e.item))
                                 .iterator;
             }

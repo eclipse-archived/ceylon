@@ -3,7 +3,7 @@ doc "Produces elements of an `Iterable` object. Classes that
 see (Iterable)
 by "Gavin"
 shared interface Iterator<out Element> {
-    doc "The next element, or `exhausted` if
-         there are no more elements to be iterated."
+    doc "The next element, or `finished` if there are no 
+         more elements to be iterated."
     shared formal Element|Finished next();
 }

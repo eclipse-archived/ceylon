@@ -80,7 +80,7 @@ class SetTest<Element>(Element... element) extends Object()
 
 void testSets() {
     value s1 = SetTest<Integer>(1, 2, 3);
-    value emptySet = SetTest<Bottom>();
+    value emptySet = SetTest<Nothing>();
     check(s1.count((Integer x) x==2)==1, "Set.count 1");
     check(s1.count((Integer x) x==100)==0, "Set.count 2");
     check(2 in s1, "Set.contains 1");

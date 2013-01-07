@@ -17,7 +17,7 @@ void comprehensions() {
   check([for (x in 1..6) if (x % 2 == 0) for (y in 1..3) if ((x*y)%3==0) x*y]=={6,12,6,12,18}, "comprehensions 8");
   check([for (x in 1..10) if (x%2==0) if (x>5) x]=={6,8,10}, "comprehensions 9");
   variable Object varcomp = s1;
-  check(varcomp is Iterable<Void>, "comprehension is Iterable");
+  check(varcomp is Iterable<Anything>, "comprehension is Iterable");
   check([for (x in {null, "hello", "goodbye"}) if (exists x) if (x.size>5) x]=={"goodbye"}, "comprehensions w/exists 1");
   check([for (x in {"a", "", "c"}) if (exists c=x[0]) c.uppercased]=={`A`, `C`}, "comprehensions w/exists 2");
   check([for (x in {"a", "", "c"}) if (!x.empty) x.uppercased]=={"A", "C"}, "comprehensions w/nonempty 1");
@@ -41,12 +41,12 @@ void comprehensions() {
   //*************Newly found bugs here
   //ceylon-compiler#598
   value b598 = [ for (x in 0..10) if (x%2==0) x**2 ];
-  check(b598 is Sequence<Void>, "ceylon-compiler #598 [1]");
+  check(b598 is Sequence<Anything>, "ceylon-compiler #598 [1]");
   check(b598.string=="{ 0, 4, 16, 36, 64, 100 }", "ceylon-compiler #598 [2]");
   //ceylon-compiler#599
   value b599_1 = [for (x in "hello") x];
   value b599_2 = [b599_1...];
-  check(b599_2 is Sequence<Void>, "ceylon-compiler #599 [1]");
+  check(b599_2 is Sequence<Anything>, "ceylon-compiler #599 [1]");
   check(b599_1.sequence == b599_2, "ceylon-compiler #599 [2]");
   //ceylon-compiler#601
   Iterable<String>? b601 = first([ for (s in "hello world".split()) s ], {""});

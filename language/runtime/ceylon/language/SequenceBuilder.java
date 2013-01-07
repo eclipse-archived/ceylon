@@ -13,7 +13,7 @@ import com.redhat.ceylon.compiler.java.metadata.TypeParameter;
 import com.redhat.ceylon.compiler.java.metadata.TypeParameters;
 
 @Ceylon(major = 3)
-@Class(extendsType="ceylon.language::IdentifiableObject")
+@Class
 @TypeParameters(@TypeParameter(value = "Element"))
 public class SequenceBuilder<Element> {
 

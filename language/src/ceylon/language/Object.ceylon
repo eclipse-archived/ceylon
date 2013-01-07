@@ -7,16 +7,16 @@ doc "The abstract supertype of all types representing
          \"hello\"+ \" \" + \"world\"==\"hello world\"
          Singleton(\"hello world\")=={ \"hello world\" }
      
-     However, since `Nothing` is not a subtype of `Object`,
-     the value `null` cannot be compared to any other value
+     However, since `Null` is not a subtype of `Object`, the 
+     value `null` cannot be compared to any other value
      using `==`. Thus, value equality is not defined for 
      optional types. This neatly voids the problem of 
      deciding the value of the expression `null==null`, 
      which is simply illegal."
-see (IdentifiableObject, Nothing)
+see (Basic, Null)
 by "Gavin"
 shared abstract class Object() 
-        extends Void() {
+        extends Anything() {
     
     doc "Determine if two values are equal. Implementations
          should respect the constraints that:

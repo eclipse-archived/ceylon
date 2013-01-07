@@ -30,17 +30,17 @@ doc "Abstract supertype of containers whose elements may be
      Lazy operations are preferred, because they can be 
      efficiently chained. For example:
      
-         string.filter((Character c) c.letter).map((Character c) c.uppercased)
+         string.filter((Character c) => c.letter).map((Character c) => c.uppercased)
      
      is much less expensive than:
      
-         string.select((Character c) c.letter).collect((Character c) c.uppercased)
+         string.select((Character c) => c.letter).collect((Character c) => c.uppercased)
      
      Furthermore, it is always easy to produce a new 
      immutable iterable object given the view produced by a
      lazy operation. For example:
      
-         { string.filter((Character c) c.letter).map((Character c) c.uppercased)... }
+         [ string.filter((Character c) => c.letter).map((Character c) => c.uppercased)... ]
      
      Lazy operations normally return an instance of 
      `Iterable` or `Map`.
@@ -57,7 +57,7 @@ doc "Abstract supertype of containers whose elements may be
 see (Collection)
 by "Gavin"
 shared interface Iterable<out Element> 
-        satisfies ContainerWithFirstElement<Element,Nothing> {
+        satisfies ContainerWithFirstElement<Element,Null> {
     
     doc "An iterator for the elements belonging to this 
          container."
@@ -68,7 +68,7 @@ shared interface Iterable<out Element>
     shared actual default Boolean empty =>
             iterator.next() is Finished;
     
-    shared default Integer size => count((Element e) true);
+    shared default Integer size => count((Element e) => true);
     
     shared actual default Boolean contains(Object element) => 
             any(ifExists(element.equals));
@@ -266,7 +266,7 @@ shared interface Iterable<out Element>
                         value iter = outerIterable.iterator;
                         variable value i=0;
                         actual shared Element|Finished next() {
-                            return ++i>take then exhausted 
+                            return ++i>take then finished 
                                     else iter.next();
                         }
                     }
@@ -324,7 +324,7 @@ shared interface Iterable<out Element>
             Boolean selecting(Element element)) {
         variable value count=0;
         for (elem in this) {
-            if (is Object elem) {
+            if (exists elem) {
                 if (selecting(elem)) {
                     count++;
                 }
@@ -371,7 +371,7 @@ shared interface Iterable<out Element>
                                 }
                             }
                             else {
-                                return exhausted;
+                                return finished;
                             }
                         }
                     }
@@ -408,7 +408,7 @@ shared interface Iterable<out Element>
     
 }
 
-Boolean ifExists(Boolean predicate(Object val))(Void val) {
+Boolean ifExists(Boolean predicate(Object val))(Anything val) {
     if (exists val) {
         return predicate(val);
     }

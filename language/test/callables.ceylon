@@ -31,8 +31,8 @@ void callables() {
   TestCallable(String) clazz = TestCallable;
   TestCallable inst = clazz("hello");
   String(Integer) meth = inst.something;
-  Object(Bottom) clazzSuper = TestCallable;
-  Void(Bottom) methSuper = inst.something;
+  Object(Nothing) clazzSuper = TestCallable;
+  Anything(Nothing) methSuper = inst.something;
   function noop(Object x, Object y) { return x; }
   Object(String,Integer) noopRef = noop;
   check("hello"==noopRef("hello",2), "Callable contravariance");

@@ -75,7 +75,7 @@ void lists() {
     check(b.reversed==8..1, "LazyList.reversed");
     
     //#167
-    value empty167 = TestList<Bottom>();
+    value empty167 = TestList<Nothing>();
     check(empty167=={}, "empty167=={}");
     check({}==empty167, "{}==empty167");
     check(empty167.hash=={}.hash, "empty167.hash=={}.hash");

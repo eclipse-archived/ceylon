@@ -10,7 +10,7 @@ shared class LazySet<out Element>({Element...} elems)
     
     shared actual Integer size {
         variable value c=0;
-        value sorted = elems.sort(byIncreasing((Element e) e.hash));
+        value sorted = elems.sort(byIncreasing((Element e) => e.hash));
         if (exists l=sorted.first) {
             c=1;
             variable Element last = l;
