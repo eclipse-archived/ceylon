@@ -24,6 +24,7 @@ interface Barface {
 
 class FunctionalParameterDefaults(
     Integer f(Integer i)=>i,
+    void k(Float f)=>print(f), 
     @error Integer h(Float f)=>f, 
     @error void g()=>"hello") {
 }

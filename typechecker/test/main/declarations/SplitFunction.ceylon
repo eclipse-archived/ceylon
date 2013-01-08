@@ -74,7 +74,9 @@ void splitFunction() {
     higher3(void f(String s), String g(Object i)) => print(f(g(0.0)));
     
     void myvoid();
-    @error myvoid() => "hello";
+    myvoid() => print("hello");
+    void brokenvoid();
+    @error brokenvoid() => "hello";
     
     void higher(Anything f(), void g()) { f(); g(); }
     higher { f()=>0; @error g()=>0; };

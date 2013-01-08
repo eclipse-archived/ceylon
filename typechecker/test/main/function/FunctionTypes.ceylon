@@ -86,7 +86,7 @@ void method() {
     @type:"X" @error function badder(Integer n) => X(n);
     @error String worse(String s) => X;
     @error String worst() => X;
-    @error void broke() => noop();
+    void notbroke() => noop();
     @error Z moreBroke() => Z;
     @error do(Z);
     @type:"Anything" function z() => Z;
@@ -126,7 +126,7 @@ void method() {
     
     higher2 { 
         strings = ["goodbye"];
-        @error void f(String s) => print(s);
+        void f(String s) => print(s);
     };
     higher2 { 
         strings = ["goodbye"];

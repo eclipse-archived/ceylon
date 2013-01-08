@@ -29,7 +29,6 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
 
-import com.redhat.ceylon.compiler.typechecker.model.NothingType;
 import com.redhat.ceylon.compiler.typechecker.model.Class;
 import com.redhat.ceylon.compiler.typechecker.model.ClassOrInterface;
 import com.redhat.ceylon.compiler.typechecker.model.Declaration;
@@ -41,6 +40,7 @@ import com.redhat.ceylon.compiler.typechecker.model.Interface;
 import com.redhat.ceylon.compiler.typechecker.model.IntersectionType;
 import com.redhat.ceylon.compiler.typechecker.model.Method;
 import com.redhat.ceylon.compiler.typechecker.model.MethodOrValue;
+import com.redhat.ceylon.compiler.typechecker.model.NothingType;
 import com.redhat.ceylon.compiler.typechecker.model.Parameter;
 import com.redhat.ceylon.compiler.typechecker.model.ParameterList;
 import com.redhat.ceylon.compiler.typechecker.model.ProducedReference;
@@ -58,10 +58,12 @@ import com.redhat.ceylon.compiler.typechecker.model.Value;
 import com.redhat.ceylon.compiler.typechecker.model.ValueParameter;
 import com.redhat.ceylon.compiler.typechecker.tree.Node;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree;
+import com.redhat.ceylon.compiler.typechecker.tree.Tree.DefaultArgument;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.Ellipsis;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.Expression;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.SpecifierOrInitializerExpression;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.SupertypeQualifier;
+import com.redhat.ceylon.compiler.typechecker.tree.Tree.Term;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.TypedArgument;
 import com.redhat.ceylon.compiler.typechecker.tree.Visitor;
 
@@ -124,6 +126,19 @@ public class ExpressionVisitor extends Visitor {
         defaultArgument=false;
     }
     
+    @Override public void visit(Tree.FunctionalParameterDeclaration that) {
+    	super.visit(that);
+    	FunctionalParameter p = that.getDeclarationModel();
+        DefaultArgument da = that.getDefaultArgument();
+		if (p.isDeclaredVoid() && p.isDefaulted() && 
+				da.getSpecifierExpression()!=null && 
+				da.getSpecifierExpression().getExpression()!=null &&
+				!isVoidMethodReference(da.getSpecifierExpression().getExpression())) {
+        	da.addError("void functional parameter may not have a default value");
+        }
+
+    }
+    
     @Override public void visit(Tree.FunctionArgument that) {
         Expression e = that.getExpression();
         if (e==null) {
@@ -144,6 +159,10 @@ public class ExpressionVisitor extends Visitor {
                 checkAssignable(t, that.getType().getTypeModel(), e, 
                         "expression type must be assignable to specified return type");
             }*/
+    		if (that.getType() instanceof Tree.VoidModifier &&
+    				!isVoidMethodReference(e)) {
+            	e.addError("void function may not evaluate to a value");
+            }
         }
         if (that.getType() instanceof Tree.VoidModifier) {
         	ProducedType vt = unit.getAnythingDeclaration().getType();
@@ -651,7 +670,8 @@ public class ExpressionVisitor extends Visitor {
                                 d.getName(unit), 803);
                     }
                 }
-                if (d instanceof Method && ((Method) d).isDeclaredVoid()) {
+                if (d instanceof Method && ((Method) d).isDeclaredVoid()  && 
+        				!isVoidMethodReference(sie.getExpression())) {
                 	that.addError("cannot specify void method: " + d.getName(unit));
                 }
                 
@@ -683,6 +703,17 @@ public class ExpressionVisitor extends Visitor {
             me.addError("illegal specification statement");
         }
     }
+
+	static boolean isVoidMethodReference(Tree.Expression e) {
+		//TODO: correctly handle multiple parameter lists!
+		Term term = e.getTerm();
+		if (!(term instanceof Tree.InvocationExpression)) return false;
+		Tree.InvocationExpression ie = (Tree.InvocationExpression) term;
+		if (!(ie.getPrimary() instanceof Tree.MemberOrTypeExpression)) return false;
+		Tree.MemberOrTypeExpression mte = (Tree.MemberOrTypeExpression) ie.getPrimary();
+		if (!(mte.getDeclaration() instanceof Method)) return false;
+		return ((Method) mte.getDeclaration()).isDeclaredVoid();
+	}
 
     private ProducedType eraseDefaultedParameters(ProducedType t) {
         ProducedType ct = t.getSupertype(unit.getCallableDeclaration());
@@ -924,6 +955,10 @@ public class ExpressionVisitor extends Visitor {
                 if (that.getType()!=null) {
                     checkFunctionType(returnType, that.getType(), se);
                 }
+                if (that.getType() instanceof Tree.VoidModifier && 
+        				!isVoidMethodReference(e)) {
+                	se.addError("void method may not evaluate to a value");
+                }
             }
         }
     }
@@ -953,6 +988,10 @@ public class ExpressionVisitor extends Visitor {
                 inferFunctionType(that, returnType);
                 if (that.getType()!=null) {
                     checkFunctionType(returnType, that.getType(), se);
+                }
+        		if (that.getDeclarationModel().isDeclaredVoid() && 
+        				!isVoidMethodReference(e)) {
+        			se.addError("void functional argument may not evaluate to a value");
                 }
             }
         }

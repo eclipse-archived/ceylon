@@ -120,4 +120,7 @@ interface Declarations {
     
     @error object obj {}
     
+    void myvoid() => print("hello");
+    @error void brokenvoid() => "hello";
+    
 }

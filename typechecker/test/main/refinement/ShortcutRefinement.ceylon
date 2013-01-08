@@ -142,19 +142,23 @@ class FatArrowRefinement(name)
 interface Above {
     shared formal Integer f();
     shared formal String s;
+    shared formal void x();
 }
 interface Below satisfies Above {
     f() => 1;
     s => "";
+    x() => print("hello");
 }
 interface Below2 satisfies Above {
     shared actual Integer f() { return 1; }
     shared actual String s { return ""; }
+    shared actual void x() { print("hello"); }
 }
 interface BrokenBelow satisfies Above {
     void g() {}
     @error f = g;
     @error s = "";
+    @error x() => "hello";
 }
 object below satisfies Below {}
 object below2 satisfies Below2 {}

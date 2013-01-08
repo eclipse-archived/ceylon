@@ -37,6 +37,7 @@ import com.redhat.ceylon.compiler.typechecker.model.Value;
 import com.redhat.ceylon.compiler.typechecker.model.ValueParameter;
 import com.redhat.ceylon.compiler.typechecker.tree.Node;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree;
+import com.redhat.ceylon.compiler.typechecker.tree.Tree.DefaultArgument;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.SequencedType;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.SpecifierOrInitializerExpression;
 import com.redhat.ceylon.compiler.typechecker.tree.Visitor;
@@ -361,9 +362,6 @@ public class DeclarationVisitor extends Visitor {
         exitScope(o);
         checkMethodArgumentParameters(that);
         m.setDeclaredAnything(that.getType() instanceof Tree.VoidModifier);
-        if (m.isDeclaredVoid() && that.getSpecifierExpression()!=null) {
-        	that.addError("void functional argument may not evaluate to a value");
-        }
     }
 
     @Override
@@ -379,9 +377,6 @@ public class DeclarationVisitor extends Visitor {
         checkFunctionArgumentParameters(that);
         m.setDeclaredAnything(that.getType() instanceof Tree.VoidModifier);
         //that.addWarning("inline functions not yet supported");
-        if (that.getType() instanceof Tree.VoidModifier && that.getExpression()!=null) {
-        	that.getExpression().addError("void function may not evaluate to a value");
-        }
     }
 
     private static void checkMethodParameters(Tree.AnyMethod that) {
@@ -513,9 +508,6 @@ public class DeclarationVisitor extends Visitor {
                 that.getType().addError("shared method must explicitly specify a return type", 200);
             }
         }
-        if (that.getType() instanceof Tree.VoidModifier && sie!=null) {
-        	that.getSpecifierExpression().addError("void method may not evaluate to a value");
-        }
     }
             
     @Override
@@ -643,7 +635,8 @@ public class DeclarationVisitor extends Visitor {
     public void visit(Tree.FunctionalParameterDeclaration that) {
         FunctionalParameter p = new FunctionalParameter();
         p.setDeclaration(declaration);
-        p.setDefaulted(that.getDefaultArgument()!=null);
+        DefaultArgument da = that.getDefaultArgument();
+		p.setDefaulted(da!=null);
         p.setDeclaredAnything(that.getType() instanceof Tree.VoidModifier);
         that.setDeclarationModel(p);
         visitDeclaration(that, p);
@@ -653,10 +646,6 @@ public class DeclarationVisitor extends Visitor {
         parameterList.getParameters().add(p);
         if (that.getType() instanceof Tree.SequencedType) {
         	that.getType().addError("functional parameter may not be sequenced");
-        }
-        if (p.isDeclaredVoid() && p.isDefaulted()) {
-        	that.getDefaultArgument()
-        	    .addError("void functional parameter may not have a default value");
         }
         if (that.getParameterLists().isEmpty()) {
         	that.addError("missing parameter list");

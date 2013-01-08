@@ -15,6 +15,7 @@ class Parameters() {
     void x12(@error void f(Integer i)=>i) {}
     void x13(@error value s="hello") {}
     void x14(@error void f) {}
+    void x15(void f(Integer i)=>print(i)) {}
     
     void d1(String name="World") {}
     void d2(Integer count=0) {}
