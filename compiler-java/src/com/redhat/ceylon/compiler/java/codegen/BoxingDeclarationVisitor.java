@@ -225,7 +225,8 @@ public abstract class BoxingDeclarationVisitor extends Visitor {
         }
         
         // inherit underlying type constraints
-        if(refinedDeclaration != declaration && type.getUnderlyingType() == null)
+        if(refinedDeclaration != declaration && type.getUnderlyingType() == null
+                && refinedDeclaration.getType() != null)
             type.setUnderlyingType(refinedDeclaration.getType().getUnderlyingType());
         
         // abort if our boxing state has already been set
@@ -279,7 +280,9 @@ public abstract class BoxingDeclarationVisitor extends Visitor {
         boxAttribute(declaration);
         rawTypedDeclaration(declaration);
         erasureToObject(declaration);
-        if (declaration.getContainer() instanceof TypeDeclaration && CodegenUtil.isSmall(declaration)) {
+        if (declaration.getContainer() instanceof TypeDeclaration 
+                && CodegenUtil.isSmall(declaration)
+                && declaration.getType() != null) {
             declaration.getType().setUnderlyingType("int");
         }
     }
