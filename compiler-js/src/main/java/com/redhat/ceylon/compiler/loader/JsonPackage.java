@@ -33,7 +33,7 @@ import com.redhat.ceylon.compiler.typechecker.model.ValueParameter;
 
 public class JsonPackage extends com.redhat.ceylon.compiler.typechecker.model.Package {
 
-    //Ugly hack to have a ref to IdentifiableObject at hand, to use as implicit supertype of classes
+    //Ugly hack to have a ref to Basic at hand, to use as implicit supertype of classes
     private final static Map<String,Object> idobj = new HashMap<String, Object>();
     //This is to use as the implicit supertype of interfaces
     private final static Map<String,Object> objclass = new HashMap<String, Object>();
@@ -46,7 +46,7 @@ public class JsonPackage extends com.redhat.ceylon.compiler.typechecker.model.Pa
     private NothingType bottom;
 
     static {
-        idobj.put(MetamodelGenerator.KEY_NAME, "IdentifiableObject");
+        idobj.put(MetamodelGenerator.KEY_NAME, "Basic");
         idobj.put(MetamodelGenerator.KEY_PACKAGE, "ceylon.language");
         idobj.put(MetamodelGenerator.KEY_MODULE, "ceylon.language");
         objclass.put(MetamodelGenerator.KEY_NAME, "Object");

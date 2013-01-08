@@ -710,7 +710,7 @@ public class GenerateJsVisitor extends Visitor
         if (extendedType != null) {
             out(",", typeFunctionName(extendedType.getType(), false));
         } else if (!isInterface) {
-            out(",", clAlias, "IdentifiableObject");
+            out(",", clAlias, "Basic");
         }
 
         if (satisfiedTypes != null) {
