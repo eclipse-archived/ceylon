@@ -173,7 +173,7 @@ Used with another target such as 'package'">
             depends="install-compiler, install-js, copy-compiler-binaries, 
                      copy-samples, copy-templates, copy-jvm-compiler-libraries,
                      copy-js-compiler-libraries, copy-cmr-libraries, copy-licenses,
-                     install-typechecker, install-language, install-runtime"
+                     install-language, install-runtime"
             description="Generates all binaries and copies them to the distribution folder">
     </target>
 
@@ -272,20 +272,20 @@ Used with another target such as 'package'">
     </target>
 
     <target name="install-compiler" 
-          depends="install-typechecker, install-language">
+          depends="install-typechecker">
         <ant antfile="${ceylon-compiler.dir}/build.xml" target="publish" dir="${ceylon-compiler.dir}" inheritall="false">
             <property name="ceylon.repo.dir" value="${ceylon.repo.dir}"/>
         </ant>
     </target>
 
-    <target name="install-js" depends="install-typechecker, install-language">
+    <target name="install-js" depends="install-typechecker">
         <ant antfile="${ceylon-js.dir}/build.xml" target="publish" dir="${ceylon-js.dir}" inheritall="false">
             <property name="ceylon.repo.dir" value="${ceylon.repo.dir}"/>
         </ant>
     </target>
 
     <target name="install-typechecker" 
-            depends="install-cmr, install-language">
+            depends="install-cmr">
         <ant antfile="${ceylon-spec.dir}/build.xml" target="publish" dir="${ceylon-spec.dir}" inheritall="false">
             <property name="ceylon.repo.dir" value="${ceylon.repo.dir}"/>
         </ant>
