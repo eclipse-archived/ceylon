@@ -74,7 +74,7 @@ class Bug687 {
             }
             returning p.$call($arg$6$0);
         );
-        final .ceylon.language.Callable<? extends .java.lang.Object> f = new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.java.lang.Object>("Void({Bottom...})"){
+        final .ceylon.language.Callable<? extends .java.lang.Object> f = new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.java.lang.Object>("Anything({Bottom...})"){
             
             @.java.lang.Override
             public .java.lang.Object $call(final .java.lang.Object $param$0) {

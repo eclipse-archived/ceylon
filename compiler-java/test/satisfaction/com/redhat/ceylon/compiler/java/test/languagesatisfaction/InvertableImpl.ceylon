@@ -18,6 +18,6 @@
  * MA  02110-1301, USA.
  */
 class InvertableImpl<out Inverse>() satisfies Invertable<Inverse> {
-    shared actual Inverse negativeValue = bottom;
-    shared actual Inverse positiveValue = bottom;
+    shared actual Inverse negativeValue = nothing;
+    shared actual Inverse positiveValue = nothing;
 }

@@ -21,16 +21,16 @@
 void bug646() {
     String[][] strs = {};
     Iterable<String[]> arrays = {};
-    Iterable<Void(String)> observers = {};
-    Void(String)[] observers2 = {};
+    Iterable<Anything(String)> observers = {};
+    Anything(String)[] observers2 = {};
     Iterable<Integer(String)> observers3 = {};
     Integer(Bottom)[] observers4 = {};
     Integer(String|Integer)[] observers5 = {};
     Integer(Nothing)[] observers6 = {};
-    Integer(IdentifiableObject)[] observers7 = {};
+    Integer(Basic)[] observers7 = {};
     Iterable<Iterable<Integer|String>> foo = {};
     Iterable<String|Integer> union = {};
-    Iterable<IdentifiableObject> ident = {};
-    Iterable<Void> v = {};
+    Iterable<Basic> ident = {};
+    Iterable<Anything> v = {};
     Iterable<Bottom> bot = {};
 }

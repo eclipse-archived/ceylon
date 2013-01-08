@@ -21,6 +21,6 @@
 void callableReturnBinary_foo(Integer i, String s) {
 }
 @nomodel
-Callable<Void, [Integer, String]> callableReturnBinary_bar() {
+Callable<Anything, [Integer, String]> callableReturnBinary_bar() {
     return callableReturnBinary_foo;
 }

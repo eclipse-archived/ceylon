@@ -32,7 +32,7 @@ Integer namedArgumentInvocationTopLevelX = namedArgumentInvocationTopLevelF{
     n=123;
 };
 @nomodel
-Void namedArgumentInvocationTopLevelY = namedArgumentInvocationTopLevelV{
+Anything namedArgumentInvocationTopLevelY = namedArgumentInvocationTopLevelV{
     s="abc";
     n=123;
 };

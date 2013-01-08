@@ -14,7 +14,7 @@ final class callableReturnBinary_bar_ {
     }
     
     static .ceylon.language.Callable<? extends .java.lang.Object> callableReturnBinary_bar() {
-        return new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.java.lang.Object>("Void(Integer, String)"){
+        return new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.java.lang.Object>("Anything(Integer, String)"){
             
             @.java.lang.Override
             public .java.lang.Object $call(final .java.lang.Object $param$0, final .java.lang.Object $param$1) {

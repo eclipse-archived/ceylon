@@ -20,44 +20,44 @@
 class ScalarImpl<Other>() of Other satisfies Scalar<Other>
         given Other satisfies Scalar<Other> {
 
-    shared actual Other magnitude = bottom;
+    shared actual Other magnitude = nothing;
     
-    shared actual Other fractionalPart = bottom;
+    shared actual Other fractionalPart = nothing;
     
-    shared actual Other wholePart = bottom;
+    shared actual Other wholePart = nothing;
 
     shared actual Other plus(Other other) {
-        return bottom;
+        return nothing;
     }
     
     shared actual Other minus(Other other) {
-        return bottom;
+        return nothing;
     }
     
     shared actual Other times(Other other) {
-        return bottom;
+        return nothing;
     }
     
     shared actual Other divided(Other other) {
-        return bottom;
+        return nothing;
     }
     
-    shared actual Integer integer = bottom;
+    shared actual Integer integer = nothing;
     
-    shared actual Float float = bottom;
+    shared actual Float float = nothing;
     
-    shared actual Integer sign = bottom;
+    shared actual Integer sign = nothing;
     
-    shared actual Boolean positive = bottom;
+    shared actual Boolean positive = nothing;
     
-    shared actual Boolean negative = bottom;
+    shared actual Boolean negative = nothing;
     
-    shared actual Other negativeValue = bottom;
+    shared actual Other negativeValue = nothing;
     
-    shared actual Other positiveValue = bottom;
+    shared actual Other positiveValue = nothing;
     
     shared actual Comparison compare(Other other) {
-        return bottom;
+        return nothing;
     }
     
 

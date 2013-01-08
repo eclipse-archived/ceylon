@@ -23,14 +23,14 @@ class MapImpl<out Key,out Item>() extends Object()
         given Item satisfies Object {
         
     shared actual MapImpl<Key,Item> clone {
-        return bottom;
+        return nothing;
     }
     
-    shared actual Iterator<Entry<Key,Item>> iterator = bottom;
+    shared actual Iterator<Entry<Key,Item>> iterator = nothing;
     
     shared actual Integer size = 0;
     
     shared actual Item? item(Object key) {
-        return bottom;
+        return nothing;
     }
 }

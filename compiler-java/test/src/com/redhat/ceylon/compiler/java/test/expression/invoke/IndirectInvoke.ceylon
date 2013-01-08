@@ -21,25 +21,25 @@
 class IndirectInvoke<X>() {
 
     // Parameter primary
-    void mParameter(Void() indirect) {
+    void mParameter(Anything() indirect) {
         indirect();
     }
-    void mParameter2(Void(Integer) indirect) {
+    void mParameter2(Anything(Integer) indirect) {
         indirect(1);
     }
-    void mParameter3(Void(Boolean) indirect) {
+    void mParameter3(Anything(Boolean) indirect) {
         indirect(true);
     }
-    void mParameter4(Void(String) indirect) {
+    void mParameter4(Anything(String) indirect) {
         indirect("");
     }
-    void mParameter5<T>(Void(T) indirect, T t) {
+    void mParameter5<T>(Anything(T) indirect, T t) {
         indirect(t);
     }
     
     // local member primary
-    void mLocal(Void() f) {
-        Void() indirect = f;
+    void mLocal(Anything() f) {
+        Anything() indirect = f;
         indirect();
     }
     Integer mLocal2(Integer(Integer) f) {
@@ -60,7 +60,7 @@ class IndirectInvoke<X>() {
     }
     
     // invocation primary
-    void mMethod(Void()() indirect) {
+    void mMethod(Anything()() indirect) {
         indirect()();
     }
     Integer mMethod2(Integer(Integer)() indirect) {
@@ -77,7 +77,7 @@ class IndirectInvoke<X>() {
     }
     
     // getter primary
-    Void() getter1 {
+    Anything() getter1 {
         throw;
     }
     void mGetter1() {
@@ -109,7 +109,7 @@ class IndirectInvoke<X>() {
     }
     
     // value primary
-    Void() value1 = mGetter1;
+    Anything() value1 = mGetter1;
     void mValue1() {
         value1();
     }

@@ -40,6 +40,6 @@ class VarianceSubClass(VarianceBottom classParam) extends VarianceClass(classPar
     shared actual VarianceBottom classAttr = classParam;
     
     shared actual VarianceBottom m(VarianceMiddle param) {
-        return bottom;
+        return nothing;
     }
 }

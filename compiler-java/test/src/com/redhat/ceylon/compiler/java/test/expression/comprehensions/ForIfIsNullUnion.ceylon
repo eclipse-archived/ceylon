@@ -19,7 +19,7 @@
  */
 @nomodel
 class ForIfIsNullUnion() {
-    shared void m(Void[] xs) {
+    shared void m(Anything[] xs) {
         print({ for (x in xs) if (is Character? x) x });
     }
 }

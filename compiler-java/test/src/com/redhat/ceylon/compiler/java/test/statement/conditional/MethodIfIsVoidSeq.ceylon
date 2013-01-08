@@ -18,10 +18,10 @@
  * MA  02110-1301, USA.
  */
 @nomodel
-void methodIfIsVoidSeq() {
+void methodIfIsAnythingSeq() {
     // basically just test if everything can be called without error
-    Void args = process.arguments;
-    if (is Void[] args) {
+    Anything args = process.arguments;
+    if (is Anything[] args) {
         for (arg in args) {
         }
     }

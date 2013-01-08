@@ -19,7 +19,7 @@
  */
 @nomodel
 void lowerInterfaceUsage() {
-    \Ii b = bottom;
+    \Ii b = nothing;
     b.m();
-    \Ii.\Iii c = bottom;
+    \Ii.\Iii c = nothing;
 }

@@ -18,10 +18,10 @@
  * MA  02110-1301, USA.
  */
 @nomodel
-List<String> topLevelAttributeGenerics = { "hello" };
+List<String> topLevelAttributeGenerics = [ "hello" ];
 @nomodel
-shared List<String> topLevelAttributeGenericsShared = { "hello" };
+shared List<String> topLevelAttributeGenericsShared = [ "hello" ];
 @nomodel
-variable List<String> topLevelVariableGenerics = { "hello" };
+variable List<String> topLevelVariableGenerics = [ "hello" ];
 @nomodel
-shared variable List<String> topLevelVariableGenericsShared = { "hello" };
+shared variable List<String> topLevelVariableGenericsShared = [ "hello" ];

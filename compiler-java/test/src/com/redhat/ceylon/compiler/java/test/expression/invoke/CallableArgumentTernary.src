@@ -22,7 +22,7 @@ final class callableArgumentTernary_m_ {
     }
     
     static void callableArgumentTernary_m() {
-        .com.redhat.ceylon.compiler.java.test.expression.invoke.callableArgumentTernary_f_.callableArgumentTernary_f(new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.java.lang.Object>("Void(Integer, String, Boolean)"){
+        .com.redhat.ceylon.compiler.java.test.expression.invoke.callableArgumentTernary_f_.callableArgumentTernary_f(new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.java.lang.Object>("Anything(Integer, String, Boolean)"){
             
             @.java.lang.Override
             public .java.lang.Object $call(final .java.lang.Object $param$0, final .java.lang.Object $param$1, final .java.lang.Object $param$2) {

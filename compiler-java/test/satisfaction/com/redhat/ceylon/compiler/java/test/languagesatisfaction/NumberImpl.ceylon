@@ -18,20 +18,20 @@
  * MA  02110-1301, USA.
  */
 class NumberImpl() satisfies Number {
-    shared actual Boolean positive = bottom;
+    shared actual Boolean positive = nothing;
         
-    shared actual Boolean negative = bottom;
+    shared actual Boolean negative = nothing;
 
-    shared actual Float float = bottom;
+    shared actual Float float = nothing;
     
-    shared actual Integer integer = bottom;
+    shared actual Integer integer = nothing;
     
-    shared actual Number magnitude = bottom;
+    shared actual Number magnitude = nothing;
     
     shared actual Integer sign = 0;
     
-    shared actual Number fractionalPart = bottom;
+    shared actual Number fractionalPart = nothing;
     
-    shared actual Number wholePart = bottom;
+    shared actual Number wholePart = nothing;
 
 }

@@ -19,6 +19,6 @@
  */
 @nomodel
 void bug709(List<String> list) {
-    if (is Sequential<Void> list) {
+    if (is Sequential<Anything> list) {
     }
 }

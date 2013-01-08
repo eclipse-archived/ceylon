@@ -19,11 +19,11 @@
  */
 
 @nomodel
-abstract class RefiningVoidMembersClass<T>(T t) {
+abstract class RefiningAnythingMembersClass<T>(T t) {
     shared void notRefinable(){}
     
     //shared default void defaultGettervoid {}
-    shared default Void defaultGetterVoid {
+    shared default Anything defaultGetterAnything {
         return 1;
     }
     shared default T defaultGetterT {
@@ -31,10 +31,10 @@ abstract class RefiningVoidMembersClass<T>(T t) {
     }
     shared default void defaultReturnsvoidImplicit(){}
     shared default void defaultReturnsvoidExplicit(){return;}
-    shared default Void defaultReturnsVoidImplicit(){
+    shared default Anything defaultReturnsAnythingImplicit(){
         return 1;
     }
-    shared default Void defaultReturnsVoidExplicit(){
+    shared default Anything defaultReturnsAnythingExplicit(){
         return 1;
     }
     shared default T defaultReturnsT() {
@@ -42,66 +42,66 @@ abstract class RefiningVoidMembersClass<T>(T t) {
     }
     
     //shared formal void formalGettervoid;
-    shared formal Void formalGetterVoid;
+    shared formal Anything formalGetterAnything;
     shared formal T formalGetterT;
     shared formal void formalReturnsvoid();
-    shared formal Void formalReturnsVoid();
+    shared formal Anything formalReturnsAnything();
     shared formal T formalReturnsT();
 }
 
 @nomodel
-abstract class RefiningVoidMembersClass_Boxed() extends RefiningVoidMembersClass<Void>(1) {
-    /*shared actual Void defaultGettervoid {
+abstract class RefiningAnythingMembersClass_Boxed() extends RefiningAnythingMembersClass<Anything>(1) {
+    /*shared actual Anything defaultGettervoid {
         return 1;
     }*/
-    shared actual Void defaultGetterT {
+    shared actual Anything defaultGetterT {
         return 1;
     }
-    shared actual Void defaultReturnsvoidExplicit(){
+    shared actual Anything defaultReturnsvoidExplicit(){
         return 1;
     }
-    shared actual Void defaultReturnsT() {
+    shared actual Anything defaultReturnsT() {
         return 1;    
     }
     
-    shared actual Void formalGetterT {
+    shared actual Anything formalGetterT {
         return 1;
     }
-    shared actual Void formalReturnsvoid() {
+    shared actual Anything formalReturnsvoid() {
         return 1;
     }
-    shared actual Void formalReturnsT() {
+    shared actual Anything formalReturnsT() {
         return 1;
     }
 }
 
 @nomodel
-abstract class RefiningVoidMembersClass_Unboxed() extends RefiningVoidMembersClass<Void>(1) {
-    /* shared actual void defaultGetterVoid {
+abstract class RefiningAnythingMembersClass_Unboxed() extends RefiningAnythingMembersClass<Anything>(1) {
+    /* shared actual void defaultGetterAnything {
     }*/
-    shared actual void defaultReturnsVoidExplicit(){
+    shared actual void defaultReturnsAnythingExplicit(){
         return;
     }
-    shared actual void defaultReturnsVoidImplicit(){
+    shared actual void defaultReturnsAnythingImplicit(){
     }
     shared actual void defaultReturnsT() {
     }
-    /* shared actual void formalGetterVoid {
+    /* shared actual void formalGetterAnything {
     };*/
     /* shared actual void formalGetterT {
     };*/
-    shared actual void formalReturnsVoid() {}
+    shared actual void formalReturnsAnything() {}
     shared actual void formalReturnsT() {}
 }
 
 
 @nomodel
-interface RefiningVoidMembersInterface<T> {
+interface RefiningAnythingMembersInterface<T> {
     
     shared void notRefinable(){}
     
     //shared default void defaultGettervoid {}
-    shared default Void defaultGetterVoid {
+    shared default Anything defaultGetterAnything {
         return 1;
     }
     shared default T defaultGetterT {
@@ -109,10 +109,10 @@ interface RefiningVoidMembersInterface<T> {
     }
     shared default void defaultReturnsvoidImplicit(){}
     shared default void defaultReturnsvoidExplicit(){return;}
-    shared default Void defaultReturnsVoidImplicit(){
+    shared default Anything defaultReturnsAnythingImplicit(){
         return 1;
     }
-    shared default Void defaultReturnsVoidExplicit(){
+    shared default Anything defaultReturnsAnythingExplicit(){
         return 1;
     }
     shared default T defaultReturnsT() {
@@ -120,51 +120,51 @@ interface RefiningVoidMembersInterface<T> {
     }
     
     //shared formal void formalGettervoid;
-    shared formal Void formalGetterVoid;
+    shared formal Anything formalGetterAnything;
     shared formal T formalGetterT;
     shared formal void formalReturnsvoid();
-    shared formal Void formalReturnsVoid();
+    shared formal Anything formalReturnsAnything();
     shared formal T formalReturnsT();
 }
 
 @nomodel
-abstract class RefiningVoidMembersInterface_Boxed() satisfies RefiningVoidMembersInterface<Void> {
-    shared actual Void defaultGetterT {
+abstract class RefiningAnythingMembersInterface_Boxed() satisfies RefiningAnythingMembersInterface<Anything> {
+    shared actual Anything defaultGetterT {
         return 1;
     }
-    shared actual Void defaultReturnsvoidExplicit(){
+    shared actual Anything defaultReturnsvoidExplicit(){
         return 1;
     }
-    shared actual Void defaultReturnsT() {
+    shared actual Anything defaultReturnsT() {
         return 1;    
     }
     
-    shared actual Void formalGetterT {
+    shared actual Anything formalGetterT {
         return 1;
     }
-    shared actual Void formalReturnsvoid() {
+    shared actual Anything formalReturnsvoid() {
         return 1;
     }
-    shared actual Void formalReturnsT() {
+    shared actual Anything formalReturnsT() {
         return 1;
     }   
 }
 
 @nomodel
-abstract class RefiningVoidMembersInterface_Unboxed() satisfies RefiningVoidMembersInterface<Void> {
-    /* shared actual void defaultGetterVoid {
+abstract class RefiningAnythingMembersInterface_Unboxed() satisfies RefiningAnythingMembersInterface<Anything> {
+    /* shared actual void defaultGetterAnything {
     }*/
-    shared actual void defaultReturnsVoidExplicit(){
+    shared actual void defaultReturnsAnythingExplicit(){
         return;
     }
-    shared actual void defaultReturnsVoidImplicit(){
+    shared actual void defaultReturnsAnythingImplicit(){
     }
     shared actual void defaultReturnsT() {
     }
-    /* shared actual void formalGetterVoid {
+    /* shared actual void formalGetterAnything {
     };*/
     /* shared actual void formalGetterT {
     };*/
-    shared actual void formalReturnsVoid() {}
+    shared actual void formalReturnsAnything() {}
     shared actual void formalReturnsT() {}
 }

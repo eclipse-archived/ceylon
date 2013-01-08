@@ -27,7 +27,7 @@ final class callableArgumentNullary_m_ {
     }
     
     static void callableArgumentNullary_m() {
-        .com.redhat.ceylon.compiler.java.test.expression.invoke.callableArgumentNullary_f_.callableArgumentNullary_f(new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.java.lang.Object>("Void()"){
+        .com.redhat.ceylon.compiler.java.test.expression.invoke.callableArgumentNullary_f_.callableArgumentNullary_f(new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.java.lang.Object>("Anything()"){
             
             @.java.lang.Override
             public .java.lang.Object $call() {

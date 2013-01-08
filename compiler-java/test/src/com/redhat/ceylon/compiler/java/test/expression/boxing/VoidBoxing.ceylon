@@ -20,57 +20,57 @@
  * MA  02110-1301, USA.
  */
 @nomodel
-class VoidBoxing() {
-    Void valueVoid = 1;
-    variable Void variableVoid = valueVoid;
-    Void getterVoid { 
-        return variableVoid;
+class AnythingBoxing() {
+    Anything valueAnything = 1;
+    variable Anything variableAnything = valueAnything;
+    Anything getterAnything { 
+        return variableAnything;
     } 
-    assign getterVoid {
-        variableVoid = getterVoid;
+    assign getterAnything {
+        variableAnything = getterAnything;
     }
-    void returnsvoid(Void v){}
-    Void returnsVoid(Void v){
+    void returnsvoid(Anything v){}
+    Anything returnsAnything(Anything v){
         return v;
     }
-    void callablevoid(Callable<Void, [Void]> f){
-        f(valueVoid);
+    void callablevoid(Callable<Anything, [Anything]> f){
+        f(valueAnything);
     }
-    Void callableVoid(Callable<Void, [Void]> f){
-        return f(valueVoid);
+    Anything callableAnything(Callable<Anything, [Anything]> f){
+        return f(valueAnything);
     }
         
     void test() {
-        Void v1 = valueVoid;
-        Void v2 = getterVoid;
-        Void v3 = returnsvoid("");
-        Void v4 = returnsvoid{v="";};
-        Void v5 = returnsVoid("");
-        Void v6 = returnsVoid{v="";};
+        Anything v1 = valueAnything;
+        Anything v2 = getterAnything;
+        Anything v3 = returnsvoid("");
+        Anything v4 = returnsvoid{v="";};
+        Anything v5 = returnsAnything("");
+        Anything v6 = returnsAnything{v="";};
         returnsvoid(returnsvoid(""));
-        returnsvoid(returnsVoid(""));
-        returnsVoid(returnsvoid(""));
-        returnsVoid(returnsVoid(""));
-        Void v7 = callablevoid(returnsvoid);
-        Void v8 = callablevoid(returnsVoid);
-        Void v9 = callableVoid(returnsvoid);
-        Void v10= callableVoid(returnsVoid);
-        Void v11= callablevoid((Void s) s);
-        Void v12= callableVoid((Void s) s); 
+        returnsvoid(returnsAnything(""));
+        returnsAnything(returnsvoid(""));
+        returnsAnything(returnsAnything(""));
+        Anything v7 = callablevoid(returnsvoid);
+        Anything v8 = callablevoid(returnsAnything);
+        Anything v9 = callableAnything(returnsvoid);
+        Anything v10= callableAnything(returnsAnything);
+        Anything v11= callablevoid((Anything s) s);
+        Anything v12= callableAnything((Anything s) s); 
         
-        variable Void v;
-        v = valueVoid;
-        v = getterVoid;
+        variable Anything v;
+        v = valueAnything;
+        v = getterAnything;
         v = returnsvoid("");
         v = returnsvoid{v="";};
-        v = returnsVoid("");
-        v = returnsVoid{v="";};
+        v = returnsAnything("");
+        v = returnsAnything{v="";};
         v = callablevoid(returnsvoid);
-        v = callablevoid(returnsVoid);
-        v = callableVoid(returnsvoid);
-        v = callableVoid(returnsVoid);
-        v = callablevoid((Void s) s);
-        v = callableVoid((Void s) s);
+        v = callablevoid(returnsAnything);
+        v = callableAnything(returnsvoid);
+        v = callableAnything(returnsAnything);
+        v = callablevoid((Anything s) s);
+        v = callableAnything((Anything s) s);
         
     }
 }

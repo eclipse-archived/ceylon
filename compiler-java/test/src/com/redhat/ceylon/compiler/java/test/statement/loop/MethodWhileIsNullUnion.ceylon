@@ -20,7 +20,7 @@
 @nomodel
 class MethodWhileIsNullUnion() {
     shared void m() {
-        Void nothing = null;
+        Anything nothing = null;
         while (is Character? nothing) {
         }
     }

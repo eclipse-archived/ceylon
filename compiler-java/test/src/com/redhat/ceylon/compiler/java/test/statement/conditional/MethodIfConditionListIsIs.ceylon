@@ -19,21 +19,21 @@
  */
 @nomodel
 class MethodIfConditionListIsIs() {
-    Boolean m(Void x, Void y) {
+    Boolean m(Anything x, Anything y) {
         if (is Integer x1=x, is Integer y1=y) {
             return x1 == y1;
         } else {
             return false;
         }
     }
-    Boolean synthetic(Void x, Void y) {
+    Boolean synthetic(Anything x, Anything y) {
         if (is Integer x, is Integer y) {
             return x == y;
         } else {
             return false;
         }
     }
-    Boolean mElseIf(Void x, Void y) {
+    Boolean mElseIf(Anything x, Anything y) {
         if (is Integer x1=x, is Integer y1=y) {
             return x1 == y1;
         } else if (is Integer x1=x) {

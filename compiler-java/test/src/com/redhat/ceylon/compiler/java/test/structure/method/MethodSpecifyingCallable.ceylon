@@ -25,24 +25,24 @@ Callable<String,[Integer]> methodSpecifyingCallable_f() {
 class MethodSpecifyingCallable() {
     String foo(Integer i) => methodSpecifyingCallable_f()(i);
     
-    value noParam = function () bottom;
+    value noParam = function () nothing;
     void noParam1() => noParam();
 
-    value oneParam = function (Integer i) bottom;
+    value oneParam = function (Integer i) nothing;
     void oneParam1() => oneParam(1);
 
     // FIXME: this will be supported soon but will likely be tested somewhere else
-    //value oneDefaultedParam = function (Integer i = 2) bottom;
+    //value oneDefaultedParam = function (Integer i = 2) nothing;
     // void oneDefaultedParam1() => oneDefaultedParam();
 
-    value oneSequencedParam = function (Integer... i) bottom;
+    value oneSequencedParam = function (Integer... i) nothing;
     void oneSequencedParam0() => oneSequencedParam();
     void oneSequencedParam1() => oneSequencedParam(1);
     void oneSequencedParam2() => oneSequencedParam(1, 2);
     void oneSequencedParam3() => oneSequencedParam(for (i in {}) i);
     void oneSequencedParam4() => oneSequencedParam({}...);
 
-    value secondSequencedParam = function (Integer a, Integer... i) bottom;
+    value secondSequencedParam = function (Integer a, Integer... i) nothing;
     void secondSequencedParam0() => secondSequencedParam(1);
     void secondSequencedParam1() => secondSequencedParam(1, 2);
     void secondSequencedParam2() => secondSequencedParam(1, 2, 3);

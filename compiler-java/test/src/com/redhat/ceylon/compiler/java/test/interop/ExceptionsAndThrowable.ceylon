@@ -51,8 +51,8 @@ shared void testThrowable(JavaExceptionsAndThrowable j){
 
 @nomodel
 shared class ExceptionsAndThrowableRefinement() extends JavaExceptionsAndThrowable() {
-    shared actual Exception t(Exception? x){ if(exists x){ return x; } else { return bottom;} }
-    shared actual Error e(Error? x){ if(exists x){ return x; } else { return bottom;} }
-    shared actual JException x(JException? x){ if(exists x){ return x; } else { return bottom;} }
-    shared actual RuntimeException rtx(RuntimeException? x){ if(exists x){ return x; } else { return bottom;} }
+    shared actual Exception t(Exception? x){ if(exists x){ return x; } else { return nothing;} }
+    shared actual Error e(Error? x){ if(exists x){ return x; } else { return nothing;} }
+    shared actual JException x(JException? x){ if(exists x){ return x; } else { return nothing;} }
+    shared actual RuntimeException rtx(RuntimeException? x){ if(exists x){ return x; } else { return nothing;} }
 }

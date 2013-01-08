@@ -29,7 +29,7 @@ shared class LocalKlass() {
             shared void m2(Integer arg1, T... t) {
             }
             shared actual Local<T> plus(Local<T> other) {
-                return bottom;
+                return nothing;
             }
         }
     }

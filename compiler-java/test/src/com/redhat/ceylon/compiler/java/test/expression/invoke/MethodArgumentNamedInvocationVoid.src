@@ -1,11 +1,11 @@
 package com.redhat.ceylon.compiler.java.test.expression.invoke;
 
-final class methodArgumentNamedIncovationVoid_ {
+final class methodArgumentNamedIncovationAnything_ {
     
-    private methodArgumentNamedIncovationVoid_() {
+    private methodArgumentNamedIncovationAnything_() {
     }
     
-    static void methodArgumentNamedIncovationVoid() {
+    static void methodArgumentNamedIncovationAnything() {
         
         final class callFunction_ {
             
@@ -19,7 +19,7 @@ final class methodArgumentNamedIncovationVoid_ {
         (
             let
             {
-                .ceylon.language.Callable<? extends .java.lang.Object> $arg$0$0 = new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.java.lang.Object>("Void()"){
+                .ceylon.language.Callable<? extends .java.lang.Object> $arg$0$0 = new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.java.lang.Object>("Anything()"){
                     
                     @.java.lang.Override
                     public .java.lang.Object $call(final .java.lang.Object $param$0) {
@@ -35,6 +35,6 @@ final class methodArgumentNamedIncovationVoid_ {
     
     public static void main(.java.lang.String[] args) {
         .ceylon.language.process_.getProcess$().setupArguments(args);
-        .com.redhat.ceylon.compiler.java.test.expression.invoke.methodArgumentNamedIncovationVoid_.methodArgumentNamedIncovationVoid();
+        .com.redhat.ceylon.compiler.java.test.expression.invoke.methodArgumentNamedIncovationAnything_.methodArgumentNamedIncovationAnything();
     }
 }

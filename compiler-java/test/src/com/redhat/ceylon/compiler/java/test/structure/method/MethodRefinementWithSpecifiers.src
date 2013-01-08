@@ -51,7 +51,7 @@ final class methodRefinementWithSpecifiers_returnsMethod_ {
     }
     
     static .ceylon.language.Callable<? extends .java.lang.Object> methodRefinementWithSpecifiers_returnsMethod() {
-        return new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.java.lang.Object>("Void()"){
+        return new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.java.lang.Object>("Anything()"){
             
             @.java.lang.Override
             public .java.lang.Object $call() {
@@ -198,7 +198,7 @@ class MethodRefinementWithSpecifiers_Class implements .com.redhat.ceylon.compile
     
     @.java.lang.Override
     public final .java.lang.Object f16() {
-        return new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.java.lang.Object>("Void(Integer)"){
+        return new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.java.lang.Object>("Anything(Integer)"){
             
             @.java.lang.Override
             public .java.lang.Object $call(final .java.lang.Object $param$0) {

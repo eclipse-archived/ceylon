@@ -19,13 +19,13 @@
  */
 @nomodel
 class MethodWhileConditionListBoolIsBool() {
-    Boolean m(Void x, Integer z) {
+    Boolean m(Anything x, Integer z) {
         while (z < 10, is Integer x, x > 0) {
             return x == 1;
         } 
         return false;
     }
-    Boolean synthetic(Void x, Integer z) {
+    Boolean synthetic(Anything x, Integer z) {
         while (z < 10, is Integer y = x, y > 0) {
             return y == 1;
         }

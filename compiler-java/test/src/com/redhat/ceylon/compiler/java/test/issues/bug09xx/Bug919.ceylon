@@ -27,14 +27,14 @@ shared class Duple<out Element, out First, out Rest>(first, rest)
     shared actual First first;
     shared actual Rest&Element[] rest;
     
-    shared actual Duple<Element,First,Rest> clone { return bottom; }
-    shared actual Element item(Integer i){ return bottom; }
-    shared actual Integer lastIndex { return bottom; }
-    shared actual Sequence<Element> reversed { return bottom; }
-    shared actual Sequence<Element> segment(Integer a, Integer b){ return bottom; }
-    shared actual Sequence<Element> span(Integer a, Integer b){ return bottom; }
-    shared actual Sequence<Element> spanFrom(Integer a){ return bottom; }
-    shared actual Sequence<Element> spanTo(Integer a){ return bottom; }
+    shared actual Duple<Element,First,Rest> clone { return nothing; }
+    shared actual Element item(Integer i){ return nothing; }
+    shared actual Integer lastIndex { return nothing; }
+    shared actual Sequence<Element> reversed { return nothing; }
+    shared actual Sequence<Element> segment(Integer a, Integer b){ return nothing; }
+    shared actual Sequence<Element> span(Integer a, Integer b){ return nothing; }
+    shared actual Sequence<Element> spanFrom(Integer a){ return nothing; }
+    shared actual Sequence<Element> spanTo(Integer a){ return nothing; }
 }
 */
 

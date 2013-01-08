@@ -25,6 +25,6 @@ abstract class RefinedVarianceInheritance2Top() {
 
 @nomodel
 class RefinedVarianceInheritance2Bottom() extends RefinedVarianceInheritance2Top() {
- shared actual Bottom m(){ return bottom; }
+ shared actual Bottom m(){ return nothing; }
  shared actual Integer m2(){ return 1; }
 }

@@ -22,20 +22,20 @@ class MethodArgumentNamedInvocationMPL() {
     void m1(Callable<Callable<String, [Integer]>, []> f) {
         String s = f()(1);
     }
-    void m2(Callable<Callable<Void, [Integer]>, []> f) {
-        Void v = f()(1);
+    void m2(Callable<Callable<Anything, [Integer]>, []> f) {
+        Anything v = f()(1);
     }
     void m3(String(Integer)() f) {
         String s = f()(1);
     }
-    void m4(Void(Integer)() f) {
-        Void v = f()(1);
+    void m4(Anything(Integer)() f) {
+        Anything v = f()(1);
     }
     void m5(void f()(Integer x)) {
-        Void v = f()(1);
+        Anything v = f()(1);
     }
-    void m6(Void f()(Integer x)) {
-        Void v = f()(1);
+    void m6(Anything f()(Integer x)) {
+        Anything v = f()(1);
     }
     void m7(String f()(Integer x)) {
         String s = f()(1);

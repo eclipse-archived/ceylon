@@ -19,7 +19,7 @@
  */
 @nomodel
 void bug594<T>(T t) {
-    Void s = "s";
+    Anything s = "s";
     String? s2 = "s";
     if (is String? s) {
         // Empty

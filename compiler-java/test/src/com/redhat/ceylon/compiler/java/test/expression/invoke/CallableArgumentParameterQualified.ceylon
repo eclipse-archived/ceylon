@@ -21,7 +21,7 @@
 void callableArgumentParameterQualified_f(void foo()) {
 }
 @nomodel
-class CallableArgumentParameterQualified(Callable<Void, []> bar) {
+class CallableArgumentParameterQualified(Callable<Anything, []> bar) {
     void m(CallableArgumentParameterQualified c) {
         callableArgumentParameterQualified_f(c.bar);
         callableArgumentParameterQualified_f(this.bar);

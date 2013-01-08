@@ -8,7 +8,7 @@ public final class multipleParameterLists_call_ {
     }
     
     @.com.redhat.ceylon.compiler.java.metadata.Annotations({@.com.redhat.ceylon.compiler.java.metadata.Annotation("shared")})
-    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Void")
+    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Anything")
     public static void multipleParameterLists_call() {
         .java.lang.String s = .com.redhat.ceylon.compiler.java.test.expression.invoke.multipleParameterLists_.multipleParameterLists().$call(.ceylon.language.Integer.instance(1L)).toString();
         final .ceylon.language.Callable<? extends .ceylon.language.String> c = .com.redhat.ceylon.compiler.java.test.expression.invoke.multipleParameterLists_.multipleParameterLists();

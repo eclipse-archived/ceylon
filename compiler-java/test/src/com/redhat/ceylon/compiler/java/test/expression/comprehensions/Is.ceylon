@@ -29,12 +29,12 @@ interface FooInterface {
 
 @nomodel
 class Foo() satisfies Common & FooInterface {
-    shared actual Common common() {return bottom;}
-    shared actual Foo foo() {return bottom;}
+    shared actual Common common() {return nothing;}
+    shared actual Foo foo() {return nothing;}
 }
 @nomodel
 class FooSub() extends Foo() {
-    shared FooSub foo2() {return bottom;}
+    shared FooSub foo2() {return nothing;}
 }
 
 @nomodel
@@ -43,8 +43,8 @@ interface BarInterface {
 }
 @nomodel
 class Bar() satisfies Common & BarInterface {
-    shared actual Common common() {return bottom;}
-    shared actual Bar bar() {return bottom;}
+    shared actual Common common() {return nothing;}
+    shared actual Bar bar() {return nothing;}
 }
 @nomodel
 void isCond(Common?[] seq) {

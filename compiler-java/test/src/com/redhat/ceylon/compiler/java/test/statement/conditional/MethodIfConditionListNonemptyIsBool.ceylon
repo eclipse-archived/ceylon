@@ -19,7 +19,7 @@
  */
 @nomodel
 class MethodIfConditionList() {
-    Boolean m(Void[] x) {
+    Boolean m(Anything[] x) {
         if (nonempty x, is Integer y = x[0], y > 0) {
             return y == 1;
         } else {

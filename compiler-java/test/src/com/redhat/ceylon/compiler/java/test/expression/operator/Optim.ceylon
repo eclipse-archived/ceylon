@@ -354,7 +354,7 @@ class Optim() extends OptimSuperclass<Integer,Float,Character,String,Boolean>(){
         sync = s1 >= s2;
     }
 
-    void nonOptimisableComparison(IdentifiableObject o){
+    void nonOptimisableComparison(Basic o){
         variable String s1 = "";
         variable Boolean b2 = false;
         variable Boolean sync;

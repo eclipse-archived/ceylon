@@ -31,11 +31,11 @@ interface RefinementAndIntersection_Co<out T> {
 }
 @nomodel
 class RefinementAndIntersection_SuperCoGood() satisfies RefinementAndIntersection_Co<RefinementAndIntersection_G> {
-    default shared actual RefinementAndIntersection_G get() { return bottom; }
+    default shared actual RefinementAndIntersection_G get() { return nothing; }
 }
 @nomodel
 class RefinementAndIntersection_SubCoGood() extends RefinementAndIntersection_SuperCoGood() satisfies RefinementAndIntersection_Co<RefinementAndIntersection_H> {
-    default shared actual RefinementAndIntersection_H&RefinementAndIntersection_G get() { return bottom; }
+    default shared actual RefinementAndIntersection_H&RefinementAndIntersection_G get() { return nothing; }
 }
 
 @nomodel

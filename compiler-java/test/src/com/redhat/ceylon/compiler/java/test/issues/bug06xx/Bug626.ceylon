@@ -19,9 +19,9 @@
  */
 @nomodel
 class Bug626() satisfies Iterable<Bottom[]> {
-    shared actual Boolean equals(Object that) {return bottom;}
-    shared actual Integer hash = bottom;
-    shared actual Iterator<Bottom[]> iterator = bottom;
+    shared actual Boolean equals(Object that) {return nothing;}
+    shared actual Integer hash = nothing;
+    shared actual Iterator<Bottom[]> iterator = nothing;
 }
 
 @nomodel

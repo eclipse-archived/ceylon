@@ -7,7 +7,7 @@ public class LocalKlass {
     public LocalKlass() {
     }
     
-    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Void")
+    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Anything")
     private final void m() {
         
         @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 3)
@@ -58,7 +58,7 @@ public class LocalKlass {
             }
             
             @.com.redhat.ceylon.compiler.java.metadata.Annotations({@.com.redhat.ceylon.compiler.java.metadata.Annotation("shared")})
-            @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Void")
+            @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Anything")
             public final void m2(@.com.redhat.ceylon.compiler.java.metadata.Name("arg1")
             @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Integer")
             final long arg1, @.com.redhat.ceylon.compiler.java.metadata.Name("t")

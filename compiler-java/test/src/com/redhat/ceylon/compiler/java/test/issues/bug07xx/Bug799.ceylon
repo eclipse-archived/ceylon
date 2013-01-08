@@ -34,7 +34,7 @@ class Bug799() {
     void mUnion(Array<Array<String|Integer>> a) {
         value n = a[0];
     }
-    void mVoid(Array<Array<Void>> a) {
+    void mAnything(Array<Array<Anything>> a) {
         value n = a[0];
     }
 }

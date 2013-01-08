@@ -22,11 +22,11 @@ class OrdinalImpl<Other>() of Other
         given Other satisfies OrdinalImpl<Other> {
         
     shared actual Other successor {
-        return bottom;
+        return nothing;
     }
     
     shared actual Other predecessor {
-        return bottom;
+        return nothing;
     }
     
     shared actual Integer distanceFrom(Other other) {

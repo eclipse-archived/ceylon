@@ -20,5 +20,5 @@
 import a { A }
 
 shared class B(){
-    A a = bottom;
+    A a = nothing;
 }

@@ -19,19 +19,19 @@
  */
 @nomodel
 class MethodWhileConditionListIsIs() {
-    Boolean m(Void x, Void y) {
+    Boolean m(Anything x, Anything y) {
         while (is Integer x1=x, is Integer y1=y) {
             return x1 == y1;
         }
         return false;
     }
-    Boolean synthetic(Void x, Void y) {
+    Boolean synthetic(Anything x, Anything y) {
         while (is Integer x, is Integer y) {
             return x == y;
         }
         return false;
     }
-    Boolean mElseIf(Void x, Void y) {
+    Boolean mElseIf(Anything x, Anything y) {
         while (is Integer x1=x, is Integer y1=y) {
             return x1 == y1;
         }

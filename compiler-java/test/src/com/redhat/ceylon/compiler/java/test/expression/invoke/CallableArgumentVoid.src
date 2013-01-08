@@ -1,8 +1,8 @@
 package com.redhat.ceylon.compiler.java.test.expression.invoke;
 
-class CallableArgumentVoid {
+class CallableArgumentAnything {
     
-    CallableArgumentVoid() {
+    CallableArgumentAnything() {
     }
     
     private final void f(final .ceylon.language.Callable<? extends .java.lang.Object> g) {
@@ -21,7 +21,7 @@ class CallableArgumentVoid {
     }
     
     private final void callsite() {
-        f(new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.java.lang.Object>("Void()"){
+        f(new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.java.lang.Object>("Anything()"){
             
             @.java.lang.Override
             public .java.lang.Object $call() {
@@ -34,14 +34,14 @@ class CallableArgumentVoid {
                 );
             }
         });
-        f(new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.java.lang.Object>("Void()"){
+        f(new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.java.lang.Object>("Anything()"){
             
             @.java.lang.Override
             public .java.lang.Object $call() {
                 return m2();
             }
         });
-        f(new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.java.lang.Object>("Void()"){
+        f(new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.java.lang.Object>("Anything()"){
             
             @.java.lang.Override
             public .java.lang.Object $call() {
@@ -52,6 +52,6 @@ class CallableArgumentVoid {
     
     public static void main(.java.lang.String[] args) {
         .ceylon.language.process_.getProcess$().setupArguments(args);
-        new .com.redhat.ceylon.compiler.java.test.expression.invoke.CallableArgumentVoid();
+        new .com.redhat.ceylon.compiler.java.test.expression.invoke.CallableArgumentAnything();
     }
 }

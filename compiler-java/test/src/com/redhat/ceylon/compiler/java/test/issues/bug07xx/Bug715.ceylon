@@ -23,7 +23,7 @@ abstract class Bug715<Item>() satisfies Map<String, Item>
     
     shared actual Map<String,Result> mapItems<Result>(Result mapping(String key, Item item))
             given Result satisfies Object {
-        return bottom;
+        return nothing;
     }
   
 }

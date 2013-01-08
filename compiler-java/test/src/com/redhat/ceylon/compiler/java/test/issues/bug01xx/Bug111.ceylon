@@ -28,9 +28,9 @@ class Bug111() {
         Integer mag = num.negativeValue;
     }
     void m3() {
-        Integer[]|Integer[] nums = {1,2,3};
+        Integer[]|Integer[] nums = [1,2,3];
         if(nonempty nums){
-            Integer|Integer|Nothing first = nums.first;
+            Integer|Integer|Null first = nums.first;
         }
     }
 

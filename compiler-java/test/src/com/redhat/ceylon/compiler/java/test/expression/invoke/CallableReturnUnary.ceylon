@@ -21,6 +21,6 @@
 void callableReturnUnary_foo(Integer i) {
 }
 @nomodel
-Callable<Void, [Integer]> callableReturnUnary_bar() {
+Callable<Anything, [Integer]> callableReturnUnary_bar() {
     return callableReturnUnary_foo;
 }

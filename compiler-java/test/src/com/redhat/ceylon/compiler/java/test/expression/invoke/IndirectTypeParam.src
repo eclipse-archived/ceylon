@@ -51,7 +51,7 @@ final class indirectTypeParam_ {
             }
             
             <T>.ceylon.language.Callable<? extends .java.lang.Object> mpl(final T t) {
-                return new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.java.lang.Object>("Void()"){
+                return new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.java.lang.Object>("Anything()"){
                     
                     @.java.lang.Override
                     public .java.lang.Object $call() {
@@ -68,7 +68,7 @@ final class indirectTypeParam_ {
             }
             
             .ceylon.language.Callable<? extends .ceylon.language.Callable<? extends .java.lang.Object>> f3(final long i) {
-                return new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.ceylon.language.Callable<? extends .java.lang.Object>>("Void()()"){
+                return new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.ceylon.language.Callable<? extends .java.lang.Object>>("Anything()()"){
                     
                     @.java.lang.Override
                     public .ceylon.language.Callable<? extends .java.lang.Object> $call() {

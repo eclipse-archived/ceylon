@@ -20,26 +20,26 @@
 class NumericImpl<Other>() of Other satisfies Numeric<Other>
         given Other satisfies Numeric<Other>  {
     shared actual Other plus(Other other) {
-        return bottom;
+        return nothing;
     }
     
     shared actual Other minus(Other other) {
-        return bottom;
+        return nothing;
     }
     
     shared actual Other times(Other other) {
-        return bottom;
+        return nothing;
     }
     
     shared actual Other divided(Other other) {
-        return bottom;
+        return nothing;
     }
     
     shared actual Other negativeValue {
-        return bottom;
+        return nothing;
     }
     
     shared actual Other positiveValue {
-        return bottom;
+        return nothing;
     }
 }

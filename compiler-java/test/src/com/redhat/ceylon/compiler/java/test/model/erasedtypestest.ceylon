@@ -18,4 +18,4 @@
  * MA  02110-1301, USA.
  */
 ExtendsObject eo = ExtendsObject();
-ExtendsIdentifiableObject eio = ExtendsIdentifiableObject();
+ExtendsBasic eio = ExtendsBasic();

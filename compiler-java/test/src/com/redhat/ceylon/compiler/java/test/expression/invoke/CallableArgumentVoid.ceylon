@@ -18,13 +18,13 @@
  * MA  02110-1301, USA.
  */
 @nomodel
-class CallableArgumentVoid() {
-    void f(Void() g) {
+class CallableArgumentAnything() {
+    void f(Anything() g) {
         g();
     }
     void m(){}
     shared default void m2(){}
-    shared default Void m3(){return 1;}
+    shared default Anything m3(){return 1;}
     void callsite() {
         f(m);
         f(m2);

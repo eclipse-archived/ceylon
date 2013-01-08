@@ -18,24 +18,24 @@
  * MA  02110-1301, USA.
  */
 class ListImpl<out Element>() extends Object() satisfies List<Element> {
-    shared actual ListImpl<Element> clone = bottom;
+    shared actual ListImpl<Element> clone = nothing;
     shared actual ListImpl<Element> segment(Integer element, Integer length) {
-        return bottom;
+        return nothing;
     }
     shared actual ListImpl<Element> span(Integer from, Integer to) {
-        return bottom;
+        return nothing;
     }
     shared actual ListImpl<Element> spanFrom(Integer from) {
-        return bottom;
+        return nothing;
     }
     shared actual ListImpl<Element> spanTo(Integer to) {
-        return bottom;
+        return nothing;
     }
     shared actual Integer? lastIndex {
-        return bottom;
+        return nothing;
     }
     shared actual Element? item(Integer index) {
-        return bottom;
+        return nothing;
     }
     shared actual ListImpl<Element> reversed {
         throw;

@@ -29,8 +29,6 @@ interface InstantiatorDelegates<X> {
     }
     shared class Sequenced(Boolean b, Integer... i) {
     }
-    shared class SequencedDefault(Boolean b, Integer... i={1}) {
-    }
     shared class TypeArg(X x) {
     }
 }
@@ -64,13 +62,10 @@ void instantiatorDelegates(InstantiatorDelegates<String> a) {
     a.Sequenced{ b=true; };
     
     a.Sequenced(true, 1);
-    a.Sequenced{ b=true; i=1; };
+    a.Sequenced{ b=true; i=[1]; };
     
     a.Sequenced(true, 1, 2);
-    a.Sequenced{ b=true; i=1; i=2; };
-    
-    a.SequencedDefault(true);
-    a.SequencedDefault{b=true; };
+    a.Sequenced{ b=true; i=[1, 2]; };
     
     a.TypeArg("");
     a.TypeArg{ x=""; };

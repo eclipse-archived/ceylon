@@ -19,11 +19,11 @@
  */
 @nomodel
 class ForIfConditionListIsIs() {
-    Boolean[] m(Void[] xs, Void[] ys) {
+    Boolean[] m(Anything[] xs, Anything[] ys) {
         return [ for (x in xs) for (y in ys) if (is Integer x1=x, is Integer y1=y) x1 == y1 ];
         
     }
-    Boolean[] synthetic(Void[] xs, Void[] ys) {
+    Boolean[] synthetic(Anything[] xs, Anything[] ys) {
         return [ for (x in xs) for (y in ys) if (is Integer x, is Integer y) x == y ];
     }
 }

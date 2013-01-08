@@ -19,7 +19,7 @@
  */
 @nomodel
 class MethodWhileConditionList() {
-    Boolean m(Void[] x) {
+    Boolean m(Anything[] x) {
         while (nonempty x, is Integer y = x[0], y > 0) {
             return y == 1;
         }

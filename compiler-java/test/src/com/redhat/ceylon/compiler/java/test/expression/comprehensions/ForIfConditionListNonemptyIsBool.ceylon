@@ -19,7 +19,7 @@
  */
 @nomodel
 class ForIfConditionList() {
-    Boolean[] m(Void[][] xs) {
+    Boolean[] m(Anything[][] xs) {
         return [ for (x in xs) if (nonempty x, is Integer y = x[0], y > 0) y == 1 ];
     }
 }

@@ -19,7 +19,7 @@
  */
 @nomodel
 class ForIfConditionListExistsIsBool() {
-    Boolean[] m(Void[][] xs) {
+    Boolean[] m(Anything[][] xs) {
         return [ for (x in xs) if (exists z=x[0], is Integer y = z, y > 0) y == 1 ];
     }
 }

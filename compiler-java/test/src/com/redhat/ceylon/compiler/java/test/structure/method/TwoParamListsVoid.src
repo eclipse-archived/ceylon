@@ -1,11 +1,11 @@
 package com.redhat.ceylon.compiler.java.test.structure.method;
 
-final class twoParamListsVoid_ {
+final class twoParamListsAnything_ {
     
-    private twoParamListsVoid_() {
+    private twoParamListsAnything_() {
     }
     
-    static void twoParamListsVoid() {
+    static void twoParamListsAnything() {
         
         final class f_ {
             
@@ -13,7 +13,7 @@ final class twoParamListsVoid_ {
             }
             
             .ceylon.language.Callable<? extends .java.lang.Object> f(final .java.lang.String s) {
-                return new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.java.lang.Object>("Void()"){
+                return new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.java.lang.Object>("Anything()"){
                     
                     @.java.lang.Override
                     public .java.lang.Object $call() {
@@ -31,7 +31,7 @@ final class twoParamListsVoid_ {
             }
             
             .ceylon.language.Callable<? extends .java.lang.Object> g(final .java.lang.String s) {
-                return new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.java.lang.Object>("Void()"){
+                return new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.java.lang.Object>("Anything()"){
                     
                     @.java.lang.Override
                     public .java.lang.Object $call() {
@@ -53,6 +53,6 @@ final class twoParamListsVoid_ {
     
     public static void main(.java.lang.String[] args) {
         .ceylon.language.process_.getProcess$().setupArguments(args);
-        .com.redhat.ceylon.compiler.java.test.structure.method.twoParamListsVoid_.twoParamListsVoid();
+        .com.redhat.ceylon.compiler.java.test.structure.method.twoParamListsAnything_.twoParamListsAnything();
     }
 }

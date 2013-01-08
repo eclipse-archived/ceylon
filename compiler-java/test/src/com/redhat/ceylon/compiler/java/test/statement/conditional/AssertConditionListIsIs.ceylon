@@ -19,11 +19,11 @@
  */
 @nomodel
 class AssertConditionListIsIs() {
-    Boolean mvar(Void x, Void y) {
+    Boolean mvar(Anything x, Anything y) {
         assert (is Integer x1=x, is Integer y1=y);
         return x1 == y1;
     }
-    Boolean m(Void x, Void y) {
+    Boolean m(Anything x, Anything y) {
         assert (is Integer x, is Integer y);
         return x == y;
     }

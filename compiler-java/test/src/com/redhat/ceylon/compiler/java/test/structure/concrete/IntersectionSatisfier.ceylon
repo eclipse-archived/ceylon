@@ -26,6 +26,6 @@ interface IntersectionSatisfier_I1<out T> satisfies IntersectionSatisfier_X<T, N
     shared actual default T? x { return null; }
 }
 @nomodel
-interface IntersectionSatisfier_I2 satisfies IntersectionSatisfier_I1<Void> {}
+interface IntersectionSatisfier_I2 satisfies IntersectionSatisfier_I1<Anything> {}
 @nomodel
 class IntersectionSatisfier_C<T>() satisfies IntersectionSatisfier_I2&IntersectionSatisfier_I1<T> {}

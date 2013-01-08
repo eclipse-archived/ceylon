@@ -33,7 +33,7 @@ final class goto_ {
     private goto_() {
     }
     
-    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Void")
+    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Anything")
     static void $goto() {
     }
     

@@ -19,42 +19,42 @@
  */
 class SequenceImpl<out Element>() satisfies Sequence<Element> {
 
-    shared actual Integer lastIndex = bottom;
+    shared actual Integer lastIndex = nothing;
     
-    shared actual Element first = bottom;
+    shared actual Element first = nothing;
 
-    shared actual Element[] rest = bottom;
+    shared actual Element[] rest = nothing;
 
-    shared actual SequenceImpl<Element> clone = bottom;
+    shared actual SequenceImpl<Element> clone = nothing;
 
-    shared actual Integer hash = bottom;
+    shared actual Integer hash = nothing;
 
     shared actual Boolean equals(Object other) {
         throw;
     }
     
     shared actual Element last {
-        return bottom;
+        return nothing;
     }
     
     shared actual Element[] segment(Integer from, Integer len) {
-        return bottom;
+        return nothing;
     }
     
     shared actual Element[] spanTo(Integer index) {
-        return bottom;
+        return nothing;
     }
     
     shared actual Element[] spanFrom(Integer index) {
-        return bottom;
+        return nothing;
     }
     
     shared actual Element[] span(Integer from, Integer to) {
-        return bottom;
+        return nothing;
     }
-    shared actual Sequence<Element> reversed = bottom;
+    shared actual Sequence<Element> reversed = nothing;
     shared actual Element? item(Integer index) {
-        return bottom;
+        return nothing;
     }
     
 }

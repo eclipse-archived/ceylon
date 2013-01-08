@@ -19,7 +19,7 @@
  */
 @nomodel
 class AssertConditionList() {
-    Boolean m(Void[] x) {
+    Boolean m(Anything[] x) {
         assert (nonempty x, is Integer y = x[0], y > 0);
         return y == 1;
     }

@@ -22,37 +22,37 @@ import java.util { Map, Set, Collection }
 @nomodel
 class MyMap() satisfies Map<String, Object> {
     shared actual Boolean equals(Object that) {
-        return bottom;
+        return nothing;
     }
     shared actual Integer hash = 1;
     shared actual void clear() {}
     shared actual Boolean containsKey(Object? \iobject) {
-        return bottom;
+        return nothing;
     }
     shared actual Boolean containsValue(Object? \iobject) {
-        return bottom;
+        return nothing;
     }
-    shared actual Boolean empty = bottom;
+    shared actual Boolean empty = nothing;
     shared actual Set<Map<String,Object>.Entry<String,Object>> entrySet() {
-        return bottom;
+        return nothing;
     }
     shared actual Object get(Object? \iobject) {
-        return bottom;
+        return nothing;
     }
     shared actual Set<String> keySet() {
-        return bottom;
+        return nothing;
     }
     shared actual Object put(String? k, Object? v) {
-        return bottom;
+        return nothing;
     }
     shared actual void putAll(Map<String,Object>? map) {}
     shared actual Object remove(Object? \iobject) {
-        return bottom;
+        return nothing;
     }
     shared actual Integer size() {
-        return bottom;
+        return nothing;
     }
     shared actual Collection<Object> values() {
-        return bottom;
+        return nothing;
     }
 }

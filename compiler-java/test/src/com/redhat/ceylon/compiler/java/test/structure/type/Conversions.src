@@ -122,15 +122,15 @@ class BarSats extends .com.redhat.ceylon.compiler.java.test.structure.type.Bar i
         new .com.redhat.ceylon.compiler.java.test.structure.type.BarSats();
     }
 }
-class ExtVoid extends .com.redhat.ceylon.compiler.java.test.structure.type.GenInv<.java.lang.Object> {
+class ExtAnything extends .com.redhat.ceylon.compiler.java.test.structure.type.GenInv<.java.lang.Object> {
     
-    ExtVoid() {
+    ExtAnything() {
         super();
     }
     
     public static void main(.java.lang.String[] args) {
         .ceylon.language.process_.getProcess$().setupArguments(args);
-        new .com.redhat.ceylon.compiler.java.test.structure.type.ExtVoid();
+        new .com.redhat.ceylon.compiler.java.test.structure.type.ExtAnything();
     }
 }
 class ExtBottom extends .com.redhat.ceylon.compiler.java.test.structure.type.GenInv<.java.lang.Object> {

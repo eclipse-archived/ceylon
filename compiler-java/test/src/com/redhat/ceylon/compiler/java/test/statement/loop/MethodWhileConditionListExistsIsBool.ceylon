@@ -19,7 +19,7 @@
  */
 @nomodel
 class MethodWhileConditionListExistsIsBool() {
-    Boolean m(Void[] x) {
+    Boolean m(Anything[] x) {
         while (exists z=x[0], is Integer y = z, y > 0) {
             return y == 1;
         }

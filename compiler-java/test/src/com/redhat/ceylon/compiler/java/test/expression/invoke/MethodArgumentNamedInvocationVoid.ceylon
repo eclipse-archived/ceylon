@@ -18,7 +18,7 @@
  * MA  02110-1301, USA.
  */
 @nomodel
-void methodArgumentNamedIncovationVoid() {
+void methodArgumentNamedIncovationAnything() {
 
    void callFunction(void f(Integer i)) {
    }

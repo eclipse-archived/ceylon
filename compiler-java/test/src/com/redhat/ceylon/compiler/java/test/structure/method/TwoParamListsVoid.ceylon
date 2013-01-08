@@ -18,11 +18,11 @@
  * MA  02110-1301, USA.
  */
 @nomodel
-void twoParamListsVoid() {
+void twoParamListsAnything() {
     void f(String s)() {
         print(s);
     }
-    Void g(String s)() {
+    Anything g(String s)() {
         return print(s);
     }
     f("hello")();

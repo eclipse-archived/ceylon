@@ -21,6 +21,6 @@
 void callableReturnNullary_foo() {
 }
 @nomodel
-Callable<Void, []> callableReturnNullary_bar() {
+Callable<Anything, []> callableReturnNullary_bar() {
     return callableReturnNullary_foo;
 }

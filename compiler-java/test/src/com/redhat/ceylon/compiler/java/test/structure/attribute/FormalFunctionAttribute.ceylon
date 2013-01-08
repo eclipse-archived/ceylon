@@ -19,6 +19,6 @@
  */
 @nomodel
 abstract class FormalFunctionAttribute() {
-    shared formal Void() f;
+    shared formal Anything() f;
     shared void run() { f(); }
 }

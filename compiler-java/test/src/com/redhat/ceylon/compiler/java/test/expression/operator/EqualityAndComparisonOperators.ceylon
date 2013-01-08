@@ -35,7 +35,7 @@ shared class EqualityAndComparisonOperators() {
 // M2 b1 = n1 extends Integer;
 // M2 b1 = n1 satisfies Object;
 
-    void equalityAndComparisonUnboxed(IdentifiableObject o1, IdentifiableObject o2) {
+    void equalityAndComparisonUnboxed(Basic o1, Basic o2) {
         variable Boolean sync = o1 === o2;
         variable Integer n1 = 0;
         variable Integer n2 = 0;
@@ -48,7 +48,7 @@ shared class EqualityAndComparisonOperators() {
         sync = n1 >= n2;
     }
 
-    void equalityAndComparisonBoxed(IdentifiableObject o1, IdentifiableObject o2,
+    void equalityAndComparisonBoxed(Basic o1, Basic o2,
                                     EqualityAndComparisonInteger n1, EqualityAndComparisonInteger n2) {
         variable Boolean? sync = o1 === o2;
         sync = n1 == n2;
@@ -86,7 +86,7 @@ shared class EqualityAndComparisonOperators() {
         sync = foo is Alias1;
         sync = foo is Alias2;
         // erased types
-        sync = foo is IdentifiableObject;
+        sync = foo is Basic;
         sync = foo is Exception;
         // type parameters
         //M5: sync = is Sequence<Boolean> foo;

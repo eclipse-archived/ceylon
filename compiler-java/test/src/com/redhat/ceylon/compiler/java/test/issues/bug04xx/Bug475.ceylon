@@ -19,5 +19,5 @@
  */
 @nomodel
 abstract class Bug475() {
-    shared actual Integer hash = bottom;
+    shared actual Integer hash = nothing;
 }

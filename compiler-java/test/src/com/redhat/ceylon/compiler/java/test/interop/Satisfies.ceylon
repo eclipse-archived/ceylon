@@ -85,5 +85,5 @@ class JavaInterfaceImpl() satisfies JavaInterface<Boolean,Integer> {
     shared actual String ceylonStringMethod(String? i){ return ""; }
 
     @error
-    shared actual M methodTypeParamMethod<M>(M? b){ return bottom; }
+    shared actual M methodTypeParamMethod<M>(M? b){ return nothing; }
 }

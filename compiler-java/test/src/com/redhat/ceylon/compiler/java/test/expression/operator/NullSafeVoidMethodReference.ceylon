@@ -18,10 +18,10 @@
  * MA  02110-1301, USA.
  */
 @nomodel
-interface NullSafeVoidMethodReference {
+interface NullSafeAnythingMethodReference {
     shared formal void invoke();
 }
 @nomodel
-void test(NullSafeVoidMethodReference? handler) {
+void test(NullSafeAnythingMethodReference? handler) {
     handler?.invoke();
 }

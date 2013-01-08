@@ -19,14 +19,14 @@
  */
 @nomodel
 class MethodIfConditionListBoolBoolIs() {
-    Boolean m(Void x, Integer z) {
+    Boolean m(Anything x, Integer z) {
         if (z < 10, z > 0, is Integer x) {
             return x == 1;
         } else {
             return false;
         }
     }
-    Boolean synthetic(Void x, Integer z) {
+    Boolean synthetic(Anything x, Integer z) {
         if (z < 10, z > 0, is Integer y = x) {
             return y == 1;
         } else {

@@ -14,7 +14,7 @@ final class callableReturnTernary_bar_ {
     }
     
     static .ceylon.language.Callable<? extends .java.lang.Object> callableReturnTernary_bar() {
-        return new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.java.lang.Object>("Void(Integer, String, Boolean)"){
+        return new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.java.lang.Object>("Anything(Integer, String, Boolean)"){
             
             @.java.lang.Override
             public .java.lang.Object $call(final .java.lang.Object $param$0, final .java.lang.Object $param$1, final .java.lang.Object $param$2) {

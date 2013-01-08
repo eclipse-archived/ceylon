@@ -3,7 +3,7 @@ package com.redhat.ceylon.compiler.java.test.expression.invoke;
 class IndirectInvoke<X> {
     
     IndirectInvoke() {
-        this.value1 = new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.java.lang.Object>("Void()"){
+        this.value1 = new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.java.lang.Object>("Anything()"){
             
             @.java.lang.Override
             public .java.lang.Object $call() {

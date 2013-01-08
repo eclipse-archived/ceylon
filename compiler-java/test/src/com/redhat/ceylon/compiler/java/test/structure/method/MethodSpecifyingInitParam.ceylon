@@ -18,6 +18,6 @@
  * MA  02110-1301, USA.
  */
 @nomodel
-class MethodSpecifyingInitParam(Callable<Void, []> x) {
+class MethodSpecifyingInitParam(Callable<Anything, []> x) {
     void foo() => x();
 }

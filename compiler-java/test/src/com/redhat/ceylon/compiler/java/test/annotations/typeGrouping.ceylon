@@ -22,4 +22,4 @@ interface TypeGroupB {}
 interface TypeGroupC {}
 interface TypeGroupD {}
 
-TypeGroupA&<TypeGroupB|TypeGroupC>&TypeGroupD typeGroupAttribute = bottom;
+TypeGroupA&<TypeGroupB|TypeGroupC>&TypeGroupD typeGroupAttribute = nothing;

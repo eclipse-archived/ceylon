@@ -17,7 +17,7 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
  * MA  02110-1301, USA.
  */
-class Bug929_super(Void... v) {
+class Bug929_super(Anything... v) {
 }
 class Bug929_superSub(Character[] s) extends Bug929_super(s[].integer) {
 }

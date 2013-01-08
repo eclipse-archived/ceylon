@@ -37,7 +37,7 @@ public class MemberClassAlias_Foo {
         }
     }
     
-    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Void")
+    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Anything")
     private final void test() {
         final .com.redhat.ceylon.compiler.java.test.structure.alias.MemberClassAlias_Foo.Member m = MemberClassAlias$new();
     }

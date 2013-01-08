@@ -18,6 +18,6 @@
  * MA  02110-1301, USA.
  */
 @nomodel
-void forIfIsBooleanConditions(Void[] xs) {
+void forIfIsBooleanConditions(Anything[] xs) {
     Integer[] z = [ for (x in xs) if (is Integer y = x, y > 0) y+1 ];
 }

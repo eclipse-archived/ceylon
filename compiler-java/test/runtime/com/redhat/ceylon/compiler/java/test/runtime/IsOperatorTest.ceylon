@@ -24,17 +24,17 @@ shared class IsOperatorTest() {
         }
         shared actual Integer hash = 0;
     }
-    Void o = o_;
+    Anything o = o_;
     object i_ extends Object() satisfies Identifiable {
         shared actual Boolean equals(Object o) {
             return false;
         }
         shared actual Integer hash = 0;
     }
-    Void i = i_;
-    object io_ extends IdentifiableObject() {}
-    Void io = io_;
-    Void nowt = null;
+    Anything i = i_;
+    object io_ extends Basic() {}
+    Anything io = io_;
+    Anything nowt = null;
     
     @test
     shared void ifIs() {
@@ -49,7 +49,7 @@ shared class IsOperatorTest() {
         if (is Identifiable nowt) {
             throw;
         }
-        if (is IdentifiableObject nowt) {
+        if (is Basic nowt) {
             throw;
         }
         
@@ -64,7 +64,7 @@ shared class IsOperatorTest() {
         if (is Identifiable o) {
             throw;
         }
-        if (is IdentifiableObject o) {
+        if (is Basic o) {
             throw;
         }
         
@@ -81,7 +81,7 @@ shared class IsOperatorTest() {
         } else {
             throw;
         }
-        if (is IdentifiableObject i) {
+        if (is Basic i) {
             throw;
         }
         
@@ -98,7 +98,7 @@ shared class IsOperatorTest() {
         } else {
             throw;
         }
-        if (is IdentifiableObject io) {
+        if (is Basic io) {
             
         } else {
             throw;
@@ -122,7 +122,7 @@ shared class IsOperatorTest() {
         if (b) {
             throw;
         }
-        b = nowt is IdentifiableObject;
+        b = nowt is Basic;
         if (b) {
             throw;
         }
@@ -141,7 +141,7 @@ shared class IsOperatorTest() {
         if (b) {
             throw;
         }
-        b = o is IdentifiableObject;
+        b = o is Basic;
         if (b) {
             throw;
         }
@@ -162,7 +162,7 @@ shared class IsOperatorTest() {
         } else {
             throw;
         }
-        b = i is IdentifiableObject;
+        b = i is Basic;
         if (b) {
             throw;
         }
@@ -183,7 +183,7 @@ shared class IsOperatorTest() {
         } else {
             throw;
         }
-        b = io is IdentifiableObject;
+        b = io is Basic;
         if (b) {
             
         } else {

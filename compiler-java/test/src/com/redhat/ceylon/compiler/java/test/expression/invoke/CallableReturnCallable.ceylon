@@ -18,6 +18,6 @@
  * MA  02110-1301, USA.
  */
 @nomodel
-Callable<Void, []> callableReturnCallable_f(void foo()) {
+Callable<Anything, []> callableReturnCallable_f(void foo()) {
     return foo;
 }

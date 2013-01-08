@@ -22,30 +22,30 @@ class ExponentiableImpl<This,Other>() of This satisfies Exponentiable<This,Other
         given Other satisfies Numeric<Other> {
 
     shared actual This power(Other exponent) {
-        return bottom;
+        return nothing;
     }
         
     shared actual This plus(This other) {
-        return bottom;
+        return nothing;
     }
     
     shared actual This minus(This other) {
-        return bottom;
+        return nothing;
     }
     
     shared actual This times(This other) {
-        return bottom;
+        return nothing;
     }
     
     shared actual This divided(This other) {
-        return bottom;
+        return nothing;
     }
     
     shared actual This negativeValue {
-        return bottom;
+        return nothing;
     }
     
     shared actual This positiveValue {
-        return bottom;
+        return nothing;
     }
 }

@@ -71,5 +71,5 @@ class OptionalInterface(JavaOptionalInterface x) satisfies JavaOptionalInterface
     shared actual JavaOptionalInterface prop3 = x;
     shared actual JavaOptionalInterface? prop4 = x;
     
-    shared actual Correspondence<Object,Object> correspondence => bottom;
+    shared actual Correspondence<Object,Object> correspondence => nothing;
 }

@@ -22,7 +22,7 @@ shared interface CapturedTypeParam<Element> {
     void foo() {
         interface I {
             shared Element m() {
-                return bottom;
+                return nothing;
             }
         }
     }   

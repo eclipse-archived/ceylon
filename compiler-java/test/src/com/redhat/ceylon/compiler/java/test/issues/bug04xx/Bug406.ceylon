@@ -20,7 +20,7 @@
 @nomodel
 class Bug406() {
     void test() {
-        String[] full = { "hello", "world" };
+        String[] full = [ "hello", "world" ];
         value spread1 = full[].uppercased;
         if (exists s1s=spread1[0]) {}
     } 

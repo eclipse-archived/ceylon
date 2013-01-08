@@ -19,7 +19,7 @@
  */
 @nomodel
 class MethodIfConditionListExistsIsBool() {
-    Boolean m(Void[] x) {
+    Boolean m(Anything[] x) {
         if (exists z=x[0], is Integer y = z, y > 0) {
             return y == 1;
         } else {

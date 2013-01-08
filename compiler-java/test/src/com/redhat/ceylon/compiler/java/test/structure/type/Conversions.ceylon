@@ -59,14 +59,14 @@ class BarSats() extends Bar() satisfies ISats {
     shared actual void z() { }
 }
 
-// For the root type Void:
-// - The Ceylon type Foo<Void> appearing in an extends or satisfies
+// For the root type Anything:
+// - The Ceylon type Foo<Anything> appearing in an extends or satisfies
 //   clause results in the Java raw type Foo<Object>
 @nomodel
-class ExtVoid() extends GenInv<Void>() {
+class ExtAnything() extends GenInv<Anything>() {
 }
 
-// For the bottom type Bottom:
+// For the nothing type Bottom:
 // - The Ceylon type Foo<Bottom> appearing in an extends or satisfies
 //   clause results in the Java raw type Foo
 @nomodel
@@ -103,12 +103,12 @@ class Conversions() {
         i1.z();
                 
         // For an erased type:
-        // - Any of the Ceylon types Void, Object, Nothing, Equality,
-        //   IdentifiableObject, and Bottom result in the Java type Object
-        Void e1;
+        // - Any of the Ceylon types Anything, Object, Nothing, Equality,
+        //   Basic, and Bottom result in the Java type Object
+        Anything e1;
         Object e2;
         Nothing e3;
-        IdentifiableObject e4;
+        Basic e4;
         Bottom e5;
         
         // For an ordinary class or interface type T:
@@ -132,16 +132,16 @@ class Conversions() {
         // - The Ceylon type Foo<U&V> results in the raw Java type Foo.
         GenInv<String&Integer> g6;
         
-        // For the root type Void:
-        // - The Ceylon type Foo<Void> appearing anywhere else results in the Java type
+        // For the root type Anything:
+        // - The Ceylon type Foo<Anything> appearing anywhere else results in the Java type
         // - Foo<Object> if Foo<T> is invariant in T
         // - Foo<?> if Foo<T> is covariant in T, or
         // - Foo<Object> if Foo<T> is contravariant in T
-        GenInv<Void> v1;
-        GenCov<Void> v2;
-        GenCon<Void> v3;
+        GenInv<Anything> v1;
+        GenCov<Anything> v2;
+        GenCon<Anything> v3;
         
-        // For the bottom type Bottom:
+        // For the nothing type Bottom:
         // - The Ceylon type Foo<Bottom> appearing anywhere else results in the Java type
         // - Foo<T> if Foo is invariant in T,
         // - Foo<? extends T> if Foo is covariant in T, or
@@ -158,8 +158,8 @@ class Conversions() {
 interface ISats2 {}
 
 @nomodel
-class UpperBoundErasure1<T>() given T satisfies ISats & ISats2 & IdentifiableObject & Identifiable {
-    void foo<T>() given T satisfies ISats & ISats2 & IdentifiableObject & Identifiable {
+class UpperBoundErasure1<T>() given T satisfies ISats & ISats2 & Basic & Identifiable {
+    void foo<T>() given T satisfies ISats & ISats2 & Basic & Identifiable {
         
     }
 }

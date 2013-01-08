@@ -17,8 +17,8 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
  * MA  02110-1301, USA.
  */
-shared class Klass(Integer p1, Integer? p2=1, Integer[] p3={}) {
+shared class Klass(Integer p1, Integer? p2=1, Integer[] p3=[]) {
     shared Integer m1(Integer p1){return +1;}
     shared Integer? m2(Integer? p2){return +1;}
-    shared Integer[] m3(Integer[] p3){return {+1};}
+    shared Integer[] m3(Integer[] p3){return [+1];}
 }

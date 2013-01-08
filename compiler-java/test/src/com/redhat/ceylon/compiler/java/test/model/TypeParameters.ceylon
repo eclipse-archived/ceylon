@@ -55,7 +55,7 @@ shared class TypeParameters <T,U> (T t, U u) {
  }
 
  shared F methodWithErasedUpperBounds<F>(F f)
-  given F satisfies IdentifiableObject {
+  given F satisfies Basic {
   return f;
  }
  
@@ -83,7 +83,7 @@ shared class ClassWithSelfParameterizedUpperBounds<F>(F f)
 }
 
 shared class ClassWithErasedUpperBounds<F>(F f)
- given F satisfies IdentifiableObject {
+ given F satisfies Basic {
 }
  
 //
@@ -119,7 +119,7 @@ shared F methodWithSelfParameterizedUpperBounds<F>(F f)
  return f;
 }
 shared F methodWithErasedUpperBounds<F>(F f)
- given F satisfies IdentifiableObject {
+ given F satisfies Basic {
  return f;
 }
 

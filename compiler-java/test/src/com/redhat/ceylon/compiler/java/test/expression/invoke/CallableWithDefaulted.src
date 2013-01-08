@@ -280,7 +280,7 @@ class CallableWithDefaulted {
     }
     
     private final void test() {
-        final .ceylon.language.Callable<? extends .java.lang.Object> f = new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.java.lang.Object>("Void(Integer, String=, Integer...)"){
+        final .ceylon.language.Callable<? extends .java.lang.Object> f = new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.java.lang.Object>("Anything(Integer, String=, Integer...)"){
             
             @.java.lang.Override
             public .java.lang.Object $call(final .java.lang.Object $param$0) {

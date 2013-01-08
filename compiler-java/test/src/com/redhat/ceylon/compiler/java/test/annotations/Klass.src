@@ -33,7 +33,7 @@ public class Klass {
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Integer")
     long p1, @.com.redhat.ceylon.compiler.java.metadata.Name("p2")
     @.com.redhat.ceylon.compiler.java.metadata.Defaulted
-    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Nothing|ceylon.language::Integer")
+    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Null|ceylon.language::Integer")
     .ceylon.language.Integer p2, @.com.redhat.ceylon.compiler.java.metadata.Name("p3")
     @.com.redhat.ceylon.compiler.java.metadata.Defaulted
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Sequential<ceylon.language::Integer>")
@@ -59,9 +59,9 @@ public class Klass {
     }
     
     @.com.redhat.ceylon.compiler.java.metadata.Annotations({@.com.redhat.ceylon.compiler.java.metadata.Annotation("shared")})
-    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Nothing|ceylon.language::Integer")
+    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Null|ceylon.language::Integer")
     public final .ceylon.language.Integer m2(@.com.redhat.ceylon.compiler.java.metadata.Name("p2")
-    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Nothing|ceylon.language::Integer")
+    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Null|ceylon.language::Integer")
     final .ceylon.language.Integer p2) {
         return .ceylon.language.Integer.instance(1L);
     }

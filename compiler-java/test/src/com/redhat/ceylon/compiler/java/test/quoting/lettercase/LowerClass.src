@@ -17,7 +17,7 @@ class c_ {
         }
     }
     
-    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Void")
+    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Anything")
     private final void m() {
         
         @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 3)

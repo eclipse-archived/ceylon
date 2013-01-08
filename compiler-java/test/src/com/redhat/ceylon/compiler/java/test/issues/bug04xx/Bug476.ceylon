@@ -35,14 +35,14 @@ abstract class Bug476Top<out T>() {
 @nomodel
 class Bug476Bottom<T,U>() extends Bug476Top<Bug476A>(){
     shared actual Bug476A&T&U m() {
-        return bottom;
+        return nothing;
     }
     shared actual Bug476Top<Bug476B>&Bug476C m2() {
-        return bottom;
+        return nothing;
     }
-    shared actual variable Bug476A&T&U attr = bottom;
+    shared actual variable Bug476A&T&U attr = nothing;
     shared actual Bug476A&T&U attr2 {
-        return bottom;
+        return nothing;
     }
     assign attr2 {
     }
@@ -51,20 +51,20 @@ class Bug476Bottom<T,U>() extends Bug476Top<Bug476A>(){
 @nomodel
 shared abstract class Bug476<out T>() satisfies List<T> {
     shared actual T[] span(Integer from, Integer to) {
-        return bottom;
+        return nothing;
     }
     shared actual T[] spanFrom(Integer from) {
-        return bottom;
+        return nothing;
     }
     shared actual T[] spanTo(Integer to) {
-        return bottom;
+        return nothing;
     }
     shared actual T[] segment(Integer from, Integer length) {
-        return bottom;
+        return nothing;
     }
-    shared actual String string = bottom;
+    shared actual String string = nothing;
     shared actual Integer hash { return 1; }
     shared actual Boolean equals(Object that) {
-        return bottom;
+        return nothing;
     }
 }

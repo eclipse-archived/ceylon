@@ -18,24 +18,24 @@
  * MA  02110-1301, USA.
  */
 @nomodel
-Object toplevelObject = bottom;
+Object toplevelObject = nothing;
 @nomodel
-Integer toplevelInteger = bottom;
+Integer toplevelInteger = nothing;
 
 @nomodel
 class BottomClass(Object argObject, Integer argInteger){
-    Object attrObject = bottom;
-    Integer attrInteger = bottom;
+    Object attrObject = nothing;
+    Integer attrInteger = nothing;
     
     Object methodObject(Object o){
-        return bottom;
+        return nothing;
     }
 
     Integer methodInteger(Integer i){
-        return bottom;
+        return nothing;
     }
     
     void f(){
-        BottomClass(bottom, bottom);
+        BottomClass(nothing, nothing);
     }
 }

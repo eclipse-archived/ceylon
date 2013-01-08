@@ -19,12 +19,12 @@
  */
 @nomodel
 class AssertConditionListBoolBoolIs() {
-    Boolean m(Void x, Integer z) {
+    Boolean m(Anything x, Integer z) {
         assert (z < 10, z > 0, is Integer x);
         return x == 1;
         
     }
-    Boolean mvar(Void x, Integer z) {
+    Boolean mvar(Anything x, Integer z) {
         assert (z < 10, z > 0, is Integer y = x);
         return y == 1;
     }

@@ -22,8 +22,8 @@ import javax.accessibility { Accessible, AccessibleContext }
 
 @nomodel
 class Bug713() extends Container() satisfies Accessible {
-    shared actual AccessibleContext accessibleContext = bottom;
+    shared actual AccessibleContext accessibleContext = nothing;
     shared actual Component getComponentAt(Point? point) {
-        return bottom;
+        return nothing;
     }
 }

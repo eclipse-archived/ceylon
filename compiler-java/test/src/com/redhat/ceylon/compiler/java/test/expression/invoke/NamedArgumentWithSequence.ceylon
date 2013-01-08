@@ -29,9 +29,9 @@ class NamedArgumentWithSequence() {
     
     }
     void invoke() {
-        m{a=+1; b=+2; b=+3; b=+4;};
+        m{a=1; b=[2, 3, 4];};
         Exception e = Exception("", null);
-        m2{a=e; b=e; b=e; b=e;};
-        m3{a=this; b=this; b=this; b=this;};
+        m2{a=e; b=[e, e, e];};
+        m3{a=this; b=[this, this, this];};
     }
 }

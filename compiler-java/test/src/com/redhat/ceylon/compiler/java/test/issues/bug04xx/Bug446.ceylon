@@ -20,12 +20,12 @@
 @nomodel
 abstract class Bug446<T>() satisfies List<T>{
     shared actual T?[] items(Integer... keys) {
-        return bottom;
+        return nothing;
     }
 
-    shared actual String string = bottom;
+    shared actual String string = nothing;
     shared actual Integer hash = 1;
     shared actual Boolean equals(Object that) {
-        return bottom;
+        return nothing;
     }
 }

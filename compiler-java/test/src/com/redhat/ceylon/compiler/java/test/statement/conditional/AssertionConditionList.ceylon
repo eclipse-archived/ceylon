@@ -23,27 +23,27 @@ class AssertionConditionList() {
         assert (x > 0, x < 10);
         return x == 1;
     }
-    Boolean m2(Void x, Integer z) {
+    Boolean m2(Anything x, Integer z) {
         assert (is Integer y = x, y > 0, z < 10);
         return y == 1;
     }
     
-    Boolean m3(Void x, Integer z) {
+    Boolean m3(Anything x, Integer z) {
         assert (z < 10, is Integer y = x, y > 0);
         return y == 1;
     }
     
-    Boolean m4(Void x, Integer z) {
+    Boolean m4(Anything x, Integer z) {
         assert (z < 10, z > 0, is Integer y = x);
         return y == 1;
     }
     
-    Boolean m5(Void[] x) {
+    Boolean m5(Anything[] x) {
         assert (nonempty x, is Integer y = x[0], y > 0);
         return y == 1;
     }
     
-    Boolean m6(Void[] x) {
+    Boolean m6(Anything[] x) {
         assert (x[0] exists, is Integer y = x[0], y > 0);
         return y == 1;
     }
@@ -58,7 +58,7 @@ class AssertionConditionList() {
         return x[0] == 0;
     }*/
     
-    Boolean m9(Void x, Void y) {
+    Boolean m9(Anything x, Anything y) {
         assert (is Integer x1 = x, is Integer y1 = y);
         return x1 + y1 == 0;
     }

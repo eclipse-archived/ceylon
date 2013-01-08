@@ -24,4 +24,4 @@ class ExtendsObject() extends Object() {
     shared actual Integer hash {return +0;}
     shared actual String string = "";
 }
-class ExtendsIdentifiableObject() extends IdentifiableObject(){}
+class ExtendsBasic() extends Basic(){}

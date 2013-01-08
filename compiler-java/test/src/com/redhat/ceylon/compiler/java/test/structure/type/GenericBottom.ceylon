@@ -20,32 +20,32 @@
 
 @nomodel
 class GenericBottom<T,U>(T&U argObject){
-    T attrTp = bottom;
+    T attrTp = nothing;
     
-    T&U attrIntersection = bottom;
+    T&U attrIntersection = nothing;
     
     T methodTp(T o) {
-        return bottom;
+        return nothing;
     }
     
     T&U methodIntersection(T&U o){
-        return bottom;
+        return nothing;
     }
     
     T getterTp {
-        return bottom;    
+        return nothing;    
     }
     
     T&U getterIntersection {
-        return bottom;
+        return nothing;
     }
 
     void f(){
-        GenericBottom<T,U> g = GenericBottom<T,U>(bottom);
+        GenericBottom<T,U> g = GenericBottom<T,U>(nothing);
         variable T t = g.attrTp;
         t = g.attrIntersection; 
-        t = g.methodTp(bottom);
-        t = g.methodIntersection(bottom);
+        t = g.methodTp(nothing);
+        t = g.methodIntersection(nothing);
         t = g.getterTp;
         t = g.getterIntersection;
     }

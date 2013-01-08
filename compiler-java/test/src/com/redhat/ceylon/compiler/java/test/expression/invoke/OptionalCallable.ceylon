@@ -18,7 +18,7 @@
  * MA  02110-1301, USA.
  */
 @nomodel
-void optionalCallable(Callable<Void, []>? onRead){
+void optionalCallable(Callable<Anything, []>? onRead){
     if(exists callback = onRead){
         callback();
     }

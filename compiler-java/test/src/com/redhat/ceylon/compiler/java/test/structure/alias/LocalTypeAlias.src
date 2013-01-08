@@ -11,7 +11,7 @@ final class localTypeAliasMethod_ {
     private localTypeAliasMethod_() {
     }
     
-    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Void")
+    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Anything")
     static void localTypeAliasMethod() {
         
         @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 3)

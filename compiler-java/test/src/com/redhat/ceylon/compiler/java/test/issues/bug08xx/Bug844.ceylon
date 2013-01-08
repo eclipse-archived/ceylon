@@ -20,13 +20,13 @@
 // simplest test case
 @nomodel
 shared class Bug844_Top<out Element>(){
-    shared default Element first(){ return bottom; }
-    shared default Element firstAttribute = bottom;
+    shared default Element first(){ return nothing; }
+    shared default Element firstAttribute = nothing;
 }
 @nomodel
 shared class Bug844_Bottom<out Element, out First>(firstAttribute) extends Bug844_Top<Element>()
     given First satisfies Element {
-    shared actual First first(){ return bottom; }
+    shared actual First first(){ return nothing; }
     shared actual First firstAttribute;
 }
 
@@ -75,8 +75,8 @@ shared abstract class Bug844_Tuple<out Element, out First, out Rest>(first, rest
                 else this[end:from-end+1].reversed.sequence;
     }
 
-    shared actual Element[] spanFrom(Integer from) { return bottom; }
-    shared actual Element[] spanTo(Integer to) { return bottom; }
+    shared actual Element[] spanFrom(Integer from) { return nothing; }
+    shared actual Element[] spanTo(Integer to) { return nothing; }
 
     shared actual Sequence<Element> clone { 
         return this; 

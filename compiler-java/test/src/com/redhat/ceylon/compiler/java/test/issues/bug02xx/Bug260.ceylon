@@ -20,11 +20,11 @@
 
 @nomodel
 interface Bug260_Interface {
-    // we will narrow those to Nothing
+    // we will narrow those to Null
     shared formal Integer? attr;
     shared formal Integer? attrGetter;
     shared formal Integer? m();
-    // we will narrow those to Bottom
+    // we will narrow those to Nothing
     shared formal Bug260_Interface2 attr2;
     shared formal Bug260_Interface2 m2();
     // we will narrow those to Bug260_Interface2&Bug260_Interface3
@@ -46,18 +46,18 @@ class Bug260_Intersection() satisfies Bug260_Interface2 & Bug260_Interface3 {
 
 @nomodel
 class Bug260() satisfies Bug260_Interface & Bug260_Interface2 {
-    // narrow to Nothing
-    shared actual Nothing attr = null;
-    shared actual Nothing attrGetter { return null; }
+    // narrow to Null
+    shared actual Null attr = null;
+    shared actual Null attrGetter { return null; }
     
-    shared actual Nothing m(){
+    shared actual Null m(){
         return null;
     }
 
-    // narrow to Bottom
-    shared actual Bottom attr2 = bottom;
-    shared actual Bottom m2() {
-        return bottom;
+    // narrow to Nothing
+    shared actual Nothing attr2 = nothing;
+    shared actual Nothing m2() {
+        return nothing;
     }
     
     // narrow to Bug260_Interface2&Bug260_Interface3

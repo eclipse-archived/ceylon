@@ -18,6 +18,6 @@
  * MA  02110-1301, USA.
  */
 @nomodel
-void bug823(Void[] xx) {
+void bug823(Anything[] xx) {
     assert(nonempty xx, is Character z=xx[0]);
 }

@@ -25,7 +25,7 @@ class Bug799 {
         final .ceylon.language.Array n = a.item(.ceylon.language.Integer.instance(0L));
     }
     
-    private final void mVoid(final .ceylon.language.Array<.ceylon.language.Array<.java.lang.Object>> a) {
+    private final void mAnything(final .ceylon.language.Array<.ceylon.language.Array<.java.lang.Object>> a) {
         final .ceylon.language.Array<.java.lang.Object> n = a.item(.ceylon.language.Integer.instance(0L));
     }
     

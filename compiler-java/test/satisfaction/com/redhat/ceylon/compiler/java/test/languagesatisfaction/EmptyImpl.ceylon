@@ -19,12 +19,12 @@
  */
 class EmptyImpl() extends Object() satisfies Empty {
     /*shared actual segment(Empty from, Integer length) {
-        return bottom;
+        return nothing;
     }
     shared actual Empty span(Empty from, Empty to) {
-        return bottom;
+        return nothing;
     }
     shared actual Empty clone {
-        return bottom;
+        return nothing;
     }*/
 }

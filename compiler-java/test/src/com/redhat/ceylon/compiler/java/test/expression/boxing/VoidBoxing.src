@@ -1,52 +1,52 @@
 package com.redhat.ceylon.compiler.java.test.expression.boxing;
 
-class VoidBoxing {
+class AnythingBoxing {
     
-    VoidBoxing() {
-        this.valueVoid = .ceylon.language.Integer.instance(1L);
-        this.variableVoid = getValueVoid();
+    AnythingBoxing() {
+        this.valueAnything = .ceylon.language.Integer.instance(1L);
+        this.variableAnything = getValueAnything();
     }
-    private final .java.lang.Object valueVoid;
+    private final .java.lang.Object valueAnything;
     
-    private final .java.lang.Object getValueVoid() {
-        return valueVoid;
+    private final .java.lang.Object getValueAnything() {
+        return valueAnything;
     }
-    private .java.lang.Object variableVoid;
+    private .java.lang.Object variableAnything;
     
-    private final .java.lang.Object getVariableVoid() {
-        return variableVoid;
-    }
-    
-    private final void setVariableVoid(final .java.lang.Object variableVoid) {
-        this.variableVoid = variableVoid;
+    private final .java.lang.Object getVariableAnything() {
+        return variableAnything;
     }
     
-    private final .java.lang.Object getGetterVoid() {
-        return getVariableVoid();
+    private final void setVariableAnything(final .java.lang.Object variableAnything) {
+        this.variableAnything = variableAnything;
     }
     
-    private final void setGetterVoid(final .java.lang.Object getterVoid) {
-        setVariableVoid(getterVoid);
+    private final .java.lang.Object getGetterAnything() {
+        return getVariableAnything();
+    }
+    
+    private final void setGetterAnything(final .java.lang.Object getterAnything) {
+        setVariableAnything(getterAnything);
     }
     
     private final void returnsvoid(final .java.lang.Object v) {
     }
     
-    private final .java.lang.Object returnsVoid(final .java.lang.Object v) {
+    private final .java.lang.Object returnsAnything(final .java.lang.Object v) {
         return v;
     }
     
     private final void callablevoid(final .ceylon.language.Callable<? extends .java.lang.Object> f) {
-        f.$call(getValueVoid());
+        f.$call(getValueAnything());
     }
     
-    private final .java.lang.Object callableVoid(final .ceylon.language.Callable<? extends .java.lang.Object> f) {
-        return f.$call(getValueVoid());
+    private final .java.lang.Object callableAnything(final .ceylon.language.Callable<? extends .java.lang.Object> f) {
+        return f.$call(getValueAnything());
     }
     
     private final void test() {
-        final .java.lang.Object v1 = getValueVoid();
-        final .java.lang.Object v2 = getGetterVoid();
+        final .java.lang.Object v1 = getValueAnything();
+        final .java.lang.Object v2 = getGetterAnything();
         final .java.lang.Object v3 = (
             let
             {
@@ -68,13 +68,13 @@ class VoidBoxing {
             }
             returning null;
         );
-        final .java.lang.Object v5 = returnsVoid(.ceylon.language.String.instance(""));
+        final .java.lang.Object v5 = returnsAnything(.ceylon.language.String.instance(""));
         final .java.lang.Object v6 = (
             let
             {
                 .java.lang.Object $arg$1$0 = .ceylon.language.String.instance("");
             }
-            returning returnsVoid($arg$1$0);
+            returning returnsAnything($arg$1$0);
         );
         returnsvoid((
             let
@@ -83,19 +83,19 @@ class VoidBoxing {
             }
             returning null;
         ));
-        returnsvoid(returnsVoid(.ceylon.language.String.instance("")));
-        returnsVoid((
+        returnsvoid(returnsAnything(.ceylon.language.String.instance("")));
+        returnsAnything((
             let
             {
                 returnsvoid(.ceylon.language.String.instance(""));
             }
             returning null;
         ));
-        returnsVoid(returnsVoid(.ceylon.language.String.instance("")));
+        returnsAnything(returnsAnything(.ceylon.language.String.instance("")));
         final .java.lang.Object v7 = (
             let
             {
-                callablevoid(new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.java.lang.Object>("Void(Void)"){
+                callablevoid(new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.java.lang.Object>("Anything(Anything)"){
                     
                     @.java.lang.Override
                     public .java.lang.Object $call(final .java.lang.Object $param$0) {
@@ -115,18 +115,18 @@ class VoidBoxing {
         final .java.lang.Object v8 = (
             let
             {
-                callablevoid(new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.java.lang.Object>("Void(Void)"){
+                callablevoid(new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.java.lang.Object>("Anything(Anything)"){
                     
                     @.java.lang.Override
                     public .java.lang.Object $call(final .java.lang.Object $param$0) {
                         final .java.lang.Object $$v = $param$0;
-                        return returnsVoid($$v);
+                        return returnsAnything($$v);
                     }
                 });
             }
             returning null;
         );
-        final .java.lang.Object v9 = callableVoid(new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.java.lang.Object>("Void(Void)"){
+        final .java.lang.Object v9 = callableAnything(new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.java.lang.Object>("Anything(Anything)"){
             
             @.java.lang.Override
             public .java.lang.Object $call(final .java.lang.Object $param$0) {
@@ -140,18 +140,18 @@ class VoidBoxing {
                 );
             }
         });
-        final .java.lang.Object v10 = callableVoid(new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.java.lang.Object>("Void(Void)"){
+        final .java.lang.Object v10 = callableAnything(new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.java.lang.Object>("Anything(Anything)"){
             
             @.java.lang.Override
             public .java.lang.Object $call(final .java.lang.Object $param$0) {
                 final .java.lang.Object $$v = $param$0;
-                return returnsVoid($$v);
+                return returnsAnything($$v);
             }
         });
         final .java.lang.Object v11 = (
             let
             {
-                callablevoid(new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.java.lang.Object>("Void(Void)"){
+                callablevoid(new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.java.lang.Object>("Anything(Anything)"){
                     
                     @.java.lang.Override
                     public .java.lang.Object $call(final .java.lang.Object $param$0) {
@@ -162,7 +162,7 @@ class VoidBoxing {
             }
             returning null;
         );
-        final .java.lang.Object v12 = callableVoid(new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.java.lang.Object>("Void(Void)"){
+        final .java.lang.Object v12 = callableAnything(new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.java.lang.Object>("Anything(Anything)"){
             
             @.java.lang.Override
             public .java.lang.Object $call(final .java.lang.Object $param$0) {
@@ -171,8 +171,8 @@ class VoidBoxing {
             }
         });
         .java.lang.Object v;
-        v = getValueVoid();
-        v = getGetterVoid();
+        v = getValueAnything();
+        v = getGetterAnything();
         v = (
             let
             {
@@ -194,18 +194,18 @@ class VoidBoxing {
             }
             returning null;
         );
-        v = returnsVoid(.ceylon.language.String.instance(""));
+        v = returnsAnything(.ceylon.language.String.instance(""));
         v = (
             let
             {
                 .java.lang.Object $arg$3$0 = .ceylon.language.String.instance("");
             }
-            returning returnsVoid($arg$3$0);
+            returning returnsAnything($arg$3$0);
         );
         v = (
             let
             {
-                callablevoid(new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.java.lang.Object>("Void(Void)"){
+                callablevoid(new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.java.lang.Object>("Anything(Anything)"){
                     
                     @.java.lang.Override
                     public .java.lang.Object $call(final .java.lang.Object $param$0) {
@@ -225,18 +225,18 @@ class VoidBoxing {
         v = (
             let
             {
-                callablevoid(new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.java.lang.Object>("Void(Void)"){
+                callablevoid(new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.java.lang.Object>("Anything(Anything)"){
                     
                     @.java.lang.Override
                     public .java.lang.Object $call(final .java.lang.Object $param$0) {
                         final .java.lang.Object $$v = $param$0;
-                        return returnsVoid($$v);
+                        return returnsAnything($$v);
                     }
                 });
             }
             returning null;
         );
-        v = callableVoid(new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.java.lang.Object>("Void(Void)"){
+        v = callableAnything(new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.java.lang.Object>("Anything(Anything)"){
             
             @.java.lang.Override
             public .java.lang.Object $call(final .java.lang.Object $param$0) {
@@ -250,18 +250,18 @@ class VoidBoxing {
                 );
             }
         });
-        v = callableVoid(new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.java.lang.Object>("Void(Void)"){
+        v = callableAnything(new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.java.lang.Object>("Anything(Anything)"){
             
             @.java.lang.Override
             public .java.lang.Object $call(final .java.lang.Object $param$0) {
                 final .java.lang.Object $$v = $param$0;
-                return returnsVoid($$v);
+                return returnsAnything($$v);
             }
         });
         v = (
             let
             {
-                callablevoid(new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.java.lang.Object>("Void(Void)"){
+                callablevoid(new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.java.lang.Object>("Anything(Anything)"){
                     
                     @.java.lang.Override
                     public .java.lang.Object $call(final .java.lang.Object $param$0) {
@@ -272,7 +272,7 @@ class VoidBoxing {
             }
             returning null;
         );
-        v = callableVoid(new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.java.lang.Object>("Void(Void)"){
+        v = callableAnything(new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.java.lang.Object>("Anything(Anything)"){
             
             @.java.lang.Override
             public .java.lang.Object $call(final .java.lang.Object $param$0) {
@@ -284,6 +284,6 @@ class VoidBoxing {
     
     public static void main(.java.lang.String[] args) {
         .ceylon.language.process_.getProcess$().setupArguments(args);
-        new .com.redhat.ceylon.compiler.java.test.expression.boxing.VoidBoxing();
+        new .com.redhat.ceylon.compiler.java.test.expression.boxing.AnythingBoxing();
     }
 }

@@ -24,5 +24,5 @@ shared interface LazySpec {
 }
 @nomodel
 shared interface LazySpecSub satisfies LazySpec {
-    shared actual default Object a() => bottom;    
+    shared actual default Object a() => nothing;    
 }

@@ -21,6 +21,6 @@
 void callableReturnNary_foo(Integer i, String s, Boolean b, Character c) {
 }
 @nomodel
-Callable<Void, [Integer, String, Boolean, Character]> callableReturnNary_bar() {
+Callable<Anything, [Integer, String, Boolean, Character]> callableReturnNary_bar() {
     return callableReturnNary_foo;
 }

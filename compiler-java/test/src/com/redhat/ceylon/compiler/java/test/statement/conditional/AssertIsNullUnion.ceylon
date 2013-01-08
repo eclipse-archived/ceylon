@@ -20,7 +20,7 @@
 @nomodel
 class AssertIsNullUnion() {
     shared void m() {
-        Void nothing = null;
+        Anything nothing = null;
         assert (is Character? nothing);
     }
 }

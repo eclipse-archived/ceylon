@@ -21,47 +21,47 @@ class IntegralImpl<Other>() of Other satisfies Integral<Other>
         given Other satisfies IntegralImpl<Other> {
 
     shared actual Other plus(Other other) {
-        return bottom;
+        return nothing;
     }
     
     shared actual Other minus(Other other) {
-        return bottom;
+        return nothing;
     }
     
     shared actual Other times(Other other) {
-        return bottom;
+        return nothing;
     }
     
     shared actual Other divided(Other other) {
-        return bottom;
+        return nothing;
     }
     
     shared actual Other remainder(Other other) {
-        return bottom;
+        return nothing;
     }
     
     shared actual Other successor {
-        return bottom;
+        return nothing;
     }
     
     shared actual Other predecessor {
-        return bottom;
+        return nothing;
     }
     
     shared actual Other negativeValue {
-        return bottom;
+        return nothing;
     }
     
     shared actual Other positiveValue {
-        return bottom;
+        return nothing;
     }
     
     shared actual Boolean zero {
-        return bottom;
+        return nothing;
     }
     
     shared actual Boolean unit {
-        return bottom;
+        return nothing;
     }
     
     shared actual Integer distanceFrom(Other other) {

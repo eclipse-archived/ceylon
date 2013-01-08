@@ -1,11 +1,11 @@
 package com.redhat.ceylon.compiler.java.test.statement.conditional;
 
-final class methodIfIsVoidSeq_ {
+final class methodIfIsAnythingSeq_ {
     
-    private methodIfIsVoidSeq_() {
+    private methodIfIsAnythingSeq_() {
     }
     
-    static void methodIfIsVoidSeq() {
+    static void methodIfIsAnythingSeq() {
         final .java.lang.Object args = .ceylon.language.process_.getProcess$().getArguments();
         .java.lang.Object $args$1;
         if (($args$1 = args) instanceof .ceylon.language.Sequential) {
@@ -19,6 +19,6 @@ final class methodIfIsVoidSeq_ {
     
     public static void main(.java.lang.String[] args) {
         .ceylon.language.process_.getProcess$().setupArguments(args);
-        .com.redhat.ceylon.compiler.java.test.statement.conditional.methodIfIsVoidSeq_.methodIfIsVoidSeq();
+        .com.redhat.ceylon.compiler.java.test.statement.conditional.methodIfIsAnythingSeq_.methodIfIsAnythingSeq();
     }
 }

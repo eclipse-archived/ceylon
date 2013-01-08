@@ -22,11 +22,11 @@ class SwitchIsNonExhaustive() {
     String m(Object b) {
         String name;
         switch(b) 
-        case(is IdentifiableObject) {
-            name = "IdentifiableObject";
+        case(is Basic) {
+            name = "Basic";
         }
         else {
-            name = "Un-IdentifiableObject";
+            name = "Un-Basic";
         }
         return name;
     }

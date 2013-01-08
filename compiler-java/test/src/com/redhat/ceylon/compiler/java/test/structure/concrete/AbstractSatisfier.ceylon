@@ -18,7 +18,7 @@
  * MA  02110-1301, USA.
  */
 @nomodel
-interface AbstractSatisfier_I satisfies Iterable<Void> {
+interface AbstractSatisfier_I satisfies Iterable<Anything> {
 }
 @nomodel
 abstract class AbstractSatisfier<T>() satisfies AbstractSatisfier_I&Iterable<T> {

@@ -24,6 +24,6 @@ shared interface \Ii {
     shared void m() {
         interface \Imi {
         }
-        \Imi a = bottom;
+        \Imi a = nothing;
     }
 }

@@ -43,7 +43,7 @@ interface MethodRefinementWithSpecifiers_Interface {
 void methodRefinementWithSpecifiers_returnsMethod()(){}
 
 @nomodel
-Callable<Void,[]> methodRefinementWithSpecifiers_attributeMethod = methodRefinementWithSpecifiers_returnsMethod();
+Callable<Anything,[]> methodRefinementWithSpecifiers_attributeMethod = methodRefinementWithSpecifiers_returnsMethod();
 
 @nomodel
 class MethodRefinementWithSpecifiers_ClassNoParam(){}
@@ -117,7 +117,7 @@ class MethodRefinementWithSpecifiers_Class(void arg()) satisfies MethodRefinemen
 /*
 @nomodel
 interface Bug891_Interface2 satisfies Bug891_Interface {
-    //shared actual Callable<Void,<>> f1 = arg;
+    //shared actual Callable<Anything,<>> f1 = arg;
     shared actual void f2() => print("a");
     f4() => print("a");
     shared actual void f6(){

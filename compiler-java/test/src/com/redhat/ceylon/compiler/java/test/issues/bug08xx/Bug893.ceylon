@@ -19,8 +19,8 @@
  */
 @nomodel
 shared interface XIterable893<out Element> {
-    shared default XIterable893<Element> success { return bottom; }
-    shared default XIterable893<Element> fail1 { return bottom; }
+    shared default XIterable893<Element> success { return nothing; }
+    shared default XIterable893<Element> fail1 { return nothing; }
     shared formal XIterable893<Element> fail2;
 }
 @nomodel
@@ -45,7 +45,7 @@ shared abstract class XSingleton893<out Element>(Element element)
         extends Object()
         satisfies XSequence893<Element>
         given Element satisfies Object {
-    shared actual XEmpty893 success { return bottom; }
-    shared actual XEmpty893 fail1 => bottom;
-    shared actual XEmpty893 fail2 = bottom;
+    shared actual XEmpty893 success { return nothing; }
+    shared actual XEmpty893 fail1 => nothing;
+    shared actual XEmpty893 fail2 = nothing;
 }
