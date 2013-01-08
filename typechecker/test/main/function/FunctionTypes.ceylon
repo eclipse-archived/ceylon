@@ -203,7 +203,7 @@ void method() {
     function str(Float f) => f.string;
     function zero() => 0.0;
     @type:"Entry<Float,String>" generic(str,zero);
-    @type:"Entry<Float,String>" generic(str,bottom);
+    @type:"Entry<Float,String>" generic(str,nothing);
     @type:"Entry<Object,Object>" generic((Object obj) => obj, () => "hello");
     @type:"Entry<Object,String>" generic((Object obj) => obj.string, () => "hello");
     @type:"Entry<String,String>" generic((String str) => str, () => "hello");
@@ -328,7 +328,7 @@ void lazySpec() {
     String lazy4(String s, Float x, Float y);
     lazy4 = (String s, Float... x) => s;
     Anything x(String s="")(Integer i);
-    x = (String s)(Integer i) => bottom;
+    x = (String s)(Integer i) => nothing;
 }
 
 void lazyLazySpec() {
@@ -341,7 +341,7 @@ void lazyLazySpec() {
     String lazy4(String s, Float x, Float y);
     @error lazy4(String s, @error Float... x) => s;
     Anything x(String s="")(Integer i);
-    x(String s)(Integer i) => bottom;
+    x(String s)(Integer i) => nothing;
 }
 
 void defaulted() {

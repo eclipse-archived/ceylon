@@ -1,4 +1,4 @@
-T infer<T>(Co<T> co) { return bottom; }
+T infer<T>(Co<T> co) { return nothing; }
 
 interface G {} interface H {}
 
@@ -39,10 +39,10 @@ void testSubCoOk() {
 
 
 class SuperCoGood() satisfies Co<G> {
-    default shared actual G get() { return bottom; }
+    default shared actual G get() { return nothing; }
 }
 class SubCoGood() extends SuperCoGood() satisfies Co<H> {
-    default shared actual H&G get() { return bottom; }
+    default shared actual H&G get() { return nothing; }
     void m() {
         @type:"G" super.get();
     }
@@ -58,7 +58,7 @@ void testSubCoGood() {
 }
 
 interface InterCoG satisfies Co<G> {
-    default shared actual G get() { return bottom; }
+    default shared actual G get() { return nothing; }
 }
 interface InterCoH satisfies Co<H> {}
 interface InterCo satisfies Co<Object> {}
@@ -66,7 +66,7 @@ interface InterCo satisfies Co<Object> {}
 @error class SatCoBroken() satisfies InterCoG&InterCoH {}
 
 class SatCoOK() satisfies InterCo&InterCoG&InterCoH {
-    default shared actual G&H get() { return bottom; }
+    default shared actual G&H get() { return nothing; }
 }
 void testSatCoOK() {
     value inst = SatCoOK();
@@ -87,7 +87,7 @@ void testSatCoGood() {
     @type:"G" infer(inst);
 }
 class SatCoFine() satisfies InterCo&InterCoH {
-    default shared actual H get() { return bottom; }
+    default shared actual H get() { return nothing; }
 }
 void testSatCoFine() {
     value inst = SatCoFine();

@@ -338,17 +338,17 @@ interface Link satisfies Rsrc {}
 
 void use() {
     
-    File|Link x = bottom;
+    File|Link x = nothing;
     switch(x) 
     case (is File) {}
     case (is Link) {}
     
-    File|Dir|Link y = bottom;
+    File|Dir|Link y = nothing;
     switch(y)
     case (is File|Dir) {}
     case (is Link) {}
     
-    Rsrc z = bottom;
+    Rsrc z = nothing;
     if (is File|Dir z) {
         switch(z) 
         case (is File) {}

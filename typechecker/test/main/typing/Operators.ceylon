@@ -63,19 +63,19 @@ class Operators() {
     
     @type:"String" value x19 = 12.34.string;
     
-    X? nothing = null;
+    X? none = null;
     
-    //@type:"Null|Operators.X" value x20 = nothing ? nothing;
+    //@type:"Null|Operators.X" value x20 = none ? none;
     //
-    //@type:"Operators.X" value x21 = nothing ? X();
+    //@type:"Operators.X" value x21 = none ? X();
     //
-    //@type:"Operators.X" value x22 = nothing ? nothing ? X();
+    //@type:"Operators.X" value x22 = none ? none ? X();
     //
-    //@type:"Operators.Y|Operators.X" value x60 = nothing ? Y();
+    //@type:"Operators.Y|Operators.X" value x60 = none ? Y();
     //
     //@error value x23 = X() ? X();
     //
-    //@error value x24 = X() ? nothing;
+    //@error value x24 = X() ? none;
     
     @type:"Range<Integer>" value x25 = 1..4;
     
@@ -89,10 +89,10 @@ class Operators() {
     @type:"Operators.X" value x27item = x27.item;
     @type:"Integer" value x27key = x27.key;
     
-    @error value x28 = 0->nothing;
+    @error value x28 = 0->none;
     
-    @type:"Boolean" value x29 = nothing exists;
-    //@type:"Boolean" value x29n = exists nothing;
+    @type:"Boolean" value x29 = none exists;
+    //@type:"Boolean" value x29n = exists none;
     
     @error @type:"Boolean" value x30 = 1 exists;
     //@error @type:"Boolean" value x30n = exists 1;
@@ -113,9 +113,9 @@ class Operators() {
     //@type:"Boolean" value x31n = is Integer one;
     @error value x31e = 1 is Integer;
     
-    @type:"Boolean" value x32 = nothing is X;
-    //@type:"Boolean" value x32n = is X nothing;    
-    @error value x32e = nothing is Integer;
+    @type:"Boolean" value x32 = none is X;
+    //@type:"Boolean" value x32n = is X none;    
+    @error value x32e = none is Integer;
     
     @type:"Boolean" value x33 = "hello" in "hello world";
     
@@ -142,7 +142,7 @@ class Operators() {
     @type:"Null|Operators.X" value x38 = sequence[0];
     @type:"Sequential<Operators.X>" value x39 = sequence[0..1];
     @type:"Sequential<Operators.X>" value x40 = sequence[1+1...];
-    @type:"Null|Operators.X" value x41 = [nothing][0];
+    @type:"Null|Operators.X" value x41 = [none][0];
     @type:"Null|String" value x42 = noSequence?[0];
     @type:"Sequential<Operators.X>" value x39u = sequence[...1];
     
@@ -316,9 +316,9 @@ class Operators() {
 
     }
     
-    Set<String> ss = bottom;
-    Set<Integer> si = bottom;
-    Set<Object> so = bottom;
+    Set<String> ss = nothing;
+    Set<Integer> si = nothing;
+    Set<Object> so = nothing;
     @type:"Set<String|Integer>" value sr0 = ss|si;
     @type:"Set<String|Integer>" value sr1 = ss^si;
     @type:"Set<Nothing>" value sr2 = ss&si;

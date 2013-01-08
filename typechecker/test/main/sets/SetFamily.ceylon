@@ -17,11 +17,11 @@ class TreeSetFamily<Element>()
             satisfies Set {
         actual shared void add(Element elem) {}
         actual shared Boolean contains1(Element elem) { 
-            return bottom; 
+            return nothing; 
         }
         actual shared Boolean equals1(TreeSet that) {
-            return bottom;
+            return nothing;
         }
-        shared actual Iterator<Element> iterator = bottom;
+        shared actual Iterator<Element> iterator = nothing;
     }
 }

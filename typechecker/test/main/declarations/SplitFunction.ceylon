@@ -47,19 +47,19 @@ void splitFunction() {
     }
 
     Anything func0(String[] x, String... y);
-    func0(String[] x, String... y) => bottom;
+    func0(String[] x, String... y) => nothing;
     
     Anything func1(String[] x, String[] y);
-    func1(String... x, @error String... y) => bottom;
+    func1(String... x, @error String... y) => nothing;
     
     Anything func2(String... x, @error String... y);
-    //func2(String[] x, String[] y) = bottom;
+    //func2(String[] x, String[] y) = nothing;
     
     Anything func3(String[] x, String[] y);
-    func3(String[] x, @error String... y) => bottom;
+    func3(String[] x, @error String... y) => nothing;
     
     Anything func4(String[] x, String... y);
-    func4(String[] x, @error String[] y) => bottom;
+    func4(String[] x, @error String[] y) => nothing;
     
     Anything printit(String s);
     printit(@error String s="hello") => print(s);

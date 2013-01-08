@@ -11,7 +11,7 @@ class Is() {
     interface SimpleContainer<T> 
         given T satisfies Number {}
     
-    String[]&Sized strings = bottom;
+    String[]&Sized strings = nothing;
     
     if (is Sequence<String> strings) {
         print(strings.first);

@@ -97,13 +97,13 @@ interface Scal<in T> of T
 
 class CompBar() satisfies Comp<CompBar> {
     shared actual Comparison compare(CompBar other) {
-        return bottom;
+        return nothing;
     }
 }
 
 @error class CompFoo() satisfies Comp<CompBar> {
     shared actual Comparison compare(CompBar other) {
-        return bottom;
+        return nothing;
     }
 }
 
@@ -111,7 +111,7 @@ class CompBar() satisfies Comp<CompBar> {
         satisfies Comparable<T> 
         given T satisfies Comparable<T>{
     shared actual Comparison compare(T other) {
-        return bottom;
+        return nothing;
     }
 }
 

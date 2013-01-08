@@ -32,19 +32,19 @@ class TypeInSatisfies() satisfies ExportedInterface{}
 // Type members
 
 shared class SharedTypeInBody(){
-    @error shared ExportedClass sharedAttr = bottom;
-    ExportedClass privateAttr = bottom;
+    @error shared ExportedClass sharedAttr = nothing;
+    ExportedClass privateAttr = nothing;
 
     if(true){
         // this is not exported so it's allowed
-        ExportedClass c = bottom;
+        ExportedClass c = nothing;
     }
 
-    @error shared ExportedClass sharedGetter1 => bottom;
-    ExportedClass privateGetter1 => bottom;
+    @error shared ExportedClass sharedGetter1 => nothing;
+    ExportedClass privateGetter1 => nothing;
 
-    @error shared ExportedClass sharedGetter2 { return bottom; }
-    ExportedClass privateGetter2 { return bottom; }
+    @error shared ExportedClass sharedGetter2 { return nothing; }
+    ExportedClass privateGetter2 { return nothing; }
     
     @error shared ExportedClass sharedMethod(@error ExportedClass a){ return a; }
     ExportedClass privateMethod(ExportedClass a){ return a; }
@@ -59,19 +59,19 @@ shared class SharedTypeInBody(){
     class PrivateInner(ExportedClass a){}
 }
 class TypeInBody(){
-    shared ExportedClass sharedAttr = bottom;
-    ExportedClass privateAttr = bottom;
+    shared ExportedClass sharedAttr = nothing;
+    ExportedClass privateAttr = nothing;
 
     if(true){
         // this is not exported so it's allowed
-        ExportedClass c = bottom;
+        ExportedClass c = nothing;
     }
 
-    shared ExportedClass sharedGetter1 => bottom;
-    ExportedClass privateGetter1 => bottom;
+    shared ExportedClass sharedGetter1 => nothing;
+    ExportedClass privateGetter1 => nothing;
 
-    shared ExportedClass sharedGetter2 { return bottom; }
-    ExportedClass privateGetter2 { return bottom; }
+    shared ExportedClass sharedGetter2 { return nothing; }
+    ExportedClass privateGetter2 { return nothing; }
     
     shared ExportedClass sharedMethod(ExportedClass a){ return a; }
     ExportedClass privateMethod(ExportedClass a){ return a; }
@@ -89,14 +89,14 @@ class TypeInBody(){
 //
 // Toplevel attributes/methods
 
-@error shared ExportedClass sharedAttr = bottom;
-ExportedClass privateAttr = bottom;
+@error shared ExportedClass sharedAttr = nothing;
+ExportedClass privateAttr = nothing;
 
-@error shared ExportedClass sharedGetter1 => bottom;
-ExportedClass privateGetter1 => bottom;
+@error shared ExportedClass sharedGetter1 => nothing;
+ExportedClass privateGetter1 => nothing;
 
-@error shared ExportedClass sharedGetter2 { return bottom; }
-ExportedClass privateGetter2 { return bottom; }
+@error shared ExportedClass sharedGetter2 { return nothing; }
+ExportedClass privateGetter2 { return nothing; }
 
 @error shared ExportedClass sharedMethod(@error ExportedClass a){ return a; }
 ExportedClass privateMethod(ExportedClass a){ return a; }
