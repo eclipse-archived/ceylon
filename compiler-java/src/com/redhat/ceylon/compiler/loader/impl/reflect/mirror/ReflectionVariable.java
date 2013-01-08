@@ -23,7 +23,6 @@ package com.redhat.ceylon.compiler.loader.impl.reflect.mirror;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Type;
 
-import com.redhat.ceylon.compiler.java.metadata.Name;
 import com.redhat.ceylon.compiler.loader.mirror.AnnotationMirror;
 import com.redhat.ceylon.compiler.loader.mirror.TypeMirror;
 import com.redhat.ceylon.compiler.loader.mirror.VariableMirror;
@@ -54,7 +53,7 @@ public class ReflectionVariable implements VariableMirror {
 
     @Override
     public String getName() {
-        AnnotationMirror name = getAnnotation(Name.class.getName());
+        AnnotationMirror name = getAnnotation("com.redhat.ceylon.compiler.java.metadata.Name");
         if(name == null)
             return "unknown";
         return (String) name.getValue();

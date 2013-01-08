@@ -384,7 +384,7 @@ public class Decl {
     }
     
     public static String className(Declaration decl) {
-        return com.redhat.ceylon.compiler.java.Util.declClassName(decl.getQualifiedNameString());
+        return decl.getQualifiedNameString().replace("::", ".");
     }
 
     public static Tree.Term unwrapExpressionsUntilTerm(Tree.Term term) {

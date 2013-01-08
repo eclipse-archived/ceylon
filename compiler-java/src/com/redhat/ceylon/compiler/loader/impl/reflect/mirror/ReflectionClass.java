@@ -20,6 +20,7 @@
 
 package com.redhat.ceylon.compiler.loader.impl.reflect.mirror;
 
+import java.lang.annotation.Annotation;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
@@ -159,17 +160,17 @@ public class ReflectionClass implements ClassMirror {
 
     @Override
     public boolean isCeylonToplevelAttribute() {
-        return !isInnerClass() && klass.isAnnotationPresent(com.redhat.ceylon.compiler.java.metadata.Attribute.class);
+        return !isInnerClass() && klass.isAnnotationPresent(ReflectionUtils.getClass("com.redhat.ceylon.compiler.java.metadata.Attribute"));
     }
 
     @Override
     public boolean isCeylonToplevelObject() {
-        return !isInnerClass() && klass.isAnnotationPresent(com.redhat.ceylon.compiler.java.metadata.Object.class);
+        return !isInnerClass() && klass.isAnnotationPresent(ReflectionUtils.getClass("com.redhat.ceylon.compiler.java.metadata.Object"));
     }
 
     @Override
     public boolean isCeylonToplevelMethod() {
-        return !isInnerClass() && klass.isAnnotationPresent(com.redhat.ceylon.compiler.java.metadata.Method.class);
+        return !isInnerClass() && klass.isAnnotationPresent(ReflectionUtils.getClass("com.redhat.ceylon.compiler.java.metadata.Method"));
     }
 
     @Override

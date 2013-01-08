@@ -53,5 +53,14 @@ public class ReflectionUtils {
         return typeParameters;
     }
 
+    /* Required to fix the distribution build, so that we can build the compiler before building the language module */
+    static Class<? extends Annotation> getClass(String string) {
+        try {
+            return (Class<? extends Annotation>) Class.forName(string);
+        } catch (ClassNotFoundException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
 
 }
