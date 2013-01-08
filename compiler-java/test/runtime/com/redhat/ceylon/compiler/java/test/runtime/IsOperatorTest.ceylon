@@ -107,83 +107,83 @@ shared class IsOperatorTest() {
     
     @test
     shared void operatorIs() {
-        variable Boolean b := false;
-        b := nowt is Nothing;
+        variable Boolean b = false;
+        b = nowt is Nothing;
         if (b) {
            
         } else {
             throw;
         }
-        b:= nowt is Object;
+        b= nowt is Object;
         if (b) {
             throw;
         }
-        b := nowt is Identifiable;
+        b = nowt is Identifiable;
         if (b) {
             throw;
         }
-        b := nowt is IdentifiableObject;
-        if (b) {
-            throw;
-        }
-        
-        b:= o is Nothing;
-        if (b) {
-            throw;
-        }
-        b := o is Object;
-        if (b) {
-        
-        } else {
-            throw;
-        }
-        b := o is Identifiable;
-        if (b) {
-            throw;
-        }
-        b := o is IdentifiableObject;
+        b = nowt is IdentifiableObject;
         if (b) {
             throw;
         }
         
-        b := i is Nothing;
+        b= o is Nothing;
         if (b) {
             throw;
         }
-        b := i is Object;
+        b = o is Object;
         if (b) {
         
         } else {
             throw;
         }
-        b := i is Identifiable;
+        b = o is Identifiable;
+        if (b) {
+            throw;
+        }
+        b = o is IdentifiableObject;
+        if (b) {
+            throw;
+        }
+        
+        b = i is Nothing;
+        if (b) {
+            throw;
+        }
+        b = i is Object;
         if (b) {
         
         } else {
             throw;
         }
-        b := i is IdentifiableObject;
-        if (b) {
-            throw;
-        }
-        
-        b := io is Nothing;
-        if (b) {
-            throw;
-        }
-        b := io is Object;
+        b = i is Identifiable;
         if (b) {
         
         } else {
             throw;
         }
-        b := io is Identifiable;
+        b = i is IdentifiableObject;
+        if (b) {
+            throw;
+        }
+        
+        b = io is Nothing;
+        if (b) {
+            throw;
+        }
+        b = io is Object;
         if (b) {
         
         } else {
             throw;
         }
-        b := io is IdentifiableObject;
+        b = io is Identifiable;
+        if (b) {
+        
+        } else {
+            throw;
+        }
+        b = io is IdentifiableObject;
         if (b) {
             
         } else {

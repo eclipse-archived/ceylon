@@ -35,7 +35,7 @@ shared class ClassesTest() {
     @test
     shared void testWithAtributes() {
         class WithAttributes() {
-            shared variable Integer count := 0;        
+            shared variable Integer count = 0;        
             shared void inc() { count += 1;}        
         }
     

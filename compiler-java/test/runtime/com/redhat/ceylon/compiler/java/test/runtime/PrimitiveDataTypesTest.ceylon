@@ -21,14 +21,14 @@ shared class PrimitiveDataTypesTest () {
   
   @test
   shared void testNumbers(){
-    variable Integer i := +2;
+    variable Integer i = +2;
     assertEquals(+2, i);
     assertTrue(+2 == i);
     assertTrue(i == +2);
     assertFalse(i == +3);
     assertTrue(i != +3);
 
-    i := +3;
+    i = +3;
     assertEquals(+3, i);
     assertTrue(+3 == i);
     assertTrue(i == +3);
@@ -41,28 +41,28 @@ shared class PrimitiveDataTypesTest () {
     assertFalse(+3 == +2);
     assertTrue(+3 != +2);
     
-    variable Integer j := i + i;
+    variable Integer j = i + i;
     assertTrue(j == +6);
 
-    j := i * i;
+    j = i * i;
     assertTrue(j == +9);
 
-    j := i - i;
+    j = i - i;
     assertTrue(j == +0);
 
-    j := i / i;
+    j = i / i;
     assertTrue(j == +1);
 
-    j := i % i;
+    j = i % i;
     assertTrue(j == +0);
 
-    j := i ** i;
+    j = i ** i;
     assertTrue(j == +27);
 
-    j := +i;
+    j = +i;
     assertTrue(j == +3);
 
-    j := -i;
+    j = -i;
     assertTrue(j == -3);
 
     assertTrue(+2 < +3);
@@ -81,11 +81,11 @@ shared class PrimitiveDataTypesTest () {
     assertFalse(false);
     assertFalse(!true);
 
-    variable Boolean t := true;
+    variable Boolean t = true;
     assertTrue(t);
     assertFalse(!t);
 
-    variable Boolean f := false;
+    variable Boolean f = false;
     assertFalse(f);
     assertTrue(!f);
     
@@ -109,7 +109,7 @@ shared class PrimitiveDataTypesTest () {
     f ||= true;
     assertTrue(f);
     // reset
-    f := false;
+    f = false;
     
     t &&= true;
     assertTrue(t);

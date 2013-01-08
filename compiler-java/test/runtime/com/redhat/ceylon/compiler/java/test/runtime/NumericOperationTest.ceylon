@@ -18,28 +18,28 @@
  * MA  02110-1301, USA.
  */
  
-variable Integer numericOperationIncrDecrTestToplevel := 0;
+variable Integer numericOperationIncrDecrTestToplevel = 0;
 Integer numericOperationIncrDecrTestGetter {
     return numericOperationIncrDecrTestToplevel;
 }
 assign numericOperationIncrDecrTestGetter {
-    numericOperationIncrDecrTestToplevel := numericOperationIncrDecrTestGetter;
+    numericOperationIncrDecrTestToplevel = numericOperationIncrDecrTestGetter;
 }
 
 shared abstract class NumericOperationTestParameterized<T>(T init) {
-    shared variable T boxedInteger := init;
+    shared variable T boxedInteger = init;
 }
 
 shared class NumericOperationTest() extends NumericOperationTestParameterized<Integer>(0) {
 
-  variable Integer incrDecrCounter := 0;
-  variable Integer unboxedAttrIncrDecr := 0;
-  variable Integer unboxedAttrIncrDecrGetterHolder := 0;
+  variable Integer incrDecrCounter = 0;
+  variable Integer unboxedAttrIncrDecr = 0;
+  variable Integer unboxedAttrIncrDecrGetterHolder = 0;
   Integer unboxedAttrIncrDecrGetter {
     return unboxedAttrIncrDecrGetterHolder;
   }
   assign unboxedAttrIncrDecrGetter {
-    unboxedAttrIncrDecrGetterHolder := unboxedAttrIncrDecrGetter;
+    unboxedAttrIncrDecrGetterHolder = unboxedAttrIncrDecrGetter;
   }
 
   @test
@@ -80,7 +80,7 @@ shared class NumericOperationTest() extends NumericOperationTestParameterized<In
 
   @test
   shared void testUnboxedLocalIncrDecr(){
-    variable Integer n := 0;
+    variable Integer n = 0;
     assertEquals(0, n);
 
     // postfix ++
@@ -110,12 +110,12 @@ shared class NumericOperationTest() extends NumericOperationTestParameterized<In
 
   @test
   shared void testUnboxedLocalIncrDecrGetter(){
-    variable Integer nHolder := 0;
+    variable Integer nHolder = 0;
     Integer n {
         return nHolder;
     }
     assign n {
-        nHolder := n;
+        nHolder = n;
     }
     assertEquals(0, n);
 
@@ -357,7 +357,7 @@ shared class NumericOperationTest() extends NumericOperationTestParameterized<In
   }
   
   void resetOnce(){
-    incrDecrCounter := 0;
+    incrDecrCounter = 0;
   }
 
   @test

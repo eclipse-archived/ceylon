@@ -32,7 +32,7 @@ shared class StatementTest() {
 
   @test
   shared void testFor() {
-    variable Integer i := +0;
+    variable Integer i = +0;
     for(Integer j in {+1,+2,+3}){
       i += j;
     }

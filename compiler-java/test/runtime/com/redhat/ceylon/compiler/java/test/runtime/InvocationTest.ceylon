@@ -25,15 +25,15 @@ class Foo(first = 1, Integer... initialRest={2, 3, 4}) {
 shared class InvocationTest() {
     @test
     shared void testInitializerDefaultedAndSequenced() {
-        variable Foo foo := Foo();
+        variable Foo foo = Foo();
         assertEquals(1, foo.first);
         assertEquals({2, 3, 4}, foo.rest);
         
-        foo := Foo(2);
+        foo = Foo(2);
         assertEquals(2, foo.first);
         assertEquals({2, 3, 4}, foo.rest);
         
-        foo := Foo(10, 11, 12);
+        foo = Foo(10, 11, 12);
         assertEquals(10, foo.first);
         assertEquals({11, 12}, foo.rest);
     } 
