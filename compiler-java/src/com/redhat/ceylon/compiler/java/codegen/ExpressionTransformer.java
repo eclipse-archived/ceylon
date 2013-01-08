@@ -20,6 +20,8 @@
 
 package com.redhat.ceylon.compiler.java.codegen;
 
+import static com.redhat.ceylon.compiler.java.codegen.AbstractTransformer.JT_COMPANION;
+import static com.redhat.ceylon.compiler.java.codegen.AbstractTransformer.JT_NO_PRIMITIVES;
 import static com.redhat.ceylon.compiler.typechecker.tree.Util.hasUncheckedNulls;
 
 import java.util.HashSet;
@@ -35,6 +37,7 @@ import com.redhat.ceylon.compiler.java.codegen.Operators.OptimisationStrategy;
 import com.redhat.ceylon.compiler.java.codegen.StatementTransformer.Cond;
 import com.redhat.ceylon.compiler.java.codegen.StatementTransformer.CondList;
 import com.redhat.ceylon.compiler.loader.model.LazyMethod;
+import com.redhat.ceylon.compiler.typechecker.model.Class;
 import com.redhat.ceylon.compiler.typechecker.model.ClassOrInterface;
 import com.redhat.ceylon.compiler.typechecker.model.Declaration;
 import com.redhat.ceylon.compiler.typechecker.model.Functional;
@@ -1624,7 +1627,12 @@ public class ExpressionTransformer extends AbstractTransformer {
                     public JCExpression transform(JCExpression primaryExpr, String selector) {
                         TransformedInvocationPrimary transformedPrimary = invocation.transformPrimary(primaryExpr, selector);
                         callBuilder.arguments(transformArgumentList(invocation, transformedPrimary));
-                        JCExpression resultExpr = invocation.transformInvocationOrInstantiation(callBuilder, transformedPrimary);
+                        JCExpression resultExpr;
+                        if (invocation instanceof NamedArgumentInvocation) {
+                            resultExpr = transformNamedArgumentInvocationOrInstantiation((NamedArgumentInvocation)invocation, callBuilder, transformedPrimary);
+                        } else {
+                            resultExpr = transformPositionalInvocationOrInstantiation(invocation, callBuilder, transformedPrimary);
+                        }
                         return resultExpr;
                     }
                 });
@@ -1634,6 +1642,92 @@ public class ExpressionTransformer extends AbstractTransformer {
         } finally {
             withinInvocation(prevFnCall);
         }
+    }
+
+    protected JCExpression transformPositionalInvocationOrInstantiation(Invocation invocation, CallBuilder callBuilder, TransformedInvocationPrimary transformedPrimary) {
+        JCExpression resultExpr;
+        if (invocation.getPrimary() instanceof Tree.BaseTypeExpression) {
+            resultExpr = transformBaseInstantiation(invocation, callBuilder, transformedPrimary);
+        } else if (invocation.getPrimary() instanceof Tree.QualifiedTypeExpression) {
+            resultExpr = transformQualifiedInstantiation(invocation, callBuilder, transformedPrimary);
+        } else {   
+            resultExpr = transformInvocation(invocation, callBuilder, transformedPrimary);
+        }
+        
+        if(invocation.handleBoxing)
+            resultExpr = applyErasureAndBoxing(resultExpr, invocation.getReturnType(), 
+                    !invocation.unboxed, invocation.boxingStrategy, invocation.getReturnType());
+        return resultExpr;
+    }
+
+    private JCExpression transformInvocation(Invocation invocation, CallBuilder callBuilder,
+            TransformedInvocationPrimary transformedPrimary) {
+        if (invocation.isOnValueType()) {
+            JCExpression primTypeExpr = makeJavaType(invocation.getQmePrimary().getTypeModel(), JT_NO_PRIMITIVES);
+            callBuilder.invoke(naming.makeQuotedQualIdent(primTypeExpr, transformedPrimary.selector));
+        } else {
+            callBuilder.invoke(naming.makeQuotedQualIdent(transformedPrimary.expr, transformedPrimary.selector));
+        }
+        return callBuilder.build();
+    }
+
+    private JCExpression transformQualifiedInstantiation(Invocation invocation, CallBuilder callBuilder,
+            TransformedInvocationPrimary transformedPrimary) {
+        
+        Tree.QualifiedTypeExpression qte = (Tree.QualifiedTypeExpression)invocation.getPrimary();
+        Declaration declaration = qte.getDeclaration();
+        if (!Strategy.generateInstantiator(declaration)) {
+            // When doing qualified invocation through an interface we need
+            // to get the companion.
+            JCExpression qualifier;
+            if (declaration.getContainer() instanceof Interface
+                    && !(qte.getPrimary() instanceof Tree.Outer)) {
+                Interface qualifyingInterface = (Interface)declaration.getContainer();
+                qualifier = make().Apply(null, 
+                        makeSelect(transformedPrimary.expr, getCompanionAccessorName(qualifyingInterface)), 
+                        List.<JCExpression>nil());
+                // But when the interface is local the accessor returns Object
+                // so we need to cast it to the type of the companion
+                if (Decl.isAncestorLocal(declaration)) {
+                    qualifier = make().TypeCast(makeJavaType(qualifyingInterface.getType(), JT_COMPANION), qualifier);
+                }
+            } else {
+                qualifier = transformedPrimary.expr;
+            }
+            ProducedType classType = (ProducedType)qte.getTarget();
+            // Note: here we're not fully qualifying the class name because the JLS says that if "new" is qualified the class name
+            // is qualified relative to it
+            JCExpression type = makeJavaType(classType, AbstractTransformer.JT_CLASS_NEW | AbstractTransformer.JT_NON_QUALIFIED);
+            callBuilder.instantiate(qualifier, type);
+        } else {
+            callBuilder.typeArguments(List.<JCExpression>nil());
+            callBuilder.invoke(naming.makeInstantiatorMethodName(transformedPrimary.expr, (Class)declaration));
+        }
+        return callBuilder.build();
+    }
+
+    private JCExpression transformBaseInstantiation(Invocation invocation, CallBuilder callBuilder,
+            TransformedInvocationPrimary transformedPrimary) {
+        JCExpression resultExpr;
+        Tree.BaseTypeExpression type = (Tree.BaseTypeExpression)invocation.getPrimary();
+        Declaration declaration = type.getDeclaration();
+        if (Strategy.generateInstantiator(declaration)) {
+            resultExpr = callBuilder
+                    .typeArguments(List.<JCExpression>nil())
+                    .invoke(naming.makeInstantiatorMethodName(transformedPrimary.expr, (Class)declaration))
+                    .build();
+            if (Decl.isAncestorLocal(invocation.getPrimaryDeclaration())) {
+                // $new method declared to return Object, so needs typecast
+                resultExpr = make().TypeCast(makeJavaType(
+                        ((TypeDeclaration)declaration).getType()), resultExpr);
+            }
+        } else {
+            ProducedType classType = (ProducedType)type.getTarget();
+            resultExpr = callBuilder
+                    .instantiate(makeJavaType(classType, AbstractTransformer.JT_CLASS_NEW))
+                    .build();
+        }
+        return resultExpr;
     }
     
     private JCExpression transformCallableSpecifierInvocation(CallBuilder callBuilder, CallableSpecifierInvocation invocation) {
@@ -1661,6 +1755,27 @@ public class ExpressionTransformer extends AbstractTransformer {
                 callBuilder.typeArgument(makeJavaType(arg, JT_TYPE_ARGUMENT));
             }
         }
+    }
+    
+    protected JCExpression transformNamedArgumentInvocationOrInstantiation(NamedArgumentInvocation invocation, 
+            CallBuilder callBuilder,
+            TransformedInvocationPrimary transformedPrimary) {
+        JCExpression resultExpr = transformPositionalInvocationOrInstantiation(invocation, callBuilder, transformedPrimary);
+        // apply the default parameters
+        if (invocation.getVars() != null && !invocation.getVars().isEmpty()) {
+            if (invocation.getReturnType() == null || Decl.isUnboxedVoid(invocation.getPrimaryDeclaration())) {
+                // void methods get wrapped like (let $arg$1=expr, $arg$0=expr in call($arg$0, $arg$1); null)
+                resultExpr = make().LetExpr( 
+                        invocation.getVars().append(make().Exec(resultExpr)).toList(), 
+                        makeNull());
+            } else {
+                // all other methods like (let $arg$1=expr, $arg$0=expr in call($arg$0, $arg$1))
+                resultExpr = make().LetExpr( 
+                        invocation.getVars().toList(),
+                        resultExpr);
+            }
+        }
+        return resultExpr;
     }
     
     //
