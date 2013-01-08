@@ -168,7 +168,9 @@ public class CeylonEnter extends Enter {
             }
             timer.startTask("Enter on Java trees");
             // enter java trees first to set up their ClassSymbol objects for ceylon trees to use during type-checking
-            if(!javaTrees.isEmpty()){
+            if(isBootstrap){
+                super.main(trees);
+            }else if(!javaTrees.isEmpty()){
                 super.main(javaTrees);
             }
             // now we can type-check the Ceylon code
