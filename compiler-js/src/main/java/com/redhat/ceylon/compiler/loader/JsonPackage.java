@@ -681,6 +681,9 @@ public class JsonPackage extends com.redhat.ceylon.compiler.typechecker.model.Pa
             }
             throw new IllegalStateException("Cannot find " + name + " in " + model.keySet());
         }
+        if (map.get(MetamodelGenerator.KEY_METATYPE) instanceof Declaration) {
+            return (Declaration)map.get(MetamodelGenerator.KEY_METATYPE);
+        }
         String metatype = (String)map.get(MetamodelGenerator.KEY_METATYPE);
         if (metatype == null) {
             throw new IllegalArgumentException("Missing metatype from entry " + map);

@@ -28,9 +28,11 @@ public class JsModuleManager extends ModuleManager {
 
     /** Tells whether the language module has been loaded yet. */
     private boolean clLoaded;
+    private final Map<String, Object> clmod;
 
-    public JsModuleManager(Context context) {
+    public JsModuleManager(Context context, Map<String, Object> jsonCL) {
         super(context);
+        clmod = jsonCL;
     }
 
     @Override
@@ -39,13 +41,17 @@ public class JsModuleManager extends ModuleManager {
             List<PhasedUnits> phasedUnitsOfDependencies, boolean forCompiledModule) {
         if (!clLoaded) {
             clLoaded = true;
-            ArtifactContext ac = new ArtifactContext("ceylon.language", module.getLanguageModule().getVersion());
-            ac.setFetchSingleArtifact(true);
-            ac.setThrowErrorIfMissing(true);
-            ac.setSuffix(".js");
-            ArtifactResult lmar = getContext().getRepositoryManager().getArtifactResult(ac);
-            resolveModule(lmar, module.getLanguageModule(), null, dependencyTree,
-                    phasedUnitsOfDependencies, true);
+            if (clmod == null) {
+                ArtifactContext ac = new ArtifactContext("ceylon.language", module.getLanguageModule().getVersion());
+                ac.setFetchSingleArtifact(true);
+                ac.setThrowErrorIfMissing(true);
+                ac.setSuffix(".js");
+                ArtifactResult lmar = getContext().getRepositoryManager().getArtifactResult(ac);
+                resolveModule(lmar, module.getLanguageModule(), null, dependencyTree,
+                        phasedUnitsOfDependencies, true);
+            } else {
+                loadModuleFromMap(artifact, module, moduleImport, dependencyTree, phasedUnitsOfDependencies, forCompiledModule, clmod);
+            }
         }
         //Create a similar artifact but with .js extension
         File js = artifact.artifact();
@@ -67,40 +73,8 @@ public class JsModuleManager extends ModuleManager {
                         }
                     }
                     if (model != null) {
-                        @SuppressWarnings("unchecked")
-                        List<String> deps = (List<String>)model.get("$mod-deps");
-                        if (deps != null) {
-                            for (String s : deps) {
-                                int p = s.indexOf('/');
-                                String depname = null;
-                                String depv = null;
-                                if (p > 0) {
-                                    depname = s.substring(0,p);
-                                    depv = s.substring(p+1);
-                                    if (depv.isEmpty()) depv = null;
-                                } else {
-                                    depname = s;
-                                }
-                                //This will cause the dependency to be loaded later
-                                JsonModule dep = (JsonModule)getOrCreateModule(splitModuleName(depname), depv);
-                                ModuleImport imp = new ModuleImport(dep, false, false);
-                                module.getImports().add(imp);
-                            }
-                        }
-                        ((JsonModule)module).setModel(model);
-                        for (ModuleImport imp : module.getImports()) {
-                            if (!imp.getModule().getNameAsString().equals("ceylon.language")) {
-                                ArtifactContext ac = new ArtifactContext(imp.getModule().getNameAsString(), imp.getModule().getVersion());
-                                ac.setSuffix(".js");
-                                artifact = getContext().getRepositoryManager().getArtifactResult(ac);
-                                if (artifact != null) {
-                                    resolveModule(artifact, imp.getModule(), imp, dependencyTree, phasedUnitsOfDependencies, forCompiledModule & imp.isExport());
-                                }
-                            }
-                        }
-                        ((JsonModule)module).loadDeclarations();
-                        //module.setAvailable(true);
-                        return;
+                        loadModuleFromMap(artifact, module, moduleImport, dependencyTree, phasedUnitsOfDependencies,
+                                forCompiledModule, model);
                     }
                 } catch (IOException ex) {
                     //nothing to do here, will attempt reading .src
@@ -145,6 +119,48 @@ public class JsModuleManager extends ModuleManager {
             }
         }
         return pkg;
+    }
+
+    protected void loadModuleFromMap(ArtifactResult artifact, Module module,
+            ModuleImport moduleImport, LinkedList<Module> dependencyTree,
+            List<PhasedUnits> phasedUnitsOfDependencies, boolean forCompiledModule,
+            Map<String, Object> model) {
+        @SuppressWarnings("unchecked")
+        List<String> deps = (List<String>)model.get("$mod-deps");
+        if (deps != null) {
+            for (String s : deps) {
+                int p = s.indexOf('/');
+                String depname = null;
+                String depv = null;
+                if (p > 0) {
+                    depname = s.substring(0,p);
+                    depv = s.substring(p+1);
+                    if (depv.isEmpty()) depv = null;
+                } else {
+                    depname = s;
+                }
+                //This will cause the dependency to be loaded later
+                JsonModule dep = (JsonModule)getOrCreateModule(splitModuleName(depname), depv);
+                ModuleImport imp = new ModuleImport(dep, false, false);
+                module.getImports().add(imp);
+            }
+        }
+        ((JsonModule)module).setModel(model);
+        for (ModuleImport imp : module.getImports()) {
+            if (!imp.getModule().getNameAsString().equals("ceylon.language")) {
+                ArtifactContext ac = new ArtifactContext(imp.getModule().getNameAsString(),
+                        imp.getModule().getVersion());
+                ac.setSuffix(".js");
+                artifact = getContext().getRepositoryManager().getArtifactResult(ac);
+                if (artifact != null) {
+                    resolveModule(artifact, imp.getModule(), imp, dependencyTree,
+                            phasedUnitsOfDependencies, forCompiledModule & imp.isExport());
+                }
+            }
+        }
+        ((JsonModule)module).loadDeclarations();
+        //module.setAvailable(true);
+        return;
     }
 
 }
