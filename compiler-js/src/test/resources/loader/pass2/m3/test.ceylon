@@ -2,9 +2,9 @@ import m2 { ... }
 
 shared class TestClass3() extends Test2() {
     assert(2+2==4);
-    variable value i:=0;
+    variable value i=0;
     i++;
-    Integer[] seq = {1,2,3};
+    Integer[] seq = [1,2,3];
     if (nonempty seq) {}
 }
 
