@@ -31,7 +31,7 @@ function isOfType(obj, type) {
             return isOfTypes(obj, type);
         }
         if (obj === null) {
-            return type.t===Nothing || type.t===Anything;
+            return type.t===Null || type.t===Anything;
         }
         var typeName = type.t.$$.T$name;
         if (obj.getT$all && typeName in obj.getT$all()) {
@@ -50,7 +50,7 @@ function isOfType(obj, type) {
 function isOfTypes(obj, types) {
     if (obj===null) {
         for (var i=0; i < types.l.length; i++) {
-            if(types.l[i].t===Nothing || types.l[i].t===Anything) return true;
+            if(types.l[i].t===Null || types.l[i].t===Anything) return true;
         }
         return false;
     }
@@ -103,7 +103,7 @@ function extendsType(t1, t2) {
         return _ints ? inters||unions : unions;
     }
     for (t in t1.t.$$.T$all) {
-        if (t === t2.t.$$.T$name || t === 'ceylon.language::Bottom') {
+        if (t === t2.t.$$.T$name || t === 'ceylon.language::Nothing') {
             return true;
         }
     }
@@ -133,7 +133,7 @@ function className(obj) {
             return tn;
         }
     }
-    if (obj === null) return String$('ceylon.language::Nothing');
+    if (obj === null) return String$('ceylon.language::Null');
     var tn = obj.getT$name();
     if (obj.$$targs$$) {
         tn += '<';

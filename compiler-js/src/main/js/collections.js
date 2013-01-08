@@ -5,7 +5,7 @@ function inheritProto(a,b,c){}//IGNORE
 function exists(x){}//IGNORE
 function Exception(){}//IGNORE
 function isOfType(a,b){}//IGNORE
-function getBottom(){}//IGNORE
+function getNothing(){}//IGNORE
 function String$(x,l){}//IGNORE
 function TypeCategory(a,b){}//IGNORE
 function ArraySequence(x){}//IGNORE

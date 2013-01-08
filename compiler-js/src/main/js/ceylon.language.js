@@ -96,14 +96,14 @@ function Anything(wat) {
     return wat;
 }
 initType(Anything, 'ceylon.language::Anything');
-function Nothing(wat) {
+function Null(wat) {
     return null;
 }
-initType(Nothing, 'ceylon.language::Nothing', Anything);
-function Bottom(wat) {
-    throw "Bottom";
+initType(Null, 'ceylon.language::Null', Anything);
+function Nothing(wat) {
+    throw "Nothing";
 }
-initType(Bottom, 'ceylon.language::Bottom');
+initType(Nothing, 'ceylon.language::Nothing');
 
 function Object$(wat) {
     return wat;
@@ -434,8 +434,8 @@ exports.identityHash=$identityHash;
 exports.Basic=Basic;
 exports.Object=Object$;
 exports.Anything=Anything;
+exports.Null=Null;
 exports.Nothing=Nothing;
-exports.Bottom=Bottom;
 exports.Boolean=Boolean$;
 exports.Comparison=Comparison;
 exports.getNull=getNull;
