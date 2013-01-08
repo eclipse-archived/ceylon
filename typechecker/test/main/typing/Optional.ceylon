@@ -71,8 +71,16 @@ class Optional() {
     Integer scs = somechars.size;
     value sci = somechars.iterator;
     
-    @type:"Null|String|Integer|Sequence<Object>" String? | String | String? | Integer | Sequence<Object> foobar1 = -1;
-    @type:"Null|Sequential<String>|Integer" String[]? | String[] | Sequence<String> | Integer foobar2 = 1.integer;
+    T t<T>(T t) => t;
+    
+    @type:"Null|String|String|Null|String|Integer|Sequence<Object>" String? | String | String? | Integer | Sequence<Object> foobar1 = -1;
+    @type:"Null|String|Integer|Sequence<Object>" value foobar1a = foobar1;
+    @type:"Null|String|Integer|Sequence<Object>" t(foobar1);
+    String|Integer|Sequence<Object>|Null foobar1b = foobar1;
+    @type:"Null|Sequential<String>|Sequential<String>|Sequence<String>|Integer" String[]? | String[] | Sequence<String> | Integer foobar2 = 1.integer;
+    @type:"Null|Sequential<String>|Integer" value foobar2a = foobar2;
+    @type:"Null|Sequential<String>|Integer" t(foobar2);
+    Sequential<String>|Integer|Null foobar2b = foobar2;
     
     @type:"Sequence<Null|String|Integer|Sequence<Object>|Sequential<String>>" value xyz1 = [ foobar1, foobar2 ].sequence;
     @type:"Sequential<Null|String|Integer|Sequence<Object>|Sequential<String>>" value xyz2 = { foobar1, foobar2 }.sequence;

@@ -39,7 +39,9 @@ void testCanonicalization() {
     print(temp);
     Integer|Float|Null t = temp;
     Number? num = t;
-    @type:"Number" Number&Object no = t else 1.0;
+    @type:"Number&Object" Number&Object no = t else 1.0;
+    @type:"Number" value no1 = no;
+    @type:"Number" Number no2 = no;
     @type:"Number" value noo = temp else 1.0;
     if (is Cntnr num) {
         @type:"Number&Cntnr" value nnn = num;

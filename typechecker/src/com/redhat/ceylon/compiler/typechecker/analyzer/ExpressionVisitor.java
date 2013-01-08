@@ -4203,6 +4203,17 @@ private void checkPositionalArguments(ParameterList pl, ProducedReference pr,
                 }*/
             }
         }
+        if (td instanceof TypeParameter) {
+        	List<ProducedType> list = new ArrayList<ProducedType>();
+        	for (ProducedType st: td.getSatisfiedTypes()) {
+        		addToIntersection(list, st, unit);
+        	}
+        	IntersectionType it = new IntersectionType(unit);
+        	it.setSatisfiedTypes(list);
+        	if (it.getType().getDeclaration() instanceof NothingType) {
+        		that.addError("upper bound constraints cannot be satisfied by any type except Nothing");
+        	}
+        }
     }
 
     /*void checkCaseOfSupertype(Tree.StaticType t, TypeDeclaration td,

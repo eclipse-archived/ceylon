@@ -94,10 +94,18 @@ class Union() {
         abc.hello();
     }
     
-    @type:"Union.S|Union.A" S|A|B|C sabc = S();
-    @type:"Union.A|Union.S" A|B|C|S abcs = S();
+    T t<T>(T x, T y, T z, T w) => nothing; 
     
-    @type:"Null|Union.A|Union.B|Union.C" A?|B?|C? oabc = null;
+    @type:"Union.S|Union.A|Union.B|Union.C" S|A|B|C sabc = S();
+    @type:"Union.S|Union.A" value sabc1 = sabc;
+    @type:"Union.A|Union.B|Union.C|Union.S" A|B|C|S abcs = S();
+    @type:"Union.A|Union.S" value abcs1 = abcs;
+    
+    @type:"Union.S|Union.A" t(S(),A(),B(),C());
+    @type:"Union.A|Union.S" t(A(),B(),C(),S()); 
+    
+    @type:"Null|Union.A|Null|Union.B|Null|Union.C" A?|B?|C? oabc = null;
+    @type:"Null|Union.A|Union.B|Union.C" value oabc1 = oabc;
     if (is A|B|C oabc) {
         @error if (exists oabc) {}
     }

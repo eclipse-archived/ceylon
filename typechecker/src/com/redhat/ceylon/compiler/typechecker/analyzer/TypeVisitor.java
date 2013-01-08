@@ -4,8 +4,6 @@ import static com.redhat.ceylon.compiler.typechecker.analyzer.Util.checkTypeBelo
 import static com.redhat.ceylon.compiler.typechecker.analyzer.Util.formatPath;
 import static com.redhat.ceylon.compiler.typechecker.analyzer.Util.getBaseDeclaration;
 import static com.redhat.ceylon.compiler.typechecker.analyzer.Util.getTypeArguments;
-import static com.redhat.ceylon.compiler.typechecker.model.Util.addToIntersection;
-import static com.redhat.ceylon.compiler.typechecker.model.Util.addToUnion;
 import static com.redhat.ceylon.compiler.typechecker.model.Util.getContainingClassOrInterface;
 import static com.redhat.ceylon.compiler.typechecker.model.Util.producedType;
 import static com.redhat.ceylon.compiler.typechecker.tree.Util.name;
@@ -16,7 +14,6 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-import com.redhat.ceylon.compiler.typechecker.model.NothingType;
 import com.redhat.ceylon.compiler.typechecker.model.Class;
 import com.redhat.ceylon.compiler.typechecker.model.ClassOrInterface;
 import com.redhat.ceylon.compiler.typechecker.model.Declaration;
@@ -29,6 +26,7 @@ import com.redhat.ceylon.compiler.typechecker.model.Method;
 import com.redhat.ceylon.compiler.typechecker.model.MethodOrValue;
 import com.redhat.ceylon.compiler.typechecker.model.Module;
 import com.redhat.ceylon.compiler.typechecker.model.ModuleImport;
+import com.redhat.ceylon.compiler.typechecker.model.NothingType;
 import com.redhat.ceylon.compiler.typechecker.model.Package;
 import com.redhat.ceylon.compiler.typechecker.model.Parameter;
 import com.redhat.ceylon.compiler.typechecker.model.ProducedType;
@@ -361,7 +359,8 @@ public class TypeVisitor extends Visitor {
         UnionType ut = new UnionType(unit);
         List<ProducedType> types = new ArrayList<ProducedType>();
         for (Tree.StaticType st: that.getStaticTypes()) {
-            addToUnion( types, st.getTypeModel() );
+            //addToUnion( types, st.getTypeModel() );
+        	types.add(st.getTypeModel());
         }
         ut.setCaseTypes(types);
         ProducedType pt = ut.getType();
@@ -375,7 +374,8 @@ public class TypeVisitor extends Visitor {
         IntersectionType it = new IntersectionType(unit);
         List<ProducedType> types = new ArrayList<ProducedType>();
         for (Tree.StaticType st: that.getStaticTypes()) {
-            addToIntersection(types, st.getTypeModel(), unit);
+            //addToIntersection(types, st.getTypeModel(), unit);
+        	types.add(st.getTypeModel());
         }
         it.setSatisfiedTypes(types);
         that.setTypeModel(it.getType());
@@ -980,17 +980,6 @@ public class TypeVisitor extends Visitor {
                 }
                 list.add(type);
             }
-        }
-        if (td instanceof TypeParameter) {
-        	List<ProducedType> l = new ArrayList<ProducedType>();
-        	for (ProducedType t: list) {
-        		addToIntersection(l, t, unit);
-        	}
-        	IntersectionType it = new IntersectionType(unit);
-        	it.setSatisfiedTypes(l);
-        	if (it.getType().getDeclaration() instanceof NothingType) {
-        		that.addError("upper bound constraints cannot be satisfied by any type except Nothing");
-        	}
         }
         td.setSatisfiedTypes(list);
     }

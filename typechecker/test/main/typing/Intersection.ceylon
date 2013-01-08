@@ -24,8 +24,11 @@ class Intersection() {
     
     @error X&Y xyError = xOnly;
     
-    @type:"Intersection.X&Intersection.Y" X&Object&Y xo = XY();
-    @type:"Nothing" X&Nothing&Y xb;
+    @type:"Intersection.X&Object&Intersection.Y" X&Object&Y xo = XY();
+    @type:"Intersection.X&Object&Intersection.Y" X&Object&Y xo1 = xo;
+    @type:"Intersection.X&Nothing&Intersection.Y" X&Nothing&Y xb = nothing;
+    @type:"Nothing" value xb1 = xb;
+    @type:"Nothing" Nothing xb2 = xb;
     
     @type:"Intersection.X&Intersection.Y" function f(X&Y xy) {
         return xy;
@@ -95,12 +98,18 @@ class Intersection() {
     object one satisfies One {}
     object onetwo satisfies One&Two {}
     
-    @type:"Sequence<Intersection.One&Intersection.Two>" Sequence<One>&Sequence<Two> seq = [ onetwo ];
+    @type:"Sequence<Intersection.One>&Sequence<Intersection.Two>" 
+    Sequence<One>&Sequence<Two> seq = [ onetwo ];
+    @type:"Sequence<Intersection.One&Intersection.Two>" value seq1 = seq;
+    @type:"Sequence<Intersection.One&Intersection.Two>" Sequence<One&Two> seq2 = seq;
     @type:"Null|Intersection.One&Intersection.Two" value item = seq[0];
     @type:"Intersection.One&Intersection.Two" value fst = seq.first;
     @type:"Iterator<Intersection.One&Intersection.Two>" value itr = seq.iterator;
     
-    @type:"Intersection.Consumer<Intersection.One|Intersection.Two>" Consumer<One>&Consumer<Two> cons = Consumer<One|Two>();
+    @type:"Intersection.Consumer<Intersection.One>&Intersection.Consumer<Intersection.Two>" 
+    Consumer<One>&Consumer<Two> cons = Consumer<One|Two>();
+    @type:"Intersection.Consumer<Intersection.One|Intersection.Two>" value cons1 = cons;
+    @type:"Intersection.Consumer<Intersection.One|Intersection.Two>" Consumer<One|Two> cons2 = cons;
     cons.consume(onetwo);
     cons.consume(one);
     One|Two unk = one;

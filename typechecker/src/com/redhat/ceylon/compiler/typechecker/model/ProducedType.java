@@ -1671,6 +1671,7 @@ public class ProducedType extends ProducedReference {
             resolvedAliases.resolvedAliases = resolvedAliases;
         }
         return resolvedAliases;
+    	//return curriedResolveAliases();
     }
     
     private ProducedType curriedResolveAliases() {
