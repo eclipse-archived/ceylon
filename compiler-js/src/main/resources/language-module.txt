@@ -26,7 +26,7 @@ Entry,Comparable,Invertable,Summable,Ordinal,Numeric,Scalar,Exponentiable,Integr
 
 Exception,NegativeNumberException,OverflowException,RecursiveInitializationException
 
-#Nothing
+#Null
 #Number
 
 Set,LazyMap,LazyList
@@ -41,5 +41,4 @@ any,byDecreasing,byIncreasing,byItem,byKey,coalesce,count,elements,emptyOrSingle
 
 #this function needs stuff that's not been implemented yet at the language level
 #combine
-#null
 #sort
