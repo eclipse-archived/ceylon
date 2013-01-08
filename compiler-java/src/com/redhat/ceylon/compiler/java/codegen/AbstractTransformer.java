@@ -2215,7 +2215,7 @@ public abstract class AbstractTransformer implements Transformation {
     JCExpression makeFinished() {
         return make().Apply(
                 List.<JCTree.JCExpression>nil(),
-                naming.makeLanguageValue("exhausted"),
+                naming.makeLanguageValue("finished"),
                 List.<JCTree.JCExpression>nil());
     }
 
