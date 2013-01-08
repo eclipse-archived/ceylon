@@ -58,7 +58,7 @@ public class Singleton<Element>
 	}
 
 	@Override
-	@TypeInfo("ceylon.language::Nothing|Element")
+	@TypeInfo("ceylon.language::Null|Element")
 	public Element item(@Name("key") Integer key) {
 		return key.longValue()==0 ? element : null;
 	}
@@ -168,7 +168,7 @@ public class Singleton<Element>
 			@Override
 			public java.lang.Object next() {
 			    if (done) {
-			        return exhausted_.getExhausted$();
+			        return finished_.getFinished$();
 			    }
 			    else {
 			    	done = true;
@@ -195,7 +195,7 @@ public class Singleton<Element>
     @TypeInfo("ceylon.language::Empty|ceylon.language::Singleton<Element>")
     @SuppressWarnings({"rawtypes", "unchecked"})
     public Sequential<? extends Element> span(@Name("from") Integer from,
-    		@TypeInfo("ceylon.language::Nothing|ceylon.language::Integer")
+    		@TypeInfo("ceylon.language::Null|ceylon.language::Integer")
     		@Name("to") Integer to) {
     	long lowest;
     	long highest;

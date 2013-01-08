@@ -9,7 +9,7 @@ import ceylon.language.Iterable;
 import ceylon.language.Iterator;
 import ceylon.language.Sequential;
 import ceylon.language.empty_;
-import ceylon.language.exhausted_;
+import ceylon.language.finished_;
 
 import com.redhat.ceylon.compiler.java.language.ArraySequence;
 import com.redhat.ceylon.compiler.java.metadata.Ceylon;
@@ -38,7 +38,7 @@ public class Util {
      * Returns true if the given object extends ceylon.language.IdentifiableObject
      */
     public static boolean isIdentifiableObject(java.lang.Object o){
-        return extendsClass(o, "ceylon.language.IdentifiableObject");
+        return extendsClass(o, "ceylon.language.Basic");
     }
     
     /**
@@ -57,7 +57,7 @@ public class Util {
             return false;
         if (klass.getName().equals(className))
             return true;
-        if ((className.equals("ceylon.language.IdentifiableObject"))
+        if ((className.equals("ceylon.language.Basic"))
                 && klass!=java.lang.Object.class
                 && !isSubclassOfString(klass)
                 //&& klass!=java.lang.String.class
@@ -104,7 +104,7 @@ public class Util {
     private static boolean classSatisfiesInterface(java.lang.Class<?> klass, String className, 
             Set<java.lang.Class<?>> alreadyVisited) {
         if(klass == null
-                || klass == ceylon.language.Void.class)
+                || klass == ceylon.language.Anything.class)
             return false;
         if ((className.equals("ceylon.language.Identifiable"))
                 && klass!=java.lang.Object.class
@@ -196,7 +196,7 @@ public class Util {
         if (sequence != null) {
             Iterator<? extends T> iterator = sequence.getIterator();
             Object o; 
-            while((o = iterator.next()) != exhausted_.getExhausted$()){
+            while((o = iterator.next()) != finished_.getFinished$()){
                 list.add((T)o);
             }
         }

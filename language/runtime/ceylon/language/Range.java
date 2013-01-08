@@ -109,7 +109,7 @@ public class Range<Element extends Comparable<? super Element> & Ordinal<? super
     	}
     }
 
-    @TypeInfo("ceylon.language::Nothing|Element")
+    @TypeInfo("ceylon.language::Null|Element")
     @Override
     public Element item(@Name("key") Integer key) {
         long index = 0;
@@ -137,7 +137,7 @@ public class Range<Element extends Comparable<? super Element> & Ordinal<? super
 
                     @TypeInfo(value="Element|ceylon.language::Finished", erased=true)
                     public java.lang.Object next() {
-                        if (!go) return exhausted_.getExhausted$();
+                        if (!go) return finished_.getFinished$();
                         long result = current;
                         if (result > ((Integer)last).value) {
                             current--;
@@ -159,7 +159,7 @@ public class Range<Element extends Comparable<? super Element> & Ordinal<? super
 
                 @TypeInfo(value="Element|ceylon.language::Finished", erased=true)
                 public java.lang.Object next() {
-                    if (!go) return exhausted_.getExhausted$();
+                    if (!go) return finished_.getFinished$();
                     java.lang.Object result = current;
                     if (((Comparable<Element>)result).compare(getLast()) == larger_.getLarger$()) {
                         current = ((Element) current).getPredecessor();
@@ -182,7 +182,7 @@ public class Range<Element extends Comparable<? super Element> & Ordinal<? super
 
                     @TypeInfo(value="Element|ceylon.language::Finished", erased=true)
                     public java.lang.Object next() {
-                        if (!go) return exhausted_.getExhausted$();
+                        if (!go) return finished_.getFinished$();
                         long result = current;
                         if (result < ((Integer)last).value) {
                             current++;
@@ -204,7 +204,7 @@ public class Range<Element extends Comparable<? super Element> & Ordinal<? super
 
                 @TypeInfo(value="Element|ceylon.language::Finished", erased=true)
                 public java.lang.Object next() {
-                    if (!go) return exhausted_.getExhausted$();
+                    if (!go) return finished_.getFinished$();
                     java.lang.Object result = current;
                     if (((Comparable<Element>)result).compare(getLast()) == smaller_.getSmaller$()) {
                         current = ((Element) current).getSuccessor();
@@ -471,10 +471,10 @@ public class Range<Element extends Comparable<? super Element> & Ordinal<? super
                             long result = current;
                             if (inverse) {
                                 // avoid current < lim etc: possibility of overflow
-                                if (current-lim < 0) return exhausted_.getExhausted$();
+                                if (current-lim < 0) return finished_.getFinished$();
                                 current-=step;
                             } else {
-                                if (current-lim > 0) return exhausted_.getExhausted$();
+                                if (current-lim > 0) return finished_.getFinished$();
                                 current+=step;
                             }
                             return Integer.instance(result);

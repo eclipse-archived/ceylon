@@ -23,7 +23,7 @@ import com.redhat.ceylon.compiler.java.metadata.Variance;
 public interface Correspondence<Key,Item> {
 
     @Annotations(@Annotation("formal"))
-    @TypeInfo("Item|ceylon.language::Nothing")
+    @TypeInfo("Item|ceylon.language::Null")
     public Item item(@Name("key") Key key);
 
     @Annotations(@Annotation("default"))
@@ -51,7 +51,7 @@ public interface Correspondence<Key,Item> {
     public Sequential<? extends Key> definesAny$keys();
 
     @Annotations(@Annotation("default"))
-    @TypeInfo("ceylon.language::Sequential<Item|ceylon.language::Nothing>")
+    @TypeInfo("ceylon.language::Sequential<Item|ceylon.language::Null>")
     public Sequential<? extends Item> items(@Sequenced @Name("keys")
     @TypeInfo("ceylon.language::Sequential<Key>")
     Sequential<? extends Key> keys);

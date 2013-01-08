@@ -114,22 +114,22 @@ public final class Map$impl<Key,Item> {
 
             @Override
             public <Other> Set<? extends Object> union(Set<? extends Other> set) {
-                return (Set)bottom_.getBottom$();
+                return (Set)nothing_.getNothing$();
             }
 
             @Override
             public <Other> Set<? extends Object> intersection(Set<? extends Other> set) {
-                return (Set)bottom_.getBottom$();
+                return (Set)nothing_.getNothing$();
             }
 
             @Override
             public <Other> Set<? extends Object> exclusiveUnion(Set<? extends Other> set) {
-                return (Set)bottom_.getBottom$();
+                return (Set)nothing_.getNothing$();
             }
 
             @Override
             public <Other> Set<? extends Key> complement(Set<? extends Other> set) {
-                return (Set)bottom_.getBottom$();
+                return (Set)nothing_.getNothing$();
             }
 
             // concrete interface methods:
@@ -936,7 +936,7 @@ public final class Map$impl<Key,Item> {
                     @Override @Ignore
                     public java.lang.Object next() {
                         java.lang.Object e = iter.next();
-                        return e == exhausted_.getExhausted$() ? e : new Entry(((Entry)e).getKey(),
+                        return e == finished_.getFinished$() ? e : new Entry(((Entry)e).getKey(),
                                 mapping.$call(((Entry)e).getKey(), ((Entry)e).getItem()));
                     }
                 };

@@ -36,7 +36,7 @@ public final class parseFloat_
         throw new RuntimeException();
     }
     
-    @TypeInfo("ceylon.language::Nothing|ceylon.language::Float")
+    @TypeInfo("ceylon.language::Null|ceylon.language::Float")
     public static Float parseFloat(@Name("string") java.lang.String string) {
     	final int length = string.length();
     	if (length == 0) {

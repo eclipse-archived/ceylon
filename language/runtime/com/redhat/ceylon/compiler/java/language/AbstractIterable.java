@@ -10,7 +10,7 @@ import ceylon.language.Iterable;
 import ceylon.language.Map;
 import ceylon.language.Sequence;
 import ceylon.language.Sequential;
-import ceylon.language.exhausted_;
+import ceylon.language.finished_;
 
 import com.redhat.ceylon.compiler.java.metadata.Class;
 import com.redhat.ceylon.compiler.java.metadata.Ignore;
@@ -43,7 +43,7 @@ public abstract class AbstractIterable<Element> implements Iterable<Element> {
     
     @Override
     public boolean getEmpty() {
-        return getIterator().next() == exhausted_.getExhausted$();
+        return getIterator().next() == finished_.getFinished$();
     }
 
     @Override

@@ -17,7 +17,7 @@ import ceylon.language.Sequential;
 import ceylon.language.Map;
 import ceylon.language.Sequence;
 import ceylon.language.empty_;
-import ceylon.language.exhausted_;
+import ceylon.language.finished_;
 
 import com.redhat.ceylon.compiler.java.metadata.Annotation;
 import com.redhat.ceylon.compiler.java.metadata.Annotations;
@@ -230,7 +230,7 @@ public class ArraySequence<Element> implements Sequence<Element> {
                 return array[(int) idx++];
             }
             else {
-                return exhausted_.getExhausted$();
+                return finished_.getFinished$();
             }
         }
 

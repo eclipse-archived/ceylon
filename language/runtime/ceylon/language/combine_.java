@@ -37,7 +37,7 @@ public class combine_ {
                         java.lang.Object e = ei.next();
                         java.lang.Object o = oi.next();
                         if (e instanceof Finished || o instanceof Finished) {
-                            return exhausted_.getExhausted$();
+                            return finished_.getFinished$();
                         }
                         return combination.$call(e, o);
                     }

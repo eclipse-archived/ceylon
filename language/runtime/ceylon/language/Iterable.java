@@ -12,8 +12,8 @@ import com.redhat.ceylon.compiler.java.metadata.Variance;
 
 @Ceylon(major = 3)
 @TypeParameters(@TypeParameter(value = "Element", variance = Variance.OUT))
-@SatisfiedTypes("ceylon.language::ContainerWithFirstElement<Element,ceylon.language::Nothing>")
-public interface Iterable<Element> extends ContainerWithFirstElement<Element,Nothing> {
+@SatisfiedTypes("ceylon.language::ContainerWithFirstElement<Element,ceylon.language::Null>")
+public interface Iterable<Element> extends ContainerWithFirstElement<Element,Null> {
 
     @Annotations(@Annotation("default"))
     public long getSize();
@@ -27,11 +27,11 @@ public interface Iterable<Element> extends ContainerWithFirstElement<Element,Not
     public Iterator<? extends Element> getIterator();
 
     @Annotations({@Annotation("actual"), @Annotation("default")})
-    @TypeInfo("ceylon.language::Nothing|Element")
+    @TypeInfo("ceylon.language::Null|Element")
     public Element getFirst();
 
     @Annotations({@Annotation("actual"), @Annotation("default")})
-    @TypeInfo("ceylon.language::Nothing|Element")
+    @TypeInfo("ceylon.language::Null|Element")
     public Element getLast();
 
     @Annotations(@Annotation("default"))
@@ -65,13 +65,13 @@ public interface Iterable<Element> extends ContainerWithFirstElement<Element,Not
         Callable<? extends Result> accumulating);
 
     @Annotations(@Annotation("default"))
-    @TypeInfo("Element|ceylon.language::Nothing")
+    @TypeInfo("Element|ceylon.language::Null")
     public Element find(@Name("selecting")
         @TypeInfo("ceylon.language::Callable<ceylon.language::Boolean,ceylon.language::Tuple<Element,Element,ceylon.language::Empty>>")
         Callable<? extends Boolean> selecting);
 
     @Annotations(@Annotation("default"))
-    @TypeInfo("Element|ceylon.language::Nothing")
+    @TypeInfo("Element|ceylon.language::Null")
     public Element findLast(@Name("selecting")
         @TypeInfo("ceylon.language::Callable<ceylon.language::Boolean,ceylon.language::Tuple<Element,Element,ceylon.language::Empty>>")
         Callable<? extends Boolean> selecting);
@@ -79,7 +79,7 @@ public interface Iterable<Element> extends ContainerWithFirstElement<Element,Not
     @Annotations(@Annotation("default"))
     @TypeInfo("ceylon.language::Sequential<Element>")
     public Sequential<? extends Element> sort(@Name("comparing")
-        @TypeInfo("ceylon.language::Callable<ceylon.language::Nothing|ceylon.language::Comparison,ceylon.language::Tuple<Element,Element,ceylon.language::Tuple<Element,Element,ceylon.language::Empty>>>")
+        @TypeInfo("ceylon.language::Callable<ceylon.language::Null|ceylon.language::Comparison,ceylon.language::Tuple<Element,Element,ceylon.language::Tuple<Element,Element,ceylon.language::Empty>>>")
         Callable<? extends Comparison> comparing);
 
     @Annotations(@Annotation("default"))

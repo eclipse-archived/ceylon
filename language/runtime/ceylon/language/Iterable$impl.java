@@ -20,7 +20,7 @@ public final class Iterable$impl<Element> {
     }
     public long getSize() {
         long count = 0;
-        for (Iterator<? extends Element> iter = $this.getIterator(); iter.next() != exhausted_.getExhausted$();) {
+        for (Iterator<? extends Element> iter = $this.getIterator(); iter.next() != finished_.getFinished$();) {
             count++;
         }
         return count;
@@ -52,7 +52,7 @@ public final class Iterable$impl<Element> {
     private static <Element> Element _getLast(Iterable<Element> $this) {
         java.lang.Object last = null;
         java.lang.Object next = null;
-        for (Iterator<? extends Element> iter = $this.getIterator(); (next = iter.next()) != exhausted_.getExhausted$();) {
+        for (Iterator<? extends Element> iter = $this.getIterator(); (next = iter.next()) != finished_.getFinished$();) {
             last = next;
         }
         return (Element)last;
@@ -70,7 +70,7 @@ public final class Iterable$impl<Element> {
     private static <Element> Sequential<? extends Element> _getSequence(Iterable<Element> $this) {
         final SequenceBuilder<Element> sb = new SequenceBuilder<Element>();
         java.lang.Object next = null;
-        for (Iterator<? extends Element> iter = $this.getIterator(); (next = iter.next()) != exhausted_.getExhausted$();) {
+        for (Iterator<? extends Element> iter = $this.getIterator(); (next = iter.next()) != finished_.getFinished$();) {
             sb.append((Element) next);
         }
         return sb.getSequence();
@@ -215,7 +215,7 @@ public final class Iterable$impl<Element> {
                         while (i++ < take) {
                             return iter.next();
                         }
-                        return exhausted_.getExhausted$();
+                        return finished_.getFinished$();
                     }
                 };
             }
@@ -291,7 +291,7 @@ public final class Iterable$impl<Element> {
             @Override public java.lang.Object next() {
                 java.lang.Object tmp = null;
                 while ((tmp = orig.next()) == null) { i++; }
-                return tmp == exhausted_.getExhausted$() ? tmp : new Entry<Integer, Element>(Integer.instance(i++), (Element)tmp);
+                return tmp == finished_.getFinished$() ? tmp : new Entry<Integer, Element>(Integer.instance(i++), (Element)tmp);
             }
 
         }

@@ -22,7 +22,7 @@ public interface List<Element>
                 Ranged<Integer, List<? extends Element>> {
 
     @Annotations(@Annotation("formal"))
-    @TypeInfo("ceylon.language::Nothing|ceylon.language::Integer")
+    @TypeInfo("ceylon.language::Null|ceylon.language::Integer")
     public Integer getLastIndex();
 
     @Annotations({@Annotation("actual"), @Annotation("default")})
@@ -34,7 +34,7 @@ public interface List<Element>
     public boolean defines(@Name("index") Integer key);
 
     @Annotations({@Annotation("actual"), @Annotation("formal")})
-    @TypeInfo("ceylon.language::Nothing|Element")
+    @TypeInfo("ceylon.language::Null|Element")
     @Override
     public Element item(@Name("index") Integer key);
 
@@ -57,17 +57,17 @@ public interface List<Element>
     public int hashCode();
 
     @Annotations({@Annotation("actual"), @Annotation("default")})
-    @TypeInfo("Element|ceylon.language.Nothing")
+    @TypeInfo("Element|ceylon.language::Null")
     public Element findLast(@Name("selecting")
         @TypeInfo("ceylon.language::Callable<ceylon.language.Boolean,ceylon.language::Tuple<Element,Element,ceylon.language::Empty>>")
         Callable<? extends Boolean> selecting);
 
     @Annotations({@Annotation("actual"), @Annotation("default")})
-    @TypeInfo("Element|ceylon.language.Nothing")
+    @TypeInfo("Element|ceylon.language::Null")
     public Element getFirst();
 
     @Annotations({@Annotation("actual"), @Annotation("default")})
-    @TypeInfo("Element|ceylon.language.Nothing")
+    @TypeInfo("Element|ceylon.language::Null")
     public Element getLast();
     
     @SuppressWarnings("rawtypes")

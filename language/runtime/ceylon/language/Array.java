@@ -244,7 +244,7 @@ public final class Array<Element> implements List<Element> {
     }
 
     /*@Override
-    @TypeInfo("ceylon.language::Nothing|Element")
+    @TypeInfo("ceylon.language::Null|Element")
     public Element getFirst() {
         if (getEmpty()) {
             return null;
@@ -341,7 +341,7 @@ public final class Array<Element> implements List<Element> {
     }
 
     @Override
-    @TypeInfo("ceylon.language::Nothing|ceylon.language::Integer")
+    @TypeInfo("ceylon.language::Null|ceylon.language::Integer")
     public Integer getLastIndex() {
         return getEmpty() ? null : Integer.instance(getSize() - 1);
     }
@@ -373,7 +373,7 @@ public final class Array<Element> implements List<Element> {
                     return unsafeItem(idx++);
                 }
                 else {
-                    return exhausted_.getExhausted$();
+                    return finished_.getFinished$();
                 }
             }
 
@@ -386,7 +386,7 @@ public final class Array<Element> implements List<Element> {
         return new ArrayIterator();
     }
 
-    @TypeInfo("ceylon.language::Nothing|Element")
+    @TypeInfo("ceylon.language::Null|Element")
     @Override
     public Element item(@Name("key") Integer key) {
         long i = key.longValue();

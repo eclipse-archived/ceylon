@@ -10,7 +10,7 @@ import com.redhat.ceylon.compiler.java.metadata.TypeInfo;
 public final class parseInteger_
 {
 	
-    @TypeInfo("ceylon.language::Nothing|ceylon.language::Integer")
+    @TypeInfo("ceylon.language::Null|ceylon.language::Integer")
     public static Integer parseInteger(@Name("string") java.lang.String string) {
     	final int length = string.length();
     	if (length == 0) {

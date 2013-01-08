@@ -45,7 +45,7 @@ public final class List$impl<Element> {
                     return $this.item(Integer.instance(index++));
                 } 
                 else {
-                    return exhausted_.getExhausted$();
+                    return finished_.getFinished$();
                 }
             }
             public final java.lang.String toString() {

@@ -68,7 +68,7 @@ public class Tuple<Element, First extends Element, Rest extends Sequential<? ext
 
 	@Override
 	@Annotations(@Annotation("actual"))
-	@TypeInfo("ceylon.language::Nothing|Element")
+	@TypeInfo("ceylon.language::Null|Element")
 	public Element item(@Name("index") Integer key) {
 	    final long idx = key.value;
 	    if (idx > 0) {
@@ -88,7 +88,7 @@ public class Tuple<Element, First extends Element, Rest extends Sequential<? ext
 
 	@Override
 	@Annotations(@Annotation("actual"))
-	@TypeInfo("Element|ceylon.language::Nothing")
+	@TypeInfo("Element|ceylon.language::Null")
 	public Element findLast(
 	        @TypeInfo("ceylon.language::Callable<ceylon.language::Boolean,ceylon.language::Tuple<Element,Element,ceylon.language::Empty>>")
 	        Callable<? extends Boolean> selecting) {
@@ -160,7 +160,7 @@ public class Tuple<Element, First extends Element, Rest extends Sequential<? ext
 
 	@Override
 	@Annotations(@Annotation("default"))
-	@TypeInfo("Element|ceylon.language::Nothing")
+	@TypeInfo("Element|ceylon.language::Null")
 	public Element find(
 	        @TypeInfo("ceylon.language::Callable<ceylon.language::Boolean,ceylon.language::Tuple<Element,Element,ceylon.language::Empty>>")
 	        Callable<? extends Boolean> selecting) {
@@ -353,7 +353,7 @@ public class Tuple<Element, First extends Element, Rest extends Sequential<? ext
 
 	@Override
 	@Annotations(@Annotation("default"))
-	@TypeInfo("ceylon.language::Sequential<Element|ceylon.language::Nothing>")
+	@TypeInfo("ceylon.language::Sequential<Element|ceylon.language::Null>")
 	public Sequential<? extends Element> items(@Sequenced @Name("keys")
             @TypeInfo("ceylon.language::Sequential<ceylon.language::Integer>")
 	        Sequential<? extends Integer> keys) {
@@ -465,7 +465,7 @@ public class Tuple<Element, First extends Element, Rest extends Sequential<? ext
 	@Annotations(@Annotation("actual"))
 	@TypeInfo("ceylon.language::Sequence<Element>")
 	public Sequence<? extends Element> sort(
-            @TypeInfo("ceylon.language::Callable<ceylon.language::Nothing|ceylon.language::Comparison,ceylon.language::Tuple<Element,Element,ceylon.language::Tuple<Element,Element,ceylon.language::Empty>>>")
+            @TypeInfo("ceylon.language::Callable<ceylon.language::Null|ceylon.language::Comparison,ceylon.language::Tuple<Element,Element,ceylon.language::Tuple<Element,Element,ceylon.language::Empty>>>")
 			Callable<? extends Comparison> comparing) {
 		return sequence$impl.sort(comparing);
 	}
@@ -491,7 +491,7 @@ public class Tuple<Element, First extends Element, Rest extends Sequential<? ext
 	    boolean first = true;
 	    Iterator<? extends Element> iterator = getIterator();
 	    java.lang.Object elem;
-	    while((elem = iterator.next()) != exhausted_.getExhausted$()){
+	    while((elem = iterator.next()) != finished_.getFinished$()){
 	        if(first){
 	            first = false;
 	        }else{

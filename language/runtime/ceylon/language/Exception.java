@@ -16,11 +16,11 @@ public class Exception extends RuntimeException {
 	private String description;
     
     public Exception(
-            @TypeInfo("ceylon.language::String|ceylon.language::Nothing")
+            @TypeInfo("ceylon.language::String|ceylon.language::Null")
             @Name("description")
             @Defaulted
             String description,
-            @TypeInfo("ceylon.language::Exception|ceylon.language::Nothing")
+            @TypeInfo("ceylon.language::Exception|ceylon.language::Null")
             @Name("cause")
             @Defaulted
             java.lang.Throwable cause) {
@@ -38,7 +38,7 @@ public class Exception extends RuntimeException {
         this($init$description());
     }
         
-    @TypeInfo("ceylon.language::Exception|ceylon.language::Nothing")
+    @TypeInfo("ceylon.language::Exception|ceylon.language::Null")
     public java.lang.Throwable getCause() {
         return super.getCause();
     }

@@ -212,7 +212,7 @@ public abstract class String
     }
 
     @Override
-    @TypeInfo("ceylon.language::Nothing|ceylon.language::Integer")
+    @TypeInfo("ceylon.language::Null|ceylon.language::Integer")
     public Integer getLastIndex() {
         long length = getSize();
         return (length == 0) ? null : Integer.instance(length - 1);
@@ -235,7 +235,7 @@ public abstract class String
     }
 
     @Override
-    @TypeInfo("ceylon.language::Character|ceylon.language::Nothing")
+    @TypeInfo("ceylon.language::Character|ceylon.language::Null")
     public Character item(@Name("index") Integer key) {
         return item(value, key.longValue());
     }
@@ -399,7 +399,7 @@ public abstract class String
                     result = Character.instance(codePoint);
                     offset += java.lang.Character.charCount(codePoint);
                 } else {
-                    result = exhausted_.getExhausted$();
+                    result = finished_.getFinished$();
                 }
                 return result;
             }
@@ -428,7 +428,7 @@ public abstract class String
         return new ArraySequence<Character>(chars);
     }
 
-    @TypeInfo("ceylon.language::Nothing|ceylon.language::Integer")
+    @TypeInfo("ceylon.language::Null|ceylon.language::Integer")
     public Integer firstOccurrence(@Name("substring") java.lang.String substring) {
         int index = value.indexOf(substring);
         return (index >= 0) ? Integer.instance(value.codePointCount(0, index)) : null;
@@ -440,7 +440,7 @@ public abstract class String
         return (index >= 0) ? Integer.instance(value.codePointCount(0, index)) : null;
     }
 
-    @TypeInfo("ceylon.language::Nothing|ceylon.language::Integer")
+    @TypeInfo("ceylon.language::Null|ceylon.language::Integer")
     public Integer lastOccurrence(@Name("substring") java.lang.String substring) {
         int index = value.lastIndexOf(substring);
         return (index >= 0) ? Integer.instance(value.codePointCount(0, index)) : null;
@@ -452,7 +452,7 @@ public abstract class String
         return (index >= 0) ? Integer.instance(value.codePointCount(0, index)) : null;
     }
 
-    @TypeInfo("ceylon.language::Nothing|ceylon.language::Integer")
+    @TypeInfo("ceylon.language::Null|ceylon.language::Integer")
     public Integer firstCharacterOccurrence(@Name("character")
     @TypeInfo("ceylon.language::Character") int character) {
         int index = value.indexOf(character);
@@ -465,7 +465,7 @@ public abstract class String
         return (index >= 0) ? Integer.instance(value.codePointCount(0, index)) : null;
     }
 
-    @TypeInfo("ceylon.language::Nothing|ceylon.language::Integer")
+    @TypeInfo("ceylon.language::Null|ceylon.language::Integer")
     public Integer lastCharacterOccurrence(@Name("character")
     @TypeInfo("ceylon.language::Character") int character) {
         int index = value.lastIndexOf(character);
@@ -712,7 +712,7 @@ public abstract class String
         java.lang.StringBuilder result = new java.lang.StringBuilder();
         Iterator<? extends String> it = strings.getIterator();
         java.lang.Object elem = it.next();
-        if (elem != exhausted_.getExhausted$()) {
+        if (elem != finished_.getFinished$()) {
             result.append(elem);
             for (;!((elem = it.next()) instanceof Finished);) {
                 result.append(value).append(elem);
@@ -1309,7 +1309,7 @@ public abstract class String
                         lastTokenWasSeparator = false;
                         return String.instance("");
                     } else {
-                        return exhausted_.getExhausted$();
+                        return finished_.getFinished$();
                     }
                 }
 
@@ -1389,7 +1389,7 @@ public abstract class String
 
         @Override
         public boolean getEmpty() {
-            return getIterator().next() == exhausted_.getExhausted$();
+            return getIterator().next() == finished_.getFinished$();
         }
 
         @Override
@@ -1548,7 +1548,7 @@ public abstract class String
                         pos = idx+oc.length();
                         return Integer.instance(idx);
                     }
-                    return exhausted_.getExhausted$();
+                    return finished_.getFinished$();
                 }
             }
 
@@ -1562,7 +1562,7 @@ public abstract class String
 
         @Override
         public boolean getEmpty() {
-            return getIterator().next() == exhausted_.getExhausted$();
+            return getIterator().next() == finished_.getFinished$();
         }
 
         @Override

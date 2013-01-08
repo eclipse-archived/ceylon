@@ -10,7 +10,7 @@ import ceylon.language.Iterator;
 import ceylon.language.Map;
 import ceylon.language.Sequence;
 import ceylon.language.Sequential;
-import ceylon.language.exhausted_;
+import ceylon.language.finished_;
 
 import com.redhat.ceylon.compiler.java.metadata.Ceylon;
 import com.redhat.ceylon.compiler.java.metadata.Class;
@@ -106,7 +106,7 @@ public class ArrayIterable<Element> implements Iterable<Element> {
         Iterator<?> iterator = restSequence.getIterator();
         Object val;
         int i = inArray;
-        while((val = iterator.next()) != exhausted_.getExhausted$()){
+        while((val = iterator.next()) != finished_.getFinished$()){
             elems[i++] = (Element) val;
         }
         return new ArraySequence<Element>(elems);
@@ -237,7 +237,7 @@ public class ArrayIterable<Element> implements Iterable<Element> {
         Iterator<? extends Element> iterator = getIterator();
         Object elem;
         boolean first = true;
-        while((elem = iterator.next()) != exhausted_.getExhausted$()){
+        while((elem = iterator.next()) != finished_.getFinished$()){
             if(!first)
                 sb.append(",");
             else
@@ -258,9 +258,9 @@ public class ArrayIterable<Element> implements Iterable<Element> {
         Iterator<? extends Element> myIterator = getIterator();
         Iterator otherIterator = other.getIterator();
         Object myElem;
-        while((myElem = myIterator.next()) != exhausted_.getExhausted$()){
+        while((myElem = myIterator.next()) != finished_.getFinished$()){
             Object otherElem;
-            if((otherElem = otherIterator.next()) != exhausted_.getExhausted$()){
+            if((otherElem = otherIterator.next()) != finished_.getFinished$()){
                 if(myElem == null){
                     if(otherElem != null)
                         return false;
@@ -272,7 +272,7 @@ public class ArrayIterable<Element> implements Iterable<Element> {
                 return false;
         }
         // we depleted our iterator, make sure the other one is depleted too
-        return otherIterator.next() == exhausted_.getExhausted$();
+        return otherIterator.next() == finished_.getFinished$();
     }
 
     @Override
@@ -281,7 +281,7 @@ public class ArrayIterable<Element> implements Iterable<Element> {
         Iterator<? extends Element> iterator = getIterator();
         Object elem;
         int hash = 17;
-        while((elem = iterator.next()) != exhausted_.getExhausted$()){
+        while((elem = iterator.next()) != finished_.getFinished$()){
             hash = 31 * hash + (elem != null ? elem.hashCode() : 0);
         }
         return hash;

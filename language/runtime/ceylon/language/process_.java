@@ -280,7 +280,7 @@ public final class process_ {
         return new PropertiesMap(props);
     }*/
     
-    @TypeInfo("ceylon.language::Nothing|ceylon.language::String")
+    @TypeInfo("ceylon.language::Null|ceylon.language::String")
     public String namedArgumentValue(@Name("name") java.lang.String name) {
         if (name.isEmpty()) return null;
         Iterator<? extends String> iterator = args.getIterator();
@@ -319,7 +319,7 @@ public final class process_ {
         return false;
     }
     
-    @TypeInfo("ceylon.language::Nothing|ceylon.language::String")
+    @TypeInfo("ceylon.language::Null|ceylon.language::String")
     public String propertyValue(@Name("name") java.lang.String name) {
         if (name.isEmpty()) {
             return null;

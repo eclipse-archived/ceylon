@@ -14,7 +14,7 @@ import com.redhat.ceylon.compiler.java.metadata.Variance;
 @TypeParameters(@TypeParameter(value = "Element", variance = Variance.OUT))
 @SatisfiedTypes({
     "ceylon.language::Sequential<Element>",
-    "ceylon.language::ContainerWithFirstElement<Element,ceylon.language::Nothing>",
+    "ceylon.language::ContainerWithFirstElement<Element,ceylon.language::Null>",
     "ceylon.language::Ranged<ceylon.language::Integer,ceylon.language::Sequential<Element>>",
     "ceylon.language::Cloneable<ceylon.language::Sequence<Element>>"
 })
@@ -56,7 +56,7 @@ public interface Sequence<Element>
     /*@Override
     @TypeInfo("ceylon.language::Sequential<Element>")
     public Sequential<? extends Element> span(@Name("from") Integer from, 
-            @TypeInfo("ceylon.language::Nothing|ceylon.language::Integer")
+            @TypeInfo("ceylon.language::Null|ceylon.language::Integer")
             @Name("to") Integer to);
     
     @Override
@@ -68,7 +68,7 @@ public interface Sequence<Element>
     @Override
     @TypeInfo("ceylon.language::Sequence<Element>")
     public Sequence<? extends Element> sort(@Name("comparing")
-            @TypeInfo("ceylon.language::Callable<ceylon.language::Nothing|ceylon.language::Comparison,ceylon.language::Tuple<Element,Element,ceylon.language::Tuple<Element,Element,ceylon.language::Empty>>>")
+            @TypeInfo("ceylon.language::Callable<ceylon.language::Null|ceylon.language::Comparison,ceylon.language::Tuple<Element,Element,ceylon.language::Tuple<Element,Element,ceylon.language::Empty>>>")
             Callable<? extends Comparison> comparing);
 
     @Annotations({@Annotation("actual"), @Annotation("default")})

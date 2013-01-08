@@ -135,7 +135,7 @@ public class InternalMap<Key, Item> implements Map<Key, Item> {
                     java.util.Map.Entry<? extends Key, ? extends Item> e = inner.next();
                     return new ceylon.language.Entry<Key, Item>(e.getKey(), e.getValue());
                 }
-                return ceylon.language.exhausted_.getExhausted$();
+                return ceylon.language.finished_.getFinished$();
             }
         };
     }
