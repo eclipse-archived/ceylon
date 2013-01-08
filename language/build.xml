@@ -65,7 +65,21 @@
         <pathelement path="${ceylon.common.lib}"/>
     </path>
 	
-    <target name="ceylonc">
+    <!-- ################################################################## -->
+    <!-- constant to declare a file binary for checksumsum -->
+    <property name="checksum.binary-prefix" value=" *" />
+    <!-- Helper target, used to create a sha1 checksum file  -->
+    <!-- Requires 'file' as a parameter. -->
+    <target name="sha1sum">
+        <fail unless="file"/>
+        <fail if="filename"/>
+        <fail if="value"/>
+        <basename file="${file}" property="filename"/>
+        <checksum file="${file}" property="value" algorithm="sha1"/>
+        <echo file="${file}.sha1" message="${value}"/>
+    </target>
+
+	<target name="ceylonc">
         <taskdef name="ceylonc" classname="com.redhat.ceylon.ant.Ceylonc" >
             <classpath>
                 <pathelement location="${ceylon.ant.lib}"/>
@@ -95,6 +109,19 @@
     <target name="dist"
             depends="build"
             description="Create Ceylon language distribution">
+    	<delete file="${build.dist}/${ceylon.language.src}"/>
+        <delete file="${build.dist}/${ceylon.language.src}.sha1"/>
+        <zip destfile="${build.dist}/${ceylon.language.src}">
+            <fileset dir="${module.language.src}">
+                <include name="ceylon/language/**/*.ceylon"/>
+            </fileset>
+            <fileset dir="${module.language.runtime}">
+                <include name="**/*.java"/>
+            </fileset>
+        </zip>
+        <antcall target="sha1sum">
+            <param name="file" value="${build.dist}/${ceylon.language.src}" />
+        </antcall>
     </target>
 
     <!-- Repository targets -->
