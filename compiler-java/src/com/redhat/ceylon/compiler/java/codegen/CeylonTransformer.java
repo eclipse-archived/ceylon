@@ -26,15 +26,18 @@ import java.util.Iterator;
 
 import javax.tools.JavaFileObject;
 
+import com.redhat.ceylon.compiler.loader.SourceDeclarationVisitor;
 import com.redhat.ceylon.compiler.typechecker.context.PhasedUnit;
 import com.redhat.ceylon.compiler.typechecker.model.Parameter;
 import com.redhat.ceylon.compiler.typechecker.model.Setter;
 import com.redhat.ceylon.compiler.typechecker.model.TypedDeclaration;
 import com.redhat.ceylon.compiler.typechecker.model.Value;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree;
+import com.redhat.ceylon.compiler.typechecker.tree.Tree.ClassOrInterface;
+import com.redhat.ceylon.compiler.typechecker.tree.Tree.CompilationUnit;
+import com.redhat.ceylon.compiler.typechecker.tree.Tree.Declaration;
 import com.sun.tools.javac.code.Flags;
 import com.sun.tools.javac.tree.JCTree;
-import com.sun.tools.javac.tree.JCTree.JCAnnotation;
 import com.sun.tools.javac.tree.JCTree.JCBlock;
 import com.sun.tools.javac.tree.JCTree.JCCompilationUnit;
 import com.sun.tools.javac.tree.JCTree.JCExpression;
@@ -102,13 +105,52 @@ public class CeylonTransformer extends AbstractTransformer {
     public JCCompilationUnit makeJCCompilationUnitPlaceholder(Tree.CompilationUnit t, JavaFileObject file, String pkgName, PhasedUnit phasedUnit) {
         JCExpression pkg = pkgName != null ? getPackage(pkgName) : null;
         at(t);
-        JCCompilationUnit topLev = new CeylonCompilationUnit(List.<JCTree.JCAnnotation> nil(), pkg, List.<JCTree> nil(), null, null, null, null, t, phasedUnit);
+        
+        List<JCTree> defs = makeDefs(t);
+        
+        JCCompilationUnit topLev = new CeylonCompilationUnit(List.<JCTree.JCAnnotation> nil(), pkg, defs, null, null, null, null, t, phasedUnit);
 
         topLev.lineMap = getMap();
         topLev.sourcefile = file;
         topLev.isCeylonProgram = true;
 
         return topLev;
+    }
+
+    private List<JCTree> makeDefs(CompilationUnit t) {
+        final ListBuffer<JCTree> defs = new ListBuffer<JCTree>();
+        
+        t.visit(new SourceDeclarationVisitor(){
+            @Override
+            public void loadFromSource(Declaration decl) {
+                long flags = decl instanceof Tree.AnyInterface ? Flags.INTERFACE : 0;
+                String name = Naming.toplevelClassName("", decl);
+                
+                defs.add(makeClassDef(decl, flags, name));
+                if(decl instanceof Tree.AnyInterface){
+                    String implName = Naming.getImplClassName(name);
+                    defs.add(makeClassDef(decl, 0, implName));
+                }
+            }
+
+            private JCTree makeClassDef(Declaration decl, long flags, String name) {
+                ListBuffer<JCTree.JCTypeParameter> typarams = new ListBuffer<JCTree.JCTypeParameter>();
+                if(decl instanceof Tree.ClassOrInterface){
+                    Tree.ClassOrInterface classDecl = (ClassOrInterface) decl;
+                    if(classDecl.getTypeParameterList() != null){
+                        for(Tree.TypeParameterDeclaration typeParamDecl : classDecl.getTypeParameterList().getTypeParameterDeclarations()){
+                            // we don't need a valid name, just a name, and making it BOGUS helps us find it later if it turns out
+                            // we failed to reset everything properly
+                            typarams.add(make().TypeParameter(names().fromString("BOGUS-"+typeParamDecl.getIdentifier().getText()), List.<JCExpression>nil()));
+                        }
+                    }
+                }
+
+                return make().ClassDef(make().Modifiers(flags | Flags.PUBLIC), names().fromString(name), typarams.toList(), null, List.<JCExpression>nil(), List.<JCTree>nil());
+            }
+        });
+        
+        return defs.toList();
     }
 
     /**

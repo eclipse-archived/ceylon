@@ -131,9 +131,7 @@ public class CeylonModelLoader extends AbstractModelLoader {
                 public void loadFromSource(Declaration decl) {
                     String fqn = Naming.toplevelClassName(pkgName, decl);
                     try{
-                        ClassSymbol classSymbol = reader.enterClass(names.fromString(fqn), tree.getSourceFile());
-                        if(isBootstrap)
-                            generateFakeClassAST(decl, classSymbol);
+                        reader.enterClass(names.fromString(fqn), tree.getSourceFile());
                     }catch(AssertionError error){
                         // this happens when we have already registered a source file for this decl, so let's
                         // print out a helpful message
@@ -151,34 +149,6 @@ public class CeylonModelLoader extends AbstractModelLoader {
             symtab.loadCeylonSymbols();
     }
     
-    /**
-     * Generates a fake class/interface for bootstrapping, which contains only a name and list of unbounded type parameters.
-     * We don't need supertype, implemented interfaces or members for bootstrap.
-     */
-    protected void generateFakeClassAST(Declaration decl, ClassSymbol classSymbol) {
-        // proceed to fake the class temporarily for Java files in Enter's first phase until we replace
-        // it with real Java AST
-        classSymbol.completer = null;
-        classSymbol.members_field = new Scope(classSymbol);
-        // this is good enough, it will be set correctly later and rechecked
-        classSymbol.flags_field = Flags.PUBLIC;
-        if(decl instanceof Tree.AnyInterface)
-            classSymbol.flags_field |= Flags.INTERFACE;
-        if(decl instanceof Tree.ClassOrInterface){
-            Tree.ClassOrInterface classDecl = (ClassOrInterface) decl;
-            if(classDecl.getTypeParameterList() != null){
-                Type.ClassType classType = (Type.ClassType) classSymbol.type;
-                ListBuffer<Type> types = new ListBuffer<Type>();
-                for(Tree.TypeParameterDeclaration typeParamDecl : classDecl.getTypeParameterList().getTypeParameterDeclarations()){
-                    // we don't need a valid name, just a name, and making it BOGUS helps us find it later if it turns out
-                    // we failed to reset everything properly
-                    types.append(new Type.TypeVar(names.fromString("BOGUS"), classSymbol, null));
-                }
-                classType.typarams_field = types.toList();
-            }
-        }
-    }
-
     @Override
     public synchronized boolean loadPackage(String packageName, boolean loadDeclarations) {
         // abort if we already loaded it, but only record that we loaded it if we want
