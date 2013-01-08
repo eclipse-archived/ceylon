@@ -43,7 +43,7 @@ void intersector2(Iterable<Container<Anything>>&Category beast){}
 Integer i1 = 5;
 shared String s1 = "hey";
 variable Float pi = 3.14;
-shared variable Sequence<Integer> seq = { 5 };
+shared variable Sequence<Integer> seq = [ 5 ];
 variable Integer|String union = "five";
 Container<String|Singleton<Integer>> useq = { "a", Singleton(2) };
 shared Integer[] sequentialAttribute1 = [ 0 ];
