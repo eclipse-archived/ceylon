@@ -21,40 +21,12 @@ import java.lang.reflect.Method;
 import java.security.AccessController;
 import java.security.PrivilegedExceptionAction;
 
-import ceylon.language.descriptor.Module;
-
 /**
  * Security actions.
  *
  * @author <a href="mailto:ales.justin@jboss.org">Ales Justin</a>
  */
 final class SecurityActions {
-
-    /**
-     * Get module.
-     *
-     * @param moduleClass the module class
-     * @return module instance
-     * @throws Exception for any error
-     */
-    static Module getModule(final Class<?> moduleClass) throws Exception {
-        final SecurityManager sm = System.getSecurityManager();
-        if (sm != null) {
-            return AccessController.doPrivileged(new PrivilegedExceptionAction<Module>() {
-                public Module run() throws Exception {
-                    return getModuleInternal(moduleClass);
-                }
-            });
-        } else {
-            return getModuleInternal(moduleClass);
-        }
-    }
-
-    private static Module getModuleInternal(final Class<?> moduleClass) throws Exception {
-        final Method getModule = moduleClass.getDeclaredMethod("getModule");
-        getModule.setAccessible(true);
-        return (Module) getModule.invoke(null); // it should be a static method
-    }
 
     /**
      * Invoke run::main.
