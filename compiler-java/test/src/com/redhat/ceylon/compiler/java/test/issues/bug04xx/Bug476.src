@@ -44,17 +44,17 @@ class Bug476Bottom<T, U> extends .com.redhat.ceylon.compiler.java.test.issues.bu
     
     Bug476Bottom() {
         super();
-        this.attr = (.com.redhat.ceylon.compiler.java.test.issues.bug04xx.Bug476A).ceylon.language.bottom_.getBottom$();
+        this.attr = (.com.redhat.ceylon.compiler.java.test.issues.bug04xx.Bug476A).ceylon.language.nothing_.getNothing$();
     }
     
     @.java.lang.Override
     public final .com.redhat.ceylon.compiler.java.test.issues.bug04xx.Bug476A m() {
-        return (.com.redhat.ceylon.compiler.java.test.issues.bug04xx.Bug476A).ceylon.language.bottom_.getBottom$();
+        return (.com.redhat.ceylon.compiler.java.test.issues.bug04xx.Bug476A).ceylon.language.nothing_.getNothing$();
     }
     
     @.java.lang.Override
     public final .com.redhat.ceylon.compiler.java.test.issues.bug04xx.Bug476Top<? extends .com.redhat.ceylon.compiler.java.test.issues.bug04xx.Bug476A> m2() {
-        return (.com.redhat.ceylon.compiler.java.test.issues.bug04xx.Bug476Top<? extends .com.redhat.ceylon.compiler.java.test.issues.bug04xx.Bug476A>)(.com.redhat.ceylon.compiler.java.test.issues.bug04xx.Bug476Top).ceylon.language.bottom_.getBottom$();
+        return (.com.redhat.ceylon.compiler.java.test.issues.bug04xx.Bug476Top<? extends .com.redhat.ceylon.compiler.java.test.issues.bug04xx.Bug476A>)(.com.redhat.ceylon.compiler.java.test.issues.bug04xx.Bug476Top).ceylon.language.nothing_.getNothing$();
     }
     private .com.redhat.ceylon.compiler.java.test.issues.bug04xx.Bug476A attr;
     
@@ -69,7 +69,7 @@ class Bug476Bottom<T, U> extends .com.redhat.ceylon.compiler.java.test.issues.bu
     
     @.java.lang.Override
     public final .com.redhat.ceylon.compiler.java.test.issues.bug04xx.Bug476A getAttr2() {
-        return (.com.redhat.ceylon.compiler.java.test.issues.bug04xx.Bug476A).ceylon.language.bottom_.getBottom$();
+        return (.com.redhat.ceylon.compiler.java.test.issues.bug04xx.Bug476A).ceylon.language.nothing_.getNothing$();
     }
     
     public final void setAttr2(final .com.redhat.ceylon.compiler.java.test.issues.bug04xx.Bug476A attr2) {
@@ -91,7 +91,7 @@ public abstract class Bug476<T> implements .ceylon.language.List<T> {
         this.$ceylon$language$Cloneable$this = new .ceylon.language.Cloneable$impl<.ceylon.language.Collection<? extends T>>((.ceylon.language.Cloneable<.ceylon.language.Collection<? extends T>>)(.ceylon.language.Cloneable)this);
         this.$ceylon$language$Correspondence$this = new .ceylon.language.Correspondence$impl<.ceylon.language.Integer, T>(this);
         this.$ceylon$language$Ranged$this = new .ceylon.language.Ranged$impl<.ceylon.language.Integer, .ceylon.language.List<? extends T>>(this);
-        this.string = ((.ceylon.language.String).ceylon.language.bottom_.getBottom$()).toString();
+        this.string = ((.ceylon.language.String).ceylon.language.nothing_.getNothing$()).toString();
     }
     protected final .ceylon.language.List$impl<T> $ceylon$language$List$this;
     
@@ -339,22 +339,22 @@ public abstract class Bug476<T> implements .ceylon.language.List<T> {
     
     @.java.lang.Override
     public final .ceylon.language.Sequential<? extends T> span(final .ceylon.language.Integer from, final .ceylon.language.Integer to) {
-        return .ceylon.language.bottom_.getBottom$();
+        return .ceylon.language.nothing_.getNothing$();
     }
     
     @.java.lang.Override
     public final .ceylon.language.Sequential<? extends T> spanFrom(final .ceylon.language.Integer from) {
-        return .ceylon.language.bottom_.getBottom$();
+        return .ceylon.language.nothing_.getNothing$();
     }
     
     @.java.lang.Override
     public final .ceylon.language.Sequential<? extends T> spanTo(final .ceylon.language.Integer to) {
-        return .ceylon.language.bottom_.getBottom$();
+        return .ceylon.language.nothing_.getNothing$();
     }
     
     @.java.lang.Override
     public final .ceylon.language.Sequential<? extends T> segment(final .ceylon.language.Integer from, final long length) {
-        return .ceylon.language.bottom_.getBottom$();
+        return .ceylon.language.nothing_.getNothing$();
     }
     private final .java.lang.String string;
     
@@ -370,6 +370,6 @@ public abstract class Bug476<T> implements .ceylon.language.List<T> {
     
     @.java.lang.Override
     public final boolean equals(final .java.lang.Object that) {
-        return ((.ceylon.language.Boolean).ceylon.language.bottom_.getBottom$()).booleanValue();
+        return ((.ceylon.language.Boolean).ceylon.language.nothing_.getNothing$()).booleanValue();
     }
 }

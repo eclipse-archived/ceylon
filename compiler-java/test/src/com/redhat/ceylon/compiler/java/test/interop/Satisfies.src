@@ -113,7 +113,7 @@ class JavaInterfaceImpl implements .com.redhat.ceylon.compiler.java.test.interop
     
     @.java.lang.Override
     public final <M>M methodTypeParamMethod(final M b) {
-        return (M).ceylon.language.bottom_.getBottom$();
+        return (M).ceylon.language.nothing_.getNothing$();
     }
     
     public static void main(.java.lang.String[] args) {

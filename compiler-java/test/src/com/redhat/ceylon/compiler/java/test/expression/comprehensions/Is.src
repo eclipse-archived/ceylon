@@ -33,12 +33,12 @@ class Foo implements .com.redhat.ceylon.compiler.java.test.expression.comprehens
     
     @.java.lang.Override
     public final .com.redhat.ceylon.compiler.java.test.expression.comprehensions.Common common() {
-        return (.com.redhat.ceylon.compiler.java.test.expression.comprehensions.Common).ceylon.language.bottom_.getBottom$();
+        return (.com.redhat.ceylon.compiler.java.test.expression.comprehensions.Common).ceylon.language.nothing_.getNothing$();
     }
     
     @.java.lang.Override
     public final .com.redhat.ceylon.compiler.java.test.expression.comprehensions.Foo foo() {
-        return (.com.redhat.ceylon.compiler.java.test.expression.comprehensions.Foo).ceylon.language.bottom_.getBottom$();
+        return (.com.redhat.ceylon.compiler.java.test.expression.comprehensions.Foo).ceylon.language.nothing_.getNothing$();
     }
     
     public static void main(.java.lang.String[] args) {
@@ -53,7 +53,7 @@ class FooSub extends .com.redhat.ceylon.compiler.java.test.expression.comprehens
     }
     
     public final .com.redhat.ceylon.compiler.java.test.expression.comprehensions.FooSub foo2() {
-        return (.com.redhat.ceylon.compiler.java.test.expression.comprehensions.FooSub).ceylon.language.bottom_.getBottom$();
+        return (.com.redhat.ceylon.compiler.java.test.expression.comprehensions.FooSub).ceylon.language.nothing_.getNothing$();
     }
     
     public static void main(.java.lang.String[] args) {
@@ -83,12 +83,12 @@ class Bar implements .com.redhat.ceylon.compiler.java.test.expression.comprehens
     
     @.java.lang.Override
     public final .com.redhat.ceylon.compiler.java.test.expression.comprehensions.Common common() {
-        return (.com.redhat.ceylon.compiler.java.test.expression.comprehensions.Common).ceylon.language.bottom_.getBottom$();
+        return (.com.redhat.ceylon.compiler.java.test.expression.comprehensions.Common).ceylon.language.nothing_.getNothing$();
     }
     
     @.java.lang.Override
     public final .com.redhat.ceylon.compiler.java.test.expression.comprehensions.Bar bar() {
-        return (.com.redhat.ceylon.compiler.java.test.expression.comprehensions.Bar).ceylon.language.bottom_.getBottom$();
+        return (.com.redhat.ceylon.compiler.java.test.expression.comprehensions.Bar).ceylon.language.nothing_.getNothing$();
     }
     
     public static void main(.java.lang.String[] args) {

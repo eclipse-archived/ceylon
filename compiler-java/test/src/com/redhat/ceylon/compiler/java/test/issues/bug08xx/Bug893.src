@@ -16,11 +16,11 @@ public final class XIterable893$impl<Element> {
     private final .com.redhat.ceylon.compiler.java.test.issues.bug08xx.XIterable893<? extends Element> $this;
     
     public final .com.redhat.ceylon.compiler.java.test.issues.bug08xx.XIterable893<? extends Element> getSuccess() {
-        return (.com.redhat.ceylon.compiler.java.test.issues.bug08xx.XIterable893<? extends Element>)(.com.redhat.ceylon.compiler.java.test.issues.bug08xx.XIterable893).ceylon.language.bottom_.getBottom$();
+        return (.com.redhat.ceylon.compiler.java.test.issues.bug08xx.XIterable893<? extends Element>)(.com.redhat.ceylon.compiler.java.test.issues.bug08xx.XIterable893).ceylon.language.nothing_.getNothing$();
     }
     
     public final .com.redhat.ceylon.compiler.java.test.issues.bug08xx.XIterable893<? extends Element> getFail1() {
-        return (.com.redhat.ceylon.compiler.java.test.issues.bug08xx.XIterable893<? extends Element>)(.com.redhat.ceylon.compiler.java.test.issues.bug08xx.XIterable893).ceylon.language.bottom_.getBottom$();
+        return (.com.redhat.ceylon.compiler.java.test.issues.bug08xx.XIterable893<? extends Element>)(.com.redhat.ceylon.compiler.java.test.issues.bug08xx.XIterable893).ceylon.language.nothing_.getNothing$();
     }
     
     public final .com.redhat.ceylon.compiler.java.test.issues.bug08xx.XIterable893<? extends Element> getFail2() {
@@ -82,7 +82,7 @@ public abstract class XSingleton893<Element> extends .java.lang.Object implement
         this.$com$redhat$ceylon$compiler$java$test$issues$bug08xx$XSequence893$this = new .com.redhat.ceylon.compiler.java.test.issues.bug08xx.XSequence893$impl<Element>(this);
         this.$com$redhat$ceylon$compiler$java$test$issues$bug08xx$XSequential893$this = new .com.redhat.ceylon.compiler.java.test.issues.bug08xx.XSequential893$impl<Element>(this);
         this.$com$redhat$ceylon$compiler$java$test$issues$bug08xx$XIterable893$this = new .com.redhat.ceylon.compiler.java.test.issues.bug08xx.XIterable893$impl<Element>(this);
-        this.fail2 = (.com.redhat.ceylon.compiler.java.test.issues.bug08xx.XIterable893<? extends Element>)(.com.redhat.ceylon.compiler.java.test.issues.bug08xx.XIterable893).ceylon.language.bottom_.getBottom$();
+        this.fail2 = (.com.redhat.ceylon.compiler.java.test.issues.bug08xx.XIterable893<? extends Element>)(.com.redhat.ceylon.compiler.java.test.issues.bug08xx.XIterable893).ceylon.language.nothing_.getNothing$();
     }
     protected final .com.redhat.ceylon.compiler.java.test.issues.bug08xx.XSequence893$impl<Element> $com$redhat$ceylon$compiler$java$test$issues$bug08xx$XSequence893$this;
     protected final .com.redhat.ceylon.compiler.java.test.issues.bug08xx.XSequential893$impl<Element> $com$redhat$ceylon$compiler$java$test$issues$bug08xx$XSequential893$this;
@@ -90,11 +90,11 @@ public abstract class XSingleton893<Element> extends .java.lang.Object implement
     
     @.java.lang.Override
     public final .com.redhat.ceylon.compiler.java.test.issues.bug08xx.XIterable893<? extends Element> getSuccess() {
-        return (.com.redhat.ceylon.compiler.java.test.issues.bug08xx.XIterable893<? extends Element>)(.com.redhat.ceylon.compiler.java.test.issues.bug08xx.XIterable893).ceylon.language.bottom_.getBottom$();
+        return (.com.redhat.ceylon.compiler.java.test.issues.bug08xx.XIterable893<? extends Element>)(.com.redhat.ceylon.compiler.java.test.issues.bug08xx.XIterable893).ceylon.language.nothing_.getNothing$();
     }
     
     public final .com.redhat.ceylon.compiler.java.test.issues.bug08xx.XIterable893<? extends Element> getFail1() {
-        return (.com.redhat.ceylon.compiler.java.test.issues.bug08xx.XIterable893<? extends Element>)(.com.redhat.ceylon.compiler.java.test.issues.bug08xx.XIterable893).ceylon.language.bottom_.getBottom$();
+        return (.com.redhat.ceylon.compiler.java.test.issues.bug08xx.XIterable893<? extends Element>)(.com.redhat.ceylon.compiler.java.test.issues.bug08xx.XIterable893).ceylon.language.nothing_.getNothing$();
     }
     private final .com.redhat.ceylon.compiler.java.test.issues.bug08xx.XIterable893<? extends Element> fail2;
     

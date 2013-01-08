@@ -21,7 +21,7 @@ class MethodSpecifyingCallable {
             
             @.java.lang.Override
             public .java.lang.Object $call() {
-                return .ceylon.language.bottom_.getBottom$();
+                return .ceylon.language.nothing_.getNothing$();
             }
         };
         this.oneParam = new .com.redhat.ceylon.compiler.java.language.AbstractCallable("Bottom(Integer)"){
@@ -29,7 +29,7 @@ class MethodSpecifyingCallable {
             @.java.lang.Override
             public .java.lang.Object $call(final .java.lang.Object $param$0) {
                 final long i = ((.ceylon.language.Integer)$param$0).longValue();
-                return .ceylon.language.bottom_.getBottom$();
+                return .ceylon.language.nothing_.getNothing$();
             }
         };
         this.oneSequencedParam = new .com.redhat.ceylon.compiler.java.language.AbstractCallable("Bottom(Integer...)"){
@@ -51,7 +51,7 @@ class MethodSpecifyingCallable {
             }
             
             private .java.lang.Object $call$typed(.ceylon.language.Sequential<? extends .ceylon.language.Integer> i) {
-                return .ceylon.language.bottom_.getBottom$();
+                return .ceylon.language.nothing_.getNothing$();
             }
         };
         this.secondSequencedParam = new .com.redhat.ceylon.compiler.java.language.AbstractCallable("Bottom(Integer, Integer...)"){
@@ -75,7 +75,7 @@ class MethodSpecifyingCallable {
             }
             
             private .java.lang.Object $call$typed(long a, .ceylon.language.Sequential<? extends .ceylon.language.Integer> i) {
-                return .ceylon.language.bottom_.getBottom$();
+                return .ceylon.language.nothing_.getNothing$();
             }
         };
     }

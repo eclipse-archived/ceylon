@@ -26,7 +26,7 @@ final class bug674_ {
             }
             private final .com.redhat.ceylon.compiler.java.test.issues.bug06xx.bug674$0$Y_ $this;
         }
-        final .com.redhat.ceylon.compiler.java.test.issues.bug06xx.bug674$0$X_<.com.redhat.ceylon.compiler.java.test.issues.bug06xx.bug674$0$Y_> y = (.com.redhat.ceylon.compiler.java.test.issues.bug06xx.bug674$0$X_<.com.redhat.ceylon.compiler.java.test.issues.bug06xx.bug674$0$Y_>)(.com.redhat.ceylon.compiler.java.test.issues.bug06xx.bug674$0$X_).ceylon.language.bottom_.getBottom$();
+        final .com.redhat.ceylon.compiler.java.test.issues.bug06xx.bug674$0$X_<.com.redhat.ceylon.compiler.java.test.issues.bug06xx.bug674$0$Y_> y = (.com.redhat.ceylon.compiler.java.test.issues.bug06xx.bug674$0$X_<.com.redhat.ceylon.compiler.java.test.issues.bug06xx.bug674$0$Y_>)(.com.redhat.ceylon.compiler.java.test.issues.bug06xx.bug674$0$X_).ceylon.language.nothing_.getNothing$();
     }
     
     public static void main(.java.lang.String[] args) {

@@ -30,6 +30,6 @@ public final class LazySpecSub$impl {
     private final .com.redhat.ceylon.compiler.java.test.structure.concrete.LazySpecSub $this;
     
     public .java.lang.Object a() {
-        return .ceylon.language.bottom_.getBottom$();
+        return .ceylon.language.nothing_.getNothing$();
     }
 }

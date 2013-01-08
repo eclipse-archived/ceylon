@@ -47,6 +47,6 @@ public final class i$impl_ {
             }
             private final .com.redhat.ceylon.compiler.java.test.quoting.lettercase.i$m$0$mi_ $this;
         }
-        final .com.redhat.ceylon.compiler.java.test.quoting.lettercase.i$m$0$mi_ a = (.com.redhat.ceylon.compiler.java.test.quoting.lettercase.i$m$0$mi_).ceylon.language.bottom_.getBottom$();
+        final .com.redhat.ceylon.compiler.java.test.quoting.lettercase.i$m$0$mi_ a = (.com.redhat.ceylon.compiler.java.test.quoting.lettercase.i$m$0$mi_).ceylon.language.nothing_.getNothing$();
     }
 }

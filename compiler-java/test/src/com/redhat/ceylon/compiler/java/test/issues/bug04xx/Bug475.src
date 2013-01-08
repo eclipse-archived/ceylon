@@ -3,7 +3,7 @@ package com.redhat.ceylon.compiler.java.test.issues.bug04xx;
 abstract class Bug475 {
     
     Bug475() {
-        this.hash = (int)((.ceylon.language.Integer).ceylon.language.bottom_.getBottom$()).longValue();
+        this.hash = (int)((.ceylon.language.Integer).ceylon.language.nothing_.getNothing$()).longValue();
     }
     private final int hash;
     

@@ -3,11 +3,11 @@ package com.redhat.ceylon.compiler.java.test.issues.bug08xx;
 public class Bug844_Top<Element> {
     
     public Bug844_Top() {
-        this.firstAttribute = (Element).ceylon.language.bottom_.getBottom$();
+        this.firstAttribute = (Element).ceylon.language.nothing_.getNothing$();
     }
     
     public Element first() {
-        return (Element).ceylon.language.bottom_.getBottom$();
+        return (Element).ceylon.language.nothing_.getNothing$();
     }
     private final Element firstAttribute;
     
@@ -29,7 +29,7 @@ public class Bug844_Bottom<Element, First extends Element> extends .com.redhat.c
     
     @.java.lang.Override
     public final First first() {
-        return (First).ceylon.language.bottom_.getBottom$();
+        return (First).ceylon.language.nothing_.getNothing$();
     }
     private final First firstAttribute;
     
@@ -384,12 +384,12 @@ public abstract class Bug844_Tuple<Element, First extends Element, Rest> extends
     
     @.java.lang.Override
     public final .ceylon.language.Sequential<? extends Element> spanFrom(final .ceylon.language.Integer from) {
-        return .ceylon.language.bottom_.getBottom$();
+        return .ceylon.language.nothing_.getNothing$();
     }
     
     @.java.lang.Override
     public final .ceylon.language.Sequential<? extends Element> spanTo(final .ceylon.language.Integer to) {
-        return .ceylon.language.bottom_.getBottom$();
+        return .ceylon.language.nothing_.getNothing$();
     }
     
     @.java.lang.Override

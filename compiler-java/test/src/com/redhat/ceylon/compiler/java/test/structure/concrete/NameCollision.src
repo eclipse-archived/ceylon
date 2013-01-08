@@ -64,12 +64,12 @@ class NameCollision implements .com.redhat.ceylon.compiler.java.test.structure.c
     
     @.java.lang.Override
     public final .ceylon.language.Integer getFirst() {
-        return (.ceylon.language.Integer).ceylon.language.bottom_.getBottom$();
+        return (.ceylon.language.Integer).ceylon.language.nothing_.getNothing$();
     }
     
     @.java.lang.Override
     public final .ceylon.language.Integer getLast() {
-        return (.ceylon.language.Integer).ceylon.language.bottom_.getBottom$();
+        return (.ceylon.language.Integer).ceylon.language.nothing_.getNothing$();
     }
     
     public static void main(.java.lang.String[] args) {

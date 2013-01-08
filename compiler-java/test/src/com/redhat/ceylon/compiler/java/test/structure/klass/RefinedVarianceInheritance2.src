@@ -17,7 +17,7 @@ class RefinedVarianceInheritance2Bottom extends .com.redhat.ceylon.compiler.java
     
     @.java.lang.Override
     public final long m() {
-        return ((.ceylon.language.Integer).ceylon.language.bottom_.getBottom$()).longValue();
+        return ((.ceylon.language.Integer).ceylon.language.nothing_.getNothing$()).longValue();
     }
     
     @.java.lang.Override

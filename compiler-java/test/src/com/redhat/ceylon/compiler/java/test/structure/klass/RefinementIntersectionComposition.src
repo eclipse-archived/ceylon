@@ -81,12 +81,12 @@ class RIC_Bottom_From_Class extends .com.redhat.ceylon.compiler.java.test.struct
     
     @.java.lang.Override
     public final .com.redhat.ceylon.compiler.java.test.structure.klass.RIC_A getVal() {
-        return (.com.redhat.ceylon.compiler.java.test.structure.klass.RIC_A).ceylon.language.bottom_.getBottom$();
+        return (.com.redhat.ceylon.compiler.java.test.structure.klass.RIC_A).ceylon.language.nothing_.getNothing$();
     }
     
     @.java.lang.Override
     public final .com.redhat.ceylon.compiler.java.test.structure.klass.RIC_A get() {
-        return (.com.redhat.ceylon.compiler.java.test.structure.klass.RIC_A).ceylon.language.bottom_.getBottom$();
+        return (.com.redhat.ceylon.compiler.java.test.structure.klass.RIC_A).ceylon.language.nothing_.getNothing$();
     }
     
     public static void main(.java.lang.String[] args) {
@@ -107,12 +107,12 @@ class RIC_Bottom_From_Interface implements .com.redhat.ceylon.compiler.java.test
     
     @.java.lang.Override
     public final .com.redhat.ceylon.compiler.java.test.structure.klass.RIC_B getVal() {
-        return (.com.redhat.ceylon.compiler.java.test.structure.klass.RIC_B).ceylon.language.bottom_.getBottom$();
+        return (.com.redhat.ceylon.compiler.java.test.structure.klass.RIC_B).ceylon.language.nothing_.getNothing$();
     }
     
     @.java.lang.Override
     public final .com.redhat.ceylon.compiler.java.test.structure.klass.RIC_B get() {
-        return (.com.redhat.ceylon.compiler.java.test.structure.klass.RIC_B).ceylon.language.bottom_.getBottom$();
+        return (.com.redhat.ceylon.compiler.java.test.structure.klass.RIC_B).ceylon.language.nothing_.getNothing$();
     }
     
     public static void main(.java.lang.String[] args) {

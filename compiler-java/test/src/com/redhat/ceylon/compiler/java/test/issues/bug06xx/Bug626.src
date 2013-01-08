@@ -6,8 +6,8 @@ class Bug626 implements .ceylon.language.Iterable<.ceylon.language.Sequential<?>
         this.$ceylon$language$Iterable$this = new .ceylon.language.Iterable$impl<.ceylon.language.Sequential<?>>(this);
         this.$ceylon$language$ContainerWithFirstElement$this = new .ceylon.language.ContainerWithFirstElement$impl<.ceylon.language.Sequential<?>, .java.lang.Object>(this);
         this.$ceylon$language$Container$this = new .ceylon.language.Container$impl(this);
-        this.hash = (int)((.ceylon.language.Integer).ceylon.language.bottom_.getBottom$()).longValue();
-        this.iterator = (.ceylon.language.Iterator<? extends .ceylon.language.Sequential<?>>)(.ceylon.language.Iterator).ceylon.language.bottom_.getBottom$();
+        this.hash = (int)((.ceylon.language.Integer).ceylon.language.nothing_.getNothing$()).longValue();
+        this.iterator = (.ceylon.language.Iterator<? extends .ceylon.language.Sequential<?>>)(.ceylon.language.Iterator).ceylon.language.nothing_.getNothing$();
     }
     protected final .ceylon.language.Iterable$impl<.ceylon.language.Sequential<?>> $ceylon$language$Iterable$this;
     
@@ -130,7 +130,7 @@ class Bug626 implements .ceylon.language.Iterable<.ceylon.language.Sequential<?>
     
     @.java.lang.Override
     public final boolean equals(final .java.lang.Object that) {
-        return ((.ceylon.language.Boolean).ceylon.language.bottom_.getBottom$()).booleanValue();
+        return ((.ceylon.language.Boolean).ceylon.language.nothing_.getNothing$()).booleanValue();
     }
     private final int hash;
     

@@ -52,7 +52,7 @@ final class typeGroupAttribute_ {
     }
     private static final .java.lang.Object[] value;
     static {
-        value = new .java.lang.Object[]{.ceylon.language.bottom_.getBottom$()};
+        value = new .java.lang.Object[]{.ceylon.language.nothing_.getNothing$()};
     }
     
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo(value = "com.redhat.ceylon.compiler.java.test.annotations::TypeGroupA&com.redhat.ceylon.compiler.java.test.annotations::TypeGroupB&com.redhat.ceylon.compiler.java.test.annotations::TypeGroupD|com.redhat.ceylon.compiler.java.test.annotations::TypeGroupA&com.redhat.ceylon.compiler.java.test.annotations::TypeGroupC&com.redhat.ceylon.compiler.java.test.annotations::TypeGroupD", erased = true)

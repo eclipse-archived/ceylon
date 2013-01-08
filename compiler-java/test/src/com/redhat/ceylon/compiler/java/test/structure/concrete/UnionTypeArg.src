@@ -6,7 +6,7 @@ class UnionTypeArg implements .ceylon.language.Iterable<.java.lang.Object> {
         this.$ceylon$language$Iterable$this = new .ceylon.language.Iterable$impl<.java.lang.Object>(this);
         this.$ceylon$language$ContainerWithFirstElement$this = new .ceylon.language.ContainerWithFirstElement$impl<.java.lang.Object, .java.lang.Object>(this);
         this.$ceylon$language$Category$this = new .ceylon.language.Category$impl(this);
-        this.iterator = (.ceylon.language.Iterator<? extends .java.lang.Object>)(.ceylon.language.Iterator).ceylon.language.bottom_.getBottom$();
+        this.iterator = (.ceylon.language.Iterator<? extends .java.lang.Object>)(.ceylon.language.Iterator).ceylon.language.nothing_.getNothing$();
     }
     protected final .ceylon.language.Iterable$impl<.java.lang.Object> $ceylon$language$Iterable$this;
     
@@ -184,7 +184,7 @@ class UnionTypeArgOverride implements .ceylon.language.Iterable<.java.lang.Objec
         this.$ceylon$language$Iterable$this = new .ceylon.language.Iterable$impl<.java.lang.Object>(this);
         this.$ceylon$language$ContainerWithFirstElement$this = new .ceylon.language.ContainerWithFirstElement$impl<.java.lang.Object, .java.lang.Object>(this);
         this.$ceylon$language$Category$this = new .ceylon.language.Category$impl(this);
-        this.iterator = (.ceylon.language.Iterator<? extends .java.lang.Object>)(.ceylon.language.Iterator).ceylon.language.bottom_.getBottom$();
+        this.iterator = (.ceylon.language.Iterator<? extends .java.lang.Object>)(.ceylon.language.Iterator).ceylon.language.nothing_.getNothing$();
     }
     protected final .ceylon.language.Iterable$impl<.java.lang.Object> $ceylon$language$Iterable$this;
     

@@ -3,8 +3,8 @@ package com.redhat.ceylon.compiler.java.test.structure.type;
 class GenericBottom<T, U> {
     
     GenericBottom(.java.lang.Object argObject) {
-        this.attrTp = (T).ceylon.language.bottom_.getBottom$();
-        this.attrIntersection = .ceylon.language.bottom_.getBottom$();
+        this.attrTp = (T).ceylon.language.nothing_.getNothing$();
+        this.attrIntersection = .ceylon.language.nothing_.getNothing$();
     }
     private final T attrTp;
     
@@ -18,27 +18,27 @@ class GenericBottom<T, U> {
     }
     
     private final T methodTp(final T o) {
-        return (T).ceylon.language.bottom_.getBottom$();
+        return (T).ceylon.language.nothing_.getNothing$();
     }
     
     private final .java.lang.Object methodIntersection(final .java.lang.Object o) {
-        return .ceylon.language.bottom_.getBottom$();
+        return .ceylon.language.nothing_.getNothing$();
     }
     
     private final T getGetterTp() {
-        return (T).ceylon.language.bottom_.getBottom$();
+        return (T).ceylon.language.nothing_.getNothing$();
     }
     
     private final .java.lang.Object getGetterIntersection() {
-        return .ceylon.language.bottom_.getBottom$();
+        return .ceylon.language.nothing_.getNothing$();
     }
     
     private final void f() {
-        final .com.redhat.ceylon.compiler.java.test.structure.type.GenericBottom<T, U> g = new .com.redhat.ceylon.compiler.java.test.structure.type.GenericBottom<T, U>(.ceylon.language.bottom_.getBottom$());
+        final .com.redhat.ceylon.compiler.java.test.structure.type.GenericBottom<T, U> g = new .com.redhat.ceylon.compiler.java.test.structure.type.GenericBottom<T, U>(.ceylon.language.nothing_.getNothing$());
         T t = g.getAttrTp();
         t = (T)g.getAttrIntersection();
-        t = g.methodTp((T).ceylon.language.bottom_.getBottom$());
-        t = (T)g.methodIntersection(.ceylon.language.bottom_.getBottom$());
+        t = g.methodTp((T).ceylon.language.nothing_.getNothing$());
+        t = (T)g.methodIntersection(.ceylon.language.nothing_.getNothing$());
         t = g.getGetterTp();
         t = (T)g.getGetterIntersection();
     }
