@@ -18,14 +18,14 @@
  * MA  02110-1301, USA.
  */
 @nomodel
-class MethodIfIsNotNothing() {
+class MethodIfIsNotNull() {
     shared void m(Object? x) {
-        if (!is Nothing x) {
+        if (!is Null x) {
             print(x.string);
         }
     }
     shared void mvar(Object? y) {
-        if (!is Nothing x=y) {
+        if (!is Null x=y) {
             print(x.string);
         }
     }

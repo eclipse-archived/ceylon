@@ -18,9 +18,9 @@
  * MA  02110-1301, USA.
  */
 @nomodel
-class MethodIfIsNothing() {
+class MethodIfIsNull() {
     shared void m(Object? x) {
-        if (is Nothing x) {
+        if (is Null x) {
         }
     }
 }

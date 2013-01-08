@@ -1,8 +1,8 @@
 package com.redhat.ceylon.compiler.java.test.statement.loop;
 
-class MethodWhileIsNotNothing {
+class MethodWhileIsNotNull {
     
-    MethodWhileIsNotNothing() {
+    MethodWhileIsNotNull() {
     }
     
     public final void m(final .java.lang.Object x) {
@@ -25,6 +25,6 @@ class MethodWhileIsNotNothing {
     
     public static void main(.java.lang.String[] args) {
         .ceylon.language.process_.getProcess$().setupArguments(args);
-        new .com.redhat.ceylon.compiler.java.test.statement.loop.MethodWhileIsNotNothing();
+        new .com.redhat.ceylon.compiler.java.test.statement.loop.MethodWhileIsNotNull();
     }
 }

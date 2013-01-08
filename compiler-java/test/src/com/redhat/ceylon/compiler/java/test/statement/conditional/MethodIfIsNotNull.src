@@ -1,8 +1,8 @@
 package com.redhat.ceylon.compiler.java.test.statement.conditional;
 
-class MethodIfIsNotNothing {
+class MethodIfIsNotNull {
     
-    MethodIfIsNotNothing() {
+    MethodIfIsNotNull() {
     }
     
     public final void m(final .java.lang.Object x) {
@@ -21,6 +21,6 @@ class MethodIfIsNotNothing {
     
     public static void main(.java.lang.String[] args) {
         .ceylon.language.process_.getProcess$().setupArguments(args);
-        new .com.redhat.ceylon.compiler.java.test.statement.conditional.MethodIfIsNotNothing();
+        new .com.redhat.ceylon.compiler.java.test.statement.conditional.MethodIfIsNotNull();
     }
 }

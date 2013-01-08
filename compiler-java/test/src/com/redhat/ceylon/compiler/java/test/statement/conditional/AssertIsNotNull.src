@@ -1,13 +1,13 @@
 package com.redhat.ceylon.compiler.java.test.statement.conditional;
 
-class AssertIsNotNothing {
+class AssertIsNotNull {
     
-    AssertIsNotNothing() {
+    AssertIsNotNull() {
     }
     
     public final void m(final .java.lang.Object x) {
         if (!(x == null)) {
-        } else throw new .ceylon.language.Exception(.ceylon.language.String.instance("Assertion failed" + .java.lang.System.lineSeparator() + ("\tviolated " + "is Nothing x" + .java.lang.System.lineSeparator() + "\tat " + "AssertIsNotNothing.ceylon:23:8-23:30")), null);
+        } else throw new .ceylon.language.Exception(.ceylon.language.String.instance("Assertion failed" + .java.lang.System.lineSeparator() + ("\tviolated " + "is Null x" + .java.lang.System.lineSeparator() + "\tat " + "AssertIsNotNull.ceylon:23:8-23:27")), null);
         .ceylon.language.print_.print(.ceylon.language.String.instance(x.toString()));
     }
     
@@ -16,12 +16,12 @@ class AssertIsNotNothing {
         .java.lang.Object $x$3 = null;
         if (!(($x$3 = y) == null)) {
             $x$4 = $x$3;
-        } else throw new .ceylon.language.Exception(.ceylon.language.String.instance("Assertion failed" + .java.lang.System.lineSeparator() + ("\tviolated " + "is Nothing x=y" + .java.lang.System.lineSeparator() + "\tat " + "AssertIsNotNothing.ceylon:27:8-27:32")), null);
+        } else throw new .ceylon.language.Exception(.ceylon.language.String.instance("Assertion failed" + .java.lang.System.lineSeparator() + ("\tviolated " + "is Null x=y" + .java.lang.System.lineSeparator() + "\tat " + "AssertIsNotNull.ceylon:27:8-27:29")), null);
         .ceylon.language.print_.print(.ceylon.language.String.instance($x$4.toString()));
     }
     
     public static void main(.java.lang.String[] args) {
         .ceylon.language.process_.getProcess$().setupArguments(args);
-        new .com.redhat.ceylon.compiler.java.test.statement.conditional.AssertIsNotNothing();
+        new .com.redhat.ceylon.compiler.java.test.statement.conditional.AssertIsNotNull();
     }
 }

@@ -18,14 +18,14 @@
  * MA  02110-1301, USA.
  */
 @nomodel
-class MethodWhileIsNotNothing() {
+class MethodWhileIsNotNull() {
     shared void m(Object? x) {
-        while (!is Nothing x) {
+        while (!is Null x) {
             print(x.string);
         }
     }
     shared void mvar(Object? y) {
-        while (!is Nothing x=y) {
+        while (!is Null x=y) {
             print(x.string);
         }
     }

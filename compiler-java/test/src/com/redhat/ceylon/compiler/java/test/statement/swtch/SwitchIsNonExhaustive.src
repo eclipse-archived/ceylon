@@ -11,9 +11,9 @@ class SwitchIsNonExhaustive {
             .java.lang.Object $sel$0 = b;
             if (.com.redhat.ceylon.compiler.java.Util.isIdentifiableObject($sel$0)) {
                 final .java.lang.Object $b$1 = (.java.lang.Object)$sel$0;
-                name = "IdentifiableObject";
+                name = "Basic";
             } else {
-                name = "Un-IdentifiableObject";
+                name = "Un-Basic";
             }
         }
         return name;

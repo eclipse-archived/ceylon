@@ -18,13 +18,13 @@
  * MA  02110-1301, USA.
  */
 @nomodel
-class AssertIsNotNothing() {
+class AssertIsNotNull() {
     shared void m(Object? x) {
-        assert (!is Nothing x);
+        assert (!is Null x);
         print(x.string);
     }
     shared void mvar(Object? y) {
-        assert (!is Nothing x=y);
+        assert (!is Null x=y);
         print(x.string);
     }
 }

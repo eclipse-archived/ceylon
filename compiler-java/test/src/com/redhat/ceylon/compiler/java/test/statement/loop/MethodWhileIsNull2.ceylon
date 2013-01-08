@@ -18,9 +18,9 @@
  * MA  02110-1301, USA.
  */
 @nomodel
-class MethodWhileIsNothing() {
+class MethodWhileIsNull() {
     shared void m(Object? x) {
-        while (is Nothing x) {
+        while (is Null x) {
         }
     }
 }

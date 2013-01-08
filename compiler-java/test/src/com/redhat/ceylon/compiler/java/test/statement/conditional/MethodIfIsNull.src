@@ -1,8 +1,8 @@
 package com.redhat.ceylon.compiler.java.test.statement.conditional;
 
-class MethodIfIsNothing {
+class MethodIfIsNull {
     
-    MethodIfIsNothing() {
+    MethodIfIsNull() {
     }
     
     private final long owt(final .ceylon.language.Integer n) {
@@ -53,6 +53,6 @@ class MethodIfIsNothing {
     
     public static void main(.java.lang.String[] args) {
         .ceylon.language.process_.getProcess$().setupArguments(args);
-        new .com.redhat.ceylon.compiler.java.test.statement.conditional.MethodIfIsNothing();
+        new .com.redhat.ceylon.compiler.java.test.statement.conditional.MethodIfIsNull();
     }
 }

@@ -20,7 +20,7 @@ class AssertIsWithMethod {
         .java.lang.Object $y2$4 = null;
         if (($y2$4 = give()) == null) {
             $y2$5 = $y2$4;
-        } else throw new .ceylon.language.Exception(.ceylon.language.String.instance("Assertion failed" + .java.lang.System.lineSeparator() + ("\tviolated " + "is Nothing y2 = give()" + .java.lang.System.lineSeparator() + "\tat " + "AssertIsWithMethod.ceylon:28:8-28:39")), null);
+        } else throw new .ceylon.language.Exception(.ceylon.language.String.instance("Assertion failed" + .java.lang.System.lineSeparator() + ("\tviolated " + "is Null y2 = give()" + .java.lang.System.lineSeparator() + "\tat " + "AssertIsWithMethod.ceylon:28:8-28:36")), null);
     }
     
     public static void main(.java.lang.String[] args) {

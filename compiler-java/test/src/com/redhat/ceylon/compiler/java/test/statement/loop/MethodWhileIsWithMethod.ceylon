@@ -26,7 +26,7 @@ class MethodWhileIsWithMethod() {
         while (is FooSub y = give()) {
             y.foo();
         }
-        while (is Nothing y = give()) {
+        while (is Null y = give()) {
         }
     }
 }

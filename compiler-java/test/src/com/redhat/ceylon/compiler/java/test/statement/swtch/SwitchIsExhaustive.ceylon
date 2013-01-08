@@ -19,7 +19,7 @@
  */
 @nomodel
 class SwitchIsExhaustive() {
-    String m(String|Integer|Nothing|Exception b) {
+    String m(String|Integer|Null|Exception b) {
         String name;
         switch(b) 
         case(is String) {
@@ -28,7 +28,7 @@ class SwitchIsExhaustive() {
         case(is Integer) {
             name = "Integer";
         }
-        case(is Nothing) {
+        case(is Null) {
             name = "Nothing";
         }
         case(is Exception) {

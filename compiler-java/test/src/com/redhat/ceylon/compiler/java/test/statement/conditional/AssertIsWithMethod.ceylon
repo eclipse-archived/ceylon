@@ -25,6 +25,6 @@ class AssertIsWithMethod() {
     shared void m() {
         assert (is FooSub y = give());
         y.foo();
-        assert (is Nothing y2 = give());
+        assert (is Null y2 = give());
     }
 }

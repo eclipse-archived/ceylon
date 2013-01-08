@@ -18,37 +18,37 @@
  * MA  02110-1301, USA.
  */
 @nomodel
-class MethodWhileIsNothing() {
-    Integer owt(Integer|Nothing n) {
+class MethodWhileIsNull() {
+    Integer owt(Integer|Null n) {
         return 0;
     }
-    Integer nowt(Nothing n) {
+    Integer nowt(Null n) {
         return 0;
     }
 
-    Integer m1(Integer|Nothing x) {
+    Integer m1(Integer|Null x) {
         while (is Integer x) {
            return x; 
         }
         return owt(x);
     }
         
-    Integer m2(Integer|Nothing x) {
+    Integer m2(Integer|Null x) {
         while (is Integer y=x) {
            return y;
         }
         return owt(x);
     }
         
-    Integer m3(Integer|Nothing x) {
-        while (is Nothing x) {
+    Integer m3(Integer|Null x) {
+        while (is Null x) {
             return nowt(x);
         }
         return owt(x);
     }
 
-    Integer m4(Integer|Nothing x) {
-        while (is Nothing y=x) {
+    Integer m4(Integer|Null x) {
+        while (is Null y=x) {
             return nowt(y);
         }
         return owt(x);

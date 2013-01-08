@@ -20,6 +20,6 @@
 @nomodel
 class AssertIsNothing() {
     shared void m(Object? x) {
-        assert (is Nothing x);
+        assert (is Null x);
     }
 }

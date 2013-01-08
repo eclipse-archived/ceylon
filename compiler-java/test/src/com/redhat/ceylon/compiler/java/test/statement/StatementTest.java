@@ -124,8 +124,8 @@ public class StatementTest extends CompilerTest {
     }
     
     @Test
-    public void testConMethodIfIsNotNothing(){
-        compareWithJavaSource("conditional/MethodIfIsNotNothing");
+    public void testConMethodIfIsNotNull(){
+        compareWithJavaSource("conditional/MethodIfIsNotNull");
     }
     
     @Test
@@ -158,13 +158,13 @@ public class StatementTest extends CompilerTest {
     }
     
     @Test
-    public void testConMethodIfIsNothing2(){
-        compareWithJavaSource("conditional/MethodIfIsNothing2");
+    public void testConMethodIfIsNull2(){
+        compareWithJavaSource("conditional/MethodIfIsNull2");
     }
     
     @Test
-    public void testConMethodIfIsNothing(){
-        compareWithJavaSource("conditional/MethodIfIsNothing");
+    public void testConMethodIfIsNull(){
+        compareWithJavaSource("conditional/MethodIfIsNull");
     }
 
     @Test
@@ -303,8 +303,8 @@ public class StatementTest extends CompilerTest {
     }
     
     @Test
-    public void testConMethodWhileIsNotNothing(){
-        compareWithJavaSource("loop/MethodWhileIsNotNothing");
+    public void testConMethodWhileIsNotNull(){
+        compareWithJavaSource("loop/MethodWhileIsNotNull");
     }
     
     @Test
@@ -337,13 +337,13 @@ public class StatementTest extends CompilerTest {
     }
     
     @Test
-    public void testConMethodWhileIsNothing2(){
-        compareWithJavaSource("loop/MethodWhileIsNothing2");
+    public void testConMethodWhileIsNull2(){
+        compareWithJavaSource("loop/MethodWhileIsNull2");
     }
     
     @Test
-    public void testConMethodWhileIsNothing(){
-        compareWithJavaSource("loop/MethodWhileIsNothing");
+    public void testConMethodWhileIsNull(){
+        compareWithJavaSource("loop/MethodWhileIsNull");
     }
 
     @Test
@@ -569,8 +569,8 @@ public class StatementTest extends CompilerTest {
     }
     
     @Test
-    public void testConAssertIsNotNothing(){
-        compareWithJavaSource("conditional/AssertIsNotNothing");
+    public void testConAssertIsNotNull(){
+        compareWithJavaSource("conditional/AssertIsNotNull");
     }
     
     @Test
@@ -603,13 +603,13 @@ public class StatementTest extends CompilerTest {
     }
     
     @Test
-    public void testConAssertIsNothing2(){
-        compareWithJavaSource("conditional/AssertIsNothing2");
+    public void testConAssertIsNull2(){
+        compareWithJavaSource("conditional/AssertIsNull2");
     }
     
     @Test
-    public void testConAssertIsNothing(){
-        compareWithJavaSource("conditional/AssertIsNothing");
+    public void testConAssertIsNull(){
+        compareWithJavaSource("conditional/AssertIsNull");
     }
 
     @Test

@@ -26,7 +26,7 @@ class MethodIfIsWithMethod() {
         if (is FooSub y = give()) {
             y.foo();
         }
-        if (is Nothing y = give()) {
+        if (is Null y = give()) {
         }
     }
 }

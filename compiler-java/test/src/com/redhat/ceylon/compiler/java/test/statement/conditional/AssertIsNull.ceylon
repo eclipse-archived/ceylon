@@ -18,31 +18,31 @@
  * MA  02110-1301, USA.
  */
 @nomodel
-class AssertIsNothing() {
-    Integer owt(Integer|Nothing n) {
+class AssertIsNull() {
+    Integer owt(Integer|Null n) {
         return 0;
     }
-    Integer nowt(Nothing n) {
+    Integer nowt(Null n) {
         return 0;
     }
 
-    Integer m1(Integer|Nothing x) {
+    Integer m1(Integer|Null x) {
         assert (is Integer x);
         return x;
     }
         
-    Integer m2(Integer|Nothing x) {
+    Integer m2(Integer|Null x) {
         assert (is Integer y=x);
         return y;  
     }
         
-    Integer m3(Integer|Nothing x) {
-        assert (is Nothing x);
+    Integer m3(Integer|Null x) {
+        assert (is Null x);
         return nowt(x);
     }
 
-    Integer m4(Integer|Nothing x) {
-        assert (is Nothing y=x);
+    Integer m4(Integer|Null x) {
+        assert (is Null y=x);
         return nowt(y);
     }
 }

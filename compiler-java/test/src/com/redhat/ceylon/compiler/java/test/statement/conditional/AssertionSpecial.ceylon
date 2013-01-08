@@ -25,7 +25,7 @@ void assertionSpecial() {
     String? v2 = "X";
     assert(exists a2 = v2);
     print(a2.size);
-    Integer[] v3 = {1,2,3};
+    Integer[] v3 = [1,2,3];
     assert(nonempty a3 = v3);
     print(a3.size);
     assert(nonempty v3);

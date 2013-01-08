@@ -19,5 +19,5 @@
  */
 @nomodel
 Callable<Integer,[Integer]> returnAnonFunction() {
-    return (Integer i) i;
+    return (Integer i) => i;
 }

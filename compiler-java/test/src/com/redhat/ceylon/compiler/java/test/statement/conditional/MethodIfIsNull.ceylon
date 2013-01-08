@@ -18,15 +18,15 @@
  * MA  02110-1301, USA.
  */
 @nomodel
-class MethodIfIsNothing() {
-    Integer owt(Integer|Nothing n) {
+class MethodIfIsNull() {
+    Integer owt(Integer|Null n) {
         return 0;
     }
-    Integer nowt(Nothing n) {
+    Integer nowt(Null n) {
         return 0;
     }
 
-    Integer m1(Integer|Nothing x) {
+    Integer m1(Integer|Null x) {
         if (is Integer x) {
            return x; 
         } else {
@@ -34,7 +34,7 @@ class MethodIfIsNothing() {
         }
     }
         
-    Integer m2(Integer|Nothing x) {
+    Integer m2(Integer|Null x) {
         if (is Integer y=x) {
            return y;
         } else {
@@ -42,16 +42,16 @@ class MethodIfIsNothing() {
         }
     }
         
-    Integer m3(Integer|Nothing x) {
-        if (is Nothing x) {
+    Integer m3(Integer|Null x) {
+        if (is Null x) {
             return nowt(x);
         } else {
             return owt(x);
         }
     }
 
-    Integer m4(Integer|Nothing x) {
-        if (is Nothing y=x) {
+    Integer m4(Integer|Null x) {
+        if (is Null y=x) {
             return nowt(y);
         } else {
             return owt(x);
