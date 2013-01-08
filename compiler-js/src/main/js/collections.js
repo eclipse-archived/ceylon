@@ -9,7 +9,7 @@ function getBottom(){}//IGNORE
 function String$(x,l){}//IGNORE
 function TypeCategory(a,b){}//IGNORE
 function ArraySequence(x){}//IGNORE
-var exports,Container,$finished,Cloneable,smaller,larger,Object$,IdentifiableObject;//IGNORE
+var exports,Container,$finished,Cloneable,smaller,larger,Object$,Basic;//IGNORE
 var Iterable,Iterator;//IGNORE
 
 function List(wat) {
@@ -178,7 +178,7 @@ function emptyIterator(){
 }
 function $init$emptyIterator(){
     if (emptyIterator.$$===undefined){
-        initTypeProto(emptyIterator,'ceylon.language::emptyIterator',IdentifiableObject,$init$Iterator());
+        initTypeProto(emptyIterator,'ceylon.language::emptyIterator',Basic,$init$Iterator());
     }
     return emptyIterator;
 }
@@ -197,11 +197,11 @@ var getEmptyIterator=function(){
 
 function Comprehension(makeNextFunc, compr) {
     if (compr===undefined) {compr = new Comprehension.$$;}
-    IdentifiableObject(compr);
+    Basic(compr);
     compr.makeNextFunc = makeNextFunc;
     return compr;
 }
-initTypeProto(Comprehension, 'ceylon.language::Comprehension', IdentifiableObject, Iterable);
+initTypeProto(Comprehension, 'ceylon.language::Comprehension', Basic, Iterable);
 var Comprehension$proto = Comprehension.$$.prototype;
 Comprehension$proto.getIterator = function() {
     return ComprehensionIterator(this.makeNextFunc());
@@ -210,9 +210,9 @@ exports.Comprehension=Comprehension;
 
 function ComprehensionIterator(nextFunc, it) {
     if (it===undefined) {it = new ComprehensionIterator.$$;}
-    IdentifiableObject(it);
+    Basic(it);
     it.next = nextFunc;
     return it;
 }
 initTypeProto(ComprehensionIterator, 'ceylon.language::ComprehensionIterator',
-        IdentifiableObject, $init$Iterator());
+        Basic, $init$Iterator());

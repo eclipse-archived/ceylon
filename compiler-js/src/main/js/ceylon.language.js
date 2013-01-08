@@ -56,13 +56,13 @@ function initExistingType(type, cons, typeName) {
 }
 function initExistingTypeProto(type, cons, typeName) {
     var args = [].slice.call(arguments, 0);
-    args.push(IdentifiableObject);
+    args.push(Basic);
     initExistingType.apply(this, args);
     var proto = cons.prototype;
     if ((proto !== undefined) && (proto.getHash === undefined)) {
     	var origToString = proto.toString;
         try {
-            inheritProto(type, IdentifiableObject);
+            inheritProto(type, Basic);
             proto.toString = origToString;
         } catch (exc) {
             // browser probably prevented access to the prototype
@@ -92,14 +92,14 @@ exports.inheritProto=inheritProto;
 exports.inheritProtoI=inheritProtoI;
 exports.reify=reify;
 
-function Void(wat) {
+function Anything(wat) {
     return wat;
 }
-initType(Void, 'ceylon.language::Void');
+initType(Anything, 'ceylon.language::Anything');
 function Nothing(wat) {
     return null;
 }
-initType(Nothing, 'ceylon.language::Nothing', Void);
+initType(Nothing, 'ceylon.language::Nothing', Anything);
 function Bottom(wat) {
     throw "Bottom";
 }
@@ -108,17 +108,17 @@ initType(Bottom, 'ceylon.language::Bottom');
 function Object$(wat) {
     return wat;
 }
-initTypeProto(Object$, 'ceylon.language::Object', Void);
+initTypeProto(Object$, 'ceylon.language::Object', Anything);
 var Object$proto = Object$.$$.prototype;
 Object$proto.getString = function() { return String$(className(this) + "@" + this.getHash()); }
 //Object$proto.getString=function() { String$(Object.prototype.toString.apply(this)) };
 Object$proto.toString=function() { return this.getString().valueOf(); }
 
-var identifiableObjectID=1;
+var BasicID=1;
 function $identityHash(x) {
-    var hash = x.identifiableObjectID;
+    var hash = x.BasicID;
     return (hash !== undefined)
-            ? hash : (x.identifiableObjectID = identifiableObjectID++);
+            ? hash : (x.BasicID = BasicID++);
 }
 
 function Identifiable(obj) {}
@@ -129,10 +129,10 @@ Identifiable$proto.equals = function(that) {
 }
 Identifiable$proto.getHash = function() { return $identityHash(this); }
 
-function IdentifiableObject(obj) {
+function Basic(obj) {
     return obj;
 }
-initTypeProto(IdentifiableObject, 'ceylon.language::IdentifiableObject', Object$, Identifiable);
+initTypeProto(Basic, 'ceylon.language::Basic', Object$, Identifiable);
 
 //INTERFACES
 //#include callable.js
@@ -225,18 +225,18 @@ function getFalse() {return false}
 var $true = true;
 var $false = false;
 function Finished() {}
-initTypeProto(Finished, 'ceylon.language::Finished', IdentifiableObject);
+initTypeProto(Finished, 'ceylon.language::Finished', Basic);
 var $finished = new Finished.$$;
 $finished.string = String$("exhausted", 9);
 $finished.getString = function() { return this.string; }
-function getExhausted() { return $finished; }
+function getFinished() { return $finished; }
 
 function Comparison(name) {
     var that = new Comparison.$$;
     that.name = String$(name);
     return that;
 }
-initTypeProto(Comparison, 'ceylon.language::Comparison', IdentifiableObject);
+initTypeProto(Comparison, 'ceylon.language::Comparison', Basic);
 var Comparison$proto = Comparison.$$.prototype;
 Comparison$proto.getString = function() { return this.name; }
 
@@ -401,7 +401,7 @@ function RangeIterator(range) {
     that.next = (range.last>=range.first) ? RangeIterator$forwardNext : RangeIterator$backwardNext;
     return that;
 }
-initTypeProto(RangeIterator, 'ceylon.language::RangeIterator', IdentifiableObject, Iterator);
+initTypeProto(RangeIterator, 'ceylon.language::RangeIterator', Basic, Iterator);
 RangeIterator$forwardNext = function() {
     var rval = this.current;
     if (rval === $finished) {
@@ -431,9 +431,9 @@ RangeIterator$backwardNext = function() {
 
 exports.Identifiable=Identifiable;
 exports.identityHash=$identityHash;
-exports.IdentifiableObject=IdentifiableObject;
+exports.Basic=Basic;
 exports.Object=Object$;
-exports.Void=Void;
+exports.Anything=Anything;
 exports.Nothing=Nothing;
 exports.Bottom=Bottom;
 exports.Boolean=Boolean$;
@@ -442,7 +442,7 @@ exports.getNull=getNull;
 exports.getTrue=getTrue;
 exports.getFalse=getFalse;
 exports.Finished=Finished;
-exports.getExhausted=getExhausted;
+exports.getFinished=getFinished;
 exports.Range=Range;
     });
 }(typeof define==='function' && define.amd ? 

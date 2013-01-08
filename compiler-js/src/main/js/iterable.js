@@ -1,7 +1,7 @@
 function initTypeProtoI(a, b, c){} //IGNORE
 function initTypeProto(a,b,c,d){}//IGNORE
 function initType(a,b){}//IGNORE
-function IdentifiableObject(x){}//IGNORE
+function Basic(x){}//IGNORE
 function ArraySequence(x){}//IGNORE
 function Comprehension(x){}//IGNORE
 function Exception(x){}//IGNORE
@@ -118,7 +118,7 @@ Iterable$proto.$every = function(/*Callable<Boolean,Element>*/selecting) {
 Iterable$proto.skipping = function(skip) {
     function skip$iter(iter,skip){
         var $cmp$=new skip$iter.$$;
-        IdentifiableObject($cmp$);
+        Basic($cmp$);
         $cmp$.iter=iter;
         $cmp$.skip=skip;
         $cmp$.getIterator=function(){
@@ -130,7 +130,7 @@ Iterable$proto.skipping = function(skip) {
         };
         return $cmp$;
     }
-    initTypeProto(skip$iter, 'ceylon.language::SkipIterable', IdentifiableObject, Iterable);
+    initTypeProto(skip$iter, 'ceylon.language::SkipIterable', Basic, Iterable);
     return skip$iter(this,skip);
 }
 Iterable$proto.taking = function(take) {
@@ -230,13 +230,13 @@ exports.Iterable=Iterable;
 
 function ChainedIterable(first, second, chained) {
     if (chained===undefined) {chained = new ChainedIterable.$$;}
-    IdentifiableObject(chained);
+    Basic(chained);
     chained.first = first;
     chained.second = second;
     return chained;
 }
 initTypeProto(ChainedIterable, "ceylon.language::ChainedIterable",
-        IdentifiableObject, Iterable);
+        Basic, Iterable);
 var ChainedIterable$proto = ChainedIterable.$$.prototype;
 ChainedIterable$proto.getIterator = function() {
     return ChainedIterator(this.first, this.second);

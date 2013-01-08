@@ -9,7 +9,7 @@ function getBottom(){}//IGNORE
 function String$(x,l){}//IGNORE
 function TypeCategory(a,b){}//IGNORE
 function ArraySequence(x){}//IGNORE
-var exports,Container,$finished,Cloneable,smaller,larger,Object$,IdentifiableObject;//IGNORE
+var exports,Container,$finished,Cloneable,smaller,larger,Object$,Basic;//IGNORE
 var Iterable,Iterator;//IGNORE
 
 function Map(wat) {
@@ -52,7 +52,7 @@ function MapValues(map) {
     val.map = map;
     return val;
 }
-initTypeProto(MapValues, 'ceylon.language::MapValues', IdentifiableObject, Collection);
+initTypeProto(MapValues, 'ceylon.language::MapValues', Basic, Collection);
 var MapValues$proto = MapValues.$$.prototype;
 MapValues$proto.getSize = function() { return this.map.getSize(); }
 MapValues$proto.getEmpty = function() { return this.map.getEmpty(); }
@@ -63,7 +63,7 @@ function MapValuesIterator(map) {
     iter.it = map.getIterator();
     return iter;
 }
-initTypeProto(MapValuesIterator, 'ceylon.language::MapValuesIterator', IdentifiableObject, Iterator);
+initTypeProto(MapValuesIterator, 'ceylon.language::MapValuesIterator', Basic, Iterator);
 MapValuesIterator.$$.prototype.next = function() {
     var entry = this.it.next();
     return (entry!==$finished) ? entry.getItem() : $finished;
@@ -75,7 +75,7 @@ function KeySet(map) {
     set.map = map;
     return set;
 }
-initTypeProto(KeySet, 'ceylon.language::KeySet', IdentifiableObject, Set);
+initTypeProto(KeySet, 'ceylon.language::KeySet', Basic, Set);
 var KeySet$proto = KeySet.$$.prototype;
 KeySet$proto.getSize = function() { return this.map.getSize(); }
 KeySet$proto.getEmpty = function() { return this.map.getEmpty(); }
@@ -87,7 +87,7 @@ function KeySetIterator(map) {
     iter.it = map.getIterator();
     return iter;
 }
-initTypeProto(KeySetIterator, 'ceylon.language::KeySetIterator', IdentifiableObject, Iterator);
+initTypeProto(KeySetIterator, 'ceylon.language::KeySetIterator', Basic, Iterator);
 KeySetIterator.$$.prototype.next = function() {
     var entry = this.it.next();
     return (entry!==$finished) ? entry.getKey() : $finished;
@@ -146,7 +146,7 @@ Map$proto.getInverse = function() {
 Map$proto.mapItems = function(mapping) {
     function EmptyMap(orig) {
         var em = new EmptyMap.$$;
-        IdentifiableObject(em);
+        Basic(em);
         em.orig=orig;
         em.clone=function() { return this; }
         em.getItem=function() { return null; }
@@ -160,27 +160,27 @@ Map$proto.mapItems = function(mapping) {
                 };
                 return $i;
             }
-            initTypeProto(miter, 'ceylon.language::MappedIterator', IdentifiableObject, Iterator);
+            initTypeProto(miter, 'ceylon.language::MappedIterator', Basic, Iterator);
             return miter(orig.getIterator());
         }
         em.getSize=function() { return this.orig.getSize(); }
         em.getString=function() { return String$('',0); }
         return em;
     }
-    initTypeProto(EmptyMap, 'ceylon.language::EmptyMap', IdentifiableObject, Map);
+    initTypeProto(EmptyMap, 'ceylon.language::EmptyMap', Basic, Map);
     return EmptyMap(this);
 }
 exports.Map=Map;
 
 function HashMap(entries, map) {
     if (map===undefined) { map = new HashMap.$$; }
-    IdentifiableObject(map);
+    Basic(map);
     map.map = {};
     map.size = 0;
     if (entries !== undefined) { map.putAll(entries); }
     return map;
 }
-initTypeProto(HashMap, 'ceylon.language::HashMap', IdentifiableObject, Map);
+initTypeProto(HashMap, 'ceylon.language::HashMap', Basic, Map);
 function copyHashMap(orig) {
     var map = HashMap();
     for (var hash in Object.keys(orig.map)) {
@@ -246,15 +246,15 @@ HashMap$proto.defines = function(key) { return this.item(key) !== null; }
 
 function HashSet(elems, set) {
     if (set===undefined) { set = new HashSet.$$; }
-    IdentifiableObject(set);
+    Basic(set);
     set.map = HashMap();
     if (elems !== undefined) { set.addAll(elems); }
     return set;
 }
-initTypeProto(HashSet, 'ceylon.language::HashSet', IdentifiableObject, Set);
+initTypeProto(HashSet, 'ceylon.language::HashSet', Basic, Set);
 function hashSetFromMap(map) {
     var set = new HashSet.$$;
-    IdentifiableObject(set);
+    Basic(set);
     set.map = this;
     return set;
 }
@@ -315,7 +315,7 @@ function HashMapIterator(map) {
     it.arrIndex = 0;
     return it;
 }
-initTypeProto(HashMapIterator, 'ceylon.language::HashMapIterator', IdentifiableObject, Iterator);
+initTypeProto(HashMapIterator, 'ceylon.language::HashMapIterator', Basic, Iterator);
 HashMapIterator.$$.prototype.next = function() {
     var hash = this.hashs[this.hashIndex];
     if (hash !== undefined) {
@@ -334,7 +334,7 @@ function HashSetIterator(map) {
     it.mapIt = map.getIterator();
     return it;
 }
-initTypeProto(HashSetIterator, 'ceylon.language::HashSetIterator', IdentifiableObject, Iterator);
+initTypeProto(HashSetIterator, 'ceylon.language::HashSetIterator', Basic, Iterator);
 HashSetIterator.$$.prototype.next = function() {
     var entry = this.mapIt.next();
     return (entry !== $finished) ? entry.getKey() : $finished;
@@ -342,11 +342,11 @@ HashSetIterator.$$.prototype.next = function() {
 
 function LazySet(elems, set) {
     if (set===undefined) {set = new LazySet.$$;}
-    IdentifiableObject(set);
+    Basic(set);
     set.elems = elems===undefined?empty:elems;
     return set;
 }
-initTypeProto(LazySet, 'ceylon.language::LazySet', IdentifiableObject, Set);
+initTypeProto(LazySet, 'ceylon.language::LazySet', Basic, Set);
 var LazySet$proto = LazySet.$$.prototype;
 LazySet$proto.getEmpty = function() { return this.elems.getEmpty(); }
 LazySet$proto.getSize = function() { return HashSet(this.elems).getSize(); }

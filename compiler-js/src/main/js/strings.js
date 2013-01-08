@@ -5,7 +5,7 @@ function Singleton(x){}//IGNORE
 function largest(a,b){}//IGNORE
 function smallest(a,b){}//IGNORE
 var Object$,List,Comparable,Ranged,Summable,Castable,Cloneable,smaller,larger,equal;//IGNORE
-var empty,$finished,IdentifiableObject,Iterator,exports;//IGNORE
+var empty,$finished,Basic,Iterator,exports;//IGNORE
 
 function String$(value,size) {
     var that = new String(value);
@@ -474,7 +474,7 @@ function StringIterator(string) {
     that.index = 0;
     return that;
 }
-initTypeProto(StringIterator, 'ceylon.language::StringIterator', IdentifiableObject, Iterator);
+initTypeProto(StringIterator, 'ceylon.language::StringIterator', Basic, Iterator);
 var StringIterator$proto = StringIterator.$$.prototype;
 StringIterator$proto.next = function() {
     if (this.index >= this.string.length) { return $finished }
@@ -610,7 +610,7 @@ function StringBuilder() {
     that.value = "";
     return that;
 }
-initTypeProto(StringBuilder, 'ceylon.language::StringBuilder', IdentifiableObject);
+initTypeProto(StringBuilder, 'ceylon.language::StringBuilder', Basic);
 var StringBuilder$proto = StringBuilder.$$.prototype;
 StringBuilder$proto.getString = function() { return String$(this.value); }
 StringBuilder$proto.append = function(s) {

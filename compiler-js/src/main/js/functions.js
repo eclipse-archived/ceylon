@@ -31,7 +31,7 @@ function isOfType(obj, type) {
             return isOfTypes(obj, type);
         }
         if (obj === null) {
-            return type.t===Nothing || type.t===Void;
+            return type.t===Nothing || type.t===Anything;
         }
         var typeName = type.t.$$.T$name;
         if (obj.getT$all && typeName in obj.getT$all()) {
@@ -50,7 +50,7 @@ function isOfType(obj, type) {
 function isOfTypes(obj, types) {
     if (obj===null) {
         for (var i=0; i < types.l.length; i++) {
-            if(types.l[i].t===Nothing || types.l[i].t===Void) return true;
+            if(types.l[i].t===Nothing || types.l[i].t===Anything) return true;
         }
         return false;
     }
@@ -147,7 +147,7 @@ function className(obj) {
 }
 
 function identityHash(obj) {
-    return obj.identifiableObjectID;
+    return obj.BasicID;
 }
 
 exports.exists=exists;
