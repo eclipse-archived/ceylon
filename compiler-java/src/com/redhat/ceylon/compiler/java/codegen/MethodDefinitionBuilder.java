@@ -200,7 +200,7 @@ public class MethodDefinitionBuilder {
                     && !Strategy.useBoxedVoid((Method)typedDeclaration)) {
                 return makeVoidType();
             } else {
-                return gen.makeJavaType(typedDeclaration, gen.typeFact().getVoidDeclaration().getType(), flags);
+                return gen.makeJavaType(typedDeclaration, gen.typeFact().getAnythingDeclaration().getType(), flags);
             }
         } else {
             return gen.makeJavaType(typedDeclaration, type, flags);

@@ -511,7 +511,7 @@ public class ClassTransformer extends AbstractTransformer {
                                 typedMember,
                                 PUBLIC | (((Setter)member).getGetter().isDefault() ? 0 : FINAL), 
                                 Collections.<TypeParameter>emptyList(), 
-                                typeFact().getVoidDeclaration().getType(), 
+                                typeFact().getAnythingDeclaration().getType(), 
                                 Naming.getSetterName(attr), 
                                 Collections.<Parameter>singletonList(((Setter)member).getParameter()),
                                 rawifyParametersAndResults);

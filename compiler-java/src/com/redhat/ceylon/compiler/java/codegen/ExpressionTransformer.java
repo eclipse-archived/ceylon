@@ -1850,7 +1850,7 @@ public class ExpressionTransformer extends AbstractTransformer {
         // Add a conditional, if we don't statically know that the source 
         // sequence is nonempty
         if (!srcSequenceType.isSubtypeOf(
-                typeFact().getSequenceType(typeFact().getVoidDeclaration().getType()).getType())) {
+                typeFact().getSequenceType(typeFact().getAnythingDeclaration().getType()).getType())) {
             returnArray = make().Conditional(
                     make().Binary(JCTree.NE, 
                             naming.makeSelect(newArrayName.makeIdent(), "length"),

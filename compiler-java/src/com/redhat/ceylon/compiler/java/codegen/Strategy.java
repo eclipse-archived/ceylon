@@ -223,7 +223,7 @@ class Strategy {
     /** 
      * Determines whether a {@code void} Ceylon method should be declared to 
      * return {@code void} or {@code java.lang.Object} (the erasure of 
-     * {@code ceylon.language.Void}) in Java. 
+     * {@code ceylon.language.Anything}) in Java. 
      * If the method can be refined, 
      * (but was not itself refined from a Java {@code void} method), or is 
      * {@code actual} then {@code java.lang.Object} should be used.
@@ -231,7 +231,7 @@ class Strategy {
     static boolean useBoxedVoid(Method m) {
         return m.isMember() &&
             (m.isDefault() || m.isFormal() || m.isActual()) &&
-            m.getUnit().getVoidDeclaration().equals(m.getType().getDeclaration()) &&
+            m.getUnit().getAnythingDeclaration().equals(m.getType().getDeclaration()) &&
             Decl.isCeylon((TypeDeclaration)m.getRefinedDeclaration().getContainer());
     }
     

@@ -165,7 +165,7 @@ public class Symtab {
     public final Type autoCloseableType;
     public final Type trustMeType;
 
-    public  Type ceylonVoidType;
+    public  Type ceylonAnythingType;
     public  Type ceylonObjectType;
     public  Type ceylonIdentifiableType;
     public  Type ceylonFloatType;
@@ -782,7 +782,7 @@ public class Symtab {
     }
 
     public void loadCeylonSymbols() {
-        ceylonVoidType = enterClass("ceylon.language.Void");
+        ceylonAnythingType = enterClass("ceylon.language.Anything");
         ceylonObjectType = enterClass("ceylon.language.Object");
         ceylonIdentifiableType = enterClass("ceylon.language.Identifiable");
         ceylonFloatType = enterClass("ceylon.language.Float");

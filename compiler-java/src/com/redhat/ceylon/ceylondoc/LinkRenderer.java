@@ -374,7 +374,7 @@ public class LinkRenderer {
     private boolean isOptionalTypeAbbreviation(UnionType unionType) {
         return unionType.getCaseTypes().size() == 2 &&
                 com.redhat.ceylon.compiler.typechecker.model.Util.isElementOfUnion(
-                        unionType, unionType.getUnit().getNothingDeclaration());
+                        unionType, unionType.getUnit().getNullDeclaration());
     }
 
     private boolean isInCurrentModule(Object obj) {
@@ -408,7 +408,7 @@ public class LinkRenderer {
      */
     private ProducedType getNonOptionalTypeForDisplay(UnionType unionType) {
         ProducedType nonOptionalType = null;
-        Class nothingDeclaration = unionType.getUnit().getNothingDeclaration();
+        Class nothingDeclaration = unionType.getUnit().getNullDeclaration();
         for (ProducedType ct : unionType.getCaseTypes()) {
             TypeDeclaration ctd = ct.getDeclaration();
             if (ctd instanceof Class && ctd.equals(nothingDeclaration)) {

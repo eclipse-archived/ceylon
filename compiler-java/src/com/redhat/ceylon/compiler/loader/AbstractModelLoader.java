@@ -67,7 +67,6 @@ import com.redhat.ceylon.compiler.loader.model.LazyValue;
 import com.redhat.ceylon.compiler.typechecker.analyzer.DeclarationVisitor;
 import com.redhat.ceylon.compiler.typechecker.analyzer.ModuleManager;
 import com.redhat.ceylon.compiler.typechecker.model.Annotation;
-import com.redhat.ceylon.compiler.typechecker.model.BottomType;
 import com.redhat.ceylon.compiler.typechecker.model.Class;
 import com.redhat.ceylon.compiler.typechecker.model.ClassOrInterface;
 import com.redhat.ceylon.compiler.typechecker.model.Declaration;
@@ -79,6 +78,7 @@ import com.redhat.ceylon.compiler.typechecker.model.MethodOrValue;
 import com.redhat.ceylon.compiler.typechecker.model.Module;
 import com.redhat.ceylon.compiler.typechecker.model.ModuleImport;
 import com.redhat.ceylon.compiler.typechecker.model.Modules;
+import com.redhat.ceylon.compiler.typechecker.model.NothingType;
 import com.redhat.ceylon.compiler.typechecker.model.Package;
 import com.redhat.ceylon.compiler.typechecker.model.Parameter;
 import com.redhat.ceylon.compiler.typechecker.model.ParameterList;
@@ -130,7 +130,7 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
 
     private static final TypeMirror OBJECT_TYPE = simpleObjectType("java.lang.Object");
     private static final TypeMirror CEYLON_OBJECT_TYPE = simpleObjectType("ceylon.language.Object");
-    private static final TypeMirror CEYLON_IDENTIFIABLE_OBJECT_TYPE = simpleObjectType("ceylon.language.IdentifiableObject");
+    private static final TypeMirror CEYLON_BASIC_TYPE = simpleObjectType("ceylon.language.Basic");
     private static final TypeMirror CEYLON_EXCEPTION_TYPE = simpleObjectType("ceylon.language.Exception");;
     
     private static final TypeMirror STRING_TYPE = simpleObjectType("java.lang.String");
@@ -320,7 +320,7 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
     private Declaration convertToDeclaration(TypeMirror type, Scope scope, DeclarationType declarationType) {
         String typeName;
         switch(type.getKind()){
-        case VOID:    typeName = "ceylon.language.Void"; break;
+        case VOID:    typeName = "ceylon.language.Anything"; break;
         case BOOLEAN: typeName = "java.lang.Boolean"; break;
         case BYTE:    typeName = "java.lang.Byte"; break;
         case CHAR:    typeName = "java.lang.Character"; break;
@@ -339,7 +339,7 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
         case WILDCARD:
             // FIXME: we shouldn't even get there, because if something contains a wildcard (Foo<?>) we erase it to
             // IdentifiableObject, so this shouldn't be reachable.
-            typeName = "ceylon.language.Bottom";
+            typeName = "ceylon.language.Nothing";
             break;
         default:
             throw new RuntimeException("Failed to handle type "+type);
@@ -623,8 +623,8 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
         typeName = typeName.trim();
         timer.startIgnore(TIMER_MODEL_LOADER_CATEGORY);
         try{
-            if ("ceylon.language.Bottom".equals(typeName)) {
-                return new BottomType(typeFactory);
+            if ("ceylon.language.Nothing".equals(typeName)) {
+                return new NothingType(typeFactory);
             } else if ("java.lang.Throwable".equals(typeName)) {
                 return convertToDeclaration("ceylon.language.Exception", declarationType);
             }
@@ -1342,7 +1342,7 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
             ProducedType type = obtainType(methodMirror.getReturnType(), methodMirror, method, VarianceLocation.COVARIANT);
             method.setType(type);
             method.setUncheckedNullType(!isCeylon && !methodMirror.getReturnType().isPrimitive());
-            method.setDeclaredVoid(methodMirror.isDeclaredVoid());
+            method.setDeclaredAnything(methodMirror.isDeclaredVoid());
             type.setRaw(methodMirror.getReturnType().isRaw());
         }catch(TypeParserException x){
             logError("Invalid type signature for method return type of "+klass.getQualifiedNameString()+"."+methodMirror.getName()+": "+x.getMessage());
@@ -1589,13 +1589,13 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
         }else{
             String className = classMirror.getQualifiedName();
             String superClassName = superClass == null ? null : superClass.getQualifiedName();
-            if(className.equals("ceylon.language.Void")){
-                // ceylon.language.Void has no super type
+            if(className.equals("ceylon.language.Anything")){
+                // ceylon.language.Anything has no super type
                 extendedType = null;
             }else if(className.equals("java.lang.Object")){
                 // we pretend its superclass is something else, but note that in theory we shouldn't 
                 // be seeing j.l.Object at all due to unerasure
-                extendedType = getType(CEYLON_IDENTIFIABLE_OBJECT_TYPE, klass, VarianceLocation.INVARIANT);
+                extendedType = getType(CEYLON_BASIC_TYPE, klass, VarianceLocation.INVARIANT);
             }else{
                 // read it from annotation first
                 String annotationSuperClassName = getAnnotationStringValue(classMirror, CEYLON_CLASS_ANNOTATION, "extendsType");
@@ -1610,7 +1610,7 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
                     // read it from the Java super type
                     // now deal with type erasure, avoid having Object as superclass
                     if("java.lang.Object".equals(superClassName)){
-                        extendedType = getType(CEYLON_IDENTIFIABLE_OBJECT_TYPE, klass, VarianceLocation.INVARIANT);
+                        extendedType = getType(CEYLON_BASIC_TYPE, klass, VarianceLocation.INVARIANT);
                     }else{
                         extendedType = getType(superClass, klass, VarianceLocation.INVARIANT);
                     }
@@ -1780,7 +1780,7 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
             setParameters(method, meth, true /* toplevel methods are always Ceylon */, method);
             try{
                 method.setType(obtainType(meth.getReturnType(), meth, method, VarianceLocation.COVARIANT));
-                method.setDeclaredVoid(meth.isDeclaredVoid());
+                method.setDeclaredAnything(meth.isDeclaredVoid());
             }catch(TypeParserException x){
                 logError("Invalid type signature for toplevel method of "+method.getQualifiedNameString()+": "+x.getMessage());
                 throw x;
@@ -1907,7 +1907,7 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
             else // must be a method
                 scope.getMembers().add(param);
             param.setName((String)typeParam.getValue("value"));
-            param.setExtendedType(typeFactory.getVoidDeclaration().getType());
+            param.setExtendedType(typeFactory.getAnythingDeclaration().getType());
             
             String varianceName = (String) typeParam.getValue("variance");
             if(varianceName != null){
@@ -1972,7 +1972,7 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
             else // must be a method
                 scope.getMembers().add(param);
             param.setName(typeParam.getName());
-            param.setExtendedType(typeFactory.getVoidDeclaration().getType());
+            param.setExtendedType(typeFactory.getAnythingDeclaration().getType());
             params.add(param);
         }
         // Now all type params have been set, we can resolve the references parts
@@ -2239,9 +2239,9 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
         // we're bootstrapping ceylon.language so we need to return the ProducedTypes straight from the model we're compiling
         Module languageModule = modules.getLanguageModule();
         String simpleName = name.substring(name.lastIndexOf(".")+1);
-        // Bottom is a special case with no real decl
-        if(name.equals("ceylon.language.Bottom"))
-            return typeFactory.getBottomDeclaration().getType();
+        // Nothing is a special case with no real decl
+        if(name.equals("ceylon.language.Nothing"))
+            return typeFactory.getNothingDeclaration().getType();
         for(Package pkg : languageModule.getPackages()){
             Declaration member = pkg.getDirectMember(simpleName, null, false);
             // if we get a value, we want its type

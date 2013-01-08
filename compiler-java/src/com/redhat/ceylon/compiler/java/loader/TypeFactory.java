@@ -99,7 +99,7 @@ public class TypeFactory extends Unit {
         }
         if (!typeArgs.get(1).isSubtypeOf(
                 getSequentialDeclaration().getProducedType(
-                        null, Collections.singletonList(getVoidDeclaration().getType())))) {
+                        null, Collections.singletonList(getAnythingDeclaration().getType())))) {
             throw new IllegalArgumentException("Callable's second argument should be sequential " + typeArgs.get(1));
         }
         return getCallableDeclaration().getProducedType(null, typeArgs);

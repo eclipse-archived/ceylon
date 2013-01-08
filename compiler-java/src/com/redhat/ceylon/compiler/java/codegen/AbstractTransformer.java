@@ -41,7 +41,6 @@ import com.redhat.ceylon.compiler.java.tools.CeylonLog;
 import com.redhat.ceylon.compiler.loader.AbstractModelLoader;
 import com.redhat.ceylon.compiler.loader.ModelLoader.DeclarationType;
 import com.redhat.ceylon.compiler.typechecker.model.Annotation;
-import com.redhat.ceylon.compiler.typechecker.model.BottomType;
 import com.redhat.ceylon.compiler.typechecker.model.Class;
 import com.redhat.ceylon.compiler.typechecker.model.ClassOrInterface;
 import com.redhat.ceylon.compiler.typechecker.model.Declaration;
@@ -52,6 +51,7 @@ import com.redhat.ceylon.compiler.typechecker.model.IntersectionType;
 import com.redhat.ceylon.compiler.typechecker.model.Method;
 import com.redhat.ceylon.compiler.typechecker.model.Module;
 import com.redhat.ceylon.compiler.typechecker.model.ModuleImport;
+import com.redhat.ceylon.compiler.typechecker.model.NothingType;
 import com.redhat.ceylon.compiler.typechecker.model.Package;
 import com.redhat.ceylon.compiler.typechecker.model.Parameter;
 import com.redhat.ceylon.compiler.typechecker.model.ProducedReference;
@@ -405,7 +405,7 @@ public abstract class AbstractTransformer implements Transformation {
     }
 
     boolean isNull(ProducedType type) {
-        return type.getSupertype(typeFact.getNullDeclaration().getTypeDeclaration()) != null;
+        return type.getSupertype(typeFact.getNullValueDeclaration().getTypeDeclaration()) != null;
     }
 
     public boolean isVoid(ProducedType type) {
@@ -753,10 +753,10 @@ public abstract class AbstractTransformer implements Transformation {
         // All the following types either are Object or erase to Object
         if (decl == typeFact.getObjectDeclaration()
                 || decl == typeFact.getIdentifiableDeclaration()
-                || decl == typeFact.getIdentifiableObjectDeclaration()
+                || decl == typeFact.getBasicDeclaration()
                 || decl == typeFact.getNothingDeclaration()
-                || decl == typeFact.getVoidDeclaration()
-                || decl instanceof BottomType) {
+                || decl == typeFact.getAnythingDeclaration()
+                || decl instanceof NothingType) {
             return true;
         }
         // Any Unions and Intersections erase to Object as well
@@ -787,7 +787,7 @@ public abstract class AbstractTransformer implements Transformation {
     
     boolean isCeylonBoolean(ProducedType type) {
         return type.isSubtypeOf(typeFact.getBooleanDeclaration().getType())
-                && !(type.getDeclaration() instanceof BottomType);
+                && !(type.getDeclaration() instanceof NothingType);
     }
     
     boolean isCeylonInteger(ProducedType type) {
@@ -1157,7 +1157,7 @@ public abstract class AbstractTransformer implements Transformation {
             } 
             JCExpression jta;
             
-            if (sameType(syms().ceylonVoidType, ta)) {
+            if (sameType(syms().ceylonAnythingType, ta)) {
                 // For the root type Void:
                 if ((flags & (JT_SATISFIES | JT_EXTENDS)) != 0) {
                     // - The Ceylon type Foo<Void> appearing in an extends or satisfies
@@ -1176,7 +1176,7 @@ public abstract class AbstractTransformer implements Transformation {
                         jta = make().Type(syms().objectType);
                     }
                 }
-            } else if (ta.getDeclaration() instanceof BottomType
+            } else if (ta.getDeclaration() instanceof NothingType
                     // if we're in a type argument, extends or satisfies already, union and intersection types should 
                     // use the same erasure rules as bottom: prefer wildcards
                     || ((flags & (__JT_TYPE_ARGUMENT | JT_EXTENDS | JT_SATISFIES)) != 0
@@ -1192,7 +1192,7 @@ public abstract class AbstractTransformer implements Transformation {
                     // - The Ceylon type Foo<Bottom> appearing in an extends or satisfies location results in the Java type
                     //   Foo<Object> (see https://github.com/ceylon/ceylon-compiler/issues/633 for why)
                     if((flags & (JT_SATISFIES | JT_EXTENDS)) != 0){
-                        if (ta.getDeclaration() instanceof BottomType) {
+                        if (ta.getDeclaration() instanceof NothingType) {
                             jta = make().Type(syms().objectType);
                         } else {
                             if (!tp.getSatisfiedTypes().isEmpty()) {
@@ -1202,7 +1202,7 @@ public abstract class AbstractTransformer implements Transformation {
                                 jta = make().Type(syms().objectType);
                             }
                         }
-                    }else if (ta.getDeclaration() instanceof BottomType){
+                    }else if (ta.getDeclaration() instanceof NothingType){
                         // - The Ceylon type Foo<Bottom> appearing anywhere else results in the Java type
                         // - Foo<?> always
                         jta = make().Wildcard(make().TypeBoundKind(BoundKind.UNBOUND), null);
@@ -1256,11 +1256,11 @@ public abstract class AbstractTransformer implements Transformation {
     private ProducedType getNonNullType(ProducedType pt) {
         // typeFact().getDefiniteType() intersects with Object, which isn't 
         // always right for working with the java type system.
-        if (typeFact().getVoidDeclaration().equals(pt.getDeclaration())) {
+        if (typeFact().getAnythingDeclaration().equals(pt.getDeclaration())) {
             pt = typeFact().getObjectDeclaration().getType();
         }
         else {
-            pt = pt.minus(typeFact().getNothingDeclaration());
+            pt = pt.minus(typeFact().getNullDeclaration());
         }
         return pt;
     }
@@ -1720,7 +1720,7 @@ public abstract class AbstractTransformer implements Transformation {
         JCExpression extendsValue = null;
         if (extendedType == null) {
             extendsValue = make().Literal("");
-        } else if (!extendedType.isExactly(typeFact.getIdentifiableObjectDeclaration().getType())){
+        } else if (!extendedType.isExactly(typeFact.getBasicDeclaration().getType())){
             extendsValue = make().Literal(serialiseTypeSignature(extendedType));
         }
         if (extendsValue != null) {
@@ -1955,7 +1955,7 @@ public abstract class AbstractTransformer implements Transformation {
     
     boolean isTypeParameter(ProducedType type) {
         if (typeFact().isOptionalType(type)) {
-            type = type.minus(typeFact().getNothingDeclaration());
+            type = type.minus(typeFact().getNullDeclaration());
         } 
         return type.getDeclaration() instanceof TypeParameter;
     }
@@ -2348,10 +2348,10 @@ public abstract class AbstractTransformer implements Transformation {
             } else if (type.isExactly(typeFact().getIdentifiableDeclaration().getType())){
                 // it's erased
                 return makeUtilInvocation("isIdentifiable", List.of(varExpr), null);
-            } else if (type.isExactly(typeFact().getIdentifiableObjectDeclaration().getType())){
+            } else if (type.isExactly(typeFact().getBasicDeclaration().getType())){
                 // it's erased
                 return makeUtilInvocation("isIdentifiableObject", List.of(varExpr), null);
-            } else if (type.getDeclaration() instanceof BottomType){
+            } else if (type.getDeclaration() instanceof NothingType){
                 // nothing is Bottom
                 return makeIgnoredEvalAndReturn(varExpr, makeBoolean(false));
             } else {
