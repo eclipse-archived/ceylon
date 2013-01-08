@@ -11,12 +11,16 @@ import java.io.PrintWriter;
 import java.nio.channels.FileChannel;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Map;
 
 import net.minidev.json.JSONObject;
+import net.minidev.json.JSONValue;
 
+import com.redhat.ceylon.cmr.ceylon.CeylonUtils;
 import com.redhat.ceylon.cmr.impl.JULLogger;
 import com.redhat.ceylon.cmr.impl.ShaSigner;
 import com.redhat.ceylon.compiler.Options;
+import com.redhat.ceylon.compiler.loader.JsModuleManagerFactory;
 import com.redhat.ceylon.compiler.typechecker.TypeChecker;
 import com.redhat.ceylon.compiler.typechecker.TypeCheckerBuilder;
 import com.redhat.ceylon.compiler.typechecker.context.PhasedUnit;
@@ -61,7 +65,7 @@ public class Stitcher {
         }
     }
 
-    private static void compileLanguageModule(PrintWriter writer) throws IOException {
+    private static void compileLanguageModule(PrintWriter writer, String clmod) throws IOException {
         File srcdir = new File("src/main/resources/source");
         srcdir.mkdirs();
         Options opts = Options.parse(new ArrayList<String>(Arrays.asList(
@@ -92,6 +96,10 @@ public class Stitcher {
                     }
                     //Compile all that stuff
                     TypeCheckerBuilder tcb = new TypeCheckerBuilder().addSrcDirectory(srcdir);
+                    tcb.setRepositoryManager(CeylonUtils.repoManager().systemRepo(opts.getSystemRepo())
+                            .userRepos(opts.getRepos()).outRepo(opts.getOutDir()).buildManager());
+                    tcb.moduleManagerFactory(new JsModuleManagerFactory(
+                            clmod == null ? null : (Map<String,Object>)JSONValue.parse(clmod)));
                     TypeChecker tc = tcb.getTypeChecker();
                     tc.process();
                     if (tc.getErrors() > 0) {
@@ -127,6 +135,7 @@ public class Stitcher {
         BufferedReader reader = new BufferedReader(new InputStreamReader(new FileInputStream(infile), "UTF-8"));
         try {
             String line = null;
+            String clModel = null;
             while ((line = reader.readLine()) != null) {
                 line = line.trim();
                 if (line.length() > 0) {
@@ -157,12 +166,14 @@ public class Stitcher {
                             pu.getCompilationUnit().visit(mmg);
                         }
                         writer.print("$$metamodel$$=");
-                        writer.print(JSONObject.toJSONString(mmg.getModel()));
+                        clModel = JSONObject.toJSONString(mmg.getModel());
+                        writer.print(clModel);
                         writer.println(";");
                         writer.println("exports.$$metamodel$$=$$metamodel$$;");
+                        writer.flush();
                     } else if (line.equals("//#COMPILED")) {
                         System.out.println("Compiling language module sources");
-                        compileLanguageModule(writer);
+                        compileLanguageModule(writer, clModel);
                     } else if (!line.endsWith("//IGNORE")) {
                         writer.println(line);
                     }
