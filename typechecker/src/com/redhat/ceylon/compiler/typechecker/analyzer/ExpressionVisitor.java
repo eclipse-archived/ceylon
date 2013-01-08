@@ -704,9 +704,12 @@ public class ExpressionVisitor extends Visitor {
         }
     }
 
-	static boolean isVoidMethodReference(Tree.Expression e) {
+	boolean isVoidMethodReference(Tree.Expression e) {
 		//TODO: correctly handle multiple parameter lists!
 		Term term = e.getTerm();
+		if (term.getTypeModel()==null || 
+				!term.getTypeModel().isExactly(unit.getAnythingDeclaration().getType()))
+			return false;
 		if (!(term instanceof Tree.InvocationExpression)) return false;
 		Tree.InvocationExpression ie = (Tree.InvocationExpression) term;
 		if (!(ie.getPrimary() instanceof Tree.MemberOrTypeExpression)) return false;
