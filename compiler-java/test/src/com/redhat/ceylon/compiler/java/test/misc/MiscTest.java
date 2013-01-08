@@ -23,6 +23,7 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashSet;
+import java.util.List;
 
 import javax.tools.JavaFileObject;
 
@@ -82,15 +83,17 @@ public class MiscTest extends CompilerTest {
         HashSet exceptions = new HashSet();
         for (String ex : new String[] {
                 // Native files
-                "Array", "Boolean", "true", "false", "Callable", "Character", "className", "Comparison",
+                "Array", "Boolean", "Callable", "Character", "className", "Comparison",
                 "Exception", "Float", "identityHash", "Integer", "language", "process",
-                "SequenceBuidler", "sort", "String", "StringBuilder",
+                "SequenceBuilder", "SequenceAppender", "sort", "String", "StringBuilder",
                 // Problem files
                 "combine", "Correspondence", "Iterable", "LazySet", "List", "Map",
                 "Range", "Sequence", "Singleton", "Tuple"
                 }) {
             exceptions.add(ex);
         }
+        String[] extras = new String[]{"array", "true", "false", "smaller", "larger", "equal", "smaller", "string"};
+        
         for(String pkg : ceylonPackages){
             File pkgDir = new File(ceylonSourcePath, pkg.replaceAll("\\.", "/"));
             File javaPkgDir = new File(javaSourcePath, pkg.replaceAll("\\.", "/"));
@@ -102,20 +105,16 @@ public class MiscTest extends CompilerTest {
                         if (!exceptions.contains(baseName)) {
                             sourceFiles.add(src);
                         } else {
-                            if (Character.isLowerCase(baseName.charAt(0))) {
-                                sourceFiles.add(new File(javaPkgDir, baseName + "_.java"));
-                            } else {
-                                sourceFiles.add(new File(javaPkgDir, baseName + ".java"));
-                                File impl = new File(javaPkgDir, baseName + "$impl.java");
-                                if (impl.exists()) {
-                                    sourceFiles.add(impl);
-                                }
-                            }
+                            addJavaSourceFile(baseName, sourceFiles, javaPkgDir);
                         }
                     }
                 }
             }
         }
+        // add extra files that are in Java
+        File javaPkgDir = new File(javaSourcePath, "ceylon/language");
+        for(String extra : extras)
+            addJavaSourceFile(extra, sourceFiles, javaPkgDir);
         
         String[] javaPackages = {"ceylon.language.descriptor", "com/redhat/ceylon/compiler/java", "com/redhat/ceylon/compiler/java/language", "com/redhat/ceylon/compiler/java/metadata"};
         for(String pkg : javaPackages){
@@ -146,6 +145,18 @@ public class MiscTest extends CompilerTest {
                 null, compilationUnits1);
         Boolean result = task.call();
         Assert.assertEquals("Compilation failed", Boolean.TRUE, result);
+    }
+
+    private void addJavaSourceFile(String baseName, List<File> sourceFiles, File javaPkgDir) {
+        if (Character.isLowerCase(baseName.charAt(0))) {
+            sourceFiles.add(new File(javaPkgDir, baseName + "_.java"));
+        } else {
+            sourceFiles.add(new File(javaPkgDir, baseName + ".java"));
+            File impl = new File(javaPkgDir, baseName + "$impl.java");
+            if (impl.exists()) {
+                sourceFiles.add(impl);
+            }
+        }
     }
 
     @Test
