@@ -2339,8 +2339,8 @@ public abstract class AbstractTransformer implements Transformation {
             if (isVoid(type)){
                 // everything is Void, it's the root of the hierarchy
                 return makeIgnoredEvalAndReturn(varExpr, makeBoolean(true));
-            } else if (type.isExactly(typeFact().getNothingDeclaration().getType())){
-                // is Nothing => is null
+            } else if (type.isExactly(typeFact().getNullDeclaration().getType())){
+                // is Null => is null
                 return make().Binary(JCTree.EQ, varExpr, makeNull());
             } else if (type.isExactly(typeFact().getObjectDeclaration().getType())){
                 // is Object => is not null
