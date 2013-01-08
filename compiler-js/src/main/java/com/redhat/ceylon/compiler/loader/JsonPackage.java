@@ -43,7 +43,7 @@ public class JsonPackage extends com.redhat.ceylon.compiler.typechecker.model.Pa
     private final Unit unit = new Unit();
     private final String pkgname;
     private boolean loaded = false;
-    private NothingType bottom;
+    private NothingType nothing;
 
     static {
         idobj.put(MetamodelGenerator.KEY_NAME, "Basic");
@@ -74,9 +74,9 @@ public class JsonPackage extends com.redhat.ceylon.compiler.typechecker.model.Pa
             //Mark the language module as immediately available to bypass certain validations
             getModule().setAvailable(true);
             //Ugly ass hack - add Nothing to the model
-            bottom = new NothingType(unit);
-            bottom.setContainer(this);
-            bottom.setUnit(unit);
+            nothing = new NothingType(unit);
+            nothing.setContainer(this);
+            nothing.setUnit(unit);
         }
         setShared(model.get("$pkg-shared") != null);
         for (Map.Entry<String,Object> e : model.entrySet()) {
@@ -677,7 +677,7 @@ public class JsonPackage extends com.redhat.ceylon.compiler.typechecker.model.Pa
         Map<String,Object> map = (Map<String,Object>)model.get(name);
         if (map == null) {
             if ("Nothing".equals(name) && "ceylon.language".equals(pkgname)) {
-                return bottom;
+                return nothing;
             }
             throw new IllegalStateException("Cannot find " + name + " in " + model.keySet());
         }
