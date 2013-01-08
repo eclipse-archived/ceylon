@@ -8,7 +8,7 @@ import com.redhat.ceylon.compiler.java.metadata.Name;
 import com.redhat.ceylon.compiler.java.metadata.TypeInfo;
 
 @Ceylon(major = 3)
-@Class
+@Class(extendsType = "ceylon.language::Basic")
 public class Exception extends RuntimeException {
 
 	private static final long serialVersionUID = -1790691559137471641L;
