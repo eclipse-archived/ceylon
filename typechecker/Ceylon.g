@@ -1069,8 +1069,8 @@ annotatedAssertionStart
 //expressions
 declarationStart
     : VALUE_MODIFIER
-    | FUNCTION_MODIFIER LIDENTIFIER //to disambiguate anon functions
-    | VOID_MODIFIER LIDENTIFIER //to disambiguate anon functions
+    | FUNCTION_MODIFIER (LIDENTIFIER|UIDENTIFIER) //to disambiguate anon functions
+    | VOID_MODIFIER (LIDENTIFIER|UIDENTIFIER) //to disambiguate anon functions
     | ASSIGN
     | INTERFACE_DEFINITION
     | CLASS_DEFINITION
