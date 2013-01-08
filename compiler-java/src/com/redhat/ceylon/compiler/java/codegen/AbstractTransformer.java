@@ -400,11 +400,11 @@ public abstract class AbstractTransformer implements Transformation {
         return typeFact().getNullDeclaration().getType().isSubtypeOf(type);
     }
     
-    boolean isNothing(ProducedType type) {
-        return type.getSupertype(typeFact.getNothingDeclaration()) != null;
+    boolean isNull(ProducedType type) {
+        return type.getSupertype(typeFact.getNullDeclaration()) != null;
     }
 
-    boolean isNull(ProducedType type) {
+    boolean isNullValue(ProducedType type) {
         return type.getSupertype(typeFact.getNullValueDeclaration().getTypeDeclaration()) != null;
     }
 
@@ -2134,7 +2134,7 @@ public abstract class AbstractTransformer implements Transformation {
      */
     JCExpression makeSequence(java.util.List<Expression> list, ProducedType seqElemType) {
         ListBuffer<JCExpression> elems = new ListBuffer<JCExpression>();
-        if (list.size() != 1 || !isNothing(list.get(0).getTypeModel())) {
+        if (list.size() != 1 || !isNull(list.get(0).getTypeModel())) {
             for (Expression expr : list) {
                 elems.append(expressionGen().transformExpression(expr, BoxingStrategy.BOXED, seqElemType));
             }

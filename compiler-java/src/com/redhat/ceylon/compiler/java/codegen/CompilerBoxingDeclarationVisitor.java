@@ -34,8 +34,8 @@ public class CompilerBoxingDeclarationVisitor extends BoxingDeclarationVisitor {
     }
 
     @Override
-    protected boolean isNothing(ProducedType type) {
-        return transformer.isNothing(type);
+    protected boolean isNull(ProducedType type) {
+        return transformer.isNull(type);
     }
 
     @Override

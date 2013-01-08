@@ -255,11 +255,11 @@ public class ExpressionTransformer extends AbstractTransformer {
         if (expectedType != null
                 // don't add cast to an erased type 
                 && !willEraseToObject(expectedType)) {
-            // special case for returning Nothing expressions
-            if (isNothing(exprType)){
+            // special case for returning Null expressions
+            if (isNull(exprType)){
                 // don't add cast for null
-                if(!isNull(exprType)){
-                    // in some cases we may have an instance of Nothing, which is of type java.lang.Object, being
+                if(!isNullValue(exprType)){
+                    // in some cases we may have an instance of Null, which is of type java.lang.Object, being
                     // returned in a context where we expect a String? (aka ceylon.language.String) so even though
                     // the instance at hand will really be null, we need a up-cast to it
                     if(!willEraseToObject(expectedType)){

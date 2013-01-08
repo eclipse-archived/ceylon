@@ -51,7 +51,7 @@ import com.redhat.ceylon.compiler.typechecker.tree.Visitor;
 public abstract class BoxingDeclarationVisitor extends Visitor {
 
     protected abstract boolean isCeylonBasicType(ProducedType type);
-    protected abstract boolean isNothing(ProducedType type);
+    protected abstract boolean isNull(ProducedType type);
     protected abstract boolean isObject(ProducedType type);
     protected abstract boolean willEraseToObject(ProducedType type);
 
@@ -106,8 +106,8 @@ public abstract class BoxingDeclarationVisitor extends Visitor {
                 List<ProducedType> caseTypes = ut.getCaseTypes();
                 // special case for optional types
                 if(caseTypes.size() == 2
-                        && (isNothing(caseTypes.get(0))
-                                || isNothing(caseTypes.get(1))))
+                        && (isNull(caseTypes.get(0))
+                                || isNull(caseTypes.get(1))))
                     return false;
                 return true;
             }

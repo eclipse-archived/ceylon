@@ -1572,7 +1572,7 @@ public class StatementTransformer extends AbstractTransformer {
     }
 
     private ProducedType propagateOptionality(ProducedType type, ProducedType nonWideningType) {
-        if(!isNothing(type)){
+        if(!isNull(type)){
             if(isOptional(type)){
                 if(!isOptional(nonWideningType)){
                     return typeFact().getOptionalType(nonWideningType);
