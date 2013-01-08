@@ -63,6 +63,7 @@ import com.redhat.ceylon.compiler.typechecker.tree.UnexpectedError;
 import com.redhat.ceylon.compiler.typechecker.util.AssertionVisitor;
 import com.sun.tools.javac.code.Symbol;
 import com.sun.tools.javac.code.Symbol.ClassSymbol;
+import com.sun.tools.javac.code.Symbol.PackageSymbol;
 import com.sun.tools.javac.code.Symtab;
 import com.sun.tools.javac.code.Type;
 import com.sun.tools.javac.code.Type.ClassType;
@@ -202,7 +203,10 @@ public class CeylonEnter extends Enter {
         for(ClassSymbol classSymbol : symtab.classes.values()){
             if(Util.isLoadedFromSource(classSymbol) 
                     || (classSymbol.sourcefile != null && classSymbol.sourcefile.getKind() == Kind.SOURCE)){
-                resetClassSymbol(classSymbol);
+                PackageSymbol pkg = classSymbol.packge();
+                String name = pkg.getQualifiedName().toString();
+                if(name.startsWith("ceylon.language") || name.startsWith("com.redhat.ceylon.compiler.java"))
+                    resetClassSymbol(classSymbol);
             }
         }
         
