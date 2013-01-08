@@ -65,6 +65,10 @@
         <pathelement path="${ceylon.common.lib}"/>
     </path>
 	
+    <path id="ant-tasks">
+        <pathelement location="${ceylon.ant.lib}"/>
+    </path>
+
     <!-- ################################################################## -->
     <!-- constant to declare a file binary for checksumsum -->
     <property name="checksum.binary-prefix" value=" *" />
@@ -80,11 +84,7 @@
     </target>
 
 	<target name="ceylonc">
-        <taskdef name="ceylonc" classname="com.redhat.ceylon.ant.Ceylonc" >
-            <classpath>
-                <pathelement location="${ceylon.ant.lib}"/>
-            </classpath>
-        </taskdef>
+        <typedef resource="com/redhat/ceylon/ant/antlib.xml" classpathref="ant-tasks"/>
     </target>
 
     <!-- Rule to clean everything up -->
@@ -150,7 +150,7 @@
     <!-- Rule to build runtime classes from their Java and Ceylon sources -->
     <target name="ceylon.language" depends="ceylonc">
         <!-- toplevel types -->
-        <ceylonc
+        <ceylon-compile
             executable="${ceylon.compiler.loc}/dist/bin/ceylon"
             verbose="false"
             noMtimeCheck="true"
@@ -233,7 +233,7 @@
                 <exclude name="ceylon/language/Tuple.ceylon"/>
                 <include name="ceylon/language/Tuple.java"/>
             </files>
-        </ceylonc>
+        </ceylon-compile>
     </target>
 
     <!-- Rule to compile and test -->
@@ -254,7 +254,7 @@
         </copy>
         <delete dir="${build.test}"/>
         <mkdir dir="${build.test}"/>
-        <ceylonc
+        <ceylon-compile
             executable="${ceylon.compiler.loc}/dist/bin/ceylon"
             src="${test.src}"
         	sysrep="${build.test.repo}"
@@ -262,7 +262,7 @@
             <files>
                 <include name="**/*.ceylon"/>
             </files>
-        </ceylonc>
+        </ceylon-compile>
     	<javac
     	    srcdir="${test.src}"
     	    destdir="${build.test}"
