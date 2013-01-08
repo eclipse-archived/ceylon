@@ -23,7 +23,7 @@ class KlassTypeParams<U,V>(U uu, V vv) {
         return u;
     }
     U attr = uu;
-    variable V var := vv;
+    variable V var = vv;
     U getter {
         return attr;
     }
@@ -31,6 +31,6 @@ class KlassTypeParams<U,V>(U uu, V vv) {
         return var;
     }
     assign getset {
-        var := getset;
+        var = getset;
     }
 }

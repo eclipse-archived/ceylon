@@ -24,8 +24,8 @@ class ImportAliasAndWildcard() {
     void m() {
         C1();
         C2();
-        variable Boolean b := f1;
-        b := f2;
+        variable Boolean b = f1;
+        b = f2;
         m1();
         foo();
     }

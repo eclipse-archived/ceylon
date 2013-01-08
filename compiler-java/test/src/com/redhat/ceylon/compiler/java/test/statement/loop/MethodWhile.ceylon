@@ -20,27 +20,27 @@
 @nomodel
 class MethodWhile(){
     shared void m(){
-        variable Boolean cont := true;
+        variable Boolean cont = true;
         while (cont) {
-            cont := false;
+            cont = false;
         }
     }
     shared void whileExists(){
-        variable Boolean? cont := true;
+        variable Boolean? cont = true;
         while (exists Boolean c = cont) {
-            cont := null;
+            cont = null;
         }
     }
     shared void whileNonEmpty(){
-        variable Integer[] seq := {1};
+        variable Integer[] seq = {1};
         while (nonempty Integer[] s = seq) {
-            seq := {};
+            seq = {};
         }
     }
     shared void whileIs(){
-        variable Object int := 1;
+        variable Object int = 1;
         while (is Integer i = int) {
-            int := "";
+            int = "";
         }
     }
 }

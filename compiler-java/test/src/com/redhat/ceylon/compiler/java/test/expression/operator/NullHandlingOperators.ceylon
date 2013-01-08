@@ -29,9 +29,9 @@ shared class NullHandlingOperators() {
         Integer? intOrNothing = +0;
         Integer n = natOrNothing1 else 2;
         Integer? nBoxed = natOrNothing1 else box(0); 
-        variable Integer? nullSafeMember := intOrNothing?.negativeValue;
-        variable Integer? nullSafeInvoke := intOrNothing?.plus(+1);
-        nullSafeInvoke := intOrNothing?.plus{
+        variable Integer? nullSafeMember = intOrNothing?.negativeValue;
+        variable Integer? nullSafeInvoke = intOrNothing?.plus(+1);
+        nullSafeInvoke = intOrNothing?.plus{
             other = +1;
         };
         
@@ -40,19 +40,19 @@ shared class NullHandlingOperators() {
     }
     
     void testEmpty() {
-        variable Boolean sync := false;
-        sync := "".characters nonempty;
+        variable Boolean sync = false;
+        sync = "".characters nonempty;
         String[] seq = {};
-        sync := seq nonempty;
+        sync = seq nonempty;
         // boxing
         Boolean? boxed = seq nonempty;
     }
 
 
     void testExists() {
-        variable Boolean sync := false;
+        variable Boolean sync = false;
         Object? foo = sync; 
-        sync := foo exists;
+        sync = foo exists;
         // boxing
         Boolean? boxed = foo exists;
     }

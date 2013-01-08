@@ -17,7 +17,7 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
  * MA  02110-1301, USA.
  */
-shared variable Integer \iZero := 0;
+shared variable Integer \iZero = 0;
 
 shared Integer \iOne {
     return 1;

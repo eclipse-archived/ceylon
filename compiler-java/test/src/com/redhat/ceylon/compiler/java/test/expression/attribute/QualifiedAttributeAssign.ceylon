@@ -19,20 +19,20 @@
  */
 @nomodel
 class QualifiedAttributeAssign(){
-   variable Boolean b := true;
-   shared variable Boolean b2 := true;
+   variable Boolean b = true;
+   shared variable Boolean b2 = true;
    QualifiedAttributeAssign q = QualifiedAttributeAssign();
    
    void m(QualifiedAttributeAssignFoo f){
-       this.b := false;
-       this.b2 := false;
-       QualifiedAttributeAssign().b := true;
-       QualifiedAttributeAssign().b2 := true;
-       q.b := q.b2;
-       f.b := f.b;
+       this.b = false;
+       this.b2 = false;
+       QualifiedAttributeAssign().b = true;
+       QualifiedAttributeAssign().b2 = true;
+       q.b = q.b2;
+       f.b = f.b;
    }
 }
 @nomodel
 class QualifiedAttributeAssignFoo() {
-   shared variable Boolean b := true;
+   shared variable Boolean b = true;
 }

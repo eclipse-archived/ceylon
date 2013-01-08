@@ -32,32 +32,32 @@ shared abstract class EqualityAndComparisonInteger()
 @nomodel
 shared class EqualityAndComparisonOperators() {
 
-// M2 b1 := n1 extends Integer;
-// M2 b1 := n1 satisfies Object;
+// M2 b1 = n1 extends Integer;
+// M2 b1 = n1 satisfies Object;
 
     void equalityAndComparisonUnboxed(IdentifiableObject o1, IdentifiableObject o2) {
-        variable Boolean sync := o1 === o2;
-        variable Integer n1 := 0;
-        variable Integer n2 := 0;
-        sync := n1 == n2;
-        sync := n1 != n2;
+        variable Boolean sync = o1 === o2;
+        variable Integer n1 = 0;
+        variable Integer n2 = 0;
+        sync = n1 == n2;
+        sync = n1 != n2;
         Comparison c = n1 <=> n2;
-        sync := n1 < n2;
-        sync := n1 > n2;
-        sync := n1 <= n2;
-        sync := n1 >= n2;
+        sync = n1 < n2;
+        sync = n1 > n2;
+        sync = n1 <= n2;
+        sync = n1 >= n2;
     }
 
     void equalityAndComparisonBoxed(IdentifiableObject o1, IdentifiableObject o2,
                                     EqualityAndComparisonInteger n1, EqualityAndComparisonInteger n2) {
-        variable Boolean? sync := o1 === o2;
-        sync := n1 == n2;
-        sync := n1 != n2;
+        variable Boolean? sync = o1 === o2;
+        sync = n1 == n2;
+        sync = n1 != n2;
         Comparison c = n1 <=> n2;
-        sync := n1 < n2;
-        sync := n1 > n2;
-        sync := n1 <= n2;
-        sync := n1 >= n2;
+        sync = n1 < n2;
+        sync = n1 > n2;
+        sync = n1 <= n2;
+        sync = n1 >= n2;
     }
 
     void testInBoxed(Integer n1, Integer n2){
@@ -69,26 +69,26 @@ shared class EqualityAndComparisonOperators() {
     }
 
     void testIs() {
-        variable Boolean sync := false;
+        variable Boolean sync = false;
         Object foo = sync; 
         // boxing test
-        sync := sync is Empty;
+        sync = sync is Empty;
         Boolean? dest = true is Empty;
         // normal test
-        sync := foo is Boolean;
+        sync = foo is Boolean;
         // unions
-        sync := foo is BasicOperatorsA | BasicOperatorsB;
+        sync = foo is BasicOperatorsA | BasicOperatorsB;
         // intersections
-        sync := foo is BasicOperatorsA & BasicOperatorsB;
+        sync = foo is BasicOperatorsA & BasicOperatorsB;
         // type aliases
         alias Alias1 => BasicOperatorsA | BasicOperatorsB;
         alias Alias2 => BasicOperatorsA & BasicOperatorsB;
-        sync := foo is Alias1;
-        sync := foo is Alias2;
+        sync = foo is Alias1;
+        sync = foo is Alias2;
         // erased types
-        sync := foo is IdentifiableObject;
-        sync := foo is Exception;
+        sync = foo is IdentifiableObject;
+        sync = foo is Exception;
         // type parameters
-        //M5: sync := is Sequence<Boolean> foo;
+        //M5: sync = is Sequence<Boolean> foo;
     }
 }

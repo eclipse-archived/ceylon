@@ -19,6 +19,6 @@
  */
 @nomodel
 void upperAttributeUsage() {
-    \iZero := \iZero + 0;
-    \iOne := \iOne + 0;
+    \iZero = \iZero + 0;
+    \iOne = \iOne + 0;
 }

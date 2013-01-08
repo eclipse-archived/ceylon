@@ -26,7 +26,7 @@ shared interface Bug903<Element> {
     shared default void foo() {
         object obj {
             shared Element? m() {
-                //i := 0;
+                //i = 0;
                 item{
                     index=0;
                 };
@@ -35,7 +35,7 @@ shared interface Bug903<Element> {
         }
         class C() {
             shared Element? m() {
-                //i := 0;
+                //i = 0;
                 item{
                     index=0;
                 };
@@ -44,7 +44,7 @@ shared interface Bug903<Element> {
         }
         interface I {
             shared Element? m() {
-                //i := 0;
+                //i = 0;
                 item{
                     index=0;
                 };

@@ -19,6 +19,6 @@
  */
 void klassWithAttributeAndConflictingMethodsTest(){
     KlassWithAttributeAndConflictingMethods t = KlassWithAttributeAndConflictingMethods();
-    t.attr := t.attr;
+    t.attr = t.attr;
     t.setAttr(t.getAttr());
 }

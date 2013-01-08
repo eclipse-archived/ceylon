@@ -24,5 +24,5 @@ assign f { }
 @nomodel
 shared void bug148_3() {
     print(f.string);
-    f := 3;
+    f = 3;
 }

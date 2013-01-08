@@ -21,8 +21,8 @@
 class BoxedLocalVariable<T>() {
      shared default void m2(T t) {
         variable T t2;
-        t2 := t;
-        t2 := t2;
+        t2 = t;
+        t2 = t2;
         T t3 {
             return t2;
         }
@@ -32,8 +32,8 @@ class BoxedLocalVariable<T>() {
 class BoxedLocalVariable_sub() extends BoxedLocalVariable<String>(){
      shared actual void m2(String t) {
         variable String t2;
-        t2 := t;
-        t2 := t2;
+        t2 = t;
+        t2 = t2;
         String t3 {
             return t2;
         }

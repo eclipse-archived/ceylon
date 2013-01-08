@@ -25,7 +25,7 @@
 Entry<Integer,String> bug270 = Entry<Integer,String> {item="hello";key=1;};
 
 @nomodel
-variable Entry<Integer,String> bug270Variable := Entry<Integer,String> {item="hello";key=1;};
+variable Entry<Integer,String> bug270Variable = Entry<Integer,String> {item="hello";key=1;};
 
 @nomodel
 T bug270_eatEntry<T>(T entry){
@@ -65,7 +65,7 @@ class Bug270() {
         Entry<Integer,String> bug270 = Entry<Integer,String> {item="hello";key=1;};
 
         // variable 
-        variable Entry<Integer,String> bug270Variable := Entry<Integer,String> {item="hello";key=1;};
+        variable Entry<Integer,String> bug270Variable = Entry<Integer,String> {item="hello";key=1;};
         if(true){
             // inside a new block?
             Entry<Integer,String> bug270_2 = Entry<Integer,String> {item="hello";key=1;};

@@ -23,16 +23,16 @@ abstract class ClassVariable(){
     variable String uncapturedvar;
     variable String capturedvar;
     shared formal variable String formalvar;
-    publicvar := "";
-    uncapturedvar := "";
-    capturedvar := "";
-    formalvar := "";
+    publicvar = "";
+    uncapturedvar = "";
+    capturedvar = "";
+    formalvar = "";
     
     void m() {
-        capturedvar := "new value";
+        capturedvar = "new value";
     }
 }
 @nomodel
 class SubClassVariable() extends ClassVariable() {
-    shared actual variable String formalvar := "";
+    shared actual variable String formalvar = "";
 }

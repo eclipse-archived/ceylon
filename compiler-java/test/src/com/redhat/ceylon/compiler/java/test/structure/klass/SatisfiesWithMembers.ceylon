@@ -27,7 +27,7 @@ interface SatisfiesWithMembers {
 @nomodel
 class SatisfiesWithMembersClass() satisfies SatisfiesWithMembers {
     actual shared Boolean b = true;
-    actual default shared variable Boolean b2 := false;
+    actual default shared variable Boolean b2 = false;
     actual shared void m() {
         return;
     }

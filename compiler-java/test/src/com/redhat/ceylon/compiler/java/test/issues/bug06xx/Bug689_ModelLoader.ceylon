@@ -26,5 +26,5 @@ class Bug689_ModelLoader<X,Y>(X x, Y y, X&Y xy) {
         return {x,y};
     }
     shared Sequence<X|Y> attributeWithUnion = {x,y};
-    shared variable Sequence<X|Y> variableWithUnion := {x,y};
+    shared variable Sequence<X|Y> variableWithUnion = {x,y};
 }

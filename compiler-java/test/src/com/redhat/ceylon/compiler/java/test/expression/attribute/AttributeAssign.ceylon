@@ -19,8 +19,8 @@
  */
 @nomodel
 class AttributeAssign(){
-    variable Boolean b1 := true;
-    variable shared Boolean b2 := true;
+    variable Boolean b1 = true;
+    variable shared Boolean b2 = true;
     Boolean b3 {
         return true;
     }
@@ -35,9 +35,9 @@ class AttributeAssign(){
     }
    
     void m(){
-        b1 := false;
-        b2 := false;
-        b3 := false;
-        b4 := false;
+        b1 = false;
+        b2 = false;
+        b3 = false;
+        b4 = false;
     }
 }

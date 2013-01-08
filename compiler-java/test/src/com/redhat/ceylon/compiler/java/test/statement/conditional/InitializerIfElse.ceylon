@@ -21,8 +21,8 @@
 class InitializerIfElse(){
     variable Boolean b;
     if(true){
-        b := true;
+        b = true;
     }else{
-        b := false;
+        b = false;
     }
 }

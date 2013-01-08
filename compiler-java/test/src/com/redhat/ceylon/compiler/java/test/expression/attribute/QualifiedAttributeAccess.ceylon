@@ -20,7 +20,7 @@
 @nomodel
 class QualifiedAttributeAccess(){
    Boolean b = true;
-   variable Boolean b2 := true;
+   variable Boolean b2 = true;
    QualifiedAttributeAccess q = QualifiedAttributeAccess();
    
    Boolean m(){

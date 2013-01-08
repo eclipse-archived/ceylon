@@ -19,7 +19,7 @@
  */
 @nomodel
 abstract class ClassAttributeWithConflictingMethods(){
-    shared variable String attr := "";
+    shared variable String attr = "";
     shared String getAttr(){ return attr; }
     shared void setAttr(String attr){}
     

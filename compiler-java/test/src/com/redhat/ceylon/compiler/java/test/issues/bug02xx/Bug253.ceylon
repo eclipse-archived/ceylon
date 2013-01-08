@@ -24,13 +24,13 @@ interface Boxer<T> {
 }
 @nomodel
 class IntBoxer() satisfies Boxer<Integer> {
-    shared actual variable Integer one := +1;
-    shared actual variable Integer two := +2;
+    shared actual variable Integer one = +1;
+    shared actual variable Integer two = +2;
 }
 @nomodel
 void bug253() {
     value boxer = IntBoxer();
-    boxer.one := +1;
-    boxer.two := +2;
-    boxer.one := boxer.two := +3;
+    boxer.one = +1;
+    boxer.two = +2;
+    boxer.one = boxer.two = +3;
 }

@@ -62,7 +62,7 @@ class CLeft() satisfies Left {
 interface EmptyInterface {}
 
 @nomodel
-variable Left topLevelLeftAttribute := CLeft();
+variable Left topLevelLeftAttribute = CLeft();
 
 @nomodel
 class MyException(String? m, Exception? x) 
@@ -76,8 +76,8 @@ class Test(Integer&EmptyInterface n) {
     void takesLeft(Left left){}
     Left & Right givesLeftAndRight(){ return CMiddle(); }
     
-    shared variable Left leftAttribute := CLeft();
-    shared variable Left&Right middleAttribute := CMiddle();
+    shared variable Left leftAttribute = CLeft();
+    shared variable Left&Right middleAttribute = CMiddle();
 
     void testUnion(){
         Left|Right middle = CLeft();
@@ -110,11 +110,11 @@ class Test(Integer&EmptyInterface n) {
         
         // attribute access
         variable Integer sync;
-        sync := middle.topAttribute;
-        sync := middle.leftAttribute;
-        sync := middle.rightAttribute;
-        sync := givesLeftAndRight().topAttribute;
-        sync := CMiddle().topAttribute;
+        sync = middle.topAttribute;
+        sync = middle.leftAttribute;
+        sync = middle.rightAttribute;
+        sync = givesLeftAndRight().topAttribute;
+        sync = CMiddle().topAttribute;
 
         // positional param
         takesTop(middle);
@@ -125,19 +125,19 @@ class Test(Integer&EmptyInterface n) {
         takesLeft{left = middle;};
         
         // assign
-        variable Left&Right middleVar := CMiddle();
+        variable Left&Right middleVar = CMiddle();
         Left left = middleVar;
         Left left2;
         left2 = middleVar;
-        variable Left left3 := middleVar;
-        left3 := middleVar; 
-        leftAttribute := middleVar;
-        erasedTest.leftAttribute := middleVar;
+        variable Left left3 = middleVar;
+        left3 = middleVar; 
+        leftAttribute = middleVar;
+        erasedTest.leftAttribute = middleVar;
         // FIXME: this is broken:
-        //topLevelLeftAttribute := middleVar;
+        //topLevelLeftAttribute = middleVar;
 
-        (middleVar := CMiddle()).left();
-        (erasedTest.middleAttribute := middleVar).left();
+        (middleVar = CMiddle()).left();
+        (erasedTest.middleAttribute = middleVar).left();
         
         // can't erase boolean types, since Boolean is final and thus can't have
         // intersections with things that can't be simplified to Boolean
@@ -165,7 +165,7 @@ class Test(Integer&EmptyInterface n) {
         // conditions
         if(exists p1OrNothing){}
         variable Boolean bSync;
-        bSync := p1OrNothing exists;
+        bSync = p1OrNothing exists;
         
         value p2 = p1OrNothing else p1;
         Integer n = p1OrNothing else p1;
@@ -182,15 +182,15 @@ class Test(Integer&EmptyInterface n) {
         Integer&EmptyInterface boxed = this.n;
 
         // arithmetic operators
-        variable Integer&EmptyInterface n := this.n;
+        variable Integer&EmptyInterface n = this.n;
         variable Integer sync;
-        sync := n + n;
-        sync := n - n;
-        sync := n * n;
-        sync := n % n;
+        sync = n + n;
+        sync = n - n;
+        sync = n * n;
+        sync = n % n;
 
-        sync := -n;
-        sync := +n;
+        sync = -n;
+        sync = +n;
     }
 
     void testComparisonOperators(Integer&EmptyInterface p1,
@@ -198,17 +198,17 @@ class Test(Integer&EmptyInterface n) {
                                  Category&EmptyInterface container){
         // equality operators
         variable Boolean sync;
-        sync := erasedTest === erasedTest;
-        sync := p1 == p1;
-        sync := p1 < p1;
+        sync = erasedTest === erasedTest;
+        sync = p1 == p1;
+        sync = p1 < p1;
         value cmp = p1 <=> p1;
         
         // in
-        sync := p1 in container;
+        sync = p1 in container;
         
         // is
         if(is Category p1){}
-        sync := p1 is Category;
+        sync = p1 is Category;
     }
 
     void testSequences(Integer&EmptyInterface p1,
@@ -224,9 +224,9 @@ class Test(Integer&EmptyInterface n) {
         Top? t2 = topsOrNothing?[p1];
         
         variable Empty|Sequence<Integer&EmptyInterface> subrange;
-        subrange := naturals[p1..p1] of Empty|Sequence<Integer&EmptyInterface>;
-        subrange := naturals[p1...] of Empty|Sequence<Integer&EmptyInterface>;
-        subrange := naturals[...p1] of Empty|Sequence<Integer&EmptyInterface>;
+        subrange = naturals[p1..p1] of Empty|Sequence<Integer&EmptyInterface>;
+        subrange = naturals[p1...] of Empty|Sequence<Integer&EmptyInterface>;
+        subrange = naturals[...p1] of Empty|Sequence<Integer&EmptyInterface>;
 
         // sequence expression
         Integer[] plainIntegers = {p1};
@@ -280,18 +280,18 @@ class Test(Integer&EmptyInterface n) {
         
         // erased type for sequences
         variable Integer sync;
-        sync := naturals.size;
-        sync := leftsAndRights.size;
+        sync = naturals.size;
+        sync = leftsAndRights.size;
 
         // nonempty tests
         if(nonempty naturals){}
         variable Boolean bSync;
-        bSync := naturals nonempty;
+        bSync = naturals nonempty;
         
         // spread op
         Left[]&Right[] spreadMember = leftsAndRights[].leftAndRightAttribute;
         variable Left[]&Right[] spreadInvocation;
-        spreadInvocation := leftsAndRights[].leftAndRightMethod(CMiddle());
-        spreadInvocation := leftsAndRights[].leftAndRightMethod{param = CMiddle();};
+        spreadInvocation = leftsAndRights[].leftAndRightMethod(CMiddle());
+        spreadInvocation = leftsAndRights[].leftAndRightMethod{param = CMiddle();};
     }
 }

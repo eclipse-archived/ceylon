@@ -36,19 +36,19 @@ interface AssignOuter {
             return outer.a;
         }
         assign aDefault {
-            outer.a := aDefault;
+            outer.a = aDefault;
         }
         shared default Integer bDefault {
             return outer.b;
         }
         assign bDefault {
-            outer.b := bDefault;
+            outer.b = bDefault;
         }
         shared default Integer cDefault {
             return outer.c;
         }
         assign cDefault {
-            outer.c := cDefault;
+            outer.c = cDefault;
         }
         void m() {
             outer.a++;
@@ -78,19 +78,19 @@ abstract class AssignOuterClass() {
             return outer.a;
         }
         assign aDefault {
-            outer.a := aDefault;
+            outer.a = aDefault;
         }
         shared default Integer bDefault {
             return outer.b;
         }
         assign bDefault {
-            outer.b := bDefault;
+            outer.b = bDefault;
         }
         shared default Integer cDefault {
             return outer.c;
         }
         assign cDefault {
-            outer.c := cDefault;
+            outer.c = cDefault;
         }
         void m() {
             outer.a++;

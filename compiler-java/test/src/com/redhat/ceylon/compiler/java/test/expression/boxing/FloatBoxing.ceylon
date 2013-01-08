@@ -19,42 +19,42 @@
  */
 @nomodel
 class FloatBoxing(){
-    variable Float attrFloat := 1.0;
+    variable Float attrFloat = 1.0;
     
     T id<T>(T x){
         return x;
     }
     void m() {
         // decl
-        variable Float localAttrFloat := 1.0;
-        variable Float? localAttrOptionalFloat := 1.0;
-        variable Object localAttrObject := 1.0;
+        variable Float localAttrFloat = 1.0;
+        variable Float? localAttrOptionalFloat = 1.0;
+        variable Object localAttrObject = 1.0;
         
         // assign
-        localAttrFloat := localAttrFloat;
-        localAttrOptionalFloat := localAttrFloat;
-        localAttrObject := localAttrFloat;
+        localAttrFloat = localAttrFloat;
+        localAttrOptionalFloat = localAttrFloat;
+        localAttrObject = localAttrFloat;
         
-        localAttrFloat := id(1.0);
-        localAttrOptionalFloat := id(1.0);
-        localAttrObject := id(1.0);
+        localAttrFloat = id(1.0);
+        localAttrOptionalFloat = id(1.0);
+        localAttrObject = id(1.0);
         
         Object localAttrConstantObject = localAttrFloat;
         Float localAttrConstantFloat = localAttrFloat;
         
         // is
         if(is Float localAttrConstantObject){
-            localAttrFloat := localAttrConstantObject;
+            localAttrFloat = localAttrConstantObject;
         }
         
-        localAttrFloat := localAttrFloat + 2.0; 
-        localAttrFloat := localAttrFloat + 4;
-        localAttrObject := localAttrFloat + 2.0;
-        localAttrObject := localAttrFloat + 4;
-        attrFloat := attrFloat + 2.0;
-        attrFloat := attrFloat + 4;
-        this.attrFloat := this.attrFloat + 2.0;
-        this.attrFloat := this.attrFloat + 4;
+        localAttrFloat = localAttrFloat + 2.0; 
+        localAttrFloat = localAttrFloat + 4;
+        localAttrObject = localAttrFloat + 2.0;
+        localAttrObject = localAttrFloat + 4;
+        attrFloat = attrFloat + 2.0;
+        attrFloat = attrFloat + 4;
+        this.attrFloat = this.attrFloat + 2.0;
+        this.attrFloat = this.attrFloat + 4;
         
         test(localAttrFloat + 2.0); 
         test(localAttrFloat + 4);
@@ -65,9 +65,9 @@ class FloatBoxing(){
         test(this.attrFloat + 2.0);
         test(this.attrFloat + 4);
         
-        localAttrFloat := localAttrFloat.plus(3.0);
-        attrFloat := attrFloat.plus(3.0);
-        this.attrFloat := this.attrFloat.plus(3.0);
+        localAttrFloat = localAttrFloat.plus(3.0);
+        attrFloat = attrFloat.plus(3.0);
+        this.attrFloat = this.attrFloat.plus(3.0);
         
         test(localAttrFloat.plus(3.0));
         test(attrFloat.plus(3.0));

@@ -42,11 +42,11 @@ class GenericBottom<T,U>(T&U argObject){
 
     void f(){
         GenericBottom<T,U> g = GenericBottom<T,U>(bottom);
-        variable T t := g.attrTp;
-        t := g.attrIntersection; 
-        t := g.methodTp(bottom);
-        t := g.methodIntersection(bottom);
-        t := g.getterTp;
-        t := g.getterIntersection;
+        variable T t = g.attrTp;
+        t = g.attrIntersection; 
+        t = g.methodTp(bottom);
+        t = g.methodIntersection(bottom);
+        t = g.getterTp;
+        t = g.getterIntersection;
     }
 }

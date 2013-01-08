@@ -23,8 +23,8 @@ class OptionalInterface(JavaOptionalInterface x) satisfies JavaOptionalInterface
         Object o1 = x.prop1;
         Object o2 = x.method(x);
         
-        x.prop1 := x;
-        x.prop1 := null;
+        x.prop1 = x;
+        x.prop1 = null;
         
         return x.prop1.prop1;
     }
@@ -65,8 +65,8 @@ class OptionalInterface(JavaOptionalInterface x) satisfies JavaOptionalInterface
         return null;
     }
     
-    shared actual variable JavaOptionalInterface prop1 := x;
-    shared actual variable JavaOptionalInterface? prop2 := null;
+    shared actual variable JavaOptionalInterface prop1 = x;
+    shared actual variable JavaOptionalInterface? prop2 = null;
 
     shared actual JavaOptionalInterface prop3 = x;
     shared actual JavaOptionalInterface? prop4 = x;

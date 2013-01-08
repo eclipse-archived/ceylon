@@ -19,77 +19,77 @@
  */
 @nomodel
 class IntegerBoxing(){
-    variable Integer attrInteger := 1;
+    variable Integer attrInteger = 1;
     
     T id<T>(T x){
         return x;
     }
     void m() {
         // decl
-        variable Integer localAttrInteger := 1;
-        variable Integer localAttrOptionalInteger := 1;
-        variable Object localAttrObject := 1;
+        variable Integer localAttrInteger = 1;
+        variable Integer localAttrOptionalInteger = 1;
+        variable Object localAttrObject = 1;
         
         // assign
-        localAttrInteger := localAttrInteger;
-        localAttrOptionalInteger := localAttrInteger;
-        localAttrObject := localAttrInteger;
+        localAttrInteger = localAttrInteger;
+        localAttrOptionalInteger = localAttrInteger;
+        localAttrObject = localAttrInteger;
         
-        localAttrInteger := id(1);
-        localAttrOptionalInteger := id(1);
-        localAttrObject := id(1);
+        localAttrInteger = id(1);
+        localAttrOptionalInteger = id(1);
+        localAttrObject = id(1);
         
         Object localAttrConstantObject = localAttrInteger;
         Integer localAttrConstantInteger = localAttrInteger;
         
         // is
         if(is Integer localAttrConstantObject){
-            localAttrInteger := localAttrConstantObject;
+            localAttrInteger = localAttrConstantObject;
         }
         
-        localAttrInteger := localAttrInteger + 2; 
-        localAttrObject := localAttrInteger + 2; 
-        attrInteger := attrInteger + 2; 
+        localAttrInteger = localAttrInteger + 2; 
+        localAttrObject = localAttrInteger + 2; 
+        attrInteger = attrInteger + 2; 
         
         test(localAttrInteger + 2);
         test(attrInteger + 2);
         test(this.attrInteger + 2);
         
-        localAttrInteger := localAttrInteger.plus(2);
-        attrInteger := attrInteger.plus(2);
-        this.attrInteger := this.attrInteger.plus(2);
+        localAttrInteger = localAttrInteger.plus(2);
+        attrInteger = attrInteger.plus(2);
+        this.attrInteger = this.attrInteger.plus(2);
         
         test(localAttrInteger.plus(2));
         test(attrInteger.plus(2));
         test(this.attrInteger.plus(2));
         
-        localAttrInteger := localAttrInteger++;
-        attrInteger := attrInteger++;
-        this.attrInteger := this.attrInteger++;
+        localAttrInteger = localAttrInteger++;
+        attrInteger = attrInteger++;
+        this.attrInteger = this.attrInteger++;
         
         test(localAttrInteger++);
         test(attrInteger++);
         test(this.attrInteger++);
         
-        localAttrInteger := localAttrInteger.successor;
-        attrInteger := attrInteger.successor;
-        this.attrInteger := this.attrInteger.successor;
+        localAttrInteger = localAttrInteger.successor;
+        attrInteger = attrInteger.successor;
+        this.attrInteger = this.attrInteger.successor;
         
         test(localAttrInteger.successor);
         test(attrInteger.successor);
         test(this.attrInteger.successor);
         
-        localAttrInteger := localAttrInteger.positiveValue;
-        attrInteger := attrInteger.positiveValue;
-        this.attrInteger := this.attrInteger.positiveValue;
+        localAttrInteger = localAttrInteger.positiveValue;
+        attrInteger = attrInteger.positiveValue;
+        this.attrInteger = this.attrInteger.positiveValue;
         
         test(localAttrInteger.positiveValue);
         test(attrInteger.positiveValue);
         test(this.attrInteger.positiveValue);
         
-        localAttrInteger := -localAttrInteger.positiveValue;
-        attrInteger := -attrInteger.positiveValue;
-        this.attrInteger := -this.attrInteger.positiveValue;
+        localAttrInteger = -localAttrInteger.positiveValue;
+        attrInteger = -attrInteger.positiveValue;
+        this.attrInteger = -this.attrInteger.positiveValue;
         
         test(-localAttrInteger.positiveValue);
         test(-attrInteger.positiveValue);

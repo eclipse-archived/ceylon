@@ -19,8 +19,8 @@
  */
 Integer attrInteger = 1;
 shared Integer attrIntegerPublic = 1;
-variable Integer attrVarInteger := 1;
-shared variable Integer attrVarIntegerPublic := 1;
+variable Integer attrVarInteger = 1;
+shared variable Integer attrVarIntegerPublic = 1;
 Integer attrGetInteger {
     return 1;
 }

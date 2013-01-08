@@ -48,10 +48,10 @@ class Bar() satisfies Common & BarInterface {
 }
 @nomodel
 void isCond(Common?[] seq) {
-    variable Foo[] foos := [ for (x in seq) if (is Foo x) x.foo() ];
-    foos := [ for (x in seq) if (is FooSub x) x.foo() ];
-    variable Common[] commons := [ for (x in seq) if (is Foo|Bar x) x.common() ];
-    commons := [ for (x in seq) if (is Foo&BarInterface x) x.foo().common() ];
-    variable BarInterface[] barIs := [ for (x in seq) if (is Foo&BarInterface x) x.bar() ];
+    variable Foo[] foos = [ for (x in seq) if (is Foo x) x.foo() ];
+    foos = [ for (x in seq) if (is FooSub x) x.foo() ];
+    variable Common[] commons = [ for (x in seq) if (is Foo|Bar x) x.common() ];
+    commons = [ for (x in seq) if (is Foo&BarInterface x) x.foo().common() ];
+    variable BarInterface[] barIs = [ for (x in seq) if (is Foo&BarInterface x) x.bar() ];
     Nothing[] nowt = [ for (x in seq) if (is Nothing x) x ];
 }

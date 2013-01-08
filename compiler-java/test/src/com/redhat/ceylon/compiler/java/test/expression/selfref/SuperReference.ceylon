@@ -19,7 +19,7 @@
  */
 @nomodel
 class SuperReference(){
-    shared variable Integer a := 0;
+    shared variable Integer a = 0;
     shared default void m(SuperReferenceChild x) {
         x.test();
     }

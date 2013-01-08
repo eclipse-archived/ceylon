@@ -27,5 +27,5 @@ interface ValueRefiningGetterSetter {
 }
 @nomodel
 class ValueRefiningGetterSetter_Sub() satisfies ValueRefiningGetterSetter {
-    shared actual variable Integer i := 0;
+    shared actual variable Integer i = 0;
 }

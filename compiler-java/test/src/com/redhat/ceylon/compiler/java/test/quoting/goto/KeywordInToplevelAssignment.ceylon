@@ -19,10 +19,10 @@
  */
 @nomodel
 @error
-variable Integer goto := 0;
+variable Integer goto = 0;
 
 @nomodel
 void keywordInToplevelAssignment() {
     @error
-    goto := 1;
+    goto = 1;
 }

@@ -20,11 +20,11 @@
 void javaKeywords(){
     JavaKeywords jk = JavaKeywords(1);
     variable Integer sync;
-    sync := jk.char;
+    sync = jk.char;
     jk.byte(1);
     int(1);
-    sync := pkg;
-    sync := char;
-    char := 1;
-    sync := byte.hash;
+    sync = pkg;
+    sync = char;
+    char = 1;
+    sync = byte.hash;
 }

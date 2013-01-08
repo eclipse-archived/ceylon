@@ -24,19 +24,19 @@ void fields() {
     JavaFields java = JavaFields();
     variable Integer sync;
     @error
-    sync := java.readOnlyField;
+    sync = java.readOnlyField;
     @error
-    sync := java.readWriteField;
+    sync = java.readWriteField;
     @error
-    java.readWriteField := 2;
+    java.readWriteField = 2;
     @error
     java.readWriteField++;
     @error
     ++java.readWriteField;
     @error
-    java.readWriteField := java.readWriteField := java.readWriteField;
+    java.readWriteField = java.readWriteField = java.readWriteField;
     @error
-    java.readWriteField := java.readWriteField += java.readWriteField;
+    java.readWriteField = java.readWriteField += java.readWriteField;
 }
 
 @nomodel
@@ -48,14 +48,14 @@ class CeylonFields() extends JavaFields() {
         Integer i1 = readOnlyField;
         Integer i2 = readWriteField;
         @error
-        readWriteField := 2;
+        readWriteField = 2;
         @error
         readWriteField++;
         @error
         ++readWriteField;
         @error
-        readWriteField := readWriteField := readWriteField;
+        readWriteField = readWriteField = readWriteField;
         @error
-        readWriteField := readWriteField += readWriteField;
+        readWriteField = readWriteField += readWriteField;
     }
 }

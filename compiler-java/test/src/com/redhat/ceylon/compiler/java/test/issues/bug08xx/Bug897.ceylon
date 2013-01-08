@@ -21,8 +21,8 @@
 class Bug897() {
     Integer m(Integer i) => i;
     shared void bar() {
-        variable Integer index := 0;
-        variable Integer captured := m(index);
+        variable Integer index = 0;
+        variable Integer captured = m(index);
         function foo(){
             return captured;
         }

@@ -92,26 +92,26 @@ class TypeParameterErasure() {
         variable TPELeft&TPERight middle;
         variable TPELeft left;
         variable TPERight right;
-        middle := TPECMiddle();
+        middle = TPECMiddle();
         
-        left := parameterized(middle);
-        right := parameterized(middle);
-        middle := parameterized(middle);
+        left = parameterized(middle);
+        right = parameterized(middle);
+        middle = parameterized(middle);
         // with explicit non-erased bounds
-        left := parameterized<TPELeft>(middle);
-        right := parameterized<TPERight>(middle);
+        left = parameterized<TPELeft>(middle);
+        right = parameterized<TPERight>(middle);
         // with explicit erased bounds
-        left := parameterized<TPELeft&TPERight>(middle);
-        right := parameterized<TPELeft&TPERight>(middle);
-        middle := parameterized<TPELeft&TPERight>(middle);
+        left = parameterized<TPELeft&TPERight>(middle);
+        right = parameterized<TPELeft&TPERight>(middle);
+        middle = parameterized<TPELeft&TPERight>(middle);
 
-        left := parameterizedWithBounds(middle);
-        right := parameterizedWithBounds(middle);
-        middle := parameterizedWithBounds(middle);
+        left = parameterizedWithBounds(middle);
+        right = parameterizedWithBounds(middle);
+        middle = parameterizedWithBounds(middle);
 
-        left := parameterizedWithIntersectionBounds(middle);
-        right := parameterizedWithIntersectionBounds(middle);
-        middle := parameterizedWithIntersectionBounds(middle);
+        left = parameterizedWithIntersectionBounds(middle);
+        right = parameterizedWithIntersectionBounds(middle);
+        middle = parameterizedWithIntersectionBounds(middle);
 
         String s = parameterizedWithErasedBounds("");
         String s2 = parameterizedWithErasedBounds<String>("");
@@ -131,26 +131,26 @@ class TypeParameterErasure() {
         variable TPELeft&TPERight middle;
         variable TPELeft left;
         variable TPERight right;
-        middle := TPECMiddle();
+        middle = TPECMiddle();
         
-        left := parameterized{t=middle;};
-        right := parameterized{t=middle;};
-        middle := parameterized{t=middle;};
+        left = parameterized{t=middle;};
+        right = parameterized{t=middle;};
+        middle = parameterized{t=middle;};
         // with explicit non-erased bounds
-        left := parameterized<TPELeft>{t=middle;};
-        right := parameterized<TPERight>{t=middle;};
+        left = parameterized<TPELeft>{t=middle;};
+        right = parameterized<TPERight>{t=middle;};
         // with explicit erased bounds
-        left := parameterized<TPELeft&TPERight>{t=middle;};
-        right := parameterized<TPELeft&TPERight>{t=middle;};
-        middle := parameterized<TPELeft&TPERight>{t=middle;};
+        left = parameterized<TPELeft&TPERight>{t=middle;};
+        right = parameterized<TPELeft&TPERight>{t=middle;};
+        middle = parameterized<TPELeft&TPERight>{t=middle;};
 
-        left := parameterizedWithBounds{t=middle;};
-        right := parameterizedWithBounds{t=middle;};
-        middle := parameterizedWithBounds{t=middle;};
+        left = parameterizedWithBounds{t=middle;};
+        right = parameterizedWithBounds{t=middle;};
+        middle = parameterizedWithBounds{t=middle;};
 
-        left := parameterizedWithIntersectionBounds{t=middle;};
-        right := parameterizedWithIntersectionBounds{t=middle;};
-        middle := parameterizedWithIntersectionBounds{t=middle;};
+        left = parameterizedWithIntersectionBounds{t=middle;};
+        right = parameterizedWithIntersectionBounds{t=middle;};
+        middle = parameterizedWithIntersectionBounds{t=middle;};
 
         String s = parameterizedWithErasedBounds{t = "";};
         String s2 = parameterizedWithErasedBounds<String>{t = "";};
@@ -302,9 +302,9 @@ class TypeParameterErasure() {
     }
 
     void testPrimitiveBound<T>(T init) given T satisfies Integer {
-        variable T n := init;
+        variable T n = init;
     }
     class TestPrimitiveBound<T>(T init) given T satisfies Integer {
-        variable T n := init;
+        variable T n = init;
     }
 }

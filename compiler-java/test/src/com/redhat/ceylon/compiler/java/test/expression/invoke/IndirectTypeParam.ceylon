@@ -23,12 +23,12 @@ T indirectTypeParam_topLevel<T>(T t) {return t;}
 @nomodel
 void indirectTypeParam<X>() {
     value f1 = indirectTypeParam_topLevel<Integer>;
-    variable Integer i := f1(1);
+    variable Integer i = f1(1);
 
     T local<T>(T t) {return t;}
     
     value f2 = local<Integer>;
-    i := f2(1);
+    i = f2(1);
 
     void mpl<T>(T t)() {
         throw;

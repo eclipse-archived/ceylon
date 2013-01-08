@@ -19,8 +19,8 @@
  */
 @nomodel
 class InitializerIf(){
-    variable Boolean b := false;
+    variable Boolean b = false;
     if(true){
-        b := true;
+        b = true;
     }
 }

@@ -51,14 +51,14 @@ interface InterfaceQualifiedIncrement {
     
     void inside(InterfaceQualifiedIncrement ii) {
         variable Integer x;
-        x := ii.m1();
-        x := ii.m2();
-        x := ii.m3();
-        x := ii.m4(); 
-        x := 1 + ii.i1;
-        x := 1 + ii.i2;
-        x := 1 + ii.i3;
-        x := 1 + ii.i4;
+        x = ii.m1();
+        x = ii.m2();
+        x = ii.m3();
+        x = ii.m4(); 
+        x = 1 + ii.i1;
+        x = 1 + ii.i2;
+        x = 1 + ii.i3;
+        x = 1 + ii.i4;
         ii.i1++;
         ii.i2++;
         ii.i3++;
@@ -72,14 +72,14 @@ interface InterfaceQualifiedIncrement {
     class InnerC() {
         void inside(InterfaceQualifiedIncrement ii) {
             variable Integer x;
-            x := ii.m1();
-            x := ii.m2();
-            x := ii.m3();
-            x := ii.m4(); 
-            x := 1 + ii.i1;
-            x := 1 + ii.i2;
-            x := 1 + ii.i3;
-            x := 1 + ii.i4;
+            x = ii.m1();
+            x = ii.m2();
+            x = ii.m3();
+            x = ii.m4(); 
+            x = 1 + ii.i1;
+            x = 1 + ii.i2;
+            x = 1 + ii.i3;
+            x = 1 + ii.i4;
             ii.i1++;
             ii.i2++;
             ii.i3++;
@@ -94,14 +94,14 @@ interface InterfaceQualifiedIncrement {
     interface InnerI {
         void inside(InterfaceQualifiedIncrement ii) {
             variable Integer x;
-            x := ii.m1();
-            x := ii.m2();
-            x := ii.m3();
-            x := ii.m4(); 
-            x := 1 + ii.i1;
-            x := 1 + ii.i2;
-            x := 1 + ii.i3;
-            x := 1 + ii.i4;
+            x = ii.m1();
+            x = ii.m2();
+            x = ii.m3();
+            x = ii.m4(); 
+            x = 1 + ii.i1;
+            x = 1 + ii.i2;
+            x = 1 + ii.i3;
+            x = 1 + ii.i4;
             ii.i1++;
             ii.i2++;
             ii.i3++;
@@ -116,14 +116,14 @@ interface InterfaceQualifiedIncrement {
 @nomodel
 void outsideInterfaceQualifiedIncrement(InterfaceQualifiedIncrement ii) {
     variable Integer x;
-    x := ii.m1();
-    x := ii.m2();
-    x := ii.m3();
-    //x := ii.m4(); m4 not shared 
-    x := 1 + ii.i1;
-    x := 1 + ii.i2;
-    x := 1 + ii.i3;
-    // x := 1 + ii.i4; i4 not shared
+    x = ii.m1();
+    x = ii.m2();
+    x = ii.m3();
+    //x = ii.m4(); m4 not shared 
+    x = 1 + ii.i1;
+    x = 1 + ii.i2;
+    x = 1 + ii.i3;
+    // x = 1 + ii.i4; i4 not shared
     ii.i1++;
     ii.i2++;
     ii.i3++;

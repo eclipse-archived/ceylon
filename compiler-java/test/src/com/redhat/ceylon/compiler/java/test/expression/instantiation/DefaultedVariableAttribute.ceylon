@@ -30,10 +30,10 @@ class DefaultedVariableAttribute(firstName=null, lastName=null) {
     assign fullName {
         value tokens = fullName.split().iterator;
         if (is String first = tokens.next()) {
-            firstName := first;
+            firstName = first;
         }
         if (is String last = tokens.next()) {
-            lastName := last;
+            lastName = last;
         }
     }
 

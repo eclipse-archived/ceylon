@@ -27,12 +27,12 @@ void namedInvocations() {
     variable File sync;
     // on Type
     @error
-    sync := createTempFile{arg0=""; arg1="";};
+    sync = createTempFile{arg0=""; arg1="";};
     @error
     Object roots1 = listRoots{};
     // on instances
     @error
-    sync := sync.createTempFile{arg0=""; arg1="";};
+    sync = sync.createTempFile{arg0=""; arg1="";};
     @error
     Object roots2 = sync.listRoots{};
 }

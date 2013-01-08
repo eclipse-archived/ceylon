@@ -45,8 +45,8 @@ shared void rvi_run(){
     print(cov_sub.m());
     
     variable String s;
-    s := cov_string.sharedFinal();
-    s := cov_string.sharedDefault();
-    s := cov_sub.sharedFinal();
-    s := cov_sub.sharedDefault();
+    s = cov_string.sharedFinal();
+    s = cov_string.sharedDefault();
+    s = cov_sub.sharedFinal();
+    s = cov_sub.sharedDefault();
 }

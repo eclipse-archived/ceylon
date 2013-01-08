@@ -23,11 +23,11 @@ void specialFields() {
     @error
     JavaFields java = JavaFields();
     @error
-    java.hash := java.hash;
+    java.hash = java.hash;
     @error
-    java.hash := java.hashCode();
+    java.hash = java.hashCode();
     @error
-    java.string := java.string;
+    java.string = java.string;
     @error
-    java.string := java.toString();
+    java.string = java.toString();
 }

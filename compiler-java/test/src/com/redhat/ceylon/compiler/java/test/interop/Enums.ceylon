@@ -23,7 +23,7 @@ import com.redhat.ceylon.compiler.java.test.interop { JavaEnum { one = \iONE, tw
 @error
 void enums(){
     JavaEnum e = one;
-    e.field := e.field;
-    e.property := e.property;
+    e.field = e.field;
+    e.property = e.property;
     e.method();
 }

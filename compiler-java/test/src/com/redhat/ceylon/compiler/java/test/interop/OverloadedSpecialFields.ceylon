@@ -23,10 +23,10 @@ import com.redhat.ceylon.compiler.java.test.interop { JavaOverloadedSpecialField
 void overloadedSpecialFields() {
     JavaOverloadedSpecialFields java = JavaOverloadedSpecialFields();
     variable Object sync;
-    sync := java.hash;
-    sync := java.hashCode(0);
-    sync := java.hashCode(0, 0);
-    sync := java.string;
-    sync := java.toString(1);
-    sync := java.toString(1, 2);
+    sync = java.hash;
+    sync = java.hashCode(0);
+    sync = java.hashCode(0, 0);
+    sync = java.string;
+    sync = java.toString(1);
+    sync = java.toString(1, 2);
 }

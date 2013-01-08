@@ -18,9 +18,9 @@
  * MA  02110-1301, USA.
  */
 @nomodel
-variable Boolean topLevelAssignB1 := true;
+variable Boolean topLevelAssignB1 = true;
 @nomodel
-variable shared Boolean topLevelAssignB2 := true;
+variable shared Boolean topLevelAssignB2 = true;
 @nomodel
 Boolean topLevelAssignB3 {
     return true;
@@ -39,9 +39,9 @@ assign topLevelAssignB4 {
 @nomodel
 class TopLevelAssign(){
     void m(){
-        topLevelAssignB1 := false;
-        topLevelAssignB2 := false;
-        topLevelAssignB3 := false;
-        topLevelAssignB4 := false;
+        topLevelAssignB1 = false;
+        topLevelAssignB2 = false;
+        topLevelAssignB3 = false;
+        topLevelAssignB4 = false;
     }
 }

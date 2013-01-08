@@ -20,12 +20,12 @@
 @nomodel
 class C<T>() {
 
-    shared variable T? t := null;
+    shared variable T? t = null;
 
 }
 @nomodel
 void m() {
     value c = C<Object>();
     Object o = 1;
-    c.t := o;
+    c.t = o;
 }

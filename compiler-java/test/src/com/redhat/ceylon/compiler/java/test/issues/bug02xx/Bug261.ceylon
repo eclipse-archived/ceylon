@@ -23,11 +23,11 @@ void bug261() {
     variable Integer vl;
     
     class Inner() {
-        shared variable Integer vi:=0;
-        shared variable Integer vj:=0;
+        shared variable Integer vi=0;
+        shared variable Integer vj=0;
     }
     value inner = Inner();
-    inner.vi:=inner.vj:=2;
+    inner.vi=inner.vj=2;
     
-    vk:=vl:=2;
+    vk=vl=2;
 }

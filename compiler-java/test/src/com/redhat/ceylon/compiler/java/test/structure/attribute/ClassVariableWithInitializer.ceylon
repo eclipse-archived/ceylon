@@ -19,6 +19,6 @@
  */
 @nomodel
 class ClassVariableWithInitializer(){
-    variable String f := "";
-    shared variable String f2 := "";
+    variable String f = "";
+    shared variable String f2 = "";
 }

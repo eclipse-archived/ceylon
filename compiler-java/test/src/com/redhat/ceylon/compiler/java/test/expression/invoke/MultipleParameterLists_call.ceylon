@@ -18,13 +18,13 @@
  * MA  02110-1301, USA.
  */
 shared void multipleParameterLists_call() {
-    variable String s := multipleParameterLists()(1);
+    variable String s = multipleParameterLists()(1);
     value c = multipleParameterLists();
-    s := c(1);
+    s = c(1);
     
-    s := multipleParameterLists2(1)(1.0)(s);
+    s = multipleParameterLists2(1)(1.0)(s);
     value c2 = multipleParameterLists2(1);
     value c3 = c2(1.0);
-    s := c3(s);
+    s = c3(s);
     
 }

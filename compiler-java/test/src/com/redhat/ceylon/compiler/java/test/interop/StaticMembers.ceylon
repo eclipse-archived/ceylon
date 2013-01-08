@@ -30,16 +30,16 @@ void staticMethods() {
     variable File sync;
     // on Type
     @error
-    sync := createTempFile("", "");
+    sync = createTempFile("", "");
     @error
-    sync := createTempFile("", "", sync);
+    sync = createTempFile("", "", sync);
     @error
     Object roots1 = listRoots();
     // on instances
     @error
-    sync := sync.createTempFile("", "");
+    sync = sync.createTempFile("", "");
     @error
-    sync := sync.createTempFile("", "", sync);
+    sync = sync.createTempFile("", "", sync);
     @error
     Object roots2 = sync.listRoots();
 }
@@ -58,9 +58,9 @@ void staticMethodsAndSubClassesOnInstance() {
     @error
     inst.topMethod();
     @error
-    inst.field := inst.field;
+    inst.field = inst.field;
     @error
-    inst.topField := inst.topField;
+    inst.topField = inst.topField;
 }
 
 @nomodel
@@ -74,9 +74,9 @@ void staticMethodsAndSubClassesOnType() {
     @error
     stopMethod();
     @error
-    sfield := sfield;
+    sfield = sfield;
     @error
-    stopField := stopField;
+    stopField = stopField;
 }
 
 @error
@@ -92,9 +92,9 @@ class StaticMethodsAndSubClasses() extends JavaWithStaticMembersSubClass() {
         @error
         topMethod();
         @error
-        field := field;
+        field = field;
         @error
-        stopField := stopField;
+        stopField = stopField;
     }
 }
 

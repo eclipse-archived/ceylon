@@ -19,14 +19,14 @@
  */
 @nomodel
 class DefaultSetter() {
-    variable Integer a := 0;
+    variable Integer a = 0;
     interface I {
         shared formal variable Integer aFormal;
         shared default Integer aDefault {
             return outer.a;
         }
         assign aDefault {
-            outer.a := aDefault;
+            outer.a = aDefault;
         }
     }
     abstract class Abstract() satisfies I {
@@ -34,7 +34,7 @@ class DefaultSetter() {
             return aDefault;
         }
         assign aFormal {
-            aDefault := aFormal;
+            aDefault = aFormal;
         }
     }
     class Concrete() satisfies I {
@@ -49,7 +49,7 @@ class DefaultSetter() {
             return aDefault;
         }
         assign aFormal {
-            aDefault := aFormal;
+            aDefault = aFormal;
         }
         shared Integer inc() {
             return aFormal++;

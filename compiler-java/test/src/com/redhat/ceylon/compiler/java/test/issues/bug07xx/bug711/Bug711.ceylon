@@ -19,5 +19,5 @@
  */
 void bug711() {
     ClassWithGetterAndSetter klazz = ClassWithGetterAndSetter();
-    klazz.someString := "foobar";
+    klazz.someString = "foobar";
 }

@@ -51,8 +51,8 @@ shared abstract class KlassWithAttributesSuper1() extends KlassWithAttributesSup
 shared class KlassWithAttributes() extends KlassWithAttributesSuper1() {
     Integer n1 = 1;
     shared Integer n2 = 2;
-    variable Integer n3 := 3;
-    shared variable Integer n4 := 4;
+    variable Integer n3 = 3;
+    shared variable Integer n4 = 4;
     Integer n5 {
         return 5;
     }
@@ -69,10 +69,10 @@ shared class KlassWithAttributes() extends KlassWithAttributesSuper1() {
     }
     assign n8 {
     }
-    shared variable String s := ""; 
-    shared variable Integer i := +1; 
-    shared variable Boolean b := true; 
-    shared variable Float f := 1.0; 
+    shared variable String s = ""; 
+    shared variable Integer i = +1; 
+    shared variable Boolean b = true; 
+    shared variable Float f = 1.0; 
     
     void capture() {
         value x = n1;

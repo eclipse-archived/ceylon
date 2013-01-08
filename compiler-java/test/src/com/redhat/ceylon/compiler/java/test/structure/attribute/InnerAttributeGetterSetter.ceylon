@@ -25,6 +25,6 @@ class InnerAttributeGetterSetter() {
         } assign innerGetterSetter {
         }
         Integer n = innerGetterSetter;
-        innerGetterSetter := 1;
+        innerGetterSetter = 1;
     }
 }

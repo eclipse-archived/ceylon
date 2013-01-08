@@ -40,7 +40,7 @@ class Bug476Bottom<T,U>() extends Bug476Top<Bug476A>(){
     shared actual Bug476Top<Bug476B>&Bug476C m2() {
         return bottom;
     }
-    shared actual variable Bug476A&T&U attr := bottom;
+    shared actual variable Bug476A&T&U attr = bottom;
     shared actual Bug476A&T&U attr2 {
         return bottom;
     }

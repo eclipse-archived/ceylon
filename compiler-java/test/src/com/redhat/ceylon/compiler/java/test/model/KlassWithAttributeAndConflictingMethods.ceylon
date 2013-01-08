@@ -18,7 +18,7 @@
  * MA  02110-1301, USA.
  */
 class KlassWithAttributeAndConflictingMethods() {
-    shared variable Integer attr := 1;
+    shared variable Integer attr = 1;
     shared Integer getAttr(){ return attr; } 
-    shared void setAttr(Integer attr){ this.attr := attr; } 
+    shared void setAttr(Integer attr){ this.attr = attr; } 
 }

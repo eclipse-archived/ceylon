@@ -18,7 +18,7 @@
  * MA  02110-1301, USA.
  */
 @nomodel
-variable Integer bug247_toplevel := 0;
+variable Integer bug247_toplevel = 0;
 @nomodel
 void bug247() {
     bug247_toplevel += 1;

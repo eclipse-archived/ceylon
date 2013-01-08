@@ -21,6 +21,6 @@
 class MethodVariableWithLateInitializer(){
    shared void m(){
        variable String f;
-       f := "";
+       f = "";
    }
 }

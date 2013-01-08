@@ -19,9 +19,9 @@
  */
 @nomodel
 shared class CreatorOperators() {
-    variable Integer n1 := 0;
-    variable Integer i1 := +0;
-    variable Integer i2 := +0;
+    variable Integer n1 = 0;
+    variable Integer i1 = +0;
+    variable Integer i2 = +0;
     
     void creators() {
         Range<Integer> r = i1..i2;

@@ -19,11 +19,11 @@
  */
 @nomodel
 shared class Bug227() {
-    variable Integer _num := 1;
+    variable Integer _num = 1;
     shared Integer num {
         return this._num;
     } 
     assign num {
-        _num := num;
+        _num = num;
     }
 } 

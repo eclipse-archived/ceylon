@@ -22,12 +22,12 @@
 @nomodel
 class VoidBoxing() {
     Void valueVoid = 1;
-    variable Void variableVoid := valueVoid;
+    variable Void variableVoid = valueVoid;
     Void getterVoid { 
         return variableVoid;
     } 
     assign getterVoid {
-        variableVoid := getterVoid;
+        variableVoid = getterVoid;
     }
     void returnsvoid(Void v){}
     Void returnsVoid(Void v){
@@ -59,18 +59,18 @@ class VoidBoxing() {
         Void v12= callableVoid((Void s) s); 
         
         variable Void v;
-        v := valueVoid;
-        v := getterVoid;
-        v := returnsvoid("");
-        v := returnsvoid{v="";};
-        v := returnsVoid("");
-        v := returnsVoid{v="";};
-        v := callablevoid(returnsvoid);
-        v := callablevoid(returnsVoid);
-        v := callableVoid(returnsvoid);
-        v := callableVoid(returnsVoid);
-        v := callablevoid((Void s) s);
-        v := callableVoid((Void s) s);
+        v = valueVoid;
+        v = getterVoid;
+        v = returnsvoid("");
+        v = returnsvoid{v="";};
+        v = returnsVoid("");
+        v = returnsVoid{v="";};
+        v = callablevoid(returnsvoid);
+        v = callablevoid(returnsVoid);
+        v = callableVoid(returnsvoid);
+        v = callableVoid(returnsVoid);
+        v = callablevoid((Void s) s);
+        v = callableVoid((Void s) s);
         
     }
 }

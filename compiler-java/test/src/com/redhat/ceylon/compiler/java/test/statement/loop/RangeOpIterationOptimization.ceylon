@@ -23,7 +23,7 @@ class OptimizedForWithRange(start, end) {
     Integer end;
     
     void literals() {
-        variable Integer sum := 0;
+        variable Integer sum = 0;
         for (i in 1..10) {
             sum += i;
         }
@@ -33,7 +33,7 @@ class OptimizedForWithRange(start, end) {
     }
     
     void expressions() {
-        variable Integer sum := 0;
+        variable Integer sum = 0;
         for (i in start..end) {
             sum += i;
         }
@@ -43,7 +43,7 @@ class OptimizedForWithRange(start, end) {
     }
     
     void by() {
-        variable Integer sum := 0;
+        variable Integer sum = 0;
         // positional argument
         for (i in (1..10).by(3)) {
             sum += i;
@@ -59,7 +59,7 @@ class OptimizedForWithRange(start, end) {
     }
     
     void disabled() {
-        variable Integer sum := 0;
+        variable Integer sum = 0;
         @disableOptimization
         for (i in 1..10) {
             sum += i;
@@ -71,11 +71,11 @@ class OptimizedForWithRange(start, end) {
     }
     
     void flow() {
-        variable Integer sum := 0;
+        variable Integer sum = 0;
         for (withElse in 1..10) {
             sum += withElse;
         } else {
-            sum := 0;
+            sum = 0;
         }
         for (breaks in 10..1) {
             sum += breaks;
@@ -85,7 +85,7 @@ class OptimizedForWithRange(start, end) {
             sum += breaksWithElse;
             break;
         } else {
-            sum := 0;
+            sum = 0;
         }
         for (breaksWithElse in 10..1) {
             sum += breaksWithElse;
@@ -93,7 +93,7 @@ class OptimizedForWithRange(start, end) {
                 break;
             }
         } else {
-            sum := 0;
+            sum = 0;
         }
         
         for (returns in 10..1) {
@@ -104,7 +104,7 @@ class OptimizedForWithRange(start, end) {
             sum += returnsWithElse;
             return;
         } else {
-            sum := 0;
+            sum = 0;
         }
         for (returnsWithElse in 10..1) {
             sum += returnsWithElse;
@@ -112,7 +112,7 @@ class OptimizedForWithRange(start, end) {
                 return;
             }
         } else {
-            sum := 0;
+            sum = 0;
         }
         
         for (throws in 10..1) {
@@ -123,7 +123,7 @@ class OptimizedForWithRange(start, end) {
             sum += throwsWithElse;
             return;
         } else {
-            sum := 0;
+            sum = 0;
         }
         for (throwsWithElse in 10..1) {
             sum += throwsWithElse;
@@ -131,7 +131,7 @@ class OptimizedForWithRange(start, end) {
                 return;
             }
         } else {
-            sum := 0;
+            sum = 0;
         }
     }
     

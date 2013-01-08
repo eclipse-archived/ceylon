@@ -25,5 +25,5 @@ class StaticMethodsOverriding() extends JavaWithStaticMembers() {
     @error
     shared actual void topMethod(){}
     @error
-    shared actual variable Integer topField := 2;
+    shared actual variable Integer topField = 2;
 }

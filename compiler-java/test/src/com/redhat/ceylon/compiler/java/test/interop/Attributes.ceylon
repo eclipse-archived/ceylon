@@ -24,41 +24,41 @@ void attributes() {
     JavaBean java = JavaBean();
     variable Boolean sync;
     @error
-    sync := java.booleanWithGet;
+    sync = java.booleanWithGet;
     @error
-    java.booleanWithGet := false;
+    java.booleanWithGet = false;
 
     @error
-    sync := java.booleanWithIs;
+    sync = java.booleanWithIs;
     @error
-    java.booleanWithIs := false;
+    java.booleanWithIs = false;
 
     @error
-    sync := java.oldStyle();
+    sync = java.oldStyle();
     @error
     java.setOldStyle(false);
 
     variable String syncStr;
     @error
-    syncStr := java.url;
+    syncStr = java.url;
     @error
-    java.url := "";
+    java.url = "";
 
     @error
-    syncStr := java.urlEncoderForHTML;
+    syncStr = java.urlEncoderForHTML;
     @error
-    java.urlEncoderForHTML := "";
+    java.urlEncoderForHTML = "";
 
     @error
-    sync := java.confusedProperty;
+    sync = java.confusedProperty;
     @error
     java.setConfusedProperty("");
 
     variable Integer syncInt;
     @error
-    syncInt := java.épardaud;
+    syncInt = java.épardaud;
     @error
-    java.épardaud := 0;
+    java.épardaud = 0;
 }
 
 @nomodel
@@ -66,32 +66,32 @@ void attributes() {
 class CeylonAttributes() extends JavaBean() {
 
     @error
-    shared variable actual Boolean booleanWithGet := false;
+    shared variable actual Boolean booleanWithGet = false;
     @error
-    shared variable actual Boolean booleanWithIs := false;
+    shared variable actual Boolean booleanWithIs = false;
     @error
-    shared variable actual String url := "";
+    shared variable actual String url = "";
     @error
-    shared variable actual String urlEncoderForHTML := "";
+    shared variable actual String urlEncoderForHTML = "";
 
     void m(){
         variable Boolean sync;
-        sync := booleanWithGet;
-        booleanWithGet := false;
+        sync = booleanWithGet;
+        booleanWithGet = false;
 
-        sync := booleanWithIs;
-        booleanWithIs := false;
+        sync = booleanWithIs;
+        booleanWithIs = false;
 
         @error
-        sync := oldStyle();
+        sync = oldStyle();
         @error
         setOldStyle(false);
 
         variable String syncStr;
-        syncStr := url;
-        url := "";
+        syncStr = url;
+        url = "";
 
-        syncStr := urlEncoderForHTML;
-        urlEncoderForHTML := "";
+        syncStr = urlEncoderForHTML;
+        urlEncoderForHTML = "";
     }
 }

@@ -23,7 +23,7 @@ abstract class Bug526Top() {
     shared formal variable Integer formalVar;
     
     shared default Integer defaultAttr = 3;
-    shared default variable Integer defaultVar := 3;
+    shared default variable Integer defaultVar = 3;
     
     shared default Integer defaultGetter { return 3; }
     shared default Integer defaultSetter { return 3; }
@@ -32,14 +32,14 @@ abstract class Bug526Top() {
 
 @nomodel
 class Bug526Bottom1() extends Bug526Top() {
-    shared actual variable Integer formalAttr := 2;
-    shared actual variable Integer formalVar := 2;
+    shared actual variable Integer formalAttr = 2;
+    shared actual variable Integer formalVar = 2;
 
-    shared actual variable Integer defaultAttr := 2;
-    shared actual variable Integer defaultVar := 2;
+    shared actual variable Integer defaultAttr = 2;
+    shared actual variable Integer defaultVar = 2;
     
-    shared actual variable Integer defaultGetter := 2;
-    shared actual variable Integer defaultSetter := 2;
+    shared actual variable Integer defaultGetter = 2;
+    shared actual variable Integer defaultSetter = 2;
 }
 
 @nomodel

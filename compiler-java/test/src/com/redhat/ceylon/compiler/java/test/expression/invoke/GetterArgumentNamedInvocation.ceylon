@@ -21,7 +21,7 @@
 void getterArgumentNamedInvocation(Integer num) {
     void callFunction(Integer i = 2, String s = "") {
     }
-    variable Integer i := 3; // test aliasing
+    variable Integer i = 3; // test aliasing
     callFunction {
         String s {
             return "s";

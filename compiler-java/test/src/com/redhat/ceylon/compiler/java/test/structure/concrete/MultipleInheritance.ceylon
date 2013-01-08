@@ -38,14 +38,14 @@ class MultipleInheritanceSubImpl() satisfies MultipleInheritanceSub {
 }
 @nomodel
 class MultipleInheritanceImplSub() extends MultipleInheritanceImpl() satisfies MultipleInheritanceSub {
-    shared actual variable Integer a := 1;
+    shared actual variable Integer a = 1;
     shared actual void m() {
         MultipleInheritanceSub::m();
     }
 }
 @nomodel
 class MultipleInheritanceSubImplSub() extends MultipleInheritanceSubImpl() satisfies MultipleInheritance {
-    shared actual variable Integer a := 1;
+    shared actual variable Integer a = 1;
     shared actual void m() {
         MultipleInheritance::m();
     }    

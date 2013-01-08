@@ -21,10 +21,10 @@
 class InitializerIfElseIf(){
     variable Boolean b;
     if(true){
-        b := true;
+        b = true;
     }else if(false){
-        b := false;
+        b = false;
     }else{
-        b := true;
+        b = true;
     }
 }

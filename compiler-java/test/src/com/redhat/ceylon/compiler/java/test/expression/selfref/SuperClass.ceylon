@@ -19,7 +19,7 @@
  */
 @nomodel
 abstract class SuperClass() {
-    shared variable Integer a := 2;
+    shared variable Integer a = 2;
     shared Integer i {
         return 2;
     }

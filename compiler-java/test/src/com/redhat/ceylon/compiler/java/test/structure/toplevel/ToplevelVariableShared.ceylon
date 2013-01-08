@@ -18,4 +18,4 @@
  * MA  02110-1301, USA.
  */
 @nomodel
-shared variable Integer topLevelVariableShared := 0;
+shared variable Integer topLevelVariableShared = 0;

@@ -21,7 +21,7 @@
 void getterArgumentNamedInvocationGeneric<T>(T t) {
     void callFunction(T i) {
     }
-    variable Integer i := 3; // test aliasing
+    variable Integer i = 3; // test aliasing
     callFunction {
         value i {
             return t;
