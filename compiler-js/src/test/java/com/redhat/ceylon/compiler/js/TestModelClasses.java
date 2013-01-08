@@ -51,13 +51,13 @@ public class TestModelClasses {
         Map<String,Object> cls = (Map<String,Object>)model.get("SimpleClass1");
         ModelUtils.checkMap(cls, MetamodelGenerator.KEY_NAME, "SimpleClass1");
         cls = (Map<String, Object>)cls.get("super");
-        ModelUtils.checkType(cls, "ceylon.language::IdentifiableObject");
+        ModelUtils.checkType(cls, "ceylon.language::Basic");
 
         cls = (Map<String, Object>)model.get("SimpleClass2");
         ModelUtils.checkMap(cls, MetamodelGenerator.KEY_NAME, "SimpleClass2", "abstract", "1");
         ModelUtils.checkParam(cls, 0, "name", "ceylon.language::String", false, false);
         cls = (Map<String, Object>)cls.get("super");
-        ModelUtils.checkMap(cls, MetamodelGenerator.KEY_NAME, "IdentifiableObject",
+        ModelUtils.checkMap(cls, MetamodelGenerator.KEY_NAME, "Basic",
                 MetamodelGenerator.KEY_MODULE, "ceylon.language");
 
         cls = (Map<String, Object>)model.get("SimpleClass4");
@@ -92,7 +92,7 @@ public class TestModelClasses {
     @Test @SuppressWarnings("unchecked")
     public void testSatisfies1() {
         Map<String,Object> cls = (Map<String,Object>)model.get("Satisfy1");
-        ModelUtils.checkType((Map<String, Object>)cls.get("super"), "ceylon.language::IdentifiableObject");
+        ModelUtils.checkType((Map<String, Object>)cls.get("super"), "ceylon.language::Basic");
         List<Map<String, Object>> ps = (List<Map<String, Object>>)cls.get("satisfies");
         Assert.assertEquals("Satisfy1 should satisfy 1 interface", 1, ps.size());
         ModelUtils.checkType(ps.get(0), "ceylon.language::Comparable<t2::Satisfy1>");
@@ -105,7 +105,7 @@ public class TestModelClasses {
     @Test @SuppressWarnings("unchecked")
     public void testSatisfies2() {
         Map<String,Object> cls = (Map<String, Object>)model.get("Satisfy2");
-        ModelUtils.checkType((Map<String, Object>)cls.get("super"), "ceylon.language::IdentifiableObject");
+        ModelUtils.checkType((Map<String, Object>)cls.get("super"), "ceylon.language::Basic");
         List<Map<String, Object>> ps = (List<Map<String, Object>>)cls.get("satisfies");
         Assert.assertEquals("Satisfy1 should satisfy 2 interfaces", 2, ps.size());
         ModelUtils.checkType(ps.get(0), "ceylon.language::Iterable<ceylon.language::Integer>");

@@ -197,13 +197,13 @@ public class TestModuleManager {
         ProducedType seq0 = null, seq1 = null;
         for (ProducedType pt : d0.getSatisfiedTypes()) {
             System.out.println(d0 + " satisfies " + pt);
-            if (pt.getProducedTypeName().startsWith("Nothing[]")) {
+            if (pt.getProducedTypeName().startsWith("Null[]")) {
                 seq0 = pt;
                 break;
             }
         }
         for (ProducedType pt : d1.getSatisfiedTypes()) {
-            if (pt.getProducedTypeName().startsWith("Nothing[]")) {
+            if (pt.getProducedTypeName().startsWith("Null[]")) {
                 seq1 = pt;
                 break;
             }
@@ -248,7 +248,7 @@ public class TestModuleManager {
         Assert.assertEquals(t0.isWellDefined(), t1.isWellDefined());
         final String t0ptqn = t0.getProducedTypeQualifiedName();
         stack.add(t0ptqn);
-        if ("ceylon.language::Anything".equals(t0ptqn) || "ceylon.language::Nothing".equals(t0ptqn) || "ceylon.language::IdentifiableObject".equals(t0ptqn) || "ceylon.language::Null".equals(t0ptqn)) {
+        if ("ceylon.language::Anything".equals(t0ptqn) || "ceylon.language::Null".equals(t0ptqn) || "ceylon.language::Basic".equals(t0ptqn) || "ceylon.language::Null".equals(t0ptqn)) {
             return;
         }
         //Type arguments
