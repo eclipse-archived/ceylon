@@ -16,7 +16,7 @@ class ForIfNonEmptySequence {
                     
                     private final boolean s() {
                         final .java.lang.Object $ceylontmpitem0 = iter$0.next();
-                        s$exhausted = $ceylontmpitem0 == .ceylon.language.exhausted_.getExhausted$();
+                        s$exhausted = $ceylontmpitem0 == .ceylon.language.finished_.getFinished$();
                         if (s$exhausted) {
                             return false;
                         } else {
@@ -39,7 +39,7 @@ class ForIfNonEmptySequence {
                     }
                     
                     public final .java.lang.Object next() {
-                        return this.next1() ? ((.ceylon.language.Sequence<? extends .ceylon.language.Character>)(.ceylon.language.Sequence)$s$2).getFirst() : .ceylon.language.exhausted_.getExhausted$();
+                        return this.next1() ? ((.ceylon.language.Sequence<? extends .ceylon.language.Character>)(.ceylon.language.Sequence)$s$2).getFirst() : .ceylon.language.finished_.getFinished$();
                     }
                 };
             }
@@ -57,7 +57,7 @@ class ForIfNonEmptySequence {
                     
                     private final boolean s() {
                         final .java.lang.Object $ceylontmpitem3 = iter$0.next();
-                        s$exhausted = $ceylontmpitem3 == .ceylon.language.exhausted_.getExhausted$();
+                        s$exhausted = $ceylontmpitem3 == .ceylon.language.finished_.getFinished$();
                         if (s$exhausted) {
                             return false;
                         } else {
@@ -80,7 +80,7 @@ class ForIfNonEmptySequence {
                     }
                     
                     public final .java.lang.Object next() {
-                        return this.next1() ? ((.ceylon.language.Sequence<? extends .ceylon.language.Character>)(.ceylon.language.Sequence)$t$5).getFirst() : .ceylon.language.exhausted_.getExhausted$();
+                        return this.next1() ? ((.ceylon.language.Sequence<? extends .ceylon.language.Character>)(.ceylon.language.Sequence)$t$5).getFirst() : .ceylon.language.finished_.getFinished$();
                     }
                 };
             }

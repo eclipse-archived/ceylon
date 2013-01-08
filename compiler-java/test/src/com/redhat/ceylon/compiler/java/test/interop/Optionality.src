@@ -38,7 +38,7 @@ class OptionalInterface implements .com.redhat.ceylon.compiler.java.test.interop
                         
                         private final boolean obj() {
                             final .java.lang.Object $ceylontmpitem6 = iter$0.next();
-                            obj$exhausted = $ceylontmpitem6 == .ceylon.language.exhausted_.getExhausted$();
+                            obj$exhausted = $ceylontmpitem6 == .ceylon.language.finished_.getFinished$();
                             if (obj$exhausted) {
                                 return false;
                             } else {
@@ -61,7 +61,7 @@ class OptionalInterface implements .com.redhat.ceylon.compiler.java.test.interop
                         }
                         
                         public final .java.lang.Object next() {
-                            return this.next1() ? $z$8 : .ceylon.language.exhausted_.getExhausted$();
+                            return this.next1() ? $z$8 : .ceylon.language.finished_.getFinished$();
                         }
                     };
                 }
@@ -81,7 +81,7 @@ class OptionalInterface implements .com.redhat.ceylon.compiler.java.test.interop
                         
                         private final boolean obj() {
                             final .java.lang.Object $ceylontmpitem12 = iter$0.next();
-                            obj$exhausted = $ceylontmpitem12 == .ceylon.language.exhausted_.getExhausted$();
+                            obj$exhausted = $ceylontmpitem12 == .ceylon.language.finished_.getFinished$();
                             if (obj$exhausted) {
                                 return false;
                             } else {
@@ -104,7 +104,7 @@ class OptionalInterface implements .com.redhat.ceylon.compiler.java.test.interop
                         }
                         
                         public final .java.lang.Object next() {
-                            return this.next1() ? $z$14 : .ceylon.language.exhausted_.getExhausted$();
+                            return this.next1() ? $z$14 : .ceylon.language.finished_.getFinished$();
                         }
                     };
                 }
@@ -138,7 +138,7 @@ class OptionalInterface implements .com.redhat.ceylon.compiler.java.test.interop
                         
                         private final boolean i() {
                             final .java.lang.Object $ceylontmpitem17 = iter$0.next();
-                            i$exhausted = $ceylontmpitem17 == .ceylon.language.exhausted_.getExhausted$();
+                            i$exhausted = $ceylontmpitem17 == .ceylon.language.finished_.getFinished$();
                             if (i$exhausted) {
                                 return false;
                             } else {
@@ -148,7 +148,7 @@ class OptionalInterface implements .com.redhat.ceylon.compiler.java.test.interop
                         }
                         
                         public final .java.lang.Object next() {
-                            return this.i() ? .com.redhat.ceylon.compiler.java.Util.checkNull($x$2.getProp1()) : .ceylon.language.exhausted_.getExhausted$();
+                            return this.i() ? .com.redhat.ceylon.compiler.java.Util.checkNull($x$2.getProp1()) : .ceylon.language.finished_.getFinished$();
                         }
                     };
                 }
@@ -163,7 +163,7 @@ class OptionalInterface implements .com.redhat.ceylon.compiler.java.test.interop
                         
                         private final boolean i() {
                             final .java.lang.Object $ceylontmpitem18 = iter$0.next();
-                            i$exhausted = $ceylontmpitem18 == .ceylon.language.exhausted_.getExhausted$();
+                            i$exhausted = $ceylontmpitem18 == .ceylon.language.finished_.getFinished$();
                             if (i$exhausted) {
                                 return false;
                             } else {
@@ -173,7 +173,7 @@ class OptionalInterface implements .com.redhat.ceylon.compiler.java.test.interop
                         }
                         
                         public final .java.lang.Object next() {
-                            return this.i() ? .com.redhat.ceylon.compiler.java.Util.checkNull($x$2.getProp1()) : .ceylon.language.exhausted_.getExhausted$();
+                            return this.i() ? .com.redhat.ceylon.compiler.java.Util.checkNull($x$2.getProp1()) : .ceylon.language.finished_.getFinished$();
                         }
                     };
                 }

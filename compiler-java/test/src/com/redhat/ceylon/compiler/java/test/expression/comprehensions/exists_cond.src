@@ -17,7 +17,7 @@ final class existsCond_ {
                     
                     private final boolean x() {
                         final .java.lang.Object $ceylontmpitem0 = iter$0.next();
-                        x$exhausted = $ceylontmpitem0 == .ceylon.language.exhausted_.getExhausted$();
+                        x$exhausted = $ceylontmpitem0 == .ceylon.language.finished_.getFinished$();
                         if (x$exhausted) {
                             return false;
                         } else {
@@ -53,7 +53,7 @@ final class existsCond_ {
                     }
                     
                     public final .java.lang.Object next() {
-                        return this.next2() ? .ceylon.language.Character.instance(.ceylon.language.Character.getUppercased($c$4)) : .ceylon.language.exhausted_.getExhausted$();
+                        return this.next2() ? .ceylon.language.Character.instance(.ceylon.language.Character.getUppercased($c$4)) : .ceylon.language.finished_.getFinished$();
                     }
                 };
             }

@@ -19,5 +19,5 @@
  */
 @nomodel
 class MethodSpecifyingInitParam(Callable<Anything, []> x) {
-    void foo() => x();
+    function foo() => x();
 }

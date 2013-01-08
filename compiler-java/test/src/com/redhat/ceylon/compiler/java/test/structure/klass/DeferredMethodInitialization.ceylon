@@ -20,5 +20,5 @@
 @nomodel
 class DeferredInitializedMethod() {
     String s(String name="world");
-    s = (String name) "hello " + name;
+    s = (String name) => "hello " + name;
 }

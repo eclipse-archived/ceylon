@@ -19,31 +19,31 @@
  */
 @nomodel
 void anonFunctionNullary<T>(T t) {
-    Callable<String, []> s1 = () "";
-    Callable<String?, []> s2 = () "";
-    Callable<String[], []> s3 = () {""};
+    Callable<String, []> s1 = () => "";
+    Callable<String?, []> s2 = () => "";
+    Callable<String[], []> s3 = () => [""];
     
-    Callable<Integer, []> i1 = () 1;
-    Callable<Integer?, []> i2 = () 1;
-    Callable<Integer[], []> i3 = () {1};
+    Callable<Integer, []> i1 = () => 1;
+    Callable<Integer?, []> i2 = () => 1;
+    Callable<Integer[], []> i3 = () => [1];
     
-    Callable<Float, []> f1 = () 1.0;
-    Callable<Float?, []> f2 = () 1.0;
-    Callable<Float[], []> f3 = () {1.0};
+    Callable<Float, []> f1 = () => 1.0;
+    Callable<Float?, []> f2 = () => 1.0;
+    Callable<Float[], []> f3 = () => [1.0];
     
-    Callable<Sequence<Integer|Float>|Empty, []> if3 = () {1, 1.0};
+    Callable<Sequence<Integer|Float>|Empty, []> if3 = () => [1, 1.0];
     
-    Callable<Boolean, []> b1 = () true;
-    Callable<Boolean?, []> b2 = () true;
-    Callable<Boolean[], []> b3 = () {true};
+    Callable<Boolean, []> b1 = () => true;
+    Callable<Boolean?, []> b2 = () => true;
+    Callable<Boolean[], []> b3 = () => [true];
     
-    Callable<Comparison, []> c1 = () larger;
-    Callable<Comparison?, []> c2 = () larger;
-    Callable<Comparison[], []> c3 = () {larger, smaller};
+    Callable<Comparison, []> c1 = () => larger;
+    Callable<Comparison?, []> c2 = () => larger;
+    Callable<Comparison[], []> c3 = () => [larger, smaller];
     
-    Callable<T, []> t1 = () t;
-    Callable<T?, []> t2 = () t;
-    Callable<T[], []> t3 = () {t};
+    Callable<T, []> t1 = () => t;
+    Callable<T?, []> t2 = () => t;
+    Callable<T[], []> t3 = () => [t];
     
-    Callable<Sequence<Integer|T>|Empty, []> it3 = () {t, 1};   
+    Callable<Sequence<Integer|T>|Empty, []> it3 = () => [t, 1];   
 }

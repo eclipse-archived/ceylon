@@ -13,8 +13,14 @@ class MethodSpecifyingUnaryTopLevel {
     MethodSpecifyingUnaryTopLevel() {
     }
     
-    private final void foo(final .java.lang.String s) {
-        .com.redhat.ceylon.compiler.java.test.structure.method.methodSpecifyingUnaryTopLevel_f_.methodSpecifyingUnaryTopLevel_f(s);
+    private final .java.lang.Object foo(final .java.lang.String s) {
+        return (
+            let
+            {
+                .com.redhat.ceylon.compiler.java.test.structure.method.methodSpecifyingUnaryTopLevel_f_.methodSpecifyingUnaryTopLevel_f(s);
+            }
+            returning null;
+        );
     }
     
     public static void main(.java.lang.String[] args) {

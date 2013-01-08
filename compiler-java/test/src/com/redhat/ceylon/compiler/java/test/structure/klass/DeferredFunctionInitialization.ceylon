@@ -20,6 +20,6 @@
 @nomodel
 void deferredFunctionInitialization() {
     String s();
-    s = () "hello";
+    s = () => "hello";
     print(s());
 }

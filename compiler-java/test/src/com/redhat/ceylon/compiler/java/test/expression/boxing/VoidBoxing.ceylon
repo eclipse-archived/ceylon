@@ -55,8 +55,8 @@ class AnythingBoxing() {
         Anything v8 = callablevoid(returnsAnything);
         Anything v9 = callableAnything(returnsvoid);
         Anything v10= callableAnything(returnsAnything);
-        Anything v11= callablevoid((Anything s) s);
-        Anything v12= callableAnything((Anything s) s); 
+        Anything v11= callablevoid((Anything s) => s);
+        Anything v12= callableAnything((Anything s) => s); 
         
         variable Anything v;
         v = valueAnything;
@@ -69,8 +69,8 @@ class AnythingBoxing() {
         v = callablevoid(returnsAnything);
         v = callableAnything(returnsvoid);
         v = callableAnything(returnsAnything);
-        v = callablevoid((Anything s) s);
-        v = callableAnything((Anything s) s);
+        v = callablevoid((Anything s) => s);
+        v = callableAnything((Anything s) => s);
         
     }
 }

@@ -21,5 +21,5 @@
 class VarargsMethodSpecifyingMethodWithVarargs() {
     void foo(Integer... seq) {
     }
-    void bar(Integer... ints) => foo(ints...);
+    function bar(Integer... ints) => foo(ints...);
 }

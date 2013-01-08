@@ -64,7 +64,7 @@ class MethodRefinementWithSpecifiers_Class(void arg()) satisfies MethodRefinemen
     f4() => arg();
 
     // short decl, lazy, arg always reevaluated
-    f5 = function () arg();
+    f5 = function () => arg();
 
     // long decl, lazy, arg always reevaluated
     shared actual void f6(){

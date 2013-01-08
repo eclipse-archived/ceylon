@@ -22,5 +22,5 @@ void methodSpecifyingUnaryTopLevel_f(String s) {
 }
 @nomodel
 class MethodSpecifyingUnaryTopLevel() {
-    void foo(String s) => methodSpecifyingUnaryTopLevel_f(s);
+    Anything foo(String s) => methodSpecifyingUnaryTopLevel_f(s);
 }

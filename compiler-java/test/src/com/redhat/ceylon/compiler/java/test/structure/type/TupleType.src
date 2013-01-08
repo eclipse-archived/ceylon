@@ -80,7 +80,7 @@ final class tupleTypeTest_ {
                     
                     private final boolean s() {
                         final .java.lang.Object $ceylontmpitem2 = iter$0.next();
-                        s$exhausted = $ceylontmpitem2 == .ceylon.language.exhausted_.getExhausted$();
+                        s$exhausted = $ceylontmpitem2 == .ceylon.language.finished_.getFinished$();
                         if (s$exhausted) {
                             return false;
                         } else {
@@ -90,7 +90,7 @@ final class tupleTypeTest_ {
                     }
                     
                     public final .java.lang.Object next() {
-                        return this.s() ? s : .ceylon.language.exhausted_.getExhausted$();
+                        return this.s() ? s : .ceylon.language.finished_.getFinished$();
                     }
                 };
             }

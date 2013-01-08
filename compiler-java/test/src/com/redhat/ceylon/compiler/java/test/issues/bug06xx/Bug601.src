@@ -18,7 +18,7 @@ final class bug601_ {
                     
                     private final boolean str() {
                         final .java.lang.Object $ceylontmpitem0 = iter$0.next();
-                        str$exhausted = $ceylontmpitem0 == .ceylon.language.exhausted_.getExhausted$();
+                        str$exhausted = $ceylontmpitem0 == .ceylon.language.finished_.getFinished$();
                         if (str$exhausted) {
                             return false;
                         } else {
@@ -28,7 +28,7 @@ final class bug601_ {
                     }
                     
                     public final .java.lang.Object next() {
-                        return this.str() ? str : .ceylon.language.exhausted_.getExhausted$();
+                        return this.str() ? str : .ceylon.language.finished_.getFinished$();
                     }
                 };
             }

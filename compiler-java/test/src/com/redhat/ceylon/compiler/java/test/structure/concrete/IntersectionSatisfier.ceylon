@@ -18,11 +18,11 @@
  * MA  02110-1301, USA.
  */
 @nomodel
-interface IntersectionSatisfier_X<out T, out N> given N satisfies Nothing {
+interface IntersectionSatisfier_X<out T, out N> given N satisfies Null {
     shared formal T|N x;
 }
 @nomodel
-interface IntersectionSatisfier_I1<out T> satisfies IntersectionSatisfier_X<T, Nothing> {
+interface IntersectionSatisfier_I1<out T> satisfies IntersectionSatisfier_X<T, Null> {
     shared actual default T? x { return null; }
 }
 @nomodel

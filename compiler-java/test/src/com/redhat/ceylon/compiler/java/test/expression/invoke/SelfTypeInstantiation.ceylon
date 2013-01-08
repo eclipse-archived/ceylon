@@ -18,7 +18,7 @@
  * MA  02110-1301, USA.
  */
 @nomodel
-class SelfTypeInstantiation<T>() of T {
+abstract class SelfTypeInstantiation<T>() of T {
 }
 @nomodel
-SelfTypeInstantiation<String> selfTypeInstantiation = SelfTypeInstantiation<String>();
+class BaseSelfTypeInstantiation() extends SelfTypeInstantiation<BaseSelfTypeInstantiation>(){}

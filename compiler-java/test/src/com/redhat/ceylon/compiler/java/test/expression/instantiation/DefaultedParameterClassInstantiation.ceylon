@@ -27,6 +27,6 @@ class DefaultedParameterClassInstantiation(Integer m = 1, Integer n = m + 1, Int
         DefaultedParameterClassInstantiation e = DefaultedParameterClassInstantiation{};
         DefaultedParameterClassInstantiation f = DefaultedParameterClassInstantiation{m=6;};
         DefaultedParameterClassInstantiation g = DefaultedParameterClassInstantiation{m=6; n=9;};
-        DefaultedParameterClassInstantiation h = DefaultedParameterClassInstantiation{m=6; n=9; seq=1; seq=2; seq=3;};
+        DefaultedParameterClassInstantiation h = DefaultedParameterClassInstantiation{m=6; n=9; seq=[1, 2, 3];};
     }
 }

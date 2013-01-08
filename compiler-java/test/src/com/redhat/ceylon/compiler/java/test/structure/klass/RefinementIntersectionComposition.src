@@ -69,9 +69,9 @@ final class RIC_Right$impl {
     }
     private final .com.redhat.ceylon.compiler.java.test.structure.klass.RIC_Right $this;
 }
-class RIC_Bottom_From_Class extends .com.redhat.ceylon.compiler.java.test.structure.klass.RIC_Middle implements .com.redhat.ceylon.compiler.java.test.structure.klass.RIC_Left, .com.redhat.ceylon.compiler.java.test.structure.klass.RIC_Right {
+class RIC_Nothing_From_Class extends .com.redhat.ceylon.compiler.java.test.structure.klass.RIC_Middle implements .com.redhat.ceylon.compiler.java.test.structure.klass.RIC_Left, .com.redhat.ceylon.compiler.java.test.structure.klass.RIC_Right {
     
-    RIC_Bottom_From_Class() {
+    RIC_Nothing_From_Class() {
         super();
         this.$com$redhat$ceylon$compiler$java$test$structure$klass$RIC_Left$this = new .com.redhat.ceylon.compiler.java.test.structure.klass.RIC_Left$impl(this);
         this.$com$redhat$ceylon$compiler$java$test$structure$klass$RIC_Right$this = new .com.redhat.ceylon.compiler.java.test.structure.klass.RIC_Right$impl(this);
@@ -91,12 +91,12 @@ class RIC_Bottom_From_Class extends .com.redhat.ceylon.compiler.java.test.struct
     
     public static void main(.java.lang.String[] args) {
         .ceylon.language.process_.getProcess$().setupArguments(args);
-        new .com.redhat.ceylon.compiler.java.test.structure.klass.RIC_Bottom_From_Class();
+        new .com.redhat.ceylon.compiler.java.test.structure.klass.RIC_Nothing_From_Class();
     }
 }
-class RIC_Bottom_From_Interface implements .com.redhat.ceylon.compiler.java.test.structure.klass.RIC_Left, .com.redhat.ceylon.compiler.java.test.structure.klass.RIC_Right {
+class RIC_Nothing_From_Interface implements .com.redhat.ceylon.compiler.java.test.structure.klass.RIC_Left, .com.redhat.ceylon.compiler.java.test.structure.klass.RIC_Right {
     
-    RIC_Bottom_From_Interface() {
+    RIC_Nothing_From_Interface() {
         this.$com$redhat$ceylon$compiler$java$test$structure$klass$RIC_Left$this = new .com.redhat.ceylon.compiler.java.test.structure.klass.RIC_Left$impl(this);
         this.$com$redhat$ceylon$compiler$java$test$structure$klass$RIC_Top$this = new .com.redhat.ceylon.compiler.java.test.structure.klass.RIC_Top$impl<.com.redhat.ceylon.compiler.java.test.structure.klass.RIC_B>((.com.redhat.ceylon.compiler.java.test.structure.klass.RIC_Top)this);
         this.$com$redhat$ceylon$compiler$java$test$structure$klass$RIC_Right$this = new .com.redhat.ceylon.compiler.java.test.structure.klass.RIC_Right$impl(this);
@@ -117,6 +117,6 @@ class RIC_Bottom_From_Interface implements .com.redhat.ceylon.compiler.java.test
     
     public static void main(.java.lang.String[] args) {
         .ceylon.language.process_.getProcess$().setupArguments(args);
-        new .com.redhat.ceylon.compiler.java.test.structure.klass.RIC_Bottom_From_Interface();
+        new .com.redhat.ceylon.compiler.java.test.structure.klass.RIC_Nothing_From_Interface();
     }
 }

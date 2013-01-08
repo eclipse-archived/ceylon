@@ -20,7 +20,7 @@ class ForIfIsNotObject {
                     
                     private final boolean x() {
                         final .java.lang.Object $ceylontmpitem0 = iter$0.next();
-                        x$exhausted = $ceylontmpitem0 == .ceylon.language.exhausted_.getExhausted$();
+                        x$exhausted = $ceylontmpitem0 == .ceylon.language.finished_.getFinished$();
                         if (x$exhausted) {
                             return false;
                         } else {
@@ -40,7 +40,7 @@ class ForIfIsNotObject {
                     }
                     
                     public final .java.lang.Object next() {
-                        return this.next1() ? nowt(x) : .ceylon.language.exhausted_.getExhausted$();
+                        return this.next1() ? nowt(x) : .ceylon.language.finished_.getFinished$();
                     }
                 };
             }
@@ -58,7 +58,7 @@ class ForIfIsNotObject {
                     
                     private final boolean y() {
                         final .java.lang.Object $ceylontmpitem2 = iter$0.next();
-                        y$exhausted = $ceylontmpitem2 == .ceylon.language.exhausted_.getExhausted$();
+                        y$exhausted = $ceylontmpitem2 == .ceylon.language.finished_.getFinished$();
                         if (y$exhausted) {
                             return false;
                         } else {
@@ -81,7 +81,7 @@ class ForIfIsNotObject {
                     }
                     
                     public final .java.lang.Object next() {
-                        return this.next1() ? nowt($x$4) : .ceylon.language.exhausted_.getExhausted$();
+                        return this.next1() ? nowt($x$4) : .ceylon.language.finished_.getFinished$();
                     }
                 };
             }

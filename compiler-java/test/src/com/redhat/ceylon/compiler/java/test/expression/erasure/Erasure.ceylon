@@ -95,9 +95,9 @@ class Test(Integer&EmptyInterface n) {
     // the Integer&EmptyInterface type cannot exist, we'll need to change it to
     // something else
     Left testIntersection(Integer&EmptyInterface p1,
-                          Integer&EmptyInterface|Nothing p1OrNothing,
+                          Integer&EmptyInterface|Null p1OrNull,
                           Sequence<Top&EmptyInterface>&EmptyInterface tops,
-                          Nothing|Sequence<Top&EmptyInterface>&EmptyInterface topsOrNothing,
+                          Null|Sequence<Top&EmptyInterface>&EmptyInterface topsOrNull,
                           Test&EmptyInterface erasedTest){
         Left&Right middle = CMiddle();
 
@@ -161,18 +161,18 @@ class Test(Integer&EmptyInterface n) {
     }
 
     void testNullHandlingOperators(Integer&EmptyInterface p1,
-                                   Integer&EmptyInterface|Nothing p1OrNothing){
+                                   Integer&EmptyInterface|Null p1OrNull){
         // conditions
-        if(exists p1OrNothing){}
+        if(exists p1OrNull){}
         variable Boolean bSync;
-        bSync = p1OrNothing exists;
+        bSync = p1OrNull exists;
         
-        value p2 = p1OrNothing else p1;
-        Integer n = p1OrNothing else p1;
+        value p2 = p1OrNull else p1;
+        Integer n = p1OrNull else p1;
         
         // FIXME: those operators are not yet supported
-        //value p3 = p1OrNothing?.remainder(p1);
-        //value p4 = p1OrNothing?.zero;
+        //value p3 = p1OrNull?.remainder(p1);
+        //value p4 = p1OrNull?.zero;
     }
 
     void testArithmeticOperators(Integer&EmptyInterface p1,
@@ -214,14 +214,14 @@ class Test(Integer&EmptyInterface n) {
     void testSequences(Integer&EmptyInterface p1,
                        Sequence<Left&Right>&EmptyInterface leftsAndRights,
                        Sequence<Entry<Left&Right,Left&Right>&EmptyInterface>&EmptyInterface leftsAndRightsEntries,
-                       Nothing|Sequence<Left&Right>&EmptyInterface topsOrNothing){
+                       Null|Sequence<Left&Right>&EmptyInterface topsOrNull){
         // sequence operators
-        Empty|Sequence<Integer&EmptyInterface> naturals = {p1};
+        Empty|Sequence<Integer&EmptyInterface> naturals = [p1];
         Integer? n5 = naturals[p1];
         Top? t = leftsAndRights[p1];
-        Empty|Sequence<Integer&EmptyInterface>|Nothing naturalsOrNothing = {p1};
-        Integer? n52 = naturalsOrNothing?[p1];
-        Top? t2 = topsOrNothing?[p1];
+        Empty|Sequence<Integer&EmptyInterface>|Null naturalsOrNull = [p1];
+        Integer? n52 = naturalsOrNull?[p1];
+        Top? t2 = topsOrNull?[p1];
         
         variable Empty|Sequence<Integer&EmptyInterface> subrange;
         subrange = naturals[p1..p1] of Empty|Sequence<Integer&EmptyInterface>;
@@ -229,7 +229,7 @@ class Test(Integer&EmptyInterface n) {
         subrange = naturals[...p1] of Empty|Sequence<Integer&EmptyInterface>;
 
         // sequence expression
-        Integer[] plainIntegers = {p1};
+        Integer[] plainIntegers = [p1];
 
         // iteration
         // FIXME: I couldn't find a way to get a sequence erased to object
@@ -273,7 +273,7 @@ class Test(Integer&EmptyInterface n) {
             itErasedValue2.left();
             itErasedValue2.right();
         }
-        Sequence<Top> topSequence = {CMiddle()}; 
+        Sequence<Top> topSequence = [CMiddle()]; 
         for(Top it in topSequence){
             it.top();
         }

@@ -33,7 +33,7 @@ interface ConcreteAttribute<A> {
 }
 @nomodel
 void concreteAttributeCallsite(ConcreteAttribute<Integer|Float> a) {
-    variable Nothing|Integer|Float v;
+    variable Null|Integer|Float v;
     v = a.aShared;
     v = a.aFormal;
     v = a.aVariableFormal;
@@ -60,7 +60,7 @@ class ConcreteAttributeGetterImpl<B>() satisfies ConcreteAttribute<B> {
 }
 @nomodel
 void concreteAttributeGetterImplCallsite(ConcreteAttributeGetterImpl<Integer|Float> a) {
-    variable Nothing|Integer|Float v;
+    variable Null|Integer|Float v;
     v = a.aShared;
     v = a.aFormal;
     v = a.aVariableFormal;
@@ -80,7 +80,7 @@ class ConcreteAttributeValueImpl<C>() satisfies ConcreteAttribute<C> {
 }
 @nomodel
 void concreteAttributeValueImplCallsite(ConcreteAttributeValueImpl<Integer|Float> a) {
-    variable Nothing|Integer|Float v;
+    variable Null|Integer|Float v;
     v = a.aShared;
     v = a.aFormal;
     v = a.aVariableFormal;

@@ -20,13 +20,13 @@
 @nomodel
 class SequenceLiteral(){
     shared void m() {
-        String[] sequence = {"a", "b"};
+        String[] sequence = ["a", "b"];
         Iterable<String> iterable = sequence;
         
         [] empty = {};
         {String...} comp = { for (s in sequence) s };  
-        [String, String, String] triplet = { "hello", "world", "goodbye" };
-        [String,String...] spreadSequence = { "hello", sequence... };
+        [String, String, String] triplet = [ "hello", "world", "goodbye" ];
+        [String,String...] spreadSequence = [ "hello", sequence... ];
         {String...} spreadIterable = { "hello", iterable... };
     }
 }

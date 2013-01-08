@@ -18,5 +18,5 @@
  * MA  02110-1301, USA.
  */
 @nomodel
-String(String) toplevel = (String name2) "hello " + name2;
+String(String) toplevel = (String name2) => "hello " + name2;
 

@@ -262,7 +262,7 @@ class Test {
         }
     }
     
-    private final .com.redhat.ceylon.compiler.java.test.expression.erasure.Left testIntersection(final .java.lang.Object p1, final .java.lang.Object p1OrNothing, final .ceylon.language.Sequential tops, final .ceylon.language.Sequential topsOrNothing, final .java.lang.Object erasedTest) {
+    private final .com.redhat.ceylon.compiler.java.test.expression.erasure.Left testIntersection(final .java.lang.Object p1, final .java.lang.Object p1OrNull, final .ceylon.language.Sequential tops, final .ceylon.language.Sequential topsOrNull, final .java.lang.Object erasedTest) {
         final .java.lang.Object middle = new .com.redhat.ceylon.compiler.java.test.expression.erasure.CMiddle();
         ((.com.redhat.ceylon.compiler.java.test.expression.erasure.Top)middle).top();
         ((.com.redhat.ceylon.compiler.java.test.expression.erasure.Left)middle).left();
@@ -301,7 +301,7 @@ class Test {
         left3 = (.com.redhat.ceylon.compiler.java.test.expression.erasure.Left)middleVar;
         setLeftAttribute((.com.redhat.ceylon.compiler.java.test.expression.erasure.Left)middleVar);
         ((.com.redhat.ceylon.compiler.java.test.expression.erasure.Test)erasedTest).setLeftAttribute((.com.redhat.ceylon.compiler.java.test.expression.erasure.Left)middleVar);
-        ((.com.redhat.ceylon.compiler.java.test.expression.erasure.Left)(
+        ((.com.redhat.ceylon.compiler.java.test.expression.erasure.CMiddle)(
             let
             {
                 .java.lang.Object $ceylontmpop5 = new .com.redhat.ceylon.compiler.java.test.expression.erasure.CMiddle();
@@ -328,24 +328,24 @@ class Test {
         return (.com.redhat.ceylon.compiler.java.test.expression.erasure.Left)middle;
     }
     
-    private final void testNullHandlingOperators(final .java.lang.Object p1, final .java.lang.Object p1OrNothing) {
-        .java.lang.Object $p1OrNothing$10;
-        if (($p1OrNothing$10 = p1OrNothing) != null) {
-            final .java.lang.Object $p1OrNothing$11 = $p1OrNothing$10;
+    private final void testNullHandlingOperators(final .java.lang.Object p1, final .java.lang.Object p1OrNull) {
+        .java.lang.Object $p1OrNull$10;
+        if (($p1OrNull$10 = p1OrNull) != null) {
+            final .java.lang.Object $p1OrNull$11 = $p1OrNull$10;
         }
         boolean bSync;
-        bSync = p1OrNothing != null;
+        bSync = p1OrNull != null;
         final .java.lang.Object p2 = (
             let
             {
-                .java.lang.Object $ceylontmp12 = p1OrNothing;
+                .java.lang.Object $ceylontmp12 = p1OrNull;
             }
             returning $ceylontmp12 != null ? $ceylontmp12 : p1;
         );
         final long n = ((.ceylon.language.Integer)(
             let
             {
-                .java.lang.Object $ceylontmp13 = p1OrNothing;
+                .java.lang.Object $ceylontmp13 = p1OrNull;
             }
             returning $ceylontmp13 != null ? $ceylontmp13 : p1;
         )).longValue();
@@ -388,22 +388,22 @@ class Test {
         );
     }
     
-    private final void testSequences(final .java.lang.Object p1, final .ceylon.language.Sequential leftsAndRights, final .ceylon.language.Sequential leftsAndRightsEntries, final .ceylon.language.Sequential topsOrNothing) {
+    private final void testSequences(final .java.lang.Object p1, final .ceylon.language.Sequential leftsAndRights, final .ceylon.language.Sequential leftsAndRightsEntries, final .ceylon.language.Sequential topsOrNull) {
         final .ceylon.language.Sequential naturals = new .ceylon.language.Tuple(p1, .ceylon.language.empty_.getEmpty$());
         final .ceylon.language.Integer n5 = (.ceylon.language.Integer)((.ceylon.language.Correspondence<? super .ceylon.language.Integer, ? extends .java.lang.Object>)(.ceylon.language.Correspondence)naturals).item((.ceylon.language.Integer)p1);
         final .com.redhat.ceylon.compiler.java.test.expression.erasure.Top t = (.com.redhat.ceylon.compiler.java.test.expression.erasure.Top)((.ceylon.language.Correspondence<? super .ceylon.language.Integer, ? extends .java.lang.Object>)(.ceylon.language.Correspondence)leftsAndRights).item((.ceylon.language.Integer)p1);
-        final .ceylon.language.Sequential naturalsOrNothing = new .ceylon.language.Tuple(p1, .ceylon.language.empty_.getEmpty$());
+        final .ceylon.language.Sequential naturalsOrNull = new .ceylon.language.Tuple(p1, .ceylon.language.empty_.getEmpty$());
         final .ceylon.language.Integer n52 = (.ceylon.language.Integer)(
             let
             {
-                .ceylon.language.Correspondence<? super .ceylon.language.Integer, ? extends .java.lang.Object> $ceylontmpsafeaccess18 = (.ceylon.language.Correspondence<? super .ceylon.language.Integer, ? extends .java.lang.Object>)(.ceylon.language.Correspondence)naturalsOrNothing;
+                .ceylon.language.Correspondence<? super .ceylon.language.Integer, ? extends .java.lang.Object> $ceylontmpsafeaccess18 = (.ceylon.language.Correspondence<? super .ceylon.language.Integer, ? extends .java.lang.Object>)(.ceylon.language.Correspondence)naturalsOrNull;
             }
             returning $ceylontmpsafeaccess18 != null ? $ceylontmpsafeaccess18.item((.ceylon.language.Integer)p1) : null;
         );
         final .com.redhat.ceylon.compiler.java.test.expression.erasure.Top t2 = (.com.redhat.ceylon.compiler.java.test.expression.erasure.Top)(
             let
             {
-                .ceylon.language.Correspondence<? super .ceylon.language.Integer, ? extends .java.lang.Object> $ceylontmpsafeaccess19 = (.ceylon.language.Correspondence<? super .ceylon.language.Integer, ? extends .java.lang.Object>)(.ceylon.language.Correspondence)topsOrNothing;
+                .ceylon.language.Correspondence<? super .ceylon.language.Integer, ? extends .java.lang.Object> $ceylontmpsafeaccess19 = (.ceylon.language.Correspondence<? super .ceylon.language.Integer, ? extends .java.lang.Object>)(.ceylon.language.Correspondence)topsOrNull;
             }
             returning $ceylontmpsafeaccess19 != null ? $ceylontmpsafeaccess19.item((.ceylon.language.Integer)p1) : null;
         );

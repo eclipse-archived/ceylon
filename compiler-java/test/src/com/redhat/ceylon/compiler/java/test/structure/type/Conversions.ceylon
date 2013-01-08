@@ -66,11 +66,11 @@ class BarSats() extends Bar() satisfies ISats {
 class ExtAnything() extends GenInv<Anything>() {
 }
 
-// For the nothing type Bottom:
-// - The Ceylon type Foo<Bottom> appearing in an extends or satisfies
+// For the nothing type Nothing:
+// - The Ceylon type Foo<Nothing> appearing in an extends or satisfies
 //   clause results in the Java raw type Foo
 @nomodel
-class ExtBottom() extends GenInv<Bottom>() {
+class ExtNothing() extends GenInv<Nothing>() {
 }
 
 @nomodel
@@ -104,12 +104,12 @@ class Conversions() {
                 
         // For an erased type:
         // - Any of the Ceylon types Anything, Object, Nothing, Equality,
-        //   Basic, and Bottom result in the Java type Object
+        //   Basic, and Nothing result in the Java type Object
         Anything e1;
         Object e2;
         Nothing e3;
         Basic e4;
-        Bottom e5;
+        Nothing e5;
         
         // For an ordinary class or interface type T:
         // - The Ceylon type Foo<T> appearing anywhere else results in the Java type
@@ -141,14 +141,14 @@ class Conversions() {
         GenCov<Anything> v2;
         GenCon<Anything> v3;
         
-        // For the nothing type Bottom:
-        // - The Ceylon type Foo<Bottom> appearing anywhere else results in the Java type
+        // For the nothing type Nothing:
+        // - The Ceylon type Foo<Nothing> appearing anywhere else results in the Java type
         // - Foo<T> if Foo is invariant in T,
         // - Foo<? extends T> if Foo is covariant in T, or
         // - Foo<? super T> if Foo is contravariant in T
-        GenInv<Bottom> b1;
-        GenCov<Bottom> b2;
-        GenCon<Bottom> b3;
+        GenInv<Nothing> b1;
+        GenCov<Nothing> b2;
+        GenCon<Nothing> b3;
     }
 }
 

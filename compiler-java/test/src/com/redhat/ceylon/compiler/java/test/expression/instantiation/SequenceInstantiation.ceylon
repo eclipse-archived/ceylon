@@ -20,7 +20,7 @@
 @nomodel
 class SequenceInstantiation(){
     shared Sequence<Integer> m() {
-        return { 1, 2, 3, n1, n2() };
+        return [ 1, 2, 3, n1, n2() ];
     }
     Integer n1 {
         return 4;

@@ -23,8 +23,8 @@ class EmptyImpl extends .java.lang.Object implements .ceylon.language.Empty {
     }
     
     @.java.lang.Override
-    public final .java.lang.Object item(final .ceylon.language.Integer key) {
-        return $ceylon$language$Empty$this.item(key);
+    public final .java.lang.Object item(final .ceylon.language.Integer index) {
+        return $ceylon$language$Empty$this.item(index);
     }
     
     @.java.lang.Override
@@ -45,6 +45,11 @@ class EmptyImpl extends .java.lang.Object implements .ceylon.language.Empty {
     @.java.lang.Override
     public final .ceylon.language.Empty spanFrom(final .ceylon.language.Integer from) {
         return $ceylon$language$Empty$this.spanFrom(from);
+    }
+    
+    @.java.lang.Override
+    public final boolean getEmpty() {
+        return $ceylon$language$Empty$this.getEmpty();
     }
     
     @.java.lang.Override
@@ -113,8 +118,8 @@ class EmptyImpl extends .java.lang.Object implements .ceylon.language.Empty {
     }
     
     @.java.lang.Override
-    public final boolean defines(final .ceylon.language.Integer key) {
-        return $ceylon$language$Empty$this.defines(key);
+    public final boolean defines(final .ceylon.language.Integer index) {
+        return $ceylon$language$Empty$this.defines(index);
     }
     
     @.java.lang.Override
@@ -178,12 +183,12 @@ class EmptyImpl extends .java.lang.Object implements .ceylon.language.Empty {
     }
     
     @.java.lang.Override
-    public final <Other>.ceylon.language.Sequence<? extends Other> withLeading(final Other element) {
+    public final <Element>.ceylon.language.Sequence<? extends Element> withLeading(final Element element) {
         return $ceylon$language$Empty$this.withLeading(element);
     }
     
     @.java.lang.Override
-    public final <Other>.ceylon.language.Sequence<? extends Other> withTrailing(final Other element) {
+    public final <Element>.ceylon.language.Sequence<? extends Element> withTrailing(final Element element) {
         return $ceylon$language$Empty$this.withTrailing(element);
     }
     protected final .ceylon.language.Sequential$impl<.java.lang.Object> $ceylon$language$Sequential$this;
@@ -204,11 +209,6 @@ class EmptyImpl extends .java.lang.Object implements .ceylon.language.Empty {
         return $ceylon$language$List$this.findLast(selecting);
     }
     protected final .ceylon.language.Collection$impl<.java.lang.Object> $ceylon$language$Collection$this;
-    
-    @.java.lang.Override
-    public boolean getEmpty() {
-        return $ceylon$language$Collection$this.getEmpty();
-    }
     protected final .ceylon.language.Iterable$impl<.java.lang.Object> $ceylon$language$Iterable$this;
     
     @.java.lang.Override

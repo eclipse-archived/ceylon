@@ -16,7 +16,7 @@ class ForIfNonEmptySequence {
                     
                     private final boolean x() {
                         final .java.lang.Object $ceylontmpitem0 = iter$0.next();
-                        x$exhausted = $ceylontmpitem0 == .ceylon.language.exhausted_.getExhausted$();
+                        x$exhausted = $ceylontmpitem0 == .ceylon.language.finished_.getFinished$();
                         if (x$exhausted) {
                             return false;
                         } else {
@@ -39,7 +39,7 @@ class ForIfNonEmptySequence {
                     }
                     
                     public final .java.lang.Object next() {
-                        return this.next1() ? $x$2.getFirst() : .ceylon.language.exhausted_.getExhausted$();
+                        return this.next1() ? $x$2.getFirst() : .ceylon.language.finished_.getFinished$();
                     }
                 };
             }
@@ -57,7 +57,7 @@ class ForIfNonEmptySequence {
                     
                     private final boolean x() {
                         final .java.lang.Object $ceylontmpitem3 = iter$0.next();
-                        x$exhausted = $ceylontmpitem3 == .ceylon.language.exhausted_.getExhausted$();
+                        x$exhausted = $ceylontmpitem3 == .ceylon.language.finished_.getFinished$();
                         if (x$exhausted) {
                             return false;
                         } else {
@@ -80,7 +80,7 @@ class ForIfNonEmptySequence {
                     }
                     
                     public final .java.lang.Object next() {
-                        return this.next1() ? $s$5.getFirst() : .ceylon.language.exhausted_.getExhausted$();
+                        return this.next1() ? $s$5.getFirst() : .ceylon.language.finished_.getFinished$();
                     }
                 };
             }

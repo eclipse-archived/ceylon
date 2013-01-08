@@ -18,8 +18,7 @@
  * MA  02110-1301, USA.
  */
 import ceylon.language{Integer}
-import ceylon.language.descriptor{Module}
 
 @nomodel
-class ImportCeylonLanguageType(Integer n, Module m) {
+class ImportCeylonLanguageType(Integer n) {
 }

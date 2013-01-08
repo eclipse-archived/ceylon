@@ -22,25 +22,25 @@ class MethodSpecifierMethod() {
     MethodSpecifierMethod noParam() {
         throw;
     }
-    void noParam1() => noParam();
-    void noParam2() => noParam{};
+    function noParam1() => noParam();
+    function noParam2() => noParam{};
 
     MethodSpecifierMethod oneParam(Integer i) {
         throw;
     }
-    void oneParam1() => oneParam(1);
-    void oneParam2() => oneParam{i = 1;};
+    function oneParam1() => oneParam(1);
+    function oneParam2() => oneParam{i = 1;};
 
     MethodSpecifierMethod oneDefaultedParam(Integer i = 2) {
         throw;
     }
-    void oneDefaultedParam1() => oneDefaultedParam();
-    void oneDefaultedParam2() => oneDefaultedParam{};
+    function oneDefaultedParam1() => oneDefaultedParam();
+    function oneDefaultedParam2() => oneDefaultedParam{};
 
     MethodSpecifierMethod oneSequencedParam(Integer... i) {
         throw;
     }
-    void oneSequencedParam1() => oneSequencedParam(1,2);
-    void oneSequencedParam2() => oneSequencedParam{i=2;i=3;};
-    void oneSequencedParam3() => oneSequencedParam(for (i in {}) i);
+    function oneSequencedParam1() => oneSequencedParam(1,2);
+    function oneSequencedParam2() => oneSequencedParam{i=[2, 3];};
+    function oneSequencedParam3() => oneSequencedParam(for (i in {}) i);
 }

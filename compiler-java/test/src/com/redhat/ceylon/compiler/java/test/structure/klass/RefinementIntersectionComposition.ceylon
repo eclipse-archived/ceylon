@@ -36,12 +36,12 @@ interface RIC_Left satisfies RIC_Top<RIC_B> {}
 @nomodel
 interface RIC_Right satisfies RIC_Top<RIC_C> {}
 @nomodel
-class RIC_Bottom_From_Class() extends RIC_Middle() satisfies RIC_Left & RIC_Right {
-    shared actual Bottom val { return nothing; }
+class RIC_Nothing_From_Class() extends RIC_Middle() satisfies RIC_Left & RIC_Right {
+    shared actual Nothing val { return nothing; }
     shared actual RIC_A & RIC_B & RIC_C get() { return nothing; }
 }
 @nomodel
-class RIC_Bottom_From_Interface() satisfies RIC_Left & RIC_Right {
-    shared actual Bottom val { return nothing; }
+class RIC_Nothing_From_Interface() satisfies RIC_Left & RIC_Right {
+    shared actual Nothing val { return nothing; }
     shared actual RIC_B & RIC_C get() { return nothing; }
 }

@@ -19,7 +19,7 @@
  */
 @nomodel
 class DefaultedAndSequenced() {
-    void m(String s, Integer i = 1, Boolean... b = {true, false}) {
+    void m(String s, Integer i = 1, Boolean... b) {
     }
     DefaultedAndSequenced self() {
         return this;
@@ -28,21 +28,21 @@ class DefaultedAndSequenced() {
         m("");
         m("", 2);
         m("", 2, false);
-        Boolean[] x = {false, false};
+        Boolean[] x = [false, false];
         m("", 2, x...);
     }
     void qmePositional() {
         self().m("");
         self().m("", 2);
         self().m("", 2, false);
-        Boolean[] x = {false, false};
+        Boolean[] x = [false, false];
         self().m("", 2, x...);
     }
     void qtePositional() {
         DefaultedAndSequenced().m("");
         DefaultedAndSequenced().m("", 2);
         DefaultedAndSequenced().m("", 2, false);
-        Boolean[] x = {false, false};
+        Boolean[] x = [false, false];
         DefaultedAndSequenced().m("", 2, x...);
     }
     void namedArgs() {
@@ -56,12 +56,12 @@ class DefaultedAndSequenced() {
         m{
             s="";
             i=2;
-            b=false;
+            b=[false];
         };
         m{
             s=""; 
             i=2; 
-            b=true; b=true;
+            b=[true, true];
         };
     }
     void qmeNamedArgs() {
@@ -75,12 +75,12 @@ class DefaultedAndSequenced() {
         self().m{
             s="";
             i=2;
-            b=false;
+            b=[false];
         };
         self().m{
             s=""; 
             i=2; 
-            b=true; b=true;
+            b=[true, true];
         };
     }
     void qteNamedArgs() {
@@ -94,12 +94,12 @@ class DefaultedAndSequenced() {
         DefaultedAndSequenced().m{
             s="";
             i=2;
-            b=false;
+            b=[false];
         };
         DefaultedAndSequenced().m{
             s=""; 
             i=2; 
-            b=true; b=true;
+            b=[true, true];
         };
     }
 }

@@ -25,27 +25,27 @@ Callable<String,[Integer]> methodSpecifyingCallable_f() {
 class MethodSpecifyingCallable() {
     String foo(Integer i) => methodSpecifyingCallable_f()(i);
     
-    value noParam = function () nothing;
-    void noParam1() => noParam();
+    value noParam = function () => nothing;
+    function noParam1() => noParam();
 
-    value oneParam = function (Integer i) nothing;
-    void oneParam1() => oneParam(1);
+    value oneParam = function (Integer i) => nothing;
+    function oneParam1() => oneParam(1);
 
     // FIXME: this will be supported soon but will likely be tested somewhere else
-    //value oneDefaultedParam = function (Integer i = 2) nothing;
+    //value oneDefaultedParam = function (Integer i = 2) => nothing;
     // void oneDefaultedParam1() => oneDefaultedParam();
 
-    value oneSequencedParam = function (Integer... i) nothing;
-    void oneSequencedParam0() => oneSequencedParam();
-    void oneSequencedParam1() => oneSequencedParam(1);
-    void oneSequencedParam2() => oneSequencedParam(1, 2);
-    void oneSequencedParam3() => oneSequencedParam(for (i in {}) i);
-    void oneSequencedParam4() => oneSequencedParam({}...);
+    value oneSequencedParam = function (Integer... i) => nothing;
+    function oneSequencedParam0() => oneSequencedParam();
+    function oneSequencedParam1() => oneSequencedParam(1);
+    function oneSequencedParam2() => oneSequencedParam(1, 2);
+    function oneSequencedParam3() => oneSequencedParam(for (i in {}) i);
+    function oneSequencedParam4() => oneSequencedParam({}...);
 
-    value secondSequencedParam = function (Integer a, Integer... i) nothing;
-    void secondSequencedParam0() => secondSequencedParam(1);
-    void secondSequencedParam1() => secondSequencedParam(1, 2);
-    void secondSequencedParam2() => secondSequencedParam(1, 2, 3);
-    void secondSequencedParam3() => secondSequencedParam(1, for (i in {}) i);
-    void secondSequencedParam4() => secondSequencedParam(1, {}...);
+    value secondSequencedParam = function (Integer a, Integer... i) => nothing;
+    function secondSequencedParam0() => secondSequencedParam(1);
+    function secondSequencedParam1() => secondSequencedParam(1, 2);
+    function secondSequencedParam2() => secondSequencedParam(1, 2, 3);
+    function secondSequencedParam3() => secondSequencedParam(1, for (i in {}) i);
+    function secondSequencedParam4() => secondSequencedParam(1, {}...);
 }

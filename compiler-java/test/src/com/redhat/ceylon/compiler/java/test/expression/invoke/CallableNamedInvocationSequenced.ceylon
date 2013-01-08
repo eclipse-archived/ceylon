@@ -20,6 +20,6 @@
 @nomodel
 void callableNamedInvocationSequenced_f(void foo(Integer i, String... s)) {
     foo{i=1;};
-    foo{i=1; s="";};
-    foo{i=1; s=""; s="";};
+    foo{i=1; s=[""];};
+    foo{i=1; s=["", ""];};
 }

@@ -19,13 +19,13 @@
  */
 @nomodel
 interface Concrete<A> {
-    void mNonShared(A? a = null, A?... aseq={a}) {
+    void mNonShared(A? a = null, A?... aseq) {
     }
-    shared void mShared(A? a = null, A?... aseq={a}) {
+    shared void mShared(A? a = null, A?... aseq) {
         mNonShared();
     }
-    shared formal void mFormal(A? a = null, A?... aseq={a});
-    shared default void mDefault(A? a = null, A?... aseq={a}) {
+    shared formal void mFormal(A? a = null, A?... aseq);
+    shared default void mDefault(A? a = null, A?... aseq) {
     }
 }
 @nomodel

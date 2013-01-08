@@ -16,7 +16,7 @@ final class forForIfBooleanConditions_ {
                     
                     private final boolean y() {
                         final .java.lang.Object $ceylontmpitem0 = iter$0.next();
-                        y$exhausted = $ceylontmpitem0 == .ceylon.language.exhausted_.getExhausted$();
+                        y$exhausted = $ceylontmpitem0 == .ceylon.language.finished_.getFinished$();
                         if (y$exhausted) {
                             return false;
                         } else {
@@ -39,7 +39,7 @@ final class forForIfBooleanConditions_ {
                     private final boolean x() {
                         while (this.iter$1()) {
                             final .java.lang.Object $ceylontmpitem1 = iter$1.next();
-                            x$exhausted = $ceylontmpitem1 == .ceylon.language.exhausted_.getExhausted$();
+                            x$exhausted = $ceylontmpitem1 == .ceylon.language.finished_.getFinished$();
                             if (x$exhausted) {
                                 iter$1 = null;
                             } else {
@@ -63,7 +63,7 @@ final class forForIfBooleanConditions_ {
                     }
                     
                     public final .java.lang.Object next() {
-                        return this.next2() ? x.times(y) : .ceylon.language.exhausted_.getExhausted$();
+                        return this.next2() ? x.times(y) : .ceylon.language.finished_.getFinished$();
                     }
                 };
             }

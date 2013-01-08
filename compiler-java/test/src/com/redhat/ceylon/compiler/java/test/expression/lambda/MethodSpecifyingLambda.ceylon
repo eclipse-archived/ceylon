@@ -19,5 +19,5 @@
  */
 @nomodel
 class MethodSpecifyingLambda() {
-    shared String(String) m = (String name2) "hello " + name2;
+    shared String(String) m = (String name2) => "hello " + name2;
 }

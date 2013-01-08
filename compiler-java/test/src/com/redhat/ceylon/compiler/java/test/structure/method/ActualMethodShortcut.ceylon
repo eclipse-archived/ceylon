@@ -26,8 +26,8 @@ abstract class ActualMethodShortcut() {
 }
 @nomodel
 class ActualMethodShortcutSub() extends ActualMethodShortcut() {
-    print1 = () process.writeLine("hello");
+    print1 = () => process.writeLine("hello");
     print2 = process.writeLine;
-    foo = (String s) print(s);
-    foo2 = (String s) s;
+    foo = (String s) => print(s);
+    foo2 = (String s) => s;
 }

@@ -16,7 +16,7 @@ class ForIfConditionListExistsIsBool {
                     
                     private final boolean x() {
                         final .java.lang.Object $ceylontmpitem0 = iter$0.next();
-                        x$exhausted = $ceylontmpitem0 == .ceylon.language.exhausted_.getExhausted$();
+                        x$exhausted = $ceylontmpitem0 == .ceylon.language.finished_.getFinished$();
                         if (x$exhausted) {
                             return false;
                         } else {
@@ -46,7 +46,7 @@ class ForIfConditionListExistsIsBool {
                     }
                     
                     public final .java.lang.Object next() {
-                        return this.next1() ? .ceylon.language.Boolean.instance($y$4 == 1L) : .ceylon.language.exhausted_.getExhausted$();
+                        return this.next1() ? .ceylon.language.Boolean.instance($y$4 == 1L) : .ceylon.language.finished_.getFinished$();
                     }
                 };
             }

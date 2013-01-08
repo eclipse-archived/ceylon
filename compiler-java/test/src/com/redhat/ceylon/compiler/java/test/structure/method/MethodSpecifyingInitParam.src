@@ -7,7 +7,7 @@ class MethodSpecifyingInitParam {
     }
     private final .ceylon.language.Callable<? extends .java.lang.Object> x;
     
-    private final void foo() {
-        x.$call();
+    private final .java.lang.Object foo() {
+        return x.$call();
     }
 }

@@ -133,15 +133,15 @@ class ExtAnything extends .com.redhat.ceylon.compiler.java.test.structure.type.G
         new .com.redhat.ceylon.compiler.java.test.structure.type.ExtAnything();
     }
 }
-class ExtBottom extends .com.redhat.ceylon.compiler.java.test.structure.type.GenInv<.java.lang.Object> {
+class ExtNothing extends .com.redhat.ceylon.compiler.java.test.structure.type.GenInv<.java.lang.Object> {
     
-    ExtBottom() {
+    ExtNothing() {
         super();
     }
     
     public static void main(.java.lang.String[] args) {
         .ceylon.language.process_.getProcess$().setupArguments(args);
-        new .com.redhat.ceylon.compiler.java.test.structure.type.ExtBottom();
+        new .com.redhat.ceylon.compiler.java.test.structure.type.ExtNothing();
     }
 }
 class Conversions {

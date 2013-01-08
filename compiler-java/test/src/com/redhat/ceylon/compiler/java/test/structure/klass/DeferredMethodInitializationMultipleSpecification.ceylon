@@ -22,7 +22,7 @@ class DeferredMethodInitializationMultipleSpecification(Boolean b) {
     String s(String name="world");
     
     if (b) {
-        s = (String name2) "hello " + name2;
+        s = (String name2) => "hello " + name2;
         s();
     } 
     

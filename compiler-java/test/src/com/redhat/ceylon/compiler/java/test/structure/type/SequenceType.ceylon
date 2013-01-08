@@ -20,9 +20,9 @@
 @nomodel
 class SequenceType() {
     shared void m() {
-        Integer[] s1 = {1,2,3};
+        Integer[] s1 = [1,2,3];
         Integer[] s2 = {};
-        SequenceType[] s3 = {this,this,this};
+        SequenceType[] s3 = [this,this,this];
         SequenceType[] s4 = {};
     }
 }

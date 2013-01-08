@@ -45,7 +45,7 @@ class MethodInitializerParameter<T>(T t) {
             i=1;
         };
         m{
-            seq=1; seq=2; seq=3; 
+            seq=[1, 2, 3]; 
             i=1;
         };
     }

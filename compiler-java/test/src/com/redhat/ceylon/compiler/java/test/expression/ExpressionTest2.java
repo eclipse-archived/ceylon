@@ -170,11 +170,6 @@ public class ExpressionTest2 extends CompilerTest {
     }
     
     @Test
-    public void testInvNamedArgumentInvocationWithDefaultedSequence(){
-        compareWithJavaSource("invoke/NamedArgumentInvocationWithDefaultedSequence");
-    }
-    
-    @Test
     public void testInvNamedArgumentInvocationInitWithEmptySequence(){
         compareWithJavaSource("invoke/NamedArgumentInvocationInitWithEmptySequence");
     }

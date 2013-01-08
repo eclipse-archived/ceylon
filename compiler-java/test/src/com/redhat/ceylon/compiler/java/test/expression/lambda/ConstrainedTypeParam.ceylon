@@ -22,6 +22,6 @@ class ConstrainedTypeParam<T>()
         given T satisfies Object {
     void method(void f(T t)) {}
     void test() {
-        method((T t) print(t.string));
+        method((T t) => print(t.string));
     }
 }

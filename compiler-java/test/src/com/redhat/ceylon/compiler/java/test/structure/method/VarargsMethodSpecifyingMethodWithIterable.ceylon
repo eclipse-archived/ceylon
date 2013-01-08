@@ -21,5 +21,5 @@
 class VarargsMethodSpecifyingMethodWithIterable() {
     void foo(Iterable<Integer> seq) {
     }
-    void bar(Integer... ints) => foo(ints);
+    function bar(Integer... ints) => foo(ints);
 }

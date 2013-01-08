@@ -64,11 +64,8 @@ class NamedArgumentWithSequence {
             let
             {
                 long $arg$6$0 = 1L;
-                .ceylon.language.Integer $arg$6$1$0 = .ceylon.language.Integer.instance(2L);
-                .ceylon.language.Integer $arg$6$1$1 = .ceylon.language.Integer.instance(3L);
-                .ceylon.language.Integer $arg$6$1$2 = .ceylon.language.Integer.instance(4L);
-                .ceylon.language.Sequential<? extends .ceylon.language.Integer> $arg$6$1$3 = new .com.redhat.ceylon.compiler.java.language.ArraySequence($arg$6$1$0, $arg$6$1$1, $arg$6$1$2);
-                m($arg$6$0, $arg$6$1$3);
+                .ceylon.language.Sequential $arg$6$1 = new .ceylon.language.Tuple<.ceylon.language.Integer, .ceylon.language.Integer, .ceylon.language.Tuple<.ceylon.language.Integer, ? extends .ceylon.language.Integer, ? extends .ceylon.language.Tuple<.ceylon.language.Integer, ? extends .ceylon.language.Integer, ? extends .ceylon.language.Empty>>>(.ceylon.language.Integer.instance(2L), new .ceylon.language.Tuple<.ceylon.language.Integer, .ceylon.language.Integer, .ceylon.language.Tuple<.ceylon.language.Integer, ? extends .ceylon.language.Integer, ? extends .ceylon.language.Empty>>(.ceylon.language.Integer.instance(3L), new .ceylon.language.Tuple<.ceylon.language.Integer, .ceylon.language.Integer, .ceylon.language.Empty>(.ceylon.language.Integer.instance(4L), .ceylon.language.empty_.getEmpty$())));
+                m($arg$6$0, $arg$6$1);
             }
             returning null;
         );
@@ -77,11 +74,8 @@ class NamedArgumentWithSequence {
             let
             {
                 .java.lang.Throwable $arg$7$0 = e;
-                .java.lang.Throwable $arg$7$1$0 = e;
-                .java.lang.Throwable $arg$7$1$1 = e;
-                .java.lang.Throwable $arg$7$1$2 = e;
-                .ceylon.language.Sequential<? extends .java.lang.Throwable> $arg$7$1$3 = new .com.redhat.ceylon.compiler.java.language.ArraySequence($arg$7$1$0, $arg$7$1$1, $arg$7$1$2);
-                m2($arg$7$0, $arg$7$1$3);
+                .ceylon.language.Sequential $arg$7$1 = new .ceylon.language.Tuple<.java.lang.Throwable, .java.lang.Throwable, .ceylon.language.Tuple<.java.lang.Throwable, ? extends .java.lang.Throwable, ? extends .ceylon.language.Tuple<.java.lang.Throwable, ? extends .java.lang.Throwable, ? extends .ceylon.language.Empty>>>(e, new .ceylon.language.Tuple<.java.lang.Throwable, .java.lang.Throwable, .ceylon.language.Tuple<.java.lang.Throwable, ? extends .java.lang.Throwable, ? extends .ceylon.language.Empty>>(e, new .ceylon.language.Tuple<.java.lang.Throwable, .java.lang.Throwable, .ceylon.language.Empty>(e, .ceylon.language.empty_.getEmpty$())));
+                m2($arg$7$0, $arg$7$1);
             }
             returning null;
         );
@@ -89,11 +83,8 @@ class NamedArgumentWithSequence {
             let
             {
                 .com.redhat.ceylon.compiler.java.test.expression.invoke.NamedArgumentWithSequence $arg$8$0 = this;
-                .com.redhat.ceylon.compiler.java.test.expression.invoke.NamedArgumentWithSequence $arg$8$1$0 = this;
-                .com.redhat.ceylon.compiler.java.test.expression.invoke.NamedArgumentWithSequence $arg$8$1$1 = this;
-                .com.redhat.ceylon.compiler.java.test.expression.invoke.NamedArgumentWithSequence $arg$8$1$2 = this;
-                .ceylon.language.Sequential<? extends .com.redhat.ceylon.compiler.java.test.expression.invoke.NamedArgumentWithSequence> $arg$8$1$3 = new .com.redhat.ceylon.compiler.java.language.ArraySequence($arg$8$1$0, $arg$8$1$1, $arg$8$1$2);
-                m3($arg$8$0, $arg$8$1$3);
+                .ceylon.language.Sequential $arg$8$1 = new .ceylon.language.Tuple<.com.redhat.ceylon.compiler.java.test.expression.invoke.NamedArgumentWithSequence, .com.redhat.ceylon.compiler.java.test.expression.invoke.NamedArgumentWithSequence, .ceylon.language.Tuple<.com.redhat.ceylon.compiler.java.test.expression.invoke.NamedArgumentWithSequence, ? extends .com.redhat.ceylon.compiler.java.test.expression.invoke.NamedArgumentWithSequence, ? extends .ceylon.language.Tuple<.com.redhat.ceylon.compiler.java.test.expression.invoke.NamedArgumentWithSequence, ? extends .com.redhat.ceylon.compiler.java.test.expression.invoke.NamedArgumentWithSequence, ? extends .ceylon.language.Empty>>>(this, new .ceylon.language.Tuple<.com.redhat.ceylon.compiler.java.test.expression.invoke.NamedArgumentWithSequence, .com.redhat.ceylon.compiler.java.test.expression.invoke.NamedArgumentWithSequence, .ceylon.language.Tuple<.com.redhat.ceylon.compiler.java.test.expression.invoke.NamedArgumentWithSequence, ? extends .com.redhat.ceylon.compiler.java.test.expression.invoke.NamedArgumentWithSequence, ? extends .ceylon.language.Empty>>(this, new .ceylon.language.Tuple<.com.redhat.ceylon.compiler.java.test.expression.invoke.NamedArgumentWithSequence, .com.redhat.ceylon.compiler.java.test.expression.invoke.NamedArgumentWithSequence, .ceylon.language.Empty>(this, .ceylon.language.empty_.getEmpty$())));
+                m3($arg$8$0, $arg$8$1);
             }
             returning null;
         );

@@ -22,5 +22,5 @@ void f() {
 }
 @nomodel
 class MethodSpecifierTopLevel() {
-    void foo() => f();
+    Anything foo() => f();
 }

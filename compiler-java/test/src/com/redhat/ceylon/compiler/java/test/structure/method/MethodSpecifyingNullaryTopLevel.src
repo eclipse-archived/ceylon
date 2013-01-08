@@ -18,8 +18,14 @@ class MethodSpecifierTopLevel {
     MethodSpecifierTopLevel() {
     }
     
-    private final void foo() {
-        .com.redhat.ceylon.compiler.java.test.structure.method.f_.f();
+    private final .java.lang.Object foo() {
+        return (
+            let
+            {
+                .com.redhat.ceylon.compiler.java.test.structure.method.f_.f();
+            }
+            returning null;
+        );
     }
     
     public static void main(.java.lang.String[] args) {

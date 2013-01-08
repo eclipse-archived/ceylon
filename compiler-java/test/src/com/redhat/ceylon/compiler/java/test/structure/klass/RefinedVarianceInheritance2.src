@@ -9,9 +9,9 @@ abstract class RefinedVarianceInheritance2Top {
     
     public abstract .ceylon.language.Integer m2();
 }
-class RefinedVarianceInheritance2Bottom extends .com.redhat.ceylon.compiler.java.test.structure.klass.RefinedVarianceInheritance2Top {
+class RefinedVarianceInheritance2Nothing extends .com.redhat.ceylon.compiler.java.test.structure.klass.RefinedVarianceInheritance2Top {
     
-    RefinedVarianceInheritance2Bottom() {
+    RefinedVarianceInheritance2Nothing() {
         super();
     }
     
@@ -27,6 +27,6 @@ class RefinedVarianceInheritance2Bottom extends .com.redhat.ceylon.compiler.java
     
     public static void main(.java.lang.String[] args) {
         .ceylon.language.process_.getProcess$().setupArguments(args);
-        new .com.redhat.ceylon.compiler.java.test.structure.klass.RefinedVarianceInheritance2Bottom();
+        new .com.redhat.ceylon.compiler.java.test.structure.klass.RefinedVarianceInheritance2Nothing();
     }
 }

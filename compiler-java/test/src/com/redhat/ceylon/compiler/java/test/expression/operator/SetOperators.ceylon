@@ -73,7 +73,7 @@ shared class SetOperators() {
         variable Set<Integer> x2 = b & c | a;
     }
     
-    void testSetOperatorsWithErasedTypes(Set<String> setOfString, Set<Integer | Float> setOfUnionType, Set<Summable<Integer> & Empty> setOfIntersectionType, Set<Bottom> setOfBottom) {
+    void testSetOperatorsWithErasedTypes(Set<String> setOfString, Set<Integer | Float> setOfUnionType, Set<Summable<Integer> & Empty> setOfIntersectionType, Set<Nothing> setOfNothing) {
         variable Set<Integer | Float | String> x1 = setOfUnionType | setOfString;
         variable Set<Integer | Float & String> x2 = setOfUnionType & setOfString;
         variable Set<Integer | Float | String> x3 = setOfUnionType ^ setOfString;
@@ -84,15 +84,15 @@ shared class SetOperators() {
         variable Set<Summable<Integer> & Empty | String> y3 = setOfIntersectionType ^ setOfString;
         variable Set<Summable<Integer> & Empty> y4 = setOfIntersectionType ~ setOfString;
         
-        variable Set<Bottom | String> z1 = setOfBottom | setOfString;
-        variable Set<Bottom & String> z2 = setOfBottom & setOfString;
-        variable Set<Bottom | String> z3 = setOfBottom ^ setOfString;
-        variable Set<Bottom> z4 = setOfBottom ~ setOfString;
+        variable Set<Nothing | String> z1 = setOfNothing | setOfString;
+        variable Set<Nothing & String> z2 = setOfNothing & setOfString;
+        variable Set<Nothing | String> z3 = setOfNothing ^ setOfString;
+        variable Set<Nothing> z4 = setOfNothing ~ setOfString;
     }
     
-    void m3(Set<Integer> a, Set<Bottom> b) {
+    void m3(Set<Integer> a, Set<Nothing> b) {
         Set<Integer> s1 = a | b;
-        Set<Bottom> s2 = a & b;
+        Set<Nothing> s2 = a & b;
         Set<Integer> s3 = a ^ b;
         Set<Integer> s4 = a ~ b;
         variable Set<Integer> sync;
@@ -143,7 +143,7 @@ class SetOperatorsSuper(a, b) {
     }
 }
 @nomodel
-class SetOperatorsSub(Set<Integer> a, Set<Bottom> b) extends SetOperatorsSuper(a, b) {
+class SetOperatorsSub(Set<Integer> a, Set<Nothing> b) extends SetOperatorsSuper(a, b) {
     shared actual void m() {
         super.sync = super.a | super.b;
         super.sync = super.a & super.b;

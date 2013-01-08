@@ -16,7 +16,7 @@ final class comp2_ {
                     
                     private final boolean i() {
                         final .java.lang.Object $ceylontmpitem0 = iter$0.next();
-                        i$exhausted = $ceylontmpitem0 == .ceylon.language.exhausted_.getExhausted$();
+                        i$exhausted = $ceylontmpitem0 == .ceylon.language.finished_.getFinished$();
                         if (i$exhausted) {
                             return false;
                         } else {
@@ -39,7 +39,7 @@ final class comp2_ {
                     private final boolean j() {
                         while (this.iter$1()) {
                             final .java.lang.Object $ceylontmpitem1 = iter$1.next();
-                            j$exhausted = $ceylontmpitem1 == .ceylon.language.exhausted_.getExhausted$();
+                            j$exhausted = $ceylontmpitem1 == .ceylon.language.finished_.getFinished$();
                             if (j$exhausted) {
                                 iter$1 = null;
                             } else {
@@ -51,7 +51,7 @@ final class comp2_ {
                     }
                     
                     public final .java.lang.Object next() {
-                        return this.j() ? i.times(.ceylon.language.Integer.instance(2L)).plus(.ceylon.language.Integer.instance(3L).divided(j)) : .ceylon.language.exhausted_.getExhausted$();
+                        return this.j() ? i.times(.ceylon.language.Integer.instance(2L)).plus(.ceylon.language.Integer.instance(3L).divided(j)) : .ceylon.language.finished_.getFinished$();
                     }
                 };
             }

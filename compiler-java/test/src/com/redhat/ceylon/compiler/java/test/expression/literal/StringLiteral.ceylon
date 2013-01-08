@@ -27,6 +27,6 @@ is
 another
 test";
         String s4 = "\\\b\t\n\f\r\'\"\`\\b";
-        String s5 = "\{0001d11e}𝄞";
+        String s5 = "\{#0001d11e}𝄞";
     }
 }
