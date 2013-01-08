@@ -116,11 +116,11 @@ class Inheritance() {
         class Inner5() extends Inheritance.Outer.Inner4() {}
         shared Inner2 inner1 = Inner3();
         Outer.Inner2 inner2 = Inner3();
-        Outer.Inner2 inner3 = Outer.Inner3();
-        Inner2 inner4 = Outer.Inner3();
-        Inheritance.Outer.Inner2 inner5 = Inheritance.Outer.Inner3();
+        Outer.Inner2 inner3 = Inner3();
+        Inner2 inner4 = Inner3();
+        Inheritance.Outer.Inner2 inner5 = Inner3();
         Inner2 inner6 = Inner4();
-        Inheritance.Outer.Inner2 inner7 = Inheritance.Outer.Inner4();
+        Inheritance.Outer.Inner2 inner7 = Inner4();
     }
     
     @error class Outer2() satisfies Outer.Inner2 {

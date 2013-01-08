@@ -502,10 +502,10 @@ class Generics() {
             class Innerest() {}
             @error ParamOuter<String>.Inner<Y>.Innerest();
             @error ParamOuter<T>.Inner<Integer>.Innerest();
-            ParamOuter<T>.Inner<Y>.Innerest();
+            @error ParamOuter<T>.Inner<Y>.Innerest();
         }
         @error ParamOuter<String>.Inner<Integer>();
-        ParamOuter<T>.Inner<Integer>();
+        @error ParamOuter<T>.Inner<Integer>();
     }
         
     void withParamOfMethod<T>(T t) { Anything x = t; } 

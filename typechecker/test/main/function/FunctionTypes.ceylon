@@ -236,7 +236,7 @@ void method() {
 
 class Outer() {
     class Inner() {}
-    Outer.Inner oi = Outer.Inner();
+    Outer.Inner oi = Inner();
 }
 
 Comparison multiCompare()(Integer x, Integer y) {
