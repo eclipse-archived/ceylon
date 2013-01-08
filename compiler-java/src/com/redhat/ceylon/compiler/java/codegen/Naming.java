@@ -64,6 +64,7 @@ import com.sun.tools.javac.util.Names;
 
 public class Naming implements LocalId {
 
+    private static final String IMPL_POSTFIX = "$impl";
 
     static enum DeclNameFlag {
         /** 
@@ -263,7 +264,7 @@ public class Naming implements LocalId {
             if (Decl.isCeylon(klass)
                     && flags.contains(DeclNameFlag.COMPANION)
                     && last) {
-                helper.append("$impl");
+                helper.append(IMPL_POSTFIX);
             }
         } else if (scope instanceof Interface) {
             Interface iface = (Interface)scope;
@@ -271,7 +272,7 @@ public class Naming implements LocalId {
             if (Decl.isCeylon(iface)
                 && ((decl instanceof Class || decl instanceof TypeAlias) 
                         || flags.contains(DeclNameFlag.COMPANION))) {
-                helper.append("$impl");
+                helper.append(IMPL_POSTFIX);
             }
         } else if (Decl.isLocalScope(scope)) {
             if (flags.contains(DeclNameFlag.COMPANION)
@@ -338,7 +339,7 @@ public class Naming implements LocalId {
             // FIXME: IMO this is wrong, and in appendDeclName2 as well, since for Interface>Class>Interface 
             // we also have to have the $impl, no? Ask Tom 
             if (lastDeclaration instanceof Tree.AnyClass) {
-                b.append("$impl");
+                b.append(IMPL_POSTFIX);
             }
         } else if (decl instanceof Tree.TypedDeclaration){
             b.append(decl.getIdentifier().getText());
@@ -1527,5 +1528,9 @@ public class Naming implements LocalId {
     
     public static String getCallableTempVarName(Parameter param){
         return "$$" + param.getName();
+    }
+    
+    public static String getImplClassName(String name){
+        return name + IMPL_POSTFIX;
     }
 }
