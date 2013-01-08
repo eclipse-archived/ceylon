@@ -24,6 +24,7 @@ import com.sun.tools.javac.code.Type;
 import com.sun.tools.javac.code.Type.ClassType;
 import com.sun.tools.javac.code.Type.MethodType;
 import com.sun.tools.javac.tree.JCTree;
+import com.sun.tools.javac.tree.JCTree.JCAnnotation;
 import com.sun.tools.javac.tree.JCTree.JCArrayTypeTree;
 import com.sun.tools.javac.tree.JCTree.JCClassDecl;
 import com.sun.tools.javac.tree.JCTree.JCCompilationUnit;
@@ -31,6 +32,7 @@ import com.sun.tools.javac.tree.JCTree.JCFieldAccess;
 import com.sun.tools.javac.tree.JCTree.JCIdent;
 import com.sun.tools.javac.tree.JCTree.JCImport;
 import com.sun.tools.javac.tree.JCTree.JCMethodDecl;
+import com.sun.tools.javac.tree.JCTree.JCModifiers;
 import com.sun.tools.javac.tree.JCTree.JCTypeApply;
 import com.sun.tools.javac.tree.JCTree.JCTypeParameter;
 import com.sun.tools.javac.tree.JCTree.JCVariableDecl;
@@ -83,8 +85,23 @@ public class JCTypeResetter extends JCTree.Visitor {
         for(JCTree def : that.defs){
             def.accept(this);
         }
-        if(that.name.toString().equals("InternalMap"))
-            "".toString();
+        that.mods.accept(this);
+    }
+
+    @Override
+    public void visitModifiers(JCModifiers that) {
+        super.visitModifiers(that);
+        for(JCTree annotation : that.annotations){
+            annotation.accept(this);
+        }
+    }
+    
+    @Override
+    public void visitAnnotation(JCAnnotation that) {
+        super.visitAnnotation(that);
+        for(JCTree arg : that.args){
+            arg.accept(this);
+        }
     }
     
     @Override
@@ -114,6 +131,7 @@ public class JCTypeResetter extends JCTree.Visitor {
         for(JCTree tyParam : that.typarams){
             tyParam.accept(this);
         }
+        that.mods.accept(this);
     }
     
     @Override
@@ -121,6 +139,7 @@ public class JCTypeResetter extends JCTree.Visitor {
         super.visitVarDef(that);
         that.sym = null;
         that.vartype.accept(this);
+        that.mods.accept(this);
     }
     
     @Override
@@ -152,26 +171,5 @@ public class JCTypeResetter extends JCTree.Visitor {
         super.visitWildcard(that);
         if(that.inner != null)
             that.inner.accept(this);
-    }
-    
-    private void resetType(JCTree that) {
-        resetType(that.type);
-    }
-
-    // not used?
-    private void resetType(Type type){
-        if(type instanceof Type.ClassType){
-            Type.ClassType classType = (ClassType) type;
-            classType.all_interfaces_field = null;
-            classType.interfaces_field = null;
-            classType.supertype_field = null;
-            classType.typarams_field = null;
-        }else if(type instanceof Type.MethodType){
-            Type.MethodType methodType = (MethodType) type;
-            for(Type argType : methodType.argtypes){
-                resetType(argType);
-            }
-            resetType(methodType.restype);
-        }
     }
 }
