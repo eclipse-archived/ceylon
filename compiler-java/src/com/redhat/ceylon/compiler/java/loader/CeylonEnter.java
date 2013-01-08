@@ -67,6 +67,7 @@ import com.sun.tools.javac.code.Symtab;
 import com.sun.tools.javac.code.Type;
 import com.sun.tools.javac.code.Type.ClassType;
 import com.sun.tools.javac.code.Types;
+import com.sun.tools.javac.comp.Annotate;
 import com.sun.tools.javac.comp.AttrContext;
 import com.sun.tools.javac.comp.Check;
 import com.sun.tools.javac.comp.Enter;
@@ -113,6 +114,7 @@ public class CeylonEnter extends Enter {
     private Symtab symtab;
     private Todo todo;
     private boolean isBootstrap;
+    private Annotate annotate;
     
     protected CeylonEnter(Context context) {
         super(context);
@@ -141,6 +143,7 @@ public class CeylonEnter extends Enter {
         types = Types.instance(context);
         symtab = Symtab.instance(context);
         todo = Todo.instance(context);
+        annotate = Annotate.instance(context);
 
         // now superclass init
         init(context);
@@ -192,6 +195,7 @@ public class CeylonEnter extends Enter {
         // get rid of some caches and state
         chk.compiled.clear();
         types.reset();
+        annotate.reset();
         super.reset();
         
         // reset all class symbols

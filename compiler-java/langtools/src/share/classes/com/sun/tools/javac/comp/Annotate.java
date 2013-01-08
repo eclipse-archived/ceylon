@@ -122,6 +122,10 @@ public class Annotate {
         String toString();
     }
 
+    // Ceylon
+    public void reset(){
+        q.clear();
+    }
 
 /* ********************************************************************
  * Compute an attribute from its annotation.
