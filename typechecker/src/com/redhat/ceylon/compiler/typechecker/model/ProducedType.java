@@ -684,17 +684,23 @@ public class ProducedType extends ProducedReference {
                         if (c.isMemberLookup() && !satisfiedTypes.isEmpty()) {
                         	//for the case of a member lookup, try to find
                         	//a common supertype by forming the union of 
-                        	//the intersected supertypes
+                        	//the two possible results (since A|B is always
+                        	//a supertype of A&B)
                         	UnionType ut = new UnionType(getDeclaration().getUnit());
                         	List<ProducedType> caseTypes = new ArrayList<ProducedType>();
-                        	if (extendedType!=null) caseTypes.add(extendedType);
-                        	caseTypes.addAll(satisfiedTypes);
+                        	//if (extendedType!=null) caseTypes.add(extendedType);
+                        	//caseTypes.addAll(satisfiedTypes);
+                        	caseTypes.add(result);
+                        	caseTypes.add(possibleResult);
                         	ut.setCaseTypes(caseTypes);
                         	result = ut.getType().getSupertype(c, list);
-                        	if (result!=null) return result;
+                        	if (result==null) {
+                            	return new UnknownType(getDeclaration().getUnit()).getType();
+                        	}
                         }
-                        result = new UnknownType(getDeclaration().getUnit()).getType();
-                    	break;
+                        else {
+                        	return new UnknownType(getDeclaration().getUnit()).getType();
+                        }
                     }
                 }
             }
