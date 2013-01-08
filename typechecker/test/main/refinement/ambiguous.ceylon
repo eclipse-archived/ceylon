@@ -14,8 +14,14 @@ class GH() satisfies AB {
     shared actual Object anything => "";
 }
 
-void abcdefgh(CD|EF cdef, EF|GH efgh, AB|GH abgh) {
+void abcdefghUnion(CD|EF cdef, EF|GH efgh, AB|GH abgh) {
     @type:"Anything" value ns = cdef.anything;
     @type:"Anything" value o = efgh.anything;
     @type:"Anything" value no = abgh.anything;
+}
+
+void abcdefghIntersection(CD&EF cdef, EF&GH efgh, AB&GH abgh) {
+    @error value ns = cdef.anything;
+    @error value o = efgh.anything;
+    @error value no = abgh.anything;
 }
