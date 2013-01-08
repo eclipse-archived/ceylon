@@ -467,6 +467,10 @@ public abstract class TypeDeclaration extends Declaration
                     return dm!=null && dm.equals(member);
                 }
             }
+            @Override
+            public boolean isMemberLookup() {
+            	return false;
+            }
         };
         return getType().getSupertype(new Criteria())!=null;
     }
@@ -491,6 +495,10 @@ public abstract class TypeDeclaration extends Declaration
                 else {
                     return false;
                 }
+            }
+            @Override
+            public boolean isMemberLookup() {
+            	return true;
             }
         };
         //this works by finding the most-specialized supertype

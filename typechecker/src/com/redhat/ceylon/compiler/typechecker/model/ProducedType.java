@@ -506,6 +506,10 @@ public class ProducedType extends ProducedReference {
                        !(type instanceof IntersectionType) && 
                        type.equals(dec);
             }
+            @Override
+            public boolean isMemberLookup() {
+            	return false;
+            }
         };
         ProducedType superType = getSupertype(c, new ArrayList<ProducedType>());
         if (!complexType) superTypesCache.put(dec, superType);
@@ -523,6 +527,7 @@ public class ProducedType extends ProducedReference {
     
     static interface Criteria {
         boolean satisfies(TypeDeclaration type);
+        boolean isMemberLookup();
     }
     
     /**
@@ -617,14 +622,15 @@ public class ProducedType extends ProducedReference {
         ProducedType extendedType = getInternalExtendedType();
         if (extendedType!=null) {
             ProducedType possibleResult = extendedType.getSupertype(c, list);
-            if (possibleResultIsMeaningful(possibleResult)) {
+            if (possibleResult!=null) {
                 result = possibleResult;
             }
         }
         
-        for (ProducedType dst: getInternalSatisfiedTypes()) {
+        List<ProducedType> satisfiedTypes = getInternalSatisfiedTypes();
+		for (ProducedType dst: satisfiedTypes) {
             ProducedType possibleResult = dst.getSupertype(c, list);
-            if (possibleResultIsMeaningful(possibleResult)) {
+            if (possibleResult!=null) {
                 if (result==null || possibleResult.isSubtypeOfInternal(result)) {
                     result = possibleResult;
                 }
@@ -675,19 +681,27 @@ public class ProducedType extends ProducedReference {
                     else {
                         //ambiguous! we can't decide between the two 
                         //supertypes which both satisfy the criteria
+                        if (c.isMemberLookup() && !satisfiedTypes.isEmpty()) {
+                        	//for the case of a member lookup, try to find
+                        	//a common supertype by forming the union of 
+                        	//the intersected supertypes
+                        	UnionType ut = new UnionType(getDeclaration().getUnit());
+                        	List<ProducedType> caseTypes = new ArrayList<ProducedType>();
+                        	if (extendedType!=null) caseTypes.add(extendedType);
+                        	caseTypes.addAll(satisfiedTypes);
+                        	ut.setCaseTypes(caseTypes);
+                        	result = ut.getType().getSupertype(c, list);
+                        	if (result!=null) return result;
+                        }
                         result = new UnknownType(getDeclaration().getUnit()).getType();
+                    	break;
                     }
                 }
             }
         }
-        
+		
         return result;
     }
-
-	private boolean possibleResultIsMeaningful(ProducedType possibleResult) {
-		return possibleResult!=null && 
-				!(possibleResult.getDeclaration() instanceof UnknownType);
-	}
 
     /**
      * Given two instantiations of the same type declaration,

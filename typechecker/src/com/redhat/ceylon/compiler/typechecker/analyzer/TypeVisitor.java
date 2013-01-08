@@ -363,8 +363,7 @@ public class TypeVisitor extends Visitor {
         	types.add(st.getTypeModel());
         }
         ut.setCaseTypes(types);
-        ProducedType pt = ut.getType();
-        that.setTypeModel(pt);
+        that.setTypeModel(ut.getType());
         //that.setTarget(pt);
     }
 
