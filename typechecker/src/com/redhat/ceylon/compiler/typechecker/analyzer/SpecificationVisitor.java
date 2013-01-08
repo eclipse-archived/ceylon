@@ -302,16 +302,16 @@ public class SpecificationVisitor extends Visitor {
 	        if (member==declaration) {
             	boolean lazy = that.getSpecifierExpression() instanceof Tree.LazySpecifierExpression;
 	            if (!lazy) that.getSpecifierExpression().visit(this);
-	            boolean variable = !isVariable();
-				if (!declared && variable) {
+	            boolean constant = !isVariable();
+				if (!declared && constant) {
                     that.addError("specified value is not yet declared: " + 
                             member.getName());
 	            }
-	            else if (cannotSpecify && variable) {
+	            else if (cannotSpecify && constant) {
 	                that.addError("cannot specify non-variable value here: " + 
 	                        member.getName(), 803);
 	            }
-	            else if (specified.possibly && variable) {
+	            else if (specified.possibly && constant) {
 	                that.addError("specified non-variable value is not definitely unspecified: " + 
 	                        member.getName(), 803);
 	            }
