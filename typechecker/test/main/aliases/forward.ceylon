@@ -7,7 +7,7 @@ List<String>&Text after = ["hello"];
 Defaulted dbefore = Defaulted("hello");
 Defaulted<String> dsbefore = dbefore;
 @error Defaulted<Integer> edbefore = dbefore;
-class Defaulted<T=String>(T t) {}
+class Defaulted<T=String>(shared T t) {}
 Defaulted dafter = Defaulted("bye");
 Defaulted<String> dsafter = dafter;
 @error Defaulted<Integer> edafter = dafter;
@@ -23,3 +23,19 @@ Optional<String,Integer> osiafter = oafter;
 Defaulted<Optional<String>> do1 = Defaulted(Optional("hello", 1));
 Defaulted<Optional<String,Integer>> do2 = do1; 
 Defaulted<Optional<String>> do3 = do2; 
+
+interface AlsoDefaulted<T=Float> {
+    shared default void accept(T tt) {}
+}
+class ExtendsDefaulted() extends Defaulted("") satisfies AlsoDefaulted {}
+Defaulted d1 = ExtendsDefaulted();
+AlsoDefaulted d2 = ExtendsDefaulted();
+void check() {
+    String s1 = d1.t;
+    d2.accept(1.0);
+    String s2 = ExtendsDefaulted().t;
+    ExtendsDefaulted().accept(1.0);
+}
+class RefinesDefault() satisfies AlsoDefaulted {
+    shared actual void accept(Float f) {}
+}
