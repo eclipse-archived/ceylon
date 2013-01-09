@@ -426,12 +426,14 @@ public class StructureTest extends CompilerTest {
     public void testMthLocalMethodSpecifyingParam(){
         compareWithJavaSource("method/LocalMethodSpecifyingParam");
     }
+    // see https://github.com/ceylon/ceylon-compiler/issues/942
     @Test
-    public void testMthVarargsMethodSpecifyingMethodWithIterable(){
+    public void testMthVarargsMethodSpecifyingMethodWithIterable_fail(){
         compareWithJavaSource("method/VarargsMethodSpecifyingMethodWithIterable");
     }
+    // see https://github.com/ceylon/ceylon-compiler/issues/942
     @Test
-    public void testMthVarargsMethodSpecifyingMethodWithVarargs(){
+    public void testMthVarargsMethodSpecifyingMethodWithVarargs_fail(){
         compareWithJavaSource("method/VarargsMethodSpecifyingMethodWithVarargs");
     }
     @Test
