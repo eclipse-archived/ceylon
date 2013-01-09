@@ -28,7 +28,4 @@ import com.redhat.ceylon.compiler.java.metadata.Module;
                 @Import(name = "com.foobar.qwert", version = "1.0.0.GA")
         })
 public class module_ {
-    public static ceylon.language.descriptor.Module getModule() {
-        return null;
-    }
 }

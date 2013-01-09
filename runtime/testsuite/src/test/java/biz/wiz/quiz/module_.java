@@ -27,7 +27,4 @@ import com.redhat.ceylon.compiler.java.metadata.Module;
         version = "1.0.0.GA",
         dependencies = {@Import(name = "default", version = "**NO_VERSION**")})
 public class module_ {
-    public static ceylon.language.descriptor.Module getModule() {
-        return null;
-    }
 }

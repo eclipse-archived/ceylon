@@ -29,7 +29,4 @@ import com.redhat.ceylon.compiler.java.metadata.Module;
                 @Import(name = "org.jboss.filtered", version = "1.0.0.Alpha1")
         })
 public class module_ {
-    public static ceylon.language.descriptor.Module getModule() {
-        return null;
-    }
 }

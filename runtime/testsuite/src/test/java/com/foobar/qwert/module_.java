@@ -30,7 +30,4 @@ import com.redhat.ceylon.compiler.java.metadata.Module;
                 @Import(name = "eu.cloud.clazz", version = "1.0.0.GA")
         })
 public class module_ {
-    public static ceylon.language.descriptor.Module getModule() {
-        return null;
-    }
 }

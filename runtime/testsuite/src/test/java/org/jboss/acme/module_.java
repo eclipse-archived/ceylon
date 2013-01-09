@@ -26,10 +26,6 @@ import com.redhat.ceylon.compiler.java.metadata.Module;
 @Module(name = "org.jboss.acme",
         version = "1.0.0.CR1")
 public class module_ {
-    public static ceylon.language.descriptor.Module getModule() {
-        return null;
-    }
-
     public static void run() {
         System.out.println("run ...");
     }

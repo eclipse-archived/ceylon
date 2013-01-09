@@ -34,7 +34,4 @@ import com.redhat.ceylon.compiler.java.metadata.Module;
                         optional = true)
         })
 public class module_ {
-    public static ceylon.language.descriptor.Module getModule() {
-        return null;
-    }
 }
