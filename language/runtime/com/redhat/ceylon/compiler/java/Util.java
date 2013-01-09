@@ -132,8 +132,8 @@ public class Util {
             }
             
         } else {
-            // Maybe the class didn't have an extends, so implictly IdentifiableObject
-            superclassName = "ceylon.language.IdentifiableObject";
+            // Maybe the class didn't have an extends, so implictly Basic
+            superclassName = "ceylon.language.Basic";
         }
         if (!superclassName.isEmpty()) {
             try {
