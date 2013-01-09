@@ -98,5 +98,13 @@ void splitFunction() {
     fun3(String s) => s;
     void fun4(String s);
     fun4 = print;    
+    void fun5(String s);
+    fun5 = (String s) => print(s);
+    
+    class X(String s) {}
+    void fun6(String s);
+    @error fun6(String s) => X(s);
+    X fun7(String s);
+    fun7(String s) => X(s);
 
 }
