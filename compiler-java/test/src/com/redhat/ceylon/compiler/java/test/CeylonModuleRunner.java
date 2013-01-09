@@ -43,14 +43,12 @@ import org.junit.runner.notification.RunNotifier;
 import org.junit.runners.ParentRunner;
 import org.junit.runners.model.InitializationError;
 
-import com.redhat.ceylon.cmr.api.RepositoryManager;
-import com.redhat.ceylon.cmr.ceylon.CeylonUtils;
 import com.redhat.ceylon.compiler.java.codegen.Decl;
 import com.redhat.ceylon.compiler.java.tools.CeylonLog;
 import com.redhat.ceylon.compiler.java.tools.CeyloncFileManager;
-import com.redhat.ceylon.compiler.typechecker.TypeChecker;
-import com.redhat.ceylon.compiler.typechecker.TypeCheckerBuilder;
+import com.redhat.ceylon.compiler.java.tools.LanguageCompiler;
 import com.redhat.ceylon.compiler.typechecker.context.PhasedUnit;
+import com.redhat.ceylon.compiler.typechecker.context.PhasedUnits;
 import com.redhat.ceylon.compiler.typechecker.model.Unit;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.AnyClass;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.CompilationUnit;
@@ -123,8 +121,9 @@ public class CeylonModuleRunner extends ParentRunner<Runner> {
             
             com.redhat.ceylon.compiler.java.launcher.Main compiler = new com.redhat.ceylon.compiler.java.launcher.Main("ceylonc");
             List<String> args = new ArrayList<>();
-            args.add("-src"); args
-            .add(srcDir.getCanonicalPath());
+//            args.add("-verbose:code");
+            args.add("-src"); 
+            args.add(srcDir.getCanonicalPath());
             args.add("-out");
             args.add(outRepo.getAbsolutePath());
             if (moduleName.equals("default")) {
@@ -136,6 +135,9 @@ public class CeylonModuleRunner extends ParentRunner<Runner> {
             int sc = compiler.compile(args.toArray(new String[args.size()]), 
                     context);
             
+            // now fetch stuff from the context
+            PhasedUnits phasedUnits = LanguageCompiler.getPhasedUnitsInstance(context);
+            
             this.children = new LinkedHashMap<Runner, Description>();
             
             for (final CompilerError compileError : listener.get(Kind.ERROR)) {
@@ -146,7 +148,7 @@ public class CeylonModuleRunner extends ParentRunner<Runner> {
             // XXX Need to use CMR if the module has dependencies
             URLClassLoader cl = classLoaderForModule(moduleName, outRepo);
             if (cl != null) {
-                loadCompiledTests(srcDir, cl);
+                loadCompiledTests(srcDir, cl, phasedUnits);
             }
         } catch (RuntimeException e) {
             throw e;
@@ -180,9 +182,9 @@ public class CeylonModuleRunner extends ParentRunner<Runner> {
                 runner.getDescription());
     }
     
-    private void loadCompiledTests(File srcDir, URLClassLoader cl)
+    private void loadCompiledTests(File srcDir, URLClassLoader cl, PhasedUnits phasedUnits)
                 throws InitializationError {
-            Map<String, List<String>> testMethods = testLoader.loadTestMethods(this, srcDir);
+            Map<String, List<String>> testMethods = testLoader.loadTestMethods(this, phasedUnits);
         if (testMethods.isEmpty() && errorIfNoTests) {
             createFailingTest("No tests!", new Exception("contains no tests"));
         }
@@ -277,27 +279,20 @@ public class CeylonModuleRunner extends ParentRunner<Runner> {
     public static interface TestLoader {
         /**
          * Loads test methods
-         * @param srcDir
+         * @param phasedUnits
          * @return A map of class names to test methods contained in that class
          */
-        public Map<String, List<String>> loadTestMethods(final CeylonModuleRunner moduleRunner, File srcDir);
+        public Map<String, List<String>> loadTestMethods(final CeylonModuleRunner moduleRunner, PhasedUnits phasedUnits);
     }
 
     public static class StandardLoader implements TestLoader {
         @Override
-        public Map<String, List<String>> loadTestMethods(final CeylonModuleRunner moduleRunner, File srcDir) {
+        public Map<String, List<String>> loadTestMethods(final CeylonModuleRunner moduleRunner, PhasedUnits phasedUnits) {
             // Find all the top level classes/functions annotated @test
             // Unfortunately doing it like this
             final Map<String, List<String>> testMethods = new TreeMap<String, List<String>>();
-            RepositoryManager repositoryManager = CeylonUtils.repoManager().buildManager();
-            TypeCheckerBuilder typeCheckerBuilder = new TypeCheckerBuilder();
-            typeCheckerBuilder.addSrcDirectory(srcDir);
-            typeCheckerBuilder.setRepositoryManager(repositoryManager);
-            TypeChecker typeChecker = typeCheckerBuilder.getTypeChecker();
-            
-            typeChecker.process();
-            
-            for (PhasedUnit pu : typeChecker.getPhasedUnits().getPhasedUnits()) {
+
+            for (PhasedUnit pu : phasedUnits.getPhasedUnits()) {
                 CompilationUnit cu = pu.getCompilationUnit();
                 cu.visit(new Visitor() {
                     private String testClassName = null;
