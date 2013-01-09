@@ -28,6 +28,6 @@ void f<X>(Bug816I<X> set) {
 }
 @nomodel
 void test() {
-    value x = Bug816C<String, Bottom>();
+    value x = Bug816C<String, Nothing>();
     f(x);
 }

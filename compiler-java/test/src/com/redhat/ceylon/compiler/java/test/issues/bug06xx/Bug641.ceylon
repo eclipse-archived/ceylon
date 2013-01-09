@@ -18,7 +18,7 @@
  * MA  02110-1301, USA.
  */
 @nomodel
-void bug641(Set<Integer> a, Set<Bottom> b) {
+void bug641(Set<Integer> a, Set<Nothing> b) {
     Set<Integer> foo1 = a.union(b);
     Set<Integer> foo2 = a.intersection(b);
     Set<Integer> foo3 = a.exclusiveUnion(b);

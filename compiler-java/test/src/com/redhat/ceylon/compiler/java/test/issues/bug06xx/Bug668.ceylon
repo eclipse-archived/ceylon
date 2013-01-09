@@ -18,14 +18,14 @@
  * MA  02110-1301, USA.
  */
 @nomodel
-shared interface Bug668_X<out Element, out Null>
-        given Null satisfies Nothing {
-    shared formal Null|Element first;
+shared interface Bug668_X<out Element, out Nada>
+        given Nada satisfies Null {
+    shared formal Nada|Element first;
 }
 
 @nomodel
 shared interface Bug668_Y<out Element> 
-        satisfies Bug668_X<Element,Nothing> {
+        satisfies Bug668_X<Element,Null> {
     shared actual default Element? first {
         return null;
     }
@@ -33,6 +33,6 @@ shared interface Bug668_Y<out Element>
 }
 
 @nomodel
-void bug668_method<Null>(Null n) given Null satisfies Nothing { 
-    object obj satisfies Bug668_Y<Bottom> & Bug668_X<Bottom,Nothing> {}
+void bug668_method<Nada>(Nada n) given Nada satisfies Null { 
+    object obj satisfies Bug668_Y<Nothing> & Bug668_X<Nothing,Null> {}
 }

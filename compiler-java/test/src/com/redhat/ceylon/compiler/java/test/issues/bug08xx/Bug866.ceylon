@@ -35,11 +35,11 @@ interface Bug866_Visitable<Visited> of Visited satisfies Iterable<Integer|Visite
 
     shared void visitPrefix(void f(Integer|Visited t)){
         f(this of Visited);
-        visitChildren(f, function (Visited child) child.visitPrefix(f));
+        visitChildren(f, function (Visited child) => child.visitPrefix(f));
     }
 
     shared void visitPostfix(void f(Integer|Visited t)){
-        visitChildren(f, function (Visited child) child.visitPostfix(f));
+        visitChildren(f, function (Visited child) => child.visitPostfix(f));
         f(this of Visited);
     }
 }

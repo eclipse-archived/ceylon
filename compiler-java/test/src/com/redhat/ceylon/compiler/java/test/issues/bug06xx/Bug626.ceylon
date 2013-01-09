@@ -18,16 +18,16 @@
  * MA  02110-1301, USA.
  */
 @nomodel
-class Bug626() satisfies Iterable<Bottom[]> {
+class Bug626() satisfies Iterable<Nothing[]> {
     shared actual Boolean equals(Object that) {return nothing;}
     shared actual Integer hash = nothing;
-    shared actual Iterator<Bottom[]> iterator = nothing;
+    shared actual Iterator<Nothing[]> iterator = nothing;
 }
 
 @nomodel
-void bug626f(Iterable<Iterable<Container<Bottom>|Closeable>> f, Iterable<Iterable<Container<Bottom>&Closeable>> f2, Iterable<Iterable<Bottom>> f3){
+void bug626f(Iterable<Iterable<Container<Nothing>|Closeable>> f, Iterable<Iterable<Container<Nothing>&Closeable>> f2, Iterable<Iterable<Nothing>> f3){
     Iterable<Iterable<Object>> i = f;
     Iterable<Iterable<Object>> i2 = f2;
     Iterable<Iterable<Object>> i3 = f3;
-    Bottom[] temp = join { iterables = Bug626().sequence; };
+    Nothing[] temp = join { iterables = Bug626().sequence; };
 }

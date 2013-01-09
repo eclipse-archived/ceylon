@@ -46,13 +46,13 @@ final class Bug667Interface$impl<T> {
         throw new .ceylon.language.Exception(null, null);
     }
 }
-class Bug667Class<Null> implements .com.redhat.ceylon.compiler.java.test.issues.bug06xx.Bug667Interface<.ceylon.language.String> {
+class Bug667Class<Nada> implements .com.redhat.ceylon.compiler.java.test.issues.bug06xx.Bug667Interface<.ceylon.language.String> {
     
-    Bug667Class(Null n) {
+    Bug667Class(Nada n) {
         this.n = n;
         this.$com$redhat$ceylon$compiler$java$test$issues$bug06xx$Bug667Interface$this = new .com.redhat.ceylon.compiler.java.test.issues.bug06xx.Bug667Interface$impl<.ceylon.language.String>(this);
     }
-    private final Null n;
+    private final Nada n;
     protected final .com.redhat.ceylon.compiler.java.test.issues.bug06xx.Bug667Interface$impl<.ceylon.language.String> $com$redhat$ceylon$compiler$java$test$issues$bug06xx$Bug667Interface$this;
     
     @.java.lang.Override
@@ -65,7 +65,7 @@ final class bug667Method_ {
     private bug667Method_() {
     }
     
-    static <Null>void bug667Method(final Null n) {
+    static <Nada>void bug667Method(final Nada n) {
         
         final class x_ implements .com.redhat.ceylon.compiler.java.test.issues.bug06xx.Bug667Interface<.ceylon.language.String> {
             

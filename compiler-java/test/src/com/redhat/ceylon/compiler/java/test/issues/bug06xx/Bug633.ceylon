@@ -23,7 +23,7 @@ interface Bug633Ranged<in Index, out Span>{
 }
 
 @nomodel
-interface Bug633Empty satisfies Bug633Ranged<Integer, Bottom> {
+interface Bug633Empty satisfies Bug633Ranged<Integer, Nothing> {
     //shared actual formal void span(Integer from);
 }
 

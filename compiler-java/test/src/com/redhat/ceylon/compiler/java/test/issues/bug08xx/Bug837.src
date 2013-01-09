@@ -11,7 +11,7 @@ class Bug837<Element extends .ceylon.language.Ordinal<? extends Element>> extend
         this.$ceylon$language$List$this = new .ceylon.language.List$impl<Element>(this);
         this.$ceylon$language$Collection$this = new .ceylon.language.Collection$impl<Element>(this);
         this.$ceylon$language$Iterable$this = new .ceylon.language.Iterable$impl<Element>(this);
-        this.$ceylon$language$ContainerWithFirstElement$this = new .ceylon.language.ContainerWithFirstElement$impl<Element, .java.lang.Object>(this);
+        this.$ceylon$language$ContainerWithFirstElement$this = new .ceylon.language.ContainerWithFirstElement$impl<Element, .java.lang.Object>((.ceylon.language.ContainerWithFirstElement<Element, .java.lang.Object>)(.ceylon.language.ContainerWithFirstElement)this);
         this.$ceylon$language$Category$this = new .ceylon.language.Category$impl(this);
         this.$ceylon$language$Cloneable$this = new .ceylon.language.Cloneable$impl<.ceylon.language.Collection<? extends Element>>((.ceylon.language.Cloneable<.ceylon.language.Collection<? extends Element>>)(.ceylon.language.Cloneable)this);
         this.$ceylon$language$Correspondence$this = new .ceylon.language.Correspondence$impl<.ceylon.language.Integer, Element>(this);

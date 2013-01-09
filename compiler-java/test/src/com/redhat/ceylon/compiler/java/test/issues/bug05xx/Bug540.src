@@ -26,12 +26,9 @@ final class arr3_ {
         value = new .ceylon.language.Array[]{(
             let
             {
-                .ceylon.language.Integer $arg$0$0$0 = .ceylon.language.Integer.instance(1L);
-                .ceylon.language.Integer $arg$0$0$1 = .ceylon.language.Integer.instance(2L);
-                .ceylon.language.Integer $arg$0$0$2 = .ceylon.language.Integer.instance(3L);
-                .ceylon.language.Sequential<? extends .ceylon.language.Integer> $arg$0$0$3 = new .com.redhat.ceylon.compiler.java.language.ArraySequence($arg$0$0$0, $arg$0$0$1, $arg$0$0$2);
+                .ceylon.language.Sequential $arg$0$0 = new .ceylon.language.Tuple<.ceylon.language.Integer, .ceylon.language.Integer, .ceylon.language.Tuple<.ceylon.language.Integer, ? extends .ceylon.language.Integer, ? extends .ceylon.language.Tuple<.ceylon.language.Integer, ? extends .ceylon.language.Integer, ? extends .ceylon.language.Empty>>>(.ceylon.language.Integer.instance(1L), new .ceylon.language.Tuple<.ceylon.language.Integer, .ceylon.language.Integer, .ceylon.language.Tuple<.ceylon.language.Integer, ? extends .ceylon.language.Integer, ? extends .ceylon.language.Empty>>(.ceylon.language.Integer.instance(2L), new .ceylon.language.Tuple<.ceylon.language.Integer, .ceylon.language.Integer, .ceylon.language.Empty>(.ceylon.language.Integer.instance(3L), .ceylon.language.empty_.getEmpty$())));
             }
-            returning .ceylon.language.array_.<.ceylon.language.Integer>array(long.class, $arg$0$0$3);
+            returning .ceylon.language.array_.<.ceylon.language.Integer>array(long.class, $arg$0$0);
         )};
     }
     

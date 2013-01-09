@@ -38,7 +38,7 @@ class Bug687()  {
         p({}...);
         p{elements = {};};
         
-        value f = sort3<Bottom>;
+        value f = sort3<Nothing>;
         f({});
     }
 }

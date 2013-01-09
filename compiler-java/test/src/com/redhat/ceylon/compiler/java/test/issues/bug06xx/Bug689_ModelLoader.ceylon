@@ -20,11 +20,11 @@
 class Bug689_ModelLoader<X,Y>(X x, Y y, X&Y xy) {
     
     shared Sequence<X|Y> parameterisedMethodWithUnion<X,Y>(X x, Y y) {
-        return {x,y};
+        return [x,y];
     }
     shared Sequence<X|Y> methodWithUnion(X x, Y y) {
-        return {x,y};
+        return [x,y];
     }
-    shared Sequence<X|Y> attributeWithUnion = {x,y};
-    shared variable Sequence<X|Y> variableWithUnion = {x,y};
+    shared Sequence<X|Y> attributeWithUnion = [x,y];
+    shared variable Sequence<X|Y> variableWithUnion = [x,y];
 }

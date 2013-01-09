@@ -481,7 +481,7 @@ public class IssuesTest extends CompilerTest {
     
     // fails pending figuring out https://github.com/ceylon/ceylon-spec/issues/465
     @Test
-    public void testBug626_fail(){
+    public void testBug626(){
         compareWithJavaSource("bug06xx/Bug626");
     }
 

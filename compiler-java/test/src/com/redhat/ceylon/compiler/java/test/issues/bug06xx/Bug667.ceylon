@@ -40,14 +40,14 @@ interface Bug667Interface<T> {
 }
  
 @nomodel
-class Bug667Class<Null>(Null n) satisfies Bug667Interface<String> 
-        given Null satisfies Nothing {    
-    shared actual Null get { return n; }
+class Bug667Class<Nada>(Nada n) satisfies Bug667Interface<String> 
+        given Nada satisfies Null {    
+    shared actual Nada get { return n; }
 }
 
 @nomodel
-void bug667Method<Null>(Null n) given Null satisfies Nothing {
+void bug667Method<Nada>(Nada n) given Nada satisfies Null {
     object x satisfies Bug667Interface<String> {    
-        shared actual Null get { return n; }
+        shared actual Nada get { return n; }
     }
 }

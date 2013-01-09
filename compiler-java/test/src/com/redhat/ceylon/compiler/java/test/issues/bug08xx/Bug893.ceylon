@@ -38,7 +38,7 @@ shared interface XSequence893<out Element>
 }
 @nomodel
 shared interface XEmpty893
-           satisfies XSequential893<Bottom> {
+           satisfies XSequential893<Nothing> {
 }
 @nomodel
 shared abstract class XSingleton893<out Element>(Element element)

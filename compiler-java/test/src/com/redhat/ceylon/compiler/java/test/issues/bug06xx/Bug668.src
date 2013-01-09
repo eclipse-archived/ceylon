@@ -1,15 +1,15 @@
 package com.redhat.ceylon.compiler.java.test.issues.bug06xx;
 
-public interface Bug668_X<Element, Null> {
+public interface Bug668_X<Element, Nada> {
     
     public abstract .java.lang.Object getFirst();
 }
-public final class Bug668_X$impl<Element, Null> {
+public final class Bug668_X$impl<Element, Nada> {
     
-    public Bug668_X$impl(.com.redhat.ceylon.compiler.java.test.issues.bug06xx.Bug668_X<? extends Element, ? extends Null> $this) {
+    public Bug668_X$impl(.com.redhat.ceylon.compiler.java.test.issues.bug06xx.Bug668_X<? extends Element, ? extends Nada> $this) {
         this.$this = $this;
     }
-    private final .com.redhat.ceylon.compiler.java.test.issues.bug06xx.Bug668_X<? extends Element, ? extends Null> $this;
+    private final .com.redhat.ceylon.compiler.java.test.issues.bug06xx.Bug668_X<? extends Element, ? extends Nada> $this;
     
     public final .java.lang.Object getFirst() {
         return $this.getFirst();
@@ -36,7 +36,7 @@ final class bug668_method_ {
     private bug668_method_() {
     }
     
-    static <Null>void bug668_method(final Null n) {
+    static <Nada>void bug668_method(final Nada n) {
         
         final class obj_ implements .com.redhat.ceylon.compiler.java.test.issues.bug06xx.Bug668_Y<.java.lang.Object>, .com.redhat.ceylon.compiler.java.test.issues.bug06xx.Bug668_X<.java.lang.Object, .java.lang.Object> {
             

@@ -31,7 +31,7 @@ Bug708<String>? bug708obj = Bug708<String>();
 @nomodel
 String? bug708extra3 = bug708obj?.test();
 @nomodel
-Bug708<String>[] bug708seq = { Bug708<String>() };
+Bug708<String>[] bug708seq = [ Bug708<String>() ];
 @nomodel
 String?[] bug708extra4 = bug708seq[].test();
 @nomodel

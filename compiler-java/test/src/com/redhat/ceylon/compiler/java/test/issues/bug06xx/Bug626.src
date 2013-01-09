@@ -5,11 +5,16 @@ class Bug626 implements .ceylon.language.Iterable<.ceylon.language.Sequential<?>
     Bug626() {
         this.$ceylon$language$Iterable$this = new .ceylon.language.Iterable$impl<.ceylon.language.Sequential<?>>(this);
         this.$ceylon$language$ContainerWithFirstElement$this = new .ceylon.language.ContainerWithFirstElement$impl<.ceylon.language.Sequential<?>, .java.lang.Object>(this);
-        this.$ceylon$language$Container$this = new .ceylon.language.Container$impl(this);
+        this.$ceylon$language$Category$this = new .ceylon.language.Category$impl(this);
         this.hash = (int)((.ceylon.language.Integer).ceylon.language.nothing_.getNothing$()).longValue();
         this.iterator = (.ceylon.language.Iterator<? extends .ceylon.language.Sequential<?>>)(.ceylon.language.Iterator).ceylon.language.nothing_.getNothing$();
     }
     protected final .ceylon.language.Iterable$impl<.ceylon.language.Sequential<?>> $ceylon$language$Iterable$this;
+    
+    @.java.lang.Override
+    public long getSize() {
+        return $ceylon$language$Iterable$this.getSize();
+    }
     
     @.java.lang.Override
     public boolean getEmpty() {
@@ -125,8 +130,43 @@ class Bug626 implements .ceylon.language.Iterable<.ceylon.language.Sequential<?>
     public <Grouping>.ceylon.language.Map<? extends Grouping, ? extends .ceylon.language.Sequence<? extends .ceylon.language.Sequential<?>>> group(final .ceylon.language.Callable<? extends Grouping> grouping) {
         return $ceylon$language$Iterable$this.group(grouping);
     }
+    
+    @.java.lang.Override
+    public boolean contains(final .java.lang.Object element) {
+        return $ceylon$language$Iterable$this.contains(element);
+    }
     protected final .ceylon.language.ContainerWithFirstElement$impl<.ceylon.language.Sequential<?>, .java.lang.Object> $ceylon$language$ContainerWithFirstElement$this;
-    protected final .ceylon.language.Container$impl $ceylon$language$Container$this;
+    protected final .ceylon.language.Category$impl $ceylon$language$Category$this;
+    
+    @.java.lang.Override
+    public final .ceylon.language.Sequential<? extends .java.lang.Object> containsEvery$elements() {
+        return $ceylon$language$Category$this.containsEvery$elements();
+    }
+    
+    @.java.lang.Override
+    public final boolean containsEvery() {
+        return $ceylon$language$Category$this.containsEvery();
+    }
+    
+    @.java.lang.Override
+    public boolean containsEvery(final .ceylon.language.Sequential<? extends .java.lang.Object> elements) {
+        return $ceylon$language$Category$this.containsEvery(elements);
+    }
+    
+    @.java.lang.Override
+    public final .ceylon.language.Sequential<? extends .java.lang.Object> containsAny$elements() {
+        return $ceylon$language$Category$this.containsAny$elements();
+    }
+    
+    @.java.lang.Override
+    public final boolean containsAny() {
+        return $ceylon$language$Category$this.containsAny();
+    }
+    
+    @.java.lang.Override
+    public boolean containsAny(final .ceylon.language.Sequential<? extends .java.lang.Object> elements) {
+        return $ceylon$language$Category$this.containsAny(elements);
+    }
     
     @.java.lang.Override
     public final boolean equals(final .java.lang.Object that) {

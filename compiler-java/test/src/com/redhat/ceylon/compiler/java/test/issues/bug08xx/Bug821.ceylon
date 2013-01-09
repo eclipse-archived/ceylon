@@ -21,12 +21,12 @@
 alias Bug821Alias => Integer|Float;
 @nomodel
 void bug821a(){
-    Sequence<Bug821Alias> ns = { 1 };
+    Sequence<Bug821Alias> ns = [ 1 ];
     value num = ns[0];
 }
 @nomodel
 void bug821b(){
     Bug821Alias n = 1;
-    Sequence<Bug821Alias> ns = { n };
+    Sequence<Bug821Alias> ns = [ n ];
     value num = ns[0];
 }

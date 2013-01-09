@@ -19,6 +19,6 @@
  */
 @nomodel
 class Bug699() {
-    value singleton = Singleton(()"hello");
+    value singleton = Singleton(() => "hello");
     print(singleton.first());
 }

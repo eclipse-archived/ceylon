@@ -20,7 +20,7 @@
 @nomodel
 void run() {
     value people = {"stef", "gavin"};
-    value v = (String nm) nm == "stef";
+    value v = (String nm) => nm == "stef";
     value frenchPeople = filter(people, v);
     print(frenchPeople);
 }
