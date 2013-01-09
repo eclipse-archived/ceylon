@@ -99,7 +99,7 @@
             <include name="**/*Main5.java" />
         </javac>
         <!-- generate the ceylon.language.js file -->
-        <java classname="com.redhat.ceylon.compiler.js.Stitcher" classpathref="test.run.classpath">
+        <java classname="com.redhat.ceylon.compiler.js.Stitcher" classpathref="test.run.classpath" fork="true">
             <arg value="${js-src}/${jslangfile}" />
             <arg value="${runtime}/${jslangpath}" />
             <arg value="${module.com.redhat.ceylon.compiler.js.version}" />
