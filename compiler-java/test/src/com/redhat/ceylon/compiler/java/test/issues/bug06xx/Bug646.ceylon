@@ -26,7 +26,7 @@ void bug646() {
     Iterable<Integer(String)> observers3 = {};
     Integer(Nothing)[] observers4 = {};
     Integer(String|Integer)[] observers5 = {};
-    Integer(Nothing)[] observers6 = {};
+    Integer(Null)[] observers6 = {};
     Integer(Basic)[] observers7 = {};
     Iterable<Iterable<Integer|String>> foo = {};
     Iterable<String|Integer> union = {};
