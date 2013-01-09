@@ -581,12 +581,11 @@ public class Util {
     }*/
     
     public static Declaration lookupMember(List<Declaration> members, String name,
-            List<ProducedType> signature, boolean ellipsis, boolean includeParameters) {
+            List<ProducedType> signature, boolean ellipsis) {
         List<Declaration> results = new ArrayList<Declaration>();
         Declaration inexactMatch = null;
         for (Declaration d: members) {
-            if (isResolvable(d) && isNamed(name, d) &&
-                    (includeParameters || !isParameter(d))) {
+            if (isResolvable(d) && isNamed(name, d)) {
                 if (signature==null) {
                     //no argument types: either a type 
                     //declaration, an attribute, or a method 

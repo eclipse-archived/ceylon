@@ -125,7 +125,7 @@ public class Package
 
     @Override
     public Declaration getDirectMember(String name, List<ProducedType> signature, boolean ellipsis) {
-        return lookupMember(getMembers(), name, signature, ellipsis, false);
+        return lookupMember(getMembers(), name, signature, ellipsis);
     }
 
     @Override

@@ -15,7 +15,7 @@ interface GettersSetters {
     class SettersWithDupeParams2(String hi, String howdy) {
         @error String hi { return "hi"; }
         @error assign howdy {  }
-        assign hi {}
+        @error assign hi {}
         @error assign hi {}
     }
     
