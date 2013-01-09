@@ -42,7 +42,6 @@ shared class Range<Element>(first, last)
     		return (last.integerValue - 
     		        first.integerValue)
     		            .magnitude+1;
-
     	}
     	else {
     		variable Integer size = 1;
