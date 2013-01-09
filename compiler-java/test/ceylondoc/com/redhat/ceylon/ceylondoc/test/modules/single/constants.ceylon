@@ -34,7 +34,7 @@ shared String[] constAbcArray = [
     
 shared Character constCharA = `A`;
 
-shared Character constCharAngstromSign = `\{212B}`;
+shared Character constCharAngstromSign = `\{#212B}`;
     
 shared Integer constNumZero = 0;
 
