@@ -61,9 +61,11 @@ import com.redhat.ceylon.compiler.typechecker.tree.Tree;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.DefaultArgument;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.Ellipsis;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.Expression;
+import com.redhat.ceylon.compiler.typechecker.tree.Tree.SpecifierExpression;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.SpecifierOrInitializerExpression;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.SupertypeQualifier;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.Term;
+import com.redhat.ceylon.compiler.typechecker.tree.Tree.Type;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.TypedArgument;
 import com.redhat.ceylon.compiler.typechecker.tree.Visitor;
 
@@ -2174,13 +2176,7 @@ public class ExpressionVisitor extends Visitor {
                      //assuming an argument can't have type params 
                     Collections.<ProducedType>emptyList()).getFullType();
             //argType = ta.getType().getTypeModel();
-            if (p instanceof FunctionalParameter &&
-            		((FunctionalParameter) p).isDeclaredVoid() &&
-            		ta.getType() instanceof Tree.FunctionModifier) {
-            	//TODO: check that it is really the "shortcut" form
-            	a.addError("functional parameter is declared void: " +
-            			p.getName());
-            }
+            checkArgumentToVoidParameter(p, ta);
         }
         ProducedType pt = pr.getTypedParameter(p).getFullType();
 //      if (p.isSequenced()) pt = unit.getIteratedType(pt);
@@ -2189,6 +2185,30 @@ public class ExpressionVisitor extends Visitor {
                 p.getName() + " of " + pr.getDeclaration().getName(unit), 
                 2100);
     }
+
+	private void checkArgumentToVoidParameter(Parameter p, Tree.TypedArgument ta) {
+		if (ta instanceof Tree.MethodArgument) {
+			Tree.MethodArgument ma = (Tree.MethodArgument) ta;
+			SpecifierExpression se = ma.getSpecifierExpression();
+			if (se!=null && se.getExpression()!=null) {
+				Type t = ta.getType();
+				// if the argument is explicitly declared 
+				// using the function modifier, it should 
+				// be allowed, even if the parameter is 
+				// declared void
+				//TODO: what is a better way to check that 
+				//      this is really the "shortcut" form
+				if (t instanceof Tree.FunctionModifier && 
+						t.getToken()==null &&
+					p instanceof FunctionalParameter &&
+						((FunctionalParameter) p).isDeclaredVoid() &&
+					!isVoidMethodReference(se.getExpression())) {
+					ta.addError("functional parameter is declared void so argument may not evaluate to a value: " +
+							p.getName());
+				}
+			}
+		}
+	}
     
     private void checkSequencedArgument(Tree.SequencedArgument a, ProducedReference pr, 
             Parameter p) {
