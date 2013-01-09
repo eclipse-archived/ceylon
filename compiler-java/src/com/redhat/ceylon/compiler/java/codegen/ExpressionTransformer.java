@@ -65,7 +65,7 @@ import com.redhat.ceylon.compiler.typechecker.tree.Tree.FunctionalParameterDecla
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.IfComprehensionClause;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.InvocationExpression;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.KeyValueIterator;
-import com.redhat.ceylon.compiler.typechecker.tree.Tree.PositionalArgument;
+import com.redhat.ceylon.compiler.typechecker.tree.Tree.NaturalLiteral;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.QualifiedMemberExpression;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.SequencedArgument;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.SpecifierExpression;
@@ -566,18 +566,8 @@ public class ExpressionTransformer extends AbstractTransformer {
         return lit;
     }
 
-    private JCExpression transformHexLiteral(Tree.QuotedLiteral literal) {
-        return transformRadixLiteral(literal, 16, "Invalid hexadecimal literal (must be unsigned and fit in 64 bits)");
-    }
-    
-    private JCExpression transformBinaryLiteral(Tree.QuotedLiteral literal) {
-        return transformRadixLiteral(literal, 2, "Invalid binary literal (must be unsigned and fit in 64 bits)");
-    }
-
-    private JCExpression transformRadixLiteral(Tree.QuotedLiteral literal, int radix, String error){
-        String value = literal
-                .getText()
-                .substring(1, literal.getText().length() - 1);
+    private JCExpression transformRadixLiteral(NaturalLiteral literal, int radix, String error){
+        String value = literal.getText().substring(1);
         at(literal);
         try{
             long l = Convert.string2long(value, radix);
@@ -631,7 +621,14 @@ public class ExpressionTransformer extends AbstractTransformer {
     }
     
     public JCExpression transform(Tree.NaturalLiteral lit) {
-        return integerLiteral(lit, lit.getText());
+        String text = lit.getText();
+        if(text.startsWith("#")){
+            return transformRadixLiteral(lit, 16, "Invalid hexadecimal literal (must be unsigned and fit in 64 bits)");
+        }
+        if(text.startsWith("$")){
+            return transformRadixLiteral(lit, 2, "Invalid binary literal (must be unsigned and fit in 64 bits)");
+        }
+        return integerLiteral(lit, text);
     }
 
     public JCExpression transformStringExpression(Tree.StringTemplate expr) {
@@ -2821,11 +2818,8 @@ public class ExpressionTransformer extends AbstractTransformer {
     }
 
     private JCExpression checkForInvocationExpressionOptimisation(InvocationExpression ce) {
-        // FIXME: temporary hack for hex/bin literals
-        JCExpression ret = checkForRadixLiterals(ce);
-        if(ret != null)
-            return ret;
-        ret = checkForBitwiseOperators(ce);
+        // FIXME: temporary hack for bitwise operators literals
+        JCExpression ret = checkForBitwiseOperators(ce);
         if(ret != null)
             return ret;
         return null;
@@ -2906,30 +2900,4 @@ public class ExpressionTransformer extends AbstractTransformer {
         }
         return null;
     }
-
-    private JCExpression checkForRadixLiterals(InvocationExpression ce) {
-        if(ce.getPrimary() instanceof Tree.BaseMemberExpression
-                && ce.getPositionalArgumentList() != null){
-            java.util.List<PositionalArgument> positionalArguments = ce.getPositionalArgumentList().getPositionalArguments();
-            if(positionalArguments.size() == 1
-                && positionalArguments.get(0).getExpression() != null){
-                Term term = positionalArguments.get(0).getExpression().getTerm();
-                if(term instanceof Tree.QuotedLiteral){
-                    Declaration decl = ((Tree.BaseMemberExpression)ce.getPrimary()).getDeclaration();
-                    if(decl instanceof Method){
-                        String name = decl.getQualifiedNameString();
-                        if(name.equals("ceylon.language::hex")){
-                            return transformHexLiteral((Tree.QuotedLiteral)term);
-                        }else if(name.equals("ceylon.language::bin")){
-                            return transformBinaryLiteral((Tree.QuotedLiteral)term);
-                        }
-                    }
-                }
-            }
-        }
-        return null;
-    }
-
-
-    
 }
