@@ -1,6 +1,8 @@
 package com.redhat.ceylon.compiler.java.codegen;
 
+import com.redhat.ceylon.compiler.java.codegen.Naming.SyntheticName;
 import com.sun.tools.javac.tree.JCTree.JCExpression;
+import com.sun.tools.javac.tree.JCTree.JCStatement;
 import com.sun.tools.javac.util.List;
 import com.sun.tools.javac.util.ListBuffer;
 
@@ -14,14 +16,19 @@ public class CallBuilder {
         NEW
     }
     
+    private static final String MISSING_TYPE = "Type expression required when evaluateArgumentsFirst()";
+    
     private final AbstractTransformer gen;
     private Kind kind;
     
     private ListBuffer<JCExpression> typeargs = ListBuffer.<JCExpression>lb();
-    private ListBuffer<JCExpression> args = ListBuffer.<JCExpression>lb();
+    /** The transformed argument expressions and their transformed type expressions */
+    private ListBuffer<ExpressionAndType> argumentsAndTypes = ListBuffer.<ExpressionAndType>lb();
 
     private JCExpression methodOrClass;
-    private JCExpression instantiateQualfier;
+    private ExpressionAndType instantiateQualfier;
+    private boolean argumentsFirst;
+    private SyntheticName basename;
     
     private CallBuilder(AbstractTransformer gen) {
         this.gen = gen;
@@ -34,6 +41,7 @@ public class CallBuilder {
     
     public CallBuilder invoke(JCExpression fn) {
         this.methodOrClass = fn;
+        this.instantiateQualfier = null;
         this.kind = Kind.APPLY;
         return this;
     }
@@ -42,7 +50,7 @@ public class CallBuilder {
         return instantiate(null, cls);
     }
     
-    public CallBuilder instantiate(JCExpression qualifier, JCExpression cls) {
+    public CallBuilder instantiate(ExpressionAndType qualifier, JCExpression cls) {
         this.methodOrClass = cls;
         this.instantiateQualfier = qualifier;
         this.kind = Kind.NEW;
@@ -61,25 +69,110 @@ public class CallBuilder {
     }
     
     public CallBuilder argument(JCExpression expr) {
-        this.args.append(expr);
+        this.argumentAndType(new ExpressionAndType(expr, null));
+        return this;
+    }
+    
+    public CallBuilder argumentAndType(ExpressionAndType argumentAndType) {
+        this.argumentsAndTypes.append(argumentAndType);
         return this;
     }
     
     public CallBuilder arguments(List<JCExpression> args) {
         for (JCExpression arg : args) {
-            this.args.append(arg);
+            this.argument(arg);
         }
         return this;
     }
     
+    public CallBuilder argumentsAndTypes(List<ExpressionAndType> argsAndTypes) {
+        this.argumentsAndTypes.clear();
+        this.argumentsAndTypes.addAll(argsAndTypes);
+        return this;
+    }
+    
+    /**
+     * Determine whether a Let expression should be used to evaluate qualifier 
+     * and arguments <strong>prior</strong> to evaluating a
+     * {@code super} invocation or instantiation. The JVM prohibits a backward 
+     * branch (i.e. loop) when an uninitialized reference is on the operand 
+     * stack.
+     * @see "#929"
+     */
+    public CallBuilder evaluateArgumentsFirst(boolean argumentsFirst) {
+        this.argumentsFirst = argumentsFirst;
+        return this;
+    }
+    
     public JCExpression build() {
+        JCExpression result;
+        
+        List<JCStatement> primaryAndArguments;
+        List<JCExpression> arguments;
+        final JCExpression newEncl;
+        
+        if (argumentsFirst) {
+            basename = gen.naming.alias("uninit");
+            primaryAndArguments = List.<JCStatement>nil();
+            arguments = List.<JCExpression>nil();
+            if (instantiateQualfier != null 
+                    && instantiateQualfier.expression != null) {
+                if (instantiateQualfier.type == null) {
+                    throw Assert.fail(MISSING_TYPE);
+                }
+                SyntheticName qualName = getQualifierName();
+                primaryAndArguments = List.<JCStatement>of(gen.makeVar(qualName, 
+                        instantiateQualfier.type, 
+                        instantiateQualfier.expression));
+                newEncl = qualName.makeIdent();
+            } else {
+                newEncl = null;
+            }
+            int argumentNum = 0;
+            for (ExpressionAndType argumentAndType : argumentsAndTypes) {
+                SyntheticName name = getArgumentName(argumentNum);
+                if (argumentAndType.type == null) {
+                    throw Assert.fail(MISSING_TYPE);
+                }
+                if (kind == Kind.NEW) {
+                    primaryAndArguments = primaryAndArguments.append(gen.makeVar(name, 
+                            argumentAndType.type, 
+                            argumentAndType.expression));
+                }
+                arguments = arguments.append(name.makeIdent());
+                argumentNum++;
+            }
+            
+        } else {
+            newEncl = this.instantiateQualfier != null ? this.instantiateQualfier.expression : null;
+            primaryAndArguments = null;
+            arguments = ExpressionAndType.toExpressionList(this.argumentsAndTypes);
+        }
         switch (kind) {
         case APPLY:
-            return gen.make().Apply(this.typeargs.toList(), this.methodOrClass, this.args.toList());
+            result = gen.make().Apply(this.typeargs.toList(), this.methodOrClass, arguments);
+            break;
         case NEW:
-            return gen.make().NewClass(this.instantiateQualfier, null, this.methodOrClass, this.args.toList(), null);
+            result = gen.make().NewClass(newEncl, null, this.methodOrClass, arguments, null);
+            break;
+        
         default:
             throw Assert.fail();
         }
+        if (this.argumentsFirst) { 
+            result = gen.make().LetExpr(primaryAndArguments, result);    
+        }
+        
+        return result;
+    }
+
+    private SyntheticName getArgumentName(int argumentNum) {
+        SyntheticName name = basename.suffixedBy("$arg$"+argumentNum);
+        return name;
+    }
+
+    private SyntheticName getQualifierName() {
+        SyntheticName qualName = basename.suffixedBy("$qual");
+        return qualName;
     }    
 }

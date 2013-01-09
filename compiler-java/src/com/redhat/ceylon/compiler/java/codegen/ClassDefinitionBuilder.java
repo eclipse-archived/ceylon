@@ -404,20 +404,7 @@ public class ClassDefinitionBuilder {
         return this;
     }
 
-    private JCExpression paramType(Parameter decl) {
-        JCExpression type;
-        MethodOrValue attr = CodegenUtil.findMethodOrValueForParam(decl);
-        if (attr instanceof Value) {
-            ProducedTypedReference typedRef = gen.getTypedReference(attr);
-            ProducedTypedReference nonWideningTypedRef = gen.nonWideningTypeDecl(typedRef);
-            ProducedType paramType = gen.nonWideningType(typedRef, nonWideningTypedRef);
-            type = gen.makeJavaType(nonWideningTypedRef.getDeclaration(), paramType, 0);
-        } else {
-            ProducedType paramType = decl.getType();
-            type = gen.makeJavaType(decl, paramType, 0);
-        }
-        return type;
-    }
+    
 
     private void initParam(String name, Parameter decl, JCExpression type) {
         if (decl.isCaptured()) {
@@ -442,7 +429,7 @@ public class ClassDefinitionBuilder {
     
     public ClassDefinitionBuilder parameter(Parameter param) {
         String name = param.getName();
-        JCExpression type = paramType(param);
+        JCExpression type = gen.classGen().transformClassParameterType(param);
         ParameterDefinitionBuilder pdb = ParameterDefinitionBuilder.instance(gen, name);
         pdb.sequenced(param.isSequenced());
         pdb.defaulted(param.isDefaulted());

@@ -47,6 +47,7 @@ import com.redhat.ceylon.compiler.typechecker.model.Generic;
 import com.redhat.ceylon.compiler.typechecker.model.Getter;
 import com.redhat.ceylon.compiler.typechecker.model.Interface;
 import com.redhat.ceylon.compiler.typechecker.model.Method;
+import com.redhat.ceylon.compiler.typechecker.model.MethodOrValue;
 import com.redhat.ceylon.compiler.typechecker.model.Package;
 import com.redhat.ceylon.compiler.typechecker.model.Parameter;
 import com.redhat.ceylon.compiler.typechecker.model.ParameterList;
@@ -302,6 +303,27 @@ public class ClassTransformer extends AbstractTransformer {
         at(def);
         // Generate the inner members list for model loading
         addAtMembers(classBuilder, model);
+    }
+    
+    /**
+     * Transforms the type of the given class parameter
+     * @param decl
+     * @return
+     */
+    JCExpression transformClassParameterType(Parameter decl) {
+        Assert.that(decl.getContainer() instanceof Class);
+        JCExpression type;
+        MethodOrValue attr = CodegenUtil.findMethodOrValueForParam(decl);
+        if (attr instanceof Value) {
+            ProducedTypedReference typedRef = getTypedReference(attr);
+            ProducedTypedReference nonWideningTypedRef = nonWideningTypeDecl(typedRef);
+            ProducedType paramType = nonWideningType(typedRef, nonWideningTypedRef);
+            type = makeJavaType(nonWideningTypedRef.getDeclaration(), paramType, 0);
+        } else {
+            ProducedType paramType = decl.getType();
+            type = makeJavaType(decl, paramType, 0);
+        }
+        return type;
     }
 
     private void transformInterface(com.redhat.ceylon.compiler.typechecker.tree.Tree.ClassOrInterface def, ClassOrInterface model, ClassDefinitionBuilder classBuilder) {

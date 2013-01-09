@@ -41,7 +41,6 @@ import com.redhat.ceylon.compiler.typechecker.model.Declaration;
 import com.redhat.ceylon.compiler.typechecker.model.Functional;
 import com.redhat.ceylon.compiler.typechecker.model.FunctionalParameter;
 import com.redhat.ceylon.compiler.typechecker.model.Getter;
-import com.redhat.ceylon.compiler.typechecker.model.Interface;
 import com.redhat.ceylon.compiler.typechecker.model.Method;
 import com.redhat.ceylon.compiler.typechecker.model.Parameter;
 import com.redhat.ceylon.compiler.typechecker.model.ParameterList;
@@ -617,8 +616,6 @@ class CallableInvocation extends DirectInvocation {
         Parameter param = callableParameters.get(argIndex);
         return gen.makeUnquotedIdent(Naming.getCallableTempVarName(param));
     }
-
-
     @Override
     protected Parameter getParameter(int index) {
         return functionalParameters.get(index);
@@ -730,6 +727,7 @@ class NamedArgumentInvocation extends Invocation {
     private final Naming.SyntheticName varBaseName;
     private final Set<String> argNames = new HashSet<String>();
     private final TreeMap<Integer, Naming.SyntheticName> argsNamesByIndex = new TreeMap<Integer, Naming.SyntheticName>();
+    private final TreeMap<Integer, ExpressionAndType> argsAndTypes = new TreeMap<Integer, ExpressionAndType>();
     private final Set<Parameter> bound = new HashSet<Parameter>();
     private ProducedReference producedReference;
     
@@ -751,6 +749,10 @@ class NamedArgumentInvocation extends Invocation {
     
     Iterable<Naming.SyntheticName> getArgsNamesByIndex() {
         return argsNamesByIndex.values();
+    }
+    
+    Iterable<ExpressionAndType> getArgumentsAndTypes() {
+        return argsAndTypes.values();
     }
 
     /**
@@ -855,92 +857,121 @@ class NamedArgumentInvocation extends Invocation {
             gen.at(namedArg);
             Parameter declaredParam = namedArg.getParameter();
             Naming.SyntheticName argName = argName(declaredParam);
-            ListBuffer<JCStatement> statements;
-            if (namedArg instanceof Tree.SpecifiedArgument) {             
-                Tree.SpecifiedArgument specifiedArg = (Tree.SpecifiedArgument)namedArg;
-                Tree.Expression expr = specifiedArg.getSpecifierExpression().getExpression();
-                ProducedType type = parameterType(declaredParam, expr.getTypeModel(), gen.TP_TO_BOUND);
-                final BoxingStrategy boxType = getNamedParameterBoxingStrategy(declaredParam);
-                // we can't just generate types like Foo<?> if the target type param is not raw because the bounds will
-                // not match, so we go raw
-                int flags = JT_RAW;
-                if(boxType == BoxingStrategy.BOXED)
-                    flags |= JT_TYPE_ARGUMENT;
-                JCExpression typeExpr = gen.makeJavaType(type, flags);
-                JCExpression argExpr = gen.expressionGen().transformExpression(expr, boxType, type);
-                JCVariableDecl varDecl = gen.makeVar(argName, typeExpr, argExpr);
-                statements = ListBuffer.<JCStatement>of(varDecl);
+            if (namedArg instanceof Tree.SpecifiedArgument) {
+                bindSpecifiedArgument(namedArg, declaredParam, argName);
             } else if (namedArg instanceof Tree.MethodArgument) {
-                Tree.MethodArgument methodArg = (Tree.MethodArgument)namedArg;
-                Method model = methodArg.getDeclarationModel();
-                List<JCStatement> body;
-                boolean prevNoExpressionlessReturn = gen.statementGen().noExpressionlessReturn;
-                try {
-                    gen.statementGen().noExpressionlessReturn = gen.isVoid(model.getType());
-                    body = gen.statementGen().transform(methodArg.getBlock()).getStatements();
-                    if (!methodArg.getBlock().getDefinitelyReturns()) {
-                        if (gen.isVoid(model.getType())) {
-                            body = body.append(gen.make().Return(gen.makeNull()));
-                        } else {
-                            body = body.append(gen.make().Return(gen.makeErroneous(methodArg.getBlock(), "non-void method doesn't definitely return")));
-                        }
-                    }
-                } finally {
-                    gen.statementGen().noExpressionlessReturn = prevNoExpressionlessReturn;
-                }
-                
-                ProducedType callableType = gen.functionalType(model);                
-                CallableBuilder callableBuilder = CallableBuilder.methodArgument(gen.gen(), 
-                        callableType, 
-                        model.getParameterLists().get(0),
-                        methodArg.getParameterLists().get(0),
-                        gen.classGen().transformMplBody(methodArg.getParameterLists(), model, body));
-                JCNewClass callable = callableBuilder.build();
-                JCExpression typeExpr = gen.makeJavaType(callableType);
-                JCVariableDecl varDecl = gen.makeVar(argName, typeExpr, callable);
-                
-                statements = ListBuffer.<JCStatement>of(varDecl);
+                bindMethodArgument(namedArg, declaredParam, argName);
             } else if (namedArg instanceof Tree.ObjectArgument) {
-                Tree.ObjectArgument objectArg = (Tree.ObjectArgument)namedArg;
-                List<JCTree> object = gen.classGen().transformObjectArgument(objectArg);
-                // No need to worry about boxing (it cannot be a boxed type) 
-                JCVariableDecl varDecl = gen.makeLocalIdentityInstance(argName.getName(), Naming.quoteClassName(objectArg.getIdentifier().getText()), false);
-                statements = toStmts(objectArg, object).append(varDecl);
+                bindObjectArgument(namedArg, declaredParam, argName);
             } else if (namedArg instanceof Tree.AttributeArgument) {
-                Tree.AttributeArgument attrArg = (Tree.AttributeArgument)namedArg;
-                final Getter model = attrArg.getDeclarationModel();
-                final String name = model.getName();
-                final Naming.SyntheticName alias = gen.naming.alias(name);
-                final List<JCTree> attrClass = gen.gen().transformAttribute(model, alias.getName(), alias.getName(), attrArg.getBlock(), null, null);
-                ProducedTypedReference typedRef = gen.getTypedReference(model);
-                ProducedTypedReference nonWideningTypedRef = gen.nonWideningTypeDecl(typedRef);
-                ProducedType nonWideningType = gen.nonWideningType(typedRef, nonWideningTypedRef);
-                ProducedType type = parameterType(declaredParam, model.getType(), 0);
-                final BoxingStrategy boxType = getNamedParameterBoxingStrategy(declaredParam);
-                JCExpression initValue = gen.make().Apply(null, 
-                        gen.makeSelect(alias.makeIdent(), Naming.getGetterName(model)),
-                        List.<JCExpression>nil());
-                initValue = gen.expressionGen().applyErasureAndBoxing(
-                        initValue, 
-                        nonWideningType, 
-                        !CodegenUtil.isUnBoxed(nonWideningTypedRef.getDeclaration()),
-                        boxType,
-                        type);
-                JCTree.JCVariableDecl var = gen.make().VarDef(
-                        gen.make().Modifiers(FINAL, List.<JCAnnotation>nil()), 
-                        argName.asName(), 
-                        gen.makeJavaType(type, boxType==BoxingStrategy.BOXED ? JT_NO_PRIMITIVES : 0), 
-                        initValue);
-                statements = toStmts(attrArg, attrClass).append(var);
+                bindAttributeArgument(namedArg, declaredParam, argName);
             } else {
                 throw new RuntimeException("" + namedArg);
             }
-            bind(declaredParam, argName, statements.toList());
+            
         }
     }
+
+    private void bindSpecifiedArgument(Tree.NamedArgument namedArg,
+            Parameter declaredParam, Naming.SyntheticName argName) {
+        ListBuffer<JCStatement> statements;
+        Tree.SpecifiedArgument specifiedArg = (Tree.SpecifiedArgument)namedArg;
+        Tree.Expression expr = specifiedArg.getSpecifierExpression().getExpression();
+        ProducedType type = parameterType(declaredParam, expr.getTypeModel(), gen.TP_TO_BOUND);
+        final BoxingStrategy boxType = getNamedParameterBoxingStrategy(declaredParam);
+        // we can't just generate types like Foo<?> if the target type param is not raw because the bounds will
+        // not match, so we go raw
+        int flags = JT_RAW;
+        if(boxType == BoxingStrategy.BOXED)
+            flags |= JT_TYPE_ARGUMENT;
+        JCExpression typeExpr = gen.makeJavaType(type, flags);
+        JCExpression argExpr = gen.expressionGen().transformExpression(expr, boxType, type);
+        JCVariableDecl varDecl = gen.makeVar(argName, typeExpr, argExpr);
+        statements = ListBuffer.<JCStatement>of(varDecl);
+        bind(declaredParam, argName, gen.makeJavaType(type, flags), statements.toList());
+    }
+
+    private void bindMethodArgument(Tree.NamedArgument namedArg,
+            Parameter declaredParam, Naming.SyntheticName argName) {
+        ListBuffer<JCStatement> statements;
+        Tree.MethodArgument methodArg = (Tree.MethodArgument)namedArg;
+        Method model = methodArg.getDeclarationModel();
+        List<JCStatement> body;
+        boolean prevNoExpressionlessReturn = gen.statementGen().noExpressionlessReturn;
+        try {
+            gen.statementGen().noExpressionlessReturn = gen.isVoid(model.getType());
+            body = gen.statementGen().transform(methodArg.getBlock()).getStatements();
+            if (!methodArg.getBlock().getDefinitelyReturns()) {
+                if (gen.isVoid(model.getType())) {
+                    body = body.append(gen.make().Return(gen.makeNull()));
+                } else {
+                    body = body.append(gen.make().Return(gen.makeErroneous(methodArg.getBlock(), "non-void method doesn't definitely return")));
+                }
+            }
+        } finally {
+            gen.statementGen().noExpressionlessReturn = prevNoExpressionlessReturn;
+        }
+        
+        ProducedType callableType = gen.functionalType(model);                
+        CallableBuilder callableBuilder = CallableBuilder.methodArgument(gen.gen(), 
+                callableType, 
+                model.getParameterLists().get(0),
+                methodArg.getParameterLists().get(0),
+                gen.classGen().transformMplBody(methodArg.getParameterLists(), model, body));
+        JCNewClass callable = callableBuilder.build();
+        JCExpression typeExpr = gen.makeJavaType(callableType);
+        JCVariableDecl varDecl = gen.makeVar(argName, typeExpr, callable);
+        
+        statements = ListBuffer.<JCStatement>of(varDecl);
+        bind(declaredParam, argName, gen.makeJavaType(callableType), statements.toList());
+    }
+
+    private void bindObjectArgument(Tree.NamedArgument namedArg,
+            Parameter declaredParam, Naming.SyntheticName argName) {
+        ListBuffer<JCStatement> statements;
+        Tree.ObjectArgument objectArg = (Tree.ObjectArgument)namedArg;
+        List<JCTree> object = gen.classGen().transformObjectArgument(objectArg);
+        // No need to worry about boxing (it cannot be a boxed type) 
+        JCVariableDecl varDecl = gen.makeLocalIdentityInstance(argName.getName(), Naming.quoteClassName(objectArg.getIdentifier().getText()), false);
+        statements = toStmts(objectArg, object).append(varDecl);
+        bind(declaredParam, argName, gen.makeJavaType(objectArg.getType().getTypeModel()), statements.toList());
+    }
+
+    private void bindAttributeArgument(Tree.NamedArgument namedArg,
+            Parameter declaredParam, Naming.SyntheticName argName) {
+        ListBuffer<JCStatement> statements;
+        Tree.AttributeArgument attrArg = (Tree.AttributeArgument)namedArg;
+        final Getter model = attrArg.getDeclarationModel();
+        final String name = model.getName();
+        final Naming.SyntheticName alias = gen.naming.alias(name);
+        final List<JCTree> attrClass = gen.gen().transformAttribute(model, alias.getName(), alias.getName(), attrArg.getBlock(), null, null);
+        ProducedTypedReference typedRef = gen.getTypedReference(model);
+        ProducedTypedReference nonWideningTypedRef = gen.nonWideningTypeDecl(typedRef);
+        ProducedType nonWideningType = gen.nonWideningType(typedRef, nonWideningTypedRef);
+        ProducedType type = parameterType(declaredParam, model.getType(), 0);
+        final BoxingStrategy boxType = getNamedParameterBoxingStrategy(declaredParam);
+        JCExpression initValue = gen.make().Apply(null, 
+                gen.makeSelect(alias.makeIdent(), Naming.getGetterName(model)),
+                List.<JCExpression>nil());
+        initValue = gen.expressionGen().applyErasureAndBoxing(
+                initValue, 
+                nonWideningType, 
+                !CodegenUtil.isUnBoxed(nonWideningTypedRef.getDeclaration()),
+                boxType,
+                type);
+        JCTree.JCVariableDecl var = gen.make().VarDef(
+                gen.make().Modifiers(FINAL, List.<JCAnnotation>nil()), 
+                argName.asName(), 
+                gen.makeJavaType(type, boxType==BoxingStrategy.BOXED ? JT_NO_PRIMITIVES : 0), 
+                initValue);
+        statements = toStmts(attrArg, attrClass).append(var);
+        bind(declaredParam, argName, gen.makeJavaType(type, boxType==BoxingStrategy.BOXED ? JT_NO_PRIMITIVES : 0),
+                statements.toList());
+    }
     
-    private void bind(Parameter param, Naming.SyntheticName argName, List<JCStatement> statements) {
+    private void bind(Parameter param, Naming.SyntheticName argName, JCExpression argType, List<JCStatement> statements) {
         this.vars.appendList(statements);
+        this.argsAndTypes.put(parameterIndex(param), new ExpressionAndType(argName.makeIdent(), argType));
         this.argsNamesByIndex.put(parameterIndex(param), argName);
         this.bound.add(param);
     }
@@ -966,7 +997,7 @@ class NamedArgumentInvocation extends Invocation {
         Naming.SyntheticName argName = argName(param);
         JCExpression typeExpr = gen.makeJavaType(type, flags);
         JCVariableDecl varDecl = gen.makeVar(argName, typeExpr, argExpr);
-        bind(param, argName, List.<JCStatement>of(varDecl));
+        bind(param, argName, gen.makeJavaType(type, flags), List.<JCStatement>of(varDecl));
     }
     
     private BoxingStrategy getNamedParameterBoxingStrategy(Parameter param) {

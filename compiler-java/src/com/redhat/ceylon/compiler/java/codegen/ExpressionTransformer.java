@@ -20,9 +20,9 @@
 
 package com.redhat.ceylon.compiler.java.codegen;
 
-import static com.redhat.ceylon.compiler.java.codegen.AbstractTransformer.JT_COMPANION;
-import static com.redhat.ceylon.compiler.java.codegen.AbstractTransformer.JT_NO_PRIMITIVES;
 import static com.redhat.ceylon.compiler.typechecker.tree.Util.hasUncheckedNulls;
+import static com.sun.tools.javac.code.Flags.PRIVATE;
+import static com.sun.tools.javac.code.Flags.STATIC;
 
 import java.util.HashSet;
 import java.util.Iterator;
@@ -48,6 +48,7 @@ import com.redhat.ceylon.compiler.typechecker.model.Method;
 import com.redhat.ceylon.compiler.typechecker.model.NothingType;
 import com.redhat.ceylon.compiler.typechecker.model.Package;
 import com.redhat.ceylon.compiler.typechecker.model.Parameter;
+import com.redhat.ceylon.compiler.typechecker.model.ParameterList;
 import com.redhat.ceylon.compiler.typechecker.model.ProducedReference;
 import com.redhat.ceylon.compiler.typechecker.model.ProducedType;
 import com.redhat.ceylon.compiler.typechecker.model.Scope;
@@ -84,6 +85,7 @@ import com.sun.tools.javac.tree.JCTree.JCConditional;
 import com.sun.tools.javac.tree.JCTree.JCExpression;
 import com.sun.tools.javac.tree.JCTree.JCLiteral;
 import com.sun.tools.javac.tree.JCTree.JCMethodInvocation;
+import com.sun.tools.javac.tree.JCTree.JCNewArray;
 import com.sun.tools.javac.tree.JCTree.JCStatement;
 import com.sun.tools.javac.tree.JCTree.JCUnary;
 import com.sun.tools.javac.tree.JCTree.JCVariableDecl;
@@ -114,6 +116,21 @@ public class ExpressionTransformer extends AbstractTransformer {
     private Tree.ClassOrInterface withinSuperInvocation = null;
     private boolean outerCompanion;
     
+    /** 
+     * Whether there is an uninitialized object reference on the operand stack. 
+     * See #929
+     */
+    private boolean uninitializedOperand = false;
+    
+    /**
+     * The (or at least <em>a</em>) JCTree which 
+     * employs a <em>backward branch</em> (jump to an earlier instruction, 
+     * for example a loop of some kind) with an uninitialized reference on the 
+     * operand stack.
+     * See #929
+     */
+    private Node backwardBranchWithUninitialized = null;
+    
     public static ExpressionTransformer getInstance(Context context) {
         ExpressionTransformer trans = context.get(ExpressionTransformer.class);
         if (trans == null) {
@@ -127,12 +144,59 @@ public class ExpressionTransformer extends AbstractTransformer {
         super(context);
     }
 
+    /**
+     * Declares that an uninitialized operand is on the operand stack
+     * @param uninitializedOperand
+     * @return The previous state
+     * @see #hasUninitializedOperand()
+     */
+    private boolean uninitializedOperand(boolean uninitializedOperand) {
+        boolean prev = this.uninitializedOperand;
+        this.uninitializedOperand = uninitializedOperand;
+        return prev;
+    }
+    
+    /**
+     * Whether there's an uninitialized operand is on the operand stack
+     * @see #uninitializedOperand(boolean)
+     */
+    boolean hasUninitializedOperand() {
+        return uninitializedOperand;
+    }
+    
+    /**
+     * Declares that a backward branch is being used.
+     */
+    private void backwardBranch(Node node) {
+        if (hasUninitializedOperand()) {
+            backwardBranchWithUninitialized = node;
+        }
+    }
+    
+    /**
+     * Whether a backward branch has been {@linkplain #backwardBranch(Node) used} 
+     * (or at least declared to be used) while an 
+     * {@linkplain #uninitializedOperand(boolean) uninitialized operand} is 
+     * on the stack
+     * @return
+     */
+    boolean hasBackwardBranches() {
+        return backwardBranchWithUninitialized != null;
+    }
+    
+    private boolean stacksUninitializedOperand(Invocation invocation) {
+        return invocation.getPrimary() instanceof Tree.BaseTypeExpression 
+                || invocation.getPrimary() instanceof Tree.QualifiedTypeExpression
+                || invocation instanceof SuperInvocation;
+    }
+	
 	//
 	// Statement expressions
 	
     public JCStatement transform(Tree.ExpressionStatement tree) {
         // ExpressionStatements do not return any value, therefore we don't care about the type of the expressions.
         inStatement = true;
+        backwardBranchWithUninitialized = null;
         JCStatement result = at(tree).Exec(transformExpression(tree.getExpression(), BoxingStrategy.INDIFFERENT, null));
         inStatement = false;
         return result;
@@ -141,6 +205,7 @@ public class ExpressionTransformer extends AbstractTransformer {
     public JCStatement transform(Tree.SpecifierStatement op) {
         // SpecifierStatement do not return any value, therefore we don't care about the type of the expressions.
         inStatement = true;
+        backwardBranchWithUninitialized = null;
         JCStatement  result = at(op).Exec(transformAssignment(op, op.getBaseMemberExpression(), op.getSpecifierExpression().getExpression()));
         inStatement = false;
         return result;
@@ -1494,27 +1559,28 @@ public class ExpressionTransformer extends AbstractTransformer {
         }
     }
     
-    private final List<JCExpression> transformArgumentList(Invocation invocation, TransformedInvocationPrimary transformedPrimary) {
+    private final List<ExpressionAndType> transformArgumentList(Invocation invocation, TransformedInvocationPrimary transformedPrimary) {
         // don't try to work on broken stuff
         if (!invocation.validNumberOfParameters()) {
-            return List.<JCExpression>nil();
+            return List.<ExpressionAndType>nil();
         }
         return transformArguments(invocation, transformedPrimary);   
     }
     
-    private final List<JCExpression> transformArguments(Invocation invocation,
+    private final List<ExpressionAndType> transformArguments(Invocation invocation,
             TransformedInvocationPrimary transformedPrimary) {
-        List<JCExpression> result = List.<JCExpression>nil();
+        List<ExpressionAndType> result = List.<ExpressionAndType>nil();
         withinInvocation(false);
         // Implicit arguments
         if (needsTypeInfoArgument(invocation)) {
-            result = result.append(makeTypeInfoArgument(invocation));
+            result = result.append(new ExpressionAndType(makeTypeInfoArgument(invocation), make().Type(syms().classType)));
         }
         if (!(invocation.getPrimary() instanceof Tree.BaseTypeExpression)
                 && !(invocation.getPrimary() instanceof Tree.QualifiedTypeExpression)
                 && invocation.isOnValueType() 
                 && transformedPrimary != null) {
-            result = result.append(transformedPrimary.expr);   
+            result = result.append(new ExpressionAndType(transformedPrimary.expr,
+                    makeJavaType(invocation.getPrimary().getTypeModel())));   
         }
         // Explicit arguments
         if (invocation instanceof SuperInvocation) {
@@ -1534,13 +1600,14 @@ public class ExpressionTransformer extends AbstractTransformer {
         return result;
     }
     
-    private List<JCExpression> transformArgumentsForSimpleInvocation(SimpleInvocation invocation) {
-        List<JCExpression> result = List.<JCExpression>nil();
+    private List<ExpressionAndType> transformArgumentsForSimpleInvocation(SimpleInvocation invocation) {
+        List<ExpressionAndType> result = List.<ExpressionAndType>nil();
         int numArguments = invocation.getNumArguments();
         boolean wrapIntoArray = false;
         ListBuffer<JCExpression> arrayWrap = new ListBuffer<JCExpression>();
         for (int argIndex = 0; argIndex < numArguments; argIndex++) {
             final JCExpression expr;
+            final JCExpression type;
             // for Java methods of variadic primitives, it's better to wrap them ourselves into an array
             // to avoid ambiguity of foo(1,2) for foo(int...) and foo(Object...) methods
             if(!wrapIntoArray
@@ -1554,17 +1621,22 @@ public class ExpressionTransformer extends AbstractTransformer {
                     || invocation.dontBoxSequence()
                     || invocation.isJavaMethod()) {
                 expr = invocation.getTransformedArgumentExpression(argIndex);
+                type = makeJavaType(invocation.getParameterType(argIndex), invocation.getParameterBoxingStrategy(argIndex) == BoxingStrategy.BOXED ? JT_NO_PRIMITIVES : 0);
             } else {
                 // box with an ArraySequence<T>
                 List<JCExpression> x = List.<JCExpression>nil();
                 final ProducedType iteratedType = typeFact().getIteratedType(invocation.getParameterType(argIndex));
+                boolean prev = this.uninitializedOperand(true);
                 for ( ; argIndex < numArguments; argIndex++) {
                     x = x.append(invocation.getTransformedArgumentExpression(argIndex));
                 }
+                this.uninitializedOperand(prev);
                 expr = makeSequence(x, iteratedType, JT_TYPE_ARGUMENT);
+                
+                type = makeJavaType(typeFact().getSequenceType(iteratedType).getType());
             }
             if(!wrapIntoArray)
-                result = result.append(expr);
+                result = result.append(new ExpressionAndType(expr, type));
             else
                 arrayWrap.append(expr);
         }
@@ -1572,21 +1644,24 @@ public class ExpressionTransformer extends AbstractTransformer {
             // must have at least one arg, so take the last one
             ProducedType parameterType = invocation.getParameterType(numArguments-1);
             JCExpression arrayType = makeJavaType(parameterType, JT_RAW);
-            result = result.append(make().NewArray(arrayType, List.<JCExpression>nil(), arrayWrap.toList()));
+            
+            JCNewArray arrayExpr = make().NewArray(arrayType, List.<JCExpression>nil(), arrayWrap.toList());
+            JCExpression arrayTypeExpr = make().TypeArray(makeJavaType(parameterType, JT_RAW));
+            result = result.append(new ExpressionAndType(arrayExpr, arrayTypeExpr));
         }
         return result;
     }
     
-    private List<JCExpression> transformArgumentsForNamedInvocation(NamedArgumentInvocation invocation) {
-        List<JCExpression> result = List.<JCExpression>nil();
-        for (Naming.SyntheticName argName : invocation.getArgsNamesByIndex()) {
-            result = result.append(argName.makeIdent());
+    private List<ExpressionAndType> transformArgumentsForNamedInvocation(NamedArgumentInvocation invocation) {
+        List<ExpressionAndType> result = List.<ExpressionAndType>nil();
+        for (ExpressionAndType argAndType : invocation.getArgumentsAndTypes()) {
+            result = result.append(argAndType);
         }
         return result;
     }
     
-    private List<JCExpression> transformArgumentsForCallableSpecifier(CallableSpecifierInvocation invocation) {
-        List<JCExpression> result = List.<JCExpression>nil();
+    private List<ExpressionAndType> transformArgumentsForCallableSpecifier(CallableSpecifierInvocation invocation) {
+        List<ExpressionAndType> result = List.<ExpressionAndType>nil();
         int argIndex = 0;
         for(Parameter parameter : invocation.getMethod().getParameterLists().get(0).getParameters()) {
             ProducedType exprType = expressionGen().getTypeForParameter(parameter, null, this.TP_TO_BOUND);
@@ -1600,7 +1675,7 @@ public class ExpressionTransformer extends AbstractTransformer {
                     !parameter.getUnboxed(), 
                     BoxingStrategy.BOXED,// Callables always have boxed params 
                     declaredParameter.getType());
-            result = result.append(arg);
+            result = result.append(new ExpressionAndType(arg, makeJavaType(declaredParameter.getType())));
             argIndex++;
         }
         return result;
@@ -1626,7 +1701,9 @@ public class ExpressionTransformer extends AbstractTransformer {
                     @Override
                     public JCExpression transform(JCExpression primaryExpr, String selector) {
                         TransformedInvocationPrimary transformedPrimary = invocation.transformPrimary(primaryExpr, selector);
-                        callBuilder.arguments(transformArgumentList(invocation, transformedPrimary));
+                        boolean prev = uninitializedOperand(stacksUninitializedOperand(invocation));
+                        callBuilder.argumentsAndTypes(transformArgumentList(invocation, transformedPrimary));
+                        uninitializedOperand(prev);
                         JCExpression resultExpr;
                         if (invocation instanceof NamedArgumentInvocation) {
                             resultExpr = transformNamedArgumentInvocationOrInstantiation((NamedArgumentInvocation)invocation, callBuilder, transformedPrimary);
@@ -1677,11 +1754,12 @@ public class ExpressionTransformer extends AbstractTransformer {
         Tree.QualifiedTypeExpression qte = (Tree.QualifiedTypeExpression)invocation.getPrimary();
         Declaration declaration = qte.getDeclaration();
         if (!Strategy.generateInstantiator(declaration)) {
-            // When doing qualified invocation through an interface we need
-            // to get the companion.
             JCExpression qualifier;
+            JCExpression qualifierType;
             if (declaration.getContainer() instanceof Interface
                     && !(qte.getPrimary() instanceof Tree.Outer)) {
+                // When doing qualified invocation through an interface we need
+                // to get the companion.
                 Interface qualifyingInterface = (Interface)declaration.getContainer();
                 qualifier = make().Apply(null, 
                         makeSelect(transformedPrimary.expr, getCompanionAccessorName(qualifyingInterface)), 
@@ -1691,14 +1769,22 @@ public class ExpressionTransformer extends AbstractTransformer {
                 if (Decl.isAncestorLocal(declaration)) {
                     qualifier = make().TypeCast(makeJavaType(qualifyingInterface.getType(), JT_COMPANION), qualifier);
                 }
+                qualifierType = makeJavaType(qualifyingInterface.getType(), JT_COMPANION);
             } else {
                 qualifier = transformedPrimary.expr;
+                if (declaration.getContainer() instanceof TypeDeclaration) {
+                    qualifierType = makeJavaType(((TypeDeclaration)declaration.getContainer()).getType());
+                } else {
+                    qualifierType = null;
+                }
             }
             ProducedType classType = (ProducedType)qte.getTarget();
             // Note: here we're not fully qualifying the class name because the JLS says that if "new" is qualified the class name
             // is qualified relative to it
             JCExpression type = makeJavaType(classType, AbstractTransformer.JT_CLASS_NEW | AbstractTransformer.JT_NON_QUALIFIED);
-            callBuilder.instantiate(qualifier, type);
+            callBuilder.evaluateArgumentsFirst(stacksUninitializedOperand(invocation) 
+                    && hasBackwardBranches());
+            callBuilder.instantiate(new ExpressionAndType(qualifier, qualifierType), type);
         } else {
             callBuilder.typeArguments(List.<JCExpression>nil());
             callBuilder.invoke(naming.makeInstantiatorMethodName(transformedPrimary.expr, (Class)declaration));
@@ -1725,6 +1811,8 @@ public class ExpressionTransformer extends AbstractTransformer {
             ProducedType classType = (ProducedType)type.getTarget();
             resultExpr = callBuilder
                     .instantiate(makeJavaType(classType, AbstractTransformer.JT_CLASS_NEW))
+                    .evaluateArgumentsFirst(stacksUninitializedOperand(invocation) 
+                            && hasBackwardBranches())
                     .build();
         }
         return resultExpr;
@@ -1734,7 +1822,7 @@ public class ExpressionTransformer extends AbstractTransformer {
         at(invocation.getNode());
         JCExpression result = callBuilder
             .invoke(naming.makeQuotedQualIdent(invocation.getCallable(), Naming.getCallableMethodName()))
-            .arguments(transformArgumentList(invocation, null))
+            .argumentsAndTypes(transformArgumentList(invocation, null))
             .build();
         if(invocation.handleBoxing)
             result = applyErasureAndBoxing(result, invocation.getReturnType(), 
@@ -1780,43 +1868,143 @@ public class ExpressionTransformer extends AbstractTransformer {
     
     //
     // Invocations
-    public JCExpression transformSuperInvocation(SuperInvocation invocation) {
-        boolean prevFnCall = withinInvocation(true);
-        try {
+    public void transformSuperInvocation(Tree.ExtendedType extendedType, ClassDefinitionBuilder classBuilder) {
+        if (extendedType.getInvocationExpression().getPositionalArgumentList() != null) {
+            InvocationExpression invocation = extendedType.getInvocationExpression();
+            Declaration primaryDeclaration = ((Tree.MemberOrTypeExpression)invocation.getPrimary()).getDeclaration();
+            java.util.List<ParameterList> paramLists = ((Functional)primaryDeclaration).getParameterLists();
+            SuperInvocation builder = new SuperInvocation(this,
+                    classBuilder.getForDefinition(),
+                    invocation,
+                    paramLists.get(0));
+            
             CallBuilder callBuilder = CallBuilder.instance(this);
-            if (invocation.getPrimary() instanceof Tree.StaticMemberOrTypeExpression){
-                transformTypeArguments(callBuilder, 
-                        ((Tree.StaticMemberOrTypeExpression)invocation.getPrimary()).getTypeArguments().getTypeModels());
-            }
-            at(invocation.getNode());
-            JCExpression expr = null;
-            if (Strategy.generateInstantiator(invocation.getPrimaryDeclaration())
-                    && invocation.getPrimaryDeclaration().getContainer() instanceof Interface) {
-                // If the subclass is inner to an interface then it will be 
-                // generated inner to the companion and we need to qualify the 
-                // super(), *unless* the subclass is nested within the same 
-                // interface as it's superclass.
-                Scope outer = invocation.getSub().getDeclarationModel().getContainer();
-                while (!(outer instanceof Package)) {
-                    if (outer == invocation.getPrimaryDeclaration().getContainer()) {
-                        expr = naming.makeSuper();
-                        break;
+            boolean prevFnCall = withinInvocation(true);
+            try {
+                if (invocation.getPrimary() instanceof Tree.StaticMemberOrTypeExpression){
+                    transformTypeArguments(callBuilder, 
+                            ((Tree.StaticMemberOrTypeExpression)invocation.getPrimary()).getTypeArguments().getTypeModels());
+                }
+                at(builder.getNode());
+                JCExpression expr = null;
+                if (Strategy.generateInstantiator(builder.getPrimaryDeclaration())
+                        && builder.getPrimaryDeclaration().getContainer() instanceof Interface) {
+                    // If the subclass is inner to an interface then it will be 
+                    // generated inner to the companion and we need to qualify the 
+                    // super(), *unless* the subclass is nested within the same 
+                    // interface as it's superclass.
+                    Scope outer = builder.getSub().getDeclarationModel().getContainer();
+                    while (!(outer instanceof Package)) {
+                        if (outer == builder.getPrimaryDeclaration().getContainer()) {
+                            expr = naming.makeSuper();
+                            break;
+                        }
+                        outer = outer.getContainer();
                     }
-                    outer = outer.getContainer();
+                    if (expr == null) {                    
+                        Interface iface = (Interface)builder.getPrimaryDeclaration().getContainer();
+                        expr = naming.makeQualifiedSuper(naming.makeCompanionFieldName(iface));
+                    }
+                } else {
+                    expr = naming.makeSuper();
                 }
-                if (expr == null) {
-                    expr = naming.makeQualifiedSuper(naming.makeCompanionFieldName((Interface)invocation.getPrimaryDeclaration().getContainer()));
-                }
-            } else {
-                expr = naming.makeSuper();
+                final List<JCExpression> superArguments = transformSuperInvocationArguments(
+                        extendedType, classBuilder, builder);
+                JCExpression superExpr = callBuilder.invoke(expr)    
+                    .arguments(superArguments)
+                    .build();
+                classBuilder.superCall(at(extendedType).Exec(superExpr));
+            } finally {
+                withinInvocation(prevFnCall);
             }
-            return callBuilder.invoke(expr)
-                // We could create a TransformedPrimary(expr, "super") here if needed
-                .arguments(transformArgumentList(invocation, null))
-                .build();
-        } finally {
-            withinInvocation(prevFnCall);
         }
+    }
+
+    /**
+     * Transforms the arguments for the invocation of a superclass initializer 
+     * (call to {@code super()}). 
+     * 
+     * This is complicated by the need to avoid 
+     * #929, so when a backward branch is needed in the evaluation of any 
+     * argument expression we generate methods on the companion class 
+     * (one for each argument) to evaluate the arguments so that the uninitialized 
+     * {@code this} is not on the operand stack. 
+     */
+    private List<JCExpression> transformSuperInvocationArguments(
+            Tree.ExtendedType extendedType,
+            ClassDefinitionBuilder classBuilder, SuperInvocation invocation) {
+        boolean prev = this.uninitializedOperand(stacksUninitializedOperand(invocation));
+        // We could create a TransformedPrimary(expr, "super") here if needed
+        List<ExpressionAndType> superArgumentsAndTypes = transformArgumentList(invocation, null);
+        this.uninitializedOperand(prev);
+        final List<JCExpression> superArguments;
+        if (stacksUninitializedOperand(invocation) 
+                && hasBackwardBranches()) {
+            at(extendedType);
+            // Avoid backward branches when invoking superclass initializers
+            Class subclass = (Class)extendedType.getScope();
+
+            java.util.List<Parameter> classParameters = subclass.getParameterList().getParameters();
+            int argumentNum = 0;
+            ListBuffer<JCExpression> argMethodCalls = ListBuffer.<JCExpression>lb();
+            // TODO This ought to be on the companion class, and not simply static
+            if (!subclass.isToplevel()) {
+                for (ExpressionAndType argument : superArgumentsAndTypes) {
+                    argMethodCalls.append(makeErroneous(backwardBranchWithUninitialized, "" +
+                    		"Use of expressions which imply a loop (or other backward branch) " +
+                    		"in the invocation of a super class initializer are currently only " +
+                    		"supported on top level classes"));
+                }
+                return argMethodCalls.toList();
+            }            
+            
+            for (ExpressionAndType argument : superArgumentsAndTypes) {
+                SyntheticName argMethodName = naming.synthetic("super$arg$"+argumentNum);
+                argumentNum++;
+
+                // Generate a static super$arg$N() method on the class
+                MethodDefinitionBuilder argMethod = MethodDefinitionBuilder.systemMethod(this, argMethodName.getName());
+                argMethod.modifiers(PRIVATE | STATIC);
+                argMethod.ignoreAnnotations();
+                for (TypeParameter typeParam : subclass.getTypeParameters()) {
+                    argMethod.typeParameter(typeParam);
+                }
+                
+                // We can't use argument.type because that's the type of the 
+                // argument expression (and already a JCExpression): 
+                // By this point the expression will already have been boxed
+                //Class superclass = subclass.getExtendedTypeDeclaration();
+                //Parameter superclassParameter = superclass.getParameterList().getParameters().get(argumentNum-1);
+                //ProducedTypedReference p = superclass.getProducedType(null, subclass.getExtendedType().getTypeArgumentList()).getTypedParameter(superclassParameter);
+                //XXX? JCExpression superclassParameterType = classGen().transformClassParameterType(p);
+                //JCExpression superclassParameterType = makeJavaType(superclassParameter, p.getType(), 0);
+                argMethod.resultType(null, argument.type);
+                
+                for (Parameter parameter : classParameters) {
+                    // TODO Boxed type of parameter?!?!?
+                    JCExpression paramType = classGen().transformClassParameterType(parameter);
+                    argMethod.parameter(ParameterDefinitionBuilder.instance(this, parameter.getName())
+                            .type(paramType, null));
+                }
+                argMethod.body(make().Return(argument.expression));
+                classBuilder.method(argMethod);
+            
+                // for the super() invocation, replace the given arguments
+                // with calls to the super$arg$N() methods
+                ListBuffer<JCExpression> argMethodArgs = ListBuffer.<JCExpression>lb();
+                for (Parameter parameter : classParameters) {
+                    argMethodArgs.append(naming.makeName(parameter, Naming.NA_IDENT));
+                }
+                argMethodCalls.append(make().Apply(List.<JCExpression>nil(), 
+                        argMethodName.makeIdent(), 
+                        argMethodArgs.toList()));
+            
+            }
+            superArguments = argMethodCalls.toList();
+        } else {
+            superArguments = ExpressionAndType.toExpressionList(superArgumentsAndTypes);   
+        }
+        return superArguments;
     }
     
     public JCExpression transform(Tree.InvocationExpression ce) {
@@ -1973,6 +2161,7 @@ public class ExpressionTransformer extends AbstractTransformer {
         
         // The for loop
         final Naming.SyntheticName srcIteratorName = varBaseName.suffixedBy("$iterator");
+        backwardBranch(expr);
         List<JCStatement> forStmt = statementGen().transformIterableIteration(expr, 
                 iterationVar, srcIteratorName, 
                 srcElementType, srcIterableName.makeIdent(), 

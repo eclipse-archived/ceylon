@@ -2118,7 +2118,15 @@ public abstract class AbstractTransformer implements Transformation {
         ProducedType arraySequenceType = toPType(syms().ceylonArraySequenceType);
         ProducedType sequenceType = arraySequenceType.getDeclaration().getProducedType(null, Arrays.asList(seqElemType));
         JCExpression typeExpr = makeJavaType(sequenceType, makeJavaTypeOpts);
-        return makeNewClass(typeExpr, elems);
+        List<ExpressionAndType> argsAndTypes = List.<ExpressionAndType>nil();
+        for (JCExpression arg : elems) {
+            argsAndTypes = argsAndTypes.append(new ExpressionAndType(arg, makeJavaType(seqElemType, makeJavaTypeOpts)));
+        }
+        return CallBuilder.instance(this)
+                .instantiate(typeExpr)
+                .argumentsAndTypes(argsAndTypes)
+                .evaluateArgumentsFirst(expressionGen().hasBackwardBranches())
+                .build();
     }
     
     /**
