@@ -214,6 +214,7 @@ public class CeylonDocToolTest {
     
     @Test
     public void externalLinksWithoutModuleNamePattern() throws IOException {
+        // Relies on having a ceylon.collection in your ~/.ceylon/repo or cache
         List<String> links = new ArrayList<String>();
         links.add("file://not-existing-dir");
         links.add("https://not-existing-url");        
@@ -224,6 +225,7 @@ public class CeylonDocToolTest {
     }    
     
     private void externalLinks(List<String> links) throws IOException {
+        // Relies on having a ceylon.collection in your ~/.ceylon/repo or cache
         compile("test/ceylondoc", "com.redhat.ceylon.ceylondoc.test.modules.dependency.b");
         compile("test/ceylondoc", "com.redhat.ceylon.ceylondoc.test.modules.dependency.c");
 
@@ -359,20 +361,19 @@ public class CeylonDocToolTest {
                 || !sdkDir.isDirectory()) {
             Assert.fail("You don't have ceylon-sdk checked out at " + sdkDir.getAbsolutePath() + " so this test doesn't apply");
         }
-        String[] moduleNames = {"file", "collection", "dbc", "io", "net", "json", "process", "math"};
-        List<String> fullModuleNames = new ArrayList<String>(moduleNames.length);
-        List<File> path = new ArrayList<File>(moduleNames.length);
-        for(String moduleName : moduleNames){
-            path.add(new File("../ceylon-sdk/source"));
-            fullModuleNames.add("ceylon." + moduleName);
-        }
-        CeylonDocTool tool = tool(path, fullModuleNames, true);
+        String[] fullModuleNames = {
+                "ceylon.file", "ceylon.collection", 
+                "ceylon.dbc", "ceylon.io", 
+                "ceylon.net", "ceylon.json", 
+                "ceylon.process", "ceylon.math"};
+        
+        CeylonDocTool tool = tool(Arrays.asList(new File("../ceylon-sdk/source")), Arrays.asList(fullModuleNames), true, "../ceylon-sdk/modules");
         tool.setIncludeNonShared(false);
         tool.setIncludeSourceCode(true);
         tool.makeDoc();
         
-        for(String moduleName : moduleNames){
-            Module module = makeModule("ceylon." + moduleName, "0.4");
+        for(String moduleName : fullModuleNames){
+            Module module = makeModule(moduleName, "0.4");
             File destDir = getOutputDir(tool, module);
 
             assertFileExists(destDir, "index.html");
