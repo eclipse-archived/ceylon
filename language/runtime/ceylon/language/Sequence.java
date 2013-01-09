@@ -14,8 +14,7 @@ import com.redhat.ceylon.compiler.java.metadata.Variance;
 @TypeParameters(@TypeParameter(value = "Element", variance = Variance.OUT))
 @SatisfiedTypes({
     "ceylon.language::Sequential<Element>",
-    "ceylon.language::ContainerWithFirstElement<Element,ceylon.language::Null>",
-    "ceylon.language::Ranged<ceylon.language::Integer,ceylon.language::Sequential<Element>>",
+    "ceylon.language::ContainerWithFirstElement<Element,ceylon.language::Nothing>",
     "ceylon.language::Cloneable<ceylon.language::Sequence<Element>>"
 })
 public interface Sequence<Element> 
