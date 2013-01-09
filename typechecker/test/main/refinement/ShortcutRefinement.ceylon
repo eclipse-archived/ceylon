@@ -174,3 +174,13 @@ class Count2(Integer x) extends Object() {
     equals(Object that) => that is Count1|Count2;
     hash => x;
 }
+
+interface MyInt {
+    shared formal void f(String s);
+}
+class MyCla() satisfies MyInt {
+    f = print;
+}
+interface MySubint satisfies MyInt {
+    @error f = print; //TODO: unnecessary error ... revisit this?
+}
