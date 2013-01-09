@@ -169,7 +169,7 @@ class TypeParameterErasure {
         return t;
     }
     
-    private final <T extends .ceylon.language.Ordinal<T> & .ceylon.language.Comparable<? super T>>T parameterizedWithParameterizedBounds(final T t) {
+    private final <T extends .ceylon.language.Ordinal<? extends T> & .ceylon.language.Comparable<? super T>>T parameterizedWithParameterizedBounds(final T t) {
         return t;
     }
     
@@ -407,7 +407,7 @@ class TypeParameterErasure {
             return i;
         }
         
-        public final <Inner extends .ceylon.language.Ordinal<Inner> & .ceylon.language.Comparable<? super Inner>>Inner parameterizedWithParameterizedBounds(final Inner i, final T t) {
+        public final <Inner extends .ceylon.language.Ordinal<? extends Inner> & .ceylon.language.Comparable<? super Inner>>Inner parameterizedWithParameterizedBounds(final Inner i, final T t) {
             i.compare(i);
             return i;
         }
@@ -459,7 +459,7 @@ class TypeParameterErasure {
         }
     }
     
-    class ParameterizedWithParameterizedBounds<T extends .ceylon.language.Ordinal<T> & .ceylon.language.Comparable<? super T>> {
+    class ParameterizedWithParameterizedBounds<T extends .ceylon.language.Ordinal<? extends T> & .ceylon.language.Comparable<? super T>> {
         
         ParameterizedWithParameterizedBounds(T t) {
         }
