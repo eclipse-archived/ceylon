@@ -536,13 +536,15 @@
     </ceylond>
   </target>
 
-  <target name="gavin" depends="dist">
+  <target name="gavin" depends="ide">
+  </target>
+  <target name="ide" depends="dist">
       <copy 
           overwrite="true"
           file="${build.dist}/${ceylon.compiler.jar}"
           tofile="../ceylon-ide-eclipse/plugins/com.redhat.ceylon.eclipse.ui/lib/com.redhat.ceylon.compiler.java-${module.com.redhat.ceylon.compiler.version}-ide.jar"/>
   </target>
-	<target name="ide-tests" depends="test.classes,gavin">
+	<target name="ide-tests" depends="test.classes,ide">
 
         <jar destfile="../ceylon-ide-eclipse/tests/com.redhat.ceylon.eclipse.ui.test/lib/compiler-tests-${module.com.redhat.ceylon.compiler.version}.jar">
           <fileset dir="${build.classes}">
