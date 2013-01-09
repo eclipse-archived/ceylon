@@ -23,7 +23,7 @@ import com.redhat.ceylon.compiler.java.metadata.Variance;
             satisfies = "ceylon.language::Sequential<Element>")
  })
 @Class(extendsType="ceylon.language::Object")
-@SatisfiedTypes("ceylon.language::Sequence<Element>")
+@SatisfiedTypes({"ceylon.language::Sequence<Element>", "ceylon.language::Cloneable<ceylon.language::Tuple<Element,First,Rest>>"})
 public class Tuple<Element, First extends Element, Rest extends Sequential<? extends Element>> 
         implements Sequence<Element> {
 
@@ -300,8 +300,8 @@ public class Tuple<Element, First extends Element, Rest extends Sequential<? ext
 
 	@Override
 	@Annotations(@Annotation("actual"))
-	@TypeInfo("ceylon.language::Sequence<Element>")
-	public Sequence<? extends Element> getClone() {
+	@TypeInfo("ceylon.language::Tuple<Element,First,Rest>")
+	public Tuple<Element,First,Rest> getClone() {
 		return this;
 	}
 
