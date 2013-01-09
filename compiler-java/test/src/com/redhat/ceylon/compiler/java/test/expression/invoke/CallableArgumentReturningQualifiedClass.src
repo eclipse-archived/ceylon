@@ -23,7 +23,7 @@ class CallableArgumentReturningQualifiedClass {
             
             @.java.lang.Override
             public .com.redhat.ceylon.compiler.java.test.expression.invoke.CallableArgumentReturningQualifiedClass.D $call() {
-                return CallableArgumentReturningQualifiedClass.this.D$new();
+                return .com.redhat.ceylon.compiler.java.test.expression.invoke.CallableArgumentReturningQualifiedClass.this.D$new();
             }
         });
     }

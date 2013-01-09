@@ -26,6 +26,6 @@ class CallableArgumentReturningQualifiedClass() {
     }
     @nomodel
     void m() {
-        f(CallableArgumentReturningQualifiedClass.D);
+        f(this.D);
     }
 }
