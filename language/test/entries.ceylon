@@ -189,9 +189,6 @@ Range<Integer> range {
 
     //non-Integer Ranges
     class TestRange(Integer number) satisfies Ordinal<TestRange> & Comparable<TestRange> {
-        shared actual Integer distanceFrom(TestRange other) {
-            return other.number-number;
-        }
         shared actual TestRange predecessor { return TestRange(number-1); }
         shared actual TestRange successor { return TestRange(number+1); }
         shared actual Comparison compare(TestRange other) {

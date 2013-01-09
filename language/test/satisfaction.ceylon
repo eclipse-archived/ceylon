@@ -94,7 +94,6 @@ class MyOrdinal(prev, next) satisfies Ordinal<MyOrdinal> {
     shared variable MyOrdinal? next;
     shared actual MyOrdinal successor { return next else this; }
     shared actual MyOrdinal predecessor { return prev else this; }
-    shared actual Integer distanceFrom(MyOrdinal other) { return 0; }
 }
 class MyNumeric(Integer x) satisfies Numeric<MyNumeric> & Exponentiable<MyNumeric,Integer> {
     shared actual MyNumeric minus(MyNumeric other) { return MyNumeric(x-other.x); }

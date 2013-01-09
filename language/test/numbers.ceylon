@@ -427,9 +427,6 @@ shared void numbers() {
     check(max([1,3,2])==3, "max()");
     check(min([3,1,2])==1, "min()");
 
-    //Ordinals
-    check(10.distanceFrom(2) == 10-2, "Integer.distanceFrom");
-
     // Bitwise operators, we need to test their boxed versions as well
     Binary<Integer> box(Integer i){
         return i;

@@ -351,5 +351,4 @@ shared void strings() {
 
     check(string() == "", "string()");
     check(string(`h`, `i`)=="hi", "string(h,i)");
-    check(`z`.distanceFrom(`a`)==25, "Character.distanceFrom");
 }
