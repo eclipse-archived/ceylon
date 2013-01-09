@@ -175,7 +175,7 @@ shared interface List<out Element>
             Other element) {
         value sb = SequenceBuilder<Element|Other>();
         sb.append(element);
-        if (exists lastIndex) {
+        if (!empty) {
             sb.appendAll(this.sequence...);
         }
         if (nonempty seq=sb.sequence) {
@@ -191,7 +191,7 @@ shared interface List<out Element>
             doc "The last element of the resulting sequence."
             Other element) {
         value sb = SequenceBuilder<Element|Other>();
-        if (exists lastIndex) {
+        if (!empty) {
             sb.appendAll(this.sequence...);
         }
         sb.append(element);

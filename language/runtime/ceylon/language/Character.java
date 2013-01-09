@@ -1,22 +1,19 @@
 package ceylon.language;
 
-import com.redhat.ceylon.compiler.java.metadata.Annotation;
-import com.redhat.ceylon.compiler.java.metadata.Annotations;
 import com.redhat.ceylon.compiler.java.metadata.Ceylon;
 import com.redhat.ceylon.compiler.java.metadata.Class;
 import com.redhat.ceylon.compiler.java.metadata.Ignore;
 import com.redhat.ceylon.compiler.java.metadata.Name;
 import com.redhat.ceylon.compiler.java.metadata.SatisfiedTypes;
-import com.redhat.ceylon.compiler.java.metadata.TypeInfo;
 import com.redhat.ceylon.compiler.java.metadata.ValueType;
 
 @Ceylon(major = 3)
 @Class(extendsType="ceylon.language::Object")
 @SatisfiedTypes({"ceylon.language::Comparable<ceylon.language::Character>",
-		        "ceylon.language::Ordinal<ceylon.language::Character>"})
+		        "ceylon.language::Enumerable<ceylon.language::Character>"})
 @ValueType
 public final class Character
-        implements Comparable<Character>, Ordinal<Character> {
+        implements Comparable<Character>, Enumerable<Character> {
 
     public final int codePoint;
 
@@ -223,27 +220,21 @@ public final class Character
         return codePoint+1;
     }
 
-    @Override
-    @Annotations(@Annotation("formal"))
-    @TypeInfo("ceylon.language::Integer")
-    public long distanceFrom(Character other) {
-        return codePoint-other.codePoint;
-    }
-    @Ignore
-    public long distanceFrom(int other) {
-        return codePoint-other;
-    }
-    @Ignore
-    public static long distanceFrom(int a, int b) {
-        return a-b;
-    }
-
     public long getInteger() {
         return codePoint;
     }
 
     @Ignore
     public static long getInteger(int codePoint) {
+        return codePoint;
+    }
+
+    public long getIntegerValue() {
+        return codePoint;
+    }
+
+    @Ignore
+    public static long getIntegerValue(int codePoint) {
         return codePoint;
     }
 

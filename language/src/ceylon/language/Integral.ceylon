@@ -7,7 +7,7 @@ doc "Abstraction of integral numeric types. That is, types
 see (Integer)
 by "Gavin"
 shared interface Integral<Other> of Other
-        satisfies Numeric<Other> & Ordinal<Other>
+        satisfies Numeric<Other> & Enumerable<Other>
         given Other satisfies Integral<Other> {
 
     doc "The remainder, after dividing this number by the 

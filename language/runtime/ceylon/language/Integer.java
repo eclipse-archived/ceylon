@@ -1,7 +1,5 @@
 package ceylon.language;
 
-import com.redhat.ceylon.compiler.java.metadata.Annotation;
-import com.redhat.ceylon.compiler.java.metadata.Annotations;
 import com.redhat.ceylon.compiler.java.metadata.Ceylon;
 import com.redhat.ceylon.compiler.java.metadata.Class;
 import com.redhat.ceylon.compiler.java.metadata.Defaulted;
@@ -324,8 +322,19 @@ public final class Integer
         return value;
     }
 
+    @TypeInfo("ceylon.language::Integer")
+    @Override
+    public long getIntegerValue() {
+        return value;
+    }
+
     @Ignore
     public static long getInteger(long value) {
+        return value;
+    }
+
+    @Ignore
+    public static long getIntegerValue(long value) {
         return value;
     }
 
@@ -397,22 +406,6 @@ public final class Integer
     @Ignore
     public static long getSuccessor(long value) {
         return value + 1;
-    }
-
-    @Override
-    @Annotations(@Annotation("actual"))
-    @TypeInfo("ceylon.language::Integer")
-    public long distanceFrom(Integer other) {
-        return value-other.value;
-    }
-
-    @Ignore
-    public long distanceFrom(long other) {
-        return value-other;
-    }
-    @Ignore
-    public static long distanceFrom(long a, long b) {
-        return a-b;
     }
 
     // Probably not spec-conformant

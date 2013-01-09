@@ -3,7 +3,8 @@ see (String)
 by "Gavin"
 shared abstract class Character()
         extends Object()
-        satisfies Ordinal<Character> & Comparable<Character> {
+        satisfies Comparable<Character> & 
+                  Enumerable<Character> {
 
     doc "A string containg just this character."
     shared actual formal String string;

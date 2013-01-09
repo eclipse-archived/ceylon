@@ -32,7 +32,6 @@ public class Range<Element extends Comparable<? super Element> & Ordinal<? super
 
     private final Element first;
     private final Element last;
-    private final long size;
 
     public Range(@Name("first") Element first,
     		     @Name("last") Element last) {
@@ -43,7 +42,6 @@ public class Range<Element extends Comparable<? super Element> & Ordinal<? super
         this.$ceylon$language$Sequence$this = new ceylon.language.Sequence$impl<Element>(this);
         this.first = first;
         this.last = last;
-        this.size = Math.abs(last.distanceFrom(first))+1;
     }
 
     private Correspondence$impl<Integer,Element> correspondence$impl = new Correspondence$impl<Integer,Element>(this);
@@ -89,13 +87,27 @@ public class Range<Element extends Comparable<? super Element> & Ordinal<? super
     @Override
     @TypeInfo("ceylon.language::Integer")
     public final long getSize(){
-        return size;
+    	if (last instanceof Enumerable && first instanceof Enumerable) {
+    		return Math.abs(((Enumerable)last).getIntegerValue() - 
+    				((Enumerable)first).getIntegerValue())+1;
+
+    	}
+    	else {
+    		long size = 1;
+    		boolean decreasing = getDecreasing();
+    		for (Element current=first; 
+    			current.compare(last)!=equal_.getEqual$();
+    			current = (Element) (decreasing ? current.getPredecessor() : current.getSuccessor())) {
+    			size++;
+    		}
+            return size;
+    	}
     }
 
     @Override
     @TypeInfo("ceylon.language::Integer")
     public final Integer getLastIndex(){
-        return Integer.instance(size - 1);
+        return Integer.instance(getSize() - 1);
     }
 
     @Override @SuppressWarnings({ "unchecked", "rawtypes" })
