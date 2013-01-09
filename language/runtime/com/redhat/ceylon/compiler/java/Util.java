@@ -35,9 +35,9 @@ public class Util {
     }
     
     /**
-     * Returns true if the given object extends ceylon.language.IdentifiableObject
+     * Returns true if the given object extends ceylon.language.Basic
      */
-    public static boolean isIdentifiableObject(java.lang.Object o){
+    public static boolean isBasic(java.lang.Object o){
         return extendsClass(o, "ceylon.language.Basic");
     }
     
