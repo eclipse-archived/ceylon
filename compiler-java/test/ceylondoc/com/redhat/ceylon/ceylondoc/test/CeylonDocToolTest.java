@@ -587,18 +587,18 @@ public class CeylonDocToolTest {
     
 	private void assertSequencedParameter(File destDir) throws IOException {
         assertMatchInFile(destDir, "class_StubClass.html", 
-                Pattern.compile("Void methodWithSequencedParameter\\(Integer... numbers\\)"));
+                Pattern.compile("Anything methodWithSequencedParameter\\(Integer... numbers\\)"));
 	}
     
     private void assertCallableParameter(File destDir) throws IOException {
         assertMatchInFile(destDir, "class_StubClass.html", 
-                Pattern.compile("methodWithCallableParameter1\\(Void onClick\\(\\)\\)"));
+                Pattern.compile("methodWithCallableParameter1\\(Anything onClick\\(\\)\\)"));
         
         assertMatchInFile(destDir, "class_StubClass.html", 
                   Pattern.compile("methodWithCallableParameter2<span class='type-parameter'>&lt;Element&gt;</span>\\(Boolean selecting\\(<span class='type-parameter'>Element</span> element\\)\\)"));
 
         assertMatchInFile(destDir, "class_StubClass.html", 
-                Pattern.compile("methodWithCallableParameter3\\(Void fce1\\(Void fce2\\(Void fce3\\(\\)\\)\\)\\)"));
+                Pattern.compile("methodWithCallableParameter3\\(Anything fce1\\(Anything fce2\\(Anything fce3\\(\\)\\)\\)\\)"));
     }
 
     private void assertFencedCodeBlockWithSyntaxHighlighter(File destDir) throws IOException {
@@ -679,7 +679,7 @@ public class CeylonDocToolTest {
         assertMatchInFile(destDir, "class_StubClassWithGenericTypeParams.html",
                 Pattern.compile("<span class='sub-navbar-name'>StubClassWithGenericTypeParams<span class='type-parameter'>&lt;<span class='type-parameter-variance'>in </span>ContravariantType, Type, <span class='type-parameter-variance'>out </span>CovariantType&gt;</span></span>"));
         assertMatchInFile(destDir, "class_StubClassWithGenericTypeParams.html",
-                Pattern.compile("<div class='signature'><span class='modifiers'>shared</span> Void methodWithGenericTypeParams<span class='type-parameter'>&lt;<span class='type-parameter-variance'>in </span>ContravariantType, Type, <span class='type-parameter-variance'>out </span>CovariantType&gt;</span>\\(\\)"));
+                Pattern.compile("<div class='signature'><span class='modifiers'>shared</span> Anything methodWithGenericTypeParams<span class='type-parameter'>&lt;<span class='type-parameter-variance'>in </span>ContravariantType, Type, <span class='type-parameter-variance'>out </span>CovariantType&gt;</span>\\(\\)"));
     }
     
     private void assertObjectPageDifferences(File destDir) throws IOException {
@@ -741,7 +741,7 @@ public class CeylonDocToolTest {
         assertMatchInFile(destDir, "class_StubClass.html",
                 Pattern.compile("Inherited Attributes"));
         assertMatchInFile(destDir, "class_StubClass.html",
-                Pattern.compile("<td>Attributes inherited from: <i class='icon-class'></i>Object<div class='inherited-members'>hash, string</div></td>"));
+                Pattern.compile("<td>Attributes inherited from: <i class='icon-class'><i class='icon-decoration-abstract'></i></i>Object<div class='inherited-members'>hash, string</div></td>"));
         assertMatchInFile(destDir, "class_StubClass.html",
                 Pattern.compile("<td>Attributes inherited from: <i class='icon-interface'></i><a class='link' href='interface_StubInterface.html'>StubInterface</a><div class='inherited-members'><a class='link' href='interface_StubInterface.html#string'>string</a></div></td>"));
     }
