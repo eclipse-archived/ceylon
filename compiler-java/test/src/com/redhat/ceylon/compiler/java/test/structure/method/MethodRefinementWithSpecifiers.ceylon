@@ -33,9 +33,9 @@ interface MethodRefinementWithSpecifiers_Interface {
     shared formal Object f13();
     shared formal void f14(Integer i);
     shared formal void f15(Integer i);
-    shared formal void f16();
-    shared formal void f17();
-    shared formal void f18();
+    shared formal Object f16();
+    shared formal Object f17();
+    shared formal Object f18();
     shared formal Object f19();
 }
 
@@ -113,16 +113,70 @@ class MethodRefinementWithSpecifiers_Class(void arg()) satisfies MethodRefinemen
     shared actual Object f19() => arg;
 }
 
-// FIXME: test that too when https://github.com/ceylon/ceylon-spec/issues/478 is resolved
-/*
 @nomodel
-interface Bug891_Interface2 satisfies Bug891_Interface {
-    //shared actual Callable<Anything,<>> f1 = arg;
-    shared actual void f2() => print("a");
-    f4() => print("a");
+void arg2(){}
+
+@nomodel
+interface Bug891_Interface2 satisfies MethodRefinementWithSpecifiers_Interface {
+    
+    class Inner(){}
+    shared class InnerShared(){}
+    
+    // long decl, lazy, arg always reevaluated
+    shared actual void f2() => arg2();
+    
+    // short decl, eager, but arg is constant so it's optimised
+    //f3 = arg2;
+    
+    // short decl, lazy, arg always reevaluated
+    f4() => arg2();
+
+    // short decl, lazy, arg always reevaluated
+    //f5 = function () => arg2();
+
+    // long decl, lazy, arg always reevaluated
     shared actual void f6(){
-        print("a");
+        arg2();
     }
+    
+    // short decl, eager, but f3 is constant so it's optimised
+    //f7 = f3;
+    
+    // short decl, lazy, f3 always reevaluated
     f8() => f3();
+    
+    // short decl, eager, returnsMethod() is only evaluated once
+    //f9 = methodRefinementWithSpecifiers_returnsMethod();
+    
+    // short decl, eager, attributeMethod is only evaluated once
+    //f10 = methodRefinementWithSpecifiers_attributeMethod;
+    
+    // short decl, eager, but Bug891_ClassNoParam is constant to it's optimised
+    //f11 = MethodRefinementWithSpecifiers_ClassNoParam;
+
+    // short decl, eager, but Inner is constant to it's optimised
+    //f12 = Inner;
+    
+    // short decl, eager, but InnerShared is constant to it's optimised to its instantiator method
+    //f13 = InnerShared;
+    
+    void takesParam(Integer i){}
+    
+    // short decl, eager, but takesParam is constant to it's optimised
+    //f14 = takesParam;
+
+    // short decl, eager, but f14 is constant to it's optimised
+    //f15 = f14;
+
+    // short decl, lazy, returns a Callable
+    f16() => takesParam;
+
+    // short decl, lazy, returns a Callable
+    f17() => Inner;
+
+    // short decl, lazy, returns a Callable
+    f18() => arg2;
+
+    // long decl, lazy, returns a Callable
+    shared actual Object f19() => arg2;
 }
-*/
