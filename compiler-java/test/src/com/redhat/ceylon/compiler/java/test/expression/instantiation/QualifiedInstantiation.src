@@ -13,13 +13,12 @@ class QualifiedInstantiation {
     }
     
     private final void m(final .com.redhat.ceylon.compiler.java.test.expression.instantiation.QualifiedInstantiation q) {
-        QualifiedInstantiation.this.new Inner("");
         this.new Inner("");
         q.new Inner("");
         (
             let
             {
-                .com.redhat.ceylon.compiler.java.test.expression.instantiation.QualifiedInstantiation $arg$0$callable$ = QualifiedInstantiation.this;
+                .com.redhat.ceylon.compiler.java.test.expression.instantiation.QualifiedInstantiation $arg$0$callable$ = this;
                 .java.lang.String $arg$0$0 = "";
             }
             returning $arg$0$callable$.new Inner($arg$0$0);
@@ -27,18 +26,10 @@ class QualifiedInstantiation {
         (
             let
             {
-                .com.redhat.ceylon.compiler.java.test.expression.instantiation.QualifiedInstantiation $arg$1$callable$ = this;
+                .com.redhat.ceylon.compiler.java.test.expression.instantiation.QualifiedInstantiation $arg$1$callable$ = q;
                 .java.lang.String $arg$1$0 = "";
             }
             returning $arg$1$callable$.new Inner($arg$1$0);
-        );
-        (
-            let
-            {
-                .com.redhat.ceylon.compiler.java.test.expression.instantiation.QualifiedInstantiation $arg$2$callable$ = q;
-                .java.lang.String $arg$2$0 = "";
-            }
-            returning $arg$2$callable$.new Inner($arg$2$0);
         );
     }
     
