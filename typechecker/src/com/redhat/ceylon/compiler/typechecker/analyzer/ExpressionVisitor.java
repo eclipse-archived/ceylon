@@ -4382,10 +4382,25 @@ private void checkPositionalArguments(ParameterList pl, ProducedReference pr,
                     if (at!=null && !at.isSubtypeOf(arg) && 
                             !(td.getSelfType()!=null && 
                                 td.getSelfType().isExactly(arg))) {
+                    	String help;
+                    	TypeDeclaration ad = arg.getDeclaration();
+						if (ad instanceof TypeParameter &&
+                    			((TypeParameter) ad).getDeclaration().equals(td)) {
+                    		help = " (try making " + ad.getName() + " a self type of " + td.getName() + ")";
+                    	}
+                    	else if (ad instanceof Interface) {
+                    		help = " (try making " + td.getName() + " satisfy " + ad.getName() + ")";
+                    	}
+                    	else if (ad instanceof Class && td instanceof Class) {
+                    		help = " (try making " + td.getName() + " extend " + ad.getName() + ")";
+                    	}
+                    	else {
+                    		help = "";
+                    	}
                         that.addError("type argument does not satisfy self type constraint on type parameter " +
                                 param.getName() + " of " + type.getDeclaration().getName(unit) + ": " +
                                 arg.getProducedTypeName(unit) + " is not a supertype or self type of " + 
-                                td.getName(unit));
+                                td.getName(unit) + help);
                     }
                 }
             }
