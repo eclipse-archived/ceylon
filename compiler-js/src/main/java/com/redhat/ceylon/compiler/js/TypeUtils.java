@@ -176,7 +176,7 @@ public class TypeUtils {
             //A component of a union/intersection type, in which case we just use the argument's type (may be null)
             //A type argument of the argument's type, in which case we must get the reified generic from the argument
             if (tp.getContainer() == parent) {
-                gen.out("/*SAME METHOD TYPEPARM plist ", Integer.toString(plistCount), "#", Integer.toString(paramCount), "*/'", type.getProducedTypeQualifiedName(), "'");
+                gen.out("$$$mptypes[", Integer.toString(paramCount), "]");
             } else {
                 gen.out("/*METHOD TYPEPARM plist ", Integer.toString(plistCount), "#", Integer.toString(paramCount), "*/'", type.getProducedTypeQualifiedName(), "'");
             }
