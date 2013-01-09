@@ -21,12 +21,12 @@ shared class SequenceTest () {
   
     @test
     shared void test(){
-        String[] stringSequence = {"foo", "bar", "longer"};
+        String[] stringSequence = ["foo", "bar", "longer"];
         // size is unboxed
         assertEquals({3, 3, 6}, stringSequence[].size);
         
         // wholePart is boxed
-        Integer[] intSequence = {3, 3, 6};
+        Integer[] intSequence = [3, 3, 6];
         assertEquals({3, 3, 6}, intSequence[].wholePart);
         
         // invoke

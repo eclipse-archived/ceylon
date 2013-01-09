@@ -17,7 +17,7 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
  * MA  02110-1301, USA.
  */
-class Foo(first = 1, Integer... initialRest={2, 3, 4}) {
+class Foo(first = 1, Integer... initialRest) {
     shared Integer first;
     shared Iterable<Integer> rest = initialRest;
 }
@@ -27,11 +27,11 @@ shared class InvocationTest() {
     shared void testInitializerDefaultedAndSequenced() {
         variable Foo foo = Foo();
         assertEquals(1, foo.first);
-        assertEquals({2, 3, 4}, foo.rest);
+        assertEquals({}, foo.rest);
         
         foo = Foo(2);
         assertEquals(2, foo.first);
-        assertEquals({2, 3, 4}, foo.rest);
+        assertEquals({}, foo.rest);
         
         foo = Foo(10, 11, 12);
         assertEquals(10, foo.first);

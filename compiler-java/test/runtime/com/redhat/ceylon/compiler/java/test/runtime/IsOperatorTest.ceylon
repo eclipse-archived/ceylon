@@ -38,7 +38,7 @@ shared class IsOperatorTest() {
     
     @test
     shared void ifIs() {
-        if (is Nothing nowt) {
+        if (is Null nowt) {
            
         } else {
             throw;
@@ -53,7 +53,7 @@ shared class IsOperatorTest() {
             throw;
         }
         
-        if (is Nothing o) {
+        if (is Null o) {
             throw;
         }
         if (is Object o) {
@@ -68,7 +68,7 @@ shared class IsOperatorTest() {
             throw;
         }
         
-        if (is Nothing i) {
+        if (is Null i) {
             throw;
         }
         if (is Object i) {
@@ -85,7 +85,7 @@ shared class IsOperatorTest() {
             throw;
         }
         
-        if (is Nothing io) {
+        if (is Null io) {
             throw;
         }
         if (is Object io) {
@@ -108,7 +108,7 @@ shared class IsOperatorTest() {
     @test
     shared void operatorIs() {
         variable Boolean b = false;
-        b = nowt is Nothing;
+        b = nowt is Null;
         if (b) {
            
         } else {
@@ -127,7 +127,7 @@ shared class IsOperatorTest() {
             throw;
         }
         
-        b= o is Nothing;
+        b= o is Null;
         if (b) {
             throw;
         }
@@ -146,7 +146,7 @@ shared class IsOperatorTest() {
             throw;
         }
         
-        b = i is Nothing;
+        b = i is Null;
         if (b) {
             throw;
         }
@@ -167,7 +167,7 @@ shared class IsOperatorTest() {
             throw;
         }
         
-        b = io is Nothing;
+        b = io is Null;
         if (b) {
             throw;
         }

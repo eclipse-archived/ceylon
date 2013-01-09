@@ -17,10 +17,9 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
  * MA  02110-1301, USA.
  */
-class SummableImpl<Other>() of Other satisfies Summable<Other> 
-    given Other satisfies SummableImpl<Other> {
+class SummableImpl() satisfies Summable<SummableImpl> {
 
-    shared actual Other plus(Other other) {
+    shared actual SummableImpl plus(SummableImpl other) {
         return nothing;
     }
 }

@@ -73,7 +73,7 @@ public class MiscTest extends CompilerTest {
     }
 
     @Test
-    public void compileRuntime_fail(){
+    public void compileRuntime(){
         java.util.List<File> sourceFiles = new ArrayList<File>();
         
         String ceylonSourcePath = "../ceylon.language/src";

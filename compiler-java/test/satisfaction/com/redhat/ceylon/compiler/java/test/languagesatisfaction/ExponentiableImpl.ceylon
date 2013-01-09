@@ -17,35 +17,33 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
  * MA  02110-1301, USA.
  */
-class ExponentiableImpl<This,Other>() of This satisfies Exponentiable<This,Other>  
-        given This satisfies ExponentiableImpl<This,Other> 
-        given Other satisfies Numeric<Other> {
+class ExponentiableImpl() satisfies Exponentiable<ExponentiableImpl,ExponentiableImpl> {
 
-    shared actual This power(Other exponent) {
+    shared actual ExponentiableImpl power(ExponentiableImpl exponent) {
         return nothing;
     }
         
-    shared actual This plus(This other) {
+    shared actual ExponentiableImpl plus(ExponentiableImpl other) {
         return nothing;
     }
     
-    shared actual This minus(This other) {
+    shared actual ExponentiableImpl minus(ExponentiableImpl other) {
         return nothing;
     }
     
-    shared actual This times(This other) {
+    shared actual ExponentiableImpl times(ExponentiableImpl other) {
         return nothing;
     }
     
-    shared actual This divided(This other) {
+    shared actual ExponentiableImpl divided(ExponentiableImpl other) {
         return nothing;
     }
     
-    shared actual This negativeValue {
+    shared actual ExponentiableImpl negativeValue {
         return nothing;
     }
     
-    shared actual This positiveValue {
+    shared actual ExponentiableImpl positiveValue {
         return nothing;
     }
 }

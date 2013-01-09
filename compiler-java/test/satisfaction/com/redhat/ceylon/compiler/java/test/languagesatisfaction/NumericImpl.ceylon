@@ -17,29 +17,29 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
  * MA  02110-1301, USA.
  */
-class NumericImpl<Other>() of Other satisfies Numeric<Other>
-        given Other satisfies Numeric<Other>  {
-    shared actual Other plus(Other other) {
+class NumericImpl() satisfies Numeric<NumericImpl> {
+    
+    shared actual NumericImpl plus(NumericImpl other) {
         return nothing;
     }
     
-    shared actual Other minus(Other other) {
+    shared actual NumericImpl minus(NumericImpl other) {
         return nothing;
     }
     
-    shared actual Other times(Other other) {
+    shared actual NumericImpl times(NumericImpl other) {
         return nothing;
     }
     
-    shared actual Other divided(Other other) {
+    shared actual NumericImpl divided(NumericImpl other) {
         return nothing;
     }
     
-    shared actual Other negativeValue {
+    shared actual NumericImpl negativeValue {
         return nothing;
     }
     
-    shared actual Other positiveValue {
+    shared actual NumericImpl positiveValue {
         return nothing;
     }
 }

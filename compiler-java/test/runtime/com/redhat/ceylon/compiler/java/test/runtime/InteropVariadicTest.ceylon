@@ -26,8 +26,8 @@ shared class InteropVariadicTest() {
     shared void testVarargsByte() {
         VariadicJava java = VariadicJava();
         java.testVarargsByte3(1, box(2), 3);
-        java.testVarargsByte3({1, box(2), 3}...);
-        value seq = {1, box(2), 3};
+        java.testVarargsByte3([1, box(2), 3]...);
+        value seq = [1, box(2), 3];
         java.testVarargsByte3(seq...);
 
         java.testVarargsByte0();
@@ -40,8 +40,8 @@ shared class InteropVariadicTest() {
     shared void testVarargsShort() {
         VariadicJava java = VariadicJava();
         java.testVarargsShort3(1, box(2), 3);
-        java.testVarargsShort3({1, box(2), 3}...);
-        value seq = {1, box(2), 3};
+        java.testVarargsShort3([1, box(2), 3]...);
+        value seq = [1, box(2), 3];
         java.testVarargsShort3(seq...);
 
         java.testVarargsShort0();
@@ -54,8 +54,8 @@ shared class InteropVariadicTest() {
     shared void testVarargsInt() {
         VariadicJava java = VariadicJava();
         java.testVarargsInt3(1, box(2), 3);
-        java.testVarargsInt3({1, box(2), 3}...);
-        value seq = {1, box(2), 3};
+        java.testVarargsInt3([1, box(2), 3]...);
+        value seq = [1, box(2), 3];
         java.testVarargsInt3(seq...);
 
         java.testVarargsInt0();
@@ -68,8 +68,8 @@ shared class InteropVariadicTest() {
     shared void testVarargsLong() {
         VariadicJava java = VariadicJava();
         java.testVarargsLong3(1, box(2), 3);
-        java.testVarargsLong3({1, box(2), 3}...);
-        value seq = {1, box(2), 3};
+        java.testVarargsLong3([1, box(2), 3]...);
+        value seq = [1, box(2), 3];
         java.testVarargsLong3(seq...);
 
         java.testVarargsLong0();
@@ -82,8 +82,8 @@ shared class InteropVariadicTest() {
     shared void testVarargsFloat() {
         VariadicJava java = VariadicJava();
         java.testVarargsFloat3(1.0, box(2.0), 3.0);
-        java.testVarargsFloat3({1.0, box(2.0), 3.0}...);
-        value seq = {1.0, box(2.0), 3.0};
+        java.testVarargsFloat3([1.0, box(2.0), 3.0]...);
+        value seq = [1.0, box(2.0), 3.0];
         java.testVarargsFloat3(seq...);
 
         java.testVarargsFloat0();
@@ -96,8 +96,8 @@ shared class InteropVariadicTest() {
     shared void testVarargsDouble() {
         VariadicJava java = VariadicJava();
         java.testVarargsDouble3(1.0, box(2.0), 3.0);
-        java.testVarargsDouble3({1.0, box(2.0), 3.0}...);
-        value seq = {1.0, box(2.0), 3.0};
+        java.testVarargsDouble3([1.0, box(2.0), 3.0]...);
+        value seq = [1.0, box(2.0), 3.0];
         java.testVarargsDouble3(seq...);
 
         java.testVarargsDouble0();
@@ -110,8 +110,8 @@ shared class InteropVariadicTest() {
     shared void testVarargsBoolean() {
         VariadicJava java = VariadicJava();
         java.testVarargsBoolean3(true, box(false), false);
-        java.testVarargsBoolean3({true, box(false), false}...);
-        value seq = {true, box(false), false};
+        java.testVarargsBoolean3([true, box(false), false]...);
+        value seq = [true, box(false), false];
         java.testVarargsBoolean3(seq...);
 
         java.testVarargsBoolean0();
@@ -124,8 +124,8 @@ shared class InteropVariadicTest() {
     shared void testVarargsChar() {
         VariadicJava java = VariadicJava();
         java.testVarargsChar3(`a`, box(`b`), `c`);
-        java.testVarargsChar3({`a`, box(`b`), `c`}...);
-        value seq = {`a`, box(`b`), `c`};
+        java.testVarargsChar3([`a`, box(`b`), `c`]...);
+        value seq = [`a`, box(`b`), `c`];
         java.testVarargsChar3(seq...);
 
         java.testVarargsChar0();
@@ -138,8 +138,8 @@ shared class InteropVariadicTest() {
     shared void testVarargsCeylonInteger() {
         VariadicJava java = VariadicJava();
         java.testVarargsCeylonInteger3(1, box(2), 3);
-        java.testVarargsCeylonInteger3({1, box(2), 3}...);
-        value seq = {1, box(2), 3};
+        java.testVarargsCeylonInteger3([1, box(2), 3]...);
+        value seq = [1, box(2), 3];
         java.testVarargsCeylonInteger3(seq...);
 
         java.testVarargsCeylonInteger0();
@@ -152,8 +152,8 @@ shared class InteropVariadicTest() {
     shared void testVarargsObject() {
         VariadicJava java = VariadicJava();
         java.testVarargsObject3(1, box(2), 3);
-        java.testVarargsObject3({1, box(2), 3}...);
-        value seq = {1, box(2), 3};
+        java.testVarargsObject3([1, box(2), 3]...);
+        value seq = [1, box(2), 3];
         java.testVarargsObject3(seq...);
 
         java.testVarargsObject0();

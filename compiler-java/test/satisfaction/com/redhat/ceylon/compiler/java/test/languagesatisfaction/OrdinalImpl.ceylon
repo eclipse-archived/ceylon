@@ -17,19 +17,18 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
  * MA  02110-1301, USA.
  */
-class OrdinalImpl<Other>() of Other
-        satisfies Ordinal<Other>
-        given Other satisfies OrdinalImpl<Other> {
+class OrdinalImpl()
+        satisfies Ordinal<OrdinalImpl> {
         
-    shared actual Other successor {
+    shared actual OrdinalImpl successor {
         return nothing;
     }
     
-    shared actual Other predecessor {
+    shared actual OrdinalImpl predecessor {
         return nothing;
     }
     
-    shared actual Integer distanceFrom(Other other) {
+    shared actual Integer distanceFrom(OrdinalImpl other) {
         return 0;
     }
 }

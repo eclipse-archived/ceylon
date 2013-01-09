@@ -17,42 +17,41 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
  * MA  02110-1301, USA.
  */
-class IntegralImpl<Other>() of Other satisfies Integral<Other>
-        given Other satisfies IntegralImpl<Other> {
+class IntegralImpl() satisfies Integral<IntegralImpl> {
 
-    shared actual Other plus(Other other) {
+    shared actual IntegralImpl plus(IntegralImpl other) {
         return nothing;
     }
     
-    shared actual Other minus(Other other) {
+    shared actual IntegralImpl minus(IntegralImpl other) {
         return nothing;
     }
     
-    shared actual Other times(Other other) {
+    shared actual IntegralImpl times(IntegralImpl other) {
         return nothing;
     }
     
-    shared actual Other divided(Other other) {
+    shared actual IntegralImpl divided(IntegralImpl other) {
         return nothing;
     }
     
-    shared actual Other remainder(Other other) {
+    shared actual IntegralImpl remainder(IntegralImpl other) {
         return nothing;
     }
     
-    shared actual Other successor {
+    shared actual IntegralImpl successor {
         return nothing;
     }
     
-    shared actual Other predecessor {
+    shared actual IntegralImpl predecessor {
         return nothing;
     }
     
-    shared actual Other negativeValue {
+    shared actual IntegralImpl negativeValue {
         return nothing;
     }
     
-    shared actual Other positiveValue {
+    shared actual IntegralImpl positiveValue {
         return nothing;
     }
     
@@ -64,7 +63,7 @@ class IntegralImpl<Other>() of Other satisfies Integral<Other>
         return nothing;
     }
     
-    shared actual Integer distanceFrom(Other other) {
+    shared actual Integer distanceFrom(IntegralImpl other) {
         return 0;
     }
 

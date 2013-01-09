@@ -17,28 +17,27 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
  * MA  02110-1301, USA.
  */
-class ScalarImpl<Other>() of Other satisfies Scalar<Other>
-        given Other satisfies Scalar<Other> {
+class ScalarImpl() satisfies Scalar<ScalarImpl> {
 
-    shared actual Other magnitude = nothing;
+    shared actual ScalarImpl magnitude = nothing;
     
-    shared actual Other fractionalPart = nothing;
+    shared actual ScalarImpl fractionalPart = nothing;
     
-    shared actual Other wholePart = nothing;
+    shared actual ScalarImpl wholePart = nothing;
 
-    shared actual Other plus(Other other) {
+    shared actual ScalarImpl plus(ScalarImpl other) {
         return nothing;
     }
     
-    shared actual Other minus(Other other) {
+    shared actual ScalarImpl minus(ScalarImpl other) {
         return nothing;
     }
     
-    shared actual Other times(Other other) {
+    shared actual ScalarImpl times(ScalarImpl other) {
         return nothing;
     }
     
-    shared actual Other divided(Other other) {
+    shared actual ScalarImpl divided(ScalarImpl other) {
         return nothing;
     }
     
@@ -52,11 +51,11 @@ class ScalarImpl<Other>() of Other satisfies Scalar<Other>
     
     shared actual Boolean negative = nothing;
     
-    shared actual Other negativeValue = nothing;
+    shared actual ScalarImpl negativeValue = nothing;
     
-    shared actual Other positiveValue = nothing;
+    shared actual ScalarImpl positiveValue = nothing;
     
-    shared actual Comparison compare(Other other) {
+    shared actual Comparison compare(ScalarImpl other) {
         return nothing;
     }
     
