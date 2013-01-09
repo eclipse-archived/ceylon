@@ -2350,7 +2350,7 @@ public abstract class AbstractTransformer implements Transformation {
                 return makeUtilInvocation("isIdentifiable", List.of(varExpr), null);
             } else if (type.isExactly(typeFact().getBasicDeclaration().getType())){
                 // it's erased
-                return makeUtilInvocation("isIdentifiableObject", List.of(varExpr), null);
+                return makeUtilInvocation("isBasic", List.of(varExpr), null);
             } else if (type.getDeclaration() instanceof NothingType){
                 // nothing is Bottom
                 return makeIgnoredEvalAndReturn(varExpr, makeBoolean(false));
