@@ -55,9 +55,3 @@ shared Null license(String url) { return null; }
 shared Null export() { return null; }
 
 shared Null optional() { return null; }
-
-doc "Annotation to specify a hexadecimal literal." 
-shared Integer hex(String number) { return 0; }
-
-doc "Annotation to specify a binary literal." 
-shared Integer bin(String number) { return 0; }
