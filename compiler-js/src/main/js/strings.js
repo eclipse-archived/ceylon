@@ -512,7 +512,7 @@ function Character(value) {
     that.value = value;
     return that;
 }
-initTypeProto(Character, 'ceylon.language::Character', Object$, Comparable);
+initTypeProto(Character, 'ceylon.language::Character', Object$, Comparable, $init$Enumerable());
 var Character$proto = Character.$$.prototype;
 Character$proto.getString = function() { return String$(codepointToString(this.value)) }
 Character$proto.equals = function(other) {
