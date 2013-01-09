@@ -28,7 +28,4 @@ class OrdinalImpl()
         return nothing;
     }
     
-    shared actual Integer distanceFrom(OrdinalImpl other) {
-        return 0;
-    }
 }

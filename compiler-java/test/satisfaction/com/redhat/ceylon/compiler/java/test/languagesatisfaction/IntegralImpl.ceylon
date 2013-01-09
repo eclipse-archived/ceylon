@@ -62,9 +62,6 @@ class IntegralImpl() satisfies Integral<IntegralImpl> {
     shared actual Boolean unit {
         return nothing;
     }
-    
-    shared actual Integer distanceFrom(IntegralImpl other) {
-        return 0;
-    }
 
+    shared actual Integer integerValue => nothing;
 }
