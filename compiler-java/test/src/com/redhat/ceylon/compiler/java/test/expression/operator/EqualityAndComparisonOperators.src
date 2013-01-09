@@ -27,6 +27,7 @@ public abstract class EqualityAndComparisonInteger extends .java.lang.Object imp
         this.$ceylon$language$Numeric$this = new .ceylon.language.Numeric$impl<.com.redhat.ceylon.compiler.java.test.expression.operator.EqualityAndComparisonInteger>(this);
         this.$ceylon$language$Summable$this = new .ceylon.language.Summable$impl<.com.redhat.ceylon.compiler.java.test.expression.operator.EqualityAndComparisonInteger>(this);
         this.$ceylon$language$Invertable$this = new .ceylon.language.Invertable$impl<.com.redhat.ceylon.compiler.java.test.expression.operator.EqualityAndComparisonInteger>(this);
+        this.$ceylon$language$Enumerable$this = new .ceylon.language.Enumerable$impl<.com.redhat.ceylon.compiler.java.test.expression.operator.EqualityAndComparisonInteger>(this);
         this.$ceylon$language$Ordinal$this = new .ceylon.language.Ordinal$impl<.com.redhat.ceylon.compiler.java.test.expression.operator.EqualityAndComparisonInteger>(this);
         this.$ceylon$language$Comparable$this = new .ceylon.language.Comparable$impl<.com.redhat.ceylon.compiler.java.test.expression.operator.EqualityAndComparisonInteger>(this);
     }
@@ -35,6 +36,7 @@ public abstract class EqualityAndComparisonInteger extends .java.lang.Object imp
     protected final .ceylon.language.Numeric$impl<.com.redhat.ceylon.compiler.java.test.expression.operator.EqualityAndComparisonInteger> $ceylon$language$Numeric$this;
     protected final .ceylon.language.Summable$impl<.com.redhat.ceylon.compiler.java.test.expression.operator.EqualityAndComparisonInteger> $ceylon$language$Summable$this;
     protected final .ceylon.language.Invertable$impl<.com.redhat.ceylon.compiler.java.test.expression.operator.EqualityAndComparisonInteger> $ceylon$language$Invertable$this;
+    protected final .ceylon.language.Enumerable$impl<.com.redhat.ceylon.compiler.java.test.expression.operator.EqualityAndComparisonInteger> $ceylon$language$Enumerable$this;
     protected final .ceylon.language.Ordinal$impl<.com.redhat.ceylon.compiler.java.test.expression.operator.EqualityAndComparisonInteger> $ceylon$language$Ordinal$this;
     protected final .ceylon.language.Comparable$impl<.com.redhat.ceylon.compiler.java.test.expression.operator.EqualityAndComparisonInteger> $ceylon$language$Comparable$this;
 }
@@ -144,7 +146,7 @@ public class EqualityAndComparisonOperators {
             {
                 .java.lang.Object $ceylontmp9 = foo;
             }
-            returning .com.redhat.ceylon.compiler.java.Util.isIdentifiableObject($ceylontmp9);
+            returning .com.redhat.ceylon.compiler.java.Util.isBasic($ceylontmp9);
         );
         sync = (
             let

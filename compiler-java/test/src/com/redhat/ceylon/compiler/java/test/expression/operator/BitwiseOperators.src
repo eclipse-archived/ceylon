@@ -10,6 +10,7 @@ abstract class BWMyInteger extends .java.lang.Object implements .ceylon.language
         this.$ceylon$language$Numeric$this = new .ceylon.language.Numeric$impl<.com.redhat.ceylon.compiler.java.test.expression.operator.BWMyInteger>(this);
         this.$ceylon$language$Summable$this = new .ceylon.language.Summable$impl<.com.redhat.ceylon.compiler.java.test.expression.operator.BWMyInteger>(this);
         this.$ceylon$language$Invertable$this = new .ceylon.language.Invertable$impl<.com.redhat.ceylon.compiler.java.test.expression.operator.BWMyInteger>(this);
+        this.$ceylon$language$Enumerable$this = new .ceylon.language.Enumerable$impl<.com.redhat.ceylon.compiler.java.test.expression.operator.BWMyInteger>(this);
         this.$ceylon$language$Ordinal$this = new .ceylon.language.Ordinal$impl<.com.redhat.ceylon.compiler.java.test.expression.operator.BWMyInteger>(this);
         this.$ceylon$language$Exponentiable$this = new .ceylon.language.Exponentiable$impl<.com.redhat.ceylon.compiler.java.test.expression.operator.BWMyInteger, .com.redhat.ceylon.compiler.java.test.expression.operator.BWMyInteger>(this);
     }
@@ -34,6 +35,7 @@ abstract class BWMyInteger extends .java.lang.Object implements .ceylon.language
     protected final .ceylon.language.Numeric$impl<.com.redhat.ceylon.compiler.java.test.expression.operator.BWMyInteger> $ceylon$language$Numeric$this;
     protected final .ceylon.language.Summable$impl<.com.redhat.ceylon.compiler.java.test.expression.operator.BWMyInteger> $ceylon$language$Summable$this;
     protected final .ceylon.language.Invertable$impl<.com.redhat.ceylon.compiler.java.test.expression.operator.BWMyInteger> $ceylon$language$Invertable$this;
+    protected final .ceylon.language.Enumerable$impl<.com.redhat.ceylon.compiler.java.test.expression.operator.BWMyInteger> $ceylon$language$Enumerable$this;
     protected final .ceylon.language.Ordinal$impl<.com.redhat.ceylon.compiler.java.test.expression.operator.BWMyInteger> $ceylon$language$Ordinal$this;
     protected final .ceylon.language.Exponentiable$impl<.com.redhat.ceylon.compiler.java.test.expression.operator.BWMyInteger, .com.redhat.ceylon.compiler.java.test.expression.operator.BWMyInteger> $ceylon$language$Exponentiable$this;
 }
