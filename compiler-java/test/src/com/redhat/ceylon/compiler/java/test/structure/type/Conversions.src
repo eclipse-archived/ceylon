@@ -176,7 +176,7 @@ class Conversions {
         final .com.redhat.ceylon.compiler.java.test.structure.type.GenCon<? super .ceylon.language.String> g3;
         final .com.redhat.ceylon.compiler.java.test.structure.type.GenInv<.ceylon.language.String> g4;
         final .com.redhat.ceylon.compiler.java.test.structure.type.GenInv g5;
-        final .com.redhat.ceylon.compiler.java.test.structure.type.GenInv<?> g6;
+        final .com.redhat.ceylon.compiler.java.test.structure.type.GenInv g6;
         final .com.redhat.ceylon.compiler.java.test.structure.type.GenInv<.java.lang.Object> v1;
         final .com.redhat.ceylon.compiler.java.test.structure.type.GenCov<? extends .java.lang.Object> v2;
         final .com.redhat.ceylon.compiler.java.test.structure.type.GenCon<? super .java.lang.Object> v3;
