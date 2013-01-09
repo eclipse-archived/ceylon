@@ -2286,8 +2286,8 @@ public class ExpressionVisitor extends Visitor {
                     p.getType() : 
                     pr.getTypedParameter(p).getFullType();
             if (!foundParameters.contains(p) &&
-                    t
-                        .getDeclaration().equals(unit.getIterableDeclaration())) {
+            		t.getDeclaration() instanceof Interface &&
+                    t.getDeclaration().equals(unit.getIterableDeclaration())) {
                 return p;
             }
         }

@@ -25,5 +25,10 @@ class LanguageModule() {
     
     if ("hello" nonempty) {}
     Character[] chars = "hello";
+    
+    //TODO: make this work!!
+    @error Integer m1 = min { @error 1, 2 };
+    Integer m2 = min([1, 2]);
+    Integer? m3 = min({1, 2});
 
 }
