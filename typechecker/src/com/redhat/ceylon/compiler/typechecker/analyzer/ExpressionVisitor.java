@@ -2594,14 +2594,6 @@ private void checkPositionalArguments(ParameterList pl, ProducedReference pr,
         return ut.getSupertype(td);
     }
 
-    private ProducedType checkInvariantOperandTypes(ProducedType lhst, ProducedType rhst, 
-            TypeDeclaration td, Node node, String message) {
-    	ProducedType lst = lhst.getSupertype(td);
-    	ProducedType rst = rhst.getSupertype(td);
-    	checkIsExactly(lst, rst, node, message);
-        return unionType(lst, rst, unit).getSupertype(td);
-    }
-
     private void visitIncrementDecrement(Tree.Term that,
             ProducedType pt, Tree.Term term) {
         if (pt!=null) {
@@ -2655,7 +2647,7 @@ private void checkPositionalArguments(ParameterList pl, ProducedReference pr,
         ProducedType lhst = leftType(that);
         ProducedType rhst = rightType(that);
         if ( rhst!=null && lhst!=null ) {
-            ProducedType ot = checkInvariantOperandTypes(lhst, rhst, 
+            ProducedType ot = checkOperandTypes(lhst, rhst, 
             		unit.getOrdinalDeclaration(), that,
                     "operand expressions must be of compatible ordinal type");
             ProducedType ct = checkOperandTypes(lhst, rhst, 
@@ -2664,9 +2656,10 @@ private void checkPositionalArguments(ParameterList pl, ProducedReference pr,
             if (ct!=null && ot!=null) {
                 ProducedType cta = ct.getTypeArgumentList().get(0);
                 ProducedType ota = ot.getTypeArgumentList().get(0);
-                checkAssignable(cta, ota, that, 
-                		"comparable type must be assignable to ordinal type");
-				ProducedType pt = producedType(unit.getRangeDeclaration(), ota);
+                checkIsExactly(cta, ota, that, 
+                		"incompatible comparable and ordinal types");
+				ProducedType pt = producedType(unit.getRangeDeclaration(), 
+						unionType(ota, cta, unit));
                 that.setTypeModel(pt);
             }
         }
