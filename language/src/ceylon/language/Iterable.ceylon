@@ -57,7 +57,7 @@ doc "Abstract supertype of containers whose elements may be
 see (Collection)
 by "Gavin"
 shared interface Iterable<out Element> 
-        satisfies ContainerWithFirstElement<Element,Null> {
+        satisfies Container<Element> {
     
     doc "An iterator for the elements belonging to this 
          container."

@@ -1,12 +1,14 @@
-doc "Abstract supertype of containers which provide an 
-     operation for accessing the first element, if any. A 
-     container which may or may not be empty is a
-     `ContainerWithFirstElement<Element,Null>`. A 
-     container which is always empty is a 
-     `ContainerWithFirstElement<Nothing,Null>`. A container
-     which is never empty is a 
-     `ContainerWithFirstElement<Element,Nothing>`."
-shared interface ContainerWithFirstElement<out Element, out Absent>
+doc "Abstract supertype of objects which may or may not
+     contain one of more other values, called *elements*,
+     and provide an operation for accessing the first 
+     element, if any. A container which may or may not be 
+     empty is a `Container<Element,Null>`. A container which 
+     is always empty is a `Container<Nothing,Null>`. A 
+     container which is never empty is a 
+     `Container<Element,Nothing>`."
+see (Category)
+by "Gavin"
+shared interface Container<out Element, out Absent=Null>
         satisfies Category
         given Absent satisfies Null {
     
@@ -26,15 +28,9 @@ shared interface ContainerWithFirstElement<out Element, out Absent>
     
 }
 
-doc "Abstract supertype of objects which may or may not
-     contain one of more other values, called *elements*."
-see (Category)
-by "Gavin"
-shared interface Container<out Element> =>
-        ContainerWithFirstElement<Element,Null>;
+doc "An empty container."
+shared interface EmptyContainer => Container<Nothing,Null>;
 
-shared interface EmptyContainer =>
-        ContainerWithFirstElement<Nothing,Null>;
-
+doc "A nonempty container."
 shared interface NonemptyContainer<out Element> =>
-        ContainerWithFirstElement<Element,Nothing>;
+        Container<Element,Nothing>;
