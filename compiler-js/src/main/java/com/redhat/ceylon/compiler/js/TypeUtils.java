@@ -22,12 +22,18 @@ public class TypeUtils {
     final TypeDeclaration tuple;
     final TypeDeclaration iterable;
     final TypeDeclaration sequential;
+    final TypeDeclaration numeric;
+    final TypeDeclaration _integer;
+    final TypeDeclaration _float;
 
     TypeUtils(Module languageModule) {
         com.redhat.ceylon.compiler.typechecker.model.Package pkg = languageModule.getPackage("ceylon.language");
         tuple = (TypeDeclaration)pkg.getMember("Tuple", null, false);
         iterable = (TypeDeclaration)pkg.getMember("Iterable", null, false);
         sequential = (TypeDeclaration)pkg.getMember("Sequential", null, false);
+        numeric = (TypeDeclaration)pkg.getMember("Numeric", null, false);
+        _integer = (TypeDeclaration)pkg.getMember("Integer", null, false);
+        _float = (TypeDeclaration)pkg.getMember("Float", null, false);
     }
 
     /** Prints the type arguments, usually for their reification. */

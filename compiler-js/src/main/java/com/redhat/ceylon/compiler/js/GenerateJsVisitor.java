@@ -3,6 +3,7 @@ package com.redhat.ceylon.compiler.js;
 import java.io.IOException;
 import java.io.Writer;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
@@ -2568,22 +2569,42 @@ public class GenerateJsVisitor extends Visitor
         }
     }
 
-    @Override public void visit(NegativeOp that) {
+    @Override public void visit(final NegativeOp that) {
         unaryOp(that, new UnaryOpGenerator() {
             @Override
             public void generate(UnaryOpTermGenerator termgen) {
-                termgen.term();
-                out(".getNegativeValue()");
+                TypeDeclaration d = that.getTerm().getTypeModel().getDeclaration();
+                if (d.inherits(types._integer)) {
+                    out("(-");
+                    termgen.term();
+                    out(")");
+                //This is not really optimal yet, since it generates
+                //stuff like Float(-Float((5.1)))
+                /*} else if (d.inherits(types._float)) {
+                    out(clAlias, "Float(-");
+                    termgen.term();
+                    out(")");*/
+                } else {
+                    termgen.term();
+                    out(".getNegativeValue()");
+                }
             }
         });
     }
 
-    @Override public void visit(PositiveOp that) {
+    @Override public void visit(final PositiveOp that) {
         unaryOp(that, new UnaryOpGenerator() {
             @Override
             public void generate(UnaryOpTermGenerator termgen) {
-                termgen.term();
-                out(".getPositiveValue()");
+                TypeDeclaration d = that.getTerm().getTypeModel().getDeclaration();
+                if (d.inherits(types._integer) || d.inherits(types._float)) {
+                    out("(+");
+                    termgen.term();
+                    out(")");
+                } else {
+                    termgen.term();
+                    out(".getPositiveValue()");
+                }
             }
         });
     }
@@ -3013,14 +3034,16 @@ public class GenerateJsVisitor extends Visitor
         }
     }
 
-   @Override public void visit(RangeOp that) {
+   @Override public void visit(final RangeOp that) {
        binaryOp(that, new BinaryOpGenerator() {
            @Override
            public void generate(BinaryOpTermGenerator termgen) {
-               out(clAlias, "Range(");
+               out(clAlias, "reify(", clAlias, "Range(");
                termgen.left();
                out(",");
                termgen.right();
+               out("),");
+               TypeUtils.printTypeArguments(that, Collections.singletonList(that.getLeftTerm().getTypeModel()), GenerateJsVisitor.this);
                out(")");
            }
        });
