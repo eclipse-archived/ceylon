@@ -289,16 +289,17 @@ public class ExpressionVisitor extends Visitor {
                 knownType = e==null ? null : e.getTypeModel();
                 //TODO: what to do here in case of !is
                 if (knownType!=null) {
+                	String help = " (expression is already of the specified type)";
                     if (that.getNot()) {
                         if (intersectionType(type,knownType, unit).getDeclaration() instanceof NothingType) {
                             that.addError("does not narrow type: intersection of " + type.getProducedTypeName(unit) + 
-                                    " and " + knownType.getProducedTypeName(unit) + " is empty ");
+                                    " and " + knownType.getProducedTypeName(unit) + " is empty" + help);
                         }
                     } 
                     else {
                         if (knownType.isSubtypeOf(type)) {
                             that.addError("does not narrow type: " + knownType.getProducedTypeName(unit) + 
-                                    " is a subtype of " + type.getProducedTypeName(unit));
+                                    " is a subtype of " + type.getProducedTypeName(unit) + help);
                         }
                     }
                 }
