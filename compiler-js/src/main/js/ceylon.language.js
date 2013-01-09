@@ -185,6 +185,22 @@ exports.Correspondence=Correspondence;
 //#COMPILED
 //Ends compiled from Ceylon sources
 
+/****************************************************************
+ * Overwriting of some methods not yet working in compiled code *
+ ****************************************************************/
+
+Singleton.$$.prototype.equals = function(other) {
+    if (isOfType(other, {t:List})) {
+        if (other.getSize() !== 1) {
+            return false;
+        }
+        var o = other.item(0);
+        return o !== null && o.equals(this.getFirst());
+    }
+    return false;
+}
+Singleton.$$.prototype.getKeys = function() { return TypeCategory(this, {t:Integer}); }
+
 //#include maps.js
 
 function Number$(wat) {
