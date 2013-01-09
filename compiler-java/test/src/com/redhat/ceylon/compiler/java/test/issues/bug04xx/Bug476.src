@@ -339,22 +339,22 @@ public abstract class Bug476<T> implements .ceylon.language.List<T> {
     
     @.java.lang.Override
     public final .ceylon.language.Sequential<? extends T> span(final .ceylon.language.Integer from, final .ceylon.language.Integer to) {
-        return .ceylon.language.nothing_.getNothing$();
+        return (.ceylon.language.Sequential).ceylon.language.nothing_.getNothing$();
     }
     
     @.java.lang.Override
     public final .ceylon.language.Sequential<? extends T> spanFrom(final .ceylon.language.Integer from) {
-        return .ceylon.language.nothing_.getNothing$();
+        return (.ceylon.language.Sequential).ceylon.language.nothing_.getNothing$();
     }
     
     @.java.lang.Override
     public final .ceylon.language.Sequential<? extends T> spanTo(final .ceylon.language.Integer to) {
-        return .ceylon.language.nothing_.getNothing$();
+        return (.ceylon.language.Sequential).ceylon.language.nothing_.getNothing$();
     }
     
     @.java.lang.Override
     public final .ceylon.language.Sequential<? extends T> segment(final .ceylon.language.Integer from, final long length) {
-        return .ceylon.language.nothing_.getNothing$();
+        return (.ceylon.language.Sequential).ceylon.language.nothing_.getNothing$();
     }
     private final .java.lang.String string;
     

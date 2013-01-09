@@ -5,13 +5,13 @@ class Bug283 {
     Bug283() {
         this.oi = .ceylon.language.Integer.instance(0L);
     }
-    private .ceylon.language.Ordinal<.ceylon.language.Integer> oi;
+    private .ceylon.language.Ordinal<? extends .ceylon.language.Integer> oi;
     
-    private final .ceylon.language.Ordinal<.ceylon.language.Integer> getOi() {
+    private final .ceylon.language.Ordinal<? extends .ceylon.language.Integer> getOi() {
         return oi;
     }
     
-    private final void setOi(final .ceylon.language.Ordinal<.ceylon.language.Integer> oi) {
+    private final void setOi(final .ceylon.language.Ordinal<? extends .ceylon.language.Integer> oi) {
         this.oi = oi;
     }
     
@@ -87,7 +87,7 @@ class Bug283 {
     }
     
     private final void m2() {
-        .ceylon.language.Ordinal<.ceylon.language.Integer> oi2 = .ceylon.language.Integer.instance(0L);
+        .ceylon.language.Ordinal<? extends .ceylon.language.Integer> oi2 = .ceylon.language.Integer.instance(0L);
         (
             let
             {
@@ -122,8 +122,8 @@ class Bug283 {
         );
     }
     
-    private final <T extends .ceylon.language.Ordinal<T>>void m3(final T t0) {
-        .ceylon.language.Ordinal<T> t = t0;
+    private final <T extends .ceylon.language.Ordinal<? extends T>>void m3(final T t0) {
+        .ceylon.language.Ordinal<? extends T> t = t0;
         (
             let
             {

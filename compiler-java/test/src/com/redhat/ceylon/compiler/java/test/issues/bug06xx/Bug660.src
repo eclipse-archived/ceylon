@@ -6,7 +6,7 @@ public final class bug660_ {
     }
     
     public static void bug660() {
-        .ceylon.language.print_.print(new .ceylon.language.Tuple(null, .ceylon.language.empty_.getEmpty$()));
+        .ceylon.language.print_.print(new .ceylon.language.Tuple<.ceylon.language.null_, .ceylon.language.null_, .ceylon.language.Empty>(null, .ceylon.language.empty_.getEmpty$()));
     }
     
     public static void main(.java.lang.String[] args) {
