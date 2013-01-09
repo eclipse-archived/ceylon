@@ -18,7 +18,7 @@ class ClassDefaultMemberClassSpecifier {
     }
     
     private final .com.redhat.ceylon.compiler.java.test.structure.mcr.ClassDefaultMemberClassSpecifier.Member s() {
-        return ClassDefaultMemberClassSpecifier.this.Member$new();
+        return this.Member$new();
     }
     
     private final .com.redhat.ceylon.compiler.java.test.structure.mcr.ClassDefaultMemberClassSpecifier.Member s2() {
