@@ -19,30 +19,30 @@
  */
 @nomodel
 void callableWithDefaulted() {
-    Callable<Anything, [Integer, String=, Integer...]> defaultedVariadic = function (Integer a, String b = "b", Integer... args) a;
+    Callable<Anything, [Integer, String=, Integer...]> defaultedVariadic = function (Integer a, String b = "b", Integer... args) => a;
     defaultedVariadic(1);
     defaultedVariadic(1, "a");
     defaultedVariadic(1, "a", 1);
     defaultedVariadic(1, "a", 1, 2);
     defaultedVariadic(1, "a", {}...);
     
-    Callable<Anything, [Integer, String]> notDefaulted = function (Integer goto, String b) goto;
+    Callable<Anything, [Integer, String]> notDefaulted = function (Integer goto, String b) => goto;
     notDefaulted(1, "a");
 
-    Callable<Anything, [Integer=, String=]> foo = function (Integer goto = 2, String b = "foo" + goto.string) goto;
+    Callable<Anything, [Integer=, String=]> foo = function (Integer goto = 2, String b = "foo" + goto.string) => goto;
     foo();
     foo(1);
     foo(1, "a");
 
     Callable<Anything, [Integer=, String=, Integer=, String=, Integer=, String=]> bar = 
-        function (Integer goto = 2, String b = "foo", Integer c = 2, String d = "foo", Integer e = 2, String f = "foo" + goto.string) goto;
+        function (Integer goto = 2, String b = "foo", Integer c = 2, String d = "foo", Integer e = 2, String f = "foo" + goto.string) => goto;
     bar();
     bar(1);
     bar(1, "a", 2, "b", 3, "c");
     
-    Callable<Anything, [Integer, Integer=]> oneOrTwo = function (Integer a, Integer b = 2) a;
+    Callable<Anything, [Integer, Integer=]> oneOrTwo = function (Integer a, Integer b = 2) => a;
     Callable<Anything, [Integer]> one = oneOrTwo;
-    Callable<Anything, [Integer...]> oneOrPlenty = function (Integer... a) a;
+    Callable<Anything, [Integer...]> oneOrPlenty = function (Integer... a) => a;
     Callable<Anything, [Integer]> oneAgain = oneOrPlenty;
 }
 
@@ -60,6 +60,6 @@ class CallableWithDefaulted(){
             }
         };
     }
-    void methodWithDefaultCallableParam2(Callable<Integer,[]> bar = () 2){
+    void methodWithDefaultCallableParam2(Callable<Integer,[]> bar = () => 2){
     }
 }
