@@ -137,8 +137,8 @@ public class ClassTransformer extends AbstractTransformer {
                 .klass(this, javaClassName, ceylonClassName)
                 .forDefinition(def);
 
-        // Very special case for the remote possibility that we're compiling Void
-        if ("ceylon.language::Void".equals(model.getQualifiedNameString())) {
+        // Very special case for Anything
+        if ("ceylon.language::Anything".equals(model.getQualifiedNameString())) {
             classBuilder.extending(null);
         }
         
