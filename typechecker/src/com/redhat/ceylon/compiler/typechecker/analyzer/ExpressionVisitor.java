@@ -644,8 +644,10 @@ public class ExpressionVisitor extends Visitor {
     
     @Override public void visit(Tree.SpecifierStatement that) {
         super.visit(that);
+        boolean hasParams = false;
         Tree.Term me = that.getBaseMemberExpression();
         while (me instanceof Tree.ParameterizedExpression) {
+        	hasParams = true;
             me = ((Tree.ParameterizedExpression) me).getPrimary();
         }
         Tree.SpecifierExpression sie = that.getSpecifierExpression();
@@ -679,9 +681,10 @@ public class ExpressionVisitor extends Visitor {
                                 d.getName(unit), 803);
                     }
                 }
-                if (d instanceof Method && ((Method) d).isDeclaredVoid()  && 
+                if (hasParams && d instanceof Method && 
+                		((Method) d).isDeclaredVoid() && 
         				!isVoidMethodReference(sie.getExpression())) {
-                	that.addError("cannot specify void method: " + d.getName(unit));
+                	that.addError("method is declared void so specified expression may not evaluate to a value: " + d.getName(unit));
                 }
                 
                 ProducedType t = that.getBaseMemberExpression().getTypeModel();

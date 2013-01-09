@@ -89,4 +89,14 @@ void splitFunction() {
     higher(()=>null,void ()=>print("hello"));
     higher(void ()=>print("hello"),void ()=>print("hello"));
     @error higher(()=>null,void ()=>null);
+
+    void fun1(String s);
+    fun1(String s) => print(s);
+    void fun2(String s);
+    @error fun2(String s) => s;
+    String fun3(String s);
+    fun3(String s) => s;
+    void fun4(String s);
+    fun4 = print;    
+
 }
