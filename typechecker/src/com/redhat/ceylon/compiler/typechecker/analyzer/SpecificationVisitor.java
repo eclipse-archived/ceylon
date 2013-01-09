@@ -189,8 +189,8 @@ public class SpecificationVisitor extends Visitor {
                                 member.getName());                    
                     }
                 }
-                if ( !mte.getAssigned() && member.isDefault() && 
-                        !isForwardReferenceable() ) {
+                if (!mte.getAssigned() && member.isDefault() && 
+                        !isForwardReferenceable()) {
                     that.addError("default member may not be used in initializer: " + 
                             member.getName());                    
                 }

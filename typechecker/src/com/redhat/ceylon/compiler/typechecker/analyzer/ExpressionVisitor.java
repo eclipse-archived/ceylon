@@ -477,20 +477,26 @@ public class ExpressionVisitor extends Visitor {
     private void checkReferenceIsNonVariable(Tree.BaseMemberExpression ref) {
         Declaration d = ref.getDeclaration();
         if (d!=null) {
-            if (d instanceof Getter) {
-                ref.addError("referenced value is a getter: " + d.getName(unit), 3100);
+        	String help=" (assign to a new local value to narrow type)";
+            if (!(d instanceof Value || d instanceof Getter || d instanceof ValueParameter)) {
+                ref.addError("referenced declaration is not a value: " + 
+                		d.getName(unit), 3100);
             }
-            if ( ((TypedDeclaration) d).isVariable() ) {
-                ref.addError("referenced value is variable: " + d.getName(unit), 3100);
+            else if (isNonConstant(d)) {
+                ref.addError("referenced value is non-constant: " + 
+                		d.getName(unit) + help, 3100);
             }
-            if ( (d instanceof MethodOrValue) && ((MethodOrValue) d).isTransient() ) {
-                ref.addError("referenced value is transient: " + d.getName(unit), 3100);
-            }
-            if ( d.isDefault() ) {
-                ref.addError("referenced value is default and may be refined: " + d.getName(unit), 3100);
+            else if (d.isDefault() || d.isFormal()) {
+                ref.addError("referenced value may be refined by a non-constant value: " + 
+                		d.getName(unit) + help, 3100);
             }
         }
     }
+
+	private boolean isNonConstant(Declaration d) {
+		return d instanceof Getter || d instanceof Value && 
+				(((Value) d).isVariable() || ((Value) d).isTransient());
+	}
     
     private void checkEmpty(ProducedType t, Tree.Term term, Node n) {
         /*if (t==null) {
