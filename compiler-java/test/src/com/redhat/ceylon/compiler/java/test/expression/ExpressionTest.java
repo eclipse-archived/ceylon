@@ -298,6 +298,26 @@ public class ExpressionTest extends CompilerTest {
     public void testQualifiedInstantiationInInterface(){
         compareWithJavaSource("instantiation/QualifiedInstantiationInInterface");
     }
+    @Test
+    public void testAvoidBackwardBranchWithNew(){
+        compileAndRun(
+                "com.redhat.ceylon.compiler.java.test.expression.instantiation.avoidBackwardBranchWithNew_run", 
+                "instantiation/AvoidBackwardBranchWithNew.ceylon");
+    }
+    @Test
+    public void testAvoidBackwardBranchWithSuper(){
+        compileAndRun(
+                "com.redhat.ceylon.compiler.java.test.expression.instantiation.avoidBackwardBranchWithSuper_run", 
+                "instantiation/AvoidBackwardBranchWithSuper.ceylon");
+    }
+    @Test
+    public void testAvoidBackwardBranchWithSuperInner(){
+        compile("instantiation/AvoidBackwardBranchWithSuper.ceylon");
+        // We're testing that we get a vaguely helpful error message
+        assertErrors("instantiation/AvoidBackwardBranchWithSuperInner",
+                new CompilerError(2, "Use of expressions which imply a loop (or other backward branch) in the invocation of a super class initializer are currently only supported on top level classes"));
+    }
+    
     // Operators
     
     @Test

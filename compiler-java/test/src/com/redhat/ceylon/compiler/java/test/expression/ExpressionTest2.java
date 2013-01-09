@@ -501,4 +501,11 @@ public class ExpressionTest2 extends CompilerTest {
         compareWithJavaSource("invoke/MultipleParameterLists");
         compareWithJavaSource("invoke/MultipleParameterLists_call");
     }
+    
+    @Test
+    public void testAvoidBackwardBranchWithVarargs(){
+        compileAndRun(
+                "com.redhat.ceylon.compiler.java.test.expression.invoke.avoidBackwardBranchWithVarargs_run", 
+                "invoke/AvoidBackwardBranchWithVarargs.ceylon");
+    }
 }
