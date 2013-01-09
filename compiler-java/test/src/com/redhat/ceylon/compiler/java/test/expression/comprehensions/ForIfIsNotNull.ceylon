@@ -18,7 +18,11 @@
  * MA  02110-1301, USA.
  */
 @nomodel
-void isCond() {
-  Sequence<Integer|String> seq = [ 1, "2", 3, "4", 5 ];
-  print({ for (x in seq) if (is Integer x) x*2 });
+class ForIfIsNotNull() {
+    shared void m(Object?[] xs) {
+        print({ for (x in xs) if (!is Null x) x.string });
+    }
+    shared void mvar(Object?[] ys) {
+        print({ for (y in ys) if (!is Null x=y) x.string });
+    }
 }

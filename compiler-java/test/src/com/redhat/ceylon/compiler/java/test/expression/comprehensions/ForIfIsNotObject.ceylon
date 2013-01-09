@@ -19,7 +19,7 @@
  */
 @nomodel
 class ForIfIsNotObject() {
-    Object nowt(Nothing n) {
+    Object nowt(Null n) {
         throw;
     }
     shared void m(Object?[] xs) {

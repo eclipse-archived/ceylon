@@ -1,0 +1,50 @@
+package com.redhat.ceylon.compiler.java.test.expression.comprehensions;
+
+class ForIfIsNull {
+    
+    ForIfIsNull() {
+    }
+    
+    public final void m(final .ceylon.language.Sequential<? extends .java.lang.Object> xs) {
+        .ceylon.language.print_.print(new .com.redhat.ceylon.compiler.java.language.AbstractIterable<.ceylon.language.Boolean>(){
+            
+            public final .ceylon.language.Iterator<.ceylon.language.Boolean> getIterator() {
+                return new .ceylon.language.Iterator<.ceylon.language.Boolean>(){
+                    private final .ceylon.language.Iterator<? extends .java.lang.Object> iter$0 = xs.getIterator();
+                    private .java.lang.Object x;
+                    private boolean x$exhausted;
+                    
+                    private final boolean x() {
+                        final .java.lang.Object $ceylontmpitem0 = iter$0.next();
+                        x$exhausted = $ceylontmpitem0 == .ceylon.language.finished_.getFinished$();
+                        if (x$exhausted) {
+                            return false;
+                        } else {
+                            x = (.java.lang.Object)$ceylontmpitem0;
+                            return true;
+                        }
+                    }
+                    
+                    private final boolean next1() {
+                        while (true) {
+                            if (!this.x()) break;
+                            if (x == null) {
+                                break;
+                            }
+                        }
+                        return !x$exhausted;
+                    }
+                    
+                    public final .java.lang.Object next() {
+                        return this.next1() ? .ceylon.language.Boolean.instance(true) : .ceylon.language.finished_.getFinished$();
+                    }
+                };
+            }
+        });
+    }
+    
+    public static void main(.java.lang.String[] args) {
+        .ceylon.language.process_.getProcess$().setupArguments(args);
+        new .com.redhat.ceylon.compiler.java.test.expression.comprehensions.ForIfIsNull();
+    }
+}

@@ -18,7 +18,27 @@
  * MA  02110-1301, USA.
  */
 @nomodel
-void isCond() {
-  Sequence<Integer|String> seq = [ 1, "2", 3, "4", 5 ];
-  print({ for (x in seq) if (is Integer x) x*2 });
+class ForIfIsNull() {
+    Integer owt(Integer|Null n) {
+        return 0;
+    }
+    Integer nowt(Null n) {
+        return 0;
+    }
+
+    void m1(Sequence<Integer|Null> xs) {
+        print({ for (x in xs) if (is Integer x) x });
+    }
+        
+    void m2(Sequence<Integer|Null> xs) {
+        print({ for (x in xs) if (is Integer y=x) y });
+    }
+        
+    void m3(Sequence<Integer|Null> xs) {
+        print({ for (x in xs) if (is Null x) nowt(x) });
+    }
+
+    void  m4(Sequence<Integer|Null> xs) {
+        print({ for (x in xs) if (is Null y=x) nowt(y) });
+    }
 }

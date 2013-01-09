@@ -22,11 +22,11 @@ class ForIfIsWithMethod() {
     Foo? give() {
         return FooSub();
     }
-    Object nowt(Nothing n) {
+    Object nowt(Null n) {
         throw;
     }
     shared void m(ForIfIsWithMethod[] xs) {
         print({ for (x in xs) if (is FooSub y = x.give()) y.foo() });
-        print({ for (x in xs) if (is Nothing y = x.give()) nowt(y) });
+        print({ for (x in xs) if (is Null y = x.give()) nowt(y) });
     }
 }

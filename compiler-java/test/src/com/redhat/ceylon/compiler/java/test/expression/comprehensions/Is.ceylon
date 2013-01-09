@@ -53,5 +53,5 @@ void isCond(Common?[] seq) {
     variable Common[] commons = [ for (x in seq) if (is Foo|Bar x) x.common() ];
     commons = [ for (x in seq) if (is Foo&BarInterface x) x.foo().common() ];
     variable BarInterface[] barIs = [ for (x in seq) if (is Foo&BarInterface x) x.bar() ];
-    Nothing[] nowt = [ for (x in seq) if (is Nothing x) x ];
+    Null[] nowt = [ for (x in seq) if (is Null x) x ];
 }
