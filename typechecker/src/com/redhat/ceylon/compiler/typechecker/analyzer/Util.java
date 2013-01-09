@@ -11,6 +11,7 @@ import com.redhat.ceylon.compiler.typechecker.model.Declaration;
 import com.redhat.ceylon.compiler.typechecker.model.ProducedType;
 import com.redhat.ceylon.compiler.typechecker.model.Scope;
 import com.redhat.ceylon.compiler.typechecker.model.TypeDeclaration;
+import com.redhat.ceylon.compiler.typechecker.model.TypeParameter;
 import com.redhat.ceylon.compiler.typechecker.model.TypedDeclaration;
 import com.redhat.ceylon.compiler.typechecker.model.Unit;
 import com.redhat.ceylon.compiler.typechecker.tree.Message;
@@ -78,10 +79,11 @@ class Util {
                 type.getProducedTypeName(that.getUnit()));
     }
 
-    static List<ProducedType> getTypeArguments(Tree.TypeArguments tal) {
+    static List<ProducedType> getTypeArguments(Tree.TypeArguments tal,
+    		List<TypeParameter> typeParameters) {
         List<ProducedType> typeArguments = new ArrayList<ProducedType>();
         if (tal instanceof Tree.TypeArgumentList) {
-            for (Tree.Type ta: ( (Tree.TypeArgumentList) tal ).getTypes()) {
+            for (Tree.Type ta: ((Tree.TypeArgumentList) tal).getTypes()) {
                 ProducedType t = ta.getTypeModel();
                 if (t==null) {
                     ta.addError("could not resolve type argument");
@@ -90,6 +92,18 @@ class Util {
                 else {
                     typeArguments.add(t);
                 }
+            }
+            for (int i=typeArguments.size(); 
+            		i<typeParameters.size(); i++) {
+            	ProducedType dta = typeParameters.get(i).getDefaultTypeArgument();
+            	if (dta==null) {
+            		break;
+            	}
+            	else {
+            		//TODO: substitute previous args 
+            		//      into the default arg
+            		typeArguments.add(dta);
+            	}
             }
         }
         return typeArguments;

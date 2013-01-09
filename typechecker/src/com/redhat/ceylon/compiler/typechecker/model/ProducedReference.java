@@ -34,6 +34,16 @@ public abstract class ProducedReference {
     }
 
     public Map<TypeParameter, ProducedType> getTypeArguments() {
+    	if (declaration instanceof Generic) {
+    		for (TypeParameter pt: ((Generic)declaration).getTypeParameters()) {
+    			if (!typeArguments.containsKey(pt)) {
+    				ProducedType dta = pt.getDefaultTypeArgument();
+    				if (dta!=null) {
+    					typeArguments.put(pt, dta);
+    				}
+    			}
+    		}
+    	}
         return typeArguments;
     }
 

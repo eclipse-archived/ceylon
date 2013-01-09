@@ -319,6 +319,7 @@ public class DeclarationVisitor extends Visitor {
     public void visit(Tree.TypeParameterDeclaration that) {
         TypeParameter p = new TypeParameter();
         p.setDeclaration(declaration);
+        p.setDefaulted(that.getTypeSpecifier()!=null);
         if (that.getTypeVariance()!=null) {
             String v = that.getTypeVariance().getText();
             p.setCovariant("out".equals(v));
