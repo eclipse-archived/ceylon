@@ -33,8 +33,8 @@ interface ParameterHiding {
     }
     
     void advancedHiding() {
-        @type:"String" value s = AdvancedHiding(1.0, 2.0).x;
-        @type:"Float" value f = AdvancedHiding(1.0, 2.0).y;
+        @error value s = AdvancedHiding(1.0, 2.0).x;
+        @error value f = AdvancedHiding(1.0, 2.0).y;
     }
     
 }

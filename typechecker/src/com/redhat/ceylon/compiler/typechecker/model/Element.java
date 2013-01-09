@@ -63,20 +63,19 @@ public abstract class Element {
     }
 
     public Declaration getDirectMemberOrParameter(String name, List<ProducedType> signature, boolean ellipsis) {
-        return lookupMember(members, name, signature, ellipsis, true);
+        return lookupMember(members, name, signature, ellipsis);
     }
 
     /**
      * Search only directly inside the given scope,
-     * without considering containing scopes or
-     * imports, and ignoring parameters.
+     * without considering containing scopes.
      */
     public Declaration getMember(String name, List<ProducedType> signature, boolean ellipsis) {
         return getDirectMember(name, signature, ellipsis);
     }
 
     public Declaration getDirectMember(String name, List<ProducedType> signature, boolean ellipsis) {
-        return lookupMember(members, name, signature, ellipsis, false);
+        return lookupMember(members, name, signature, ellipsis);
     }
 
     public ProducedType getDeclaringType(Declaration d) {
