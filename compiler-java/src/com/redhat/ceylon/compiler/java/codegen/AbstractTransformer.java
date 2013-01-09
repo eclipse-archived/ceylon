@@ -754,7 +754,8 @@ public abstract class AbstractTransformer implements Transformation {
         if (decl == typeFact.getObjectDeclaration()
                 || decl == typeFact.getIdentifiableDeclaration()
                 || decl == typeFact.getBasicDeclaration()
-                || decl == typeFact.getNothingDeclaration()
+                || decl == typeFact.getNullDeclaration()
+                || decl == typeFact.getNullValueDeclaration().getTypeDeclaration()
                 || decl == typeFact.getAnythingDeclaration()
                 || decl instanceof NothingType) {
             return true;
@@ -900,8 +901,8 @@ public abstract class AbstractTransformer implements Transformation {
         // ERASURE
         if (willEraseToObject(type)) {
             // For an erased type:
-            // - Any of the Ceylon types Void, Object, Nothing,
-            //   IdentifiableObject, and Bottom result in the Java type Object
+            // - Any of the Ceylon types Anything, Object, Null,
+            //   Basic, and Nothing result in the Java type Object
             // For any other union type U|V (U nor V is Optional):
             // - The Ceylon type U|V results in the Java type Object
             if ((flags & JT_SATISFIES) != 0) {

@@ -102,8 +102,8 @@ public class ExpressionTest3 extends CompilerTest {
     }
     
     @Test
-    public void testComprehensionForIfIsNotNothing(){
-        compareWithJavaSource("comprehensions/ForIfIsNotNothing");
+    public void testComprehensionForIfIsNotNull(){
+        compareWithJavaSource("comprehensions/ForIfIsNotNull");
     }
     
     @Test
@@ -135,13 +135,13 @@ public class ExpressionTest3 extends CompilerTest {
     }
     
     @Test
-    public void testComprehensionForIfIsNothing2(){
-        compareWithJavaSource("comprehensions/ForIfIsNothing2");
+    public void testComprehensionForIfIsNull2(){
+        compareWithJavaSource("comprehensions/ForIfIsNull2");
     }
     
     @Test
-    public void testComprehensionForIfIsNothing(){
-        compareWithJavaSource("comprehensions/ForIfIsNothing");
+    public void testComprehensionForIfIsNull(){
+        compareWithJavaSource("comprehensions/ForIfIsNull");
     }
 
     @Test
