@@ -18,19 +18,16 @@
  * MA  02110-1301, USA.
  */
 @nomodel
-class QuotedLiteralErrors(){
-    @error
-    shared void m() {
-        Integer ex1 = hex('-CAFEBABE');
-        Integer ex2 = hex('+2');
-        Integer ex3 = hex('-2');
-        Integer ex4 = hex('salut');
-        Integer ex5 = hex('CAFEBABECAFEBABE1');
+class NumericLiteralParserErrors(){
+    shared void hexBin() {
+        Integer ex1 = #-CAFEBABE;
+        Integer ex2 = #+2;
+        Integer ex3 = #-2;
+        Integer ex4 = #salut;
 
-        Integer eb1 = bin('-1101');
-        Integer eb2 = bin('+1101');
-        Integer eb3 = bin('123');
-        Integer eb4 = bin('salut');
-        Integer eb5 = bin('11011101110111011101110111011101110111011101110111011101110111011');
+        Integer eb1 = $-1101;
+        Integer eb2 = $+1101;
+        Integer eb3 = $123;
+        Integer eb4 = $salut;
     }
 }

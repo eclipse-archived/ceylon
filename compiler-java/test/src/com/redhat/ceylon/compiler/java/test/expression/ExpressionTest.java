@@ -158,18 +158,6 @@ public class ExpressionTest extends CompilerTest {
     @Test
     public void testLitQuotedLiteral(){
         compareWithJavaSource("literal/QuotedLiteral");
-        assertErrors("literal/QuotedLiteralErrors",
-                new CompilerError(24, "Invalid hexadecimal literal (must be unsigned and fit in 64 bits)"),
-                new CompilerError(25, "Invalid hexadecimal literal (must be unsigned and fit in 64 bits)"),
-                new CompilerError(26, "Invalid hexadecimal literal (must be unsigned and fit in 64 bits)"),
-                new CompilerError(27, "Invalid hexadecimal literal (must be unsigned and fit in 64 bits)"),
-                new CompilerError(28, "Invalid hexadecimal literal (must be unsigned and fit in 64 bits)"),
-                new CompilerError(30, "Invalid binary literal (must be unsigned and fit in 64 bits)"),
-                new CompilerError(31, "Invalid binary literal (must be unsigned and fit in 64 bits)"),
-                new CompilerError(32, "Invalid binary literal (must be unsigned and fit in 64 bits)"),
-                new CompilerError(33, "Invalid binary literal (must be unsigned and fit in 64 bits)"),
-                new CompilerError(34, "Invalid binary literal (must be unsigned and fit in 64 bits)")
-        );
     }
     @Test
     public void testLitNumericLiteral(){
@@ -180,7 +168,20 @@ public class ExpressionTest extends CompilerTest {
                 new CompilerError(27, "Literal so large it is indistinguishable from infinity"),
                 new CompilerError(28, "Literal so large it is indistinguishable from infinity"),
                 new CompilerError(29, "Literal so small it is indistinguishable from zero"),
-                new CompilerError(30, "Literal so small it is indistinguishable from zero")
+                new CompilerError(30, "Literal so small it is indistinguishable from zero"),
+                new CompilerError(34, "Invalid hexadecimal literal (must be unsigned and fit in 64 bits)"),
+                new CompilerError(36, "Invalid binary literal (must be unsigned and fit in 64 bits)")
+        );
+        assertErrors("literal/NumericLiteralParserErrors",
+                new CompilerError(-1, "Ceylon parser failed"),
+                new CompilerError(23, "incorrect syntax: no viable alternative at character '-'"),
+                new CompilerError(24, "incorrect syntax: no viable alternative at character '+'"),
+                new CompilerError(25, "incorrect syntax: no viable alternative at character '-'"),
+                new CompilerError(26, "incorrect syntax: no viable alternative at character 's'"),
+                new CompilerError(28, "incorrect syntax: mismatched character '-' expecting set null"),
+                new CompilerError(29, "incorrect syntax: mismatched character '+' expecting set null"),
+                new CompilerError(30, "incorrect syntax: no viable alternative at token '23'"),
+                new CompilerError(31, "incorrect syntax: mismatched character 's' expecting set null")
         );
     }
     

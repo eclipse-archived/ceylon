@@ -23,11 +23,5 @@ class QuotedLiteral(){
     shared void m() {
         String s1 = '';
         String s2 = 'This is a test';
-        Integer x1 = hex('CAFEBABE');
-        Integer x2 = hex('cafebabe');
-        Integer x3 = hex('FFFFFFFFFFFFFFFF');
-
-        Integer b1 = bin('1101');
-        Integer b2 = bin('1101110111011101110111011101110111011101110111011101110111011101');
     }
 }

@@ -8,11 +8,6 @@ class QuotedLiteral {
     public final void m() {
         final .java.lang.String s1 = "";
         final .java.lang.String s2 = "This is a test";
-        final long x1 = 3405691582L;
-        final long x2 = 3405691582L;
-        final long x3 = -1L;
-        final long b1 = 13L;
-        final long b2 = -2459565876494606883L;
     }
     
     public static void main(.java.lang.String[] args) {

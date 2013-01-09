@@ -29,4 +29,10 @@ class NumericLiteralErrors(){
         Float f3 = 2.0E-324;
         Float f4 = -2.0E-324;
     }
+
+    shared void hexBin() {
+        Integer ex5 = #CAFEBABECAFEBABE1;
+
+        Integer eb5 = $11011101110111011101110111011101110111011101110111011101110111011;
+    }
 }

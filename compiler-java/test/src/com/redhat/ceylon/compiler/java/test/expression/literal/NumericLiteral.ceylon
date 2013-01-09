@@ -35,4 +35,13 @@ class NumericLiteral(){
         Float f5 = 0.0;
         Float f6 = -0.0;
     }
+    
+    shared void hexBin(){
+        Integer x1 = #CAFEBABE;
+        Integer x2 = #cafebabe;
+        Integer x3 = #FFFFFFFFFFFFFFFF;
+
+        Integer b1 = $1101;
+        Integer b2 = $1101110111011101110111011101110111011101110111011101110111011101;
+    }
 }

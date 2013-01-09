@@ -20,6 +20,14 @@ class NumericLiteral {
         final double f6 = -0.0;
     }
     
+    public final void hexBin() {
+        final long x1 = 3405691582L;
+        final long x2 = 3405691582L;
+        final long x3 = -1L;
+        final long b1 = 13L;
+        final long b2 = -2459565876494606883L;
+    }
+    
     public static void main(.java.lang.String[] args) {
         .ceylon.language.process_.getProcess$().setupArguments(args);
         new .com.redhat.ceylon.compiler.java.test.expression.literal.NumericLiteral();
