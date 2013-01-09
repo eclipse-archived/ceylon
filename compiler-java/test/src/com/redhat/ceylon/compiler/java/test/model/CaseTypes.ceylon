@@ -17,8 +17,9 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
  * MA  02110-1301, USA.
  */
-shared class CaseTypes <T> () of T {
+shared abstract class CaseTypes <T> () of T {
 }
+shared class CaseTypesImpl() extends CaseTypes<CaseTypesImpl>(){}
 
 shared abstract class CaseTypes2() of CaseTypesLeft | CaseTypesRight {}
 shared class CaseTypesLeft() extends CaseTypes2() {}
