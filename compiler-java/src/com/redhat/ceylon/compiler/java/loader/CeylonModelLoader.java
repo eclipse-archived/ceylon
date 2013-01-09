@@ -223,11 +223,13 @@ public class CeylonModelLoader extends AbstractModelLoader {
          * of C) is not found in symtab.classes but in C's ClassSymbol.enclosedElements.
          */
         do{
-            String suffix = "";
-            if (lastPartHasLowerInitial(outerName) && !outerName.endsWith("_")) {
-                suffix = "_";
+            // we must first try with no postfix, because we can have a valid class foo.bar in Java,
+            // when in Ceylon it would be foo.bar_
+            classSymbol = symtab.classes.get(names.fromString(Util.quoteJavaKeywords(outerName)));
+            // try again with a postfix "_"
+            if (classSymbol == null && lastPartHasLowerInitial(outerName) && !outerName.endsWith("_")) {
+                classSymbol = symtab.classes.get(names.fromString(Util.quoteJavaKeywords(outerName+"_")));
             }
-            classSymbol = symtab.classes.get(names.fromString(Util.quoteJavaKeywords(outerName+suffix)));
             if(classSymbol != null){
                 // if we got a source symbol for something non-Java it's a slipery slope
                 if(Util.isLoadedFromSource(classSymbol) && !Util.isJavaSource(classSymbol))
