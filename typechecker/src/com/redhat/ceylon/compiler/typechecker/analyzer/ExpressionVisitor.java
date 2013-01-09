@@ -719,15 +719,19 @@ public class ExpressionVisitor extends Visitor {
 	boolean isVoidMethodReference(Tree.Expression e) {
 		//TODO: correctly handle multiple parameter lists!
 		Term term = e.getTerm();
-		if (term.getTypeModel()==null || 
-				!term.getTypeModel().isExactly(unit.getAnythingDeclaration().getType()))
-			return false;
-		if (!(term instanceof Tree.InvocationExpression)) return false;
-		Tree.InvocationExpression ie = (Tree.InvocationExpression) term;
-		if (!(ie.getPrimary() instanceof Tree.MemberOrTypeExpression)) return false;
-		Tree.MemberOrTypeExpression mte = (Tree.MemberOrTypeExpression) ie.getPrimary();
-		if (!(mte.getDeclaration() instanceof Method)) return false;
-		return ((Method) mte.getDeclaration()).isDeclaredVoid();
+		ProducedType tm = term.getTypeModel();
+		if (tm!=null && tm.isExactly(unit.getAnythingDeclaration().getType())) {
+			if (term instanceof Tree.InvocationExpression) {
+				Tree.InvocationExpression ie = (Tree.InvocationExpression) term;
+				if (ie.getPrimary() instanceof Tree.MemberOrTypeExpression) {
+					Tree.MemberOrTypeExpression mte = (Tree.MemberOrTypeExpression) ie.getPrimary();
+					if (mte.getDeclaration() instanceof Functional) {
+						return ((Functional) mte.getDeclaration()).isDeclaredVoid();
+					}
+				}
+			}
+		}
+		return false;
 	}
 
     private ProducedType eraseDefaultedParameters(ProducedType t) {

@@ -369,3 +369,8 @@ void bug() {
     defaultedVariadic(1, "a", 1, 2); // error
     defaultedVariadic(1, "a", {}...); // error
 }
+
+void parameterToFunction(void parameter(String s)) {
+    void function1(String s) => parameter(s);
+    Anything function2(String s) => parameter(s);
+}
