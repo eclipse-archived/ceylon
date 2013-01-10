@@ -220,19 +220,20 @@ Iterable$proto.group = function(grouping, $$$mptypes) {
     }
     return map;
 }
-
-exports.Iterable=Iterable;
-
-Iterable$proto.chain = function(other) {
-    return ChainedIterable(this, other);
+Iterable$proto.chain = function(other, $$$mptypes) {
+    return ChainedIterable(this, other, [this.$$targs$$[0], $$$mptypes[0]]);
+}
+Iterable$proto.getSize = function() {
+    return this.count(function() { return true; });
 }
 exports.Iterable=Iterable;
 
-function ChainedIterable(first, second, chained) {
+function ChainedIterable(first, second, $$targs$$, chained) {
     if (chained===undefined) {chained = new ChainedIterable.$$;}
     Basic(chained);
     chained.first = first;
     chained.second = second;
+    chained.$$targs$$=$$targs$$;
     return chained;
 }
 initTypeProto(ChainedIterable, "ceylon.language::ChainedIterable",
@@ -244,6 +245,7 @@ ChainedIterable$proto.getIterator = function() {
 
 function toTuple(iterable) {
   var seq = iterable.getSequence();
-  return Tuple(seq.getFirst(), seq.getRest().getSequence(), seq.$$targs$$);
+  return Tuple(seq.getFirst(), seq.getRest().getSequence(),
+    [seq.$$targs$$[0], seq.$$targs$$[0], {t:Sequential, a:seq.$$targs$$}]);
 }
 exports.toTuple=toTuple;
