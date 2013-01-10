@@ -842,6 +842,7 @@ class NamedArgumentInvocation extends Invocation {
         if (getPrimaryDeclaration() == null) {
             return;
         }
+        boolean prev = gen.expressionGen().withinInvocation(false);
         java.util.List<Tree.NamedArgument> namedArguments = namedArgumentList.getNamedArguments();
         java.util.List<ParameterList> paramLists = ((Functional)getPrimaryDeclaration()).getParameterLists();
         java.util.List<Parameter> declaredParams = paramLists.get(0).getParameters();
@@ -853,6 +854,7 @@ class NamedArgumentInvocation extends Invocation {
                 && !Strategy.defaultParameterMethodOnOuter(getPrimaryDeclaration())) {
             vars.prepend(makeThis());
         }
+        gen.expressionGen().withinInvocation(prev);
     }
     
     private JCExpression makeDefaultedArgumentMethodCall(Parameter param) {
