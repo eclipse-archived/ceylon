@@ -3501,12 +3501,8 @@ public class GenerateJsVisitor extends Visitor
             }
         } else {
             //This is an eager comprehension
-            out(clAlias, "toTuple(");
             that.getComprehension().visit(this);
-            out(")");
-            out("/* tuple type ");
-            TypeUtils.printTypeArguments(that, that.getTypeModel().getTypeArgumentList(), this);
-            out("*/");
+            out(".getSequence()");
         }
     }
 
