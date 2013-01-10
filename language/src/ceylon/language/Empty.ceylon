@@ -14,14 +14,14 @@ shared interface Empty
     shared actual Null item(Integer index) => null;
     
     doc "Returns an `Empty` for any given segment."
-    shared actual Empty segment(Integer from, Integer length) => this;
+    shared actual [] segment(Integer from, Integer length) => this;
     
     doc "Returns an `Empty` for any given span."
-    shared actual Empty span(Integer from, Integer to) => this;
+    shared actual [] span(Integer from, Integer to) => this;
     doc "Returns an `Empty` for any given span."
-    shared actual Empty spanTo(Integer to) => this;
+    shared actual [] spanTo(Integer to) => this;
     doc "Returns an `Empty` for any given span."
-    shared actual Empty spanFrom(Integer from) => this;
+    shared actual [] spanFrom(Integer from) => this;
     
     doc "Returns `true`."
     shared actual Boolean empty => true;
@@ -30,10 +30,10 @@ shared interface Empty
     shared actual Integer size => 0; 
     
     doc "Returns an `Empty`."
-    shared actual Empty reversed => this;
+    shared actual [] reversed => this;
     
     doc "Returns an `Empty`."
-    shared actual Empty sequence => this;
+    shared actual [] sequence => this;
     
     doc "Returns a string description of the empty sequence: 
          `{}`."
@@ -48,16 +48,16 @@ shared interface Empty
     doc "Returns `null`."
     shared actual Null last => null; 
     
-    //shared actual Empty rest { return this; }
+    //shared actual [] rest { return this; }
     
     doc "Returns an `Empty`."
-    shared actual Empty clone => this;
+    shared actual [] clone => this;
     
     doc "Returns an `Empty`."
-    shared actual Empty coalesced => this; 
+    shared actual [] coalesced => this; 
     
     doc "Returns an `Empty`."
-    shared actual Empty indexed => this;
+    shared actual [] indexed => this;
     
     doc "Returns `other`."
     shared actual Iterable<Other> chain<Other>(Iterable<Other> other) => other;
@@ -71,10 +71,10 @@ shared interface Empty
     
     shared actual Boolean defines(Integer index) => false;
     
-    shared actual Empty map<Result>(
+    shared actual [] map<Result>(
             Result collecting(Nothing element)) => this;
     
-    shared actual Empty filter
+    shared actual [] filter
             (Boolean selecting(Nothing element)) => this;
     
     shared actual Result fold<Result>(Result initial,
@@ -84,13 +84,13 @@ shared interface Empty
     shared actual Null find
             (Boolean selecting(Nothing element)) => null;
     
-    shared actual Empty sort
+    shared actual [] sort
             (Comparison? comparing(Nothing a, Nothing b)) => this;
     
-    shared actual Empty collect<Result>
+    shared actual [] collect<Result>
             (Result collecting(Nothing element)) => this;
     
-    shared actual Empty select
+    shared actual [] select
             (Boolean selecting(Nothing element)) => this;
     
     shared actual Boolean any
@@ -99,11 +99,11 @@ shared interface Empty
     shared actual Boolean every
             (Boolean selecting(Nothing element)) => false;
     
-    shared actual Empty skipping(Integer skip) => this;
+    shared actual [] skipping(Integer skip) => this;
     
-    shared actual Empty taking(Integer take) => this;
+    shared actual [] taking(Integer take) => this;
     
-    shared actual Empty by(Integer step) => this;
+    shared actual [] by(Integer step) => this;
     
     shared actual Sequence<Element> withLeading<Element>
             (Element element) => [ element ];
@@ -115,7 +115,7 @@ shared interface Empty
 doc "The value representing a sequence with no elements. The 
      instance of `{}`"
 //by "Tako Schotanus"
-shared object empty extends Object() satisfies Empty {}
+shared object empty extends Object() satisfies [] {}
 
 doc "An iterator that returns no elements."
 shared object emptyIterator satisfies Iterator<Nothing> {
