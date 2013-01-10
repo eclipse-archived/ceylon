@@ -1621,6 +1621,9 @@ public class ProducedType extends ProducedReference {
     
     public void setUnderlyingType(String underlyingType) {
         this.underlyingType = underlyingType;
+        // if we have a resolvedAliases cache, update it too
+        if(resolvedAliases != null && resolvedAliases != this)
+            resolvedAliases.setUnderlyingType(underlyingType);
     }
     
     public String getUnderlyingType() {
@@ -1680,6 +1683,9 @@ public class ProducedType extends ProducedReference {
 
     public void setRaw(boolean isRaw) {
         this.isRaw = isRaw;
+        // if we have a resolvedAliases cache, update it too
+        if(resolvedAliases != null && resolvedAliases != this)
+            resolvedAliases.setRaw(isRaw);
     }
     
     public ProducedType resolveAliases() {
@@ -1689,6 +1695,11 @@ public class ProducedType extends ProducedReference {
             resolvedAliases = curriedResolveAliases();
             // mark it as resolved so it doesn't get resolved again
             resolvedAliases.resolvedAliases = resolvedAliases;
+            if(resolvedAliases != this){
+                // inherit whatever underlying type we had
+                resolvedAliases.underlyingType = underlyingType;
+                resolvedAliases.isRaw = isRaw;
+            }
         }
         return resolvedAliases;
     	//return curriedResolveAliases();
