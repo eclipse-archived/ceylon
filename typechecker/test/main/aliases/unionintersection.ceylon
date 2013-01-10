@@ -1,13 +1,15 @@
+interface Container<out T> { shared Boolean empty=>false; }
 interface Cntnr => Container<Anything>; 
 
 alias Number => Integer|Float;
-alias ListLike<T> given T satisfies Object => List<T>|Map<Integer,T>;
+alias ListLike<T> given T satisfies Object => <List<T>|Map<Integer,T>>&Container<T>;
 alias C => Container<Anything>&Category;
 @error alias E => Cntnr&Category;
 
 Number n = 1;
 Number x = 2.0;
-ListLike<Float> list = [ 1.0, 2.0 ];
+[Float, Float]&Container<Float> pair = nothing;
+ListLike<Float> list = pair;
 C c = list;
 
 shared alias Strings => List<String>;
