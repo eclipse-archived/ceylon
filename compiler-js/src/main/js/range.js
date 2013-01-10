@@ -1,7 +1,8 @@
-function Range(first, last) {
-    var that = new Range.$$;
+function Range(first, last, $$targs$$, that) {
+    if (that === undefined) that = new Range.$$;
     that.first = first;
     that.last = last;
+    that.$$targs$$=$$targs$$;
     if (isOfType(first, $init$Enumerable()) && isOfType(last, $init$Enumerable())) {
         that.size=last.getIntegerValue().minus(first.getIntegerValue()).getMagnitude().plus(1);
     }
@@ -57,7 +58,7 @@ Range$proto.contains = function(x) {
 Range$proto.getRest = function() {
     if (this.first.equals(this.last)) return empty;
     var n = this.next(this.first);
-    return Range(n, this.last);
+    return Range(n, this.last, this.$$targs$$);
 }
 Range$proto.segment = function(from, len) {
     //only positive length for now
@@ -68,7 +69,7 @@ Range$proto.segment = function(from, len) {
     var y = x;
     for (var i=1; i < len; i++) { y = this.next(y); }
     if (!this.includes(y)) { y = this.last; }
-    return Range(x, y);
+    return Range(x, y, this.$$targs);
 }
 Range$proto.span = function(from, to) {
     var li = this.getLastIndex();
@@ -94,7 +95,7 @@ Range$proto.span = function(from, to) {
     for (var i=0; i < from; i++) { x = this.next(x); }
     var y = this.first;
     for (var i=0; i < to; i++) { y = this.next(y); }
-    return Range(x, y);
+    return Range(x, y, this.$$targs);
 }
 Range$proto.spanTo = function(to) {
     return to<0 ? empty : this.span(0, to);
@@ -125,14 +126,14 @@ Range$proto.equals = function(other) {
     return this.first.equals(other.getFirst()) && this.last.equals(other.getLast());
 }
 Range$proto.getIterator = function() { return RangeIterator(this); }
-Range$proto.getReversed = function() { return Range(this.last, this.first); }
+Range$proto.getReversed = function() { return Range(this.last, this.first, this.$$targs$$); }
 Range$proto.skipping = function(skip) {
     var x=0;
     var e=this.first;
     while (x++<skip) {
         e=this.next(e);
     }
-    return this.includes(e) ? new Range(e, this.last) : empty;
+    return this.includes(e) ? new Range(e, this.last, this.$$targs$$) : empty;
 }
 Range$proto.taking = function(take) {
     if (take == 0) {
@@ -143,7 +144,7 @@ Range$proto.taking = function(take) {
     while (++x<take) {
         e=this.next(e);
     }
-    return this.includes(e) ? new Range(this.first, e) : this;
+    return this.includes(e) ? new Range(this.first, e, this.$$targs$$) : this;
 }
 Range$proto.getSequence = function() { return this; }
 Range$proto.getCoalesced = function() { return this; }
@@ -163,6 +164,7 @@ function RangeIterator(range) {
     var that = new RangeIterator.$$;
     that.range = range;
     that.current = range.getFirst();
+    that.$$targs$$ = range.$$targs$$;
     that.next = (range.last>=range.first) ? RangeIterator$forwardNext : RangeIterator$backwardNext;
     return that;
 }

@@ -57,14 +57,14 @@ List$proto.findLast = function(select) {
     }
     return null;
 }
-List$proto.withLeading = function(other) {
-    var sb = SequenceBuilder([{t:'u',l:[this.$$targs$$[0], {t:other.getT$all()[other.getT$name()]}]}]);
+List$proto.withLeading = function(other, $$$mptypes) {
+    var sb = SequenceBuilder([{t:'u',l:[this.$$targs$$[0], $$$mptypes[0]]}]);
     sb.append(other);
     sb.appendAll(this);
     return sb.getSequence();
 }
-List$proto.withTrailing = function(other) {
-    var sb = SequenceBuilder([{t:'u',l:[this.$$targs$$[0], {t:other.getT$all()[other.getT$name()]}]}]);
+List$proto.withTrailing = function(other, $$$mptypes) {
+    var sb = SequenceBuilder([{t:'u',l:[this.$$targs$$[0], $$$mptypes[0]]}]);
     sb.appendAll(this);
     sb.append(other);
     return sb.getSequence();

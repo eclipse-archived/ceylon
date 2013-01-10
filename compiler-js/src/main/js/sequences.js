@@ -85,11 +85,11 @@ Array$proto.getReversed = function() {
     if (this.length === 0) { return this; }
     var arr = this.slice(0);
     arr.reverse();
-    return this.$seq ? ArraySequence(arr,this.$$targs$$) : arr;
+    return this.$seq ? ArraySequence(arr,this.$$targs$$) : arr.reifyCeylonType(this.$$targs$$);
 }
-Array$proto.chain = function(other) {
+Array$proto.chain = function(other, $$$mptypes) {
     if (this.length === 0) { return other; }
-    return Iterable.$$.prototype.chain.call(this, other);
+    return Iterable.$$.prototype.chain.call(this, other, $$$mptypes);
 }
 Array$proto.getFirst = function() { return this.length>0 ? this[0] : null; }
 Array$proto.getLast = function() { return this.length>0 ? this[this.length-1] : null; }
@@ -103,7 +103,7 @@ Array$proto.span = function(from, to) {
     if (from > to) {
         var arr = this.segment(to, from-to+1);
         arr.reverse();
-        return arr;
+        return arr.reifyCeylonType(this.$$targs$$);
     }
     return this.segment(from, to-from+1);
 }
@@ -147,12 +147,13 @@ exports.array=function(elems, $$$ptypes) {
     e.$$targs$$=$$$ptypes;
     return e;
 }
-exports.arrayOfSize=function(size, elem) {
+exports.arrayOfSize=function(size, elem, $$$mptypes) {
     if (size > 0) {
         var elems = [];
         for (var i = 0; i < size; i++) {
             elems.push(elem);
         }
+        elems.$$targs$$=$$$mptypes;
         return elems;
     } else return [];
 }
@@ -169,9 +170,10 @@ TypeCategory$proto.contains = function(k) {
     return isOfType(k, this.type) && this.seq.defines(k);
 }
 
-function SequenceBuilder() {
+function SequenceBuilder($$targs$$) {
     var that = new SequenceBuilder.$$;
     that.seq = [];
+    that.$$targs$$=$$targs$$;
     return that;
 }
 initTypeProto(SequenceBuilder, 'ceylon.language::SequenceBuilder', Basic);
@@ -189,9 +191,10 @@ SequenceBuilder$proto.appendAll = function(/*Iterable*/arr) {
 }
 SequenceBuilder$proto.getSize = function() { return this.seq.length; }
 
-function SequenceAppender(other) {
+function SequenceAppender(other, $$targs$$) {
     var that = new SequenceAppender.$$;
     that.seq = [];
+    that.$$targs$$=$$targs$$;
     that.appendAll(other);
     return that;
 }
