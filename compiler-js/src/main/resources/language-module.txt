@@ -12,6 +12,7 @@ ContainerWithFirstElement,Iterator,Collection,Category
 #Finished
 
 #its iterator impl can't handle null elements
+#but we replace it with our own
 #List
 
 Tuple,ChainedIterator
@@ -34,8 +35,8 @@ Set,LazyMap,LazyList
 #this one has native impls due to reified generics
 #Range
 
-#this one has native impls due to reified generics in its equals()
-#but we just overwrite the generated method with our own
+#this one has native impls due to its equals() and keys
+#but we just overwrite those methods with our own
 Singleton
 
 any,byDecreasing,byIncreasing,byItem,byKey,coalesce,count,elements,emptyOrSingleton,entries,equalTo,every,first,forItem,forKey,greaterThan,join,largest,lessThan,max,min,smallest,sum,zip,print,nothing,identical
