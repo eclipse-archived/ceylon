@@ -64,7 +64,7 @@ public class SetOperators {
                 }
             }
         }
-        .ceylon.language.Set x2 = a.intersection(b);
+        .ceylon.language.Set<?> x2 = a.intersection(b);
         .ceylon.language.Set x3 = a.exclusiveUnion(b);
         x1.contains(.ceylon.language.Integer.instance(1L));
         x1.contains(.ceylon.language.Float.instance(1.1));
@@ -111,16 +111,16 @@ public class SetOperators {
     
     private final void testSetOperatorsWithErasedTypes(final .ceylon.language.Set<? extends .ceylon.language.String> setOfString, final .ceylon.language.Set setOfUnionType, final .ceylon.language.Set<? extends .ceylon.language.Sequential<?>> setOfIntersectionType, final .ceylon.language.Set<?> setOfNothing) {
         .ceylon.language.Set x1 = setOfUnionType.union(setOfString);
-        .ceylon.language.Set x2 = setOfUnionType.intersection(setOfString);
+        .ceylon.language.Set<? extends .ceylon.language.Integer> x2 = (.ceylon.language.Set)setOfUnionType.intersection(setOfString);
         .ceylon.language.Set x3 = setOfUnionType.exclusiveUnion(setOfString);
         .ceylon.language.Set x4 = setOfUnionType.complement(setOfString);
         .ceylon.language.Set<? extends .ceylon.language.Sequential<? extends .ceylon.language.Character>> y1 = setOfIntersectionType.union(setOfString);
         .ceylon.language.Set<? extends .ceylon.language.Sequential<?>> y2 = setOfIntersectionType.intersection(setOfString);
         .ceylon.language.Set<? extends .ceylon.language.Sequential<? extends .ceylon.language.Character>> y3 = setOfIntersectionType.exclusiveUnion(setOfString);
         .ceylon.language.Set<? extends .ceylon.language.Sequential<?>> y4 = setOfIntersectionType.complement(setOfString);
-        .ceylon.language.Set<? extends .ceylon.language.Sequential<? extends .ceylon.language.Character>> z1 = setOfNothing.union(setOfString);
-        .ceylon.language.Set z2 = setOfNothing.intersection(setOfString);
-        .ceylon.language.Set<? extends .ceylon.language.Sequential<? extends .ceylon.language.Character>> z3 = setOfNothing.exclusiveUnion(setOfString);
+        .ceylon.language.Set<? extends .ceylon.language.String> z1 = setOfNothing.union(setOfString);
+        .ceylon.language.Set<?> z2 = setOfNothing.intersection(setOfString);
+        .ceylon.language.Set<? extends .ceylon.language.String> z3 = setOfNothing.exclusiveUnion(setOfString);
         .ceylon.language.Set<?> z4 = setOfNothing.complement(setOfString);
     }
     
