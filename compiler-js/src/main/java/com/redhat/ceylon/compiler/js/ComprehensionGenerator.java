@@ -39,7 +39,7 @@ class ComprehensionGenerator {
     }
 
     void generateComprehension(Comprehension that) {
-        gen.out(GenerateJsVisitor.getClAlias(), "reify(", GenerateJsVisitor.getClAlias(), "Comprehension(function()");
+        gen.out(GenerateJsVisitor.getClAlias(), "Comprehension(function()");
         gen.beginBlock();
         if (gen.isAddComments()) {
             gen.out("//Comprehension"); gen.location(that); gen.endLine();
@@ -197,7 +197,7 @@ class ComprehensionGenerator {
 
         gen.out("return ", finished, ";");
         gen.endBlockNewLine();
-        gen.endBlock(); gen.out("),");
+        gen.endBlock(); gen.out(",");
         TypeUtils.printTypeArguments(that, Collections.singletonList(expression.getTypeModel()), gen);
         gen.out(")");
     }

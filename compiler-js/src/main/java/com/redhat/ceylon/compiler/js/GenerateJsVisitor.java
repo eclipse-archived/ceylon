@@ -302,11 +302,17 @@ public class GenerateJsVisitor extends Visitor
         boolean ptypes = false;
         for (Parameter param: that.getParameters()) {
             if (!first) out(",");
-            out(names.name(param.getDeclarationModel()));
-            first = false;
-            if (param.getDeclarationModel().getTypeDeclaration() instanceof TypeParameter) {
-                ptypes = true;
+            com.redhat.ceylon.compiler.typechecker.model.Parameter d = param.getDeclarationModel();
+            if (!ptypes && d.getScope() instanceof Method) {
+                List<TypeParameter> tparms = ((Method)d.getScope()).getTypeParameters();
+                if (tparms != null && !tparms.isEmpty()) {
+                    for (TypeParameter tp : ((Method)d.getScope()).getTypeParameters()) {
+                        ptypes |= TypeUtils.typeContainsTypeParameter(d.getType(), tp) != null;
+                    }
+                }
             }
+            out(names.name(d));
+            first = false;
         }
         if (ptypes) {
             if (!first) out(",");
@@ -546,6 +552,9 @@ public class GenerateJsVisitor extends Visitor
             p.visit(this);
             out(", ");
         }
+        if (that.getTypeParameterList() != null && !that.getTypeParameterList().getTypeParameterDeclarations().isEmpty()) {
+            out("$$targs$$,");
+        }
         self(d);
         out(")");
         beginBlock();
@@ -553,6 +562,9 @@ public class GenerateJsVisitor extends Visitor
         out("$init$", names.name(d), "();");
         endLine();
         declareSelf(d);
+        if (that.getTypeParameterList() != null && !that.getTypeParameterList().getTypeParameterDeclarations().isEmpty()) {
+            self(d); out(".$$targs$$=$$targs$$;"); endLine();
+        }
         referenceOuter(d);
         initParameters(that.getParameterList(), d);
         
@@ -1339,7 +1351,11 @@ public class GenerateJsVisitor extends Visitor
     @Override
     public void visit(StringLiteral that) {
         final int slen = that.getText().codePointCount(1, that.getText().length()-1);
-        out(clAlias, "String(", escapeStringLiteral(that.getText()), ",", Integer.toString(slen), ")");
+        if (JsCompiler.compilingLanguageModule) {
+            out("String$(", escapeStringLiteral(that.getText()), ",", Integer.toString(slen), ")");
+        } else {
+            out(clAlias, "String(", escapeStringLiteral(that.getText()), ",", Integer.toString(slen), ")");
+        }
     }
 
     @Override
@@ -1715,9 +1731,6 @@ public class GenerateJsVisitor extends Visitor
             Map<String, String> argVarNames = defineNamedArguments(argList);
 
             TypeArguments targs = that.getPrimary() instanceof BaseTypeExpression ? ((BaseTypeExpression)that.getPrimary()).getTypeArguments() : null;
-            if (targs != null && targs.getTypeModels() != null && !targs.getTypeModels().isEmpty()) {
-                out(clAlias, "reify(");
-            }
             that.getPrimary().visit(this);
             if (that.getPrimary() instanceof Tree.MemberOrTypeExpression) {
                 Tree.MemberOrTypeExpression mte = (Tree.MemberOrTypeExpression) that.getPrimary();
@@ -1731,7 +1744,6 @@ public class GenerateJsVisitor extends Visitor
                     if (targs != null && targs.getTypeModels() != null && !targs.getTypeModels().isEmpty()) {
                         out(",");
                         TypeUtils.printTypeArguments(that, targs.getTypeModels(), this);
-                        out(")");
                     }
                 }
             }
@@ -1739,10 +1751,6 @@ public class GenerateJsVisitor extends Visitor
         }
         else {
             PositionalArgumentList argList = that.getPositionalArgumentList();
-            TypeArguments targs = that.getPrimary() instanceof BaseTypeExpression ? ((BaseTypeExpression)that.getPrimary()).getTypeArguments() : null;
-            if (targs != null && targs.getTypeModels() != null && !targs.getTypeModels().isEmpty()) {
-                out(clAlias, "reify(");
-            }
             that.getPrimary().visit(this);
             if (prototypeStyle && (getSuperMemberScope(that.getPrimary()) != null)) {
                 out(".call(this");
@@ -1755,34 +1763,23 @@ public class GenerateJsVisitor extends Visitor
                 out("(");
             }
             argList.visit(this);
-            if (targs == null && that.getPrimary() instanceof BaseMemberExpression) {
-                targs = ((BaseMemberExpression)that.getPrimary()).getTypeArguments();
-                if (targs == null || targs.getTypeModels() == null || targs.getTypeModels().isEmpty()) {
-                    out(")");
-                    targs = null;
-                } else {
-                    if (argList.getPositionalArguments().size() > 0 || argList.getComprehension() != null) {
-                        out(",");
-                    }
-                    Declaration bmed = ((BaseMemberExpression)that.getPrimary()).getDeclaration();
-                    if (bmed instanceof Functional) {
-                        if (((Functional) bmed).getParameterLists().get(0).getParameters().size() > argList.getPositionalArguments().size()
-                                && argList.getComprehension() == null) {
-                            out("undefined,");
-                        }
-                    }
-                }
-            } else {
-                out(")");
-                //Output a comma only for type initializers with type arguments
-                if (targs != null && targs.getTypeModels() != null && !targs.getTypeModels().isEmpty()) {
+            TypeArguments targs = that.getPrimary() instanceof StaticMemberOrTypeExpression ? ((StaticMemberOrTypeExpression)that.getPrimary()).getTypeArguments() : null;
+            if (targs != null && targs.getTypeModels() != null && !targs.getTypeModels().isEmpty()) {
+                if (argList.getPositionalArguments().size() > 0 || argList.getComprehension() != null) {
                     out(",");
                 }
+                Declaration bmed = ((StaticMemberOrTypeExpression)that.getPrimary()).getDeclaration();
+                if (bmed instanceof Functional) {
+                    if (((Functional) bmed).getParameterLists().get(0).getParameters().size() > argList.getPositionalArguments().size()
+                            && argList.getComprehension() == null) {
+                        out("undefined,");
+                    }
+                }
+                if (targs != null && targs.getTypeModels() != null && !targs.getTypeModels().isEmpty()) {
+                    TypeUtils.printTypeArguments(that, targs.getTypeModels(), this);
+                }
             }
-            if (targs != null && targs.getTypeModels() != null && !targs.getTypeModels().isEmpty()) {
-                TypeUtils.printTypeArguments(that, targs.getTypeModels(), this);
-                out(")");
-            }
+            out(")");
         }
     }
 
@@ -1860,20 +1857,22 @@ public class GenerateJsVisitor extends Visitor
     public void visit(PositionalArgumentList that) {
         if (!that.getPositionalArguments().isEmpty()) {
             boolean first=true;
-            boolean sequenced=false;
+            ProducedType sequencedType=null;
             for (PositionalArgument arg: that.getPositionalArguments()) {
                 if (!first) out(",");
                 int boxType = boxUnboxStart(arg.getExpression().getTerm(), arg.getParameter());
-                if (!sequenced && arg.getParameter() != null && arg.getParameter().isSequenced() && that.getEllipsis() == null) {
-                    sequenced=true;
+                if (sequencedType==null && arg.getParameter() != null && arg.getParameter().isSequenced() && that.getEllipsis() == null) {
+                    sequencedType=arg.getExpression().getTypeModel();
                     out("[");
                 }
                 arg.visit(this);
                 boxUnboxEnd(boxType);
                 first = false;
             }
-            if (sequenced) {
-                out("]");
+            if (sequencedType != null) {
+                out("].reifyCeylonType(");
+                TypeUtils.printTypeArguments(that, Collections.singletonList(sequencedType), this);
+                out(")");
             }
         }
         if (that.getComprehension() != null) {
@@ -2769,11 +2768,11 @@ public class GenerateJsVisitor extends Visitor
        binaryOp(that, new BinaryOpGenerator() {
            @Override
            public void generate(BinaryOpTermGenerator termgen) {
-               out(clAlias, "reify(", clAlias, "Entry(");
+               out(clAlias, "Entry(");
                termgen.left();
                out(",");
                termgen.right();
-               out("),");
+               out(",");
                TypeUtils.printTypeArguments(that, that.getTypeModel().getTypeArgumentList(),
                        GenerateJsVisitor.this);
                out(")");
@@ -3038,11 +3037,11 @@ public class GenerateJsVisitor extends Visitor
        binaryOp(that, new BinaryOpGenerator() {
            @Override
            public void generate(BinaryOpTermGenerator termgen) {
-               out(clAlias, "reify(", clAlias, "Range(");
+               out(clAlias, "Range(");
                termgen.left();
                out(",");
                termgen.right();
-               out("),");
+               out(",");
                TypeUtils.printTypeArguments(that, Collections.singletonList(that.getLeftTerm().getTypeModel()), GenerateJsVisitor.this);
                out(")");
            }
@@ -3432,8 +3431,9 @@ public class GenerateJsVisitor extends Visitor
         if (that.getComprehension() == null) {
             SequencedArgument sarg = that.getSequencedArgument();
             if (sarg == null) {
-                out(",", clAlias, "empty");
+                out(clAlias, "empty");
             } else if (sarg.getParameter() == null) {
+                List<List<ProducedType>> targs = new ArrayList<List<ProducedType>>();
                 int lim = sarg.getExpressionList().getExpressions().size()-1;
                 for (Expression expr : sarg.getExpressionList().getExpressions()) {
                     if (count > 0) {
@@ -3449,16 +3449,26 @@ public class GenerateJsVisitor extends Visitor
                         }
                     } else {
                         out(clAlias, "Tuple(");
+                        if (count > 0) {
+                            targs.add(0, targs.get(0).get(2).getTypeArgumentList());
+                        } else {
+                            targs.add(that.getTypeModel().getTypeArgumentList());
+                        }
                         expr.visit(this);
                     }
                     count++;
                 }
                 if (sarg.getEllipsis() == null) {
-                    out(",", clAlias, "empty");
+                    if (count > 0) {
+                        out(",");
+                    }
+                    out(clAlias, "empty");
                 } else {
                     count--;
                 }
-                for (int i = 0; i < count; i++) {
+                for (List<ProducedType> t : targs) {
+                    out(",");
+                    TypeUtils.printTypeArguments(that, t, this);
                     out(")");
                 }
             } else {

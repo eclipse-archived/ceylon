@@ -188,7 +188,9 @@ public class TypeUtils {
         if (d == tp) {
             return td;
         } else if (d instanceof UnionType || d instanceof IntersectionType) {
-            for (ProducedType sub : td.getCaseTypes()) {
+            List<ProducedType> comps = td.getCaseTypes();
+            if (comps == null) comps = td.getSupertypes();
+            for (ProducedType sub : comps) {
                 td = typeContainsTypeParameter(sub, tp);
                 if (td != null) {
                     return td;
