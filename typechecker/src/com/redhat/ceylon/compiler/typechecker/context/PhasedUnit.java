@@ -29,6 +29,7 @@ import com.redhat.ceylon.compiler.typechecker.util.AssertionVisitor;
 import com.redhat.ceylon.compiler.typechecker.util.PrintVisitor;
 import com.redhat.ceylon.compiler.typechecker.util.ReferenceCounter;
 import com.redhat.ceylon.compiler.typechecker.util.StatisticsVisitor;
+import com.redhat.ceylon.compiler.typechecker.util.UnitFactory;
 import com.redhat.ceylon.compiler.typechecker.util.UsageVisitor;
 
 /**
@@ -119,6 +120,10 @@ public class PhasedUnit {
         return null;
     }
 
+    protected Unit createUnit() {
+        return new Unit();
+    }
+    
     public void visitRemainingModulePhase() {
         if ( moduleVisitor != null ) {
             moduleVisitor.setPhase(ModuleVisitor.Phase.REMAINING);
@@ -187,8 +192,14 @@ public class PhasedUnit {
             processLiterals();
             scanningDeclarations = true;
             //System.out.println("Scan declarations for " + fileName);
+            UnitFactory unitFactory = new UnitFactory() {
+                @Override
+                public Unit createUnit() {
+                    return PhasedUnit.this.createUnit();
+                }
+            };
             DeclarationVisitor dv = new DeclarationVisitor(pkg, fileName,
-            		unitFile.getPath(), pathRelativeToSrcDir);
+            		unitFile.getPath(), pathRelativeToSrcDir, unitFactory);
             compilationUnit.visit(dv);
             unit = dv.getCompilationUnit();
             declarationsScanned = true;

@@ -71,7 +71,7 @@ public abstract class TypeDeclaration extends Declaration
     public List<TypeDeclaration> getSatisfiedTypeDeclarations() {
         List<TypeDeclaration> list = new ArrayList<TypeDeclaration>();
         for (ProducedType pt: getSatisfiedTypes()) {
-            list.add(pt.getDeclaration());
+            list.add(pt==null?null:pt.getDeclaration());
         }
         return list;
     }
@@ -92,7 +92,7 @@ public abstract class TypeDeclaration extends Declaration
         }
         else {
             for (ProducedType pt: caseTypes) {
-                list.add(pt.getDeclaration());
+                list.add(pt==null?null:pt.getDeclaration());
             }
         }
         return list;
