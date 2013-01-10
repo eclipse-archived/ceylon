@@ -76,12 +76,6 @@ function inheritProto(type) {
         for (var $ in superProto) {proto[$] = superProto[$]}
     }
 }
-function reify(obj, params) {
-    if (obj) {
-        obj.$$targs$$=params;
-    }
-    return obj;
-}
 var inheritProtoI = inheritProto;
 exports.initType=initType;
 exports.initTypeProto=initTypeProto;
@@ -90,7 +84,6 @@ exports.initExistingType=initExistingType;
 exports.initExistingTypeProto=initExistingTypeProto;
 exports.inheritProto=inheritProto;
 exports.inheritProtoI=inheritProtoI;
-exports.reify=reify;
 
 function Anything(wat) {
     return wat;
@@ -170,7 +163,7 @@ Correspondence$proto.items = function(keys) {
         for (var i = 0; i < keys.length; i++) {
             r.push(this.item(keys[i]));
         }
-        return ArraySequence(r);
+        return ArraySequence(r, [this.$$targs$$[1]]);
     }
     return empty;
 }
@@ -181,6 +174,7 @@ exports.Correspondence=Correspondence;
 
 //#include iterable.js
 //#include collections.js
+//#include list.js
 //Compiled from Ceylon sources
 //#COMPILED
 //Ends compiled from Ceylon sources
