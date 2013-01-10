@@ -209,30 +209,30 @@
                 <exclude name="ceylon/language/StringBuilder.ceylon"/>
                 <include name="ceylon/language/StringBuilder.java"/>
                 <!-- These are problem files we hope to be able to compile some day -->
-                <exclude name="ceylon/language/combine.ceylon"/>
+                <exclude name="ceylon/language/combine.ceylon"/> <!-- RUNTIME ERROR (incomplete) -->
                 <include name="ceylon/language/combine_.java"/>
-                <exclude name="ceylon/language/Correspondence.ceylon"/>
+                <exclude name="ceylon/language/Correspondence.ceylon"/> <!-- COMPILE ERROR (see compiler issue #904) -->
                 <include name="ceylon/language/Correspondence.java"/>
                 <include name="ceylon/language/Correspondence$impl.java"/>
-                <exclude name="ceylon/language/Iterable.ceylon"/>
+                <exclude name="ceylon/language/Iterable.ceylon"/> <!-- COMPILE ERROR (unknown cause) -->
                 <include name="ceylon/language/Iterable.java"/>
                 <include name="ceylon/language/Iterable$impl.java"/>
-                <exclude name="ceylon/language/LazySet.ceylon"/>
+                <exclude name="ceylon/language/LazySet.ceylon"/> <!-- COMPILE ERROR (needs reified generics) -->
                 <include name="ceylon/language/LazySet.java"/>
-                <exclude name="ceylon/language/List.ceylon"/>
+                <exclude name="ceylon/language/List.ceylon"/> <!-- COMPILE ERROR (see compiler issue #903) -->
                 <include name="ceylon/language/List.java"/>
                 <include name="ceylon/language/List$impl.java"/>
-                <exclude name="ceylon/language/Map.ceylon"/>
+                <exclude name="ceylon/language/Map.ceylon"/> <!-- COMPILE ERROR (see compiler issue #904) -->
                 <include name="ceylon/language/Map.java"/>
                 <include name="ceylon/language/Map$impl.java"/>
-                <exclude name="ceylon/language/Range.ceylon"/>
+                <exclude name="ceylon/language/Range.ceylon"/> <!-- RUNTIME ERROR (incomplete) -->
                 <include name="ceylon/language/Range.java"/>
-                <exclude name="ceylon/language/Sequence.ceylon"/>
+                <exclude name="ceylon/language/Sequence.ceylon"/> <!-- RUNTIME ERROR (incomplete) -->
                 <include name="ceylon/language/Sequence.java"/>
                 <include name="ceylon/language/Sequence$impl.java"/>
-                <exclude name="ceylon/language/Singleton.ceylon"/>
+                <exclude name="ceylon/language/Singleton.ceylon"/> <!-- RUNTIME ERROR (incomplete) -->
                 <include name="ceylon/language/Singleton.java"/>
-                <exclude name="ceylon/language/Tuple.ceylon"/>
+                <exclude name="ceylon/language/Tuple.ceylon"/> <!-- COMPILE ERROR (unknown cause) -->
                 <include name="ceylon/language/Tuple.java"/>
             </files>
         </ceylon-compile>
