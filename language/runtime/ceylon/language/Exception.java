@@ -21,7 +21,7 @@ public class Exception extends RuntimeException {
             @Defaulted
             String description,
             @TypeInfo("ceylon.language::Exception|ceylon.language::Null")
-            @Name("cause")
+            @Name("c")
             @Defaulted
             java.lang.Throwable cause) {
         super(description==null ? null : description.toString(), cause);

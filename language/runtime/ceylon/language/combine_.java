@@ -19,14 +19,14 @@ public class combine_ {
     @TypeParameters({
         @TypeParameter("Result"), @TypeParameter("Element"), @TypeParameter("OtherElement")
     })
-    public static <Result,Element,OtherElement> Iterable<Result> combine(
+    public static <Result,Element,OtherElement> Iterable<Result, ? extends java.lang.Object> combine(
             @Name("combination") @TypeInfo("ceylon.language::Callable<Result,ceylon.language::Tuple<Element|OtherElement,Element,ceylon.language::Tuple<OtherElement,OtherElement,ceylon.language::Empty>>>")
             final Callable<? extends Result> combination,
-            @Name("elements") @TypeInfo("ceylon.language::Iterable<Element>")
-            final Iterable<? extends Element> elements,
+            @Name("elements") @TypeInfo("ceylon.language::Iterable<Element,ceylon.language::Null>")
+            final Iterable<? extends Element, ? extends java.lang.Object> elements,
             @Name("otherElements") @TypeInfo("ceylon.language::Iterable<OtherElement>")
-            final Iterable<? extends OtherElement> otherElements) {
-        return new AbstractIterable<Result>() {
+            final Iterable<? extends OtherElement, ? extends java.lang.Object> otherElements) {
+        return new AbstractIterable<Result,java.lang.Object>() {
             @Override @Ignore
             public Iterator<? extends Result> getIterator() {
                 final Iterator<? extends Element> ei = elements.getIterator();

@@ -15,5 +15,6 @@ shared <Key->Item>[] zip<Key,Item>({Key...} keys, {Item...} items)
         given Key satisfies Object
         given Item satisfies Object {
     value iter = items.iterator;
-    return [ for (key in keys) if (!is Finished item=iter.next()) key->item ];
+    return nothing;
+    //return [ for (key in keys) if (!is Finished item=iter.next()) key->item ];
 }

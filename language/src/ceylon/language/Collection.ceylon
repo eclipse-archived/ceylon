@@ -42,9 +42,9 @@ shared interface Collection<out Element>
         }
     }
     
-    value elementsString =>
-            ", ".join ( for (elem in this) 
-                            elem?.string else "null" );
+    value elementsString => "hello";
+            /*", ".join ( for (elem in this)
+                            elem?.string else "null" );*/
     
     doc "A string of form `\"{ x, y, z }\"` where `x`, `y`, 
          and `z` are the `string` representations of the 

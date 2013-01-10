@@ -1,5 +1,9 @@
 package ceylon.language;
 
+import javax.media.j3d.J3DBuffer;
+import javax.media.jai.JAI;
+
+import com.redhat.ceylon.common.tool.Java7Checker;
 import com.redhat.ceylon.compiler.java.language.AbstractIterable;
 import com.redhat.ceylon.compiler.java.language.FilterIterable;
 import com.redhat.ceylon.compiler.java.language.MapIterable;
@@ -62,13 +66,13 @@ public final class Map$impl<Key,Item> {
         class keySet implements Set<Key>{
             private final ceylon.language.Category$impl $ceylon$language$Category$this;
             private final ceylon.language.Collection$impl<Key> $ceylon$language$Collection$this;
-            private final ceylon.language.Iterable$impl<Key> $ceylon$language$Iterable$this;
+            private final ceylon.language.Iterable$impl<Key,? extends java.lang.Object> $ceylon$language$Iterable$this;
             private final ceylon.language.Set$impl<Key> $ceylon$language$Set$this;
 
             private keySet() {
                 this.$ceylon$language$Category$this = new ceylon.language.Category$impl(this);
                 this.$ceylon$language$Collection$this = new ceylon.language.Collection$impl<Key>(this);
-                this.$ceylon$language$Iterable$this = new ceylon.language.Iterable$impl<Key>(this);
+                this.$ceylon$language$Iterable$this = new ceylon.language.Iterable$impl<Key,java.lang.Object>(this);
                 this.$ceylon$language$Set$this = new ceylon.language.Set$impl<Key>(this);
             }
 
@@ -136,17 +140,19 @@ public final class Map$impl<Key,Item> {
 
             @Override
             @Ignore
-            public Iterable<? extends Key> getRest() {
+            public Iterable<? extends Key, ? extends java.lang.Object> getRest() {
                 return $ceylon$language$Iterable$this.getRest();
             }
 
             @Override
             @Ignore
             public Key getFirst() {
-                return $ceylon$language$Iterable$this.getFirst();
+            	throw new RuntimeException();
+//                return $ceylon$language$Iterable$this.getFirst();
             }
             @Override @Ignore public Key getLast() {
-                return $ceylon$language$Iterable$this.getLast();
+            	throw new RuntimeException();
+//                return $ceylon$language$Iterable$this.getLast();
             }
 
             @Override
@@ -228,13 +234,13 @@ public final class Map$impl<Key,Item> {
             }
             @Override
             @Ignore
-            public <Result> Iterable<Result> map(Callable<? extends Result> f) {
+            public <Result> Iterable<? extends Result,? extends java.lang.Object> map(Callable<? extends Result> f) {
                 return new MapIterable<Key, Result>(this, f);
             }
             @Override
             @Ignore
-            public Iterable<? extends Key> filter(Callable<? extends Boolean> f) {
-                return new FilterIterable<Key>(this, f);
+            public Iterable<? extends Key, ? extends java.lang.Object> filter(Callable<? extends Boolean> f) {
+                return new FilterIterable<Key, java.lang.Object>(this, f);
             }
             @Override @Ignore
             public <Result> Sequential<? extends Result> collect(Callable<? extends Result> f) {
@@ -242,7 +248,7 @@ public final class Map$impl<Key,Item> {
             }
             @Override @Ignore
             public Sequential<? extends Key> select(Callable<? extends Boolean> f) {
-                return new FilterIterable<Key>(this, f).getSequence();
+                return new FilterIterable<Key, java.lang.Object>(this, f).getSequence();
             }
             @Override
             @Ignore
@@ -258,17 +264,17 @@ public final class Map$impl<Key,Item> {
                 return $ceylon$language$Iterable$this.every(f);
             }
 			@Override @Ignore
-			public Iterable<? extends Key> skipping(long skip) {
+			public Iterable<? extends Key, ? extends java.lang.Object> skipping(long skip) {
 				return $ceylon$language$Iterable$this.skipping(skip);
 			}
 
 			@Override @Ignore
-			public Iterable<? extends Key> taking(long take) {
+			public Iterable<? extends Key, ? extends java.lang.Object> taking(long take) {
 				return $ceylon$language$Iterable$this.taking(take);
 			}
 
 			@Override @Ignore
-			public Iterable<? extends Key> by(long step) {
+			public Iterable<? extends Key, ? extends java.lang.Object> by(long step) {
 				return $ceylon$language$Iterable$this.by(step);
 			}
             @Override @Ignore
@@ -276,14 +282,14 @@ public final class Map$impl<Key,Item> {
                 return $ceylon$language$Iterable$this.count(f);
             }
             @Override @Ignore
-            public Iterable<? extends Key> getCoalesced() {
+            public Iterable<? extends Key, ? extends java.lang.Object> getCoalesced() {
                 return $ceylon$language$Iterable$this.getCoalesced();
             }
             @Override @Ignore
-            public Iterable<? extends Entry<? extends Integer, ? extends Key>> getIndexed() {
+            public Iterable<? extends Entry<? extends Integer, ? extends Key>, ? extends java.lang.Object> getIndexed() {
                 return $ceylon$language$Iterable$this.getIndexed();
             }
-			@Override @Ignore public <Other>Iterable chain(Iterable<? extends Other> other) {
+			@Override @Ignore public <Other>Iterable chain(Iterable<? extends Other, ? extends java.lang.Object> other) {
 				return $ceylon$language$Iterable$this.chain(other);
 			}
 		    @Override @Ignore
@@ -301,12 +307,12 @@ public final class Map$impl<Key,Item> {
         class valueCollection implements Collection<Item> {
             private final ceylon.language.Category$impl $ceylon$language$Category$this;
             private final ceylon.language.Collection$impl<Item> $ceylon$language$Collection$this;
-            private final ceylon.language.Iterable$impl<Item> $ceylon$language$Iterable$this;
+            private final ceylon.language.Iterable$impl<Item,java.lang.Object> $ceylon$language$Iterable$this;
 
             private valueCollection() {
                 this.$ceylon$language$Category$this = new ceylon.language.Category$impl(this);
                 this.$ceylon$language$Collection$this = new ceylon.language.Collection$impl<Item>(this);
-                this.$ceylon$language$Iterable$this = new ceylon.language.Iterable$impl<Item>(this);
+                this.$ceylon$language$Iterable$this = new ceylon.language.Iterable$impl<Item,java.lang.Object>(this);
             }
 
             @Override
@@ -353,17 +359,19 @@ public final class Map$impl<Key,Item> {
 
             @Override
             @Ignore
-            public Iterable<? extends Item> getRest() {
+            public Iterable<? extends Item, ? extends java.lang.Object> getRest() {
                 return $ceylon$language$Iterable$this.getRest();
             }
 
             @Override
             @Ignore
             public Item getFirst() {
-                return $ceylon$language$Iterable$this.getFirst();
+            	throw new RuntimeException();
+                //return $ceylon$language$Iterable$this.getFirst();
             }
             @Override @Ignore public Item getLast() {
-                return $ceylon$language$Iterable$this.getLast();
+            	throw new RuntimeException();
+                //return $ceylon$language$Iterable$this.getLast();
             }
 
             @Override
@@ -434,13 +442,13 @@ public final class Map$impl<Key,Item> {
             }
             @Override
             @Ignore
-            public <Result> Iterable<? extends Result> map(Callable<? extends Result> f) {
+            public <Result> Iterable<? extends Result, ? extends java.lang.Object> map(Callable<? extends Result> f) {
                 return new MapIterable<Item, Result>(this, f);
             }
             @Override
             @Ignore
-            public Iterable<? extends Item> filter(Callable<? extends Boolean> f) {
-                return new FilterIterable<Item>(this, f);
+            public Iterable<? extends Item, ? extends java.lang.Object> filter(Callable<? extends Boolean> f) {
+                return new FilterIterable<Item, java.lang.Object>(this, f);
             }
             @Override @Ignore
             public <Result> Sequential<? extends Result> collect(Callable<? extends Result> f) {
@@ -448,7 +456,7 @@ public final class Map$impl<Key,Item> {
             }
             @Override @Ignore
             public Sequential<? extends Item> select(Callable<? extends Boolean> f) {
-                return new FilterIterable<Item>(this, f).getSequence();
+                return new FilterIterable<Item, java.lang.Object>(this, f).getSequence();
             }
             @Override
             @Ignore
@@ -464,17 +472,17 @@ public final class Map$impl<Key,Item> {
                 return $ceylon$language$Iterable$this.every(f);
             }
 			@Override @Ignore
-			public Iterable<? extends Item> skipping(long skip) {
+			public Iterable<? extends Item, ? extends java.lang.Object> skipping(long skip) {
 				return $ceylon$language$Iterable$this.skipping(skip);
 			}
 
 			@Override @Ignore
-			public Iterable<? extends Item> taking(long take) {
+			public Iterable<? extends Item, ? extends java.lang.Object> taking(long take) {
 				return $ceylon$language$Iterable$this.taking(take);
 			}
 
 			@Override @Ignore
-			public Iterable<? extends Item> by(long step) {
+			public Iterable<? extends Item, ? extends java.lang.Object> by(long step) {
 				return $ceylon$language$Iterable$this.by(step);
 			}
             @Override @Ignore
@@ -482,14 +490,14 @@ public final class Map$impl<Key,Item> {
                 return $ceylon$language$Iterable$this.count(f);
             }
             @Override @Ignore
-            public Iterable<? extends Item> getCoalesced() {
+            public Iterable<? extends Item, ? extends java.lang.Object> getCoalesced() {
                 return $ceylon$language$Iterable$this.getCoalesced();
             }
             @Override @Ignore
-            public Iterable<? extends Entry<? extends Integer, ? extends Item>> getIndexed() {
+            public Iterable<? extends Entry<? extends Integer, ? extends Item>, ? extends java.lang.Object> getIndexed() {
                 return $ceylon$language$Iterable$this.getIndexed();
             }
-			@Override @Ignore public <Other>Iterable chain(Iterable<? extends Other> other) {
+			@Override @Ignore public <Other>Iterable chain(Iterable<? extends Other, ? extends java.lang.Object> other) {
 				return $ceylon$language$Iterable$this.chain(other);
 			}
 		    @Override @Ignore
@@ -510,13 +518,13 @@ public final class Map$impl<Key,Item> {
             private final ceylon.language.Category$impl $ceylon$language$Category$this;
             private final ceylon.language.Collection$impl<Item> $ceylon$language$Collection$this;
             private final ceylon.language.Correspondence$impl $ceylon$language$Correspondence$this;
-            private final ceylon.language.Iterable$impl<Entry<? extends Item, ? extends Set<? extends Key>>> $ceylon$language$Iterable$this;
+            private final ceylon.language.Iterable$impl<Entry<? extends Item, ? extends Set<? extends Key>>,java.lang.Object> $ceylon$language$Iterable$this;
 
             private inverse() {
                 this.$ceylon$language$Category$this = new ceylon.language.Category$impl(this);
                 this.$ceylon$language$Collection$this = new ceylon.language.Collection$impl(this);
                 this.$ceylon$language$Correspondence$this = new ceylon.language.Correspondence$impl(this);
-                this.$ceylon$language$Iterable$this = new ceylon.language.Iterable$impl<Entry<? extends Item, ? extends Set<? extends Key>>>(this);
+                this.$ceylon$language$Iterable$this = new ceylon.language.Iterable$impl<Entry<? extends Item, ? extends Set<? extends Key>>,java.lang.Object>(this);
             }
             
             @Ignore
@@ -548,7 +556,7 @@ public final class Map$impl<Key,Item> {
 
             @Override
             public Set<? extends Key> item(final java.lang.Object key) {
-                return new LazySet<Key>(new AbstractIterable<Key>(){
+                return new LazySet<Key>(new AbstractIterable<Key,java.lang.Object>(){
                     public Iterator<? extends Key> getIterator() {
                         return new Iterator<Key>(){
                             final Iterator<? extends Entry<? extends Key, ? extends Item>> orig = $this.getIterator();
@@ -729,17 +737,19 @@ public final class Map$impl<Key,Item> {
             }
             @Override
             @Ignore
-            public Iterable<? extends Entry<? extends Item, ? extends Set<? extends Key>>> getRest() {
+            public Iterable<? extends Entry<? extends Item, ? extends Set<? extends Key>>, ? extends java.lang.Object> getRest() {
                 return $ceylon$language$Iterable$this.getRest();
             }
             @Override
             @Ignore
             public Entry<? extends Item, ? extends Set<? extends Key>> getFirst() {
-                return $ceylon$language$Iterable$this.getFirst();
+            	throw new RuntimeException();
+//                return $ceylon$language$Iterable$this.getFirst();
             }
             @Override @Ignore
             public Entry<? extends Item, ? extends Set<? extends Key>> getLast() {
-                return $ceylon$language$Iterable$this.getLast();
+            	throw new RuntimeException();
+//                return $ceylon$language$Iterable$this.getLast();
             }
             @Override @Ignore
             public Entry<? extends Item, ? extends Set<? extends Key>> find(Callable<? extends Boolean> f) {
@@ -756,13 +766,13 @@ public final class Map$impl<Key,Item> {
             }
             @Override
             @Ignore
-            public <Result> Iterable<? extends Result> map(Callable<? extends Result> f) {
+            public <Result> Iterable<? extends Result, ? extends java.lang.Object> map(Callable<? extends Result> f) {
                 return new MapIterable<Entry<? extends Item, ? extends Set<? extends Key>>, Result>(this, f);
             }
             @Override
             @Ignore
-            public Iterable<? extends Entry<? extends Item, ? extends Set<? extends Key>>> filter(Callable<? extends Boolean> f) {
-                return new FilterIterable<Entry<? extends Item, ? extends Set<? extends Key>>>(this, f);
+            public Iterable<? extends Entry<? extends Item, ? extends Set<? extends Key>>, ? extends java.lang.Object> filter(Callable<? extends Boolean> f) {
+                return new FilterIterable<Entry<? extends Item, ? extends Set<? extends Key>>, java.lang.Object>(this, f);
             }
             @Override @Ignore
             public <Result> Sequential<? extends Result> collect(Callable<? extends Result> f) {
@@ -771,7 +781,7 @@ public final class Map$impl<Key,Item> {
             @Override
             @Ignore
             public Sequential<? extends Entry<? extends Item, ? extends Set<? extends Key>>> select(Callable<? extends Boolean> f) {
-                return new FilterIterable<Entry<? extends Item, ? extends Set<? extends Key>>>(this, f).getSequence();
+                return new FilterIterable<Entry<? extends Item, ? extends Set<? extends Key>>, java.lang.Object>(this, f).getSequence();
             }
             @Override
             @Ignore
@@ -787,17 +797,17 @@ public final class Map$impl<Key,Item> {
                 return $ceylon$language$Iterable$this.every(f);
             }
 			@Override @Ignore
-			public Iterable<? extends Entry<? extends Item, ? extends Set<? extends Key>>> skipping(long skip) {
+			public Iterable<? extends Entry<? extends Item, ? extends Set<? extends Key>>, ? extends java.lang.Object> skipping(long skip) {
 				return $ceylon$language$Iterable$this.skipping(skip);
 			}
 
 			@Override @Ignore
-			public Iterable<? extends Entry<? extends Item, ? extends Set<? extends Key>>> taking(long take) {
+			public Iterable<? extends Entry<? extends Item, ? extends Set<? extends Key>>, ? extends java.lang.Object> taking(long take) {
 				return $ceylon$language$Iterable$this.taking(take);
 			}
 
 			@Override @Ignore
-			public Iterable<? extends Entry<? extends Item, ? extends Set<? extends Key>>> by(long step) {
+			public Iterable<? extends Entry<? extends Item, ? extends Set<? extends Key>>, ? extends java.lang.Object> by(long step) {
 				return $ceylon$language$Iterable$this.by(step);
 			}
             @Override @Ignore
@@ -805,14 +815,14 @@ public final class Map$impl<Key,Item> {
                 return $ceylon$language$Iterable$this.count(f);
             }
             @Override @Ignore
-            public Iterable<? extends Entry<? extends Item, ? extends Set<? extends Key>>> getCoalesced() {
+            public Iterable<? extends Entry<? extends Item, ? extends Set<? extends Key>>, ? extends java.lang.Object> getCoalesced() {
                 return $ceylon$language$Iterable$this.getCoalesced();
             }
             @Override @Ignore
-            public Iterable<? extends Entry<? extends Integer, ? extends Entry<? extends Item, ? extends Set<? extends Key>>>> getIndexed() {
+            public Iterable<? extends Entry<? extends Integer, ? extends Entry<? extends Item, ? extends Set<? extends Key>>>, ? extends java.lang.Object> getIndexed() {
                 return $ceylon$language$Iterable$this.getIndexed();
             }
-            @Override @Ignore public <Other>Iterable chain(Iterable<? extends Other> other) {
+            @Override @Ignore public <Other>Iterable chain(Iterable<? extends Other, ? extends java.lang.Object> other) {
                 return $ceylon$language$Iterable$this.chain(other);
             }
             @Override @Ignore
@@ -840,13 +850,13 @@ public final class Map$impl<Key,Item> {
             private final ceylon.language.Category$impl $ceylon$language$Category$this;
             private final ceylon.language.Collection$impl $ceylon$language$Collection$this;
             private final ceylon.language.Correspondence$impl $ceylon$language$Correspondence$this;
-            private final ceylon.language.Iterable$impl<Entry<? extends Key, ? extends Result>> $ceylon$language$Iterable$this;
+            private final ceylon.language.Iterable$impl<Entry<? extends Key, ? extends Result>, ? extends java.lang.Object> $ceylon$language$Iterable$this;
 
             private mapItems() {
                 this.$ceylon$language$Category$this = new ceylon.language.Category$impl(this);
                 this.$ceylon$language$Collection$this = new ceylon.language.Collection$impl(this);
                 this.$ceylon$language$Correspondence$this = new ceylon.language.Correspondence$impl(this);
-                this.$ceylon$language$Iterable$this = new ceylon.language.Iterable$impl<Entry<? extends Key, ? extends Result>>(this);
+                this.$ceylon$language$Iterable$this = new ceylon.language.Iterable$impl<Entry<? extends Key, ? extends Result>, java.lang.Object>(this);
             }
             
             @Ignore
@@ -949,30 +959,32 @@ public final class Map$impl<Key,Item> {
 
             @Override
             @Ignore
-            public Iterable<? extends Entry<? extends Key, ? extends Result>> getRest() {
+            public Iterable<? extends Entry<? extends Key, ? extends Result>, ? extends java.lang.Object> getRest() {
                 return $ceylon$language$Iterable$this.getRest();
             }
 
             @Override
             @Ignore
             public Entry<? extends Key, ? extends Result> getFirst() {
-                return $ceylon$language$Iterable$this.getFirst();
+            	throw new RuntimeException();
+//                return $ceylon$language$Iterable$this.getFirst();
             }
             @Override @Ignore
             public Entry<? extends Key, ? extends Result> getLast() {
-                return $ceylon$language$Iterable$this.getLast();
+            	throw new RuntimeException();
+//                return $ceylon$language$Iterable$this.getLast();
             }
 
             @Override
-            public <R2> Iterable<? extends R2> map(
+            public <R2> Iterable<? extends R2, ? extends java.lang.Object> map(
                     Callable<? extends R2> collecting) {
                 return new MapIterable<Entry<? extends Key, ? extends Result>, R2>(this, collecting);
             }
 
             @Override
-            public Iterable<? extends Entry<? extends Key, ? extends Result>> filter(
+            public Iterable<? extends Entry<? extends Key, ? extends Result>, ? extends java.lang.Object> filter(
                     Callable<? extends Boolean> selecting) {
-                return new FilterIterable<Entry<? extends Key, ? extends Result>>(this, selecting);
+                return new FilterIterable<Entry<? extends Key, ? extends Result>, java.lang.Object>(this, selecting);
             }
             @Override
             public <R2> Sequential<? extends R2> collect(
@@ -982,7 +994,7 @@ public final class Map$impl<Key,Item> {
             @Override
             public Sequential<? extends Entry<? extends Key, ? extends Result>> select(
                     Callable<? extends Boolean> selecting) {
-                return new FilterIterable<Entry<? extends Key, ? extends Result>>(this, selecting).getSequence();
+                return new FilterIterable<Entry<? extends Key, ? extends Result>, java.lang.Object>(this, selecting).getSequence();
             }
 
             @Override
@@ -1020,19 +1032,19 @@ public final class Map$impl<Key,Item> {
             }
 
             @Override
-            public Iterable<? extends Entry<? extends Key, ? extends Result>> skipping(
+            public Iterable<? extends Entry<? extends Key, ? extends Result>, ? extends java.lang.Object> skipping(
                     long skip) {
                 return $ceylon$language$Iterable$this.skipping(skip);
             }
 
             @Override
-            public Iterable<? extends Entry<? extends Key, ? extends Result>> taking(
+            public Iterable<? extends Entry<? extends Key, ? extends Result>, ? extends java.lang.Object> taking(
                     long take) {
                 return $ceylon$language$Iterable$this.taking(take);
             }
 
             @Override
-            public Iterable<? extends Entry<? extends Key, ? extends Result>> by(
+            public Iterable<? extends Entry<? extends Key, ? extends Result>, ? extends java.lang.Object> by(
                     long step) {
                 return $ceylon$language$Iterable$this.by(step);
             }
@@ -1041,14 +1053,14 @@ public final class Map$impl<Key,Item> {
                 return $ceylon$language$Iterable$this.count(f);
             }
             @Override @Ignore
-            public Iterable<? extends Entry<? extends Key, ? extends Result>> getCoalesced() {
+            public Iterable<? extends Entry<? extends Key, ? extends Result>, ? extends java.lang.Object> getCoalesced() {
                 return $ceylon$language$Iterable$this.getCoalesced();
             }
             @Override @Ignore
-            public Iterable<? extends Entry<? extends Integer, ? extends Entry<? extends Key, ? extends Result>>> getIndexed() {
+            public Iterable<? extends Entry<? extends Integer, ? extends Entry<? extends Key, ? extends Result>>, ? extends java.lang.Object> getIndexed() {
                 return $ceylon$language$Iterable$this.getIndexed();
             }
-            @Override @Ignore public <Other>Iterable chain(Iterable<? extends Other> other) {
+            @Override @Ignore public <Other>Iterable chain(Iterable<? extends Other, ? extends java.lang.Object> other) {
                 return $ceylon$language$Iterable$this.chain(other);
             }
             @Override @Ignore

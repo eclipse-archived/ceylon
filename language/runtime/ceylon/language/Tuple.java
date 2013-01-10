@@ -27,7 +27,7 @@ import com.redhat.ceylon.compiler.java.metadata.Variance;
 public class Tuple<Element, First extends Element, Rest extends Sequential<? extends Element>> 
         implements Sequence<Element> {
 
-    private final Iterable$impl<Element> iterable$impl = new Iterable$impl<Element>(this);
+    private final Iterable$impl<Element,java.lang.Object> iterable$impl = new Iterable$impl<Element,java.lang.Object>(this);
     private final Sequence$impl<Element> sequence$impl = new Sequence$impl<Element>(this);
     private final List$impl<Element> list$impl = new List$impl<Element>(this);
     private final Correspondence$impl<Integer,Element> correspondence$impl = new Correspondence$impl<Integer,Element>(this);
@@ -131,7 +131,7 @@ public class Tuple<Element, First extends Element, Rest extends Sequential<? ext
 	@Annotations(@Annotation("default"))
 	@TypeInfo("ceylon.language::Iterable<Result>")
 	@TypeParameters(@TypeParameter("Result"))
-	public <Result> Iterable<? extends Result> map(
+	public <Result> Iterable<? extends Result, ? extends java.lang.Object> map(
 	        @TypeInfo("ceylon.language::Callable<Result,ceylon.language::Tuple<Element,Element,ceylon.language::Empty>>")
 			Callable<? extends Result> collecting) {
 		return iterable$impl.map(collecting);
@@ -139,8 +139,8 @@ public class Tuple<Element, First extends Element, Rest extends Sequential<? ext
 
 	@Override
 	@Annotations(@Annotation("default"))
-	@TypeInfo("ceylon.language::Iterable<Element>")
-	public Iterable<? extends Element> filter(
+	@TypeInfo("ceylon.language::Iterable<Element,ceylon.language::Null>")
+	public Iterable<? extends Element, ? extends java.lang.Object> filter(
 	        @TypeInfo("ceylon.language::Callable<ceylon.language::Boolean,ceylon.language::Tuple<Element,Element,ceylon.language::Empty>>")
 			Callable<? extends Boolean> selecting) {
 		return iterable$impl.filter(selecting);
@@ -196,22 +196,22 @@ public class Tuple<Element, First extends Element, Rest extends Sequential<? ext
 
 	@Override
 	@Annotations(@Annotation("default"))
-	@TypeInfo("ceylon.language::Iterable<Element>")
-	public Iterable<? extends Element> skipping(long skip) {
+	@TypeInfo("ceylon.language::Iterable<Element,ceylon.language::Null>")
+	public Iterable<? extends Element, ? extends java.lang.Object> skipping(long skip) {
 		return iterable$impl.skipping(skip);
 	}
 
 	@Override
 	@Annotations(@Annotation("default"))
-	@TypeInfo("ceylon.language::Iterable<Element>")
-	public Iterable<? extends Element> taking(long take) {
+	@TypeInfo("ceylon.language::Iterable<Element,ceylon.language::Null>")
+	public Iterable<? extends Element, ? extends java.lang.Object> taking(long take) {
 		return iterable$impl.taking(take);
 	}
 
 	@Override
 	@Annotations(@Annotation("default"))
-	@TypeInfo("ceylon.language::Iterable<Element>")
-	public Iterable<? extends Element> by(long step) {
+	@TypeInfo("ceylon.language::Iterable<Element,ceylon.language::Null>")
+	public Iterable<? extends Element, ? extends java.lang.Object> by(long step) {
 		return iterable$impl.by(step);
 	}
 
@@ -227,14 +227,14 @@ public class Tuple<Element, First extends Element, Rest extends Sequential<? ext
 	@Override
 	@Annotations(@Annotation("default"))
 	@TypeInfo("ceylon.language::Iterable<Element&ceylon.language::Object>")
-	public Iterable<? extends Element> getCoalesced() {
+	public Iterable<? extends Element, ? extends java.lang.Object> getCoalesced() {
 		return iterable$impl.getCoalesced();
 	}
 
 	@Override
 	@Annotations(@Annotation("default"))
 	@TypeInfo("ceylon.language::Iterable<ceylon.language::Entry<ceylon.language::Integer,Element&ceylon.language::Object>>")
-	public Iterable<? extends Entry<? extends Integer, ? extends Element>> getIndexed() {
+	public Iterable<? extends Entry<? extends Integer, ? extends Element>, ? extends java.lang.Object> getIndexed() {
 		return iterable$impl.getIndexed();
 	}
 
@@ -244,7 +244,7 @@ public class Tuple<Element, First extends Element, Rest extends Sequential<? ext
 	@TypeParameters(@TypeParameter("Other"))
 	public <Other> Iterable chain(@Name("other")
             @TypeInfo("ceylon.language::Iterable<Other>")
-        	Iterable<? extends Other> other) {
+        	Iterable<? extends Other, ? extends java.lang.Object> other) {
 		return iterable$impl.chain(other);
 	}
 

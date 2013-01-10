@@ -56,8 +56,9 @@ doc "Abstract supertype of containers whose elements may be
      Eager operations normally return a sequence."
 see (Collection)
 by "Gavin"
-shared interface Iterable<out Element> 
-        satisfies Container<Element> {
+shared interface Iterable<out Element, out Absent=Null>
+        satisfies Container<Element,Absent> 
+        given Absent satisfies Null {
     
     doc "An iterator for the elements belonging to this 
          container."
@@ -73,7 +74,7 @@ shared interface Iterable<out Element>
     shared actual default Boolean contains(Object element) => 
             any(ifExists(element.equals));
     
-    doc "The first element returned by the iterator, if any.
+    /*doc "The first element returned by the iterator, if any.
          This should produce the same value as
          `ordered.iterator.head`."
     shared actual default Element? first {
@@ -96,7 +97,7 @@ shared interface Iterable<out Element>
             e = x;
         }
         return e;
-    }
+    }*/
     
     doc "Returns an iterable object containing all but the 
          first element of this container."
@@ -244,6 +245,8 @@ shared interface Iterable<out Element>
                     while (i++<skip && !iterator.next() is Finished) {}
                     return iterator;
                 }
+                shared actual Element? first => iterator.next();
+                shared actual Element? last => outer.last;
             }
             return iterable;
         }
@@ -272,6 +275,8 @@ shared interface Iterable<out Element>
                     }
                     return iterator;
                 }
+                shared actual Element? first => outer.first;
+                shared actual Element? last => outer.last; //TODO!!!!
             }
             return iterable;
         }
@@ -337,7 +342,7 @@ shared interface Iterable<out Element>
          original order. For null elements of the original 
          `Iterable`, there is no entry in the resulting 
          iterable object."
-    shared default {Element&Object...} coalesced =>
+    shared default Iterable<Element&Object,Absent> coalesced =>
             { for (e in this) if (exists e) e };
     
     doc "All entries of form `index->element` where `index` 
@@ -352,7 +357,7 @@ shared interface Iterable<out Element>
              
          results in an iterable object with the entries
          `0->\"hello\"` and `2->\"world\"`."
-    shared default {Integer->Element&Object...} indexed {
+    shared default Iterable<Integer->Element&Object,Absent> indexed {
             object iterable satisfies {<Integer->Element&Object>?...} {
                 shared actual Iterator<<Integer->Element&Object>?> iterator {
                     value outerIterable { return outer; }

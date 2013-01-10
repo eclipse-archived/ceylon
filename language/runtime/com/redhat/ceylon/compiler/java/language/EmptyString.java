@@ -1,6 +1,7 @@
 package com.redhat.ceylon.compiler.java.language;
 
 import ceylon.language.Boolean;
+import ceylon.language.Null;
 import ceylon.language.Callable;
 import ceylon.language.Character;
 import ceylon.language.Comparison;
@@ -37,7 +38,7 @@ public class EmptyString extends String {
     }
 
     @Override
-    public Iterable<? extends Character> getRest() {
+    public Iterable<? extends Character, ? extends java.lang.Object> getRest() {
         return this;
     }
 
@@ -69,7 +70,7 @@ public class EmptyString extends String {
     }
     @Override
     @Ignore
-    public Iterable<? extends Character> filter(Callable<? extends Boolean> f) {
+    public Iterable<? extends Character, ? extends java.lang.Object> filter(Callable<? extends Boolean> f) {
         return this;
     }
     @SuppressWarnings({"unchecked", "rawtypes"})
@@ -95,15 +96,15 @@ public class EmptyString extends String {
         return false;
     }
     @Override @Ignore
-    public Iterable<? extends Character> skipping(long skip) {
+    public Iterable<? extends Character, ? extends java.lang.Object> skipping(long skip) {
         return this;
     }
     @Override @Ignore
-    public Iterable<? extends Character> taking(long take) {
+    public Iterable<? extends Character, ? extends java.lang.Object> taking(long take) {
         return this;
     }
     @Override @Ignore
-    public Iterable<? extends Character> by(long step) {
+    public Iterable<? extends Character, ? extends java.lang.Object> by(long step) {
         return this;
     }
     @Override @Ignore
@@ -112,9 +113,9 @@ public class EmptyString extends String {
     }
     @Override @Ignore
     @SuppressWarnings({"unchecked", "rawtypes"})
-    public Iterable<? extends Entry<? extends Integer, ? extends Character>> getIndexed() { return (Iterable)this; }
+    public Iterable<? extends Entry<? extends Integer, ? extends Character>, ? extends java.lang.Object> getIndexed() { return (Iterable)this; }
     @SuppressWarnings("rawtypes")
-    @Override @Ignore public <Other>Iterable chain(Iterable<? extends Other> other) { return other; }
+    @Override @Ignore public <Other>Iterable chain(Iterable<? extends Other, ? extends java.lang.Object> other) { return other; }
     @Override @Ignore
     public <Key> Map<? extends Key, ? extends Sequence<? extends Character>> group(Callable<? extends Key> grouping) {
         return new InternalMap<Key, Sequence<? extends Character>>(java.util.Collections.<Key,Sequence<Character>>emptyMap());

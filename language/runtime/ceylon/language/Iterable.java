@@ -11,9 +11,10 @@ import com.redhat.ceylon.compiler.java.metadata.TypeParameters;
 import com.redhat.ceylon.compiler.java.metadata.Variance;
 
 @Ceylon(major = 3)
-@TypeParameters(@TypeParameter(value = "Element", variance = Variance.OUT))
-@SatisfiedTypes("ceylon.language::Container<Element,ceylon.language::Null>")
-public interface Iterable<Element> extends Container<Element,Null> {
+@TypeParameters({@TypeParameter(value = "Element", variance = Variance.OUT),
+                 @TypeParameter(value = "Absent", variance = Variance.OUT)})
+@SatisfiedTypes("ceylon.language::Container<Element,Absent>")
+public interface Iterable<Element,Absent> extends Container<Element,Absent> {
 
     @Annotations(@Annotation("default"))
     public long getSize();
@@ -26,32 +27,32 @@ public interface Iterable<Element> extends Container<Element,Null> {
     @TypeInfo("ceylon.language::Iterator<Element>")
     public Iterator<? extends Element> getIterator();
 
-    @Annotations({@Annotation("actual"), @Annotation("default")})
+    /*@Annotations({@Annotation("actual"), @Annotation("default")})
     @TypeInfo("ceylon.language::Null|Element")
     public Element getFirst();
 
     @Annotations({@Annotation("actual"), @Annotation("default")})
     @TypeInfo("ceylon.language::Null|Element")
-    public Element getLast();
+    public Element getLast();*/
 
     @Annotations(@Annotation("default"))
-    @TypeInfo("ceylon.language::Iterable<Element>")
-    public Iterable<? extends Element> getRest();
+    @TypeInfo("ceylon.language::Iterable<Element, Null>")
+    public Iterable<? extends Element, ? extends java.lang.Object> getRest();
 
     @Annotations(@Annotation("default"))
     @TypeInfo("ceylon.language::Sequential<Element>")
     public Sequential<? extends Element> getSequence();
 
     @Annotations(@Annotation("default"))
-    @TypeInfo("ceylon.language::Iterable<Result>")
+    @TypeInfo("ceylon.language::Iterable<Result,ceylon.language::Null>")
     @TypeParameters(@TypeParameter("Result"))
-    public <Result> Iterable<? extends Result> map(@Name("collecting")
+    public <Result> Iterable<? extends Result, ? extends java.lang.Object> map(@Name("collecting")
         @TypeInfo("ceylon.language::Callable<Result,ceylon.language::Tuple<Element,Element,ceylon.language::Empty>>")
         Callable<? extends Result> collecting);
 
     @Annotations(@Annotation("default"))
-    @TypeInfo("ceylon.language::Iterable<Element>")
-    public Iterable<? extends Element> filter(@Name("selecting")
+    @TypeInfo("ceylon.language::Iterable<Element,ceylon.language::Null>")
+    public Iterable<? extends Element, ? extends java.lang.Object> filter(@Name("selecting")
         @TypeInfo("ceylon.language::Callable<ceylon.language::Boolean,ceylon.language::Tuple<Element,Element,ceylon.language::Empty>>")
         Callable<? extends Boolean> selecting);
 
@@ -108,20 +109,20 @@ public interface Iterable<Element> extends Container<Element,Null> {
         Callable<? extends Boolean> selecting);
 
     @Annotations(@Annotation("default"))
-    @TypeInfo("ceylon.language::Iterable<Element>")
-    public Iterable<? extends Element> skipping(@Name("skip")
+    @TypeInfo("ceylon.language::Iterable<Element,ceylon.language::Null>")
+    public Iterable<? extends Element, ? extends java.lang.Object> skipping(@Name("skip")
         @TypeInfo("ceylon.language::Integer")
         long skip);
 
     @Annotations(@Annotation("default"))
-    @TypeInfo("ceylon.language::Iterable<Element>")
-    public Iterable<? extends Element> taking(@Name("take")
+    @TypeInfo("ceylon.language::Iterable<Element,ceylon.language::Null>")
+    public Iterable<? extends Element, ? extends java.lang.Object> taking(@Name("take")
         @TypeInfo("ceylon.language::Integer")
         long take);
 
     @Annotations(@Annotation("default"))
-    @TypeInfo("ceylon.language::Iterable<Element>")
-    public Iterable<? extends Element> by(@Name("step")
+    @TypeInfo("ceylon.language::Iterable<Element,ceylon.language::Null>")
+    public Iterable<? extends Element, ? extends java.lang.Object> by(@Name("step")
         @TypeInfo("ceylon.language::Integer")
         long step);
 
@@ -132,19 +133,19 @@ public interface Iterable<Element> extends Container<Element,Null> {
         Callable<? extends Boolean> selecting);
 
     @Annotations(@Annotation("default"))
-    @TypeInfo("ceylon.language::Iterable<Element&ceylon.language::Object>")
-    public Iterable<? extends Element> getCoalesced();
+    @TypeInfo("ceylon.language::Iterable<Element&ceylon.language::Object,Absent>")
+    public Iterable<? extends Element,? extends Absent> getCoalesced();
 
     @Annotations(@Annotation("default"))
-    @TypeInfo("ceylon.language::Iterable<ceylon.language::Entry<ceylon.language::Integer,Element&ceylon.language::Object>>")
-    public Iterable<? extends Entry<? extends Integer, ? extends Element>> getIndexed();
+    @TypeInfo("ceylon.language::Iterable<ceylon.language::Entry<ceylon.language::Integer,Element&ceylon.language::Object>,Absent>")
+    public Iterable<? extends Entry<? extends Integer, ? extends Element>, ? extends Absent> getIndexed();
 
     @Annotations(@Annotation("default"))
-    @TypeInfo("ceylon.language::Iterable<Element|Other>")
+    @TypeInfo("ceylon.language::Iterable<Element|Other,ceylon.language::Null>")
     @TypeParameters(@TypeParameter("Other"))
     public <Other> Iterable chain(@Name("other")
-            @TypeInfo("ceylon.language::Iterable<Other>")
-            Iterable<? extends Other> other);
+            @TypeInfo("ceylon.language::Iterable<Other,ceylon.language::Null>")
+            Iterable<? extends Other, ? extends java.lang.Object> other);
 
     @Annotations(@Annotation("default"))
     @TypeParameters(@TypeParameter(value="Grouping",satisfies="ceylon.language::Object"))

@@ -74,13 +74,13 @@ public final class process_ {
         }
 
         @Override
-        public Iterable<? extends String> items(
+        public Iterable<? extends String, ? extends java.lang.Object> items(
                 Iterable<? extends java.lang.Object> keys) {
             return Correspondence$impl._items(this, keys);
         }
 
         @Override
-        public Iterable<? extends String> items() {
+        public Iterable<? extends String, ? extends java.lang.Object> items() {
             return Correspondence$impl._items(this, $empty.getEmpty());
         }
 

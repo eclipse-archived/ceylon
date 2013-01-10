@@ -22,18 +22,18 @@ import com.redhat.ceylon.compiler.java.metadata.Variance;
 public class LazySet<Element> implements Set<Element> {
     private final ceylon.language.Collection$impl $ceylon$language$Collection$this;
 
-    private final Iterable<? extends Element> elems;
+    private final Iterable<? extends Element, ? extends java.lang.Object> elems;
     private final Set$impl<Element> set$impl = new Set$impl<Element>(this);
     private final Category$impl cat$impl = new Category$impl(this);
 
     @Ignore @SuppressWarnings("unchecked")
     public LazySet() {
         this.$ceylon$language$Collection$this = new ceylon.language.Collection$impl(this);
-        this.elems = (Iterable<? extends Element>)empty_.getEmpty$();
+        this.elems = (Iterable<? extends Element, ? extends java.lang.Object>)empty_.getEmpty$();
     }
     public LazySet(@Name("elems")
-            @TypeInfo("ceylon.language::Iterable<Element>")
-            Iterable<? extends Element> elems) {
+            @TypeInfo("ceylon.language::Iterable<Element,ceylon.language::Null>")
+            Iterable<? extends Element, ? extends java.lang.Object> elems) {
         this.$ceylon$language$Collection$this = new ceylon.language.Collection$impl(this);
         this.elems = elems;
     }
@@ -99,13 +99,13 @@ public class LazySet<Element> implements Set<Element> {
     @TypeParameters(@TypeParameter(value="Other", satisfies="ceylon.language::Object"))
     @TypeInfo("ceylon.language::Set<Element|Other>")
     public <Other> Set exclusiveUnion(final Set<? extends Other> set) {
-        Iterable<? extends Element> hereNotThere = elems.filter(new AbstractCallable<Boolean>("Set_xor1"){
+        Iterable<? extends Element, ? extends java.lang.Object> hereNotThere = elems.filter(new AbstractCallable<Boolean>("Set_xor1"){
             @Override
             public Boolean $call(java.lang.Object e) {
                 return Boolean.instance(!set.contains(e));
             };
         });
-        Iterable<? extends Other> thereNotHere = set.filter(new AbstractCallable<Boolean>("Set_xor2"){
+        Iterable<? extends Other, ? extends java.lang.Object> thereNotHere = set.filter(new AbstractCallable<Boolean>("Set_xor2"){
             @Override
             public Boolean $call(final java.lang.Object e) {
                 return Boolean.instance(elems.find(new AbstractCallable<Boolean>("Set_find2"){
@@ -163,16 +163,18 @@ public class LazySet<Element> implements Set<Element> {
 
     @Override @Ignore
     public Element getFirst() {
-        return elems.getFirst();
+    	throw new RuntimeException();
+//        return elems.getFirst();
     }
 
     @Override @Ignore
     public Element getLast() {
-        return elems.getLast();
+    	throw new RuntimeException();
+//        return elems.getLast();
     }
 
     @Override @Ignore
-    public Iterable<? extends Element> getRest() {
+    public Iterable<? extends Element, ? extends java.lang.Object> getRest() {
         return elems.getRest();
     }
 
@@ -182,13 +184,13 @@ public class LazySet<Element> implements Set<Element> {
     }
 
     @Override @Ignore
-    public <Result> Iterable<? extends Result> map(
+    public <Result> Iterable<? extends Result, ? extends java.lang.Object> map(
             Callable<? extends Result> collecting) {
         return elems.map(collecting);
     }
 
     @Override @Ignore
-    public Iterable<? extends Element> filter(
+    public Iterable<? extends Element, ? extends java.lang.Object> filter(
             Callable<? extends Boolean> selecting) {
         return elems.filter(selecting);
     }
@@ -238,17 +240,17 @@ public class LazySet<Element> implements Set<Element> {
     }
 
     @Override @Ignore
-    public Iterable<? extends Element> skipping(long skip) {
+    public Iterable<? extends Element, ? extends java.lang.Object> skipping(long skip) {
         return elems.skipping(skip);
     }
 
     @Override @Ignore
-    public Iterable<? extends Element> taking(long take) {
+    public Iterable<? extends Element, ? extends java.lang.Object> taking(long take) {
         return elems.taking(take);
     }
 
     @Override @Ignore
-    public Iterable<? extends Element> by(long step) {
+    public Iterable<? extends Element, ? extends java.lang.Object> by(long step) {
         return elems.by(step);
     }
 
@@ -258,18 +260,18 @@ public class LazySet<Element> implements Set<Element> {
     }
 
     @Override @Ignore
-    public Iterable<? extends Element> getCoalesced() {
+    public Iterable<? extends Element, ? extends java.lang.Object> getCoalesced() {
         return elems.getCoalesced();
     }
 
     @Override @Ignore
-    public Iterable<? extends Entry<? extends Integer, ? extends Element>> getIndexed() {
+    public Iterable<? extends Entry<? extends Integer, ? extends Element>, ? extends java.lang.Object> getIndexed() {
         return elems.getIndexed();
     }
 
     @SuppressWarnings("rawtypes")
     @Override @Ignore
-    public <Other> Iterable chain(Iterable<? extends Other> other) {
+    public <Other> Iterable chain(Iterable<? extends Other, ? extends java.lang.Object> other) {
         return elems.chain(other);
     }
 

@@ -33,7 +33,7 @@ public abstract class String
                Summable<String>, Castable<String> {
     private final ceylon.language.Category$impl $ceylon$language$Category$this;
     private final ceylon.language.Correspondence$impl $ceylon$language$Correspondence$this;
-    protected final ceylon.language.Iterable$impl<Character> $ceylon$language$Iterable$this;
+    protected final ceylon.language.Iterable$impl<Character,java.lang.Object> $ceylon$language$Iterable$this;
     protected final ceylon.language.List$impl<Character> $ceylon$language$List$this;
 
     public final java.lang.String value;
@@ -41,7 +41,7 @@ public abstract class String
     protected String(java.lang.String s) {
         this.$ceylon$language$Category$this = new ceylon.language.Category$impl(this);
         this.$ceylon$language$Correspondence$this = new ceylon.language.Correspondence$impl(this);
-        this.$ceylon$language$Iterable$this = new ceylon.language.Iterable$impl<Character>(this);
+        this.$ceylon$language$Iterable$this = new ceylon.language.Iterable$impl<Character,java.lang.Object>(this);
         this.$ceylon$language$List$this = new ceylon.language.List$impl<Character>(this);
         value = s;
     }
@@ -708,7 +708,7 @@ public abstract class String
     }
 
     @Ignore
-    public static java.lang.String join(java.lang.String value, Iterable<? extends String> strings) {
+    public static java.lang.String join(java.lang.String value, Iterable<? extends String, ? extends java.lang.Object> strings) {
         java.lang.StringBuilder result = new java.lang.StringBuilder();
         Iterator<? extends String> it = strings.getIterator();
         java.lang.Object elem = it.next();
@@ -893,7 +893,7 @@ public abstract class String
     }
 
     @TypeInfo("ceylon.language::Iterable<ceylon.language::String>")
-    public Iterable<? extends String> split(
+    public Iterable<? extends String, ? extends java.lang.Object> split(
             @TypeInfo(value="ceylon.language::Iterable<ceylon.language::Character>|ceylon.language::Callable<ceylon.language::Boolean,ceylon.language::Tuple<ceylon.language::Character,ceylon.language::Character,ceylon.language::Empty>>", erased=true)
             @Defaulted
             @Name("separator") java.lang.Object separator,
@@ -908,7 +908,7 @@ public abstract class String
     }
 
     @Ignore
-    public static Iterable<? extends String> split(java.lang.String value,
+    public static Iterable<? extends String, ? extends java.lang.Object> split(java.lang.String value,
             java.lang.Object separator,
             boolean discardSeparators,
             boolean groupSeparators) {
@@ -919,38 +919,38 @@ public abstract class String
     }
 
     @Ignore
-    public Iterable<? extends String> split(
+    public Iterable<? extends String, ? extends java.lang.Object> split(
             java.lang.Object separator,
             boolean discardSeparators) {
         return split(separator, discardSeparators, split$groupSeparators(separator, discardSeparators));
     }
 
     @Ignore
-    public static Iterable<? extends String> split(java.lang.String value,
+    public static Iterable<? extends String, ? extends java.lang.Object> split(java.lang.String value,
             java.lang.Object separator,
             boolean discardSeparators) {
         return split(value, separator, discardSeparators, split$groupSeparators(separator, discardSeparators));
     }
 
     @Ignore
-    public Iterable<? extends String> split(
+    public Iterable<? extends String, ? extends java.lang.Object> split(
             java.lang.Object separator) {
         return split(separator, split$discardSeparators(separator));
     }
 
     @Ignore
-    public static Iterable<? extends String> split(java.lang.String value,
+    public static Iterable<? extends String, ? extends java.lang.Object> split(java.lang.String value,
             java.lang.Object separator) {
         return split(value, separator, split$discardSeparators(separator));
     }
 
     @Ignore
-    public Iterable<? extends String> split() {
+    public Iterable<? extends String, ? extends java.lang.Object> split() {
         return split(split$separator());
     }
 
     @Ignore
-    public static Iterable<? extends String> split(java.lang.String value) {
+    public static Iterable<? extends String, ? extends java.lang.Object> split(java.lang.String value) {
         return split(value, split$separator());
     }
 
@@ -975,7 +975,7 @@ public abstract class String
     }
 
     @TypeInfo("ceylon.language::Iterable<ceylon.language::String>")
-    public Iterable<? extends String> getLines() {
+    public Iterable<? extends String, ? extends java.lang.Object> getLines() {
         return split(new AbstractCallable<Boolean>("whitespace") {
             @Override
             public Boolean $call(java.lang.Object ch) {
@@ -985,7 +985,7 @@ public abstract class String
     }
 
     @Ignore
-    public static Iterable<? extends String> getLines(java.lang.String value) {
+    public static Iterable<? extends String, ? extends java.lang.Object> getLines(java.lang.String value) {
         return split(value, new AbstractCallable<Boolean>("whitespace") {
             @Override
             public Boolean $call(java.lang.Object ch) {
@@ -995,13 +995,13 @@ public abstract class String
     }
 
     @TypeInfo("ceylon.language::Iterable<ceylon.language::Integer>")
-    public Iterable<? extends Integer> occurrences(
+    public Iterable<? extends Integer, ? extends java.lang.Object> occurrences(
             @Name("substring") java.lang.String substring) {
         return new Occurs(value, substring);
     }
 
     @Ignore
-    public static Iterable<? extends Integer> occurrences(java.lang.String value, java.lang.String substring) {
+    public static Iterable<? extends Integer, ? extends java.lang.Object> occurrences(java.lang.String value, java.lang.String substring) {
         return new Occurs(value, substring);
     }
 
@@ -1016,7 +1016,7 @@ public abstract class String
     }
 
     @Ignore
-    public static Iterable<? extends Character> getRest(java.lang.String value) {
+    public static Iterable<? extends Character, ? extends java.lang.Object> getRest(java.lang.String value) {
         if (value.isEmpty()) {
             return instance(value);
         } else {
@@ -1043,7 +1043,7 @@ public abstract class String
     }
 
     @Ignore
-    public static Iterable<? extends Character> getSequence(java.lang.String value) {
+    public static Iterable<? extends Character, ? extends java.lang.Object> getSequence(java.lang.String value) {
         if (value.isEmpty()) {
             return instance(value);
         } else {
@@ -1070,7 +1070,7 @@ public abstract class String
     }
 
     @Ignore
-    public static Iterable<? extends Character> sort(java.lang.String value, Callable<? extends Comparison> f) {
+    public static Iterable<? extends Character, ? extends java.lang.Object> sort(java.lang.String value, Callable<? extends Comparison> f) {
         if (value.isEmpty()) {
             return instance(value);
         } else {
@@ -1079,12 +1079,12 @@ public abstract class String
     }
 
     @Override @Ignore
-    public <Result> Iterable<? extends Result> map(Callable<? extends Result> f) {
+    public <Result> Iterable<? extends Result, ? extends java.lang.Object> map(Callable<? extends Result> f) {
         return new MapIterable<Character, Result>(this, f);
     }
 
     @Ignore
-    public static <Result> Iterable<? extends Result> map(java.lang.String value, Callable<? extends Result> f) {
+    public static <Result> Iterable<? extends Result, ? extends java.lang.Object> map(java.lang.String value, Callable<? extends Result> f) {
         return new MapIterable<Character, Result>(instance(value), f);
     }
 
@@ -1102,7 +1102,7 @@ public abstract class String
         if (value.isEmpty()) {
             return instance(value);
         } else {
-            return String.instance(string_.string((new FilterIterable<Character>(instance(value), f)).getSequence()));
+            return String.instance(string_.string((new FilterIterable<Character, java.lang.Object>(instance(value), f)).getSequence()));
         }
     }
 
@@ -1143,7 +1143,7 @@ public abstract class String
     }
 
     @Ignore
-    public static Iterable<? extends Character> skipping(java.lang.String value, long skip) {
+    public static Iterable<? extends Character, ? extends java.lang.Object> skipping(java.lang.String value, long skip) {
         if (value.isEmpty()) {
             return instance(value);
         } else {
@@ -1152,7 +1152,7 @@ public abstract class String
     }
 
     @Ignore
-    public static Iterable<? extends Character> taking(java.lang.String value, long take) {
+    public static Iterable<? extends Character, ? extends java.lang.Object> taking(java.lang.String value, long take) {
         if (value.isEmpty()) {
             return instance(value);
         } else {
@@ -1161,7 +1161,7 @@ public abstract class String
     }
 
     @Ignore
-    public static Iterable<? extends Character> by(java.lang.String value, long step) {
+    public static Iterable<? extends Character, ? extends java.lang.Object> by(java.lang.String value, long step) {
         if (value.isEmpty()) {
             return instance(value);
         } else {
@@ -1190,7 +1190,7 @@ public abstract class String
     }
 
     @Ignore
-    public static Iterable<? extends Entry<? extends Integer, ? extends Character>> getIndexed(java.lang.String value) {
+    public static Iterable<? extends Entry<? extends Integer, ? extends Character>, ? extends java.lang.Object> getIndexed(java.lang.String value) {
         if (value.isEmpty()) {
             return (Iterable)instance(value);
         } else {
@@ -1199,7 +1199,7 @@ public abstract class String
     }
 
     @Ignore
-    public static <Other>Iterable chain(java.lang.String value, Iterable<? extends Other> other) {
+    public static <Other>Iterable chain(java.lang.String value, Iterable<? extends Other, ? extends java.lang.Object> other) {
         if (value.isEmpty()) {
             return other;
         } else {
@@ -1243,8 +1243,8 @@ public abstract class String
         }
     }
 
-    private static final class Tokens implements Iterable<String> {
-        private final ceylon.language.Iterable$impl<String> $ceylon$language$Iterable$this;
+    private static final class Tokens implements Iterable<String,java.lang.Object> {
+        private final ceylon.language.Iterable$impl<String,java.lang.Object> $ceylon$language$Iterable$this;
         private final ceylon.language.Category$impl $ceylon$language$Category$this;
         
         private final java.lang.String str;
@@ -1254,7 +1254,7 @@ public abstract class String
 
         public Tokens(java.lang.String str, java.lang.Object separator,
                 boolean keepSeparators, boolean groupSeparators) {
-            this.$ceylon$language$Iterable$this = new ceylon.language.Iterable$impl<String>(this);
+            this.$ceylon$language$Iterable$this = new ceylon.language.Iterable$impl<String,java.lang.Object>(this);
             this.$ceylon$language$Category$this = new ceylon.language.Category$impl(this);
             this.str = str;
             this.separator = separator;
@@ -1370,7 +1370,7 @@ public abstract class String
                             return false;
                         int charCodePoint = java.lang.Character.codePointAt(chars, index);
                         java.lang.Object $tmp;
-                        for (Iterator<? extends Character> iter = ((Iterable<? extends Character>)separator).getIterator();
+                        for (Iterator<? extends Character> iter = ((Iterable<? extends Character, ? extends java.lang.Object>)separator).getIterator();
                                 !(($tmp = iter.next()) instanceof Finished);) {
                             if (((Character)$tmp).getInteger() == charCodePoint) {
                                 return true;
@@ -1395,16 +1395,18 @@ public abstract class String
         @Override
         @Ignore
         public String getFirst() {
-        	return $ceylon$language$Iterable$this.getFirst();
+        	throw new RuntimeException();
+//        	return $ceylon$language$Iterable$this.getFirst();
         }
         @Override @Ignore
         public String getLast() {
-            return $ceylon$language$Iterable$this.getLast();
+        	throw new RuntimeException();
+//            return $ceylon$language$Iterable$this.getLast();
         }
 
         @Override
         @Ignore
-        public Iterable<? extends String> getRest() {
+        public Iterable<? extends String, ? extends java.lang.Object> getRest() {
         	return $ceylon$language$Iterable$this.getRest();
         }
 
@@ -1428,13 +1430,13 @@ public abstract class String
         }
         @Override
         @Ignore
-        public <Result> Iterable<? extends Result> map(Callable<? extends Result> f) {
+        public <Result> Iterable<? extends Result, ? extends java.lang.Object> map(Callable<? extends Result> f) {
             return new MapIterable<String, Result>(this, f);
         }
         @Override
         @Ignore
-        public Iterable<? extends String> filter(Callable<? extends Boolean> f) {
-            return new FilterIterable<String>(this, f);
+        public Iterable<? extends String, ? extends java.lang.Object> filter(Callable<? extends Boolean> f) {
+            return new FilterIterable<String,java.lang.Object>(this, f);
         }
         @Override
         @Ignore
@@ -1444,7 +1446,7 @@ public abstract class String
         @Override
         @Ignore
         public Sequential<? extends String> select(Callable<? extends Boolean> f) {
-            return new FilterIterable<String>(this, f).getSequence();
+            return new FilterIterable<String,java.lang.Object>(this, f).getSequence();
         }
         @Override
         @Ignore
@@ -1460,15 +1462,15 @@ public abstract class String
             return $ceylon$language$Iterable$this.every(f);
         }
         @Override @Ignore
-        public Iterable<? extends String> skipping(long n) {
+        public Iterable<? extends String, ? extends java.lang.Object> skipping(long n) {
             return $ceylon$language$Iterable$this.skipping(n);
         }
         @Override @Ignore
-        public Iterable<? extends String> taking(long n) {
+        public Iterable<? extends String, ? extends java.lang.Object> taking(long n) {
             return $ceylon$language$Iterable$this.taking(n);
         }
         @Override @Ignore
-        public Iterable<? extends String> by(long n) {
+        public Iterable<? extends String, ? extends java.lang.Object> by(long n) {
             return $ceylon$language$Iterable$this.by(n);
         }
         @Override @Ignore
@@ -1476,14 +1478,14 @@ public abstract class String
             return $ceylon$language$Iterable$this.count(f);
         }
         @Override @Ignore
-        public Iterable<? extends String> getCoalesced() {
+        public Iterable<? extends String, ? extends java.lang.Object> getCoalesced() {
             return $ceylon$language$Iterable$this.getCoalesced();
         }
         @Override @Ignore
-        public Iterable<? extends Entry<? extends Integer, ? extends String>> getIndexed() {
+        public Iterable<? extends Entry<? extends Integer, ? extends String>, ? extends java.lang.Object> getIndexed() {
             return $ceylon$language$Iterable$this.getIndexed();
         }
-        @Override @Ignore public <Other>Iterable chain(Iterable<? extends Other> other) {
+        @Override @Ignore public <Other>Iterable chain(Iterable<? extends Other, ? extends java.lang.Object> other) {
             return $ceylon$language$Iterable$this.chain(other);
         }
         @Override @Ignore
@@ -1522,15 +1524,15 @@ public abstract class String
         }
     }
 
-    private static final class Occurs implements Iterable<Integer> {
-        private final ceylon.language.Iterable$impl<Integer> $ceylon$language$Iterable$this;
+    private static final class Occurs implements Iterable<Integer,java.lang.Object> {
+        private final ceylon.language.Iterable$impl<Integer,java.lang.Object> $ceylon$language$Iterable$this;
         private final ceylon.language.Category$impl $ceylon$language$Category$this;
         
         private final java.lang.String str;
         private final java.lang.String oc;
 
         public Occurs(java.lang.String str, java.lang.String oc) {
-            this.$ceylon$language$Iterable$this = new ceylon.language.Iterable$impl<Integer>(this);
+            this.$ceylon$language$Iterable$this = new ceylon.language.Iterable$impl<Integer,java.lang.Object>(this);
             this.$ceylon$language$Category$this = new ceylon.language.Category$impl(this);
             this.str = str;
             this.oc = oc;
@@ -1568,16 +1570,18 @@ public abstract class String
         @Override
         @Ignore
         public Integer getFirst() {
-        	return $ceylon$language$Iterable$this.getFirst();
+        	throw new RuntimeException();
+//        	return $ceylon$language$Iterable$this.getFirst();
         }
         @Override @Ignore
         public Integer getLast() {
-            return $ceylon$language$Iterable$this.getLast();
+        	throw new RuntimeException();
+//            return $ceylon$language$Iterable$this.getLast();
         }
 
         @Override
         @Ignore
-        public Iterable<? extends Integer> getRest() {
+        public Iterable<? extends Integer, ? extends java.lang.Object> getRest() {
         	return $ceylon$language$Iterable$this.getRest();
         }
 
@@ -1601,13 +1605,13 @@ public abstract class String
         }
         @Override
         @Ignore
-        public <Result> Iterable<? extends Result> map(Callable<? extends Result> f) {
+        public <Result> Iterable<? extends Result, ? extends java.lang.Object> map(Callable<? extends Result> f) {
             return new MapIterable<Integer, Result>(this, f);
         }
         @Override
         @Ignore
-        public Iterable<? extends Integer> filter(Callable<? extends Boolean> f) {
-            return new FilterIterable<Integer>(this, f);
+        public Iterable<? extends Integer, ? extends java.lang.Object> filter(Callable<? extends Boolean> f) {
+            return new FilterIterable<Integer, java.lang.Object>(this, f);
         }
         @Override @Ignore
         public <Result> Sequential<? extends Result> collect(Callable<? extends Result> f) {
@@ -1615,7 +1619,7 @@ public abstract class String
         }
         @Override @Ignore
         public Sequential<? extends Integer> select(Callable<? extends Boolean> f) {
-            return new FilterIterable<Integer>(this, f).getSequence();
+            return new FilterIterable<Integer, java.lang.Object>(this, f).getSequence();
         }
         @Override
         @Ignore
@@ -1631,15 +1635,15 @@ public abstract class String
             return $ceylon$language$Iterable$this.every(f);
         }
         @Override @Ignore
-        public Iterable<? extends Integer> skipping(long n) {
+        public Iterable<? extends Integer, ? extends java.lang.Object> skipping(long n) {
             return $ceylon$language$Iterable$this.skipping(n);
         }
         @Override @Ignore
-        public Iterable<? extends Integer> taking(long n) {
+        public Iterable<? extends Integer, ? extends java.lang.Object> taking(long n) {
             return $ceylon$language$Iterable$this.taking(n);
         }
         @Override @Ignore
-        public Iterable<? extends Integer> by(long n) {
+        public Iterable<? extends Integer, ? extends java.lang.Object> by(long n) {
             return $ceylon$language$Iterable$this.by(n);
         }
         @Override @Ignore
@@ -1647,14 +1651,14 @@ public abstract class String
             return $ceylon$language$Iterable$this.count(f);
         }
         @Override @Ignore
-        public Iterable<? extends Integer> getCoalesced() {
+        public Iterable<? extends Integer, ? extends java.lang.Object> getCoalesced() {
             return $ceylon$language$Iterable$this.getCoalesced();
         }
         @Override @Ignore
-        public Iterable<? extends Entry<? extends Integer, ? extends Integer>> getIndexed() {
+        public Iterable<? extends Entry<? extends Integer, ? extends Integer>, ? extends java.lang.Object> getIndexed() {
             return $ceylon$language$Iterable$this.getIndexed();
         }
-        @Override @Ignore public <Other>Iterable chain(Iterable<? extends Other> other) {
+        @Override @Ignore public <Other>Iterable chain(Iterable<? extends Other, ? extends java.lang.Object> other) {
             return $ceylon$language$Iterable$this.chain(other);
         }
         @Override @Ignore
