@@ -14,7 +14,7 @@ doc "Represents an iterable collection of elements of finite
      collection."
 see (List, Map, Set)
 shared interface Collection<out Element>
-        satisfies {Element...} &
+        satisfies {Element*} &
                   Category &
                   Cloneable<Collection<Element>> {
     

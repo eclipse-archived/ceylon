@@ -2,7 +2,7 @@ doc "An implementation of Set that wraps an `Iterable` of
      elements. All operations on this Set are performed
      on the `Iterable`."
 by "Enrique Zamudio"
-shared class LazySet<out Element>({Element...} elems)
+shared class LazySet<out Element>({Element*} elems)
         satisfies Set<Element>
         given Element satisfies Object {
     

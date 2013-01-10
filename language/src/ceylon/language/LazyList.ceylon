@@ -2,7 +2,7 @@ doc "An implementation of List that wraps an `Iterable` of
      elements. All operations on this List are performed on 
      the Iterable."
 by "Enrique Zamudio"
-shared class LazyList<out Element>({Element...} elems)
+shared class LazyList<out Element>({Element*} elems)
         satisfies List<Element> {
     
     shared actual Integer? lastIndex {

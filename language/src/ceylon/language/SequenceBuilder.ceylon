@@ -19,7 +19,7 @@ shared class SequenceBuilder<Element>() {
     
     doc "Append multiple elements to the sequence and return 
          this `SequenceBuilder`"
-    default shared SequenceBuilder<Element> appendAll(Element... elements) {
+    default shared SequenceBuilder<Element> appendAll(Element* elements) {
         for (element in elements) {
             append(element);
         }

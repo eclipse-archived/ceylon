@@ -65,12 +65,12 @@ shared abstract class String()
     doc "Split the string into tokens, using the given
          predicate to determine which characters are 
          separator characters."
-    shared formal {String...} split(
+    shared formal {String*} split(
             doc "A predicate that determines if a character
                  is a separator characters at which to split.
                  Default to split at any Unicode whitespace
                  character."
-            {Character...}|Boolean(Character) separator 
+            {Character*}|Boolean(Character) separator 
                     = (Character ch) => ch.whitespace,
             doc "Specifies that the separator characters
                  occurring in the string should be discarded.
@@ -85,10 +85,10 @@ shared abstract class String()
     
     doc "Join the given strings, using this string as a 
          separator."
-    shared formal String join(String... strings);
+    shared formal String join(String* strings);
     
     doc "Split the string into lines of text."
-    shared formal {String...} lines;
+    shared formal {String*} lines;
 
     doc "This string, after discarding whitespace from the 
          beginning and end of the string."
@@ -184,7 +184,7 @@ shared abstract class String()
     doc "The character indexes at which the given substring
          occurs within this string. Occurrences do not 
          overlap."
-    shared formal {Integer...} occurrences(String substring);
+    shared formal {Integer*} occurrences(String substring);
     
     doc "The first index at which the given substring occurs
          within this string, or `null` if the substring does
@@ -277,4 +277,4 @@ shared abstract class String()
 }
 
 doc "Create a new string containing the given characters."
-shared String string(Character... characters) { throw; }
+shared String string(Character* characters) { throw; }

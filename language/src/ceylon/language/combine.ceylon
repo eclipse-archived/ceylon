@@ -1,10 +1,10 @@
 doc "Applies a function to each element of two `Iterable`s
      and returns an `Iterable` with the results."
 by "Gavin" "Enrique Zamudio"
-shared {Result...} combine<Result,Element,OtherElement>(
+shared {Result*} combine<Result,Element,OtherElement>(
         Result combination(Element element, OtherElement otherElement), 
-        {Element...} elements, 
-        {OtherElement...} otherElements) {
+        {Element*} elements, 
+        {OtherElement*} otherElements) {
     //Eventually we'll just do this
     //return {
     //    let (oi=otherElements.iterator)

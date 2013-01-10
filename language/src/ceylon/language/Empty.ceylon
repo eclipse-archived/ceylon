@@ -60,7 +60,7 @@ shared interface Empty
     shared actual [] indexed => nothing; //this;
     
     doc "Returns `other`."
-    shared actual {Other...} chain<Other>({Other...} other) => other;
+    shared actual {Other*} chain<Other>({Other*} other) => other;
     
     doc "Returns `false` for any given element."
     shared actual Boolean contains(Object element) => false;
