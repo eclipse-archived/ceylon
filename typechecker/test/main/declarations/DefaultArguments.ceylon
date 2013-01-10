@@ -6,10 +6,10 @@ class DefiningClass() {
 }
 
 class DefaultedAndSequenced() {
-    void m(String s, Integer i = 1, @error Boolean... b = [true, false]) {}
+    void m(String s, Integer i = 1, @error Boolean* b = [true, false]) {}
     m("hello");
     m("hello", 2);
-    m("hello", 2, {}...);
+    m("hello", 2, {}*);
     m("hello", 2, true);
     m("hello", 2, true, false);
 }

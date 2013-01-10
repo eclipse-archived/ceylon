@@ -144,16 +144,16 @@ interface InitializerParams {
     class YY(x) { shared default Float x; }
     
     class WithSequencedParam(strings) {
-        String... strings;
+        String* strings;
         for (String s in strings) {}
     }
     void withSequencedParam(strings) {
-        String... strings;
+        String* strings;
         for (String s in strings) {}
     }
-    void broken(@error Float... floats()) {
-        @error Integer... ints;
-        @error String... strings() { return ["hello"]; }
+    void broken(@error Float* floats()) {
+        @error Integer* ints;
+        @error String* strings() { return ["hello"]; }
     }
     
     void testSequencedParam() {

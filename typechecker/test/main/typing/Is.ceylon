@@ -96,7 +96,7 @@ class Is() {
         //@error for (String str in e) {} 
         @type:"Correspondence<Integer,String>&Sized" value ee = e;
     }
-    if (is Sized&{String...} e) {
+    if (is Sized&{String*} e) {
         String? s = e[0];
         Integer size = e.size;
         Boolean empty = e.empty;
@@ -119,9 +119,9 @@ class Is() {
     
     //Boolean b1 = is Sized&Iterable<String> e;
     //Boolean b2 = is Sized|Category e;
-    //Boolean b3 = is Sized&{String...} e;
+    //Boolean b3 = is Sized&{String*} e;
     //Boolean b4 = is <Sized|Category>&Iterable<Object> e;
-    //Boolean b5 = is [String...] e;
+    //Boolean b5 = is [String*] e;
     //Boolean b6 = is String[] e;
     //Boolean b7 = is [String,Integer] e;
     //Boolean b8 = is String() e;
@@ -131,9 +131,9 @@ class Is() {
     
     Boolean c1 = e is Sized&Iterable<String>;
     Boolean c2 = e is Sized|Category;
-    Boolean c3 = e is Sized&{String...};
+    Boolean c3 = e is Sized&{String*};
     Boolean c4 = e is <Sized|Category>&Iterable<Object>;
-    Boolean c5 = e is [String...];
+    Boolean c5 = e is [String*];
     Boolean c6 = e is String[];
     Boolean c7 = e is [String,Integer];
     Boolean c8 = e is String();
@@ -177,7 +177,7 @@ class Is() {
         Identifiable&Category ic = cat;
     }
     
-    void notIs<T>(T... ts) {
+    void notIs<T>(T* ts) {
         value next = ts.iterator.next();
         if (!is Finished next) {
             T tt = next;

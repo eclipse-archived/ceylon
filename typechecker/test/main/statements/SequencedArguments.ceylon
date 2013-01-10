@@ -13,34 +13,34 @@ class Assignment() {
 }
 
 class SequencedArguments() {
-    void print(String s, String... strings) {}
+    void print(String s, String* strings) {}
     void printAll(String[] strings) {}
-    void printSum(Integer... n) {}
+    void printSum(Integer* n) {}
     
     String[] names = [ "stef", "tako" ];
     
     print(" ", "hello", "world");
-    print(" ", names...);
-    print(" ", "hello", "world", names...);
+    print(" ", names*);
+    print(" ", "hello", "world", names*);
     printSum(1,2,3);
-    printSum([1,2,3]...);
+    printSum([1,2,3]*);
     @error print(" ", names);
     @error print(" ", "hello", names, "world");
-    @error print(" ", "hello"...);
-    @error print(" ", "hello", "world"...);
-    @error print(" ", "hello", names, "world", names...);
-    @error print(" "...);
-    @error printSum(1...);
+    @error print(" ", "hello"*);
+    @error print(" ", "hello", "world"*);
+    @error print(" ", "hello", names, "world", names*);
+    @error print(" "*);
+    @error printSum(1*);
     printAll(names);
-    @error printAll(names...);
+    @error printAll(names*);
 }
 
 class SequencedArgumentsAgain() {
     String[] strings = ["world", "moon"];
-    void printAll(Integer i, String... strings) {}
-    printAll(1, "hello", "goodbye", strings...);
+    void printAll(Integer i, String* strings) {}
+    printAll(1, "hello", "goodbye", strings*);
     @error printAll();
     printAll(2);
-    printAll(1, "hello", "goodbye", strings...);
-    @error printAll(1, 0, "goodbye", strings...);
+    printAll(1, "hello", "goodbye", strings*);
+    @error printAll(1, 0, "goodbye", strings*);
 }

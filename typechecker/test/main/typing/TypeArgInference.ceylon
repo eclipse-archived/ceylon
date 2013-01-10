@@ -66,16 +66,16 @@ class TypeArgInference() {
     @type:"Nothing" method("hello");
     @error:"String" method([]);
     
-    T? firstElt<T>(T... args) {
+    T? firstElt<T>(T* args) {
         return args.sequence.first;
     }
-    T? firstElt0<T>({T...} args) {
+    T? firstElt0<T>({T*} args) {
         return args.sequence.first;
     }
     @type:"Null|String" firstElt("hello", "world");
     @type:"Null|Sequence<String>" firstElt(["hello", "world"].sequence);
     @type:"Null|Tuple<String,String,Tuple<String,String,Empty>>" firstElt (["hello", "world"]);
-    @type:"Null|String" firstElt(["hello", "world"]...);
+    @type:"Null|String" firstElt(["hello", "world"]*);
     @type:"Null|String" firstElt0 { "hello", "world" };
     @type:"Null|Sequence<String>" firstElt0 {["hello", "world"].sequence};
     firstElt { args = "hello"; @error args="world"; };

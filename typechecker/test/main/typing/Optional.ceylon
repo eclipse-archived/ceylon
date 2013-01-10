@@ -59,10 +59,10 @@ class Optional() {
     }
     
     Sequence<String> stuff = [ "foo" ];
-    Character[][] chars = stuff[].characters;
+    Character[][] chars = stuff*.characters;
 
     String[] nostuff = {};
-    Character[][] nochars = nostuff[].characters;
+    Character[][] nochars = nostuff*.characters;
     
     String? maybestuff = null;
     Character[]? maybechars = maybestuff?.characters;
@@ -88,7 +88,7 @@ class Optional() {
     //TODO: I think the type parameter X does
     //      not hide the X defined above - it
     //      should!
-    /*shared void entries<X>(X... sequence) 
+    /*shared void entries<X>(X* sequence) 
             given X satisfies Equality {
         if (nonempty sequence) {
             entries<X>(sequence.clone);

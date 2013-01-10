@@ -211,7 +211,7 @@ class Generics() {
         }
     }
     
-    abstract class SortedList<T>(T... elements) 
+    abstract class SortedList<T>(T* elements) 
         extends Object()
         satisfies Sequence<T> 
         given T satisfies Comparable<T> {

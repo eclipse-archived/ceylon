@@ -108,7 +108,7 @@ abstract class X<T>() {
     shared formal Object baz(String s(Integer i));
     shared formal String qux<S>();
     shared formal Anything fum(String string = "hello");
-    shared formal Anything fo(String... strings);
+    shared formal Anything fo(String* strings);
     shared formal void fee();
 }
 
@@ -118,7 +118,7 @@ class Y() extends X<String>() {
     baz = (String(Integer) s) => s(0);
     @error qux = () => "hello";
     fum = (String s) => print(s);
-    fo = (String... ss) => print(", ".join(ss...));
+    fo = (String* ss) => print(", ".join(ss*));
     @error fee() => 0;
 }
 
@@ -182,5 +182,5 @@ class MyCla() satisfies MyInt {
     f = print;
 }
 interface MySubint satisfies MyInt {
-    @error f = print; //TODO: unnecessary error ... revisit this?
+    @error f = print; //TODO: unnecessary error * revisit this?
 }

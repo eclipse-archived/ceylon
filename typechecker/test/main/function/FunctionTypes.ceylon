@@ -221,17 +221,17 @@ void method() {
         @error return foo;
     }
     
-    Null foo(Integer... seq) => null;
-    Null bar(Integer... ints) => foo(ints...);
-    Null baz(Integer... seq); baz = foo;
-    Null qux(Integer... ints) => baz(ints...);
+    Null foo(Integer* seq) => null;
+    Null bar(Integer* ints) => foo(ints*);
+    Null baz(Integer* seq); baz = foo;
+    Null qux(Integer* ints) => baz(ints*);
     Null ok(Integer ints) => foo(ints);
-    @error Null broke(Integer ints) => foo(ints...);
+    @error Null broke(Integer ints) => foo(ints*);
     Null notBroke(Integer ints); notBroke = foo;
-    Null alsoBroke(Integer... ints); @error alsoBroke = ok;
-    Null reallyBroke(Integer... ints); reallyBroke(@error Integer[] ints) => foo(ints...);
-    Null badlyBroke(Integer... ints); badlyBroke(@error Integer[] ints) => ok(ints.first else 0);
-    Null terrible(Integer... ints); @error terrible(Integer... ints) => foo;    
+    Null alsoBroke(Integer* ints); @error alsoBroke = ok;
+    Null reallyBroke(Integer* ints); reallyBroke(@error Integer[] ints) => foo(ints*);
+    Null badlyBroke(Integer* ints); badlyBroke(@error Integer[] ints) => ok(ints.first else 0);
+    Null terrible(Integer* ints); @error terrible(Integer* ints) => foo;    
 }
 
 class Outer() {
@@ -273,17 +273,17 @@ Sequence<Boolean()(String)> singletonBooleanFunc = Singleton<Boolean()(String)>(
 
 void sequencedParams() {
     value str = string;
-    Anything(Character...) str0 = str;
-    Anything(Character...) str0p = string;
+    Anything(Character*) str0 = str;
+    Anything(Character*) str0p = string;
     Anything(Character) str1 = str;
     Anything(Character, Character) str2 = str;
-    str("hello".characters...);
+    str("hello".characters*);
     str();
     str(`X`);
     str(`h`, `e`, `l`, `l`, `o`);
     @error str(1);
     @error str("hello".characters);
-    @error str(`X`...);
+    @error str(`X`*);
 }
 
  class Outer1() {
@@ -293,13 +293,13 @@ void sequencedParams() {
  Outer1.Inner? i1 = o?.Inner();
  Outer1.Inner? cons() => o?.Inner();
  
-void foo1(Integer... seq) {}
-void bar1(Integer... ints) { foo1(ints...); }
-Anything(Integer...) baz1 = bar1; 
+void foo1(Integer* seq) {}
+void bar1(Integer* ints) { foo1(ints*); }
+Anything(Integer*) baz1 = bar1; 
 
-Boolean foo2(Integer... seq) => true;
-Boolean bar2(Integer... ints) => foo2(ints...);
-Boolean(Integer...) baz2 = bar2; 
+Boolean foo2(Integer* seq) => true;
+Boolean bar2(Integer* ints) => foo2(ints*);
+Boolean(Integer*) baz2 = bar2; 
 
 alias CSI => Callable<String,[Integer]>;
 String callCSI(CSI csi) {
@@ -321,12 +321,12 @@ void useHandle() {
 void lazySpec() {
     String lazy1(String s, Float x=0.0, Boolean b=false);
     lazy1 = (String s, Float x, Boolean b) => b then s else x.string;
-    String lazy2(String s, Float... x);
-    lazy2 = (String s, Float... x) => s;
+    String lazy2(String s, Float* x);
+    lazy2 = (String s, Float* x) => s;
     String lazy3(String s, Float x=0.0);
     lazy3 = (String s, Float x, Boolean b=true) => b then s else x.string;
     String lazy4(String s, Float x, Float y);
-    lazy4 = (String s, Float... x) => s;
+    lazy4 = (String s, Float* x) => s;
     Anything x(String s="")(Integer i);
     x = (String s)(Integer i) => nothing;
 }
@@ -334,12 +334,12 @@ void lazySpec() {
 void lazyLazySpec() {
     String lazy1(String s, Float x=0.0, Boolean b=false);
     lazy1(String s, Float x, Boolean b) => b then s else x.string;
-    String lazy2(String s, Float... x);
-    lazy2(String s, Float... x) => s;
+    String lazy2(String s, Float* x);
+    lazy2(String s, Float* x) => s;
     String lazy3(String s, Float x=0.0);
     @error lazy3(String s, Float x, @error Boolean b=true) => b then s else x.string;
     String lazy4(String s, Float x, Float y);
-    @error lazy4(String s, @error Float... x) => s;
+    @error lazy4(String s, @error Float* x) => s;
     Anything x(String s="")(Integer i);
     x(String s)(Integer i) => nothing;
 }
@@ -361,13 +361,13 @@ void defaulted() {
 }
 
 void bug() {
-    Callable<Anything, [Integer, String=, Integer...]> defaultedVariadic = 
-            function (Integer a, String b = "b", Integer... args) => a;
+    Callable<Anything, [Integer, String=, Integer*]> defaultedVariadic = 
+            function (Integer a, String b = "b", Integer* args) => a;
     defaultedVariadic(1);
     defaultedVariadic(1, "a");
     defaultedVariadic(1, "a", 1); // error
     defaultedVariadic(1, "a", 1, 2); // error
-    defaultedVariadic(1, "a", {}...); // error
+    defaultedVariadic(1, "a", {}*); // error
 }
 
 void parameterToFunction(void parameter(String s)) {

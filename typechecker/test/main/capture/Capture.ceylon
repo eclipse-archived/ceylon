@@ -253,7 +253,7 @@ class Capture() {
          shared Integer n;
      }
      
-     class Something2(@uncaptured n) { //was @captured before...
+     class Something2(@uncaptured n) { //was @captured before*
          shared Integer n;
          shared void p() {
              print(n);

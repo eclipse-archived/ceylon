@@ -1,4 +1,4 @@
-class Conditions(String... elems) {
+class Conditions(String* elems) {
 
     void x(Anything o) {
         if (is Object o) {

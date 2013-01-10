@@ -3,13 +3,13 @@ class Parameters() {
     void x2(@type:"String" String s, @type:"Integer" Integer n) {}
     void x3(@type:"Sequential<String>" String[] s) {}
     void x4(@type:"Null|String" String? s) {}
-    void x5(@type:"Sequential<String>" String... s) {}
+    void x5(@type:"Sequential<String>" String* s) {}
     
     void x6(String s="hello", @error Integer n) {}
-    void x7(String... s, @error Integer n) {}
-    void x8(String... s, @error Integer n=0) {}
+    void x7(String* s, @error Integer n) {}
+    void x8(String* s, @error Integer n=0) {}
 
-    void x9(@error String... s=[]) {}
+    void x9(@error String* s=[]) {}
     void x10(@type:"Integer" Integer f(Integer i)=>i) {}
     void x11(@error function f(Integer i)=>i) {}
     void x12(@error void f(Integer i)=>i) {}
@@ -29,9 +29,9 @@ class Parameters() {
     @error broken1("hello");
     void broken2<T>(T t, @error Unknown p) {}
     @error broken2("hello", "goodbye");
-    void broken3(@error Unknown... p) {}
+    void broken3(@error Unknown* p) {}
     @error broken3("hello");
-    void broken4(@error Unknown[]... p) {}
+    void broken4(@error Unknown[]* p) {}
     @error broken4({"hello"});
     void broken5<T>(@error Entry<T,Unknown> e) {}
     @error broken5("hello"->"goodbye");
@@ -46,9 +46,9 @@ class Parameters() {
     	shared actual void greet(@error String greeting="hello") {}
     }
     
-    void method()(@error String name="gavin")(@error String... names) {}
+    void method()(@error String name="gavin")(@error String* names) {}
     
-    void func(String... x, @error String... y) {}
+    void func(String* x, @error String* y) {}
     
     void withDefaultedCallableParams(Float f() => 0.5, Float g(Float x) => x) {}
     void withDefaultedFunctionParams(Float() f = () => 0.5, Float(Float) g = (Float x) => x) {}

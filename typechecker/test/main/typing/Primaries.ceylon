@@ -113,8 +113,8 @@ class Primaries() {
     @type:"Sequence<Primaries.B>" value p22 = [B(), S()].sequence;
     @type:"Sequence<Primaries.S|Primaries.T>" value p23 = [S(), T()].sequence;
     @type:"Sequence<Primaries.T|Primaries.S>" value p24 = [T(), S()].sequence;
-    {T(), S()}[].doIt();
-    @type:"Sequence<String>" value p25 = [S(), T()][].getIt();
+    {T(), S()}*.doIt();
+    @type:"Sequence<String>" value p25 = [S(), T()]*.getIt();
     B[] bs1 = [S(), B()];
     B[] bs2 = [B(), S()];
     //H[] hs = [S(), T()];
@@ -174,10 +174,10 @@ class Primaries() {
     @error value f10 = 1.123_1234;
     value f11 = 1.123_123;
     
-    {B...} beez = p2[].b;
-    {String...} stringz = {"hello", "world"}.map((String s) => s.uppercased);
+    {B*} beez = p2*.b;
+    {String*} stringz = {"hello", "world"}.map((String s) => s.uppercased);
         
-    ann {Float} shared {Float...} floats = {};
+    ann {Float} shared {Float*} floats = {};
     
     String interpolated0 = "hello" "ABC123".count(function (Character c) => c.digit) "world";
     String interpolated1 = "hello" { "ABC" 1+1 "123" } "world";
@@ -190,9 +190,9 @@ class Primaries() {
     String interpolated8 = "hello" "ABC123".size "world";
     
     List<Character> list=[` `];
-    @type:"Sequential<Integer>" value xxxx = list[].integer;
+    @type:"Sequential<Integer>" value xxxx = list*.integer;
     Exception("Expecting an Array but got: " true then "x" else "null" "");    
     
 }
 
-void ann({Anything...} elements) {}
+void ann({Anything*} elements) {}

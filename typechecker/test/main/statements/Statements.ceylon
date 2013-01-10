@@ -15,7 +15,7 @@ void statements() {
     X();
     y();
     X().doIt();
-    { X() }[].doIt();
+    { X() }*.doIt();
     X? xn = null;
     xn?.doIt();
     
@@ -26,7 +26,7 @@ void statements() {
     @error "Hello" + "World";
     @error "Hello"[0];
     @error { "Hello", "World" };
-    @error { X() }[].hello;
+    @error { X() }*.hello;
     @error xn?.hello;
     
     @error true;

@@ -147,33 +147,33 @@ class Operators() {
     @type:"Sequential<Operators.X>" value x39u = sequence[...1];
     
     @error value x43 = sequence["hello"];
-    @error value x44 = sequence["hello"...];
-    @error value x44u = sequence[..."hello"];
+    @error value x44 = sequence["hello"*];
+    @error value x44u = sequence[*"hello"];
     @error value x45 = sequence[1.."hello"];
     
     String? maybeString = null;
     Callable<Null|Iterable<String>,[Iterable<Character>|Callable<Boolean,[Character]>,Boolean,Boolean]> mss = maybeString?.split;
-    Callable<Sequence<Iterable<String>>,[Iterable<Character>|Callable<Boolean,[Character]>,Boolean,Boolean]> hws = ["hello", "world"][].split;
+    Callable<Sequence<Iterable<String>>,[Iterable<Character>|Callable<Boolean,[Character]>,Boolean,Boolean]> hws = ["hello", "world"]*.split;
     
     Sequence<String> helloworld = ["hello", "world"];
     @type:"Sequential<String>" value e45 = emp[].uppercased;
-    @type:"Sequence<Sequential<Character>>" value x46 = helloworld[].characters;
-    @type:"Sequence<String>" value x47 = helloworld[].uppercased;
+    @type:"Sequence<Sequential<Character>>" value x46 = helloworld*.characters;
+    @type:"Sequence<String>" value x47 = helloworld*.uppercased;
     @type:"Null|Sequential<Character>" value x48 = helloworld[0]?.characters;
-    @type:"Sequence<Sequential<Character>>" value x49 = helloworld[].characters;
-    @type:"Sequence<Iterable<String,Null>>" value x50 = helloworld[].lines;
+    @type:"Sequence<Sequential<Character>>" value x49 = helloworld*.characters;
+    @type:"Sequence<Iterable<String,Null>>" value x50 = helloworld*.lines;
     @type:"Null|String" value x51 = helloworld[0]?.normalized;
     @type:"Null|Iterable<String,Null>" value x512 = helloworld[0]?.split((Character c) => c==` `);
-    @type:"Sequence<String>" value x52 = helloworld[].normalized;
-    @type:"Sequence<Iterable<String,Null>>" value x522 = helloworld[].split((Character c) => c==` `);
+    @type:"Sequence<String>" value x52 = helloworld*.normalized;
+    @type:"Sequence<Iterable<String,Null>>" value x522 = helloworld*.split((Character c) => c==` `);
     @type:"Null|String" value x53 = noSequence?[0]?.normalized;
     @type:"Null|Iterable<String,Null>" value x532 = noSequence?[0]?.split((Character c) => c==` `);
-    @type:"Sequence<Operators.X>" value x54 = [Operators()][].X();
+    @type:"Sequence<Operators.X>" value x54 = [Operators()]*.X();
 
-    {String...} onetwo = {"one", "two"};
-    @type:"Sequential<String>" value x61 = onetwo[].uppercased;
-    @type:"Sequential<Sequential<Character>>" value x62 = onetwo[].characters;
-    @type:"Sequential<Iterable<String,Null>>" value x63 = onetwo[].split((Character c) => c==` `);
+    {String*} onetwo = {"one", "two"};
+    @type:"Sequential<String>" value x61 = onetwo*.uppercased;
+    @type:"Sequential<Sequential<Character>>" value x62 = onetwo*.characters;
+    @type:"Sequential<Iterable<String,Null>>" value x63 = onetwo*.split((Character c) => c==` `);
     
     @type:"Null|Sequential<String>" value s1 = noSequence?[1...];
     @type:"Null|Sequential<String>" value s2 = noSequence?[...2];
@@ -218,7 +218,7 @@ class Operators() {
     
     String-><Boolean->String> ent = "hello"->(true->"hello");
     
-    @error X()[].doIt();
+    @error X()*.doIt();
     @error X()?.doIt();
     
     @type:"Empty" value es = {};

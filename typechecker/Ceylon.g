@@ -1528,8 +1528,8 @@ sequencedArgument returns [SequencedArgument sequencedArgument]
         sequencedArgument.setExpressionList($expressions.expressionList);
         sequencedArgument.getCompilerAnnotations().addAll($compilerAnnotations.annotations); }
       (
-        ELLIPSIS
-        { sequencedArgument.setEllipsis(new Ellipsis($ELLIPSIS)); }
+        PRODUCT_OP
+        { sequencedArgument.setEllipsis(new Ellipsis($PRODUCT_OP)); }
       )?
     ;
 
@@ -1777,9 +1777,9 @@ positionalArguments returns [PositionalArgumentList positionalArgumentList]
           )
         )* 
         (
-          ELLIPSIS
+          PRODUCT_OP
           { if ($positionalArgumentList.getComprehension()==null)
-                $positionalArgumentList.setEllipsis( new Ellipsis($ELLIPSIS) );
+                $positionalArgumentList.setEllipsis( new Ellipsis($PRODUCT_OP) );
             else
                 displayRecognitionError(getTokenNames(), 
                     new MismatchedTokenException(RPAREN, input)); }
@@ -2312,32 +2312,46 @@ typeArguments returns [TypeArgumentList typeArgumentList]
     ;
 
 tupleElementType returns [Type type]
-    : t=type
+    : (abbreviatedType (PRODUCT_OP|SUM_OP))=>
+      at=abbreviatedType
+      (
+        PRODUCT_OP
+        { SequencedType st = new SequencedType(null);
+          st.setType($at.type); 
+          st.setEndToken($PRODUCT_OP);
+          $type = st; }
+      |
+        SUM_OP
+        { SequencedType st = new SequencedType(null);
+          st.setType($at.type); 
+          st.setEndToken($SUM_OP);
+          $type = st; }
+      )
+    |
+      t=type
       { $type = $t.type; }
       (
-        SPECIFY 
+        SPECIFY
         { DefaultedType st = new DefaultedType(null);
           st.setType($t.type); 
           st.setEndToken($SPECIFY);
-          $type = st; }
-      |
-        ELLIPSIS
-        { SequencedType st = new SequencedType(null);
-          st.setType($t.type); 
-          st.setEndToken($ELLIPSIS);
           $type = st; }
       )?
     ;
 
 variadicType returns [Type type]
-    : t=type 
-      { $type=$t.type; }
+    : (abbreviatedType (PRODUCT_OP|SUM_OP))=> 
+      at=abbreviatedType 
+      { $type=$at.type; }
       ( 
-        ELLIPSIS
-        { SequencedType st = new SequencedType($ELLIPSIS);
-          st.setType($t.type);
+        PRODUCT_OP
+        { SequencedType st = new SequencedType($PRODUCT_OP);
+          st.setType($at.type);
           $type = st; }
       )?
+    |
+      t=type 
+      { $type=$t.type; }
     ;
 
 tupleType returns [TupleType type]
@@ -2370,10 +2384,20 @@ groupedType returns [StaticType type]
 iterableType returns [IterableType type]
    : LBRACE
      { $type = new IterableType($LBRACE); }
-     t=type
-     { $type.setElementType($t.type); }
-     ELLIPSIS
-     { $type.setEndToken($ELLIPSIS); }
+     ( (abbreviatedType (PRODUCT_OP|SUM_OP))=>
+       at=abbreviatedType
+       { $type.setElementType($at.type); }
+       (
+         PRODUCT_OP
+         { $type.setEndToken($PRODUCT_OP); }
+       |
+         SUM_OP
+         { $type.setEndToken($SUM_OP); }
+       )
+     |
+       t=type
+       { $type.setElementType($t.type); }
+     )
      RBRACE
      { $type.setEndToken($RBRACE); }
    ;
@@ -3177,7 +3201,6 @@ NATURAL_LITERAL
     | '$' BinaryDigits
     ;
     
-fragment SPREAD_OP: '[].';
 fragment ARRAY: '[]';
 fragment INDEX_OP: '[';
 //distinguish the spread operator "x[]."
@@ -3185,8 +3208,7 @@ fragment INDEX_OP: '[';
 LBRACKET
     : '['
     (
-      (']' '.' ~'.') => '].' { $type = SPREAD_OP; }
-    | (']') => ']' { $type = ARRAY; }
+      (']') => ']' { $type = ARRAY; }
     | { $type = INDEX_OP; }
     )
     ;
@@ -3539,8 +3561,13 @@ DIFFERENCE_OP
     :   '-'
     ;
 
-PRODUCT_OP
+fragment SPREAD_OP: '*.';
+fragment PRODUCT_OP: '*';
+ASTERISK
     :   '*'
+    ( ('.') => '.' { $type = SPREAD_OP; }
+    | { $type = PRODUCT_OP; }
+    )
     ;
 
 QUOTIENT_OP

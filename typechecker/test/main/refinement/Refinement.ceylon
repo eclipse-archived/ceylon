@@ -212,9 +212,9 @@ class WithRefiningMethod() extends WithRefinedMethod() {
 }
 
 class Qux() {
-    shared default void print(String... strings) {}
+    shared default void print(String* strings) {}
     shared default void print2(String[] strings) {}
-    shared default void print3(String... strings) {}
+    shared default void print3(String* strings) {}
 }
 
 class QuxQux() extends Qux() {
@@ -224,12 +224,12 @@ class QuxQux() extends Qux() {
             pr(string);
         }
     }
-    shared actual void print2(String... strings) {
+    shared actual void print2(String* strings) {
         for (string in strings) {
             pr(string);
         }
     }
-    shared actual void print3(String... strings) {
+    shared actual void print3(String* strings) {
         for (string in strings) {
             pr(string);
         }

@@ -1,7 +1,7 @@
 void comprehensions() {
-    {String...} words = { "hello", "world", "goodbye" };
-    [String...] eager = [ for (w in words) if (w.size>2) w ];
-    {String...} lazy = { for (w in words) if (w.size>2) w };
+    {String*} words = { "hello", "world", "goodbye" };
+    [String*] eager = [ for (w in words) if (w.size>2) w ];
+    {String*} lazy = { for (w in words) if (w.size>2) w };
     
     String?[] wordsAnNulls = [ "hello", "world", null, "goodbye" ];
     String joined1 = " ".join(for (w in wordsAnNulls) if (exists w) w.uppercased);
@@ -11,8 +11,8 @@ void comprehensions() {
     @type:"Iterable<String,Null>" value iter = { for (x in {null, "hello", "goodbye"}) if (exists x) if (x.size>1) x.uppercased };
     @type:"Array<String>" array(for (x in {null, "hello", "goodbye"}) if (exists x) if (x.size>1) x.uppercased);
     
-    value yyy = { array (seq...)... };
-    value xxx = { array { @error seq... }... };
+    value yyy = { array (seq*)* };
+    value xxx = { array { @error seq* }* };
     
     value nulls = coalesce(for (c in "hElLo") null).sequence;
     value nullsAndChars = coalesce(for (c in "hElLo") c.uppercase then c else null).sequence;

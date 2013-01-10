@@ -59,4 +59,4 @@ void testCanonicalization() {
     List<Number> nums = list;
 }
 
-alias ItFun<T> => {T()...}&Category;
+alias ItFun<T> => {T()*}&Category;

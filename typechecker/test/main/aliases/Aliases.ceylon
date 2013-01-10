@@ -58,7 +58,7 @@ class Aliases() {
     @error interface Y => Container&Identifiable;
     
     interface Seq<T> => T[];
-    interface It<T> => {T...};
+    interface It<T> => {T*};
     interface Fun<T> => T(Object);
 }
 

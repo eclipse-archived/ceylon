@@ -1,8 +1,8 @@
 List<String>&Text before = ["hello"];
-{String...} stringsBefore = before;
+{String*} stringsBefore = before;
 alias Text => List<String>;
 List<String>&Text after = ["hello"];
-{String...} stringsAfter = after;
+{String*} stringsAfter = after;
 
 Defaulted dbefore = Defaulted("hello");
 Defaulted<String> dsbefore = dbefore;

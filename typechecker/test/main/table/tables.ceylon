@@ -6,7 +6,7 @@ String center(String content, Integer size) {
             " ".repeat(paddingAfter);
 }
 
-class Cell({String...} content) {
+class Cell({String*} content) {
     shared actual String string {
         value result = StringBuilder();
         for (s in content) {
@@ -16,7 +16,7 @@ class Cell({String...} content) {
     }
 }
 
-class Row({Cell...} cell) {
+class Row({Cell*} cell) {
     shared Cell[] cells = cell.sequence;
     shared actual String string {
         value result = StringBuilder();
@@ -29,7 +29,7 @@ class Row({Cell...} cell) {
     }
 }
 
-class Table(String title, Row header, {Row...} rows) {
+class Table(String title, Row header, {Row*} rows) {
     shared actual String string {
         value result = StringBuilder();
         value size = header.cells.size*21+1;

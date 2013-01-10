@@ -137,7 +137,7 @@ class Union() {
     Sequence<String>|Sequence<Integer> sssn = [ "hello" ];
     String|Integer sssnf = sssn.first;
     
-    function first<T>(T... args) {
+    function first<T>(T* args) {
         if (nonempty seq = args.sequence) {
             return seq.first;
         }
@@ -205,7 +205,7 @@ class Union() {
     Outer<Object>.Inner<Object> foobart5 = foobar5;
     @type:"Union.Outer<Object>.Inner<Object>" value foobarts5 = foobar5.get;
     
-    class Sorted<out Elem>(Elem... them) 
+    class Sorted<out Elem>(Elem* them) 
             given Elem satisfies Comparable<Elem> {
         shared Elem[] elements = them.sequence;
     }
