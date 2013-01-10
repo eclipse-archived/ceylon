@@ -149,9 +149,11 @@ public class TypeUtils {
         if (tp.getContainer() instanceof ClassOrInterface) {
             int pos = ((ClassOrInterface)tp.getContainer()).getTypeParameters().indexOf(tp);
             if (parent == tp.getContainer()) {
-                gen.out("this.$$targs$$[", Integer.toString(pos), "]");
+                gen.self((ClassOrInterface)tp.getContainer());
+                gen.out(".$$targs$$[", Integer.toString(pos), "]");
             } else {
-                gen.out("/*TYPE TYPEPARM ", Integer.toString(pos), parent.getQualifiedNameString(), "*/'", tp.getQualifiedNameString(), "'");
+                gen.out("/*TYPE TYPEPARM ", Integer.toString(pos), parent.getQualifiedNameString(), "*/'",
+                        tp.getQualifiedNameString(), "'");
             }
         } else {
             //it has to be a method, right?
@@ -178,7 +180,8 @@ public class TypeUtils {
             if (tp.getContainer() == parent) {
                 gen.out("$$$mptypes[", Integer.toString(paramCount), "]");
             } else {
-                gen.out("/*METHOD TYPEPARM plist ", Integer.toString(plistCount), "#", Integer.toString(paramCount), "*/'", type.getProducedTypeQualifiedName(), "'");
+                gen.out("/*METHOD TYPEPARM plist ", Integer.toString(plistCount), "#",
+                        Integer.toString(paramCount), "*/'", type.getProducedTypeQualifiedName(), "'");
             }
         }
     }

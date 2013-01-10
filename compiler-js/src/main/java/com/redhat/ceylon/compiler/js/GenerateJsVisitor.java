@@ -653,6 +653,11 @@ public class GenerateJsVisitor extends Visitor
                 arg.visit(this);
                 out(",");
             }
+            //If the supertype has type arguments, add them to the call
+            if (typeDecl.getTypeParameters() != null && !typeDecl.getTypeParameters().isEmpty()) {
+                TypeUtils.printTypeArguments(that, extendedType.getType().getTypeArgumentList().getTypeModels(), this);
+                out(",");
+            }
             self(d);
             out(");");
             endLine();
@@ -1756,15 +1761,7 @@ public class GenerateJsVisitor extends Visitor
                 Tree.MemberOrTypeExpression mte = (Tree.MemberOrTypeExpression) that.getPrimary();
                 if (mte.getDeclaration() instanceof Functional) {
                     Functional f = (Functional) mte.getDeclaration();
-                    TypeArguments _targs = null;
-                    if (targs == null && mte instanceof BaseMemberExpression) {
-                        _targs = ((BaseMemberExpression)mte).getTypeArguments();
-                    }
-                    applyNamedArguments(argList, f, argVarNames, getSuperMemberScope(mte)!=null, _targs);
-                    if (targs != null && targs.getTypeModels() != null && !targs.getTypeModels().isEmpty()) {
-                        out(",");
-                        TypeUtils.printTypeArguments(that, targs.getTypeModels(), this);
-                    }
+                    applyNamedArguments(argList, f, argVarNames, getSuperMemberScope(mte)!=null, targs);
                 }
             }
             out(")");
@@ -2398,7 +2395,7 @@ public class GenerateJsVisitor extends Visitor
     @Override
     public void visit(AnnotationList that) {}
 
-    private void self(TypeDeclaration d) {
+    void self(TypeDeclaration d) {
         out(names.self(d));
     }
 
