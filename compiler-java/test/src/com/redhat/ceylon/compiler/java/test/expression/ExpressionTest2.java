@@ -178,6 +178,11 @@ public class ExpressionTest2 extends CompilerTest {
     public void testInvNamedArgumentInvocationOnPrimitive(){
         compareWithJavaSource("invoke/NamedArgumentInvocationOnPrimitive");
     }
+
+    @Test
+    public void testInvNamedArgumentInvocationWithMethodReference(){
+        compareWithJavaSource("invoke/NamedArgumentInvocationWithMethodReference");
+    }
     
     @Test
     public void testInvNamedArgumentSequencedTypeParamInvocation(){

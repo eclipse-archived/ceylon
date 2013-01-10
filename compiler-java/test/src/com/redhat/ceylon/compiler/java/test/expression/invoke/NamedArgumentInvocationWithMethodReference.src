@@ -1,0 +1,49 @@
+package com.redhat.ceylon.compiler.java.test.expression.invoke;
+
+@.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 3)
+class NamedArgumentInvocationWithMethodReference {
+    
+    NamedArgumentInvocationWithMethodReference() {
+    }
+    
+    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Anything")
+    private final void m() {
+    }
+    
+    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Anything")
+    private final void m2(@.com.redhat.ceylon.compiler.java.metadata.Name("f")
+    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Callable<ceylon.language::Anything,ceylon.language::Empty>")
+    final .ceylon.language.Callable<? extends .java.lang.Object> f) {
+    }
+    
+    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Anything")
+    private final void test() {
+        (
+            let
+            {
+                .ceylon.language.Callable $arg$0$0 = new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.java.lang.Object>("Anything()"){
+                    
+                    @.java.lang.Override
+                    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+                    public .java.lang.Object $call() {
+                        return (
+                            let
+                            {
+                                m();
+                            }
+                            returning null;
+                        );
+                    }
+                };
+                m2($arg$0$0);
+            }
+            returning null;
+        );
+    }
+    
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    public static void main(.java.lang.String[] args) {
+        .ceylon.language.process_.getProcess$().setupArguments(args);
+        new .com.redhat.ceylon.compiler.java.test.expression.invoke.NamedArgumentInvocationWithMethodReference();
+    }
+}
