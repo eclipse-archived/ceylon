@@ -3467,9 +3467,8 @@ public class GenerateJsVisitor extends Visitor
                         if (expr.getTypeModel().getDeclaration().inherits(types.tuple)) {
                             expr.visit(this);
                         } else {
-                            out(clAlias, "toTuple(");
                             expr.visit(this);
-                            out(")");
+                            out(".getSequence()");
                         }
                     } else {
                         out(clAlias, "Tuple(");
