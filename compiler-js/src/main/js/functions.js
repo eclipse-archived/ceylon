@@ -1,6 +1,5 @@
 var exports,console,$finished,process$,empty;//IGNORE
 function Comparison(x){}//IGNORE
-function ArraySequence(x){}//IGNORE
 function Entry(a,b){}//IGNORE
 function Singleton(x){}//IGNORE
 function SequenceBuilder(){}//IGNORE
@@ -71,7 +70,6 @@ function isOfTypes(obj, types) {
     return _ints ? inters||unions : unions;
 }
 function extendsType(t1, t2) {
-    //TODO deal with union/intersection types
     if (t1.t === 'u' || t1.t === 'i') {
         var unions = false;
         var inters = true;

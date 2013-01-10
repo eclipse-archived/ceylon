@@ -29,7 +29,7 @@ function combine(/*Callable<Result,Element,Other>*/f, /*Iterable<Element>*/i1, /
     });
 }
 
-function sort(elems) {
+function sort(elems, $$$mptypes) {
     if (elems===undefined) {return empty;}
     var arr = [];
     var it = elems.getIterator();
@@ -40,7 +40,7 @@ function sort(elems) {
         var cmp = a.compare(b);
         return (cmp===larger) ? 1 : ((cmp===smaller) ? -1 : 0);
     });
-    return ArraySequence(arr);
+    return ArraySequence(arr, $$$mptypes);
 }
 
 exports.string=string;
