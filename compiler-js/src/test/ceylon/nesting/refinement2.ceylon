@@ -67,7 +67,7 @@ shared class SubRef51() extends SubRef5() {
 
 void testRefinement2() {
     value c1 = Y2("y2").SubRef1(99).Inner("with parm");
-    check(className(c1) == "nesting::Y2.SubRef1.Inner", "classname is " + className(c1));
+    check(className(c1) == "nesting::Y2.SubRef1.Inner<ceylon.language::String>", "classname is " + className(c1));
     check(c1.origin == "RefineTest1.Inner (with parm)", "refinement [1] " + c1.origin);
     check(c1.suborigin == "SubRef1.Inner", "refinement [2] " + c1.suborigin);
     check(c1.x() == "REFINED x and yy2,d:99,d2:with parm. and a:y2, b:1, c:with parm.", "refinement [3] " + c1.x());
