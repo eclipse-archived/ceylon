@@ -86,7 +86,7 @@ class MemberClassAliasTricks_Foo(Integer a = 1, Integer b = 2){
     
     class MemberClassAliasToToplevel(Integer a, Integer b) 
             => MemberClassAliasTricks_Foo(a,b);
-    class MemberClassAliasToToplevel2(Integer a, Integer b) 
+    @error class MemberClassAliasToToplevel2(Integer a, Integer b) 
             => MemberClassAliasToToplevel(a,b);
 
     void test(){
@@ -94,3 +94,5 @@ class MemberClassAliasTricks_Foo(Integer a = 1, Integer b = 2){
         MemberClassAliasToToplevel2 m2 = MemberClassAliasToToplevel2(1,2);
     }
 }
+
+@error alias Rec<T> => Tuple<T,T,Rec<T>>;
