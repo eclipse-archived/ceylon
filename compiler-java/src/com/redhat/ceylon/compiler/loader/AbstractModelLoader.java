@@ -72,6 +72,7 @@ import com.redhat.ceylon.compiler.typechecker.model.ClassOrInterface;
 import com.redhat.ceylon.compiler.typechecker.model.Declaration;
 import com.redhat.ceylon.compiler.typechecker.model.Element;
 import com.redhat.ceylon.compiler.typechecker.model.Functional;
+import com.redhat.ceylon.compiler.typechecker.model.FunctionalParameter;
 import com.redhat.ceylon.compiler.typechecker.model.Interface;
 import com.redhat.ceylon.compiler.typechecker.model.Method;
 import com.redhat.ceylon.compiler.typechecker.model.MethodOrValue;
@@ -1227,6 +1228,20 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
             }
         }
 
+        // Now marry-up attributes and parameters)
+        if (klass instanceof Class) {
+            for (Declaration m : klass.getMembers()) {
+                if (m instanceof Value) {
+                    Value v = (Value)m;
+                    Parameter p = ((Class)klass).getParameter(v.getName());
+                    if (p instanceof ValueParameter) {
+                        ((ValueParameter)p).setHidden(true);    
+                    }
+                }
+            }
+        }
+        
+        
         klass.setStaticallyImportable(!isCeylon && classMirror.isStatic());
         
         setExtendedType(klass, classMirror);
