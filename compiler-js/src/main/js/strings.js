@@ -293,7 +293,7 @@ String$proto.join = function(strings) {
 function isWhitespace(c) { return c.value in $WS; }
 String$proto.$split = function(sep, discard, group) {
     // shortcut for empty input
-    if (this.length === 0) {return Singleton(this);}
+    if (this.length === 0) {return Singleton(this, {t:String$});}
 
     if (sep === undefined) {sep = isWhitespace}
     if (discard === undefined) {discard = true}
@@ -407,7 +407,7 @@ String$proto.$split = function(sep, discard, group) {
     }
 
     this.codePoints = count;
-    return ArraySequence(tokens);
+    return ArraySequence(tokens, {t:String$});
 }
 String$proto.getReversed = function() {
     var result = "";
