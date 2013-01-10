@@ -4,6 +4,6 @@
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.junit.JUNIT_CONTAINER/4"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/ceylon-common"/>
-	<classpathentry kind="lib" path="build/dist/ceylon/language/0.5/ceylon.language-0.5.car"/>
+	<classpathentry kind="lib" path="ide-dist/ceylon.language-0.5.car"/>
 	<classpathentry kind="output" path="build/classes"/>
 </classpath>
