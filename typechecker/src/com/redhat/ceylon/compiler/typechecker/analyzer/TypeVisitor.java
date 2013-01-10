@@ -359,7 +359,8 @@ public class TypeVisitor extends Visitor {
         List<ProducedType> types = new ArrayList<ProducedType>();
         for (Tree.StaticType st: that.getStaticTypes()) {
             //addToUnion( types, st.getTypeModel() );
-        	types.add(st.getTypeModel());
+        	ProducedType t = st.getTypeModel();
+			if (t!=null) types.add(t);
         }
         ut.setCaseTypes(types);
         that.setTypeModel(ut.getType());
@@ -373,7 +374,8 @@ public class TypeVisitor extends Visitor {
         List<ProducedType> types = new ArrayList<ProducedType>();
         for (Tree.StaticType st: that.getStaticTypes()) {
             //addToIntersection(types, st.getTypeModel(), unit);
-        	types.add(st.getTypeModel());
+        	ProducedType t = st.getTypeModel();
+			if (t!=null) types.add(t);
         }
         it.setSatisfiedTypes(types);
         that.setTypeModel(it.getType());
