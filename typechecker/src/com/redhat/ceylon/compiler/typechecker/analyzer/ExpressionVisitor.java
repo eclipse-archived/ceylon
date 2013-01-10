@@ -86,6 +86,7 @@ public class ExpressionVisitor extends Visitor {
     private Tree.Expression switchExpression;
     private Declaration returnDeclaration;
     private boolean defaultArgument;
+    private boolean isCondition;
 
     private Unit unit;
     
@@ -261,7 +262,9 @@ public class ExpressionVisitor extends Visitor {
         //want to check that the specifier expression is
         //assignable to the declared variable type
         //(nor is it possible to infer the variable type)
+    	isCondition=true;
         that.getType().visit(this);
+        isCondition=false;
         Tree.Variable v = that.getVariable();
         ProducedType type = that.getType().getTypeModel();
         if (v!=null) {
@@ -4119,11 +4122,11 @@ private void checkPositionalArguments(ParameterList pl, ProducedReference pr,
             !((Generic) member).getTypeParameters().isEmpty();
     }
     
-    private boolean acceptsTypeArguments(ProducedType receiver, Declaration member, 
+    private boolean acceptsTypeArguments(ProducedType receiver, Declaration dec, 
             List<ProducedType> typeArguments, Tree.TypeArguments tal, Node parent) {
-        if (member==null) return false;
-        if (isGeneric(member)) {
-            List<TypeParameter> params = ((Generic) member).getTypeParameters();
+        if (dec==null) return false;
+        if (isGeneric(dec)) {
+            List<TypeParameter> params = ((Generic) dec).getTypeParameters();
             if ( params.size()==typeArguments.size() ) {
                 for (int i=0; i<params.size(); i++) {
                     TypeParameter param = params.get(i);
@@ -4131,19 +4134,19 @@ private void checkPositionalArguments(ParameterList pl, ProducedReference pr,
                     //Map<TypeParameter, ProducedType> self = Collections.singletonMap(param, arg);
                     for (ProducedType st: param.getSatisfiedTypes()) {
                         //sts = sts.substitute(self);
-                        ProducedType sts = st.getProducedType(receiver, member, typeArguments);
+                        ProducedType sts = st.getProducedType(receiver, dec, typeArguments);
                         if (argType!=null) {
-                            if (!argType.isSubtypeOf(sts)) {
+                            if (!isCondition && !argType.isSubtypeOf(sts)) {
                                 if (tal instanceof Tree.InferredTypeArguments) {
                                     parent.addError("inferred type argument " + argType.getProducedTypeName(unit)
                                             + " to type parameter " + param.getName()
-                                            + " of declaration " + member.getName(unit)
+                                            + " of declaration " + dec.getName(unit)
                                             + " not assignable to " + sts.getProducedTypeName(unit));
                                 }
                                 else {
                                     ( (Tree.TypeArgumentList) tal ).getTypes()
                                             .get(i).addError("type parameter " + param.getName() 
-                                            + " of declaration " + member.getName(unit)
+                                            + " of declaration " + dec.getName(unit)
                                             + " has argument " + argType.getProducedTypeName(unit) 
                                             + " not assignable to " + sts.getProducedTypeName(unit), 2102);
                                 }
@@ -4151,19 +4154,19 @@ private void checkPositionalArguments(ParameterList pl, ProducedReference pr,
                             }
                         }
                     }
-                    boolean asec = argumentSatisfiesEnumeratedConstraint(receiver, member, 
-                            typeArguments, argType, param);
-                    if (!asec) {
+                    if (!isCondition && 
+                    		!argumentSatisfiesEnumeratedConstraint(receiver, dec, 
+                                    typeArguments, argType, param)) {
                         if (tal instanceof Tree.InferredTypeArguments) {
                             parent.addError("inferred type argument " + argType.getProducedTypeName(unit)
                                     + " to type parameter " + param.getName()
-                                    + " of declaration " + member.getName(unit)
+                                    + " of declaration " + dec.getName(unit)
                                     + " not one of the enumerated cases");
                         }
                         else {
                             ( (Tree.TypeArgumentList) tal ).getTypes()
                             .get(i).addError("type parameter " + param.getName() 
-                                    + " of declaration " + member.getName(unit)
+                                    + " of declaration " + dec.getName(unit)
                                     + " has argument " + argType.getProducedTypeName(unit) 
                                     + " not one of the enumerated cases");
                         }
@@ -4174,10 +4177,10 @@ private void checkPositionalArguments(ParameterList pl, ProducedReference pr,
             }
             else {
                 if (tal==null || tal instanceof Tree.InferredTypeArguments) {
-                    parent.addError("requires type arguments: " + member.getName(unit));
+                    parent.addError("requires type arguments: " + dec.getName(unit));
                 }
                 else {
-                    tal.addError("wrong number of type arguments to: " + member.getName(unit));
+                    tal.addError("wrong number of type arguments to: " + dec.getName(unit));
                 }
                 return false;
             }
@@ -4186,7 +4189,7 @@ private void checkPositionalArguments(ParameterList pl, ProducedReference pr,
             boolean empty = typeArguments.isEmpty();
             if (!empty) {
                 tal.addError("does not accept type arguments: " + 
-                        member.getName(unit));
+                        dec.getName(unit));
             }
             return empty;
         }

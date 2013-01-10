@@ -17,9 +17,10 @@ class Is() {
         print(strings.first);
     }
     @error if (is Sequence strings) {}
-    @error if (is SimpleContainer<String> strings) {}
+    if (is SimpleContainer<String> strings) {}
     @error if (is Is.SimpleContainer strings) {}
-    @error if (is Is.SimpleContainer<String> strings) {}
+    if (is Is.SimpleContainer<String> strings) {}
+    @error if (is Is.SimpleContainer<String,Integer> strings) {}
 
     if (strings is Sequence<String>) {
         //print(strings.first);
@@ -28,6 +29,7 @@ class Is() {
     @error if (strings is SimpleContainer<String>) {}
     @error if (strings is Is.SimpleContainer) {}
     @error if (strings is Is.SimpleContainer<String>) {}
+    @error if (strings is Is.SimpleContainer<String,Integer>) {}
 
     void method<T>() {
         if (is T strings) {}
