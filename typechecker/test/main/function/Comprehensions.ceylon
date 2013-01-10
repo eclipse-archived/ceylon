@@ -8,7 +8,7 @@ void comprehensions() {
     String joined2 = " ".join { @error for (w in wordsAnNulls) if (exists w) w.trimmed };
     Entry<String,Integer>[] entries = [ for (s in words) for (n in 0..10) s->n ];
     @type:"Sequential<String>" value seq = [ for (x in {null, "hello", "goodbye"}) if (exists x) if (x.size>1) x.uppercased ];
-    @type:"Iterable<String>" value iter = { for (x in {null, "hello", "goodbye"}) if (exists x) if (x.size>1) x.uppercased };
+    @type:"Iterable<String,Null>" value iter = { for (x in {null, "hello", "goodbye"}) if (exists x) if (x.size>1) x.uppercased };
     @type:"Array<String>" array(for (x in {null, "hello", "goodbye"}) if (exists x) if (x.size>1) x.uppercased);
     
     value yyy = { array (seq...)... };

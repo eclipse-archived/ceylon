@@ -86,7 +86,7 @@ class Is() {
         Boolean isEmpty = e.isEmpty;
         if ("hello" in e) {}
         for (String str in e) {}
-        @type:"Correspondence<Integer,String>&Sized&Iterable<String>" value ee = e;
+        @type:"Correspondence<Integer,String>&Sized&Iterable<String,Null>" value ee = e;
     }
     if (is Sized&Category e) {
         String? s = e[0];
@@ -104,7 +104,7 @@ class Is() {
         Boolean isEmpty = e.isEmpty;
         if ("hello" in e) {}
         for (String str in e) {} 
-        @type:"Correspondence<Integer,String>&Sized&Iterable<String>" value ee = e;
+        @type:"Correspondence<Integer,String>&Sized&Iterable<String,Null>" value ee = e;
     }
     if (is String[] e) {
         String? s = e[0];

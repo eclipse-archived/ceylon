@@ -145,13 +145,13 @@ class TypeArgInference() {
     function argfun(Integer? x) => x?.float;
     @type:"Null|Float|Integer" higher(argfun);
     
-    @type:"Iterable<Integer>" { "hello", "world" }.map((String s) => s.size);
-    @type:"Iterable<String>" { "hello", "world" }.filter((String s) => !s.empty);
+    @type:"Iterable<Integer,Null>" { "hello", "world" }.map((String s) => s.size);
+    @type:"Iterable<String,Null>" { "hello", "world" }.filter((String s) => !s.empty);
     @type:"String" { "hello", "world" }.fold("", (String result, String s) => result+" "+s);
     @type:"Null|String" { null, "hello", "world" }.find((String? s) => s exists);
 
-    @type:"Iterable<Integer>" { "hello", "world" }.map { function collecting(String s) => s.size; };
-    @type:"Iterable<String>" { "hello", "world" }.filter { function selecting(String s) => !s.empty; };
+    @type:"Iterable<Integer,Null>" { "hello", "world" }.map { function collecting(String s) => s.size; };
+    @type:"Iterable<String,Null>" { "hello", "world" }.filter { function selecting(String s) => !s.empty; };
     @type:"String" { "hello", "world" }.fold { initial=""; function accumulating(String result, String s) => result+" "+s; };
     @type:"Null|String" { null, "hello", "world" }.find { function selecting(String? s) => s exists; };
     
