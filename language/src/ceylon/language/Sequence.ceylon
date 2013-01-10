@@ -25,9 +25,17 @@ see (Empty)
 by "Gavin"
 shared interface Sequence<out Element>
         satisfies Element[] & 
-                  NonemptyContainer<Element> &
+                  Iterable<Element,Nothing> &
                   Cloneable<Sequence<Element>> {
     
+    shared actual default Integer size=>List::size;
+    shared actual default Iterator<Element> iterator
+            =>List::iterator;
+    shared actual default Boolean contains(Object element)
+            =>Collection::contains(element);
+    shared actual default Element? findLast(Boolean selecting(Element elem)) 
+            => List::findLast(selecting);
+                
     doc "The index of the last element of the sequence."
     see (size)
     shared actual formal Integer lastIndex;
