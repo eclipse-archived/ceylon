@@ -9,6 +9,7 @@ bin
 gensrc
 output
 out
+ide-dist
 
 #IDEs
 .idea
