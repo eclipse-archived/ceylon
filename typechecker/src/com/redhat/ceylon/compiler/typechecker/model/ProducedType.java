@@ -1250,7 +1250,13 @@ public class ProducedType extends ProducedReference {
                 }
                 if (abbreviateIterable()) {
                     ProducedType it = u.getIteratedType(this);
-                    return "{" + it.getProducedTypeName(unit) + "...}";
+					String etn = it.getProducedTypeName(unit);
+					if (it.isPrimitiveAbbreviatedType()) {
+						return "{" + etn + "*}";
+					}
+					else {
+						return "{<" + etn + ">*}";
+					}
                 }
                 if (abbreviateEmpty()) {
                 	return "[]";
@@ -1373,8 +1379,14 @@ public class ProducedType extends ProducedReference {
     			}
     			else if (!defaulted && args.getDeclaration().equals(u.getSequentialDeclaration())) {
     				ProducedType elementType = u.getIteratedType(args);
-    				if (elementType!=null) { 
-    					return elementType.getProducedTypeName(unit) + "...";
+    				if (elementType!=null) {
+						String etn = elementType.getProducedTypeName(unit);
+    					if (elementType.isPrimitiveAbbreviatedType()) {
+							return etn + "*";
+    					}
+    					else {
+    						return "<" + etn + ">*";
+    					}
     				}
     			}
     		}
