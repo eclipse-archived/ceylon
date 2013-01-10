@@ -552,7 +552,9 @@ public class GenerateJsVisitor extends Visitor
             p.visit(this);
             out(", ");
         }
-        if (that.getTypeParameterList() != null && !that.getTypeParameterList().getTypeParameterDeclarations().isEmpty()) {
+        boolean withTargs = that.getTypeParameterList() != null &&
+                !that.getTypeParameterList().getTypeParameterDeclarations().isEmpty();
+        if (withTargs) {
             out("$$targs$$,");
         }
         self(d);
@@ -562,8 +564,26 @@ public class GenerateJsVisitor extends Visitor
         out("$init$", names.name(d), "();");
         endLine();
         declareSelf(d);
-        if (that.getTypeParameterList() != null && !that.getTypeParameterList().getTypeParameterDeclarations().isEmpty()) {
+        if (withTargs) {
             self(d); out(".$$targs$$=$$targs$$;"); endLine();
+        } else {
+            //Check if any of the satisfied types have type arguments
+            if (that.getSatisfiedTypes() != null) {
+                for(Tree.StaticType sat : that.getSatisfiedTypes().getTypes()) {
+                    boolean first = true;
+                    List<ProducedType> targs = sat.getTypeModel().getTypeArgumentList();
+                    if (targs != null && !targs.isEmpty()) {
+                        if (first) {
+                            self(d); out(".$$targs$$=");
+                            TypeUtils.printTypeArguments(that, targs, this);
+                            endLine(true);
+                        } else {
+                            out("/*TODO: more type arguments*/");
+                            endLine();
+                        }
+                    }
+                }
+            }
         }
         referenceOuter(d);
         initParameters(that.getParameterList(), d);
@@ -2031,48 +2051,43 @@ public class GenerateJsVisitor extends Visitor
             } else if (sarg.getParameter() == null) {
                 int lim = sarg.getExpressionList().getExpressions().size()-1;
                 int count=0;
-                boolean lastIsSeq = sarg.getEllipsis() != null &&
-                        sarg.getExpressionList().getExpressions().get(lim).getTypeModel().getDeclaration().inherits(types.sequential);
-                boolean tupleize = sarg.getEllipsis() == null || lastIsSeq;
-                if (!tupleize && lim>0) {
+                ProducedType chainedType = null;
+                if (lim>0 || sarg.getEllipsis() == null) {
                     out("[");
                 }
                 for (Expression expr : sarg.getExpressionList().getExpressions()) {
                     if (count==lim && sarg.getEllipsis() != null) {
-                        if (tupleize) {
-                            if (count > 0) {
-                                out(",");
-                            }
-                            if (!lastIsSeq) {
-                                out(clAlias,"toTuple(");
-                            }
-                        } else {
-                            if (lim > 0) {
-                                out("].chain(");
-                            }
+                        if (lim > 0) {
+                            out("].reifyCeylonType(");
+                            TypeUtils.printTypeArguments(that, that.getTypeModel().getTypeArgumentList(), this);
+                            out(").chain(");
+                            chainedType = expr.getTypeModel();
                         }
                         count--;
                     } else {
                         if (count > 0) {
                             out(",");
                         }
-                        if (tupleize) {
-                            out(clAlias, "Tuple(");
-                        }
                     }
                     expr.visit(this);
                     count++;
                 }
-                if (sarg.getEllipsis() == null) {
-                    out(",", clAlias, "empty");
-                }
-                for (int i = 0; i < count; i++) {
+                if (chainedType == null) {
+                    if (sarg.getEllipsis() == null) {
+                        out("].reifyCeylonType(");
+                        TypeUtils.printTypeArguments(that, that.getTypeModel().getTypeArgumentList(), this);
+                        out(")");
+                    }
+                } else {
+                    out(",");
+                    TypeUtils.printTypeArguments(that, chainedType.getTypeArgumentList(), this);
                     out(")");
                 }
             } else {
                 out("WTF IS A SEQUENCED ENUM ARG PARAMETER?");
             }
         } else {
+            //now it's a lazy comprehension
             that.getComprehension().visit(this);
         }
     }
@@ -3476,9 +3491,13 @@ public class GenerateJsVisitor extends Visitor
                 out("/*TUPLE PARAM*/");
             }
         } else {
+            //This is an eager comprehension
             out(clAlias, "toTuple(");
             that.getComprehension().visit(this);
             out(")");
+            out("/* tuple type ");
+            TypeUtils.printTypeArguments(that, that.getTypeModel().getTypeArgumentList(), this);
+            out("*/");
         }
     }
 
