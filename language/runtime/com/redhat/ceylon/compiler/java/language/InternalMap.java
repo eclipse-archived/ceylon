@@ -145,16 +145,14 @@ public class InternalMap<Key, Item> implements Map<Key, Item> {
     @Annotations({ @Annotation("actual"), @Annotation("default") })
     @TypeInfo("ceylon.language::Nothing|Element")
     public Entry<? extends Key, ? extends Item> getFirst() {
-    	throw new RuntimeException();
-//        return iter$impl.getFirst();
+        return iter$impl.getFirst();
     }
 
     @Override
     @Annotations({ @Annotation("actual"), @Annotation("default") })
     @TypeInfo("ceylon.language::Nothing|Element")
     public Entry<? extends Key, ? extends Item> getLast() {
-    	throw new RuntimeException();
-//        return iter$impl.getLast();
+        return iter$impl.getLast();
     }
 
     @Override

@@ -27,13 +27,13 @@ public interface Iterable<Element,Absent> extends Container<Element,Absent> {
     @TypeInfo("ceylon.language::Iterator<Element>")
     public Iterator<? extends Element> getIterator();
 
-    /*@Annotations({@Annotation("actual"), @Annotation("default")})
-    @TypeInfo("ceylon.language::Null|Element")
+    @Annotations({@Annotation("actual"), @Annotation("default")})
+    @TypeInfo("Absent|Element")
     public Element getFirst();
 
     @Annotations({@Annotation("actual"), @Annotation("default")})
-    @TypeInfo("ceylon.language::Null|Element")
-    public Element getLast();*/
+    @TypeInfo("Absent|Element")
+    public Element getLast();
 
     @Annotations(@Annotation("default"))
     @TypeInfo("ceylon.language::Iterable<Element, Null>")

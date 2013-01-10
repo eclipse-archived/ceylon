@@ -1395,13 +1395,11 @@ public abstract class String
         @Override
         @Ignore
         public String getFirst() {
-        	throw new RuntimeException();
-//        	return $ceylon$language$Iterable$this.getFirst();
+        	return $ceylon$language$Iterable$this.getFirst();
         }
         @Override @Ignore
         public String getLast() {
-        	throw new RuntimeException();
-//            return $ceylon$language$Iterable$this.getLast();
+            return $ceylon$language$Iterable$this.getLast();
         }
 
         @Override
@@ -1570,13 +1568,11 @@ public abstract class String
         @Override
         @Ignore
         public Integer getFirst() {
-        	throw new RuntimeException();
-//        	return $ceylon$language$Iterable$this.getFirst();
+        	return $ceylon$language$Iterable$this.getFirst();
         }
         @Override @Ignore
         public Integer getLast() {
-        	throw new RuntimeException();
-//            return $ceylon$language$Iterable$this.getLast();
+            return $ceylon$language$Iterable$this.getLast();
         }
 
         @Override

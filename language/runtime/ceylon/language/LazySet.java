@@ -163,14 +163,12 @@ public class LazySet<Element> implements Set<Element> {
 
     @Override @Ignore
     public Element getFirst() {
-    	throw new RuntimeException();
-//        return elems.getFirst();
+        return elems.getFirst();
     }
 
     @Override @Ignore
     public Element getLast() {
-    	throw new RuntimeException();
-//        return elems.getLast();
+        return elems.getLast();
     }
 
     @Override @Ignore

@@ -56,12 +56,10 @@ public abstract class AbstractIterable<Element,Absent> implements Iterable<Eleme
     @Override
     @Ignore
     public Element getFirst() {
-    	throw new RuntimeException(); //TODO!
-    	//return $ceylon$language$Iterable$this.getFirst();
+    	return $ceylon$language$Iterable$this.getFirst();
     }
     @Override @Ignore public Element getLast() {
-    	throw new RuntimeException(); //TODO!
-        //return $ceylon$language$Iterable$this.getLast();
+        return $ceylon$language$Iterable$this.getLast();
     }
 
     @Override

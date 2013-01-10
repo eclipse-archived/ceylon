@@ -59,12 +59,10 @@ public class MapIterable<Element, Result> implements Iterable<Result,java.lang.O
     @Override
     @Ignore
     public Result getFirst() {
-    	throw new RuntimeException();
-//    	return $ceylon$language$Iterable$this.getFirst();
+    	return $ceylon$language$Iterable$this.getFirst();
     }
     @Override @Ignore public Result getLast(){
-    	throw new RuntimeException();
-//        return $ceylon$language$Iterable$this.getLast();
+        return $ceylon$language$Iterable$this.getLast();
     }
 
     @Override

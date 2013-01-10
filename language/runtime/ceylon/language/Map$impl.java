@@ -147,12 +147,10 @@ public final class Map$impl<Key,Item> {
             @Override
             @Ignore
             public Key getFirst() {
-            	throw new RuntimeException();
-//                return $ceylon$language$Iterable$this.getFirst();
+                return $ceylon$language$Iterable$this.getFirst();
             }
             @Override @Ignore public Key getLast() {
-            	throw new RuntimeException();
-//                return $ceylon$language$Iterable$this.getLast();
+                return $ceylon$language$Iterable$this.getLast();
             }
 
             @Override
@@ -366,12 +364,10 @@ public final class Map$impl<Key,Item> {
             @Override
             @Ignore
             public Item getFirst() {
-            	throw new RuntimeException();
-                //return $ceylon$language$Iterable$this.getFirst();
+                return $ceylon$language$Iterable$this.getFirst();
             }
             @Override @Ignore public Item getLast() {
-            	throw new RuntimeException();
-                //return $ceylon$language$Iterable$this.getLast();
+                return $ceylon$language$Iterable$this.getLast();
             }
 
             @Override
@@ -743,13 +739,11 @@ public final class Map$impl<Key,Item> {
             @Override
             @Ignore
             public Entry<? extends Item, ? extends Set<? extends Key>> getFirst() {
-            	throw new RuntimeException();
-//                return $ceylon$language$Iterable$this.getFirst();
+                return $ceylon$language$Iterable$this.getFirst();
             }
             @Override @Ignore
             public Entry<? extends Item, ? extends Set<? extends Key>> getLast() {
-            	throw new RuntimeException();
-//                return $ceylon$language$Iterable$this.getLast();
+                return $ceylon$language$Iterable$this.getLast();
             }
             @Override @Ignore
             public Entry<? extends Item, ? extends Set<? extends Key>> find(Callable<? extends Boolean> f) {
@@ -966,13 +960,11 @@ public final class Map$impl<Key,Item> {
             @Override
             @Ignore
             public Entry<? extends Key, ? extends Result> getFirst() {
-            	throw new RuntimeException();
-//                return $ceylon$language$Iterable$this.getFirst();
+                return $ceylon$language$Iterable$this.getFirst();
             }
             @Override @Ignore
             public Entry<? extends Key, ? extends Result> getLast() {
-            	throw new RuntimeException();
-//                return $ceylon$language$Iterable$this.getLast();
+                return $ceylon$language$Iterable$this.getLast();
             }
 
             @Override

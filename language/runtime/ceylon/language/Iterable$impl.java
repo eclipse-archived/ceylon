@@ -32,13 +32,14 @@ public final class Iterable$impl<Element,Absent> {
         return $this.getIterator().next() instanceof Finished;
     }
 
-    /*public Element getFirst(){
+    public Element getFirst(){
         return Iterable$impl.<Element>_getFirst($this);
     }
     @SuppressWarnings("unchecked")
     private static <Element> Element _getFirst(Iterable<Element, ? extends java.lang.Object> $this){
         java.lang.Object first = $this.getIterator().next();
         if (first instanceof Finished) {
+        	//TODO: assertion
             return null;
         }
         else {
@@ -55,8 +56,9 @@ public final class Iterable$impl<Element,Absent> {
         for (Iterator<? extends Element> iter = $this.getIterator(); (next = iter.next()) != finished_.getFinished$();) {
             last = next;
         }
+    	//TODO: assertion
         return (Element)last;
-    }*/
+    }
 
     public Iterable<? extends Element, ? extends java.lang.Object> getRest() {
         return Iterable$impl._getRest($this);

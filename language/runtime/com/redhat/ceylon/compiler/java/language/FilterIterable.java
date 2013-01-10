@@ -58,12 +58,10 @@ public class FilterIterable<Element,Absent> implements Iterable<Element,Absent> 
     @Override
     @Ignore
     public Element getFirst() {
-    	throw new RuntimeException();
-//    	return $ceylon$language$Iterable$this.getFirst();
+    	return $ceylon$language$Iterable$this.getFirst();
     }
     @Override @Ignore public Element getLast(){
-    	throw new RuntimeException();
-//        return $ceylon$language$Iterable$this.getLast();
+        return $ceylon$language$Iterable$this.getLast();
     }
     @Override
     @Ignore
