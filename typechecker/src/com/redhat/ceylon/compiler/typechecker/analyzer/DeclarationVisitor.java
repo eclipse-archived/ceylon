@@ -460,7 +460,7 @@ public class DeclarationVisitor extends Visitor {
         		instanceof Tree.LazySpecifierExpression);
         visitDeclaration(that, v);
         super.visit(that);
-        if (v.isInterfaceMember() && !v.isFormal()) {
+        if (v.isInterfaceMember() && !v.isFormal() && !v.isNative()) {
             if (that.getSpecifierOrInitializerExpression()==null) {
                 that.addError("interface attribute must be annotated formal", 1400);
             }
@@ -887,6 +887,9 @@ public class DeclarationVisitor extends Visitor {
                 model.setFormal(true);
             }
         }
+        if (hasAnnotation(al, "native")) {
+        	model.setNative(true);
+        }
         if (model.isFormal() && model.isDefault()) {
             that.addError("declaration may not be annotated both formal and default");
         }
@@ -980,7 +983,16 @@ public class DeclarationVisitor extends Visitor {
             	!(that instanceof Tree.Parameter)) {
             	that.addError("formal member may not have a body", 1100);
             }
-        }        
+        }
+        
+        if (d.isNative()) {
+        	if (d.getContainer() instanceof Declaration) {
+        		Declaration ci = (Declaration) d.getContainer();
+        		if (!ci.isNative()) {
+        			that.addError("native member belongs to a non-native declaration");
+        		}
+        	}
+        }
         
         /*if ( !d.isFormal() && 
                 d.getContainer() instanceof Interface && 

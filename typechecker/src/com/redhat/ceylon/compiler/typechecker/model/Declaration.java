@@ -28,6 +28,7 @@ public abstract class Declaration
     private boolean staticallyImportable;
     private boolean protectedVisibility;
     private String qualifiedNameAsStringCache;
+	private boolean nat;
 
     public Scope getVisibleScope() {
         return visibleScope;
@@ -101,9 +102,17 @@ public abstract class Declaration
     public boolean isFormal() {
         return formal;
     }
-
+    
     public void setFormal(boolean formal) {
         this.formal = formal;
+    }
+
+    public boolean isNative() {
+    	return nat;
+    }
+    
+    public void setNative(boolean nat) {
+    	this.nat=nat;
     }
 
     public boolean isDefault() {
