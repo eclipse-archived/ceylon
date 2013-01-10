@@ -60,13 +60,13 @@ shared class Singleton<out Element>(Element element)
          Otherwise, returns an instance of `Empty`."
     shared actual Empty|Singleton<Element> segment
             (Integer from, Integer length) =>
-                    from>0 || length==0 then {} else this;
+                    from<=0 && from+length>0 then this else {};
     
     doc "Returns a `Singleton` if the given starting index 
          is `0`. Otherwise, returns an instance of `Empty`."
     shared actual Empty|Singleton<Element> span
             (Integer from, Integer to) =>
-                    from>0 then {} else this;
+                    (((from <= 0) && (to >= 0)) || ((from >= 0) && (to <= 0))) then this else {};
     
     shared actual Empty|Singleton<Element> spanTo
             (Integer to) => to<0 then {} else this;
