@@ -9,6 +9,7 @@
     <property name="build.lib" location="${build.dir}/lib"/>
     <property name="build.test" location="${build.dir}/test"/>
     <property name="build.test.repo" location="${build.dir}/test-repo"/>
+    <property name="ide.dist" location="${basedir}/ide-dist"/>
 	
     <!-- The Java and Ceylon source files for the runtime -->
     <property name="runtime.src" location="runtime"/> 
@@ -31,9 +32,10 @@
     <property name="module.language.runtime" value="${basedir}/runtime"/>
 
     <!-- module archives -->
+    <property name="ceylon.language.name" value="${module.language.name}-${module.ceylon.language.version}"/>
     <property name="ceylon.language.dir" value="${module.language.dir}/${module.ceylon.language.version}"/>
-    <property name="ceylon.language.src" value="${ceylon.language.dir}/${module.language.name}-${module.ceylon.language.version}.src"/>
-    <property name="ceylon.language.car" value="${ceylon.language.dir}/${module.language.name}-${module.ceylon.language.version}.car"/>
+    <property name="ceylon.language.src" value="${ceylon.language.dir}/${ceylon.language.name}.src"/>
+    <property name="ceylon.language.car" value="${ceylon.language.dir}/${ceylon.language.name}.car"/>
     <property name="ceylon.language.repo" value="${ceylon.repo.dir}/${ceylon.language.dir}"/>
     <property name="ceylon.language.dist" value="${build.dist}/${ceylon.language.dir}"/>
     <property name="ceylon.compiler.loc" value="${basedir}/../ceylon-dist"/>
@@ -207,37 +209,45 @@
                 <exclude name="ceylon/language/StringBuilder.ceylon"/>
                 <include name="ceylon/language/StringBuilder.java"/>
                 <!-- These are problem files we hope to be able to compile some day -->
-                <exclude name="ceylon/language/combine.ceylon"/>
+                <exclude name="ceylon/language/combine.ceylon"/> <!-- RUNTIME ERROR (incomplete) -->
                 <include name="ceylon/language/combine_.java"/>
-                <exclude name="ceylon/language/Correspondence.ceylon"/>
+                <exclude name="ceylon/language/Correspondence.ceylon"/> <!-- COMPILE ERROR (see compiler issue #904) -->
                 <include name="ceylon/language/Correspondence.java"/>
                 <include name="ceylon/language/Correspondence$impl.java"/>
-                <exclude name="ceylon/language/Iterable.ceylon"/>
+                <exclude name="ceylon/language/Iterable.ceylon"/> <!-- COMPILE ERROR (unknown cause) -->
                 <include name="ceylon/language/Iterable.java"/>
                 <include name="ceylon/language/Iterable$impl.java"/>
-                <exclude name="ceylon/language/LazySet.ceylon"/>
+                <exclude name="ceylon/language/LazySet.ceylon"/> <!-- COMPILE ERROR (needs reified generics) -->
                 <include name="ceylon/language/LazySet.java"/>
-                <exclude name="ceylon/language/List.ceylon"/>
+                <exclude name="ceylon/language/List.ceylon"/> <!-- COMPILE ERROR (see compiler issue #903) -->
                 <include name="ceylon/language/List.java"/>
                 <include name="ceylon/language/List$impl.java"/>
-                <exclude name="ceylon/language/Map.ceylon"/>
+                <exclude name="ceylon/language/Map.ceylon"/> <!-- COMPILE ERROR (see compiler issue #904) -->
                 <include name="ceylon/language/Map.java"/>
                 <include name="ceylon/language/Map$impl.java"/>
-                <exclude name="ceylon/language/Range.ceylon"/>
+                <exclude name="ceylon/language/Range.ceylon"/> <!-- RUNTIME ERROR (incomplete) -->
                 <include name="ceylon/language/Range.java"/>
-                <exclude name="ceylon/language/Sequence.ceylon"/>
+                <exclude name="ceylon/language/Sequence.ceylon"/> <!-- RUNTIME ERROR (incomplete) -->
                 <include name="ceylon/language/Sequence.java"/>
                 <include name="ceylon/language/Sequence$impl.java"/>
-                <exclude name="ceylon/language/Singleton.ceylon"/>
+                <exclude name="ceylon/language/Singleton.ceylon"/> <!-- RUNTIME ERROR (incomplete) -->
                 <include name="ceylon/language/Singleton.java"/>
-                <exclude name="ceylon/language/Tuple.ceylon"/>
+                <exclude name="ceylon/language/Tuple.ceylon"/> <!-- COMPILE ERROR (unknown cause) -->
                 <include name="ceylon/language/Tuple.java"/>
             </files>
         </ceylon-compile>
     </target>
 
     <!-- Rule to compile and test -->
-    <target name="build" depends="ceylon.language"/>
+    <target name="build" depends="ceylon.language">
+        <!-- Temporary hack to prevent problems in the IDE when the compilation fails -->
+        <mkdir dir="${ide.dist}"/>
+    	<copy todir="${ide.dist}">
+            <fileset dir="${build.dist}/${ceylon.language.dir}">
+                <include name="${ceylon.language.name}.car"/>
+            </fileset>
+        </copy>
+    </target>
 	
     <target name="compile.tests" depends="build,ceylonc">
         <delete dir="${build.test.repo}"/>

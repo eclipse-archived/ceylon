@@ -54,7 +54,7 @@ shared interface List<out Element>
                 satisfies Iterator<Element> {
             variable Integer index = 0;
             shared actual Element|Finished next() {
-                if (index < (lastIndex else -1)) {
+                if (index <= (lastIndex else -1)) {
                     if (exists elem = item(index++)) {
                         return elem;
                     }
