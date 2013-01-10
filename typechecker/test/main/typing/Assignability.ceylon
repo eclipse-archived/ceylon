@@ -309,7 +309,7 @@ class Assignability() {
     printStrings();
     @error printStrings0();
     printStrings {};
-    @error printStrings0 {};
+    printStrings0 {};
     
     printStrings("Hello", "World");
     @error printStrings0("Hello", "World");

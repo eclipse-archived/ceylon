@@ -61,6 +61,7 @@ import com.redhat.ceylon.compiler.typechecker.tree.Tree;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.DefaultArgument;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.Ellipsis;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.Expression;
+import com.redhat.ceylon.compiler.typechecker.tree.Tree.ExpressionList;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.SpecifierExpression;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.SpecifierOrInitializerExpression;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.SupertypeQualifier;
@@ -3739,7 +3740,8 @@ private void checkPositionalArguments(ParameterList pl, ProducedReference pr,
         }*/
     }
     
-    private ProducedType getTupleType(List<Tree.Expression> es, Tree.Ellipsis ell) {
+    private ProducedType getTupleType(List<Tree.Expression> es, 
+    		Tree.Ellipsis ell, boolean requireSequential) {
         ProducedType result = unit.getEmptyDeclaration().getType();
         ProducedType ut = unit.getNothingDeclaration().getType();
         for (int i=es.size()-1; i>=0; i--) {
@@ -3750,7 +3752,7 @@ private void checkPositionalArguments(ParameterList pl, ProducedReference pr,
                     ut = unit.getIteratedType(et);
                     result = unit.denotableType(et);
                     //result = unit.getSequentialType(ut);
-                    if (!unit.isSequentialType(et)) {
+                    if (requireSequential && !unit.isSequentialType(et)) {
                         ell.addError("last element expression is not sequential: " +
                                 et.getProducedTypeName(unit) + " is not a sequence type");
                     }
@@ -3769,10 +3771,13 @@ private void checkPositionalArguments(ParameterList pl, ProducedReference pr,
         super.visit(that);
         ProducedType tt = null;
         if (that.getSequencedArgument()!=null) {
-            List<Tree.Expression> es = that.getSequencedArgument()
-                    .getExpressionList().getExpressions();
-            Tree.Ellipsis ell = that.getSequencedArgument().getEllipsis();
-            tt = getTupleType(es, ell);
+            ExpressionList el = that.getSequencedArgument()
+                    .getExpressionList();
+            if (el!=null) {
+            	List<Tree.Expression> es = el.getExpressions();
+            	Tree.Ellipsis ell = that.getSequencedArgument().getEllipsis();
+            	tt = getTupleType(es, ell, true);
+            }
         }
         else if (that.getComprehension()!=null) {
             ProducedType ct = that.getComprehension()
@@ -3804,17 +3809,20 @@ private void checkPositionalArguments(ParameterList pl, ProducedReference pr,
                 if (e.getTypeModel()!=null) {
                     addToUnion(list, unit.denotableType(e.getTypeModel()));*/
         else if (that.getSequencedArgument()!=null) {
-            Tree.ExpressionList el = that.getSequencedArgument().getExpressionList();
+            Tree.ExpressionList el = that.getSequencedArgument()
+            		.getExpressionList();
             if (el!=null) {
                 List<Tree.Expression> es = el.getExpressions();
                 Tree.Ellipsis ell = that.getSequencedArgument().getEllipsis();
-                ProducedType rt = getGenericElementType(es, ell);
+                /*ProducedType rt = getGenericElementType(es, ell);
                 boolean hasElement = es.size()>(ell==null?0:1);
                 //TODO: if the spread Iterable is nonempty, so
                 //      should this expression be!!
 				st = hasElement ?
                 		unit.getNonemptyIterableType(rt) : 
-                		unit.getIterableType(rt);
+                		unit.getIterableType(rt);*/
+                st = getTupleType(es, ell, false)
+                		.getSupertype(unit.getIterableDeclaration());
             }
         }
         else {
