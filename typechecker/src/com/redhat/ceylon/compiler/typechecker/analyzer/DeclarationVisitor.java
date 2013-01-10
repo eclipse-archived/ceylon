@@ -41,6 +41,7 @@ import com.redhat.ceylon.compiler.typechecker.tree.Tree.DefaultArgument;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.SequencedType;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.SpecifierOrInitializerExpression;
 import com.redhat.ceylon.compiler.typechecker.tree.Visitor;
+import com.redhat.ceylon.compiler.typechecker.util.UnitFactory;
 
 /**
  * First phase of type analysis.
@@ -63,14 +64,16 @@ public class DeclarationVisitor extends Visitor {
     private Declaration declaration;
     private String fullPath; 
     private String relativePath;
-
+    protected UnitFactory unitFactory;
+    
     public DeclarationVisitor(Package pkg, String filename,
-    		String fullPath, String relativePath) {
+    		String fullPath, String relativePath, UnitFactory unitFactory) {
         scope = pkg;
         this.pkg = pkg;
         this.filename = filename;
         this.fullPath = fullPath;
         this.relativePath = relativePath;
+        this.unitFactory = unitFactory;
     }
 
     public Unit getCompilationUnit() {
@@ -229,7 +232,7 @@ public class DeclarationVisitor extends Visitor {
     
     @Override
     public void visit(Tree.CompilationUnit that) {
-        unit = new Unit();
+        unit = unitFactory.createUnit();
         //that.setModelNode(unit);
         unit.setPackage(pkg);
         unit.setFilename(filename);
