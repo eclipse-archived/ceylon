@@ -4,7 +4,7 @@ doc "The supertype of all exceptions. A subclass represents
      problems of that kind."
 by "Gavin"
    "Tom"
-shared class Exception(description=null, cause=null) {
+shared native class Exception(description=null, cause=null) {
     
     doc "The underlying cause of this exception."
     shared Exception? cause;
@@ -12,7 +12,7 @@ shared class Exception(description=null, cause=null) {
     doc "A description of the problem."
     String? description;
     
-    //shared StackTrace stackTrace { throw; }
+    //shared native StackTrace stackTrace;
     
     doc "A message describing the problem. This default 
          implementation returns the description, if any, or 
@@ -26,8 +26,6 @@ shared class Exception(description=null, cause=null) {
     
     doc "Print the stack trace to the standard error of
          the virtual machine process."
-    shared void printStackTrace() {
-        throw;
-    }
+    shared native void printStackTrace();
     
 }

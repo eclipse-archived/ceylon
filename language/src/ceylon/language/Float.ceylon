@@ -72,4 +72,4 @@ doc "The `Float` value of the given string representation of
      syntax for a `Float` literal in the Ceylon language except 
      that it may optionally begin with a sign character (`+` or 
      `-`)."
-shared Float? parseFloat(String string) { throw; }
+shared native Float? parseFloat(String string);

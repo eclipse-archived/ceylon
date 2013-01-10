@@ -19,4 +19,4 @@ doc "The `Integer` value of the given string representation of an
      The syntax accepted by this method is the same as the syntax for an 
      `Integer` literal in the Ceylon language except that it may optionally 
      begin with a sign character (`+` or `-`)."
-shared Integer? parseInteger(String string) { throw; }
+shared native Integer? parseInteger(String string);

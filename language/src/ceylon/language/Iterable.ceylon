@@ -56,7 +56,7 @@ doc "Abstract supertype of containers whose elements may be
      Eager operations normally return a sequence."
 see (Collection)
 by "Gavin"
-shared interface Iterable<out Element> 
+shared native interface Iterable<out Element> 
         satisfies ContainerWithFirstElement<Element,Null> {
     
     doc "An iterator for the elements belonging to this 
@@ -175,11 +175,9 @@ shared interface Iterable<out Element>
          
          This operation is eager by nature."
     see (byIncreasing, byDecreasing)
-    shared default Element[] sort(
+    shared native default Element[] sort(
             doc "The function comparing pairs of elements."
-            Comparison? comparing(Element x, Element y)) { 
-        throw;
-    }
+            Comparison? comparing(Element x, Element y));
     
     doc "A sequence containing the results of applying the
          given mapping to the elements of this container. An 
@@ -398,13 +396,11 @@ shared interface Iterable<out Element>
     doc "Creates a Map that contains this `Iterable`'s
          elements, grouped in `Sequence`s under the
          keys provided by the grouping function."
-    shared default Map<Grouping,Sequence<Element>> group<Grouping>(
+    shared default native Map<Grouping,Sequence<Element>> group<Grouping>(
                 doc "A function that must return the key under
                      which to group the specified element."
                 Grouping grouping(Element elem))
-            given Grouping satisfies Object {
-        throw;
-    }
+            given Grouping satisfies Object;
     
 }
 

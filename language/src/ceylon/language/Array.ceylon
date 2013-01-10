@@ -29,13 +29,13 @@ shared abstract class Array<Element>()
 doc "Create an array containing the given elements. If no
      elements are provided, create an empty array of the
      given element type."
-shared Array<Element> array<Element>(Element... elements) { throw; }
+shared native Array<Element> array<Element>(Element... elements);
 
 doc "Create an array of the specified size, populating every 
      index with the given element. If the specified size is
      smaller than `1`, return an empty array of the given
      element type."
-shared Array<Element> arrayOfSize<Element>(
+shared native Array<Element> arrayOfSize<Element>(
         doc "The size of the resulting array. If the size
              is non-positive, an empty array will be 
              created."
@@ -43,11 +43,11 @@ shared Array<Element> arrayOfSize<Element>(
         doc "The element value with which to populate the
              array. All elements of the resulting array 
              will have the same value." 
-        Element element) { throw; }
+        Element element);
 
 doc "Efficiently copy the elements of one array to another 
      array."
-shared void copyArray<Element>(
+shared native void copyArray<Element>(
         doc "The source array containing the elements to be 
              copied."
         Array<Element> source,
@@ -61,7 +61,7 @@ shared void copyArray<Element>(
              copy the first element."
         Integer to, 
         doc "The number of elements to copy."
-        Integer length) { throw; }
+        Integer length);
         //TODO: defaults!
-        //Integer from=0, Integer to=0, Integer length=smallest(source.size,target.size)) { throw; }
+        //Integer from=0, Integer to=0, Integer length=smallest(source.size,target.size));
         
