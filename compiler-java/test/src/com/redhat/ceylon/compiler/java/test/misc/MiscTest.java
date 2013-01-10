@@ -87,8 +87,7 @@ public class MiscTest extends CompilerTest {
                 "Exception", "Float", "identityHash", "Integer", "language", "process",
                 "SequenceBuilder", "SequenceAppender", "sort", "String", "StringBuilder",
                 // Problem files
-                "combine", "Correspondence", "Iterable", "LazySet", "List", "Map",
-                "Range", "Sequence", "Singleton", "Tuple"
+                "Correspondence", "Iterable", "LazySet", "List", "Map", "Tuple"
                 }) {
             exceptions.add(ex);
         }
