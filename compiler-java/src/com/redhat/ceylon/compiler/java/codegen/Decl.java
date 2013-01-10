@@ -35,6 +35,7 @@ import com.redhat.ceylon.compiler.typechecker.model.Method;
 import com.redhat.ceylon.compiler.typechecker.model.MethodOrValue;
 import com.redhat.ceylon.compiler.typechecker.model.NamedArgumentList;
 import com.redhat.ceylon.compiler.typechecker.model.Package;
+import com.redhat.ceylon.compiler.typechecker.model.ProducedType;
 import com.redhat.ceylon.compiler.typechecker.model.Scope;
 import com.redhat.ceylon.compiler.typechecker.model.Setter;
 import com.redhat.ceylon.compiler.typechecker.model.TypeDeclaration;
@@ -362,19 +363,27 @@ public class Decl {
     }
 
     public static boolean isValueTypeDecl(Tree.Term decl) {
-        if ((decl != null) && decl.getTypeModel().getDeclaration() instanceof LazyClass) {
-            return ((LazyClass)decl.getTypeModel().getDeclaration()).isValueType();
+        if (decl != null){
+            return isValueTypeDecl(decl.getTypeModel());
         }
         return false;
     }
     
     public static boolean isValueTypeDecl(TypedDeclaration decl) {
-        if ((decl != null) && decl.getType().getDeclaration() instanceof LazyClass) {
-            return ((LazyClass)decl.getType().getDeclaration()).isValueType();
+        if (decl != null){
+            return isValueTypeDecl(decl.getType());
         }
         return false;
     }
-    
+
+    private static boolean isValueTypeDecl(ProducedType type) {
+        type = type.resolveAliases();
+        if ((type != null) && type.getDeclaration() instanceof LazyClass) {
+            return ((LazyClass)type.getDeclaration()).isValueType();
+        }
+        return false;
+    }
+
     static boolean isRefinableMemberClass(Declaration model) {
         return model instanceof Class 
                 && model.isMember()
