@@ -2615,7 +2615,8 @@ private void checkPositionalArguments(ParameterList pl, ProducedReference pr,
     
     private ProducedType checkOperandTypes(ProducedType lhst, ProducedType rhst, 
             TypeDeclaration td, Node node, String message) {
-        ProducedType ut = unionType(lhst, rhst, unit);
+        ProducedType ut = unionType(unit.denotableType(lhst), 
+        		unit.denotableType(rhst), unit);
         ProducedType st = producedType(td, ut);
         checkAssignable(lhst, st, node, message);
         checkAssignable(rhst, st, node, message);
