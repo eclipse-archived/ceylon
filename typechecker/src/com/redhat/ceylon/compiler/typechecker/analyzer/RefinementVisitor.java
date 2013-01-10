@@ -224,7 +224,8 @@ public class RefinementVisitor extends Visitor {
 
 	private void validateRefinement(Tree.StatementOrArgument that, TypeDeclaration td) {
 		List<ProducedType> supertypes = td.getType().getSupertypes();
-		if (td instanceof TypeAlias) {
+		if (td instanceof TypeAlias && 
+				td.getExtendedType()!=null) {
 			supertypes.add(td.getExtendedType());
 		}
 		for (int i=0; i<supertypes.size(); i++) {

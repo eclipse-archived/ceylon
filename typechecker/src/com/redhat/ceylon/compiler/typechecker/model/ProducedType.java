@@ -1735,4 +1735,56 @@ public class ProducedType extends ProducedReference {
     	}
     }
     
+    public boolean containsTypeParameters() {
+    	TypeDeclaration d = getDeclaration();
+		if (d instanceof TypeParameter) {
+			return true;
+		}
+		else if (d instanceof UnionType) {
+			for (ProducedType ct: getCaseTypes()) {
+				if (ct.containsTypeParameters()) return true;
+			}
+		}
+		else if (d instanceof IntersectionType) {
+			for (ProducedType st: getSatisfiedTypes()) {
+				if (st.containsTypeParameters()) return true;
+			}
+		}
+		else {
+			for (ProducedType at: getTypeArgumentList()) {
+				if (at.containsTypeParameters()) return true;
+			}
+			ProducedType qt = getQualifyingType();
+			if (qt!=null && qt.containsTypeParameters()) return true;
+		}
+		return false;
+    }
+    
+    public boolean containsTypeAliases() {
+    	TypeDeclaration d = getDeclaration();
+		if (d instanceof TypeAlias||
+			d instanceof ClassAlias||
+			d instanceof InterfaceAlias) {
+			return true;
+		}
+		else if (d instanceof UnionType) {
+			for (ProducedType ct: getCaseTypes()) {
+				if (ct.containsTypeAliases()) return true;
+			}
+		}
+		else if (d instanceof IntersectionType) {
+			for (ProducedType st: getSatisfiedTypes()) {
+				if (st.containsTypeAliases()) return true;
+			}
+		}
+		else {
+			for (ProducedType at: getTypeArgumentList()) {
+				if (at.containsTypeAliases()) return true;
+			}
+			ProducedType qt = getQualifyingType();
+			if (qt!=null && qt.containsTypeAliases()) return true;
+		}
+		return false;
+    }
+    
 }
