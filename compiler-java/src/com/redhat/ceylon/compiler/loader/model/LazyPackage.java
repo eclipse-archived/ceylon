@@ -77,7 +77,7 @@ public class LazyPackage extends Package {
 
             // make sure we iterate over a copy of compiledDeclarations, to avoid lazy loading to modify it and
             // cause a ConcurrentModificationException: https://github.com/ceylon/ceylon-compiler/issues/399
-            Declaration d = lookupMember(copy(compiledDeclarations), name, signature, ellipsis, false);
+            Declaration d = lookupMember(copy(compiledDeclarations), name, signature, ellipsis);
             if (d != null) {
                 return d;
             }
@@ -93,7 +93,7 @@ public class LazyPackage extends Package {
                     if ( ((Class) d).isAbstraction()) {
                         // make sure we iterate over a copy of compiledDeclarations, to avoid lazy loading to modify it and
                         // cause a ConcurrentModificationException: https://github.com/ceylon/ceylon-compiler/issues/399
-                        return lookupMember(copy(compiledDeclarations), name, signature, ellipsis, false);
+                        return lookupMember(copy(compiledDeclarations), name, signature, ellipsis);
                     }
                 }
                 return d;
