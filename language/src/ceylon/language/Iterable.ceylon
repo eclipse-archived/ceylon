@@ -245,7 +245,14 @@ shared interface Iterable<out Element, out Absent=Null>
                     while (i++<skip && !iterator.next() is Finished) {}
                     return iterator;
                 }
-                shared actual Element? first => iterator.next();
+                shared actual Element? first {
+                    if (!is Finished first = iterator.next()) {
+                        return first;
+                    }
+                    else {
+                        return null;
+                    }
+                }
                 shared actual Element? last => outer.last;
             }
             return iterable;
@@ -343,7 +350,7 @@ shared interface Iterable<out Element, out Absent=Null>
          `Iterable`, there is no entry in the resulting 
          iterable object."
     shared default Iterable<Element&Object,Absent> coalesced =>
-            { for (e in this) if (exists e) e };
+            nothing; //{ for (e in this) if (exists e) e };
     
     doc "All entries of form `index->element` where `index` 
          is the position at which `element` occurs, for every
@@ -357,14 +364,14 @@ shared interface Iterable<out Element, out Absent=Null>
              
          results in an iterable object with the entries
          `0->\"hello\"` and `2->\"world\"`."
-    shared default Iterable<Integer->Element&Object,Absent> indexed {
-            object iterable satisfies {<Integer->Element&Object>?...} {
-                shared actual Iterator<<Integer->Element&Object>?> iterator {
+    shared default {Integer->Element&Object...} indexed {
+            object iterable satisfies {Integer->Element&Object...} {
+                shared actual Iterator<Integer->Element&Object> iterator {
                     value outerIterable { return outer; }
-                    object iterator satisfies Iterator<<Integer->Element&Object>?> {
+                    object iterator satisfies Iterator<Integer->Element&Object> {
                         value iter = outerIterable.iterator;
                         variable value i=0;
-                        actual shared <Integer->Element&Object>?|Finished next() {
+                        actual shared <Integer->Element&Object>|Finished next() {
                             value next = iter.next();
                             if (!is Finished next) {
                                 if (exists next) {
@@ -372,7 +379,7 @@ shared interface Iterable<out Element, out Absent=Null>
                                 }
                                 else {
                                     i++;
-                                    return null;
+                                    return this.next();
                                 }
                             }
                             else {
