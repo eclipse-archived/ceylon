@@ -12,100 +12,6 @@ function ArraySequence(x){}//IGNORE
 var exports,Container,$finished,Cloneable,smaller,larger,Object$,Basic;//IGNORE
 var Iterable,Iterator;//IGNORE
 
-function List(wat) {
-    return wat;
-}
-function $init$List() {
-    if (List.$$===undefined) {
-        initTypeProtoI(List, 'ceylon.language::List', $init$Collection(), $init$Correspondence(), $init$Ranged(), $init$Cloneable());
-    }
-    return List;
-}
-$init$List();
-var List$proto = List.$$.prototype;
-List$proto.getSize = function() {
-    var li = this.getLastIndex();
-    return li === null ? 0 : li.getSuccessor();
-}
-List$proto.defines = function(idx) {
-    var li = this.getLastIndex();
-    if (li === null) li = -1;
-    return li.compare(idx) !== smaller;
-}
-List$proto.getIterator = function() {
-    return ListIterator(this);
-}
-List$proto.equals = function(other) {
-    if (isOfType(other, {t:List}) && other.getSize().equals(this.getSize())) {
-        for (var i = 0; i < this.getSize(); i++) {
-            var mine = this.item(i);
-            var theirs = other.item(i);
-            if (((mine === null) && theirs) || !(mine && mine.equals(theirs))) {
-                return false;
-            }
-        }
-        return true;
-    }
-    return false;
-}
-List$proto.getHash = function() {
-    var hc=1;
-    var iter=this.getIterator();
-    var e; while ((e = iter.next()) != $finished) {
-        hc*=31;
-        if (e !== null) {
-            hc += e.getHash();
-        }
-    }
-    return hc;
-}
-List$proto.findLast = function(select) {
-    var li = this.getLastIndex();
-    if (li !== null) {
-        while (li>=0) {
-            var e = this.item(li);
-            if (e !== null && select(e)) {
-                return e;
-            }
-            li = li.getPredecessor();
-        }
-    }
-    return null;
-}
-List$proto.withLeading = function(other) {
-    var sb = SequenceBuilder();
-    sb.append(other);
-    sb.appendAll(this);
-    return sb.getSequence();
-}
-List$proto.withTrailing = function(other) {
-    var sb = SequenceBuilder();
-    sb.appendAll(this);
-    sb.append(other);
-    return sb.getSequence();
-}
-exports.List=List;
-
-function ListIterator(list) {
-    var that = new ListIterator.$$;
-    that.list=list;
-    that.index=0;
-    that.lastIndex=list.getLastIndex();
-    if (that.lastIndex === null) {
-        that.lastIndex = -1;
-    } else {
-        that.lastIndex = that.lastIndex;
-    }
-    return that;
-}
-initTypeProtoI(ListIterator, 'ceylon.language::ListIterator', $init$Iterator());
-ListIterator.$$.prototype.next = function() {
-    if (this.index <= this.lastIndex) {
-        return this.list.item(this.index++);
-    }
-    return $finished;
-}
-
 function Sequential($$sequential) {
     return $$sequential;
 }
@@ -121,6 +27,7 @@ exports.Sequential=Sequential;
 function Empty() {
     var that = new Empty.$$;
     that.value = [];
+    that.$$targs$$=[{t:Nothing}];
     return that;
 }
 initTypeProtoI(Empty, 'ceylon.language::Empty', Sequential, $init$Ranged(), $init$Cloneable());
@@ -159,10 +66,10 @@ Empty$proto.$filter = function(f) { return this; }
 Empty$proto.getCoalesced = function() { return this; }
 Empty$proto.getIndexed = function() { return this; }
 Empty$proto.withLeading = function(other) {
-    return new ArraySequence([other]);
+    return new ArraySequence([other], [{t:other.getT$all()[other.getT$name()]}]);
 }
 Empty$proto.withTrailing = function(other) {
-    return new ArraySequence([other]);
+    return new ArraySequence([other], [{t:other.getT$all()[other.getT$name()]}]);
 }
 Empty$proto.chain = function(other) { return other; }
 
@@ -174,6 +81,7 @@ exports.Empty=Empty;
 function emptyIterator(){
     var $$emptyIterator=new emptyIterator.$$;
     Iterator($$emptyIterator);
+    $$emptyIterator.$$targs$$=[{t:Nothing}];
     return $$emptyIterator;
 }
 function $init$emptyIterator(){
@@ -190,26 +98,28 @@ $init$emptyIterator();
     return $finished;
 };
 })(emptyIterator.$$.prototype);
-var emptyIterator$2=emptyIterator(new emptyIterator.$$);
+var emptyIterator$2=emptyIterator();
 var getEmptyIterator=function(){
     return emptyIterator$2;
 }
 
-function Comprehension(makeNextFunc, compr) {
+function Comprehension(makeNextFunc, $$targs$$, compr) {
     if (compr===undefined) {compr = new Comprehension.$$;}
     Basic(compr);
     compr.makeNextFunc = makeNextFunc;
+    compr.$$targs$$=$$targs$$;
     return compr;
 }
 initTypeProto(Comprehension, 'ceylon.language::Comprehension', Basic, Iterable);
 var Comprehension$proto = Comprehension.$$.prototype;
 Comprehension$proto.getIterator = function() {
-    return ComprehensionIterator(this.makeNextFunc());
+    return ComprehensionIterator(this.makeNextFunc(), this.$$targs$$);
 }
 exports.Comprehension=Comprehension;
 
-function ComprehensionIterator(nextFunc, it) {
+function ComprehensionIterator(nextFunc, $$targs$$, it) {
     if (it===undefined) {it = new ComprehensionIterator.$$;}
+    it.$$targs$$=$$targs$$;
     Basic(it);
     it.next = nextFunc;
     return it;
