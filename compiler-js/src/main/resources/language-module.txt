@@ -29,8 +29,10 @@ Exception,NegativeNumberException,OverflowException,RecursiveInitializationExcep
 
 #Null
 #Number
-
-Set,LazyMap,LazyList
+#Map is close to compiling but requires reified types in one method
+#Map
+Set
+LazyMap,LazyList,LazySet
 
 #this one has native impls due to reified generics
 #Range

@@ -45,9 +45,10 @@ Map$proto.getHash = function() {
 }
 
 Map$proto.getValues = function() { return MapValues(this); }
-function MapValues(map) {
+function MapValues(map, $$targs$$) {
     var val = new MapValues.$$;
     val.map = map;
+    val.$$targs$$=$$targs$$;
     return val;
 }
 initTypeProto(MapValues, 'ceylon.language::MapValues', Basic, Collection);
@@ -59,6 +60,7 @@ MapValues$proto.getIterator = function() { return MapValuesIterator(this.map); }
 function MapValuesIterator(map) {
     var iter = new MapValuesIterator.$$;
     iter.it = map.getIterator();
+    iter.$$targs$$=[map.$$targs$$[1]];
     return iter;
 }
 initTypeProto(MapValuesIterator, 'ceylon.language::MapValuesIterator', Basic, Iterator);
@@ -68,9 +70,10 @@ MapValuesIterator.$$.prototype.next = function() {
 }
 
 Map$proto.getKeys = function() { return KeySet(this); }
-function KeySet(map) {
+function KeySet(map, $$targs$$) {
     var set = new KeySet.$$;
     set.map = map;
+    set.$$targs$$=[map.$$targs$$[0]];
     return set;
 }
 initTypeProto(KeySet, 'ceylon.language::KeySet', Basic, Set);
@@ -83,6 +86,7 @@ KeySet$proto.getIterator = function() { return KeySetIterator(this.map); }
 function KeySetIterator(map) {
     var iter = new KeySetIterator.$$;
     iter.it = map.getIterator();
+    iter.$$targs$$=[map.$$targs$$[0]];
     return iter;
 }
 initTypeProto(KeySetIterator, 'ceylon.language::KeySetIterator', Basic, Iterator);
@@ -90,13 +94,13 @@ KeySetIterator.$$.prototype.next = function() {
     var entry = this.it.next();
     return (entry!==$finished) ? entry.getKey() : $finished;
 }
-KeySet$proto.union = function(other) {
+KeySet$proto.union = function(other, $$$mptypes) {
     var set = hashSetFromMap(this.map);
     set.addAll(other);
     return set;
 }
-KeySet$proto.intersection = function(other) {
-    var set = HashSet();
+KeySet$proto.intersection = function(other, $$$mptypes) {
+    var set = HashSet(undefined, [{t:'i', l:[this.$$targs$$[0], $$$mptypes[0]]}]);
     var it = this.map.getIterator();
     var entry;
     while ((entry=it.next()) !== $finished) {
@@ -105,8 +109,8 @@ KeySet$proto.intersection = function(other) {
     }
     return set;
 }
-KeySet$proto.exclusiveUnion = function(other) {
-    var set = this.complement(other);
+KeySet$proto.exclusiveUnion = function(other, $$$mptypes) {
+    var set = this.complement(other, $$$mptypes);
     var it = other.getIterator();
     var elem;
     while ((elem=it.next()) !== $finished) {
@@ -114,8 +118,8 @@ KeySet$proto.exclusiveUnion = function(other) {
     }
     return set;
 }
-KeySet$proto.complement = function(other) {
-    var set = HashSet();
+KeySet$proto.complement = function(other, $$$mptypes) {
+    var set = HashSet(undefined, [{t:'u', l:[this.$$targs$$[0], $$$mptypes[0]]}]);
     var it = this.map.getIterator();
     var entry;
     while ((entry=it.next()) !== $finished) {
@@ -126,53 +130,56 @@ KeySet$proto.complement = function(other) {
 }
 
 Map$proto.getInverse = function() {
-    var inv = HashMap();
+    var inv = HashMap(undefined, [this.$$targs$$[1], {t:Set, a:[this.$$targs$$[0]]}]);
     var it = this.getIterator();
     var entry;
-    var newSet = HashSet();
+    var newSet = HashSet(undefined, [this.$$targs$$[0]]);
     while ((entry=it.next()) !== $finished) {
         var item = entry.getItem();
-        var set = inv.put(Entry(item, newSet), true);
+        var set = inv.put(Entry(item, newSet, [this.$$targs$$[1], {t:Set, a:[this.$$targs$$[0]]}]), true);
         if (set === null) {
             set = newSet;
-            newSet = HashSet();
+            newSet = HashSet(undefined, [this.$$targs$$[0]]);
         }
         set.add(entry.getKey());
     }
     return inv;
 }
-Map$proto.mapItems = function(mapping) {
-    function EmptyMap(orig) {
+Map$proto.mapItems = function(mapping, $$$mptypes) {
+    function EmptyMap(orig, $$targs$$) {
         var em = new EmptyMap.$$;
+        em.$$targs$$=$$targs$$;
         Basic(em);
         em.orig=orig;
         em.clone=function() { return this; }
         em.getItem=function() { return null; }
         em.getIterator=function() {
-            function miter(iter) {
+            function miter(iter, $$targs1$$) {
                 var $i = new miter.$$;
                 $i.iter = iter;
+                $i.$$targs$$=$$targs1$$;
                 $i.next = function() {
                     var e = this.iter.next();
-                    return e===$finished ? e : Entry(e.getKey(), mapping(e.getKey(), e.getItem()));
+                    return e===$finished ? e : Entry(e.getKey(), mapping(e.getKey(), e.getItem()), this.$$targs$$);
                 };
                 return $i;
             }
             initTypeProto(miter, 'ceylon.language::MappedIterator', Basic, Iterator);
-            return miter(orig.getIterator());
+            return miter(orig.getIterator(), [{t:Entry, a:em.$$targs$$}]);
         }
         em.getSize=function() { return this.orig.getSize(); }
         em.getString=function() { return String$('',0); }
         return em;
     }
     initTypeProto(EmptyMap, 'ceylon.language::EmptyMap', Basic, Map);
-    return EmptyMap(this);
+    return EmptyMap(this, [this.$$targs$$[0], $$$mptypes[0]]);
 }
 exports.Map=Map;
 
-function HashMap(entries, map) {
+function HashMap(entries, $$targs$$, map) {
     if (map===undefined) { map = new HashMap.$$; }
     Basic(map);
+    map.$$targs$$=$$targs$$;
     map.map = {};
     map.size = 0;
     if (entries !== undefined) { map.putAll(entries); }
@@ -180,7 +187,7 @@ function HashMap(entries, map) {
 }
 initTypeProto(HashMap, 'ceylon.language::HashMap', Basic, Map);
 function copyHashMap(orig) {
-    var map = HashMap();
+    var map = HashMap(undefined, orig.$$targs$$);
     for (var hash in Object.keys(orig.map)) {
         map.map[hash] = orig.map[hash].slice(0);
     }
@@ -242,10 +249,11 @@ HashMap$proto.contains = function(elem) {
 }
 HashMap$proto.defines = function(key) { return this.item(key) !== null; }
 
-function HashSet(elems, set) {
+function HashSet(elems, $$targs$$, set) {
     if (set===undefined) { set = new HashSet.$$; }
     Basic(set);
-    set.map = HashMap();
+    set.$$targs$$=$$targs$$;
+    set.map = HashMap(undefined, [$$targs$$[0], {t:Boolean$}]);
     if (elems !== undefined) { set.addAll(elems); }
     return set;
 }
@@ -254,14 +262,15 @@ function hashSetFromMap(map) {
     var set = new HashSet.$$;
     Basic(set);
     set.map = this;
+    set.$$targs$$=[map.$$targs$$[0]];
     return set;
 }
 var HashSet$proto = HashSet.$$.prototype;
-HashSet$proto.add = function(elem) { this.map.put(Entry(elem, true)); }
+HashSet$proto.add = function(elem) { this.map.put(Entry(elem, true, [this.$$targs$$[0], {t:Boolean$}])); }
 HashSet$proto.addAll = function(elems) {
     var it = elems.getIterator();
     var elem;
-    while ((elem=it.next()) !== $finished) { this.map.put(Entry(elem, true)); }
+    while ((elem=it.next()) !== $finished) { this.map.put(Entry(elem, true, [this.$$targs$$[0], {t:Boolean$}])); }
 }
 HashSet$proto.getSize = function() { return this.map.size; }
 HashSet$proto.getEmpty = function() { return this.map.size===0; }
@@ -269,16 +278,17 @@ HashSet$proto.getLast = function() {
     var entry = this.map.getLast();
     return (entry !== null) ? entry.getKey() : null;
 }
-HashSet$proto.getIterator = function() { return HashSetIterator(this.map); }
+HashSet$proto.getIterator = function() { return HashSetIterator(this.map, this.$$targs$$); }
 HashSet$proto.getClone = function() { return this; }
 HashSet$proto.contains = function(elem) { return this.map.item(elem) !== null; }
-HashSet$proto.union = function(other) {
+HashSet$proto.union = function(other, $$$mptypes) {
     var set = hashSetFromMap(copyHashMap(this.map));
+    set.$$targs$$=[{t:'u', l:[this.$$targs$$[0], $$$mptypes[0]]}];
     set.addAll(other);
     return set;
 }
-HashSet$proto.intersection = function(other) {
-    var set = HashSet();
+HashSet$proto.intersection = function(other, $$$mptypes) {
+    var set = HashSet(undefined, [{t:'i', l:[this.$$targs$$[0], $$$mptypes[0]]}]);
     var it = this.getIterator();
     var elem;
     while ((elem=it.next()) !== $finished) {
@@ -296,7 +306,7 @@ HashSet$proto.exclusiveUnion = function(other) {
     return set;
 }
 HashSet$proto.complement = function(other) {
-    var set = HashSet();
+    var set = HashSet(undfined, [{t:'u', l:[this.$$targs$$[0], $$$mptypes[0]]}]);
     var it = this.getIterator();
     var elem;
     while ((elem=it.next()) !== $finished) {
@@ -305,9 +315,10 @@ HashSet$proto.complement = function(other) {
     return set;
 }
 
-function HashMapIterator(map) {
+function HashMapIterator(map, $$targs$$) {
     var it = new HashMapIterator.$$;
     it.map = map;
+    it.$$targs$$=$$targs$$;
     it.hashs = Object.keys(map);
     it.hashIndex = 0;
     it.arrIndex = 0;
@@ -327,9 +338,10 @@ HashMapIterator.$$.prototype.next = function() {
     }
     return $finished;
 }
-function HashSetIterator(map) {
+function HashSetIterator(map, $$targs$$) {
     var it = new HashSetIterator.$$;
     it.mapIt = map.getIterator();
+    it.$$targs$$=$$targs$$;
     return it;
 }
 initTypeProto(HashSetIterator, 'ceylon.language::HashSetIterator', Basic, Iterator);
@@ -337,49 +349,3 @@ HashSetIterator.$$.prototype.next = function() {
     var entry = this.mapIt.next();
     return (entry !== $finished) ? entry.getKey() : $finished;
 }
-
-function LazySet(elems, set) {
-    if (set===undefined) {set = new LazySet.$$;}
-    Basic(set);
-    set.elems = elems===undefined?empty:elems;
-    return set;
-}
-initTypeProto(LazySet, 'ceylon.language::LazySet', Basic, Set);
-var LazySet$proto = LazySet.$$.prototype;
-LazySet$proto.getEmpty = function() { return this.elems.getEmpty(); }
-LazySet$proto.getSize = function() { return HashSet(this.elems).getSize(); }
-LazySet$proto.getClone = function() { return this; }
-LazySet$proto.getIterator = function() { return HashSet(this.elems).getIterator(); }
-LazySet$proto.equals = function(other) {
-    var hset = HashSet(this.elems);
-    var it = other.getIterator();
-    var elem;
-    var count = 0;
-    while ((elem=it.next()) !== $finished) {
-        if (!hset.contains(elem)) { return false; }
-        ++count;
-    }
-    return count==hset.getSize();
-}
-LazySet$proto.union = function(other) {
-    var set = HashSet(this.elems);
-    set.addAll(other);
-    return set;
-}
-LazySet$proto.intersection = function(other) {
-    var set = HashSet(this.elems);
-    var result = HashSet();
-    var it = other.getIterator();
-    var elem;
-    while ((elem=it.next()) !== $finished) {
-        if (set.contains(elem)) { result.add(elem); }
-    }
-    return result;
-}
-LazySet$proto.exclusiveUnion = function(other) {
-    return other.exclusiveUnion(HashSet(this.elems));
-}
-LazySet$proto.complement = function(other) {
-    return other.complement(HashSet(this.elems));
-}
-exports.LazySet=LazySet;
