@@ -10,6 +10,7 @@ var empty,$finished,Basic,Iterator,exports;//IGNORE
 function String$(value,size) {
     var that = new String(value);
     that.codePoints = size;
+    that.$$targs$$=[{t:Character}];
     return that;
 }
 initExistingType(String$, String, 'ceylon.language::String', Object$, Sequential, Comparable,
