@@ -211,7 +211,7 @@ public class TypeUtils {
 
     static boolean isReservedTypename(String typeName) {
         return JsCompiler.compilingLanguageModule && (typeName.equals("Object") || typeName.equals("Number")
-                || typeName.equals("Array")) || typeName.equals("String");
+                || typeName.equals("Array")) || typeName.equals("String") || typeName.equals("Boolean");
     }
 
 }

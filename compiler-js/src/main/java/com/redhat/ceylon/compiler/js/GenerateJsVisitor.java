@@ -2896,52 +2896,64 @@ public class GenerateJsVisitor extends Visitor
    }
 
     @Override
-    public void visit(UnionOp that) {
+    public void visit(final UnionOp that) {
         binaryOp(that, new BinaryOpGenerator() {
             @Override
             public void generate(BinaryOpTermGenerator termgen) {
                 termgen.left();
                 out(".union(");
                 termgen.right();
+                out(",");
+                TypeUtils.printTypeArguments(that, that.getRightTerm().getTypeModel().getTypeArgumentList(),
+                        GenerateJsVisitor.this);
                 out(")");
             }
         });
     }
 
     @Override
-    public void visit(IntersectionOp that) {
+    public void visit(final IntersectionOp that) {
         binaryOp(that, new BinaryOpGenerator() {
             @Override
             public void generate(BinaryOpTermGenerator termgen) {
                 termgen.left();
                 out(".intersection(");
                 termgen.right();
+                out(",");
+                TypeUtils.printTypeArguments(that, that.getRightTerm().getTypeModel().getTypeArgumentList(),
+                        GenerateJsVisitor.this);
                 out(")");
             }
         });
     }
 
     @Override
-    public void visit(XorOp that) {
+    public void visit(final XorOp that) {
         binaryOp(that, new BinaryOpGenerator() {
             @Override
             public void generate(BinaryOpTermGenerator termgen) {
                 termgen.left();
                 out(".exclusiveUnion(");
                 termgen.right();
+                out(",");
+                TypeUtils.printTypeArguments(that, that.getRightTerm().getTypeModel().getTypeArgumentList(),
+                        GenerateJsVisitor.this);
                 out(")");
             }
         });
     }
 
     @Override
-    public void visit(ComplementOp that) {
+    public void visit(final ComplementOp that) {
         binaryOp(that, new BinaryOpGenerator() {
             @Override
             public void generate(BinaryOpTermGenerator termgen) {
                 termgen.left();
                 out(".complement(");
                 termgen.right();
+                out(",");
+                TypeUtils.printTypeArguments(that, that.getRightTerm().getTypeModel().getTypeArgumentList(),
+                        GenerateJsVisitor.this);
                 out(")");
             }
         });
