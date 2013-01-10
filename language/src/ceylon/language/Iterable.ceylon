@@ -74,16 +74,19 @@ shared interface Iterable<out Element, out Absent=Null>
     shared actual default Boolean contains(Object element) => 
             any(ifExists(element.equals));
     
-    /*doc "The first element returned by the iterator, if any.
-         This should produce the same value as
-         `ordered.iterator.head`."
-    shared actual default Element? first {
-        if (!is Finished first = iterator.next()) {
-            return first;
+    doc "The first element returned by the iterator, if any.
+         This should always produce the same value as
+         `iterable.iterator.head`."
+    shared actual default Absent|Element first {
+        Element? first;
+        if (!is Finished next = iterator.next()) {
+            first = next;
         }
         else {
-            return null;
+            first = null;
         }
+        assert (is Absent|Element first);
+        return first;
     }
     
     doc "The last element returned by the iterator, if any.
@@ -91,13 +94,13 @@ shared interface Iterable<out Element, out Absent=Null>
          might never return; also, this implementation will
          iterate through all the elements, which might be
          very time-consuming."
-    shared actual default Element? last {
-        variable Element? e = null;
+    shared actual default Absent|Element last {
+        variable Absent|Element e = first;
         for (x in this) {
             e = x;
         }
         return e;
-    }*/
+    }
     
     doc "Returns an iterable object containing all but the 
          first element of this container."
