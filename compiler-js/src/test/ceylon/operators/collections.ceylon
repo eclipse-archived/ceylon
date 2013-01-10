@@ -10,7 +10,7 @@ void testEnumerations() {
     value t2=[0, seq...];//same as s2
     check(className(seq).startsWith("ceylon.language::Tuple"), "{1,2,3} is not a Tuple but a " className(seq) "");
     check(!className(lcomp).startsWith("ceylon.language::Tuple"), "lazy comprehension is a Tuple " className(lcomp) "");
-    check(className(ecomp).startsWith("ceylon.language::Tuple"), "eager comprehension is not a Tuple but a " className(ecomp) "");
+    check(className(ecomp).startsWith("ceylon.language::ArraySequence"), "eager comprehension is not a Tuple but a " className(ecomp) "");
     check(!className(s2).startsWith("ceylon.language::Tuple"), "{0,seq...} is a Tuple " className(s2) "");
     check(!className(s3).startsWith("ceylon.language::Tuple"), "{x,iter...} is a Tuple " className(s3) "");
     check(className(t1).startsWith("ceylon.language::Tuple"), "[1,2,3] is not a Tuple but a " className(t1) "");
@@ -26,6 +26,6 @@ void testEnumerations() {
     check(t2.size==4, "t2.size!=4");
     //check(t3.size==5, "t3.size!=5");
     check(!className({lcomp...}).startsWith("ceylon.language::Tuple"), "{comp...} is Tuple " className({lcomp...}) "");
-    check(className({ecomp...}).startsWith("ceylon.language::Tuple"), "{ecomp...} is not Tuple but " className({ecomp...}) "");
+    check(className({ecomp...}).startsWith("ceylon.language::ArraySequence"), "{ecomp...} is not Tuple but " className({ecomp...}) "");
     check(className({seq...}).startsWith("ceylon.language::Tuple"), "{seq...} is not Tuple but " className({seq...}) "");
 }
