@@ -8,14 +8,14 @@ void lazyeager() {
     value x1 = {};                               //type []
     @type:"Iterable<String,Null>" 
     value x2 = { for (p in people) p.name };     //type {String*}
-    @type:"Iterable<String,Null>" 
-    value x8 = { "hello" };                      //type {String*}
-    @type:"Iterable<String,Null>" 
-    value x3 = { "hello", "world", "goodbye" };  //type {String*}
-    @type:"Iterable<String,Null>" 
-    value x4 = { "hello", sequence* };         //type {String*}
-    @type:"Iterable<String,Null>" 
-    value x5 = { "hello", iterable* };         //type {String*}
+    @type:"Iterable<String,Nothing>" 
+    value x8 = { "hello" };                      //type {String+}
+    @type:"Iterable<String,Nothing>" 
+    value x3 = { "hello", "world", "goodbye" };  //type {String+}
+    @type:"Iterable<String,Nothing>" 
+    value x4 = { "hello", sequence* };         //type {String+}
+    @type:"Iterable<String,Nothing>" 
+    value x5 = { "hello", iterable* };         //type {String+}
     @type:"Iterable<String,Null>" 
     value x6 = { sequence* };                  //type {String*}
     @type:"Iterable<String,Null>" 

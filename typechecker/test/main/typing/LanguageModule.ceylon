@@ -26,9 +26,19 @@ class LanguageModule() {
     if ("hello" nonempty) {}
     Character[] chars = "hello";
     
-    //TODO: make this work!!
-    @error Integer m1 = min { @error 1, 2 };
+    [Integer*] ints2 = {};
+    {Integer*} ints1 = {};
+    
+    Integer m1 = min { 1, 2 };
+    Null n1 = min {};
+    @type:"Null|Integer" min {ints1*};
+    @type:"Null|Integer" min {ints2*};
+    
     Integer m2 = min([1, 2]);
-    Integer? m3 = min({1, 2});
+    Null n2 = min([]);
+    Integer m3 = min({1, 2});
+    Null n3 = min({});
+    @type:"Null|Integer" min(ints1);
+    @type:"Null|Integer" min(ints2);
 
 }

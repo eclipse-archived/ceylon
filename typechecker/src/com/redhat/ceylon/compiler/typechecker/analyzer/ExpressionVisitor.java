@@ -2106,6 +2106,11 @@ public class ExpressionVisitor extends Visitor {
         if (ch!=null) {
             checkNamedArg(ch, pl, pr, foundParameters);
         }
+        
+        if (sa==null&&ch==null) {
+        	Parameter sp = getUnspecifiedParameter(pr, pl, foundParameters);
+        	foundParameters.add(sp);
+        }
             
         for (Parameter p: pl.getParameters()) {
             if (!foundParameters.contains(p) && 
@@ -3804,7 +3809,12 @@ private void checkPositionalArguments(ParameterList pl, ProducedReference pr,
                 List<Tree.Expression> es = el.getExpressions();
                 Tree.Ellipsis ell = that.getSequencedArgument().getEllipsis();
                 ProducedType rt = getGenericElementType(es, ell);
-                st = unit.getIterableType(rt);
+                boolean hasElement = es.size()>(ell==null?0:1);
+                //TODO: if the spread Iterable is nonempty, so
+                //      should this expression be!!
+				st = hasElement ?
+                		unit.getNonemptyIterableType(rt) : 
+                		unit.getIterableType(rt);
             }
         }
         else {

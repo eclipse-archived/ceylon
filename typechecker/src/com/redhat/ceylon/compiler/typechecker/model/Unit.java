@@ -497,6 +497,11 @@ public class Unit {
         		getNullDeclaration().getType());
     }
 
+    public ProducedType getNonemptyIterableType(ProducedType et) {
+        return producedType(getIterableDeclaration(), et, 
+        		getNothingDeclaration().getType());
+    }
+
     public ProducedType getSetType(ProducedType et) {
         return producedType(getSetDeclaration(), et);
     }
