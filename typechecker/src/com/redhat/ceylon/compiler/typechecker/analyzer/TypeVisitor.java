@@ -690,8 +690,14 @@ public class TypeVisitor extends Visitor {
         if (that.getTypeSpecifier()!=null) {
         	Tree.StaticType type = that.getTypeSpecifier().getType();
         	if (type!=null) {
-        		that.getDeclarationModel()
-        				.setDefaultTypeArgument(type.getTypeModel());
+				ProducedType t = type.getTypeModel();
+        		if (t.containsTypeParameters()) {
+        			type.addError("default type argument involves type parameters: " + 
+        					t.getProducedTypeName());
+        		}
+        		else {
+					that.getDeclarationModel().setDefaultTypeArgument(t);
+				}
         	}
         }
     }

@@ -945,6 +945,7 @@ typeParameters returns [TypeParameterList typeParameterList]
 
 typeParameter returns [TypeParameterDeclaration typeParameter]
     : { $typeParameter = new TypeParameterDeclaration(null); }
+      compilerAnnotations
       ( 
         variance 
         { $typeParameter.setTypeVariance($variance.typeVariance); } 
@@ -955,6 +956,7 @@ typeParameter returns [TypeParameterDeclaration typeParameter]
         typeDefault
         { $typeParameter.setTypeSpecifier($typeDefault.typeSpecifier); }
       )?
+      { $typeParameter.getCompilerAnnotations().addAll($compilerAnnotations.annotations); }
     //-> ^(TYPE_PARAMETER_DECLARATION variance? typeName)
     ;
 
