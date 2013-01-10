@@ -165,7 +165,7 @@ class Operators() {
     @type:"Null|String" value x51 = helloworld[0]?.normalized;
     @type:"Null|Iterable<String,Null>" value x512 = helloworld[0]?.split((Character c) => c==` `);
     @type:"Sequence<String>" value x52 = helloworld[].normalized;
-    @type:"Sequence<Iterable<String>,Null>" value x522 = helloworld[].split((Character c) => c==` `);
+    @type:"Sequence<Iterable<String,Null>>" value x522 = helloworld[].split((Character c) => c==` `);
     @type:"Null|String" value x53 = noSequence?[0]?.normalized;
     @type:"Null|Iterable<String,Null>" value x532 = noSequence?[0]?.split((Character c) => c==` `);
     @type:"Sequence<Operators.X>" value x54 = [Operators()][].X();
