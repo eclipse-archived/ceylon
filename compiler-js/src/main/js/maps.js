@@ -7,7 +7,6 @@ function Exception(){}//IGNORE
 function isOfType(a,b){}//IGNORE
 function String$(x,l){}//IGNORE
 function TypeCategory(a,b){}//IGNORE
-function ArraySequence(x){}//IGNORE
 var exports,Container,$finished,Cloneable,smaller,larger,Object$,Basic;//IGNORE
 var Iterable,Iterator;//IGNORE
 

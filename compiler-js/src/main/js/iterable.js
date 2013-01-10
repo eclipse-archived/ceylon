@@ -31,7 +31,7 @@ Iterable$proto.getSequence = function() {
     while ((next = iter.next()) !== $finished) {
         a.push(next);
     }
-    return ArraySequence(a);
+    return ArraySequence(a, this.$$targs$$);
 }
 Iterable$proto.$map = function(mapper) {
     var iter = this;
@@ -95,7 +95,7 @@ Iterable$proto.$sort = function(/*Callable<Comparison?,Element,Element>*/compari
         if (r === smaller) return -1;
         return 0;
     });
-    return ArraySequence(a);
+    return ArraySequence(a, this.$$targs$$);
 }
 Iterable$proto.any = function(/*Callable<Boolean,Element>*/selecting) {
     var iter = this.getIterator();
@@ -204,17 +204,17 @@ Iterable$proto.collect = function(collecting) {
 Iterable$proto.select = function(selecting) {
     return this.$filter(selecting).getSequence();
 }
-Iterable$proto.group = function(grouping) {
+Iterable$proto.group = function(grouping, $$$mptypes) {
     var map = HashMap();
     var it = this.getIterator();
     var elem;
-    var newSeq = ArraySequence([]);
+    var newSeq = ArraySequence([], this.$$targs$$);
     while ((elem=it.next()) !== $finished) {
         var key = grouping(elem);
-        var seq = map.put(Entry(key, newSeq), true);
+        var seq = map.put(Entry(key, newSeq, [$$$mptypes[0], {t:Sequence, a:this.$$targs$$}]), true);
         if (seq === null) {
             seq = newSeq;
-            newSeq = ArraySequence([]);
+            newSeq = ArraySequence([], this.$$targs$$);
         }
         seq.push(elem);
     }
@@ -244,6 +244,6 @@ ChainedIterable$proto.getIterator = function() {
 
 function toTuple(iterable) {
   var seq = iterable.getSequence();
-  return reify(Tuple(seq.getFirst(), seq.getRest().getSequence()), seq.$$targs$$);
+  return Tuple(seq.getFirst(), seq.getRest().getSequence(), seq.$$targs$$);
 }
 exports.toTuple=toTuple;

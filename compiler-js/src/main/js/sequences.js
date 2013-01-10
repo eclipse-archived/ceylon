@@ -12,19 +12,21 @@ var Basic,Category;//IGNORE
 function Sequence($$sequence) {
     return $$sequence;
 }
-initTypeProtoI(Sequence, 'ceylon.language::Sequence', Sequential, Cloneable);
 function $init$Sequence() {
     if (Sequence.$$===undefined) {
-        initTypeProtoI(Sequence, 'ceylon.language::Sequence', $init$Sequential(), $init$Cloneable());
+        initTypeProtoI(Sequence, 'ceylon.language::Sequence', $init$Sequential(),
+            $init$ContainerWithFirstElement(), $init$Cloneable());
     }
     return Sequence;
 }
+$init$Sequence();
 var Sequence$proto = Sequence.$$.prototype;
 Sequence$proto.getLast = function() {
     var last = this.item(this.getLastIndex());
     if (last === null) throw Exception();
     return last;
 }
+Sequence$proto.getEmpty = function() { return false; }
 
 function Array$() {
     var that = new Array$.$$;
@@ -36,6 +38,10 @@ var Array$proto = Array.prototype;
 var origArrToString = Array$proto.toString;
 inheritProtoI(Array$, Object$, Cloneable, Ranged, $init$List());
 Array$proto.toString = origArrToString;
+Array$proto.reifyCeylonType = function(typeParameters) {
+    this.$$targs$$ = typeParameters;
+    return this;
+}
 exports.Array=Array$;
 
 function EmptyArray() {
@@ -46,8 +52,9 @@ function ArrayList(items) {
     return items;
 }
 initTypeProto(ArrayList, 'ceylon.language::ArrayList', Array$, $init$List());
-function ArraySequence(/* js array */value) {
+function ArraySequence(/* js array */value, $$targs$$) {
     value.$seq = true;
+    value.$$targs$$=$$targs$$;
     return value;
 }
 initTypeProto(ArraySequence, 'ceylon.language::ArraySequence', Basic, Sequence);
@@ -78,7 +85,7 @@ Array$proto.getReversed = function() {
     if (this.length === 0) { return this; }
     var arr = this.slice(0);
     arr.reverse();
-    return this.$seq ? ArraySequence(arr) : arr;
+    return this.$seq ? ArraySequence(arr,this.$$targs$$) : arr;
 }
 Array$proto.chain = function(other) {
     if (this.length === 0) { return other; }
@@ -90,7 +97,7 @@ Array$proto.segment = function(from, len) {
     if (len <= 0) { return empty; }
     var stop = from + len;
     var seq = this.slice((from>=0)?from:0, (stop>=0)?stop:0);
-    return (seq.length > 0) ? ArraySequence(seq) : empty;
+    return (seq.length > 0) ? ArraySequence(seq,this.$$targs$$) : empty;
 }
 Array$proto.span = function(from, to) {
     if (from > to) {
@@ -107,7 +114,7 @@ Array$proto.spanFrom = function(from) {
     return this.span(from, 0x7fffffff);
 }
 Array$proto.getRest = function() {
-    return this.length<=1 ? empty : ArraySequence(this.slice(1));
+    return this.length<=1 ? empty : ArraySequence(this.slice(1),this.$$targs$$);
 }
 Array$proto.items = function(keys) {
     if (keys === undefined) return empty;
@@ -116,7 +123,7 @@ Array$proto.items = function(keys) {
         var key = keys.item(i);
         seq.push(this.item(key));
     }
-    return ArraySequence(seq);
+    return ArraySequence(seq,this.$$targs$$);
 }
 Array$proto.getKeys = function() { return TypeCategory(this, {t:Integer}); }
 Array$proto.contains = function(elem) {
@@ -170,7 +177,7 @@ function SequenceBuilder() {
 initTypeProto(SequenceBuilder, 'ceylon.language::SequenceBuilder', Basic);
 var SequenceBuilder$proto = SequenceBuilder.$$.prototype;
 SequenceBuilder$proto.getSequence = function() {
-    return (this.seq.length > 0) ? ArraySequence(this.seq) : empty;
+    return (this.seq.length > 0) ? ArraySequence(this.seq,this.$$targs$$) : empty;
 }
 SequenceBuilder$proto.append = function(e) { this.seq.push(e); }
 SequenceBuilder$proto.appendAll = function(/*Iterable*/arr) {
