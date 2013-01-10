@@ -8,6 +8,7 @@ doc "Abstract supertype of objects which may or may not
      `Container<Element,Nothing>`."
 see (Category)
 by "Gavin"
+deprecated "Will be removed in Ceylon 1.0."
 shared interface Container<out Element, out Absent=Null>
         satisfies Category
         given Absent satisfies Null {
@@ -29,8 +30,10 @@ shared interface Container<out Element, out Absent=Null>
 }
 
 doc "An empty container."
+deprecated "Will be removed in Ceylon 1.0."
 shared interface EmptyContainer => Container<Nothing,Null>;
 
 doc "A nonempty container."
+deprecated "Will be removed in Ceylon 1.0."
 shared interface NonemptyContainer<out Element> =>
         Container<Element,Nothing>;
