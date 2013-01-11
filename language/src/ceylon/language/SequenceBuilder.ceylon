@@ -3,19 +3,15 @@ doc "Since sequences are immutable, this class is used for
      elements to the empty sequence. This class is mutable
      but threadsafe."
 see (SequenceAppender, join, Singleton)
-shared class SequenceBuilder<Element>() {
+shared native class SequenceBuilder<Element>() {
     
     doc "The resulting sequence. If no elements have been
          appended, the empty sequence."
-    shared default Element[] sequence {
-        throw;
-    }
+    shared native default Element[] sequence;
     
     doc "Append an element to the sequence and return this 
          `SequenceBuilder`"
-    shared SequenceBuilder<Element> append(Element element) {
-        throw;
-    }
+    shared native SequenceBuilder<Element> append(Element element);
     
     doc "Append multiple elements to the sequence and return 
          this `SequenceBuilder`"
@@ -40,14 +36,12 @@ doc "This class is used for constructing a new nonempty
      not modified, since `Sequence`s are immutable. This 
      class is mutable but threadsafe."
 see (SequenceBuilder)
-shared class SequenceAppender<Element>(Sequence<Element> elements) 
+shared native class SequenceAppender<Element>(Sequence<Element> elements) 
         extends SequenceBuilder<Element>() {
     
     doc "The resulting nonempty sequence. If no elements 
          have been appended, the original nonempty 
          sequence."
-    shared actual Sequence<Element> sequence {
-        throw;
-    }
+    shared actual native Sequence<Element> sequence;
     
 }

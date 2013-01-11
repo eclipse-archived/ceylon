@@ -114,7 +114,7 @@ shared interface Empty
 doc "The value representing a sequence with no elements. The 
      instance of `{}`"
 //by "Tako Schotanus"
-shared object empty extends Object() satisfies Empty {}
+shared object empty extends Object() satisfies [] {}
 
 doc "An iterator that returns no elements."
 shared object emptyIterator satisfies Iterator<Nothing> {

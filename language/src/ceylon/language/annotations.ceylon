@@ -21,6 +21,10 @@ doc "Annotation to mark a member whose implementation must
      be provided by subtypes."  
 shared Null formal() { return null; }
 
+doc "Annotation to mark a member whose implementation is 
+     be provided by platform-native code."  
+shared Null native() { return null; }
+
 doc "Annotation to mark a member whose implementation may be 
      refined by subtypes. Non-`default` declarations may not 
      be refined."

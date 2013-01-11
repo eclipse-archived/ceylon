@@ -277,4 +277,4 @@ shared abstract class String()
 }
 
 doc "Create a new string containing the given characters."
-shared String string(Character* characters) { throw; }
+shared native String string(Character* characters);

@@ -31,7 +31,7 @@ shared class LazySet<out Element>({Element*} elems)
         LazySet(elems.chain(set));
     
     shared actual Set<Element&Other> intersection<Other>(Set<Other> set)
-            given Other satisfies Object =>//{ throw; }
+            given Other satisfies Object =>
         //requires support for reified generics!
         LazySet({ for (e in set) if (is Element e, e in this) e });
     
