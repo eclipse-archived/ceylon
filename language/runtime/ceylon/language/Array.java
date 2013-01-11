@@ -2,8 +2,6 @@ package ceylon.language;
 
 import java.util.Arrays;
 
-import javax.media.j3d.J3DBuffer;
-
 import com.redhat.ceylon.compiler.java.Util;
 import com.redhat.ceylon.compiler.java.language.FilterIterable;
 import com.redhat.ceylon.compiler.java.language.MapIterable;
