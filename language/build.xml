@@ -228,7 +228,7 @@
                 <exclude name="ceylon/language/Map.ceylon"/> <!-- COMPILE ERROR (see compiler issue #904) -->
                 <include name="ceylon/language/Map.java"/>
                 <include name="ceylon/language/Map$impl.java"/>
-                <exclude name="ceylon/language/Range.ceylon"/> <!-- RUNTIME ERROR (incomplete) -->
+                <exclude name="ceylon/language/Range.ceylon"/> <!-- RUNTIME ERROR (incomplete and needs reified generics) -->
                 <include name="ceylon/language/Range.java"/>
                 <exclude name="ceylon/language/Sequence.ceylon"/> <!-- RUNTIME ERROR (incomplete) -->
                 <include name="ceylon/language/Sequence.java"/>
