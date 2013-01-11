@@ -1401,6 +1401,18 @@ public class ProducedType extends ProducedReference {
     					}
     				}
     			}
+    			else if (!defaulted && args.getDeclaration().equals(u.getSequenceDeclaration())) {
+    				ProducedType elementType = u.getIteratedType(args);
+    				if (elementType!=null) {
+						String etn = elementType.getProducedTypeName(unit);
+    					if (elementType.isPrimitiveAbbreviatedType()) {
+							return etn + "+";
+    					}
+    					else {
+    						return "<" + etn + ">+";
+    					}
+    				}
+    			}
     		}
     	}
     	return null;
