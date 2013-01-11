@@ -38,6 +38,7 @@ import com.redhat.ceylon.compiler.typechecker.model.Package;
 import com.redhat.ceylon.compiler.typechecker.model.ProducedType;
 import com.redhat.ceylon.compiler.typechecker.model.Scope;
 import com.redhat.ceylon.compiler.typechecker.model.Setter;
+import com.redhat.ceylon.compiler.typechecker.model.Specification;
 import com.redhat.ceylon.compiler.typechecker.model.TypeDeclaration;
 import com.redhat.ceylon.compiler.typechecker.model.TypedDeclaration;
 import com.redhat.ceylon.compiler.typechecker.model.Value;
@@ -246,7 +247,8 @@ public class Decl {
     public static boolean isLocalScope(Scope scope) {
         return scope instanceof MethodOrValue 
                 || scope instanceof ControlBlock
-                || scope instanceof NamedArgumentList;
+                || scope instanceof NamedArgumentList
+                || scope instanceof Specification;
     }
     
     /**
