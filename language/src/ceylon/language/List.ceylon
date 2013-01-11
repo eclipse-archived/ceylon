@@ -170,7 +170,7 @@ shared interface List<out Element>
     
     doc "Returns a new `List` that starts with the specified
          element, followed by the elements of this `List`."
-    shared default Sequence<Element|Other> withLeading<Other>(
+    shared default [<Element|Other>+] withLeading<Other>(
             doc "The first element of the resulting sequence."
             Other element) {
         value sb = SequenceBuilder<Element|Other>();
@@ -187,7 +187,7 @@ shared interface List<out Element>
     doc "Returns a new `List` that contains the specified
          element appended to the end of this `List`s'
          elements."
-    shared default Sequence<Element|Other> withTrailing<Other>(
+    shared default [<Element|Other>+] withTrailing<Other>(
             doc "The last element of the resulting sequence."
             Other element) {
         value sb = SequenceBuilder<Element|Other>();

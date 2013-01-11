@@ -1,7 +1,7 @@
 doc "A sequence with exactly one element."
 shared class Singleton<out Element>(Element element)
         extends Object()
-        satisfies Sequence<Element>
+        satisfies [Element+]
         given Element satisfies Object {
     
     doc "Returns `0`."
@@ -111,7 +111,7 @@ shared class Singleton<out Element>(Element element)
             (Boolean selecting(Element element)) =>
                     selecting(element) then 1 else 0;
     
-    shared actual Sequence<Result> map<Result>
+    shared actual [Result+] map<Result>
             (Result selecting(Element e)) =>
                     [ selecting(element) ];
     

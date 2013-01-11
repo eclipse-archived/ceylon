@@ -89,9 +89,9 @@ shared interface Correspondence<in Key, out Item>
         }
     }
 
-    class Items(Sequence<Key> keys)
+    class Items([Key+] keys)
             extends Object()
-            satisfies Sequence<Item?> {
+            satisfies [Item?+] {
     
         shared actual Integer lastIndex => keys.lastIndex;
         
@@ -143,9 +143,9 @@ shared interface Correspondence<in Key, out Item>
             }
         }
         
-        shared actual Sequence<Item?> clone => this;
+        shared actual [Item?+] clone => this;
         
-        shared actual Sequence<Item?> reversed =>
+        shared actual [Item?+] reversed =>
                 outer.Items(keys.reversed);
         
         shared actual Integer hash => keys.hash;

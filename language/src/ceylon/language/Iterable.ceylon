@@ -411,7 +411,7 @@ shared native interface Iterable<out Element, out Absent=Null>
     doc "Creates a Map that contains this `Iterable`'s
          elements, grouped in `Sequence`s under the
          keys provided by the grouping function."
-    shared default native Map<Grouping,Sequence<Element>> group<Grouping>(
+    shared default native Map<Grouping,[Element+]> group<Grouping>(
                 doc "A function that must return the key under
                      which to group the specified element."
                 Grouping grouping(Element elem))

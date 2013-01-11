@@ -15,7 +15,7 @@ doc "Represents the range of totally ordered, ordinal values
 by "Gavin"
 shared class Range<Element>(first, last) 
         extends Object() 
-        satisfies Sequence<Element> & Category
+        satisfies [Element+] & Category
         given Element satisfies Ordinal<Element> & 
                                 Comparable<Element> { 
     
