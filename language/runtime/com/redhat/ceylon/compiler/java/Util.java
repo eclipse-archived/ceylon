@@ -5,7 +5,6 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
 
-import ceylon.language.Null;
 import ceylon.language.Iterable;
 import ceylon.language.Iterator;
 import ceylon.language.Sequential;

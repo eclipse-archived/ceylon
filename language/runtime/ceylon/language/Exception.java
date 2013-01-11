@@ -23,7 +23,7 @@ public class Exception extends RuntimeException {
             @TypeInfo("ceylon.language::Exception|ceylon.language::Null")
             @Name("cause")
             @Defaulted
-            java.lang.Throwable cause) {
+            Throwable cause) {
         super(description==null ? null : description.toString(), cause);
         this.description = description;
     }
@@ -39,7 +39,7 @@ public class Exception extends RuntimeException {
     }
         
     @TypeInfo("ceylon.language::Exception|ceylon.language::Null")
-    public java.lang.Throwable getCause() {
+    public Throwable getCause() {
         return super.getCause();
     }
     
@@ -67,11 +67,11 @@ public class Exception extends RuntimeException {
     }
 
     @Ignore
-    public static ceylon.language.String $init$description(){
+    public static String $init$description(){
         return null;
     }
     @Ignore
-    public static java.lang.Throwable $init$cause(ceylon.language.String description){
+    public static Throwable $init$cause(String description){
         return null;
     }
 }
