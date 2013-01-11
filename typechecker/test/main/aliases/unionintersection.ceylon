@@ -1,23 +1,28 @@
+interface Container<out T> { shared Boolean empty=>false; }
 interface Cntnr => Container<Anything>; 
 
 alias Number => Integer|Float;
-alias ListLike<T> given T satisfies Object => List<T>|Map<Integer,T>;
-alias C => Cntnr&Category;
+alias ListLike<T> given T satisfies Object => <List<T>|Map<Integer,T>>&Container<T>;
+alias C => Container<Anything>&Category;
+@error alias E => Cntnr&Category;
 
 Number n = 1;
 Number x = 2.0;
-ListLike<Float> list = [ 1.0, 2.0 ];
+[Float, Float]&Container<Float> pair = nothing;
+ListLike<Float> list = pair;
 C c = list;
 
 shared alias Strings => List<String>;
 
 void local() {
-    alias Numbers => List<Number>;
-    Numbers ns = [ 1, 3.0 ];
+    alias Numbers => List<Integer|Float>;
+    Numbers numbers = [ 1, 3.0 ];
+    @error alias Ns => List<Number>;
+    @error Ns ns = [ 1, 3.0 ];
 }
 
 class Outer() {
-    shared alias Cs => List<C>;
+    shared alias Cs => List<Container<Anything>&Category>;
     shared Cs cs = [ c, c ];
 }
 

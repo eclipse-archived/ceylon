@@ -1625,6 +1625,9 @@ public class ProducedType extends ProducedReference {
     
     public void setUnderlyingType(String underlyingType) {
         this.underlyingType = underlyingType;
+        // if we have a resolvedAliases cache, update it too
+        if(resolvedAliases != null && resolvedAliases != this)
+            resolvedAliases.setUnderlyingType(underlyingType);
     }
     
     public String getUnderlyingType() {
@@ -1684,6 +1687,9 @@ public class ProducedType extends ProducedReference {
 
     public void setRaw(boolean isRaw) {
         this.isRaw = isRaw;
+        // if we have a resolvedAliases cache, update it too
+        if(resolvedAliases != null && resolvedAliases != this)
+            resolvedAliases.setRaw(isRaw);
     }
     
     public ProducedType resolveAliases() {
@@ -1693,6 +1699,11 @@ public class ProducedType extends ProducedReference {
             resolvedAliases = curriedResolveAliases();
             // mark it as resolved so it doesn't get resolved again
             resolvedAliases.resolvedAliases = resolvedAliases;
+            if(resolvedAliases != this){
+                // inherit whatever underlying type we had
+                resolvedAliases.underlyingType = underlyingType;
+                resolvedAliases.isRaw = isRaw;
+            }
         }
         return resolvedAliases;
     	//return curriedResolveAliases();
@@ -1737,6 +1748,58 @@ public class ProducedType extends ProducedReference {
     	else {
     		return d.getProducedType(aliasedQualifyingType, aliasedArgs);
     	}
+    }
+    
+    public boolean containsTypeParameters() {
+    	TypeDeclaration d = getDeclaration();
+		if (d instanceof TypeParameter) {
+			return true;
+		}
+		else if (d instanceof UnionType) {
+			for (ProducedType ct: getCaseTypes()) {
+				if (ct.containsTypeParameters()) return true;
+			}
+		}
+		else if (d instanceof IntersectionType) {
+			for (ProducedType st: getSatisfiedTypes()) {
+				if (st.containsTypeParameters()) return true;
+			}
+		}
+		else {
+			for (ProducedType at: getTypeArgumentList()) {
+				if (at.containsTypeParameters()) return true;
+			}
+			ProducedType qt = getQualifyingType();
+			if (qt!=null && qt.containsTypeParameters()) return true;
+		}
+		return false;
+    }
+    
+    public boolean containsTypeAliases() {
+    	TypeDeclaration d = getDeclaration();
+		if (d instanceof TypeAlias||
+			d instanceof ClassAlias||
+			d instanceof InterfaceAlias) {
+			return true;
+		}
+		else if (d instanceof UnionType) {
+			for (ProducedType ct: getCaseTypes()) {
+				if (ct.containsTypeAliases()) return true;
+			}
+		}
+		else if (d instanceof IntersectionType) {
+			for (ProducedType st: getSatisfiedTypes()) {
+				if (st.containsTypeAliases()) return true;
+			}
+		}
+		else {
+			for (ProducedType at: getTypeArgumentList()) {
+				if (at.containsTypeAliases()) return true;
+			}
+			ProducedType qt = getQualifyingType();
+			if (qt!=null && qt.containsTypeAliases()) return true;
+		}
+		return false;
     }
     
 }

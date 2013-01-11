@@ -174,7 +174,13 @@ public class SpecificationVisitor extends Visitor {
                     //you are allowed to refer to formal
                     //declarations in a class declaration
                     //section or interface
-                    if (!declaration.isFormal()) {
+                    if (declaration.isFormal()) {
+						if (!isForwardReferenceable()) {
+						    that.addError("formal member may not be used in initializer: " + 
+						            member.getName());                    
+						}
+					}
+                    else if (!declaration.isNative()) {
                         if (isVariable()) {
                             that.addError("not definitely initialized: " + 
                                     member.getName());                    
@@ -183,10 +189,6 @@ public class SpecificationVisitor extends Visitor {
                             that.addError("not definitely specified: " + 
                                     member.getName());
                         }
-                    }
-                    else if (!isForwardReferenceable()) {
-                        that.addError("formal member may not be used in initializer: " + 
-                                member.getName());                    
                     }
                 }
                 if (!mte.getAssigned() && member.isDefault() && 
@@ -375,11 +377,12 @@ public class SpecificationVisitor extends Visitor {
             if (that.getSpecifierExpression()!=null) {
                 specify();
             }
-            else if (declaration.isToplevel()) {
+            else if (declaration.isToplevel() && !declaration.isNative()) {
                 that.addError("toplevel function must be specified: " +
                         declaration.getName());
             }
-            else if (declaration.isInterfaceMember() && !declaration.isFormal()) {
+            else if (declaration.isInterfaceMember() && 
+            		!declaration.isFormal() && !declaration.isNative()) {
                 that.addError("interface method must be formal or specified: " +
                         declaration.getName(), 1400);
             }
@@ -589,8 +592,10 @@ public class SpecificationVisitor extends Visitor {
     }
 
     private boolean isSharedDeclarationUninitialized() {
-        return (declaration.isShared() || declaration.isCaptured()) && 
+        return (declaration.isShared() || 
+        		    declaration.isCaptured()) && 
                 !declaration.isFormal() && 
+                !declaration.isNative() &&
                 !specified.definitely;
     }
     
