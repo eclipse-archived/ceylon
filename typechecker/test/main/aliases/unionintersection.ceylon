@@ -7,7 +7,7 @@ alias C => Container<Anything>&Category;
 
 Number n = 1;
 Number x = 2.0;
-[Float, Float]&Container<Float> pair = nothing;
+[Float, Float] pair = nothing;
 ListLike<Float> list = pair;
 C c = list;
 
