@@ -19,6 +19,8 @@
  */
 TypeParameters<Integer,String> t1 = TypeParameters<Integer,String>(1, "foo");
 
+ClassWithDefaultedTypeParameters<String> td = ClassWithDefaultedTypeParameters<String>();
+
 class T2() satisfies InterfaceA & InterfaceB {}
 ClassWithUpperBounds<T2> t2 = ClassWithUpperBounds(T2());
 
@@ -35,6 +37,7 @@ ClassWithVariance<Number, Number> t6 = ClassWithVariance<Number, Number>(1);
 ClassWithCaseTypes<Integer> t7 = ClassWithCaseTypes<Integer>();
 
 void testToplevelMethodTypeParameters(){
+    methodWithDefaultedTypeParameters<String>();
     methodWithUpperBounds(T2());
     methodWithParameterizedUpperBounds(T3());
     methodWithSelfParameterizedUpperBounds(T4());

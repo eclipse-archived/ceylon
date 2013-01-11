@@ -37,6 +37,12 @@ shared class TypeParameters <T,U> (T t, U u) {
  }
  
  //
+ // methods with defaulted type params
+ 
+ shared void methodWithDefaultedTypeParameters<A, T = Number | String, U = Number>(){
+ }
+
+ //
  // upper bounds tests
  
  shared F methodWithUpperBounds<F>(F f)
@@ -65,6 +71,12 @@ shared class TypeParameters <T,U> (T t, U u) {
   given I satisfies O{
   return i;
  }
+}
+
+//
+// class with defaulted type params
+
+shared class ClassWithDefaultedTypeParameters<A, T = Number | String, U = Number>(){
 }
 
 //
@@ -101,6 +113,12 @@ shared class ClassWithVariance<in I, out O>(I i)
 
 shared T methodWithTypeParameters<T, U>(T t, U u){
  return t;
+}
+
+//
+// methods with defaulted type params
+
+shared void methodWithDefaultedTypeParameters<A, T = Number | String, U = Number>(){
 }
 
 //
@@ -141,3 +159,4 @@ shared class ClassWithCaseTypes<T>()
 
 shared void methodWithCaseTypes<T>() 
  given T of Integer | String {}
+
