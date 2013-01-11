@@ -403,13 +403,15 @@ public class ExpressionTransformer extends AbstractTransformer {
             if(isTurnedToRaw(expectedType)){
                 return false;
             }
+            // if the expected type is exactly the common type, they must have the same erasure
+            // note that we don't do that test if we know the expected type is not raw, because
+            // the common type could be erased
+            if(commonType.isExactly(expectedType))
+                return false;
         }
         // Surely this is a sign of a really badly designed method but I (Stef) have a strong
         // feeling that callables never need a raw cast
         if(isCeylonCallable(commonType))
-            return false;
-        // if the expected type is exactly the common type, they must have the same erasure
-        if(commonType.isExactly(expectedType))
             return false;
         // now see if the type parameters match
         java.util.List<ProducedType> commonTypeArgs = commonType.getTypeArgumentList();
