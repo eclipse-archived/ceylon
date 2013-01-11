@@ -7,7 +7,8 @@ alias C => Container<Anything>&Category;
 
 Number n = 1;
 Number x = 2.0;
-ListLike<Float> list = [ 1.0, 2.0 ];
+[Float, Float]&Container<Float> pair = nothing;
+ListLike<Float> list = pair;
 C c = list;
 
 shared alias Strings => List<String>;
