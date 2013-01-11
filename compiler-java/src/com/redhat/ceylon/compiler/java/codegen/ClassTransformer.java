@@ -1765,6 +1765,7 @@ public class ClassTransformer extends AbstractTransformer {
             }
                
             if (!isVoid(model)
+                    || model instanceof Method && !(Decl.isUnboxedVoid(model))
                     || (model instanceof Method && Strategy.useBoxedVoid((Method)model)) 
                     || Strategy.generateInstantiator(model)) {
                 if (!vars.isEmpty()) {

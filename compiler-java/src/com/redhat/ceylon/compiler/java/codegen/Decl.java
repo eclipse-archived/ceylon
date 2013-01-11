@@ -323,6 +323,10 @@ public class Decl {
             && ((Tree.MethodDeclaration)def).getSpecifierExpression() == null;
     }
 
+    /**
+     * Is the declaration a method declared to return {@code void} 
+     * (as opposed to a {@code Anything})
+     */
     public static boolean isUnboxedVoid(Declaration decl) {
         return Util.isUnboxedVoid(decl);
     }

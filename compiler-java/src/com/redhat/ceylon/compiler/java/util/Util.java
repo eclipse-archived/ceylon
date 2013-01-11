@@ -193,6 +193,10 @@ public class Util {
                 || pkgName.startsWith(moduleName+".");
     }
     
+    /**
+     * Is the declaration a method declared to return {@code void} 
+     * (as opposed to a {@code Anything})
+     */
     public static boolean isUnboxedVoid(Declaration decl) {
         return (decl instanceof Method)
                 && ((Method)decl).isDeclaredVoid();
