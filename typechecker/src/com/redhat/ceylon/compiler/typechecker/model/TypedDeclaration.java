@@ -118,5 +118,5 @@ public abstract class TypedDeclaration extends Declaration {
     public void setUncheckedNullType(boolean uncheckedNullType) {
         this.uncheckedNullType = uncheckedNullType;
     }
-
+    
 }

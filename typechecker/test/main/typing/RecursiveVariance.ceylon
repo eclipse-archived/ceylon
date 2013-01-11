@@ -11,13 +11,13 @@ interface Pile<out X> {}
 }
 
 class Better<out T>() satisfies Pile<Bucket<T>> {
-	function ok() {
+	shared Pile<Bucket<T>> ok() {
 		Pile<Bucket<T>> w = this;
 		return w;
 	}
 }
 @error class Worse<out T>() extends Widget<Bucket<T>>() {
-	@error function notok() {
+	Widget<Bucket<T>> notok() {
 		Widget<Bucket<T>> w = this;
 		return w;
 	}
