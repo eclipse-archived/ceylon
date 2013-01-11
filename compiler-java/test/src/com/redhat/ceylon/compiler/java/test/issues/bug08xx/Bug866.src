@@ -1,6 +1,6 @@
 package com.redhat.ceylon.compiler.java.test.issues.bug08xx;
 
-interface Bug866_Visitable<Visited extends .com.redhat.ceylon.compiler.java.test.issues.bug08xx.Bug866_Visitable<Visited>> extends .ceylon.language.Iterable<.java.lang.Object> {
+interface Bug866_Visitable<Visited extends .com.redhat.ceylon.compiler.java.test.issues.bug08xx.Bug866_Visitable<Visited>> extends .ceylon.language.Iterable<.java.lang.Object, .java.lang.Object> {
     
     public abstract .java.lang.String getDescription();
     

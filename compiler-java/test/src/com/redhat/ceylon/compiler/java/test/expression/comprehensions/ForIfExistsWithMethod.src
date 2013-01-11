@@ -10,7 +10,7 @@ class ForIfExistsWithMethod {
     }
     
     public final .ceylon.language.Sequential<? extends .ceylon.language.Integer> m(final .ceylon.language.Sequential<? extends .com.redhat.ceylon.compiler.java.test.expression.comprehensions.ForIfExistsWithMethod> xs) {
-        return new .com.redhat.ceylon.compiler.java.language.AbstractIterable<.ceylon.language.Integer>(){
+        return new .com.redhat.ceylon.compiler.java.language.AbstractIterable<.ceylon.language.Integer, .java.lang.Object>(){
             
             public final .ceylon.language.Iterator<.ceylon.language.Integer> getIterator() {
                 return new .ceylon.language.Iterator<.ceylon.language.Integer>(){

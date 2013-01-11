@@ -6,7 +6,7 @@ final class forIfIsBooleanConditions_ {
     }
     
     static void forIfIsBooleanConditions(final .ceylon.language.Sequential<? extends .java.lang.Object> xs) {
-        final .ceylon.language.Sequential<? extends .ceylon.language.Integer> z = new .com.redhat.ceylon.compiler.java.language.AbstractIterable<.ceylon.language.Integer>(){
+        final .ceylon.language.Sequential<? extends .ceylon.language.Integer> z = new .com.redhat.ceylon.compiler.java.language.AbstractIterable<.ceylon.language.Integer, .java.lang.Object>(){
             
             public final .ceylon.language.Iterator<.ceylon.language.Integer> getIterator() {
                 return new .ceylon.language.Iterator<.ceylon.language.Integer>(){

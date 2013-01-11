@@ -9,16 +9,16 @@ final class Container$impl {
     }
     private final .com.redhat.ceylon.compiler.java.test.structure.concrete.Container $this;
 }
-class NameCollision implements .com.redhat.ceylon.compiler.java.test.structure.concrete.Container, .ceylon.language.ContainerWithFirstElement<.ceylon.language.Integer, .java.lang.Object> {
+class NameCollision implements .com.redhat.ceylon.compiler.java.test.structure.concrete.Container, .ceylon.language.Container<.ceylon.language.Integer, .java.lang.Object> {
     
     NameCollision() {
         this.$com$redhat$ceylon$compiler$java$test$structure$concrete$Container$this = new .com.redhat.ceylon.compiler.java.test.structure.concrete.Container$impl(this);
-        this.$ceylon$language$ContainerWithFirstElement$this = new .ceylon.language.ContainerWithFirstElement$impl<.ceylon.language.Integer, .java.lang.Object>(this);
+        this.$ceylon$language$Container$this = new .ceylon.language.Container$impl<.ceylon.language.Integer, .java.lang.Object>(this);
         this.$ceylon$language$Category$this = new .ceylon.language.Category$impl(this);
         this.empty = true;
     }
     protected final .com.redhat.ceylon.compiler.java.test.structure.concrete.Container$impl $com$redhat$ceylon$compiler$java$test$structure$concrete$Container$this;
-    protected final .ceylon.language.ContainerWithFirstElement$impl<.ceylon.language.Integer, .java.lang.Object> $ceylon$language$ContainerWithFirstElement$this;
+    protected final .ceylon.language.Container$impl<.ceylon.language.Integer, .java.lang.Object> $ceylon$language$Container$this;
     protected final .ceylon.language.Category$impl $ceylon$language$Category$this;
     
     @.java.lang.Override

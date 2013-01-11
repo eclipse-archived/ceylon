@@ -6,7 +6,7 @@ class ForIfIsNull {
     }
     
     public final void m(final .ceylon.language.Sequential<? extends .java.lang.Object> xs) {
-        .ceylon.language.print_.print(new .com.redhat.ceylon.compiler.java.language.AbstractIterable<.ceylon.language.Boolean>(){
+        .ceylon.language.print_.print(new .com.redhat.ceylon.compiler.java.language.AbstractIterable<.ceylon.language.Boolean, .java.lang.Object>(){
             
             public final .ceylon.language.Iterator<.ceylon.language.Boolean> getIterator() {
                 return new .ceylon.language.Iterator<.ceylon.language.Boolean>(){

@@ -7,19 +7,19 @@ final class bug646_ {
     
     static void bug646() {
         final .ceylon.language.Sequential<? extends .ceylon.language.Sequential<? extends .ceylon.language.String>> strs = (.ceylon.language.Sequential).ceylon.language.empty_.getEmpty$();
-        final .ceylon.language.Iterable<? extends .ceylon.language.Sequential<? extends .ceylon.language.String>> arrays = (.ceylon.language.Iterable).ceylon.language.empty_.getEmpty$();
-        final .ceylon.language.Iterable<? extends .ceylon.language.Callable<? extends .java.lang.Object>> observers = (.ceylon.language.Iterable).ceylon.language.empty_.getEmpty$();
+        final .ceylon.language.Iterable<? extends .ceylon.language.Sequential<? extends .ceylon.language.String>, ?> arrays = (.ceylon.language.Iterable).ceylon.language.empty_.getEmpty$();
+        final .ceylon.language.Iterable<? extends .ceylon.language.Callable<? extends .java.lang.Object>, ?> observers = (.ceylon.language.Iterable).ceylon.language.empty_.getEmpty$();
         final .ceylon.language.Sequential<? extends .ceylon.language.Callable<? extends .java.lang.Object>> observers2 = (.ceylon.language.Sequential).ceylon.language.empty_.getEmpty$();
-        final .ceylon.language.Iterable<? extends .ceylon.language.Callable<? extends .ceylon.language.Integer>> observers3 = (.ceylon.language.Iterable).ceylon.language.empty_.getEmpty$();
+        final .ceylon.language.Iterable<? extends .ceylon.language.Callable<? extends .ceylon.language.Integer>, ?> observers3 = (.ceylon.language.Iterable).ceylon.language.empty_.getEmpty$();
         final .ceylon.language.Sequential<? extends .ceylon.language.Callable<? extends .ceylon.language.Integer>> observers4 = (.ceylon.language.Sequential).ceylon.language.empty_.getEmpty$();
         final .ceylon.language.Sequential<? extends .ceylon.language.Callable<? extends .ceylon.language.Integer>> observers5 = (.ceylon.language.Sequential).ceylon.language.empty_.getEmpty$();
         final .ceylon.language.Sequential<? extends .ceylon.language.Callable<? extends .ceylon.language.Integer>> observers6 = (.ceylon.language.Sequential).ceylon.language.empty_.getEmpty$();
         final .ceylon.language.Sequential<? extends .ceylon.language.Callable<? extends .ceylon.language.Integer>> observers7 = (.ceylon.language.Sequential).ceylon.language.empty_.getEmpty$();
-        final .ceylon.language.Iterable<? extends .ceylon.language.Iterable<? extends .java.lang.Object>> foo = (.ceylon.language.Iterable).ceylon.language.empty_.getEmpty$();
-        final .ceylon.language.Iterable union = .ceylon.language.empty_.getEmpty$();
-        final .ceylon.language.Iterable<? extends .java.lang.Object> ident = .ceylon.language.empty_.getEmpty$();
-        final .ceylon.language.Iterable<? extends .java.lang.Object> v = .ceylon.language.empty_.getEmpty$();
-        final .ceylon.language.Iterable<?> bot = .ceylon.language.empty_.getEmpty$();
+        final .ceylon.language.Iterable<? extends .ceylon.language.Iterable<? extends .java.lang.Object, ?>, ?> foo = (.ceylon.language.Iterable).ceylon.language.empty_.getEmpty$();
+        final .ceylon.language.Iterable<? extends .java.lang.Object, ?> union = .ceylon.language.empty_.getEmpty$();
+        final .ceylon.language.Iterable<? extends .java.lang.Object, ?> ident = .ceylon.language.empty_.getEmpty$();
+        final .ceylon.language.Iterable<? extends .java.lang.Object, ?> v = .ceylon.language.empty_.getEmpty$();
+        final .ceylon.language.Iterable<?, ?> bot = .ceylon.language.empty_.getEmpty$();
     }
     
     public static void main(.java.lang.String[] args) {

@@ -1,15 +1,15 @@
 package com.redhat.ceylon.compiler.java.test.issues.bug06xx;
 
-class Bug626 implements .ceylon.language.Iterable<.ceylon.language.Sequential<?>> {
+class Bug626 implements .ceylon.language.Iterable<.ceylon.language.Sequential<?>, .java.lang.Object> {
     
     Bug626() {
-        this.$ceylon$language$Iterable$this = new .ceylon.language.Iterable$impl<.ceylon.language.Sequential<?>>(this);
-        this.$ceylon$language$ContainerWithFirstElement$this = new .ceylon.language.ContainerWithFirstElement$impl<.ceylon.language.Sequential<?>, .java.lang.Object>(this);
+        this.$ceylon$language$Iterable$this = new .ceylon.language.Iterable$impl<.ceylon.language.Sequential<?>, .java.lang.Object>(this);
+        this.$ceylon$language$Container$this = new .ceylon.language.Container$impl<.ceylon.language.Sequential<?>, .java.lang.Object>(this);
         this.$ceylon$language$Category$this = new .ceylon.language.Category$impl(this);
         this.hash = (int)((.ceylon.language.Integer).ceylon.language.nothing_.getNothing$()).longValue();
         this.iterator = (.ceylon.language.Iterator<? extends .ceylon.language.Sequential<?>>)(.ceylon.language.Iterator).ceylon.language.nothing_.getNothing$();
     }
-    protected final .ceylon.language.Iterable$impl<.ceylon.language.Sequential<?>> $ceylon$language$Iterable$this;
+    protected final .ceylon.language.Iterable$impl<.ceylon.language.Sequential<?>, .java.lang.Object> $ceylon$language$Iterable$this;
     
     @.java.lang.Override
     public long getSize() {
@@ -32,7 +32,7 @@ class Bug626 implements .ceylon.language.Iterable<.ceylon.language.Sequential<?>
     }
     
     @.java.lang.Override
-    public .ceylon.language.Iterable<? extends .ceylon.language.Sequential<?>> getRest() {
+    public .ceylon.language.Iterable<? extends .ceylon.language.Sequential<?>, ?> getRest() {
         return $ceylon$language$Iterable$this.getRest();
     }
     
@@ -42,12 +42,12 @@ class Bug626 implements .ceylon.language.Iterable<.ceylon.language.Sequential<?>
     }
     
     @.java.lang.Override
-    public <Result>.ceylon.language.Iterable<? extends Result> map(final .ceylon.language.Callable<? extends Result> collecting) {
+    public <Result>.ceylon.language.Iterable<? extends Result, ?> map(final .ceylon.language.Callable<? extends Result> collecting) {
         return $ceylon$language$Iterable$this.map(collecting);
     }
     
     @.java.lang.Override
-    public .ceylon.language.Iterable<? extends .ceylon.language.Sequential<?>> filter(final .ceylon.language.Callable<? extends .ceylon.language.Boolean> selecting) {
+    public .ceylon.language.Iterable<? extends .ceylon.language.Sequential<?>, ?> filter(final .ceylon.language.Callable<? extends .ceylon.language.Boolean> selecting) {
         return $ceylon$language$Iterable$this.filter(selecting);
     }
     
@@ -92,17 +92,17 @@ class Bug626 implements .ceylon.language.Iterable<.ceylon.language.Sequential<?>
     }
     
     @.java.lang.Override
-    public .ceylon.language.Iterable<? extends .ceylon.language.Sequential<?>> skipping(final long skip) {
+    public .ceylon.language.Iterable<? extends .ceylon.language.Sequential<?>, ?> skipping(final long skip) {
         return $ceylon$language$Iterable$this.skipping(skip);
     }
     
     @.java.lang.Override
-    public .ceylon.language.Iterable<? extends .ceylon.language.Sequential<?>> taking(final long take) {
+    public .ceylon.language.Iterable<? extends .ceylon.language.Sequential<?>, ?> taking(final long take) {
         return $ceylon$language$Iterable$this.taking(take);
     }
     
     @.java.lang.Override
-    public .ceylon.language.Iterable<? extends .ceylon.language.Sequential<?>> by(final long step) {
+    public .ceylon.language.Iterable<? extends .ceylon.language.Sequential<?>, ?> by(final long step) {
         return $ceylon$language$Iterable$this.by(step);
     }
     
@@ -112,17 +112,17 @@ class Bug626 implements .ceylon.language.Iterable<.ceylon.language.Sequential<?>
     }
     
     @.java.lang.Override
-    public .ceylon.language.Iterable<? extends .ceylon.language.Sequential<?>> getCoalesced() {
+    public .ceylon.language.Iterable<? extends .ceylon.language.Sequential<?>, ?> getCoalesced() {
         return $ceylon$language$Iterable$this.getCoalesced();
     }
     
     @.java.lang.Override
-    public .ceylon.language.Iterable<? extends .ceylon.language.Entry<? extends .ceylon.language.Integer, ? extends .ceylon.language.Sequential<?>>> getIndexed() {
+    public .ceylon.language.Iterable<? extends .ceylon.language.Entry<? extends .ceylon.language.Integer, ? extends .ceylon.language.Sequential<?>>, ?> getIndexed() {
         return $ceylon$language$Iterable$this.getIndexed();
     }
     
     @.java.lang.Override
-    public <Other>.ceylon.language.Iterable chain(final .ceylon.language.Iterable<? extends Other> other) {
+    public <Other>.ceylon.language.Iterable<? extends .java.lang.Object, ?> chain(final .ceylon.language.Iterable<? extends Other, ?> other) {
         return $ceylon$language$Iterable$this.chain(other);
     }
     
@@ -135,7 +135,7 @@ class Bug626 implements .ceylon.language.Iterable<.ceylon.language.Sequential<?>
     public boolean contains(final .java.lang.Object element) {
         return $ceylon$language$Iterable$this.contains(element);
     }
-    protected final .ceylon.language.ContainerWithFirstElement$impl<.ceylon.language.Sequential<?>, .java.lang.Object> $ceylon$language$ContainerWithFirstElement$this;
+    protected final .ceylon.language.Container$impl<.ceylon.language.Sequential<?>, .java.lang.Object> $ceylon$language$Container$this;
     protected final .ceylon.language.Category$impl $ceylon$language$Category$this;
     
     @.java.lang.Override
@@ -195,10 +195,10 @@ final class bug626f_ {
     private bug626f_() {
     }
     
-    static void bug626f(final .ceylon.language.Iterable<? extends .ceylon.language.Iterable<? extends .java.lang.Object>> f, final .ceylon.language.Iterable<? extends .ceylon.language.Iterable<? extends .java.lang.Object>> f2, final .ceylon.language.Iterable<? extends .ceylon.language.Iterable<?>> f3) {
-        final .ceylon.language.Iterable<? extends .ceylon.language.Iterable<? extends .java.lang.Object>> i = f;
-        final .ceylon.language.Iterable<? extends .ceylon.language.Iterable<? extends .java.lang.Object>> i2 = f2;
-        final .ceylon.language.Iterable<? extends .ceylon.language.Iterable<? extends .java.lang.Object>> i3 = f3;
+    static void bug626f(final .ceylon.language.Iterable<? extends .ceylon.language.Iterable<? extends .java.lang.Object, ?>, ?> f, final .ceylon.language.Iterable<? extends .ceylon.language.Iterable<? extends .java.lang.Object, ?>, ?> f2, final .ceylon.language.Iterable<? extends .ceylon.language.Iterable<?, ?>, ?> f3) {
+        final .ceylon.language.Iterable<? extends .ceylon.language.Iterable<? extends .java.lang.Object, ?>, ?> i = f;
+        final .ceylon.language.Iterable<? extends .ceylon.language.Iterable<? extends .java.lang.Object, ?>, ?> i2 = f2;
+        final .ceylon.language.Iterable<? extends .ceylon.language.Iterable<? extends .java.lang.Object, ?>, ?> i3 = f3;
         final .ceylon.language.Sequential<?> temp = (
             let
             {

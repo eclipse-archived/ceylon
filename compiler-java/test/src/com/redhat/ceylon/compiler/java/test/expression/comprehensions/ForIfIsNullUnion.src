@@ -6,7 +6,7 @@ class ForIfIsNullUnion {
     }
     
     public final void m(final .ceylon.language.Sequential<? extends .java.lang.Object> xs) {
-        .ceylon.language.print_.print(new .com.redhat.ceylon.compiler.java.language.AbstractIterable<.ceylon.language.Character>(){
+        .ceylon.language.print_.print(new .com.redhat.ceylon.compiler.java.language.AbstractIterable<.ceylon.language.Character, .java.lang.Object>(){
             
             public final .ceylon.language.Iterator<.ceylon.language.Character> getIterator() {
                 return new .ceylon.language.Iterator<.ceylon.language.Character>(){

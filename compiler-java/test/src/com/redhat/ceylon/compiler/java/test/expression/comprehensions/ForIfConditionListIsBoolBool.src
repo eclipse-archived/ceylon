@@ -6,7 +6,7 @@ class ForIfConditionListIsBoolBool {
     }
     
     private final .ceylon.language.Sequential<? extends .ceylon.language.Boolean> m(final .ceylon.language.Sequential<? extends .java.lang.Object> xs, final .ceylon.language.Sequential<? extends .ceylon.language.Integer> zs) {
-        return new .com.redhat.ceylon.compiler.java.language.AbstractIterable<.ceylon.language.Boolean>(){
+        return new .com.redhat.ceylon.compiler.java.language.AbstractIterable<.ceylon.language.Boolean, .java.lang.Object>(){
             
             public final .ceylon.language.Iterator<.ceylon.language.Boolean> getIterator() {
                 return new .ceylon.language.Iterator<.ceylon.language.Boolean>(){
@@ -76,7 +76,7 @@ class ForIfConditionListIsBoolBool {
     }
     
     private final .ceylon.language.Sequential<? extends .ceylon.language.Boolean> synthetic(final .ceylon.language.Sequential<? extends .java.lang.Object> xs, final .ceylon.language.Sequential<? extends .ceylon.language.Integer> zs) {
-        return new .com.redhat.ceylon.compiler.java.language.AbstractIterable<.ceylon.language.Boolean>(){
+        return new .com.redhat.ceylon.compiler.java.language.AbstractIterable<.ceylon.language.Boolean, .java.lang.Object>(){
             
             public final .ceylon.language.Iterator<.ceylon.language.Boolean> getIterator() {
                 return new .ceylon.language.Iterator<.ceylon.language.Boolean>(){

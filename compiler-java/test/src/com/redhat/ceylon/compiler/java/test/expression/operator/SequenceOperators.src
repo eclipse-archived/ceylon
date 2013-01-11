@@ -94,7 +94,7 @@ public class SequenceOperators {
         final .ceylon.language.Sequential<? extends .ceylon.language.Integer> spreadMemberWithUnboxedType = (
             let
             {
-                .ceylon.language.Iterable<? extends .ceylon.language.String> $spread$6$iterable = sequence;
+                .ceylon.language.Iterable<? extends .ceylon.language.String, ?> $spread$6$iterable = sequence;
                 .ceylon.language.SequenceBuilder<.ceylon.language.Integer> $spread$6$sequenceBuilder = new .ceylon.language.SequenceBuilder<.ceylon.language.Integer>();
                 .java.lang.Object $spread$6$iteration;
                 for (.ceylon.language.Iterator<? extends .ceylon.language.String> $spread$6$iterator = $spread$6$iterable.getIterator(); !(($spread$6$iteration = $spread$6$iterator.next()) instanceof .ceylon.language.Finished); ) {
@@ -108,7 +108,7 @@ public class SequenceOperators {
         final .ceylon.language.Sequential<? extends .ceylon.language.Integer> spreadMemberWithBoxedType = (
             let
             {
-                .ceylon.language.Iterable<? extends .ceylon.language.Integer> $spread$7$iterable = intSequence;
+                .ceylon.language.Iterable<? extends .ceylon.language.Integer, ?> $spread$7$iterable = intSequence;
                 .ceylon.language.SequenceBuilder<.ceylon.language.Integer> $spread$7$sequenceBuilder = new .ceylon.language.SequenceBuilder<.ceylon.language.Integer>();
                 .java.lang.Object $spread$7$iteration;
                 for (.ceylon.language.Iterator<? extends .ceylon.language.Integer> $spread$7$iterator = $spread$7$iterable.getIterator(); !(($spread$7$iteration = $spread$7$iterator.next()) instanceof .ceylon.language.Finished); ) {
@@ -122,7 +122,7 @@ public class SequenceOperators {
         spreadInvoke = (
             let
             {
-                .ceylon.language.Iterable<? extends .ceylon.language.String> $spread$8$iterable = sequence;
+                .ceylon.language.Iterable<? extends .ceylon.language.String, ?> $spread$8$iterable = sequence;
                 .ceylon.language.SequenceBuilder<.ceylon.language.Character> $spread$8$sequenceBuilder = new .ceylon.language.SequenceBuilder<.ceylon.language.Character>();
                 .java.lang.Object $spread$8$iteration;
                 for (.ceylon.language.Iterator<? extends .ceylon.language.String> $spread$8$iterator = $spread$8$iterable.getIterator(); !(($spread$8$iteration = $spread$8$iterator.next()) instanceof .ceylon.language.Finished); ) {
@@ -135,7 +135,7 @@ public class SequenceOperators {
         spreadInvoke = (
             let
             {
-                .ceylon.language.Iterable<? extends .ceylon.language.String> $spread$10$iterable = sequence;
+                .ceylon.language.Iterable<? extends .ceylon.language.String, ?> $spread$10$iterable = sequence;
                 .ceylon.language.SequenceBuilder<.ceylon.language.Character> $spread$10$sequenceBuilder = new .ceylon.language.SequenceBuilder<.ceylon.language.Character>();
                 .java.lang.Object $spread$10$iteration;
                 for (.ceylon.language.Iterator<? extends .ceylon.language.String> $spread$10$iterator = $spread$10$iterable.getIterator(); !(($spread$10$iteration = $spread$10$iterator.next()) instanceof .ceylon.language.Finished); ) {
@@ -156,7 +156,7 @@ public class SequenceOperators {
         final .ceylon.language.Sequential<? extends .ceylon.language.String> upperCasedEmpty = (
             let
             {
-                .ceylon.language.Iterable<? extends .ceylon.language.String> $spread$11$iterable = empty;
+                .ceylon.language.Iterable<? extends .ceylon.language.String, ?> $spread$11$iterable = empty;
                 .ceylon.language.SequenceBuilder<.ceylon.language.String> $spread$11$sequenceBuilder = new .ceylon.language.SequenceBuilder<.ceylon.language.String>();
                 .java.lang.Object $spread$11$iteration;
                 for (.ceylon.language.Iterator<? extends .ceylon.language.String> $spread$11$iterator = $spread$11$iterable.getIterator(); !(($spread$11$iteration = $spread$11$iterator.next()) instanceof .ceylon.language.Finished); ) {

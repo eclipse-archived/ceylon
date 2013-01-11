@@ -1,6 +1,6 @@
 package com.redhat.ceylon.compiler.java.test.structure.concrete;
 
-interface AbstractSatisfier_I extends .ceylon.language.Iterable<.java.lang.Object> {
+interface AbstractSatisfier_I extends .ceylon.language.Iterable<.java.lang.Object, .java.lang.Object> {
 }
 final class AbstractSatisfier_I$impl {
     
@@ -9,16 +9,16 @@ final class AbstractSatisfier_I$impl {
     }
     private final .com.redhat.ceylon.compiler.java.test.structure.concrete.AbstractSatisfier_I $this;
 }
-abstract class AbstractSatisfier<T> implements .com.redhat.ceylon.compiler.java.test.structure.concrete.AbstractSatisfier_I, .ceylon.language.Iterable<T> {
+abstract class AbstractSatisfier<T> implements .com.redhat.ceylon.compiler.java.test.structure.concrete.AbstractSatisfier_I, .ceylon.language.Iterable<T, .java.lang.Object> {
     
     AbstractSatisfier() {
         this.$com$redhat$ceylon$compiler$java$test$structure$concrete$AbstractSatisfier_I$this = new .com.redhat.ceylon.compiler.java.test.structure.concrete.AbstractSatisfier_I$impl(this);
-        this.$ceylon$language$Iterable$this = new .ceylon.language.Iterable$impl<.java.lang.Object>((.ceylon.language.Iterable<.java.lang.Object>)(.ceylon.language.Iterable)this);
-        this.$ceylon$language$ContainerWithFirstElement$this = new .ceylon.language.ContainerWithFirstElement$impl<.java.lang.Object, .java.lang.Object>((.ceylon.language.ContainerWithFirstElement<.java.lang.Object, .java.lang.Object>)(.ceylon.language.ContainerWithFirstElement)this);
+        this.$ceylon$language$Iterable$this = new .ceylon.language.Iterable$impl<.java.lang.Object, .java.lang.Object>((.ceylon.language.Iterable<.java.lang.Object, .java.lang.Object>)(.ceylon.language.Iterable)this);
+        this.$ceylon$language$Container$this = new .ceylon.language.Container$impl<.java.lang.Object, .java.lang.Object>((.ceylon.language.Container<.java.lang.Object, .java.lang.Object>)(.ceylon.language.Container)this);
         this.$ceylon$language$Category$this = new .ceylon.language.Category$impl(this);
     }
     protected final .com.redhat.ceylon.compiler.java.test.structure.concrete.AbstractSatisfier_I$impl $com$redhat$ceylon$compiler$java$test$structure$concrete$AbstractSatisfier_I$this;
-    protected final .ceylon.language.Iterable$impl<.java.lang.Object> $ceylon$language$Iterable$this;
+    protected final .ceylon.language.Iterable$impl<.java.lang.Object, .java.lang.Object> $ceylon$language$Iterable$this;
     
     @.java.lang.Override
     public long getSize() {
@@ -41,7 +41,7 @@ abstract class AbstractSatisfier<T> implements .com.redhat.ceylon.compiler.java.
     }
     
     @.java.lang.Override
-    public .ceylon.language.Iterable<? extends .java.lang.Object> getRest() {
+    public .ceylon.language.Iterable<? extends .java.lang.Object, ?> getRest() {
         return $ceylon$language$Iterable$this.getRest();
     }
     
@@ -51,12 +51,12 @@ abstract class AbstractSatisfier<T> implements .com.redhat.ceylon.compiler.java.
     }
     
     @.java.lang.Override
-    public <Result>.ceylon.language.Iterable<? extends Result> map(final .ceylon.language.Callable<? extends Result> collecting) {
+    public <Result>.ceylon.language.Iterable<? extends Result, ?> map(final .ceylon.language.Callable<? extends Result> collecting) {
         return $ceylon$language$Iterable$this.map(collecting);
     }
     
     @.java.lang.Override
-    public .ceylon.language.Iterable<? extends .java.lang.Object> filter(final .ceylon.language.Callable<? extends .ceylon.language.Boolean> selecting) {
+    public .ceylon.language.Iterable<? extends .java.lang.Object, ?> filter(final .ceylon.language.Callable<? extends .ceylon.language.Boolean> selecting) {
         return $ceylon$language$Iterable$this.filter(selecting);
     }
     
@@ -101,17 +101,17 @@ abstract class AbstractSatisfier<T> implements .com.redhat.ceylon.compiler.java.
     }
     
     @.java.lang.Override
-    public .ceylon.language.Iterable<? extends .java.lang.Object> skipping(final long skip) {
+    public .ceylon.language.Iterable<? extends .java.lang.Object, ?> skipping(final long skip) {
         return $ceylon$language$Iterable$this.skipping(skip);
     }
     
     @.java.lang.Override
-    public .ceylon.language.Iterable<? extends .java.lang.Object> taking(final long take) {
+    public .ceylon.language.Iterable<? extends .java.lang.Object, ?> taking(final long take) {
         return $ceylon$language$Iterable$this.taking(take);
     }
     
     @.java.lang.Override
-    public .ceylon.language.Iterable<? extends .java.lang.Object> by(final long step) {
+    public .ceylon.language.Iterable<? extends .java.lang.Object, ?> by(final long step) {
         return $ceylon$language$Iterable$this.by(step);
     }
     
@@ -121,17 +121,17 @@ abstract class AbstractSatisfier<T> implements .com.redhat.ceylon.compiler.java.
     }
     
     @.java.lang.Override
-    public .ceylon.language.Iterable<? extends .java.lang.Object> getCoalesced() {
+    public .ceylon.language.Iterable<? extends .java.lang.Object, ?> getCoalesced() {
         return $ceylon$language$Iterable$this.getCoalesced();
     }
     
     @.java.lang.Override
-    public .ceylon.language.Iterable<? extends .ceylon.language.Entry<? extends .ceylon.language.Integer, ? extends .java.lang.Object>> getIndexed() {
+    public .ceylon.language.Iterable<? extends .ceylon.language.Entry<? extends .ceylon.language.Integer, ? extends .java.lang.Object>, ?> getIndexed() {
         return $ceylon$language$Iterable$this.getIndexed();
     }
     
     @.java.lang.Override
-    public <Other>.ceylon.language.Iterable<? extends .java.lang.Object> chain(final .ceylon.language.Iterable<? extends Other> other) {
+    public <Other>.ceylon.language.Iterable<? extends .java.lang.Object, ?> chain(final .ceylon.language.Iterable<? extends Other, ?> other) {
         return $ceylon$language$Iterable$this.chain(other);
     }
     
@@ -144,7 +144,7 @@ abstract class AbstractSatisfier<T> implements .com.redhat.ceylon.compiler.java.
     public boolean contains(final .java.lang.Object element) {
         return $ceylon$language$Iterable$this.contains(element);
     }
-    protected final .ceylon.language.ContainerWithFirstElement$impl<.java.lang.Object, .java.lang.Object> $ceylon$language$ContainerWithFirstElement$this;
+    protected final .ceylon.language.Container$impl<.java.lang.Object, .java.lang.Object> $ceylon$language$Container$this;
     protected final .ceylon.language.Category$impl $ceylon$language$Category$this;
     
     @.java.lang.Override

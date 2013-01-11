@@ -6,7 +6,7 @@ class ForIfNonEmptySequence {
     }
     
     public final void m(final .ceylon.language.Sequential<? extends .ceylon.language.Sequential<? extends .ceylon.language.Integer>> xs) {
-        .ceylon.language.print_.print(new .com.redhat.ceylon.compiler.java.language.AbstractIterable<.ceylon.language.Integer>(){
+        .ceylon.language.print_.print(new .com.redhat.ceylon.compiler.java.language.AbstractIterable<.ceylon.language.Integer, .java.lang.Object>(){
             
             public final .ceylon.language.Iterator<.ceylon.language.Integer> getIterator() {
                 return new .ceylon.language.Iterator<.ceylon.language.Integer>(){
@@ -47,7 +47,7 @@ class ForIfNonEmptySequence {
     }
     
     public final void mvar(final .ceylon.language.Sequential<? extends .ceylon.language.Sequential<? extends .ceylon.language.Integer>> xs) {
-        .ceylon.language.print_.print(new .com.redhat.ceylon.compiler.java.language.AbstractIterable<.ceylon.language.Integer>(){
+        .ceylon.language.print_.print(new .com.redhat.ceylon.compiler.java.language.AbstractIterable<.ceylon.language.Integer, .java.lang.Object>(){
             
             public final .ceylon.language.Iterator<.ceylon.language.Integer> getIterator() {
                 return new .ceylon.language.Iterator<.ceylon.language.Integer>(){

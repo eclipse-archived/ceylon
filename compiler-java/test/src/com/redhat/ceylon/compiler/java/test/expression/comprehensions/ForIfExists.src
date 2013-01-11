@@ -6,7 +6,7 @@ class ForIfExists {
     }
     
     public final .ceylon.language.Sequential<? extends .ceylon.language.Integer> m(final .ceylon.language.Sequential<? extends .ceylon.language.Integer> xs) {
-        return new .com.redhat.ceylon.compiler.java.language.AbstractIterable<.ceylon.language.Integer>(){
+        return new .com.redhat.ceylon.compiler.java.language.AbstractIterable<.ceylon.language.Integer, .java.lang.Object>(){
             
             public final .ceylon.language.Iterator<.ceylon.language.Integer> getIterator() {
                 return new .ceylon.language.Iterator<.ceylon.language.Integer>(){
@@ -47,7 +47,7 @@ class ForIfExists {
     }
     
     public final .ceylon.language.Sequential<? extends .ceylon.language.Integer> m2(final .ceylon.language.Sequential<? extends .ceylon.language.Integer> xs) {
-        return new .com.redhat.ceylon.compiler.java.language.AbstractIterable<.ceylon.language.Integer>(){
+        return new .com.redhat.ceylon.compiler.java.language.AbstractIterable<.ceylon.language.Integer, .java.lang.Object>(){
             
             public final .ceylon.language.Iterator<.ceylon.language.Integer> getIterator() {
                 return new .ceylon.language.Iterator<.ceylon.language.Integer>(){

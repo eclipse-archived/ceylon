@@ -9,7 +9,7 @@ final class bug832_ {
         final .java.lang.Object n = .ceylon.language.Integer.instance(2L);
         final long sign = ((.ceylon.language.Number)n).getSign();
         final .java.lang.Object l = .ceylon.language.empty_.getEmpty$();
-        final long s = ((.ceylon.language.Iterable<? extends .java.lang.Object>)(.ceylon.language.Iterable)l).getSize();
+        final long s = ((.ceylon.language.Iterable<? extends .java.lang.Object, ?>)(.ceylon.language.Iterable)l).getSize();
     }
     
     public static void main(.java.lang.String[] args) {

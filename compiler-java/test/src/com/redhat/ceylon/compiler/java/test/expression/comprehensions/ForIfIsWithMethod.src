@@ -14,7 +14,7 @@ class ForIfIsWithMethod {
     }
     
     public final void m(final .ceylon.language.Sequential<? extends .com.redhat.ceylon.compiler.java.test.expression.comprehensions.ForIfIsWithMethod> xs) {
-        .ceylon.language.print_.print(new .com.redhat.ceylon.compiler.java.language.AbstractIterable<.java.lang.Object>(){
+        .ceylon.language.print_.print(new .com.redhat.ceylon.compiler.java.language.AbstractIterable<.java.lang.Object, .java.lang.Object>(){
             
             public final .ceylon.language.Iterator<.java.lang.Object> getIterator() {
                 return new .ceylon.language.Iterator<.java.lang.Object>(){
@@ -52,7 +52,7 @@ class ForIfIsWithMethod {
                 };
             }
         });
-        .ceylon.language.print_.print(new .com.redhat.ceylon.compiler.java.language.AbstractIterable<.java.lang.Object>(){
+        .ceylon.language.print_.print(new .com.redhat.ceylon.compiler.java.language.AbstractIterable<.java.lang.Object, .java.lang.Object>(){
             
             public final .ceylon.language.Iterator<.java.lang.Object> getIterator() {
                 return new .ceylon.language.Iterator<.java.lang.Object>(){

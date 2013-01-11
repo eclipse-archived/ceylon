@@ -6,7 +6,7 @@ class ForIfIsIntersection {
     }
     
     public final void m(final .ceylon.language.Sequential<? extends .java.lang.Object> xs) {
-        .ceylon.language.print_.print(new .com.redhat.ceylon.compiler.java.language.AbstractIterable<.ceylon.language.String>(){
+        .ceylon.language.print_.print(new .com.redhat.ceylon.compiler.java.language.AbstractIterable<.ceylon.language.String, .java.lang.Object>(){
             
             public final .ceylon.language.Iterator<.ceylon.language.String> getIterator() {
                 return new .ceylon.language.Iterator<.ceylon.language.String>(){
@@ -41,7 +41,7 @@ class ForIfIsIntersection {
                 };
             }
         });
-        .ceylon.language.print_.print(new .com.redhat.ceylon.compiler.java.language.AbstractIterable<.ceylon.language.String>(){
+        .ceylon.language.print_.print(new .com.redhat.ceylon.compiler.java.language.AbstractIterable<.ceylon.language.String, .java.lang.Object>(){
             
             public final .ceylon.language.Iterator<.ceylon.language.String> getIterator() {
                 return new .ceylon.language.Iterator<.ceylon.language.String>(){
@@ -76,7 +76,7 @@ class ForIfIsIntersection {
                 };
             }
         });
-        .ceylon.language.print_.print(new .com.redhat.ceylon.compiler.java.language.AbstractIterable<.ceylon.language.String>(){
+        .ceylon.language.print_.print(new .com.redhat.ceylon.compiler.java.language.AbstractIterable<.ceylon.language.String, .java.lang.Object>(){
             
             public final .ceylon.language.Iterator<.ceylon.language.String> getIterator() {
                 return new .ceylon.language.Iterator<.ceylon.language.String>(){
@@ -114,7 +114,7 @@ class ForIfIsIntersection {
     }
     
     public final void mvar(final .ceylon.language.Sequential<? extends .java.lang.Object> ys) {
-        .ceylon.language.print_.print(new .com.redhat.ceylon.compiler.java.language.AbstractIterable<.ceylon.language.String>(){
+        .ceylon.language.print_.print(new .com.redhat.ceylon.compiler.java.language.AbstractIterable<.ceylon.language.String, .java.lang.Object>(){
             
             public final .ceylon.language.Iterator<.ceylon.language.String> getIterator() {
                 return new .ceylon.language.Iterator<.ceylon.language.String>(){
@@ -152,7 +152,7 @@ class ForIfIsIntersection {
                 };
             }
         });
-        .ceylon.language.print_.print(new .com.redhat.ceylon.compiler.java.language.AbstractIterable<.ceylon.language.String>(){
+        .ceylon.language.print_.print(new .com.redhat.ceylon.compiler.java.language.AbstractIterable<.ceylon.language.String, .java.lang.Object>(){
             
             public final .ceylon.language.Iterator<.ceylon.language.String> getIterator() {
                 return new .ceylon.language.Iterator<.ceylon.language.String>(){
@@ -190,7 +190,7 @@ class ForIfIsIntersection {
                 };
             }
         });
-        .ceylon.language.print_.print(new .com.redhat.ceylon.compiler.java.language.AbstractIterable<.ceylon.language.String>(){
+        .ceylon.language.print_.print(new .com.redhat.ceylon.compiler.java.language.AbstractIterable<.ceylon.language.String, .java.lang.Object>(){
             
             public final .ceylon.language.Iterator<.ceylon.language.String> getIterator() {
                 return new .ceylon.language.Iterator<.ceylon.language.String>(){

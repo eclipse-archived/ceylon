@@ -6,7 +6,7 @@ final class callablePositionalInvocationSequencedComprehension_ {
     }
     
     static void callablePositionalInvocationSequencedComprehension(final .ceylon.language.Callable<? extends .java.lang.Object> foo, final .ceylon.language.Callable<? extends .java.lang.Object> bar) {
-        foo.$call(new .com.redhat.ceylon.compiler.java.language.AbstractIterable<.ceylon.language.Integer>(){
+        foo.$call(new .com.redhat.ceylon.compiler.java.language.AbstractIterable<.ceylon.language.Integer, .java.lang.Object>(){
             
             public final .ceylon.language.Iterator<.ceylon.language.Integer> getIterator() {
                 return new .ceylon.language.Iterator<.ceylon.language.Integer>(){
@@ -31,7 +31,7 @@ final class callablePositionalInvocationSequencedComprehension_ {
                 };
             }
         }.getSequence());
-        foo.$call((.ceylon.language.Sequential)new .com.redhat.ceylon.compiler.java.language.AbstractIterable<.java.lang.Object>(){
+        foo.$call((.ceylon.language.Sequential)new .com.redhat.ceylon.compiler.java.language.AbstractIterable<.java.lang.Object, .java.lang.Object>(){
             
             public final .ceylon.language.Iterator getIterator() {
                 return new .ceylon.language.Iterator(){
@@ -56,7 +56,7 @@ final class callablePositionalInvocationSequencedComprehension_ {
                 };
             }
         }.getSequence());
-        bar.$call(.ceylon.language.String.instance("a"), new .com.redhat.ceylon.compiler.java.language.AbstractIterable<.ceylon.language.Integer>(){
+        bar.$call(.ceylon.language.String.instance("a"), new .com.redhat.ceylon.compiler.java.language.AbstractIterable<.ceylon.language.Integer, .java.lang.Object>(){
             
             public final .ceylon.language.Iterator<.ceylon.language.Integer> getIterator() {
                 return new .ceylon.language.Iterator<.ceylon.language.Integer>(){
@@ -81,7 +81,7 @@ final class callablePositionalInvocationSequencedComprehension_ {
                 };
             }
         }.getSequence());
-        bar.$call(.ceylon.language.String.instance("a"), (.ceylon.language.Sequential)new .com.redhat.ceylon.compiler.java.language.AbstractIterable<.java.lang.Object>(){
+        bar.$call(.ceylon.language.String.instance("a"), (.ceylon.language.Sequential)new .com.redhat.ceylon.compiler.java.language.AbstractIterable<.java.lang.Object, .java.lang.Object>(){
             
             public final .ceylon.language.Iterator getIterator() {
                 return new .ceylon.language.Iterator(){
@@ -107,7 +107,7 @@ final class callablePositionalInvocationSequencedComprehension_ {
             }
         }.getSequence());
         final .ceylon.language.Callable<? extends .java.lang.Object> mCallableFoo = foo;
-        mCallableFoo.$call(new .com.redhat.ceylon.compiler.java.language.AbstractIterable<.ceylon.language.Integer>(){
+        mCallableFoo.$call(new .com.redhat.ceylon.compiler.java.language.AbstractIterable<.ceylon.language.Integer, .java.lang.Object>(){
             
             public final .ceylon.language.Iterator<.ceylon.language.Integer> getIterator() {
                 return new .ceylon.language.Iterator<.ceylon.language.Integer>(){
@@ -132,7 +132,7 @@ final class callablePositionalInvocationSequencedComprehension_ {
                 };
             }
         }.getSequence());
-        mCallableFoo.$call((.ceylon.language.Sequential)new .com.redhat.ceylon.compiler.java.language.AbstractIterable<.java.lang.Object>(){
+        mCallableFoo.$call((.ceylon.language.Sequential)new .com.redhat.ceylon.compiler.java.language.AbstractIterable<.java.lang.Object, .java.lang.Object>(){
             
             public final .ceylon.language.Iterator getIterator() {
                 return new .ceylon.language.Iterator(){
@@ -158,7 +158,7 @@ final class callablePositionalInvocationSequencedComprehension_ {
             }
         }.getSequence());
         final .ceylon.language.Callable<? extends .java.lang.Object> mCallableBar = bar;
-        mCallableBar.$call(.ceylon.language.String.instance("a"), new .com.redhat.ceylon.compiler.java.language.AbstractIterable<.ceylon.language.Integer>(){
+        mCallableBar.$call(.ceylon.language.String.instance("a"), new .com.redhat.ceylon.compiler.java.language.AbstractIterable<.ceylon.language.Integer, .java.lang.Object>(){
             
             public final .ceylon.language.Iterator<.ceylon.language.Integer> getIterator() {
                 return new .ceylon.language.Iterator<.ceylon.language.Integer>(){
@@ -183,7 +183,7 @@ final class callablePositionalInvocationSequencedComprehension_ {
                 };
             }
         }.getSequence());
-        mCallableBar.$call(.ceylon.language.String.instance("a"), (.ceylon.language.Sequential)new .com.redhat.ceylon.compiler.java.language.AbstractIterable<.java.lang.Object>(){
+        mCallableBar.$call(.ceylon.language.String.instance("a"), (.ceylon.language.Sequential)new .com.redhat.ceylon.compiler.java.language.AbstractIterable<.java.lang.Object, .java.lang.Object>(){
             
             public final .ceylon.language.Iterator getIterator() {
                 return new .ceylon.language.Iterator(){

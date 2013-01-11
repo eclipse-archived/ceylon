@@ -1,6 +1,6 @@
 package com.redhat.ceylon.compiler.java.test.structure.klass;
 
-class KlassTypeParamsSatisfies<U extends .ceylon.language.ContainerWithFirstElement<? extends .ceylon.language.Integer, ?>, V extends .ceylon.language.Summable<.ceylon.language.Integer>, W extends .ceylon.language.ContainerWithFirstElement<? extends .ceylon.language.Integer, ?> & .ceylon.language.Summable<.ceylon.language.Integer>> {
+class KlassTypeParamsSatisfies<U extends .ceylon.language.Container<? extends .ceylon.language.Integer, ?>, V extends .ceylon.language.Summable<.ceylon.language.Integer>, W extends .ceylon.language.Container<? extends .ceylon.language.Integer, ?> & .ceylon.language.Summable<.ceylon.language.Integer>> {
     
     KlassTypeParamsSatisfies() {
     }

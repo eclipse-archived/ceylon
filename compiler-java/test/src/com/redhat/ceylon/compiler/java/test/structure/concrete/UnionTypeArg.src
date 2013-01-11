@@ -1,14 +1,14 @@
 package com.redhat.ceylon.compiler.java.test.structure.concrete;
 
-class UnionTypeArg implements .ceylon.language.Iterable<.java.lang.Object> {
+class UnionTypeArg implements .ceylon.language.Iterable<.java.lang.Object, .java.lang.Object> {
     
     UnionTypeArg() {
-        this.$ceylon$language$Iterable$this = new .ceylon.language.Iterable$impl<.java.lang.Object>(this);
-        this.$ceylon$language$ContainerWithFirstElement$this = new .ceylon.language.ContainerWithFirstElement$impl<.java.lang.Object, .java.lang.Object>(this);
+        this.$ceylon$language$Iterable$this = new .ceylon.language.Iterable$impl<.java.lang.Object, .java.lang.Object>(this);
+        this.$ceylon$language$Container$this = new .ceylon.language.Container$impl<.java.lang.Object, .java.lang.Object>(this);
         this.$ceylon$language$Category$this = new .ceylon.language.Category$impl(this);
         this.iterator = (.ceylon.language.Iterator<? extends .java.lang.Object>)(.ceylon.language.Iterator).ceylon.language.nothing_.getNothing$();
     }
-    protected final .ceylon.language.Iterable$impl<.java.lang.Object> $ceylon$language$Iterable$this;
+    protected final .ceylon.language.Iterable$impl<.java.lang.Object, .java.lang.Object> $ceylon$language$Iterable$this;
     
     @.java.lang.Override
     public long getSize() {
@@ -134,7 +134,7 @@ class UnionTypeArg implements .ceylon.language.Iterable<.java.lang.Object> {
     public boolean contains(final .java.lang.Object element) {
         return $ceylon$language$Iterable$this.contains(element);
     }
-    protected final .ceylon.language.ContainerWithFirstElement$impl<.java.lang.Object, .java.lang.Object> $ceylon$language$ContainerWithFirstElement$this;
+    protected final .ceylon.language.Container$impl<.java.lang.Object, .java.lang.Object> $ceylon$language$Container$this;
     protected final .ceylon.language.Category$impl $ceylon$language$Category$this;
     
     @.java.lang.Override
@@ -178,15 +178,15 @@ class UnionTypeArg implements .ceylon.language.Iterable<.java.lang.Object> {
         new .com.redhat.ceylon.compiler.java.test.structure.concrete.UnionTypeArg();
     }
 }
-class UnionTypeArgOverride implements .ceylon.language.Iterable<.java.lang.Object> {
+class UnionTypeArgOverride implements .ceylon.language.Iterable<.java.lang.Object, .java.lang.Object> {
     
     UnionTypeArgOverride() {
-        this.$ceylon$language$Iterable$this = new .ceylon.language.Iterable$impl<.java.lang.Object>(this);
-        this.$ceylon$language$ContainerWithFirstElement$this = new .ceylon.language.ContainerWithFirstElement$impl<.java.lang.Object, .java.lang.Object>(this);
+        this.$ceylon$language$Iterable$this = new .ceylon.language.Iterable$impl<.java.lang.Object, .java.lang.Object>(this);
+        this.$ceylon$language$Container$this = new .ceylon.language.Container$impl<.java.lang.Object, .java.lang.Object>(this);
         this.$ceylon$language$Category$this = new .ceylon.language.Category$impl(this);
         this.iterator = (.ceylon.language.Iterator<? extends .java.lang.Object>)(.ceylon.language.Iterator).ceylon.language.nothing_.getNothing$();
     }
-    protected final .ceylon.language.Iterable$impl<.java.lang.Object> $ceylon$language$Iterable$this;
+    protected final .ceylon.language.Iterable$impl<.java.lang.Object, .java.lang.Object> $ceylon$language$Iterable$this;
     
     @.java.lang.Override
     public long getSize() {
@@ -302,7 +302,7 @@ class UnionTypeArgOverride implements .ceylon.language.Iterable<.java.lang.Objec
     public boolean contains(final .java.lang.Object element) {
         return $ceylon$language$Iterable$this.contains(element);
     }
-    protected final .ceylon.language.ContainerWithFirstElement$impl<.java.lang.Object, .java.lang.Object> $ceylon$language$ContainerWithFirstElement$this;
+    protected final .ceylon.language.Container$impl<.java.lang.Object, .java.lang.Object> $ceylon$language$Container$this;
     protected final .ceylon.language.Category$impl $ceylon$language$Category$this;
     
     @.java.lang.Override

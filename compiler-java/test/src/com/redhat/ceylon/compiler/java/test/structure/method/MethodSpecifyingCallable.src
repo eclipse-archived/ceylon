@@ -120,7 +120,7 @@ class MethodSpecifyingCallable {
     }
     
     private final .java.lang.Object oneSequencedParam3() {
-        return getOneSequencedParam().$call((.ceylon.language.Sequential)new .com.redhat.ceylon.compiler.java.language.AbstractIterable<.java.lang.Object>(){
+        return getOneSequencedParam().$call((.ceylon.language.Sequential)new .com.redhat.ceylon.compiler.java.language.AbstractIterable<.java.lang.Object, .java.lang.Object>(){
             
             public final .ceylon.language.Iterator getIterator() {
                 return new .ceylon.language.Iterator(){
@@ -169,7 +169,7 @@ class MethodSpecifyingCallable {
     }
     
     private final .java.lang.Object secondSequencedParam3() {
-        return getSecondSequencedParam().$call(.ceylon.language.Integer.instance(1L), (.ceylon.language.Sequential)new .com.redhat.ceylon.compiler.java.language.AbstractIterable<.java.lang.Object>(){
+        return getSecondSequencedParam().$call(.ceylon.language.Integer.instance(1L), (.ceylon.language.Sequential)new .com.redhat.ceylon.compiler.java.language.AbstractIterable<.java.lang.Object, .java.lang.Object>(){
             
             public final .ceylon.language.Iterator getIterator() {
                 return new .ceylon.language.Iterator(){

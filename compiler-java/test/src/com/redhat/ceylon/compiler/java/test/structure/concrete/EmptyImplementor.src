@@ -8,8 +8,8 @@ class EmptyImpl extends .java.lang.Object implements .ceylon.language.Empty {
         this.$ceylon$language$Sequential$this = new .ceylon.language.Sequential$impl<.java.lang.Object>(this);
         this.$ceylon$language$List$this = new .ceylon.language.List$impl<.java.lang.Object>(this);
         this.$ceylon$language$Collection$this = new .ceylon.language.Collection$impl<.java.lang.Object>(this);
-        this.$ceylon$language$Iterable$this = new .ceylon.language.Iterable$impl<.java.lang.Object>(this);
-        this.$ceylon$language$ContainerWithFirstElement$this = new .ceylon.language.ContainerWithFirstElement$impl<.java.lang.Object, .java.lang.Object>(this);
+        this.$ceylon$language$Iterable$this = new .ceylon.language.Iterable$impl<.java.lang.Object, .java.lang.Object>(this);
+        this.$ceylon$language$Container$this = new .ceylon.language.Container$impl<.java.lang.Object, .java.lang.Object>(this);
         this.$ceylon$language$Category$this = new .ceylon.language.Category$impl(this);
         this.$ceylon$language$Cloneable$this = new .ceylon.language.Cloneable$impl<.ceylon.language.Collection<?>>((.ceylon.language.Cloneable<.ceylon.language.Collection<?>>)(.ceylon.language.Cloneable)this);
         this.$ceylon$language$Correspondence$this = new .ceylon.language.Correspondence$impl<.ceylon.language.Integer, .java.lang.Object>(this);
@@ -98,12 +98,12 @@ class EmptyImpl extends .java.lang.Object implements .ceylon.language.Empty {
     }
     
     @.java.lang.Override
-    public final .ceylon.language.Iterable<? extends .ceylon.language.Entry<? extends .ceylon.language.Integer, ?>> getIndexed() {
+    public final .ceylon.language.Iterable<? extends .ceylon.language.Entry<? extends .ceylon.language.Integer, ?>, ?> getIndexed() {
         return $ceylon$language$Empty$this.getIndexed();
     }
     
     @.java.lang.Override
-    public final <Other>.ceylon.language.Iterable<? extends Other> chain(final .ceylon.language.Iterable<? extends Other> other) {
+    public final <Other>.ceylon.language.Iterable<? extends Other, ?> chain(final .ceylon.language.Iterable<? extends Other, ?> other) {
         return $ceylon$language$Empty$this.chain(other);
     }
     
@@ -123,7 +123,7 @@ class EmptyImpl extends .java.lang.Object implements .ceylon.language.Empty {
     }
     
     @.java.lang.Override
-    public final <Result>.ceylon.language.Iterable<? extends Result> map(final .ceylon.language.Callable<? extends Result> collecting) {
+    public final <Result>.ceylon.language.Iterable<? extends Result, ?> map(final .ceylon.language.Callable<? extends Result> collecting) {
         return $ceylon$language$Empty$this.map(collecting);
     }
     
@@ -209,10 +209,10 @@ class EmptyImpl extends .java.lang.Object implements .ceylon.language.Empty {
         return $ceylon$language$List$this.findLast(selecting);
     }
     protected final .ceylon.language.Collection$impl<.java.lang.Object> $ceylon$language$Collection$this;
-    protected final .ceylon.language.Iterable$impl<.java.lang.Object> $ceylon$language$Iterable$this;
+    protected final .ceylon.language.Iterable$impl<.java.lang.Object, .java.lang.Object> $ceylon$language$Iterable$this;
     
     @.java.lang.Override
-    public .ceylon.language.Iterable<?> getRest() {
+    public .ceylon.language.Iterable<?, ?> getRest() {
         return $ceylon$language$Iterable$this.getRest();
     }
     
@@ -220,7 +220,7 @@ class EmptyImpl extends .java.lang.Object implements .ceylon.language.Empty {
     public <Grouping>.ceylon.language.Map<? extends Grouping, ? extends .ceylon.language.Sequence<?>> group(final .ceylon.language.Callable<? extends Grouping> grouping) {
         return $ceylon$language$Iterable$this.group(grouping);
     }
-    protected final .ceylon.language.ContainerWithFirstElement$impl<.java.lang.Object, .java.lang.Object> $ceylon$language$ContainerWithFirstElement$this;
+    protected final .ceylon.language.Container$impl<.java.lang.Object, .java.lang.Object> $ceylon$language$Container$this;
     protected final .ceylon.language.Category$impl $ceylon$language$Category$this;
     
     @.java.lang.Override

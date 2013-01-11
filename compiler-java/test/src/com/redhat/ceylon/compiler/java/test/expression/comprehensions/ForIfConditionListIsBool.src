@@ -6,7 +6,7 @@ class ForIfConditionListIsBool {
     }
     
     private final .ceylon.language.Sequential<? extends .ceylon.language.String> m(final .ceylon.language.Sequence xs) {
-        return new .com.redhat.ceylon.compiler.java.language.AbstractIterable<.ceylon.language.String>(){
+        return new .com.redhat.ceylon.compiler.java.language.AbstractIterable<.ceylon.language.String, .java.lang.Object>(){
             
             public final .ceylon.language.Iterator<.ceylon.language.String> getIterator() {
                 return new .ceylon.language.Iterator<.ceylon.language.String>(){
@@ -49,7 +49,7 @@ class ForIfConditionListIsBool {
     }
     
     private final .ceylon.language.Sequential<? extends .ceylon.language.String> synthetic(final .ceylon.language.Sequence xs) {
-        return new .com.redhat.ceylon.compiler.java.language.AbstractIterable<.ceylon.language.String>(){
+        return new .com.redhat.ceylon.compiler.java.language.AbstractIterable<.ceylon.language.String, .java.lang.Object>(){
             
             public final .ceylon.language.Iterator<.ceylon.language.String> getIterator() {
                 return new .ceylon.language.Iterator<.ceylon.language.String>(){

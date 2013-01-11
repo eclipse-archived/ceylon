@@ -40,7 +40,7 @@ class Bug627Two extends .com.redhat.ceylon.compiler.java.test.issues.bug06xx.Bug
 }
 interface Bug627Abstract {
     
-    public abstract .ceylon.language.Iterable<? extends .com.redhat.ceylon.compiler.java.test.issues.bug06xx.Bug627Enum> elements();
+    public abstract .ceylon.language.Iterable<? extends .com.redhat.ceylon.compiler.java.test.issues.bug06xx.Bug627Enum, ?> elements();
 }
 final class Bug627Abstract$impl {
     
@@ -57,7 +57,7 @@ class Bug627Concrete implements .com.redhat.ceylon.compiler.java.test.issues.bug
     protected final .com.redhat.ceylon.compiler.java.test.issues.bug06xx.Bug627Abstract$impl $com$redhat$ceylon$compiler$java$test$issues$bug06xx$Bug627Abstract$this;
     
     @.java.lang.Override
-    public final .ceylon.language.Iterable<? extends .com.redhat.ceylon.compiler.java.test.issues.bug06xx.Bug627Enum> elements() {
+    public final .ceylon.language.Iterable<? extends .com.redhat.ceylon.compiler.java.test.issues.bug06xx.Bug627Enum, ?> elements() {
         return (.ceylon.language.Iterable).ceylon.language.empty_.getEmpty$();
     }
     

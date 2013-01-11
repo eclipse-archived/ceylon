@@ -101,7 +101,7 @@ class MethodSpecifierMethod {
     }
     
     private final .com.redhat.ceylon.compiler.java.test.structure.method.MethodSpecifierMethod oneSequencedParam3() {
-        return oneSequencedParam((.ceylon.language.Sequential)new .com.redhat.ceylon.compiler.java.language.AbstractIterable<.java.lang.Object>(){
+        return oneSequencedParam((.ceylon.language.Sequential)new .com.redhat.ceylon.compiler.java.language.AbstractIterable<.java.lang.Object, .java.lang.Object>(){
             
             public final .ceylon.language.Iterator getIterator() {
                 return new .ceylon.language.Iterator(){
