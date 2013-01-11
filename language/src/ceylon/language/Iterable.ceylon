@@ -56,8 +56,9 @@ doc "Abstract supertype of containers whose elements may be
      Eager operations normally return a sequence."
 see (Collection)
 by "Gavin"
-shared native interface Iterable<out Element> 
-        satisfies ContainerWithFirstElement<Element,Null> {
+shared native interface Iterable<out Element, out Absent=Null>
+        satisfies Container<Element,Absent> 
+        given Absent satisfies Null {
     
     doc "An iterator for the elements belonging to this 
          container."
@@ -74,15 +75,18 @@ shared native interface Iterable<out Element>
             any(ifExists(element.equals));
     
     doc "The first element returned by the iterator, if any.
-         This should produce the same value as
-         `ordered.iterator.head`."
-    shared actual default Element? first {
-        if (!is Finished first = iterator.next()) {
-            return first;
+         This should always produce the same value as
+         `iterable.iterator.head`."
+    shared actual default Absent|Element first {
+        Element? first;
+        if (!is Finished next = iterator.next()) {
+            first = next;
         }
         else {
-            return null;
+            first = null;
         }
+        assert (is Absent|Element first);
+        return first;
     }
     
     doc "The last element returned by the iterator, if any.
@@ -90,8 +94,8 @@ shared native interface Iterable<out Element>
          might never return; also, this implementation will
          iterate through all the elements, which might be
          very time-consuming."
-    shared actual default Element? last {
-        variable Element? e = null;
+    shared actual default Absent|Element last {
+        variable Absent|Element e = first;
         for (x in this) {
             e = x;
         }
@@ -242,6 +246,15 @@ shared native interface Iterable<out Element>
                     while (i++<skip && !iterator.next() is Finished) {}
                     return iterator;
                 }
+                shared actual Element? first {
+                    if (!is Finished first = iterator.next()) {
+                        return first;
+                    }
+                    else {
+                        return null;
+                    }
+                }
+                shared actual Element? last => outer.last;
             }
             return iterable;
         }
@@ -270,6 +283,8 @@ shared native interface Iterable<out Element>
                     }
                     return iterator;
                 }
+                shared actual Element? first => outer.first;
+                shared actual Element? last => outer.last; //TODO!!!!
             }
             return iterable;
         }
@@ -335,8 +350,8 @@ shared native interface Iterable<out Element>
          original order. For null elements of the original 
          `Iterable`, there is no entry in the resulting 
          iterable object."
-    shared default {Element&Object...} coalesced =>
-            { for (e in this) if (exists e) e };
+    shared default Iterable<Element&Object,Absent> coalesced =>
+            nothing; //{ for (e in this) if (exists e) e };
     
     doc "All entries of form `index->element` where `index` 
          is the position at which `element` occurs, for every
@@ -351,13 +366,13 @@ shared native interface Iterable<out Element>
          results in an iterable object with the entries
          `0->\"hello\"` and `2->\"world\"`."
     shared default {Integer->Element&Object...} indexed {
-            object iterable satisfies {<Integer->Element&Object>?...} {
-                shared actual Iterator<<Integer->Element&Object>?> iterator {
+            object iterable satisfies {Integer->Element&Object...} {
+                shared actual Iterator<Integer->Element&Object> iterator {
                     value outerIterable { return outer; }
-                    object iterator satisfies Iterator<<Integer->Element&Object>?> {
+                    object iterator satisfies Iterator<Integer->Element&Object> {
                         value iter = outerIterable.iterator;
                         variable value i=0;
-                        actual shared <Integer->Element&Object>?|Finished next() {
+                        actual shared <Integer->Element&Object>|Finished next() {
                             value next = iter.next();
                             if (!is Finished next) {
                                 if (exists next) {
@@ -365,7 +380,7 @@ shared native interface Iterable<out Element>
                                 }
                                 else {
                                     i++;
-                                    return null;
+                                    return this.next();
                                 }
                             }
                             else {

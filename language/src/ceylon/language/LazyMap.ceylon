@@ -7,6 +7,9 @@ shared class LazyMap<out Key,out Item>({Key->Item...} entries)
         given Key satisfies Object
         given Item satisfies Object {
     
+    shared actual <Key->Item>? first => entries.first;
+    shared actual <Key->Item>? last => entries.last;
+    
     shared actual LazyMap<Key, Item> clone => this;
     
     shared actual Integer size =>

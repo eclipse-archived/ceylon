@@ -1,15 +1,29 @@
 doc "Applies a function to each element of two `Iterable`s
      and returns an `Iterable` with the results."
-by "Gavin" "Enrique Zamudio"
-shared native {Result...} combine<Result,Element,OtherElement>(
+by "Gavin" "Enrique Zamudio" "Tako"
+shared {Result...} combine<Result,Element,OtherElement>(
         Result combination(Element element, OtherElement otherElement), 
         {Element...} elements, 
-        {OtherElement...} otherElements);
-    //Eventually we'll just do this
-    //return {
-    //    let (oi=otherElements.iterator)
-    //    for (e in elements)
-    //        let (o=oi.next())
-    //        if (is OtherElement o)
-    //            combination(e, o)
-    //};
+        {OtherElement...} otherElements) {
+    
+    class CombineIterable() satisfies Iterable<Result> {
+        shared actual Iterator<Result> iterator {
+            class CombineIterator() satisfies Iterator<Result> {
+                value iter = elements.iterator;
+                value otherIter = otherElements.iterator;
+                shared actual Result|Finished next() {
+                    value elem = iter.next();
+                    value otherElem = otherIter.next();
+                    if (!is Finished elem, !is Finished otherElem) {
+                        return combination(elem, otherElem);
+                    } else {
+                        return finished;
+                    }
+                }
+            }
+            return CombineIterator();
+        }
+        
+    }
+    return CombineIterable();
+}

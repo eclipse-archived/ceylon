@@ -26,7 +26,7 @@ public class Range<Element extends Comparable<? super Element> & Ordinal<? super
     implements Sequence<Element>, Category {
     private final ceylon.language.Category$impl $ceylon$language$Category$this;
     private final ceylon.language.Correspondence$impl $ceylon$language$Correspondence$this;
-    private final ceylon.language.Iterable$impl<Element> $ceylon$language$Iterable$this;
+    private final ceylon.language.Iterable$impl<Element,java.lang.Object> $ceylon$language$Iterable$this;
     private final ceylon.language.List$impl<Element> $ceylon$language$List$this;
     private final ceylon.language.Sequence$impl<Element> $ceylon$language$Sequence$this;
 
@@ -37,7 +37,7 @@ public class Range<Element extends Comparable<? super Element> & Ordinal<? super
     		     @Name("last") Element last) {
         this.$ceylon$language$Category$this = new ceylon.language.Category$impl(this);
         this.$ceylon$language$Correspondence$this = new ceylon.language.Correspondence$impl(this);
-        this.$ceylon$language$Iterable$this = new ceylon.language.Iterable$impl<Element>(this);
+        this.$ceylon$language$Iterable$this = new ceylon.language.Iterable$impl<Element,java.lang.Object>(this);
         this.$ceylon$language$List$this = new ceylon.language.List$impl<Element>(this);
         this.$ceylon$language$Sequence$this = new ceylon.language.Sequence$impl<Element>(this);
         this.first = first;
@@ -464,10 +464,10 @@ public class Range<Element extends Comparable<? super Element> & Ordinal<? super
 
     @Override
     @Ignore
-    public Iterable<? extends Element> by(final long step) {
+    public Iterable<? extends Element, ? extends java.lang.Object> by(final long step) {
         if (step > 1 && first instanceof Integer && last instanceof Integer) {
             //Optimize for Integer ranges
-            return new AbstractIterable<Element>() {
+            return new AbstractIterable<Element,  Null>() {
                 @Override
                 @Annotations(@Annotation("formal"))
                 @TypeInfo("ceylon.language::Iterator<Element>")
@@ -528,13 +528,13 @@ public class Range<Element extends Comparable<? super Element> & Ordinal<? super
     }
     @Override
     @Ignore
-    public <Result> Iterable<? extends Result> map(Callable<? extends Result> f) {
+    public <Result> Iterable<? extends Result, ? extends java.lang.Object> map(Callable<? extends Result> f) {
         return new MapIterable<Element, Result>(this, f);
     }
     @Override
     @Ignore
-    public Iterable<? extends Element> filter(Callable<? extends Boolean> f) {
-        return new FilterIterable<Element>(this, f);
+    public Iterable<? extends Element, ? extends java.lang.Object> filter(Callable<? extends Boolean> f) {
+        return new FilterIterable<Element,  Null>(this, f);
     }
     @Override @Ignore
     public <Result> Sequence<? extends Result> collect(Callable<? extends Result> f) {
@@ -542,7 +542,7 @@ public class Range<Element extends Comparable<? super Element> & Ordinal<? super
     }
     @Override @Ignore
     public Sequential<? extends Element> select(Callable<? extends Boolean> f) {
-        return new FilterIterable<Element>(this, f).getSequence();
+        return new FilterIterable<Element,  Null>(this, f).getSequence();
     }
     @Override
     @Ignore
@@ -559,7 +559,7 @@ public class Range<Element extends Comparable<? super Element> & Ordinal<? super
     }
     @Override @SuppressWarnings("unchecked")
     @TypeInfo("ceylon.language::Range<Element>|ceylon.language::Empty")
-    public Iterable<? extends Element> skipping(@Name("take") long skip) {
+    public Iterable<? extends Element, ? extends java.lang.Object> skipping(@Name("take") long skip) {
         long x=0;
         Element e=first;
         while (x++<skip) {
@@ -569,7 +569,7 @@ public class Range<Element extends Comparable<? super Element> & Ordinal<? super
     }
     @Override @SuppressWarnings({ "unchecked", "rawtypes" })
     @TypeInfo("ceylon.language::Range<Element>|ceylon.language::Empty")
-    public Iterable<? extends Element> taking(@Name("take") long take) {
+    public Iterable<? extends Element, ? extends java.lang.Object> taking(@Name("take") long take) {
         if (take == 0) {
             return (Iterable)empty_.getEmpty$();
         }
@@ -597,11 +597,11 @@ public class Range<Element extends Comparable<? super Element> & Ordinal<? super
         return this; //There can be no nulls in a Range
     }
     @Override @Ignore
-    public Iterable<? extends Entry<? extends Integer, ? extends Element>> getIndexed() {
+    public Iterable<? extends Entry<? extends Integer, ? extends Element>, ? extends java.lang.Object> getIndexed() {
         return $ceylon$language$Iterable$this.getIndexed();
     }
     @SuppressWarnings("rawtypes")
-    @Override @Ignore public <Other>Iterable chain(Iterable<? extends Other> other) {
+    @Override @Ignore public <Other>Iterable chain(Iterable<? extends Other, ? extends java.lang.Object> other) {
         return $ceylon$language$Iterable$this.chain(other);
     }
     @Override @Ignore

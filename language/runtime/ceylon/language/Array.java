@@ -29,7 +29,7 @@ public final class Array<Element> implements List<Element> {
     private final ceylon.language.Category$impl $ceylon$language$Category$this;
     private final ceylon.language.Collection$impl $ceylon$language$Collection$this;
     private final ceylon.language.Correspondence$impl $ceylon$language$Correspondence$this;
-    private final ceylon.language.Iterable$impl<Element> $ceylon$language$Iterable$this;
+    private final ceylon.language.Iterable$impl<Element,java.lang.Object> $ceylon$language$Iterable$this;
     private final ceylon.language.List$impl<Element> $ceylon$language$List$this;
 
     private final java.lang.Object array;
@@ -39,7 +39,7 @@ public final class Array<Element> implements List<Element> {
         this.$ceylon$language$Category$this = new ceylon.language.Category$impl(this);
         this.$ceylon$language$Collection$this = new ceylon.language.Collection$impl(this);
         this.$ceylon$language$Correspondence$this = new ceylon.language.Correspondence$impl(this);
-        this.$ceylon$language$Iterable$this = new ceylon.language.Iterable$impl<Element>(this);
+        this.$ceylon$language$Iterable$this = new ceylon.language.Iterable$impl<Element,java.lang.Object>(this);
         this.$ceylon$language$List$this = new ceylon.language.List$impl<Element>(this);
         this.array = array;
     }
@@ -147,28 +147,28 @@ public final class Array<Element> implements List<Element> {
     }
 
     @Ignore @SuppressWarnings({"unchecked", "rawtypes"})
-    public static <T> Array<T> instance(java.lang.Class typeClass, Iterable<? extends T> elements) {
+    public static <T> Array<T> instance(java.lang.Class typeClass, Iterable<? extends T, ? extends java.lang.Object> elements) {
         if (typeClass == null) {
             typeClass = java.lang.Object.class;
         }
         if (typeClass == int.class) {
-            return (Array<T>) instance(Util.toIntArray((Iterable<? extends Integer>) elements));
+            return (Array<T>) instance(Util.toIntArray((Iterable<? extends Integer, ? extends java.lang.Object>) elements));
         } else if (typeClass == long.class) {
-            return (Array<T>) instance(Util.toLongArray((Iterable<? extends Integer>) elements));
+            return (Array<T>) instance(Util.toLongArray((Iterable<? extends Integer, ? extends java.lang.Object>) elements));
         } else if (typeClass == byte.class) {
-            return (Array<T>) instance(Util.toByteArray((Iterable<? extends Integer>) elements));
+            return (Array<T>) instance(Util.toByteArray((Iterable<? extends Integer, ? extends java.lang.Object>) elements));
         } else if (typeClass == short.class) {
-            return (Array<T>) instance(Util.toShortArray((Iterable<? extends Integer>) elements));
+            return (Array<T>) instance(Util.toShortArray((Iterable<? extends Integer, ? extends java.lang.Object>) elements));
         } else if (typeClass == float.class) {
-            return (Array<T>) instance(Util.toFloatArray((Iterable<? extends Float>) elements));
+            return (Array<T>) instance(Util.toFloatArray((Iterable<? extends Float, ? extends java.lang.Object>) elements));
         } else if (typeClass == double.class) {
-            return (Array<T>) instance(Util.toDoubleArray((Iterable<? extends Float>) elements));
+            return (Array<T>) instance(Util.toDoubleArray((Iterable<? extends Float, ? extends java.lang.Object>) elements));
         } else if (typeClass == boolean.class) {
-            return (Array<T>) instance(Util.toBooleanArray((Iterable<? extends Boolean>) elements));
+            return (Array<T>) instance(Util.toBooleanArray((Iterable<? extends Boolean, ? extends java.lang.Object>) elements));
         } else if (typeClass == char.class) {
-            return (Array<T>) instance(Util.toCharArray((Iterable<? extends Character>) elements));
+            return (Array<T>) instance(Util.toCharArray((Iterable<? extends Character, ? extends java.lang.Object>) elements));
         } else if (typeClass == java.lang.String.class) {
-            return (Array<T>) instance(Util.toJavaStringArray((Iterable<? extends String>) elements));
+            return (Array<T>) instance(Util.toJavaStringArray((Iterable<? extends String, ? extends java.lang.Object>) elements));
         } else {
             return (Array<T>) instance((T[]) Util.toArray(elements, typeClass));
         }
@@ -609,7 +609,7 @@ public final class Array<Element> implements List<Element> {
     }
     
     @Override
-    public Iterable<? extends Element> getRest() {
+    public Iterable<? extends Element, ? extends java.lang.Object> getRest() {
         if (getSize() < 2) {
             return array_.<Element>array();
         } else {
@@ -742,13 +742,13 @@ public final class Array<Element> implements List<Element> {
     }
     @Override
     @Ignore
-    public <Result> Iterable<? extends Result> map(Callable<? extends Result> f) {
+    public <Result> Iterable<? extends Result, ? extends java.lang.Object> map(Callable<? extends Result> f) {
         return new MapIterable<Element, Result>(this, f);
     }
     @Override
     @Ignore
-    public Iterable<? extends Element> filter(Callable<? extends Boolean> f) {
-        return new FilterIterable<Element>(this, f);
+    public Iterable<? extends Element, ? extends java.lang.Object> filter(Callable<? extends Boolean> f) {
+        return new FilterIterable<Element,  Null>(this, f);
     }
     @Override @Ignore
     public <Result> Sequential<? extends Result> collect(Callable<? extends Result> f) {
@@ -756,7 +756,7 @@ public final class Array<Element> implements List<Element> {
     }
     @Override @Ignore
     public Sequential<? extends Element> select(Callable<? extends Boolean> f) {
-        return new FilterIterable<Element>(this, f).getSequence();
+        return new FilterIterable<Element,  Null>(this, f).getSequence();
     }
     @Override
     @Ignore
@@ -772,29 +772,29 @@ public final class Array<Element> implements List<Element> {
         return $ceylon$language$Iterable$this.every(f);
     }
 	@Override @Ignore
-	public Iterable<? extends Element> skipping(long skip) {
+	public Iterable<? extends Element, ? extends java.lang.Object> skipping(long skip) {
 		return $ceylon$language$Iterable$this.skipping(skip);
 	}
 
 	@Override @Ignore
-	public Iterable<? extends Element> taking(long take) {
+	public Iterable<? extends Element, ? extends java.lang.Object> taking(long take) {
 		return $ceylon$language$Iterable$this.taking(take);
 	}
 
 	@Override @Ignore
-	public Iterable<? extends Element> by(long step) {
+	public Iterable<? extends Element, ? extends java.lang.Object> by(long step) {
 		return $ceylon$language$Iterable$this.by(step);
 	}
     @Override @Ignore
-    public Iterable<? extends Element> getCoalesced() {
+    public Iterable<? extends Element, ? extends java.lang.Object> getCoalesced() {
         return $ceylon$language$Iterable$this.getCoalesced();
     }
     @Override @Ignore
-    public Iterable<? extends Entry<? extends Integer, ? extends Element>> getIndexed() {
+    public Iterable<? extends Entry<? extends Integer, ? extends Element>, ? extends java.lang.Object> getIndexed() {
         return $ceylon$language$Iterable$this.getIndexed();
     }
     @SuppressWarnings("rawtypes")
-    @Override @Ignore public <Other>Iterable chain(Iterable<? extends Other> other) {
+    @Override @Ignore public <Other>Iterable chain(Iterable<? extends Other, ? extends java.lang.Object> other) {
         return $ceylon$language$Iterable$this.chain(other);
     }
     @Override @Ignore
@@ -810,12 +810,12 @@ public final class Array<Element> implements List<Element> {
 
     @Override @SuppressWarnings("rawtypes")
     @Annotations({ @Annotation("actual") })
-    public <Other> Sequence withLeading(Other e) {
+    public <Other> Sequence<Other> withLeading(Other e) {
         return $ceylon$language$List$this.withLeading(e);
     }
     @Override @SuppressWarnings("rawtypes")
     @Annotations({ @Annotation("actual") })
-    public <Other> Sequence withTrailing(Other e) {
+    public <Other> Sequence<Other> withTrailing(Other e) {
         return $ceylon$language$List$this.withTrailing(e);
     }
 }

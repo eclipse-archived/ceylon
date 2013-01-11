@@ -1,6 +1,7 @@
 package com.redhat.ceylon.compiler.java.language;
 
 import ceylon.language.Boolean;
+import ceylon.language.Null;
 import ceylon.language.Callable;
 import ceylon.language.Character;
 import ceylon.language.Comparison;
@@ -64,8 +65,8 @@ public class SequenceString extends String implements Sequence<Character> {
     }
     @Override
     @Ignore
-    public Iterable<? extends Character> filter(Callable<? extends Boolean> f) {
-        return String.instance(string_.string((new FilterIterable<Character>(this, f)).getSequence()));
+    public Iterable<? extends Character, ? extends java.lang.Object> filter(Callable<? extends Boolean> f) {
+        return String.instance(string_.string((new FilterIterable<Character,java.lang.Object>(this, f)).getSequence()));
     }
     @Override @Ignore
     public <Result> Sequence<? extends Result> collect(Callable<? extends Result> f) {
@@ -73,7 +74,7 @@ public class SequenceString extends String implements Sequence<Character> {
     }
     @Override @Ignore
     public Sequential<? extends Character> select(Callable<? extends Boolean> f) {
-        return String.instance(string_.string((new FilterIterable<Character>(this, f)).getSequence()));
+        return String.instance(string_.string((new FilterIterable<Character,java.lang.Object>(this, f)).getSequence()));
     }
     @Override
     @Ignore
@@ -89,15 +90,15 @@ public class SequenceString extends String implements Sequence<Character> {
         return $ceylon$language$Iterable$this.every(f);
     }
     @Override @Ignore
-    public Iterable<? extends Character> skipping(long skip) {
+    public Iterable<? extends Character, ? extends java.lang.Object> skipping(long skip) {
         return this.segment(Integer.instance(skip), this.getSize());
     }
     @Override @Ignore
-    public Iterable<? extends Character> taking(long take) {
+    public Iterable<? extends Character, ? extends java.lang.Object> taking(long take) {
         return this.segment(Integer.instance(0), take);
     }
     @Override @Ignore
-    public Iterable<? extends Character> by(long step) {
+    public Iterable<? extends Character, ? extends java.lang.Object> by(long step) {
         return String.instance(string_.string($ceylon$language$Iterable$this.by(step).getSequence()));
     }
     @Override @Ignore
@@ -105,11 +106,11 @@ public class SequenceString extends String implements Sequence<Character> {
         return $ceylon$language$Iterable$this.count(f);
     }
     @Override @Ignore
-    public Iterable<? extends Entry<? extends Integer, ? extends Character>> getIndexed() {
+    public Iterable<? extends Entry<? extends Integer, ? extends Character>, ? extends java.lang.Object> getIndexed() {
         return $ceylon$language$Iterable$this.getIndexed();
     }
     @SuppressWarnings("rawtypes")
-    @Override @Ignore public <Other>Iterable chain(Iterable<? extends Other> other) {
+    @Override @Ignore public <Other>Iterable chain(Iterable<? extends Other, ? extends java.lang.Object> other) {
         return $ceylon$language$Iterable$this.chain(other);
     }
     @Override @Ignore
