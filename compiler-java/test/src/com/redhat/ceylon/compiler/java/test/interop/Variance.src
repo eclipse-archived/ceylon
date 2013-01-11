@@ -15,7 +15,7 @@ final class variance_ {
                 return var.interfaceMethod($$arg0);
             }
         };
-        final .java.lang.Object ret1 = .com.redhat.ceylon.compiler.java.Util.checkNull(var.interfaceMethod((.com.redhat.ceylon.compiler.java.test.interop.Interface)var));
+        final .java.lang.Object ret1 = .com.redhat.ceylon.compiler.java.Util.checkNull(var.interfaceMethod(var));
         final .ceylon.language.Callable<? extends .java.lang.Object> classMethod = new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.java.lang.Object>("Object(Class<Object>?)"){
             
             @.java.lang.Override
@@ -24,7 +24,7 @@ final class variance_ {
                 return var.classMethod($$arg0);
             }
         };
-        final .java.lang.Object ret2 = .com.redhat.ceylon.compiler.java.Util.checkNull(var.classMethod((.com.redhat.ceylon.compiler.java.test.interop.Class)var));
+        final .java.lang.Object ret2 = .com.redhat.ceylon.compiler.java.Util.checkNull(var.classMethod(var));
         final .com.redhat.ceylon.compiler.java.test.interop.JavaVariance m = .com.redhat.ceylon.compiler.java.Util.checkNull(var.<.com.redhat.ceylon.compiler.java.test.interop.JavaVariance>method(var));
         final .java.lang.Object v1 = .com.redhat.ceylon.compiler.java.Util.checkNull(var.roField);
         final .java.lang.Object v2 = .com.redhat.ceylon.compiler.java.Util.checkNull(var.rwField);

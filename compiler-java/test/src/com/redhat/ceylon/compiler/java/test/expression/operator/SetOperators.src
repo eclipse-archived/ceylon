@@ -177,7 +177,7 @@ public class SetOperators {
         final .ceylon.language.Set<? extends .java.lang.Object> s4 = a.complement(b);
         .ceylon.language.Set<? extends .java.lang.Object> sync;
         sync = a.union(b);
-        sync = a.intersection(b);
+        sync = (.ceylon.language.Set)a.intersection(b);
         sync = a.exclusiveUnion(b);
         sync = a.complement(b);
         (
