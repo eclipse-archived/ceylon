@@ -384,19 +384,33 @@ public class ExpressionTransformer extends AbstractTransformer {
         // abort if both types are the same
         if(exprType.isExactly(expectedType))
             return false;
+        
+        // if one type is erased and the other is not we need a cast
+        boolean eraseExprType = willEraseToObject(exprType);
+        boolean eraseExpectedType = willEraseToObject(expectedType);
+        if(eraseExprType != eraseExpectedType)
+            return true;
+        // if both erase to object we need no cast
+        if(eraseExprType && eraseExpectedType)
+            return false;
+        
         ProducedType commonType = exprType.getSupertype(expectedType.getDeclaration());
         if(commonType == null || !(commonType.getDeclaration() instanceof ClassOrInterface))
             return false;
         if(!expectedTypeNotRaw){
-            if(hasErasedTypeParameters(expectedType, false))
+            // the truth is that we don't really know if the expected type is raw or not, that flag only gets set
+            // if we know for sure that the expected type is NOT raw. if it's false we've no idea but we can check:
+            if(isTurnedToRaw(expectedType)){
                 return false;
+            }
         }
         // Surely this is a sign of a really badly designed method but I (Stef) have a strong
         // feeling that callables never need a raw cast
         if(isCeylonCallable(commonType))
             return false;
-        if(hasErasedTypeParameters(commonType, false))
-            return true;
+        // if the expected type is exactly the common type, they must have the same erasure
+        if(commonType.isExactly(expectedType))
+            return false;
         // now see if the type parameters match
         java.util.List<ProducedType> commonTypeArgs = commonType.getTypeArgumentList();
         java.util.List<ProducedType> expectedTypeArgs = expectedType.getTypeArgumentList();
@@ -409,6 +423,23 @@ public class ExpressionTransformer extends AbstractTransformer {
             ProducedType expectedTypeArg = expectedTypeArgs.get(i);
             if(needsRawCast(commonTypeArg, expectedTypeArg, expectedTypeNotRaw))
                 return true;
+        }
+        return false;
+    }
+
+    /**
+     * This method should do the same sort of logic as AbstractTransformer.makeTypeArgs to determine
+     * that the given type will be turned raw as a return type
+     */
+    private boolean isTurnedToRaw(ProducedType type) {
+        // we only produce raw references if the type argument is a union/intersection that isn't erased to a sequential
+        for(ProducedType arg : type.getTypeArgumentList()){
+            // make sure we get rid of optional types and aliases
+            arg = simplifyType(arg);
+            if((typeFact().isUnion(arg) || typeFact().isIntersection(arg))
+                    && !willEraseToSequential(arg)){
+                return true;
+            }
         }
         return false;
     }
