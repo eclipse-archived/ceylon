@@ -19,19 +19,19 @@ class MyComparable() satisfies Comparable<MyComparable> {
         return p <=> other.p;
     }
 }
-class MyContainerWithLastElement() satisfies ContainerWithFirstElement<Integer,Null> {
+class MyContainerWithLastElement() satisfies Container<Integer,Null> {
     shared actual Integer? first { return 1; }
     shared actual Integer? last { return 2; }
     shared actual Boolean empty { return false; }
     shared actual Boolean contains(Object element) => element == 1 || element == 2;
 }
-class MyContainerWithoutFirstElement() satisfies ContainerWithFirstElement<Integer,Null> {
+class MyContainerWithoutFirstElement() satisfies Container<Integer,Null> {
     shared actual Integer? first { return null; }
     shared actual Integer? last { return 2; }
     shared actual Boolean empty { return false; }
     shared actual Boolean contains(Object element) => element == 2;
 }
-class MyContainerWithoutLastElement() satisfies ContainerWithFirstElement<Integer,Null> {
+class MyContainerWithoutLastElement() satisfies Container<Integer,Null> {
     shared actual Integer? first { return 1; }
     shared actual Integer? last { return null; }
     shared actual Boolean empty { return false; }
@@ -138,7 +138,7 @@ void testSatisfaction() {
     check(`l` in collection, "Collection.contains");
     check(collection.string == "{ h, e, l, l, o }", "Collection.string");
     check(MyComparable() <= MyComparable(), "Comparable.compare");
-    variable ContainerWithFirstElement<Integer,Null> cwfe = MyContainerWithLastElement();
+    variable Container<Integer,Null> cwfe = MyContainerWithLastElement();
     check(cwfe.first exists, "ContainerWithFirstElement.first [1]");
     check(cwfe.last exists,  "ContainerWithFirstElement.last  [1]");
     cwfe = MyContainerWithoutFirstElement();

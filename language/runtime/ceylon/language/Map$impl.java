@@ -1,8 +1,5 @@
 package ceylon.language;
 
-import javax.media.j3d.J3DBuffer;
-import javax.media.jai.JAI;
-
 import com.redhat.ceylon.common.tool.Java7Checker;
 import com.redhat.ceylon.compiler.java.language.AbstractIterable;
 import com.redhat.ceylon.compiler.java.language.FilterIterable;

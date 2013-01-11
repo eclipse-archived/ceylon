@@ -4,10 +4,10 @@ doc "The supertype of all exceptions. A subclass represents
      problems of that kind."
 by "Gavin"
    "Tom"
-shared native class Exception(description=null, Exception? c=null) {
+shared native class Exception(description=null, cause=null) {
     
     doc "The underlying cause of this exception."
-    shared Exception? cause=c;
+    shared Exception? cause;
     
     doc "A description of the problem."
     String? description;
