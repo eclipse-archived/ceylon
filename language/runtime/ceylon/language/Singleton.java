@@ -29,7 +29,7 @@ public class Singleton<Element>
 
 	Element element;
 
-	public Singleton(Element element) {
+	public Singleton(@Name("element") Element element) {
         this.$ceylon$language$Category$this = new ceylon.language.Category$impl(this);
         this.$ceylon$language$Correspondence$this = new ceylon.language.Correspondence$impl(this);
         this.$ceylon$language$Iterable$this = new ceylon.language.Iterable$impl<Element>(this);
