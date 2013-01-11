@@ -317,9 +317,8 @@ public class StructureTest extends CompilerTest {
     public void testMthActualMethodShortcut(){
         compareWithJavaSource("method/ActualMethodShortcut");
     }
-    // Fails because of https://github.com/ceylon/ceylon-compiler/issues/944
     @Test
-    public void testMthMethodRefinementWithSpecifiers_fail(){
+    public void testMthMethodRefinementWithSpecifiers(){
         compareWithJavaSource("method/MethodRefinementWithSpecifiers");
     }
     @Test

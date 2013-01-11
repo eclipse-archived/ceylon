@@ -235,3 +235,160 @@ class MethodRefinementWithSpecifiers_Class implements .com.redhat.ceylon.compile
         return arg;
     }
 }
+final class arg2_ {
+    
+    private arg2_() {
+    }
+    
+    static void arg2() {
+    }
+    
+    public static void main(.java.lang.String[] args) {
+        .ceylon.language.process_.getProcess$().setupArguments(args);
+        .com.redhat.ceylon.compiler.java.test.structure.method.arg2_.arg2();
+    }
+}
+interface Bug891_Interface2 extends .com.redhat.ceylon.compiler.java.test.structure.method.MethodRefinementWithSpecifiers_Interface {
+    
+    public .com.redhat.ceylon.compiler.java.test.structure.method.Bug891_Interface2$impl $com$redhat$ceylon$compiler$java$test$structure$method$Bug891_Interface2$impl();
+    
+    public .com.redhat.ceylon.compiler.java.test.structure.method.Bug891_Interface2$impl.InnerShared InnerShared$new();
+    
+    @.java.lang.Override
+    public .java.lang.Object f2();
+    
+    @.java.lang.Override
+    public .java.lang.Object f4();
+    
+    @.java.lang.Override
+    public .java.lang.Object f6();
+    
+    @.java.lang.Override
+    public .java.lang.Object f8();
+    
+    @.java.lang.Override
+    public .java.lang.Object f16();
+    
+    @.java.lang.Override
+    public .java.lang.Object f17();
+    
+    @.java.lang.Override
+    public .java.lang.Object f18();
+    
+    @.java.lang.Override
+    public .java.lang.Object f19();
+}
+final class Bug891_Interface2$impl {
+    
+    Bug891_Interface2$impl(.com.redhat.ceylon.compiler.java.test.structure.method.Bug891_Interface2 $this) {
+        this.$this = $this;
+    }
+    private final .com.redhat.ceylon.compiler.java.test.structure.method.Bug891_Interface2 $this;
+    
+    class Inner {
+        
+        Inner() {
+        }
+    }
+    
+    public .com.redhat.ceylon.compiler.java.test.structure.method.Bug891_Interface2$impl.InnerShared InnerShared$new() {
+        return new InnerShared();
+    }
+    
+    public class InnerShared {
+        
+        protected InnerShared() {
+        }
+    }
+    
+    public .java.lang.Object f2() {
+        return (
+            let
+            {
+                .com.redhat.ceylon.compiler.java.test.structure.method.arg2_.arg2();
+            }
+            returning null;
+        );
+    }
+    
+    public .java.lang.Object f4() {
+        return (
+            let
+            {
+                .com.redhat.ceylon.compiler.java.test.structure.method.arg2_.arg2();
+            }
+            returning null;
+        );
+    }
+    
+    public .java.lang.Object f6() {
+        .com.redhat.ceylon.compiler.java.test.structure.method.arg2_.arg2();
+        return null;
+    }
+    
+    public .java.lang.Object f8() {
+        return $this.f3();
+    }
+    
+    private void takesParam(final long i) {
+    }
+    
+    public .java.lang.Object f16() {
+        return new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.java.lang.Object>("Anything(Integer)"){
+            
+            @.java.lang.Override
+            public .java.lang.Object $call(final .java.lang.Object $param$0) {
+                final long $$i = ((.ceylon.language.Integer)$param$0).longValue();
+                return (
+                    let
+                    {
+                        takesParam($$i);
+                    }
+                    returning null;
+                );
+            }
+        };
+    }
+    
+    public .java.lang.Object f17() {
+        return new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.com.redhat.ceylon.compiler.java.test.structure.method.Bug891_Interface2$impl.Inner>("Bug891_Interface2.Inner()"){
+            
+            @.java.lang.Override
+            public .com.redhat.ceylon.compiler.java.test.structure.method.Bug891_Interface2$impl.Inner $call() {
+                return new .com.redhat.ceylon.compiler.java.test.structure.method.Bug891_Interface2$impl.Inner();
+            }
+        };
+    }
+    
+    public .java.lang.Object f18() {
+        return new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.java.lang.Object>("Anything()"){
+            
+            @.java.lang.Override
+            public .java.lang.Object $call() {
+                return (
+                    let
+                    {
+                        .com.redhat.ceylon.compiler.java.test.structure.method.arg2_.arg2();
+                    }
+                    returning null;
+                );
+            }
+        };
+    }
+    
+    public .java.lang.Object f19() {
+        return new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.java.lang.Object>("Anything()"){
+            
+            @.java.lang.Override
+            public .java.lang.Object $call() {
+                return (
+                    let
+                    {
+                        .com.redhat.ceylon.compiler.java.test.structure.method.arg2_.arg2();
+                    }
+                    returning null;
+                );
+            }
+        };
+    }
+}
