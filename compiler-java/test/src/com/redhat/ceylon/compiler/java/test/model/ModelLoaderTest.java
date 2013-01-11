@@ -289,6 +289,7 @@ public class ModelLoaderTest extends CompilerTest {
         Assert.assertEquals("[Contravariant]", validDeclaration.isContravariant(), modelDeclaration.isContravariant());
         Assert.assertEquals("[Covariant]", validDeclaration.isCovariant(), modelDeclaration.isCovariant());
         Assert.assertEquals("[SelfType]", validDeclaration.isSelfType(), modelDeclaration.isSelfType());
+        Assert.assertEquals("[Defaulted]", validDeclaration.isDefaulted(), modelDeclaration.isDefaulted());
         if (validDeclaration.getDeclaration() != null && modelDeclaration.getDeclaration() != null) {
             compareDeclarations(validDeclaration.getDeclaration(), modelDeclaration.getDeclaration());
         } else if (!(validDeclaration.getDeclaration() == null && modelDeclaration.getDeclaration() == null)) {
@@ -298,6 +299,11 @@ public class ModelLoaderTest extends CompilerTest {
             compareDeclarations(validDeclaration.getSelfTypedDeclaration(), modelDeclaration.getSelfTypedDeclaration());
         } else if (!(validDeclaration.getSelfTypedDeclaration() == null && modelDeclaration.getSelfTypedDeclaration() == null)) {
             Assert.fail("[SelfType] one has self typed declaration the other not");
+        }
+        if (validDeclaration.getDefaultTypeArgument() != null && modelDeclaration.getDefaultTypeArgument() != null) {
+            compareDeclarations(validDeclaration.getDefaultTypeArgument().getDeclaration(), modelDeclaration.getDefaultTypeArgument().getDeclaration());
+        } else if (!(validDeclaration.getDefaultTypeArgument() == null && modelDeclaration.getDefaultTypeArgument() == null)) {
+            Assert.fail("[DefaultTypeArgument] one has default type argument the other not");
         }
         compareSatisfiedTypes(name, validDeclaration.getSatisfiedTypeDeclarations(), modelDeclaration.getSatisfiedTypeDeclarations());
         compareCaseTypes(name, validDeclaration.getCaseTypeDeclarations(), modelDeclaration.getCaseTypeDeclarations());
