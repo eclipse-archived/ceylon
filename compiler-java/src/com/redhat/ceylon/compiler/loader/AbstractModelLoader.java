@@ -1944,16 +1944,31 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
         Iterator<TypeParameter> paramsIterator = params.iterator();
         for(AnnotationMirror typeParam : typeParameters){
             TypeParameter param = paramsIterator.next();
+            
             @SuppressWarnings("unchecked")
             List<String> satisfiesAttribute = (List<String>)typeParam.getValue("satisfies");
             setListOfTypes(param.getSatisfiedTypes(), satisfiesAttribute, scope,
                     "Invalid type signature for satisfies of type parameter "+param.getName()+" of "+scope.getQualifiedNameString()+": ");
+
             @SuppressWarnings("unchecked")
             List<String> caseTypesAttribute = (List<String>)typeParam.getValue("caseTypes");
             if(caseTypesAttribute != null && !caseTypesAttribute.isEmpty())
                 param.setCaseTypes(new LinkedList<ProducedType>());
             setListOfTypes(param.getCaseTypes(), caseTypesAttribute, scope,
                     "Invalid type signature for case types of type parameter "+param.getName()+" of "+scope.getQualifiedNameString()+": ");
+
+            @SuppressWarnings("unchecked")
+            String defaultValueAttribute = (String)typeParam.getValue("defaultValue");
+            if(defaultValueAttribute != null && !defaultValueAttribute.isEmpty()){
+                try{
+                    ProducedType decodedType = decodeType(defaultValueAttribute, scope);
+                    param.setDefaultTypeArgument(decodedType);
+                    param.setDefaulted(true);
+                }catch(TypeParserException x){
+                    logError("Failed to decode defaultValue for @TypeParameter: "+defaultValueAttribute);
+                    throw x;
+                }
+            }
         }
     }
 
