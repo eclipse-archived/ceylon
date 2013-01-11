@@ -316,7 +316,7 @@ shared void sequences() {
     }
     check(nonnull==2, "iterate sequence with nulls");
 
-    value coalesced = coalesce(nulls...).sequence;
+    value coalesced = coalesce(nulls*).sequence;
     check(coalesced.size==2, "coalesce size");
     check(coalesced.string=="{ hello, world }", "coalesce.string");
     check(coalesced.keys.contains(0), "coalesced keys");

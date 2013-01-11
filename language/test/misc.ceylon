@@ -3,7 +3,7 @@ see()
 tagged()
 void misc() {
     
-    function stringify(Character... chars) {
+    function stringify(Character* chars) {
         StringBuilder sb = StringBuilder();
         for (c in chars) {
             sb.appendCharacter(c);
@@ -11,7 +11,7 @@ void misc() {
         return sb.string;
     }
     
-    check(stringify("hello".characters...)=="hello", "args");
+    check(stringify("hello".characters*)=="hello", "args");
     check(stringify( `h`, `i` )=="hi", "sequenced args");
     //unusable check(stringify { chars="hello".characters; }=="hello", "named args");
     // FIXME: Disabled until we fix the backend
@@ -38,7 +38,7 @@ void misc() {
     }
     check(bs.size==11, "builder size");
     
-    for (n->e in entries(bs.sequence...)) {
+    for (n->e in entries(bs.sequence*)) {
         check(n==e, "entry iteration");
     }
 

@@ -29,14 +29,14 @@ void comprehensions() {
   check([for(i in 1..2)[for(j in 1..2)""i","j""]]=={{"1,1","1,2"},{"2,1","2,2"}}, "nested comprehension");
 
   //new comprehension-related functions
-  check(any([for (x in 1..5) x>4]...), "any");
-  check(every([for (x in 1..5) x>0]...), "every");
+  check(any([for (x in 1..5) x>4]*), "any");
+  check(every([for (x in 1..5) x>0]*), "every");
   if (exists ff=first(for (x in 1..5) if (x>3) x)) {
     check(ff==4, "first [1]");
   } else { fail("first [1]"); }
   check(!first(for (x in 1..5) if (x%6==0) x) exists, "first [2]");
-  check(count([for (x in 1..5) x>4]...) == 1, "count [1]");
-  check(count([for (x in 1..5) x>0]...) == 5, "count [2]");
+  check(count([for (x in 1..5) x>4]*) == 1, "count [1]");
+  check(count([for (x in 1..5) x>0]*) == 5, "count [2]");
 
   //*************Newly found bugs here
   //ceylon-compiler#598
@@ -45,7 +45,7 @@ void comprehensions() {
   check(b598.string=="{ 0, 4, 16, 36, 64, 100 }", "ceylon-compiler #598 [2]");
   //ceylon-compiler#599
   value b599_1 = [for (x in "hello") x];
-  value b599_2 = [b599_1...];
+  value b599_2 = [b599_1*];
   check(b599_2 is Sequence<Anything>, "ceylon-compiler #599 [1]");
   check(b599_1.sequence == b599_2, "ceylon-compiler #599 [2]");
   //ceylon-compiler#601

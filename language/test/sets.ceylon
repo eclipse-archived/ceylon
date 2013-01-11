@@ -8,7 +8,7 @@ interface SetTestBase<out Element> satisfies Set<Element>
     shared formal Element[] elements;
 }
 
-class SetTest<Element>(Element... element) extends Object()
+class SetTest<Element>(Element* element) extends Object()
             satisfies SetTestBase<Element>
             given Element satisfies Object {
     shared actual Element[] elements = element.sequence;
@@ -19,7 +19,7 @@ class SetTest<Element>(Element... element) extends Object()
     shared actual Set<Element|Other> union<Other>(Set<Other> set)
                 given Other satisfies Object {
         value sb = SequenceBuilder<Element|Other>();
-        sb.appendAll(elements...);
+        sb.appendAll(elements*);
         for (e in set) {
             for (e2 in elements) {
                 if (e2 == e) { break; }
@@ -27,7 +27,7 @@ class SetTest<Element>(Element... element) extends Object()
                 sb.append(e);
             }
         }
-        return SetTest(sb.sequence...);
+        return SetTest(sb.sequence*);
     }
     shared actual Set<Element&Other> intersection<Other>(Set<Other> set)
                 given Other satisfies Object {
@@ -42,7 +42,7 @@ class SetTest<Element>(Element... element) extends Object()
         //        }
         //    }
         //}
-        //return SetTest(sb.sequence...);
+        //return SetTest(sb.sequence*);
         return nothing;
     }
     shared actual Set<Element|Other> exclusiveUnion<Other>(Set<Other> set)
@@ -62,7 +62,7 @@ class SetTest<Element>(Element... element) extends Object()
                 sb.append(e);
             }
         }
-        return SetTest(sb.sequence...);
+        return SetTest(sb.sequence*);
     }
     shared actual Set<Element> complement<Other>(Set<Other> set)
                 given Other satisfies Object {
@@ -74,7 +74,7 @@ class SetTest<Element>(Element... element) extends Object()
                 sb.append(e);
             }
         }
-        return SetTest(sb.sequence...);
+        return SetTest(sb.sequence*);
     }
 }
 
