@@ -209,8 +209,6 @@
                 <exclude name="ceylon/language/StringBuilder.ceylon"/>
                 <include name="ceylon/language/StringBuilder.java"/>
                 <!-- These are problem files we hope to be able to compile some day -->
-                <exclude name="ceylon/language/combine.ceylon"/> <!-- RUNTIME ERROR (incomplete) -->
-                <include name="ceylon/language/combine_.java"/>
                 <exclude name="ceylon/language/Correspondence.ceylon"/> <!-- COMPILE ERROR (see compiler issue #904) -->
                 <include name="ceylon/language/Correspondence.java"/>
                 <include name="ceylon/language/Correspondence$impl.java"/>
