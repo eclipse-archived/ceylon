@@ -12,7 +12,7 @@ import com.redhat.ceylon.compiler.java.metadata.Variance;
 
 @Ceylon(major = 3)
 @TypeParameters({@TypeParameter(value = "Element", variance = Variance.OUT),
-                 @TypeParameter(value = "Absent", variance = Variance.OUT)})
+                 @TypeParameter(value = "Absent", variance = Variance.OUT, defaultValue = "Null", satisfies = "ceylon.language::Null")})
 @SatisfiedTypes("ceylon.language::Container<Element,Absent>")
 public interface Iterable<Element,Absent> extends Container<Element,Absent> {
 
