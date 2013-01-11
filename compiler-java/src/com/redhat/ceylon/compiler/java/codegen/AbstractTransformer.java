@@ -1655,7 +1655,11 @@ public abstract class AbstractTransformer implements Transformation {
 
     final JCAnnotation makeAtTypeParameter(String name, java.util.List<ProducedType> satisfiedTypes, java.util.List<ProducedType> caseTypes, 
                                            boolean covariant, boolean contravariant) {
-        JCExpression nameAttribute = make().Assign(naming.makeUnquotedIdent("value"), make().Literal(name));
+        ListBuffer<JCExpression> attributes = new ListBuffer<JCExpression>();
+        
+        // name
+        attributes.add(make().Assign(naming.makeUnquotedIdent("value"), make().Literal(name)));
+
         // variance
         String variance = "NONE";
         if(covariant)
@@ -1664,6 +1668,8 @@ public abstract class AbstractTransformer implements Transformation {
             variance = "IN";
         JCExpression varianceAttribute = make().Assign(naming.makeUnquotedIdent("variance"), 
                 make().Select(makeIdent(syms().ceylonVarianceType), names().fromString(variance)));
+        attributes.add(varianceAttribute);
+        
         // upper bounds
         ListBuffer<JCExpression> upperBounds = new ListBuffer<JCTree.JCExpression>();
         for(ProducedType satisfiedType : satisfiedTypes){
@@ -1672,6 +1678,8 @@ public abstract class AbstractTransformer implements Transformation {
         }
         JCExpression satisfiesAttribute = make().Assign(naming.makeUnquotedIdent("satisfies"), 
                 make().NewArray(null, null, upperBounds.toList()));
+        attributes.add(satisfiesAttribute);
+        
         // case types
         ListBuffer<JCExpression> caseTypesExpressions = new ListBuffer<JCTree.JCExpression>();
         if(caseTypes != null){
@@ -1682,9 +1690,10 @@ public abstract class AbstractTransformer implements Transformation {
         }
         JCExpression caseTypeAttribute = make().Assign(naming.makeUnquotedIdent("caseTypes"), 
                 make().NewArray(null, null, caseTypesExpressions.toList()));
+        attributes.add(caseTypeAttribute);
+        
         // all done
-        return make().Annotation(makeIdent(syms().ceylonAtTypeParameter), 
-                List.<JCExpression>of(nameAttribute, varianceAttribute, satisfiesAttribute, caseTypeAttribute));
+        return make().Annotation(makeIdent(syms().ceylonAtTypeParameter), attributes.toList());
     }
 
     List<JCAnnotation> makeAtTypeParameters(List<JCExpression> typeParameters) {
