@@ -898,5 +898,11 @@ public class IssuesTest extends CompilerTest {
     public void testBug931() {
         compareWithJavaSource("bug09xx/Bug931");
     }
+
+    // see https://github.com/ceylon/ceylon-compiler/issues/953
+    @Test
+    public void testBug953_fail() {
+        compareWithJavaSource("bug09xx/Bug953");
+    }
 }
 
