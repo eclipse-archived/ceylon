@@ -38,9 +38,9 @@ public final class arrayOfSize_ {
         return Array.<Element>instance(typeClass, (int)size, element);
     }
     
-    private static <Element> Iterable<Element> getIterable(final long size, 
+    private static <Element> Iterable<Element, ? extends java.lang.Object> getIterable(final long size, 
     		final Element element) {
-        return new AbstractIterable<Element>() {
+        return new AbstractIterable<Element,  Null>() {
             public Iterator<Element> getIterator() {
                 return new Iterator<Element>() {
                     long idx = 0;

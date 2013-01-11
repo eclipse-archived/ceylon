@@ -31,4 +31,11 @@ public @interface TypeParameter {
 
     /** The variance of this type parameter */
     Variance variance() default Variance.NONE;
+    
+    /**
+     * The default value for this type parameter if it is optional and defaulted.
+     * Defaults to the empty string if this type parameter is not optional. 
+     * May contain fully-qualified type names and type parameter names.
+     */
+    String defaultValue() default "";
 }

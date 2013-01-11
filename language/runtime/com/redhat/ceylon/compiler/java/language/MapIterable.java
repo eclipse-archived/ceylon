@@ -1,6 +1,7 @@
 package com.redhat.ceylon.compiler.java.language;
 
 import ceylon.language.Boolean;
+import ceylon.language.Null;
 import ceylon.language.Callable;
 import ceylon.language.Comparison;
 import ceylon.language.Entry;
@@ -21,15 +22,15 @@ import com.redhat.ceylon.compiler.java.metadata.TypeInfo;
  * 
  * @author Enrique Zamudio
  */
-public class MapIterable<Element, Result> implements Iterable<Result> {
-    private final ceylon.language.Iterable$impl<Result> $ceylon$language$Iterable$this;
+public class MapIterable<Element, Result> implements Iterable<Result,java.lang.Object> {
+    private final ceylon.language.Iterable$impl<Result,java.lang.Object> $ceylon$language$Iterable$this;
     private final ceylon.language.Category$impl $ceylon$language$Category$this;
     
-    final Iterable<? extends Element> iterable;
+    final Iterable<? extends Element, ? extends java.lang.Object> iterable;
     final Callable<? extends Result> sel;
     
-    public MapIterable(Iterable<? extends Element> iterable, Callable<? extends Result> collecting) {
-        this.$ceylon$language$Iterable$this = new ceylon.language.Iterable$impl<Result>(this);
+    public MapIterable(Iterable<? extends Element, ? extends java.lang.Object> iterable, Callable<? extends Result> collecting) {
+        this.$ceylon$language$Iterable$this = new ceylon.language.Iterable$impl<Result,java.lang.Object>(this);
         this.$ceylon$language$Category$this = new ceylon.language.Category$impl(this);
         this.iterable = iterable;
         sel = collecting;
@@ -66,7 +67,7 @@ public class MapIterable<Element, Result> implements Iterable<Result> {
 
     @Override
     @Ignore
-    public Iterable<? extends Result> getRest() {
+    public Iterable<? extends Result, ? extends java.lang.Object> getRest() {
     	return $ceylon$language$Iterable$this.getRest();
     }
 
@@ -98,13 +99,13 @@ public class MapIterable<Element, Result> implements Iterable<Result> {
     }
     @Override
     @Ignore
-    public <R2> Iterable<R2> map(Callable<? extends R2> f) {
+    public <R2> Iterable<R2, ? extends java.lang.Object> map(Callable<? extends R2> f) {
         return new MapIterable<Result, R2>(this, f);
     }
     @Override
     @Ignore
-    public Iterable<? extends Result> filter(Callable<? extends Boolean> f) {
-        return new FilterIterable<Result>(this, f);
+    public Iterable<? extends Result, ? extends java.lang.Object> filter(Callable<? extends Boolean> f) {
+        return new FilterIterable<Result,java.lang.Object>(this, f);
     }
     @Override
     @Ignore
@@ -120,15 +121,15 @@ public class MapIterable<Element, Result> implements Iterable<Result> {
         return $ceylon$language$Iterable$this.every(f);
     }
     @Override @Ignore
-    public Iterable<? extends Result> skipping(long skip) {
+    public Iterable<? extends Result, ? extends java.lang.Object> skipping(long skip) {
         return $ceylon$language$Iterable$this.skipping(skip);
     }
     @Override @Ignore
-    public Iterable<? extends Result> taking(long take) {
+    public Iterable<? extends Result, ? extends java.lang.Object> taking(long take) {
         return $ceylon$language$Iterable$this.taking(take);
     }
     @Override @Ignore
-    public Iterable<? extends Result> by(long step) {
+    public Iterable<? extends Result, ? extends java.lang.Object> by(long step) {
         return $ceylon$language$Iterable$this.by(step);
     }
     @Override @Ignore
@@ -136,15 +137,15 @@ public class MapIterable<Element, Result> implements Iterable<Result> {
         return $ceylon$language$Iterable$this.count(f);
     }
     @Override @Ignore
-    public Iterable<? extends Result> getCoalesced() {
+    public Iterable<? extends Result, ? extends java.lang.Object> getCoalesced() {
         return $ceylon$language$Iterable$this.getCoalesced();
     }
     @Override @Ignore
-    public Iterable<? extends Entry<? extends Integer, ? extends Result>> getIndexed() {
+    public Iterable<? extends Entry<? extends Integer, ? extends Result>, ? extends java.lang.Object> getIndexed() {
         return $ceylon$language$Iterable$this.getIndexed();
     }
     @SuppressWarnings("rawtypes") @Override @Ignore
-    public <Other> Iterable chain(Iterable<? extends Other> other) {
+    public <Other> Iterable chain(Iterable<? extends Other, ? extends java.lang.Object> other) {
         return $ceylon$language$Iterable$this.chain(other);
     }
     @Override @Ignore

@@ -1,6 +1,7 @@
 package com.redhat.ceylon.compiler.java.language;
 
 import ceylon.language.Boolean;
+import ceylon.language.Null;
 import ceylon.language.Callable;
 import ceylon.language.Comparison;
 import ceylon.language.Entry;
@@ -21,15 +22,15 @@ import com.redhat.ceylon.compiler.java.metadata.TypeInfo;
  * 
  * @author Enrique Zamudio
  */
-public class FilterIterable<Element> implements Iterable<Element> {
-    private final ceylon.language.Iterable$impl<Element> $ceylon$language$Iterable$this;
+public class FilterIterable<Element,Absent> implements Iterable<Element,Absent> {
+    private final ceylon.language.Iterable$impl<Element,Absent> $ceylon$language$Iterable$this;
     private final ceylon.language.Category$impl $ceylon$language$Category$this;
     
-    final Iterable<? extends Element> iterable;
+    final Iterable<? extends Element, ? extends java.lang.Object> iterable;
     final Callable<? extends Boolean> f;
     
-    public FilterIterable(Iterable<? extends Element> iterable, Callable<? extends Boolean> selecting) {
-        this.$ceylon$language$Iterable$this = new ceylon.language.Iterable$impl<Element>(this);
+    public FilterIterable(Iterable<? extends Element, ? extends java.lang.Object> iterable, Callable<? extends Boolean> selecting) {
+        this.$ceylon$language$Iterable$this = new ceylon.language.Iterable$impl<Element,Absent>(this);
         this.$ceylon$language$Category$this = new ceylon.language.Category$impl(this);
         this.iterable = iterable;
         f = selecting;
@@ -64,7 +65,7 @@ public class FilterIterable<Element> implements Iterable<Element> {
     }
     @Override
     @Ignore
-    public Iterable<? extends Element> getRest() {
+    public Iterable<? extends Element, ? extends java.lang.Object> getRest() {
     	return $ceylon$language$Iterable$this.getRest();
     }
     @Override
@@ -95,13 +96,13 @@ public class FilterIterable<Element> implements Iterable<Element> {
     }
     @Override
     @Ignore
-    public <Result> Iterable<Result> map(Callable<? extends Result> f) {
+    public <Result> Iterable<Result, ? extends java.lang.Object> map(Callable<? extends Result> f) {
         return new MapIterable<Element, Result>(this, f);
     }
     @Override
     @Ignore
-    public Iterable<? extends Element> filter(Callable<? extends Boolean> f) {
-        return new FilterIterable<Element>(this, f);
+    public Iterable<? extends Element, ? extends java.lang.Object> filter(Callable<? extends Boolean> f) {
+        return new FilterIterable<Element,  Null>(this, f);
     }
     @Override
     @Ignore
@@ -117,15 +118,15 @@ public class FilterIterable<Element> implements Iterable<Element> {
         return $ceylon$language$Iterable$this.every(f);
     }
     @Override @Ignore
-    public Iterable<? extends Element> skipping(long skip) {
+    public Iterable<? extends Element, ? extends java.lang.Object> skipping(long skip) {
         return $ceylon$language$Iterable$this.skipping(skip);
     }
     @Override @Ignore
-    public Iterable<? extends Element> taking(long take) {
+    public Iterable<? extends Element, ? extends java.lang.Object> taking(long take) {
         return $ceylon$language$Iterable$this.taking(take);
     }
     @Override @Ignore
-    public Iterable<? extends Element> by(long step) {
+    public Iterable<? extends Element, ? extends java.lang.Object> by(long step) {
         return $ceylon$language$Iterable$this.by(step);
     }
     @Override @Ignore
@@ -133,15 +134,15 @@ public class FilterIterable<Element> implements Iterable<Element> {
         return $ceylon$language$Iterable$this.count(f);
     }
     @Override @Ignore
-    public Iterable<? extends Element> getCoalesced() {
+    public Iterable<? extends Element, ? extends Absent> getCoalesced() {
         return $ceylon$language$Iterable$this.getCoalesced();
     }
     @Override @Ignore
-    public Iterable<? extends Entry<? extends Integer, ? extends Element>> getIndexed() {
+    public Iterable<? extends Entry<? extends Integer, ? extends Element>, ? extends Absent> getIndexed() {
         return $ceylon$language$Iterable$this.getIndexed();
     }
     @Override @Ignore @SuppressWarnings("rawtypes")
-    public <Other> Iterable chain(Iterable<? extends Other> other) {
+    public <Other> Iterable chain(Iterable<? extends Other, ? extends java.lang.Object> other) {
         return $ceylon$language$Iterable$this.chain(other);
     }
     @Override @Ignore

@@ -23,7 +23,7 @@ public class Singleton<Element>
         implements Sequence<Element> {
     private final ceylon.language.Category$impl $ceylon$language$Category$this;
     private final ceylon.language.Correspondence$impl $ceylon$language$Correspondence$this;
-    private final ceylon.language.Iterable$impl<Element> $ceylon$language$Iterable$this;
+    private final ceylon.language.Iterable$impl<Element,java.lang.Object> $ceylon$language$Iterable$this;
     private final ceylon.language.List$impl<Element> $ceylon$language$List$this;
     private final ceylon.language.Sequence$impl<Element> $ceylon$language$Sequence$this;
 
@@ -32,7 +32,7 @@ public class Singleton<Element>
 	public Singleton(Element element) {
         this.$ceylon$language$Category$this = new ceylon.language.Category$impl(this);
         this.$ceylon$language$Correspondence$this = new ceylon.language.Correspondence$impl(this);
-        this.$ceylon$language$Iterable$this = new ceylon.language.Iterable$impl<Element>(this);
+        this.$ceylon$language$Iterable$this = new ceylon.language.Iterable$impl<Element,java.lang.Object>(this);
         this.$ceylon$language$List$this = new ceylon.language.List$impl<Element>(this);
         this.$ceylon$language$Sequence$this = new ceylon.language.Sequence$impl<Element>(this);
 		this.element = element;
@@ -327,7 +327,7 @@ public class Singleton<Element>
     @Override
     @TypeInfo("ceylon.language::Singleton<Element>|ceylon.language::Empty")
     @SuppressWarnings({"unchecked", "rawtypes"})
-    public Iterable<? extends Element> filter(@Name("selecting")
+    public Iterable<? extends Element, ? extends java.lang.Object> filter(@Name("selecting")
             @TypeInfo("ceylon.language::Callable<ceylon.language::Boolean,ceylon.language::Tuple<Element,Element,ceylon.language::Empty>>")
             Callable<? extends Boolean> selecting) {
         return selecting.$call(element).booleanValue() ? this : (Iterable)empty_.getEmpty$();
@@ -363,17 +363,17 @@ public class Singleton<Element>
     @Override
     @TypeInfo("ceylon.language::Singleton<Element>|ceylon.language::Empty")
     @SuppressWarnings({"unchecked", "rawtypes"})
-    public Iterable<? extends Element> skipping(long skip) {
+    public Iterable<? extends Element, ? extends java.lang.Object> skipping(long skip) {
         return skip>0 ? (Iterable)empty_.getEmpty$() : this;
     }
     @Override
     @TypeInfo("ceylon.language::Singleton<Element>|ceylon.language::Empty")
     @SuppressWarnings({"unchecked", "rawtypes"})
-    public Iterable<? extends Element> taking(long take) {
+    public Iterable<? extends Element, ? extends java.lang.Object> taking(long take) {
         return take<1 ? (Iterable)empty_.getEmpty$() : this;
     }
     @Override @Ignore
-    public Iterable<? extends Element> by(long step) {
+    public Iterable<? extends Element, ? extends java.lang.Object> by(long step) {
         return this;
     }
     @Override @Ignore
@@ -390,7 +390,7 @@ public class Singleton<Element>
         return new Singleton<Entry<? extends Integer, ? extends Element>>(new Entry<Integer, Element>(Integer.instance(0), element));
     }
     @SuppressWarnings("rawtypes")
-    @Override @Ignore public <Other>Iterable chain(Iterable<? extends Other> other) {
+    @Override @Ignore public <Other>Iterable chain(Iterable<? extends Other, ? extends java.lang.Object> other) {
         return $ceylon$language$Iterable$this.chain(other);
     }
     @Override @Ignore

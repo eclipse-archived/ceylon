@@ -5,6 +5,7 @@ import static java.lang.Long.MAX_VALUE;
 import java.util.Arrays;
 
 import ceylon.language.Boolean;
+import ceylon.language.Null;
 import ceylon.language.Callable;
 import ceylon.language.Category;
 import ceylon.language.Comparison;
@@ -35,7 +36,7 @@ public class ArraySequence<Element> implements Sequence<Element> {
     private final ceylon.language.Category$impl $ceylon$language$Category$this;
     private final ceylon.language.Collection$impl $ceylon$language$Collection$this;
     private final ceylon.language.Correspondence$impl $ceylon$language$Correspondence$this;
-    private final ceylon.language.Iterable$impl<Element> $ceylon$language$Iterable$this;
+    private final ceylon.language.Iterable$impl<Element,java.lang.Object> $ceylon$language$Iterable$this;
     private final ceylon.language.List$impl<Element> $ceylon$language$List$this;
     private final ceylon.language.Sequence$impl<Element> $ceylon$language$Sequence$this;
 
@@ -51,7 +52,7 @@ public class ArraySequence<Element> implements Sequence<Element> {
         this.$ceylon$language$Category$this = new ceylon.language.Category$impl(this);
         this.$ceylon$language$Collection$this = new ceylon.language.Collection$impl(this);
         this.$ceylon$language$Correspondence$this = new ceylon.language.Correspondence$impl(this);
-        this.$ceylon$language$Iterable$this = new ceylon.language.Iterable$impl<Element>(this);
+        this.$ceylon$language$Iterable$this = new ceylon.language.Iterable$impl<Element,java.lang.Object>(this);
         this.$ceylon$language$List$this = new ceylon.language.List$impl<Element>(this);
         this.$ceylon$language$Sequence$this = new ceylon.language.Sequence$impl<Element>(this);
     	if (array.length==0 || array.length<=first) {
@@ -66,7 +67,7 @@ public class ArraySequence<Element> implements Sequence<Element> {
         this.$ceylon$language$Category$this = new ceylon.language.Category$impl(this);
         this.$ceylon$language$Collection$this = new ceylon.language.Collection$impl(this);
         this.$ceylon$language$Correspondence$this = new ceylon.language.Correspondence$impl(this);
-        this.$ceylon$language$Iterable$this = new ceylon.language.Iterable$impl<Element>(this);
+        this.$ceylon$language$Iterable$this = new ceylon.language.Iterable$impl<Element,java.lang.Object>(this);
         this.$ceylon$language$List$this = new ceylon.language.List$impl<Element>(this);
         this.$ceylon$language$Sequence$this = new ceylon.language.Sequence$impl<Element>(this);
     	if (list.size()==0) {
@@ -395,12 +396,12 @@ public class ArraySequence<Element> implements Sequence<Element> {
     }
 
     @Override
-    public <Result> Iterable<? extends Result> map(Callable<? extends Result> f) {
+    public <Result> Iterable<? extends Result, ? extends java.lang.Object> map(Callable<? extends Result> f) {
         return new MapIterable<Element, Result>(this, f);
     }
     @Override
-    public Iterable<? extends Element> filter(Callable<? extends Boolean> f) {
-        return new FilterIterable<Element>(this, f);
+    public Iterable<? extends Element, ? extends java.lang.Object> filter(Callable<? extends Boolean> f) {
+        return new FilterIterable<Element,  Null>(this, f);
     }
     @Override
     public <Result> Sequence<? extends Result> collect(Callable<? extends Result> f) {
@@ -409,7 +410,7 @@ public class ArraySequence<Element> implements Sequence<Element> {
 
     @Override
     public Sequential<? extends Element> select(Callable<? extends Boolean> f) {
-        return new FilterIterable<Element>(this, f).getSequence();
+        return new FilterIterable<Element,  Null>(this, f).getSequence();
     }
 
     @Override
@@ -426,27 +427,27 @@ public class ArraySequence<Element> implements Sequence<Element> {
         return $ceylon$language$Iterable$this.every(f);
     }
     @Override @Ignore
-    public Iterable<? extends Element> skipping(long skip) {
+    public Iterable<? extends Element, ? extends java.lang.Object> skipping(long skip) {
         return $ceylon$language$Iterable$this.skipping(skip);
     }
     @Override @Ignore
-    public Iterable<? extends Element> taking(long take) {
+    public Iterable<? extends Element, ? extends java.lang.Object> taking(long take) {
         return $ceylon$language$Iterable$this.taking(take);
     }
     @Override @Ignore
-    public Iterable<? extends Element> by(long step) {
+    public Iterable<? extends Element, ? extends java.lang.Object> by(long step) {
         return $ceylon$language$Iterable$this.by(step);
     }
     @Override @Ignore
-    public Iterable<? extends Element> getCoalesced() {
+    public Iterable<? extends Element, ? extends java.lang.Object> getCoalesced() {
         return $ceylon$language$Iterable$this.getCoalesced();
     }
     @Override @Ignore
-    public Iterable<? extends Entry<? extends Integer, ? extends Element>> getIndexed() {
+    public Iterable<? extends Entry<? extends Integer, ? extends Element>, ? extends java.lang.Object> getIndexed() {
         return $ceylon$language$Iterable$this.getIndexed();
     }
     @SuppressWarnings("rawtypes")
-    @Override @Ignore public <Other>Iterable chain(Iterable<? extends Other> other) {
+    @Override @Ignore public <Other>Iterable chain(Iterable<? extends Other, ? extends java.lang.Object> other) {
         return $ceylon$language$Iterable$this.chain(other);
     }
     @Override @Ignore

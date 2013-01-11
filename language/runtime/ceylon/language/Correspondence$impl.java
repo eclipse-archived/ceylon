@@ -153,7 +153,7 @@ public final class Correspondence$impl<Key,Item> {
         private final Correspondence$impl<ceylon.language.Integer, Item> $ceylon$language$Correspondence$this;
         private final ceylon.language.Category$impl $ceylon$language$Category$this;
         private final ceylon.language.Collection$impl<Item> $ceylon$language$Collection$this;
-        private final ceylon.language.Iterable$impl<Item> $ceylon$language$Iterable$this;
+        private final ceylon.language.Iterable$impl<Item,? extends java.lang.Object> $ceylon$language$Iterable$this;
         private final ceylon.language.List$impl<Item> $ceylon$language$List$this;
         private final ceylon.language.Sequence$impl<Item> $ceylon$language$Sequence$this;
 
@@ -162,7 +162,7 @@ public final class Correspondence$impl<Key,Item> {
             this.$ceylon$language$Correspondence$this = new Correspondence$impl<ceylon.language.Integer, Item>(this);
             this.$ceylon$language$Category$this = new ceylon.language.Category$impl(this);
             this.$ceylon$language$Collection$this = new ceylon.language.Collection$impl<Item>(this);
-            this.$ceylon$language$Iterable$this = new ceylon.language.Iterable$impl<Item>(this);
+            this.$ceylon$language$Iterable$this = new ceylon.language.Iterable$impl<Item,java.lang.Object>(this);
             this.$ceylon$language$List$this = new ceylon.language.List$impl<Item>(this);
             this.$ceylon$language$Sequence$this = new ceylon.language.Sequence$impl<Item>(this);
         }
@@ -273,23 +273,23 @@ public final class Correspondence$impl<Key,Item> {
             return $ceylon$language$List$this.getIterator();
         }
         @Override @Ignore
-        public Iterable<? extends Item> skipping(long skip) {
+        public Iterable<? extends Item, ? extends java.lang.Object> skipping(long skip) {
             return $ceylon$language$Iterable$this.skipping(skip);
         }
 
         @Override @Ignore
-        public Iterable<? extends Item> taking(long take) {
+        public Iterable<? extends Item, ? extends java.lang.Object> taking(long take) {
             return $ceylon$language$Iterable$this.taking(take);
         }
 
         @Override @Ignore
-        public Iterable<? extends Item> by(long step) {
+        public Iterable<? extends Item, ? extends java.lang.Object> by(long step) {
             return $ceylon$language$Iterable$this.by(step);
         }
         @Override
         @SuppressWarnings({"rawtypes", "unchecked"})
         public Sequential<? extends Item> segment(Integer from, long length) {
-            Iterable<? extends Key> keys = (Iterable<? extends Key>) this.keys.segment(from, length);
+            Iterable<? extends Key, ? extends java.lang.Object> keys = (Iterable<? extends Key, ? extends java.lang.Object>) this.keys.segment(from, length);
             if (keys.getEmpty()) {
                 return (Sequential)empty_.getEmpty$();
             }
@@ -300,7 +300,7 @@ public final class Correspondence$impl<Key,Item> {
         @Override
         @SuppressWarnings({"rawtypes", "unchecked"})
         public Sequential<? extends Item> span(Integer from, Integer to) {
-            Iterable<? extends Key> keys = (Iterable<? extends Key>) this.keys.span(from, to);
+            Iterable<? extends Key, ? extends java.lang.Object> keys = (Iterable<? extends Key, ? extends java.lang.Object>) this.keys.span(from, to);
             if (keys.getEmpty()) {
                 return (Sequential)empty_.getEmpty$();
             }
@@ -311,7 +311,7 @@ public final class Correspondence$impl<Key,Item> {
         @Override
         @SuppressWarnings({"rawtypes", "unchecked"})
         public Sequential<? extends Item> spanTo(Integer to) {
-            Iterable<? extends Key> keys = (Iterable<? extends Key>) this.keys.spanTo(to);
+            Iterable<? extends Key, ? extends java.lang.Object> keys = (Iterable<? extends Key, ? extends java.lang.Object>) this.keys.spanTo(to);
             if (keys.getEmpty()) {
                 return (Sequential)empty_.getEmpty$();
             }
@@ -322,7 +322,7 @@ public final class Correspondence$impl<Key,Item> {
         @Override
         @SuppressWarnings({"rawtypes", "unchecked"})
         public Sequential<? extends Item> spanFrom(Integer from) {
-            Iterable<? extends Key> keys = (Iterable<? extends Key>) this.keys.spanFrom(from);
+            Iterable<? extends Key, ? extends java.lang.Object> keys = (Iterable<? extends Key, ? extends java.lang.Object>) this.keys.spanFrom(from);
             if (keys.getEmpty()) {
                 return (Sequential)empty_.getEmpty$();
             }
@@ -395,13 +395,13 @@ public final class Correspondence$impl<Key,Item> {
         }
         @Override
         @Ignore
-        public <Result> Iterable<? extends Result> map(Callable<? extends Result> f) {
+        public <Result> Iterable<? extends Result, ? extends java.lang.Object> map(Callable<? extends Result> f) {
             return new MapIterable<Item, Result>(this, f);
         }
         @Override
         @Ignore
-        public Iterable<? extends Item> filter(Callable<? extends Boolean> f) {
-            return new FilterIterable<Item>(this, f);
+        public Iterable<? extends Item, ? extends java.lang.Object> filter(Callable<? extends Boolean> f) {
+            return new FilterIterable<Item, java.lang.Object>(this, f);
         }
         @Override @Ignore
         public <Result> Sequence<? extends Result> collect(Callable<? extends Result> f) {
@@ -409,7 +409,7 @@ public final class Correspondence$impl<Key,Item> {
         }
         @Override @Ignore
         public Sequential<? extends Item> select(Callable<? extends Boolean> f) {
-            return new FilterIterable<Item>(this, f).getSequence();
+            return new FilterIterable<Item, java.lang.Object>(this, f).getSequence();
         }
         @Override
         @Ignore
@@ -429,15 +429,15 @@ public final class Correspondence$impl<Key,Item> {
             return $ceylon$language$Iterable$this.count(f);
         }
         @Override @Ignore
-        public Iterable<? extends Item> getCoalesced() {
+        public Iterable<? extends Item, ? extends java.lang.Object> getCoalesced() {
             return $ceylon$language$Iterable$this.getCoalesced();
         }
         @Override @Ignore
-        public Iterable<? extends Entry<? extends Integer, ? extends Item>> getIndexed() {
+        public Iterable<? extends Entry<? extends Integer, ? extends Item>, ? extends java.lang.Object> getIndexed() {
             return $ceylon$language$Iterable$this.getIndexed();
         }
         @SuppressWarnings("rawtypes")
-        @Override @Ignore public <Other>Iterable chain(Iterable<? extends Other> other) {
+        @Override @Ignore public <Other>Iterable chain(Iterable<? extends Other, ? extends java.lang.Object> other) {
             return $ceylon$language$Iterable$this.chain(other);
         }
         @Override @Ignore

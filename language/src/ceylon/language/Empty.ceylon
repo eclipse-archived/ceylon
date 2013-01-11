@@ -57,10 +57,10 @@ shared interface Empty
     shared actual [] coalesced => this; 
     
     doc "Returns an `Empty`."
-    shared actual [] indexed => this;
+    shared actual [] indexed => nothing; //this;
     
     doc "Returns `other`."
-    shared actual Iterable<Other> chain<Other>(Iterable<Other> other) => other;
+    shared actual {Other...} chain<Other>({Other...} other) => other;
     
     doc "Returns `false` for any given element."
     shared actual Boolean contains(Object element) => false;
@@ -72,7 +72,7 @@ shared interface Empty
     shared actual Boolean defines(Integer index) => false;
     
     shared actual [] map<Result>(
-            Result collecting(Nothing element)) => this;
+            Result collecting(Nothing element)) => nothing; //this;
     
     shared actual [] filter
             (Boolean selecting(Nothing element)) => this;
