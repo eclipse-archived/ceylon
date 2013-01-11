@@ -292,10 +292,9 @@ public class StructureTest2 extends CompilerTest {
     public void testCncConcreteAttribute(){
         compareWithJavaSource("concrete/ConcreteAttribute");
     }
-    
-    // broken now: https://github.com/ceylon/ceylon-compiler/issues/943
+
     @Test
-    public void testCncDefaultSetter_fail(){
+    public void testCncDefaultSetter(){
         compareWithJavaSource("concrete/DefaultSetter");
     }
     
