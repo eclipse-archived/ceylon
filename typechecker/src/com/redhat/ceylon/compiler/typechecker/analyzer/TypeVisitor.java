@@ -1081,7 +1081,7 @@ public class TypeVisitor extends Visitor {
             	if (list.size() == 1 && list.get(0).getDeclaration().isSelfType()) {
             		Scope s = list.get(0).getDeclaration().getContainer();
             		if (s instanceof ClassOrInterface && !((ClassOrInterface) s).isAbstract()) {
-            			that.addError("non-abstract class parameterized by self type: " + td.getName());
+            			that.addError("non-abstract class parameterized by self type: " + td.getName(), 905);
             		}
             	}
             	else {
