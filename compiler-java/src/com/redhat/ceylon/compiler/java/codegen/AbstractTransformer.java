@@ -1654,7 +1654,7 @@ public abstract class AbstractTransformer implements Transformation {
     }
 
     final JCAnnotation makeAtTypeParameter(String name, java.util.List<ProducedType> satisfiedTypes, java.util.List<ProducedType> caseTypes, 
-                                           boolean covariant, boolean contravariant) {
+                                           boolean covariant, boolean contravariant, ProducedType defaultValue) {
         ListBuffer<JCExpression> attributes = new ListBuffer<JCExpression>();
         
         // name
@@ -1691,6 +1691,10 @@ public abstract class AbstractTransformer implements Transformation {
         JCExpression caseTypeAttribute = make().Assign(naming.makeUnquotedIdent("caseTypes"), 
                 make().NewArray(null, null, caseTypesExpressions.toList()));
         attributes.add(caseTypeAttribute);
+        
+        if(defaultValue != null){
+            attributes.add(make().Assign(naming.makeUnquotedIdent("defaultValue"), make().Literal(serialiseTypeSignature(defaultValue))));
+        }
         
         // all done
         return make().Annotation(makeIdent(syms().ceylonAtTypeParameter), attributes.toList());
@@ -2528,7 +2532,8 @@ public abstract class AbstractTransformer implements Transformation {
                 declarationModel.getSatisfiedTypes(),
                 declarationModel.getCaseTypes(),
                 declarationModel.isCovariant(),
-                declarationModel.isContravariant());
+                declarationModel.isContravariant(),
+                declarationModel.getDefaultTypeArgument());
     }
     
     JCAnnotation makeAtTypeParameter(Tree.TypeParameterDeclaration param) {
