@@ -3368,12 +3368,15 @@ private void checkPositionalArguments(ParameterList pl, ProducedReference pr,
                             name(that.getIdentifier()) + 
                             " of type " + d.getName(unit), 400);
                 }
-                if (member.isProtectedVisibility() &&
-                        !(that.getPrimary() instanceof Tree.This) &&
-                        !(that.getPrimary() instanceof Tree.Super)) {
+                boolean selfReference = that.getPrimary() instanceof Tree.This ||
+				                        that.getPrimary() instanceof Tree.Super;
+				if (member.isProtectedVisibility() && !selfReference) {
                     that.addError("member method or attribute is not visible: " +
                             name(that.getIdentifier()) + 
                             " of type " + d.getName(unit));
+                }
+                if (!selfReference && !member.isShared()) {
+                	member.setOtherInstanceAccess(true);
                 }
                 Tree.TypeArguments tal = that.getTypeArguments();
                 if (explicitTypeArguments(member,tal, that)) {
@@ -3527,12 +3530,15 @@ private void checkPositionalArguments(ParameterList pl, ProducedReference pr,
                             name(that.getIdentifier()) +
                             " of type " + d.getName(unit), 400);
                 }
-                if (type.isProtectedVisibility() &&
-                        !(that.getPrimary() instanceof Tree.This) &&
-                        !(that.getPrimary() instanceof Tree.Super)) {
+                boolean selfReference = that.getPrimary() instanceof Tree.This &&
+				                        that.getPrimary() instanceof Tree.Super;
+				if (type.isProtectedVisibility() && !selfReference) {
                     that.addError("member type is not visible: " +
                             name(that.getIdentifier()) +
                             " of type " + d.getName(unit));
+                }
+                if (!selfReference && !type.isShared()) {
+                	type.setOtherInstanceAccess(true);
                 }
                 Tree.TypeArguments tal = that.getTypeArguments();
                 if (explicitTypeArguments(type, tal, that)) {

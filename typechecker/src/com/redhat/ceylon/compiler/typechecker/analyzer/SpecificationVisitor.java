@@ -593,7 +593,7 @@ public class SpecificationVisitor extends Visitor {
 
     private boolean isSharedDeclarationUninitialized() {
         return (declaration.isShared() || 
-        		    declaration.isCaptured()) && 
+        		declaration.getOtherInstanceAccess()) && 
                 !declaration.isFormal() && 
                 !declaration.isNative() &&
                 !specified.definitely;

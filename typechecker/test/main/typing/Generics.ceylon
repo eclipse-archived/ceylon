@@ -67,31 +67,31 @@ class Generics() {
     class Variances<out X, in Y, Z>(X x, Y y, Z z) 
             given X satisfies Object
             given Y satisfies Object {
-        X goodAtt = x;
-        @error Y badAtt = y;
-        X[] goodAtt2 { return [x]; }
-        @error Y[] badAtt2 { return [y]; }
-        X goodMethod() { return goodAtt; }
-        @error Y badMethod() { return badAtt; }
-        X[] goodMethod2() { return [goodAtt]; }
-        @error Y[] badMethod2() { return [badAtt]; }
-        Producer<X> goodMethod3() { return Producer<X>(); }
-        @error Consumer<X> badMethod3() { return Consumer<X>(); }
-        Consumer<Y> goodMethod4() { return Consumer<Y>(); }
-        @error Producer<Y> badMethod4() { return Producer<Y>(); }
-        void goodAnythingMethod(Y y) {}
-        void badAnythingMethod(@error X x) {}
-        void goodAnythingMethod2(Y[] y) {}
-        void badAnythingMethod2(@error X[] x) {}
-        void goodAnythingMethod3(Consumer<X> c) {}
-        void badAnythingMethod3(@error Consumer<Y> p) {}
-        void goodAnythingMethod4(Producer<Y> c) {}
-        void badAnythingMethod4(@error Producer<X> p) {}
-        class GoodClass(Y y) {}
-        class BadClass(@error X x) {}
-        class GoodClass2(Y[] y) {}
-        class BadClass2(@error X[] x) {}
-        class GoodClassInheritance() 
+        shared X goodAtt = x;
+        @error shared Y badAtt = y;
+        shared X[] goodAtt2 { return [x]; }
+        @error shared Y[] badAtt2 { return [y]; }
+        shared X goodMethod() { return goodAtt; }
+        @error shared Y badMethod() { return badAtt; }
+        shared X[] goodMethod2() { return [goodAtt]; }
+        @error shared Y[] badMethod2() { return [badAtt]; }
+        shared Producer<X> goodMethod3() { return Producer<X>(); }
+        @error shared Consumer<X> badMethod3() { return Consumer<X>(); }
+        shared Consumer<Y> goodMethod4() { return Consumer<Y>(); }
+        @error shared Producer<Y> badMethod4() { return Producer<Y>(); }
+        shared void goodAnythingMethod(Y y) {}
+        shared void badAnythingMethod(@error X x) {}
+        shared void goodAnythingMethod2(Y[] y) {}
+        shared void badAnythingMethod2(@error X[] x) {}
+        shared void goodAnythingMethod3(Consumer<X> c) {}
+        shared void badAnythingMethod3(@error Consumer<Y> p) {}
+        shared void goodAnythingMethod4(Producer<Y> c) {}
+        shared void badAnythingMethod4(@error Producer<X> p) {}
+        shared class GoodClass(Y y) {}
+        shared class BadClass(@error X x) {}
+        shared class GoodClass2(Y[] y) {}
+        shared class BadClass2(@error X[] x) {}
+        shared class GoodClassInheritance() 
                 extends Object() 
                 satisfies Sequence<X> {
             //fake implementations
@@ -107,68 +107,70 @@ class Generics() {
             shared actual X[] spanTo(Integer to) { return this; }
             shared actual X[] spanFrom(Integer from) { return this; }
         }
-        @error class BadClassInheritance() satisfies Sequence<Y> {}
-        class GoodClassInheritance2() extends Producer<X>() {}
-        @error class BadClassInheritance2() extends Producer<Y>() {}
-        class GoodClassInheritance3() extends Consumer<Y>() {}
-        @error class BadClassInheritance3() extends Consumer<X>() {}
-        class BadParameterizedClassGiven1<T>(T t) @error given T satisfies X {}
-        class GoodParameterizedClassGiven2<T>(T t) given T satisfies Y {}
-        class GoodParameterizedClassGiven3<in T>(T t) given T satisfies Y {}
-        class GoodParameterizedClassGiven4<out T>(T t) given T satisfies Y {}
-        class OKParameterizedClassGiven1<out T>(T t) given T satisfies Y {
+        @error shared class BadClassInheritance() satisfies Sequence<Y> {}
+        shared class GoodClassInheritance2() extends Producer<X>() {}
+        @error shared class BadClassInheritance2() extends Producer<Y>() {}
+        shared class GoodClassInheritance3() extends Consumer<Y>() {}
+        @error shared class BadClassInheritance3() extends Consumer<X>() {}
+        shared class BadParameterizedClassGiven1<T>(T t) @error given T satisfies X {}
+        shared class GoodParameterizedClassGiven2<T>(T t) given T satisfies Y {}
+        shared class GoodParameterizedClassGiven3<in T>(T t) given T satisfies Y {}
+        shared class GoodParameterizedClassGiven4<out T>(T t) given T satisfies Y {}
+        shared class OKParameterizedClassGiven1<out T>(T t) given T satisfies Y {
         	shared T get() { return t; }
         }
-        class OKParameterizedClassGiven2<in T>(T t) given T satisfies Y {
+        shared class OKParameterizedClassGiven2<in T>(T t) given T satisfies Y {
         	shared void put(T t) {}
         }
-        class GoodParameterizedClass<out T>(T t) {}
-        class GoodParameterizedClass2<out T>(Producer<T> t) {}
-        class GoodParameterizedClass3<out T>(Consumer<T> t) {}
-        class GoodParameterizedClass4<out T>(void get(T t)) {}
-        class GoodParameterizedClass5<out T>(void get(T[] t)) given T satisfies Object {}
-        class GoodParameterizedClass6<out T>(void get(Producer<T> t)) {}
-        class GoodParameterizedClass7<in T>(T t) {}
-        class GoodParameterizedClass8<in T>(void get(Consumer<T> t)) {}
-        class GoodParameterizedClass9<in T>(Producer<T> t) {}
-        class GoodParameterizedClass10<in T>(Consumer<T> t) {}
-        class BadParameterizedClass<out T>(void get(Consumer<T> t)) {}
-        class BadParameterizedClass2<in T>(void get(T t)) {}
-        class BadParameterizedClass3<in T>(void get(T[] t)) given T satisfies Object {}
-        class BadParameterizedClass4<in T>(void get(Producer<T> t)) {}
-        void goodHigherOrderMethod(void get(X x)) {}
-        void badHigherOrderMethod(void get(@error Y x)) {}
-        void goodHigherOrderMethod2(void get(X[] x)) {}
-        void badHigherOrderMethod2(void get(@error Y[] x)) {}
-        void goodHigherOrderMethod3(void get(Producer<X> x)) {}
-        void badHigherOrderMethod3(void get(@error Consumer<X> x)) {}
+        shared class GoodParameterizedClass<out T>(T t) {}
+        shared class GoodParameterizedClass2<out T>(Producer<T> t) {}
+        shared class GoodParameterizedClass3<out T>(Consumer<T> t) {}
+        shared class GoodParameterizedClass4<out T>(void get(T t)) {}
+        shared class GoodParameterizedClass5<out T>(void get(T[] t)) given T satisfies Object {}
+        shared class GoodParameterizedClass6<out T>(void get(Producer<T> t)) {}
+        shared class GoodParameterizedClass7<in T>(T t) {}
+        shared class GoodParameterizedClass8<in T>(void get(Consumer<T> t)) {}
+        shared class GoodParameterizedClass9<in T>(Producer<T> t) {}
+        shared class GoodParameterizedClass10<in T>(Consumer<T> t) {}
+        shared class BadParameterizedClass<out T>(void get(Consumer<T> t)) {}
+        shared class BadParameterizedClass2<in T>(void get(T t)) {}
+        shared class BadParameterizedClass3<in T>(void get(T[] t)) given T satisfies Object {}
+        shared class BadParameterizedClass4<in T>(void get(Producer<T> t)) {}
+        shared void goodHigherOrderMethod(void get(X x)) {}
+        shared void badHigherOrderMethod(void get(@error Y x)) {}
+        shared void goodHigherOrderMethod2(void get(X[] x)) {}
+        shared void badHigherOrderMethod2(void get(@error Y[] x)) {}
+        shared void goodHigherOrderMethod3(void get(Producer<X> x)) {}
+        shared void badHigherOrderMethod3(void get(@error Consumer<X> x)) {}
         
-        Z methodWithNonvariant(Z z) { return z; }
-        Z attributeWithNonvariant;
-        variable Z variableAtt = z;
-        @error variable X badVariableAtt = x;
-        @error variable Y badVariableAtt2 = y;
-        Z goodGetter { return z; }
+        shared Z methodWithNonvariant(Z z) { return z; }
+        shared Z attributeWithNonvariant;
+        attributeWithNonvariant = nothing;
+        shared variable Z variableAtt = z;
+        @error shared variable X badVariableAtt = x;
+        @error shared variable Y badVariableAtt2 = y;
+        shared Z goodGetter { return z; }
         assign goodGetter { }
-        @error X badGetter { return x; }
+        @error shared X badGetter { return x; }
         assign badGetter { }
-        @error Y badGetter2 { return y; }
+        @error shared Y badGetter2 { return y; }
         assign badGetter2 { }
         
         class NestedClass() {
-            X x;
-            @error Y y;
-            void goodMethod(Y y) {}
-            void badMethod(@error X x) {}
-            Z method(Z z) { return z; }
+            shared X x;
+            @error shared Y y;
+            shared void goodMethod(Y y) {}
+            shared void badMethod(@error X x) {}
+            shared Z method(Z z) { return z; }
+            x = nothing;
         }
         
-        void goodGenericMethod1<D>(D d) given D satisfies Y {}
-        void goodGenericMethod3<D>(D d) given D satisfies Consumer<X> {}
-        void goodGenericMethod4<D>(D d) given D satisfies Producer<Y> {}
-        void badGenericMethod1<D>(D d) @error given D satisfies X {}
-        void badGenericMethod5<D>(D d) @error given D satisfies Producer<X> {}
-        void badGenericMethod6<D>(D d) @error given D satisfies Consumer<Y> {}
+        shared void goodGenericMethod1<D>(D d) given D satisfies Y {}
+        shared void goodGenericMethod3<D>(D d) given D satisfies Consumer<X> {}
+        shared void goodGenericMethod4<D>(D d) given D satisfies Producer<Y> {}
+        shared void badGenericMethod1<D>(D d) @error given D satisfies X {}
+        shared void badGenericMethod5<D>(D d) @error given D satisfies Producer<X> {}
+        shared void badGenericMethod6<D>(D d) @error given D satisfies Consumer<Y> {}
     }
     
     class Bar() {

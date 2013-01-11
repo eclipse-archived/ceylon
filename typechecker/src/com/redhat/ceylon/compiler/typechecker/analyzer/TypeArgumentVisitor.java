@@ -40,7 +40,7 @@ public class TypeArgumentVisitor extends Visitor {
             flip();
             if (that.getSatisfiedTypes()!=null) {
                 for (Tree.Type type: that.getSatisfiedTypes().getTypes()) {
-                    check(type, false);
+                    check(type, false, null);
                     checkSupertype(type);
                 }
             }
@@ -56,7 +56,7 @@ public class TypeArgumentVisitor extends Visitor {
         }
         super.visit(that);
         if (parameterizedDeclaration.isClassOrInterfaceMember()) {
-            check(that.getType(), false);
+            check(that.getType(), false, null);
         }
         if (topLevel) {
             parameterizedDeclaration = null;
@@ -67,7 +67,9 @@ public class TypeArgumentVisitor extends Visitor {
         super.visit(that);
         if (!(that instanceof Tree.Variable) && !(that instanceof Tree.Parameter) &&
                 that.getDeclarationModel().isClassOrInterfaceMember()) {
-            check(that.getType(), that.getDeclarationModel().isVariable());
+            check(that.getType(), 
+            		that.getDeclarationModel().isVariable(), 
+            		that.getDeclarationModel());
         }
     }
     
@@ -75,56 +77,58 @@ public class TypeArgumentVisitor extends Visitor {
         super.visit(that);
         if (that.getSatisfiedTypes()!=null) {
             for (Tree.Type type: that.getSatisfiedTypes().getTypes()) {
-                check(type, false);
+                check(type, false, null);
                 checkSupertype(type);
             }
         }
     }
 
     @Override public void visit(Tree.TypeSpecifier that) {
-    	check(that.getType(), false);
+    	check(that.getType(), false, null);
     }
     
     @Override public void visit(Tree.AnyClass that) {
         super.visit(that);
         if (that.getExtendedType()!=null) {
-            check(that.getExtendedType().getType(), false);
+            check(that.getExtendedType().getType(), false, null);
             checkSupertype(that.getExtendedType().getType());
         }
     }
     
     @Override public void visit(Tree.FunctionArgument that) {}
 
-    private void check(Tree.Type that, boolean variable) {
-        if (that!=null) {
-            check(that.getTypeModel(), that, variable);
-        }
-    }
-    
-    private void check(ProducedType type, Node that, boolean variable) {
-        if (type!=null) {
-        	List<TypeParameter> errors = type.checkVariance(!contravariant && !variable, 
-        			contravariant && !variable, parameterizedDeclaration);
-            for (TypeParameter td: errors) {
-            	String var; String loc;
-            	if ( td.isContravariant() ) {
-            		var = "contravariant (in)";
-            		loc = "covariant";
-            	}
-            	else if ( td.isCovariant() ) {
-            		var = "covariant (out)";
-            		loc = "contravariant";
-            	}
-            	else {
-            		throw new RuntimeException();
-            	}
-                that.addError(var + " type parameter " + td.getName() + 
-                		" appears in " + loc + " location in type: " + 
-                		type.getProducedTypeName(that.getUnit()));
-            }
+    private void check(Tree.Type that, boolean variable, Declaration d) {
+        if (that!=null && (d==null || d.isShared() || d.getOtherInstanceAccess())) {
+            ProducedType type = that.getTypeModel();
+			if (type!=null) {
+				List<TypeParameter> errors = type.checkVariance(!contravariant && !variable, 
+						contravariant && !variable, parameterizedDeclaration);
+			    displayErrors(that, type, errors);
+			}
         }
     }
 
+	private void displayErrors(Tree.Type that, ProducedType type,
+			List<TypeParameter> errors) {
+		for (TypeParameter td: errors) {
+			String var; String loc;
+			if ( td.isContravariant() ) {
+				var = "contravariant (in)";
+				loc = "covariant";
+			}
+			else if ( td.isCovariant() ) {
+				var = "covariant (out)";
+				loc = "contravariant";
+			}
+			else {
+				throw new RuntimeException();
+			}
+		    that.addError(var + " type parameter " + td.getName() + 
+		    		" appears in " + loc + " location in type: " + 
+		    		type.getProducedTypeName(that.getUnit()));
+		}
+	}
+    
     private void checkSupertype(Tree.Type that) {
         if (that!=null) {
             checkSupertype(that.getTypeModel(), that);

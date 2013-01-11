@@ -29,6 +29,7 @@ public abstract class Declaration
     private boolean protectedVisibility;
     private String qualifiedNameAsStringCache;
 	private boolean nat;
+	private boolean otherInstanceAccess;
 
     public Scope getVisibleScope() {
         return visibleScope;
@@ -292,4 +293,13 @@ public abstract class Declaration
     public String getName(Unit unit) {
     	return unit==null ? getName() : unit.getAliasedName(this);
     }
+    
+    public boolean getOtherInstanceAccess() {
+    	return otherInstanceAccess;
+    }
+
+	public void setOtherInstanceAccess(boolean access) {
+		otherInstanceAccess=access;
+	}
+
 }
