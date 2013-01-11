@@ -810,12 +810,12 @@ public final class Array<Element> implements List<Element> {
 
     @Override @SuppressWarnings("rawtypes")
     @Annotations({ @Annotation("actual") })
-    public <Other> Sequence withLeading(Other e) {
+    public <Other> Sequence<Other> withLeading(Other e) {
         return $ceylon$language$List$this.withLeading(e);
     }
     @Override @SuppressWarnings("rawtypes")
     @Annotations({ @Annotation("actual") })
-    public <Other> Sequence withTrailing(Other e) {
+    public <Other> Sequence<Other> withTrailing(Other e) {
         return $ceylon$language$List$this.withTrailing(e);
     }
 }
