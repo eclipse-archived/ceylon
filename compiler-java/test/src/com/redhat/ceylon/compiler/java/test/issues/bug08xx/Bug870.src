@@ -6,7 +6,7 @@ public final class bug870_ {
     }
     
     public static <Value extends .ceylon.language.Comparable<? super Value>, Nada>void bug870(final .java.lang.Object values) {
-        final .ceylon.language.ContainerWithFirstElement<? extends Value, ? extends Nada> cwfe = (.ceylon.language.ContainerWithFirstElement<? extends Value, ? extends Nada>)(.ceylon.language.ContainerWithFirstElement)values;
+        final .ceylon.language.Container<? extends Value, ? extends Nada> cwfe = (.ceylon.language.Container<? extends Value, ? extends Nada>)(.ceylon.language.Container)values;
         final .java.lang.Object first = cwfe.getFirst();
         .java.lang.Object $first$1;
         if (($first$1 = first) != null) {

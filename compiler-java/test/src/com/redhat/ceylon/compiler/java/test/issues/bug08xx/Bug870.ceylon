@@ -18,10 +18,10 @@
  * MA  02110-1301, USA.
  */
 @nomodel
-shared void bug870<Value,Nada>(Iterable<Value>&ContainerWithFirstElement<Value,Nada> values) 
+shared void bug870<Value,Nada>(Iterable<Value>&Container<Value,Nada> values) 
         given Value satisfies Comparable<Value>
         given Nada satisfies Null {
-    ContainerWithFirstElement<Value,Nada> cwfe = values;
+    Container<Value,Nada> cwfe = values;
     value first = cwfe.first;
     if (exists first) {
     }
