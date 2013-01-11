@@ -81,4 +81,8 @@ public class AnnotationsTest extends CompilerTest {
         compile("Interface.ceylon", "Klass.ceylon", "MemberKlass.ceylon", "KlassInMemberObject.ceylon");
         compareWithJavaSource("typereferences");
     }
-}
+    @Test
+    public void testTypeParameters(){
+        compareWithJavaSource("TypeParameters");
+    }
+ }

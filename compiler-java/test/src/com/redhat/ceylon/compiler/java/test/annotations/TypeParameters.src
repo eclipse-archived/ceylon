@@ -1,0 +1,41 @@
+package com.redhat.ceylon.compiler.java.test.annotations;
+
+@.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 3)
+@.com.redhat.ceylon.compiler.java.metadata.Annotations({@.com.redhat.ceylon.compiler.java.metadata.Annotation("shared")})
+@.com.redhat.ceylon.compiler.java.metadata.TypeParameters({@.com.redhat.ceylon.compiler.java.metadata.TypeParameter(value = "A", variance = .com.redhat.ceylon.compiler.java.metadata.Variance.OUT, satisfies = {"ceylon.language::Number", "ceylon.language::Closeable"}, caseTypes = {}), @.com.redhat.ceylon.compiler.java.metadata.TypeParameter(value = "B", variance = .com.redhat.ceylon.compiler.java.metadata.Variance.IN, satisfies = {}, caseTypes = {"ceylon.language::Number", "ceylon.language::String"}), @.com.redhat.ceylon.compiler.java.metadata.TypeParameter(value = "C", variance = .com.redhat.ceylon.compiler.java.metadata.Variance.NONE, satisfies = {}, caseTypes = {}, defaultValue = "A"), @.com.redhat.ceylon.compiler.java.metadata.TypeParameter(value = "D", variance = .com.redhat.ceylon.compiler.java.metadata.Variance.NONE, satisfies = {}, caseTypes = {}, defaultValue = "ceylon.language::Number|ceylon.language::String")})
+public class TypeParameters<A extends .ceylon.language.Number & .ceylon.language.Closeable, B, C, D> {
+    
+    public TypeParameters() {
+    }
+    
+    @.com.redhat.ceylon.compiler.java.metadata.Annotations({@.com.redhat.ceylon.compiler.java.metadata.Annotation("shared")})
+    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Anything")
+    @.com.redhat.ceylon.compiler.java.metadata.TypeParameters({@.com.redhat.ceylon.compiler.java.metadata.TypeParameter(value = "A", variance = .com.redhat.ceylon.compiler.java.metadata.Variance.OUT, satisfies = {"ceylon.language::Number", "ceylon.language::Closeable"}, caseTypes = {}), @.com.redhat.ceylon.compiler.java.metadata.TypeParameter(value = "B", variance = .com.redhat.ceylon.compiler.java.metadata.Variance.IN, satisfies = {}, caseTypes = {"ceylon.language::Number", "ceylon.language::String"}), @.com.redhat.ceylon.compiler.java.metadata.TypeParameter(value = "C", variance = .com.redhat.ceylon.compiler.java.metadata.Variance.NONE, satisfies = {}, caseTypes = {}, defaultValue = "A"), @.com.redhat.ceylon.compiler.java.metadata.TypeParameter(value = "D", variance = .com.redhat.ceylon.compiler.java.metadata.Variance.NONE, satisfies = {}, caseTypes = {}, defaultValue = "ceylon.language::Number|ceylon.language::String")})
+    public final <A extends .ceylon.language.Number & .ceylon.language.Closeable, B, C, D>void m() {
+    }
+    
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    public static void main(.java.lang.String[] args) {
+        .ceylon.language.process_.getProcess$().setupArguments(args);
+        new .com.redhat.ceylon.compiler.java.test.annotations.TypeParameters();
+    }
+}
+@.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 3)
+@.com.redhat.ceylon.compiler.java.metadata.Method
+public final class typeParameters_ {
+    
+    private typeParameters_() {
+    }
+    
+    @.com.redhat.ceylon.compiler.java.metadata.Annotations({@.com.redhat.ceylon.compiler.java.metadata.Annotation("shared")})
+    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Anything")
+    @.com.redhat.ceylon.compiler.java.metadata.TypeParameters({@.com.redhat.ceylon.compiler.java.metadata.TypeParameter(value = "A", variance = .com.redhat.ceylon.compiler.java.metadata.Variance.OUT, satisfies = {"ceylon.language::Number", "ceylon.language::Closeable"}, caseTypes = {}), @.com.redhat.ceylon.compiler.java.metadata.TypeParameter(value = "B", variance = .com.redhat.ceylon.compiler.java.metadata.Variance.IN, satisfies = {}, caseTypes = {"ceylon.language::Number", "ceylon.language::String"}), @.com.redhat.ceylon.compiler.java.metadata.TypeParameter(value = "C", variance = .com.redhat.ceylon.compiler.java.metadata.Variance.NONE, satisfies = {}, caseTypes = {}, defaultValue = "A"), @.com.redhat.ceylon.compiler.java.metadata.TypeParameter(value = "D", variance = .com.redhat.ceylon.compiler.java.metadata.Variance.NONE, satisfies = {}, caseTypes = {}, defaultValue = "ceylon.language::Number|ceylon.language::String")})
+    public static <A extends .ceylon.language.Number & .ceylon.language.Closeable, B, C, D>void typeParameters() {
+    }
+    
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    public static void main(.java.lang.String[] args) {
+        .ceylon.language.process_.getProcess$().setupArguments(args);
+        .com.redhat.ceylon.compiler.java.test.annotations.typeParameters_.typeParameters();
+    }
+}
