@@ -8,14 +8,13 @@ class VarargsMethodSpecifyingMethodWithIterable {
     private final void foo(final .ceylon.language.Iterable<? extends .ceylon.language.Integer> seq) {
     }
     
-    private final void bar() {
-        (
+    private final .java.lang.Object bar() {
+        return (
             let
             {
                 .ceylon.language.Sequential<? extends .ceylon.language.Integer> $ceylontmp$ints$1 = bar$ints();
-                bar($ceylontmp$ints$1);
             }
-            returning null;
+            returning bar($ceylontmp$ints$1);
         );
     }
     
@@ -23,8 +22,14 @@ class VarargsMethodSpecifyingMethodWithIterable {
         return (.ceylon.language.Sequential).ceylon.language.empty_.getEmpty$();
     }
     
-    private final void bar(final .ceylon.language.Sequential<? extends .ceylon.language.Integer> ints) {
-        foo(ints);
+    private final .java.lang.Object bar(final .ceylon.language.Sequential<? extends .ceylon.language.Integer> ints) {
+        return (
+            let
+            {
+                foo(ints);
+            }
+            returning null;
+        );
     }
     
     public static void main(.java.lang.String[] args) {
