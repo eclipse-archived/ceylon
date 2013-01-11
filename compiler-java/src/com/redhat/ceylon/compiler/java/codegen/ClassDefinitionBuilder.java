@@ -134,6 +134,10 @@ public class ClassDefinitionBuilder {
             annotations(gen.makeAtName(ceylonClassName));
         }
     }
+    
+    public String toString() {
+        return "CDB for " + ((modifiers & INTERFACE) != 0 ? "interface " : "class ") + name;
+    }
 
     ClassDefinitionBuilder getContainingClassBuilder() {
         return containingClassBuilder;
