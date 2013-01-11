@@ -3900,7 +3900,7 @@ private void checkPositionalArguments(ParameterList pl, ProducedReference pr,
             checkAssignable(e.getTypeModel(), unit.getObjectDeclaration().getType(), e, 
                     "interpolated expression must not be an optional type: " + 
                             e.getTypeModel().getProducedTypeName(unit) + 
-                            " is not assignable to Value");
+                            " is not assignable to Object");
         }
         setLiteralType(that, unit.getStringDeclaration());
     }
@@ -4185,14 +4185,14 @@ private void checkPositionalArguments(ParameterList pl, ProducedReference pr,
                                     parent.addError("inferred type argument " + argType.getProducedTypeName(unit)
                                             + " to type parameter " + param.getName()
                                             + " of declaration " + dec.getName(unit)
-                                            + " not assignable to " + sts.getProducedTypeName(unit));
+                                            + " not assignable to upper bound " + sts.getProducedTypeName(unit));
                                 }
                                 else {
                                     ((Tree.TypeArgumentList) tal).getTypes()
                                             .get(i).addError("type parameter " + param.getName() 
                                             + " of declaration " + dec.getName(unit)
                                             + " has argument " + argType.getProducedTypeName(unit) 
-                                            + " not assignable to " + sts.getProducedTypeName(unit), 2102);
+                                            + " not assignable to upper bound " + sts.getProducedTypeName(unit), 2102);
                                 }
                                 return false;
                             }
