@@ -396,19 +396,16 @@ public class TypeVisitor extends Visitor {
     @Override 
     public void visit(Tree.IterableType that) {
         super.visit(that);
-        if (that.getElementType()!=null) {
-        	if (that.getElementType() instanceof Tree.SequencedType) {
-        		ProducedType st = that.getElementType().getTypeModel();
-        		if (st!=null) {
-        			ProducedType et = unit.getSequentialElementType(st);
-        			Declaration d = st.getDeclaration();
-        			if (d!=null) { 
-        				if (d.equals(unit.getSequenceDeclaration())) {
-        					that.setTypeModel(unit.getNonemptyIterableType(et));
-        				}
-        				else if (d.equals(unit.getSequentialDeclaration())) {
-        					that.setTypeModel(unit.getIterableType(et));
-        				}
+        Tree.Type elem = that.getElementType();
+		if (elem!=null) {
+        	if (elem instanceof Tree.SequencedType) {
+        		ProducedType et = ((Tree.SequencedType) elem).getType().getTypeModel();
+        		if (et!=null) {
+        			if (((Tree.SequencedType) elem).getAtLeastOne()) {
+        				that.setTypeModel(unit.getNonemptyIterableType(et));
+        			}
+        			else {
+        				that.setTypeModel(unit.getIterableType(et));
         			}
         		}
         	}
@@ -474,7 +471,7 @@ public class TypeVisitor extends Visitor {
 				else {
 					sequenced = true;
 					atleastone = ((Tree.SequencedType) st).getAtLeastOne();
-					arg = unit.getIteratedType(arg);
+					arg = ((Tree.SequencedType) st).getType().getTypeModel();
 				}
 			}
 			args.add(arg);

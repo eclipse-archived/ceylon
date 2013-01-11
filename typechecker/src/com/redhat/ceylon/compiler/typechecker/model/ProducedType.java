@@ -1815,7 +1815,7 @@ public class ProducedType extends ProducedReference {
 		}
 		else {
 			for (ProducedType at: getTypeArgumentList()) {
-				if (at.containsTypeParameters()) return true;
+				if (at!=null && at.containsTypeParameters()) return true;
 			}
 			ProducedType qt = getQualifyingType();
 			if (qt!=null && qt.containsTypeParameters()) return true;
@@ -1842,7 +1842,7 @@ public class ProducedType extends ProducedReference {
 		}
 		else {
 			for (ProducedType at: getTypeArgumentList()) {
-				if (at.containsTypeAliases()) return true;
+				if (at!=null && at.containsTypeAliases()) return true;
 			}
 			ProducedType qt = getQualifyingType();
 			if (qt!=null && qt.containsTypeAliases()) return true;
