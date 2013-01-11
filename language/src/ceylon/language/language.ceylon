@@ -1,26 +1,26 @@
 doc "Contains information about the language"
 by "The Ceylon Team"
-shared object language {
+shared native object language {
     
     doc "The Ceylon language version."
-    shared String version { throw; }
+    shared native String version;
     
     doc "The Ceylon language major version."
-    shared Integer majorVersion { throw; }
+    shared native Integer majorVersion;
     
     doc "The Ceylon language minor version."
-    shared Integer minorVersion { throw; }
+    shared native Integer minorVersion;
     
     doc "The Ceylon language release version."
-    shared Integer releaseVersion { throw; }
+    shared native Integer releaseVersion;
     
     doc "The Ceylon language release name."
-    shared String versionName { throw; }
+    shared native String versionName;
     
     doc "The major version of the code generated for the underlying runtime."
-    shared Integer majorVersionBinary { throw; }
+    shared native Integer majorVersionBinary;
     
     doc "The minor version of the code generated for the underlying runtime."
-    shared Integer minorVersionBinary { throw; }
+    shared native Integer minorVersionBinary;
     
 }

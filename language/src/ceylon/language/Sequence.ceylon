@@ -23,7 +23,7 @@ doc "A nonempty, immutable sequence of values. A sequence of
      called _emptiness-preserving_."
 see (Empty)
 by "Gavin"
-shared interface Sequence<out Element>
+shared native interface Sequence<out Element>
         satisfies Element[] & 
                   NonemptyContainer<Element> &
                   Cloneable<Sequence<Element>> {
@@ -58,9 +58,9 @@ shared interface Sequence<out Element>
     doc "A nonempty sequence containing the elements of this
          container, sorted according to a function 
          imposing a partial order upon the elements."
-    shared default actual Sequence<Element> sort(
+    shared default actual native Sequence<Element> sort(
             doc "The function comparing pairs of elements."
-            Comparison? comparing(Element x, Element y)) { throw; }
+            Comparison? comparing(Element x, Element y));
 
     doc "A nonempty sequence containing the results of 
          applying the given mapping to the elements of this

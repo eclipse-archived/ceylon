@@ -186,9 +186,9 @@ shared void numbers() {
     variable value i=0;
     for (x in 1..10) {
         i=i+1;
-        check(x>=1&&x<=10, "natural range");
+        check(x>=1&&x<=10, "natural range [1]");
     }
-    check(i==10, "natural range");
+    check(i==10, "natural range [2]");
 
     i=0;
     for (x in -5..+5) {
