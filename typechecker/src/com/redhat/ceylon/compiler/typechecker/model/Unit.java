@@ -409,14 +409,14 @@ public class Unit {
     	    		}
     	    	}
     	    	result = producedType(getCallableDeclaration(), result,
-    	    			getTupleType(args, hasSequenced, firstDefaulted));
+    	    			getTupleType(args, hasSequenced, false, firstDefaulted));
     	    }
     	}
     	return result;
     }
     
     public ProducedType getTupleType(List<ProducedType> elemTypes, 
-    		boolean sequenced, int firstDefaulted) {
+    		boolean sequenced, boolean atLeastOne, int firstDefaulted) {
     	ProducedType result = getEmptyDeclaration().getType();
     	ProducedType union = getNothingDeclaration().getType();
     	int last = elemTypes.size()-1;
@@ -424,12 +424,16 @@ public class Unit {
     		ProducedType elemType = elemTypes.get(i);
     		union = unionType(union, elemType, this);
     		if (sequenced && i==last) {
-    			result = getSequentialType(elemType);
+    			result = atLeastOne ? 
+    					getSequenceType(elemType) : 
+    					getSequentialType(elemType);
     		}
     		else {
-    			result = producedType(getTupleDeclaration(), union, elemType, result);
+    			result = producedType(getTupleDeclaration(), 
+    					union, elemType, result);
     			if (firstDefaulted>=0 && i>=firstDefaulted) {
-    				result = unionType(result, getEmptyDeclaration().getType(), this);
+    				result = unionType(result, 
+    						getEmptyDeclaration().getType(), this);
     			}
     		}
     	}

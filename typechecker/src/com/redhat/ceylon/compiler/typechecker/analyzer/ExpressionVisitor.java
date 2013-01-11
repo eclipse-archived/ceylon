@@ -747,12 +747,13 @@ public class ExpressionVisitor extends Visitor {
                 ProducedType pts = typeArgs.get(1);
                 List<ProducedType> argtypes = getTupleElementTypes(pts);
                 boolean argsequenced = isTupleLengthUnbounded(pts);
+                boolean atleastone = isTupleVariantAtLeastOne(pts);
                 if (argsequenced) {
                     ProducedType spt = argtypes.get(argtypes.size()-1);
                     argtypes.set(argtypes.size()-1, unit.getIteratedType(spt));
                 }
                 return producedType(unit.getCallableDeclaration(), rt, 
-                        unit.getTupleType(argtypes, argsequenced, -1));
+                        unit.getTupleType(argtypes, argsequenced, atleastone, -1));
             }
         }
         return t;
@@ -1930,6 +1931,28 @@ public class ExpressionVisitor extends Visitor {
         return false;
     }
     
+    private boolean isTupleVariantAtLeastOne(ProducedType args) {
+        if (args!=null) {
+            ProducedType tst = nonemptyArgs(args).getSupertype(unit.getTupleDeclaration());
+            if (tst!=null) {
+                List<ProducedType> tal = tst.getTypeArgumentList();
+                if (tal.size()>=3) {
+                    return isTupleLengthUnbounded(tal.get(2));
+                }
+            }
+            else if (args.getSupertype(unit.getEmptyDeclaration())!=null) {
+                return false;
+            }
+            else if (args.getSupertype(unit.getSequenceDeclaration())!=null) {
+                return true;
+            }
+            else if (args.getSupertype(unit.getSequentialDeclaration())!=null) {
+                return false;
+            }
+        }
+        return false;
+    }
+    
     private int getTupleMinimumLength(ProducedType args) {
         if (args!=null) {
             if (unit.isEmptyType(args)) {
@@ -2294,7 +2317,7 @@ public class ExpressionVisitor extends Visitor {
             ProducedType t = pr==null ? 
                     p.getType() : 
                     pr.getTypedParameter(p).getFullType();
-            if (!foundParameters.contains(p) &&
+            if (t!=null &&!foundParameters.contains(p) &&
                     t.getDeclaration() instanceof Interface &&
                     t.getDeclaration().equals(unit.getIterableDeclaration())) {
                 return p;
@@ -2580,6 +2603,7 @@ private void checkPositionalArguments(ParameterList pl, ProducedReference pr,
                 if (lnegated) lindex = -lindex;
                 List<ProducedType> elementTypes = getTupleElementTypes(pt);
                 boolean sequenced = isTupleLengthUnbounded(pt);
+                boolean atleastone = isTupleVariantAtLeastOne(pt);
                 int min = getTupleMinimumLength(pt);
                 List<ProducedType> list = new ArrayList<ProducedType>();
                 if (elementTypes!=null) {
@@ -2599,7 +2623,7 @@ private void checkPositionalArguments(ParameterList pl, ProducedReference pr,
                         ProducedType rt = unit.getIteratedType(it);
                         list.add(rt);
                     }
-                    that.setTypeModel(unit.getTupleType(list, sequenced, min-lindex));
+                    that.setTypeModel(unit.getTupleType(list, sequenced, atleastone, min-lindex));
                 }
             }
         }

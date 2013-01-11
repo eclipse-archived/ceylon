@@ -2313,7 +2313,7 @@ typeArguments returns [TypeArgumentList typeArgumentList]
       { $typeArgumentList.setEndToken($LARGER_OP); }
     ;
 
-tupleElementType returns [Type type]
+variadicType returns [Type type]
     : (abbreviatedType (PRODUCT_OP|SUM_OP))=>
       at=abbreviatedType
       (
@@ -2327,6 +2327,7 @@ tupleElementType returns [Type type]
         { SequencedType st = new SequencedType(null);
           st.setType($at.type); 
           st.setEndToken($SUM_OP);
+          st.setAtLeastOne(true);
           $type = st; }
       )
     |
@@ -2341,31 +2342,16 @@ tupleElementType returns [Type type]
       )?
     ;
 
-variadicType returns [Type type]
-    : (abbreviatedType (PRODUCT_OP|SUM_OP))=> 
-      at=abbreviatedType 
-      { $type=$at.type; }
-      ( 
-        PRODUCT_OP
-        { SequencedType st = new SequencedType($PRODUCT_OP);
-          st.setType($at.type);
-          $type = st; }
-      )?
-    |
-      t=type 
-      { $type=$t.type; }
-    ;
-
 tupleType returns [TupleType type]
     : INDEX_OP
       { $type = new TupleType($INDEX_OP); }
       (
-        t1=tupleElementType 
+        t1=variadicType
         { $type.addElementType($t1.type); }
         (
           c=COMMA
           { $type.setEndToken($c); }
-          t2=tupleElementType
+          t2=variadicType
           { $type.addElementType($t2.type);
             $type.setEndToken(null); }
         )*
@@ -2386,20 +2372,8 @@ groupedType returns [StaticType type]
 iterableType returns [IterableType type]
    : LBRACE
      { $type = new IterableType($LBRACE); }
-     ( (abbreviatedType (PRODUCT_OP|SUM_OP))=>
-       at=abbreviatedType
-       { $type.setElementType($at.type); }
-       (
-         PRODUCT_OP
-         { $type.setEndToken($PRODUCT_OP); }
-       |
-         SUM_OP
-         { $type.setEndToken($SUM_OP); }
-       )
-     |
-       t=type
-       { $type.setElementType($t.type); }
-     )
+     t=variadicType
+     { $type.setElementType($t.type); }
      RBRACE
      { $type.setEndToken($RBRACE); }
    ;
@@ -2511,13 +2485,13 @@ abbreviatedType returns [StaticType type]
           bt.setReturnType($type);
           $type=bt; }
           (
-            t1=tupleElementType
+            t1=variadicType
             { if ($t1.type!=null)
                   bt.addArgumentType($t1.type); }
             (
               COMMA
               { bt.setEndToken($COMMA); }
-              t2=tupleElementType
+              t2=variadicType
               { if ($t2.type!=null)
                     bt.addArgumentType($t2.type); }
             )*

@@ -397,9 +397,23 @@ public class TypeVisitor extends Visitor {
     public void visit(Tree.IterableType that) {
         super.visit(that);
         if (that.getElementType()!=null) {
-        	ProducedType et = that.getElementType().getTypeModel();
-        	if (et!=null) {
-        		that.setTypeModel(unit.getIterableType(et));
+        	if (that.getElementType() instanceof Tree.SequencedType) {
+        		ProducedType st = that.getElementType().getTypeModel();
+        		if (st!=null) {
+        			ProducedType et = unit.getSequentialElementType(st);
+        			Declaration d = st.getDeclaration();
+        			if (d!=null) { 
+        				if (d.equals(unit.getSequenceDeclaration())) {
+        					that.setTypeModel(unit.getNonemptyIterableType(et));
+        				}
+        				else if (d.equals(unit.getSequentialDeclaration())) {
+        					that.setTypeModel(unit.getIterableType(et));
+        				}
+        			}
+        		}
+        	}
+        	else {
+        		that.addError("malformed iterable type");
         	}
         }
     }
@@ -440,6 +454,7 @@ public class TypeVisitor extends Visitor {
 	private ProducedType getTupleType(List<Tree.Type> ets) {
 		List<ProducedType> args = new ArrayList<ProducedType>();
         boolean sequenced = false;
+        boolean atleastone = false;
 		int firstDefaulted = -1;
 		for (int i=0; i<ets.size(); i++) {
 			Tree.Type st = ets.get(i);
@@ -458,12 +473,13 @@ public class TypeVisitor extends Visitor {
 				}
 				else {
 					sequenced = true;
+					atleastone = ((Tree.SequencedType) st).getAtLeastOne();
 					arg = unit.getIteratedType(arg);
 				}
 			}
 			args.add(arg);
         }
-        return unit.getTupleType(args, sequenced, firstDefaulted);
+        return unit.getTupleType(args, sequenced, atleastone, firstDefaulted);
 	}
     
     //TODO: copy/pasted from ExpressionVisitor
@@ -596,7 +612,10 @@ public class TypeVisitor extends Visitor {
         super.visit(that);
         ProducedType type = that.getType().getTypeModel();
         if (type!=null) {
-            that.setTypeModel(unit.getSequentialType(type));
+        	ProducedType et = that.getAtLeastOne() ? 
+        			unit.getSequenceType(type) : 
+        			unit.getSequentialType(type);
+            that.setTypeModel(et);
         }
     }
 

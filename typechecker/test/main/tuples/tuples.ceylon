@@ -134,4 +134,11 @@ void test() {
     [Float=] range2x = fixedlen[2...];
     [] range3x = fixedlen[3...];
     @error [String,Integer,Float=] rangeError0x = fixedlen[0...];
+    
+    @type:"Iterable<String,Null>" {String*} i1 = {""};
+    @type:"Iterable<String,Nothing>" {String+} i2 = {""};
+    @type:"Sequence<String>" [String+] s1 = [""];
+    @type:"Sequential<String>" [String*] s2 = [""];
+    @type:"Tuple<String,String,Sequence<String>>" [String,String+] p1 = ["", s1*];
+    @type:"Tuple<String,String,Sequential<String>>" [String,String*] p2 = ["", s2*];
 }

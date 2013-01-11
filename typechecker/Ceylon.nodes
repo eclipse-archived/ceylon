@@ -225,7 +225,7 @@
     STATIC_TYPE elementType)
 
 ^(ITERABLE_TYPE: STATIC_TYPE
-    STATIC_TYPE elementType)
+    TYPE elementType)
 
 ^(OPTIONAL_TYPE: STATIC_TYPE
     STATIC_TYPE definiteType)
@@ -267,7 +267,8 @@
 ^(INFERRED_TYPE_ARGUMENTS:TYPE_ARGUMENTS)
 
 ^(SEQUENCED_TYPE:TYPE
-    TYPE)
+    TYPE
+    boolean atLeastOne;)
 
 ^(DEFAULTED_TYPE:TYPE
     TYPE)
