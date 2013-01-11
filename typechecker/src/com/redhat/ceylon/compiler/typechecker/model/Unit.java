@@ -493,7 +493,8 @@ public class Unit {
     }
     
     public ProducedType getIterableType(ProducedType et) {
-        return producedType(getIterableDeclaration(), et);
+        return producedType(getIterableDeclaration(), et, 
+        		getNullDeclaration().getType());
     }
 
     public ProducedType getSetType(ProducedType et) {
@@ -548,7 +549,7 @@ public class Unit {
 
     public ProducedType getIteratedType(ProducedType type) {
         ProducedType st = type.getSupertype(getIterableDeclaration());
-        if (st!=null && st.getTypeArguments().size()==1) {
+        if (st!=null && st.getTypeArguments().size()>0) {
             return st.getTypeArgumentList().get(0);
         }
         else {

@@ -559,7 +559,8 @@ public class TypeVisitor extends Visitor {
 
     private void visitSimpleType(Tree.SimpleType that, ProducedType ot, TypeDeclaration dec) {
         Tree.TypeArgumentList tal = that.getTypeArgumentList();
-        List<ProducedType> ta = getTypeArguments(tal);
+        List<ProducedType> ta = getTypeArguments(tal, 
+        		dec.getTypeParameters());
         if (tal!=null) tal.setTypeModels(ta);
         //if (acceptsTypeArguments(dec, ta, tal, that)) {
             ProducedType pt = dec.getProducedType(ot, ta);
@@ -631,11 +632,7 @@ public class TypeVisitor extends Visitor {
         }
         else if (!(type instanceof Tree.LocalModifier)) { //if the type declaration is missing, we do type inference later
             ProducedType t = type.getTypeModel();
-            if (t==null) {
-                //TODO: this case is temporary until we
-                //      add support for sequenced parameters
-            }
-            else {
+            if (t!=null) {
                 td.setType(t);
             }
         }
@@ -690,6 +687,13 @@ public class TypeVisitor extends Visitor {
 		    that.getDeclarationModel().setExtendedType(vd.getType());
         }
         super.visit(that);
+        if (that.getTypeSpecifier()!=null) {
+        	Tree.StaticType type = that.getTypeSpecifier().getType();
+        	if (type!=null) {
+        		that.getDeclarationModel()
+        				.setDefaultTypeArgument(type.getTypeModel());
+        	}
+        }
     }
     
     @Override 

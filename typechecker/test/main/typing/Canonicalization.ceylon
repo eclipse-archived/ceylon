@@ -7,16 +7,16 @@ class Canicalization() {
     interface Y{}
     
     X<Y> xy = nothing;
-    @type:"Iterable<Canicalization.Y&Container<Object>>" value v1 = xy.get;
+    @type:"Iterable<Canicalization.Y&Container<Object,Null>,Null>" value v1 = xy.get;
     X<Nothing> xb = nothing;
-    @type:"Iterable<Nothing>" value v2 = xb.get;
+    @type:"Iterable<Nothing,Null>" value v2 = xb.get;
     X<String> xs = nothing;
-    @type:"Iterable<String>" value v3 = xs.get;
+    @type:"Iterable<String,Null>" value v3 = xs.get;
     X<Integer|String> xios = nothing;
-    @type:"Iterable<Integer&Container<Object>|String>" value v4 = xios.get;
+    @type:"Iterable<Integer&Container<Object,Null>|String,Null>" value v4 = xios.get;
     X<Integer&String> xias = nothing;
-    @type:"Iterable<Nothing>" value v5 = xias.get;
+    @type:"Iterable<Nothing,Null>" value v5 = xias.get;
     X<Y&String> xyas = nothing;
-    @type:"Iterable<Canicalization.Y&String>" value v6 = xyas.get;
+    @type:"Iterable<Canicalization.Y&String,Null>" value v6 = xyas.get;
     
 }

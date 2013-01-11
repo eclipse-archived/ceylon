@@ -56,7 +56,7 @@ class Is() {
         Boolean isEmpty = d.isEmpty;
         if ("hello" in d) {}
         //@error for (String str in d) {}
-        @type:"Correspondence<Integer,String>&Sized&Container<Anything>" value dd = d;
+        @type:"Correspondence<Integer,String>&Sized&Container<Anything,Null>" value dd = d;
     }
     if (is Emptyish&Container<String> d) {
         String? s = d[0];
@@ -68,7 +68,7 @@ class Is() {
         Boolean isEmpty = d.isEmpty;
         if ("hello" in d) {}
         //@error for (String str in d) {}
-        @type:"Correspondence<Integer,String>&Emptyish&Container<String>" value dd = d;
+        @type:"Correspondence<Integer,String>&Emptyish&Container<String,Null>" value dd = d;
     }
     if (is Sized&Category d) {
         String? s = d[0];
@@ -88,7 +88,7 @@ class Is() {
         Boolean isEmpty = e.isEmpty;
         if ("hello" in e) {}
         for (String str in e) {}
-        @type:"Correspondence<Integer,String>&Sized&Iterable<String>" value ee = e;
+        @type:"Correspondence<Integer,String>&Sized&Iterable<String,Null>" value ee = e;
     }
     if (is Sized&Category e) {
         String? s = e[0];
@@ -106,7 +106,7 @@ class Is() {
         Boolean isEmpty = e.isEmpty;
         if ("hello" in e) {}
         for (String str in e) {} 
-        @type:"Correspondence<Integer,String>&Sized&Iterable<String>" value ee = e;
+        @type:"Correspondence<Integer,String>&Sized&Iterable<String,Null>" value ee = e;
     }
     if (is String[] e) {
         String? s = e[0];

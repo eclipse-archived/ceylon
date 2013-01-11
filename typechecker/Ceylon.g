@@ -950,7 +950,11 @@ typeParameter returns [TypeParameterDeclaration typeParameter]
         { $typeParameter.setTypeVariance($variance.typeVariance); } 
       )? 
       typeNameDeclaration
-      { $typeParameter.setIdentifier($typeNameDeclaration.identifier); } 
+      { $typeParameter.setIdentifier($typeNameDeclaration.identifier); }
+      (
+        typeDefault
+        { $typeParameter.setTypeSpecifier($typeDefault.typeSpecifier); }
+      )?
     //-> ^(TYPE_PARAMETER_DECLARATION variance? typeName)
     ;
 
@@ -1183,6 +1187,14 @@ continueDirective returns [Continue directive]
 typeSpecifier returns [TypeSpecifier typeSpecifier]
     : COMPUTE 
       { $typeSpecifier = new TypeSpecifier($COMPUTE); }
+      type
+      { $typeSpecifier.setType($type.type); }
+    //-> ^(TYPE_SPECIFIER[$SPECIFY] type)
+    ;
+
+typeDefault returns [TypeSpecifier typeSpecifier]
+    : SPECIFY 
+      { $typeSpecifier = new TypeSpecifier($SPECIFY); }
       type
       { $typeSpecifier.setType($type.type); }
     //-> ^(TYPE_SPECIFIER[$SPECIFY] type)
