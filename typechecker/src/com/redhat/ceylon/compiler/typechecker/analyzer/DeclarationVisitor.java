@@ -832,8 +832,17 @@ public class DeclarationVisitor extends Visitor {
     private static List<TypeParameter> getTypeParameters(Tree.TypeParameterList tpl) {
         List<TypeParameter> typeParameters = new ArrayList<TypeParameter>();
         if (tpl!=null) {
+        	boolean foundDefaulted=false;
             for (Tree.TypeParameterDeclaration tp: tpl.getTypeParameterDeclarations()) {
                 typeParameters.add(tp.getDeclarationModel());
+                if (tp.getTypeSpecifier()==null) {
+                	if (foundDefaulted) {
+                		tp.addError("required type parameter follows defaulted type parameter");
+                	}
+                }
+                else {
+                	foundDefaulted=true;
+                }
             }
         }
         return typeParameters;

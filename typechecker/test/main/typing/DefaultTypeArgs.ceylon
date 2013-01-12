@@ -12,4 +12,6 @@ class DefaultTypeArgs() {
     
     class WithNestedIllegalDefaultTypeArg<X,@error Y=List<X>>(X x, Y y) {}
     
+    interface I<T=String,@error S> {}
+    interface J<T,@error T> {}
 }
