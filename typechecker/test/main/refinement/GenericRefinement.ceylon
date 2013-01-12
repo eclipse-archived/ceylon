@@ -158,6 +158,6 @@ class GenericRefinement() {
         object obj 
             extends Object()
             satisfies Empty & 
-                ContainerWithFirstElement<Nothing,Absent> {}
+                Container<Nothing,Absent> {}
     }
 }
