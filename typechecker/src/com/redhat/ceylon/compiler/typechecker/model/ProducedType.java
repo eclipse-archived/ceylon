@@ -224,6 +224,12 @@ public class ProducedType extends ProducedReference {
             return true;
         }
         else if (getDeclaration() instanceof IntersectionType) {
+        	if (type.getDeclaration() instanceof ClassOrInterface) {
+        		ProducedType pst = getSupertype(type.getDeclaration());
+        		if (pst!=null && pst.isSubtypeOfInternal(type)) {
+        			return true;
+        		}
+        	}
             for (ProducedType ct: getInternalSatisfiedTypes()) {
                 if (ct==null || ct.isSubtypeOfInternal(type)) {
                     return true;
