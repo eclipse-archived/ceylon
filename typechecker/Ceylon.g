@@ -2131,23 +2131,17 @@ additiveOperator returns [BinaryOperatorExpression operator]
       { $operator = new SumOp($SUM_OP); }
     | DIFFERENCE_OP
       { $operator = new DifferenceOp($DIFFERENCE_OP); }
-    | UNION_OP
-      { $operator = new UnionOp($UNION_OP); }
-    | XOR_OP
-      { $operator = new XorOp($XOR_OP); }
-    | COMPLEMENT_OP
-      { $operator = new ComplementOp($COMPLEMENT_OP); }
     ;
 
 multiplicativeExpression returns [Term term]
-    : ne1=negationComplementExpression
-      { $term = $ne1.term; }
+    : ue1=unionExpression
+      { $term = $ue1.term; }
       (
         multiplicativeOperator 
         { $multiplicativeOperator.operator.setLeftTerm($term);
           $term = $multiplicativeOperator.operator; }
-        ne2=negationComplementExpression
-        { $multiplicativeOperator.operator.setRightTerm($ne2.term); }
+        ue2=unionExpression
+        { $multiplicativeOperator.operator.setRightTerm($ue2.term); }
       )*
     ;
 
@@ -2158,7 +2152,43 @@ multiplicativeOperator returns [BinaryOperatorExpression operator]
       { $operator = new QuotientOp($QUOTIENT_OP); }
     | REMAINDER_OP
       { $operator = new RemainderOp($REMAINDER_OP); }
-    | INTERSECTION_OP
+    ;
+
+unionExpression returns [Term term]
+    : ie1=intersectionExpression
+      { $term = $ie1.term; }
+      (
+        unionOperator 
+        { $unionOperator.operator.setLeftTerm($term);
+          $term = $unionOperator.operator; }
+        ie2=intersectionExpression
+        { $unionOperator.operator.setRightTerm($ie2.term); }
+      )*
+    ;
+    
+unionOperator returns [BinaryOperatorExpression operator]
+    : UNION_OP
+      { $operator = new UnionOp($UNION_OP); }
+    | XOR_OP
+      { $operator = new XorOp($XOR_OP); }
+    | COMPLEMENT_OP
+      { $operator = new ComplementOp($COMPLEMENT_OP); }
+    ;
+
+intersectionExpression returns [Term term]
+    : ne1=negationComplementExpression
+      { $term = $ne1.term; }
+      (
+        intersectionOperator 
+        { $intersectionOperator.operator.setLeftTerm($term);
+          $term = $intersectionOperator.operator; }
+        ne2=negationComplementExpression
+        { $intersectionOperator.operator.setRightTerm($ne2.term); }
+      )*
+    ;
+    
+intersectionOperator returns [BinaryOperatorExpression operator]
+    : INTERSECTION_OP
       { $operator = new IntersectionOp($INTERSECTION_OP); }
     ;
 
@@ -2314,8 +2344,8 @@ typeArguments returns [TypeArgumentList typeArgumentList]
     ;
 
 variadicType returns [Type type]
-    : (abbreviatedType (PRODUCT_OP|SUM_OP))=>
-      at=abbreviatedType
+    : (unionType (PRODUCT_OP|SUM_OP))=>
+      at=unionType
       (
         PRODUCT_OP
         { SequencedType st = new SequencedType(null);
