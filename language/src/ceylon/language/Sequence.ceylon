@@ -30,12 +30,13 @@ shared native interface Sequence<out Element>
                   Cloneable<[Element+]> {
     
     shared actual default Integer size=>List::size;
-    shared actual default Iterator<Element> iterator
-            =>List::iterator;
-    shared actual default Boolean contains(Object element)
-            =>Collection::contains(element);
-    shared actual default Element? findLast(Boolean selecting(Element elem)) 
-            => List::findLast(selecting);
+    shared actual default Iterator<Element> iterator =>
+            List::iterator;
+    shared actual default Boolean contains(Object element) =>
+            Collection::contains(element);
+    shared actual default Element? findLast(
+            Boolean selecting(Element elem)) => 
+                    List::findLast(selecting);
                 
     doc "The index of the last element of the sequence."
     see (size)

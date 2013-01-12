@@ -350,7 +350,7 @@ shared native interface Iterable<out Element, out Absent=Null>
          original order. For null elements of the original 
          `Iterable`, there is no entry in the resulting 
          iterable object."
-    shared default {<Element&Object>*} coalesced =>
+    shared default {Element&Object*} coalesced =>
             { for (e in this) if (exists e) e };
     
     doc "All entries of form `index->element` where `index` 
@@ -398,9 +398,9 @@ shared native interface Iterable<out Element, out Absent=Null>
          original order, followed by the elements of the 
          given iterable object also in their original
          order."
-    shared default {<Element|Other>*} chain<Other>(
+    shared default {Element|Other*} chain<Other>(
             {Other*} other) {
-        object chained satisfies {<Element|Other>*} {
+        object chained satisfies {Element|Other*} {
             shared actual Iterator<Element|Other> iterator {
                 return ChainedIterator(outer, other);
             }
