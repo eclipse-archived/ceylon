@@ -350,8 +350,8 @@ shared native interface Iterable<out Element, out Absent=Null>
          original order. For null elements of the original 
          `Iterable`, there is no entry in the resulting 
          iterable object."
-    shared default Iterable<Element&Object,Absent> coalesced =>
-            nothing; //{ for (e in this) if (exists e) e };
+    shared default {<Element&Object>*} coalesced =>
+            { for (e in this) if (exists e) e };
     
     doc "All entries of form `index->element` where `index` 
          is the position at which `element` occurs, for every
