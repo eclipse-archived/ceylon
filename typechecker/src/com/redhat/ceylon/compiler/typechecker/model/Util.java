@@ -437,11 +437,17 @@ public class Util {
                     else if (pt.isSubtypeOf(t)) {
                         iter.remove();
                     }
+                    else if (haveUninhabitableIntersection(pt,t, unit)) {
+                        list.clear();
+                        list.add(unit.getNothingDeclaration().getType());
+                        return;
+                    }
                     else if (pt.getDeclaration() instanceof ClassOrInterface && 
                             t.getDeclaration() instanceof ClassOrInterface && 
                             pt.getDeclaration().equals(t.getDeclaration()) ) {
                         //canonicalize T<InX,OutX>&T<InY,OutY> to T<InX|InY,OutX&OutY>
                         TypeDeclaration td = pt.getDeclaration();
+                        iter.remove();
                         List<ProducedType> args = new ArrayList<ProducedType>();
                         for (int i=0; i<td.getTypeParameters().size(); i++) {
                             TypeParameter tp = td.getTypeParameters().get(i);
@@ -454,41 +460,22 @@ public class Util {
                                 args.add(intersectionType(pta, ta, unit));
                             }
                             else {
-                                TypeDeclaration ptad = pta.getDeclaration();
-                                TypeDeclaration tad = ta.getDeclaration();
-                                if ( !(ptad instanceof TypeParameter) &&
-                                     !(tad instanceof TypeParameter) &&
-                                        !ptad.equals(tad) ) {
-                                    //if the two type arguments have provably 
-                                    //different types, then the meet of the
-                                    //two intersected invariant types is empty
-                                    //TODO: this is too weak, we should really
-                                    //      recursively search for type parameter
-                                    //      arguments and if we don't find any
-                                    //      we can reduce to Nothing
-                                    list.clear();
-                                    args.add( new NothingType(unit).getType() );
-                                    return;
-                                }
-                                else {
-                                    //TODO: this is not correct: the intersection
-                                    //      of two different instantiations of an
-                                    //      invariant type is actually Nothing
-                                    //      unless the type arguments are equivalent
-                                    //      or are type parameters that might 
-                                    //      represent equivalent types at runtime.
-                                    //      Therefore, a method T x(T y) of Inv<T> 
-                                    //      should have the signature:
-                                    //             Foo&Bar x(Foo|Bar y)
-                                    //      on the intersection Inv<Foo>&Inv<Bar>.
-                                    //      But this code gives it the more 
-                                    //      restrictive signature:
-                                    //             Foo&Bar x(Foo&Bar y)
-                                    args.add(intersectionType(pta, ta, unit));
-                                }
+                            	//TODO: this is not correct: the intersection
+                            	//      of two different instantiations of an
+                            	//      invariant type is actually Nothing
+                            	//      unless the type arguments are equivalent
+                            	//      or are type parameters that might 
+                            	//      represent equivalent types at runtime.
+                            	//      Therefore, a method T x(T y) of Inv<T> 
+                            	//      should have the signature:
+                            	//             Foo&Bar x(Foo|Bar y)
+                            	//      on the intersection Inv<Foo>&Inv<Bar>.
+                            	//      But this code gives it the more 
+                            	//      restrictive signature:
+                            	//             Foo&Bar x(Foo&Bar y)
+                            	args.add(intersectionType(pta, ta, unit));
                             }
                         }
-                        iter.remove();
                         //TODO: broken handling of member types!
                         list.add( td.getProducedType(pt.getQualifyingType(), args) );
                         return;
@@ -501,15 +488,13 @@ public class Util {
                             pt.getDeclaration() instanceof Interface &&
                                 t.getDeclaration() instanceof Class &&
                                 t.getDeclaration().equals(nd) ||
-                                //t.getDeclaration().getQualifiedNameString().equals("ceylon.language.Null") ||
                             t.getDeclaration() instanceof Interface &&
                             pt.getDeclaration() instanceof Class &&
                                 pt.getDeclaration().equals(nd)) {
-                                //pt.getDeclaration().getQualifiedNameString().equals("ceylon.language.Null")) {
                             if (t.getSupertype(pt.getDeclaration())==null &&
                             		pt.getSupertype(t.getDeclaration())==null) {
-                            	//the meet of two classes unrelated by inheritance, or
-                            	//of Null with an interface type is empty
+                            	//the meet of two classes unrelated by inheritance, 
+                            	//or of Null with an interface type is empty
                             	list.clear();
                             	list.add( unit.getNothingDeclaration().getType() );
                             	return;
@@ -522,6 +507,44 @@ public class Util {
                 list.add(pt);
             }
         }
+    }
+    
+    /**
+     * Determine if a type of form X<P>&X<Q> is equivalent to
+     * Nothing where X<T> is invariant in T.
+     * @param p the argument type P
+     * @param q the argument type Q
+     */
+    private static boolean haveUninhabitableIntersection
+            (ProducedType p, ProducedType q, Unit unit) {
+//		for (ProducedType pst: p.getSupertypes()) {
+//    		TypeDeclaration std = pst.getDeclaration();
+//    		if (std instanceof ClassOrInterface) {
+//    			ProducedType qst = q.getSupertype(std);
+//    			if (qst!=null) {
+    	List<TypeDeclaration> stds = p.getDeclaration().getSuperTypeDeclarations();
+    	stds.retainAll(q.getDeclaration().getSuperTypeDeclarations());
+    	for (TypeDeclaration std: stds) {
+    		ProducedType pst = p.getSupertype(std);
+    		ProducedType qst = q.getSupertype(std);
+    				for (TypeParameter tp: std.getTypeParameters()) {
+    					if (tp.isInvariant()) {
+    						ProducedType psta = pst.getTypeArguments().get(tp);
+    						ProducedType qsta = qst.getTypeArguments().get(tp);
+    						if (psta!=null && psta.isWellDefined() &&
+    								qsta!=null && psta.isWellDefined() &&
+    								//what about types with UnknownType as an arg?
+    								!pst.containsTypeParameters() && 
+    								!qst.containsTypeParameters() &&
+    								!pst.isExactly(qst)) {
+    							return true;
+    						}
+    					}
+//    				}
+//    			}
+    		}
+    	}
+		return false;
     }
     
     public static String formatPath(List<String> path) {

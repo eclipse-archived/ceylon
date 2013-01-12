@@ -28,6 +28,9 @@ void coverage() {
     
     []&{String+} x0 = nothing;
     {Nothing+} y0 = x0 of {Nothing+};
+    {Nothing+}&[] y8 = x0 of {Nothing+}&[];
+    @error Nothing y9 = x0 of Nothing;
+    @error []&{String+} x9 = y0;
 
     {Nothing*}&{String+} x3 = nothing;
     {Nothing+} y3 = x3 of {Nothing+};

@@ -607,5 +607,29 @@ public abstract class TypeDeclaration extends Declaration
             }
         }
     }
-
+    
+    /**
+     * Be very careful with this operation. It does NOT return
+     * the right result for union types! It's really only for
+     * use by Util.haveUninhabitableIntersection().
+     */
+    public List<TypeDeclaration> getSuperTypeDeclarations() {
+    	//TODO: do we need to handle union types here?
+    	List<TypeDeclaration> result;
+    	ClassOrInterface etd = getExtendedTypeDeclaration();
+		if (etd==null) {
+    		result = new ArrayList<TypeDeclaration>();
+    	}
+		else {
+			result = etd.getSuperTypeDeclarations();
+		}
+    	for (TypeDeclaration std: getSatisfiedTypeDeclarations()) {
+    		result.addAll(std.getSuperTypeDeclarations());
+    	}
+    	if (this instanceof ClassOrInterface) {
+    		result.add(this);
+    	}
+    	return result;
+    }
+    
 }

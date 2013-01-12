@@ -367,7 +367,8 @@ class Union2() {
     InvariantAll<String>&InvariantAll<Integer> iall5 = nothing;
     Nothing ing2 = iall5;
     @error value ival2 = iall2.val;
-    @error Union2.InvariantAll<String|Integer> iall3 = iall2;
+    Union2.InvariantAll<String|Integer> iall3 = iall2;
+    Union2.InvariantAll<String&Integer> iall7 = iall2;
     @type:"Union2.InvariantAll<String|Integer>" value ival3 = iall3.val;
     
     interface ContravariantAll<in T> {
@@ -384,7 +385,8 @@ class Union2() {
     @type:"Union2.ContravariantAll<Nothing>" value cval = call.val;
     ContravariantSome<String>&ContravariantNone<Integer> call2 = nothing;
     @error Nothing cng = call2;
-    @error value cval2 = call2.val;
+    ContravariantAll<String|Integer> cai = call2;
+    Union2.ContravariantAll<String|Integer> cval2 = call2.val;
     Union2.ContravariantAll<String|Integer> call3 = call2;
     @type:"Union2.ContravariantAll<String|Integer>" value cval3 = call3.val;
 }
