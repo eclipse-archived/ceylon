@@ -1681,11 +1681,15 @@ public class ProducedType extends ProducedReference {
     public String getUnderlyingType() {
         return underlyingType;
     }
-
+    
+    public boolean covers(ProducedType st) {
+    	return resolveAliases().coversInternal(st.resolveAliases());
+    }
+    
     /**
      * Does type covers the given type?
      */
-    public boolean covers(ProducedType st) {
+    public boolean coversInternal(ProducedType st) {
         //X covers Y if the union of cases of Y is 
         //a subtype of X
         if (st.getUnionOfCases(true).isSubtypeOf(this)) {
