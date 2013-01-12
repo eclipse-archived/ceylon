@@ -1,6 +1,6 @@
 doc "Don't forget to document me"
 by "gavin"
-shared class Tuple<out Element, out First, out Rest>(first, rest)
+shared class Tuple<out Element, out First, out Rest=Empty>(first, rest)
         extends Object()
         satisfies [Element+] & 
                   Cloneable<Tuple<Element,First,Rest>>
