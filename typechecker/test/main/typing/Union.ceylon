@@ -274,3 +274,117 @@ class Union() {
     }*/
     
 }
+
+class Union1() {
+    
+    class All() {
+        shared default All val => this;
+    }
+    class Some() extends All() {
+        shared actual Some val => this;
+    }
+    class None() extends All() {
+        shared actual None val => this;
+    }
+    
+    Some|None all = Some();
+    @type:"Union1.All" value val = all.val;
+    List<Some>|List<None> alls = [Some()];
+    @type:"Null|Union1.Some|Union1.None" value firstAll = alls.first;
+    
+    class GenericAll<out T>() {
+        shared default GenericAll<T> val => GenericAll<T>();
+    }
+    class GenericSome<out T>() extends GenericAll<T>() {
+        shared actual GenericSome<T> val => GenericSome<T>();
+    }
+    class GenericNone<out T>() extends GenericAll<T>() {
+        shared actual GenericNone<T> val => GenericNone<T>();
+    }
+    
+    GenericSome<String>|GenericNone<Integer> gall = GenericSome<String>();
+    @type:"Union1.GenericAll<String|Integer>" value gval = gall.val;
+    List<GenericSome<String>>|List<GenericNone<Integer>> galls = [GenericSome<String>()];
+    @type:"Null|Union1.GenericSome<String>|Union1.GenericNone<Integer>" value gfirstAll = galls.first;
+    
+    class InvariantAll<T>() {
+        shared default GenericAll<T> val => GenericAll<T>();
+    }
+    class InvariantSome<T>() extends InvariantAll<T>() {
+        shared actual GenericSome<T> val => GenericSome<T>();
+    }
+    class InvariantNone<T>() extends InvariantAll<T>() {
+        shared actual GenericNone<T> val => GenericNone<T>();
+    }
+    
+    InvariantSome<String>|InvariantNone<Integer> iall = InvariantSome<String>();
+    @error value ival = iall.val;
+    List<InvariantSome<String>>|List<InvariantNone<Integer>> ialls = [InvariantSome<String>()];
+    @type:"Null|Union1.InvariantSome<String>|Union1.InvariantNone<Integer>" value ifirstAll = ialls.first;
+    InvariantSome<String>&InvariantNone<Integer> iall2 = nothing;
+    Nothing ing = iall2;
+    @error value ival2 = iall2.val;
+    Union1.InvariantAll<String|Integer> iall3 = iall2;
+    @type:"Union1.GenericAll<String|Integer>" value ival3 = iall3.val;
+    
+    class ContravariantAll<in T>() {
+        shared default ContravariantAll<T> val => ContravariantAll<T>();
+    }
+    class ContravariantSome<in T>() extends ContravariantAll<T>() {
+        shared actual ContravariantSome<T> val => ContravariantSome<T>();
+    }
+    class ContravariantNone<in T>() extends ContravariantAll<T>() {
+        shared actual ContravariantNone<T> val => ContravariantNone<T>();
+    }
+    
+    ContravariantSome<String>|ContravariantNone<Integer> call = ContravariantSome<String>();
+    @type:"Union1.ContravariantAll<Nothing>" value cval = call.val;
+    ContravariantSome<String>&ContravariantNone<Integer> call2 = nothing;
+    Nothing cng = call2;
+    @error value cval2 = call2.val;
+    Union1.ContravariantAll<String|Integer> call3 = call2;
+    @type:"Union1.ContravariantAll<String|Integer>" value cval3 = call3.val;
+    List<ContravariantSome<String>>|List<ContravariantNone<Integer>> calls = [ContravariantSome<String>()];
+    @type:"Null|Union1.ContravariantSome<String>|Union1.ContravariantNone<Integer>" value cfirstAll = calls.first;
+    
+}
+
+class Union2() {
+    interface InvariantAll<T> {
+        shared formal InvariantAll<T> val;
+    }
+    interface InvariantSome<T> satisfies InvariantAll<T> {
+        shared formal actual InvariantSome<T> val;
+    }
+    interface InvariantNone<T> satisfies InvariantAll<T> {
+        shared formal actual InvariantNone<T> val;
+    }
+    
+    InvariantSome<String>|InvariantNone<Integer> iall = nothing;
+    @error value ival = iall.val;
+    InvariantSome<String>&InvariantNone<Integer> iall2 = nothing;
+    Nothing ing1 = iall2;
+    InvariantAll<String>&InvariantAll<Integer> iall5 = nothing;
+    Nothing ing2 = iall5;
+    @error value ival2 = iall2.val;
+    @error Union2.InvariantAll<String|Integer> iall3 = iall2;
+    @type:"Union2.InvariantAll<String|Integer>" value ival3 = iall3.val;
+    
+    interface ContravariantAll<in T> {
+        shared formal ContravariantAll<T> val;
+    }
+    interface ContravariantSome<in T> satisfies ContravariantAll<T> {
+        shared formal actual ContravariantSome<T> val;
+    }
+    interface ContravariantNone<in T> satisfies ContravariantAll<T> {
+        shared formal actual ContravariantNone<T> val;
+    }
+    
+    ContravariantSome<String>|ContravariantNone<Integer> call = nothing;
+    @type:"Union2.ContravariantAll<Nothing>" value cval = call.val;
+    ContravariantSome<String>&ContravariantNone<Integer> call2 = nothing;
+    @error Nothing cng = call2;
+    @error value cval2 = call2.val;
+    Union2.ContravariantAll<String|Integer> call3 = call2;
+    @type:"Union2.ContravariantAll<String|Integer>" value cval3 = call3.val;
+}
