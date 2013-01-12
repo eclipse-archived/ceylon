@@ -11,7 +11,7 @@ void coverage() {
     I<Nothing,Nothing> y2 = x2 of I<Nothing,Nothing>;
     
     S<String>&I<String,Nothing> z = nothing;
-    T<String>|I<Nothing,Nothing> u = z of S<String>|I<Nothing,Nothing>;
+    T<String>|I<Nothing,Nothing> u = z of T<String>|I<Nothing,Nothing>;
     S<String> w = z of S<String>;
     @error T<String> v = z of T<String>;
 

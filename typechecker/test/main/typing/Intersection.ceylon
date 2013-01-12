@@ -147,4 +147,10 @@ class Intersection() {
     @type:"Null|Integer" max(join([],[1, 2, 3]));
     @type:"Null|Integer" max({1, 2, 3}.filter((Integer i) => i>0));
     
+    interface Multi<out X, out Y> {}
+    Multi<Nothing,Integer>&Multi<Integer,Nothing> multiinter = nothing;
+    Multi<Nothing,Integer>&Multi<Integer,Nothing> multiunion = nothing;
+    Multi<Nothing,Nothing> check = multiinter;
+    @error Multi<Nothing,Nothing> check = multiunion;
+    
 }
