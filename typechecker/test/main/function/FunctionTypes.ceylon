@@ -222,14 +222,14 @@ void method() {
     }
     
     Null foo(Integer* seq) => null;
-    Null bar(Integer* ints) => foo(ints*);
+    Null bar(Integer* ints) => foo(*ints);
     Null baz(Integer* seq); baz = foo;
-    Null qux(Integer* ints) => baz(ints*);
+    Null qux(Integer* ints) => baz(*ints);
     Null ok(Integer ints) => foo(ints);
-    @error Null broke(Integer ints) => foo(ints*);
+    @error Null broke(Integer ints) => foo(*ints);
     Null notBroke(Integer ints); notBroke = foo;
     Null alsoBroke(Integer* ints); @error alsoBroke = ok;
-    Null reallyBroke(Integer* ints); reallyBroke(@error Integer[] ints) => foo(ints*);
+    Null reallyBroke(Integer* ints); reallyBroke(@error Integer[] ints) => foo(*ints);
     Null badlyBroke(Integer* ints); badlyBroke(@error Integer[] ints) => ok(ints.first else 0);
     Null terrible(Integer* ints); @error terrible(Integer* ints) => foo;    
 }
@@ -277,13 +277,13 @@ void sequencedParams() {
     Anything(Character*) str0p = string;
     Anything(Character) str1 = str;
     Anything(Character, Character) str2 = str;
-    str("hello".characters*);
+    str(*"hello".characters);
     str();
     str(`X`);
     str(`h`, `e`, `l`, `l`, `o`);
     @error str(1);
     @error str("hello".characters);
-    @error str(`X`*);
+    @error str(*`X`);
 }
 
  class Outer1() {
@@ -294,11 +294,11 @@ void sequencedParams() {
  Outer1.Inner? cons() => o?.Inner();
  
 void foo1(Integer* seq) {}
-void bar1(Integer* ints) { foo1(ints*); }
+void bar1(Integer* ints) { foo1(*ints); }
 Anything(Integer*) baz1 = bar1; 
 
 Boolean foo2(Integer* seq) => true;
-Boolean bar2(Integer* ints) => foo2(ints*);
+Boolean bar2(Integer* ints) => foo2(*ints);
 Boolean(Integer*) baz2 = bar2; 
 
 alias CSI => Callable<String,[Integer]>;
@@ -367,7 +367,7 @@ void bug() {
     defaultedVariadic(1, "a");
     defaultedVariadic(1, "a", 1); // error
     defaultedVariadic(1, "a", 1, 2); // error
-    defaultedVariadic(1, "a", {}*); // error
+    defaultedVariadic(1, "a", *{}); // error
 }
 
 void parameterToFunction(void parameter(String s)) {

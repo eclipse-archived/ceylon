@@ -593,22 +593,21 @@ argument list."
     NamedArgumentList namedArgumentList;)
 
 ^(SEQUENCED_ARGUMENT:STATEMENT_OR_ARGUMENT
-    EXPRESSION_LIST
-    ELLIPSIS?
+    POSITIONAL_ARGUMENT*
     Parameter parameter;)
 
 "A list of positional arguments."
 ^(POSITIONAL_ARGUMENT_LIST:ARGUMENT_LIST 
     POSITIONAL_ARGUMENT*
-    COMPREHENSION?
-    ELLIPSIS?)
+    COMPREHENSION?)
 
 ^(ELLIPSIS)
 
 ^(POSITIONAL_ARGUMENT 
     EXPRESSION
     Parameter parameter;)
-    
+^(SPREAD_ARGUMENT:POSITIONAL_ARGUMENT)
+
 ^(FUNCTION_ARGUMENT:TERM
     TYPE type
     PARAMETER_LIST*

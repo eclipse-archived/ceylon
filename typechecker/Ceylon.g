@@ -1525,14 +1525,35 @@ namedArguments returns [NamedArgumentList namedArgumentList]
 
 sequencedArgument returns [SequencedArgument sequencedArgument]
     : compilerAnnotations
-      expressions
       { sequencedArgument = new SequencedArgument(null);
-        sequencedArgument.setExpressionList($expressions.expressionList);
         sequencedArgument.getCompilerAnnotations().addAll($compilerAnnotations.annotations); }
-      (
-        PRODUCT_OP
-        { sequencedArgument.setEllipsis(new Ellipsis($PRODUCT_OP)); }
-      )?
+        (
+          pa1=positionalArgument
+          { if ($pa1.positionalArgument!=null)
+                $sequencedArgument.addPositionalArgument($pa1.positionalArgument); }
+        |
+          sa1=spreadArgument
+          { if ($sa1.positionalArgument!=null)
+                $sequencedArgument.addPositionalArgument($sa1.positionalArgument); }
+        )
+        (
+          c=COMMA
+          { $sequencedArgument.setEndToken($c); }
+          (
+            pa2=positionalArgument
+            { if ($pa2.positionalArgument!=null)
+                  $sequencedArgument.addPositionalArgument($pa2.positionalArgument); 
+              sequencedArgument.setEndToken(null); }
+          |
+            sa2=spreadArgument
+            { if ($sa2.positionalArgument!=null)
+                  $sequencedArgument.addPositionalArgument($sa2.positionalArgument); 
+              sequencedArgument.setEndToken(null); }
+          |
+            { displayRecognitionError(getTokenNames(), 
+                new MismatchedTokenException(LIDENTIFIER, input)); }
+          )
+        )* 
     ;
 
 namedArgument returns [NamedArgument namedArgument]
@@ -1755,6 +1776,10 @@ positionalArguments returns [PositionalArgumentList positionalArgumentList]
           { if ($pa1.positionalArgument!=null)
                 $positionalArgumentList.addPositionalArgument($pa1.positionalArgument); }
         |
+          sa1=spreadArgument
+          { if ($sa1.positionalArgument!=null)
+                $positionalArgumentList.addPositionalArgument($sa1.positionalArgument); }
+        |
           c2=comprehension
           { $positionalArgumentList.setComprehension($c2.comprehension); }
         )
@@ -1769,7 +1794,12 @@ positionalArguments returns [PositionalArgumentList positionalArgumentList]
             { if ($pa2.positionalArgument!=null)
                   $positionalArgumentList.addPositionalArgument($pa2.positionalArgument); 
               positionalArgumentList.setEndToken(null); }
-          | 
+          |
+            sa2=spreadArgument
+            { if ($sa2.positionalArgument!=null)
+                  $positionalArgumentList.addPositionalArgument($sa2.positionalArgument); 
+              positionalArgumentList.setEndToken(null); }
+          |
             c1=comprehension
             { $positionalArgumentList.setComprehension($c1.comprehension);
               positionalArgumentList.setEndToken(null); }
@@ -1778,23 +1808,24 @@ positionalArguments returns [PositionalArgumentList positionalArgumentList]
                 new MismatchedTokenException(LIDENTIFIER, input)); }
           )
         )* 
-        (
-          PRODUCT_OP
-          { if ($positionalArgumentList.getComprehension()==null)
-                $positionalArgumentList.setEllipsis( new Ellipsis($PRODUCT_OP) );
-            else
-                displayRecognitionError(getTokenNames(), 
-                    new MismatchedTokenException(RPAREN, input)); }
-        )?
       )?
       RPAREN
       { $positionalArgumentList.setEndToken($RPAREN); }
     ;
 
 positionalArgument returns [PositionalArgument positionalArgument]
-    @init { $positionalArgument = new PositionalArgument(null); }
-    : functionOrExpression
+    : { $positionalArgument = new PositionalArgument(null); }
+      functionOrExpression
       { $positionalArgument.setExpression($functionOrExpression.expression); }
+    ;
+
+spreadArgument returns [SpreadArgument positionalArgument]
+    : PRODUCT_OP
+      { $positionalArgument = new SpreadArgument($PRODUCT_OP); }
+      unionExpression
+      { Expression e = new Expression(null);
+        e.setTerm($unionExpression.term);
+        $positionalArgument.setExpression(e); }
     ;
 
 anonParametersStart

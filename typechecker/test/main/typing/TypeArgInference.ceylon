@@ -75,7 +75,7 @@ class TypeArgInference() {
     @type:"Null|String" firstElt("hello", "world");
     @type:"Null|Sequence<String>" firstElt(["hello", "world"].sequence);
     @type:"Null|Tuple<String,String,Tuple<String,String,Empty>>" firstElt (["hello", "world"]);
-    @type:"Null|String" firstElt(["hello", "world"]*);
+    @type:"Null|String" firstElt(*["hello", "world"]);
     @type:"Null|String" firstElt0 { "hello", "world" };
     @type:"Null|Sequence<String>" firstElt0 {["hello", "world"].sequence};
     firstElt { args = "hello"; @error args="world"; };

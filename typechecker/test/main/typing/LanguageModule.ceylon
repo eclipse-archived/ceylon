@@ -17,7 +17,7 @@ class LanguageModule() {
     //@error plus<Integer, Integer, Integer>(1, 2);
 
     @type:"Iterable<Entry<Integer,String>,Null>" entries("hello", "world");
-    @type:"Iterable<Entry<Integer,String>,Null>" entries(["hello", "world"]*);
+    @type:"Iterable<Entry<Integer,String>,Null>" entries(*["hello", "world"]);
     for (Integer i->String s in entries("hello", "world", "!")) {}
     
     //print(append({"one", "two" , "three"}, "four").size==4);
@@ -31,8 +31,8 @@ class LanguageModule() {
     
     Integer m1 = min { 1, 2 };
     Null n1 = min {};
-    @type:"Null|Integer" min {ints1*};
-    @type:"Null|Integer" min {ints2*};
+    @type:"Null|Integer" min {*ints1};
+    @type:"Null|Integer" min {*ints2};
     
     Integer m2 = min([1, 2]);
     Null n2 = min([]);

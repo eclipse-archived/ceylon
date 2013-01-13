@@ -37,7 +37,7 @@ void test() {
     [String*] hibye2 = hibye;
     [String, Integer, Object*] trip = triple("", 0, 0.0);
     value ints = [1,2,3];
-    [String,Integer,Integer*] vartup = ["hello", 4, ints*];
+    [String,Integer,Integer*] vartup = ["hello", 4, *ints];
     @type:"Null" value v0 = vartup[-1];
     @type:"String" value v1 = vartup[0];
     @type:"Integer" value v2 = vartup[1];
@@ -56,13 +56,13 @@ void test() {
     [String, Integer, Integer] t1 = 
             [1, 2, "", 4, 5][2...];
     //<String, Integer> t2 = 
-    //        (1, 2, "", 4, 5, "hello"*)[2..3];
+    //        (1, 2, "", 4, 5, *"hello")[2..3];
     //<String, Integer, Integer, Character> t3 = 
-    //        (1, 2, "", 4, 5, "hello"*)[2..5];
+    //        (1, 2, "", 4, 5, *"hello")[2..5];
     //<String, Integer, Integer, Character, Character, Character, Character> t4 = 
-    //        (1, 2, "", 4, 5, "hello"*)[2..8];
+    //        (1, 2, "", 4, 5, *"hello")[2..8];
     [String, Integer, Integer, Character*] t5 = 
-            [1, 2, "", 4, 5, "hello"*][2...];
+            [1, 2, "", 4, 5, *"hello"][2...];
     //<Integer, Integer, String, Integer, Integer> t6 = 
     //        (1, 2, "", 4, 5)[-2..6];
     [Integer, Integer, String, Integer, Integer] t6 = 
@@ -108,10 +108,10 @@ void test() {
     Integer(Float, Float*) ref9 = var;
     
     value tail = [1, "goodbye", 2];
-    value headTail = [0, "hello", tail*];
+    value headTail = [0, "hello", *tail];
     [Integer,String,Integer,String,Integer] result = headTail;
     @type:"Tuple<Integer|Character,Integer,String>" 
-    value strange = [0, "hello"*];
+    value strange = [0, *"hello"];
     
     [String,Integer=,Float*] varlen = ["hello"];
     @type:"String" value elem0 = varlen[0];
@@ -139,6 +139,6 @@ void test() {
     @type:"Iterable<String,Nothing>" {String+} i2 = {""};
     @type:"Sequence<String>" [String+] s1 = [""];
     @type:"Sequential<String>" [String*] s2 = [""];
-    @type:"Tuple<String,String,Sequence<String>>" [String,String+] p1 = ["", s1*];
-    @type:"Tuple<String,String,Sequential<String>>" [String,String*] p2 = ["", s2*];
+    @type:"Tuple<String,String,Sequence<String>>" [String,String+] p1 = ["", *s1];
+    @type:"Tuple<String,String,Sequential<String>>" [String,String*] p2 = ["", *s2];
 }

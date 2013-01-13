@@ -1125,4 +1125,25 @@ public class DeclarationVisitor extends Visitor {
     	}
     }
     
+    @Override
+    public void visit(Tree.PositionalArgumentList that) {
+        super.visit(that);
+        checkPositionalArguments(that.getPositionalArguments());
+    }
+
+    @Override
+    public void visit(Tree.SequencedArgument that) {
+        super.visit(that);
+        checkPositionalArguments(that.getPositionalArguments());
+    }
+
+	private void checkPositionalArguments(List<Tree.PositionalArgument> args) {
+		for (int i=0; i<args.size()-1; i++) {
+        	Tree.PositionalArgument a = args.get(i);
+			if (a instanceof Tree.SpreadArgument) {
+        		a.addError("spread argument must be the last argument in the argument list");
+        	}
+        }
+	}    
+    
 }

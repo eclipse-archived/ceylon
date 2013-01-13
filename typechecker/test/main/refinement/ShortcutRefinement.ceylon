@@ -118,7 +118,7 @@ class Y() extends X<String>() {
     baz = (String(Integer) s) => s(0);
     @error qux = () => "hello";
     fum = (String s) => print(s);
-    fo = (String* ss) => print(", ".join(ss*));
+    fo = (String* ss) => print(", ".join(*ss));
     @error fee() => 0;
 }
 

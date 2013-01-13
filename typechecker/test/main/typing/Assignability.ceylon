@@ -275,7 +275,7 @@ class Assignability() {
     
     for (@error X x -> Y y in 12) {}
     
-    for (Integer i->String s in entries<String>(["hello", "world", "!"]*)) {
+    for (Integer i->String s in entries<String>(*["hello", "world", "!"])) {
         print(i.string + ": " + s);
     }
     
@@ -283,7 +283,7 @@ class Assignability() {
         print(i.string + ": " + s);
     }
     
-    for (i->s in entries(["hello", "world", "!"]*)) {
+    for (i->s in entries(*["hello", "world", "!"])) {
         print(i.string + ": " + s);
     }
     
@@ -344,10 +344,18 @@ class Assignability() {
     {String*} strings1 = { "hello" };
     [String*] strings2 = [ "hello" ];
     
-    @error printStrings(strings1*);
-    printStrings0 { strings1* };
-    printStrings(strings2*);
-    printStrings0 {strings2*};
+    @error printStrings(*strings1);
+    printStrings0 { *strings1 };
+    printStrings(*strings2);
+    printStrings0 { *strings2 };
+    
+    @error printStrings("Hello", "World", *strings1);
+    printStrings0 { "Hello", "World", *strings1 };
+    printStrings("Hello", "World", *strings2);
+    printStrings0 { "Hello", "World", *strings2 };
+    
+    printStrings0 { @error "Hello", *strings1, "World" };
+    @error printStrings("Hello", *strings2, "World");
     
     String joinStrings(Character char, String* strings) { throw; }
     String joinStrings0(Character char, {String*} strings) { throw; }
@@ -376,20 +384,20 @@ class Assignability() {
     
     void w<W>(W* ws) {}
     w<String>("foo");
-    w<String>(["foo"]*);
-    @error w<String>({"foo"}*);
+    w<String>(*["foo"]);
+    @error w<String>(*{"foo"});
     w<String>("foo", "bar");
-    w<String>(["foo", "bar"]*);
+    w<String>(*["foo", "bar"]);
     w("foo");
-    w(["foo"]*);
-    @error w({"foo"}*);
+    w(*["foo"]);
+    @error w(*{"foo"});
     w("foo", "bar");
-    w(["foo", "bar"]*);
-    @error w({"foo", "bar"}*);
+    w(*["foo", "bar"]);
+    @error w(*{"foo", "bar"});
     {String*} iterable = {"foo", "bar"};
     [String*] sequential = ["foo", "bar"];
-    @error w(iterable*);
-    w(sequential*);
+    @error w(*iterable);
+    w(*sequential);
     
     object o { shared String hello = "hello"; }
     @type:"Basic" value oo = o;
