@@ -3,6 +3,7 @@ package com.redhat.ceylon.compiler.typechecker.analyzer;
 import static com.redhat.ceylon.compiler.typechecker.analyzer.Util.getLastExecutableStatement;
 
 import com.redhat.ceylon.compiler.typechecker.model.Declaration;
+import com.redhat.ceylon.compiler.typechecker.model.MethodOrValue;
 import com.redhat.ceylon.compiler.typechecker.model.TypeDeclaration;
 import com.redhat.ceylon.compiler.typechecker.tree.Node;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree;
@@ -259,11 +260,44 @@ public class SelfReferenceVisitor extends Visitor {
             checkSelfReference(that, e.getTerm());    
         }
     }
+    
+    @Override
+    public void visit(Tree.SpecifierStatement that) {
+    	if ( inBody() ) {
+    		Tree.Term lt = that.getBaseMemberExpression();
+			Tree.SpecifierExpression se = that.getSpecifierExpression();
+    		if (lt instanceof Tree.MemberOrTypeExpression && se!=null) {
+    			Tree.Expression e = se.getExpression();
+    			if (e!=null) {
+    				if (e.getTerm() instanceof Tree.This) {
+    					Declaration d = ((Tree.MemberOrTypeExpression) lt).getDeclaration();
+    					if (d instanceof MethodOrValue) {
+    						if (((MethodOrValue) d).isLate()) {
+    							lt.visit(this);
+    							return; //NOTE: EARLY EXIT!!
+    						}
+    					}
+    				}
+    			}
+    		}
+    	}
+    	super.visit(that);
+    }
 
     @Override
     public void visit(Tree.AssignmentOp that) {
         super.visit(that);
         if ( inBody() ) {
+        	Tree.Term lt = that.getLeftTerm();
+			if (lt instanceof Tree.MemberOrTypeExpression &&
+					that.getRightTerm() instanceof Tree.This) {
+        		Declaration d = ((Tree.MemberOrTypeExpression) lt).getDeclaration();
+        		if (d instanceof MethodOrValue) {
+        			if (((MethodOrValue) d).isLate()) {
+        				return; //NOTE: EARLY EXIT!!
+        			}
+        		}
+        	}
             checkSelfReference(that, that.getRightTerm());    
         }
     }
