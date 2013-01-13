@@ -61,7 +61,8 @@ public class Util {
      * Convenience method to bind a single type argument 
      * to a toplevel type declaration.  
      */
-    public static ProducedType producedType(TypeDeclaration declaration, ProducedType typeArgument) {
+    public static ProducedType producedType(TypeDeclaration declaration, 
+    		ProducedType typeArgument) {
         return declaration.getProducedType(null, singletonList(typeArgument));
     }
 
@@ -69,7 +70,8 @@ public class Util {
      * Convenience method to bind a list of type arguments
      * to a toplevel type declaration.  
      */
-    public static ProducedType producedType(TypeDeclaration declaration, ProducedType... typeArguments) {
+    public static ProducedType producedType(TypeDeclaration declaration, 
+    		ProducedType... typeArguments) {
         return declaration.getProducedType(null, asList(typeArguments));
     }
 
@@ -104,12 +106,13 @@ public class Util {
         return false;
     }
 
-    static boolean hasMatchingSignature(List<ProducedType> signature, boolean ellipsis, Declaration d) {
+    static boolean hasMatchingSignature(List<ProducedType> signature, 
+    		boolean ellipsis, Declaration d) {
         return hasMatchingSignature(signature, ellipsis, d, true);
     }
     
-    static boolean hasMatchingSignature(List<ProducedType> signature, boolean ellipsis, Declaration d, 
-    		boolean excludeAbstractClasses) {
+    static boolean hasMatchingSignature(List<ProducedType> signature, 
+    		boolean ellipsis, Declaration d, boolean excludeAbstractClasses) {
         if (excludeAbstractClasses && 
         		d instanceof Class && ((Class) d).isAbstract()) {
             return false;
@@ -365,8 +368,6 @@ public class Util {
                     add=false;
                     break;
                 }
-                //TODO: I think in some very rare occasions 
-                //      this can cause stack overflows!
                 else if (pt.isSupertypeOf(t)) {
                     iter.remove();
                 }
@@ -383,7 +384,8 @@ public class Util {
      * into account that a supertype is a "duplicate" of its
      * subtype.
      */
-    public static void addToIntersection(List<ProducedType> list, ProducedType pt, Unit unit) {
+    public static void addToIntersection(List<ProducedType> list, ProducedType pt, 
+    		Unit unit) {
         if (pt==null) {
             return;
         }
@@ -432,8 +434,6 @@ public class Util {
                         included = false;
                         break;
                     }
-                    //TODO: I think in some very rare occasions 
-                    //      this can cause stack overflows!
                     else if (pt.isSubtypeOf(t)) {
                         iter.remove();
                     }
@@ -567,7 +567,8 @@ public class Util {
         return true;
     }
 
-    public static ProducedType unionType(ProducedType lhst, ProducedType rhst, Unit unit) {
+    public static ProducedType unionType(ProducedType lhst, ProducedType rhst, 
+    		Unit unit) {
         List<ProducedType> list = new ArrayList<ProducedType>();
         addToUnion(list, rhst);
         addToUnion(list, lhst);
@@ -576,7 +577,8 @@ public class Util {
         return ut.getType();
     }
 
-    public static ProducedType intersectionType(ProducedType lhst, ProducedType rhst, Unit unit) {
+    public static ProducedType intersectionType(ProducedType lhst, ProducedType rhst, 
+    		Unit unit) {
         List<ProducedType> list = new ArrayList<ProducedType>();
         addToIntersection(list, rhst, unit);
         addToIntersection(list, lhst, unit);
@@ -593,15 +595,6 @@ public class Util {
         }
         return false;
     }
-    
-    /*public static boolean isElementOfIntersection(IntersectionType ut, ClassOrInterface td) {
-        for (TypeDeclaration ct: ut.getSatisfiedTypeDeclarations()) {
-            if (ct instanceof ClassOrInterface && ct.equals(td)) {
-                return true;
-            }
-        }
-        return false;
-    }*/
     
     public static Declaration lookupMember(List<Declaration> members, String name,
             List<ProducedType> signature, boolean ellipsis) {
@@ -702,7 +695,8 @@ public class Util {
         ParameterList parameterList = parameterLists.get(0);
         if(parameterList == null || parameterList.getParameters() == null)
             return null;
-        ArrayList<ProducedType> signature = new ArrayList<ProducedType>(parameterList.getParameters().size());
+        int size = parameterList.getParameters().size();
+		List<ProducedType> signature = new ArrayList<ProducedType>(size);
         for(Parameter param : parameterList.getParameters()){
             signature.add(param.getType());
         }
