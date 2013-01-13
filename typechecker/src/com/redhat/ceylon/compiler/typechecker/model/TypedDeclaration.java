@@ -87,6 +87,10 @@ public abstract class TypedDeclaration extends Declaration {
         return false;
     }
     
+    public boolean isLate() {
+    	return false;
+    }
+    
     public TypedDeclaration getOriginalDeclaration() {
         return originalDeclaration;
     }

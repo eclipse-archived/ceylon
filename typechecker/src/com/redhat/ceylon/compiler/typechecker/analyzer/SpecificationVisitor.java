@@ -6,6 +6,7 @@ import static com.redhat.ceylon.compiler.typechecker.analyzer.Util.getLastExecut
 import com.redhat.ceylon.compiler.typechecker.model.Class;
 import com.redhat.ceylon.compiler.typechecker.model.Declaration;
 import com.redhat.ceylon.compiler.typechecker.model.TypedDeclaration;
+import com.redhat.ceylon.compiler.typechecker.model.Value;
 import com.redhat.ceylon.compiler.typechecker.model.ValueParameter;
 import com.redhat.ceylon.compiler.typechecker.tree.Node;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree;
@@ -93,6 +94,11 @@ public class SpecificationVisitor extends Visitor {
     private boolean isVariable() {
         return (declaration instanceof TypedDeclaration)
             && ((TypedDeclaration) declaration).isVariable();
+    }
+    
+    private boolean isLate() {
+        return (declaration instanceof Value)
+            && ((Value) declaration).isLate();
     }
     
     @Override
@@ -278,7 +284,7 @@ public class SpecificationVisitor extends Visitor {
             Tree.BaseMemberExpression m = (Tree.BaseMemberExpression) term;
             Declaration member = getBaseDeclaration(m, null, false);
             if (member==declaration) {
-                if (!isVariable()) {
+                if (!isVariable() && !isLate()) {
                     if (node instanceof Tree.AssignOp) {
                         node.addError("cannot specify non-variable value here: " +
                                         member.getName(), 803);
@@ -304,7 +310,7 @@ public class SpecificationVisitor extends Visitor {
 	        if (member==declaration) {
             	boolean lazy = that.getSpecifierExpression() instanceof Tree.LazySpecifierExpression;
 	            if (!lazy) that.getSpecifierExpression().visit(this);
-	            boolean constant = !isVariable();
+	            boolean constant = !isVariable() && !isLate();
 				if (!declared && constant) {
                     that.addError("specified value is not yet declared: " + 
                             member.getName());
@@ -452,7 +458,7 @@ public class SpecificationVisitor extends Visitor {
             if (sie!=null) {
                 specify();
             }
-            else if (declaration.isToplevel()) {
+            else if (declaration.isToplevel() && !isLate()) {
                 if (isVariable()) {
                     that.addError("toplevel variable value must be initialized: " +
                             declaration.getName());
@@ -596,6 +602,7 @@ public class SpecificationVisitor extends Visitor {
         		declaration.getOtherInstanceAccess()) && 
                 !declaration.isFormal() && 
                 !declaration.isNative() &&
+                !isLate() &&
                 !specified.definitely;
     }
     
@@ -750,7 +757,7 @@ public class SpecificationVisitor extends Visitor {
     	
         boolean d = beginDeclarationScope();
         SpecificationState as = beginSpecificationScope();
-        if (isVariable()) {
+        if (isVariable() || isLate()) {
             that.getWhileClause().visit(this);
         }
         else {
@@ -789,7 +796,7 @@ public class SpecificationVisitor extends Visitor {
         boolean d = beginDeclarationScope();
         SpecificationState as = beginSpecificationScope();
         if (that.getForClause()!=null) {
-            if (isVariable()) {
+            if (isVariable() || isLate()) {
                 that.getForClause().visit(this);
             }
             else {

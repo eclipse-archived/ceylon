@@ -930,6 +930,14 @@ public class DeclarationVisitor extends Visitor {
                 that.addError("declaration is not a value, and may not be annotated variable", 1500);
             }
         }
+        if (hasAnnotation(al, "late")) {
+            if (model instanceof Value) {
+                ((Value) model).setLate(true);
+            }
+            else {
+            	that.addError("declaration is not a simple attribute, and may not be annotated late");
+            }
+        }
         if (model instanceof Value) {
         	Value value = (Value) model;
         	if (value.isVariable() && value.isTransient()) {

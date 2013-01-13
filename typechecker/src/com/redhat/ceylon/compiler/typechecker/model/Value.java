@@ -11,6 +11,7 @@ public class Value extends MethodOrValue {
     private boolean variable;
     private boolean trans;
     private boolean captured;
+    private boolean late;
 
     /*public boolean isFormal() {
          return formal;
@@ -46,5 +47,14 @@ public class Value extends MethodOrValue {
     public void setCaptured(boolean local) {
         this.captured = local;
     }
+    
+    @Override
+    public boolean isLate() {
+		return late;
+	}
+    
+    public void setLate(boolean late) {
+		this.late = late;
+	}
 
 }

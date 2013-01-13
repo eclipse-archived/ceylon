@@ -694,7 +694,7 @@ public class ExpressionVisitor extends Visitor {
                     if (mv.isShortcutRefinement()) {
                         bme.addError("already specified: " + d.getName(unit));
                     }
-                    else if (d.isToplevel() && !mv.isVariable()) {
+                    else if (d.isToplevel() && !mv.isVariable() && !mv.isLate()) {
                         that.addError("cannot specify non-variable toplevel value here: " + 
                                 d.getName(unit), 803);
                     }
@@ -2982,7 +2982,8 @@ private void checkPositionalArguments(ParameterList pl, ProducedReference pr,
                     that.addError("member cannot be assigned: " 
                             + dec.getName(unit));
                 }
-                else if ( !((TypedDeclaration) dec).isVariable() ) {
+                else if (!((MethodOrValue) dec).isVariable() &&
+                		 !((MethodOrValue) dec).isLate()) {
                     that.addError("value is not variable: " 
                             + dec.getName(unit), 800);
                 }
