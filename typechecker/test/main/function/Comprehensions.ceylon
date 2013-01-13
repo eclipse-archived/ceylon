@@ -33,6 +33,8 @@ void comprehensions() {
     
     [String*] eagerBroken = [ @error "hello", for (w in words) if (w.size>2) w, "world" ];
     {String*} lazyBroken = { @error "hello", for (w in words) if (w.size>2) w, "world" };
+    [String*] eagerWithStaticAndSpreadBroken = [ @error "hello", *eager, "world" ];
+    {String*} lazyWithStaticAndSpreadBroken = { @error "hello", *lazy, "world" };
     
     function variadic(String* strings) => strings.size;
     function iterated({String*} strings) => strings.size;
