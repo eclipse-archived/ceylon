@@ -83,7 +83,7 @@ interface Declarations {
             @error print(s);
             @error String s = "goodbye";
         }
-        for (x in {}) {
+        for (x in {1, 2}) {
             @error print(s);
             @error String s = "goodbye";
         }

@@ -237,7 +237,7 @@ class Assignability() {
     
     for (@error X x in 46 ) {}
     
-    for (Integer i in {}) {
+    for (@error Integer i in {}) {
         print(i.string);
     }
     for (Integer i in {-1,+2}) {

@@ -570,6 +570,20 @@ public class ExpressionVisitor extends Visitor {
                     "resource must be closeable");
         }
     }
+    
+    @Override public void visit(Tree.ForIterator that) {
+    	super.visit(that);
+    	Tree.SpecifierExpression se = that.getSpecifierExpression();
+		if (se!=null) {
+    		Tree.Expression e = se.getExpression();
+			if (e!=null) {
+    			if (e.getTypeModel()!=null && e.getTypeModel()
+    					.isSubtypeOf(unit.getEmptyDeclaration().getType())) {
+    				se.addError("iterated expression is definitely empty");
+    			}
+    		}
+    	}
+    }
 
     @Override public void visit(Tree.ValueIterator that) {
         super.visit(that);

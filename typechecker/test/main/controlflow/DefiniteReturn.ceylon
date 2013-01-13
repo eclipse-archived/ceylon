@@ -1,10 +1,11 @@
 interface DefiniteReturn {
-    
+        
     void doSomething() {}
     void doSomethingElse() {}
     void doNull() {}
     Boolean testSomething()  { return 1<2; }
     class X() {}
+    {X*} xs => {};
     
     //void methods:
     
@@ -173,7 +174,7 @@ interface DefiniteReturn {
     }
     
     void voidMethodWithReturnInEmptyFor() {
-        for (X x in {}) {
+        for (X x in xs) {
             doSomething();
             return;
         }
@@ -189,7 +190,7 @@ interface DefiniteReturn {
     }
     
     void voidMethodWithReturnInEmptyFor2() {
-        for (X x in {}) {
+        for (X x in xs) {
             doSomething();
             return;
         }
@@ -211,7 +212,7 @@ interface DefiniteReturn {
     }
     
     void voidMethodWithReturnInForAndEmptyFail() {
-        for (X x in {}) {
+        for (X x in xs) {
             doSomething();
             return;
         }
@@ -497,7 +498,7 @@ interface DefiniteReturn {
     }
     
     @error X methodWithReturnInEmptyFor() {
-        for (X x in {}) {
+        for (X x in xs) {
             doSomething();
             return X();
         }
@@ -545,7 +546,7 @@ interface DefiniteReturn {
     }
     
     @error X methodWithReturnInEmptyFor2() {
-        for (X x in {}) {
+        for (X x in xs) {
             doSomething();
             return X();
         }
@@ -556,7 +557,7 @@ interface DefiniteReturn {
     }
     
     X methodWithReturnInEmptyFor3() {
-        for (X x in {}) {
+        for (X x in xs) {
             doSomething();
             return X();
         }
@@ -580,7 +581,7 @@ interface DefiniteReturn {
     }
     
     X methodWithReturnInEmptyForAndFail() {
-        for (X x in {}) {
+        for (X x in xs) {
             doSomething();
             return X();
         }
@@ -810,7 +811,7 @@ interface DefiniteReturn {
     }
     
     @error X getterWithReturnInEmptyFor {
-        for (X x in {}) {
+        for (X x in xs) {
             doSomething();
             return X();
         }
@@ -829,7 +830,7 @@ interface DefiniteReturn {
     }
     
     @error X getterWithReturnInEmptyFor2 {
-        for (X x in {}) {
+        for (X x in xs) {
             doSomething();
             return X();
         }
@@ -852,7 +853,7 @@ interface DefiniteReturn {
     }
     
     X getterWithReturnInEmptyFor3 {
-        for (X x in {}) {
+        for (X x in xs) {
             doSomething();
             return X();
         }
@@ -864,7 +865,7 @@ interface DefiniteReturn {
     }
     
     X getterWithReturnInEmptyForAndFail {
-        for (X x in {}) {
+        for (X x in xs) {
             doSomething();
             return X();
         }
@@ -1094,7 +1095,7 @@ interface DefiniteReturn {
     }
     
     assign getterWithReturnInEmptyFor {
-        for (X x in {}) {
+        for (X x in xs) {
             doSomething();
             return;
         }
@@ -1113,7 +1114,7 @@ interface DefiniteReturn {
     }
     
     assign getterWithReturnInEmptyFor2 {
-        for (X x in {}) {
+        for (X x in xs) {
             doSomething();
             return;
         }
@@ -1135,7 +1136,7 @@ interface DefiniteReturn {
     }
     
     assign getterWithReturnInEmptyForAndFail {
-        for (X x in {}) {
+        for (X x in xs) {
             doSomething();
             return;
         }

@@ -55,13 +55,13 @@ void testShortcutMethodSpec(){
 }
 
 void bla(String a, Integer* p){
-    bla("a", for(i in {}) i);
+    bla("a", for(i in {1, 2}) i);
     bla("a");
     bla("a", 1, 2);
     bla("a", *[1, 2]);
 }
 void bli(Integer* p){
-    bli(for(i in {}) i);
+    bli(for(i in {1, 2}) i);
     bli();
     bli(1, 2);
     bli(*[1, 2]);
