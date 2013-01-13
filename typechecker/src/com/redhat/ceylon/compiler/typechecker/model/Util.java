@@ -480,6 +480,14 @@ public class Util {
 		    pt.getSupertype(td)==null;
 	}
 
+	/**
+	 * Given two produced types for the exact same type
+	 * constructor, return the principal instantiation
+	 * of that type constructor for the intersection of 
+	 * the two types.
+	 * @param pt an instantiation of the type constructor
+	 * @param t another instantiation of the type constructor
+	 */
 	private static ProducedType principalInstantiation(ProducedType pt,
 			ProducedType t, Unit unit) {
 		TypeDeclaration td = pt.getDeclaration();
@@ -511,9 +519,19 @@ public class Util {
 		    	args.add(intersectionType(pta, ta, unit));
 		    }
 		}
-		//TODO: broken handling of member types!
-		ProducedType pit = td.getProducedType(pt.getQualifyingType(), args);
-		return pit;
+		ProducedType ptqt = pt.getQualifyingType();
+		ProducedType tqt = t.getQualifyingType();
+		ProducedType qt = null;
+		if (ptqt!=null && tqt!=null && 
+				td.getContainer() instanceof TypeDeclaration) {
+			TypeDeclaration qtd = (TypeDeclaration) td.getContainer();
+			ProducedType pst = ptqt.getSupertype(qtd);
+			ProducedType st = tqt.getSupertype(qtd);
+			if (pst!=null && st!=null) {
+				qt = principalInstantiation(pst, st, unit);
+			}
+		}
+		return td.getProducedType(qt, args);
 	}
     
     /**

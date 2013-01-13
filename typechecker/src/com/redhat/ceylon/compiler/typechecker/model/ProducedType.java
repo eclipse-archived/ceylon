@@ -185,7 +185,8 @@ public class ProducedType extends ProducedReference {
      * Is this type a subtype of the given type? 
      */
     public boolean isSubtypeOf(ProducedType type) {
-        return type!=null && resolveAliases().isSubtypeOfInternal(type.resolveAliases());
+        return type!=null && resolveAliases()
+        		.isSubtypeOfInternal(type.resolveAliases());
     }
     
     /**
