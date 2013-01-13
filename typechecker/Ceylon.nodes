@@ -589,11 +589,11 @@ argument list."
 ^(NAMED_ARGUMENT_LIST:ARGUMENT_LIST 
     NAMED_ARGUMENT*
     SEQUENCED_ARGUMENT?
-    COMPREHENSION?
     NamedArgumentList namedArgumentList;)
 
 ^(SEQUENCED_ARGUMENT:STATEMENT_OR_ARGUMENT
     POSITIONAL_ARGUMENT*
+    COMPREHENSION?
     Parameter parameter;)
 
 "A list of positional arguments."
@@ -668,12 +668,10 @@ argument list."
 
 "Enumerated elements of a sequence."
 ^(SEQUENCE_ENUMERATION:ATOM 
-    SEQUENCED_ARGUMENT?
-    COMPREHENSION?)
+    SEQUENCED_ARGUMENT?)
 
 ^(TUPLE:ATOM 
-    SEQUENCED_ARGUMENT?
-    COMPREHENSION?)
+    SEQUENCED_ARGUMENT?)
 
 "A string template."
 ^(STRING_TEMPLATE:ATOM 

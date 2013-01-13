@@ -34,7 +34,7 @@ void comprehensions() {
     function iterated({String*} strings) => strings.size;
     
     value pos = variadic( for (w in words) if (w.size>2) w );
-    value posWithStatic = variadic( "hello", "world", @error for (w in words) if (w.size>2) w );
+    //value posWithStatic = variadic( "hello", "world", for (w in words) if (w.size>2) w );
     value posWithStaticAndSpread = variadic( "hello", "world", *eager );
     
     value named = iterated { for (w in words) if (w.size>2) w };

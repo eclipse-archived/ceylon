@@ -1368,9 +1368,6 @@ enumeration returns [SequenceEnumeration sequenceEnumeration]
       (
         sequencedArgument
         { $sequenceEnumeration.setSequencedArgument($sequencedArgument.sequencedArgument); }
-      | 
-        comprehension
-        { $sequenceEnumeration.setComprehension($comprehension.comprehension); }
       )?
       RBRACE
       { $sequenceEnumeration.setEndToken($RBRACE); }
@@ -1382,9 +1379,6 @@ tuple returns [Tuple tuple]
       (
         sequencedArgument
         { $tuple.setSequencedArgument($sequencedArgument.sequencedArgument); }
-      | 
-        comprehension
-        { $tuple.setComprehension($comprehension.comprehension); }
       )?
       RBRACKET
       { $tuple.setEndToken($RBRACKET); }
@@ -1515,9 +1509,6 @@ namedArguments returns [NamedArgumentList namedArgumentList]
       ( 
         sequencedArgument
         { $namedArgumentList.setSequencedArgument($sequencedArgument.sequencedArgument); }
-      | 
-        comprehension
-        { $namedArgumentList.setComprehension($comprehension.comprehension); }
       )?
       RBRACE
       { $namedArgumentList.setEndToken($RBRACE); }
@@ -1535,6 +1526,9 @@ sequencedArgument returns [SequencedArgument sequencedArgument]
           sa1=spreadArgument
           { if ($sa1.positionalArgument!=null)
                 $sequencedArgument.addPositionalArgument($sa1.positionalArgument); }
+        |
+          c1=comprehension
+          { $sequencedArgument.setComprehension($c1.comprehension); }
         )
         (
           c=COMMA
@@ -1548,6 +1542,10 @@ sequencedArgument returns [SequencedArgument sequencedArgument]
             sa2=spreadArgument
             { if ($sa2.positionalArgument!=null)
                   $sequencedArgument.addPositionalArgument($sa2.positionalArgument); 
+              sequencedArgument.setEndToken(null); }
+          |
+            c2=comprehension
+            { $sequencedArgument.setComprehension($c2.comprehension);
               sequencedArgument.setEndToken(null); }
           |
             { displayRecognitionError(getTokenNames(), 
@@ -1780,8 +1778,8 @@ positionalArguments returns [PositionalArgumentList positionalArgumentList]
           { if ($sa1.positionalArgument!=null)
                 $positionalArgumentList.addPositionalArgument($sa1.positionalArgument); }
         |
-          c2=comprehension
-          { $positionalArgumentList.setComprehension($c2.comprehension); }
+          c1=comprehension
+          { $positionalArgumentList.setComprehension($c1.comprehension); }
         )
         (
           c=COMMA 
@@ -1800,8 +1798,8 @@ positionalArguments returns [PositionalArgumentList positionalArgumentList]
                   $positionalArgumentList.addPositionalArgument($sa2.positionalArgument); 
               positionalArgumentList.setEndToken(null); }
           |
-            c1=comprehension
-            { $positionalArgumentList.setComprehension($c1.comprehension);
+            c2=comprehension
+            { $positionalArgumentList.setComprehension($c2.comprehension);
               positionalArgumentList.setEndToken(null); }
           | 
             { displayRecognitionError(getTokenNames(), 
@@ -1882,9 +1880,7 @@ anonymousFunction returns [Expression expression]
 
 comprehension returns [Comprehension comprehension]
     @init { $comprehension = new Comprehension(null); }
-    : compilerAnnotations
-      { $comprehension.getCompilerAnnotations().addAll($compilerAnnotations.annotations); }
-      forComprehensionClause
+    : forComprehensionClause
       { $comprehension.setForComprehensionClause($forComprehensionClause.comprehensionClause); }
     ;
 

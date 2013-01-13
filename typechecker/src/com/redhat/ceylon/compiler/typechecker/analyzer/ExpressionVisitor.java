@@ -1634,12 +1634,15 @@ public class ExpressionVisitor extends Visitor {
         }
         Tree.SequencedArgument sa = args.getSequencedArgument();
         if (sa!=null) {
-            inferTypeArg(sa, tp, parameters, inferredTypes, foundParameters);
+            Parameter sp = getUnspecifiedParameter(null, parameters, foundParameters);
+            if (sp!=null) {
+            	inferTypeArg(sa, tp, sp, inferredTypes);
+            	Tree.Comprehension ch = sa.getComprehension();
+            	if (ch!=null) {
+            		inferTypeArg(ch, tp, sp, inferredTypes);
+            	}
+            }
         }    
-        Tree.Comprehension ch = args.getComprehension();
-        if (ch!=null) {
-            inferTypeArg(ch, tp, parameters, inferredTypes, foundParameters);
-        }
     }
 
     private void inferTypeArg(Tree.Comprehension ch, TypeParameter tp,
@@ -1656,37 +1659,29 @@ public class ExpressionVisitor extends Visitor {
     }
 
     private void inferTypeArg(Tree.Comprehension ch, TypeParameter tp,
-            ParameterList parameters, List<ProducedType> inferredTypes, 
-            Set<Parameter> foundParameters) {
-        Parameter sp = getUnspecifiedParameter(null, parameters, foundParameters);
-        if (sp!=null) {
-            ProducedType ct = ch.getForComprehensionClause().getTypeModel();
-            if (ct!=null) {
-                ProducedType spt = unit.getIteratedType(sp.getType());
-                addToUnion(inferredTypes, inferTypeArg(tp, spt, ct,
-                        new ArrayList<TypeParameter>()));
-            }
-        }
+            Parameter sp, List<ProducedType> inferredTypes) {
+    	ProducedType ct = ch.getForComprehensionClause().getTypeModel();
+    	if (ct!=null) {
+    		ProducedType spt = unit.getIteratedType(sp.getType());
+    		addToUnion(inferredTypes, inferTypeArg(tp, spt, ct,
+    				new ArrayList<TypeParameter>()));
+    	}
     }
 
     private void inferTypeArg(Tree.SequencedArgument sa, TypeParameter tp,
-            ParameterList parameters, List<ProducedType> inferredTypes, 
-            Set<Parameter> foundParameters) {
-        Parameter sp = getUnspecifiedParameter(null, parameters, foundParameters);
-        if (sp!=null) {
-            List<Tree.PositionalArgument> args = sa.getPositionalArguments();
-            for (int i=0; i<args.size(); i++) {
-                PositionalArgument a = args.get(i);
-				Tree.Expression e = a.getExpression();
-                ProducedType spt = a instanceof Tree.SpreadArgument ? 
-                		sp.getType() : unit.getIteratedType(sp.getType());
-                ProducedType sat = e.getTypeModel();
-                if (sat!=null) {
-                    addToUnion(inferredTypes, inferTypeArg(tp, spt, sat,
-                            new ArrayList<TypeParameter>()));
-                }
-            }
-        }
+            Parameter sp, List<ProducedType> inferredTypes) {
+    	List<Tree.PositionalArgument> args = sa.getPositionalArguments();
+    	for (int i=0; i<args.size(); i++) {
+    		PositionalArgument a = args.get(i);
+    		Tree.Expression e = a.getExpression();
+    		ProducedType spt = a instanceof Tree.SpreadArgument ? 
+    				sp.getType() : unit.getIteratedType(sp.getType());
+    				ProducedType sat = e.getTypeModel();
+    				if (sat!=null) {
+    					addToUnion(inferredTypes, inferTypeArg(tp, spt, sat,
+    							new ArrayList<TypeParameter>()));
+    				}
+    	}
     }
 
     private void inferTypeArg(Tree.NamedArgument arg, TypeParameter tp,
@@ -2130,15 +2125,9 @@ public class ExpressionVisitor extends Visitor {
         
         Tree.SequencedArgument sa = nal.getSequencedArgument();
         if (sa!=null) {
-            checkNamedArg(sa, pl, pr, foundParameters);
+            checkNamedArg(sa, pl, pr, foundParameters);        
         }
-        
-        Tree.Comprehension ch = nal.getComprehension();
-        if (ch!=null) {
-            checkNamedArg(ch, pl, pr, foundParameters);
-        }
-        
-        if (sa==null&&ch==null) {
+        else {
         	Parameter sp = getUnspecifiedParameter(pr, pl, foundParameters);
         	foundParameters.add(sp);
         }
@@ -2151,24 +2140,7 @@ public class ExpressionVisitor extends Visitor {
             }
         }
     }
-
-    private void checkNamedArg(Tree.Comprehension ch, ParameterList pl,
-            ProducedReference pr, Set<Parameter> foundParameters) {
-        Parameter sp = getUnspecifiedParameter(pr, pl, foundParameters);
-        if (sp==null) {
-            ch.addError("all iterable parameters specified by name: " + 
-                    pr.getDeclaration().getName(unit) + 
-                    " does not declare any additional parameters of type Iterable");
-        }
-        else {
-            if (!foundParameters.add(sp)) {
-                ch.addError("duplicate argument for parameter: " +
-                        sp.getName() + " of " + pr.getDeclaration().getName(unit));
-            }
-            checkComprehensionArgument(ch, pr, sp);
-        }
-    }
-
+    
     private void checkNamedArg(Tree.SequencedArgument sa, ParameterList pl,
             ProducedReference pr, Set<Parameter> foundParameters) {
         Parameter sp = getUnspecifiedParameter(pr, pl, foundParameters);
@@ -2183,6 +2155,10 @@ public class ExpressionVisitor extends Visitor {
                         sp + " of " + pr.getDeclaration().getName(unit));
             }
             checkSequencedArgument(sa, pr, sp);
+            Tree.Comprehension ch = sa.getComprehension();
+            if (ch!=null) {
+                checkComprehensionArgument(ch, pr, sp);
+            }
         }
     }
 
@@ -3817,15 +3793,15 @@ private void checkPositionalArguments(ParameterList pl, ProducedReference pr,
     @Override public void visit(Tree.Tuple that) {
         super.visit(that);
         ProducedType tt = null;
-        if (that.getSequencedArgument()!=null) {
-            Tree.SequencedArgument sa = that.getSequencedArgument();
+        Tree.SequencedArgument sa = that.getSequencedArgument();
+        if (sa!=null) {
             tt = getTupleType(sa.getPositionalArguments(), true);
-        }
-        else if (that.getComprehension()!=null) {
-            ProducedType ct = that.getComprehension()
-                    .getForComprehensionClause().getTypeModel();
-            if (ct!=null) {
-                tt = unit.getSequentialType(ct);
+            if (sa.getComprehension()!=null) {
+                ProducedType ct = sa.getComprehension()
+                        .getForComprehensionClause().getTypeModel();
+                if (ct!=null) {
+                    tt = unit.getSequentialType(ct);
+                }
             }
         }
         else {
@@ -3837,24 +3813,18 @@ private void checkPositionalArguments(ParameterList pl, ProducedReference pr,
     @Override public void visit(Tree.SequenceEnumeration that) {
         super.visit(that);
         ProducedType st = null;
-        if (that.getComprehension()!=null) {
-            ProducedType ct = that.getComprehension()
-                    .getForComprehensionClause().getTypeModel();
-            if (ct!=null) {
-                st = unit.getIterableType(ct);
-            }
-        }
-        /*else {
-            ProducedType et;
-            List<ProducedType> list = new ArrayList<ProducedType>();
-            for (Tree.Expression e: that.getExpressionList().getExpressions()) {
-                if (e.getTypeModel()!=null) {
-                    addToUnion(list, unit.denotableType(e.getTypeModel()));*/
-        else if (that.getSequencedArgument()!=null) {
-            Tree.SequencedArgument sa = that.getSequencedArgument();
+        Tree.SequencedArgument sa = that.getSequencedArgument();
+        if (sa!=null) {
             List<Tree.PositionalArgument> pas = sa.getPositionalArguments();
             st = getTupleType(pas, false)
             		.getSupertype(unit.getIterableDeclaration());
+            if (sa.getComprehension()!=null) {
+                ProducedType ct = sa.getComprehension()
+                        .getForComprehensionClause().getTypeModel();
+                if (ct!=null) {
+                    st = unit.getIterableType(ct);
+                }
+            }
         }
         else {
             st = unit.getEmptyDeclaration().getType();
@@ -3863,7 +3833,7 @@ private void checkPositionalArguments(ParameterList pl, ProducedReference pr,
         if (st!=null) that.setTypeModel(st);
     }
 
-    private ProducedType getGenericElementType(List<Tree.Expression> es,
+    /*private ProducedType getGenericElementType(List<Tree.Expression> es,
             Tree.Ellipsis ell) {
         List<ProducedType> list = new ArrayList<ProducedType>();
         for (int i=0; i<es.size(); i++) {
@@ -3897,7 +3867,7 @@ private void checkPositionalArguments(ParameterList pl, ProducedReference pr,
             ut.setCaseTypes(list);
             return ut.getType(); 
         }
-    }
+    }*/
 
     @Override public void visit(Tree.CatchVariable that) {
         super.visit(that);
