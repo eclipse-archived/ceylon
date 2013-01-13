@@ -396,9 +396,9 @@ public class Util {
         }
         else {
             //implement the rule that Foo&Bar==Nothing if 
-            //there exists some Baz of Foo | Bar
-            //i.e. the intersection of disjoint types is
-            //empty
+            //there exists some enumerated type Baz with
+        	//    Baz of Foo | Bar 
+        	//(the intersection of disjoint types is empty)
             for (ProducedType supertype: pt.getSupertypes()) {
                 List<TypeDeclaration> ctds = supertype.getDeclaration()
                         .getCaseTypeDeclarations();
@@ -446,60 +446,14 @@ public class Util {
                             t.getDeclaration() instanceof ClassOrInterface && 
                             pt.getDeclaration().equals(t.getDeclaration()) ) {
                         //canonicalize T<InX,OutX>&T<InY,OutY> to T<InX|InY,OutX&OutY>
-                        TypeDeclaration td = pt.getDeclaration();
                         iter.remove();
-                        List<ProducedType> args = new ArrayList<ProducedType>();
-                        for (int i=0; i<td.getTypeParameters().size(); i++) {
-                            TypeParameter tp = td.getTypeParameters().get(i);
-                            ProducedType pta = pt.getTypeArguments().get(tp);
-                            ProducedType ta = t.getTypeArguments().get(tp);
-                            if (tp.isContravariant()) {
-                                args.add(unionType(pta, ta, unit));
-                            }
-                            else if (tp.isCovariant()) {
-                                args.add(intersectionType(pta, ta, unit));
-                            }
-                            else {
-                            	//TODO: this is not correct: the intersection
-                            	//      of two different instantiations of an
-                            	//      invariant type is actually Nothing
-                            	//      unless the type arguments are equivalent
-                            	//      or are type parameters that might 
-                            	//      represent equivalent types at runtime.
-                            	//      Therefore, a method T x(T y) of Inv<T> 
-                            	//      should have the signature:
-                            	//             Foo&Bar x(Foo|Bar y)
-                            	//      on the intersection Inv<Foo>&Inv<Bar>.
-                            	//      But this code gives it the more 
-                            	//      restrictive signature:
-                            	//             Foo&Bar x(Foo&Bar y)
-                            	args.add(intersectionType(pta, ta, unit));
-                            }
-                        }
-                        //TODO: broken handling of member types!
-                        list.add( td.getProducedType(pt.getQualifyingType(), args) );
+                        list.add(principalInstantiation(pt, t, unit));
                         return;
                     }
-                    else {
-                        //Unit unit = pt.getDeclaration().getUnit();
-                        TypeDeclaration nd = unit.getNullDeclaration();
-                        if (pt.getDeclaration() instanceof Class &&
-                                t.getDeclaration() instanceof Class ||
-                            pt.getDeclaration() instanceof Interface &&
-                                t.getDeclaration() instanceof Class &&
-                                t.getDeclaration().equals(nd) ||
-                            t.getDeclaration() instanceof Interface &&
-                            pt.getDeclaration() instanceof Class &&
-                                pt.getDeclaration().equals(nd)) {
-                            if (t.getSupertype(pt.getDeclaration())==null &&
-                            		pt.getSupertype(t.getDeclaration())==null) {
-                            	//the meet of two classes unrelated by inheritance, 
-                            	//or of Null with an interface type is empty
-                            	list.clear();
-                            	list.add( unit.getNothingDeclaration().getType() );
-                            	return;
-                            }
-                        }
+                    else if (emptyMeet(pt, t, unit)) {
+                    	list.clear();
+                    	list.add( unit.getNothingDeclaration().getType() );
+                    	return;                            
                     }
                 }
             }
@@ -508,6 +462,59 @@ public class Util {
             }
         }
     }
+
+	/**
+	 * the meet of two classes unrelated by inheritance,
+	 * or of Null with an interface type is empty 
+	 */
+	private static boolean emptyMeet(ProducedType pt, ProducedType t, Unit unit) {
+		TypeDeclaration nd = unit.getNullDeclaration(); //TODO what about the anonymous type of null?
+		TypeDeclaration ptd = pt.getDeclaration();
+		TypeDeclaration td = t.getDeclaration();
+		return (ptd instanceof Class && td instanceof Class ||
+		        ptd instanceof Interface && td instanceof Class &&
+		        		td.equals(nd) ||
+		        td instanceof Interface && ptd instanceof Class &&
+		        		ptd.equals(nd)) &&
+		    t.getSupertype(ptd)==null &&
+		    pt.getSupertype(td)==null;
+	}
+
+	private static ProducedType principalInstantiation(ProducedType pt,
+			ProducedType t, Unit unit) {
+		TypeDeclaration td = pt.getDeclaration();
+		List<ProducedType> args = new ArrayList<ProducedType>();
+		for (int i=0; i<td.getTypeParameters().size(); i++) {
+		    TypeParameter tp = td.getTypeParameters().get(i);
+		    ProducedType pta = pt.getTypeArguments().get(tp);
+		    ProducedType ta = t.getTypeArguments().get(tp);
+		    if (tp.isContravariant()) {
+		        args.add(unionType(pta, ta, unit));
+		    }
+		    else if (tp.isCovariant()) {
+		        args.add(intersectionType(pta, ta, unit));
+		    }
+		    else {
+		    	//TODO: this is not correct: the intersection
+		    	//      of two different instantiations of an
+		    	//      invariant type is actually Nothing
+		    	//      unless the type arguments are equivalent
+		    	//      or are type parameters that might 
+		    	//      represent equivalent types at runtime.
+		    	//      Therefore, a method T x(T y) of Inv<T> 
+		    	//      should have the signature:
+		    	//             Foo&Bar x(Foo|Bar y)
+		    	//      on the intersection Inv<Foo>&Inv<Bar>.
+		    	//      But this code gives it the more 
+		    	//      restrictive signature:
+		    	//             Foo&Bar x(Foo&Bar y)
+		    	args.add(intersectionType(pta, ta, unit));
+		    }
+		}
+		//TODO: broken handling of member types!
+		ProducedType pit = td.getProducedType(pt.getQualifyingType(), args);
+		return pit;
+	}
     
     /**
      * Determine if a type of form X<P>&X<Q> is equivalent to
@@ -517,31 +524,24 @@ public class Util {
      */
     private static boolean haveUninhabitableIntersection
             (ProducedType p, ProducedType q, Unit unit) {
-//		for (ProducedType pst: p.getSupertypes()) {
-//    		TypeDeclaration std = pst.getDeclaration();
-//    		if (std instanceof ClassOrInterface) {
-//    			ProducedType qst = q.getSupertype(std);
-//    			if (qst!=null) {
     	List<TypeDeclaration> stds = p.getDeclaration().getSuperTypeDeclarations();
     	stds.retainAll(q.getDeclaration().getSuperTypeDeclarations());
     	for (TypeDeclaration std: stds) {
     		ProducedType pst = p.getSupertype(std);
     		ProducedType qst = q.getSupertype(std);
-    				for (TypeParameter tp: std.getTypeParameters()) {
-    					if (tp.isInvariant()) {
-    						ProducedType psta = pst.getTypeArguments().get(tp);
-    						ProducedType qsta = qst.getTypeArguments().get(tp);
-    						if (psta!=null && psta.isWellDefined() &&
-    								qsta!=null && psta.isWellDefined() &&
-    								//what about types with UnknownType as an arg?
-    								!pst.containsTypeParameters() && 
-    								!qst.containsTypeParameters() &&
-    								!pst.isExactly(qst)) {
-    							return true;
-    						}
-    					}
-//    				}
-//    			}
+    		for (TypeParameter tp: std.getTypeParameters()) {
+    			if (tp.isInvariant()) {
+    				ProducedType psta = pst.getTypeArguments().get(tp);
+    				ProducedType qsta = qst.getTypeArguments().get(tp);
+    				if (psta!=null && psta.isWellDefined() &&
+    						qsta!=null && psta.isWellDefined() &&
+    						//what about types with UnknownType as an arg?
+    						!pst.containsTypeParameters() && 
+    						!qst.containsTypeParameters() &&
+    						!pst.isExactly(qst)) {
+    					return true;
+    				}
+    			}
     		}
     	}
 		return false;
