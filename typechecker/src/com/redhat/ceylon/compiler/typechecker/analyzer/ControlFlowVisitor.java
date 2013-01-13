@@ -2,6 +2,8 @@ package com.redhat.ceylon.compiler.typechecker.analyzer;
 
 import static com.redhat.ceylon.compiler.typechecker.tree.Util.name;
 
+import com.redhat.ceylon.compiler.typechecker.model.ProducedType;
+import com.redhat.ceylon.compiler.typechecker.model.Unit;
 import com.redhat.ceylon.compiler.typechecker.tree.Node;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree;
 import com.redhat.ceylon.compiler.typechecker.tree.Visitor;
@@ -361,13 +363,31 @@ public class ControlFlowVisitor extends Visitor {
         boolean d = beginIndefiniteReturnScope();
         
         Boolean b = beginLoop();
+        boolean atLeastOneIteration = false;
         if (that.getForClause()!=null) {
             that.getForClause().visit(this);
+            Unit unit = that.getUnit();
+			ProducedType neit = unit.getNonemptyIterableType(unit
+            		.getAnythingDeclaration().getType());
+            Tree.ForIterator fi = that.getForClause().getForIterator();
+            if (fi!=null) {
+            	Tree.SpecifierExpression se = fi.getSpecifierExpression();
+            	if (se!=null) {
+            		Tree.Expression e = se.getExpression();
+            		if (e!=null) {
+            			ProducedType t = e.getTypeModel();
+            			atLeastOneIteration = t!=null && t.isSubtypeOf(neit);
+            		}
+            	}
+            }
         }
         boolean definitelyDoesNotExitFromFor = !exitedFromLoop;
+        boolean definitelyReturnsFromFor = definitelyReturns && 
+        		atLeastOneIteration;
         that.setExits(exitedFromLoop);
         endLoop(b);
-        endDefiniteReturnScope(d);
+        
+        definitelyReturns = d || definitelyReturnsFromFor;
         
         boolean definitelyReturnsFromFail;
         if (that.getElseClause()!=null) {
@@ -378,7 +398,8 @@ public class ControlFlowVisitor extends Visitor {
             definitelyReturnsFromFail = false;
         }
         
-        definitelyReturns = d || (definitelyReturnsFromFail && definitelyDoesNotExitFromFor);
+        definitelyReturns = d || definitelyReturnsFromFor || 
+        		(definitelyReturnsFromFail && definitelyDoesNotExitFromFor);
     }
 
     @Override
@@ -392,7 +413,7 @@ public class ControlFlowVisitor extends Visitor {
         for (Tree.CaseClause cc: that.getSwitchCaseList().getCaseClauses()) {
             cc.visit(this);
             definitelyReturnsFromEveryCatch = definitelyReturnsFromEveryCatch && definitelyReturns;
-            endDefiniteReturnScope(d);            
+            endDefiniteReturnScope(d);
         }
         
         if (that.getSwitchCaseList().getElseClause()!=null) {

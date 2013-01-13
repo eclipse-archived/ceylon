@@ -172,10 +172,29 @@ interface DefiniteReturn {
         @error doNull();
     }
     
+    void voidMethodWithReturnInEmptyFor() {
+        for (X x in {}) {
+            doSomething();
+            return;
+        }
+        doNull();
+    }
+    
     void voidMethodWithReturnInFor() {
         for (X x in {X()}) {
             doSomething();
             return;
+        }
+        @error doNull();
+    }
+    
+    void voidMethodWithReturnInEmptyFor2() {
+        for (X x in {}) {
+            doSomething();
+            return;
+        }
+        else {
+            doSomethingElse();
         }
         doNull();
     }
@@ -186,9 +205,20 @@ interface DefiniteReturn {
             return;
         }
         else {
-            doSomethingElse();
+            @error doSomethingElse();
         }
-        doNull();
+        @error doNull();
+    }
+    
+    void voidMethodWithReturnInForAndEmptyFail() {
+        for (X x in {}) {
+            doSomething();
+            return;
+        }
+        else {
+            doSomethingElse();
+            return;
+        }
     }
     
     void voidMethodWithReturnInForAndFail() {
@@ -197,8 +227,8 @@ interface DefiniteReturn {
             return;
         }
         else {
-            doSomethingElse();
-            return;
+            @error doSomethingElse();
+            @error return;
         }
     }
     
@@ -466,12 +496,20 @@ interface DefiniteReturn {
         @error doNull();
     }
     
-    @error X methodWithReturnInFor() {
-        for (X x in {X()}) {
+    @error X methodWithReturnInEmptyFor() {
+        for (X x in {}) {
             doSomething();
             return X();
         }
         doNull();
+    }
+    
+    X methodWithReturnInFor() {
+        for (X x in {X()}) {
+            doSomething();
+            return X();
+        }
+        @error doNull();
     }
     
     X methodWithReturnInFail() {
@@ -495,8 +533,19 @@ interface DefiniteReturn {
         doNull();
     }
     
-    @error X methodWithReturnInFor2() {
+    X methodWithReturnInFor2() {
         for (X x in {X()}) {
+            doSomething();
+            return X();
+        }
+        else {
+            @error doSomethingElse();
+        }
+        @error doNull();
+    }
+    
+    @error X methodWithReturnInEmptyFor2() {
+        for (X x in {}) {
             doSomething();
             return X();
         }
@@ -506,8 +555,8 @@ interface DefiniteReturn {
         doNull();
     }
     
-    X methodWithReturnInFor3() {
-        for (X x in {X()}) {
+    X methodWithReturnInEmptyFor3() {
+        for (X x in {}) {
             doSomething();
             return X();
         }
@@ -518,14 +567,37 @@ interface DefiniteReturn {
         return X();
     }
     
-    X methodWithReturnInForAndFail() {
+    X methodWithReturnInFor3() {
         for (X x in {X()}) {
+            doSomething();
+            return X();
+        }
+        else {
+            @error doSomethingElse();
+        }
+        @error doNull();
+        @error return X();
+    }
+    
+    X methodWithReturnInEmptyForAndFail() {
+        for (X x in {}) {
             doSomething();
             return X();
         }
         else {
             doSomethingElse();
             return X();
+        }
+    }
+    
+    X methodWithReturnInForAndFail() {
+        for (X x in {X()}) {
+            doSomething();
+            return X();
+        }
+        else {
+            @error doSomethingElse();
+            @error return X();
         }
     }
     
@@ -729,16 +801,35 @@ interface DefiniteReturn {
         @error doNull();
     }
     
-    @error X getterWithReturnInFor {
+    X getterWithReturnInFor {
         for (X x in {X()}) {
+            doSomething();
+            return X();
+        }
+        @error doNull();
+    }
+    
+    @error X getterWithReturnInEmptyFor {
+        for (X x in {}) {
             doSomething();
             return X();
         }
         doNull();
     }
     
-    @error X getterWithReturnInFor2 {
+    X getterWithReturnInFor2 {
         for (X x in {X()}) {
+            doSomething();
+            return X();
+        }
+        else {
+            @error doSomethingElse();
+        }
+        @error doNull();
+    }
+    
+    @error X getterWithReturnInEmptyFor2 {
+        for (X x in {}) {
             doSomething();
             return X();
         }
@@ -754,10 +845,33 @@ interface DefiniteReturn {
             return X();
         }
         else {
+            @error doSomethingElse();
+        }
+        @error doNull();
+        @error return X();
+    }
+    
+    X getterWithReturnInEmptyFor3 {
+        for (X x in {}) {
+            doSomething();
+            return X();
+        }
+        else {
             doSomethingElse();
         }
         doNull();
         return X();
+    }
+    
+    X getterWithReturnInEmptyForAndFail {
+        for (X x in {}) {
+            doSomething();
+            return X();
+        }
+        else {
+            doSomethingElse();
+            return X();
+        }
     }
     
     X getterWithReturnInForAndFail {
@@ -766,8 +880,8 @@ interface DefiniteReturn {
             return X();
         }
         else {
-            doSomethingElse();
-            return X();
+            @error doSomethingElse();
+            @error return X();
         }
     }
     
@@ -976,11 +1090,30 @@ interface DefiniteReturn {
             doSomething();
             return;
         }
+        @error doNull();
+    }
+    
+    assign getterWithReturnInEmptyFor {
+        for (X x in {}) {
+            doSomething();
+            return;
+        }
         doNull();
     }
     
     assign getterWithReturnInFor2 {
         for (X x in {X()}) {
+            doSomething();
+            return;
+        }
+        else {
+            @error doSomethingElse();
+        }
+        @error doNull();
+    }
+    
+    assign getterWithReturnInEmptyFor2 {
+        for (X x in {}) {
             doSomething();
             return;
         }
@@ -992,6 +1125,17 @@ interface DefiniteReturn {
     
     assign getterWithReturnInForAndFail {
         for (X x in {X()}) {
+            doSomething();
+            return;
+        }
+        else {
+            @error doSomethingElse();
+            @error return;
+        }
+    }
+    
+    assign getterWithReturnInEmptyForAndFail {
+        for (X x in {}) {
             doSomething();
             return;
         }
