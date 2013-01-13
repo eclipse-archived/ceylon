@@ -270,7 +270,7 @@ public class ControlFlowVisitor extends Visitor {
 
     private void checkExecutableStatementAllowed(Node that) {
         if (!canExecute) {
-            that.addError("misplaced statement or initializer");
+            that.addError("statement or initializer may not occur directly in interface body");
         }
     }
     
