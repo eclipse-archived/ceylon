@@ -379,13 +379,15 @@ class Util {
                 }
                 if (a.getPositionalArgumentList()!=null) {
                     for ( Tree.PositionalArgument pa: a.getPositionalArgumentList().getPositionalArguments() ) {
-                        Tree.Term t = pa.getExpression().getTerm();
-                        if (t instanceof Tree.Literal) {
-                            ann.addPositionalArgment( ( (Tree.Literal) t ).getText() );
-                        }
-                        else if (t instanceof Tree.BaseMemberOrTypeExpression) {
-                            ann.addPositionalArgment( ( (Tree.BaseMemberOrTypeExpression) t ).getIdentifier().getText() );
-                        }
+                    	if (pa instanceof Tree.ListedArgument) {
+                    		Tree.Term t = ((Tree.ListedArgument) pa).getExpression().getTerm();
+                    		if (t instanceof Tree.Literal) {
+                    			ann.addPositionalArgment( ( (Tree.Literal) t ).getText() );
+                    		}
+                    		else if (t instanceof Tree.BaseMemberOrTypeExpression) {
+                    			ann.addPositionalArgment( ( (Tree.BaseMemberOrTypeExpression) t ).getIdentifier().getText() );
+                    		}
+                    	}
                     }
                 }
                 annotations.add(ann);

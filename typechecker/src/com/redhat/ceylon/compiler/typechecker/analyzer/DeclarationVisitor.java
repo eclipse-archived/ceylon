@@ -1143,6 +1143,9 @@ public class DeclarationVisitor extends Visitor {
 			if (a instanceof Tree.SpreadArgument) {
         		a.addError("spread argument must be the last argument in the argument list");
         	}
+			if (a instanceof Tree.Comprehension) {
+        		a.addError("comprehension must be the last argument in the argument list");
+        	}
         }
 	}    
     

@@ -268,7 +268,7 @@ public class SelfReferenceVisitor extends Visitor {
         }
     }
 
-    @Override
+    /*@Override
     public void visit(Tree.PositionalArgumentList that) {
         super.visit(that);
         if ( inBody() ) {
@@ -277,6 +277,28 @@ public class SelfReferenceVisitor extends Visitor {
                 if (e!=null) {
                     checkSelfReference(arg, e.getTerm());
                 }
+            }
+        }
+    }*/
+
+    @Override
+    public void visit(Tree.ListedArgument that) {
+        super.visit(that);
+        if ( inBody() ) {
+            Tree.Expression e = that.getExpression();
+            if (e!=null) {
+            	checkSelfReference(that, e.getTerm());
+            }
+        }
+    }
+
+    @Override
+    public void visit(Tree.SpreadArgument that) {
+        super.visit(that);
+        if ( inBody() ) {
+            Tree.Expression e = that.getExpression();
+            if (e!=null) {
+            	checkSelfReference(that, e.getTerm());
             }
         }
     }

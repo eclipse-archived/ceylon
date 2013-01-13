@@ -1528,7 +1528,8 @@ sequencedArgument returns [SequencedArgument sequencedArgument]
                 $sequencedArgument.addPositionalArgument($sa1.positionalArgument); }
         |
           c1=comprehension
-          { $sequencedArgument.setComprehension($c1.comprehension); }
+          { if ($c1.comprehension!=null)
+                $sequencedArgument.addPositionalArgument($c1.comprehension); }
         )
         (
           c=COMMA
@@ -1545,7 +1546,8 @@ sequencedArgument returns [SequencedArgument sequencedArgument]
               sequencedArgument.setEndToken(null); }
           |
             c2=comprehension
-            { $sequencedArgument.setComprehension($c2.comprehension);
+            { if ($c2.comprehension!=null)
+                $sequencedArgument.addPositionalArgument($c2.comprehension);
               sequencedArgument.setEndToken(null); }
           |
             { displayRecognitionError(getTokenNames(), 
@@ -1768,51 +1770,18 @@ parExpression returns [Expression expression]
 positionalArguments returns [PositionalArgumentList positionalArgumentList]
     : LPAREN 
       { $positionalArgumentList = new PositionalArgumentList($LPAREN); }
-      ( 
-        (
-          pa1=positionalArgument
-          { if ($pa1.positionalArgument!=null)
-                $positionalArgumentList.addPositionalArgument($pa1.positionalArgument); }
-        |
-          sa1=spreadArgument
-          { if ($sa1.positionalArgument!=null)
-                $positionalArgumentList.addPositionalArgument($sa1.positionalArgument); }
-        |
-          c1=comprehension
-          { $positionalArgumentList.setComprehension($c1.comprehension); }
-        )
-        (
-          c=COMMA 
-          { if ($positionalArgumentList.getComprehension()!=null)
-                displayRecognitionError(getTokenNames(), 
-                    new MismatchedTokenException(RPAREN, input));
-            $positionalArgumentList.setEndToken($c); }
-          (
-            pa2=positionalArgument
-            { if ($pa2.positionalArgument!=null)
-                  $positionalArgumentList.addPositionalArgument($pa2.positionalArgument); 
-              positionalArgumentList.setEndToken(null); }
-          |
-            sa2=spreadArgument
-            { if ($sa2.positionalArgument!=null)
-                  $positionalArgumentList.addPositionalArgument($sa2.positionalArgument); 
-              positionalArgumentList.setEndToken(null); }
-          |
-            c2=comprehension
-            { $positionalArgumentList.setComprehension($c2.comprehension);
-              positionalArgumentList.setEndToken(null); }
-          | 
-            { displayRecognitionError(getTokenNames(), 
-                new MismatchedTokenException(LIDENTIFIER, input)); }
-          )
-        )* 
+      (
+        sa=sequencedArgument
+        { if ($sa.sequencedArgument!=null) 
+              $positionalArgumentList.getPositionalArguments()
+                  .addAll($sa.sequencedArgument.getPositionalArguments()); }
       )?
       RPAREN
       { $positionalArgumentList.setEndToken($RPAREN); }
     ;
 
-positionalArgument returns [PositionalArgument positionalArgument]
-    : { $positionalArgument = new PositionalArgument(null); }
+positionalArgument returns [ListedArgument positionalArgument]
+    : { $positionalArgument = new ListedArgument(null); }
       functionOrExpression
       { $positionalArgument.setExpression($functionOrExpression.expression); }
     ;
@@ -2630,14 +2599,14 @@ literalArguments returns [PositionalArgumentList argumentList]
       )*
     ;
     
-literalArgument returns [PositionalArgument positionalArgument]
+literalArgument returns [ListedArgument positionalArgument]
     : nonstringLiteral
-      { $positionalArgument = new PositionalArgument(null);
+      { $positionalArgument = new ListedArgument(null);
         Expression e = new Expression(null);
         e.setTerm($nonstringLiteral.literal);
         $positionalArgument.setExpression(e); }
     | stringLiteral
-      { $positionalArgument = new PositionalArgument(null);
+      { $positionalArgument = new ListedArgument(null);
         Expression e = new Expression(null);
         e.setTerm($stringLiteral.stringLiteral);
         $positionalArgument.setExpression(e); 

@@ -61,7 +61,6 @@ import com.redhat.ceylon.compiler.typechecker.tree.Tree;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.DefaultArgument;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.Expression;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.PositionalArgument;
-import com.redhat.ceylon.compiler.typechecker.tree.Tree.PositionalArgumentList;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.SpecifierExpression;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.SpecifierOrInitializerExpression;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.SupertypeQualifier;
@@ -1500,7 +1499,7 @@ public class ExpressionVisitor extends Visitor {
             p.setDirectlyInvoked(true);
         }
         
-        PositionalArgumentList pal = that.getPositionalArgumentList();
+        Tree.PositionalArgumentList pal = that.getPositionalArgumentList();
 		if (pal!=null) {
             pal.visit(this);
             if (isDirectInvocation) {
@@ -1510,7 +1509,7 @@ public class ExpressionVisitor extends Visitor {
                 List<ProducedType> sig = new ArrayList<ProducedType>();
                 List<PositionalArgument> args = pal.getPositionalArguments();
 				for (Tree.PositionalArgument pa: args) {
-                    sig.add(pa.getExpression().getTypeModel());
+                    sig.add(pa.getTypeModel());
                 }
 		        Tree.MemberOrTypeExpression p = (Tree.MemberOrTypeExpression) that.getPrimary();
                 p.setSignature(sig);
@@ -1518,8 +1517,9 @@ public class ExpressionVisitor extends Visitor {
             }
         }
         
-        if (that.getNamedArgumentList()!=null) {
-            that.getNamedArgumentList().visit(this);
+        Tree.NamedArgumentList nal = that.getNamedArgumentList();
+		if (nal!=null) {
+            nal.visit(this);
         }
         
         that.getPrimary().visit(this);
@@ -1637,50 +1637,22 @@ public class ExpressionVisitor extends Visitor {
             Parameter sp = getUnspecifiedParameter(null, parameters, foundParameters);
             if (sp!=null) {
             	inferTypeArg(sa, tp, sp, inferredTypes);
-            	Tree.Comprehension ch = sa.getComprehension();
-            	if (ch!=null) {
-            		inferTypeArg(ch, tp, sp, inferredTypes);
-            	}
             }
         }    
-    }
-
-    private void inferTypeArg(Tree.Comprehension ch, TypeParameter tp,
-            ParameterList parameters, List<ProducedType> inferredTypes) {
-        Parameter sp = getSequencedParameter(parameters);
-        if (sp!=null) {
-            ProducedType ct = ch.getForComprehensionClause().getTypeModel();
-            if (ct!=null) {
-                ProducedType spt = unit.getIteratedType(sp.getType());
-                addToUnion(inferredTypes, inferTypeArg(tp, spt, ct,
-                        new ArrayList<TypeParameter>()));
-            }
-        }
-    }
-
-    private void inferTypeArg(Tree.Comprehension ch, TypeParameter tp,
-            Parameter sp, List<ProducedType> inferredTypes) {
-    	ProducedType ct = ch.getForComprehensionClause().getTypeModel();
-    	if (ct!=null) {
-    		ProducedType spt = unit.getIteratedType(sp.getType());
-    		addToUnion(inferredTypes, inferTypeArg(tp, spt, ct,
-    				new ArrayList<TypeParameter>()));
-    	}
     }
 
     private void inferTypeArg(Tree.SequencedArgument sa, TypeParameter tp,
             Parameter sp, List<ProducedType> inferredTypes) {
     	List<Tree.PositionalArgument> args = sa.getPositionalArguments();
     	for (int i=0; i<args.size(); i++) {
-    		PositionalArgument a = args.get(i);
-    		Tree.Expression e = a.getExpression();
+    		Tree.PositionalArgument a = args.get(i);
     		ProducedType spt = a instanceof Tree.SpreadArgument ? 
     				sp.getType() : unit.getIteratedType(sp.getType());
-    				ProducedType sat = e.getTypeModel();
-    				if (sat!=null) {
-    					addToUnion(inferredTypes, inferTypeArg(tp, spt, sat,
-    							new ArrayList<TypeParameter>()));
-    				}
+			ProducedType t = a.getTypeModel();
+			if (t!=null) {
+				addToUnion(inferredTypes, inferTypeArg(tp, spt, t,
+						new ArrayList<TypeParameter>()));
+			}
     	}
     }
 
@@ -1720,13 +1692,12 @@ public class ExpressionVisitor extends Visitor {
             List<ProducedType> inferredTypes) {
         for (int i=0; i<parameters.getParameters().size(); i++) {
             Parameter parameter = parameters.getParameters().get(i);
-            List<PositionalArgument> args = pal.getPositionalArguments();
+            List<Tree.PositionalArgument> args = pal.getPositionalArguments();
 			if (args.size()>i) {
                 if (parameter.isSequenced() && !hasSpreadArgument(args)) {
                     ProducedType spt = unit.getIteratedType(parameter.getType());
                     for (int k=i; k<args.size(); k++) {
-                        ProducedType sat = args.get(k)
-                                .getExpression().getTypeModel();
+                        ProducedType sat = args.get(k).getTypeModel();
                         if (sat!=null) {
                             addToUnion(inferredTypes, inferTypeArg(tp, spt, sat,
                                     new ArrayList<TypeParameter>()));
@@ -1736,22 +1707,15 @@ public class ExpressionVisitor extends Visitor {
                 }
                 else {
                     Tree.PositionalArgument a = args.get(i);
-                    if (a.getExpression()!=null) {
-                        ProducedType pt = pr.getTypedParameter(parameter)
-                                .getFullType();
-                        addToUnion(inferredTypes, inferTypeArg(tp, pt, 
-                                getPositionalArgumentType(a), 
-                                new ArrayList<TypeParameter>()));
-                    }
+                    ProducedType pt = pr.getTypedParameter(parameter)
+                    		.getFullType();
+                    addToUnion(inferredTypes, inferTypeArg(tp, pt, 
+                    		a.getTypeModel(), 
+                    		new ArrayList<TypeParameter>()));
                 }
             }
         }
         
-        Tree.Comprehension ch = pal.getComprehension();
-        if (ch!=null) {
-            inferTypeArg(ch, tp, parameters, inferredTypes);
-        }
-
     }
     
     private ProducedType union(List<ProducedType> types) {
@@ -2065,7 +2029,7 @@ public class ExpressionVisitor extends Visitor {
             int i=0;
             for (; i<paramCount-(sequenced?1:0) && i<argCount; i++) {
                 Tree.PositionalArgument arg = args.get(i);
-                checkAssignable(getPositionalArgumentType(arg), 
+                checkAssignable(arg.getTypeModel(), 
                         typeArgs.get(i), arg, 
                         "argument must be assignable to parameter type");
             }
@@ -2075,11 +2039,11 @@ public class ExpressionVisitor extends Visitor {
                 for (; i<argCount; i++) {
                     Tree.PositionalArgument arg = args.get(i);
                     if (arg instanceof Tree.SpreadArgument) {
-                        checkAssignable(getPositionalArgumentType(arg), spt, arg, 
+                        checkAssignable(arg.getTypeModel(), spt, arg, 
                                 "spread argument must be assignable to sequenced parameter type");
                     }
                     else {
-                    	checkAssignable(getPositionalArgumentType(arg), spit, arg, 
+                    	checkAssignable(arg.getTypeModel(), spit, arg, 
                     			"argument must be assignable to sequenced parameter type");
                     }
                 }
@@ -2155,10 +2119,6 @@ public class ExpressionVisitor extends Visitor {
                         sp + " of " + pr.getDeclaration().getName(unit));
             }
             checkSequencedArgument(sa, pr, sp);
-            Tree.Comprehension ch = sa.getComprehension();
-            if (ch!=null) {
-                checkComprehensionArgument(ch, pr, sp);
-            }
         }
     }
 
@@ -2237,34 +2197,20 @@ public class ExpressionVisitor extends Visitor {
         ProducedType paramType = pr.getTypedParameter(p).getFullType();
         for (int i=0; i<args.size(); i++) {
         	Tree.PositionalArgument a = args.get(i);
-			Tree.Expression e = a.getExpression();
         	if (paramType==null) {
         		paramType = new UnknownType(sa.getUnit()).getType();
         	}
         	if (a instanceof Tree.SpreadArgument) {
-        		checkAssignable(e.getTypeModel(), paramType, sa, 
+        		checkAssignable(a.getTypeModel(), paramType, sa, 
         				"spread argument must be assignable to iterable parameter " + 
         						p.getName() + " of " + pr.getDeclaration().getName(unit));
         	}
         	else {
-        		checkAssignable(e.getTypeModel(), unit.getIteratedType(paramType), sa, 
+        		checkAssignable(a.getTypeModel(), unit.getIteratedType(paramType), sa, 
         				"argument must be assignable to iterable parameter " + 
         						p.getName() + " of " + pr.getDeclaration().getName(unit));
         	}
         }
-    }
-    
-    private void checkComprehensionArgument(Tree.Comprehension ch, ProducedReference pr, 
-            Parameter p) {
-        //a.setParameter(p); //TODO!!!!!!
-        ProducedType paramType = pr.getTypedParameter(p).getFullType();
-        if (paramType==null) {
-            paramType = new UnknownType(ch.getUnit()).getType();
-        }
-        ProducedType ct = ch.getForComprehensionClause().getTypeModel();
-        checkAssignable(ct, unit.getIteratedType(paramType), ch, 
-                "argument must be assignable to iterable parameter " + 
-                p.getName() + " of " + pr.getDeclaration().getName(unit));
     }
     
     private Parameter getMatchingParameter(ParameterList pl, Tree.NamedArgument na) {
@@ -2275,18 +2221,6 @@ public class ExpressionVisitor extends Visitor {
             }
         }
         return null;
-    }
-
-    private Parameter getSequencedParameter(ParameterList pl) {
-        int s = pl.getParameters().size();
-        if (s==0) return null;
-        Parameter p = pl.getParameters().get(s-1);
-        if (p.isSequenced()) {
-            return p;
-        }
-        else {
-            return null;
-        }
     }
 
     private Parameter getUnspecifiedParameter(ProducedReference pr,
@@ -2327,9 +2261,6 @@ private void checkPositionalArguments(ParameterList pl, ProducedReference pr,
                     if (hasSpreadArgument(args)) {
                         checkPositionalArgument(p, pr, args.get(args.size()-1), paramType);
                     }
-                    if (pal.getComprehension()!=null) {
-                        pal.getComprehension().addError("sequenced parameter already has arguments");
-                    }
                     return; //Note: early return!
                 }
                 else {
@@ -2343,39 +2274,14 @@ private void checkPositionalArguments(ParameterList pl, ProducedReference pr,
                     pr.getDeclaration().getName(unit) + " has " + args.size() + " parameters", 2000);
         }
 
-        Tree.Comprehension ch = pal.getComprehension();
-        if (ch!=null) {
-            Parameter p = getSequencedParameter(pl);
-            if (p!=null) {
-                ProducedType paramType = pr.getTypedParameter(p.getAliasedParameter())
-                        .getFullType();
-                checkComprehensionPositionalArgument(p, pr, ch, paramType);
-            }
-        }
-
         if (!pl.hasSequencedParameter()) {
             if (hasSpreadArgument(args)) {
                 args.get(args.size()-1)
                         .addError("no matching sequenced parameter declared by " +
                                 pr.getDeclaration().getName(unit));
             }
-            if (ch!=null) {
-                ch.addError("no matching sequenced parameter declared by " +
-                        pr.getDeclaration().getName(unit));
-            }
         }
         
-    }
-
-    private void checkComprehensionPositionalArgument(Parameter p, ProducedReference pr,
-            Tree.Comprehension ch, ProducedType paramType) {
-        ProducedType at = paramType==null ? null : 
-                unit.getIteratedType(paramType);
-        //a.setParameter(p); //TODO!!!!
-        ProducedType ct = ch.getForComprehensionClause().getTypeModel();
-        checkAssignable(ct, at, ch, 
-                "comprehension must be assignable to sequenced parameter " + 
-                p.getName()+ " of " + pr.getDeclaration().getName(unit));
     }
 
     private void checkSequencedPositionalArgument(Parameter p, ProducedReference pr,
@@ -2387,12 +2293,9 @@ private void checkPositionalArguments(ParameterList pl, ProducedReference pr,
             Tree.PositionalArgument a = args.get(j);
             if (!(a instanceof Tree.SpreadArgument)) {
             	a.setParameter(p);
-            	Tree.Expression e = a.getExpression();
-            	if (e!=null) {
-            		checkAssignable(e.getTypeModel(), at, a, 
-            				"argument must be assignable to sequenced parameter " + 
-            						p.getName()+ " of " + pr.getDeclaration().getName(unit), 2101);
-            	}
+            	checkAssignable(a.getTypeModel(), at, a, 
+            			"argument must be assignable to sequenced parameter " + 
+            					p.getName()+ " of " + pr.getDeclaration().getName(unit), 2101);
             }
         }
     }
@@ -2410,19 +2313,31 @@ private void checkPositionalArguments(ParameterList pl, ProducedReference pr,
     private void checkPositionalArgument(Parameter p, ProducedReference pr,
             Tree.PositionalArgument a, ProducedType paramType) {
         a.setParameter(p);
-        if (a.getExpression()!=null) {
-            checkAssignable(getPositionalArgumentType(a), paramType, a, 
-                    "argument must be assignable to parameter " + 
-                    p.getName() + " of " + pr.getDeclaration().getName(unit), 
-                    2100);
-        }
+        checkAssignable(a.getTypeModel(), paramType, a, 
+        		"argument must be assignable to parameter " + 
+				p.getName() + " of " + pr.getDeclaration().getName(unit), 
+				2100);
+    }
+    
+    @Override public void visit(Tree.Comprehension that) {
+    	super.visit(that);
+    	that.setTypeModel(that.getForComprehensionClause().getTypeModel());
     }
 
-    private ProducedType getPositionalArgumentType(Tree.PositionalArgument a) {
-        Tree.Expression e = a.getExpression();
-        return e==null ? null : e.getTypeModel();
+    @Override public void visit(Tree.SpreadArgument that) {
+    	super.visit(that);
+    	if (that.getExpression()!=null) {
+    		that.setTypeModel(that.getExpression().getTypeModel());
+    	}
     }
-        
+
+    @Override public void visit(Tree.ListedArgument that) {
+    	super.visit(that);
+    	if (that.getExpression()!=null) {
+    		that.setTypeModel(that.getExpression().getTypeModel());
+    	}
+    }
+
     @Override public void visit(Tree.Annotation that) {
         super.visit(that);
         Declaration dec = ((Tree.MemberOrTypeExpression) that.getPrimary()).getDeclaration();
@@ -3768,7 +3683,7 @@ private void checkPositionalArguments(ParameterList pl, ProducedReference pr,
         ProducedType ut = unit.getNothingDeclaration().getType();
         for (int i=es.size()-1; i>=0; i--) {
             Tree.PositionalArgument a = es.get(i);
-            ProducedType t = a.getExpression().getTypeModel();
+            ProducedType t = a.getTypeModel();
 			if (t!=null) {
                 ProducedType et = t;
                 if (a instanceof Tree.SpreadArgument) {
@@ -3779,6 +3694,11 @@ private void checkPositionalArguments(ParameterList pl, ProducedReference pr,
                         a.addError("spread argument expression is not sequential: " +
                                 et.getProducedTypeName(unit) + " is not a sequence type");
                     }
+                }
+                else if (a instanceof Tree.Comprehension) {
+                	et = unit.denotableType(et);
+                	ut = et;
+                	result = unit.getSequentialType(et);
                 }
                 else {
                     et = unit.denotableType(et);
@@ -3796,13 +3716,6 @@ private void checkPositionalArguments(ParameterList pl, ProducedReference pr,
         Tree.SequencedArgument sa = that.getSequencedArgument();
         if (sa!=null) {
             tt = getTupleType(sa.getPositionalArguments(), true);
-            if (sa.getComprehension()!=null) {
-                ProducedType ct = sa.getComprehension()
-                        .getForComprehensionClause().getTypeModel();
-                if (ct!=null) {
-                    tt = unit.getSequentialType(ct);
-                }
-            }
         }
         else {
             tt = unit.getEmptyDeclaration().getType();
@@ -3818,13 +3731,6 @@ private void checkPositionalArguments(ParameterList pl, ProducedReference pr,
             List<Tree.PositionalArgument> pas = sa.getPositionalArguments();
             st = getTupleType(pas, false)
             		.getSupertype(unit.getIterableDeclaration());
-            if (sa.getComprehension()!=null) {
-                ProducedType ct = sa.getComprehension()
-                        .getForComprehensionClause().getTypeModel();
-                if (ct!=null) {
-                    st = unit.getIterableType(ct);
-                }
-            }
         }
         else {
             st = unit.getEmptyDeclaration().getType();
