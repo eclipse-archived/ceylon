@@ -99,7 +99,7 @@ shared interface Correspondence<in Key, out Item>
         
         shared actual Item? last => outer.item(keys.last);
         
-        shared actual Item?[] rest = outer.items(keys.rest*);
+        shared actual Item?[] rest = outer.items(*keys.rest);
         
         shared actual Item? item(Integer index) {
             if (exists Key key = keys.item(index)) {
