@@ -3,7 +3,9 @@ package com.redhat.ceylon.compiler.typechecker.model;
 import static com.redhat.ceylon.compiler.typechecker.model.Util.addToIntersection;
 import static com.redhat.ceylon.compiler.typechecker.model.Util.addToUnion;
 import static com.redhat.ceylon.compiler.typechecker.model.Util.arguments;
+import static com.redhat.ceylon.compiler.typechecker.model.Util.constructPrincipalInstantiation;
 import static com.redhat.ceylon.compiler.typechecker.model.Util.isElementOfUnion;
+import static com.redhat.ceylon.compiler.typechecker.model.Util.principalQualifyingType;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -502,8 +504,9 @@ public class ProducedType extends ProducedReference {
      *         there is no such supertype
      */
     public ProducedType getSupertype(final TypeDeclaration dec) {
-        boolean complexType = dec instanceof UnionType || dec instanceof IntersectionType;
-        if(!complexType && superTypesCache.containsKey(dec)){
+        boolean complexType = dec instanceof UnionType 
+        		|| dec instanceof IntersectionType;
+        if (!complexType && superTypesCache.containsKey(dec)) {
             return superTypesCache.get(dec);
         }
         Criteria c = new Criteria() {
@@ -679,11 +682,10 @@ public class ProducedType extends ProducedReference {
                     	possibleResult=possibleResult.getSupertype(d);
                     }*/
                     
-                    if (d!=null) {
-                        List<ProducedType> args = constructPrincipalInstantiation(
-                                d, result, possibleResult);
-                        //TODO: broken for member types! ugh :-(
-                        result = d.getProducedType(result.getQualifyingType(), args);
+                    Unit unit = getDeclaration().getUnit();
+					if (d!=null) {
+                        result = d.getProducedType(principalQualifyingType(result, possibleResult, d, unit),
+                        		constructPrincipalInstantiation(d, result, possibleResult, unit));
                     }
                     else {
                         //ambiguous! we can't decide between the two 
@@ -693,7 +695,7 @@ public class ProducedType extends ProducedReference {
                         	//a common supertype by forming the union of 
                         	//the two possible results (since A|B is always
                         	//a supertype of A&B)
-                        	UnionType ut = new UnionType(getDeclaration().getUnit());
+                        	UnionType ut = new UnionType(unit);
                         	List<ProducedType> caseTypes = new ArrayList<ProducedType>();
                         	//if (extendedType!=null) caseTypes.add(extendedType);
                         	//caseTypes.addAll(satisfiedTypes);
@@ -702,11 +704,11 @@ public class ProducedType extends ProducedReference {
                         	ut.setCaseTypes(caseTypes);
                         	result = ut.getType().getSupertype(c, list);
                         	if (result==null) {
-                            	return new UnknownType(getDeclaration().getUnit()).getType();
+                            	return new UnknownType(unit).getType();
                         	}
                         }
                         else {
-                        	return new UnknownType(getDeclaration().getUnit()).getType();
+                        	return new UnknownType(unit).getType();
                         }
                     }
                 }
@@ -716,56 +718,6 @@ public class ProducedType extends ProducedReference {
         return result;
     }
 
-    /**
-     * Given two instantiations of the same type declaration,
-     * construct a principal instantiation that is a supertype
-     * of both. This is impossible in the following special
-     * cases:
-     * 
-     * - an abstract class which does not obey the principal
-     *   instantiation inheritance rule
-     * - an intersection between two instantiations of the
-     *   same type where one argument is a type parameter
-     * 
-     * Nevertheless, we give it our best shot!
-     */
-    private List<ProducedType> constructPrincipalInstantiation(
-            TypeDeclaration dec, ProducedType first, ProducedType second) {
-        List<ProducedType> args = new ArrayList<ProducedType>();
-        for (TypeParameter tp: dec.getTypeParameters()) {
-            List<ProducedType> l = new ArrayList<ProducedType>();
-            Unit unit = getDeclaration().getUnit();
-            ProducedType arg;
-            ProducedType rta = first.getTypeArguments().get(tp);
-            ProducedType prta = second.getTypeArguments().get(tp);
-            if (tp.isContravariant()) {
-                addToUnion(l, rta);
-                addToUnion(l, prta);
-                UnionType ut = new UnionType(unit);
-                ut.setCaseTypes(l);
-                arg = ut.getType();
-            }
-            else {//if (tp.isCovariant()) {
-                addToIntersection(l, rta, unit);
-                addToIntersection(l, prta, unit);
-                IntersectionType it = new IntersectionType(unit);
-                it.setSatisfiedTypes(l);
-                arg = it.canonicalize().getType();
-            }
-//                            else {
-//                                if (rta.isExactlyInternal(prta)) {
-//                                    arg = rta;
-//                                }
-//                                else {
-//                                    //TODO: think this case through better!
-//                                    return null;
-//                                }
-//                            }
-            args.add(arg);
-        }
-        return args;
-    }
-    
     private ProducedType qualifiedByDeclaringType() {
         ProducedType qt = getQualifyingType();
         if (qt==null) {

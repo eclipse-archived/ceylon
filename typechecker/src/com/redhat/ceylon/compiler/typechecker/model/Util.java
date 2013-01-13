@@ -519,6 +519,17 @@ public class Util {
 		    	args.add(intersectionType(pta, ta, unit));
 		    }
 		}
+		return td.getProducedType(principalQualifyingType(pt, t, td, unit), args);
+	}
+	
+	/**
+	 * Given two instantiations of a qualified type constructor, 
+	 * determine the qualifying type of the principal 
+	 * instantiation of that type constructor for the 
+	 * intersection of the two types.
+	 */
+	static ProducedType principalQualifyingType(ProducedType pt,
+			ProducedType t, TypeDeclaration td, Unit unit) {
 		ProducedType ptqt = pt.getQualifyingType();
 		ProducedType tqt = t.getQualifyingType();
 		ProducedType qt = null;
@@ -531,7 +542,7 @@ public class Util {
 				qt = principalInstantiation(pst, st, unit);
 			}
 		}
-		return td.getProducedType(qt, args);
+		return qt;
 	}
     
     /**
@@ -754,6 +765,56 @@ public class Util {
     static boolean isVisible(Declaration member, TypeDeclaration type) {
         return type instanceof TypeParameter || 
                 type.isVisible(member.getVisibleScope());
+    }
+
+	/**
+     * Given two instantiations of the same type constructor,
+     * construct a principal instantiation that is a supertype
+     * of both. This is impossible in the following special
+     * cases:
+     * 
+     * - an abstract class which does not obey the principal
+     *   instantiation inheritance rule
+     * - an intersection between two instantiations of the
+     *   same type where one argument is a type parameter
+     * 
+     * Nevertheless, we give it our best shot!
+     */
+    public static List<ProducedType> constructPrincipalInstantiation(
+            TypeDeclaration dec, ProducedType first, ProducedType second,
+            Unit unit) {
+        List<ProducedType> args = new ArrayList<ProducedType>();
+        for (TypeParameter tp: dec.getTypeParameters()) {
+            List<ProducedType> l = new ArrayList<ProducedType>();
+            ProducedType arg;
+            ProducedType rta = first.getTypeArguments().get(tp);
+            ProducedType prta = second.getTypeArguments().get(tp);
+            if (tp.isContravariant()) {
+                addToUnion(l, rta);
+                addToUnion(l, prta);
+                UnionType ut = new UnionType(unit);
+                ut.setCaseTypes(l);
+                arg = ut.getType();
+            }
+            else { //if (tp.isCovariant()) {
+                addToIntersection(l, rta, unit);
+                addToIntersection(l, prta, unit);
+                IntersectionType it = new IntersectionType(unit);
+                it.setSatisfiedTypes(l);
+                arg = it.canonicalize().getType();
+            }
+//                            else {
+//                                if (rta.isExactlyInternal(prta)) {
+//                                    arg = rta;
+//                                }
+//                                else {
+//                                    //TODO: think this case through better!
+//                                    return null;
+//                                }
+//                            }
+            args.add(arg);
+        }
+        return args;
     }
 
 }
