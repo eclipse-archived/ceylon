@@ -4,6 +4,9 @@ interface G {} interface H {}
 
 interface Co<out T> {
     formal shared T get();
+    shared class C<out S>(S* s) {
+        shared T get() => nothing;
+    }
 }
 
 class SuperCo() satisfies Co<Object> {
@@ -49,12 +52,19 @@ class SubCoGood() extends SuperCoGood() satisfies Co<H> {
 }
 void testSubCoGood() {
     value inst = SubCoGood();
+    
     @type:"H&G" inst.get();
     Co<G> cog = inst;
     Co<H> coh = inst;
     Co<Object> coo = inst;
     Co<G&H> cogh = inst;
     @type:"G&H" infer(inst);
+    
+    @type:"G&H" inst.C("").get();
+    Co<G>.C<String|Float> cogc = inst.C("", 0.0);
+    Co<H>.C<String|Float> cohc = inst.C("", 0.0);
+    Co<Object>.C<String|Float> cooc = inst.C("", 0.0);
+    Co<G&H>.C<String|Float> coghc = inst.C("", 0.0);
 }
 
 interface InterCoG satisfies Co<G> {
