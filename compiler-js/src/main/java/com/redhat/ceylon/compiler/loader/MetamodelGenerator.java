@@ -175,6 +175,9 @@ public class MetamodelGenerator {
         } else if (tp.getCaseTypes() != null && !tp.getCaseTypes().isEmpty()) {
             encodeTypes(tp.getCaseTypes(), map, "of");
         }
+        if (tp.getDefaultTypeArgument() != null) {
+            map.put(KEY_DEFAULT, typeMap(tp.getDefaultTypeArgument()));
+        }
         return map;
     }
 

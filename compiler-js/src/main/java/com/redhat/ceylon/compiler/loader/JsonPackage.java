@@ -265,6 +265,11 @@ public class JsonPackage extends com.redhat.ceylon.compiler.typechecker.model.Pa
                 tparms.add(tparm);
                 allparms.add(tparm);
                 tp.put(MetamodelGenerator.KEY_METATYPE, tparm);
+                if (tp.containsKey(MetamodelGenerator.KEY_DEFAULT)) {
+                    tparm.setDefaultTypeArgument(getTypeFromJson(
+                            (Map<String,Object>)tp.get(MetamodelGenerator.KEY_DEFAULT), existing));
+                    tparm.setDefaulted(true);
+                }
             }
         }
         if (container instanceof TypeDeclaration) {
