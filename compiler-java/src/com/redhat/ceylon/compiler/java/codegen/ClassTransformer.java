@@ -1250,7 +1250,6 @@ public class ClassTransformer extends AbstractTransformer {
     List<MethodDefinitionBuilder> transform(Tree.AnyMethod def,
             ClassDefinitionBuilder classBuilder, List<JCStatement> body) {
         final Method model = def.getDeclarationModel();
-        final String methodName = naming.selector(model);
         if (Decl.withinInterface(model)) {
             // Transform it for the companion
             final Block block;
@@ -1275,7 +1274,7 @@ public class ClassTransformer extends AbstractTransformer {
             
             boolean transformDefaultValues = def instanceof MethodDeclaration || block != null;
             
-            List<MethodDefinitionBuilder> companionDefs = transformMethod(def, model, methodName, 
+            List<MethodDefinitionBuilder> companionDefs = transformMethod(def, model,  
                         transformMethod,
                         actualAndAnnotations,
                         cbody,
@@ -1290,7 +1289,7 @@ public class ClassTransformer extends AbstractTransformer {
         if (!Strategy.onlyOnCompanion(model)) {
             // Transform it for the interface/class
             List<JCStatement> cbody = !model.isInterfaceMember() ? transformMplBody(def.getParameterLists(), model, body) : null;
-            result = transformMethod(def, model, methodName, true, true, 
+            result = transformMethod(def, model, true, true, 
                     cbody, 
                     true,
                     Decl.withinInterface(model) ? 0 : OL_BODY,
@@ -1317,7 +1316,7 @@ public class ClassTransformer extends AbstractTransformer {
      * @param defaultValuesBody Whether the default value methods should have a body
      */
     private List<MethodDefinitionBuilder> transformMethod(Tree.AnyMethod def,
-            final Method model, final String methodName,
+            final Method model, 
             boolean transformMethod, boolean actualAndAnnotations, List<JCStatement> body, 
             boolean transformOverloads, int overloadsFlags, 
             boolean transformDefaultValues, boolean defaultValuesBody) {
@@ -1331,8 +1330,7 @@ public class ClassTransformer extends AbstractTransformer {
         }
         
         final MethodDefinitionBuilder methodBuilder = MethodDefinitionBuilder.method(
-                this, model.isClassOrInterfaceMember(), 
-                methodName);
+                this, model);
         final ParameterList parameterList = model.getParameterLists().get(0);
         Tree.ParameterList paramList = def.getParameterLists().get(0);
         for (Tree.Parameter param : paramList.getParameters()) {
@@ -1343,8 +1341,7 @@ public class ClassTransformer extends AbstractTransformer {
                 if (model.getRefinedDeclaration() == model) {
                     
                     if (transformOverloads) {
-                        MethodDefinitionBuilder overloadBuilder = MethodDefinitionBuilder.method(this, model.isClassOrInterfaceMember(),
-                                methodName);
+                        MethodDefinitionBuilder overloadBuilder = MethodDefinitionBuilder.method(this, model);
                         MethodDefinitionBuilder overloadedMethod = makeOverloadsForDefaultedParameter(
                                 overloadsFlags, 
                                 overloadBuilder, 
