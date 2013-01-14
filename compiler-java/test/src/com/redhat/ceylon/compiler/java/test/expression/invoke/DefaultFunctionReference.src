@@ -102,8 +102,7 @@ final class defaultFunctionReference2_ {
                 return $call$typed(o);
             }
             
-            private .java.lang.Object $call$typed(@.com.redhat.ceylon.compiler.java.metadata.Name("o")
-            .ceylon.language.Sequential<? extends .java.lang.Object> o) {
+            private .java.lang.Object $call$typed(.ceylon.language.Sequential<? extends .java.lang.Object> o) {
                 return (
                     let
                     {
