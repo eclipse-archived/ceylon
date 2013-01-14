@@ -1,5 +1,7 @@
 package com.redhat.ceylon.compiler.js;
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Iterator;
 import java.util.List;
 
@@ -25,6 +27,7 @@ public class TypeUtils {
     final TypeDeclaration numeric;
     final TypeDeclaration _integer;
     final TypeDeclaration _float;
+    final TypeDeclaration _null;
 
     TypeUtils(Module languageModule) {
         com.redhat.ceylon.compiler.typechecker.model.Package pkg = languageModule.getPackage("ceylon.language");
@@ -34,6 +37,7 @@ public class TypeUtils {
         numeric = (TypeDeclaration)pkg.getMember("Numeric", null, false);
         _integer = (TypeDeclaration)pkg.getMember("Integer", null, false);
         _float = (TypeDeclaration)pkg.getMember("Float", null, false);
+        _null = (TypeDeclaration)pkg.getMember("Null", null, false);
     }
 
     /** Prints the type arguments, usually for their reification. */
@@ -212,6 +216,15 @@ public class TypeUtils {
     static boolean isReservedTypename(String typeName) {
         return JsCompiler.compilingLanguageModule && (typeName.equals("Object") || typeName.equals("Number")
                 || typeName.equals("Array")) || typeName.equals("String") || typeName.equals("Boolean");
+    }
+
+    List<ProducedType> iterableDefaultedTypeParameter(ProducedType... pt) {
+        final ArrayList<ProducedType> ts = new ArrayList<ProducedType>(pt.length+1);
+        for (ProducedType t : pt) {
+            ts.add(t);
+        }
+        ts.add(_null.getType());
+        return ts;
     }
 
 }

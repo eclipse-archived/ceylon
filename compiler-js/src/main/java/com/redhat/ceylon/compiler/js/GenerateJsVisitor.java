@@ -144,6 +144,8 @@ public class GenerateJsVisitor extends Visitor
         types = typeUtils;
     }
 
+    TypeUtils getTypeUtils() { return types; }
+
     /** Tells the receiver whether to add comments to certain declarations. Default is true. */
     public void setAddComments(boolean flag) { comment = flag; }
     public boolean isAddComments() { return comment; }
@@ -1891,7 +1893,7 @@ public class GenerateJsVisitor extends Visitor
             }
             if (sequencedType != null) {
                 out("].reifyCeylonType(");
-                TypeUtils.printTypeArguments(that, Collections.singletonList(sequencedType), this);
+                TypeUtils.printTypeArguments(that, types.iterableDefaultedTypeParameter(sequencedType), this);
                 out(")");
             }
         }
@@ -2065,8 +2067,9 @@ public class GenerateJsVisitor extends Visitor
     		for (PositionalArgument expr : positionalArguments) {
     			if (count==lim && spread) {
     				if (lim > 0) {
-    					out("].reifyCeylonType(");
-    					TypeUtils.printTypeArguments(that, that.getTypeModel().getTypeArgumentList(), this);
+    					out("].reifyCeylonType(", "/*AQUI*/");
+    					TypeUtils.printTypeArguments(that,
+    					        that.getTypeModel().getTypeArgumentList(), this);
     					out(").chain(");
     					chainedType = expr.getTypeModel();
     				}
