@@ -7,7 +7,7 @@ by "Gavin"
 shared native class Exception(description=null, cause=null) {
     
     doc "The underlying cause of this exception."
-    shared Exception? cause=c;
+    shared Exception? cause;
     
     doc "A description of the problem."
     String? description;
