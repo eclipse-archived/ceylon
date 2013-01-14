@@ -98,12 +98,6 @@
             </classpath>
             <include name="**/*Main5.java" />
         </javac>
-        <!-- generate the ceylon.language.js file -->
-        <java classname="com.redhat.ceylon.compiler.js.Stitcher" classpathref="test.run.classpath" fork="true">
-            <arg value="${js-src}/${jslangfile}" />
-            <arg value="${runtime}/${jslangpath}" />
-            <arg value="${module.com.redhat.ceylon.compiler.js.version}" />
-        </java>
     </target>
 
     <!-- build jscompiler jar -->
@@ -114,8 +108,17 @@
             </fileset>
         </jar>
     </target>
-    
-    <target name="build" depends="ceylon.js.jar">
+
+    <!-- generate the ceylon.language.js file -->
+    <target name="build-js-language-module" depends="compile">
+        <java classname="com.redhat.ceylon.compiler.js.Stitcher" classpathref="test.run.classpath" fork="true">
+            <arg value="${js-src}/${jslangfile}" />
+            <arg value="${runtime}/${jslangpath}" />
+            <arg value="${module.com.redhat.ceylon.compiler.js.version}" />
+        </java>
+    </target>
+
+    <target name="build" depends="ceylon.js.jar,build-js-language-module">
     </target>
 
     <target name="test-compile" depends="build">
@@ -156,7 +159,7 @@
         </java>
     </target>
 
-    <target name="nodetest" depends="compiletest,noderun" description="Run tests on node.js (requires node)">
+    <target name="nodetest" depends="build-js-language-module,compiletest,noderun" description="Run tests on node.js (requires node)">
     </target>
 
     <!-- Repository targets -->
