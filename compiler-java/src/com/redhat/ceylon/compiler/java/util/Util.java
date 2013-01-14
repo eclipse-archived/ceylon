@@ -101,32 +101,6 @@ public class Util {
         return Naming.capitalize(str);
     }
 
-    public static String getErasedMethodName(String name) {
-        return Naming.getErasedMethodName(name);
-    }
-
-    public static String getMethodName(String name) {
-        return Naming.getMethodName(name);
-    }
-
-    /** 
-     * @deprecated Use {@link Naming#getGetterName(Declaration)}.
-     * This method will be removed at a future date. 
-     */
-    @Deprecated
-    public static String getGetterName(String property) {
-        return Naming.getGetterName(property);
-    }
-
-    /** 
-     * @deprecated Use {@link Naming#getSetterName(Declaration)}.
-     * This method will be removed at a future date.
-     */
-    @Deprecated
-    public static String getSetterName(String property){
-        return Naming.getSetterName(property);
-    }
-
     // Used by the IDE
     public static String getModuleArchiveName(Module module) {
         return getArchiveName(module, "car");
