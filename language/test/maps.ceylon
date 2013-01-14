@@ -49,7 +49,7 @@ void testMaps() {
         check(e.key in m1.keys, "Map.keys.contains(" e.key ") should be true");
     }
     check("B"->SetTest(2, 4) in m1.inverse, "Map.inverse should contain B->Set(2,4)");
-    check(m1.inverse.size==m1.size, "Map.inverse 1");
+    check(m1.inverse.size==m1.size, "Map.inverse 1: sizes original " m1.size " vs " m1.inverse.size "");
     value m2 = m1.mapItems((Integer k, String v) => k*100);
     check(1->100 in m2, "Map.mapItems");
     for (k->v in m2) {
