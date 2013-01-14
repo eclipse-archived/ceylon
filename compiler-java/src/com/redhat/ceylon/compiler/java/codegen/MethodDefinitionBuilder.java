@@ -84,13 +84,7 @@ public class MethodDefinitionBuilder {
     private boolean built = false;
 
     public static MethodDefinitionBuilder method(AbstractTransformer gen, Method method) {
-        String methodName;
-        if (method.isClassOrInterfaceMember()) {
-            methodName = Naming.getErasedMethodName(gen.naming.selector(method));
-        } else {
-            methodName = Naming.getMethodName(gen.naming.selector(method));
-        }
-        return new MethodDefinitionBuilder(gen, false, methodName);
+        return new MethodDefinitionBuilder(gen, false, gen.naming.selector(method));
     }
     
     public static MethodDefinitionBuilder method2(AbstractTransformer gen, String name) {

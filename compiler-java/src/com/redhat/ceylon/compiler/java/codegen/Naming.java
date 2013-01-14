@@ -383,7 +383,7 @@ public class Naming implements LocalId {
         return makeDeclName(null, decl, DeclNameFlag.QUALIFIED, DeclNameFlag.COMPANION);
     }
     
-    String quoteMethodNameIfProperty(Method method) {
+    private String quoteMethodNameIfProperty(Method method) {
         String name = method.getName();
         // Toplevel methods keep their original name because their names might be mangled
         if (method instanceof LazyMethod) {
@@ -932,12 +932,16 @@ public class Naming implements LocalId {
                 return getGetterName(decl);
             }
         } else if (decl instanceof Method) {
-            if (decl.isClassOrInterfaceMember()) {
-                String quotedName = quoteMethodNameIfProperty((Method) decl);
+            if (decl.isClassMember()) {
                 // don't try to be smart with interop calls 
                 if(decl instanceof JavaMethod)
                     return ((JavaMethod)decl).getRealName();
-                return getErasedMethodName(quotedName);
+                if (decl.isClassOrInterfaceMember()) {
+                    String quotedName = quoteMethodNameIfProperty((Method) decl);
+                    return getErasedMethodName(quotedName);
+                } else {
+                    return getMethodName(decl.getName());
+                }
             }
             return quoteMethodName(decl);
         }
