@@ -5,7 +5,7 @@
 #Correspondence
 
 Binary,Castable,Cloneable,Closeable,Ranged
-ContainerWithFirstElement,Iterator,Collection,Category
+Container,Iterator,Collection,Category
 
 #this requires native impl of sort
 #Iterable
