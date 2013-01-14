@@ -2199,8 +2199,8 @@ public abstract class AbstractTransformer implements Transformation {
                     }
                 }
             }
-            // the last iterable goes first
-            if(i == 0)
+            // the last iterable goes first if spread
+            if(i == 0 && spread)
                 elems.prepend(jcExpression);
             else
                 elems.append(jcExpression);
