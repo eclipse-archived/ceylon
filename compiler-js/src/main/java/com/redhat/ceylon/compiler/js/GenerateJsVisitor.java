@@ -35,6 +35,7 @@ import com.redhat.ceylon.compiler.typechecker.model.TypeParameter;
 import com.redhat.ceylon.compiler.typechecker.model.Util;
 import com.redhat.ceylon.compiler.typechecker.model.Value;
 import com.redhat.ceylon.compiler.typechecker.tree.*;
+import com.redhat.ceylon.compiler.typechecker.tree.Tree.PositionalArgument;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.*;
 
 public class GenerateJsVisitor extends Visitor
@@ -425,8 +426,7 @@ public class GenerateJsVisitor extends Visitor
         out(names.name(aliased), "(");
         if (ext.getInvocationExpression().getPositionalArgumentList() != null) {
             ext.getInvocationExpression().getPositionalArgumentList().visit(this);
-            if (!ext.getInvocationExpression().getPositionalArgumentList().getPositionalArguments().isEmpty()
-                    || ext.getInvocationExpression().getPositionalArgumentList().getComprehension()!=null) {
+            if (!ext.getInvocationExpression().getPositionalArgumentList().getPositionalArguments().isEmpty()) {
                 out(",");
             }
         } else {
@@ -1771,8 +1771,7 @@ public class GenerateJsVisitor extends Visitor
             that.getPrimary().visit(this);
             if (prototypeStyle && (getSuperMemberScope(that.getPrimary()) != null)) {
                 out(".call(this");
-                if (!argList.getPositionalArguments().isEmpty()
-                        || (argList.getComprehension() != null)) {
+                if (!argList.getPositionalArguments().isEmpty()) {
                     out(",");
                 }
             }
@@ -1782,13 +1781,15 @@ public class GenerateJsVisitor extends Visitor
             argList.visit(this);
             TypeArguments targs = that.getPrimary() instanceof StaticMemberOrTypeExpression ? ((StaticMemberOrTypeExpression)that.getPrimary()).getTypeArguments() : null;
             if (targs != null && targs.getTypeModels() != null && !targs.getTypeModels().isEmpty()) {
-                if (argList.getPositionalArguments().size() > 0 || argList.getComprehension() != null) {
+                if (argList.getPositionalArguments().size() > 0) {
                     out(",");
                 }
                 Declaration bmed = ((StaticMemberOrTypeExpression)that.getPrimary()).getDeclaration();
                 if (bmed instanceof Functional) {
                     if (((Functional) bmed).getParameterLists().get(0).getParameters().size() > argList.getPositionalArguments().size()
-                            && argList.getComprehension() == null) {
+                    		// has no comprehension
+                    		&& (argList.getPositionalArguments().isEmpty()
+                    			|| argList.getPositionalArguments().get(argList.getPositionalArguments().size()-1) instanceof Tree.Comprehension == false)) {
                         out("undefined,");
                     }
                 }
@@ -1821,14 +1822,6 @@ public class GenerateJsVisitor extends Visitor
             sarg.visit(this);
             out(",");
         }
-        if (argList.getComprehension() != null) {
-            String varName = names.createTempVariable("comp");
-            argVarNames.put("$comp$", varName);
-            retainedVars.add(varName);
-            out(varName, "=");
-            argList.getComprehension().visit(this);
-            out(",");
-        }
         return argVarNames;
     }
 
@@ -1854,8 +1847,6 @@ public class GenerateJsVisitor extends Visitor
                     out(clAlias, "empty");
                 } else if (argList.getSequencedArgument()!=null) {
                     out(argVarNames.get(p.getName()));
-                } else if (argList.getComprehension() != null) {
-                    out(argVarNames.get("$comp$"));
                 } else {
                     out("undefined");
                 }
@@ -1877,9 +1868,21 @@ public class GenerateJsVisitor extends Visitor
             ProducedType sequencedType=null;
             for (PositionalArgument arg: that.getPositionalArguments()) {
                 if (!first) out(",");
-                int boxType = boxUnboxStart(arg.getExpression().getTerm(), arg.getParameter());
-                if (sequencedType==null && arg.getParameter() != null && arg.getParameter().isSequenced() && that.getEllipsis() == null) {
-                    sequencedType=arg.getExpression().getTypeModel();
+                Tree.Expression expr;
+                boolean spread = false;
+                if(arg instanceof Tree.ListedArgument)
+                	expr = ((Tree.ListedArgument) arg).getExpression();
+                else if(arg instanceof Tree.SpreadArgument){
+                	expr = ((Tree.SpreadArgument) arg).getExpression();
+                	spread = true;
+                }else{
+                	((Tree.Comprehension)arg).visit(this);
+                	// don't do the rest
+                	break;
+                }
+                int boxType = boxUnboxStart(expr.getTerm(), arg.getParameter());
+                if (sequencedType==null && arg.getParameter() != null && arg.getParameter().isSequenced() && !spread) {
+                    sequencedType=expr.getTypeModel();
                     out("[");
                 }
                 arg.visit(this);
@@ -1891,9 +1894,6 @@ public class GenerateJsVisitor extends Visitor
                 TypeUtils.printTypeArguments(that, Collections.singletonList(sequencedType), this);
                 out(")");
             }
-        }
-        if (that.getComprehension() != null) {
-            that.getComprehension().visit(this);
         }
     }
 
@@ -2029,64 +2029,70 @@ public class GenerateJsVisitor extends Visitor
 
     @Override
     public void visit(SequencedArgument that) {
-        if (that.getEllipsis() == null) { out("["); }
+    	List<PositionalArgument> positionalArguments = that.getPositionalArguments();
+    	boolean spread = !positionalArguments.isEmpty() 
+    			&& positionalArguments.get(positionalArguments.size()-1) instanceof Tree.ListedArgument == false;
+        if (!spread) { out("["); }
         boolean first=true;
-        for (Expression arg: that.getExpressionList().getExpressions()) {
+        for (PositionalArgument arg: positionalArguments) {
             if (!first) out(",");
-            arg.visit(this);
+            if(arg instanceof Tree.ListedArgument)
+            	((Tree.ListedArgument) arg).getExpression().visit(this);
+            else if(arg instanceof Tree.SpreadArgument)
+            	((Tree.SpreadArgument) arg).getExpression().visit(this);
+            else // comprehension
+            	arg.visit(this);
             first = false;
         }
-        if (that.getEllipsis() == null) { out("]"); }
+        if (!spread) { out("]"); }
     }
 
     @Override
     public void visit(SequenceEnumeration that) {
-        if (that.getComprehension() == null) {
-            SequencedArgument sarg = that.getSequencedArgument();
-            if (sarg == null) {
-                out(clAlias, "empty");
-            } else if (sarg.getParameter() == null) {
-                int lim = sarg.getExpressionList().getExpressions().size()-1;
-                int count=0;
-                ProducedType chainedType = null;
-                if (lim>0 || sarg.getEllipsis() == null) {
-                    out("[");
-                }
-                for (Expression expr : sarg.getExpressionList().getExpressions()) {
-                    if (count==lim && sarg.getEllipsis() != null) {
-                        if (lim > 0) {
-                            out("].reifyCeylonType(");
-                            TypeUtils.printTypeArguments(that, that.getTypeModel().getTypeArgumentList(), this);
-                            out(").chain(");
-                            chainedType = expr.getTypeModel();
-                        }
-                        count--;
-                    } else {
-                        if (count > 0) {
-                            out(",");
-                        }
-                    }
-                    expr.visit(this);
-                    count++;
-                }
-                if (chainedType == null) {
-                    if (sarg.getEllipsis() == null) {
-                        out("].reifyCeylonType(");
-                        TypeUtils.printTypeArguments(that, that.getTypeModel().getTypeArgumentList(), this);
-                        out(")");
-                    }
-                } else {
-                    out(",");
-                    TypeUtils.printTypeArguments(that, chainedType.getTypeArgumentList(), this);
-                    out(")");
-                }
-            } else {
-                out("WTF IS A SEQUENCED ENUM ARG PARAMETER?");
-            }
-        } else {
-            //now it's a lazy comprehension
-            that.getComprehension().visit(this);
-        }
+    	SequencedArgument sarg = that.getSequencedArgument();
+    	if (sarg == null) {
+    		out(clAlias, "empty");
+    	} else if (sarg.getParameter() == null) {
+    		List<PositionalArgument> positionalArguments = sarg.getPositionalArguments();
+    		int lim = positionalArguments.size()-1;
+    		boolean spread = !positionalArguments.isEmpty() 
+    				&& positionalArguments.get(positionalArguments.size()-1) instanceof Tree.ListedArgument == false;
+    		int count=0;
+    		ProducedType chainedType = null;
+    		if (lim>0 || !spread) {
+    			out("[");
+    		}
+    		for (PositionalArgument expr : positionalArguments) {
+    			if (count==lim && spread) {
+    				if (lim > 0) {
+    					out("].reifyCeylonType(");
+    					TypeUtils.printTypeArguments(that, that.getTypeModel().getTypeArgumentList(), this);
+    					out(").chain(");
+    					chainedType = expr.getTypeModel();
+    				}
+    				count--;
+    			} else {
+    				if (count > 0) {
+    					out(",");
+    				}
+    			}
+    			expr.visit(this);
+    			count++;
+    		}
+    		if (chainedType == null) {
+    			if (!spread) {
+    				out("].reifyCeylonType(");
+    				TypeUtils.printTypeArguments(that, that.getTypeModel().getTypeArgumentList(), this);
+    				out(")");
+    			}
+    		} else {
+    			out(",");
+    			TypeUtils.printTypeArguments(that, chainedType.getTypeArgumentList(), this);
+    			out(")");
+    		}
+    	} else {
+    		out("WTF IS A SEQUENCED ENUM ARG PARAMETER?");
+    	}
     }
 
 
@@ -3452,56 +3458,53 @@ public class GenerateJsVisitor extends Visitor
     @Override
     public void visit(Tuple that) {
         int count = 0;
-        if (that.getComprehension() == null) {
-            SequencedArgument sarg = that.getSequencedArgument();
-            if (sarg == null) {
-                out(clAlias, "empty");
-            } else if (sarg.getParameter() == null) {
-                List<List<ProducedType>> targs = new ArrayList<List<ProducedType>>();
-                int lim = sarg.getExpressionList().getExpressions().size()-1;
-                for (Expression expr : sarg.getExpressionList().getExpressions()) {
-                    if (count > 0) {
-                        out(",");
-                    }
-                    if (count==lim && sarg.getEllipsis() != null) {
-                        if (expr.getTypeModel().getDeclaration().inherits(types.tuple)) {
-                            expr.visit(this);
-                        } else {
-                            expr.visit(this);
-                            out(".getSequence()");
-                        }
-                    } else {
-                        out(clAlias, "Tuple(");
-                        if (count > 0) {
-                            targs.add(0, targs.get(0).get(2).getTypeArgumentList());
-                        } else {
-                            targs.add(that.getTypeModel().getTypeArgumentList());
-                        }
-                        expr.visit(this);
-                    }
-                    count++;
-                }
-                if (sarg.getEllipsis() == null) {
-                    if (count > 0) {
-                        out(",");
-                    }
-                    out(clAlias, "empty");
-                } else {
-                    count--;
-                }
-                for (List<ProducedType> t : targs) {
-                    out(",");
-                    TypeUtils.printTypeArguments(that, t, this);
-                    out(")");
-                }
-            } else {
-                //TODO WTF is this supposed to be?
-                out("/*TUPLE PARAM*/");
-            }
+        SequencedArgument sarg = that.getSequencedArgument();
+        if (sarg == null) {
+        	out(clAlias, "empty");
+        } else if (sarg.getParameter() == null) {
+        	List<List<ProducedType>> targs = new ArrayList<List<ProducedType>>();
+        	List<PositionalArgument> positionalArguments = sarg.getPositionalArguments();
+        	boolean spread = !positionalArguments.isEmpty() 
+        			&& positionalArguments.get(positionalArguments.size()-1) instanceof Tree.ListedArgument == false;
+        	int lim = positionalArguments.size()-1;
+        	for (PositionalArgument expr : positionalArguments) {
+        		if (count > 0) {
+        			out(",");
+        		}
+        		if (count==lim && spread) {
+        			if (expr.getTypeModel().getDeclaration().inherits(types.tuple)) {
+        				expr.visit(this);
+        			} else {
+        				expr.visit(this);
+        				out(".getSequence()");
+        			}
+        		} else {
+        			out(clAlias, "Tuple(");
+        			if (count > 0) {
+        				targs.add(0, targs.get(0).get(2).getTypeArgumentList());
+        			} else {
+        				targs.add(that.getTypeModel().getTypeArgumentList());
+        			}
+        			expr.visit(this);
+        		}
+        		count++;
+        	}
+        	if (!spread) {
+        		if (count > 0) {
+        			out(",");
+        		}
+        		out(clAlias, "empty");
+        	} else {
+        		count--;
+        	}
+        	for (List<ProducedType> t : targs) {
+        		out(",");
+        		TypeUtils.printTypeArguments(that, t, this);
+        		out(")");
+        	}
         } else {
-            //This is an eager comprehension
-            that.getComprehension().visit(this);
-            out(".getSequence()");
+        	//TODO WTF is this supposed to be?
+        	out("/*TUPLE PARAM*/");
         }
     }
 
@@ -3514,7 +3517,7 @@ public class GenerateJsVisitor extends Visitor
         for (Annotation ann : that.getAnnotationList().getAnnotations()) {
             BaseMemberExpression bme = (BaseMemberExpression)ann.getPrimary();
             if ("doc".equals(bme.getDeclaration().getName())) {
-                custom = ann.getPositionalArgumentList().getPositionalArguments().get(0).getExpression().getTerm().getText();
+                custom = ((Tree.ListedArgument)ann.getPositionalArgumentList().getPositionalArguments().get(0)).getExpression().getTerm().getText();
                 //unquote
                 custom = custom.substring(1, custom.length() - 1);
             }
