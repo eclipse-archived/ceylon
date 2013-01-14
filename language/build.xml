@@ -24,6 +24,7 @@
 
     <!-- Local repository -->
     <property name="ceylon.repo.dir" location="${user.home}/.ceylon/repo"/>
+    <property name="ceylon-js.dir" location="${basedir}/../ceylon-js"/>
     
     <!-- ceylon.language -->
     <property name="module.language.src" value="${basedir}/src"/>
@@ -124,6 +125,9 @@
         <antcall target="sha1sum">
             <param name="file" value="${build.dist}/${ceylon.language.src}" />
         </antcall>
+        <ant antfile="${ceylon-js.dir}/build.xml" target="build-js-language-module" dir="${ceylon-js.dir}" inheritall="false">
+            <property name="ceylon.repo.dir" value="${ceylon.repo.dir}"/>
+        </ant>
     </target>
 
     <!-- Repository targets -->
@@ -135,6 +139,7 @@
     <target name="publish-internal">
         <copy todir="${ceylon.language.repo}">
             <fileset dir="${ceylon.language.dist}"/>
+            <fileset dir="${ceylon-js.dir}/build/runtime/${ceylon.language.dir}" />
         </copy>
     </target>
 
