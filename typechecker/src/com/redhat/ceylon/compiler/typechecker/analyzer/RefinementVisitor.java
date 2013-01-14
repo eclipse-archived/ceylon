@@ -42,6 +42,7 @@ import com.redhat.ceylon.compiler.typechecker.model.TypeParameter;
 import com.redhat.ceylon.compiler.typechecker.model.TypedDeclaration;
 import com.redhat.ceylon.compiler.typechecker.model.UnionType;
 import com.redhat.ceylon.compiler.typechecker.model.Value;
+import com.redhat.ceylon.compiler.typechecker.model.ValueParameter;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree;
 import com.redhat.ceylon.compiler.typechecker.tree.Visitor;
 
@@ -678,5 +679,51 @@ public class RefinementVisitor extends Visitor {
         }
         return pl;
     }
-        
+    
+    @Override
+    public void visit(Tree.ParameterList that) {
+    	super.visit(that);
+        boolean foundSequenced = false;
+        boolean foundDefault = false;
+        ParameterList pl = that.getModel();
+        for (Tree.Parameter p: that.getParameters()) {
+            if (p!=null) {
+                if (p.getDefaultArgument()!=null) {
+                    if (foundSequenced) {
+                    	p.getDefaultArgument()
+                            .addError("defaulted parameter must occur before sequenced parameter");
+                    }
+                    foundDefault = true;
+                    if (!pl.isFirst()) {
+                        p.getDefaultArgument()
+                            .addError("only the first parameter list may have defaulted parameters");
+                    }
+                }
+                else if (isSequenced(p)) {
+                	Tree.Type st = p.getType();
+                    if (foundSequenced) {
+						st.addError("parameter list may have at most one sequenced parameter");
+                    }
+                    foundSequenced = true;
+                    if (!pl.isFirst()) {
+                    	st.addError("only the first parameter list may have a sequenced parameter");
+                    }
+                }
+                else {
+                    if (foundDefault) {
+                        p.addError("required parameter must occur before defaulted parameters");
+                    }
+                    if (foundSequenced) {
+                        p.addError("required parameter must occur before sequenced parameter");
+                    }
+                }
+            }
+        }
+    }
+
+	private boolean isSequenced(Tree.Parameter p) {
+		return (p.getDeclarationModel() instanceof ValueParameter) &&
+				((ValueParameter) p.getDeclarationModel()).isSequenced();
+	}
+    
 }

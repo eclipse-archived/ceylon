@@ -657,11 +657,12 @@ public class DeclarationVisitor extends Visitor {
     public void visit(Tree.ParameterList that) {
         ParameterList pl = parameterList;
         parameterList = new ParameterList();
+        that.setModel(parameterList);
         super.visit(that);
-        boolean first;
         if (scope instanceof Functional) {
             Functional f = (Functional) scope;
-            first = f.getParameterLists().isEmpty();
+            boolean first = f.getParameterLists().isEmpty();
+            parameterList.setFirst(first);
             if (f instanceof Class && !first) {
                 that.addError("classes may have only one parameter list");
             }
@@ -673,45 +674,10 @@ public class DeclarationVisitor extends Visitor {
         	if (!(scope instanceof Specification)) {
         		that.addError("may not have a parameter list");
         	}
-            first = true;
+            parameterList.setFirst(true);
         }
         parameterList = pl;
         
-        boolean foundSequenced = false;
-        boolean foundDefault = false;
-        for (Tree.Parameter p: that.getParameters()) {
-            if (p!=null) {
-                if (p.getDefaultArgument()!=null) {
-                    if (foundSequenced) {
-                    	p.getDefaultArgument()
-                            .addError("defaulted parameter must occur before sequenced parameter");
-                    }
-                    foundDefault = true;
-                    if (!first) {
-                        p.getDefaultArgument()
-                            .addError("only the first parameter list may have defaulted parameters");
-                    }
-                }
-                else if (p.getType() instanceof Tree.SequencedType) {
-                	Tree.SequencedType st = (Tree.SequencedType) p.getType();
-                    if (foundSequenced) {
-						st.addError("parameter list may have at most one sequenced parameter");
-                    }
-                    foundSequenced = true;
-                    if (!first) {
-                    	st.addError("only the first parameter list may have a sequenced parameter");
-                    }
-                }
-                else {
-                    if (foundDefault) {
-                        p.addError("required parameter must occur before defaulted parameters");
-                    }
-                    if (foundSequenced) {
-                        p.addError("required parameter must occur before sequenced parameter");
-                    }
-                }
-            }
-        }
     }
     
     private int id=0;

@@ -28,6 +28,7 @@ import com.redhat.ceylon.compiler.typechecker.model.Module;
 import com.redhat.ceylon.compiler.typechecker.model.ModuleImport;
 import com.redhat.ceylon.compiler.typechecker.model.Package;
 import com.redhat.ceylon.compiler.typechecker.model.Parameter;
+import com.redhat.ceylon.compiler.typechecker.model.ParameterList;
 import com.redhat.ceylon.compiler.typechecker.model.ProducedType;
 import com.redhat.ceylon.compiler.typechecker.model.Scope;
 import com.redhat.ceylon.compiler.typechecker.model.TypeAlias;
@@ -854,6 +855,7 @@ public class TypeVisitor extends Visitor {
                 if (param instanceof ValueParameter && 
                         ((ValueParameter) param).isHidden()) {
                     param.setType(dec.getType());
+                    param.setSequenced(that.getType() instanceof Tree.SequencedType);
                     if (sie!=null) {
                         sie.addError("attribute is an initializer parameter and may not have an initial value: " + 
                         		dec.getName());
@@ -1168,4 +1170,5 @@ public class TypeVisitor extends Visitor {
     		that.getType().addError("method may not be sequenced");
     	}
     }
+    
 }

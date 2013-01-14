@@ -12,5 +12,13 @@ interface SharedParameters {
         String s1 = wsp.t;
         String s2 = ExtendsWithSharedParam().t;
     }
+    
+    class Foo(bar="baz", options) {
+        shared String bar;
+        shared String* options;
+    }
+
+    class Bar(shared String bar="baz", 
+            shared String* options) {}
 
 }

@@ -168,7 +168,8 @@
     Class anonymousClass;)
 
 ^(PARAMETER_LIST 
-    PARAMETER*)
+    PARAMETER*
+    ParameterList model;)
 ^(abstract PARAMETER:TYPED_DECLARATION  
     DEFAULT_ARGUMENT?
     abstract Parameter declarationModel;)

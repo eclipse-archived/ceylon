@@ -7,6 +7,7 @@ public class ParameterList {
     
     private List<Parameter> parameters = new ArrayList<Parameter>();
     private boolean supportsNamedParameters = true;
+    private boolean first;
     
     public List<Parameter> getParameters() {
         return parameters;
@@ -29,5 +30,13 @@ public class ParameterList {
         return !parameters.isEmpty() && 
                 parameters.get(parameters.size()-1).isSequenced();
     }
+    
+    public boolean isFirst() {
+		return first;
+	}
+    
+    public void setFirst(boolean first) {
+		this.first = first;
+	}
     
 }
