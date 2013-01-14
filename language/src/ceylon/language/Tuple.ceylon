@@ -1,8 +1,8 @@
 doc "Don't forget to document me"
 by "gavin"
-shared class Tuple<out Element, out First, out Rest>(first, rest)
+shared class Tuple<out Element, out First, out Rest=Empty>(first, rest)
         extends Object()
-        satisfies Sequence<Element> & 
+        satisfies [Element+] & 
                   Cloneable<Tuple<Element,First,Rest>>
         given First satisfies Element
         given Rest satisfies Element[] {
@@ -35,7 +35,7 @@ shared class Tuple<out Element, out First, out Rest>(first, rest)
         }
     }
     
-    shared actual Sequence<Element> reversed =>
+    shared actual [Element+] reversed =>
             rest.reversed.withTrailing(first);
     
     shared actual Element[] segment(Integer from, Integer length) {

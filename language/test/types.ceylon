@@ -36,7 +36,7 @@ interface TypesList<out X> {
     shared formal Boolean empty;
 }
 
-class ConcreteTypesList<out X>(X... xs) 
+class ConcreteTypesList<out X>(X* xs) 
         satisfies TypesList<X> {
     shared actual Integer size {
         return 0;

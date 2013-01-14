@@ -1,14 +1,14 @@
-class TestList<Element>(Element... elems) satisfies List<Element> {
+class TestList<Element>(Element* elems) satisfies List<Element> {
     shared actual Boolean equals(Object other) { return List::equals(other); }
     shared actual Element? item(Integer x) { return elems[x]; }
-    shared actual TestList<Element> reversed { return TestList(elems.reversed...); }
+    shared actual TestList<Element> reversed { return TestList(*elems.reversed); }
     shared actual Integer hash { return List::hash; }
     shared actual Integer? lastIndex { return elems.lastIndex; }
-    shared actual TestList<Element> span(Integer a, Integer b) { return TestList(elems.span(a, b)...); }
-    shared actual TestList<Element> spanFrom(Integer a) { return TestList(elems.spanFrom(a)...); }
-    shared actual TestList<Element> spanTo(Integer b) { return TestList(elems.spanTo(b)...); }
-    shared actual TestList<Element> segment(Integer a, Integer b) { return TestList(elems.segment(a, b)...); }
-    shared actual TestList<Element> clone { return TestList(elems...); }
+    shared actual TestList<Element> span(Integer a, Integer b) { return TestList(*elems.span(a, b)); }
+    shared actual TestList<Element> spanFrom(Integer a) { return TestList(*elems.spanFrom(a)); }
+    shared actual TestList<Element> spanTo(Integer b) { return TestList(*elems.spanTo(b)); }
+    shared actual TestList<Element> segment(Integer a, Integer b) { return TestList(*elems.segment(a, b)); }
+    shared actual TestList<Element> clone { return TestList(*elems); }
 }
 
 void lists() {

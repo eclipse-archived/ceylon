@@ -23,10 +23,10 @@ void operators() {
 
     String[] empty = {};
     String[] full = [ "hello", "world" ];
-    check(!empty[].uppercased nonempty, "spread 1");
-    check(full[].uppercased nonempty, "spread 2");
-    value spread1 = full[].uppercased;
-    value spread2 = full[].item(1);
+    check(!empty*.uppercased nonempty, "spread 1");
+    check(full*.uppercased nonempty, "spread 2");
+    value spread1 = full*.uppercased;
+    value spread2 = full*.item(1);
 	if (exists s1s=spread1[0]) {
         check(s1s == "HELLO", "spread 3");
     } else { fail("spread 3"); }
@@ -42,8 +42,8 @@ void operators() {
         check(s2s == `o`, "spread 8");
     } else { fail("spread 8"); }
     /*
-    Character?[] spread3(Integer x) = full[].item;
-    //Callable<Character?[], Integer> spread3 = full[].item;
+    Character?[] spread3(Integer x) = full*.item;
+    //Callable<Character?[], Integer> spread3 = full*.item;
     value spread4 = spread3(1);
     check(spread4.size == 2, "spread 10");
     if (exists s4s=spread4[0]) {
@@ -54,14 +54,14 @@ void operators() {
     } else { fail("spread 12"); }
     */
     value spreadList = [ Spread1(), Spread2() ];
-    value spread13 = spreadList[].x();
+    value spread13 = spreadList*.x();
     check(spread13.size == 2, "spread 13 size");
     check(spread13[0] is String, "spread 13 item 0");
     if (is String s13_1 = spread13[1]) {
         check(s13_1 == "S2", "spread 13 item 1");
     } else { fail("spread 13 item 1"); }
     /*
-    function spread14() = spreadList[].x;
+    function spread14() = spreadList*.x;
     check(spread14().size == 2, "spread 14 size");
     check(spread14()[0] is String, "spread 14 item 0");
     if (is String s14_1 = spread14()[1]) {

@@ -104,7 +104,7 @@ shared native interface Iterable<out Element, out Absent=Null>
     
     doc "Returns an iterable object containing all but the 
          first element of this container."
-    shared default {Element...} rest => skipping(1);
+    shared default {Element*} rest => skipping(1);
     
     doc "A sequence containing the elements returned by the
          iterator."
@@ -114,7 +114,7 @@ shared native interface Iterable<out Element, out Absent=Null>
          the given mapping to the elements of to this 
          container."
     see (collect)
-    shared default {Result...} map<Result>(
+    shared default {Result*} map<Result>(
             doc "The mapping to apply to the elements."
             Result collecting(Element elem)) =>
                     { for (elem in this) collecting(elem) };
@@ -122,7 +122,7 @@ shared native interface Iterable<out Element, out Absent=Null>
     doc "An `Iterable` containing the elements of this 
          container that satisfy the given predicate."
     see (select)
-    shared default {Element...} filter(
+    shared default {Element*} filter(
             doc "The predicate the elements must satisfy."
             Boolean selecting(Element elem)) =>
                     { for (elem in this) if (selecting(elem)) elem };
@@ -234,12 +234,12 @@ shared native interface Iterable<out Element, out Absent=Null>
          `skip` elements. If this iterable object does not 
          contain more elements than the specified number of 
          elements, the `Iterable` contains no elements."
-    shared default {Element...} skipping(Integer skip) {
+    shared default {Element*} skipping(Integer skip) {
         if (skip <= 0) { 
             return this;
         }
         else {
-            object iterable satisfies {Element...} {
+            object iterable satisfies {Element*} {
                 shared actual Iterator<Element> iterator {
                     value iterator = outer.iterator;
                     variable value i=0;
@@ -265,12 +265,12 @@ shared native interface Iterable<out Element, out Absent=Null>
          number of elements is larger than the number of 
          elements of this iterable object, the `Iterable` 
          contains the same elements as this iterable object."
-    shared default {Element...} taking(Integer take) {
+    shared default {Element*} taking(Integer take) {
         if (take <= 0) { 
             return {}; 
         }
         else {
-            object iterable satisfies {Element...} {
+            object iterable satisfies {Element*} {
                 shared actual Iterator<Element> iterator {
                     value outerIterable { return outer; }
                     object iterator satisfies Iterator<Element> {
@@ -302,7 +302,7 @@ shared native interface Iterable<out Element, out Absent=Null>
          `0`, `3`, `6`, and `9` in that order."
     throws (Exception, "if the given step size is nonpositive, 
                         i.e. `step<1`") //TODO: better exception type
-    shared default {Element...} by(Integer step) {
+    shared default {Element*} by(Integer step) {
         if (step <= 0) {
             throw Exception("step size must be greater than zero");
         }
@@ -310,7 +310,7 @@ shared native interface Iterable<out Element, out Absent=Null>
             return this;
         } 
         else {
-            object iterable satisfies {Element...} {
+            object iterable satisfies {Element*} {
                 shared actual Iterator<Element> iterator {
                     value outerIterable { return outer; }
                     object iterator satisfies Iterator<Element> {
@@ -350,8 +350,8 @@ shared native interface Iterable<out Element, out Absent=Null>
          original order. For null elements of the original 
          `Iterable`, there is no entry in the resulting 
          iterable object."
-    shared default Iterable<Element&Object,Absent> coalesced =>
-            nothing; //{ for (e in this) if (exists e) e };
+    shared default {Element&Object*} coalesced =>
+            { for (e in this) if (exists e) e };
     
     doc "All entries of form `index->element` where `index` 
          is the position at which `element` occurs, for every
@@ -365,8 +365,8 @@ shared native interface Iterable<out Element, out Absent=Null>
              
          results in an iterable object with the entries
          `0->\"hello\"` and `2->\"world\"`."
-    shared default {Integer->Element&Object...} indexed {
-            object iterable satisfies {Integer->Element&Object...} {
+    shared default {<Integer->Element&Object>*} indexed {
+            object iterable satisfies {<Integer->Element&Object>*} {
                 shared actual Iterator<Integer->Element&Object> iterator {
                     value outerIterable { return outer; }
                     object iterator satisfies Iterator<Integer->Element&Object> {
@@ -398,9 +398,9 @@ shared native interface Iterable<out Element, out Absent=Null>
          original order, followed by the elements of the 
          given iterable object also in their original
          order."
-    shared default {Element|Other...} chain<Other>(
-            {Other...} other) {
-        object chained satisfies {Element|Other...} {
+    shared default {Element|Other*} chain<Other>(
+            {Other*} other) {
+        object chained satisfies {Element|Other*} {
             shared actual Iterator<Element|Other> iterator {
                 return ChainedIterator(outer, other);
             }
@@ -411,7 +411,7 @@ shared native interface Iterable<out Element, out Absent=Null>
     doc "Creates a Map that contains this `Iterable`'s
          elements, grouped in `Sequence`s under the
          keys provided by the grouping function."
-    shared default native Map<Grouping,Sequence<Element>> group<Grouping>(
+    shared default native Map<Grouping,[Element+]> group<Grouping>(
                 doc "A function that must return the key under
                      which to group the specified element."
                 Grouping grouping(Element elem))

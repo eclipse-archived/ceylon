@@ -2,7 +2,7 @@ doc "An `Iterator` that returns the elements of two
      `Iterable`s, as if they were chained together."
 //see(Iterator.chain)
 by "Enrique Zamudio"
-shared class ChainedIterator<Element,Other>({Element...} first, {Other...} second) 
+shared class ChainedIterator<Element,Other>({Element*} first, {Other*} second) 
         satisfies Iterator<Element|Other> {
 
     variable Iterator<Element|Other> iter = first.iterator;

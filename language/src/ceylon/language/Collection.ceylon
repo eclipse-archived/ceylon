@@ -14,7 +14,7 @@ doc "Represents an iterable collection of elements of finite
      collection."
 see (List, Map, Set)
 shared interface Collection<out Element>
-        satisfies {Element...} &
+        satisfies {Element*} &
                   Category &
                   Cloneable<Collection<Element>> {
     
@@ -42,7 +42,7 @@ shared interface Collection<out Element>
         }
     }
     
-    value elementsString => 
+    value elementsString =>
             ", ".join ( for (elem in this)
                             elem?.string else "null" );
     

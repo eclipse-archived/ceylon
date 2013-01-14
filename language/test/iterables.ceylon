@@ -163,7 +163,7 @@ void testIterables() {
     //coalesced
     check((1..10).coalesced == 1..10, "Range.coalesced");
     check({1,2,3,null,4,5}.coalesced.sequence=={1,2,3,4,5}, "Sequence.coalesced");
-    check(string({for (c in "HoLa") c.uppercase then c else null}.coalesced.sequence...)=="HL", "Iterable.coalesced");
+    check(string(*{for (c in "HoLa") c.uppercase then c else null}.coalesced.sequence)=="HL", "Iterable.coalesced");
     check(array(1,2,3,null,5).coalesced.sequence=={1,2,3,5}, "Array.coalesced");
     check(Singleton("X").coalesced==Singleton("X"), "Singleton.coalesced [1]");
     check("ABC".coalesced=="ABC", "String.coalesced");

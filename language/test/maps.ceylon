@@ -6,7 +6,7 @@ interface MapTestBase<out Key, out Item> satisfies Map<Key, Item>
     shared formal Entry<Key, Item>[] entries;
 }
 
-class MapTest<Key, Item>(Key->Item... entry)
+class MapTest<Key, Item>(<Key->Item>* entry)
             extends Object()
             satisfies MapTestBase<Key, Item>
             given Key satisfies Object

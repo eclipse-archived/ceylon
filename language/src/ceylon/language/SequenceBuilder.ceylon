@@ -15,7 +15,7 @@ shared native class SequenceBuilder<Element>() {
     
     doc "Append multiple elements to the sequence and return 
          this `SequenceBuilder`"
-    default shared SequenceBuilder<Element> appendAll(Element... elements) {
+    default shared SequenceBuilder<Element> appendAll(Element* elements) {
         for (element in elements) {
             append(element);
         }
@@ -36,12 +36,12 @@ doc "This class is used for constructing a new nonempty
      not modified, since `Sequence`s are immutable. This 
      class is mutable but threadsafe."
 see (SequenceBuilder)
-shared native class SequenceAppender<Element>(Sequence<Element> elements) 
+shared native class SequenceAppender<Element>([Element+] elements) 
         extends SequenceBuilder<Element>() {
     
     doc "The resulting nonempty sequence. If no elements 
          have been appended, the original nonempty 
          sequence."
-    shared actual native Sequence<Element> sequence;
+    shared actual native [Element+] sequence;
     
 }

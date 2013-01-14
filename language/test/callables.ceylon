@@ -14,9 +14,9 @@ void callables() {
   value ini1 = "Hello".initial;
   check(testCallable(ini1)=="H", "higher-class 2");
   /*
-  value ini2 = seq[].initial;
+  value ini2 = seq*.initial;
   function ini3(Integer i) = ini2;
-  String[] ini4(Integer i) = seq[].initial;
+  String[] ini4(Integer i) = seq*.initial;
   check(ini3(1) == {"H", "W"}, "higher-class 3 (ceylon-js #53)");
   check(ini4(1) == {"H", "W"}, "higher-class 4 (ceylon-js #53)");
   check("Callable" in className(ini2), "Spread Callable className");

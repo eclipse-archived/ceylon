@@ -2,10 +2,9 @@ doc "A sequence with no elements. The type of the expression
      `{}`."
 see (Sequence)
 shared interface Empty
-           satisfies Nothing[] & 
-                     EmptyContainer &
+           satisfies Nothing[] &
                      Ranged<Integer,[]> &
-                     Cloneable<Empty> {
+                     Cloneable<[]> {
     
     doc "Returns an iterator that is already exhausted."
     shared actual Iterator<Nothing> iterator => emptyIterator;
@@ -60,7 +59,7 @@ shared interface Empty
     shared actual [] indexed => this;
     
     doc "Returns `other`."
-    shared actual {Other...} chain<Other>({Other...} other) => other;
+    shared actual {Other*} chain<Other>({Other*} other) => other;
     
     doc "Returns `false` for any given element."
     shared actual Boolean contains(Object element) => false;
@@ -105,10 +104,10 @@ shared interface Empty
     
     shared actual [] by(Integer step) => this;
     
-    shared actual Sequence<Element> withLeading<Element>
+    shared actual [Element] withLeading<Element>
             (Element element) => [ element ];
     
-    shared actual Sequence<Element> withTrailing<Element>
+    shared actual [Element] withTrailing<Element>
             (Element element) => [ element ];
 }
 

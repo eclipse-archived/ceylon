@@ -12,7 +12,7 @@ shared native class StringBuilder() {
     shared native StringBuilder append(String string);
     
     doc "Append the characters in the given strings."
-    shared StringBuilder appendAll(String... strings) {
+    shared StringBuilder appendAll(String* strings) {
         for (s in strings) {
             append(s);
         }
