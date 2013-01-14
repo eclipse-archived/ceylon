@@ -985,7 +985,10 @@ public class StatementTransformer extends AbstractTransformer {
             Tree.Expression expression = null;
             if (doc.getPositionalArgumentList() != null) {
                 Tree.PositionalArgument arg = doc.getPositionalArgumentList().getPositionalArguments().get(0);
-                expression = arg.getExpression();
+                if(arg instanceof Tree.ListedArgument)
+                    expression = ((Tree.ListedArgument) arg).getExpression();
+                else
+                    throw new RuntimeException("Argument to doc annotation cannot be a spread argument or comprehension: " + arg);
             } else if (doc.getNamedArgumentList() != null) {
                 Tree.SpecifiedArgument arg = (Tree.SpecifiedArgument)doc.getNamedArgumentList().getNamedArguments().get(0);
                 expression = arg.getSpecifierExpression().getExpression();
@@ -1120,7 +1123,11 @@ public class StatementTransformer extends AbstractTransformer {
                     range = (Tree.RangeOp)((Tree.Expression)(prim.getPrimary())).getTerm();                    
                     if (inv.getPositionalArgumentList() != null) {
                         PositionalArgument a = inv.getPositionalArgumentList().getPositionalArguments().get(0);
-                        increment = a.getExpression().getTerm();
+                        if(a instanceof Tree.ListedArgument)
+                            increment = ((Tree.ListedArgument)a).getExpression().getTerm();
+                        else
+                            return optimizationFailed(stmt, optName, 
+                                    "Unable to determine expression for argument to by(): appears spread or comprehension");
                     } else if (inv.getNamedArgumentList() != null) {
                         Tree.SpecifiedArgument sarg = null;
                         for (Tree.NamedArgument arg : inv.getNamedArgumentList().getNamedArguments()) {

@@ -61,7 +61,6 @@ import com.redhat.ceylon.compiler.typechecker.tree.Tree;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.Comprehension;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.Condition;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.DefaultArgument;
-import com.redhat.ceylon.compiler.typechecker.tree.Tree.Expression;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.ExpressionComprehensionClause;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.ForComprehensionClause;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.FunctionArgument;
@@ -70,6 +69,7 @@ import com.redhat.ceylon.compiler.typechecker.tree.Tree.IfComprehensionClause;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.InvocationExpression;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.KeyValueIterator;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.NaturalLiteral;
+import com.redhat.ceylon.compiler.typechecker.tree.Tree.PositionalArgument;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.QualifiedMemberExpression;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.SequencedArgument;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.SpecifierExpression;
@@ -769,23 +769,14 @@ public class ExpressionTransformer extends AbstractTransformer {
     
     private JCExpression transform(Tree.SequenceEnumeration value, ProducedType expectedType) {
         at(value);
-        if (value.getComprehension() != null) {
-            return transformComprehension(value.getComprehension(), expectedType);
-        } else if (value.getSequencedArgument() != null) {
+        if (value.getSequencedArgument() != null) {
             SequencedArgument sequencedArgument = value.getSequencedArgument();
-            boolean ellipsis = sequencedArgument.getEllipsis() != null;
-            // we are only an Iterable literal if the last expression is Iterable and has ellipsis
-            java.util.List<Tree.Expression> list = sequencedArgument.getExpressionList().getExpressions();
+            java.util.List<Tree.PositionalArgument> list = sequencedArgument.getPositionalArguments();
             if(list.isEmpty())
                 return makeErroneous(value, "Empty iterable literal with sequenced arguments: "+value);
-            Expression lastExpression = list.get(list.size()-1);
-            if (ellipsis && !typeFact().isSequentialType(lastExpression.getTypeModel())) {
-                ProducedType seqElemType = typeFact().getIteratedType(value.getTypeModel());
-                seqElemType = wrapInOptionalForInterop(seqElemType, expectedType);
-                return makeIterable(list, seqElemType);
-            } else {
-                return makeTuple(list, ellipsis);
-            }
+            ProducedType seqElemType = typeFact().getIteratedType(value.getTypeModel());
+            seqElemType = wrapInOptionalForInterop(seqElemType, expectedType);
+            return makeIterable(list, seqElemType);
         } else {
             return makeEmpty();
         }
@@ -794,11 +785,8 @@ public class ExpressionTransformer extends AbstractTransformer {
     public JCExpression transform(Tree.Tuple value) {
         SequencedArgument sequencedArgument = value.getSequencedArgument();
         if(sequencedArgument != null){
-            boolean ellipsis = sequencedArgument.getEllipsis() != null;
-            return makeTuple(sequencedArgument.getExpressionList().getExpressions(), ellipsis);
-        }else if(value.getComprehension() != null){
-            // FIXME: do we need to deal with erasure?
-            return iterableToSequence(transformComprehension(value.getComprehension())); 
+            java.util.List<PositionalArgument> args = sequencedArgument.getPositionalArguments();
+            return makeTuple(args);
         }
         // nothing in there
         return makeEmpty();
@@ -811,34 +799,46 @@ public class ExpressionTransformer extends AbstractTransformer {
         return applyErasureAndBoxing(sequential, sequentialType, true, BoxingStrategy.BOXED, expectedType);
     }
     
-    private JCExpression makeTuple(java.util.List<Tree.Expression> expressions, boolean ellipsis) {
+    private JCExpression makeTuple(java.util.List<Tree.PositionalArgument> expressions) {
         java.util.List<ProducedType> expressionTypes = new LinkedList<ProducedType>();
-        for(Tree.Expression expr : expressions){
+        for(Tree.PositionalArgument expr : expressions){
             expressionTypes.add(expr.getTypeModel());
         }
+        boolean spread = false;
         // turn the last type from a sequence to its element type
-        if(ellipsis && !expressionTypes.isEmpty()){
-            int lastIndex = expressionTypes.size()-1;
-            ProducedType lastType = expressionTypes.get(lastIndex);
-            expressionTypes.set(lastIndex, typeFact().getIteratedType(lastType));
+        if(!expressions.isEmpty()){
+            int lastIndex = expressions.size()-1;
+            Tree.PositionalArgument last = expressions.get(lastIndex);
+            if(last instanceof Tree.SpreadArgument || last instanceof Tree.Comprehension){
+                ProducedType lastType = expressionTypes.get(lastIndex);
+                expressionTypes.set(lastIndex, typeFact().getIteratedType(lastType));
+                spread = true;
+            }
         }
-        return makeTuple(expressions.iterator(), expressionTypes, ellipsis);
+        return makeTuple(expressions.iterator(), expressionTypes, spread);
     }
     
-    private JCExpression makeTuple(Iterator<Tree.Expression> iter, java.util.List<ProducedType> expressionTypes, boolean ellipsis) {
+    private JCExpression makeTuple(Iterator<Tree.PositionalArgument> iter, java.util.List<ProducedType> expressionTypes, boolean spread) {
         if (iter.hasNext()) {
             // no erasure here? really?
-            Expression expr = iter.next();
-            JCExpression first = transformExpression(expr);
+            Tree.PositionalArgument expr = iter.next();
+            JCExpression first;
+            if(expr instanceof Tree.ListedArgument)
+                first = transformExpression(((Tree.ListedArgument) expr).getExpression());
+            else if(expr instanceof Tree.SpreadArgument){
+                first = transformExpression(((Tree.SpreadArgument) expr).getExpression());
+            }else{
+                first = iterableToSequence(transformComprehension((Tree.Comprehension)expr)); 
+            }
             // last one with ellipsis is just a sequence
-            if(!iter.hasNext() && ellipsis)
+            if(!iter.hasNext() && spread)
                 return first;
             // make the tuple type
-            ProducedType tupleType = typeFact().getTupleType(expressionTypes, ellipsis, -1);
+            ProducedType tupleType = typeFact().getTupleType(expressionTypes, spread, false /* FIXME: What? */, -1);
             JCExpression typeExpr = makeJavaType(tupleType, CeylonTransformer.JT_CLASS_NEW);
             // get the rest of the tuple
             expressionTypes.remove(0);
-            JCExpression rest = makeTuple(iter, expressionTypes, ellipsis);
+            JCExpression rest = makeTuple(iter, expressionTypes, spread);
             // make the tuple
             return makeNewClass(typeExpr, List.of(first, rest));
         } else {
@@ -2696,7 +2696,7 @@ public class ExpressionTransformer extends AbstractTransformer {
         return transformComprehension(comp, null);
     }
 
-    private JCExpression transformComprehension(Comprehension comp, ProducedType expectedType) {
+    JCExpression transformComprehension(Comprehension comp, ProducedType expectedType) {
         ProducedType elementType = comp.getForComprehensionClause().getTypeModel();
         elementType = wrapInOptionalForInterop(elementType, expectedType);
         return new ComprehensionTransformation(comp, elementType).transformComprehension();
@@ -3157,7 +3157,10 @@ public class ExpressionTransformer extends AbstractTransformer {
                 || ce.getPositionalArgumentList().getPositionalArguments() == null
                 || ce.getPositionalArgumentList().getPositionalArguments().size() != 1)
             return null;
-        Tree.Expression right = ce.getPositionalArgumentList().getPositionalArguments().get(0).getExpression();
+        Tree.PositionalArgument arg = ce.getPositionalArgumentList().getPositionalArguments().get(0);
+        if(arg instanceof Tree.ListedArgument == false)
+            return null;
+        Tree.Expression right = ((Tree.ListedArgument)arg).getExpression();
         return checkForBitwiseOperators(ce, qme, right);
     }
     

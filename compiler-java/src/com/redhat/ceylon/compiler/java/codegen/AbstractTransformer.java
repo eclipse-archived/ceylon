@@ -64,6 +64,7 @@ import com.redhat.ceylon.compiler.typechecker.model.UnionType;
 import com.redhat.ceylon.compiler.typechecker.model.UnknownType;
 import com.redhat.ceylon.compiler.typechecker.tree.Node;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree;
+import com.redhat.ceylon.compiler.typechecker.tree.Tree.Comprehension;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.Expression;
 import com.sun.tools.javac.code.BoundKind;
 import com.sun.tools.javac.code.Symtab;
@@ -2164,27 +2165,53 @@ public abstract class AbstractTransformer implements Transformation {
     }
 
     /**
-     * Makes an iterable literal, where the last element of `list` is a spread Iterable.
+     * Makes an iterable literal, where the last element of `list` can be a spread Iterable.
      */
-    JCExpression makeIterable(java.util.List<Expression> list, ProducedType seqElemType) {
+    JCExpression makeIterable(java.util.List<Tree.PositionalArgument> list, ProducedType seqElemType) {
         ListBuffer<JCExpression> elems = new ListBuffer<JCExpression>();
         int i = list.size();
-        for (Expression expr : list) {
+        boolean spread = false;
+        for (Tree.PositionalArgument arg : list) {
             i--;
             ProducedType type;
-            // last expression is always an Iterable<seqElemType>
-            if(i == 0)
+            // last expression can be an Iterable<seqElemType>
+            if(i == 0 && (arg instanceof Tree.SpreadArgument || arg instanceof Tree.Comprehension))
                 type = typeFact().getIterableType(seqElemType);
             else
                 type = seqElemType;
-            JCExpression jcExpression = expressionGen().transformExpression(expr, BoxingStrategy.BOXED, type);
+            
+            // do the expression
+            JCExpression jcExpression;
+            if(arg instanceof Tree.ListedArgument){
+                Tree.Expression expr = ((Tree.ListedArgument) arg).getExpression();
+                jcExpression = expressionGen().transformExpression(expr, BoxingStrategy.BOXED, type);
+            }else{
+                // make sure we only have spread/comprehension as last
+                if(i != 0){
+                    jcExpression = makeErroneous(arg, "Spread or comprehension argument is not last in sequence literal");
+                }else{
+                    spread = true;
+                    if(arg instanceof Tree.SpreadArgument){
+                        Tree.Expression expr = ((Tree.SpreadArgument) arg).getExpression();
+                        jcExpression = expressionGen().transformExpression(expr, BoxingStrategy.BOXED, type);
+                    }else{
+                        jcExpression = expressionGen().transformComprehension((Comprehension) arg, type);
+                    }
+                }
+            }
             // the last iterable goes first
             if(i == 0)
                 elems.prepend(jcExpression);
             else
                 elems.append(jcExpression);
         }
-        return makeIterable(elems.toList(), seqElemType, CeylonTransformer.JT_CLASS_NEW);
+        // small optimisation if we have only a single element
+        if(elems.size() == 1 && spread)
+            return elems.first();
+        if(spread)
+            return makeIterable(elems.toList(), seqElemType, CeylonTransformer.JT_CLASS_NEW);
+        else
+            return makeSequence(elems.toList(), seqElemType, CeylonTransformer.JT_CLASS_NEW);
     }
 
     /**

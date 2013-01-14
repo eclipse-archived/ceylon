@@ -27,13 +27,11 @@ import static com.sun.tools.javac.code.Flags.FINAL;
 
 import java.util.ArrayList;
 import java.util.HashSet;
-import java.util.LinkedList;
 import java.util.Map;
 import java.util.Set;
 import java.util.TreeMap;
 
 import com.redhat.ceylon.compiler.java.codegen.AbstractTransformer.BoxingStrategy;
-import com.redhat.ceylon.compiler.java.codegen.Naming.SyntheticName;
 import com.redhat.ceylon.compiler.typechecker.model.Class;
 import com.redhat.ceylon.compiler.typechecker.model.ClassAlias;
 import com.redhat.ceylon.compiler.typechecker.model.ClassOrInterface;
@@ -56,6 +54,7 @@ import com.redhat.ceylon.compiler.typechecker.tree.Tree;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.Comprehension;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.Expression;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.FunctionArgument;
+import com.redhat.ceylon.compiler.typechecker.tree.Tree.PositionalArgument;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.PositionalArgumentList;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.Primary;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.QualifiedTypeExpression;
@@ -290,18 +289,23 @@ class IndirectInvocationBuilder extends SimpleInvocation {
         
         PositionalArgumentList positionalArgumentList = invocation.getPositionalArgumentList();
         final java.util.List<Tree.Expression> argumentExpressions = new ArrayList<Tree.Expression>(tas.size());
+        boolean spread = false;
+        Comprehension comprehension = null;
         for (Tree.PositionalArgument argument : positionalArgumentList.getPositionalArguments()) {
-            argumentExpressions.add(argument.getExpression());
+            if(argument instanceof Tree.ListedArgument)
+                argumentExpressions.add(((Tree.ListedArgument)argument).getExpression());
+            else if(argument instanceof Tree.SpreadArgument){
+                argumentExpressions.add(((Tree.SpreadArgument)argument).getExpression());
+                spread = true;
+            }else{
+                comprehension = (Comprehension) argument;
+            }
+
         }
+        this.spread = spread;
+        this.comprehension = comprehension;
         this.argumentExpressions = argumentExpressions;
         this.parameterTypes = parameterTypes;
-        this.spread = positionalArgumentList.getEllipsis() != null;
-        
-        if(positionalArgumentList.getComprehension() != null) {
-            this.comprehension = positionalArgumentList.getComprehension();
-        }else{
-            this.comprehension = null;
-        }
     }
     
     @Override
@@ -480,42 +484,46 @@ class PositionalInvocation extends DirectInvocation {
     }
     @Override
     protected Tree.Expression getArgumentExpression(int argIndex) {
-        return getPositional().getPositionalArguments().get(argIndex).getExpression();
+        PositionalArgument arg = getPositional().getPositionalArguments().get(argIndex);
+        if(arg instanceof Tree.ListedArgument)
+            return ((Tree.ListedArgument) arg).getExpression();
+        if(arg instanceof Tree.SpreadArgument)
+            return ((Tree.SpreadArgument) arg).getExpression();
+        throw new RuntimeException("Trying to get an argument expression which is a Comprehension: " + arg);
     }
     @Override
     protected JCExpression getTransformedArgumentExpression(int argIndex) {
-        if (argIndex == getPositional().getPositionalArguments().size() && getPositional().getComprehension() != null) {
-            ProducedType type = getParameterType(argIndex);
-            return gen.expressionGen().comprehensionAsSequential(getPositional().getComprehension(), type); 
+        PositionalArgument arg = getPositional().getPositionalArguments().get(argIndex);
+        // FIXME: I don't like much this weird special case here
+        if(arg instanceof Tree.ListedArgument){
+            Tree.Expression expr = ((Tree.ListedArgument) arg).getExpression();
+            if (expr.getTerm() instanceof FunctionArgument) {
+                FunctionArgument farg = (FunctionArgument)expr.getTerm();
+                return gen.expressionGen().transform(farg);
+            }
         }
-        Tree.Expression expr = getArgumentExpression(argIndex);
-        if (expr.getTerm() instanceof FunctionArgument) {
-            FunctionArgument farg = (FunctionArgument)expr.getTerm();
-            return gen.expressionGen().transform(farg);
+        // special case for comprehensions which are not expressions
+        if(arg instanceof Tree.Comprehension){
+            ProducedType type = getParameterType(argIndex);
+            return gen.expressionGen().comprehensionAsSequential((Comprehension) arg, type); 
         }
         return gen.expressionGen().transformArg(this, argIndex);
     }
     @Override
     protected Parameter getParameter(int argIndex) {
-        // last parameter can be a comprehension which is not counted as part of positional arguments
-        if(argIndex == getPositional().getPositionalArguments().size() && getPositional().getComprehension() != null)
-            return getParameters().get(argIndex);
         return getPositional().getPositionalArguments().get(argIndex).getParameter();
     }
     @Override
     protected int getNumArguments() {
-        return getPositional().getPositionalArguments().size() + (getPositional().getComprehension()==null?0:1);
-    }
-    @Override
-    protected boolean isParameterSequenced(int argIndex) {
-        if (argIndex == getPositional().getPositionalArguments().size() && getPositional().getComprehension() != null) {
-            return true;
-        }
-        return super.isParameterSequenced(argIndex);
+        return getPositional().getPositionalArguments().size();
     }
     @Override
     protected boolean dontBoxSequence() {
-        return getPositional().getEllipsis() != null || getPositional().getComprehension() != null;
+        java.util.List<PositionalArgument> args = getPositional().getPositionalArguments();
+        if(args.isEmpty())
+            return false;
+        PositionalArgument last = args.get(args.size()-1);
+        return last instanceof Tree.SpreadArgument || last instanceof Tree.Comprehension;
     }
     
     @Override
@@ -1024,16 +1032,13 @@ class NamedArgumentInvocation extends Invocation {
                     argExpr = makeDefaultedArgumentMethodCall(param);
                     hasDefaulted |= true;
                 } else if (param.isSequenced()) {
-                    if (namedArgumentList.getComprehension() != null) {
-                        argExpr = gen.expressionGen().comprehensionAsSequential(namedArgumentList.getComprehension(), param.getType());
+                    // FIXME: this special case is just plain weird, it looks very wrong
+                    if (getPrimaryDeclaration() instanceof FunctionalParameter) {
+                        // honestly I don't know if it needs a cast but it can't hurt
+                        argExpr = gen.makeEmptyAsSequential(true);
                     } else {
-                        if (getPrimaryDeclaration() instanceof FunctionalParameter) {
-                            // honestly I don't know if it needs a cast but it can't hurt
-                            argExpr = gen.makeEmptyAsSequential(true);
-                        } else {
-                            argExpr = makeDefaultedArgumentMethodCall(param);
-                            hasDefaulted |= true;
-                        }
+                        argExpr = makeDefaultedArgumentMethodCall(param);
+                        hasDefaulted |= true;
                     }
                 } else {
                     argExpr = gen.makeErroneous(this.getNode(), "Missing argument, and parameter is not defaulted");
