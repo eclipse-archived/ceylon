@@ -138,15 +138,6 @@ public abstract class TypeDeclaration extends Declaration
         return pt;
     }
     
-    @Override
-    public boolean equals(Object object) {
-        if(object == this)
-            return true;
-        return super.equals(object) && 
-                getTypeParameters().size()==
-                ((TypeDeclaration) object).getTypeParameters().size();
-    }
-
     /**
      * The type of the declaration as seen from
      * within the body of the declaration itself.
