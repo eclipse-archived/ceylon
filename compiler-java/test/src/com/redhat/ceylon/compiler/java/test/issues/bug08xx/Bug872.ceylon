@@ -33,7 +33,7 @@ shared interface Visitable{
     }
     shared default void visitAroundText2(Visitor visitor, String name, String text){
     }
-    shared void visitAroundTags(Visitor visitor, String name, Tag|String... tags){
+    shared void visitAroundTags(Visitor visitor, String name, Tag|String* tags){
     }
 }
 
@@ -59,27 +59,27 @@ shared interface Tag satisfies Visitable {}
 shared interface InlineTag satisfies Tag{}
 
 @nomodel
-shared class Container<TagType>(String name, TagType|String... initialTags) satisfies Visitable 
+shared class Container<TagType>(String name, TagType|String* initialTags) satisfies Visitable 
     given TagType satisfies Tag {
 
     shared Sequential<TagType|String> tags = initialTags;
 
     shared actual void visit(Visitor visitor) {
-        visitAroundTags(visitor, "body", tags...);
+        visitAroundTags(visitor, "body", *tags);
     }
 }
 
 @nomodel
-shared class Body(Tag|String... initialTags) extends Container<Tag>("body", initialTags...) {}
+shared class Body(Tag|String* initialTags) extends Container<Tag>("body", *initialTags) {}
 
 @nomodel
-shared class Block(String name, Tag|String... initialTags) extends Container<Tag>(name, initialTags...) satisfies Tag {}
+shared class Block(String name, Tag|String* initialTags) extends Container<Tag>(name, *initialTags) satisfies Tag {}
 
 @nomodel
-shared class P(Tag|String... tags) extends Block("p", tags...){}
+shared class P(Tag|String* tags) extends Block("p", *tags){}
 
 @nomodel
-shared class Inline(String name, InlineTag|String... initialTags) extends Container<InlineTag>(name, initialTags...) satisfies InlineTag {}
+shared class Inline(String name, InlineTag|String* initialTags) extends Container<InlineTag>(name, *initialTags) satisfies InlineTag {}
 
 @nomodel
-shared class B(InlineTag|String... tags) extends Inline("b", tags...){}
+shared class B(InlineTag|String* tags) extends Inline("b", *tags){}

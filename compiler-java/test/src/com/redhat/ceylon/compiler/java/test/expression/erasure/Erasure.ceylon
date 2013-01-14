@@ -289,9 +289,9 @@ class Test(Integer&EmptyInterface n) {
         bSync = naturals nonempty;
         
         // spread op
-        Left[]&Right[] spreadMember = leftsAndRights[].leftAndRightAttribute;
+        Left[]&Right[] spreadMember = leftsAndRights*.leftAndRightAttribute;
         variable Left[]&Right[] spreadInvocation;
-        spreadInvocation = leftsAndRights[].leftAndRightMethod(CMiddle());
-        spreadInvocation = leftsAndRights[].leftAndRightMethod{param = CMiddle();};
+        spreadInvocation = leftsAndRights*.leftAndRightMethod(CMiddle());
+        spreadInvocation = leftsAndRights*.leftAndRightMethod{param = CMiddle();};
     }
 }

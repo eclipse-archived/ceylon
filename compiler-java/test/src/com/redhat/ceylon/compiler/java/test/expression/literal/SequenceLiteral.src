@@ -7,9 +7,9 @@ class SequenceLiteral {
     
     public final void m() {
         final .ceylon.language.Sequential<? extends .ceylon.language.String> sequence = new .ceylon.language.Tuple<.ceylon.language.String, .ceylon.language.String, .ceylon.language.Tuple<.ceylon.language.String, ? extends .ceylon.language.String, ? extends .ceylon.language.Empty>>(.ceylon.language.String.instance("a"), new .ceylon.language.Tuple<.ceylon.language.String, .ceylon.language.String, .ceylon.language.Empty>(.ceylon.language.String.instance("b"), .ceylon.language.empty_.getEmpty$()));
-        final .ceylon.language.Iterable<? extends .ceylon.language.String, ?> iterable = sequence;
+        final .ceylon.language.Iterable<? extends .ceylon.language.String, ?> iterable = new .com.redhat.ceylon.compiler.java.language.ArraySequence<.ceylon.language.String>(.ceylon.language.String.instance("a"), .ceylon.language.String.instance("b"));
         final .ceylon.language.Empty empty = .ceylon.language.empty_.getEmpty$();
-        final .ceylon.language.Iterable<? extends .ceylon.language.String, ?> comp = new .com.redhat.ceylon.compiler.java.language.AbstractIterable<.ceylon.language.String, .java.lang.Object>(){
+        final .ceylon.language.Iterable<? extends .ceylon.language.String, ?> iterableComp = new .com.redhat.ceylon.compiler.java.language.AbstractIterable<.ceylon.language.String, .java.lang.Object>(){
             
             public final .ceylon.language.Iterator<.ceylon.language.String> getIterator() {
                 return new .ceylon.language.Iterator<.ceylon.language.String>(){
@@ -34,6 +34,81 @@ class SequenceLiteral {
                 };
             }
         };
+        final .ceylon.language.Sequential<? extends .ceylon.language.String> sequenceComp = new .com.redhat.ceylon.compiler.java.language.AbstractIterable<.ceylon.language.String, .java.lang.Object>(){
+            
+            public final .ceylon.language.Iterator<.ceylon.language.String> getIterator() {
+                return new .ceylon.language.Iterator<.ceylon.language.String>(){
+                    private final .ceylon.language.Iterator<? extends .ceylon.language.String> iter$0 = sequence.getIterator();
+                    private .ceylon.language.String s;
+                    private boolean s$exhausted;
+                    
+                    private final boolean s() {
+                        final .java.lang.Object $ceylontmpitem1 = iter$0.next();
+                        s$exhausted = $ceylontmpitem1 == .ceylon.language.finished_.getFinished$();
+                        if (s$exhausted) {
+                            return false;
+                        } else {
+                            s = (.ceylon.language.String)$ceylontmpitem1;
+                            return true;
+                        }
+                    }
+                    
+                    public final .java.lang.Object next() {
+                        return this.s() ? s : .ceylon.language.finished_.getFinished$();
+                    }
+                };
+            }
+        }.getSequence();
+        final .ceylon.language.Iterable<? extends .ceylon.language.String, ?> iterableComp2 = .com.redhat.ceylon.compiler.java.language.ArrayIterable.<.ceylon.language.String>instance(new .com.redhat.ceylon.compiler.java.language.AbstractIterable<.ceylon.language.String, .java.lang.Object>(){
+            
+            public final .ceylon.language.Iterator<.ceylon.language.String> getIterator() {
+                return new .ceylon.language.Iterator<.ceylon.language.String>(){
+                    private final .ceylon.language.Iterator<? extends .ceylon.language.String> iter$0 = sequence.getIterator();
+                    private .ceylon.language.String s;
+                    private boolean s$exhausted;
+                    
+                    private final boolean s() {
+                        final .java.lang.Object $ceylontmpitem2 = iter$0.next();
+                        s$exhausted = $ceylontmpitem2 == .ceylon.language.finished_.getFinished$();
+                        if (s$exhausted) {
+                            return false;
+                        } else {
+                            s = (.ceylon.language.String)$ceylontmpitem2;
+                            return true;
+                        }
+                    }
+                    
+                    public final .java.lang.Object next() {
+                        return this.s() ? s : .ceylon.language.finished_.getFinished$();
+                    }
+                };
+            }
+        }, .ceylon.language.String.instance("a"));
+        final .ceylon.language.Sequential<? extends .ceylon.language.String> sequenceComp2 = new .ceylon.language.Tuple(.ceylon.language.String.instance("a"), new .com.redhat.ceylon.compiler.java.language.AbstractIterable<.ceylon.language.String, .java.lang.Object>(){
+            
+            public final .ceylon.language.Iterator<.ceylon.language.String> getIterator() {
+                return new .ceylon.language.Iterator<.ceylon.language.String>(){
+                    private final .ceylon.language.Iterator<? extends .ceylon.language.String> iter$0 = sequence.getIterator();
+                    private .ceylon.language.String s;
+                    private boolean s$exhausted;
+                    
+                    private final boolean s() {
+                        final .java.lang.Object $ceylontmpitem3 = iter$0.next();
+                        s$exhausted = $ceylontmpitem3 == .ceylon.language.finished_.getFinished$();
+                        if (s$exhausted) {
+                            return false;
+                        } else {
+                            s = (.ceylon.language.String)$ceylontmpitem3;
+                            return true;
+                        }
+                    }
+                    
+                    public final .java.lang.Object next() {
+                        return this.s() ? s : .ceylon.language.finished_.getFinished$();
+                    }
+                };
+            }
+        }.getSequence());
         final .ceylon.language.Tuple<.ceylon.language.String, ? extends .ceylon.language.String, ? extends .ceylon.language.Tuple<.ceylon.language.String, ? extends .ceylon.language.String, ? extends .ceylon.language.Tuple<.ceylon.language.String, ? extends .ceylon.language.String, ? extends .ceylon.language.Empty>>> triplet = new .ceylon.language.Tuple<.ceylon.language.String, .ceylon.language.String, .ceylon.language.Tuple<.ceylon.language.String, ? extends .ceylon.language.String, ? extends .ceylon.language.Tuple<.ceylon.language.String, ? extends .ceylon.language.String, ? extends .ceylon.language.Empty>>>(.ceylon.language.String.instance("hello"), new .ceylon.language.Tuple<.ceylon.language.String, .ceylon.language.String, .ceylon.language.Tuple<.ceylon.language.String, ? extends .ceylon.language.String, ? extends .ceylon.language.Empty>>(.ceylon.language.String.instance("world"), new .ceylon.language.Tuple<.ceylon.language.String, .ceylon.language.String, .ceylon.language.Empty>(.ceylon.language.String.instance("goodbye"), .ceylon.language.empty_.getEmpty$())));
         final .ceylon.language.Tuple<.ceylon.language.String, ? extends .ceylon.language.String, ? extends .ceylon.language.Sequential<? extends .ceylon.language.String>> spreadSequence = new .ceylon.language.Tuple<.ceylon.language.String, .ceylon.language.String, .ceylon.language.Sequential<? extends .ceylon.language.String>>(.ceylon.language.String.instance("hello"), sequence);
         final .ceylon.language.Iterable<? extends .ceylon.language.String, ?> spreadIterable = .com.redhat.ceylon.compiler.java.language.ArrayIterable.<.ceylon.language.String>instance(iterable, .ceylon.language.String.instance("hello"));

@@ -18,6 +18,6 @@
  * MA  02110-1301, USA.
  */
 @nomodel
-class InitializerVarargs(String f, String... fs) {
+class InitializerVarargs(String f, String* fs) {
     for (String ff in fs) { }
 }

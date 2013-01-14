@@ -17,7 +17,7 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
  * MA  02110-1301, USA.
  */
-class Foo(first = 1, Integer... initialRest) {
+class Foo(first = 1, Integer* initialRest) {
     shared Integer first;
     shared Iterable<Integer> rest = initialRest;
 }

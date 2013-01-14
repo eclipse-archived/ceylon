@@ -19,6 +19,6 @@
  */
 @nomodel
 class NamedArgumentWithEmptySequence() {
-    void m(Integer... b) {}
+    void m(Integer* b) {}
     m{};
 }

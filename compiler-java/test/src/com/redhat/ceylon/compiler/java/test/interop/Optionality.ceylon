@@ -54,8 +54,8 @@ class OptionalInterface(JavaOptionalInterface x) satisfies JavaOptionalInterface
             JavaOptionalInterface[] seqCheck = [ x.prop1 ];
             JavaOptionalInterface?[] seqNoCheck = [ x.prop1 ];
 
-            JavaOptionalInterface[] seqCheckSpread = [ [x.prop1]... ];
-            JavaOptionalInterface?[] seqNoCheckSpread = [ [x.prop1]... ];
+            JavaOptionalInterface[] seqCheckSpread = [ *[x.prop1] ];
+            JavaOptionalInterface?[] seqNoCheckSpread = [ *[x.prop1] ];
 
             JavaOptionalInterface[] comprehensionCheck = [ for (i in 1..2) x.prop1 ];
             JavaOptionalInterface?[] comprehensionNoCheck = [ for (i in 1..2) x.prop1 ];

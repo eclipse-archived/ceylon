@@ -3,8 +3,8 @@ class AvoidBackwardBranchWithNew(Object[] arr){
     }
     shared void test(){
         value arr = [1];
-        value o = AvoidBackwardBranchWithNew(arr[].successor);
-        o.Inner(arr[].successor);
+        value o = AvoidBackwardBranchWithNew(arr*.successor);
+        o.Inner(arr*.successor);
     }
 }
 void avoidBackwardBranchWithNew_run() {

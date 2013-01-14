@@ -101,12 +101,12 @@ class MethodSpecifierMethod {
     }
     
     private final .com.redhat.ceylon.compiler.java.test.structure.method.MethodSpecifierMethod oneSequencedParam3() {
-        return oneSequencedParam((.ceylon.language.Sequential)new .com.redhat.ceylon.compiler.java.language.AbstractIterable<.java.lang.Object, .java.lang.Object>(){
+        return oneSequencedParam(new .com.redhat.ceylon.compiler.java.language.AbstractIterable<.ceylon.language.Integer, .java.lang.Object>(){
             
-            public final .ceylon.language.Iterator getIterator() {
-                return new .ceylon.language.Iterator(){
-                    private final .ceylon.language.Iterator<?> iter$0 = .ceylon.language.empty_.getEmpty$().getIterator();
-                    private .java.lang.Object i;
+            public final .ceylon.language.Iterator<.ceylon.language.Integer> getIterator() {
+                return new .ceylon.language.Iterator<.ceylon.language.Integer>(){
+                    private final .ceylon.language.Iterator<? extends .ceylon.language.Integer> iter$0 = new .com.redhat.ceylon.compiler.java.language.ArraySequence<.ceylon.language.Integer>(.ceylon.language.Integer.instance(1L)).getIterator();
+                    private .ceylon.language.Integer i;
                     private boolean i$exhausted;
                     
                     private final boolean i() {
@@ -115,7 +115,7 @@ class MethodSpecifierMethod {
                         if (i$exhausted) {
                             return false;
                         } else {
-                            i = (.java.lang.Object)$ceylontmpitem8;
+                            i = (.ceylon.language.Integer)$ceylontmpitem8;
                             return true;
                         }
                     }

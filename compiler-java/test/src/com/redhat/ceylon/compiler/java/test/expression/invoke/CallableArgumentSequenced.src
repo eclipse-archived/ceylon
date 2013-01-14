@@ -37,7 +37,7 @@ final class callableArgumentSequenced_m_ {
     }
     
     static void callableArgumentSequenced_m() {
-        .com.redhat.ceylon.compiler.java.test.expression.invoke.callableArgumentSequenced_f_.callableArgumentSequenced_f(new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.java.lang.Object>("Anything(String...)"){
+        .com.redhat.ceylon.compiler.java.test.expression.invoke.callableArgumentSequenced_f_.callableArgumentSequenced_f(new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.java.lang.Object>("Anything(String*)"){
             
             @.java.lang.Override
             public .java.lang.Object $call() {

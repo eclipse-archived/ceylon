@@ -20,11 +20,11 @@
 @nomodel
 class MethodInitializerParameterOld<T>(
         void m(Integer i), 
-        void m2(Integer i, Integer... seq), 
+        void m2(Integer i, Integer* seq), 
         T m3(T t), 
         void m4(Integer i)) {
     void m(Integer i) = m;
-    void m2(Integer i, Integer... seq) = m2;
+    void m2(Integer i, Integer* seq) = m2;
     T m3(T t) = m3;
     void m4(Integer i) = m4;   
 }

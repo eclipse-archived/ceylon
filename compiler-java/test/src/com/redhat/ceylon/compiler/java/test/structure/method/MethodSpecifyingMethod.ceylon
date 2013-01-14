@@ -37,10 +37,10 @@ class MethodSpecifierMethod() {
     function oneDefaultedParam1() => oneDefaultedParam();
     function oneDefaultedParam2() => oneDefaultedParam{};
 
-    MethodSpecifierMethod oneSequencedParam(Integer... i) {
+    MethodSpecifierMethod oneSequencedParam(Integer* i) {
         throw;
     }
     function oneSequencedParam1() => oneSequencedParam(1,2);
     function oneSequencedParam2() => oneSequencedParam{i=[2, 3];};
-    function oneSequencedParam3() => oneSequencedParam(for (i in {}) i);
+    function oneSequencedParam3() => oneSequencedParam(for (i in {1}) i);
 }

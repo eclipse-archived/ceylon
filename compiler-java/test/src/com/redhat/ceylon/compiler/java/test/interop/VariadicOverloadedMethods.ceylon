@@ -26,11 +26,11 @@ void variadicOverloadedMethods() {
     java.variadic(1);
     java.variadic(1, 2);
     java.variadic(1, 2, 3);
-    java.variadic([1, 2, 3]...);
+    java.variadic(*[1, 2, 3]);
     java.variadic(1.0);
     java.variadic(1.0, 2.0);
     java.variadic(1.0, 2.0, 3.0);
     java.variadic("a");
     java.variadic("a", "b");
-    java.variadic(["a", "b"]...);
+    java.variadic(*["a", "b"]);
 }

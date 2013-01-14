@@ -26,4 +26,4 @@ shared void f3(Integer n = 5, Integer m = n) {}
 @nomodel
 shared void f4(Integer n = 5, Integer m = n + 1) {}
 @nomodel
-shared void f5(Integer n = 5, Integer... seq) {}
+shared void f5(Integer n = 5, Integer* seq) {}

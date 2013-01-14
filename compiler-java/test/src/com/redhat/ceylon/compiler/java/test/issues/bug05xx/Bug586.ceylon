@@ -20,5 +20,5 @@
 @nomodel
 void bug586() {
     String[] seq = {};
-    value s = seq[].string.first;
+    value s = seq*.string.first;
 }

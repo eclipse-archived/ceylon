@@ -26,4 +26,4 @@ class DefaultedInitializerParameter3(Integer n = 5, Integer m = n) {}
 @nomodel
 class DefaultedInitializerParameter4(Integer n = 5, Integer m = n + 1) {}
 @nomodel
-class DefaultedInitializerParameter5(Integer n = 5, Integer... seq) {}
+class DefaultedInitializerParameter5(Integer n = 5, Integer* seq) {}

@@ -26,140 +26,140 @@ shared class InteropVariadicTest() {
     shared void testVarargsByte() {
         VariadicJava java = VariadicJava();
         java.testVarargsByte3(1, box(2), 3);
-        java.testVarargsByte3([1, box(2), 3]...);
+        java.testVarargsByte3(*[1, box(2), 3]);
         value seq = [1, box(2), 3];
-        java.testVarargsByte3(seq...);
+        java.testVarargsByte3(*seq);
 
         java.testVarargsByte0();
-        java.testVarargsByte0({}...);
+        java.testVarargsByte0(*{});
         value empty = {};
-        java.testVarargsByte0(empty...);
+        java.testVarargsByte0(*empty);
     }
 
     @test
     shared void testVarargsShort() {
         VariadicJava java = VariadicJava();
         java.testVarargsShort3(1, box(2), 3);
-        java.testVarargsShort3([1, box(2), 3]...);
+        java.testVarargsShort3(*[1, box(2), 3]);
         value seq = [1, box(2), 3];
-        java.testVarargsShort3(seq...);
+        java.testVarargsShort3(*seq);
 
         java.testVarargsShort0();
-        java.testVarargsShort0({}...);
+        java.testVarargsShort0(*{});
         value empty = {};
-        java.testVarargsShort0(empty...);
+        java.testVarargsShort0(*empty);
     }
 
     @test
     shared void testVarargsInt() {
         VariadicJava java = VariadicJava();
         java.testVarargsInt3(1, box(2), 3);
-        java.testVarargsInt3([1, box(2), 3]...);
+        java.testVarargsInt3(*[1, box(2), 3]);
         value seq = [1, box(2), 3];
-        java.testVarargsInt3(seq...);
+        java.testVarargsInt3(*seq);
 
         java.testVarargsInt0();
-        java.testVarargsInt0({}...);
+        java.testVarargsInt0(*{});
         value empty = {};
-        java.testVarargsInt0(empty...);
+        java.testVarargsInt0(*empty);
     }
 
     @test
     shared void testVarargsLong() {
         VariadicJava java = VariadicJava();
         java.testVarargsLong3(1, box(2), 3);
-        java.testVarargsLong3([1, box(2), 3]...);
+        java.testVarargsLong3(*[1, box(2), 3]);
         value seq = [1, box(2), 3];
-        java.testVarargsLong3(seq...);
+        java.testVarargsLong3(*seq);
 
         java.testVarargsLong0();
-        java.testVarargsLong0({}...);
+        java.testVarargsLong0(*{});
         value empty = {};
-        java.testVarargsLong0(empty...);
+        java.testVarargsLong0(*empty);
     }
 
     @test
     shared void testVarargsFloat() {
         VariadicJava java = VariadicJava();
         java.testVarargsFloat3(1.0, box(2.0), 3.0);
-        java.testVarargsFloat3([1.0, box(2.0), 3.0]...);
+        java.testVarargsFloat3(*[1.0, box(2.0), 3.0]);
         value seq = [1.0, box(2.0), 3.0];
-        java.testVarargsFloat3(seq...);
+        java.testVarargsFloat3(*seq);
 
         java.testVarargsFloat0();
-        java.testVarargsFloat0({}...);
+        java.testVarargsFloat0(*{});
         value empty = {};
-        java.testVarargsFloat0(empty...);
+        java.testVarargsFloat0(*empty);
     }
 
     @test
     shared void testVarargsDouble() {
         VariadicJava java = VariadicJava();
         java.testVarargsDouble3(1.0, box(2.0), 3.0);
-        java.testVarargsDouble3([1.0, box(2.0), 3.0]...);
+        java.testVarargsDouble3(*[1.0, box(2.0), 3.0]);
         value seq = [1.0, box(2.0), 3.0];
-        java.testVarargsDouble3(seq...);
+        java.testVarargsDouble3(*seq);
 
         java.testVarargsDouble0();
-        java.testVarargsDouble0({}...);
+        java.testVarargsDouble0(*{});
         value empty = {};
-        java.testVarargsDouble0(empty...);
+        java.testVarargsDouble0(*empty);
     }
 
     @test
     shared void testVarargsBoolean() {
         VariadicJava java = VariadicJava();
         java.testVarargsBoolean3(true, box(false), false);
-        java.testVarargsBoolean3([true, box(false), false]...);
+        java.testVarargsBoolean3(*[true, box(false), false]);
         value seq = [true, box(false), false];
-        java.testVarargsBoolean3(seq...);
+        java.testVarargsBoolean3(*seq);
 
         java.testVarargsBoolean0();
-        java.testVarargsBoolean0({}...);
+        java.testVarargsBoolean0(*{});
         value empty = {};
-        java.testVarargsBoolean0(empty...);
+        java.testVarargsBoolean0(*empty);
     }
 
     @test
     shared void testVarargsChar() {
         VariadicJava java = VariadicJava();
         java.testVarargsChar3(`a`, box(`b`), `c`);
-        java.testVarargsChar3([`a`, box(`b`), `c`]...);
+        java.testVarargsChar3(*[`a`, box(`b`), `c`]);
         value seq = [`a`, box(`b`), `c`];
-        java.testVarargsChar3(seq...);
+        java.testVarargsChar3(*seq);
 
         java.testVarargsChar0();
-        java.testVarargsChar0({}...);
+        java.testVarargsChar0(*{});
         value empty = {};
-        java.testVarargsChar0(empty...);
+        java.testVarargsChar0(*empty);
     }
 
     @test
     shared void testVarargsCeylonInteger() {
         VariadicJava java = VariadicJava();
         java.testVarargsCeylonInteger3(1, box(2), 3);
-        java.testVarargsCeylonInteger3([1, box(2), 3]...);
+        java.testVarargsCeylonInteger3(*[1, box(2), 3]);
         value seq = [1, box(2), 3];
-        java.testVarargsCeylonInteger3(seq...);
+        java.testVarargsCeylonInteger3(*seq);
 
         java.testVarargsCeylonInteger0();
-        java.testVarargsCeylonInteger0({}...);
+        java.testVarargsCeylonInteger0(*{});
         value empty = {};
-        java.testVarargsCeylonInteger0(empty...);
+        java.testVarargsCeylonInteger0(*empty);
     }
 
     @test
     shared void testVarargsObject() {
         VariadicJava java = VariadicJava();
         java.testVarargsObject3(1, box(2), 3);
-        java.testVarargsObject3([1, box(2), 3]...);
+        java.testVarargsObject3(*[1, box(2), 3]);
         value seq = [1, box(2), 3];
-        java.testVarargsObject3(seq...);
+        java.testVarargsObject3(*seq);
 
         java.testVarargsObject0();
-        java.testVarargsObject0({}...);
+        java.testVarargsObject0(*{});
         value empty = {};
-        java.testVarargsObject0(empty...);
+        java.testVarargsObject0(*empty);
     }
 
 

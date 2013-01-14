@@ -19,15 +19,15 @@
  */
 @nomodel
 void spread(Sequence<String> seq, String x) {
-    Sequence<Integer> ini1 = seq[].size;
-    Sequence<String> ini2 = seq[].replace(x, x);
+    Sequence<Integer> ini1 = seq*.size;
+    Sequence<String> ini2 = seq*.replace(x, x);
     
     Iterable<String> seq2 = seq;
-    Sequential<Integer> ini3 = seq2[].size;
-    Sequential<String> ini4 = seq2[].replace(x, x);
+    Sequential<Integer> ini3 = seq2*.size;
+    Sequential<String> ini4 = seq2*.replace(x, x);
     
     List<String> seq3 = seq;
-    Sequential<Integer> ini5 = seq3[].size;
-    Sequential<String> ini6 = seq3[].replace(x, x);
+    Sequential<Integer> ini5 = seq3*.size;
+    Sequential<String> ini6 = seq3*.replace(x, x);
 
 }

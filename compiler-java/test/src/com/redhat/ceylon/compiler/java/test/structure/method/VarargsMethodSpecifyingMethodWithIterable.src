@@ -5,7 +5,7 @@ class VarargsMethodSpecifyingMethodWithIterable {
     VarargsMethodSpecifyingMethodWithIterable() {
     }
     
-    private final void foo(final .ceylon.language.Iterable<? extends .ceylon.language.Integer> seq) {
+    private final void foo(final .ceylon.language.Iterable<? extends .ceylon.language.Integer, ?> seq) {
     }
     
     private final .java.lang.Object bar() {

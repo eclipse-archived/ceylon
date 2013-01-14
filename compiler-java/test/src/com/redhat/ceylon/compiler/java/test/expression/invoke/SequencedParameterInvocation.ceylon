@@ -19,10 +19,10 @@
  */
 @nomodel
 class SequencedParameterInvocation(){
-    void m(String a, Integer... i) {
+    void m(String a, Integer* i) {
     }
     
-    void m2(String a, SequencedParameterInvocation... i) {
+    void m2(String a, SequencedParameterInvocation* i) {
     }
     
     void f() {

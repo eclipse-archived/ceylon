@@ -18,17 +18,18 @@
  * MA  02110-1301, USA.
  */
 @nomodel
-void callablePositionalInvocationSequencedComprehension(void foo(Integer... i), void bar(String a, Integer... i)) {
+void callablePositionalInvocationSequencedComprehension(void foo(Integer* i), void bar(String a, Integer* i)) {
+    Integer[] em = {};
     foo(for (i in {1}) i);
-    foo(for (i in {}) i);
+    foo(for (i in em) i);
     bar("a", for (i in {1}) i);
-    bar("a", for (i in {}) i);
+    bar("a", for (i in em) i);
     
     value mCallableFoo = foo;
     mCallableFoo(for (i in {1}) i);
-    mCallableFoo(for (i in {}) i);
+    mCallableFoo(for (i in em) i);
     value mCallableBar = bar;
     mCallableBar("a", for (i in {1}) i);
-    mCallableBar("a", for (i in {}) i);
+    mCallableBar("a", for (i in em) i);
     
 }

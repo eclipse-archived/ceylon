@@ -19,7 +19,7 @@
  */
 @nomodel
 class ClassDefaultMemberClassWithSequencedParams() {
-    shared default class Member(Integer... i) {
+    shared default class Member(Integer* i) {
     }
     shared Member m1() {
         Member{i=[1,2,3];};
@@ -30,7 +30,7 @@ class ClassDefaultMemberClassWithSequencedParams() {
 }
 @nomodel
 class ClassDefaultMemberClassWithSequencedParams_sub() extends ClassDefaultMemberClassWithSequencedParams() {
-    shared actual class Member(Integer... i) extends super.Member(i...) {
+    shared actual class Member(Integer* i) extends super.Member(*i) {
     }
     shared Member m2() {
         Member{i=[2,3,4];};

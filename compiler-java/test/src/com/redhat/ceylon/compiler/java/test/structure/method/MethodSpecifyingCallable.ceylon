@@ -35,17 +35,17 @@ class MethodSpecifyingCallable() {
     //value oneDefaultedParam = function (Integer i = 2) => nothing;
     // void oneDefaultedParam1() => oneDefaultedParam();
 
-    value oneSequencedParam = function (Integer... i) => nothing;
+    value oneSequencedParam = function (Integer* i) => nothing;
     function oneSequencedParam0() => oneSequencedParam();
     function oneSequencedParam1() => oneSequencedParam(1);
     function oneSequencedParam2() => oneSequencedParam(1, 2);
-    function oneSequencedParam3() => oneSequencedParam(for (i in {}) i);
-    function oneSequencedParam4() => oneSequencedParam({}...);
+    function oneSequencedParam3() => oneSequencedParam(for (i in {1}) i);
+    function oneSequencedParam4() => oneSequencedParam(*{});
 
-    value secondSequencedParam = function (Integer a, Integer... i) => nothing;
+    value secondSequencedParam = function (Integer a, Integer* i) => nothing;
     function secondSequencedParam0() => secondSequencedParam(1);
     function secondSequencedParam1() => secondSequencedParam(1, 2);
     function secondSequencedParam2() => secondSequencedParam(1, 2, 3);
-    function secondSequencedParam3() => secondSequencedParam(1, for (i in {}) i);
-    function secondSequencedParam4() => secondSequencedParam(1, {}...);
+    function secondSequencedParam3() => secondSequencedParam(1, for (i in {1}) i);
+    function secondSequencedParam4() => secondSequencedParam(1, *{});
 }

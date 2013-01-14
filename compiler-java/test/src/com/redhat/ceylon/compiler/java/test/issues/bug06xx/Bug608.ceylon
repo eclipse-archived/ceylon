@@ -23,9 +23,9 @@ import java.lang { ProcessBuilder }
 void bug608() {
     value b = ProcessBuilder();
     String[] args = ["a", "b"];
-    b.command(args...);
+    b.command(*args);
 
     value commandWithArgs = "".split { discardSeparators=true; };
-    value builder = ProcessBuilder(commandWithArgs.sequence...);
-    builder.command(commandWithArgs.sequence...);
+    value builder = ProcessBuilder(*commandWithArgs.sequence);
+    builder.command(*commandWithArgs.sequence);
 }

@@ -18,7 +18,7 @@
  * MA  02110-1301, USA.
  */
 @nomodel
-class Bug730(Singleton<String|Boolean>... values)  {
-    void m(Singleton<String|Boolean>... values)  {
+class Bug730(Singleton<String|Boolean>* values)  {
+    void m(Singleton<String|Boolean>* values)  {
     }
 }

@@ -19,7 +19,7 @@
  */
 @nomodel
 class DefaultedAndSequenced() {
-    void m(String s, Integer i = 1, Boolean... b) {
+    void m(String s, Integer i = 1, Boolean* b) {
     }
     DefaultedAndSequenced self() {
         return this;
@@ -29,21 +29,21 @@ class DefaultedAndSequenced() {
         m("", 2);
         m("", 2, false);
         Boolean[] x = [false, false];
-        m("", 2, x...);
+        m("", 2, *x);
     }
     void qmePositional() {
         self().m("");
         self().m("", 2);
         self().m("", 2, false);
         Boolean[] x = [false, false];
-        self().m("", 2, x...);
+        self().m("", 2, *x);
     }
     void qtePositional() {
         DefaultedAndSequenced().m("");
         DefaultedAndSequenced().m("", 2);
         DefaultedAndSequenced().m("", 2, false);
         Boolean[] x = [false, false];
-        DefaultedAndSequenced().m("", 2, x...);
+        DefaultedAndSequenced().m("", 2, *x);
     }
     void namedArgs() {
         m{

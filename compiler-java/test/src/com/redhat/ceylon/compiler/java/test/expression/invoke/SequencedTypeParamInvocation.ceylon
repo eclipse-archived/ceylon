@@ -19,7 +19,7 @@
  */
 @nomodel
 class SequencedTypeParamInvocation<T>() {
-    shared void algo(T... strings) {}
+    shared void algo(T* strings) {}
 }
 @nomodel
 void sequencedTypeParamInvocationMethod() {

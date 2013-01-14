@@ -19,7 +19,7 @@
  */
 @nomodel
 class InvocationWithVarargsAndComprehensions() {
-    void m(Integer... b) {
+    void m(Integer* b) {
         //m(for (i in {1}) i);
         //m(for (i in {}) i);
         //m{for (i in {1}) i};

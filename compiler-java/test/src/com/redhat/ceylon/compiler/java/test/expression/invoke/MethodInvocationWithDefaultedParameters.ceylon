@@ -31,7 +31,7 @@ class Fookls(init) {
     shared default void f7(Integer n = this.prop) {}
     shared default void f8(Integer n = init) {}
     shared default void f9(Integer n = prop.successor) {}
-    shared default void fa(Integer n = 5, Integer... seq) {}
+    shared default void fa(Integer n = 5, Integer* seq) {}
 }
 @nomodel
 class Foosubkls(Integer init) extends Fookls(init) {
@@ -44,7 +44,7 @@ class Foosubkls(Integer init) extends Fookls(init) {
     shared actual void f7(Integer n) {}
     shared actual void f8(Integer n) {}
     shared actual void f9(Integer n) {}
-    shared actual void fa(Integer n, Integer... seq) {}
+    shared actual void fa(Integer n, Integer* seq) {}
 }
 @nomodel
 interface Barface {
@@ -56,7 +56,7 @@ interface Barface {
     shared formal void f5(Integer n = prop);
     shared formal void f7(Integer n = this.prop);
     shared formal void f9(Integer n = prop.successor);
-    shared formal void fa(Integer n = 5, Integer... seq);
+    shared formal void fa(Integer n = 5, Integer* seq);
 }
 @nomodel
 class Barkls() satisfies Barface {
@@ -68,7 +68,7 @@ class Barkls() satisfies Barface {
     shared actual void f5(Integer n) {}
     shared actual void f7(Integer n) {}
     shared actual void f9(Integer n) {}
-    shared actual void fa(Integer n, Integer... seq) {}
+    shared actual void fa(Integer n, Integer* seq) {}
 }
 @nomodel
 void methodInvocationWithDefaultedParameters() {
@@ -97,7 +97,7 @@ void methodInvocationWithDefaultedParameters() {
     f.fa(6);
     f.fa(6);
     f.fa(6, 1, 2, 3);
-    f.fa(6, [1, 2, 3]...);
+    f.fa(6, *[1, 2, 3]);
     
     f.f1{};
     f.f1{n=6;};
@@ -149,7 +149,7 @@ void methodInvocationWithDefaultedParameters() {
     f2.fa(6);
     f2.fa(6);
     f2.fa(6, 1, 2, 3);
-    f2.fa(6, [1, 2, 3]...);
+    f2.fa(6, *[1, 2, 3]);
     
     f2.f1{};
     f2.f1{n=6;};
@@ -196,7 +196,7 @@ void methodInvocationWithDefaultedParameters() {
     b.fa(6);
     b.fa(6);
     b.fa(6, 1, 2, 3);
-    b.fa(6, [1, 2, 3]...);
+    b.fa(6, *[1, 2, 3]);
     
     b.f1{};
     b.f1{n=6;};
@@ -239,7 +239,7 @@ void methodInvocationWithDefaultedParameters() {
     b2.fa(6);
     b2.fa(6);
     b2.fa(6, 1, 2, 3);
-    b2.fa(6, [1, 2, 3]...);
+    b2.fa(6, *[1, 2, 3]);
     
     b2.f1{};
     b2.f1{n=6;};

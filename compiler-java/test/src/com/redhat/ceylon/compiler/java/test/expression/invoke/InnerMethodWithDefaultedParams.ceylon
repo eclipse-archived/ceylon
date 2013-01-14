@@ -42,7 +42,7 @@ class InnerMethodWithDefaultedParams(Integer init) {
         @error
         void f9(Integer n = prop.successor) {}
         @error
-        void fa(Integer n = 5, Integer... seq) {}
+        void fa(Integer n = 5, Integer* seq) {}
         
         
     }

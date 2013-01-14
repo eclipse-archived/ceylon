@@ -20,6 +20,6 @@
 @nomodel
 class SpreadMethodReference() {
     void m(String[] seq) {
-        Callable<String[],[Integer]> f = seq[].initial;
+        Callable<String[],[Integer]> f = seq*.initial;
     }
 }

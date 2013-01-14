@@ -88,40 +88,40 @@ void variadicMethods() {
     @error
     java.variadicBoolean(true, box(false), true);
     @error
-    java.variadicBoolean({}...);
+    java.variadicBoolean(*{});
     @error
-    java.variadicBoolean([true, box(false), true]...);
+    java.variadicBoolean(*[true, box(false), true]);
 
     @error
     java.variadicCeylonBoolean(true, box(false), true);
     @error
-    java.variadicCeylonBoolean({}...);
+    java.variadicCeylonBoolean(*{});
     @error
-    java.variadicCeylonBoolean([true, box(false), true]...);
+    java.variadicCeylonBoolean(*[true, box(false), true]);
 
     @error
     java.variadicChar(`a`, box(`b`), `c`);
     @error
-    java.variadicChar({}...);
+    java.variadicChar(*{});
     @error
-    java.variadicChar([`a`, box(`b`), `c`]...);
+    java.variadicChar(*[`a`, box(`b`), `c`]);
 
     @error
     java.variadicByte(1, box(2), 3);
     @error
-    java.variadicByte({}...);
+    java.variadicByte(*{});
     @error
-    java.variadicByte([1, box(2), 3]...);
+    java.variadicByte(*[1, box(2), 3]);
 
     @error
-    java.variadicShort({}...);
+    java.variadicShort(*{});
     @error
-    java.variadicShort([1, box(2), 3]...);
+    java.variadicShort(*[1, box(2), 3]);
 
     @error
-    java.variadicInt({}...);
+    java.variadicInt(*{});
     @error
-    java.variadicInt([1, box(2), 3]...);
+    java.variadicInt(*[1, box(2), 3]);
 
     @error
     java.variadicLong(1, box(2), 3);
@@ -132,25 +132,25 @@ void variadicMethods() {
     @error
     java.variadicLong();
     @error
-    java.variadicLong({}...);
+    java.variadicLong(*{});
     @error
-    java.variadicLong([1, box(2), 3]...);
+    java.variadicLong(*[1, box(2), 3]);
     Integer[] empty = {};
     Integer[] full = [1, 2];
     @error
-    java.variadicLong(empty...);
+    java.variadicLong(*empty);
     @error
-    java.variadicLong(full...);
+    java.variadicLong(*full);
 
     @error
-    java.variadicFloat({}...);
+    java.variadicFloat(*{});
     @error
-    java.variadicFloat([1.0, box(2.0), 3.0]...);
+    java.variadicFloat(*[1.0, box(2.0), 3.0]);
 
     @error
-    java.variadicDouble({}...);
+    java.variadicDouble(*{});
     @error
-    java.variadicDouble([1.0, box(2.0), 3.0]...);
+    java.variadicDouble(*[1.0, box(2.0), 3.0]);
 
     @error
     java.variadicJavaString("a", box("b"), "c");
@@ -164,44 +164,44 @@ void variadicMethods() {
     @error
     java.variadicJavaString(string);
     @error
-    java.variadicJavaString({}...);
+    java.variadicJavaString(*{});
     @error
-    java.variadicJavaString(["a", box("b"), "c"]...);
+    java.variadicJavaString(*["a", box("b"), "c"]);
 
     @error
     java.variadicCeylonString("a", box("b"), "c");
     @error
-    java.variadicCeylonString({}...);
+    java.variadicCeylonString(*{});
     @error
-    java.variadicCeylonString(["a", box("b"), "c"]...);
+    java.variadicCeylonString(*["a", box("b"), "c"]);
     String[] emptyString = {};
     String[] fullString = ["a", "b"];
     @error
-    java.variadicCeylonString(emptyString...);
+    java.variadicCeylonString(*emptyString);
     @error
-    java.variadicCeylonString(fullString...);
+    java.variadicCeylonString(*fullString);
 
     @error
     java.variadicObject("a", box("b"), 1, box(2));
     @error
-    java.variadicObject({}...);
+    java.variadicObject(*{});
     @error
-    java.variadicObject(["a", box("b"), 1, box(2)]...);
+    java.variadicObject(*["a", box("b"), 1, box(2)]);
 
     @error
     java.variadicObject(JString("a"), JInteger(1));
     @error
-    java.variadicObject([JString("a"), JInteger(1)]...);
+    java.variadicObject(*[JString("a"), JInteger(1)]);
     
     @error
     java.variadicT<Integer>(1, box(2), 3);
     @error
-    java.variadicT<Integer>({}...);
+    java.variadicT<Integer>(*{});
     @error
-    java.variadicT<Integer>([1, box(2), 3]...);
+    java.variadicT<Integer>(*[1, box(2), 3]);
     Integer[] sequence = [1, box(2), 3];
     @error
-    java.variadicT<Integer>(sequence...);
+    java.variadicT<Integer>(*sequence);
 
     @error
     java.variadicT<String>("a", box("b"), "c");

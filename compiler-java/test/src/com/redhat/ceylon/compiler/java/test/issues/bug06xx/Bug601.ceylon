@@ -20,6 +20,6 @@
 @nomodel
 void bug601() {
     first({"hello", "world"}, {""});
-    first({"hello world".split()...}, {""});
+    first({*"hello world".split()}, {""});
     first({for (str in "hello world".split()) str}, {""});
 }

@@ -19,7 +19,7 @@
  */
 shared interface InterfacewithMethods {
     shared formal void formalMethod(Integer p1, String p2);
-    shared formal void varargs(Integer... args);
+    shared formal void varargs(Integer* args);
     shared default void defaultMethod(){}
     shared void concreteMethod(){}
 }
@@ -55,5 +55,5 @@ shared class KlassWithMethods() extends KlassWithMethodsSuper1() {
  shared actual void defaultMethod(){}
  
  // varargs
- shared void varargs(Integer... args){}
+ shared void varargs(Integer* args){}
 }

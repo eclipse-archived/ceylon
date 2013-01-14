@@ -37,7 +37,7 @@ class MethodInitializerParameter<T>(T t) {
         };
     }
     void sequenced(m) {
-        void m(Integer i, Integer... seq);
+        void m(Integer i, Integer* seq);
         m(1);
         m(1, 2);
         m(1, 2, 3);

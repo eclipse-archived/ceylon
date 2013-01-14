@@ -18,7 +18,7 @@
  * MA  02110-1301, USA.
  */
 @nomodel
-shared Iterable<Entry<Integer,Element&Object>> bug675<Element>(Element... elements) {
+shared Iterable<Entry<Integer,Element&Object>> bug675<Element>(Element* elements) {
     for (k->v in bug675(1,2)){}
     return elements.indexed;
 }

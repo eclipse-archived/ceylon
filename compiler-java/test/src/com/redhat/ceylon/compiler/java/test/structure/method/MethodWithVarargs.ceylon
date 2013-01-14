@@ -19,13 +19,13 @@
  */
 @nomodel
 class MethodWithVarargs() {
-    shared void f1(Integer... ns) {
+    shared void f1(Integer* ns) {
         for (Integer n in ns) { }
     }
-    shared void f2(Integer i, Integer... ns) {
+    shared void f2(Integer i, Integer* ns) {
         for (Integer n in ns) { }
     }
-    shared void f3(Object... os) {
+    shared void f3(Object* os) {
         for (Object o in os) { }
     }
     void m() {
@@ -33,11 +33,11 @@ class MethodWithVarargs() {
         f2(1, 2, 3);
         f1();
         f2(1);
-        f1([1, 2, 3]...);
-        f2(1, [2, 3]...);
+        f1(*[1, 2, 3]);
+        f2(1, *[2, 3]);
         f3(1, 2, 3);
         f3({1, 2, 3});
-        f3([1, 2, 3]...);
+        f3(*[1, 2, 3]);
         f3(1, "foo", 5.0);
     }
 }

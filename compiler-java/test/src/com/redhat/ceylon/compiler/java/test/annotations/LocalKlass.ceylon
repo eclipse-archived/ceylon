@@ -26,7 +26,7 @@ shared class LocalKlass() {
             }
             assign i2 {
             }
-            shared void m2(Integer arg1, T... t) {
+            shared void m2(Integer arg1, T* t) {
             }
             shared actual Local<T> plus(Local<T> other) {
                 return nothing;

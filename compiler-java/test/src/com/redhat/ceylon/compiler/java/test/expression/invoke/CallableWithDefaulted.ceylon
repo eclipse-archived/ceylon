@@ -19,12 +19,12 @@
  */
 @nomodel
 void callableWithDefaulted() {
-    Callable<Anything, [Integer, String=, Integer...]> defaultedVariadic = function (Integer a, String b = "b", Integer... args) => a;
+    Callable<Anything, [Integer, String=, Integer*]> defaultedVariadic = function (Integer a, String b = "b", Integer* args) => a;
     defaultedVariadic(1);
     defaultedVariadic(1, "a");
     defaultedVariadic(1, "a", 1);
     defaultedVariadic(1, "a", 1, 2);
-    defaultedVariadic(1, "a", {}...);
+    defaultedVariadic(1, "a", *{});
     
     Callable<Anything, [Integer, String]> notDefaulted = function (Integer goto, String b) => goto;
     notDefaulted(1, "a");
@@ -42,13 +42,13 @@ void callableWithDefaulted() {
     
     Callable<Anything, [Integer, Integer=]> oneOrTwo = function (Integer a, Integer b = 2) => a;
     Callable<Anything, [Integer]> one = oneOrTwo;
-    Callable<Anything, [Integer...]> oneOrPlenty = function (Integer... a) => a;
+    Callable<Anything, [Integer*]> oneOrPlenty = function (Integer* a) => a;
     Callable<Anything, [Integer]> oneAgain = oneOrPlenty;
 }
 
 @nomodel
 class CallableWithDefaulted(){
-    void defaultedVariadic(Integer a, String b = "b", Integer... args){
+    void defaultedVariadic(Integer a, String b = "b", Integer* args){
     }
     void test(){
         value f = defaultedVariadic;

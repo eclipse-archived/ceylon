@@ -18,6 +18,6 @@
  * MA  02110-1301, USA.
  */
 @nomodel
-class NamedArgumentInvocationInitWithEmptySequence(Integer... b) {
+class NamedArgumentInvocationInitWithEmptySequence(Integer* b) {
     Object o = NamedArgumentInvocationInitWithEmptySequence{};
 }

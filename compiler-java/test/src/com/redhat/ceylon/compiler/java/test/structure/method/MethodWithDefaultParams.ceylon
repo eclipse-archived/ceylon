@@ -25,7 +25,7 @@ class MethodWithDefaultParams() {
     shared void f3(Integer n = 5, Integer m = n) {}
     shared void f4(Integer n = 5, Integer m = n + 1) {}
     shared void f5(Integer n = prop) {}
-    shared void f6(Integer n = prop, Integer... seq) {}
+    shared void f6(Integer n = prop, Integer* seq) {}
 }
 @nomodel
 interface MethodWithDefaultParams2 {
@@ -35,5 +35,5 @@ interface MethodWithDefaultParams2 {
     shared formal void f3(Integer n = 5, Integer m = n);
     shared formal void f4(Integer n = 5, Integer m = n + 1);
     shared formal void f5(Integer n = prop);
-    shared formal void f6(Integer n = prop, Integer... seq);
+    shared formal void f6(Integer n = prop, Integer* seq);
 }

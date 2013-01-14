@@ -21,12 +21,15 @@
 class SequenceLiteral(){
     shared void m() {
         String[] sequence = ["a", "b"];
-        Iterable<String> iterable = sequence;
+        Iterable<String> iterable = {"a", "b"};
         
         [] empty = {};
-        {String...} comp = { for (s in sequence) s };  
+        {String*} iterableComp = { for (s in sequence) s };  
+        [String*] sequenceComp = [ for (s in sequence) s ];  
+        {String*} iterableComp2 = { "a", for (s in sequence) s };  
+        [String*] sequenceComp2 = [ "a", for (s in sequence) s ];  
         [String, String, String] triplet = [ "hello", "world", "goodbye" ];
-        [String,String...] spreadSequence = [ "hello", sequence... ];
-        {String...} spreadIterable = { "hello", iterable... };
+        [String,String*] spreadSequence = [ "hello", *sequence ];
+        {String*} spreadIterable = { "hello", *iterable };
     }
 }

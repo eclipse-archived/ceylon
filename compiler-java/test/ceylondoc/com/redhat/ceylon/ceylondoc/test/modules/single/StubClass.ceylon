@@ -58,7 +58,7 @@ shared class StubClass(
     shared void methodWithTagged() {}
     
     doc "The stub method with sequenced parameter."
-    shared void methodWithSequencedParameter(Integer... numbers) {}
+    shared void methodWithSequencedParameter(Integer* numbers) {}
     
     shared void methodWithCallableParameter1(void onClick()) {}
     

@@ -32,7 +32,7 @@ class OptionalInterface implements .com.redhat.ceylon.compiler.java.test.interop
                 
                 public final .ceylon.language.Iterator<.com.redhat.ceylon.compiler.java.test.interop.JavaOptionalInterface> getIterator() {
                     return new .ceylon.language.Iterator<.com.redhat.ceylon.compiler.java.test.interop.JavaOptionalInterface>(){
-                        private final .ceylon.language.Iterator<? extends .com.redhat.ceylon.compiler.java.test.interop.JavaOptionalInterface> iter$0 = new .ceylon.language.Tuple<.com.redhat.ceylon.compiler.java.test.interop.JavaOptionalInterface, .com.redhat.ceylon.compiler.java.test.interop.JavaOptionalInterface, .ceylon.language.Empty>($x$2, .ceylon.language.empty_.getEmpty$()).getIterator();
+                        private final .ceylon.language.Iterator<? extends .com.redhat.ceylon.compiler.java.test.interop.JavaOptionalInterface> iter$0 = new .com.redhat.ceylon.compiler.java.language.ArraySequence<.com.redhat.ceylon.compiler.java.test.interop.JavaOptionalInterface>($x$2).getIterator();
                         private .com.redhat.ceylon.compiler.java.test.interop.JavaOptionalInterface obj;
                         private boolean obj$exhausted;
                         
@@ -75,7 +75,7 @@ class OptionalInterface implements .com.redhat.ceylon.compiler.java.test.interop
                 
                 public final .ceylon.language.Iterator<.com.redhat.ceylon.compiler.java.test.interop.JavaOptionalInterface> getIterator() {
                     return new .ceylon.language.Iterator<.com.redhat.ceylon.compiler.java.test.interop.JavaOptionalInterface>(){
-                        private final .ceylon.language.Iterator<? extends .com.redhat.ceylon.compiler.java.test.interop.JavaOptionalInterface> iter$0 = new .ceylon.language.Tuple<.com.redhat.ceylon.compiler.java.test.interop.JavaOptionalInterface, .com.redhat.ceylon.compiler.java.test.interop.JavaOptionalInterface, .ceylon.language.Empty>($x$2, .ceylon.language.empty_.getEmpty$()).getIterator();
+                        private final .ceylon.language.Iterator<? extends .com.redhat.ceylon.compiler.java.test.interop.JavaOptionalInterface> iter$0 = new .com.redhat.ceylon.compiler.java.language.ArraySequence<.com.redhat.ceylon.compiler.java.test.interop.JavaOptionalInterface>($x$2).getIterator();
                         private .com.redhat.ceylon.compiler.java.test.interop.JavaOptionalInterface obj;
                         private boolean obj$exhausted;
                         

@@ -19,7 +19,7 @@
  */
 @nomodel
 class VarargsMethodSpecifyingMethodWithVarargs() {
-    void foo(Integer... seq) {
+    void foo(Integer* seq) {
     }
-    function bar(Integer... ints) => foo(ints...);
+    function bar(Integer* ints) => foo(*ints);
 }

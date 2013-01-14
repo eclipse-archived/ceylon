@@ -19,7 +19,7 @@
  */
 @nomodel
 class IterableMethodSpecifyingMethodWithVarargs() {
-    void foo(Integer... seq) {
+    void foo(Integer* seq) {
     }
-    function bar(Sequential<Integer> ints) => foo(ints...);
+    function bar(Sequential<Integer> ints) => foo(*ints);
 }

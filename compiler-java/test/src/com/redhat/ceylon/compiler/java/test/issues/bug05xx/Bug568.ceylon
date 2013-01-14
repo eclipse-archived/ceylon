@@ -20,5 +20,5 @@
 @nomodel
 void bug568() {
    Integer[] childPaths = {};
-   for (s in childPaths[].string) {}
+   for (s in childPaths*.string) {}
 }

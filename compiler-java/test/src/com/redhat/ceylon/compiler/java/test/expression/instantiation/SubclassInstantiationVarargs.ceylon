@@ -18,7 +18,7 @@
  * MA  02110-1301, USA.
  */
 @nomodel
-class Foo(String... name) {
+class Foo(String* name) {
 }
 @nomodel
 class Bar(String name1, String name2) extends Foo(name1, name2) {}

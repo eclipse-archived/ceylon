@@ -19,13 +19,13 @@
  */
 @nomodel
 class NamedArgumentWithSequence() {
-    void m(Integer a, Integer... b) {
+    void m(Integer a, Integer* b) {
     
     }
-    void m2(Exception a, Exception... b) {
+    void m2(Exception a, Exception* b) {
     
     }
-    void m3(NamedArgumentWithSequence a, NamedArgumentWithSequence... b) {
+    void m3(NamedArgumentWithSequence a, NamedArgumentWithSequence* b) {
     
     }
     void invoke() {

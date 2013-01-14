@@ -6,7 +6,7 @@ final class callableWithDefaulted_ {
     }
     
     static void callableWithDefaulted() {
-        final .ceylon.language.Callable<? extends .java.lang.Object> defaultedVariadic = new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.ceylon.language.Integer>("Integer(Integer, String=, Integer...)"){
+        final .ceylon.language.Callable<? extends .java.lang.Object> defaultedVariadic = new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.ceylon.language.Integer>("Integer(Integer, String=, Integer*)"){
             
             private final .java.lang.String $$b(final long a) {
                 return "b";
@@ -210,7 +210,7 @@ final class callableWithDefaulted_ {
             }
         };
         final .ceylon.language.Callable<? extends .java.lang.Object> one = oneOrTwo;
-        final .ceylon.language.Callable<? extends .java.lang.Object> oneOrPlenty = new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.ceylon.language.Sequential<? extends .ceylon.language.Integer>>("Integer[](Integer...)"){
+        final .ceylon.language.Callable<? extends .java.lang.Object> oneOrPlenty = new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.ceylon.language.Sequential<? extends .ceylon.language.Integer>>("Integer[](Integer*)"){
             
             private final .ceylon.language.Sequential<? extends .ceylon.language.Integer> $$a() {
                 return (.ceylon.language.Sequential).ceylon.language.empty_.getEmpty$();
@@ -280,7 +280,7 @@ class CallableWithDefaulted {
     }
     
     private final void test() {
-        final .ceylon.language.Callable<? extends .java.lang.Object> f = new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.java.lang.Object>("Anything(Integer, String=, Integer...)"){
+        final .ceylon.language.Callable<? extends .java.lang.Object> f = new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.java.lang.Object>("Anything(Integer, String=, Integer*)"){
             
             @.java.lang.Override
             public .java.lang.Object $call(final .java.lang.Object $param$0) {

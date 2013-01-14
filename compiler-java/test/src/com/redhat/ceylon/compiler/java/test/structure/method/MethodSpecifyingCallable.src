@@ -32,7 +32,7 @@ class MethodSpecifyingCallable {
                 return .ceylon.language.nothing_.getNothing$();
             }
         };
-        this.oneSequencedParam = new .com.redhat.ceylon.compiler.java.language.AbstractCallable("Nothing(Integer...)"){
+        this.oneSequencedParam = new .com.redhat.ceylon.compiler.java.language.AbstractCallable("Nothing(Integer*)"){
             
             private final .ceylon.language.Sequential<? extends .ceylon.language.Integer> $$i() {
                 return (.ceylon.language.Sequential).ceylon.language.empty_.getEmpty$();
@@ -54,7 +54,7 @@ class MethodSpecifyingCallable {
                 return .ceylon.language.nothing_.getNothing$();
             }
         };
-        this.secondSequencedParam = new .com.redhat.ceylon.compiler.java.language.AbstractCallable("Nothing(Integer, Integer...)"){
+        this.secondSequencedParam = new .com.redhat.ceylon.compiler.java.language.AbstractCallable("Nothing(Integer, Integer*)"){
             
             private final .ceylon.language.Sequential<? extends .ceylon.language.Integer> $$i(final long a) {
                 return (.ceylon.language.Sequential).ceylon.language.empty_.getEmpty$();
@@ -120,12 +120,12 @@ class MethodSpecifyingCallable {
     }
     
     private final .java.lang.Object oneSequencedParam3() {
-        return getOneSequencedParam().$call((.ceylon.language.Sequential)new .com.redhat.ceylon.compiler.java.language.AbstractIterable<.java.lang.Object, .java.lang.Object>(){
+        return getOneSequencedParam().$call(new .com.redhat.ceylon.compiler.java.language.AbstractIterable<.ceylon.language.Integer, .java.lang.Object>(){
             
-            public final .ceylon.language.Iterator getIterator() {
-                return new .ceylon.language.Iterator(){
-                    private final .ceylon.language.Iterator<?> iter$0 = .ceylon.language.empty_.getEmpty$().getIterator();
-                    private .java.lang.Object i;
+            public final .ceylon.language.Iterator<.ceylon.language.Integer> getIterator() {
+                return new .ceylon.language.Iterator<.ceylon.language.Integer>(){
+                    private final .ceylon.language.Iterator<? extends .ceylon.language.Integer> iter$0 = new .com.redhat.ceylon.compiler.java.language.ArraySequence<.ceylon.language.Integer>(.ceylon.language.Integer.instance(1L)).getIterator();
+                    private .ceylon.language.Integer i;
                     private boolean i$exhausted;
                     
                     private final boolean i() {
@@ -134,7 +134,7 @@ class MethodSpecifyingCallable {
                         if (i$exhausted) {
                             return false;
                         } else {
-                            i = (.java.lang.Object)$ceylontmpitem0;
+                            i = (.ceylon.language.Integer)$ceylontmpitem0;
                             return true;
                         }
                     }
@@ -169,12 +169,12 @@ class MethodSpecifyingCallable {
     }
     
     private final .java.lang.Object secondSequencedParam3() {
-        return getSecondSequencedParam().$call(.ceylon.language.Integer.instance(1L), (.ceylon.language.Sequential)new .com.redhat.ceylon.compiler.java.language.AbstractIterable<.java.lang.Object, .java.lang.Object>(){
+        return getSecondSequencedParam().$call(.ceylon.language.Integer.instance(1L), new .com.redhat.ceylon.compiler.java.language.AbstractIterable<.ceylon.language.Integer, .java.lang.Object>(){
             
-            public final .ceylon.language.Iterator getIterator() {
-                return new .ceylon.language.Iterator(){
-                    private final .ceylon.language.Iterator<?> iter$0 = .ceylon.language.empty_.getEmpty$().getIterator();
-                    private .java.lang.Object i;
+            public final .ceylon.language.Iterator<.ceylon.language.Integer> getIterator() {
+                return new .ceylon.language.Iterator<.ceylon.language.Integer>(){
+                    private final .ceylon.language.Iterator<? extends .ceylon.language.Integer> iter$0 = new .com.redhat.ceylon.compiler.java.language.ArraySequence<.ceylon.language.Integer>(.ceylon.language.Integer.instance(1L)).getIterator();
+                    private .ceylon.language.Integer i;
                     private boolean i$exhausted;
                     
                     private final boolean i() {
@@ -183,7 +183,7 @@ class MethodSpecifyingCallable {
                         if (i$exhausted) {
                             return false;
                         } else {
-                            i = (.java.lang.Object)$ceylontmpitem1;
+                            i = (.ceylon.language.Integer)$ceylontmpitem1;
                             return true;
                         }
                     }

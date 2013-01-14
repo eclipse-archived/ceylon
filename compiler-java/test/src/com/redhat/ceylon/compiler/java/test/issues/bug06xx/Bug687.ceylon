@@ -22,20 +22,20 @@ class Bug687()  {
     void method<T>(void foo(T t)) {
     }
 
-    shared void sort<T>(T... elements) 
+    shared void sort<T>(T* elements) 
         given T satisfies Number {
     }
     shared void sort3<T>(Iterable<T> elements) 
         given T satisfies Number {
     }
-    shared void sort2(Number&Category... elements) { 
+    shared void sort2(Number&Category* elements) { 
     }
-    void foo(void p(Number&Category... elements)){
-        sort({}...);
+    void foo(void p(Number&Category* elements)){
+        sort(*{});
         sort{elements = {};};
-        sort2({}...);
+        sort2(*{});
         sort2{elements = {};};
-        p({}...);
+        p(*{});
         p{elements = {};};
         
         value f = sort3<Nothing>;

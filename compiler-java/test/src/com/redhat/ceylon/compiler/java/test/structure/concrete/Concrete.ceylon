@@ -19,13 +19,13 @@
  */
 @nomodel
 interface Concrete<A> {
-    void mNonShared(A? a = null, A?... aseq) {
+    void mNonShared(A? a = null, A?* aseq) {
     }
-    shared void mShared(A? a = null, A?... aseq) {
+    shared void mShared(A? a = null, A?* aseq) {
         mNonShared();
     }
-    shared formal void mFormal(A? a = null, A?... aseq);
-    shared default void mDefault(A? a = null, A?... aseq) {
+    shared formal void mFormal(A? a = null, A?* aseq);
+    shared default void mDefault(A? a = null, A?* aseq) {
     }
 }
 @nomodel
@@ -59,7 +59,7 @@ void concreteCallsites(Concrete<Integer|Float> conc) {
 }
 @nomodel
 class ConcreteImpl<B>() satisfies Concrete<B> {
-    shared actual void mFormal(B? b, B?... bseq) {
+    shared actual void mFormal(B? b, B?* bseq) {
     }
 }
 @nomodel
@@ -93,9 +93,9 @@ void concreteImplCallsites(ConcreteImpl<Integer|Float> conc) {
 }
 @nomodel
 class ConcreteImplWithDefault<C>() satisfies Concrete<C> {
-    shared actual void mFormal(C? c, C?... cseq) {
+    shared actual void mFormal(C? c, C?* cseq) {
     }
-    shared actual void mDefault(C? c, C?... cseq) {
+    shared actual void mDefault(C? c, C?* cseq) {
     }
 }
 @nomodel
@@ -161,7 +161,7 @@ void abstractCallsites(Abstract<Integer|Float> conc) {
 }
 @nomodel
 class AbstractSub<E>() extends Abstract<E>() {
-    shared actual void mFormal(E? e, E?... eseq) {
+    shared actual void mFormal(E? e, E?* eseq) {
     }
 }
 @nomodel
@@ -195,9 +195,9 @@ void abstractSubCallsites(AbstractSub<Integer|Float> conc) {
 }
 @nomodel
 abstract class AbstractImpl<F>() satisfies Concrete<F> {
-    shared actual void mFormal(F? f, F?... fseq) {
+    shared actual void mFormal(F? f, F?* fseq) {
     }
-    shared actual default void mDefault(F? f, F?... fseq) {
+    shared actual default void mDefault(F? f, F?* fseq) {
     }
 }
 @nomodel
@@ -231,7 +231,7 @@ void abstractImpl(AbstractImpl<Integer|Float> conc) {
 }
 @nomodel
 class AbstractImplSub<G>() extends AbstractImpl<G>() {
-    shared actual void mDefault(G? g, G?... gseq) {
+    shared actual void mDefault(G? g, G?* gseq) {
     }
 }
 @nomodel

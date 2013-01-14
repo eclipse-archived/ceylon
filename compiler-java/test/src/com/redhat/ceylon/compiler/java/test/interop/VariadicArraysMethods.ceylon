@@ -23,5 +23,5 @@ void variadicArraysMethods() {
 
     Array<Object>[] objectArray = {array<Object>("a"), array<Object>("b")};
     java.variadicObjectArray(objectArray);
-    java.variadicObjectArray(objectArray...);
+    java.variadicObjectArray(*objectArray);
 }

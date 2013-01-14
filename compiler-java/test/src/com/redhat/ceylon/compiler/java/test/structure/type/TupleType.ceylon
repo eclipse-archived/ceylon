@@ -39,16 +39,16 @@ void tupleTypeTest() {
         return hibye;
     }
     Sequence<String> strings = hibye;
-    [String, String...] hibye1 = hibye;
-    [String...] hibye2 = hibye;
-    [String, Integer, Object...] trip = triple("", 0, 0.0);
+    [String, String*] hibye1 = hibye;
+    [String*] hibye2 = hibye;
+    [String, Integer, Object*] trip = triple("", 0, 0.0);
     
     [] emptyTuple = [];
     [String] oneTuple = ["a"];
     [String, Integer] twoTuple = ["a", 2];
     [String, Integer, String] threeTuple = ["a", 2, "c"];
-    [String...] oneTupleEllipsis = [strings...];
-    [Integer, String...] twoTupleEllipsis = [1, strings...];
-    [String, Integer, String...] threeTupleEllipsis = ["a", 1, strings...];
-    [String...] comprehensionTuple = [for (s in strings) s];
+    [String*] oneTupleEllipsis = [*strings];
+    [Integer, String*] twoTupleEllipsis = [1, *strings];
+    [String, Integer, String*] threeTupleEllipsis = ["a", 1, *strings];
+    [String*] comprehensionTuple = [for (s in strings) s];
 }

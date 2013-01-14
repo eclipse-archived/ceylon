@@ -18,7 +18,7 @@
  * MA  02110-1301, USA.
  */
 @nomodel
-void sequencedTypeParamInvocation2<T>(T... ts) {}
+void sequencedTypeParamInvocation2<T>(T* ts) {}
 @nomodel
 void sequencedTypeParamInvocation2_test() {
     sequencedTypeParamInvocation2{ts = [1, 2];};

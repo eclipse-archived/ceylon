@@ -27,7 +27,7 @@ interface InstantiatorDelegates<X> {
     }
     shared class Binary2(Boolean b=true, Integer i=1) {
     }
-    shared class Sequenced(Boolean b, Integer... i) {
+    shared class Sequenced(Boolean b, Integer* i) {
     }
     shared class TypeArg(X x) {
     }

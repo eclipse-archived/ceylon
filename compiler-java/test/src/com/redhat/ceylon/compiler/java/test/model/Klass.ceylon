@@ -23,5 +23,5 @@ shared interface Interface {
 }
 shared class Klass() {
 }
-shared class KlassWithConstructor(Integer param, Integer... varargs) {
+shared class KlassWithConstructor(Integer param, Integer* varargs) {
 }

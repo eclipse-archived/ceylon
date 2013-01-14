@@ -67,15 +67,15 @@ shared class SequenceOperators() {
         lowerRange = this.sequence[...1];
         lowerRange = sequence[...box(1)];
         
-        Integer[] spreadMemberWithUnboxedType = sequence[].size;
+        Integer[] spreadMemberWithUnboxedType = sequence*.size;
         Integer[] intSequence = [1];
-        Integer[] spreadMemberWithBoxedType = intSequence[].wholePart;
+        Integer[] spreadMemberWithBoxedType = intSequence*.wholePart;
         variable Character?[] spreadInvoke;
-        spreadInvoke = sequence[].item(0);
-        spreadInvoke = sequence[].item{index = 0;};
+        spreadInvoke = sequence*.item(0);
+        spreadInvoke = sequence*.item{index = 0;};
 
         String[] empty = {};
-        String[] upperCasedEmpty = empty[].uppercased;
+        String[] upperCasedEmpty = empty*.uppercased;
     }
     
     void testString(){

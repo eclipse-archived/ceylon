@@ -17,17 +17,17 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
  * MA  02110-1301, USA.
  */
-shared class TypeParameters<out A,in B,C=A,D=Number|String>()
+shared class TypeParameters<out A,in B,C=Number,D=Number|String>()
     given B of Number | String
     given A satisfies Number & Closeable {
     
-    shared void m<out A,in B,C=A,D=Number|String>()
+    shared void m<out A,in B,C=Number,D=Number|String>()
         given B of Number | String
         given A satisfies Number & Closeable {
     }
 }
 
-shared void typeParameters<out A,in B,C=A,D=Number|String>()
+shared void typeParameters<out A,in B,C=Number,D=Number|String>()
     given B of Number | String
     given A satisfies Number & Closeable {
 }
