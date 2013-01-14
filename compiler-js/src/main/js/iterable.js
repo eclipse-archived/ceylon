@@ -11,7 +11,7 @@ var Container,$finished,empty,larger,smaller,exports;//IGNORE
 function Iterable(wat) {
     return wat;
 }
-initTypeProtoI(Iterable, 'ceylon.language::Iterable', $init$ContainerWithFirstElement());
+initTypeProtoI(Iterable, 'ceylon.language::Iterable', $init$Container());
 function $init$Iterable() { return Iterable; }
 var Iterable$proto=Iterable.$$.prototype;
 Iterable$proto.getEmpty = function() {

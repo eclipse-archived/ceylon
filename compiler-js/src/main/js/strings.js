@@ -10,7 +10,6 @@ var empty,$finished,Basic,Iterator,exports;//IGNORE
 function String$(value,size) {
     var that = new String(value);
     that.codePoints = size;
-    that.$$targs$$=[{t:Character}];
     return that;
 }
 initExistingType(String$, String, 'ceylon.language::String', Object$, Sequential, Comparable,
@@ -23,6 +22,7 @@ initType(SequenceString, "ceylon.language::SequenceString", String$, Sequence);
 function EmptyString() {}
 initType(EmptyString, "ceylon.language::EmptyString", String$, Empty);
 var String$proto = String$.$$.prototype;
+String$proto.$$targs$$=[{t:Character}, {t:Character}];
 String$proto.getT$name = function() {
     return ((this.length!==0)?SequenceString:EmptyString).$$.T$name;
 }

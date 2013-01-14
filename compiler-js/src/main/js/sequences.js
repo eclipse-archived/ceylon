@@ -15,7 +15,7 @@ function Sequence($$sequence) {
 function $init$Sequence() {
     if (Sequence.$$===undefined) {
         initTypeProtoI(Sequence, 'ceylon.language::Sequence', $init$Sequential(),
-            $init$ContainerWithFirstElement(), $init$Cloneable());
+            $init$Container(), $init$Cloneable());
     }
     return Sequence;
 }
