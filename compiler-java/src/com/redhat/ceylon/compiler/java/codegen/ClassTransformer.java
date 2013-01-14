@@ -1016,7 +1016,7 @@ public class ClassTransformer extends AbstractTransformer {
                  * declaration we can use to make sure we're not widening the attribute type.
                  */
             .setter(this, name, decl.getDeclarationModel().getGetter())
-            .modifiers(transformAttributeGetSetDeclFlags(decl.getDeclarationModel(), false));
+            .modifiers(transformAttributeGetSetDeclFlags(decl.getDeclarationModel(), forCompanion));
         
         // companion class members are never actual no matter what the Declaration says
         if(forCompanion)
