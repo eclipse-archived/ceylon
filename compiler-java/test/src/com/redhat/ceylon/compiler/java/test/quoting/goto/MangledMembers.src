@@ -1,0 +1,77 @@
+package com.redhat.ceylon.compiler.java.test.quoting.$goto;
+
+class MangledMembers_class {
+    
+    MangledMembers_class() {
+    }
+    
+    public final .java.lang.String $clone() {
+        return "";
+    }
+    
+    public final .java.lang.String $hashCode() {
+        return "";
+    }
+    
+    public final boolean $toString() {
+        return true;
+    }
+    
+    public final .java.lang.String $notify() {
+        return "";
+    }
+    
+    public final .java.lang.String $notifyAll() {
+        return "";
+    }
+    
+    public final .java.lang.String $getClass() {
+        return "";
+    }
+    
+    public final .java.lang.String $finalize() {
+        return "";
+    }
+    
+    public static void main(.java.lang.String[] args) {
+        .ceylon.language.process_.getProcess$().setupArguments(args);
+        new .com.redhat.ceylon.compiler.java.test.quoting.$goto.MangledMembers_class();
+    }
+}
+class MangledMembers_clone {
+    
+    MangledMembers_clone() {
+    }
+    
+    public final .java.lang.String getClone() {
+        return "";
+    }
+    
+    public static void main(.java.lang.String[] args) {
+        .ceylon.language.process_.getProcess$().setupArguments(args);
+        new .com.redhat.ceylon.compiler.java.test.quoting.$goto.MangledMembers_clone();
+    }
+}
+interface MangledMembers_interface {
+    
+    public abstract .java.lang.String $clone();
+    
+    public abstract .java.lang.String $hashCode();
+    
+    public abstract boolean $toString();
+    
+    public abstract .java.lang.String $notify();
+    
+    public abstract .java.lang.String $notifyAll();
+    
+    public abstract .java.lang.String $getClass();
+    
+    public abstract .java.lang.String $finalize();
+}
+final class MangledMembers_interface$impl {
+    
+    MangledMembers_interface$impl(.com.redhat.ceylon.compiler.java.test.quoting.$goto.MangledMembers_interface $this) {
+        this.$this = $this;
+    }
+    private final .com.redhat.ceylon.compiler.java.test.quoting.$goto.MangledMembers_interface $this;
+}

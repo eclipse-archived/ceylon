@@ -120,6 +120,11 @@ public class QuotingTest extends CompilerTest {
     }
     
     @Test
+    public void testMangledMembers(){
+        compareWithJavaSource("goto/MangledMembers");
+    }
+    
+    @Test
     public void testKeywordInCallable(){
         compareWithJavaSource("goto/KeywordInCallable");
     }
