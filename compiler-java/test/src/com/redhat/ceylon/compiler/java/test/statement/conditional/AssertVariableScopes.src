@@ -13,7 +13,7 @@ class AssertVariableScopes {
         .ceylon.language.String.terminal($x$38, 1L);
         final .java.lang.String $y$41;
         .java.lang.Object $y$40 = null;
-        if (($y$40 = getY()) instanceof .ceylon.language.String) {
+        if (($y$40 = getY$priv()) instanceof .ceylon.language.String) {
             $y$41 = ((.ceylon.language.String)$y$40).toString();
         } else throw new .ceylon.language.AssertionException("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "is String y"));
         .ceylon.language.String.terminal($y$41, 1L);
@@ -21,7 +21,7 @@ class AssertVariableScopes {
     private final .java.lang.Object x;
     private final .java.lang.Object y;
     
-    private final .java.lang.Object getY() {
+    private final .java.lang.Object getY$priv() {
         return y;
     }
     
@@ -41,7 +41,7 @@ class AssertVariableScopes {
                 .ceylon.language.String.terminal($x$2, 1L);
                 final .java.lang.String $y$5;
                 .java.lang.Object $y$4 = null;
-                if (($y$4 = getY()) instanceof .ceylon.language.String) {
+                if (($y$4 = getY$priv()) instanceof .ceylon.language.String) {
                     $y$5 = ((.ceylon.language.String)$y$4).toString();
                 } else throw new .ceylon.language.AssertionException("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "is String y"));
                 .ceylon.language.String.terminal($y$5, 1L);
@@ -78,7 +78,7 @@ class AssertVariableScopes {
         .ceylon.language.String.terminal($x$14, 1L);
         final .java.lang.String $y$17;
         .java.lang.Object $y$16 = null;
-        if (($y$16 = getY()) instanceof .ceylon.language.String) {
+        if (($y$16 = getY$priv()) instanceof .ceylon.language.String) {
             $y$17 = ((.ceylon.language.String)$y$16).toString();
         } else throw new .ceylon.language.AssertionException("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "is String y"));
         .ceylon.language.String.terminal($y$17, 1L);

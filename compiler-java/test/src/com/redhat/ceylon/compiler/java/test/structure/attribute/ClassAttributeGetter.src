@@ -5,7 +5,7 @@ abstract class ClassAttributeGetter {
     ClassAttributeGetter() {
     }
     
-    private final .java.lang.String getF() {
+    private final .java.lang.String getF$priv() {
         return "";
     }
     

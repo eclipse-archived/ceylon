@@ -14,16 +14,16 @@ class Bug689<X, Y> {
         sync = ((.ceylon.language.Sequence<? extends .ceylon.language.Integer>)<.ceylon.language.Integer, .ceylon.language.Integer>parameterisedMethodWithIntersection(.ceylon.language.Integer.instance(1L))).getFirst();
         sync = ((.ceylon.language.Sequence<? extends .ceylon.language.Integer>)new .com.redhat.ceylon.compiler.java.test.issues.bug06xx.Bug689<.ceylon.language.Integer, .ceylon.language.Integer>(.ceylon.language.Integer.instance(1L), .ceylon.language.Integer.instance(2L), .ceylon.language.Integer.instance(3L)).methodWithUnion(.ceylon.language.Integer.instance(1L), .ceylon.language.Integer.instance(2L))).getFirst();
         sync = ((.ceylon.language.Sequence<? extends .ceylon.language.Integer>)new .com.redhat.ceylon.compiler.java.test.issues.bug06xx.Bug689<.ceylon.language.Integer, .ceylon.language.Integer>(.ceylon.language.Integer.instance(1L), .ceylon.language.Integer.instance(2L), .ceylon.language.Integer.instance(3L)).methodWithIntersection(.ceylon.language.Integer.instance(1L))).getFirst();
-        sync = ((.ceylon.language.Sequence<? extends .ceylon.language.Integer>)new .com.redhat.ceylon.compiler.java.test.issues.bug06xx.Bug689<.ceylon.language.Integer, .ceylon.language.Integer>(.ceylon.language.Integer.instance(1L), .ceylon.language.Integer.instance(2L), .ceylon.language.Integer.instance(3L)).getAttributeWithUnion()).getFirst();
-        sync = ((.ceylon.language.Sequence<? extends .ceylon.language.Integer>)new .com.redhat.ceylon.compiler.java.test.issues.bug06xx.Bug689<.ceylon.language.Integer, .ceylon.language.Integer>(.ceylon.language.Integer.instance(1L), .ceylon.language.Integer.instance(2L), .ceylon.language.Integer.instance(3L)).getAttributeWithIntersection()).getFirst();
-        sync = ((.ceylon.language.Sequence<? extends .ceylon.language.Integer>)new .com.redhat.ceylon.compiler.java.test.issues.bug06xx.Bug689<.ceylon.language.Integer, .ceylon.language.Integer>(.ceylon.language.Integer.instance(1L), .ceylon.language.Integer.instance(2L), .ceylon.language.Integer.instance(3L)).getVariableWithUnion()).getFirst();
-        sync = ((.ceylon.language.Sequence<? extends .ceylon.language.Integer>)new .com.redhat.ceylon.compiler.java.test.issues.bug06xx.Bug689<.ceylon.language.Integer, .ceylon.language.Integer>(.ceylon.language.Integer.instance(1L), .ceylon.language.Integer.instance(2L), .ceylon.language.Integer.instance(3L)).getVariableWithIntersection()).getFirst();
+        sync = ((.ceylon.language.Sequence<? extends .ceylon.language.Integer>)new .com.redhat.ceylon.compiler.java.test.issues.bug06xx.Bug689<.ceylon.language.Integer, .ceylon.language.Integer>(.ceylon.language.Integer.instance(1L), .ceylon.language.Integer.instance(2L), .ceylon.language.Integer.instance(3L)).getAttributeWithUnion$priv()).getFirst();
+        sync = ((.ceylon.language.Sequence<? extends .ceylon.language.Integer>)new .com.redhat.ceylon.compiler.java.test.issues.bug06xx.Bug689<.ceylon.language.Integer, .ceylon.language.Integer>(.ceylon.language.Integer.instance(1L), .ceylon.language.Integer.instance(2L), .ceylon.language.Integer.instance(3L)).getAttributeWithIntersection$priv()).getFirst();
+        sync = ((.ceylon.language.Sequence<? extends .ceylon.language.Integer>)new .com.redhat.ceylon.compiler.java.test.issues.bug06xx.Bug689<.ceylon.language.Integer, .ceylon.language.Integer>(.ceylon.language.Integer.instance(1L), .ceylon.language.Integer.instance(2L), .ceylon.language.Integer.instance(3L)).getVariableWithUnion$priv()).getFirst();
+        sync = ((.ceylon.language.Sequence<? extends .ceylon.language.Integer>)new .com.redhat.ceylon.compiler.java.test.issues.bug06xx.Bug689<.ceylon.language.Integer, .ceylon.language.Integer>(.ceylon.language.Integer.instance(1L), .ceylon.language.Integer.instance(2L), .ceylon.language.Integer.instance(3L)).getVariableWithIntersection$priv()).getFirst();
         sync = ((.ceylon.language.Tuple<.ceylon.language.Integer, ? extends .ceylon.language.Integer, ? extends .ceylon.language.Tuple<.ceylon.language.Integer, ? extends .ceylon.language.Integer, ? extends .ceylon.language.Empty>>)(
             let
             {
                 .com.redhat.ceylon.compiler.java.test.issues.bug06xx.Bug689<.ceylon.language.Integer, .ceylon.language.Integer> $ceylontmpopE0 = new .com.redhat.ceylon.compiler.java.test.issues.bug06xx.Bug689<.ceylon.language.Integer, .ceylon.language.Integer>(.ceylon.language.Integer.instance(1L), .ceylon.language.Integer.instance(2L), .ceylon.language.Integer.instance(3L));
                 .ceylon.language.Sequence<? extends .ceylon.language.Integer> $ceylontmpopV1 = (.ceylon.language.Sequence<? extends .ceylon.language.Integer>)new .ceylon.language.Tuple<.ceylon.language.Integer, .ceylon.language.Integer, .ceylon.language.Tuple<.ceylon.language.Integer, ? extends .ceylon.language.Integer, ? extends .ceylon.language.Empty>>(.ceylon.language.Integer.instance(1L), new .ceylon.language.Tuple<.ceylon.language.Integer, .ceylon.language.Integer, .ceylon.language.Empty>(.ceylon.language.Integer.instance(2L), .ceylon.language.empty_.getEmpty$()));
-                $ceylontmpopE0.setVariableWithUnion($ceylontmpopV1);
+                $ceylontmpopE0.setVariableWithUnion$priv($ceylontmpopV1);
             }
             returning $ceylontmpopV1;
         )).getFirst();
@@ -32,12 +32,12 @@ class Bug689<X, Y> {
             {
                 .com.redhat.ceylon.compiler.java.test.issues.bug06xx.Bug689<.ceylon.language.Integer, .ceylon.language.Integer> $ceylontmpopE2 = new .com.redhat.ceylon.compiler.java.test.issues.bug06xx.Bug689<.ceylon.language.Integer, .ceylon.language.Integer>(.ceylon.language.Integer.instance(1L), .ceylon.language.Integer.instance(2L), .ceylon.language.Integer.instance(3L));
                 .ceylon.language.Sequence<? extends .ceylon.language.Integer> $ceylontmpopV3 = (.ceylon.language.Sequence<? extends .ceylon.language.Integer>)new .ceylon.language.Tuple<.ceylon.language.Integer, .ceylon.language.Integer, .ceylon.language.Empty>(.ceylon.language.Integer.instance(1L), .ceylon.language.empty_.getEmpty$());
-                $ceylontmpopE2.setVariableWithIntersection($ceylontmpopV3);
+                $ceylontmpopE2.setVariableWithIntersection$priv($ceylontmpopV3);
             }
             returning $ceylontmpopV3;
         )).getFirst();
-        sync = ((.ceylon.language.Sequence<? extends .ceylon.language.Sequence<? extends .ceylon.language.Integer>>)(.ceylon.language.Sequence)new .com.redhat.ceylon.compiler.java.test.issues.bug06xx.Bug689<.ceylon.language.Integer, .ceylon.language.Integer>(.ceylon.language.Integer.instance(1L), .ceylon.language.Integer.instance(2L), .ceylon.language.Integer.instance(3L)).getAttributeWithUnionWithinTypeArg()).getFirst().getFirst();
-        final .ceylon.language.Number o = ((.ceylon.language.List<? extends .ceylon.language.Integer>)(.ceylon.language.List)new .com.redhat.ceylon.compiler.java.test.issues.bug06xx.Bug689<.ceylon.language.Integer, .ceylon.language.Integer>(.ceylon.language.Integer.instance(1L), .ceylon.language.Integer.instance(2L), .ceylon.language.Integer.instance(3L)).getAttributeWithUnionErasedToIterable()).get(.ceylon.language.Integer.instance(0L));
+        sync = ((.ceylon.language.Sequence<? extends .ceylon.language.Sequence<? extends .ceylon.language.Integer>>)(.ceylon.language.Sequence)new .com.redhat.ceylon.compiler.java.test.issues.bug06xx.Bug689<.ceylon.language.Integer, .ceylon.language.Integer>(.ceylon.language.Integer.instance(1L), .ceylon.language.Integer.instance(2L), .ceylon.language.Integer.instance(3L)).getAttributeWithUnionWithinTypeArg$priv()).getFirst().getFirst();
+        final .ceylon.language.Number o = ((.ceylon.language.List<? extends .ceylon.language.Integer>)(.ceylon.language.List)new .com.redhat.ceylon.compiler.java.test.issues.bug06xx.Bug689<.ceylon.language.Integer, .ceylon.language.Integer>(.ceylon.language.Integer.instance(1L), .ceylon.language.Integer.instance(2L), .ceylon.language.Integer.instance(3L)).getAttributeWithUnionErasedToIterable$priv()).get(.ceylon.language.Integer.instance(0L));
         sync = ((.ceylon.language.Sequence<? extends .ceylon.language.Integer>)new .com.redhat.ceylon.compiler.java.test.issues.bug06xx.Bug689_ModelLoader<.ceylon.language.Integer, .ceylon.language.Integer>(.ceylon.language.Integer.instance(1L), .ceylon.language.Integer.instance(2L), .ceylon.language.Integer.instance(3L)).<.ceylon.language.Integer, .ceylon.language.Integer>parameterisedMethodWithUnion(.ceylon.language.Integer.instance(1L), .ceylon.language.Integer.instance(2L))).getFirst();
         sync = ((.ceylon.language.Sequence<? extends .ceylon.language.Integer>)new .com.redhat.ceylon.compiler.java.test.issues.bug06xx.Bug689_ModelLoader<.ceylon.language.Integer, .ceylon.language.Integer>(.ceylon.language.Integer.instance(1L), .ceylon.language.Integer.instance(2L), .ceylon.language.Integer.instance(3L)).methodWithUnion(.ceylon.language.Integer.instance(1L), .ceylon.language.Integer.instance(2L))).getFirst();
         sync = ((.ceylon.language.Sequence<? extends .ceylon.language.Integer>)new .com.redhat.ceylon.compiler.java.test.issues.bug06xx.Bug689_ModelLoader<.ceylon.language.Integer, .ceylon.language.Integer>(.ceylon.language.Integer.instance(1L), .ceylon.language.Integer.instance(2L), .ceylon.language.Integer.instance(3L)).getAttributeWithUnion()).getFirst();
@@ -71,40 +71,40 @@ class Bug689<X, Y> {
     }
     private final .ceylon.language.Sequence attributeWithUnion;
     
-    private final .ceylon.language.Sequence getAttributeWithUnion() {
+    private final .ceylon.language.Sequence getAttributeWithUnion$priv() {
         return attributeWithUnion;
     }
     private final .ceylon.language.Sequence attributeWithIntersection;
     
-    private final .ceylon.language.Sequence getAttributeWithIntersection() {
+    private final .ceylon.language.Sequence getAttributeWithIntersection$priv() {
         return attributeWithIntersection;
     }
     private .ceylon.language.Sequence variableWithUnion;
     
-    private final .ceylon.language.Sequence getVariableWithUnion() {
+    private final .ceylon.language.Sequence getVariableWithUnion$priv() {
         return variableWithUnion;
     }
     
-    private final void setVariableWithUnion(final .ceylon.language.Sequence variableWithUnion) {
+    private final void setVariableWithUnion$priv(final .ceylon.language.Sequence variableWithUnion) {
         this.variableWithUnion = variableWithUnion;
     }
     private .ceylon.language.Sequence variableWithIntersection;
     
-    private final .ceylon.language.Sequence getVariableWithIntersection() {
+    private final .ceylon.language.Sequence getVariableWithIntersection$priv() {
         return variableWithIntersection;
     }
     
-    private final void setVariableWithIntersection(final .ceylon.language.Sequence variableWithIntersection) {
+    private final void setVariableWithIntersection$priv(final .ceylon.language.Sequence variableWithIntersection) {
         this.variableWithIntersection = variableWithIntersection;
     }
     private final .ceylon.language.Sequence<? extends .ceylon.language.Sequence<? extends .java.lang.Object>> attributeWithUnionWithinTypeArg;
     
-    private final .ceylon.language.Sequence<? extends .ceylon.language.Sequence<? extends .java.lang.Object>> getAttributeWithUnionWithinTypeArg() {
+    private final .ceylon.language.Sequence<? extends .ceylon.language.Sequence<? extends .java.lang.Object>> getAttributeWithUnionWithinTypeArg$priv() {
         return attributeWithUnionWithinTypeArg;
     }
     private final .ceylon.language.Sequential attributeWithUnionErasedToIterable;
     
-    private final .ceylon.language.Sequential getAttributeWithUnionErasedToIterable() {
+    private final .ceylon.language.Sequential getAttributeWithUnionErasedToIterable$priv() {
         return attributeWithUnionErasedToIterable;
     }
 }

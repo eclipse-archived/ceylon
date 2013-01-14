@@ -7,11 +7,11 @@ public abstract class Bug902 {
     }
     private final long y;
     
-    private final long getY() {
+    private final long getY$priv() {
         return y;
     }
     
     public final long getZ() {
-        return getY();
+        return getY$priv();
     }
 }

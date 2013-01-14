@@ -43,7 +43,7 @@ class KlassWithObjectMember {
         }
     }
     
-    private final .com.redhat.ceylon.compiler.java.test.structure.klass.KlassWithObjectMember.capturedobj_ getCapturedobj() {
+    private final .com.redhat.ceylon.compiler.java.test.structure.klass.KlassWithObjectMember.capturedobj_ getCapturedobj$priv() {
         return capturedobj;
     }
     private final .com.redhat.ceylon.compiler.java.test.structure.klass.KlassWithObjectMember.sharedobj_ sharedobj;
@@ -69,6 +69,6 @@ class KlassWithObjectMember {
     }
     
     private final void m() {
-        getCapturedobj().m();
+        getCapturedobj$priv().m();
     }
 }

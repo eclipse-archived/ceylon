@@ -44,11 +44,11 @@ class UnionTypeInfo {
     }
     
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo(value = "com.redhat.ceylon.compiler.java.test.annotations::Foo|com.redhat.ceylon.compiler.java.test.annotations::Bar", erased = true)
-    private final .java.lang.Object getGetter() {
+    private final .java.lang.Object getGetter$priv() {
         return new .com.redhat.ceylon.compiler.java.test.annotations.Foo();
     }
     
-    private final void setGetter(@.com.redhat.ceylon.compiler.java.metadata.Name("getter")
+    private final void setGetter$priv(@.com.redhat.ceylon.compiler.java.metadata.Name("getter")
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo(value = "com.redhat.ceylon.compiler.java.test.annotations::Foo|com.redhat.ceylon.compiler.java.test.annotations::Bar", erased = true)
     final .java.lang.Object getter) {
     }

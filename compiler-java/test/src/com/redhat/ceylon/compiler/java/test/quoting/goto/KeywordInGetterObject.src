@@ -5,7 +5,7 @@ class KeywordInGetterObject {
     KeywordInGetterObject() {
     }
     
-    private final long getI() {
+    private final long getI$priv() {
         
         final class goto_ {
             

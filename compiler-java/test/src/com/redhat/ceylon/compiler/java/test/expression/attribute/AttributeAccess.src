@@ -8,7 +8,7 @@ class AttributeAccess {
     }
     private final boolean b1;
     
-    private final boolean getB1() {
+    private final boolean getB1$priv() {
         return b1;
     }
     private final boolean b2;
@@ -17,7 +17,7 @@ class AttributeAccess {
         return b2;
     }
     
-    private final boolean getB3() {
+    private final boolean getB3$priv() {
         return true;
     }
     
@@ -26,9 +26,9 @@ class AttributeAccess {
     }
     
     private final void m() {
-        final boolean bb1 = getB1();
+        final boolean bb1 = getB1$priv();
         final boolean bb2 = getB2();
-        final boolean bb3 = getB3();
+        final boolean bb3 = getB3$priv();
         final boolean bb4 = getB4();
     }
     

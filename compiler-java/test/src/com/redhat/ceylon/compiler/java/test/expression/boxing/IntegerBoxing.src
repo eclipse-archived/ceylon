@@ -7,11 +7,11 @@ class IntegerBoxing {
     }
     private long attrInteger;
     
-    private final long getAttrInteger() {
+    private final long getAttrInteger$priv() {
         return attrInteger;
     }
     
-    private final void setAttrInteger(final long attrInteger) {
+    private final void setAttrInteger$priv(final long attrInteger) {
         this.attrInteger = attrInteger;
     }
     
@@ -38,31 +38,31 @@ class IntegerBoxing {
         }
         localAttrInteger = localAttrInteger + 2L;
         localAttrObject = .ceylon.language.Integer.instance(localAttrInteger + 2L);
-        setAttrInteger(getAttrInteger() + 2L);
+        setAttrInteger$priv(getAttrInteger$priv() + 2L);
         test(localAttrInteger + 2L);
-        test(getAttrInteger() + 2L);
-        test(this.getAttrInteger() + 2L);
+        test(getAttrInteger$priv() + 2L);
+        test(this.getAttrInteger$priv() + 2L);
         localAttrInteger = .ceylon.language.Integer.plus(localAttrInteger, 2L);
-        setAttrInteger(.ceylon.language.Integer.plus(getAttrInteger(), 2L));
-        this.setAttrInteger(.ceylon.language.Integer.plus(this.getAttrInteger(), 2L));
+        setAttrInteger$priv(.ceylon.language.Integer.plus(getAttrInteger$priv(), 2L));
+        this.setAttrInteger$priv(.ceylon.language.Integer.plus(this.getAttrInteger$priv(), 2L));
         test(.ceylon.language.Integer.plus(localAttrInteger, 2L));
-        test(.ceylon.language.Integer.plus(getAttrInteger(), 2L));
-        test(.ceylon.language.Integer.plus(this.getAttrInteger(), 2L));
+        test(.ceylon.language.Integer.plus(getAttrInteger$priv(), 2L));
+        test(.ceylon.language.Integer.plus(this.getAttrInteger$priv(), 2L));
         localAttrInteger = localAttrInteger++;
-        setAttrInteger((
+        setAttrInteger$priv((
             let
             {
-                long $ceylontmpop3 = getAttrInteger();
-                setAttrInteger($ceylontmpop3 + 1);
+                long $ceylontmpop3 = getAttrInteger$priv();
+                setAttrInteger$priv($ceylontmpop3 + 1);
             }
             returning $ceylontmpop3;
         ));
-        this.setAttrInteger((
+        this.setAttrInteger$priv((
             let
             {
                 .com.redhat.ceylon.compiler.java.test.expression.boxing.IntegerBoxing $ceylontmpopE4 = this;
-                long $ceylontmpopV5 = $ceylontmpopE4.getAttrInteger();
-                $ceylontmpopE4.setAttrInteger($ceylontmpopV5 + 1);
+                long $ceylontmpopV5 = $ceylontmpopE4.getAttrInteger$priv();
+                $ceylontmpopE4.setAttrInteger$priv($ceylontmpopV5 + 1);
             }
             returning $ceylontmpopV5;
         ));
@@ -70,8 +70,8 @@ class IntegerBoxing {
         test((
             let
             {
-                long $ceylontmpop6 = getAttrInteger();
-                setAttrInteger($ceylontmpop6 + 1);
+                long $ceylontmpop6 = getAttrInteger$priv();
+                setAttrInteger$priv($ceylontmpop6 + 1);
             }
             returning $ceylontmpop6;
         ));
@@ -79,29 +79,29 @@ class IntegerBoxing {
             let
             {
                 .com.redhat.ceylon.compiler.java.test.expression.boxing.IntegerBoxing $ceylontmpopE7 = this;
-                long $ceylontmpopV8 = $ceylontmpopE7.getAttrInteger();
-                $ceylontmpopE7.setAttrInteger($ceylontmpopV8 + 1);
+                long $ceylontmpopV8 = $ceylontmpopE7.getAttrInteger$priv();
+                $ceylontmpopE7.setAttrInteger$priv($ceylontmpopV8 + 1);
             }
             returning $ceylontmpopV8;
         ));
         localAttrInteger = .ceylon.language.Integer.getSuccessor(localAttrInteger);
-        setAttrInteger(.ceylon.language.Integer.getSuccessor(getAttrInteger()));
-        this.setAttrInteger(.ceylon.language.Integer.getSuccessor(this.getAttrInteger()));
+        setAttrInteger$priv(.ceylon.language.Integer.getSuccessor(getAttrInteger$priv()));
+        this.setAttrInteger$priv(.ceylon.language.Integer.getSuccessor(this.getAttrInteger$priv()));
         test(.ceylon.language.Integer.getSuccessor(localAttrInteger));
-        test(.ceylon.language.Integer.getSuccessor(getAttrInteger()));
-        test(.ceylon.language.Integer.getSuccessor(this.getAttrInteger()));
+        test(.ceylon.language.Integer.getSuccessor(getAttrInteger$priv()));
+        test(.ceylon.language.Integer.getSuccessor(this.getAttrInteger$priv()));
         localAttrInteger = .ceylon.language.Integer.getPositiveValue(localAttrInteger);
-        setAttrInteger(.ceylon.language.Integer.getPositiveValue(getAttrInteger()));
-        this.setAttrInteger(.ceylon.language.Integer.getPositiveValue(this.getAttrInteger()));
+        setAttrInteger$priv(.ceylon.language.Integer.getPositiveValue(getAttrInteger$priv()));
+        this.setAttrInteger$priv(.ceylon.language.Integer.getPositiveValue(this.getAttrInteger$priv()));
         test(.ceylon.language.Integer.getPositiveValue(localAttrInteger));
-        test(.ceylon.language.Integer.getPositiveValue(getAttrInteger()));
-        test(.ceylon.language.Integer.getPositiveValue(this.getAttrInteger()));
+        test(.ceylon.language.Integer.getPositiveValue(getAttrInteger$priv()));
+        test(.ceylon.language.Integer.getPositiveValue(this.getAttrInteger$priv()));
         localAttrInteger = -.ceylon.language.Integer.getPositiveValue(localAttrInteger);
-        setAttrInteger(-.ceylon.language.Integer.getPositiveValue(getAttrInteger()));
-        this.setAttrInteger(-.ceylon.language.Integer.getPositiveValue(this.getAttrInteger()));
+        setAttrInteger$priv(-.ceylon.language.Integer.getPositiveValue(getAttrInteger$priv()));
+        this.setAttrInteger$priv(-.ceylon.language.Integer.getPositiveValue(this.getAttrInteger$priv()));
         test(-.ceylon.language.Integer.getPositiveValue(localAttrInteger));
-        test(-.ceylon.language.Integer.getPositiveValue(getAttrInteger()));
-        test(-.ceylon.language.Integer.getPositiveValue(this.getAttrInteger()));
+        test(-.ceylon.language.Integer.getPositiveValue(getAttrInteger$priv()));
+        test(-.ceylon.language.Integer.getPositiveValue(this.getAttrInteger$priv()));
     }
     
     private final void test(final long i) {

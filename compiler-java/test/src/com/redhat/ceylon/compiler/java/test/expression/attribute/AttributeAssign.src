@@ -8,11 +8,11 @@ class AttributeAssign {
     }
     private boolean b1;
     
-    private final boolean getB1() {
+    private final boolean getB1$priv() {
         return b1;
     }
     
-    private final void setB1(final boolean b1) {
+    private final void setB1$priv(final boolean b1) {
         this.b1 = b1;
     }
     private boolean b2;
@@ -25,11 +25,11 @@ class AttributeAssign {
         this.b2 = b2;
     }
     
-    private final boolean getB3() {
+    private final boolean getB3$priv() {
         return true;
     }
     
-    private final void setB3(final boolean b3) {
+    private final void setB3$priv(final boolean b3) {
         final boolean _b3 = b3;
     }
     
@@ -42,9 +42,9 @@ class AttributeAssign {
     }
     
     private final void m() {
-        setB1(false);
+        setB1$priv(false);
         setB2(false);
-        setB3(false);
+        setB3$priv(false);
         setB4(false);
     }
     

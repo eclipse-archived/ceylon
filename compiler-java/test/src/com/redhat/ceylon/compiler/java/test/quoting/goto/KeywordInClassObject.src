@@ -13,12 +13,12 @@ class KeywordInClassObject {
         }
     }
     
-    private final .com.redhat.ceylon.compiler.java.test.quoting.$goto.KeywordInClassObject.goto_ getGoto() {
+    private final .com.redhat.ceylon.compiler.java.test.quoting.$goto.KeywordInClassObject.goto_ getGoto$priv() {
         return goto;
     }
     
     private final void m() {
-        final .java.lang.String s = getGoto().toString();
+        final .java.lang.String s = getGoto$priv().toString();
     }
     
     public static void main(.java.lang.String[] args) {

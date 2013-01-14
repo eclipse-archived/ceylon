@@ -8,29 +8,29 @@ class Bug479 {
     }
     private final .java.lang.String baseString;
     
-    private final .java.lang.String getBaseString() {
+    private final .java.lang.String getBaseString$priv() {
         return baseString;
     }
     private final .java.lang.String _underscoredBaseString;
     
-    private final .java.lang.String get_underscoredBaseString() {
+    private final .java.lang.String get_underscoredBaseString$priv() {
         return _underscoredBaseString;
     }
     
     public final .java.lang.String getSimpleFoo() {
-        return "simpleFoo" + getBaseString();
+        return "simpleFoo" + getBaseString$priv();
     }
     
     public final .java.lang.String get_underscoredFoo() {
-        return "underscoredFoo" + getBaseString();
+        return "underscoredFoo" + getBaseString$priv();
     }
     
     public final .java.lang.String getSimpleFooUnderscoredBaseString() {
-        return "simpleFoo" + get_underscoredBaseString();
+        return "simpleFoo" + get_underscoredBaseString$priv();
     }
     
     public final .java.lang.String get_underscoredFooUnderscoredBaseString() {
-        return "underscoredFoo" + get_underscoredBaseString();
+        return "underscoredFoo" + get_underscoredBaseString$priv();
     }
     
     public static void main(.java.lang.String[] args) {

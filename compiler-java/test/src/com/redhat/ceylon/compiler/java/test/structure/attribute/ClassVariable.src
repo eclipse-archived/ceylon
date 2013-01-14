@@ -6,7 +6,7 @@ abstract class ClassVariable {
         .java.lang.String uncapturedvar;
         setPublicvar("");
         uncapturedvar = "";
-        setCapturedvar("");
+        setCapturedvar$priv("");
         setFormalvar("");
     }
     private .java.lang.String publicvar;
@@ -20,11 +20,11 @@ abstract class ClassVariable {
     }
     private .java.lang.String capturedvar;
     
-    private final .java.lang.String getCapturedvar() {
+    private final .java.lang.String getCapturedvar$priv() {
         return capturedvar;
     }
     
-    private final void setCapturedvar(final .java.lang.String capturedvar) {
+    private final void setCapturedvar$priv(final .java.lang.String capturedvar) {
         this.capturedvar = capturedvar;
     }
     
@@ -33,7 +33,7 @@ abstract class ClassVariable {
     public abstract void setFormalvar(final .java.lang.String formalvar);
     
     private final void m() {
-        setCapturedvar("new value");
+        setCapturedvar$priv("new value");
     }
 }
 class SubClassVariable extends .com.redhat.ceylon.compiler.java.test.structure.attribute.ClassVariable {

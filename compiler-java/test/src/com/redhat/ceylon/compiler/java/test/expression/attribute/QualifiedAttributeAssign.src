@@ -9,11 +9,11 @@ class QualifiedAttributeAssign {
     }
     private boolean b;
     
-    private final boolean getB() {
+    private final boolean getB$priv() {
         return b;
     }
     
-    private final void setB(final boolean b) {
+    private final void setB$priv(final boolean b) {
         this.b = b;
     }
     private boolean b2;
@@ -27,16 +27,16 @@ class QualifiedAttributeAssign {
     }
     private final .com.redhat.ceylon.compiler.java.test.expression.attribute.QualifiedAttributeAssign q;
     
-    private final .com.redhat.ceylon.compiler.java.test.expression.attribute.QualifiedAttributeAssign getQ() {
+    private final .com.redhat.ceylon.compiler.java.test.expression.attribute.QualifiedAttributeAssign getQ$priv() {
         return q;
     }
     
     private final void m(final .com.redhat.ceylon.compiler.java.test.expression.attribute.QualifiedAttributeAssignFoo f) {
-        this.setB(false);
+        this.setB$priv(false);
         this.setB2(false);
-        new .com.redhat.ceylon.compiler.java.test.expression.attribute.QualifiedAttributeAssign().setB(true);
+        new .com.redhat.ceylon.compiler.java.test.expression.attribute.QualifiedAttributeAssign().setB$priv(true);
         new .com.redhat.ceylon.compiler.java.test.expression.attribute.QualifiedAttributeAssign().setB2(true);
-        getQ().setB(getQ().getB2());
+        getQ$priv().setB$priv(getQ$priv().getB2());
         f.setB(f.getB());
     }
     

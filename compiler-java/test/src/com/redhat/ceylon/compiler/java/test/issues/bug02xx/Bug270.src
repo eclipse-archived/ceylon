@@ -121,12 +121,12 @@ class Bug270 {
     }
     private final .ceylon.language.Entry<? extends .ceylon.language.Integer, ? extends .ceylon.language.String> bug270;
     
-    private final .ceylon.language.Entry<? extends .ceylon.language.Integer, ? extends .ceylon.language.String> getBug270() {
+    private final .ceylon.language.Entry<? extends .ceylon.language.Integer, ? extends .ceylon.language.String> getBug270$priv() {
         return bug270;
     }
     
     private final void forceFieldGenerationByCapture() {
-        this.getBug270().equals(.ceylon.language.Integer.instance(1L));
+        this.getBug270$priv().equals(.ceylon.language.Integer.instance(1L));
     }
     
     private final void method() {

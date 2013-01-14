@@ -14,11 +14,11 @@ final class Bug911$impl {
     }
     private final .com.redhat.ceylon.compiler.java.test.issues.bug09xx.Bug911 $this;
     
-    private final .java.lang.String getText() {
+    private final .java.lang.String getText$priv() {
         return "bar";
     }
     
     public final .java.lang.String toString() {
-        return getText();
+        return getText$priv();
     }
 }

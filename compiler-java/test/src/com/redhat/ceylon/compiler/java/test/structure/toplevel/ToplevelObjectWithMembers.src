@@ -17,7 +17,7 @@ final class topLevelObjectWithMembers_ {
     }
     private final boolean valCaptured;
     
-    private final boolean getValCaptured() {
+    private final boolean getValCaptured$priv() {
         return valCaptured;
     }
     private boolean varShared;
@@ -31,20 +31,20 @@ final class topLevelObjectWithMembers_ {
     }
     private boolean varCaptured;
     
-    private final boolean getVarCaptured() {
+    private final boolean getVarCaptured$priv() {
         return varCaptured;
     }
     
-    private final void setVarCaptured(final boolean varCaptured) {
+    private final void setVarCaptured$priv(final boolean varCaptured) {
         this.varCaptured = varCaptured;
     }
     
     private final boolean y() {
-        return getValCaptured();
+        return getValCaptured$priv();
     }
     
     public final boolean yShared() {
-        return getVarCaptured();
+        return getVarCaptured$priv();
     }
     private static final .com.redhat.ceylon.compiler.java.test.structure.toplevel.topLevelObjectWithMembers_[] value;
     static {

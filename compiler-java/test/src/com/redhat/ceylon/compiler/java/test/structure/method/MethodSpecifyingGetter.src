@@ -5,12 +5,12 @@ class MethodSpecifierGetter {
     MethodSpecifierGetter() {
     }
     
-    private final .ceylon.language.Callable<? extends .ceylon.language.Integer> getF() {
+    private final .ceylon.language.Callable<? extends .ceylon.language.Integer> getF$priv() {
         throw new .ceylon.language.Exception(null, null);
     }
     
     private final long foo(final boolean b) {
-        return getF().$call(.ceylon.language.Boolean.instance(b)).longValue();
+        return getF$priv().$call(.ceylon.language.Boolean.instance(b)).longValue();
     }
     
     public static void main(.java.lang.String[] args) {

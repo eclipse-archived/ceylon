@@ -9,46 +9,46 @@ class QualifiedAttributeAccess {
     }
     private final boolean b;
     
-    private final boolean getB() {
+    private final boolean getB$priv() {
         return b;
     }
     private boolean b2;
     
-    private final boolean getB2() {
+    private final boolean getB2$priv() {
         return b2;
     }
     
-    private final void setB2(final boolean b2) {
+    private final void setB2$priv(final boolean b2) {
         this.b2 = b2;
     }
     private final .com.redhat.ceylon.compiler.java.test.expression.attribute.QualifiedAttributeAccess q;
     
-    private final .com.redhat.ceylon.compiler.java.test.expression.attribute.QualifiedAttributeAccess getQ() {
+    private final .com.redhat.ceylon.compiler.java.test.expression.attribute.QualifiedAttributeAccess getQ$priv() {
         return q;
     }
     
     private final boolean m() {
-        return this.getB();
+        return this.getB$priv();
     }
     
     private final boolean m2() {
-        return this.getB2();
+        return this.getB2$priv();
     }
     
     private final boolean m3() {
-        return new .com.redhat.ceylon.compiler.java.test.expression.attribute.QualifiedAttributeAccess().getB();
+        return new .com.redhat.ceylon.compiler.java.test.expression.attribute.QualifiedAttributeAccess().getB$priv();
     }
     
     private final boolean m4() {
-        return new .com.redhat.ceylon.compiler.java.test.expression.attribute.QualifiedAttributeAccess().getB2();
+        return new .com.redhat.ceylon.compiler.java.test.expression.attribute.QualifiedAttributeAccess().getB2$priv();
     }
     
     private final boolean m5() {
-        return getQ().getB();
+        return getQ$priv().getB$priv();
     }
     
     private final boolean m6() {
-        return getQ().getB2();
+        return getQ$priv().getB2$priv();
     }
     
     private final boolean m7(final .com.redhat.ceylon.compiler.java.test.expression.attribute.Foo f) {

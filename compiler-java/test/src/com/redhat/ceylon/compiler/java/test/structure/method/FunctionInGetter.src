@@ -5,7 +5,7 @@ class FunctionInGetter {
     FunctionInGetter() {
     }
     
-    private final .java.lang.String getFoo() {
+    private final .java.lang.String getFoo$priv() {
         if (true) {
             final long i = 1L;
             

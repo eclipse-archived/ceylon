@@ -8,12 +8,12 @@ class OptimizedForWithRange {
     }
     private final long start;
     
-    private final long getStart() {
+    private final long getStart$priv() {
         return start;
     }
     private final long end;
     
-    private final long getEnd() {
+    private final long getEnd$priv() {
         return end;
     }
     
@@ -39,16 +39,16 @@ class OptimizedForWithRange {
     
     private final void expressions() {
         long sum = 0L;
-        final long $ceylontmpstart10 = getStart();
-        final long $ceylontmpend11 = getEnd();
+        final long $ceylontmpstart10 = getStart$priv();
+        final long $ceylontmpend11 = getEnd$priv();
         final boolean $ceylontmpincreasing12 = $ceylontmpstart10 <= $ceylontmpend11;
         final long $ceylontmpincr13 = $ceylontmpincreasing12 ? 1L : -1L;
         for (long $i$14 = $ceylontmpstart10; $ceylontmpincreasing12 ? $i$14 - $ceylontmpend11 <= 0L : $i$14 - $ceylontmpend11 >= 0L; $i$14 += $ceylontmpincr13) {
             final long i = $i$14;
             sum += i;
         }
-        final long $ceylontmpstart15 = getStart() + 10L;
-        final long $ceylontmpend16 = getEnd() + 10L;
+        final long $ceylontmpstart15 = getStart$priv() + 10L;
+        final long $ceylontmpend16 = getEnd$priv() + 10L;
         final boolean $ceylontmpincreasing17 = $ceylontmpstart15 <= $ceylontmpend16;
         final long $ceylontmpincr18 = $ceylontmpincreasing17 ? 1L : -1L;
         for (long $i$19 = $ceylontmpstart15; $ceylontmpincreasing17 ? $i$19 - $ceylontmpend16 <= 0L : $i$19 - $ceylontmpend16 >= 0L; $i$19 += $ceylontmpincr18) {

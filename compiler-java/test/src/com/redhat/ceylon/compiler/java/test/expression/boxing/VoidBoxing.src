@@ -4,29 +4,29 @@ class AnythingBoxing {
     
     AnythingBoxing() {
         this.valueAnything = .ceylon.language.Integer.instance(1L);
-        this.variableAnything = getValueAnything();
+        this.variableAnything = getValueAnything$priv();
     }
     private final .java.lang.Object valueAnything;
     
-    private final .java.lang.Object getValueAnything() {
+    private final .java.lang.Object getValueAnything$priv() {
         return valueAnything;
     }
     private .java.lang.Object variableAnything;
     
-    private final .java.lang.Object getVariableAnything() {
+    private final .java.lang.Object getVariableAnything$priv() {
         return variableAnything;
     }
     
-    private final void setVariableAnything(final .java.lang.Object variableAnything) {
+    private final void setVariableAnything$priv(final .java.lang.Object variableAnything) {
         this.variableAnything = variableAnything;
     }
     
-    private final .java.lang.Object getGetterAnything() {
-        return getVariableAnything();
+    private final .java.lang.Object getGetterAnything$priv() {
+        return getVariableAnything$priv();
     }
     
-    private final void setGetterAnything(final .java.lang.Object getterAnything) {
-        setVariableAnything(getterAnything);
+    private final void setGetterAnything$priv(final .java.lang.Object getterAnything) {
+        setVariableAnything$priv(getterAnything);
     }
     
     private final void returnsvoid(final .java.lang.Object v) {
@@ -37,16 +37,16 @@ class AnythingBoxing {
     }
     
     private final void callablevoid(final .ceylon.language.Callable<? extends .java.lang.Object> f) {
-        f.$call(getValueAnything());
+        f.$call(getValueAnything$priv());
     }
     
     private final .java.lang.Object callableAnything(final .ceylon.language.Callable<? extends .java.lang.Object> f) {
-        return f.$call(getValueAnything());
+        return f.$call(getValueAnything$priv());
     }
     
     private final void test() {
-        final .java.lang.Object v1 = getValueAnything();
-        final .java.lang.Object v2 = getGetterAnything();
+        final .java.lang.Object v1 = getValueAnything$priv();
+        final .java.lang.Object v2 = getGetterAnything$priv();
         final .java.lang.Object v3 = (
             let
             {
@@ -171,8 +171,8 @@ class AnythingBoxing {
             }
         });
         .java.lang.Object v;
-        v = getValueAnything();
-        v = getGetterAnything();
+        v = getValueAnything$priv();
+        v = getGetterAnything$priv();
         v = (
             let
             {

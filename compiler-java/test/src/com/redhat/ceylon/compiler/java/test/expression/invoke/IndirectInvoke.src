@@ -111,89 +111,89 @@ class IndirectInvoke<X> {
         return indirect.$call().$call(t);
     }
     
-    private final .ceylon.language.Callable<? extends .java.lang.Object> getGetter1() {
+    private final .ceylon.language.Callable<? extends .java.lang.Object> getGetter1$priv() {
         throw new .ceylon.language.Exception(null, null);
     }
     
     private final void mGetter1() {
-        getGetter1().$call();
+        getGetter1$priv().$call();
     }
     
-    private final .ceylon.language.Callable<? extends .ceylon.language.Integer> getGetter2() {
+    private final .ceylon.language.Callable<? extends .ceylon.language.Integer> getGetter2$priv() {
         throw new .ceylon.language.Exception(null, null);
     }
     
     private final long mGetter2() {
-        return getGetter2().$call().longValue();
+        return getGetter2$priv().$call().longValue();
     }
     
-    private final .ceylon.language.Callable<? extends .ceylon.language.Boolean> getGetter3() {
+    private final .ceylon.language.Callable<? extends .ceylon.language.Boolean> getGetter3$priv() {
         throw new .ceylon.language.Exception(null, null);
     }
     
     private final boolean mGetter3() {
-        return getGetter3().$call().booleanValue();
+        return getGetter3$priv().$call().booleanValue();
     }
     
-    private final .ceylon.language.Callable<? extends .ceylon.language.String> getGetter4() {
+    private final .ceylon.language.Callable<? extends .ceylon.language.String> getGetter4$priv() {
         throw new .ceylon.language.Exception(null, null);
     }
     
     private final .java.lang.String mGetter4() {
-        return getGetter4().$call().toString();
+        return getGetter4$priv().$call().toString();
     }
     
-    private final .ceylon.language.Callable<? extends X> getGetter5() {
+    private final .ceylon.language.Callable<? extends X> getGetter5$priv() {
         throw new .ceylon.language.Exception(null, null);
     }
     
     private final X mGetter5() {
-        return getGetter5().$call();
+        return getGetter5$priv().$call();
     }
     private final .ceylon.language.Callable<? extends .java.lang.Object> value1;
     
-    private final .ceylon.language.Callable<? extends .java.lang.Object> getValue1() {
+    private final .ceylon.language.Callable<? extends .java.lang.Object> getValue1$priv() {
         return value1;
     }
     
     private final void mValue1() {
-        getValue1().$call();
+        getValue1$priv().$call();
     }
     private final .ceylon.language.Callable<? extends .ceylon.language.Integer> value2;
     
-    private final .ceylon.language.Callable<? extends .ceylon.language.Integer> getValue2() {
+    private final .ceylon.language.Callable<? extends .ceylon.language.Integer> getValue2$priv() {
         return value2;
     }
     
     private final long mValue2() {
-        return getValue2().$call().longValue();
+        return getValue2$priv().$call().longValue();
     }
     private final .ceylon.language.Callable<? extends .ceylon.language.Boolean> value3;
     
-    private final .ceylon.language.Callable<? extends .ceylon.language.Boolean> getValue3() {
+    private final .ceylon.language.Callable<? extends .ceylon.language.Boolean> getValue3$priv() {
         return value3;
     }
     
     private final boolean mValue3() {
-        return getValue3().$call().booleanValue();
+        return getValue3$priv().$call().booleanValue();
     }
     private final .ceylon.language.Callable<? extends .ceylon.language.String> value4;
     
-    private final .ceylon.language.Callable<? extends .ceylon.language.String> getValue4() {
+    private final .ceylon.language.Callable<? extends .ceylon.language.String> getValue4$priv() {
         return value4;
     }
     
     private final .java.lang.String mValue4() {
-        return getValue4().$call().toString();
+        return getValue4$priv().$call().toString();
     }
     private final .ceylon.language.Callable<? extends X> value5;
     
-    private final .ceylon.language.Callable<? extends X> getValue5() {
+    private final .ceylon.language.Callable<? extends X> getValue5$priv() {
         return value5;
     }
     
     private final X mValue5() {
-        return getValue5().$call();
+        return getValue5$priv().$call();
     }
     
     public static void main(.java.lang.String[] args) {

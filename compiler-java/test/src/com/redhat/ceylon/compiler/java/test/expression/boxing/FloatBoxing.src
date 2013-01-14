@@ -7,11 +7,11 @@ class FloatBoxing {
     }
     private double attrFloat;
     
-    private final double getAttrFloat() {
+    private final double getAttrFloat$priv() {
         return attrFloat;
     }
     
-    private final void setAttrFloat(final double attrFloat) {
+    private final void setAttrFloat$priv(final double attrFloat) {
         this.attrFloat = attrFloat;
     }
     
@@ -40,24 +40,24 @@ class FloatBoxing {
         localAttrFloat = localAttrFloat + 4L;
         localAttrObject = .ceylon.language.Float.instance(localAttrFloat + 2.0);
         localAttrObject = .ceylon.language.Float.instance(localAttrFloat + 4L);
-        setAttrFloat(getAttrFloat() + 2.0);
-        setAttrFloat(getAttrFloat() + 4L);
-        this.setAttrFloat(this.getAttrFloat() + 2.0);
-        this.setAttrFloat(this.getAttrFloat() + 4L);
+        setAttrFloat$priv(getAttrFloat$priv() + 2.0);
+        setAttrFloat$priv(getAttrFloat$priv() + 4L);
+        this.setAttrFloat$priv(this.getAttrFloat$priv() + 2.0);
+        this.setAttrFloat$priv(this.getAttrFloat$priv() + 4L);
         test(localAttrFloat + 2.0);
         test(localAttrFloat + 4L);
         test(localAttrFloat + 2.0);
         test(localAttrFloat + 4L);
-        test(getAttrFloat() + 2.0);
-        test(getAttrFloat() + 4L);
-        test(this.getAttrFloat() + 2.0);
-        test(this.getAttrFloat() + 4L);
+        test(getAttrFloat$priv() + 2.0);
+        test(getAttrFloat$priv() + 4L);
+        test(this.getAttrFloat$priv() + 2.0);
+        test(this.getAttrFloat$priv() + 4L);
         localAttrFloat = .ceylon.language.Float.plus(localAttrFloat, 3.0);
-        setAttrFloat(.ceylon.language.Float.plus(getAttrFloat(), 3.0));
-        this.setAttrFloat(.ceylon.language.Float.plus(this.getAttrFloat(), 3.0));
+        setAttrFloat$priv(.ceylon.language.Float.plus(getAttrFloat$priv(), 3.0));
+        this.setAttrFloat$priv(.ceylon.language.Float.plus(this.getAttrFloat$priv(), 3.0));
         test(.ceylon.language.Float.plus(localAttrFloat, 3.0));
-        test(.ceylon.language.Float.plus(getAttrFloat(), 3.0));
-        test(.ceylon.language.Float.plus(this.getAttrFloat(), 3.0));
+        test(.ceylon.language.Float.plus(getAttrFloat$priv(), 3.0));
+        test(.ceylon.language.Float.plus(this.getAttrFloat$priv(), 3.0));
     }
     
     private final void test(final double f) {

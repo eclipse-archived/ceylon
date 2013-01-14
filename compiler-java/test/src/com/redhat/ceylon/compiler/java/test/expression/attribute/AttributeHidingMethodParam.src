@@ -7,12 +7,12 @@ class AttributeHidingMethodParam {
     }
     private final boolean b;
     
-    private final boolean getB() {
+    private final boolean getB$priv() {
         return b;
     }
     
     private final boolean m(final boolean b) {
-        return this.getB();
+        return this.getB$priv();
     }
     
     public static void main(.java.lang.String[] args) {

@@ -7,20 +7,20 @@ public class Bug227 {
     }
     private long _num;
     
-    private final long get_num() {
+    private final long get_num$priv() {
         return _num;
     }
     
-    private final void set_num(final long _num) {
+    private final void set_num$priv(final long _num) {
         this._num = _num;
     }
     
     public final long getNum() {
-        return this.get_num();
+        return this.get_num$priv();
     }
     
     public final void setNum(final long num) {
-        set_num(num);
+        set_num$priv(num);
     }
     
     public static void main(.java.lang.String[] args) {

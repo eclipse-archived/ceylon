@@ -5,11 +5,11 @@ class FunctionInSetter {
     FunctionInSetter() {
     }
     
-    private final .java.lang.String getFoo() {
+    private final .java.lang.String getFoo$priv() {
         return "";
     }
     
-    private final void setFoo(final .java.lang.String foo) {
+    private final void setFoo$priv(final .java.lang.String foo) {
         if (true) {
             final long i = 1L;
             

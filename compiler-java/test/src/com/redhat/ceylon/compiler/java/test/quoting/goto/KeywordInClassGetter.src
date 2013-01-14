@@ -5,11 +5,11 @@ class KeywordInClassGetter {
     KeywordInClassGetter() {
     }
     
-    private final .java.lang.String getGoto() {
+    private final .java.lang.String getGoto$priv() {
         return "";
     }
     
-    private final void setGoto(final .java.lang.String goto) {
+    private final void setGoto$priv(final .java.lang.String goto) {
     }
     
     public static void main(.java.lang.String[] args) {

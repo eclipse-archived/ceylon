@@ -12,28 +12,28 @@ class KlassTypeParams<U, V> {
     }
     private final U attr;
     
-    private final U getAttr() {
+    private final U getAttr$priv() {
         return attr;
     }
     private V var;
     
-    private final V getVar() {
+    private final V getVar$priv() {
         return var;
     }
     
-    private final void setVar(final V var) {
+    private final void setVar$priv(final V var) {
         this.var = var;
     }
     
-    private final U getGetter() {
-        return getAttr();
+    private final U getGetter$priv() {
+        return getAttr$priv();
     }
     
-    private final V getGetset() {
-        return getVar();
+    private final V getGetset$priv() {
+        return getVar$priv();
     }
     
-    private final void setGetset(final V getset) {
-        setVar(getset);
+    private final void setGetset$priv(final V getset) {
+        setVar$priv(getset);
     }
 }

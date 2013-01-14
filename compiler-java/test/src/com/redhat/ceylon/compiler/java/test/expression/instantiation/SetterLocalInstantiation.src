@@ -5,11 +5,11 @@ class SetterLocalInstantiation {
     SetterLocalInstantiation() {
     }
     
-    private final long getI() {
+    private final long getI$priv() {
         return 0L;
     }
     
-    private final void setI(final long i) {
+    private final void setI$priv(final long i) {
         
         class LocalClass {
             

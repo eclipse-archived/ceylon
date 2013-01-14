@@ -14,12 +14,12 @@ public final class bug899_ {
             }
             private final long i;
             
-            private final long getI() {
+            private final long getI$priv() {
                 return i;
             }
             
             public final long f() {
-                return getI() + 1L;
+                return getI$priv() + 1L;
             }
         }
         final o_ o = new o_();

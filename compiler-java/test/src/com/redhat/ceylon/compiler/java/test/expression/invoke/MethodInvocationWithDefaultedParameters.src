@@ -14,12 +14,12 @@ class Fookls {
     }
     private final long privProp;
     
-    private final long getPrivProp() {
+    private final long getPrivProp$priv() {
         return privProp;
     }
     private final long init;
     
-    private final long getInit() {
+    private final long getInit$priv() {
         return init;
     }
     
@@ -154,7 +154,7 @@ class Fookls {
     }
     
     public final long f6$n() {
-        return getPrivProp();
+        return getPrivProp$priv();
     }
     
     public .java.lang.Object f6(final long n) {
@@ -190,7 +190,7 @@ class Fookls {
     }
     
     public final long f8$n() {
-        return getInit();
+        return getInit$priv();
     }
     
     public .java.lang.Object f8(final long n) {

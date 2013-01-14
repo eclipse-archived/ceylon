@@ -266,19 +266,19 @@ class Optim extends .com.redhat.ceylon.compiler.java.test.expression.operator.Op
     }
     private long fieldInteger;
     
-    private final long getFieldInteger() {
+    private final long getFieldInteger$priv() {
         return fieldInteger;
     }
     
-    private final void setFieldInteger(final long fieldInteger) {
+    private final void setFieldInteger$priv(final long fieldInteger) {
         this.fieldInteger = fieldInteger;
     }
     
-    private final long getFieldGetterInteger() {
+    private final long getFieldGetterInteger$priv() {
         return 0L;
     }
     
-    private final void setFieldGetterInteger(final long fieldGetterInteger) {
+    private final void setFieldGetterInteger$priv(final long fieldGetterInteger) {
     }
     
     private final void nonOptimisableArithmetic() {
@@ -304,28 +304,28 @@ class Optim extends .com.redhat.ceylon.compiler.java.test.expression.operator.Op
             }
         }
         final localGetterInteger$setter_ localGetterInteger$setter_ = new localGetterInteger$setter_();
-        setFieldInteger((
+        setFieldInteger$priv((
             let
             {
-                long $ceylontmpop8 = getFieldInteger();
-                setFieldInteger($ceylontmpop8 + 1);
+                long $ceylontmpop8 = getFieldInteger$priv();
+                setFieldInteger$priv($ceylontmpop8 + 1);
             }
             returning $ceylontmpop8;
         ));
-        this.setFieldInteger((
+        this.setFieldInteger$priv((
             let
             {
                 .com.redhat.ceylon.compiler.java.test.expression.operator.Optim $ceylontmpopE9 = this;
-                long $ceylontmpopV10 = $ceylontmpopE9.getFieldInteger();
-                $ceylontmpopE9.setFieldInteger($ceylontmpopV10 + 1);
+                long $ceylontmpopV10 = $ceylontmpopE9.getFieldInteger$priv();
+                $ceylontmpopE9.setFieldInteger$priv($ceylontmpopV10 + 1);
             }
             returning $ceylontmpopV10;
         ));
-        setFieldGetterInteger((
+        setFieldGetterInteger$priv((
             let
             {
-                long $ceylontmpop11 = getFieldGetterInteger();
-                setFieldGetterInteger($ceylontmpop11 + 1);
+                long $ceylontmpop11 = getFieldGetterInteger$priv();
+                setFieldGetterInteger$priv($ceylontmpop11 + 1);
             }
             returning $ceylontmpop11;
         ));
@@ -345,28 +345,28 @@ class Optim extends .com.redhat.ceylon.compiler.java.test.expression.operator.Op
             }
             returning $ceylontmpop13;
         ));
-        setFieldInteger((
+        setFieldInteger$priv((
             let
             {
-                long $ceylontmpop14 = getFieldInteger() + 1;
-                setFieldInteger($ceylontmpop14);
+                long $ceylontmpop14 = getFieldInteger$priv() + 1;
+                setFieldInteger$priv($ceylontmpop14);
             }
             returning $ceylontmpop14;
         ));
-        this.setFieldInteger((
+        this.setFieldInteger$priv((
             let
             {
                 .com.redhat.ceylon.compiler.java.test.expression.operator.Optim $ceylontmpopE15 = this;
-                long $ceylontmpopV16 = $ceylontmpopE15.getFieldInteger() + 1;
-                $ceylontmpopE15.setFieldInteger($ceylontmpopV16);
+                long $ceylontmpopV16 = $ceylontmpopE15.getFieldInteger$priv() + 1;
+                $ceylontmpopE15.setFieldInteger$priv($ceylontmpopV16);
             }
             returning $ceylontmpopV16;
         ));
-        setFieldGetterInteger((
+        setFieldGetterInteger$priv((
             let
             {
-                long $ceylontmpop17 = getFieldGetterInteger() + 1;
-                setFieldGetterInteger($ceylontmpop17);
+                long $ceylontmpop17 = getFieldGetterInteger$priv() + 1;
+                setFieldGetterInteger$priv($ceylontmpop17);
             }
             returning $ceylontmpop17;
         ));
@@ -386,28 +386,28 @@ class Optim extends .com.redhat.ceylon.compiler.java.test.expression.operator.Op
             }
             returning $ceylontmpop19;
         ));
-        setFieldInteger((
+        setFieldInteger$priv((
             let
             {
-                long $ceylontmpop20 = getFieldInteger() + getFieldInteger();
-                setFieldInteger($ceylontmpop20);
+                long $ceylontmpop20 = getFieldInteger$priv() + getFieldInteger$priv();
+                setFieldInteger$priv($ceylontmpop20);
             }
             returning $ceylontmpop20;
         ));
-        this.setFieldInteger((
+        this.setFieldInteger$priv((
             let
             {
                 .com.redhat.ceylon.compiler.java.test.expression.operator.Optim $ceylontmpopE21 = this;
-                long $ceylontmpopV22 = $ceylontmpopE21.getFieldInteger() + this.getFieldInteger();
-                $ceylontmpopE21.setFieldInteger($ceylontmpopV22);
+                long $ceylontmpopV22 = $ceylontmpopE21.getFieldInteger$priv() + this.getFieldInteger$priv();
+                $ceylontmpopE21.setFieldInteger$priv($ceylontmpopV22);
             }
             returning $ceylontmpopV22;
         ));
-        setFieldGetterInteger((
+        setFieldGetterInteger$priv((
             let
             {
-                long $ceylontmpop23 = getFieldGetterInteger() + getFieldGetterInteger();
-                setFieldGetterInteger($ceylontmpop23);
+                long $ceylontmpop23 = getFieldGetterInteger$priv() + getFieldGetterInteger$priv();
+                setFieldGetterInteger$priv($ceylontmpop23);
             }
             returning $ceylontmpop23;
         ));

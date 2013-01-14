@@ -296,52 +296,52 @@ class BasicTypes {
     }
     private final long privateAttrInteger;
     
-    private final long getPrivateAttrInteger() {
+    private final long getPrivateAttrInteger$priv() {
         return privateAttrInteger;
     }
     private final double privateAttrFloat;
     
-    private final double getPrivateAttrFloat() {
+    private final double getPrivateAttrFloat$priv() {
         return privateAttrFloat;
     }
     private final .java.lang.String privateAttrString;
     
-    private final .java.lang.String getPrivateAttrString() {
+    private final .java.lang.String getPrivateAttrString$priv() {
         return privateAttrString;
     }
     private final boolean privateAttrBoolean;
     
-    private final boolean getPrivateAttrBoolean() {
+    private final boolean getPrivateAttrBoolean$priv() {
         return privateAttrBoolean;
     }
     private final int privateAttrCharacter;
     
-    private final int getPrivateAttrCharacter() {
+    private final int getPrivateAttrCharacter$priv() {
         return privateAttrCharacter;
     }
     private final .ceylon.language.Integer privateAttrOptionalInteger;
     
-    private final .ceylon.language.Integer getPrivateAttrOptionalInteger() {
+    private final .ceylon.language.Integer getPrivateAttrOptionalInteger$priv() {
         return privateAttrOptionalInteger;
     }
     private final .ceylon.language.Float privateAttrOptionalFloat;
     
-    private final .ceylon.language.Float getPrivateAttrOptionalFloat() {
+    private final .ceylon.language.Float getPrivateAttrOptionalFloat$priv() {
         return privateAttrOptionalFloat;
     }
     private final .ceylon.language.String privateAttrOptionalString;
     
-    private final .ceylon.language.String getPrivateAttrOptionalString() {
+    private final .ceylon.language.String getPrivateAttrOptionalString$priv() {
         return privateAttrOptionalString;
     }
     private final .ceylon.language.Boolean privateAttrOptionalBoolean;
     
-    private final .ceylon.language.Boolean getPrivateAttrOptionalBoolean() {
+    private final .ceylon.language.Boolean getPrivateAttrOptionalBoolean$priv() {
         return privateAttrOptionalBoolean;
     }
     private final .ceylon.language.Character privateAttrOptionalCharacter;
     
-    private final .ceylon.language.Character getPrivateAttrOptionalCharacter() {
+    private final .ceylon.language.Character getPrivateAttrOptionalCharacter$priv() {
         return privateAttrOptionalCharacter;
     }
     private final long sharedAttrInteger;
@@ -396,16 +396,16 @@ class BasicTypes {
     }
     
     private final void m() {
-        final long localAttrInteger = getPrivateAttrInteger();
-        final double localAttrFloat = getPrivateAttrFloat();
-        final .java.lang.String localAttrString = getPrivateAttrString();
-        final boolean localAttrBoolean = getPrivateAttrBoolean();
-        final int localAttrCharacter = getPrivateAttrCharacter();
-        final .ceylon.language.Integer localAttrOptionalInteger = getPrivateAttrOptionalInteger();
-        final .ceylon.language.Float localAttrOptionalFloat = getPrivateAttrOptionalFloat();
-        final .ceylon.language.String localAttrOptionalString = getPrivateAttrOptionalString();
-        final .ceylon.language.Boolean localAttrOptionalBoolean = getPrivateAttrOptionalBoolean();
-        final .ceylon.language.Character localAttrOptionalCharacter = getPrivateAttrOptionalCharacter();
+        final long localAttrInteger = getPrivateAttrInteger$priv();
+        final double localAttrFloat = getPrivateAttrFloat$priv();
+        final .java.lang.String localAttrString = getPrivateAttrString$priv();
+        final boolean localAttrBoolean = getPrivateAttrBoolean$priv();
+        final int localAttrCharacter = getPrivateAttrCharacter$priv();
+        final .ceylon.language.Integer localAttrOptionalInteger = getPrivateAttrOptionalInteger$priv();
+        final .ceylon.language.Float localAttrOptionalFloat = getPrivateAttrOptionalFloat$priv();
+        final .ceylon.language.String localAttrOptionalString = getPrivateAttrOptionalString$priv();
+        final .ceylon.language.Boolean localAttrOptionalBoolean = getPrivateAttrOptionalBoolean$priv();
+        final .ceylon.language.Character localAttrOptionalCharacter = getPrivateAttrOptionalCharacter$priv();
     }
     
     private final long methodInteger(final long i) {

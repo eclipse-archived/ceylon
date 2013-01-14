@@ -6,11 +6,11 @@ abstract class ClassAttributeGetterSetter {
         this.f5 = "";
     }
     
-    private final .java.lang.String getF() {
+    private final .java.lang.String getF$priv() {
         return "";
     }
     
-    private final void setF(final .java.lang.String f) {
+    private final void setF$priv(final .java.lang.String f) {
     }
     
     public final .java.lang.String getF2() {

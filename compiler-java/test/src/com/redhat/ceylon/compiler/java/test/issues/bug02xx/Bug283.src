@@ -7,11 +7,11 @@ class Bug283 {
     }
     private .ceylon.language.Ordinal<? extends .ceylon.language.Integer> oi;
     
-    private final .ceylon.language.Ordinal<? extends .ceylon.language.Integer> getOi() {
+    private final .ceylon.language.Ordinal<? extends .ceylon.language.Integer> getOi$priv() {
         return oi;
     }
     
-    private final void setOi(final .ceylon.language.Ordinal<? extends .ceylon.language.Integer> oi) {
+    private final void setOi$priv(final .ceylon.language.Ordinal<? extends .ceylon.language.Integer> oi) {
         this.oi = oi;
     }
     
@@ -19,32 +19,32 @@ class Bug283 {
         (
             let
             {
-                .ceylon.language.Integer $ceylontmpop0 = (.ceylon.language.Integer)getOi();
-                setOi($ceylontmpop0.getSuccessor());
+                .ceylon.language.Integer $ceylontmpop0 = (.ceylon.language.Integer)getOi$priv();
+                setOi$priv($ceylontmpop0.getSuccessor());
             }
             returning $ceylontmpop0;
         );
         (
             let
             {
-                .ceylon.language.Integer $ceylontmpop1 = (.ceylon.language.Integer)getOi();
-                setOi($ceylontmpop1.getPredecessor());
+                .ceylon.language.Integer $ceylontmpop1 = (.ceylon.language.Integer)getOi$priv();
+                setOi$priv($ceylontmpop1.getPredecessor());
             }
             returning $ceylontmpop1;
         );
         (
             let
             {
-                .ceylon.language.Integer $ceylontmpop2 = getOi().getSuccessor();
-                setOi($ceylontmpop2);
+                .ceylon.language.Integer $ceylontmpop2 = getOi$priv().getSuccessor();
+                setOi$priv($ceylontmpop2);
             }
             returning $ceylontmpop2;
         );
         (
             let
             {
-                .ceylon.language.Integer $ceylontmpop3 = getOi().getPredecessor();
-                setOi($ceylontmpop3);
+                .ceylon.language.Integer $ceylontmpop3 = getOi$priv().getPredecessor();
+                setOi$priv($ceylontmpop3);
             }
             returning $ceylontmpop3;
         );
@@ -52,8 +52,8 @@ class Bug283 {
             let
             {
                 .com.redhat.ceylon.compiler.java.test.issues.bug02xx.Bug283 $ceylontmpopE4 = x;
-                .ceylon.language.Integer $ceylontmpopV5 = (.ceylon.language.Integer)$ceylontmpopE4.getOi();
-                $ceylontmpopE4.setOi($ceylontmpopV5.getSuccessor());
+                .ceylon.language.Integer $ceylontmpopV5 = (.ceylon.language.Integer)$ceylontmpopE4.getOi$priv();
+                $ceylontmpopE4.setOi$priv($ceylontmpopV5.getSuccessor());
             }
             returning $ceylontmpopV5;
         );
@@ -61,8 +61,8 @@ class Bug283 {
             let
             {
                 .com.redhat.ceylon.compiler.java.test.issues.bug02xx.Bug283 $ceylontmpopE6 = x;
-                .ceylon.language.Integer $ceylontmpopV7 = (.ceylon.language.Integer)$ceylontmpopE6.getOi();
-                $ceylontmpopE6.setOi($ceylontmpopV7.getPredecessor());
+                .ceylon.language.Integer $ceylontmpopV7 = (.ceylon.language.Integer)$ceylontmpopE6.getOi$priv();
+                $ceylontmpopE6.setOi$priv($ceylontmpopV7.getPredecessor());
             }
             returning $ceylontmpopV7;
         );
@@ -70,8 +70,8 @@ class Bug283 {
             let
             {
                 .com.redhat.ceylon.compiler.java.test.issues.bug02xx.Bug283 $ceylontmpopE8 = x;
-                .ceylon.language.Integer $ceylontmpopV9 = $ceylontmpopE8.getOi().getSuccessor();
-                $ceylontmpopE8.setOi($ceylontmpopV9);
+                .ceylon.language.Integer $ceylontmpopV9 = $ceylontmpopE8.getOi$priv().getSuccessor();
+                $ceylontmpopE8.setOi$priv($ceylontmpopV9);
             }
             returning $ceylontmpopV9;
         );
@@ -79,8 +79,8 @@ class Bug283 {
             let
             {
                 .com.redhat.ceylon.compiler.java.test.issues.bug02xx.Bug283 $ceylontmpopE10 = x;
-                .ceylon.language.Integer $ceylontmpopV11 = $ceylontmpopE10.getOi().getPredecessor();
-                $ceylontmpopE10.setOi($ceylontmpopV11);
+                .ceylon.language.Integer $ceylontmpopV11 = $ceylontmpopE10.getOi$priv().getPredecessor();
+                $ceylontmpopE10.setOi$priv($ceylontmpopV11);
             }
             returning $ceylontmpopV11;
         );

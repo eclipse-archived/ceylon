@@ -31,11 +31,11 @@ class DefaultSetter {
     }
     private long a;
     
-    private final long getA() {
+    private final long getA$priv() {
         return a;
     }
     
-    private final void setA(final long a) {
+    private final void setA$priv(final long a) {
         this.a = a;
     }
     
@@ -51,11 +51,11 @@ class DefaultSetter {
         }
         
         public final long getADefault() {
-            return .com.redhat.ceylon.compiler.java.test.structure.concrete.DefaultSetter.this.getA();
+            return .com.redhat.ceylon.compiler.java.test.structure.concrete.DefaultSetter.this.getA$priv();
         }
         
         public final void setADefault(final long aDefault) {
-            .com.redhat.ceylon.compiler.java.test.structure.concrete.DefaultSetter.this.setA(aDefault);
+            .com.redhat.ceylon.compiler.java.test.structure.concrete.DefaultSetter.this.setA$priv(aDefault);
         }
     }
     
