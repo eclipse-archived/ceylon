@@ -26,7 +26,7 @@ see (Empty)
 by "Gavin"
 shared native interface Sequence<out Element>
         satisfies Element[] & 
-                  Iterable<Element,Nothing> &
+                  {Element+} &
                   Cloneable<[Element+]> {
     
     shared actual default Integer size=>List::size;
