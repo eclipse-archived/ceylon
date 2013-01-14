@@ -113,7 +113,8 @@ void test_exists_nonempty() {
 void test_max_min() {
     Integer mx1 = max([1, 2, 3]);
     check(mx1==3, "max nonempty seq");
-    Null mx2 = max({});
+    // fails because of https://github.com/ceylon/ceylon-compiler/issues/953
+    //Null mx2 = max({});
     Integer? mx3 = max(join({},{1, 2, 3}));
     check((mx3 else 10)==3, "max joined seq");
     Integer? mx4 = max({1, 2, 3}.filter((Integer i) => i>0));
@@ -121,7 +122,8 @@ void test_max_min() {
     
     Integer mn1 = min([1, 2, 3]);
     check(mn1==1, "min nonempty seq");
-    Null mn2 = min({});
+    // fails because of https://github.com/ceylon/ceylon-compiler/issues/953
+    //Null mn2 = min({});
     Integer? mn3 = min(join({},{1, 2, 3}));
     check((mn3 else 10)==1, "min joined seq");
     Integer? mn4 = min({1, 2, 3}.filter((Integer i) => i>0));
