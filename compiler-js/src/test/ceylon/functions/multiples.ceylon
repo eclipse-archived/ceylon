@@ -9,7 +9,7 @@ String multiFullname(String nombre)(String apat)(String amat) {
 String multiDefaulted(String name="A")(String apat)(String amat) {
     return "" name " " apat " " amat "";
 }
-String multiSequenced(String... names)(Integer count) {
+String multiSequenced(String* names)(Integer count) {
     value sb = StringBuilder();
     for (name in names) {
         sb.append(name).append(" ");

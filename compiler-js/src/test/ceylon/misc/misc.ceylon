@@ -45,7 +45,7 @@ object foob {
     shared String name="Gavin";
 }
 
-void printAll(String... strings) {}
+void printAll(String* strings) {}
 
 class F(String name) => Foo(name);
 

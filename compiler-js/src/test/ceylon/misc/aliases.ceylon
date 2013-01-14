@@ -76,6 +76,6 @@ void testAliasing() {
     Object xxxxx2 = "XXXX";
     check(xxxxx1 is String|Integer, "is String|Integer");
     check(xxxxx2 is String&Sequence<Anything>, "is String&Sequence");
-    function cualquiera(Boolean... bits) => any(bits...);
+    function cualquiera(Boolean* bits) => any(*bits);
     check(cualquiera(true,true,true), "seq arg method alias");
 }

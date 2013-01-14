@@ -8,7 +8,7 @@ shared void hello(String name) {
     print("hello" + name);
 }
 
-shared void helloAll(String... names) {}
+shared void helloAll(String* names) {}
 
 shared String toString(Object obj) {
     return obj.string;
@@ -110,13 +110,13 @@ shared void testGetterMethodDefinitions() {
   check(gt.x==3, "getter defined as method 3");
 }
 
-String namedArgFunc(String x="x", String y=x+"y", String... z) {
+String namedArgFunc(String x="x", String y=x+"y", String* z) {
     variable String result = x + "," + y;
     for (s in z) { result += "," + s; }
     return result;
 }
 
-class Issue105(i, Issue105... more) {
+class Issue105(i, Issue105* more) {
     shared Integer i;
 }
 

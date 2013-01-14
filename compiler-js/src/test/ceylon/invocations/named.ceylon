@@ -1,7 +1,7 @@
 import check {...}
 
 //Tests for named argument invocations with objects, methods, and getter arguments.
-String namedFunc({Integer...} iter, String desc, Boolean match(Integer i)) {
+String namedFunc({Integer*} iter, String desc, Boolean match(Integer i)) {
   for (i in iter) {
     if (match(i)) {
       return "" desc ": " i "";
