@@ -739,11 +739,11 @@ public class TypeVisitor extends Visitor {
             else {
                 ProducedType type = et.getTypeModel();
                 if (type!=null) {
-                	if (type.containsTypeAliases()) {
+                	/*if (type.containsTypeAliases()) {
                 		et.addError("aliased type involves type aliases: " +
                 				type.getProducedTypeName());
                 	}
-                	else if (type.getDeclaration() instanceof Class) {
+                	else*/ if (type.getDeclaration() instanceof Class) {
                     	that.getDeclarationModel().setExtendedType(type);
                     } 
                     else {
@@ -773,11 +773,11 @@ public class TypeVisitor extends Visitor {
             else {
                 ProducedType type = et.getTypeModel();
                 if (type!=null) {
-                	if (type.containsTypeAliases()) {
+                	/*if (type.containsTypeAliases()) {
                 		et.addError("aliased type involves type aliases: " +
                 				type.getProducedTypeName());
                 	}
-                	else if (type.getDeclaration() instanceof Interface) {
+                	else*/ if (type.getDeclaration() instanceof Interface) {
                     	that.getDeclarationModel().setExtendedType(type);
                     } 
                     else {
@@ -803,13 +803,13 @@ public class TypeVisitor extends Visitor {
             else {
                 ProducedType type = et.getTypeModel();
                 if (type!=null) {
-                	if (type.containsTypeAliases()) {
+                	/*if (type.containsTypeAliases()) {
                 		et.addError("aliased type involves type aliases: " +
                 				type.getProducedTypeName());
                 	}
-                	else {
+                	else {*/
                 		that.getDeclarationModel().setExtendedType(type);
-                	}
+                	//}
                 }
             }
         }

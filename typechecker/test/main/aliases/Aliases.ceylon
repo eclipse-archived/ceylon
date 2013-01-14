@@ -86,7 +86,7 @@ class MemberClassAliasTricks_Foo(Integer a = 1, Integer b = 2){
     
     class MemberClassAliasToToplevel(Integer a, Integer b) 
             => MemberClassAliasTricks_Foo(a,b);
-    @error class MemberClassAliasToToplevel2(Integer a, Integer b) 
+    class MemberClassAliasToToplevel2(Integer a, Integer b) 
             => MemberClassAliasToToplevel(a,b);
 
     void test(){
@@ -96,3 +96,5 @@ class MemberClassAliasTricks_Foo(Integer a = 1, Integer b = 2){
 }
 
 @error alias Rec<T> => Tuple<T,T,Rec<T>>;
+@error alias RX => String|List<RY>;
+alias RY => Object&Iterable<RX>;

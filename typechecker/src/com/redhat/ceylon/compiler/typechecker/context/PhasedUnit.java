@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.antlr.runtime.CommonToken;
 
+import com.redhat.ceylon.compiler.typechecker.analyzer.AliasVisitor;
 import com.redhat.ceylon.compiler.typechecker.analyzer.ControlFlowVisitor;
 import com.redhat.ceylon.compiler.typechecker.analyzer.DeclarationVisitor;
 import com.redhat.ceylon.compiler.typechecker.analyzer.ExpressionVisitor;
@@ -225,6 +226,7 @@ public class PhasedUnit {
     public synchronized void validateRefinement() {
         if (! refinementValidated) {
             //System.out.println("Validate member refinement for " + fileName);
+        	compilationUnit.visit(new AliasVisitor());
             compilationUnit.visit(new RefinementVisitor());
             refinementValidated = true;
         }

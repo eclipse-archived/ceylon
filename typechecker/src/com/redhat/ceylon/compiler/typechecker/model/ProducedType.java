@@ -12,6 +12,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import com.googlecode.sardine.model.Set;
+
 
 /**
  * A produced type with actual type arguments.
@@ -1786,7 +1788,7 @@ public class ProducedType extends ProducedReference {
 		return false;
     }
     
-    public boolean containsTypeAliases() {
+    /*public boolean containsTypeAliases() {
     	TypeDeclaration d = getDeclaration();
 		if (d instanceof TypeAlias||
 			d instanceof ClassAlias||
@@ -1809,6 +1811,34 @@ public class ProducedType extends ProducedReference {
 			}
 			ProducedType qt = getQualifyingType();
 			if (qt!=null && qt.containsTypeAliases()) return true;
+		}
+		return false;
+    }*/
+    
+    public boolean isRecursiveTypeAliasDefinition(TypeDeclaration ad) {
+    	TypeDeclaration d = getDeclaration();
+		if (d instanceof TypeAlias||
+			d instanceof ClassAlias||
+			d instanceof InterfaceAlias) {
+			if (d.equals(ad)) return true;
+			if (d.getExtendedType().isRecursiveTypeAliasDefinition(ad)) return true;
+		}
+		else if (d instanceof UnionType) {
+			for (ProducedType ct: getCaseTypes()) {
+				if (ct.isRecursiveTypeAliasDefinition(ad)) return true;
+			}
+		}
+		else if (d instanceof IntersectionType) {
+			for (ProducedType st: getSatisfiedTypes()) {
+				if (st.isRecursiveTypeAliasDefinition(ad)) return true;
+			}
+		}
+		else {
+			for (ProducedType at: getTypeArgumentList()) {
+				if (at!=null && at.isRecursiveTypeAliasDefinition(ad)) return true;
+			}
+			ProducedType qt = getQualifyingType();
+			if (qt!=null && qt.isRecursiveTypeAliasDefinition(ad)) return true;
 		}
 		return false;
     }

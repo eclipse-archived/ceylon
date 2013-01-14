@@ -3,21 +3,22 @@ interface Cntnr => Container<Anything>;
 alias Number => Integer|Float;
 alias ListLike<T> given T satisfies Object => List<T>|Map<Integer,T>;
 alias C => Container<Anything>&Category;
-@error alias E => Cntnr&Category;
+alias E => Cntnr&Category;
 
 Number n = 1;
 Number x = 2.0;
 [Float, Float] pair = nothing;
 ListLike<Float> list = pair;
 C c = list;
+E e = list;
 
 shared alias Strings => List<String>;
 
 void local() {
     alias Numbers => List<Integer|Float>;
     Numbers numbers = [ 1, 3.0 ];
-    @error alias Ns => List<Number>;
-    @error Ns ns = [ 1, 3.0 ];
+    alias Ns => List<Number>;
+    Ns ns = [ 1, 3.0 ];
 }
 
 class Outer() {
@@ -27,6 +28,13 @@ class Outer() {
 
 Outer.Cs cs = Outer().cs;
 
+class Outer2() {
+    shared alias Es => List<E>;
+    shared Es es = [ e, e ];
+}
+
+Outer2.Es es = Outer2().es;
+
 void testSwitch(Number nn, C cc) {
     switch (nn)
     case (is Integer) {}
@@ -34,6 +42,15 @@ void testSwitch(Number nn, C cc) {
     print(cc.empty);
     print(cc.contains(1.0));
     print("hello" in cc);
+}
+
+void testSwitch2(Number nn, E ee) {
+    switch (nn)
+    case (is Integer) {}
+    case (is Float) {}
+    print(ee.empty);
+    print(ee.contains(1.0));
+    print("hello" in ee);
 }
 
 void testCanonicalization() {
