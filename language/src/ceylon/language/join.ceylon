@@ -5,5 +5,5 @@ doc "Given a list of iterable objects, return a new sequence
 see (SequenceBuilder)
 shared Element[] join<Element>(
         doc "The iterable objects to join."
-        {Element...}... iterables) => nothing;
-                //[ for (it in iterables) for (val in it) val ];
+        {Element...}... iterables) => 
+                [ for (it in iterables) for (val in it) val ];
