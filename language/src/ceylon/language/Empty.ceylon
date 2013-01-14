@@ -57,7 +57,7 @@ shared interface Empty
     shared actual [] coalesced => this; 
     
     doc "Returns an `Empty`."
-    shared actual [] indexed => nothing; //this;
+    shared actual [] indexed => this;
     
     doc "Returns `other`."
     shared actual {Other...} chain<Other>({Other...} other) => other;
@@ -72,7 +72,7 @@ shared interface Empty
     shared actual Boolean defines(Integer index) => false;
     
     shared actual [] map<Result>(
-            Result collecting(Nothing element)) => nothing; //this;
+            Result collecting(Nothing element)) => this;
     
     shared actual [] filter
             (Boolean selecting(Nothing element)) => this;
