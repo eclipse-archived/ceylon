@@ -22,7 +22,7 @@ initType(SequenceString, "ceylon.language::SequenceString", String$, Sequence);
 function EmptyString() {}
 initType(EmptyString, "ceylon.language::EmptyString", String$, Empty);
 var String$proto = String$.$$.prototype;
-String$proto.$$targs$$=[{t:Character}, {t:Character}];
+String$proto.$$targs$$=[{t:Character}, {t:Null}];
 String$proto.getT$name = function() {
     return ((this.length!==0)?SequenceString:EmptyString).$$.T$name;
 }
