@@ -21,7 +21,7 @@ final class SuperInterface$impl {
         return 2L;
     }
     
-    public void setI(final long i) {
+    public final void setI(final long i) {
     }
     
     public long m() {

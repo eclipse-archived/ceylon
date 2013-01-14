@@ -21,7 +21,7 @@ public final class MultipleInheritance$impl {
         return 1L;
     }
     
-    public void setA(final long a) {
+    public final void setA(final long a) {
     }
     
     public .java.lang.Object m() {
