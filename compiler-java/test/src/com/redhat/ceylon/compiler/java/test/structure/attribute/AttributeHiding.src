@@ -5,10 +5,14 @@ class AttributeHiding {
     AttributeHiding() {
         this.name = "";
     }
-    private final .java.lang.String name;
+    private .java.lang.String name;
     
     public final .java.lang.String getName() {
         return name;
+    }
+    
+    public final void setName(final .java.lang.String name) {
+        this.name = name;
     }
     
     @.java.lang.Override
@@ -27,10 +31,14 @@ class AttributeHidingSub extends .com.redhat.ceylon.compiler.java.test.structure
         super();
         this.name = "";
     }
-    private final .java.lang.String name;
+    private .java.lang.String name;
     
     private final .java.lang.String getName$priv() {
         return name;
+    }
+    
+    private final void setName$priv(final .java.lang.String name) {
+        this.name = name;
     }
     
     @.java.lang.Override

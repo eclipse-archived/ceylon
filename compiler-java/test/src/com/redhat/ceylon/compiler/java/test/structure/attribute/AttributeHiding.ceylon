@@ -19,11 +19,11 @@
  */
 @nomodel
 class AttributeHiding() { 
-    shared String name="";
+    shared variable String name="";
     shared actual default String string => name;
 }
 @nomodel
 class AttributeHidingSub() extends AttributeHiding() { 
-    String name="";
+    variable String name="";
     shared actual default String string => name; 
 }
