@@ -42,7 +42,6 @@ import com.redhat.ceylon.compiler.typechecker.model.ValueParameter;
 import com.redhat.ceylon.compiler.typechecker.parser.CeylonLexer;
 import com.redhat.ceylon.compiler.typechecker.tree.Node;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree;
-import com.redhat.ceylon.compiler.typechecker.tree.Tree.SupertypeQualifier;
 import com.redhat.ceylon.compiler.typechecker.tree.Visitor;
 
 /**
@@ -481,7 +480,7 @@ public class TypeVisitor extends Visitor {
     
     //TODO: copy/pasted from ExpressionVisitor
 	private static TypeDeclaration getSupertypeDeclaration(Tree.BaseType that, 
-			SupertypeQualifier sq) {
+			Tree.SupertypeQualifier sq) {
 		String typeName = name(sq.getIdentifier());
 		Declaration dec = that.getScope().getMemberOrParameter(that.getUnit(), typeName, null, false);
 		if (dec instanceof TypeDeclaration) {
@@ -508,7 +507,7 @@ public class TypeVisitor extends Visitor {
     public void visit(Tree.BaseType that) {
         super.visit(that);
         TypeDeclaration type;
-        SupertypeQualifier sq = that.getSupertypeQualifier();
+        Tree.SupertypeQualifier sq = that.getSupertypeQualifier();
 		if (sq==null) {
         	type = getBaseDeclaration(that);
         }

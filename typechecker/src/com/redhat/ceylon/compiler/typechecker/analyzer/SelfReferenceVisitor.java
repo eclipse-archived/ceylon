@@ -7,7 +7,6 @@ import com.redhat.ceylon.compiler.typechecker.model.MethodOrValue;
 import com.redhat.ceylon.compiler.typechecker.model.TypeDeclaration;
 import com.redhat.ceylon.compiler.typechecker.tree.Node;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree;
-import com.redhat.ceylon.compiler.typechecker.tree.Tree.Expression;
 import com.redhat.ceylon.compiler.typechecker.tree.Visitor;
 /**
  * Validates that the initializer of a class does
@@ -246,7 +245,7 @@ public class SelfReferenceVisitor extends Visitor {
     @Override
     public void visit(Tree.Return that) {
         super.visit(that);
-        Expression e = that.getExpression();
+        Tree.Expression e = that.getExpression();
         if ( e!=null && inBody() ) {
             checkSelfReference(that, e.getTerm());    
         }
@@ -255,7 +254,7 @@ public class SelfReferenceVisitor extends Visitor {
     @Override
     public void visit(Tree.SpecifierOrInitializerExpression that) {
         super.visit(that);
-        Expression e = that.getExpression();
+        Tree.Expression e = that.getExpression();
         if ( e!=null && inBody() ) {
             checkSelfReference(that, e.getTerm());    
         }
@@ -344,7 +343,7 @@ public class SelfReferenceVisitor extends Visitor {
             for (Tree.NamedArgument arg: that.getNamedArguments()) {
                 if (arg instanceof Tree.SpecifiedArgument) {
                     Tree.SpecifierExpression se = ((Tree.SpecifiedArgument) arg).getSpecifierExpression();
-                    Expression e = se.getExpression();
+                    Tree.Expression e = se.getExpression();
                     if (e!=null) {
                         checkSelfReference(se, e.getTerm());
                     }

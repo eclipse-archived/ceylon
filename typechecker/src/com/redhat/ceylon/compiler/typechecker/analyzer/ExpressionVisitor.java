@@ -58,15 +58,6 @@ import com.redhat.ceylon.compiler.typechecker.model.Value;
 import com.redhat.ceylon.compiler.typechecker.model.ValueParameter;
 import com.redhat.ceylon.compiler.typechecker.tree.Node;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree;
-import com.redhat.ceylon.compiler.typechecker.tree.Tree.DefaultArgument;
-import com.redhat.ceylon.compiler.typechecker.tree.Tree.Expression;
-import com.redhat.ceylon.compiler.typechecker.tree.Tree.PositionalArgument;
-import com.redhat.ceylon.compiler.typechecker.tree.Tree.SpecifierExpression;
-import com.redhat.ceylon.compiler.typechecker.tree.Tree.SpecifierOrInitializerExpression;
-import com.redhat.ceylon.compiler.typechecker.tree.Tree.SupertypeQualifier;
-import com.redhat.ceylon.compiler.typechecker.tree.Tree.Term;
-import com.redhat.ceylon.compiler.typechecker.tree.Tree.Type;
-import com.redhat.ceylon.compiler.typechecker.tree.Tree.TypedArgument;
 import com.redhat.ceylon.compiler.typechecker.tree.Visitor;
 
 /**
@@ -132,7 +123,7 @@ public class ExpressionVisitor extends Visitor {
     @Override public void visit(Tree.FunctionalParameterDeclaration that) {
         super.visit(that);
         FunctionalParameter p = that.getDeclarationModel();
-        DefaultArgument da = that.getDefaultArgument();
+        Tree.DefaultArgument da = that.getDefaultArgument();
         if (p.isDeclaredVoid() && p.isDefaulted() && 
                 da.getSpecifierExpression()!=null && 
                 da.getSpecifierExpression().getExpression()!=null &&
@@ -143,7 +134,7 @@ public class ExpressionVisitor extends Visitor {
     }
     
     @Override public void visit(Tree.FunctionArgument that) {
-        Expression e = that.getExpression();
+    	Tree.Expression e = that.getExpression();
         if (e==null) {
             Tree.Type rt = beginReturnScope(that.getType());           
             Declaration od = beginReturnDeclaration(that.getDeclarationModel());
@@ -288,7 +279,7 @@ public class ExpressionVisitor extends Visitor {
                 initOriginalDeclaration(v);
                 //this is a bit ugly (the parser sends us a SyntheticVariable
                 //instead of the real StaticType which it very well knows!)
-                Expression e = se.getExpression();
+                Tree.Expression e = se.getExpression();
                 knownType = e==null ? null : e.getTypeModel();
                 //TODO: what to do here in case of !is
                 if (knownType!=null) {
@@ -605,7 +596,7 @@ public class ExpressionVisitor extends Visitor {
     
     @Override public void visit(Tree.AttributeDeclaration that) {
         super.visit(that);
-        SpecifierOrInitializerExpression sie = that.getSpecifierOrInitializerExpression();
+        Tree.SpecifierOrInitializerExpression sie = that.getSpecifierOrInitializerExpression();
         inferType(that, sie);
         if (that.getType()!=null) {
             checkType(that.getType().getTypeModel(), 
@@ -736,7 +727,7 @@ public class ExpressionVisitor extends Visitor {
 
     boolean isVoidMethodReference(Tree.Expression e) {
         //TODO: correctly handle multiple parameter lists!
-        Term term = e.getTerm();
+    	Tree.Term term = e.getTerm();
         ProducedType tm = term.getTypeModel();
         if (tm!=null && tm.isExactly(unit.getAnythingDeclaration().getType())) {
             if (term instanceof Tree.InvocationExpression) {
@@ -1227,7 +1218,7 @@ public class ExpressionVisitor extends Visitor {
     
     private void setTypeFromOptionalType(Tree.LocalModifier local, 
             Tree.SpecifierExpression se, Tree.Variable that) {
-        Expression e = se.getExpression();
+    	Tree.Expression e = se.getExpression();
         if (e!=null) {
             ProducedType expressionType = e.getTypeModel();
             if (expressionType!=null) {
@@ -1248,7 +1239,7 @@ public class ExpressionVisitor extends Visitor {
     
     private void setTypeFromEmptyType(Tree.LocalModifier local, 
             Tree.SpecifierExpression se, Tree.Variable that) {
-        Expression e = se.getExpression();
+    	Tree.Expression e = se.getExpression();
         if (e!=null) {
             ProducedType expressionType = e.getTypeModel();
             if (expressionType!=null) {
@@ -1290,7 +1281,7 @@ public class ExpressionVisitor extends Visitor {
     
     private void setTypeFromKeyType(Tree.LocalModifier local,
             Tree.SpecifierExpression se, Tree.Variable that) {
-        Expression e = se.getExpression();
+    	Tree.Expression e = se.getExpression();
         if (e!=null) {
             ProducedType expressionType = e.getTypeModel();
             if (expressionType!=null) {
@@ -1313,7 +1304,7 @@ public class ExpressionVisitor extends Visitor {
     
     private void setTypeFromValueType(Tree.LocalModifier local,
             Tree.SpecifierExpression se, Tree.Variable that) {
-        Expression e = se.getExpression();
+    	Tree.Expression e = se.getExpression();
         if (e!=null) {
             ProducedType expressionType = e.getTypeModel();
             if (expressionType!=null) {
@@ -1337,7 +1328,7 @@ public class ExpressionVisitor extends Visitor {
     private void setType(Tree.LocalModifier local, 
             Tree.SpecifierOrInitializerExpression s, 
             Tree.TypedDeclaration that) {
-        Expression e = s.getExpression();
+    	Tree.Expression e = s.getExpression();
         if (e!=null) {
             ProducedType type = e.getTypeModel();
             if (type!=null) {
@@ -1351,7 +1342,7 @@ public class ExpressionVisitor extends Visitor {
     private void setType(Tree.LocalModifier local, 
             Tree.SpecifierOrInitializerExpression s, 
             Tree.AttributeArgument that) {
-        Expression e = s.getExpression();
+    	Tree.Expression e = s.getExpression();
         if (e!=null) {
             ProducedType type = e.getTypeModel();
             if (type!=null) {
@@ -1378,7 +1369,7 @@ public class ExpressionVisitor extends Visitor {
         
     @Override public void visit(Tree.Throw that) {
         super.visit(that);
-        Expression e = that.getExpression();
+        Tree.Expression e = that.getExpression();
         if (e!=null) {
             checkAssignable(e.getTypeModel(),
                     unit.getExceptionDeclaration().getType(), e,
@@ -1521,7 +1512,7 @@ public class ExpressionVisitor extends Visitor {
                 //so that we can resolve the the right 
                 //overloaded declaration
                 List<ProducedType> sig = new ArrayList<ProducedType>();
-                List<PositionalArgument> args = pal.getPositionalArguments();
+                List<Tree.PositionalArgument> args = pal.getPositionalArguments();
 				for (Tree.PositionalArgument pa: args) {
                     sig.add(pa.getTypeModel());
                 }
@@ -1683,7 +1674,7 @@ public class ExpressionVisitor extends Visitor {
         }
         else if (arg instanceof Tree.TypedArgument) {
             //copy/pasted from checkNamedArgument()
-            TypedArgument ta = (Tree.TypedArgument) arg;
+        	Tree.TypedArgument ta = (Tree.TypedArgument) arg;
             type = ta.getDeclarationModel().getProducedTypedReference(null,
                     //assuming an argument can't have type params 
                     Collections.<ProducedType>emptyList()).getFullType();
@@ -2183,9 +2174,9 @@ public class ExpressionVisitor extends Visitor {
     private void checkArgumentToVoidParameter(Parameter p, Tree.TypedArgument ta) {
         if (ta instanceof Tree.MethodArgument) {
             Tree.MethodArgument ma = (Tree.MethodArgument) ta;
-            SpecifierExpression se = ma.getSpecifierExpression();
+            Tree.SpecifierExpression se = ma.getSpecifierExpression();
             if (se!=null && se.getExpression()!=null) {
-                Type t = ta.getType();
+            	Tree.Type t = ta.getType();
                 // if the argument is explicitly declared 
                 // using the function modifier, it should 
                 // be allowed, even if the parameter is 
@@ -3185,7 +3176,7 @@ private void checkPositionalArguments(ParameterList pl, ProducedReference pr,
     }
     
     private static Declaration getSupertypeDeclaration(Tree.BaseMemberOrTypeExpression that, 
-            SupertypeQualifier sq) {
+    		Tree.SupertypeQualifier sq) {
         String typeName = name(sq.getIdentifier());
         Declaration dec = that.getScope().getMemberOrParameter(that.getUnit(), typeName, null, false);
         if (dec instanceof TypeDeclaration) {
@@ -3229,7 +3220,7 @@ private void checkPositionalArguments(ParameterList pl, ProducedReference pr,
             that.getTypeArgumentList().visit(this);*/
         super.visit(that);
         TypedDeclaration member;
-        SupertypeQualifier sq = that.getSupertypeQualifier();
+        Tree.SupertypeQualifier sq = that.getSupertypeQualifier();
         if (sq==null) {
             member = getBaseDeclaration(that, that.getSignature(), that.getEllipsis());
         }
@@ -3269,7 +3260,7 @@ private void checkPositionalArguments(ParameterList pl, ProducedReference pr,
     }
     
     private static TypedDeclaration getSupertypeMemberDeclaration(
-            Tree.BaseMemberExpression that, SupertypeQualifier sq) {
+            Tree.BaseMemberExpression that, Tree.SupertypeQualifier sq) {
         TypedDeclaration member;
         Declaration dec = getSupertypeDeclaration(that, sq);
         if (dec instanceof TypedDeclaration) {
@@ -3383,7 +3374,7 @@ private void checkPositionalArguments(ParameterList pl, ProducedReference pr,
         super.visit(that);
         /*if (that.getTypeArgumentList()!=null)
             that.getTypeArgumentList().visit(this);*/
-        SupertypeQualifier sq = that.getSupertypeQualifier();
+        Tree.SupertypeQualifier sq = that.getSupertypeQualifier();
         TypeDeclaration type;
         if (sq==null) {
             type = getBaseDeclaration(that, that.getSignature(), that.getEllipsis());
@@ -3419,7 +3410,7 @@ private void checkPositionalArguments(ParameterList pl, ProducedReference pr,
     }
 
     static TypeDeclaration getSupertypeTypeDeclaration(Tree.BaseTypeExpression that, 
-            SupertypeQualifier sq) {
+    		Tree.SupertypeQualifier sq) {
         Declaration dec = getSupertypeDeclaration(that, sq);
         if (dec instanceof TypeDeclaration) {
             return (TypeDeclaration) dec;

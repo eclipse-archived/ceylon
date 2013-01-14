@@ -37,9 +37,6 @@ import com.redhat.ceylon.compiler.typechecker.model.Value;
 import com.redhat.ceylon.compiler.typechecker.model.ValueParameter;
 import com.redhat.ceylon.compiler.typechecker.tree.Node;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree;
-import com.redhat.ceylon.compiler.typechecker.tree.Tree.DefaultArgument;
-import com.redhat.ceylon.compiler.typechecker.tree.Tree.SequencedType;
-import com.redhat.ceylon.compiler.typechecker.tree.Tree.SpecifierOrInitializerExpression;
 import com.redhat.ceylon.compiler.typechecker.tree.Visitor;
 import com.redhat.ceylon.compiler.typechecker.util.UnitFactory;
 
@@ -469,7 +466,7 @@ public class DeclarationVisitor extends Visitor {
                 that.addError("interfaces may not have simple attributes");
             }*/
         }
-        SpecifierOrInitializerExpression sie = that.getSpecifierOrInitializerExpression();
+        Tree.SpecifierOrInitializerExpression sie = that.getSpecifierOrInitializerExpression();
         if ( v.isFormal() && sie!=null ) {
             that.addError("formal attributes may not have a value", 1307);
         }
@@ -639,7 +636,7 @@ public class DeclarationVisitor extends Visitor {
     public void visit(Tree.FunctionalParameterDeclaration that) {
         FunctionalParameter p = new FunctionalParameter();
         p.setDeclaration(declaration);
-        DefaultArgument da = that.getDefaultArgument();
+        Tree.DefaultArgument da = that.getDefaultArgument();
 		p.setDefaulted(da!=null);
         p.setDeclaredAnything(that.getType() instanceof Tree.VoidModifier);
         that.setDeclarationModel(p);
@@ -696,7 +693,7 @@ public class DeclarationVisitor extends Visitor {
                     }
                 }
                 else if (p.getType() instanceof Tree.SequencedType) {
-                    SequencedType st = (Tree.SequencedType) p.getType();
+                	Tree.SequencedType st = (Tree.SequencedType) p.getType();
                     if (foundSequenced) {
 						st.addError("parameter list may have at most one sequenced parameter");
                     }

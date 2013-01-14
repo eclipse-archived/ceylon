@@ -10,8 +10,6 @@ import com.redhat.ceylon.compiler.typechecker.model.Value;
 import com.redhat.ceylon.compiler.typechecker.model.ValueParameter;
 import com.redhat.ceylon.compiler.typechecker.tree.Node;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree;
-import com.redhat.ceylon.compiler.typechecker.tree.Tree.LocalModifier;
-import com.redhat.ceylon.compiler.typechecker.tree.Tree.SpecifierOrInitializerExpression;
 import com.redhat.ceylon.compiler.typechecker.tree.Visitor;
 
 /**
@@ -432,7 +430,7 @@ public class SpecificationVisitor extends Visitor {
     @Override
     public void visit(Tree.ValueParameterDeclaration that) {
         super.visit(that);
-        if (that.getType() instanceof LocalModifier) {
+        if (that.getType() instanceof Tree.LocalModifier) {
             ValueParameter d = that.getDeclarationModel();
             Declaration a = that.getScope().getDirectMember(d.getName(), null, false);
             if (a!=null && a==declaration) {
@@ -454,7 +452,7 @@ public class SpecificationVisitor extends Visitor {
     public void visit(Tree.AttributeDeclaration that) {
         super.visit(that);        
         if (that.getDeclarationModel()==declaration) {
-            SpecifierOrInitializerExpression sie = that.getSpecifierOrInitializerExpression();
+        	Tree.SpecifierOrInitializerExpression sie = that.getSpecifierOrInitializerExpression();
             if (sie!=null) {
                 specify();
             }
