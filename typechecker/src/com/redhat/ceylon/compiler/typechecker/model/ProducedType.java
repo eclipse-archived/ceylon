@@ -12,8 +12,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import com.googlecode.sardine.model.Set;
-
 
 /**
  * A produced type with actual type arguments.
