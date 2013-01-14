@@ -144,7 +144,8 @@ public class Naming implements LocalId {
         }
     }
 
-    public static String getErasedGetterName(String property) {
+    public static String getErasedGetterName(Declaration decl) {
+        String property = decl.getName();
         // ERASURE
         if ("hash".equals(property)) {
             return "hashCode";
@@ -152,7 +153,11 @@ public class Naming implements LocalId {
             return "toString";
         }
         
-        return getGetterName(property);
+        String getterName = getGetterName(property);
+        if (decl.isMember() && !decl.isShared()) {
+            getterName += "$priv";
+        }
+        return getterName;
     }
 
     /**
@@ -425,7 +430,7 @@ public class Naming implements LocalId {
             return ((JavaBeanValue)decl).getGetterName();
         }
         if (Decl.withinClassOrInterface(decl)) {
-            return getErasedGetterName(decl.getName());
+            return getErasedGetterName(decl);
         } else if (decl instanceof TypedDeclaration && Decl.isBoxedVariable((TypedDeclaration)decl)) {
             return "ref";
         } else {
@@ -454,7 +459,11 @@ public class Naming implements LocalId {
         } else if (decl instanceof TypedDeclaration && Decl.isBoxedVariable((TypedDeclaration)decl)) {
             return "ref";
         } 
-        return getSetterName(decl.getName());
+        String setterName = getSetterName(decl.getName());
+        if (decl.isMember() && !decl.isShared()) {
+            setterName += "$priv";
+        }
+        return setterName;
     }
 
     static String getDefaultedParamMethodName(Declaration decl, Parameter param) {

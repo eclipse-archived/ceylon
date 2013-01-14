@@ -109,10 +109,6 @@ public class Util {
         return Naming.getMethodName(name);
     }
 
-    public static String getErasedGetterName(String property) {
-        return Naming.getErasedGetterName(property);
-    }
-
     /** 
      * @deprecated Use {@link Naming#getGetterName(Declaration)}.
      * This method will be removed at a future date. 
