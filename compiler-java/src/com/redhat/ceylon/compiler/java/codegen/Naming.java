@@ -94,14 +94,29 @@ public class Naming implements LocalId {
     public static boolean isJavaKeyword(String name) {
         return tokens.contains(name);
     }
+    
     /** Prefixes the given name with a dollar ($) if it is a Java keyword */
     public static String quoteIfJavaKeyword(String name){
         if(isJavaKeyword(name))
             return quote(name);
         return name;
     }
+
+    private static final HashSet<String> QUOTABLE_METHOD_NAMES;
+    static {
+        QUOTABLE_METHOD_NAMES = new HashSet<>(Arrays.asList(
+                "hashCode",
+                "toString",
+                "equals",
+                "wait",
+                "notify",
+                "notifyAll",
+                "getClass",
+                "finalize",
+                "clone"));
+    }
     
-    private String getErasedMethodName(Method decl) {
+    private String getMethodName(Method decl) {
         if (decl.isClassOrInterfaceMember()) {
             String name = decl.getName();
             // ERASURE
@@ -110,21 +125,20 @@ public class Naming implements LocalId {
             } else if ("string".equals(name)) {
                 return "toString";
             } else if ("equals".equals(name)) {
-                // This is a special case where we override the mangling of getMethodName()
+                // This is a special case where we override the mangling of getMethodNameInternal()
                 return "equals";
-            } else if ("clone".equals(name)) {
-                // This is a special case where we override the mangling of getMethodName()
-                // FIXME we should only do this when implementing Cloneable!
-                return "clone";
-            } else {
-                return getMethodName(decl);
-            }
+            } else if ("clone".equals(name)
+                    && Decl.getClassOrInterfaceContainer(decl).getType().isSubtypeOf(
+                            ((TypeDeclaration)gen().typeFact().getLanguageModuleDeclaration("Cloneable")).getType())) {
+                return "clone";    
+            } 
+            return getMethodNameInternal(decl);
         } else {
-            return getMethodName(decl);
+            return getMethodNameInternal(decl);
         }
     }
 
-    private String getMethodName(Method decl) {
+    private String getMethodNameInternal(Method decl) {
         String name;
         if (decl.isClassOrInterfaceMember()) {
             name = quoteMethodNameIfProperty(decl);
@@ -132,24 +146,8 @@ public class Naming implements LocalId {
             name = decl.getName();
         }
         // ERASURE
-        if ("hashCode".equals(name)) {
-            return "$hashCode";
-        } else if ("toString".equals(name)) {
-            return "$toString";
-        } else if ("equals".equals(name)) {
-            return "$equals";
-        } else if ("wait".equals(name)) {
-            return "$wait";
-        } else if ("notify".equals(name)) {
-            return "$notify";
-        } else if ("notifyAll".equals(name)) {
-            return "$notifyAll";
-        } else if ("getClass".equals(name)) {
-            return "$getClass";
-        } else if ("finalize".equals(name)) {
-            return "$finalize";
-        } else if ("clone".equals(name)) {
-            return "$clone";
+        if (QUOTABLE_METHOD_NAMES.contains(name)) {
+            return quote(name);
         } else {
             return quoteIfJavaKeyword(name);
         }
@@ -426,7 +424,7 @@ public class Naming implements LocalId {
     private String quoteMethodName(Method decl){
         // always use the refined decl
         Declaration refinedDecl = decl.getRefinedDeclaration();  
-        return getErasedMethodName((Method)refinedDecl);
+        return getMethodName((Method)refinedDecl);
     
     }
 
@@ -804,7 +802,7 @@ public class Naming implements LocalId {
         } else if (decl instanceof Setter) {
             expr = makeQualIdent(expr, getSetterName(decl.getName()));
         } else if (decl instanceof Method) {
-            expr = makeQualIdent(expr, getErasedMethodName((Method)decl));
+            expr = makeQualIdent(expr, getMethodName((Method)decl));
         } else if (decl instanceof Parameter) {
             if ((namingOptions & NA_ALIASED) != 0) {
                 expr = makeQualIdent(expr, getAliasedParameterName((Parameter)decl));
@@ -943,7 +941,7 @@ public class Naming implements LocalId {
                 // don't try to be smart with interop calls 
                 if(decl instanceof JavaMethod)
                     return ((JavaMethod)decl).getRealName();
-                return getErasedMethodName((Method)decl);    
+                return getMethodName((Method)decl);    
             }
             return quoteMethodName((Method)decl);
         }
