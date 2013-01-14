@@ -848,11 +848,7 @@ public class Naming implements LocalId {
         if ((namingOptions & NA_WRAPPER) != 0) {
             expr = makeQualIdent(expr, getQuotedClassName(decl, namingOptions & (NA_GETTER | NA_SETTER)));
         } else if ((namingOptions & NA_WRAPPER_UNQUOTED) != 0) {
-//<<<<<<< HEAD
-//            expr = iors(expr, getRealName(decl, namingOptions & (NA_GETTER | NA_SETTER | NA_WRAPPER_UNQUOTED)));
-//=======
             expr = makeQualIdent(expr, getRealName(decl, namingOptions & (NA_GETTER | NA_SETTER | NA_WRAPPER_UNQUOTED)));
-//>>>>>>> origin/master
         } else if ((namingOptions & NA_Q_LOCAL_INSTANCE) != 0) {
             expr = makeQualIdent(expr, getAttrClassName(decl, namingOptions & (NA_GETTER | NA_SETTER)));
         }
