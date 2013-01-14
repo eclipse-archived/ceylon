@@ -332,7 +332,8 @@ public class CallableBuilder {
 
     private JCTree makeCallTypedMethod(List<JCStatement> body, java.util.List<ProducedType> parameterTypes) {
         // make the method
-        MethodDefinitionBuilder methodBuilder = MethodDefinitionBuilder.method(gen, false, Naming.getCallableTypedMethodName());
+        MethodDefinitionBuilder methodBuilder = MethodDefinitionBuilder.systemMethod(gen, Naming.getCallableTypedMethodName());
+        methodBuilder.ignoreAnnotations(false).noAnnotations();
         methodBuilder.modifiers(Flags.PRIVATE);
         ProducedType returnType = gen.getReturnTypeOfCallable(typeModel);
         methodBuilder.resultType(gen.makeJavaType(returnType, JT_NO_PRIMITIVES), null);

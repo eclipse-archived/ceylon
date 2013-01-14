@@ -228,6 +228,11 @@ public class MethodDefinitionBuilder {
         return this;
     }
     
+    public MethodDefinitionBuilder ignoreAnnotations(boolean ignoreAnnotations) {
+        this.ignoreAnnotations = ignoreAnnotations;
+        return this;
+    }
+    
     public MethodDefinitionBuilder noAnnotations() {
         return noAnnotations(true);
     }
