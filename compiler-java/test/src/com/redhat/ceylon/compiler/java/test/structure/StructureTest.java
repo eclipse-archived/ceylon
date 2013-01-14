@@ -98,6 +98,10 @@ public class StructureTest extends CompilerTest {
     public void testAtrFormalFunctionAttribute(){
         compareWithJavaSource("attribute/FormalFunctionAttribute");
     }
+    @Test
+    public void testAtrAttributeHiding() {
+        compareWithJavaSource("attribute/AttributeHiding");
+    }
     
     //
     // Classes
@@ -314,6 +318,11 @@ public class StructureTest extends CompilerTest {
         compareWithJavaSource("klass/RefiningVoidMembers");
     }
     
+    @Test
+    public void testKlsKlassHiding(){
+        compareWithJavaSource("klass/KlassHiding");
+    }
+    
     //
     // Methods
     
@@ -477,6 +486,10 @@ public class StructureTest extends CompilerTest {
     @Test
     public void testMethodRefinementAndVarianceEdgeCases() {
         compareWithJavaSource("method/MethodRefinementAndVarianceEdgeCases");
+    }
+    @Test
+    public void testMethodHiding() {
+        compareWithJavaSource("method/MethodHiding");
     }
 
     //

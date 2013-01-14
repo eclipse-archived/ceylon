@@ -1,0 +1,45 @@
+package com.redhat.ceylon.compiler.java.test.structure.attribute;
+
+class AttributeHiding {
+    
+    AttributeHiding() {
+        this.name = "";
+    }
+    private final .java.lang.String name;
+    
+    public final .java.lang.String getName() {
+        return name;
+    }
+    
+    @.java.lang.Override
+    public .java.lang.String toString() {
+        return getName();
+    }
+    
+    public static void main(.java.lang.String[] args) {
+        .ceylon.language.process_.getProcess$().setupArguments(args);
+        new .com.redhat.ceylon.compiler.java.test.structure.attribute.AttributeHiding();
+    }
+}
+class AttributeHidingSub extends .com.redhat.ceylon.compiler.java.test.structure.attribute.AttributeHiding {
+    
+    AttributeHidingSub() {
+        super();
+        this.name = "";
+    }
+    private final .java.lang.String name;
+    
+    private final .java.lang.String getName$priv() {
+        return name;
+    }
+    
+    @.java.lang.Override
+    public .java.lang.String toString() {
+        return getName$priv();
+    }
+    
+    public static void main(.java.lang.String[] args) {
+        .ceylon.language.process_.getProcess$().setupArguments(args);
+        new .com.redhat.ceylon.compiler.java.test.structure.attribute.AttributeHidingSub();
+    }
+}

@@ -1,0 +1,49 @@
+package com.redhat.ceylon.compiler.java.test.structure.klass;
+
+class KlassHiding {
+    
+    KlassHiding() {
+    }
+    
+    public .com.redhat.ceylon.compiler.java.test.structure.klass.KlassHiding.Inner Inner$new() {
+        return new Inner();
+    }
+    
+    public class Inner {
+        
+        protected Inner() {
+        }
+    }
+    
+    @.java.lang.Override
+    public .java.lang.String toString() {
+        return Inner$new().toString();
+    }
+    
+    public static void main(.java.lang.String[] args) {
+        .ceylon.language.process_.getProcess$().setupArguments(args);
+        new .com.redhat.ceylon.compiler.java.test.structure.klass.KlassHiding();
+    }
+}
+class KlassHidingSub extends .com.redhat.ceylon.compiler.java.test.structure.klass.KlassHiding {
+    
+    KlassHidingSub() {
+        super();
+    }
+    
+    class Inner {
+        
+        Inner() {
+        }
+    }
+    
+    @.java.lang.Override
+    public .java.lang.String toString() {
+        return new .com.redhat.ceylon.compiler.java.test.structure.klass.KlassHidingSub.Inner().toString();
+    }
+    
+    public static void main(.java.lang.String[] args) {
+        .ceylon.language.process_.getProcess$().setupArguments(args);
+        new .com.redhat.ceylon.compiler.java.test.structure.klass.KlassHidingSub();
+    }
+}
