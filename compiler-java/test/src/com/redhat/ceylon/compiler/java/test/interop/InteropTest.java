@@ -228,9 +228,7 @@ public class InteropTest extends CompilerTest {
     @Test
     public void testIopRefinesDefaultAccessMethod(){
         compile("access/JavaAccessModifiers.java");
-        // XXX This error comes from javac rather than the ceylon typechecker
-        assertErrors("access/RefinesDefaultAccessMethod",
-                new CompilerError(22, "defaultAccessMethod() in com.redhat.ceylon.compiler.java.test.interop.access.RefinesDefaultAccessMethod cannot override defaultAccessMethod() in com.redhat.ceylon.compiler.java.test.interop.access.JavaAccessModifiers\n  attempting to assign weaker access privileges; was package"));
+        compile("access/RefinesDefaultAccessMethod.ceylon");
     }
 
     @Test
