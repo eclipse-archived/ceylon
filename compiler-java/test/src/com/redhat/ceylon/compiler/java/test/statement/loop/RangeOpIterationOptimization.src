@@ -152,70 +152,86 @@ class OptimizedForWithRange {
         for (long $returns$63 = $ceylontmpstart59; $ceylontmpincreasing61 ? $returns$63 - $ceylontmpend60 <= 0L : $returns$63 - $ceylontmpend60 >= 0L; $returns$63 += $ceylontmpincr62) {
             final long returns = $returns$63;
             sum += returns;
-            return;
+            break;
         }
-        final long $ceylontmpstart64 = 10L;
-        final long $ceylontmpend65 = 1L;
-        final boolean $ceylontmpincreasing66 = $ceylontmpstart64 <= $ceylontmpend65;
-        final long $ceylontmpincr67 = $ceylontmpincreasing66 ? 1L : -1L;
-        for (long $returnsWithElse$68 = $ceylontmpstart64; $ceylontmpincreasing66 ? $returnsWithElse$68 - $ceylontmpend65 <= 0L : $returnsWithElse$68 - $ceylontmpend65 >= 0L; $returnsWithElse$68 += $ceylontmpincr67) {
-            final long returnsWithElse = $returnsWithElse$68;
+        boolean $doforelse$64 = true;
+        final long $ceylontmpstart65 = 10L;
+        final long $ceylontmpend66 = 1L;
+        final boolean $ceylontmpincreasing67 = $ceylontmpstart65 <= $ceylontmpend66;
+        final long $ceylontmpincr68 = $ceylontmpincreasing67 ? 1L : -1L;
+        for (long $returnsWithElse$69 = $ceylontmpstart65; $ceylontmpincreasing67 ? $returnsWithElse$69 - $ceylontmpend66 <= 0L : $returnsWithElse$69 - $ceylontmpend66 >= 0L; $returnsWithElse$69 += $ceylontmpincr68) {
+            final long returnsWithElse = $returnsWithElse$69;
             sum += returnsWithElse;
-            return;
+            $doforelse$64 = false;
+            break;
         }
-        sum = 0L;
-        final long $ceylontmpstart69 = 10L;
-        final long $ceylontmpend70 = 1L;
-        final boolean $ceylontmpincreasing71 = $ceylontmpstart69 <= $ceylontmpend70;
-        final long $ceylontmpincr72 = $ceylontmpincreasing71 ? 1L : -1L;
-        for (long $returnsWithElse$73 = $ceylontmpstart69; $ceylontmpincreasing71 ? $returnsWithElse$73 - $ceylontmpend70 <= 0L : $returnsWithElse$73 - $ceylontmpend70 >= 0L; $returnsWithElse$73 += $ceylontmpincr72) {
-            final long returnsWithElse = $returnsWithElse$73;
+        if ($doforelse$64) {
+            sum = 0L;
+        }
+        boolean $doforelse$70 = true;
+        final long $ceylontmpstart71 = 10L;
+        final long $ceylontmpend72 = 1L;
+        final boolean $ceylontmpincreasing73 = $ceylontmpstart71 <= $ceylontmpend72;
+        final long $ceylontmpincr74 = $ceylontmpincreasing73 ? 1L : -1L;
+        for (long $returnsWithElse$75 = $ceylontmpstart71; $ceylontmpincreasing73 ? $returnsWithElse$75 - $ceylontmpend72 <= 0L : $returnsWithElse$75 - $ceylontmpend72 >= 0L; $returnsWithElse$75 += $ceylontmpincr74) {
+            final long returnsWithElse = $returnsWithElse$75;
             sum += returnsWithElse;
             if (returnsWithElse == 5L) {
-                return;
+                $doforelse$70 = false;
+                break;
             }
         }
-        sum = 0L;
-        final long $ceylontmpstart75 = 10L;
-        final long $ceylontmpend76 = 1L;
-        final boolean $ceylontmpincreasing77 = $ceylontmpstart75 <= $ceylontmpend76;
-        final long $ceylontmpincr78 = $ceylontmpincreasing77 ? 1L : -1L;
-        for (long $throws$79 = $ceylontmpstart75; $ceylontmpincreasing77 ? $throws$79 - $ceylontmpend76 <= 0L : $throws$79 - $ceylontmpend76 >= 0L; $throws$79 += $ceylontmpincr78) {
-            final long throws = $throws$79;
+        if ($doforelse$70) {
+            sum = 0L;
+        }
+        final long $ceylontmpstart77 = 10L;
+        final long $ceylontmpend78 = 1L;
+        final boolean $ceylontmpincreasing79 = $ceylontmpstart77 <= $ceylontmpend78;
+        final long $ceylontmpincr80 = $ceylontmpincreasing79 ? 1L : -1L;
+        for (long $throws$81 = $ceylontmpstart77; $ceylontmpincreasing79 ? $throws$81 - $ceylontmpend78 <= 0L : $throws$81 - $ceylontmpend78 >= 0L; $throws$81 += $ceylontmpincr80) {
+            final long throws = $throws$81;
             sum += throws;
-            return;
+            break;
         }
-        final long $ceylontmpstart80 = 10L;
-        final long $ceylontmpend81 = 1L;
-        final boolean $ceylontmpincreasing82 = $ceylontmpstart80 <= $ceylontmpend81;
-        final long $ceylontmpincr83 = $ceylontmpincreasing82 ? 1L : -1L;
-        for (long $throwsWithElse$84 = $ceylontmpstart80; $ceylontmpincreasing82 ? $throwsWithElse$84 - $ceylontmpend81 <= 0L : $throwsWithElse$84 - $ceylontmpend81 >= 0L; $throwsWithElse$84 += $ceylontmpincr83) {
-            final long throwsWithElse = $throwsWithElse$84;
+        boolean $doforelse$82 = true;
+        final long $ceylontmpstart83 = 10L;
+        final long $ceylontmpend84 = 1L;
+        final boolean $ceylontmpincreasing85 = $ceylontmpstart83 <= $ceylontmpend84;
+        final long $ceylontmpincr86 = $ceylontmpincreasing85 ? 1L : -1L;
+        for (long $throwsWithElse$87 = $ceylontmpstart83; $ceylontmpincreasing85 ? $throwsWithElse$87 - $ceylontmpend84 <= 0L : $throwsWithElse$87 - $ceylontmpend84 >= 0L; $throwsWithElse$87 += $ceylontmpincr86) {
+            final long throwsWithElse = $throwsWithElse$87;
             sum += throwsWithElse;
-            return;
+            $doforelse$82 = false;
+            break;
         }
-        sum = 0L;
-        final long $ceylontmpstart85 = 10L;
-        final long $ceylontmpend86 = 1L;
-        final boolean $ceylontmpincreasing87 = $ceylontmpstart85 <= $ceylontmpend86;
-        final long $ceylontmpincr88 = $ceylontmpincreasing87 ? 1L : -1L;
-        for (long $throwsWithElse$89 = $ceylontmpstart85; $ceylontmpincreasing87 ? $throwsWithElse$89 - $ceylontmpend86 <= 0L : $throwsWithElse$89 - $ceylontmpend86 >= 0L; $throwsWithElse$89 += $ceylontmpincr88) {
-            final long throwsWithElse = $throwsWithElse$89;
+        if ($doforelse$82) {
+            sum = 0L;
+        }
+        boolean $doforelse$88 = true;
+        final long $ceylontmpstart89 = 10L;
+        final long $ceylontmpend90 = 1L;
+        final boolean $ceylontmpincreasing91 = $ceylontmpstart89 <= $ceylontmpend90;
+        final long $ceylontmpincr92 = $ceylontmpincreasing91 ? 1L : -1L;
+        for (long $throwsWithElse$93 = $ceylontmpstart89; $ceylontmpincreasing91 ? $throwsWithElse$93 - $ceylontmpend90 <= 0L : $throwsWithElse$93 - $ceylontmpend90 >= 0L; $throwsWithElse$93 += $ceylontmpincr92) {
+            final long throwsWithElse = $throwsWithElse$93;
             sum += throwsWithElse;
             if (throwsWithElse == 5L) {
-                return;
+                $doforelse$88 = false;
+                break;
             }
         }
-        sum = 0L;
+        if ($doforelse$88) {
+            sum = 0L;
+        }
     }
     
     private final void captured() {
-        final long $ceylontmpstart91 = 0L;
-        final long $ceylontmpend92 = 10L;
-        final boolean $ceylontmpincreasing93 = $ceylontmpstart91 <= $ceylontmpend92;
-        final long $ceylontmpincr94 = $ceylontmpincreasing93 ? 1L : -1L;
-        for (long $i$95 = $ceylontmpstart91; $ceylontmpincreasing93 ? $i$95 - $ceylontmpend92 <= 0L : $i$95 - $ceylontmpend92 >= 0L; $i$95 += $ceylontmpincr94) {
-            final long i = $i$95;
+        final long $ceylontmpstart95 = 0L;
+        final long $ceylontmpend96 = 10L;
+        final boolean $ceylontmpincreasing97 = $ceylontmpstart95 <= $ceylontmpend96;
+        final long $ceylontmpincr98 = $ceylontmpincreasing97 ? 1L : -1L;
+        for (long $i$99 = $ceylontmpstart95; $ceylontmpincreasing97 ? $i$99 - $ceylontmpend96 <= 0L : $i$99 - $ceylontmpend96 >= 0L; $i$99 += $ceylontmpincr98) {
+            final long i = $i$99;
             
             final class x_ {
                 

@@ -98,18 +98,18 @@ class OptimizedForWithRange(start, end) {
         
         for (returns in 10..1) {
             sum += returns;
-            return;
+            break;
         }
         for (returnsWithElse in 10..1) {
             sum += returnsWithElse;
-            return;
+            break;
         } else {
             sum = 0;
         }
         for (returnsWithElse in 10..1) {
             sum += returnsWithElse;
             if (returnsWithElse == 5) {
-                return;
+                break;
             }
         } else {
             sum = 0;
@@ -117,18 +117,18 @@ class OptimizedForWithRange(start, end) {
         
         for (throws in 10..1) {
             sum += throws;
-            return;
+            break;
         }
         for (throwsWithElse in 10..1) {
             sum += throwsWithElse;
-            return;
+            break;
         } else {
             sum = 0;
         }
         for (throwsWithElse in 10..1) {
             sum += throwsWithElse;
             if (throwsWithElse == 5) {
-                return;
+                break;
             }
         } else {
             sum = 0;
