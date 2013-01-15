@@ -230,6 +230,14 @@ public class InteropTest extends CompilerTest {
         compile("access/JavaAccessModifiers.java");
         compile("access/RefinesDefaultAccessMethod.ceylon");
     }
+    
+    @Test
+    public void testIopRefinesDefaultAccessMethodWithShared(){
+        compile("access/JavaAccessModifiers.java");
+        // XXX This error comes from javac rather than the ceylon typechecker
+        assertErrors("access/RefinesDefaultAccessMethodWithShared",
+                new CompilerError(22, "I don't know what the error message is yet, but I expect there to be one."));
+    }
 
     @Test
     public void testIopRefinesDefaultAccessMethodWithActual(){
