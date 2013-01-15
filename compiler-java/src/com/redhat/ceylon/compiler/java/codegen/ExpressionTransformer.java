@@ -1537,7 +1537,7 @@ public class ExpressionTransformer extends AbstractTransformer {
             ProducedType type = invocation.getParameterType(argIndex);
             if (invocation.isParameterSequenced(argIndex)
                     && !invocation.isJavaMethod()
-                    && !invocation.dontBoxSequence()) {
+                    && !invocation.isSpread()) {
                 // If the parameter is sequenced and the argument is not ...
                 // then the expected type of the *argument* is the type arg to Iterator
                 type = typeFact().getIteratedType(type);
@@ -1551,7 +1551,7 @@ public class ExpressionTransformer extends AbstractTransformer {
                     type, flags);
             if(invocation.isParameterSequenced(argIndex)
                     && invocation.isJavaMethod()
-                    && invocation.dontBoxSequence()){
+                    && invocation.isSpread()){
                 // must translate it into a Util call
                 ret = sequenceToJavaArray(ret, type, boxingStrategy, expr.getTypeModel());
             }
@@ -1648,10 +1648,10 @@ public class ExpressionTransformer extends AbstractTransformer {
                     && invocation.isJavaMethod()
                     && invocation.getParameterBoxingStrategy(argIndex) == BoxingStrategy.UNBOXED
                     && willEraseToPrimitive(typeFact().getDefiniteType(invocation.getParameterType(argIndex)))
-                    && !invocation.dontBoxSequence())
+                    && !invocation.isSpread())
                 wrapIntoArray = true;
             if (!invocation.isParameterSequenced(argIndex)
-                    || invocation.dontBoxSequence()
+                    || invocation.isSpread()
                     || invocation.isJavaMethod()) {
                 expr = invocation.getTransformedArgumentExpression(argIndex);
                 type = makeJavaType(invocation.getParameterType(argIndex), invocation.getParameterBoxingStrategy(argIndex) == BoxingStrategy.BOXED ? JT_NO_PRIMITIVES : 0);

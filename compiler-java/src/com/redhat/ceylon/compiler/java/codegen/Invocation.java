@@ -230,7 +230,7 @@ abstract class SimpleInvocation extends Invocation {
      */
     //protected abstract JCExpression getTransformedArgumentExpression(int argIndex);
 
-    protected abstract boolean dontBoxSequence();
+    protected abstract boolean isSpread();
 
     /**
      * For subclasses if the target method doesn't support default values for variadic
@@ -362,7 +362,7 @@ class IndirectInvocationBuilder extends SimpleInvocation {
     }
 
     @Override
-    protected boolean dontBoxSequence() {
+    protected boolean isSpread() {
         return comprehension != null || spread;
     }
 
@@ -427,7 +427,7 @@ abstract class DirectInvocation extends SimpleInvocation {
         int flags = AbstractTransformer.TP_TO_BOUND;
         if(isParameterSequenced(argIndex)
                 && isJavaMethod()
-                && dontBoxSequence())
+                && isSpread())
             flags |= AbstractTransformer.TP_SEQUENCED_TYPE;
         return gen.expressionGen().getTypeForParameter(getParameter(argIndex), getProducedReference(), flags);
     }
@@ -518,7 +518,7 @@ class PositionalInvocation extends DirectInvocation {
         return getPositional().getPositionalArguments().size();
     }
     @Override
-    protected boolean dontBoxSequence() {
+    protected boolean isSpread() {
         java.util.List<PositionalArgument> args = getPositional().getPositionalArguments();
         if(args.isEmpty())
             return false;
@@ -616,7 +616,7 @@ class CallableInvocation extends DirectInvocation {
         return parameterCount;
     }
     @Override
-    protected boolean dontBoxSequence() {
+    protected boolean isSpread() {
         return isParameterSequenced(getNumArguments() - 1);
     }
     @Override
@@ -678,7 +678,7 @@ class MethodReferenceSpecifierInvocation extends DirectInvocation {
         return method.getParameterLists().get(0).getParameters().get(argIndex);
     }
     @Override
-    protected boolean dontBoxSequence() {
+    protected boolean isSpread() {
         return method.getParameterLists().get(0).getParameters().get(getNumArguments() - 1).isSequenced();
     }
     @Override
