@@ -231,6 +231,7 @@ abstract class SimpleInvocation extends Invocation {
     //protected abstract JCExpression getTransformedArgumentExpression(int argIndex);
 
     protected abstract boolean isSpread();
+    protected abstract boolean isArgumentSpread(int argIndex);
 
     /**
      * For subclasses if the target method doesn't support default values for variadic
@@ -366,6 +367,15 @@ class IndirectInvocationBuilder extends SimpleInvocation {
         return comprehension != null || spread;
     }
 
+    @Override
+    protected boolean isArgumentSpread(int argIndex) {
+        if(spread) // spread args must be last argument
+            return argIndex == argumentExpressions.size() - 1;
+        if(comprehension != null) // comprehension must be last
+            return argIndex == argumentExpressions.size();
+        return false;
+    }
+    
     @Override
     protected Tree.Expression getArgumentExpression(int argIndex) {
         return argumentExpressions.get(argIndex);
@@ -527,6 +537,14 @@ class PositionalInvocation extends DirectInvocation {
     }
     
     @Override
+    protected boolean isArgumentSpread(int argIndex) {
+        PositionalArgument arg = getPositional().getPositionalArguments().get(argIndex);
+        if(!arg.getParameter().isSequenced())
+            return false;
+        return arg instanceof Tree.SpreadArgument || arg instanceof Tree.Comprehension;
+    }
+    
+    @Override
     protected boolean isParameterRaw(int argIndex){
         Parameter param = getParameter(argIndex);
         ProducedType type = param.getType();
@@ -620,6 +638,10 @@ class CallableInvocation extends DirectInvocation {
         return isParameterSequenced(getNumArguments() - 1);
     }
     @Override
+    protected boolean isArgumentSpread(int argIndex) {
+        return isSpread() && argIndex == getNumArguments() - 1;
+    }
+    @Override
     protected JCExpression getTransformedArgumentExpression(int argIndex) {
         Parameter param = callableParameters.get(argIndex);
         return gen.makeUnquotedIdent(Naming.getCallableTempVarName(param));
@@ -680,6 +702,10 @@ class MethodReferenceSpecifierInvocation extends DirectInvocation {
     @Override
     protected boolean isSpread() {
         return method.getParameterLists().get(0).getParameters().get(getNumArguments() - 1).isSequenced();
+    }
+    @Override
+    protected boolean isArgumentSpread(int argIndex) {
+        return isSpread() && argIndex == getNumArguments() - 1;
     }
     @Override
     protected Expression getArgumentExpression(int argIndex) {
