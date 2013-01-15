@@ -23,7 +23,7 @@ abstract class ClassAttribute {
     
     public abstract .java.lang.String getFormalvarShortcut();
     
-    private final .java.lang.String m() {
+    private final .java.lang.String m$priv() {
         return getCapturedvar$priv();
     }
 }

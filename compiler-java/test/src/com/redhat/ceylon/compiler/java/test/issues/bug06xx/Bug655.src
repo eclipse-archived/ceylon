@@ -5,26 +5,26 @@ class Bug655 {
     Bug655() {
     }
     
-    private final .com.redhat.ceylon.compiler.java.test.issues.bug06xx.Bug655 select(final .ceylon.language.Callable<? extends .ceylon.language.String> predicates) {
+    private final .com.redhat.ceylon.compiler.java.test.issues.bug06xx.Bug655 select$priv(final .ceylon.language.Callable<? extends .ceylon.language.String> predicates) {
         return this;
     }
     
-    private final .com.redhat.ceylon.compiler.java.test.issues.bug06xx.Bug655 where() {
+    private final .com.redhat.ceylon.compiler.java.test.issues.bug06xx.Bug655 where$priv() {
         return this;
     }
     
-    private final .java.lang.String nome() {
+    private final .java.lang.String nome$priv() {
         return "";
     }
     
-    private final void get() {
-        select(new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.ceylon.language.String>("String()"){
+    private final void get$priv() {
+        select$priv(new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.ceylon.language.String>("String()"){
             
             @.java.lang.Override
             public .ceylon.language.String $call() {
-                return .ceylon.language.String.instance(nome());
+                return .ceylon.language.String.instance(nome$priv());
             }
-        }).where();
+        }).where$priv();
     }
     
     public static void main(.java.lang.String[] args) {

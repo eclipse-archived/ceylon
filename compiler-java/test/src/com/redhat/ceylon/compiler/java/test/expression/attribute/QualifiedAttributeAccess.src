@@ -27,31 +27,31 @@ class QualifiedAttributeAccess {
         return q;
     }
     
-    private final boolean m() {
+    private final boolean m$priv() {
         return this.getB$priv();
     }
     
-    private final boolean m2() {
+    private final boolean m2$priv() {
         return this.getB2$priv();
     }
     
-    private final boolean m3() {
+    private final boolean m3$priv() {
         return new .com.redhat.ceylon.compiler.java.test.expression.attribute.QualifiedAttributeAccess().getB$priv();
     }
     
-    private final boolean m4() {
+    private final boolean m4$priv() {
         return new .com.redhat.ceylon.compiler.java.test.expression.attribute.QualifiedAttributeAccess().getB2$priv();
     }
     
-    private final boolean m5() {
+    private final boolean m5$priv() {
         return getQ$priv().getB$priv();
     }
     
-    private final boolean m6() {
+    private final boolean m6$priv() {
         return getQ$priv().getB2$priv();
     }
     
-    private final boolean m7(final .com.redhat.ceylon.compiler.java.test.expression.attribute.Foo f) {
+    private final boolean m7$priv(final .com.redhat.ceylon.compiler.java.test.expression.attribute.Foo f) {
         return f.getB();
     }
     

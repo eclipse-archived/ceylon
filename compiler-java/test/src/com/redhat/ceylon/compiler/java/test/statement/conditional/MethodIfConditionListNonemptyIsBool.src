@@ -5,7 +5,7 @@ class MethodIfConditionList {
     MethodIfConditionList() {
     }
     
-    private final boolean m(final .ceylon.language.Sequential<? extends .java.lang.Object> x) {
+    private final boolean m$priv(final .ceylon.language.Sequential<? extends .java.lang.Object> x) {
         boolean $ceylontmpif0 = false;
         .java.lang.Object $y$3;
         final long $y$4;

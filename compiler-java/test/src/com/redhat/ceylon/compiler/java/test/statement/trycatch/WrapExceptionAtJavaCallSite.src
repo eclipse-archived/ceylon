@@ -5,7 +5,7 @@ class ReplaceExceptionAtJavaCallSite {
     ReplaceExceptionAtJavaCallSite() {
     }
     
-    private final void m() {
+    private final void m$priv() {
         final .com.redhat.ceylon.compiler.java.test.statement.trycatch.JavaThrower jt = new .com.redhat.ceylon.compiler.java.test.statement.trycatch.JavaThrower();
         final boolean n = jt.throwException();
         final boolean m = jt.throwThrowable();

@@ -5,7 +5,7 @@ class Method {
     Method() {
     }
     
-    private final void f() {
+    private final void f$priv() {
     }
     
     public static void main(.java.lang.String[] args) {

@@ -25,12 +25,12 @@ class Bug299 {
         Inner(final .java.lang.String s) {
         }
         
-        private final void m() {
+        private final void m$priv() {
             (
                 let
                 {
                     .java.lang.String $ceylontmp$s$3 = m$s();
-                    m($ceylontmp$s$3);
+                    m$priv($ceylontmp$s$3);
                 }
                 returning null;
             );
@@ -40,11 +40,11 @@ class Bug299 {
             return "b";
         }
         
-        private final void m(final .java.lang.String s) {
+        private final void m$priv(final .java.lang.String s) {
         }
     }
     
-    private final void m() {
+    private final void m$priv() {
         
         final class Inner$impl {
             
@@ -70,12 +70,12 @@ class Bug299 {
             Inner(final .java.lang.String s) {
             }
             
-            private final void m() {
+            private final void m$priv() {
                 (
                     let
                     {
                         .java.lang.String $ceylontmp$s$7 = m$s();
-                        m($ceylontmp$s$7);
+                        m$priv($ceylontmp$s$7);
                     }
                     returning null;
                 );
@@ -85,7 +85,7 @@ class Bug299 {
                 return "b";
             }
             
-            private final void m(final .java.lang.String s) {
+            private final void m$priv(final .java.lang.String s) {
             }
         }
     }

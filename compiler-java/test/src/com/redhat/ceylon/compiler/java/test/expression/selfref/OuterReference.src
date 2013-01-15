@@ -48,13 +48,13 @@ class OuterReference extends .com.redhat.ceylon.compiler.java.test.expression.se
         InnerClass(final boolean b) {
         }
         
-        private final boolean m() {
+        private final boolean m$priv() {
             return (
                 let
                 {
                     boolean $ceylontmp$b$3 = m$b();
                 }
-                returning m($ceylontmp$b$3);
+                returning m$priv($ceylontmp$b$3);
             );
         }
         
@@ -62,7 +62,7 @@ class OuterReference extends .com.redhat.ceylon.compiler.java.test.expression.se
             return .com.redhat.ceylon.compiler.java.test.expression.selfref.OuterReference.this.superTest();
         }
         
-        private final boolean m(final boolean b) {
+        private final boolean m$priv(final boolean b) {
             .com.redhat.ceylon.compiler.java.test.expression.selfref.OuterReference.this.superTest();
             return .com.redhat.ceylon.compiler.java.test.expression.selfref.OuterReference.this.test();
         }
@@ -75,13 +75,13 @@ class OuterReference extends .com.redhat.ceylon.compiler.java.test.expression.se
         }
         private final .com.redhat.ceylon.compiler.java.test.expression.selfref.OuterReference$InnerIface $this;
         
-        private final boolean m() {
+        private final boolean m$priv() {
             return (
                 let
                 {
                     boolean $ceylontmp$b$5 = m$b();
                 }
-                returning m($ceylontmp$b$5);
+                returning m$priv($ceylontmp$b$5);
             );
         }
         
@@ -89,13 +89,13 @@ class OuterReference extends .com.redhat.ceylon.compiler.java.test.expression.se
             return .com.redhat.ceylon.compiler.java.test.expression.selfref.OuterReference.this.superTest();
         }
         
-        private boolean m(final boolean b) {
+        private boolean m$priv(final boolean b) {
             .com.redhat.ceylon.compiler.java.test.expression.selfref.OuterReference.this.superTest();
             return .com.redhat.ceylon.compiler.java.test.expression.selfref.OuterReference.this.test();
         }
     }
     
-    private final void m() {
+    private final void m$priv() {
         
         final class LocalClass$impl {
             
@@ -131,12 +131,12 @@ class OuterReference extends .com.redhat.ceylon.compiler.java.test.expression.se
             }
             private final .com.redhat.ceylon.compiler.java.test.expression.selfref.OuterReference$m$0$LocalIface $this;
             
-            private final void m() {
+            private final void m$priv() {
                 (
                     let
                     {
                         boolean $ceylontmp$b$9 = m$b();
-                        m($ceylontmp$b$9);
+                        m$priv($ceylontmp$b$9);
                     }
                     returning null;
                 );
@@ -146,7 +146,7 @@ class OuterReference extends .com.redhat.ceylon.compiler.java.test.expression.se
                 return .com.redhat.ceylon.compiler.java.test.expression.selfref.OuterReference.this.superTest();
             }
             
-            private void m(final boolean b) {
+            private void m$priv(final boolean b) {
                 .com.redhat.ceylon.compiler.java.test.expression.selfref.OuterReference.this.superTest();
                 .com.redhat.ceylon.compiler.java.test.expression.selfref.OuterReference.this.test();
             }

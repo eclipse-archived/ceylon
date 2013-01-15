@@ -25,7 +25,7 @@ class AssertVariableScopes {
         return y;
     }
     
-    private final void m() {
+    private final void m$priv() {
         
         final class m_local_ {
             
@@ -84,7 +84,7 @@ class AssertVariableScopes {
         .ceylon.language.String.terminal($y$17, 1L);
     }
     
-    private final void masking(final .java.lang.Object x, final .java.lang.Object y) {
+    private final void masking$priv(final .java.lang.Object x, final .java.lang.Object y) {
         
         final class m_local_ {
             

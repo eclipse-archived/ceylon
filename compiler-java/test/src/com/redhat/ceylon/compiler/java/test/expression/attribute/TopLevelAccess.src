@@ -39,7 +39,7 @@ class TopLevelAccess {
     TopLevelAccess() {
     }
     
-    private final void m() {
+    private final void m$priv() {
         final boolean bb1 = .com.redhat.ceylon.compiler.java.test.expression.attribute.b1_.getB1$();
         final boolean bb2 = .com.redhat.ceylon.compiler.java.test.expression.attribute.b2_.getB2$();
         final boolean bb3 = .com.redhat.ceylon.compiler.java.test.expression.attribute.b3_.getB3$();

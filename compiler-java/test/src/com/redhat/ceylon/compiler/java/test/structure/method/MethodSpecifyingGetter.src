@@ -9,7 +9,7 @@ class MethodSpecifierGetter {
         throw new .ceylon.language.Exception(null, null);
     }
     
-    private final long foo(final boolean b) {
+    private final long foo$priv(final boolean b) {
         return getF$priv().$call(.ceylon.language.Boolean.instance(b)).longValue();
     }
     

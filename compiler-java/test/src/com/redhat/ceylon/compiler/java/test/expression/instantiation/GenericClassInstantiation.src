@@ -61,7 +61,7 @@ class KlassTypeParamsInstantiationT<T> {
         }
     }
     
-    private final void m() {
+    private final void m$priv() {
         new .com.redhat.ceylon.compiler.java.test.expression.instantiation.KlassTypeParamsInstantiationT<T>.Inner<.ceylon.language.String>();
     }
     

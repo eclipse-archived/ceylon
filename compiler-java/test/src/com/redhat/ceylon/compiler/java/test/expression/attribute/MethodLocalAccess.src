@@ -5,12 +5,12 @@ class MethodLocalAccess {
     MethodLocalAccess() {
     }
     
-    private final long m1() {
+    private final long m1$priv() {
         final long n1 = 1L;
         return n1;
     }
     
-    private final long m2() {
+    private final long m2$priv() {
         
         final class n2$getter_ {
             
@@ -25,7 +25,7 @@ class MethodLocalAccess {
         return n2$getter_.getN2();
     }
     
-    private final long m3() {
+    private final long m3$priv() {
         
         final class selfref$getter_ {
             

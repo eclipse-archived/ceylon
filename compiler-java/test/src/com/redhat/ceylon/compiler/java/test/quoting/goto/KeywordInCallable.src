@@ -5,7 +5,7 @@ class KeywordInCallable {
     KeywordInCallable() {
     }
     
-    private final void m(final .ceylon.language.Callable<? extends .java.lang.Object> do) {
+    private final void m$priv(final .ceylon.language.Callable<? extends .java.lang.Object> do) {
         do.$call();
         
         final class enum_ {
@@ -21,7 +21,7 @@ class KeywordInCallable {
                         return (
                             let
                             {
-                                $goto();
+                                goto$priv();
                             }
                             returning null;
                         );
@@ -30,20 +30,20 @@ class KeywordInCallable {
             }
         }
         final enum_ enum = new enum_();
-        m(new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.java.lang.Object>("Anything()"){
+        m$priv(new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.java.lang.Object>("Anything()"){
             
             @.java.lang.Override
             public .java.lang.Object $call() {
                 return (
                     let
                     {
-                        $goto();
+                        goto$priv();
                     }
                     returning null;
                 );
             }
         });
-        m(new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.ceylon.language.Callable<? extends .java.lang.Object>>("Anything()()"){
+        m$priv(new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.ceylon.language.Callable<? extends .java.lang.Object>>("Anything()()"){
             
             @.java.lang.Override
             public .ceylon.language.Callable<? extends .java.lang.Object> $call() {
@@ -52,7 +52,7 @@ class KeywordInCallable {
         });
     }
     
-    private final void $goto() {
+    private final void goto$priv() {
     }
     
     public static void main(.java.lang.String[] args) {

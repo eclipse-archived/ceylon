@@ -5,7 +5,7 @@ class InnerAttributeGetterLateInitialisation {
     InnerAttributeGetterLateInitialisation() {
     }
     
-    private final void m() {
+    private final void m$priv() {
         final long m;
         m = 2L;
         

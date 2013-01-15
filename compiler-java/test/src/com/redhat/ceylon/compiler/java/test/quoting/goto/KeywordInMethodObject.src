@@ -5,7 +5,7 @@ class KeywordInMethodObject {
     KeywordInMethodObject() {
     }
     
-    private final void m() {
+    private final void m$priv() {
         
         final class goto_ {
             

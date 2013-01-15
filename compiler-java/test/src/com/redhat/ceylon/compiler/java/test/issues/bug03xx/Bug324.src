@@ -11,7 +11,7 @@ class Bug324 {
         }
     }
     
-    private final void m() {
+    private final void m$priv() {
         
         class Bug324 {
             

@@ -19,7 +19,7 @@ class MethodSpecifyingToplevelWithResult {
     MethodSpecifyingToplevelWithResult() {
     }
     
-    private final long foo() {
+    private final long foo$priv() {
         return .com.redhat.ceylon.compiler.java.test.structure.method.methodSpecifyingToplevelWithResult_f_.methodSpecifyingToplevelWithResult_f();
     }
     

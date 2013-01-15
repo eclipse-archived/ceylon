@@ -7,7 +7,7 @@ class InitializerParamAccess {
     }
     private final boolean b;
     
-    private final boolean m() {
+    private final boolean m$priv() {
         return b;
     }
 }

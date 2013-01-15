@@ -151,7 +151,7 @@ public class Bug801_ImplClass implements .com.redhat.ceylon.compiler.java.test.i
         }
     }
     
-    private final void method() {
+    private final void method$priv() {
         
         class MemberInterfaceImpl implements .com.redhat.ceylon.compiler.java.test.issues.bug08xx.Bug801_Interface$MemberInterface {
             
@@ -280,7 +280,7 @@ public class Bug801_ImplClass2 extends .com.redhat.ceylon.compiler.java.test.iss
         }
     }
     
-    private final void method() {
+    private final void method$priv() {
         
         class MemberInterfaceImpl implements .com.redhat.ceylon.compiler.java.test.issues.bug08xx.Bug801_Class$MemberInterface {
             

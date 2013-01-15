@@ -5,7 +5,7 @@ class ImportAliasAndWildcard {
     ImportAliasAndWildcard() {
     }
     
-    private final void m() {
+    private final void m$priv() {
         new .com.redhat.ceylon.compiler.java.test.structure.import_.pkg.C1();
         new .com.redhat.ceylon.compiler.java.test.structure.import_.pkg.C2();
         boolean b = .com.redhat.ceylon.compiler.java.test.structure.import_.pkg.f1_.getF1$();

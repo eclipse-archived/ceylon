@@ -5,13 +5,13 @@ class ValueKeyword {
     ValueKeyword() {
     }
     
-    private final void m() {
+    private final void m$priv() {
         final .java.lang.String f = "";
         final .java.lang.String l = f;
-        final long l2 = test();
+        final long l2 = test$priv();
     }
     
-    private final long test() {
+    private final long test$priv() {
         return 0L;
     }
     

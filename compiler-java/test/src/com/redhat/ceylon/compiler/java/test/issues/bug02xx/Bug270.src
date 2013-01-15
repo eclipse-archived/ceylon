@@ -125,11 +125,11 @@ class Bug270 {
         return bug270;
     }
     
-    private final void forceFieldGenerationByCapture() {
+    private final void forceFieldGenerationByCapture$priv() {
         this.getBug270$priv().equals(.ceylon.language.Integer.instance(1L));
     }
     
-    private final void method() {
+    private final void method$priv() {
         final .ceylon.language.Entry<? extends .ceylon.language.Integer, ? extends .ceylon.language.String> bug270 = (
             let
             {

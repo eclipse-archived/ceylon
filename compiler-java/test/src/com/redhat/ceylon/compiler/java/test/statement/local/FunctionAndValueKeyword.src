@@ -5,12 +5,12 @@ class FunctionAndValueKeyword {
     FunctionAndValueKeyword() {
     }
     
-    private final long test() {
+    private final long test$priv() {
         return 0L;
     }
     
-    private final void m() {
-        final long n = test();
+    private final void m$priv() {
+        final long n = test$priv();
     }
     
     public static void main(.java.lang.String[] args) {

@@ -11,7 +11,7 @@ class AttributeHidingMethodParam {
         return b;
     }
     
-    private final boolean m(final boolean b) {
+    private final boolean m$priv(final boolean b) {
         return this.getB$priv();
     }
     

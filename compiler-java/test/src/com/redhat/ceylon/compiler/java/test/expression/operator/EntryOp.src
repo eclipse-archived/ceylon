@@ -5,7 +5,7 @@ public class EntryOp {
     public EntryOp() {
     }
     
-    private final void m(final long n1, final long i2) {
+    private final void m$priv(final long n1, final long i2) {
         final .ceylon.language.Entry<? extends .ceylon.language.Integer, ? extends .ceylon.language.Integer> entry = new .ceylon.language.Entry<.ceylon.language.Integer, .ceylon.language.Integer>(.ceylon.language.Integer.instance(n1), .ceylon.language.Integer.instance(i2));
     }
     

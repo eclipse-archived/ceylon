@@ -5,7 +5,7 @@ class AssertConditionList {
     AssertConditionList() {
     }
     
-    private final boolean m(final .ceylon.language.Sequential<? extends .java.lang.Object> x) {
+    private final boolean m$priv(final .ceylon.language.Sequential<? extends .java.lang.Object> x) {
         .java.lang.String $ceylontmpassert0 = null;
         final long $y$4;
         final .ceylon.language.Sequence<? extends .java.lang.Object> $x$2;

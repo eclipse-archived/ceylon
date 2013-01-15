@@ -6,7 +6,7 @@ class MethodLocalHidingAttribute {
         final boolean b = true;
     }
     
-    private final boolean m() {
+    private final boolean m$priv() {
         final boolean b = false;
         return b;
     }

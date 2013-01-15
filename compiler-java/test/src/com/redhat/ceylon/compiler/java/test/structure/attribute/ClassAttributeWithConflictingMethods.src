@@ -26,7 +26,7 @@ abstract class ClassAttributeWithConflictingMethods {
     public final void $setAttr(final .java.lang.String attr) {
     }
     
-    private final void m() {
+    private final void m$priv() {
         setAttr(getAttr());
         this.setAttr(this.getAttr());
         $setAttr($getAttr());
@@ -60,7 +60,7 @@ final class InterfaceAttributeWithConflictingMethods$impl {
         $this.setAttr(attr);
     }
     
-    private void m() {
+    private void m$priv() {
         $this.setAttr($this.getAttr());
         $this.setAttr($this.getAttr());
         $this.$setAttr($this.$getAttr());

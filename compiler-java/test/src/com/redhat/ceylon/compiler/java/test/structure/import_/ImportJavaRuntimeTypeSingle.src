@@ -5,7 +5,7 @@ class ImportJavaRuntimeTypeSingle {
     ImportJavaRuntimeTypeSingle() {
     }
     
-    private final void m(final .java.util.List<.ceylon.language.Integer> l) {
+    private final void m$priv(final .java.util.List<.ceylon.language.Integer> l) {
         new .java.lang.Exception();
     }
     

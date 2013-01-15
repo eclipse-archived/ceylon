@@ -5,22 +5,22 @@ class CharacterBoxing {
     CharacterBoxing() {
     }
     
-    private final void m() {
+    private final void m$priv() {
         final int b1 = 65;
         final int b2 = .ceylon.language.Character.getLowercased(b1);
         final int b3 = .ceylon.language.Character.getUppercased(97);
         final .ceylon.language.Character b4 = .ceylon.language.Character.instance(.ceylon.language.Character.getSuccessor(97));
-        final int b5 = successor(b3);
-        final .ceylon.language.Character b6 = successor2(b4);
-        final int b7 = successor3(b4);
+        final int b5 = successor$priv(b3);
+        final .ceylon.language.Character b6 = successor2$priv(b4);
+        final int b7 = successor3$priv(b4);
         .ceylon.language.print_.print(.ceylon.language.String.instance(.ceylon.language.Character.toString(b7)));
     }
     
-    private final int successor(final int c) {
+    private final int successor$priv(final int c) {
         return .ceylon.language.Character.getSuccessor(c);
     }
     
-    private final .ceylon.language.Character successor2(final .ceylon.language.Character c) {
+    private final .ceylon.language.Character successor2$priv(final .ceylon.language.Character c) {
         .ceylon.language.Character $c$1;
         if (($c$1 = c) != null) {
             final int $c$2 = $c$1.intValue();
@@ -29,7 +29,7 @@ class CharacterBoxing {
         return null;
     }
     
-    private final int successor3(final .ceylon.language.Character c) {
+    private final int successor3$priv(final .ceylon.language.Character c) {
         .ceylon.language.Character $c$4;
         if (($c$4 = c) != null) {
             final int $c$5 = $c$4.intValue();

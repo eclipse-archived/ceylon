@@ -11,7 +11,7 @@ class QualifiedParameterisedInstantiation<G> {
         }
     }
     
-    private final void m() {
+    private final void m$priv() {
         final .com.redhat.ceylon.compiler.java.test.expression.instantiation.QualifiedParameterisedInstantiation<G> other = this;
         this.new Inner<.ceylon.language.Integer>("");
         other.new Inner<.ceylon.language.Integer>("");

@@ -5,7 +5,7 @@ class ObjectInMethod {
     ObjectInMethod() {
     }
     
-    private final void m() {
+    private final void m$priv() {
         final long i = 1L;
         
         final class foo_ {

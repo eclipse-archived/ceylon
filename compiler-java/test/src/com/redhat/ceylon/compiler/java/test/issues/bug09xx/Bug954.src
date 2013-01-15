@@ -65,12 +65,12 @@ class Bug954 {
     }
     private .ceylon.language.Callable<? extends .ceylon.language.Integer> x;
     
-    private final long x(final long i) {
+    private final long x$priv(final long i) {
         if (x == null) throw new .com.redhat.ceylon.compiler.java.language.UninitializedMethodError(); else return x.$call(.ceylon.language.Integer.instance(i)).longValue();
     }
     private .ceylon.language.Callable<? extends .ceylon.language.Integer> y;
     
-    private final long y(final long i) {
+    private final long y$priv(final long i) {
         if (y == null) throw new .com.redhat.ceylon.compiler.java.language.UninitializedMethodError(); else return y.$call(.ceylon.language.Integer.instance(i)).longValue();
     }
     private .ceylon.language.Callable<? extends .ceylon.language.Integer> pubx;

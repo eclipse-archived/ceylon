@@ -82,7 +82,7 @@ public class EqualityAndComparisonOperators {
     public EqualityAndComparisonOperators() {
     }
     
-    private final void equalityAndComparisonUnboxed(final .java.lang.Object o1, final .java.lang.Object o2) {
+    private final void equalityAndComparisonUnboxed$priv(final .java.lang.Object o1, final .java.lang.Object o2) {
         boolean sync = o1 == o2;
         long n1 = 0L;
         long n2 = 0L;
@@ -95,7 +95,7 @@ public class EqualityAndComparisonOperators {
         sync = n1 >= n2;
     }
     
-    private final void equalityAndComparisonBoxed(final .java.lang.Object o1, final .java.lang.Object o2, final .com.redhat.ceylon.compiler.java.test.expression.operator.EqualityAndComparisonInteger n1, final .com.redhat.ceylon.compiler.java.test.expression.operator.EqualityAndComparisonInteger n2) {
+    private final void equalityAndComparisonBoxed$priv(final .java.lang.Object o1, final .java.lang.Object o2, final .com.redhat.ceylon.compiler.java.test.expression.operator.EqualityAndComparisonInteger n1, final .com.redhat.ceylon.compiler.java.test.expression.operator.EqualityAndComparisonInteger n2) {
         .ceylon.language.Boolean sync = .ceylon.language.Boolean.instance(o1 == o2);
         sync = .ceylon.language.Boolean.instance(n1.equals(n2));
         sync = .ceylon.language.Boolean.instance(!n1.equals(n2));
@@ -106,7 +106,7 @@ public class EqualityAndComparisonOperators {
         sync = .ceylon.language.Boolean.instance(n1.compare(n2).asLargeAs());
     }
     
-    private final void testInBoxed(final long n1, final long n2) {
+    private final void testInBoxed$priv(final long n1, final long n2) {
         final boolean b1 = (
             let
             {
@@ -116,7 +116,7 @@ public class EqualityAndComparisonOperators {
         );
     }
     
-    private final void testInUnboxed(final .com.redhat.ceylon.compiler.java.test.expression.operator.EqualityAndComparisonInteger n1, final .com.redhat.ceylon.compiler.java.test.expression.operator.EqualityAndComparisonInteger n2) {
+    private final void testInUnboxed$priv(final .com.redhat.ceylon.compiler.java.test.expression.operator.EqualityAndComparisonInteger n1, final .com.redhat.ceylon.compiler.java.test.expression.operator.EqualityAndComparisonInteger n2) {
         final .ceylon.language.Boolean b1 = .ceylon.language.Boolean.instance((
             let
             {
@@ -126,7 +126,7 @@ public class EqualityAndComparisonOperators {
         ));
     }
     
-    private final void testIs() {
+    private final void testIs$priv() {
         boolean sync = false;
         final .java.lang.Object foo = .ceylon.language.Boolean.instance(sync);
         sync = (

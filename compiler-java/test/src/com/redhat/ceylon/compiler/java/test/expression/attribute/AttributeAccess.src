@@ -25,7 +25,7 @@ class AttributeAccess {
         return true;
     }
     
-    private final void m() {
+    private final void m$priv() {
         final boolean bb1 = getB1$priv();
         final boolean bb2 = getB2();
         final boolean bb3 = getB3$priv();

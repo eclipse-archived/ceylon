@@ -5,7 +5,7 @@ class ImportTypeMultiple {
     ImportTypeMultiple() {
     }
     
-    private final void m() {
+    private final void m$priv() {
         new .com.redhat.ceylon.compiler.java.test.structure.import_.pkg.C1();
         new .com.redhat.ceylon.compiler.java.test.structure.import_.pkg.C2();
     }

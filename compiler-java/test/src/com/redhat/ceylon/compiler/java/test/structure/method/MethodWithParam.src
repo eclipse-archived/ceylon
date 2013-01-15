@@ -5,7 +5,7 @@ class MethodWithParam {
     MethodWithParam() {
     }
     
-    private final void f(final long i) {
+    private final void f$priv(final long i) {
     }
     
     public final void f2(final long i) {

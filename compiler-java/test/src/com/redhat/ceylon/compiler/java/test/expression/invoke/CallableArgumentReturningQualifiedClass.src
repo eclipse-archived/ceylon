@@ -15,11 +15,11 @@ class CallableArgumentReturningQualifiedClass {
         }
     }
     
-    private final void f(final .ceylon.language.Callable<? extends .com.redhat.ceylon.compiler.java.test.expression.invoke.CallableArgumentReturningQualifiedClass.D> foo) {
+    private final void f$priv(final .ceylon.language.Callable<? extends .com.redhat.ceylon.compiler.java.test.expression.invoke.CallableArgumentReturningQualifiedClass.D> foo) {
     }
     
-    private final void m() {
-        f(new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.com.redhat.ceylon.compiler.java.test.expression.invoke.CallableArgumentReturningQualifiedClass.D>("CallableArgumentReturningQualifiedClass.D()"){
+    private final void m$priv() {
+        f$priv(new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.com.redhat.ceylon.compiler.java.test.expression.invoke.CallableArgumentReturningQualifiedClass.D>("CallableArgumentReturningQualifiedClass.D()"){
             
             @.java.lang.Override
             public .com.redhat.ceylon.compiler.java.test.expression.invoke.CallableArgumentReturningQualifiedClass.D $call() {

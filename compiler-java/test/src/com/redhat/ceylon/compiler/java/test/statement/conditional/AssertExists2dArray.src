@@ -5,7 +5,7 @@ class AssertExists2dArray {
     AssertExists2dArray() {
     }
     
-    private final void ints() {
+    private final void ints$priv() {
         final .ceylon.language.Array<.ceylon.language.Array<.ceylon.language.Integer>> t = .ceylon.language.arrayOfSize_.<.ceylon.language.Array<.ceylon.language.Integer>>arrayOfSize(.ceylon.language.Array.class, 2L, .ceylon.language.arrayOfSize_.<.ceylon.language.Integer>arrayOfSize(long.class, 2L, .ceylon.language.Integer.instance(0L)));
         final .ceylon.language.Array<.ceylon.language.Integer> $r$2;
         .ceylon.language.Array<.ceylon.language.Integer> $r$1 = null;
@@ -15,7 +15,7 @@ class AssertExists2dArray {
         $r$2.setItem(0L, .ceylon.language.Integer.instance(100L));
     }
     
-    private final void strings() {
+    private final void strings$priv() {
         final .ceylon.language.Array<.ceylon.language.Array<.ceylon.language.String>> t = .ceylon.language.arrayOfSize_.<.ceylon.language.Array<.ceylon.language.String>>arrayOfSize(.ceylon.language.Array.class, 2L, .ceylon.language.arrayOfSize_.<.ceylon.language.String>arrayOfSize(.java.lang.String.class, 2L, .ceylon.language.String.instance("")));
         final .ceylon.language.Array<.ceylon.language.String> $r$5;
         .ceylon.language.Array<.ceylon.language.String> $r$4 = null;
@@ -25,7 +25,7 @@ class AssertExists2dArray {
         $r$5.setItem(0L, .ceylon.language.String.instance(""));
     }
     
-    private final void nulls() {
+    private final void nulls$priv() {
         final .ceylon.language.Array<.ceylon.language.Array<.java.lang.Object>> t = .ceylon.language.arrayOfSize_.<.ceylon.language.Array<.java.lang.Object>>arrayOfSize(.ceylon.language.Array.class, 2L, .ceylon.language.arrayOfSize_.arrayOfSize(.java.lang.Object.class, 2L, null));
         final .ceylon.language.Array<.java.lang.Object> $r$8;
         .ceylon.language.Array<.java.lang.Object> $r$7 = null;
@@ -35,7 +35,7 @@ class AssertExists2dArray {
         $r$8.setItem(0L, null);
     }
     
-    private final void objects(final .java.lang.Object obj) {
+    private final void objects$priv(final .java.lang.Object obj) {
         final .ceylon.language.Array<.ceylon.language.Array<.java.lang.Object>> t = .ceylon.language.arrayOfSize_.<.ceylon.language.Array<.java.lang.Object>>arrayOfSize(.ceylon.language.Array.class, 2L, .ceylon.language.arrayOfSize_.arrayOfSize(.java.lang.Object.class, 2L, obj));
         final .ceylon.language.Array<.java.lang.Object> $r$11;
         .ceylon.language.Array<.java.lang.Object> $r$10 = null;
@@ -45,7 +45,7 @@ class AssertExists2dArray {
         $r$11.setItem(0L, obj);
     }
     
-    private final void union(final .java.lang.Object obj) {
+    private final void union$priv(final .java.lang.Object obj) {
         final .ceylon.language.Array<.ceylon.language.Array<.java.lang.Object>> t = .ceylon.language.arrayOfSize_.<.ceylon.language.Array<.java.lang.Object>>arrayOfSize(.ceylon.language.Array.class, 2L, .ceylon.language.arrayOfSize_.arrayOfSize(null, 2L, obj));
         final .ceylon.language.Array $r$14;
         .ceylon.language.Array $r$13 = null;

@@ -5,7 +5,7 @@ class SwitchIsVarSubst {
     SwitchIsVarSubst() {
     }
     
-    private final .java.lang.String m(final .java.lang.Object b) {
+    private final .java.lang.String m$priv(final .java.lang.Object b) {
         final .java.lang.String name;
         {
             .java.lang.Object $sel$0 = b;

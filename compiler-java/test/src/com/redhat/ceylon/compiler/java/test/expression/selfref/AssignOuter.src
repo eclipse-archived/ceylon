@@ -39,11 +39,11 @@ final class AssignOuter$impl {
     }
     private final .com.redhat.ceylon.compiler.java.test.expression.selfref.AssignOuter $this;
     
-    private final long getA() {
+    private final long getA$priv() {
         return 0L;
     }
     
-    private void setA(final long a) {
+    private final void setA$priv(final long a) {
     }
     
     public final void setB(final long b) {
@@ -54,7 +54,7 @@ final class AssignOuter$impl {
         return 0L;
     }
     
-    public void setC(final long c) {
+    public final void setC(final long c) {
     }
     
     public final void setD(final .ceylon.language.Integer d) {
@@ -69,18 +69,18 @@ final class AssignOuter$impl {
         private final .com.redhat.ceylon.compiler.java.test.expression.selfref.AssignOuter$I $this;
         
         public final long getADefault() {
-            return .com.redhat.ceylon.compiler.java.test.expression.selfref.AssignOuter$impl.this.$this.$com$redhat$ceylon$compiler$java$test$expression$selfref$AssignOuter$impl().getA();
+            return .com.redhat.ceylon.compiler.java.test.expression.selfref.AssignOuter$impl.this.$this.$com$redhat$ceylon$compiler$java$test$expression$selfref$AssignOuter$impl().getA$priv();
         }
         
-        public void setADefault(final long aDefault) {
-            .com.redhat.ceylon.compiler.java.test.expression.selfref.AssignOuter$impl.this.$this.$com$redhat$ceylon$compiler$java$test$expression$selfref$AssignOuter$impl().setA(aDefault);
+        public final void setADefault(final long aDefault) {
+            .com.redhat.ceylon.compiler.java.test.expression.selfref.AssignOuter$impl.this.$this.$com$redhat$ceylon$compiler$java$test$expression$selfref$AssignOuter$impl().setA$priv(aDefault);
         }
         
         public final long getBDefault() {
             return .com.redhat.ceylon.compiler.java.test.expression.selfref.AssignOuter$impl.this.$this.getB();
         }
         
-        public void setBDefault(final long bDefault) {
+        public final void setBDefault(final long bDefault) {
             .com.redhat.ceylon.compiler.java.test.expression.selfref.AssignOuter$impl.this.$this.setB(bDefault);
         }
         
@@ -88,17 +88,17 @@ final class AssignOuter$impl {
             return .com.redhat.ceylon.compiler.java.test.expression.selfref.AssignOuter$impl.this.$this.getC();
         }
         
-        public void setCDefault(final long cDefault) {
+        public final void setCDefault(final long cDefault) {
             .com.redhat.ceylon.compiler.java.test.expression.selfref.AssignOuter$impl.this.$this.setC(cDefault);
         }
         
-        private void m() {
+        private void m$priv() {
             (
                 let
                 {
                     .com.redhat.ceylon.compiler.java.test.expression.selfref.AssignOuter $ceylontmpopE0 = .com.redhat.ceylon.compiler.java.test.expression.selfref.AssignOuter$impl.this.$this;
-                    long $ceylontmpopV1 = $ceylontmpopE0.$com$redhat$ceylon$compiler$java$test$expression$selfref$AssignOuter$impl().getA();
-                    $ceylontmpopE0.$com$redhat$ceylon$compiler$java$test$expression$selfref$AssignOuter$impl().setA($ceylontmpopV1 + 1);
+                    long $ceylontmpopV1 = $ceylontmpopE0.$com$redhat$ceylon$compiler$java$test$expression$selfref$AssignOuter$impl().getA$priv();
+                    $ceylontmpopE0.$com$redhat$ceylon$compiler$java$test$expression$selfref$AssignOuter$impl().setA$priv($ceylontmpopV1 + 1);
                 }
                 returning $ceylontmpopV1;
             );
@@ -124,8 +124,8 @@ final class AssignOuter$impl {
                 let
                 {
                     .com.redhat.ceylon.compiler.java.test.expression.selfref.AssignOuter $ceylontmpopE6 = .com.redhat.ceylon.compiler.java.test.expression.selfref.AssignOuter$impl.this.$this;
-                    long $ceylontmpopV7 = $ceylontmpopE6.$com$redhat$ceylon$compiler$java$test$expression$selfref$AssignOuter$impl().getA() + 1;
-                    $ceylontmpopE6.$com$redhat$ceylon$compiler$java$test$expression$selfref$AssignOuter$impl().setA($ceylontmpopV7);
+                    long $ceylontmpopV7 = $ceylontmpopE6.$com$redhat$ceylon$compiler$java$test$expression$selfref$AssignOuter$impl().getA$priv() + 1;
+                    $ceylontmpopE6.$com$redhat$ceylon$compiler$java$test$expression$selfref$AssignOuter$impl().setA$priv($ceylontmpopV7);
                 }
                 returning $ceylontmpopV7;
             );
@@ -171,11 +171,11 @@ abstract class AssignOuterClass {
     AssignOuterClass() {
     }
     
-    private final long getA() {
+    private final long getA$priv() {
         return 0L;
     }
     
-    private final void setA(final long a) {
+    private final void setA$priv(final long a) {
     }
     
     public abstract long getB();
@@ -197,18 +197,18 @@ abstract class AssignOuterClass {
         private final .com.redhat.ceylon.compiler.java.test.expression.selfref.AssignOuterClass$I $this;
         
         public final long getADefault() {
-            return .com.redhat.ceylon.compiler.java.test.expression.selfref.AssignOuterClass.this.getA();
+            return .com.redhat.ceylon.compiler.java.test.expression.selfref.AssignOuterClass.this.getA$priv();
         }
         
-        public void setADefault(final long aDefault) {
-            .com.redhat.ceylon.compiler.java.test.expression.selfref.AssignOuterClass.this.setA(aDefault);
+        public final void setADefault(final long aDefault) {
+            .com.redhat.ceylon.compiler.java.test.expression.selfref.AssignOuterClass.this.setA$priv(aDefault);
         }
         
         public final long getBDefault() {
             return .com.redhat.ceylon.compiler.java.test.expression.selfref.AssignOuterClass.this.getB();
         }
         
-        public void setBDefault(final long bDefault) {
+        public final void setBDefault(final long bDefault) {
             .com.redhat.ceylon.compiler.java.test.expression.selfref.AssignOuterClass.this.setB(bDefault);
         }
         
@@ -216,17 +216,17 @@ abstract class AssignOuterClass {
             return .com.redhat.ceylon.compiler.java.test.expression.selfref.AssignOuterClass.this.getC();
         }
         
-        public void setCDefault(final long cDefault) {
+        public final void setCDefault(final long cDefault) {
             .com.redhat.ceylon.compiler.java.test.expression.selfref.AssignOuterClass.this.setC(cDefault);
         }
         
-        private void m() {
+        private void m$priv() {
             (
                 let
                 {
                     .com.redhat.ceylon.compiler.java.test.expression.selfref.AssignOuterClass $ceylontmpopE12 = .com.redhat.ceylon.compiler.java.test.expression.selfref.AssignOuterClass.this;
-                    long $ceylontmpopV13 = $ceylontmpopE12.getA();
-                    $ceylontmpopE12.setA($ceylontmpopV13 + 1);
+                    long $ceylontmpopV13 = $ceylontmpopE12.getA$priv();
+                    $ceylontmpopE12.setA$priv($ceylontmpopV13 + 1);
                 }
                 returning $ceylontmpopV13;
             );
@@ -252,8 +252,8 @@ abstract class AssignOuterClass {
                 let
                 {
                     .com.redhat.ceylon.compiler.java.test.expression.selfref.AssignOuterClass $ceylontmpopE18 = .com.redhat.ceylon.compiler.java.test.expression.selfref.AssignOuterClass.this;
-                    long $ceylontmpopV19 = $ceylontmpopE18.getA() + 1;
-                    $ceylontmpopE18.setA($ceylontmpopV19);
+                    long $ceylontmpopV19 = $ceylontmpopE18.getA$priv() + 1;
+                    $ceylontmpopE18.setA$priv($ceylontmpopV19);
                 }
                 returning $ceylontmpopV19;
             );

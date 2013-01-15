@@ -5,12 +5,12 @@ class VarargsMethodSpecifyingMethodWithVarargs {
     VarargsMethodSpecifyingMethodWithVarargs() {
     }
     
-    private final void foo() {
+    private final void foo$priv() {
         (
             let
             {
                 .ceylon.language.Sequential<? extends .ceylon.language.Integer> $ceylontmp$seq$1 = foo$seq();
-                foo($ceylontmp$seq$1);
+                foo$priv($ceylontmp$seq$1);
             }
             returning null;
         );
@@ -20,16 +20,16 @@ class VarargsMethodSpecifyingMethodWithVarargs {
         return (.ceylon.language.Sequential).ceylon.language.empty_.getEmpty$();
     }
     
-    private final void foo(final .ceylon.language.Sequential<? extends .ceylon.language.Integer> seq) {
+    private final void foo$priv(final .ceylon.language.Sequential<? extends .ceylon.language.Integer> seq) {
     }
     
-    private final .java.lang.Object bar() {
+    private final .java.lang.Object bar$priv() {
         return (
             let
             {
                 .ceylon.language.Sequential<? extends .ceylon.language.Integer> $ceylontmp$ints$3 = bar$ints();
             }
-            returning bar($ceylontmp$ints$3);
+            returning bar$priv($ceylontmp$ints$3);
         );
     }
     
@@ -37,11 +37,11 @@ class VarargsMethodSpecifyingMethodWithVarargs {
         return (.ceylon.language.Sequential).ceylon.language.empty_.getEmpty$();
     }
     
-    private final .java.lang.Object bar(final .ceylon.language.Sequential<? extends .ceylon.language.Integer> ints) {
+    private final .java.lang.Object bar$priv(final .ceylon.language.Sequential<? extends .ceylon.language.Integer> ints) {
         return (
             let
             {
-                foo(ints);
+                foo$priv(ints);
             }
             returning null;
         );

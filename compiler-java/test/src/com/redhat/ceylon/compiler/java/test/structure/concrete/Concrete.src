@@ -41,13 +41,13 @@ final class Concrete$impl<A> {
     }
     private final .com.redhat.ceylon.compiler.java.test.structure.concrete.Concrete<A> $this;
     
-    private final void mNonShared() {
+    private final void mNonShared$priv() {
         (
             let
             {
                 A $ceylontmp$a$1 = mNonShared$a();
                 .ceylon.language.Sequential<? extends A> $ceylontmp$aseq$2 = mNonShared$aseq($ceylontmp$a$1);
-                mNonShared($ceylontmp$a$1, $ceylontmp$aseq$2);
+                mNonShared$priv($ceylontmp$a$1, $ceylontmp$aseq$2);
             }
             returning null;
         );
@@ -57,12 +57,12 @@ final class Concrete$impl<A> {
         return null;
     }
     
-    private final void mNonShared(final A a) {
+    private final void mNonShared$priv(final A a) {
         (
             let
             {
                 .ceylon.language.Sequential<? extends A> $ceylontmp$aseq$4 = mNonShared$aseq(a);
-                mNonShared(a, $ceylontmp$aseq$4);
+                mNonShared$priv(a, $ceylontmp$aseq$4);
             }
             returning null;
         );
@@ -72,7 +72,7 @@ final class Concrete$impl<A> {
         return (.ceylon.language.Sequential).ceylon.language.empty_.getEmpty$();
     }
     
-    private void mNonShared(final A a, final .ceylon.language.Sequential<? extends A> aseq) {
+    private void mNonShared$priv(final A a, final .ceylon.language.Sequential<? extends A> aseq) {
     }
     
     public final void mShared() {
@@ -107,7 +107,7 @@ final class Concrete$impl<A> {
     }
     
     public void mShared(final A a, final .ceylon.language.Sequential<? extends A> aseq) {
-        mNonShared();
+        mNonShared$priv();
     }
     
     public final .java.lang.Object mFormal() {

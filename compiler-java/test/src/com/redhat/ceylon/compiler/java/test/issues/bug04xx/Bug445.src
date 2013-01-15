@@ -16,7 +16,7 @@ final class Bug445$impl<T> {
         Inner() {
         }
         
-        private final void t(final T t) {
+        private final void t$priv(final T t) {
         }
     }
 }

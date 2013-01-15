@@ -27,7 +27,7 @@ class ToplevelMethodInvocation {
     ToplevelMethodInvocation() {
     }
     
-    private final long m() {
+    private final long m$priv() {
         .com.redhat.ceylon.compiler.java.test.expression.invoke.topLevelMethodInvocationMethod1_.topLevelMethodInvocationMethod1();
         return .com.redhat.ceylon.compiler.java.test.expression.invoke.topLevelMethodInvocationMethod2_.topLevelMethodInvocationMethod2(1L, "");
     }

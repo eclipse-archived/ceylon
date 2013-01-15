@@ -5,7 +5,7 @@ class LocalMethod {
     LocalMethod() {
     }
     
-    private final void m() {
+    private final void m$priv() {
         
         final class local_ {
             

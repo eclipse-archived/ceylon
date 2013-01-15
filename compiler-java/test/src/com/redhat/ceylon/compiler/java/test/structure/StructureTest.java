@@ -596,9 +596,8 @@ public class StructureTest extends CompilerTest {
         compareWithJavaSource("alias/InterfaceAliasFromModelLoader");
     }
 
-    // typechecker now rejects these, no sure what to do about it
     @Test
-    public void testAlsMemberClassAliasTricks_fail() {
+    public void testAlsMemberClassAliasTricks() {
         compareWithJavaSource("alias/MemberClassAliasTricks");
     }
 

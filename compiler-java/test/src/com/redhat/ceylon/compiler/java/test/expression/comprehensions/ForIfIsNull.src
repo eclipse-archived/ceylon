@@ -5,15 +5,15 @@ class ForIfIsNull {
     ForIfIsNull() {
     }
     
-    private final long owt(final .ceylon.language.Integer n) {
+    private final long owt$priv(final .ceylon.language.Integer n) {
         return 0L;
     }
     
-    private final long nowt(final .java.lang.Object n) {
+    private final long nowt$priv(final .java.lang.Object n) {
         return 0L;
     }
     
-    private final void m1(final .ceylon.language.Sequence<? extends .ceylon.language.Integer> xs) {
+    private final void m1$priv(final .ceylon.language.Sequence<? extends .ceylon.language.Integer> xs) {
         .ceylon.language.print_.print(new .com.redhat.ceylon.compiler.java.language.AbstractIterable<.ceylon.language.Integer, .java.lang.Object>(){
             
             public final .ceylon.language.Iterator<.ceylon.language.Integer> getIterator() {
@@ -54,7 +54,7 @@ class ForIfIsNull {
         });
     }
     
-    private final void m2(final .ceylon.language.Sequence<? extends .ceylon.language.Integer> xs) {
+    private final void m2$priv(final .ceylon.language.Sequence<? extends .ceylon.language.Integer> xs) {
         .ceylon.language.print_.print(new .com.redhat.ceylon.compiler.java.language.AbstractIterable<.ceylon.language.Integer, .java.lang.Object>(){
             
             public final .ceylon.language.Iterator<.ceylon.language.Integer> getIterator() {
@@ -95,7 +95,7 @@ class ForIfIsNull {
         });
     }
     
-    private final void m3(final .ceylon.language.Sequence<? extends .ceylon.language.Integer> xs) {
+    private final void m3$priv(final .ceylon.language.Sequence<? extends .ceylon.language.Integer> xs) {
         .ceylon.language.print_.print(new .com.redhat.ceylon.compiler.java.language.AbstractIterable<.ceylon.language.Integer, .java.lang.Object>(){
             
             public final .ceylon.language.Iterator<.ceylon.language.Integer> getIterator() {
@@ -126,14 +126,14 @@ class ForIfIsNull {
                     }
                     
                     public final .java.lang.Object next() {
-                        return this.next1() ? .ceylon.language.Integer.instance(nowt(x)) : .ceylon.language.finished_.getFinished$();
+                        return this.next1() ? .ceylon.language.Integer.instance(nowt$priv(x)) : .ceylon.language.finished_.getFinished$();
                     }
                 };
             }
         });
     }
     
-    private final void m4(final .ceylon.language.Sequence<? extends .ceylon.language.Integer> xs) {
+    private final void m4$priv(final .ceylon.language.Sequence<? extends .ceylon.language.Integer> xs) {
         .ceylon.language.print_.print(new .com.redhat.ceylon.compiler.java.language.AbstractIterable<.ceylon.language.Integer, .java.lang.Object>(){
             
             public final .ceylon.language.Iterator<.ceylon.language.Integer> getIterator() {
@@ -167,7 +167,7 @@ class ForIfIsNull {
                     }
                     
                     public final .java.lang.Object next() {
-                        return this.next1() ? .ceylon.language.Integer.instance(nowt($y$10)) : .ceylon.language.finished_.getFinished$();
+                        return this.next1() ? .ceylon.language.Integer.instance(nowt$priv($y$10)) : .ceylon.language.finished_.getFinished$();
                     }
                 };
             }

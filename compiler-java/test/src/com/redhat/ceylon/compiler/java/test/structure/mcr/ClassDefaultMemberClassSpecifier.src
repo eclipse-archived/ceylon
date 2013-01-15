@@ -17,11 +17,11 @@ class ClassDefaultMemberClassSpecifier {
         }
     }
     
-    private final .com.redhat.ceylon.compiler.java.test.structure.mcr.ClassDefaultMemberClassSpecifier.Member s() {
+    private final .com.redhat.ceylon.compiler.java.test.structure.mcr.ClassDefaultMemberClassSpecifier.Member s$priv() {
         return this.Member$new();
     }
     
-    private final .com.redhat.ceylon.compiler.java.test.structure.mcr.ClassDefaultMemberClassSpecifier.Member s2() {
+    private final .com.redhat.ceylon.compiler.java.test.structure.mcr.ClassDefaultMemberClassSpecifier.Member s2$priv() {
         return other.Member$new();
     }
 }

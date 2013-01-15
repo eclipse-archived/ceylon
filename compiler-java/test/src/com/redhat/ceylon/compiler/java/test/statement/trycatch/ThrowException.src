@@ -5,7 +5,7 @@ class ThrowException {
     ThrowException() {
     }
     
-    private final void t() {
+    private final void t$priv() {
         throw new .ceylon.language.Exception(.ceylon.language.String.instance("Bang!"), null);
     }
     

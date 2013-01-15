@@ -15,11 +15,11 @@ class MethodErasure {
         return (int)0L;
     }
     
-    private final .java.lang.String $hashCode() {
+    private final .java.lang.String hashCode$priv() {
         return "bar";
     }
     
-    private final long $toString() {
+    private final long toString$priv() {
         return 0L;
     }
     

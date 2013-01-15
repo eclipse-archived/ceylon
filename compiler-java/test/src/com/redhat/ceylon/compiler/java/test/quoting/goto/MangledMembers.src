@@ -54,6 +54,8 @@ class MangledMembers_clone {
 }
 interface MangledMembers_interface {
     
+    public .com.redhat.ceylon.compiler.java.test.quoting.$goto.MangledMembers_interface$impl $com$redhat$ceylon$compiler$java$test$quoting$$goto$MangledMembers_interface$impl();
+    
     public abstract .java.lang.String $clone();
     
     public abstract .java.lang.String $hashCode();

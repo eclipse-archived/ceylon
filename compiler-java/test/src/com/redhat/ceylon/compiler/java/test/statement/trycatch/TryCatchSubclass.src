@@ -11,22 +11,22 @@ class TryCatchSubclass {
     TryCatchSubclass() {
     }
     
-    private final void t() {
+    private final void t$priv() {
     }
     
-    private final void ce(final .com.redhat.ceylon.compiler.java.test.statement.trycatch.E e) {
+    private final void ce$priv(final .com.redhat.ceylon.compiler.java.test.statement.trycatch.E e) {
     }
     
-    private final void cexception(final .java.lang.Throwable e) {
+    private final void cexception$priv(final .java.lang.Throwable e) {
     }
     
-    private final void m() {
+    private final void m$priv() {
         try {
-            t();
+            t$priv();
         } catch (final .com.redhat.ceylon.compiler.java.test.statement.trycatch.E e) {
-            ce(e);
+            ce$priv(e);
         } catch (final .java.lang.Exception e) {
-            cexception(e);
+            cexception$priv(e);
         }
     }
     

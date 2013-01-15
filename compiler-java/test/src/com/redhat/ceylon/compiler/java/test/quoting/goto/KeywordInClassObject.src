@@ -17,7 +17,7 @@ class KeywordInClassObject {
         return goto;
     }
     
-    private final void m() {
+    private final void m$priv() {
         final .java.lang.String s = getGoto$priv().toString();
     }
     

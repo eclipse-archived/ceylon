@@ -12,7 +12,7 @@ class QualifiedInstantiation {
         }
     }
     
-    private final void m(final .com.redhat.ceylon.compiler.java.test.expression.instantiation.QualifiedInstantiation q) {
+    private final void m$priv(final .com.redhat.ceylon.compiler.java.test.expression.instantiation.QualifiedInstantiation q) {
         this.new Inner("");
         q.new Inner("");
         (

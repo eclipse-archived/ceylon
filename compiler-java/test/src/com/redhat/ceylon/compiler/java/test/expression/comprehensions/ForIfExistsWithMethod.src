@@ -5,7 +5,7 @@ class ForIfExistsWithMethod {
     ForIfExistsWithMethod() {
     }
     
-    private final .ceylon.language.Integer give() {
+    private final .ceylon.language.Integer give$priv() {
         return .ceylon.language.Integer.instance(0L);
     }
     
@@ -34,7 +34,7 @@ class ForIfExistsWithMethod {
                         while (true) {
                             if (!this.x()) break;
                             .ceylon.language.Integer $y$1 = null;
-                            if (($y$1 = x.give()) != null) {
+                            if (($y$1 = x.give$priv()) != null) {
                                 $y$2 = $y$1.longValue();
                                 break;
                             }

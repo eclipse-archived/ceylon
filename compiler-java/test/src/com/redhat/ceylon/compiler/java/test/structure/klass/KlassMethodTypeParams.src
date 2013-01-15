@@ -5,7 +5,7 @@ class KlassMethodTypeParams {
     KlassMethodTypeParams() {
     }
     
-    private final <T>T m(final T t) {
+    private final <T>T m$priv(final T t) {
         return t;
     }
     

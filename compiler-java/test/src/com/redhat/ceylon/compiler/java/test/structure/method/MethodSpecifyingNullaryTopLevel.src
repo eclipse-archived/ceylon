@@ -18,7 +18,7 @@ class MethodSpecifierTopLevel {
     MethodSpecifierTopLevel() {
     }
     
-    private final .java.lang.Object foo() {
+    private final .java.lang.Object foo$priv() {
         return (
             let
             {

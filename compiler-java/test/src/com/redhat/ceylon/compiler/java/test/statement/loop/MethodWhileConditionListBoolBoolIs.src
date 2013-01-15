@@ -5,7 +5,7 @@ class MethodWhileConditionListBoolBoolIs {
     MethodWhileConditionListBoolBoolIs() {
     }
     
-    private final boolean m(final .java.lang.Object x, final long z) {
+    private final boolean m$priv(final .java.lang.Object x, final long z) {
         while (true) {
             .java.lang.Object $x$0;
             if (z < 10L) {
@@ -20,7 +20,7 @@ class MethodWhileConditionListBoolBoolIs {
         return false;
     }
     
-    private final boolean synthetic(final .java.lang.Object x, final long z) {
+    private final boolean synthetic$priv(final .java.lang.Object x, final long z) {
         while (true) {
             .java.lang.Object $y$2;
             if (z < 10L) {

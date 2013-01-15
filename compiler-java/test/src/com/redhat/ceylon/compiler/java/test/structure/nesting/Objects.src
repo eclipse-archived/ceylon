@@ -91,7 +91,7 @@ class Objects {
         }
     }
     
-    private final void local() {
+    private final void local$priv() {
         
         final class local_o_ extends .com.redhat.ceylon.compiler.java.test.structure.nesting.Objects.Dummy {
             

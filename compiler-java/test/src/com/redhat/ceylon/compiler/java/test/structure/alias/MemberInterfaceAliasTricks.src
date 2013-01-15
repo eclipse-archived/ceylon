@@ -69,12 +69,12 @@ public final class MemberInterfaceAliasTricks_Foo$impl {
             }
         }
         
-        private void test() {
+        private void test$priv() {
             final .com.redhat.ceylon.compiler.java.test.structure.alias.MemberInterfaceAliasTricks_Foo$impl.MemberClass m1 = $this.MemberClassAliasToEnclosingMemberClass$new();
         }
     }
     
-    private void test(final .com.redhat.ceylon.compiler.java.test.structure.alias.MemberInterfaceAliasTricks_Foo$MemberInterface x) {
+    private void test$priv(final .com.redhat.ceylon.compiler.java.test.structure.alias.MemberInterfaceAliasTricks_Foo$MemberInterface x) {
         final .com.redhat.ceylon.compiler.java.test.structure.alias.MemberInterfaceAliasTricks_Foo$impl.MemberClass m1 = x.MemberClassAliasToEnclosingMemberClass$new();
     }
 }

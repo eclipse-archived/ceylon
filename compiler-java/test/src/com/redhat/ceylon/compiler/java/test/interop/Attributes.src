@@ -85,7 +85,7 @@ class CeylonAttributes extends .com.redhat.ceylon.compiler.java.test.interop.Jav
         this.urlEncoderForHTML = urlEncoderForHTML;
     }
     
-    private final void m() {
+    private final void m$priv() {
         boolean sync;
         sync = getBooleanWithGet();
         setBooleanWithGet(false);

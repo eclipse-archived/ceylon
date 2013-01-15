@@ -67,7 +67,7 @@ abstract class ClassDefaultMemberClassWithMemberSubclass {
         }
     }
     
-    private final void m() {
+    private final void m$priv() {
         
         class LocalDefaultSub extends .com.redhat.ceylon.compiler.java.test.structure.mcr.ClassDefaultMemberClassWithMemberSubclass.Default {
             

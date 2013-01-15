@@ -31,7 +31,7 @@ class QualifiedAttributeAssign {
         return q;
     }
     
-    private final void m(final .com.redhat.ceylon.compiler.java.test.expression.attribute.QualifiedAttributeAssignFoo f) {
+    private final void m$priv(final .com.redhat.ceylon.compiler.java.test.expression.attribute.QualifiedAttributeAssignFoo f) {
         this.setB$priv(false);
         this.setB2(false);
         new .com.redhat.ceylon.compiler.java.test.expression.attribute.QualifiedAttributeAssign().setB$priv(true);

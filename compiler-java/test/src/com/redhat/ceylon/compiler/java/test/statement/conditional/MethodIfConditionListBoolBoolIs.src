@@ -5,7 +5,7 @@ class MethodIfConditionListBoolBoolIs {
     MethodIfConditionListBoolBoolIs() {
     }
     
-    private final boolean m(final .java.lang.Object x, final long z) {
+    private final boolean m$priv(final .java.lang.Object x, final long z) {
         boolean $ceylontmpif0 = false;
         .java.lang.Object $x$1;
         final long $x$2;
@@ -30,7 +30,7 @@ class MethodIfConditionListBoolBoolIs {
         }
     }
     
-    private final boolean synthetic(final .java.lang.Object x, final long z) {
+    private final boolean synthetic$priv(final .java.lang.Object x, final long z) {
         boolean $ceylontmpif3 = false;
         .java.lang.Object $y$4;
         final long $y$5;

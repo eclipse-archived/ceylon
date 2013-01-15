@@ -5,11 +5,11 @@ class ChainedInvocations {
     ChainedInvocations() {
     }
     
-    private final long m() {
-        return new .com.redhat.ceylon.compiler.java.test.expression.invoke.ChainedInvocations().foo();
+    private final long m$priv() {
+        return new .com.redhat.ceylon.compiler.java.test.expression.invoke.ChainedInvocations().foo$priv();
     }
     
-    private final long foo() {
+    private final long foo$priv() {
         return 1L;
     }
     

@@ -15,20 +15,20 @@ class IntegerBoxing {
         this.attrInteger = attrInteger;
     }
     
-    private final <T>T id(final T x) {
+    private final <T>T id$priv(final T x) {
         return x;
     }
     
-    private final void m() {
+    private final void m$priv() {
         long localAttrInteger = 1L;
         long localAttrOptionalInteger = 1L;
         .java.lang.Object localAttrObject = .ceylon.language.Integer.instance(1L);
         localAttrInteger = localAttrInteger;
         localAttrOptionalInteger = localAttrInteger;
         localAttrObject = .ceylon.language.Integer.instance(localAttrInteger);
-        localAttrInteger = <.ceylon.language.Integer>id(.ceylon.language.Integer.instance(1L)).longValue();
-        localAttrOptionalInteger = <.ceylon.language.Integer>id(.ceylon.language.Integer.instance(1L)).longValue();
-        localAttrObject = <.ceylon.language.Integer>id(.ceylon.language.Integer.instance(1L));
+        localAttrInteger = <.ceylon.language.Integer>id$priv(.ceylon.language.Integer.instance(1L)).longValue();
+        localAttrOptionalInteger = <.ceylon.language.Integer>id$priv(.ceylon.language.Integer.instance(1L)).longValue();
+        localAttrObject = <.ceylon.language.Integer>id$priv(.ceylon.language.Integer.instance(1L));
         final .java.lang.Object localAttrConstantObject = .ceylon.language.Integer.instance(localAttrInteger);
         final long localAttrConstantInteger = localAttrInteger;
         .java.lang.Object $localAttrConstantObject$1;
@@ -39,15 +39,15 @@ class IntegerBoxing {
         localAttrInteger = localAttrInteger + 2L;
         localAttrObject = .ceylon.language.Integer.instance(localAttrInteger + 2L);
         setAttrInteger$priv(getAttrInteger$priv() + 2L);
-        test(localAttrInteger + 2L);
-        test(getAttrInteger$priv() + 2L);
-        test(this.getAttrInteger$priv() + 2L);
+        test$priv(localAttrInteger + 2L);
+        test$priv(getAttrInteger$priv() + 2L);
+        test$priv(this.getAttrInteger$priv() + 2L);
         localAttrInteger = .ceylon.language.Integer.plus(localAttrInteger, 2L);
         setAttrInteger$priv(.ceylon.language.Integer.plus(getAttrInteger$priv(), 2L));
         this.setAttrInteger$priv(.ceylon.language.Integer.plus(this.getAttrInteger$priv(), 2L));
-        test(.ceylon.language.Integer.plus(localAttrInteger, 2L));
-        test(.ceylon.language.Integer.plus(getAttrInteger$priv(), 2L));
-        test(.ceylon.language.Integer.plus(this.getAttrInteger$priv(), 2L));
+        test$priv(.ceylon.language.Integer.plus(localAttrInteger, 2L));
+        test$priv(.ceylon.language.Integer.plus(getAttrInteger$priv(), 2L));
+        test$priv(.ceylon.language.Integer.plus(this.getAttrInteger$priv(), 2L));
         localAttrInteger = localAttrInteger++;
         setAttrInteger$priv((
             let
@@ -66,8 +66,8 @@ class IntegerBoxing {
             }
             returning $ceylontmpopV5;
         ));
-        test(localAttrInteger++);
-        test((
+        test$priv(localAttrInteger++);
+        test$priv((
             let
             {
                 long $ceylontmpop6 = getAttrInteger$priv();
@@ -75,7 +75,7 @@ class IntegerBoxing {
             }
             returning $ceylontmpop6;
         ));
-        test((
+        test$priv((
             let
             {
                 .com.redhat.ceylon.compiler.java.test.expression.boxing.IntegerBoxing $ceylontmpopE7 = this;
@@ -87,24 +87,24 @@ class IntegerBoxing {
         localAttrInteger = .ceylon.language.Integer.getSuccessor(localAttrInteger);
         setAttrInteger$priv(.ceylon.language.Integer.getSuccessor(getAttrInteger$priv()));
         this.setAttrInteger$priv(.ceylon.language.Integer.getSuccessor(this.getAttrInteger$priv()));
-        test(.ceylon.language.Integer.getSuccessor(localAttrInteger));
-        test(.ceylon.language.Integer.getSuccessor(getAttrInteger$priv()));
-        test(.ceylon.language.Integer.getSuccessor(this.getAttrInteger$priv()));
+        test$priv(.ceylon.language.Integer.getSuccessor(localAttrInteger));
+        test$priv(.ceylon.language.Integer.getSuccessor(getAttrInteger$priv()));
+        test$priv(.ceylon.language.Integer.getSuccessor(this.getAttrInteger$priv()));
         localAttrInteger = .ceylon.language.Integer.getPositiveValue(localAttrInteger);
         setAttrInteger$priv(.ceylon.language.Integer.getPositiveValue(getAttrInteger$priv()));
         this.setAttrInteger$priv(.ceylon.language.Integer.getPositiveValue(this.getAttrInteger$priv()));
-        test(.ceylon.language.Integer.getPositiveValue(localAttrInteger));
-        test(.ceylon.language.Integer.getPositiveValue(getAttrInteger$priv()));
-        test(.ceylon.language.Integer.getPositiveValue(this.getAttrInteger$priv()));
+        test$priv(.ceylon.language.Integer.getPositiveValue(localAttrInteger));
+        test$priv(.ceylon.language.Integer.getPositiveValue(getAttrInteger$priv()));
+        test$priv(.ceylon.language.Integer.getPositiveValue(this.getAttrInteger$priv()));
         localAttrInteger = -.ceylon.language.Integer.getPositiveValue(localAttrInteger);
         setAttrInteger$priv(-.ceylon.language.Integer.getPositiveValue(getAttrInteger$priv()));
         this.setAttrInteger$priv(-.ceylon.language.Integer.getPositiveValue(this.getAttrInteger$priv()));
-        test(-.ceylon.language.Integer.getPositiveValue(localAttrInteger));
-        test(-.ceylon.language.Integer.getPositiveValue(getAttrInteger$priv()));
-        test(-.ceylon.language.Integer.getPositiveValue(this.getAttrInteger$priv()));
+        test$priv(-.ceylon.language.Integer.getPositiveValue(localAttrInteger));
+        test$priv(-.ceylon.language.Integer.getPositiveValue(getAttrInteger$priv()));
+        test$priv(-.ceylon.language.Integer.getPositiveValue(this.getAttrInteger$priv()));
     }
     
-    private final void test(final long i) {
+    private final void test$priv(final long i) {
     }
     
     public static void main(.java.lang.String[] args) {

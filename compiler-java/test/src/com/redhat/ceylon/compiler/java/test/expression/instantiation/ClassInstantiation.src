@@ -43,7 +43,7 @@ class InnerClassInstantiation {
         }
     }
     
-    private final void m() {
+    private final void m$priv() {
         final .com.redhat.ceylon.compiler.java.test.expression.instantiation.InnerClassInstantiation.InnerClass x = new .com.redhat.ceylon.compiler.java.test.expression.instantiation.InnerClassInstantiation.InnerClass();
     }
     
@@ -57,7 +57,7 @@ class LocalClassInstantiation {
     LocalClassInstantiation() {
     }
     
-    private final void m() {
+    private final void m$priv() {
         
         class LocalClass {
             

@@ -41,7 +41,7 @@ class AttributeAssign {
         final boolean _b4 = b4;
     }
     
-    private final void m() {
+    private final void m$priv() {
         setB1$priv(false);
         setB2(false);
         setB3$priv(false);

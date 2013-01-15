@@ -5,7 +5,7 @@ class ImportMethodSingle {
     ImportMethodSingle() {
     }
     
-    private final void m() {
+    private final void m$priv() {
         .com.redhat.ceylon.compiler.java.test.structure.import_.pkg.m1_.m1();
     }
     

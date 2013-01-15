@@ -375,7 +375,7 @@ class OperationsOnBytes extends .com.redhat.ceylon.compiler.java.test.interop.Ty
         super();
     }
     
-    private final void m() {
+    private final void m$priv() {
         byte_attr = (byte)(byte_attr + byte_attr);
         byte_attr = (byte)(byte_attr * byte_attr);
         byte_attr = (byte)(byte_attr / byte_attr);

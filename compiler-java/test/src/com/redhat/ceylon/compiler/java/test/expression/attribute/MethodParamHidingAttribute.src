@@ -6,7 +6,7 @@ class MethodParamHidingAttribute {
         final boolean b = true;
     }
     
-    private final void m(final boolean b) {
+    private final void m$priv(final boolean b) {
         final boolean b2 = b;
     }
     

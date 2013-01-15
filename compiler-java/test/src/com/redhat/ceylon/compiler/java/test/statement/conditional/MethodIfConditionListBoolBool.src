@@ -5,7 +5,7 @@ class MethodIfConditionListBoolBool {
     MethodIfConditionListBoolBool() {
     }
     
-    private final boolean m(final long x) {
+    private final boolean m$priv(final long x) {
         boolean $ceylontmpif0 = false;
         if (x > 0L) {
             if (x < 10L) {

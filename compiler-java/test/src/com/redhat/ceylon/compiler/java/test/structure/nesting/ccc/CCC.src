@@ -5,13 +5,13 @@ class C<T extends .ceylon.language.String, X extends .ceylon.language.Boolean> {
     C() {
     }
     
-    private final <U>T m1(final X b) {
+    private final <U>T m1$priv(final X b) {
         return (
             let
             {
                 U $ceylontmp$u$1 = m1$u(b);
             }
-            returning m1(b, $ceylontmp$u$1);
+            returning m1$priv(b, $ceylontmp$u$1);
         );
     }
     
@@ -19,7 +19,7 @@ class C<T extends .ceylon.language.String, X extends .ceylon.language.Boolean> {
         return null;
     }
     
-    private final <U>T m1(final X b, final U u) {
+    private final <U>T m1$priv(final X b, final U u) {
         throw new .ceylon.language.Exception(null, null);
     }
     
@@ -33,8 +33,8 @@ class C<T extends .ceylon.language.String, X extends .ceylon.language.Boolean> {
             CCC() {
             }
             
-            private final T m2() {
-                return m1(null);
+            private final T m2$priv() {
+                return m1$priv(null);
             }
         }
     }

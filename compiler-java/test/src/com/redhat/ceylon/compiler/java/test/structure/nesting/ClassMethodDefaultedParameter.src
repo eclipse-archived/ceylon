@@ -5,12 +5,12 @@ class C<T> {
     C() {
     }
     
-    private final void m() {
+    private final void m$priv() {
         (
             let
             {
                 long $ceylontmp$i$1 = m$i();
-                m($ceylontmp$i$1);
+                m$priv($ceylontmp$i$1);
             }
             returning null;
         );
@@ -20,7 +20,7 @@ class C<T> {
         return 1L;
     }
     
-    private final void m(final long i) {
+    private final void m$priv(final long i) {
     }
     
     public final long m2() {
@@ -41,14 +41,14 @@ class C<T> {
         return i;
     }
     
-    private final long m3() {
+    private final long m3$priv() {
         return (
             let
             {
                 long $ceylontmp$i$5 = m3$i();
                 long $ceylontmp$n$6 = m3$n($ceylontmp$i$5);
             }
-            returning m3($ceylontmp$i$5, $ceylontmp$n$6);
+            returning m3$priv($ceylontmp$i$5, $ceylontmp$n$6);
         );
     }
     
@@ -56,13 +56,13 @@ class C<T> {
         return 1L;
     }
     
-    private final long m3(final long i) {
+    private final long m3$priv(final long i) {
         return (
             let
             {
                 long $ceylontmp$n$8 = m3$n(i);
             }
-            returning m3(i, $ceylontmp$n$8);
+            returning m3$priv(i, $ceylontmp$n$8);
         );
     }
     
@@ -70,17 +70,17 @@ class C<T> {
         return 2L * i;
     }
     
-    private final long m3(final long i, final long n) {
+    private final long m3$priv(final long i, final long n) {
         return i;
     }
     
-    private final long m4(final long i) {
+    private final long m4$priv(final long i) {
         return (
             let
             {
                 long $ceylontmp$n$10 = m4$n(i);
             }
-            returning m4(i, $ceylontmp$n$10);
+            returning m4$priv(i, $ceylontmp$n$10);
         );
     }
     
@@ -88,18 +88,18 @@ class C<T> {
         return 2L * i;
     }
     
-    private final long m4(final long i, final long n) {
+    private final long m4$priv(final long i, final long n) {
         return i;
     }
     
-    private final <U>long m5(final long i) {
+    private final <U>long m5$priv(final long i) {
         return (
             let
             {
                 T $ceylontmp$t$12 = m5$t(i);
                 U $ceylontmp$u$13 = m5$u(i, $ceylontmp$t$12);
             }
-            returning m5(i, $ceylontmp$t$12, $ceylontmp$u$13);
+            returning m5$priv(i, $ceylontmp$t$12, $ceylontmp$u$13);
         );
     }
     
@@ -107,13 +107,13 @@ class C<T> {
         return null;
     }
     
-    private final <U>long m5(final long i, final T t) {
+    private final <U>long m5$priv(final long i, final T t) {
         return (
             let
             {
                 U $ceylontmp$u$15 = m5$u(i, t);
             }
-            returning m5(i, t, $ceylontmp$u$15);
+            returning m5$priv(i, t, $ceylontmp$u$15);
         );
     }
     
@@ -121,33 +121,33 @@ class C<T> {
         return null;
     }
     
-    private final <U>long m5(final long i, final T t, final U u) {
+    private final <U>long m5$priv(final long i, final T t, final U u) {
         return i;
     }
     
-    private final void positional(final .com.redhat.ceylon.compiler.java.test.structure.nesting.C<.ceylon.language.Boolean> c) {
-        c.m();
-        c.m(2L);
+    private final void positional$priv(final .com.redhat.ceylon.compiler.java.test.structure.nesting.C<.ceylon.language.Boolean> c) {
+        c.m$priv();
+        c.m$priv(2L);
         c.m2();
         c.m2(2L);
-        c.m3();
-        c.m3(5L);
-        c.m3(4L, 5L);
-        c.m4(5L);
-        c.m4(4L, 5L);
-        c.<.ceylon.language.String>m5(5L);
-        c.<.ceylon.language.String>m5(5L, null);
-        c.<.ceylon.language.String>m5(5L, null, .ceylon.language.String.instance(""));
+        c.m3$priv();
+        c.m3$priv(5L);
+        c.m3$priv(4L, 5L);
+        c.m4$priv(5L);
+        c.m4$priv(4L, 5L);
+        c.<.ceylon.language.String>m5$priv(5L);
+        c.<.ceylon.language.String>m5$priv(5L, null);
+        c.<.ceylon.language.String>m5$priv(5L, null, .ceylon.language.String.instance(""));
     }
     
-    private final void named(final .com.redhat.ceylon.compiler.java.test.structure.nesting.C<.ceylon.language.Boolean> c) {
+    private final void named$priv(final .com.redhat.ceylon.compiler.java.test.structure.nesting.C<.ceylon.language.Boolean> c) {
         (
             let
             {
                 .com.redhat.ceylon.compiler.java.test.structure.nesting.C<.ceylon.language.Boolean> $arg$16$callable$ = c;
                 .com.redhat.ceylon.compiler.java.test.structure.nesting.C<.ceylon.language.Boolean> $arg$16$this$ = $arg$16$callable$;
                 long $arg$16$0 = $arg$16$this$.m$i();
-                $arg$16$callable$.m($arg$16$0);
+                $arg$16$callable$.m$priv($arg$16$0);
             }
             returning null;
         );
@@ -155,7 +155,7 @@ class C<T> {
             let
             {
                 long $arg$17$0 = 2L;
-                m($arg$17$0);
+                m$priv($arg$17$0);
             }
             returning null;
         );
@@ -175,7 +175,7 @@ class C<T> {
                 long $arg$19$0 = $arg$19$this$.m3$i();
                 long $arg$19$1 = $arg$19$this$.m3$n($arg$19$0);
             }
-            returning m3($arg$19$0, $arg$19$1);
+            returning m3$priv($arg$19$0, $arg$19$1);
         );
         (
             let
@@ -184,7 +184,7 @@ class C<T> {
                 long $arg$20$0 = 5L;
                 long $arg$20$1 = $arg$20$this$.m3$n($arg$20$0);
             }
-            returning m3($arg$20$0, $arg$20$1);
+            returning m3$priv($arg$20$0, $arg$20$1);
         );
         (
             let
@@ -192,7 +192,7 @@ class C<T> {
                 long $arg$21$0 = 4L;
                 long $arg$21$1 = 5L;
             }
-            returning m3($arg$21$0, $arg$21$1);
+            returning m3$priv($arg$21$0, $arg$21$1);
         );
         (
             let
@@ -200,7 +200,7 @@ class C<T> {
                 long $arg$22$1 = 5L;
                 long $arg$22$0 = 4L;
             }
-            returning m3($arg$22$0, $arg$22$1);
+            returning m3$priv($arg$22$0, $arg$22$1);
         );
         (
             let
@@ -209,13 +209,13 @@ class C<T> {
                 long $arg$23$1 = 5L;
                 long $arg$23$0 = $arg$23$this$.m3$i();
             }
-            returning m3($arg$23$0, $arg$23$1);
+            returning m3$priv($arg$23$0, $arg$23$1);
         );
-        m4(5L);
-        m4(4L, 5L);
-        c.<.ceylon.language.String>m5(5L);
-        <.ceylon.language.String>m5(5L, null);
-        <.ceylon.language.String>m5(5L, null, .ceylon.language.String.instance(""));
+        m4$priv(5L);
+        m4$priv(4L, 5L);
+        c.<.ceylon.language.String>m5$priv(5L);
+        <.ceylon.language.String>m5$priv(5L, null);
+        <.ceylon.language.String>m5$priv(5L, null, .ceylon.language.String.instance(""));
     }
     
     public static void main(.java.lang.String[] args) {

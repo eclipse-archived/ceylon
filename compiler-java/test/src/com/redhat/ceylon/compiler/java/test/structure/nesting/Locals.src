@@ -39,16 +39,16 @@ class Local {
     Local() {
     }
     
-    private final long mLocal() {
+    private final long mLocal$priv() {
         return 0L;
     }
     
-    private final void local() {
+    private final void local$priv() {
         (
             let
             {
                 long $ceylontmp$i$7 = local$i();
-                local($ceylontmp$i$7);
+                local$priv($ceylontmp$i$7);
             }
             returning null;
         );
@@ -58,7 +58,7 @@ class Local {
         return 0L;
     }
     
-    private final void local(final long i) {
+    private final void local$priv(final long i) {
         
         final class LC$impl {
             
@@ -94,7 +94,7 @@ class Local {
                 private final .com.redhat.ceylon.compiler.java.test.structure.nesting.Local$local$0$LC$LCI $this;
                 
                 public long m() {
-                    return mLocal() + i + j;
+                    return mLocal$priv() + i + j;
                 }
             }
             
@@ -129,7 +129,7 @@ class Local {
                 
                 @.java.lang.Override
                 public final long m() {
-                    return mLocal() + i + j + k;
+                    return mLocal$priv() + i + j + k;
                 }
             }
         }
@@ -149,7 +149,7 @@ class Local {
                 private final .com.redhat.ceylon.compiler.java.test.structure.nesting.Local$local$0$LI$LII $this;
                 
                 public long m() {
-                    return mLocal() + i;
+                    return mLocal$priv() + i;
                 }
             }
             
@@ -184,7 +184,7 @@ class Local {
                 
                 @.java.lang.Override
                 public final long m() {
-                    return mLocal() + i + j;
+                    return mLocal$priv() + i + j;
                 }
             }
         }
@@ -212,12 +212,12 @@ class Local {
         }
         private final long i;
         
-        private final void local2() {
+        private final void local2$priv() {
             (
                 let
                 {
                     long $ceylontmp$j$15 = local2$j();
-                    local2($ceylontmp$j$15);
+                    local2$priv($ceylontmp$j$15);
                 }
                 returning null;
             );
@@ -227,7 +227,7 @@ class Local {
             return 0L;
         }
         
-        private final void local2(final long j) {
+        private final void local2$priv(final long j) {
             
             final class CL$impl {
                 
@@ -263,7 +263,7 @@ class Local {
                     private final .com.redhat.ceylon.compiler.java.test.structure.nesting.Local$C$local2$1$CL$LCI $this;
                     
                     public long m() {
-                        return mLocal() + i + j + k;
+                        return mLocal$priv() + i + j + k;
                     }
                 }
                 
@@ -298,7 +298,7 @@ class Local {
                     
                     @.java.lang.Override
                     public final long m() {
-                        return mLocal() + i + j + k + l;
+                        return mLocal$priv() + i + j + k + l;
                     }
                 }
             }
@@ -312,12 +312,12 @@ class Local {
         }
         private final .com.redhat.ceylon.compiler.java.test.structure.nesting.Local$I $this;
         
-        private final void local3() {
+        private final void local3$priv() {
             (
                 let
                 {
                     long $ceylontmp$i$21 = local3$i();
-                    local3($ceylontmp$i$21);
+                    local3$priv($ceylontmp$i$21);
                 }
                 returning null;
             );
@@ -327,7 +327,7 @@ class Local {
             return 0L;
         }
         
-        private void local3(final long i) {
+        private void local3$priv(final long i) {
             
             final class IL$impl {
                 
@@ -363,7 +363,7 @@ class Local {
                     private final .com.redhat.ceylon.compiler.java.test.structure.nesting.Local$I$local3$2$IL$ICI $this;
                     
                     public long m() {
-                        return mLocal() + i + j;
+                        return mLocal$priv() + i + j;
                     }
                 }
                 
@@ -398,7 +398,7 @@ class Local {
                     
                     @.java.lang.Override
                     public final long m() {
-                        return mLocal() + i + j + k;
+                        return mLocal$priv() + i + j + k;
                     }
                 }
             }

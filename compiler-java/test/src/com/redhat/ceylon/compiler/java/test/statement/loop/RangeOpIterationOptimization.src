@@ -17,7 +17,7 @@ class OptimizedForWithRange {
         return end;
     }
     
-    private final void literals() {
+    private final void literals$priv() {
         long sum = 0L;
         final long $ceylontmpstart0 = 1L;
         final long $ceylontmpend1 = 10L;
@@ -37,7 +37,7 @@ class OptimizedForWithRange {
         }
     }
     
-    private final void expressions() {
+    private final void expressions$priv() {
         long sum = 0L;
         final long $ceylontmpstart10 = getStart$priv();
         final long $ceylontmpend11 = getEnd$priv();
@@ -57,7 +57,7 @@ class OptimizedForWithRange {
         }
     }
     
-    private final void by() {
+    private final void by$priv() {
         long sum = 0L;
         final long $ceylontmpstart20 = 1L;
         final long $ceylontmpend21 = 10L;
@@ -81,7 +81,7 @@ class OptimizedForWithRange {
         }
     }
     
-    private final void disabled() {
+    private final void disabled$priv() {
         long sum = 0L;
         .java.lang.Object $elem$32;
         for (.ceylon.language.Iterator<? extends .ceylon.language.Integer> $i$iter$33 = new .ceylon.language.Range<.ceylon.language.Integer>(.ceylon.language.Integer.instance(1L), .ceylon.language.Integer.instance(10L)).getIterator(); !(($elem$32 = $i$iter$33.next()) instanceof .ceylon.language.Finished); ) {
@@ -95,7 +95,7 @@ class OptimizedForWithRange {
         }
     }
     
-    private final void flow() {
+    private final void flow$priv() {
         long sum = 0L;
         final long $ceylontmpstart36 = 1L;
         final long $ceylontmpend37 = 10L;
@@ -225,7 +225,7 @@ class OptimizedForWithRange {
         }
     }
     
-    private final void captured() {
+    private final void captured$priv() {
         final long $ceylontmpstart95 = 0L;
         final long $ceylontmpend96 = 10L;
         final boolean $ceylontmpincreasing97 = $ceylontmpstart95 <= $ceylontmpend96;

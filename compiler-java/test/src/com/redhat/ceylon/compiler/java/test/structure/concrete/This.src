@@ -61,7 +61,7 @@ final class This$impl {
         Inner() {
         }
         
-        private final void m3() {
+        private final void m3$priv() {
             $this.m2(1L, 2L);
         }
     }

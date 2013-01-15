@@ -31,7 +31,7 @@ class CallableArgumentParameterTypeParamMixed<X> {
     CallableArgumentParameterTypeParamMixed() {
     }
     
-    private final <Y>void m() {
+    private final <Y>void m$priv() {
         .com.redhat.ceylon.compiler.java.test.expression.invoke.callableArgumentParameterTypeParamMixed_f_.<.ceylon.language.Integer, .ceylon.language.Boolean>callableArgumentParameterTypeParamMixed_f(new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.ceylon.language.Integer>("Integer(Integer, Boolean)"){
             
             @.java.lang.Override

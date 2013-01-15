@@ -15,20 +15,20 @@ class FloatBoxing {
         this.attrFloat = attrFloat;
     }
     
-    private final <T>T id(final T x) {
+    private final <T>T id$priv(final T x) {
         return x;
     }
     
-    private final void m() {
+    private final void m$priv() {
         double localAttrFloat = 1.0;
         .ceylon.language.Float localAttrOptionalFloat = .ceylon.language.Float.instance(1.0);
         .java.lang.Object localAttrObject = .ceylon.language.Float.instance(1.0);
         localAttrFloat = localAttrFloat;
         localAttrOptionalFloat = .ceylon.language.Float.instance(localAttrFloat);
         localAttrObject = .ceylon.language.Float.instance(localAttrFloat);
-        localAttrFloat = <.ceylon.language.Float>id(.ceylon.language.Float.instance(1.0)).doubleValue();
-        localAttrOptionalFloat = <.ceylon.language.Float>id(.ceylon.language.Float.instance(1.0));
-        localAttrObject = <.ceylon.language.Float>id(.ceylon.language.Float.instance(1.0));
+        localAttrFloat = <.ceylon.language.Float>id$priv(.ceylon.language.Float.instance(1.0)).doubleValue();
+        localAttrOptionalFloat = <.ceylon.language.Float>id$priv(.ceylon.language.Float.instance(1.0));
+        localAttrObject = <.ceylon.language.Float>id$priv(.ceylon.language.Float.instance(1.0));
         final .java.lang.Object localAttrConstantObject = .ceylon.language.Float.instance(localAttrFloat);
         final double localAttrConstantFloat = localAttrFloat;
         .java.lang.Object $localAttrConstantObject$1;
@@ -44,23 +44,23 @@ class FloatBoxing {
         setAttrFloat$priv(getAttrFloat$priv() + 4L);
         this.setAttrFloat$priv(this.getAttrFloat$priv() + 2.0);
         this.setAttrFloat$priv(this.getAttrFloat$priv() + 4L);
-        test(localAttrFloat + 2.0);
-        test(localAttrFloat + 4L);
-        test(localAttrFloat + 2.0);
-        test(localAttrFloat + 4L);
-        test(getAttrFloat$priv() + 2.0);
-        test(getAttrFloat$priv() + 4L);
-        test(this.getAttrFloat$priv() + 2.0);
-        test(this.getAttrFloat$priv() + 4L);
+        test$priv(localAttrFloat + 2.0);
+        test$priv(localAttrFloat + 4L);
+        test$priv(localAttrFloat + 2.0);
+        test$priv(localAttrFloat + 4L);
+        test$priv(getAttrFloat$priv() + 2.0);
+        test$priv(getAttrFloat$priv() + 4L);
+        test$priv(this.getAttrFloat$priv() + 2.0);
+        test$priv(this.getAttrFloat$priv() + 4L);
         localAttrFloat = .ceylon.language.Float.plus(localAttrFloat, 3.0);
         setAttrFloat$priv(.ceylon.language.Float.plus(getAttrFloat$priv(), 3.0));
         this.setAttrFloat$priv(.ceylon.language.Float.plus(this.getAttrFloat$priv(), 3.0));
-        test(.ceylon.language.Float.plus(localAttrFloat, 3.0));
-        test(.ceylon.language.Float.plus(getAttrFloat$priv(), 3.0));
-        test(.ceylon.language.Float.plus(this.getAttrFloat$priv(), 3.0));
+        test$priv(.ceylon.language.Float.plus(localAttrFloat, 3.0));
+        test$priv(.ceylon.language.Float.plus(getAttrFloat$priv(), 3.0));
+        test$priv(.ceylon.language.Float.plus(this.getAttrFloat$priv(), 3.0));
     }
     
-    private final void test(final double f) {
+    private final void test$priv(final double f) {
     }
     
     public static void main(.java.lang.String[] args) {

@@ -165,17 +165,17 @@ class TypeParameterErasure {
     TypeParameterErasure() {
     }
     
-    private final <T>T parameterized(final T t) {
+    private final <T>T parameterized$priv(final T t) {
         return t;
     }
     
-    private final <T extends .com.redhat.ceylon.compiler.java.test.expression.erasure.TPERight>T parameterizedWithBounds(final T t) {
+    private final <T extends .com.redhat.ceylon.compiler.java.test.expression.erasure.TPERight>T parameterizedWithBounds$priv(final T t) {
         t.right();
         t.right();
         return t;
     }
     
-    private final <T extends .com.redhat.ceylon.compiler.java.test.expression.erasure.TPELeft & .com.redhat.ceylon.compiler.java.test.expression.erasure.TPERight>T parameterizedWithIntersectionBounds(final T t) {
+    private final <T extends .com.redhat.ceylon.compiler.java.test.expression.erasure.TPELeft & .com.redhat.ceylon.compiler.java.test.expression.erasure.TPERight>T parameterizedWithIntersectionBounds$priv(final T t) {
         t.left();
         t.left();
         t.right();
@@ -183,74 +183,74 @@ class TypeParameterErasure {
         return t;
     }
     
-    private final <T>T parameterizedWithErasedBounds(final T t) {
+    private final <T>T parameterizedWithErasedBounds$priv(final T t) {
         t.equals(t);
         return t;
     }
     
-    private final <T extends .ceylon.language.Ordinal<? extends T> & .ceylon.language.Comparable<? super T>>T parameterizedWithParameterizedBounds(final T t) {
+    private final <T extends .ceylon.language.Ordinal<? extends T> & .ceylon.language.Comparable<? super T>>T parameterizedWithParameterizedBounds$priv(final T t) {
         return t;
     }
     
-    private final void testTypeParameters() {
-        final long i = <.ceylon.language.Integer>parameterized(.ceylon.language.Integer.instance(2L)).longValue();
-        final long i2 = <.ceylon.language.Integer>parameterized(.ceylon.language.Integer.instance(2L)).longValue();
-        final long n = <.ceylon.language.Integer>parameterized(.ceylon.language.Integer.instance(2L)).longValue();
-        final long n2 = <.ceylon.language.Integer>parameterized(.ceylon.language.Integer.instance(2L)).longValue();
+    private final void testTypeParameters$priv() {
+        final long i = <.ceylon.language.Integer>parameterized$priv(.ceylon.language.Integer.instance(2L)).longValue();
+        final long i2 = <.ceylon.language.Integer>parameterized$priv(.ceylon.language.Integer.instance(2L)).longValue();
+        final long n = <.ceylon.language.Integer>parameterized$priv(.ceylon.language.Integer.instance(2L)).longValue();
+        final long n2 = <.ceylon.language.Integer>parameterized$priv(.ceylon.language.Integer.instance(2L)).longValue();
         .java.lang.Object middle;
         .com.redhat.ceylon.compiler.java.test.expression.erasure.TPELeft left;
         .com.redhat.ceylon.compiler.java.test.expression.erasure.TPERight right;
         middle = new .com.redhat.ceylon.compiler.java.test.expression.erasure.TPECMiddle();
-        left = (.com.redhat.ceylon.compiler.java.test.expression.erasure.TPELeft)parameterized(middle);
-        right = (.com.redhat.ceylon.compiler.java.test.expression.erasure.TPERight)parameterized(middle);
-        middle = parameterized(middle);
-        left = <.com.redhat.ceylon.compiler.java.test.expression.erasure.TPELeft>parameterized((.com.redhat.ceylon.compiler.java.test.expression.erasure.TPELeft)middle);
-        right = <.com.redhat.ceylon.compiler.java.test.expression.erasure.TPERight>parameterized((.com.redhat.ceylon.compiler.java.test.expression.erasure.TPERight)middle);
-        left = (.com.redhat.ceylon.compiler.java.test.expression.erasure.TPELeft)parameterized(middle);
-        right = (.com.redhat.ceylon.compiler.java.test.expression.erasure.TPERight)parameterized(middle);
-        middle = parameterized(middle);
-        left = (.com.redhat.ceylon.compiler.java.test.expression.erasure.TPELeft)parameterizedWithBounds((.com.redhat.ceylon.compiler.java.test.expression.erasure.TPERight)middle);
-        right = (.com.redhat.ceylon.compiler.java.test.expression.erasure.TPERight)parameterizedWithBounds((.com.redhat.ceylon.compiler.java.test.expression.erasure.TPERight)middle);
-        middle = parameterizedWithBounds((.com.redhat.ceylon.compiler.java.test.expression.erasure.TPERight)middle);
-        left = (.com.redhat.ceylon.compiler.java.test.expression.erasure.TPELeft)parameterizedWithIntersectionBounds((.com.redhat.ceylon.compiler.java.test.expression.erasure.TPELeft)middle);
-        right = (.com.redhat.ceylon.compiler.java.test.expression.erasure.TPERight)parameterizedWithIntersectionBounds((.com.redhat.ceylon.compiler.java.test.expression.erasure.TPELeft)middle);
-        middle = parameterizedWithIntersectionBounds((.com.redhat.ceylon.compiler.java.test.expression.erasure.TPELeft)middle);
-        final .java.lang.String s = <.ceylon.language.String>parameterizedWithErasedBounds(.ceylon.language.String.instance("")).toString();
-        final .java.lang.String s2 = <.ceylon.language.String>parameterizedWithErasedBounds(.ceylon.language.String.instance("")).toString();
-        final .java.lang.Object e = <.ceylon.language.String>parameterizedWithErasedBounds(.ceylon.language.String.instance(""));
-        final .java.lang.Object e2 = parameterizedWithErasedBounds(.ceylon.language.String.instance(""));
-        <.ceylon.language.Integer>parameterizedWithParameterizedBounds(.ceylon.language.Integer.instance(2L));
-        <.ceylon.language.Integer>parameterizedWithParameterizedBounds(.ceylon.language.Integer.instance(2L));
+        left = (.com.redhat.ceylon.compiler.java.test.expression.erasure.TPELeft)parameterized$priv(middle);
+        right = (.com.redhat.ceylon.compiler.java.test.expression.erasure.TPERight)parameterized$priv(middle);
+        middle = parameterized$priv(middle);
+        left = <.com.redhat.ceylon.compiler.java.test.expression.erasure.TPELeft>parameterized$priv((.com.redhat.ceylon.compiler.java.test.expression.erasure.TPELeft)middle);
+        right = <.com.redhat.ceylon.compiler.java.test.expression.erasure.TPERight>parameterized$priv((.com.redhat.ceylon.compiler.java.test.expression.erasure.TPERight)middle);
+        left = (.com.redhat.ceylon.compiler.java.test.expression.erasure.TPELeft)parameterized$priv(middle);
+        right = (.com.redhat.ceylon.compiler.java.test.expression.erasure.TPERight)parameterized$priv(middle);
+        middle = parameterized$priv(middle);
+        left = (.com.redhat.ceylon.compiler.java.test.expression.erasure.TPELeft)parameterizedWithBounds$priv((.com.redhat.ceylon.compiler.java.test.expression.erasure.TPERight)middle);
+        right = (.com.redhat.ceylon.compiler.java.test.expression.erasure.TPERight)parameterizedWithBounds$priv((.com.redhat.ceylon.compiler.java.test.expression.erasure.TPERight)middle);
+        middle = parameterizedWithBounds$priv((.com.redhat.ceylon.compiler.java.test.expression.erasure.TPERight)middle);
+        left = (.com.redhat.ceylon.compiler.java.test.expression.erasure.TPELeft)parameterizedWithIntersectionBounds$priv((.com.redhat.ceylon.compiler.java.test.expression.erasure.TPELeft)middle);
+        right = (.com.redhat.ceylon.compiler.java.test.expression.erasure.TPERight)parameterizedWithIntersectionBounds$priv((.com.redhat.ceylon.compiler.java.test.expression.erasure.TPELeft)middle);
+        middle = parameterizedWithIntersectionBounds$priv((.com.redhat.ceylon.compiler.java.test.expression.erasure.TPELeft)middle);
+        final .java.lang.String s = <.ceylon.language.String>parameterizedWithErasedBounds$priv(.ceylon.language.String.instance("")).toString();
+        final .java.lang.String s2 = <.ceylon.language.String>parameterizedWithErasedBounds$priv(.ceylon.language.String.instance("")).toString();
+        final .java.lang.Object e = <.ceylon.language.String>parameterizedWithErasedBounds$priv(.ceylon.language.String.instance(""));
+        final .java.lang.Object e2 = parameterizedWithErasedBounds$priv(.ceylon.language.String.instance(""));
+        <.ceylon.language.Integer>parameterizedWithParameterizedBounds$priv(.ceylon.language.Integer.instance(2L));
+        <.ceylon.language.Integer>parameterizedWithParameterizedBounds$priv(.ceylon.language.Integer.instance(2L));
     }
     
-    private final void testTypeParametersNamedArguments() {
+    private final void testTypeParametersNamedArguments$priv() {
         final long i = (
             let
             {
                 .ceylon.language.Integer $arg$3$0 = .ceylon.language.Integer.instance(2L);
             }
-            returning <.ceylon.language.Integer>parameterized($arg$3$0);
+            returning <.ceylon.language.Integer>parameterized$priv($arg$3$0);
         ).longValue();
         final long i2 = (
             let
             {
                 .ceylon.language.Integer $arg$4$0 = .ceylon.language.Integer.instance(2L);
             }
-            returning <.ceylon.language.Integer>parameterized($arg$4$0);
+            returning <.ceylon.language.Integer>parameterized$priv($arg$4$0);
         ).longValue();
         final long n = (
             let
             {
                 .ceylon.language.Integer $arg$5$0 = .ceylon.language.Integer.instance(2L);
             }
-            returning <.ceylon.language.Integer>parameterized($arg$5$0);
+            returning <.ceylon.language.Integer>parameterized$priv($arg$5$0);
         ).longValue();
         final long n2 = (
             let
             {
                 .ceylon.language.Integer $arg$6$0 = .ceylon.language.Integer.instance(2L);
             }
-            returning <.ceylon.language.Integer>parameterized($arg$6$0);
+            returning <.ceylon.language.Integer>parameterized$priv($arg$6$0);
         ).longValue();
         .java.lang.Object middle;
         .com.redhat.ceylon.compiler.java.test.expression.erasure.TPELeft left;
@@ -261,140 +261,140 @@ class TypeParameterErasure {
             {
                 .java.lang.Object $arg$7$0 = middle;
             }
-            returning parameterized($arg$7$0);
+            returning parameterized$priv($arg$7$0);
         );
         right = (.com.redhat.ceylon.compiler.java.test.expression.erasure.TPERight)(
             let
             {
                 .java.lang.Object $arg$8$0 = middle;
             }
-            returning parameterized($arg$8$0);
+            returning parameterized$priv($arg$8$0);
         );
         middle = (
             let
             {
                 .java.lang.Object $arg$9$0 = middle;
             }
-            returning parameterized($arg$9$0);
+            returning parameterized$priv($arg$9$0);
         );
         left = (
             let
             {
                 .com.redhat.ceylon.compiler.java.test.expression.erasure.TPELeft $arg$10$0 = (.com.redhat.ceylon.compiler.java.test.expression.erasure.TPELeft)middle;
             }
-            returning <.com.redhat.ceylon.compiler.java.test.expression.erasure.TPELeft>parameterized($arg$10$0);
+            returning <.com.redhat.ceylon.compiler.java.test.expression.erasure.TPELeft>parameterized$priv($arg$10$0);
         );
         right = (
             let
             {
                 .com.redhat.ceylon.compiler.java.test.expression.erasure.TPERight $arg$11$0 = (.com.redhat.ceylon.compiler.java.test.expression.erasure.TPERight)middle;
             }
-            returning <.com.redhat.ceylon.compiler.java.test.expression.erasure.TPERight>parameterized($arg$11$0);
+            returning <.com.redhat.ceylon.compiler.java.test.expression.erasure.TPERight>parameterized$priv($arg$11$0);
         );
         left = (.com.redhat.ceylon.compiler.java.test.expression.erasure.TPELeft)(
             let
             {
                 .java.lang.Object $arg$12$0 = middle;
             }
-            returning parameterized($arg$12$0);
+            returning parameterized$priv($arg$12$0);
         );
         right = (.com.redhat.ceylon.compiler.java.test.expression.erasure.TPERight)(
             let
             {
                 .java.lang.Object $arg$13$0 = middle;
             }
-            returning parameterized($arg$13$0);
+            returning parameterized$priv($arg$13$0);
         );
         middle = (
             let
             {
                 .java.lang.Object $arg$14$0 = middle;
             }
-            returning parameterized($arg$14$0);
+            returning parameterized$priv($arg$14$0);
         );
         left = (.com.redhat.ceylon.compiler.java.test.expression.erasure.TPELeft)(
             let
             {
                 .com.redhat.ceylon.compiler.java.test.expression.erasure.TPERight $arg$15$0 = (.com.redhat.ceylon.compiler.java.test.expression.erasure.TPERight)middle;
             }
-            returning parameterizedWithBounds($arg$15$0);
+            returning parameterizedWithBounds$priv($arg$15$0);
         );
         right = (.com.redhat.ceylon.compiler.java.test.expression.erasure.TPERight)(
             let
             {
                 .com.redhat.ceylon.compiler.java.test.expression.erasure.TPERight $arg$16$0 = (.com.redhat.ceylon.compiler.java.test.expression.erasure.TPERight)middle;
             }
-            returning parameterizedWithBounds($arg$16$0);
+            returning parameterizedWithBounds$priv($arg$16$0);
         );
         middle = (
             let
             {
                 .com.redhat.ceylon.compiler.java.test.expression.erasure.TPERight $arg$17$0 = (.com.redhat.ceylon.compiler.java.test.expression.erasure.TPERight)middle;
             }
-            returning parameterizedWithBounds($arg$17$0);
+            returning parameterizedWithBounds$priv($arg$17$0);
         );
         left = (.com.redhat.ceylon.compiler.java.test.expression.erasure.TPELeft)(
             let
             {
                 .com.redhat.ceylon.compiler.java.test.expression.erasure.TPELeft $arg$18$0 = (.com.redhat.ceylon.compiler.java.test.expression.erasure.TPELeft)middle;
             }
-            returning parameterizedWithIntersectionBounds($arg$18$0);
+            returning parameterizedWithIntersectionBounds$priv($arg$18$0);
         );
         right = (.com.redhat.ceylon.compiler.java.test.expression.erasure.TPERight)(
             let
             {
                 .com.redhat.ceylon.compiler.java.test.expression.erasure.TPELeft $arg$19$0 = (.com.redhat.ceylon.compiler.java.test.expression.erasure.TPELeft)middle;
             }
-            returning parameterizedWithIntersectionBounds($arg$19$0);
+            returning parameterizedWithIntersectionBounds$priv($arg$19$0);
         );
         middle = (
             let
             {
                 .com.redhat.ceylon.compiler.java.test.expression.erasure.TPELeft $arg$20$0 = (.com.redhat.ceylon.compiler.java.test.expression.erasure.TPELeft)middle;
             }
-            returning parameterizedWithIntersectionBounds($arg$20$0);
+            returning parameterizedWithIntersectionBounds$priv($arg$20$0);
         );
         final .java.lang.String s = (
             let
             {
                 .ceylon.language.String $arg$21$0 = .ceylon.language.String.instance("");
             }
-            returning <.ceylon.language.String>parameterizedWithErasedBounds($arg$21$0);
+            returning <.ceylon.language.String>parameterizedWithErasedBounds$priv($arg$21$0);
         ).toString();
         final .java.lang.String s2 = (
             let
             {
                 .ceylon.language.String $arg$22$0 = .ceylon.language.String.instance("");
             }
-            returning <.ceylon.language.String>parameterizedWithErasedBounds($arg$22$0);
+            returning <.ceylon.language.String>parameterizedWithErasedBounds$priv($arg$22$0);
         ).toString();
         final .java.lang.Object e = (
             let
             {
                 .ceylon.language.String $arg$23$0 = .ceylon.language.String.instance("");
             }
-            returning <.ceylon.language.String>parameterizedWithErasedBounds($arg$23$0);
+            returning <.ceylon.language.String>parameterizedWithErasedBounds$priv($arg$23$0);
         );
         final .java.lang.Object e2 = (
             let
             {
                 .java.lang.Object $arg$24$0 = .ceylon.language.String.instance("");
             }
-            returning parameterizedWithErasedBounds($arg$24$0);
+            returning parameterizedWithErasedBounds$priv($arg$24$0);
         );
         (
             let
             {
                 .ceylon.language.Integer $arg$25$0 = .ceylon.language.Integer.instance(2L);
             }
-            returning <.ceylon.language.Integer>parameterizedWithParameterizedBounds($arg$25$0);
+            returning <.ceylon.language.Integer>parameterizedWithParameterizedBounds$priv($arg$25$0);
         );
         (
             let
             {
                 .ceylon.language.Integer $arg$26$0 = .ceylon.language.Integer.instance(2L);
             }
-            returning <.ceylon.language.Integer>parameterizedWithParameterizedBounds($arg$26$0);
+            returning <.ceylon.language.Integer>parameterizedWithParameterizedBounds$priv($arg$26$0);
         );
     }
     
@@ -448,27 +448,27 @@ class TypeParameterErasure {
             t.right();
             t.right();
             final .java.lang.Object middle = new .com.redhat.ceylon.compiler.java.test.expression.erasure.TPECMiddle();
-            requiresCastLeft(t);
+            requiresCastLeft$priv(t);
             (
                 let
                 {
                     .com.redhat.ceylon.compiler.java.test.expression.erasure.TPELeft $arg$33$0 = t;
-                    requiresCastLeft($arg$33$0);
+                    requiresCastLeft$priv($arg$33$0);
                 }
                 returning null;
             );
-            requiresCastLeft((.com.redhat.ceylon.compiler.java.test.expression.erasure.TPELeft)middle);
+            requiresCastLeft$priv((.com.redhat.ceylon.compiler.java.test.expression.erasure.TPELeft)middle);
             (
                 let
                 {
                     .com.redhat.ceylon.compiler.java.test.expression.erasure.TPELeft $arg$34$0 = (.com.redhat.ceylon.compiler.java.test.expression.erasure.TPELeft)middle;
-                    requiresCastLeft($arg$34$0);
+                    requiresCastLeft$priv($arg$34$0);
                 }
                 returning null;
             );
         }
         
-        private final void requiresCastLeft(final .com.redhat.ceylon.compiler.java.test.expression.erasure.TPELeft l) {
+        private final void requiresCastLeft$priv(final .com.redhat.ceylon.compiler.java.test.expression.erasure.TPELeft l) {
         }
     }
     
@@ -484,7 +484,7 @@ class TypeParameterErasure {
         }
     }
     
-    private final void testTypeParameterInstantiations() {
+    private final void testTypeParameterInstantiations$priv() {
         final .java.lang.Object middle = new .com.redhat.ceylon.compiler.java.test.expression.erasure.TPECMiddle();
         final .com.redhat.ceylon.compiler.java.test.expression.erasure.TPELeft left = new .com.redhat.ceylon.compiler.java.test.expression.erasure.TPECLeft();
         final .com.redhat.ceylon.compiler.java.test.expression.erasure.TypeParameterErasure.Parameterized parameterizedMiddle = new .com.redhat.ceylon.compiler.java.test.expression.erasure.TypeParameterErasure.Parameterized(middle);
@@ -513,7 +513,7 @@ class TypeParameterErasure {
         parameterizedMiddle.<.ceylon.language.Integer>parameterizedWithParameterizedBounds(.ceylon.language.Integer.instance(2L), middle);
     }
     
-    private final void testTypeParameterInstantiationsNamedArguments() {
+    private final void testTypeParameterInstantiationsNamedArguments$priv() {
         final .java.lang.Object middle = new .com.redhat.ceylon.compiler.java.test.expression.erasure.TPECMiddle();
         final .com.redhat.ceylon.compiler.java.test.expression.erasure.TPELeft left = new .com.redhat.ceylon.compiler.java.test.expression.erasure.TPECLeft();
         final .com.redhat.ceylon.compiler.java.test.expression.erasure.TypeParameterErasure.Parameterized parameterizedMiddle = (
@@ -696,7 +696,7 @@ class TypeParameterErasure {
         );
     }
     
-    private final <T extends .ceylon.language.Integer>void testPrimitiveBound(final T init) {
+    private final <T extends .ceylon.language.Integer>void testPrimitiveBound$priv(final T init) {
         T n = init;
     }
     

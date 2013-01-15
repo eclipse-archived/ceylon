@@ -5,7 +5,7 @@ class Bug620<T extends .ceylon.language.Numeric<T>> {
     Bug620() {
     }
     
-    private final void m(final .ceylon.language.Numeric<T> init) {
+    private final void m$priv(final .ceylon.language.Numeric<T> init) {
         T n = (T)init;
         n = n.plus(n);
     }

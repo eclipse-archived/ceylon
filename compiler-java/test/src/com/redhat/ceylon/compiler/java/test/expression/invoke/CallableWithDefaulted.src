@@ -323,13 +323,13 @@ class CallableWithDefaulted {
     CallableWithDefaulted() {
     }
     
-    private final void defaultedVariadic(final long a) {
+    private final void defaultedVariadic$priv(final long a) {
         (
             let
             {
                 .java.lang.String $ceylontmp$b$4 = defaultedVariadic$b(a);
                 .ceylon.language.Sequential<? extends .ceylon.language.Integer> $ceylontmp$args$5 = defaultedVariadic$args(a, $ceylontmp$b$4);
-                defaultedVariadic(a, $ceylontmp$b$4, $ceylontmp$args$5);
+                defaultedVariadic$priv(a, $ceylontmp$b$4, $ceylontmp$args$5);
             }
             returning null;
         );
@@ -339,12 +339,12 @@ class CallableWithDefaulted {
         return "b";
     }
     
-    private final void defaultedVariadic(final long a, final .java.lang.String b) {
+    private final void defaultedVariadic$priv(final long a, final .java.lang.String b) {
         (
             let
             {
                 .ceylon.language.Sequential<? extends .ceylon.language.Integer> $ceylontmp$args$7 = defaultedVariadic$args(a, b);
-                defaultedVariadic(a, b, $ceylontmp$args$7);
+                defaultedVariadic$priv(a, b, $ceylontmp$args$7);
             }
             returning null;
         );
@@ -354,10 +354,10 @@ class CallableWithDefaulted {
         return (.ceylon.language.Sequential).ceylon.language.empty_.getEmpty$();
     }
     
-    private final void defaultedVariadic(final long a, final .java.lang.String b, final .ceylon.language.Sequential<? extends .ceylon.language.Integer> args) {
+    private final void defaultedVariadic$priv(final long a, final .java.lang.String b, final .ceylon.language.Sequential<? extends .ceylon.language.Integer> args) {
     }
     
-    private final void test() {
+    private final void test$priv() {
         final .ceylon.language.Callable<? extends .java.lang.Object> f = new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.java.lang.Object>("Anything(Integer, String=, Integer*)"){
             
             @.java.lang.Override
@@ -366,7 +366,7 @@ class CallableWithDefaulted {
                 return (
                     let
                     {
-                        defaultedVariadic($$a);
+                        defaultedVariadic$priv($$a);
                     }
                     returning null;
                 );
@@ -379,7 +379,7 @@ class CallableWithDefaulted {
                 return (
                     let
                     {
-                        defaultedVariadic($$a, $$b);
+                        defaultedVariadic$priv($$a, $$b);
                     }
                     returning null;
                 );
@@ -393,7 +393,7 @@ class CallableWithDefaulted {
                 return (
                     let
                     {
-                        defaultedVariadic($$a, $$b, $$args);
+                        defaultedVariadic$priv($$a, $$b, $$args);
                     }
                     returning null;
                 );
@@ -401,12 +401,12 @@ class CallableWithDefaulted {
         };
     }
     
-    private final void methodWithDefaultCallableParam() {
+    private final void methodWithDefaultCallableParam$priv() {
         (
             let
             {
                 .ceylon.language.Callable<? extends .ceylon.language.Integer> $ceylontmp$bar$10 = methodWithDefaultCallableParam$bar();
-                methodWithDefaultCallableParam($ceylontmp$bar$10);
+                methodWithDefaultCallableParam$priv($ceylontmp$bar$10);
             }
             returning null;
         );
@@ -424,7 +424,7 @@ class CallableWithDefaulted {
         };
     }
     
-    private final void methodWithDefaultCallableParam(final .ceylon.language.Callable<? extends .ceylon.language.Integer> bar) {
+    private final void methodWithDefaultCallableParam$priv(final .ceylon.language.Callable<? extends .ceylon.language.Integer> bar) {
         (
             let
             {
@@ -437,18 +437,18 @@ class CallableWithDefaulted {
                         return a.plus(b);
                     }
                 };
-                methodWithDefaultCallableParam($arg$8$0);
+                methodWithDefaultCallableParam$priv($arg$8$0);
             }
             returning null;
         );
     }
     
-    private final void methodWithDefaultCallableParam2() {
+    private final void methodWithDefaultCallableParam2$priv() {
         (
             let
             {
                 .ceylon.language.Callable<? extends .ceylon.language.Integer> $ceylontmp$bar$12 = methodWithDefaultCallableParam2$bar();
-                methodWithDefaultCallableParam2($ceylontmp$bar$12);
+                methodWithDefaultCallableParam2$priv($ceylontmp$bar$12);
             }
             returning null;
         );
@@ -464,7 +464,7 @@ class CallableWithDefaulted {
         };
     }
     
-    private final void methodWithDefaultCallableParam2(final .ceylon.language.Callable<? extends .ceylon.language.Integer> bar) {
+    private final void methodWithDefaultCallableParam2$priv(final .ceylon.language.Callable<? extends .ceylon.language.Integer> bar) {
     }
     
     public static void main(.java.lang.String[] args) {

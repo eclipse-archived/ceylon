@@ -184,7 +184,7 @@ class MethodRefinementWithSpecifiers_Class implements .com.redhat.ceylon.compile
         return InnerShared$new();
     }
     
-    private final void takesParam(final long i) {
+    private final void takesParam$priv(final long i) {
     }
     
     @.java.lang.Override
@@ -192,7 +192,7 @@ class MethodRefinementWithSpecifiers_Class implements .com.redhat.ceylon.compile
         return (
             let
             {
-                takesParam(i);
+                takesParam$priv(i);
             }
             returning null;
         );
@@ -213,7 +213,7 @@ class MethodRefinementWithSpecifiers_Class implements .com.redhat.ceylon.compile
                 return (
                     let
                     {
-                        takesParam($$i);
+                        takesParam$priv($$i);
                     }
                     returning null;
                 );
@@ -337,7 +337,7 @@ final class Bug891_Interface2$impl {
         return $this.f3();
     }
     
-    private void takesParam(final long i) {
+    private void takesParam$priv(final long i) {
     }
     
     public .java.lang.Object f16() {
@@ -349,7 +349,7 @@ final class Bug891_Interface2$impl {
                 return (
                     let
                     {
-                        takesParam($$i);
+                        takesParam$priv($$i);
                     }
                     returning null;
                 );

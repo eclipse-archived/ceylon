@@ -5,35 +5,35 @@ class MethodArgumentNamedInvocationMPL {
     MethodArgumentNamedInvocationMPL() {
     }
     
-    private final void m1(final .ceylon.language.Callable<? extends .ceylon.language.Callable<? extends .ceylon.language.String>> f) {
+    private final void m1$priv(final .ceylon.language.Callable<? extends .ceylon.language.Callable<? extends .ceylon.language.String>> f) {
         final .java.lang.String s = f.$call().$call(.ceylon.language.Integer.instance(1L)).toString();
     }
     
-    private final void m2(final .ceylon.language.Callable<? extends .ceylon.language.Callable<? extends .java.lang.Object>> f) {
+    private final void m2$priv(final .ceylon.language.Callable<? extends .ceylon.language.Callable<? extends .java.lang.Object>> f) {
         final .java.lang.Object v = f.$call().$call(.ceylon.language.Integer.instance(1L));
     }
     
-    private final void m3(final .ceylon.language.Callable<? extends .ceylon.language.Callable<? extends .ceylon.language.String>> f) {
+    private final void m3$priv(final .ceylon.language.Callable<? extends .ceylon.language.Callable<? extends .ceylon.language.String>> f) {
         final .java.lang.String s = f.$call().$call(.ceylon.language.Integer.instance(1L)).toString();
     }
     
-    private final void m4(final .ceylon.language.Callable<? extends .ceylon.language.Callable<? extends .java.lang.Object>> f) {
+    private final void m4$priv(final .ceylon.language.Callable<? extends .ceylon.language.Callable<? extends .java.lang.Object>> f) {
         final .java.lang.Object v = f.$call().$call(.ceylon.language.Integer.instance(1L));
     }
     
-    private final void m5(final .ceylon.language.Callable<? extends .ceylon.language.Callable<? extends .java.lang.Object>> f) {
+    private final void m5$priv(final .ceylon.language.Callable<? extends .ceylon.language.Callable<? extends .java.lang.Object>> f) {
         final .java.lang.Object v = f.$call().$call(.ceylon.language.Integer.instance(1L));
     }
     
-    private final void m6(final .ceylon.language.Callable<? extends .ceylon.language.Callable<? extends .java.lang.Object>> f) {
+    private final void m6$priv(final .ceylon.language.Callable<? extends .ceylon.language.Callable<? extends .java.lang.Object>> f) {
         final .java.lang.Object v = f.$call().$call(.ceylon.language.Integer.instance(1L));
     }
     
-    private final void m7(final .ceylon.language.Callable<? extends .ceylon.language.Callable<? extends .ceylon.language.String>> f) {
+    private final void m7$priv(final .ceylon.language.Callable<? extends .ceylon.language.Callable<? extends .ceylon.language.String>> f) {
         final .java.lang.String s = f.$call().$call(.ceylon.language.Integer.instance(1L)).toString();
     }
     
-    private final void callsite() {
+    private final void callsite$priv() {
         (
             let
             {
@@ -51,7 +51,7 @@ class MethodArgumentNamedInvocationMPL {
                         };
                     }
                 };
-                m1($arg$0$0);
+                m1$priv($arg$0$0);
             }
             returning null;
         );
@@ -72,7 +72,7 @@ class MethodArgumentNamedInvocationMPL {
                         };
                     }
                 };
-                m2($arg$1$0);
+                m2$priv($arg$1$0);
             }
             returning null;
         );
@@ -93,7 +93,7 @@ class MethodArgumentNamedInvocationMPL {
                         };
                     }
                 };
-                m2($arg$2$0);
+                m2$priv($arg$2$0);
             }
             returning null;
         );
@@ -114,7 +114,7 @@ class MethodArgumentNamedInvocationMPL {
                         };
                     }
                 };
-                m3($arg$3$0);
+                m3$priv($arg$3$0);
             }
             returning null;
         );
@@ -135,7 +135,7 @@ class MethodArgumentNamedInvocationMPL {
                         };
                     }
                 };
-                m4($arg$4$0);
+                m4$priv($arg$4$0);
             }
             returning null;
         );
@@ -156,7 +156,7 @@ class MethodArgumentNamedInvocationMPL {
                         };
                     }
                 };
-                m4($arg$5$0);
+                m4$priv($arg$5$0);
             }
             returning null;
         );
@@ -177,7 +177,7 @@ class MethodArgumentNamedInvocationMPL {
                         };
                     }
                 };
-                m5($arg$6$0);
+                m5$priv($arg$6$0);
             }
             returning null;
         );
@@ -198,7 +198,7 @@ class MethodArgumentNamedInvocationMPL {
                         };
                     }
                 };
-                m5($arg$7$0);
+                m5$priv($arg$7$0);
             }
             returning null;
         );
@@ -219,7 +219,7 @@ class MethodArgumentNamedInvocationMPL {
                         };
                     }
                 };
-                m6($arg$8$0);
+                m6$priv($arg$8$0);
             }
             returning null;
         );
@@ -240,7 +240,7 @@ class MethodArgumentNamedInvocationMPL {
                         };
                     }
                 };
-                m6($arg$9$0);
+                m6$priv($arg$9$0);
             }
             returning null;
         );
@@ -261,7 +261,7 @@ class MethodArgumentNamedInvocationMPL {
                         };
                     }
                 };
-                m7($arg$10$0);
+                m7$priv($arg$10$0);
             }
             returning null;
         );

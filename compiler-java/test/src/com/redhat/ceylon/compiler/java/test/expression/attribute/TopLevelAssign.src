@@ -47,7 +47,7 @@ class TopLevelAssign {
     TopLevelAssign() {
     }
     
-    private final void m() {
+    private final void m$priv() {
         .com.redhat.ceylon.compiler.java.test.expression.attribute.topLevelAssignB1_.setTopLevelAssignB1(false);
         .com.redhat.ceylon.compiler.java.test.expression.attribute.topLevelAssignB2_.setTopLevelAssignB2(false);
         .com.redhat.ceylon.compiler.java.test.expression.attribute.topLevelAssignB3_.setTopLevelAssignB3(false);

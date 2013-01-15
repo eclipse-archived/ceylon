@@ -65,7 +65,7 @@ class UnionTypeInfo {
     }
     
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo(value = "com.redhat.ceylon.compiler.java.test.annotations::Foo|com.redhat.ceylon.compiler.java.test.annotations::Bar", erased = true)
-    private final .java.lang.Object method(@.com.redhat.ceylon.compiler.java.metadata.Name("methodParam")
+    private final .java.lang.Object method$priv(@.com.redhat.ceylon.compiler.java.metadata.Name("methodParam")
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo(value = "com.redhat.ceylon.compiler.java.test.annotations::Foo|com.redhat.ceylon.compiler.java.test.annotations::Bar", erased = true)
     final .java.lang.Object methodParam) {
         final .java.lang.Object val = new .com.redhat.ceylon.compiler.java.test.annotations.Foo();

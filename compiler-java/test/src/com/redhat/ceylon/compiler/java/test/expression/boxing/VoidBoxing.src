@@ -29,28 +29,28 @@ class AnythingBoxing {
         setVariableAnything$priv(getterAnything);
     }
     
-    private final void returnsvoid(final .java.lang.Object v) {
+    private final void returnsvoid$priv(final .java.lang.Object v) {
     }
     
-    private final .java.lang.Object returnsAnything(final .java.lang.Object v) {
+    private final .java.lang.Object returnsAnything$priv(final .java.lang.Object v) {
         return v;
     }
     
-    private final void callablevoid(final .ceylon.language.Callable<? extends .java.lang.Object> f) {
+    private final void callablevoid$priv(final .ceylon.language.Callable<? extends .java.lang.Object> f) {
         f.$call(getValueAnything$priv());
     }
     
-    private final .java.lang.Object callableAnything(final .ceylon.language.Callable<? extends .java.lang.Object> f) {
+    private final .java.lang.Object callableAnything$priv(final .ceylon.language.Callable<? extends .java.lang.Object> f) {
         return f.$call(getValueAnything$priv());
     }
     
-    private final void test() {
+    private final void test$priv() {
         final .java.lang.Object v1 = getValueAnything$priv();
         final .java.lang.Object v2 = getGetterAnything$priv();
         final .java.lang.Object v3 = (
             let
             {
-                returnsvoid(.ceylon.language.String.instance(""));
+                returnsvoid$priv(.ceylon.language.String.instance(""));
             }
             returning null;
         );
@@ -61,41 +61,41 @@ class AnythingBoxing {
                     let
                     {
                         .java.lang.Object $arg$0$0 = .ceylon.language.String.instance("");
-                        returnsvoid($arg$0$0);
+                        returnsvoid$priv($arg$0$0);
                     }
                     returning null;
                 );
             }
             returning null;
         );
-        final .java.lang.Object v5 = returnsAnything(.ceylon.language.String.instance(""));
+        final .java.lang.Object v5 = returnsAnything$priv(.ceylon.language.String.instance(""));
         final .java.lang.Object v6 = (
             let
             {
                 .java.lang.Object $arg$1$0 = .ceylon.language.String.instance("");
             }
-            returning returnsAnything($arg$1$0);
+            returning returnsAnything$priv($arg$1$0);
         );
-        returnsvoid((
+        returnsvoid$priv((
             let
             {
-                returnsvoid(.ceylon.language.String.instance(""));
+                returnsvoid$priv(.ceylon.language.String.instance(""));
             }
             returning null;
         ));
-        returnsvoid(returnsAnything(.ceylon.language.String.instance("")));
-        returnsAnything((
+        returnsvoid$priv(returnsAnything$priv(.ceylon.language.String.instance("")));
+        returnsAnything$priv((
             let
             {
-                returnsvoid(.ceylon.language.String.instance(""));
+                returnsvoid$priv(.ceylon.language.String.instance(""));
             }
             returning null;
         ));
-        returnsAnything(returnsAnything(.ceylon.language.String.instance("")));
+        returnsAnything$priv(returnsAnything$priv(.ceylon.language.String.instance("")));
         final .java.lang.Object v7 = (
             let
             {
-                callablevoid(new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.java.lang.Object>("Anything(Anything)"){
+                callablevoid$priv(new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.java.lang.Object>("Anything(Anything)"){
                     
                     @.java.lang.Override
                     public .java.lang.Object $call(final .java.lang.Object $param$0) {
@@ -103,7 +103,7 @@ class AnythingBoxing {
                         return (
                             let
                             {
-                                returnsvoid($$v);
+                                returnsvoid$priv($$v);
                             }
                             returning null;
                         );
@@ -115,18 +115,18 @@ class AnythingBoxing {
         final .java.lang.Object v8 = (
             let
             {
-                callablevoid(new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.java.lang.Object>("Anything(Anything)"){
+                callablevoid$priv(new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.java.lang.Object>("Anything(Anything)"){
                     
                     @.java.lang.Override
                     public .java.lang.Object $call(final .java.lang.Object $param$0) {
                         final .java.lang.Object $$v = $param$0;
-                        return returnsAnything($$v);
+                        return returnsAnything$priv($$v);
                     }
                 });
             }
             returning null;
         );
-        final .java.lang.Object v9 = callableAnything(new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.java.lang.Object>("Anything(Anything)"){
+        final .java.lang.Object v9 = callableAnything$priv(new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.java.lang.Object>("Anything(Anything)"){
             
             @.java.lang.Override
             public .java.lang.Object $call(final .java.lang.Object $param$0) {
@@ -134,24 +134,24 @@ class AnythingBoxing {
                 return (
                     let
                     {
-                        returnsvoid($$v);
+                        returnsvoid$priv($$v);
                     }
                     returning null;
                 );
             }
         });
-        final .java.lang.Object v10 = callableAnything(new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.java.lang.Object>("Anything(Anything)"){
+        final .java.lang.Object v10 = callableAnything$priv(new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.java.lang.Object>("Anything(Anything)"){
             
             @.java.lang.Override
             public .java.lang.Object $call(final .java.lang.Object $param$0) {
                 final .java.lang.Object $$v = $param$0;
-                return returnsAnything($$v);
+                return returnsAnything$priv($$v);
             }
         });
         final .java.lang.Object v11 = (
             let
             {
-                callablevoid(new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.java.lang.Object>("Anything(Anything)"){
+                callablevoid$priv(new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.java.lang.Object>("Anything(Anything)"){
                     
                     @.java.lang.Override
                     public .java.lang.Object $call(final .java.lang.Object $param$0) {
@@ -162,7 +162,7 @@ class AnythingBoxing {
             }
             returning null;
         );
-        final .java.lang.Object v12 = callableAnything(new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.java.lang.Object>("Anything(Anything)"){
+        final .java.lang.Object v12 = callableAnything$priv(new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.java.lang.Object>("Anything(Anything)"){
             
             @.java.lang.Override
             public .java.lang.Object $call(final .java.lang.Object $param$0) {
@@ -176,7 +176,7 @@ class AnythingBoxing {
         v = (
             let
             {
-                returnsvoid(.ceylon.language.String.instance(""));
+                returnsvoid$priv(.ceylon.language.String.instance(""));
             }
             returning null;
         );
@@ -187,25 +187,25 @@ class AnythingBoxing {
                     let
                     {
                         .java.lang.Object $arg$2$0 = .ceylon.language.String.instance("");
-                        returnsvoid($arg$2$0);
+                        returnsvoid$priv($arg$2$0);
                     }
                     returning null;
                 );
             }
             returning null;
         );
-        v = returnsAnything(.ceylon.language.String.instance(""));
+        v = returnsAnything$priv(.ceylon.language.String.instance(""));
         v = (
             let
             {
                 .java.lang.Object $arg$3$0 = .ceylon.language.String.instance("");
             }
-            returning returnsAnything($arg$3$0);
+            returning returnsAnything$priv($arg$3$0);
         );
         v = (
             let
             {
-                callablevoid(new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.java.lang.Object>("Anything(Anything)"){
+                callablevoid$priv(new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.java.lang.Object>("Anything(Anything)"){
                     
                     @.java.lang.Override
                     public .java.lang.Object $call(final .java.lang.Object $param$0) {
@@ -213,7 +213,7 @@ class AnythingBoxing {
                         return (
                             let
                             {
-                                returnsvoid($$v);
+                                returnsvoid$priv($$v);
                             }
                             returning null;
                         );
@@ -225,18 +225,18 @@ class AnythingBoxing {
         v = (
             let
             {
-                callablevoid(new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.java.lang.Object>("Anything(Anything)"){
+                callablevoid$priv(new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.java.lang.Object>("Anything(Anything)"){
                     
                     @.java.lang.Override
                     public .java.lang.Object $call(final .java.lang.Object $param$0) {
                         final .java.lang.Object $$v = $param$0;
-                        return returnsAnything($$v);
+                        return returnsAnything$priv($$v);
                     }
                 });
             }
             returning null;
         );
-        v = callableAnything(new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.java.lang.Object>("Anything(Anything)"){
+        v = callableAnything$priv(new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.java.lang.Object>("Anything(Anything)"){
             
             @.java.lang.Override
             public .java.lang.Object $call(final .java.lang.Object $param$0) {
@@ -244,24 +244,24 @@ class AnythingBoxing {
                 return (
                     let
                     {
-                        returnsvoid($$v);
+                        returnsvoid$priv($$v);
                     }
                     returning null;
                 );
             }
         });
-        v = callableAnything(new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.java.lang.Object>("Anything(Anything)"){
+        v = callableAnything$priv(new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.java.lang.Object>("Anything(Anything)"){
             
             @.java.lang.Override
             public .java.lang.Object $call(final .java.lang.Object $param$0) {
                 final .java.lang.Object $$v = $param$0;
-                return returnsAnything($$v);
+                return returnsAnything$priv($$v);
             }
         });
         v = (
             let
             {
-                callablevoid(new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.java.lang.Object>("Anything(Anything)"){
+                callablevoid$priv(new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.java.lang.Object>("Anything(Anything)"){
                     
                     @.java.lang.Override
                     public .java.lang.Object $call(final .java.lang.Object $param$0) {
@@ -272,7 +272,7 @@ class AnythingBoxing {
             }
             returning null;
         );
-        v = callableAnything(new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.java.lang.Object>("Anything(Anything)"){
+        v = callableAnything$priv(new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.java.lang.Object>("Anything(Anything)"){
             
             @.java.lang.Override
             public .java.lang.Object $call(final .java.lang.Object $param$0) {

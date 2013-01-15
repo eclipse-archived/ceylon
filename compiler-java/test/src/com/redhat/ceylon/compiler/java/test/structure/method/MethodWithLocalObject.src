@@ -5,7 +5,7 @@ class MethodWithLocalObject {
     MethodWithLocalObject() {
     }
     
-    private final void m() {
+    private final void m$priv() {
         final .java.lang.String ss = "foo";
         
         final class y_ {

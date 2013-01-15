@@ -5,17 +5,17 @@ class TryFinally {
     TryFinally() {
     }
     
-    private final void t() {
+    private final void t$priv() {
     }
     
-    private final void f() {
+    private final void f$priv() {
     }
     
-    private final void m() {
+    private final void m$priv() {
         try {
-            t();
+            t$priv();
         } finally {
-            f();
+            f$priv();
         }
     }
     

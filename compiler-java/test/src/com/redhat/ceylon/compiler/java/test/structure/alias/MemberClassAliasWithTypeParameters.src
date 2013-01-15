@@ -77,7 +77,7 @@ public class MemberClassAliasWithTypeParameters_Foo<C> {
     }
     
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Anything")
-    private final void test() {
+    private final void test$priv() {
         final .com.redhat.ceylon.compiler.java.test.structure.alias.MemberClassAliasWithTypeParameters_Foo<C>.Member<.ceylon.language.Integer> m1 = MemberClassAlias1$new(.ceylon.language.Integer.instance(1L));
         final .com.redhat.ceylon.compiler.java.test.structure.alias.MemberClassAliasWithTypeParameters_Foo<C>.Member<.ceylon.language.Integer> m2 = MemberClassAlias2$new(.ceylon.language.Integer.instance(1L));
         final .com.redhat.ceylon.compiler.java.test.structure.alias.MemberClassAliasWithTypeParameters_Foo<C>.Member<C> m3 = MemberClassAlias3$new(c);

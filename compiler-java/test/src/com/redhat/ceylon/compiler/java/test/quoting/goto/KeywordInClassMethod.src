@@ -5,7 +5,7 @@ class KeywordInMethod {
     KeywordInMethod() {
     }
     
-    private final void $goto() {
+    private final void goto$priv() {
     }
     
     public static void main(.java.lang.String[] args) {

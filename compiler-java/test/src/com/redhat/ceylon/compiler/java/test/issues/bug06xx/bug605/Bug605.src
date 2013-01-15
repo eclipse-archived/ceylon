@@ -79,7 +79,7 @@ class Bug605cls {
     Bug605cls() {
     }
     
-    private final void mth() {
+    private final void mth$priv() {
         
         final class hash$getter_ {
             

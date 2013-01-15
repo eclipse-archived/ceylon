@@ -5,7 +5,7 @@ class MethodTypeParams {
     MethodTypeParams() {
     }
     
-    private final <U, V>U f(final U u, final V v) {
+    private final <U, V>U f$priv(final U u, final V v) {
         return u;
     }
     

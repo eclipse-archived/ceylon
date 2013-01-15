@@ -5,49 +5,49 @@ class MethodIfIsNull {
     MethodIfIsNull() {
     }
     
-    private final long owt(final .ceylon.language.Integer n) {
+    private final long owt$priv(final .ceylon.language.Integer n) {
         return 0L;
     }
     
-    private final long nowt(final .java.lang.Object n) {
+    private final long nowt$priv(final .java.lang.Object n) {
         return 0L;
     }
     
-    private final long m1(final .ceylon.language.Integer x) {
+    private final long m1$priv(final .ceylon.language.Integer x) {
         .java.lang.Object $x$1;
         if (($x$1 = x) instanceof .ceylon.language.Integer) {
             final long $x$2 = ((.ceylon.language.Integer)$x$1).longValue();
             return $x$2;
         } else {
-            return owt(x);
+            return owt$priv(x);
         }
     }
     
-    private final long m2(final .ceylon.language.Integer x) {
+    private final long m2$priv(final .ceylon.language.Integer x) {
         .java.lang.Object $y$4;
         if (($y$4 = x) instanceof .ceylon.language.Integer) {
             final long $y$5 = ((.ceylon.language.Integer)$y$4).longValue();
             return $y$5;
         } else {
-            return owt(x);
+            return owt$priv(x);
         }
     }
     
-    private final long m3(final .ceylon.language.Integer x) {
+    private final long m3$priv(final .ceylon.language.Integer x) {
         if (x == null) {
-            return nowt(x);
+            return nowt$priv(x);
         } else {
-            return owt(x);
+            return owt$priv(x);
         }
     }
     
-    private final long m4(final .ceylon.language.Integer x) {
+    private final long m4$priv(final .ceylon.language.Integer x) {
         .java.lang.Object $y$9;
         if (($y$9 = x) == null) {
             final .java.lang.Object $y$10 = $y$9;
-            return nowt($y$10);
+            return nowt$priv($y$10);
         } else {
-            return owt(x);
+            return owt$priv(x);
         }
     }
     

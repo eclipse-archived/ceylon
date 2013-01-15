@@ -5,20 +5,20 @@ class AssertIsWithMethod {
     AssertIsWithMethod() {
     }
     
-    private final .com.redhat.ceylon.compiler.java.test.statement.conditional.Foo give() {
+    private final .com.redhat.ceylon.compiler.java.test.statement.conditional.Foo give$priv() {
         return new .com.redhat.ceylon.compiler.java.test.statement.conditional.FooSub();
     }
     
     public final void m() {
         final .com.redhat.ceylon.compiler.java.test.statement.conditional.FooSub $y$2;
         .java.lang.Object $y$1 = null;
-        if (($y$1 = give()) instanceof .com.redhat.ceylon.compiler.java.test.statement.conditional.FooSub) {
+        if (($y$1 = give$priv()) instanceof .com.redhat.ceylon.compiler.java.test.statement.conditional.FooSub) {
             $y$2 = (.com.redhat.ceylon.compiler.java.test.statement.conditional.FooSub)$y$1;
         } else throw new .ceylon.language.AssertionException("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "is FooSub y = give()"));
         $y$2.foo();
         final .java.lang.Object $y2$5;
         .java.lang.Object $y2$4 = null;
-        if (($y2$4 = give()) == null) {
+        if (($y2$4 = give$priv()) == null) {
             $y2$5 = $y2$4;
         } else throw new .ceylon.language.AssertionException("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "is Null y2 = give()"));
     }

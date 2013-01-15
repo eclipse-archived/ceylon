@@ -5,7 +5,7 @@ class AssertConditionListIsIs {
     AssertConditionListIsIs() {
     }
     
-    private final boolean mvar(final .java.lang.Object x, final .java.lang.Object y) {
+    private final boolean mvar$priv(final .java.lang.Object x, final .java.lang.Object y) {
         .java.lang.String $ceylontmpassert0 = null;
         final long $y1$4;
         final long $x1$2;
@@ -28,7 +28,7 @@ class AssertConditionListIsIs {
         return $x1$2 == $y1$4;
     }
     
-    private final boolean m(final .java.lang.Object x, final .java.lang.Object y) {
+    private final boolean m$priv(final .java.lang.Object x, final .java.lang.Object y) {
         .java.lang.String $ceylontmpassert5 = null;
         final long $y$9;
         final long $x$7;

@@ -42,7 +42,7 @@ class Bug323 {
         }
     }
     
-    private final void m() {
+    private final void m$priv() {
         final .com.redhat.ceylon.compiler.java.test.issues.bug03xx.Bug323.Inner v1 = new .com.redhat.ceylon.compiler.java.test.issues.bug03xx.Bug323.Inner();
         final .com.redhat.ceylon.compiler.java.test.issues.bug03xx.Bug323.Inner v2 = new .com.redhat.ceylon.compiler.java.test.issues.bug03xx.Bug323.Inner(3L);
         final .com.redhat.ceylon.compiler.java.test.issues.bug03xx.Bug323.Inner v3 = this.new Inner();

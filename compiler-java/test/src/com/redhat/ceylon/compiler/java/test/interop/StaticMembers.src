@@ -65,7 +65,7 @@ class StaticMethodsAndSubClasses extends .com.redhat.ceylon.compiler.java.test.i
         super();
     }
     
-    private final void test() {
+    private final void test$priv() {
         .com.redhat.ceylon.compiler.java.test.interop.JavaWithStaticMembersSubClass.method();
         .com.redhat.ceylon.compiler.java.test.interop.JavaWithStaticMembersSubClass.method(1L);
         .com.redhat.ceylon.compiler.java.test.interop.JavaWithStaticMembers.method(1L, 2L);

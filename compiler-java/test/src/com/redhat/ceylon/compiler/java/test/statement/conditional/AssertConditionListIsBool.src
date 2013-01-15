@@ -5,7 +5,7 @@ class AssertConditionListIsBool {
     AssertConditionListIsBool() {
     }
     
-    private final void m(final .java.lang.Object x) {
+    private final void m$priv(final .java.lang.Object x) {
         .java.lang.String $ceylontmpassert0 = null;
         final .java.lang.String $x$2;
         .java.lang.Object $x$1 = null;
@@ -23,7 +23,7 @@ class AssertConditionListIsBool {
         .ceylon.language.print_.print(.ceylon.language.String.instance(.ceylon.language.String.getUppercased($x$2)));
     }
     
-    private final void mvar(final .java.lang.Object x) {
+    private final void mvar$priv(final .java.lang.Object x) {
         .java.lang.String $ceylontmpassert3 = null;
         final .java.lang.String $z$5;
         .java.lang.Object $z$4 = null;

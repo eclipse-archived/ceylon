@@ -8,18 +8,18 @@ class NamedArgumentWithEmptySequence {
             {
                 .com.redhat.ceylon.compiler.java.test.expression.invoke.NamedArgumentWithEmptySequence $arg$2$this$ = this;
                 .ceylon.language.Sequential $arg$2$0 = $arg$2$this$.m$b();
-                m($arg$2$0);
+                m$priv($arg$2$0);
             }
             returning null;
         );
     }
     
-    private final void m() {
+    private final void m$priv() {
         (
             let
             {
                 .ceylon.language.Sequential<? extends .ceylon.language.Integer> $ceylontmp$b$1 = m$b();
-                m($ceylontmp$b$1);
+                m$priv($ceylontmp$b$1);
             }
             returning null;
         );
@@ -29,7 +29,7 @@ class NamedArgumentWithEmptySequence {
         return (.ceylon.language.Sequential).ceylon.language.empty_.getEmpty$();
     }
     
-    private final void m(final .ceylon.language.Sequential<? extends .ceylon.language.Integer> b) {
+    private final void m$priv(final .ceylon.language.Sequential<? extends .ceylon.language.Integer> b) {
     }
     
     public static void main(.java.lang.String[] args) {

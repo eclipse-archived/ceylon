@@ -5,36 +5,36 @@ class CallableReturnMethod {
     CallableReturnMethod() {
     }
     
-    private final long f() {
+    private final long f$priv() {
         return 1L;
     }
     
-    private final .ceylon.language.Callable<? extends .ceylon.language.Integer> m() {
+    private final .ceylon.language.Callable<? extends .ceylon.language.Integer> m$priv() {
         return new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.ceylon.language.Integer>("Integer()"){
             
             @.java.lang.Override
             public .ceylon.language.Integer $call() {
-                return .ceylon.language.Integer.instance(f());
+                return .ceylon.language.Integer.instance(f$priv());
             }
         };
     }
     
-    private final .ceylon.language.Callable<? extends .ceylon.language.Integer> m2() {
+    private final .ceylon.language.Callable<? extends .ceylon.language.Integer> m2$priv() {
         return new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.ceylon.language.Integer>("Integer()"){
             
             @.java.lang.Override
             public .ceylon.language.Integer $call() {
-                return .ceylon.language.Integer.instance(.com.redhat.ceylon.compiler.java.test.expression.invoke.CallableReturnMethod.this.f());
+                return .ceylon.language.Integer.instance(.com.redhat.ceylon.compiler.java.test.expression.invoke.CallableReturnMethod.this.f$priv());
             }
         };
     }
     
-    private final .ceylon.language.Callable<? extends .ceylon.language.Integer> m3(final .com.redhat.ceylon.compiler.java.test.expression.invoke.CallableReturnMethod c) {
+    private final .ceylon.language.Callable<? extends .ceylon.language.Integer> m3$priv(final .com.redhat.ceylon.compiler.java.test.expression.invoke.CallableReturnMethod c) {
         return new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.ceylon.language.Integer>("Integer()"){
             
             @.java.lang.Override
             public .ceylon.language.Integer $call() {
-                return .ceylon.language.Integer.instance(c.f());
+                return .ceylon.language.Integer.instance(c.f$priv());
             }
         };
     }

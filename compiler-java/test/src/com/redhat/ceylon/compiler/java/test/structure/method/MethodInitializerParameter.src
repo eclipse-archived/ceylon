@@ -7,7 +7,7 @@ class MethodInitializerParameter<T> {
     }
     private final T t;
     
-    private final void unary(final .ceylon.language.Callable<? extends .java.lang.Object> m$) {
+    private final void unary$priv(final .ceylon.language.Callable<? extends .java.lang.Object> m$) {
         
         final class m_ {
             
@@ -32,7 +32,7 @@ class MethodInitializerParameter<T> {
         );
     }
     
-    private final void nary(final .ceylon.language.Callable<? extends .java.lang.Object> m$) {
+    private final void nary$priv(final .ceylon.language.Callable<? extends .java.lang.Object> m$) {
         
         final class m_ {
             
@@ -60,7 +60,7 @@ class MethodInitializerParameter<T> {
         );
     }
     
-    private final void sequenced(final .ceylon.language.Callable<? extends .java.lang.Object> m$) {
+    private final void sequenced$priv(final .ceylon.language.Callable<? extends .java.lang.Object> m$) {
         
         final class m_ {
             
@@ -113,7 +113,7 @@ class MethodInitializerParameter<T> {
         );
     }
     
-    private final void typeParameter(final .ceylon.language.Callable<? extends T> m$) {
+    private final void typeParameter$priv(final .ceylon.language.Callable<? extends T> m$) {
         
         final class m_ {
             
@@ -137,7 +137,7 @@ class MethodInitializerParameter<T> {
         );
     }
     
-    private final void defaultedParameter(final .ceylon.language.Callable<? extends .java.lang.Object> m$) {
+    private final void defaultedParameter$priv(final .ceylon.language.Callable<? extends .java.lang.Object> m$) {
         
         final class m_ {
             

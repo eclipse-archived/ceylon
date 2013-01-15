@@ -5,7 +5,7 @@ class Bug490 {
     Bug490() {
     }
     
-    private final void f() {
+    private final void f$priv() {
         final int c = 97;
         .ceylon.language.print_.print(.ceylon.language.String.instance(new .java.lang.StringBuilder().appendCodePoint(c).toString()));
         .ceylon.language.print_.print(.ceylon.language.String.instance(new .java.lang.StringBuilder().append("a").appendCodePoint(c).append("b").append(2L).append("c").toString()));

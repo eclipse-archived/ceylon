@@ -5,16 +5,16 @@ class CE {
     CE() {
     }
     
-    private final long call() {
+    private final long call$priv() {
         return 1L;
     }
     
-    private final .ceylon.language.Callable<? extends .ceylon.language.Integer> bar() {
+    private final .ceylon.language.Callable<? extends .ceylon.language.Integer> bar$priv() {
         return new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.ceylon.language.Integer>("Integer()"){
             
             @.java.lang.Override
             public .ceylon.language.Integer $call() {
-                return .ceylon.language.Integer.instance(call());
+                return .ceylon.language.Integer.instance(call$priv());
             }
         };
     }

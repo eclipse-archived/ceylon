@@ -17,7 +17,7 @@ class IndirectQualifiedAttributeAccess {
         return q;
     }
     
-    private final boolean test() {
+    private final boolean test$priv() {
         return getQ$priv().getB$priv();
     }
     

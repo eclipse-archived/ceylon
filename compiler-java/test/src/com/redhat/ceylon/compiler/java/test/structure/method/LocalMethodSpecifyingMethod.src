@@ -5,11 +5,11 @@ class LocalMethodSpecifyingMethod {
     LocalMethodSpecifyingMethod() {
     }
     
-    private final long bar(final .java.lang.String s) {
+    private final long bar$priv(final .java.lang.String s) {
         return 1L;
     }
     
-    private final void m() {
+    private final void m$priv() {
         
         final class foo_ {
             
@@ -17,7 +17,7 @@ class LocalMethodSpecifyingMethod {
             }
             
             long foo(final .java.lang.String x) {
-                return bar(x);
+                return bar$priv(x);
             }
         }
         final foo_ foo = new foo_();

@@ -6,16 +6,16 @@ class MethodInvocation {
     }
     
     public final void m() {
-        n();
-        o(1L);
+        n$priv();
+        o$priv(1L);
         p();
     }
     
-    private final void n() {
+    private final void n$priv() {
         return;
     }
     
-    private final long o(final long oarg) {
+    private final long o$priv(final long oarg) {
         return oarg;
     }
     

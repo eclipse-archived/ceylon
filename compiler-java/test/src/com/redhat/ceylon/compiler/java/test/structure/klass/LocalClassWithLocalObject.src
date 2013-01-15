@@ -5,7 +5,7 @@ class LocalClassWithLocalObject {
     LocalClassWithLocalObject() {
     }
     
-    private final void m() {
+    private final void m$priv() {
         
         class Inner {
             

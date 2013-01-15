@@ -17,11 +17,11 @@ class GenericBottom<T, U> {
         return attrIntersection;
     }
     
-    private final T methodTp(final T o) {
+    private final T methodTp$priv(final T o) {
         return (T).ceylon.language.nothing_.getNothing$();
     }
     
-    private final .java.lang.Object methodIntersection(final .java.lang.Object o) {
+    private final .java.lang.Object methodIntersection$priv(final .java.lang.Object o) {
         return .ceylon.language.nothing_.getNothing$();
     }
     
@@ -33,12 +33,12 @@ class GenericBottom<T, U> {
         return .ceylon.language.nothing_.getNothing$();
     }
     
-    private final void f() {
+    private final void f$priv() {
         final .com.redhat.ceylon.compiler.java.test.structure.type.GenericBottom<T, U> g = new .com.redhat.ceylon.compiler.java.test.structure.type.GenericBottom<T, U>(.ceylon.language.nothing_.getNothing$());
         T t = g.getAttrTp$priv();
         t = (T)g.getAttrIntersection$priv();
-        t = g.methodTp((T).ceylon.language.nothing_.getNothing$());
-        t = (T)g.methodIntersection(.ceylon.language.nothing_.getNothing$());
+        t = g.methodTp$priv((T).ceylon.language.nothing_.getNothing$());
+        t = (T)g.methodIntersection$priv(.ceylon.language.nothing_.getNothing$());
         t = g.getGetterTp$priv();
         t = (T)g.getGetterIntersection$priv();
     }

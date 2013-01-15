@@ -5,7 +5,7 @@ class ThrowThrowable {
     ThrowThrowable() {
     }
     
-    private final void m() {
+    private final void m$priv() {
         try {
         } catch (final .java.lang.Exception e) {
             .java.lang.Throwable $cause$1;

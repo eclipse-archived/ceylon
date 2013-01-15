@@ -5,7 +5,7 @@ class Bug687 {
     Bug687() {
     }
     
-    private final <T>void method(final .ceylon.language.Callable<? extends .java.lang.Object> foo) {
+    private final <T>void method$priv(final .ceylon.language.Callable<? extends .java.lang.Object> foo) {
     }
     
     public final <T extends .ceylon.language.Number>void sort() {
@@ -47,7 +47,7 @@ class Bug687 {
     public final void sort2(final .ceylon.language.Sequential elements) {
     }
     
-    private final void foo(final .ceylon.language.Callable<? extends .java.lang.Object> p) {
+    private final void foo$priv(final .ceylon.language.Callable<? extends .java.lang.Object> p) {
         sort((.ceylon.language.Sequential).ceylon.language.empty_.getEmpty$());
         (
             let

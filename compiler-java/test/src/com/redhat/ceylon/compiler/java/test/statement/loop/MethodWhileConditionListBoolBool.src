@@ -5,7 +5,7 @@ class MethodWhileConditionListBoolBool {
     MethodWhileConditionListBoolBool() {
     }
     
-    private final boolean m(final long x) {
+    private final boolean m$priv(final long x) {
         while (true) {
             if (x > 0L) {
                 if (x < 10L) {

@@ -32,7 +32,7 @@ abstract class ClassVariable {
     
     public abstract void setFormalvar(final .java.lang.String formalvar);
     
-    private final void m() {
+    private final void m$priv() {
         setCapturedvar$priv("new value");
     }
 }

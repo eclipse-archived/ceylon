@@ -16,7 +16,7 @@ class Bug595 {
     }
     private final .ceylon.language.Callable<? extends .ceylon.language.String> str;
     
-    private final .java.lang.String str() {
+    private final .java.lang.String str$priv() {
         return str.$call().toString();
     }
 }

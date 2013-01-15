@@ -8,7 +8,7 @@ class InitializerParamAccessWithExtends extends .java.lang.Object {
     }
     private final boolean b;
     
-    private final boolean m() {
+    private final boolean m$priv() {
         return b;
     }
     
@@ -30,7 +30,7 @@ class InitializerParamAccessWithExtends2 extends .com.redhat.ceylon.compiler.jav
     }
     private final boolean b;
     
-    private final boolean m() {
+    private final boolean m$priv() {
         return b;
     }
 }

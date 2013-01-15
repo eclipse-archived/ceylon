@@ -5,88 +5,88 @@ class Method {
     Method() {
     }
     
-    private final void $abstract() {
+    private final void abstract$priv() {
     }
     
-    private final void $boolean() {
+    private final void boolean$priv() {
     }
     
-    private final void $byte() {
+    private final void byte$priv() {
     }
     
-    private final void $char() {
+    private final void char$priv() {
     }
     
-    private final void $const() {
+    private final void const$priv() {
     }
     
-    private final void $default() {
+    private final void default$priv() {
     }
     
-    private final void $do() {
+    private final void do$priv() {
     }
     
-    private final void $double() {
+    private final void double$priv() {
     }
     
-    private final void $enum() {
+    private final void enum$priv() {
     }
     
-    private final void $final() {
+    private final void final$priv() {
     }
     
-    private final void $float() {
+    private final void float$priv() {
     }
     
-    private final void $goto() {
+    private final void goto$priv() {
     }
     
-    private final void $implements() {
+    private final void implements$priv() {
     }
     
-    private final void $instanceof() {
+    private final void instanceof$priv() {
     }
     
-    private final void $int() {
+    private final void int$priv() {
     }
     
-    private final void $long() {
+    private final void long$priv() {
     }
     
-    private final void $native() {
+    private final void native$priv() {
     }
     
-    private final void $new() {
+    private final void new$priv() {
     }
     
-    private final void $private() {
+    private final void private$priv() {
     }
     
-    private final void $protected() {
+    private final void protected$priv() {
     }
     
-    private final void $public() {
+    private final void public$priv() {
     }
     
-    private final void $short() {
+    private final void short$priv() {
     }
     
-    private final void $static() {
+    private final void static$priv() {
     }
     
-    private final void $strictfp() {
+    private final void strictfp$priv() {
     }
     
-    private final void $synchronized() {
+    private final void synchronized$priv() {
     }
     
-    private final void $throws() {
+    private final void throws$priv() {
     }
     
-    private final void $transient() {
+    private final void transient$priv() {
     }
     
-    private final void $volatile() {
+    private final void volatile$priv() {
     }
     
     public static void main(.java.lang.String[] args) {

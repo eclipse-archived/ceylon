@@ -56,10 +56,10 @@ class X {
     X() {
     }
     
-    private final void foo(final .java.lang.String s, final boolean b) {
+    private final void foo$priv(final .java.lang.String s, final boolean b) {
     }
     
-    private final void bar() {
+    private final void bar$priv() {
         
         final class foo_ {
             
@@ -85,7 +85,7 @@ class X {
                 .com.redhat.ceylon.compiler.java.test.expression.invoke.X $arg$3$callable$ = this;
                 boolean $arg$3$1 = true;
                 .java.lang.String $arg$3$0 = "a";
-                $arg$3$callable$.foo($arg$3$0, $arg$3$1);
+                $arg$3$callable$.foo$priv($arg$3$0, $arg$3$1);
             }
             returning null;
         );

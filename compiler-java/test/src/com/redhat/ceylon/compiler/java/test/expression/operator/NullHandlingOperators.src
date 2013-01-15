@@ -5,11 +5,11 @@ public class NullHandlingOperators {
     public NullHandlingOperators() {
     }
     
-    private final <T>T box(final T t) {
+    private final <T>T box$priv(final T t) {
         return t;
     }
     
-    private final void nullHandling() {
+    private final void nullHandling$priv() {
         final .ceylon.language.Integer natOrNothing1 = .ceylon.language.Integer.instance(0L);
         final .ceylon.language.Integer intOrNothing = .ceylon.language.Integer.instance(0L);
         final long n = (
@@ -24,7 +24,7 @@ public class NullHandlingOperators {
             {
                 .ceylon.language.Integer $ceylontmp1 = natOrNothing1;
             }
-            returning $ceylontmp1 != null ? $ceylontmp1 : <.ceylon.language.Integer>box(.ceylon.language.Integer.instance(0L));
+            returning $ceylontmp1 != null ? $ceylontmp1 : <.ceylon.language.Integer>box$priv(.ceylon.language.Integer.instance(0L));
         );
         .ceylon.language.Integer nullSafeMember = (
             let
@@ -64,7 +64,7 @@ public class NullHandlingOperators {
         );
     }
     
-    private final void testEmpty() {
+    private final void testEmpty$priv() {
         boolean sync = false;
         sync = (
             let
@@ -90,14 +90,14 @@ public class NullHandlingOperators {
         ));
     }
     
-    private final void testExists() {
+    private final void testExists$priv() {
         boolean sync = false;
         final .java.lang.Object foo = .ceylon.language.Boolean.instance(sync);
         sync = foo != null;
         final .ceylon.language.Boolean boxed = .ceylon.language.Boolean.instance(foo != null);
     }
     
-    private final void testThenElse() {
+    private final void testThenElse$priv() {
         final long n = 5L;
         final .ceylon.language.String foo = n > 0L ? .ceylon.language.String.instance("yes") : null;
         final .ceylon.language.String bar = (

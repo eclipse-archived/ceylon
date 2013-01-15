@@ -5,7 +5,7 @@ class InnerAttributeGetter {
     InnerAttributeGetter() {
     }
     
-    private final void m() {
+    private final void m$priv() {
         final long m = 2L;
         
         final class innerGetter$getter_ {

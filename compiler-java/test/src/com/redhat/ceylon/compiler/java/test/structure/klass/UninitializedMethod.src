@@ -7,7 +7,7 @@ public abstract class UninitializedMethod {
     }
     private .ceylon.language.Callable<? extends .ceylon.language.Integer> t;
     
-    private final long t() {
+    private final long t$priv() {
         if (t == null) throw new .com.redhat.ceylon.compiler.java.language.UninitializedMethodError(); else return t.$call().longValue();
     }
 }

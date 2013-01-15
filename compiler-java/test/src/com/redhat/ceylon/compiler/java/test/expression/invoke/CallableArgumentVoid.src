@@ -5,11 +5,11 @@ class CallableArgumentAnything {
     CallableArgumentAnything() {
     }
     
-    private final void f(final .ceylon.language.Callable<? extends .java.lang.Object> g) {
+    private final void f$priv(final .ceylon.language.Callable<? extends .java.lang.Object> g) {
         g.$call();
     }
     
-    private final void m() {
+    private final void m$priv() {
     }
     
     public .java.lang.Object m2() {
@@ -20,28 +20,28 @@ class CallableArgumentAnything {
         return .ceylon.language.Integer.instance(1L);
     }
     
-    private final void callsite() {
-        f(new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.java.lang.Object>("Anything()"){
+    private final void callsite$priv() {
+        f$priv(new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.java.lang.Object>("Anything()"){
             
             @.java.lang.Override
             public .java.lang.Object $call() {
                 return (
                     let
                     {
-                        m();
+                        m$priv();
                     }
                     returning null;
                 );
             }
         });
-        f(new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.java.lang.Object>("Anything()"){
+        f$priv(new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.java.lang.Object>("Anything()"){
             
             @.java.lang.Override
             public .java.lang.Object $call() {
                 return m2();
             }
         });
-        f(new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.java.lang.Object>("Anything()"){
+        f$priv(new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.java.lang.Object>("Anything()"){
             
             @.java.lang.Override
             public .java.lang.Object $call() {

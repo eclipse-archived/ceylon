@@ -15,13 +15,13 @@ class DeferredInitializedMethod {
     }
     private .ceylon.language.Callable<? extends .ceylon.language.String> s;
     
-    private final .java.lang.String s() {
+    private final .java.lang.String s$priv() {
         return (
             let
             {
                 .java.lang.String $ceylontmp$name$1 = s$name();
             }
-            returning s($ceylontmp$name$1);
+            returning s$priv($ceylontmp$name$1);
         );
     }
     
@@ -29,7 +29,7 @@ class DeferredInitializedMethod {
         return "world";
     }
     
-    private final .java.lang.String s(final .java.lang.String name) {
+    private final .java.lang.String s$priv(final .java.lang.String name) {
         if (s == null) throw new .com.redhat.ceylon.compiler.java.language.UninitializedMethodError(); else return s.$call(.ceylon.language.String.instance(name)).toString();
     }
     

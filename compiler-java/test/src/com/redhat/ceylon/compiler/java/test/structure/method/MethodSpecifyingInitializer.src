@@ -5,7 +5,7 @@ class MethodSpecifierType {
     MethodSpecifierType() {
     }
     
-    private final .com.redhat.ceylon.compiler.java.test.structure.method.MethodSpecifierType foo() {
+    private final .com.redhat.ceylon.compiler.java.test.structure.method.MethodSpecifierType foo$priv() {
         return new .com.redhat.ceylon.compiler.java.test.structure.method.MethodSpecifierType();
     }
     

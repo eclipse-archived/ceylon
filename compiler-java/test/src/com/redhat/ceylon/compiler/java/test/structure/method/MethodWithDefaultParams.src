@@ -11,12 +11,12 @@ class MethodWithDefaultParams {
         return prop;
     }
     
-    private final void f1() {
+    private final void f1$priv() {
         (
             let
             {
                 long $ceylontmp$n$1 = f1$n();
-                f1($ceylontmp$n$1);
+                f1$priv($ceylontmp$n$1);
             }
             returning null;
         );
@@ -26,7 +26,7 @@ class MethodWithDefaultParams {
         return 5L;
     }
     
-    private final void f1(final long n) {
+    private final void f1$priv(final long n) {
     }
     
     public final void f2(final long n) {

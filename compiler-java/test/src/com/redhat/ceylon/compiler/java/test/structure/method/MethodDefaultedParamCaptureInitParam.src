@@ -7,13 +7,13 @@ class MethodDefaultedParamCaptureInitParam {
     }
     private final .java.lang.String s;
     
-    private final .java.lang.String m() {
+    private final .java.lang.String m$priv() {
         return (
             let
             {
                 .java.lang.String $ceylontmp$t$1 = m$t();
             }
-            returning m($ceylontmp$t$1);
+            returning m$priv($ceylontmp$t$1);
         );
     }
     
@@ -21,7 +21,7 @@ class MethodDefaultedParamCaptureInitParam {
         return s;
     }
     
-    private final .java.lang.String m(final .java.lang.String t) {
+    private final .java.lang.String m$priv(final .java.lang.String t) {
         return t;
     }
 }

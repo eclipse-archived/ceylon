@@ -10,7 +10,7 @@ class IndirectInvoke<X> {
                 return (
                     let
                     {
-                        mGetter1();
+                        mGetter1$priv();
                     }
                     returning null;
                 );
@@ -20,94 +20,94 @@ class IndirectInvoke<X> {
             
             @.java.lang.Override
             public .ceylon.language.Integer $call() {
-                return .ceylon.language.Integer.instance(mGetter2());
+                return .ceylon.language.Integer.instance(mGetter2$priv());
             }
         };
         this.value3 = new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.ceylon.language.Boolean>("Boolean()"){
             
             @.java.lang.Override
             public .ceylon.language.Boolean $call() {
-                return .ceylon.language.Boolean.instance(mGetter3());
+                return .ceylon.language.Boolean.instance(mGetter3$priv());
             }
         };
         this.value4 = new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.ceylon.language.String>("String()"){
             
             @.java.lang.Override
             public .ceylon.language.String $call() {
-                return .ceylon.language.String.instance(mGetter4());
+                return .ceylon.language.String.instance(mGetter4$priv());
             }
         };
         this.value5 = new .com.redhat.ceylon.compiler.java.language.AbstractCallable<X>("X()"){
             
             @.java.lang.Override
             public X $call() {
-                return mGetter5();
+                return mGetter5$priv();
             }
         };
     }
     
-    private final void mParameter(final .ceylon.language.Callable<? extends .java.lang.Object> indirect) {
+    private final void mParameter$priv(final .ceylon.language.Callable<? extends .java.lang.Object> indirect) {
         indirect.$call();
     }
     
-    private final void mParameter2(final .ceylon.language.Callable<? extends .java.lang.Object> indirect) {
+    private final void mParameter2$priv(final .ceylon.language.Callable<? extends .java.lang.Object> indirect) {
         indirect.$call(.ceylon.language.Integer.instance(1L));
     }
     
-    private final void mParameter3(final .ceylon.language.Callable<? extends .java.lang.Object> indirect) {
+    private final void mParameter3$priv(final .ceylon.language.Callable<? extends .java.lang.Object> indirect) {
         indirect.$call(.ceylon.language.Boolean.instance(true));
     }
     
-    private final void mParameter4(final .ceylon.language.Callable<? extends .java.lang.Object> indirect) {
+    private final void mParameter4$priv(final .ceylon.language.Callable<? extends .java.lang.Object> indirect) {
         indirect.$call(.ceylon.language.String.instance(""));
     }
     
-    private final <T>void mParameter5(final .ceylon.language.Callable<? extends .java.lang.Object> indirect, final T t) {
+    private final <T>void mParameter5$priv(final .ceylon.language.Callable<? extends .java.lang.Object> indirect, final T t) {
         indirect.$call(t);
     }
     
-    private final void mLocal(final .ceylon.language.Callable<? extends .java.lang.Object> f) {
+    private final void mLocal$priv(final .ceylon.language.Callable<? extends .java.lang.Object> f) {
         final .ceylon.language.Callable<? extends .java.lang.Object> indirect = f;
         indirect.$call();
     }
     
-    private final long mLocal2(final .ceylon.language.Callable<? extends .ceylon.language.Integer> f) {
+    private final long mLocal2$priv(final .ceylon.language.Callable<? extends .ceylon.language.Integer> f) {
         final .ceylon.language.Callable<? extends .ceylon.language.Integer> indirect = f;
         return indirect.$call(.ceylon.language.Integer.instance(1L)).longValue();
     }
     
-    private final boolean mLocal3(final .ceylon.language.Callable<? extends .ceylon.language.Boolean> f) {
+    private final boolean mLocal3$priv(final .ceylon.language.Callable<? extends .ceylon.language.Boolean> f) {
         final .ceylon.language.Callable<? extends .ceylon.language.Boolean> indirect = f;
         return indirect.$call(.ceylon.language.Boolean.instance(true)).booleanValue();
     }
     
-    private final .java.lang.String mLocal4(final .ceylon.language.Callable<? extends .ceylon.language.String> f) {
+    private final .java.lang.String mLocal4$priv(final .ceylon.language.Callable<? extends .ceylon.language.String> f) {
         final .ceylon.language.Callable<? extends .ceylon.language.String> indirect = f;
         return indirect.$call(.ceylon.language.String.instance("")).toString();
     }
     
-    private final <T>T mLocal5(final .ceylon.language.Callable<? extends T> f, final T t) {
+    private final <T>T mLocal5$priv(final .ceylon.language.Callable<? extends T> f, final T t) {
         final .ceylon.language.Callable<? extends T> indirect = f;
         return indirect.$call(t);
     }
     
-    private final void mMethod(final .ceylon.language.Callable<? extends .ceylon.language.Callable<? extends .java.lang.Object>> indirect) {
+    private final void mMethod$priv(final .ceylon.language.Callable<? extends .ceylon.language.Callable<? extends .java.lang.Object>> indirect) {
         indirect.$call().$call();
     }
     
-    private final long mMethod2(final .ceylon.language.Callable<? extends .ceylon.language.Callable<? extends .ceylon.language.Integer>> indirect) {
+    private final long mMethod2$priv(final .ceylon.language.Callable<? extends .ceylon.language.Callable<? extends .ceylon.language.Integer>> indirect) {
         return indirect.$call().$call(.ceylon.language.Integer.instance(1L)).longValue();
     }
     
-    private final boolean mMethod3(final .ceylon.language.Callable<? extends .ceylon.language.Callable<? extends .ceylon.language.Boolean>> indirect) {
+    private final boolean mMethod3$priv(final .ceylon.language.Callable<? extends .ceylon.language.Callable<? extends .ceylon.language.Boolean>> indirect) {
         return indirect.$call().$call(.ceylon.language.Boolean.instance(true)).booleanValue();
     }
     
-    private final .java.lang.String mMethod4(final .ceylon.language.Callable<? extends .ceylon.language.Callable<? extends .ceylon.language.String>> indirect) {
+    private final .java.lang.String mMethod4$priv(final .ceylon.language.Callable<? extends .ceylon.language.Callable<? extends .ceylon.language.String>> indirect) {
         return indirect.$call().$call(.ceylon.language.String.instance("")).toString();
     }
     
-    private final <T>T mMethod5(final .ceylon.language.Callable<? extends .ceylon.language.Callable<? extends T>> indirect, final T t) {
+    private final <T>T mMethod5$priv(final .ceylon.language.Callable<? extends .ceylon.language.Callable<? extends T>> indirect, final T t) {
         return indirect.$call().$call(t);
     }
     
@@ -115,7 +115,7 @@ class IndirectInvoke<X> {
         throw new .ceylon.language.Exception(null, null);
     }
     
-    private final void mGetter1() {
+    private final void mGetter1$priv() {
         getGetter1$priv().$call();
     }
     
@@ -123,7 +123,7 @@ class IndirectInvoke<X> {
         throw new .ceylon.language.Exception(null, null);
     }
     
-    private final long mGetter2() {
+    private final long mGetter2$priv() {
         return getGetter2$priv().$call().longValue();
     }
     
@@ -131,7 +131,7 @@ class IndirectInvoke<X> {
         throw new .ceylon.language.Exception(null, null);
     }
     
-    private final boolean mGetter3() {
+    private final boolean mGetter3$priv() {
         return getGetter3$priv().$call().booleanValue();
     }
     
@@ -139,7 +139,7 @@ class IndirectInvoke<X> {
         throw new .ceylon.language.Exception(null, null);
     }
     
-    private final .java.lang.String mGetter4() {
+    private final .java.lang.String mGetter4$priv() {
         return getGetter4$priv().$call().toString();
     }
     
@@ -147,7 +147,7 @@ class IndirectInvoke<X> {
         throw new .ceylon.language.Exception(null, null);
     }
     
-    private final X mGetter5() {
+    private final X mGetter5$priv() {
         return getGetter5$priv().$call();
     }
     private final .ceylon.language.Callable<? extends .java.lang.Object> value1;
@@ -156,7 +156,7 @@ class IndirectInvoke<X> {
         return value1;
     }
     
-    private final void mValue1() {
+    private final void mValue1$priv() {
         getValue1$priv().$call();
     }
     private final .ceylon.language.Callable<? extends .ceylon.language.Integer> value2;
@@ -165,7 +165,7 @@ class IndirectInvoke<X> {
         return value2;
     }
     
-    private final long mValue2() {
+    private final long mValue2$priv() {
         return getValue2$priv().$call().longValue();
     }
     private final .ceylon.language.Callable<? extends .ceylon.language.Boolean> value3;
@@ -174,7 +174,7 @@ class IndirectInvoke<X> {
         return value3;
     }
     
-    private final boolean mValue3() {
+    private final boolean mValue3$priv() {
         return getValue3$priv().$call().booleanValue();
     }
     private final .ceylon.language.Callable<? extends .ceylon.language.String> value4;
@@ -183,7 +183,7 @@ class IndirectInvoke<X> {
         return value4;
     }
     
-    private final .java.lang.String mValue4() {
+    private final .java.lang.String mValue4$priv() {
         return getValue4$priv().$call().toString();
     }
     private final .ceylon.language.Callable<? extends X> value5;
@@ -192,7 +192,7 @@ class IndirectInvoke<X> {
         return value5;
     }
     
-    private final X mValue5() {
+    private final X mValue5$priv() {
         return getValue5$priv().$call();
     }
     

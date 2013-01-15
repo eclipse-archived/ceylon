@@ -5,7 +5,7 @@ class MethodWhileExists2dArray {
     MethodWhileExists2dArray() {
     }
     
-    private final void ints() {
+    private final void ints$priv() {
         final .ceylon.language.Array<.ceylon.language.Array<.ceylon.language.Integer>> t = .ceylon.language.arrayOfSize_.<.ceylon.language.Array<.ceylon.language.Integer>>arrayOfSize(.ceylon.language.Array.class, 2L, .ceylon.language.arrayOfSize_.<.ceylon.language.Integer>arrayOfSize(long.class, 2L, .ceylon.language.Integer.instance(0L)));
         while (true) {
             .ceylon.language.Array<.ceylon.language.Integer> $r$0;
@@ -16,7 +16,7 @@ class MethodWhileExists2dArray {
         }
     }
     
-    private final void strings() {
+    private final void strings$priv() {
         final .ceylon.language.Array<.ceylon.language.Array<.ceylon.language.String>> t = .ceylon.language.arrayOfSize_.<.ceylon.language.Array<.ceylon.language.String>>arrayOfSize(.ceylon.language.Array.class, 2L, .ceylon.language.arrayOfSize_.<.ceylon.language.String>arrayOfSize(.java.lang.String.class, 2L, .ceylon.language.String.instance("")));
         while (true) {
             .ceylon.language.Array<.ceylon.language.String> $r$2;
@@ -27,7 +27,7 @@ class MethodWhileExists2dArray {
         }
     }
     
-    private final void nulls() {
+    private final void nulls$priv() {
         final .ceylon.language.Array<.ceylon.language.Array<.java.lang.Object>> t = .ceylon.language.arrayOfSize_.<.ceylon.language.Array<.java.lang.Object>>arrayOfSize(.ceylon.language.Array.class, 2L, .ceylon.language.arrayOfSize_.arrayOfSize(.java.lang.Object.class, 2L, null));
         while (true) {
             .ceylon.language.Array<.java.lang.Object> $r$4;
@@ -38,7 +38,7 @@ class MethodWhileExists2dArray {
         }
     }
     
-    private final void objects(final .java.lang.Object obj) {
+    private final void objects$priv(final .java.lang.Object obj) {
         final .ceylon.language.Array<.ceylon.language.Array<.java.lang.Object>> t = .ceylon.language.arrayOfSize_.<.ceylon.language.Array<.java.lang.Object>>arrayOfSize(.ceylon.language.Array.class, 2L, .ceylon.language.arrayOfSize_.arrayOfSize(.java.lang.Object.class, 2L, obj));
         while (true) {
             .ceylon.language.Array<.java.lang.Object> $r$6;
@@ -49,7 +49,7 @@ class MethodWhileExists2dArray {
         }
     }
     
-    private final void union(final .java.lang.Object obj) {
+    private final void union$priv(final .java.lang.Object obj) {
         final .ceylon.language.Array<.ceylon.language.Array<.java.lang.Object>> t = .ceylon.language.arrayOfSize_.<.ceylon.language.Array<.java.lang.Object>>arrayOfSize(.ceylon.language.Array.class, 2L, .ceylon.language.arrayOfSize_.arrayOfSize(null, 2L, obj));
         while (true) {
             .ceylon.language.Array $r$8;

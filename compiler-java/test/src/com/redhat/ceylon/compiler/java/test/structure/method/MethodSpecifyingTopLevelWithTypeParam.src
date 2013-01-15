@@ -14,11 +14,11 @@ class MethodSpecifyingTopLevelWithTypeParam<S, T> {
     MethodSpecifyingTopLevelWithTypeParam() {
     }
     
-    private final .java.lang.String foo(final long i) {
+    private final .java.lang.String foo$priv(final long i) {
         return .com.redhat.ceylon.compiler.java.test.structure.method.methodSpecifyingTopLevelWithTypeParam_f_.<.ceylon.language.String, .ceylon.language.Integer>methodSpecifyingTopLevelWithTypeParam_f(.ceylon.language.Integer.instance(i)).toString();
     }
     
-    private final S bar(final T y) {
+    private final S bar$priv(final T y) {
         return .com.redhat.ceylon.compiler.java.test.structure.method.methodSpecifyingTopLevelWithTypeParam_f_.<S, T>methodSpecifyingTopLevelWithTypeParam_f(y);
     }
     

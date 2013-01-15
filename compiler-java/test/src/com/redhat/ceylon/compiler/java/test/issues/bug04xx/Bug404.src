@@ -5,7 +5,7 @@ class Bug404 {
     Bug404() {
     }
     
-    private final void test() {
+    private final void test$priv() {
         boolean sync;
         sync = (
             let

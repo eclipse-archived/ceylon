@@ -5,7 +5,7 @@ class SpreadMethodReference {
     SpreadMethodReference() {
     }
     
-    private final void m(final .ceylon.language.Sequential<? extends .ceylon.language.String> seq) {
+    private final void m$priv(final .ceylon.language.Sequential<? extends .ceylon.language.String> seq) {
         final .ceylon.language.Callable<? extends .ceylon.language.Sequential<? extends .ceylon.language.String>> f = new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.ceylon.language.Sequential<? extends .ceylon.language.String>>("String[](Integer)"){
             
             @.java.lang.Override

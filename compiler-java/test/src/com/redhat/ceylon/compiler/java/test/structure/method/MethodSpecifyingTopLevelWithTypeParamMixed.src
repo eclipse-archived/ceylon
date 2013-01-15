@@ -27,11 +27,11 @@ class MethodSpecifyingTopLevelWithTypeParamMixed<S, T> {
         return new .com.redhat.ceylon.compiler.java.test.structure.method.C<S>();
     }
     
-    private final .java.lang.String foo(final .java.lang.String s, final long i) {
+    private final .java.lang.String foo$priv(final .java.lang.String s, final long i) {
         return getC().<.ceylon.language.Integer>f(.ceylon.language.String.instance(s), .ceylon.language.Integer.instance(i)).toString();
     }
     
-    private final S bar(final S x, final T y) {
+    private final S bar$priv(final S x, final T y) {
         return getC2().<T>f(x, y);
     }
     

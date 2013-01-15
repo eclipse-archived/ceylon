@@ -5,7 +5,7 @@ class AssertConditionListBoolIsBool {
     AssertConditionListBoolIsBool() {
     }
     
-    private final boolean m(final .java.lang.Object x, final long z) {
+    private final boolean m$priv(final .java.lang.Object x, final long z) {
         .java.lang.String $ceylontmpassert0 = null;
         final long $x$2;
         if (z < 10L) {
@@ -28,7 +28,7 @@ class AssertConditionListBoolIsBool {
         return $x$2 == 1L;
     }
     
-    private final boolean mvar(final .java.lang.Object x, final long z) {
+    private final boolean mvar$priv(final .java.lang.Object x, final long z) {
         .java.lang.String $ceylontmpassert3 = null;
         final long $y$5;
         if (z < 10L) {

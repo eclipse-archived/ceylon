@@ -21,7 +21,7 @@ final class QualifiedInstantiationInInterface$impl<G> {
         }
     }
     
-    private void m() {
+    private void m$priv() {
         final .com.redhat.ceylon.compiler.java.test.expression.instantiation.QualifiedInstantiationInInterface<G> other = $this;
         $this.$com$redhat$ceylon$compiler$java$test$expression$instantiation$QualifiedInstantiationInInterface$impl().new Inner<.ceylon.language.Integer>("");
         other.$com$redhat$ceylon$compiler$java$test$expression$instantiation$QualifiedInstantiationInInterface$impl().new Inner<.ceylon.language.Integer>("");
@@ -43,7 +43,7 @@ final class QualifiedInstantiationInInterface$impl<G> {
         );
     }
     
-    private void m2() {
+    private void m2$priv() {
         
         final class Local$impl<T> {
             
@@ -58,7 +58,7 @@ final class QualifiedInstantiationInInterface$impl<G> {
                 }
             }
             
-            private void m3(final .com.redhat.ceylon.compiler.java.test.expression.instantiation.QualifiedInstantiationInInterface$m2$0$Local<.ceylon.language.String> l) {
+            private void m3$priv(final .com.redhat.ceylon.compiler.java.test.expression.instantiation.QualifiedInstantiationInInterface$m2$0$Local<.ceylon.language.String> l) {
                 (Local$impl<T>)$this.Local$impl().new LocalInner<.ceylon.language.Integer>("");
                 (Local$impl<.ceylon.language.String>)l.Local$impl().new LocalInner<.ceylon.language.Integer>("");
                 (

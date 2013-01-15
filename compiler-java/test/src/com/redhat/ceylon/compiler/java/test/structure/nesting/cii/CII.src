@@ -13,13 +13,13 @@ class C<T extends .ceylon.language.String, X extends .ceylon.language.Boolean> {
     C() {
     }
     
-    private final <U>T m1(final X b) {
+    private final <U>T m1$priv(final X b) {
         return (
             let
             {
                 U $ceylontmp$u$1 = m1$u(b);
             }
-            returning m1(b, $ceylontmp$u$1);
+            returning m1$priv(b, $ceylontmp$u$1);
         );
     }
     
@@ -27,7 +27,7 @@ class C<T extends .ceylon.language.String, X extends .ceylon.language.Boolean> {
         return null;
     }
     
-    private final <U>T m1(final X b, final U u) {
+    private final <U>T m1$priv(final X b, final U u) {
         throw new .ceylon.language.Exception(null, null);
     }
     
@@ -45,8 +45,8 @@ class C<T extends .ceylon.language.String, X extends .ceylon.language.Boolean> {
             }
             private final .com.redhat.ceylon.compiler.java.test.structure.nesting.cii.C$CI$CII<? extends T, ? super X> $this;
             
-            private T m2() {
-                return m1(null);
+            private T m2$priv() {
+                return m1$priv(null);
             }
         }
     }

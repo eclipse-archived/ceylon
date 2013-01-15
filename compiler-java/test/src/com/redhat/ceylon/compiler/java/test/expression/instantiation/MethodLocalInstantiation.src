@@ -5,7 +5,7 @@ class OuterClass {
     OuterClass() {
     }
     
-    private final long m() {
+    private final long m$priv() {
         
         class LocalClass {
             

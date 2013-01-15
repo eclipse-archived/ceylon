@@ -44,7 +44,7 @@ final class Bug994$impl {
         return null;
     }
     
-    private void mprivate() {
+    private void mprivate$priv() {
     }
     
     final class Inner$impl {
@@ -54,17 +54,17 @@ final class Bug994$impl {
         }
         private final .com.redhat.ceylon.compiler.java.test.issues.bug09xx.Bug994$Inner $this;
         
-        private void m2() {
+        private void m2$priv() {
             long x = 0L;
             final .ceylon.language.Integer i1 = .com.redhat.ceylon.compiler.java.test.issues.bug09xx.Bug994$impl.this.$this.get(.ceylon.language.Integer.instance(1L));
             final .ceylon.language.Integer i2 = .com.redhat.ceylon.compiler.java.test.issues.bug09xx.Bug994$impl.this.$this.get(.ceylon.language.Integer.instance(1L));
             final .ceylon.language.Integer i3 = .com.redhat.ceylon.compiler.java.test.issues.bug09xx.Bug994$impl.this.$this.get(.ceylon.language.Integer.instance(x++));
             final .ceylon.language.Integer i4 = .com.redhat.ceylon.compiler.java.test.issues.bug09xx.Bug994$impl.this.$this.get(.ceylon.language.Integer.instance(x++));
             .com.redhat.ceylon.compiler.java.test.issues.bug09xx.Bug994$impl.this.$this.m();
-            .com.redhat.ceylon.compiler.java.test.issues.bug09xx.Bug994$impl.this.$this.$com$redhat$ceylon$compiler$java$test$issues$bug09xx$Bug994$impl().mprivate();
+            .com.redhat.ceylon.compiler.java.test.issues.bug09xx.Bug994$impl.this.$this.$com$redhat$ceylon$compiler$java$test$issues$bug09xx$Bug994$impl().mprivate$priv();
             final .com.redhat.ceylon.compiler.java.test.issues.bug09xx.Bug994 foo = .com.redhat.ceylon.compiler.java.test.issues.bug09xx.Bug994$impl.this.$this;
             foo.m();
-            foo.$com$redhat$ceylon$compiler$java$test$issues$bug09xx$Bug994$impl().mprivate();
+            foo.$com$redhat$ceylon$compiler$java$test$issues$bug09xx$Bug994$impl().mprivate$priv();
         }
     }
 }

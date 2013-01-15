@@ -5,11 +5,11 @@ class ConstrainedTypeParam<T> {
     ConstrainedTypeParam() {
     }
     
-    private final void method(final .ceylon.language.Callable<? extends .java.lang.Object> f) {
+    private final void method$priv(final .ceylon.language.Callable<? extends .java.lang.Object> f) {
     }
     
-    private final void test() {
-        method(new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.java.lang.Object>("Anything(T)"){
+    private final void test$priv() {
+        method$priv(new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.java.lang.Object>("Anything(T)"){
             
             @.java.lang.Override
             public .java.lang.Object $call(final .java.lang.Object $param$0) {

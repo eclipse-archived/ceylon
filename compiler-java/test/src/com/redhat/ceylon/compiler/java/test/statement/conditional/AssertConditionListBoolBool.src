@@ -5,7 +5,7 @@ class AssertConditionListBoolBool {
     AssertConditionListBoolBool() {
     }
     
-    private final boolean m(final long x) {
+    private final boolean m$priv(final long x) {
         .java.lang.String $ceylontmpassert0 = null;
         if (x > 0L) {
             if (x < 10L) {

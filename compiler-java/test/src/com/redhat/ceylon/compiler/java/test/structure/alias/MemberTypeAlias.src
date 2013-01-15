@@ -81,28 +81,28 @@ public class MemberTypeAliasClass {
     }
     
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo(value = "com.redhat.ceylon.compiler.java.test.structure.alias::MemberTypeAliasClass.TypeAliasClass&com.redhat.ceylon.compiler.java.test.structure.alias::MemberTypeAliasClass.TypeAliasInterface", erased = true)
-    private final .java.lang.Object classAliasMethod1(@.com.redhat.ceylon.compiler.java.metadata.Name("f")
+    private final .java.lang.Object classAliasMethod1$priv(@.com.redhat.ceylon.compiler.java.metadata.Name("f")
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo(value = "com.redhat.ceylon.compiler.java.test.structure.alias::MemberTypeAliasClass.TypeAliasClass&com.redhat.ceylon.compiler.java.test.structure.alias::MemberTypeAliasClass.TypeAliasInterface", erased = true)
     final .java.lang.Object f) {
         return f;
     }
     
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo(value = "com.redhat.ceylon.compiler.java.test.structure.alias::MemberTypeAliasClass.TypeAliasClass|com.redhat.ceylon.compiler.java.test.structure.alias::MemberTypeAliasClass.TypeAliasInterface", erased = true)
-    private final .java.lang.Object classAliasMethod2(@.com.redhat.ceylon.compiler.java.metadata.Name("f")
+    private final .java.lang.Object classAliasMethod2$priv(@.com.redhat.ceylon.compiler.java.metadata.Name("f")
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo(value = "com.redhat.ceylon.compiler.java.test.structure.alias::MemberTypeAliasClass.TypeAliasClass|com.redhat.ceylon.compiler.java.test.structure.alias::MemberTypeAliasClass.TypeAliasInterface", erased = true)
     final .java.lang.Object f) {
         return f;
     }
     
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("com.redhat.ceylon.compiler.java.test.structure.alias::MemberTypeAliasClass.TypeAliasClass")
-    private final .com.redhat.ceylon.compiler.java.test.structure.alias.MemberTypeAliasClass.TypeAliasClass classAliasMethod3(@.com.redhat.ceylon.compiler.java.metadata.Name("f")
+    private final .com.redhat.ceylon.compiler.java.test.structure.alias.MemberTypeAliasClass.TypeAliasClass classAliasMethod3$priv(@.com.redhat.ceylon.compiler.java.metadata.Name("f")
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("com.redhat.ceylon.compiler.java.test.structure.alias::MemberTypeAliasClass.TypeAliasClass")
     final .com.redhat.ceylon.compiler.java.test.structure.alias.MemberTypeAliasClass.TypeAliasClass f) {
         return f;
     }
     
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("com.redhat.ceylon.compiler.java.test.structure.alias::MemberTypeAliasClass.TypeAliasInterface")
-    private final .com.redhat.ceylon.compiler.java.test.structure.alias.MemberTypeAliasClass$TypeAliasInterface classAliasMethod4(@.com.redhat.ceylon.compiler.java.metadata.Name("f")
+    private final .com.redhat.ceylon.compiler.java.test.structure.alias.MemberTypeAliasClass$TypeAliasInterface classAliasMethod4$priv(@.com.redhat.ceylon.compiler.java.metadata.Name("f")
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("com.redhat.ceylon.compiler.java.test.structure.alias::MemberTypeAliasClass.TypeAliasInterface")
     final .com.redhat.ceylon.compiler.java.test.structure.alias.MemberTypeAliasClass$TypeAliasInterface f) {
         return f;
@@ -205,19 +205,19 @@ public final class MemberTypeAliasInterface$impl {
         }
     }
     
-    private .java.lang.Object classAliasMethod1(final .java.lang.Object f) {
+    private .java.lang.Object classAliasMethod1$priv(final .java.lang.Object f) {
         return f;
     }
     
-    private .java.lang.Object classAliasMethod2(final .java.lang.Object f) {
+    private .java.lang.Object classAliasMethod2$priv(final .java.lang.Object f) {
         return f;
     }
     
-    private .com.redhat.ceylon.compiler.java.test.structure.alias.MemberTypeAliasInterface$impl.TypeAliasClass classAliasMethod3(final .com.redhat.ceylon.compiler.java.test.structure.alias.MemberTypeAliasInterface$impl.TypeAliasClass f) {
+    private .com.redhat.ceylon.compiler.java.test.structure.alias.MemberTypeAliasInterface$impl.TypeAliasClass classAliasMethod3$priv(final .com.redhat.ceylon.compiler.java.test.structure.alias.MemberTypeAliasInterface$impl.TypeAliasClass f) {
         return f;
     }
     
-    private .com.redhat.ceylon.compiler.java.test.structure.alias.MemberTypeAliasInterface$TypeAliasInterface classAliasMethod4(final .com.redhat.ceylon.compiler.java.test.structure.alias.MemberTypeAliasInterface$TypeAliasInterface f) {
+    private .com.redhat.ceylon.compiler.java.test.structure.alias.MemberTypeAliasInterface$TypeAliasInterface classAliasMethod4$priv(final .com.redhat.ceylon.compiler.java.test.structure.alias.MemberTypeAliasInterface$TypeAliasInterface f) {
         return f;
     }
 }

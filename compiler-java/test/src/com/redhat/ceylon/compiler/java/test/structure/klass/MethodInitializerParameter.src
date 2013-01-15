@@ -10,17 +10,17 @@ class MethodInitializerParameter<T> {
     }
     private final .ceylon.language.Callable<? extends .java.lang.Object> m;
     
-    private final void m(final long i) {
+    private final void m$priv(final long i) {
         m.$call(.ceylon.language.Integer.instance(i));
     }
     private final .ceylon.language.Callable<? extends .java.lang.Object> m2;
     
-    private final void m2(final long i) {
+    private final void m2$priv(final long i) {
         (
             let
             {
                 .ceylon.language.Sequential<? extends .ceylon.language.Integer> $ceylontmp$seq$1 = m2$seq(i);
-                m2(i, $ceylontmp$seq$1);
+                m2$priv(i, $ceylontmp$seq$1);
             }
             returning null;
         );
@@ -30,22 +30,22 @@ class MethodInitializerParameter<T> {
         return (.ceylon.language.Sequential).ceylon.language.empty_.getEmpty$();
     }
     
-    private final void m2(final long i, final .ceylon.language.Sequential<? extends .ceylon.language.Integer> seq) {
+    private final void m2$priv(final long i, final .ceylon.language.Sequential<? extends .ceylon.language.Integer> seq) {
         m2.$call(.ceylon.language.Integer.instance(i), seq);
     }
     private final .ceylon.language.Callable<? extends T> m3;
     
-    private final T m3(final T t) {
+    private final T m3$priv(final T t) {
         return m3.$call(t);
     }
     private final .ceylon.language.Callable<? extends .java.lang.Object> m4;
     
-    private final void m4() {
+    private final void m4$priv() {
         (
             let
             {
                 long $ceylontmp$i$3 = m4$i();
-                m4($ceylontmp$i$3);
+                m4$priv($ceylontmp$i$3);
             }
             returning null;
         );
@@ -55,7 +55,7 @@ class MethodInitializerParameter<T> {
         return 1L;
     }
     
-    private final void m4(final long i) {
+    private final void m4$priv(final long i) {
         m4.$call(.ceylon.language.Integer.instance(i));
     }
 }

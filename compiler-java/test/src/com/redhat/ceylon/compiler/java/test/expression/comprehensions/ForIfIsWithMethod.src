@@ -5,11 +5,11 @@ class ForIfIsWithMethod {
     ForIfIsWithMethod() {
     }
     
-    private final .com.redhat.ceylon.compiler.java.test.expression.comprehensions.Foo give() {
+    private final .com.redhat.ceylon.compiler.java.test.expression.comprehensions.Foo give$priv() {
         return new .com.redhat.ceylon.compiler.java.test.expression.comprehensions.FooSub();
     }
     
-    private final .java.lang.Object nowt(final .java.lang.Object n) {
+    private final .java.lang.Object nowt$priv(final .java.lang.Object n) {
         throw new .ceylon.language.Exception(null, null);
     }
     
@@ -38,7 +38,7 @@ class ForIfIsWithMethod {
                         while (true) {
                             if (!this.x()) break;
                             .java.lang.Object $y$1 = null;
-                            if (($y$1 = x.give()) instanceof .com.redhat.ceylon.compiler.java.test.expression.comprehensions.FooSub) {
+                            if (($y$1 = x.give$priv()) instanceof .com.redhat.ceylon.compiler.java.test.expression.comprehensions.FooSub) {
                                 $y$2 = (.com.redhat.ceylon.compiler.java.test.expression.comprehensions.FooSub)$y$1;
                                 break;
                             }
@@ -76,7 +76,7 @@ class ForIfIsWithMethod {
                         while (true) {
                             if (!this.x()) break;
                             .java.lang.Object $y$4 = null;
-                            if (($y$4 = x.give()) == null) {
+                            if (($y$4 = x.give$priv()) == null) {
                                 $y$5 = $y$4;
                                 break;
                             }
@@ -85,7 +85,7 @@ class ForIfIsWithMethod {
                     }
                     
                     public final .java.lang.Object next() {
-                        return this.next1() ? nowt($y$5) : .ceylon.language.finished_.getFinished$();
+                        return this.next1() ? nowt$priv($y$5) : .ceylon.language.finished_.getFinished$();
                     }
                 };
             }

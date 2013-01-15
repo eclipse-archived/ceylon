@@ -13,7 +13,7 @@ class MethodSpecifyingUnaryTopLevel {
     MethodSpecifyingUnaryTopLevel() {
     }
     
-    private final .java.lang.Object foo(final .java.lang.String s) {
+    private final .java.lang.Object foo$priv(final .java.lang.String s) {
         return (
             let
             {

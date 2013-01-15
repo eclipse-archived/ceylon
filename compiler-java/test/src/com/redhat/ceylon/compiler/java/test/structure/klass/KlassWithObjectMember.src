@@ -68,7 +68,7 @@ class KlassWithObjectMember {
         return sharedobj;
     }
     
-    private final void m() {
+    private final void m$priv() {
         getCapturedobj$priv().m();
     }
 }

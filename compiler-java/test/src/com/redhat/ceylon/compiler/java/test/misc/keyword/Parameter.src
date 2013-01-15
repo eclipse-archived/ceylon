@@ -5,88 +5,88 @@ class Parameter {
     Parameter() {
     }
     
-    private final void m1(final boolean abstract) {
+    private final void m1$priv(final boolean abstract) {
     }
     
-    private final void m3(final boolean boolean) {
+    private final void m3$priv(final boolean boolean) {
     }
     
-    private final void m4(final boolean byte) {
+    private final void m4$priv(final boolean byte) {
     }
     
-    private final void m5(final boolean char) {
+    private final void m5$priv(final boolean char) {
     }
     
-    private final void m6(final boolean const) {
+    private final void m6$priv(final boolean const) {
     }
     
-    private final void m7(final boolean default) {
+    private final void m7$priv(final boolean default) {
     }
     
-    private final void m8(final boolean do) {
+    private final void m8$priv(final boolean do) {
     }
     
-    private final void m9(final boolean double) {
+    private final void m9$priv(final boolean double) {
     }
     
-    private final void m10(final boolean enum) {
+    private final void m10$priv(final boolean enum) {
     }
     
-    private final void m11(final boolean final) {
+    private final void m11$priv(final boolean final) {
     }
     
-    private final void m12(final boolean float) {
+    private final void m12$priv(final boolean float) {
     }
     
-    private final void m13(final boolean goto) {
+    private final void m13$priv(final boolean goto) {
     }
     
-    private final void m14(final boolean implements) {
+    private final void m14$priv(final boolean implements) {
     }
     
-    private final void m15(final boolean instanceof) {
+    private final void m15$priv(final boolean instanceof) {
     }
     
-    private final void m16(final boolean int) {
+    private final void m16$priv(final boolean int) {
     }
     
-    private final void m17(final boolean long) {
+    private final void m17$priv(final boolean long) {
     }
     
-    private final void m18(final boolean native) {
+    private final void m18$priv(final boolean native) {
     }
     
-    private final void m19(final boolean new) {
+    private final void m19$priv(final boolean new) {
     }
     
-    private final void m21(final boolean private) {
+    private final void m21$priv(final boolean private) {
     }
     
-    private final void m22(final boolean protected) {
+    private final void m22$priv(final boolean protected) {
     }
     
-    private final void m23(final boolean public) {
+    private final void m23$priv(final boolean public) {
     }
     
-    private final void m24(final boolean short) {
+    private final void m24$priv(final boolean short) {
     }
     
-    private final void m25(final boolean static) {
+    private final void m25$priv(final boolean static) {
     }
     
-    private final void m26(final boolean strictfp) {
+    private final void m26$priv(final boolean strictfp) {
     }
     
-    private final void m27(final boolean synchronized) {
+    private final void m27$priv(final boolean synchronized) {
     }
     
-    private final void m28(final boolean throws) {
+    private final void m28$priv(final boolean throws) {
     }
     
-    private final void m29(final boolean transient) {
+    private final void m29$priv(final boolean transient) {
     }
     
-    private final void m30(final boolean volatile) {
+    private final void m30$priv(final boolean volatile) {
     }
     
     public static void main(.java.lang.String[] args) {

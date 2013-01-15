@@ -41,7 +41,7 @@ final class I$impl<T extends .ceylon.language.String, X extends .ceylon.language
             ICC() {
             }
             
-            private final T m2() {
+            private final T m2$priv() {
                 return $this.m1(null);
             }
         }

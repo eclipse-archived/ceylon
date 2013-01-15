@@ -5,17 +5,17 @@ class TryCatch {
     TryCatch() {
     }
     
-    private final void t() {
+    private final void t$priv() {
     }
     
-    private final void c(final .java.lang.Throwable e) {
+    private final void c$priv(final .java.lang.Throwable e) {
     }
     
-    private final void m() {
+    private final void m$priv() {
         try {
-            t();
+            t$priv();
         } catch (final .java.lang.Exception e) {
-            c(e);
+            c$priv(e);
         }
     }
     

@@ -5,7 +5,7 @@ class MethodVariable {
     MethodVariable() {
     }
     
-    private final void m() {
+    private final void m$priv() {
         .java.lang.String f;
     }
     

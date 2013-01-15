@@ -33,7 +33,7 @@ class Bug781_1<T extends .com.redhat.ceylon.compiler.java.test.issues.bug07xx.Bu
         t.i();
     }
     
-    private final <T extends .com.redhat.ceylon.compiler.java.test.issues.bug07xx.Bug781Class & .com.redhat.ceylon.compiler.java.test.issues.bug07xx.Bug781Interface>void m(final T t) {
+    private final <T extends .com.redhat.ceylon.compiler.java.test.issues.bug07xx.Bug781Class & .com.redhat.ceylon.compiler.java.test.issues.bug07xx.Bug781Interface>void m$priv(final T t) {
         t.c();
         t.i();
     }
@@ -49,7 +49,7 @@ final class Bug781_2$impl<T extends .com.redhat.ceylon.compiler.java.test.issues
     }
     private final .com.redhat.ceylon.compiler.java.test.issues.bug07xx.Bug781_2<T> $this;
     
-    private <T extends .com.redhat.ceylon.compiler.java.test.issues.bug07xx.Bug781Class & .com.redhat.ceylon.compiler.java.test.issues.bug07xx.Bug781Interface>void m(final T t) {
+    private <T extends .com.redhat.ceylon.compiler.java.test.issues.bug07xx.Bug781Class & .com.redhat.ceylon.compiler.java.test.issues.bug07xx.Bug781Interface>void m$priv(final T t) {
         t.c();
         t.i();
     }

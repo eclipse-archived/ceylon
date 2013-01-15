@@ -5,7 +5,7 @@ class MethodWhileConditionList {
     MethodWhileConditionList() {
     }
     
-    private final void m1(final long x) {
+    private final void m1$priv(final long x) {
         long a = 0L;
         while (true) {
             if (x > 0L) {
@@ -16,7 +16,7 @@ class MethodWhileConditionList {
         }
     }
     
-    private final void m2(final .java.lang.Object x, final long z) {
+    private final void m2$priv(final .java.lang.Object x, final long z) {
         long a = 0L;
         while (true) {
             .java.lang.Object $y$0;
@@ -31,7 +31,7 @@ class MethodWhileConditionList {
         }
     }
     
-    private final void m3(final .java.lang.Object x, final long z) {
+    private final void m3$priv(final .java.lang.Object x, final long z) {
         long a = 0L;
         while (true) {
             .java.lang.Object $y$2;
@@ -46,7 +46,7 @@ class MethodWhileConditionList {
         }
     }
     
-    private final void m4(final .java.lang.Object x, final long z) {
+    private final void m4$priv(final .java.lang.Object x, final long z) {
         long a = 0L;
         while (true) {
             .java.lang.Object $y$4;
@@ -61,7 +61,7 @@ class MethodWhileConditionList {
         }
     }
     
-    private final void m5(final .ceylon.language.Sequential<? extends .java.lang.Object> x) {
+    private final void m5$priv(final .ceylon.language.Sequential<? extends .java.lang.Object> x) {
         long a = 0L;
         while (true) {
             .java.lang.Object $y$8;
@@ -78,7 +78,7 @@ class MethodWhileConditionList {
         }
     }
     
-    private final void m6(final .ceylon.language.Sequential<? extends .java.lang.Object> x) {
+    private final void m6$priv(final .ceylon.language.Sequential<? extends .java.lang.Object> x) {
         long a = 0L;
         .java.lang.Object $y$11;
         if (x.get(.ceylon.language.Integer.instance(0L)) != null) {

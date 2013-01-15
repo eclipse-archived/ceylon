@@ -7,7 +7,7 @@ class KlassTypeParams<U, V> {
         this.var = vv;
     }
     
-    private final U foo(final U u, final V v) {
+    private final U foo$priv(final U u, final V v) {
         return u;
     }
     private final U attr;

@@ -39,7 +39,7 @@ final class topLevelObjectWithMembers_ {
         this.varCaptured = varCaptured;
     }
     
-    private final boolean y() {
+    private final boolean y$priv() {
         return getValCaptured$priv();
     }
     

@@ -213,7 +213,7 @@ class UpperBoundErasure1<T extends .com.redhat.ceylon.compiler.java.test.structu
     UpperBoundErasure1() {
     }
     
-    private final <T extends .com.redhat.ceylon.compiler.java.test.structure.type.ISats & .com.redhat.ceylon.compiler.java.test.structure.type.ISats2>void foo() {
+    private final <T extends .com.redhat.ceylon.compiler.java.test.structure.type.ISats & .com.redhat.ceylon.compiler.java.test.structure.type.ISats2>void foo$priv() {
     }
     
     public static void main(.java.lang.String[] args) {

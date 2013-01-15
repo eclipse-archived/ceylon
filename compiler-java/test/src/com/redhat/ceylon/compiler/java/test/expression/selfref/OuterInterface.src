@@ -17,7 +17,7 @@ final class OuterInterface$impl<T> {
     }
     private final .com.redhat.ceylon.compiler.java.test.expression.selfref.OuterInterface<T> $this;
     
-    private void $private() {
+    private void private$priv() {
     }
     
     public void sharedFinal() {
@@ -32,13 +32,13 @@ final class OuterInterface$impl<T> {
         InnerClass() {
         }
         
-        private final void m3() {
-            .com.redhat.ceylon.compiler.java.test.expression.selfref.OuterInterface$impl.this.$this.$com$redhat$ceylon$compiler$java$test$expression$selfref$OuterInterface$impl().$private();
+        private final void m3$priv() {
+            .com.redhat.ceylon.compiler.java.test.expression.selfref.OuterInterface$impl.this.$this.$com$redhat$ceylon$compiler$java$test$expression$selfref$OuterInterface$impl().private$priv();
             .com.redhat.ceylon.compiler.java.test.expression.selfref.OuterInterface$impl.this.$this.sharedFinal();
             .com.redhat.ceylon.compiler.java.test.expression.selfref.OuterInterface$impl.this.$this.sharedDefault();
             .com.redhat.ceylon.compiler.java.test.expression.selfref.OuterInterface$impl.this.$this.sharedFormal();
             final .com.redhat.ceylon.compiler.java.test.expression.selfref.OuterInterface<T> o = .com.redhat.ceylon.compiler.java.test.expression.selfref.OuterInterface$impl.this.$this;
-            o.$com$redhat$ceylon$compiler$java$test$expression$selfref$OuterInterface$impl().$private();
+            o.$com$redhat$ceylon$compiler$java$test$expression$selfref$OuterInterface$impl().private$priv();
             o.sharedFinal();
             o.sharedDefault();
             o.sharedFormal();

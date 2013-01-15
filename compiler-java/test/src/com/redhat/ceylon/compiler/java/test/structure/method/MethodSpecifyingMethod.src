@@ -5,43 +5,43 @@ class MethodSpecifierMethod {
     MethodSpecifierMethod() {
     }
     
-    private final .com.redhat.ceylon.compiler.java.test.structure.method.MethodSpecifierMethod noParam() {
+    private final .com.redhat.ceylon.compiler.java.test.structure.method.MethodSpecifierMethod noParam$priv() {
         throw new .ceylon.language.Exception(null, null);
     }
     
-    private final .com.redhat.ceylon.compiler.java.test.structure.method.MethodSpecifierMethod noParam1() {
-        return noParam();
+    private final .com.redhat.ceylon.compiler.java.test.structure.method.MethodSpecifierMethod noParam1$priv() {
+        return noParam$priv();
     }
     
-    private final .com.redhat.ceylon.compiler.java.test.structure.method.MethodSpecifierMethod noParam2() {
-        return noParam();
+    private final .com.redhat.ceylon.compiler.java.test.structure.method.MethodSpecifierMethod noParam2$priv() {
+        return noParam$priv();
     }
     
-    private final .com.redhat.ceylon.compiler.java.test.structure.method.MethodSpecifierMethod oneParam(final long i) {
+    private final .com.redhat.ceylon.compiler.java.test.structure.method.MethodSpecifierMethod oneParam$priv(final long i) {
         throw new .ceylon.language.Exception(null, null);
     }
     
-    private final .com.redhat.ceylon.compiler.java.test.structure.method.MethodSpecifierMethod oneParam1() {
-        return oneParam(1L);
+    private final .com.redhat.ceylon.compiler.java.test.structure.method.MethodSpecifierMethod oneParam1$priv() {
+        return oneParam$priv(1L);
     }
     
-    private final .com.redhat.ceylon.compiler.java.test.structure.method.MethodSpecifierMethod oneParam2() {
+    private final .com.redhat.ceylon.compiler.java.test.structure.method.MethodSpecifierMethod oneParam2$priv() {
         return (
             let
             {
                 long $arg$1$0 = 1L;
             }
-            returning oneParam($arg$1$0);
+            returning oneParam$priv($arg$1$0);
         );
     }
     
-    private final .com.redhat.ceylon.compiler.java.test.structure.method.MethodSpecifierMethod oneDefaultedParam() {
+    private final .com.redhat.ceylon.compiler.java.test.structure.method.MethodSpecifierMethod oneDefaultedParam$priv() {
         return (
             let
             {
                 long $ceylontmp$i$3 = oneDefaultedParam$i();
             }
-            returning oneDefaultedParam($ceylontmp$i$3);
+            returning oneDefaultedParam$priv($ceylontmp$i$3);
         );
     }
     
@@ -49,32 +49,32 @@ class MethodSpecifierMethod {
         return 2L;
     }
     
-    private final .com.redhat.ceylon.compiler.java.test.structure.method.MethodSpecifierMethod oneDefaultedParam(final long i) {
+    private final .com.redhat.ceylon.compiler.java.test.structure.method.MethodSpecifierMethod oneDefaultedParam$priv(final long i) {
         throw new .ceylon.language.Exception(null, null);
     }
     
-    private final .com.redhat.ceylon.compiler.java.test.structure.method.MethodSpecifierMethod oneDefaultedParam1() {
-        return oneDefaultedParam();
+    private final .com.redhat.ceylon.compiler.java.test.structure.method.MethodSpecifierMethod oneDefaultedParam1$priv() {
+        return oneDefaultedParam$priv();
     }
     
-    private final .com.redhat.ceylon.compiler.java.test.structure.method.MethodSpecifierMethod oneDefaultedParam2() {
+    private final .com.redhat.ceylon.compiler.java.test.structure.method.MethodSpecifierMethod oneDefaultedParam2$priv() {
         return (
             let
             {
                 .com.redhat.ceylon.compiler.java.test.structure.method.MethodSpecifierMethod $arg$4$this$ = this;
                 long $arg$4$0 = $arg$4$this$.oneDefaultedParam$i();
             }
-            returning oneDefaultedParam($arg$4$0);
+            returning oneDefaultedParam$priv($arg$4$0);
         );
     }
     
-    private final .com.redhat.ceylon.compiler.java.test.structure.method.MethodSpecifierMethod oneSequencedParam() {
+    private final .com.redhat.ceylon.compiler.java.test.structure.method.MethodSpecifierMethod oneSequencedParam$priv() {
         return (
             let
             {
                 .ceylon.language.Sequential<? extends .ceylon.language.Integer> $ceylontmp$i$6 = oneSequencedParam$i();
             }
-            returning oneSequencedParam($ceylontmp$i$6);
+            returning oneSequencedParam$priv($ceylontmp$i$6);
         );
     }
     
@@ -82,26 +82,26 @@ class MethodSpecifierMethod {
         return (.ceylon.language.Sequential).ceylon.language.empty_.getEmpty$();
     }
     
-    private final .com.redhat.ceylon.compiler.java.test.structure.method.MethodSpecifierMethod oneSequencedParam(final .ceylon.language.Sequential<? extends .ceylon.language.Integer> i) {
+    private final .com.redhat.ceylon.compiler.java.test.structure.method.MethodSpecifierMethod oneSequencedParam$priv(final .ceylon.language.Sequential<? extends .ceylon.language.Integer> i) {
         throw new .ceylon.language.Exception(null, null);
     }
     
-    private final .com.redhat.ceylon.compiler.java.test.structure.method.MethodSpecifierMethod oneSequencedParam1() {
-        return oneSequencedParam(new .com.redhat.ceylon.compiler.java.language.ArraySequence<.ceylon.language.Integer>(.ceylon.language.Integer.instance(1L), .ceylon.language.Integer.instance(2L)));
+    private final .com.redhat.ceylon.compiler.java.test.structure.method.MethodSpecifierMethod oneSequencedParam1$priv() {
+        return oneSequencedParam$priv(new .com.redhat.ceylon.compiler.java.language.ArraySequence<.ceylon.language.Integer>(.ceylon.language.Integer.instance(1L), .ceylon.language.Integer.instance(2L)));
     }
     
-    private final .com.redhat.ceylon.compiler.java.test.structure.method.MethodSpecifierMethod oneSequencedParam2() {
+    private final .com.redhat.ceylon.compiler.java.test.structure.method.MethodSpecifierMethod oneSequencedParam2$priv() {
         return (
             let
             {
                 .ceylon.language.Sequential $arg$7$0 = new .ceylon.language.Tuple<.ceylon.language.Integer, .ceylon.language.Integer, .ceylon.language.Tuple<.ceylon.language.Integer, ? extends .ceylon.language.Integer, ? extends .ceylon.language.Empty>>(.ceylon.language.Integer.instance(2L), new .ceylon.language.Tuple<.ceylon.language.Integer, .ceylon.language.Integer, .ceylon.language.Empty>(.ceylon.language.Integer.instance(3L), .ceylon.language.empty_.getEmpty$()));
             }
-            returning oneSequencedParam($arg$7$0);
+            returning oneSequencedParam$priv($arg$7$0);
         );
     }
     
-    private final .com.redhat.ceylon.compiler.java.test.structure.method.MethodSpecifierMethod oneSequencedParam3() {
-        return oneSequencedParam(new .com.redhat.ceylon.compiler.java.language.AbstractIterable<.ceylon.language.Integer, .java.lang.Object>(){
+    private final .com.redhat.ceylon.compiler.java.test.structure.method.MethodSpecifierMethod oneSequencedParam3$priv() {
+        return oneSequencedParam$priv(new .com.redhat.ceylon.compiler.java.language.AbstractIterable<.ceylon.language.Integer, .java.lang.Object>(){
             
             public final .ceylon.language.Iterator<.ceylon.language.Integer> getIterator() {
                 return new .com.redhat.ceylon.compiler.java.language.AbstractIterator<.ceylon.language.Integer>(){

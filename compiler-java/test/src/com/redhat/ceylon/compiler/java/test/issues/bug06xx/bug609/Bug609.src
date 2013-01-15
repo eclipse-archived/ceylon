@@ -181,7 +181,7 @@ class Bug609cls {
     Bug609cls() {
     }
     
-    private final void mth() {
+    private final void mth$priv() {
         
         final class wait_ {
             

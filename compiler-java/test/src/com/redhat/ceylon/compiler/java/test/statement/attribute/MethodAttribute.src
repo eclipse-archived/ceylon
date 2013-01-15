@@ -5,7 +5,7 @@ class MethodAttribute {
     MethodAttribute() {
     }
     
-    private final void m() {
+    private final void m$priv() {
         final .java.lang.String f;
     }
     

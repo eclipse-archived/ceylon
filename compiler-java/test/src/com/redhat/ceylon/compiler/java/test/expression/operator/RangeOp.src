@@ -5,11 +5,11 @@ class RangeOp<T> {
     RangeOp() {
     }
     
-    private final void $int(final long i1, final long i2) {
+    private final void int$priv(final long i1, final long i2) {
         final .ceylon.language.Range<.ceylon.language.Integer> range = new .ceylon.language.Range<.ceylon.language.Integer>(.ceylon.language.Integer.instance(i1), .ceylon.language.Integer.instance(i2));
     }
     
-    private final <T extends .ceylon.language.Ordinal<? extends T> & .ceylon.language.Comparable<? super T>>void t(final T t1, final T t2) {
+    private final <T extends .ceylon.language.Ordinal<? extends T> & .ceylon.language.Comparable<? super T>>void t$priv(final T t1, final T t2) {
         final .ceylon.language.Range<T> range = new .ceylon.language.Range<T>(t1, t2);
     }
     

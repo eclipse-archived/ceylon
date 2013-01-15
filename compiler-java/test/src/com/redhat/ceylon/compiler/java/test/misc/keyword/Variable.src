@@ -5,7 +5,7 @@ class Variable {
     Variable() {
     }
     
-    private final void m() {
+    private final void m$priv() {
         final boolean abstract = false;
         final boolean boolean = false;
         final boolean byte = false;

@@ -5,12 +5,12 @@ class InvocationWithVarargsAndComprehensions {
     InvocationWithVarargsAndComprehensions() {
     }
     
-    private final void m() {
+    private final void m$priv() {
         (
             let
             {
                 .ceylon.language.Sequential<? extends .ceylon.language.Integer> $ceylontmp$b$1 = m$b();
-                m($ceylontmp$b$1);
+                m$priv($ceylontmp$b$1);
             }
             returning null;
         );
@@ -20,7 +20,7 @@ class InvocationWithVarargsAndComprehensions {
         return (.ceylon.language.Sequential).ceylon.language.empty_.getEmpty$();
     }
     
-    private final void m(final .ceylon.language.Sequential<? extends .ceylon.language.Integer> b) {
+    private final void m$priv(final .ceylon.language.Sequential<? extends .ceylon.language.Integer> b) {
         final .ceylon.language.Tuple<.java.lang.Object, ? extends .ceylon.language.Integer, ? extends .ceylon.language.Tuple<.ceylon.language.Sequential<? extends .ceylon.language.Character>, ? extends .ceylon.language.String, ? extends .ceylon.language.Tuple<.ceylon.language.Empty, ? extends .ceylon.language.Empty, ? extends .ceylon.language.Empty>>> t = new .ceylon.language.Tuple(.ceylon.language.Integer.instance(1L), new .ceylon.language.Tuple<.ceylon.language.Sequential<? extends .ceylon.language.Character>, .ceylon.language.String, .ceylon.language.Tuple<.ceylon.language.Empty, ? extends .ceylon.language.Empty, ? extends .ceylon.language.Empty>>(.ceylon.language.String.instance("a"), new .ceylon.language.Tuple<.ceylon.language.Empty, .ceylon.language.Empty, .ceylon.language.Empty>(.ceylon.language.empty_.getEmpty$(), .ceylon.language.empty_.getEmpty$())));
     }
     

@@ -77,7 +77,7 @@ class Bug991SequenceClass implements .com.redhat.ceylon.compiler.java.test.issue
         return $com$redhat$ceylon$compiler$java$test$issues$bug09xx$Bug991List$this.f();
     }
     
-    private final void m() {
+    private final void m$priv() {
         final .ceylon.language.Sequence<? extends .ceylon.language.Integer> s = (.ceylon.language.Sequence<? extends .ceylon.language.Integer>)(.ceylon.language.Sequence)new .com.redhat.ceylon.compiler.java.language.AbstractIterable<.ceylon.language.Integer, .java.lang.Object>(){
             
             public final .ceylon.language.Iterator<.ceylon.language.Integer> getIterator() {

@@ -57,7 +57,7 @@ class OverloadedMembersAndSubClasses extends .com.redhat.ceylon.compiler.java.te
         super();
     }
     
-    private final void test() {
+    private final void test$priv() {
         method();
         method(1L);
         method(1L, 2L);

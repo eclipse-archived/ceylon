@@ -242,13 +242,13 @@ class Test {
     }
     private final .java.lang.Object n;
     
-    private final void takesTop(final .com.redhat.ceylon.compiler.java.test.expression.erasure.Top top) {
+    private final void takesTop$priv(final .com.redhat.ceylon.compiler.java.test.expression.erasure.Top top) {
     }
     
-    private final void takesLeft(final .com.redhat.ceylon.compiler.java.test.expression.erasure.Left left) {
+    private final void takesLeft$priv(final .com.redhat.ceylon.compiler.java.test.expression.erasure.Left left) {
     }
     
-    private final .java.lang.Object givesLeftAndRight() {
+    private final .java.lang.Object givesLeftAndRight$priv() {
         return new .com.redhat.ceylon.compiler.java.test.expression.erasure.CMiddle();
     }
     private .com.redhat.ceylon.compiler.java.test.expression.erasure.Left leftAttribute;
@@ -270,40 +270,40 @@ class Test {
         this.middleAttribute = middleAttribute;
     }
     
-    private final void testUnion() {
+    private final void testUnion$priv() {
         final .java.lang.Object middle = new .com.redhat.ceylon.compiler.java.test.expression.erasure.CLeft();
         ((.com.redhat.ceylon.compiler.java.test.expression.erasure.Top)middle).top();
         final long n1 = ((.com.redhat.ceylon.compiler.java.test.expression.erasure.Top)middle).getTopAttribute();
-        takesTop((.com.redhat.ceylon.compiler.java.test.expression.erasure.Top)middle);
+        takesTop$priv((.com.redhat.ceylon.compiler.java.test.expression.erasure.Top)middle);
         .java.lang.Object $middle$1;
         if (($middle$1 = middle) instanceof .com.redhat.ceylon.compiler.java.test.expression.erasure.Left) {
             final .com.redhat.ceylon.compiler.java.test.expression.erasure.Left $middle$2 = (.com.redhat.ceylon.compiler.java.test.expression.erasure.Left)$middle$1;
             final long n2 = $middle$2.getLeftAttribute();
             $middle$2.left();
-            takesLeft($middle$2);
+            takesLeft$priv($middle$2);
         }
     }
     
-    private final .com.redhat.ceylon.compiler.java.test.expression.erasure.Left testIntersection(final .java.lang.Object p1, final .java.lang.Object p1OrNull, final .ceylon.language.Sequential tops, final .ceylon.language.Sequential topsOrNull, final .java.lang.Object erasedTest) {
+    private final .com.redhat.ceylon.compiler.java.test.expression.erasure.Left testIntersection$priv(final .java.lang.Object p1, final .java.lang.Object p1OrNull, final .ceylon.language.Sequential tops, final .ceylon.language.Sequential topsOrNull, final .java.lang.Object erasedTest) {
         final .java.lang.Object middle = new .com.redhat.ceylon.compiler.java.test.expression.erasure.CMiddle();
         ((.com.redhat.ceylon.compiler.java.test.expression.erasure.Top)middle).top();
         ((.com.redhat.ceylon.compiler.java.test.expression.erasure.Left)middle).left();
         ((.com.redhat.ceylon.compiler.java.test.expression.erasure.Right)middle).right();
-        ((.com.redhat.ceylon.compiler.java.test.expression.erasure.Top)givesLeftAndRight()).top();
+        ((.com.redhat.ceylon.compiler.java.test.expression.erasure.Top)givesLeftAndRight$priv()).top();
         new .com.redhat.ceylon.compiler.java.test.expression.erasure.CMiddle().top();
         long sync;
         sync = ((.com.redhat.ceylon.compiler.java.test.expression.erasure.Top)middle).getTopAttribute();
         sync = ((.com.redhat.ceylon.compiler.java.test.expression.erasure.Left)middle).getLeftAttribute();
         sync = ((.com.redhat.ceylon.compiler.java.test.expression.erasure.Right)middle).getRightAttribute();
-        sync = ((.com.redhat.ceylon.compiler.java.test.expression.erasure.Top)givesLeftAndRight()).getTopAttribute();
+        sync = ((.com.redhat.ceylon.compiler.java.test.expression.erasure.Top)givesLeftAndRight$priv()).getTopAttribute();
         sync = new .com.redhat.ceylon.compiler.java.test.expression.erasure.CMiddle().getTopAttribute();
-        takesTop((.com.redhat.ceylon.compiler.java.test.expression.erasure.Top)middle);
-        takesLeft((.com.redhat.ceylon.compiler.java.test.expression.erasure.Left)middle);
+        takesTop$priv((.com.redhat.ceylon.compiler.java.test.expression.erasure.Top)middle);
+        takesLeft$priv((.com.redhat.ceylon.compiler.java.test.expression.erasure.Left)middle);
         (
             let
             {
                 .com.redhat.ceylon.compiler.java.test.expression.erasure.Top $arg$3$0 = (.com.redhat.ceylon.compiler.java.test.expression.erasure.Top)middle;
-                takesTop($arg$3$0);
+                takesTop$priv($arg$3$0);
             }
             returning null;
         );
@@ -311,7 +311,7 @@ class Test {
             let
             {
                 .com.redhat.ceylon.compiler.java.test.expression.erasure.Left $arg$4$0 = (.com.redhat.ceylon.compiler.java.test.expression.erasure.Left)middle;
-                takesLeft($arg$4$0);
+                takesLeft$priv($arg$4$0);
             }
             returning null;
         );
@@ -350,7 +350,7 @@ class Test {
         return (.com.redhat.ceylon.compiler.java.test.expression.erasure.Left)middle;
     }
     
-    private final void testNullHandlingOperators(final .java.lang.Object p1, final .java.lang.Object p1OrNull) {
+    private final void testNullHandlingOperators$priv(final .java.lang.Object p1, final .java.lang.Object p1OrNull) {
         .java.lang.Object $p1OrNull$10;
         if (($p1OrNull$10 = p1OrNull) != null) {
             final .java.lang.Object $p1OrNull$11 = $p1OrNull$10;
@@ -373,7 +373,7 @@ class Test {
         )).longValue();
     }
     
-    private final void testArithmeticOperators(final .java.lang.Object p1, final .java.lang.Object erasedTest) {
+    private final void testArithmeticOperators$priv(final .java.lang.Object p1, final .java.lang.Object erasedTest) {
         final long unboxed = ((.ceylon.language.Integer)p1).longValue();
         final .java.lang.Object boxed = this.n;
         .java.lang.Object n = this.n;
@@ -386,7 +386,7 @@ class Test {
         sync = ((.ceylon.language.Invertable<? extends .ceylon.language.Integer>)(.ceylon.language.Invertable)n).getPositiveValue().longValue();
     }
     
-    private final void testComparisonOperators(final .java.lang.Object p1, final .java.lang.Object erasedTest, final .java.lang.Object container) {
+    private final void testComparisonOperators$priv(final .java.lang.Object p1, final .java.lang.Object erasedTest, final .java.lang.Object container) {
         boolean sync;
         sync = erasedTest == erasedTest;
         sync = p1.equals(p1);
@@ -410,7 +410,7 @@ class Test {
         );
     }
     
-    private final void testSequences(final .java.lang.Object p1, final .ceylon.language.Sequential leftsAndRights, final .ceylon.language.Sequential leftsAndRightsEntries, final .ceylon.language.Sequential topsOrNull) {
+    private final void testSequences$priv(final .java.lang.Object p1, final .ceylon.language.Sequential leftsAndRights, final .ceylon.language.Sequential leftsAndRightsEntries, final .ceylon.language.Sequential topsOrNull) {
         final .ceylon.language.Sequential naturals = new .ceylon.language.Tuple(p1, .ceylon.language.empty_.getEmpty$());
         final .ceylon.language.Integer n5 = (.ceylon.language.Integer)((.ceylon.language.Correspondence<? super .ceylon.language.Integer, ? extends .java.lang.Object>)(.ceylon.language.Correspondence)naturals).get((.ceylon.language.Integer)p1);
         final .com.redhat.ceylon.compiler.java.test.expression.erasure.Top t = (.com.redhat.ceylon.compiler.java.test.expression.erasure.Top)((.ceylon.language.Correspondence<? super .ceylon.language.Integer, ? extends .java.lang.Object>)(.ceylon.language.Correspondence)leftsAndRights).get((.ceylon.language.Integer)p1);

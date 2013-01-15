@@ -148,13 +148,13 @@ public class MemberClassAliasTricks_Foo {
         }
         
         @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Anything")
-        private final void test() {
+        private final void test$priv() {
             final .com.redhat.ceylon.compiler.java.test.structure.alias.MemberClassAliasTricks_Foo.Member m1 = MemberClassAliasToEnclosingMemberClass$new(1L, 2L);
         }
     }
     
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Anything")
-    private final void test() {
+    private final void test$priv() {
         final .com.redhat.ceylon.compiler.java.test.structure.alias.MemberClassAliasTricks_Foo m1 = MemberClassAliasToToplevel$new(1L, 2L);
         final .com.redhat.ceylon.compiler.java.test.structure.alias.MemberClassAliasTricks_Foo m2 = MemberClassAliasToToplevel2$new(1L, 2L);
         final .com.redhat.ceylon.compiler.java.test.structure.alias.MemberClassAliasTricks_Foo.Member m3 = Member$new(1L, 2L).MemberClassAliasToEnclosingMemberClass$new(3L, 4L);

@@ -14,7 +14,7 @@ class NamedArgumentInvocationInit {
         }
     }
     
-    private final void m() {
+    private final void m$priv() {
         (
             let
             {
@@ -22,7 +22,7 @@ class NamedArgumentInvocationInit {
                 .java.lang.String $arg$0$0 = "a";
             }
             returning new .com.redhat.ceylon.compiler.java.test.expression.invoke.NamedArgumentInvocationInit($arg$0$0, $arg$0$1);
-        ).m();
+        ).m$priv();
         (
             let
             {

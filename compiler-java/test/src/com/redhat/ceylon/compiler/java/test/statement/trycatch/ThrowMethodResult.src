@@ -5,12 +5,12 @@ class ThrowMethodResult {
     ThrowMethodResult() {
     }
     
-    private final .java.lang.Throwable e() {
+    private final .java.lang.Throwable e$priv() {
         return new .ceylon.language.Exception(.ceylon.language.String.instance("Bang!"), null);
     }
     
-    private final void t() {
-        throw e();
+    private final void t$priv() {
+        throw e$priv();
     }
     
     public static void main(.java.lang.String[] args) {

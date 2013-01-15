@@ -5,7 +5,7 @@ class ForIfIsNotObject {
     ForIfIsNotObject() {
     }
     
-    private final .java.lang.Object nowt(final .java.lang.Object n) {
+    private final .java.lang.Object nowt$priv(final .java.lang.Object n) {
         throw new .ceylon.language.Exception(null, null);
     }
     
@@ -40,7 +40,7 @@ class ForIfIsNotObject {
                     }
                     
                     public final .java.lang.Object next() {
-                        return this.next1() ? nowt(x) : .ceylon.language.finished_.getFinished$();
+                        return this.next1() ? nowt$priv(x) : .ceylon.language.finished_.getFinished$();
                     }
                 };
             }
@@ -81,7 +81,7 @@ class ForIfIsNotObject {
                     }
                     
                     public final .java.lang.Object next() {
-                        return this.next1() ? nowt($x$4) : .ceylon.language.finished_.getFinished$();
+                        return this.next1() ? nowt$priv($x$4) : .ceylon.language.finished_.getFinished$();
                     }
                 };
             }

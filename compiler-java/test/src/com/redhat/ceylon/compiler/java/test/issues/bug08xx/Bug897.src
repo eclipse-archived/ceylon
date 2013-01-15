@@ -5,13 +5,13 @@ class Bug897 {
     Bug897() {
     }
     
-    private final long m(final long i) {
+    private final long m$priv(final long i) {
         return i;
     }
     
     public final void bar() {
         long index = 0L;
-        final .com.redhat.ceylon.compiler.java.language.VariableBoxLong captured_ = new .com.redhat.ceylon.compiler.java.language.VariableBoxLong(m(index));
+        final .com.redhat.ceylon.compiler.java.language.VariableBoxLong captured_ = new .com.redhat.ceylon.compiler.java.language.VariableBoxLong(m$priv(index));
         
         final class foo_ {
             

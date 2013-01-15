@@ -15,19 +15,19 @@ class ClassDefaultMemberClassReference {
         }
     }
     
-    private final void m(final .ceylon.language.Callable<? extends .com.redhat.ceylon.compiler.java.test.structure.mcr.ClassDefaultMemberClassReference.Member> f) {
+    private final void m$priv(final .ceylon.language.Callable<? extends .com.redhat.ceylon.compiler.java.test.structure.mcr.ClassDefaultMemberClassReference.Member> f) {
         f.$call();
     }
     
-    private final void m2(final .com.redhat.ceylon.compiler.java.test.structure.mcr.ClassDefaultMemberClassReference i) {
-        m(new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.com.redhat.ceylon.compiler.java.test.structure.mcr.ClassDefaultMemberClassReference.Member>("ClassDefaultMemberClassReference.Member()"){
+    private final void m2$priv(final .com.redhat.ceylon.compiler.java.test.structure.mcr.ClassDefaultMemberClassReference i) {
+        m$priv(new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.com.redhat.ceylon.compiler.java.test.structure.mcr.ClassDefaultMemberClassReference.Member>("ClassDefaultMemberClassReference.Member()"){
             
             @.java.lang.Override
             public .com.redhat.ceylon.compiler.java.test.structure.mcr.ClassDefaultMemberClassReference.Member $call() {
                 return Member$new();
             }
         });
-        m(new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.com.redhat.ceylon.compiler.java.test.structure.mcr.ClassDefaultMemberClassReference.Member>("ClassDefaultMemberClassReference.Member()"){
+        m$priv(new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.com.redhat.ceylon.compiler.java.test.structure.mcr.ClassDefaultMemberClassReference.Member>("ClassDefaultMemberClassReference.Member()"){
             
             @.java.lang.Override
             public .com.redhat.ceylon.compiler.java.test.structure.mcr.ClassDefaultMemberClassReference.Member $call() {

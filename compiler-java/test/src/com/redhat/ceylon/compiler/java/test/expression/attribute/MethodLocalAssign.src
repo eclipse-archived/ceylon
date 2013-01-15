@@ -5,7 +5,7 @@ class MethodLocalAssign {
     MethodLocalAssign() {
     }
     
-    private final void m() {
+    private final void m$priv() {
         boolean b = true;
         b = false;
         final .com.redhat.ceylon.compiler.java.language.VariableBoxBoolean b1_ = new .com.redhat.ceylon.compiler.java.language.VariableBoxBoolean(true);

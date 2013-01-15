@@ -47,7 +47,7 @@ final class I$impl<T extends .ceylon.language.String, X extends .ceylon.language
             }
             private final .com.redhat.ceylon.compiler.java.test.structure.nesting.ici.I$IC$ICI<? extends T, ? super X> $this;
             
-            private T m2() {
+            private T m2$priv() {
                 return .com.redhat.ceylon.compiler.java.test.structure.nesting.ici.I$impl.this.$this.m1(null);
             }
         }

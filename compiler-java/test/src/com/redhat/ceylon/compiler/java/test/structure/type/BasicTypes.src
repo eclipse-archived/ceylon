@@ -395,7 +395,7 @@ class BasicTypes {
         return sharedAttrOptionalCharacter;
     }
     
-    private final void m() {
+    private final void m$priv() {
         final long localAttrInteger = getPrivateAttrInteger$priv();
         final double localAttrFloat = getPrivateAttrFloat$priv();
         final .java.lang.String localAttrString = getPrivateAttrString$priv();
@@ -408,43 +408,43 @@ class BasicTypes {
         final .ceylon.language.Character localAttrOptionalCharacter = getPrivateAttrOptionalCharacter$priv();
     }
     
-    private final long methodInteger(final long i) {
+    private final long methodInteger$priv(final long i) {
         return i;
     }
     
-    private final double methodFloat(final double i) {
+    private final double methodFloat$priv(final double i) {
         return i;
     }
     
-    private final .java.lang.String methodString(final .java.lang.String i) {
+    private final .java.lang.String methodString$priv(final .java.lang.String i) {
         return i;
     }
     
-    private final boolean methodBoolean(final boolean i) {
+    private final boolean methodBoolean$priv(final boolean i) {
         return i;
     }
     
-    private final int methodCharacter(final int i) {
+    private final int methodCharacter$priv(final int i) {
         return i;
     }
     
-    private final .ceylon.language.Integer methodOptionalInteger(final .ceylon.language.Integer i) {
+    private final .ceylon.language.Integer methodOptionalInteger$priv(final .ceylon.language.Integer i) {
         return i;
     }
     
-    private final .ceylon.language.Float methodOptionalFloat(final .ceylon.language.Float i) {
+    private final .ceylon.language.Float methodOptionalFloat$priv(final .ceylon.language.Float i) {
         return i;
     }
     
-    private final .ceylon.language.String methodOptionalString(final .ceylon.language.String i) {
+    private final .ceylon.language.String methodOptionalString$priv(final .ceylon.language.String i) {
         return i;
     }
     
-    private final .ceylon.language.Boolean methodOptionalBoolean(final .ceylon.language.Boolean i) {
+    private final .ceylon.language.Boolean methodOptionalBoolean$priv(final .ceylon.language.Boolean i) {
         return i;
     }
     
-    private final .ceylon.language.Character methodOptionalCharacter(final .ceylon.language.Character i) {
+    private final .ceylon.language.Character methodOptionalCharacter$priv(final .ceylon.language.Character i) {
         return i;
     }
 }

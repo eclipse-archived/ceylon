@@ -5,34 +5,34 @@ class MethodErasure {
     MethodErasure() {
     }
     
-    private final long m1() {
+    private final long m1$priv() {
         return hashCode();
     }
     
-    private final long m2() {
+    private final long m2$priv() {
         return this.hashCode();
     }
     
-    private final .java.lang.String m3() {
+    private final .java.lang.String m3$priv() {
         return toString();
     }
     
-    private final .java.lang.String m4() {
+    private final .java.lang.String m4$priv() {
         return this.toString();
     }
     
-    private final void m5() {
-        $hashCode();
-        this.$hashCode();
-        $toString();
-        this.$toString();
+    private final void m5$priv() {
+        hashCode$priv();
+        this.hashCode$priv();
+        toString$priv();
+        this.toString$priv();
     }
     
-    private final .java.lang.String $hashCode() {
+    private final .java.lang.String hashCode$priv() {
         return "bar";
     }
     
-    private final long $toString() {
+    private final long toString$priv() {
         return 0L;
     }
     

@@ -5,7 +5,7 @@ class MethodWhileConditionListIsBool {
     MethodWhileConditionListIsBool() {
     }
     
-    private final void m(final .java.lang.Object x) {
+    private final void m$priv(final .java.lang.Object x) {
         while (true) {
             .java.lang.Object $x$0;
             if (($x$0 = x) instanceof .ceylon.language.String) {
@@ -17,7 +17,7 @@ class MethodWhileConditionListIsBool {
         }
     }
     
-    private final void synthetic(final .java.lang.Object x) {
+    private final void synthetic$priv(final .java.lang.Object x) {
         while (true) {
             .java.lang.Object $z$2;
             if (($z$2 = x) instanceof .ceylon.language.String) {

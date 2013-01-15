@@ -60,7 +60,7 @@ class CeylonFields extends .com.redhat.ceylon.compiler.java.test.interop.JavaFie
         super();
     }
     
-    private final void f() {
+    private final void f$priv() {
         final long i1 = readOnlyField;
         final long i2 = readWriteField;
         readWriteField = 2L;

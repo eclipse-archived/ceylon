@@ -5,7 +5,7 @@ class MethodWhileConditionListExistsIsBool {
     MethodWhileConditionListExistsIsBool() {
     }
     
-    private final boolean m(final .ceylon.language.Sequential<? extends .java.lang.Object> x) {
+    private final boolean m$priv(final .ceylon.language.Sequential<? extends .java.lang.Object> x) {
         while (true) {
             .java.lang.Object $y$2;
             .java.lang.Object $z$0;

@@ -233,7 +233,7 @@ class BitwiseOperators {
         this.boxedI1 = boxedI1;
     }
     
-    private final void unboxedAttributes() {
+    private final void unboxedAttributes$priv() {
         setI1(~getN1());
         setN1(getN1() & getN2());
         setI1(getN1() | getN2());
@@ -243,7 +243,7 @@ class BitwiseOperators {
         setN1(getN1() >> getN2());
     }
     
-    private final void unboxedGetterAttributes() {
+    private final void unboxedGetterAttributes$priv() {
         setGetterI1(~getGetterN1());
         setGetterN1(getGetterN1() & getGetterN2());
         setGetterI1(getGetterN1() | getGetterN2());
@@ -286,7 +286,7 @@ class BitwiseOperators {
         return null;
     }
     
-    private final void unboxedLocals() {
+    private final void unboxedLocals$priv() {
         long n1 = 0L;
         long n2 = 0L;
         long i1 = 0L;
@@ -299,7 +299,7 @@ class BitwiseOperators {
         n1 = n1 >> n2;
     }
     
-    private final void unboxedLocalGetters() {
+    private final void unboxedLocalGetters$priv() {
         final .com.redhat.ceylon.compiler.java.language.VariableBoxLong n1_ = new .com.redhat.ceylon.compiler.java.language.VariableBoxLong(0L);
         final .com.redhat.ceylon.compiler.java.language.VariableBoxLong n2_ = new .com.redhat.ceylon.compiler.java.language.VariableBoxLong(0L);
         final .com.redhat.ceylon.compiler.java.language.VariableBoxLong i1_ = new .com.redhat.ceylon.compiler.java.language.VariableBoxLong(0L);
@@ -381,7 +381,7 @@ class BitwiseOperators {
         getterN1$setter_.setGetterN1(getterN1$getter_.getGetterN1() >> getterN2$getter_.getGetterN2());
     }
     
-    private final void boxedLocals() {
+    private final void boxedLocals$priv() {
         .com.redhat.ceylon.compiler.java.test.expression.operator.BWMyInteger n1 = initN;
         .com.redhat.ceylon.compiler.java.test.expression.operator.BWMyInteger n2 = initN;
         .com.redhat.ceylon.compiler.java.test.expression.operator.BWMyInteger i1 = initI;
@@ -394,7 +394,7 @@ class BitwiseOperators {
         n1 = n1.rightArithmeticShift(1L);
     }
     
-    private final void unboxedToplevel() {
+    private final void unboxedToplevel$priv() {
         .com.redhat.ceylon.compiler.java.test.expression.operator.bwToplevelI1_.setBwToplevelI1(~.com.redhat.ceylon.compiler.java.test.expression.operator.bwToplevelN1_.getBwToplevelN1$());
         .com.redhat.ceylon.compiler.java.test.expression.operator.bwToplevelN1_.setBwToplevelN1(.com.redhat.ceylon.compiler.java.test.expression.operator.bwToplevelN1_.getBwToplevelN1$() & .com.redhat.ceylon.compiler.java.test.expression.operator.bwToplevelN2_.getBwToplevelN2$());
         .com.redhat.ceylon.compiler.java.test.expression.operator.bwToplevelI1_.setBwToplevelI1(.com.redhat.ceylon.compiler.java.test.expression.operator.bwToplevelN1_.getBwToplevelN1$() | .com.redhat.ceylon.compiler.java.test.expression.operator.bwToplevelN2_.getBwToplevelN2$());
@@ -404,7 +404,7 @@ class BitwiseOperators {
         .com.redhat.ceylon.compiler.java.test.expression.operator.bwToplevelN1_.setBwToplevelN1(.com.redhat.ceylon.compiler.java.test.expression.operator.bwToplevelN1_.getBwToplevelN1$() >> .com.redhat.ceylon.compiler.java.test.expression.operator.bwToplevelN2_.getBwToplevelN2$());
     }
     
-    private final void unboxedToplevelGetter() {
+    private final void unboxedToplevelGetter$priv() {
         .com.redhat.ceylon.compiler.java.test.expression.operator.bwToplevelGetterI1_.setBwToplevelGetterI1(~.com.redhat.ceylon.compiler.java.test.expression.operator.bwToplevelGetterN1_.getBwToplevelGetterN1$());
         .com.redhat.ceylon.compiler.java.test.expression.operator.bwToplevelGetterN1_.setBwToplevelGetterN1(.com.redhat.ceylon.compiler.java.test.expression.operator.bwToplevelGetterN1_.getBwToplevelGetterN1$() & .com.redhat.ceylon.compiler.java.test.expression.operator.bwToplevelGetterN2_.getBwToplevelGetterN2$());
         .com.redhat.ceylon.compiler.java.test.expression.operator.bwToplevelGetterI1_.setBwToplevelGetterI1(.com.redhat.ceylon.compiler.java.test.expression.operator.bwToplevelGetterN1_.getBwToplevelGetterN1$() | .com.redhat.ceylon.compiler.java.test.expression.operator.bwToplevelGetterN2_.getBwToplevelGetterN2$());

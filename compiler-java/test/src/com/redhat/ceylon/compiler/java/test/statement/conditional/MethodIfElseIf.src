@@ -5,7 +5,7 @@ class MethodIfElseIf {
     MethodIfElseIf() {
     }
     
-    private final long m() {
+    private final long m$priv() {
         if (true) {
             return 1L;
         } else {

@@ -5,23 +5,23 @@ class StringBoxing {
     StringBoxing() {
     }
     
-    private final void m() {
+    private final void m$priv() {
         final .java.lang.String s1 = "TEST";
         final .java.lang.String s2 = .ceylon.language.String.getLowercased(s1);
-        final .java.lang.String s3 = upper(s2);
-        final .ceylon.language.String s4 = upper2(.ceylon.language.String.instance(s3));
-        final .java.lang.String s5 = upper3(s4);
-        final .java.lang.String s6 = .ceylon.language.String.getUppercased(upper3(s4));
+        final .java.lang.String s3 = upper$priv(s2);
+        final .ceylon.language.String s4 = upper2$priv(.ceylon.language.String.instance(s3));
+        final .java.lang.String s5 = upper3$priv(s4);
+        final .java.lang.String s6 = .ceylon.language.String.getUppercased(upper3$priv(s4));
         .ceylon.language.String.compare(s6, s5);
         final .java.lang.String s7 = .ceylon.language.String.plus(s5, s6);
         final boolean b = .ceylon.language.String.getCoalesced("ABC").equals("ABC");
     }
     
-    private final .java.lang.String upper(final .java.lang.String s) {
+    private final .java.lang.String upper$priv(final .java.lang.String s) {
         return .ceylon.language.String.getUppercased(s);
     }
     
-    private final .ceylon.language.String upper2(final .ceylon.language.String s) {
+    private final .ceylon.language.String upper2$priv(final .ceylon.language.String s) {
         .ceylon.language.String $s$1;
         if (($s$1 = s) != null) {
             final .java.lang.String $s$2 = $s$1.toString();
@@ -30,7 +30,7 @@ class StringBoxing {
         return null;
     }
     
-    private final .java.lang.String upper3(final .ceylon.language.String s) {
+    private final .java.lang.String upper3$priv(final .ceylon.language.String s) {
         .ceylon.language.String $s$4;
         if (($s$4 = s) != null) {
             final .java.lang.String $s$5 = $s$4.toString();
