@@ -483,9 +483,9 @@ public abstract class TypeDeclaration extends Declaration
                 if (type == TypeDeclaration.this)
                     return false;
                 Declaration d = type.getDirectMember(name, signature, ellipsis);
-                if (d!=null && d.isShared()) {
+                if (d!=null && d.isShared() && isResolvable(d)) {
                     // only accept abstractions if we don't have a signature
-                    return !Util.isAbstraction(d) || signature == null;
+                    return !isAbstraction(d) || signature == null;
                 }
                 else {
                     return false;

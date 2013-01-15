@@ -285,7 +285,9 @@ public class RefinementVisitor extends Visitor {
 		                if (d.isShared() && isResolvable(d) && 
 		                		!errors.contains(d.getName())) {
 		                    Declaration r = td.getMember(d.getName(), null, false);
-		                    if (r==null || !r.refines(d)) {
+		                    if (r==null || !r.refines(d) && 
+		                    		//squash bogus error when there is a dupe declaration
+		                    		!r.getContainer().equals(td)) {
 		                        //TODO: This seems to dupe some checks that are already 
 		                        //      done in TypeHierarchyVisitor, resulting in
 		                        //      multiple errors
