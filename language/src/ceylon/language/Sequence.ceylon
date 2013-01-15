@@ -29,15 +29,6 @@ shared native interface Sequence<out Element>
                   {Element+} &
                   Cloneable<[Element+]> {
     
-    shared actual default Integer size=>List::size;
-    shared actual default Iterator<Element> iterator =>
-            List::iterator;
-    shared actual default Boolean contains(Object element) =>
-            Collection::contains(element);
-    shared actual default Element? findLast(
-            Boolean selecting(Element elem)) => 
-                    List::findLast(selecting);
-                
     doc "The index of the last element of the sequence."
     see (size)
     shared actual formal Integer lastIndex;
@@ -54,7 +45,7 @@ shared native interface Sequence<out Element>
          element."
     shared actual formal Element[] rest;
         
-    doc "Returns `false`, since every `Some` contains at
+    doc "Returns `false`, since every `Sequence` contains at
          least one element."
     shared actual Boolean empty => false;
     
@@ -94,5 +85,22 @@ shared native interface Sequence<out Element>
     
     shared formal [Value+] prepend<Value>(Value* elements)
             given Value abstracts Element;*/
-
+    
+    //Note: the remaining members are inherited from List,
+    //      a subtype of {Element*}, and from {Element+}.
+    //      This is considered ambiguous inheritance, and
+    //      so these members must be refined here.
+    
+    shared actual default Integer size=>List::size;
+    
+    shared actual default Iterator<Element> iterator =>
+            List::iterator;
+    
+    shared actual default Boolean contains(Object element) =>
+            Collection::contains(element);
+    
+    shared actual default Element? findLast(
+            Boolean selecting(Element elem)) => 
+                    List::findLast(selecting);
+    
 }
