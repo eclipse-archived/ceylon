@@ -1651,21 +1651,38 @@ public class ExpressionTransformer extends AbstractTransformer {
                     && !invocation.isSpread())
                 wrapIntoArray = true;
             if (!invocation.isParameterSequenced(argIndex)
-                    || invocation.isSpread()
+                    || invocation.isArgumentSpread(argIndex)
                     || invocation.isJavaMethod()) {
                 expr = invocation.getTransformedArgumentExpression(argIndex);
                 type = makeJavaType(invocation.getParameterType(argIndex), invocation.getParameterBoxingStrategy(argIndex) == BoxingStrategy.BOXED ? JT_NO_PRIMITIVES : 0);
             } else {
-                // box with an ArraySequence<T>
-                List<JCExpression> x = List.<JCExpression>nil();
                 final ProducedType iteratedType = typeFact().getIteratedType(invocation.getParameterType(argIndex));
-                boolean prev = this.uninitializedOperand(true);
-                for ( ; argIndex < numArguments; argIndex++) {
-                    x = x.append(invocation.getTransformedArgumentExpression(argIndex));
+
+                // we can't have a Java method and we must have a sequenced param
+                if(invocation.isSpread()){
+                    // we can have several remaining arguments and the last one is spread
+                    List<JCExpression> x = List.<JCExpression>nil();
+                    for ( ; argIndex < numArguments; argIndex++) {
+                        JCExpression argExpr = invocation.getTransformedArgumentExpression(argIndex);
+                        // the last parameter is spread and must be put first
+                        if(argIndex < numArguments - 1)
+                            x = x.append(argExpr);
+                        else
+                            x = x.prepend(argExpr);
+                    }
+                    JCExpression typeExpr = makeJavaType(iteratedType, JT_TYPE_ARGUMENT);
+                    expr = makeUtilInvocation("sequentialInstance", x, List.of(typeExpr));
+                }else{
+                    // collect each remaining argument and box with an ArraySequence<T>
+                    List<JCExpression> x = List.<JCExpression>nil();
+                    boolean prev = this.uninitializedOperand(true);
+                    for ( ; argIndex < numArguments; argIndex++) {
+                        x = x.append(invocation.getTransformedArgumentExpression(argIndex));
+                    }
+                    this.uninitializedOperand(prev);
+                    expr = makeSequence(x, iteratedType, JT_TYPE_ARGUMENT);
+
                 }
-                this.uninitializedOperand(prev);
-                expr = makeSequence(x, iteratedType, JT_TYPE_ARGUMENT);
-                
                 type = makeJavaType(typeFact().getSequenceType(iteratedType).getType());
             }
             if(!wrapIntoArray)
