@@ -394,6 +394,9 @@ public class Naming implements LocalId {
     
     private String quoteMethodNameIfProperty(Method method) {
         String name = method.getName();
+        if (!method.isShared()) {
+            name += "$priv";
+        }
         // Toplevel methods keep their original name because their names might be mangled
         if (method instanceof LazyMethod) {
             return ((LazyMethod)method).getRealName();
