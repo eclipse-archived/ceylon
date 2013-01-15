@@ -179,9 +179,10 @@ shared native interface Iterable<out Element, out Absent=Null>
          
          This operation is eager by nature."
     see (byIncreasing, byDecreasing)
-    shared native default Element[] sort(
+    shared default Element[] sort(
             doc "The function comparing pairs of elements."
-            Comparison? comparing(Element x, Element y));
+            Comparison? comparing(Element x, Element y)) =>
+                    internalSort(comparing, this);
     
     doc "A sequence containing the results of applying the
          given mapping to the elements of this container. An 
