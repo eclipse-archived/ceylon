@@ -3,7 +3,6 @@ package com.redhat.ceylon.compiler.typechecker.analyzer;
 import static com.redhat.ceylon.compiler.typechecker.analyzer.Util.checkAssignable;
 import static com.redhat.ceylon.compiler.typechecker.analyzer.Util.checkAssignableWithWarning;
 import static com.redhat.ceylon.compiler.typechecker.analyzer.Util.checkCallable;
-import static com.redhat.ceylon.compiler.typechecker.analyzer.Util.checkIsExactly;
 import static com.redhat.ceylon.compiler.typechecker.analyzer.Util.checkSupertype;
 import static com.redhat.ceylon.compiler.typechecker.analyzer.Util.checkTypeBelongsToContainingScope;
 import static com.redhat.ceylon.compiler.typechecker.analyzer.Util.getBaseDeclaration;
@@ -2555,16 +2554,6 @@ private void checkPositionalArguments(ParameterList pl, ProducedReference pr,
         checkAssignability(that.getTerm(), that);
     }
     
-    private ProducedType checkOperandTypes(ProducedType lhst, ProducedType rhst, 
-            TypeDeclaration td, Node node, String message) {
-        ProducedType ut = unionType(unit.denotableType(lhst), 
-        		unit.denotableType(rhst), unit);
-        ProducedType st = producedType(td, ut);
-        checkAssignable(lhst, st, node, message);
-        checkAssignable(rhst, st, node, message);
-        return ut.getSupertype(td);
-    }
-
     private void visitIncrementDecrement(Tree.Term that,
             ProducedType pt, Tree.Term term) {
         if (pt!=null) {
@@ -2621,16 +2610,11 @@ private void checkPositionalArguments(ParameterList pl, ProducedReference pr,
             ProducedType ot = checkOperandTypes(lhst, rhst, 
                     unit.getOrdinalDeclaration(), that,
                     "operand expressions must be of compatible ordinal type");
-            ProducedType ct = checkOperandTypes(lhst, rhst, 
+            checkOperandTypes(lhst, rhst, 
                     unit.getComparableDeclaration(), that, 
                     "operand expressions must be comparable");
-            if (ct!=null && ot!=null) {
-                ProducedType cta = ct.getTypeArgumentList().get(0);
-                ProducedType ota = ot.getTypeArgumentList().get(0);
-                checkIsExactly(cta, ota, that, 
-                        "incompatible comparable and ordinal types");
-                ProducedType pt = producedType(unit.getRangeDeclaration(), 
-                        unionType(ota, cta, unit));
+            if (ot!=null) {
+                ProducedType pt = producedType(unit.getRangeDeclaration(), ot);
                 that.setTypeModel(pt);
             }
         }
@@ -2659,11 +2643,36 @@ private void checkPositionalArguments(ParameterList pl, ProducedReference pr,
                     "operand expression must not be an optional type");
             checkSupertype(rhst, unit.getObjectDeclaration(), that.getRightTerm(), 
                     "operand expression must not be an optional type");
-            ProducedType et = unit.getEntryType(lhst, rhst);
-            that.setTypeModel(et);
+            that.setTypeModel( unit.getEntryType(lhst, rhst) );
         }
     }
     
+    private void visitEqualityOperator(Tree.BinaryOperatorExpression that, 
+    		TypeDeclaration td) {
+        ProducedType lhst = leftType(that);
+        ProducedType rhst = rightType(that);
+        if ( rhst!=null && lhst!=null ) {
+            checkSupertype(lhst, td, that.getLeftTerm(), 
+                    "operand expression must be of type " + td.getName());
+            checkSupertype(rhst, td, that.getRightTerm(), 
+                    "operand expression must not be of type" + td.getName());
+        }
+        that.setTypeModel(unit.getBooleanDeclaration().getType());
+    }
+    
+    private ProducedType checkOperandTypes(ProducedType lhst, ProducedType rhst, 
+            TypeDeclaration td, Node node, String message) {
+    	ProducedType lhsst = checkSupertype(lhst, td, node, message);
+    	if (lhsst!=null) {
+    		ProducedType t = lhsst.getTypeArgumentList().get(0);
+    		checkAssignable(rhst, t, node, message);
+            return t;
+    	}
+    	else {
+    		return null;
+    	}
+    }
+
     private void visitArithmeticOperator(Tree.BinaryOperatorExpression that, 
             TypeDeclaration type) {
         ProducedType lhst = leftType(that);
@@ -3047,7 +3056,7 @@ private void checkPositionalArguments(ParameterList pl, ProducedReference pr,
 
     @Override public void visit(Tree.EqualityOp that) {
         super.visit(that);
-        visitComparisonOperator(that, unit.getObjectDeclaration());
+        visitEqualityOperator(that, unit.getObjectDeclaration());
     }
 
     @Override public void visit(Tree.ComparisonOp that) {
@@ -3057,7 +3066,7 @@ private void checkPositionalArguments(ParameterList pl, ProducedReference pr,
 
     @Override public void visit(Tree.IdenticalOp that) {
         super.visit(that);
-        visitComparisonOperator(that, unit.getIdentifiableDeclaration());
+        visitEqualityOperator(that, unit.getIdentifiableDeclaration());
     }
 
     @Override public void visit(Tree.CompareOp that) {
