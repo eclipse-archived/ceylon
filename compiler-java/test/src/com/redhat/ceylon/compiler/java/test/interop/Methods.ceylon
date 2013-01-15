@@ -91,6 +91,7 @@ void variadicMethods() {
     java.variadicBoolean(*{});
     @error
     java.variadicBoolean(*[true, box(false), true]);
+    java.variadicBoolean(true, box(false), *[true, box(false), true]);
 
     @error
     java.variadicCeylonBoolean(true, box(false), true);
@@ -112,6 +113,8 @@ void variadicMethods() {
     java.variadicByte(*{});
     @error
     java.variadicByte(*[1, box(2), 3]);
+    java.variadicByte(1, *[1, box(2), 3]);
+    java.variadicByte(1, box(2), *[1, box(2), 3]);
 
     @error
     java.variadicShort(*{});
@@ -142,10 +145,11 @@ void variadicMethods() {
     @error
     java.variadicLong(*full);
 
-    @error
     java.variadicFloat(*{});
-    @error
+    java.variadicFloat(1.0, box(2.0), 3.0);
     java.variadicFloat(*[1.0, box(2.0), 3.0]);
+    java.variadicFloat(1.0, *[1.0, box(2.0), 3.0]);
+    java.variadicFloat(1.0, box(2.0), *[1.0, box(2.0), 3.0]);
 
     @error
     java.variadicDouble(*{});
@@ -167,6 +171,7 @@ void variadicMethods() {
     java.variadicJavaString(*{});
     @error
     java.variadicJavaString(*["a", box("b"), "c"]);
+    java.variadicJavaString("a", box("b"), *["a", box("b"), "c"]);
 
     @error
     java.variadicCeylonString("a", box("b"), "c");
@@ -202,6 +207,7 @@ void variadicMethods() {
     Integer[] sequence = [1, box(2), 3];
     @error
     java.variadicT<Integer>(*sequence);
+    java.variadicT<Integer>(1, box(2), *sequence);
 
     @error
     java.variadicT<String>("a", box("b"), "c");
