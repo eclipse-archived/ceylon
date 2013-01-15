@@ -136,12 +136,7 @@ public class InvocationGenerator {
                             TypeUtils.printTypeArguments(that,
                                     gen.getTypeUtils().iterableDefaultedTypeParameter(arg.getTypeModel()), gen);
                         } else {
-                            ProducedType spreadType = null;
-                            for (ProducedType sup : expr.getTypeModel().getSupertypes()) {
-                                if (sup.getProducedTypeQualifiedName().startsWith("ceylon.language::Sequential")) {
-                                    spreadType = sup;
-                                }
-                            }
+                            ProducedType spreadType = TypeUtils.findSupertype(gen.getTypeUtils().sequential, expr.getTypeModel());
                             TypeUtils.printTypeArguments(that, spreadType.getTypeArgumentList(), gen);
                         }
                         gen.out(")");
