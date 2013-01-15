@@ -8,6 +8,7 @@ import static com.redhat.ceylon.compiler.typechecker.analyzer.Util.checkIsExactl
 import static com.redhat.ceylon.compiler.typechecker.model.Util.getSignature;
 import static com.redhat.ceylon.compiler.typechecker.model.Util.intersectionType;
 import static com.redhat.ceylon.compiler.typechecker.model.Util.isCompletelyVisible;
+import static com.redhat.ceylon.compiler.typechecker.model.Util.isResolvable;
 import static java.util.Collections.singletonMap;
 
 import java.util.ArrayList;
@@ -281,16 +282,19 @@ public class RefinementVisitor extends Visitor {
 		        if (td instanceof ClassOrInterface && 
 		                !((ClassOrInterface) td).isAbstract()) {
 		            for (Declaration d: st.getDeclaration().getMembers()) {
-		                if (d.isShared() && !(d instanceof Setter) && !d.isAnonymous() && 
+		                if (d.isShared() && isResolvable(d) && 
 		                		!errors.contains(d.getName())) {
 		                    Declaration r = td.getMember(d.getName(), null, false);
 		                    if (r==null || !r.refines(d)) {
 		                        //TODO: This seems to dupe some checks that are already 
 		                        //      done in TypeHierarchyVisitor, resulting in
 		                        //      multiple errors
+		                    	String other = r==null ? 
+		                    			" other supertypes " : 
+		                    			((TypeDeclaration) r.getContainer()).getName(); 
 		                        that.addError("member " + d.getName() + 
-		                                " is inherited ambiguously and so must be refined by " + 
-		                        		td.getName());
+		                                " is inherited ambiguously from " + st.getDeclaration().getName() +  
+		                                " and " + other + " and so must be refined by " + td.getName());
 		                        errors.add(d.getName());
 		                    }
 		                    /*else if (!r.getContainer().equals(td)) { //the case where the member is actually declared by the current type is handled by checkRefinedTypeAndParameterTypes()
