@@ -50,8 +50,15 @@ void testAssignmentInIf1() {
 void testAssignmentInIf2() {
 	interface I {}
     variable Boolean b;
-    if (is I i = (b=true)) {}
+    @error if (is I i = (b=true)) {}
     print(b);
+}
+void testAssignmentInIf3() {
+	interface I {}
+	Object hello="hello";
+    variable Object o="hello";
+    if (is String s = (o=hello)) {}
+    print(o);
 }
 
 void testAssignmentInWhile() {
@@ -67,6 +74,13 @@ void testAssignmentInWhile1() {
 void testAssignmentInWhile2() {
 	interface I {}
     variable Boolean b;
-    while (is I i = (b=true)) {}
+    @error while (is I i = (b=true)) {}
     print(b);
+}
+void testAssignmentInWhile3() {
+	interface I {}
+	Object hello="hello";
+    variable Object o="hello";
+    if (is String s = (o=hello)) {}
+    print(o);
 }

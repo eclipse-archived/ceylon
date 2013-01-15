@@ -13,7 +13,8 @@ void coverage() {
     S<String>&I<String,Nothing> z = nothing;
     T<String>|I<Nothing,Nothing> u = z of T<String>|I<Nothing,Nothing>;
     S<String> w = z of S<String>;
-    @error T<String> v = z of T<String>;
+    T<String> v = z of T<String>;
+    @error T<String> t = z;
 
     {Nothing*}&{String+} something = nothing;
     {Nothing+} it = something;
@@ -24,12 +25,13 @@ void coverage() {
     {Nothing+}|[String+] iter3 = strings of {Nothing+}|[String+];
     [String+]|{Nothing+} iter1 = strings of [String+]|{Nothing+};    
     [String*] iter6 = strings of [String*];
-    @error [String+] iter2 = strings of [String+];
+    [String+] iter2 = strings of [String+];
+    @error [String+] iter7 = strings;
     
     []&{String+} x0 = nothing;
     {Nothing+} y0 = x0 of {Nothing+};
     {Nothing+}&[] y8 = x0 of {Nothing+}&[];
-    @error Nothing y9 = x0 of Nothing;
+    Nothing y9 = x0 of Nothing;
     @error []&{String+} x9 = y0;
 
     {Nothing*}&{String+} x3 = nothing;

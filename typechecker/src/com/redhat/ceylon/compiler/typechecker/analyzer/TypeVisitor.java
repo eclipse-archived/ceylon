@@ -28,7 +28,6 @@ import com.redhat.ceylon.compiler.typechecker.model.Module;
 import com.redhat.ceylon.compiler.typechecker.model.ModuleImport;
 import com.redhat.ceylon.compiler.typechecker.model.Package;
 import com.redhat.ceylon.compiler.typechecker.model.Parameter;
-import com.redhat.ceylon.compiler.typechecker.model.ParameterList;
 import com.redhat.ceylon.compiler.typechecker.model.ProducedType;
 import com.redhat.ceylon.compiler.typechecker.model.Scope;
 import com.redhat.ceylon.compiler.typechecker.model.TypeAlias;
@@ -1054,12 +1053,14 @@ public class TypeVisitor extends Visitor {
                 TypedDeclaration od = getBaseDeclaration(bme, null, false);
                 if (od!=null) {
                     ProducedType type = od.getType();
-                    TypeDeclaration dec = type.getDeclaration();
-                    if (!dec.isToplevel() && !dec.isAnonymous()) {
-                        bme.addError("case must refer to a toplevel object declaration");
-                    }
-                    else {
-                        list.add(type);
+                    if (type!=null) {
+                    	TypeDeclaration dec = type.getDeclaration();
+                    	if (dec!=null && !dec.isToplevel() && !dec.isAnonymous()) {
+                    		bme.addError("case must refer to a toplevel object declaration");
+                    	}
+                    	else {
+                    		list.add(type);
+                    	}
                     }
                 }
             }

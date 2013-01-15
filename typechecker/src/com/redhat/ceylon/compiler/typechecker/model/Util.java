@@ -464,20 +464,26 @@ public class Util {
     }
 
 	/**
-	 * the meet of two classes unrelated by inheritance,
-	 * or of Null with an interface type is empty 
+	 * The meet of two classes unrelated by inheritance,
+	 * or of Null with an interface type is empty. The meet
+	 * of an anonymous class with a type to which it is not
+	 * assignable is empty.
 	 */
 	private static boolean emptyMeet(ProducedType pt, ProducedType t, Unit unit) {
 		TypeDeclaration nd = unit.getNullDeclaration(); //TODO what about the anonymous type of null?
 		TypeDeclaration ptd = pt.getDeclaration();
 		TypeDeclaration td = t.getDeclaration();
-		return (ptd instanceof Class && td instanceof Class ||
+		return ((ptd instanceof Class && td instanceof Class ||
 		        ptd instanceof Interface && td instanceof Class &&
 		        		td.equals(nd) ||
 		        td instanceof Interface && ptd instanceof Class &&
 		        		ptd.equals(nd)) &&
 		    t.getSupertype(ptd)==null &&
-		    pt.getSupertype(td)==null;
+		    pt.getSupertype(td)==null) ||
+		    //the following test could be isFinal() 
+		    //instead of isAnonymous()
+		        ptd.isAnonymous() && !pt.isSubtypeOf(t) ||
+		        td.isAnonymous() && !t.isSubtypeOf(pt);
 	}
 
 	/**
