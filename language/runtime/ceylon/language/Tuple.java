@@ -20,7 +20,7 @@ import com.redhat.ceylon.compiler.java.metadata.Variance;
     @TypeParameter(value = "First", variance = Variance.OUT, 
             satisfies = "Element"),
     @TypeParameter(value = "Rest", variance = Variance.OUT, 
-    		defaultValue = "ceylon.language::Null",
+    		defaultValue = "ceylon.language::Empty",
             satisfies = "ceylon.language::Sequential<Element>")
  })
 @Class(extendsType="ceylon.language::Object")
