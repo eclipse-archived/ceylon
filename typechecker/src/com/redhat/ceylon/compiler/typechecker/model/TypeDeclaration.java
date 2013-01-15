@@ -40,6 +40,10 @@ public abstract class TypeDeclaration extends Declaration
     public boolean isSelfType() {
     	return false;
     }
+    
+    public boolean isFinal() {
+    	return false;
+    }
 
     public List<TypeParameter> getTypeParameters() {
         return typeParameters;

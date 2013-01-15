@@ -928,6 +928,10 @@ public class TypeVisitor extends Visitor {
         				et.addError("extends a type alias: " + 
         						type.getDeclaration().getName(unit));
         			}
+        			else if (etd.isFinal()) {
+        				et.addError("extends a final class: " + 
+        						type.getDeclaration().getName(unit));
+        			}
         			else if (!etd.isExtendable() && 
         					!inLanguageModule(that) &&
         					!td.isAlias()) {

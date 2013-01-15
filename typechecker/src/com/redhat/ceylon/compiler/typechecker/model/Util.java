@@ -482,8 +482,8 @@ public class Util {
 		    pt.getSupertype(td)==null) ||
 		    //the following test could be isFinal() 
 		    //instead of isAnonymous()
-		        ptd.isAnonymous() && !pt.isSubtypeOf(t) ||
-		        td.isAnonymous() && !t.isSubtypeOf(pt);
+		        ptd.isFinal() && !pt.isSubtypeOf(t) ||
+		        td.isFinal() && !t.isSubtypeOf(pt);
 	}
 
 	/**

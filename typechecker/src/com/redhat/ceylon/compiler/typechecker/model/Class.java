@@ -14,6 +14,7 @@ public class Class extends ClassOrInterface implements Functional {
     private boolean overloaded;
     private boolean abstraction;
     private boolean anonymous;
+    private boolean fin;
     private List<Declaration> overloads;
 
     @Override
@@ -88,6 +89,15 @@ public class Class extends ClassOrInterface implements Functional {
     public boolean isAbstraction() {
         return abstraction;
     }
+    
+    @Override
+    public boolean isFinal() {
+		return fin||anonymous;
+	}
+    
+    public void setFinal(boolean fin) {
+		this.fin = fin;
+	}
 
     @Override
     public List<Declaration> getOverloads() {
