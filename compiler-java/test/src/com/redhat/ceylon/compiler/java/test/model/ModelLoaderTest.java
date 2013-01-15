@@ -49,6 +49,7 @@ import com.redhat.ceylon.compiler.java.tools.LanguageCompiler;
 import com.redhat.ceylon.compiler.loader.AbstractModelLoader;
 import com.redhat.ceylon.compiler.loader.ModelLoader;
 import com.redhat.ceylon.compiler.loader.ModelLoader.DeclarationType;
+import com.redhat.ceylon.compiler.loader.model.LazyElement;
 import com.redhat.ceylon.compiler.typechecker.context.PhasedUnit;
 import com.redhat.ceylon.compiler.typechecker.context.PhasedUnits;
 import com.redhat.ceylon.compiler.typechecker.model.Annotation;
@@ -189,7 +190,7 @@ public class ModelLoaderTest extends CompilerTest {
     }
 
     protected void compareDeclarations(Declaration validDeclaration, Declaration modelDeclaration) {
-        if(alreadyCompared(validDeclaration, modelDeclaration))
+        if(alreadyCompared(validDeclaration, modelDeclaration) || validDeclaration instanceof LazyElement)
             return;
         String name = validDeclaration.getQualifiedNameString();
         Assert.assertNotNull("Missing model declararion for: "+name, modelDeclaration);
