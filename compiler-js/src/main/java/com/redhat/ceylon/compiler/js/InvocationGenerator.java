@@ -116,10 +116,8 @@ public class InvocationGenerator {
                         expr = null;
                     }
                     if (!first) {
-                        gen.out("].reifyCeylonType(");
-                        TypeUtils.printTypeArguments(that,
-                                gen.getTypeUtils().iterableDefaultedTypeParameter(sequencedType), gen);
-                        gen.out(").chain(");
+                        gen.closeSequenceWithReifiedType(that, gen.getTypeUtils().iterableDefaultedTypeParameter(sequencedType));
+                        gen.out(".chain(");
                         sequencedType=null;
                     }
                     if (arg instanceof Tree.SpreadArgument) {
@@ -148,9 +146,7 @@ public class InvocationGenerator {
                 first = false;
             }
             if (sequencedType != null) {
-                gen.out("].reifyCeylonType(");
-                TypeUtils.printTypeArguments(that, gen.getTypeUtils().iterableDefaultedTypeParameter(sequencedType), gen);
-                gen.out(")");
+                gen.closeSequenceWithReifiedType(that, gen.getTypeUtils().iterableDefaultedTypeParameter(sequencedType));
             }
         }
     }

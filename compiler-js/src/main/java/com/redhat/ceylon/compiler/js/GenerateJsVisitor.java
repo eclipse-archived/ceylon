@@ -435,7 +435,6 @@ public class GenerateJsVisitor extends Visitor
         } else {
             out("/*PENDIENTE*/");
         }
-        //aqui
         self(d);
         out(");}");
         endLine();
@@ -1961,49 +1960,46 @@ public class GenerateJsVisitor extends Visitor
 
     @Override
     public void visit(SequenceEnumeration that) {
-    	SequencedArgument sarg = that.getSequencedArgument();
-    	if (sarg == null) {
-    		out(clAlias, "empty");
-    	} else {
-    		List<PositionalArgument> positionalArguments = sarg.getPositionalArguments();
-    		int lim = positionalArguments.size()-1;
-    		boolean spread = !positionalArguments.isEmpty() 
-    				&& positionalArguments.get(positionalArguments.size()-1) instanceof Tree.ListedArgument == false;
-    		int count=0;
-    		ProducedType chainedType = null;
-    		if (lim>0 || !spread) {
-    			out("[");
-    		}
-    		for (PositionalArgument expr : positionalArguments) {
-    			if (count==lim && spread) {
-    				if (lim > 0) {
-    					out("].reifyCeylonType(");
-    					ProducedType seqType = TypeUtils.findSupertype(types.iterable, that.getTypeModel());
-    					TypeUtils.printTypeArguments(that, seqType.getTypeArgumentList(), this);
-    					out(").chain(/*AQUI*/");
-    					chainedType = TypeUtils.findSupertype(types.iterable, expr.getTypeModel());
-    				}
-    				count--;
-    			} else {
-    				if (count > 0) {
-    					out(",");
-    				}
-    			}
-    			expr.visit(this);
-    			count++;
-    		}
-    		if (chainedType == null) {
-    			if (!spread) {
-    				out("].reifyCeylonType(");
-    				TypeUtils.printTypeArguments(that, that.getTypeModel().getTypeArgumentList(), this);
-    				out(")");
-    			}
-    		} else {
-    			out(",");
-    			TypeUtils.printTypeArguments(that, chainedType.getTypeArgumentList(), this);
-    			out(")");
-    		}
-    	}
+        SequencedArgument sarg = that.getSequencedArgument();
+        if (sarg == null) {
+            out(clAlias, "empty");
+        } else {
+            List<PositionalArgument> positionalArguments = sarg.getPositionalArguments();
+            int lim = positionalArguments.size()-1;
+            boolean spread = !positionalArguments.isEmpty() 
+                    && positionalArguments.get(positionalArguments.size()-1) instanceof Tree.ListedArgument == false;
+            int count=0;
+            ProducedType chainedType = null;
+            if (lim>0 || !spread) {
+                out("[");
+            }
+            for (PositionalArgument expr : positionalArguments) {
+                if (count==lim && spread) {
+                    if (lim > 0) {
+                        ProducedType seqType = TypeUtils.findSupertype(types.iterable, that.getTypeModel());
+                        closeSequenceWithReifiedType(that, seqType.getTypeArgumentList());
+                        out(".chain(");
+                        chainedType = TypeUtils.findSupertype(types.iterable, expr.getTypeModel());
+                    }
+                    count--;
+                } else {
+                    if (count > 0) {
+                        out(",");
+                    }
+                }
+                expr.visit(this);
+                count++;
+            }
+            if (chainedType == null) {
+                if (!spread) {
+                    closeSequenceWithReifiedType(that, that.getTypeModel().getTypeArgumentList());
+                }
+            } else {
+                out(",");
+                TypeUtils.printTypeArguments(that, chainedType.getTypeArgumentList(), this);
+                out(")");
+            }
+        }
     }
 
 
@@ -3443,6 +3439,12 @@ public class GenerateJsVisitor extends Visitor
         custom = escapeStringLiteral(sb.toString());
         out(") { throw ", clAlias, "Exception('", custom, "'); }");
         endLine();
+    }
+
+    void closeSequenceWithReifiedType(Node that, List<ProducedType> types) {
+        out("].reifyCeylonType(");
+        TypeUtils.printTypeArguments(that, types, this);
+        out(")");
     }
 
 }
