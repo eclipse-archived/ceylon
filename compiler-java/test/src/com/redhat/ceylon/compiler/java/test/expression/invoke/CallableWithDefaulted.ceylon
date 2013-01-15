@@ -24,7 +24,13 @@ void callableWithDefaulted() {
     defaultedVariadic(1, "a");
     defaultedVariadic(1, "a", 1);
     defaultedVariadic(1, "a", 1, 2);
-    defaultedVariadic(1, "a", *{});
+    value ints = [1,2];
+    defaultedVariadic(1, "a", *ints);
+    defaultedVariadic(1, "a", 3, *ints);
+    defaultedVariadic(1, "a", 3, 4, *ints);
+    defaultedVariadic(1, "a", for (i in ints) i);
+    defaultedVariadic(1, "a", 3, for (i in ints) i);
+    defaultedVariadic(1, "a", 3, 4, for (i in ints) i);
     
     Callable<Anything, [Integer, String]> notDefaulted = function (Integer goto, String b) => goto;
     notDefaulted(1, "a");
