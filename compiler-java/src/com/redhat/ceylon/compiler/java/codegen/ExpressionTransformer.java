@@ -1536,8 +1536,9 @@ public class ExpressionTransformer extends AbstractTransformer {
         if (invocation.hasParameter(argIndex)) {
             ProducedType type = invocation.getParameterType(argIndex);
             if (invocation.isParameterSequenced(argIndex)
+                    // Java methods need their underlying type preserved
                     && !invocation.isJavaMethod()
-                    && !invocation.isSpread()) {
+                    && !invocation.isArgumentSpread(argIndex)) {
                 // If the parameter is sequenced and the argument is not ...
                 // then the expected type of the *argument* is the type arg to Iterator
                 type = typeFact().getIteratedType(type);
