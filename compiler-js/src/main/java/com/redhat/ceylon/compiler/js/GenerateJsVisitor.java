@@ -1964,7 +1964,7 @@ public class GenerateJsVisitor extends Visitor
     	SequencedArgument sarg = that.getSequencedArgument();
     	if (sarg == null) {
     		out(clAlias, "empty");
-    	} else if (sarg.getParameter() == null) {
+    	} else {
     		List<PositionalArgument> positionalArguments = sarg.getPositionalArguments();
     		int lim = positionalArguments.size()-1;
     		boolean spread = !positionalArguments.isEmpty() 
@@ -1977,11 +1977,11 @@ public class GenerateJsVisitor extends Visitor
     		for (PositionalArgument expr : positionalArguments) {
     			if (count==lim && spread) {
     				if (lim > 0) {
-    					out("].reifyCeylonType(", "/*AQUI*/");
-    					TypeUtils.printTypeArguments(that,
-    					        that.getTypeModel().getTypeArgumentList(), this);
-    					out(").chain(");
-    					chainedType = expr.getTypeModel();
+    					out("].reifyCeylonType(");
+    					ProducedType seqType = TypeUtils.findSupertype(types.iterable, that.getTypeModel());
+    					TypeUtils.printTypeArguments(that, seqType.getTypeArgumentList(), this);
+    					out(").chain(/*AQUI*/");
+    					chainedType = TypeUtils.findSupertype(types.iterable, expr.getTypeModel());
     				}
     				count--;
     			} else {
@@ -2003,8 +2003,6 @@ public class GenerateJsVisitor extends Visitor
     			TypeUtils.printTypeArguments(that, chainedType.getTypeArgumentList(), this);
     			out(")");
     		}
-    	} else {
-    		out("WTF IS A SEQUENCED ENUM ARG PARAMETER?");
     	}
     }
 
@@ -3374,7 +3372,7 @@ public class GenerateJsVisitor extends Visitor
         SequencedArgument sarg = that.getSequencedArgument();
         if (sarg == null) {
         	out(clAlias, "empty");
-        } else if (sarg.getParameter() == null) {
+        } else {
         	List<List<ProducedType>> targs = new ArrayList<List<ProducedType>>();
         	List<PositionalArgument> positionalArguments = sarg.getPositionalArguments();
         	boolean spread = !positionalArguments.isEmpty() 
@@ -3415,9 +3413,6 @@ public class GenerateJsVisitor extends Visitor
         		TypeUtils.printTypeArguments(that, t, this);
         		out(")");
         	}
-        } else {
-        	//TODO WTF is this supposed to be?
-        	out("/*TUPLE PARAM*/");
         }
     }
 
