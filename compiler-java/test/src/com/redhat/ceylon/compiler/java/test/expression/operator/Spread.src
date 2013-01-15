@@ -32,7 +32,7 @@ final class spread_ {
             }
             returning $spread$1$sequenceBuilder.getSequence();
         );
-        final .ceylon.language.Iterable<? extends .ceylon.language.String, ?> seq2 = seq;
+        final .ceylon.language.Iterable<? extends .ceylon.language.String, ?> seq2 = (.ceylon.language.Iterable<? extends .ceylon.language.String, ?>)(.ceylon.language.Iterable)seq;
         final .ceylon.language.Sequential<? extends .ceylon.language.Integer> ini3 = (
             let
             {

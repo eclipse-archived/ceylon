@@ -48,7 +48,7 @@ public abstract class Bug844_Tuple<Element, First extends Element, Rest> extends
         this.$ceylon$language$Sequential$this = new .ceylon.language.Sequential$impl<Element>(this);
         this.$ceylon$language$List$this = new .ceylon.language.List$impl<Element>(this);
         this.$ceylon$language$Collection$this = new .ceylon.language.Collection$impl<Element>(this);
-        this.$ceylon$language$Iterable$this = new .ceylon.language.Iterable$impl<Element, .java.lang.Object>(this);
+        this.$ceylon$language$Iterable$this = new .ceylon.language.Iterable$impl<Element, .java.lang.Object>((.ceylon.language.Iterable<Element, .java.lang.Object>)(.ceylon.language.Iterable)this);
         this.$ceylon$language$Container$this = new .ceylon.language.Container$impl<Element, .java.lang.Object>((.ceylon.language.Container<Element, .java.lang.Object>)(.ceylon.language.Container)this);
         this.$ceylon$language$Category$this = new .ceylon.language.Category$impl(this);
         this.$ceylon$language$Cloneable$this = new .ceylon.language.Cloneable$impl<.ceylon.language.Collection<? extends Element>>((.ceylon.language.Cloneable<.ceylon.language.Collection<? extends Element>>)(.ceylon.language.Cloneable)this);
@@ -56,6 +56,26 @@ public abstract class Bug844_Tuple<Element, First extends Element, Rest> extends
         this.$ceylon$language$Ranged$this = new .ceylon.language.Ranged$impl<.ceylon.language.Integer, .ceylon.language.List<? extends Element>>((.ceylon.language.Ranged<.ceylon.language.Integer, .ceylon.language.List<? extends Element>>)(.ceylon.language.Ranged)this);
     }
     protected final .ceylon.language.Sequence$impl<Element> $ceylon$language$Sequence$this;
+    
+    @.java.lang.Override
+    public long getSize() {
+        return $ceylon$language$Sequence$this.getSize();
+    }
+    
+    @.java.lang.Override
+    public .ceylon.language.Iterator<? extends Element> getIterator() {
+        return $ceylon$language$Sequence$this.getIterator();
+    }
+    
+    @.java.lang.Override
+    public boolean contains(final .java.lang.Object element) {
+        return $ceylon$language$Sequence$this.contains(element);
+    }
+    
+    @.java.lang.Override
+    public Element findLast(final .ceylon.language.Callable<? extends .ceylon.language.Boolean> selecting) {
+        return $ceylon$language$Sequence$this.findLast(selecting);
+    }
     
     @.java.lang.Override
     public Element getLast() {
@@ -85,18 +105,8 @@ public abstract class Bug844_Tuple<Element, First extends Element, Rest> extends
     protected final .ceylon.language.List$impl<Element> $ceylon$language$List$this;
     
     @.java.lang.Override
-    public long getSize() {
-        return $ceylon$language$List$this.getSize();
-    }
-    
-    @.java.lang.Override
     public boolean defines(final .ceylon.language.Integer index) {
         return $ceylon$language$List$this.defines(index);
-    }
-    
-    @.java.lang.Override
-    public .ceylon.language.Iterator<? extends Element> getIterator() {
-        return $ceylon$language$List$this.getIterator();
     }
     
     @.java.lang.Override
@@ -110,11 +120,6 @@ public abstract class Bug844_Tuple<Element, First extends Element, Rest> extends
     }
     
     @.java.lang.Override
-    public Element findLast(final .ceylon.language.Callable<? extends .ceylon.language.Boolean> selecting) {
-        return $ceylon$language$List$this.findLast(selecting);
-    }
-    
-    @.java.lang.Override
     public <Other>.ceylon.language.Sequence withLeading(final Other element) {
         return $ceylon$language$List$this.withLeading(element);
     }
@@ -124,11 +129,6 @@ public abstract class Bug844_Tuple<Element, First extends Element, Rest> extends
         return $ceylon$language$List$this.withTrailing(element);
     }
     protected final .ceylon.language.Collection$impl<Element> $ceylon$language$Collection$this;
-    
-    @.java.lang.Override
-    public boolean contains(final .java.lang.Object element) {
-        return $ceylon$language$Collection$this.contains(element);
-    }
     protected final .ceylon.language.Iterable$impl<Element, .java.lang.Object> $ceylon$language$Iterable$this;
     
     @.java.lang.Override

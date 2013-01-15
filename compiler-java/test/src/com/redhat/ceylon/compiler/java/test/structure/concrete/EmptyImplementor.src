@@ -183,12 +183,12 @@ class EmptyImpl extends .java.lang.Object implements .ceylon.language.Empty {
     }
     
     @.java.lang.Override
-    public final <Element>.ceylon.language.Sequence<? extends Element> withLeading(final Element element) {
+    public final <Element>.ceylon.language.Tuple<Element, ? extends Element, ? extends .ceylon.language.Empty> withLeading(final Element element) {
         return $ceylon$language$Empty$this.withLeading(element);
     }
     
     @.java.lang.Override
-    public final <Element>.ceylon.language.Sequence<? extends Element> withTrailing(final Element element) {
+    public final <Element>.ceylon.language.Tuple<Element, ? extends Element, ? extends .ceylon.language.Empty> withTrailing(final Element element) {
         return $ceylon$language$Empty$this.withTrailing(element);
     }
     protected final .ceylon.language.Sequential$impl<.java.lang.Object> $ceylon$language$Sequential$this;
