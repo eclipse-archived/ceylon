@@ -1427,8 +1427,8 @@ public class ClassTransformer extends AbstractTransformer {
                     this,
                     model,
                     initializingParameter != null ? 
-                                            naming.makeName(initializingParameter, Naming.NA_MEMBER) : 
-                                            naming.makeName(model, Naming.NA_MEMBER),
+                                            naming.makeName(initializingParameter, Naming.NA_IDENT) : 
+                                            naming.makeName(model, Naming.NA_IDENT),
                     def);
             invocation.handleBoxing(true);
             JCExpression call = expressionGen().transformInvocation(invocation);
@@ -1443,7 +1443,7 @@ public class ClassTransformer extends AbstractTransformer {
             if (initializingParameter == null) {
                 // If the field isn't initialized by a parameter we have to 
                 // cope with the possibility that it's never initialized
-                final JCBinary cond = make().Binary(JCTree.EQ, naming.makeName(model, Naming.NA_MEMBER), makeNull());
+                final JCBinary cond = make().Binary(JCTree.EQ, naming.makeName(model, Naming.NA_IDENT), makeNull());
                 final JCStatement throw_ = make().Throw(make().NewClass(null, null, 
                         makeIdent(syms().ceylonUninitializedMethodErrorType), 
                         List.<JCExpression>nil(), 
