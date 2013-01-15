@@ -4,7 +4,6 @@ import java.io.IOException;
 import java.io.Writer;
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
@@ -51,6 +50,7 @@ public class GenerateJsVisitor extends Visitor
     private final RetainedVars retainedVars = new RetainedVars();
     private final Map<String, String> importedModules;
     final ConditionGenerator conds;
+    private final InvocationGenerator invoker;
     private final List<CommonToken> tokens;
 
     private final class SuperVisitor extends Visitor {
@@ -142,6 +142,7 @@ public class GenerateJsVisitor extends Visitor
         this.tokens = tokens;
         importedModules = imports;
         types = typeUtils;
+        invoker = new InvocationGenerator(this, names, retainedVars);
     }
 
     TypeUtils getTypeUtils() { return types; }
@@ -1755,7 +1756,7 @@ public class GenerateJsVisitor extends Visitor
             NamedArgumentList argList = that.getNamedArgumentList();
             out("(");
 
-            Map<String, String> argVarNames = defineNamedArguments(argList);
+            Map<String, String> argVarNames = invoker.defineNamedArguments(argList);
 
             TypeArguments targs = that.getPrimary() instanceof BaseTypeExpression ? ((BaseTypeExpression)that.getPrimary()).getTypeArguments() : null;
             that.getPrimary().visit(this);
@@ -1763,7 +1764,7 @@ public class GenerateJsVisitor extends Visitor
                 Tree.MemberOrTypeExpression mte = (Tree.MemberOrTypeExpression) that.getPrimary();
                 if (mte.getDeclaration() instanceof Functional) {
                     Functional f = (Functional) mte.getDeclaration();
-                    applyNamedArguments(argList, f, argVarNames, getSuperMemberScope(mte)!=null, targs);
+                    invoker.applyNamedArguments(argList, f, argVarNames, getSuperMemberScope(mte)!=null, targs);
                 }
             }
             out(")");
@@ -1803,100 +1804,9 @@ public class GenerateJsVisitor extends Visitor
         }
     }
 
-    private Map<String, String> defineNamedArguments(NamedArgumentList argList) {
-        Map<String, String> argVarNames = new HashMap<String, String>();
-        for (NamedArgument arg: argList.getNamedArguments()) {
-            String paramName = arg.getParameter().getName();
-                String varName = names.createTempVariable(paramName);
-                argVarNames.put(paramName, varName);
-                retainedVars.add(varName);
-                out(varName, "=");
-                arg.visit(this);
-            out(",");
-        }
-        SequencedArgument sarg = argList.getSequencedArgument();
-        if (sarg!=null) {
-            String paramName = sarg.getParameter().getName();
-            String varName = names.createTempVariable(paramName);
-            argVarNames.put(paramName, varName);
-            retainedVars.add(varName);
-            out(varName, "=");
-            sarg.visit(this);
-            out(",");
-        }
-        return argVarNames;
-    }
-
-    private void applyNamedArguments(NamedArgumentList argList, Functional func,
-                Map<String, String> argVarNames, boolean superAccess, TypeArguments targs) {
-        boolean firstList = true;
-        for (com.redhat.ceylon.compiler.typechecker.model.ParameterList plist : func.getParameterLists()) {
-            List<String> argNames = argList.getNamedArgumentList().getArgumentNames();
-            boolean first=true;
-            if (firstList && superAccess) {
-                out(".call(this");
-                if (!plist.getParameters().isEmpty()) { out(","); }
-            }
-            else {
-                out("(");
-            }
-            for (com.redhat.ceylon.compiler.typechecker.model.Parameter p : plist.getParameters()) {
-                if (!first) out(",");
-                boolean namedArgumentGiven = argNames.contains(p.getName());
-                if (namedArgumentGiven) {
-                    out(argVarNames.get(p.getName()));
-                } else if (p.isSequenced()) {
-                    out(clAlias, "empty");
-                } else if (argList.getSequencedArgument()!=null) {
-                    out(argVarNames.get(p.getName()));
-                } else {
-                    out("undefined");
-                }
-                first = false;
-            }
-            if (targs != null && !targs.getTypeModels().isEmpty()) {
-                if (!first) out(",");
-                TypeUtils.printTypeArguments(argList, targs.getTypeModels(), this);
-            }
-            out(")");
-            firstList = false;
-        }
-    }
-
     @Override
     public void visit(PositionalArgumentList that) {
-        if (!that.getPositionalArguments().isEmpty()) {
-            boolean first=true;
-            ProducedType sequencedType=null;
-            for (PositionalArgument arg: that.getPositionalArguments()) {
-                if (!first) out(",");
-                Tree.Expression expr;
-                boolean spread = false;
-                if(arg instanceof Tree.ListedArgument)
-                	expr = ((Tree.ListedArgument) arg).getExpression();
-                else if(arg instanceof Tree.SpreadArgument){
-                	expr = ((Tree.SpreadArgument) arg).getExpression();
-                	spread = true;
-                }else{
-                	((Tree.Comprehension)arg).visit(this);
-                	// don't do the rest
-                	break;
-                }
-                int boxType = boxUnboxStart(expr.getTerm(), arg.getParameter());
-                if (sequencedType==null && arg.getParameter() != null && arg.getParameter().isSequenced() && !spread) {
-                    sequencedType=expr.getTypeModel();
-                    out("[");
-                }
-                arg.visit(this);
-                boxUnboxEnd(boxType);
-                first = false;
-            }
-            if (sequencedType != null) {
-                out("].reifyCeylonType(");
-                TypeUtils.printTypeArguments(that, types.iterableDefaultedTypeParameter(sequencedType), this);
-                out(")");
-            }
-        }
+        invoker.generatePositionalArguments(that, that.getPositionalArguments(), false);
     }
 
     // Make sure fromTerm is compatible with toTerm by boxing it when necessary
@@ -1908,7 +1818,7 @@ public class GenerateJsVisitor extends Visitor
     }
 
     // Make sure fromTerm is compatible with toTerm by boxing or unboxing it when necessary
-    private int boxUnboxStart(Term fromTerm, Term toTerm) {
+    int boxUnboxStart(Term fromTerm, Term toTerm) {
         boolean fromNative = isNative(fromTerm);
         boolean toNative = isNative(toTerm);
         ProducedType fromType = fromTerm.getTypeModel();
@@ -1916,14 +1826,14 @@ public class GenerateJsVisitor extends Visitor
     }
 
     // Make sure fromTerm is compatible with toDecl by boxing or unboxing it when necessary
-    private int boxUnboxStart(Term fromTerm, com.redhat.ceylon.compiler.typechecker.model.TypedDeclaration toDecl) {
+    int boxUnboxStart(Term fromTerm, com.redhat.ceylon.compiler.typechecker.model.TypedDeclaration toDecl) {
         boolean fromNative = isNative(fromTerm);
         boolean toNative = isNative(toDecl);
         ProducedType fromType = fromTerm.getTypeModel();
         return boxUnboxStart(fromNative, fromType, toNative);
     }
 
-    private int boxUnboxStart(boolean fromNative, ProducedType fromType, boolean toNative) {
+    int boxUnboxStart(boolean fromNative, ProducedType fromType, boolean toNative) {
         if (fromNative != toNative) {
             // Box the value
             String fromTypeName = fromType.getProducedTypeQualifiedName();
@@ -1954,7 +1864,7 @@ public class GenerateJsVisitor extends Visitor
         return 0;
     }
 
-    private void boxUnboxEnd(int boxType) {
+    void boxUnboxEnd(int boxType) {
         switch (boxType) {
         case 1: out(")"); break;
         case 2: out(".valueOf()"); break;
@@ -2038,9 +1948,9 @@ public class GenerateJsVisitor extends Visitor
         boolean first=true;
         for (PositionalArgument arg: positionalArguments) {
             if (!first) out(",");
-            if(arg instanceof Tree.ListedArgument)
+            if (arg instanceof Tree.ListedArgument) {
             	((Tree.ListedArgument) arg).getExpression().visit(this);
-            else if(arg instanceof Tree.SpreadArgument)
+            } else if(arg instanceof Tree.SpreadArgument)
             	((Tree.SpreadArgument) arg).getExpression().visit(this);
             else // comprehension
             	arg.visit(this);
