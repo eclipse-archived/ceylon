@@ -20,6 +20,25 @@ import com.redhat.ceylon.compiler.java.metadata.Variance;
 public interface Sequence<Element> 
         extends Sequential<Element> {
     
+    @Annotations({@Annotation("shared"), @Annotation("actual"), @Annotation("default")})
+    @Override
+    public long getSize();
+    
+    @Annotations({@Annotation("shared"), @Annotation("actual"), @Annotation("default")})
+    @Override
+    public Iterator<? extends Element> getIterator();
+    
+    @Annotations({@Annotation("shared"), @Annotation("actual"), @Annotation("default")})
+    @Override
+    public boolean contains(@Name("element") java.lang.Object element);
+    
+    @Annotations({@Annotation("shared"), @Annotation("actual"), @Annotation("default")})
+    @TypeInfo("ceylon.language::Null|Element")
+    @Override
+    public Element findLast(@Name("selecting")
+                            @TypeInfo("ceylon.language::Callable<ceylon.language.Boolean,ceylon.language::Tuple<Element,Element,ceylon.language::Empty>>")
+                            Callable<? extends Boolean> selecting);
+
     @Annotations({@Annotation("actual"), @Annotation("formal")})
     @Override
     @TypeInfo("ceylon.language::Integer")
