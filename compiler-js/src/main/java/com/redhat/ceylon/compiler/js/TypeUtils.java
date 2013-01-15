@@ -226,4 +226,18 @@ public class TypeUtils {
         return ts;
     }
 
+    /** Find the type with the specified declaration among the specified type's supertypes, case types, satisfied types, etc. */
+    static ProducedType findSupertype(TypeDeclaration d, ProducedType pt) {
+        if (pt.getDeclaration().equals(d)) {
+            return pt;
+        }
+        List<ProducedType> list = pt.getSupertypes() == null ? pt.getCaseTypes() : pt.getSupertypes();
+        for (ProducedType t : list) {
+            if (t.getDeclaration().equals(d)) {
+                return t;
+            }
+        }
+        return null;
+    }
+
 }
