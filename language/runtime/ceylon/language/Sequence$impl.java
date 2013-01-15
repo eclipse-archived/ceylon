@@ -5,12 +5,32 @@ import com.redhat.ceylon.compiler.java.metadata.Ignore;
 @Ignore
 public final class Sequence$impl<Element> {
     private final ceylon.language.Iterable$impl<Element, ? extends java.lang.Object> $ceylon$language$Iterable$this;
+    private final ceylon.language.List$impl<Element> $ceylon$language$List$this;
+    private final ceylon.language.Collection$impl<Element> $ceylon$language$Collection$this;
     
     private final Sequence<Element> $this;
     
     public Sequence$impl(Sequence<Element> $this) {
         this.$ceylon$language$Iterable$this = new ceylon.language.Iterable$impl<Element,java.lang.Object>($this);
+        this.$ceylon$language$List$this = new ceylon.language.List$impl<Element>($this);
+        this.$ceylon$language$Collection$this = new ceylon.language.Collection$impl<Element>($this);
         this.$this = $this;
+    }
+
+    public long getSize(){
+        return $ceylon$language$List$this.getSize();
+    }
+    
+    public Iterator<? extends Element> getIterator(){
+        return $ceylon$language$List$this.getIterator();
+    }
+    
+    public boolean contains(java.lang.Object element){
+        return $ceylon$language$Collection$this.contains(element);
+    }
+    
+    public Element findLast(Callable<? extends Boolean> selecting){
+        return $ceylon$language$List$this.findLast(selecting);
     }
 
     public Element getLast(){
