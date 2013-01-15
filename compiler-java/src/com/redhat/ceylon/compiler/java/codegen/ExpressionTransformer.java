@@ -1550,12 +1550,6 @@ public class ExpressionTransformer extends AbstractTransformer {
             JCExpression ret = transformExpression(expr, 
                     boxingStrategy, 
                     type, flags);
-            if(invocation.isParameterSequenced(argIndex)
-                    && invocation.isJavaMethod()
-                    && invocation.isSpread()){
-                // must translate it into a Util call
-                ret = sequenceToJavaArray(ret, type, boxingStrategy, expr.getTypeModel());
-            }
             return ret;
         } else {
             // Overloaded methods don't have a reference to a parameter
@@ -1642,24 +1636,29 @@ public class ExpressionTransformer extends AbstractTransformer {
         for (int argIndex = 0; argIndex < numArguments; argIndex++) {
             final JCExpression expr;
             final JCExpression type;
+            BoxingStrategy boxingStrategy = invocation.getParameterBoxingStrategy(argIndex);
+            ProducedType parameterType = invocation.getParameterType(argIndex);
             // for Java methods of variadic primitives, it's better to wrap them ourselves into an array
             // to avoid ambiguity of foo(1,2) for foo(int...) and foo(Object...) methods
             if(!wrapIntoArray
                     && invocation.isParameterSequenced(argIndex)
                     && invocation.isJavaMethod()
-                    && invocation.getParameterBoxingStrategy(argIndex) == BoxingStrategy.UNBOXED
-                    && willEraseToPrimitive(typeFact().getDefiniteType(invocation.getParameterType(argIndex)))
+                    && boxingStrategy == BoxingStrategy.UNBOXED
+                    && willEraseToPrimitive(typeFact().getDefiniteType(parameterType))
                     && !invocation.isSpread())
                 wrapIntoArray = true;
+            // if it's not sequenced it's not special
             if (!invocation.isParameterSequenced(argIndex)
-                    || invocation.isArgumentSpread(argIndex)
-                    || invocation.isJavaMethod()) {
+                    // if it's spread and not Java, we pass it along
+                    || (invocation.isArgumentSpread(argIndex) && !invocation.isJavaMethod())
+                    // if it's sequenced, Java and there's no spread at all, pass it along
+                    || (invocation.isParameterSequenced(argIndex) && invocation.isJavaMethod() && !invocation.isSpread())) {
                 expr = invocation.getTransformedArgumentExpression(argIndex);
-                type = makeJavaType(invocation.getParameterType(argIndex), invocation.getParameterBoxingStrategy(argIndex) == BoxingStrategy.BOXED ? JT_NO_PRIMITIVES : 0);
+                type = makeJavaType(invocation.getParameterType(argIndex), boxingStrategy == BoxingStrategy.BOXED ? JT_NO_PRIMITIVES : 0);
             } else {
-                final ProducedType iteratedType = typeFact().getIteratedType(invocation.getParameterType(argIndex));
+                final ProducedType iteratedType = typeFact().getIteratedType(parameterType);
 
-                // we can't have a Java method and we must have a sequenced param
+                // we must have a sequenced param
                 if(invocation.isSpread()){
                     // we can have several remaining arguments and the last one is spread
                     List<JCExpression> x = List.<JCExpression>nil();
@@ -1671,8 +1670,21 @@ public class ExpressionTransformer extends AbstractTransformer {
                         else
                             x = x.prepend(argExpr);
                     }
-                    JCExpression typeExpr = makeJavaType(iteratedType, JT_TYPE_ARGUMENT);
-                    expr = makeUtilInvocation("sequentialInstance", x, List.of(typeExpr));
+                    if(invocation.isJavaMethod()){
+                        // collect all the initial arguments and wrap into a Java array
+                        // first arg is the spread part
+                        JCExpression last = x.head;
+                        // remove it from x
+                        x = x.tail;
+                        
+                        ProducedType lastType = invocation.getArgumentExpression(numArguments-1).getTypeModel();
+
+                        // must translate it into a Util call
+                        expr = sequenceToJavaArray(last, parameterType, boxingStrategy, lastType, x);
+                    }else{
+                        JCExpression typeExpr = makeJavaType(iteratedType, JT_TYPE_ARGUMENT);
+                        expr = makeUtilInvocation("sequentialInstance", x, List.of(typeExpr));
+                    }
                 }else{
                     // collect each remaining argument and box with an ArraySequence<T>
                     List<JCExpression> x = List.<JCExpression>nil();
