@@ -28,5 +28,6 @@ shared void test() {
     check(mixseqs{nums=[4]; for (c in "hola") c}=="C:h #4");
     check(mixseqs{*"hola"}=="C:h #?");
     check(mixseqs{`H`,`I`}=="C:H #?");
+    testSpread();
     results();
 }
