@@ -47,6 +47,82 @@ class SequencedParameterInvocation {
         final .ceylon.language.Tuple<.ceylon.language.Integer, ? extends .ceylon.language.Integer, ? extends .ceylon.language.Tuple<.ceylon.language.Integer, ? extends .ceylon.language.Integer, ? extends .ceylon.language.Tuple<.ceylon.language.Integer, ? extends .ceylon.language.Integer, ? extends .ceylon.language.Empty>>> ints = new .ceylon.language.Tuple<.ceylon.language.Integer, .ceylon.language.Integer, .ceylon.language.Tuple<.ceylon.language.Integer, ? extends .ceylon.language.Integer, ? extends .ceylon.language.Tuple<.ceylon.language.Integer, ? extends .ceylon.language.Integer, ? extends .ceylon.language.Empty>>>(.ceylon.language.Integer.instance(1L), new .ceylon.language.Tuple<.ceylon.language.Integer, .ceylon.language.Integer, .ceylon.language.Tuple<.ceylon.language.Integer, ? extends .ceylon.language.Integer, ? extends .ceylon.language.Empty>>(.ceylon.language.Integer.instance(2L), new .ceylon.language.Tuple<.ceylon.language.Integer, .ceylon.language.Integer, .ceylon.language.Empty>(.ceylon.language.Integer.instance(3L), .ceylon.language.empty_.getEmpty$())));
         m("foo", ints);
         m("foo", .com.redhat.ceylon.compiler.java.Util.<.ceylon.language.Integer>sequentialInstance(ints, .ceylon.language.Integer.instance(1L)));
+        m("foo", .com.redhat.ceylon.compiler.java.Util.<.ceylon.language.Integer>sequentialInstance(ints, .ceylon.language.Integer.instance(1L), .ceylon.language.Integer.instance(2L)));
+        m("foo", new .com.redhat.ceylon.compiler.java.language.AbstractIterable<.ceylon.language.Integer, .java.lang.Object>(){
+            
+            public final .ceylon.language.Iterator<.ceylon.language.Integer> getIterator() {
+                return new .ceylon.language.Iterator<.ceylon.language.Integer>(){
+                    private final .ceylon.language.Iterator<? extends .ceylon.language.Integer> iter$0 = new .com.redhat.ceylon.compiler.java.language.ArraySequence<.ceylon.language.Integer>(.ceylon.language.Integer.instance(1L)).getIterator();
+                    private .ceylon.language.Integer i;
+                    private boolean i$exhausted;
+                    
+                    private final boolean i() {
+                        final .java.lang.Object $ceylontmpitem4 = iter$0.next();
+                        i$exhausted = $ceylontmpitem4 == .ceylon.language.finished_.getFinished$();
+                        if (i$exhausted) {
+                            return false;
+                        } else {
+                            i = (.ceylon.language.Integer)$ceylontmpitem4;
+                            return true;
+                        }
+                    }
+                    
+                    public final .java.lang.Object next() {
+                        return this.i() ? i : .ceylon.language.finished_.getFinished$();
+                    }
+                };
+            }
+        }.getSequence());
+        m("foo", .com.redhat.ceylon.compiler.java.Util.<.ceylon.language.Integer>sequentialInstance(new .com.redhat.ceylon.compiler.java.language.AbstractIterable<.ceylon.language.Integer, .java.lang.Object>(){
+            
+            public final .ceylon.language.Iterator<.ceylon.language.Integer> getIterator() {
+                return new .ceylon.language.Iterator<.ceylon.language.Integer>(){
+                    private final .ceylon.language.Iterator<? extends .ceylon.language.Integer> iter$0 = new .com.redhat.ceylon.compiler.java.language.ArraySequence<.ceylon.language.Integer>(.ceylon.language.Integer.instance(1L)).getIterator();
+                    private .ceylon.language.Integer i;
+                    private boolean i$exhausted;
+                    
+                    private final boolean i() {
+                        final .java.lang.Object $ceylontmpitem5 = iter$0.next();
+                        i$exhausted = $ceylontmpitem5 == .ceylon.language.finished_.getFinished$();
+                        if (i$exhausted) {
+                            return false;
+                        } else {
+                            i = (.ceylon.language.Integer)$ceylontmpitem5;
+                            return true;
+                        }
+                    }
+                    
+                    public final .java.lang.Object next() {
+                        return this.i() ? i : .ceylon.language.finished_.getFinished$();
+                    }
+                };
+            }
+        }.getSequence(), .ceylon.language.Integer.instance(1L)));
+        m("foo", .com.redhat.ceylon.compiler.java.Util.<.ceylon.language.Integer>sequentialInstance(new .com.redhat.ceylon.compiler.java.language.AbstractIterable<.ceylon.language.Integer, .java.lang.Object>(){
+            
+            public final .ceylon.language.Iterator<.ceylon.language.Integer> getIterator() {
+                return new .ceylon.language.Iterator<.ceylon.language.Integer>(){
+                    private final .ceylon.language.Iterator<? extends .ceylon.language.Integer> iter$0 = new .com.redhat.ceylon.compiler.java.language.ArraySequence<.ceylon.language.Integer>(.ceylon.language.Integer.instance(1L)).getIterator();
+                    private .ceylon.language.Integer i;
+                    private boolean i$exhausted;
+                    
+                    private final boolean i() {
+                        final .java.lang.Object $ceylontmpitem6 = iter$0.next();
+                        i$exhausted = $ceylontmpitem6 == .ceylon.language.finished_.getFinished$();
+                        if (i$exhausted) {
+                            return false;
+                        } else {
+                            i = (.ceylon.language.Integer)$ceylontmpitem6;
+                            return true;
+                        }
+                    }
+                    
+                    public final .java.lang.Object next() {
+                        return this.i() ? i : .ceylon.language.finished_.getFinished$();
+                    }
+                };
+            }
+        }.getSequence(), .ceylon.language.Integer.instance(1L), .ceylon.language.Integer.instance(2L)));
         m2("foo", new .com.redhat.ceylon.compiler.java.language.ArraySequence<.com.redhat.ceylon.compiler.java.test.expression.invoke.SequencedParameterInvocation>(this, this, this));
     }
     

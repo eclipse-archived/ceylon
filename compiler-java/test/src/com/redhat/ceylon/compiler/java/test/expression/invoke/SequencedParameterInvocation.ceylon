@@ -29,8 +29,16 @@ class SequencedParameterInvocation(){
         m("foo");
         m("foo", 1, 2, 3);
         value ints = [1,2,3];
+        // spread
         m("foo", *ints);
+        // partial spread
         m("foo", 1, *ints);
+        m("foo", 1, 2, *ints);
+        // spread comprehension
+        m("foo", for (i in {1}) i);
+        // partial spread comprehension
+        m("foo", 1, for (i in {1}) i);
+        m("foo", 1, 2, for (i in {1}) i);
         m2("foo", this, this, this);
     }
 }
