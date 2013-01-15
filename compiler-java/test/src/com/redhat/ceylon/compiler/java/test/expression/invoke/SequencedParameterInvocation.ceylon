@@ -28,6 +28,9 @@ class SequencedParameterInvocation(){
     void f() {
         m("foo");
         m("foo", 1, 2, 3);
+        value ints = [1,2,3];
+        m("foo", *ints);
+        m("foo", 1, *ints);
         m2("foo", this, this, this);
     }
 }
