@@ -157,7 +157,8 @@
 	font-style: italic;
 }
 
-.type-parameter-variance {
+.type-parameter-variance,
+.type-parameter-default-value {
 	color: rgb(120, 120, 120);
 }
 

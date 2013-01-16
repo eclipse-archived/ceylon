@@ -371,7 +371,7 @@ public class ClassDoc extends ClassOrPackageDoc {
                 }
                 
                 writeIcon(superType.getDeclaration());
-                around("span class='decl' title='"+ superType.getProducedTypeQualifiedName() +"'", linkRenderer().to(superType).getLink());
+                around("span class='decl' title='"+ superType.getProducedTypeQualifiedName() +"'", linkRenderer().to(superType).forDeclaration(true).getLink());
                 i++;
             }
             while (i-- > 0) {

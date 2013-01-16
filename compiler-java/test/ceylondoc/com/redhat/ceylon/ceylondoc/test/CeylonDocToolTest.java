@@ -684,9 +684,9 @@ public class CeylonDocToolTest {
     
     private void assertGenericTypeParams(File destDir) throws IOException {
         assertMatchInFile(destDir, "class_StubClassWithGenericTypeParams.html",
-                Pattern.compile("<span class='sub-navbar-name'>StubClassWithGenericTypeParams<span class='type-parameter'>&lt;<span class='type-parameter-variance'>in </span>ContravariantType, Type, <span class='type-parameter-variance'>out </span>CovariantType&gt;</span></span>"));
+                Pattern.compile("<span class='sub-navbar-name'>StubClassWithGenericTypeParams<span class='type-parameter'>&lt;<span class='type-parameter-variance'>in </span>ContravariantType, Type, <span class='type-parameter-variance'>out </span>CovariantType, DefaultedType<span class='type-parameter-default-value'> = Iterable<span class='type-parameter'>&lt;<a class='link' href='class_StubClass.html'>StubClass</a>&gt;</span></span>&gt;</span></span>"));
         assertMatchInFile(destDir, "class_StubClassWithGenericTypeParams.html",
-                Pattern.compile("<div class='signature'><span class='modifiers'>shared</span> Anything methodWithGenericTypeParams<span class='type-parameter'>&lt;<span class='type-parameter-variance'>in </span>ContravariantType, Type, <span class='type-parameter-variance'>out </span>CovariantType&gt;</span>\\(\\)"));
+                Pattern.compile("<div class='signature'><span class='modifiers'>shared</span> Anything methodWithGenericTypeParams<span class='type-parameter'>&lt;<span class='type-parameter-variance'>in </span>ContravariantType, Type, <span class='type-parameter-variance'>out </span>CovariantType, DefaultedType<span class='type-parameter-default-value'> = Iterable<span class='type-parameter'>&lt;<a class='link' href='class_StubClass.html'>StubClass</a>&gt;</span></span>&gt;</span>\\(\\)"));
     }
     
     private void assertObjectPageDifferences(File destDir) throws IOException {

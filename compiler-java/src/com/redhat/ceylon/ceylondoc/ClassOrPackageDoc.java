@@ -275,6 +275,12 @@ public abstract class ClassOrPackageDoc extends CeylonDoc {
                     write("<span class='type-parameter-variance'>out </span>");
                 }
                 write(typeParam.getName());
+                if (typeParam.isDefaulted() && typeParam.getDefaultTypeArgument() != null){
+                    open("span class='type-parameter-default-value'");
+                    write(" = ");
+                    write(linkRenderer().to(typeParam.getDefaultTypeArgument()).getLink());
+                    close("span");
+                }
             }
             write("&gt;");
             write("</span>");

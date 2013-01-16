@@ -17,8 +17,8 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
  * MA  02110-1301, USA.
  */
-shared class StubClassWithGenericTypeParams<in ContravariantType, Type, out CovariantType>() {
+shared class StubClassWithGenericTypeParams<in ContravariantType, Type, out CovariantType, DefaultedType = Iterable<StubClass>>() {
 
-    shared void methodWithGenericTypeParams<in ContravariantType, Type, out CovariantType>() {}
+    shared void methodWithGenericTypeParams<in ContravariantType, Type, out CovariantType, DefaultedType = Iterable<StubClass>>() {}
     
 }
