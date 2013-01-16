@@ -371,11 +371,14 @@ public class ExpressionVisitor extends Visitor {
                                 List<ProducedType> list = new ArrayList<ProducedType>();
                                 addToIntersection(list, unit.getAnythingDeclaration().getType(), unit);
                                 for (ProducedType st: tp.getSatisfiedTypes()) {
-                                    addToIntersection(list, st, unit);
+                                	if (!tp.isSelfType()) {
+                                		st = st.substitute(type.getTypeArguments());
+                                		addToIntersection(list, st, unit);
+                                	}
                                 }
                                 IntersectionType ut = new IntersectionType(unit);
                                 ut.setSatisfiedTypes(list);
-                                if (!ta.isExactly(ut.getType())) {
+                                if (!ut.getType().isSubtypeOf(ta)) {
                                     that.addWarning("type argument to covariant (out) type parameter in assignability condition must be " +
                                             ut.getType().getProducedTypeName(unit) + " (until we implement reified generics)");
                                 }
