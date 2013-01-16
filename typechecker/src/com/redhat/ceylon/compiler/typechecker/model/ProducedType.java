@@ -1222,14 +1222,17 @@ public class ProducedType extends ProducedReference {
                 if (abbreviateIterable()) {
                     ProducedType it = u.getIteratedType(this);
 					String etn = it.getProducedTypeName(unit);
-					String many = getTypeArgumentList().get(1).getDeclaration()
-							.equals(u.getNothingDeclaration()) ?
-									"+":"*";
-					if (it.isPrimitiveAbbreviatedType()) {
-						return "{" + etn + many + "}";
-					}
-					else {
-						return "{<" + etn + ">" + many + "}";
+					ProducedType nt = getTypeArgumentList().get(1);
+					if (nt!=null && nt.getDeclaration()!=null) {
+						String many = nt.getDeclaration()
+								.equals(u.getNothingDeclaration()) ?
+										"+":"*";
+						if (it.isPrimitiveAbbreviatedType()) {
+							return "{" + etn + many + "}";
+						}
+						else {
+							return "{<" + etn + ">" + many + "}";
+						}
 					}
                 }
                 if (abbreviateEntry()) {
