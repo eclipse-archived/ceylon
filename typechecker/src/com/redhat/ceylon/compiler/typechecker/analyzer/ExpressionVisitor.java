@@ -2610,10 +2610,13 @@ private void checkPositionalArguments(ParameterList pl, ProducedReference pr,
             ProducedType ot = checkOperandTypes(lhst, rhst, 
                     unit.getOrdinalDeclaration(), that,
                     "operand expressions must be of compatible ordinal type");
-            checkOperandTypes(lhst, rhst, 
+            ProducedType ct = checkOperandTypes(lhst, rhst, 
                     unit.getComparableDeclaration(), that, 
                     "operand expressions must be comparable");
             if (ot!=null) {
+            	if (ct!=null) {
+            		checkAssignable(ot, ct, that, "ordinal type must be assignable to comparable type");
+            	}
                 ProducedType pt = producedType(unit.getRangeDeclaration(), ot);
                 that.setTypeModel(pt);
             }
