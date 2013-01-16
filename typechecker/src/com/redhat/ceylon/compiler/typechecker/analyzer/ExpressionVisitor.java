@@ -57,6 +57,7 @@ import com.redhat.ceylon.compiler.typechecker.model.Value;
 import com.redhat.ceylon.compiler.typechecker.model.ValueParameter;
 import com.redhat.ceylon.compiler.typechecker.tree.Node;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree;
+import com.redhat.ceylon.compiler.typechecker.tree.Tree.PositionalArgumentList;
 import com.redhat.ceylon.compiler.typechecker.tree.Visitor;
 
 /**
@@ -2009,55 +2010,6 @@ public class ExpressionVisitor extends Visitor {
         }
     }
 
-    private void checkIndirectInvocationArguments(Tree.InvocationExpression that, 
-            List<ProducedType> typeArgs, boolean sequenced, int min) {
-        if (that.getNamedArgumentList() != null) {
-            that.addError("named arguments not supported for indirect invocations");
-        }
-        if (that.getPositionalArgumentList() != null) {
-            List<Tree.PositionalArgument> args = that.getPositionalArgumentList()
-                    .getPositionalArguments();
-            int argCount = args.size();
-            int paramCount = typeArgs.size();
-            if (hasSpreadArgument(args)) {
-                if (!sequenced) {
-                    args.get(args.size()-1).addError("no matching sequenced parameter");
-                }
-            }
-            if (argCount>paramCount && !sequenced) {
-                that.addError("too many arguments: " + 
-                        paramCount + " arguments required");
-            }
-            //TODO: take into account defaulted parameters!!
-            if (argCount<min) {
-                    that.addError("not enough arguments: " + 
-                            paramCount + " arguments required");
-            }
-            int i=0;
-            for (; i<paramCount-(sequenced?1:0) && i<argCount; i++) {
-                Tree.PositionalArgument arg = args.get(i);
-                checkAssignable(arg.getTypeModel(), 
-                        typeArgs.get(i), arg, 
-                        "argument must be assignable to parameter type");
-            }
-            if (sequenced) {
-                ProducedType spt = typeArgs.get(typeArgs.size()-1);
-                ProducedType spit = unit.getIteratedType(spt);
-                for (; i<argCount; i++) {
-                    Tree.PositionalArgument arg = args.get(i);
-                    if (arg instanceof Tree.SpreadArgument) {
-                        checkAssignable(arg.getTypeModel(), spt, arg, 
-                                "spread argument must be assignable to sequenced parameter type");
-                    }
-                    else {
-                        checkAssignable(arg.getTypeModel(), spit, arg, 
-                                "argument must be assignable to sequenced parameter type");
-                    }
-                }
-            }
-        }
-    }
-
     private void checkInvocationArguments(Tree.InvocationExpression that,
             ProducedReference prf, Functional dec) {
         List<ParameterList> pls = dec.getParameterLists();
@@ -2073,18 +2025,63 @@ public class ExpressionVisitor extends Visitor {
         }
         else /*if (!dec.isOverloaded())*/ {
             ParameterList pl = pls.get(0);            
-            if ( that.getPositionalArgumentList()!=null ) {
-                checkPositionalArguments(pl, prf, that.getPositionalArgumentList());
+            Tree.PositionalArgumentList args = that.getPositionalArgumentList();
+            if (args!=null) {
+                checkPositionalArguments(pl, prf, args);
             }
-            if ( that.getNamedArgumentList()!=null ) {
+            Tree.NamedArgumentList namedArgs = that.getNamedArgumentList();
+            if (namedArgs!=null) {
                 if (pl.isNamedParametersSupported()) {
-                    that.getNamedArgumentList().getNamedArgumentList().setParameterList(pl);
-                    checkNamedArguments(pl, prf, that.getNamedArgumentList());
+                    namedArgs.getNamedArgumentList().setParameterList(pl);
+                    checkNamedArguments(pl, prf, namedArgs);
                 }
             }
         }
     }
+    
+    private void checkSpreadArgument(Tree.SpreadArgument arg, 
+            List<Parameter> params, ProducedReference pr) {
+        List<ProducedType> paramTypes = new ArrayList<ProducedType>();
+        int max = params.size()-1;
+        int firstDefaulted = -1;
+        boolean sequenced = false;
+        for (int i=0; i<=max; i++) {
+            Parameter p = params.get(i);
+            ProducedType ft = pr.getTypedParameter(p).getFullType();
+            if (firstDefaulted<0 && p.isDefaulted()) {
+                firstDefaulted = i;
+            }
+            if (i==max && p.isSequenced()) {
+                sequenced = true;
+                if (ft!=null) {
+                    ft = unit.getIteratedType(ft);
+                }
+            }
+            paramTypes.add(ft);
+        }
+        ProducedType argTuple = arg.getTypeModel();
+        checkSpreadArgumentSequential(arg, argTuple);
+        checkSpreadArgument(arg, paramTypes, sequenced, 
+                firstDefaulted, argTuple);
+    }
+    
+    private void checkSpreadArgument(Tree.SpreadArgument arg,
+            List<ProducedType> paramTypes, boolean sequenced, 
+            int firstDefaulted, ProducedType argTuple) {
+        ProducedType paramTuple = unit.getTupleType(paramTypes, 
+                sequenced, false, firstDefaulted);
+        checkAssignable(argTuple, paramTuple, arg, 
+                "spread argument not assignable to parameter types");
+    }
 
+    private void checkSpreadArgumentSequential(Tree.SpreadArgument arg,
+            ProducedType argTuple) {
+        if (!unit.isSequentialType(argTuple)) {
+            arg.addError("spread argument expression is not sequential: " +
+                    argTuple.getProducedTypeName(unit) + " is not a sequence type");
+        }
+    }
+    
     private void checkNamedArguments(ParameterList pl, ProducedReference pr, 
             Tree.NamedArgumentList nal) {
         List<Tree.NamedArgument> na = nal.getNamedArguments();        
@@ -2096,7 +2093,7 @@ public class ExpressionVisitor extends Visitor {
         
         Tree.SequencedArgument sa = nal.getSequencedArgument();
         if (sa!=null) {
-            checkNamedArg(sa, pl, pr, foundParameters);        
+            checkSequencedArg(sa, pl, pr, foundParameters);        
         }
         else {
             Parameter sp = getUnspecifiedParameter(pr, pl, foundParameters);
@@ -2112,7 +2109,7 @@ public class ExpressionVisitor extends Visitor {
         }
     }
     
-    private void checkNamedArg(Tree.SequencedArgument sa, ParameterList pl,
+    private void checkSequencedArg(Tree.SequencedArgument sa, ParameterList pl,
             ProducedReference pr, Set<Parameter> foundParameters) {
         Parameter sp = getUnspecifiedParameter(pr, pl, foundParameters);
         if (sp==null) {
@@ -2244,8 +2241,8 @@ public class ExpressionVisitor extends Visitor {
         }
         return null;
     }
-
-private void checkPositionalArguments(ParameterList pl, ProducedReference pr, 
+    
+    private void checkPositionalArguments(ParameterList pl, ProducedReference pr, 
             Tree.PositionalArgumentList pal) {
         List<Tree.PositionalArgument> args = pal.getPositionalArguments();
         List<Parameter> params = pl.getParameters();
@@ -2253,56 +2250,136 @@ private void checkPositionalArguments(ParameterList pl, ProducedReference pr,
             Parameter p = params.get(i);
             if (i>=args.size()) {
                 if (!p.isDefaulted() && !p.isSequenced()) {
-                    pal.addError("missing argument to parameter " + 
-                            p.getName() + " of " + pr.getDeclaration().getName(unit));
-                }
-                if (p.isSequenced() && hasSpreadArgument(args)) {
-                    pal.addError("missing argument to sequenced parameter " + 
+                    pal.addError("missing argument to required parameter " + 
                             p.getName() + " of " + pr.getDeclaration().getName(unit));
                 }
             } 
             else {
-                ProducedType paramType = pr.getTypedParameter(p).getFullType();
-                if (p.isSequenced()) {
-                    checkSequencedPositionalArgument(p, pr, pal, i, paramType);
-                    if (hasSpreadArgument(args)) {
-                        checkPositionalArgument(p, pr, args.get(args.size()-1), paramType);
-                    }
-                    return; //Note: early return!
+                Tree.PositionalArgument a = args.get(i);
+                if (a instanceof Tree.SpreadArgument) {
+                    checkSpreadArgument((Tree.SpreadArgument) a, 
+                            params.subList(i, params.size()), pr);
+                    break;
                 }
                 else {
-                    checkPositionalArgument(p, pr, args.get(i), paramType);
+                    ProducedType paramType = pr.getTypedParameter(p).getFullType();
+                    if (p.isSequenced()) {
+                        checkSequencedPositionalArgument(p, pr, 
+                                args.subList(i, args.size()), paramType);
+                        return; //Note: early return!
+                    }
+                    else {
+                        checkPositionalArgument(p, pr, a, paramType);
+                    }
                 }
             }
         }
+        
         for (int i=params.size(); i<args.size(); i++) {
             args.get(i).addError("no matching parameter declared by " +
                     pr.getDeclaration().getName(unit) + ": " + 
                     pr.getDeclaration().getName(unit) + " has " + args.size() + " parameters", 2000);
         }
-
-        if (!pl.hasSequencedParameter()) {
-            if (hasSpreadArgument(args)) {
-                args.get(args.size()-1)
-                        .addError("no matching sequenced parameter declared by " +
-                                pr.getDeclaration().getName(unit));
-            }
+    
+    }
+    
+    private void checkIndirectInvocationArguments(Tree.InvocationExpression that, 
+            List<ProducedType> paramTypes, boolean sequenced, int firstDefaulted) {
+        
+        if (that.getNamedArgumentList()!=null) {
+            that.addError("named arguments not supported for indirect invocations");
         }
         
+        PositionalArgumentList pal = that.getPositionalArgumentList();
+        if (pal!=null) {
+            List<Tree.PositionalArgument> args = pal.getPositionalArguments();
+            for (int i=0; i<paramTypes.size(); i++) {
+                if (i>=args.size()) {
+                    if (i<firstDefaulted && (!sequenced || i!=paramTypes.size()-1)) {
+                        pal.addError("missing argument for required parameter " + i);
+                    }
+                }
+                else {
+                    Tree.PositionalArgument arg = args.get(i);
+                    ProducedType at = arg.getTypeModel();
+                    if (arg instanceof Tree.SpreadArgument) {
+                        checkSpreadArgumentSequential((Tree.SpreadArgument) arg, at);
+                        //TODO: this ultimately repackages the parameter
+                        //      information as a tuple - it would be
+                        //      better to just truncate the original
+                        //      tuple type we started with
+                        List<ProducedType> pts = new ArrayList<ProducedType>(paramTypes
+                                .subList(i, paramTypes.size()));
+                        if (sequenced) {
+                            pts.set(pts.size()-1, 
+                                    unit.getIteratedType(pts.get(pts.size()-1)));
+                        }
+                        checkSpreadArgument((Tree.SpreadArgument) arg, pts, 
+                                sequenced, firstDefaulted, at);
+                        break;
+                    }
+                    else {
+                        ProducedType paramType = paramTypes.get(i);
+                        if (sequenced && i==paramTypes.size()-1) {
+                            checkSequencedIndirectArgument(args.subList(i, args.size()), paramType);
+                            return; //Note: early return!
+                        }
+                        else {
+                            checkAssignable(at, paramType, arg, 
+                                    "argument must be assignable to parameter type");
+                        }
+                    }
+                }
+            }
+    
+            for (int i=paramTypes.size(); i<args.size(); i++) {
+                args.get(i).addError("no matching parameter: function reference has " + 
+                        paramTypes.size() + " parameters", 2000);
+            }
+    
+        }
     }
 
+    private void checkSequencedIndirectArgument(List<Tree.PositionalArgument> args, 
+            ProducedType paramType) {
+        for (int i=0; i<args.size(); i++) {
+            Tree.PositionalArgument a = args.get(i);
+            ProducedType at = a.getTypeModel();
+            if (a instanceof Tree.SpreadArgument) {
+//                checkSpreadArgumentSequential((Tree.SpreadArgument) a, at);
+//                checkAssignable(unit.getIteratedType(at), set, a,
+//                        "spread argument must be assignable to sequenced parameter ");
+                checkAssignable(at, paramType, a,
+                        "spread argument must be assignable to sequenced parameter ");
+            }
+            else {
+                ProducedType set = paramType==null ? null : unit.getIteratedType(paramType);
+                checkAssignable(at, set, a, 
+                        "argument must be assignable to sequenced parameter ");
+            }
+        }
+    }
+    
     private void checkSequencedPositionalArgument(Parameter p, ProducedReference pr,
-            Tree.PositionalArgumentList pal, int from, ProducedType paramType) {
-        List<Tree.PositionalArgument> args = pal.getPositionalArguments();
-        ProducedType at = paramType==null ? null : 
-                unit.getIteratedType(paramType);
-        for (int j=from; j<args.size(); j++) {
+            List<Tree.PositionalArgument> args, ProducedType paramType) {
+        for (int j=0; j<args.size(); j++) {
             Tree.PositionalArgument a = args.get(j);
-            if (!(a instanceof Tree.SpreadArgument)) {
-                a.setParameter(p);
-                checkAssignable(a.getTypeModel(), at, a, 
+            a.setParameter(p);
+            ProducedType at = a.getTypeModel();
+            if (a instanceof Tree.SpreadArgument) {
+//                checkSpreadArgumentSequential((Tree.SpreadArgument) a, at);
+//                checkAssignable(unit.getIteratedType(at), set, a, 
+//                        "spread argument must be assignable to sequenced parameter " + 
+//                        p.getName()+ " of " + pr.getDeclaration().getName(unit), 2101);
+                checkAssignable(at, paramType, a, 
+                        "spread argument must be assignable to sequenced parameter " + 
+                         p.getName()+ " of " + pr.getDeclaration().getName(unit), 2101);
+            }
+            else {
+                ProducedType set = paramType==null ? null : unit.getIteratedType(paramType);
+                checkAssignable(at, set, a, 
                         "argument must be assignable to sequenced parameter " + 
-                                p.getName()+ " of " + pr.getDeclaration().getName(unit), 2101);
+                         p.getName()+ " of " + pr.getDeclaration().getName(unit), 2101);
             }
         }
     }
@@ -3713,9 +3790,8 @@ private void checkPositionalArguments(ParameterList pl, ProducedReference pr,
                     ut = unit.getIteratedType(et);
                     result = unit.denotableType(et);
                     //result = unit.getSequentialType(ut);
-                    if (requireSequential && !unit.isSequentialType(et)) {
-                        a.addError("spread argument expression is not sequential: " +
-                                et.getProducedTypeName(unit) + " is not a sequence type");
+                    if (requireSequential) { 
+                        checkSpreadArgumentSequential((Tree.SpreadArgument) a, et);
                     }
                 }
                 else if (a instanceof Tree.Comprehension) {

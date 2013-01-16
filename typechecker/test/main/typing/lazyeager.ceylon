@@ -49,13 +49,13 @@ void lazyeager() {
     }
     f(*"hello");
     f(*charseq);
-    f(` `, *charseq); //TODO!!!
+    f(` `, *charseq);
     @error f(*chariter);
     @error f(` `, *chariter);
     value g = f;
     g(*"hello");
     g(*charseq);
-    g(` `, *charseq); //TODO!!!
+    g(` `, *charseq);
     @error g(*chariter);
     @error g(` `, *chariter);
 
