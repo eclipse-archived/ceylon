@@ -107,16 +107,16 @@ shared class Range<Element>(first, last)
         return RangeIterator();
     }
     
-    doc "Determines if the range includes the given object."
+    //TODO: enable when we have reified generics
+    /*doc "Determines if the range includes the given object."
     shared actual Boolean contains(Object element) {
-        throw;
-        //if (is Element element) {
-        //    return includes(element);
-        //}
-        //else {
-        //    return false;
-        //}
-    }
+        if (is Element element) {
+            return includes(element);
+        }
+        else {
+            return false;
+        }
+    }*/
     
     shared actual Integer count(Boolean selecting(Element element)) {
         variable value e = first;
@@ -135,38 +135,17 @@ shared class Range<Element>(first, last)
             decreasing then x<=first && x>=last
                     else x>=first && x<=last;
     
-    /*shared Element[] excludingLast {
-        throw; //todo!
-    }*/
-
-    /*shared Integer? index(Element x) {
-    if (!includes(x)) {
-        return null;
-    }
-    else {
-        //optimize this for numbers!
-        variable Integer index=0;
-        variable Element value=first;
-        while (value<x) {
-            ++index;
-            ++value;
-        }
-        return index;
-    }
-    }*/
-
     doc "Determines if two ranges are the same by comparing
          their endpoints."
     shared actual Boolean equals(Object that) {
-        throw;
-        //if (is Range<Element> that) {
-        //    //optimize for another Range
-        //    return that.first==first && that.last==last;
-        //}
-        //else {
-        //    //it might be another sort of List
-        //    return that.equals(this);
-        //}
+        if (is Range<Object> that) {
+            //optimize for another Range
+            return that.first==first && that.last==last;
+        }
+        else {
+            //it might be another sort of List
+            return List::equals(that);
+        }
     }
     
     doc "Returns the range itself, since ranges are 
