@@ -37,6 +37,7 @@ import com.redhat.ceylon.compiler.typechecker.model.Element;
 import com.redhat.ceylon.compiler.typechecker.model.IntersectionType;
 import com.redhat.ceylon.compiler.typechecker.model.Module;
 import com.redhat.ceylon.compiler.typechecker.model.Package;
+import com.redhat.ceylon.compiler.typechecker.model.Parameter;
 import com.redhat.ceylon.compiler.typechecker.model.ProducedType;
 import com.redhat.ceylon.compiler.typechecker.model.Scope;
 import com.redhat.ceylon.compiler.typechecker.model.TypeDeclaration;
@@ -350,6 +351,8 @@ public class LinkRenderer {
     }
 
     private boolean isParameter(Declaration currentDecl) {
+        if(currentDecl instanceof Parameter)
+            return true;
         if(currentDecl instanceof Value == false)
             return false;
         Value value = (Value)currentDecl;
