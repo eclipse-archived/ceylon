@@ -965,10 +965,12 @@ public class ProducedType extends ProducedReference {
 
     /**
      * Is the type well-defined? Are any of its arguments
-     * garbage unknown types?
+     * garbage nulls?
      */
     public boolean isWellDefined() {
-    	List<TypeParameter> tps = getDeclaration().getTypeParameters();
+    	TypeDeclaration d = getDeclaration();
+		//if (d instanceof UnknownType) return false;
+    	List<TypeParameter> tps = d.getTypeParameters();
 		List<ProducedType> tas = getTypeArgumentList();
 		for (int i=0; i<tps.size(); i++) {
 			ProducedType at=tas.get(i);
