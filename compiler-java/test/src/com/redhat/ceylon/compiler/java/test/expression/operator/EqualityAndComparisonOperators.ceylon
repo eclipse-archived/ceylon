@@ -73,7 +73,11 @@ shared class EqualityAndComparisonOperators() {
         Object foo = sync; 
         // boxing test
         sync = sync is Empty;
-        Boolean? dest = true is Empty;
+        // we used to test boxing stuff like "true is Empty" but that doesn't typecheck anymore now that
+        // all the unboxable types are final (boolean,character,integer,float,string), and the typechecker
+        // can assert that a type test is either always true or always wrong 
+        //Boolean? dest = true is Boolean;
+        
         // normal test
         sync = foo is Boolean;
         // unions
