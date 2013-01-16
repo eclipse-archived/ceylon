@@ -58,6 +58,7 @@ import com.redhat.ceylon.compiler.typechecker.tree.Tree.PositionalArgument;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.PositionalArgumentList;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.Primary;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.QualifiedTypeExpression;
+import com.redhat.ceylon.compiler.typechecker.tree.Tree.SequencedArgument;
 import com.sun.tools.javac.tree.JCTree;
 import com.sun.tools.javac.tree.JCTree.JCAnnotation;
 import com.sun.tools.javac.tree.JCTree.JCExpression;
@@ -798,9 +799,12 @@ class NamedArgumentInvocation extends Invocation {
         }
         boolean prev = gen.expressionGen().withinInvocation(false);
         java.util.List<Tree.NamedArgument> namedArguments = namedArgumentList.getNamedArguments();
+        SequencedArgument sequencedArgument = namedArgumentList.getSequencedArgument();
         java.util.List<ParameterList> paramLists = ((Functional)getPrimaryDeclaration()).getParameterLists();
         java.util.List<Parameter> declaredParams = paramLists.get(0).getParameters();
         appendVarsForNamedArguments(namedArguments, declaredParams);
+        if(sequencedArgument != null)
+            appendVarsForSequencedArguments(sequencedArgument, declaredParams);
         boolean hasDefaulted = appendVarsForDefaulted(declaredParams);
         
         if (hasDefaulted 
@@ -811,6 +815,55 @@ class NamedArgumentInvocation extends Invocation {
         gen.expressionGen().withinInvocation(prev);
     }
     
+    private void appendVarsForSequencedArguments(Tree.SequencedArgument sequencedArgument, java.util.List<Parameter> declaredParams) {
+        // collect each remaining argument
+        List<JCTree.JCExpression> x = List.<JCTree.JCExpression>nil();
+        boolean spread = false;
+        
+        Parameter parameter = sequencedArgument.getParameter();
+        ProducedType parameterType = parameter.getType();
+        // find out the individual type
+        ProducedType iteratedType = gen.typeFact().getIteratedType(parameter.getType());
+        for (Tree.PositionalArgument arg : sequencedArgument.getPositionalArguments()) {
+            gen.at(arg);
+            if(arg instanceof Tree.ListedArgument){
+                Tree.Expression expr = ((Tree.ListedArgument) arg).getExpression();
+                // always boxed since we stuff them into a sequence
+                JCTree.JCExpression javaExpr = gen.expressionGen().transformExpression(expr, BoxingStrategy.BOXED, iteratedType);
+                x = x.append(javaExpr);
+            }else if(arg instanceof Tree.SpreadArgument){
+                Expression expr = ((Tree.SpreadArgument) arg).getExpression();
+                // always boxed since it is a sequence
+                JCTree.JCExpression javaExpr = gen.expressionGen().transformExpression(expr, BoxingStrategy.BOXED, parameterType);
+                // goes first
+                x = x.prepend(javaExpr);
+                spread = true;
+            }else if(arg instanceof Tree.Comprehension){
+                Tree.Comprehension comprehension = (Comprehension) arg;
+                JCTree.JCExpression javaExpr  = gen.expressionGen().transformComprehension(comprehension, parameterType);
+                // goes first
+                x = x.prepend(javaExpr);
+                spread = true;
+            }
+        }
+        gen.at(sequencedArgument);
+        // we can't just generate types like Foo<?> if the target type param is not raw because the bounds will
+        // not match, so we go raw
+        int flags = JT_RAW | JT_TYPE_ARGUMENT;
+        JCTree.JCExpression sequenceValue;
+        if(!spread)
+            sequenceValue = gen.makeSequence(x, iteratedType,  flags);
+        else{
+            sequenceValue = gen.makeIterable(x, iteratedType, CeylonTransformer.JT_CLASS_NEW);
+        }
+        JCTree.JCExpression sequenceType = gen.makeJavaType(parameterType, flags);
+        
+        Naming.SyntheticName argName = argName(parameter);
+
+        JCTree.JCVariableDecl varDecl = gen.makeVar(argName, sequenceType, sequenceValue);
+        bind(parameter, argName, gen.makeJavaType(parameterType, flags), List.<JCTree.JCStatement>of(varDecl));
+    }
+
     private JCExpression makeDefaultedArgumentMethodCall(Parameter param) {
         JCExpression thisExpr = null;
         switch (Strategy.defaultParameterMethodOwner(param)) {
