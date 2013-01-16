@@ -904,6 +904,14 @@ public class IssuesTest extends CompilerTest {
         compareWithJavaSource("bug09xx/Bug934");
     }
 
+    @Test
+    public void testBug950() {
+        assertErrors("bug09xx/Bug950",
+                new CompilerError(34, "member foo is inherited ambiguously from Bug950_Left and Bug950_Top and so must be refined by Bug950_Bottom"),
+                new CompilerError(34, "may not inherit two declarations with the same name unless redefined in subclass: foo is defined by supertypes Bug950_Left and Bug950_Right"));
+
+    }
+
     // see https://github.com/ceylon/ceylon-compiler/issues/953
     @Test
     public void testBug953_fail() {
