@@ -363,11 +363,10 @@ public class ClassDoc extends ClassOrPackageDoc {
             }
             int i = 0;
             for (ProducedType superType : superTypes) {
-                open("ul class='inheritance'", "li");
+                String klass = "inheritance-" + i;
+                open("ul class='inheritance "+klass+"'", "li");
                 if( i != 0) {
                     around("i class='icon-indentation'");
-                } else {
-                    around("i class='icon-none'");
                 }
                 
                 writeIcon(superType.getDeclaration());

@@ -198,6 +198,11 @@
 	list-style-type: none;
 }
 
+.inheritance-0,
+.inheritance-1 {
+    margin-left: 0;
+}
+
 td .description {
     padding: 0 30px;
 }
