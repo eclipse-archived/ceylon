@@ -3340,7 +3340,9 @@ private void checkPositionalArguments(ParameterList pl, ProducedReference pr,
             }
             if (that.getPrimary() instanceof Tree.Super) {
                 if (member!=null && member.isFormal()) {
-                    that.addError("superclass member is formal");
+                    that.addError("superclass member is formal: " + 
+                    		member.getName() + " declared by " + 
+                    		((Declaration) member.getContainer()).getName());
                 }
             }
         }
