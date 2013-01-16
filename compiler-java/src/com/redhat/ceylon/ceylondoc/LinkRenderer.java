@@ -232,51 +232,64 @@ public class LinkRenderer {
 
         if (!skipTypeArguments) {
             if (typeArguments != null) {
-                processTypeParameterList(typeArguments);
+                processTypeParameterList(clazz.getTypeParameters(), typeArguments);
             } else {
-                processTypeParameterList(clazz.getTypeParameters());
+                processTypeParameterList(clazz.getTypeParameters(), null);
             }
         }
     }
 
-    private void processTypeParameterList(List</*TypeParameter|ProducedType*/ ?> typeParameters) {
-        if (typeParameters != null && !typeParameters.isEmpty()) {
-            buffer.append("<span class='type-parameter'>");
-            buffer.append("&lt;");
-            boolean first = true;
-            for (Object element : typeParameters) {
-                TypeParameter typeParam = null;
-                ProducedType typeParamType = null;
-                
-                if (element instanceof TypeParameter) {
-                    typeParam = (TypeParameter) element;
-                    typeParamType = typeParam.getType();
-                } else {
-                    typeParamType = (ProducedType) element;
-                    if (typeParamType.getDeclaration() instanceof TypeParameter) {
-                        typeParam = (TypeParameter) typeParamType.getDeclaration();
-                    }
+    private void processTypeParameterList(List<TypeParameter> typeParameters, List<ProducedType> typeArguments) {
+        if (typeParameters != null && !typeParameters.isEmpty()){
+            // find the last non-defaulted arg
+            int firstDefaultedTypeArgument = 0;
+            if(typeArguments != null){
+                firstDefaultedTypeArgument = typeArguments.size();
+                for(int i=typeArguments.size()-1;i>=0;i--){
+                    TypeParameter typeParameter = typeParameters.get(i);
+                    if(!typeParameter.isDefaulted())
+                        break; // not defaulted, stop
+                    if(typeArguments.get(i).isExactly(typeParameter.getDefaultTypeArgument()))
+                        firstDefaultedTypeArgument = i;
+                    else
+                        break; // found first non-default one so stop
                 }
-
-                if (first) {
-                    first = false;
-                } else {
-                    buffer.append(", ");
-                }
-
-                if (typeParam != null) {
-                    if (typeParam.isContravariant()) {
-                        buffer.append("<span class='type-parameter-variance'>in </span>");
-                    }
-                    if (typeParam.isCovariant()) {
-                        buffer.append("<span class='type-parameter-variance'>out </span>");
-                    }
-                }
-                
-                processProducedType(typeParamType);
             }
-            buffer.append("&gt;");
-            buffer.append("</span>");
+            if(typeArguments == null || firstDefaultedTypeArgument > 0) {
+                buffer.append("<span class='type-parameter'>");
+                buffer.append("&lt;");
+                boolean first = true;
+                int i = 0;
+                for (TypeParameter typeParam : typeParameters) {
+                    if(typeArguments != null && i == firstDefaultedTypeArgument)
+                        break;
+                    ProducedType typeParamType;
+                    if(typeArguments != null)
+                        typeParamType = typeArguments.get(i);
+                    else
+                        typeParamType = typeParam.getType();
+
+                    if (first) {
+                        first = false;
+                    } else {
+                        buffer.append(", ");
+                    }
+
+                    if (typeArguments == null) {
+                        if (typeParam.isContravariant()) {
+                            buffer.append("<span class='type-parameter-variance'>in </span>");
+                        }
+                        if (typeParam.isCovariant()) {
+                            buffer.append("<span class='type-parameter-variance'>out </span>");
+                        }
+                    }
+
+                    processProducedType(typeParamType);
+                    i++;
+                }
+                buffer.append("&gt;");
+                buffer.append("</span>");
+            }
         }
     }
     
