@@ -82,6 +82,14 @@
     <pathelement path="${ceylon.language.lib}"/>
     <pathelement path="${ceylon-tests.car}"/>
     <pathelement path="${shrinkwrap-maven-uberjar.lib}"/>
+    <pathelement path="${jandex.lib}"/>
+    <pathelement path="${slf4j-simple.lib}"/>
+    <pathelement path="${slf4j-api.lib}"/>
+    <pathelement path="${sardine.lib}"/>
+    <pathelement path="${httpcore.lib}"/>
+    <pathelement path="${httpclient.lib}"/>
+    <pathelement path="${commons-codec.lib}"/>
+    <pathelement path="${commons-logging.lib}"/>
   </path>
   
   <path id="integrationtest.run.classpath">
@@ -360,8 +368,9 @@
        includeantruntime="false">
       <include name="com/redhat/ceylon/compiler/java/test/**"/>
       <exclude name="com/redhat/ceylon/compiler/java/test/interop/mixed/**"/>
-        <include name="com/redhat/ceylon/tools/**"/>
+      <include name="com/redhat/ceylon/tools/**"/>
       <include name="com/redhat/ceylon/itest/**"/>
+      <include name="com/redhat/ceylon/ant/**"/>
       <include name="com/redhat/ceylon/ceylondoc/test/**"/>
     </javac>
     <copy todir="${build.classes}">
@@ -437,8 +446,8 @@
   	<property name="bootclasspath" refid="test.run.classpath" />
   </target>    
     
-  <target name="test" depends="test.ast,test.runtime,test.ceylond"
-      description="Runs the tests and generates a test report. The dont.test system property can be used to select which tests to run">
+  <target name="test" depends="test.all"
+      description="Runs the tests and generates a test report.">
     <junitreport todir="${test.reports}">
       <fileset dir="${test.reports}">
         <include name="TEST-*.xml"/>
@@ -447,8 +456,8 @@
     </junitreport>
   </target>
 
-  <!-- Runs the JUnit tests which make assertions on the AST passed to javac -->
-  <target name="test.ast" depends="-test.prepare" unless="dont.test.ast">
+  <!-- Runs the JUnit tests -->
+  <target name="test.all" depends="-test.prepare">
     <junit printsummary="yes" haltonfailure="no">
       <classpath refid="test.run.classpath"/>
       <jvmarg value="-Xbootclasspath/p:${bootclasspath}"/>
@@ -457,57 +466,7 @@
 
       <batchtest fork="yes" todir="${test.reports}">
         <fileset dir="${test.src}">
-          <include name="com/redhat/ceylon/compiler/java/test/ConcurrentTestsNoRuntime.java"/>
-        </fileset>
-      </batchtest>
-    </junit>
-  </target>
-    
-  <!-- Runs the JUnit tests which execute generate ceylon classes -->
-  <target name="test.runtime" depends="-test.prepare" unless="dont.test.runtime">
-    <junit printsummary="yes" haltonfailure="no">
-      <classpath refid="test.run.classpath"/>
-      <jvmarg value="-Xbootclasspath/p:${bootclasspath}"/>
-
-      <formatter type="xml"/>
-
-      <batchtest fork="yes" todir="${test.reports}">
-        <fileset dir="${test.src}">
-          <include name="com/redhat/ceylon/compiler/java/test/runtime/RuntimeSuite.java"/>
-          <include name="com/redhat/ceylon/compiler/java/test/languagesatisfaction/LanguageSatisfactionSuite.java"/>
-        </fileset>
-      </batchtest>
-    </junit>
-  </target>
-	
-  <!-- Runs the JUnit tests for ceylond -->
-  <target name="test.ceylond" depends="-test.prepare" unless="dont.test.ceylond">
-	<junit printsummary="yes" haltonfailure="no">
-	  <classpath refid="test.run.classpath"/>
-	  <jvmarg value="-Xbootclasspath/p:${bootclasspath}"/>
-	  <formatter type="xml"/>
-	  <batchtest fork="yes" todir="${test.reports}">
-	    <fileset dir="${test.ceylond.src}">
-	      <include name="com/redhat/ceylon/ceylondoc/test/**/*Test.java"/>
-	    </fileset>
-	  </batchtest>
-	</junit>
-  </target>
-  
-  <target name="integration-test" depends="-test.prepare" 
-      description="Runs integration tests (ant task tests, script tests etc)">
-    
-    <junit printsummary="yes" haltonfailure="no">
-      <classpath refid="integrationtest.run.classpath"/>
-      <jvmarg value="-Dant.home=${ant.home}"/>
-      <jvmarg value="-Dbuild.bin=${build.bin}"/>
-      <jvmarg value="-Dbuild.dist=${build.dist}"/>
-      <jvmarg value="-Dceylon.ant.lib=${ceylon.ant.lib}"/>
-      <formatter type="xml"/>
-      <batchtest fork="yes" todir="${test.reports}">
-        <fileset dir="${test.src}">
-          <include name="com/redhat/ceylon/itest/**/*Test.java"/>
-          <exclude name="com/redhat/ceylon/itest/**/AntBasedTest.java"/>
+          <include name="com/redhat/ceylon/compiler/java/test/cmr/CMRTestHTTP.java"/>
         </fileset>
       </batchtest>
     </junit>
