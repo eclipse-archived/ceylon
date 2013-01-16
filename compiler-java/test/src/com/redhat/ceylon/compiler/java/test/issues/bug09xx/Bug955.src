@@ -1,0 +1,52 @@
+package com.redhat.ceylon.compiler.java.test.issues.bug09xx;
+
+final class bug955_ {
+    
+    private bug955_() {
+    }
+    
+    static void bug955(final .ceylon.language.Callable<? extends .ceylon.language.String> str) {
+        .ceylon.language.print_.print(str.$call());
+    }
+}
+final class testbug955_ {
+    
+    private testbug955_() {
+    }
+    
+    static void testbug955() {
+        (
+            let
+            {
+                .ceylon.language.Callable<? extends .ceylon.language.String> $arg$0$0 = new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.ceylon.language.String>("String()"){
+                    
+                    @.java.lang.Override
+                    public .ceylon.language.String $call() {
+                        return .ceylon.language.String.instance("hello world");
+                    }
+                };
+                .com.redhat.ceylon.compiler.java.test.issues.bug09xx.bug955_.bug955($arg$0$0);
+            }
+            returning null;
+        );
+        (
+            let
+            {
+                .ceylon.language.Callable<? extends .ceylon.language.String> $arg$1$0 = new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.ceylon.language.String>("String()"){
+                    
+                    @.java.lang.Override
+                    public .ceylon.language.String $call() {
+                        return .ceylon.language.String.instance("hello world");
+                    }
+                };
+                .com.redhat.ceylon.compiler.java.test.issues.bug09xx.bug955_.bug955($arg$1$0);
+            }
+            returning null;
+        );
+    }
+    
+    public static void main(.java.lang.String[] args) {
+        .ceylon.language.process_.getProcess$().setupArguments(args);
+        .com.redhat.ceylon.compiler.java.test.issues.bug09xx.testbug955_.testbug955();
+    }
+}
