@@ -37,14 +37,13 @@ shared class Range<Element>(first, last)
 
     doc "The nonzero number of elements in the range."
     shared actual Integer size {
-    	/*if (is Enumerable<Element> last, 
-    	    is Enumerable<Element> first) {
+    	if (is Enumerable<Anything> last, 
+    	    is Enumerable<Anything> first) {
     		return (last.integerValue - 
     		        first.integerValue)
     		            .magnitude+1;
     	}
-    	else {*/ //TODO uncomment when this actually works
-    	//I need the language module to typecheck to generate the JS metamodel
+    	else {
     		variable Integer size = 1;
     		variable Element current=first;
     		while (current!=last) {
@@ -52,7 +51,7 @@ shared class Range<Element>(first, last)
     			current = next(current);
     		}
             return size;
-    	//}
+    	}
     }
     
     doc "The index of the end of the range."
