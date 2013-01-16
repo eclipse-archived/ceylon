@@ -507,8 +507,8 @@ public class Util {
 
     public static <T> T[] toArray(ceylon.language.List<? extends T> sequence,
             T[] ret, T... initialElements){
-        int i=0;
         System.arraycopy(initialElements, 0, ret, 0, initialElements.length);
+        int i=initialElements.length;
         while(!sequence.getEmpty()){
             ret[i++] = sequence.getFirst();
             sequence = (ceylon.language.List<? extends T>)sequence.getRest();
