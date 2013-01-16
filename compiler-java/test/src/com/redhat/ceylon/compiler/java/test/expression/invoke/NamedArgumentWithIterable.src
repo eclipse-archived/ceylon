@@ -1,0 +1,154 @@
+package com.redhat.ceylon.compiler.java.test.expression.invoke;
+
+class NamedArgumentWithIterable {
+    
+    NamedArgumentWithIterable() {
+    }
+    
+    private final void m(final long a, final .ceylon.language.Iterable<? extends .ceylon.language.Integer, ?> b) {
+    }
+    
+    private final void m2(final .java.lang.Throwable a, final .ceylon.language.Iterable<? extends .java.lang.Throwable, ?> b) {
+    }
+    
+    private final void m3(final .com.redhat.ceylon.compiler.java.test.expression.invoke.NamedArgumentWithIterable a, final .ceylon.language.Iterable<? extends .com.redhat.ceylon.compiler.java.test.expression.invoke.NamedArgumentWithIterable, ?> b) {
+    }
+    
+    private final void invoke() {
+        (
+            let
+            {
+                long $arg$0$0 = 1L;
+                .ceylon.language.Iterable $arg$0$1 = new .com.redhat.ceylon.compiler.java.language.ArraySequence(.ceylon.language.Integer.instance(2L), .ceylon.language.Integer.instance(3L), .ceylon.language.Integer.instance(4L));
+                m($arg$0$0, $arg$0$1);
+            }
+            returning null;
+        );
+        (
+            let
+            {
+                long $arg$1$0 = 1L;
+                .ceylon.language.Iterable $arg$1$1 = .com.redhat.ceylon.compiler.java.language.ArrayIterable.<.ceylon.language.Integer>instance((.ceylon.language.Iterable<? extends .ceylon.language.Integer, ?>)(.ceylon.language.Iterable)new .ceylon.language.Tuple<.ceylon.language.Integer, .ceylon.language.Integer, .ceylon.language.Tuple<.ceylon.language.Integer, ? extends .ceylon.language.Integer, ? extends .ceylon.language.Empty>>(.ceylon.language.Integer.instance(4L), new .ceylon.language.Tuple<.ceylon.language.Integer, .ceylon.language.Integer, .ceylon.language.Empty>(.ceylon.language.Integer.instance(5L), .ceylon.language.empty_.getEmpty$())));
+                m($arg$1$0, $arg$1$1);
+            }
+            returning null;
+        );
+        (
+            let
+            {
+                long $arg$2$0 = 1L;
+                .ceylon.language.Iterable $arg$2$1 = .com.redhat.ceylon.compiler.java.language.ArrayIterable.<.ceylon.language.Integer>instance(new .com.redhat.ceylon.compiler.java.language.ArraySequence<.ceylon.language.Integer>(.ceylon.language.Integer.instance(4L), .ceylon.language.Integer.instance(5L)));
+                m($arg$2$0, $arg$2$1);
+            }
+            returning null;
+        );
+        (
+            let
+            {
+                long $arg$3$0 = 1L;
+                .ceylon.language.Iterable $arg$3$1 = .com.redhat.ceylon.compiler.java.language.ArrayIterable.<.ceylon.language.Integer>instance((.ceylon.language.Iterable<? extends .ceylon.language.Integer, ?>)(.ceylon.language.Iterable)new .ceylon.language.Tuple<.ceylon.language.Integer, .ceylon.language.Integer, .ceylon.language.Tuple<.ceylon.language.Integer, ? extends .ceylon.language.Integer, ? extends .ceylon.language.Empty>>(.ceylon.language.Integer.instance(4L), new .ceylon.language.Tuple<.ceylon.language.Integer, .ceylon.language.Integer, .ceylon.language.Empty>(.ceylon.language.Integer.instance(5L), .ceylon.language.empty_.getEmpty$())), .ceylon.language.Integer.instance(2L), .ceylon.language.Integer.instance(3L));
+                m($arg$3$0, $arg$3$1);
+            }
+            returning null;
+        );
+        (
+            let
+            {
+                long $arg$4$0 = 1L;
+                .ceylon.language.Iterable $arg$4$1 = .com.redhat.ceylon.compiler.java.language.ArrayIterable.<.ceylon.language.Integer>instance(new .com.redhat.ceylon.compiler.java.language.ArraySequence<.ceylon.language.Integer>(.ceylon.language.Integer.instance(4L), .ceylon.language.Integer.instance(5L)), .ceylon.language.Integer.instance(2L), .ceylon.language.Integer.instance(3L));
+                m($arg$4$0, $arg$4$1);
+            }
+            returning null;
+        );
+        (
+            let
+            {
+                long $arg$5$0 = 1L;
+                .ceylon.language.Iterable $arg$5$1 = .com.redhat.ceylon.compiler.java.language.ArrayIterable.<.ceylon.language.Integer>instance(new .com.redhat.ceylon.compiler.java.language.AbstractIterable<.ceylon.language.Integer, .java.lang.Object>(){
+                    
+                    public final .ceylon.language.Iterator<.ceylon.language.Integer> getIterator() {
+                        return new .ceylon.language.Iterator<.ceylon.language.Integer>(){
+                            private final .ceylon.language.Iterator<? extends .ceylon.language.Integer> iter$0 = new .com.redhat.ceylon.compiler.java.language.ArraySequence<.ceylon.language.Integer>(.ceylon.language.Integer.instance(2L)).getIterator();
+                            private .ceylon.language.Integer i;
+                            private boolean i$exhausted;
+                            
+                            private final boolean i() {
+                                final .java.lang.Object $ceylontmpitem6 = iter$0.next();
+                                i$exhausted = $ceylontmpitem6 == .ceylon.language.finished_.getFinished$();
+                                if (i$exhausted) {
+                                    return false;
+                                } else {
+                                    i = (.ceylon.language.Integer)$ceylontmpitem6;
+                                    return true;
+                                }
+                            }
+                            
+                            public final .java.lang.Object next() {
+                                return this.i() ? i : .ceylon.language.finished_.getFinished$();
+                            }
+                        };
+                    }
+                });
+                m($arg$5$0, $arg$5$1);
+            }
+            returning null;
+        );
+        (
+            let
+            {
+                long $arg$7$0 = 1L;
+                .ceylon.language.Iterable $arg$7$1 = .com.redhat.ceylon.compiler.java.language.ArrayIterable.<.ceylon.language.Integer>instance(new .com.redhat.ceylon.compiler.java.language.AbstractIterable<.ceylon.language.Integer, .java.lang.Object>(){
+                    
+                    public final .ceylon.language.Iterator<.ceylon.language.Integer> getIterator() {
+                        return new .ceylon.language.Iterator<.ceylon.language.Integer>(){
+                            private final .ceylon.language.Iterator<? extends .ceylon.language.Integer> iter$0 = new .com.redhat.ceylon.compiler.java.language.ArraySequence<.ceylon.language.Integer>(.ceylon.language.Integer.instance(4L)).getIterator();
+                            private .ceylon.language.Integer i;
+                            private boolean i$exhausted;
+                            
+                            private final boolean i() {
+                                final .java.lang.Object $ceylontmpitem8 = iter$0.next();
+                                i$exhausted = $ceylontmpitem8 == .ceylon.language.finished_.getFinished$();
+                                if (i$exhausted) {
+                                    return false;
+                                } else {
+                                    i = (.ceylon.language.Integer)$ceylontmpitem8;
+                                    return true;
+                                }
+                            }
+                            
+                            public final .java.lang.Object next() {
+                                return this.i() ? i : .ceylon.language.finished_.getFinished$();
+                            }
+                        };
+                    }
+                }, .ceylon.language.Integer.instance(2L), .ceylon.language.Integer.instance(3L));
+                m($arg$7$0, $arg$7$1);
+            }
+            returning null;
+        );
+        final .java.lang.Throwable e = new .ceylon.language.Exception(.ceylon.language.String.instance(""), null);
+        (
+            let
+            {
+                .java.lang.Throwable $arg$9$0 = e;
+                .ceylon.language.Iterable $arg$9$1 = new .com.redhat.ceylon.compiler.java.language.ArraySequence(e, e, e);
+                m2($arg$9$0, $arg$9$1);
+            }
+            returning null;
+        );
+        (
+            let
+            {
+                .com.redhat.ceylon.compiler.java.test.expression.invoke.NamedArgumentWithIterable $arg$10$0 = this;
+                .ceylon.language.Iterable $arg$10$1 = new .com.redhat.ceylon.compiler.java.language.ArraySequence(this, this, this);
+                m3($arg$10$0, $arg$10$1);
+            }
+            returning null;
+        );
+    }
+    
+    public static void main(.java.lang.String[] args) {
+        .ceylon.language.process_.getProcess$().setupArguments(args);
+        new .com.redhat.ceylon.compiler.java.test.expression.invoke.NamedArgumentWithIterable();
+    }
+}

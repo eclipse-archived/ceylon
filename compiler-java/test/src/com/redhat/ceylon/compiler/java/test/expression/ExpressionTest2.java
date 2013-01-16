@@ -155,6 +155,11 @@ public class ExpressionTest2 extends CompilerTest {
     }
     
     @Test
+    public void testInvNamedArgumentWithIterable(){
+        compareWithJavaSource("invoke/NamedArgumentWithIterable");
+    }
+    
+    @Test
     public void testInvInvocationWithVarargsAndComprehensions(){
         compareWithJavaSource("invoke/InvocationWithVarargsAndComprehensions");
     }
