@@ -57,6 +57,7 @@ import com.redhat.ceylon.compiler.typechecker.model.Setter;
 import com.redhat.ceylon.compiler.typechecker.model.TypedDeclaration;
 import com.redhat.ceylon.compiler.typechecker.model.Unit;
 import com.redhat.ceylon.compiler.typechecker.tree.Node;
+import com.redhat.ceylon.compiler.typechecker.tree.Tree;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.CompilationUnit;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.CompilerAnnotation;
 import com.redhat.ceylon.compiler.typechecker.tree.UnexpectedError;
@@ -450,14 +451,16 @@ public class CeylonEnter extends Enter {
                 }
                 @Override
                 protected void out(AnalysisError err) {
-                    logError(getPosition(err.getTreeNode()), err.getMessage());
+                    Node node = getIdentifyingNode(err.getTreeNode());
+                    logError(getPosition(node), err.getMessage());
                 }
                 @Override
                 protected void out(AnalysisWarning err) {
+                    Node node = getIdentifyingNode(err.getTreeNode());
                     if (allowWarnings) {
-                        logWarning(getPosition(err.getTreeNode()), err.getMessage());
+                        logWarning(getPosition(node), err.getMessage());
                     } else {
-                        logError(getPosition(err.getTreeNode()), err.getMessage());
+                        logError(getPosition(node), err.getMessage());
                     }
                 }
                 @Override
@@ -518,6 +521,37 @@ public class CeylonEnter extends Enter {
         private CeylonPhasedUnit cpu;
         JavacAssertionVisitor(CeylonPhasedUnit cpu){
             this.cpu = cpu;
+        }
+        protected Node getIdentifyingNode(Node node) {
+            if (node instanceof Tree.Declaration) {
+                return ((Tree.Declaration) node).getIdentifier();
+            }
+            else if (node instanceof Tree.ModuleDescriptor) {
+                return ((Tree.ModuleDescriptor) node).getImportPath();
+            }
+            else if (node instanceof Tree.PackageDescriptor) {
+                return ((Tree.PackageDescriptor) node).getImportPath();
+            }
+            else if (node instanceof Tree.NamedArgument) {
+                return ((Tree.NamedArgument) node).getIdentifier();
+            }
+            else if (node instanceof Tree.StaticMemberOrTypeExpression) {
+                return ((Tree.StaticMemberOrTypeExpression) node).getIdentifier();
+            }
+            else if (node instanceof Tree.ExtendedTypeExpression) {
+                //TODO: whoah! this is really ugly!
+                return ((Tree.SimpleType) ((Tree.ExtendedTypeExpression) node).getChildren().get(0))
+                        .getIdentifier();
+            }
+            else if (node instanceof Tree.SimpleType) {
+                return ((Tree.SimpleType) node).getIdentifier();
+            }
+            else if (node instanceof Tree.ImportMemberOrType) {
+                return ((Tree.ImportMemberOrType) node).getIdentifier();
+            }
+            else {    
+                return node;
+            }
         }
         protected int getPosition(Node node) {
             int pos;
