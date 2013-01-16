@@ -47,6 +47,7 @@ import com.redhat.ceylon.compiler.java.test.statement.StatementTest;
 import com.redhat.ceylon.compiler.java.test.structure.StructureTest;
 import com.redhat.ceylon.compiler.java.test.structure.StructureTest2;
 import com.redhat.ceylon.compiler.java.test.structure.StructureTest3;
+import com.redhat.ceylon.tools.TopLevelToolTest;
 import com.redhat.ceylon.tools.test.CompilerToolsTests;
 
 @RunWith(ConcurrentSuite.class) 
@@ -78,6 +79,7 @@ import com.redhat.ceylon.tools.test.CompilerToolsTests;
     BcTests.class,
     ExpressionTest3.class,
     CompilerToolsTests.class,
+    TopLevelToolTest.class,
     CeylonDocToolTest.class,
     AntToolTests.class
 })
