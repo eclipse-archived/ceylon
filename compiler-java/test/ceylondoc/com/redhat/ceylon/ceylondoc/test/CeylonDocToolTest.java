@@ -37,6 +37,7 @@ import javax.tools.JavaFileObject;
 
 import junit.framework.Assert;
 
+import org.junit.Ignore;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.TestName;
@@ -204,7 +205,9 @@ public class CeylonDocToolTest {
         assertBug968(destDir);
     }
 
+    // fails until we put an M5 SDK on Herd
     @Test
+    @Ignore("M5")
     public void externalLinksWithModuleNamePattern() throws IOException {
         List<String> links = new ArrayList<String>();
         links.add("com.redhat=file://" + new File("").getAbsolutePath() + "/build/CeylonDocToolTest/" + name.getMethodName());
@@ -213,7 +216,9 @@ public class CeylonDocToolTest {
         externalLinks(links);
     }
     
+    // fails until we put an M5 SDK on Herd
     @Test
+    @Ignore("M5")
     public void externalLinksWithoutModuleNamePattern() throws IOException {
         // Relies on having a ceylon.collection in your ~/.ceylon/repo or cache
         List<String> links = new ArrayList<String>();
