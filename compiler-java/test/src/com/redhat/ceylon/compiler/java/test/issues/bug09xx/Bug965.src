@@ -1,0 +1,56 @@
+package com.redhat.ceylon.compiler.java.test.issues.bug09xx;
+
+public interface Bug965_Interface {
+    
+    public boolean $isFoo();
+    
+    public boolean $getFoo();
+    
+    public boolean foo();
+}
+public final class Bug965_Interface$impl {
+    
+    public Bug965_Interface$impl(.com.redhat.ceylon.compiler.java.test.issues.bug09xx.Bug965_Interface $this) {
+        this.$this = $this;
+    }
+    private final .com.redhat.ceylon.compiler.java.test.issues.bug09xx.Bug965_Interface $this;
+    
+    public boolean $isFoo() {
+        return false;
+    }
+    
+    public boolean $getFoo() {
+        return false;
+    }
+    
+    public boolean foo() {
+        return false;
+    }
+}
+public class Bug965_Class implements .com.redhat.ceylon.compiler.java.test.issues.bug09xx.Bug965_Interface {
+    
+    public Bug965_Class() {
+        this.$com$redhat$ceylon$compiler$java$test$issues$bug09xx$Bug965_Interface$this = new .com.redhat.ceylon.compiler.java.test.issues.bug09xx.Bug965_Interface$impl(this);
+    }
+    protected final .com.redhat.ceylon.compiler.java.test.issues.bug09xx.Bug965_Interface$impl $com$redhat$ceylon$compiler$java$test$issues$bug09xx$Bug965_Interface$this;
+    
+    @.java.lang.Override
+    public final boolean $isFoo() {
+        return true;
+    }
+    
+    @.java.lang.Override
+    public final boolean $getFoo() {
+        return true;
+    }
+    
+    @.java.lang.Override
+    public final boolean foo() {
+        return true;
+    }
+    
+    public static void main(.java.lang.String[] args) {
+        .ceylon.language.process_.getProcess$().setupArguments(args);
+        new .com.redhat.ceylon.compiler.java.test.issues.bug09xx.Bug965_Class();
+    }
+}

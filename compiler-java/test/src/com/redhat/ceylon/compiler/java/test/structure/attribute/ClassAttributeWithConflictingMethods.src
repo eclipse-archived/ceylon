@@ -15,6 +15,10 @@ abstract class ClassAttributeWithConflictingMethods {
         this.attr = attr;
     }
     
+    public final boolean $isAttr() {
+        return true;
+    }
+    
     public final .java.lang.String $getAttr() {
         return getAttr();
     }
@@ -23,7 +27,47 @@ abstract class ClassAttributeWithConflictingMethods {
     }
     
     private final void m() {
+        setAttr(getAttr());
+        this.setAttr(this.getAttr());
         $setAttr($getAttr());
         this.$setAttr(this.$getAttr());
+        $isAttr();
+        this.$isAttr();
+    }
+}
+interface InterfaceAttributeWithConflictingMethods {
+    
+    public abstract .java.lang.String getAttr();
+    
+    public abstract void setAttr(final .java.lang.String attr);
+    
+    public abstract boolean $isAttr();
+    
+    public abstract .java.lang.String $getAttr();
+    
+    public abstract .java.lang.Object $setAttr(final .java.lang.String attr);
+}
+final class InterfaceAttributeWithConflictingMethods$impl {
+    
+    InterfaceAttributeWithConflictingMethods$impl(.com.redhat.ceylon.compiler.java.test.structure.attribute.InterfaceAttributeWithConflictingMethods $this) {
+        this.$this = $this;
+    }
+    private final .com.redhat.ceylon.compiler.java.test.structure.attribute.InterfaceAttributeWithConflictingMethods $this;
+    
+    public final .java.lang.String getAttr() {
+        return $this.getAttr();
+    }
+    
+    public final void setAttr(final .java.lang.String attr) {
+        $this.setAttr(attr);
+    }
+    
+    private void m() {
+        $this.setAttr($this.getAttr());
+        $this.setAttr($this.getAttr());
+        $this.$setAttr($this.$getAttr());
+        $this.$setAttr($this.$getAttr());
+        $this.$isAttr();
+        $this.$isAttr();
     }
 }

@@ -18,35 +18,20 @@
  * MA  02110-1301, USA.
  */
 @nomodel
-abstract class ClassAttributeWithConflictingMethods(){
-    shared variable String attr = "";
-    shared Boolean isAttr(){ return true; }
-    shared String getAttr(){ return attr; }
-    shared void setAttr(String attr){}
-    
-    void m(){
-        attr = attr;
-        this.attr = this.attr;
-        setAttr(getAttr());
-        this.setAttr(this.getAttr());
-        isAttr();
-        this.isAttr();
-    } 
+shared interface Bug965_Interface {
+    shared default Boolean isFoo() { return false; }
+    shared default Boolean getFoo() { return false; }
+    shared default Boolean foo() { return false; }
 }
-
 @nomodel
-interface InterfaceAttributeWithConflictingMethods {
-    shared formal variable String attr;
-    shared formal Boolean isAttr();
-    shared formal String getAttr();
-    shared formal void setAttr(String attr);
-
-    void m(){
-        attr = attr;
-        this.attr = this.attr;
-        setAttr(getAttr());
-        this.setAttr(this.getAttr());
-        isAttr();
-        this.isAttr();
-    } 
+shared class Bug965_Class() satisfies Bug965_Interface {
+    shared actual Boolean isFoo() {
+        return true;
+    }
+    shared actual Boolean getFoo() {
+        return true;
+    }
+    shared actual Boolean foo() {
+        return true;
+    }
 }
