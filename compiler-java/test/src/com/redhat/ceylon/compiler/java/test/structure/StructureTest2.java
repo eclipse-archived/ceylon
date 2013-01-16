@@ -304,11 +304,6 @@ public class StructureTest2 extends CompilerTest {
     }
     
     @Test
-    public void testCncEmptyImplementor(){
-        compareWithJavaSource("concrete/EmptyImplementor");
-    }
-    
-    @Test
     public void testCncNameCollision(){
         compareWithJavaSource("concrete/NameCollision");
     }
