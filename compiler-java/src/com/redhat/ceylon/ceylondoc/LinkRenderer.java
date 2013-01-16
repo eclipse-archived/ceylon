@@ -58,6 +58,7 @@ public class LinkRenderer {
     private Scope scope;
     private Declaration anchor;
     private boolean skipTypeArguments;
+    private boolean forDeclaration = false;
     
     public LinkRenderer(CeylonDocTool ceylonDocTool, Writer writer, Object from) {
         this.ceylonDocTool = ceylonDocTool;
@@ -75,13 +76,22 @@ public class LinkRenderer {
         this.scope = linkRenderer.scope;
         this.anchor = linkRenderer.anchor;
         this.skipTypeArguments = linkRenderer.skipTypeArguments;
+        this.forDeclaration = linkRenderer.forDeclaration;
     }
     
     public LinkRenderer to(Object to) {
         this.to = to;
         return this;
     }
-    
+
+    /**
+     * Include things like in/out/default value of Type Parameters
+     */
+    public LinkRenderer forDeclaration(boolean forDeclaration) {
+        this.forDeclaration = forDeclaration;
+        return this;
+    }
+
     public LinkRenderer useCustomText(String customText) {
         this.customText = customText;
         return this;
@@ -244,7 +254,7 @@ public class LinkRenderer {
         if (typeParameters != null && !typeParameters.isEmpty()){
             // find the last non-defaulted arg
             int firstDefaultedTypeArgument = 0;
-            if(typeArguments != null){
+            if(!forDeclaration && typeArguments != null){
                 firstDefaultedTypeArgument = typeArguments.size();
                 for(int i=typeArguments.size()-1;i>=0;i--){
                     TypeParameter typeParameter = typeParameters.get(i);
@@ -256,13 +266,13 @@ public class LinkRenderer {
                         break; // found first non-default one so stop
                 }
             }
-            if(typeArguments == null || firstDefaultedTypeArgument > 0) {
+            if(forDeclaration || typeArguments == null || firstDefaultedTypeArgument > 0) {
                 buffer.append("<span class='type-parameter'>");
                 buffer.append("&lt;");
                 boolean first = true;
                 int i = 0;
                 for (TypeParameter typeParam : typeParameters) {
-                    if(typeArguments != null && i == firstDefaultedTypeArgument)
+                    if(!forDeclaration && typeArguments != null && i == firstDefaultedTypeArgument)
                         break;
                     ProducedType typeParamType;
                     if(typeArguments != null)
@@ -276,7 +286,7 @@ public class LinkRenderer {
                         buffer.append(", ");
                     }
 
-                    if (typeArguments == null) {
+                    if (forDeclaration) {
                         if (typeParam.isContravariant()) {
                             buffer.append("<span class='type-parameter-variance'>in </span>");
                         }
@@ -285,7 +295,25 @@ public class LinkRenderer {
                         }
                     }
 
+                    boolean oldForDeclaration = forDeclaration;
+                    forDeclaration = false;
                     processProducedType(typeParamType);
+                    forDeclaration = oldForDeclaration;
+                    
+                    if (forDeclaration) {
+                        if(typeParam.isDefaulted()){
+                            buffer.append("<span class='type-parameter-default-value'>");
+                            if(typeParam.getDefaultTypeArgument() != null){
+                                buffer.append(" = ");
+                                oldForDeclaration = forDeclaration;
+                                forDeclaration = false;
+                                processProducedType(typeParam.getDefaultTypeArgument());
+                                forDeclaration = oldForDeclaration;
+                            }else
+                                buffer.append("=");
+                            buffer.append("</span>");
+                        }
+                    }
                     i++;
                 }
                 buffer.append("&gt;");
@@ -608,5 +636,4 @@ public class LinkRenderer {
         }
         return result.booleanValue();
     }
-    
 }
