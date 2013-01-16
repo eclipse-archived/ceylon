@@ -923,7 +923,7 @@ public class Naming implements LocalId {
                 return getGetterName(decl);
             }
         } else if (decl instanceof Method) {
-            if (decl.isClassMember()) {
+            if (decl.isClassOrInterfaceMember()) {
                 String quotedName = quoteMethodNameIfProperty((Method) decl);
                 // don't try to be smart with interop calls 
                 if(decl instanceof JavaMethod)
