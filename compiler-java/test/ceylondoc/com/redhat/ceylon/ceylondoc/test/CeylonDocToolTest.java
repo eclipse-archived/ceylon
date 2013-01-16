@@ -201,6 +201,7 @@ public class CeylonDocToolTest {
         assertBug691AbbreviatedOptionalType(destDir);
         assertBug839(destDir);
         assertBug927LoadingAndSortingInheritedMembers(destDir);
+        assertBug968(destDir);
     }
 
     @Test
@@ -737,7 +738,14 @@ public class CeylonDocToolTest {
         assertMatchInFile(destDir, "class_StubClass.html",
                 Pattern.compile("<div class='signature'><span class='modifiers'>shared</span> Iterable<span class='type-parameter'>&lt;Entry<span class='type-parameter'>&lt;Integer, <span class='type-parameter'>Element</span>&amp;Object&gt;</span>&gt;</span> bug839<span class='type-parameter'>&lt;Element&gt;</span>\\(\\)</div>"));
     }
-    
+
+    private void assertBug968(File destDir) throws IOException {
+        assertMatchInFile(destDir, "class_StubClass.html",
+                Pattern.compile("<div class='signature'><span class='modifiers'>shared</span> Iterable<span class='type-parameter'>&lt;Integer&gt;</span> bug968_1\\(\\)</div>"));
+        assertMatchInFile(destDir, "class_StubClass.html",
+                Pattern.compile("<div class='signature'><span class='modifiers'>shared</span> Iterable<span class='type-parameter'>&lt;Integer, Nothing&gt;</span> bug968_2\\(\\)</div>"));
+    }
+
     private void assertBug927LoadingAndSortingInheritedMembers(File destDir) throws IOException {
         assertMatchInFile(destDir, "class_StubClass.html",
                 Pattern.compile("Inherited Attributes"));

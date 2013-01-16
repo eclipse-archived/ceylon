@@ -133,6 +133,9 @@ shared class StubClass(
     shared Element? bug691AbbreviatedOptionalType2<Element>() { throw; }
     
     shared Iterable<Entry<Integer,Element&Object>> bug839<Element>() { throw; }
+
+    shared Iterable<Integer> bug968_1() { throw; }
+    shared Iterable<Integer, Nothing> bug968_2() { throw; }
     
     doc "This is `StubInnerInterface`"
     tagged("stubInnerTag1")
