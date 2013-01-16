@@ -86,7 +86,7 @@ class Util {
             for (Tree.Type ta: ((Tree.TypeArgumentList) tal).getTypes()) {
                 ProducedType t = ta.getTypeModel();
                 if (t==null) {
-                    ta.addError("could not resolve type argument");
+//                    ta.addError("could not resolve type argument");
                     typeArguments.add(null);
                 }
                 else {
