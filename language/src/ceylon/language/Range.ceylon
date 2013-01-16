@@ -135,7 +135,8 @@ shared class Range<Element>(first, last)
             decreasing then x<=first && x>=last
                     else x>=first && x<=last;
     
-    doc "Determines if two ranges are the same by comparing
+    //TODO: enable when we have reified generics
+    /*doc "Determines if two ranges are the same by comparing
          their endpoints."
     shared actual Boolean equals(Object that) {
         if (is Range<Object> that) {
@@ -146,7 +147,7 @@ shared class Range<Element>(first, last)
             //it might be another sort of List
             return List::equals(that);
         }
-    }
+    }*/
     
     doc "Returns the range itself, since ranges are 
          immutable."
