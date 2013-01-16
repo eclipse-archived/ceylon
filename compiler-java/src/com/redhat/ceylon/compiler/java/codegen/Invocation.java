@@ -63,6 +63,7 @@ import com.sun.tools.javac.tree.JCTree;
 import com.sun.tools.javac.tree.JCTree.JCAnnotation;
 import com.sun.tools.javac.tree.JCTree.JCExpression;
 import com.sun.tools.javac.tree.JCTree.JCNewClass;
+import com.sun.tools.javac.tree.JCTree.JCReturn;
 import com.sun.tools.javac.tree.JCTree.JCStatement;
 import com.sun.tools.javac.tree.JCTree.JCVariableDecl;
 import com.sun.tools.javac.util.List;
@@ -987,13 +988,20 @@ class NamedArgumentInvocation extends Invocation {
         boolean prevNoExpressionlessReturn = gen.statementGen().noExpressionlessReturn;
         try {
             gen.statementGen().noExpressionlessReturn = gen.isVoid(model.getType());
-            body = gen.statementGen().transform(methodArg.getBlock()).getStatements();
-            if (!methodArg.getBlock().getDefinitelyReturns()) {
-                if (gen.isVoid(model.getType())) {
-                    body = body.append(gen.make().Return(gen.makeNull()));
-                } else {
-                    body = body.append(gen.make().Return(gen.makeErroneous(methodArg.getBlock(), "non-void method doesn't definitely return")));
+            if (methodArg.getBlock() != null) {
+                body = gen.statementGen().transform(methodArg.getBlock()).getStatements();
+                if (!methodArg.getBlock().getDefinitelyReturns()) {
+                    if (gen.isVoid(model.getType())) {
+                        body = body.append(gen.make().Return(gen.makeNull()));
+                    } else {
+                        body = body.append(gen.make().Return(gen.makeErroneous(methodArg.getBlock(), "non-void method doesn't definitely return")));
+                    }
                 }
+            } else {
+                Expression expr = methodArg.getSpecifierExpression().getExpression();
+                JCExpression transExpr = gen.expressionGen().transformExpression(expr);
+                JCReturn returnStat = gen.make().Return(transExpr);
+                body = List.<JCStatement>of(returnStat);
             }
         } finally {
             gen.statementGen().noExpressionlessReturn = prevNoExpressionlessReturn;
