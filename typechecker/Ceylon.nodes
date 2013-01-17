@@ -698,7 +698,8 @@ argument list."
     FOR_COMPREHENSION_CLAUSE)
 
 ^(abstract COMPREHENSION_CLAUSE:CONTROL_CLAUSE
-    ProducedType typeModel;)
+    ProducedType typeModel;
+    boolean possiblyEmpty;)
 
 ^(EXPRESSION_COMPREHENSION_CLAUSE:COMPREHENSION_CLAUSE
     EXPRESSION)

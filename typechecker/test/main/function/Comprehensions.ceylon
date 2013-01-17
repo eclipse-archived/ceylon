@@ -58,4 +58,17 @@ void comprehensions() {
     value namedWithStaticError1 = iterated { @error "hello", 1, for (w in words) if (w.size>2) w };
     value namedWithStaticError2 = iterated { @error "hello", "world", for (w in words) if (w.size>2) w.size };
     
+    [String+] atLeastOneWord = [ "word" ];
+    [String+] nonempty1 = [ for (w in atLeastOneWord) w.uppercased ];
+    {String+} nonempty2 = { for (w in atLeastOneWord) w.uppercased };
+    [String+] nonempty3 = [ for (w in atLeastOneWord) for (v in atLeastOneWord) w+v ];
+    {String+} nonempty4 = { for (w in atLeastOneWord) for (v in atLeastOneWord) w+v };
+    
+    @error [String+] empty1 = [ for (w in atLeastOneWord) if (!w.empty) w.uppercased ];
+    @error {String+} empty2 = { for (w in atLeastOneWord) if (!w.empty) w.uppercased };
+    @error [String+] empty3 = [ for (w in atLeastOneWord) for (v in words) w+v ];
+    @error {String+} empty4 = { for (w in atLeastOneWord) for (v in words) w+v };
+    @error [Character+] empty5 = [ for (w in atLeastOneWord) for (c in w.characters) c ];
+    @error {Character+} empty6 = { for (w in atLeastOneWord) for (c in w.characters) c };
+    
 }
