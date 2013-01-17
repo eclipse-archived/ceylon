@@ -14,7 +14,7 @@ import com.redhat.ceylon.compiler.java.metadata.TypeInfo;
 import com.redhat.ceylon.compiler.java.metadata.TypeParameter;
 import com.redhat.ceylon.compiler.java.metadata.TypeParameters;
 
-@Ceylon(major = 3)
+@Ceylon(major = 4)
 @Method
 public final class sort_ {
     
@@ -45,7 +45,7 @@ public final class sort_ {
     
 }
 
-@Ceylon(major = 3)
+@Ceylon(major = 4)
 @Method
 final class internalSort_ {
     

@@ -3,7 +3,7 @@ package ceylon.language;
 import com.redhat.ceylon.compiler.java.metadata.Ceylon;
 import com.redhat.ceylon.compiler.java.metadata.Object;
 
-@Ceylon(major = 3) @Object
+@Ceylon(major = 4) @Object
 public class larger_ extends Comparison {
 	
 	private larger_() {

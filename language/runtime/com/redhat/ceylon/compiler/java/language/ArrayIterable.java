@@ -22,7 +22,7 @@ import com.redhat.ceylon.compiler.java.metadata.Sequenced;
 import com.redhat.ceylon.compiler.java.metadata.TypeInfo;
 
 @Ignore
-@Ceylon(major = 3)
+@Ceylon(major = 4)
 @Class(extendsType="ceylon.language::Object")
 @SatisfiedTypes("ceylon.language::Iterable<Element,Absent>")
 public class ArrayIterable<Element,Absent> implements Iterable<Element,Absent> {

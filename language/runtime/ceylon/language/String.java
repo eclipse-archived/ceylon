@@ -19,7 +19,7 @@ import com.redhat.ceylon.compiler.java.metadata.Sequenced;
 import com.redhat.ceylon.compiler.java.metadata.TypeInfo;
 import com.redhat.ceylon.compiler.java.metadata.ValueType;
 
-@Ceylon(major = 3)
+@Ceylon(major = 4)
 @Class(extendsType="ceylon.language::Object")
 @SatisfiedTypes({"ceylon.language::Sequential<ceylon.language::Character>",
                  "ceylon.language::Comparable<ceylon.language::String>",

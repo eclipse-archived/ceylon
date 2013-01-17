@@ -6,7 +6,7 @@ import com.redhat.ceylon.compiler.java.metadata.Class;
 import com.redhat.ceylon.compiler.java.metadata.Ignore;
 import com.redhat.ceylon.compiler.java.metadata.ValueType;
 
-@Ceylon(major = 3)
+@Ceylon(major = 4)
 @Class
 @CaseTypes({"ceylon.language::true", "ceylon.language::false"})
 @ValueType
