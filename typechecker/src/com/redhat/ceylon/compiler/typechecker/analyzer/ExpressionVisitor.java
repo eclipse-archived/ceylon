@@ -716,6 +716,10 @@ public class ExpressionVisitor extends Visitor {
                         !isVoidMethodReference(sie.getExpression())) {
                     that.addError("method is declared void so specified expression may not evaluate to a value: " + d.getName(unit));
                 }
+                if (d instanceof Value && 
+                		that.getSpecifierExpression() instanceof Tree.LazySpecifierExpression) {
+                	((Value) d).setTransient(true);
+                }
                 
                 ProducedType t = that.getBaseMemberExpression().getTypeModel();
                 if (that.getBaseMemberExpression()==me && d instanceof Method) {

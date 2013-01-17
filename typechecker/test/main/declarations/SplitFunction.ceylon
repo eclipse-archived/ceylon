@@ -106,5 +106,14 @@ void splitFunction() {
     @error fun6(String s) => X(s);
     X fun7(String s);
     fun7(String s) => X(s);
+    
+    Integer int;
+    if (true) {
+        @error int = 0;
+    }
+    else {
+        int => 1;
+    }
+    print(int);
 
 }
