@@ -1,6 +1,6 @@
 package com.redhat.ceylon.compiler.java.test.interop;
 
-@.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 3)
+@.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 4)
 @.com.redhat.ceylon.compiler.java.metadata.SatisfiedTypes({"com.redhat.ceylon.compiler.java.test.interop::JavaNestingInterface<ceylon.language::String>"})
 class JNI_Impl implements .com.redhat.ceylon.compiler.java.test.interop.JavaNestingInterface<.ceylon.language.String> {
     
@@ -13,7 +13,7 @@ class JNI_Impl implements .com.redhat.ceylon.compiler.java.test.interop.JavaNest
         new .com.redhat.ceylon.compiler.java.test.interop.JNI_Impl();
     }
 }
-@.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 3)
+@.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 4)
 @.com.redhat.ceylon.compiler.java.metadata.SatisfiedTypes({"com.redhat.ceylon.compiler.java.test.interop::JavaNestingInterface.InnerInterface<ceylon.language::String>"})
 class JNI_InnerInterface_Impl implements .com.redhat.ceylon.compiler.java.test.interop.JavaNestingInterface.InnerInterface<.ceylon.language.String> {
     
@@ -26,7 +26,7 @@ class JNI_InnerInterface_Impl implements .com.redhat.ceylon.compiler.java.test.i
         new .com.redhat.ceylon.compiler.java.test.interop.JNI_InnerInterface_Impl();
     }
 }
-@.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 3)
+@.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 4)
 @.com.redhat.ceylon.compiler.java.metadata.SatisfiedTypes({"com.redhat.ceylon.compiler.java.test.interop::JavaNesting.InnerStatic.InnerInterface<ceylon.language::String>"})
 class JN_IS_InnerInterface_Impl implements .com.redhat.ceylon.compiler.java.test.interop.JavaNesting.InnerStatic.InnerInterface<.ceylon.language.String> {
     
@@ -39,7 +39,7 @@ class JN_IS_InnerInterface_Impl implements .com.redhat.ceylon.compiler.java.test
         new .com.redhat.ceylon.compiler.java.test.interop.JN_IS_InnerInterface_Impl();
     }
 }
-@.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 3)
+@.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 4)
 @.com.redhat.ceylon.compiler.java.metadata.SatisfiedTypes({"com.redhat.ceylon.compiler.java.test.interop::JavaNesting.InnerInterface<ceylon.language::String>"})
 class JN_InnerInterface_Impl implements .com.redhat.ceylon.compiler.java.test.interop.JavaNesting.InnerInterface<.ceylon.language.String> {
     

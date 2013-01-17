@@ -1,6 +1,6 @@
 package com.redhat.ceylon.compiler.java.test.structure.modules.single;
 
-@.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 3)
+@.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 4)
 @.com.redhat.ceylon.compiler.java.metadata.Module(name = "com.redhat.ceylon.compiler.java.test.structure.modules.single", doc = "Bla bla.", license = "http://www.gnu.org/licenses/gpl.html", by = {"Stef FroMage"}, version = "6.6.6", dependencies = {})
 final class module_ {
     

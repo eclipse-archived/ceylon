@@ -1,6 +1,6 @@
 package com.redhat.ceylon.compiler.java.test.annotations;
 
-@.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 3)
+@.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 4)
 @.com.redhat.ceylon.compiler.java.metadata.Members({@.com.redhat.ceylon.compiler.java.metadata.Member(name = "Member", javaClass = "com.redhat.ceylon.compiler.java.test.annotations.MemberKlass.Member", packageName = "com.redhat.ceylon.compiler.java.test.annotations")})
 @.com.redhat.ceylon.compiler.java.metadata.Annotations({@.com.redhat.ceylon.compiler.java.metadata.Annotation("shared")})
 public class MemberKlass {
@@ -13,7 +13,7 @@ public class MemberKlass {
         return new Member();
     }
     
-    @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 3)
+    @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 4)
     @.com.redhat.ceylon.compiler.java.metadata.Members({@.com.redhat.ceylon.compiler.java.metadata.Member(name = "MemberMember", javaClass = "com.redhat.ceylon.compiler.java.test.annotations.MemberKlass.Member.MemberMember", packageName = "com.redhat.ceylon.compiler.java.test.annotations")})
     @.com.redhat.ceylon.compiler.java.metadata.Container(name = "MemberKlass", javaClass = "com.redhat.ceylon.compiler.java.test.annotations.MemberKlass", packageName = "com.redhat.ceylon.compiler.java.test.annotations")
     @.com.redhat.ceylon.compiler.java.metadata.Annotations({@.com.redhat.ceylon.compiler.java.metadata.Annotation("shared")})
@@ -27,7 +27,7 @@ public class MemberKlass {
             return new MemberMember();
         }
         
-        @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 3)
+        @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 4)
         @.com.redhat.ceylon.compiler.java.metadata.Container(name = "Member", javaClass = "com.redhat.ceylon.compiler.java.test.annotations.MemberKlass.Member", packageName = "com.redhat.ceylon.compiler.java.test.annotations")
         @.com.redhat.ceylon.compiler.java.metadata.Annotations({@.com.redhat.ceylon.compiler.java.metadata.Annotation("shared")})
         public class MemberMember {

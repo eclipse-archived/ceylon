@@ -1,6 +1,6 @@
 package com.redhat.ceylon.compiler.java.test.annotations;
 
-@.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 3)
+@.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 4)
 @.com.redhat.ceylon.compiler.java.metadata.Members({@.com.redhat.ceylon.compiler.java.metadata.Member(name = "member", javaClass = "com.redhat.ceylon.compiler.java.test.annotations.KlassInMemberObject.member_", packageName = "com.redhat.ceylon.compiler.java.test.annotations")})
 @.com.redhat.ceylon.compiler.java.metadata.Annotations({@.com.redhat.ceylon.compiler.java.metadata.Annotation("shared")})
 public class KlassInMemberObject {
@@ -10,7 +10,7 @@ public class KlassInMemberObject {
     }
     private final .com.redhat.ceylon.compiler.java.test.annotations.KlassInMemberObject.member_ member;
     
-    @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 3)
+    @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 4)
     @.com.redhat.ceylon.compiler.java.metadata.Name("member")
     @.com.redhat.ceylon.compiler.java.metadata.Object
     @.com.redhat.ceylon.compiler.java.metadata.Annotations({@.com.redhat.ceylon.compiler.java.metadata.Annotation("shared")})
@@ -24,7 +24,7 @@ public class KlassInMemberObject {
             return new Klass();
         }
         
-        @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 3)
+        @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 4)
         @.com.redhat.ceylon.compiler.java.metadata.Container(name = "member", javaClass = "com.redhat.ceylon.compiler.java.test.annotations.KlassInMemberObject.member_", packageName = "com.redhat.ceylon.compiler.java.test.annotations")
         @.com.redhat.ceylon.compiler.java.metadata.Annotations({@.com.redhat.ceylon.compiler.java.metadata.Annotation("shared")})
         public class Klass {

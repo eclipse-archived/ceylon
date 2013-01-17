@@ -1,6 +1,6 @@
 package com.redhat.ceylon.compiler.java.test.structure.alias;
 
-@.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 3)
+@.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 4)
 interface LocalInterfaceAlias_Toplevel {
 }
 @.com.redhat.ceylon.compiler.java.metadata.Ignore
@@ -11,11 +11,11 @@ final class LocalInterfaceAlias_Toplevel$impl {
     }
     private final .com.redhat.ceylon.compiler.java.test.structure.alias.LocalInterfaceAlias_Toplevel $this;
 }
-@.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 3)
+@.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 4)
 @.com.redhat.ceylon.compiler.java.metadata.Name("InterfaceAlias_Foo")
 interface localInterfaceAliasMethod$0$InterfaceAlias_Foo_ {
 }
-@.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 3)
+@.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 4)
 @.com.redhat.ceylon.compiler.java.metadata.Method
 final class localInterfaceAliasMethod_ {
     
@@ -34,7 +34,7 @@ final class localInterfaceAliasMethod_ {
             private final .com.redhat.ceylon.compiler.java.test.structure.alias.localInterfaceAliasMethod$0$InterfaceAlias_Foo_ $this;
         }
         
-        @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 3)
+        @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 4)
         @.com.redhat.ceylon.compiler.java.metadata.SatisfiedTypes({"com.redhat.ceylon.compiler.java.test.structure.alias::localInterfaceAliasMethod.InterfaceAlias_Foo"})
         class Class1 implements .com.redhat.ceylon.compiler.java.test.structure.alias.localInterfaceAliasMethod$0$InterfaceAlias_Foo_ {
             
@@ -45,7 +45,7 @@ final class localInterfaceAliasMethod_ {
             protected final InterfaceAlias_Foo$impl $com$redhat$ceylon$compiler$java$test$structure$alias$localInterfaceAliasMethod$InterfaceAlias_Foo$this;
         }
         
-        @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 3)
+        @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 4)
         @.com.redhat.ceylon.compiler.java.metadata.SatisfiedTypes({"com.redhat.ceylon.compiler.java.test.structure.alias::LocalInterfaceAlias_Toplevel"})
         class Class2 implements .com.redhat.ceylon.compiler.java.test.structure.alias.LocalInterfaceAlias_Toplevel {
             

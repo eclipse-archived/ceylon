@@ -1,12 +1,12 @@
 package com.redhat.ceylon.compiler.java.test.structure.alias;
 
-@.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 3)
+@.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 4)
 @.com.redhat.ceylon.compiler.java.metadata.Name("TypeAliasInterface")
 @.com.redhat.ceylon.compiler.java.metadata.Container(name = "MemberTypeAliasClass", javaClass = "com.redhat.ceylon.compiler.java.test.structure.alias.MemberTypeAliasClass", packageName = "com.redhat.ceylon.compiler.java.test.structure.alias")
 @.com.redhat.ceylon.compiler.java.metadata.Annotations({@.com.redhat.ceylon.compiler.java.metadata.Annotation("shared")})
 public interface MemberTypeAliasClass$TypeAliasInterface {
 }
-@.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 3)
+@.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 4)
 @.com.redhat.ceylon.compiler.java.metadata.Members({@.com.redhat.ceylon.compiler.java.metadata.Member(name = "TypeAlias4", javaClass = "com.redhat.ceylon.compiler.java.test.structure.alias.MemberTypeAliasClass.TypeAlias4", packageName = "com.redhat.ceylon.compiler.java.test.structure.alias"), @.com.redhat.ceylon.compiler.java.metadata.Member(name = "TypeAlias3", javaClass = "com.redhat.ceylon.compiler.java.test.structure.alias.MemberTypeAliasClass.TypeAlias3", packageName = "com.redhat.ceylon.compiler.java.test.structure.alias"), @.com.redhat.ceylon.compiler.java.metadata.Member(name = "TypeAlias2", javaClass = "com.redhat.ceylon.compiler.java.test.structure.alias.MemberTypeAliasClass.TypeAlias2", packageName = "com.redhat.ceylon.compiler.java.test.structure.alias"), @.com.redhat.ceylon.compiler.java.metadata.Member(name = "TypeAlias1", javaClass = "com.redhat.ceylon.compiler.java.test.structure.alias.MemberTypeAliasClass.TypeAlias1", packageName = "com.redhat.ceylon.compiler.java.test.structure.alias"), @.com.redhat.ceylon.compiler.java.metadata.Member(name = "TypeAliasInterface", javaClass = "com.redhat.ceylon.compiler.java.test.structure.alias.MemberTypeAliasClass$TypeAliasInterface", packageName = "com.redhat.ceylon.compiler.java.test.structure.alias"), @.com.redhat.ceylon.compiler.java.metadata.Member(name = "TypeAliasClass", javaClass = "com.redhat.ceylon.compiler.java.test.structure.alias.MemberTypeAliasClass.TypeAliasClass", packageName = "com.redhat.ceylon.compiler.java.test.structure.alias")})
 @.com.redhat.ceylon.compiler.java.metadata.Annotations({@.com.redhat.ceylon.compiler.java.metadata.Annotation("shared")})
 public class MemberTypeAliasClass {
@@ -19,7 +19,7 @@ public class MemberTypeAliasClass {
         return new TypeAliasClass();
     }
     
-    @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 3)
+    @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 4)
     @.com.redhat.ceylon.compiler.java.metadata.Container(name = "MemberTypeAliasClass", javaClass = "com.redhat.ceylon.compiler.java.test.structure.alias.MemberTypeAliasClass", packageName = "com.redhat.ceylon.compiler.java.test.structure.alias")
     @.com.redhat.ceylon.compiler.java.metadata.Annotations({@.com.redhat.ceylon.compiler.java.metadata.Annotation("shared")})
     public class TypeAliasClass {
@@ -37,7 +37,7 @@ public class MemberTypeAliasClass {
         private final .com.redhat.ceylon.compiler.java.test.structure.alias.MemberTypeAliasClass$TypeAliasInterface $this;
     }
     
-    @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 3)
+    @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 4)
     @.com.redhat.ceylon.compiler.java.metadata.TypeAlias("com.redhat.ceylon.compiler.java.test.structure.alias::MemberTypeAliasClass.TypeAliasClass&com.redhat.ceylon.compiler.java.test.structure.alias::MemberTypeAliasClass.TypeAliasInterface")
     @.com.redhat.ceylon.compiler.java.metadata.Container(name = "MemberTypeAliasClass", javaClass = "com.redhat.ceylon.compiler.java.test.structure.alias.MemberTypeAliasClass", packageName = "com.redhat.ceylon.compiler.java.test.structure.alias")
     @.com.redhat.ceylon.compiler.java.metadata.Annotations({@.com.redhat.ceylon.compiler.java.metadata.Annotation("shared")})
@@ -47,7 +47,7 @@ public class MemberTypeAliasClass {
         }
     }
     
-    @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 3)
+    @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 4)
     @.com.redhat.ceylon.compiler.java.metadata.TypeAlias("com.redhat.ceylon.compiler.java.test.structure.alias::MemberTypeAliasClass.TypeAliasClass|com.redhat.ceylon.compiler.java.test.structure.alias::MemberTypeAliasClass.TypeAliasInterface")
     @.com.redhat.ceylon.compiler.java.metadata.Container(name = "MemberTypeAliasClass", javaClass = "com.redhat.ceylon.compiler.java.test.structure.alias.MemberTypeAliasClass", packageName = "com.redhat.ceylon.compiler.java.test.structure.alias")
     @.com.redhat.ceylon.compiler.java.metadata.Annotations({@.com.redhat.ceylon.compiler.java.metadata.Annotation("shared")})
@@ -57,7 +57,7 @@ public class MemberTypeAliasClass {
         }
     }
     
-    @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 3)
+    @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 4)
     @.com.redhat.ceylon.compiler.java.metadata.TypeAlias("com.redhat.ceylon.compiler.java.test.structure.alias::MemberTypeAliasClass.TypeAliasClass")
     @.com.redhat.ceylon.compiler.java.metadata.Container(name = "MemberTypeAliasClass", javaClass = "com.redhat.ceylon.compiler.java.test.structure.alias.MemberTypeAliasClass", packageName = "com.redhat.ceylon.compiler.java.test.structure.alias")
     @.com.redhat.ceylon.compiler.java.metadata.Annotations({@.com.redhat.ceylon.compiler.java.metadata.Annotation("shared")})
@@ -67,7 +67,7 @@ public class MemberTypeAliasClass {
         }
     }
     
-    @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 3)
+    @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 4)
     @.com.redhat.ceylon.compiler.java.metadata.TypeAlias("com.redhat.ceylon.compiler.java.test.structure.alias::MemberTypeAliasClass.TypeAliasInterface")
     @.com.redhat.ceylon.compiler.java.metadata.Container(name = "MemberTypeAliasClass", javaClass = "com.redhat.ceylon.compiler.java.test.structure.alias.MemberTypeAliasClass", packageName = "com.redhat.ceylon.compiler.java.test.structure.alias")
     @.com.redhat.ceylon.compiler.java.metadata.Annotations({@.com.redhat.ceylon.compiler.java.metadata.Annotation("shared")})
@@ -111,13 +111,13 @@ public class MemberTypeAliasClass {
         new .com.redhat.ceylon.compiler.java.test.structure.alias.MemberTypeAliasClass();
     }
 }
-@.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 3)
+@.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 4)
 @.com.redhat.ceylon.compiler.java.metadata.Name("TypeAliasInterface")
 @.com.redhat.ceylon.compiler.java.metadata.Container(name = "MemberTypeAliasInterface", javaClass = "com.redhat.ceylon.compiler.java.test.structure.alias.MemberTypeAliasInterface", packageName = "com.redhat.ceylon.compiler.java.test.structure.alias")
 @.com.redhat.ceylon.compiler.java.metadata.Annotations({@.com.redhat.ceylon.compiler.java.metadata.Annotation("shared")})
 public interface MemberTypeAliasInterface$TypeAliasInterface {
 }
-@.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 3)
+@.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 4)
 @.com.redhat.ceylon.compiler.java.metadata.Members({@.com.redhat.ceylon.compiler.java.metadata.Member(name = "TypeAlias4", javaClass = "com.redhat.ceylon.compiler.java.test.structure.alias.MemberTypeAliasInterface$impl.TypeAlias4", packageName = "com.redhat.ceylon.compiler.java.test.structure.alias"), @.com.redhat.ceylon.compiler.java.metadata.Member(name = "TypeAlias3", javaClass = "com.redhat.ceylon.compiler.java.test.structure.alias.MemberTypeAliasInterface$impl.TypeAlias3", packageName = "com.redhat.ceylon.compiler.java.test.structure.alias"), @.com.redhat.ceylon.compiler.java.metadata.Member(name = "TypeAlias2", javaClass = "com.redhat.ceylon.compiler.java.test.structure.alias.MemberTypeAliasInterface$impl.TypeAlias2", packageName = "com.redhat.ceylon.compiler.java.test.structure.alias"), @.com.redhat.ceylon.compiler.java.metadata.Member(name = "TypeAlias1", javaClass = "com.redhat.ceylon.compiler.java.test.structure.alias.MemberTypeAliasInterface$impl.TypeAlias1", packageName = "com.redhat.ceylon.compiler.java.test.structure.alias"), @.com.redhat.ceylon.compiler.java.metadata.Member(name = "TypeAliasInterface", javaClass = "com.redhat.ceylon.compiler.java.test.structure.alias.MemberTypeAliasInterface$TypeAliasInterface", packageName = "com.redhat.ceylon.compiler.java.test.structure.alias"), @.com.redhat.ceylon.compiler.java.metadata.Member(name = "TypeAliasClass", javaClass = "com.redhat.ceylon.compiler.java.test.structure.alias.MemberTypeAliasInterface$impl.TypeAliasClass", packageName = "com.redhat.ceylon.compiler.java.test.structure.alias")})
 @.com.redhat.ceylon.compiler.java.metadata.Annotations({@.com.redhat.ceylon.compiler.java.metadata.Annotation("shared")})
 public interface MemberTypeAliasInterface {
@@ -141,7 +141,7 @@ public final class MemberTypeAliasInterface$impl {
         return new TypeAliasClass();
     }
     
-    @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 3)
+    @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 4)
     @.com.redhat.ceylon.compiler.java.metadata.Container(name = "MemberTypeAliasInterface", javaClass = "com.redhat.ceylon.compiler.java.test.structure.alias.MemberTypeAliasInterface", packageName = "com.redhat.ceylon.compiler.java.test.structure.alias")
     @.com.redhat.ceylon.compiler.java.metadata.Annotations({@.com.redhat.ceylon.compiler.java.metadata.Annotation("shared")})
     public class TypeAliasClass {
@@ -159,7 +159,7 @@ public final class MemberTypeAliasInterface$impl {
         private final .com.redhat.ceylon.compiler.java.test.structure.alias.MemberTypeAliasInterface$TypeAliasInterface $this;
     }
     
-    @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 3)
+    @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 4)
     @.com.redhat.ceylon.compiler.java.metadata.TypeAlias("com.redhat.ceylon.compiler.java.test.structure.alias::MemberTypeAliasInterface.TypeAliasClass&com.redhat.ceylon.compiler.java.test.structure.alias::MemberTypeAliasInterface.TypeAliasInterface")
     @.com.redhat.ceylon.compiler.java.metadata.Container(name = "MemberTypeAliasInterface", javaClass = "com.redhat.ceylon.compiler.java.test.structure.alias.MemberTypeAliasInterface", packageName = "com.redhat.ceylon.compiler.java.test.structure.alias")
     @.com.redhat.ceylon.compiler.java.metadata.Annotations({@.com.redhat.ceylon.compiler.java.metadata.Annotation("shared")})
@@ -169,7 +169,7 @@ public final class MemberTypeAliasInterface$impl {
         }
     }
     
-    @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 3)
+    @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 4)
     @.com.redhat.ceylon.compiler.java.metadata.TypeAlias("com.redhat.ceylon.compiler.java.test.structure.alias::MemberTypeAliasInterface.TypeAliasClass|com.redhat.ceylon.compiler.java.test.structure.alias::MemberTypeAliasInterface.TypeAliasInterface")
     @.com.redhat.ceylon.compiler.java.metadata.Container(name = "MemberTypeAliasInterface", javaClass = "com.redhat.ceylon.compiler.java.test.structure.alias.MemberTypeAliasInterface", packageName = "com.redhat.ceylon.compiler.java.test.structure.alias")
     @.com.redhat.ceylon.compiler.java.metadata.Annotations({@.com.redhat.ceylon.compiler.java.metadata.Annotation("shared")})
@@ -179,7 +179,7 @@ public final class MemberTypeAliasInterface$impl {
         }
     }
     
-    @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 3)
+    @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 4)
     @.com.redhat.ceylon.compiler.java.metadata.TypeAlias("com.redhat.ceylon.compiler.java.test.structure.alias::MemberTypeAliasInterface.TypeAliasClass")
     @.com.redhat.ceylon.compiler.java.metadata.Container(name = "MemberTypeAliasInterface", javaClass = "com.redhat.ceylon.compiler.java.test.structure.alias.MemberTypeAliasInterface", packageName = "com.redhat.ceylon.compiler.java.test.structure.alias")
     @.com.redhat.ceylon.compiler.java.metadata.Annotations({@.com.redhat.ceylon.compiler.java.metadata.Annotation("shared")})
@@ -189,7 +189,7 @@ public final class MemberTypeAliasInterface$impl {
         }
     }
     
-    @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 3)
+    @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 4)
     @.com.redhat.ceylon.compiler.java.metadata.TypeAlias("com.redhat.ceylon.compiler.java.test.structure.alias::MemberTypeAliasInterface.TypeAliasInterface")
     @.com.redhat.ceylon.compiler.java.metadata.Container(name = "MemberTypeAliasInterface", javaClass = "com.redhat.ceylon.compiler.java.test.structure.alias.MemberTypeAliasInterface", packageName = "com.redhat.ceylon.compiler.java.test.structure.alias")
     @.com.redhat.ceylon.compiler.java.metadata.Annotations({@.com.redhat.ceylon.compiler.java.metadata.Annotation("shared")})

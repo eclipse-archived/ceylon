@@ -1,6 +1,6 @@
 package com.redhat.ceylon.compiler.java.test.structure.pkg;
 
-@.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 3)
+@.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 4)
 @.com.redhat.ceylon.compiler.java.metadata.Package(name = "com.redhat.ceylon.compiler.java.test.structure.pkg", doc = "Great documentation", shared = true)
 final class package_ {
     

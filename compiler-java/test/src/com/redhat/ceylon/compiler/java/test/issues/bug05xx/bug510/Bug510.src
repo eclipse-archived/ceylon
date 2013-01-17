@@ -1,11 +1,11 @@
 package com.redhat.ceylon.compiler.java.test.issues.bug05xx.bug510;
 
-@.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 3)
+@.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 4)
 @.com.redhat.ceylon.compiler.java.metadata.Name("Bug510inner")
 @.com.redhat.ceylon.compiler.java.metadata.Container(name = "Bug510", javaClass = "com.redhat.ceylon.compiler.java.test.issues.bug05xx.bug510.Bug510", packageName = "com.redhat.ceylon.compiler.java.test.issues.bug05xx.bug510")
 interface Bug510$Bug510inner {
 }
-@.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 3)
+@.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 4)
 @.com.redhat.ceylon.compiler.java.metadata.Members({@.com.redhat.ceylon.compiler.java.metadata.Member(name = "Bug510inner", javaClass = "com.redhat.ceylon.compiler.java.test.issues.bug05xx.bug510.Bug510$Bug510inner", packageName = "com.redhat.ceylon.compiler.java.test.issues.bug05xx.bug510")})
 interface Bug510 {
 }
@@ -26,7 +26,7 @@ final class Bug510$impl {
         private final .com.redhat.ceylon.compiler.java.test.issues.bug05xx.bug510.Bug510$Bug510inner $this;
     }
 }
-@.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 3)
+@.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 4)
 @.com.redhat.ceylon.compiler.java.metadata.Method
 final class goto_ {
     
@@ -43,7 +43,7 @@ final class goto_ {
         .com.redhat.ceylon.compiler.java.test.issues.bug05xx.bug510.goto_.$goto();
     }
 }
-@.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 3)
+@.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 4)
 @.com.redhat.ceylon.compiler.java.metadata.Attribute
 final class volatile_ {
     
@@ -63,7 +63,7 @@ final class volatile_ {
         }
     }
 }
-@.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 3)
+@.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 4)
 @.com.redhat.ceylon.compiler.java.metadata.Name("synchronized")
 @.com.redhat.ceylon.compiler.java.metadata.Object
 final class synchronized_ {
