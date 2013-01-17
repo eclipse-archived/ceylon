@@ -149,7 +149,8 @@
 	font-family: monospace;
 }
 
-.modifiers {
+.modifiers,
+.void {
 	color: rgb(120, 120, 120);
 }
 

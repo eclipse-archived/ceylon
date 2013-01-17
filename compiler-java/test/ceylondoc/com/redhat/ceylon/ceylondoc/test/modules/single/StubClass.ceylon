@@ -66,6 +66,8 @@ shared class StubClass(
     
     shared void methodWithCallableParameter3(void fce1(void fce2(void fce3()))) {}
     
+    shared Anything methodWithAnything() { throw; }
+    
     doc "Test fenced code block with syntax highlighter.
     
          ```ceylon

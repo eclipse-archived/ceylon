@@ -192,6 +192,7 @@ public class CeylonDocToolTest {
         assertDocumentationOfRefinedMember(destDir);
         assertSequencedParameter(destDir);
         assertCallableParameter(destDir);
+        assertAnythingReturnType(destDir);
         assertFencedCodeBlockWithSyntaxHighlighter(destDir);
         assertWikiStyleLinkSyntax(destDir);
         assertConstants(destDir);
@@ -204,7 +205,7 @@ public class CeylonDocToolTest {
         assertBug927LoadingAndSortingInheritedMembers(destDir);
         assertBug968(destDir);
     }
-
+    
     // fails until we put an M5 SDK on Herd
     @Test
     @Ignore("M5")
@@ -595,18 +596,23 @@ public class CeylonDocToolTest {
     
 	private void assertSequencedParameter(File destDir) throws IOException {
         assertMatchInFile(destDir, "class_StubClass.html", 
-                Pattern.compile("Anything methodWithSequencedParameter\\(Integer... numbers\\)"));
+                Pattern.compile("<span class='void'>void</span> methodWithSequencedParameter\\(Integer... numbers\\)"));
 	}
     
     private void assertCallableParameter(File destDir) throws IOException {
         assertMatchInFile(destDir, "class_StubClass.html", 
-                Pattern.compile("methodWithCallableParameter1\\(Anything onClick\\(\\)\\)"));
+                Pattern.compile("methodWithCallableParameter1\\(<span class='void'>void</span> onClick\\(\\)\\)"));
         
         assertMatchInFile(destDir, "class_StubClass.html", 
                   Pattern.compile("methodWithCallableParameter2<span class='type-parameter'>&lt;Element&gt;</span>\\(Boolean selecting\\(<span class='type-parameter'>Element</span> element\\)\\)"));
 
         assertMatchInFile(destDir, "class_StubClass.html", 
-                Pattern.compile("methodWithCallableParameter3\\(Anything fce1\\(Anything fce2\\(Anything fce3\\(\\)\\)\\)\\)"));
+                Pattern.compile("methodWithCallableParameter3\\(<span class='void'>void</span> fce1\\(<span class='void'>void</span> fce2\\(<span class='void'>void</span> fce3\\(\\)\\)\\)\\)"));
+    }
+    
+    private void assertAnythingReturnType(File destDir) throws IOException {
+        assertMatchInFile(destDir, "class_StubClass.html", 
+                Pattern.compile("Anything methodWithAnything\\(\\)"));
     }
 
     private void assertFencedCodeBlockWithSyntaxHighlighter(File destDir) throws IOException {
@@ -687,7 +693,7 @@ public class CeylonDocToolTest {
         assertMatchInFile(destDir, "class_StubClassWithGenericTypeParams.html",
                 Pattern.compile("<span class='sub-navbar-name'>StubClassWithGenericTypeParams<span class='type-parameter'>&lt;<span class='type-parameter-variance'>in </span>ContravariantType, Type, <span class='type-parameter-variance'>out </span>CovariantType, DefaultedType<span class='type-parameter-default-value'> = Iterable<span class='type-parameter'>&lt;<a class='link' href='class_StubClass.html'>StubClass</a>&gt;</span></span>&gt;</span></span>"));
         assertMatchInFile(destDir, "class_StubClassWithGenericTypeParams.html",
-                Pattern.compile("<div class='signature'><span class='modifiers'>shared</span> Anything methodWithGenericTypeParams<span class='type-parameter'>&lt;<span class='type-parameter-variance'>in </span>ContravariantType, Type, <span class='type-parameter-variance'>out </span>CovariantType, DefaultedType<span class='type-parameter-default-value'> = Iterable<span class='type-parameter'>&lt;<a class='link' href='class_StubClass.html'>StubClass</a>&gt;</span></span>&gt;</span>\\(\\)"));
+                Pattern.compile("<div class='signature'><span class='modifiers'>shared</span> <span class='void'>void</span> methodWithGenericTypeParams<span class='type-parameter'>&lt;<span class='type-parameter-variance'>in </span>ContravariantType, Type, <span class='type-parameter-variance'>out </span>CovariantType, DefaultedType<span class='type-parameter-default-value'> = Iterable<span class='type-parameter'>&lt;<a class='link' href='class_StubClass.html'>StubClass</a>&gt;</span></span>&gt;</span>\\(\\)"));
     }
     
     private void assertObjectPageDifferences(File destDir) throws IOException {

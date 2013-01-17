@@ -97,7 +97,13 @@ public abstract class ClassOrPackageDoc extends CeylonDoc {
         open("div class='signature'");
         around("span class='modifiers'", getModifiers(d));
         write(" ");
-        linkRenderer().to(d.getType()).write();
+        
+        if( d instanceof Method && ((Method) d).isDeclaredVoid() ) {
+            around("span class='void'", "void");
+        } else {
+            linkRenderer().to(d.getType()).write();    
+        }
+        
         write(" ");
         write(d.getName());
         if( isConstantValue(d) ) {
@@ -312,7 +318,11 @@ public abstract class ClassOrPackageDoc extends CeylonDoc {
     }
 
     private void writeFunctionalParameter(FunctionalParameter functionParam) throws IOException {
-        linkRenderer().to(functionParam.getType()).write();
+        if( functionParam.isDeclaredVoid() ) {
+            around("span class='void'", "void");
+        } else {
+            linkRenderer().to(functionParam.getType()).write();
+        }
         write(" ");
         write(functionParam.getName());
         writeParameterList(functionParam);
