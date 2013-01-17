@@ -6,8 +6,8 @@ shared class LazyList<out Element>({Element*} elems)
         satisfies List<Element> {
     
     shared actual Integer? lastIndex {
-        value c = elems.count((Element e) => true);
-        return c > 0 then c-1 else null;
+        value size = elems.size;
+        return size > 0 then size-1 else null;
     }
     
     shared actual Element? item(Integer index) {
@@ -19,8 +19,8 @@ shared class LazyList<out Element>({Element*} elems)
         }
     }
     
-    shared actual Iterator<Element> iterator =>
-        elems.iterator;
+    shared actual Iterator<Element> iterator => 
+            elems.iterator;
     
     doc "Returns a `List` with the elements of this `List` 
          in reverse order. This operation will create copy 
@@ -28,7 +28,7 @@ shared class LazyList<out Element>({Element*} elems)
          original `Iterable` will no longer be reflected in 
          the new `List`."
     shared actual List<Element> reversed =>
-        elems.sequence.reversed;
+            elems.sequence.reversed;
     
     shared actual List<Element> clone => this;
     
@@ -52,14 +52,12 @@ shared class LazyList<out Element>({Element*} elems)
         }
     }
     
-    shared actual List<Element> spanTo(Integer to) {
-        return to<0 then {} else LazyList(elems.taking(to+1));
-    }
+    shared actual List<Element> spanTo(Integer to) =>
+            to<0 then {} else LazyList(elems.taking(to+1));
     
-    shared actual List<Element> spanFrom(Integer from) {
-        return from > 0 then LazyList(elems.skipping(from))
-            else this;
-    }
+    shared actual List<Element> spanFrom(Integer from) =>
+            from > 0 then LazyList(elems.skipping(from))
+                    else this;
     
     shared actual List<Element> segment
             (Integer from, Integer length) {
@@ -75,9 +73,9 @@ shared class LazyList<out Element>({Element*} elems)
     
     shared actual default Boolean equals(Object that) {
         if (is List<Anything> that) {
-            value s = elems.count((Element e) => true);
-            if (that.size==s) {
-                for (i in 0..s-1) {
+            value size = elems.size;
+            if (that.size==size) {
+                for (i in 0..size-1) {
                     value x = this[i];
                     value y = that[i];
                     if (exists x) {
@@ -113,8 +111,9 @@ shared class LazyList<out Element>({Element*} elems)
         return hash;
     }
     
-    shared default actual Element? findLast(Boolean selecting(Element elem)) =>
-        elems.findLast(selecting);
+    shared default actual Element? findLast(
+            Boolean selecting(Element elem)) =>
+                    elems.findLast(selecting);
     
     shared actual default Element? first => elems.first;
     
