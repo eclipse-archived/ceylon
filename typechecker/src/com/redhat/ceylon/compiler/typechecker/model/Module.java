@@ -10,7 +10,7 @@ import java.util.Map;
 import java.util.TreeMap;
 
 public class Module 
-        implements Referenceable {
+        implements Referenceable, Annotated {
 
     public static final String DEFAULT_MODULE_NAME = "default";
 
@@ -186,6 +186,7 @@ public class Module
         this.isDefault = isDefault;
     }
 
+    @Override
     public List<Annotation> getAnnotations() {
         return annotations;
     }

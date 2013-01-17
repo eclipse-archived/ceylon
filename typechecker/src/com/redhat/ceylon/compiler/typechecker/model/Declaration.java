@@ -15,7 +15,7 @@ import java.util.List;
  */
 public abstract class Declaration 
         extends Element 
-        implements Referenceable {
+        implements Referenceable, Annotated {
 
 	private String name;
 	private boolean shared;
@@ -59,6 +59,7 @@ public abstract class Declaration
         return false;
     }
 
+    @Override
     public List<Annotation> getAnnotations() {
         return annotations;
     }

@@ -8,7 +8,7 @@ import java.util.List;
  *
  * @author Emmanuel Bernard <emmanuel@hibernate.org>
  */
-public class ModuleImport {
+public class ModuleImport implements Annotated {
     private final boolean optional;
     private final boolean export;
     private final Module module;
@@ -32,6 +32,7 @@ public class ModuleImport {
         return module;
     }
     
+    @Override
     public List<Annotation> getAnnotations() {
         return annotations;
     }

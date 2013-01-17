@@ -12,7 +12,7 @@ import java.util.Map;
 import java.util.TreeMap;
 
 public class Package 
-        implements ImportableScope, Referenceable {
+        implements ImportableScope, Referenceable, Annotated {
 
     private List<String> name;
     private Module module;
@@ -214,6 +214,7 @@ public class Package
         return result;
     }
     
+    @Override
     public List<Annotation> getAnnotations() {
         return annotations;
     }
