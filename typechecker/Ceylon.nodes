@@ -566,12 +566,7 @@ argument list."
 
 "An index (element access by key) expression."
 ^(INDEX_EXPRESSION:POSTFIX_EXPRESSION
-    INDEX_OPERATOR
     ELEMENT_OR_RANGE)
-
-^(abstract INDEX_OPERATOR)
-^(INDEX_OP: INDEX_OPERATOR)
-^(SAFE_INDEX_OP: INDEX_OPERATOR)
 
 ^(abstract ELEMENT_OR_RANGE)
 ^(ELEMENT:ELEMENT_OR_RANGE

@@ -2448,7 +2448,7 @@ public class ExpressionVisitor extends Visitor {
             that.addError("could not determine type of receiver");
         }
         else {
-            if (that.getIndexOperator() instanceof Tree.SafeIndexOp) {
+            /*if (that.getIndexOperator() instanceof Tree.SafeIndexOp) {
                 if (unit.isOptionalType(pt)) {
                     pt = unit.getDefiniteType(pt);
                 }
@@ -2456,7 +2456,7 @@ public class ExpressionVisitor extends Visitor {
                     that.getPrimary().addError("receiving type not of optional type: " +
                             pt.getDeclaration().getName(unit) + " is not a subtype of Optional");
                 }
-            }
+            }*/
             if (that.getElementOrRange()==null) {
                 that.addError("malformed index expression");
             }
@@ -2523,9 +2523,9 @@ public class ExpressionVisitor extends Visitor {
                             refineTypeForTupleOpenRange(that, pt, 
                                     er.getLowerBound().getTerm());
                         }
-                        if (that.getIndexOperator() instanceof Tree.SafeIndexOp) {
+                        /*if (that.getIndexOperator() instanceof Tree.SafeIndexOp) {
                             that.setTypeModel(unit.getOptionalType(that.getTypeModel()));
-                        }
+                        }*/
                     }
                 }
             }

@@ -143,7 +143,7 @@ class Operators() {
     @type:"Sequential<Operators.X>" value x39 = sequence[0..1];
     @type:"Sequential<Operators.X>" value x40 = sequence[1+1...];
     @type:"Null|Operators.X" value x41 = [none][0];
-    @type:"Null|String" value x42 = noSequence?[0];
+    //@type:"Null|String" value x42 = noSequence?[0];
     @type:"Sequential<Operators.X>" value x39u = sequence[...1];
     
     @error value x43 = sequence["hello"];
@@ -156,7 +156,7 @@ class Operators() {
     Callable<Sequence<Iterable<String>>,[Iterable<Character>|Callable<Boolean,[Character]>,Boolean,Boolean]> hws = ["hello", "world"]*.split;
     
     Sequence<String> helloworld = ["hello", "world"];
-    @type:"Sequential<String>" value e45 = emp[].uppercased;
+    @type:"Sequential<String>" value e45 = emp*.uppercased;
     @type:"Sequence<Sequential<Character>>" value x46 = helloworld*.characters;
     @type:"Sequence<String>" value x47 = helloworld*.uppercased;
     @type:"Null|Sequential<Character>" value x48 = helloworld[0]?.characters;
@@ -166,8 +166,8 @@ class Operators() {
     @type:"Null|Iterable<String,Null>" value x512 = helloworld[0]?.split((Character c) => c==` `);
     @type:"Sequence<String>" value x52 = helloworld*.normalized;
     @type:"Sequence<Iterable<String,Null>>" value x522 = helloworld*.split((Character c) => c==` `);
-    @type:"Null|String" value x53 = noSequence?[0]?.normalized;
-    @type:"Null|Iterable<String,Null>" value x532 = noSequence?[0]?.split((Character c) => c==` `);
+    //@type:"Null|String" value x53 = noSequence?[0]?.normalized;
+    //@type:"Null|Iterable<String,Null>" value x532 = noSequence?[0]?.split((Character c) => c==` `);
     @type:"Sequence<Operators.X>" value x54 = [Operators()]*.X();
 
     {String*} onetwo = {"one", "two"};
@@ -175,10 +175,10 @@ class Operators() {
     @type:"Sequential<Sequential<Character>>" value x62 = onetwo*.characters;
     @type:"Sequential<Iterable<String,Null>>" value x63 = onetwo*.split((Character c) => c==` `);
     
-    @type:"Null|Sequential<String>" value s1 = noSequence?[1...];
-    @type:"Null|Sequential<String>" value s2 = noSequence?[...2];
-    @type:"Null|Sequential<String>" value s3 = noSequence?[1..2];
-    @type:"Null|Sequential<String>" value s4 = noSequence?[1:2];
+    @type:"Sequential<Operators.X>" value s1 = sequence[1...];
+    @type:"Sequential<Operators.X>" value s2 = sequence[...2];
+    @type:"Sequential<Operators.X>" value s3 = sequence[1..2];
+    @type:"Sequential<Operators.X>" value s4 = sequence[1:2];
     
     variable Integer n = 0;
     @type:"Integer" n++;

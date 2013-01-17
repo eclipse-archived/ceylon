@@ -1355,13 +1355,6 @@ memberSelectionOperator returns [MemberOperator operator]
       { $operator=new SpreadOp($SPREAD_OP); }
     ;
 
-elementSelectionOperator returns [IndexOperator operator]
-    : SAFE_INDEX_OP
-      { $operator=new SafeIndexOp($SAFE_INDEX_OP); }
-    | INDEX_OP
-      { $operator=new IndexOp($INDEX_OP); }
-    ;
-
 enumeration returns [SequenceEnumeration sequenceEnumeration]
     : LBRACE 
       { $sequenceEnumeration = new SequenceEnumeration($LBRACE); } 
@@ -1374,16 +1367,16 @@ enumeration returns [SequenceEnumeration sequenceEnumeration]
     ;
 
 tuple returns [Tuple tuple]
-    : INDEX_OP 
-      { $tuple = new Tuple($INDEX_OP); }
+    : LBRACKET 
+      { $tuple = new Tuple($LBRACKET); }
       (
         sequencedArgument
         { $tuple.setSequencedArgument($sequencedArgument.sequencedArgument); }
       )?
       RBRACKET
       { $tuple.setEndToken($RBRACKET); }
-      | ARRAY { $tuple = new Tuple($ARRAY); } 
     ;
+    
 expressions returns [ExpressionList expressionList]
     : { $expressionList = new ExpressionList(null); }
       e1=expression 
@@ -1442,9 +1435,8 @@ indexOrIndexRange returns [IndexExpression indexExpression]
     //      make this rule return ElementOrRange instead
     //      of IndexExpression, instantiating IndexExpression
     //      from the calling primary rule
-    : elementSelectionOperator
-      { $indexExpression = new IndexExpression(null);
-        $indexExpression.setIndexOperator($elementSelectionOperator.operator); }
+    : LBRACKET
+      { $indexExpression = new IndexExpression($LBRACKET); }
       (
         e1=ELLIPSIS
         { $indexExpression.setEndToken($e1); }
@@ -2369,8 +2361,8 @@ variadicType returns [Type type]
     ;
 
 tupleType returns [TupleType type]
-    : INDEX_OP
-      { $type = new TupleType($INDEX_OP); }
+    : LBRACKET
+      { $type = new TupleType($LBRACKET); }
       (
         t1=variadicType
         { $type.addElementType($t1.type); }
@@ -2384,8 +2376,6 @@ tupleType returns [TupleType type]
       )?
       RBRACKET
       { $type.setEndToken($RBRACKET); }
-    | ARRAY 
-      { $type = new TupleType($ARRAY); }
     ;
 
 groupedType returns [StaticType type]
@@ -2495,16 +2485,17 @@ abbreviatedType returns [StaticType type]
       //prefix "is Type" operator
       //(typeAbbreviationStart)=>
       (
-        DEFAULT_OP 
+        OPTIONAL 
         { OptionalType ot = new OptionalType(null);
           ot.setDefiniteType($type);
-          ot.setEndToken($DEFAULT_OP);
+          ot.setEndToken($OPTIONAL);
           $type=ot; }
-      | ARRAY 
-        { SequenceType ot = new SequenceType(null);
-          ot.setElementType($type);
-          ot.setEndToken($DEFAULT_OP);
-          $type=ot; }
+      | LBRACKET RBRACKET 
+        { SequenceType st = new SequenceType(null);
+          st.setElementType($type);
+          st.setEndToken($LBRACKET);
+          st.setEndToken($RBRACKET);
+          $type=st; }
       | LPAREN
         { bt = new FunctionType(null);
           bt.setEndToken($LPAREN);
@@ -3203,34 +3194,6 @@ NATURAL_LITERAL
     | '$' BinaryDigits
     ;
     
-fragment ARRAY: '[]';
-fragment INDEX_OP: '[';
-//distinguish the spread operator "x[]."
-//from a sequenced type "T[]..."
-LBRACKET
-    : '['
-    (
-      (']') => ']' { $type = ARRAY; }
-    | { $type = INDEX_OP; }
-    )
-    ;
-
-fragment SAFE_MEMBER_OP: '?.';
-fragment SAFE_INDEX_OP: '?[';
-fragment DEFAULT_OP: '?';
-//distinguish the safe index operator "x?[i]"
-//from an abbreviated type "T?[]"
-//and the safe member operator "x?.y" from 
-//the sequenced type "T?..."
-QMARK
-    : '?'
-    (
-      ('[' ~']') => '[' { $type = SAFE_INDEX_OP; }
-    | ('.' ~'.') => '.' { $type = SAFE_MEMBER_OP; }
-    | { $type = DEFAULT_OP; }
-    )
-    ;
-
 /*
  Stef: we must take 32-bit code points into account here because AntLR considers each
  character to be 16-bit like in Java, which means that it will consider a high/low surrogate
@@ -3499,6 +3462,10 @@ RBRACE
     :   '}'
     ;
 
+LBRACKET
+    :   '['
+    ;
+
 RBRACKET
     :   ']'
     ;
@@ -3519,6 +3486,14 @@ COMPUTE
     :   '=>'
     ;
 
+SAFE_MEMBER_OP
+    :   '?.'
+    ;
+
+OPTIONAL
+    :    '?'
+    ;
+
 NOT_OP
     :   '!'
     ;
@@ -3526,10 +3501,6 @@ NOT_OP
 COMPLEMENT_OP
     :   '~'
     ;
-
-/*SPECIFY
-    :   ':='
-    ;*/
 
 EQUAL_OP
     :   '=='
@@ -3563,13 +3534,12 @@ DIFFERENCE_OP
     :   '-'
     ;
 
-fragment SPREAD_OP: '*.';
-fragment PRODUCT_OP: '*';
-ASTERISK
+SPREAD_OP
+    :    '*.'
+    ;
+
+PRODUCT_OP
     :   '*'
-    ( ('.') => '.' { $type = SPREAD_OP; }
-    | { $type = PRODUCT_OP; }
-    )
     ;
 
 QUOTIENT_OP
