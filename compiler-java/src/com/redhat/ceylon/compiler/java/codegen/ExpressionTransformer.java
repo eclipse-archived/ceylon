@@ -2621,21 +2621,28 @@ public class ExpressionTransformer extends AbstractTransformer {
     }
 
     private JCExpression transformAssignment(Node op, Tree.Term leftTerm, Tree.Term rightTerm) {
-        // FIXME: can this be anything else than a Tree.MemberOrTypeExpression?
-        TypedDeclaration decl = (TypedDeclaration) ((Tree.MemberOrTypeExpression)leftTerm).getDeclaration();
+        // FIXME: can this be anything else than a Tree.MemberOrTypeExpression or Tree.ParameterizedExpression?
+        BoxingStrategy boxing;
+        if (leftTerm instanceof Tree.MemberOrTypeExpression) {
+            TypedDeclaration decl = (TypedDeclaration) ((Tree.MemberOrTypeExpression)leftTerm).getDeclaration();
+            boxing = CodegenUtil.getBoxingStrategy(decl);
+        } else {
+            // instanceof Tree.ParameterizedExpression
+            boxing = CodegenUtil.getBoxingStrategy(leftTerm);
+        }
 
         // Remember and disable inStatement for RHS
         boolean tmpInStatement = inStatement;
         inStatement = false;
         
         // right side
-        final JCExpression rhs = transformExpression(rightTerm, CodegenUtil.getBoxingStrategy(decl), leftTerm.getTypeModel());
+        final JCExpression rhs = transformExpression(rightTerm, boxing, leftTerm.getTypeModel());
 
         if (tmpInStatement) {
             return transformAssignment(op, leftTerm, rhs);
         } else {
             ProducedType valueType = leftTerm.getTypeModel();
-            return transformAssignAndReturnOperation(op, leftTerm, CodegenUtil.getBoxingStrategy(decl) == BoxingStrategy.BOXED, 
+            return transformAssignAndReturnOperation(op, leftTerm, boxing == BoxingStrategy.BOXED, 
                     valueType, valueType, new AssignAndReturnOperationFactory(){
                 @Override
                 public JCExpression getNewValue(JCExpression previousValue) {
