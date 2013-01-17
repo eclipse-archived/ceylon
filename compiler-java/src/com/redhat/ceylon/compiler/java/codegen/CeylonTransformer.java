@@ -29,6 +29,7 @@ import javax.tools.JavaFileObject;
 import com.redhat.ceylon.compiler.loader.SourceDeclarationVisitor;
 import com.redhat.ceylon.compiler.typechecker.context.PhasedUnit;
 import com.redhat.ceylon.compiler.typechecker.model.Parameter;
+import com.redhat.ceylon.compiler.typechecker.model.ProducedType;
 import com.redhat.ceylon.compiler.typechecker.model.Setter;
 import com.redhat.ceylon.compiler.typechecker.model.TypedDeclaration;
 import com.redhat.ceylon.compiler.typechecker.model.Value;
@@ -42,6 +43,7 @@ import com.sun.tools.javac.tree.JCTree.JCBlock;
 import com.sun.tools.javac.tree.JCTree.JCCompilationUnit;
 import com.sun.tools.javac.tree.JCTree.JCExpression;
 import com.sun.tools.javac.tree.JCTree.JCImport;
+import com.sun.tools.javac.tree.JCTree.JCStatement;
 import com.sun.tools.javac.util.Context;
 import com.sun.tools.javac.util.List;
 import com.sun.tools.javac.util.ListBuffer;
@@ -309,7 +311,16 @@ public class CeylonTransformer extends AbstractTransformer {
                 }
             } else {
                 // For local and toplevel getters
-                JCBlock getterBlock = make().Block(0, statementGen().transformStmts(block.getStatements()));
+                List<JCStatement> stats;
+                if (block != null) {
+                    stats = statementGen().transformStmts(block.getStatements());
+                } else {
+                    BoxingStrategy boxing = CodegenUtil.getBoxingStrategy(declarationModel);
+                    ProducedType type = declarationModel.getType();
+                    JCExpression transExpr = expressionGen().transformExpression(expression.getExpression(), boxing, type);
+                    stats = List.<JCStatement>of(make().Return(transExpr));
+                }
+                JCBlock getterBlock = make().Block(0, stats);
                 builder.getterBlock(getterBlock);
                 
                 if (Decl.isLocal(declarationModel)) {

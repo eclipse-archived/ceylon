@@ -999,7 +999,9 @@ class NamedArgumentInvocation extends Invocation {
                 }
             } else {
                 Expression expr = methodArg.getSpecifierExpression().getExpression();
-                JCExpression transExpr = gen.expressionGen().transformExpression(expr);
+                BoxingStrategy boxing = CodegenUtil.getBoxingStrategy(model);
+                ProducedType type = model.getType();
+                JCExpression transExpr = gen.expressionGen().transformExpression(expr, boxing, type);
                 JCReturn returnStat = gen.make().Return(transExpr);
                 body = List.<JCStatement>of(returnStat);
             }
@@ -1039,7 +1041,7 @@ class NamedArgumentInvocation extends Invocation {
         final Getter model = attrArg.getDeclarationModel();
         final String name = model.getName();
         final Naming.SyntheticName alias = gen.naming.alias(name);
-        final List<JCTree> attrClass = gen.gen().transformAttribute(model, alias.getName(), alias.getName(), attrArg.getBlock(), null, null);
+        final List<JCTree> attrClass = gen.gen().transformAttribute(model, alias.getName(), alias.getName(), attrArg.getBlock(), attrArg.getSpecifierExpression(), null);
         ProducedTypedReference typedRef = gen.getTypedReference(model);
         ProducedTypedReference nonWideningTypedRef = gen.nonWideningTypeDecl(typedRef);
         ProducedType nonWideningType = gen.nonWideningType(typedRef, nonWideningTypedRef);
