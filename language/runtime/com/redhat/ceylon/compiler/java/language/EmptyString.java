@@ -18,7 +18,7 @@ import com.redhat.ceylon.compiler.java.metadata.Ceylon;
 import com.redhat.ceylon.compiler.java.metadata.Ignore;
 
 @Ignore
-@Ceylon(major = 3)
+@Ceylon(major = 4)
 public class EmptyString extends String {
 
     public static EmptyString instance = new EmptyString();

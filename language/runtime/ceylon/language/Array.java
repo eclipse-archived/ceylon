@@ -17,7 +17,7 @@ import com.redhat.ceylon.compiler.java.metadata.TypeInfo;
 import com.redhat.ceylon.compiler.java.metadata.TypeParameter;
 import com.redhat.ceylon.compiler.java.metadata.TypeParameters;
 
-@Ceylon(major = 3)
+@Ceylon(major = 4)
 @Class(extendsType="ceylon.language::Object")
 @TypeParameters(@TypeParameter(value = "Element"))
 @SatisfiedTypes({

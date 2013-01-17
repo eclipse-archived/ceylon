@@ -13,7 +13,7 @@ import com.redhat.ceylon.compiler.java.metadata.TypeParameter;
 import com.redhat.ceylon.compiler.java.metadata.TypeParameters;
 import com.redhat.ceylon.compiler.java.metadata.Variance;
 
-@Ceylon(major = 3)
+@Ceylon(major = 4)
 @TypeParameters({
     @TypeParameter(value = "Key", variance = Variance.IN,
             satisfies="ceylon.language::Object"),

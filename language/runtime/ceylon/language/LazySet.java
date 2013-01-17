@@ -15,7 +15,7 @@ import com.redhat.ceylon.compiler.java.metadata.TypeParameter;
 import com.redhat.ceylon.compiler.java.metadata.TypeParameters;
 import com.redhat.ceylon.compiler.java.metadata.Variance;
 
-@Ceylon(major = 3)
+@Ceylon(major = 4)
 @TypeParameters(@TypeParameter(value="Element", variance=Variance.OUT,
     satisfies="ceylon.language::Object"))
 @SatisfiedTypes("ceylon.language::Set<Element>")

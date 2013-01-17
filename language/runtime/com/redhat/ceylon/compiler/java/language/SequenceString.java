@@ -18,7 +18,7 @@ import com.redhat.ceylon.compiler.java.metadata.Ceylon;
 import com.redhat.ceylon.compiler.java.metadata.Ignore;
 
 @Ignore
-@Ceylon(major = 3)
+@Ceylon(major = 4)
 public class SequenceString extends String implements Sequence<Character> {
 
     public SequenceString(java.lang.String s) {

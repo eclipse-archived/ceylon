@@ -10,7 +10,7 @@ import com.redhat.ceylon.compiler.java.metadata.TypeParameter;
 import com.redhat.ceylon.compiler.java.metadata.TypeParameters;
 import com.redhat.ceylon.compiler.java.metadata.Variance;
 
-@Ceylon(major = 3)
+@Ceylon(major = 4)
 @TypeParameters(@TypeParameter(value = "Element", variance = Variance.OUT))
 @SatisfiedTypes({"ceylon.language::Collection<Element>",
                  "ceylon.language::Correspondence<ceylon.language::Integer,Element>",

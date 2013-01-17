@@ -144,7 +144,7 @@ public final class Correspondence$impl<Key,Item> {
         return new Items(keys);
     }
     
-    @Ceylon(major = 3)
+    @Ceylon(major = 4)
     @Class
     @Container(name = "Correspondence", javaClass = "ceylon.language.Correspondence", packageName = "ceylon.language")
     public class Items
