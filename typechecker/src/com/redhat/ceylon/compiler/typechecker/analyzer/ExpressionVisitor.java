@@ -1670,16 +1670,10 @@ public class ExpressionVisitor extends Visitor {
     private void inferTypeArg(Tree.SequencedArgument sa, TypeParameter tp,
             Parameter sp, List<ProducedType> inferredTypes) {
         List<Tree.PositionalArgument> args = sa.getPositionalArguments();
-        for (int i=0; i<args.size(); i++) {
-            Tree.PositionalArgument a = args.get(i);
-            ProducedType spt = a instanceof Tree.SpreadArgument ? 
-                    sp.getType() : unit.getIteratedType(sp.getType());
-            ProducedType t = a.getTypeModel();
-            if (t!=null) {
-                addToUnion(inferredTypes, inferTypeArg(tp, spt, t,
-                        new ArrayList<TypeParameter>()));
-            }
-        }
+        ProducedType att = getTupleType(args, false);
+        ProducedType spt = sp.getType();
+        addToUnion(inferredTypes, inferTypeArg(tp, spt, att,
+        		new ArrayList<TypeParameter>()));
     }
 
     private void inferTypeArg(Tree.NamedArgument arg, TypeParameter tp,
@@ -2221,22 +2215,11 @@ public class ExpressionVisitor extends Visitor {
         sa.setParameter(p);
         List<Tree.PositionalArgument> args = sa.getPositionalArguments();
         ProducedType paramType = pr.getTypedParameter(p).getFullType();
-        for (int i=0; i<args.size(); i++) {
-            Tree.PositionalArgument a = args.get(i);
-            if (paramType==null) {
-                paramType = new UnknownType(sa.getUnit()).getType();
-            }
-            if (a instanceof Tree.SpreadArgument) {
-                checkAssignable(a.getTypeModel(), paramType, sa, 
-                        "spread argument must be assignable to iterable parameter " + 
-                                p.getName() + " of " + pr.getDeclaration().getName(unit));
-            }
-            else {
-                checkAssignable(a.getTypeModel(), unit.getIteratedType(paramType), sa, 
-                        "argument must be assignable to iterable parameter " + 
-                                p.getName() + " of " + pr.getDeclaration().getName(unit));
-            }
-        }
+        ProducedType att = getTupleType(args, false)
+        		.getSupertype(unit.getIterableDeclaration());
+        checkAssignable(att, paramType, sa, 
+        		"iterable arguments must be assignable to iterable parameter " + 
+        		p.getName() + " of " + pr.getDeclaration().getName(unit));
     }
     
     private Parameter getMatchingParameter(ParameterList pl, Tree.NamedArgument na) {

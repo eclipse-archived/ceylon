@@ -74,7 +74,13 @@ void comprehensions() {
     T|N first<T,N>(Iterable<T,N> values) given N satisfies Null => values.first;
     @type:"String" value f1 = first { for (w in atLeastOneWord) w.uppercased };
     @type:"String" value f2 = first { for (w in atLeastOneWord) for (v in atLeastOneWord) w+v };
-    @type:"Null|String" value f3 = first { for (w in atLeastOneWord) if (!w.empty) w.uppercased };
-    @type:"Null|String" value f4 = first { for (w in atLeastOneWord) for (v in words) w+v };
-    @type:"Null|Character" value f5 = first { for (w in atLeastOneWord) for (c in w.characters) c };
+    @type:"String" value f0 = first { "hello", for (w in words) w };
+    @type:"String" value fs1 = first { *atLeastOneWord };
+    @type:"String" value fs2 = first { "hello", *words };
+    @type:"String|Null" value f3 = first { for (w in atLeastOneWord) if (!w.empty) w.uppercased };
+    @type:"String|Null" value f4 = first { for (w in atLeastOneWord) for (v in words) w+v };
+    @type:"Character|Null" value f5 = first { for (w in atLeastOneWord) for (c in w.characters) c };
+    @type:"String|Null" value f6 = first { for (w in words) w };
+    @type:"String|Null" value fs3 = first { *words };
+    
 }
