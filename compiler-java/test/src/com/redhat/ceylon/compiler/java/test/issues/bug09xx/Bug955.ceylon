@@ -20,7 +20,16 @@
 @nomodel
 void bug955(String str()) { print(str()); }
 @nomodel
+class Bug595(str, att) {
+    String str();
+    String att;
+}
+@nomodel
 void testbug955() {
     bug955 { function str() => "hello world"; };
     bug955 { str() => "hello world"; };
+    bug955 { String str() => "hello world"; };
+    Bug595 { function str() => "hello world"; att => ""; };
+    Bug595 { str() => "hello world"; att => ""; };
+    Bug595 { String str() => "hello world"; att => ""; };
 }
