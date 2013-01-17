@@ -115,5 +115,15 @@ void splitFunction() {
         int => 1;
     }
     print(int);
+    
+    abstract class Sup() {
+        shared formal Integer int;
+    }
+    class Sub1() extends Sup() {
+        int = 0;
+    }
+    class Sub2() extends Sup() {
+        int => 1;
+    }
 
 }
