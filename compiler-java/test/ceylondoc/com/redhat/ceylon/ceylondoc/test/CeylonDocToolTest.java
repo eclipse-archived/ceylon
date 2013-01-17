@@ -371,7 +371,8 @@ public class CeylonDocToolTest {
                 "ceylon.file", "ceylon.collection", 
                 "ceylon.dbc", "ceylon.io", 
                 "ceylon.net", "ceylon.json", 
-                "ceylon.process", "ceylon.math"};
+                "ceylon.process", "ceylon.math",
+                "ceylon.test"};
         
         CeylonDocTool tool = tool(Arrays.asList(new File("../ceylon-sdk/source")), Arrays.asList(fullModuleNames), true, "../ceylon-sdk/modules");
         tool.setIncludeNonShared(false);
@@ -379,7 +380,7 @@ public class CeylonDocToolTest {
         tool.makeDoc();
         
         for(String moduleName : fullModuleNames){
-            Module module = makeModule(moduleName, "0.4");
+            Module module = makeModule(moduleName, "0.5");
             File destDir = getOutputDir(tool, module);
 
             assertFileExists(destDir, "index.html");
