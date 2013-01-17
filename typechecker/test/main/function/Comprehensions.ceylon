@@ -71,4 +71,10 @@ void comprehensions() {
     @error [Character+] empty5 = [ for (w in atLeastOneWord) for (c in w.characters) c ];
     @error {Character+} empty6 = { for (w in atLeastOneWord) for (c in w.characters) c };
     
+    T|N first<T,N>(Iterable<T,N> values) given N satisfies Null => values.first;
+    @type:"String" value f1 = first { for (w in atLeastOneWord) w.uppercased };
+    @type:"String" value f2 = first { for (w in atLeastOneWord) for (v in atLeastOneWord) w+v };
+    @type:"Null|String" value f3 = first { for (w in atLeastOneWord) if (!w.empty) w.uppercased };
+    @type:"Null|String" value f4 = first { for (w in atLeastOneWord) for (v in words) w+v };
+    @type:"Null|Character" value f5 = first { for (w in atLeastOneWord) for (c in w.characters) c };
 }
