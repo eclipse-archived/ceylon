@@ -912,10 +912,14 @@ public class IssuesTest extends CompilerTest {
 
     }
 
-    // see https://github.com/ceylon/ceylon-compiler/issues/953
     @Test
     public void testBug953_fail() {
         compareWithJavaSource("bug09xx/Bug953");
+    }
+    
+    @Test
+    public void testBug954_fail() {
+        compareWithJavaSource("bug09xx/Bug954");
     }
     
     @Test
