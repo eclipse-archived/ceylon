@@ -334,5 +334,24 @@ class Operators() {
     @type:"Integer" value somethingSpecial = anythingAtAll = 1;
     @type:"Singleton<Float>" Singleton(anythingAtAll = 1.0);
     
+    {String(Float)*} funcs = { (Float x) => x.string.lowercased, 
+                               (Float y) => y.string.uppercased };
+    @error {String*} results1 = funcs(1.0);
+    
+    {Float*} floats = { 1.0, 2.0 };
+    [Float*] results2 = floats*.plus(1.0);
+    @type:"Callable<Sequential<Float>,Tuple<Float,Float,Empty>>" 
+    value ref1 = floats*.plus;
+    Float[](Float) ref2 = floats*.times;
+    
+    Float? floatOrNull = null;
+    Float? result1 = floatOrNull?.plus(1.0);
+    @type:"Callable<Null|Float,Tuple<Float,Float,Empty>>" 
+    value ref3 = floatOrNull?.plus;
+    Float?(Float) ref4 = floatOrNull?.times;
+    
+    {Operators*} opers = { Operators(), Operators() };
+    X[] exes = opers*.X();
+    X[]() refs = opers*.X; 
     
 }
