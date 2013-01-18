@@ -2593,22 +2593,30 @@ public class ExpressionTransformer extends AbstractTransformer {
     }
 
     private JCExpression transformAssignment(Node op, Tree.Term leftTerm, Tree.Term rightTerm) {
-        // FIXME: can this be anything else than a Tree.MemberOrTypeExpression or Tree.ParameterizedExpression?
-        BoxingStrategy boxing;
-        if (leftTerm instanceof Tree.MemberOrTypeExpression) {
-            TypedDeclaration decl = (TypedDeclaration) ((Tree.MemberOrTypeExpression)leftTerm).getDeclaration();
-            boxing = CodegenUtil.getBoxingStrategy(decl);
-        } else {
-            // instanceof Tree.ParameterizedExpression
-            boxing = CodegenUtil.getBoxingStrategy(leftTerm);
-        }
-
         // Remember and disable inStatement for RHS
         boolean tmpInStatement = inStatement;
         inStatement = false;
         
-        // right side
-        final JCExpression rhs = transformExpression(rightTerm, boxing, leftTerm.getTypeModel());
+        // FIXME: can this be anything else than a Tree.MemberOrTypeExpression or Tree.ParameterizedExpression?
+        final JCExpression rhs;
+        BoxingStrategy boxing;
+        if (leftTerm instanceof Tree.MemberOrTypeExpression) {
+            TypedDeclaration decl = (TypedDeclaration) ((Tree.MemberOrTypeExpression)leftTerm).getDeclaration();
+            boxing = CodegenUtil.getBoxingStrategy(decl);
+            rhs = transformExpression(rightTerm, boxing, leftTerm.getTypeModel());
+        } else {
+            // instanceof Tree.ParameterizedExpression
+            boxing = CodegenUtil.getBoxingStrategy(leftTerm);
+            Tree.ParameterizedExpression paramExpr = (Tree.ParameterizedExpression)leftTerm;
+            Method decl = (Method) ((Tree.MemberOrTypeExpression)paramExpr.getPrimary()).getDeclaration();
+            CallableBuilder callableBuilder = CallableBuilder.anonymous(
+                    gen(),
+                    (Tree.Expression)rightTerm,
+                    decl.getParameterLists().get(0),
+                    paramExpr.getParameterLists().get(0),
+                    paramExpr.getPrimary().getTypeModel());
+            rhs = callableBuilder.build();
+        }
 
         if (tmpInStatement) {
             return transformAssignment(op, leftTerm, rhs);
@@ -2628,16 +2636,19 @@ public class ExpressionTransformer extends AbstractTransformer {
         // left hand side can be either BaseMemberExpression, QualifiedMemberExpression or array access (M2)
         // TODO: array access (M2)
         JCExpression expr = null;
-        if(leftTerm instanceof Tree.BaseMemberExpression)
+        if(leftTerm instanceof Tree.BaseMemberExpression) {
             if (needDollarThis((Tree.BaseMemberExpression)leftTerm)) {
                 expr = naming.makeQuotedThis();
             } else {
                 expr = makeSuperQualifier((Tree.BaseMemberExpression)leftTerm);
             }
-        else if(leftTerm instanceof Tree.QualifiedMemberExpression){
+        } else if(leftTerm instanceof Tree.QualifiedMemberExpression) {
             Tree.QualifiedMemberExpression qualified = ((Tree.QualifiedMemberExpression)leftTerm);
             expr = transformExpression(qualified.getPrimary(), BoxingStrategy.BOXED, qualified.getTarget().getQualifyingType());
-        }else{
+        } else if(leftTerm instanceof Tree.ParameterizedExpression) {
+            // Nothing to do here
+            expr = null;
+        } else {
             return makeErroneous(op, "Not supported yet: "+op.getNodeType());
         }
         return transformAssignment(op, leftTerm, expr, rhs);
@@ -2646,8 +2657,14 @@ public class ExpressionTransformer extends AbstractTransformer {
     private JCExpression transformAssignment(Node op, Tree.Term leftTerm, JCExpression lhs, JCExpression rhs) {
         JCExpression result = null;
 
-        // FIXME: can this be anything else than a Tree.MemberOrTypeExpression?
-        TypedDeclaration decl = (TypedDeclaration) ((Tree.MemberOrTypeExpression)leftTerm).getDeclaration();
+        // FIXME: can this be anything else than a Tree.MemberOrTypeExpression or Tree.ParameterizedExpression?
+        TypedDeclaration decl;
+        if (leftTerm instanceof Tree.MemberOrTypeExpression) {
+            decl = (TypedDeclaration) ((Tree.MemberOrTypeExpression)leftTerm).getDeclaration();
+        } else {
+            // instanceof Tree.ParameterizedExpression
+            decl = (TypedDeclaration) ((Tree.MemberOrTypeExpression)((Tree.ParameterizedExpression)leftTerm).getPrimary()).getDeclaration();
+        }
 
         boolean variable = decl.isVariable();
         
