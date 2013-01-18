@@ -3135,16 +3135,7 @@ public class GenerateJsVisitor extends Visitor
     }
 
     public void visit(IndexExpression that) {
-        IndexOperator op = that.getIndexOperator();
-        if (op instanceof SafeIndexOp) {
-            out(clAlias, "exists(");
-            that.getPrimary().visit(this);
-            out(")?");
-        }
         visitIndex(that);
-        if (op instanceof SafeIndexOp) {
-            out(":null");
-        }
     }
 
     /** Generates code for a case clause, as part of a switch statement. Each case
