@@ -52,6 +52,7 @@ import com.redhat.ceylon.compiler.typechecker.tree.Tree.NaturalLiteral;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.NegativeOp;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.Nonempty;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.NotOp;
+import com.redhat.ceylon.compiler.typechecker.tree.Tree.ParameterizedExpression;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.PositiveOp;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.PostfixOperatorExpression;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.PowerOp;
@@ -119,6 +120,12 @@ public abstract class BoxingVisitor extends Visitor {
 
     @Override
     public void visit(InvocationExpression that) {
+        super.visit(that);
+        propagateFromTerm(that, that.getPrimary());
+    }
+
+    @Override
+    public void visit(ParameterizedExpression that) {
         super.visit(that);
         propagateFromTerm(that, that.getPrimary());
     }

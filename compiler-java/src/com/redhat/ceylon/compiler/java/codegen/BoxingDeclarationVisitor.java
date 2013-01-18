@@ -45,6 +45,7 @@ import com.redhat.ceylon.compiler.typechecker.tree.Tree.AttributeArgument;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.AttributeDeclaration;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.AttributeSetterDefinition;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.FunctionArgument;
+import com.redhat.ceylon.compiler.typechecker.tree.Tree.ParameterizedExpression;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.Variable;
 import com.redhat.ceylon.compiler.typechecker.tree.Visitor;
 
@@ -158,23 +159,26 @@ public abstract class BoxingDeclarationVisitor extends Visitor {
         for (int ii = 0; ii < paramLists.size(); ii++) {
             ParameterList paramList = paramLists.get(ii);
             ParameterList refinedParamList = refinedParamLists.get(ii);
-            if (paramList.getParameters().size() != 
-                    refinedParamList.getParameters().size()) {
-                // abort on errors caught by the typechecker
-                return;
+            boxAndRawParameterList(paramList, refinedParamList);
+        }
+    }
+    private void boxAndRawParameterList(ParameterList paramList, ParameterList refinedParamList) {
+        if (paramList.getParameters().size() != 
+                refinedParamList.getParameters().size()) {
+            // abort on errors caught by the typechecker
+            return;
+        }
+        for (int jj = 0; jj < paramList.getParameters().size(); jj++) {
+            Parameter param = paramList.getParameters().get(jj);
+            Parameter refinedParam = refinedParamList.getParameters().get(jj);
+            if (param instanceof Functional && refinedParam instanceof Functional) {
+                boxAndRawParameterLists(((Functional)param).getParameterLists(),
+                        ((Functional)refinedParam).getParameterLists());
             }
-            for (int jj = 0; jj < paramList.getParameters().size(); jj++) {
-                Parameter param = paramList.getParameters().get(jj);
-                Parameter refinedParam = refinedParamList.getParameters().get(jj);
-                if (param instanceof Functional && refinedParam instanceof Functional) {
-                    boxAndRawParameterLists(((Functional)param).getParameterLists(),
-                            ((Functional)refinedParam).getParameterLists());
-                }
-                setBoxingState(param, refinedParam);
-                // also mark params as raw if needed
-                rawTypedDeclaration(param);
-                erasureToObject(param);
-            }
+            setBoxingState(param, refinedParam);
+            // also mark params as raw if needed
+            rawTypedDeclaration(param);
+            erasureToObject(param);
         }
     }
 
@@ -323,5 +327,13 @@ public abstract class BoxingDeclarationVisitor extends Visitor {
         if(declaration == null)
             return;
         setBoxingState(declaration, declaration);
+    }
+
+    @Override
+    public void visit(ParameterizedExpression that) {
+        super.visit(that);
+        for (Tree.ParameterList list : that.getParameterLists()) {
+            boxAndRawParameterList(list.getModel(), list.getModel());
+        }
     }
 }
