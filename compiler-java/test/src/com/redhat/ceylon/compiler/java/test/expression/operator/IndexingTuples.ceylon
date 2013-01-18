@@ -23,8 +23,4 @@ class IndexingTuples() {
         value t = [1, "2", Singleton(`3`)];
         Integer v1 = t[0];
     }
-    void safe() {
-        [Integer, String, Character[]]? t = [1, "2", Singleton(`3`)];
-        Integer v = t?[0];
-    }
 }

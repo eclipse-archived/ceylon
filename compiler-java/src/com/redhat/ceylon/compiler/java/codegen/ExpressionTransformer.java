@@ -2513,16 +2513,12 @@ public class ExpressionTransformer extends AbstractTransformer {
     }
 
     public JCTree transform(Tree.IndexExpression access) {
-        boolean safe = access.getIndexOperator() instanceof Tree.SafeIndexOp;
-
         // depends on the operator
         Tree.ElementOrRange elementOrRange = access.getElementOrRange();
         boolean isElement = elementOrRange instanceof Tree.Element;
         
         // let's see what types there are
         ProducedType leftType = access.getPrimary().getTypeModel();
-        if(safe)
-            leftType = access.getUnit().getDefiniteType(leftType);
         // find the corresponding supertype
         Interface leftSuperTypeDeclaration;
         if(isElement)
@@ -2532,23 +2528,7 @@ public class ExpressionTransformer extends AbstractTransformer {
         ProducedType leftCorrespondenceOrRangeType = leftType.getSupertype(leftSuperTypeDeclaration);
         ProducedType rightType = getTypeArgument(leftCorrespondenceOrRangeType, 0);
         
-        // How we transform the lhs depends whether this is a nullsafe index...
-        Name varName;
-        JCVariableDecl tmpVar;
-        JCExpression lhs;
-        if (safe) {
-            varName = naming.tempName("safeaccess");
-            // make a (let ArrayElem tmp = lhs in (tmp != null ? tmp.item(index) : null)) call
-            JCExpression arrayType = makeJavaType(leftCorrespondenceOrRangeType);
-            // ArrayElem tmp = lhs
-            tmpVar = make().VarDef(make().Modifiers(0), varName, arrayType, 
-                    transformExpression(access.getPrimary(), BoxingStrategy.BOXED, leftCorrespondenceOrRangeType));
-            lhs = make().Ident(varName);
-        } else {
-            varName = null;
-            tmpVar = null;
-            lhs = transformExpression(access.getPrimary(), BoxingStrategy.BOXED, leftCorrespondenceOrRangeType);
-        }
+        JCExpression lhs = transformExpression(access.getPrimary(), BoxingStrategy.BOXED, leftCorrespondenceOrRangeType);
         
         // now find the access code
         JCExpression safeAccess;
@@ -2602,15 +2582,7 @@ public class ExpressionTransformer extends AbstractTransformer {
 
         }
 
-        if (!safe) {
-            return safeAccess;
-        }
-        // (tmpVar != null ? safeAccess : null)
-        JCConditional conditional = at(access.getPrimary()).Conditional(
-                make().Binary(JCTree.NE, make().Ident(varName), makeNull()), 
-                safeAccess, makeNull());
-        // (let tmpVar in conditional)
-        return make().LetExpr(tmpVar, conditional);
+        return safeAccess;
     }
 
     //

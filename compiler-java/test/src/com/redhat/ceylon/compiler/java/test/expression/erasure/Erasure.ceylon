@@ -220,8 +220,6 @@ class Test(Integer&EmptyInterface n) {
         Integer? n5 = naturals[p1];
         Top? t = leftsAndRights[p1];
         Empty|Sequence<Integer&EmptyInterface>|Null naturalsOrNull = [p1];
-        Integer? n52 = naturalsOrNull?[p1];
-        Top? t2 = topsOrNull?[p1];
         
         variable Empty|Sequence<Integer&EmptyInterface> subrange;
         subrange = naturals[p1..p1] of Empty|Sequence<Integer&EmptyInterface>;

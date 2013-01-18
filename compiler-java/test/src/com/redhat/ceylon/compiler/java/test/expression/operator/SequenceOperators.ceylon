@@ -35,13 +35,6 @@ shared class SequenceOperators() {
 //        if (c1 satisfies OpenCorrespondence<Integer, String>) {
 //            c1[n1] = s;
 //        }
-        s =  c2?[1];
-        s =  this.c2?[1];
-        s =  c2?[box(1)];
-        variable List<String>? l;
-        l = c3?[1..2];
-        l = c3?[1...];
-        l = c3?[1:2];
 // M?:        
 //        Integer[] indices = {1, 2, 3};
 //        variable String[] seq1 = c1[indices];
