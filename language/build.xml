@@ -206,8 +206,8 @@
                 <exclude name="ceylon/language/SequenceBuilder.ceylon"/>
                 <include name="ceylon/language/SequenceBuilder.java"/>
                 <include name="ceylon/language/SequenceAppender.java"/>
-                <exclude name="ceylon/language/sort.ceylon"/>
-                <include name="ceylon/language/sort_.java"/>
+                <exclude name="ceylon/language/internalSort.ceylon"/>
+                <include name="ceylon/language/internalSort_.java"/>
                 <exclude name="ceylon/language/String.ceylon"/>
                 <include name="ceylon/language/String.java"/>
                 <include name="ceylon/language/string_.java"/>

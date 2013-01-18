@@ -38,16 +38,15 @@ void misc() {
     }
     check(bs.size==11, "builder size");
     
-    for (n->e in entries(*bs.sequence)) {
+    for (n->e in entries(bs.sequence)) {
         check(n==e, "entry iteration");
     }
 
     //Test empty varargs
     see(); by(); tagged();
-    array(); coalesce();
-    elements(); entries();
+    array();
     join(); string();
-    ",".join(); sort();
+    ",".join();
     StringBuilder().appendAll();
     SequenceBuilder().appendAll();
     //LazyList<Nothing>(); LazyMap<Nothing,Nothing>(); LazySet<Nothing>();

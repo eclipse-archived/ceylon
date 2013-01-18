@@ -21,7 +21,7 @@ shared Range<Integer> range {
 }*/
 
 void test_entries_function() {
-    value e = entries("a", "b", "c", "X", "Y", "Z", "1", "2", "3", "d", "e", "f").sequence;
+    value e = entries {"a", "b", "c", "X", "Y", "Z", "1", "2", "3", "d", "e", "f"}.sequence;
     value _e = Entry(-1, "null");
     check((e[2] else _e).key==2, "entries [1]");
     check((e[2] else _e).item=="c", "entries [2]");
@@ -209,7 +209,7 @@ Range<Integer> range {
     //Test the entries function
     test_entries_function();
     //Test comparisons by Key and Item
-    value e1 = entries("a", "B", "c", "D");
+    value e1 = entries {"a", "B", "c", "D"};
     value k1 = e1.sort(byKey((Integer a, Integer b) => b<=>a)).sequence;
     value k2 = e1.sort(byItem((String a, String b) => a<=>b)).sequence;
     if (exists x=k1[0]) {

@@ -1,4 +1,4 @@
-class Pair(String one, String two) satisfies Iterable<String> {
+class Pair(String one, String two) satisfies {String*} {
     shared actual object iterator satisfies Iterator<String> {
         variable Integer i=0;
         shared actual String|Finished next() {
@@ -18,7 +18,7 @@ void test_foreach() {
         sum += i;
     }
     check(sum==15, "simple foreach");
-    Boolean hasEvens(Sequence<Integer> l) {
+    Boolean hasEvens([Integer+] l) {
         variable Boolean found = false;
         for (i in l) {
             if (i % 2 == 0) {
@@ -55,14 +55,14 @@ void test_foreach() {
     //with iterator
     sum = 0;
     variable Boolean did_else = false;
-    for (idx -> elem in entries(2,4,6)) {
+    for (idx -> elem in entries {2,4,6}) {
         sum += idx + elem;
     } else {
         did_else = true;
     }
     check(sum==15, "foreach with iterator");
     check(did_else, "for/else with iterator");
-    for (idx -> elem in entries(2,4,6)) {
+    for (idx -> elem in entries {2,4,6}) {
         if (idx == 0) { break; }
     } else {
         sum = 0;
