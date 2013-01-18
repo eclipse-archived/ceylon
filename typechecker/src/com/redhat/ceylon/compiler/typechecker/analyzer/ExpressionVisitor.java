@@ -2288,7 +2288,8 @@ public class ExpressionVisitor extends Visitor {
         for (int i=params.size(); i<args.size(); i++) {
             args.get(i).addError("no matching parameter declared by " +
                     pr.getDeclaration().getName(unit) + ": " + 
-                    pr.getDeclaration().getName(unit) + " has " + args.size() + " parameters", 2000);
+                    pr.getDeclaration().getName(unit) + " has " + 
+                    params.size() + " parameters", 2000);
         }
     
     }
