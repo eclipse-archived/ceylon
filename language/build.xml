@@ -237,6 +237,9 @@
                 <include name="ceylon/language/Singleton.java"/>
                 <exclude name="ceylon/language/Tuple.ceylon"/> <!-- COMPILE ERROR (unknown cause) -->
                 <include name="ceylon/language/Tuple.java"/>
+                <exclude name="ceylon/language/flatten.ceylon"/>
+                <include name="ceylon/language/flatten_.java"/>
+                <include name="ceylon/language/unflatten_.java"/>
             </files>
         </ceylon-compile>
     </target>
