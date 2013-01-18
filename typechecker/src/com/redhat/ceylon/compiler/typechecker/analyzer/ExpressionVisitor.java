@@ -2266,12 +2266,9 @@ public class ExpressionVisitor extends Visitor {
             else {
                 Tree.PositionalArgument a = args.get(i);
                 if (a instanceof Tree.SpreadArgument) {
-                    Tree.SpreadArgument arg = (Tree.SpreadArgument) a;
-                    ProducedType at = arg.getTypeModel();
-                    checkSpreadArgumentSequential(arg, at);
-                    ProducedType ptt = getParameterTypesAsTupleType(params.subList(i, params.size()), pr);
-                    checkAssignable(at, ptt, arg, 
-                            "spread argument not assignable to parameter types");
+                    checkSpreadArgument(pr, p, a, 
+                    		(Tree.SpreadArgument) a, 
+                    		params.subList(i, params.size()));
                     break;
                 }
                 else {
@@ -2295,6 +2292,17 @@ public class ExpressionVisitor extends Visitor {
         }
     
     }
+
+	private void checkSpreadArgument(ProducedReference pr, Parameter p,
+			Tree.PositionalArgument a, Tree.SpreadArgument arg,
+			List<Parameter> psl) {
+		a.setParameter(p);
+		ProducedType at = arg.getTypeModel();
+		checkSpreadArgumentSequential(arg, at);
+		ProducedType ptt = getParameterTypesAsTupleType(psl, pr);
+		checkAssignable(at, ptt, arg, 
+		        "spread argument not assignable to parameter types");
+	}
     
     private void checkIndirectInvocationArguments(Tree.InvocationExpression that, 
             List<ProducedType> paramTypes, boolean sequenced, int firstDefaulted) {
@@ -2316,27 +2324,16 @@ public class ExpressionVisitor extends Visitor {
                     Tree.PositionalArgument arg = args.get(i);
                     ProducedType at = arg.getTypeModel();
                     if (arg instanceof Tree.SpreadArgument) {
-                        checkSpreadArgumentSequential((Tree.SpreadArgument) arg, at);
-                        //TODO: this ultimately repackages the parameter
-                        //      information as a tuple - it would be
-                        //      better to just truncate the original
-                        //      tuple type we started with
-                        List<ProducedType> pts = new ArrayList<ProducedType>(paramTypes
-                                .subList(i, paramTypes.size()));
-                        if (sequenced) {
-                            pts.set(pts.size()-1, 
-                                    unit.getIteratedType(pts.get(pts.size()-1)));
-                        }
-                        ProducedType ptt = unit.getTupleType(pts, sequenced, false, 
-                                firstDefaulted);
-                        checkAssignable(at, ptt, (Tree.SpreadArgument) arg, 
-                                "spread argument not assignable to parameter types");
+                        checkSpreadIndirectArgument((Tree.SpreadArgument) arg, 
+                        		paramTypes.subList(i, paramTypes.size()), 
+                        		sequenced, firstDefaulted, at);
                         break;
                     }
                     else {
                         ProducedType paramType = paramTypes.get(i);
                         if (sequenced && i==paramTypes.size()-1) {
-                            checkSequencedIndirectArgument(args.subList(i, args.size()), paramType);
+                            checkSequencedIndirectArgument(args.subList(i, args.size()), 
+                            		paramType);
                             return; //Note: early return!
                         }
                         else {
@@ -2354,6 +2351,25 @@ public class ExpressionVisitor extends Visitor {
     
         }
     }
+
+	private void checkSpreadIndirectArgument(Tree.SpreadArgument sa,
+			List<ProducedType> psl, boolean sequenced, int firstDefaulted,
+			ProducedType at) {
+		checkSpreadArgumentSequential(sa, at);
+		//TODO: this ultimately repackages the parameter
+		//      information as a tuple - it would be
+		//      better to just truncate the original
+		//      tuple type we started with
+		List<ProducedType> pts = new ArrayList<ProducedType>(psl);
+		if (sequenced) {
+		    pts.set(pts.size()-1, 
+		            unit.getIteratedType(pts.get(pts.size()-1)));
+		}
+		ProducedType ptt = unit.getTupleType(pts, sequenced, false, 
+		        firstDefaulted);
+		checkAssignable(at, ptt, sa, 
+		        "spread argument not assignable to parameter types");
+	}
 
     private void checkSequencedIndirectArgument(List<Tree.PositionalArgument> args, 
             ProducedType paramType) {
