@@ -1225,16 +1225,13 @@ public class ProducedType extends ProducedReference {
                     ProducedType it = u.getIteratedType(this);
 					String etn = it.getProducedTypeName(unit);
 					ProducedType nt = getTypeArgumentList().get(1);
-					if (nt!=null && nt.getDeclaration()!=null) {
-						String many = nt.getDeclaration()
-								.equals(u.getNothingDeclaration()) ?
-										"+":"*";
-						if (it.isPrimitiveAbbreviatedType()) {
-							return "{" + etn + many + "}";
-						}
-						else {
-							return "{<" + etn + ">" + many + "}";
-						}
+					String many = nt.getDeclaration() instanceof NothingType ?
+							"+":"*";
+					if (it.isPrimitiveAbbreviatedType()) {
+						return "{" + etn + many + "}";
+					}
+					else {
+						return "{<" + etn + ">" + many + "}";
 					}
                 }
                 if (abbreviateEntry()) {
@@ -1433,8 +1430,15 @@ public class ProducedType extends ProducedReference {
     		Unit unit = getDeclaration().getUnit();
     		if (getDeclaration().equals(unit.getIterableDeclaration())) {
     			ProducedType et = unit.getIteratedType(this);
-				return et!=null && 
-						getTypeArgumentList().size()==2;// && et.isPrimitiveAbbreviatedType();
+				if (et!=null && getTypeArgumentList().size()==2) {
+					ProducedType at = getTypeArgumentList().get(1);
+					if (at!=null) {
+						TypeDeclaration d = at.getDeclaration();
+						return d instanceof NothingType ||
+								d instanceof ClassOrInterface && 
+								d.equals(unit.getNullDeclaration());
+					}
+				}// && et.isPrimitiveAbbreviatedType();
     		}
     	}
     	return false;
