@@ -306,7 +306,6 @@ objectDeclaration returns [ObjectDefinition declaration]
         SEMICOLON
         { $declaration.setEndToken($SEMICOLON); }
       )
-    //-> ^(OBJECT_DEFINITION VALUE_MODIFIER memberName extendedType? satisfiedTypes? classBody?) 
     ;
 
 voidOrInferredMethodDeclaration returns [AnyMethod declaration]
@@ -351,7 +350,6 @@ voidOrInferredMethodDeclaration returns [AnyMethod declaration]
         { $declaration = def; }
         block 
         { def.setBlock($block.block); }
-      //-> ^(METHOD_DEFINITION VOID_MODIFIER memberName methodParameters? block)   
       | 
         (
           lazySpecifier
@@ -361,7 +359,6 @@ voidOrInferredMethodDeclaration returns [AnyMethod declaration]
         SEMICOLON
         { expecting=-1; }
         { $declaration.setEndToken($SEMICOLON); }
-      //-> ^(METHOD_DECLARATION VOID_MODIFIER memberName methodParameters? specifier?)   
       )
     ;
 
@@ -379,7 +376,6 @@ setterDeclaration returns [AttributeSetterDefinition declaration]
         SEMICOLON
         { $declaration.setEndToken($SEMICOLON); }
       )
-    //-> ^(ATTRIBUTE_SETTER_DEFINITION[$ASSIGN] VOID_MODIFIER memberName block)
     ;
 
 inferredAttributeDeclaration returns [AnyAttribute declaration]
@@ -407,12 +403,10 @@ inferredAttributeDeclaration returns [AnyAttribute declaration]
         SEMICOLON
         { $declaration.setEndToken($SEMICOLON); 
           expecting=-1; }
-        //-> ^(ATTRIBUTE_DECLARATION VALUE_MODIFIER memberName specifier? initializer?)
       | 
         { $declaration = def; }
         block
         { def.setBlock($block.block); }
-        //-> ^(ATTRIBUTE_GETTER_DEFINITION VALUE_MODIFIER memberName block)
       )
     ;
 
@@ -454,7 +448,6 @@ typedMethodOrAttributeDeclaration returns [TypedDeclaration declaration]
           { $declaration = mdef; }
           b1=block
          { mdef.setBlock($b1.block); }
-        //-> ^(METHOD_DEFINITION unionType memberName methodParameters memberBody)
         | 
           (
             ms=lazySpecifier
@@ -464,7 +457,6 @@ typedMethodOrAttributeDeclaration returns [TypedDeclaration declaration]
           s1=SEMICOLON
           { $declaration.setEndToken($s1);
             expecting=-1; }
-        //-> ^(METHOD_DECLARATION unionType memberName methodParameters specifier?)
         )
       | 
         (
@@ -478,12 +470,10 @@ typedMethodOrAttributeDeclaration returns [TypedDeclaration declaration]
         s2=SEMICOLON
         { $declaration.setEndToken($s2); 
         expecting=-1; }
-      //-> ^(ATTRIBUTE_DECLARATION unionType memberName specifier? initializer?)
       | 
         { $declaration = adef; }
         b2=block
         { adef.setBlock($b2.block); }
-      //-> ^(ATTRIBUTE_GETTER_DEFINITION unionType memberName memberBody)      
       )
     ;
 
@@ -508,10 +498,10 @@ interfaceDeclaration returns [AnyInterface declaration]
           dec.setCaseTypes($caseTypes.caseTypes); }
       )?
       /*metatypes?*/ 
-      (
+      /*(
         adaptedTypes
         { def.setAdaptedTypes($adaptedTypes.adaptedTypes); }
-      )?
+      )?*/
       (
         satisfiedTypes
         { def.setSatisfiedTypes($satisfiedTypes.satisfiedTypes); 
@@ -526,7 +516,6 @@ interfaceDeclaration returns [AnyInterface declaration]
         { $declaration = def; }
         interfaceBody
         { def.setInterfaceBody($interfaceBody.interfaceBody); }
-      //-> ^(INTERFACE_DEFINITION typeName interfaceParameters? interfaceBody)
       | 
         (
           typeSpecifier
@@ -536,7 +525,6 @@ interfaceDeclaration returns [AnyInterface declaration]
         SEMICOLON
         { $declaration.setEndToken($SEMICOLON); 
           expecting=-1; }
-      //-> ^(INTERFACE_DECLARATION[$INTERFACE_DEFINITION] typeName interfaceParameters? typeSpecifier?)
       )
     ;
 
@@ -585,7 +573,6 @@ classDeclaration returns [AnyClass declaration]
         { $declaration = def; }
         classBody
         { def.setClassBody($classBody.classBody); }
-      //-> ^(CLASS_DEFINITION typeName classParameters? classBody)
       | 
         (
           classSpecifier
@@ -595,7 +582,6 @@ classDeclaration returns [AnyClass declaration]
         SEMICOLON
         { $declaration.setEndToken($SEMICOLON); 
           expecting=-1; }
-      //-> ^(CLASS_DECLARATION[$CLASS_DEFINITION] typeName classParameters? typeSpecifier?)
       )
     ;
 
@@ -633,20 +619,6 @@ assertion returns [Assertion assertion]
       SEMICOLON
       { $assertion.setEndToken($SEMICOLON); 
         expecting=-1; }
-      /*{ ValueModifier fm = new ValueModifier($ASSERT);
-        dec = new AttributeDeclaration($ASSERT);
-        dec.setType(fm);
-        $declaration = dec; }
-      memberNameDeclaration
-      { dec.setIdentifier($memberNameDeclaration.identifier); 
-        def.setIdentifier($memberNameDeclaration.identifier); }
-          specifier 
-          { dec.setSpecifierOrInitializerExpression($specifier.specifierExpression); }
-        { expecting=SEMICOLON; }
-        SEMICOLON
-        { $declaration.setEndToken($SEMICOLON); 
-          expecting=-1; }
-        //-> ^(ATTRIBUTE_DECLARATION VALUE_MODIFIER memberName specifier? initializer?)*/
     ;
 
 block returns [Block block]
@@ -659,7 +631,6 @@ block returns [Block block]
       )*
       RBRACE
       { $block.setEndToken($RBRACE); }
-    //-> ^(BLOCK[$LBRACE] annotatedDeclarationOrStatement*)
     ;
 
 //Note: interface bodies can't really contain 
@@ -676,7 +647,6 @@ interfaceBody returns [InterfaceBody interfaceBody]
       )*
       RBRACE
       { $interfaceBody.setEndToken($RBRACE); }
-    //-> ^(INTERFACE_BODY[$LBRACE] annotatedDeclarationOrStatement2*)
     ;
 
 classBody returns [ClassBody classBody]
@@ -689,7 +659,6 @@ classBody returns [ClassBody classBody]
       )*
       RBRACE
       { $classBody.setEndToken($RBRACE); }
-    //-> ^(CLASS_BODY[$LBRACE] annotatedDeclarationOrStatement2*)
     ;
 
 extendedType returns [ExtendedType extendedType]
@@ -710,7 +679,6 @@ classInstantiation returns [SimpleType type, InvocationExpression invocationExpr
     : (
         qualifiedType
         { $type=$qualifiedType.type; }
-        //-> ^(EXTENDED_TYPE[$EXTENDS] type ^(INVOCATION_EXPRESSION ^(EXTENDED_TYPE_EXPRESSION) positionalArguments))
       | SUPER MEMBER_OP 
         typeReference 
         { QualifiedType qt=new QualifiedType(null);
@@ -720,7 +688,6 @@ classInstantiation returns [SimpleType type, InvocationExpression invocationExpr
           if ($typeReference.typeArgumentList!=null)
               qt.setTypeArgumentList($typeReference.typeArgumentList);
           $type=qt; }
-        //-> ^(EXTENDED_TYPE[$EXTENDS] ^(QUALIFIED_TYPE SUPER_TYPE[$SUPER] typeReference) ^(INVOCATION_EXPRESSION ^(EXTENDED_TYPE_EXPRESSION) positionalArguments))
       )
       (
         positionalArguments
@@ -749,11 +716,8 @@ satisfiedTypes returns [SatisfiedTypes satisfiedTypes]
           t2=abbreviatedType
           { $satisfiedTypes.addType($t2.type); 
             $satisfiedTypes.setEndToken(null); }
-        /*| { displayRecognitionError(getTokenNames(),
-              new MismatchedTokenException(UIDENTIFIER, input)); }*/
         )
       )*
-    //-> ^(SATISFIED_TYPES[$SATISFIES] type+)
     ;
 
 abstractedType returns [AbstractedType abstractedType]
@@ -763,7 +727,7 @@ abstractedType returns [AbstractedType abstractedType]
       { $abstractedType.setType($qualifiedType.type); }
     ;
 
-adaptedTypes returns [AdaptedTypes adaptedTypes]
+/*adaptedTypes returns [AdaptedTypes adaptedTypes]
     : ADAPTED_TYPES 
       { $adaptedTypes = new AdaptedTypes($ADAPTED_TYPES); }
       t1=qualifiedType 
@@ -779,7 +743,7 @@ adaptedTypes returns [AdaptedTypes adaptedTypes]
               new MismatchedTokenException(UIDENTIFIER, input)); }
         )
       )*
-    ;
+    ;*/
 
 caseTypes returns [CaseTypes caseTypes]
     : CASE_TYPES
@@ -795,8 +759,6 @@ caseTypes returns [CaseTypes caseTypes]
           { if ($ct2.type!=null) $caseTypes.addType($ct2.type); 
             if ($ct2.instance!=null) $caseTypes.addBaseMemberExpression($ct2.instance); 
             $caseTypes.setEndToken(null); }
-        /*| { displayRecognitionError(getTokenNames(),
-              new MismatchedTokenException(UIDENTIFIER, input)); }*/
         )
       )*
     ;
@@ -804,7 +766,7 @@ caseTypes returns [CaseTypes caseTypes]
 caseType returns [StaticType type, BaseMemberExpression instance]
     : t=abbreviatedType 
       { $type=$t.type;}
-    | memberName //-> ^(BASE_MEMBER_EXPRESSION memberName)
+    | memberName
       { $instance = new BaseMemberExpression(null);
         $instance.setIdentifier($memberName.identifier);
         $instance.setTypeArguments( new InferredTypeArguments(null) ); }
@@ -839,7 +801,6 @@ parameters returns [ParameterList parameterList]
       )?
       RPAREN
       { $parameterList.setEndToken($RPAREN); }
-      //-> ^(PARAMETER_LIST[$LPAREN] annotatedParameter*)
     ;
 
 // FIXME: This accepts more than the language spec: named arguments
@@ -886,8 +847,6 @@ parameter returns [Parameter parameter]
             $parameter.setDefaultArgument(da);
             da.setSpecifierExpression($lazySpecifier.specifierExpression); }
         )?
-          //for callable parameters
-        //-> ^(FUNCTIONAL_PARAMETER_DECLARATION parameterType memberName parameters+ specifier?)
       )
     ;
 
@@ -907,7 +866,6 @@ parameterRef returns [InitializerParameter parameter]
 parameterDeclaration returns [Parameter parameter]
     : compilerAnnotations
       (
-        //(LIDENTIFIER (SPECIFY|COMMA|RPAREN)) =>
         r=parameterRef
         { $parameter=$r.parameter; }
       | 
@@ -940,7 +898,6 @@ typeParameters returns [TypeParameterList typeParameterList]
       )*
       LARGER_OP
       { $typeParameterList.setEndToken($LARGER_OP); }
-    //-> ^(TYPE_PARAMETER_LIST[$SMALLER_OP] typeParameter+)
     ;
 
 typeParameter returns [TypeParameterDeclaration typeParameter]
@@ -957,13 +914,12 @@ typeParameter returns [TypeParameterDeclaration typeParameter]
         { $typeParameter.setTypeSpecifier($typeDefault.typeSpecifier); }
       )?
       { $typeParameter.getCompilerAnnotations().addAll($compilerAnnotations.annotations); }
-    //-> ^(TYPE_PARAMETER_DECLARATION variance? typeName)
     ;
 
 variance returns [TypeVariance typeVariance]
-    : IN_OP //-> ^(TYPE_VARIANCE[$IN_OP])
+    : IN_OP
       { $typeVariance = new TypeVariance($IN_OP); }
-    | OUT //-> ^(TYPE_VARIANCE[$OUT])
+    | OUT
       { $typeVariance = new TypeVariance($OUT); }
     ;
     
@@ -1000,7 +956,6 @@ typeConstraints returns [TypeConstraintList typeConstraintList]
         typeConstraint
         { $typeConstraintList.addTypeConstraint($typeConstraint.typeConstraint); }
       )+
-    //-> ^(TYPE_CONSTRAINT_LIST typeConstraint2+)
     ;
 
 declarationOrStatement returns [Statement statement]
@@ -1130,10 +1085,10 @@ expressionOrSpecificationStatement returns [Statement statement]
       (
         SEMICOLON
         { $statement.setEndToken($SEMICOLON); }
-      /*| { displayRecognitionError(getTokenNames(), 
+      | { displayRecognitionError(getTokenNames(), 
               new MismatchedTokenException(SEMICOLON, input)); }
         COMMA
-        { $statement.setEndToken($COMMA); }*/
+        { $statement.setEndToken($COMMA); }
       )
       { expecting=-1; }
     ;
@@ -1191,7 +1146,6 @@ typeSpecifier returns [TypeSpecifier typeSpecifier]
       { $typeSpecifier = new TypeSpecifier($COMPUTE); }
       type
       { $typeSpecifier.setType($type.type); }
-    //-> ^(TYPE_SPECIFIER[$SPECIFY] type)
     ;
 
 typeDefault returns [TypeSpecifier typeSpecifier]
@@ -1199,7 +1153,6 @@ typeDefault returns [TypeSpecifier typeSpecifier]
       { $typeSpecifier = new TypeSpecifier($SPECIFY); }
       type
       { $typeSpecifier.setType($type.type); }
-    //-> ^(TYPE_SPECIFIER[$SPECIFY] type)
     ;
 
 specifier returns [SpecifierExpression specifierExpression]
@@ -1596,7 +1549,6 @@ objectArgument returns [ObjectArgument declaration]
         SEMICOLON
         { $declaration.setEndToken($SEMICOLON); }
       )
-    //-> ^(OBJECT_ARGUMENT[$OBJECT_DEFINITION] VALUE_MODIFIER memberName extendedType? satisfiedTypes? classBody?)
     ;
 
 voidOrInferredMethodArgument returns [MethodArgument declaration]
@@ -1627,7 +1579,6 @@ voidOrInferredMethodArgument returns [MethodArgument declaration]
         { expecting=-1; }
         { $declaration.setEndToken($SEMICOLON); }
       )
-    //-> ^(METHOD_ARGUMENT VOID_MODIFIER memberName parameters* block)
     ;
 
 inferredGetterArgument returns [AttributeArgument declaration]
@@ -1649,7 +1600,6 @@ inferredGetterArgument returns [AttributeArgument declaration]
         { expecting=-1; }
         { $declaration.setEndToken($SEMICOLON); }
       )
-      //-> ^(ATTRIBUTE_ARGUMENT VALUE_MODIFIER memberName block)      
     ;
 
 typedMethodOrGetterArgument returns [TypedArgument declaration]
@@ -1684,8 +1634,6 @@ typedMethodOrGetterArgument returns [TypedArgument declaration]
         { expecting=-1; }
         { $declaration.setEndToken($SEMICOLON); }
       )
-      //-> ^(METHOD_ARGUMENT unionType memberName parameters+ memberBody)
-      //-> ^(ATTRIBUTE_ARGUMENT unionType memberName memberBody)      
     ;
 
 untypedMethodOrGetterArgument returns [TypedArgument declaration]
@@ -1711,8 +1659,6 @@ untypedMethodOrGetterArgument returns [TypedArgument declaration]
       SEMICOLON
       { expecting=-1; }
       { $declaration.setEndToken($SEMICOLON); }
-      //-> ^(METHOD_ARGUMENT unionType memberName parameters+ memberBody)
-      //-> ^(ATTRIBUTE_ARGUMENT unionType memberName memberBody)      
     ;
 
 namedArgumentDeclaration returns [NamedArgument declaration]
@@ -1831,12 +1777,6 @@ anonymousFunction returns [Expression expression]
         block
         { fa.setBlock($block.block); }
       )
-    /*| VALUE_MODIFIER
-      { fa.setType(new FunctionModifier($VALUE_MODIFIER)); } 
-      e1=expression
-      { fa.addParameterList(new ParameterList(null));
-        fa.setExpression($e1.expression); 
-        $positionalArgument = fa; }*/
     ;
 
 comprehension returns [Comprehension comprehension]
@@ -2671,7 +2611,6 @@ booleanCondition returns [BooleanCondition condition]
     : { $condition = new BooleanCondition(null); }
       expression
       { $condition.setExpression($expression.expression); }
-    //-> ^(BOOLEAN_CONDITION expression)
     ;
     
 existsCondition returns [Condition condition]
@@ -2682,14 +2621,12 @@ existsCondition returns [Condition condition]
         $condition = ec; }
       specifiedVariable 
       { ec.setVariable($specifiedVariable.variable); }
-    //-> ^(EXISTS_CONDITION[$EXISTS] specifiedVariable2)
     | //(EXISTS LIDENTIFIER (RPAREN|COMMA)) =>
       e1=EXISTS
       { ec = new ExistsCondition($e1); 
         $condition = ec; }
       impliedVariable
       { ec.setVariable($impliedVariable.variable); }
-    //-> ^(EXISTS_CONDITION[$EXISTS] impliedVariable)
     ;
     
 nonemptyCondition returns [Condition condition]
@@ -2700,14 +2637,12 @@ nonemptyCondition returns [Condition condition]
         $condition = nc; }
       specifiedVariable 
       { nc.setVariable($specifiedVariable.variable); }
-    //-> ^(NONEMPTY_CONDITION[$NONEMPTY] specifiedVariable2)
     | //(NONEMPTY LIDENTIFIER (RPAREN|COMMA)) =>
       n1=NONEMPTY 
       { nc = new NonemptyCondition($n1); 
         $condition = nc; }
       impliedVariable 
       { nc.setVariable($impliedVariable.variable); }
-    //-> ^(NONEMPTY_CONDITION[$NONEMPTY] impliedVariable)
     ;
 
 isCondition returns [Condition condition]
@@ -2728,7 +2663,6 @@ isCondition returns [Condition condition]
       { ic.getVariable().setIdentifier($memberName.identifier); }
       specifier
       { ic.getVariable().setSpecifierExpression($specifier.specifierExpression); }
-    //-> ^(IS_CONDITION[$IS_OP] unionType ^(VARIABLE unionType memberName specifier))
     | //(NOT_OP? IS_OP type LIDENTIFIER (RPAREN|COMMA)) =>
       (n1=NOT_OP { not=true; })?
       i1=IS_OP
@@ -2739,7 +2673,6 @@ isCondition returns [Condition condition]
       { ic.setType($t1.type); }
       impliedVariable 
       { ic.setVariable($impliedVariable.variable); }
-    //-> ^(IS_CONDITION[$IS_OP] unionType ^(VARIABLE SYNTHETIC_VARIABLE memberName ^(SPECIFIER_EXPRESSION ^(EXPRESSION ^(BASE_MEMBER_EXPRESSION memberName)))))
     ;
 
 satisfiesCondition returns [SatisfiesCondition condition]
@@ -2749,7 +2682,6 @@ satisfiesCondition returns [SatisfiesCondition condition]
       { $condition.setLeftType($t1.type); }
       t2=qualifiedType 
       { $condition.setRightType($t2.type); })?
-    //-> ^(SATISFIES_CONDITION[$SATISFIES] type+)
     ;
 
 controlStatement returns [ControlStatement controlStatement]
@@ -2781,7 +2713,6 @@ ifElse returns [IfStatement statement]
         elseBlock
         { $statement.setElseClause($elseBlock.clause); }
       )?
-    //-> ^(IF_STATEMENT ifBlock elseBlock?)
     ;
 
 ifBlock returns [IfClause clause]
@@ -2809,7 +2740,6 @@ elseIf returns [Block block]
     : ifElse
       { $block = new Block(null);
         $block.addStatement($ifElse.statement); }
-    //-> ^(BLOCK ifElse)
     ;
 
 switchCaseElse returns [SwitchStatement statement]
@@ -2841,7 +2771,6 @@ switchCaseElse returns [SwitchStatement statement]
           } 
         } 
       }
-    //-> ^(SWITCH_STATEMENT switchHeader cases)
     ;
 
 switchHeader returns [SwitchClause clause]
@@ -2865,7 +2794,6 @@ cases returns [SwitchCaseList switchCaseList]
         defaultCaseBlock
         { $switchCaseList.setElseClause($defaultCaseBlock.clause); }
       )?
-    //-> ^(SWITCH_CASE_LIST caseItem+ defaultCaseItem?)
     ;
     
 caseBlock returns [CaseClause clause]
@@ -2901,7 +2829,6 @@ matchCaseCondition returns [MatchCase item]
     : expressions
       { $item = new MatchCase(null);
         $item.setExpressionList($expressions.expressionList); }
-    //-> ^(MATCH_CASE expressions)
     ;
 
 isCaseCondition returns [IsCase item]
@@ -2909,7 +2836,6 @@ isCaseCondition returns [IsCase item]
       { $item = new IsCase($IS_OP); }
       type
       { $item.setType($type.type); }
-    //-> ^(IS_CASE[$IS_OP] unionType)
     ;
 
 satisfiesCaseCondition returns [SatisfiesCase item]
@@ -2917,7 +2843,6 @@ satisfiesCaseCondition returns [SatisfiesCase item]
       { $item = new SatisfiesCase($SATISFIES); }
       qualifiedType
       { $item.setType($qualifiedType.type); }
-    //-> ^(SATISFIES_CASE[$SATISFIES] type)
     ;
 
 forElse returns [ForStatement statement]
@@ -2928,7 +2853,6 @@ forElse returns [ForStatement statement]
         failBlock
         { $statement.setElseClause($failBlock.clause); }
       )?
-    //-> ^(FOR_STATEMENT forBlock failBlock?)
     ;
 
 forBlock returns [ForClause clause]
@@ -2961,7 +2885,6 @@ forIterator returns [ForIterator iterator]
         { vi.setVariable($v1.variable); }
         c1=containment
         { vi.setSpecifierExpression($c1.specifierExpression); }
-      //-> ^(VALUE_ITERATOR $v1 containment)
       | 
         { $iterator = kvi; }
         ENTRY_OP
@@ -2970,7 +2893,6 @@ forIterator returns [ForIterator iterator]
         { kvi.setValueVariable($v2.variable); }
         c2=containment
         {  kvi.setSpecifierExpression($c2.specifierExpression); }
-      //-> ^(KEY_VALUE_ITERATOR $v1 $v2 containment)
       )?
     )?
     { if ($iterator!=null)
@@ -2984,14 +2906,12 @@ containment returns [SpecifierExpression specifierExpression]
       { $specifierExpression = new SpecifierExpression($IN_OP); }
       (expression
       { $specifierExpression.setExpression($expression.expression); })?
-    //-> ^(SPECIFIER_EXPRESSION expression)
     ;
     
 whileLoop returns [WhileStatement statement]
     : { $statement = new WhileStatement(null); }
       whileBlock
       { $statement.setWhileClause($whileBlock.clause); }
-    //-> ^(WHILE_STATEMENT whileBlock)
     ;
 
 whileBlock returns [WhileClause clause]
@@ -3015,7 +2935,6 @@ tryCatchFinally returns [TryCatchStatement statement]
         finallyBlock
       { $statement.setFinallyClause($finallyBlock.clause); }
       )?
-    //-> ^(TRY_CATCH_STATEMENT tryBlock catchBlock* finallyBlock?)
     ;
 
 tryBlock returns [TryClause clause]
@@ -3067,10 +2986,8 @@ resource returns [Resource resource]
     (COMPILER_ANNOTATION|declarationStart|specificationStart) 
       => specifiedVariable
       { $resource.setVariable($specifiedVariable.variable); }
-    //-> ^(RESOURCE specifiedVariable2)
     | expression
       { $resource.setExpression($expression.expression); }
-    //-> ^(RESOURCE expression)
     )?
     RPAREN
     { $resource.setEndToken($RPAREN); }
@@ -3110,12 +3027,10 @@ var returns [Variable variable]
         p1=parameters
         { $variable.addParameterList($p1.parameterList); }
       )*
-    //-> ^(VARIABLE unionType memberName parameters*)
     | 
       { $variable.setType( new ValueModifier(null) ); }
       mn2=memberName
       { $variable.setIdentifier($mn2.identifier); }
-    //-> ^(VARIABLE VALUE_MODIFIER memberName)
     | 
       { $variable.setType( new FunctionModifier(null) ); }
       mn3=memberName 
@@ -3125,7 +3040,6 @@ var returns [Variable variable]
         { $variable.addParameterList($p3.parameterList); }
       )+
     )
-    //-> ^(VARIABLE FUNCTION_MODIFIER memberName parameters+)
     ;
 
 impliedVariable returns [Variable variable]
@@ -3142,7 +3056,6 @@ impliedVariable returns [Variable variable]
         se.setExpression(e);
         v.setSpecifierExpression(se); 
         $variable = v; }
-    //-> ^(VARIABLE SYNTHETIC_VARIABLE memberName ^(SPECIFIER_EXPRESSION ^(EXPRESSION ^(BASE_MEMBER_EXPRESSION memberName))))
     ;
 
 
