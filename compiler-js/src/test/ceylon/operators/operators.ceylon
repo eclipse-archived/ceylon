@@ -160,10 +160,10 @@ void testCollectionOperators() {
     check(!s2 exists, "lookup");
     String|Null s3 = seq1[-1]; //not optional anymore!
     check(!s3 exists, "lookup");
-    variable Sequence<String>? unsafe = seq1;
-    check(unsafe?[0] exists, "safe index");
-    unsafe = null;
-    check(!unsafe?[0] exists, "safe index");
+    //variable Sequence<String>? unsafe = seq1;
+    //check(unsafe?[0] exists, "safe index");
+    //unsafe = null;
+    //check(!unsafe?[0] exists, "safe index");
 }
 
 class NullsafeTest() {

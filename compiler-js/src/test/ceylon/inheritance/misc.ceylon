@@ -50,7 +50,7 @@ class ShortcutRefineTest3(String f(Integer i), Boolean flag) satisfies RefineTes
     shared actual String s1;
     shared actual String s2(Integer i);
     if (flag) {
-        s1 = "one";
+        s1 => "one";
         s2 = f;
     }
     else {
