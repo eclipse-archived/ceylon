@@ -18,7 +18,40 @@
  * MA  02110-1301, USA.
  */
 @nomodel
-void bug954() {
+class Bug954(Boolean b) {
+    Integer n = 2;
+    
     Integer x(Integer i);
-    x(Integer i) => i*2;
+    x(Integer i) => i * n;
+    
+
+    Integer y(Integer i);
+    if (b) {
+        y(Integer i) => i * n * 2;
+    } else {
+        y(Integer i) => i * n * 3;
+    }
+
+    shared Integer pubx(Integer i);
+    pubx(Integer i) => i * n;
+    
+    shared Integer puby(Integer i);
+    if (b) {
+        puby(Integer i) => i * n * 2;
+    } else {
+        puby(Integer i) => i * n * 3;
+    }
+}
+void bug954(Boolean b) {
+    Integer n = 2;
+    
+    Integer x(Integer i);
+    x(Integer i) => i * n;
+    
+    Integer y(Integer i);
+    if (b) {
+        y(Integer i) => i * n * 2;
+    } else {
+        y(Integer i) => i * n * 3;
+    }
 }

@@ -1,1 +1,162 @@
 package com.redhat.ceylon.compiler.java.test.issues.bug09xx;
+
+class Bug954 {
+    
+    Bug954(boolean b) {
+        final long n = 2L;
+        this.x = null;
+        x = new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.ceylon.language.Integer>("Integer(Integer)"){
+            
+            @.java.lang.Override
+            public .ceylon.language.Integer $call(final .java.lang.Object $param$0) {
+                final long i = ((.ceylon.language.Integer)$param$0).longValue();
+                return .ceylon.language.Integer.instance(i * n);
+            }
+        };
+        this.y = null;
+        if (b) {
+            y = new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.ceylon.language.Integer>("Integer(Integer)"){
+                
+                @.java.lang.Override
+                public .ceylon.language.Integer $call(final .java.lang.Object $param$0) {
+                    final long i = ((.ceylon.language.Integer)$param$0).longValue();
+                    return .ceylon.language.Integer.instance(i * n * 2L);
+                }
+            };
+        } else {
+            y = new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.ceylon.language.Integer>("Integer(Integer)"){
+                
+                @.java.lang.Override
+                public .ceylon.language.Integer $call(final .java.lang.Object $param$0) {
+                    final long i = ((.ceylon.language.Integer)$param$0).longValue();
+                    return .ceylon.language.Integer.instance(i * n * 3L);
+                }
+            };
+        }
+        this.pubx = null;
+        pubx = new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.ceylon.language.Integer>("Integer(Integer)"){
+            
+            @.java.lang.Override
+            public .ceylon.language.Integer $call(final .java.lang.Object $param$0) {
+                final long i = ((.ceylon.language.Integer)$param$0).longValue();
+                return .ceylon.language.Integer.instance(i * n);
+            }
+        };
+        this.puby = null;
+        if (b) {
+            puby = new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.ceylon.language.Integer>("Integer(Integer)"){
+                
+                @.java.lang.Override
+                public .ceylon.language.Integer $call(final .java.lang.Object $param$0) {
+                    final long i = ((.ceylon.language.Integer)$param$0).longValue();
+                    return .ceylon.language.Integer.instance(i * n * 2L);
+                }
+            };
+        } else {
+            puby = new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.ceylon.language.Integer>("Integer(Integer)"){
+                
+                @.java.lang.Override
+                public .ceylon.language.Integer $call(final .java.lang.Object $param$0) {
+                    final long i = ((.ceylon.language.Integer)$param$0).longValue();
+                    return .ceylon.language.Integer.instance(i * n * 3L);
+                }
+            };
+        }
+    }
+    private .ceylon.language.Callable<? extends .ceylon.language.Integer> x;
+    
+    private final long x(final long i) {
+        if (x == null) throw new .com.redhat.ceylon.compiler.java.language.UninitializedMethodError(); else return x.$call(.ceylon.language.Integer.instance(i)).longValue();
+    }
+    private .ceylon.language.Callable<? extends .ceylon.language.Integer> y;
+    
+    private final long y(final long i) {
+        if (y == null) throw new .com.redhat.ceylon.compiler.java.language.UninitializedMethodError(); else return y.$call(.ceylon.language.Integer.instance(i)).longValue();
+    }
+    private .ceylon.language.Callable<? extends .ceylon.language.Integer> pubx;
+    
+    public final long pubx(final long i) {
+        if (pubx == null) throw new .com.redhat.ceylon.compiler.java.language.UninitializedMethodError(); else return pubx.$call(.ceylon.language.Integer.instance(i)).longValue();
+    }
+    private .ceylon.language.Callable<? extends .ceylon.language.Integer> puby;
+    
+    public final long puby(final long i) {
+        if (puby == null) throw new .com.redhat.ceylon.compiler.java.language.UninitializedMethodError(); else return puby.$call(.ceylon.language.Integer.instance(i)).longValue();
+    }
+}
+@.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 4)
+@.com.redhat.ceylon.compiler.java.metadata.Method
+final class bug954_ {
+    
+    private bug954_() {
+    }
+    
+    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Anything")
+    static void bug954(@.com.redhat.ceylon.compiler.java.metadata.Name("b")
+    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Boolean")
+    final boolean b) {
+        final long n = 2L;
+        
+        @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 4)
+        @.com.redhat.ceylon.compiler.java.metadata.Method
+        final class x_ {
+            
+            private x_() {
+                this.x = null;
+            }
+            private .ceylon.language.Callable<? extends .ceylon.language.Integer> x;
+            
+            long x(@.com.redhat.ceylon.compiler.java.metadata.Name("i")
+            final long i) {
+                if (x == null) throw new .com.redhat.ceylon.compiler.java.language.UninitializedMethodError(); else return x.$call(.ceylon.language.Integer.instance(i)).longValue();
+            }
+        }
+        final x_ x = new x_();
+        x.x = new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.ceylon.language.Integer>("Integer(Integer)"){
+            
+            @.java.lang.Override
+            @.com.redhat.ceylon.compiler.java.metadata.Ignore
+            public .ceylon.language.Integer $call(final .java.lang.Object $param$0) {
+                final long i = ((.ceylon.language.Integer)$param$0).longValue();
+                return .ceylon.language.Integer.instance(i * n);
+            }
+        };
+        
+        @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 4)
+        @.com.redhat.ceylon.compiler.java.metadata.Method
+        final class y_ {
+            
+            private y_() {
+                this.y = null;
+            }
+            private .ceylon.language.Callable<? extends .ceylon.language.Integer> y;
+            
+            long y(@.com.redhat.ceylon.compiler.java.metadata.Name("i")
+            final long i) {
+                if (y == null) throw new .com.redhat.ceylon.compiler.java.language.UninitializedMethodError(); else return y.$call(.ceylon.language.Integer.instance(i)).longValue();
+            }
+        }
+        final y_ y = new y_();
+        if (b) {
+            y.y = new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.ceylon.language.Integer>("Integer(Integer)"){
+                
+                @.java.lang.Override
+                @.com.redhat.ceylon.compiler.java.metadata.Ignore
+                public .ceylon.language.Integer $call(final .java.lang.Object $param$0) {
+                    final long i = ((.ceylon.language.Integer)$param$0).longValue();
+                    return .ceylon.language.Integer.instance(i * n * 2L);
+                }
+            };
+        } else {
+            y.y = new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.ceylon.language.Integer>("Integer(Integer)"){
+                
+                @.java.lang.Override
+                @.com.redhat.ceylon.compiler.java.metadata.Ignore
+                public .ceylon.language.Integer $call(final .java.lang.Object $param$0) {
+                    final long i = ((.ceylon.language.Integer)$param$0).longValue();
+                    return .ceylon.language.Integer.instance(i * n * 3L);
+                }
+            };
+        }
+    }
+}
