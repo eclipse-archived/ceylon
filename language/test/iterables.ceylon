@@ -190,7 +190,7 @@ void testIterables() {
     if ("".last exists) {
         fail("String.last [2]");
     }
-    if (exists l={for(i in 1..1000) i}.last) {
+    if (exists l={for(i in 1..1000) if (i>500) i}.last) {
         check(l==1000, "Iterable.last");
     } else { fail("Iterable.last"); }
 

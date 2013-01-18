@@ -15,11 +15,11 @@ void operators() {
     check(!maybeNot?.uppercased exists, "?.");
     check((maybe else "goodbye")=="hello", "?");
     check((maybeNot else "goodbye")=="goodbye", "?");
-    check(maybe?[0] exists, "?[]");
-    check(maybe?[4] exists, "?[]");
-    check(!maybe?[10] exists, "?[]");
-    check(!maybeNot?[0] exists, "?[]");
-    check(!maybeNot?[10] exists, "?[]");
+    //check(maybe?[0] exists, "?[]");
+    //check(maybe?[4] exists, "?[]");
+    //check(!maybe?[10] exists, "?[]");
+    //check(!maybeNot?[0] exists, "?[]");
+    //check(!maybeNot?[10] exists, "?[]");
 
     String[] empty = {};
     String[] full = [ "hello", "world" ];

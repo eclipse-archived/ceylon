@@ -44,8 +44,8 @@ void misc() {
 
     //Test empty varargs
     see(); by(); tagged();
-    any(); array(); coalesce(); count();
-    elements(); entries(); every(); first();
+    array(); coalesce();
+    elements(); entries();
     join(); string();
     ",".join(); sort();
     StringBuilder().appendAll();

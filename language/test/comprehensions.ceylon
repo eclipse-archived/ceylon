@@ -29,14 +29,14 @@ void comprehensions() {
   check([for(i in 1..2)[for(j in 1..2)""i","j""]]=={{"1,1","1,2"},{"2,1","2,2"}}, "nested comprehension");
 
   //new comprehension-related functions
-  check(any(*[for (x in 1..5) x>4]), "any");
-  check(every(*[for (x in 1..5) x>0]), "every");
-  if (exists ff=first(for (x in 1..5) if (x>3) x)) {
+  check(any { for (x in 1..5) x>4 }, "any");
+  check(every { for (x in 1..5) x>0 }, "every");
+  if (exists ff=first { for (x in 1..5) if (x>3) x }) {
     check(ff==4, "first [1]");
   } else { fail("first [1]"); }
-  check(!first(for (x in 1..5) if (x%6==0) x) exists, "first [2]");
-  check(count(*[for (x in 1..5) x>4]) == 1, "count [1]");
-  check(count(*[for (x in 1..5) x>0]) == 5, "count [2]");
+  check(!first { for (x in 1..5) if (x%6==0) x } exists, "first [2]");
+  check(count { for (x in 1..5) x>4 } == 1, "count [1]");
+  check(count { for (x in 1..5) x>0 } == 5, "count [2]");
 
   //*************Newly found bugs here
   //ceylon-compiler#598
@@ -49,7 +49,7 @@ void comprehensions() {
   check(b599_2 is Sequence<Anything>, "ceylon-compiler #599 [1]");
   check(b599_1.sequence == b599_2, "ceylon-compiler #599 [2]");
   //ceylon-compiler#601
-  Iterable<String>? b601 = first([ for (s in "hello world".split()) s ], {""});
+  Iterable<String>? b601 = first { [ for (s in "hello world".split()) s ], {""} };
   if (exists b601) {
     check(b601=={"hello", "world"}, "ceylon-compiler #601 [1]");
   } else { fail("ceylon-compiler #601 [2]"); }
