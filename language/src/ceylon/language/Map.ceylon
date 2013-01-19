@@ -77,6 +77,7 @@ shared interface Map<out Key,out Item>
          this map, and every value is the set of keys that 
          stored the `Item` in this map."
     shared default Map<Item, Set<Key>> inverse {
+        value outerMap => this;
         object inverse 
                 extends Object() 
                 satisfies Map<Item, Set<Key>> {
@@ -84,14 +85,14 @@ shared interface Map<out Key,out Item>
             shared actual Map<Item,Set<Key>> clone => this;
             
             shared actual Set<Key>? item(Object key) => 
-                    LazySet({for (k->v in outer) if (v==key) k});
+                    LazySet({for (k->v in outerMap) if (v==key) k});
             
             shared actual Iterator<Item->Set<Key>> iterator =>
                     outer.values.map((Item e) => e ->
-                            LazySet({for (k->v in outer) if (v==e) k}))
+                            LazySet({for (k->v in outerMap) if (v==e) k}))
                                     .iterator;
             
-            shared actual Integer size => outer.size;
+            shared actual Integer size => outerMap.size;
             
         }
         return inverse;
@@ -106,29 +107,31 @@ shared interface Map<out Key,out Item>
                  map."
             Result mapping(Key key, Item item)) 
             given Result satisfies Object {
+        value outerMap => this;
         object mapped extends Object() 
                 satisfies Map<Key, Result> {
+                        
             shared actual Map<Key, Result> clone {
                 //TODO: should take a copy 
                 return this;
             }
+            
             shared actual Result? item(Object key) {
                 throw;
                 //if (is Key key) {
-                //    if (exists item=outer[key]) {
+                //    if (exists item=outerMap[key]) {
                 //        return mapping(key, item);
                 //    }
                 //}
                 //return null;
             }
-            shared actual Iterator<Key->Result> iterator {
-                return outer.map((Key->Item e) =>
+            
+            shared actual Iterator<Key->Result> iterator =>
+                    outerMap.map((Key->Item e) =>
                         e.key -> mapping(e.key,e.item))
                                 .iterator;
-            }
-            shared actual Integer size { 
-                return outer.size; 
-            }
+            
+            shared actual Integer size => outerMap.size;
         }
         return mapped;
     }

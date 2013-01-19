@@ -220,9 +220,6 @@
                 <exclude name="ceylon/language/List.ceylon"/> <!-- COMPILE ERROR (see compiler issue #903) -->
                 <include name="ceylon/language/List.java"/>
                 <include name="ceylon/language/List$impl.java"/>
-                <exclude name="ceylon/language/Map.ceylon"/> <!-- COMPILE ERROR (see compiler issue #904) -->
-                <include name="ceylon/language/Map.java"/>
-                <include name="ceylon/language/Map$impl.java"/>
                 <exclude name="ceylon/language/flatten.ceylon"/>
                 <include name="ceylon/language/flatten_.java"/>
                 <include name="ceylon/language/unflatten_.java"/>
