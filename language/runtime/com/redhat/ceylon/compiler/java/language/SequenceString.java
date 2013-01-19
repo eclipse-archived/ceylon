@@ -1,7 +1,6 @@
 package com.redhat.ceylon.compiler.java.language;
 
 import ceylon.language.Boolean;
-import ceylon.language.Null;
 import ceylon.language.Callable;
 import ceylon.language.Character;
 import ceylon.language.Comparison;
@@ -131,5 +130,9 @@ public class SequenceString extends String implements Sequence<Character> {
     @Override @Ignore
     public SequenceString getReversed() {
         return (SequenceString)super.getReversed();
+    }
+    @Override
+    public SequenceString getClone() {
+    	return this;
     }
 }

@@ -1,16 +1,15 @@
 package com.redhat.ceylon.compiler.java.language;
 
 import ceylon.language.Boolean;
-import ceylon.language.Null;
 import ceylon.language.Callable;
 import ceylon.language.Character;
 import ceylon.language.Comparison;
 import ceylon.language.Entry;
 import ceylon.language.Integer;
 import ceylon.language.Iterable;
-import ceylon.language.Sequential;
 import ceylon.language.Map;
 import ceylon.language.Sequence;
+import ceylon.language.Sequential;
 import ceylon.language.String;
 import ceylon.language.empty_;
 
@@ -38,7 +37,7 @@ public class EmptyString extends String {
     }
 
     @Override
-    public Iterable<? extends Character, ? extends java.lang.Object> getRest() {
+    public EmptyString getRest() {
         return this;
     }
 

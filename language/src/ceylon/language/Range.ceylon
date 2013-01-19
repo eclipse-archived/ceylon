@@ -107,8 +107,7 @@ shared class Range<Element>(first, last)
         return RangeIterator();
     }
     
-    //TODO: enable when we have reified generics
-    /*doc "Determines if the range includes the given object."
+    doc "Determines if the range includes the given object."
     shared actual Boolean contains(Object element) {
         if (is Element element) {
             return includes(element);
@@ -116,7 +115,7 @@ shared class Range<Element>(first, last)
         else {
             return false;
         }
-    }*/
+    }
     
     shared actual Integer count(Boolean selecting(Element element)) {
         variable value e = first;

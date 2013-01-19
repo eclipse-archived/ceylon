@@ -49,7 +49,8 @@ shared interface Empty of e
     doc "Returns `null`."
     shared actual Null last => null; 
     
-    //shared actual [] rest { return this; }
+    doc "Returns an `Empty`."
+    shared actual [] rest => this;
     
     doc "Returns an `Empty`."
     shared actual [] clone => this;

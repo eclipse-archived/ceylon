@@ -56,11 +56,11 @@ public interface List<Element>
     @Override
     public int hashCode();
 
-    @Annotations({@Annotation("actual"), @Annotation("default")})
+    /*@Annotations({@Annotation("actual"), @Annotation("default")})
     @TypeInfo("Element|ceylon.language::Null")
     public Element findLast(@Name("selecting")
         @TypeInfo("ceylon.language::Callable<ceylon.language.Boolean,ceylon.language::Tuple<Element,Element,ceylon.language::Empty>>")
-        Callable<? extends Boolean> selecting);
+        Callable<? extends Boolean> selecting);*/
 
     @Annotations({@Annotation("actual"), @Annotation("default")})
     @TypeInfo("Element|ceylon.language::Null")

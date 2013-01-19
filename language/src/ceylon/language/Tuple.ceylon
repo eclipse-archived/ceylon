@@ -59,6 +59,8 @@ shared class Tuple<out Element, out First, out Rest=Empty>(first, rest/*=[]*/)
     //TODO: should just have type Rest
     shared actual Rest&Element[] rest;
     
+    shared actual Integer size => 1 + rest.size;
+    
     shared actual Element? item(Integer index) {
         switch (index<=>0)
         case (smaller) { return null; }
@@ -109,6 +111,31 @@ shared class Tuple<out Element, out First, out Rest=Empty>(first, rest/*=[]*/)
     shared actual Element[] spanFrom(Integer from) =>
             span(from, size);
     
-    shared actual default Tuple<Element,First,Rest> clone => this;
-
+    shared actual Tuple<Element,First,Rest> clone => this;
+    
+    shared actual default Iterator<Element> iterator {
+        object iterator satisfies Iterator<Element> {
+            variable Element[] current = outer;
+            shared actual Element|Finished next() {
+                if (nonempty c = current) {
+                    current = current.rest;
+                    return c.first;
+                }
+                else {
+                    return finished;
+                }
+            } 
+        }
+        return iterator;
+    }
+    
+    shared actual default Boolean contains(Object element) {
+        if (exists first, first==element) {
+            return true;
+        }
+        else {
+            return element in rest;
+        }
+    }
+    
 }

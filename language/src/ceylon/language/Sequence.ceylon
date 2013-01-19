@@ -20,7 +20,7 @@ doc "A nonempty, immutable sequence of values. The type
      called _emptiness-preserving_."
 see (Empty)
 by "Gavin"
-shared native interface Sequence<out Element>
+shared interface Sequence<out Element>
         satisfies Element[] & 
                   {Element+} &
                   Cloneable<[Element+]> {
@@ -37,10 +37,6 @@ shared native interface Sequence<out Element>
          element with index `sequence.lastIndex`."
     shared actual formal Element last;
     
-    doc "The rest of the sequence, without the first 
-         element."
-    shared actual formal Element[] rest;
-        
     doc "Returns `false`, since every `Sequence` contains at
          least one element."
     shared actual Boolean empty => false;
@@ -55,9 +51,14 @@ shared native interface Sequence<out Element>
     doc "A nonempty sequence containing the elements of this
          container, sorted according to a function 
          imposing a partial order upon the elements."
-    shared default actual native [Element+] sort(
+    shared default actual [Element+] sort(
             doc "The function comparing pairs of elements."
-            Comparison? comparing(Element x, Element y));
+            Comparison? comparing(Element x, Element y)) {
+        value s = internalSort(comparing, this);
+        //TODO: fix internalSort() and remove this assertion
+        assert (nonempty s);
+        return s;
+    }
 
     doc "A nonempty sequence containing the results of 
          applying the given mapping to the elements of this
@@ -69,35 +70,6 @@ shared native interface Sequence<out Element>
         assert (nonempty s);
         return s;
     }
-
-    /*shared actual formal Element[] span(Integer from,
-                                        Integer? to);
-                                        
-    shared actual formal Element[] segment(Integer from,
-                                           Integer length);*/
-                                           
-    /*shared formal [Value+] append<Value>(Value* elements)
-            given Value abstracts Element;
-    
-    shared formal [Value+] prepend<Value>(Value* elements)
-            given Value abstracts Element;*/
-    
-    //Note: the remaining members are inherited from List,
-    //      a subtype of {Element*}, and from {Element+}.
-    //      This is considered ambiguous inheritance, and
-    //      so these members must be refined here.
-    
-    shared actual default Integer size=>List::size;
-    
-    shared actual default Iterator<Element> iterator =>
-            List::iterator;
-    
-    shared actual default Boolean contains(Object element) =>
-            Collection::contains(element);
-    
-    shared actual default Element? findLast(
-            Boolean selecting(Element elem)) => 
-                    List::findLast(selecting);
     
     shared actual default [Element+] clone => this;
     

@@ -101,6 +101,36 @@ shared interface Correspondence<in Key, out Item>
         
         shared actual Item?[] rest = outer.items(keys.rest);
         
+        shared actual Integer size => keys.size;
+        
+        shared actual Iterator<Item?> iterator {
+            value correspondence => outer;
+            object iterator satisfies Iterator<Item?> {
+                value keyIterator = keys.iterator;
+                shared actual Finished|Item? next() {
+                    value key = keyIterator.next();
+                    if (!is Finished key) {
+                        return correspondence.item(key);
+                    }
+                    else {
+                        return finished;
+                    }
+                }
+            }
+            return iterator;
+        }
+        
+        shared actual Boolean contains(Object that) {
+            for (item in this) {
+                if (exists item) {
+                    return item==that;
+                }
+            }
+            else {
+                return false;
+            }
+        }
+        
         shared actual Item? item(Integer index) {
             if (exists Key key = keys.item(index)) {
                 return outer.item(key);

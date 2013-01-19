@@ -126,6 +126,10 @@ shared class Singleton<out Element>(Element element)
             (Boolean selecting(Element e)) =>
                     selecting(element) then element;
     
+    shared actual default Element? findLast
+            (Boolean selecting(Element elem)) => 
+                    find(selecting);
+    
     shared actual Singleton<Element> sort
             (Comparison? comparing(Element a, Element b)) => this;
     
@@ -146,5 +150,5 @@ shared class Singleton<out Element>(Element element)
     doc "Returns the Singleton itself, since a Singleton
          cannot contain a null."
     shared actual Singleton<Element> coalesced => this;
-
+    
 }
