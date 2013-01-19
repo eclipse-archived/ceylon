@@ -38,7 +38,7 @@ shared interface Category {
     doc "Determines if every one of the given values belongs
          to this `Category`."
     see (contains)
-    shared default Boolean containsEvery(Object* elements) {
+    shared default Boolean containsEvery({Object*} elements) {
         for (element in elements) {
             if (!contains(element)) {
                 return false;
@@ -49,10 +49,10 @@ shared interface Category {
         }
     }
 
-    doc "Determines if any of the given values belongs
+    doc "Determines if any one of the given values belongs 
          to this `Category`"
     see (contains)
-    shared default Boolean containsAny(Object* elements) {
+    shared default Boolean containsAny({Object*} elements) {
         for (element in elements) {
             if (contains(element)) {
                 return true;

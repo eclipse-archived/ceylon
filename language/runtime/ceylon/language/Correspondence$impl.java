@@ -48,35 +48,35 @@ public final class Correspondence$impl<Key,Item> {
 
             @Override
             @Ignore
-            public boolean containsEvery(ceylon.language.Sequential<?> elements) {
+            public boolean containsEvery(Iterable<?,?> elements) {
                 return $ceylon$language$Category$this.containsEvery(elements);
             }
-            @Override
-            @Ignore
-            public boolean containsEvery() {
-                return $ceylon$language$Category$this.containsEvery(empty_.getEmpty$());
-            }
-            @Override
-            @Ignore
-            public ceylon.language.Sequential<?> containsEvery$elements() {
-                return empty_.getEmpty$();
-            }
+//            @Override
+//            @Ignore
+//            public boolean containsEvery() {
+//                return $ceylon$language$Category$this.containsEvery(empty_.getEmpty$());
+//            }
+//            @Override
+//            @Ignore
+//            public ceylon.language.Sequential<?> containsEvery$elements() {
+//                return empty_.getEmpty$();
+//            }
 
             @Override
             @Ignore
-            public boolean containsAny(ceylon.language.Sequential<?> elements) {
+            public boolean containsAny(Iterable<?,?> elements) {
                 return $ceylon$language$Category$this.containsAny(elements);
             }
-            @Override
-            @Ignore
-            public boolean containsAny() {
-                return $ceylon$language$Category$this.containsAny(empty_.getEmpty$());
-            }
-            @Override
-            @Ignore
-            public ceylon.language.Sequential<?> containsAny$elements() {
-                return empty_.getEmpty$();
-            }
+//            @Override
+//            @Ignore
+//            public boolean containsAny() {
+//                return $ceylon$language$Category$this.containsAny(empty_.getEmpty$());
+//            }
+//            @Override
+//            @Ignore
+//            public ceylon.language.Sequential<?> containsAny$elements() {
+//                return empty_.getEmpty$();
+//            }
         };
         return new CategoryKeys();
     }
@@ -337,34 +337,34 @@ public final class Correspondence$impl<Key,Item> {
         }
         @Override
         @Ignore
-        public boolean containsEvery(Sequential<?> elements) {
+        public boolean containsEvery(Iterable<?,?> elements) {
             return $ceylon$language$Category$this.containsEvery(elements);
         }
+//        @Override
+//        @Ignore
+//        public boolean containsEvery() {
+//            return $ceylon$language$Category$this.containsEvery(empty_.getEmpty$());
+//        }
+//        @Override
+//        @Ignore
+//        public Sequential<?> containsEvery$elements() {
+//            return empty_.getEmpty$();
+//        }
         @Override
         @Ignore
-        public boolean containsEvery() {
-            return $ceylon$language$Category$this.containsEvery(empty_.getEmpty$());
-        }
-        @Override
-        @Ignore
-        public Sequential<?> containsEvery$elements() {
-            return empty_.getEmpty$();
-        }
-        @Override
-        @Ignore
-        public boolean containsAny(Sequential<?> elements) {
+        public boolean containsAny(Iterable<?,?> elements) {
             return $ceylon$language$Category$this.containsAny(elements);
         }
-        @Override
-        @Ignore
-        public boolean containsAny() {
-            return $ceylon$language$Category$this.containsAny(empty_.getEmpty$());
-        }
-        @Override
-        @Ignore
-        public Sequential<?> containsAny$elements() {
-            return empty_.getEmpty$();
-        }
+//        @Override
+//        @Ignore
+//        public boolean containsAny() {
+//            return $ceylon$language$Category$this.containsAny(empty_.getEmpty$());
+//        }
+//        @Override
+//        @Ignore
+//        public Sequential<?> containsAny$elements() {
+//            return empty_.getEmpty$();
+//        }
         @Override
         @Ignore
         public boolean equals(java.lang.Object obj) {

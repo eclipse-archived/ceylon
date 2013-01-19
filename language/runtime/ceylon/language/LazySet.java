@@ -281,39 +281,39 @@ public class LazySet<Element> implements Set<Element> {
 
     @Override @Ignore
     public boolean containsEvery(
-            @Sequenced @Name("elements")
-            @TypeInfo("ceylon.language::Sequential<ceylon.language::Object>")
-            Sequential<?> elements) {
+            @Name("elements")
+            @TypeInfo("ceylon.language::Iterable<ceylon.language::Object,ceylon.language::Null>")
+            Iterable<?,?> elements) {
         return cat$impl.containsEvery(elements);
     }
 
-    @Override @Ignore
-    public boolean containsEvery() {
-        return cat$impl.containsEvery();
-    }
-
-    @Override @Ignore
-    public Sequential<?> containsEvery$elements() {
-        return cat$impl.containsEvery$elements();
-    }
+//    @Override @Ignore
+//    public boolean containsEvery() {
+//        return cat$impl.containsEvery();
+//    }
+//
+//    @Override @Ignore
+//    public Sequential<?> containsEvery$elements() {
+//        return cat$impl.containsEvery$elements();
+//    }
 
     @Override @Ignore
     public boolean containsAny(
             @Sequenced @Name("elements")
-            @TypeInfo("ceylon.language::Sequential<ceylon.language::Object>")
-            Sequential<?> elements) {
+            @TypeInfo("ceylon.language::Iterable<ceylon.language::Object,ceylon.language::Null>")
+            Iterable<?,?> elements) {
         return cat$impl.containsAny(elements);
     }
 
-    @Override @Ignore
-    public boolean containsAny() {
-        return cat$impl.containsAny();
-    }
-
-    @Override @Ignore
-    public Sequential<?> containsAny$elements() {
-        return cat$impl.containsAny$elements();
-    }
+//    @Override @Ignore
+//    public boolean containsAny() {
+//        return cat$impl.containsAny();
+//    }
+//
+//    @Override @Ignore
+//    public Sequential<?> containsAny$elements() {
+//        return cat$impl.containsAny$elements();
+//    }
 
     @Override @Ignore
     public boolean superset(Set<? extends java.lang.Object> set) {

@@ -129,10 +129,10 @@ void testSatisfaction() {
     value category = MyCategory();
     check(5 in category, "Category.contains [1]");
     check(!20 in category, "Category.contains [2]");
-    check(category.containsEvery(1,2,3,4,5), "Category.containsEvery [1]");
-    check(!category.containsEvery(0,1,2,3), "Category.containsEvery [2]");
-    check(category.containsAny(0,1,2,3), "Category.containsAny [1]");
-    check(!category.containsAny(0,11,12,13), "Category.containsAny [2]");
+    check(category.containsEvery {1,2,3,4,5}, "Category.containsEvery [1]");
+    check(!category.containsEvery {0,1,2,3}, "Category.containsEvery [2]");
+    check(category.containsAny {0,1,2,3}, "Category.containsAny [1]");
+    check(!category.containsAny {0,11,12,13}, "Category.containsAny [2]");
     value collection = MyCollection();
     check(!collection.empty, "Collection.empty");
     check(`l` in collection, "Collection.contains");

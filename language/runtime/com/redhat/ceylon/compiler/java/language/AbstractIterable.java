@@ -151,33 +151,31 @@ public abstract class AbstractIterable<Element,Absent> implements Iterable<Eleme
         return $ceylon$language$Iterable$this.group(grouping);
     }
     @Override @Ignore
-    public boolean contains(@Name("element") java.lang.Object element) {
+    public boolean contains(java.lang.Object element) {
         return $ceylon$language$Iterable$this.contains(element);
     }
     @Override @Ignore
-    public boolean containsEvery(
-            @Sequenced @Name("elements") @TypeInfo("ceylon.language::Sequential<ceylon.language::Object>") Sequential<?> elements) {
+    public boolean containsEvery(Iterable<?,?> elements) {
         return $ceylon$language$Category$this.containsEvery(elements);
     }
+//    @Override @Ignore
+//    public boolean containsEvery() {
+//        return $ceylon$language$Category$this.containsEvery();
+//    }
+//    @Override @Ignore
+//    public Sequential<?> containsEvery$elements() {
+//        return $ceylon$language$Category$this.containsEvery$elements();
+//    }
     @Override @Ignore
-    public boolean containsEvery() {
-        return $ceylon$language$Category$this.containsEvery();
-    }
-    @Override @Ignore
-    public Sequential<?> containsEvery$elements() {
-        return $ceylon$language$Category$this.containsEvery$elements();
-    }
-    @Override @Ignore
-    public boolean containsAny(
-            @Sequenced @Name("elements") @TypeInfo("ceylon.language::Sequential<ceylon.language::Object>") Sequential<?> elements) {
+    public boolean containsAny(Iterable<?,?> elements) {
         return $ceylon$language$Category$this.containsAny(elements);
     }
-    @Override @Ignore
-    public boolean containsAny() {
-        return $ceylon$language$Category$this.containsAny();
-    }
-    @Override @Ignore
-    public Sequential<?> containsAny$elements() {
-        return $ceylon$language$Category$this.containsAny$elements();
-    }
+//    @Override @Ignore
+//    public boolean containsAny() {
+//        return $ceylon$language$Category$this.containsAny();
+//    }
+//    @Override @Ignore
+//    public Sequential<?> containsAny$elements() {
+//        return $ceylon$language$Category$this.containsAny$elements();
+//    }
 }

@@ -574,39 +574,39 @@ public final class Array<Element> implements List<Element> {
 
     @Override
     @Ignore
-    public boolean containsEvery(@Sequenced @Name("elements")
-    @TypeInfo("ceylon.language::Sequential<ceylon.language::Object>")
-    Sequential<?> elements) {
+    public boolean containsEvery(@Name("elements")
+    @TypeInfo("ceylon.language::Iterable<ceylon.language::Object,ceylon.language::Null>")
+    Iterable<?,?> elements) {
         return $ceylon$language$Category$this.containsEvery(elements);
     }
-    @Override
-    @Ignore
-    public boolean containsEvery() {
-        return $ceylon$language$Category$this.containsEvery(empty_.getEmpty$());
-    }
-    @Override
-    @Ignore
-    public Sequential<?> containsEvery$elements() {
-        return empty_.getEmpty$();
-    }
+//    @Override
+//    @Ignore
+//    public boolean containsEvery() {
+//        return $ceylon$language$Category$this.containsEvery(empty_.getEmpty$());
+//    }
+//    @Override
+//    @Ignore
+//    public Sequential<?> containsEvery$elements() {
+//        return empty_.getEmpty$();
+//    }
 
     @Override
     @Ignore
-    public boolean containsAny(@Sequenced @Name("elements")
-    @TypeInfo("ceylon.language::Sequential<ceylon.language::Object>")
-    Sequential<?> elements) {
+    public boolean containsAny(@Name("elements")
+    @TypeInfo("ceylon.language::Iterable<ceylon.language::Object,ceylon.language::Null>")
+    Iterable<?,?> elements) {
         return $ceylon$language$Category$this.containsAny(elements);
     }
-    @Override
-    @Ignore
-    public boolean containsAny() {
-        return $ceylon$language$Category$this.containsAny(empty_.getEmpty$());
-    }
-    @Override
-    @Ignore
-    public Sequential<?> containsAny$elements() {
-        return empty_.getEmpty$();
-    }
+//    @Override
+//    @Ignore
+//    public boolean containsAny() {
+//        return $ceylon$language$Category$this.containsAny(empty_.getEmpty$());
+//    }
+//    @Override
+//    @Ignore
+//    public Sequential<?> containsAny$elements() {
+//        return empty_.getEmpty$();
+//    }
     
     @Override
     public Iterable<? extends Element, ? extends java.lang.Object> getRest() {

@@ -261,43 +261,43 @@ public class Tuple<Element, First extends Element, Rest extends Sequential<? ext
 
 	@Override
 	@Annotations(@Annotation("default"))
-	public boolean containsEvery(@Sequenced @Name("elements")
-	        @TypeInfo("ceylon.language::Sequential<ceylon.language::Object>")
-	Sequential<?> elements) {
+	public boolean containsEvery(@Name("elements")
+	        @TypeInfo("ceylon.language::Iterable<ceylon.language::Object,ceylon.language::Null>")
+	        Iterable<?,?> elements) {
 		return category$impl.containsEvery(elements);
 	}
 
-	@Override
-	@Ignore
-	public boolean containsEvery() {
-		return category$impl.containsEvery();
-	}
-
-	@Override
-	@Ignore
-	public Sequential<?> containsEvery$elements() {
-		return category$impl.containsEvery$elements();
-	}
+//	@Override
+//	@Ignore
+//	public boolean containsEvery() {
+//		return category$impl.containsEvery();
+//	}
+//
+//	@Override
+//	@Ignore
+//	public Sequential<?> containsEvery$elements() {
+//		return category$impl.containsEvery$elements();
+//	}
 
 	@Override
 	@Annotations(@Annotation("default"))
-	public boolean containsAny(@Sequenced @Name("elements")
-	        @TypeInfo("ceylon.language::Sequential<ceylon.language::Object>")
-	Sequential<?> elements) {
+	public boolean containsAny(@Name("elements")
+	        @TypeInfo("ceylon.language::Iterable<ceylon.language::Object,ceylon.language::Null>")
+	        Iterable<?,?> elements) {
 		return category$impl.containsAny(elements);
 	}
 
-	@Override
-	@Ignore
-	public boolean containsAny() {
-		return category$impl.containsAny();
-	}
-
-	@Override
-	@Ignore
-	public Sequential<?> containsAny$elements() {
-		return category$impl.containsAny$elements();
-	}
+//	@Override
+//	@Ignore
+//	public boolean containsAny() {
+//		return category$impl.containsAny();
+//	}
+//
+//	@Override
+//	@Ignore
+//	public Sequential<?> containsAny$elements() {
+//		return category$impl.containsAny$elements();
+//	}
 
 	@Override
 	@Annotations(@Annotation("actual"))

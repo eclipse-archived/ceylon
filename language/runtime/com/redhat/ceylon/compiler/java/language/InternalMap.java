@@ -313,41 +313,39 @@ public class InternalMap<Key, Item> implements Map<Key, Item> {
 
     @Override
     @Annotations(@Annotation("default"))
-    public boolean containsEvery(
-            @Sequenced @Name("elements") @TypeInfo("ceylon.language::Sequential<ceylon.language::Object>") Sequential<?> elements) {
+    public boolean containsEvery(Iterable<?,?> elements) {
         return cat$impl.containsEvery(elements);
     }
 
-    @Override
-    @Ignore
-    public boolean containsEvery() {
-        return cat$impl.containsEvery();
-    }
-
-    @Override
-    @Ignore
-    public Sequential<?> containsEvery$elements() {
-        return cat$impl.containsEvery$elements();
-    }
+//    @Override
+//    @Ignore
+//    public boolean containsEvery() {
+//        return cat$impl.containsEvery();
+//    }
+//
+//    @Override
+//    @Ignore
+//    public Sequential<?> containsEvery$elements() {
+//        return cat$impl.containsEvery$elements();
+//    }
 
     @Override
     @Annotations(@Annotation("default"))
-    public boolean containsAny(
-            @Sequenced @Name("elements") @TypeInfo("ceylon.language::Sequential<ceylon.language::Object>") Sequential<?> elements) {
+    public boolean containsAny(Iterable<?,?> elements) {
         return cat$impl.containsAny(elements);
     }
 
-    @Override
-    @Ignore
-    public boolean containsAny() {
-        return cat$impl.containsAny();
-    }
-
-    @Override
-    @Ignore
-    public Sequential<?> containsAny$elements() {
-        return cat$impl.containsAny$elements();
-    }
+//    @Override
+//    @Ignore
+//    public boolean containsAny() {
+//        return cat$impl.containsAny();
+//    }
+//
+//    @Override
+//    @Ignore
+//    public Sequential<?> containsAny$elements() {
+//        return cat$impl.containsAny$elements();
+//    }
 
     @Override
     @Annotations(@Annotation("formal"))
