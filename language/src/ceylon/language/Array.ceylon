@@ -29,7 +29,7 @@ shared abstract class Array<Element>()
 doc "Create an array containing the given elements. If no
      elements are provided, create an empty array of the
      given element type."
-shared native Array<Element> array<Element>(Element* elements);
+shared native Array<Element> array<Element>({Element*} elements);
 
 doc "Create an array of the specified size, populating every 
      index with the given element. If the specified size is

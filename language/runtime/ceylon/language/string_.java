@@ -4,7 +4,6 @@ import com.redhat.ceylon.compiler.java.metadata.Ceylon;
 import com.redhat.ceylon.compiler.java.metadata.Ignore;
 import com.redhat.ceylon.compiler.java.metadata.Method;
 import com.redhat.ceylon.compiler.java.metadata.Name;
-import com.redhat.ceylon.compiler.java.metadata.Sequenced;
 import com.redhat.ceylon.compiler.java.metadata.TypeInfo;
 
 @Ceylon(major = 4)
@@ -14,9 +13,9 @@ public final class string_ {
     private string_() {}
     
     @TypeInfo("ceylon.language::String")
-    public static java.lang.String string(@Name("characters") @Sequenced 
-    @TypeInfo("ceylon.language::Sequential<ceylon.language::Character>")
-    final Sequential<? extends Character> characters) {
+    public static java.lang.String string(@Name("characters")
+    @TypeInfo("ceylon.language::Iterable<ceylon.language::Character,ceylon.language::Null>")
+    final Iterable<? extends Character, ? extends java.lang.Object> characters) {
         if (characters instanceof String) {
             return ((String)characters).toString();
         } else {

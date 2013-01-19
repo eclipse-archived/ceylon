@@ -349,6 +349,6 @@ shared void strings() {
     check("\{#0022}"=="\"", "Unicode escape 9");
     check("\{#0027}"=="\'", "Unicode escape 10");
 
-    check(string() == "", "string()");
-    check(string(`h`, `i`)=="hi", "string(h,i)");
+    check(string ([]) == "", "string()");
+    check(string {`h`, `i`}=="hi", "string(h,i)");
 }

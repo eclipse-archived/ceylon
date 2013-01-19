@@ -20,15 +20,15 @@ public final class array_ {
     public static <Element> Array<Element> array(
     @Name("elements")
     @Sequenced
-    @TypeInfo("ceylon.language::Sequential<Element>")
-    final ceylon.language.Sequential<? extends Element> elements) {
+    @TypeInfo("ceylon.language::Iterable<Element,ceylon.language::Null>")
+    final ceylon.language.Iterable<? extends Element,? extends java.lang.Object> elements) {
         return array(null, elements);
     }
     
     @Ignore
     public static <Element> Array<Element> array(
             Class typeClass,
-            final ceylon.language.Sequential<? extends Element> elements) {
+            final ceylon.language.Iterable<? extends Element,? extends java.lang.Object> elements) {
         return Array.<Element>instance(typeClass, elements);
     }
     

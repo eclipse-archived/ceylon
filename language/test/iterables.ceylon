@@ -163,8 +163,8 @@ void testIterables() {
     //coalesced
     check((1..10).coalesced == 1..10, "Range.coalesced");
     check({1,2,3,null,4,5}.coalesced.sequence=={1,2,3,4,5}, "Sequence.coalesced");
-    check(string(*{for (c in "HoLa") c.uppercase then c else null}.coalesced.sequence)=="HL", "Iterable.coalesced");
-    check(array(1,2,3,null,5).coalesced.sequence=={1,2,3,5}, "Array.coalesced");
+    check(string({for (c in "HoLa") c.uppercase then c else null}.coalesced.sequence)=="HL", "Iterable.coalesced");
+    check(array{1,2,3,null,5}.coalesced.sequence=={1,2,3,5}, "Array.coalesced");
     check(Singleton("X").coalesced==Singleton("X"), "Singleton.coalesced [1]");
     check("ABC".coalesced=="ABC", "String.coalesced");
     check({}.coalesced=={}, "Empty.coalesced");
@@ -173,7 +173,7 @@ void testIterables() {
         check(k+1==v, "Range.indexed");
     }
     check({"a", "b", "c"}.indexed.sequence=={0->"a", 1->"b", 2->"c"}, "Sequence.indexed");
-    check(array(0, 1, 2).indexed.sequence=={0->0, 1->1, 2->2}, "Array.indexed");
+    check(array{0, 1, 2}.indexed.sequence=={0->0, 1->1, 2->2}, "Array.indexed");
     check(Singleton("A").indexed.sequence=={0->"A"}, "Singleton.indexed");
     check({}.indexed=={}, "Empty.indexed");
     check({for (c in "abc") c}.indexed.sequence=={0->`a`, 1->`b`, 2->`c`}, "Iterable.indexed");
@@ -201,8 +201,8 @@ void testIterables() {
     check("abc".chain({1,2}).sequence=={`a`, `b`, `c`, 1, 2}, "String.chain");
     check("".chain(Singleton(1)).sequence=={1}, "\"\".chain");
     check({}.chain({1,2})=={1,2}, "Empty.chain");
-    check(array().chain({1,2}).sequence==[1,2], "EmptyArray.chain");
-    check(array(1,2).chain({3,4}).sequence=={1,2,3,4}, "NonemptyArray.chain");
+    check(array([]).chain({1,2}).sequence==[1,2], "EmptyArray.chain");
+    check(array{1,2}.chain({3,4}).sequence=={1,2,3,4}, "NonemptyArray.chain");
     check(Singleton(1).chain(Singleton(2)).chain(Singleton("3")).sequence=={1,2,"3"}, "Singletons.chain");
 
     //group
