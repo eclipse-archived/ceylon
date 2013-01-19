@@ -208,6 +208,9 @@
                 <include name="ceylon/language/string_.java"/>
                 <exclude name="ceylon/language/StringBuilder.ceylon"/>
                 <include name="ceylon/language/StringBuilder.java"/>
+                <exclude name="ceylon/language/flatten.ceylon"/>
+                <include name="ceylon/language/flatten_.java"/>
+                <include name="ceylon/language/unflatten_.java"/>
                 <!-- These are problem files we hope to be able to compile some day -->
                 <exclude name="ceylon/language/Correspondence.ceylon"/> <!-- COMPILE ERROR (see compiler issue #904) -->
                 <include name="ceylon/language/Correspondence.java"/>
@@ -217,9 +220,6 @@
                 <include name="ceylon/language/Iterable$impl.java"/>
                 <exclude name="ceylon/language/LazySet.ceylon"/> <!-- COMPILE ERROR (needs reified generics) -->
                 <include name="ceylon/language/LazySet.java"/>
-                <exclude name="ceylon/language/flatten.ceylon"/>
-                <include name="ceylon/language/flatten_.java"/>
-                <include name="ceylon/language/unflatten_.java"/>
             </files>
         </ceylon-compile>
     </target>
