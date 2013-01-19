@@ -228,4 +228,7 @@ void testIterables() {
         "hello", { 1,2,3,4 });
     check(combined.sequence.size==4, "combine [1]");
     check(combined.sequence == { "comb h+1", "comb e+2", "comb l+3", "comb l+4" }, "combine [2]");
+    
+    check((1..4).fold(0, plus<Integer>)==10, "fold with plus");
+    check((1..4).fold(1, times<Integer>)==24, "fold with times");
 }
