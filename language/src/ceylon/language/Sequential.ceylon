@@ -1,3 +1,15 @@
+doc "A possibly-empty, immutable sequence of values. The 
+     type `Sequential<Element>` may be abbreviated 
+     `[Element*]` or `Element[]`. 
+     
+     `Sequential` has two enumerated subtypes:
+     
+     - `Empty`, abbreviated `[]`, represents an empty 
+        sequence, and
+     - `Sequence<Element>`, abbreviated `[Element+]` 
+        represents a non-empty sequence, and has the very
+        important subclass `Tuple`."
+see (Tuple)
 shared interface Sequential<out Element>
         of Empty|Sequence<Element>
         satisfies List<Element> & 
@@ -18,5 +30,7 @@ shared interface Sequential<out Element>
          representation contains the string `\"null\"`."
     shared actual default String string => 
             empty then "[]" else "[ " commaList(this) " ]";
+    
+    shared actual default Element[] clone => this;
     
 }

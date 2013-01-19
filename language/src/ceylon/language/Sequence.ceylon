@@ -1,17 +1,13 @@
-doc "A nonempty, immutable sequence of values. A sequence of
-     values may be formed using braces:
+doc "A nonempty, immutable sequence of values. The type 
+     `Sequence<Element>`, may be abbreviated `[Element+]`.
      
-         value worlds = { \"hello\", \"world\" };
-         value cubes = { for (n in 0..100) n**3 };
+     Given a possibly-empty sequence of type `[Element*], 
+     the `if (nonempty ...)` construct, or, alternatively,
+     the `assert (nonempty ...)` construct, may be used to 
+     narrow to a nonempty sequence type:
      
-     The type `Sequential<Element>`, abbreviated `[Element*]`
-     or `Element[]`, represents a possibly-empty sequence. 
-     The `if (nonempty ...)` construct may be used to obtain 
-     an instance of `Sequence<Element>`, abbreviated 
-     `[Element+]` from a possibly-empty sequence:
-     
-         Integer[] nums = ... ;
-         if (nonmpty nums) {
+         [Integer*] nums = ... ;
+         if (nonempty nums) {
              Integer first = nums.first;
              Integer max = max(nums);
              [Integer+] squares = nums.collect((Integer i) i**2));
@@ -102,5 +98,7 @@ shared native interface Sequence<out Element>
     shared actual default Element? findLast(
             Boolean selecting(Element elem)) => 
                     List::findLast(selecting);
+    
+    shared actual default [Element+] clone => this;
     
 }

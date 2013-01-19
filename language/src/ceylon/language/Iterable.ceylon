@@ -4,6 +4,17 @@ doc "Abstract supertype of containers whose elements may be
      be a well-defined iteration order, and so the order of
      iterated elements may not be stable.
      
+     The type `Iterable<Element,Null>`, usually abbreviated
+     `{Element*}` represents a possibly-empty iterable 
+     container. The type `Iterable<Element,Nothing>`, 
+     usually abbreviated `{Element+}` represents a nonempty 
+     iterable container.
+     
+     An instance of `Iterable` may be constructed by 
+     surrounding a value list in braces:
+     
+         {String+} words = { \"hello\", \"world\" };
+     
      An instance of `Iterable` may be iterated using a `for`
      loop:
      

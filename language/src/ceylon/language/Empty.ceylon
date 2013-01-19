@@ -1,7 +1,7 @@
 import ceylon.language { e=empty }
 
 doc "A sequence with no elements. The type of the expression
-     `{}`."
+     `[]`."
 see (Sequence)
 shared interface Empty of e
            satisfies Nothing[] &
