@@ -286,17 +286,17 @@ public final class process_ {
         Iterator<? extends String> iterator = args.getIterator();
         java.lang.Object next;
         while ((next = iterator.next()) instanceof String) {
-            String arg = (String) next;
+            java.lang.String arg = ((String) next).value;
             if (arg.startsWith("-" + name + "=") || 
                     arg.startsWith("--" + name + "=")) {
-                return String.instance(arg.value.substring(arg.value.indexOf('=')+1));
+                return String.instance(arg.substring(arg.indexOf('=')+1));
             }
             if (arg.equals("-" + name) || 
                     arg.equals("--" + name)) {
                 java.lang.Object val = iterator.next();
                 if (val instanceof String) {
-                    String result = ((String) val);
-                    return result.startsWith("-") ? null : result;
+                    java.lang.String result = ((String) val).value;
+                    return String.instance(result.startsWith("-") ? null : result);
                 }
             }
         }
@@ -308,7 +308,7 @@ public final class process_ {
         Iterator<? extends String> iterator = args.getIterator();
         java.lang.Object next;
         while ((next = iterator.next()) instanceof String) {
-            String arg = (String) next;
+            java.lang.String arg = ((String) next).value;
             if (arg.startsWith("-" + name + "=") || 
                     arg.startsWith("--" + name + "=") || 
                     arg.equals("-" + name) || 
