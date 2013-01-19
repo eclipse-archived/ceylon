@@ -183,11 +183,6 @@
                 <include name="ceylon/language/Character.java"/>
                 <exclude name="ceylon/language/className.ceylon"/>
                 <include name="ceylon/language/className_.java"/>
-                <exclude name="ceylon/language/Comparison.ceylon"/>
-                <include name="ceylon/language/Comparison.java"/>
-                <include name="ceylon/language/smaller_.java"/>
-                <include name="ceylon/language/equal_.java"/>
-                <include name="ceylon/language/larger_.java"/>
                 <exclude name="ceylon/language/Exception.ceylon"/>
                 <include name="ceylon/language/Exception.java"/>
                 <exclude name="ceylon/language/Float.ceylon"/>
