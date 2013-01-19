@@ -1,7 +1,6 @@
 package com.redhat.ceylon.compiler.java.language;
 
 import ceylon.language.Boolean;
-import ceylon.language.Null;
 import ceylon.language.Callable;
 import ceylon.language.Collection;
 import ceylon.language.Comparison;
@@ -57,58 +56,58 @@ public class InternalMap<Key, Item> implements Map<Key, Item> {
 
     @Override
     @Annotations(@Annotation("default"))
-    public boolean definesEvery(Sequential<? extends java.lang.Object> keys) {
+    public boolean definesEvery(Iterable<? extends Object,? extends java.lang.Object> keys) {
         return corr$impl.definesEvery(keys);
     }
 
-    @Override
-    @Ignore
-    public boolean definesEvery() {
-        return corr$impl.definesEvery();
-    }
+//    @Override
+//    @Ignore
+//    public boolean definesEvery() {
+//        return corr$impl.definesEvery();
+//    }
 
-    @Override
-    @Ignore
-    public Sequential<? extends Object> definesEvery$keys() {
-        return corr$impl.definesEvery$keys();
-    }
+//    @Override
+//    @Ignore
+//    public Iterable<? extends Object,? extends java.lang.Object> definesEvery$keys() {
+//        return corr$impl.definesEvery$keys();
+//    }
 
     @Override
     @Annotations(@Annotation("default"))
-    public boolean definesAny(Sequential<? extends Object> keys) {
+    public boolean definesAny(Iterable<? extends Object,? extends java.lang.Object> keys) {
         return corr$impl.definesAny(keys);
     }
 
-    @Override
-    @Ignore
-    public boolean definesAny() {
-        return corr$impl.definesAny();
-    }
+//    @Override
+//    @Ignore
+//    public boolean definesAny() {
+//        return corr$impl.definesAny();
+//    }
 
-    @Override
-    @Ignore
-    public Sequential<? extends Object> definesAny$keys() {
-        return corr$impl.definesAny$keys();
-    }
+//    @Override
+//    @Ignore
+//    public Iterable<? extends Object,? extends java.lang.Object> definesAny$keys() {
+//        return corr$impl.definesAny$keys();
+//    }
 
     @Override
     @Annotations(@Annotation("default"))
     @TypeInfo("ceylon.language::Sequential<Item|ceylon.language::Nothing>")
-    public Sequential<? extends Item> items(Sequential<? extends Object> keys) {
+    public Sequential<? extends Item> items(Iterable<? extends Object,? extends java.lang.Object> keys) {
         return corr$impl.items(keys);
     }
 
-    @Override
-    @Ignore
-    public Sequential<? extends Item> items() {
-        return corr$impl.items();
-    }
+//    @Override
+//    @Ignore
+//    public Sequential<? extends Item> items() {
+//        return corr$impl.items();
+//    }
 
-    @Override
-    @Ignore
-    public Sequential<? extends Object> items$keys() {
-        return corr$impl.items$keys();
-    }
+//    @Override
+//    @Ignore
+//    public Iterable<? extends Object,? extends java.lang.Object> items$keys() {
+//        return corr$impl.items$keys();
+//    }
 
     @Override
     @Annotations({ @Annotation("actual"), @Annotation("default") })

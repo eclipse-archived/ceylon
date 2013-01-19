@@ -162,11 +162,11 @@ Range<Integer> range {
     check(r1.span(3, 1000).string=="4..5", "range.span 5");
     check(r1.span(0,0).string=="1..1", "range.span 6");
     check(!(1..2).span(4,5) nonempty, "range.span (out of bounds)");
-    check(r1.definesEvery(1,2,3), "range.definesEvery 1");
-    check(!r1.definesEvery(4,5,6,7), "range.definesEvery 2");
-    check(r1.definesAny(1,2,3), "range.definesAny 1");
-    check(!r1.definesAny(7,6,5), "range.definesAny 2");
-    check(r1.definesAny(6,5,4), "range.definesAny 3");
+    check(r1.definesEvery {1,2,3}, "range.definesEvery 1");
+    check(!r1.definesEvery {4,5,6,7}, "range.definesEvery 2");
+    check(r1.definesAny {1,2,3}, "range.definesAny 1");
+    check(!r1.definesAny {7,6,5}, "range.definesAny 2");
+    check(r1.definesAny {6,5,4}, "range.definesAny 3");
     variable Integer sum = 0;
     for (Integer x in r1) {
         sum += x;

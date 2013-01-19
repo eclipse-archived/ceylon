@@ -1,6 +1,5 @@
 package ceylon.language;
 
-import com.redhat.ceylon.common.tool.Java7Checker;
 import com.redhat.ceylon.compiler.java.language.AbstractIterable;
 import com.redhat.ceylon.compiler.java.language.FilterIterable;
 import com.redhat.ceylon.compiler.java.language.MapIterable;
@@ -606,57 +605,57 @@ public final class Map$impl<Key,Item> {
 
             @Override
             @Ignore
-            public boolean definesEvery(Sequential<? extends java.lang.Object> keys) {
+            public boolean definesEvery(Iterable<? extends java.lang.Object,? extends java.lang.Object> keys) {
                 return $ceylon$language$Correspondence$this.definesEvery(keys);
             }
 
-            @Override
-            @Ignore
-            public boolean definesEvery() {
-                return $ceylon$language$Correspondence$this.definesEvery(empty_.getEmpty$());
-            }
+//            @Override
+//            @Ignore
+//            public boolean definesEvery() {
+//                return $ceylon$language$Correspondence$this.definesEvery(empty_.getEmpty$());
+//            }
+
+//            @Override
+//            @Ignore
+//            public Sequential<? extends java.lang.Object> definesEvery$keys() {
+//                return empty_.getEmpty$();
+//            }
 
             @Override
             @Ignore
-            public Sequential<? extends java.lang.Object> definesEvery$keys() {
-                return empty_.getEmpty$();
-            }
-
-            @Override
-            @Ignore
-            public boolean definesAny(Sequential<? extends java.lang.Object> keys) {
+            public boolean definesAny(Iterable<? extends java.lang.Object,? extends java.lang.Object> keys) {
                 return $ceylon$language$Correspondence$this.definesAny(keys);
             }
 
-            @Override
-            @Ignore
-            public boolean definesAny() {
-                return $ceylon$language$Correspondence$this.definesAny(empty_.getEmpty$());
-            }
+//            @Override
+//            @Ignore
+//            public boolean definesAny() {
+//                return $ceylon$language$Correspondence$this.definesAny(empty_.getEmpty$());
+//            }
+
+//            @Override
+//            @Ignore
+//            public Sequential<? extends java.lang.Object> definesAny$keys() {
+//                return empty_.getEmpty$();
+//            }
 
             @Override
             @Ignore
-            public Sequential<? extends java.lang.Object> definesAny$keys() {
-                return empty_.getEmpty$();
-            }
-
-            @Override
-            @Ignore
-            public Sequential<? extends Set<? extends Key>> items(Sequential<? extends java.lang.Object> keys) {
+            public Sequential<? extends Set<? extends Key>> items(Iterable<? extends java.lang.Object,? extends java.lang.Object> keys) {
                 return $ceylon$language$Correspondence$this.items(keys);
             }
 
-            @Override
-            @Ignore
-            public Sequential<? extends Set<? extends Key>> items() {
-                return $ceylon$language$Correspondence$this.items(empty_.getEmpty$());
-            }
+//            @Override
+//            @Ignore
+//            public Sequential<? extends Set<? extends Key>> items() {
+//                return $ceylon$language$Correspondence$this.items(empty_.getEmpty$());
+//            }
 
-            @Override
-            @Ignore
-            public Sequential<? extends java.lang.Object> items$keys() {
-                return empty_.getEmpty$();
-            }
+//            @Override
+//            @Ignore
+//            public Sequential<? extends java.lang.Object> items$keys() {
+//                return empty_.getEmpty$();
+//            }
 
             @Override
             @Ignore
@@ -875,50 +874,50 @@ public final class Map$impl<Key,Item> {
 
             @Override @Ignore
             public boolean definesEvery(
-                    Sequential<? extends java.lang.Object> keys) {
+            		Iterable<? extends java.lang.Object,? extends java.lang.Object> keys) {
                 return $this.definesEvery(keys);
             }
 
-            @Override @Ignore
-            public boolean definesEvery() {
-                return $this.definesEvery();
-            }
+//            @Override @Ignore
+//            public boolean definesEvery() {
+//                return $this.definesEvery();
+//            }
+
+//            @Override @Ignore
+//            public Iterable<? extends java.lang.Object,? extends java.lang.Object> definesEvery$keys() {
+//                return $this.definesEvery$keys();
+//            }
 
             @Override @Ignore
-            public Sequential<? extends java.lang.Object> definesEvery$keys() {
-                return $this.definesEvery$keys();
-            }
-
-            @Override @Ignore
-            public boolean definesAny(Sequential<? extends java.lang.Object> keys) {
+            public boolean definesAny(Iterable<? extends java.lang.Object,? extends java.lang.Object> keys) {
                 return $this.definesAny(keys);
             }
 
-            @Override @Ignore
-            public boolean definesAny() {
-                return $this.definesAny();
-            }
+//            @Override @Ignore
+//            public boolean definesAny() {
+//                return $this.definesAny();
+//            }
 
-            @Override @Ignore
-            public Sequential<? extends java.lang.Object> definesAny$keys() {
-                return $this.definesAny$keys();
-            }
+//            @Override @Ignore
+//            public Iterable<? extends java.lang.Object,? extends java.lang.Object> definesAny$keys() {
+//                return $this.definesAny$keys();
+//            }
 
             @Override
             public Sequential<? extends Result> items(
-                    Sequential<? extends java.lang.Object> keys) {
+            		Iterable<? extends java.lang.Object,? extends java.lang.Object> keys) {
                 return $ceylon$language$Correspondence$this.items(keys);
             }
 
-            @Override
-            public Sequential<? extends Result> items() {
-                return $ceylon$language$Correspondence$this.items(empty_.getEmpty$());
-            }
+//            @Override
+//            public Sequential<? extends Result> items() {
+//                return $ceylon$language$Correspondence$this.items(empty_.getEmpty$());
+//            }
 
-            @Override
-            public Sequential<? extends java.lang.Object> items$keys() {
-                return empty_.getEmpty$();
-            }
+//            @Override
+//            public Sequential<? extends java.lang.Object> items$keys() {
+//                return empty_.getEmpty$();
+//            }
 
             @Override
             public boolean getEmpty() {

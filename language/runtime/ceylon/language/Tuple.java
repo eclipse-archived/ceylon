@@ -314,64 +314,64 @@ public class Tuple<Element, First extends Element, Rest extends Sequential<? ext
 
 	@Override
 	@Annotations(@Annotation("default"))
-	public boolean definesEvery(@Sequenced @Name("keys")
-            @TypeInfo("ceylon.language::Sequential<ceylon.language::Integer>")
-	        Sequential<? extends Integer> keys) {
+	public boolean definesEvery(@Name("keys")
+            @TypeInfo("ceylon.language::Iterable<ceylon.language::Integer,ceylon.language::Null>")
+	        Iterable<? extends Integer,? extends java.lang.Object> keys) {
 		return correspondence$impl.definesEvery(keys);
 	}
 
-	@Override
-	@Ignore
-	public boolean definesEvery() {
-		return correspondence$impl.definesEvery();
-	}
+//	@Override
+//	@Ignore
+//	public boolean definesEvery() {
+//		return correspondence$impl.definesEvery();
+//	}
 
-	@Override
-	@Ignore
-	public Sequential<? extends Integer> definesEvery$keys() {
-		return correspondence$impl.definesEvery$keys();
-	}
+//	@Override
+//	@Ignore
+//	public Iterable<? extends Integer,? extends java.lang.Object> definesEvery$keys() {
+//		return correspondence$impl.definesEvery$keys();
+//	}
 
 	@Override
 	@Annotations(@Annotation("default"))
-	public boolean definesAny(@Sequenced @Name("keys")
-            @TypeInfo("ceylon.language::Sequential<ceylon.language::Integer>")
-	        Sequential<? extends Integer> keys) {
+	public boolean definesAny(@Name("keys")
+            @TypeInfo("ceylon.language::Iterable<ceylon.language::Integer,ceylon.language::Null>")
+	Iterable<? extends Integer,? extends java.lang.Object> keys) {
 		return correspondence$impl.definesAny(keys);
 	}
 
-	@Override
-	@Ignore
-	public boolean definesAny() {
-		return correspondence$impl.definesAny();
-	}
+//	@Override
+//	@Ignore
+//	public boolean definesAny() {
+//		return correspondence$impl.definesAny();
+//	}
 
-	@Override
-	@Ignore
-	public Sequential<? extends Integer> definesAny$keys() {
-		return correspondence$impl.definesAny$keys();
-	}
+//	@Override
+//	@Ignore
+//	public Iterable<? extends Integer,? extends java.lang.Object> definesAny$keys() {
+//		return correspondence$impl.definesAny$keys();
+//	}
 
 	@Override
 	@Annotations(@Annotation("default"))
 	@TypeInfo("ceylon.language::Sequential<Element|ceylon.language::Null>")
-	public Sequential<? extends Element> items(@Sequenced @Name("keys")
-            @TypeInfo("ceylon.language::Sequential<ceylon.language::Integer>")
-	        Sequential<? extends Integer> keys) {
+	public Sequential<? extends Element> items(@Name("keys")
+            @TypeInfo("ceylon.language::Iterable<ceylon.language::Integer,ceylon.language::Null>")
+	Iterable<? extends Integer,? extends java.lang.Object> keys) {
 		return correspondence$impl.items(keys);
 	}
 
-	@Override
-	@Ignore
-	public Sequential<? extends Element> items() {
-		return correspondence$impl.items();
-	}
+//	@Override
+//	@Ignore
+//	public Sequential<? extends Element> items() {
+//		return correspondence$impl.items();
+//	}
 
-	@Override
-	@Ignore
-	public Sequential<? extends Integer> items$keys() {
-		return correspondence$impl.items$keys();
-	}
+//	@Override
+//	@Ignore
+//	public Sequential<? extends Integer> items$keys() {
+//		return correspondence$impl.items$keys();
+//	}
 
 	@Override
 	@Ignore

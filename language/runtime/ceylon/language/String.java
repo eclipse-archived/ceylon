@@ -7,8 +7,6 @@ import com.redhat.ceylon.compiler.java.language.FilterIterable;
 import com.redhat.ceylon.compiler.java.language.InternalMap;
 import com.redhat.ceylon.compiler.java.language.MapIterable;
 import com.redhat.ceylon.compiler.java.language.SequenceString;
-import com.redhat.ceylon.compiler.java.metadata.Annotation;
-import com.redhat.ceylon.compiler.java.metadata.Annotations;
 import com.redhat.ceylon.compiler.java.metadata.Ceylon;
 import com.redhat.ceylon.compiler.java.metadata.Class;
 import com.redhat.ceylon.compiler.java.metadata.Defaulted;
@@ -279,8 +277,8 @@ public abstract class String
     @Override
     @Ignore
     public boolean definesEvery(@Name("keys")
-    @TypeInfo("ceylon.language::Sequential<ceylon.language::Integer>")
-    Sequential<? extends Integer> keys) {
+    @TypeInfo("ceylon.language::Iterable<ceylon.language::Integer,ceylon.language::Null>")
+    Iterable<? extends Integer,? extends java.lang.Object> keys) {
         //TODO: inefficient ... better to cache the result
         //      of getSize()
         return $ceylon$language$Correspondence$this.definesEvery(keys);
@@ -294,11 +292,11 @@ public abstract class String
         return instance(value).definesEvery(keys);
     }
 
-    @Override
-    @Ignore
-    public boolean definesEvery() {
-        return $ceylon$language$Correspondence$this.definesEvery((Sequential)empty_.getEmpty$());
-    }
+//    @Override
+//    @Ignore
+//    public boolean definesEvery() {
+//        return $ceylon$language$Correspondence$this.definesEvery((Sequential)empty_.getEmpty$());
+//    }
 
     @Ignore
     public static boolean definesEvery(java.lang.String value) {
@@ -306,17 +304,17 @@ public abstract class String
         return instance(value).definesEvery((Sequential)empty_.getEmpty$());
     }
 
-    @Override
-    @Ignore
-    public Sequential<? extends Integer> definesEvery$keys() {
-        return (Sequential)empty_.getEmpty$();
-    }
+//    @Override
+//    @Ignore
+//    public Sequential<? extends Integer> definesEvery$keys() {
+//        return (Sequential)empty_.getEmpty$();
+//    }
 
     @Override
     @Ignore
     public boolean definesAny(@Name("keys")
-    @TypeInfo("ceylon.language::Sequential<ceylon.language::Integer>")
-    Sequential<? extends Integer> keys) {
+    @TypeInfo("ceylon.language::Iterable<ceylon.language::Integer,ceylon.language::Null>")
+    Iterable<? extends Integer,? extends java.lang.Object> keys) {
         //TODO: inefficient ... better to cache the result
         //      of getSize()
         return $ceylon$language$Correspondence$this.definesAny(keys);
@@ -330,11 +328,11 @@ public abstract class String
         return instance(value).definesAny(keys);
     }
 
-    @Override
-    @Ignore
-    public boolean definesAny() {
-        return $ceylon$language$Correspondence$this.definesAny((Sequential)empty_.getEmpty$());
-    }
+//    @Override
+//    @Ignore
+//    public boolean definesAny() {
+//        return $ceylon$language$Correspondence$this.definesAny((Sequential)empty_.getEmpty$());
+//    }
 
     @Ignore
     public static boolean definesAny(java.lang.String value) {
@@ -342,17 +340,17 @@ public abstract class String
         return instance(value).definesAny((Sequential)empty_.getEmpty$());
     }
 
-    @Override
-    @Ignore
-    public Sequential<? extends Integer> definesAny$keys() {
-        return (Sequential)empty_.getEmpty$();
-    }
+//    @Override
+//    @Ignore
+//    public Sequential<? extends Integer> definesAny$keys() {
+//        return (Sequential)empty_.getEmpty$();
+//    }
 
     @Override
     @Ignore
     public Sequential<? extends Character> items(@Name("keys")
-    @TypeInfo("ceylon.language::Sequential<ceylon.language::Integer>")
-    Sequential<? extends Integer> keys) {
+    @TypeInfo("ceylon.language::Iterable<ceylon.language::Integer,ceylon.language::Null>")
+    Iterable<? extends Integer,? extends java.lang.Object> keys) {
         return $ceylon$language$Correspondence$this.items(keys);
     }
 
@@ -362,11 +360,11 @@ public abstract class String
         return instance(value).items(keys);
     }
 
-    @Override
-    @Ignore
-    public Sequential<? extends Character> items() {
-        return $ceylon$language$Correspondence$this.items((Sequential)empty_.getEmpty$());
-    }
+//    @Override
+//    @Ignore
+//    public Sequential<? extends Character> items() {
+//        return $ceylon$language$Correspondence$this.items((Sequential)empty_.getEmpty$());
+//    }
 
     @Ignore
     public static Sequential<? extends Character> items(java.lang.String value) {
@@ -374,11 +372,11 @@ public abstract class String
         return instance(value).items((Sequential)empty_.getEmpty$());
     }
 
-    @Override
-    @Ignore
-    public Sequential<? extends Integer> items$keys() {
-        return (Sequential)empty_.getEmpty$();
-    }
+//    @Override
+//    @Ignore
+//    public Sequential<? extends Integer> items$keys() {
+//        return (Sequential)empty_.getEmpty$();
+//    }
 
     @Override
     @TypeInfo("ceylon.language::Iterator<ceylon.language::Character>")

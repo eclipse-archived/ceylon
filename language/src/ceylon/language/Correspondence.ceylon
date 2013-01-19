@@ -52,7 +52,7 @@ shared interface Correspondence<in Key, out Item>
     doc "Determines if this `Correspondence` defines a value
          for every one of the given keys."
     see (defines)
-    shared default Boolean definesEvery(Key* keys) {
+    shared default Boolean definesEvery({Key*} keys) {
         for (key in keys) {
             if (!defines(key)) {
                 return false;
@@ -66,7 +66,7 @@ shared interface Correspondence<in Key, out Item>
     doc "Determines if this `Correspondence` defines a value
          for any one of the given keys."
     see (defines)
-    shared default Boolean definesAny(Key* keys) {
+    shared default Boolean definesAny({Key*} keys) {
         for (key in keys) {
             if (defines(key)) {
                 return true;
@@ -80,7 +80,7 @@ shared interface Correspondence<in Key, out Item>
     doc "Returns the items defined for the given keys, in
          the same order as the corresponding keys."
     see (item)
-    shared default Item?[] items(Key* keys) {
+    shared default Item?[] items({Key*} keys) {
         if (nonempty some = keys.sequence) {
             return Items(some.clone);
         }
@@ -99,7 +99,7 @@ shared interface Correspondence<in Key, out Item>
         
         shared actual Item? last => outer.item(keys.last);
         
-        shared actual Item?[] rest = outer.items(*keys.rest);
+        shared actual Item?[] rest = outer.items(keys.rest);
         
         shared actual Item? item(Integer index) {
             if (exists Key key = keys.item(index)) {

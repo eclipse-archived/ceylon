@@ -81,16 +81,16 @@ public final class Correspondence$impl<Key,Item> {
         return new CategoryKeys();
     }
 
-    public boolean definesEvery(ceylon.language.Sequential<? extends Key> keys){
+    public boolean definesEvery(Iterable<? extends Key, ? extends java.lang.Object> keys){
         return Correspondence$impl.<Key,Item>_definesEvery(this.$this, keys);
     }
     public boolean definesEvery(){
         return Correspondence$impl.<Key,Item>_definesEvery(this.$this, (Sequential)empty_.getEmpty$());
     }
-    public ceylon.language.Sequential<? extends Key> definesEvery$keys(){
+    public Iterable<? extends Key, ? extends java.lang.Object> definesEvery$keys(){
         return (Sequential<? extends Key>) empty_.getEmpty$();
     }
-    private static <Key,Item> boolean _definesEvery(Correspondence<Key,Item> $this, ceylon.language.Sequential<? extends Key> keys){
+    private static <Key,Item> boolean _definesEvery(Correspondence<Key,Item> $this, Iterable<? extends Key, ? extends java.lang.Object> keys){
         java.lang.Object elem;
         for (ceylon.language.Iterator<? extends Key> $key$iter$0 = keys.getIterator(); !((elem = $key$iter$0.next()) instanceof Finished);) {
             final Key key = (Key) elem;
@@ -101,16 +101,16 @@ public final class Correspondence$impl<Key,Item> {
         return true;
     }
 
-    public boolean definesAny(ceylon.language.Sequential<? extends Key> keys) {
+    public boolean definesAny(Iterable<? extends Key, ? extends java.lang.Object> keys) {
         return Correspondence$impl.<Key,Item>_definesAny(this.$this, keys);
     }
     public boolean definesAny() {
         return Correspondence$impl.<Key,Item>_definesAny(this.$this, (Sequential)empty_.getEmpty$());
     }
-    public ceylon.language.Sequential<? extends Key> definesAny$keys() {
+    public Iterable<? extends Key, ? extends java.lang.Object> definesAny$keys() {
         return (Sequential)empty_.getEmpty$();
     }
-    private static <Key,Item> boolean _definesAny(Correspondence<Key,Item> $this, ceylon.language.Sequential<? extends Key> keys) {
+    private static <Key,Item> boolean _definesAny(Correspondence<Key,Item> $this, Iterable<? extends Key, ? extends java.lang.Object> keys) {
         java.lang.Object elem;
         for (ceylon.language.Iterator<? extends Key> $key$iter$0 = keys.getIterator(); !((elem = $key$iter$0.next()) instanceof Finished);) {
             final Key key = (Key) elem;
@@ -121,7 +121,7 @@ public final class Correspondence$impl<Key,Item> {
         return false;
     }
 
-    public ceylon.language.Sequential<? extends Item> items(ceylon.language.Sequential<? extends Key> keys) {
+    public ceylon.language.Sequential<? extends Item> items(Iterable<? extends Key, ? extends java.lang.Object> keys) {
         return Correspondence$impl.<Key,Item>_items(this.$this, keys);
     }
     public ceylon.language.Sequential<? extends Item> items() {
@@ -130,7 +130,7 @@ public final class Correspondence$impl<Key,Item> {
     public ceylon.language.Sequential<? extends Key> items$keys() {
         return (Sequential)empty_.getEmpty$();
     }
-    private static <Key,Item> ceylon.language.Sequential<? extends Item> _items(Correspondence<Key,Item> $this, ceylon.language.Sequential<? extends Key> keys) {
+    private static <Key,Item> ceylon.language.Sequential<? extends Item> _items(Correspondence<Key,Item> $this, Iterable<? extends Key, ? extends java.lang.Object> keys) {
         if (keys instanceof Sequence) {
             final ceylon.language.Sequence<? extends Key> $keys$1 = (Sequence<? extends Key>)keys;
             return $this.Items$new((Sequence<? extends Key>)$keys$1.getClone());
@@ -204,49 +204,49 @@ public final class Correspondence$impl<Key,Item> {
         }
         @Override
         @Ignore
-        public boolean definesEvery(Sequential<? extends Integer> keys) {
+        public boolean definesEvery(Iterable<? extends Integer, ? extends java.lang.Object> keys) {
             return Correspondence$impl._definesEvery(this, keys);
         }
-        @Override @Ignore
-        @SuppressWarnings({"rawtypes", "unchecked"})
-        public boolean definesEvery() {
-            return Correspondence$impl._definesEvery(this, (Sequential)empty_.getEmpty$());
-        }
-        @Override @Ignore
-        @SuppressWarnings({"rawtypes", "unchecked"})
-        public Sequential<? extends Integer> definesEvery$keys() {
-            return (Sequential)empty_.getEmpty$();
-        }
+//        @Override @Ignore
+//        @SuppressWarnings({"rawtypes", "unchecked"})
+//        public boolean definesEvery() {
+//            return Correspondence$impl._definesEvery(this, (Sequential)empty_.getEmpty$());
+//        }
+//        @Override @Ignore
+//        @SuppressWarnings({"rawtypes", "unchecked"})
+//        public Iterable<? extends Integer, ? extends java.lang.Object> definesEvery$keys() {
+//            return (Sequential)empty_.getEmpty$();
+//        }
         @Override
         @Ignore
-        public boolean definesAny(Sequential<? extends Integer> keys) {
+        public boolean definesAny(Iterable<? extends Integer, ? extends java.lang.Object> keys) {
             return Correspondence$impl._definesAny(this, keys);
         }
-        @Override @Ignore
-        @SuppressWarnings({"rawtypes", "unchecked"})
-        public boolean definesAny() {
-            return Correspondence$impl._definesAny(this, (Sequential)empty_.getEmpty$());
-        }
-        @Override @Ignore
-        @SuppressWarnings({"rawtypes", "unchecked"})
-        public Sequential<? extends Integer> definesAny$keys() {
-            return (Sequential)empty_.getEmpty$();
-        }
+//        @Override @Ignore
+//        @SuppressWarnings({"rawtypes", "unchecked"})
+//        public boolean definesAny() {
+//            return Correspondence$impl._definesAny(this, (Sequential)empty_.getEmpty$());
+//        }
+//        @Override @Ignore
+//        @SuppressWarnings({"rawtypes", "unchecked"})
+//        public Iterable<? extends Integer, ? extends java.lang.Object> definesAny$keys() {
+//            return (Sequential)empty_.getEmpty$();
+//        }
         @Override
         @Ignore
-        public Sequential<? extends Item> items(Sequential<? extends Integer> keys) {
+        public Sequential<? extends Item> items(Iterable<? extends Integer, ? extends java.lang.Object> keys) {
             return Correspondence$impl._items(this, keys);
         }
-        @Override @Ignore
-        @SuppressWarnings({"rawtypes", "unchecked"})
-        public Sequential<? extends Item> items() {
-            return Correspondence$impl._items(this, (Sequential)empty_.getEmpty$());
-        }
-        @Override @Ignore
-        @SuppressWarnings({"rawtypes", "unchecked"})
-        public Sequential<? extends Integer> items$keys() {
-            return (Sequential)empty_.getEmpty$();
-        }
+//        @Override @Ignore
+//        @SuppressWarnings({"rawtypes", "unchecked"})
+//        public Sequential<? extends Item> items() {
+//            return Correspondence$impl._items(this, (Sequential)empty_.getEmpty$());
+//        }
+//        @Override @Ignore
+//        @SuppressWarnings({"rawtypes", "unchecked"})
+//        public Iterable<? extends Integer, ? extends java.lang.Object> items$keys() {
+//            return (Sequential)empty_.getEmpty$();
+//        }
         @Override
         @Ignore
         public boolean getEmpty() {

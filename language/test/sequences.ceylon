@@ -218,13 +218,13 @@ shared void sequences() {
     check(!result.keys.contains(2), "sequence keys 2");
     check(result.defines(0)&&result.defines(1)&&!result.defines(2),
            "sequence defines");
-    check(result.definesEvery(0,1), "sequence definesEvery 0,1");
-    check(!result.definesEvery(1,2), "sequence definesEvery 1,2");
-    check(result.definesAny(1,2), "sequence definesAny 1,2");
-    check(!result.definesAny(2,3), "sequence definesAny 2,3");
-    check(result.items(0,1,2,3).string=="{ hello, world, null, null }", "sequence.items 1");
-    check(result.items(1,0).string=="{ world, hello }", "sequence.items 2");
-    check(result.items(5,6,7).string=="{ null, null, null }", "sequence.items 3");
+    check(result.definesEvery {0,1}, "sequence definesEvery 0,1");
+    check(!result.definesEvery {1,2}, "sequence definesEvery 1,2");
+    check(result.definesAny {1,2}, "sequence definesAny 1,2");
+    check(!result.definesAny {2,3}, "sequence definesAny 2,3");
+    check(result.items {0,1,2,3}.string=="{ hello, world, null, null }", "sequence.items 1");
+    check(result.items {1,0}.string=="{ world, hello }", "sequence.items 2");
+    check(result.items {5,6,7}.string=="{ null, null, null }", "sequence.items 3");
 
     if (nonempty result) {
         value rest = result.rest;

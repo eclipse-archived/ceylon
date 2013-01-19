@@ -1,11 +1,8 @@
 package com.redhat.ceylon.compiler.java.language;
 
-import static java.lang.Long.MAX_VALUE;
-
 import java.util.Arrays;
 
 import ceylon.language.Boolean;
-import ceylon.language.Null;
 import ceylon.language.Callable;
 import ceylon.language.Category;
 import ceylon.language.Comparison;
@@ -14,9 +11,10 @@ import ceylon.language.Entry;
 import ceylon.language.Integer;
 import ceylon.language.Iterable;
 import ceylon.language.Iterator;
-import ceylon.language.Sequential;
 import ceylon.language.Map;
+import ceylon.language.Null;
 import ceylon.language.Sequence;
+import ceylon.language.Sequential;
 import ceylon.language.empty_;
 import ceylon.language.finished_;
 
@@ -257,53 +255,53 @@ public class ArraySequence<Element> implements Sequence<Element> {
 
     @Override
     @Ignore
-    public boolean definesEvery(Sequential<? extends Integer> keys) {
+    public boolean definesEvery(Iterable<? extends Integer,? extends java.lang.Object> keys) {
         return $ceylon$language$Correspondence$this.definesEvery(keys);
     }
 
-    @Override
-    @Ignore @SuppressWarnings({"unchecked", "rawtypes"})
-    public boolean definesEvery() {
-        return $ceylon$language$Correspondence$this.definesEvery((Sequential)empty_.getEmpty$());
-    }
-    @Override
-    @Ignore @SuppressWarnings({"unchecked", "rawtypes"})
-    public Sequential<? extends Integer> definesEvery$keys() {
-        return (Sequential)empty_.getEmpty$();
-    }
+//    @Override
+//    @Ignore @SuppressWarnings({"unchecked", "rawtypes"})
+//    public boolean definesEvery() {
+//        return $ceylon$language$Correspondence$this.definesEvery((Sequential)empty_.getEmpty$());
+//    }
+//    @Override
+//    @Ignore @SuppressWarnings({"unchecked", "rawtypes"})
+//    public Sequential<? extends Integer> definesEvery$keys() {
+//        return (Sequential)empty_.getEmpty$();
+//    }
 
     @Override
     @Ignore
-    public boolean definesAny(Sequential<? extends Integer> keys) {
+    public boolean definesAny(Iterable<? extends Integer,? extends java.lang.Object> keys) {
         return $ceylon$language$Correspondence$this.definesAny(keys);
     }
 
-    @Override
-    @Ignore @SuppressWarnings({"unchecked", "rawtypes"})
-    public boolean definesAny() {
-        return $ceylon$language$Correspondence$this.definesAny((Sequential)empty_.getEmpty$());
-    }
+//    @Override
+//    @Ignore @SuppressWarnings({"unchecked", "rawtypes"})
+//    public boolean definesAny() {
+//        return $ceylon$language$Correspondence$this.definesAny((Sequential)empty_.getEmpty$());
+//    }
 
-    @Override @SuppressWarnings({"unchecked", "rawtypes"})
-    public Sequential<? extends Integer> definesAny$keys() {
-        return (Sequential)empty_.getEmpty$();
-    }
+//    @Override @SuppressWarnings({"unchecked", "rawtypes"})
+//    public Sequential<? extends Integer> definesAny$keys() {
+//        return (Sequential)empty_.getEmpty$();
+//    }
 
     @Override
     @Ignore
-    public ceylon.language.Sequential<? extends Element> items(Sequential<? extends Integer> keys) {
+    public ceylon.language.Sequential<? extends Element> items(Iterable<? extends Integer,? extends java.lang.Object> keys) {
         return $ceylon$language$Correspondence$this.items(keys);
     }
 
-    @Override
-    @Ignore @SuppressWarnings({"unchecked", "rawtypes"})
-    public ceylon.language.Sequential<? extends Element> items() {
-        return $ceylon$language$Correspondence$this.items((Sequential)empty_.getEmpty$());
-    }
-    @Override @SuppressWarnings({"unchecked", "rawtypes"})
-    public Sequential<? extends Integer> items$keys() {
-        return (Sequential)empty_.getEmpty$();
-    }
+//    @Override
+//    @Ignore @SuppressWarnings({"unchecked", "rawtypes"})
+//    public ceylon.language.Sequential<? extends Element> items() {
+//        return $ceylon$language$Correspondence$this.items((Sequential)empty_.getEmpty$());
+//    }
+//    @Override @SuppressWarnings({"unchecked", "rawtypes"})
+//    public Sequential<? extends Integer> items$keys() {
+//        return (Sequential)empty_.getEmpty$();
+//    }
 
     @Override
     public ArraySequence<Element> getClone() {

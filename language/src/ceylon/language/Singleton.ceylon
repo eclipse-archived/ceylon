@@ -81,21 +81,20 @@ shared class Singleton<out Element>(Element element)
          that `List` has only one element which is equal to 
          this `Singleton`'s element."
     shared actual Boolean equals(Object that) {
-        throw;
-        //if (is List<Element> that) {
-        //    if (that.size!=1) {
-        //        return false;
-        //    }
-        //    else if (exists elem = that[0]) {
-        //        return elem==element;
-        //    }
-        //    else {
-        //        return false;
-        //    }
-        //}
-        //else {
-        //    return false;
-        //}
+        if (is List<Anything> that) {
+            if (that.size!=1) {
+                return false;
+            }
+            else if (exists elem = that[0]) {
+                return elem==element;
+            }
+            else {
+                return false;
+            }
+        }
+        else {
+            return false;
+        }
     }
     
     shared actual Integer hash => 31 + element.hash;

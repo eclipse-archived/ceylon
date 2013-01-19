@@ -466,53 +466,53 @@ public final class Array<Element> implements List<Element> {
 
     @Override
     @Ignore
-    public boolean definesEvery(@Sequenced @Name("keys")
-    @TypeInfo("ceylon.language::Sequential<ceylon.language::Integer>")
-    Sequential<? extends Integer> keys) {
+    public boolean definesEvery(@Name("keys")
+    @TypeInfo("ceylon.language::Iterable<ceylon.language::Integer,ceylon.language::Null>")
+    Iterable<? extends Integer, ? extends java.lang.Object> keys) {
         return $ceylon$language$Correspondence$this.definesEvery(keys);
     }
-    @Ignore @SuppressWarnings({"unchecked", "rawtypes"})
-    public boolean definesEvery() {
-        return $ceylon$language$Correspondence$this.definesEvery((Sequential)empty_.getEmpty$());
-    }
-    @Ignore @SuppressWarnings({"unchecked", "rawtypes"})
-    public Sequential definesEvery$keys() {
-        return empty_.getEmpty$();
-    }
+//    @Ignore @SuppressWarnings({"unchecked", "rawtypes"})
+//    public boolean definesEvery() {
+//        return $ceylon$language$Correspondence$this.definesEvery((Sequential)empty_.getEmpty$());
+//    }
+//    @Ignore @SuppressWarnings({"unchecked", "rawtypes"})
+//    public Sequential definesEvery$keys() {
+//        return empty_.getEmpty$();
+//    }
 
     @Override
     @Ignore
-    public boolean definesAny(@Sequenced @Name("keys")
-    @TypeInfo("ceylon.language::Sequential<ceylon.language::Integer>")
-    Sequential<? extends Integer> keys) {
+    public boolean definesAny(@Name("keys")
+    @TypeInfo("ceylon.language::Iterable<ceylon.language::Integer,ceylon.language::Null>")
+    Iterable<? extends Integer, ? extends java.lang.Object> keys) {
         return $ceylon$language$Correspondence$this.definesAny(keys);
     }
-    @Ignore @SuppressWarnings({"unchecked", "rawtypes"})
-    public boolean definesAny() {
-        return $ceylon$language$Correspondence$this.definesAny((Sequential)empty_.getEmpty$());
-    }
-    @Ignore @SuppressWarnings({"unchecked", "rawtypes"})
-    public Sequential definesAny$keys() {
-        return empty_.getEmpty$();
-    }
+//    @Ignore @SuppressWarnings({"unchecked", "rawtypes"})
+//    public boolean definesAny() {
+//        return $ceylon$language$Correspondence$this.definesAny((Sequential)empty_.getEmpty$());
+//    }
+//    @Ignore @SuppressWarnings({"unchecked", "rawtypes"})
+//    public Iterable definesAny$keys() {
+//        return empty_.getEmpty$();
+//    }
 
     @Override
     @Ignore
-    public Sequential<? extends Element> items(@Sequenced @Name("keys")
-    @TypeInfo("ceylon.language::Sequential<ceylon.language::Integer>")
-    Sequential<? extends Integer> keys){
+    public Sequential<? extends Element> items(@Name("keys")
+    @TypeInfo("ceylon.language::Iterable<ceylon.language::Integer,ceylon.language::Null>")
+    Iterable<? extends Integer, ? extends java.lang.Object> keys){
         return $ceylon$language$Correspondence$this.items(keys);
     }
-    @Override
-    @Ignore @SuppressWarnings({"unchecked", "rawtypes"})
-    public Sequential<? extends Element> items() {
-        return $ceylon$language$Correspondence$this.items((Sequential)empty_.getEmpty$());
-    }
-    @Override
-    @Ignore @SuppressWarnings({"unchecked", "rawtypes"})
-    public Sequential<? extends Integer> items$keys() {
-        return (Sequential)empty_.getEmpty$();
-    }
+//    @Override
+//    @Ignore @SuppressWarnings({"unchecked", "rawtypes"})
+//    public Sequential<? extends Element> items() {
+//        return $ceylon$language$Correspondence$this.items((Sequential)empty_.getEmpty$());
+//    }
+//    @Override
+//    @Ignore @SuppressWarnings({"unchecked", "rawtypes"})
+//    public Sequential<? extends Integer> items$keys() {
+//        return (Sequential)empty_.getEmpty$();
+//    }
 
     @Override
     public Array<Element> getClone() {

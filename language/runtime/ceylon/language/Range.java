@@ -294,59 +294,59 @@ public class Range<Element extends Comparable<? super Element> & Ordinal<? super
 
     @Override
     @Ignore
-    public boolean definesEvery(@Sequenced @Name("keys")
-    @TypeInfo("ceylon.language::Sequential<ceylon.language::Integer>")
-    Sequential<? extends Integer> keys) {
+    public boolean definesEvery(@Name("keys")
+    @TypeInfo("ceylon.language::Iterable<ceylon.language::Integer,ceylon.language::Null>")
+    Iterable<? extends Integer,? extends java.lang.Object> keys) {
         return $ceylon$language$Correspondence$this.definesEvery(keys);
     }
-    @Override
-    @Ignore @SuppressWarnings({"unchecked", "rawtypes"})
-    public boolean definesEvery() {
-        return $ceylon$language$Correspondence$this.definesEvery((Sequential)empty_.getEmpty$());
-    }
-    @Override
-    @Ignore @SuppressWarnings({"unchecked", "rawtypes"})
-    public Sequential<? extends Integer> definesEvery$keys() {
-        return (Sequential)empty_.getEmpty$();
-    }
+//    @Override
+//    @Ignore @SuppressWarnings({"unchecked", "rawtypes"})
+//    public boolean definesEvery() {
+//        return $ceylon$language$Correspondence$this.definesEvery((Sequential)empty_.getEmpty$());
+//    }
+//    @Override
+//    @Ignore @SuppressWarnings({"unchecked", "rawtypes"})
+//    public Sequential<? extends Integer> definesEvery$keys() {
+//        return (Sequential)empty_.getEmpty$();
+//    }
 
     @Override
     @Ignore
-    public boolean definesAny(@Sequenced @Name("keys")
-    @TypeInfo("ceylon.language::Sequential<ceylon.language::Integer>")
-    Sequential<? extends Integer> keys) {
+    public boolean definesAny(@Name("keys")
+    @TypeInfo("ceylon.language::Iterable<ceylon.language::Integer,ceylon.language::Null>")
+    Iterable<? extends Integer,? extends java.lang.Object> keys) {
         return $ceylon$language$Correspondence$this.definesAny(keys);
     }
-    @Override
-    @Ignore @SuppressWarnings({"unchecked", "rawtypes"})
-    public boolean definesAny() {
-        return $ceylon$language$Correspondence$this.definesAny((Sequential)empty_.getEmpty$());
-    }
-    @Override
-    @Ignore @SuppressWarnings({"unchecked", "rawtypes"})
-    public Sequential<? extends Integer> definesAny$keys() {
-        return (Sequential)empty_.getEmpty$();
-    }
+//    @Override
+//    @Ignore @SuppressWarnings({"unchecked", "rawtypes"})
+//    public boolean definesAny() {
+//        return $ceylon$language$Correspondence$this.definesAny((Sequential)empty_.getEmpty$());
+//    }
+//    @Override
+//    @Ignore @SuppressWarnings({"unchecked", "rawtypes"})
+//    public Sequential<? extends Integer> definesAny$keys() {
+//        return (Sequential)empty_.getEmpty$();
+//    }
 
     @Override
     @Ignore
-    public ceylon.language.Sequential<? extends Element> items(@Sequenced @Name("keys")
-    @TypeInfo("ceylon.language::Sequential<ceylon.language::Integer>")
-    Sequential<? extends Integer> keys) {
+    public ceylon.language.Sequential<? extends Element> items(@Name("keys")
+    @TypeInfo("ceylon.language::Iterable<ceylon.language::Integer,ceylon.language::Null>")
+    Iterable<? extends Integer,? extends java.lang.Object> keys) {
         return $ceylon$language$Correspondence$this.items(keys);
     }
 
-    @Override
-    @Ignore @SuppressWarnings({"unchecked", "rawtypes"})
-    public ceylon.language.Sequential<? extends Element> items() {
-        return $ceylon$language$Correspondence$this.items((Sequential)empty_.getEmpty$());
-    }
+//    @Override
+//    @Ignore @SuppressWarnings({"unchecked", "rawtypes"})
+//    public ceylon.language.Sequential<? extends Element> items() {
+//        return $ceylon$language$Correspondence$this.items((Sequential)empty_.getEmpty$());
+//    }
 
-    @Override
-    @Ignore @SuppressWarnings({"unchecked", "rawtypes"})
-    public Sequential<? extends Integer> items$keys() {
-        return (Sequential)empty_.getEmpty$();
-    }
+//    @Override
+//    @Ignore @SuppressWarnings({"unchecked", "rawtypes"})
+//    public Sequential<? extends Integer> items$keys() {
+//        return (Sequential)empty_.getEmpty$();
+//    }
 
     @Override
     @Ignore
