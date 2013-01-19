@@ -49,27 +49,24 @@ shared interface List<out Element>
          the sequence has index `0`."
     shared actual formal Element? item(Integer index);
     
-    shared actual default Iterator<Element> iterator {
+    /*shared actual default Iterator<Element> iterator {
+        value outerList => this;
         object listIterator
                 satisfies Iterator<Element> {
             variable Integer index = 0;
             shared actual Element|Finished next() {
                 if (index <= (lastIndex else -1)) {
-                    if (exists elem = item(index++)) {
-                        return elem;
-                    }
-                    else {
-                        throw;
-                    }
+                    value elem = outerList.item(index++));
+                    assert (is Element elem);
+                    return elem;
                 }
                 else {
                     return finished;
                 }
             }
-            shared actual String string => "listIterator";
         }
         return listIterator;
-    }
+    }*/
     
     doc "Reverse this list, returning a new list."
     shared formal List<Element> reversed;

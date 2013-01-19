@@ -733,7 +733,7 @@ public final class Array<Element> implements List<Element> {
     }
     @Override @Ignore
     public Element findLast(Callable<? extends Boolean> f) {
-        return $ceylon$language$List$this.findLast(f);
+        return $ceylon$language$Iterable$this.findLast(f);
     }
     @Override
     @Ignore

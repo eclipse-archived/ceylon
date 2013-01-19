@@ -250,7 +250,7 @@ public final class Correspondence$impl<Key,Item> {
         @Override
         @Ignore
         public boolean getEmpty() {
-            return $ceylon$language$List$this.getEmpty();
+            return $ceylon$language$Sequence$this.getEmpty();
         }
         @Override
         @Ignore
@@ -270,7 +270,19 @@ public final class Correspondence$impl<Key,Item> {
         @Override
         @Ignore
         public Iterator<? extends Item> getIterator() {
-            return $ceylon$language$List$this.getIterator();
+            return new Iterator<Item>() {
+            	Iterator<? extends Key> keyIterator = keys.getIterator();
+            	@Override
+            	public java.lang.Object next() {
+            		java.lang.Object next = keyIterator.next();
+            		if (next instanceof Finished) {
+            			return finished_.getFinished$();
+            		}
+            		else {
+            			return $this.item((Key) next);
+            		}
+            	}
+			};
         }
         @Override @Ignore
         public Iterable<? extends Item, ? extends java.lang.Object> skipping(long skip) {
@@ -386,7 +398,7 @@ public final class Correspondence$impl<Key,Item> {
         }
         @Override @Ignore
         public Item findLast(Callable<? extends Boolean> f) {
-            return $ceylon$language$List$this.findLast(f);
+            return $ceylon$language$Iterable$this.findLast(f);
         }
         @Override
         @Ignore

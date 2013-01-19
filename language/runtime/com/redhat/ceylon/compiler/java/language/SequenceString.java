@@ -55,7 +55,7 @@ public class SequenceString extends String implements Sequence<Character> {
     }
     @Override @Ignore
     public Character findLast(Callable<? extends Boolean> f) {
-        return $ceylon$language$List$this.findLast(f);
+        return $ceylon$language$Iterable$this.findLast(f);
     }
     @Override
     @Ignore

@@ -217,9 +217,6 @@
                 <include name="ceylon/language/Iterable$impl.java"/>
                 <exclude name="ceylon/language/LazySet.ceylon"/> <!-- COMPILE ERROR (needs reified generics) -->
                 <include name="ceylon/language/LazySet.java"/>
-                <exclude name="ceylon/language/List.ceylon"/> <!-- COMPILE ERROR (see compiler issue #903) -->
-                <include name="ceylon/language/List.java"/>
-                <include name="ceylon/language/List$impl.java"/>
                 <exclude name="ceylon/language/flatten.ceylon"/>
                 <include name="ceylon/language/flatten_.java"/>
                 <include name="ceylon/language/unflatten_.java"/>
