@@ -12,7 +12,6 @@ import com.redhat.ceylon.compiler.java.metadata.Class;
 import com.redhat.ceylon.compiler.java.metadata.Ignore;
 import com.redhat.ceylon.compiler.java.metadata.Name;
 import com.redhat.ceylon.compiler.java.metadata.SatisfiedTypes;
-import com.redhat.ceylon.compiler.java.metadata.Sequenced;
 import com.redhat.ceylon.compiler.java.metadata.TypeInfo;
 import com.redhat.ceylon.compiler.java.metadata.TypeParameter;
 import com.redhat.ceylon.compiler.java.metadata.TypeParameters;
@@ -46,17 +45,11 @@ public final class Array<Element> implements List<Element> {
 
     private Correspondence$impl<Integer,Element> correspondence$impl = new Correspondence$impl<Integer,Element>(this);
     
-    @Ignore
-    @Override
-    public Correspondence$impl<? super Integer,? extends Element> $ceylon$language$Correspondence$impl(){
-        return correspondence$impl;
-    }
-
-    @Override
-    @Ignore
-    public Correspondence$impl<? super Integer, ? extends Element>.Items Items$new(Sequence<? extends Integer> keys) {
-        return correspondence$impl.Items$new(keys);
-    }
+//    @Ignore
+//    @Override
+//    public Correspondence$impl<? super Integer,? extends Element> $ceylon$language$Correspondence$impl(){
+//        return correspondence$impl;
+//    }
 
     @Ignore
     public static Array<Character> instance(char[] array) {

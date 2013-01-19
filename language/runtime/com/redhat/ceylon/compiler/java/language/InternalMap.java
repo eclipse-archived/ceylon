@@ -4,7 +4,6 @@ import ceylon.language.Boolean;
 import ceylon.language.Callable;
 import ceylon.language.Collection;
 import ceylon.language.Comparison;
-import ceylon.language.Correspondence$impl;
 import ceylon.language.Entry;
 import ceylon.language.Integer;
 import ceylon.language.Iterable;
@@ -17,8 +16,6 @@ import ceylon.language.Set;
 import com.redhat.ceylon.compiler.java.metadata.Annotation;
 import com.redhat.ceylon.compiler.java.metadata.Annotations;
 import com.redhat.ceylon.compiler.java.metadata.Ignore;
-import com.redhat.ceylon.compiler.java.metadata.Name;
-import com.redhat.ceylon.compiler.java.metadata.Sequenced;
 import com.redhat.ceylon.compiler.java.metadata.TypeInfo;
 import com.redhat.ceylon.compiler.java.metadata.TypeParameter;
 import com.redhat.ceylon.compiler.java.metadata.TypeParameters;
@@ -383,15 +380,10 @@ public class InternalMap<Key, Item> implements Map<Key, Item> {
         return map$impl.mapItems(mapping);
     }
 
-    @Override
-    @Ignore
-    public Correspondence$impl<java.lang.Object, ? extends Item> $ceylon$language$Correspondence$impl() {
-        return corr$impl;
-    }
+//    @Override
+//    @Ignore
+//    public Correspondence$impl<java.lang.Object, ? extends Item> $ceylon$language$Correspondence$impl() {
+//        return corr$impl;
+//    }
 
-    @Override
-    @Ignore
-    public Correspondence$impl<? super java.lang.Object, ? extends Item>.Items Items$new(Sequence<? extends java.lang.Object> keys) {
-        return corr$impl.Items$new(keys);
-    }
 }

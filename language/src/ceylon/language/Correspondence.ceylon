@@ -34,20 +34,7 @@ shared interface Correspondence<in Key, out Item>
     doc "The `Category` of all keys for which a value is 
          defined by this `Correspondence`."
     see (defines)
-    shared default Category keys {
-        object keys satisfies Category {
-            shared actual Boolean contains(Object key) {
-                throw;
-                //if (is Key key) {
-                //    return defines(key);
-                //}
-                //else {
-                //    return false;
-                //}
-            }
-        }
-        return keys;
-    }
+    shared default Category keys => Keys(this);
     
     doc "Determines if this `Correspondence` defines a value
          for every one of the given keys."
@@ -80,105 +67,7 @@ shared interface Correspondence<in Key, out Item>
     doc "Returns the items defined for the given keys, in
          the same order as the corresponding keys."
     see (item)
-    shared default Item?[] items({Key*} keys) {
-        if (nonempty some = keys.sequence) {
-            return Items(some.clone);
-        }
-        else {
-            return {};
-        }
-    }
-
-    class Items([Key+] keys)
-            extends Object()
-            satisfies [Item?+] {
-    
-        shared actual Integer lastIndex => keys.lastIndex;
-        
-        shared actual Item? first => outer.item(keys.first);
-        
-        shared actual Item? last => outer.item(keys.last);
-        
-        shared actual Item?[] rest = outer.items(keys.rest);
-        
-        shared actual Integer size => keys.size;
-        
-        shared actual Iterator<Item?> iterator {
-            value correspondence => outer;
-            object iterator satisfies Iterator<Item?> {
-                value keyIterator = keys.iterator;
-                shared actual Finished|Item? next() {
-                    value key = keyIterator.next();
-                    if (!is Finished key) {
-                        return correspondence.item(key);
-                    }
-                    else {
-                        return finished;
-                    }
-                }
-            }
-            return iterator;
-        }
-        
-        shared actual Boolean contains(Object that) {
-            for (item in this) {
-                if (exists item) {
-                    return item==that;
-                }
-            }
-            else {
-                return false;
-            }
-        }
-        
-        shared actual Item? item(Integer index) {
-            if (exists Key key = keys.item(index)) {
-                return outer.item(key);
-            }
-            else {
-                return null;
-            }
-        }
-        shared actual Item?[] segment(Integer from, 
-                                     Integer length) {
-            if (nonempty keys = keys.segment(from,length)) {
-                return outer.Items(keys);
-            }
-            else {
-                return {};
-            }
-        }
-        shared actual Item?[] span(Integer from, Integer to) {
-            if (nonempty k = keys.span(from,to)) {
-                return outer.Items(k);
-            }
-            else {
-                return {};
-            }
-        }
-        shared actual Item?[] spanFrom(Integer from) {
-            if (nonempty k = keys.spanFrom(from)) {
-                return outer.Items(k);
-            }
-            else {
-                return {};
-            }
-        }
-        shared actual Item?[] spanTo(Integer to) {
-            if (nonempty k = keys.spanTo(to)) {
-                return outer.Items(k);
-            }
-            else {
-                return {};
-            }
-        }
-        
-        shared actual [Item?+] clone => this;
-        
-        shared actual [Item?+] reversed =>
-                outer.Items(keys.reversed);
-        
-        shared actual Integer hash => keys.hash;
-    }
+    shared default Item?[] items({Key*} keys) =>
+            [ for (key in keys) item(key) ];
     
 }

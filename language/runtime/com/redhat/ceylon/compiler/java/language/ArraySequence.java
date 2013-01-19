@@ -77,17 +77,11 @@ public class ArraySequence<Element> implements Sequence<Element> {
 
     private Correspondence$impl<Integer,Element> correspondence$impl = new Correspondence$impl<Integer,Element>(this);
     
-    @Ignore
-    @Override
-    public Correspondence$impl<? super Integer,? extends Element> $ceylon$language$Correspondence$impl(){
-        return correspondence$impl;
-    }
-
-    @Override
-    @Ignore
-    public Correspondence$impl<? super Integer, ? extends Element>.Items Items$new(Sequence<? extends Integer> keys) {
-        return correspondence$impl.Items$new(keys);
-    }
+//    @Ignore
+////    @Override
+//    public Correspondence$impl<? super Integer,? extends Element> $ceylon$language$Correspondence$impl(){
+//        return correspondence$impl;
+//    }
 
     @Override
     public Element getFirst() {

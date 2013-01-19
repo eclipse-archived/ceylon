@@ -46,17 +46,11 @@ public abstract class String
 
     private Correspondence$impl<Integer,Character> correspondence$impl = new Correspondence$impl<Integer,Character>(this);
     
-    @Ignore
-    @Override
-    public Correspondence$impl<? super Integer,? extends Character> $ceylon$language$Correspondence$impl(){
-        return correspondence$impl;
-    }
-
-    @Override
-    @Ignore
-    public Correspondence$impl<? super Integer, ? extends Character>.Items Items$new(Sequence<? extends Integer> keys) {
-        return correspondence$impl.Items$new(keys);
-    }
+//    @Ignore
+//    @Override
+//    public Correspondence$impl<? super Integer,? extends Character> $ceylon$language$Correspondence$impl(){
+//        return correspondence$impl;
+//    }
 
     @Override
     public java.lang.String toString() {

@@ -212,9 +212,8 @@
                 <include name="ceylon/language/flatten_.java"/>
                 <include name="ceylon/language/unflatten_.java"/>
                 <!-- These are problem files we hope to be able to compile some day -->
-                <exclude name="ceylon/language/Correspondence.ceylon"/> <!-- COMPILE ERROR (see compiler issue #904) -->
-                <include name="ceylon/language/Correspondence.java"/>
-                <include name="ceylon/language/Correspondence$impl.java"/>
+                <exclude name="ceylon/language/Keys.ceylon"/> <!-- COMPILE ERROR (needs reified generics) -->
+                <include name="ceylon/language/Keys.java"/>
                 <exclude name="ceylon/language/Iterable.ceylon"/> <!-- COMPILE ERROR (unknown cause) -->
                 <include name="ceylon/language/Iterable.java"/>
                 <include name="ceylon/language/Iterable$impl.java"/>
