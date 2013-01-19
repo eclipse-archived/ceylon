@@ -41,11 +41,7 @@ shared interface Collection<out Element>
             return false;
         }
     }
-    
-    value elementsString =>
-            ", ".join ( for (elem in this)
-                            elem?.string else "null" );
-    
+        
     doc "A string of form `\"{ x, y, z }\"` where `x`, `y`, 
          and `z` are the `string` representations of the 
          elements of this collection, as produced by the
@@ -53,7 +49,12 @@ shared interface Collection<out Element>
          if this collection is empty. If the collection 
          iterator produces the value `null`, the string
          representation contains the string `\"null\"`."
-    shared default actual String string =>
-            empty then "{}" else "{ " elementsString " }";
+    shared actual default String string => 
+            empty then "{}" else "{ " commaList(this) " }";
     
 }
+
+String commaList({Anything*} elements) =>
+        ", ".join ( for (element in elements)
+                    element?.string else "null" );
+
