@@ -37,13 +37,15 @@ shared class Range<Element>(first, last)
 
     doc "The nonzero number of elements in the range."
     shared actual Integer size {
-    	if (is Enumerable<Anything> last, 
+        //TODO: re-enable when compiler
+        //      bug is fixed
+    	/*if (is Enumerable<Anything> last, 
     	    is Enumerable<Anything> first) {
     		return (last.integerValue - 
     		        first.integerValue)
     		            .magnitude+1;
     	}
-    	else {
+    	else {*/
     		variable Integer size = 1;
     		variable Element current=first;
     		while (current!=last) {
@@ -51,7 +53,7 @@ shared class Range<Element>(first, last)
     			current = next(current);
     		}
             return size;
-    	}
+    	//}
     }
     
     doc "The index of the end of the range."
@@ -91,7 +93,7 @@ shared class Range<Element>(first, last)
             shared actual Element|Finished next() {
                 Element|Finished result = current;
                 if (!is Finished curr = current) {
-                    if (curr == last) {
+                    if (decreasing then curr<=last else curr>=last) {
                         current = finished;
                     } 
                     else {
@@ -109,8 +111,18 @@ shared class Range<Element>(first, last)
     
     doc "Determines if the range includes the given object."
     shared actual Boolean contains(Object element) {
-        if (is Element element) {
+        //TODO: re-enable this implementation once we have
+        //      reified generics
+        /*if (is Element element) {
             return includes(element);
+        }
+        else {
+            return false;
+        }*/
+        for (e in this) {
+            if (e==element) {
+                return true;
+            }
         }
         else {
             return false;

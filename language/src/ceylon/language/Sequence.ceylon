@@ -48,6 +48,10 @@ shared interface Sequence<out Element>
     doc "This sequence."
     shared default actual [Element+] sequence => this;
     
+    doc "The rest of the sequence, without the first 
+         element."
+    shared actual formal Element[] rest;
+    
     doc "A nonempty sequence containing the elements of this
          container, sorted according to a function 
          imposing a partial order upon the elements."

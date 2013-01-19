@@ -19,8 +19,10 @@ shared interface Empty of e
     
     doc "Returns an `Empty` for any given span."
     shared actual [] span(Integer from, Integer to) => this;
+    
     doc "Returns an `Empty` for any given span."
     shared actual [] spanTo(Integer to) => this;
+    
     doc "Returns an `Empty` for any given span."
     shared actual [] spanFrom(Integer from) => this;
     

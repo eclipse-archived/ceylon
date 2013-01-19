@@ -106,8 +106,10 @@ shared class Tuple<out Element, out First, out Rest=Empty>(first, rest/*=[]*/)
         return realFrom<=end then this[from:end-realFrom+1] 
                 else this[end:realFrom-end+1].reversed.sequence;
     }
+    
     shared actual Element[] spanTo(Integer to) =>
             to<0 then [] else span(0, to);
+    
     shared actual Element[] spanFrom(Integer from) =>
             span(from, size);
     
@@ -118,7 +120,7 @@ shared class Tuple<out Element, out First, out Rest=Empty>(first, rest/*=[]*/)
             variable Element[] current = outer;
             shared actual Element|Finished next() {
                 if (nonempty c = current) {
-                    current = current.rest;
+                    current = c.rest;
                     return c.first;
                 }
                 else {
