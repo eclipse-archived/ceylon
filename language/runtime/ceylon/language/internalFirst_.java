@@ -10,7 +10,7 @@ import com.redhat.ceylon.compiler.java.metadata.Variance;
 
 @Ceylon(major = 4)
 @Method
-public final class internalFirst_ {
+final class internalFirst_ {
     
     private internalFirst_() {}
     
@@ -18,7 +18,7 @@ public final class internalFirst_ {
     @TypeParameters({@TypeParameter(value = "Value", variance = Variance.OUT),
                      @TypeParameter(value = "Absent", variance = Variance.OUT, 
                              satisfies = "ceylon.language::Null")})
-    public static <Value,Absent> java.lang.Object internalFirst(@Name("values")
+    static <Value,Absent> java.lang.Object internalFirst(@Name("values")
     @TypeInfo("ceylon.language::Iterable<Value,Absent>")
     final Iterable<? extends Value, ?> values) {
         java.lang.Object first = values.getIterator().next();

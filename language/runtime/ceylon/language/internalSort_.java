@@ -19,7 +19,7 @@ final class internalSort_ {
     
     @TypeParameters(@TypeParameter(value="Element"))
     @TypeInfo("ceylon.language::Sequential<Element>")
-    public static <Element> Sequential<? extends Element> internalSort(
+    static <Element> Sequential<? extends Element> internalSort(
         @Name("comparing")
         @TypeInfo("ceylon.language::Callable<ceylon.language::Comparison|ceylon.language::Null,ceylon.language::Tuple<Element,Element,ceylon.language::Tuple<Element,Element,ceylon.language::Empty>>>")
         final Callable<? extends Comparison> comparing,
