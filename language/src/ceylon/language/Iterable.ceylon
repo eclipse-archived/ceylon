@@ -377,7 +377,7 @@ shared native interface Iterable<out Element, out Absent=Null>
              
          results in an iterable object with the entries
          `0->\"hello\"` and `2->\"world\"`."
-    shared default Iterable<<Integer->Element&Object>,Null> indexed {
+    shared default {<Integer->Element&Object>*} indexed {
         //TODO: this should be an inner object
 		class Indexes<out Element, out Absent>(Iterable<Element,Absent> outerIterable)
 		        satisfies Iterable<Integer->Element,Absent> 
