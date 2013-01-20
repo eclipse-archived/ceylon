@@ -12,6 +12,7 @@ public class TypeParameter extends TypeDeclaration implements Functional {
     private TypeDeclaration selfTypedDeclaration;
     private ProducedType defaultTypeArgument;
     private boolean defaulted;
+    private boolean constrained;
 
     public boolean isInvariant() {
     	return !covariant && !contravariant;
@@ -132,6 +133,14 @@ public class TypeParameter extends TypeDeclaration implements Functional {
     
     public void setDefaulted(boolean defaulted) {
 		this.defaulted = defaulted;
+	}
+    
+    public boolean isConstrained() {
+		return constrained;
+	}
+    
+    public void setConstrained(boolean constrained) {
+		this.constrained = constrained;
 	}
     
 }

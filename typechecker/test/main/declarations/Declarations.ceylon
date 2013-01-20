@@ -123,4 +123,11 @@ interface Declarations {
     void myvoid() => print("hello");
     @error void brokenvoid() => "hello";
     
+    interface Constrained<T> 
+        given T satisfies Object 
+        @error given T satisfies Category {}
+    
+    void constrained<T>()
+        given T satisfies Object 
+        @error given T satisfies Category {}
 }

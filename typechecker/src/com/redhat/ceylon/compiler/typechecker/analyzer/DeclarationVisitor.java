@@ -994,7 +994,8 @@ public class DeclarationVisitor extends Visitor {
 
     @Override
     public void visit(Tree.TypeConstraint that) {
-        TypeParameter p = (TypeParameter) scope.getMemberOrParameter(unit, name(that.getIdentifier()), null, false);
+        TypeParameter p = (TypeParameter) scope.getMemberOrParameter(unit, 
+        		name(that.getIdentifier()), null, false);
         that.setDeclarationModel(p);
         if (p==null) {
             that.addError("no matching type parameter for constraint: " + 
@@ -1003,6 +1004,13 @@ public class DeclarationVisitor extends Visitor {
             p.setDeclaration(declaration);
             that.setDeclarationModel(p);
             visitDeclaration(that, p);
+        }
+        else {
+        	if (p.isConstrained()) {
+        		that.addError("duplicate constraint list for type parameter: " +
+        				p.getName());
+        	}
+        	p.setConstrained(true);
         }
         
         Scope o = enterScope(p);
