@@ -2,6 +2,9 @@ class List<T>()
         extends Object()
         satisfies Sequence<T> {
     shared void add(T t) {}
+    shared actual Integer size {
+        return 1;
+    }
     shared actual Integer lastIndex {
         return 0;
     }
@@ -10,6 +13,9 @@ class List<T>()
     }
     shared actual T? item(Integer n) {
         return null;
+    }
+    shared actual Boolean contains(Object o) {
+        return false;
     }
     shared actual T[] rest {
         return this;
@@ -34,5 +40,8 @@ class List<T>()
     }
     shared actual T[] spanTo(Integer to) {
         return this;
+    }
+    shared actual Iterator<T> iterator {
+        throw;
     }
 }

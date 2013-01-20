@@ -275,19 +275,19 @@ class Assignability() {
     
     for (@error X x -> Y y in 12) {}
     
-    for (Integer i->String s in entries<String>(*["hello", "world", "!"])) {
+    for (Integer i->String s in entries<String>(["hello", "world", "!"])) {
         print(i.string + ": " + s);
     }
     
-    for (Integer i->String s in entries<String>("hello", "world", "!")) {
+    for (Integer i->String s in entries<String>{"hello", "world", "!"}) {
         print(i.string + ": " + s);
     }
     
-    for (i->s in entries(*["hello", "world", "!"])) {
+    for (i->s in entries(["hello", "world", "!"])) {
         print(i.string + ": " + s);
     }
     
-    for (i->s in entries("hello", "world", "!")) {
+    for (i->s in entries{"hello", "world", "!"}) {
         print(i.string + ": " + s);
     }
     

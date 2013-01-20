@@ -16,9 +16,9 @@ class LanguageModule() {
     //@error plus<Integer, Integer, Float>(1, -2);
     //@error plus<Integer, Integer, Integer>(1, 2);
 
-    @type:"Iterable<Entry<Integer,String>,Null>" entries("hello", "world");
-    @type:"Iterable<Entry<Integer,String>,Null>" entries(*["hello", "world"]);
-    for (Integer i->String s in entries("hello", "world", "!")) {}
+    @type:"Iterable<Entry<Integer,String>,Null>" entries{"hello", "world"};
+    @type:"Iterable<Entry<Integer,String>,Null>" entries(["hello", "world"]);
+    for (Integer i->String s in entries{"hello", "world", "!"}) {}
     
     //print(append({"one", "two" , "three"}, "four").size==4);
     print(["one", "two" , "three"].withTrailing("four").size==4);

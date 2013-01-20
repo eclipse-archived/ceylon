@@ -95,10 +95,12 @@ class Generics() {
                 extends Object() 
                 satisfies Sequence<X> {
             //fake implementations
+            shared actual Integer size = 1;
             shared actual Integer lastIndex = 0;
             shared actual X[] rest = {};
             shared actual GoodClassInheritance clone = GoodClassInheritance();
             shared actual X? item(Integer key) { return null; }
+            shared actual Boolean contains(Object x) { return false; }
             shared actual X[] segment(Integer from, Integer length) { return this; }
             shared actual X first { throw; }
             shared actual X last { throw; }
@@ -106,6 +108,7 @@ class Generics() {
             shared actual X[] span(Integer from, Integer to) { return this; }
             shared actual X[] spanTo(Integer to) { return this; }
             shared actual X[] spanFrom(Integer from) { return this; }
+            shared actual Iterator<X> iterator { throw; }
         }
         @error shared class BadClassInheritance() satisfies Sequence<Y> {}
         shared class GoodClassInheritance2() extends Producer<X>() {}
@@ -496,7 +499,7 @@ class Generics() {
     @type:"String" genericMethod2("hello");
     @type:"String" genericMethod2(true then "hello");
     
-    @type:"Iterable<String,Null>" coalesce(null, "hello");
+    @type:"Iterable<String,Null>" coalesce{null, "hello"};
     @type:"Sequential<String>" join({}, {"hello", "world"}, {"goodbye"});
     
     class ParamOuter<T>() {
