@@ -206,7 +206,7 @@ void testIterables() {
     check(Singleton(1).chain(Singleton(2)).chain(Singleton("3")).sequence=={1,2,"3"}, "Singletons.chain");
 
     //group
-    value grouped = (1..10).group((Integer i) => i%2==0 then "even" else "odd");
+    /*value grouped = (1..10).group((Integer i) => i%2==0 then "even" else "odd");
     check(grouped.size == 2, "Iterable.group 1");
     if (exists v=grouped["even"]) {
         check(v.size == 5, "Iterable.group 2");
@@ -219,13 +219,13 @@ void testIterables() {
         check(v.size == 4, "Iterable.group 6");
         check(v.every((Character i) => i.lowercase), "Iterable.group 7");
     } else { fail("Iterable.group 6"); }
-    check(gr2.defines(false), "Iterable.group 8");
+    check(gr2.defines(false), "Iterable.group 8");*/
 
     //Iterable-related functions
     check({"aaa", "tt", "z"}.sort(byIncreasing((String s) => s.size)).sequence=={"z","tt","aaa"}, "sort(byIncreasing)");
     check({"z", "aaa", "tt"}.sort(byDecreasing((String s) => s.size)).sequence=={"aaa","tt","z"}, "sort(byDecreasing)");
-    Iterable<String> combined = combine<String,Character,Integer>((Character c, Integer i) => "comb " c "+" i "",
-        "hello", { 1,2,3,4 });
+    Iterable<String> combined = combine((Character c, Integer i) => "comb " c "+" i "",
+                                               "hello", { 1,2,3,4 });
     check(combined.sequence.size==4, "combine [1]");
     check(combined.sequence == { "comb h+1", "comb e+2", "comb l+3", "comb l+4" }, "combine [2]");
     

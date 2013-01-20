@@ -112,10 +112,10 @@ public class SequenceString extends String implements Sequence<Character> {
     @Override @Ignore public <Other>Iterable chain(Iterable<? extends Other, ? extends java.lang.Object> other) {
         return $ceylon$language$Iterable$this.chain(other);
     }
-    @Override @Ignore
+    /*@Override @Ignore
     public <Key> Map<? extends Key, ? extends Sequence<? extends Character>> group(Callable<? extends Key> grouping) {
         return $ceylon$language$Iterable$this.group(grouping);
-    }
+    }*/
 
     @Override @Ignore
     @SuppressWarnings("rawtypes")

@@ -64,39 +64,21 @@ shared interface Map<out Key,out Item>
     
     doc "Returns the set of keys contained in this `Map`."
     actual shared default Set<Key> keys =>
-            LazySet({for (k->v in this) k});
+            LazySet ({ for (k->v in this) k });
     
     doc "Returns all the values stored in this `Map`. An 
          element can be stored under more than one key in 
          the map, and so it can be contained more than once 
          in the resulting collection."
     shared default Collection<Item> values =>
-            LazyList({for (k->v in this) v});
+            LazyList ({ for (k->v in this) v });
     
     doc "Returns a `Map` in which every key is an `Item` in 
          this map, and every value is the set of keys that 
          stored the `Item` in this map."
-    shared default Map<Item, Set<Key>> inverse {
-        value outerMap => this;
-        object inverse 
-                extends Object() 
-                satisfies Map<Item, Set<Key>> {
-            
-            shared actual Map<Item,Set<Key>> clone => this;
-            
-            shared actual Set<Key>? item(Object key) => 
-                    LazySet({for (k->v in outerMap) if (v==key) k});
-            
-            shared actual Iterator<Item->Set<Key>> iterator =>
-                    outer.values.map((Item e) => e ->
-                            LazySet({for (k->v in outerMap) if (v==e) k}))
-                                    .iterator;
-            
-            shared actual Integer size => outerMap.size;
-            
-        }
-        return inverse;
-    }
+    shared default Map<Item,Set<Key>> inverse =>
+            LazyMap ({ for (key->item in this) item -> 
+                LazySet ({ for (k->i in this) if (i==key) k }) });
     
     doc "Returns a `Map` with the same keys as this map. For
          every key, the item is the result of applying the
@@ -106,34 +88,8 @@ shared interface Map<out Key,out Item>
                  pair, producing the item of the resulting
                  map."
             Result mapping(Key key, Item item)) 
-            given Result satisfies Object {
-        value outerMap => this;
-        object mapped extends Object() 
-                satisfies Map<Key, Result> {
-                        
-            shared actual Map<Key, Result> clone {
-                //TODO: should take a copy 
-                return this;
-            }
-            
-            shared actual Result? item(Object key) {
-                throw;
-                //if (is Key key) {
-                //    if (exists item=outerMap[key]) {
-                //        return mapping(key, item);
-                //    }
-                //}
-                //return null;
-            }
-            
-            shared actual Iterator<Key->Result> iterator =>
-                    outerMap.map((Key->Item e) =>
-                        e.key -> mapping(e.key,e.item))
-                                .iterator;
-            
-            shared actual Integer size => outerMap.size;
-        }
-        return mapped;
-    }
+            given Result satisfies Object =>
+                LazyMap ({ for (key->item in this) 
+                            key->mapping(key,item) });
     
 }

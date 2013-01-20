@@ -58,10 +58,12 @@ public class FilterIterable<Element,Absent> implements Iterable<Element,Absent> 
     @Override
     @Ignore
     public Element getFirst() {
-    	return $ceylon$language$Iterable$this.getFirst();
+    	return (Element) $ceylon$language$Iterable$this.getFirst();
     }
-    @Override @Ignore public Element getLast(){
-        return $ceylon$language$Iterable$this.getLast();
+    @Override 
+    @Ignore 
+    public Element getLast(){
+        return (Element) $ceylon$language$Iterable$this.getLast();
     }
     @Override
     @Ignore
@@ -134,21 +136,21 @@ public class FilterIterable<Element,Absent> implements Iterable<Element,Absent> 
         return $ceylon$language$Iterable$this.count(f);
     }
     @Override @Ignore
-    public Iterable<? extends Element, ? extends Absent> getCoalesced() {
+    public Iterable<? extends Element, ?> getCoalesced() {
         return $ceylon$language$Iterable$this.getCoalesced();
     }
     @Override @Ignore
-    public Iterable<? extends Entry<? extends Integer, ? extends Element>, ? extends Absent> getIndexed() {
+    public Iterable<? extends Entry<? extends Integer, ? extends Element>, ?> getIndexed() {
         return $ceylon$language$Iterable$this.getIndexed();
     }
     @Override @Ignore @SuppressWarnings("rawtypes")
     public <Other> Iterable chain(Iterable<? extends Other, ? extends java.lang.Object> other) {
         return $ceylon$language$Iterable$this.chain(other);
     }
-    @Override @Ignore
+    /*@Override @Ignore
     public <Key> Map<? extends Key, ? extends Sequence<? extends Element>> group(Callable<? extends Key> grouping) {
         return $ceylon$language$Iterable$this.group(grouping);
-    }
+    }*/
     @Override @Ignore
     public boolean contains(@Name("element") java.lang.Object element) {
         return $ceylon$language$Iterable$this.contains(element);

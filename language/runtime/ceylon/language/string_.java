@@ -1,7 +1,6 @@
 package ceylon.language;
 
 import com.redhat.ceylon.compiler.java.metadata.Ceylon;
-import com.redhat.ceylon.compiler.java.metadata.Ignore;
 import com.redhat.ceylon.compiler.java.metadata.Method;
 import com.redhat.ceylon.compiler.java.metadata.Name;
 import com.redhat.ceylon.compiler.java.metadata.TypeInfo;
@@ -27,9 +26,5 @@ public final class string_ {
             }
             return sb.toString();
         }
-    }
-    @Ignore
-    public static java.lang.String string() {
-        return "";
     }
 }

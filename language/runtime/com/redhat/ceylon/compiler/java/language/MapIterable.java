@@ -59,10 +59,11 @@ public class MapIterable<Element, Result> implements Iterable<Result,java.lang.O
     @Override
     @Ignore
     public Result getFirst() {
-    	return $ceylon$language$Iterable$this.getFirst();
+    	return (Result) $ceylon$language$Iterable$this.getFirst();
     }
-    @Override @Ignore public Result getLast(){
-        return $ceylon$language$Iterable$this.getLast();
+    @Override @Ignore 
+    public Result getLast(){
+        return (Result) $ceylon$language$Iterable$this.getLast();
     }
 
     @Override
@@ -137,21 +138,21 @@ public class MapIterable<Element, Result> implements Iterable<Result,java.lang.O
         return $ceylon$language$Iterable$this.count(f);
     }
     @Override @Ignore
-    public Iterable<? extends Result, ? extends java.lang.Object> getCoalesced() {
+    public Iterable<? extends Result, ?> getCoalesced() {
         return $ceylon$language$Iterable$this.getCoalesced();
     }
     @Override @Ignore
-    public Iterable<? extends Entry<? extends Integer, ? extends Result>, ? extends java.lang.Object> getIndexed() {
+    public Iterable<? extends Entry<? extends Integer, ? extends Result>, ?> getIndexed() {
         return $ceylon$language$Iterable$this.getIndexed();
     }
     @SuppressWarnings("rawtypes") @Override @Ignore
-    public <Other> Iterable chain(Iterable<? extends Other, ? extends java.lang.Object> other) {
+    public <Other> Iterable chain(Iterable<? extends Other, ?> other) {
         return $ceylon$language$Iterable$this.chain(other);
     }
-    @Override @Ignore
+    /*@Override @Ignore
     public <Key> Map<? extends Key, ? extends Sequence<? extends Result>> group(Callable<? extends Key> grouping) {
         return $ceylon$language$Iterable$this.group(grouping);
-    }
+    }*/
     @Override @Ignore
     public boolean contains(@Name("element") java.lang.Object element) {
         return $ceylon$language$Iterable$this.contains(element);

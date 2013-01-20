@@ -214,11 +214,11 @@ public class ArrayIterable<Element,Absent> implements Iterable<Element,Absent> {
     }
 
     @Override @Ignore
-    public Iterable<? extends Element, ? extends Absent> getCoalesced() {
+    public Iterable<? extends Element, ?> getCoalesced() {
         return $ceylon$language$Iterable$this.getCoalesced();
     }
     @Override @Ignore
-    public Iterable<? extends Entry<? extends Integer, ? extends Element>, ? extends Absent> getIndexed() {
+    public Iterable<? extends Entry<? extends Integer, ? extends Element>, ?> getIndexed() {
         return $ceylon$language$Iterable$this.getIndexed();
     }
     
@@ -226,10 +226,10 @@ public class ArrayIterable<Element,Absent> implements Iterable<Element,Absent> {
     @Override @Ignore public <Other>Iterable chain(Iterable<? extends Other, ? extends java.lang.Object> other) {
         return $ceylon$language$Iterable$this.chain(other);
     }
-    @Override @Ignore
+    /*@Override @Ignore
     public <Key> Map<? extends Key, ? extends Sequence<? extends Element>> group(Callable<? extends Key> grouping) {
         return $ceylon$language$Iterable$this.group(grouping);
-    }
+    }*/
 
     @Override
     @Ignore

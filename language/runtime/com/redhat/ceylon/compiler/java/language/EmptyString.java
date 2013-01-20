@@ -114,11 +114,12 @@ public class EmptyString extends String {
     @SuppressWarnings({"unchecked", "rawtypes"})
     public Iterable<? extends Entry<? extends Integer, ? extends Character>, ? extends java.lang.Object> getIndexed() { return (Iterable)this; }
     @SuppressWarnings("rawtypes")
-    @Override @Ignore public <Other>Iterable chain(Iterable<? extends Other, ? extends java.lang.Object> other) { return other; }
-    @Override @Ignore
+    @Override @Ignore 
+    public <Other>Iterable chain(Iterable<? extends Other, ? extends java.lang.Object> other) { return other; }
+    /*@Override @Ignore
     public <Key> Map<? extends Key, ? extends Sequence<? extends Character>> group(Callable<? extends Key> grouping) {
         return new InternalMap<Key, Sequence<? extends Character>>(java.util.Collections.<Key,Sequence<Character>>emptyMap());
-    }
+    }*/
 
     @SuppressWarnings("rawtypes")
     @Override @Ignore public <Other>Sequence withLeading(Other e) {

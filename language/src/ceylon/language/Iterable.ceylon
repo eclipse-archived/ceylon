@@ -91,17 +91,8 @@ shared native interface Iterable<out Element, out Absent=Null>
     doc "The first element returned by the iterator, if any.
          This should always produce the same value as
          `iterable.iterator.head`."
-    shared actual default Absent|Element first {
-        Element? first;
-        if (!is Finished next = iterator.next()) {
-            first = next;
-        }
-        else {
-            first = null;
-        }
-        assert (is Absent|Element first);
-        return first;
-    }
+    shared actual default Absent|Element first =>
+            internalFirst(this);
     
     doc "The last element returned by the iterator, if any.
          Iterables are potentially infinite, so calling this
@@ -291,9 +282,9 @@ shared native interface Iterable<out Element, out Absent=Null>
             return {}; 
         }
         else {
+            value outerIterable => this;
             object iterable satisfies {Element*} {
                 shared actual Iterator<Element> iterator {
-                    value outerIterable { return outer; }
                     object iterator satisfies Iterator<Element> {
                         value iter = outerIterable.iterator;
                         variable value i=0;
@@ -324,6 +315,7 @@ shared native interface Iterable<out Element, out Absent=Null>
     throws (Exception, "if the given step size is nonpositive, 
                         i.e. `step<1`") //TODO: better exception type
     shared default {Element*} by(Integer step) {
+        value outerIterable => this;
         if (step <= 0) {
             throw Exception("step size must be greater than zero");
         }
@@ -331,16 +323,15 @@ shared native interface Iterable<out Element, out Absent=Null>
             return this;
         } 
         else {
-            object iterable satisfies {Element*} {
+            object iterable satisfies Iterable<Element,Absent> {
                 shared actual Iterator<Element> iterator {
-                    value outerIterable { return outer; }
                     object iterator satisfies Iterator<Element> {
                         value iter = outerIterable.iterator;
-                        actual shared Element|Finished next() {
-                            value next = iter.next();
+                        shared actual Element|Finished next() {
+                            value n = iter.next();
                             variable value i=0;
-                            while (++i<step && !iterator.next() is Finished) {}
-                            return next;
+                            while (++i<step && !iter.next() is Finished) {}
+                            return n;
                         }
                     }
                     return iterator;
@@ -386,56 +377,52 @@ shared native interface Iterable<out Element, out Absent=Null>
              
          results in an iterable object with the entries
          `0->\"hello\"` and `2->\"world\"`."
-    shared default {<Integer->Element&Object>*} indexed {
-            object iterable satisfies {<Integer->Element&Object>*} {
-                shared actual Iterator<Integer->Element&Object> iterator {
-                    value outerIterable { return outer; }
-                    object iterator satisfies Iterator<Integer->Element&Object> {
-                        value iter = outerIterable.iterator;
-                        variable value i=0;
-                        actual shared <Integer->Element&Object>|Finished next() {
-                            value next = iter.next();
-                            if (!is Finished next) {
-                                if (exists next) {
-                                    return i++->next;
-                                }
-                                else {
-                                    i++;
-                                    return this.next();
-                                }
-                            }
-                            else {
-                                return finished;
-                            }
-                        }
-                    }
-                    return iterator;
-                }
-            }
-            return iterable.coalesced;
+    shared default Iterable<<Integer->Element&Object>,Null> indexed {
+        //TODO: this should be an inner object
+		class Indexes<out Element, out Absent>(Iterable<Element,Absent> outerIterable)
+		        satisfies Iterable<Integer->Element,Absent> 
+		        given Element satisfies Object
+		        given Absent satisfies Null {
+		    shared actual Iterator<Integer->Element> iterator {
+		        object iterator satisfies Iterator<Integer->Element> {
+		            variable value i=0;
+		            value outerIterator = outerIterable.iterator;
+		            shared actual <Integer->Element>|Finished next() {
+		                if (!is Finished next = outerIterator.next()) {
+		                    return i++->next;
+		                }
+		                else {
+		                    return finished;
+		                }
+		            }
+		        }
+		        return iterator;
+		    }
+		}
+        return Indexes(this.coalesced);
     }
-    
+            
     doc "The elements of this iterable object, in their
          original order, followed by the elements of the 
          given iterable object also in their original
          order."
-    shared default {Element|Other*} chain<Other>(
-            {Other*} other) {
+    shared default {Element|Other*} chain<Other>({Other*} other) {
+        value outerIterable => this;
         object chained satisfies {Element|Other*} {
             shared actual Iterator<Element|Other> iterator =>
-                    ChainedIterator(outer, other);
+                    ChainedIterator(outerIterable, other);
         }
         return chained;
     }
     
-    doc "Creates a Map that contains this `Iterable`'s
+    /*doc "Creates a Map that contains this `Iterable`'s
          elements, grouped in `Sequence`s under the
          keys provided by the grouping function."
     shared default native Map<Grouping,[Element+]> group<Grouping>(
                 doc "A function that must return the key under
                      which to group the specified element."
                 Grouping grouping(Element elem))
-            given Grouping satisfies Object;
+            given Grouping satisfies Object;*/
     
 }
 

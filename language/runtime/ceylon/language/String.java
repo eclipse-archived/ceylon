@@ -1158,14 +1158,14 @@ public abstract class String
             return instance(value).chain(other);
         }
     }
-    @Ignore
+    /*@Ignore
     public static <Key> Map<? extends Key, ? extends Sequence<? extends Character>> group(java.lang.String value, Callable<? extends Key> grouping) {
         if (value.isEmpty()) {
             return new InternalMap<Key, Sequence<? extends Character>>(java.util.Collections.<Key,Sequence<Character>>emptyMap());
         } else {
             return instance(value).group(grouping);
         }
-    }
+    }*/
 
     @Ignore
     public static <Other>String withLeading(java.lang.String value) {
@@ -1347,11 +1347,11 @@ public abstract class String
         @Override
         @Ignore
         public String getFirst() {
-        	return $ceylon$language$Iterable$this.getFirst();
+        	return (String) $ceylon$language$Iterable$this.getFirst();
         }
         @Override @Ignore
         public String getLast() {
-            return $ceylon$language$Iterable$this.getLast();
+            return (String) $ceylon$language$Iterable$this.getLast();
         }
 
         @Override
@@ -1438,10 +1438,10 @@ public abstract class String
         @Override @Ignore public <Other>Iterable chain(Iterable<? extends Other, ? extends java.lang.Object> other) {
             return $ceylon$language$Iterable$this.chain(other);
         }
-        @Override @Ignore
+        /*@Override @Ignore
         public <Key> Map<? extends Key, ? extends Sequence<? extends String>> group(Callable<? extends Key> grouping) {
             return $ceylon$language$Iterable$this.group(grouping);
-        }
+        }*/
         @Override @Ignore
         public boolean contains(@Name("element") java.lang.Object element) {
             return $ceylon$language$Iterable$this.contains(element);
@@ -1524,11 +1524,11 @@ public abstract class String
         @Override
         @Ignore
         public Integer getFirst() {
-        	return $ceylon$language$Iterable$this.getFirst();
+        	return (Integer) $ceylon$language$Iterable$this.getFirst();
         }
         @Override @Ignore
         public Integer getLast() {
-            return $ceylon$language$Iterable$this.getLast();
+            return (Integer) $ceylon$language$Iterable$this.getLast();
         }
 
         @Override
@@ -1613,10 +1613,10 @@ public abstract class String
         @Override @Ignore public <Other>Iterable chain(Iterable<? extends Other, ? extends java.lang.Object> other) {
             return $ceylon$language$Iterable$this.chain(other);
         }
-        @Override @Ignore
+        /*@Override @Ignore
         public <Key> Map<? extends Key, ? extends Sequence<? extends Integer>> group(Callable<? extends Key> grouping) {
             return $ceylon$language$Iterable$this.group(grouping);
-        }
+        }*/
         @Override @Ignore
         public boolean contains(@Name("element") java.lang.Object element) {
             return $ceylon$language$Iterable$this.contains(element);

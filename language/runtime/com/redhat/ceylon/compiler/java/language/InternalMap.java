@@ -141,20 +141,20 @@ public class InternalMap<Key, Item> implements Map<Key, Item> {
     @Annotations({ @Annotation("actual"), @Annotation("default") })
     @TypeInfo("ceylon.language::Nothing|Element")
     public Entry<? extends Key, ? extends Item> getFirst() {
-        return iter$impl.getFirst();
+        return (Entry<? extends Key, ? extends Item>) iter$impl.getFirst();
     }
 
     @Override
     @Annotations({ @Annotation("actual"), @Annotation("default") })
     @TypeInfo("ceylon.language::Nothing|Element")
     public Entry<? extends Key, ? extends Item> getLast() {
-        return iter$impl.getLast();
+        return (Entry<? extends Key, ? extends Item>) iter$impl.getLast();
     }
 
     @Override
     @Annotations(@Annotation("default"))
     @TypeInfo("ceylon.language::Iterable<Element,ceylon.language::Null>")
-    public Iterable<? extends Entry<? extends Key, ? extends Item>, ? extends java.lang.Object> getRest() {
+    public Iterable<? extends Entry<? extends Key, ? extends Item>, ?> getRest() {
         return iter$impl.getRest();
     }
 
@@ -169,7 +169,7 @@ public class InternalMap<Key, Item> implements Map<Key, Item> {
     @Annotations(@Annotation("default"))
     @TypeInfo("ceylon.language::Iterable<Result>")
     @TypeParameters(@TypeParameter("Result"))
-    public <Result> Iterable<? extends Result, ? extends java.lang.Object> map(
+    public <Result> Iterable<? extends Result, ?> map(
             Callable<? extends Result> collecting) {
         return iter$impl.map(collecting);
     }
@@ -177,7 +177,7 @@ public class InternalMap<Key, Item> implements Map<Key, Item> {
     @Override
     @Annotations(@Annotation("default"))
     @TypeInfo("ceylon.language::Iterable<Element,ceylon.language::Null>")
-    public Iterable<? extends Entry<? extends Key, ? extends Item>, ? extends java.lang.Object> filter(
+    public Iterable<? extends Entry<? extends Key, ? extends Item>, ?> filter(
             Callable<? extends Boolean> selecting) {
         return iter$impl.filter(selecting);
     }
@@ -297,10 +297,10 @@ public class InternalMap<Key, Item> implements Map<Key, Item> {
     public <Other> Iterable chain(Iterable<? extends Other, ? extends java.lang.Object> other) {
         return iter$impl.chain(other);
     }
-    @Override @Ignore
+    /*@Override @Ignore
     public <Key2> Map<? extends Key2, ? extends Sequence<? extends Entry<? extends Key, ? extends Item>>> group(Callable<? extends Key2> grouping) {
         return iter$impl.group(grouping);
-    }
+    }*/
 
     @Override
     @Annotations(@Annotation("formal"))

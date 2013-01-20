@@ -163,12 +163,12 @@ public class LazySet<Element> implements Set<Element> {
 
     @Override @Ignore
     public Element getFirst() {
-        return elems.getFirst();
+        return (Element) elems.getFirst();
     }
 
     @Override @Ignore
     public Element getLast() {
-        return elems.getLast();
+        return (Element) elems.getLast();
     }
 
     @Override @Ignore
@@ -273,11 +273,11 @@ public class LazySet<Element> implements Set<Element> {
         return elems.chain(other);
     }
 
-    @Override @Ignore
+    /*@Override @Ignore
     public <Key> Map<? extends Key, ? extends Sequence<? extends Element>> group(
             Callable<? extends Key> grouping) {
         return elems.group(grouping);
-    }
+    }*/
 
     @Override @Ignore
     public boolean containsEvery(

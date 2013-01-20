@@ -214,9 +214,8 @@
                 <!-- These are problem files we hope to be able to compile some day -->
                 <exclude name="ceylon/language/Keys.ceylon"/> <!-- COMPILE ERROR (needs reified generics) -->
                 <include name="ceylon/language/Keys.java"/>
-                <exclude name="ceylon/language/Iterable.ceylon"/> <!-- COMPILE ERROR (unknown cause) -->
-                <include name="ceylon/language/Iterable.java"/>
-                <include name="ceylon/language/Iterable$impl.java"/>
+                <exclude name="ceylon/language/internalFirst.ceylon"/> <!-- COMPILE ERROR (needs reified generics) -->
+                <include name="ceylon/language/internalFirst_.java"/>
                 <exclude name="ceylon/language/LazySet.ceylon"/> <!-- COMPILE ERROR (needs reified generics) -->
                 <include name="ceylon/language/LazySet.java"/>
             </files>

@@ -33,7 +33,7 @@ shared class LazySet<out Element>({Element*} elems)
     shared actual Set<Element&Other> intersection<Other>(Set<Other> set)
             given Other satisfies Object =>
         //requires support for reified generics!
-        LazySet({ for (e in set) if (is Element e, e in this) e });
+        LazySet ({ for (e in set) if (is Element e, e in this) e });
     
     shared actual Set<Element|Other> exclusiveUnion<Other>(Set<Other> other)
             given Other satisfies Object {
@@ -44,7 +44,7 @@ shared class LazySet<out Element>({Element*} elems)
     
     shared actual Set<Element> complement<Other>(Set<Other> set)
             given Other satisfies Object =>
-        LazySet({ for (e in this) if (!e in set) e });
+        LazySet ({ for (e in this) if (!e in set) e });
     
     shared actual default Boolean equals(Object that) {
         if (is Set<Object> that) {

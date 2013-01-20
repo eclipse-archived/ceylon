@@ -1,12 +1,13 @@
 doc "Applies a function to each element of two `Iterable`s
      and returns an `Iterable` with the results."
 by "Gavin" "Enrique Zamudio" "Tako"
-shared {Result*} combine<Result,Element,OtherElement>(
+shared Iterable<Result,Absent> combine<Result,Absent,Element,OtherElement>(
         Result combination(Element element, OtherElement otherElement), 
-        {Element*} elements, 
-        {OtherElement*} otherElements)  {
+        Iterable<Element,Absent> elements, 
+        Iterable<OtherElement,Absent> otherElements) 
+        given Absent satisfies Null {
     
-    class CombineIterable() satisfies {Result*} {
+    class CombineIterable() satisfies Iterable<Result,Absent> {
         shared actual Iterator<Result> iterator {
             class CombineIterator() satisfies Iterator<Result> {
                 value iter = elements.iterator;
