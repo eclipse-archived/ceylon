@@ -49,4 +49,9 @@ public class CompilerBoxingDeclarationVisitor extends BoxingDeclarationVisitor {
         return transformer.willEraseToObject(type) || transformer.willEraseToSequential(type);
     }
 
+    @Override
+    protected boolean isCallable(ProducedType type) {
+        return transformer.isCeylonCallable(type);
+    }
+
 }

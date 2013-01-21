@@ -54,6 +54,7 @@ public abstract class BoxingDeclarationVisitor extends Visitor {
     protected abstract boolean isCeylonBasicType(ProducedType type);
     protected abstract boolean isNull(ProducedType type);
     protected abstract boolean isObject(ProducedType type);
+    protected abstract boolean isCallable(ProducedType type);
     protected abstract boolean willEraseToObject(ProducedType type);
 
     @Override
@@ -67,20 +68,68 @@ public abstract class BoxingDeclarationVisitor extends Visitor {
         super.visit(that);
         boxMethod(that.getDeclarationModel());
         rawTypedDeclaration(that.getDeclarationModel());
-        erasureToObject(that.getDeclarationModel());
+        setErasureState(that.getDeclarationModel());
     }
 
-    private void erasureToObject(TypedDeclaration decl) {
+    private void setErasureState(TypedDeclaration decl) {
         // deal with invalid input
         if(decl == null)
             return;
 
         ProducedType type = decl.getType();
-        if(type != null && willEraseToObject(type)){
+        if(type != null && hasErasure(type.resolveAliases())){
             decl.setTypeErased(true);
         }
     }
 
+    private boolean hasErasure(ProducedType type) {
+        TypeDeclaration declaration = type.getDeclaration();
+        if(declaration == null)
+            return false;
+        if(declaration instanceof UnionType){
+            UnionType ut = (UnionType) declaration;
+            List<ProducedType> caseTypes = ut.getCaseTypes();
+            // special case for optional types
+            if(caseTypes.size() == 2){
+                if(isNull(caseTypes.get(0)))
+                    return hasErasure(caseTypes.get(1));
+                if(isNull(caseTypes.get(1)))
+                    return hasErasure(caseTypes.get(0));
+            }
+            // must be erased
+            return true;
+        }
+        if(declaration instanceof IntersectionType){
+            IntersectionType ut = (IntersectionType) declaration;
+            List<ProducedType> satisfiedTypes = ut.getSatisfiedTypes();
+            // special case for non-optional types
+            if(satisfiedTypes.size() == 2){
+                if(isObject(satisfiedTypes.get(0)))
+                    return hasErasure(satisfiedTypes.get(1));
+                if(isObject(satisfiedTypes.get(1)))
+                    return hasErasure(satisfiedTypes.get(0));
+            }
+            // must be erased
+            return true;
+        }
+        // Note: we don't consider types like Anything, Null, Basic, Identifiable as erased because
+        // they can never be better than Object as far as Java is concerned
+        // FIXME: what about Nothing then?
+        
+        // special case for Callable where we stop after the first type param
+        boolean isCallable = isCallable(type);
+        
+        // now check its type parameters
+        for(ProducedType pt : type.getTypeArgumentList()){
+            if(hasErasure(pt))
+                return true;
+            if(isCallable)
+                break;
+        }
+        // no erasure here
+        return false;
+    }
+    
     private void rawTypedDeclaration(TypedDeclaration decl) {
         // deal with invalid input
         if(decl == null)
@@ -178,7 +227,7 @@ public abstract class BoxingDeclarationVisitor extends Visitor {
             setBoxingState(param, refinedParam);
             // also mark params as raw if needed
             rawTypedDeclaration(param);
-            erasureToObject(param);
+            setErasureState(param);
         }
     }
 
@@ -283,7 +332,7 @@ public abstract class BoxingDeclarationVisitor extends Visitor {
         TypedDeclaration declaration = that.getDeclarationModel();
         boxAttribute(declaration);
         rawTypedDeclaration(declaration);
-        erasureToObject(declaration);
+        setErasureState(declaration);
         if (declaration.getContainer() instanceof TypeDeclaration 
                 && CodegenUtil.isSmall(declaration)
                 && declaration.getType() != null) {
