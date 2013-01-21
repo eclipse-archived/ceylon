@@ -19,8 +19,8 @@ void lists() {
     //withLeading
     check({}.withLeading("A")=={"A"}, "Empty.withLeading(A)");
     check({}.withLeading("foo").size==1, "{}.withLeading.size");
-    check(array().withLeading(1)=={1}, "empty array.withLeading(1)");
-    check(array(1,2).withLeading("A")=={"A",1,2}, "Array.withLeading(a)" array(1,2).withLeading("A") "");
+    check(array{}.withLeading(1)=={1}, "empty array.withLeading(1)");
+    check(array{1,2}.withLeading("A")=={"A",1,2}, "Array.withLeading(a)" array{1,2}.withLeading("A") "");
     check([1,2].withLeading("a")=={"a",1,2}, "Sequence.withLeading(a)" [1,2].withLeading("a") "");
     check([1,2].withLeading("foo").size==3, "Sequence.withLeading.size" [1,2].withLeading("foo").size "");
     check(Singleton(1).withLeading("a")=={"a",1}, "Singleton.withLeading(a)" Singleton(1).withLeading("a") "");
@@ -33,8 +33,8 @@ void lists() {
     //withTrailing
     check({}.withTrailing("A")=={"A"}, "Empty.withTrailing(A)");
     check({}.withTrailing("foo").size==1, "{}.withTrailing.size");
-    check(array().withTrailing(1)=={1}, "empty array.withTrailing(1)");
-    check(array(1,2).withTrailing("A")=={1,2,"A"}, "Array.withTrailing(a)");
+    check(array{}.withTrailing(1)=={1}, "empty array.withTrailing(1)");
+    check(array{1,2}.withTrailing("A")=={1,2,"A"}, "Array.withTrailing(a)");
     check([1,2].withTrailing("a")=={1,2,"a"}, "Sequence.withTrailing(a)");
     check([1,2].withTrailing("foo").size==3, "Sequence.withTrailing.size");
     check(Singleton(1).withTrailing("a")=={1,"a"}, "Singleton.withTrailing(a)");

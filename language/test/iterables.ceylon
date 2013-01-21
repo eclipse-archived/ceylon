@@ -156,7 +156,7 @@ void testIterables() {
     check({1,2,3,4,5}.count((Integer x) => x%2==0)==2, "Sequence.count");
     check({for (i in 1..10) i}.count(greaterThan(7))==3, "Iterable.count (greaterThan)");
     check({for (i in 1..10) i}.count(lessThan(7))==6, "Iterable.count (lessThan)");
-    check(array(1,2,3,4,5).count((Integer x) => x%2==1)==3, "Array.count");
+    check(array{1,2,3,4,5}.count((Integer x) => x%2==1)==3, "Array.count");
     check("AbcdEfghIjklmnOp".count((Character c) => c.uppercase)==4, "String.count");
     check(Singleton(1).count(equalTo(1))==1, "Singleton.count (equalTo)");
 
