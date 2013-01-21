@@ -174,7 +174,6 @@ exports.Correspondence=Correspondence;
 
 //#include iterable.js
 //#include collections.js
-//#include list.js
 //Compiled from Ceylon sources
 //#COMPILED
 //Ends compiled from Ceylon sources
@@ -183,16 +182,6 @@ exports.Correspondence=Correspondence;
  * Overwriting of some methods not yet working in compiled code *
  ****************************************************************/
 
-Singleton.$$.prototype.equals = function(other) {
-    if (isOfType(other, {t:List})) {
-        if (other.getSize() !== 1) {
-            return false;
-        }
-        var o = other.item(0);
-        return o !== null && o.equals(this.getFirst());
-    }
-    return false;
-}
 Singleton.$$.prototype.getKeys = function() { return TypeCategory(this, {t:Integer}); }
 
 //#include maps.js
@@ -254,8 +243,6 @@ Comparison$proto.getString = function() { return this.name; }
 //#include functions2.js
 //#include sequences.js
 //#include process.js
-//#include range.js
-
 
 //#include annotations.js
 
