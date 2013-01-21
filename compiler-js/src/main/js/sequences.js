@@ -21,12 +21,14 @@ function $init$Sequence() {
 }
 $init$Sequence();
 var Sequence$proto = Sequence.$$.prototype;
-Sequence$proto.getLast = function() {
-    var last = this.item(this.getLastIndex());
-    if (last === null) throw Exception();
-    return last;
-}
 Sequence$proto.getEmpty = function() { return false; }
+Sequence$proto.sort = function(comp) {
+    return internalSort(comp, this, this.$$targs$$);
+}
+Sequence$proto.collect = function(f, $$$mptypes) {
+    return this.map(f, $$$mptypes).getSequence();
+}
+Sequence$proto.getClone = function() { return this; }
 
 function Array$() {
     var that = new Array$.$$;
@@ -133,6 +135,13 @@ Array$proto.contains = function(elem) {
         }
     }
     return false;
+}
+Array$proto.getIterator = function() {
+    var $$$index$$$ = 0;
+    var $$$arr$$$ = this;
+    return new ComprehensionIterator(function() {
+        return ($$$index$$$ === $$$arr$$$.length) ? $finished : $$$arr$$$[$$$index$$$++];
+    }, this.$$targs$$);
 }
 
 exports.ArrayList=ArrayList;
