@@ -936,5 +936,11 @@ public class IssuesTest extends CompilerTest {
     public void testBug973() {
         compareWithJavaSource("bug09xx/Bug973");
     }
+
+    @Test
+    // ? Javac bug
+    public void testBug974_fail() {
+        compareWithJavaSource("bug09xx/Bug974");
+    }
 }
 
