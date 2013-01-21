@@ -81,7 +81,7 @@
         <pathelement path="${ceylon.common.lib}"/>
         <pathelement path="${ceylon.language.lib}"/>
         <pathelement path="${ceylon.module-resolver.lib}"/>
-        <pathelement path="${jboss-modules.lib}"/>
+        <pathelement path="${dist.dir}/repo/${jboss-modules.dir}/main/${jboss-modules.module}"/>
     </path>
 
     <path id="test.build.classpath">
@@ -132,7 +132,6 @@
         </chmod>
         <!-- Copy the libraries -->
         <copy file="${bootstrap.lib}" tofile="${build.dist.lib}/${bootstrap.jar}"/>
-        <copy file="${jboss-modules.lib}" tofile="${build.dist.lib}/${jboss-modules.jar}"/>
         <!-- Copy the Ceylon runtime dependencies -->
         <copy file="${jboss-jandex.lib}" tofile="${build.dist.repo}/${jboss-jandex.dir}/main/${jboss-jandex.module}"/>
         <copy file="${ceylon.common.lib}" tofile="${build.dist.repo}/${ceylon.common.jar}"/>
