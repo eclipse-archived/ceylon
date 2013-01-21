@@ -918,6 +918,7 @@ public class GenerateJsVisitor extends Visitor
     }
 
     private void objectDefinition(ObjectDefinition that) {
+        comment(that);
         Value d = that.getDeclarationModel();
         boolean addToPrototype = prototypeStyle && d.isClassOrInterfaceMember();
         Class c = (Class) d.getTypeDeclaration();
@@ -1445,7 +1446,7 @@ public class GenerateJsVisitor extends Visitor
             while ((scope != null) && !(scope instanceof TypeDeclaration)) {
                 scope = scope.getContainer();
             }
-            if (scope != null) {
+            if (scope != null && ((TypeDeclaration)scope).isClassOrInterfaceMember()) {
                 self((TypeDeclaration) scope);
                 out(".");
             }
@@ -1757,7 +1758,7 @@ public class GenerateJsVisitor extends Visitor
 
             Map<String, String> argVarNames = invoker.defineNamedArguments(argList);
 
-            TypeArguments targs = that.getPrimary() instanceof BaseTypeExpression ? ((BaseTypeExpression)that.getPrimary()).getTypeArguments() : null;
+            TypeArguments targs = that.getPrimary() instanceof BaseMemberOrTypeExpression ? ((BaseMemberOrTypeExpression)that.getPrimary()).getTypeArguments() : null;
             that.getPrimary().visit(this);
             if (that.getPrimary() instanceof Tree.MemberOrTypeExpression) {
                 Tree.MemberOrTypeExpression mte = (Tree.MemberOrTypeExpression) that.getPrimary();
@@ -2979,7 +2980,9 @@ public class GenerateJsVisitor extends Visitor
                out(",");
                termgen.right();
                out(",");
-               TypeUtils.printTypeArguments(that, Collections.singletonList(that.getLeftTerm().getTypeModel()), GenerateJsVisitor.this);
+               TypeUtils.printTypeArguments(that,
+                       that.getTypeModel().getTypeArgumentList(),
+                       GenerateJsVisitor.this);
                out(")");
            }
        });
