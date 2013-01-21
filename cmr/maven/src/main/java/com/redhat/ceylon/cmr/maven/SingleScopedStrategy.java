@@ -16,7 +16,10 @@
 
 package com.redhat.ceylon.cmr.maven;
 
+import java.util.Arrays;
+import java.util.EnumSet;
 import java.util.List;
+import java.util.Set;
 
 import org.jboss.shrinkwrap.resolver.api.maven.ScopeType;
 import org.jboss.shrinkwrap.resolver.api.maven.coordinate.MavenDependency;
@@ -24,6 +27,7 @@ import org.jboss.shrinkwrap.resolver.api.maven.filter.MavenResolutionFilter;
 import org.jboss.shrinkwrap.resolver.api.maven.filter.NonTransitiveFilter;
 import org.jboss.shrinkwrap.resolver.api.maven.strategy.AcceptScopesStrategy;
 import org.jboss.shrinkwrap.resolver.api.maven.strategy.MavenResolutionStrategy;
+import org.jboss.shrinkwrap.resolver.api.maven.strategy.TransitiveExclusionPolicy;
 
 /**
  * @author <a href="mailto:ales.justin@jboss.org">Ales Justin</a>
@@ -32,6 +36,7 @@ class SingleScopedStrategy implements MavenResolutionStrategy {
     private static final MavenResolutionFilter[] EMPTY_CHAIN = new MavenResolutionFilter[]{};
 
     private MavenResolutionFilter[] filters;
+    private TransitiveExclusionPolicy tep;
 
     SingleScopedStrategy(final ScopeType... scopes) {
         final AcceptScopesStrategy scopesStrategy = new AcceptScopesStrategy(scopes);
@@ -45,6 +50,7 @@ class SingleScopedStrategy implements MavenResolutionStrategy {
                 }
             };
         }
+        tep = new SingleTransitiveExclusionPolicy(scopes);
     }
 
     public MavenResolutionFilter[] getPreResolutionFilters() {
@@ -53,5 +59,27 @@ class SingleScopedStrategy implements MavenResolutionStrategy {
 
     public MavenResolutionFilter[] getResolutionFilters() {
         return filters;
+    }
+
+    public TransitiveExclusionPolicy getTransitiveExclusionPolicy() {
+        return tep;
+    }
+
+    private class SingleTransitiveExclusionPolicy implements TransitiveExclusionPolicy {
+        private ScopeType[] scopes;
+
+        private SingleTransitiveExclusionPolicy(ScopeType[] scopes) {
+            EnumSet<ScopeType> used = EnumSet.copyOf(Arrays.asList(scopes));
+            Set<ScopeType> set = EnumSet.complementOf(used);
+            this.scopes = set.toArray(new ScopeType[set.size()]);
+        }
+
+        public boolean allowOptional() {
+            return false;
+        }
+
+        public ScopeType[] getFilteredScopes() {
+            return scopes;
+        }
     }
 }
