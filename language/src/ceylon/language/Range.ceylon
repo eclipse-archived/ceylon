@@ -62,6 +62,7 @@ shared class Range<Element>(first, last)
     doc "The rest of the range, without the start of the
          range."
     shared actual Element[] rest {
+        if (size==1) { return {}; }
         Element n = next(first);
         return n==last then {} else Range<Element>(n,last);
     }
@@ -244,4 +245,6 @@ shared class Range<Element>(first, last)
          contain nulls."
     shared actual Range<Element> coalesced => this;
 
+    //TODO should we refine this?
+    //shared actual [Element+] sequence => this;
 }
