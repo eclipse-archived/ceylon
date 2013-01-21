@@ -81,7 +81,7 @@
         <pathelement path="${ceylon.common.lib}"/>
         <pathelement path="${ceylon.language.lib}"/>
         <pathelement path="${ceylon.module-resolver.lib}"/>
-        <pathelement path="${dist.dir}/repo/${jboss-modules.dir}/main/${jboss-modules.module}"/>
+        <pathelement path="${jboss-modules.lib}"/>
     </path>
 
     <path id="test.build.classpath">
@@ -133,6 +133,7 @@
         <!-- Copy the libraries -->
         <copy file="${bootstrap.lib}" tofile="${build.dist.lib}/${bootstrap.jar}"/>
         <!-- Copy the Ceylon runtime dependencies -->
+        <copy file="${jboss-modules.lib}" tofile="${build.dist.repo}/${jboss-modules.dir}/main/${jboss-modules.module}"/>
         <copy file="${jboss-jandex.lib}" tofile="${build.dist.repo}/${jboss-jandex.dir}/main/${jboss-jandex.module}"/>
         <copy file="${ceylon.common.lib}" tofile="${build.dist.repo}/${ceylon.common.jar}"/>
         <copy file="${ceylon.language.lib}" tofile="${build.dist.repo}/${ceylon.language.car}"/>
@@ -231,7 +232,7 @@
     <!-- Rule to compile and test -->
     <target name="build" depends="runtime.jar,bootstrap.jar"/>
 
-    <target name="compile.tests" depends="build">
+    <target name="compile.tests" depends="dist">
         <mkdir dir="${build.test}"/>
         <javac debug="true"
                srcdir="${runtime-test.src}"
