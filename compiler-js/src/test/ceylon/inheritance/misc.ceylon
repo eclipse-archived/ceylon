@@ -63,10 +63,10 @@ void testMisc() {
   value testcat = TestCategory();
   check(testcat.contains(1), "Category.contains");
   check(!testcat.contains(0), "!Category.contains");
-  check(testcat.containsEvery(1,2,3,4,5,6,7,8,9,10), "Category.containsEvery");
-  check(!testcat.containsEvery(2,4,6,8,10,11), "!Category.containsEvery");
-  check(testcat.containsAny(30,20,10,50), "Category.containsAny");
-  check(!testcat.containsAny(0,20,30,40,50), "!Category.containsAny");
+  check(testcat.containsEvery{1,2,3,4,5,6,7,8,9,10}, "Category.containsEvery");
+  check(!testcat.containsEvery{2,4,6,8,10,11}, "!Category.containsEvery");
+  check(testcat.containsAny{30,20,10,50}, "Category.containsAny");
+  check(!testcat.containsAny{0,20,30,40,50}, "!Category.containsAny");
   check(IndirectionTestChild().x()=="x+y", "Inheritance");
   
   //TODO: failing tests commented out below. Make them work!

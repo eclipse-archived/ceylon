@@ -25,7 +25,7 @@ Callable<String, [Integer]> subtract(Integer howMuch) {
 
 void testAnonymous() {
   print("Testing anonymous functions...");
-  value nums = array(1,2,3,4,5);
+  value nums = array{1,2,3,4,5};
   //Test positional argument call
   variable value found = find(nums, (Integer i) => i%2==0);
   if (exists i=found) {

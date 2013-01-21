@@ -166,6 +166,9 @@ class MySequence<out Element>(Sequence<Element> seq)
     shared actual Boolean equals(Object other) { return seq.equals(other); }
     shared actual Sequence<Element> reversed { return seq.reversed; }
     shared actual Element last => seq.last;
+    shared actual Integer size => seq.size;
+    shared actual Boolean contains(Object x) => seq.contains(x);
+    shared actual Iterator<Element> iterator => seq.iterator;
 }
 
 void testIfNonempty() {

@@ -69,6 +69,7 @@ class TestList() satisfies List<String> {
     shared actual List<String> span(Integer from, Integer to) { return {}; }
     shared actual List<String> spanTo(Integer to) { return {}; }
     shared actual List<String> spanFrom(Integer from) { return {}; }
+    shared actual Iterator<String> iterator = emptyIterator;
     shared actual Boolean equals(Object that) { return List::equals(that); }
     shared actual Integer hash { return List::hash; }
 }

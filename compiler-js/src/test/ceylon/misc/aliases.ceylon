@@ -58,6 +58,8 @@ class MiMatrix(Integer gridSize) satisfies Matrix<Integer> {
     shared actual Sequence<Integer>[] rest = grid.rest;
     shared actual Sequence<Integer> first = grid.first;
     shared actual MiMatrix clone => this;
+    shared actual Integer size => gridSize*gridSize;
+    shared actual Boolean contains(Object other) => grid.contains(other);
 }
 
 void testAliasing() {
@@ -70,7 +72,7 @@ void testAliasing() {
     check(use(AliasingSub2().iface), "Aliased member interface");
     Strinteger xxxxx = 5;
     check(xxxxx is Integer, "Type alias");
-    check(Listleton([[1],[2],[3]].first).string=="{ [ 1 ] }", "class alias");
+    check(Listleton([[1],[2],[3]].first).string=="{ [ 1 ] }", "class alias " Listleton([[1],[2],[3]].first) "");
     check(MiMatrix(2).string=="{ { 1, 2 }, { 1, 2 } }", "interface alias " MiMatrix(2) "");
     Object xxxxx1 = 6;
     Object xxxxx2 = "XXXX";
