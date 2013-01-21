@@ -273,7 +273,7 @@ String$proto.getFirst = function() { return this.getSize()>0?this.item(0):null; 
 String$proto.getLast = function() { return this.getSize()>0?this.item(this.getSize().getPredecessor()):null; }
 String$proto.getKeys = function() {
     //TODO implement!!!
-    return this.getSize() > 0 ? Range(0, this.getSize().getPredecessor()) : empty;
+    return this.getSize() > 0 ? Range(0, this.getSize().getPredecessor(), [{t:Integer}]) : empty;
 }
 String$proto.join = function(strings) {
     if (strings === undefined) {return String$("", 0)}
@@ -293,7 +293,7 @@ String$proto.join = function(strings) {
 function isWhitespace(c) { return c.value in $WS; }
 String$proto.$split = function(sep, discard, group) {
     // shortcut for empty input
-    if (this.length === 0) {return Singleton(this, {t:String$});}
+    if (this.length === 0) {return Singleton(this, [{t:String$}, {t:String$}]); }
 
     if (sep === undefined) {sep = isWhitespace}
     if (discard === undefined) {discard = true}
@@ -407,7 +407,7 @@ String$proto.$split = function(sep, discard, group) {
     }
 
     this.codePoints = count;
-    return ArraySequence(tokens, {t:String$});
+    return ArraySequence(tokens, [{t:String$},{t:Null}]);
 }
 String$proto.getReversed = function() {
     var result = "";
@@ -477,6 +477,7 @@ function StringIterator(string) {
 }
 initTypeProto(StringIterator, 'ceylon.language::StringIterator', Basic, Iterator);
 var StringIterator$proto = StringIterator.$$.prototype;
+StringIterator$proto.$$targs$$=[{t:Character}, {t:Null}];
 StringIterator$proto.next = function() {
     if (this.index >= this.string.length) { return $finished }
     var first = this.string.charCodeAt(this.index++);
