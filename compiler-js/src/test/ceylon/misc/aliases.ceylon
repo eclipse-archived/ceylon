@@ -35,8 +35,7 @@ class Listleton<T>(List<T> l) => Singleton<List<T>>(l);
 class MiMatrix(Integer gridSize) satisfies Matrix<Integer> {
     value sb = SequenceBuilder<Sequence<Integer>>();
     for (i in 1..gridSize) {
-        assert(nonempty row=[ for (j in 1..gridSize) if (j%2==0) j ]);
-        sb.append(row);
+        sb.append([ for (j in 1..gridSize) j ]);
     }
     Matrix<Integer> grid;
     if (nonempty g=sb.sequence) {
@@ -48,8 +47,6 @@ class MiMatrix(Integer gridSize) satisfies Matrix<Integer> {
     shared actual String string = grid.string;
     shared actual Integer hash = grid.hash;
     shared actual Boolean equals(Object other) => grid.equals(other);
-    //shared actual Sequence<Integer>[] span(Integer from, Integer? to) = grid.span(from,to);
-    //shared actual Sequence<Integer>[] segment(Integer from, Integer length) = grid.segment(from,length);
     span = grid.span;
     segment = grid.segment;
     shared actual Matrix<Integer> reversed = grid.reversed;
@@ -58,7 +55,7 @@ class MiMatrix(Integer gridSize) satisfies Matrix<Integer> {
     shared actual Sequence<Integer>[] rest = grid.rest;
     shared actual Sequence<Integer> first = grid.first;
     shared actual MiMatrix clone => this;
-    shared actual Integer size => gridSize*gridSize;
+    shared actual Integer size => grid.size;
     shared actual Boolean contains(Object other) => grid.contains(other);
 }
 
@@ -72,8 +69,8 @@ void testAliasing() {
     check(use(AliasingSub2().iface), "Aliased member interface");
     Strinteger xxxxx = 5;
     check(xxxxx is Integer, "Type alias");
-    check(Listleton([[1],[2],[3]].first).string=="{ [ 1 ] }", "class alias " Listleton([[1],[2],[3]].first) "");
-    check(MiMatrix(2).string=="{ { 1, 2 }, { 1, 2 } }", "interface alias " MiMatrix(2) "");
+    check(Listleton([[1],[2],[3]].first).string=="{ [ 1 ] }", "class alias " Listleton([[1],[2],[3]].first) " instead of { [ 1 ] }");
+    check(MiMatrix(2).string=="{ { 1, 2 }, { 1, 2 } }", "interface alias " MiMatrix(2) " instead of { { 1, 2 }, { 1, 2 } }");
     Object xxxxx1 = 6;
     Object xxxxx2 = "XXXX";
     check(xxxxx1 is String|Integer, "is String|Integer");
