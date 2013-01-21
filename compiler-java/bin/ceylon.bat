@@ -8,9 +8,10 @@ if "%exit%" == "true" (
 )
 
 set "LIB=%CEYLON_HOME%\lib"
+set "REPO=%CEYLON_HOME%\repo"
 set "RUNTIME_REPO=%CEYLON_HOME%\runtime-repo"
 
-set "JAVA_CP=%LIB%\jboss-modules.jar"
+set "JAVA_CP=%REPO%\org\jboss\modules\main\org.jboss.modules-main.jar"
 set "JAVA_CP=%JAVA_CP%;%LIB%\ceylon-runtime-bootstrap.jar"
 set "JAVA_CP=%JAVA_CP%;%MINIMAL_CP%"
 

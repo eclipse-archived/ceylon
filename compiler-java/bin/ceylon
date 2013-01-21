@@ -30,10 +30,13 @@ else
 fi
 
 LIB="$CEYLON_HOME/lib"
+REPO="$CEYLON_HOME/repo"
 RUNTIME_REPO="$CEYLON_HOME/runtime-repo"
 
-JAVA_CP="$LIB/jboss-modules.jar"
+JAVA_CP="$REPO/org/jboss/modules/main/org.jboss.modules-main.jar"
 JAVA_CP="$JAVA_CP:$LIB/ceylon-runtime-bootstrap.jar"
+
+#JAVA_DEBUG_OPTS="-Xrunjdwp:transport=dt_socket,address=8787,server=y,suspend=y"
 
 # source classpath to set the MINIMAL_CP
 . "$DIR/ceylon-cp.sh"
@@ -45,6 +48,7 @@ JAVA_CP="$JAVA_CP:$LIB/ceylon-runtime-bootstrap.jar"
 BOOTSTRAP_CP="$MINIMAL_CP"
 
 java \
+ $JAVA_DEBUG_OPTS \
  -Xbootclasspath/p:"$BOOTSTRAP_CP" \
  -cp $JAVA_CP \
  "-Dceylon.home=$CEYLON_HOME" \
