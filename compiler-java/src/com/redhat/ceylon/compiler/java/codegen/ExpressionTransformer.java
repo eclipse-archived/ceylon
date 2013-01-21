@@ -346,7 +346,6 @@ public class ExpressionTransformer extends AbstractTransformer {
                                     || typeFact().getDefiniteType(exprType).isSubtypeOf(typeFact().getEmptyDeclaration().getType())))){
                 // Set the new expression type to a "clean" copy of the expected type
                 // (without the underlying type, because the cast is always to a non-primitive)
-                expectedType = getTypeOrSelfType(expectedType);
                 exprType = simplifyType(expectedType).withoutUnderlyingType();
                 // Erased types need a type cast, first we check if a raw cast is needed
                 if (hasTypeParameters(expectedType)) {
@@ -494,14 +493,6 @@ public class ExpressionTransformer extends AbstractTransformer {
             }
         }
         return result;
-    }
-    
-    private ProducedType getTypeOrSelfType(ProducedType exprType) {
-        final ProducedType selfType = exprType.getDeclaration().getSelfType();
-        if (selfType != null) {
-            return findTypeArgument(exprType, selfType.getDeclaration());
-        }
-        return exprType; 
     }
     
     private JCExpression applySelfTypeCasts(JCExpression result, ProducedType exprType,
