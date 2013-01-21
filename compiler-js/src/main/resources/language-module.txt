@@ -39,8 +39,6 @@ Range
 #but we just overwrite those methods with our own
 Singleton
 
-any,byDecreasing,byIncreasing,byItem,byKey,coalesce,count,emptyOrSingleton,entries,equalTo,every,first,forItem,forKey,greaterThan,join,largest,lessThan,max,min,smallest,sum,product,zip,print,nothing,identical,compose,curry,shuffle,plus,times,internalFirst
-
-#this function needs stuff that's not been implemented yet at the language level
-#combine
-#sort
+any,byDecreasing,byIncreasing,byItem,byKey,coalesce,count,emptyOrSingleton,curry,shuffle,entries,equalTo
+every,first,forItem,forKey,greaterThan,join,largest,lessThan,max,min,smallest,sum,product,zip,print,nothing
+identical,compose,curry,shuffle,plus,times,internalFirst,curry,shuffle,combine,sort
