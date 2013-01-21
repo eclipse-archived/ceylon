@@ -824,27 +824,34 @@ class NamedArgumentInvocation extends Invocation {
         Parameter parameter = sequencedArgument.getParameter();
         ProducedType parameterType = parameter.getType();
         // find out the individual type
-        ProducedType iteratedType = gen.typeFact().getIteratedType(parameter.getType());
+        ProducedType iteratedType = null;
         for (Tree.PositionalArgument arg : sequencedArgument.getPositionalArguments()) {
             gen.at(arg);
             if(arg instanceof Tree.ListedArgument){
                 Tree.Expression expr = ((Tree.ListedArgument) arg).getExpression();
+                iteratedType = gen.typeFact().getIteratedType(expr.getTypeModel());
                 // always boxed since we stuff them into a sequence
                 JCTree.JCExpression javaExpr = gen.expressionGen().transformExpression(expr, BoxingStrategy.BOXED, iteratedType);
                 x = x.append(javaExpr);
+                
             }else if(arg instanceof Tree.SpreadArgument){
                 Expression expr = ((Tree.SpreadArgument) arg).getExpression();
+                iteratedType = gen.typeFact().getIteratedType(expr.getTypeModel());
                 // always boxed since it is a sequence
                 JCTree.JCExpression javaExpr = gen.expressionGen().transformExpression(expr, BoxingStrategy.BOXED, parameterType);
                 // goes first
                 x = x.prepend(javaExpr);
                 spread = true;
+                
             }else if(arg instanceof Tree.Comprehension){
                 Tree.Comprehension comprehension = (Comprehension) arg;
+                iteratedType = comprehension.getTypeModel();
                 JCTree.JCExpression javaExpr  = gen.expressionGen().transformComprehension(comprehension, parameterType);
                 // goes first
                 x = x.prepend(javaExpr);
                 spread = true;
+            } else {
+                throw Assert.fail();
             }
         }
         gen.at(sequencedArgument);
