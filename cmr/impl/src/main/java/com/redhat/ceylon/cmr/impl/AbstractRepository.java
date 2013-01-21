@@ -88,6 +88,8 @@ public abstract class AbstractRepository implements Repository {
             return ArtifactContext.DOCS_ZIPPED;
         else if (ArtifactContext.MODULE_PROPERTIES.equals(suffix))
             return ArtifactContext.MODULE_PROPERTIES;
+        else if (ArtifactContext.MODULE_XML.equals(suffix))
+            return ArtifactContext.MODULE_XML;
         else if (RepositoryManager.DEFAULT_MODULE.equals(name))
             return name + suffix;
         else
@@ -260,22 +262,22 @@ public abstract class AbstractRepository implements Repository {
     }
 
     private boolean checkBinaryVersion(String module, Node node, ModuleQuery lookup) {
-        if(lookup.getBinaryMajor() == null && lookup.getBinaryMinor() == null)
+        if (lookup.getBinaryMajor() == null && lookup.getBinaryMinor() == null)
             return true;
-        try{
+        try {
             File file = node.getContent(File.class);
             if (file == null)
                 return false; // can't verify
 
             int[] versions = BytecodeUtils.getBinaryVersions(module, file);
-            if(versions == null)
+            if (versions == null)
                 return false; // can't verify
-            if(lookup.getBinaryMajor() != null && versions[0] != lookup.getBinaryMajor())
+            if (lookup.getBinaryMajor() != null && versions[0] != lookup.getBinaryMajor())
                 return false;
-            if(lookup.getBinaryMinor() != null && versions[1] != lookup.getBinaryMinor())
+            if (lookup.getBinaryMinor() != null && versions[1] != lookup.getBinaryMinor())
                 return false;
             return true;
-        }catch(Exception x){
+        } catch (Exception x) {
             // can't verify
             return false;
         }
@@ -430,7 +432,7 @@ public abstract class AbstractRepository implements Repository {
                 if (artifact == null)
                     continue;
                 // is it the right version?
-                if(suffix.equals(ArtifactContext.CAR) && !checkBinaryVersion(name, artifact, lookup))
+                if (suffix.equals(ArtifactContext.CAR) && !checkBinaryVersion(name, artifact, lookup))
                     continue;
                 // we found the artifact: let's notify
                 final ModuleVersionDetails newVersion = result.addVersion(version);

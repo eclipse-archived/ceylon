@@ -273,6 +273,15 @@ public class SmokeTestCase extends AbstractTest {
     }
 
     @Test
+    public void testXmlResolver() throws Exception {
+        RepositoryManager manager = getRepositoryManager();
+        ArtifactContext context = new ArtifactContext("older-jar", "12-b3", ArtifactContext.JAR);
+        File[] files = manager.resolve(context);
+        Assert.assertNotNull(files);
+        Assert.assertEquals(3, files.length);
+    }
+
+    @Test
     public void test2ndTry() throws Exception {
         RepositoryManager manager = getRepositoryManager();
         ArtifactContext ac = new ArtifactContext("test-jar", "0.1");
@@ -292,6 +301,7 @@ public class SmokeTestCase extends AbstractTest {
                 new ModuleDetails("hello", "A test", "Apache Software License", set("The Ceylon Team"), set("1.0.0")),
                 new ModuleDetails("moduletest", "A test", "GPLv2", set("The Ceylon Team"), set("0.1")),
                 new ModuleDetails("old-jar", null, null, set(), set("1.2.CR1")),
+                new ModuleDetails("older-jar", null, null, set(), set("12-b3")),
                 new ModuleDetails("org.jboss.acme", null, null, set(), set("1.0.0.Final")),
                 new ModuleDetails("test-jar", null, null, set(), set("0.1")),
         };
@@ -384,6 +394,7 @@ public class SmokeTestCase extends AbstractTest {
                 new ModuleDetails("hello", "A test", "Apache Software License", set("The Ceylon Team"), set("1.0.0")),
                 new ModuleDetails("moduletest", "A test", "GPLv2", set("The Ceylon Team"), set("0.1")),
                 new ModuleDetails("old-jar", null, null, set(), set("1.2.CR1")),
+                new ModuleDetails("older-jar", null, null, set(), set("12-b3")),
                 new ModuleDetails("org.jboss.acme", null, null, set(), set("1.0.0.Final")),
                 new ModuleDetails("test-jar", null, null, set(), set("0.1")),
         };
@@ -409,10 +420,11 @@ public class SmokeTestCase extends AbstractTest {
         expected = new ModuleDetails[]{
                 new ModuleDetails("moduletest", "A test", "GPLv2", set("The Ceylon Team"), set("0.1")),
                 new ModuleDetails("old-jar", null, null, set(), set("1.2.CR1")),
+                new ModuleDetails("older-jar", null, null, set(), set("12-b3")),
         };
 
-        results = testSearchResults("", Type.JVM, expected, results.getStart() + results.getCount(), 2l, repoManager, results.getNextPagingInfo());
-        Assert.assertEquals(2, results.getCount());
+        results = testSearchResults("", Type.JVM, expected, results.getStart() + results.getCount(), 3l, repoManager, results.getNextPagingInfo());
+        Assert.assertEquals(3, results.getCount());
         Assert.assertEquals(true, results.getHasMoreResults());
         Assert.assertEquals(2, results.getStart());
 
@@ -424,7 +436,7 @@ public class SmokeTestCase extends AbstractTest {
         results = testSearchResults("", Type.JVM, expected, results.getStart() + results.getCount(), 2l, repoManager, results.getNextPagingInfo());
         Assert.assertEquals(2, results.getCount());
         Assert.assertEquals(false, results.getHasMoreResults());
-        Assert.assertEquals(4, results.getStart());
+        Assert.assertEquals(5, results.getStart());
     }
 
     @Test
@@ -464,6 +476,7 @@ public class SmokeTestCase extends AbstractTest {
         // we only get jars since those have no binary version
         ModuleDetails[] expected = new ModuleDetails[]{
                 new ModuleDetails("old-jar", null, null, set(), set("1.2.CR1")),
+                new ModuleDetails("older-jar", null, null, set(), set("12-b3")),
                 new ModuleDetails("test-jar", null, null, set(), set("0.1")),
         };
         testSearchResults("", Type.JVM, expected, null, null, getRepositoryManager(), null, 1234, 0);

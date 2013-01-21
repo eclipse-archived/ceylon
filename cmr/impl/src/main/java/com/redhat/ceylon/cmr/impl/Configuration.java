@@ -29,6 +29,7 @@ public class Configuration {
     static {
         resolvers = new DependencyResolvers();
         resolvers.addResolver(PropertiesDependencyResolver.INSTANCE);
+        resolvers.addResolver(XmlDependencyResolver.INSTANCE);
         resolvers.addResolver(BytecodeUtils.INSTANCE);
     }
 
