@@ -26,7 +26,7 @@ void comprehensions() {
   check([for (x in {1.1,2.2,3,4.4}) if (is Integer i=x) i*2]=={6}, "comprehensions w/is 2");
   check(array{for (k->v in entries(["a","b","c","d","e"])) if (k%2==0) v.uppercased}==array({"A","C","E"}), "key-value comprehensions");
   // comprehension nested inside comprehension
-  check([for(i in 1..2)[for(j in 1..2)""i","j""]]=={{"1,1","1,2"},{"2,1","2,2"}}, "nested comprehension");
+  check([for(i in 1..2)[for(j in 1..2)""i","j""]]==[["1,1","1,2"],["2,1","2,2"]], "nested comprehension " [for(i in 1..2)[for(j in 1..2)""i","j""]] " instead of {{'1,1','1,2'},{'2,1','2,2}}");
 
   //new comprehension-related functions
   check(any { for (x in 1..5) x>4 }, "any");
