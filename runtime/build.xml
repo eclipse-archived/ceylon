@@ -81,7 +81,7 @@
         <pathelement path="${ceylon.common.lib}"/>
         <pathelement path="${ceylon.language.lib}"/>
         <pathelement path="${ceylon.module-resolver.lib}"/>
-        <pathelement path="${jboss-modules.lib}"/>
+        <pathelement path="${dist.dir}/repo/${jboss-modules.dir}/main/${jboss-modules.module}"/>
     </path>
 
     <path id="test.build.classpath">
