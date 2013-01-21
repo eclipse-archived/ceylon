@@ -39,6 +39,7 @@ import com.redhat.ceylon.compiler.typechecker.model.Declaration;
 import com.redhat.ceylon.compiler.typechecker.model.Functional;
 import com.redhat.ceylon.compiler.typechecker.model.FunctionalParameter;
 import com.redhat.ceylon.compiler.typechecker.model.Getter;
+import com.redhat.ceylon.compiler.typechecker.model.IntersectionType;
 import com.redhat.ceylon.compiler.typechecker.model.Method;
 import com.redhat.ceylon.compiler.typechecker.model.Parameter;
 import com.redhat.ceylon.compiler.typechecker.model.ParameterList;
@@ -48,6 +49,7 @@ import com.redhat.ceylon.compiler.typechecker.model.ProducedTypedReference;
 import com.redhat.ceylon.compiler.typechecker.model.TypeDeclaration;
 import com.redhat.ceylon.compiler.typechecker.model.TypeParameter;
 import com.redhat.ceylon.compiler.typechecker.model.TypedDeclaration;
+import com.redhat.ceylon.compiler.typechecker.model.UnionType;
 import com.redhat.ceylon.compiler.typechecker.model.Value;
 import com.redhat.ceylon.compiler.typechecker.tree.Node;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree;
@@ -220,6 +222,11 @@ abstract class SimpleInvocation extends Invocation {
 
     // to be overridden
     protected boolean isParameterRaw(int argIndex) {
+        return false;
+    }
+
+    // to be overridden
+    protected boolean isParameterWithConstrainedTypeParameters(int argIndex) {
         return false;
     }
 
@@ -551,6 +558,39 @@ class PositionalInvocation extends DirectInvocation {
         Parameter param = getParameter(argIndex);
         ProducedType type = param.getType();
         return type == null ? false : type.isRaw();
+    }
+    
+    @Override
+    protected boolean isParameterWithConstrainedTypeParameters(int argIndex) {
+        Parameter param = getParameter(argIndex);
+        ProducedType type = param.getType();
+        return hasConstrainedTypeParameters(type);
+    }
+    
+    private boolean hasConstrainedTypeParameters(ProducedType type) {
+        TypeDeclaration declaration = type.getDeclaration();
+        if(declaration instanceof TypeParameter){
+            TypeParameter tp = (TypeParameter) declaration;
+            return !tp.getSatisfiedTypes().isEmpty();
+        }
+        if(declaration instanceof UnionType){
+            for(ProducedType m : declaration.getCaseTypes())
+                if(hasConstrainedTypeParameters(m))
+                    return true;
+            return false;
+        }
+        if(declaration instanceof IntersectionType){
+            for(ProducedType m : declaration.getSatisfiedTypes())
+                if(hasConstrainedTypeParameters(m))
+                    return true;
+            return false;
+        }
+        // check its type arguments
+        for(ProducedType typeArg : type.getTypeArgumentList()){
+            if(hasConstrainedTypeParameters(typeArg))
+                return true;
+        }
+        return false;
     }
     
     protected boolean hasDefaultArgument(int ii) {
