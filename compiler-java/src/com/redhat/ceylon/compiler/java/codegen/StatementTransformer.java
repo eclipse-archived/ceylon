@@ -881,9 +881,10 @@ public class StatementTransformer extends AbstractTransformer {
         public JCExpression makeResultExpr() {
             Value decl = this.cond.getVariable().getDeclarationModel();
             return expressionGen().applyErasureAndBoxing(testVar.makeIdent(),
-                    typeFact().getDefiniteType(this.specifierExpr.getTypeModel()), true,
+                    typeFact().getDefiniteType(this.specifierExpr.getTypeModel()), false, true,
                     BoxingStrategy.BOXED,
-                    decl.getType());
+                    decl.getType(),
+                    ExpressionTransformer.EXPR_DOWN_CAST);
         }
         
         @Override
