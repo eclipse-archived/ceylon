@@ -1488,7 +1488,9 @@ public abstract class AbstractTransformer implements Transformation {
                 && (flags & TP_TO_BOUND) != 0) {
             if (!declTypeDecl.getSatisfiedTypes().isEmpty()) {
                 // use upper bound
-                return declTypeDecl.getSatisfiedTypes().get(0);
+                ProducedType upperBound = declTypeDecl.getSatisfiedTypes().get(0);
+                // make sure we apply the type arguments
+                return upperBound.substitute(producedReference.getTypeArguments());
             }
          } else if (willEraseToSequential(declType)
                  && typeFact().getEmptyDeclaration().getType().isSupertypeOf(type)) {
