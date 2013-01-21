@@ -137,15 +137,19 @@ public abstract class BoxingDeclarationVisitor extends Visitor {
 
         ProducedType type = decl.getType();
         if(type != null){
-            if(containsRaw(type))
+            if(isRaw(type))
                 type.setRaw(true);
         }
     }
 
-    private boolean containsRaw(ProducedType type) {
+    private boolean isRaw(ProducedType type) {
         // do this on resolved aliases
         type = type.resolveAliases();
-        for(ProducedType typeArg : type.getTypeArguments().values()){
+
+        // special case for Callable where we stop after the first type param
+        boolean isCallable = isCallable(type);
+        
+        for(ProducedType typeArg : type.getTypeArgumentList()){
             // skip invalid input
             if(typeArg == null)
                 return false;
@@ -155,25 +159,34 @@ public abstract class BoxingDeclarationVisitor extends Visitor {
                 UnionType ut = (UnionType) typeDeclaration;
                 List<ProducedType> caseTypes = ut.getCaseTypes();
                 // special case for optional types
-                if(caseTypes.size() == 2
-                        && (isNull(caseTypes.get(0))
-                                || isNull(caseTypes.get(1))))
-                    return false;
+                if(caseTypes.size() == 2){
+                    if(isNull(caseTypes.get(0)))
+                        return isRaw(caseTypes.get(1));
+                    if(isNull(caseTypes.get(1)))
+                        return isRaw(caseTypes.get(0));
+                }
+                // must be raw
                 return true;
             }
             if(typeDeclaration instanceof IntersectionType){
                 IntersectionType ut = (IntersectionType) typeDeclaration;
                 List<ProducedType> satisfiedTypes = ut.getSatisfiedTypes();
                 // special case for non-optional types
-                if(satisfiedTypes.size() == 2
-                        && (isObject(satisfiedTypes.get(0))
-                                || isObject(satisfiedTypes.get(1))))
-                    return false;
+                if(satisfiedTypes.size() == 2){
+                    if(isObject(satisfiedTypes.get(0)))
+                        return isRaw(satisfiedTypes.get(1));
+                    if(isObject(satisfiedTypes.get(1)))
+                        return isRaw(satisfiedTypes.get(0));
+                }
+                // must be raw
                 return true;
             }
-            if(containsRaw(typeArg))
-                return true;
+            // Callable really has a single type arg in Java
+            if(isCallable)
+                break;
+            // don't recurse
         }
+        // didn't find anything to make it raw
         return false;
     }
 
