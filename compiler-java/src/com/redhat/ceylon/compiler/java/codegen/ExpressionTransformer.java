@@ -55,6 +55,7 @@ import com.redhat.ceylon.compiler.typechecker.model.Scope;
 import com.redhat.ceylon.compiler.typechecker.model.TypeDeclaration;
 import com.redhat.ceylon.compiler.typechecker.model.TypeParameter;
 import com.redhat.ceylon.compiler.typechecker.model.TypedDeclaration;
+import com.redhat.ceylon.compiler.typechecker.model.UnionType;
 import com.redhat.ceylon.compiler.typechecker.model.Value;
 import com.redhat.ceylon.compiler.typechecker.tree.Node;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree;
@@ -103,6 +104,8 @@ public class ExpressionTransformer extends AbstractTransformer {
     // flags for transformExpression
     public static final int EXPR_FOR_COMPANION = 1;
     public static final int EXPR_EXPECTED_TYPE_NOT_RAW = 1 << 1;
+    public static final int EXPR_EXPECTED_TYPE_HAS_CONSTRAINED_TYPE_PARAMETERS = 1 << 2;
+    public static final int EXPR_DOWN_CAST = 1 << 3;
 
     static{
         // only there to make sure this class is initialised before the enums defined in it, otherwise we
@@ -321,6 +324,11 @@ public class ExpressionTransformer extends AbstractTransformer {
         if (expectedType != null
                 // don't add cast to an erased type 
                 && !willEraseToObject(expectedType)) {
+            
+            boolean expectedTypeIsNotRaw = (flags & EXPR_EXPECTED_TYPE_NOT_RAW) != 0;
+            boolean expectedTypeHasConstrainedTypeParameters = (flags & EXPR_EXPECTED_TYPE_HAS_CONSTRAINED_TYPE_PARAMETERS) != 0;
+            boolean downCast = (flags & EXPR_DOWN_CAST) != 0;
+            
             // special case for returning Null expressions
             if (isNull(exprType)){
                 // don't add cast for null
@@ -328,38 +336,45 @@ public class ExpressionTransformer extends AbstractTransformer {
                     // in some cases we may have an instance of Null, which is of type java.lang.Object, being
                     // returned in a context where we expect a String? (aka ceylon.language.String) so even though
                     // the instance at hand will really be null, we need a up-cast to it
-                    if(!willEraseToObject(expectedType)){
-                        JCExpression targetType = makeJavaType(expectedType, AbstractTransformer.JT_RAW);
-                        result = make().TypeCast(targetType, result);
-                    }
+                    // FIXME: this is always true
+                    JCExpression targetType = makeJavaType(expectedType, AbstractTransformer.JT_RAW);
+                    result = make().TypeCast(targetType, result);
                 }
-            }else if(
-                    // if we don't expect exactly a sequential, or if we have a sequential we erased to Object
-                    ((!isExactlySequential(expectedType) 
-                            || (exprErased && exprType.isExactly(typeFact().getObjectDeclaration().getType())))
-                       && ((exprErased && !isFunctionalResult(exprType))
-                            || willEraseToObject(exprType)
-                            || (exprType.isRaw() && !hasErasedTypeParameters(expectedType, true))))
-                    || (typeFact().getNonemptySequenceType(typeFact().getDefiniteType(expectedType)) != null
-                            && (isExactlySequential(exprType)
-                                    || willEraseToSequential(exprType)
-                                    || typeFact().getDefiniteType(exprType).isSubtypeOf(typeFact().getEmptyDeclaration().getType())))){
-                // Set the new expression type to a "clean" copy of the expected type
-                // (without the underlying type, because the cast is always to a non-primitive)
-                exprType = simplifyType(expectedType).withoutUnderlyingType();
-                // Erased types need a type cast, first we check if a raw cast is needed
-                if (hasTypeParameters(expectedType)) {
-                    JCExpression rawType = makeJavaType(expectedType, AbstractTransformer.JT_TYPE_ARGUMENT | AbstractTransformer.JT_RAW);
-                    result = make().TypeCast(rawType, result);
-                }
-                // then the actual cast
-                JCExpression targetType = makeJavaType(expectedType, AbstractTransformer.JT_TYPE_ARGUMENT);
-                result = make().TypeCast(targetType, result);
-            }else if(exprType.getDeclaration() instanceof NothingType
-                    || needsRawCast(exprType, expectedType, (flags & EXPR_EXPECTED_TYPE_NOT_RAW) != 0)){
+            }else if(exprType.getDeclaration() instanceof NothingType){
                 // type param erasure
                 JCExpression targetType = makeJavaType(expectedType, AbstractTransformer.JT_RAW);
                 result = make().TypeCast(targetType, result);
+            }else if(// expression was forcibly erased
+                     exprErased
+                     // we're down casting so we must cast
+                     || downCast
+                     // some type parameter somewhere needs a cast
+                     || needsCast(exprType, expectedType, expectedTypeIsNotRaw, expectedTypeHasConstrainedTypeParameters)
+                     // if the exprType is raw and the expected type isn't
+                     || (exprType.isRaw() && (expectedTypeIsNotRaw || !isTurnedToRaw(expectedType)))){
+                
+                // save this before we simplify it because we lose that flag doing so
+                boolean exprIsRaw = exprType.isRaw();
+                boolean expectedTypeIsRaw = isTurnedToRaw(expectedType) && !expectedTypeIsNotRaw;
+
+                // simplify the type
+                // (without the underlying type, because the cast is always to a non-primitive)
+                exprType = simplifyType(expectedType).withoutUnderlyingType();
+                
+                // We will need a raw cast if the expected type has type parameters, 
+                // unless the expr is already raw
+                if (!exprIsRaw && hasTypeParameters(expectedType)) {
+                    JCExpression rawType = makeJavaType(expectedType, AbstractTransformer.JT_TYPE_ARGUMENT | AbstractTransformer.JT_RAW);
+                    result = make().TypeCast(rawType, result);
+                }
+                
+                // don't even try making an actual cast if there are bounded type parameters in play, because going raw is much safer
+                // also don't try making the cast if the expected type is raw because anything goes
+                if(!expectedTypeHasConstrainedTypeParameters && !expectedTypeIsRaw){
+                    // Do the actual cast
+                    JCExpression targetType = makeJavaType(expectedType, AbstractTransformer.JT_TYPE_ARGUMENT);
+                    result = make().TypeCast(targetType, result);
+                }
             }else
                 canCast = true;
         }
@@ -376,26 +391,59 @@ public class ExpressionTransformer extends AbstractTransformer {
         return ret;
     }
 
-    private boolean needsRawCast(ProducedType exprType, ProducedType expectedType, boolean expectedTypeNotRaw) {
+    private boolean needsCast(ProducedType exprType, ProducedType expectedType, 
+                              boolean expectedTypeNotRaw, boolean expectedTypeHasConstrainedTypeParameters) {
         // make sure we work on definite types
         exprType = typeFact().getDefiniteType(exprType);
         expectedType = typeFact().getDefiniteType(expectedType);
         // abort if both types are the same
-        if(exprType.isExactly(expectedType))
-            return false;
-        
-        // if one type is erased and the other is not we need a cast
+        if(exprType.isExactly(expectedType)){
+            // unless the expected type is parameterised with bounds because in that case we can't
+            // really trust the expected type
+            if(!expectedTypeHasConstrainedTypeParameters)
+                return false;
+        }
+
+        // now see about erasure
         boolean eraseExprType = willEraseToObject(exprType);
         boolean eraseExpectedType = willEraseToObject(expectedType);
-        if(eraseExprType != eraseExpectedType)
-            return true;
-        // if both erase to object we need no cast
-        if(eraseExprType && eraseExpectedType)
-            return false;
         
+        // if we erase expected type we need no cast
+        if(eraseExpectedType){
+            // unless the expected type is parameterised with bounds that erasure to Object can't possibly satisfy
+            if(!expectedTypeHasConstrainedTypeParameters)
+                return false;
+        }
+        // if we erase the expr type we need a cast
+        if(eraseExprType)
+            return true;
+        
+        // special case for things that are erased to sequential, because for example Range|Empty does not have any super type
+        // but we know that if expectedType is a sequential we will erase it not to Object but to Sequential 
+        if(expectedType.getDeclaration() instanceof UnionType
+                && willEraseToSequential(expectedType)){
+            // consider the expected type to be Sequential then
+            expectedType = typeFact().getDefiniteType(expectedType.getSupertype(typeFact().getSequentialDeclaration()));
+        }
+
+        // same thing for expr type, because we know it's not erased to Object, we already checked, but if it
+        // will end up into a Sequential we need to know this
+        if(exprType.getDeclaration() instanceof UnionType
+                && willEraseToSequential(exprType)){
+            // consider the expression type to be Sequential then
+            exprType = typeFact().getDefiniteType(exprType.getSupertype(typeFact().getSequentialDeclaration()));
+        }
+        
+        // find their common type
         ProducedType commonType = exprType.getSupertype(expectedType.getDeclaration());
+        
         if(commonType == null || !(commonType.getDeclaration() instanceof ClassOrInterface))
             return false;
+        
+        // some times we can lose info due to an erased type parameter somewhere in the inheritance graph
+        if(lostTypeParameterInInheritance(exprType, commonType))
+            return true;
+        
         if(!expectedTypeNotRaw){
             // the truth is that we don't really know if the expected type is raw or not, that flag only gets set
             // if we know for sure that the expected type is NOT raw. if it's false we've no idea but we can check:
@@ -407,11 +455,12 @@ public class ExpressionTransformer extends AbstractTransformer {
             // the common type could be erased
             if(commonType.isExactly(expectedType))
                 return false;
+            
+            
         }
-        // Surely this is a sign of a really badly designed method but I (Stef) have a strong
-        // feeling that callables never need a raw cast
-        if(isCeylonCallable(commonType))
-            return false;
+        //special case for Callable because only the first type param exists in Java, the rest is completely suppressed
+        boolean isCallable = isCeylonCallable(commonType);
+        
         // now see if the type parameters match
         java.util.List<ProducedType> commonTypeArgs = commonType.getTypeArgumentList();
         java.util.List<ProducedType> expectedTypeArgs = expectedType.getTypeArgumentList();
@@ -422,9 +471,58 @@ public class ExpressionTransformer extends AbstractTransformer {
             // apply the same logic to each type param: see if they would require a raw cast
             ProducedType commonTypeArg = commonTypeArgs.get(i);
             ProducedType expectedTypeArg = expectedTypeArgs.get(i);
-            if(needsRawCast(commonTypeArg, expectedTypeArg, expectedTypeNotRaw))
+            if(needsCast(commonTypeArg, expectedTypeArg, expectedTypeNotRaw, expectedTypeHasConstrainedTypeParameters))
                 return true;
+            // stop after the first one for Callable
+            if(isCallable)
+                break;
         }
+        return false;
+    }
+
+    private boolean lostTypeParameterInInheritance(ProducedType exprType, ProducedType commonType) {
+        if(exprType.getDeclaration() instanceof ClassOrInterface == false
+                || commonType.getDeclaration() instanceof ClassOrInterface == false)
+            return false;
+        ClassOrInterface exprDecl = (ClassOrInterface) exprType.getDeclaration();
+        ClassOrInterface commonDecl = (ClassOrInterface) commonType.getDeclaration();
+        // do not search interfaces if the common declaration is a class, because interfaces cannot be subtypes of a class
+        boolean searchInterfaces = commonDecl instanceof Interface;
+        return lostTypeParameterInInheritance(exprDecl, commonDecl, searchInterfaces, false);
+    }
+
+    private boolean lostTypeParameterInInheritance(ClassOrInterface exprDecl, ClassOrInterface commonDecl, boolean searchInterfaces, boolean lostTypeParameter) {
+        // stop if we found the common decl
+        if(exprDecl == commonDecl)
+            return lostTypeParameter;
+        if(searchInterfaces){
+            // find a match in interfaces
+            for(ProducedType pt : exprDecl.getSatisfiedTypes()){
+                // FIXME: this is very heavy-handed because we consider that once we've lost a type parameter we've lost them all
+                // but we could optimise this by checking:
+                // 1/ which type parameter we've really lost
+                // 2/ if the type parameters we're passing to our super type actually depend in any way from type parameters we've lost
+                boolean lostTypeParameter2 = lostTypeParameter || isTurnedToRaw(pt);
+                pt = simplifyType(pt);
+                // it has to be an interface
+                Interface interf = (Interface) pt.getDeclaration();
+                if(lostTypeParameterInInheritance(interf, commonDecl, searchInterfaces, lostTypeParameter2))
+                    return true;
+            }
+        }
+        // search for super classes
+        ProducedType extendedType = exprDecl.getExtendedType();
+        if(extendedType != null){
+            // FIXME: see above
+            boolean lostTypeParameter2 = lostTypeParameter || isTurnedToRaw(extendedType);
+            extendedType = simplifyType(extendedType);
+            // it has to be a Class
+            Class extendedTypeDeclaration = (Class) extendedType.getDeclaration();
+            // looks like Object's superclass is Object, so stop right there
+            if(extendedTypeDeclaration != typeFact().getObjectDeclaration())
+                return lostTypeParameterInInheritance(extendedTypeDeclaration, commonDecl, searchInterfaces, lostTypeParameter2);
+        }
+        // didn't find it
         return false;
     }
 
@@ -441,18 +539,6 @@ public class ExpressionTransformer extends AbstractTransformer {
                     && !willEraseToSequential(arg)){
                 return true;
             }
-        }
-        return false;
-    }
-
-    private boolean hasErasedTypeParameters(ProducedType type, boolean keepRecursing) {
-        for(ProducedType arg : type.getTypeArgumentList()){
-            if(willEraseToObject(arg))
-                return true;
-            if(keepRecursing
-                    && arg.getDeclaration() instanceof ClassOrInterface
-                    && hasErasedTypeParameters(arg, true))
-                return true;
         }
         return false;
     }
@@ -1538,6 +1624,8 @@ public class ExpressionTransformer extends AbstractTransformer {
             int flags = 0;
             if(!invocation.isParameterRaw(argIndex))
                 flags |= ExpressionTransformer.EXPR_EXPECTED_TYPE_NOT_RAW;
+            if(invocation.isParameterWithConstrainedTypeParameters(argIndex))
+                flags |= ExpressionTransformer.EXPR_EXPECTED_TYPE_HAS_CONSTRAINED_TYPE_PARAMETERS;
             JCExpression ret = transformExpression(expr, 
                     boxingStrategy, 
                     type, flags);
