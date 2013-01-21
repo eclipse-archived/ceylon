@@ -73,8 +73,11 @@ public class InvocationGenerator {
                     gen.out(GenerateJsVisitor.getClAlias(), "empty");
                 } else if (argList.getSequencedArgument()!=null) {
                     gen.out(argVarNames.get(p.getName()));
-                } else {
+                } else if (p.isDefaulted()) {
                     gen.out("undefined");
+                } else {
+                    //It's an empty Iterable
+                    gen.out(GenerateJsVisitor.getClAlias(), "empty");
                 }
                 first = false;
             }
