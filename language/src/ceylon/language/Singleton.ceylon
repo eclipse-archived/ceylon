@@ -82,19 +82,13 @@ shared class Singleton<out Element>(Element element)
          this `Singleton`'s element."
     shared actual Boolean equals(Object that) {
         if (is List<Anything> that) {
-            if (that.size!=1) {
-                return false;
-            }
-            else if (exists elem = that[0]) {
-                return elem==element;
-            }
-            else {
-                return false;
+            if (that.size==1) {
+                if (exists elem = that[0]) {
+                    return elem==element;
+                }
             }
         }
-        else {
-            return false;
-        }
+        return false;
     }
     
     shared actual Integer hash => 31 + element.hash;
