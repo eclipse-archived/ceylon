@@ -7,6 +7,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
+import com.redhat.ceylon.compiler.js.JsCompiler;
 import com.redhat.ceylon.compiler.typechecker.analyzer.ModuleManager;
 import com.redhat.ceylon.compiler.typechecker.model.Annotation;
 import com.redhat.ceylon.compiler.typechecker.model.NothingType;
@@ -720,6 +721,8 @@ public class JsonPackage extends com.redhat.ceylon.compiler.typechecker.model.Pa
                 d.setActual(true);
             } else if ("default".equals(name)) {
                 d.setDefault(true);
+            } else if ("native".equals(name)) {
+                d.setNative(true);
             } else {
                 Annotation ann = new Annotation();
                 ann.setName(name);
@@ -728,6 +731,11 @@ public class JsonPackage extends com.redhat.ceylon.compiler.typechecker.model.Pa
                 }
                 d.getAnnotations().add(ann);
             }
+        }
+        //This is to avoid problems with private declarations while
+        //compiling the language module
+        if (JsCompiler.isCompilingLanguageModule() && d.isToplevel()) {
+            d.setShared(true);
         }
     }
 

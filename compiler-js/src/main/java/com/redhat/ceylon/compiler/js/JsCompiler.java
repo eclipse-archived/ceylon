@@ -348,4 +348,8 @@ public class JsCompiler {
         writer.write("}));\n");
     }
 
+    /** Returns true if the compiler is currently compiling the language module. */
+    public static boolean isCompilingLanguageModule() {
+        return compilingLanguageModule;
+    }
 }
