@@ -1458,14 +1458,12 @@ public abstract class AbstractTransformer implements Transformation {
     static final int TP_SEQUENCED_TYPE = 1<<1;
     
     ProducedType getTypeForParameter(Parameter parameter, ProducedReference producedReference, int flags) {
-        if (parameter instanceof FunctionalParameter) {
-            return getTypeForFunctionalParameter((FunctionalParameter)parameter);
-        }
+        boolean functional = parameter instanceof FunctionalParameter;
         if (producedReference == null) {
             return parameter.getType();
         }
         final ProducedTypedReference producedTypedReference = producedReference.getTypedParameter(parameter);
-        final ProducedType type = producedTypedReference.getType();
+        final ProducedType type = functional ? producedTypedReference.getFullType() : producedTypedReference.getType();
         final TypedDeclaration producedParameterDecl = producedTypedReference.getDeclaration();
         final ProducedType declType = producedParameterDecl.getType();
         // be more resilient to upstream errors
