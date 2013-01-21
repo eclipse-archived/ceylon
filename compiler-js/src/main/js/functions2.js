@@ -14,25 +14,6 @@ function string(/*Iterable<Character>*/chars) {
     return s.getString();
 }
 
-function combine(/*Callable<Result,Element,Other>*/f, /*Iterable<Element>*/i1, /*Iterable<Other>*/i2) {
-    return Comprehension(function(){
-        var ei = i1.getIterator();
-        var oi = i2.getIterator();
-        return function() {
-            var ne = ei.next();
-            var no = oi.next();
-            if (ne === $finished || no === $finished) {
-                return $finished;
-            }
-            return f(ne, no);
-        };
-    });
-}
-
-function sort(elems, $$$mptypes) {
-    return internalSort(byIncreasing(function(e) { return e; }), elems, $$$mptypes);
-}
-
 function internalSort(comp, elems, $$$mptypes) {
     if (elems===undefined) {return empty;}
     var arr = [];
@@ -48,5 +29,22 @@ function internalSort(comp, elems, $$$mptypes) {
 }
 
 exports.string=string;
-exports.combine=combine;
-exports.sort=sort;
+
+function flatten(tf, $$$mptypes) {
+    var rf = function() {
+        var t = getEmpty();
+        for (var i=0; i < arguments.length; i++) {
+            t = Tuple(arguments[i], t);
+        }
+        return tf(t);
+    }
+    rf.$$targs$$=$$$mptypes;
+    return rf;
+}
+function unflatten(ff, $$$mptypes) {
+    var rf = function() {
+        return ff(arguments);
+    }
+    rf.$$targs$$=$$$mptypes;
+    return rf;
+}
