@@ -22,6 +22,10 @@ function $init$Sequential() {
     return Sequential;
 }
 $init$Sequential();
+Sequential.$$.prototype.getString=function() {
+    return this.getEmpty()?String$("[]",2) :
+        StringBuilder().appendAll([String$("[ ",2),commaList(this),String$(" ]",2)]).getString();
+}
 exports.Sequential=Sequential;
 
 function Empty() {
@@ -102,6 +106,7 @@ var emptyIterator$2=emptyIterator();
 var getEmptyIterator=function(){
     return emptyIterator$2;
 }
+exports.getEmptyIterator=getEmptyIterator;
 
 function Comprehension(makeNextFunc, $$targs$$, compr) {
     if (compr===undefined) {compr = new Comprehension.$$;}
