@@ -320,7 +320,6 @@ Used with another target such as 'package'">
                 <include name="commons-logging-*.jar"/>
                 <include name="commons-codec-*.jar"/>
                 <include name="slf4j-*.jar"/>
-                <include name="jandex-*.jar"/>
             </fileset>
         </copy>
     </target>
