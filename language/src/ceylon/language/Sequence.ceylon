@@ -15,9 +15,9 @@ doc "A nonempty, immutable sequence of values. The type
          }
      
      Operations like `first`, `max()`, `collect()`, and 
-     `sort()`, which polymorphically produce a nonempty
-     or non-null output when given a nonempty input are 
-     called _emptiness-preserving_."
+     `sort()`, which polymorphically produce a nonempty or 
+     non-null output when given a nonempty input are called 
+     _emptiness-preserving_."
 see (Empty)
 by "Gavin"
 shared interface Sequence<out Element>
