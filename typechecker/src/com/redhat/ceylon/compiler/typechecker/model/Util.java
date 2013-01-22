@@ -62,7 +62,7 @@ public class Util {
      * to a toplevel type declaration.  
      */
     public static ProducedType producedType(TypeDeclaration declaration, 
-    		ProducedType typeArgument) {
+            ProducedType typeArgument) {
         return declaration.getProducedType(null, singletonList(typeArgument));
     }
 
@@ -71,7 +71,7 @@ public class Util {
      * to a toplevel type declaration.  
      */
     public static ProducedType producedType(TypeDeclaration declaration, 
-    		ProducedType... typeArguments) {
+            ProducedType... typeArguments) {
         return declaration.getProducedType(null, asList(typeArguments));
     }
 
@@ -107,14 +107,14 @@ public class Util {
     }
 
     static boolean hasMatchingSignature(List<ProducedType> signature, 
-    		boolean ellipsis, Declaration d) {
+            boolean ellipsis, Declaration d) {
         return hasMatchingSignature(signature, ellipsis, d, true);
     }
     
     static boolean hasMatchingSignature(List<ProducedType> signature, 
-    		boolean ellipsis, Declaration d, boolean excludeAbstractClasses) {
+            boolean ellipsis, Declaration d, boolean excludeAbstractClasses) {
         if (excludeAbstractClasses && 
-        		d instanceof Class && ((Class) d).isAbstract()) {
+                d instanceof Class && ((Class) d).isAbstract()) {
             return false;
         }
         if (d instanceof Functional) {
@@ -128,7 +128,7 @@ public class Util {
                     List<Parameter> params = pls.get(0).getParameters();
                     int size = params.size();
                     boolean hasSeqParam = pls.get(0).hasSequencedParameter();
-					if (hasSeqParam) {
+                    if (hasSeqParam) {
                         size--;
                         if (signature.size()<size) {
                             return false;
@@ -325,9 +325,9 @@ public class Util {
         return map;
     }
 
-	public static Map<TypeParameter, ProducedType> getArgumentsOfOuterType(
-			ProducedType receivingType) {
-		Map<TypeParameter, ProducedType> map = new HashMap<TypeParameter, ProducedType>();
+    public static Map<TypeParameter, ProducedType> getArgumentsOfOuterType(
+            ProducedType receivingType) {
+        Map<TypeParameter, ProducedType> map = new HashMap<TypeParameter, ProducedType>();
         //make sure we collect all type arguments
         //from the whole qualified type!
         ProducedType dt = receivingType;
@@ -335,8 +335,8 @@ public class Util {
             map.putAll(dt.getTypeArguments());
             dt = dt.getQualifyingType();
         }
-		return map;
-	}
+        return map;
+    }
     
     static <T> List<T> list(List<T> list, T element) {
         List<T> result = new ArrayList<T>();
@@ -385,7 +385,7 @@ public class Util {
      * subtype.
      */
     public static void addToIntersection(List<ProducedType> list, ProducedType pt, 
-    		Unit unit) {
+            Unit unit) {
         if (pt==null) {
             return;
         }
@@ -397,8 +397,8 @@ public class Util {
         else {
             //implement the rule that Foo&Bar==Nothing if 
             //there exists some enumerated type Baz with
-        	//    Baz of Foo | Bar 
-        	//(the intersection of disjoint types is empty)
+            //    Baz of Foo | Bar 
+            //(the intersection of disjoint types is empty)
             for (ProducedType supertype: pt.getSupertypes()) {
                 List<TypeDeclaration> ctds = supertype.getDeclaration()
                         .getCaseTypeDeclarations();
@@ -451,9 +451,9 @@ public class Util {
                         return;
                     }
                     else if (emptyMeet(pt, t, unit)) {
-                    	list.clear();
-                    	list.add( unit.getNothingDeclaration().getType() );
-                    	return;                            
+                        list.clear();
+                        list.add( unit.getNothingDeclaration().getType() );
+                        return;                            
                     }
                 }
             }
@@ -463,91 +463,113 @@ public class Util {
         }
     }
 
-	/**
-	 * The meet of two classes unrelated by inheritance,
-	 * or of Null with an interface type is empty. The meet
-	 * of an anonymous class with a type to which it is not
-	 * assignable is empty.
-	 */
-	private static boolean emptyMeet(ProducedType pt, ProducedType t, Unit unit) {
-		TypeDeclaration nd = unit.getNullDeclaration(); //TODO what about the anonymous type of null?
-		TypeDeclaration ptd = pt.getDeclaration();
-		TypeDeclaration td = t.getDeclaration();
-		return ((ptd instanceof Class && td instanceof Class ||
-		        ptd instanceof Interface && td instanceof Class &&
-		        		td.equals(nd) ||
-		        td instanceof Interface && ptd instanceof Class &&
-		        		ptd.equals(nd)) &&
-		    t.getSupertype(ptd)==null &&
-		    pt.getSupertype(td)==null) ||
-		        ptd.isFinal() && !pt.isSubtypeOf(t) ||
-		        td.isFinal() && !t.isSubtypeOf(pt);
-	}
+    /**
+     * The meet of two classes unrelated by inheritance,
+     * or of Null with an interface type is empty. The meet
+     * of an anonymous class with a type to which it is not
+     * assignable is empty.
+     */
+    private static boolean emptyMeet(ProducedType pt, ProducedType t, Unit unit) {
+        TypeDeclaration nd = unit.getNullDeclaration(); //TODO what about the anonymous type of null?
+        TypeDeclaration ptd = pt.getDeclaration();
+        TypeDeclaration td = t.getDeclaration();
+        if (ptd instanceof Class && td instanceof Class ||
+            ptd instanceof Interface && td instanceof Class &&
+                    td.equals(nd) ||
+            td instanceof Interface && ptd instanceof Class &&
+                    ptd.equals(nd)) {
+            if (t.getSupertype(ptd)==null &&
+                pt.getSupertype(td)==null) {
+            	return true;
+            }
+        }
+        if (ptd.isFinal()) {
+            if (ptd.getTypeParameters().isEmpty() &&
+                    !t.containsTypeParameters() &&
+                    !pt.isSubtypeOf(t)) {
+            	return true;
+            }
+            if (pt.getSupertype(td)==null) {
+            	return true;
+            }
+        }
+        if (td.isFinal()) { 
+            if (td.getTypeParameters().isEmpty() &&
+                    !pt.containsTypeParameters() &&
+                    !t.isSubtypeOf(pt)) {
+            	return true;
+            }
+            if (t.getSupertype(ptd)==null) {
+            	return true;
+            }
+        }
+        return false;
+    }
 
-	/**
-	 * Given two produced types for the exact same type
-	 * constructor, return the principal instantiation
-	 * of that type constructor for the intersection of 
-	 * the two types.
-	 * @param pt an instantiation of the type constructor
-	 * @param t another instantiation of the type constructor
-	 */
-	private static ProducedType principalInstantiation(ProducedType pt,
-			ProducedType t, Unit unit) {
-		TypeDeclaration td = pt.getDeclaration();
-		List<ProducedType> args = new ArrayList<ProducedType>();
-		for (int i=0; i<td.getTypeParameters().size(); i++) {
-		    TypeParameter tp = td.getTypeParameters().get(i);
-		    ProducedType pta = pt.getTypeArguments().get(tp);
-		    ProducedType ta = t.getTypeArguments().get(tp);
-		    if (tp.isContravariant()) {
-		        args.add(unionType(pta, ta, unit));
-		    }
-		    else if (tp.isCovariant()) {
-		        args.add(intersectionType(pta, ta, unit));
-		    }
-		    else {
-		    	//TODO: this is not correct: the intersection
-		    	//      of two different instantiations of an
-		    	//      invariant type is actually Nothing
-		    	//      unless the type arguments are equivalent
-		    	//      or are type parameters that might 
-		    	//      represent equivalent types at runtime.
-		    	//      Therefore, a method T x(T y) of Inv<T> 
-		    	//      should have the signature:
-		    	//             Foo&Bar x(Foo|Bar y)
-		    	//      on the intersection Inv<Foo>&Inv<Bar>.
-		    	//      But this code gives it the more 
-		    	//      restrictive signature:
-		    	//             Foo&Bar x(Foo&Bar y)
-		    	args.add(intersectionType(pta, ta, unit));
-		    }
-		}
-		return td.getProducedType(principalQualifyingType(pt, t, td, unit), args);
-	}
-	
-	/**
-	 * Given two instantiations of a qualified type constructor, 
-	 * determine the qualifying type of the principal 
-	 * instantiation of that type constructor for the 
-	 * intersection of the two types.
-	 */
-	static ProducedType principalQualifyingType(ProducedType pt,
-			ProducedType t, TypeDeclaration td, Unit unit) {
-		ProducedType ptqt = pt.getQualifyingType();
-		ProducedType tqt = t.getQualifyingType();
-		ProducedType qt = null;
-		if (ptqt!=null && tqt!=null && 
-				td.getContainer() instanceof TypeDeclaration) {
-			TypeDeclaration qtd = (TypeDeclaration) td.getContainer();
-			ProducedType pst = ptqt.getSupertype(qtd);
-			ProducedType st = tqt.getSupertype(qtd);
-			if (pst!=null && st!=null) {
-				qt = principalInstantiation(pst, st, unit);
-			}
-		}
-		return qt;
-	}
+    /**
+     * Given two produced types for the exact same type
+     * constructor, return the principal instantiation
+     * of that type constructor for the intersection of 
+     * the two types.
+     * @param pt an instantiation of the type constructor
+     * @param t another instantiation of the type constructor
+     */
+    private static ProducedType principalInstantiation(ProducedType pt,
+            ProducedType t, Unit unit) {
+        TypeDeclaration td = pt.getDeclaration();
+        List<ProducedType> args = new ArrayList<ProducedType>();
+        for (int i=0; i<td.getTypeParameters().size(); i++) {
+            TypeParameter tp = td.getTypeParameters().get(i);
+            ProducedType pta = pt.getTypeArguments().get(tp);
+            ProducedType ta = t.getTypeArguments().get(tp);
+            if (tp.isContravariant()) {
+                args.add(unionType(pta, ta, unit));
+            }
+            else if (tp.isCovariant()) {
+                args.add(intersectionType(pta, ta, unit));
+            }
+            else {
+                //TODO: this is not correct: the intersection
+                //      of two different instantiations of an
+                //      invariant type is actually Nothing
+                //      unless the type arguments are equivalent
+                //      or are type parameters that might 
+                //      represent equivalent types at runtime.
+                //      Therefore, a method T x(T y) of Inv<T> 
+                //      should have the signature:
+                //             Foo&Bar x(Foo|Bar y)
+                //      on the intersection Inv<Foo>&Inv<Bar>.
+                //      But this code gives it the more 
+                //      restrictive signature:
+                //             Foo&Bar x(Foo&Bar y)
+                args.add(intersectionType(pta, ta, unit));
+            }
+        }
+        return td.getProducedType(principalQualifyingType(pt, t, td, unit), args);
+    }
+    
+    /**
+     * Given two instantiations of a qualified type constructor, 
+     * determine the qualifying type of the principal 
+     * instantiation of that type constructor for the 
+     * intersection of the two types.
+     */
+    static ProducedType principalQualifyingType(ProducedType pt,
+            ProducedType t, TypeDeclaration td, Unit unit) {
+        ProducedType ptqt = pt.getQualifyingType();
+        ProducedType tqt = t.getQualifyingType();
+        ProducedType qt = null;
+        if (ptqt!=null && tqt!=null && 
+                td.getContainer() instanceof TypeDeclaration) {
+            TypeDeclaration qtd = (TypeDeclaration) td.getContainer();
+            ProducedType pst = ptqt.getSupertype(qtd);
+            ProducedType st = tqt.getSupertype(qtd);
+            if (pst!=null && st!=null) {
+                qt = principalInstantiation(pst, st, unit);
+            }
+        }
+        return qt;
+    }
     
     /**
      * Determine if a type of form X<P>&X<Q> is equivalent to
@@ -557,27 +579,27 @@ public class Util {
      */
     private static boolean haveUninhabitableIntersection
             (ProducedType p, ProducedType q, Unit unit) {
-    	List<TypeDeclaration> stds = p.getDeclaration().getSuperTypeDeclarations();
-    	stds.retainAll(q.getDeclaration().getSuperTypeDeclarations());
-    	for (TypeDeclaration std: stds) {
-    		ProducedType pst = p.getSupertype(std);
-    		ProducedType qst = q.getSupertype(std);
-    		for (TypeParameter tp: std.getTypeParameters()) {
-    			if (tp.isInvariant()) {
-    				ProducedType psta = pst.getTypeArguments().get(tp);
-    				ProducedType qsta = qst.getTypeArguments().get(tp);
-    				if (psta!=null && psta.isWellDefined() &&
-    						qsta!=null && psta.isWellDefined() &&
-    						//what about types with UnknownType as an arg?
-    						!pst.containsTypeParameters() && 
-    						!qst.containsTypeParameters() &&
-    						!pst.isExactly(qst)) {
-    					return true;
-    				}
-    			}
-    		}
-    	}
-		return false;
+        List<TypeDeclaration> stds = p.getDeclaration().getSuperTypeDeclarations();
+        stds.retainAll(q.getDeclaration().getSuperTypeDeclarations());
+        for (TypeDeclaration std: stds) {
+            ProducedType pst = p.getSupertype(std);
+            ProducedType qst = q.getSupertype(std);
+            for (TypeParameter tp: std.getTypeParameters()) {
+                if (tp.isInvariant()) {
+                    ProducedType psta = pst.getTypeArguments().get(tp);
+                    ProducedType qsta = qst.getTypeArguments().get(tp);
+                    if (psta!=null && psta.isWellDefined() &&
+                            qsta!=null && psta.isWellDefined() &&
+                            //what about types with UnknownType as an arg?
+                            !pst.containsTypeParameters() && 
+                            !qst.containsTypeParameters() &&
+                            !pst.isExactly(qst)) {
+                        return true;
+                    }
+                }
+            }
+        }
+        return false;
     }
     
     public static String formatPath(List<String> path) {
@@ -592,7 +614,7 @@ public class Util {
     static boolean addToSupertypes(List<ProducedType> list, ProducedType st) {
         for (ProducedType et: list) {
             if (st.getDeclaration().equals(et.getDeclaration()) && //return both a type and its self type
-            		st.isExactlyInternal(et)) {
+                    st.isExactlyInternal(et)) {
                 return false;
             }
         }
@@ -601,7 +623,7 @@ public class Util {
     }
 
     public static ProducedType unionType(ProducedType lhst, ProducedType rhst, 
-    		Unit unit) {
+            Unit unit) {
         List<ProducedType> list = new ArrayList<ProducedType>();
         addToUnion(list, rhst);
         addToUnion(list, lhst);
@@ -611,7 +633,7 @@ public class Util {
     }
 
     public static ProducedType intersectionType(ProducedType lhst, ProducedType rhst, 
-    		Unit unit) {
+            Unit unit) {
         List<ProducedType> list = new ArrayList<ProducedType>();
         addToIntersection(list, rhst, unit);
         addToIntersection(list, lhst, unit);
@@ -698,7 +720,7 @@ public class Util {
     }
     
     public static Declaration findMatchingOverloadedClass(Class abstractionClass, 
-    		List<ProducedType> signature, boolean ellipsis) {
+            List<ProducedType> signature, boolean ellipsis) {
         List<Declaration> results = new ArrayList<Declaration>();
         if (!abstractionClass.isAbstraction()) {
             return abstractionClass;
@@ -729,7 +751,7 @@ public class Util {
         if(parameterList == null || parameterList.getParameters() == null)
             return null;
         int size = parameterList.getParameters().size();
-		List<ProducedType> signature = new ArrayList<ProducedType>(size);
+        List<ProducedType> signature = new ArrayList<ProducedType>(size);
         for(Parameter param : parameterList.getParameters()){
             signature.add(param.getType());
         }
@@ -771,7 +793,7 @@ public class Util {
                 type.isVisible(member.getVisibleScope());
     }
 
-	/**
+    /**
      * Given two instantiations of the same type constructor,
      * construct a principal instantiation that is a supertype
      * of both. This is impossible in the following special
