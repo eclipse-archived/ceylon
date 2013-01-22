@@ -450,11 +450,6 @@ public class Util {
                         list.add(principalInstantiation(pt, t, unit));
                         return;
                     }
-                    else if (emptyMeet(pt, t, unit)) {
-                        list.clear();
-                        list.add( unit.getNothingDeclaration().getType() );
-                        return;                            
-                    }
                 }
             }
             if (included) {
@@ -469,37 +464,37 @@ public class Util {
      * of an anonymous class with a type to which it is not
      * assignable is empty.
      */
-    private static boolean emptyMeet(ProducedType pt, ProducedType t, Unit unit) {
+    private static boolean emptyMeet(ProducedType p, ProducedType q, Unit unit) {
         TypeDeclaration nd = unit.getNullDeclaration(); //TODO what about the anonymous type of null?
-        TypeDeclaration ptd = pt.getDeclaration();
-        TypeDeclaration td = t.getDeclaration();
-        if (ptd instanceof Class && td instanceof Class ||
-            ptd instanceof Interface && td instanceof Class &&
-                    td.equals(nd) ||
-            td instanceof Interface && ptd instanceof Class &&
-                    ptd.equals(nd)) {
-            if (t.getSupertype(ptd)==null &&
-                pt.getSupertype(td)==null) {
+        TypeDeclaration pd = p.getDeclaration();
+        TypeDeclaration qd = q.getDeclaration();
+        if (pd instanceof Class && qd instanceof Class ||
+            pd instanceof Interface && qd instanceof Class &&
+                    qd.equals(nd) ||
+            qd instanceof Interface && pd instanceof Class &&
+                    pd.equals(nd)) {
+            if (q.getSupertype(pd)==null &&
+                p.getSupertype(qd)==null) {
             	return true;
             }
         }
-        if (ptd.isFinal()) {
-            if (ptd.getTypeParameters().isEmpty() &&
-                    !t.containsTypeParameters() &&
-                    !pt.isSubtypeOf(t)) {
+        if (pd.isFinal()) {
+            if (pd.getTypeParameters().isEmpty() &&
+                    !q.containsTypeParameters() &&
+                    !p.isSubtypeOf(q)) {
             	return true;
             }
-            if (pt.getSupertype(td)==null) {
+            if (p.getSupertype(qd)==null) {
             	return true;
             }
         }
-        if (td.isFinal()) { 
-            if (td.getTypeParameters().isEmpty() &&
-                    !pt.containsTypeParameters() &&
-                    !t.isSubtypeOf(pt)) {
+        if (qd.isFinal()) { 
+            if (qd.getTypeParameters().isEmpty() &&
+                    !p.containsTypeParameters() &&
+                    !q.isSubtypeOf(p)) {
             	return true;
             }
-            if (t.getSupertype(ptd)==null) {
+            if (q.getSupertype(pd)==null) {
             	return true;
             }
         }
@@ -579,6 +574,8 @@ public class Util {
      */
     private static boolean haveUninhabitableIntersection
             (ProducedType p, ProducedType q, Unit unit) {
+    	if (emptyMeet(p, q, unit)) return true;
+    	
         List<TypeDeclaration> stds = p.getDeclaration().getSuperTypeDeclarations();
         stds.retainAll(q.getDeclaration().getSuperTypeDeclarations());
         for (TypeDeclaration std: stds) {
