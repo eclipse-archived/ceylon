@@ -2,6 +2,7 @@ package com.redhat.ceylon.compiler.java.language;
 
 
 import ceylon.language.Boolean;
+import ceylon.language.Iterator;
 import ceylon.language.Null;
 import ceylon.language.Callable;
 import ceylon.language.Comparison;
@@ -10,6 +11,7 @@ import ceylon.language.Integer;
 import ceylon.language.Iterable;
 import ceylon.language.Map;
 import ceylon.language.Sequence;
+import ceylon.language.SequenceBuilder;
 import ceylon.language.Sequential;
 import ceylon.language.finished_;
 
@@ -50,7 +52,12 @@ public abstract class AbstractIterable<Element,Absent> implements Iterable<Eleme
     @Override
     @Ignore
     public Sequential<? extends Element> getSequence() {
-        return $ceylon$language$Iterable$this.getSequence();
+        final SequenceBuilder<Element> sb = new SequenceBuilder<Element>();
+        java.lang.Object next = null;
+        for (Iterator<? extends Element> iter = getIterator(); (next = iter.next()) != finished_.getFinished$();) {
+            sb.append((Element) next);
+        }
+        return sb.getSequence();
     }
     
     @Override
