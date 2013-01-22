@@ -329,6 +329,7 @@ public class ClassDoc extends ClassOrPackageDoc {
         write(klass.getName());
         writeTypeParameters(klass.getTypeParameters());
         close("span");
+        writeTypeParametersConstraints(klass.getTypeParameters());
     }    
 
     private void writeDescription() throws IOException {

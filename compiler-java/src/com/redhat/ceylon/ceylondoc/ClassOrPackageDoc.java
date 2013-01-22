@@ -72,7 +72,7 @@ public abstract class ClassOrPackageDoc extends CeylonDoc {
         open("div class='signature'");
         around("span class='modifiers'", getModifiers(d));
         write(" ");
-        linkRenderer().to(d.getType()).write();
+        linkRenderer().to(d.getType()).forDeclaration(true).write();
         close("div");
         writeDescription(d);
         close("td");
@@ -113,6 +113,7 @@ public abstract class ClassOrPackageDoc extends CeylonDoc {
             Method m = (Method) d;
             writeTypeParameters(m.getTypeParameters());
             writeParameterList(m);
+            writeTypeParametersConstraints(m.getTypeParameters());
         }
         close("div");
         writeDescription(d);
@@ -275,21 +276,64 @@ public abstract class ClassOrPackageDoc extends CeylonDoc {
                     write(", ");
                 }
                 if (typeParam.isContravariant()) {
-                    write("<span class='type-parameter-variance'>in </span>");
+                    write("<span class='type-parameter-keyword'>in </span>");
                 }
                 if (typeParam.isCovariant()) {
-                    write("<span class='type-parameter-variance'>out </span>");
+                    write("<span class='type-parameter-keyword'>out </span>");
                 }
                 write(typeParam.getName());
                 if (typeParam.isDefaulted() && typeParam.getDefaultTypeArgument() != null){
-                    open("span class='type-parameter-default-value'");
-                    write(" = ");
+                    write("<span class='type-parameter-keyword'> = </span>");
                     write(linkRenderer().to(typeParam.getDefaultTypeArgument()).getLink());
-                    close("span");
                 }
             }
             write("&gt;");
             write("</span>");
+        }
+    }
+    
+    protected final void writeTypeParametersConstraints(List<TypeParameter> typeParameters) throws IOException {
+        for (TypeParameter typeParam : typeParameters) {
+            if (typeParam.isConstrained()) {
+                open("div class='type-parameter-constraint'");
+
+                write("<span class='type-parameter-keyword'>given </span>");
+                write(typeParam.getName());
+
+                List<ProducedType> satisfiedTypes = typeParam.getSatisfiedTypes();
+                if (satisfiedTypes != null && !satisfiedTypes.isEmpty()) {
+                    write("<span class='type-parameter-keyword'> satisfies </span>");
+                    boolean first = true;
+                    for (ProducedType satisfiedType : satisfiedTypes) {
+                        if (first) {
+                            first = false;
+                        } else {
+                            write(" &amp; ");
+                        }
+                        write(linkRenderer().to(satisfiedType).getLink());
+                    }
+                }
+
+                List<ProducedType> caseTypes = typeParam.getCaseTypes();
+                if (caseTypes != null && !caseTypes.isEmpty()) {
+                    write("<span class='type-parameter-keyword'> of </span>");
+                    boolean first = true;
+                    for (ProducedType caseType : caseTypes) {
+                        if (first) {
+                            first = false;
+                        } else {
+                            write(" | ");
+                        }
+                        write(linkRenderer().to(caseType).getLink());
+                    }
+                }
+
+                if (typeParam.getParameterList() != null) {
+                    writeParameterList(typeParam);
+                }
+
+                close("div");
+            }
         }
     }
 

@@ -691,9 +691,22 @@ public class CeylonDocToolTest {
     
     private void assertGenericTypeParams(File destDir) throws IOException {
         assertMatchInFile(destDir, "class_StubClassWithGenericTypeParams.html",
-                Pattern.compile("<span class='sub-navbar-name'>StubClassWithGenericTypeParams<span class='type-parameter'>&lt;<span class='type-parameter-variance'>in </span>ContravariantType, Type, <span class='type-parameter-variance'>out </span>CovariantType, DefaultedType<span class='type-parameter-default-value'> = Iterable<span class='type-parameter'>&lt;<a class='link' href='class_StubClass.html'>StubClass</a>&gt;</span></span>&gt;</span></span>"));
+                Pattern.compile("<span class='sub-navbar-name'>StubClassWithGenericTypeParams<span class='type-parameter'>&lt;<span class='type-parameter-keyword'>in </span>ContravariantType, T1, T2, T3, <span class='type-parameter-keyword'>out </span>CovariantType, DefaultedType<span class='type-parameter-keyword'> = </span>Iterable<span class='type-parameter'>&lt;<a class='link' href='class_StubClass.html'>StubClass</a>&gt;</span>&gt;</span></span>"));
         assertMatchInFile(destDir, "class_StubClassWithGenericTypeParams.html",
-                Pattern.compile("<div class='signature'><span class='modifiers'>shared</span> <span class='void'>void</span> methodWithGenericTypeParams<span class='type-parameter'>&lt;<span class='type-parameter-variance'>in </span>ContravariantType, Type, <span class='type-parameter-variance'>out </span>CovariantType, DefaultedType<span class='type-parameter-default-value'> = Iterable<span class='type-parameter'>&lt;<a class='link' href='class_StubClass.html'>StubClass</a>&gt;</span></span>&gt;</span>\\(\\)"));
+                Pattern.compile("<div class='type-parameter-constraint'><span class='type-parameter-keyword'>given </span>T1<span class='type-parameter-keyword'> satisfies </span>Number &amp; Closeable</div>"));
+        assertMatchInFile(destDir, "class_StubClassWithGenericTypeParams.html",
+                Pattern.compile("<div class='type-parameter-constraint'><span class='type-parameter-keyword'>given </span>T2<span class='type-parameter-keyword'> of </span>Number | String</div>"));
+        assertMatchInFile(destDir, "class_StubClassWithGenericTypeParams.html",
+                Pattern.compile("<div class='type-parameter-constraint'><span class='type-parameter-keyword'>given </span>T3\\(String s\\)</div></div>"));
+        
+        assertMatchInFile(destDir, "class_StubClassWithGenericTypeParams.html",
+                Pattern.compile("<div class='signature'><span class='modifiers'>shared</span> <span class='void'>void</span> methodWithGenericTypeParams<span class='type-parameter'>&lt;<span class='type-parameter-keyword'>in </span>ContravariantType, X1, X2, X3, <span class='type-parameter-keyword'>out </span>CovariantType, DefaultedType<span class='type-parameter-keyword'> = </span>Iterable<span class='type-parameter'>&lt;<a class='link' href='class_StubClass.html'>StubClass</a>&gt;</span>&gt;</span>\\(\\)"));
+        assertMatchInFile(destDir, "class_StubClassWithGenericTypeParams.html",
+                Pattern.compile("<div class='type-parameter-constraint'><span class='type-parameter-keyword'>given </span>X1<span class='type-parameter-keyword'> satisfies </span>Number &amp; Closeable</div>"));
+        assertMatchInFile(destDir, "class_StubClassWithGenericTypeParams.html",
+                Pattern.compile("<div class='type-parameter-constraint'><span class='type-parameter-keyword'>given </span>X2<span class='type-parameter-keyword'> of </span>Number | String</div>"));
+        assertMatchInFile(destDir, "class_StubClassWithGenericTypeParams.html",
+                Pattern.compile("<div class='type-parameter-constraint'><span class='type-parameter-keyword'>given </span>T3\\(String s\\)</div>"));
     }
     
     private void assertObjectPageDifferences(File destDir) throws IOException {

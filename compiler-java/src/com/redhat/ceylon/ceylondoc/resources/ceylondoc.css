@@ -158,8 +158,11 @@
 	font-style: italic;
 }
 
-.type-parameter-variance,
-.type-parameter-default-value {
+.type-parameter-constraint {
+	padding-left: 30px;
+}
+
+.type-parameter-keyword {
 	color: rgb(120, 120, 120);
 }
 
@@ -167,7 +170,12 @@
 	color: rgb(120, 120, 120);
 }
 
-.sub-navbar .type-parameter-variance {
+.sub-navbar .type-parameter-constraint {
+	padding-top: 4px;
+	color: rgb(120, 120, 120);
+}
+
+.sub-navbar .type-parameter-keyword {
 	color: rgb(160, 160, 160);
 }
 

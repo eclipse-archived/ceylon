@@ -288,10 +288,10 @@ public class LinkRenderer {
 
                     if (forDeclaration) {
                         if (typeParam.isContravariant()) {
-                            buffer.append("<span class='type-parameter-variance'>in </span>");
+                            buffer.append("<span class='type-parameter-keyword'>in </span>");
                         }
                         if (typeParam.isCovariant()) {
-                            buffer.append("<span class='type-parameter-variance'>out </span>");
+                            buffer.append("<span class='type-parameter-keyword'>out </span>");
                         }
                     }
 
@@ -301,17 +301,16 @@ public class LinkRenderer {
                     forDeclaration = oldForDeclaration;
                     
                     if (forDeclaration) {
-                        if(typeParam.isDefaulted()){
-                            buffer.append("<span class='type-parameter-default-value'>");
-                            if(typeParam.getDefaultTypeArgument() != null){
-                                buffer.append(" = ");
+                        if (typeParam.isDefaulted()) {
+                            if (typeParam.getDefaultTypeArgument() != null) {
+                                buffer.append("<span class='type-parameter-keyword'> = </span>");
                                 oldForDeclaration = forDeclaration;
                                 forDeclaration = false;
                                 processProducedType(typeParam.getDefaultTypeArgument());
                                 forDeclaration = oldForDeclaration;
-                            }else
-                                buffer.append("=");
-                            buffer.append("</span>");
+                            } else {
+                                buffer.append("<span class='type-parameter-keyword'>=</span>");
+                            }
                         }
                     }
                     i++;
