@@ -85,6 +85,7 @@ import com.sun.tools.javac.tree.JCTree;
 import com.sun.tools.javac.tree.JCTree.JCBlock;
 import com.sun.tools.javac.tree.JCTree.JCConditional;
 import com.sun.tools.javac.tree.JCTree.JCExpression;
+import com.sun.tools.javac.tree.JCTree.JCExpressionStatement;
 import com.sun.tools.javac.tree.JCTree.JCLiteral;
 import com.sun.tools.javac.tree.JCTree.JCMethodInvocation;
 import com.sun.tools.javac.tree.JCTree.JCNewArray;
@@ -1080,8 +1081,11 @@ public class ExpressionTransformer extends AbstractTransformer {
     }
 
     public JCExpression transform(Tree.SegmentOp op) {
-        // FIXME: https://github.com/ceylon/ceylon-compiler/issues/836
-        return makeErroneous(op, "Segment operators not implemented yet");
+        // we need to get the range bound type
+        final ProducedType type = getTypeArgument(getSupertype(op.getLeftTerm(), op.getUnit().getOrdinalDeclaration()));
+        JCExpression startExpr = transformExpression(op.getLeftTerm(), BoxingStrategy.BOXED, type);
+        JCExpression lengthExpr = transformExpression(op.getRightTerm(), BoxingStrategy.UNBOXED, typeFact().getIntegerDeclaration().getType());
+        return makeUtilInvocation("spreadOp", List.<JCExpression>of(startExpr, lengthExpr), List.<JCExpression>of(makeJavaType(type, JT_TYPE_ARGUMENT)));
     }
 
     public JCExpression transform(Tree.RangeOp op) {
