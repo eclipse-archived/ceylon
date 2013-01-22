@@ -16,43 +16,19 @@ class Bug837<Element extends .ceylon.language.Ordinal<? extends Element>> extend
         this.$ceylon$language$Cloneable$this = new .ceylon.language.Cloneable$impl<.ceylon.language.Collection<? extends Element>>((.ceylon.language.Cloneable<.ceylon.language.Collection<? extends Element>>)(.ceylon.language.Cloneable)this);
         this.$ceylon$language$Correspondence$this = new .ceylon.language.Correspondence$impl<.ceylon.language.Integer, Element>(this);
         this.$ceylon$language$Ranged$this = new .ceylon.language.Ranged$impl<.ceylon.language.Integer, .ceylon.language.List<? extends Element>>((.ceylon.language.Ranged<.ceylon.language.Integer, .ceylon.language.List<? extends Element>>)(.ceylon.language.Ranged)this);
+        this.last = getFirst();
     }
     private final long length;
     protected final .ceylon.language.Sequence$impl<Element> $ceylon$language$Sequence$this;
     
     @.java.lang.Override
-    public long getSize() {
-        return $ceylon$language$Sequence$this.getSize();
-    }
-    
-    @.java.lang.Override
-    public .ceylon.language.Iterator<? extends Element> getIterator() {
-        return $ceylon$language$Sequence$this.getIterator();
-    }
-    
-    @.java.lang.Override
-    public boolean contains(final .java.lang.Object element) {
-        return $ceylon$language$Sequence$this.contains(element);
-    }
-    
-    @.java.lang.Override
-    public Element findLast(final .ceylon.language.Callable<? extends .ceylon.language.Boolean> selecting) {
-        return $ceylon$language$Sequence$this.findLast(selecting);
-    }
-    
-    @.java.lang.Override
-    public Element getLast() {
-        return $ceylon$language$Sequence$this.getLast();
+    public final boolean getEmpty() {
+        return $ceylon$language$Sequence$this.getEmpty();
     }
     
     @.java.lang.Override
     public .ceylon.language.Sequence<? extends Element> getSequence() {
         return $ceylon$language$Sequence$this.getSequence();
-    }
-    
-    @.java.lang.Override
-    public final boolean getEmpty() {
-        return $ceylon$language$Sequence$this.getEmpty();
     }
     
     @.java.lang.Override
@@ -65,6 +41,11 @@ class Bug837<Element extends .ceylon.language.Ordinal<? extends Element>> extend
         return $ceylon$language$Sequence$this.collect(collecting);
     }
     protected final .ceylon.language.Sequential$impl<Element> $ceylon$language$Sequential$this;
+    
+    @.java.lang.Override
+    public .java.lang.String toString() {
+        return $ceylon$language$Sequential$this.toString();
+    }
     protected final .ceylon.language.List$impl<Element> $ceylon$language$List$this;
     
     @.java.lang.Override
@@ -92,11 +73,6 @@ class Bug837<Element extends .ceylon.language.Ordinal<? extends Element>> extend
         return $ceylon$language$List$this.withTrailing(element);
     }
     protected final .ceylon.language.Collection$impl<Element> $ceylon$language$Collection$this;
-    
-    @.java.lang.Override
-    public .java.lang.String toString() {
-        return $ceylon$language$Collection$this.toString();
-    }
     protected final .ceylon.language.Iterable$impl<Element, .java.lang.Object> $ceylon$language$Iterable$this;
     
     @.java.lang.Override
@@ -117,6 +93,11 @@ class Bug837<Element extends .ceylon.language.Ordinal<? extends Element>> extend
     @.java.lang.Override
     public Element find(final .ceylon.language.Callable<? extends .ceylon.language.Boolean> selecting) {
         return $ceylon$language$Iterable$this.find(selecting);
+    }
+    
+    @.java.lang.Override
+    public Element findLast(final .ceylon.language.Callable<? extends .ceylon.language.Boolean> selecting) {
+        return $ceylon$language$Iterable$this.findLast(selecting);
     }
     
     @.java.lang.Override
@@ -166,57 +147,22 @@ class Bug837<Element extends .ceylon.language.Ordinal<? extends Element>> extend
     
     @.java.lang.Override
     public <Other>.ceylon.language.Iterable<? extends .java.lang.Object, ?> chain(final .ceylon.language.Iterable<? extends Other, ?> other) {
-        return $ceylon$language$Iterable$this.chain(other);
-    }
-    
-    @.java.lang.Override
-    public <Grouping>.ceylon.language.Map<? extends Grouping, ? extends .ceylon.language.Sequence<? extends Element>> group(final .ceylon.language.Callable<? extends Grouping> grouping) {
-        return $ceylon$language$Iterable$this.group(grouping);
+        return (.ceylon.language.Iterable)$ceylon$language$Iterable$this.chain(other);
     }
     protected final .ceylon.language.Container$impl<Element, .java.lang.Object> $ceylon$language$Container$this;
     protected final .ceylon.language.Category$impl $ceylon$language$Category$this;
     
     @.java.lang.Override
-    public final .ceylon.language.Sequential<? extends .java.lang.Object> containsEvery$elements() {
-        return $ceylon$language$Category$this.containsEvery$elements();
-    }
-    
-    @.java.lang.Override
-    public final boolean containsEvery() {
-        return $ceylon$language$Category$this.containsEvery();
-    }
-    
-    @.java.lang.Override
-    public boolean containsEvery(final .ceylon.language.Sequential<? extends .java.lang.Object> elements) {
+    public boolean containsEvery(final .ceylon.language.Iterable<? extends .java.lang.Object, ?> elements) {
         return $ceylon$language$Category$this.containsEvery(elements);
     }
     
     @.java.lang.Override
-    public final .ceylon.language.Sequential<? extends .java.lang.Object> containsAny$elements() {
-        return $ceylon$language$Category$this.containsAny$elements();
-    }
-    
-    @.java.lang.Override
-    public final boolean containsAny() {
-        return $ceylon$language$Category$this.containsAny();
-    }
-    
-    @.java.lang.Override
-    public boolean containsAny(final .ceylon.language.Sequential<? extends .java.lang.Object> elements) {
+    public boolean containsAny(final .ceylon.language.Iterable<? extends .java.lang.Object, ?> elements) {
         return $ceylon$language$Category$this.containsAny(elements);
     }
     protected final .ceylon.language.Cloneable$impl<.ceylon.language.Collection<? extends Element>> $ceylon$language$Cloneable$this;
     protected final .ceylon.language.Correspondence$impl<.ceylon.language.Integer, Element> $ceylon$language$Correspondence$this;
-    
-    @.java.lang.Override
-    public .ceylon.language.Correspondence$impl<? super .ceylon.language.Integer, ? extends Element> $ceylon$language$Correspondence$impl() {
-        return $ceylon$language$Correspondence$this;
-    }
-    
-    @.java.lang.Override
-    public final .ceylon.language.Correspondence$impl<? super .ceylon.language.Integer, ? extends Element>.Items Items$new(final .ceylon.language.Sequence<? extends .ceylon.language.Integer> arg0) {
-        return $ceylon$language$Correspondence$this.Items$new(arg0);
-    }
     
     @.java.lang.Override
     public .ceylon.language.Category getKeys() {
@@ -224,47 +170,17 @@ class Bug837<Element extends .ceylon.language.Ordinal<? extends Element>> extend
     }
     
     @.java.lang.Override
-    public final .ceylon.language.Sequential<? extends .ceylon.language.Integer> definesEvery$keys() {
-        return $ceylon$language$Correspondence$this.definesEvery$keys();
-    }
-    
-    @.java.lang.Override
-    public final boolean definesEvery() {
-        return $ceylon$language$Correspondence$this.definesEvery();
-    }
-    
-    @.java.lang.Override
-    public boolean definesEvery(final .ceylon.language.Sequential<? extends .ceylon.language.Integer> keys) {
+    public boolean definesEvery(final .ceylon.language.Iterable<? extends .ceylon.language.Integer, ?> keys) {
         return $ceylon$language$Correspondence$this.definesEvery(keys);
     }
     
     @.java.lang.Override
-    public final .ceylon.language.Sequential<? extends .ceylon.language.Integer> definesAny$keys() {
-        return $ceylon$language$Correspondence$this.definesAny$keys();
-    }
-    
-    @.java.lang.Override
-    public final boolean definesAny() {
-        return $ceylon$language$Correspondence$this.definesAny();
-    }
-    
-    @.java.lang.Override
-    public boolean definesAny(final .ceylon.language.Sequential<? extends .ceylon.language.Integer> keys) {
+    public boolean definesAny(final .ceylon.language.Iterable<? extends .ceylon.language.Integer, ?> keys) {
         return $ceylon$language$Correspondence$this.definesAny(keys);
     }
     
     @.java.lang.Override
-    public final .ceylon.language.Sequential<? extends .ceylon.language.Integer> items$keys() {
-        return $ceylon$language$Correspondence$this.items$keys();
-    }
-    
-    @.java.lang.Override
-    public final .ceylon.language.Sequential<? extends Element> items() {
-        return $ceylon$language$Correspondence$this.items();
-    }
-    
-    @.java.lang.Override
-    public .ceylon.language.Sequential<? extends Element> items(final .ceylon.language.Sequential<? extends .ceylon.language.Integer> keys) {
+    public .ceylon.language.Sequential<? extends Element> items(final .ceylon.language.Iterable<? extends .ceylon.language.Integer, ?> keys) {
         return $ceylon$language$Correspondence$this.items(keys);
     }
     protected final .ceylon.language.Ranged$impl<.ceylon.language.Integer, .ceylon.language.List<? extends Element>> $ceylon$language$Ranged$this;
@@ -273,6 +189,12 @@ class Bug837<Element extends .ceylon.language.Ordinal<? extends Element>> extend
     @.java.lang.Override
     public final Element getFirst() {
         return first;
+    }
+    private final Element last;
+    
+    @.java.lang.Override
+    public final Element getLast() {
+        return last;
     }
     
     @.java.lang.Override
@@ -318,5 +240,18 @@ class Bug837<Element extends .ceylon.language.Ordinal<? extends Element>> extend
     @.java.lang.Override
     public final .ceylon.language.Sequence<? extends Element> getClone() {
         return this;
+    }
+    
+    public final .ceylon.language.Iterator<? extends Element> getIterator() {
+        return (.ceylon.language.Iterator).ceylon.language.nothing_.getNothing$();
+    }
+    
+    public final long getSize() {
+        return ((.ceylon.language.Integer).ceylon.language.nothing_.getNothing$()).longValue();
+    }
+    
+    @.java.lang.Override
+    public final boolean contains(final .java.lang.Object o) {
+        return ((.ceylon.language.Boolean).ceylon.language.nothing_.getNothing$()).booleanValue();
     }
 }

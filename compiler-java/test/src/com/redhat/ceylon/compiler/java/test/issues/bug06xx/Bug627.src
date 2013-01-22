@@ -58,7 +58,7 @@ class Bug627Concrete implements .com.redhat.ceylon.compiler.java.test.issues.bug
     
     @.java.lang.Override
     public final .ceylon.language.Iterable<? extends .com.redhat.ceylon.compiler.java.test.issues.bug06xx.Bug627Enum, ?> elements() {
-        return (.ceylon.language.Iterable).ceylon.language.empty_.getEmpty$();
+        return (.ceylon.language.Iterable<? extends .com.redhat.ceylon.compiler.java.test.issues.bug06xx.Bug627Enum, ?>)(.ceylon.language.Iterable).ceylon.language.empty_.getEmpty$();
     }
     
     public static void main(.java.lang.String[] args) {

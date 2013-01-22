@@ -6,10 +6,10 @@ final class bug641_ {
     }
     
     static void bug641(final .ceylon.language.Set<? extends .ceylon.language.Integer> a, final .ceylon.language.Set<?> b) {
-        final .ceylon.language.Set<? extends .ceylon.language.Integer> foo1 = (.ceylon.language.Set<? extends .ceylon.language.Integer>)(.ceylon.language.Set)a.union(b);
-        final .ceylon.language.Set<? extends .ceylon.language.Integer> foo2 = (.ceylon.language.Set<? extends .ceylon.language.Integer>)(.ceylon.language.Set)a.intersection(b);
-        final .ceylon.language.Set<? extends .ceylon.language.Integer> foo3 = (.ceylon.language.Set<? extends .ceylon.language.Integer>)(.ceylon.language.Set)a.exclusiveUnion(b);
-        final .ceylon.language.Set<? extends .ceylon.language.Integer> foo4 = a.complement(b);
+        final .ceylon.language.Set<? extends .ceylon.language.Integer> foo1 = (.ceylon.language.Set<? extends .ceylon.language.Integer>)a.union((.ceylon.language.Set)b);
+        final .ceylon.language.Set<? extends .ceylon.language.Integer> foo2 = (.ceylon.language.Set<? extends .ceylon.language.Integer>)a.intersection((.ceylon.language.Set)b);
+        final .ceylon.language.Set<? extends .ceylon.language.Integer> foo3 = (.ceylon.language.Set<? extends .ceylon.language.Integer>)a.exclusiveUnion((.ceylon.language.Set)b);
+        final .ceylon.language.Set<? extends .ceylon.language.Integer> foo4 = a.complement((.ceylon.language.Set)b);
     }
 }
 interface Bug641Set<Element> {

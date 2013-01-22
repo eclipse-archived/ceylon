@@ -8,16 +8,16 @@ class MethodIfNonEmptySequence {
     public final void m(final .java.lang.String s) {
         .ceylon.language.String $s$1;
         if (($s$1 = .ceylon.language.String.instance(s)) instanceof .ceylon.language.Sequence) {
-            final .ceylon.language.Sequential<? extends .ceylon.language.Character> $s$2 = $s$1;
-            .ceylon.language.print_.print(((.ceylon.language.Sequence<? extends .ceylon.language.Character>)(.ceylon.language.Sequence)$s$2).getFirst());
+            final .ceylon.language.Sequential<? extends .ceylon.language.Character> $s$2 = (.ceylon.language.Sequential<? extends .ceylon.language.Character>)$s$1;
+            .ceylon.language.print_.print($s$2.getFirst());
         }
     }
     
     public final void mvar(final .java.lang.String s) {
         .ceylon.language.String $t$4;
         if (($t$4 = .ceylon.language.String.instance(s)) instanceof .ceylon.language.Sequence) {
-            final .ceylon.language.Sequential<? extends .ceylon.language.Character> $t$5 = $t$4;
-            .ceylon.language.print_.print(((.ceylon.language.Sequence<? extends .ceylon.language.Character>)(.ceylon.language.Sequence)$t$5).getFirst());
+            final .ceylon.language.Sequential<? extends .ceylon.language.Character> $t$5 = (.ceylon.language.Sequential<? extends .ceylon.language.Character>)$t$4;
+            .ceylon.language.print_.print($t$5.getFirst());
         }
     }
     

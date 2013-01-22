@@ -12,7 +12,7 @@ final class Bug816I$impl<T> {
 class Bug816C<T1, T2> implements .com.redhat.ceylon.compiler.java.test.issues.bug08xx.Bug816I<.java.lang.Object> {
     
     Bug816C() {
-        this.$com$redhat$ceylon$compiler$java$test$issues$bug08xx$Bug816I$this = new .com.redhat.ceylon.compiler.java.test.issues.bug08xx.Bug816I$impl<.java.lang.Object>(this);
+        this.$com$redhat$ceylon$compiler$java$test$issues$bug08xx$Bug816I$this = new .com.redhat.ceylon.compiler.java.test.issues.bug08xx.Bug816I$impl<.java.lang.Object>((.com.redhat.ceylon.compiler.java.test.issues.bug08xx.Bug816I)this);
     }
     protected final .com.redhat.ceylon.compiler.java.test.issues.bug08xx.Bug816I$impl<.java.lang.Object> $com$redhat$ceylon$compiler$java$test$issues$bug08xx$Bug816I$this;
     
@@ -36,7 +36,7 @@ final class test_ {
     
     static void test() {
         final .com.redhat.ceylon.compiler.java.test.issues.bug08xx.Bug816C<.ceylon.language.String, ?> x = new .com.redhat.ceylon.compiler.java.test.issues.bug08xx.Bug816C();
-        .com.redhat.ceylon.compiler.java.test.issues.bug08xx.f_.<.ceylon.language.String>f((.com.redhat.ceylon.compiler.java.test.issues.bug08xx.Bug816I)x);
+        .com.redhat.ceylon.compiler.java.test.issues.bug08xx.f_.<.ceylon.language.String>f((.com.redhat.ceylon.compiler.java.test.issues.bug08xx.Bug816I<? extends .ceylon.language.String>)(.com.redhat.ceylon.compiler.java.test.issues.bug08xx.Bug816I)x);
     }
     
     public static void main(.java.lang.String[] args) {

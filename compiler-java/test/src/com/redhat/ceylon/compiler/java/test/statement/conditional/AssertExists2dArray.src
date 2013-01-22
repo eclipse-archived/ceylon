@@ -49,7 +49,7 @@ class AssertExists2dArray {
         final .ceylon.language.Array<.ceylon.language.Array<.java.lang.Object>> t = .ceylon.language.arrayOfSize_.<.ceylon.language.Array<.java.lang.Object>>arrayOfSize(.ceylon.language.Array.class, 2L, .ceylon.language.arrayOfSize_.arrayOfSize(null, 2L, obj));
         final .ceylon.language.Array $r$14;
         .ceylon.language.Array $r$13 = null;
-        if (($r$13 = t.item(.ceylon.language.Integer.instance(0L))) != null) {
+        if (($r$13 = ((.ceylon.language.Correspondence<? super .ceylon.language.Integer, ? extends .ceylon.language.Array<.java.lang.Object>>)(.ceylon.language.Correspondence)t).item(.ceylon.language.Integer.instance(0L))) != null) {
             $r$14 = $r$13;
         } else throw new .ceylon.language.Exception(.ceylon.language.String.instance("Assertion failed" + .java.lang.System.lineSeparator() + ("\tviolated " + "exists r=t[0]" + .java.lang.System.lineSeparator() + "\tat " + "AssertExists2dArray.ceylon:44:8-44:30")), null);
         $r$14.setItem(0L, obj);

@@ -31,7 +31,7 @@ class MethodWhile {
             .ceylon.language.Sequential<? extends .ceylon.language.Integer> $s$2;
             if (($s$2 = seq) instanceof .ceylon.language.Sequence) {
                 final .ceylon.language.Sequential<? extends .ceylon.language.Integer> $s$3 = $s$2;
-                seq = (.ceylon.language.Sequential).ceylon.language.empty_.getEmpty$();
+                seq = (.ceylon.language.Sequential<? extends .ceylon.language.Integer>)(.ceylon.language.Sequential).ceylon.language.empty_.getEmpty$();
             } else break;
         }
     }

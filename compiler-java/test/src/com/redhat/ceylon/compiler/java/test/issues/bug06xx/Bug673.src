@@ -52,7 +52,7 @@ public class Bug673_PaisController implements .com.redhat.ceylon.compiler.java.t
     
     public Bug673_PaisController() {
         this.$com$redhat$ceylon$compiler$java$test$issues$bug06xx$Bug673_GridBehavior$this = new .com.redhat.ceylon.compiler.java.test.issues.bug06xx.Bug673_GridBehavior$impl(this);
-        this.$com$redhat$ceylon$compiler$java$test$issues$bug06xx$Bug673_EventObserver$this = new .com.redhat.ceylon.compiler.java.test.issues.bug06xx.Bug673_EventObserver$impl<.com.redhat.ceylon.compiler.java.test.issues.bug06xx.Bug673_Event>(this);
+        this.$com$redhat$ceylon$compiler$java$test$issues$bug06xx$Bug673_EventObserver$this = new .com.redhat.ceylon.compiler.java.test.issues.bug06xx.Bug673_EventObserver$impl<.com.redhat.ceylon.compiler.java.test.issues.bug06xx.Bug673_Event>((.com.redhat.ceylon.compiler.java.test.issues.bug06xx.Bug673_EventObserver)this);
     }
     protected final .com.redhat.ceylon.compiler.java.test.issues.bug06xx.Bug673_GridBehavior$impl $com$redhat$ceylon$compiler$java$test$issues$bug06xx$Bug673_GridBehavior$this;
     

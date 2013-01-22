@@ -44,7 +44,7 @@ class MethodIfExists2dArray {
     private final void union(final .java.lang.Object obj) {
         final .ceylon.language.Array<.ceylon.language.Array<.java.lang.Object>> t = .ceylon.language.arrayOfSize_.<.ceylon.language.Array<.java.lang.Object>>arrayOfSize(.ceylon.language.Array.class, 2L, .ceylon.language.arrayOfSize_.arrayOfSize(null, 2L, obj));
         .ceylon.language.Array $r$13;
-        if (($r$13 = t.item(.ceylon.language.Integer.instance(0L))) != null) {
+        if (($r$13 = ((.ceylon.language.Correspondence<? super .ceylon.language.Integer, ? extends .ceylon.language.Array<.java.lang.Object>>)(.ceylon.language.Correspondence)t).item(.ceylon.language.Integer.instance(0L))) != null) {
             final .ceylon.language.Array $r$14 = $r$13;
             $r$14.setItem(0L, obj);
         }

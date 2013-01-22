@@ -111,7 +111,7 @@ public class SetOperators {
     
     private final void testSetOperatorsWithErasedTypes(final .ceylon.language.Set<? extends .ceylon.language.String> setOfString, final .ceylon.language.Set setOfUnionType, final .ceylon.language.Set<? extends .ceylon.language.Sequential<?>> setOfIntersectionType, final .ceylon.language.Set<?> setOfNothing) {
         .ceylon.language.Set x1 = setOfUnionType.union(setOfString);
-        .ceylon.language.Set<? extends .ceylon.language.Integer> x2 = (.ceylon.language.Set)setOfUnionType.intersection(setOfString);
+        .ceylon.language.Set<? extends .ceylon.language.Integer> x2 = (.ceylon.language.Set<? extends .ceylon.language.Integer>)(.ceylon.language.Set)setOfUnionType.intersection(setOfString);
         .ceylon.language.Set x3 = setOfUnionType.exclusiveUnion(setOfString);
         .ceylon.language.Set x4 = setOfUnionType.complement(setOfString);
         .ceylon.language.Set<? extends .ceylon.language.Sequential<? extends .ceylon.language.Character>> y1 = setOfIntersectionType.union(setOfString);
@@ -131,7 +131,7 @@ public class SetOperators {
         final .ceylon.language.Set<? extends .ceylon.language.Integer> s4 = a.complement(b);
         .ceylon.language.Set<? extends .ceylon.language.Integer> sync;
         sync = a.union(b);
-        sync = (.ceylon.language.Set)a.intersection(b);
+        sync = (.ceylon.language.Set<? extends .ceylon.language.Integer>)(.ceylon.language.Set)a.intersection(b);
         sync = a.exclusiveUnion(b);
         sync = a.complement(b);
         (
@@ -177,7 +177,7 @@ public class SetOperators {
         final .ceylon.language.Set<? extends .java.lang.Object> s4 = a.complement(b);
         .ceylon.language.Set<? extends .java.lang.Object> sync;
         sync = a.union(b);
-        sync = (.ceylon.language.Set)a.intersection(b);
+        sync = a.intersection(b);
         sync = a.exclusiveUnion(b);
         sync = a.complement(b);
         (
@@ -297,7 +297,7 @@ class SetOperatorsSuper {
 class SetOperatorsSub extends .com.redhat.ceylon.compiler.java.test.expression.operator.SetOperatorsSuper {
     
     SetOperatorsSub(.ceylon.language.Set<? extends .ceylon.language.Integer> a, .ceylon.language.Set<?> b) {
-        super(a, (.ceylon.language.Set)b);
+        super(a, (.ceylon.language.Set<? extends .ceylon.language.Integer>)(.ceylon.language.Set)b);
     }
     
     @.java.lang.Override

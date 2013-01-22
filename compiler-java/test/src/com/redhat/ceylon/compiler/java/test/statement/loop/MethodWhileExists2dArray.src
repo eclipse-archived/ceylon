@@ -53,7 +53,7 @@ class MethodWhileExists2dArray {
         final .ceylon.language.Array<.ceylon.language.Array<.java.lang.Object>> t = .ceylon.language.arrayOfSize_.<.ceylon.language.Array<.java.lang.Object>>arrayOfSize(.ceylon.language.Array.class, 2L, .ceylon.language.arrayOfSize_.arrayOfSize(null, 2L, obj));
         while (true) {
             .ceylon.language.Array $r$8;
-            if (($r$8 = t.item(.ceylon.language.Integer.instance(0L))) != null) {
+            if (($r$8 = ((.ceylon.language.Correspondence<? super .ceylon.language.Integer, ? extends .ceylon.language.Array<.java.lang.Object>>)(.ceylon.language.Correspondence)t).item(.ceylon.language.Integer.instance(0L))) != null) {
                 final .ceylon.language.Array $r$9 = $r$8;
                 $r$9.setItem(0L, obj);
             } else break;

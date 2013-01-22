@@ -31,7 +31,7 @@ class ForIfNonEmptySequence {
                             if (!this.s()) break;
                             .ceylon.language.String $s$1 = null;
                             if (($s$1 = s) instanceof .ceylon.language.Sequence) {
-                                $s$2 = $s$1;
+                                $s$2 = (.ceylon.language.Sequential<? extends .ceylon.language.Character>)$s$1;
                                 break;
                             }
                         }
@@ -39,7 +39,7 @@ class ForIfNonEmptySequence {
                     }
                     
                     public final .java.lang.Object next() {
-                        return this.next1() ? ((.ceylon.language.Sequence<? extends .ceylon.language.Character>)(.ceylon.language.Sequence)$s$2).getFirst() : .ceylon.language.finished_.getFinished$();
+                        return this.next1() ? $s$2.getFirst() : .ceylon.language.finished_.getFinished$();
                     }
                 };
             }
@@ -72,7 +72,7 @@ class ForIfNonEmptySequence {
                             if (!this.s()) break;
                             .ceylon.language.String $t$4 = null;
                             if (($t$4 = s) instanceof .ceylon.language.Sequence) {
-                                $t$5 = $t$4;
+                                $t$5 = (.ceylon.language.Sequential<? extends .ceylon.language.Character>)$t$4;
                                 break;
                             }
                         }
@@ -80,7 +80,7 @@ class ForIfNonEmptySequence {
                     }
                     
                     public final .java.lang.Object next() {
-                        return this.next1() ? ((.ceylon.language.Sequence<? extends .ceylon.language.Character>)(.ceylon.language.Sequence)$t$5).getFirst() : .ceylon.language.finished_.getFinished$();
+                        return this.next1() ? $t$5.getFirst() : .ceylon.language.finished_.getFinished$();
                     }
                 };
             }

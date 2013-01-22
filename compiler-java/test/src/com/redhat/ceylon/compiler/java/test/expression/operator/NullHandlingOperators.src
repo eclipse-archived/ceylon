@@ -60,7 +60,7 @@ public class NullHandlingOperators {
             {
                 .ceylon.language.Sequential<? extends .ceylon.language.String> $ceylontmp6 = s1;
             }
-            returning $ceylontmp6 != null ? $ceylontmp6 : (.ceylon.language.Sequential).ceylon.language.empty_.getEmpty$();
+            returning $ceylontmp6 != null ? $ceylontmp6 : (.ceylon.language.Sequential<? extends .ceylon.language.String>)(.ceylon.language.Sequential).ceylon.language.empty_.getEmpty$();
         );
     }
     
@@ -73,7 +73,7 @@ public class NullHandlingOperators {
             }
             returning $ceylontmp7 instanceof .ceylon.language.Sequence;
         );
-        final .ceylon.language.Sequential<? extends .ceylon.language.String> seq = (.ceylon.language.Sequential).ceylon.language.empty_.getEmpty$();
+        final .ceylon.language.Sequential<? extends .ceylon.language.String> seq = (.ceylon.language.Sequential<? extends .ceylon.language.String>)(.ceylon.language.Sequential).ceylon.language.empty_.getEmpty$();
         sync = (
             let
             {

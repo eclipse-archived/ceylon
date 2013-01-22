@@ -22,7 +22,7 @@ class Bug799 {
     }
     
     private final void mUnion(final .ceylon.language.Array<.ceylon.language.Array<.java.lang.Object>> a) {
-        final .ceylon.language.Array n = a.item(.ceylon.language.Integer.instance(0L));
+        final .ceylon.language.Array n = ((.ceylon.language.Correspondence<? super .ceylon.language.Integer, ? extends .ceylon.language.Array<.java.lang.Object>>)(.ceylon.language.Correspondence)a).item(.ceylon.language.Integer.instance(0L));
     }
     
     private final void mAnything(final .ceylon.language.Array<.ceylon.language.Array<.java.lang.Object>> a) {

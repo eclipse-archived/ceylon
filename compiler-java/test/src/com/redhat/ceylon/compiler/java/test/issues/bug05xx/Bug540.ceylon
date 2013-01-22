@@ -20,4 +20,4 @@
 @nomodel
 Array<Integer> arr1 = array([1, 2, 3]);
 @nomodel
-Array<Integer> arr3 = array{elements=[1, 2, 3];};
+Array<Integer> arr3 = array{1, 2, 3};

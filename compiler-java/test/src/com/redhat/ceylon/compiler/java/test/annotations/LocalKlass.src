@@ -73,7 +73,7 @@ public class LocalKlass {
             public final Local<T> plus(@.com.redhat.ceylon.compiler.java.metadata.Name("other")
             @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("com.redhat.ceylon.compiler.java.test.annotations::LocalKlass.m.Local<T>")
             final Local<T> other) {
-                return (Local<T>)(Local).ceylon.language.nothing_.getNothing$();
+                return (Local).ceylon.language.nothing_.getNothing$();
             }
         }
     }

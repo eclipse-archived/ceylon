@@ -37,7 +37,7 @@ final class bug202_tricky_ {
         if (i <= 0L) {
             return new .com.redhat.ceylon.compiler.java.test.issues.bug02xx.Bug202_Tricky();
         } else {
-            return ((.com.redhat.ceylon.compiler.java.test.issues.bug02xx.Bug202_ReadList<? extends .java.lang.Object>)(.com.redhat.ceylon.compiler.java.test.issues.bug02xx.Bug202_ReadList).com.redhat.ceylon.compiler.java.test.issues.bug02xx.bug202_tricky_.bug202_tricky(i - 1L)).get(i);
+            return ((.com.redhat.ceylon.compiler.java.test.issues.bug02xx.Bug202_ReadList).com.redhat.ceylon.compiler.java.test.issues.bug02xx.bug202_tricky_.bug202_tricky(i - 1L)).get(i);
         }
     }
 }

@@ -5,7 +5,7 @@ public class SequenceOperators {
     public SequenceOperators() {
         this.c1 = new .ceylon.language.Tuple<.ceylon.language.String, .ceylon.language.String, .ceylon.language.Empty>(.ceylon.language.String.instance(""), .ceylon.language.empty_.getEmpty$());
         final .ceylon.language.Correspondence<? super .ceylon.language.Integer, ? extends .ceylon.language.String> c2 = new .ceylon.language.Tuple<.ceylon.language.String, .ceylon.language.String, .ceylon.language.Empty>(.ceylon.language.String.instance(""), .ceylon.language.empty_.getEmpty$());
-        this.sequence = (.ceylon.language.Sequential).ceylon.language.empty_.getEmpty$();
+        this.sequence = (.ceylon.language.Sequential<? extends .ceylon.language.String>)(.ceylon.language.Sequential).ceylon.language.empty_.getEmpty$();
     }
     private final .ceylon.language.Correspondence<? super .ceylon.language.Integer, ? extends .ceylon.language.String> c1;
     
@@ -104,7 +104,7 @@ public class SequenceOperators {
             }
             returning $spread$4$sequenceBuilder.getSequence();
         );
-        final .ceylon.language.Sequential<? extends .ceylon.language.String> empty = (.ceylon.language.Sequential).ceylon.language.empty_.getEmpty$();
+        final .ceylon.language.Sequential<? extends .ceylon.language.String> empty = (.ceylon.language.Sequential<? extends .ceylon.language.String>)(.ceylon.language.Sequential).ceylon.language.empty_.getEmpty$();
         final .ceylon.language.Sequential<? extends .ceylon.language.String> upperCasedEmpty = (
             let
             {

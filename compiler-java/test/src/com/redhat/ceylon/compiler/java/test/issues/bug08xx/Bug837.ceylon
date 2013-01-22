@@ -25,6 +25,8 @@ class Bug837<Element>(first, Integer length)
 
     shared actual Element first;
 
+    shared actual Element last = first;
+
     shared actual Element? item(Integer index) {
         throw;
     }
@@ -59,5 +61,9 @@ class Bug837<Element>(first, Integer length)
     shared actual Sequence<Element> clone { 
         return this; 
     }
+    
+    shared actual Iterator<Element> iterator => nothing;
+    shared actual Integer size => nothing;
 
+    shared actual Boolean contains(Object o) => nothing;
 }

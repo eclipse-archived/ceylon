@@ -148,7 +148,7 @@ class MethodSpecifyingCallable {
     }
     
     private final .java.lang.Object oneSequencedParam4() {
-        return getOneSequencedParam().$call((.ceylon.language.Sequential).ceylon.language.empty_.getEmpty$());
+        return getOneSequencedParam().$call((.ceylon.language.Sequential<? extends .ceylon.language.Integer>)(.ceylon.language.Sequential).ceylon.language.empty_.getEmpty$());
     }
     private final .ceylon.language.Callable<?> secondSequencedParam;
     
@@ -197,7 +197,7 @@ class MethodSpecifyingCallable {
     }
     
     private final .java.lang.Object secondSequencedParam4() {
-        return getSecondSequencedParam().$call(.ceylon.language.Integer.instance(1L), (.ceylon.language.Sequential).ceylon.language.empty_.getEmpty$());
+        return getSecondSequencedParam().$call(.ceylon.language.Integer.instance(1L), (.ceylon.language.Sequential<? extends .ceylon.language.Integer>)(.ceylon.language.Sequential).ceylon.language.empty_.getEmpty$());
     }
     
     public static void main(.java.lang.String[] args) {

@@ -98,7 +98,7 @@ class RIC_Nothing_From_Interface implements .com.redhat.ceylon.compiler.java.tes
     
     RIC_Nothing_From_Interface() {
         this.$com$redhat$ceylon$compiler$java$test$structure$klass$RIC_Left$this = new .com.redhat.ceylon.compiler.java.test.structure.klass.RIC_Left$impl(this);
-        this.$com$redhat$ceylon$compiler$java$test$structure$klass$RIC_Top$this = new .com.redhat.ceylon.compiler.java.test.structure.klass.RIC_Top$impl<.com.redhat.ceylon.compiler.java.test.structure.klass.RIC_B>((.com.redhat.ceylon.compiler.java.test.structure.klass.RIC_Top)this);
+        this.$com$redhat$ceylon$compiler$java$test$structure$klass$RIC_Top$this = new .com.redhat.ceylon.compiler.java.test.structure.klass.RIC_Top$impl<.com.redhat.ceylon.compiler.java.test.structure.klass.RIC_B>((.com.redhat.ceylon.compiler.java.test.structure.klass.RIC_Top<? extends .com.redhat.ceylon.compiler.java.test.structure.klass.RIC_B>)(.com.redhat.ceylon.compiler.java.test.structure.klass.RIC_Top)this);
         this.$com$redhat$ceylon$compiler$java$test$structure$klass$RIC_Right$this = new .com.redhat.ceylon.compiler.java.test.structure.klass.RIC_Right$impl(this);
     }
     protected final .com.redhat.ceylon.compiler.java.test.structure.klass.RIC_Left$impl $com$redhat$ceylon$compiler$java$test$structure$klass$RIC_Left$this;

@@ -130,7 +130,7 @@ public class Html implements .com.redhat.ceylon.compiler.java.test.issues.bug08x
     
     @.java.lang.Override
     public final .ceylon.language.Sequential visitAroundTags$tags(final .com.redhat.ceylon.compiler.java.test.issues.bug08xx.Visitor visitor, final .java.lang.String name) {
-        return $com$redhat$ceylon$compiler$java$test$issues$bug08xx$Visitable$this.visitAroundTags$tags(visitor, name);
+        return (.ceylon.language.Sequential)$com$redhat$ceylon$compiler$java$test$issues$bug08xx$Visitable$this.visitAroundTags$tags(visitor, name);
     }
     
     @.java.lang.Override
@@ -198,7 +198,7 @@ public class Head implements .com.redhat.ceylon.compiler.java.test.issues.bug08x
     
     @.java.lang.Override
     public final .ceylon.language.Sequential visitAroundTags$tags(final .com.redhat.ceylon.compiler.java.test.issues.bug08xx.Visitor visitor, final .java.lang.String name) {
-        return $com$redhat$ceylon$compiler$java$test$issues$bug08xx$Visitable$this.visitAroundTags$tags(visitor, name);
+        return (.ceylon.language.Sequential)$com$redhat$ceylon$compiler$java$test$issues$bug08xx$Visitable$this.visitAroundTags$tags(visitor, name);
     }
     
     @.java.lang.Override
@@ -279,7 +279,7 @@ public class Container<TagType extends .com.redhat.ceylon.compiler.java.test.iss
     
     @.java.lang.Override
     public final .ceylon.language.Sequential visitAroundTags$tags(final .com.redhat.ceylon.compiler.java.test.issues.bug08xx.Visitor visitor, final .java.lang.String name) {
-        return $com$redhat$ceylon$compiler$java$test$issues$bug08xx$Visitable$this.visitAroundTags$tags(visitor, name);
+        return (.ceylon.language.Sequential)$com$redhat$ceylon$compiler$java$test$issues$bug08xx$Visitable$this.visitAroundTags$tags(visitor, name);
     }
     
     @.java.lang.Override

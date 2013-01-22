@@ -72,7 +72,7 @@ final class indirectTypeParam_ {
                     
                     @.java.lang.Override
                     public .ceylon.language.Callable<? extends .java.lang.Object> $call() {
-                        return mpl.<.ceylon.language.Integer>mpl(.ceylon.language.Integer.instance(i));
+                        return (.ceylon.language.Callable<? extends .ceylon.language.Callable<? extends .java.lang.Object>>)(.ceylon.language.Callable)mpl.<.ceylon.language.Integer>mpl(.ceylon.language.Integer.instance(i));
                     }
                 };
             }

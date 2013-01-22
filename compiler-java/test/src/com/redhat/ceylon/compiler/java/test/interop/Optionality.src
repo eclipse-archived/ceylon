@@ -218,6 +218,6 @@ class OptionalInterface implements .com.redhat.ceylon.compiler.java.test.interop
     }
     
     public final .ceylon.language.Correspondence<? super .java.lang.Object, ? extends .java.lang.Object> getCorrespondence() {
-        return (.ceylon.language.Correspondence<? super .java.lang.Object, ? extends .java.lang.Object>)(.ceylon.language.Correspondence).ceylon.language.nothing_.getNothing$();
+        return (.ceylon.language.Correspondence).ceylon.language.nothing_.getNothing$();
     }
 }

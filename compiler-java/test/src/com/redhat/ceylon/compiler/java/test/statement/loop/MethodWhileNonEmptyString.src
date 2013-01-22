@@ -9,7 +9,7 @@ class MethodWhileNonEmptySequence {
         while (true) {
             .ceylon.language.String $s$0;
             if (($s$0 = .ceylon.language.String.instance(s)) instanceof .ceylon.language.Sequence) {
-                final .ceylon.language.Sequential<? extends .ceylon.language.Character> $s$1 = $s$0;
+                final .java.lang.Object $s$1 = $s$0;
                 .ceylon.language.print_.print(((.ceylon.language.Sequence<? extends .ceylon.language.Character>)(.ceylon.language.Sequence)$s$1).getFirst());
             } else break;
         }
@@ -19,7 +19,7 @@ class MethodWhileNonEmptySequence {
         while (true) {
             .ceylon.language.String $t$2;
             if (($t$2 = .ceylon.language.String.instance(s)) instanceof .ceylon.language.Sequence) {
-                final .ceylon.language.Sequential<? extends .ceylon.language.Character> $t$3 = $t$2;
+                final .java.lang.Object $t$3 = $t$2;
                 .ceylon.language.print_.print(((.ceylon.language.Sequence<? extends .ceylon.language.Character>)(.ceylon.language.Sequence)$t$3).getFirst());
             } else break;
         }

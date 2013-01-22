@@ -47,8 +47,8 @@ final class bug633_ {
     static void bug633() {
         final .com.redhat.ceylon.compiler.java.test.issues.bug06xx.Bug633EmptyImpl a = new .com.redhat.ceylon.compiler.java.test.issues.bug06xx.Bug633EmptyImpl();
         final .com.redhat.ceylon.compiler.java.test.issues.bug06xx.Bug633Empty b = new .com.redhat.ceylon.compiler.java.test.issues.bug06xx.Bug633EmptyImpl();
-        final .com.redhat.ceylon.compiler.java.test.issues.bug06xx.Bug633Ranged<? super .ceylon.language.Integer, ? extends .ceylon.language.Integer> c = (.com.redhat.ceylon.compiler.java.test.issues.bug06xx.Bug633Ranged)new .com.redhat.ceylon.compiler.java.test.issues.bug06xx.Bug633EmptyImpl();
-        final .ceylon.language.Sequential<? extends .ceylon.language.Integer> seq = (.ceylon.language.Sequential).ceylon.language.empty_.getEmpty$();
+        final .com.redhat.ceylon.compiler.java.test.issues.bug06xx.Bug633Ranged<? super .ceylon.language.Integer, ? extends .ceylon.language.Integer> c = (.com.redhat.ceylon.compiler.java.test.issues.bug06xx.Bug633Ranged<? super .ceylon.language.Integer, ? extends .ceylon.language.Integer>)(.com.redhat.ceylon.compiler.java.test.issues.bug06xx.Bug633Ranged)new .com.redhat.ceylon.compiler.java.test.issues.bug06xx.Bug633EmptyImpl();
+        final .ceylon.language.Sequential<? extends .ceylon.language.Integer> seq = (.ceylon.language.Sequential<? extends .ceylon.language.Integer>)(.ceylon.language.Sequential).ceylon.language.empty_.getEmpty$();
     }
     
     public static void main(.java.lang.String[] args) {

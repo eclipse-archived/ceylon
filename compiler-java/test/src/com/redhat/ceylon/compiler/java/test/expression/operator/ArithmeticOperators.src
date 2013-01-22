@@ -4,7 +4,7 @@ abstract class MyInteger extends .java.lang.Object implements .ceylon.language.C
     
     MyInteger() {
         super();
-        this.$ceylon$language$Castable$this = new .ceylon.language.Castable$impl<.java.lang.Object>(this);
+        this.$ceylon$language$Castable$this = new .ceylon.language.Castable$impl<.java.lang.Object>((.ceylon.language.Castable)this);
         this.$ceylon$language$Integral$this = new .ceylon.language.Integral$impl<.com.redhat.ceylon.compiler.java.test.expression.operator.MyInteger>(this);
         this.$ceylon$language$Numeric$this = new .ceylon.language.Numeric$impl<.com.redhat.ceylon.compiler.java.test.expression.operator.MyInteger>(this);
         this.$ceylon$language$Summable$this = new .ceylon.language.Summable$impl<.com.redhat.ceylon.compiler.java.test.expression.operator.MyInteger>(this);

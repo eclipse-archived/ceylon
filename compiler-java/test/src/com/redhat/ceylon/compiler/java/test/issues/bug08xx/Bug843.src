@@ -16,8 +16,8 @@ final class bug843_test_ {
     }
     
     static void bug843_test() {
-        new .com.redhat.ceylon.compiler.java.test.issues.bug08xx.Bug843_1<.ceylon.language.Integer, .ceylon.language.Empty>((.ceylon.language.Sequential).ceylon.language.empty_.getEmpty$());
-        new .com.redhat.ceylon.compiler.java.test.issues.bug08xx.Bug843_2<.ceylon.language.Empty>((.ceylon.language.Sequential).ceylon.language.empty_.getEmpty$());
+        new .com.redhat.ceylon.compiler.java.test.issues.bug08xx.Bug843_1<.ceylon.language.Integer, .ceylon.language.Empty>((.ceylon.language.Sequential<? extends .ceylon.language.Integer>)(.ceylon.language.Sequential).ceylon.language.empty_.getEmpty$());
+        new .com.redhat.ceylon.compiler.java.test.issues.bug08xx.Bug843_2<.ceylon.language.Empty>((.ceylon.language.Sequential<? extends .ceylon.language.Integer>)(.ceylon.language.Sequential).ceylon.language.empty_.getEmpty$());
     }
     
     public static void main(.java.lang.String[] args) {

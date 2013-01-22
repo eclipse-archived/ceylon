@@ -6,7 +6,7 @@ final class callablePositionalInvocationSequencedComprehension_ {
     }
     
     static void callablePositionalInvocationSequencedComprehension(final .ceylon.language.Callable<? extends .java.lang.Object> foo, final .ceylon.language.Callable<? extends .java.lang.Object> bar) {
-        final .ceylon.language.Sequential<? extends .ceylon.language.Integer> em = (.ceylon.language.Sequential).ceylon.language.empty_.getEmpty$();
+        final .ceylon.language.Sequential<? extends .ceylon.language.Integer> em = (.ceylon.language.Sequential<? extends .ceylon.language.Integer>)(.ceylon.language.Sequential).ceylon.language.empty_.getEmpty$();
         foo.$call(new .com.redhat.ceylon.compiler.java.language.AbstractIterable<.ceylon.language.Integer, .java.lang.Object>(){
             
             public final .ceylon.language.Iterator<.ceylon.language.Integer> getIterator() {

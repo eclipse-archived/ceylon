@@ -6,7 +6,7 @@ final class bug568_ {
     }
     
     static void bug568() {
-        final .ceylon.language.Sequential<? extends .ceylon.language.Integer> childPaths = (.ceylon.language.Sequential).ceylon.language.empty_.getEmpty$();
+        final .ceylon.language.Sequential<? extends .ceylon.language.Integer> childPaths = (.ceylon.language.Sequential<? extends .ceylon.language.Integer>)(.ceylon.language.Sequential).ceylon.language.empty_.getEmpty$();
         .java.lang.Object $elem$0;
         for (.ceylon.language.Iterator<? extends .ceylon.language.String> $s$iter$2 = (
             let
