@@ -4,7 +4,6 @@ import com.redhat.ceylon.compiler.java.metadata.Ceylon;
 import com.redhat.ceylon.compiler.java.metadata.Ignore;
 import com.redhat.ceylon.compiler.java.metadata.Method;
 import com.redhat.ceylon.compiler.java.metadata.Name;
-import com.redhat.ceylon.compiler.java.metadata.Sequenced;
 import com.redhat.ceylon.compiler.java.metadata.TypeInfo;
 import com.redhat.ceylon.compiler.java.metadata.TypeParameter;
 import com.redhat.ceylon.compiler.java.metadata.TypeParameters;
@@ -19,7 +18,6 @@ public final class array_ {
     @TypeInfo("ceylon.language::Array<Element>")
     public static <Element> Array<Element> array(
     @Name("elements")
-    @Sequenced
     @TypeInfo("ceylon.language::Iterable<Element,ceylon.language::Null>")
     final ceylon.language.Iterable<? extends Element,? extends java.lang.Object> elements) {
         return array(null, elements);
