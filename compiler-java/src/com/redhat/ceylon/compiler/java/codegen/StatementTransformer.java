@@ -835,9 +835,9 @@ public class StatementTransformer extends AbstractTransformer {
                 exprType = typeFact().getDefiniteType(exprType);
             }
             return expressionGen().applyErasureAndBoxing(testVar.makeIdent(),
-                    exprType, true,
+                    exprType, willEraseToObject(decl.getType()), true,
                     CodegenUtil.getBoxingStrategy(decl),
-                    decl.getType());
+                    decl.getType(), 0);
         }
         
         @Override
