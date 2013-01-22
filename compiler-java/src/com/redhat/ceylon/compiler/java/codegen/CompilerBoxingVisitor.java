@@ -20,6 +20,7 @@
 package com.redhat.ceylon.compiler.java.codegen;
 
 import com.redhat.ceylon.compiler.typechecker.model.Declaration;
+import com.redhat.ceylon.compiler.typechecker.model.ProducedType;
 
 public class CompilerBoxingVisitor extends BoxingVisitor {
     private AbstractTransformer transformer;
@@ -38,4 +39,8 @@ public class CompilerBoxingVisitor extends BoxingVisitor {
         return transformer.isBooleanFalse(decl);
     }
 
+    @Override
+    protected boolean hasErasure(ProducedType type) {
+        return transformer.hasErasure(type);
+    }
 }

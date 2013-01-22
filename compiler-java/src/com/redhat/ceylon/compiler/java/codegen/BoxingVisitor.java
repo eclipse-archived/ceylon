@@ -70,6 +70,7 @@ public abstract class BoxingVisitor extends Visitor {
 
     protected abstract boolean isBooleanTrue(Declaration decl);
     protected abstract boolean isBooleanFalse(Declaration decl);
+    protected abstract boolean hasErasure(ProducedType type);
 
     @Override
     public void visit(BaseMemberExpression that) {

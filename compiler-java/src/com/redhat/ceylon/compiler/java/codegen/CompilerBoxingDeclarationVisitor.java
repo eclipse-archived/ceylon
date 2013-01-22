@@ -54,4 +54,8 @@ public class CompilerBoxingDeclarationVisitor extends BoxingDeclarationVisitor {
         return transformer.isCeylonCallable(type);
     }
 
+    @Override
+    protected boolean hasErasure(ProducedType type) {
+        return transformer.hasErasure(type);
+    }
 }

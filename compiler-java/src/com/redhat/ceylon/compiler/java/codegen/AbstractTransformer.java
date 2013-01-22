@@ -782,6 +782,58 @@ public abstract class AbstractTransformer implements Transformation {
                 && typeFact().isSequentialType(type);
     }
 
+    boolean hasErasure(ProducedType type) {
+        return hasErasureResolved(type.resolveAliases());
+    }
+    
+    private boolean hasErasureResolved(ProducedType type) {
+        TypeDeclaration declaration = type.getDeclaration();
+        if(declaration == null)
+            return false;
+        if(declaration instanceof UnionType){
+            UnionType ut = (UnionType) declaration;
+            java.util.List<ProducedType> caseTypes = ut.getCaseTypes();
+            // special case for optional types
+            if(caseTypes.size() == 2){
+                if(isOptional(caseTypes.get(0)))
+                    return hasErasureResolved(caseTypes.get(1));
+                if(isOptional(caseTypes.get(1)))
+                    return hasErasureResolved(caseTypes.get(0));
+            }
+            // must be erased
+            return true;
+        }
+        if(declaration instanceof IntersectionType){
+            IntersectionType ut = (IntersectionType) declaration;
+            java.util.List<ProducedType> satisfiedTypes = ut.getSatisfiedTypes();
+            // special case for non-optional types
+            if(satisfiedTypes.size() == 2){
+                if(isObject(satisfiedTypes.get(0)))
+                    return hasErasureResolved(satisfiedTypes.get(1));
+                if(isObject(satisfiedTypes.get(1)))
+                    return hasErasureResolved(satisfiedTypes.get(0));
+            }
+            // must be erased
+            return true;
+        }
+        // Note: we don't consider types like Anything, Null, Basic, Identifiable as erased because
+        // they can never be better than Object as far as Java is concerned
+        // FIXME: what about Nothing then?
+        
+        // special case for Callable where we stop after the first type param
+        boolean isCallable = isCeylonCallable(type);
+        
+        // now check its type parameters
+        for(ProducedType pt : type.getTypeArgumentList()){
+            if(hasErasureResolved(pt))
+                return true;
+            if(isCallable)
+                break;
+        }
+        // no erasure here
+        return false;
+    }
+
     boolean isCeylonString(ProducedType type) {
         return (sameType(syms().ceylonStringType, type));
     }
