@@ -49,15 +49,12 @@ shared class Tuple<out Element, out First, out Rest=Empty>(first, rest/*=[]*/)
         extends Object()
         satisfies [Element+] & 
                   Cloneable<Tuple<Element,First,Rest>>
-        //TODO: reenable this type constraint
-        /*given First satisfies Element*/
+        given First satisfies Element
         given Rest satisfies Element[] {
     
-    //TODO: should just have type First
-    shared actual First&Element first;
+    shared actual First first;
     
-    //TODO: should just have type Rest
-    shared actual Rest&Element[] rest;
+    shared actual Rest rest;
     
     shared actual Integer size => 1 + rest.size;
     
