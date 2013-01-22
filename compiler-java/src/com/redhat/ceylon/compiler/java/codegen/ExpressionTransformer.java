@@ -346,10 +346,8 @@ public class ExpressionTransformer extends AbstractTransformer {
                 result = make().TypeCast(targetType, result);
             }else if(// expression was forcibly erased
                      exprErased
-                     // we're down casting so we must cast
-                     || downCast
                      // some type parameter somewhere needs a cast
-                     || needsCast(exprType, expectedType, expectedTypeIsNotRaw, expectedTypeHasConstrainedTypeParameters)
+                     || needsCast(exprType, expectedType, expectedTypeIsNotRaw, expectedTypeHasConstrainedTypeParameters, downCast)
                      // if the exprType is raw and the expected type isn't
                      || (exprType.isRaw() && (expectedTypeIsNotRaw || !isTurnedToRaw(expectedType)))){
                 
@@ -366,11 +364,15 @@ public class ExpressionTransformer extends AbstractTransformer {
                 if (!exprIsRaw && hasTypeParameters(expectedType)) {
                     JCExpression rawType = makeJavaType(expectedType, AbstractTransformer.JT_TYPE_ARGUMENT | AbstractTransformer.JT_RAW);
                     result = make().TypeCast(rawType, result);
+                    // expr is now raw
+                    exprIsRaw = true;
                 }
                 
-                // don't even try making an actual cast if there are bounded type parameters in play, because going raw is much safer
-                // also don't try making the cast if the expected type is raw because anything goes
-                if(!expectedTypeHasConstrainedTypeParameters && !expectedTypeIsRaw){
+                // if the expr is not raw, we need a cast
+                // if the expr is raw:
+                //  don't even try making an actual cast if there are bounded type parameters in play, because going raw is much safer
+                //  also don't try making the cast if the expected type is raw because anything goes
+                if(!exprIsRaw || (!expectedTypeHasConstrainedTypeParameters && !expectedTypeIsRaw)){
                     // Do the actual cast
                     JCExpression targetType = makeJavaType(expectedType, AbstractTransformer.JT_TYPE_ARGUMENT);
                     result = make().TypeCast(targetType, result);
@@ -400,10 +402,11 @@ public class ExpressionTransformer extends AbstractTransformer {
     }
 
     private boolean needsCast(ProducedType exprType, ProducedType expectedType, 
-                              boolean expectedTypeNotRaw, boolean expectedTypeHasConstrainedTypeParameters) {
+                              boolean expectedTypeNotRaw, boolean expectedTypeHasConstrainedTypeParameters,
+                              boolean downCast) {
         // make sure we work on definite types
-        exprType = typeFact().getDefiniteType(exprType);
-        expectedType = typeFact().getDefiniteType(expectedType);
+        exprType = simplifyType(exprType);
+        expectedType = simplifyType(expectedType);
         // abort if both types are the same
         if(exprType.isExactly(expectedType)){
             // unless the expected type is parameterised with bounds because in that case we can't
@@ -445,8 +448,10 @@ public class ExpressionTransformer extends AbstractTransformer {
         // find their common type
         ProducedType commonType = exprType.getSupertype(expectedType.getDeclaration());
         
-        if(commonType == null || !(commonType.getDeclaration() instanceof ClassOrInterface))
-            return false;
+        if(commonType == null || !(commonType.getDeclaration() instanceof ClassOrInterface)){
+            // we did not find any common type, but we may be downcasting, in which case we need a cast
+            return downCast;
+        }
         
         // some times we can lose info due to an erased type parameter somewhere in the inheritance graph
         if(lostTypeParameterInInheritance(exprType, commonType))
@@ -479,7 +484,8 @@ public class ExpressionTransformer extends AbstractTransformer {
             // apply the same logic to each type param: see if they would require a raw cast
             ProducedType commonTypeArg = commonTypeArgs.get(i);
             ProducedType expectedTypeArg = expectedTypeArgs.get(i);
-            if(needsCast(commonTypeArg, expectedTypeArg, expectedTypeNotRaw, expectedTypeHasConstrainedTypeParameters))
+            // downcasting info doesn't propagate to type parameters
+            if(needsCast(commonTypeArg, expectedTypeArg, expectedTypeNotRaw, expectedTypeHasConstrainedTypeParameters, false))
                 return true;
             // stop after the first one for Callable
             if(isCallable)
