@@ -1960,7 +1960,7 @@ public abstract class AbstractTransformer implements Transformation {
         if (!required)
             return List.nil();
         String name = serialiseTypeSignature(type);
-        boolean erased = willEraseToObject(type) && !isVoid(type) && !isCeylonObject(type);
+        boolean erased = hasErasure(type);
         // Add the original type to the annotations
         if (!erased) {
             return makeModelAnnotation(syms().ceylonAtTypeInfoType, List.<JCExpression>of(make().Literal(name)));
