@@ -1544,14 +1544,13 @@ public abstract class AbstractTransformer implements Transformation {
                 // make sure we apply the type arguments
                 return upperBound.substitute(producedReference.getTypeArguments());
             }
-         } else if (willEraseToSequential(declType)
-                 && typeFact().getEmptyDeclaration().getType().isSupertypeOf(type)) {
-             // Erasure: If the declType would be Sequential<Element>
-             // but the (produced) type is Empty (which is a Sequential<j.l.Object>)
-             // treat the parameter type as Sequential<Element>, so that 
-             // empty is given a typecast.
-             return typeFact().getSequentialType(typeFact.getIteratedType(declType));
-         }
+        } else if (willEraseToSequential(declType)) {
+            // Erasure: If the declType would be Sequential<Element>
+            // treat the parameter type as Sequential<Element>, because that's all
+            // Java will see.
+            ProducedType erasedType = typeFact().getDefiniteType(declType).getSupertype(typeFact().getSequentialDeclaration());
+            return erasedType.substitute(producedReference.getTypeArguments());
+        }
         return type;
     }
 
