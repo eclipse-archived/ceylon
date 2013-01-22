@@ -2265,12 +2265,13 @@ public class ExpressionTransformer extends AbstractTransformer {
         at(expr);
 
         // iterable
-        ProducedType srcType = expr.getPrimary().getTypeModel();
         Naming.SyntheticName srcIterableName = varBaseName.suffixedBy("$iterable");
-        ProducedType t = typeFact().getNonemptyType(expr.getPrimary().getTypeModel());
-        ProducedType srcElementType = typeFact().getIteratedType(t);
-        JCExpression srcIterableTypeExpr = makeJavaType(typeFact().getIterableType(typeFact().getIteratedType(t)), JT_NO_PRIMITIVES);
-        JCExpression srcIterableExpr = transformExpression(expr.getPrimary(), BoxingStrategy.BOXED, srcType);
+        // make sure we get an Iterable<T> where T is the type we're going to invoke the member on, because
+        // we might have a sequence of something erased to Object, like A&B, and we only invoke the member on A
+        // which is not erased, so let's not even look at the contents of the sequence, but just the target type
+        ProducedType srcElementType = expr.getTarget().getQualifyingType();
+        JCExpression srcIterableTypeExpr = makeJavaType(typeFact().getIterableType(srcElementType), JT_NO_PRIMITIVES);
+        JCExpression srcIterableExpr = transformExpression(expr.getPrimary(), BoxingStrategy.BOXED, typeFact().getIterableType(srcElementType));
 
         // sequenceBuilder
         Naming.SyntheticName builderVar = varBaseName.suffixedBy("$sequenceBuilder");
@@ -2282,9 +2283,9 @@ public class ExpressionTransformer extends AbstractTransformer {
         // element.member
         final SyntheticName elementVar = varBaseName.suffixedBy("$element");
         JCExpression elementExpr = elementVar.makeIdent();
-        elementExpr = applyErasureAndBoxing(elementExpr, srcElementType, CodegenUtil.hasTypeErased(expr),
+        elementExpr = applyErasureAndBoxing(elementExpr, srcElementType, CodegenUtil.hasTypeErased(expr.getPrimary()),
                 true, BoxingStrategy.BOXED, 
-                expr.getTarget().getQualifyingType(), 0);
+                srcElementType, 0);
         JCExpression appliedExpr = transformMemberExpression(expr, elementExpr, transformer);
         
         // This short-circuit is here for spread invocations
@@ -2309,7 +2310,11 @@ public class ExpressionTransformer extends AbstractTransformer {
                 iteration);
         
         // we always need to box to put in SequenceBuilder
-        appliedExpr = applyErasureAndBoxing(appliedExpr, expr.getTarget().getType(), CodegenUtil.hasTypeErased(expr), !CodegenUtil.isUnBoxed(expr), BoxingStrategy.BOXED, expr.getTarget().getType(), 0);
+        appliedExpr = applyErasureAndBoxing(appliedExpr, expr.getTarget().getType(), 
+                // don't trust the erased flag of expr, as it reflects the result type of the overall spread expr,
+                // not necessarily of the applied member
+                CodegenUtil.hasTypeErased((TypedDeclaration)expr.getTarget().getDeclaration()), 
+                !CodegenUtil.isUnBoxed(expr), BoxingStrategy.BOXED, expr.getTarget().getType(), 0);
         // sequenceBuilder.append(APPLIED_EXPR)
         JCStatement body = make().Exec(make().Apply(List.<JCExpression>nil(), 
                 naming.makeQualIdent(builderVar.makeIdent(), "append"), 
@@ -2338,13 +2343,19 @@ public class ExpressionTransformer extends AbstractTransformer {
         // Do we *statically* know the result must be a Sequence 
         final boolean primaryIsSequence = expr.getPrimary().getTypeModel().isSubtypeOf(
                 typeFact().getSequenceType(typeFact().getAnythingDeclaration().getType()).getType());
+        int flags = 0;
+        // if we want a Sequence and SequenceBuilder returns a Sequential, we need to force the downcast
+        if(primaryIsSequence)
+            flags |= EXPR_DOWN_CAST;
         spread = applyErasureAndBoxing(spread, 
-                typeFact().getSequentialType(srcElementType),// the type of SequenceBuilder.getSequence();
+                typeFact().getSequentialType(expr.getTarget().getType()),// the type of SequenceBuilder.getSequence();
+                false,
                 true,
                 BoxingStrategy.BOXED, 
                 primaryIsSequence ? 
                         typeFact().getSequenceType(expr.getTarget().getType()) 
-                        : typeFact().getSequentialType(expr.getTarget().getType()));
+                        : typeFact().getSequentialType(expr.getTarget().getType()),
+                flags);
         
         return spread;
     }
