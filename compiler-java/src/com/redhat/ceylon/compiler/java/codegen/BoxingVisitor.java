@@ -111,6 +111,14 @@ public abstract class BoxingVisitor extends Visitor {
         } else {
             propagateFromDeclaration(that, (TypedDeclaration)that.getDeclaration());
         }
+        // special case for spread op, because even if the primary is erased (ex: <T> T|String), its application may not
+        // be (ex: <String>), and in that case we will generate a proper Sequential<String> which is not raw at all
+        if(that.getMemberOperator() instanceof Tree.SpreadOp){
+            // find the return element type
+            ProducedType elementType = that.getTarget().getType();
+            CodegenUtil.markTypeErased(that, hasErasure(elementType));
+                
+        }
     }
 
     @Override

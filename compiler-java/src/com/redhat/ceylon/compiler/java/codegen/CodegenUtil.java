@@ -102,7 +102,11 @@ class CodegenUtil {
     }
 
     static void markTypeErased(Term node) {
-        node.setTypeErased(true);
+        markTypeErased(node, true);
+    }
+
+    static void markTypeErased(Term node, boolean erased) {
+        node.setTypeErased(erased);
     }
 
     /**
