@@ -2427,6 +2427,9 @@ public class Types {
         for (Type t : newTvars.toList()) {
             TypeVar tv = (TypeVar) t;
             tv.bound = newBounds.head;
+            // Fix for Ceylon: try really hard not to make recursive bounds
+            if(tv.bound == tv)
+                tv.bound = null;
             newBounds = newBounds.tail;
         }
         return newTvars.toList();
@@ -2442,6 +2445,9 @@ public class Types {
             // the new bound should use the new type variable in place
             // of the old
             tv.bound = subst(bound1, List.<Type>of(t), List.<Type>of(tv));
+            // Fix for Ceylon: try really hard not to make recursive bounds
+            if(tv.bound == tv)
+                tv.bound = t;
             return tv;
         }
     }
