@@ -342,7 +342,7 @@ public class ExpressionTransformer extends AbstractTransformer {
                 }
             }else if(exprType.getDeclaration() instanceof NothingType){
                 // type param erasure
-                JCExpression targetType = makeJavaType(expectedType, AbstractTransformer.JT_RAW);
+                JCExpression targetType = makeJavaType(expectedType, AbstractTransformer.JT_RAW | AbstractTransformer.JT_NO_PRIMITIVES);
                 result = make().TypeCast(targetType, result);
             }else if(// expression was forcibly erased
                      exprErased
@@ -381,6 +381,14 @@ public class ExpressionTransformer extends AbstractTransformer {
 
         // we must do the boxing after the cast to the proper type
         JCExpression ret = boxUnboxIfNecessary(result, exprBoxed, exprType, boxingStrategy);
+        
+        // very special case for nothing that we need to "unbox" to a primitive type
+        if(exprType.getDeclaration() instanceof NothingType
+                && boxingStrategy == BoxingStrategy.UNBOXED){
+            // in this case we have to use the expected type
+            ret = unboxType(ret, expectedType);
+        }
+        
         // now check if we need variance casts
         if (canCast) {
             ret = applyVarianceCasts(ret, exprType, exprBoxed, boxingStrategy, expectedType,
