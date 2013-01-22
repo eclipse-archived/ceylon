@@ -478,7 +478,8 @@ public class ClassTransformer extends AbstractTransformer {
                                     typedParameter.getType(), 
                                     Naming.getDefaultedParamMethodName(method, param), 
                                     parameters.subList(0, parameters.indexOf(param)),
-                                    rawifyParametersAndResults);
+                                    rawifyParametersAndResults,
+                                    param.getTypeErased());
                             classBuilder.method(defaultValueDelegate);
                             
                             final MethodDefinitionBuilder overload = makeDelegateToCompanion(iface,
@@ -488,7 +489,8 @@ public class ClassTransformer extends AbstractTransformer {
                                     typedMember.getType(), 
                                     naming.selector(method), 
                                     parameters.subList(0, parameters.indexOf(param)),
-                                    rawifyParametersAndResults);
+                                    rawifyParametersAndResults,
+                                    param.getTypeErased());
                             classBuilder.method(overload);
                         }
                     }
@@ -506,7 +508,8 @@ public class ClassTransformer extends AbstractTransformer {
                             method.getType(), 
                             naming.selector(method), 
                             method.getParameterLists().get(0).getParameters(),
-                            rawifyParametersAndResults);
+                            rawifyParametersAndResults,
+                            ((Method) member).getTypeErased());
                     classBuilder.method(concreteMemberDelegate);
                      
                 }
@@ -525,7 +528,8 @@ public class ClassTransformer extends AbstractTransformer {
                                 typedMember.getType(), 
                                 Naming.getGetterName(attr), 
                                 Collections.<Parameter>emptyList(),
-                                rawifyParametersAndResults);
+                                rawifyParametersAndResults,
+                                attr.getTypeErased());
                         classBuilder.method(getterDelegate);
                     }
                     if (member instanceof Setter) { 
@@ -536,7 +540,8 @@ public class ClassTransformer extends AbstractTransformer {
                                 typeFact().getAnythingDeclaration().getType(), 
                                 Naming.getSetterName(attr), 
                                 Collections.<Parameter>singletonList(((Setter)member).getParameter()),
-                                rawifyParametersAndResults);
+                                rawifyParametersAndResults,
+                                ((Setter) member).getTypeErased());
                         classBuilder.method(setterDelegate);
                     }
                     if (member instanceof Value 
@@ -585,7 +590,8 @@ public class ClassTransformer extends AbstractTransformer {
                         typedParameter.getType(),
                         Naming.getDefaultedParamMethodName(klass, param), 
                         parameters.subList(0, parameters.indexOf(param)),
-                        rawifyParametersAndResults);
+                        rawifyParametersAndResults,
+                        param.getTypeErased());
                 classBuilder.method(defaultValueDelegate);
                 
                 final MethodDefinitionBuilder overload = makeDelegateToCompanion(iface,
@@ -595,7 +601,8 @@ public class ClassTransformer extends AbstractTransformer {
                         typeMember.getType(), 
                         instantiatorMethodName, 
                         parameters.subList(0, parameters.indexOf(param)),
-                        rawifyParametersAndResults);
+                        rawifyParametersAndResults,
+                        param.getTypeErased());
                 classBuilder.method(overload);
             }
         }
@@ -606,7 +613,8 @@ public class ClassTransformer extends AbstractTransformer {
                 typeMember.getType(), 
                 instantiatorMethodName, 
                 parameters,
-                rawifyParametersAndResults);
+                rawifyParametersAndResults,
+                false);
         classBuilder.method(overload);
     }
 
@@ -647,7 +655,8 @@ public class ClassTransformer extends AbstractTransformer {
             final java.util.List<TypeParameter> typeParameters,
             final ProducedType methodType,
             final String methodName, final java.util.List<Parameter> parameters, 
-            boolean rawifyParametersAndResults) {
+            boolean rawifyParametersAndResults,
+            boolean typeErased) {
         final MethodDefinitionBuilder concreteWrapper = MethodDefinitionBuilder.systemMethod(gen(), methodName);
         concreteWrapper.modifiers(mods);
         concreteWrapper.ignoreAnnotations();
@@ -659,15 +668,21 @@ public class ClassTransformer extends AbstractTransformer {
         }
         boolean explicitReturn = false;
         Declaration member = typedMember.getDeclaration();
+        ProducedType returnType = null;
         if (!isVoid(methodType) 
                 || ((member instanceof Method || member instanceof Getter || member instanceof Value) && !Decl.isUnboxedVoid(member)) 
                 || (member instanceof Method && Strategy.useBoxedVoid((Method)member))) {
             explicitReturn = true;
             if (typedMember instanceof ProducedTypedReference) {
-                concreteWrapper.resultTypeNonWidening((ProducedTypedReference)typedMember, typedMember.getType(),
+                ProducedTypedReference typedRef = (ProducedTypedReference) typedMember;
+                concreteWrapper.resultTypeNonWidening(typedRef, typedMember.getType(),
                         rawifyParametersAndResults ? JT_RAW_TP_BOUND : 0);
+                // FIXME: this is redundant with what we computed in the previous line in concreteWrapper.resultTypeNonWidening
+                ProducedTypedReference nonWideningTypedRef = gen().nonWideningTypeDecl(typedRef);
+                returnType = gen().nonWideningType(typedRef, nonWideningTypedRef);
             } else {
                 concreteWrapper.resultType(null, makeJavaType((ProducedType)typedMember));
+                returnType = (ProducedType) typedMember;
             }
         }
         
@@ -681,9 +696,13 @@ public class ClassTransformer extends AbstractTransformer {
                 null,  // TODO Type args
                 makeSelect(getCompanionFieldName(iface), methodName),
                 arguments.toList());
+        
         if (!explicitReturn) {
             concreteWrapper.body(gen().make().Exec(expr));
         } else {
+            // deal with erasure and stuff
+            // FIXME: figure out the bigs about boxing
+            expr = gen().expressionGen().applyErasureAndBoxing(expr, methodType, typeErased, false, BoxingStrategy.INDIFFERENT, returnType, 0);
             concreteWrapper.body(gen().make().Return(expr));
         }
         return concreteWrapper;
