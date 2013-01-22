@@ -1176,6 +1176,10 @@ class NamedArgumentInvocation extends Invocation {
                         argExpr = makeDefaultedArgumentMethodCall(param);
                         hasDefaulted |= true;
                     }
+                } else if(gen.typeFact().isIterableType(param.getType())){
+                    // must be an iterable we need to fill with empty
+                    // FIXME: deal with this erasure bug later
+                    argExpr = gen.make().TypeCast(gen.makeJavaType(gen.typeFact().getIterableDeclaration().getType(), AbstractTransformer.JT_RAW), gen.makeEmpty());
                 } else {
                     argExpr = gen.makeErroneous(this.getNode(), "Missing argument, and parameter is not defaulted");
                 }
