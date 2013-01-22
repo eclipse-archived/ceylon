@@ -74,6 +74,8 @@ public class MiscTest extends CompilerTest {
 
     @Test
     public void compileRuntime(){
+        cleanCars("build/classes-runtime");
+        
         java.util.List<File> sourceFiles = new ArrayList<File>();
         
         String ceylonSourcePath = "../ceylon.language/src";
@@ -83,15 +85,19 @@ public class MiscTest extends CompilerTest {
         HashSet exceptions = new HashSet();
         for (String ex : new String[] {
                 // Native files
-                "Array", "Boolean", "Callable", "Character", "className", "Comparison",
-                "Exception", "Float", "identityHash", "Integer", "language", "process",
-                "SequenceBuilder", "SequenceAppender", "sort", "String", "StringBuilder",
+                "Array", "Boolean", "Callable", "Character", "className",
+                "Exception", "flatten", "Float", "identityHash", "Integer", "internalFirst", "internalSort", 
+                "Keys", "language", "process",
+                "SequenceBuilder", "SequenceAppender", "String", "StringBuilder", "unflatten",
                 // Problem files
-                "Correspondence", "Iterable", "LazySet", "List", "Map", "Tuple", "Sequence", "Range"
+                "LazySet"
                 }) {
             exceptions.add(ex);
         }
-        String[] extras = new String[]{"array", "true", "false", "smaller", "larger", "equal", "smaller", "string"};
+        String[] extras = new String[]{
+                "array", "arrayOfSize", "copyArray", "false", "infinity",
+                "parseFloat", "parseInteger", "string", "true"
+        };
         
         for(String pkg : ceylonPackages){
             File pkgDir = new File(ceylonSourcePath, pkg.replaceAll("\\.", "/"));
