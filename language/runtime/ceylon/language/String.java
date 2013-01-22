@@ -31,7 +31,9 @@ public abstract class String
                Summable<String>, Castable<String> {
     private final ceylon.language.Category$impl $ceylon$language$Category$this;
     private final ceylon.language.Correspondence$impl $ceylon$language$Correspondence$this;
+    @Ignore
     protected final ceylon.language.Iterable$impl<Character,java.lang.Object> $ceylon$language$Iterable$this;
+    @Ignore
     protected final ceylon.language.List$impl<Character> $ceylon$language$List$this;
 
     public final java.lang.String value;
