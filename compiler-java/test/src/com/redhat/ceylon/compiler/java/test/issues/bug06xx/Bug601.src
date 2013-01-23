@@ -6,33 +6,51 @@ final class bug601_ {
     }
     
     static void bug601() {
-        .ceylon.language.first_.<.ceylon.language.Iterable<? extends .ceylon.language.String, ?>>first(new .com.redhat.ceylon.compiler.java.language.ArraySequence<.ceylon.language.Iterable<? extends .ceylon.language.String, ?>>(new .com.redhat.ceylon.compiler.java.language.ArraySequence<.ceylon.language.String>(.ceylon.language.String.instance("hello"), .ceylon.language.String.instance("world")), new .com.redhat.ceylon.compiler.java.language.ArraySequence<.ceylon.language.String>(.ceylon.language.String.instance(""))));
-        .ceylon.language.first_.<.ceylon.language.Iterable<? extends .ceylon.language.String, ?>>first(new .com.redhat.ceylon.compiler.java.language.ArraySequence<.ceylon.language.Iterable<? extends .ceylon.language.String, ?>>(.ceylon.language.String.split("hello world"), new .com.redhat.ceylon.compiler.java.language.ArraySequence<.ceylon.language.String>(.ceylon.language.String.instance(""))));
-        .ceylon.language.first_.<.ceylon.language.Iterable<? extends .ceylon.language.String, ?>>first(new .com.redhat.ceylon.compiler.java.language.ArraySequence<.ceylon.language.Iterable<? extends .ceylon.language.String, ?>>(new .com.redhat.ceylon.compiler.java.language.AbstractIterable<.ceylon.language.String, .java.lang.Object>(){
-            
-            public final .ceylon.language.Iterator<.ceylon.language.String> getIterator() {
-                return new .ceylon.language.Iterator<.ceylon.language.String>(){
-                    private final .ceylon.language.Iterator<? extends .ceylon.language.String> iter$0 = .ceylon.language.String.split("hello world").getIterator();
-                    private .ceylon.language.String str;
-                    private boolean str$exhausted;
-                    
-                    private final boolean str() {
-                        final .java.lang.Object $ceylontmpitem0 = iter$0.next();
-                        str$exhausted = $ceylontmpitem0 == .ceylon.language.finished_.getFinished$();
-                        if (str$exhausted) {
-                            return false;
-                        } else {
-                            str = (.ceylon.language.String)$ceylontmpitem0;
-                            return true;
-                        }
-                    }
-                    
-                    public final .java.lang.Object next() {
-                        return this.str() ? str : .ceylon.language.finished_.getFinished$();
-                    }
-                };
+        (
+            let
+            {
+                .ceylon.language.Iterable $arg$0$0 = new .com.redhat.ceylon.compiler.java.language.ArraySequence(new .com.redhat.ceylon.compiler.java.language.ArraySequence<.ceylon.language.String>(.ceylon.language.String.instance("hello"), .ceylon.language.String.instance("world")), new .com.redhat.ceylon.compiler.java.language.ArraySequence<.ceylon.language.String>(.ceylon.language.String.instance("")));
             }
-        }, new .com.redhat.ceylon.compiler.java.language.ArraySequence<.ceylon.language.String>(.ceylon.language.String.instance(""))));
+            returning .ceylon.language.first_.first($arg$0$0);
+        );
+        (
+            let
+            {
+                .ceylon.language.Iterable $arg$1$0 = new .com.redhat.ceylon.compiler.java.language.ArraySequence(.ceylon.language.String.split("hello world"), new .com.redhat.ceylon.compiler.java.language.ArraySequence<.ceylon.language.String>(.ceylon.language.String.instance("")));
+            }
+            returning .ceylon.language.first_.first($arg$1$0);
+        );
+        (
+            let
+            {
+                .ceylon.language.Iterable $arg$2$0 = new .com.redhat.ceylon.compiler.java.language.ArraySequence(new .com.redhat.ceylon.compiler.java.language.AbstractIterable<.ceylon.language.String, .java.lang.Object>(){
+                    
+                    public final .ceylon.language.Iterator<.ceylon.language.String> getIterator() {
+                        return new .ceylon.language.Iterator<.ceylon.language.String>(){
+                            private final .ceylon.language.Iterator<? extends .ceylon.language.String> iter$0 = .ceylon.language.String.split("hello world").getIterator();
+                            private .ceylon.language.String str;
+                            private boolean str$exhausted;
+                            
+                            private final boolean str() {
+                                final .java.lang.Object $ceylontmpitem3 = iter$0.next();
+                                str$exhausted = $ceylontmpitem3 == .ceylon.language.finished_.getFinished$();
+                                if (str$exhausted) {
+                                    return false;
+                                } else {
+                                    str = (.ceylon.language.String)$ceylontmpitem3;
+                                    return true;
+                                }
+                            }
+                            
+                            public final .java.lang.Object next() {
+                                return this.str() ? str : .ceylon.language.finished_.getFinished$();
+                            }
+                        };
+                    }
+                }, new .com.redhat.ceylon.compiler.java.language.ArraySequence<.ceylon.language.String>(.ceylon.language.String.instance("")));
+            }
+            returning .ceylon.language.first_.first($arg$2$0);
+        );
     }
     
     public static void main(.java.lang.String[] args) {

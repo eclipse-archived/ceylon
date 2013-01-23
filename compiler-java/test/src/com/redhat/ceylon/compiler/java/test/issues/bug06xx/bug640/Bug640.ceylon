@@ -19,14 +19,14 @@
  */
 @nomodel
 shared void bug640() {
-    value x = array(Accept(), Accept(), Accept());
+    value x = array { Accept(), Accept(), Accept() };
     Accept().accepts(x);
-    value y = array("aap", "noot", "mies");
+    value y = array { "aap", "noot", "mies" };
     Accept().strings(y);
-    value z = array(1, 2, 3);
+    value z = array { 1, 2, 3 };
     Accept().longs(z);
 }
 @nomodel
 shared void bug640gen<T>(SequenceBuilder<T> sb) {
-    value x = array(*sb.sequence);
+    value x = array(sb.sequence);
 }

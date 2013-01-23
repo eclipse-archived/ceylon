@@ -19,6 +19,6 @@
  */
 @nomodel
 shared void bug671() {
-    value a6 = array<Integer?>(1);
+    value a6 = array<Integer?> { 1 };
     a6.setItem(0,null);
 }

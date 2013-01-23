@@ -19,7 +19,7 @@
  */
 @nomodel
 abstract class Bug446<T>() satisfies List<T>{
-    shared actual T?[] items(Integer* keys) {
+    shared actual T?[] items({Integer*} keys) {
         return nothing;
     }
 
