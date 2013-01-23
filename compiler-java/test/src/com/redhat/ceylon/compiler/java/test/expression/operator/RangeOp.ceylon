@@ -18,13 +18,12 @@
  * MA  02110-1301, USA.
  */
 @nomodel
-shared class CreatorOperators() {
-    variable Integer n1 = 0;
-    variable Integer i1 = +0;
-    variable Integer i2 = +0;
-    
-    void creators() {
-        Range<Integer> r = i1..i2;
-        Entry<Integer, Integer> entry = n1 -> i2;
+class RangeOp<T>() {
+    void int(Integer i1, Integer i2) {   
+        Range<Integer> range = i1..i2;
+    }
+    void t<T>(T t1, T t2) 
+            given T satisfies Ordinal<T>&Comparable<T> {
+        Range<T> range = t1..t2;
     }
 }

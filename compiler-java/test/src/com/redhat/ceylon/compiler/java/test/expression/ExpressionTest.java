@@ -346,8 +346,12 @@ public class ExpressionTest extends CompilerTest {
         compareWithJavaSource("operator/IndexingTuples");
     }
     @Test
-    public void testOprCreatorOperators(){
-        compareWithJavaSource("operator/CreatorOperators");
+    public void testOprEntryOp(){
+        compareWithJavaSource("operator/EntryOp");
+    }
+    @Test
+    public void testOprRangeOp(){
+        compareWithJavaSource("operator/RangeOp");
     }
     @Test
     public void testOprArithmeticOperators(){
