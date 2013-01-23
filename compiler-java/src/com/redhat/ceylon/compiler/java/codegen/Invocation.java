@@ -862,21 +862,19 @@ class NamedArgumentInvocation extends Invocation {
         boolean spread = false;
         
         Parameter parameter = sequencedArgument.getParameter();
-        ProducedType parameterType = parameter.getType();
+        ProducedType parameterType = parameterType(parameter, parameter.getType(), gen.TP_TO_BOUND);
         // find out the individual type
-        ProducedType iteratedType = null;
+        ProducedType iteratedType = gen.typeFact().getIteratedType(parameterType);
         for (Tree.PositionalArgument arg : sequencedArgument.getPositionalArguments()) {
             gen.at(arg);
             if(arg instanceof Tree.ListedArgument){
                 Tree.Expression expr = ((Tree.ListedArgument) arg).getExpression();
-                iteratedType = gen.typeFact().getIteratedType(expr.getTypeModel());
                 // always boxed since we stuff them into a sequence
                 JCTree.JCExpression javaExpr = gen.expressionGen().transformExpression(expr, BoxingStrategy.BOXED, iteratedType);
                 x = x.append(javaExpr);
                 
             }else if(arg instanceof Tree.SpreadArgument){
                 Expression expr = ((Tree.SpreadArgument) arg).getExpression();
-                iteratedType = gen.typeFact().getIteratedType(expr.getTypeModel());
                 // always boxed since it is a sequence
                 JCTree.JCExpression javaExpr = gen.expressionGen().transformExpression(expr, BoxingStrategy.BOXED, parameterType);
                 // goes first
@@ -885,7 +883,6 @@ class NamedArgumentInvocation extends Invocation {
                 
             }else if(arg instanceof Tree.Comprehension){
                 Tree.Comprehension comprehension = (Comprehension) arg;
-                iteratedType = comprehension.getTypeModel();
                 JCTree.JCExpression javaExpr  = gen.expressionGen().transformComprehension(comprehension, parameterType);
                 // goes first
                 x = x.prepend(javaExpr);
