@@ -367,11 +367,9 @@ class Util {
                             if (e!=null) {
                                 Tree.Term t = e.getTerm();
                                 String param = ((Tree.SpecifiedArgument) na).getIdentifier().getText();
-                                if (t instanceof Tree.Literal) {
-                                    ann.addNamedArgument( param, ( (Tree.Literal) t ).getText() );
-                                }
-                                else if (t instanceof Tree.BaseMemberOrTypeExpression) {
-                                    ann.addNamedArgument( param, ( (Tree.BaseMemberOrTypeExpression) t ).getIdentifier().getText() );
+                        		String text = toString(t);
+                        		if (text!=null) {
+                                    ann.addNamedArgument(param, text);
                                 }
                             }
                         }                    
@@ -381,11 +379,9 @@ class Util {
                     for ( Tree.PositionalArgument pa: a.getPositionalArgumentList().getPositionalArguments() ) {
                     	if (pa instanceof Tree.ListedArgument) {
                     		Tree.Term t = ((Tree.ListedArgument) pa).getExpression().getTerm();
-                    		if (t instanceof Tree.Literal) {
-                    			ann.addPositionalArgment( ( (Tree.Literal) t ).getText() );
-                    		}
-                    		else if (t instanceof Tree.BaseMemberOrTypeExpression) {
-                    			ann.addPositionalArgment( ( (Tree.BaseMemberOrTypeExpression) t ).getIdentifier().getText() );
+                    		String text = toString(t);
+                    		if (text!=null) {
+                    			ann.addPositionalArgment(text);
                     		}
                     	}
                     }
@@ -393,6 +389,29 @@ class Util {
                 annotations.add(ann);
             }
         }
+    }
+    
+    private static String toString(Tree.Term t) {
+    	if (t instanceof Tree.Literal) {
+    		return ((Tree.Literal) t).getText();
+    	}
+    	else if (t instanceof Tree.StaticMemberOrTypeExpression) {
+    		Tree.StaticMemberOrTypeExpression mte = (Tree.StaticMemberOrTypeExpression) t;
+    		String id = mte.getIdentifier().getText();
+    		if (mte instanceof Tree.QualifiedMemberOrTypeExpression) {
+    			Tree.Primary p = ((Tree.QualifiedMemberOrTypeExpression) mte).getPrimary();
+    			if (p instanceof Tree.StaticMemberOrTypeExpression) {
+    				return toString((Tree.StaticMemberOrTypeExpression) p) + '.' + id;
+    			}
+    			return null;
+    		}
+    		else {
+    			return id;
+    		}
+    	}
+    	else {
+    		return null;
+    	}
     }
 
 }
