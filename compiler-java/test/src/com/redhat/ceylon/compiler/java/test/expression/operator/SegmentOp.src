@@ -1,0 +1,34 @@
+package com.redhat.ceylon.compiler.java.test.expression.operator;
+
+class SegmentOp<T> {
+    
+    SegmentOp() {
+    }
+    
+    private final void $int(final long i1, final long i2) {
+        final .ceylon.language.Sequential<? extends .ceylon.language.Integer> segment = (
+            let
+            {
+                .ceylon.language.Integer $start$0 = .ceylon.language.Integer.instance(i1);
+                long $length$1 = 10L;
+            }
+            returning $length$1 > 0L ? new .ceylon.language.Range($start$0, $start$0.incremented($length$1)) : .ceylon.language.empty_.getEmpty$();
+        );
+    }
+    
+    private final <T extends .ceylon.language.Ordinal<? extends T>>void t(final T t1, final T t2) {
+        final .ceylon.language.Sequential<? extends T> segment = (
+            let
+            {
+                T $start$2 = t1;
+                long $length$3 = 10L;
+            }
+            returning $length$3 > 0L ? new .ceylon.language.Range($start$2, $start$2.incremented($length$3)) : .ceylon.language.empty_.getEmpty$();
+        );
+    }
+    
+    public static void main(.java.lang.String[] args) {
+        .ceylon.language.process_.getProcess$().setupArguments(args);
+        new .com.redhat.ceylon.compiler.java.test.expression.operator.SegmentOp();
+    }
+}

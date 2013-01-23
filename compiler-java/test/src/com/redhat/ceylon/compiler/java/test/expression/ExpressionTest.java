@@ -354,6 +354,10 @@ public class ExpressionTest extends CompilerTest {
         compareWithJavaSource("operator/RangeOp");
     }
     @Test
+    public void testOprSegmentOp(){
+        compareWithJavaSource("operator/SegmentOp");
+    }
+    @Test
     public void testOprArithmeticOperators(){
         compareWithJavaSource("operator/ArithmeticOperators");
     }
