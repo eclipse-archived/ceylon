@@ -1,5 +1,4 @@
 function initTypeProto(a,b,c,d,e,f,g,h,i,j,k,l);//IGNORE
-function initTypeProtoI(a,b,c,d,e,f,g,h,i,j,k,l);//IGNORE
 function String$(x){}//IGNORE
 function Character(x){}//IGNORE
 function isOfType(a,b){}//IGNORE
@@ -14,7 +13,7 @@ function Sequence($$sequence) {
 }
 function $init$Sequence() {
     if (Sequence.$$===undefined) {
-        initTypeProtoI(Sequence, 'ceylon.language::Sequence', $init$Sequential(),
+        initTypeProto(Sequence, 'ceylon.language::Sequence', $init$Sequential(),
             $init$Container(), $init$Cloneable());
     }
     return Sequence;
@@ -38,7 +37,7 @@ initExistingType(Array$, Array, 'ceylon.language::Array', Object$,
         Cloneable, Ranged, $init$List());
 var Array$proto = Array.prototype;
 var origArrToString = Array$proto.toString;
-inheritProtoI(Array$, Object$, Cloneable, Ranged, $init$List());
+inheritProto(Array$, Object$, Cloneable, Ranged, $init$List());
 Array$proto.toString = origArrToString;
 Array$proto.reifyCeylonType = function(typeParameters) {
     this.$$targs$$ = typeParameters;

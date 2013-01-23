@@ -1,5 +1,4 @@
 function initType(a,b,c,d,e,f,g,h,i,j,k,l){}//IGNORE
-function initTypeProtoI(a,b,c,d,e,f){}//IGNORE
 function initTypeProto(a,b,c,d,e,f,g){}//IGNORE
 function inheritProto(a,b,c){}//IGNORE
 function exists(x){}//IGNORE
@@ -15,7 +14,7 @@ function Map(wat) {
 }
 function $init$Map() {
     if (Map.$$===undefined) {
-        initTypeProtoI(Map, 'ceylon.language::Map', Collection, $init$Correspondence(), Cloneable);
+        initTypeProto(Map, 'ceylon.language::Map', Collection, $init$Correspondence(), Cloneable);
     }
     return Map;
 }

@@ -15,7 +15,7 @@ function String$(value,size) {
 initExistingType(String$, String, 'ceylon.language::String', Object$, Sequential, Comparable,
         Ranged, Summable, Castable, Cloneable);
 var origStrToString = String.prototype.toString;
-inheritProtoI(String$, Object$, Sequential, Comparable, Ranged, Summable, Castable,
+inheritProto(String$, Object$, Sequential, Comparable, Ranged, Summable, Castable,
         Cloneable);
 function SequenceString() {}
 initType(SequenceString, "ceylon.language::SequenceString", String$, Sequence);

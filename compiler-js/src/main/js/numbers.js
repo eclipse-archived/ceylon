@@ -8,7 +8,7 @@ var Object$,Castable,Integral,Numeric,Exponentiable,Scalar,equal,smaller,larger,
 function JSNumber(value) { return Number(value); }
 initExistingType(JSNumber, Number, 'ceylon.language::JSNumber');
 var origNumToString = Number.prototype.toString;
-inheritProtoI(JSNumber, Object$, Scalar, Castable, $init$Integral(), Exponentiable);
+inheritProto(JSNumber, Object$, Scalar, Castable, $init$Integral(), Exponentiable);
 
 function Integer(value) { return Number(value); }
 initTypeProto(Integer, 'ceylon.language::Integer', Object$, Scalar, Castable,

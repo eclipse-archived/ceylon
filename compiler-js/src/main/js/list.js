@@ -91,7 +91,7 @@ function ListIterator(list) {
     }
     return that;
 }
-initTypeProtoI(ListIterator, 'ceylon.language::ListIterator', $init$Iterator());
+initTypeProto(ListIterator, 'ceylon.language::ListIterator', $init$Iterator());
 ListIterator.$$.prototype.next = function() {
     if (this.index <= this.lastIndex) {
         return this.list.item(this.index++);
