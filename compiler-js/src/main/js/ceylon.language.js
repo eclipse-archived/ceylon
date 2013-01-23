@@ -13,8 +13,8 @@ function className(x){}//IGNORE
 function isOfType(a,b){}//IGNORE
 var larger,smaller,Sequence,Category,empty,equal; //IGNORE
 
-function getT$name() {return this.constructor.T$name;}
-function getT$all() {return this.constructor.T$all;}
+function getT$name() {return (this.$$||this.constructor).T$name;}
+function getT$all() {return (this.$$||this.constructor).T$all;}
 function initType(type, typeName) {
     var cons = function() {}
     type.$$ = cons;
@@ -34,7 +34,6 @@ function initTypeProto(type, typeName) {
     args.unshift(type);
     inheritProto.apply(this, args);
 }
-var initTypeProtoI = initTypeProto;
 function initExistingType(type, cons, typeName) {
     type.$$ = cons;
     cons.T$name = typeName;
@@ -45,10 +44,10 @@ function initExistingType(type, cons, typeName) {
         for (var $ in superTypes) {cons.T$all[$] = superTypes[$]}
     }
     var proto = cons.prototype;
-    if (cons !== undefined) {
+    if (proto !== undefined) {
         try {
-            cons.prototype.getT$name = getT$name;
-            cons.prototype.getT$all = getT$all;
+            proto.getT$name = getT$name;
+            proto.getT$all = getT$all;
         } catch (exc) {
             // browser probably prevented access to the prototype
         }
@@ -76,14 +75,11 @@ function inheritProto(type) {
         for (var $ in superProto) {proto[$] = superProto[$]}
     }
 }
-var inheritProtoI = inheritProto;
 exports.initType=initType;
 exports.initTypeProto=initTypeProto;
-exports.initTypeProtoI=initTypeProtoI;
 exports.initExistingType=initExistingType;
 exports.initExistingTypeProto=initExistingTypeProto;
 exports.inheritProto=inheritProto;
-exports.inheritProtoI=inheritProtoI;
 
 function Anything(wat) {
     return wat;
@@ -129,49 +125,6 @@ initTypeProto(Basic, 'ceylon.language::Basic', Object$, Identifiable);
 
 //INTERFACES
 //#include callable.js
-
-function Correspondence(wat) {
-    return wat;
-}
-initType(Correspondence, 'ceylon.language::Correspondence');
-function $init$Correspondence() { return Correspondence; }
-var Correspondence$proto=Correspondence.$$.prototype;
-Correspondence$proto.defines = function(key) {
-    return exists(this.item(key));
-}
-Correspondence$proto.definesEvery = function(keys) {
-	if (keys === undefined) return true;
-    for (var i=0; i<keys.length; i++) {
-        if (!this.defines(keys[i])) {
-            return false;
-        }
-    }
-    return true;
-}
-Correspondence$proto.definesAny = function(keys) {
-	if (keys === undefined) return true;
-    for (var i=0; i<keys.length; i++) {
-        if (this.defines(keys[i])) {
-            return true;
-        }
-    }
-    return false;
-}
-Correspondence$proto.items = function(keys) {
-    if (nonempty(keys)) {
-        var r=[];
-        for (var i = 0; i < keys.length; i++) {
-            r.push(this.item(keys[i]));
-        }
-        return ArraySequence(r, [this.$$targs$$[1]]);
-    }
-    return empty;
-}
-Correspondence$proto.keys = function() {
-    return TypeCategory(this, {t:Integer});
-}
-exports.Correspondence=Correspondence;
-
 //#include iterable.js
 //#include collections.js
 //Compiled from Ceylon sources
@@ -182,7 +135,7 @@ exports.Correspondence=Correspondence;
  * Overwriting of some methods not yet working in compiled code *
  ****************************************************************/
 
-Singleton.$$.prototype.getKeys = function() { return TypeCategory(this, {t:Integer}); }
+//Singleton.$$.prototype.getKeys = function() { return TypeCategory(this, {t:Integer}); }
 
 //#include maps.js
 
