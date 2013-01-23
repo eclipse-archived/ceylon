@@ -54,3 +54,17 @@ public class Bug965_Class implements .com.redhat.ceylon.compiler.java.test.issue
         new .com.redhat.ceylon.compiler.java.test.issues.bug09xx.Bug965_Class();
     }
 }
+@.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 4)
+@.com.redhat.ceylon.compiler.java.metadata.Method
+final class bugXXX_ {
+    
+    private bugXXX_() {
+    }
+    
+    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Anything")
+    static void bugXXX(@.com.redhat.ceylon.compiler.java.metadata.Name("r")
+    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo(value = "ceylon.language::Ranged<ceylon.language::Integer,ceylon.language::String>&com.redhat.ceylon.compiler.java.test.issues.bug09xx::Bug965_Interface", erased = true)
+    final .java.lang.Object r) {
+        final .java.lang.String m = ((.ceylon.language.Ranged<? super .ceylon.language.Integer, ? extends .ceylon.language.String>)(.ceylon.language.Ranged)r).spanFrom(.ceylon.language.Integer.instance(1L)).toString();
+    }
+}

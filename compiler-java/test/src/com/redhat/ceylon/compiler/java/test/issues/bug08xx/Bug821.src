@@ -12,7 +12,7 @@ final class bug821a_ {
     
     static void bug821a() {
         final .ceylon.language.Sequence ns = new .ceylon.language.Tuple<.ceylon.language.Integer, .ceylon.language.Integer, .ceylon.language.Empty>(.ceylon.language.Integer.instance(1L), .ceylon.language.empty_.getEmpty$());
-        final .java.lang.Object num = ns.item(.ceylon.language.Integer.instance(0L));
+        final .java.lang.Object num = ((.ceylon.language.Correspondence<? super .ceylon.language.Integer, ? extends .java.lang.Object>)ns).item(.ceylon.language.Integer.instance(0L));
     }
     
     public static void main(.java.lang.String[] args) {
@@ -28,7 +28,7 @@ final class bug821b_ {
     static void bug821b() {
         final .java.lang.Object n = .ceylon.language.Integer.instance(1L);
         final .ceylon.language.Sequence ns = new .ceylon.language.Tuple(n, .ceylon.language.empty_.getEmpty$());
-        final .java.lang.Object num = ns.item(.ceylon.language.Integer.instance(0L));
+        final .java.lang.Object num = ((.ceylon.language.Correspondence<? super .ceylon.language.Integer, ? extends .java.lang.Object>)ns).item(.ceylon.language.Integer.instance(0L));
     }
     
     public static void main(.java.lang.String[] args) {

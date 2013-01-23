@@ -63,7 +63,7 @@ final class RawInv$impl<T, U> {
 class RawInvImplementor<X, Y> implements .com.redhat.ceylon.compiler.java.test.structure.concrete.RawInv<.java.lang.Object, Y> {
     
     RawInvImplementor() {
-        this.$com$redhat$ceylon$compiler$java$test$structure$concrete$RawInv$this = new .com.redhat.ceylon.compiler.java.test.structure.concrete.RawInv$impl<.java.lang.Object, Y>((.com.redhat.ceylon.compiler.java.test.structure.concrete.RawInv)this);
+        this.$com$redhat$ceylon$compiler$java$test$structure$concrete$RawInv$this = new .com.redhat.ceylon.compiler.java.test.structure.concrete.RawInv$impl<.java.lang.Object, Y>(this);
     }
     protected final .com.redhat.ceylon.compiler.java.test.structure.concrete.RawInv$impl<.java.lang.Object, Y> $com$redhat$ceylon$compiler$java$test$structure$concrete$RawInv$this;
     
@@ -159,7 +159,7 @@ final class RawIn$impl<T, U> {
 class RawInImplementor<X, Y> implements .com.redhat.ceylon.compiler.java.test.structure.concrete.RawIn<.java.lang.Object, Y> {
     
     RawInImplementor() {
-        this.$com$redhat$ceylon$compiler$java$test$structure$concrete$RawIn$this = new .com.redhat.ceylon.compiler.java.test.structure.concrete.RawIn$impl<.java.lang.Object, Y>((.com.redhat.ceylon.compiler.java.test.structure.concrete.RawIn)this);
+        this.$com$redhat$ceylon$compiler$java$test$structure$concrete$RawIn$this = new .com.redhat.ceylon.compiler.java.test.structure.concrete.RawIn$impl<.java.lang.Object, Y>(this);
     }
     protected final .com.redhat.ceylon.compiler.java.test.structure.concrete.RawIn$impl<.java.lang.Object, Y> $com$redhat$ceylon$compiler$java$test$structure$concrete$RawIn$this;
     
@@ -236,7 +236,7 @@ final class RawOut$impl<T, U> {
 class RawOutImplementor<X, Y> implements .com.redhat.ceylon.compiler.java.test.structure.concrete.RawOut<.java.lang.Object, Y> {
     
     RawOutImplementor() {
-        this.$com$redhat$ceylon$compiler$java$test$structure$concrete$RawOut$this = new .com.redhat.ceylon.compiler.java.test.structure.concrete.RawOut$impl<.java.lang.Object, Y>((.com.redhat.ceylon.compiler.java.test.structure.concrete.RawOut)this);
+        this.$com$redhat$ceylon$compiler$java$test$structure$concrete$RawOut$this = new .com.redhat.ceylon.compiler.java.test.structure.concrete.RawOut$impl<.java.lang.Object, Y>(this);
     }
     protected final .com.redhat.ceylon.compiler.java.test.structure.concrete.RawOut$impl<.java.lang.Object, Y> $com$redhat$ceylon$compiler$java$test$structure$concrete$RawOut$this;
     

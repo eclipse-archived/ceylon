@@ -170,8 +170,10 @@ final class erasureCasting_ {
             }
             returning $spread$15$sequenceBuilder.getSequence();
         );
-        final .ceylon.language.Tuple<.ceylon.language.Integer, ? extends .ceylon.language.Integer, ? extends .ceylon.language.Tuple<.ceylon.language.Integer, ? extends .ceylon.language.Integer, ? extends .ceylon.language.Empty>> t = new .ceylon.language.Tuple<.ceylon.language.Integer, .ceylon.language.Integer, .ceylon.language.Tuple<.ceylon.language.Integer, ? extends .ceylon.language.Integer, ? extends .ceylon.language.Empty>>(.ceylon.language.Integer.instance(1L), new .ceylon.language.Tuple<.ceylon.language.Integer, .ceylon.language.Integer, .ceylon.language.Empty>(.ceylon.language.Integer.instance(2L), .ceylon.language.empty_.getEmpty$()));
-        final .ceylon.language.Sequential<? extends .ceylon.language.Integer> t2 = ((.ceylon.language.Ranged<? super .ceylon.language.Integer, ? extends .ceylon.language.Sequential<? extends .ceylon.language.Integer>>)(.ceylon.language.Ranged)t).span(.ceylon.language.Integer.instance(0L), .ceylon.language.Integer.instance(1L));
+        final .ceylon.language.Tuple<.java.lang.Object, ? extends .ceylon.language.Integer, ? extends .ceylon.language.Tuple<.ceylon.language.Sequential<? extends .ceylon.language.Character>, ? extends .ceylon.language.String, ? extends .ceylon.language.Tuple<.ceylon.language.Singleton<? extends .ceylon.language.Character>, ? extends .ceylon.language.Singleton<? extends .ceylon.language.Character>, ? extends .ceylon.language.Empty>>> t = new .ceylon.language.Tuple(.ceylon.language.Integer.instance(1L), new .ceylon.language.Tuple<.ceylon.language.Sequential<? extends .ceylon.language.Character>, .ceylon.language.String, .ceylon.language.Tuple<.ceylon.language.Singleton<? extends .ceylon.language.Character>, ? extends .ceylon.language.Singleton<? extends .ceylon.language.Character>, ? extends .ceylon.language.Empty>>(.ceylon.language.String.instance("2"), new .ceylon.language.Tuple<.ceylon.language.Singleton<? extends .ceylon.language.Character>, .ceylon.language.Singleton<? extends .ceylon.language.Character>, .ceylon.language.Empty>(new .ceylon.language.Singleton<.ceylon.language.Character>(.ceylon.language.Character.instance(51)), .ceylon.language.empty_.getEmpty$())));
+        final .ceylon.language.Sequential t2 = ((.ceylon.language.Ranged<? super .ceylon.language.Integer, ? extends .ceylon.language.Sequential<? extends .java.lang.Object>>)(.ceylon.language.Ranged)t).span(.ceylon.language.Integer.instance(0L), .ceylon.language.Integer.instance(1L));
+        final .com.redhat.ceylon.compiler.java.test.expression.erasure.EC_Tuple<.java.lang.Object, ? extends .ceylon.language.Integer> nonRawTuple = new .com.redhat.ceylon.compiler.java.test.expression.erasure.EC_Tuple(.ceylon.language.Integer.instance(1L));
+        final long nonRawTupleFirst = ((.com.redhat.ceylon.compiler.java.test.expression.erasure.EC_Tuple<.java.lang.Object, ? extends .ceylon.language.Integer>)(.com.redhat.ceylon.compiler.java.test.expression.erasure.EC_Tuple)nonRawTuple).getFirst().longValue();
     }
 }
 @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 4)
@@ -317,5 +319,16 @@ class EC_ErasedMemberImpl<Element> implements .com.redhat.ceylon.compiler.java.t
     public static void main(.java.lang.String[] args) {
         .ceylon.language.process_.getProcess$().setupArguments(args);
         new .com.redhat.ceylon.compiler.java.test.expression.erasure.EC_ErasedMemberImpl();
+    }
+}
+class EC_Tuple<Element, First extends Element> {
+    
+    EC_Tuple(First first) {
+        this.first = first;
+    }
+    private final First first;
+    
+    public final First getFirst() {
+        return first;
     }
 }

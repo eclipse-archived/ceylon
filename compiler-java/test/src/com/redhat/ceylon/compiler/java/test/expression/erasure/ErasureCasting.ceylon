@@ -159,6 +159,10 @@ void erasureCasting(EC_A & EC_B & EC_C tripleIntersectionParam,
     // tuple as ranged
     [Integer,String,Singleton<Character>] t = [1, "2", Singleton(`3`)];
     value t2 = t[0..1];
+
+    // make sure we don't consider nonRawTuple as raw invalidly
+    value nonRawTuple = EC_Tuple<Integer|String,Integer>(1);
+    value nonRawTupleFirst = nonRawTuple.first;
 }
 
 shared void valueOrNada<Value,Nada>(Value|Nada valueOrNada) 
@@ -233,4 +237,10 @@ interface EC_ErasedMember<Element, Absent>
 @nomodel
 class EC_ErasedMemberImpl<Element>() satisfies EC_ErasedMember<Element, Null> {
     // make sure the generated bridges are appropriately casted
+}
+
+@nomodel
+class EC_Tuple<out Element, out First>(first)
+    given First satisfies Element{
+    shared First first;
 }
