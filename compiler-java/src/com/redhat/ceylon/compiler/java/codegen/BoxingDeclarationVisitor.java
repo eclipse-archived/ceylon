@@ -26,7 +26,6 @@ import com.redhat.ceylon.compiler.typechecker.model.Class;
 import com.redhat.ceylon.compiler.typechecker.model.Declaration;
 import com.redhat.ceylon.compiler.typechecker.model.Functional;
 import com.redhat.ceylon.compiler.typechecker.model.FunctionalParameter;
-import com.redhat.ceylon.compiler.typechecker.model.IntersectionType;
 import com.redhat.ceylon.compiler.typechecker.model.Method;
 import com.redhat.ceylon.compiler.typechecker.model.MethodOrValue;
 import com.redhat.ceylon.compiler.typechecker.model.Parameter;
@@ -36,7 +35,6 @@ import com.redhat.ceylon.compiler.typechecker.model.Setter;
 import com.redhat.ceylon.compiler.typechecker.model.TypeDeclaration;
 import com.redhat.ceylon.compiler.typechecker.model.TypeParameter;
 import com.redhat.ceylon.compiler.typechecker.model.TypedDeclaration;
-import com.redhat.ceylon.compiler.typechecker.model.UnionType;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.AnyAttribute;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.AnyClass;
@@ -57,6 +55,7 @@ public abstract class BoxingDeclarationVisitor extends Visitor {
     protected abstract boolean isCallable(ProducedType type);
     protected abstract boolean hasErasure(ProducedType type);
     protected abstract boolean willEraseToObject(ProducedType type);
+    protected abstract boolean isRaw(ProducedType type);
 
     @Override
     public void visit(FunctionArgument that) {
@@ -93,54 +92,6 @@ public abstract class BoxingDeclarationVisitor extends Visitor {
             if(isRaw(type))
                 type.setRaw(true);
         }
-    }
-
-    private boolean isRaw(ProducedType type) {
-        // do this on resolved aliases
-        type = type.resolveAliases();
-
-        // special case for Callable where we stop after the first type param
-        boolean isCallable = isCallable(type);
-        
-        for(ProducedType typeArg : type.getTypeArgumentList()){
-            // skip invalid input
-            if(typeArg == null)
-                return false;
-            
-            TypeDeclaration typeDeclaration = typeArg.getDeclaration();
-            if(typeDeclaration instanceof UnionType){
-                UnionType ut = (UnionType) typeDeclaration;
-                List<ProducedType> caseTypes = ut.getCaseTypes();
-                // special case for optional types
-                if(caseTypes.size() == 2){
-                    if(isNull(caseTypes.get(0)))
-                        return isRaw(caseTypes.get(1));
-                    if(isNull(caseTypes.get(1)))
-                        return isRaw(caseTypes.get(0));
-                }
-                // must be raw
-                return true;
-            }
-            if(typeDeclaration instanceof IntersectionType){
-                IntersectionType ut = (IntersectionType) typeDeclaration;
-                List<ProducedType> satisfiedTypes = ut.getSatisfiedTypes();
-                // special case for non-optional types
-                if(satisfiedTypes.size() == 2){
-                    if(isObject(satisfiedTypes.get(0)))
-                        return isRaw(satisfiedTypes.get(1));
-                    if(isObject(satisfiedTypes.get(1)))
-                        return isRaw(satisfiedTypes.get(0));
-                }
-                // must be raw
-                return true;
-            }
-            // Callable really has a single type arg in Java
-            if(isCallable)
-                break;
-            // don't recurse
-        }
-        // didn't find anything to make it raw
-        return false;
     }
 
     private void boxMethod(Method method) {

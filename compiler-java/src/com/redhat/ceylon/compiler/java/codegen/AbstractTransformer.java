@@ -834,6 +834,76 @@ public abstract class AbstractTransformer implements Transformation {
         return false;
     }
 
+    /**
+     * This method should do the same sort of logic as AbstractTransformer.makeTypeArgs to determine
+     * that the given type will be turned raw as a return type
+     */
+    boolean isTurnedToRaw(ProducedType type){
+        return isTurnedToRawResolved(type.resolveAliases());
+    }
+    
+    private boolean isTurnedToRawResolved(ProducedType type) {
+        // if we don't have type arguments we can't be raw
+        if(type.getTypeArguments().isEmpty())
+            return false;
+
+        // we only go raw if every type param is an erased union/intersection
+        
+        // special case for Callable where we stop after the first type param
+        boolean isCallable = isCeylonCallable(type);
+        
+        boolean everyTypeParameterIsErasedUnionIntersection = true;
+        
+        for(ProducedType typeArg : type.getTypeArgumentList()){
+            // skip invalid input
+            if(typeArg == null)
+                return false;
+            
+            everyTypeParameterIsErasedUnionIntersection &= isErasedUnionOrIntersection(typeArg);
+            
+            // Callable really has a single type arg in Java
+            if(isCallable)
+                break;
+            // don't recurse
+        }
+        // we're only raw if every type param is an erased union/intersection
+        return everyTypeParameterIsErasedUnionIntersection;
+    }
+
+    private boolean isErasedUnionOrIntersection(ProducedType producedType) {
+        TypeDeclaration typeDeclaration = producedType.getDeclaration();
+        if(typeDeclaration instanceof UnionType){
+            UnionType ut = (UnionType) typeDeclaration;
+            java.util.List<ProducedType> caseTypes = ut.getCaseTypes();
+            // special case for optional types
+            if(caseTypes.size() == 2){
+                if(isNull(caseTypes.get(0))){
+                    return isErasedUnionOrIntersection(caseTypes.get(1));
+                }else if(isNull(caseTypes.get(1))){
+                    return isErasedUnionOrIntersection(caseTypes.get(0));
+                }
+            }
+            // it is erased unless we turn it into Sequential something
+            return !willEraseToSequential(producedType);
+        }
+        if(typeDeclaration instanceof IntersectionType){
+            IntersectionType ut = (IntersectionType) typeDeclaration;
+            java.util.List<ProducedType> satisfiedTypes = ut.getSatisfiedTypes();
+            // special case for non-optional types
+            if(satisfiedTypes.size() == 2){
+                if(isObject(satisfiedTypes.get(0))){
+                    return isErasedUnionOrIntersection(satisfiedTypes.get(1));
+                }else if(isObject(satisfiedTypes.get(1))){
+                    return isErasedUnionOrIntersection(satisfiedTypes.get(0));
+                }
+            }
+            // it is erased unless we turn it into Sequential something
+            return !willEraseToSequential(producedType);
+        }
+        // we found something which is not erased entirely
+        return false;
+    }
+
     boolean isCeylonString(ProducedType type) {
         return (sameType(syms().ceylonStringType, type));
     }

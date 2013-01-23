@@ -58,4 +58,9 @@ public class CompilerBoxingDeclarationVisitor extends BoxingDeclarationVisitor {
     protected boolean hasErasure(ProducedType type) {
         return transformer.hasErasure(type);
     }
+
+    @Override
+    protected boolean isRaw(ProducedType type) {
+        return transformer.isTurnedToRaw(type);
+    }
 }

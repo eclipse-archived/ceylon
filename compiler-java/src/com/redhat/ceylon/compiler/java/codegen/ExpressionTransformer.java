@@ -540,23 +540,6 @@ public class ExpressionTransformer extends AbstractTransformer {
         return false;
     }
 
-    /**
-     * This method should do the same sort of logic as AbstractTransformer.makeTypeArgs to determine
-     * that the given type will be turned raw as a return type
-     */
-    private boolean isTurnedToRaw(ProducedType type) {
-        // we only produce raw references if the type argument is a union/intersection that isn't erased to a sequential
-        for(ProducedType arg : type.getTypeArgumentList()){
-            // make sure we get rid of optional types and aliases
-            arg = simplifyType(arg);
-            if((typeFact().isUnion(arg) || typeFact().isIntersection(arg))
-                    && !willEraseToSequential(arg)){
-                return true;
-            }
-        }
-        return false;
-    }
-
     private boolean hasTypeParameters(ProducedType type) {
         if (!type.getTypeArgumentList().isEmpty()) {
             return true;
