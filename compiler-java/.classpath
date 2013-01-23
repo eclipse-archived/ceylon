@@ -16,6 +16,5 @@
 	<classpathentry combineaccessrules="false" kind="src" path="/ceylon-common"/>
 	<classpathentry kind="lib" path="lib/txtmark-0.8-f17d7e2193.jar"/>
 	<classpathentry kind="lib" path="lib/markdownpapers-core-1.2.7.jar"/>
-	<classpathentry kind="lib" path="/ceylon-module-resolver/lib/shrinkwrap-maven-uberjar-2.0.0-alpha-7.jar"/>
 	<classpathentry kind="output" path="build/classes"/>
 </classpath>
