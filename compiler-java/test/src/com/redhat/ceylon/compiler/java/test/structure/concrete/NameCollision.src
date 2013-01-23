@@ -22,32 +22,12 @@ class NameCollision implements .com.redhat.ceylon.compiler.java.test.structure.c
     protected final .ceylon.language.Category$impl $ceylon$language$Category$this;
     
     @.java.lang.Override
-    public final .ceylon.language.Sequential<? extends .java.lang.Object> containsEvery$elements() {
-        return $ceylon$language$Category$this.containsEvery$elements();
-    }
-    
-    @.java.lang.Override
-    public final boolean containsEvery() {
-        return $ceylon$language$Category$this.containsEvery();
-    }
-    
-    @.java.lang.Override
-    public boolean containsEvery(final .ceylon.language.Sequential<? extends .java.lang.Object> elements) {
+    public boolean containsEvery(final .ceylon.language.Iterable<? extends .java.lang.Object, ?> elements) {
         return $ceylon$language$Category$this.containsEvery(elements);
     }
     
     @.java.lang.Override
-    public final .ceylon.language.Sequential<? extends .java.lang.Object> containsAny$elements() {
-        return $ceylon$language$Category$this.containsAny$elements();
-    }
-    
-    @.java.lang.Override
-    public final boolean containsAny() {
-        return $ceylon$language$Category$this.containsAny();
-    }
-    
-    @.java.lang.Override
-    public boolean containsAny(final .ceylon.language.Sequential<? extends .java.lang.Object> elements) {
+    public boolean containsAny(final .ceylon.language.Iterable<? extends .java.lang.Object, ?> elements) {
         return $ceylon$language$Category$this.containsAny(elements);
     }
     private final boolean empty;

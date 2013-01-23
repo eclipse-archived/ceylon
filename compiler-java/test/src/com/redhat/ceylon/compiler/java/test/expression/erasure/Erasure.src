@@ -462,7 +462,7 @@ class Test {
         }
         long sync;
         sync = ((.ceylon.language.List<? extends .java.lang.Object>)(.ceylon.language.List)naturals).getSize();
-        sync = ((.ceylon.language.Sequence<? extends .java.lang.Object>)(.ceylon.language.Sequence)leftsAndRights).getSize();
+        sync = ((.ceylon.language.Iterable<? extends .java.lang.Object, ?>)(.ceylon.language.Iterable)leftsAndRights).getSize();
         .ceylon.language.Sequential $naturals$35;
         if (($naturals$35 = (.ceylon.language.Sequential<? extends .java.lang.Object>)(.ceylon.language.Sequential)naturals) instanceof .ceylon.language.Sequence) {
             final .ceylon.language.Sequence $naturals$36 = (.ceylon.language.Sequence<? extends .java.lang.Object>)(.ceylon.language.Sequence)$naturals$35;

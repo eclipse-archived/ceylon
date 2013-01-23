@@ -21,13 +21,18 @@ abstract class AbstractSatisfier<T> implements .com.redhat.ceylon.compiler.java.
     protected final .ceylon.language.Iterable$impl<.java.lang.Object, .java.lang.Object> $ceylon$language$Iterable$this;
     
     @.java.lang.Override
+    public boolean getEmpty() {
+        return $ceylon$language$Iterable$this.getEmpty();
+    }
+    
+    @.java.lang.Override
     public long getSize() {
         return $ceylon$language$Iterable$this.getSize();
     }
     
     @.java.lang.Override
-    public boolean getEmpty() {
-        return $ceylon$language$Iterable$this.getEmpty();
+    public boolean contains(final .java.lang.Object element) {
+        return $ceylon$language$Iterable$this.contains(element);
     }
     
     @.java.lang.Override
@@ -134,46 +139,16 @@ abstract class AbstractSatisfier<T> implements .com.redhat.ceylon.compiler.java.
     public <Other>.ceylon.language.Iterable<? extends .java.lang.Object, ?> chain(final .ceylon.language.Iterable<? extends Other, ?> other) {
         return $ceylon$language$Iterable$this.chain(other);
     }
-    
-    @.java.lang.Override
-    public <Grouping>.ceylon.language.Map<? extends Grouping, ? extends .ceylon.language.Sequence<? extends .java.lang.Object>> group(final .ceylon.language.Callable<? extends Grouping> grouping) {
-        return $ceylon$language$Iterable$this.group(grouping);
-    }
-    
-    @.java.lang.Override
-    public boolean contains(final .java.lang.Object element) {
-        return $ceylon$language$Iterable$this.contains(element);
-    }
     protected final .ceylon.language.Container$impl<.java.lang.Object, .java.lang.Object> $ceylon$language$Container$this;
     protected final .ceylon.language.Category$impl $ceylon$language$Category$this;
     
     @.java.lang.Override
-    public final .ceylon.language.Sequential<? extends .java.lang.Object> containsEvery$elements() {
-        return $ceylon$language$Category$this.containsEvery$elements();
-    }
-    
-    @.java.lang.Override
-    public final boolean containsEvery() {
-        return $ceylon$language$Category$this.containsEvery();
-    }
-    
-    @.java.lang.Override
-    public boolean containsEvery(final .ceylon.language.Sequential<? extends .java.lang.Object> elements) {
+    public boolean containsEvery(final .ceylon.language.Iterable<? extends .java.lang.Object, ?> elements) {
         return $ceylon$language$Category$this.containsEvery(elements);
     }
     
     @.java.lang.Override
-    public final .ceylon.language.Sequential<? extends .java.lang.Object> containsAny$elements() {
-        return $ceylon$language$Category$this.containsAny$elements();
-    }
-    
-    @.java.lang.Override
-    public final boolean containsAny() {
-        return $ceylon$language$Category$this.containsAny();
-    }
-    
-    @.java.lang.Override
-    public boolean containsAny(final .ceylon.language.Sequential<? extends .java.lang.Object> elements) {
+    public boolean containsAny(final .ceylon.language.Iterable<? extends .java.lang.Object, ?> elements) {
         return $ceylon$language$Category$this.containsAny(elements);
     }
 }

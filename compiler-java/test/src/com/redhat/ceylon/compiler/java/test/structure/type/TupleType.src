@@ -29,7 +29,7 @@ final class add_ {
     }
     
     static double add(final .ceylon.language.Tuple<.ceylon.language.Float, ? extends .ceylon.language.Float, ? extends .ceylon.language.Tuple<.ceylon.language.Float, ? extends .ceylon.language.Float, ? extends .ceylon.language.Empty>> floats) {
-        return floats.getFirst().plus(floats.getRest().getFirst()).doubleValue();
+        return ((.ceylon.language.Float)floats.getFirst()).plus((.ceylon.language.Float)floats.getRest().getFirst()).doubleValue();
     }
     
     public static void main(.java.lang.String[] args) {
@@ -44,9 +44,9 @@ final class tupleTypeTest_ {
     
     static void tupleTypeTest() {
         final .ceylon.language.Tuple<.java.lang.Object, ? extends .ceylon.language.String, ? extends .ceylon.language.Tuple<.java.lang.Object, ? extends .ceylon.language.Integer, ? extends .ceylon.language.Tuple<.ceylon.language.Float, ? extends .ceylon.language.Float, ? extends .ceylon.language.Empty>>> tup = .com.redhat.ceylon.compiler.java.test.structure.type.triple_.triple("hello", 0L, 0.0);
-        final .java.lang.String a = tup.getFirst().toString();
-        final long b = tup.getRest().getFirst().longValue();
-        final double c = tup.getRest().getRest().getFirst().doubleValue();
+        final .java.lang.String a = ((.ceylon.language.String)tup.getFirst()).toString();
+        final long b = ((.ceylon.language.Integer)tup.getRest().getFirst()).longValue();
+        final double c = ((.ceylon.language.Float)tup.getRest().getRest().getFirst()).doubleValue();
         final .ceylon.language.Tuple<.ceylon.language.String, ? extends .ceylon.language.String, ? extends .ceylon.language.Tuple<.ceylon.language.String, ? extends .ceylon.language.String, ? extends .ceylon.language.Empty>> hibye = new .ceylon.language.Tuple<.ceylon.language.String, .ceylon.language.String, .ceylon.language.Tuple<.ceylon.language.String, ? extends .ceylon.language.String, ? extends .ceylon.language.Empty>>(.ceylon.language.String.instance("hello"), new .ceylon.language.Tuple<.ceylon.language.String, .ceylon.language.String, .ceylon.language.Empty>(.ceylon.language.String.instance("goodbye"), .ceylon.language.empty_.getEmpty$()));
         
         final class fun_ {
