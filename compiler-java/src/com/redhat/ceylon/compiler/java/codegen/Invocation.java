@@ -893,13 +893,13 @@ class NamedArgumentInvocation extends Invocation {
         }
         gen.at(sequencedArgument);
         // we can't just generate types like Foo<?> if the target type param is not raw because the bounds will
-        // not match, so we go raw
-        int flags = JT_RAW | JT_TYPE_ARGUMENT;
+        // not match, so we go raw, we also ignore primitives naturally
+        int flags = JT_RAW | JT_TYPE_ARGUMENT | JT_NO_PRIMITIVES;
         JCTree.JCExpression sequenceValue;
         if(!spread)
             sequenceValue = gen.makeSequence(x, iteratedType,  flags);
         else{
-            sequenceValue = gen.makeIterable(x, iteratedType, CeylonTransformer.JT_CLASS_NEW);
+            sequenceValue = gen.makeIterable(x, iteratedType, CeylonTransformer.JT_CLASS_NEW | JT_NO_PRIMITIVES);
         }
         JCTree.JCExpression sequenceType = gen.makeJavaType(parameterType, flags);
         
