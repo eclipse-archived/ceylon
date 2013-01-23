@@ -98,15 +98,17 @@ public class Stitcher {
                     TypeCheckerBuilder tcb = new TypeCheckerBuilder().addSrcDirectory(srcdir);
                     tcb.setRepositoryManager(CeylonUtils.repoManager().systemRepo(opts.getSystemRepo())
                             .userRepos(opts.getRepos()).outRepo(opts.getOutDir()).buildManager());
+                    //This is to use the JSON metamodel
                     tcb.moduleManagerFactory(new JsModuleManagerFactory(
                             clmod == null ? null : (Map<String,Object>)JSONValue.parse(clmod)));
+                    //Set this before typechecking to share some decls that otherwise would be private
+                    JsCompiler.compilingLanguageModule=true;
                     TypeChecker tc = tcb.getTypeChecker();
                     tc.process();
                     if (tc.getErrors() > 0) {
                         System.exit(1);
                     }
                     JsCompiler jsc = new JsCompiler(tc, opts).stopOnErrors(false);
-                    JsCompiler.compilingLanguageModule=true;
                     jsc.generate();
                     File compsrc = new File("src/main/resources/modules/default/default.js");
                     if (compsrc.exists() && compsrc.isFile() && compsrc.canRead()) {

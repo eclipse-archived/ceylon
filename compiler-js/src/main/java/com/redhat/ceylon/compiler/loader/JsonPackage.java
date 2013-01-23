@@ -127,11 +127,11 @@ public class JsonPackage extends com.redhat.ceylon.compiler.typechecker.model.Pa
                     cls = new com.redhat.ceylon.compiler.typechecker.model.Class();
                 }
                 cls.setAbstract(m.containsKey("abstract"));
-                setAnnotations(cls, (Map<String,List<String>>)m.get(MetamodelGenerator.KEY_ANNOTATIONS));
                 cls.setAnonymous(m.containsKey("$anon"));
                 cls.setContainer(parent);
                 cls.setName(name);
                 cls.setUnit(unit);
+                setAnnotations(cls, (Map<String,List<String>>)m.get(MetamodelGenerator.KEY_ANNOTATIONS));
                 if (parent == this) {
                     unit.addDeclaration(cls);
                 } else {
@@ -734,7 +734,7 @@ public class JsonPackage extends com.redhat.ceylon.compiler.typechecker.model.Pa
         }
         //This is to avoid problems with private declarations while
         //compiling the language module
-        if (JsCompiler.isCompilingLanguageModule() && d.isToplevel()) {
+        if (JsCompiler.isCompilingLanguageModule() && d.isToplevel() && !d.isShared()) {
             d.setShared(true);
         }
     }
