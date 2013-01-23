@@ -770,6 +770,8 @@ caseType returns [StaticType type, BaseMemberExpression instance]
       { $instance = new BaseMemberExpression(null);
         $instance.setIdentifier($memberName.identifier);
         $instance.setTypeArguments( new InferredTypeArguments(null) ); }
+    | classDeclaration
+    | objectDeclaration
     ;
 
 //Support for metatypes
@@ -1795,9 +1797,9 @@ comprehensionClause returns [ComprehensionClause comprehensionClause]
     ;
 
 expressionComprehensionClause returns [ExpressionComprehensionClause comprehensionClause]
-    : expression
+    : functionOrExpression
       { $comprehensionClause = new ExpressionComprehensionClause(null);
-        $comprehensionClause.setExpression($expression.expression); }
+        $comprehensionClause.setExpression($functionOrExpression.expression); }
     | { displayRecognitionError(getTokenNames(), 
           new MismatchedTokenException(LIDENTIFIER, input)); }
     ;
