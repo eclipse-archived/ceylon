@@ -1,5 +1,4 @@
 function initType(a,b,c,d,e,f,g,h,i,j,k,l){}//IGNORE
-function initTypeProtoI(a,b,c,d,e,f){}//IGNORE
 function initTypeProto(a,b,c,d,e,f,g){}//IGNORE
 function inheritProto(a,b,c){}//IGNORE
 function exists(x){}//IGNORE
@@ -17,7 +16,7 @@ function Sequential($$sequential) {
 }
 function $init$Sequential() {
     if (Sequential.$$===undefined) {
-        initTypeProtoI(Sequential, 'ceylon.language::Sequential', $init$List(), $init$Ranged(), $init$Cloneable());
+        initTypeProto(Sequential, 'ceylon.language::Sequential', $init$List(), $init$Ranged(), $init$Cloneable());
     }
     return Sequential;
 }
@@ -34,7 +33,7 @@ function Empty() {
     that.$$targs$$=[{t:Nothing}];
     return that;
 }
-initTypeProtoI(Empty, 'ceylon.language::Empty', Sequential, $init$Ranged(), $init$Cloneable());
+initTypeProto(Empty, 'ceylon.language::Empty', Sequential, $init$Ranged(), $init$Cloneable());
 var Empty$proto = Empty.$$.prototype;
 Empty$proto.getEmpty = function() { return true; }
 Empty$proto.defines = function(x) { return false; }
@@ -78,7 +77,7 @@ Empty$proto.withTrailing = function(other) {
 Empty$proto.chain = function(other) { return other; }
 
 var empty = Empty();
-
+empty.$$targs$$=[{t:Nothing},{t:Null}];
 exports.empty=empty;
 exports.Empty=Empty;
 
