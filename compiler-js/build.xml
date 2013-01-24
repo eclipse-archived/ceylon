@@ -116,7 +116,6 @@
             <arg value="../ceylon.language/runtime-js/ceylon.language.js" />
             <arg value="../ceylon.language/runtime-js/language-module.txt" />
             <arg value="${runtime}/${jslangmodule}" />
-            <arg value="${module.com.redhat.ceylon.compiler.js.version}" />
         </java>
     </target>
 
