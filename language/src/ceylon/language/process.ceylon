@@ -32,7 +32,7 @@ shared native object process {
     doc "Print a line to the standard output of the 
          virtual machine process."
     see (print)
-    shared void writeLine(String line) { 
+    shared void writeLine(String line="") { 
         write(line);
         write(newline); 
     }
@@ -43,7 +43,7 @@ shared native object process {
     
     doc "Print a line to the standard error of the 
          virtual machine process."
-    shared void writeErrorLine(String line) { 
+    shared void writeErrorLine(String line="") { 
         writeError(line);
         writeError(newline);
     }
