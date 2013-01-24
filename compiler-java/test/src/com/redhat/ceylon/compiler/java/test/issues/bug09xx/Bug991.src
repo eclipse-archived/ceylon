@@ -1,0 +1,84 @@
+package com.redhat.ceylon.compiler.java.test.issues.bug09xx;
+
+interface Bug991Iterable {
+    
+    public .com.redhat.ceylon.compiler.java.test.issues.bug09xx.Bug991Iterable$impl $com$redhat$ceylon$compiler$java$test$issues$bug09xx$Bug991Iterable$impl();
+    
+    public .java.lang.Object f();
+}
+final class Bug991Iterable$impl {
+    
+    Bug991Iterable$impl(.com.redhat.ceylon.compiler.java.test.issues.bug09xx.Bug991Iterable $this) {
+        this.$this = $this;
+    }
+    private final .com.redhat.ceylon.compiler.java.test.issues.bug09xx.Bug991Iterable $this;
+    
+    public .java.lang.Object f() {
+        return null;
+    }
+}
+interface Bug991List extends .com.redhat.ceylon.compiler.java.test.issues.bug09xx.Bug991Iterable {
+    
+    public .com.redhat.ceylon.compiler.java.test.issues.bug09xx.Bug991List$impl $com$redhat$ceylon$compiler$java$test$issues$bug09xx$Bug991List$impl();
+    
+    @.java.lang.Override
+    public .java.lang.Object f();
+}
+final class Bug991List$impl {
+    
+    Bug991List$impl(.com.redhat.ceylon.compiler.java.test.issues.bug09xx.Bug991List $this) {
+        this.$this = $this;
+    }
+    private final .com.redhat.ceylon.compiler.java.test.issues.bug09xx.Bug991List $this;
+    
+    public .java.lang.Object f() {
+        return null;
+    }
+}
+interface Bug991Sequence extends .com.redhat.ceylon.compiler.java.test.issues.bug09xx.Bug991List {
+    
+    public .com.redhat.ceylon.compiler.java.test.issues.bug09xx.Bug991Sequence$impl $com$redhat$ceylon$compiler$java$test$issues$bug09xx$Bug991Sequence$impl();
+    
+    @.java.lang.Override
+    public .java.lang.Object f();
+}
+final class Bug991Sequence$impl {
+    
+    Bug991Sequence$impl(.com.redhat.ceylon.compiler.java.test.issues.bug09xx.Bug991Sequence $this) {
+        this.$this = $this;
+    }
+    private final .com.redhat.ceylon.compiler.java.test.issues.bug09xx.Bug991Sequence $this;
+    
+    public .java.lang.Object f() {
+        return $this.$com$redhat$ceylon$compiler$java$test$issues$bug09xx$Bug991List$impl().f();
+    }
+}
+class Bug991SequenceClass implements .com.redhat.ceylon.compiler.java.test.issues.bug09xx.Bug991List {
+    
+    Bug991SequenceClass() {
+        this.$com$redhat$ceylon$compiler$java$test$issues$bug09xx$Bug991List$this = new .com.redhat.ceylon.compiler.java.test.issues.bug09xx.Bug991List$impl(this);
+        this.$com$redhat$ceylon$compiler$java$test$issues$bug09xx$Bug991Iterable$this = new .com.redhat.ceylon.compiler.java.test.issues.bug09xx.Bug991Iterable$impl(this);
+    }
+    protected final .com.redhat.ceylon.compiler.java.test.issues.bug09xx.Bug991List$impl $com$redhat$ceylon$compiler$java$test$issues$bug09xx$Bug991List$this;
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.test.issues.bug09xx.Bug991List$impl $com$redhat$ceylon$compiler$java$test$issues$bug09xx$Bug991List$impl() {
+        return $com$redhat$ceylon$compiler$java$test$issues$bug09xx$Bug991List$this;
+    }
+    protected final .com.redhat.ceylon.compiler.java.test.issues.bug09xx.Bug991Iterable$impl $com$redhat$ceylon$compiler$java$test$issues$bug09xx$Bug991Iterable$this;
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.test.issues.bug09xx.Bug991Iterable$impl $com$redhat$ceylon$compiler$java$test$issues$bug09xx$Bug991Iterable$impl() {
+        return $com$redhat$ceylon$compiler$java$test$issues$bug09xx$Bug991Iterable$this;
+    }
+    
+    @.java.lang.Override
+    public .java.lang.Object f() {
+        return $com$redhat$ceylon$compiler$java$test$issues$bug09xx$Bug991List$this.f();
+    }
+    
+    public static void main(.java.lang.String[] args) {
+        .ceylon.language.process_.getProcess$().setupArguments(args);
+        new .com.redhat.ceylon.compiler.java.test.issues.bug09xx.Bug991SequenceClass();
+    }
+}
