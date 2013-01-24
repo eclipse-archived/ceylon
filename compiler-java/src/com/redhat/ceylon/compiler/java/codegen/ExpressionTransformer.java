@@ -324,59 +324,64 @@ public class ExpressionTransformer extends AbstractTransformer {
         if (expectedType != null
                 // don't add cast to an erased type 
                 && !willEraseToObject(expectedType)) {
-            
-            boolean expectedTypeIsNotRaw = (flags & EXPR_EXPECTED_TYPE_NOT_RAW) != 0;
-            boolean expectedTypeHasConstrainedTypeParameters = (flags & EXPR_EXPECTED_TYPE_HAS_CONSTRAINED_TYPE_PARAMETERS) != 0;
-            boolean downCast = (flags & EXPR_DOWN_CAST) != 0;
-            
-            // special case for returning Null expressions
-            if (isNull(exprType)){
-                // don't add cast for null
-                if(!isNullValue(exprType)){
-                    // in some cases we may have an instance of Null, which is of type java.lang.Object, being
-                    // returned in a context where we expect a String? (aka ceylon.language.String) so even though
-                    // the instance at hand will really be null, we need a up-cast to it
-                    // FIXME: this is always true
-                    JCExpression targetType = makeJavaType(expectedType, AbstractTransformer.JT_RAW);
-                    result = make().TypeCast(targetType, result);
-                }
-            }else if(exprType.getDeclaration() instanceof NothingType){
-                // type param erasure
-                JCExpression targetType = makeJavaType(expectedType, AbstractTransformer.JT_RAW | AbstractTransformer.JT_NO_PRIMITIVES);
-                result = make().TypeCast(targetType, result);
-            }else if(// expression was forcibly erased
-                     exprErased
-                     // some type parameter somewhere needs a cast
-                     || needsCast(exprType, expectedType, expectedTypeIsNotRaw, expectedTypeHasConstrainedTypeParameters, downCast)
-                     // if the exprType is raw and the expected type isn't
-                     || (exprType.isRaw() && (expectedTypeIsNotRaw || !isTurnedToRaw(expectedType)))){
-                
-                // save this before we simplify it because we lose that flag doing so
-                boolean exprIsRaw = exprType.isRaw();
-                boolean expectedTypeIsRaw = isTurnedToRaw(expectedType) && !expectedTypeIsNotRaw;
 
-                // simplify the type
-                // (without the underlying type, because the cast is always to a non-primitive)
-                exprType = simplifyType(expectedType).withoutUnderlyingType();
-                
-                // We will need a raw cast if the expected type has type parameters, 
-                // unless the expr is already raw
-                if (!exprIsRaw && hasTypeParameters(expectedType)) {
-                    JCExpression rawType = makeJavaType(expectedType, AbstractTransformer.JT_TYPE_ARGUMENT | AbstractTransformer.JT_RAW);
-                    result = make().TypeCast(rawType, result);
-                    // expr is now raw
-                    exprIsRaw = true;
-                }
-                
-                // if the expr is not raw, we need a cast
-                // if the expr is raw:
-                //  don't even try making an actual cast if there are bounded type parameters in play, because going raw is much safer
-                //  also don't try making the cast if the expected type is raw because anything goes
-                if(!exprIsRaw || (!expectedTypeHasConstrainedTypeParameters && !expectedTypeIsRaw)){
-                    // Do the actual cast
-                    JCExpression targetType = makeJavaType(expectedType, AbstractTransformer.JT_TYPE_ARGUMENT);
+            // only try to cast boxed types, no point otherwise
+            if(exprBoxed){
+
+                boolean expectedTypeIsNotRaw = (flags & EXPR_EXPECTED_TYPE_NOT_RAW) != 0;
+                boolean expectedTypeHasConstrainedTypeParameters = (flags & EXPR_EXPECTED_TYPE_HAS_CONSTRAINED_TYPE_PARAMETERS) != 0;
+                boolean downCast = (flags & EXPR_DOWN_CAST) != 0;
+
+                // special case for returning Null expressions
+                if (isNull(exprType)){
+                    // don't add cast for null
+                    if(!isNullValue(exprType)){
+                        // in some cases we may have an instance of Null, which is of type java.lang.Object, being
+                        // returned in a context where we expect a String? (aka ceylon.language.String) so even though
+                        // the instance at hand will really be null, we need a up-cast to it
+                        // FIXME: this is always true
+                        JCExpression targetType = makeJavaType(expectedType, AbstractTransformer.JT_RAW);
+                        result = make().TypeCast(targetType, result);
+                    }
+                }else if(exprType.getDeclaration() instanceof NothingType){
+                    // type param erasure
+                    JCExpression targetType = makeJavaType(expectedType, AbstractTransformer.JT_RAW | AbstractTransformer.JT_NO_PRIMITIVES);
                     result = make().TypeCast(targetType, result);
-                }
+                }else if(// expression was forcibly erased
+                         exprErased
+                         // some type parameter somewhere needs a cast
+                         || needsCast(exprType, expectedType, expectedTypeIsNotRaw, expectedTypeHasConstrainedTypeParameters, downCast)
+                         // if the exprType is raw and the expected type isn't
+                         || (exprType.isRaw() && (expectedTypeIsNotRaw || !isTurnedToRaw(expectedType)))){
+
+                    // save this before we simplify it because we lose that flag doing so
+                    boolean exprIsRaw = exprType.isRaw();
+                    boolean expectedTypeIsRaw = isTurnedToRaw(expectedType) && !expectedTypeIsNotRaw;
+
+                    // simplify the type
+                    // (without the underlying type, because the cast is always to a non-primitive)
+                    exprType = simplifyType(expectedType).withoutUnderlyingType();
+
+                    // We will need a raw cast if the expected type has type parameters, 
+                    // unless the expr is already raw
+                    if (!exprIsRaw && hasTypeParameters(expectedType)) {
+                        JCExpression rawType = makeJavaType(expectedType, AbstractTransformer.JT_TYPE_ARGUMENT | AbstractTransformer.JT_RAW);
+                        result = make().TypeCast(rawType, result);
+                        // expr is now raw
+                        exprIsRaw = true;
+                    }
+
+                    // if the expr is not raw, we need a cast
+                    // if the expr is raw:
+                    //  don't even try making an actual cast if there are bounded type parameters in play, because going raw is much safer
+                    //  also don't try making the cast if the expected type is raw because anything goes
+                    if(!exprIsRaw || (!expectedTypeHasConstrainedTypeParameters && !expectedTypeIsRaw)){
+                        // Do the actual cast
+                        JCExpression targetType = makeJavaType(expectedType, AbstractTransformer.JT_TYPE_ARGUMENT);
+                        result = make().TypeCast(targetType, result);
+                    }
+                }else
+                    canCast = true;
             }else
                 canCast = true;
         }
