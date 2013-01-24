@@ -39,7 +39,7 @@ doc "A string of characters. Each character in the string is
      Since a `String` has an underlying UTF-16 encoding, 
      certain operations are expensive, requiring iteration
      of the characters of the string. In particular, `size`
-     requires iteration of the whole string, and `item()`,
+     requires iteration of the whole string, and `get()`,
      `span()`, and `segment()` require iteration from the 
      beginning of the string to the given index."
 by "Gavin"
@@ -179,7 +179,7 @@ shared native abstract class String()
          string. The first character in the string occurs at
          index zero. The last character in the string occurs
          at index `string.size-1`."
-    shared actual formal Character? item(Integer index);
+    shared actual formal Character? get(Integer index);
     
     doc "The character indexes at which the given substring
          occurs within this string. Occurrences do not 

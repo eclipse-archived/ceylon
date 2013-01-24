@@ -21,7 +21,7 @@ shared class Singleton<out Element>(Element element)
     
     doc "Returns the contained element, if the specified 
          index is `0`."
-    shared actual Element? item(Integer index) {
+    shared actual Element? get(Integer index) {
         if (index==0) {
             return element;
         }
@@ -53,26 +53,28 @@ shared class Singleton<out Element>(Element element)
         return SingletonIterator();
     }
     
-    shared actual String string => "{ " first.string " }";
+    shared actual String string => "[ " first.string " ]";
     
     doc "Returns a `Singleton` if the given starting index 
          is `0` and the given `length` is greater than `0`.
          Otherwise, returns an instance of `Empty`."
     shared actual Empty|Singleton<Element> segment
             (Integer from, Integer length) =>
-                    from<=0 && from+length>0 then this else {};
+                    from<=0 && from+length>0 then this else [];
     
     doc "Returns a `Singleton` if the given starting index 
          is `0`. Otherwise, returns an instance of `Empty`."
     shared actual Empty|Singleton<Element> span
             (Integer from, Integer to) =>
-                    (((from <= 0) && (to >= 0)) || ((from >= 0) && (to <= 0))) then this else {};
+                    (((from <= 0) && (to >= 0)) || 
+                    ((from >= 0) && (to <= 0))) 
+                        then this else [];
     
     shared actual Empty|Singleton<Element> spanTo
-            (Integer to) => to<0 then {} else this;
+            (Integer to) => to<0 then [] else this;
 
     shared actual Empty|Singleton<Element> spanFrom
-            (Integer from) => from>0 then {} else this;
+            (Integer from) => from>0 then [] else this;
 
     doc "Return this singleton."
     shared actual Singleton<Element> reversed => this;
@@ -83,7 +85,7 @@ shared class Singleton<out Element>(Element element)
     shared actual Boolean equals(Object that) {
         if (is List<Anything> that) {
             if (that.size==1) {
-                if (exists elem = that[0]) {
+                if (exists elem = that.first) {
                     return elem==element;
                 }
             }

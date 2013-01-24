@@ -41,7 +41,7 @@ public class InternalMap<Key, Item> implements Map<Key, Item> {
     @Override
     @Annotations(@Annotation("formal"))
     @TypeInfo("Item|ceylon.language::Nothing")
-    public Item item(Object key) {
+    public Item get(Object key) {
         return m.get(key);
     }
 

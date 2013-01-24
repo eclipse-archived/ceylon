@@ -59,11 +59,11 @@ shared class Tuple<out Element, out First, out Rest=[]>
     
     shared actual Integer size => 1 + rest.size;
     
-    shared actual Element? item(Integer index) {
+    shared actual Element? get(Integer index) {
         switch (index<=>0)
         case (smaller) { return null; }
         case (equal) { return first; }
-        case (larger) { return rest.item(index-1); }
+        case (larger) { return rest.get(index-1); }
     }
     
     shared actual Integer lastIndex {

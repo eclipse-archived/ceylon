@@ -24,7 +24,7 @@ public final class process_ {
         }
 
         @Override
-        public String item(java.lang.Object key) {
+        public String get(java.lang.Object key) {
             if (key instanceof String) {
                 return String.instance(props.getProperty(((String)key).value));
             }
@@ -98,7 +98,7 @@ public final class process_ {
         public boolean contains(java.lang.Object element) {
             if (element instanceof Entry) {
                 Entry entry = (Entry) element;
-                String value = item(entry.getKey());
+                String value = get(entry.getKey());
                 return value!=null && value.equals(entry.getItem());
             }
             return false;

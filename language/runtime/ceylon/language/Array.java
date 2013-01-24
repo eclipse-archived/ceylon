@@ -381,12 +381,12 @@ public final class Array<Element> implements List<Element> {
 
     @TypeInfo("ceylon.language::Null|Element")
     @Override
-    public Element item(@Name("key") Integer key) {
+    public Element get(@Name("key") Integer key) {
         long i = key.longValue();
-        return item((int)i);
+        return get((int)i);
     }
 
-    private Element item(int index) {
+    private Element get(int index) {
         return index < 0 || index >= getSize() ?
                 null : unsafeItem(index);
     }

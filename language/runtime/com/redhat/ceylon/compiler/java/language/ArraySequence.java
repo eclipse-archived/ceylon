@@ -235,7 +235,7 @@ public class ArraySequence<Element> implements Sequence<Element> {
     }
 
     @Override
-    public Element item(Integer key) {
+    public Element get(Integer key) {
         long index = key.longValue()+first;
         return index<0 || index >= array.length ?
                 null : array[(int) index];

@@ -11,7 +11,7 @@ doc "Abstract supertype of objects which associate values
      
          value bg = settings[\"backgroundColor\"] else white;
      
-     The `item()` operation and item operator result in an
+     The `get()` operation and item operator result in an
      optional type, to reflect the possibility that there is
      no item for the given key."
 see (Map, List, Category)
@@ -23,13 +23,13 @@ shared interface Correspondence<in Key, out Item>
          `null` if there is no value defined for the given 
          key."
     see (items)
-    shared formal Item? item(Key key);
+    shared formal Item? get(Key key);
     
     doc "Determines if there is a value defined for the 
          given key."
     see (definesAny, definesEvery, keys)
     shared default Boolean defines(Key key) => 
-            item(key) exists;
+            get(key) exists;
     
     doc "The `Category` of all keys for which a value is 
          defined by this `Correspondence`."
@@ -66,8 +66,8 @@ shared interface Correspondence<in Key, out Item>
     
     doc "Returns the items defined for the given keys, in
          the same order as the corresponding keys."
-    see (item)
+    see (get)
     shared default Item?[] items({Key*} keys) =>
-            [ for (key in keys) item(key) ];
+            [ for (key in keys) get(key) ];
     
 }

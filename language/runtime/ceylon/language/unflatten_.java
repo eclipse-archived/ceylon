@@ -35,18 +35,18 @@ public final class unflatten_ {
 				case 0:
 					return flatFunction.$call();
 				case 1:
-					return flatFunction.$call(seq.item(Integer.instance(0)));
+					return flatFunction.$call(seq.get(Integer.instance(0)));
 				case 2:
-					return flatFunction.$call(seq.item(Integer.instance(0)), 
-							seq.item(Integer.instance(1)));
+					return flatFunction.$call(seq.get(Integer.instance(0)), 
+							seq.get(Integer.instance(1)));
 				case 3:
-					return flatFunction.$call(seq.item(Integer.instance(0)), 
-							seq.item(Integer.instance(1)), 
-							seq.item(Integer.instance(2)));
+					return flatFunction.$call(seq.get(Integer.instance(0)), 
+							seq.get(Integer.instance(1)), 
+							seq.get(Integer.instance(2)));
 				default:
 					java.lang.Object[] args = new java.lang.Object[(int) seq.getSize()];
 					for (int i=0; i<seq.getSize(); i++) {
-						args[i] = seq.item(Integer.instance(i));
+						args[i] = seq.get(Integer.instance(i));
 					}
 					return flatFunction.$call(args);
 				}

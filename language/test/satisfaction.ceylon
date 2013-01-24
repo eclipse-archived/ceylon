@@ -64,7 +64,7 @@ class MyIterator() satisfies Iterator<Integer> {
     shared actual Boolean equals(Object other) { return false; }
     shared actual MySequence clone { return MySequence(); }
     shared actual Sequence<Integer> reversed { return this; }
-    shared actual Integer? item(Integer index) {
+    shared actual Integer? get(Integer index) {
         return index==0 then 1 else null;
     }
     shared actual Integer[] segment(Integer from, Integer length) {
@@ -122,7 +122,7 @@ class MyInvertable(Integer x) satisfies Invertable<MyInvertable> {
 }
 class MyCorrespondence() satisfies Correspondence<Integer, Character> {
     value a = "abcdef";
-    shared actual Character? item(Integer k) { return a[k]; }
+    shared actual Character? get(Integer k) { return a[k]; }
 }
 
 void testSatisfaction() {

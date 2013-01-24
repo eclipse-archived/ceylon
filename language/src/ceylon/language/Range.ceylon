@@ -68,7 +68,7 @@ shared class Range<Element>(first, last)
     doc "The element of the range that occurs `n` values after
          the start of the range. Note that this operation 
          is inefficient for large ranges."
-    shared actual Element? item(Integer n) {
+    shared actual Element? get(Integer n) {
         //optimize this for numbers!
         variable Integer index=0;
         variable Element x=first;

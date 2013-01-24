@@ -26,7 +26,7 @@ void operators() {
     check(!empty*.uppercased nonempty, "spread 1");
     check(full*.uppercased nonempty, "spread 2");
     value spread1 = full*.uppercased;
-    value spread2 = full*.item(1);
+    value spread2 = full*.get(1);
 	if (exists s1s=spread1[0]) {
         check(s1s == "HELLO", "spread 3");
     } else { fail("spread 3"); }

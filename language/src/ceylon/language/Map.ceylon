@@ -36,7 +36,7 @@ shared interface Map<out Key,out Item>
         if (is Map<Object,Object> that,
                 that.size==size) {
             for (entry in this) {
-                if (exists item = that[entry.key],
+                if (exists item = that.get(entry.key),
                         item==entry.item) {
                     continue;
                 }

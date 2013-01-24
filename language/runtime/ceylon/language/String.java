@@ -230,12 +230,12 @@ public abstract class String
 
     @Override
     @TypeInfo("ceylon.language::Character|ceylon.language::Null")
-    public Character item(@Name("index") Integer key) {
-        return item(value, key.longValue());
+    public Character get(@Name("index") Integer key) {
+        return get(value, key.longValue());
     }
 
     @Ignore
-    public static Character item(java.lang.String value, long key) {
+    public static Character get(java.lang.String value, long key) {
         int index = (int)key;
         int length = value.length();
         if (index < 0 || index >= length) {
@@ -983,7 +983,7 @@ public abstract class String
         if (value.isEmpty()) {
             return null;
         } else {
-            return item(value, 0);
+            return get(value, 0);
         }
     }
 
@@ -992,7 +992,7 @@ public abstract class String
         if (value.isEmpty()) {
             return null;
         } else {
-            return item(value, getLastIndex(value).longValue());
+            return get(value, getLastIndex(value).longValue());
         }
     }
 

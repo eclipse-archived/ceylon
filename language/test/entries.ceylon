@@ -139,9 +139,9 @@ Range<Integer> range {
     value r2r = r2.rest;
     check(r1r.size==r1.size-1, "range.rest.size 1");
     check(r2r.size==r2.size-1, "range.rest.size 2");
-    check((r1r.first else 0) == (r1.item(1) else 1), "range.rest.first 1");
-    check((r2r.first else 0) == (r2.item(1) else 1), "range.rest.first 2");
-    check(!r4.rest nonempty, "nonempty range.rest says " r4.rest nonempty ", sould be false");
+    check((r1r.first else 0) == (r1.get(1) else 1), "range.rest.first 1");
+    check((r2r.first else 0) == (r2.get(1) else 1), "range.rest.first 2");
+    check(!r4.rest nonempty, "nonempty range.rest says " r4.rest nonempty ", should be false");
     check(r1.lastIndex==4, "range.lastIndex 1");
     check(r2.lastIndex==3, "range.lastIndex 2");
     check(r1.by(2).sequence.string=="{ 1, 3, 5 }", "range.by 1");

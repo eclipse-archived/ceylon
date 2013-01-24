@@ -33,7 +33,7 @@ void test_singleton() {
     else {
         fail("singleton item");
     }
-    if (exists str=singleton.item(0)) {
+    if (exists str=singleton.get(0)) {
         check(str=="hello", "singleton item");
     }
     else {
@@ -42,7 +42,7 @@ void test_singleton() {
     if (exists str=singleton[1]) {
         fail("singleton item");
     }
-    if (exists str=singleton.item(1)) {
+    if (exists str=singleton.get(1)) {
         fail("singleton item");
     }
 

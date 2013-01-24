@@ -16,7 +16,7 @@ class MapTest<Key, Item>(<Key->Item>* entry)
     shared actual Boolean empty { return entries.empty; }
     shared actual MapTest<Key, Item> clone { return this; }
     shared actual Iterator<Key->Item> iterator { return entries.iterator; }
-    shared actual Item? item(Object key) {
+    shared actual Item? get(Object key) {
         for (e in entries) {
             if (e.key == key) { return e.item; }
         }
@@ -36,7 +36,7 @@ void testMaps() {
     check(m1.defines(4), "Map.defines(4) should be true");
     check(!m1.defines(5), "Map.defines 2");
     check(!m1.defines("hi"), "Map.defines 3");
-    check(m1[4] exists, "Map.item(4) should exist");
+    check(m1[4] exists, "Map.get(4) should exist");
     check(!m1[5] exists, "Map.item 2");
     check(!m1["hi"] exists, "Map.item 3");
     check(!m1.iterator.next() is Finished, "Map.iterator");

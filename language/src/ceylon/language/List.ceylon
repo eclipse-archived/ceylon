@@ -47,7 +47,7 @@ shared interface List<out Element>
          of the sequence, that is, if
          `index>sequence.lastIndex`. The first element of
          the sequence has index `0`."
-    shared actual formal Element? item(Integer index);
+    shared actual formal Element? get(Integer index);
     
     shared actual default Iterator<Element> iterator {
         object listIterator
@@ -55,7 +55,7 @@ shared interface List<out Element>
             variable Integer index = 0;
             shared actual Element|Finished next() {
                 if (index <= (lastIndex else -1)) {
-                    value elem = outer.item(index++);
+                    value elem = outer.get(index++);
                     assert (exists elem);
                     return elem;
                 }
@@ -84,8 +84,8 @@ shared interface List<out Element>
         if (is List<Anything> that) {
             if (that.size==size) {
                 for (i in 0..size-1) {
-                    value x = this[i];
-                    value y = that[i];
+                    value x = this.get(i);
+                    value y = that.get(i);
                     if (exists x) {
                         if (exists y) {
                             if (x!=y) {
@@ -126,7 +126,7 @@ shared interface List<out Element>
         if (exists l=lastIndex) {
             variable value index = l;
             while (index >= 0) {
-                if (exists elem = item(index--)) {
+                if (exists elem = get(index--)) {
                     if (selecting(elem)) {
                         return elem;
                     }
@@ -137,12 +137,12 @@ shared interface List<out Element>
     }*/
     
     doc "Returns the first element of this `List`, if any."
-    shared actual default Element? first => this[0];
+    shared actual default Element? first => get(0);
     
     doc "Returns the last element of this `List`, if any."
     shared actual default Element? last {
         if (exists i = lastIndex) {
-            return this[i];
+            return get(i);
         }
         return null;
     }

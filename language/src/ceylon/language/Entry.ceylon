@@ -1,9 +1,15 @@
-doc "A pair containing a key and an associated value
-     called the item. Used primarily to represent the
-     elements of a `Map`."
+doc "A pair containing a _key_ and an associated value called 
+     the _item_. Used primarily to represent the elements of 
+     a `Map`. The type `Entry<Key,Item>` may be abbreviated 
+     `Key->Item`. An instance of `Entry` may be constructed 
+     using the `->` operator:
+     
+         String->Person entry = person.name->person;
+     "
 by "Gavin"
 shared class Entry<out Key, out Item>(key, item)
-        extends Object()
+        extends Tuple<Key|Item,Key,Tuple<Item,Item>>
+                (key,Tuple(item,[]))
         given Key satisfies Object
         given Item satisfies Object {
     

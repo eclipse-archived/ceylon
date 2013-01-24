@@ -19,7 +19,7 @@ shared interface Empty of e
     shared actual Iterator<Nothing> iterator => emptyIterator;
     
     doc "Returns `null` for any given index."
-    shared actual Null item(Integer index) => null;
+    shared actual Null get(Integer index) => null;
     
     doc "Returns an `Empty` for any given segment."
     shared actual [] segment(Integer from, Integer length) => this;

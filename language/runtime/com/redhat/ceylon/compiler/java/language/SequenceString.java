@@ -37,11 +37,11 @@ public class SequenceString extends String implements Sequence<Character> {
     @Override
     @Ignore
     public Character getFirst() {
-        return item(Integer.instance(0));
+        return get(Integer.instance(0));
     }
     @Override @Ignore
     public Character getLast() {
-        return item(getLastIndex());
+        return get(getLastIndex());
     }
 
     @Override

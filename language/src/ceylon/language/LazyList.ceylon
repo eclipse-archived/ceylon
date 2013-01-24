@@ -10,7 +10,7 @@ shared class LazyList<out Element>({Element*} elems)
         return size > 0 then size-1 else null;
     }
     
-    shared actual Element? item(Integer index) {
+    shared actual Element? get(Integer index) {
         if (index == 0) {
             return elems.first;
         } 
@@ -35,7 +35,7 @@ shared class LazyList<out Element>({Element*} elems)
     shared actual List<Element> span
             (Integer from, Integer to) {
         if (to < 0 && from < 0) {
-            return {};
+            return [];
         }
         Integer toIndex = largest(to,0);
         Integer fromIndex = largest(from,0);
@@ -70,7 +70,7 @@ shared class LazyList<out Element>({Element*} elems)
             return LazyList(els.taking(length));
         } 
         else {
-            return {};
+            return [];
         }
     }
     
@@ -79,8 +79,8 @@ shared class LazyList<out Element>({Element*} elems)
             value size = elems.size;
             if (that.size==size) {
                 for (i in 0..size-1) {
-                    value x = this[i];
-                    value y = that[i];
+                    value x = this.get(i);
+                    value y = that.get(i);
                     if (exists x) {
                         if (exists y) {
                             if (x!=y) {
