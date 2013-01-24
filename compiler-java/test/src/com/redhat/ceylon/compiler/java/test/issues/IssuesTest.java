@@ -936,6 +936,11 @@ public class IssuesTest extends CompilerTest {
     }
     
     @Test
+    public void testBug966() {
+        compareWithJavaSource("bug09xx/Bug966");
+    }
+    
+    @Test
     public void testBug973() {
         compareWithJavaSource("bug09xx/Bug973");
     }
