@@ -94,7 +94,9 @@ public abstract class BoxingVisitor extends Visitor {
             return;
         }
         if (Decl.isValueTypeDecl(that.getPrimary())) {
-            CodegenUtil.markUnBoxed(that);
+            // it's unboxed iff it's an unboxable type
+            if(Decl.isValueTypeDecl((TypedDeclaration)that.getDeclaration()))
+                CodegenUtil.markUnBoxed(that);
             if(CodegenUtil.isRaw((TypedDeclaration) that.getDeclaration()))
                 CodegenUtil.markRaw(that);
             if(CodegenUtil.hasTypeErased((TypedDeclaration) that.getDeclaration()))
