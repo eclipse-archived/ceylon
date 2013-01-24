@@ -913,7 +913,12 @@ public class ExpressionTransformer extends AbstractTransformer {
             else if(expr instanceof Tree.SpreadArgument){
                 first = transformExpression(((Tree.SpreadArgument) expr).getExpression());
             }else{
-                first = iterableToSequence(transformComprehension((Tree.Comprehension)expr)); 
+                Tree.Comprehension comp = (Tree.Comprehension) expr;
+                ProducedType elementType = expressionTypes.get(0);
+                ProducedType expectedType = comp.getForComprehensionClause().getPossiblyEmpty() 
+                        ? typeFact().getSequentialType(elementType)
+                        : typeFact().getSequenceType(elementType);
+                first = comprehensionAsSequential(comp, expectedType);
             }
             // last one with ellipsis is just a sequence
             if(!iter.hasNext() && spread)
