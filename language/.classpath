@@ -5,5 +5,6 @@
 	<classpathentry kind="con" path="org.eclipse.jdt.junit.JUNIT_CONTAINER/4"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/ceylon-common"/>
 	<classpathentry exported="true" kind="lib" path="ide-dist/ceylon.language-0.5.car" sourcepath=""/>
+	<classpathentry kind="src" path="runtime-js"/>
 	<classpathentry kind="output" path="build/classes"/>
 </classpath>
