@@ -37,15 +37,13 @@ shared class Range<Element>(first, last)
 
     doc "The nonzero number of elements in the range."
     shared actual Integer size {
-        //TODO: re-enable when compiler
-        //      bug is fixed
-    	/*if (is Enumerable<Anything> last, 
+    	if (is Enumerable<Anything> last, 
     	    is Enumerable<Anything> first) {
     		return (last.integerValue - 
     		        first.integerValue)
     		            .magnitude+1;
     	}
-    	else {*/
+    	else {
     		variable Integer size = 1;
     		variable Element current=first;
     		while (current!=last) {
@@ -53,7 +51,7 @@ shared class Range<Element>(first, last)
     			current = next(current);
     		}
             return size;
-    	//}
+    	}
     }
     
     doc "The index of the end of the range."
@@ -210,9 +208,11 @@ shared class Range<Element>(first, last)
         while (j++<toIndex) { y=next(y); }
         return Range<Element>(x, y);
     }
+    
     shared actual Range<Element>|Empty spanTo(Integer to) {
         return to < 0 then {} else span(0, to);
     }
+    
     shared actual Range<Element>|Empty spanFrom(Integer from) {
         return span(from, size);
     }
@@ -244,7 +244,8 @@ shared class Range<Element>(first, last)
     doc "Returns the range itself, since a Range cannot
          contain nulls."
     shared actual Range<Element> coalesced => this;
-
-    //TODO should we refine this?
-    //shared actual [Element+] sequence => this;
+    
+    doc "Returns this range."
+    shared actual Range<Element> sequence => this;
+    
 }
