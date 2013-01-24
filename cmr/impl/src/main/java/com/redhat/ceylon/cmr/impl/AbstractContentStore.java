@@ -16,13 +16,13 @@
 
 package com.redhat.ceylon.cmr.impl;
 
+import java.util.HashSet;
+import java.util.Set;
+
 import com.redhat.ceylon.cmr.api.Logger;
 import com.redhat.ceylon.cmr.spi.ContentStore;
 import com.redhat.ceylon.cmr.spi.Node;
 import com.redhat.ceylon.cmr.spi.StructureBuilder;
-
-import java.util.HashSet;
-import java.util.Set;
 
 /**
  * Abstract content store.
@@ -33,8 +33,10 @@ public abstract class AbstractContentStore implements ContentStore, StructureBui
 
     private static final String CAR = ".car";
     private static final String JAR = ".jar";
+    private static final String PROPERTIES = ".properties";
     private static final String SHA1 = ".sha1";
     private static final String SRC = ".src";
+    private static final String XML = ".xml";
     private static final String ZIP = ".zip";
 
     protected static final String SEPARATOR = "/";
@@ -46,9 +48,11 @@ public abstract class AbstractContentStore implements ContentStore, StructureBui
         this.log = log;
         addSuffix(CAR);
         addSuffix(JAR);
-        addSuffix(ZIP);
+        addSuffix(PROPERTIES);
         addSuffix(SHA1);
         addSuffix(SRC);
+        addSuffix(XML);
+        addSuffix(ZIP);
     }
 
     public void addSuffix(String suffix) {

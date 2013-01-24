@@ -29,6 +29,7 @@ import com.redhat.ceylon.cmr.api.ModuleSearchResult;
 import com.redhat.ceylon.cmr.api.ModuleSearchResult.ModuleDetails;
 import com.redhat.ceylon.cmr.api.ModuleVersionDetails;
 import com.redhat.ceylon.cmr.api.Repository;
+import com.redhat.ceylon.cmr.api.RepositoryBuilder;
 import com.redhat.ceylon.cmr.api.RepositoryManager;
 import com.redhat.ceylon.cmr.api.RepositoryManagerBuilder;
 import com.redhat.ceylon.cmr.api.VersionComparator;
@@ -267,6 +268,25 @@ public class SmokeTestCase extends AbstractTest {
             File[] files = manager.resolve(context);
             Assert.assertNotNull(files);
             Assert.assertEquals(3, files.length);
+        } finally {
+            manager.removeArtifact(context);
+        }
+    }
+
+    @Test
+    public void testPropertiesGet() throws Exception {
+        RepositoryManagerBuilder builder = getRepositoryManagerBuilder();
+        RepositoryBuilder rb = builder.repositoryBuilder();
+        Repository repository = rb.buildRepository("http://modules.ceylon-lang.org/test");
+        builder.appendRepository(repository);
+        RepositoryManager manager = builder.buildRepository();
+
+        ArtifactContext context = new ArtifactContext("io.undertow.core", "1.0.0.Alpha1-9fdfd5f766", ArtifactContext.JAR);
+        try {
+            File artifact = manager.getArtifact(context);
+            Assert.assertNotNull(artifact);
+            File mp = new File(artifact.getParent(), ArtifactContext.MODULE_PROPERTIES);
+            Assert.assertNotNull(mp.exists());
         } finally {
             manager.removeArtifact(context);
         }
