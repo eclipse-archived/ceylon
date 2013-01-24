@@ -50,13 +50,12 @@ shared interface List<out Element>
     shared actual formal Element? item(Integer index);
     
     shared actual default Iterator<Element> iterator {
-        value outerList => this;
         object listIterator
                 satisfies Iterator<Element> {
             variable Integer index = 0;
             shared actual Element|Finished next() {
                 if (index <= (lastIndex else -1)) {
-                    value elem = outerList.item(index++);
+                    value elem = outer.item(index++);
                     assert (exists elem);
                     return elem;
                 }
@@ -70,25 +69,6 @@ shared interface List<out Element>
     
     doc "Reverse this list, returning a new list."
     shared formal List<Element> reversed;
-    
-    /*doc "Select the elements between the given indices. If 
-         the start index is the same as the end index,
-         return a list with a single element. If the start 
-         index is larger than the end index, return the
-         elements in the reverse order from the order in
-         which they appear in this list. If both the
-         start index and the end index are larger than the
-         last index in the list, return an empty list. 
-         Otherwise, if the last index is larger than the 
-         last index in the list, return all elements from 
-         the start index to last element of the list."
-    shared actual formal List<Element> span(Integer from,
-                                        Integer? to);
-	
-    doc "Returns a list containing the elements beginning 
-         from the given index, with the given length."
-    shared actual formal List<Element> segment(Integer from,
-                                           Integer length);*/
     
     doc "Two `List`s are considered equal iff they have the 
          same `size` and _entry sets_. The entry set of a 
@@ -139,6 +119,8 @@ shared interface List<out Element>
         return hash;
     }
     
+    //disabled because of compiler bug resolving
+    //ambiguity in Sequence
     /*shared default actual Element? findLast(
             Boolean selecting(Element elem)) {
         if (exists l=lastIndex) {
@@ -175,10 +157,8 @@ shared interface List<out Element>
         if (!empty) {
             sb.appendAll(*this.sequence);
         }
-        if (nonempty seq=sb.sequence) {
-            return seq;
-        }
-        throw; //Can't happen
+        assert (nonempty seq=sb.sequence);
+        return seq;
     }
     
     doc "Returns a new `List` that contains the specified
@@ -192,10 +172,27 @@ shared interface List<out Element>
             sb.appendAll(*this.sequence);
         }
         sb.append(element);
-        if (nonempty seq=sb.sequence) {
-            return seq;
-        }
-        throw; //Can't happen
+        assert (nonempty seq=sb.sequence);
+        return seq;
     }
-
+    
+    /*doc "Select the elements between the given indices. If 
+         the start index is the same as the end index,
+         return a list with a single element. If the start 
+         index is larger than the end index, return the
+         elements in the reverse order from the order in
+         which they appear in this list. If both the
+         start index and the end index are larger than the
+         last index in the list, return an empty list. 
+         Otherwise, if the last index is larger than the 
+         last index in the list, return all elements from 
+         the start index to last element of the list."
+    shared actual formal List<Element> span(Integer from,
+                                        Integer? to);
+	
+    doc "Returns a list containing the elements beginning 
+         from the given index, with the given length."
+    shared actual formal List<Element> segment(Integer from,
+                                           Integer length);*/
+    
 }

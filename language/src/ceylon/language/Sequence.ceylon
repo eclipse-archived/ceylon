@@ -77,4 +77,9 @@ shared interface Sequence<out Element>
     
     shared actual default [Element+] clone => this;
     
+    //disabled because of compiler bug
+    /*shared default actual Element? findLast(
+            Boolean selecting(Element elem)) => 
+            List::findLast(selecting);*/
+    
 }
