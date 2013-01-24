@@ -489,8 +489,7 @@ public class ExpressionTransformer extends AbstractTransformer {
             // apply the same logic to each type param: see if they would require a raw cast
             ProducedType commonTypeArg = commonTypeArgs.get(i);
             ProducedType expectedTypeArg = expectedTypeArgs.get(i);
-            // downcasting info doesn't propagate to type parameters
-            if(needsCast(commonTypeArg, expectedTypeArg, expectedTypeNotRaw, expectedTypeHasConstrainedTypeParameters, false))
+            if(needsCast(commonTypeArg, expectedTypeArg, expectedTypeNotRaw, expectedTypeHasConstrainedTypeParameters, downCast))
                 return true;
             // stop after the first one for Callable
             if(isCallable)
