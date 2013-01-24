@@ -11,20 +11,18 @@
     <property name="build.test.repo" location="${build.dir}/test-repo"/>
     <property name="ide.dist" location="${basedir}/ide-dist"/>
 	
-    <!-- The Java and Ceylon source files for the runtime -->
+    <!-- The Java/JS source files for the runtime -->
     <property name="runtime.src" location="runtime"/> 
-
-    <!-- jar generated -->
-    <property name="runtime.jar" location="${build.lib}/runtime.jar"/>
+    <property name="runtime-js.src" location="runtime-js"/> 
 
     <property name="test.src" location="test"/>
+    <property name="test-js.src" location="test-js"/>
     <property name="test.reports" location="${build.dir}/test-reports"/>
 
     <tstamp/>
 
     <!-- Local repository -->
     <property name="ceylon.repo.dir" location="${user.home}/.ceylon/repo"/>
-    <property name="ceylon-js.dir" location="${basedir}/../ceylon-js"/>
     
     <!-- ceylon.language -->
     <property name="module.language.src" value="${basedir}/src"/>
@@ -37,6 +35,7 @@
     <property name="ceylon.language.dir" value="${module.language.dir}/${module.ceylon.language.version}"/>
     <property name="ceylon.language.src" value="${ceylon.language.dir}/${ceylon.language.name}.src"/>
     <property name="ceylon.language.car" value="${ceylon.language.dir}/${ceylon.language.name}.car"/>
+    <property name="ceylon.language.js" value="ceylon.language.js"/> 
     <property name="ceylon.language.repo" value="${ceylon.repo.dir}/${ceylon.language.dir}"/>
     <property name="ceylon.language.dist" value="${build.dist}/${ceylon.language.dir}"/>
     <property name="ceylon.compiler.loc" value="${basedir}/../ceylon-dist"/>
@@ -49,6 +48,16 @@
     <property name="ceylon.common.dir" value="com/redhat/ceylon/common/${module.com.redhat.ceylon.common.version}"/>
     <property name="ceylon.common.jar" value="${ceylon.common.dir}/com.redhat.ceylon.common-${module.com.redhat.ceylon.common.version}.jar"/>
     <property name="ceylon.common.lib" location="${ceylon.repo.dir}/${ceylon.common.jar}"/>
+    <!-- For JS -->
+	<property name="ceylon.compiler-js.dir" value="com/redhat/ceylon/compiler/js/${module.com.redhat.ceylon.compiler.js.version}"/>
+    <property name="ceylon.compiler-js.jar" value="${ceylon.compiler-js.dir}/com.redhat.ceylon.compiler.js-${module.com.redhat.ceylon.compiler.js.version}.jar"/>
+    <property name="ceylon.compiler-js.lib" location="${ceylon.repo.dir}/${ceylon.compiler-js.jar}"/>
+    <property name="ceylon.module-resolver.dir" value="com/redhat/ceylon/module-resolver/${module.com.redhat.ceylon.module-resolver.version}"/>
+    <property name="ceylon.module-resolver.jar" value="${ceylon.module-resolver.dir}/com.redhat.ceylon.module-resolver-${module.com.redhat.ceylon.module-resolver.version}.jar"/>
+    <property name="ceylon.module-resolver.lib" location="${ceylon.repo.dir}/${ceylon.module-resolver.jar}"/>
+    <property name="ceylon.typechecker.dir" value="com/redhat/ceylon/typechecker/${module.com.redhat.ceylon.typechecker.version}"/>
+    <property name="ceylon.typechecker.jar" value="${ceylon.typechecker.dir}/com.redhat.ceylon.typechecker-${module.com.redhat.ceylon.typechecker.version}.jar"/>
+    <property name="ceylon.typechecker.lib" location="${ceylon.repo.dir}/${ceylon.typechecker.jar}"/>
 
     <property name="tests.car" value="${build.test}/default/default.car"/>
 
@@ -62,14 +71,27 @@
     </path>
 	
     <path id="test.run.classpath">
-        <pathelement path="${junit.lib}"/>
-        <pathelement path="${build.dist}/${ceylon.language.car}"/>
+        <path refid="test.compile.classpath"/>
         <pathelement path="${build.test}"/>
         <pathelement path="${ceylon.common.lib}"/>
     </path>
 	
     <path id="ant-tasks">
-        <pathelement location="${ceylon.ant.lib}"/>
+        <pathelement path="${ceylon.ant.lib}"/>
+    </path>
+    
+    <path id="js.compiler.classpath">
+        <pathelement path="${antlr.lib}"/>
+        <pathelement path="${json.lib}" />
+        <pathelement path="${ceylon.common.lib}"/>
+        <pathelement path="${ceylon.module-resolver.lib}"/>
+        <pathelement path="${ceylon.typechecker.lib}"/>
+        <pathelement path="${ceylon.compiler-js.lib}"/>
+    </path>
+    
+    <path id="js.test.compile.classpath">
+        <path refid="js.compiler.classpath"/>
+        <pathelement path="${basedir}/../ceylon-js/build/lib/compiler.js.test.jar"/>
     </path>
 
     <!-- ################################################################## -->
@@ -125,9 +147,6 @@
         <antcall target="sha1sum">
             <param name="file" value="${build.dist}/${ceylon.language.src}" />
         </antcall>
-        <ant antfile="${ceylon-js.dir}/build.xml" target="build-js-language-module" dir="${ceylon-js.dir}" inheritall="false">
-            <property name="ceylon.repo.dir" value="${ceylon.repo.dir}"/>
-        </ant>
     </target>
 
     <!-- Repository targets -->
@@ -139,7 +158,6 @@
     <target name="publish-internal">
         <copy todir="${ceylon.language.repo}">
             <fileset dir="${ceylon.language.dist}"/>
-            <fileset dir="${ceylon-js.dir}/build/runtime/${ceylon.language.dir}" />
         </copy>
     </target>
 
@@ -155,7 +173,7 @@
 
     <!-- Tasks related to building the ceylon.language module -->
     <!-- Rule to build runtime classes from their Java and Ceylon sources -->
-    <target name="ceylon.language" depends="ceylonc">
+    <target name="ceylon.language.java" depends="ceylonc">
         <!-- toplevel types -->
         <ceylon-compile
             executable="${ceylon.compiler.loc}/dist/bin/ceylon"
@@ -221,9 +239,19 @@
             </files>
         </ceylon-compile>
     </target>
+	
+    <!-- generate the ceylon.language.js file -->
+    <target name="ceylon.language.js">
+        <mkdir dir="${ceylon.language.dist}"/>
+        <java classname="com.redhat.ceylon.compiler.js.Stitcher" classpathref="js.compiler.classpath" fork="true">
+            <arg value="${runtime-js.src}/${ceylon.language.js}" />
+            <arg value="${ceylon.language.dist}" />
+            <arg value="${module.com.redhat.ceylon.compiler.js.version}" />
+        </java>
+    </target>
 
     <!-- Rule to compile and test -->
-    <target name="build" depends="ceylon.language">
+    <target name="build" depends="ceylon.language.java">
         <!-- Temporary hack to prevent problems in the IDE when the compilation fails -->
         <mkdir dir="${ide.dist}"/>
     	<copy todir="${ide.dist}">
@@ -233,7 +261,7 @@
         </copy>
     </target>
 	
-    <target name="compile.tests" depends="build,ceylonc">
+    <target name="compile.tests.java" depends="ceylon.language.java,ceylonc">
         <delete dir="${build.test.repo}"/>
         <mkdir dir="${build.test.repo}"/>
     	<copy todir="${build.test.repo}">
@@ -267,9 +295,9 @@
     	    <include name="**/*.java"/>
     	</javac>
     </target>
-      
-    <target name="test" depends="compile.tests"
-        description="compile and run the tests">
+    
+    <target name="test.java" depends="compile.tests.java"
+        description="compile and run the Java tests">
         <java classname="runAndExit_" classpath="${tests.car};${build.dist}/${ceylon.language.car}"
             resultproperty="test.ceylon.result"/>
     	
@@ -301,5 +329,29 @@
     	<fail if="${test.fail.ceylon}" message="There were ${test.ceylon.result} failure(s) in the Ceylon tests"/>
     	<fail if="${test.fail.junit}"  message="There were Junit test failures"/>
     	
+    </target>
+
+    <target name="compile.tests.js" depends="ceylon.language.js">
+        <java classname="MainForJsTest" classpathref="js.test.compile.classpath" failonerror="true">
+            <sysproperty key="file.encoding" value="UTF-8" />
+        </java>
+    </target>
+
+    <target name="test.js" depends="compile.tests.js"
+        description="Run tests on node.js (requires node)">
+        <echo message="Running tests on node.js (node must be installed)" />
+        <mkdir dir="${build.test}/modules/${jslangpath}" />
+        <mkdir dir="${build.test}/opt_modules/${jslangpath}" />
+        <copy file="${runtime}/${jslangmodule}" todir="${build.test}/modules/${jslangpath}" />
+        <copy file="${runtime}/${jslangmodule}.sha1" todir="${build.test}/modules/${jslangpath}" />
+        <copy file="${runtime}/${jslangmodule}" todir="${build.test}/opt_modules/${jslangpath}" />
+        <copy file="${runtime}/${jslangmodule}.sha1" todir="${build.test}/opt_modules/${jslangpath}" />
+        <java classname="NodeTest" classpathref="js.test.run.classpath">
+            <arg value="${build.test}/modules" />
+            <arg value="${build.test}/opt_modules" />
+        </java>
+    </target>
+
+    <target name="test" depends="test.java" description="compile and run the tests">
     </target>
 </project>
