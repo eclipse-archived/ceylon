@@ -190,9 +190,9 @@ public class TestModuleManager {
     @Test
     public void tmptest() {
         System.out.println("-----------------------");
-        ClassOrInterface d0 = (ClassOrInterface)srclang.getDirectMember("Empty", null, false);
+        ClassOrInterface d0 = (ClassOrInterface)srclang.getDirectMember("Container", null, false);
         Assert.assertNotNull("ContainerWithFirstElement from srclang", d0);
-        ClassOrInterface d1 = (ClassOrInterface)jslang.getDirectMember("Empty", null, false);
+        ClassOrInterface d1 = (ClassOrInterface)jslang.getDirectMember("Container", null, false);
         Assert.assertNotNull("ContainerWithFirstElement from jslang", d1);
         ProducedType seq0 = null, seq1 = null;
         for (ProducedType pt : d0.getSatisfiedTypes()) {
@@ -208,24 +208,12 @@ public class TestModuleManager {
                 break;
             }
         }
-        for (ProducedType pt : seq0.getCaseTypes()) {
-            if (pt.getProducedTypeName().equals("Empty")) {
-                seq0 = pt;
-                break;
-            }
-        }
-        for (ProducedType pt : seq1.getCaseTypes()) {
-            if (pt.getProducedTypeName().equals("Empty")) {
-                seq1 = pt;
-                break;
-            }
-        }
         compareTypes(seq0, seq1, new ArrayList<String>());
         System.out.println("src " + seq0 + " - js " + seq1);
         compareTypeDeclarations(d0, d1);
         MethodOrValue m0 = (MethodOrValue)d0.getDirectMember("first", null, false);
         MethodOrValue m1 = (MethodOrValue)d1.getDirectMember("first", null, false);
-        System.out.println("ContainerWithFirstElement.first " + m0 + " vs " + m1);
+        System.out.println("Container.first " + m0 + " vs " + m1);
         System.out.println("refined member " + d0.getRefinedMember("first", null, false).getContainer() + " vs " + d1.getRefinedMember("first", null, false).getContainer());
         System.out.println("refined " + m0.getRefinedDeclaration().getContainer() + " vs " + m1.getRefinedDeclaration().getContainer());
     }
