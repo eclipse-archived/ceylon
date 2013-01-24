@@ -35,7 +35,7 @@
     <property name="ceylon.language.dir" value="${module.language.dir}/${module.ceylon.language.version}"/>
     <property name="ceylon.language.src" value="${ceylon.language.dir}/${ceylon.language.name}.src"/>
     <property name="ceylon.language.car" value="${ceylon.language.dir}/${ceylon.language.name}.car"/>
-    <property name="ceylon.language.js" value="ceylon.language.js"/> 
+    <property name="ceylon.language.js" value="${ceylon.language.dir}/${ceylon.language.name}.js"/> 
     <property name="ceylon.language.repo" value="${ceylon.repo.dir}/${ceylon.language.dir}"/>
     <property name="ceylon.language.dist" value="${build.dist}/${ceylon.language.dir}"/>
     <property name="ceylon.compiler.loc" value="${basedir}/../ceylon-dist"/>
@@ -244,9 +244,9 @@
     <target name="ceylon.language.js">
         <mkdir dir="${ceylon.language.dist}"/>
         <java classname="com.redhat.ceylon.compiler.js.Stitcher" classpathref="js.compiler.classpath" fork="true">
-            <arg value="${runtime-js.src}/${ceylon.language.js}" />
-            <arg value="${ceylon.language.dist}" />
-            <arg value="${module.com.redhat.ceylon.compiler.js.version}" />
+            <arg value="${runtime-js.src}/ceylon.language.js" />
+            <arg value="${runtime-js.src}/language-module.txt" />
+            <arg value="${build.dist}/${ceylon.language.js}" />
         </java>
     </target>
 
