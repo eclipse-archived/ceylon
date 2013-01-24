@@ -892,9 +892,11 @@ public class ExpressionTransformer extends AbstractTransformer {
         if(!expressions.isEmpty()){
             int lastIndex = expressions.size()-1;
             Tree.PositionalArgument last = expressions.get(lastIndex);
-            if(last instanceof Tree.SpreadArgument || last instanceof Tree.Comprehension){
+            if(last instanceof Tree.SpreadArgument){
                 ProducedType lastType = expressionTypes.get(lastIndex);
                 expressionTypes.set(lastIndex, typeFact().getIteratedType(lastType));
+                spread = true;
+            }else if(last instanceof Tree.Comprehension){
                 spread = true;
             }
         }
