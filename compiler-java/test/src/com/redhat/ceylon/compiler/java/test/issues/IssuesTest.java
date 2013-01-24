@@ -766,9 +766,8 @@ public class IssuesTest extends CompilerTest {
         compareWithJavaSource("bug08xx/Bug823");
     }
     
-    // typechecker now rejects these, no sure what to do about it
     @Test
-    public void testBug824_fail() {
+    public void testBug824() {
         compareWithJavaSource("bug08xx/Bug824");
     }
 
