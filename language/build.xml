@@ -246,7 +246,7 @@
         <java classname="com.redhat.ceylon.compiler.js.Stitcher" classpathref="js.compiler.classpath" fork="true">
             <arg value="${runtime-js.src}/ceylon.language.js" />
             <arg value="${runtime-js.src}/language-module.txt" />
-            <arg value="${ceylon.language.js}" />
+            <arg value="${build.dist}/${ceylon.language.js}" />
         </java>
     </target>
 
