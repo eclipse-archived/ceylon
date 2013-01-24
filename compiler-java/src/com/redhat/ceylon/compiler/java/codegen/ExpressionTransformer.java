@@ -875,7 +875,11 @@ public class ExpressionTransformer extends AbstractTransformer {
         JCExpression sequential = iterableToSequence(transformComprehension(comprehension));
         ProducedType elementType = comprehension.getForComprehensionClause().getTypeModel();
         ProducedType sequentialType = typeFact().getSequentialType(elementType);
-        return applyErasureAndBoxing(sequential, sequentialType, true, BoxingStrategy.BOXED, expectedType);
+        int flags = 0;
+        // make sure we detect that we're downcasting a sequential into a sequence if we know the comprehension is non-empty
+        if(expectedType.getSupertype(typeFact().getSequenceDeclaration()) != null)
+            flags = EXPR_DOWN_CAST;
+        return applyErasureAndBoxing(sequential, sequentialType, false, true, BoxingStrategy.BOXED, expectedType, flags);
     }
     
     private JCExpression makeTuple(java.util.List<Tree.PositionalArgument> expressions) {
