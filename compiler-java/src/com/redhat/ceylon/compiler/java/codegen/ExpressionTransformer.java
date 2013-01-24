@@ -2646,9 +2646,16 @@ public class ExpressionTransformer extends AbstractTransformer {
                                           makeSelect(lhs, "item"), List.of(index));
             // Because tuple index access has the type of the indexed element
             // (not the union of types in the sequential) a typecast may be required.
+            ProducedType sequentialElementType = getTypeArgument(leftCorrespondenceOrRangeType, 1);
+            ProducedType expectedType = access.getTypeModel();
+            int flags = 0;
+            if(!expectedType.isExactly(sequentialElementType)
+                    // could be optional too, for regular Correspondence item access
+                    && !expectedType.isExactly(typeFact().getOptionalType(sequentialElementType)))
+                flags |= EXPR_DOWN_CAST;
             safeAccess = applyErasureAndBoxing(safeAccess, 
-                                               getTypeArgument(leftCorrespondenceOrRangeType, 1), 
-                                               true, BoxingStrategy.BOXED, access.getTypeModel());
+                                               sequentialElementType, 
+                                               false, true, BoxingStrategy.BOXED, expectedType, flags);
         }else{
             // do the indices
             Tree.ElementRange range = (Tree.ElementRange) elementOrRange;
@@ -2682,6 +2689,16 @@ public class ExpressionTransformer extends AbstractTransformer {
             safeAccess = at(access).Apply(List.<JCTree.JCExpression>nil(), 
                     makeSelect(lhs, method), args);
 
+            // Because tuple open span access has the type of the indexed element
+            // (not a sequential of the union of types in the ranged) a typecast may be required.
+            ProducedType rangedSpanType = getTypeArgument(leftCorrespondenceOrRangeType, 1);
+            ProducedType expectedType = access.getTypeModel();
+            int flags = 0;
+            if(!expectedType.isExactly(rangedSpanType))
+                flags |= EXPR_DOWN_CAST;
+            safeAccess = applyErasureAndBoxing(safeAccess, 
+                                               rangedSpanType, 
+                                               false, true, BoxingStrategy.BOXED, expectedType, flags);
         }
 
         return safeAccess;
