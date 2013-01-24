@@ -4,7 +4,7 @@ void test_singleton() {
     check(!singleton.empty, "singleton empty");
     check(singleton.defines(0), "singleton defines");
     check(!singleton.defines(1), "singleton defines");
-    check(singleton.string=="{ hello }", "singleton string");
+    check(singleton.string=="[ hello ]", "singleton string");
     check(singleton.reversed==singleton, "singleton reversed");
     check(singleton nonempty, "singleton nonempty");
     if (nonempty singleton) {
@@ -53,8 +53,8 @@ void test_singleton() {
     check(singleton.spanTo(0) nonempty, "nonempty singleton spanTo(0)");
     check(singleton.spanTo(1) nonempty, "nonempty singleton spanTo(1)");
     check(singleton.segment(0, 1) nonempty, "nonempty singleton segment(0,1)");
-    check(singleton.span(0, 3).string=="{ hello }", "singleton span(0,3).string");
-    check(singleton.segment(0, 3).string=="{ hello }", "singleton segment(0,3).string");
+    check(singleton.span(0, 3).string=="[ hello ]", "singleton span(0,3).string");
+    check(singleton.segment(0, 3).string=="[ hello ]", "singleton segment(0,3).string");
     check(!singleton.span(1, 1) nonempty, "!nonempty singleton span(1,1)");
     check(!singleton.spanFrom(1) nonempty, "!nonempty singleton spanFrom(1)");
     check(!singleton.segment(1, 1) nonempty, "!nonempty singleton segment(1,1)");
