@@ -35,10 +35,11 @@ public class MainForJsTest {
                 .buildManager();
         System.out.println("Typechecking Ceylon test code...");
         TypeCheckerBuilder tcb = new TypeCheckerBuilder().verbose(false)
-            .addSrcDirectory(new File("src/test/ceylon"))
-            .addSrcDirectory(new File("../ceylon.language/test"))
             .moduleManagerFactory(new JsModuleManagerFactory())
             .usageWarnings(false);
+        for (String dir : args) {
+            tcb.addSrcDirectory(new File(dir));
+        }
         tcb.setRepositoryManager(repoman);
         TypeChecker typeChecker = tcb.getTypeChecker();
         typeChecker.process();

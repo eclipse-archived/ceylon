@@ -12,6 +12,7 @@
     <property name="build.test" location="${build.dir}/test" />
 
     <property name="test-src" location="${basedir}/src/test/java" />
+    <property name="test-lib" location="${build.lib}/compiler.js.test.jar" />
     <property name="src" location="${basedir}/src/main/java" />
     <property name="js-src" location="${basedir}/src/main/js" />
     <property name="runtime" value="${basedir}/build/runtime" />
@@ -135,11 +136,17 @@
                 </fileset>
             </classpath>
         </javac>
+        <jar destfile="${test-lib}">
+            <fileset dir="${build.test-classes}">
+            </fileset>
+        </jar>
     </target>
 
     <target name="compiletest" depends="test-compile">
         <java classname="MainForJsTest" classpathref="test.run.classpath" failonerror="true">
             <sysproperty key="file.encoding" value="UTF-8" />
+            <arg value="src/test/ceylon"/>
+            <arg value="../ceylon.language/test"/>
         </java>
     </target>
 
