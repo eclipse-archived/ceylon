@@ -2388,7 +2388,15 @@ public class ExpressionTransformer extends AbstractTransformer {
         if (expr.getSupertypeQualifier() != null) {
             ClassOrInterface supertype = (ClassOrInterface)expr.getDeclaration().getContainer();
             if (supertype instanceof Interface) {
-                primaryExpr = naming.makeCompanionFieldName((Interface)supertype);
+                if (needDollarThis(expr.getScope())) {
+                    // we're in an interface $impl class
+                    // have to prefix it with $this and invoke it
+                    primaryExpr = makeQualIdent(naming.makeQuotedThis(), getCompanionAccessorName((Interface) supertype));
+                    primaryExpr = make().Apply(null, primaryExpr, List.<JCExpression>nil());
+                }else{
+                    // we're in a regular class
+                    primaryExpr = naming.makeCompanionFieldName((Interface)supertype);
+                }
             } else { // class
                 primaryExpr = naming.makeSuper();
             }
