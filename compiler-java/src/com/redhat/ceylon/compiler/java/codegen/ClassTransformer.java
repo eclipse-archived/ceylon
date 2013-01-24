@@ -701,8 +701,20 @@ public class ClassTransformer extends AbstractTransformer {
             concreteWrapper.body(gen().make().Exec(expr));
         } else {
             // deal with erasure and stuff
-            // FIXME: figure out the bigs about boxing
-            expr = gen().expressionGen().applyErasureAndBoxing(expr, methodType, typeErased, false, BoxingStrategy.INDIFFERENT, returnType, 0);
+            BoxingStrategy boxingStrategy;
+            boolean exprBoxed;
+            if(member instanceof TypedDeclaration){
+                TypedDeclaration typedDecl = (TypedDeclaration) member;
+                exprBoxed = !CodegenUtil.isUnBoxed(typedDecl);
+                boxingStrategy = CodegenUtil.getBoxingStrategy(typedDecl);
+            }else{
+                // must be a class or interface
+                exprBoxed = true;
+                boxingStrategy = BoxingStrategy.UNBOXED;
+            }
+            expr = gen().expressionGen().applyErasureAndBoxing(expr, methodType, typeErased, 
+                                                               exprBoxed, boxingStrategy,
+                                                               returnType, 0);
             concreteWrapper.body(gen().make().Return(expr));
         }
         return concreteWrapper;
