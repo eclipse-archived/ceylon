@@ -176,6 +176,11 @@ void erasureCasting(EC_A & EC_B & EC_C tripleIntersectionParam,
     // (because that's the type of the tuple literal), and we think we need that cast, even though we don't
     // we might be able to improve this logic somehow in the future.
     Integer[] integerSequential = [ for (c in 1..2) c ];
+    
+    // because accessing tuples with integer constant indices is equivalent to downcasting, we need to make sure casting is added
+    [Sequential<[Integer,String]>,Sequential<String>] tupleOfSequentialSomething = nothing;
+    String[] sequenceOfStrings2 = tupleOfSequentialSomething[1];
+    value sequenceOfSequenceOfStrings = tupleOfSequentialSomething[1...];
 }
 
 @nomodel
