@@ -99,7 +99,7 @@ class Generics() {
             shared actual Integer lastIndex = 0;
             shared actual X[] rest = {};
             shared actual GoodClassInheritance clone = GoodClassInheritance();
-            shared actual X? item(Integer key) { return null; }
+            shared actual X? get(Integer key) { return null; }
             shared actual Boolean contains(Object x) { return false; }
             shared actual X[] segment(Integer from, Integer length) { return this; }
             shared actual X first { throw; }

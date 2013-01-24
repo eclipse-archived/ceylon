@@ -11,7 +11,7 @@ class List<T>()
     shared actual List<T> clone {
         return this;
     }
-    shared actual T? item(Integer n) {
+    shared actual T? get(Integer n) {
         return null;
     }
     shared actual Boolean contains(Object o) {
