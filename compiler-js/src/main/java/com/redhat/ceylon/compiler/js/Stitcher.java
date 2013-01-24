@@ -11,6 +11,7 @@ import java.io.PrintWriter;
 import java.nio.channels.FileChannel;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 import java.util.Map;
 
 import net.minidev.json.JSONObject;
@@ -65,75 +66,73 @@ public class Stitcher {
         }
     }
 
-    private static void compileLanguageModule(PrintWriter writer, String clmod) throws IOException {
-        File srcdir = new File("src/main/resources/source");
-        srcdir.mkdirs();
+    private static void compileLanguageModule(List<String> sources, PrintWriter writer, String clmod)
+            throws IOException {
+        final File clSrcDir = new File("../ceylon.language/src/ceylon/language/");
+        //We'll copy the files to this temporary dir
+        File tmpdir = File.createTempFile("ceylonjs", "clsrc");
+        tmpdir.delete();
+        tmpdir = new File(tmpdir.getAbsolutePath());
+        tmpdir.mkdir();
+        tmpdir.deleteOnExit();
+        final File tmpout = new File(tmpdir, "modules");
+        tmpout.mkdir();
+        tmpout.deleteOnExit();
         Options opts = Options.parse(new ArrayList<String>(Arrays.asList(
                 "-rep", "build/runtime", "-nocomments", "-optimize",
-                "-out", "src/main/resources/modules", "-nomodule")));
+                "-out", tmpout.getAbsolutePath(), "-nomodule")));
 
-        //Read the list of files to copy
-        BufferedReader listReader = new BufferedReader(new FileReader("src/main/resources/language-module.txt"));
-        try {
-            String line;
-            //Copy the files to a temporary dir
-            while ((line = listReader.readLine()) != null) {
-                if (!line.startsWith("#") && line.length() > 0) {
-                    //Erase all existing files
-                    for (File f : srcdir.listFiles()) {
-                        f.delete();
-                    }
-                    //Compile these files
-                    System.out.println("Compiling language module " + line);
-                    for (String filename : line.split(",")) {
-                        File src = new File(String.format("../ceylon.language/src/ceylon/language/%s.ceylon", filename.trim()));
-                        if (src.exists() && src.isFile() && src.canRead()) {
-                            File dst = new File(srcdir, src.getName());
-                            copyFile(src, dst);
-                        } else {
-                            throw new IllegalArgumentException("Invalid Ceylon language module source " + src);
-                        }
-                    }
-                    //Compile all that stuff
-                    TypeCheckerBuilder tcb = new TypeCheckerBuilder().addSrcDirectory(srcdir);
-                    tcb.setRepositoryManager(CeylonUtils.repoManager().systemRepo(opts.getSystemRepo())
-                            .userRepos(opts.getRepos()).outRepo(opts.getOutDir()).buildManager());
-                    //This is to use the JSON metamodel
-                    tcb.moduleManagerFactory(new JsModuleManagerFactory(
-                            clmod == null ? null : (Map<String,Object>)JSONValue.parse(clmod)));
-                    //Set this before typechecking to share some decls that otherwise would be private
-                    JsCompiler.compilingLanguageModule=true;
-                    TypeChecker tc = tcb.getTypeChecker();
-                    tc.process();
-                    if (tc.getErrors() > 0) {
-                        System.exit(1);
-                    }
-                    JsCompiler jsc = new JsCompiler(tc, opts).stopOnErrors(false);
-                    jsc.generate();
-                    File compsrc = new File("src/main/resources/modules/default/default.js");
-                    if (compsrc.exists() && compsrc.isFile() && compsrc.canRead()) {
-                        BufferedReader jsr = new BufferedReader(new FileReader(compsrc));
-                        try {
-                            String jsline = null;
-                            while ((jsline = jsr.readLine()) != null) {
-                                writer.println(jsline);
-                            }
-                        } finally {
-                            jsr.close();
-                            compsrc.delete();
-                        }
-                    } else {
-                        System.out.println("WTF??? No generated default.js for language module!!!!");
-                        System.exit(1);
-                    }
+        for (String line : sources) {
+            for (File f : tmpdir.listFiles()) {
+                f.delete();
+            }
+            //Compile these files
+            System.out.println("Compiling language module " + line);
+            for (String filename : line.split(",")) {
+                File src = new File(clSrcDir, String.format("%s.ceylon", filename.trim()));
+                if (src.exists() && src.isFile() && src.canRead()) {
+                    File dst = new File(tmpdir, src.getName());
+                    copyFile(src, dst);
+                } else {
+                    throw new IllegalArgumentException("Invalid Ceylon language module source " + src);
                 }
             }
-        } finally {
-            listReader.close();
+            //Compile all that stuff
+            TypeCheckerBuilder tcb = new TypeCheckerBuilder().addSrcDirectory(tmpdir);
+            tcb.setRepositoryManager(CeylonUtils.repoManager().systemRepo(opts.getSystemRepo())
+                    .userRepos(opts.getRepos()).outRepo(opts.getOutDir()).buildManager());
+            //This is to use the JSON metamodel
+            tcb.moduleManagerFactory(new JsModuleManagerFactory(
+                    clmod == null ? null : (Map<String,Object>)JSONValue.parse(clmod)));
+            //Set this before typechecking to share some decls that otherwise would be private
+            JsCompiler.compilingLanguageModule=true;
+            TypeChecker tc = tcb.getTypeChecker();
+            tc.process();
+            if (tc.getErrors() > 0) {
+                System.exit(1);
+            }
+            JsCompiler jsc = new JsCompiler(tc, opts).stopOnErrors(false);
+            jsc.generate();
+            File compsrc = new File(tmpout, "default/default.js");
+            if (compsrc.exists() && compsrc.isFile() && compsrc.canRead()) {
+                BufferedReader jsr = new BufferedReader(new FileReader(compsrc));
+                try {
+                    String jsline = null;
+                    while ((jsline = jsr.readLine()) != null) {
+                        writer.println(jsline);
+                    }
+                } finally {
+                    jsr.close();
+                    compsrc.delete();
+                }
+            } else {
+                System.out.println("WTF??? No generated default.js for language module!!!!");
+                System.exit(1);
+            }
         }
     }
 
-    private static void stitch(File infile, PrintWriter writer) throws IOException {
+    private static void stitch(File infile, PrintWriter writer, List<String> sourceFiles) throws IOException {
         BufferedReader reader = new BufferedReader(new InputStreamReader(new FileInputStream(infile), "UTF-8"));
         try {
             String line = null;
@@ -144,7 +143,7 @@ public class Stitcher {
                     if (line.startsWith("//#include ")) {
                         File auxfile = new File(infile.getParentFile(), line.substring(11).trim());
                         if (auxfile.exists() && auxfile.isFile() && auxfile.canRead()) {
-                            stitch(auxfile, writer);
+                            stitch(auxfile, writer, null);
                         } else {
                             throw new IllegalArgumentException("Invalid included file " + auxfile);
                         }
@@ -175,7 +174,7 @@ public class Stitcher {
                         writer.flush();
                     } else if (line.equals("//#COMPILED")) {
                         System.out.println("Compiling language module sources");
-                        compileLanguageModule(writer, clModel);
+                        compileLanguageModule(sourceFiles, writer, clModel);
                     } else if (!line.endsWith("//IGNORE")) {
                         writer.println(line);
                     }
@@ -187,33 +186,43 @@ public class Stitcher {
     }
 
     public static void main(String[] args) throws IOException {
-        if (args.length < 2) {
-            System.err.println("This program requires 2 arguments to run:");
+        if (args.length < 3) {
+            System.err.println("This program requires 3 arguments to run:");
             System.err.println("1. The path to the main JS file");
-            System.err.println("2. The destination directory for the processed file");
-            System.err.println();
-            System.err.println("You can specify a third parameter which is a version number,");
-            System.err.println("which will be inserted between filename and extension.");
+            System.err.println("2. The path to the list of language module files to compile from Ceylon source");
+            System.err.println("3. The path of the resulting JS file");
             System.exit(1);
             return;
         }
         File infile = new File(args[0]);
         if (infile.exists() && infile.isFile() && infile.canRead()) {
-            File outdir = new File(args[1]);
-            if (outdir.exists() && outdir.isDirectory() && outdir.canWrite()) {
-                String outname = infile.getName();
-                if (args.length>2) {
-                    final int dotpos = outname.lastIndexOf('.');
-                    outname = String.format("%s-%s%s", outname.substring(0, dotpos), args[2], outname.substring(dotpos));
+            File outfile = new File(args[2]);
+            if (!outfile.getParentFile().exists()) {
+                outfile.getParentFile().mkdirs();
+            }
+            ArrayList<String> clsrc = new ArrayList<String>();
+            File clSourcesPath = new File(args[1]);
+            if (!(clSourcesPath.exists() && clSourcesPath.isFile() && clSourcesPath.canRead())) {
+                throw new IllegalArgumentException("Invalid language module sources list " + args[2]);
+            }
+            BufferedReader listReader = new BufferedReader(new FileReader(clSourcesPath));
+            try {
+                String line;
+                //Copy the files to a temporary dir
+                while ((line = listReader.readLine()) != null) {
+                    if (!line.startsWith("#") && line.length() > 0) {
+                        clsrc.add(line);
+                    }
                 }
-                File outfile = new File(outdir, outname);
-                PrintWriter writer = new PrintWriter(outfile, "UTF-8");
-                stitch(infile, writer);
+            } finally {
+                listReader.close();
+            }
+            PrintWriter writer = new PrintWriter(outfile, "UTF-8");
+            try {
+                stitch(infile, writer, clsrc);
+            } finally {
                 writer.close();
                 ShaSigner.sign(outfile, new JULLogger(), true);
-            } else {
-                System.err.println("Output directory is invalid: " + outdir);
-                System.exit(3);
             }
         } else {
             System.err.println("Input file is invalid: " + infile);
