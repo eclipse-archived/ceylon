@@ -121,8 +121,8 @@ Array$proto.items = function(keys) {
     if (keys === undefined) return empty;
     var seq = [];
     for (var i = 0; i < keys.getSize(); i++) {
-        var key = keys.item(i);
-        seq.push(this.item(key));
+        var key = keys.get(i);
+        seq.push(this.get(key));
     }
     return ArraySequence(seq,this.$$targs$$);
 }

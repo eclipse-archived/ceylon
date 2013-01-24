@@ -24,7 +24,7 @@ Map$proto.equals = function(other) {
     if (isOfType(other, {t:Map}) && other.getSize().equals(this.getSize())) {
         var iter = this.getIterator();
         var entry; while ((entry = iter.next()) !== $finished) {
-            var oi = other.item(entry.getKey());
+            var oi = other.get(entry.getKey());
             if (oi === null || !entry.getItem().equals(oi)) {
                 return false;
             }
@@ -241,12 +241,12 @@ HashMap$proto.item = function(key) {
 }
 HashMap$proto.contains = function(elem) {
     if (isOfType(elem, {t:Entry})) {
-        var item = this.item(elem.getKey());
+        var item = this.get(elem.getKey());
         if (item !== null) { return item.equals(elem.getItem()); }
     }
     return false;
 }
-HashMap$proto.defines = function(key) { return this.item(key) !== null; }
+HashMap$proto.defines = function(key) { return this.get(key) !== null; }
 
 function HashSet(elems, $$targs$$, set) {
     if (set===undefined) { set = new HashSet.$$; }
@@ -279,7 +279,7 @@ HashSet$proto.getLast = function() {
 }
 HashSet$proto.getIterator = function() { return HashSetIterator(this.map, this.$$targs$$); }
 HashSet$proto.getClone = function() { return this; }
-HashSet$proto.contains = function(elem) { return this.map.item(elem) !== null; }
+HashSet$proto.contains = function(elem) { return this.map.get(elem) !== null; }
 HashSet$proto.union = function(other, $$$mptypes) {
     var set = hashSetFromMap(copyHashMap(this.map));
     set.$$targs$$=[{t:'u', l:[this.$$targs$$[0], $$$mptypes[0]]}];
@@ -300,7 +300,7 @@ HashSet$proto.exclusiveUnion = function(other) {
     var it = other.getIterator();
     var elem;
     while ((elem=it.next()) !== $finished) {
-        if (this.map.item(elem) === null) { set.map.put(Entry(elem, true)); }
+        if (this.map.get(elem) === null) { set.map.put(Entry(elem, true)); }
     }
     return set;
 }

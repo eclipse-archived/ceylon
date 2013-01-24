@@ -23,8 +23,8 @@ List$proto.defines = function(idx) {
 List$proto.equals = function(other) {
     if (isOfType(other, {t:List}) && other.getSize().equals(this.getSize())) {
         for (var i = 0; i < this.getSize(); i++) {
-            var mine = this.item(i);
-            var theirs = other.item(i);
+            var mine = this.get(i);
+            var theirs = other.get(i);
             if (((mine === null) && theirs) || !(mine && mine.equals(theirs))) {
                 return false;
             }
@@ -48,7 +48,7 @@ List$proto.findLast = function(select) {
     var li = this.getLastIndex();
     if (li !== null) {
         while (li>=0) {
-            var e = this.item(li);
+            var e = this.get(li);
             if (e !== null && select(e)) {
                 return e;
             }
@@ -94,7 +94,7 @@ function ListIterator(list) {
 initTypeProto(ListIterator, 'ceylon.language::ListIterator', $init$Iterator());
 ListIterator.$$.prototype.next = function() {
     if (this.index <= this.lastIndex) {
-        return this.list.item(this.index++);
+        return this.list.get(this.index++);
     }
     return $finished;
 }

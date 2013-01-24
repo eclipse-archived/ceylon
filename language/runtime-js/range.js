@@ -105,7 +105,7 @@ Range$proto.spanFrom = function(from) {
 }
 Range$proto.definesEvery = function(keys) {
     for (var i = 0; i < keys.getSize(); i++) {
-        if (!this.defines(keys.item(i))) {
+        if (!this.defines(keys.get(i))) {
             return false;
         }
     }
@@ -113,7 +113,7 @@ Range$proto.definesEvery = function(keys) {
 }
 Range$proto.definesAny = function(keys) {
     for (var i = 0; i < keys.getSize(); i++) {
-        if (this.defines(keys.item(i))) {
+        if (this.defines(keys.get(i))) {
             return true;
         }
     }

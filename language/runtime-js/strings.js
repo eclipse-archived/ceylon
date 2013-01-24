@@ -167,7 +167,7 @@ String$proto.getHash = function() {
   return this._hash;
 }
 String$proto.getFirst = function() {
-    return this.item(0);
+    return this.get(0);
 }
 
 function cmpSubString(str, subStr, offset) {
@@ -269,8 +269,8 @@ String$proto.lastCharacterOccurrence = function(subc) {
 String$proto.getCharacters = function() {
     return this.length>0 ? this:empty;
 }
-String$proto.getFirst = function() { return this.getSize()>0?this.item(0):null; }
-String$proto.getLast = function() { return this.getSize()>0?this.item(this.getSize().getPredecessor()):null; }
+String$proto.getFirst = function() { return this.getSize()>0?this.get(0):null; }
+String$proto.getLast = function() { return this.getSize()>0?this.get(this.getSize().getPredecessor()):null; }
 String$proto.getKeys = function() {
     //TODO implement!!!
     return this.getSize() > 0 ? Range(0, this.getSize().getPredecessor(), [{t:Integer}]) : empty;
