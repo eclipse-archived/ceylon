@@ -42,8 +42,12 @@ import com.redhat.ceylon.compiler.typechecker.tree.Tree.AnyMethod;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.AttributeArgument;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.AttributeDeclaration;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.AttributeSetterDefinition;
+import com.redhat.ceylon.compiler.typechecker.tree.Tree.ForComprehensionClause;
+import com.redhat.ceylon.compiler.typechecker.tree.Tree.ForIterator;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.FunctionArgument;
+import com.redhat.ceylon.compiler.typechecker.tree.Tree.KeyValueIterator;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.ParameterizedExpression;
+import com.redhat.ceylon.compiler.typechecker.tree.Tree.ValueIterator;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.Variable;
 import com.redhat.ceylon.compiler.typechecker.tree.Visitor;
 
@@ -300,6 +304,20 @@ public abstract class BoxingDeclarationVisitor extends Visitor {
         super.visit(that);
         for (Tree.ParameterList list : that.getParameterLists()) {
             boxAndRawParameterList(list.getModel(), list.getModel());
+        }
+    }
+
+    @Override
+    public void visit(ForComprehensionClause that) {
+        super.visit(that);
+        // sort of a hack, because normal visiting rules would declare iterator variables to be potentially
+        // unboxed, but the implementation always boxes them for now, so override it after we visit the comprehension
+        ForIterator iter = that.getForIterator();
+        if (iter instanceof ValueIterator) {
+            ((ValueIterator) iter).getVariable().getDeclarationModel().setUnboxed(false);
+        } else if (iter instanceof KeyValueIterator) {
+            ((KeyValueIterator) iter).getKeyVariable().getDeclarationModel().setUnboxed(false);
+            ((KeyValueIterator) iter).getValueVariable().getDeclarationModel().setUnboxed(false);
         }
     }
 }
