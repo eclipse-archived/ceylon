@@ -33,6 +33,11 @@ abstract class Bug477_1<T> implements .ceylon.language.List<T> {
     }
     
     @.java.lang.Override
+    public .ceylon.language.Iterator<? extends T> getIterator() {
+        return $ceylon$language$List$this.getIterator();
+    }
+    
+    @.java.lang.Override
     public T getFirst() {
         return $ceylon$language$List$this.getFirst();
     }
@@ -242,6 +247,11 @@ abstract class Bug477_2<T> implements .ceylon.language.List<T> {
     @.java.lang.Override
     public boolean defines(final .ceylon.language.Integer index) {
         return $ceylon$language$List$this.defines(index);
+    }
+    
+    @.java.lang.Override
+    public .ceylon.language.Iterator<? extends T> getIterator() {
+        return $ceylon$language$List$this.getIterator();
     }
     
     @.java.lang.Override

@@ -32,6 +32,11 @@ abstract class Bug446<T> implements .ceylon.language.List<T> {
     }
     
     @.java.lang.Override
+    public .ceylon.language.Iterator<? extends T> getIterator() {
+        return $ceylon$language$List$this.getIterator();
+    }
+    
+    @.java.lang.Override
     public T getFirst() {
         return $ceylon$language$List$this.getFirst();
     }
