@@ -8,8 +8,10 @@ doc "A pair containing a _key_ and an associated value called
      "
 by "Gavin"
 shared class Entry<out Key, out Item>(key, item)
-        extends Tuple<Key|Item,Key,Tuple<Item,Item>>
-                (key,Tuple(item,[]))
+        extends Object()
+        //TODO: disabled for now for performance 
+        /*extends Tuple<Key|Item,Key,Tuple<Item,Item>>
+                (key,Tuple(item,[]))*/
         given Key satisfies Object
         given Item satisfies Object {
     
