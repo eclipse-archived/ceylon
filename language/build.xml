@@ -334,6 +334,7 @@
     <target name="compile.tests.js" depends="ceylon.language.js">
         <java classname="MainForJsTest" classpathref="js.test.compile.classpath" failonerror="true">
             <sysproperty key="file.encoding" value="UTF-8" />
+            <arg value="test"/>
         </java>
     </target>
 
