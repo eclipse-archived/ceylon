@@ -7,6 +7,7 @@ final class bug953_ {
     
     static void bug953() {
         .ceylon.language.sort_.sort((.ceylon.language.Iterable).ceylon.language.empty_.getEmpty$());
+        final .java.lang.Object i = .ceylon.language.min_.min((.ceylon.language.Iterable).ceylon.language.empty_.getEmpty$());
     }
     
     public static void main(.java.lang.String[] args) {

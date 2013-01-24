@@ -20,4 +20,5 @@
 @nomodel
 void bug953(){
     sort({});
+    Null i = min({});
 } 
