@@ -137,10 +137,11 @@ void rangeOpIterationOptimizationCorrect() {
     void optimizedWithByMatches(Integer start, Integer end, Integer step) {
         value unoptimized = SequenceBuilder<Integer>();
         @disableOptimization
-        for (i in (start..end).by(step)) {
-            //print("unoptimized " i "");
-            unoptimized.append(i);
-        }
+        // See https://github.com/ceylon/ceylon.language/issues/192
+        //for (i in (start..end).by(step)) {
+        //    //print("unoptimized " i "");
+        //    unoptimized.append(i);
+        //}
         
         value optimized = SequenceBuilder<Integer>();
         @requireOptimization:"RangeOpIteration"

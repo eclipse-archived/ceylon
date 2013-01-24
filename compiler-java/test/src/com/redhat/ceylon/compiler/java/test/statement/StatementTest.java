@@ -257,8 +257,9 @@ public class StatementTest extends CompilerTest {
         compareWithJavaSource("loop/RangeOpIterationOptimization");
     }
     
+    // fails due to https://github.com/ceylon/ceylon.language/issues/192
     @Test
-    public void testLopRangeOpIterationOptimizationCorrect(){
+    public void testLopRangeOpIterationOptimizationCorrect_fail(){
         compileAndRun("com.redhat.ceylon.compiler.java.test.statement.loop.rangeOpIterationOptimizationCorrect", 
                 "loop/RangeOpIterationOptimizationCorrect.ceylon");
     }
