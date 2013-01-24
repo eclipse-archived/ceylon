@@ -84,7 +84,7 @@ class SequenceLiteral {
                 };
             }
         }, .ceylon.language.String.instance("a"));
-        final .ceylon.language.Sequential<? extends .ceylon.language.String> sequenceComp2 = new .ceylon.language.Tuple(.ceylon.language.String.instance("a"), new .com.redhat.ceylon.compiler.java.language.AbstractIterable<.ceylon.language.String, .java.lang.Object>(){
+        final .ceylon.language.Sequential<? extends .ceylon.language.String> sequenceComp2 = new .ceylon.language.Tuple<.ceylon.language.String, .ceylon.language.String, .ceylon.language.Sequential<? extends .ceylon.language.String>>(.ceylon.language.String.instance("a"), new .com.redhat.ceylon.compiler.java.language.AbstractIterable<.ceylon.language.String, .java.lang.Object>(){
             
             public final .ceylon.language.Iterator<.ceylon.language.String> getIterator() {
                 return new .ceylon.language.Iterator<.ceylon.language.String>(){

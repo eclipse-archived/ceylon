@@ -70,7 +70,7 @@ final class tupleTypeTest_ {
         final .ceylon.language.Sequential<? extends .ceylon.language.String> oneTupleEllipsis = strings;
         final .ceylon.language.Tuple<.java.lang.Object, ? extends .ceylon.language.Integer, ? extends .ceylon.language.Sequential<? extends .ceylon.language.String>> twoTupleEllipsis = new .ceylon.language.Tuple(.ceylon.language.Integer.instance(1L), strings);
         final .ceylon.language.Tuple<.java.lang.Object, ? extends .ceylon.language.String, ? extends .ceylon.language.Tuple<.java.lang.Object, ? extends .ceylon.language.Integer, ? extends .ceylon.language.Sequential<? extends .ceylon.language.String>>> threeTupleEllipsis = new .ceylon.language.Tuple(.ceylon.language.String.instance("a"), new .ceylon.language.Tuple(.ceylon.language.Integer.instance(1L), strings));
-        final .ceylon.language.Sequential<? extends .ceylon.language.String> comprehensionTuple = new .com.redhat.ceylon.compiler.java.language.AbstractIterable<.ceylon.language.String, .java.lang.Object>(){
+        final .ceylon.language.Sequential<? extends .ceylon.language.String> comprehensionTuple = (.ceylon.language.Sequence<? extends .ceylon.language.String>)(.ceylon.language.Sequence)new .com.redhat.ceylon.compiler.java.language.AbstractIterable<.ceylon.language.String, .java.lang.Object>(){
             
             public final .ceylon.language.Iterator<.ceylon.language.String> getIterator() {
                 return new .ceylon.language.Iterator<.ceylon.language.String>(){
