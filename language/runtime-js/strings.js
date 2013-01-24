@@ -100,7 +100,7 @@ String$proto.shorterThan = function(length) {
 String$proto.getIterator = function() {
 	return this.length === 0 ? getEmptyIterator() : StringIterator(this);
 }
-String$proto.item = function(index) {
+String$proto.get = function(index) {
     if (index<0 || index>=this.length) {return null}
     var i = 0;
     for (var count=0; count<index; count++) {

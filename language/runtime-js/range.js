@@ -32,7 +32,7 @@ Range$proto.getSize = function() {
     return this.size;
 }
 Range$proto.getLastIndex = function() { return this.getSize()-1; }
-Range$proto.item = function(index) {
+Range$proto.get = function(index) {
     var idx = 0;
     var x = this.first;
     while (idx < index) {

@@ -228,7 +228,7 @@ HashMap$proto.getLast = function() {
 }
 HashMap$proto.getIterator = function() { return HashMapIterator(this.map); }
 HashMap$proto.getClone = function() { return this; }
-HashMap$proto.item = function(key) {
+HashMap$proto.get = function(key) {
     var hash = key.getHash();
     var arr = this.map[hash];
     if (arr !== undefined) {

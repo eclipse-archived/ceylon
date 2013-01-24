@@ -75,7 +75,7 @@ Array$proto.setItem = function(idx,elem) {
         this[idx] = elem;
     }
 }
-Array$proto.item = function(idx) {
+Array$proto.get = function(idx) {
     var result = this[idx];
     return result!==undefined ? result:null;
 }
