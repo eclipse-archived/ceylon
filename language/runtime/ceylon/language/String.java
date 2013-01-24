@@ -662,7 +662,7 @@ public abstract class String
     }
 
     @Ignore
-    public static java.lang.String join(java.lang.String value, Iterable<? extends String, ? extends java.lang.Object> strings) {
+    public static java.lang.String join(java.lang.String value, Sequential<? extends String> strings) {
         java.lang.StringBuilder result = new java.lang.StringBuilder();
         Iterator<? extends String> it = strings.getIterator();
         java.lang.Object elem = it.next();
@@ -682,7 +682,7 @@ public abstract class String
 
     @Ignore
     public static java.lang.String join(java.lang.String value) {
-        return join(value, (Iterable)empty_.getEmpty$());
+        return join(value, (Sequential)empty_.getEmpty$());
     }
 
     @Override
