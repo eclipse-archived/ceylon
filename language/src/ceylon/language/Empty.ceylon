@@ -1,7 +1,14 @@
 import ceylon.language { e=empty }
 
-doc "A sequence with no elements. The type of the expression
-     `[]`."
+doc "A sequence with no elements. The type `Empty` may be
+     abbreviated `[]`, and an instance is produced by the 
+     expression `[]`. That is, in the following expression,
+     `e` has type `[]` and refers to the value `[]`:
+     
+         [] e = [];
+     
+     (Whether the syntax `[]` refers to the type or the 
+     value depends upon how it occurs grammatically.)"
 see (Sequence)
 shared interface Empty of e
            satisfies Nothing[] &
@@ -116,8 +123,8 @@ shared interface Empty of e
             (Element element) => [ element ];
 }
 
-doc "The value representing a sequence with no elements. The 
-     instance of `{}`"
+doc "A sequence with no elements, abbreviated `[]`. The 
+     unique instance of the type `[]`."
 //by "Tako Schotanus"
 shared object empty extends Object() satisfies [] {}
 
