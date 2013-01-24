@@ -13,8 +13,8 @@ abstract class AbstractSatisfier<T> implements .com.redhat.ceylon.compiler.java.
     
     AbstractSatisfier() {
         this.$com$redhat$ceylon$compiler$java$test$structure$concrete$AbstractSatisfier_I$this = new .com.redhat.ceylon.compiler.java.test.structure.concrete.AbstractSatisfier_I$impl(this);
-        this.$ceylon$language$Iterable$this = new .ceylon.language.Iterable$impl<.java.lang.Object, .java.lang.Object>((.ceylon.language.Iterable)this);
-        this.$ceylon$language$Container$this = new .ceylon.language.Container$impl<.java.lang.Object, .java.lang.Object>((.ceylon.language.Container)this);
+        this.$ceylon$language$Iterable$this = new .ceylon.language.Iterable$impl<.java.lang.Object, .java.lang.Object>((.ceylon.language.Iterable<.java.lang.Object, .java.lang.Object>)(.ceylon.language.Iterable)this);
+        this.$ceylon$language$Container$this = new .ceylon.language.Container$impl<.java.lang.Object, .java.lang.Object>((.ceylon.language.Container<.java.lang.Object, .java.lang.Object>)(.ceylon.language.Container)this);
         this.$ceylon$language$Category$this = new .ceylon.language.Category$impl(this);
     }
     protected final .com.redhat.ceylon.compiler.java.test.structure.concrete.AbstractSatisfier_I$impl $com$redhat$ceylon$compiler$java$test$structure$concrete$AbstractSatisfier_I$this;
@@ -137,7 +137,7 @@ abstract class AbstractSatisfier<T> implements .com.redhat.ceylon.compiler.java.
     
     @.java.lang.Override
     public <Other>.ceylon.language.Iterable<? extends .java.lang.Object, ?> chain(final .ceylon.language.Iterable<? extends Other, ?> other) {
-        return $ceylon$language$Iterable$this.chain(other);
+        return (.ceylon.language.Iterable<? extends .java.lang.Object, ?>)(.ceylon.language.Iterable)$ceylon$language$Iterable$this.chain(other);
     }
     protected final .ceylon.language.Container$impl<.java.lang.Object, .java.lang.Object> $ceylon$language$Container$this;
     protected final .ceylon.language.Category$impl $ceylon$language$Category$this;

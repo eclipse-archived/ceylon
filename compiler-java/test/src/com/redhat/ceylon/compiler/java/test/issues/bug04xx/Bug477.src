@@ -11,7 +11,7 @@ abstract class Bug477_1<T> implements .ceylon.language.List<T> {
         this.$ceylon$language$Cloneable$this = new .ceylon.language.Cloneable$impl<.ceylon.language.Collection<? extends T>>((.ceylon.language.Cloneable<.ceylon.language.Collection<? extends T>>)(.ceylon.language.Cloneable)this);
         this.$ceylon$language$Correspondence$this = new .ceylon.language.Correspondence$impl<.ceylon.language.Integer, T>(this);
         this.$ceylon$language$Ranged$this = new .ceylon.language.Ranged$impl<.ceylon.language.Integer, .ceylon.language.List<? extends T>>(this);
-        this.clone = (.com.redhat.ceylon.compiler.java.test.issues.bug04xx.Bug477_1<? extends T>)(.com.redhat.ceylon.compiler.java.test.issues.bug04xx.Bug477_1).ceylon.language.nothing_.getNothing$();
+        this.clone = (.com.redhat.ceylon.compiler.java.test.issues.bug04xx.Bug477_1).ceylon.language.nothing_.getNothing$();
         this.string = ((.ceylon.language.String).ceylon.language.nothing_.getNothing$()).toString();
         this.hash = (int)1L;
     }
@@ -25,11 +25,6 @@ abstract class Bug477_1<T> implements .ceylon.language.List<T> {
     @.java.lang.Override
     public boolean defines(final .ceylon.language.Integer index) {
         return $ceylon$language$List$this.defines(index);
-    }
-    
-    @.java.lang.Override
-    public .ceylon.language.Iterator<? extends T> getIterator() {
-        return $ceylon$language$List$this.getIterator();
     }
     
     @.java.lang.Override
@@ -161,7 +156,7 @@ abstract class Bug477_1<T> implements .ceylon.language.List<T> {
     
     @.java.lang.Override
     public <Other>.ceylon.language.Iterable<? extends .java.lang.Object, ?> chain(final .ceylon.language.Iterable<? extends Other, ?> other) {
-        return $ceylon$language$Iterable$this.chain(other);
+        return (.ceylon.language.Iterable<? extends .java.lang.Object, ?>)(.ceylon.language.Iterable)$ceylon$language$Iterable$this.chain(other);
     }
     protected final .ceylon.language.Container$impl<T, .java.lang.Object> $ceylon$language$Container$this;
     protected final .ceylon.language.Category$impl $ceylon$language$Category$this;
@@ -233,7 +228,7 @@ abstract class Bug477_2<T> implements .ceylon.language.List<T> {
         this.$ceylon$language$Cloneable$this = new .ceylon.language.Cloneable$impl<.ceylon.language.Collection<? extends T>>((.ceylon.language.Cloneable<.ceylon.language.Collection<? extends T>>)(.ceylon.language.Cloneable)this);
         this.$ceylon$language$Correspondence$this = new .ceylon.language.Correspondence$impl<.ceylon.language.Integer, T>(this);
         this.$ceylon$language$Ranged$this = new .ceylon.language.Ranged$impl<.ceylon.language.Integer, .ceylon.language.List<? extends T>>(this);
-        this.clone = (.ceylon.language.List<? extends T>)(.ceylon.language.List).ceylon.language.nothing_.getNothing$();
+        this.clone = (.ceylon.language.List).ceylon.language.nothing_.getNothing$();
         this.string = ((.ceylon.language.String).ceylon.language.nothing_.getNothing$()).toString();
         this.hash = (int)1L;
     }
@@ -247,11 +242,6 @@ abstract class Bug477_2<T> implements .ceylon.language.List<T> {
     @.java.lang.Override
     public boolean defines(final .ceylon.language.Integer index) {
         return $ceylon$language$List$this.defines(index);
-    }
-    
-    @.java.lang.Override
-    public .ceylon.language.Iterator<? extends T> getIterator() {
-        return $ceylon$language$List$this.getIterator();
     }
     
     @.java.lang.Override
@@ -383,7 +373,7 @@ abstract class Bug477_2<T> implements .ceylon.language.List<T> {
     
     @.java.lang.Override
     public <Other>.ceylon.language.Iterable<? extends .java.lang.Object, ?> chain(final .ceylon.language.Iterable<? extends Other, ?> other) {
-        return $ceylon$language$Iterable$this.chain(other);
+        return (.ceylon.language.Iterable<? extends .java.lang.Object, ?>)(.ceylon.language.Iterable)$ceylon$language$Iterable$this.chain(other);
     }
     protected final .ceylon.language.Container$impl<T, .java.lang.Object> $ceylon$language$Container$this;
     protected final .ceylon.language.Category$impl $ceylon$language$Category$this;

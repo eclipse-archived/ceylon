@@ -54,7 +54,7 @@ class Bug476Bottom<T, U> extends .com.redhat.ceylon.compiler.java.test.issues.bu
     
     @.java.lang.Override
     public final .com.redhat.ceylon.compiler.java.test.issues.bug04xx.Bug476Top<? extends .com.redhat.ceylon.compiler.java.test.issues.bug04xx.Bug476A> m2() {
-        return (.com.redhat.ceylon.compiler.java.test.issues.bug04xx.Bug476Top<? extends .com.redhat.ceylon.compiler.java.test.issues.bug04xx.Bug476A>)(.com.redhat.ceylon.compiler.java.test.issues.bug04xx.Bug476Top).ceylon.language.nothing_.getNothing$();
+        return (.com.redhat.ceylon.compiler.java.test.issues.bug04xx.Bug476Top).ceylon.language.nothing_.getNothing$();
     }
     private .com.redhat.ceylon.compiler.java.test.issues.bug04xx.Bug476A attr;
     
@@ -103,11 +103,6 @@ public abstract class Bug476<T> implements .ceylon.language.List<T> {
     @.java.lang.Override
     public boolean defines(final .ceylon.language.Integer index) {
         return $ceylon$language$List$this.defines(index);
-    }
-    
-    @.java.lang.Override
-    public .ceylon.language.Iterator<? extends T> getIterator() {
-        return $ceylon$language$List$this.getIterator();
     }
     
     @.java.lang.Override
@@ -239,7 +234,7 @@ public abstract class Bug476<T> implements .ceylon.language.List<T> {
     
     @.java.lang.Override
     public <Other>.ceylon.language.Iterable<? extends .java.lang.Object, ?> chain(final .ceylon.language.Iterable<? extends Other, ?> other) {
-        return $ceylon$language$Iterable$this.chain(other);
+        return (.ceylon.language.Iterable<? extends .java.lang.Object, ?>)(.ceylon.language.Iterable)$ceylon$language$Iterable$this.chain(other);
     }
     protected final .ceylon.language.Container$impl<T, .java.lang.Object> $ceylon$language$Container$this;
     protected final .ceylon.language.Category$impl $ceylon$language$Category$this;
