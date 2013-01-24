@@ -125,7 +125,7 @@ shared class Singleton<out Element>(Element element)
                     find(selecting);
     
     shared actual Singleton<Element> sort
-            (Comparison? comparing(Element a, Element b)) => this;
+            (Comparison comparing(Element a, Element b)) => this;
     
     shared actual Boolean any
             (Boolean selecting(Element e)) =>

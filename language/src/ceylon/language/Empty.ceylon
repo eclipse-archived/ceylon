@@ -96,7 +96,7 @@ shared interface Empty of e
             (Boolean selecting(Nothing element)) => null;
     
     shared actual [] sort
-            (Comparison? comparing(Nothing a, Nothing b)) => this;
+            (Comparison comparing(Nothing a, Nothing b)) => this;
     
     shared actual [] collect<Result>
             (Result collecting(Nothing element)) => this;

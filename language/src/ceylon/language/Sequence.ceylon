@@ -57,7 +57,7 @@ shared interface Sequence<out Element>
          imposing a partial order upon the elements."
     shared default actual [Element+] sort(
             doc "The function comparing pairs of elements."
-            Comparison? comparing(Element x, Element y)) {
+            Comparison comparing(Element x, Element y)) {
         value s = internalSort(comparing, this);
         //TODO: fix internalSort() and remove this assertion
         assert (nonempty s);

@@ -192,7 +192,7 @@ shared native interface Iterable<out Element, out Absent=Null>
     see (byIncreasing, byDecreasing)
     shared default Element[] sort(
             doc "The function comparing pairs of elements."
-            Comparison? comparing(Element x, Element y)) =>
+            Comparison comparing(Element x, Element y)) =>
                     internalSort(comparing, this);
     
     doc "A sequence containing the results of applying the
