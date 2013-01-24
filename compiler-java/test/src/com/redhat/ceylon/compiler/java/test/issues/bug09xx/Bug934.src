@@ -1,0 +1,45 @@
+package com.redhat.ceylon.compiler.java.test.issues.bug09xx;
+
+final class bug934_collectMatches_ {
+    
+    private bug934_collectMatches_() {
+    }
+    
+    static <Element>.ceylon.language.Tuple<.ceylon.language.Sequential<? extends .java.lang.Object>, ? extends .ceylon.language.Sequential<? extends .ceylon.language.Tuple<.java.lang.Object, ? extends .ceylon.language.Integer, ? extends .ceylon.language.Tuple<Element, ? extends Element, ? extends .ceylon.language.Empty>>>, ? extends .ceylon.language.Tuple<.ceylon.language.Sequential<? extends Element>, ? extends .ceylon.language.Sequential<? extends Element>, ? extends .ceylon.language.Empty>> bug934_collectMatches(final .ceylon.language.Sequential<? extends Element> data, final .ceylon.language.Callable<? extends .ceylon.language.Integer> search) {
+        final .ceylon.language.SequenceBuilder<.ceylon.language.Tuple<.java.lang.Object, ? extends .ceylon.language.Integer, ? extends .ceylon.language.Tuple<Element, ? extends Element, ? extends .ceylon.language.Empty>>> ok = new .ceylon.language.SequenceBuilder<.ceylon.language.Tuple<.java.lang.Object, ? extends .ceylon.language.Integer, ? extends .ceylon.language.Tuple<Element, ? extends Element, ? extends .ceylon.language.Empty>>>();
+        final .ceylon.language.SequenceBuilder<Element> ko = new .ceylon.language.SequenceBuilder<Element>();
+        .java.lang.Object $elem$0;
+        for (.ceylon.language.Iterator<? extends Element> $element$iter$1 = data.getIterator(); !(($elem$0 = $element$iter$1.next()) instanceof .ceylon.language.Finished); ) {
+            final Element element = (Element)$elem$0;
+            final long result = search.$call(element).longValue();
+            if (result > 0L) {
+                ((.ceylon.language.SequenceBuilder<.ceylon.language.Tuple<.java.lang.Object, ? extends .ceylon.language.Integer, ? extends .ceylon.language.Tuple<Element, ? extends Element, ? extends .ceylon.language.Empty>>>)(.ceylon.language.SequenceBuilder)ok).append(new .ceylon.language.Tuple(.ceylon.language.Integer.instance(result), new .ceylon.language.Tuple<Element, Element, .ceylon.language.Empty>(element, .ceylon.language.empty_.getEmpty$())));
+            } else {
+                ko.append(element);
+            }
+        }
+        return new .ceylon.language.Tuple<.ceylon.language.Sequential<? extends .java.lang.Object>, .ceylon.language.Sequential<? extends .ceylon.language.Tuple<.java.lang.Object, ? extends .ceylon.language.Integer, ? extends .ceylon.language.Tuple<Element, ? extends Element, ? extends .ceylon.language.Empty>>>, .ceylon.language.Tuple<.ceylon.language.Sequential<? extends Element>, ? extends .ceylon.language.Sequential<? extends Element>, ? extends .ceylon.language.Empty>>(((.ceylon.language.SequenceBuilder<.ceylon.language.Tuple<.java.lang.Object, ? extends .ceylon.language.Integer, ? extends .ceylon.language.Tuple<Element, ? extends Element, ? extends .ceylon.language.Empty>>>)(.ceylon.language.SequenceBuilder)ok).getSequence(), new .ceylon.language.Tuple<.ceylon.language.Sequential<? extends Element>, .ceylon.language.Sequential<? extends Element>, .ceylon.language.Empty>(ko.getSequence(), .ceylon.language.empty_.getEmpty$()));
+    }
+}
+final class bug934_ {
+    
+    private bug934_() {
+    }
+    
+    static void bug934() {
+        final .ceylon.language.Tuple<.ceylon.language.Sequential<? extends .ceylon.language.Sequential<? extends .java.lang.Object>>, ? extends .ceylon.language.Sequential<? extends .ceylon.language.Tuple<.java.lang.Object, ? extends .ceylon.language.Integer, ? extends .ceylon.language.Tuple<.ceylon.language.String, ? extends .ceylon.language.String, ? extends .ceylon.language.Empty>>>, ? extends .ceylon.language.Tuple<.ceylon.language.Sequential<? extends .ceylon.language.String>, ? extends .ceylon.language.Sequential<? extends .ceylon.language.String>, ? extends .ceylon.language.Empty>> results = (.ceylon.language.Tuple<.ceylon.language.Sequential<? extends .ceylon.language.Sequential<? extends .java.lang.Object>>, ? extends .ceylon.language.Sequential<? extends .ceylon.language.Tuple<.java.lang.Object, ? extends .ceylon.language.Integer, ? extends .ceylon.language.Tuple<.ceylon.language.String, ? extends .ceylon.language.String, ? extends .ceylon.language.Empty>>>, ? extends .ceylon.language.Tuple<.ceylon.language.Sequential<? extends .ceylon.language.String>, ? extends .ceylon.language.Sequential<? extends .ceylon.language.String>, ? extends .ceylon.language.Empty>>)(.ceylon.language.Tuple).com.redhat.ceylon.compiler.java.test.issues.bug09xx.bug934_collectMatches_.<.ceylon.language.String>bug934_collectMatches(new .ceylon.language.Tuple<.ceylon.language.String, .ceylon.language.String, .ceylon.language.Tuple<.ceylon.language.String, ? extends .ceylon.language.String, ? extends .ceylon.language.Empty>>(.ceylon.language.String.instance("Merry Christmas"), new .ceylon.language.Tuple<.ceylon.language.String, .ceylon.language.String, .ceylon.language.Empty>(.ceylon.language.String.instance("Happy Holidays"), .ceylon.language.empty_.getEmpty$())), new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.ceylon.language.Integer>("Integer(String)"){
+            
+            @.java.lang.Override
+            public .ceylon.language.Integer $call(final .java.lang.Object $param$0) {
+                final .java.lang.String s = ((.ceylon.language.String)$param$0).toString();
+                return .ceylon.language.Integer.instance(2L);
+            }
+        });
+        .ceylon.language.print_.print(.ceylon.language.String.instance("Uppercase letters: " + .ceylon.language.String.join(", ", (.ceylon.language.Sequential<? extends .ceylon.language.String>)(.ceylon.language.Sequential)((.ceylon.language.Correspondence<? super .ceylon.language.Integer, ? extends .ceylon.language.Sequential<? extends .ceylon.language.Sequential<? extends .java.lang.Object>>>)(.ceylon.language.Correspondence)results).item(.ceylon.language.Integer.instance(1L)))));
+    }
+    
+    public static void main(.java.lang.String[] args) {
+        .ceylon.language.process_.getProcess$().setupArguments(args);
+        .com.redhat.ceylon.compiler.java.test.issues.bug09xx.bug934_.bug934();
+    }
+}
