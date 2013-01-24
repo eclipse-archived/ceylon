@@ -1,0 +1,16 @@
+package com.redhat.ceylon.compiler.java.test.issues.bug09xx;
+
+final class bug953_ {
+    
+    private bug953_() {
+    }
+    
+    static void bug953() {
+        .ceylon.language.sort_.sort((.ceylon.language.Iterable).ceylon.language.empty_.getEmpty$());
+    }
+    
+    public static void main(.java.lang.String[] args) {
+        .ceylon.language.process_.getProcess$().setupArguments(args);
+        .com.redhat.ceylon.compiler.java.test.issues.bug09xx.bug953_.bug953();
+    }
+}

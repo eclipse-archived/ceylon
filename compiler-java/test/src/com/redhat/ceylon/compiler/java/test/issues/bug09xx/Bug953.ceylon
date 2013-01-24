@@ -19,5 +19,5 @@
  */
 @nomodel
 void bug953(){
-    sort(*{});
+    sort({});
 } 
