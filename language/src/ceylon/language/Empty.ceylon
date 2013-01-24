@@ -5,7 +5,7 @@ doc "A sequence with no elements. The type `Empty` may be
      expression `[]`. That is, in the following expression,
      `e` has type `[]` and refers to the value `[]`:
      
-         [] e = [];
+         [] none = [];
      
      (Whether the syntax `[]` refers to the type or the 
      value depends upon how it occurs grammatically.)"
