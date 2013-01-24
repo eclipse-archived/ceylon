@@ -174,24 +174,68 @@ final class erasureCasting_ {
         final .ceylon.language.Sequential t2 = ((.ceylon.language.Ranged<? super .ceylon.language.Integer, ? extends .ceylon.language.Sequential<? extends .java.lang.Object>>)(.ceylon.language.Ranged)t).span(.ceylon.language.Integer.instance(0L), .ceylon.language.Integer.instance(1L));
         final .com.redhat.ceylon.compiler.java.test.expression.erasure.EC_Tuple<.java.lang.Object, ? extends .ceylon.language.Integer> nonRawTuple = new .com.redhat.ceylon.compiler.java.test.expression.erasure.EC_Tuple(.ceylon.language.Integer.instance(1L));
         final long nonRawTupleFirst = ((.com.redhat.ceylon.compiler.java.test.expression.erasure.EC_Tuple<.java.lang.Object, ? extends .ceylon.language.Integer>)(.com.redhat.ceylon.compiler.java.test.expression.erasure.EC_Tuple)nonRawTuple).getFirst().longValue();
+        final int unboxedInteger = ((.ceylon.language.Sequence<? extends .ceylon.language.Character>).ceylon.language.String.<.ceylon.language.Character>withLeading("abc", .ceylon.language.Character.instance(100))).getFirst().intValue();
+        final .ceylon.language.Sequence<? extends .ceylon.language.Integer> nonEmptySequence = (.ceylon.language.Sequence<? extends .ceylon.language.Integer>)(.ceylon.language.Sequence)new .com.redhat.ceylon.compiler.java.language.AbstractIterable<.ceylon.language.Integer, .java.lang.Object>(){
+            
+            public final .ceylon.language.Iterator<.ceylon.language.Integer> getIterator() {
+                return new .ceylon.language.Iterator<.ceylon.language.Integer>(){
+                    private final .ceylon.language.Iterator<? extends .ceylon.language.Integer> iter$0 = new .ceylon.language.Range<.ceylon.language.Integer>(.ceylon.language.Integer.instance(1L), .ceylon.language.Integer.instance(2L)).getIterator();
+                    private .ceylon.language.Integer c;
+                    private boolean c$exhausted;
+                    
+                    private final boolean c() {
+                        final .java.lang.Object $ceylontmpitem16 = iter$0.next();
+                        c$exhausted = $ceylontmpitem16 == .ceylon.language.finished_.getFinished$();
+                        if (c$exhausted) {
+                            return false;
+                        } else {
+                            c = (.ceylon.language.Integer)$ceylontmpitem16;
+                            return true;
+                        }
+                    }
+                    
+                    public final .java.lang.Object next() {
+                        return this.c() ? c : .ceylon.language.finished_.getFinished$();
+                    }
+                };
+            }
+        }.getSequence();
+        final .ceylon.language.Sequential<? extends .ceylon.language.Integer> integerSequential = (.ceylon.language.Sequence<? extends .ceylon.language.Integer>)(.ceylon.language.Sequence)new .com.redhat.ceylon.compiler.java.language.AbstractIterable<.ceylon.language.Integer, .java.lang.Object>(){
+            
+            public final .ceylon.language.Iterator<.ceylon.language.Integer> getIterator() {
+                return new .ceylon.language.Iterator<.ceylon.language.Integer>(){
+                    private final .ceylon.language.Iterator<? extends .ceylon.language.Integer> iter$0 = new .ceylon.language.Range<.ceylon.language.Integer>(.ceylon.language.Integer.instance(1L), .ceylon.language.Integer.instance(2L)).getIterator();
+                    private .ceylon.language.Integer c;
+                    private boolean c$exhausted;
+                    
+                    private final boolean c() {
+                        final .java.lang.Object $ceylontmpitem17 = iter$0.next();
+                        c$exhausted = $ceylontmpitem17 == .ceylon.language.finished_.getFinished$();
+                        if (c$exhausted) {
+                            return false;
+                        } else {
+                            c = (.ceylon.language.Integer)$ceylontmpitem17;
+                            return true;
+                        }
+                    }
+                    
+                    public final .java.lang.Object next() {
+                        return this.c() ? c : .ceylon.language.finished_.getFinished$();
+                    }
+                };
+            }
+        }.getSequence();
     }
 }
-@.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 4)
-@.com.redhat.ceylon.compiler.java.metadata.Method
-public final class valueOrNada_ {
+final class valueOrNada_ {
     
     private valueOrNada_() {
     }
     
-    @.com.redhat.ceylon.compiler.java.metadata.Annotations({@.com.redhat.ceylon.compiler.java.metadata.Annotation("shared")})
-    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Anything")
-    @.com.redhat.ceylon.compiler.java.metadata.TypeParameters({@.com.redhat.ceylon.compiler.java.metadata.TypeParameter(value = "Value", variance = .com.redhat.ceylon.compiler.java.metadata.Variance.NONE, satisfies = {}, caseTypes = {}), @.com.redhat.ceylon.compiler.java.metadata.TypeParameter(value = "Nada", variance = .com.redhat.ceylon.compiler.java.metadata.Variance.NONE, satisfies = {"ceylon.language::Null"}, caseTypes = {})})
-    public static <Value, Nada>void valueOrNada(@.com.redhat.ceylon.compiler.java.metadata.Name("valueOrNada")
-    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo(value = "Value|Nada", erased = true)
-    final .java.lang.Object valueOrNada) {
-        .java.lang.Object $valueOrNada$17;
-        if (($valueOrNada$17 = valueOrNada) != null) {
-            final Value $valueOrNada$18 = (Value)$valueOrNada$17;
+    static <Value, Nada>void valueOrNada(final .java.lang.Object valueOrNada) {
+        .java.lang.Object $valueOrNada$19;
+        if (($valueOrNada$19 = valueOrNada) != null) {
+            final Value $valueOrNada$20 = (Value)$valueOrNada$19;
         }
     }
 }

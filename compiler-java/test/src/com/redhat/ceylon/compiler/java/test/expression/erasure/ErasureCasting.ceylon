@@ -163,9 +163,23 @@ void erasureCasting(EC_A & EC_B & EC_C tripleIntersectionParam,
     // make sure we don't consider nonRawTuple as raw invalidly
     value nonRawTuple = EC_Tuple<Integer|String,Integer>(1);
     value nonRawTupleFirst = nonRawTuple.first;
+
+    // getFirst returns an erased type that we need to unbox
+    // make sure we're calling the value type static decl, which must be marked as not raw
+    value unboxedInteger = "abc".withLeading(`d`).first;
+
+    // nonempty comprehension must be cast from Sequential to Sequence
+    value nonEmptySequence = [ for (c in 1..2) c ];
+    // this one should not require a cast, because we're really expecting a Sequential, which is what comprehension.sequence gives
+    // us, but currently the problem is that we get the tuple expression of type Sequence, which we don't need to cast to the
+    // expected type Sequential, and within the Tuple expression, we evaluate the comprehension using an expected type of Sequence
+    // (because that's the type of the tuple literal), and we think we need that cast, even though we don't
+    // we might be able to improve this logic somehow in the future.
+    Integer[] integerSequential = [ for (c in 1..2) c ];
 }
 
-shared void valueOrNada<Value,Nada>(Value|Nada valueOrNada) 
+@nomodel
+void valueOrNada<Value,Nada>(Value|Nada valueOrNada) 
         given Nada satisfies Null {
     // this looks like valueOrNada would be unboxed to Value, because isOptional may return true
     // but it is really not, it's erased to Object, so we must make sure it is properly marked
