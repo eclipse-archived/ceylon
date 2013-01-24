@@ -29,8 +29,8 @@ doc "A _tuple_ is a typed linked list. Each instance of
      A _terminated_ tuple type is a tuple where the type of
      the last link in the chain is `Empty`. An _unterminated_ 
      tuple type is a tuple where the type of the last link
-     in the chain is `Sequence` or `Sequential`. Thus, 
-     a terminated tuple type has a length that is known
+     in the chain is `Sequence` or `Sequential`. Thus, a 
+     terminated tuple type has a length that is known
      statically. For an unterminated tuple type only a lower
      bound on its length is known statically.
      
