@@ -15,7 +15,7 @@ shared class LazyMap<out Key,out Item>({<Key->Item>*} entries)
     shared actual Integer size => entries.size;
     
     shared actual Item? item(Object key) =>
-            entries.find((Key->Item e) => e.key == key)?.item;
+            entries.find((Key->Item e) => e.key==key)?.item;
     
     shared actual Iterator<Key->Item> iterator =>
             entries.iterator;

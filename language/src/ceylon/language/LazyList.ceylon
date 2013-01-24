@@ -40,15 +40,18 @@ shared class LazyList<out Element>({Element*} elems)
         Integer toIndex = largest(to,0);
         Integer fromIndex = largest(from,0);
         if (toIndex >= fromIndex) {
-            value els = fromIndex > 0 then elems.skipping(fromIndex)
+            value els = fromIndex > 0 
+                    then elems.skipping(fromIndex)
                     else elems;
             return LazyList(els.taking(toIndex-fromIndex+1));
         } 
         else {
             //reversed
-            value seq = toIndex>0 then elems.skipping(toIndex)
-                else elems;
-            return seq.taking(fromIndex-toIndex+1).sequence.reversed;
+            value seq = toIndex>0 
+                    then elems.skipping(toIndex)
+                    else elems;
+            return seq.taking(fromIndex-toIndex+1)
+                    .sequence.reversed;
         }
     }
     

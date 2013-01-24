@@ -186,7 +186,7 @@ shared native interface Iterable<out Element, out Absent=Null>
          and `byDecreasing()` produce a suitable 
          comparison function:
          
-             \"Hello World!\".sort(byIncreasing((Character c) c.lowercased))
+             \"Hello World!\".sort(byIncreasing((Character c) => c.lowercased))
          
          This operation is eager by nature."
     see (byIncreasing, byDecreasing)
@@ -252,11 +252,11 @@ shared native interface Iterable<out Element, out Absent=Null>
         }
         else {
             object iterable satisfies {Element*} {
+                value iter = outer.iterator;
                 shared actual Iterator<Element> iterator {
-                    value iterator = outer.iterator;
                     variable value i=0;
-                    while (i++<skip && !iterator.next() is Finished) {}
-                    return iterator;
+                    while (i++<skip && !iter.next() is Finished) {}
+                    return iter;
                 }
                 shared actual Element? first {
                     if (!is Finished first = iterator.next()) {
@@ -282,11 +282,10 @@ shared native interface Iterable<out Element, out Absent=Null>
             return {}; 
         }
         else {
-            value outerIterable => this;
             object iterable satisfies {Element*} {
                 shared actual Iterator<Element> iterator {
+                    value iter = outer.iterator;
                     object iterator satisfies Iterator<Element> {
-                        value iter = outerIterable.iterator;
                         variable value i=0;
                         actual shared Element|Finished next() {
                             return ++i>take then finished 
@@ -313,25 +312,24 @@ shared native interface Iterable<out Element, out Absent=Null>
          results in an iterable object with the elements
          `0`, `3`, `6`, and `9` in that order."
     throws (Exception, "if the given step size is nonpositive, 
-                        i.e. `step<1`") //TODO: better exception type
+                        i.e. `step<1`") //TODO: this is an assertion
     shared default {Element*} by(Integer step) {
-        value outerIterable => this;
-        if (step <= 0) {
-            throw Exception("step size must be greater than zero");
-        }
-        else if (step == 1) {
+        doc "step size must be greater than zero"
+        assert (step > 0);
+        if (step == 1) {
             return this;
         } 
         else {
             object iterable satisfies Iterable<Element,Absent> {
                 shared actual Iterator<Element> iterator {
+                    value iter = outer.iterator;
                     object iterator satisfies Iterator<Element> {
-                        value iter = outerIterable.iterator;
                         shared actual Element|Finished next() {
-                            value n = iter.next();
+                            value next = iter.next();
                             variable value i=0;
-                            while (++i<step && !iter.next() is Finished) {}
-                            return n;
+                            while (++i<step && 
+                                    !iter.next() is Finished) {}
+                            return next;
                         }
                     }
                     return iterator;
@@ -378,17 +376,15 @@ shared native interface Iterable<out Element, out Absent=Null>
          results in an iterable object with the entries
          `0->\"hello\"` and `2->\"world\"`."
     shared default {<Integer->Element&Object>*} indexed {
-        //TODO: this should be an inner object
-		class Indexes<out Element, out Absent>(Iterable<Element,Absent> outerIterable)
-		        satisfies Iterable<Integer->Element,Absent> 
-		        given Element satisfies Object
-		        given Absent satisfies Null {
-		    shared actual Iterator<Integer->Element> iterator {
-		        object iterator satisfies Iterator<Integer->Element> {
+		object indexes
+		        satisfies {<Integer->Element&Object>*} {
+            value outerCoalesced = outer.coalesced;
+		    shared actual Iterator<Integer->Element&Object> iterator {
+		        object iterator satisfies Iterator<Integer->Element&Object> {
+		            value iter = outerCoalesced.iterator;
 		            variable value i=0;
-		            value outerIterator = outerIterable.iterator;
-		            shared actual <Integer->Element>|Finished next() {
-		                if (!is Finished next = outerIterator.next()) {
+		            shared actual <Integer->Element&Object>|Finished next() {
+		                if (!is Finished next = iter.next()) {
 		                    return i++->next;
 		                }
 		                else {
@@ -399,7 +395,7 @@ shared native interface Iterable<out Element, out Absent=Null>
 		        return iterator;
 		    }
 		}
-        return Indexes(this.coalesced);
+        return indexes;
     }
             
     doc "The elements of this iterable object, in their
@@ -407,7 +403,7 @@ shared native interface Iterable<out Element, out Absent=Null>
          given iterable object also in their original
          order."
     shared default {Element|Other*} chain<Other>({Other*} other) {
-        value outerIterable => this;
+        value outerIterable => this; //TODO: remove this when compiler bug is fixed
         object chained satisfies {Element|Other*} {
             shared actual Iterator<Element|Other> iterator =>
                     ChainedIterator(outerIterable, other);

@@ -44,7 +44,7 @@ doc "A string of characters. Each character in the string is
      beginning of the string to the given index."
 by "Gavin"
 see (string)
-shared abstract class String()
+shared native abstract class String()
         extends Object()
         satisfies Character[] & 
                   Comparable<String> &
