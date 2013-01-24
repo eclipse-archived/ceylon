@@ -578,7 +578,8 @@ Character$proto.getDigit = function() {
     }
     return this.value>=0x1d7ce && this.value<=0x1d7ff;
 }
-Character$proto.getInteger = function() { return this.value; }
+Character$proto.getIntegerValue = function() { return this.value; }
+Character$proto.getInteger = Character$proto.getIntegerValue;
 Character$proto.getUppercase = function() {
     var str = codepointToString(this.value);
     return str.toLowerCase()!==str && !(this.value in $titlecase);
