@@ -790,43 +790,29 @@ public class ClassTransformer extends AbstractTransformer {
     }
     
     private MethodDefinitionBuilder makeCompanionAccessor(Interface iface, ProducedType satisfiedType, boolean forImplementor) {
-        // Doing this only for interfaces with inner classes breaks BC for implementors
-        // when an inner class is added to the interface. OTOH it means we 
-        // don't have to have an access on every Ceylon interface when it 
-        // isn't used on most of them.
-        boolean hasInnerClasses = false;
-        for (Declaration member : iface.getMembers()) {
-            if (member instanceof Class) {
-                hasInnerClasses = true;
-                break;
-            }
+        MethodDefinitionBuilder thisMethod = MethodDefinitionBuilder.systemMethod(
+                this, getCompanionAccessorName(iface));
+        thisMethod.noAnnotations();
+        if (!forImplementor && Decl.isAncestorLocal(iface)) {
+            // For a local interface the return type cannot be a local
+            // companion class, because that won't be visible at the 
+            // top level, so use Object instead
+            thisMethod.resultType(null, make().Type(syms().objectType));
+        } else {
+            thisMethod.resultType(null, makeJavaType(satisfiedType, JT_COMPANION));
         }
-        if (hasInnerClasses) {
-            MethodDefinitionBuilder thisMethod = MethodDefinitionBuilder.systemMethod(
-                    this, getCompanionAccessorName(iface));
-            thisMethod.noAnnotations();
-            if (!forImplementor && Decl.isAncestorLocal(iface)) {
-                // For a local interface the return type cannot be a local
-                // companion class, because that won't be visible at the 
-                // top level, so use Object instead
-                thisMethod.resultType(null, make().Type(syms().objectType));
-            } else {
-                thisMethod.resultType(null, makeJavaType(satisfiedType, JT_COMPANION));
-            }
-            if (forImplementor) {
-                thisMethod.isOverride(true);
-            } else {
-                thisMethod.ignoreAnnotations();
-            }
-            thisMethod.modifiers(PUBLIC);
-            if (forImplementor) {
-                thisMethod.body(make().Return(naming.makeCompanionFieldName(iface)));
-            } else {
-                thisMethod.noBody();
-            }
-            return thisMethod;
+        if (forImplementor) {
+            thisMethod.isOverride(true);
+        } else {
+            thisMethod.ignoreAnnotations();
         }
-        return null;
+        thisMethod.modifiers(PUBLIC);
+        if (forImplementor) {
+            thisMethod.body(make().Return(naming.makeCompanionFieldName(iface)));
+        } else {
+            thisMethod.noBody();
+        }
+        return thisMethod;
     }
 
     private void buildCompanion(final Tree.ClassOrInterface def,
