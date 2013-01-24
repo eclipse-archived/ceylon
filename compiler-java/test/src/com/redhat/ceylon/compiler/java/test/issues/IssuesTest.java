@@ -905,6 +905,11 @@ public class IssuesTest extends CompilerTest {
     }
 
     @Test
+    public void testBug935_fail() {
+        compareWithJavaSource("bug09xx/Bug935");
+    }
+
+    @Test
     public void testBug950() {
         assertErrors("bug09xx/Bug950",
                 new CompilerError(34, "member foo is inherited ambiguously from Bug950_Left and Bug950_Top and so must be refined by Bug950_Bottom"),
