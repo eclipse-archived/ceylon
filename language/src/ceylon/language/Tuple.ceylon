@@ -45,7 +45,8 @@ doc "A _tuple_ is a typed linked list. Each instance of
      
      "
 by "Gavin"
-shared class Tuple<out Element, out First, out Rest=Empty>(first, rest/*=[]*/)
+shared class Tuple<out Element, out First, out Rest=[]>
+            (first, rest)
         extends Object()
         satisfies [Element+] & 
                   Cloneable<Tuple<Element,First,Rest>>
@@ -93,7 +94,8 @@ shared class Tuple<out Element, out First, out Rest=Empty>(first, rest/*=[]*/)
         Integer realFrom = from < 0 then 0 else from;
         if (realFrom==0) {
             return length==1 then [first]
-                else rest[0:length+realFrom-1].withLeading(first);
+                else rest[0:length+realFrom-1]
+                        .withLeading(first);
         }
         return rest[realFrom-1:length];
     }
