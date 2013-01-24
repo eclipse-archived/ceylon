@@ -2707,7 +2707,7 @@ public class GenerateJsVisitor extends Visitor
    }
 
    @Override public void visit(Element that) {
-       out(".item(");
+       out(".get(");
        that.getExpression().visit(this);
        out(")");
    }
@@ -3105,7 +3105,7 @@ public class GenerateJsVisitor extends Visitor
         that.getPrimary().visit(this);
         ElementOrRange eor = that.getElementOrRange();
         if (eor instanceof Element) {
-            out(".item(");
+            out(".get(");
             ((Element)eor).getExpression().visit(this);
             out(")");
         } else {//range, or spread?
