@@ -33,9 +33,14 @@ public class ExamplesTestCase extends ModulesTest {
     }
 
     @Test
-    @Ignore // TODO -- fix module_ and run_
     public void testHello() throws Throwable {
         car("hello/1.0.0", Collections.<String, String>emptyMap());
+    }
+
+    @Test
+    @Ignore("@Steph -- weird Range ctor usage")
+    public void testIssue29() throws Throwable {
+        car("test.ceylon.dbc/0.5", Collections.<String, String>emptyMap());
     }
 
     @Test

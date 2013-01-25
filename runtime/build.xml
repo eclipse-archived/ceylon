@@ -73,7 +73,8 @@
 
     <!-- module archives -->
     <property name="ceylon.runtime.dir" value="${module.runtime.dir}/${module.ceylon.runtime.version}"/>
-    <property name="ceylon.runtime.jar" value="${ceylon.runtime.dir}/${module.runtime.name}-${module.ceylon.runtime.version}.jar"/>
+    <property name="ceylon.runtime.jar"
+              value="${ceylon.runtime.dir}/${module.runtime.name}-${module.ceylon.runtime.version}.jar"/>
     <property name="ceylon.runtime.repo" value="${ceylon.repo.dir}/${ceylon.runtime.dir}"/>
     <property name="ceylon.runtime.dist" value="${build.dist.repo}/${ceylon.runtime.dir}"/>
 
@@ -133,7 +134,10 @@
         <!-- Copy the libraries -->
         <copy file="${bootstrap.lib}" tofile="${build.dist.lib}/${bootstrap.jar}"/>
         <!-- Copy the Ceylon runtime dependencies -->
-        <copy file="${jboss-modules.lib}" tofile="${build.dist.repo}/${jboss-modules.dir}/main/${jboss-modules.module}"/>
+        <copy file="${dist.dir}/repo/${javax-xml-stream.dir}/main/module.xml"
+              tofile="${build.dist.repo}/${javax-xml-stream.dir}/main/module.xml"/>
+        <copy file="${jboss-modules.lib}"
+              tofile="${build.dist.repo}/${jboss-modules.dir}/main/${jboss-modules.module}"/>
         <copy file="${jboss-jandex.lib}" tofile="${build.dist.repo}/${jboss-jandex.dir}/main/${jboss-jandex.module}"/>
         <copy file="${ceylon.common.lib}" tofile="${build.dist.repo}/${ceylon.common.jar}"/>
         <copy file="${ceylon.language.lib}" tofile="${build.dist.repo}/${ceylon.language.car}"/>

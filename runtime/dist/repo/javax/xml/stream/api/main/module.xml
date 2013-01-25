@@ -16,12 +16,15 @@
   ~ limitations under the License.
   -->
 
-<module xmlns="urn:jboss:module:1.1" name="com.redhat.ceylon.maven-support">
-    <resources>
-        <resource-root path="com.redhat.ceylon.maven-support-main.jar"/>
-    </resources>
+<module xmlns="urn:jboss:module:1.1" name="javax.xml.stream.api">
 
     <dependencies>
-        <module name="javax.xml.stream.api"/>
+        <system export="true">
+            <paths>
+                <path name="javax/xml/stream"/>
+                <path name="javax/xml/stream/events"/>
+                <path name="javax/xml/stream/util"/>
+            </paths>
+        </system>
     </dependencies>
 </module>

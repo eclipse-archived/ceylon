@@ -32,8 +32,8 @@ import com.redhat.ceylon.cmr.api.ArtifactResult;
 import com.redhat.ceylon.cmr.api.ImportType;
 import com.redhat.ceylon.cmr.api.JDKUtils;
 import com.redhat.ceylon.cmr.api.RepositoryManager;
+import com.redhat.ceylon.cmr.api.VisibilityType;
 import com.redhat.ceylon.common.Versions;
-
 import org.jboss.modules.DependencySpec;
 import org.jboss.modules.LocalLoader;
 import org.jboss.modules.ModuleIdentifier;
@@ -194,13 +194,18 @@ public class CeylonModuleLoader extends ModuleLoader {
             builder.addDependency(lds); // local resources
             deps.add(lds);
 
+            // used modules
+            Set<String> modules = new HashSet<String>();
+
             if (isDefault == false) {
                 Node<ArtifactResult> root = new Node<ArtifactResult>();
                 for (ArtifactResult i : artifact.dependencies()) {
+                    final String name = i.name();
+                    modules.add(name); // track used modules
+
                     if (i.importType() == ImportType.OPTIONAL) {
-                        String path = i.name();
                         Node<ArtifactResult> current = root;
-                        String[] tokens = path.split("\\.");
+                        String[] tokens = name.split("\\.");
                         for (String token : tokens) {
                             Node<ArtifactResult> child = current.getChild(token);
                             if (child == null)
@@ -239,6 +244,18 @@ public class CeylonModuleLoader extends ModuleLoader {
             Graph.Vertex<ModuleIdentifier, Boolean> sdsv = graph.createVertex(RUNTIME, RUNTIME);
             Graph.Edge.create(false, vertex, sdsv);
 
+            // add JDK modules to loose artifacts
+            if (artifact.visibilityType() == VisibilityType.LOOSE) {
+                Set<String> jdkModules = JDKUtils.getJDKModuleNames();
+                for (String module : jdkModules) {
+                    if (modules.contains(module) == false) {
+                        DependencySpec ds = getJDKDependency(module);
+                        builder.addDependency(ds);
+                        // no need to track system deps -- cannot be updated anyway
+                    }
+                }
+            }
+
             dependencies.put(moduleIdentifier, deps);
 
             return builder.create();
@@ -263,17 +280,28 @@ public class CeylonModuleLoader extends ModuleLoader {
     }
 
     /**
+     * Get JDK dependency.
+     *
+     * @param name the module name
+     * @return dependency spec
+     */
+    DependencySpec getJDKDependency(String name) {
+        Set<String> paths = JDKUtils.getJDKPathsByModule(name);
+        return DependencySpec.createSystemDependencySpec(paths);
+    }
+
+    /**
      * Create module dependency from import.
      *
      * @param i the import
      * @return new module dependency
      */
     DependencySpec createModuleDependency(ArtifactResult i) {
-        if (JDKUtils.isJDKModule(i.name())) {
-            Set<String> paths = JDKUtils.getJDKPathsByModule(i.name());
-            return DependencySpec.createSystemDependencySpec(paths);
-        } else if (JDKUtils.isOracleJDKModule(i.name())) {
-            Set<String> paths = JDKUtils.getOracleJDKPathsByModule(i.name());
+        final String name = i.name();
+        if (JDKUtils.isJDKModule(name)) {
+            return getJDKDependency(name);
+        } else if (JDKUtils.isOracleJDKModule(name)) {
+            Set<String> paths = JDKUtils.getOracleJDKPathsByModule(name);
             return DependencySpec.createSystemDependencySpec(paths);
         } else {
             final ModuleIdentifier mi = createModuleIdentifier(i);

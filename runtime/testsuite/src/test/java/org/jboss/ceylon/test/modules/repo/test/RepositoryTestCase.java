@@ -17,14 +17,13 @@
 
 package org.jboss.ceylon.test.modules.repo.test;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import ceylon.modules.spi.Argument;
 import ceylon.modules.spi.Constants;
 import org.jboss.ceylon.test.modules.ModulesTest;
-import org.junit.Ignore;
 import org.junit.Test;
-
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  * Test different repository usage.
@@ -38,7 +37,6 @@ public class RepositoryTestCase extends ModulesTest {
     }
 
     @Test
-    @Ignore // TODO -- fix module_ and run_
     public void testMultipleRepositories() throws Throwable {
         List<String> extra = new ArrayList<String>();
         // alternative
