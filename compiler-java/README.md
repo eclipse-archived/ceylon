@@ -104,7 +104,7 @@ Building the project on Mac with JDK7
 
 3) export JAVA_HOME
 
-    Skywalker:ceylon-compiler alesj$ export JAVA_HOME=/Library/Java/JavaVirtualMachines/jdk1.7.0_06.jdk/Contents/Home/
+    Skywalker:ceylon-compiler alesj$ export JAVA_HOME=/Library/Java/JavaVirtualMachines/jdk1.7.0_08.jdk/Contents/Home/
 
     Skywalker:ceylon-compiler alesj$ java -version
     java version "1.7.0_06-ea"
