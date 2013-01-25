@@ -414,4 +414,9 @@ class Util {
     	}
     }
 
+    static boolean inLanguageModule(Unit unit) {
+        return unit.getPackage().getQualifiedNameString()
+                .startsWith("ceylon.language");
+    }
+    
 }

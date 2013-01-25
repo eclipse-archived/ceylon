@@ -7,6 +7,7 @@ import static com.redhat.ceylon.compiler.typechecker.analyzer.Util.checkSupertyp
 import static com.redhat.ceylon.compiler.typechecker.analyzer.Util.checkTypeBelongsToContainingScope;
 import static com.redhat.ceylon.compiler.typechecker.analyzer.Util.getBaseDeclaration;
 import static com.redhat.ceylon.compiler.typechecker.analyzer.Util.getTypeArguments;
+import static com.redhat.ceylon.compiler.typechecker.analyzer.Util.inLanguageModule;
 import static com.redhat.ceylon.compiler.typechecker.model.Util.addToIntersection;
 import static com.redhat.ceylon.compiler.typechecker.model.Util.addToUnion;
 import static com.redhat.ceylon.compiler.typechecker.model.Util.findMatchingOverloadedClass;
@@ -4406,6 +4407,23 @@ public class ExpressionVisitor extends Visitor {
                 checkSelfTypes(et, td, type);
                 checkExtensionOfMemberType(et, td, type);
                 //checkCaseOfSupertype(et, td, type);
+                if (!td.isAlias()) {
+                	TypeDeclaration etd = td.getExtendedTypeDeclaration();
+                	while (etd!=null && etd.isAlias()) {
+                		etd = etd.getExtendedTypeDeclaration();
+                	}
+                	if (etd!=null) {
+                		if (etd.isFinal()) {
+                			et.addError("extends a final class: " + 
+                					etd.getName(unit));
+                		}
+                		else if (!etd.isExtendable() && 
+                				!inLanguageModule(that.getUnit())) {
+                			et.addError("directly extends a special language type: " +
+                					etd.getName(unit));
+                		}
+                	}
+                }
             }
         }
     }

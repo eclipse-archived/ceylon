@@ -119,3 +119,5 @@ void testOpAliases() {
 
 class S() => String();
 @error abstract class StringSubclass() extends S() {}
+@error abstract class IntSubclass() extends I() {}
+class I() => Integer();

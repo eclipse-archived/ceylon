@@ -928,16 +928,6 @@ public class TypeVisitor extends Visitor {
         				et.addError("extends a type alias: " + 
         						type.getDeclaration().getName(unit));
         			}
-        			else if (etd.isFinal()) {
-        				et.addError("extends a final class: " + 
-        						type.getDeclaration().getName(unit));
-        			}
-        			else if (!etd.isExtendable() && 
-        					!inLanguageModule(that) &&
-        					!td.isAlias()) {
-        				et.addError("directly extends a special language type: " +
-        						type.getDeclaration().getName(unit));
-        			}
         			else {
         				td.setExtendedType(type);
         			}
@@ -946,11 +936,6 @@ public class TypeVisitor extends Visitor {
         }
     }
 
-    private boolean inLanguageModule(Tree.ExtendedType that) {
-        return that.getUnit().getPackage().getQualifiedNameString()
-                .startsWith("ceylon.language");
-    }
-    
     @Override 
     public void visit(Tree.SatisfiedTypes that) {
         super.visit(that);
