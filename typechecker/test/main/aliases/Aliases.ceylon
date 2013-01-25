@@ -98,3 +98,24 @@ class MemberClassAliasTricks_Foo(Integer a = 1, Integer b = 2){
 @error alias Rec<T> => Tuple<T,T,Rec<T>>;
 @error alias RX => String|List<RY>;
 alias RY => Object&Iterable<RX>;
+
+alias Id<T> => T;
+alias Or<X,Y> => X|Y;
+
+T unwrap<T>(Id<T> idt) => idt;
+
+void testOpAliases() {
+    Id<String> idstr = "hello";
+    Id<Object> idobj = idstr;
+    String str = idstr;
+    @type:"String" value string = unwrap(idstr);
+    Integer idstrlen = idstr.size;
+    
+    Or<Integer,Float> ornum = 1;
+    Integer|Float num = ornum;
+    Float ornumasfloat = ornum.float;
+    Or<Float,Integer> ornum2 = ornum;
+}
+
+class S() => String();
+@error abstract class StringSubclass() extends S() {}

@@ -3469,6 +3469,7 @@ public class ExpressionVisitor extends Visitor {
         ProducedType pt = that.getPrimary().getTypeModel();
         if (pt!=null && that.getIdentifier()!=null && 
                 !that.getIdentifier().getText().equals("")) {
+        	pt = pt.resolveAliases(); //needed for aliases like "alias Id<T> => T"
             TypeDeclaration d = unwrap(pt, that).getDeclaration();
             TypedDeclaration member = (TypedDeclaration) d.getMember(name(that.getIdentifier()), 
                     unit, that.getSignature(), that.getEllipsis());
