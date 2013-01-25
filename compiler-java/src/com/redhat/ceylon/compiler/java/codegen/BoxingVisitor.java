@@ -142,7 +142,7 @@ public abstract class BoxingVisitor extends Visitor {
         ProducedType lhsModel = that.getPrimary().getTypeModel();
         if(lhsModel.getDeclaration() == null)
             return;
-        String methodName = that.getElementOrRange() instanceof Tree.Element ? "item" : "span";
+        String methodName = that.getElementOrRange() instanceof Tree.Element ? "get" : "span";
         // find the method from its declaration
         TypedDeclaration member = (TypedDeclaration) lhsModel.getDeclaration().getMember(methodName, null, false);
         if(member == null)
