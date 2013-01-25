@@ -2,6 +2,9 @@ package com.redhat.ceylon.compiler.java.language;
 
 
 import ceylon.language.Boolean;
+import ceylon.language.Category$impl;
+import ceylon.language.Container$impl;
+import ceylon.language.Iterable$impl;
 import ceylon.language.Iterator;
 import ceylon.language.Null;
 import ceylon.language.Callable;
@@ -31,12 +34,36 @@ import com.redhat.ceylon.compiler.java.metadata.TypeInfo;
 @Class(extendsType="ceylon.language::Object")
 @SatisfiedTypes("ceylon.language::Iterable<Element,Absent>")
 public abstract class AbstractIterable<Element,Absent> implements Iterable<Element,Absent> {
-    private final ceylon.language.Iterable$impl<Element, Absent> $ceylon$language$Iterable$this;
-    private final ceylon.language.Category$impl $ceylon$language$Category$this;
+    
+    @Ignore
+    protected final ceylon.language.Iterable$impl<Element, Absent> $ceylon$language$Iterable$this;
+    @Ignore
+    protected final ceylon.language.Container$impl<Element,Absent> $ceylon$language$Container$this;
+    @Ignore
+    protected final ceylon.language.Category$impl $ceylon$language$Category$this;
 
     public AbstractIterable() {
         this.$ceylon$language$Iterable$this = new ceylon.language.Iterable$impl<Element,Absent>(this);
+        this.$ceylon$language$Container$this = new ceylon.language.Container$impl<Element,Absent>(this);
         this.$ceylon$language$Category$this = new ceylon.language.Category$impl(this);
+    }
+    
+    @Ignore
+    @Override
+    public Category$impl $ceylon$language$Category$impl(){
+        return $ceylon$language$Category$this;
+    }
+
+    @Ignore
+    @Override
+    public Container$impl<Element,Absent> $ceylon$language$Container$impl(){
+        return $ceylon$language$Container$this;
+    }
+
+    @Ignore
+    @Override
+    public Iterable$impl<Element,Absent> $ceylon$language$Iterable$impl(){
+        return $ceylon$language$Iterable$this;
     }
     
     @Override

@@ -1,6 +1,10 @@
 package com.redhat.ceylon.compiler.java.language;
 
 import ceylon.language.Boolean;
+import ceylon.language.Category$impl;
+import ceylon.language.Container$impl;
+import ceylon.language.Iterable$impl;
+import ceylon.language.Iterator$impl;
 import ceylon.language.Null;
 import ceylon.language.Callable;
 import ceylon.language.Comparison;
@@ -26,8 +30,12 @@ import com.redhat.ceylon.compiler.java.metadata.TypeInfo;
 @Class(extendsType="ceylon.language::Object")
 @SatisfiedTypes("ceylon.language::Iterable<Element,Absent>")
 public class ArrayIterable<Element,Absent> implements Iterable<Element,Absent> {
-    private final ceylon.language.Iterable$impl<Element,Absent> $ceylon$language$Iterable$this;
-    private final ceylon.language.Category$impl $ceylon$language$Category$this;
+    @Ignore
+    protected final ceylon.language.Iterable$impl<Element, Absent> $ceylon$language$Iterable$this;
+    @Ignore
+    protected final ceylon.language.Container$impl<Element,Absent> $ceylon$language$Container$this;
+    @Ignore
+    protected final ceylon.language.Category$impl $ceylon$language$Category$this;
 
     protected final Element[] array;
     protected final Iterable<? extends Element, ? extends java.lang.Object> rest;
@@ -40,6 +48,7 @@ public class ArrayIterable<Element,Absent> implements Iterable<Element,Absent> {
     @Ignore
     public ArrayIterable(Iterable<? extends Element, ? extends java.lang.Object> rest, Element[] array, long first) {
         this.$ceylon$language$Iterable$this = new ceylon.language.Iterable$impl<Element,Absent>(this);
+        this.$ceylon$language$Container$this = new ceylon.language.Container$impl<Element,Absent>(this);
         this.$ceylon$language$Category$this = new ceylon.language.Category$impl(this);
     	if (array.length==0 || array.length<=first) {
     		throw new IllegalArgumentException("ArrayIterable may not have zero elements (array)");
@@ -50,6 +59,24 @@ public class ArrayIterable<Element,Absent> implements Iterable<Element,Absent> {
         this.array = array;
         this.first = first;
         this.rest = rest;
+    }
+
+    @Ignore
+    @Override
+    public Category$impl $ceylon$language$Category$impl(){
+        return $ceylon$language$Category$this;
+    }
+
+    @Ignore
+    @Override
+    public Container$impl<Element,Absent> $ceylon$language$Container$impl(){
+        return $ceylon$language$Container$this;
+    }
+
+    @Ignore
+    @Override
+    public Iterable$impl<Element,Absent> $ceylon$language$Iterable$impl(){
+        return $ceylon$language$Iterable$this;
     }
 
     @Ignore
@@ -118,8 +145,7 @@ public class ArrayIterable<Element,Absent> implements Iterable<Element,Absent> {
         return new ArrayIterableIterator();
     }
 
-    public class ArrayIterableIterator
-            implements Iterator<Element> {
+    public class ArrayIterableIterator extends AbstractIterator<Element> {
         private long idx = first;
         private Iterator<Element> restIterator;
 

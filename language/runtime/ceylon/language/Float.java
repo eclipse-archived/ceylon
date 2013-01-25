@@ -1,5 +1,6 @@
 package ceylon.language;
 
+import com.redhat.ceylon.compiler.java.Util;
 import com.redhat.ceylon.compiler.java.metadata.Ceylon;
 import com.redhat.ceylon.compiler.java.metadata.Class;
 import com.redhat.ceylon.compiler.java.metadata.Ignore;
@@ -26,6 +27,56 @@ public final class Float
         value = d;
     }
     
+    @Ignore
+    @Override
+    public Scalar$impl<Float> $ceylon$language$Scalar$impl(){
+        // drags Numeric<Float> Comparable<Float> Number
+        throw Util.makeUnimplementedMixinAccessException();
+    }
+
+    @Ignore
+    @Override
+    public Numeric$impl<Float> $ceylon$language$Numeric$impl(){
+        // drags Summable<Float> Invertable<Float>
+        throw Util.makeUnimplementedMixinAccessException();
+    }
+
+    @Ignore
+    @Override
+    public Summable$impl<Float> $ceylon$language$Summable$impl(){
+        throw Util.makeUnimplementedMixinAccessException();
+    }
+
+    @Ignore
+    @Override
+    public Invertable$impl<Float> $ceylon$language$Invertable$impl(){
+        throw Util.makeUnimplementedMixinAccessException();
+    }
+
+    @Ignore
+    @Override
+    public Comparable$impl<Float> $ceylon$language$Comparable$impl(){
+        throw Util.makeUnimplementedMixinAccessException();
+    }
+
+    @Ignore
+    @Override
+    public Number$impl $ceylon$language$Number$impl(){
+        throw Util.makeUnimplementedMixinAccessException();
+    }
+
+    @Ignore
+    @Override
+    public Exponentiable$impl<Float,Float> $ceylon$language$Exponentiable$impl(){
+        throw Util.makeUnimplementedMixinAccessException();
+    }
+
+    @Ignore
+    @Override
+    public Castable$impl<Float> $ceylon$language$Castable$impl(){
+        throw Util.makeUnimplementedMixinAccessException();
+    }
+
     @Ignore
     public static Float instance(double d) {
         return new Float(d);

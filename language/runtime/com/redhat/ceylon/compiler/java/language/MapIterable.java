@@ -1,6 +1,10 @@
 package com.redhat.ceylon.compiler.java.language;
 
 import ceylon.language.Boolean;
+import ceylon.language.Category$impl;
+import ceylon.language.Container$impl;
+import ceylon.language.Iterable$impl;
+import ceylon.language.Iterator$impl;
 import ceylon.language.Null;
 import ceylon.language.Callable;
 import ceylon.language.Comparison;
@@ -24,6 +28,7 @@ import com.redhat.ceylon.compiler.java.metadata.TypeInfo;
  */
 public class MapIterable<Element, Result> implements Iterable<Result,java.lang.Object> {
     private final ceylon.language.Iterable$impl<Result,java.lang.Object> $ceylon$language$Iterable$this;
+    private final ceylon.language.Container$impl<Result,java.lang.Object> $ceylon$language$Container$this;
     private final ceylon.language.Category$impl $ceylon$language$Category$this;
     
     final Iterable<? extends Element, ? extends java.lang.Object> iterable;
@@ -31,14 +36,34 @@ public class MapIterable<Element, Result> implements Iterable<Result,java.lang.O
     
     public MapIterable(Iterable<? extends Element, ? extends java.lang.Object> iterable, Callable<? extends Result> collecting) {
         this.$ceylon$language$Iterable$this = new ceylon.language.Iterable$impl<Result,java.lang.Object>(this);
+        this.$ceylon$language$Container$this = new ceylon.language.Container$impl<Result,java.lang.Object>(this);
         this.$ceylon$language$Category$this = new ceylon.language.Category$impl(this);
         this.iterable = iterable;
-        sel = collecting;
+        this.sel = collecting;
     }
 
-    class MapIterator implements Iterator<Result> {
+    @Ignore
+    @Override
+    public Category$impl $ceylon$language$Category$impl(){
+        return $ceylon$language$Category$this;
+    }
+
+    @Ignore
+    @Override
+    public Container$impl<Result,java.lang.Object> $ceylon$language$Container$impl(){
+        return $ceylon$language$Container$this;
+    }
+
+    @Ignore
+    @Override
+    public Iterable$impl<Result,java.lang.Object> $ceylon$language$Iterable$impl(){
+        return $ceylon$language$Iterable$this;
+    }
+
+    class MapIterator extends AbstractIterator<Result> {
         final Iterator<? extends Element> orig = iterable.getIterator();
         java.lang.Object elem;
+        
         public java.lang.Object next() {
             elem = orig.next();
             if (!(elem instanceof Finished)) {

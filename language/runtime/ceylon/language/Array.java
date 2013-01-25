@@ -5,6 +5,7 @@ import java.util.Arrays;
 import com.redhat.ceylon.compiler.java.Util;
 import com.redhat.ceylon.compiler.java.language.FilterIterable;
 import com.redhat.ceylon.compiler.java.language.MapIterable;
+import com.redhat.ceylon.compiler.java.language.AbstractIterator;
 import com.redhat.ceylon.compiler.java.metadata.Annotation;
 import com.redhat.ceylon.compiler.java.metadata.Annotations;
 import com.redhat.ceylon.compiler.java.metadata.Ceylon;
@@ -25,31 +26,85 @@ import com.redhat.ceylon.compiler.java.metadata.TypeParameters;
     "ceylon.language::Ranged<ceylon.language::Integer,ceylon.language::Array<Element>>"
 })
 public final class Array<Element> implements List<Element> {
-    private final ceylon.language.Category$impl $ceylon$language$Category$this;
-    private final ceylon.language.Collection$impl $ceylon$language$Collection$this;
-    private final ceylon.language.Correspondence$impl $ceylon$language$Correspondence$this;
-    private final ceylon.language.Iterable$impl<Element,java.lang.Object> $ceylon$language$Iterable$this;
-    private final ceylon.language.List$impl<Element> $ceylon$language$List$this;
+    @Ignore
+    protected final ceylon.language.Category$impl $ceylon$language$Category$this;
+    @Ignore
+    protected final ceylon.language.Iterable$impl<Element,java.lang.Object> $ceylon$language$Iterable$this;
+    @Ignore
+    protected final ceylon.language.Container$impl<Element,java.lang.Object> $ceylon$language$Container$this;
+    @Ignore
+    protected final ceylon.language.Collection$impl<Element> $ceylon$language$Collection$this;
+    @Ignore
+    protected final ceylon.language.List$impl<Element> $ceylon$language$List$this;
+    @Ignore
+    protected final ceylon.language.Correspondence$impl<Integer,Element> $ceylon$language$Correspondence$this;
+    @Ignore
+    protected final ceylon.language.Ranged$impl<Integer,List<Element>> $ceylon$language$Ranged$this;
+    @Ignore
+    protected final ceylon.language.Cloneable$impl $ceylon$language$Cloneable$this;
 
     private final java.lang.Object array;
 
     private Array(java.lang.Object array) {
         assert(array.getClass().isArray());
         this.$ceylon$language$Category$this = new ceylon.language.Category$impl(this);
-        this.$ceylon$language$Collection$this = new ceylon.language.Collection$impl(this);
-        this.$ceylon$language$Correspondence$this = new ceylon.language.Correspondence$impl(this);
+        this.$ceylon$language$Container$this = new ceylon.language.Container$impl<Element,java.lang.Object>(this);
         this.$ceylon$language$Iterable$this = new ceylon.language.Iterable$impl<Element,java.lang.Object>(this);
+        this.$ceylon$language$Collection$this = new ceylon.language.Collection$impl<Element>(this);
         this.$ceylon$language$List$this = new ceylon.language.List$impl<Element>(this);
+        this.$ceylon$language$Correspondence$this = new ceylon.language.Correspondence$impl<Integer,Element>(this);
+        this.$ceylon$language$Ranged$this = new ceylon.language.Ranged$impl<Integer,List<Element>>((Ranged)this);
+        this.$ceylon$language$Cloneable$this = new ceylon.language.Cloneable$impl((Array)this);
         this.array = array;
     }
 
-    private Correspondence$impl<Integer,Element> correspondence$impl = new Correspondence$impl<Integer,Element>(this);
-    
-//    @Ignore
-//    @Override
-//    public Correspondence$impl<? super Integer,? extends Element> $ceylon$language$Correspondence$impl(){
-//        return correspondence$impl;
-//    }
+    @Ignore
+    @Override
+    public Category$impl $ceylon$language$Category$impl(){
+        return $ceylon$language$Category$this;
+    }
+
+    @Ignore
+    @Override
+    public Container$impl<Element,java.lang.Object> $ceylon$language$Container$impl(){
+        return $ceylon$language$Container$this;
+    }
+
+    @Ignore
+    @Override
+    public Iterable$impl<Element,java.lang.Object> $ceylon$language$Iterable$impl(){
+        return $ceylon$language$Iterable$this;
+    }
+
+    @Ignore
+    @Override
+    public Collection$impl<Element> $ceylon$language$Collection$impl(){
+        return $ceylon$language$Collection$this;
+    }
+
+    @Ignore
+    @Override
+    public List$impl<Element> $ceylon$language$List$impl(){
+        return $ceylon$language$List$this;
+    }
+
+    @Ignore
+    @Override
+    public Correspondence$impl<Integer,Element> $ceylon$language$Correspondence$impl(){
+        return $ceylon$language$Correspondence$this;
+    }
+
+    @Ignore
+    @Override
+    public Ranged$impl<Integer,List<? extends Element>> $ceylon$language$Ranged$impl(){
+        return (Ranged$impl)$ceylon$language$Ranged$this;
+    }
+
+    @Ignore
+    @Override
+    public Cloneable$impl $ceylon$language$Cloneable$impl(){
+        return $ceylon$language$Cloneable$this;
+    }
 
     @Ignore
     public static Array<Character> instance(char[] array) {
@@ -357,7 +412,7 @@ public final class Array<Element> implements List<Element> {
 
     @Override
     public Iterator<Element> getIterator() {
-        class ArrayIterator implements Iterator<Element> {
+        class ArrayIterator extends AbstractIterator<Element> {
             private int idx = 0;
 
             @Override

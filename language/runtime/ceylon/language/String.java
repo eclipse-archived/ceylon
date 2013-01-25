@@ -1,6 +1,7 @@
 package ceylon.language;
 
 import com.redhat.ceylon.compiler.java.language.AbstractCallable;
+import com.redhat.ceylon.compiler.java.language.AbstractIterator;
 import com.redhat.ceylon.compiler.java.language.ArraySequence;
 import com.redhat.ceylon.compiler.java.language.EmptyString;
 import com.redhat.ceylon.compiler.java.language.FilterIterable;
@@ -29,30 +30,120 @@ import com.redhat.ceylon.compiler.java.metadata.ValueType;
 public abstract class String
     implements Comparable<String>, Sequential<Character>,
                Summable<String>, Castable<String> {
-    private final ceylon.language.Category$impl $ceylon$language$Category$this;
-    private final ceylon.language.Correspondence$impl $ceylon$language$Correspondence$this;
+    @Ignore
+    protected final ceylon.language.Category$impl $ceylon$language$Category$this;
+    @Ignore
+    protected final ceylon.language.Container$impl<Character,java.lang.Object> $ceylon$language$Container$this;
     @Ignore
     protected final ceylon.language.Iterable$impl<Character,java.lang.Object> $ceylon$language$Iterable$this;
     @Ignore
     protected final ceylon.language.List$impl<Character> $ceylon$language$List$this;
+    @Ignore
+    protected final ceylon.language.Collection$impl<Character> $ceylon$language$Collection$this;
+    @Ignore
+    protected final ceylon.language.Sequential$impl<Character> $ceylon$language$Sequential$this;
+    @Ignore
+    protected final ceylon.language.Correspondence$impl<Integer,Character> $ceylon$language$Correspondence$this;
+    @Ignore
+    protected final ceylon.language.Comparable$impl<String> $ceylon$language$Comparable$this;
+    @Ignore
+    protected final ceylon.language.Summable$impl<String> $ceylon$language$Summable$this;
+    @Ignore
+    protected final ceylon.language.Castable$impl<String> $ceylon$language$Castable$this;
+    @Ignore
+    protected final ceylon.language.Ranged$impl<Integer,List<Character>> $ceylon$language$Ranged$this;
+    @Ignore
+    protected final ceylon.language.Cloneable$impl $ceylon$language$Cloneable$this;
 
     public final java.lang.String value;
 
     protected String(java.lang.String s) {
         this.$ceylon$language$Category$this = new ceylon.language.Category$impl(this);
-        this.$ceylon$language$Correspondence$this = new ceylon.language.Correspondence$impl(this);
+        this.$ceylon$language$Container$this = new ceylon.language.Container$impl<Character,java.lang.Object>(this);
         this.$ceylon$language$Iterable$this = new ceylon.language.Iterable$impl<Character,java.lang.Object>(this);
+        this.$ceylon$language$Correspondence$this = new ceylon.language.Correspondence$impl<Integer,Character>(this);
         this.$ceylon$language$List$this = new ceylon.language.List$impl<Character>(this);
+        this.$ceylon$language$Collection$this = new ceylon.language.Collection$impl<Character>(this);
+        this.$ceylon$language$Sequential$this = new ceylon.language.Sequential$impl<Character>(this);
+        this.$ceylon$language$Comparable$this = new ceylon.language.Comparable$impl<String>(this);
+        this.$ceylon$language$Summable$this = new ceylon.language.Summable$impl<String>(this);
+        this.$ceylon$language$Castable$this = new ceylon.language.Castable$impl<String>(this);
+        this.$ceylon$language$Ranged$this = new ceylon.language.Ranged$impl<Integer,List<Character>>((Ranged)this);
+        this.$ceylon$language$Cloneable$this = new ceylon.language.Cloneable$impl(this);
         value = s;
     }
 
-    private Correspondence$impl<Integer,Character> correspondence$impl = new Correspondence$impl<Integer,Character>(this);
-    
-//    @Ignore
-//    @Override
-//    public Correspondence$impl<? super Integer,? extends Character> $ceylon$language$Correspondence$impl(){
-//        return correspondence$impl;
-//    }
+    @Ignore
+    @Override
+    public Category$impl $ceylon$language$Category$impl(){
+        return $ceylon$language$Category$this;
+    }
+
+    @Ignore
+    @Override
+    public Container$impl<Character,java.lang.Object> $ceylon$language$Container$impl(){
+        return $ceylon$language$Container$this;
+    }
+
+    @Ignore
+    @Override
+    public Iterable$impl<Character,java.lang.Object> $ceylon$language$Iterable$impl(){
+        return $ceylon$language$Iterable$this;
+    }
+
+    @Ignore
+    @Override
+    public Collection$impl<Character> $ceylon$language$Collection$impl(){
+        return $ceylon$language$Collection$this;
+    }
+
+    @Ignore
+    @Override
+    public List$impl<Character> $ceylon$language$List$impl(){
+        return $ceylon$language$List$this;
+    }
+
+    @Ignore
+    @Override
+    public Sequential$impl<Character> $ceylon$language$Sequential$impl(){
+        return $ceylon$language$Sequential$this;
+    }
+
+    @Ignore
+    @Override
+    public Correspondence$impl<Integer,Character> $ceylon$language$Correspondence$impl(){
+        return $ceylon$language$Correspondence$this;
+    }
+
+    @Ignore
+    @Override
+    public Ranged$impl $ceylon$language$Ranged$impl(){
+        return (Ranged$impl)$ceylon$language$Ranged$this;
+    }
+
+    @Ignore
+    @Override
+    public Cloneable$impl $ceylon$language$Cloneable$impl(){
+        return $ceylon$language$Cloneable$this;
+    }
+
+    @Ignore
+    @Override
+    public Comparable$impl<String> $ceylon$language$Comparable$impl(){
+        return $ceylon$language$Comparable$this;
+    }
+
+    @Ignore
+    @Override
+    public Castable$impl<String> $ceylon$language$Castable$impl(){
+        return $ceylon$language$Castable$this;
+    }
+
+    @Ignore
+    @Override
+    public Summable$impl<String> $ceylon$language$Summable$impl(){
+        return $ceylon$language$Summable$this;
+    }
 
     @Override
     public java.lang.String toString() {
@@ -382,7 +473,7 @@ public abstract class String
 
     @Ignore
     public static Iterator<Character> getIterator(final java.lang.String value) {
-        class StringIterator implements Iterator<Character> {
+        class StringIterator extends AbstractIterator<Character> {
             private int offset = 0;
 
             @Override
@@ -1199,6 +1290,7 @@ public abstract class String
 
     private static final class Tokens implements Iterable<String,java.lang.Object> {
         private final ceylon.language.Iterable$impl<String,java.lang.Object> $ceylon$language$Iterable$this;
+        private final ceylon.language.Container$impl<String,java.lang.Object> $ceylon$language$Container$this;
         private final ceylon.language.Category$impl $ceylon$language$Category$this;
         
         private final java.lang.String str;
@@ -1209,6 +1301,7 @@ public abstract class String
         public Tokens(java.lang.String str, java.lang.Object separator,
                 boolean keepSeparators, boolean groupSeparators) {
             this.$ceylon$language$Iterable$this = new ceylon.language.Iterable$impl<String,java.lang.Object>(this);
+            this.$ceylon$language$Container$this = new ceylon.language.Container$impl<String,java.lang.Object>(this);
             this.$ceylon$language$Category$this = new ceylon.language.Category$impl(this);
             this.str = str;
             this.separator = separator;
@@ -1216,9 +1309,29 @@ public abstract class String
             this.groupSeparators = groupSeparators;
         }
 
+        @Ignore
+        @Override
+        public Category$impl $ceylon$language$Category$impl(){
+            return $ceylon$language$Category$this;
+        }
+
+        @Ignore
+        @Override
+        public Container$impl<String,java.lang.Object> $ceylon$language$Container$impl(){
+            return $ceylon$language$Container$this;
+        }
+
+        @Ignore
+        @Override
+        public Iterable$impl<String,java.lang.Object> $ceylon$language$Iterable$impl(){
+            return $ceylon$language$Iterable$this;
+        }
+
+
         @Override
         public Iterator<? extends String> getIterator() {
-            abstract class TokenIterator implements Iterator<String> {
+            abstract class TokenIterator extends AbstractIterator<String> {
+                
                 protected final char[] chars = str.toCharArray();
                 protected int index = 0;
                 private boolean first = true;
@@ -1482,6 +1595,7 @@ public abstract class String
 
     private static final class Occurs implements Iterable<Integer,java.lang.Object> {
         private final ceylon.language.Iterable$impl<Integer,java.lang.Object> $ceylon$language$Iterable$this;
+        private final ceylon.language.Container$impl<Integer,java.lang.Object> $ceylon$language$Container$this;
         private final ceylon.language.Category$impl $ceylon$language$Category$this;
         
         private final java.lang.String str;
@@ -1489,14 +1603,33 @@ public abstract class String
 
         public Occurs(java.lang.String str, java.lang.String oc) {
             this.$ceylon$language$Iterable$this = new ceylon.language.Iterable$impl<Integer,java.lang.Object>(this);
+            this.$ceylon$language$Container$this = new ceylon.language.Container$impl<Integer,java.lang.Object>(this);
             this.$ceylon$language$Category$this = new ceylon.language.Category$impl(this);
             this.str = str;
             this.oc = oc;
         }
 
+        @Ignore
+        @Override
+        public Category$impl $ceylon$language$Category$impl(){
+            return $ceylon$language$Category$this;
+        }
+
+        @Ignore
+        @Override
+        public Container$impl<Integer,java.lang.Object> $ceylon$language$Container$impl(){
+            return $ceylon$language$Container$this;
+        }
+
+        @Ignore
+        @Override
+        public Iterable$impl<Integer,java.lang.Object> $ceylon$language$Iterable$impl(){
+            return $ceylon$language$Iterable$this;
+        }
+
         @Override
         public Iterator<? extends Integer> getIterator() {
-            class OccurrenceIterator implements Iterator<Integer> {
+            class OccurrenceIterator extends AbstractIterator<Integer> {
                 private int pos=0;
 
                 @Override

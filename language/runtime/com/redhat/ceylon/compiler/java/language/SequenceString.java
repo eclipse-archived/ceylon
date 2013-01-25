@@ -9,7 +9,9 @@ import ceylon.language.Integer;
 import ceylon.language.Iterable;
 import ceylon.language.Map;
 import ceylon.language.Sequence;
+import ceylon.language.Sequence$impl;
 import ceylon.language.Sequential;
+import ceylon.language.Sequential$impl;
 import ceylon.language.String;
 import ceylon.language.string_;
 
@@ -20,8 +22,18 @@ import com.redhat.ceylon.compiler.java.metadata.Ignore;
 @Ceylon(major = 4)
 public class SequenceString extends String implements Sequence<Character> {
 
+    @Ignore
+    protected final ceylon.language.Sequence$impl<Character> $ceylon$language$Sequence$this;
+
     public SequenceString(java.lang.String s) {
         super(s);
+        this.$ceylon$language$Sequence$this = new ceylon.language.Sequence$impl<Character>(this);
+    }
+
+    @Ignore
+    @Override
+    public Sequence$impl<Character> $ceylon$language$Sequence$impl(){
+        return $ceylon$language$Sequence$this;
     }
 
     @Override

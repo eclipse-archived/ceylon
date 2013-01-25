@@ -20,22 +20,72 @@ import com.redhat.ceylon.compiler.java.metadata.Variance;
     satisfies="ceylon.language::Object"))
 @SatisfiedTypes("ceylon.language::Set<Element>")
 public class LazySet<Element> implements Set<Element> {
-    private final ceylon.language.Collection$impl $ceylon$language$Collection$this;
+    @Ignore
+    protected final ceylon.language.Category$impl $ceylon$language$Category$this;
+    @Ignore
+    protected final ceylon.language.Iterable$impl<Element,java.lang.Object> $ceylon$language$Iterable$this;
+    @Ignore
+    protected final ceylon.language.Container$impl<Element,java.lang.Object> $ceylon$language$Container$this;
+    @Ignore
+    protected final ceylon.language.Collection$impl<Element> $ceylon$language$Collection$this;
+    @Ignore
+    protected final ceylon.language.Set$impl<Element> $ceylon$language$Set$this;
+    @Ignore
+    protected final ceylon.language.Cloneable$impl $ceylon$language$Cloneable$this;
 
     private final Iterable<? extends Element, ? extends java.lang.Object> elems;
-    private final Set$impl<Element> set$impl = new Set$impl<Element>(this);
-    private final Category$impl cat$impl = new Category$impl(this);
 
     @Ignore @SuppressWarnings("unchecked")
     public LazySet() {
-        this.$ceylon$language$Collection$this = new ceylon.language.Collection$impl(this);
-        this.elems = (Iterable<? extends Element, ? extends java.lang.Object>)empty_.getEmpty$();
+        this((Iterable<? extends Element, ? extends java.lang.Object>)empty_.getEmpty$());
     }
     public LazySet(@Name("elems")
             @TypeInfo("ceylon.language::Iterable<Element,ceylon.language::Null>")
             Iterable<? extends Element, ? extends java.lang.Object> elems) {
-        this.$ceylon$language$Collection$this = new ceylon.language.Collection$impl(this);
+        this.$ceylon$language$Category$this = new ceylon.language.Category$impl(this);
+        this.$ceylon$language$Container$this = new ceylon.language.Container$impl<Element,java.lang.Object>(this);
+        this.$ceylon$language$Iterable$this = new ceylon.language.Iterable$impl<Element,java.lang.Object>(this);
+        this.$ceylon$language$Collection$this = new ceylon.language.Collection$impl<Element>(this);
+        this.$ceylon$language$Set$this = new ceylon.language.Set$impl<Element>(this);
+        this.$ceylon$language$Cloneable$this = new ceylon.language.Cloneable$impl(this);
         this.elems = elems;
+    }
+    
+
+    @Ignore
+    @Override
+    public Category$impl $ceylon$language$Category$impl(){
+        return $ceylon$language$Category$this;
+    }
+
+    @Ignore
+    @Override
+    public Container$impl<Element,java.lang.Object> $ceylon$language$Container$impl(){
+        return $ceylon$language$Container$this;
+    }
+
+    @Ignore
+    @Override
+    public Iterable$impl<Element,java.lang.Object> $ceylon$language$Iterable$impl(){
+        return $ceylon$language$Iterable$this;
+    }
+
+    @Ignore
+    @Override
+    public Collection$impl<Element> $ceylon$language$Collection$impl(){
+        return $ceylon$language$Collection$this;
+    }
+
+    @Ignore
+    @Override
+    public Set$impl<Element> $ceylon$language$Set$impl(){
+        return $ceylon$language$Set$this;
+    }
+
+    @Ignore
+    @Override
+    public Cloneable$impl $ceylon$language$Cloneable$impl(){
+        return $ceylon$language$Cloneable$this;
     }
 
     @Override
@@ -137,13 +187,13 @@ public class LazySet<Element> implements Set<Element> {
     @Annotations({@Annotation("actual"), @Annotation("default")})
     @TypeInfo("ceylon.language::Boolean")
     public boolean equals(java.lang.Object other) {
-        return set$impl.equals(other);
+        return $ceylon$language$Set$this.equals(other);
     }
     @Override
     @Annotations({@Annotation("actual"), @Annotation("default")})
     @TypeInfo("ceylon.language::Integer")
     public int hashCode() {
-        return set$impl.hashCode();
+        return $ceylon$language$Set$this.hashCode();
     }
 
     @Override @Ignore
@@ -284,7 +334,7 @@ public class LazySet<Element> implements Set<Element> {
             @Name("elements")
             @TypeInfo("ceylon.language::Iterable<ceylon.language::Object,ceylon.language::Null>")
             Iterable<?,?> elements) {
-        return cat$impl.containsEvery(elements);
+        return $ceylon$language$Category$this.containsEvery(elements);
     }
 
 //    @Override @Ignore
@@ -299,10 +349,10 @@ public class LazySet<Element> implements Set<Element> {
 
     @Override @Ignore
     public boolean containsAny(
-            @Sequenced @Name("elements")
+            @Name("elements")
             @TypeInfo("ceylon.language::Iterable<ceylon.language::Object,ceylon.language::Null>")
             Iterable<?,?> elements) {
-        return cat$impl.containsAny(elements);
+        return $ceylon$language$Category$this.containsAny(elements);
     }
 
 //    @Override @Ignore
@@ -317,12 +367,12 @@ public class LazySet<Element> implements Set<Element> {
 
     @Override @Ignore
     public boolean superset(Set<? extends java.lang.Object> set) {
-        return set$impl.superset(set);
+        return $ceylon$language$Set$this.superset(set);
     }
 
     @Override @Ignore
     public boolean subset(Set<? extends java.lang.Object> set) {
-        return set$impl.subset(set);
+        return $ceylon$language$Set$this.subset(set);
     }
 
     @Override @Ignore

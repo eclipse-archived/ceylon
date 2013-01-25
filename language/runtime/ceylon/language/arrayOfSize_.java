@@ -1,6 +1,7 @@
 package ceylon.language;
 
 import com.redhat.ceylon.compiler.java.language.AbstractIterable;
+import com.redhat.ceylon.compiler.java.language.AbstractIterator;
 import com.redhat.ceylon.compiler.java.metadata.Ceylon;
 import com.redhat.ceylon.compiler.java.metadata.Ignore;
 import com.redhat.ceylon.compiler.java.metadata.Method;
@@ -42,8 +43,9 @@ public final class arrayOfSize_ {
     		final Element element) {
         return new AbstractIterable<Element,Null>() {
             public Iterator<Element> getIterator() {
-                return new Iterator<Element>() {
+                return new AbstractIterator<Element>() {
                     long idx = 0;
+
                     @TypeInfo(value="Element|ceylon.language::Finished", erased=true)
                     public java.lang.Object next() {
                         return idx++<size ? element : finished_.getFinished$();

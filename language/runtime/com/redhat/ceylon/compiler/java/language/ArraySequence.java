@@ -2,19 +2,32 @@ package com.redhat.ceylon.compiler.java.language;
 
 import java.util.Arrays;
 
+import ceylon.language.Array;
 import ceylon.language.Boolean;
 import ceylon.language.Callable;
 import ceylon.language.Category;
+import ceylon.language.Category$impl;
+import ceylon.language.Cloneable$impl;
+import ceylon.language.Collection$impl;
 import ceylon.language.Comparison;
+import ceylon.language.Container$impl;
 import ceylon.language.Correspondence$impl;
 import ceylon.language.Entry;
 import ceylon.language.Integer;
 import ceylon.language.Iterable;
+import ceylon.language.Iterable$impl;
 import ceylon.language.Iterator;
+import ceylon.language.Iterator$impl;
+import ceylon.language.List;
+import ceylon.language.List$impl;
 import ceylon.language.Map;
 import ceylon.language.Null;
+import ceylon.language.Ranged;
+import ceylon.language.Ranged$impl;
 import ceylon.language.Sequence;
+import ceylon.language.Sequence$impl;
 import ceylon.language.Sequential;
+import ceylon.language.Sequential$impl;
 import ceylon.language.empty_;
 import ceylon.language.finished_;
 
@@ -32,11 +45,15 @@ import com.redhat.ceylon.compiler.java.metadata.TypeInfo;
 @SatisfiedTypes("ceylon.language::Sequence<Element>")
 public class ArraySequence<Element> implements Sequence<Element> {
     private final ceylon.language.Category$impl $ceylon$language$Category$this;
-    private final ceylon.language.Collection$impl $ceylon$language$Collection$this;
-    private final ceylon.language.Correspondence$impl $ceylon$language$Correspondence$this;
+    private final ceylon.language.Container$impl<Element,java.lang.Object> $ceylon$language$Container$this;
     private final ceylon.language.Iterable$impl<Element,java.lang.Object> $ceylon$language$Iterable$this;
+    private final ceylon.language.Collection$impl<Element> $ceylon$language$Collection$this;
+    private final ceylon.language.Correspondence$impl<Integer,Element> $ceylon$language$Correspondence$this;
     private final ceylon.language.List$impl<Element> $ceylon$language$List$this;
+    private final ceylon.language.Sequential$impl<Element> $ceylon$language$Sequential$this;
     private final ceylon.language.Sequence$impl<Element> $ceylon$language$Sequence$this;
+    private final ceylon.language.Ranged$impl<Integer,List<? extends Element>> $ceylon$language$Ranged$this;
+    private final ceylon.language.Cloneable$impl $ceylon$language$Cloneable$this;
 
     protected final Element[] array;
     protected final long first;
@@ -48,11 +65,15 @@ public class ArraySequence<Element> implements Sequence<Element> {
     @Ignore
     public ArraySequence(Element[] array, long first) {
         this.$ceylon$language$Category$this = new ceylon.language.Category$impl(this);
-        this.$ceylon$language$Collection$this = new ceylon.language.Collection$impl(this);
-        this.$ceylon$language$Correspondence$this = new ceylon.language.Correspondence$impl(this);
+        this.$ceylon$language$Container$this = new ceylon.language.Container$impl<Element,java.lang.Object>(this);
         this.$ceylon$language$Iterable$this = new ceylon.language.Iterable$impl<Element,java.lang.Object>(this);
+        this.$ceylon$language$Collection$this = new ceylon.language.Collection$impl<Element>(this);
+        this.$ceylon$language$Correspondence$this = new ceylon.language.Correspondence$impl<Integer,Element>(this);
         this.$ceylon$language$List$this = new ceylon.language.List$impl<Element>(this);
         this.$ceylon$language$Sequence$this = new ceylon.language.Sequence$impl<Element>(this);
+        this.$ceylon$language$Sequential$this = new ceylon.language.Sequential$impl<Element>(this);
+        this.$ceylon$language$Ranged$this = new ceylon.language.Ranged$impl<Integer,List<? extends Element>>((Ranged)this);
+        this.$ceylon$language$Cloneable$this = new ceylon.language.Cloneable$impl(this);
     	if (array.length==0 || array.length<=first) {
     		throw new IllegalArgumentException("ArraySequence may not have zero elements");
     	}
@@ -62,26 +83,68 @@ public class ArraySequence<Element> implements Sequence<Element> {
 
     @Ignore
     public ArraySequence(java.util.List<Element> list) {
-        this.$ceylon$language$Category$this = new ceylon.language.Category$impl(this);
-        this.$ceylon$language$Collection$this = new ceylon.language.Collection$impl(this);
-        this.$ceylon$language$Correspondence$this = new ceylon.language.Correspondence$impl(this);
-        this.$ceylon$language$Iterable$this = new ceylon.language.Iterable$impl<Element,java.lang.Object>(this);
-        this.$ceylon$language$List$this = new ceylon.language.List$impl<Element>(this);
-        this.$ceylon$language$Sequence$this = new ceylon.language.Sequence$impl<Element>(this);
-    	if (list.size()==0) {
-    		throw new IllegalArgumentException("ArraySequence may not have zero elements");
-    	}
-        this.array = (Element[]) list.toArray();
-        this.first = 0;
+        this((Element[]) list.toArray(), 0);
     }
 
-    private Correspondence$impl<Integer,Element> correspondence$impl = new Correspondence$impl<Integer,Element>(this);
-    
-//    @Ignore
-////    @Override
-//    public Correspondence$impl<? super Integer,? extends Element> $ceylon$language$Correspondence$impl(){
-//        return correspondence$impl;
-//    }
+    @Ignore
+    @Override
+    public Category$impl $ceylon$language$Category$impl(){
+        return $ceylon$language$Category$this;
+    }
+
+    @Ignore
+    @Override
+    public Container$impl<Element,java.lang.Object> $ceylon$language$Container$impl(){
+        return $ceylon$language$Container$this;
+    }
+
+    @Ignore
+    @Override
+    public Iterable$impl<Element,java.lang.Object> $ceylon$language$Iterable$impl(){
+        return $ceylon$language$Iterable$this;
+    }
+
+    @Ignore
+    @Override
+    public Collection$impl<Element> $ceylon$language$Collection$impl(){
+        return $ceylon$language$Collection$this;
+    }
+
+    @Ignore
+    @Override
+    public List$impl<Element> $ceylon$language$List$impl(){
+        return $ceylon$language$List$this;
+    }
+
+    @Ignore
+    @Override
+    public Correspondence$impl<Integer,Element> $ceylon$language$Correspondence$impl(){
+        return $ceylon$language$Correspondence$this;
+    }
+
+    @Ignore
+    @Override
+    public Ranged$impl $ceylon$language$Ranged$impl(){
+        return $ceylon$language$Ranged$this;
+    }
+
+    @Ignore
+    @Override
+    public Sequential$impl<Element> $ceylon$language$Sequential$impl(){
+        return $ceylon$language$Sequential$this;
+    }
+
+    @Ignore
+    @Override
+    public Sequence$impl<Element> $ceylon$language$Sequence$impl(){
+        return $ceylon$language$Sequence$this;
+    }
+
+    @Ignore
+    @Override
+    public Cloneable$impl $ceylon$language$Cloneable$impl(){
+        return $ceylon$language$Cloneable$this;
+    }
 
     @Override
     public Element getFirst() {
@@ -213,8 +276,7 @@ public class ArraySequence<Element> implements Sequence<Element> {
         return new ArrayListIterator();
     }
 
-    public class ArrayListIterator
-            implements Iterator<Element> {
+    public class ArrayListIterator extends AbstractIterator<Element> {
         private long idx = first;
 
         @Override

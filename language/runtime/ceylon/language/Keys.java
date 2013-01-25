@@ -18,15 +18,22 @@ import com.redhat.ceylon.compiler.java.metadata.Variance;
 class Keys<Key,Item> implements Category {
 
 	private Correspondence<? super Key, ? extends Item> correspondence;
-	private Category$impl Category$impl$this; 
+    @Ignore
+	protected Category$impl $ceylon$language$Category$this; 
 	
 	Keys(@Name("correspondence")
 		@TypeInfo("ceylon.language::Correspondence<Key,Item>")
 	    Correspondence<? super Key, ? extends Item> correspondence) {
 		this.correspondence = correspondence;
-		Category$impl$this = new Category$impl(this);
+		this.$ceylon$language$Category$this = new Category$impl(this);
 	}
 	
+    @Ignore
+    @Override
+    public Category$impl $ceylon$language$Category$impl(){
+        return $ceylon$language$Category$this;
+    }
+
 	@Override
 	public boolean contains(@Name("key") java.lang.Object key) {
 		return correspondence.defines((Key)key);
@@ -35,13 +42,13 @@ class Keys<Key,Item> implements Category {
 	@Override
 	@Ignore
 	public boolean containsAny(Iterable<?, ?> keys) {
-		return Category$impl$this.containsAny(keys);
+		return $ceylon$language$Category$this.containsAny(keys);
 	}
 
 	@Override
 	@Ignore
 	public boolean containsEvery(Iterable<?, ?> keys) {
-		return Category$impl$this.containsEvery(keys);
+		return $ceylon$language$Category$this.containsEvery(keys);
 	}
 
 }

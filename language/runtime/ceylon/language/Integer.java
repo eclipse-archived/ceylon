@@ -1,5 +1,6 @@
 package ceylon.language;
 
+import com.redhat.ceylon.compiler.java.Util;
 import com.redhat.ceylon.compiler.java.metadata.Ceylon;
 import com.redhat.ceylon.compiler.java.metadata.Class;
 import com.redhat.ceylon.compiler.java.metadata.Defaulted;
@@ -29,6 +30,82 @@ public final class Integer
 
     private Integer(long l) {
         value = l;
+    }
+
+    @Ignore
+    @Override
+    public Scalar$impl<Integer> $ceylon$language$Scalar$impl(){
+        // drags Numeric<Integer> Comparable<Integer> Number
+        throw Util.makeUnimplementedMixinAccessException();
+    }
+
+    @Ignore
+    @Override
+    public Numeric$impl<Integer> $ceylon$language$Numeric$impl(){
+        // drags Summable<Integer> Invertable<Integer>
+        throw Util.makeUnimplementedMixinAccessException();
+    }
+
+    @Ignore
+    @Override
+    public Summable$impl<Integer> $ceylon$language$Summable$impl(){
+        throw Util.makeUnimplementedMixinAccessException();
+    }
+
+    @Ignore
+    @Override
+    public Invertable$impl<Integer> $ceylon$language$Invertable$impl(){
+        throw Util.makeUnimplementedMixinAccessException();
+    }
+
+    @Ignore
+    @Override
+    public Comparable$impl<Integer> $ceylon$language$Comparable$impl(){
+        throw Util.makeUnimplementedMixinAccessException();
+    }
+
+    @Ignore
+    @Override
+    public Number$impl $ceylon$language$Number$impl(){
+        throw Util.makeUnimplementedMixinAccessException();
+    }
+
+    @Ignore
+    @Override
+    public Integral$impl<Integer> $ceylon$language$Integral$impl(){
+        // drags Numeric<Integer> Enumerable<Integer>
+        throw Util.makeUnimplementedMixinAccessException();
+    }
+
+    @Ignore
+    @Override
+    public Ordinal$impl<Integer> $ceylon$language$Ordinal$impl(){
+        throw Util.makeUnimplementedMixinAccessException();
+    }
+
+    @Ignore
+    @Override
+    public Enumerable$impl<Integer> $ceylon$language$Enumerable$impl(){
+        // drags Ordinal<Integer>
+        throw Util.makeUnimplementedMixinAccessException();
+    }
+
+    @Ignore
+    @Override
+    public Binary$impl<Integer> $ceylon$language$Binary$impl(){
+        throw Util.makeUnimplementedMixinAccessException();
+    }
+
+    @Ignore
+    @Override
+    public Exponentiable$impl<Integer,Integer> $ceylon$language$Exponentiable$impl(){
+        throw Util.makeUnimplementedMixinAccessException();
+    }
+
+    @Ignore
+    @Override
+    public Castable$impl<Numeric> $ceylon$language$Castable$impl(){
+        throw Util.makeUnimplementedMixinAccessException();
     }
 
     @Ignore

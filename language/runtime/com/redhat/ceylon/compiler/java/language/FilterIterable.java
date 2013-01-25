@@ -1,6 +1,10 @@
 package com.redhat.ceylon.compiler.java.language;
 
 import ceylon.language.Boolean;
+import ceylon.language.Category$impl;
+import ceylon.language.Container$impl;
+import ceylon.language.Iterable$impl;
+import ceylon.language.Iterator$impl;
 import ceylon.language.Null;
 import ceylon.language.Callable;
 import ceylon.language.Comparison;
@@ -24,6 +28,7 @@ import com.redhat.ceylon.compiler.java.metadata.TypeInfo;
  */
 public class FilterIterable<Element,Absent> implements Iterable<Element,Absent> {
     private final ceylon.language.Iterable$impl<Element,Absent> $ceylon$language$Iterable$this;
+    private final ceylon.language.Container$impl<Element,Absent> $ceylon$language$Container$this;
     private final ceylon.language.Category$impl $ceylon$language$Category$this;
     
     final Iterable<? extends Element, ? extends java.lang.Object> iterable;
@@ -31,13 +36,33 @@ public class FilterIterable<Element,Absent> implements Iterable<Element,Absent> 
     
     public FilterIterable(Iterable<? extends Element, ? extends java.lang.Object> iterable, Callable<? extends Boolean> selecting) {
         this.$ceylon$language$Iterable$this = new ceylon.language.Iterable$impl<Element,Absent>(this);
+        this.$ceylon$language$Container$this = new ceylon.language.Container$impl<Element,Absent>(this);
         this.$ceylon$language$Category$this = new ceylon.language.Category$impl(this);
         this.iterable = iterable;
         f = selecting;
     }
 
-    class FilterIterator implements Iterator<Element> {
+    @Ignore
+    @Override
+    public Category$impl $ceylon$language$Category$impl(){
+        return $ceylon$language$Category$this;
+    }
+
+    @Ignore
+    @Override
+    public Container$impl<Element,Absent> $ceylon$language$Container$impl(){
+        return $ceylon$language$Container$this;
+    }
+
+    @Ignore
+    @Override
+    public Iterable$impl<Element,Absent> $ceylon$language$Iterable$impl(){
+        return $ceylon$language$Iterable$this;
+    }
+
+    class FilterIterator extends AbstractIterator<Element> {
         final Iterator<? extends Element> iter = iterable.getIterator();
+
         public java.lang.Object next() {
             java.lang.Object elem = iter.next();
             boolean flag = elem instanceof Finished ? true : f.$call(elem).booleanValue();

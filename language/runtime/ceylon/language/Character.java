@@ -1,5 +1,6 @@
 package ceylon.language;
 
+import com.redhat.ceylon.compiler.java.Util;
 import com.redhat.ceylon.compiler.java.metadata.Ceylon;
 import com.redhat.ceylon.compiler.java.metadata.Class;
 import com.redhat.ceylon.compiler.java.metadata.Ignore;
@@ -19,6 +20,24 @@ public final class Character
 
     private Character(int codePoint) {
         this.codePoint = codePoint;
+    }
+
+    @Ignore
+    @Override
+    public Ordinal$impl<Character> $ceylon$language$Ordinal$impl(){
+        throw Util.makeUnimplementedMixinAccessException();
+    }
+
+    @Ignore
+    @Override
+    public Enumerable$impl<Character> $ceylon$language$Enumerable$impl(){
+        throw Util.makeUnimplementedMixinAccessException();
+    }
+
+    @Ignore
+    @Override
+    public Comparable$impl<Character> $ceylon$language$Comparable$impl(){
+        throw Util.makeUnimplementedMixinAccessException();
     }
 
     @Ignore
