@@ -126,12 +126,12 @@ public class ExpressionVisitor extends Visitor {
         FunctionalParameter p = that.getDeclarationModel();
         Tree.DefaultArgument da = that.getDefaultArgument();
         if (p.isDeclaredVoid() && p.isDefaulted()) { 
-        	SpecifierExpression se = da.getSpecifierExpression();
-			if (se!=null && se.getExpression()!=null &&
-        			!isSatementExpression(se.getExpression())) {
-        		da.addError("functional parameter is declared void so specified expression must be a statement: " +
-        				p.getName());
-        	}
+            SpecifierExpression se = da.getSpecifierExpression();
+            if (se!=null && se.getExpression()!=null &&
+                    !isSatementExpression(se.getExpression())) {
+                da.addError("functional parameter is declared void so specified expression must be a statement: " +
+                        p.getName());
+            }
         }
     }
     
@@ -195,8 +195,8 @@ public class ExpressionVisitor extends Visitor {
                             that.setPossiblyEmpty(!nonemptyIterable || 
                                     cc.getPossiblyEmpty());
                             ProducedType firstType = unionType(unit.getFirstType(it), 
-                            		cc.getFirstTypeModel(), unit);
-							that.setFirstTypeModel(firstType);
+                                    cc.getFirstTypeModel(), unit);
+                            that.setFirstTypeModel(firstType);
                         }
                     }
                 }
@@ -649,7 +649,7 @@ public class ExpressionVisitor extends Visitor {
                     else if (ct.getTypeArgumentList().size()>=2) {
                         ProducedType tupleType = ct.getTypeArgumentList().get(1);
                         List<ProducedType> argTypes = getTupleElementTypes(tupleType);
-                        boolean sequenced = isTupleLengthUnbounded(tupleType);
+                        boolean variadic = isTupleLengthUnbounded(tupleType);
                         List<Tree.Parameter> params = pl.getParameters();
                         if (argTypes.size()!=params.size()) {
                             pl.addError("wrong number of declared parameters: must have " + argTypes.size() + " parameters");
@@ -665,10 +665,10 @@ public class ExpressionVisitor extends Visitor {
                         if (!params.isEmpty()) {
                             Tree.Parameter lastParam = params.get(params.size()-1);
                             boolean refSequenced = lastParam.getDeclarationModel().isSequenced();
-                            if (refSequenced && !sequenced) {
+                            if (refSequenced && !variadic) {
                                 lastParam.addError("parameter list in referenced declaration does not have a sequenced parameter");
                             }
-                            if (!refSequenced && sequenced) {
+                            if (!refSequenced && variadic) {
                                 lastParam.addError("parameter list in referenced declaration has a sequenced parameter");                            
                             }
                         }
@@ -726,8 +726,8 @@ public class ExpressionVisitor extends Visitor {
                             d.getName(unit));
                 }
                 if (d instanceof Value && 
-                		that.getSpecifierExpression() instanceof Tree.LazySpecifierExpression) {
-                	((Value) d).setTransient(true);
+                        that.getSpecifierExpression() instanceof Tree.LazySpecifierExpression) {
+                    ((Value) d).setTransient(true);
                 }
                 
                 ProducedType t = that.getBaseMemberExpression().getTypeModel();
@@ -760,16 +760,16 @@ public class ExpressionVisitor extends Visitor {
     }
     
     boolean isSatementExpression(Tree.Expression e) {
-    	if (e==null) {
-    		return false;
-    	}
-    	else {
-    		Tree.Term t = e.getTerm();
-			return t instanceof Tree.InvocationExpression ||
-    				t instanceof Tree.PostfixOperatorExpression ||
-    				t instanceof Tree.AssignmentOp ||
-    				t instanceof Tree.PrefixOperatorExpression;
-    	}
+        if (e==null) {
+            return false;
+        }
+        else {
+            Tree.Term t = e.getTerm();
+            return t instanceof Tree.InvocationExpression ||
+                    t instanceof Tree.PostfixOperatorExpression ||
+                    t instanceof Tree.AssignmentOp ||
+                    t instanceof Tree.PrefixOperatorExpression;
+        }
     }
     
     /*boolean isVoidMethodReference(Tree.Expression e) {
@@ -797,15 +797,15 @@ public class ExpressionVisitor extends Visitor {
             if (typeArgs.size()>=2) {
                 ProducedType rt = typeArgs.get(0);
                 ProducedType pts = typeArgs.get(1);
-                List<ProducedType> argtypes = getTupleElementTypes(pts);
-                boolean argsequenced = isTupleLengthUnbounded(pts);
-                boolean atleastone = isTupleVariantAtLeastOne(pts);
-                if (argsequenced) {
-                    ProducedType spt = argtypes.get(argtypes.size()-1);
-                    argtypes.set(argtypes.size()-1, unit.getIteratedType(spt));
+                List<ProducedType> argTypes = getTupleElementTypes(pts);
+                boolean variadic = isTupleLengthUnbounded(pts);
+                boolean atLeastOne = isTupleVariantAtLeastOne(pts);
+                if (variadic) {
+                    ProducedType spt = argTypes.get(argTypes.size()-1);
+                    argTypes.set(argTypes.size()-1, unit.getIteratedType(spt));
                 }
                 return producedType(unit.getCallableDeclaration(), rt, 
-                        unit.getTupleType(argtypes, argsequenced, atleastone, -1));
+                        unit.getTupleType(argTypes, variadic, atLeastOne, -1));
             }
         }
         return t;
@@ -1034,7 +1034,7 @@ public class ExpressionVisitor extends Visitor {
                 if (that.getType() instanceof Tree.VoidModifier && 
                         !isSatementExpression(e)) {
                     se.addError("method is declared void so specified expression must be a statement: " +
-                    		that.getDeclarationModel().getName());
+                            that.getDeclarationModel().getName());
                 }
             }
         }
@@ -1051,7 +1051,7 @@ public class ExpressionVisitor extends Visitor {
     @Override public void visit(Tree.MethodArgument that) {
         Tree.SpecifierExpression se = that.getSpecifierExpression();
         Method d = that.getDeclarationModel();
-		if (se==null) {
+        if (se==null) {
             Tree.Type rt = beginReturnScope(that.getType());           
             Declaration od = beginReturnDeclaration(d);
             super.visit(that);
@@ -1701,7 +1701,7 @@ public class ExpressionVisitor extends Visitor {
         ProducedType att = getTupleType(args, false);
         ProducedType spt = sp.getType();
         addToUnion(inferredTypes, inferTypeArg(tp, spt, att,
-        		new ArrayList<TypeParameter>()));
+                new ArrayList<TypeParameter>()));
     }
 
     private void inferTypeArg(Tree.NamedArgument arg, TypeParameter tp,
@@ -1746,15 +1746,15 @@ public class ExpressionVisitor extends Visitor {
                 Tree.PositionalArgument a = args.get(i);
                 ProducedType at = a.getTypeModel();
                 if (a instanceof Tree.SpreadArgument) {
-                	at = spreadType(at, unit, true);
+                    at = spreadType(at, unit, true);
                     ProducedType ptt = getParameterTypesAsTupleType(params.subList(i, params.size()), pr);
                     addToUnion(inferredTypes, inferTypeArg(tp, ptt, at, 
                             new ArrayList<TypeParameter>()));
                 }
                 else if (a instanceof Tree.Comprehension) {
-                	if (parameter.isSequenced()) {
-                		inferTypeArg(tp, parameter, ((Tree.Comprehension) a), inferredTypes);
-                	}
+                    if (parameter.isSequenced()) {
+                        inferTypeArg(tp, parameter, ((Tree.Comprehension) a), inferredTypes);
+                    }
                 }
                 else {
                     if (parameter.isSequenced()) {
@@ -1772,37 +1772,37 @@ public class ExpressionVisitor extends Visitor {
         }
     }
 
-	private void inferTypeArg(TypeParameter tp, Parameter parameter,
-			List<Tree.PositionalArgument> args, List<ProducedType> inferredTypes) {
-		for (int k=0; k<args.size(); k++) {
-		    Tree.PositionalArgument sa = args.get(k);
-		    ProducedType sat = sa.getTypeModel();
-		    if (sat!=null) {
-		        ProducedType pt = parameter.getType();
-		        if (sa instanceof Tree.SpreadArgument) {
-		        	sat = spreadType(sat, unit, true);
-		            addToUnion(inferredTypes, inferTypeArg(tp, pt, sat,
-		                    new ArrayList<TypeParameter>()));
-		        }
-		        else {
-		            ProducedType spt = unit.getIteratedType(pt);
-		            addToUnion(inferredTypes, inferTypeArg(tp, spt, sat,
-		                    new ArrayList<TypeParameter>()));
-		        }
-		    }
-		}
-	}
+    private void inferTypeArg(TypeParameter tp, Parameter parameter,
+            List<Tree.PositionalArgument> args, List<ProducedType> inferredTypes) {
+        for (int k=0; k<args.size(); k++) {
+            Tree.PositionalArgument sa = args.get(k);
+            ProducedType sat = sa.getTypeModel();
+            if (sat!=null) {
+                ProducedType pt = parameter.getType();
+                if (sa instanceof Tree.SpreadArgument) {
+                    sat = spreadType(sat, unit, true);
+                    addToUnion(inferredTypes, inferTypeArg(tp, pt, sat,
+                            new ArrayList<TypeParameter>()));
+                }
+                else {
+                    ProducedType spt = unit.getIteratedType(pt);
+                    addToUnion(inferredTypes, inferTypeArg(tp, spt, sat,
+                            new ArrayList<TypeParameter>()));
+                }
+            }
+        }
+    }
     
-	private void inferTypeArg(TypeParameter tp, Parameter parameter,
-			Tree.Comprehension c, List<ProducedType> inferredTypes) {
-		    ProducedType sat = c.getTypeModel();
-		    if (sat!=null) {
-		        ProducedType pt = parameter.getType();
-		        ProducedType spt = unit.getIteratedType(pt);
-		        addToUnion(inferredTypes, inferTypeArg(tp, spt, sat,
-		        		new ArrayList<TypeParameter>()));
-		    }
-	}
+    private void inferTypeArg(TypeParameter tp, Parameter parameter,
+            Tree.Comprehension c, List<ProducedType> inferredTypes) {
+            ProducedType sat = c.getTypeModel();
+            if (sat!=null) {
+                ProducedType pt = parameter.getType();
+                ProducedType spt = unit.getIteratedType(pt);
+                addToUnion(inferredTypes, inferTypeArg(tp, spt, sat,
+                        new ArrayList<TypeParameter>()));
+            }
+    }
     
     private ProducedType union(List<ProducedType> types) {
         if (types.isEmpty()) {
@@ -2267,10 +2267,10 @@ public class ExpressionVisitor extends Visitor {
         List<Tree.PositionalArgument> args = sa.getPositionalArguments();
         ProducedType paramType = pr.getTypedParameter(p).getFullType();
         ProducedType att = getTupleType(args, false)
-        		.getSupertype(unit.getIterableDeclaration());
+                .getSupertype(unit.getIterableDeclaration());
         checkAssignable(att, paramType, sa, 
-        		"iterable arguments must be assignable to iterable parameter " + 
-        		p.getName() + " of " + pr.getDeclaration().getName(unit));
+                "iterable arguments must be assignable to iterable parameter " + 
+                p.getName() + " of " + pr.getDeclaration().getName(unit));
     }
     
     private Parameter getMatchingParameter(ParameterList pl, Tree.NamedArgument na) {
@@ -2314,18 +2314,18 @@ public class ExpressionVisitor extends Visitor {
                 Tree.PositionalArgument a = args.get(i);
                 if (a instanceof Tree.SpreadArgument) {
                     checkSpreadArgument(pr, p, a, 
-                    		(Tree.SpreadArgument) a, 
-                    		params.subList(i, params.size()));
+                            (Tree.SpreadArgument) a, 
+                            params.subList(i, params.size()));
                     break;
                 }
                 else if (a instanceof Tree.Comprehension) {
                     if (p.isSequenced()) {
-                    	checkComprehensionPositionalArgument(p, pr, 
+                        checkComprehensionPositionalArgument(p, pr, 
                                 (Tree.Comprehension) a);
                     }
                     else {
                         a.addError("not a sequenced parameter: parameter " + 
-                        		p.getName() + " of " + pr.getDeclaration().getName());
+                                p.getName() + " of " + pr.getDeclaration().getName());
                     }
                     break;
                 }
@@ -2351,16 +2351,16 @@ public class ExpressionVisitor extends Visitor {
     
     }
 
-	private void checkSpreadArgument(ProducedReference pr, Parameter p,
-			Tree.PositionalArgument a, Tree.SpreadArgument arg,
-			List<Parameter> psl) {
-		a.setParameter(p);
-		ProducedType at = spreadType(arg.getTypeModel(), unit, true);
-		//checkSpreadArgumentSequential(arg, at);
-		ProducedType ptt = getParameterTypesAsTupleType(psl, pr);
-		checkAssignable(at, ptt, arg, 
-		        "spread argument not assignable to parameter types");
-	}
+    private void checkSpreadArgument(ProducedReference pr, Parameter p,
+            Tree.PositionalArgument a, Tree.SpreadArgument arg,
+            List<Parameter> psl) {
+        a.setParameter(p);
+        ProducedType at = spreadType(arg.getTypeModel(), unit, true);
+        //checkSpreadArgumentSequential(arg, at);
+        ProducedType ptt = getParameterTypesAsTupleType(psl, pr);
+        checkAssignable(at, ptt, arg, 
+                "spread argument not assignable to parameter types");
+    }
     
     private void checkIndirectInvocationArguments(Tree.InvocationExpression that, 
             List<ProducedType> paramTypes, boolean sequenced, int firstDefaulted) {
@@ -2383,26 +2383,26 @@ public class ExpressionVisitor extends Visitor {
                     ProducedType at = arg.getTypeModel();
                     if (arg instanceof Tree.SpreadArgument) {
                         checkSpreadIndirectArgument((Tree.SpreadArgument) arg, 
-                        		paramTypes.subList(i, paramTypes.size()), 
-                        		sequenced, firstDefaulted, at);
+                                paramTypes.subList(i, paramTypes.size()), 
+                                sequenced, firstDefaulted, at);
                         break;
                     }
                     else if (arg instanceof Tree.Comprehension) {
-                    	ProducedType paramType = paramTypes.get(i);
-                    	if (sequenced && i==paramTypes.size()-1) {
-                    		checkSequencedIndirectArgument((Tree.Comprehension) arg, 
-                        		paramType);
-                    	}
-                    	else {
+                        ProducedType paramType = paramTypes.get(i);
+                        if (sequenced && i==paramTypes.size()-1) {
+                            checkSequencedIndirectArgument((Tree.Comprehension) arg, 
+                                paramType);
+                        }
+                        else {
                             arg.addError("not a sequenced parameter: parameter " + i);
-                    	}
+                        }
                         break;
                     }
                     else {
                         ProducedType paramType = paramTypes.get(i);
                         if (sequenced && i==paramTypes.size()-1) {
                             checkSequencedIndirectArgument(args.subList(i, args.size()), 
-                            		paramType);
+                                    paramType);
                             return; //Note: early return!
                         }
                         else {
@@ -2421,25 +2421,25 @@ public class ExpressionVisitor extends Visitor {
         }
     }
 
-	private void checkSpreadIndirectArgument(Tree.SpreadArgument sa,
-			List<ProducedType> psl, boolean sequenced, int firstDefaulted,
-			ProducedType at) {
-		//checkSpreadArgumentSequential(sa, at);
-		at = spreadType(at, unit, true);
-		//TODO: this ultimately repackages the parameter
-		//      information as a tuple - it would be
-		//      better to just truncate the original
-		//      tuple type we started with
-		List<ProducedType> pts = new ArrayList<ProducedType>(psl);
-		if (sequenced) {
-		    pts.set(pts.size()-1, 
-		            unit.getIteratedType(pts.get(pts.size()-1)));
-		}
-		ProducedType ptt = unit.getTupleType(pts, sequenced, false, 
-		        firstDefaulted);
-		checkAssignable(at, ptt, sa, 
-		        "spread argument not assignable to parameter types");
-	}
+    private void checkSpreadIndirectArgument(Tree.SpreadArgument sa,
+            List<ProducedType> psl, boolean sequenced, int firstDefaulted,
+            ProducedType at) {
+        //checkSpreadArgumentSequential(sa, at);
+        at = spreadType(at, unit, true);
+        //TODO: this ultimately repackages the parameter
+        //      information as a tuple - it would be
+        //      better to just truncate the original
+        //      tuple type we started with
+        List<ProducedType> pts = new ArrayList<ProducedType>(psl);
+        if (sequenced) {
+            pts.set(pts.size()-1, 
+                    unit.getIteratedType(pts.get(pts.size()-1)));
+        }
+        ProducedType ptt = unit.getTupleType(pts, sequenced, false, 
+                firstDefaulted);
+        checkAssignable(at, ptt, sa, 
+                "spread argument not assignable to parameter types");
+    }
 
     private void checkSequencedIndirectArgument(List<Tree.PositionalArgument> args, 
             ProducedType paramType) {
@@ -2449,7 +2449,7 @@ public class ExpressionVisitor extends Visitor {
             ProducedType at = a.getTypeModel();
             if (a instanceof Tree.SpreadArgument) {
                 //checkSpreadArgumentSequential((Tree.SpreadArgument) a, at);
-            	at = spreadType(at, unit, true);
+                at = spreadType(at, unit, true);
                 checkAssignable(unit.getIteratedType(at), set, a,
                         "spread argument must be assignable to sequenced parameter ");
                 checkAssignable(at, paramType, a,
@@ -2463,23 +2463,23 @@ public class ExpressionVisitor extends Visitor {
     }
     
     private void checkSequencedIndirectArgument(Tree.Comprehension c, 
-    		ProducedType paramType) {
-    	ProducedType at = c.getTypeModel();
-    	ProducedType set = paramType==null ? null : unit.getIteratedType(paramType);
-    	checkAssignable(at, set, c, 
-    			"argument must be assignable to sequenced parameter");
+            ProducedType paramType) {
+        ProducedType at = c.getTypeModel();
+        ProducedType set = paramType==null ? null : unit.getIteratedType(paramType);
+        checkAssignable(at, set, c, 
+                "argument must be assignable to sequenced parameter");
     }
     
     private void checkSequencedPositionalArgument(Parameter p, ProducedReference pr,
             List<Tree.PositionalArgument> args) {
-    	ProducedType paramType = pr.getTypedParameter(p).getFullType();
+        ProducedType paramType = pr.getTypedParameter(p).getFullType();
         ProducedType set = paramType==null ? null : unit.getIteratedType(paramType);
         for (int j=0; j<args.size(); j++) {
             Tree.PositionalArgument a = args.get(j);
             a.setParameter(p);
             ProducedType at = a.getTypeModel();
             if (a instanceof Tree.SpreadArgument) {
-            	at = spreadType(at, unit, true);
+                at = spreadType(at, unit, true);
                 checkAssignable(at, paramType, a, 
                         "spread argument must be assignable to sequenced parameter " + 
                          p.getName()+ " of " + pr.getDeclaration().getName(unit), 2101);
@@ -2493,14 +2493,14 @@ public class ExpressionVisitor extends Visitor {
     }
     
     private void checkComprehensionPositionalArgument(Parameter p, ProducedReference pr,
-    		Tree.Comprehension c) {
+            Tree.Comprehension c) {
         ProducedType paramType = pr.getTypedParameter(p).getFullType();
-    	c.setParameter(p);
-    	ProducedType at = c.getTypeModel();
-    	ProducedType set = paramType==null ? null : unit.getIteratedType(paramType);
-    	checkAssignable(at, set, c, 
-    			"argument must be assignable to sequenced parameter " + 
-    					p.getName()+ " of " + pr.getDeclaration().getName(unit), 2101);
+        c.setParameter(p);
+        ProducedType at = c.getTypeModel();
+        ProducedType set = paramType==null ? null : unit.getIteratedType(paramType);
+        checkAssignable(at, set, c, 
+                "argument must be assignable to sequenced parameter " + 
+                        p.getName()+ " of " + pr.getDeclaration().getName(unit), 2101);
     }
     
     private boolean hasSpreadArgument(List<Tree.PositionalArgument> args) {
@@ -2515,7 +2515,7 @@ public class ExpressionVisitor extends Visitor {
 
     private void checkPositionalArgument(Parameter p, ProducedReference pr,
             Tree.ListedArgument a) {
-    	ProducedType paramType = pr.getTypedParameter(p).getFullType();
+        ProducedType paramType = pr.getTypedParameter(p).getFullType();
         a.setParameter(p);
         checkAssignable(a.getTypeModel(), paramType, a, 
                 "argument must be assignable to parameter " + 
@@ -2659,16 +2659,16 @@ public class ExpressionVisitor extends Visitor {
                 int index = Integer.parseInt(t.getText());
                 if (negated) index = -index;
                 List<ProducedType> elementTypes = getTupleElementTypes(pt);
-                boolean sequenced = isTupleLengthUnbounded(pt);
-                int min = getTupleMinimumLength(pt);
+                boolean variadic = isTupleLengthUnbounded(pt);
+                int minimumLength = getTupleMinimumLength(pt);
                 if (elementTypes!=null) {
                     if (index<0) {
                         that.setTypeModel(unit.getNullDeclaration().getType());
                     }
-                    else if (index<elementTypes.size()-(sequenced?1:0)) {
+                    else if (index<elementTypes.size()-(variadic?1:0)) {
                         ProducedType iet = elementTypes.get(index);
                         if (iet!=null && !(iet.getDeclaration() instanceof UnknownType)) {
-                            if (index>=min) {
+                            if (index>=minimumLength) {
                                 iet = unionType(iet, 
                                         unit.getNullDeclaration().getType(), 
                                         unit);
@@ -2679,7 +2679,7 @@ public class ExpressionVisitor extends Visitor {
                     else {
                         ProducedType iet = elementTypes.get(elementTypes.size()-1);
                         if (iet!=null && !(iet.getDeclaration() instanceof UnknownType)) {
-                            if (sequenced) {
+                            if (variadic) {
                                 that.setTypeModel(unionType(unit.getIteratedType(iet), 
                                         unit.getNullDeclaration().getType(), 
                                         unit));
@@ -2710,28 +2710,28 @@ public class ExpressionVisitor extends Visitor {
                 int lindex = Integer.parseInt(l.getText());
                 if (lnegated) lindex = -lindex;
                 List<ProducedType> elementTypes = getTupleElementTypes(pt);
-                boolean sequenced = isTupleLengthUnbounded(pt);
-                boolean atleastone = isTupleVariantAtLeastOne(pt);
-                int min = getTupleMinimumLength(pt);
+                boolean variadic = isTupleLengthUnbounded(pt);
+                boolean atLeastOne = isTupleVariantAtLeastOne(pt);
+                int minimumLength = getTupleMinimumLength(pt);
                 List<ProducedType> list = new ArrayList<ProducedType>();
                 if (elementTypes!=null) {
                     if (lindex<0) {
                         lindex=0;
                     }
                     for (int index=lindex; 
-                            index<elementTypes.size()-(sequenced?1:0); 
+                            index<elementTypes.size()-(variadic?1:0); 
                             index++) {
                         ProducedType et = elementTypes.get(index);
                         if (et==null || et.getDeclaration() instanceof UnknownType) return;
                         list.add(et);
                     }
-                    if (sequenced) {
+                    if (variadic) {
                         ProducedType it = elementTypes.get(elementTypes.size()-1);
                         if (it==null || it.getDeclaration() instanceof UnknownType) return;
                         ProducedType rt = unit.getIteratedType(it);
                         list.add(rt);
                     }
-                    that.setTypeModel(unit.getTupleType(list, sequenced, atleastone, min-lindex));
+                    that.setTypeModel(unit.getTupleType(list, variadic, atLeastOne, minimumLength-lindex));
                 }
             }
         }
@@ -3498,7 +3498,7 @@ public class ExpressionVisitor extends Visitor {
         ProducedType pt = that.getPrimary().getTypeModel();
         if (pt!=null && that.getIdentifier()!=null && 
                 !that.getIdentifier().getText().equals("")) {
-        	pt = pt.resolveAliases(); //needed for aliases like "alias Id<T> => T"
+            pt = pt.resolveAliases(); //needed for aliases like "alias Id<T> => T"
             TypeDeclaration d = unwrap(pt, that).getDeclaration();
             TypedDeclaration member = (TypedDeclaration) d.getMember(name(that.getIdentifier()), 
                     unit, that.getSignature(), that.getEllipsis());
@@ -3912,19 +3912,19 @@ public class ExpressionVisitor extends Visitor {
                         checkSpreadArgumentSequential((Tree.SpreadArgument) a, et);
                     }*/
                     ut = unit.getIteratedType(et);
-                	result = spreadType(et, unit, requireSequential);
+                    result = spreadType(et, unit, requireSequential);
                 }
                 else if (a instanceof Tree.Comprehension) {
                     ut = et;
                     Tree.ForComprehensionClause fcc = ((Tree.Comprehension) a).getForComprehensionClause();
-					result = fcc.getPossiblyEmpty() ? 
-							unit.getSequentialType(et) : 
-							unit.getSequenceType(et);
-					if (!requireSequential) {
-						ProducedType it = producedType(unit.getIterableDeclaration(), 
-								et, fcc.getFirstTypeModel());
-						result = intersectionType(result, it, unit);
-					}
+                    result = fcc.getPossiblyEmpty() ? 
+                            unit.getSequentialType(et) : 
+                            unit.getSequenceType(et);
+                    if (!requireSequential) {
+                        ProducedType it = producedType(unit.getIterableDeclaration(), 
+                                et, fcc.getFirstTypeModel());
+                        result = intersectionType(result, it, unit);
+                    }
                 }
                 else {
                     ut = unionType(ut, et, unit);
@@ -3935,19 +3935,39 @@ public class ExpressionVisitor extends Visitor {
         return result;
     }
     
-    private static ProducedType spreadType(ProducedType et, Unit unit,
-    		boolean requireSequential) {
-    	if (et==null) return null;
-    	if (unit.isSequentialType(et)) {
-    		return et;
-    	}
-    	else {
-    		ProducedType st = unit.isNonemptyIterableType(et) ?
-					unit.getSequenceType(unit.getIteratedType(et)) :
-					unit.getSequentialType(unit.getIteratedType(et)); 
-			return requireSequential ? 
-					st : intersectionType(st, et, unit);
-    	}
+    private ProducedType spreadType(ProducedType et, Unit unit,
+            boolean requireSequential) {
+        if (et==null) return null;
+        if (unit.isSequentialType(et)) {
+            // if it's already a subtype of Sequential, erase 
+            // out extraneous information, like that it is a
+            // String, just keeping information about what
+            // kind of tuple it is
+            List<ProducedType> elementTypes = getTupleElementTypes(et);
+            boolean variadic = isTupleLengthUnbounded(et);
+            boolean atLeastOne = isTupleVariantAtLeastOne(et);
+            int minimumLength = getTupleMinimumLength(et);
+            if (variadic) {
+                ProducedType spt = elementTypes.get(elementTypes.size()-1);
+                elementTypes.set(elementTypes.size()-1, unit.getIteratedType(spt));
+            }
+            return unit.getTupleType(elementTypes, variadic, 
+                    atLeastOne, minimumLength);
+        }
+        else {
+            // transform any Iterable into a Sequence without
+            // losing the information that it is nonempty, in
+            // the case that we know that for sure
+            ProducedType st = unit.isNonemptyIterableType(et) ?
+                    unit.getSequenceType(unit.getIteratedType(et)) :
+                    unit.getSequentialType(unit.getIteratedType(et)); 
+            // unless this is a tuple constructor, remember
+            // the original Iterable type arguments, to
+            // account for the possibility that the argument
+            // to Absent is a type parameter
+            return requireSequential ? 
+                    st : intersectionType(st, et, unit);
+        }
 
     }
     
@@ -4453,21 +4473,21 @@ public class ExpressionVisitor extends Visitor {
                 checkExtensionOfMemberType(et, td, type);
                 //checkCaseOfSupertype(et, td, type);
                 if (!td.isAlias()) {
-                	TypeDeclaration etd = td.getExtendedTypeDeclaration();
-                	while (etd!=null && etd.isAlias()) {
-                		etd = etd.getExtendedTypeDeclaration();
-                	}
-                	if (etd!=null) {
-                		if (etd.isFinal()) {
-                			et.addError("extends a final class: " + 
-                					etd.getName(unit));
-                		}
-                		else if (!etd.isExtendable() && 
-                				!inLanguageModule(that.getUnit())) {
-                			et.addError("directly extends a special language type: " +
-                					etd.getName(unit));
-                		}
-                	}
+                    TypeDeclaration etd = td.getExtendedTypeDeclaration();
+                    while (etd!=null && etd.isAlias()) {
+                        etd = etd.getExtendedTypeDeclaration();
+                    }
+                    if (etd!=null) {
+                        if (etd.isFinal()) {
+                            et.addError("extends a final class: " + 
+                                    etd.getName(unit));
+                        }
+                        else if (!etd.isExtendable() && 
+                                !inLanguageModule(that.getUnit())) {
+                            et.addError("directly extends a special language type: " +
+                                    etd.getName(unit));
+                        }
+                    }
                 }
             }
         }

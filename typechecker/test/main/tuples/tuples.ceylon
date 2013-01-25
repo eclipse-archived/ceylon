@@ -110,7 +110,7 @@ void test() {
     value tail = [1, "goodbye", 2];
     value headTail = [0, "hello", *tail];
     [Integer,String,Integer,String,Integer] result = headTail;
-    @type:"Tuple<Integer|Character,Integer,String>" 
+    @type:"Tuple<Integer|Character,Integer,Sequential<Character>>" 
     value strange = [0, *"hello"];
     
     [String,Integer=,Float*] varlen = ["hello"];
