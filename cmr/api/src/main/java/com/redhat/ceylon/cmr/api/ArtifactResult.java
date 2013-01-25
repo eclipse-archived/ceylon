@@ -54,6 +54,13 @@ public interface ArtifactResult {
     ArtifactResultType type();
 
     /**
+     * Get visibility type.
+     *
+     * @return visibility type
+     */
+    VisibilityType visibilityType();
+
+    /**
      * The requested artifact.
      *
      * @return the requested artifact

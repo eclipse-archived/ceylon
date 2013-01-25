@@ -2,6 +2,7 @@
 *.iml
 *.ipr
 *.iws
+*.idx
 /target/
 spi/target/
 api/target/

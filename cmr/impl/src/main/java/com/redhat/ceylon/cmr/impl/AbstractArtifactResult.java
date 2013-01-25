@@ -18,9 +18,12 @@ package com.redhat.ceylon.cmr.impl;
 
 import java.io.File;
 
+import com.redhat.ceylon.cmr.api.ArtifactContext;
 import com.redhat.ceylon.cmr.api.ArtifactResult;
+import com.redhat.ceylon.cmr.api.ArtifactResultType;
 import com.redhat.ceylon.cmr.api.ImportType;
 import com.redhat.ceylon.cmr.api.RepositoryException;
+import com.redhat.ceylon.cmr.api.VisibilityType;
 
 /**
  * Abstract artifact result.
@@ -40,16 +43,6 @@ public abstract class AbstractArtifactResult implements ArtifactResult {
         this.version = version;
     }
 
-    public File artifact() throws RepositoryException {
-        if (artifact == null && checked == false) {
-            checked = true;
-            artifact = artifactInternal();
-        }
-        return artifact;
-    }
-
-    protected abstract File artifactInternal();
-
     public String name() {
         return name;
     }
@@ -61,5 +54,25 @@ public abstract class AbstractArtifactResult implements ArtifactResult {
     public ImportType importType() {
         return ImportType.UNDEFINED;
     }
+
+    public VisibilityType visibilityType() {
+        if (type() == ArtifactResultType.CEYLON) {
+            File file = artifact();
+            if (file != null && file.getName().endsWith(ArtifactContext.CAR)) {
+                return VisibilityType.STRICT;
+            }
+        }
+        return VisibilityType.LOOSE;
+    }
+
+    public File artifact() throws RepositoryException {
+        if (artifact == null && checked == false) {
+            checked = true;
+            artifact = artifactInternal();
+        }
+        return artifact;
+    }
+
+    protected abstract File artifactInternal();
 }
 
