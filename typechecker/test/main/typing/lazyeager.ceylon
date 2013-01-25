@@ -31,14 +31,14 @@ void lazyeager() {
     value y3 = [ "hello", "world", "goodbye" ];  //type [String, String, String]
     @type:"Tuple<String,String,Sequential<String>>" 
     value y4 = [ "hello", *sequence ];         //type [String, String*]
-    @type:"Tuple<String,String,Iterable<String,Null>>"
-    value y5 = [ @error "hello", *iterable ];         //type [String, String*]
+    @type:"Tuple<String,String,Sequential<String>>"
+    value y5 = [ "hello", *iterable ];         //type [String, String*]
     @type:"Tuple<String,String,Sequential<String>>"
     value y9 = [ "hello", *iterable.sequence ];         //type [String, String*]
     @type:"Sequential<String>" 
     value y6 = [ *sequence ];                  //type [String*]
-    @type:"Iterable<String,Null>" 
-    value y7 = [ @error *iterable ];                  //error
+    @type:"Sequential<String>" 
+    value y7 = [ *iterable ];                  //type [String*]
     @type:"Sequential<String>" 
     value y10 = [ *iterable.sequence ];                  //type [String*]
     
@@ -50,13 +50,20 @@ void lazyeager() {
     f(*"hello");
     f(*charseq);
     f(` `, *charseq);
-    @error f(*chariter);
-    @error f(` `, *chariter);
+    f(*chariter);
+    f(` `, *chariter);
     value g = f;
     g(*"hello");
     g(*charseq);
     g(` `, *charseq);
-    @error g(*chariter);
-    @error g(` `, *chariter);
-
+    g(*chariter);
+    g(` `, *chariter);
+    
+    {Integer+} ints = {1, 2, 3};
+    [Integer+] intseq = [*ints];
+    void consume(Integer* ints) {}
+    consume(*ints);
+    consume(-1, 0, *ints);
+    {Integer+} intsAgain = { *ints }; 
+    
 }

@@ -575,6 +575,11 @@ public class Unit {
             return null;
         }
     }
+    
+    public boolean isNonemptyIterableType(ProducedType type) {
+    	ProducedType ft = getFirstType(type);
+    	return ft!=null && ft.getDeclaration() instanceof NothingType;
+    }
 
     public ProducedType getSetElementType(ProducedType type) {
         ProducedType st = type.getSupertype(getSetDeclaration());

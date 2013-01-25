@@ -344,12 +344,12 @@ class Assignability() {
     {String*} strings1 = { "hello" };
     [String*] strings2 = [ "hello" ];
     
-    @error printStrings(*strings1);
+    printStrings(*strings1);
     printStrings0 { *strings1 };
     printStrings(*strings2);
     printStrings0 { *strings2 };
     
-    @error printStrings("Hello", "World", *strings1);
+    printStrings("Hello", "World", *strings1);
     printStrings0 { "Hello", "World", *strings1 };
     printStrings("Hello", "World", *strings2);
     printStrings0 { "Hello", "World", *strings2 };
@@ -385,18 +385,18 @@ class Assignability() {
     void w<W>(W* ws) {}
     w<String>("foo");
     w<String>(*["foo"]);
-    @error w<String>(*{"foo"});
+    w<String>(*{"foo"});
     w<String>("foo", "bar");
     w<String>(*["foo", "bar"]);
     w("foo");
     w(*["foo"]);
-    @error w(*{"foo"});
+    w(*{"foo"});
     w("foo", "bar");
     w(*["foo", "bar"]);
-    @error w(*{"foo", "bar"});
+    w(*{"foo", "bar"});
     {String*} iterable = {"foo", "bar"};
     [String*] sequential = ["foo", "bar"];
-    @error w(*iterable);
+    w(*iterable);
     w(*sequential);
     
     object o { shared String hello = "hello"; }
