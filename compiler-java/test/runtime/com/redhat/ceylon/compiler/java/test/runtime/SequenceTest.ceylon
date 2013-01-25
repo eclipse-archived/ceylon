@@ -30,7 +30,7 @@ shared class SequenceTest () {
         assertEquals({3, 3, 6}, intSequence*.wholePart);
         
         // invoke
-        assertEquals({`f`, `b`, `l`}, stringSequence*.item(0));
-        assertEquals({`f`, `b`, `l`}, stringSequence*.item{index = 0;});
+        assertEquals({`f`, `b`, `l`}, stringSequence*.get(0));
+        assertEquals({`f`, `b`, `l`}, stringSequence*.get{index = 0;});
     }
 }

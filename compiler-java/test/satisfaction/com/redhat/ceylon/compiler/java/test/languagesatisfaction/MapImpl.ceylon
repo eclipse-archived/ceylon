@@ -30,7 +30,7 @@ class MapImpl<out Key,out Item>() extends Object()
     
     shared actual Integer size = 0;
     
-    shared actual Item? item(Object key) {
+    shared actual Item? get(Object key) {
         return nothing;
     }
 }

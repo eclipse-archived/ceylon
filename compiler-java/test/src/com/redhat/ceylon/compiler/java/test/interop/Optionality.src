@@ -123,7 +123,7 @@ class OptionalInterface implements .com.redhat.ceylon.compiler.java.test.interop
                 }
                 returning $ceylontmp16 != null ? $ceylontmp16 : $x$2;
             );
-            final .java.lang.Object correspondenceCheck = .com.redhat.ceylon.compiler.java.Util.checkNull($x$2.getCorrespondence()).item($x$2);
+            final .java.lang.Object correspondenceCheck = .com.redhat.ceylon.compiler.java.Util.checkNull($x$2.getCorrespondence()).get($x$2);
             final .ceylon.language.Sequential<? extends .com.redhat.ceylon.compiler.java.test.interop.JavaOptionalInterface> seqCheck = new .ceylon.language.Tuple<.com.redhat.ceylon.compiler.java.test.interop.JavaOptionalInterface, .com.redhat.ceylon.compiler.java.test.interop.JavaOptionalInterface, .ceylon.language.Empty>(.com.redhat.ceylon.compiler.java.Util.checkNull($x$2.getProp1()), .ceylon.language.empty_.getEmpty$());
             final .ceylon.language.Sequential<? extends .com.redhat.ceylon.compiler.java.test.interop.JavaOptionalInterface> seqNoCheck = new .ceylon.language.Tuple<.com.redhat.ceylon.compiler.java.test.interop.JavaOptionalInterface, .com.redhat.ceylon.compiler.java.test.interop.JavaOptionalInterface, .ceylon.language.Empty>(.com.redhat.ceylon.compiler.java.Util.checkNull($x$2.getProp1()), .ceylon.language.empty_.getEmpty$());
             final .ceylon.language.Sequential<? extends .com.redhat.ceylon.compiler.java.test.interop.JavaOptionalInterface> seqCheckSpread = new .ceylon.language.Tuple<.com.redhat.ceylon.compiler.java.test.interop.JavaOptionalInterface, .com.redhat.ceylon.compiler.java.test.interop.JavaOptionalInterface, .ceylon.language.Empty>(.com.redhat.ceylon.compiler.java.Util.checkNull($x$2.getProp1()), .ceylon.language.empty_.getEmpty$());

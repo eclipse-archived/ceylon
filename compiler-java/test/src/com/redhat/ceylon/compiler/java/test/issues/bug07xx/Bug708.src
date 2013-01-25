@@ -498,7 +498,7 @@ public class Bug708Map<T> extends .java.lang.Object implements .ceylon.language.
     @.com.redhat.ceylon.compiler.java.metadata.Annotations({@.com.redhat.ceylon.compiler.java.metadata.Annotation("shared"), @.com.redhat.ceylon.compiler.java.metadata.Annotation("actual")})
     @.java.lang.Override
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo(value = "ceylon.language::String|ceylon.language::Null|T", erased = true)
-    public final .java.lang.Object item(@.com.redhat.ceylon.compiler.java.metadata.Name("key")
+    public final .java.lang.Object get(@.com.redhat.ceylon.compiler.java.metadata.Name("key")
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Object")
     final .java.lang.Object key) {
         return null;
@@ -589,7 +589,7 @@ public final class bug708_test2_ {
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Integer")
     final long key) {
         .ceylon.language.String $entry$18;
-        if (($entry$18 = (.ceylon.language.String).com.redhat.ceylon.compiler.java.test.issues.bug07xx.bug708_cache_.getBug708_cache$().item(.ceylon.language.Integer.instance(key))) != null) {
+        if (($entry$18 = (.ceylon.language.String)(.ceylon.language.String).com.redhat.ceylon.compiler.java.test.issues.bug07xx.bug708_cache_.getBug708_cache$().get(.ceylon.language.Integer.instance(key))) != null) {
             final .java.lang.String $entry$19 = $entry$18.toString();
         }
     }

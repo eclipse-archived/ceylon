@@ -10,7 +10,7 @@ class AssertConditionListExistsIsBool {
         final long $y$4;
         final .java.lang.Object $z$2;
         .java.lang.Object $z$1 = null;
-        if (($z$1 = x.item(.ceylon.language.Integer.instance(0L))) != null) {
+        if (($z$1 = x.get(.ceylon.language.Integer.instance(0L))) != null) {
             $z$2 = $z$1;
             .java.lang.Object $y$3 = null;
             if (($y$3 = $z$2) instanceof .ceylon.language.Integer) {

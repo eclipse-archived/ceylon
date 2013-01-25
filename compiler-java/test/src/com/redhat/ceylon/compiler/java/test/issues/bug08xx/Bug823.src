@@ -13,7 +13,7 @@ final class bug823_ {
         if (($xx$1 = xx) instanceof .ceylon.language.Sequence) {
             $xx$2 = (.ceylon.language.Sequence<? extends .java.lang.Object>)(.ceylon.language.Sequence)$xx$1;
             .java.lang.Object $z$3 = null;
-            if (($z$3 = $xx$2.item(.ceylon.language.Integer.instance(0L))) instanceof .ceylon.language.Character) {
+            if (($z$3 = $xx$2.get(.ceylon.language.Integer.instance(0L))) instanceof .ceylon.language.Character) {
                 $z$4 = ((.ceylon.language.Character)$z$3).intValue();
             } else {
                 $z$4 = 0;

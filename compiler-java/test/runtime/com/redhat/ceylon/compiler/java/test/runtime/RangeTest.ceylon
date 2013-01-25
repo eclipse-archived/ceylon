@@ -70,11 +70,11 @@ shared class RangeTest() {
     @test
     shared void testItem() {    
         Range<Integer> range = Range(0, 9);
-        Integer? first = range.item(1);
+        Integer? first = range.get(1);
         if (exists first) {
             assertEquals(first,1);
         }
-        Integer? ten = range.item(10);
+        Integer? ten = range.get(10);
         if (exists ten) {
             fail();
         }                        

@@ -8,7 +8,7 @@ class MethodWhileExistsSequence {
     public final long mvar(final .ceylon.language.Sequential<? extends .ceylon.language.Integer> x) {
         while (true) {
             .ceylon.language.Integer $y$0;
-            if (($y$0 = x.item(.ceylon.language.Integer.instance(0L))) != null) {
+            if (($y$0 = x.get(.ceylon.language.Integer.instance(0L))) != null) {
                 final long $y$1 = $y$0.longValue();
                 return $y$1;
             } else break;

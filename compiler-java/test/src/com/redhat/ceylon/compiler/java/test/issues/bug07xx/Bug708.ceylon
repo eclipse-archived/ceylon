@@ -56,7 +56,7 @@ shared class Bug708Map<T>() extends Object()
             given T satisfies Object {
     shared actual Boolean empty { return true; }
     shared actual Integer size { return 0; }
-    shared actual String|T? item(Object key) { return null; }
+    shared actual String|T? get(Object key) { return null; }
     shared actual Boolean contains(Object element) { return false; }
     shared actual Boolean defines(Object key) { return false; }
     shared actual Bug708Map<T> clone { return this; }

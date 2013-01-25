@@ -44,7 +44,7 @@ final class existsCond_ {
                         while (true) {
                             if (!this.next1()) break;
                             .ceylon.language.Character $c$3 = null;
-                            if (($c$3 = .ceylon.language.String.instance(.ceylon.language.String.initial($x$2, 1L)).item(.ceylon.language.Integer.instance(0L))) != null) {
+                            if (($c$3 = .ceylon.language.String.instance(.ceylon.language.String.initial($x$2, 1L)).get(.ceylon.language.Integer.instance(0L))) != null) {
                                 $c$4 = $c$3.intValue();
                                 break;
                             }

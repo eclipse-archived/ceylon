@@ -9,7 +9,7 @@ class MethodWhileConditionListExistsIsBool {
         while (true) {
             .java.lang.Object $y$2;
             .java.lang.Object $z$0;
-            if (($z$0 = x.item(.ceylon.language.Integer.instance(0L))) != null) {
+            if (($z$0 = x.get(.ceylon.language.Integer.instance(0L))) != null) {
                 final .java.lang.Object $z$1 = $z$0;
                 if (($y$2 = $z$1) instanceof .ceylon.language.Integer) {
                     final long $y$3 = ((.ceylon.language.Integer)$y$2).longValue();

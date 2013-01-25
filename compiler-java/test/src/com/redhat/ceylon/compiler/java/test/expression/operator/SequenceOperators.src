@@ -23,9 +23,9 @@ public class SequenceOperators {
     }
     
     private final void testSequence(final .ceylon.language.Correspondence<? super .ceylon.language.Integer, ? extends .ceylon.language.String> c1, final .ceylon.language.Correspondence<? super .ceylon.language.Integer, ? extends .ceylon.language.String> c2, final .ceylon.language.List<? extends .ceylon.language.String> c3, final .ceylon.language.Ranged<? super .ceylon.language.String, ? extends .ceylon.language.String> stringRange, final .java.lang.Object integerAndList) {
-        .ceylon.language.String s = c1.item(.ceylon.language.Integer.instance(1L));
-        s = this.getC1().item(.ceylon.language.Integer.instance(1L));
-        s = c1.item(<.ceylon.language.Integer>box(.ceylon.language.Integer.instance(1L)));
+        .ceylon.language.String s = c1.get(.ceylon.language.Integer.instance(1L));
+        s = this.getC1().get(.ceylon.language.Integer.instance(1L));
+        s = c1.get(<.ceylon.language.Integer>box(.ceylon.language.Integer.instance(1L)));
         final .ceylon.language.Sequential<? extends .ceylon.language.String> sequence = new .ceylon.language.Tuple<.ceylon.language.String, .ceylon.language.String, .ceylon.language.Tuple<.ceylon.language.String, ? extends .ceylon.language.String, ? extends .ceylon.language.Empty>>(.ceylon.language.String.instance("foo"), new .ceylon.language.Tuple<.ceylon.language.String, .ceylon.language.String, .ceylon.language.Empty>(.ceylon.language.String.instance("bar"), .ceylon.language.empty_.getEmpty$()));
         .ceylon.language.Sequential<? extends .ceylon.language.String> subrange;
         subrange = ((.ceylon.language.Ranged<? super .ceylon.language.Integer, ? extends .ceylon.language.Sequential<? extends .ceylon.language.String>>)(.ceylon.language.Ranged)sequence).span(.ceylon.language.Integer.instance(1L), .ceylon.language.Integer.instance(2L));
@@ -79,7 +79,7 @@ public class SequenceOperators {
                 .java.lang.Object $spread$2$iteration;
                 for (.ceylon.language.Iterator<? extends .ceylon.language.String> $spread$2$iterator = $spread$2$iterable.getIterator(); !(($spread$2$iteration = $spread$2$iterator.next()) instanceof .ceylon.language.Finished); ) {
                     .ceylon.language.String $spread$2$element = (.ceylon.language.String)$spread$2$iteration;
-                    $spread$2$sequenceBuilder.append($spread$2$element.item(.ceylon.language.Integer.instance(0L)));
+                    $spread$2$sequenceBuilder.append($spread$2$element.get(.ceylon.language.Integer.instance(0L)));
                 }
             }
             returning $spread$2$sequenceBuilder.getSequence();
@@ -98,7 +98,7 @@ public class SequenceOperators {
                             .ceylon.language.String $arg$3$callable$ = $spread$4$element;
                             .ceylon.language.Integer $arg$3$0 = .ceylon.language.Integer.instance(0L);
                         }
-                        returning $arg$3$callable$.item($arg$3$0);
+                        returning $arg$3$callable$.get($arg$3$0);
                     ));
                 }
             }
@@ -122,7 +122,7 @@ public class SequenceOperators {
     
     private final void testString() {
         final .java.lang.String string = "";
-        final .ceylon.language.Character c = .ceylon.language.String.instance(string).item(.ceylon.language.Integer.instance(0L));
+        final .ceylon.language.Character c = .ceylon.language.String.instance(string).get(.ceylon.language.Integer.instance(0L));
         .java.lang.String sync;
         sync = ((.ceylon.language.Ranged<? super .ceylon.language.Integer, ? extends .ceylon.language.String>)(.ceylon.language.Ranged).ceylon.language.String.instance(string)).span(.ceylon.language.Integer.instance(0L), .ceylon.language.Integer.instance(1L)).toString();
         sync = ((.ceylon.language.Ranged<? super .ceylon.language.Integer, ? extends .ceylon.language.String>)(.ceylon.language.Ranged).ceylon.language.String.instance(string)).segment(.ceylon.language.Integer.instance(0L), 1L).toString();

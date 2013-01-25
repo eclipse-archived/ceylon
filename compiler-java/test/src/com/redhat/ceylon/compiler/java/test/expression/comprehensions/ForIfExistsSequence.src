@@ -30,7 +30,7 @@ class ForIfExistsSequence {
                         while (true) {
                             if (!this.x()) break;
                             .ceylon.language.Integer $y$1 = null;
-                            if (($y$1 = x.item(.ceylon.language.Integer.instance(0L))) != null) {
+                            if (($y$1 = x.get(.ceylon.language.Integer.instance(0L))) != null) {
                                 $y$2 = $y$1.longValue();
                                 break;
                             }

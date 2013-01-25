@@ -272,7 +272,7 @@ class ListImplementor<X> implements .ceylon.language.List<X> {
     }
     
     @.java.lang.Override
-    public final X item(final .ceylon.language.Integer index) {
+    public final X get(final .ceylon.language.Integer index) {
         throw new .ceylon.language.Exception(null, null);
     }
     

@@ -68,7 +68,7 @@ class MethodWhileConditionList {
             .ceylon.language.Sequential<? extends .java.lang.Object> $x$6;
             if (($x$6 = x) instanceof .ceylon.language.Sequence) {
                 final .ceylon.language.Sequence<? extends .java.lang.Object> $x$7 = (.ceylon.language.Sequence<? extends .java.lang.Object>)(.ceylon.language.Sequence)$x$6;
-                if (($y$8 = $x$7.item(.ceylon.language.Integer.instance(0L))) instanceof .ceylon.language.Integer) {
+                if (($y$8 = $x$7.get(.ceylon.language.Integer.instance(0L))) instanceof .ceylon.language.Integer) {
                     final long $y$9 = ((.ceylon.language.Integer)$y$8).longValue();
                     if ($y$9 > 0L) {
                         a += $y$9;
@@ -81,8 +81,8 @@ class MethodWhileConditionList {
     private final void m6(final .ceylon.language.Sequential<? extends .java.lang.Object> x) {
         long a = 0L;
         .java.lang.Object $y$11;
-        if (x.item(.ceylon.language.Integer.instance(0L)) != null) {
-            if (($y$11 = x.item(.ceylon.language.Integer.instance(0L))) instanceof .ceylon.language.Integer) {
+        if (x.get(.ceylon.language.Integer.instance(0L)) != null) {
+            if (($y$11 = x.get(.ceylon.language.Integer.instance(0L))) instanceof .ceylon.language.Integer) {
                 final long $y$12 = ((.ceylon.language.Integer)$y$11).longValue();
                 if ($y$12 > 0L) {
                     a += $y$12;

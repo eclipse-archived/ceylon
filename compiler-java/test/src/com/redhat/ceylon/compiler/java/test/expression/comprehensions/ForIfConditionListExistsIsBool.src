@@ -32,7 +32,7 @@ class ForIfConditionListExistsIsBool {
                             if (!this.x()) break;
                             .java.lang.Object $y$3 = null;
                             .java.lang.Object $z$1 = null;
-                            if (($z$1 = x.item(.ceylon.language.Integer.instance(0L))) != null) {
+                            if (($z$1 = x.get(.ceylon.language.Integer.instance(0L))) != null) {
                                 $z$2 = $z$1;
                                 if (($y$3 = $z$2) instanceof .ceylon.language.Integer) {
                                     $y$4 = ((.ceylon.language.Integer)$y$3).longValue();

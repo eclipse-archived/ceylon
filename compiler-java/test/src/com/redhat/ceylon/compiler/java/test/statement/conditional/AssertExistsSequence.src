@@ -8,7 +8,7 @@ class AssertExistsSequence {
     public final long mvar(final .ceylon.language.Sequential<? extends .ceylon.language.Integer> x) {
         final long $y$2;
         .ceylon.language.Integer $y$1 = null;
-        if (($y$1 = x.item(.ceylon.language.Integer.instance(0L))) != null) {
+        if (($y$1 = x.get(.ceylon.language.Integer.instance(0L))) != null) {
             $y$2 = $y$1.longValue();
         } else throw new .ceylon.language.Exception(.ceylon.language.String.instance("Assertion failed" + .java.lang.System.lineSeparator() + ("\tviolated " + "exists y=x[0]" + .java.lang.System.lineSeparator() + "\tat " + "AssertExistsSequence.ceylon:23:8-23:30")), null);
         return $y$2;

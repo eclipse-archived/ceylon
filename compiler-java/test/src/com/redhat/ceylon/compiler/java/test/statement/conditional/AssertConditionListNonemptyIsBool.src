@@ -13,7 +13,7 @@ class AssertConditionList {
         if (($x$1 = x) instanceof .ceylon.language.Sequence) {
             $x$2 = (.ceylon.language.Sequence<? extends .java.lang.Object>)(.ceylon.language.Sequence)$x$1;
             .java.lang.Object $y$3 = null;
-            if (($y$3 = $x$2.item(.ceylon.language.Integer.instance(0L))) instanceof .ceylon.language.Integer) {
+            if (($y$3 = $x$2.get(.ceylon.language.Integer.instance(0L))) instanceof .ceylon.language.Integer) {
                 $y$4 = ((.ceylon.language.Integer)$y$3).longValue();
                 if ($y$4 > 0L) {
                 } else {

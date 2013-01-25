@@ -428,8 +428,8 @@ class Test {
     
     private final void testSequences(final .java.lang.Object p1, final .ceylon.language.Sequential leftsAndRights, final .ceylon.language.Sequential leftsAndRightsEntries, final .ceylon.language.Sequential topsOrNull) {
         final .ceylon.language.Sequential naturals = new .ceylon.language.Tuple(p1, .ceylon.language.empty_.getEmpty$());
-        final .ceylon.language.Integer n5 = (.ceylon.language.Integer)((.ceylon.language.Correspondence<? super .ceylon.language.Integer, ? extends .java.lang.Object>)(.ceylon.language.Correspondence)naturals).item((.ceylon.language.Integer)p1);
-        final .com.redhat.ceylon.compiler.java.test.expression.erasure.Top t = (.com.redhat.ceylon.compiler.java.test.expression.erasure.Top)((.ceylon.language.Correspondence<? super .ceylon.language.Integer, ? extends .java.lang.Object>)(.ceylon.language.Correspondence)leftsAndRights).item((.ceylon.language.Integer)p1);
+        final .ceylon.language.Integer n5 = (.ceylon.language.Integer)((.ceylon.language.Correspondence<? super .ceylon.language.Integer, ? extends .java.lang.Object>)(.ceylon.language.Correspondence)naturals).get((.ceylon.language.Integer)p1);
+        final .com.redhat.ceylon.compiler.java.test.expression.erasure.Top t = (.com.redhat.ceylon.compiler.java.test.expression.erasure.Top)((.ceylon.language.Correspondence<? super .ceylon.language.Integer, ? extends .java.lang.Object>)(.ceylon.language.Correspondence)leftsAndRights).get((.ceylon.language.Integer)p1);
         final .ceylon.language.Sequential naturalsOrNull = new .ceylon.language.Tuple(p1, .ceylon.language.empty_.getEmpty$());
         .ceylon.language.Sequential subrange;
         subrange = ((.ceylon.language.Ranged<? super .ceylon.language.Integer, ? extends .ceylon.language.Sequential<? extends .java.lang.Object>>)(.ceylon.language.Ranged)naturals).span((.ceylon.language.Integer)p1, (.ceylon.language.Integer)p1);

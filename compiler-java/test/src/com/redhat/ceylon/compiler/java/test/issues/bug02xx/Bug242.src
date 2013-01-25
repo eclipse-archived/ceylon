@@ -6,6 +6,6 @@ public final class bug242_ {
     }
     
     public static <T>void bug242(final .ceylon.language.Sequential<? extends T> a, final long i) {
-        final T t = a.item(.ceylon.language.Integer.instance(i));
+        final T t = a.get(.ceylon.language.Integer.instance(i));
     }
 }

@@ -306,7 +306,7 @@ public abstract class Bug844_Tuple<Element, First extends Element, Rest> extends
     }
     
     @.java.lang.Override
-    public final Element item(final .ceylon.language.Integer index) {
+    public final Element get(final .ceylon.language.Integer index) {
         {
             .java.lang.Object $sel$2 = index.compare(.ceylon.language.Integer.instance(0L));
             if ($sel$2 == .ceylon.language.smaller_.getSmaller$()) {
@@ -314,7 +314,7 @@ public abstract class Bug844_Tuple<Element, First extends Element, Rest> extends
             } else if ($sel$2 == .ceylon.language.equal_.getEqual$()) {
                 return getFirst();
             } else if ($sel$2 == .ceylon.language.larger_.getLarger$()) {
-                return ((.ceylon.language.List<? extends Element>)(.ceylon.language.List)getRest()).item(index.minus(.ceylon.language.Integer.instance(1L)));
+                return ((.ceylon.language.List<? extends Element>)(.ceylon.language.List)getRest()).get(index.minus(.ceylon.language.Integer.instance(1L)));
             } else throw new .com.redhat.ceylon.compiler.java.language.EnumeratedTypeError("Supposedly exhaustive switch was not exhaustive");
         }
     }

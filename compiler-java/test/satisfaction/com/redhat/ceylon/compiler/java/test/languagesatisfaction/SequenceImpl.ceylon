@@ -53,7 +53,7 @@ class SequenceImpl<out Element>() satisfies Sequence<Element> {
         return nothing;
     }
     shared actual Sequence<Element> reversed = nothing;
-    shared actual Element? item(Integer index) {
+    shared actual Element? get(Integer index) {
         return nothing;
     }
 

@@ -248,7 +248,7 @@ class Bug837<Element extends .ceylon.language.Ordinal<? extends Element>> extend
     }
     
     @.java.lang.Override
-    public final Element item(final .ceylon.language.Integer index) {
+    public final Element get(final .ceylon.language.Integer index) {
         throw new .ceylon.language.Exception(null, null);
     }
     

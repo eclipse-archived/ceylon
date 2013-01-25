@@ -96,7 +96,7 @@ class AssertionConditionList {
         if (($x$11 = x) instanceof .ceylon.language.Sequence) {
             $x$12 = (.ceylon.language.Sequence<? extends .java.lang.Object>)(.ceylon.language.Sequence)$x$11;
             .java.lang.Object $y$13 = null;
-            if (($y$13 = $x$12.item(.ceylon.language.Integer.instance(0L))) instanceof .ceylon.language.Integer) {
+            if (($y$13 = $x$12.get(.ceylon.language.Integer.instance(0L))) instanceof .ceylon.language.Integer) {
                 $y$14 = ((.ceylon.language.Integer)$y$13).longValue();
                 if ($y$14 > 0L) {
                 } else {
@@ -118,9 +118,9 @@ class AssertionConditionList {
     private final boolean m6(final .ceylon.language.Sequential<? extends .java.lang.Object> x) {
         .java.lang.String $ceylontmpassert15 = null;
         final long $y$17;
-        if (x.item(.ceylon.language.Integer.instance(0L)) != null) {
+        if (x.get(.ceylon.language.Integer.instance(0L)) != null) {
             .java.lang.Object $y$16 = null;
-            if (($y$16 = x.item(.ceylon.language.Integer.instance(0L))) instanceof .ceylon.language.Integer) {
+            if (($y$16 = x.get(.ceylon.language.Integer.instance(0L))) instanceof .ceylon.language.Integer) {
                 $y$17 = ((.ceylon.language.Integer)$y$16).longValue();
                 if ($y$17 > 0L) {
                 } else {
