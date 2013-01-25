@@ -2643,7 +2643,7 @@ public class ExpressionTransformer extends AbstractTransformer {
 
             // tmpVar.item(index)
             safeAccess = at(access).Apply(List.<JCTree.JCExpression>nil(), 
-                                          makeSelect(lhs, "item"), List.of(index));
+                                          makeSelect(lhs, "get"), List.of(index));
             // Because tuple index access has the type of the indexed element
             // (not the union of types in the sequential) a typecast may be required.
             ProducedType sequentialElementType = getTypeArgument(leftCorrespondenceOrRangeType, 1);
