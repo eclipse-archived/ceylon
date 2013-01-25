@@ -47,15 +47,15 @@ import org.xml.sax.SAXException;
 final class XmlDependencyResolver implements DependencyResolver {
     static XmlDependencyResolver INSTANCE = new XmlDependencyResolver();
 
-    public List<ModuleInfo> resolve(ArtifactResult parent) {
-        final File artifact = parent.artifact();
+    public Set<ModuleInfo> resolve(ArtifactResult result) {
+        final File artifact = result.artifact();
         final File mp = new File(artifact.getParent(), ArtifactContext.MODULE_XML);
         if (mp.exists() == false)
             return null;
 
         try {
             final Module module = parse(mp);
-            final List<ModuleInfo> infos = new ArrayList<ModuleInfo>();
+            final Set<ModuleInfo> infos = new LinkedHashSet<ModuleInfo>();
             for (ModuleIdentifier mi : module.getDependencies()) {
                 infos.add(new ModuleInfo(mi.getName(), mi.getSlot(), mi.isOptional(), false));
             }

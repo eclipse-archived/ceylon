@@ -119,7 +119,7 @@ public class AetherUtils {
                             return result;
                         }
 
-                        public File artifact() throws RepositoryException {
+                        protected File artifactInternal() throws RepositoryException {
                             return getResult().artifact();
                         }
 
@@ -190,7 +190,7 @@ public class AetherUtils {
             this.file = file;
         }
 
-        public File artifact() throws RepositoryException {
+        protected File artifactInternal() throws RepositoryException {
             return file;
         }
 

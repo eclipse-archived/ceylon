@@ -20,9 +20,10 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.util.ArrayList;
 import java.util.Collections;
+import java.util.LinkedHashSet;
 import java.util.List;
+import java.util.Set;
 
 import com.redhat.ceylon.cmr.api.ArtifactResult;
 import com.redhat.ceylon.cmr.api.DependencyResolver;
@@ -56,8 +57,8 @@ public final class BytecodeUtils implements DependencyResolver {
     private static final DotName MODULE_ANNOTATION = DotName.createSimple("com.redhat.ceylon.compiler.java.metadata.Module");
     private static final DotName CEYLON_ANNOTATION = DotName.createSimple("com.redhat.ceylon.compiler.java.metadata.Ceylon");
 
-    public List<ModuleInfo> resolve(ArtifactResult parent) {
-        return readModuleInformation(parent.name(), parent.artifact());
+    public Set<ModuleInfo> resolve(ArtifactResult result) {
+        return readModuleInformation(result.name(), result.artifact());
     }
 
     public Node descriptor(Node artifact) {
@@ -71,25 +72,25 @@ public final class BytecodeUtils implements DependencyResolver {
      * @param jarFile    the module jar file
      * @return module info list
      */
-    public static List<ModuleInfo> readModuleInformation(final String moduleName, final File jarFile) {
+    public static Set<ModuleInfo> readModuleInformation(final String moduleName, final File jarFile) {
         final ClassInfo moduleClass = getModuleInfo(moduleName, jarFile);
         if (moduleClass == null)
             return null;
 
         List<AnnotationInstance> annotations = moduleClass.annotations().get(MODULE_ANNOTATION);
         if (annotations == null || annotations.isEmpty())
-            return Collections.emptyList();
+            return Collections.emptySet();
 
         final AnnotationInstance ai = annotations.get(0);
         final AnnotationValue dependencies = ai.value("dependencies");
         if (dependencies == null)
-            return Collections.emptyList();
+            return Collections.emptySet();
 
         final AnnotationInstance[] imports = dependencies.asNestedArray();
         if (imports == null || imports.length == 0)
-            return Collections.emptyList();
+            return Collections.emptySet();
 
-        final List<ModuleInfo> infos = new ArrayList<ModuleInfo>();
+        final Set<ModuleInfo> infos = new LinkedHashSet<ModuleInfo>();
         for (AnnotationInstance im : imports) {
             final String name = asString(im, "name");
             if (JAVA.equalsIgnoreCase(name) == false) {
@@ -111,7 +112,7 @@ public final class BytecodeUtils implements DependencyResolver {
             // TODO -- remove this with new Jandex release
             final File indexFile = new File(jarFile.getAbsolutePath().replace(".jar", "-jar") + ".idx");
             // remove the index file if it is older than the jar file
-            if(indexFile.exists() && indexFile.lastModified() < jarFile.lastModified())
+            if (indexFile.exists() && indexFile.lastModified() < jarFile.lastModified())
                 indexFile.delete();
             if (indexFile.exists() == false) {
                 JarIndexer.createJarIndex(jarFile, new Indexer(), false, false, false);
@@ -143,7 +144,7 @@ public final class BytecodeUtils implements DependencyResolver {
         final AnnotationInstance moduleAnnotation = annotations.get(0);
         AnnotationValue majorAnnotation = moduleAnnotation.value("major");
         AnnotationValue minorAnnotation = moduleAnnotation.value("minor");
-        
+
         int major = majorAnnotation != null ? majorAnnotation.asInt() : 0;
         int minor = minorAnnotation != null ? minorAnnotation.asInt() : 0;
         return new int[]{major, minor};

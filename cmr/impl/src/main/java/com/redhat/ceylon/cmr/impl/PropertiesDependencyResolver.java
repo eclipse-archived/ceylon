@@ -18,10 +18,10 @@ package com.redhat.ceylon.cmr.impl;
 
 import java.io.File;
 import java.io.FileReader;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.LinkedHashSet;
 import java.util.Map;
 import java.util.Properties;
+import java.util.Set;
 
 import com.redhat.ceylon.cmr.api.ArtifactContext;
 import com.redhat.ceylon.cmr.api.ArtifactResult;
@@ -37,8 +37,8 @@ import com.redhat.ceylon.cmr.spi.Node;
 final class PropertiesDependencyResolver implements DependencyResolver {
     static PropertiesDependencyResolver INSTANCE = new PropertiesDependencyResolver();
 
-    public List<ModuleInfo> resolve(ArtifactResult parent) {
-        final File artifact = parent.artifact();
+    public Set<ModuleInfo> resolve(ArtifactResult result) {
+        final File artifact = result.artifact();
         final File mp = new File(artifact.getParent(), ArtifactContext.MODULE_PROPERTIES);
         if (mp.exists() == false)
             return null;
@@ -51,7 +51,7 @@ final class PropertiesDependencyResolver implements DependencyResolver {
             } finally {
                 reader.close();
             }
-            List<ModuleInfo> infos = new ArrayList<ModuleInfo>();
+            Set<ModuleInfo> infos = new LinkedHashSet<ModuleInfo>();
             for (Map.Entry entry : properties.entrySet()) {
                 infos.add(new ModuleInfo(entry.getKey().toString(), entry.getValue().toString(), false, false));
             }

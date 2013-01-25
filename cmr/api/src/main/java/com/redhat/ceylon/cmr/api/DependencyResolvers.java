@@ -17,6 +17,7 @@
 package com.redhat.ceylon.cmr.api;
 
 import java.util.List;
+import java.util.Set;
 import java.util.concurrent.CopyOnWriteArrayList;
 
 import com.redhat.ceylon.cmr.spi.Node;
@@ -41,11 +42,12 @@ public class DependencyResolvers {
         resolvers.remove(resolver);
     }
 
-    public List<ModuleInfo> resolve(ArtifactResult parent) {
+    public Set<ModuleInfo> resolve(ArtifactResult result) {
         for (DependencyResolver dr : resolvers) {
-            List<ModuleInfo> deps = dr.resolve(parent);
-            if (deps != null)
+            Set<ModuleInfo> deps = dr.resolve(result);
+            if (deps != null) {
                 return deps;
+            }
         }
         return null;
     }

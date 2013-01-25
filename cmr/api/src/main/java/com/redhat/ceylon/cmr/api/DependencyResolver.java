@@ -16,7 +16,7 @@
 
 package com.redhat.ceylon.cmr.api;
 
-import java.util.List;
+import java.util.Set;
 
 import com.redhat.ceylon.cmr.spi.Node;
 
@@ -29,10 +29,10 @@ public interface DependencyResolver {
     /**
      * Resolve dependecies.
      *
-     * @param parent the parent
+     * @param result the result
      * @return dependencies list or null if cannot resolve
      */
-    List<ModuleInfo> resolve(ArtifactResult parent);
+    Set<ModuleInfo> resolve(ArtifactResult result);
 
     /**
      * Get descriptor if exists.

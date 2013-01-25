@@ -16,8 +16,11 @@
 
 package com.redhat.ceylon.cmr.impl;
 
+import java.io.File;
+
 import com.redhat.ceylon.cmr.api.ArtifactResult;
 import com.redhat.ceylon.cmr.api.ImportType;
+import com.redhat.ceylon.cmr.api.RepositoryException;
 
 /**
  * Abstract artifact result.
@@ -29,10 +32,23 @@ public abstract class AbstractArtifactResult implements ArtifactResult {
     private String name;
     private String version;
 
+    private volatile File artifact;
+    private volatile boolean checked;
+
     protected AbstractArtifactResult(String name, String version) {
         this.name = name;
         this.version = version;
     }
+
+    public File artifact() throws RepositoryException {
+        if (artifact == null && checked == false) {
+            checked = true;
+            artifact = artifactInternal();
+        }
+        return artifact;
+    }
+
+    protected abstract File artifactInternal();
 
     public String name() {
         return name;

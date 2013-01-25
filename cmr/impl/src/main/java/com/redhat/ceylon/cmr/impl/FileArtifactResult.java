@@ -16,10 +16,10 @@
 
 package com.redhat.ceylon.cmr.impl;
 
+import java.io.File;
+
 import com.redhat.ceylon.cmr.api.RepositoryException;
 import com.redhat.ceylon.cmr.api.RepositoryManager;
-
-import java.io.File;
 
 /**
  * Existing file.
@@ -27,7 +27,6 @@ import java.io.File;
  * @author <a href="mailto:ales.justin@jboss.org">Ales Justin</a>
  */
 public class FileArtifactResult extends AbstractCeylonArtifactResult {
-
     private final File file;
 
     protected FileArtifactResult(RepositoryManager manager, String name, String version, File file) {
@@ -35,7 +34,7 @@ public class FileArtifactResult extends AbstractCeylonArtifactResult {
         this.file = file;
     }
 
-    public File artifact() throws RepositoryException {
+    protected File artifactInternal() throws RepositoryException {
         return file;
     }
 }

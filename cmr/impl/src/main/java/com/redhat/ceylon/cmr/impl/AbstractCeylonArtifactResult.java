@@ -20,6 +20,7 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Set;
 
 import com.redhat.ceylon.cmr.api.ArtifactContext;
 import com.redhat.ceylon.cmr.api.ArtifactResult;
@@ -47,7 +48,7 @@ public abstract class AbstractCeylonArtifactResult extends AbstractArtifactResul
     }
 
     public List<ArtifactResult> dependencies() throws RepositoryException {
-        List<ModuleInfo> infos = Configuration.getResolvers().resolve(this);
+        Set<ModuleInfo> infos = Configuration.getResolvers().resolve(this);
         // TODO -- perhaps null is not valid?
         if (infos == null || infos.isEmpty())
             return Collections.emptyList();
@@ -89,7 +90,7 @@ public abstract class AbstractCeylonArtifactResult extends AbstractArtifactResul
             return getDelegate().type();
         }
 
-        public File artifact() throws RepositoryException {
+        protected File artifactInternal() throws RepositoryException {
             return getDelegate().artifact();
         }
 
