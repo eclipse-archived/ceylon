@@ -35,24 +35,10 @@ interface Bug991Sequence satisfies Bug991List {
 @nomodel
 class Bug991SequenceClass() satisfies Bug991List {
     shared default actual void f() => Bug991List::f();
-}
-/*
-@nomodel
-interface Top<out E>{
-    shared default E e(){ return nothing; }
-}
-@nomodel
-class Middle() satisfies Top<Iterable<Character>>{}
-@nomodel
-class Bottom() extends Middle() satisfies Top<Sequence<Character>>{
-    shared void f(){
-        // BUG:
-        Sequence<Character> s = e();
+    
+    void m(){
+        // make sure comprehensions are correctly generated too, because they need to use
+        // AbstractIterator to avoid generating a supertype accessor method
+        value s = [for (i in 1..2) i];
     }
 }
-
-@nomodel
-void bug991(){
-    Bottom().f();
-}
-*/
