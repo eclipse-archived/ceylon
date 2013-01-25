@@ -694,6 +694,7 @@ argument list."
 
 ^(abstract COMPREHENSION_CLAUSE:CONTROL_CLAUSE
     ProducedType typeModel;
+    ProducedType firstTypeModel;
     boolean possiblyEmpty;)
 
 ^(EXPRESSION_COMPREHENSION_CLAUSE:COMPREHENSION_CLAUSE

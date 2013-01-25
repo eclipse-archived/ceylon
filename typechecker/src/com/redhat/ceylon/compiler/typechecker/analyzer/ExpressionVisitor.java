@@ -170,6 +170,7 @@ public class ExpressionVisitor extends Visitor {
     @Override public void visit(Tree.ExpressionComprehensionClause that) {
         super.visit(that);
         that.setTypeModel(that.getExpression().getTypeModel());
+        that.setFirstTypeModel(unit.getNothingDeclaration().getType());
     }
     
     @Override public void visit(Tree.ForComprehensionClause that) {
@@ -191,6 +192,9 @@ public class ExpressionVisitor extends Visitor {
                                     it.isSubtypeOf(unit.getNonemptyIterableType(et));
                             that.setPossiblyEmpty(!nonemptyIterable || 
                                     cc.getPossiblyEmpty());
+                            ProducedType firstType = unionType(unit.getFirstType(it), 
+                            		cc.getFirstTypeModel(), unit);
+							that.setFirstTypeModel(firstType);
                         }
                     }
                 }
@@ -201,6 +205,7 @@ public class ExpressionVisitor extends Visitor {
     @Override public void visit(Tree.IfComprehensionClause that) {
         super.visit(that);
         that.setPossiblyEmpty(true);
+        that.setFirstTypeModel(unit.getNullDeclaration().getType());
         Tree.ComprehensionClause cc = that.getComprehensionClause();
         if (cc!=null) {
             that.setTypeModel(cc.getTypeModel());
@@ -3880,21 +3885,27 @@ public class ExpressionVisitor extends Visitor {
             if (t!=null) {
                 ProducedType et = t;
                 if (a instanceof Tree.SpreadArgument) {
-                    ut = unit.getIteratedType(et);
-                    result = unit.denotableType(et);
-                    //result = unit.getSequentialType(ut);
                     if (requireSequential) { 
                         checkSpreadArgumentSequential((Tree.SpreadArgument) a, et);
                     }
+                    ut = unit.getIteratedType(et);
+                    result = unit.denotableType(et);
+                    //result = unit.getSequentialType(ut);
                 }
                 else if (a instanceof Tree.Comprehension) {
                     et = unit.denotableType(et);
                     ut = et;
-                    boolean possiblyEmpty = ((Tree.Comprehension) a).getForComprehensionClause()
-                    		.getPossiblyEmpty();
+                    Tree.ForComprehensionClause fcc = ((Tree.Comprehension) a).getForComprehensionClause();
+					boolean possiblyEmpty = fcc.getPossiblyEmpty();
 					result = possiblyEmpty ? 
 							unit.getSequentialType(et) : 
 							unit.getSequenceType(et);
+					if (!requireSequential) {
+						ProducedType it = producedType(unit.getIterableDeclaration(), 
+								et, fcc.getFirstTypeModel());
+						result = intersectionType(result, it, unit);
+						//result = it;
+					}
                 }
                 else {
                     et = unit.denotableType(et);

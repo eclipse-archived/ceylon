@@ -566,6 +566,16 @@ public class Unit {
         }
     }
 
+    public ProducedType getFirstType(ProducedType type) {
+        ProducedType st = type.getSupertype(getIterableDeclaration());
+        if (st!=null && st.getTypeArguments().size()>1) {
+            return st.getTypeArgumentList().get(1);
+        }
+        else {
+            return null;
+        }
+    }
+
     public ProducedType getSetElementType(ProducedType type) {
         ProducedType st = type.getSupertype(getSetDeclaration());
         if (st!=null && st.getTypeArguments().size()==1) {

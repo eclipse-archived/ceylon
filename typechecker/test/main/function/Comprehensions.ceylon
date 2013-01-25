@@ -84,4 +84,12 @@ void comprehensions() {
     @type:"String|Null" value f6 = first { for (w in words) w };
     @type:"String|Null" value fs3 = first { *words };
     
+    void method<Element,Absent>(Iterable<Element,Absent> it) 
+            given Absent satisfies Null {
+        @type:"Iterable<Element,Absent>" value c1 = { for (e in it) e };
+        @type:"Iterable<Tuple<Element,Element,Tuple<Element,Element,Empty>>,Absent>" value c2 = { for (e in it) for (f in it) [e,f] };
+        @type:"Iterable<Element&Object,Null>" value c3 = { for (e in it) if (exists e) e };
+        @type:"Sequential<Element>" value c4 = [ for (e in it) e ];
+    }
+    
 }
