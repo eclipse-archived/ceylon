@@ -2929,7 +2929,9 @@ public class ExpressionTransformer extends AbstractTransformer {
             )), null));
             //Define the inner iterator class
             ProducedType iteratorType = typeFact().getIteratorType(typeFact().getIteratedType(targetIterType));
-            JCExpression iterator = make().NewClass(null, null,makeJavaType(iteratorType, JT_CLASS_NEW|JT_EXTENDS),
+            JCExpression iteratorTypeExpr = make().TypeApply(makeIdent(syms().ceylonAbstractIteratorType),
+                                                             List.<JCExpression>of(makeJavaType(typeFact().getIteratedType(targetIterType), JT_NO_PRIMITIVES)));
+            JCExpression iterator = make().NewClass(null, null, iteratorTypeExpr,
                     List.<JCExpression>nil(), make().AnonymousClassDef(make().Modifiers(0), fields.toList()));
             //Define the anonymous iterable class
             JCExpression iterable = make().NewClass(null, null,
