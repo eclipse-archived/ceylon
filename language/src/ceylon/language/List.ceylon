@@ -55,8 +55,7 @@ shared interface List<out Element>
             variable Integer index = 0;
             shared actual Element|Finished next() {
                 if (index <= (lastIndex else -1)) {
-                    value elem = outer.get(index++);
-                    assert (exists elem);
+                    assert (exists elem = outer.get(index++));
                     return elem;
                 }
                 else {
@@ -84,8 +83,8 @@ shared interface List<out Element>
         if (is List<Anything> that) {
             if (that.size==size) {
                 for (i in 0..size-1) {
-                    value x = this.get(i);
-                    value y = that.get(i);
+                    value x = this[i];
+                    value y = that[i];
                     if (exists x) {
                         if (exists y) {
                             if (x!=y) {
@@ -126,7 +125,7 @@ shared interface List<out Element>
         if (exists l=lastIndex) {
             variable value index = l;
             while (index >= 0) {
-                if (exists elem = get(index--)) {
+                if (exists elem = this[index--]) {
                     if (selecting(elem)) {
                         return elem;
                     }
@@ -137,12 +136,12 @@ shared interface List<out Element>
     }*/
     
     doc "Returns the first element of this `List`, if any."
-    shared actual default Element? first => get(0);
+    shared actual default Element? first => this[0];
     
     doc "Returns the last element of this `List`, if any."
     shared actual default Element? last {
         if (exists i = lastIndex) {
-            return get(i);
+            return this[i];
         }
         return null;
     }

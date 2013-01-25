@@ -24,7 +24,7 @@ shared class LazyMap<out Key,out Item>({<Key->Item>*} entries)
         if (is Map<Object,Object> that) {
             if (that.size==size) {
                 for (entry in this) {
-                    if (exists item = that.get(entry.key)) {
+                    if (exists item = that[entry.key]) {
                         if (item==entry.item) {
                             continue;
                         }

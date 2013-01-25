@@ -63,7 +63,7 @@ shared class Tuple<out Element, out First, out Rest=[]>
         switch (index<=>0)
         case (smaller) { return null; }
         case (equal) { return first; }
-        case (larger) { return rest.get(index-1); }
+        case (larger) { return rest[index-1]; }
     }
     
     shared actual Integer lastIndex {

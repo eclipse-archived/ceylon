@@ -79,8 +79,8 @@ shared class LazyList<out Element>({Element*} elems)
             value size = elems.size;
             if (that.size==size) {
                 for (i in 0..size-1) {
-                    value x = this.get(i);
-                    value y = that.get(i);
+                    value x = this[i];
+                    value y = that[i];
                     if (exists x) {
                         if (exists y) {
                             if (x!=y) {
