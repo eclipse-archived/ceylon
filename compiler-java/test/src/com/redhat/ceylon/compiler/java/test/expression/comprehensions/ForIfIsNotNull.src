@@ -9,7 +9,7 @@ class ForIfIsNotNull {
         .ceylon.language.print_.print(new .com.redhat.ceylon.compiler.java.language.AbstractIterable<.ceylon.language.String, .java.lang.Object>(){
             
             public final .ceylon.language.Iterator<.ceylon.language.String> getIterator() {
-                return new .ceylon.language.Iterator<.ceylon.language.String>(){
+                return new .com.redhat.ceylon.compiler.java.language.AbstractIterator<.ceylon.language.String>(){
                     private final .ceylon.language.Iterator<? extends .java.lang.Object> iter$0 = xs.getIterator();
                     private .java.lang.Object x;
                     private boolean x$exhausted;
@@ -47,7 +47,7 @@ class ForIfIsNotNull {
         .ceylon.language.print_.print(new .com.redhat.ceylon.compiler.java.language.AbstractIterable<.ceylon.language.String, .java.lang.Object>(){
             
             public final .ceylon.language.Iterator<.ceylon.language.String> getIterator() {
-                return new .ceylon.language.Iterator<.ceylon.language.String>(){
+                return new .com.redhat.ceylon.compiler.java.language.AbstractIterator<.ceylon.language.String>(){
                     private final .ceylon.language.Iterator<? extends .java.lang.Object> iter$0 = ys.getIterator();
                     private .java.lang.Object y;
                     private boolean y$exhausted;

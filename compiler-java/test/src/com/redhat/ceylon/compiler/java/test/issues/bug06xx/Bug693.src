@@ -2,6 +2,8 @@ package com.redhat.ceylon.compiler.java.test.issues.bug06xx;
 
 public interface Bug693_Interface {
     
+    public .com.redhat.ceylon.compiler.java.test.issues.bug06xx.Bug693_Interface$impl $com$redhat$ceylon$compiler$java$test$issues$bug06xx$Bug693_Interface$impl();
+    
     public abstract .ceylon.language.Integer getX();
 }
 public final class Bug693_Interface$impl {
@@ -37,6 +39,11 @@ public class Bug693_Class implements .com.redhat.ceylon.compiler.java.test.issue
         return false;
     }
     protected final .com.redhat.ceylon.compiler.java.test.issues.bug06xx.Bug693_Interface$impl $com$redhat$ceylon$compiler$java$test$issues$bug06xx$Bug693_Interface$this;
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.test.issues.bug06xx.Bug693_Interface$impl $com$redhat$ceylon$compiler$java$test$issues$bug06xx$Bug693_Interface$impl() {
+        return $com$redhat$ceylon$compiler$java$test$issues$bug06xx$Bug693_Interface$this;
+    }
     private final .ceylon.language.Integer x;
     
     @.java.lang.Override

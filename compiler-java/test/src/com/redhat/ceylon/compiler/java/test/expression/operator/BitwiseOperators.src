@@ -15,7 +15,17 @@ abstract class BWMyInteger extends .java.lang.Object implements .ceylon.language
         this.$ceylon$language$Exponentiable$this = new .ceylon.language.Exponentiable$impl<.com.redhat.ceylon.compiler.java.test.expression.operator.BWMyInteger, .com.redhat.ceylon.compiler.java.test.expression.operator.BWMyInteger>(this);
     }
     protected final .ceylon.language.Castable$impl<.java.lang.Object> $ceylon$language$Castable$this;
+    
+    @.java.lang.Override
+    public .ceylon.language.Castable$impl<.java.lang.Object> $ceylon$language$Castable$impl() {
+        return $ceylon$language$Castable$this;
+    }
     protected final .ceylon.language.Binary$impl<.com.redhat.ceylon.compiler.java.test.expression.operator.BWMyInteger> $ceylon$language$Binary$this;
+    
+    @.java.lang.Override
+    public .ceylon.language.Binary$impl<.com.redhat.ceylon.compiler.java.test.expression.operator.BWMyInteger> $ceylon$language$Binary$impl() {
+        return $ceylon$language$Binary$this;
+    }
     
     @.java.lang.Override
     public final boolean set$bit(final long index) {
@@ -32,12 +42,47 @@ abstract class BWMyInteger extends .java.lang.Object implements .ceylon.language
         return $ceylon$language$Binary$this.clear(index);
     }
     protected final .ceylon.language.Integral$impl<.com.redhat.ceylon.compiler.java.test.expression.operator.BWMyInteger> $ceylon$language$Integral$this;
+    
+    @.java.lang.Override
+    public .ceylon.language.Integral$impl<.com.redhat.ceylon.compiler.java.test.expression.operator.BWMyInteger> $ceylon$language$Integral$impl() {
+        return $ceylon$language$Integral$this;
+    }
     protected final .ceylon.language.Numeric$impl<.com.redhat.ceylon.compiler.java.test.expression.operator.BWMyInteger> $ceylon$language$Numeric$this;
+    
+    @.java.lang.Override
+    public .ceylon.language.Numeric$impl<.com.redhat.ceylon.compiler.java.test.expression.operator.BWMyInteger> $ceylon$language$Numeric$impl() {
+        return $ceylon$language$Numeric$this;
+    }
     protected final .ceylon.language.Summable$impl<.com.redhat.ceylon.compiler.java.test.expression.operator.BWMyInteger> $ceylon$language$Summable$this;
+    
+    @.java.lang.Override
+    public .ceylon.language.Summable$impl<.com.redhat.ceylon.compiler.java.test.expression.operator.BWMyInteger> $ceylon$language$Summable$impl() {
+        return $ceylon$language$Summable$this;
+    }
     protected final .ceylon.language.Invertable$impl<.com.redhat.ceylon.compiler.java.test.expression.operator.BWMyInteger> $ceylon$language$Invertable$this;
+    
+    @.java.lang.Override
+    public .ceylon.language.Invertable$impl<.com.redhat.ceylon.compiler.java.test.expression.operator.BWMyInteger> $ceylon$language$Invertable$impl() {
+        return $ceylon$language$Invertable$this;
+    }
     protected final .ceylon.language.Enumerable$impl<.com.redhat.ceylon.compiler.java.test.expression.operator.BWMyInteger> $ceylon$language$Enumerable$this;
+    
+    @.java.lang.Override
+    public .ceylon.language.Enumerable$impl<.com.redhat.ceylon.compiler.java.test.expression.operator.BWMyInteger> $ceylon$language$Enumerable$impl() {
+        return $ceylon$language$Enumerable$this;
+    }
     protected final .ceylon.language.Ordinal$impl<.com.redhat.ceylon.compiler.java.test.expression.operator.BWMyInteger> $ceylon$language$Ordinal$this;
+    
+    @.java.lang.Override
+    public .ceylon.language.Ordinal$impl<.com.redhat.ceylon.compiler.java.test.expression.operator.BWMyInteger> $ceylon$language$Ordinal$impl() {
+        return $ceylon$language$Ordinal$this;
+    }
     protected final .ceylon.language.Exponentiable$impl<.com.redhat.ceylon.compiler.java.test.expression.operator.BWMyInteger, .com.redhat.ceylon.compiler.java.test.expression.operator.BWMyInteger> $ceylon$language$Exponentiable$this;
+    
+    @.java.lang.Override
+    public .ceylon.language.Exponentiable$impl<.com.redhat.ceylon.compiler.java.test.expression.operator.BWMyInteger, .com.redhat.ceylon.compiler.java.test.expression.operator.BWMyInteger> $ceylon$language$Exponentiable$impl() {
+        return $ceylon$language$Exponentiable$this;
+    }
 }
 final class bwToplevelN1_ {
     

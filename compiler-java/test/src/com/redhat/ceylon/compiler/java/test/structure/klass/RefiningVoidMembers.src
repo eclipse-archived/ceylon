@@ -117,6 +117,8 @@ abstract class RefiningAnythingMembersClass_Unboxed extends .com.redhat.ceylon.c
 }
 interface RefiningAnythingMembersInterface<T> {
     
+    public .com.redhat.ceylon.compiler.java.test.structure.klass.RefiningAnythingMembersInterface$impl<T> $com$redhat$ceylon$compiler$java$test$structure$klass$RefiningAnythingMembersInterface$impl();
+    
     public void notRefinable();
     
     public .java.lang.Object getDefaultGetterAnything();
@@ -197,6 +199,11 @@ abstract class RefiningAnythingMembersInterface_Boxed implements .com.redhat.cey
     protected final .com.redhat.ceylon.compiler.java.test.structure.klass.RefiningAnythingMembersInterface$impl<.java.lang.Object> $com$redhat$ceylon$compiler$java$test$structure$klass$RefiningAnythingMembersInterface$this;
     
     @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.test.structure.klass.RefiningAnythingMembersInterface$impl<.java.lang.Object> $com$redhat$ceylon$compiler$java$test$structure$klass$RefiningAnythingMembersInterface$impl() {
+        return $com$redhat$ceylon$compiler$java$test$structure$klass$RefiningAnythingMembersInterface$this;
+    }
+    
+    @.java.lang.Override
     public final void notRefinable() {
         $com$redhat$ceylon$compiler$java$test$structure$klass$RefiningAnythingMembersInterface$this.notRefinable();
     }
@@ -257,6 +264,11 @@ abstract class RefiningAnythingMembersInterface_Unboxed implements .com.redhat.c
         this.$com$redhat$ceylon$compiler$java$test$structure$klass$RefiningAnythingMembersInterface$this = new .com.redhat.ceylon.compiler.java.test.structure.klass.RefiningAnythingMembersInterface$impl<.java.lang.Object>(this);
     }
     protected final .com.redhat.ceylon.compiler.java.test.structure.klass.RefiningAnythingMembersInterface$impl<.java.lang.Object> $com$redhat$ceylon$compiler$java$test$structure$klass$RefiningAnythingMembersInterface$this;
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.test.structure.klass.RefiningAnythingMembersInterface$impl<.java.lang.Object> $com$redhat$ceylon$compiler$java$test$structure$klass$RefiningAnythingMembersInterface$impl() {
+        return $com$redhat$ceylon$compiler$java$test$structure$klass$RefiningAnythingMembersInterface$this;
+    }
     
     @.java.lang.Override
     public final void notRefinable() {

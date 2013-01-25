@@ -12,6 +12,11 @@ class Bug979Iterable implements .ceylon.language.Iterable<.ceylon.language.Strin
     protected final .ceylon.language.Iterable$impl<.ceylon.language.String, .java.lang.Object> $ceylon$language$Iterable$this;
     
     @.java.lang.Override
+    public .ceylon.language.Iterable$impl<.ceylon.language.String, .java.lang.Object> $ceylon$language$Iterable$impl() {
+        return $ceylon$language$Iterable$this;
+    }
+    
+    @.java.lang.Override
     public boolean getEmpty() {
         return $ceylon$language$Iterable$this.getEmpty();
     }
@@ -131,7 +136,17 @@ class Bug979Iterable implements .ceylon.language.Iterable<.ceylon.language.Strin
         return (.ceylon.language.Iterable<? extends .java.lang.Object, ?>)(.ceylon.language.Iterable)$ceylon$language$Iterable$this.chain(other);
     }
     protected final .ceylon.language.Container$impl<.ceylon.language.String, .java.lang.Object> $ceylon$language$Container$this;
+    
+    @.java.lang.Override
+    public .ceylon.language.Container$impl<.ceylon.language.String, .java.lang.Object> $ceylon$language$Container$impl() {
+        return $ceylon$language$Container$this;
+    }
     protected final .ceylon.language.Category$impl $ceylon$language$Category$this;
+    
+    @.java.lang.Override
+    public .ceylon.language.Category$impl $ceylon$language$Category$impl() {
+        return $ceylon$language$Category$this;
+    }
     
     @.java.lang.Override
     public boolean containsEvery(final .ceylon.language.Iterable<? extends .java.lang.Object, ?> elements) {
@@ -164,6 +179,11 @@ class Bug979Set extends .java.lang.Object implements .ceylon.language.Set<.ceylo
     protected final .ceylon.language.Set$impl<.ceylon.language.String> $ceylon$language$Set$this;
     
     @.java.lang.Override
+    public .ceylon.language.Set$impl<.ceylon.language.String> $ceylon$language$Set$impl() {
+        return $ceylon$language$Set$this;
+    }
+    
+    @.java.lang.Override
     public boolean superset(final .ceylon.language.Set<? extends .java.lang.Object> set) {
         return $ceylon$language$Set$this.superset(set);
     }
@@ -185,6 +205,11 @@ class Bug979Set extends .java.lang.Object implements .ceylon.language.Set<.ceylo
     protected final .ceylon.language.Collection$impl<.ceylon.language.String> $ceylon$language$Collection$this;
     
     @.java.lang.Override
+    public .ceylon.language.Collection$impl<.ceylon.language.String> $ceylon$language$Collection$impl() {
+        return $ceylon$language$Collection$this;
+    }
+    
+    @.java.lang.Override
     public boolean getEmpty() {
         return $ceylon$language$Collection$this.getEmpty();
     }
@@ -199,6 +224,11 @@ class Bug979Set extends .java.lang.Object implements .ceylon.language.Set<.ceylo
         return $ceylon$language$Collection$this.toString();
     }
     protected final .ceylon.language.Iterable$impl<.ceylon.language.String, .java.lang.Object> $ceylon$language$Iterable$this;
+    
+    @.java.lang.Override
+    public .ceylon.language.Iterable$impl<.ceylon.language.String, .java.lang.Object> $ceylon$language$Iterable$impl() {
+        return $ceylon$language$Iterable$this;
+    }
     
     @.java.lang.Override
     public long getSize() {
@@ -310,7 +340,17 @@ class Bug979Set extends .java.lang.Object implements .ceylon.language.Set<.ceylo
         return (.ceylon.language.Iterable<? extends .java.lang.Object, ?>)(.ceylon.language.Iterable)$ceylon$language$Iterable$this.chain(other);
     }
     protected final .ceylon.language.Container$impl<.ceylon.language.String, .java.lang.Object> $ceylon$language$Container$this;
+    
+    @.java.lang.Override
+    public .ceylon.language.Container$impl<.ceylon.language.String, .java.lang.Object> $ceylon$language$Container$impl() {
+        return $ceylon$language$Container$this;
+    }
     protected final .ceylon.language.Category$impl $ceylon$language$Category$this;
+    
+    @.java.lang.Override
+    public .ceylon.language.Category$impl $ceylon$language$Category$impl() {
+        return $ceylon$language$Category$this;
+    }
     
     @.java.lang.Override
     public boolean containsEvery(final .ceylon.language.Iterable<? extends .java.lang.Object, ?> elements) {
@@ -322,6 +362,11 @@ class Bug979Set extends .java.lang.Object implements .ceylon.language.Set<.ceylo
         return $ceylon$language$Category$this.containsAny(elements);
     }
     protected final .ceylon.language.Cloneable$impl<.ceylon.language.Collection<? extends .ceylon.language.String>> $ceylon$language$Cloneable$this;
+    
+    @.java.lang.Override
+    public .ceylon.language.Cloneable$impl<.ceylon.language.Collection<? extends .ceylon.language.String>> $ceylon$language$Cloneable$impl() {
+        return $ceylon$language$Cloneable$this;
+    }
     
     @.java.lang.Override
     public final .ceylon.language.Iterator<? extends .ceylon.language.String> getIterator() {

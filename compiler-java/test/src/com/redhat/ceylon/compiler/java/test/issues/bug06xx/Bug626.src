@@ -12,6 +12,11 @@ class Bug626 implements .ceylon.language.Iterable<.ceylon.language.Sequential<?>
     protected final .ceylon.language.Iterable$impl<.ceylon.language.Sequential<?>, .java.lang.Object> $ceylon$language$Iterable$this;
     
     @.java.lang.Override
+    public .ceylon.language.Iterable$impl<.ceylon.language.Sequential<?>, .java.lang.Object> $ceylon$language$Iterable$impl() {
+        return $ceylon$language$Iterable$this;
+    }
+    
+    @.java.lang.Override
     public boolean getEmpty() {
         return $ceylon$language$Iterable$this.getEmpty();
     }
@@ -131,7 +136,17 @@ class Bug626 implements .ceylon.language.Iterable<.ceylon.language.Sequential<?>
         return (.ceylon.language.Iterable<? extends .java.lang.Object, ?>)(.ceylon.language.Iterable)$ceylon$language$Iterable$this.chain(other);
     }
     protected final .ceylon.language.Container$impl<.ceylon.language.Sequential<?>, .java.lang.Object> $ceylon$language$Container$this;
+    
+    @.java.lang.Override
+    public .ceylon.language.Container$impl<.ceylon.language.Sequential<?>, .java.lang.Object> $ceylon$language$Container$impl() {
+        return $ceylon$language$Container$this;
+    }
     protected final .ceylon.language.Category$impl $ceylon$language$Category$this;
+    
+    @.java.lang.Override
+    public .ceylon.language.Category$impl $ceylon$language$Category$impl() {
+        return $ceylon$language$Category$this;
+    }
     
     @.java.lang.Override
     public boolean containsEvery(final .ceylon.language.Iterable<? extends .java.lang.Object, ?> elements) {

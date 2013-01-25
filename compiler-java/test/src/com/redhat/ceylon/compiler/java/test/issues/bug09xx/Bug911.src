@@ -2,6 +2,8 @@ package com.redhat.ceylon.compiler.java.test.issues.bug09xx;
 
 interface Bug911 {
     
+    public .com.redhat.ceylon.compiler.java.test.issues.bug09xx.Bug911$impl $com$redhat$ceylon$compiler$java$test$issues$bug09xx$Bug911$impl();
+    
     @.java.lang.Override
     public .java.lang.String toString();
 }

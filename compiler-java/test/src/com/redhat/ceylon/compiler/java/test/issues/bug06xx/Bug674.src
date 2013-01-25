@@ -1,8 +1,12 @@
 package com.redhat.ceylon.compiler.java.test.issues.bug06xx;
 
 interface bug674$0$X_<T> {
+    
+    public .java.lang.Object X$impl();
 }
 interface bug674$0$Y_ {
+    
+    public .java.lang.Object Y$impl();
 }
 final class bug674_ {
     

@@ -174,6 +174,8 @@ class MethodWithDefaultParams {
 }
 interface MethodWithDefaultParams2 {
     
+    public .com.redhat.ceylon.compiler.java.test.structure.method.MethodWithDefaultParams2$impl $com$redhat$ceylon$compiler$java$test$structure$method$MethodWithDefaultParams2$impl();
+    
     public abstract long getProp();
     
     public abstract .java.lang.Object f1();

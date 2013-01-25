@@ -2,6 +2,8 @@ package com.redhat.ceylon.compiler.java.test.structure.klass;
 
 interface InterfaceWithMembers {
     
+    public .com.redhat.ceylon.compiler.java.test.structure.klass.InterfaceWithMembers$impl $com$redhat$ceylon$compiler$java$test$structure$klass$InterfaceWithMembers$impl();
+    
     public abstract boolean getB();
     
     public abstract boolean getB2();

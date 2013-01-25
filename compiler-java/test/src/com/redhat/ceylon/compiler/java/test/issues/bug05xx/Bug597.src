@@ -8,6 +8,11 @@ class Bug597 implements .com.redhat.ceylon.compiler.java.test.issues.bug05xx.Sup
     protected final .com.redhat.ceylon.compiler.java.test.issues.bug05xx.Super$impl $com$redhat$ceylon$compiler$java$test$issues$bug05xx$Super$this;
     
     @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.test.issues.bug05xx.Super$impl $com$redhat$ceylon$compiler$java$test$issues$bug05xx$Super$impl() {
+        return $com$redhat$ceylon$compiler$java$test$issues$bug05xx$Super$this;
+    }
+    
+    @.java.lang.Override
     public .java.lang.String getFoo() {
         return $com$redhat$ceylon$compiler$java$test$issues$bug05xx$Super$this.getFoo();
     }
@@ -18,6 +23,8 @@ class Bug597 implements .com.redhat.ceylon.compiler.java.test.issues.bug05xx.Sup
     }
 }
 public interface Super {
+    
+    public .com.redhat.ceylon.compiler.java.test.issues.bug05xx.Super$impl $com$redhat$ceylon$compiler$java$test$issues$bug05xx$Super$impl();
     
     public .java.lang.String getFoo();
 }

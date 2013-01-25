@@ -2,6 +2,8 @@ package com.redhat.ceylon.compiler.java.test.structure.klass;
 
 interface TypeParamRename<T, U> {
     
+    public .com.redhat.ceylon.compiler.java.test.structure.klass.TypeParamRename$impl<T, U> $com$redhat$ceylon$compiler$java$test$structure$klass$TypeParamRename$impl();
+    
     public U m();
     
     public abstract T m$t();
@@ -63,6 +65,11 @@ class TypeParamRenameKls<X, Y> implements .com.redhat.ceylon.compiler.java.test.
         this.$com$redhat$ceylon$compiler$java$test$structure$klass$TypeParamRename$this = new .com.redhat.ceylon.compiler.java.test.structure.klass.TypeParamRename$impl<X, Y>(this);
     }
     protected final .com.redhat.ceylon.compiler.java.test.structure.klass.TypeParamRename$impl<X, Y> $com$redhat$ceylon$compiler$java$test$structure$klass$TypeParamRename$this;
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.test.structure.klass.TypeParamRename$impl<X, Y> $com$redhat$ceylon$compiler$java$test$structure$klass$TypeParamRename$impl() {
+        return $com$redhat$ceylon$compiler$java$test$structure$klass$TypeParamRename$this;
+    }
     
     @.java.lang.Override
     public final X m$t() {

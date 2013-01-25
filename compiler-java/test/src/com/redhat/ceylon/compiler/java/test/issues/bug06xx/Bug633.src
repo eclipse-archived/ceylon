@@ -2,6 +2,8 @@ package com.redhat.ceylon.compiler.java.test.issues.bug06xx;
 
 interface Bug633Ranged<Index, Span> {
     
+    public .com.redhat.ceylon.compiler.java.test.issues.bug06xx.Bug633Ranged$impl<Index, Span> $com$redhat$ceylon$compiler$java$test$issues$bug06xx$Bug633Ranged$impl();
+    
     public abstract .java.lang.Object span(final Index from);
 }
 final class Bug633Ranged$impl<Index, Span> {
@@ -12,6 +14,8 @@ final class Bug633Ranged$impl<Index, Span> {
     private final .com.redhat.ceylon.compiler.java.test.issues.bug06xx.Bug633Ranged<? super Index, ? extends Span> $this;
 }
 interface Bug633Empty extends .com.redhat.ceylon.compiler.java.test.issues.bug06xx.Bug633Ranged<.ceylon.language.Integer, .java.lang.Object> {
+    
+    public .com.redhat.ceylon.compiler.java.test.issues.bug06xx.Bug633Empty$impl $com$redhat$ceylon$compiler$java$test$issues$bug06xx$Bug633Empty$impl();
 }
 final class Bug633Empty$impl {
     
@@ -27,7 +31,17 @@ class Bug633EmptyImpl implements .com.redhat.ceylon.compiler.java.test.issues.bu
         this.$com$redhat$ceylon$compiler$java$test$issues$bug06xx$Bug633Ranged$this = new .com.redhat.ceylon.compiler.java.test.issues.bug06xx.Bug633Ranged$impl<.ceylon.language.Integer, .java.lang.Object>(this);
     }
     protected final .com.redhat.ceylon.compiler.java.test.issues.bug06xx.Bug633Empty$impl $com$redhat$ceylon$compiler$java$test$issues$bug06xx$Bug633Empty$this;
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.test.issues.bug06xx.Bug633Empty$impl $com$redhat$ceylon$compiler$java$test$issues$bug06xx$Bug633Empty$impl() {
+        return $com$redhat$ceylon$compiler$java$test$issues$bug06xx$Bug633Empty$this;
+    }
     protected final .com.redhat.ceylon.compiler.java.test.issues.bug06xx.Bug633Ranged$impl<.ceylon.language.Integer, .java.lang.Object> $com$redhat$ceylon$compiler$java$test$issues$bug06xx$Bug633Ranged$this;
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.test.issues.bug06xx.Bug633Ranged$impl<.ceylon.language.Integer, .java.lang.Object> $com$redhat$ceylon$compiler$java$test$issues$bug06xx$Bug633Ranged$impl() {
+        return $com$redhat$ceylon$compiler$java$test$issues$bug06xx$Bug633Ranged$this;
+    }
     
     @.java.lang.Override
     public final .java.lang.Object span(final .ceylon.language.Integer from) {

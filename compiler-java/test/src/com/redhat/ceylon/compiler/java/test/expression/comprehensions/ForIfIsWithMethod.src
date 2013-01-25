@@ -17,7 +17,7 @@ class ForIfIsWithMethod {
         .ceylon.language.print_.print(new .com.redhat.ceylon.compiler.java.language.AbstractIterable<.java.lang.Object, .java.lang.Object>(){
             
             public final .ceylon.language.Iterator<.java.lang.Object> getIterator() {
-                return new .ceylon.language.Iterator<.java.lang.Object>(){
+                return new .com.redhat.ceylon.compiler.java.language.AbstractIterator<.java.lang.Object>(){
                     private final .ceylon.language.Iterator<? extends .com.redhat.ceylon.compiler.java.test.expression.comprehensions.ForIfIsWithMethod> iter$0 = xs.getIterator();
                     private .com.redhat.ceylon.compiler.java.test.expression.comprehensions.ForIfIsWithMethod x;
                     private boolean x$exhausted;
@@ -55,7 +55,7 @@ class ForIfIsWithMethod {
         .ceylon.language.print_.print(new .com.redhat.ceylon.compiler.java.language.AbstractIterable<.java.lang.Object, .java.lang.Object>(){
             
             public final .ceylon.language.Iterator<.java.lang.Object> getIterator() {
-                return new .ceylon.language.Iterator<.java.lang.Object>(){
+                return new .com.redhat.ceylon.compiler.java.language.AbstractIterator<.java.lang.Object>(){
                     private final .ceylon.language.Iterator<? extends .com.redhat.ceylon.compiler.java.test.expression.comprehensions.ForIfIsWithMethod> iter$0 = xs.getIterator();
                     private .com.redhat.ceylon.compiler.java.test.expression.comprehensions.ForIfIsWithMethod x;
                     private boolean x$exhausted;

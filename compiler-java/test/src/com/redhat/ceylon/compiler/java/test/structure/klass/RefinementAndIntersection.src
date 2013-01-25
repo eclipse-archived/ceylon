@@ -2,6 +2,8 @@ package com.redhat.ceylon.compiler.java.test.structure.klass;
 
 interface RefinementAndIntersection_G {
     
+    public .com.redhat.ceylon.compiler.java.test.structure.klass.RefinementAndIntersection_G$impl $com$redhat$ceylon$compiler$java$test$structure$klass$RefinementAndIntersection_G$impl();
+    
     public void g();
 }
 final class RefinementAndIntersection_G$impl {
@@ -16,6 +18,8 @@ final class RefinementAndIntersection_G$impl {
 }
 interface RefinementAndIntersection_H {
     
+    public .com.redhat.ceylon.compiler.java.test.structure.klass.RefinementAndIntersection_H$impl $com$redhat$ceylon$compiler$java$test$structure$klass$RefinementAndIntersection_H$impl();
+    
     public void h();
 }
 final class RefinementAndIntersection_H$impl {
@@ -29,6 +33,8 @@ final class RefinementAndIntersection_H$impl {
     }
 }
 interface RefinementAndIntersection_Co<T> {
+    
+    public .com.redhat.ceylon.compiler.java.test.structure.klass.RefinementAndIntersection_Co$impl<T> $com$redhat$ceylon$compiler$java$test$structure$klass$RefinementAndIntersection_Co$impl();
     
     public abstract T get();
 }
@@ -45,6 +51,11 @@ class RefinementAndIntersection_SuperCoGood implements .com.redhat.ceylon.compil
         this.$com$redhat$ceylon$compiler$java$test$structure$klass$RefinementAndIntersection_Co$this = new .com.redhat.ceylon.compiler.java.test.structure.klass.RefinementAndIntersection_Co$impl<.com.redhat.ceylon.compiler.java.test.structure.klass.RefinementAndIntersection_G>(this);
     }
     protected final .com.redhat.ceylon.compiler.java.test.structure.klass.RefinementAndIntersection_Co$impl<.com.redhat.ceylon.compiler.java.test.structure.klass.RefinementAndIntersection_G> $com$redhat$ceylon$compiler$java$test$structure$klass$RefinementAndIntersection_Co$this;
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.test.structure.klass.RefinementAndIntersection_Co$impl<.com.redhat.ceylon.compiler.java.test.structure.klass.RefinementAndIntersection_G> $com$redhat$ceylon$compiler$java$test$structure$klass$RefinementAndIntersection_Co$impl() {
+        return $com$redhat$ceylon$compiler$java$test$structure$klass$RefinementAndIntersection_Co$this;
+    }
     
     @.java.lang.Override
     public .com.redhat.ceylon.compiler.java.test.structure.klass.RefinementAndIntersection_G get() {

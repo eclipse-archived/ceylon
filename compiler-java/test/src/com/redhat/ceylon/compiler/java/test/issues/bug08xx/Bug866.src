@@ -2,6 +2,8 @@ package com.redhat.ceylon.compiler.java.test.issues.bug08xx;
 
 interface Bug866_Visitable<Visited extends .com.redhat.ceylon.compiler.java.test.issues.bug08xx.Bug866_Visitable<Visited>> extends .ceylon.language.Iterable<.java.lang.Object, .java.lang.Object> {
     
+    public .com.redhat.ceylon.compiler.java.test.issues.bug08xx.Bug866_Visitable$impl<Visited> $com$redhat$ceylon$compiler$java$test$issues$bug08xx$Bug866_Visitable$impl();
+    
     public abstract .java.lang.String getDescription();
     
     public void visitPrefix(final .ceylon.language.Callable<? extends .java.lang.Object> f);

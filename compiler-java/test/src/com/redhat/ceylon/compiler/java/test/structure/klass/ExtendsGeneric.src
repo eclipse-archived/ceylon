@@ -1,6 +1,8 @@
 package com.redhat.ceylon.compiler.java.test.structure.klass;
 
 interface ExtendsGeneric_Foo<T> {
+    
+    public .com.redhat.ceylon.compiler.java.test.structure.klass.ExtendsGeneric_Foo$impl<T> $com$redhat$ceylon$compiler$java$test$structure$klass$ExtendsGeneric_Foo$impl();
 }
 final class ExtendsGeneric_Foo$impl<T> {
     
@@ -10,6 +12,8 @@ final class ExtendsGeneric_Foo$impl<T> {
     private final .com.redhat.ceylon.compiler.java.test.structure.klass.ExtendsGeneric_Foo<? super T> $this;
 }
 interface ExtendsGeneric_Bar<T> {
+    
+    public .com.redhat.ceylon.compiler.java.test.structure.klass.ExtendsGeneric_Bar$impl<T> $com$redhat$ceylon$compiler$java$test$structure$klass$ExtendsGeneric_Bar$impl();
 }
 final class ExtendsGeneric_Bar$impl<T> {
     
@@ -19,6 +23,8 @@ final class ExtendsGeneric_Bar$impl<T> {
     private final .com.redhat.ceylon.compiler.java.test.structure.klass.ExtendsGeneric_Bar<? extends T> $this;
 }
 interface ExtendsGeneric_Baz<T> {
+    
+    public .com.redhat.ceylon.compiler.java.test.structure.klass.ExtendsGeneric_Baz$impl<T> $com$redhat$ceylon$compiler$java$test$structure$klass$ExtendsGeneric_Baz$impl();
 }
 final class ExtendsGeneric_Baz$impl<T> {
     

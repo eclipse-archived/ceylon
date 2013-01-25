@@ -2,6 +2,8 @@ package com.redhat.ceylon.compiler.java.test.structure.concrete;
 
 public interface LazySpec {
     
+    public .com.redhat.ceylon.compiler.java.test.structure.concrete.LazySpec$impl $com$redhat$ceylon$compiler$java$test$structure$concrete$LazySpec$impl();
+    
     public .java.lang.Object a();
     
     public abstract .java.lang.Object b();
@@ -18,6 +20,8 @@ public final class LazySpec$impl {
     }
 }
 public interface LazySpecSub extends .com.redhat.ceylon.compiler.java.test.structure.concrete.LazySpec {
+    
+    public .com.redhat.ceylon.compiler.java.test.structure.concrete.LazySpecSub$impl $com$redhat$ceylon$compiler$java$test$structure$concrete$LazySpecSub$impl();
     
     @.java.lang.Override
     public .java.lang.Object a();

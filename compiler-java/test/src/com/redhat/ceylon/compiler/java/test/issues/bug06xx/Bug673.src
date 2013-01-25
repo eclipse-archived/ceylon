@@ -19,6 +19,8 @@ public abstract class Bug673_StoreEvent extends .com.redhat.ceylon.compiler.java
 }
 public interface Bug673_EventObserver<Evento extends .com.redhat.ceylon.compiler.java.test.issues.bug06xx.Bug673_Event> {
     
+    public .com.redhat.ceylon.compiler.java.test.issues.bug06xx.Bug673_EventObserver$impl<Evento> $com$redhat$ceylon$compiler$java$test$issues$bug06xx$Bug673_EventObserver$impl();
+    
     public .java.lang.Object on(final Evento event, final .ceylon.language.Callable<? extends .ceylon.language.Boolean> action);
 }
 public final class Bug673_EventObserver$impl<Evento extends .com.redhat.ceylon.compiler.java.test.issues.bug06xx.Bug673_Event> {
@@ -33,6 +35,8 @@ public final class Bug673_EventObserver$impl<Evento extends .com.redhat.ceylon.c
     }
 }
 public interface Bug673_GridBehavior extends .com.redhat.ceylon.compiler.java.test.issues.bug06xx.Bug673_EventObserver<.com.redhat.ceylon.compiler.java.test.issues.bug06xx.Bug673_Event> {
+    
+    public .com.redhat.ceylon.compiler.java.test.issues.bug06xx.Bug673_GridBehavior$impl $com$redhat$ceylon$compiler$java$test$issues$bug06xx$Bug673_GridBehavior$impl();
     
     @.java.lang.Override
     public .java.lang.Object on(final .com.redhat.ceylon.compiler.java.test.issues.bug06xx.Bug673_Event event, final .ceylon.language.Callable<? extends .ceylon.language.Boolean> action);
@@ -57,10 +61,20 @@ public class Bug673_PaisController implements .com.redhat.ceylon.compiler.java.t
     protected final .com.redhat.ceylon.compiler.java.test.issues.bug06xx.Bug673_GridBehavior$impl $com$redhat$ceylon$compiler$java$test$issues$bug06xx$Bug673_GridBehavior$this;
     
     @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.test.issues.bug06xx.Bug673_GridBehavior$impl $com$redhat$ceylon$compiler$java$test$issues$bug06xx$Bug673_GridBehavior$impl() {
+        return $com$redhat$ceylon$compiler$java$test$issues$bug06xx$Bug673_GridBehavior$this;
+    }
+    
+    @.java.lang.Override
     public final .java.lang.Object on(final .com.redhat.ceylon.compiler.java.test.issues.bug06xx.Bug673_Event event, final .ceylon.language.Callable<? extends .ceylon.language.Boolean> action) {
         return $com$redhat$ceylon$compiler$java$test$issues$bug06xx$Bug673_GridBehavior$this.on(event, action);
     }
     protected final .com.redhat.ceylon.compiler.java.test.issues.bug06xx.Bug673_EventObserver$impl<.com.redhat.ceylon.compiler.java.test.issues.bug06xx.Bug673_Event> $com$redhat$ceylon$compiler$java$test$issues$bug06xx$Bug673_EventObserver$this;
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.test.issues.bug06xx.Bug673_EventObserver$impl<.com.redhat.ceylon.compiler.java.test.issues.bug06xx.Bug673_Event> $com$redhat$ceylon$compiler$java$test$issues$bug06xx$Bug673_EventObserver$impl() {
+        return $com$redhat$ceylon$compiler$java$test$issues$bug06xx$Bug673_EventObserver$this;
+    }
     
     public static void main(.java.lang.String[] args) {
         .ceylon.language.process_.getProcess$().setupArguments(args);

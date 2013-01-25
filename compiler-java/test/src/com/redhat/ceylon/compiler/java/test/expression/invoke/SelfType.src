@@ -47,6 +47,8 @@ final class selfType2_ {
     }
 }
 interface A extends .ceylon.language.Comparable {
+    
+    public .com.redhat.ceylon.compiler.java.test.expression.invoke.A$impl $com$redhat$ceylon$compiler$java$test$expression$invoke$A$impl();
 }
 final class A$impl {
     
@@ -56,6 +58,8 @@ final class A$impl {
     private final .com.redhat.ceylon.compiler.java.test.expression.invoke.A $this;
 }
 interface C extends .ceylon.language.Comparable {
+    
+    public .com.redhat.ceylon.compiler.java.test.expression.invoke.C$impl $com$redhat$ceylon$compiler$java$test$expression$invoke$C$impl();
 }
 final class C$impl {
     
@@ -65,6 +69,8 @@ final class C$impl {
     private final .com.redhat.ceylon.compiler.java.test.expression.invoke.C $this;
 }
 interface D extends .ceylon.language.Comparable<.com.redhat.ceylon.compiler.java.test.expression.invoke.D> {
+    
+    public .com.redhat.ceylon.compiler.java.test.expression.invoke.D$impl $com$redhat$ceylon$compiler$java$test$expression$invoke$D$impl();
 }
 final class D$impl {
     

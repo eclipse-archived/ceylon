@@ -2,6 +2,8 @@ package com.redhat.ceylon.compiler.java.test.structure.method;
 
 interface MethodRefinementWithSpecifiers_Interface {
     
+    public .com.redhat.ceylon.compiler.java.test.structure.method.MethodRefinementWithSpecifiers_Interface$impl $com$redhat$ceylon$compiler$java$test$structure$method$MethodRefinementWithSpecifiers_Interface$impl();
+    
     public abstract .java.lang.Object f2();
     
     public abstract .java.lang.Object f3();
@@ -97,6 +99,11 @@ class MethodRefinementWithSpecifiers_Class implements .com.redhat.ceylon.compile
     }
     private final .ceylon.language.Callable<? extends .java.lang.Object> arg;
     protected final .com.redhat.ceylon.compiler.java.test.structure.method.MethodRefinementWithSpecifiers_Interface$impl $com$redhat$ceylon$compiler$java$test$structure$method$MethodRefinementWithSpecifiers_Interface$this;
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.test.structure.method.MethodRefinementWithSpecifiers_Interface$impl $com$redhat$ceylon$compiler$java$test$structure$method$MethodRefinementWithSpecifiers_Interface$impl() {
+        return $com$redhat$ceylon$compiler$java$test$structure$method$MethodRefinementWithSpecifiers_Interface$this;
+    }
     
     class Inner {
         

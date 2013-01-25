@@ -2,6 +2,8 @@ package com.redhat.ceylon.compiler.java.test.issues.bug02xx;
 
 interface Bug202_ReadList<T> {
     
+    public .com.redhat.ceylon.compiler.java.test.issues.bug02xx.Bug202_ReadList$impl<T> $com$redhat$ceylon$compiler$java$test$issues$bug02xx$Bug202_ReadList$impl();
+    
     public abstract T get(final long i);
 }
 final class Bug202_ReadList$impl<T> {
@@ -17,6 +19,11 @@ class Bug202_Tricky implements .com.redhat.ceylon.compiler.java.test.issues.bug0
         this.$com$redhat$ceylon$compiler$java$test$issues$bug02xx$Bug202_ReadList$this = new .com.redhat.ceylon.compiler.java.test.issues.bug02xx.Bug202_ReadList$impl<.com.redhat.ceylon.compiler.java.test.issues.bug02xx.Bug202_ReadList<? extends .com.redhat.ceylon.compiler.java.test.issues.bug02xx.Bug202_Tricky>>(this);
     }
     protected final .com.redhat.ceylon.compiler.java.test.issues.bug02xx.Bug202_ReadList$impl<.com.redhat.ceylon.compiler.java.test.issues.bug02xx.Bug202_ReadList<? extends .com.redhat.ceylon.compiler.java.test.issues.bug02xx.Bug202_Tricky>> $com$redhat$ceylon$compiler$java$test$issues$bug02xx$Bug202_ReadList$this;
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.test.issues.bug02xx.Bug202_ReadList$impl<.com.redhat.ceylon.compiler.java.test.issues.bug02xx.Bug202_ReadList<? extends .com.redhat.ceylon.compiler.java.test.issues.bug02xx.Bug202_Tricky>> $com$redhat$ceylon$compiler$java$test$issues$bug02xx$Bug202_ReadList$impl() {
+        return $com$redhat$ceylon$compiler$java$test$issues$bug02xx$Bug202_ReadList$this;
+    }
     
     @.java.lang.Override
     public final .com.redhat.ceylon.compiler.java.test.issues.bug02xx.Bug202_ReadList<? extends .com.redhat.ceylon.compiler.java.test.issues.bug02xx.Bug202_Tricky> get(final long i) {

@@ -82,6 +82,8 @@ class GenCon<T> {
 }
 interface ISats {
     
+    public .com.redhat.ceylon.compiler.java.test.structure.type.ISats$impl $com$redhat$ceylon$compiler$java$test$structure$type$ISats$impl();
+    
     public abstract .java.lang.Object z();
 }
 final class ISats$impl {
@@ -111,6 +113,11 @@ class BarSats extends .com.redhat.ceylon.compiler.java.test.structure.type.Bar i
         this.$com$redhat$ceylon$compiler$java$test$structure$type$ISats$this = new .com.redhat.ceylon.compiler.java.test.structure.type.ISats$impl(this);
     }
     protected final .com.redhat.ceylon.compiler.java.test.structure.type.ISats$impl $com$redhat$ceylon$compiler$java$test$structure$type$ISats$this;
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.test.structure.type.ISats$impl $com$redhat$ceylon$compiler$java$test$structure$type$ISats$impl() {
+        return $com$redhat$ceylon$compiler$java$test$structure$type$ISats$this;
+    }
     
     @.java.lang.Override
     public final .java.lang.Object z() {
@@ -191,6 +198,8 @@ class Conversions {
     }
 }
 interface ISats2 {
+    
+    public .com.redhat.ceylon.compiler.java.test.structure.type.ISats2$impl $com$redhat$ceylon$compiler$java$test$structure$type$ISats2$impl();
 }
 final class ISats2$impl {
     

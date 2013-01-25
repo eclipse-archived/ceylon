@@ -2,6 +2,8 @@ package com.redhat.ceylon.compiler.java.test.structure.concrete;
 
 public interface MultipleInheritance {
     
+    public .com.redhat.ceylon.compiler.java.test.structure.concrete.MultipleInheritance$impl $com$redhat$ceylon$compiler$java$test$structure$concrete$MultipleInheritance$impl();
+    
     public long getA();
     
     public void setA(final long a);
@@ -34,6 +36,11 @@ class MultipleInheritanceImpl implements .com.redhat.ceylon.compiler.java.test.s
     protected final .com.redhat.ceylon.compiler.java.test.structure.concrete.MultipleInheritance$impl $com$redhat$ceylon$compiler$java$test$structure$concrete$MultipleInheritance$this;
     
     @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.test.structure.concrete.MultipleInheritance$impl $com$redhat$ceylon$compiler$java$test$structure$concrete$MultipleInheritance$impl() {
+        return $com$redhat$ceylon$compiler$java$test$structure$concrete$MultipleInheritance$this;
+    }
+    
+    @.java.lang.Override
     public long getA() {
         return $com$redhat$ceylon$compiler$java$test$structure$concrete$MultipleInheritance$this.getA();
     }
@@ -54,6 +61,8 @@ class MultipleInheritanceImpl implements .com.redhat.ceylon.compiler.java.test.s
     }
 }
 interface MultipleInheritanceSub extends .com.redhat.ceylon.compiler.java.test.structure.concrete.MultipleInheritance {
+    
+    public .com.redhat.ceylon.compiler.java.test.structure.concrete.MultipleInheritanceSub$impl $com$redhat$ceylon$compiler$java$test$structure$concrete$MultipleInheritanceSub$impl();
 }
 final class MultipleInheritanceSub$impl {
     
@@ -69,7 +78,17 @@ class MultipleInheritanceSubImpl implements .com.redhat.ceylon.compiler.java.tes
         this.$com$redhat$ceylon$compiler$java$test$structure$concrete$MultipleInheritance$this = new .com.redhat.ceylon.compiler.java.test.structure.concrete.MultipleInheritance$impl(this);
     }
     protected final .com.redhat.ceylon.compiler.java.test.structure.concrete.MultipleInheritanceSub$impl $com$redhat$ceylon$compiler$java$test$structure$concrete$MultipleInheritanceSub$this;
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.test.structure.concrete.MultipleInheritanceSub$impl $com$redhat$ceylon$compiler$java$test$structure$concrete$MultipleInheritanceSub$impl() {
+        return $com$redhat$ceylon$compiler$java$test$structure$concrete$MultipleInheritanceSub$this;
+    }
     protected final .com.redhat.ceylon.compiler.java.test.structure.concrete.MultipleInheritance$impl $com$redhat$ceylon$compiler$java$test$structure$concrete$MultipleInheritance$this;
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.test.structure.concrete.MultipleInheritance$impl $com$redhat$ceylon$compiler$java$test$structure$concrete$MultipleInheritance$impl() {
+        return $com$redhat$ceylon$compiler$java$test$structure$concrete$MultipleInheritance$this;
+    }
     
     @.java.lang.Override
     public long getA() {
@@ -99,6 +118,11 @@ class MultipleInheritanceImplSub extends .com.redhat.ceylon.compiler.java.test.s
         this.a = 1L;
     }
     protected final .com.redhat.ceylon.compiler.java.test.structure.concrete.MultipleInheritanceSub$impl $com$redhat$ceylon$compiler$java$test$structure$concrete$MultipleInheritanceSub$this;
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.test.structure.concrete.MultipleInheritanceSub$impl $com$redhat$ceylon$compiler$java$test$structure$concrete$MultipleInheritanceSub$impl() {
+        return $com$redhat$ceylon$compiler$java$test$structure$concrete$MultipleInheritanceSub$this;
+    }
     private long a;
     
     @.java.lang.Override

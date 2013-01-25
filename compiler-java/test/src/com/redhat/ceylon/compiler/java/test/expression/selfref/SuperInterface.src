@@ -2,6 +2,8 @@ package com.redhat.ceylon.compiler.java.test.expression.selfref;
 
 interface SuperInterface {
     
+    public .com.redhat.ceylon.compiler.java.test.expression.selfref.SuperInterface$impl $com$redhat$ceylon$compiler$java$test$expression$selfref$SuperInterface$impl();
+    
     public long getI();
     
     public void setI(final long i);
@@ -32,6 +34,11 @@ class SuperInterface_Sub implements .com.redhat.ceylon.compiler.java.test.expres
         this.$com$redhat$ceylon$compiler$java$test$expression$selfref$SuperInterface$this = new .com.redhat.ceylon.compiler.java.test.expression.selfref.SuperInterface$impl(this);
     }
     protected final .com.redhat.ceylon.compiler.java.test.expression.selfref.SuperInterface$impl $com$redhat$ceylon$compiler$java$test$expression$selfref$SuperInterface$this;
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.test.expression.selfref.SuperInterface$impl $com$redhat$ceylon$compiler$java$test$expression$selfref$SuperInterface$impl() {
+        return $com$redhat$ceylon$compiler$java$test$expression$selfref$SuperInterface$this;
+    }
     
     @.java.lang.Override
     public final long getI() {

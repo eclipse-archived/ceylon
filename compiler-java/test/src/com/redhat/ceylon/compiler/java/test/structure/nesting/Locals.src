@@ -2,9 +2,13 @@ package com.redhat.ceylon.compiler.java.test.structure.nesting;
 
 interface Local$local$0$LC$LCI {
     
+    public .java.lang.Object LC$LCI$impl();
+    
     public long m();
 }
 interface Local$local$0$LI$LII {
+    
+    public .java.lang.Object LI$impl$LII$impl();
     
     public long m();
 }
@@ -16,13 +20,19 @@ interface Local$local$0$LI {
 }
 interface Local$C$local2$1$CL$LCI {
     
+    public .java.lang.Object CL$LCI$impl();
+    
     public long m();
 }
 interface Local$I$local3$2$IL$ICI {
     
+    public .java.lang.Object IL$ICI$impl();
+    
     public long m();
 }
 interface Local$I {
+    
+    public .com.redhat.ceylon.compiler.java.test.structure.nesting.Local.I$impl $com$redhat$ceylon$compiler$java$test$structure$nesting$Local$I$impl();
 }
 class Local {
     
@@ -113,6 +123,11 @@ class Local {
                 protected final LC.LCI$impl $com$redhat$ceylon$compiler$java$test$structure$nesting$Local$local$LC$LCI$this;
                 
                 @.java.lang.Override
+                public LC.LCI$impl LC$LCI$impl() {
+                    return $com$redhat$ceylon$compiler$java$test$structure$nesting$Local$local$LC$LCI$this;
+                }
+                
+                @.java.lang.Override
                 public final long m() {
                     return mLocal() + i + j + k;
                 }
@@ -161,6 +176,11 @@ class Local {
                 }
                 private final long j;
                 protected final LI$impl.LII$impl $com$redhat$ceylon$compiler$java$test$structure$nesting$Local$local$LI$LII$this;
+                
+                @.java.lang.Override
+                public LI$impl.LII$impl LI$impl$LII$impl() {
+                    return $com$redhat$ceylon$compiler$java$test$structure$nesting$Local$local$LI$LII$this;
+                }
                 
                 @.java.lang.Override
                 public final long m() {
@@ -272,6 +292,11 @@ class Local {
                     protected final CL.LCI$impl $com$redhat$ceylon$compiler$java$test$structure$nesting$Local$C$local2$CL$LCI$this;
                     
                     @.java.lang.Override
+                    public CL.LCI$impl CL$LCI$impl() {
+                        return $com$redhat$ceylon$compiler$java$test$structure$nesting$Local$C$local2$CL$LCI$this;
+                    }
+                    
+                    @.java.lang.Override
                     public final long m() {
                         return mLocal() + i + j + k + l;
                     }
@@ -365,6 +390,11 @@ class Local {
                     }
                     private final long k;
                     protected final IL.ICI$impl $com$redhat$ceylon$compiler$java$test$structure$nesting$Local$I$local3$IL$ICI$this;
+                    
+                    @.java.lang.Override
+                    public IL.ICI$impl IL$ICI$impl() {
+                        return $com$redhat$ceylon$compiler$java$test$structure$nesting$Local$I$local3$IL$ICI$this;
+                    }
                     
                     @.java.lang.Override
                     public final long m() {

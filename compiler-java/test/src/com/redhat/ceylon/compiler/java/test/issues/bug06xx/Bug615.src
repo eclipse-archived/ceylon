@@ -2,6 +2,8 @@ package com.redhat.ceylon.compiler.java.test.issues.bug06xx;
 
 interface I {
     
+    public .com.redhat.ceylon.compiler.java.test.issues.bug06xx.I$impl $com$redhat$ceylon$compiler$java$test$issues$bug06xx$I$impl();
+    
     public abstract .ceylon.language.Integer getX();
 }
 final class I$impl {
@@ -22,6 +24,11 @@ class C implements .com.redhat.ceylon.compiler.java.test.issues.bug06xx.I {
         this.$com$redhat$ceylon$compiler$java$test$issues$bug06xx$I$this = new .com.redhat.ceylon.compiler.java.test.issues.bug06xx.I$impl(this);
     }
     protected final .com.redhat.ceylon.compiler.java.test.issues.bug06xx.I$impl $com$redhat$ceylon$compiler$java$test$issues$bug06xx$I$this;
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.test.issues.bug06xx.I$impl $com$redhat$ceylon$compiler$java$test$issues$bug06xx$I$impl() {
+        return $com$redhat$ceylon$compiler$java$test$issues$bug06xx$I$this;
+    }
     private final .ceylon.language.Integer x;
     
     @.java.lang.Override

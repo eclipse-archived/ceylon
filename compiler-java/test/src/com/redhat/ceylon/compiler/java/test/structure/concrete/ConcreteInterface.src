@@ -2,6 +2,8 @@ package com.redhat.ceylon.compiler.java.test.structure.concrete;
 
 interface I1 {
     
+    public .com.redhat.ceylon.compiler.java.test.structure.concrete.I1$impl $com$redhat$ceylon$compiler$java$test$structure$concrete$I1$impl();
+    
     public abstract .java.lang.String m1();
     
     public abstract long m1$i();
@@ -49,6 +51,8 @@ final class I1$impl {
     }
 }
 interface I2 {
+    
+    public .com.redhat.ceylon.compiler.java.test.structure.concrete.I2$impl $com$redhat$ceylon$compiler$java$test$structure$concrete$I2$impl();
     
     public abstract .java.lang.String m2();
     
@@ -105,6 +109,11 @@ class C implements .com.redhat.ceylon.compiler.java.test.structure.concrete.I1, 
     protected final .com.redhat.ceylon.compiler.java.test.structure.concrete.I1$impl $com$redhat$ceylon$compiler$java$test$structure$concrete$I1$this;
     
     @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.test.structure.concrete.I1$impl $com$redhat$ceylon$compiler$java$test$structure$concrete$I1$impl() {
+        return $com$redhat$ceylon$compiler$java$test$structure$concrete$I1$this;
+    }
+    
+    @.java.lang.Override
     public final long m1$i() {
         return $com$redhat$ceylon$compiler$java$test$structure$concrete$I1$this.m1$i();
     }
@@ -124,6 +133,11 @@ class C implements .com.redhat.ceylon.compiler.java.test.structure.concrete.I1, 
         return $com$redhat$ceylon$compiler$java$test$structure$concrete$I1$this.m1(i);
     }
     protected final .com.redhat.ceylon.compiler.java.test.structure.concrete.I2$impl $com$redhat$ceylon$compiler$java$test$structure$concrete$I2$this;
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.test.structure.concrete.I2$impl $com$redhat$ceylon$compiler$java$test$structure$concrete$I2$impl() {
+        return $com$redhat$ceylon$compiler$java$test$structure$concrete$I2$this;
+    }
     
     @.java.lang.Override
     public final long m2$i() {

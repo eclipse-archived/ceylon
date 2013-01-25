@@ -1,6 +1,8 @@
 package com.redhat.ceylon.compiler.java.test.structure.nesting;
 
 public interface interfaceWithinObject$Z_ {
+    
+    public .com.redhat.ceylon.compiler.java.test.structure.nesting.interfaceWithinObject_.Z$impl $com$redhat$ceylon$compiler$java$test$structure$nesting$interfaceWithinObject_$Z$impl();
 }
 final class interfaceWithinObject_ {
     
@@ -26,6 +28,11 @@ final class interfaceWithinObject_ {
             this.$com$redhat$ceylon$compiler$java$test$structure$nesting$interfaceWithinObject$Z$this = new .com.redhat.ceylon.compiler.java.test.structure.nesting.interfaceWithinObject_.Z$impl(this);
         }
         protected final .com.redhat.ceylon.compiler.java.test.structure.nesting.interfaceWithinObject_.Z$impl $com$redhat$ceylon$compiler$java$test$structure$nesting$interfaceWithinObject$Z$this;
+        
+        @.java.lang.Override
+        public .com.redhat.ceylon.compiler.java.test.structure.nesting.interfaceWithinObject_.Z$impl $com$redhat$ceylon$compiler$java$test$structure$nesting$interfaceWithinObject_$Z$impl() {
+            return $com$redhat$ceylon$compiler$java$test$structure$nesting$interfaceWithinObject$Z$this;
+        }
     }
     private final .com.redhat.ceylon.compiler.java.test.structure.nesting.interfaceWithinObject_.z_ z;
     
@@ -35,6 +42,11 @@ final class interfaceWithinObject_ {
             this.$com$redhat$ceylon$compiler$java$test$structure$nesting$interfaceWithinObject$Z$this = new .com.redhat.ceylon.compiler.java.test.structure.nesting.interfaceWithinObject_.Z$impl(this);
         }
         protected final .com.redhat.ceylon.compiler.java.test.structure.nesting.interfaceWithinObject_.Z$impl $com$redhat$ceylon$compiler$java$test$structure$nesting$interfaceWithinObject$Z$this;
+        
+        @.java.lang.Override
+        public .com.redhat.ceylon.compiler.java.test.structure.nesting.interfaceWithinObject_.Z$impl $com$redhat$ceylon$compiler$java$test$structure$nesting$interfaceWithinObject_$Z$impl() {
+            return $com$redhat$ceylon$compiler$java$test$structure$nesting$interfaceWithinObject$Z$this;
+        }
     }
     
     public final .com.redhat.ceylon.compiler.java.test.structure.nesting.interfaceWithinObject_.z_ getZ() {

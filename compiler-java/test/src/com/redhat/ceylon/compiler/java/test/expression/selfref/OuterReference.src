@@ -15,8 +15,12 @@ class OuterReferenceSuper {
     }
 }
 interface OuterReference$InnerIface {
+    
+    public .com.redhat.ceylon.compiler.java.test.expression.selfref.OuterReference.InnerIface$impl $com$redhat$ceylon$compiler$java$test$expression$selfref$OuterReference$InnerIface$impl();
 }
 interface OuterReference$m$0$LocalIface {
+    
+    public .java.lang.Object LocalIface$impl();
 }
 class OuterReference extends .com.redhat.ceylon.compiler.java.test.expression.selfref.OuterReferenceSuper {
     

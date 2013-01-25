@@ -2,6 +2,9 @@ package com.redhat.ceylon.compiler.java.test.structure.alias;
 
 @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 4)
 interface LocalInterfaceAlias_Toplevel {
+    
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    public .com.redhat.ceylon.compiler.java.test.structure.alias.LocalInterfaceAlias_Toplevel$impl $com$redhat$ceylon$compiler$java$test$structure$alias$LocalInterfaceAlias_Toplevel$impl();
 }
 @.com.redhat.ceylon.compiler.java.metadata.Ignore
 final class LocalInterfaceAlias_Toplevel$impl {
@@ -14,6 +17,9 @@ final class LocalInterfaceAlias_Toplevel$impl {
 @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 4)
 @.com.redhat.ceylon.compiler.java.metadata.Name("InterfaceAlias_Foo")
 interface localInterfaceAliasMethod$0$InterfaceAlias_Foo_ {
+    
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    public .java.lang.Object InterfaceAlias_Foo$impl();
 }
 @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 4)
 @.com.redhat.ceylon.compiler.java.metadata.Method
@@ -43,6 +49,12 @@ final class localInterfaceAliasMethod_ {
             }
             @.com.redhat.ceylon.compiler.java.metadata.Ignore
             protected final InterfaceAlias_Foo$impl $com$redhat$ceylon$compiler$java$test$structure$alias$localInterfaceAliasMethod$InterfaceAlias_Foo$this;
+            
+            @.java.lang.Override
+            @.com.redhat.ceylon.compiler.java.metadata.Ignore
+            public InterfaceAlias_Foo$impl InterfaceAlias_Foo$impl() {
+                return $com$redhat$ceylon$compiler$java$test$structure$alias$localInterfaceAliasMethod$InterfaceAlias_Foo$this;
+            }
         }
         
         @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 4)
@@ -54,6 +66,12 @@ final class localInterfaceAliasMethod_ {
             }
             @.com.redhat.ceylon.compiler.java.metadata.Ignore
             protected final .com.redhat.ceylon.compiler.java.test.structure.alias.LocalInterfaceAlias_Toplevel$impl $com$redhat$ceylon$compiler$java$test$structure$alias$LocalInterfaceAlias_Toplevel$this;
+            
+            @.java.lang.Override
+            @.com.redhat.ceylon.compiler.java.metadata.Ignore
+            public .com.redhat.ceylon.compiler.java.test.structure.alias.LocalInterfaceAlias_Toplevel$impl $com$redhat$ceylon$compiler$java$test$structure$alias$LocalInterfaceAlias_Toplevel$impl() {
+                return $com$redhat$ceylon$compiler$java$test$structure$alias$LocalInterfaceAlias_Toplevel$this;
+            }
         }
         final Class1 foo1 = new Class1();
         final Class2 foo2 = new Class2();

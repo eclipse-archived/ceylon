@@ -1,6 +1,8 @@
 package com.redhat.ceylon.compiler.java.test.structure.klass;
 
 interface SatisfiesGeneric_Foo<T> {
+    
+    public .com.redhat.ceylon.compiler.java.test.structure.klass.SatisfiesGeneric_Foo$impl<T> $com$redhat$ceylon$compiler$java$test$structure$klass$SatisfiesGeneric_Foo$impl();
 }
 final class SatisfiesGeneric_Foo$impl<T> {
     
@@ -10,6 +12,8 @@ final class SatisfiesGeneric_Foo$impl<T> {
     private final .com.redhat.ceylon.compiler.java.test.structure.klass.SatisfiesGeneric_Foo<? super T> $this;
 }
 interface SatisfiesGeneric_Bar<T> {
+    
+    public .com.redhat.ceylon.compiler.java.test.structure.klass.SatisfiesGeneric_Bar$impl<T> $com$redhat$ceylon$compiler$java$test$structure$klass$SatisfiesGeneric_Bar$impl();
 }
 final class SatisfiesGeneric_Bar$impl<T> {
     
@@ -19,6 +23,8 @@ final class SatisfiesGeneric_Bar$impl<T> {
     private final .com.redhat.ceylon.compiler.java.test.structure.klass.SatisfiesGeneric_Bar<? extends T> $this;
 }
 interface SatisfiesGeneric_Baz<T> {
+    
+    public .com.redhat.ceylon.compiler.java.test.structure.klass.SatisfiesGeneric_Baz$impl<T> $com$redhat$ceylon$compiler$java$test$structure$klass$SatisfiesGeneric_Baz$impl();
 }
 final class SatisfiesGeneric_Baz$impl<T> {
     
@@ -28,6 +34,8 @@ final class SatisfiesGeneric_Baz$impl<T> {
     private final .com.redhat.ceylon.compiler.java.test.structure.klass.SatisfiesGeneric_Baz<T> $this;
 }
 interface SatisfiesGeneric<X, Y, Z> {
+    
+    public .com.redhat.ceylon.compiler.java.test.structure.klass.SatisfiesGeneric$impl<X, Y, Z> $com$redhat$ceylon$compiler$java$test$structure$klass$SatisfiesGeneric$impl();
 }
 final class SatisfiesGeneric$impl<X, Y, Z> {
     
@@ -42,6 +50,11 @@ class SatisfiesGenericImpl implements .com.redhat.ceylon.compiler.java.test.stru
         this.$com$redhat$ceylon$compiler$java$test$structure$klass$SatisfiesGeneric$this = new .com.redhat.ceylon.compiler.java.test.structure.klass.SatisfiesGeneric$impl<.com.redhat.ceylon.compiler.java.test.structure.klass.SatisfiesGeneric_Foo<? super .ceylon.language.Integer>, .com.redhat.ceylon.compiler.java.test.structure.klass.SatisfiesGeneric_Bar<? extends .ceylon.language.Integer>, .com.redhat.ceylon.compiler.java.test.structure.klass.SatisfiesGeneric_Baz<.ceylon.language.String>>(this);
     }
     protected final .com.redhat.ceylon.compiler.java.test.structure.klass.SatisfiesGeneric$impl<.com.redhat.ceylon.compiler.java.test.structure.klass.SatisfiesGeneric_Foo<? super .ceylon.language.Integer>, .com.redhat.ceylon.compiler.java.test.structure.klass.SatisfiesGeneric_Bar<? extends .ceylon.language.Integer>, .com.redhat.ceylon.compiler.java.test.structure.klass.SatisfiesGeneric_Baz<.ceylon.language.String>> $com$redhat$ceylon$compiler$java$test$structure$klass$SatisfiesGeneric$this;
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.test.structure.klass.SatisfiesGeneric$impl<.com.redhat.ceylon.compiler.java.test.structure.klass.SatisfiesGeneric_Foo<? super .ceylon.language.Integer>, .com.redhat.ceylon.compiler.java.test.structure.klass.SatisfiesGeneric_Bar<? extends .ceylon.language.Integer>, .com.redhat.ceylon.compiler.java.test.structure.klass.SatisfiesGeneric_Baz<.ceylon.language.String>> $com$redhat$ceylon$compiler$java$test$structure$klass$SatisfiesGeneric$impl() {
+        return $com$redhat$ceylon$compiler$java$test$structure$klass$SatisfiesGeneric$this;
+    }
     
     public static void main(.java.lang.String[] args) {
         .ceylon.language.process_.getProcess$().setupArguments(args);

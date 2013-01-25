@@ -2,6 +2,8 @@ package com.redhat.ceylon.compiler.java.test.structure.klass;
 
 interface InterfaceWithConcreteMembers {
     
+    public .com.redhat.ceylon.compiler.java.test.structure.klass.InterfaceWithConcreteMembers$impl $com$redhat$ceylon$compiler$java$test$structure$klass$InterfaceWithConcreteMembers$impl();
+    
     public long foo(final boolean b);
     
     public long foo2(final boolean b);
@@ -39,6 +41,11 @@ class InterfaceWithConcreteMembersImpl implements .com.redhat.ceylon.compiler.ja
         this.$com$redhat$ceylon$compiler$java$test$structure$klass$InterfaceWithConcreteMembers$this = new .com.redhat.ceylon.compiler.java.test.structure.klass.InterfaceWithConcreteMembers$impl(this);
     }
     protected final .com.redhat.ceylon.compiler.java.test.structure.klass.InterfaceWithConcreteMembers$impl $com$redhat$ceylon$compiler$java$test$structure$klass$InterfaceWithConcreteMembers$this;
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.test.structure.klass.InterfaceWithConcreteMembers$impl $com$redhat$ceylon$compiler$java$test$structure$klass$InterfaceWithConcreteMembers$impl() {
+        return $com$redhat$ceylon$compiler$java$test$structure$klass$InterfaceWithConcreteMembers$this;
+    }
     
     @.java.lang.Override
     public long foo(final boolean b) {

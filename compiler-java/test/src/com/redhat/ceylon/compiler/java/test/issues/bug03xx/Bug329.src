@@ -2,6 +2,8 @@ package com.redhat.ceylon.compiler.java.test.issues.bug03xx;
 
 interface Bug329_Something {
     
+    public .com.redhat.ceylon.compiler.java.test.issues.bug03xx.Bug329_Something$impl $com$redhat$ceylon$compiler$java$test$issues$bug03xx$Bug329_Something$impl();
+    
     public abstract .java.lang.Object getSomething();
 }
 final class Bug329_Something$impl {
@@ -28,6 +30,11 @@ final class bug329_se_ implements .com.redhat.ceylon.compiler.java.test.issues.b
         return something;
     }
     protected final .com.redhat.ceylon.compiler.java.test.issues.bug03xx.Bug329_Something$impl $com$redhat$ceylon$compiler$java$test$issues$bug03xx$Bug329_Something$this;
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.test.issues.bug03xx.Bug329_Something$impl $com$redhat$ceylon$compiler$java$test$issues$bug03xx$Bug329_Something$impl() {
+        return $com$redhat$ceylon$compiler$java$test$issues$bug03xx$Bug329_Something$this;
+    }
     private static final .com.redhat.ceylon.compiler.java.test.issues.bug03xx.bug329_se_[] value;
     static {
         value = new .com.redhat.ceylon.compiler.java.test.issues.bug03xx.bug329_se_[]{new .com.redhat.ceylon.compiler.java.test.issues.bug03xx.bug329_se_()};
@@ -52,6 +59,11 @@ final class bug329_se2_ implements .com.redhat.ceylon.compiler.java.test.issues.
         return .ceylon.language.String.instance("somethingElse");
     }
     protected final .com.redhat.ceylon.compiler.java.test.issues.bug03xx.Bug329_Something$impl $com$redhat$ceylon$compiler$java$test$issues$bug03xx$Bug329_Something$this;
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.test.issues.bug03xx.Bug329_Something$impl $com$redhat$ceylon$compiler$java$test$issues$bug03xx$Bug329_Something$impl() {
+        return $com$redhat$ceylon$compiler$java$test$issues$bug03xx$Bug329_Something$this;
+    }
     private static final .com.redhat.ceylon.compiler.java.test.issues.bug03xx.bug329_se2_[] value;
     static {
         value = new .com.redhat.ceylon.compiler.java.test.issues.bug03xx.bug329_se2_[]{new .com.redhat.ceylon.compiler.java.test.issues.bug03xx.bug329_se2_()};

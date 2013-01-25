@@ -14,6 +14,8 @@ final class bug641_ {
 }
 interface Bug641Set<Element> {
     
+    public .com.redhat.ceylon.compiler.java.test.issues.bug06xx.Bug641Set$impl<Element> $com$redhat$ceylon$compiler$java$test$issues$bug06xx$Bug641Set$impl();
+    
     public abstract <Other>.ceylon.language.Set union(final .ceylon.language.Set<? extends Other> set);
     
     public abstract <Other>.ceylon.language.Set intersection(final .ceylon.language.Set<? extends Other> set);

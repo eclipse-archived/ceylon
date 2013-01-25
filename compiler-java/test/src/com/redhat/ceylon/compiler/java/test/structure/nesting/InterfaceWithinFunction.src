@@ -1,6 +1,8 @@
 package com.redhat.ceylon.compiler.java.test.structure.nesting;
 
 interface interfaceWithinFunction$0$Foo_ {
+    
+    public .java.lang.Object Foo$impl();
 }
 final class interfaceWithinFunction_ {
     

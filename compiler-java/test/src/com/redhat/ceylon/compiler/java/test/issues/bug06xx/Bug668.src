@@ -2,6 +2,8 @@ package com.redhat.ceylon.compiler.java.test.issues.bug06xx;
 
 public interface Bug668_X<Element, Nada> {
     
+    public .com.redhat.ceylon.compiler.java.test.issues.bug06xx.Bug668_X$impl<Element, Nada> $com$redhat$ceylon$compiler$java$test$issues$bug06xx$Bug668_X$impl();
+    
     public abstract .java.lang.Object getFirst();
 }
 public final class Bug668_X$impl<Element, Nada> {
@@ -16,6 +18,8 @@ public final class Bug668_X$impl<Element, Nada> {
     }
 }
 public interface Bug668_Y<Element> extends .com.redhat.ceylon.compiler.java.test.issues.bug06xx.Bug668_X<Element, .java.lang.Object> {
+    
+    public .com.redhat.ceylon.compiler.java.test.issues.bug06xx.Bug668_Y$impl<Element> $com$redhat$ceylon$compiler$java$test$issues$bug06xx$Bug668_Y$impl();
     
     @.java.lang.Override
     public Element getFirst();
@@ -47,10 +51,20 @@ final class bug668_method_ {
             protected final .com.redhat.ceylon.compiler.java.test.issues.bug06xx.Bug668_Y$impl<.java.lang.Object> $com$redhat$ceylon$compiler$java$test$issues$bug06xx$Bug668_Y$this;
             
             @.java.lang.Override
+            public .com.redhat.ceylon.compiler.java.test.issues.bug06xx.Bug668_Y$impl<.java.lang.Object> $com$redhat$ceylon$compiler$java$test$issues$bug06xx$Bug668_Y$impl() {
+                return $com$redhat$ceylon$compiler$java$test$issues$bug06xx$Bug668_Y$this;
+            }
+            
+            @.java.lang.Override
             public .java.lang.Object getFirst() {
                 return $com$redhat$ceylon$compiler$java$test$issues$bug06xx$Bug668_Y$this.getFirst();
             }
             protected final .com.redhat.ceylon.compiler.java.test.issues.bug06xx.Bug668_X$impl<.java.lang.Object, .java.lang.Object> $com$redhat$ceylon$compiler$java$test$issues$bug06xx$Bug668_X$this;
+            
+            @.java.lang.Override
+            public .com.redhat.ceylon.compiler.java.test.issues.bug06xx.Bug668_X$impl<.java.lang.Object, .java.lang.Object> $com$redhat$ceylon$compiler$java$test$issues$bug06xx$Bug668_X$impl() {
+                return $com$redhat$ceylon$compiler$java$test$issues$bug06xx$Bug668_X$this;
+            }
         }
         final obj_ obj = new obj_();
     }

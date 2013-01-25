@@ -1,6 +1,8 @@
 package com.redhat.ceylon.compiler.java.test.structure.klass;
 
 interface Satisfies {
+    
+    public .com.redhat.ceylon.compiler.java.test.structure.klass.Satisfies$impl $com$redhat$ceylon$compiler$java$test$structure$klass$Satisfies$impl();
 }
 final class Satisfies$impl {
     
@@ -15,6 +17,11 @@ class SatisfiesClass implements .com.redhat.ceylon.compiler.java.test.structure.
         this.$com$redhat$ceylon$compiler$java$test$structure$klass$Satisfies$this = new .com.redhat.ceylon.compiler.java.test.structure.klass.Satisfies$impl(this);
     }
     protected final .com.redhat.ceylon.compiler.java.test.structure.klass.Satisfies$impl $com$redhat$ceylon$compiler$java$test$structure$klass$Satisfies$this;
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.test.structure.klass.Satisfies$impl $com$redhat$ceylon$compiler$java$test$structure$klass$Satisfies$impl() {
+        return $com$redhat$ceylon$compiler$java$test$structure$klass$Satisfies$this;
+    }
     
     public static void main(.java.lang.String[] args) {
         .ceylon.language.process_.getProcess$().setupArguments(args);

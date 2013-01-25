@@ -15,6 +15,8 @@ class Bug781Class {
 }
 interface Bug781Interface {
     
+    public .com.redhat.ceylon.compiler.java.test.issues.bug07xx.Bug781Interface$impl $com$redhat$ceylon$compiler$java$test$issues$bug07xx$Bug781Interface$impl();
+    
     public abstract .java.lang.Object i();
 }
 final class Bug781Interface$impl {
@@ -37,6 +39,8 @@ class Bug781_1<T extends .com.redhat.ceylon.compiler.java.test.issues.bug07xx.Bu
     }
 }
 interface Bug781_2<T extends .com.redhat.ceylon.compiler.java.test.issues.bug07xx.Bug781Class & .com.redhat.ceylon.compiler.java.test.issues.bug07xx.Bug781Interface> {
+    
+    public .com.redhat.ceylon.compiler.java.test.issues.bug07xx.Bug781_2$impl<T> $com$redhat$ceylon$compiler$java$test$issues$bug07xx$Bug781_2$impl();
 }
 final class Bug781_2$impl<T extends .com.redhat.ceylon.compiler.java.test.issues.bug07xx.Bug781Class & .com.redhat.ceylon.compiler.java.test.issues.bug07xx.Bug781Interface> {
     

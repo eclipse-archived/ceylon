@@ -1,8 +1,12 @@
 package com.redhat.ceylon.compiler.java.test.structure.nesting.cii;
 
 interface C$CI$CII<T extends .ceylon.language.String, X extends .ceylon.language.Boolean> {
+    
+    public .com.redhat.ceylon.compiler.java.test.structure.nesting.cii.C$CI$CII<T, X> $com$redhat$ceylon$compiler$java$test$structure$nesting$cii$C$CI$impl$CII$impl();
 }
 interface C$CI<T extends .ceylon.language.String, X extends .ceylon.language.Boolean> {
+    
+    public .com.redhat.ceylon.compiler.java.test.structure.nesting.cii.C$CI<T, X> $com$redhat$ceylon$compiler$java$test$structure$nesting$cii$C$CI$impl();
 }
 class C<T extends .ceylon.language.String, X extends .ceylon.language.Boolean> {
     

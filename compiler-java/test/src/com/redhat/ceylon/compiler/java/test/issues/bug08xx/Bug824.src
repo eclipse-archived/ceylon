@@ -2,6 +2,8 @@ package com.redhat.ceylon.compiler.java.test.issues.bug08xx;
 
 interface Bug824_X {
     
+    public .com.redhat.ceylon.compiler.java.test.issues.bug08xx.Bug824_X$impl $com$redhat$ceylon$compiler$java$test$issues$bug08xx$Bug824_X$impl();
+    
     public .java.lang.String getName();
 }
 final class Bug824_X$impl {
@@ -27,6 +29,11 @@ class Bug824_W implements .com.redhat.ceylon.compiler.java.test.issues.bug08xx.B
     protected final .com.redhat.ceylon.compiler.java.test.issues.bug08xx.Bug824_X$impl $com$redhat$ceylon$compiler$java$test$issues$bug08xx$Bug824_X$this;
     
     @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.test.issues.bug08xx.Bug824_X$impl $com$redhat$ceylon$compiler$java$test$issues$bug08xx$Bug824_X$impl() {
+        return $com$redhat$ceylon$compiler$java$test$issues$bug08xx$Bug824_X$this;
+    }
+    
+    @.java.lang.Override
     public final .java.lang.String getName() {
         return $com$redhat$ceylon$compiler$java$test$issues$bug08xx$Bug824_X$this.getName();
     }
@@ -42,6 +49,11 @@ class Bug824_W2 implements .com.redhat.ceylon.compiler.java.test.issues.bug08xx.
         this.$com$redhat$ceylon$compiler$java$test$issues$bug08xx$Bug824_X$this = new .com.redhat.ceylon.compiler.java.test.issues.bug08xx.Bug824_X$impl(this);
     }
     protected final .com.redhat.ceylon.compiler.java.test.issues.bug08xx.Bug824_X$impl $com$redhat$ceylon$compiler$java$test$issues$bug08xx$Bug824_X$this;
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.test.issues.bug08xx.Bug824_X$impl $com$redhat$ceylon$compiler$java$test$issues$bug08xx$Bug824_X$impl() {
+        return $com$redhat$ceylon$compiler$java$test$issues$bug08xx$Bug824_X$this;
+    }
     
     @.java.lang.Override
     public final .java.lang.String getName() {

@@ -12,7 +12,7 @@ class SequenceLiteral {
         final .ceylon.language.Iterable<? extends .ceylon.language.String, ?> iterableComp = new .com.redhat.ceylon.compiler.java.language.AbstractIterable<.ceylon.language.String, .java.lang.Object>(){
             
             public final .ceylon.language.Iterator<.ceylon.language.String> getIterator() {
-                return new .ceylon.language.Iterator<.ceylon.language.String>(){
+                return new .com.redhat.ceylon.compiler.java.language.AbstractIterator<.ceylon.language.String>(){
                     private final .ceylon.language.Iterator<? extends .ceylon.language.String> iter$0 = sequence.getIterator();
                     private .ceylon.language.String s;
                     private boolean s$exhausted;
@@ -37,7 +37,7 @@ class SequenceLiteral {
         final .ceylon.language.Sequential<? extends .ceylon.language.String> sequenceComp = new .com.redhat.ceylon.compiler.java.language.AbstractIterable<.ceylon.language.String, .java.lang.Object>(){
             
             public final .ceylon.language.Iterator<.ceylon.language.String> getIterator() {
-                return new .ceylon.language.Iterator<.ceylon.language.String>(){
+                return new .com.redhat.ceylon.compiler.java.language.AbstractIterator<.ceylon.language.String>(){
                     private final .ceylon.language.Iterator<? extends .ceylon.language.String> iter$0 = sequence.getIterator();
                     private .ceylon.language.String s;
                     private boolean s$exhausted;
@@ -62,7 +62,7 @@ class SequenceLiteral {
         final .ceylon.language.Iterable<? extends .ceylon.language.String, ?> iterableComp2 = .com.redhat.ceylon.compiler.java.language.ArrayIterable.<.ceylon.language.String>instance(new .com.redhat.ceylon.compiler.java.language.AbstractIterable<.ceylon.language.String, .java.lang.Object>(){
             
             public final .ceylon.language.Iterator<.ceylon.language.String> getIterator() {
-                return new .ceylon.language.Iterator<.ceylon.language.String>(){
+                return new .com.redhat.ceylon.compiler.java.language.AbstractIterator<.ceylon.language.String>(){
                     private final .ceylon.language.Iterator<? extends .ceylon.language.String> iter$0 = sequence.getIterator();
                     private .ceylon.language.String s;
                     private boolean s$exhausted;
@@ -87,7 +87,7 @@ class SequenceLiteral {
         final .ceylon.language.Sequential<? extends .ceylon.language.String> sequenceComp2 = new .ceylon.language.Tuple<.ceylon.language.String, .ceylon.language.String, .ceylon.language.Sequential<? extends .ceylon.language.String>>(.ceylon.language.String.instance("a"), new .com.redhat.ceylon.compiler.java.language.AbstractIterable<.ceylon.language.String, .java.lang.Object>(){
             
             public final .ceylon.language.Iterator<.ceylon.language.String> getIterator() {
-                return new .ceylon.language.Iterator<.ceylon.language.String>(){
+                return new .com.redhat.ceylon.compiler.java.language.AbstractIterator<.ceylon.language.String>(){
                     private final .ceylon.language.Iterator<? extends .ceylon.language.String> iter$0 = sequence.getIterator();
                     private .ceylon.language.String s;
                     private boolean s$exhausted;

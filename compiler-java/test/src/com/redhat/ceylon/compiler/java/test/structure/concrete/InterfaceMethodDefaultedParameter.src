@@ -2,6 +2,8 @@ package com.redhat.ceylon.compiler.java.test.structure.concrete;
 
 interface I<T> {
     
+    public .com.redhat.ceylon.compiler.java.test.structure.concrete.I$impl<T> $com$redhat$ceylon$compiler$java$test$structure$concrete$I$impl();
+    
     public abstract .java.lang.Object m();
     
     public abstract long m$i();
@@ -263,6 +265,11 @@ class C<T> implements .com.redhat.ceylon.compiler.java.test.structure.concrete.I
         this.$com$redhat$ceylon$compiler$java$test$structure$concrete$I$this = new .com.redhat.ceylon.compiler.java.test.structure.concrete.I$impl<T>(this);
     }
     protected final .com.redhat.ceylon.compiler.java.test.structure.concrete.I$impl<T> $com$redhat$ceylon$compiler$java$test$structure$concrete$I$this;
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.test.structure.concrete.I$impl<T> $com$redhat$ceylon$compiler$java$test$structure$concrete$I$impl() {
+        return $com$redhat$ceylon$compiler$java$test$structure$concrete$I$this;
+    }
     
     @.java.lang.Override
     public final long m$i() {

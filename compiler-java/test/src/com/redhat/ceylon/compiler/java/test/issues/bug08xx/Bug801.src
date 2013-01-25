@@ -1,8 +1,12 @@
 package com.redhat.ceylon.compiler.java.test.issues.bug08xx;
 
 public interface Bug801_Interface$MemberInterface {
+    
+    public .com.redhat.ceylon.compiler.java.test.issues.bug08xx.Bug801_Interface$impl.MemberInterface$impl $com$redhat$ceylon$compiler$java$test$issues$bug08xx$Bug801_Interface$impl$MemberInterface$impl();
 }
 public interface Bug801_Interface {
+    
+    public .com.redhat.ceylon.compiler.java.test.issues.bug08xx.Bug801_Interface$impl $com$redhat$ceylon$compiler$java$test$issues$bug08xx$Bug801_Interface$impl();
 }
 public final class Bug801_Interface$impl {
     
@@ -20,6 +24,8 @@ public final class Bug801_Interface$impl {
     }
 }
 public interface Bug801_Class$MemberInterface {
+    
+    public .com.redhat.ceylon.compiler.java.test.issues.bug08xx.Bug801_Class.MemberInterface$impl $com$redhat$ceylon$compiler$java$test$issues$bug08xx$Bug801_Class$MemberInterface$impl();
 }
 public class Bug801_Class {
     
@@ -40,8 +46,12 @@ public class Bug801_Class {
     }
 }
 public interface Bug801_ImplClass$MemberInterface2 extends .com.redhat.ceylon.compiler.java.test.issues.bug08xx.Bug801_Interface$MemberInterface {
+    
+    public .com.redhat.ceylon.compiler.java.test.issues.bug08xx.Bug801_ImplClass.MemberInterface2$impl $com$redhat$ceylon$compiler$java$test$issues$bug08xx$Bug801_ImplClass$MemberInterface2$impl();
 }
 interface Bug801_ImplClass$method$0$MemberInterface2 extends .com.redhat.ceylon.compiler.java.test.issues.bug08xx.Bug801_Interface$MemberInterface {
+    
+    public .java.lang.Object MemberInterface2$impl();
 }
 public class Bug801_ImplClass implements .com.redhat.ceylon.compiler.java.test.issues.bug08xx.Bug801_Interface {
     
@@ -49,6 +59,11 @@ public class Bug801_ImplClass implements .com.redhat.ceylon.compiler.java.test.i
         this.$com$redhat$ceylon$compiler$java$test$issues$bug08xx$Bug801_Interface$this = new .com.redhat.ceylon.compiler.java.test.issues.bug08xx.Bug801_Interface$impl(this);
     }
     protected final .com.redhat.ceylon.compiler.java.test.issues.bug08xx.Bug801_Interface$impl $com$redhat$ceylon$compiler$java$test$issues$bug08xx$Bug801_Interface$this;
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.test.issues.bug08xx.Bug801_Interface$impl $com$redhat$ceylon$compiler$java$test$issues$bug08xx$Bug801_Interface$impl() {
+        return $com$redhat$ceylon$compiler$java$test$issues$bug08xx$Bug801_Interface$this;
+    }
     
     public .com.redhat.ceylon.compiler.java.test.issues.bug08xx.Bug801_ImplClass.MemberInterfaceImpl MemberInterfaceImpl$new() {
         return new MemberInterfaceImpl();
@@ -60,6 +75,11 @@ public class Bug801_ImplClass implements .com.redhat.ceylon.compiler.java.test.i
             this.$com$redhat$ceylon$compiler$java$test$issues$bug08xx$Bug801_Interface$MemberInterface$this = .com.redhat.ceylon.compiler.java.test.issues.bug08xx.Bug801_ImplClass.this.$com$redhat$ceylon$compiler$java$test$issues$bug08xx$Bug801_Interface$this.new MemberInterface$impl(this);
         }
         protected final .com.redhat.ceylon.compiler.java.test.issues.bug08xx.Bug801_Interface$impl.MemberInterface$impl $com$redhat$ceylon$compiler$java$test$issues$bug08xx$Bug801_Interface$MemberInterface$this;
+        
+        @.java.lang.Override
+        public .com.redhat.ceylon.compiler.java.test.issues.bug08xx.Bug801_Interface$impl.MemberInterface$impl $com$redhat$ceylon$compiler$java$test$issues$bug08xx$Bug801_Interface$impl$MemberInterface$impl() {
+            return $com$redhat$ceylon$compiler$java$test$issues$bug08xx$Bug801_Interface$MemberInterface$this;
+        }
     }
     
     public final class MemberInterface2$impl {
@@ -89,6 +109,11 @@ public class Bug801_ImplClass implements .com.redhat.ceylon.compiler.java.test.i
                 this.$com$redhat$ceylon$compiler$java$test$issues$bug08xx$Bug801_Interface$MemberInterface$this = .com.redhat.ceylon.compiler.java.test.issues.bug08xx.Bug801_ImplClass.this.$com$redhat$ceylon$compiler$java$test$issues$bug08xx$Bug801_Interface$this.new MemberInterface$impl(this);
             }
             protected final .com.redhat.ceylon.compiler.java.test.issues.bug08xx.Bug801_Interface$impl.MemberInterface$impl $com$redhat$ceylon$compiler$java$test$issues$bug08xx$Bug801_Interface$MemberInterface$this;
+            
+            @.java.lang.Override
+            public .com.redhat.ceylon.compiler.java.test.issues.bug08xx.Bug801_Interface$impl.MemberInterface$impl $com$redhat$ceylon$compiler$java$test$issues$bug08xx$Bug801_Interface$impl$MemberInterface$impl() {
+                return $com$redhat$ceylon$compiler$java$test$issues$bug08xx$Bug801_Interface$MemberInterface$this;
+            }
         }
     }
     
@@ -103,6 +128,11 @@ public class Bug801_ImplClass implements .com.redhat.ceylon.compiler.java.test.i
         }
         protected final .com.redhat.ceylon.compiler.java.test.issues.bug08xx.Bug801_Interface$impl $com$redhat$ceylon$compiler$java$test$issues$bug08xx$Bug801_Interface$this;
         
+        @.java.lang.Override
+        public .com.redhat.ceylon.compiler.java.test.issues.bug08xx.Bug801_Interface$impl $com$redhat$ceylon$compiler$java$test$issues$bug08xx$Bug801_Interface$impl() {
+            return $com$redhat$ceylon$compiler$java$test$issues$bug08xx$Bug801_Interface$this;
+        }
+        
         public .com.redhat.ceylon.compiler.java.test.issues.bug08xx.Bug801_ImplClass.Bar.MemberInterfaceImpl MemberInterfaceImpl$new() {
             return new MemberInterfaceImpl();
         }
@@ -113,6 +143,11 @@ public class Bug801_ImplClass implements .com.redhat.ceylon.compiler.java.test.i
                 this.$com$redhat$ceylon$compiler$java$test$issues$bug08xx$Bug801_Interface$MemberInterface$this = .com.redhat.ceylon.compiler.java.test.issues.bug08xx.Bug801_ImplClass.Bar.this.$com$redhat$ceylon$compiler$java$test$issues$bug08xx$Bug801_Interface$this.new MemberInterface$impl(this);
             }
             protected final .com.redhat.ceylon.compiler.java.test.issues.bug08xx.Bug801_Interface$impl.MemberInterface$impl $com$redhat$ceylon$compiler$java$test$issues$bug08xx$Bug801_Interface$MemberInterface$this;
+            
+            @.java.lang.Override
+            public .com.redhat.ceylon.compiler.java.test.issues.bug08xx.Bug801_Interface$impl.MemberInterface$impl $com$redhat$ceylon$compiler$java$test$issues$bug08xx$Bug801_Interface$impl$MemberInterface$impl() {
+                return $com$redhat$ceylon$compiler$java$test$issues$bug08xx$Bug801_Interface$MemberInterface$this;
+            }
         }
     }
     
@@ -124,6 +159,11 @@ public class Bug801_ImplClass implements .com.redhat.ceylon.compiler.java.test.i
                 this.$com$redhat$ceylon$compiler$java$test$issues$bug08xx$Bug801_Interface$MemberInterface$this = .com.redhat.ceylon.compiler.java.test.issues.bug08xx.Bug801_ImplClass.this.$com$redhat$ceylon$compiler$java$test$issues$bug08xx$Bug801_Interface$this.new MemberInterface$impl(this);
             }
             protected final .com.redhat.ceylon.compiler.java.test.issues.bug08xx.Bug801_Interface$impl.MemberInterface$impl $com$redhat$ceylon$compiler$java$test$issues$bug08xx$Bug801_Interface$MemberInterface$this;
+            
+            @.java.lang.Override
+            public .com.redhat.ceylon.compiler.java.test.issues.bug08xx.Bug801_Interface$impl.MemberInterface$impl $com$redhat$ceylon$compiler$java$test$issues$bug08xx$Bug801_Interface$impl$MemberInterface$impl() {
+                return $com$redhat$ceylon$compiler$java$test$issues$bug08xx$Bug801_Interface$MemberInterface$this;
+            }
         }
         
         final class MemberInterface2$impl {
@@ -141,8 +181,12 @@ public class Bug801_ImplClass implements .com.redhat.ceylon.compiler.java.test.i
     }
 }
 public interface Bug801_ImplClass2$MemberInterface2 extends .com.redhat.ceylon.compiler.java.test.issues.bug08xx.Bug801_Class$MemberInterface {
+    
+    public .com.redhat.ceylon.compiler.java.test.issues.bug08xx.Bug801_ImplClass2.MemberInterface2$impl $com$redhat$ceylon$compiler$java$test$issues$bug08xx$Bug801_ImplClass2$MemberInterface2$impl();
 }
 interface Bug801_ImplClass2$method$0$MemberInterface2 extends .com.redhat.ceylon.compiler.java.test.issues.bug08xx.Bug801_Class$MemberInterface {
+    
+    public .java.lang.Object MemberInterface2$impl();
 }
 public class Bug801_ImplClass2 extends .com.redhat.ceylon.compiler.java.test.issues.bug08xx.Bug801_Class {
     
@@ -160,6 +204,11 @@ public class Bug801_ImplClass2 extends .com.redhat.ceylon.compiler.java.test.iss
             this.$com$redhat$ceylon$compiler$java$test$issues$bug08xx$Bug801_Class$MemberInterface$this = new .com.redhat.ceylon.compiler.java.test.issues.bug08xx.Bug801_Class.MemberInterface$impl(this);
         }
         protected final .com.redhat.ceylon.compiler.java.test.issues.bug08xx.Bug801_Class.MemberInterface$impl $com$redhat$ceylon$compiler$java$test$issues$bug08xx$Bug801_Class$MemberInterface$this;
+        
+        @.java.lang.Override
+        public .com.redhat.ceylon.compiler.java.test.issues.bug08xx.Bug801_Class.MemberInterface$impl $com$redhat$ceylon$compiler$java$test$issues$bug08xx$Bug801_Class$MemberInterface$impl() {
+            return $com$redhat$ceylon$compiler$java$test$issues$bug08xx$Bug801_Class$MemberInterface$this;
+        }
     }
     
     public final class MemberInterface2$impl {
@@ -189,6 +238,11 @@ public class Bug801_ImplClass2 extends .com.redhat.ceylon.compiler.java.test.iss
                 this.$com$redhat$ceylon$compiler$java$test$issues$bug08xx$Bug801_Class$MemberInterface$this = new .com.redhat.ceylon.compiler.java.test.issues.bug08xx.Bug801_Class.MemberInterface$impl(this);
             }
             protected final .com.redhat.ceylon.compiler.java.test.issues.bug08xx.Bug801_Class.MemberInterface$impl $com$redhat$ceylon$compiler$java$test$issues$bug08xx$Bug801_Class$MemberInterface$this;
+            
+            @.java.lang.Override
+            public .com.redhat.ceylon.compiler.java.test.issues.bug08xx.Bug801_Class.MemberInterface$impl $com$redhat$ceylon$compiler$java$test$issues$bug08xx$Bug801_Class$MemberInterface$impl() {
+                return $com$redhat$ceylon$compiler$java$test$issues$bug08xx$Bug801_Class$MemberInterface$this;
+            }
         }
     }
     
@@ -203,6 +257,11 @@ public class Bug801_ImplClass2 extends .com.redhat.ceylon.compiler.java.test.iss
         }
         protected final .com.redhat.ceylon.compiler.java.test.issues.bug08xx.Bug801_Interface$impl $com$redhat$ceylon$compiler$java$test$issues$bug08xx$Bug801_Interface$this;
         
+        @.java.lang.Override
+        public .com.redhat.ceylon.compiler.java.test.issues.bug08xx.Bug801_Interface$impl $com$redhat$ceylon$compiler$java$test$issues$bug08xx$Bug801_Interface$impl() {
+            return $com$redhat$ceylon$compiler$java$test$issues$bug08xx$Bug801_Interface$this;
+        }
+        
         public .com.redhat.ceylon.compiler.java.test.issues.bug08xx.Bug801_ImplClass2.Bar.MemberInterfaceImpl MemberInterfaceImpl$new() {
             return new MemberInterfaceImpl();
         }
@@ -213,6 +272,11 @@ public class Bug801_ImplClass2 extends .com.redhat.ceylon.compiler.java.test.iss
                 this.$com$redhat$ceylon$compiler$java$test$issues$bug08xx$Bug801_Interface$MemberInterface$this = .com.redhat.ceylon.compiler.java.test.issues.bug08xx.Bug801_ImplClass2.Bar.this.$com$redhat$ceylon$compiler$java$test$issues$bug08xx$Bug801_Interface$this.new MemberInterface$impl(this);
             }
             protected final .com.redhat.ceylon.compiler.java.test.issues.bug08xx.Bug801_Interface$impl.MemberInterface$impl $com$redhat$ceylon$compiler$java$test$issues$bug08xx$Bug801_Interface$MemberInterface$this;
+            
+            @.java.lang.Override
+            public .com.redhat.ceylon.compiler.java.test.issues.bug08xx.Bug801_Interface$impl.MemberInterface$impl $com$redhat$ceylon$compiler$java$test$issues$bug08xx$Bug801_Interface$impl$MemberInterface$impl() {
+                return $com$redhat$ceylon$compiler$java$test$issues$bug08xx$Bug801_Interface$MemberInterface$this;
+            }
         }
     }
     
@@ -224,6 +288,11 @@ public class Bug801_ImplClass2 extends .com.redhat.ceylon.compiler.java.test.iss
                 this.$com$redhat$ceylon$compiler$java$test$issues$bug08xx$Bug801_Class$MemberInterface$this = new .com.redhat.ceylon.compiler.java.test.issues.bug08xx.Bug801_Class.MemberInterface$impl(this);
             }
             protected final .com.redhat.ceylon.compiler.java.test.issues.bug08xx.Bug801_Class.MemberInterface$impl $com$redhat$ceylon$compiler$java$test$issues$bug08xx$Bug801_Class$MemberInterface$this;
+            
+            @.java.lang.Override
+            public .com.redhat.ceylon.compiler.java.test.issues.bug08xx.Bug801_Class.MemberInterface$impl $com$redhat$ceylon$compiler$java$test$issues$bug08xx$Bug801_Class$MemberInterface$impl() {
+                return $com$redhat$ceylon$compiler$java$test$issues$bug08xx$Bug801_Class$MemberInterface$this;
+            }
         }
         
         final class MemberInterface2$impl {

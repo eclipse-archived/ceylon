@@ -1,6 +1,8 @@
 package com.redhat.ceylon.compiler.java.test.issues.bug08xx;
 
 interface Bug816I<T> {
+    
+    public .com.redhat.ceylon.compiler.java.test.issues.bug08xx.Bug816I$impl<T> $com$redhat$ceylon$compiler$java$test$issues$bug08xx$Bug816I$impl();
 }
 final class Bug816I$impl<T> {
     
@@ -15,6 +17,11 @@ class Bug816C<T1, T2> implements .com.redhat.ceylon.compiler.java.test.issues.bu
         this.$com$redhat$ceylon$compiler$java$test$issues$bug08xx$Bug816I$this = new .com.redhat.ceylon.compiler.java.test.issues.bug08xx.Bug816I$impl<.java.lang.Object>((.com.redhat.ceylon.compiler.java.test.issues.bug08xx.Bug816I)this);
     }
     protected final .com.redhat.ceylon.compiler.java.test.issues.bug08xx.Bug816I$impl<.java.lang.Object> $com$redhat$ceylon$compiler$java$test$issues$bug08xx$Bug816I$this;
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.test.issues.bug08xx.Bug816I$impl<.java.lang.Object> $com$redhat$ceylon$compiler$java$test$issues$bug08xx$Bug816I$impl() {
+        return $com$redhat$ceylon$compiler$java$test$issues$bug08xx$Bug816I$this;
+    }
     
     public static void main(.java.lang.String[] args) {
         .ceylon.language.process_.getProcess$().setupArguments(args);

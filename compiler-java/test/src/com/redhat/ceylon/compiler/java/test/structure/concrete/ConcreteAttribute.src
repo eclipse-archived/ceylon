@@ -2,6 +2,8 @@ package com.redhat.ceylon.compiler.java.test.structure.concrete;
 
 interface ConcreteAttribute<A> {
     
+    public .com.redhat.ceylon.compiler.java.test.structure.concrete.ConcreteAttribute$impl<A> $com$redhat$ceylon$compiler$java$test$structure$concrete$ConcreteAttribute$impl();
+    
     public A getAShared();
     
     public abstract A getAFormal();
@@ -67,6 +69,11 @@ class ConcreteAttributeGetterImpl<B> implements .com.redhat.ceylon.compiler.java
     protected final .com.redhat.ceylon.compiler.java.test.structure.concrete.ConcreteAttribute$impl<B> $com$redhat$ceylon$compiler$java$test$structure$concrete$ConcreteAttribute$this;
     
     @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.test.structure.concrete.ConcreteAttribute$impl<B> $com$redhat$ceylon$compiler$java$test$structure$concrete$ConcreteAttribute$impl() {
+        return $com$redhat$ceylon$compiler$java$test$structure$concrete$ConcreteAttribute$this;
+    }
+    
+    @.java.lang.Override
     public final B getAShared() {
         return $com$redhat$ceylon$compiler$java$test$structure$concrete$ConcreteAttribute$this.getAShared();
     }
@@ -126,6 +133,11 @@ class ConcreteAttributeValueImpl<C> implements .com.redhat.ceylon.compiler.java.
         this.aDefault = null;
     }
     protected final .com.redhat.ceylon.compiler.java.test.structure.concrete.ConcreteAttribute$impl<C> $com$redhat$ceylon$compiler$java$test$structure$concrete$ConcreteAttribute$this;
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.test.structure.concrete.ConcreteAttribute$impl<C> $com$redhat$ceylon$compiler$java$test$structure$concrete$ConcreteAttribute$impl() {
+        return $com$redhat$ceylon$compiler$java$test$structure$concrete$ConcreteAttribute$this;
+    }
     
     @.java.lang.Override
     public final C getAShared() {

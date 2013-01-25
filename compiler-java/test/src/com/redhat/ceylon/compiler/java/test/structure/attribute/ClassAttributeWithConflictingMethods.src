@@ -37,6 +37,8 @@ abstract class ClassAttributeWithConflictingMethods {
 }
 interface InterfaceAttributeWithConflictingMethods {
     
+    public .com.redhat.ceylon.compiler.java.test.structure.attribute.InterfaceAttributeWithConflictingMethods$impl $com$redhat$ceylon$compiler$java$test$structure$attribute$InterfaceAttributeWithConflictingMethods$impl();
+    
     public abstract .java.lang.String getAttr();
     
     public abstract void setAttr(final .java.lang.String attr);

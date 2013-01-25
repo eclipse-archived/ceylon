@@ -2,6 +2,8 @@ package com.redhat.ceylon.compiler.java.test.expression.erasure;
 
 interface EC_A {
     
+    public .com.redhat.ceylon.compiler.java.test.expression.erasure.EC_A$impl $com$redhat$ceylon$compiler$java$test$expression$erasure$EC_A$impl();
+    
     public abstract long $int();
 }
 final class EC_A$impl {
@@ -12,6 +14,8 @@ final class EC_A$impl {
     private final .com.redhat.ceylon.compiler.java.test.expression.erasure.EC_A $this;
 }
 interface EC_B {
+    
+    public .com.redhat.ceylon.compiler.java.test.expression.erasure.EC_B$impl $com$redhat$ceylon$compiler$java$test$expression$erasure$EC_B$impl();
 }
 final class EC_B$impl {
     
@@ -21,6 +25,8 @@ final class EC_B$impl {
     private final .com.redhat.ceylon.compiler.java.test.expression.erasure.EC_B $this;
 }
 interface EC_C {
+    
+    public .com.redhat.ceylon.compiler.java.test.expression.erasure.EC_C$impl $com$redhat$ceylon$compiler$java$test$expression$erasure$EC_C$impl();
 }
 final class EC_C$impl {
     
@@ -30,6 +36,8 @@ final class EC_C$impl {
     private final .com.redhat.ceylon.compiler.java.test.expression.erasure.EC_C $this;
 }
 interface EC_ABC extends .com.redhat.ceylon.compiler.java.test.expression.erasure.EC_A, .com.redhat.ceylon.compiler.java.test.expression.erasure.EC_B, .com.redhat.ceylon.compiler.java.test.expression.erasure.EC_C {
+    
+    public .com.redhat.ceylon.compiler.java.test.expression.erasure.EC_ABC$impl $com$redhat$ceylon$compiler$java$test$expression$erasure$EC_ABC$impl();
 }
 final class EC_ABC$impl {
     
@@ -39,6 +47,8 @@ final class EC_ABC$impl {
     private final .com.redhat.ceylon.compiler.java.test.expression.erasure.EC_ABC $this;
 }
 interface EC_Parameterised<T> {
+    
+    public .com.redhat.ceylon.compiler.java.test.expression.erasure.EC_Parameterised$impl<T> $com$redhat$ceylon$compiler$java$test$expression$erasure$EC_Parameterised$impl();
     
     public abstract T t();
 }
@@ -51,6 +61,8 @@ final class EC_Parameterised$impl<T> {
 }
 interface EC_ParameterisedSelfBound<T> {
     
+    public .com.redhat.ceylon.compiler.java.test.expression.erasure.EC_ParameterisedSelfBound$impl<T> $com$redhat$ceylon$compiler$java$test$expression$erasure$EC_ParameterisedSelfBound$impl();
+    
     public abstract T t();
 }
 final class EC_ParameterisedSelfBound$impl<T> {
@@ -61,6 +73,8 @@ final class EC_ParameterisedSelfBound$impl<T> {
     private final .com.redhat.ceylon.compiler.java.test.expression.erasure.EC_ParameterisedSelfBound<? extends T> $this;
 }
 interface EC_DoubleParameters<T1, T2> extends .com.redhat.ceylon.compiler.java.test.expression.erasure.EC_Parameterised<.java.lang.Object> {
+    
+    public .com.redhat.ceylon.compiler.java.test.expression.erasure.EC_DoubleParameters$impl<T1, T2> $com$redhat$ceylon$compiler$java$test$expression$erasure$EC_DoubleParameters$impl();
 }
 final class EC_DoubleParameters$impl<T1, T2> {
     
@@ -178,7 +192,7 @@ final class erasureCasting_ {
         final .ceylon.language.Sequence<? extends .ceylon.language.Integer> nonEmptySequence = (.ceylon.language.Sequence<? extends .ceylon.language.Integer>)(.ceylon.language.Sequence)new .com.redhat.ceylon.compiler.java.language.AbstractIterable<.ceylon.language.Integer, .java.lang.Object>(){
             
             public final .ceylon.language.Iterator<.ceylon.language.Integer> getIterator() {
-                return new .ceylon.language.Iterator<.ceylon.language.Integer>(){
+                return new .com.redhat.ceylon.compiler.java.language.AbstractIterator<.ceylon.language.Integer>(){
                     private final .ceylon.language.Iterator<? extends .ceylon.language.Integer> iter$0 = new .ceylon.language.Range<.ceylon.language.Integer>(.ceylon.language.Integer.instance(1L), .ceylon.language.Integer.instance(2L)).getIterator();
                     private .ceylon.language.Integer c;
                     private boolean c$exhausted;
@@ -203,7 +217,7 @@ final class erasureCasting_ {
         final .ceylon.language.Sequential<? extends .ceylon.language.Integer> integerSequential = (.ceylon.language.Sequence<? extends .ceylon.language.Integer>)(.ceylon.language.Sequence)new .com.redhat.ceylon.compiler.java.language.AbstractIterable<.ceylon.language.Integer, .java.lang.Object>(){
             
             public final .ceylon.language.Iterator<.ceylon.language.Integer> getIterator() {
-                return new .ceylon.language.Iterator<.ceylon.language.Integer>(){
+                return new .com.redhat.ceylon.compiler.java.language.AbstractIterator<.ceylon.language.Integer>(){
                     private final .ceylon.language.Iterator<? extends .ceylon.language.Integer> iter$0 = new .ceylon.language.Range<.ceylon.language.Integer>(.ceylon.language.Integer.instance(1L), .ceylon.language.Integer.instance(2L)).getIterator();
                     private .ceylon.language.Integer c;
                     private boolean c$exhausted;
@@ -243,6 +257,8 @@ final class valueOrNada_ {
     }
 }
 interface EC_ParameterisedTOrString<T> {
+    
+    public .com.redhat.ceylon.compiler.java.test.expression.erasure.EC_ParameterisedTOrString$impl<T> $com$redhat$ceylon$compiler$java$test$expression$erasure$EC_ParameterisedTOrString$impl();
     
     public abstract .java.lang.Object t();
 }
@@ -327,6 +343,8 @@ final class ec_methodWithErasedBounds2_ {
 }
 interface EC_ErasedMember<Element, Absent> {
     
+    public .com.redhat.ceylon.compiler.java.test.expression.erasure.EC_ErasedMember$impl<Element, Absent> $com$redhat$ceylon$compiler$java$test$expression$erasure$EC_ErasedMember$impl();
+    
     public .java.lang.Object getAttr();
     
     public .java.lang.Object m();
@@ -352,6 +370,11 @@ class EC_ErasedMemberImpl<Element> implements .com.redhat.ceylon.compiler.java.t
         this.$com$redhat$ceylon$compiler$java$test$expression$erasure$EC_ErasedMember$this = new .com.redhat.ceylon.compiler.java.test.expression.erasure.EC_ErasedMember$impl<Element, .java.lang.Object>(this);
     }
     protected final .com.redhat.ceylon.compiler.java.test.expression.erasure.EC_ErasedMember$impl<Element, .java.lang.Object> $com$redhat$ceylon$compiler$java$test$expression$erasure$EC_ErasedMember$this;
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.test.expression.erasure.EC_ErasedMember$impl<Element, .java.lang.Object> $com$redhat$ceylon$compiler$java$test$expression$erasure$EC_ErasedMember$impl() {
+        return $com$redhat$ceylon$compiler$java$test$expression$erasure$EC_ErasedMember$this;
+    }
     
     @.java.lang.Override
     public Element getAttr() {

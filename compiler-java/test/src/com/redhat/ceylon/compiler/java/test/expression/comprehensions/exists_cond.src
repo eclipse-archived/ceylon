@@ -10,7 +10,7 @@ final class existsCond_ {
         .ceylon.language.print_.print(new .com.redhat.ceylon.compiler.java.language.AbstractIterable<.ceylon.language.Character, .java.lang.Object>(){
             
             public final .ceylon.language.Iterator<.ceylon.language.Character> getIterator() {
-                return new .ceylon.language.Iterator<.ceylon.language.Character>(){
+                return new .com.redhat.ceylon.compiler.java.language.AbstractIterator<.ceylon.language.Character>(){
                     private final .ceylon.language.Iterator<? extends .ceylon.language.String> iter$0 = seq.getIterator();
                     private .ceylon.language.String x;
                     private boolean x$exhausted;

@@ -9,6 +9,11 @@ class Bug630Impl extends .java.lang.Object implements .com.redhat.ceylon.compile
     protected final .com.redhat.ceylon.compiler.java.test.issues.bug06xx.Bug630$impl $com$redhat$ceylon$compiler$java$test$issues$bug06xx$Bug630$this;
     
     @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.test.issues.bug06xx.Bug630$impl $com$redhat$ceylon$compiler$java$test$issues$bug06xx$Bug630$impl() {
+        return $com$redhat$ceylon$compiler$java$test$issues$bug06xx$Bug630$this;
+    }
+    
+    @.java.lang.Override
     public int hashCode() {
         return $com$redhat$ceylon$compiler$java$test$issues$bug06xx$Bug630$this.hashCode();
     }

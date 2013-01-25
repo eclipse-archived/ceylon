@@ -55,7 +55,7 @@ final class callableWithDefaulted_ {
         defaultedVariadic.$call(.ceylon.language.Integer.instance(1L), .ceylon.language.String.instance("a"), new .com.redhat.ceylon.compiler.java.language.AbstractIterable<.ceylon.language.Integer, .java.lang.Object>(){
             
             public final .ceylon.language.Iterator<.ceylon.language.Integer> getIterator() {
-                return new .ceylon.language.Iterator<.ceylon.language.Integer>(){
+                return new .com.redhat.ceylon.compiler.java.language.AbstractIterator<.ceylon.language.Integer>(){
                     private final .ceylon.language.Iterator<? extends .ceylon.language.Integer> iter$0 = ints.getIterator();
                     private .ceylon.language.Integer i;
                     private boolean i$exhausted;
@@ -80,7 +80,7 @@ final class callableWithDefaulted_ {
         defaultedVariadic.$call(.ceylon.language.Integer.instance(1L), .ceylon.language.String.instance("a"), .com.redhat.ceylon.compiler.java.Util.<.ceylon.language.Integer>sequentialInstance(new .com.redhat.ceylon.compiler.java.language.AbstractIterable<.ceylon.language.Integer, .java.lang.Object>(){
             
             public final .ceylon.language.Iterator<.ceylon.language.Integer> getIterator() {
-                return new .ceylon.language.Iterator<.ceylon.language.Integer>(){
+                return new .com.redhat.ceylon.compiler.java.language.AbstractIterator<.ceylon.language.Integer>(){
                     private final .ceylon.language.Iterator<? extends .ceylon.language.Integer> iter$0 = ints.getIterator();
                     private .ceylon.language.Integer i;
                     private boolean i$exhausted;
@@ -105,7 +105,7 @@ final class callableWithDefaulted_ {
         defaultedVariadic.$call(.ceylon.language.Integer.instance(1L), .ceylon.language.String.instance("a"), .com.redhat.ceylon.compiler.java.Util.<.ceylon.language.Integer>sequentialInstance(new .com.redhat.ceylon.compiler.java.language.AbstractIterable<.ceylon.language.Integer, .java.lang.Object>(){
             
             public final .ceylon.language.Iterator<.ceylon.language.Integer> getIterator() {
-                return new .ceylon.language.Iterator<.ceylon.language.Integer>(){
+                return new .com.redhat.ceylon.compiler.java.language.AbstractIterator<.ceylon.language.Integer>(){
                     private final .ceylon.language.Iterator<? extends .ceylon.language.Integer> iter$0 = ints.getIterator();
                     private .ceylon.language.Integer i;
                     private boolean i$exhausted;

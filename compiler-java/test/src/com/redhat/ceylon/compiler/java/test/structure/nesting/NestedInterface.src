@@ -1,6 +1,8 @@
 package com.redhat.ceylon.compiler.java.test.structure.nesting;
 
 interface C$I {
+    
+    public .com.redhat.ceylon.compiler.java.test.structure.nesting.C.I$impl $com$redhat$ceylon$compiler$java$test$structure$nesting$C$I$impl();
 }
 class C {
     

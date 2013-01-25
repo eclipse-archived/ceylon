@@ -1,6 +1,8 @@
 package com.redhat.ceylon.compiler.java.test.expression.operator;
 
 interface BasicOperatorsA {
+    
+    public .com.redhat.ceylon.compiler.java.test.expression.operator.BasicOperatorsA$impl $com$redhat$ceylon$compiler$java$test$expression$operator$BasicOperatorsA$impl();
 }
 final class BasicOperatorsA$impl {
     
@@ -10,6 +12,8 @@ final class BasicOperatorsA$impl {
     private final .com.redhat.ceylon.compiler.java.test.expression.operator.BasicOperatorsA $this;
 }
 interface BasicOperatorsB {
+    
+    public .com.redhat.ceylon.compiler.java.test.expression.operator.BasicOperatorsB$impl $com$redhat$ceylon$compiler$java$test$expression$operator$BasicOperatorsB$impl();
 }
 final class BasicOperatorsB$impl {
     
@@ -32,13 +36,53 @@ public abstract class EqualityAndComparisonInteger extends .java.lang.Object imp
         this.$ceylon$language$Comparable$this = new .ceylon.language.Comparable$impl<.com.redhat.ceylon.compiler.java.test.expression.operator.EqualityAndComparisonInteger>(this);
     }
     protected final .ceylon.language.Castable$impl<.java.lang.Object> $ceylon$language$Castable$this;
+    
+    @.java.lang.Override
+    public .ceylon.language.Castable$impl<.java.lang.Object> $ceylon$language$Castable$impl() {
+        return $ceylon$language$Castable$this;
+    }
     protected final .ceylon.language.Integral$impl<.com.redhat.ceylon.compiler.java.test.expression.operator.EqualityAndComparisonInteger> $ceylon$language$Integral$this;
+    
+    @.java.lang.Override
+    public .ceylon.language.Integral$impl<.com.redhat.ceylon.compiler.java.test.expression.operator.EqualityAndComparisonInteger> $ceylon$language$Integral$impl() {
+        return $ceylon$language$Integral$this;
+    }
     protected final .ceylon.language.Numeric$impl<.com.redhat.ceylon.compiler.java.test.expression.operator.EqualityAndComparisonInteger> $ceylon$language$Numeric$this;
+    
+    @.java.lang.Override
+    public .ceylon.language.Numeric$impl<.com.redhat.ceylon.compiler.java.test.expression.operator.EqualityAndComparisonInteger> $ceylon$language$Numeric$impl() {
+        return $ceylon$language$Numeric$this;
+    }
     protected final .ceylon.language.Summable$impl<.com.redhat.ceylon.compiler.java.test.expression.operator.EqualityAndComparisonInteger> $ceylon$language$Summable$this;
+    
+    @.java.lang.Override
+    public .ceylon.language.Summable$impl<.com.redhat.ceylon.compiler.java.test.expression.operator.EqualityAndComparisonInteger> $ceylon$language$Summable$impl() {
+        return $ceylon$language$Summable$this;
+    }
     protected final .ceylon.language.Invertable$impl<.com.redhat.ceylon.compiler.java.test.expression.operator.EqualityAndComparisonInteger> $ceylon$language$Invertable$this;
+    
+    @.java.lang.Override
+    public .ceylon.language.Invertable$impl<.com.redhat.ceylon.compiler.java.test.expression.operator.EqualityAndComparisonInteger> $ceylon$language$Invertable$impl() {
+        return $ceylon$language$Invertable$this;
+    }
     protected final .ceylon.language.Enumerable$impl<.com.redhat.ceylon.compiler.java.test.expression.operator.EqualityAndComparisonInteger> $ceylon$language$Enumerable$this;
+    
+    @.java.lang.Override
+    public .ceylon.language.Enumerable$impl<.com.redhat.ceylon.compiler.java.test.expression.operator.EqualityAndComparisonInteger> $ceylon$language$Enumerable$impl() {
+        return $ceylon$language$Enumerable$this;
+    }
     protected final .ceylon.language.Ordinal$impl<.com.redhat.ceylon.compiler.java.test.expression.operator.EqualityAndComparisonInteger> $ceylon$language$Ordinal$this;
+    
+    @.java.lang.Override
+    public .ceylon.language.Ordinal$impl<.com.redhat.ceylon.compiler.java.test.expression.operator.EqualityAndComparisonInteger> $ceylon$language$Ordinal$impl() {
+        return $ceylon$language$Ordinal$this;
+    }
     protected final .ceylon.language.Comparable$impl<.com.redhat.ceylon.compiler.java.test.expression.operator.EqualityAndComparisonInteger> $ceylon$language$Comparable$this;
+    
+    @.java.lang.Override
+    public .ceylon.language.Comparable$impl<.com.redhat.ceylon.compiler.java.test.expression.operator.EqualityAndComparisonInteger> $ceylon$language$Comparable$impl() {
+        return $ceylon$language$Comparable$this;
+    }
 }
 public class EqualityAndComparisonOperators {
     

@@ -1,6 +1,8 @@
 package com.redhat.ceylon.compiler.java.test.structure.klass;
 
 interface VarianceTop {
+    
+    public .com.redhat.ceylon.compiler.java.test.structure.klass.VarianceTop$impl $com$redhat$ceylon$compiler$java$test$structure$klass$VarianceTop$impl();
 }
 final class VarianceTop$impl {
     
@@ -10,6 +12,8 @@ final class VarianceTop$impl {
     private final .com.redhat.ceylon.compiler.java.test.structure.klass.VarianceTop $this;
 }
 interface VarianceMiddle extends .com.redhat.ceylon.compiler.java.test.structure.klass.VarianceTop {
+    
+    public .com.redhat.ceylon.compiler.java.test.structure.klass.VarianceMiddle$impl $com$redhat$ceylon$compiler$java$test$structure$klass$VarianceMiddle$impl();
 }
 final class VarianceMiddle$impl {
     
@@ -19,6 +23,8 @@ final class VarianceMiddle$impl {
     private final .com.redhat.ceylon.compiler.java.test.structure.klass.VarianceMiddle $this;
 }
 interface VarianceBottom extends .com.redhat.ceylon.compiler.java.test.structure.klass.VarianceMiddle {
+    
+    public .com.redhat.ceylon.compiler.java.test.structure.klass.VarianceBottom$impl $com$redhat$ceylon$compiler$java$test$structure$klass$VarianceBottom$impl();
 }
 final class VarianceBottom$impl {
     

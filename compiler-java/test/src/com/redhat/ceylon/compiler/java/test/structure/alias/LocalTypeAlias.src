@@ -3,6 +3,9 @@ package com.redhat.ceylon.compiler.java.test.structure.alias;
 @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 4)
 @.com.redhat.ceylon.compiler.java.metadata.Name("TypeAliasInterface")
 interface localTypeAliasMethod$0$TypeAliasInterface_ {
+    
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    public .java.lang.Object TypeAliasInterface$impl();
 }
 @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 4)
 @.com.redhat.ceylon.compiler.java.metadata.Method

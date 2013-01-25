@@ -1,10 +1,12 @@
 package com.redhat.ceylon.compiler.java.test.structure.nesting.ici;
 
 interface I$IC$ICI<T extends .ceylon.language.String, X extends .ceylon.language.Boolean> {
+    
+    public .com.redhat.ceylon.compiler.java.test.structure.nesting.ici.I$IC$ICI<T, X> $com$redhat$ceylon$compiler$java$test$structure$nesting$ici$I$impl$IC$ICI$impl();
 }
 interface I<T extends .ceylon.language.String, X extends .ceylon.language.Boolean> {
     
-    public .com.redhat.ceylon.compiler.java.test.structure.nesting.ici.I$impl<? extends T, ? super X> $com$redhat$ceylon$compiler$java$test$structure$nesting$ici$I$impl();
+    public .com.redhat.ceylon.compiler.java.test.structure.nesting.ici.I$impl<T, X> $com$redhat$ceylon$compiler$java$test$structure$nesting$ici$I$impl();
     
     public abstract <U>T m1(final X b);
     

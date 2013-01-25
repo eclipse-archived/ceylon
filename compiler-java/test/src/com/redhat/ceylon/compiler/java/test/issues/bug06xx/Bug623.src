@@ -12,6 +12,8 @@ class Bug623Direct extends .java.lang.Object {
     }
 }
 interface Bug623 {
+    
+    public .com.redhat.ceylon.compiler.java.test.issues.bug06xx.Bug623$impl $com$redhat$ceylon$compiler$java$test$issues$bug06xx$Bug623$impl();
 }
 final class Bug623$impl {
     
@@ -27,6 +29,11 @@ class Bug623Indirect extends .java.lang.Object implements .com.redhat.ceylon.com
         this.$com$redhat$ceylon$compiler$java$test$issues$bug06xx$Bug623$this = new .com.redhat.ceylon.compiler.java.test.issues.bug06xx.Bug623$impl(this);
     }
     protected final .com.redhat.ceylon.compiler.java.test.issues.bug06xx.Bug623$impl $com$redhat$ceylon$compiler$java$test$issues$bug06xx$Bug623$this;
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.test.issues.bug06xx.Bug623$impl $com$redhat$ceylon$compiler$java$test$issues$bug06xx$Bug623$impl() {
+        return $com$redhat$ceylon$compiler$java$test$issues$bug06xx$Bug623$this;
+    }
     
     public static void main(.java.lang.String[] args) {
         .ceylon.language.process_.getProcess$().setupArguments(args);

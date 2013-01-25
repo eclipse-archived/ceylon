@@ -13,7 +13,7 @@ class ForIfIsNotObject {
         .ceylon.language.print_.print(new .com.redhat.ceylon.compiler.java.language.AbstractIterable<.java.lang.Object, .java.lang.Object>(){
             
             public final .ceylon.language.Iterator<.java.lang.Object> getIterator() {
-                return new .ceylon.language.Iterator<.java.lang.Object>(){
+                return new .com.redhat.ceylon.compiler.java.language.AbstractIterator<.java.lang.Object>(){
                     private final .ceylon.language.Iterator<? extends .java.lang.Object> iter$0 = xs.getIterator();
                     private .java.lang.Object x;
                     private boolean x$exhausted;
@@ -51,7 +51,7 @@ class ForIfIsNotObject {
         .ceylon.language.print_.print(new .com.redhat.ceylon.compiler.java.language.AbstractIterable<.java.lang.Object, .java.lang.Object>(){
             
             public final .ceylon.language.Iterator<.java.lang.Object> getIterator() {
-                return new .ceylon.language.Iterator<.java.lang.Object>(){
+                return new .com.redhat.ceylon.compiler.java.language.AbstractIterator<.java.lang.Object>(){
                     private final .ceylon.language.Iterator<? extends .java.lang.Object> iter$0 = ys.getIterator();
                     private .java.lang.Object y;
                     private boolean y$exhausted;

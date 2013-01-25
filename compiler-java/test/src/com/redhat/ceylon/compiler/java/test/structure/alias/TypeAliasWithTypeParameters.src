@@ -11,6 +11,8 @@ public class TypeAliasWithTypeParametersClass<T> {
     }
 }
 public interface TypeAliasWithTypeParametersInterface<T> {
+    
+    public .com.redhat.ceylon.compiler.java.test.structure.alias.TypeAliasWithTypeParametersInterface$impl<T> $com$redhat$ceylon$compiler$java$test$structure$alias$TypeAliasWithTypeParametersInterface$impl();
 }
 public final class TypeAliasWithTypeParametersInterface$impl<T> {
     

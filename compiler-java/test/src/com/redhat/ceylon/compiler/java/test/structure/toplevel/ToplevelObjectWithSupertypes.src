@@ -7,6 +7,8 @@ public class C {
 }
 public interface I {
     
+    public .com.redhat.ceylon.compiler.java.test.structure.toplevel.I$impl $com$redhat$ceylon$compiler$java$test$structure$toplevel$I$impl();
+    
     public abstract boolean id(final boolean x);
 }
 public final class I$impl {
@@ -28,6 +30,11 @@ public final class topLevelObjectWithSuperTypes_ extends .com.redhat.ceylon.comp
         return x;
     }
     protected final .com.redhat.ceylon.compiler.java.test.structure.toplevel.I$impl $com$redhat$ceylon$compiler$java$test$structure$toplevel$I$this;
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.test.structure.toplevel.I$impl $com$redhat$ceylon$compiler$java$test$structure$toplevel$I$impl() {
+        return $com$redhat$ceylon$compiler$java$test$structure$toplevel$I$this;
+    }
     private static final .com.redhat.ceylon.compiler.java.test.structure.toplevel.topLevelObjectWithSuperTypes_[] value;
     static {
         value = new .com.redhat.ceylon.compiler.java.test.structure.toplevel.topLevelObjectWithSuperTypes_[]{new .com.redhat.ceylon.compiler.java.test.structure.toplevel.topLevelObjectWithSuperTypes_()};

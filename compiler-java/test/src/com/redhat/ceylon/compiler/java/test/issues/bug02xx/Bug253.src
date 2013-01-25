@@ -2,6 +2,8 @@ package com.redhat.ceylon.compiler.java.test.issues.bug02xx;
 
 interface Boxer<T> {
     
+    public .com.redhat.ceylon.compiler.java.test.issues.bug02xx.Boxer$impl<T> $com$redhat$ceylon$compiler$java$test$issues$bug02xx$Boxer$impl();
+    
     public abstract T getOne();
     
     public abstract void setOne(final T one);
@@ -41,6 +43,11 @@ class IntBoxer implements .com.redhat.ceylon.compiler.java.test.issues.bug02xx.B
         this.two = .ceylon.language.Integer.instance(2L);
     }
     protected final .com.redhat.ceylon.compiler.java.test.issues.bug02xx.Boxer$impl<.ceylon.language.Integer> $com$redhat$ceylon$compiler$java$test$issues$bug02xx$Boxer$this;
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.test.issues.bug02xx.Boxer$impl<.ceylon.language.Integer> $com$redhat$ceylon$compiler$java$test$issues$bug02xx$Boxer$impl() {
+        return $com$redhat$ceylon$compiler$java$test$issues$bug02xx$Boxer$this;
+    }
     private .ceylon.language.Integer one;
     
     @.java.lang.Override

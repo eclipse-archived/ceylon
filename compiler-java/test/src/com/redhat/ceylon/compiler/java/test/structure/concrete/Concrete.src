@@ -2,6 +2,8 @@ package com.redhat.ceylon.compiler.java.test.structure.concrete;
 
 interface Concrete<A> {
     
+    public .com.redhat.ceylon.compiler.java.test.structure.concrete.Concrete$impl<A> $com$redhat$ceylon$compiler$java$test$structure$concrete$Concrete$impl();
+    
     public void mShared();
     
     public abstract A mShared$a();
@@ -330,6 +332,11 @@ class ConcreteImpl<B> implements .com.redhat.ceylon.compiler.java.test.structure
     protected final .com.redhat.ceylon.compiler.java.test.structure.concrete.Concrete$impl<B> $com$redhat$ceylon$compiler$java$test$structure$concrete$Concrete$this;
     
     @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.test.structure.concrete.Concrete$impl<B> $com$redhat$ceylon$compiler$java$test$structure$concrete$Concrete$impl() {
+        return $com$redhat$ceylon$compiler$java$test$structure$concrete$Concrete$this;
+    }
+    
+    @.java.lang.Override
     public final B mShared$a() {
         return $com$redhat$ceylon$compiler$java$test$structure$concrete$Concrete$this.mShared$a();
     }
@@ -569,6 +576,11 @@ class ConcreteImplWithDefault<C> implements .com.redhat.ceylon.compiler.java.tes
     protected final .com.redhat.ceylon.compiler.java.test.structure.concrete.Concrete$impl<C> $com$redhat$ceylon$compiler$java$test$structure$concrete$Concrete$this;
     
     @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.test.structure.concrete.Concrete$impl<C> $com$redhat$ceylon$compiler$java$test$structure$concrete$Concrete$impl() {
+        return $com$redhat$ceylon$compiler$java$test$structure$concrete$Concrete$this;
+    }
+    
+    @.java.lang.Override
     public final C mShared$a() {
         return $com$redhat$ceylon$compiler$java$test$structure$concrete$Concrete$this.mShared$a();
     }
@@ -806,6 +818,11 @@ abstract class Abstract<D> implements .com.redhat.ceylon.compiler.java.test.stru
         this.$com$redhat$ceylon$compiler$java$test$structure$concrete$Concrete$this = new .com.redhat.ceylon.compiler.java.test.structure.concrete.Concrete$impl<D>(this);
     }
     protected final .com.redhat.ceylon.compiler.java.test.structure.concrete.Concrete$impl<D> $com$redhat$ceylon$compiler$java$test$structure$concrete$Concrete$this;
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.test.structure.concrete.Concrete$impl<D> $com$redhat$ceylon$compiler$java$test$structure$concrete$Concrete$impl() {
+        return $com$redhat$ceylon$compiler$java$test$structure$concrete$Concrete$this;
+    }
     
     @.java.lang.Override
     public final D mShared$a() {
@@ -1203,6 +1220,11 @@ abstract class AbstractImpl<F> implements .com.redhat.ceylon.compiler.java.test.
         this.$com$redhat$ceylon$compiler$java$test$structure$concrete$Concrete$this = new .com.redhat.ceylon.compiler.java.test.structure.concrete.Concrete$impl<F>(this);
     }
     protected final .com.redhat.ceylon.compiler.java.test.structure.concrete.Concrete$impl<F> $com$redhat$ceylon$compiler$java$test$structure$concrete$Concrete$this;
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.test.structure.concrete.Concrete$impl<F> $com$redhat$ceylon$compiler$java$test$structure$concrete$Concrete$impl() {
+        return $com$redhat$ceylon$compiler$java$test$structure$concrete$Concrete$this;
+    }
     
     @.java.lang.Override
     public final F mShared$a() {

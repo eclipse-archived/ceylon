@@ -16,6 +16,8 @@ final class concreteMethodBySpecificationMethod_ {
 }
 interface ConcreteMethodBySpecification {
     
+    public .com.redhat.ceylon.compiler.java.test.structure.concrete.ConcreteMethodBySpecification$impl $com$redhat$ceylon$compiler$java$test$structure$concrete$ConcreteMethodBySpecification$impl();
+    
     public abstract long mFormal(final long i);
     
     public long mSharedFn();
@@ -87,6 +89,8 @@ final class ConcreteMethodBySpecification$impl {
 }
 interface ConcreteMethodBySpecificationSub extends .com.redhat.ceylon.compiler.java.test.structure.concrete.ConcreteMethodBySpecification {
     
+    public .com.redhat.ceylon.compiler.java.test.structure.concrete.ConcreteMethodBySpecificationSub$impl $com$redhat$ceylon$compiler$java$test$structure$concrete$ConcreteMethodBySpecificationSub$impl();
+    
     public long mSharedSup();
     
     public abstract long mSharedSup$i();
@@ -151,6 +155,11 @@ class ConcreteMethodBySpecificationImpl implements .com.redhat.ceylon.compiler.j
     protected final .com.redhat.ceylon.compiler.java.test.structure.concrete.ConcreteMethodBySpecificationSub$impl $com$redhat$ceylon$compiler$java$test$structure$concrete$ConcreteMethodBySpecificationSub$this;
     
     @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.test.structure.concrete.ConcreteMethodBySpecificationSub$impl $com$redhat$ceylon$compiler$java$test$structure$concrete$ConcreteMethodBySpecificationSub$impl() {
+        return $com$redhat$ceylon$compiler$java$test$structure$concrete$ConcreteMethodBySpecificationSub$this;
+    }
+    
+    @.java.lang.Override
     public final long mSharedSup$i() {
         return $com$redhat$ceylon$compiler$java$test$structure$concrete$ConcreteMethodBySpecificationSub$this.mSharedSup$i();
     }
@@ -180,6 +189,11 @@ class ConcreteMethodBySpecificationImpl implements .com.redhat.ceylon.compiler.j
         return $com$redhat$ceylon$compiler$java$test$structure$concrete$ConcreteMethodBySpecificationSub$this.mDefaultSup(i);
     }
     protected final .com.redhat.ceylon.compiler.java.test.structure.concrete.ConcreteMethodBySpecification$impl $com$redhat$ceylon$compiler$java$test$structure$concrete$ConcreteMethodBySpecification$this;
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.test.structure.concrete.ConcreteMethodBySpecification$impl $com$redhat$ceylon$compiler$java$test$structure$concrete$ConcreteMethodBySpecification$impl() {
+        return $com$redhat$ceylon$compiler$java$test$structure$concrete$ConcreteMethodBySpecification$this;
+    }
     
     @.java.lang.Override
     public final long mSharedFn() {

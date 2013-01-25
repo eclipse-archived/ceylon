@@ -2,6 +2,8 @@ package com.redhat.ceylon.compiler.java.test.expression.comprehensions;
 
 interface Common {
     
+    public .com.redhat.ceylon.compiler.java.test.expression.comprehensions.Common$impl $com$redhat$ceylon$compiler$java$test$expression$comprehensions$Common$impl();
+    
     public abstract .com.redhat.ceylon.compiler.java.test.expression.comprehensions.Common common();
 }
 final class Common$impl {
@@ -12,6 +14,8 @@ final class Common$impl {
     private final .com.redhat.ceylon.compiler.java.test.expression.comprehensions.Common $this;
 }
 interface FooInterface {
+    
+    public .com.redhat.ceylon.compiler.java.test.expression.comprehensions.FooInterface$impl $com$redhat$ceylon$compiler$java$test$expression$comprehensions$FooInterface$impl();
     
     public abstract .com.redhat.ceylon.compiler.java.test.expression.comprehensions.FooInterface foo();
 }
@@ -29,7 +33,17 @@ class Foo implements .com.redhat.ceylon.compiler.java.test.expression.comprehens
         this.$com$redhat$ceylon$compiler$java$test$expression$comprehensions$FooInterface$this = new .com.redhat.ceylon.compiler.java.test.expression.comprehensions.FooInterface$impl(this);
     }
     protected final .com.redhat.ceylon.compiler.java.test.expression.comprehensions.Common$impl $com$redhat$ceylon$compiler$java$test$expression$comprehensions$Common$this;
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.test.expression.comprehensions.Common$impl $com$redhat$ceylon$compiler$java$test$expression$comprehensions$Common$impl() {
+        return $com$redhat$ceylon$compiler$java$test$expression$comprehensions$Common$this;
+    }
     protected final .com.redhat.ceylon.compiler.java.test.expression.comprehensions.FooInterface$impl $com$redhat$ceylon$compiler$java$test$expression$comprehensions$FooInterface$this;
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.test.expression.comprehensions.FooInterface$impl $com$redhat$ceylon$compiler$java$test$expression$comprehensions$FooInterface$impl() {
+        return $com$redhat$ceylon$compiler$java$test$expression$comprehensions$FooInterface$this;
+    }
     
     @.java.lang.Override
     public final .com.redhat.ceylon.compiler.java.test.expression.comprehensions.Common common() {
@@ -63,6 +77,8 @@ class FooSub extends .com.redhat.ceylon.compiler.java.test.expression.comprehens
 }
 interface BarInterface {
     
+    public .com.redhat.ceylon.compiler.java.test.expression.comprehensions.BarInterface$impl $com$redhat$ceylon$compiler$java$test$expression$comprehensions$BarInterface$impl();
+    
     public abstract .com.redhat.ceylon.compiler.java.test.expression.comprehensions.BarInterface bar();
 }
 final class BarInterface$impl {
@@ -79,7 +95,17 @@ class Bar implements .com.redhat.ceylon.compiler.java.test.expression.comprehens
         this.$com$redhat$ceylon$compiler$java$test$expression$comprehensions$BarInterface$this = new .com.redhat.ceylon.compiler.java.test.expression.comprehensions.BarInterface$impl(this);
     }
     protected final .com.redhat.ceylon.compiler.java.test.expression.comprehensions.Common$impl $com$redhat$ceylon$compiler$java$test$expression$comprehensions$Common$this;
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.test.expression.comprehensions.Common$impl $com$redhat$ceylon$compiler$java$test$expression$comprehensions$Common$impl() {
+        return $com$redhat$ceylon$compiler$java$test$expression$comprehensions$Common$this;
+    }
     protected final .com.redhat.ceylon.compiler.java.test.expression.comprehensions.BarInterface$impl $com$redhat$ceylon$compiler$java$test$expression$comprehensions$BarInterface$this;
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.test.expression.comprehensions.BarInterface$impl $com$redhat$ceylon$compiler$java$test$expression$comprehensions$BarInterface$impl() {
+        return $com$redhat$ceylon$compiler$java$test$expression$comprehensions$BarInterface$this;
+    }
     
     @.java.lang.Override
     public final .com.redhat.ceylon.compiler.java.test.expression.comprehensions.Common common() {
@@ -105,7 +131,7 @@ final class isCond_ {
         .ceylon.language.Sequential<? extends .com.redhat.ceylon.compiler.java.test.expression.comprehensions.Foo> foos = new .com.redhat.ceylon.compiler.java.language.AbstractIterable<.com.redhat.ceylon.compiler.java.test.expression.comprehensions.Foo, .java.lang.Object>(){
             
             public final .ceylon.language.Iterator<.com.redhat.ceylon.compiler.java.test.expression.comprehensions.Foo> getIterator() {
-                return new .ceylon.language.Iterator<.com.redhat.ceylon.compiler.java.test.expression.comprehensions.Foo>(){
+                return new .com.redhat.ceylon.compiler.java.language.AbstractIterator<.com.redhat.ceylon.compiler.java.test.expression.comprehensions.Foo>(){
                     private final .ceylon.language.Iterator<? extends .com.redhat.ceylon.compiler.java.test.expression.comprehensions.Common> iter$0 = seq.getIterator();
                     private .com.redhat.ceylon.compiler.java.test.expression.comprehensions.Common x;
                     private boolean x$exhausted;
@@ -143,7 +169,7 @@ final class isCond_ {
         foos = new .com.redhat.ceylon.compiler.java.language.AbstractIterable<.com.redhat.ceylon.compiler.java.test.expression.comprehensions.Foo, .java.lang.Object>(){
             
             public final .ceylon.language.Iterator<.com.redhat.ceylon.compiler.java.test.expression.comprehensions.Foo> getIterator() {
-                return new .ceylon.language.Iterator<.com.redhat.ceylon.compiler.java.test.expression.comprehensions.Foo>(){
+                return new .com.redhat.ceylon.compiler.java.language.AbstractIterator<.com.redhat.ceylon.compiler.java.test.expression.comprehensions.Foo>(){
                     private final .ceylon.language.Iterator<? extends .com.redhat.ceylon.compiler.java.test.expression.comprehensions.Common> iter$0 = seq.getIterator();
                     private .com.redhat.ceylon.compiler.java.test.expression.comprehensions.Common x;
                     private boolean x$exhausted;
@@ -181,7 +207,7 @@ final class isCond_ {
         .ceylon.language.Sequential<? extends .com.redhat.ceylon.compiler.java.test.expression.comprehensions.Common> commons = new .com.redhat.ceylon.compiler.java.language.AbstractIterable<.com.redhat.ceylon.compiler.java.test.expression.comprehensions.Common, .java.lang.Object>(){
             
             public final .ceylon.language.Iterator<.com.redhat.ceylon.compiler.java.test.expression.comprehensions.Common> getIterator() {
-                return new .ceylon.language.Iterator<.com.redhat.ceylon.compiler.java.test.expression.comprehensions.Common>(){
+                return new .com.redhat.ceylon.compiler.java.language.AbstractIterator<.com.redhat.ceylon.compiler.java.test.expression.comprehensions.Common>(){
                     private final .ceylon.language.Iterator<? extends .com.redhat.ceylon.compiler.java.test.expression.comprehensions.Common> iter$0 = seq.getIterator();
                     private .com.redhat.ceylon.compiler.java.test.expression.comprehensions.Common x;
                     private boolean x$exhausted;
@@ -216,7 +242,7 @@ final class isCond_ {
         commons = new .com.redhat.ceylon.compiler.java.language.AbstractIterable<.com.redhat.ceylon.compiler.java.test.expression.comprehensions.Common, .java.lang.Object>(){
             
             public final .ceylon.language.Iterator<.com.redhat.ceylon.compiler.java.test.expression.comprehensions.Common> getIterator() {
-                return new .ceylon.language.Iterator<.com.redhat.ceylon.compiler.java.test.expression.comprehensions.Common>(){
+                return new .com.redhat.ceylon.compiler.java.language.AbstractIterator<.com.redhat.ceylon.compiler.java.test.expression.comprehensions.Common>(){
                     private final .ceylon.language.Iterator<? extends .com.redhat.ceylon.compiler.java.test.expression.comprehensions.Common> iter$0 = seq.getIterator();
                     private .com.redhat.ceylon.compiler.java.test.expression.comprehensions.Common x;
                     private boolean x$exhausted;
@@ -251,7 +277,7 @@ final class isCond_ {
         .ceylon.language.Sequential<? extends .com.redhat.ceylon.compiler.java.test.expression.comprehensions.BarInterface> barIs = new .com.redhat.ceylon.compiler.java.language.AbstractIterable<.com.redhat.ceylon.compiler.java.test.expression.comprehensions.BarInterface, .java.lang.Object>(){
             
             public final .ceylon.language.Iterator<.com.redhat.ceylon.compiler.java.test.expression.comprehensions.BarInterface> getIterator() {
-                return new .ceylon.language.Iterator<.com.redhat.ceylon.compiler.java.test.expression.comprehensions.BarInterface>(){
+                return new .com.redhat.ceylon.compiler.java.language.AbstractIterator<.com.redhat.ceylon.compiler.java.test.expression.comprehensions.BarInterface>(){
                     private final .ceylon.language.Iterator<? extends .com.redhat.ceylon.compiler.java.test.expression.comprehensions.Common> iter$0 = seq.getIterator();
                     private .com.redhat.ceylon.compiler.java.test.expression.comprehensions.Common x;
                     private boolean x$exhausted;
@@ -286,7 +312,7 @@ final class isCond_ {
         final .ceylon.language.Sequential<?> nowt = new .com.redhat.ceylon.compiler.java.language.AbstractIterable<.java.lang.Object, .java.lang.Object>(){
             
             public final .ceylon.language.Iterator getIterator() {
-                return new .ceylon.language.Iterator(){
+                return new .com.redhat.ceylon.compiler.java.language.AbstractIterator<.java.lang.Object>(){
                     private final .ceylon.language.Iterator<? extends .com.redhat.ceylon.compiler.java.test.expression.comprehensions.Common> iter$0 = seq.getIterator();
                     private .com.redhat.ceylon.compiler.java.test.expression.comprehensions.Common x;
                     private boolean x$exhausted;

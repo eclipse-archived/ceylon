@@ -306,6 +306,8 @@ class Foosubkls extends .com.redhat.ceylon.compiler.java.test.expression.invoke.
 }
 interface Barface {
     
+    public .com.redhat.ceylon.compiler.java.test.expression.invoke.Barface$impl $com$redhat$ceylon$compiler$java$test$expression$invoke$Barface$impl();
+    
     public abstract long getProp();
     
     public abstract .java.lang.Object f1();
@@ -543,6 +545,11 @@ class Barkls implements .com.redhat.ceylon.compiler.java.test.expression.invoke.
         this.prop = 42L;
     }
     protected final .com.redhat.ceylon.compiler.java.test.expression.invoke.Barface$impl $com$redhat$ceylon$compiler$java$test$expression$invoke$Barface$this;
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.test.expression.invoke.Barface$impl $com$redhat$ceylon$compiler$java$test$expression$invoke$Barface$impl() {
+        return $com$redhat$ceylon$compiler$java$test$expression$invoke$Barface$this;
+    }
     
     @.java.lang.Override
     public final long f1$n() {

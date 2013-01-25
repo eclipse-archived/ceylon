@@ -1,6 +1,8 @@
 package com.redhat.ceylon.compiler.java.test.issues.bug04xx;
 
 interface Bug476A {
+    
+    public .com.redhat.ceylon.compiler.java.test.issues.bug04xx.Bug476A$impl $com$redhat$ceylon$compiler$java$test$issues$bug04xx$Bug476A$impl();
 }
 final class Bug476A$impl {
     
@@ -10,6 +12,8 @@ final class Bug476A$impl {
     private final .com.redhat.ceylon.compiler.java.test.issues.bug04xx.Bug476A $this;
 }
 interface Bug476B extends .com.redhat.ceylon.compiler.java.test.issues.bug04xx.Bug476A {
+    
+    public .com.redhat.ceylon.compiler.java.test.issues.bug04xx.Bug476B$impl $com$redhat$ceylon$compiler$java$test$issues$bug04xx$Bug476B$impl();
 }
 final class Bug476B$impl {
     
@@ -19,6 +23,8 @@ final class Bug476B$impl {
     private final .com.redhat.ceylon.compiler.java.test.issues.bug04xx.Bug476B $this;
 }
 interface Bug476C {
+    
+    public .com.redhat.ceylon.compiler.java.test.issues.bug04xx.Bug476C$impl $com$redhat$ceylon$compiler$java$test$issues$bug04xx$Bug476C$impl();
 }
 final class Bug476C$impl {
     
@@ -96,6 +102,11 @@ public abstract class Bug476<T> implements .ceylon.language.List<T> {
     protected final .ceylon.language.List$impl<T> $ceylon$language$List$this;
     
     @.java.lang.Override
+    public .ceylon.language.List$impl<T> $ceylon$language$List$impl() {
+        return $ceylon$language$List$this;
+    }
+    
+    @.java.lang.Override
     public long getSize() {
         return $ceylon$language$List$this.getSize();
     }
@@ -132,6 +143,11 @@ public abstract class Bug476<T> implements .ceylon.language.List<T> {
     protected final .ceylon.language.Collection$impl<T> $ceylon$language$Collection$this;
     
     @.java.lang.Override
+    public .ceylon.language.Collection$impl<T> $ceylon$language$Collection$impl() {
+        return $ceylon$language$Collection$this;
+    }
+    
+    @.java.lang.Override
     public boolean getEmpty() {
         return $ceylon$language$Collection$this.getEmpty();
     }
@@ -141,6 +157,11 @@ public abstract class Bug476<T> implements .ceylon.language.List<T> {
         return $ceylon$language$Collection$this.contains(element);
     }
     protected final .ceylon.language.Iterable$impl<T, .java.lang.Object> $ceylon$language$Iterable$this;
+    
+    @.java.lang.Override
+    public .ceylon.language.Iterable$impl<T, .java.lang.Object> $ceylon$language$Iterable$impl() {
+        return $ceylon$language$Iterable$this;
+    }
     
     @.java.lang.Override
     public .ceylon.language.Iterable<? extends T, ?> getRest() {
@@ -237,7 +258,17 @@ public abstract class Bug476<T> implements .ceylon.language.List<T> {
         return (.ceylon.language.Iterable<? extends .java.lang.Object, ?>)(.ceylon.language.Iterable)$ceylon$language$Iterable$this.chain(other);
     }
     protected final .ceylon.language.Container$impl<T, .java.lang.Object> $ceylon$language$Container$this;
+    
+    @.java.lang.Override
+    public .ceylon.language.Container$impl<T, .java.lang.Object> $ceylon$language$Container$impl() {
+        return $ceylon$language$Container$this;
+    }
     protected final .ceylon.language.Category$impl $ceylon$language$Category$this;
+    
+    @.java.lang.Override
+    public .ceylon.language.Category$impl $ceylon$language$Category$impl() {
+        return $ceylon$language$Category$this;
+    }
     
     @.java.lang.Override
     public boolean containsEvery(final .ceylon.language.Iterable<? extends .java.lang.Object, ?> elements) {
@@ -249,7 +280,17 @@ public abstract class Bug476<T> implements .ceylon.language.List<T> {
         return $ceylon$language$Category$this.containsAny(elements);
     }
     protected final .ceylon.language.Cloneable$impl<.ceylon.language.Collection<? extends T>> $ceylon$language$Cloneable$this;
+    
+    @.java.lang.Override
+    public .ceylon.language.Cloneable$impl<.ceylon.language.Collection<? extends T>> $ceylon$language$Cloneable$impl() {
+        return $ceylon$language$Cloneable$this;
+    }
     protected final .ceylon.language.Correspondence$impl<.ceylon.language.Integer, T> $ceylon$language$Correspondence$this;
+    
+    @.java.lang.Override
+    public .ceylon.language.Correspondence$impl<.ceylon.language.Integer, T> $ceylon$language$Correspondence$impl() {
+        return $ceylon$language$Correspondence$this;
+    }
     
     @.java.lang.Override
     public .ceylon.language.Category getKeys() {
@@ -271,6 +312,11 @@ public abstract class Bug476<T> implements .ceylon.language.List<T> {
         return $ceylon$language$Correspondence$this.items(keys);
     }
     protected final .ceylon.language.Ranged$impl<.ceylon.language.Integer, .ceylon.language.List<? extends T>> $ceylon$language$Ranged$this;
+    
+    @.java.lang.Override
+    public .ceylon.language.Ranged$impl<.ceylon.language.Integer, .ceylon.language.List<? extends T>> $ceylon$language$Ranged$impl() {
+        return $ceylon$language$Ranged$this;
+    }
     
     @.java.lang.Override
     public final .ceylon.language.Sequential<? extends T> span(final .ceylon.language.Integer from, final .ceylon.language.Integer to) {
