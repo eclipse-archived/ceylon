@@ -6,7 +6,8 @@ options {
 
 @parser::header { package com.redhat.ceylon.compiler.typechecker.parser;
                   import com.redhat.ceylon.compiler.typechecker.tree.Node;
-                  import static com.redhat.ceylon.compiler.typechecker.tree.CustomTree.*; }
+                  import static com.redhat.ceylon.compiler.typechecker.tree.CustomTree.*;
+                  import static com.redhat.ceylon.compiler.typechecker.tree.CustomTree.Package; }
 @lexer::header { package com.redhat.ceylon.compiler.typechecker.parser; }
 
 @members {
@@ -2195,6 +2196,8 @@ selfReference returns [Atom atom]
       { $atom = new Super($SUPER); }
     | OUTER
       { $atom = new Outer($OUTER); }
+    | PACKAGE
+      { $atom = new Package($PACKAGE); }
     ;
     
 nonstringLiteral returns [Literal literal]

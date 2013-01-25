@@ -576,7 +576,11 @@ argument list."
     EXPRESSION? upperBound
     EXPRESSION? length)
 
+"A reference to the outer containing instance."
 ^(OUTER:ATOM)
+
+"A reference to the containing package."
+^(PACKAGE:ATOM)
 
 "A list of arguments in an invocation expression."
 ^(abstract ARGUMENT_LIST)

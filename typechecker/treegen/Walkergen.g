@@ -11,7 +11,8 @@ grammar Walkergen;
 nodeList : 
     {
     println("package com.redhat.ceylon.compiler.typechecker.tree;\n");
-    println("import static com.redhat.ceylon.compiler.typechecker.tree.Tree.*;\n");
+    println("import static com.redhat.ceylon.compiler.typechecker.tree.Tree.*;");
+    println("import static com.redhat.ceylon.compiler.typechecker.tree.Tree.Package;\n");
     println("public class Walker {\n");
     }
            (DESCRIPTION? node)+ 

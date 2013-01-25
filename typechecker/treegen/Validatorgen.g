@@ -10,7 +10,8 @@ grammar Validatorgen;
 
 nodeList : { 
            println("package com.redhat.ceylon.compiler.typechecker.tree;\n");
-           println("import static com.redhat.ceylon.compiler.typechecker.tree.Tree.*;\n");
+           println("import static com.redhat.ceylon.compiler.typechecker.tree.Tree.*;");
+           println("import static com.redhat.ceylon.compiler.typechecker.tree.Tree.Package;\n");
            println("public class Validator extends Visitor {\n");
            }
            (DESCRIPTION? node)+ 
