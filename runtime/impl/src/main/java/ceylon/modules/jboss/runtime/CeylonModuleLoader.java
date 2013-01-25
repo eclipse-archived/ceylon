@@ -219,9 +219,12 @@ public class CeylonModuleLoader extends ModuleLoader {
                         deps.add(mds);
                     }
 
-                    ModuleIdentifier mi = createModuleIdentifier(i);
-                    Graph.Vertex<ModuleIdentifier, Boolean> dv = graph.createVertex(mi, mi);
-                    Graph.Edge.create(i.importType() == ImportType.EXPORT, vertex, dv);
+                    // no need to track system deps -- cannot be updated anyway
+                    if (JDKUtils.isJDKModule(name) == false && JDKUtils.isOracleJDKModule(name) == false) {
+                        ModuleIdentifier mi = createModuleIdentifier(i);
+                        Graph.Vertex<ModuleIdentifier, Boolean> dv = graph.createVertex(mi, mi);
+                        Graph.Edge.create(i.importType() == ImportType.EXPORT, vertex, dv);
+                    }
                 }
                 if (root.isEmpty() == false) {
                     LocalLoader onDemandLoader = new OnDemandLocalLoader(moduleIdentifier, this, root);
