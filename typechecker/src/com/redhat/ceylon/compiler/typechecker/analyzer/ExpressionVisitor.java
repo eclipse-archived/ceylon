@@ -58,6 +58,7 @@ import com.redhat.ceylon.compiler.typechecker.model.Value;
 import com.redhat.ceylon.compiler.typechecker.model.ValueParameter;
 import com.redhat.ceylon.compiler.typechecker.tree.Node;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree;
+import com.redhat.ceylon.compiler.typechecker.tree.Tree.SpecifierExpression;
 import com.redhat.ceylon.compiler.typechecker.tree.Visitor;
 
 /**
@@ -124,13 +125,14 @@ public class ExpressionVisitor extends Visitor {
         super.visit(that);
         FunctionalParameter p = that.getDeclarationModel();
         Tree.DefaultArgument da = that.getDefaultArgument();
-        if (p.isDeclaredVoid() && p.isDefaulted() && 
-                da.getSpecifierExpression()!=null && 
-                da.getSpecifierExpression().getExpression()!=null &&
-                !isVoidMethodReference(da.getSpecifierExpression().getExpression())) {
-            da.addError("void functional parameter may not have a default value");
+        if (p.isDeclaredVoid() && p.isDefaulted()) { 
+        	SpecifierExpression se = da.getSpecifierExpression();
+			if (se!=null && se.getExpression()!=null &&
+        			!isSatementExpression(se.getExpression())) {
+        		da.addError("functional parameter is declared void so specified expression must be a statement: " +
+        				p.getName());
+        	}
         }
-
     }
     
     @Override public void visit(Tree.FunctionArgument that) {
@@ -154,8 +156,8 @@ public class ExpressionVisitor extends Visitor {
                         "expression type must be assignable to specified return type");
             }*/
             if (that.getType() instanceof Tree.VoidModifier &&
-                    !isVoidMethodReference(e)) {
-                e.addError("void function may not evaluate to a value");
+                    !isSatementExpression(e)) {
+                e.addError("anonymous function is declared void so specified expression must be a statement");
             }
         }
         if (that.getType() instanceof Tree.VoidModifier) {
@@ -719,8 +721,9 @@ public class ExpressionVisitor extends Visitor {
                 }
                 if (hasParams && d instanceof Method && 
                         ((Method) d).isDeclaredVoid() && 
-                        !isVoidMethodReference(sie.getExpression())) {
-                    that.addError("method is declared void so specified expression may not evaluate to a value: " + d.getName(unit));
+                        !isSatementExpression(sie.getExpression())) {
+                    that.addError("method is declared void so specified expression must be a statement: " + 
+                            d.getName(unit));
                 }
                 if (d instanceof Value && 
                 		that.getSpecifierExpression() instanceof Tree.LazySpecifierExpression) {
@@ -755,8 +758,21 @@ public class ExpressionVisitor extends Visitor {
             me.addError("illegal specification statement");
         }
     }
-
-    boolean isVoidMethodReference(Tree.Expression e) {
+    
+    boolean isSatementExpression(Tree.Expression e) {
+    	if (e==null) {
+    		return false;
+    	}
+    	else {
+    		Tree.Term t = e.getTerm();
+			return t instanceof Tree.InvocationExpression ||
+    				t instanceof Tree.PostfixOperatorExpression ||
+    				t instanceof Tree.AssignmentOp ||
+    				t instanceof Tree.PrefixOperatorExpression;
+    	}
+    }
+    
+    /*boolean isVoidMethodReference(Tree.Expression e) {
         //TODO: correctly handle multiple parameter lists!
         Tree.Term term = e.getTerm();
         ProducedType tm = term.getTypeModel();
@@ -772,7 +788,7 @@ public class ExpressionVisitor extends Visitor {
             }
         }
         return false;
-    }
+    }*/
 
     private ProducedType eraseDefaultedParameters(ProducedType t) {
         ProducedType ct = t.getSupertype(unit.getCallableDeclaration());
@@ -1016,8 +1032,9 @@ public class ExpressionVisitor extends Visitor {
                     checkFunctionType(returnType, that.getType(), se);
                 }
                 if (that.getType() instanceof Tree.VoidModifier && 
-                        !isVoidMethodReference(e)) {
-                    se.addError("void method may not evaluate to a value");
+                        !isSatementExpression(e)) {
+                    se.addError("method is declared void so specified expression must be a statement: " +
+                    		that.getDeclarationModel().getName());
                 }
             }
         }
@@ -1033,12 +1050,13 @@ public class ExpressionVisitor extends Visitor {
 
     @Override public void visit(Tree.MethodArgument that) {
         Tree.SpecifierExpression se = that.getSpecifierExpression();
-        if (se==null) {
+        Method d = that.getDeclarationModel();
+		if (se==null) {
             Tree.Type rt = beginReturnScope(that.getType());           
-            Declaration od = beginReturnDeclaration(that.getDeclarationModel());
+            Declaration od = beginReturnDeclaration(d);
             super.visit(that);
             endReturnDeclaration(od);
-            endReturnScope(rt, that.getDeclarationModel());
+            endReturnScope(rt, d);
         }
         else {
             super.visit(that);
@@ -1049,9 +1067,9 @@ public class ExpressionVisitor extends Visitor {
                 if (that.getType()!=null) {
                     checkFunctionType(returnType, that.getType(), se);
                 }
-                if (that.getDeclarationModel().isDeclaredVoid() && 
-                        !isVoidMethodReference(e)) {
-                    se.addError("void functional argument may not evaluate to a value");
+                if (d.isDeclaredVoid() && !isSatementExpression(e)) {
+                    se.addError("functional argument is declared void so specified expression must be a statement: " + 
+                            d.getName());
                 }
             }
         }
@@ -2235,7 +2253,7 @@ public class ExpressionVisitor extends Visitor {
                         t.getToken()==null &&
                     p instanceof FunctionalParameter &&
                         ((FunctionalParameter) p).isDeclaredVoid() &&
-                    !isVoidMethodReference(se.getExpression())) {
+                    !isSatementExpression(se.getExpression())) {
                     ta.addError("functional parameter is declared void so argument may not evaluate to a value: " +
                             p.getName());
                 }
