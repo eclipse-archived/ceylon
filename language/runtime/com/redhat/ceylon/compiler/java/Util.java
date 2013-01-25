@@ -585,4 +585,12 @@ public class Util {
         }
         return new ArraySequence<T>(newArray);
     }
+
+    /**
+     * Returns a runtime exception. To be used by implementors of mixin methods used to access super-interfaces $impl fields
+     * for final classes that don't and will never need them
+     */
+    public static RuntimeException makeUnimplementedMixinAccessException() {
+        return new RuntimeException("Internal error: should never be called");
+    }
 }
