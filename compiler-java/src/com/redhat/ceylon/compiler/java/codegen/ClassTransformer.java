@@ -786,7 +786,6 @@ public class ClassTransformer extends AbstractTransformer {
                 makeAtIgnore());
 
         classBuilder.method(makeCompanionAccessor(iface, satisfiedType, true));
-        
     }
     
     private MethodDefinitionBuilder makeCompanionAccessor(Interface iface, ProducedType satisfiedType, boolean forImplementor) {
@@ -799,7 +798,7 @@ public class ClassTransformer extends AbstractTransformer {
             // top level, so use Object instead
             thisMethod.resultType(null, make().Type(syms().objectType));
         } else {
-            thisMethod.resultType(null, makeJavaType(satisfiedType, JT_COMPANION));
+            thisMethod.resultType(null, makeJavaType(satisfiedType, JT_COMPANION | JT_SATISFIES));
         }
         if (forImplementor) {
             thisMethod.isOverride(true);
