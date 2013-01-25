@@ -2663,7 +2663,8 @@ public class ExpressionTransformer extends AbstractTransformer {
                 flags |= EXPR_DOWN_CAST;
             safeAccess = applyErasureAndBoxing(safeAccess, 
                                                sequentialElementType, 
-                                               false, true, BoxingStrategy.BOXED, expectedType, flags);
+                                               CodegenUtil.hasTypeErased(access), true, BoxingStrategy.BOXED, 
+                                               expectedType, flags);
         }else{
             // do the indices
             Tree.ElementRange range = (Tree.ElementRange) elementOrRange;
@@ -2706,7 +2707,8 @@ public class ExpressionTransformer extends AbstractTransformer {
                 flags |= EXPR_DOWN_CAST;
             safeAccess = applyErasureAndBoxing(safeAccess, 
                                                rangedSpanType, 
-                                               false, true, BoxingStrategy.BOXED, expectedType, flags);
+                                               CodegenUtil.hasTypeErased(access), true, BoxingStrategy.BOXED, 
+                                               expectedType, flags);
         }
 
         return safeAccess;
