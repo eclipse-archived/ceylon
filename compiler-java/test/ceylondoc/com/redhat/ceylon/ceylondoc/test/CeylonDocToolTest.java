@@ -651,6 +651,15 @@ public class CeylonDocToolTest {
                 Pattern.compile("unresolvable = unresolvable"));
         
         assertMatchInFile(destDir, "class_StubClass.html", 
+                Pattern.compile("stubObject = <a class='link' href='object_stubObject.html'>stubObject</a>"));
+        assertMatchInFile(destDir, "class_StubClass.html", 
+                Pattern.compile("stubObject.foo = <a class='link' href='object_stubObject.html#foo'>stubObject.foo</a>"));
+        assertMatchInFile(destDir, "class_StubClass.html", 
+                Pattern.compile("stubObject.stubInnerObject = <a class='link' href='object_stubObject.stubInnerObject.html'>stubObject.stubInnerObject</a>"));
+        assertMatchInFile(destDir, "class_StubClass.html", 
+                Pattern.compile("stubObject.stubInnerObject.fooInner = <a class='link' href='object_stubObject.stubInnerObject.html#fooInner'>stubObject.stubInnerObject.fooInner</a>"));
+        
+        assertMatchInFile(destDir, "class_StubClass.html", 
                 Pattern.compile("imported A1 = <a class='link' href='a/class_A1.html'>A1</a>"));
         assertMatchInFile(destDir, "class_StubClass.html", 
                 Pattern.compile("imported AliasA2 = <a class='link' href='a/class_A2.html'>AliasA2</a>"));

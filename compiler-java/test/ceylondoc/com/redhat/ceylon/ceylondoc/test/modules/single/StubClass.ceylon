@@ -110,8 +110,11 @@ shared class StubClass(
          1. StubClass.StubInnerClass = [[StubClass.StubInnerClass]]
          1. StubClass.StubInnerClass.innerMethod = [[StubClass.StubInnerClass.innerMethod]]
          1. StubInterface with custom name = [[custom stub interface|StubInterface]]
+         1. stubObject = [[stubObject]]
+         1. stubObject.foo = [[stubObject.foo]]
+         1. stubObject.stubInnerObject = [[stubObject.stubInnerObject]]
+         1. stubObject.stubInnerObject.fooInner = [[stubObject.stubInnerObject.fooInner]]
          1. unresolvable = [[unresolvable]]
-         1. Integer = [[Integer]] (external links are broken, see issue 225)
          1. imported A1 = [[A1]]
          1. imported AliasA2 = [[AliasA2]]
 

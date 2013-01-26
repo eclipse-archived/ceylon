@@ -358,12 +358,19 @@ public class LinkRenderer {
         for (String currentDeclName : declNames) {
             currentDecl = resolveDeclaration(currentScope, currentDeclName, isNested);
             if (currentDecl != null) {
-                currentScope = resolveScope(currentDecl);
+                if( isValueWithTypeObject(currentDecl) ) {
+                    TypeDeclaration objectType = ((Value)currentDecl).getTypeDeclaration();
+                    currentScope = objectType;
+                    currentDecl = objectType;
+                } else {
+                    currentScope = resolveScope(currentDecl);
+                }
                 isNested = true;
             } else {
                 break;
             }
         }
+        
         // we can't link to parameters yet, unless they're toplevel
         if (currentDecl != null && 
                 !isParameter(currentDecl)) {
@@ -377,12 +384,22 @@ public class LinkRenderer {
         }
     }
 
-    private boolean isParameter(Declaration currentDecl) {
-        if(currentDecl instanceof Parameter)
+    private boolean isValueWithTypeObject(Declaration decl) {
+        if (decl instanceof Value) {
+            TypeDeclaration typeDeclaration = ((Value) decl).getTypeDeclaration();
+            if (typeDeclaration instanceof Class && typeDeclaration.isAnonymous()) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    private boolean isParameter(Declaration decl) {
+        if(decl instanceof Parameter)
             return true;
-        if(currentDecl instanceof Value == false)
+        if(decl instanceof Value == false)
             return false;
-        Value value = (Value)currentDecl;
+        Value value = (Value)decl;
         return !value.isToplevel() && !value.isClassOrInterfaceMember();
     }
 
