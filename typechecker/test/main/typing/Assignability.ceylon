@@ -428,7 +428,8 @@ class Assignability() {
     @type:"Tuple<String,String,Empty>|Tuple<Integer,Integer,Empty>" value ut = f(["aaa"],[1]);
     Sequence<Object> st1 = ut;
     Sequence<String|Integer> st2 = ut;
-    @type:"Null|String|Integer" value item = ut[0];
+    @type:"String|Integer" value item = ut[0];
+    @type:"Null" value noitem = ut[1];
     @type:"Sequential<String>|Sequential<Integer>" value items = ut[1..2];
     
     class Invariant<T>(T t) {}

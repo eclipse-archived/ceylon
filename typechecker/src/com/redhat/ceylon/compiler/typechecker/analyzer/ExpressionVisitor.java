@@ -2644,8 +2644,6 @@ public class ExpressionVisitor extends Visitor {
 
     private void refineTypeForTupleElement(Tree.IndexExpression that,
             ProducedType pt, Tree.Term t) {
-        //TODO: reverse ranges
-        //TODO: ranges without lower bound
         boolean negated = false;
         if (t instanceof Tree.NegativeOp) {
             t = ((Tree.NegativeOp) t).getTerm();
@@ -2654,14 +2652,14 @@ public class ExpressionVisitor extends Visitor {
         else if (t instanceof Tree.PositiveOp) {
             t = ((Tree.PositiveOp) t).getTerm();
         }
-        if (pt.getDeclaration() instanceof Class &&
-                pt.getDeclaration().equals(unit.getTupleDeclaration())) {
+        ProducedType tt = pt.getSupertype(unit.getTupleDeclaration());
+        if (tt!=null) {
             if (t instanceof Tree.NaturalLiteral) {
                 int index = Integer.parseInt(t.getText());
                 if (negated) index = -index;
-                List<ProducedType> elementTypes = getTupleElementTypes(pt);
-                boolean variadic = isTupleLengthUnbounded(pt);
-                int minimumLength = getTupleMinimumLength(pt);
+                List<ProducedType> elementTypes = getTupleElementTypes(tt);
+                boolean variadic = isTupleLengthUnbounded(tt);
+                int minimumLength = getTupleMinimumLength(tt);
                 if (elementTypes!=null) {
                     if (index<0) {
                         that.setTypeModel(unit.getNullDeclaration().getType());
@@ -2705,15 +2703,15 @@ public class ExpressionVisitor extends Visitor {
         else if (l instanceof Tree.PositiveOp) {
             l = ((Tree.PositiveOp) l).getTerm();
         }
-        if (pt.getDeclaration() instanceof Class &&
-                pt.getDeclaration().equals(unit.getTupleDeclaration())) {
+        ProducedType tt = pt.getSupertype(unit.getTupleDeclaration());
+        if (tt!=null) {
             if (l instanceof Tree.NaturalLiteral) {
                 int lindex = Integer.parseInt(l.getText());
                 if (lnegated) lindex = -lindex;
-                List<ProducedType> elementTypes = getTupleElementTypes(pt);
-                boolean variadic = isTupleLengthUnbounded(pt);
-                boolean atLeastOne = isTupleVariantAtLeastOne(pt);
-                int minimumLength = getTupleMinimumLength(pt);
+                List<ProducedType> elementTypes = getTupleElementTypes(tt);
+                boolean variadic = isTupleLengthUnbounded(tt);
+                boolean atLeastOne = isTupleVariantAtLeastOne(tt);
+                int minimumLength = getTupleMinimumLength(tt);
                 List<ProducedType> list = new ArrayList<ProducedType>();
                 if (elementTypes!=null) {
                     if (lindex<0) {

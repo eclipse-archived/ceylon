@@ -141,4 +141,10 @@ void test() {
     @type:"Sequential<String>" [String*] s2 = [""];
     @type:"Tuple<String,String,Sequence<String>>" [String,String+] p1 = ["", *s1];
     @type:"Tuple<String,String,Sequential<String>>" [String,String*] p2 = ["", *s2];
+    
+    alias Point => [Float,Float];
+    Point pt = [0.0,0.0];
+    @type:"Float" value ptx = pt[0];
+    @type:"Float" value pty = pt[1];
+    @type:"Null" value ptz = pt[2];
 }
