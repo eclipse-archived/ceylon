@@ -11,7 +11,7 @@ doc "A possibly-empty, immutable sequence of values. The
         important subclass `Tuple`."
 see (Tuple)
 shared interface Sequential<out Element>
-        of Empty|Sequence<Element>
+        of []|[Element+]
         satisfies List<Element> & 
                   Ranged<Integer,Element[]> &
                   Cloneable<Element[]> {
