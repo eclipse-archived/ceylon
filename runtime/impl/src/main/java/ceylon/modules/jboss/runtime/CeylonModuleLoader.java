@@ -19,6 +19,7 @@ package ceylon.modules.jboss.runtime;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
@@ -62,6 +63,8 @@ public class CeylonModuleLoader extends ModuleLoader {
     private static final String CEYLON_RUNTIME_PATH;
     private static final Set<ModuleIdentifier> BOOTSTRAP;
 
+    private static final Map<String, DependencySpec> SYSTEM_DEPENDENCIES;
+
     static {
         final String defaultVersion = System.getProperty("ceylon.version", Versions.CEYLON_VERSION_NUMBER);
         LANGUAGE = ModuleIdentifier.create("ceylon.language", defaultVersion);
@@ -82,6 +85,20 @@ public class CeylonModuleLoader extends ModuleLoader {
         BOOTSTRAP.add(MODULES);
         BOOTSTRAP.add(JANDEX);
         BOOTSTRAP.add(RUNTIME);
+
+        SYSTEM_DEPENDENCIES = new HashMap<String, DependencySpec>();
+        // JDK
+        for (String module : JDKUtils.getJDKModuleNames()) {
+            Set<String> paths = JDKUtils.getJDKPathsByModule(module);
+            DependencySpec dependencySpec = DependencySpec.createSystemDependencySpec(paths);
+            SYSTEM_DEPENDENCIES.put(module, dependencySpec);
+        }
+        // Oracle
+        for (String module : JDKUtils.getOracleJDKModuleNames()) {
+            Set<String> paths = JDKUtils.getOracleJDKPathsByModule(module);
+            DependencySpec dependencySpec = DependencySpec.createSystemDependencySpec(paths);
+            SYSTEM_DEPENDENCIES.put(module, dependencySpec);
+        }
     }
 
     private RepositoryManager repository;
@@ -194,14 +211,14 @@ public class CeylonModuleLoader extends ModuleLoader {
             builder.addDependency(lds); // local resources
             deps.add(lds);
 
-            // used modules
-            Set<String> modules = new HashSet<String>();
+            // used moduleDependencies
+            Set<String> moduleDependencies = new HashSet<String>();
 
             if (isDefault == false) {
                 Node<ArtifactResult> root = new Node<ArtifactResult>();
                 for (ArtifactResult i : artifact.dependencies()) {
                     final String name = i.name();
-                    modules.add(name); // track used modules
+                    moduleDependencies.add(name); // track used module dependencies
 
                     if (i.importType() == ImportType.OPTIONAL) {
                         Node<ArtifactResult> current = root;
@@ -220,7 +237,7 @@ public class CeylonModuleLoader extends ModuleLoader {
                     }
 
                     // no need to track system deps -- cannot be updated anyway
-                    if (JDKUtils.isJDKModule(name) == false && JDKUtils.isOracleJDKModule(name) == false) {
+                    if (SYSTEM_DEPENDENCIES.containsKey(name) == false) {
                         ModuleIdentifier mi = createModuleIdentifier(i);
                         Graph.Vertex<ModuleIdentifier, Boolean> dv = graph.createVertex(mi, mi);
                         Graph.Edge.create(i.importType() == ImportType.EXPORT, vertex, dv);
@@ -247,12 +264,11 @@ public class CeylonModuleLoader extends ModuleLoader {
             Graph.Vertex<ModuleIdentifier, Boolean> sdsv = graph.createVertex(RUNTIME, RUNTIME);
             Graph.Edge.create(false, vertex, sdsv);
 
-            // add JDK modules to loose artifacts
+            // add JDK moduleDependencies to loose artifacts
             if (artifact.visibilityType() == VisibilityType.LOOSE) {
-                Set<String> jdkModules = JDKUtils.getJDKModuleNames();
-                for (String module : jdkModules) {
-                    if (modules.contains(module) == false) {
-                        DependencySpec ds = getJDKDependency(module);
+                for (String module : JDKUtils.getJDKModuleNames()) {
+                    if (moduleDependencies.contains(module) == false) {
+                        DependencySpec ds = SYSTEM_DEPENDENCIES.get(module);
                         builder.addDependency(ds);
                         // no need to track system deps -- cannot be updated anyway
                     }
@@ -283,40 +299,25 @@ public class CeylonModuleLoader extends ModuleLoader {
     }
 
     /**
-     * Get JDK dependency.
-     *
-     * @param name the module name
-     * @return dependency spec
-     */
-    DependencySpec getJDKDependency(String name) {
-        Set<String> paths = JDKUtils.getJDKPathsByModule(name);
-        return DependencySpec.createSystemDependencySpec(paths);
-    }
-
-    /**
      * Create module dependency from import.
      *
      * @param i the import
      * @return new module dependency
      */
     DependencySpec createModuleDependency(ArtifactResult i) {
-        final String name = i.name();
-        if (JDKUtils.isJDKModule(name)) {
-            return getJDKDependency(name);
-        } else if (JDKUtils.isOracleJDKModule(name)) {
-            Set<String> paths = JDKUtils.getOracleJDKPathsByModule(name);
-            return DependencySpec.createSystemDependencySpec(paths);
-        } else {
-            final ModuleIdentifier mi = createModuleIdentifier(i);
-            final boolean export = (i.importType() == ImportType.EXPORT);
-            return DependencySpec.createModuleDependencySpec(
-                    PathFilters.getDefaultImportFilterWithServices(), // import everything?
-                    (export ? PathFilters.acceptAll() : PathFilters.rejectAll()),
-                    this,
-                    mi,
-                    i.importType() == ImportType.OPTIONAL
-            );
-        }
+        final DependencySpec dependencySpec = SYSTEM_DEPENDENCIES.get(i.name());
+        if (dependencySpec != null)
+            return dependencySpec;
+
+        final ModuleIdentifier mi = createModuleIdentifier(i);
+        final boolean export = (i.importType() == ImportType.EXPORT);
+        return DependencySpec.createModuleDependencySpec(
+                PathFilters.getDefaultImportFilterWithServices(), // import everything?
+                (export ? PathFilters.acceptAll() : PathFilters.rejectAll()),
+                this,
+                mi,
+                i.importType() == ImportType.OPTIONAL
+        );
     }
 
     /**
