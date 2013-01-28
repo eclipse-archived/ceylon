@@ -73,7 +73,7 @@ public class PhasedUnit {
         this.pathRelativeToSrcDir = Helper.computeRelativePath(unitFile, srcDir);
         this.moduleManager = moduleManager;
         this.tokens = tokenStream;
-        unit = new Unit();
+        unit = createUnit();
         unit.setFilename(fileName);
         unit.setFullPath(unitFile.getPath());
         unit.setRelativePath(pathRelativeToSrcDir);
