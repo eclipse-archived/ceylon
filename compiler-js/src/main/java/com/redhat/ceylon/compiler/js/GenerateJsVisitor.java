@@ -567,7 +567,8 @@ public class GenerateJsVisitor extends Visitor
         endLine();
         declareSelf(d);
         if (withTargs) {
-            self(d); out(".$$targs$$=$$targs$$;"); endLine();
+            out(clAlias, "set_type_args(");
+            self(d); out(",$$targs$$);"); endLine();
         } else {
             //Check if any of the satisfied types have type arguments
             if (that.getSatisfiedTypes() != null) {
@@ -683,7 +684,20 @@ public class GenerateJsVisitor extends Visitor
                 self(d);
                 out(");");
                 endLine();
-                
+                //Set the reified types from interfaces
+                Map<TypeParameter, ProducedType> reifs = st.getTypeModel().getTypeArguments();
+                if (reifs != null && !reifs.isEmpty()) {
+                    for (Map.Entry<TypeParameter, ProducedType> e : reifs.entrySet()) {
+                        if (e.getValue().getDeclaration() instanceof ClassOrInterface) {
+                            out(clAlias, "add_type_arg(");
+                            self(d);
+                            out(",'", e.getKey().getName(), "',");
+                            TypeUtils.typeNameOrList(that, e.getValue(), this, true);
+                            out(");");
+                            endLine();
+                        }
+                    }
+                }
                 copySuperMembers(typeDecl, superDecs, d);
             }
         }
@@ -1848,7 +1862,11 @@ public class GenerateJsVisitor extends Visitor
             if (fromNative) {
                 // conversion from native value to Ceylon value
                 if (fromTypeName.equals("ceylon.language::String")) {
-                    out(clAlias, "String(");
+                    if (JsCompiler.compilingLanguageModule) {
+                        out("String$(");
+                    } else {
+                        out(clAlias, "String(");
+                    }
                 } else if (fromTypeName.equals("ceylon.language::Integer")) {
                     out("(");
                 } else if (fromTypeName.equals("ceylon.language::Float")) {
