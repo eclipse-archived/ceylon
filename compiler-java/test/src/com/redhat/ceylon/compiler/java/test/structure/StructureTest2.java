@@ -332,7 +332,12 @@ public class StructureTest2 extends CompilerTest {
     public void testCncInterfaceMethodDefaultedParameter(){
         compareWithJavaSource("concrete/InterfaceMethodDefaultedParameter");
     }
-    
+
+    @Test
+    public void testCncInterfaceErasure(){
+        compareWithJavaSource("concrete/InterfaceErasure");
+    }
+
     @Test
     public void testCncConcreteMethodBySpecification(){
         compareWithJavaSource("concrete/ConcreteMethodBySpecification");
