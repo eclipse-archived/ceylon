@@ -2874,79 +2874,23 @@ public class ExpressionVisitor extends Visitor {
             return null;
         }
     }
-
+    
     private void visitArithmeticOperator(Tree.BinaryOperatorExpression that, 
             TypeDeclaration type) {
         ProducedType lhst = leftType(that);
         ProducedType rhst = rightType(that);
         if ( rhst!=null && lhst!=null ) {
-            ProducedType lhsst = checkSupertype(lhst, type, that.getLeftTerm(), 
+            ProducedType nt = checkSupertype(lhst, type, that.getLeftTerm(), 
                     "operand expression must be of numeric type");
-            ProducedType rhsst = checkSupertype(rhst, type, that.getRightTerm(), 
-                    "operand expression must be of numeric type");
-            if (rhsst!=null && lhsst!=null) {
-                rhst = rhsst.getTypeArgumentList().get(0);
-                lhst = lhsst.getTypeArgumentList().get(0);
-                //find the common type to which arguments
-                //can be widened, according to Castable
-                ProducedType rt;
-                ProducedType st;
-                if (lhst.isSubtypeOf(unit.getCastableType(lhst)) &&
-                        rhst.isSubtypeOf(unit.getCastableType(lhst))) {
-                    //the lhs has a wider type
-                    rt = lhst;
-                    st = lhsst;
-                }
-                else if (lhst.isSubtypeOf(unit.getCastableType(rhst)) && 
-                        rhst.isSubtypeOf(unit.getCastableType(rhst))) {
-                    //the rhs has a wider type
-                    rt = rhst;
-                    st = rhsst;
-                }
-                else if (lhst.isExactly(rhst)) { 
-                    //in case the args don't implement Castable at all, but
-                    //they are exactly the same type, so no promotion is 
-                    //necessary - note the language spec does not actually 
-                    //bless this at present
-                    rt = lhst;
-                    st = lhsst;
-                }
-                else {
-                    that.addError("operand expressions must be promotable to common numeric type: " + 
-                            lhst.getProducedTypeName(unit) + " and " + 
-                            rhst.getProducedTypeName(unit));
-                    return;
-                }
-                checkAssignable(rt, producedType(type, rt), that, 
+            if (nt!=null) {
+                ProducedType ot = nt.getTypeArgumentList().get(0);
+                checkAssignable(rhst, ot, that, 
                         "operands must be of compatible numeric type");
-                that.setTypeModel(rt);
+                that.setTypeModel(ot);
             }
         }
     }
-
-    private void visitPowerOperator(Tree.BinaryOperatorExpression that) {
-        ProducedType lhst = leftType(that);
-        ProducedType rhst = rightType(that);
-        if ( rhst!=null && lhst!=null ) {
-            ProducedType lhsst = checkSupertype(lhst, unit.getExponentiableDeclaration(), 
-                    that.getLeftTerm(), "operand expression must be of exponentiable type");
-            /*ProducedType rhsst = checkOperandType(rhst, unit.getNumericDeclaration(), 
-                    that.getRightTerm(), "operand expression must be of numeric type");*/
-            if (/*rhsst!=null &&*/lhsst!=null) {
-                //rhst = rhsst.getTypeArgumentList().get(0);
-                lhst = lhsst.getTypeArgumentList().get(0);
-                that.setTypeModel(lhst);
-                ProducedType powt = lhsst.getTypeArgumentList().get(1);
-                if (!rhst.isSubtypeOf(unit.getCastableType(powt)) &&
-                        !rhst.isSubtypeOf(powt)) { //note the language spec does not actually bless this
-                    that.getRightTerm().addError("operand expression must be promotable to exponent type: " + 
-                            rhst.getProducedTypeName(unit) + " is not promotable to " +
-                            powt.getProducedTypeName(unit));
-                }
-            }
-        }
-    }
-
+    
     private void visitArithmeticAssignOperator(Tree.BinaryOperatorExpression that, 
             TypeDeclaration type) {
         ProducedType lhst = leftType(that);
@@ -2958,18 +2902,14 @@ public class ExpressionVisitor extends Visitor {
             if (nt!=null) {
                 ProducedType t = nt.getTypeArgumentList().get(0);
                 //that.setTypeModel(t); //stef requests lhst to make it easier on backend
-                if (!rhst.isSubtypeOf(unit.getCastableType(t)) &&
-                        !rhst.isSubtypeOf(lhst)) { //note the language spec does not actually bless this
-                    that.getRightTerm().addError("operand expression must be promotable to declared type: " + 
-                            rhst.getProducedTypeName(unit) + " is not promotable to " +
-                            nt.getProducedTypeName(unit));
-                }
+                checkAssignable(rhst, t, that, 
+                        "operands must be of compatible numeric type");
                 checkAssignable(t, lhst, that, 
                         "result type must be assignable to declared type");
             }
         }
     }
-
+    
     private void visitSetOperator(Tree.BitwiseOp that) {
         //TypeDeclaration sd = unit.getSetDeclaration();
         ProducedType lhst = leftType(that);
@@ -3213,15 +3153,13 @@ public class ExpressionVisitor extends Visitor {
     
     @Override public void visit(Tree.ArithmeticOp that) {
         super.visit(that);
-        if (that instanceof Tree.PowerOp) {
-            visitPowerOperator(that);
-        }
-        else {
-            visitArithmeticOperator(that, getArithmeticDeclaration(that));
-        }
+        visitArithmeticOperator(that, getArithmeticDeclaration(that));
     }
 
     private Interface getArithmeticDeclaration(Tree.ArithmeticOp that) {
+        if (that instanceof Tree.PowerOp) {
+            return unit.getExponentiableDeclaration();
+        }
         if (that instanceof Tree.SumOp) {
             return unit.getSummableDeclaration();
         }

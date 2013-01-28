@@ -286,10 +286,6 @@ public class Unit {
         return (Interface) getLanguageModuleDeclaration("Callable");
     }
     
-    public Interface getCastableDeclaration() {
-        return (Interface) getLanguageModuleDeclaration("Castable");
-    }
-    
     public Interface getSummableDeclaration() {
         return (Interface) getLanguageModuleDeclaration("Summable");
     }
@@ -526,10 +522,6 @@ public class Unit {
      */
     public ProducedType getRangeType(ProducedType rt) {
         return Util.producedType(getRangeDeclaration(), rt);
-    }
-
-    public ProducedType getCastableType(ProducedType et) {
-        return producedType(getCastableDeclaration(), et);
     }
 
     public ProducedType getEntryType(ProducedType kt, ProducedType vt) {
