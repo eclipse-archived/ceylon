@@ -249,11 +249,9 @@ interface EC_ErasedMember<Element, Absent>
     shared default Absent|Element attr => nothing;
     shared default Absent|Element m() => nothing;
     
-    // FIXME: bug
-    //shared default void defaultedParams(Absent|Element p = nothing){}
+    shared default void defaultedParams(Absent|Element p = nothing){}
     
-    // FIXME: bug
-    //shared default class Class(Absent|Element p = nothing){}
+    shared default class Class(Absent|Element p = nothing){}
 }
 
 @nomodel

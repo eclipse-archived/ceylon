@@ -362,6 +362,18 @@ interface EC_ErasedMember<Element, Absent> {
     public .java.lang.Object getAttr();
     
     public .java.lang.Object m();
+    
+    public .java.lang.Object defaultedParams();
+    
+    public abstract .java.lang.Object defaultedParams$p();
+    
+    public .java.lang.Object defaultedParams(final .java.lang.Object p);
+    
+    public .com.redhat.ceylon.compiler.java.test.expression.erasure.EC_ErasedMember$impl<Element, Absent>.Class Class$new(final .java.lang.Object p);
+    
+    public abstract .java.lang.Object $Class$init$p();
+    
+    public .com.redhat.ceylon.compiler.java.test.expression.erasure.EC_ErasedMember$impl<Element, Absent>.Class Class$new();
 }
 final class EC_ErasedMember$impl<Element, Absent> {
     
@@ -376,6 +388,48 @@ final class EC_ErasedMember$impl<Element, Absent> {
     
     public .java.lang.Object m() {
         return .ceylon.language.nothing_.getNothing$();
+    }
+    
+    public final .java.lang.Object defaultedParams() {
+        return (
+            let
+            {
+                .java.lang.Object $ceylontmp$p$22 = defaultedParams$p();
+            }
+            returning defaultedParams($ceylontmp$p$22);
+        );
+    }
+    
+    public final .java.lang.Object defaultedParams$p() {
+        return .ceylon.language.nothing_.getNothing$();
+    }
+    
+    public .java.lang.Object defaultedParams(final .java.lang.Object p) {
+        return null;
+    }
+    
+    public .com.redhat.ceylon.compiler.java.test.expression.erasure.EC_ErasedMember$impl<Element, Absent>.Class Class$new(final .java.lang.Object p) {
+        return new Class(p);
+    }
+    
+    public final .java.lang.Object $Class$init$p() {
+        return .ceylon.language.nothing_.getNothing$();
+    }
+    
+    public .com.redhat.ceylon.compiler.java.test.expression.erasure.EC_ErasedMember$impl<Element, Absent>.Class Class$new() {
+        return (
+            let
+            {
+                .java.lang.Object $ceylontmp$p$30 = $Class$init$p();
+            }
+            returning new Class($ceylontmp$p$30);
+        );
+    }
+    
+    public class Class {
+        
+        protected Class(.java.lang.Object p) {
+        }
     }
 }
 class EC_ErasedMemberImpl<Element> implements .com.redhat.ceylon.compiler.java.test.expression.erasure.EC_ErasedMember<Element, .java.lang.Object> {
@@ -398,6 +452,36 @@ class EC_ErasedMemberImpl<Element> implements .com.redhat.ceylon.compiler.java.t
     @.java.lang.Override
     public Element m() {
         return (Element)$com$redhat$ceylon$compiler$java$test$expression$erasure$EC_ErasedMember$this.m();
+    }
+    
+    @.java.lang.Override
+    public final Element defaultedParams$p() {
+        return (Element)$com$redhat$ceylon$compiler$java$test$expression$erasure$EC_ErasedMember$this.defaultedParams$p();
+    }
+    
+    @.java.lang.Override
+    public final .java.lang.Object defaultedParams() {
+        return $com$redhat$ceylon$compiler$java$test$expression$erasure$EC_ErasedMember$this.defaultedParams();
+    }
+    
+    @.java.lang.Override
+    public .java.lang.Object defaultedParams(final .java.lang.Object p) {
+        return $com$redhat$ceylon$compiler$java$test$expression$erasure$EC_ErasedMember$this.defaultedParams(p);
+    }
+    
+    @.java.lang.Override
+    public final Element $Class$init$p() {
+        return (Element)$com$redhat$ceylon$compiler$java$test$expression$erasure$EC_ErasedMember$this.$Class$init$p();
+    }
+    
+    @.java.lang.Override
+    public final .com.redhat.ceylon.compiler.java.test.expression.erasure.EC_ErasedMember$impl<Element, .java.lang.Object>.Class Class$new() {
+        return $com$redhat$ceylon$compiler$java$test$expression$erasure$EC_ErasedMember$this.Class$new();
+    }
+    
+    @.java.lang.Override
+    public final .com.redhat.ceylon.compiler.java.test.expression.erasure.EC_ErasedMember$impl<Element, .java.lang.Object>.Class Class$new(final .java.lang.Object p) {
+        return $com$redhat$ceylon$compiler$java$test$expression$erasure$EC_ErasedMember$this.Class$new(p);
     }
     
     public static void main(.java.lang.String[] args) {
