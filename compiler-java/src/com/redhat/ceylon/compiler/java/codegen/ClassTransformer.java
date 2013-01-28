@@ -490,7 +490,7 @@ public class ClassTransformer extends AbstractTransformer {
                                     naming.selector(method), 
                                     parameters.subList(0, parameters.indexOf(param)),
                                     rawifyParametersAndResults,
-                                    param.getTypeErased());
+                                    ((Method) member).getTypeErased());
                             classBuilder.method(overload);
                         }
                     }
@@ -602,7 +602,7 @@ public class ClassTransformer extends AbstractTransformer {
                         instantiatorMethodName, 
                         parameters.subList(0, parameters.indexOf(param)),
                         rawifyParametersAndResults,
-                        param.getTypeErased());
+                        false);
                 classBuilder.method(overload);
             }
         }
