@@ -1,0 +1,25 @@
+package com.redhat.ceylon.compiler.java.test.issues.bug09xx;
+
+final class bug975_2_dontSort_ {
+    
+    private bug975_2_dontSort_() {
+    }
+    
+    static <Element extends .ceylon.language.Comparable<? super Element>>.ceylon.language.Sequential<? extends Element> bug975_2_dontSort(final .ceylon.language.Iterable<? extends Element, ? extends .java.lang.Object> elements) {
+        return elements.getSequence();
+    }
+}
+final class bug975_2_test_ {
+    
+    private bug975_2_test_() {
+    }
+    
+    static void bug975_2_test() {
+        .com.redhat.ceylon.compiler.java.test.issues.bug09xx.bug975_2_dontSort_.bug975_2_dontSort((.ceylon.language.Iterable).ceylon.language.empty_.getEmpty$());
+    }
+    
+    public static void main(.java.lang.String[] args) {
+        .ceylon.language.process_.getProcess$().setupArguments(args);
+        .com.redhat.ceylon.compiler.java.test.issues.bug09xx.bug975_2_test_.bug975_2_test();
+    }
+}
