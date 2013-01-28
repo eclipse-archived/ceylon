@@ -319,6 +319,14 @@ public class MethodDefinitionBuilder {
             nonWideningType = param.getType();
             nonWideningDecl = param;
         }
+        // make sure we don't accidentally narrow parameters that would be erased in the topmost declaration
+        // see 
+        TypedDeclaration refinedParameter = (TypedDeclaration)CodegenUtil.getTopmostRefinedDeclaration(param);
+        if(refinedParameter != param){
+            // if the supertype method itself got erased to Object, we can't do better than this
+            if(gen.willEraseToObject(refinedParameter.getType()) && !gen.willEraseToBestBounds(param))
+                nonWideningType = gen.typeFact().getObjectDeclaration().getType();
+        }
         return parameter(mods, paramName, aliasedName, param, nonWideningDecl, nonWideningType, flags);
     }
 
