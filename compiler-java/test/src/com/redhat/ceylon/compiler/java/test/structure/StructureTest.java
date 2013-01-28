@@ -466,6 +466,10 @@ public class StructureTest extends CompilerTest {
     public void testMethodInitializerParameter() {
         compareWithJavaSource("method/MethodInitializerParameter");
     }
+    @Test
+    public void testMethodRefinementAndVarianceEdgeCases() {
+        compareWithJavaSource("method/MethodRefinementAndVarianceEdgeCases");
+    }
 
     //
     // Aliases
