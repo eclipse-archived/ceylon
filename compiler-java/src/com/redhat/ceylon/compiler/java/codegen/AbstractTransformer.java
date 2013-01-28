@@ -1252,7 +1252,9 @@ public abstract class AbstractTransformer implements Transformation {
                 }
             }
             
-            if (isOptional(ta)) {
+            // Null will claim to be optional, but if we get its non-null type we will land with Nothing, which is not what
+            // we want, so we make sure it's not Null
+            if (isOptional(ta) && !isNull(ta)) {
                 // For an optional type T?:
                 // - The Ceylon type Foo<T?> results in the Java type Foo<T>.
                 ta = getNonNullType(ta);
