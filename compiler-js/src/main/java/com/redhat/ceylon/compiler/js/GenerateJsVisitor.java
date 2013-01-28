@@ -1067,9 +1067,10 @@ public class GenerateJsVisitor extends Visitor
 
     @Override
     public void visit(MethodDefinition that) {
+        Method d = that.getDeclarationModel();
         //Don't even bother with nodes that have errors
         if (that.getErrors() != null && !that.getErrors().isEmpty()) return;
-        if (!(prototypeStyle && that.getDeclarationModel().isClassOrInterfaceMember())) {
+        if (!((prototypeStyle && that.getDeclarationModel().isClassOrInterfaceMember()) || isNative(d))) {
             comment(that);
             methodDefinition(that);
         }
