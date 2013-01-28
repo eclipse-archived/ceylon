@@ -17,6 +17,7 @@ import com.redhat.ceylon.compiler.typechecker.model.Unit;
 import com.redhat.ceylon.compiler.typechecker.tree.Message;
 import com.redhat.ceylon.compiler.typechecker.tree.Node;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree;
+import com.redhat.ceylon.compiler.typechecker.tree.Tree.AnonymousAnnotation;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.Expression;
 import com.redhat.ceylon.compiler.typechecker.tree.Visitor;
 
@@ -356,6 +357,13 @@ class Util {
 
     static void buildAnnotations(Tree.AnnotationList al, List<Annotation> annotations) {
         if (al!=null) {
+            AnonymousAnnotation aa = al.getAnonymousAnnotation();
+            if (aa!=null) {
+                Annotation ann = new Annotation();
+                ann.setName("doc");
+                ann.addPositionalArgment(aa.getStringLiteral().getText());
+                annotations.add(ann);
+            }
             for (Tree.Annotation a: al.getAnnotations()) {
                 Annotation ann = new Annotation();
                 String name = ( (Tree.BaseMemberExpression) a.getPrimary() ).getIdentifier().getText();

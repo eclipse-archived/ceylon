@@ -1021,7 +1021,7 @@ declaration returns [Declaration declaration]
     ;*/
 
 annotatedDeclarationStart
-    : annotation* declarationStart
+    : STRING_LITERAL? annotation* declarationStart
     ;
 
 annotatedAssertionStart
@@ -2497,6 +2497,13 @@ typeNameWithArguments returns [Identifier identifier, TypeArgumentList typeArgum
     
 annotations returns [AnnotationList annotationList]
     : { $annotationList = new AnnotationList(null); }
+      (
+          STRING_LITERAL
+          { AnonymousAnnotation aa = new AnonymousAnnotation(null);
+            aa.setStringLiteral(new StringLiteral($STRING_LITERAL));
+            $annotationList.setAnonymousAnnotation(aa);
+            $STRING_LITERAL.setType(ASTRING_LITERAL); }
+      )?
       (
         annotation 
         { $annotationList.addAnnotation($annotation.annotation); }
