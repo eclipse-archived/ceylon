@@ -5,7 +5,7 @@ final class bug641_ {
     private bug641_() {
     }
     
-    static void bug641(final .ceylon.language.Set<? extends .ceylon.language.Integer> a, final .ceylon.language.Set<?> b) {
+    static void bug641(final .ceylon.language.Set<? extends .ceylon.language.Integer> a, final .ceylon.language.Set<? extends .java.lang.Object> b) {
         final .ceylon.language.Set<? extends .ceylon.language.Integer> foo1 = (.ceylon.language.Set<? extends .ceylon.language.Integer>)a.union((.ceylon.language.Set)b);
         final .ceylon.language.Set<? extends .ceylon.language.Integer> foo2 = (.ceylon.language.Set<? extends .ceylon.language.Integer>)a.intersection((.ceylon.language.Set)b);
         final .ceylon.language.Set<? extends .ceylon.language.Integer> foo3 = (.ceylon.language.Set<? extends .ceylon.language.Integer>)a.exclusiveUnion((.ceylon.language.Set)b);

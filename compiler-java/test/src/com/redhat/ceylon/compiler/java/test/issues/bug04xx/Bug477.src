@@ -80,7 +80,7 @@ abstract class Bug477_1<T> implements .ceylon.language.List<T> {
     }
     
     @.java.lang.Override
-    public .ceylon.language.Iterable<? extends T, ?> getRest() {
+    public .ceylon.language.Iterable<? extends T, ? extends .java.lang.Object> getRest() {
         return $ceylon$language$Iterable$this.getRest();
     }
     
@@ -90,12 +90,12 @@ abstract class Bug477_1<T> implements .ceylon.language.List<T> {
     }
     
     @.java.lang.Override
-    public <Result>.ceylon.language.Iterable<? extends Result, ?> map(final .ceylon.language.Callable<? extends Result> collecting) {
+    public <Result>.ceylon.language.Iterable<? extends Result, ? extends .java.lang.Object> map(final .ceylon.language.Callable<? extends Result> collecting) {
         return $ceylon$language$Iterable$this.map(collecting);
     }
     
     @.java.lang.Override
-    public .ceylon.language.Iterable<? extends T, ?> filter(final .ceylon.language.Callable<? extends .ceylon.language.Boolean> selecting) {
+    public .ceylon.language.Iterable<? extends T, ? extends .java.lang.Object> filter(final .ceylon.language.Callable<? extends .ceylon.language.Boolean> selecting) {
         return $ceylon$language$Iterable$this.filter(selecting);
     }
     
@@ -140,17 +140,17 @@ abstract class Bug477_1<T> implements .ceylon.language.List<T> {
     }
     
     @.java.lang.Override
-    public .ceylon.language.Iterable<? extends T, ?> skipping(final long skip) {
+    public .ceylon.language.Iterable<? extends T, ? extends .java.lang.Object> skipping(final long skip) {
         return $ceylon$language$Iterable$this.skipping(skip);
     }
     
     @.java.lang.Override
-    public .ceylon.language.Iterable<? extends T, ?> taking(final long take) {
+    public .ceylon.language.Iterable<? extends T, ? extends .java.lang.Object> taking(final long take) {
         return $ceylon$language$Iterable$this.taking(take);
     }
     
     @.java.lang.Override
-    public .ceylon.language.Iterable<? extends T, ?> by(final long step) {
+    public .ceylon.language.Iterable<? extends T, ? extends .java.lang.Object> by(final long step) {
         return $ceylon$language$Iterable$this.by(step);
     }
     
@@ -160,18 +160,18 @@ abstract class Bug477_1<T> implements .ceylon.language.List<T> {
     }
     
     @.java.lang.Override
-    public .ceylon.language.Iterable<? extends T, ?> getCoalesced() {
+    public .ceylon.language.Iterable<? extends T, ? extends .java.lang.Object> getCoalesced() {
         return $ceylon$language$Iterable$this.getCoalesced();
     }
     
     @.java.lang.Override
-    public .ceylon.language.Iterable<? extends .ceylon.language.Entry<? extends .ceylon.language.Integer, ? extends T>, ?> getIndexed() {
+    public .ceylon.language.Iterable<? extends .ceylon.language.Entry<? extends .ceylon.language.Integer, ? extends T>, ? extends .java.lang.Object> getIndexed() {
         return $ceylon$language$Iterable$this.getIndexed();
     }
     
     @.java.lang.Override
-    public <Other>.ceylon.language.Iterable<? extends .java.lang.Object, ?> chain(final .ceylon.language.Iterable<? extends Other, ?> other) {
-        return (.ceylon.language.Iterable<? extends .java.lang.Object, ?>)(.ceylon.language.Iterable)$ceylon$language$Iterable$this.chain(other);
+    public <Other>.ceylon.language.Iterable<? extends .java.lang.Object, ? extends .java.lang.Object> chain(final .ceylon.language.Iterable<? extends Other, ? extends .java.lang.Object> other) {
+        return (.ceylon.language.Iterable<? extends .java.lang.Object, ? extends .java.lang.Object>)(.ceylon.language.Iterable)$ceylon$language$Iterable$this.chain(other);
     }
     protected final .ceylon.language.Container$impl<T, .java.lang.Object> $ceylon$language$Container$this;
     
@@ -187,12 +187,12 @@ abstract class Bug477_1<T> implements .ceylon.language.List<T> {
     }
     
     @.java.lang.Override
-    public boolean containsEvery(final .ceylon.language.Iterable<? extends .java.lang.Object, ?> elements) {
+    public boolean containsEvery(final .ceylon.language.Iterable<? extends .java.lang.Object, ? extends .java.lang.Object> elements) {
         return $ceylon$language$Category$this.containsEvery(elements);
     }
     
     @.java.lang.Override
-    public boolean containsAny(final .ceylon.language.Iterable<? extends .java.lang.Object, ?> elements) {
+    public boolean containsAny(final .ceylon.language.Iterable<? extends .java.lang.Object, ? extends .java.lang.Object> elements) {
         return $ceylon$language$Category$this.containsAny(elements);
     }
     protected final .ceylon.language.Cloneable$impl<.ceylon.language.Collection<? extends T>> $ceylon$language$Cloneable$this;
@@ -214,17 +214,17 @@ abstract class Bug477_1<T> implements .ceylon.language.List<T> {
     }
     
     @.java.lang.Override
-    public boolean definesEvery(final .ceylon.language.Iterable<? extends .ceylon.language.Integer, ?> keys) {
+    public boolean definesEvery(final .ceylon.language.Iterable<? extends .ceylon.language.Integer, ? extends .java.lang.Object> keys) {
         return $ceylon$language$Correspondence$this.definesEvery(keys);
     }
     
     @.java.lang.Override
-    public boolean definesAny(final .ceylon.language.Iterable<? extends .ceylon.language.Integer, ?> keys) {
+    public boolean definesAny(final .ceylon.language.Iterable<? extends .ceylon.language.Integer, ? extends .java.lang.Object> keys) {
         return $ceylon$language$Correspondence$this.definesAny(keys);
     }
     
     @.java.lang.Override
-    public .ceylon.language.Sequential<? extends T> items(final .ceylon.language.Iterable<? extends .ceylon.language.Integer, ?> keys) {
+    public .ceylon.language.Sequential<? extends T> items(final .ceylon.language.Iterable<? extends .ceylon.language.Integer, ? extends .java.lang.Object> keys) {
         return $ceylon$language$Correspondence$this.items(keys);
     }
     protected final .ceylon.language.Ranged$impl<.ceylon.language.Integer, .ceylon.language.List<? extends T>> $ceylon$language$Ranged$this;
@@ -337,7 +337,7 @@ abstract class Bug477_2<T> implements .ceylon.language.List<T> {
     }
     
     @.java.lang.Override
-    public .ceylon.language.Iterable<? extends T, ?> getRest() {
+    public .ceylon.language.Iterable<? extends T, ? extends .java.lang.Object> getRest() {
         return $ceylon$language$Iterable$this.getRest();
     }
     
@@ -347,12 +347,12 @@ abstract class Bug477_2<T> implements .ceylon.language.List<T> {
     }
     
     @.java.lang.Override
-    public <Result>.ceylon.language.Iterable<? extends Result, ?> map(final .ceylon.language.Callable<? extends Result> collecting) {
+    public <Result>.ceylon.language.Iterable<? extends Result, ? extends .java.lang.Object> map(final .ceylon.language.Callable<? extends Result> collecting) {
         return $ceylon$language$Iterable$this.map(collecting);
     }
     
     @.java.lang.Override
-    public .ceylon.language.Iterable<? extends T, ?> filter(final .ceylon.language.Callable<? extends .ceylon.language.Boolean> selecting) {
+    public .ceylon.language.Iterable<? extends T, ? extends .java.lang.Object> filter(final .ceylon.language.Callable<? extends .ceylon.language.Boolean> selecting) {
         return $ceylon$language$Iterable$this.filter(selecting);
     }
     
@@ -397,17 +397,17 @@ abstract class Bug477_2<T> implements .ceylon.language.List<T> {
     }
     
     @.java.lang.Override
-    public .ceylon.language.Iterable<? extends T, ?> skipping(final long skip) {
+    public .ceylon.language.Iterable<? extends T, ? extends .java.lang.Object> skipping(final long skip) {
         return $ceylon$language$Iterable$this.skipping(skip);
     }
     
     @.java.lang.Override
-    public .ceylon.language.Iterable<? extends T, ?> taking(final long take) {
+    public .ceylon.language.Iterable<? extends T, ? extends .java.lang.Object> taking(final long take) {
         return $ceylon$language$Iterable$this.taking(take);
     }
     
     @.java.lang.Override
-    public .ceylon.language.Iterable<? extends T, ?> by(final long step) {
+    public .ceylon.language.Iterable<? extends T, ? extends .java.lang.Object> by(final long step) {
         return $ceylon$language$Iterable$this.by(step);
     }
     
@@ -417,18 +417,18 @@ abstract class Bug477_2<T> implements .ceylon.language.List<T> {
     }
     
     @.java.lang.Override
-    public .ceylon.language.Iterable<? extends T, ?> getCoalesced() {
+    public .ceylon.language.Iterable<? extends T, ? extends .java.lang.Object> getCoalesced() {
         return $ceylon$language$Iterable$this.getCoalesced();
     }
     
     @.java.lang.Override
-    public .ceylon.language.Iterable<? extends .ceylon.language.Entry<? extends .ceylon.language.Integer, ? extends T>, ?> getIndexed() {
+    public .ceylon.language.Iterable<? extends .ceylon.language.Entry<? extends .ceylon.language.Integer, ? extends T>, ? extends .java.lang.Object> getIndexed() {
         return $ceylon$language$Iterable$this.getIndexed();
     }
     
     @.java.lang.Override
-    public <Other>.ceylon.language.Iterable<? extends .java.lang.Object, ?> chain(final .ceylon.language.Iterable<? extends Other, ?> other) {
-        return (.ceylon.language.Iterable<? extends .java.lang.Object, ?>)(.ceylon.language.Iterable)$ceylon$language$Iterable$this.chain(other);
+    public <Other>.ceylon.language.Iterable<? extends .java.lang.Object, ? extends .java.lang.Object> chain(final .ceylon.language.Iterable<? extends Other, ? extends .java.lang.Object> other) {
+        return (.ceylon.language.Iterable<? extends .java.lang.Object, ? extends .java.lang.Object>)(.ceylon.language.Iterable)$ceylon$language$Iterable$this.chain(other);
     }
     protected final .ceylon.language.Container$impl<T, .java.lang.Object> $ceylon$language$Container$this;
     
@@ -444,12 +444,12 @@ abstract class Bug477_2<T> implements .ceylon.language.List<T> {
     }
     
     @.java.lang.Override
-    public boolean containsEvery(final .ceylon.language.Iterable<? extends .java.lang.Object, ?> elements) {
+    public boolean containsEvery(final .ceylon.language.Iterable<? extends .java.lang.Object, ? extends .java.lang.Object> elements) {
         return $ceylon$language$Category$this.containsEvery(elements);
     }
     
     @.java.lang.Override
-    public boolean containsAny(final .ceylon.language.Iterable<? extends .java.lang.Object, ?> elements) {
+    public boolean containsAny(final .ceylon.language.Iterable<? extends .java.lang.Object, ? extends .java.lang.Object> elements) {
         return $ceylon$language$Category$this.containsAny(elements);
     }
     protected final .ceylon.language.Cloneable$impl<.ceylon.language.Collection<? extends T>> $ceylon$language$Cloneable$this;
@@ -471,17 +471,17 @@ abstract class Bug477_2<T> implements .ceylon.language.List<T> {
     }
     
     @.java.lang.Override
-    public boolean definesEvery(final .ceylon.language.Iterable<? extends .ceylon.language.Integer, ?> keys) {
+    public boolean definesEvery(final .ceylon.language.Iterable<? extends .ceylon.language.Integer, ? extends .java.lang.Object> keys) {
         return $ceylon$language$Correspondence$this.definesEvery(keys);
     }
     
     @.java.lang.Override
-    public boolean definesAny(final .ceylon.language.Iterable<? extends .ceylon.language.Integer, ?> keys) {
+    public boolean definesAny(final .ceylon.language.Iterable<? extends .ceylon.language.Integer, ? extends .java.lang.Object> keys) {
         return $ceylon$language$Correspondence$this.definesAny(keys);
     }
     
     @.java.lang.Override
-    public .ceylon.language.Sequential<? extends T> items(final .ceylon.language.Iterable<? extends .ceylon.language.Integer, ?> keys) {
+    public .ceylon.language.Sequential<? extends T> items(final .ceylon.language.Iterable<? extends .ceylon.language.Integer, ? extends .java.lang.Object> keys) {
         return $ceylon$language$Correspondence$this.items(keys);
     }
     protected final .ceylon.language.Ranged$impl<.ceylon.language.Integer, .ceylon.language.List<? extends T>> $ceylon$language$Ranged$this;

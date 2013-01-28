@@ -24,10 +24,10 @@ class MethodIfExists2dArray {
     }
     
     private final void nulls() {
-        final .ceylon.language.Array<.ceylon.language.Array<?>> t = .ceylon.language.arrayOfSize_.<.ceylon.language.Array<?>>arrayOfSize(.ceylon.language.Array.class, 2L, .ceylon.language.arrayOfSize_.arrayOfSize(.java.lang.Object.class, 2L, null));
-        .ceylon.language.Array<?> $r$7;
+        final .ceylon.language.Array<.ceylon.language.Array<.java.lang.Object>> t = .ceylon.language.arrayOfSize_.<.ceylon.language.Array<.java.lang.Object>>arrayOfSize(.ceylon.language.Array.class, 2L, .ceylon.language.arrayOfSize_.arrayOfSize(.java.lang.Object.class, 2L, null));
+        .ceylon.language.Array<.java.lang.Object> $r$7;
         if (($r$7 = t.get(.ceylon.language.Integer.instance(0L))) != null) {
-            final .ceylon.language.Array<?> $r$8 = $r$7;
+            final .ceylon.language.Array<.java.lang.Object> $r$8 = $r$7;
             $r$8.setItem(0L, null);
         }
     }

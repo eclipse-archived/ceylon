@@ -42,7 +42,7 @@ interface Bug627Abstract {
     
     public .com.redhat.ceylon.compiler.java.test.issues.bug06xx.Bug627Abstract$impl $com$redhat$ceylon$compiler$java$test$issues$bug06xx$Bug627Abstract$impl();
     
-    public abstract .ceylon.language.Iterable<? extends .com.redhat.ceylon.compiler.java.test.issues.bug06xx.Bug627Enum, ?> elements();
+    public abstract .ceylon.language.Iterable<? extends .com.redhat.ceylon.compiler.java.test.issues.bug06xx.Bug627Enum, ? extends .java.lang.Object> elements();
 }
 final class Bug627Abstract$impl {
     
@@ -64,8 +64,8 @@ class Bug627Concrete implements .com.redhat.ceylon.compiler.java.test.issues.bug
     }
     
     @.java.lang.Override
-    public final .ceylon.language.Iterable<? extends .com.redhat.ceylon.compiler.java.test.issues.bug06xx.Bug627Enum, ?> elements() {
-        return (.ceylon.language.Iterable<? extends .com.redhat.ceylon.compiler.java.test.issues.bug06xx.Bug627Enum, ?>)(.ceylon.language.Iterable).ceylon.language.empty_.getEmpty$();
+    public final .ceylon.language.Iterable<? extends .com.redhat.ceylon.compiler.java.test.issues.bug06xx.Bug627Enum, ? extends .java.lang.Object> elements() {
+        return (.ceylon.language.Iterable<? extends .com.redhat.ceylon.compiler.java.test.issues.bug06xx.Bug627Enum, ? extends .java.lang.Object>)(.ceylon.language.Iterable).ceylon.language.empty_.getEmpty$();
     }
     
     public static void main(.java.lang.String[] args) {

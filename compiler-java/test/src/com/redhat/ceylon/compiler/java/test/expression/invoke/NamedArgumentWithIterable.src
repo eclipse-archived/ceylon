@@ -5,13 +5,13 @@ class NamedArgumentWithIterable {
     NamedArgumentWithIterable() {
     }
     
-    private final void m(final long a, final .ceylon.language.Iterable<? extends .ceylon.language.Integer, ?> b) {
+    private final void m(final long a, final .ceylon.language.Iterable<? extends .ceylon.language.Integer, ? extends .java.lang.Object> b) {
     }
     
-    private final void m2(final .java.lang.Throwable a, final .ceylon.language.Iterable<? extends .java.lang.Throwable, ?> b) {
+    private final void m2(final .java.lang.Throwable a, final .ceylon.language.Iterable<? extends .java.lang.Throwable, ? extends .java.lang.Object> b) {
     }
     
-    private final void m3(final .com.redhat.ceylon.compiler.java.test.expression.invoke.NamedArgumentWithIterable a, final .ceylon.language.Iterable<? extends .com.redhat.ceylon.compiler.java.test.expression.invoke.NamedArgumentWithIterable, ?> b) {
+    private final void m3(final .com.redhat.ceylon.compiler.java.test.expression.invoke.NamedArgumentWithIterable a, final .ceylon.language.Iterable<? extends .com.redhat.ceylon.compiler.java.test.expression.invoke.NamedArgumentWithIterable, ? extends .java.lang.Object> b) {
     }
     
     private final void invoke() {
@@ -28,7 +28,7 @@ class NamedArgumentWithIterable {
             let
             {
                 long $arg$1$0 = 1L;
-                .ceylon.language.Iterable $arg$1$1 = .com.redhat.ceylon.compiler.java.language.ArrayIterable.<.ceylon.language.Integer>instance((.ceylon.language.Iterable<? extends .ceylon.language.Integer, ?>)(.ceylon.language.Iterable)new .ceylon.language.Tuple<.ceylon.language.Integer, .ceylon.language.Integer, .ceylon.language.Tuple<.ceylon.language.Integer, ? extends .ceylon.language.Integer, ? extends .ceylon.language.Empty>>(.ceylon.language.Integer.instance(4L), new .ceylon.language.Tuple<.ceylon.language.Integer, .ceylon.language.Integer, .ceylon.language.Empty>(.ceylon.language.Integer.instance(5L), .ceylon.language.empty_.getEmpty$())));
+                .ceylon.language.Iterable $arg$1$1 = .com.redhat.ceylon.compiler.java.language.ArrayIterable.<.ceylon.language.Integer>instance((.ceylon.language.Iterable<? extends .ceylon.language.Integer, ? extends .java.lang.Object>)(.ceylon.language.Iterable)new .ceylon.language.Tuple<.ceylon.language.Integer, .ceylon.language.Integer, .ceylon.language.Tuple<.ceylon.language.Integer, ? extends .ceylon.language.Integer, ? extends .ceylon.language.Empty>>(.ceylon.language.Integer.instance(4L), new .ceylon.language.Tuple<.ceylon.language.Integer, .ceylon.language.Integer, .ceylon.language.Empty>(.ceylon.language.Integer.instance(5L), .ceylon.language.empty_.getEmpty$())));
                 m($arg$1$0, $arg$1$1);
             }
             returning null;
@@ -46,7 +46,7 @@ class NamedArgumentWithIterable {
             let
             {
                 long $arg$3$0 = 1L;
-                .ceylon.language.Iterable $arg$3$1 = .com.redhat.ceylon.compiler.java.language.ArrayIterable.<.ceylon.language.Integer>instance((.ceylon.language.Iterable<? extends .ceylon.language.Integer, ?>)(.ceylon.language.Iterable)new .ceylon.language.Tuple<.ceylon.language.Integer, .ceylon.language.Integer, .ceylon.language.Tuple<.ceylon.language.Integer, ? extends .ceylon.language.Integer, ? extends .ceylon.language.Empty>>(.ceylon.language.Integer.instance(4L), new .ceylon.language.Tuple<.ceylon.language.Integer, .ceylon.language.Integer, .ceylon.language.Empty>(.ceylon.language.Integer.instance(5L), .ceylon.language.empty_.getEmpty$())), .ceylon.language.Integer.instance(2L), .ceylon.language.Integer.instance(3L));
+                .ceylon.language.Iterable $arg$3$1 = .com.redhat.ceylon.compiler.java.language.ArrayIterable.<.ceylon.language.Integer>instance((.ceylon.language.Iterable<? extends .ceylon.language.Integer, ? extends .java.lang.Object>)(.ceylon.language.Iterable)new .ceylon.language.Tuple<.ceylon.language.Integer, .ceylon.language.Integer, .ceylon.language.Tuple<.ceylon.language.Integer, ? extends .ceylon.language.Integer, ? extends .ceylon.language.Empty>>(.ceylon.language.Integer.instance(4L), new .ceylon.language.Tuple<.ceylon.language.Integer, .ceylon.language.Integer, .ceylon.language.Empty>(.ceylon.language.Integer.instance(5L), .ceylon.language.empty_.getEmpty$())), .ceylon.language.Integer.instance(2L), .ceylon.language.Integer.instance(3L));
                 m($arg$3$0, $arg$3$1);
             }
             returning null;

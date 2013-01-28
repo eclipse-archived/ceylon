@@ -88,7 +88,7 @@ final class indirectTypeParam_ {
             
             @.java.lang.Override
             public .ceylon.language.Sequential<? extends .java.lang.Object> $call(final .java.lang.Object $param$0) {
-                final .ceylon.language.Sequential<? extends .ceylon.language.Iterable<? extends .java.lang.Object, ?>> $$iterables = (.ceylon.language.Sequential<? extends .ceylon.language.Iterable<? extends .java.lang.Object, ?>>)(.ceylon.language.Sequential)$param$0;
+                final .ceylon.language.Sequential<? extends .ceylon.language.Iterable<? extends .java.lang.Object, ? extends .java.lang.Object>> $$iterables = (.ceylon.language.Sequential<? extends .ceylon.language.Iterable<? extends .java.lang.Object, ? extends .java.lang.Object>>)(.ceylon.language.Sequential)$param$0;
                 return .ceylon.language.join_.join($$iterables);
             }
         };
@@ -101,7 +101,7 @@ final class indirectTypeParam_ {
             
             @.java.lang.Override
             public .ceylon.language.Sequential<? extends X> $call(final .java.lang.Object $param$0) {
-                final .ceylon.language.Sequential<? extends .ceylon.language.Iterable<? extends X, ?>> $$iterables = (.ceylon.language.Sequential<? extends .ceylon.language.Iterable<? extends X, ?>>)(.ceylon.language.Sequential)$param$0;
+                final .ceylon.language.Sequential<? extends .ceylon.language.Iterable<? extends X, ? extends .java.lang.Object>> $$iterables = (.ceylon.language.Sequential<? extends .ceylon.language.Iterable<? extends X, ? extends .java.lang.Object>>)(.ceylon.language.Sequential)$param$0;
                 return .ceylon.language.join_.<X>join($$iterables);
             }
         };

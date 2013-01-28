@@ -5,16 +5,16 @@ class Bug799 {
     Bug799() {
     }
     
-    private final void mNothing(final .ceylon.language.Array<.ceylon.language.Array<?>> a) {
-        final .ceylon.language.Array<?> n = a.get(.ceylon.language.Integer.instance(0L));
+    private final void mNothing(final .ceylon.language.Array<.ceylon.language.Array<.java.lang.Object>> a) {
+        final .ceylon.language.Array<.java.lang.Object> n = a.get(.ceylon.language.Integer.instance(0L));
     }
     
-    private final void mNothing2(final .ceylon.language.List<? extends .ceylon.language.List<?>> a) {
-        final .ceylon.language.List<?> n = a.get(.ceylon.language.Integer.instance(0L));
+    private final void mNothing2(final .ceylon.language.List<? extends .ceylon.language.List<? extends .java.lang.Object>> a) {
+        final .ceylon.language.List<? extends .java.lang.Object> n = a.get(.ceylon.language.Integer.instance(0L));
     }
     
-    private final void mNothing3(final .ceylon.language.Correspondence<? super .ceylon.language.Integer, ? extends .ceylon.language.Correspondence<? super .ceylon.language.Integer, ?>> a) {
-        final .ceylon.language.Correspondence<? super .ceylon.language.Integer, ?> n = a.get(.ceylon.language.Integer.instance(0L));
+    private final void mNothing3(final .ceylon.language.Correspondence<? super .ceylon.language.Integer, ? extends .ceylon.language.Correspondence<? super .ceylon.language.Integer, ? extends .java.lang.Object>> a) {
+        final .ceylon.language.Correspondence<? super .ceylon.language.Integer, ? extends .java.lang.Object> n = a.get(.ceylon.language.Integer.instance(0L));
     }
     
     private final void mObject(final .ceylon.language.Array<.ceylon.language.Array<.java.lang.Object>> a) {

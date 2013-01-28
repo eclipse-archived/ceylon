@@ -83,27 +83,27 @@ class MethodSpecifyingCallable {
     private final .java.lang.String foo(final long i) {
         return .com.redhat.ceylon.compiler.java.test.structure.method.methodSpecifyingCallable_f_.methodSpecifyingCallable_f().$call(.ceylon.language.Integer.instance(i)).toString();
     }
-    private final .ceylon.language.Callable<?> noParam;
+    private final .ceylon.language.Callable<? extends .java.lang.Object> noParam;
     
-    private final .ceylon.language.Callable<?> getNoParam() {
+    private final .ceylon.language.Callable<? extends .java.lang.Object> getNoParam() {
         return noParam;
     }
     
     private final .java.lang.Object noParam1() {
         return getNoParam().$call();
     }
-    private final .ceylon.language.Callable<?> oneParam;
+    private final .ceylon.language.Callable<? extends .java.lang.Object> oneParam;
     
-    private final .ceylon.language.Callable<?> getOneParam() {
+    private final .ceylon.language.Callable<? extends .java.lang.Object> getOneParam() {
         return oneParam;
     }
     
     private final .java.lang.Object oneParam1() {
         return getOneParam().$call(.ceylon.language.Integer.instance(1L));
     }
-    private final .ceylon.language.Callable<?> oneSequencedParam;
+    private final .ceylon.language.Callable<? extends .java.lang.Object> oneSequencedParam;
     
-    private final .ceylon.language.Callable<?> getOneSequencedParam() {
+    private final .ceylon.language.Callable<? extends .java.lang.Object> getOneSequencedParam() {
         return oneSequencedParam;
     }
     
@@ -150,9 +150,9 @@ class MethodSpecifyingCallable {
     private final .java.lang.Object oneSequencedParam4() {
         return getOneSequencedParam().$call((.ceylon.language.Sequential<? extends .ceylon.language.Integer>)(.ceylon.language.Sequential).ceylon.language.empty_.getEmpty$());
     }
-    private final .ceylon.language.Callable<?> secondSequencedParam;
+    private final .ceylon.language.Callable<? extends .java.lang.Object> secondSequencedParam;
     
-    private final .ceylon.language.Callable<?> getSecondSequencedParam() {
+    private final .ceylon.language.Callable<? extends .java.lang.Object> getSecondSequencedParam() {
         return secondSequencedParam;
     }
     

@@ -88,7 +88,7 @@ final class erasureCasting_ {
     private erasureCasting_() {
     }
     
-    static void erasureCasting(final .java.lang.Object tripleIntersectionParam, final .com.redhat.ceylon.compiler.java.test.expression.erasure.EC_Parameterised rawParam, final .com.redhat.ceylon.compiler.java.test.expression.erasure.EC_Parameterised<? extends .com.redhat.ceylon.compiler.java.test.expression.erasure.EC_Parameterised<? extends .java.lang.Object>> hasRawParam, final .com.redhat.ceylon.compiler.java.test.expression.erasure.EC_DoubleParameters<.com.redhat.ceylon.compiler.java.test.expression.erasure.EC_A, .com.redhat.ceylon.compiler.java.test.expression.erasure.EC_A> hasLostParameter, final .ceylon.language.Callable erasedReturnCallable, final .ceylon.language.Callable<? extends .com.redhat.ceylon.compiler.java.test.expression.erasure.EC_A> erasedParamCallable, final .com.redhat.ceylon.compiler.java.test.expression.erasure.EC_Parameterised<?> hasErasedParameter, final .com.redhat.ceylon.compiler.java.test.expression.erasure.EC_A a, final .ceylon.language.Sequence<? extends .ceylon.language.String> nonEmptyStringSequence, final .ceylon.language.Sequential erasedSequence) {
+    static void erasureCasting(final .java.lang.Object tripleIntersectionParam, final .com.redhat.ceylon.compiler.java.test.expression.erasure.EC_Parameterised rawParam, final .com.redhat.ceylon.compiler.java.test.expression.erasure.EC_Parameterised<? extends .com.redhat.ceylon.compiler.java.test.expression.erasure.EC_Parameterised<? extends .java.lang.Object>> hasRawParam, final .com.redhat.ceylon.compiler.java.test.expression.erasure.EC_DoubleParameters<.com.redhat.ceylon.compiler.java.test.expression.erasure.EC_A, .com.redhat.ceylon.compiler.java.test.expression.erasure.EC_A> hasLostParameter, final .ceylon.language.Callable erasedReturnCallable, final .ceylon.language.Callable<? extends .com.redhat.ceylon.compiler.java.test.expression.erasure.EC_A> erasedParamCallable, final .com.redhat.ceylon.compiler.java.test.expression.erasure.EC_Parameterised<? extends .java.lang.Object> hasErasedParameter, final .com.redhat.ceylon.compiler.java.test.expression.erasure.EC_A a, final .ceylon.language.Sequence<? extends .ceylon.language.String> nonEmptyStringSequence, final .ceylon.language.Sequential erasedSequence) {
         final .java.lang.Object doubleIntersectionAttr = tripleIntersectionParam;
         final .com.redhat.ceylon.compiler.java.test.expression.erasure.EC_A aAttr = (.com.redhat.ceylon.compiler.java.test.expression.erasure.EC_A)tripleIntersectionParam;
         final .java.lang.Object n = null;
@@ -144,7 +144,7 @@ final class erasureCasting_ {
         final .ceylon.language.Sequential<? extends .ceylon.language.String> sequenceOfStrings = (
             let
             {
-                .ceylon.language.Iterable<? extends .com.redhat.ceylon.compiler.java.test.expression.erasure.EC_ParameterisedTOrString<.ceylon.language.String>, ?> $spread$11$iterable = sequenceOfErasedMethod;
+                .ceylon.language.Iterable<? extends .com.redhat.ceylon.compiler.java.test.expression.erasure.EC_ParameterisedTOrString<.ceylon.language.String>, ? extends .java.lang.Object> $spread$11$iterable = sequenceOfErasedMethod;
                 .ceylon.language.SequenceBuilder<.ceylon.language.String> $spread$11$sequenceBuilder = new .ceylon.language.SequenceBuilder<.ceylon.language.String>();
                 .java.lang.Object $spread$11$iteration;
                 for (.ceylon.language.Iterator<? extends .com.redhat.ceylon.compiler.java.test.expression.erasure.EC_ParameterisedTOrString<.ceylon.language.String>> $spread$11$iterator = $spread$11$iterable.getIterator(); !(($spread$11$iteration = $spread$11$iterator.next()) instanceof .ceylon.language.Finished); ) {
@@ -157,7 +157,7 @@ final class erasureCasting_ {
         final .ceylon.language.Sequence<? extends .ceylon.language.Integer> nonEmptyIntegerSequence = (.ceylon.language.Sequence<? extends .ceylon.language.Integer>)(.ceylon.language.Sequence)(
             let
             {
-                .ceylon.language.Iterable<? extends .ceylon.language.String, ?> $spread$12$iterable = (.ceylon.language.Iterable<? extends .ceylon.language.String, ?>)(.ceylon.language.Iterable)nonEmptyStringSequence;
+                .ceylon.language.Iterable<? extends .ceylon.language.String, ? extends .java.lang.Object> $spread$12$iterable = (.ceylon.language.Iterable<? extends .ceylon.language.String, ? extends .java.lang.Object>)(.ceylon.language.Iterable)nonEmptyStringSequence;
                 .ceylon.language.SequenceBuilder<.ceylon.language.Integer> $spread$12$sequenceBuilder = new .ceylon.language.SequenceBuilder<.ceylon.language.Integer>();
                 .java.lang.Object $spread$12$iteration;
                 for (.ceylon.language.Iterator<? extends .ceylon.language.String> $spread$12$iterator = $spread$12$iterable.getIterator(); !(($spread$12$iteration = $spread$12$iterator.next()) instanceof .ceylon.language.Finished); ) {
@@ -174,7 +174,7 @@ final class erasureCasting_ {
         final .ceylon.language.Sequence<? extends .ceylon.language.Integer> sequenceOfInts = (.ceylon.language.Sequence<? extends .ceylon.language.Integer>)(.ceylon.language.Sequence)(
             let
             {
-                .ceylon.language.Iterable<? extends .com.redhat.ceylon.compiler.java.test.expression.erasure.EC_A, ?> $spread$15$iterable = (.ceylon.language.Iterable<? extends .com.redhat.ceylon.compiler.java.test.expression.erasure.EC_A, ?>)(.ceylon.language.Iterable)erasedSequence;
+                .ceylon.language.Iterable<? extends .com.redhat.ceylon.compiler.java.test.expression.erasure.EC_A, ? extends .java.lang.Object> $spread$15$iterable = (.ceylon.language.Iterable<? extends .com.redhat.ceylon.compiler.java.test.expression.erasure.EC_A, ? extends .java.lang.Object>)(.ceylon.language.Iterable)erasedSequence;
                 .ceylon.language.SequenceBuilder<.ceylon.language.Integer> $spread$15$sequenceBuilder = new .ceylon.language.SequenceBuilder<.ceylon.language.Integer>();
                 .java.lang.Object $spread$15$iteration;
                 for (.ceylon.language.Iterator<? extends .com.redhat.ceylon.compiler.java.test.expression.erasure.EC_A> $spread$15$iterator = $spread$15$iterable.getIterator(); !(($spread$15$iteration = $spread$15$iterator.next()) instanceof .ceylon.language.Finished); ) {

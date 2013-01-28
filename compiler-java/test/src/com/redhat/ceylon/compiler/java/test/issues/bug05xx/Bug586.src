@@ -10,7 +10,7 @@ final class bug586_ {
         final .ceylon.language.String s = (
             let
             {
-                .ceylon.language.Iterable<? extends .ceylon.language.String, ?> $spread$0$iterable = seq;
+                .ceylon.language.Iterable<? extends .ceylon.language.String, ? extends .java.lang.Object> $spread$0$iterable = seq;
                 .ceylon.language.SequenceBuilder<.ceylon.language.String> $spread$0$sequenceBuilder = new .ceylon.language.SequenceBuilder<.ceylon.language.String>();
                 .java.lang.Object $spread$0$iteration;
                 for (.ceylon.language.Iterator<? extends .ceylon.language.String> $spread$0$iterator = $spread$0$iterable.getIterator(); !(($spread$0$iteration = $spread$0$iterator.next()) instanceof .ceylon.language.Finished); ) {

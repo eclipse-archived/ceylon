@@ -309,9 +309,9 @@ final class isCond_ {
                 };
             }
         }.getSequence();
-        final .ceylon.language.Sequential<?> nowt = new .com.redhat.ceylon.compiler.java.language.AbstractIterable<.java.lang.Object, .java.lang.Object>(){
+        final .ceylon.language.Sequential<? extends .java.lang.Object> nowt = new .com.redhat.ceylon.compiler.java.language.AbstractIterable<.java.lang.Object, .java.lang.Object>(){
             
-            public final .ceylon.language.Iterator getIterator() {
+            public final .ceylon.language.Iterator<.java.lang.Object> getIterator() {
                 return new .com.redhat.ceylon.compiler.java.language.AbstractIterator<.java.lang.Object>(){
                     private final .ceylon.language.Iterator<? extends .com.redhat.ceylon.compiler.java.test.expression.comprehensions.Common> iter$0 = seq.getIterator();
                     private .com.redhat.ceylon.compiler.java.test.expression.comprehensions.Common x;

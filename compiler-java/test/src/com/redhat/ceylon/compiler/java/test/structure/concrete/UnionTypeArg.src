@@ -132,7 +132,7 @@ class UnionTypeArg implements .ceylon.language.Iterable<.java.lang.Object, .java
     
     @.java.lang.Override
     public .ceylon.language.Iterable chain(final .ceylon.language.Iterable other) {
-        return (.ceylon.language.Iterable<? extends .java.lang.Object, ?>)(.ceylon.language.Iterable)$ceylon$language$Iterable$this.chain(other);
+        return (.ceylon.language.Iterable<? extends .java.lang.Object, ? extends .java.lang.Object>)(.ceylon.language.Iterable)$ceylon$language$Iterable$this.chain(other);
     }
     protected final .ceylon.language.Container$impl<.java.lang.Object, .java.lang.Object> $ceylon$language$Container$this;
     
@@ -148,12 +148,12 @@ class UnionTypeArg implements .ceylon.language.Iterable<.java.lang.Object, .java
     }
     
     @.java.lang.Override
-    public boolean containsEvery(final .ceylon.language.Iterable<? extends .java.lang.Object, ?> elements) {
+    public boolean containsEvery(final .ceylon.language.Iterable<? extends .java.lang.Object, ? extends .java.lang.Object> elements) {
         return $ceylon$language$Category$this.containsEvery(elements);
     }
     
     @.java.lang.Override
-    public boolean containsAny(final .ceylon.language.Iterable<? extends .java.lang.Object, ?> elements) {
+    public boolean containsAny(final .ceylon.language.Iterable<? extends .java.lang.Object, ? extends .java.lang.Object> elements) {
         return $ceylon$language$Category$this.containsAny(elements);
     }
     private final .ceylon.language.Iterator iterator;
@@ -290,7 +290,7 @@ class UnionTypeArgOverride implements .ceylon.language.Iterable<.java.lang.Objec
     
     @.java.lang.Override
     public .ceylon.language.Iterable chain(final .ceylon.language.Iterable other) {
-        return (.ceylon.language.Iterable<? extends .java.lang.Object, ?>)(.ceylon.language.Iterable)$ceylon$language$Iterable$this.chain(other);
+        return (.ceylon.language.Iterable<? extends .java.lang.Object, ? extends .java.lang.Object>)(.ceylon.language.Iterable)$ceylon$language$Iterable$this.chain(other);
     }
     protected final .ceylon.language.Container$impl<.java.lang.Object, .java.lang.Object> $ceylon$language$Container$this;
     
@@ -306,12 +306,12 @@ class UnionTypeArgOverride implements .ceylon.language.Iterable<.java.lang.Objec
     }
     
     @.java.lang.Override
-    public boolean containsEvery(final .ceylon.language.Iterable<? extends .java.lang.Object, ?> elements) {
+    public boolean containsEvery(final .ceylon.language.Iterable<? extends .java.lang.Object, ? extends .java.lang.Object> elements) {
         return $ceylon$language$Category$this.containsEvery(elements);
     }
     
     @.java.lang.Override
-    public boolean containsAny(final .ceylon.language.Iterable<? extends .java.lang.Object, ?> elements) {
+    public boolean containsAny(final .ceylon.language.Iterable<? extends .java.lang.Object, ? extends .java.lang.Object> elements) {
         return $ceylon$language$Category$this.containsAny(elements);
     }
     private final .ceylon.language.Iterator iterator;
