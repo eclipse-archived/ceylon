@@ -32,6 +32,7 @@ Sequence$proto.getClone = function() { return this; }
 
 function Array$() {
     var that = new Array$.$$;
+    List(that);
     return that;
 }
 initExistingType(Array$, Array, 'ceylon.language::Array', Object$,

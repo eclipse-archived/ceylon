@@ -210,7 +210,7 @@ Iterable$proto.group = function(grouping, $$$mptypes) {
     var newSeq = ArraySequence([], this.$$targs$$);
     while ((elem=it.next()) !== $finished) {
         var key = grouping(elem);
-        var seq = map.put(Entry(key, newSeq, {Key:$$$mptypes.Grouping, Item:{t:Sequence, a:this.$$targs$$}]), true);
+        var seq = map.put(Entry(key, newSeq, {Key:$$$mptypes.Grouping, Item:{t:Sequence, a:this.$$targs$$}}), true);
         if (seq === null) {
             seq = newSeq;
             newSeq = ArraySequence([], this.$$targs$$);
