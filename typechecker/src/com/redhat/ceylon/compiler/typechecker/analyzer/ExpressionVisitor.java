@@ -3529,7 +3529,7 @@ public class ExpressionVisitor extends Visitor {
                                         that.getPrimary() instanceof Tree.Super;
                 if (member.isProtectedVisibility() && !selfReference) {
                     that.addError("member method or attribute is not visible: " +
-                            name + " of  " + container);
+                            name + " of " + container);
                 }
                 if (!selfReference && !member.isShared()) {
                     member.setOtherInstanceAccess(true);
