@@ -2871,6 +2871,7 @@ public class ExpressionTransformer extends AbstractTransformer {
     class ComprehensionTransformation {
         private final Comprehension comp;
         final ProducedType targetIterType;
+        final ProducedType absentIterType;
         int idx = 0;
         ExpressionComprehensionClause excc = null;
         Naming.SyntheticName prevItemVar = null;
@@ -2884,6 +2885,7 @@ public class ExpressionTransformer extends AbstractTransformer {
         public ComprehensionTransformation(final Comprehension comp, ProducedType elementType) {
             this.comp = comp;
             targetIterType = typeFact().getIterableType(elementType);
+            absentIterType = comp.getForComprehensionClause().getFirstTypeModel();
         }
     
         public JCExpression transformComprehension() {
@@ -2918,6 +2920,8 @@ public class ExpressionTransformer extends AbstractTransformer {
                 if (itemVar != null) prevItemVar = itemVar;
             }
     
+            ProducedType iteratedType = typeFact().getIteratedType(targetIterType);
+            
             //Define the next() method for the Iterator
             fields.add(make().MethodDef(make().Modifiers(Flags.PUBLIC | Flags.FINAL), names().fromString("next"),
                 makeJavaType(typeFact().getObjectDeclaration().getType()), List.<JCTree.JCTypeParameter>nil(),
@@ -2926,20 +2930,20 @@ public class ExpressionTransformer extends AbstractTransformer {
                         make().Conditional(
                             make().Apply(null, 
                                 ctxtName.makeIdentWithThis(), List.<JCExpression>nil()),
-                            transformExpression(excc.getExpression(), BoxingStrategy.BOXED, typeFact().getIteratedType(targetIterType)),
+                            transformExpression(excc.getExpression(), BoxingStrategy.BOXED, iteratedType),
                             makeFinished()))
             )), null));
             //Define the inner iterator class
-            ProducedType iteratorType = typeFact().getIteratorType(typeFact().getIteratedType(targetIterType));
+            ProducedType iteratorType = typeFact().getIteratorType(iteratedType);
             JCExpression iteratorTypeExpr = make().TypeApply(makeIdent(syms().ceylonAbstractIteratorType),
-                                                             List.<JCExpression>of(makeJavaType(typeFact().getIteratedType(targetIterType), JT_NO_PRIMITIVES)));
+                                                             List.<JCExpression>of(makeJavaType(iteratedType, JT_NO_PRIMITIVES)));
             JCExpression iterator = make().NewClass(null, null, iteratorTypeExpr,
                     List.<JCExpression>nil(), make().AnonymousClassDef(make().Modifiers(0), fields.toList()));
             //Define the anonymous iterable class
             JCExpression iterable = make().NewClass(null, null,
                     make().TypeApply(makeIdent(syms().ceylonAbstractIterableType),
-                        List.<JCExpression>of(makeJavaType(typeFact().getIteratedType(targetIterType), JT_NO_PRIMITIVES),
-                                              makeJavaType(typeFact().getIteratedAbsentType(targetIterType), JT_NO_PRIMITIVES))),
+                        List.<JCExpression>of(makeJavaType(iteratedType, JT_NO_PRIMITIVES),
+                                              makeJavaType(absentIterType, JT_NO_PRIMITIVES))),
                     List.<JCExpression>nil(), make().AnonymousClassDef(make().Modifiers(0), List.<JCTree>of(
                         make().MethodDef(make().Modifiers(Flags.PUBLIC | Flags.FINAL), names().fromString("getIterator"),
                             makeJavaType(iteratorType, JT_CLASS_NEW|JT_EXTENDS),
