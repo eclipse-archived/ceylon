@@ -224,9 +224,21 @@ public class CallableBuilder {
                 varInitialExpression = paramExpression;
             }
             // store it in a local var
+            int flags = 0;
+            if(!CodegenUtil.isUnBoxed(param)){
+                flags |= AbstractTransformer.JT_NO_PRIMITIVES;
+            }
+            // Always go raw if we're forwarding, because we're building the call ourselves and we don't get a chance to apply erasure and
+            // casting to parameter expressions when we pass them to the forwarded method. Ideally we could set it up correctly so that
+            // the proper erasure is done when we read from the Callable.call Object param, but since we store it in a variable defined here,
+            // we'd need to duplicate some of the erasure logic here to make or not the type raw, and that would be worse.
+            // Besides, named parameter invocation does the same.
+            // See https://github.com/ceylon/ceylon-compiler/issues/1005
+            if(forwardCallTo != null)
+                flags |= AbstractTransformer.JT_RAW;
             JCStatement var = gen.make().VarDef(gen.make().Modifiers(Flags.FINAL), 
                     gen.naming.makeUnquotedName(getCallableTempVarName(param)), 
-                    gen.makeJavaType(parameterTypes.get(a), CodegenUtil.isUnBoxed(param) ? 0 : gen.JT_NO_PRIMITIVES),
+                    gen.makeJavaType(parameterTypes.get(a), flags),
                     varInitialExpression);
             stmts.append(var);
             a++;
