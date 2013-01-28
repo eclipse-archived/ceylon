@@ -389,7 +389,7 @@ class CallableWithDefaulted {
             public .java.lang.Object $call(final .java.lang.Object $param$0, final .java.lang.Object $param$1, final .java.lang.Object $param$2) {
                 final long $$a = ((.ceylon.language.Integer)$param$0).longValue();
                 final .java.lang.String $$b = ((.ceylon.language.String)$param$1).toString();
-                final .ceylon.language.Sequential<? extends .ceylon.language.Integer> $$args = (.ceylon.language.Sequential<? extends .ceylon.language.Integer>)(.ceylon.language.Sequential)$param$2;
+                final .ceylon.language.Sequential $$args = (.ceylon.language.Sequential<? extends .ceylon.language.Integer>)(.ceylon.language.Sequential)$param$2;
                 return (
                     let
                     {

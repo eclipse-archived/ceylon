@@ -52,7 +52,7 @@ final class callableArgumentSequenced_m_ {
             
             @.java.lang.Override
             public .java.lang.Object $call(final .java.lang.Object $param$0) {
-                final .ceylon.language.Sequential<? extends .ceylon.language.String> $$s = (.ceylon.language.Sequential<? extends .ceylon.language.String>)(.ceylon.language.Sequential)$param$0;
+                final .ceylon.language.Sequential $$s = (.ceylon.language.Sequential<? extends .ceylon.language.String>)(.ceylon.language.Sequential)$param$0;
                 return (
                     let
                     {
