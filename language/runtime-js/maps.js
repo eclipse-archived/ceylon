@@ -59,7 +59,7 @@ MapValues$proto.getIterator = function() { return MapValuesIterator(this.map); }
 function MapValuesIterator(map) {
     var iter = new MapValuesIterator.$$;
     iter.it = map.getIterator();
-    iter.$$targs$$=[map.$$targs$$[1]];
+    iter.$$targs$$={Element:map.$$targs$$.Item};
     return iter;
 }
 initTypeProto(MapValuesIterator, 'ceylon.language::MapValuesIterator', Basic, Iterator);
@@ -72,7 +72,7 @@ Map$proto.getKeys = function() { return KeySet(this); }
 function KeySet(map, $$targs$$) {
     var set = new KeySet.$$;
     set.map = map;
-    set.$$targs$$=[map.$$targs$$[0]];
+    set.$$targs$$={Element:map.$$targs$$.Key};
     return set;
 }
 initTypeProto(KeySet, 'ceylon.language::KeySet', Basic, Set);
@@ -85,7 +85,7 @@ KeySet$proto.getIterator = function() { return KeySetIterator(this.map); }
 function KeySetIterator(map) {
     var iter = new KeySetIterator.$$;
     iter.it = map.getIterator();
-    iter.$$targs$$=[map.$$targs$$[0]];
+    iter.$$targs$$={Element:map.$$targs$$.Key};
     return iter;
 }
 initTypeProto(KeySetIterator, 'ceylon.language::KeySetIterator', Basic, Iterator);
@@ -99,7 +99,7 @@ KeySet$proto.union = function(other, $$$mptypes) {
     return set;
 }
 KeySet$proto.intersection = function(other, $$$mptypes) {
-    var set = HashSet(undefined, [{t:'i', l:[this.$$targs$$[0], $$$mptypes[0]]}]);
+    var set = HashSet(undefined, {Element:{t:'i', l:[this.$$targs$$.Element, $$$mptypes.Other]}});
     var it = this.map.getIterator();
     var entry;
     while ((entry=it.next()) !== $finished) {
@@ -118,7 +118,7 @@ KeySet$proto.exclusiveUnion = function(other, $$$mptypes) {
     return set;
 }
 KeySet$proto.complement = function(other, $$$mptypes) {
-    var set = HashSet(undefined, [{t:'u', l:[this.$$targs$$[0], $$$mptypes[0]]}]);
+    var set = HashSet(undefined, {Element:{t:'u', l:[this.$$targs$$.Element, $$$mptypes.Other]}});
     var it = this.map.getIterator();
     var entry;
     while ((entry=it.next()) !== $finished) {
@@ -129,16 +129,16 @@ KeySet$proto.complement = function(other, $$$mptypes) {
 }
 
 Map$proto.getInverse = function() {
-    var inv = HashMap(undefined, [this.$$targs$$[1], {t:Set, a:[this.$$targs$$[0]]}]);
+    var inv = HashMap(undefined, {Key:this.$$targs$$.Item, Item:{t:Set, a:{Element:this.$$targs$$.Key}}});
     var it = this.getIterator();
     var entry;
-    var newSet = HashSet(undefined, [this.$$targs$$[0]]);
+    var newSet = HashSet(undefined, {Element:this.$$targs$$.Key});
     while ((entry=it.next()) !== $finished) {
         var item = entry.getItem();
-        var set = inv.put(Entry(item, newSet, [this.$$targs$$[1], {t:Set, a:[this.$$targs$$[0]]}]), true);
+        var set = inv.put(Entry(item, newSet, {Key:this.$$targs$$.Item, Item:{t:Set, a:{Element:this.$$targs$$.Key}}}), true);
         if (set === null) {
             set = newSet;
-            newSet = HashSet(undefined, [this.$$targs$$[0]]);
+            newSet = HashSet(undefined, {Element:this.$$targs$$.Key});
         }
         set.add(entry.getKey());
     }
@@ -164,14 +164,14 @@ Map$proto.mapItems = function(mapping, $$$mptypes) {
                 return $i;
             }
             initTypeProto(miter, 'ceylon.language::MappedIterator', Basic, Iterator);
-            return miter(orig.getIterator(), [{t:Entry, a:em.$$targs$$}]);
+            return miter(orig.getIterator(), {Element:{t:Entry, a:em.$$targs$$}});
         }
         em.getSize=function() { return this.orig.getSize(); }
         em.getString=function() { return String$('',0); }
         return em;
     }
     initTypeProto(EmptyMap, 'ceylon.language::EmptyMap', Basic, Map);
-    return EmptyMap(this, [this.$$targs$$[0], $$$mptypes[0]]);
+    return EmptyMap(this, {Key:this.$$targs$$.Key, Item:$$$mptypes.Result});
 }
 exports.Map=Map;
 
@@ -252,7 +252,7 @@ function HashSet(elems, $$targs$$, set) {
     if (set===undefined) { set = new HashSet.$$; }
     Basic(set);
     set.$$targs$$=$$targs$$;
-    set.map = HashMap(undefined, [$$targs$$[0], {t:Boolean$}]);
+    set.map = HashMap(undefined, {Key:$$targs$$.Element, Item:{t:Boolean$}});
     if (elems !== undefined) { set.addAll(elems); }
     return set;
 }
@@ -261,15 +261,15 @@ function hashSetFromMap(map) {
     var set = new HashSet.$$;
     Basic(set);
     set.map = this;
-    set.$$targs$$=[map.$$targs$$[0]];
+    set.$$targs$$={Element:map.$$targs$$.Key};
     return set;
 }
 var HashSet$proto = HashSet.$$.prototype;
-HashSet$proto.add = function(elem) { this.map.put(Entry(elem, true, [this.$$targs$$[0], {t:Boolean$}])); }
+HashSet$proto.add = function(elem) { this.map.put(Entry(elem, true, {Key:this.$$targs$$.Element, Item:{t:Boolean$}})); }
 HashSet$proto.addAll = function(elems) {
     var it = elems.getIterator();
     var elem;
-    while ((elem=it.next()) !== $finished) { this.map.put(Entry(elem, true, [this.$$targs$$[0], {t:Boolean$}])); }
+    while ((elem=it.next()) !== $finished) { this.map.put(Entry(elem, true, {Key:this.$$targs$$.Element, Item:{t:Boolean$}})); }
 }
 HashSet$proto.getSize = function() { return this.map.size; }
 HashSet$proto.getEmpty = function() { return this.map.size===0; }
@@ -282,12 +282,12 @@ HashSet$proto.getClone = function() { return this; }
 HashSet$proto.contains = function(elem) { return this.map.get(elem) !== null; }
 HashSet$proto.union = function(other, $$$mptypes) {
     var set = hashSetFromMap(copyHashMap(this.map));
-    set.$$targs$$=[{t:'u', l:[this.$$targs$$[0], $$$mptypes[0]]}];
+    set.$$targs$$={Element:{t:'u', l:[this.$$targs$$.Element, $$$mptypes.Other]}};
     set.addAll(other);
     return set;
 }
 HashSet$proto.intersection = function(other, $$$mptypes) {
-    var set = HashSet(undefined, [{t:'i', l:[this.$$targs$$[0], $$$mptypes[0]]}]);
+    var set = HashSet(undefined, {Element:{t:'i', l:[this.$$targs$$.Element, $$$mptypes.Other]}});
     var it = this.getIterator();
     var elem;
     while ((elem=it.next()) !== $finished) {
@@ -305,11 +305,11 @@ HashSet$proto.exclusiveUnion = function(other) {
     return set;
 }
 HashSet$proto.complement = function(other) {
-    var set = HashSet(undfined, [{t:'u', l:[this.$$targs$$[0], $$$mptypes[0]]}]);
+    var set = HashSet(undefined, {Element:{t:'u', l:[this.$$targs$$.Element, $$$mptypes.Other]}});
     var it = this.getIterator();
     var elem;
     while ((elem=it.next()) !== $finished) {
-        if (!other.contains(elem)) { set.map.put(Entry(elem, true)); }
+        if (!other.contains(elem)) { set.map.put(Entry(elem, true, {Key:this.$$targs$$.Element, Item:{t:Boolean$}})); }
     }
     return set;
 }

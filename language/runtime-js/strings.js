@@ -22,7 +22,7 @@ initType(SequenceString, "ceylon.language::SequenceString", String$, Sequence);
 function EmptyString() {}
 initType(EmptyString, "ceylon.language::EmptyString", String$, Empty);
 var String$proto = String$.$$.prototype;
-String$proto.$$targs$$=[{t:Character}, {t:Null}];
+String$proto.$$targs$$={Element:{t:Character}, Absent:{t:Null}};
 String$proto.getT$name = function() {
     return ((this.length!==0)?SequenceString:EmptyString).$$.T$name;
 }
@@ -477,7 +477,7 @@ function StringIterator(string) {
 }
 initTypeProto(StringIterator, 'ceylon.language::StringIterator', Basic, Iterator);
 var StringIterator$proto = StringIterator.$$.prototype;
-StringIterator$proto.$$targs$$=[{t:Character}, {t:Null}];
+StringIterator$proto.$$targs$$={Element:{t:Character}, Absent:{t:Null}};
 StringIterator$proto.next = function() {
     if (this.index >= this.string.length) { return $finished }
     var first = this.string.charCodeAt(this.index++);

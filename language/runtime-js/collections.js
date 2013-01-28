@@ -30,7 +30,7 @@ exports.Sequential=Sequential;
 function Empty() {
     var that = new Empty.$$;
     that.value = [];
-    that.$$targs$$=[{t:Nothing}];
+    that.$$targs$$={Element:{t:Nothing}};
     return that;
 }
 initTypeProto(Empty, 'ceylon.language::Empty', Sequential, $init$Ranged(), $init$Cloneable());
@@ -77,14 +77,14 @@ Empty$proto.withTrailing = function(other) {
 Empty$proto.chain = function(other) { return other; }
 
 var empty = Empty();
-empty.$$targs$$=[{t:Nothing},{t:Null}];
+empty.$$targs$$={Element:{t:Nothing},Absent:{t:Null}};
 exports.empty=empty;
 exports.Empty=Empty;
 
 function emptyIterator(){
     var $$emptyIterator=new emptyIterator.$$;
     Iterator($$emptyIterator);
-    $$emptyIterator.$$targs$$=[{t:Nothing}];
+    $$emptyIterator.$$targs$$={Element:{t:Nothing}};
     return $$emptyIterator;
 }
 function $init$emptyIterator(){

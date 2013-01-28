@@ -134,12 +134,12 @@ function className(obj) {
     if (obj === null) return String$('ceylon.language::Null');
     var tn = obj.getT$name();
     if (obj.$$targs$$) {
-        tn += '<';
+        /*tn += '<';
         for (var i=0; i < obj.$$targs$$.length; i++) {
             if (i>0) { tn += ','; }
             tn += _typename(obj.$$targs$$[i]);
         }
-        tn += '>';
+        tn += '>';*/
     }
     return String$(tn);
 }
