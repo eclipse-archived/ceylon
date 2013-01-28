@@ -197,7 +197,7 @@ class ComprehensionGenerator {
         gen.out("return ", finished, ";");
         gen.endBlockNewLine();
         gen.endBlock(); gen.out(",");
-        TypeUtils.printTypeArguments(that, gen.getTypeUtils().iterableDefaultedTypeParameter(expression.getTypeModel()), gen);
+        TypeUtils.printTypeArguments(that, gen.getTypeUtils().wrapAsIterableArguments(that.getTypeModel()), gen);
         gen.out(")");
     }
 

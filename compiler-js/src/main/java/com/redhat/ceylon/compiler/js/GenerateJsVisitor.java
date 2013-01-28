@@ -573,7 +573,7 @@ public class GenerateJsVisitor extends Visitor
             if (that.getSatisfiedTypes() != null) {
                 for(Tree.StaticType sat : that.getSatisfiedTypes().getTypes()) {
                     boolean first = true;
-                    List<ProducedType> targs = sat.getTypeModel().getTypeArgumentList();
+                    Map<TypeParameter,ProducedType> targs = sat.getTypeModel().getTypeArguments();
                     if (targs != null && !targs.isEmpty()) {
                         if (first) {
                             self(d); out(".$$targs$$=");
@@ -657,7 +657,9 @@ public class GenerateJsVisitor extends Visitor
             }
             //If the supertype has type arguments, add them to the call
             if (typeDecl.getTypeParameters() != null && !typeDecl.getTypeParameters().isEmpty()) {
-                TypeUtils.printTypeArguments(that, extendedType.getType().getTypeArgumentList().getTypeModels(), this);
+                extendedType.getType().getTypeArgumentList().getTypeModels();
+                TypeUtils.printTypeArguments(that, TypeUtils.matchTypeParametersWithArguments(typeDecl.getTypeParameters(),
+                        extendedType.getType().getTypeArgumentList().getTypeModels()), this);
                 out(",");
             }
             self(d);
@@ -1795,9 +1797,15 @@ public class GenerateJsVisitor extends Visitor
                     			|| argList.getPositionalArguments().get(argList.getPositionalArguments().size()-1) instanceof Tree.Comprehension == false)) {
                         out("undefined,");
                     }
-                }
-                if (targs != null && targs.getTypeModels() != null && !targs.getTypeModels().isEmpty()) {
-                    TypeUtils.printTypeArguments(that, targs.getTypeModels(), this);
+                    if (targs != null && targs.getTypeModels() != null && !targs.getTypeModels().isEmpty()) {
+                        Map<TypeParameter, ProducedType> invargs = TypeUtils.matchTypeParametersWithArguments(
+                                ((Functional) bmed).getTypeParameters(), targs.getTypeModels());
+                        if (invargs != null) {
+                            TypeUtils.printTypeArguments(that, invargs, this);
+                        } else {
+                            out("/*TARGS != TPARAMS!!!! WTF?????*/");
+                        }
+                    }
                 }
             }
             out(")");
@@ -1978,7 +1986,7 @@ public class GenerateJsVisitor extends Visitor
                 if (count==lim && spread) {
                     if (lim > 0) {
                         ProducedType seqType = TypeUtils.findSupertype(types.iterable, that.getTypeModel());
-                        closeSequenceWithReifiedType(that, seqType.getTypeArgumentList());
+                        closeSequenceWithReifiedType(that, seqType.getTypeArguments());
                         out(".chain(");
                         chainedType = TypeUtils.findSupertype(types.iterable, expr.getTypeModel());
                     }
@@ -1993,11 +2001,11 @@ public class GenerateJsVisitor extends Visitor
             }
             if (chainedType == null) {
                 if (!spread) {
-                    closeSequenceWithReifiedType(that, that.getTypeModel().getTypeArgumentList());
+                    closeSequenceWithReifiedType(that, that.getTypeModel().getTypeArguments());
                 }
             } else {
                 out(",");
-                TypeUtils.printTypeArguments(that, chainedType.getTypeArgumentList(), this);
+                TypeUtils.printTypeArguments(that, chainedType.getTypeArguments(), this);
                 out(")");
             }
         }
@@ -2699,7 +2707,7 @@ public class GenerateJsVisitor extends Visitor
                out(",");
                termgen.right();
                out(",");
-               TypeUtils.printTypeArguments(that, that.getTypeModel().getTypeArgumentList(),
+               TypeUtils.printTypeArguments(that, that.getTypeModel().getTypeArguments(),
                        GenerateJsVisitor.this);
                out(")");
            }
@@ -2818,7 +2826,7 @@ public class GenerateJsVisitor extends Visitor
                 out(".union(");
                 termgen.right();
                 out(",");
-                TypeUtils.printTypeArguments(that, that.getRightTerm().getTypeModel().getTypeArgumentList(),
+                TypeUtils.printTypeArguments(that, that.getRightTerm().getTypeModel().getTypeArguments(),
                         GenerateJsVisitor.this);
                 out(")");
             }
@@ -2834,7 +2842,7 @@ public class GenerateJsVisitor extends Visitor
                 out(".intersection(");
                 termgen.right();
                 out(",");
-                TypeUtils.printTypeArguments(that, that.getRightTerm().getTypeModel().getTypeArgumentList(),
+                TypeUtils.printTypeArguments(that, that.getRightTerm().getTypeModel().getTypeArguments(),
                         GenerateJsVisitor.this);
                 out(")");
             }
@@ -2850,7 +2858,7 @@ public class GenerateJsVisitor extends Visitor
                 out(".exclusiveUnion(");
                 termgen.right();
                 out(",");
-                TypeUtils.printTypeArguments(that, that.getRightTerm().getTypeModel().getTypeArgumentList(),
+                TypeUtils.printTypeArguments(that, that.getRightTerm().getTypeModel().getTypeArguments(),
                         GenerateJsVisitor.this);
                 out(")");
             }
@@ -2866,7 +2874,7 @@ public class GenerateJsVisitor extends Visitor
                 out(".complement(");
                 termgen.right();
                 out(",");
-                TypeUtils.printTypeArguments(that, that.getRightTerm().getTypeModel().getTypeArgumentList(),
+                TypeUtils.printTypeArguments(that, that.getRightTerm().getTypeModel().getTypeArguments(),
                         GenerateJsVisitor.this);
                 out(")");
             }
@@ -2981,7 +2989,7 @@ public class GenerateJsVisitor extends Visitor
                termgen.right();
                out(",");
                TypeUtils.printTypeArguments(that,
-                       that.getTypeModel().getTypeArgumentList(),
+                       that.getTypeModel().getTypeArguments(),
                        GenerateJsVisitor.this);
                out(")");
            }
@@ -3363,7 +3371,7 @@ public class GenerateJsVisitor extends Visitor
         if (sarg == null) {
         	out(clAlias, "empty");
         } else {
-        	List<List<ProducedType>> targs = new ArrayList<List<ProducedType>>();
+        	List<Map<TypeParameter,ProducedType>> targs = new ArrayList<Map<TypeParameter,ProducedType>>();
         	List<PositionalArgument> positionalArguments = sarg.getPositionalArguments();
         	boolean spread = !positionalArguments.isEmpty() 
         			&& positionalArguments.get(positionalArguments.size()-1) instanceof Tree.ListedArgument == false;
@@ -3381,11 +3389,11 @@ public class GenerateJsVisitor extends Visitor
         			}
         		} else {
         			out(clAlias, "Tuple(");
-        			if (count > 0) {
-        				targs.add(0, targs.get(0).get(2).getTypeArgumentList());
-        			} else {
-        				targs.add(that.getTypeModel().getTypeArgumentList());
-        			}
+        			//if (count > 0) {
+        			//	targs.add(0, targs.get(0).get(2).getTypeArguments());
+        			//} else {
+        				targs.add(that.getTypeModel().getTypeArguments());
+        			//}
         			expr.visit(this);
         		}
         		count++;
@@ -3398,7 +3406,7 @@ public class GenerateJsVisitor extends Visitor
         	} else {
         		count--;
         	}
-        	for (List<ProducedType> t : targs) {
+        	for (Map<TypeParameter,ProducedType> t : targs) {
         		out(",");
         		TypeUtils.printTypeArguments(that, t, this);
         		out(")");
@@ -3435,7 +3443,7 @@ public class GenerateJsVisitor extends Visitor
         endLine();
     }
 
-    void closeSequenceWithReifiedType(Node that, List<ProducedType> types) {
+    void closeSequenceWithReifiedType(Node that, Map<TypeParameter,ProducedType> types) {
         out("].reifyCeylonType(");
         TypeUtils.printTypeArguments(that, types, this);
         out(")");

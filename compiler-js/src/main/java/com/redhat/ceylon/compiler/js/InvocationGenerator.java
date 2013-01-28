@@ -6,6 +6,7 @@ import java.util.Map;
 
 import com.redhat.ceylon.compiler.typechecker.model.Functional;
 import com.redhat.ceylon.compiler.typechecker.model.ProducedType;
+import com.redhat.ceylon.compiler.typechecker.model.TypeParameter;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.ArgumentList;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.NamedArgument;
@@ -82,8 +83,10 @@ public class InvocationGenerator {
                 first = false;
             }
             if (targs != null && !targs.getTypeModels().isEmpty()) {
+                Map<TypeParameter, ProducedType> invargs = TypeUtils.matchTypeParametersWithArguments(
+                        func.getTypeParameters(), targs.getTypeModels());
                 if (!first) gen.out(",");
-                TypeUtils.printTypeArguments(argList, targs.getTypeModels(), gen);
+                TypeUtils.printTypeArguments(argList, invargs, gen);
             }
             gen.out(")");
             firstList = false;
@@ -119,7 +122,8 @@ public class InvocationGenerator {
                         expr = null;
                     }
                     if (!first) {
-                        gen.closeSequenceWithReifiedType(that, gen.getTypeUtils().iterableDefaultedTypeParameter(sequencedType));
+                        gen.closeSequenceWithReifiedType(that,
+                                gen.getTypeUtils().wrapAsIterableArguments(sequencedType));
                         gen.out(".chain(");
                         sequencedType=null;
                     }
@@ -135,10 +139,10 @@ public class InvocationGenerator {
                         if (expr == null) {
                             //it's a comprehension
                             TypeUtils.printTypeArguments(that,
-                                    gen.getTypeUtils().iterableDefaultedTypeParameter(arg.getTypeModel()), gen);
+                                    gen.getTypeUtils().wrapAsIterableArguments(arg.getTypeModel()), gen);
                         } else {
                             ProducedType spreadType = TypeUtils.findSupertype(gen.getTypeUtils().sequential, expr.getTypeModel());
-                            TypeUtils.printTypeArguments(that, spreadType.getTypeArgumentList(), gen);
+                            TypeUtils.printTypeArguments(that, spreadType.getTypeArguments(), gen);
                         }
                         gen.out(")");
                     }
@@ -149,7 +153,8 @@ public class InvocationGenerator {
                 first = false;
             }
             if (sequencedType != null) {
-                gen.closeSequenceWithReifiedType(that, gen.getTypeUtils().iterableDefaultedTypeParameter(sequencedType));
+                gen.closeSequenceWithReifiedType(that,
+                        gen.getTypeUtils().wrapAsIterableArguments(sequencedType));
             }
         }
     }

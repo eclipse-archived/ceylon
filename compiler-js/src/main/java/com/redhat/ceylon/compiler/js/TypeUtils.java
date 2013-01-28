@@ -1,8 +1,9 @@
 package com.redhat.ceylon.compiler.js;
 
-import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 
 import com.redhat.ceylon.compiler.typechecker.model.ClassOrInterface;
 import com.redhat.ceylon.compiler.typechecker.model.IntersectionType;
@@ -40,15 +41,17 @@ public class TypeUtils {
     }
 
     /** Prints the type arguments, usually for their reification. */
-    public static void printTypeArguments(Node node, List<ProducedType> targs, GenerateJsVisitor gen) {
-        gen.out("[");
+    public static void printTypeArguments(Node node, Map<TypeParameter,ProducedType> targs, GenerateJsVisitor gen) {
+        gen.out("{");
         boolean first = true;
-        for (ProducedType pt : targs) {
+        for (Map.Entry<TypeParameter,ProducedType> e : targs.entrySet()) {
             if (first) {
                 first = false;
             } else {
                 gen.out(",");
             }
+            gen.out(e.getKey().getName(), ":");
+            ProducedType pt = e.getValue();
             TypeDeclaration d = pt.getDeclaration();
             boolean composite = d instanceof UnionType || d instanceof IntersectionType;
             boolean hasParams = pt.getTypeArgumentList() != null && !pt.getTypeArgumentList().isEmpty();
@@ -64,13 +67,13 @@ public class TypeUtils {
             }
             if (hasParams) {
                 gen.out(",a:");
-                printTypeArguments(node, pt.getTypeArgumentList(), gen);
+                printTypeArguments(node, pt.getTypeArguments(), gen);
             }
             if (closeBracket) {
                 gen.out("}");
             }
         }
-        gen.out("]");
+        gen.out("}");
     }
 
     static void outputQualifiedTypename(Node node, ProducedType pt, GenerateJsVisitor gen) {
@@ -113,7 +116,7 @@ public class TypeUtils {
                 outputQualifiedTypename(node, pt, gen);
                 if (!pt.getTypeArgumentList().isEmpty()) {
                     gen.out(",a:");
-                    printTypeArguments(node, pt.getTypeArgumentList(), gen);
+                    printTypeArguments(node, pt.getTypeArguments(), gen);
                 }
                 gen.out("}");
             }
@@ -150,12 +153,11 @@ public class TypeUtils {
             parent = parent.getScope();
         }
         if (tp.getContainer() instanceof ClassOrInterface) {
-            int pos = ((ClassOrInterface)tp.getContainer()).getTypeParameters().indexOf(tp);
             if (parent == tp.getContainer()) {
                 gen.self((ClassOrInterface)tp.getContainer());
-                gen.out(".$$targs$$[", Integer.toString(pos), "]");
+                gen.out(".$$targs$$.", tp.getName());
             } else {
-                gen.out("/*TYPE TYPEPARM ", Integer.toString(pos), parent.getQualifiedNameString(), "*/'",
+                gen.out("/*TYPE TYPEPARM ", tp.getName(), parent.getQualifiedNameString(), "*/'",
                         tp.getQualifiedNameString(), "'");
             }
         } else {
@@ -163,14 +165,12 @@ public class TypeUtils {
             //We need to find the index of the parameter where the argument occurs
             //...and it could be null...
             int plistCount = -1;
-            int paramCount = -1;
             ProducedType type = null;
             for (Iterator<ParameterList> iter0 = ((Method)tp.getContainer()).getParameterLists().iterator();
                     type == null && iter0.hasNext();) {
                 plistCount++;
                 for (Iterator<Parameter> iter1 = iter0.next().getParameters().iterator();
                         type == null && iter1.hasNext();) {
-                    paramCount++;
                     if (type == null) {
                         type = typeContainsTypeParameter(iter1.next().getType(), tp);
                     }
@@ -181,10 +181,10 @@ public class TypeUtils {
             //A component of a union/intersection type, in which case we just use the argument's type (may be null)
             //A type argument of the argument's type, in which case we must get the reified generic from the argument
             if (tp.getContainer() == parent) {
-                gen.out("$$$mptypes[", Integer.toString(paramCount), "]");
+                gen.out("$$$mptypes.", tp.getName());
             } else {
                 gen.out("/*METHOD TYPEPARM plist ", Integer.toString(plistCount), "#",
-                        Integer.toString(paramCount), "*/'", type.getProducedTypeQualifiedName(), "'");
+                        tp.getName(), "*/'", type.getProducedTypeQualifiedName(), "'");
             }
         }
     }
@@ -217,15 +217,6 @@ public class TypeUtils {
                 || typeName.equals("Array")) || typeName.equals("String") || typeName.equals("Boolean");
     }
 
-    List<ProducedType> iterableDefaultedTypeParameter(ProducedType... pt) {
-        final ArrayList<ProducedType> ts = new ArrayList<ProducedType>(pt.length+1);
-        for (ProducedType t : pt) {
-            ts.add(t);
-        }
-        ts.add(_null.getType());
-        return ts;
-    }
-
     /** Find the type with the specified declaration among the specified type's supertypes, case types, satisfied types, etc. */
     static ProducedType findSupertype(TypeDeclaration d, ProducedType pt) {
         if (pt.getDeclaration().equals(d)) {
@@ -238,6 +229,24 @@ public class TypeUtils {
             }
         }
         return null;
+    }
+
+    static Map<TypeParameter, ProducedType> matchTypeParametersWithArguments(List<TypeParameter> params, List<ProducedType> targs) {
+        if (params != null && targs != null && params.size() == targs.size()) {
+            HashMap<TypeParameter, ProducedType> r = new HashMap<TypeParameter, ProducedType>();
+            for (int i = 0; i < targs.size(); i++) {
+                r.put(params.get(i), targs.get(i));
+            }
+            return r;
+        }
+        return null;
+    }
+
+    Map<TypeParameter, ProducedType> wrapAsIterableArguments(ProducedType pt) {
+        HashMap<TypeParameter, ProducedType> r = new HashMap<TypeParameter, ProducedType>();
+        r.put(iterable.getTypeParameters().get(0), pt);
+        r.put(iterable.getTypeParameters().get(1), _null.getExtendedType());
+        return r;
     }
 
 }
