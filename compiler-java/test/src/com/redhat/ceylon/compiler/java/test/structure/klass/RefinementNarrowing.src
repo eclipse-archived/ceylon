@@ -1,0 +1,48 @@
+package com.redhat.ceylon.compiler.java.test.structure.klass;
+
+interface RNParameters<Element, Absent> {
+    
+    public .com.redhat.ceylon.compiler.java.test.structure.klass.RNParameters$impl<Element, Absent> $com$redhat$ceylon$compiler$java$test$structure$klass$RNParameters$impl();
+    
+    public abstract .java.lang.Object m(final .java.lang.Object p);
+    
+    public .java.lang.Object m2(final .java.lang.Object p);
+}
+final class RNParameters$impl<Element, Absent> {
+    
+    RNParameters$impl(.com.redhat.ceylon.compiler.java.test.structure.klass.RNParameters<Element, Absent> $this) {
+        this.$this = $this;
+    }
+    private final .com.redhat.ceylon.compiler.java.test.structure.klass.RNParameters<Element, Absent> $this;
+    
+    public .java.lang.Object m2(final .java.lang.Object p) {
+        return null;
+    }
+}
+class RNParametersImpl<Element> implements .com.redhat.ceylon.compiler.java.test.structure.klass.RNParameters<Element, .java.lang.Object> {
+    
+    RNParametersImpl() {
+        this.$com$redhat$ceylon$compiler$java$test$structure$klass$RNParameters$this = new .com.redhat.ceylon.compiler.java.test.structure.klass.RNParameters$impl<Element, .java.lang.Object>(this);
+    }
+    protected final .com.redhat.ceylon.compiler.java.test.structure.klass.RNParameters$impl<Element, .java.lang.Object> $com$redhat$ceylon$compiler$java$test$structure$klass$RNParameters$this;
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.test.structure.klass.RNParameters$impl<Element, .java.lang.Object> $com$redhat$ceylon$compiler$java$test$structure$klass$RNParameters$impl() {
+        return $com$redhat$ceylon$compiler$java$test$structure$klass$RNParameters$this;
+    }
+    
+    @.java.lang.Override
+    public .java.lang.Object m2(final .java.lang.Object p) {
+        return $com$redhat$ceylon$compiler$java$test$structure$klass$RNParameters$this.m2(p);
+    }
+    
+    @.java.lang.Override
+    public final .java.lang.Object m(final .java.lang.Object p) {
+        return null;
+    }
+    
+    public static void main(.java.lang.String[] args) {
+        .ceylon.language.process_.getProcess$().setupArguments(args);
+        new .com.redhat.ceylon.compiler.java.test.structure.klass.RNParametersImpl();
+    }
+}

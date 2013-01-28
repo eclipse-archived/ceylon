@@ -224,6 +224,10 @@ public class StructureTest extends CompilerTest {
         compareWithJavaSource("klass/RefinementWidening");
     }
     @Test
+    public void testKlsRefinementNarrowing(){
+        compareWithJavaSource("klass/RefinementNarrowing");
+    }
+    @Test
     public void testKlsVariance(){
         compareWithJavaSource("klass/Variance");
     }
