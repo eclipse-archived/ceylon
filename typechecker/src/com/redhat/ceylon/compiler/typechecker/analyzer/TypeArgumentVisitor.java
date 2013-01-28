@@ -56,7 +56,7 @@ public class TypeArgumentVisitor extends Visitor {
         }
         super.visit(that);
         if (parameterizedDeclaration.isClassOrInterfaceMember()) {
-            check(that.getType(), false, null);
+            check(that.getType(), false, parameterizedDeclaration);
         }
         if (topLevel) {
             parameterizedDeclaration = null;
@@ -82,9 +82,19 @@ public class TypeArgumentVisitor extends Visitor {
             }
         }
     }
-
-    @Override public void visit(Tree.TypeSpecifier that) {
-    	check(that.getType(), false, null);
+    
+    @Override public void visit(Tree.InterfaceDeclaration that) {
+        super.visit(that);
+        if (that.getTypeSpecifier()!=null) {
+            check(that.getTypeSpecifier().getType(), false, null);
+        }
+    }
+    
+    @Override public void visit(Tree.TypeAliasDeclaration that) {
+        super.visit(that);
+        if (that.getTypeSpecifier()!=null) {
+            check(that.getTypeSpecifier().getType(), false, null);
+        }
     }
     
     @Override public void visit(Tree.AnyClass that) {
@@ -145,5 +155,5 @@ public class TypeArgumentVisitor extends Visitor {
             }
         }
     }
-
+    
 }
