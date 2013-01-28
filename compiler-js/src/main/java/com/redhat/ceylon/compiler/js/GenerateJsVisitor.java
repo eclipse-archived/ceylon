@@ -304,10 +304,18 @@ public class GenerateJsVisitor extends Visitor
         out("(");
         boolean first=true;
         boolean ptypes = false;
+        //Check if this is the first parameter list
+        final boolean plist0;
+        if (that.getScope() instanceof Method) {
+            plist0 = ((Method)that.getScope()).getParameterLists().get(0)==that.getModel();
+        } else {
+            plist0 = false;
+        }
         for (Parameter param: that.getParameters()) {
             if (!first) out(",");
             com.redhat.ceylon.compiler.typechecker.model.Parameter d = param.getDeclarationModel();
-            if (!ptypes && d.getScope() instanceof Method) {
+            //Only add the type arguments to the first parameter list
+            if (plist0 && !ptypes && d.getScope() instanceof Method) {
                 List<TypeParameter> tparms = ((Method)d.getScope()).getTypeParameters();
                 if (tparms != null && !tparms.isEmpty()) {
                     for (TypeParameter tp : ((Method)d.getScope()).getTypeParameters()) {
@@ -3408,11 +3416,15 @@ public class GenerateJsVisitor extends Visitor
         			}
         		} else {
         			out(clAlias, "Tuple(");
-        			//if (count > 0) {
-        			//	targs.add(0, targs.get(0).get(2).getTypeArguments());
-        			//} else {
+        			if (count > 0) {
+        			    for (Map.Entry<TypeParameter,ProducedType> e : targs.get(0).entrySet()) {
+        			        if (e.getKey().getName().equals("Rest")) {
+                                targs.add(0, e.getValue().getTypeArguments());
+        			        }
+        			    }
+        			} else {
         				targs.add(that.getTypeModel().getTypeArguments());
-        			//}
+        			}
         			expr.visit(this);
         		}
         		count++;
