@@ -33,25 +33,44 @@ exports.string=string;
 function flatten(tf, $$$mptypes) {
     var rf = function() {
         var t = empty;
+        var e = null;
         for (var i=0; i < arguments.length; i++) {
             var c = arguments[i]===null ? Null :
+                arguments[i] === undefined ? Empty :
                 arguments[i].getT$all ? arguments[i].getT$all() :
                 Anything;
-            t = Tuple(arguments[i], t, [c, t.getT$all()[0]]);
+            if (e === null) {
+                e = c;
+            } else if (e.t === 'u' && e.l.length > 0) {
+                var l = [c];
+                for (var j=0; j < e.l.length; j++) {
+                    l[j+1] = e.l[j];
+                }
+            } else {
+                e = {t:'u', l:[e, c]};
+            }
+            var rest;
+            if (t === empty) {
+                rest={t:Empty};
+            } else {
+                rest={t:Tuple, a:t.$$$targs$$$};
+            }
+            t = Tuple(arguments[i], t, {First:c, Element:e, Rest:rest});
         }
         return tf(t, t.$$targs$$);
-    }
+    };
     rf.$$targs$$=$$$mptypes;
     return rf;
 }
 function unflatten(ff, $$$mptypes) {
-    var ru = function ru() {
+    var ru = function ru(seq) {
+        if (seq===undefined || seq.getSize() === 0) { return ff(); }
         var a = [];
-        for (var i = 0; i < arguments.length; i++) {
-            a[i] = arguments[i];
+        for (var i = 0; i < seq.getSize(); i++) {
+            a[i] = seq.get(i);
         }
-        a[i]=this.$$targs$$;
-        return ff.apply(this, a);
+        a[i]=ru.$$targs$$;
+        return ff.apply(ru, a);
     }
     ru.$$targs$$=$$$mptypes;
     return ru;
@@ -61,6 +80,6 @@ function unflatten(ff, $$$mptypes) {
 function toTuple(iterable) {
   var seq = iterable.getSequence();
   return Tuple(seq.getFirst(), seq.getRest().getSequence(),
-    [seq.$$targs$$[0], seq.$$targs$$[0], {t:Sequential, a:seq.$$targs$$}]);
+    {First:seq.$$targs$$.Element, Element:seq.$$targs$$.Element, Rest:{t:Sequential, a:seq.$$targs$$}});
 }
 exports.toTuple=toTuple;
