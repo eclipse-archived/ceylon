@@ -231,4 +231,7 @@ void testIterables() {
     
     check((1..4).fold(0, plus<Integer>)==10, "fold with plus");
     check((1..4).fold(1, times<Integer>)==24, "fold with times");
+    
+    check({null, "foo", "bar", null}.defaultNullElements(0).sequence=={0, "foo", "bar", 0}, "defaultNullElements [1]");
+    check({"foo", null, "bar"}.defaultNullElements("-").sequence=={"foo", "-", "bar"}, "defaultNullElements [2]");
 }
