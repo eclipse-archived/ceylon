@@ -1340,8 +1340,18 @@ public abstract class AbstractTransformer implements Transformation {
                         }
                     }else if (ta.getDeclaration() instanceof NothingType){
                         // - The Ceylon type Foo<Bottom> appearing anywhere else results in the Java type
-                        // - Foo<?> always
-                        jta = make().Wildcard(make().TypeBoundKind(BoundKind.UNBOUND), null);
+                        // - Foo<? super Object> if Foo is contravariant in T, or
+                        // - Foo<? extends Object> if Foo is covariant in T and not depended on by other type params
+                        // - Foo<Object> otherwise
+                        // this is more correct than Foo<?> because a method returning Foo<?> could never override a method returning Foo<Object>
+                        // see https://github.com/ceylon/ceylon-compiler/issues/1003
+                        if (tp.isContravariant()) {
+                            jta = make().Wildcard(make().TypeBoundKind(BoundKind.SUPER), make().Type(syms().objectType));
+                        } else if (tp.isCovariant() && !isDependedOn) {
+                            jta = make().Wildcard(make().TypeBoundKind(BoundKind.EXTENDS), make().Type(syms().objectType));
+                        } else {
+                            jta = make().Type(syms().objectType);
+                        }
                     }else{
                         // - The Ceylon type Foo<T> appearing anywhere else results in the Java type
                         // - Foo<T> if Foo is invariant in T,
