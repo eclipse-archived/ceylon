@@ -364,6 +364,10 @@ public class InternalMap<Key, Item> implements Map<Key, Item> {
     public <Other> Iterable chain(Iterable<? extends Other, ? extends java.lang.Object> other) {
         return $ceylon$language$Iterable$this.chain(other);
     }
+    @Override @Ignore
+    public <Default>Iterable<?,?> defaultNullElements(Default defaultValue) {
+        return $ceylon$language$Iterable$this.defaultNullElements(defaultValue);
+    }
     /*@Override @Ignore
     public <Key2> Map<? extends Key2, ? extends Sequence<? extends Entry<? extends Key, ? extends Item>>> group(Callable<? extends Key2> grouping) {
         return iter$impl.group(grouping);

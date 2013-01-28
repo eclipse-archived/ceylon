@@ -411,6 +411,30 @@ shared native interface Iterable<out Element, out Absent=Null>
         return chained;
     }
     
+    doc "Returns an Iterable that contains this `Iterable`'s elements but that
+         will return `defaultValue` instead of `null` for `null` elements of
+         that `Iterable`.
+         
+         Calling this method on an `Iterable` that cannot have `null` values
+         will not change the `Iterable` behavior. This means that calling this
+         method on an `Iterable` which has been obtained using this method will
+         not change the default value as there is no `null` value anymore."
+    shared default Iterable<Element&Object|Default>
+      defaultNullElements<Default>(Default defaultValue) {
+        alias ElementOrDefault => Element&Object|Default;
+        object iterable satisfies {ElementOrDefault*} {
+            shared actual Iterator<ElementOrDefault> iterator {
+                value iter = outer.iterator;
+                object iterator satisfies Iterator<ElementOrDefault> {
+                    actual shared ElementOrDefault|Finished next()
+                        => iter.next() else defaultValue;
+                }
+                return iterator;
+            }
+        }
+        return iterable;
+    }
+    
     /*doc "Creates a Map that contains this `Iterable`'s
          elements, grouped in `Sequence`s under the
          keys provided by the grouping function."

@@ -222,6 +222,17 @@ Iterable$proto.group = function(grouping, $$$mptypes) {
 Iterable$proto.chain = function(other, $$$mptypes) {
     return ChainedIterable(this, other, {Element:this.$$targs$$.Element, Other:$$$mptypes.Other});
 }
+Iterable$proto.defaultNullElements = function(defaultValue) {
+    var iter = this;
+    return Comprehension(function() {
+        var it = iter.getIterator();
+        return function() {
+            var value = it.next();
+            if (value === null) {return defaultValue;}
+            return value;
+        }
+    });
+}
 Iterable$proto.getSize = function() {
     return this.count(function() { return true; });
 }

@@ -845,6 +845,10 @@ public final class Array<Element> implements List<Element> {
     @Override @Ignore public <Other>Iterable chain(Iterable<? extends Other, ? extends java.lang.Object> other) {
         return $ceylon$language$Iterable$this.chain(other);
     }
+    @Override @Ignore
+    public <Default>Iterable<?,?> defaultNullElements(Default defaultValue) {
+        return $ceylon$language$Iterable$this.defaultNullElements(defaultValue);
+    }
     /*@Override @Ignore
     public <Key> Map<? extends Key, ? extends Sequence<? extends Element>> group(Callable<? extends Key> grouping) {
         return $ceylon$language$Iterable$this.group(grouping);
