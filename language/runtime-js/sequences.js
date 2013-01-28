@@ -9,6 +9,7 @@ var List,Cloneable,Ranged,exports,larger,smaller,equal,Object$,empty,$finished,I
 var Basic,Category;//IGNORE
 
 function Sequence($$sequence) {
+    List($$sequence);
     return $$sequence;
 }
 function $init$Sequence() {

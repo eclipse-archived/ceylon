@@ -148,6 +148,24 @@ function identityHash(obj) {
     return obj.BasicID;
 }
 
+function set_type_args(obj, targs) {
+    if (obj.$$targs$$ === undefined) {
+        obj.$$targs$$=targs;
+    } else {
+        for (x in targs) {
+            obj.$$targs$$[x] = targs[x];
+        }
+    }
+}
+function add_type_arg(obj, name, type) {
+    if (obj.$$targs$$ === undefined) {
+        obj.$$targs$$={};
+    }
+    obj.$$targs$$[name]=type;
+}
+
+exports.set_type_args=set_type_args;
+exports.add_type_arg=add_type_arg;
 exports.exists=exists;
 exports.nonempty=nonempty;
 exports.isOfType=isOfType;

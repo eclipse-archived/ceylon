@@ -135,8 +135,6 @@ initTypeProto(Basic, 'ceylon.language::Basic', Object$, Identifiable);
  * Overwriting of some methods not yet working in compiled code *
  ****************************************************************/
 
-//Singleton.$$.prototype.getKeys = function() { return TypeCategory(this, {t:Integer}); }
-
 //#include maps.js
 
 function Number$(wat) {
