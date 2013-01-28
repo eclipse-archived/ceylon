@@ -58,13 +58,13 @@ List$proto.findLast = function(select) {
     return null;
 }
 List$proto.withLeading = function(other, $$$mptypes) {
-    var sb = SequenceBuilder([{t:'u',l:[this.$$targs$$[0], $$$mptypes[0]]}]);
+    var sb = SequenceBuilder({Element:{t:'u',l:[this.$$targs$$.Element, $$$mptypes.Other]}});
     sb.append(other);
     sb.appendAll(this);
     return sb.getSequence();
 }
 List$proto.withTrailing = function(other, $$$mptypes) {
-    var sb = SequenceBuilder([{t:'u',l:[this.$$targs$$[0], $$$mptypes[0]]}]);
+    var sb = SequenceBuilder({Element:{t:'u',l:[this.$$targs$$.Element, $$$mptypes.Other]}});
     sb.appendAll(this);
     sb.append(other);
     return sb.getSequence();

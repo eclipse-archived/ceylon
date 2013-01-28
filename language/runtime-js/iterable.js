@@ -210,7 +210,7 @@ Iterable$proto.group = function(grouping, $$$mptypes) {
     var newSeq = ArraySequence([], this.$$targs$$);
     while ((elem=it.next()) !== $finished) {
         var key = grouping(elem);
-        var seq = map.put(Entry(key, newSeq, [$$$mptypes[0], {t:Sequence, a:this.$$targs$$}]), true);
+        var seq = map.put(Entry(key, newSeq, {Key:$$$mptypes.Grouping, Item:{t:Sequence, a:this.$$targs$$}]), true);
         if (seq === null) {
             seq = newSeq;
             newSeq = ArraySequence([], this.$$targs$$);
@@ -220,7 +220,7 @@ Iterable$proto.group = function(grouping, $$$mptypes) {
     return map;
 }
 Iterable$proto.chain = function(other, $$$mptypes) {
-    return ChainedIterable(this, other, [this.$$targs$$[0], $$$mptypes[0]]);
+    return ChainedIterable(this, other, {Element:this.$$targs$$.Element, Other:$$$mptypes.Other});
 }
 Iterable$proto.getSize = function() {
     return this.count(function() { return true; });
