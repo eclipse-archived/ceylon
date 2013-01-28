@@ -43,3 +43,17 @@ class SuperInterface_Sub() satisfies SuperInterface {
         return Object::string;
     }
 }
+
+@nomodel
+interface SuperInterface_SubInterface satisfies SuperInterface {
+    shared actual Integer m() {
+        SuperInterface::i++;
+        return SuperInterface::i + SuperInterface::m();
+    }
+    shared Integer m2() {
+        return SuperInterface::i + SuperInterface::m();
+    }
+    shared actual String string {
+        return Object::string;
+    }
+}

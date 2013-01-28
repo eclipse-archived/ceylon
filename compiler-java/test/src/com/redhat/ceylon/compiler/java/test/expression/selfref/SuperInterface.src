@@ -77,3 +77,42 @@ class SuperInterface_Sub implements .com.redhat.ceylon.compiler.java.test.expres
         new .com.redhat.ceylon.compiler.java.test.expression.selfref.SuperInterface_Sub();
     }
 }
+interface SuperInterface_SubInterface extends .com.redhat.ceylon.compiler.java.test.expression.selfref.SuperInterface {
+    
+    public .com.redhat.ceylon.compiler.java.test.expression.selfref.SuperInterface_SubInterface$impl $com$redhat$ceylon$compiler$java$test$expression$selfref$SuperInterface_SubInterface$impl();
+    
+    @.java.lang.Override
+    public long m();
+    
+    public long m2();
+    
+    @.java.lang.Override
+    public .java.lang.String toString();
+}
+final class SuperInterface_SubInterface$impl {
+    
+    SuperInterface_SubInterface$impl(.com.redhat.ceylon.compiler.java.test.expression.selfref.SuperInterface_SubInterface $this) {
+        this.$this = $this;
+    }
+    private final .com.redhat.ceylon.compiler.java.test.expression.selfref.SuperInterface_SubInterface $this;
+    
+    public long m() {
+        (
+            let
+            {
+                long $ceylontmpop1 = $this.$com$redhat$ceylon$compiler$java$test$expression$selfref$SuperInterface$impl().getI();
+                $this.setI($ceylontmpop1 + 1);
+            }
+            returning $ceylontmpop1;
+        );
+        return $this.$com$redhat$ceylon$compiler$java$test$expression$selfref$SuperInterface$impl().getI() + $this.$com$redhat$ceylon$compiler$java$test$expression$selfref$SuperInterface$impl().m();
+    }
+    
+    public long m2() {
+        return $this.$com$redhat$ceylon$compiler$java$test$expression$selfref$SuperInterface$impl().getI() + $this.$com$redhat$ceylon$compiler$java$test$expression$selfref$SuperInterface$impl().m();
+    }
+    
+    public final .java.lang.String toString() {
+        return super.toString();
+    }
+}
