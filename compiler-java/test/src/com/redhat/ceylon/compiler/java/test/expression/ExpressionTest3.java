@@ -194,4 +194,9 @@ public class ExpressionTest3 extends CompilerTest {
         compareWithJavaSource("comprehensions/exists_cond");
     }
 
+    @Test
+    public void testComprehensionEmptiness() {
+        compareWithJavaSource("comprehensions/Emptiness");
+    }
+
 }
