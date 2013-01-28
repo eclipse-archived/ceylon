@@ -102,6 +102,9 @@ void erasureCasting(EC_A & EC_B & EC_C tripleIntersectionParam,
     
     ec_boundsOnElement3(hasErasedParameter);
 
+    // make sure that callable goes raw when capturing methods, to be able to bypass complex erasure rules
+    value callableToBoundsOnElement3 = ec_boundsOnElement3<Nothing>;
+
     // this one requires a cast too, because the inferred type for elements (Empty) is different
     // from the Java declaration that it is erased into a Sequantial<Integer> 
     ec_boundsOnElement4<Integer, Empty>(empty);

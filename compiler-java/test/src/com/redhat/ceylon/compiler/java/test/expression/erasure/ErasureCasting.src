@@ -119,6 +119,20 @@ final class erasureCasting_ {
         .com.redhat.ceylon.compiler.java.test.expression.erasure.ec_boundsOnElement_.ec_boundsOnElement((.com.redhat.ceylon.compiler.java.test.expression.erasure.EC_Parameterised).ceylon.language.nothing_.getNothing$());
         .com.redhat.ceylon.compiler.java.test.expression.erasure.ec_boundsOnElement2_.ec_boundsOnElement2((.ceylon.language.Sequential).ceylon.language.empty_.getEmpty$());
         .com.redhat.ceylon.compiler.java.test.expression.erasure.ec_boundsOnElement3_.ec_boundsOnElement3((.com.redhat.ceylon.compiler.java.test.expression.erasure.EC_Parameterised)hasErasedParameter);
+        final .ceylon.language.Callable<? extends .java.lang.Object> callableToBoundsOnElement3 = new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.java.lang.Object>("Anything(EC_Parameterised<Nothing>)"){
+            
+            @.java.lang.Override
+            public .java.lang.Object $call(final .java.lang.Object $param$0) {
+                final .com.redhat.ceylon.compiler.java.test.expression.erasure.EC_Parameterised $$elements = (.com.redhat.ceylon.compiler.java.test.expression.erasure.EC_Parameterised<? extends .java.lang.Object>)(.com.redhat.ceylon.compiler.java.test.expression.erasure.EC_Parameterised)$param$0;
+                return (
+                    let
+                    {
+                        .com.redhat.ceylon.compiler.java.test.expression.erasure.ec_boundsOnElement3_.ec_boundsOnElement3($$elements);
+                    }
+                    returning null;
+                );
+            }
+        };
         .com.redhat.ceylon.compiler.java.test.expression.erasure.ec_boundsOnElement4_.<.ceylon.language.Integer, .ceylon.language.Empty>ec_boundsOnElement4((.ceylon.language.Sequential<? extends .ceylon.language.Integer>)(.ceylon.language.Sequential).ceylon.language.empty_.getEmpty$());
         .com.redhat.ceylon.compiler.java.test.expression.erasure.ec_boundsOnElement5_.ec_boundsOnElement5((.com.redhat.ceylon.compiler.java.test.expression.erasure.EC_A)tripleIntersectionParam);
         final .com.redhat.ceylon.compiler.java.test.expression.erasure.EC_Parameterised<? extends .com.redhat.ceylon.compiler.java.test.expression.erasure.EC_A> lostParamAttr = (.com.redhat.ceylon.compiler.java.test.expression.erasure.EC_Parameterised<? extends .com.redhat.ceylon.compiler.java.test.expression.erasure.EC_A>)(.com.redhat.ceylon.compiler.java.test.expression.erasure.EC_Parameterised)hasLostParameter;
