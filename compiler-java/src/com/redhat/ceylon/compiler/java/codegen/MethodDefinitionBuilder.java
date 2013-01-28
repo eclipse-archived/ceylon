@@ -278,6 +278,7 @@ public class MethodDefinitionBuilder {
 
     private JCExpression paramType(TypedDeclaration nonWideningDecl,
             ProducedType nonWideningType, int flags) {
+        // keep in sync with gen.willEraseToBestBounds()
         if (gen.typeFact().isUnion(nonWideningType) 
                 || gen.typeFact().isIntersection(nonWideningType)) {
             final TypeDeclaration refinedTypeDecl = ((TypedDeclaration)CodegenUtil.getTopmostRefinedDeclaration(nonWideningDecl)).getType().getDeclaration();

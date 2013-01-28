@@ -689,7 +689,13 @@ public class ClassTransformer extends AbstractTransformer {
         ListBuffer<JCExpression> arguments = ListBuffer.<JCExpression>lb();
         for (Parameter param : parameters) {
             final ProducedTypedReference typedParameter = typedMember.getTypedParameter(param);
-            concreteWrapper.parameter(param, typedParameter.getType(), FINAL, rawifyParametersAndResults ? JT_RAW_TP_BOUND : 0);
+            ProducedType type;
+            // if the supertype method itself got erased to Object, we can't do better than this
+            if(gen().willEraseToObject(param.getType()) && !gen().willEraseToBestBounds(param))
+                type = typeFact().getObjectDeclaration().getType();
+            else
+                type = typedParameter.getType();
+            concreteWrapper.parameter(param, type, FINAL, rawifyParametersAndResults ? JT_RAW_TP_BOUND : 0);
             arguments.add(naming.makeName(param, Naming.NA_MEMBER));
         }
         JCExpression expr = make().Apply(

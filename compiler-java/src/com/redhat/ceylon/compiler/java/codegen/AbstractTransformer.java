@@ -782,6 +782,20 @@ public abstract class AbstractTransformer implements Transformation {
                 && typeFact().isSequentialType(type);
     }
 
+    // keep in sync with MethodDefinitionBuilder.paramType()
+    public boolean willEraseToBestBounds(Parameter param) {
+        ProducedType type = param.getType();
+        if (typeFact().isUnion(type) 
+                || typeFact().isIntersection(type)) {
+            final TypeDeclaration refinedTypeDecl = ((TypedDeclaration)CodegenUtil.getTopmostRefinedDeclaration(param)).getType().getDeclaration();
+            if (refinedTypeDecl instanceof TypeParameter
+                    && !refinedTypeDecl.getSatisfiedTypes().isEmpty()) {
+                return true;
+            }
+        }
+        return false;
+    }
+
     boolean hasErasure(ProducedType type) {
         return hasErasureResolved(type.resolveAliases());
     }
