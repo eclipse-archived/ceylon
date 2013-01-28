@@ -5,7 +5,8 @@ shared abstract class Integer()
         satisfies Scalar<Integer> & 
                   Integral<Integer> &
                   Binary<Integer> & 
-                  Exponentiable<Integer,Integer> {
+                  Exponentiable<Integer,Integer> &
+                  Castable<Integer|Float> {
     
     doc "The UTF-32 character with this UCS code point."
     shared formal Character character;

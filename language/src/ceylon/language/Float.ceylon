@@ -14,7 +14,8 @@ doc "A 64-bit floating point number. A `Float` is capable of
 shared abstract class Float()
         extends Object()
         satisfies Scalar<Float> & 
-                  Exponentiable<Float,Float> {
+                  Exponentiable<Float,Float> &
+                  Castable<Float> {
     
     doc "Determines whether this value is undefined (that is, 
          Not a Number or NaN). The undefined value has the 
