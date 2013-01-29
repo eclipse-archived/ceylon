@@ -18,12 +18,24 @@
  * MA  02110-1301, USA.
  */
 @nomodel
-class SegmentOp<T>() {
-    void int(Integer i1, Integer i2) {
-        Integer[] segment = i1:10;
+class SegmentOp() {
+    shared Integer[] int(Integer start, Integer length) {
+        Integer[] segment = start:length;
+        return segment;
     }
-    void t<T>(T t1, T t2) 
+    shared Character[] char(Character start, Integer length) {
+        Character[] segment = start:length;
+        return segment;
+    }
+    shared T[] t<T>(T start, Integer length) 
             given T satisfies Ordinal<T>{
-        T[] segment = t1:10;
+        T[] segment = start:length;
+        return segment;
+    }
+    shared T[] t2<T,S>(T&S start, Integer length) 
+            given T satisfies Ordinal<T>{
+        T[] segment = start:length;
+        return segment;
     }
 }
+

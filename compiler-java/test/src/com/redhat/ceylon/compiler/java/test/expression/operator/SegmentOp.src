@@ -1,30 +1,28 @@
 package com.redhat.ceylon.compiler.java.test.expression.operator;
 
-class SegmentOp<T> {
+class SegmentOp {
     
     SegmentOp() {
     }
     
-    private final void $int(final long i1, final long i2) {
-        final .ceylon.language.Sequential<? extends .ceylon.language.Integer> segment = (
-            let
-            {
-                .ceylon.language.Integer $start$0 = .ceylon.language.Integer.instance(i1);
-                long $length$1 = 10L;
-            }
-            returning $length$1 > 0L ? new .ceylon.language.Range($start$0, $start$0.incremented($length$1)) : .ceylon.language.empty_.getEmpty$();
-        );
+    public final .ceylon.language.Sequential<? extends .ceylon.language.Integer> $int(final long start, final long length) {
+        final .ceylon.language.Sequential<? extends .ceylon.language.Integer> segment = .com.redhat.ceylon.compiler.java.Util.<.ceylon.language.Integer>spreadOp(.ceylon.language.Integer.instance(start), length);
+        return segment;
     }
     
-    private final <T extends .ceylon.language.Ordinal<? extends T>>void t(final T t1, final T t2) {
-        final .ceylon.language.Sequential<? extends T> segment = (
-            let
-            {
-                T $start$2 = t1;
-                long $length$3 = 10L;
-            }
-            returning $length$3 > 0L ? new .ceylon.language.Range($start$2, $start$2.incremented($length$3)) : .ceylon.language.empty_.getEmpty$();
-        );
+    public final .ceylon.language.Sequential<? extends .ceylon.language.Character> $char(final int start, final long length) {
+        final .ceylon.language.Sequential<? extends .ceylon.language.Character> segment = .com.redhat.ceylon.compiler.java.Util.<.ceylon.language.Character>spreadOp(.ceylon.language.Character.instance(start), length);
+        return segment;
+    }
+    
+    public final <T extends .ceylon.language.Ordinal<? extends T>>.ceylon.language.Sequential<? extends T> t(final T start, final long length) {
+        final .ceylon.language.Sequential<? extends T> segment = .com.redhat.ceylon.compiler.java.Util.<T>spreadOp(start, length);
+        return segment;
+    }
+    
+    public final <T extends .ceylon.language.Ordinal<? extends T>, S>.ceylon.language.Sequential<? extends T> t2(final .java.lang.Object start, final long length) {
+        final .ceylon.language.Sequential<? extends T> segment = .com.redhat.ceylon.compiler.java.Util.<T>spreadOp((T)start, length);
+        return segment;
     }
     
     public static void main(.java.lang.String[] args) {
