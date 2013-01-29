@@ -38,7 +38,7 @@ class DefaultedParameterClassInstantiation {
         );
     }
     
-    DefaultedParameterClassInstantiation(long m, long n, .ceylon.language.Sequential<? extends .ceylon.language.Integer> seq) {
+    DefaultedParameterClassInstantiation(final long m, final long n, final .ceylon.language.Sequential<? extends .ceylon.language.Integer> seq) {
     }
     
     static long $init$m() {

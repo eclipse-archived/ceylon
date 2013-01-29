@@ -2,7 +2,7 @@ package com.redhat.ceylon.compiler.java.test.structure.method;
 
 class MethodDefaultedParamCaptureInitParam {
     
-    MethodDefaultedParamCaptureInitParam(.java.lang.String s) {
+    MethodDefaultedParamCaptureInitParam(final .java.lang.String s) {
         this.s = s;
     }
     private final .java.lang.String s;

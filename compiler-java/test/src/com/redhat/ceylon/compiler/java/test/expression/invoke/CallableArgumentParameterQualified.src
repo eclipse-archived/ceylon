@@ -10,7 +10,7 @@ final class callableArgumentParameterQualified_f_ {
 }
 class CallableArgumentParameterQualified {
     
-    CallableArgumentParameterQualified(.ceylon.language.Callable<? extends .java.lang.Object> bar) {
+    CallableArgumentParameterQualified(final .ceylon.language.Callable<? extends .java.lang.Object> bar) {
         this.bar = bar;
     }
     private final .ceylon.language.Callable<? extends .java.lang.Object> bar;

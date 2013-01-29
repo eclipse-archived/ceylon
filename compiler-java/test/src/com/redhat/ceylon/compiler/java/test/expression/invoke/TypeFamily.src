@@ -9,7 +9,7 @@ abstract class TypeFamily<N extends .com.redhat.ceylon.compiler.java.test.expres
     
     public abstract class Edge {
         
-        protected Edge(N n1, N n2) {
+        protected Edge(final N n1, final N n2) {
             this.n1 = n1;
             this.n2 = n2;
         }
@@ -66,7 +66,7 @@ class TypeFamilyBasic extends .com.redhat.ceylon.compiler.java.test.expression.i
     
     public class Edge extends .com.redhat.ceylon.compiler.java.test.expression.invoke.TypeFamily<.com.redhat.ceylon.compiler.java.test.expression.invoke.TypeFamilyBasic.Node, .com.redhat.ceylon.compiler.java.test.expression.invoke.TypeFamilyBasic.Edge>.Edge {
         
-        protected Edge(.com.redhat.ceylon.compiler.java.test.expression.invoke.TypeFamilyBasic.Node n1, .com.redhat.ceylon.compiler.java.test.expression.invoke.TypeFamilyBasic.Node n2) {
+        protected Edge(final .com.redhat.ceylon.compiler.java.test.expression.invoke.TypeFamilyBasic.Node n1, final .com.redhat.ceylon.compiler.java.test.expression.invoke.TypeFamilyBasic.Node n2) {
             super(n1, n2);
         }
     }

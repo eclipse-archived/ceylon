@@ -2,7 +2,7 @@ package com.redhat.ceylon.compiler.java.test.expression.attribute;
 
 class InitializerParamAccessInInitializer {
     
-    InitializerParamAccessInInitializer(boolean b) {
+    InitializerParamAccessInInitializer(final boolean b) {
         final boolean b2 = b;
     }
 }

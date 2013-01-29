@@ -2,12 +2,12 @@ package com.redhat.ceylon.compiler.java.test.issues.bug05xx;
 
 class Bug544 {
     
-    Bug544(.java.lang.String s) {
+    Bug544(final .java.lang.String s) {
     }
 }
 class Bug544SharedAttribute extends .com.redhat.ceylon.compiler.java.test.issues.bug05xx.Bug544 {
     
-    Bug544SharedAttribute(.java.lang.String s) {
+    Bug544SharedAttribute(final .java.lang.String s) {
         super(s);
         this.s = s;
     }
@@ -19,7 +19,7 @@ class Bug544SharedAttribute extends .com.redhat.ceylon.compiler.java.test.issues
 }
 class Bug544Captured extends .com.redhat.ceylon.compiler.java.test.issues.bug05xx.Bug544 {
     
-    Bug544Captured(.java.lang.String s) {
+    Bug544Captured(final .java.lang.String s) {
         super(s);
         this.s = s;
     }
@@ -31,7 +31,7 @@ class Bug544Captured extends .com.redhat.ceylon.compiler.java.test.issues.bug05x
 }
 class Bug544NonSharedAttr extends .com.redhat.ceylon.compiler.java.test.issues.bug05xx.Bug544 {
     
-    Bug544NonSharedAttr(.java.lang.String s) {
+    Bug544NonSharedAttr(final .java.lang.String s) {
         super(s);
     }
 }
@@ -65,7 +65,7 @@ class Bug544Toplevel extends .com.redhat.ceylon.compiler.java.test.issues.bug05x
 }
 class Bug544Qualified extends .com.redhat.ceylon.compiler.java.test.issues.bug05xx.Bug544 {
     
-    Bug544Qualified(.com.redhat.ceylon.compiler.java.test.issues.bug05xx.Bug544SharedAttribute b) {
+    Bug544Qualified(final .com.redhat.ceylon.compiler.java.test.issues.bug05xx.Bug544SharedAttribute b) {
         super(b.getS());
     }
 }

@@ -38,7 +38,7 @@ class Bug323 {
             );
         }
         
-        Inner(long f, long g) {
+        Inner(final long f, final long g) {
         }
     }
     

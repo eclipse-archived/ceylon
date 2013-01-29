@@ -2,7 +2,7 @@ package com.redhat.ceylon.compiler.java.test.statement.conditional;
 
 class AssertVariableScopes {
     
-    AssertVariableScopes(.java.lang.Object x, .java.lang.Object y) {
+    AssertVariableScopes(final .java.lang.Object x, final .java.lang.Object y) {
         this.x = x;
         this.y = y;
         final .java.lang.String $x$38;

@@ -85,7 +85,7 @@ public final class XEmpty893$impl {
 }
 public abstract class XSingleton893<Element> extends .java.lang.Object implements .com.redhat.ceylon.compiler.java.test.issues.bug08xx.XSequence893<Element> {
     
-    public XSingleton893(Element element) {
+    public XSingleton893(final Element element) {
         super();
         this.$com$redhat$ceylon$compiler$java$test$issues$bug08xx$XSequence893$this = new .com.redhat.ceylon.compiler.java.test.issues.bug08xx.XSequence893$impl<Element>(this);
         this.$com$redhat$ceylon$compiler$java$test$issues$bug08xx$XSequential893$this = new .com.redhat.ceylon.compiler.java.test.issues.bug08xx.XSequential893$impl<Element>(this);

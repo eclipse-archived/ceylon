@@ -8,7 +8,7 @@ class QualifiedInstantiation {
     
     class Inner {
         
-        Inner(.java.lang.String s) {
+        Inner(final .java.lang.String s) {
         }
     }
     

@@ -428,7 +428,7 @@ final class EC_ErasedMember$impl<Element, Absent> {
     
     public class Class {
         
-        protected Class(.java.lang.Object p) {
+        protected Class(final .java.lang.Object p) {
         }
     }
 }
@@ -491,7 +491,7 @@ class EC_ErasedMemberImpl<Element> implements .com.redhat.ceylon.compiler.java.t
 }
 class EC_Tuple<Element, First extends Element> {
     
-    EC_Tuple(First first) {
+    EC_Tuple(final First first) {
         this.first = first;
     }
     private final First first;

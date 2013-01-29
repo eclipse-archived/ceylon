@@ -8,7 +8,7 @@ public class MemberClassAliasWithTypeParameters_Foo<C> {
     
     public MemberClassAliasWithTypeParameters_Foo(@.com.redhat.ceylon.compiler.java.metadata.Name("c")
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("C")
-    C c) {
+    final C c) {
         this.c = c;
     }
     private final C c;
@@ -26,7 +26,7 @@ public class MemberClassAliasWithTypeParameters_Foo<C> {
         
         protected Member(@.com.redhat.ceylon.compiler.java.metadata.Name("t")
         @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("T")
-        T t) {
+        final T t) {
         }
     }
     

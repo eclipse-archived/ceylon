@@ -2,13 +2,13 @@ package com.redhat.ceylon.compiler.java.test.statement.trycatch;
 
 class E1 extends .ceylon.language.Exception {
     
-    E1(.ceylon.language.String description, .java.lang.Throwable cause) {
+    E1(final .ceylon.language.String description, final .java.lang.Throwable cause) {
         super(description, cause);
     }
 }
 class E2 extends .ceylon.language.Exception {
     
-    E2(.ceylon.language.String description, .java.lang.Throwable cause) {
+    E2(final .ceylon.language.String description, final .java.lang.Throwable cause) {
         super(description, cause);
     }
 }

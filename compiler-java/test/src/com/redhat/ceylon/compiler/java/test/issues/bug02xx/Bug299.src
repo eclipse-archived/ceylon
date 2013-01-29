@@ -22,7 +22,7 @@ class Bug299 {
             );
         }
         
-        Inner(.java.lang.String s) {
+        Inner(final .java.lang.String s) {
         }
         
         private final void m() {
@@ -67,7 +67,7 @@ class Bug299 {
                 );
             }
             
-            Inner(.java.lang.String s) {
+            Inner(final .java.lang.String s) {
             }
             
             private final void m() {

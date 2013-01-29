@@ -2,7 +2,7 @@ package com.redhat.ceylon.compiler.java.test.issues.bug03xx;
 
 public class Bug366<T> extends .java.lang.ref.WeakReference<T> {
     
-    public Bug366(T obj, .java.lang.ref.ReferenceQueue<T> q) {
+    public Bug366(final T obj, final .java.lang.ref.ReferenceQueue<T> q) {
         super(obj, q);
     }
 }

@@ -127,7 +127,7 @@ final class toplevelI1_ {
 }
 class ArithmeticOperators {
     
-    ArithmeticOperators(.com.redhat.ceylon.compiler.java.test.expression.operator.MyInteger initN, .com.redhat.ceylon.compiler.java.test.expression.operator.MyInteger initI) {
+    ArithmeticOperators(final .com.redhat.ceylon.compiler.java.test.expression.operator.MyInteger initN, final .com.redhat.ceylon.compiler.java.test.expression.operator.MyInteger initI) {
         this.initN = initN;
         this.initI = initI;
         this.n1 = 0L;
@@ -1018,7 +1018,7 @@ class ArithmeticOperators {
 }
 class ArithmeticOperatorsSub extends .com.redhat.ceylon.compiler.java.test.expression.operator.ArithmeticOperators {
     
-    ArithmeticOperatorsSub(.com.redhat.ceylon.compiler.java.test.expression.operator.MyInteger initN, .com.redhat.ceylon.compiler.java.test.expression.operator.MyInteger initI) {
+    ArithmeticOperatorsSub(final .com.redhat.ceylon.compiler.java.test.expression.operator.MyInteger initN, final .com.redhat.ceylon.compiler.java.test.expression.operator.MyInteger initI) {
         super(initN, initI);
     }
     

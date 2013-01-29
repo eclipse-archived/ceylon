@@ -18,10 +18,10 @@ public class ClassAliasWithParameters_Foo {
     
     public ClassAliasWithParameters_Foo(@.com.redhat.ceylon.compiler.java.metadata.Name("i")
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Integer")
-    long i, @.com.redhat.ceylon.compiler.java.metadata.Name("s")
+    final long i, @.com.redhat.ceylon.compiler.java.metadata.Name("s")
     @.com.redhat.ceylon.compiler.java.metadata.Defaulted
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::String")
-    .java.lang.String s) {
+    final .java.lang.String s) {
     }
     
     @.com.redhat.ceylon.compiler.java.metadata.Ignore

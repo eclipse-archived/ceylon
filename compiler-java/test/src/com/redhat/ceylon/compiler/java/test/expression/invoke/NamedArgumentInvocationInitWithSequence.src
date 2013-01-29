@@ -13,7 +13,7 @@ class NamedArgumentInvocationInitWithSequence {
         );
     }
     
-    NamedArgumentInvocationInitWithSequence(.java.lang.String a, .ceylon.language.Sequential<? extends .ceylon.language.Integer> b) {
+    NamedArgumentInvocationInitWithSequence(final .java.lang.String a, final .ceylon.language.Sequential<? extends .ceylon.language.Integer> b) {
     }
     
     static .ceylon.language.Sequential<? extends .ceylon.language.Integer> $init$b(final .java.lang.String a) {
@@ -37,7 +37,7 @@ class NamedArgumentInvocationInitWithSequence {
             );
         }
         
-        Inner(boolean x, .java.lang.String y, .ceylon.language.Sequential<? extends .ceylon.language.Integer> z) {
+        Inner(final boolean x, final .java.lang.String y, final .ceylon.language.Sequential<? extends .ceylon.language.Integer> z) {
         }
         
         public final void m2() {

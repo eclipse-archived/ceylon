@@ -25,7 +25,7 @@ class ClassDefaultMemberClassWithSequencedParams {
     
     public class Member {
         
-        protected Member(.ceylon.language.Sequential<? extends .ceylon.language.Integer> i) {
+        protected Member(final .ceylon.language.Sequential<? extends .ceylon.language.Integer> i) {
         }
     }
     
@@ -77,7 +77,7 @@ class ClassDefaultMemberClassWithSequencedParams_sub extends .com.redhat.ceylon.
     
     public class Member extends .com.redhat.ceylon.compiler.java.test.structure.mcr.ClassDefaultMemberClassWithSequencedParams.Member {
         
-        protected Member(.ceylon.language.Sequential<? extends .ceylon.language.Integer> i) {
+        protected Member(final .ceylon.language.Sequential<? extends .ceylon.language.Integer> i) {
             super(i);
         }
     }

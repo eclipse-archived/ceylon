@@ -221,7 +221,7 @@ public class SetOperators {
 }
 class SetOperatorsSuper {
     
-    SetOperatorsSuper(.ceylon.language.Set<? extends .ceylon.language.Integer> a, .ceylon.language.Set<? extends .ceylon.language.Integer> b) {
+    SetOperatorsSuper(final .ceylon.language.Set<? extends .ceylon.language.Integer> a, final .ceylon.language.Set<? extends .ceylon.language.Integer> b) {
         this.a = a;
         this.b = b;
         this.sync = getA();
@@ -296,7 +296,7 @@ class SetOperatorsSuper {
 }
 class SetOperatorsSub extends .com.redhat.ceylon.compiler.java.test.expression.operator.SetOperatorsSuper {
     
-    SetOperatorsSub(.ceylon.language.Set<? extends .ceylon.language.Integer> a, .ceylon.language.Set<? extends .java.lang.Object> b) {
+    SetOperatorsSub(final .ceylon.language.Set<? extends .ceylon.language.Integer> a, final .ceylon.language.Set<? extends .java.lang.Object> b) {
         super(a, (.ceylon.language.Set<? extends .ceylon.language.Integer>)(.ceylon.language.Set)b);
     }
     

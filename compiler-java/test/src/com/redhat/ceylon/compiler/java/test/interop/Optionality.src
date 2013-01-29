@@ -2,7 +2,7 @@ package com.redhat.ceylon.compiler.java.test.interop;
 
 class OptionalInterface implements .com.redhat.ceylon.compiler.java.test.interop.JavaOptionalInterface {
     
-    OptionalInterface(.com.redhat.ceylon.compiler.java.test.interop.JavaOptionalInterface x) {
+    OptionalInterface(final .com.redhat.ceylon.compiler.java.test.interop.JavaOptionalInterface x) {
         this.prop1 = x;
         this.prop2 = null;
         this.prop3 = x;

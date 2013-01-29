@@ -2,13 +2,13 @@ package com.redhat.ceylon.compiler.java.test.expression.attribute;
 
 class InitializerParamHidingAttribute {
     
-    InitializerParamHidingAttribute(boolean b) {
+    InitializerParamHidingAttribute(final boolean b) {
         final boolean b2 = b;
     }
 }
 class InitializerParamHidingAttribute2 {
     
-    InitializerParamHidingAttribute2(boolean b) {
+    InitializerParamHidingAttribute2(final boolean b) {
         this.b = b;
         this.b2 = getB();
     }

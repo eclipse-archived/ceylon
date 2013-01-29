@@ -2,7 +2,7 @@ package com.redhat.ceylon.compiler.java.test.structure.klass;
 
 class MethodInitializerParameter<T> {
     
-    MethodInitializerParameter(.ceylon.language.Callable<? extends .java.lang.Object> m, .ceylon.language.Callable<? extends .java.lang.Object> m2, .ceylon.language.Callable<? extends T> m3, .ceylon.language.Callable<? extends .java.lang.Object> m4) {
+    MethodInitializerParameter(final .ceylon.language.Callable<? extends .java.lang.Object> m, final .ceylon.language.Callable<? extends .java.lang.Object> m2, final .ceylon.language.Callable<? extends T> m3, final .ceylon.language.Callable<? extends .java.lang.Object> m4) {
         this.m = m;
         this.m2 = m2;
         this.m3 = m3;

@@ -13,7 +13,7 @@ class OverrideDefaultedInitParam {
         );
     }
     
-    OverrideDefaultedInitParam(.java.lang.String id) {
+    OverrideDefaultedInitParam(final .java.lang.String id) {
     }
     
     static .java.lang.String $init$id() {
@@ -38,7 +38,7 @@ class OverrideDefaultedInitParamSub extends .com.redhat.ceylon.compiler.java.tes
         );
     }
     
-    OverrideDefaultedInitParamSub(.java.lang.String id) {
+    OverrideDefaultedInitParamSub(final .java.lang.String id) {
         super(id);
     }
     

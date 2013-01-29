@@ -2,7 +2,7 @@ package com.redhat.ceylon.compiler.java.test.expression.invoke;
 
 class DefaultedAndTypeParams<X> {
     
-    DefaultedAndTypeParams(X init) {
+    DefaultedAndTypeParams(final X init) {
         this.init = init;
     }
     private final X init;

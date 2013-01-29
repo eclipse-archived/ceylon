@@ -2,12 +2,12 @@ package com.redhat.ceylon.compiler.java.test.expression.invoke;
 
 class NamedArgumentInvocationInit {
     
-    NamedArgumentInvocationInit(.java.lang.String a, long b) {
+    NamedArgumentInvocationInit(final .java.lang.String a, final long b) {
     }
     
     class Inner {
         
-        Inner(boolean x, .java.lang.String y, long z) {
+        Inner(final boolean x, final .java.lang.String y, final long z) {
         }
         
         public final void m2() {

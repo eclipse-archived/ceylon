@@ -2,6 +2,6 @@ package com.redhat.ceylon.compiler.java.test.structure.klass;
 
 class InitializerParameter {
     
-    InitializerParameter(.java.lang.String f) {
+    InitializerParameter(final .java.lang.String f) {
     }
 }

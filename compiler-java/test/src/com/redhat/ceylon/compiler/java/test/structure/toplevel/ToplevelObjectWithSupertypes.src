@@ -2,7 +2,7 @@ package com.redhat.ceylon.compiler.java.test.structure.toplevel;
 
 public class C {
     
-    public C(long n) {
+    public C(final long n) {
     }
 }
 public interface I {

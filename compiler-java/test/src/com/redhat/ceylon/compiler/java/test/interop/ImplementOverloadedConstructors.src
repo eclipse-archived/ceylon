@@ -24,7 +24,7 @@ class ImplementOverloadedConstructor2 extends .com.redhat.ceylon.compiler.java.t
 }
 class ImplementOverloadedConstructor3 extends .com.redhat.ceylon.compiler.java.test.interop.JavaWithOverloadedMembers {
     
-    ImplementOverloadedConstructor3(long i) {
+    ImplementOverloadedConstructor3(final long i) {
         super(i);
     }
 }

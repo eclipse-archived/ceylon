@@ -19,7 +19,7 @@ final class I$impl {
 }
 class C implements .com.redhat.ceylon.compiler.java.test.issues.bug06xx.I {
     
-    C(.ceylon.language.Integer x) {
+    C(final .ceylon.language.Integer x) {
         this.x = x;
         this.$com$redhat$ceylon$compiler$java$test$issues$bug06xx$I$this = new .com.redhat.ceylon.compiler.java.test.issues.bug06xx.I$impl(this);
     }

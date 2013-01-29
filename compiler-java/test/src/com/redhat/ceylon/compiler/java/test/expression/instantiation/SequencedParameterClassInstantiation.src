@@ -13,7 +13,7 @@ class SequencedParameterClassInstantiation {
         );
     }
     
-    SequencedParameterClassInstantiation(long a, .ceylon.language.Sequential<? extends .ceylon.language.Integer> args) {
+    SequencedParameterClassInstantiation(final long a, final .ceylon.language.Sequential<? extends .ceylon.language.Integer> args) {
     }
     
     static .ceylon.language.Sequential<? extends .ceylon.language.Integer> $init$args(final long a) {

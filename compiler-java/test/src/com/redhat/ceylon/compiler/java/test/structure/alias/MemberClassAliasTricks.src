@@ -33,10 +33,10 @@ public class MemberClassAliasTricks_Foo {
     public MemberClassAliasTricks_Foo(@.com.redhat.ceylon.compiler.java.metadata.Name("a")
     @.com.redhat.ceylon.compiler.java.metadata.Defaulted
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Integer")
-    long a, @.com.redhat.ceylon.compiler.java.metadata.Name("b")
+    final long a, @.com.redhat.ceylon.compiler.java.metadata.Name("b")
     @.com.redhat.ceylon.compiler.java.metadata.Defaulted
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Integer")
-    long b) {
+    final long b) {
     }
     
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
@@ -126,10 +126,10 @@ public class MemberClassAliasTricks_Foo {
         protected Member(@.com.redhat.ceylon.compiler.java.metadata.Name("a")
         @.com.redhat.ceylon.compiler.java.metadata.Defaulted
         @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Integer")
-        long a, @.com.redhat.ceylon.compiler.java.metadata.Name("b")
+        final long a, @.com.redhat.ceylon.compiler.java.metadata.Name("b")
         @.com.redhat.ceylon.compiler.java.metadata.Defaulted
         @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Integer")
-        long b) {
+        final long b) {
         }
         
         @.com.redhat.ceylon.compiler.java.metadata.Ignore

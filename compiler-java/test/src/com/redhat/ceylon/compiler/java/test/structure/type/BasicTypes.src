@@ -262,7 +262,7 @@ public final class globalAttrOptionalCharacter_ {
 }
 class BasicTypes {
     
-    BasicTypes(long paramInteger, double paramFloat, .java.lang.String paramString, boolean paramBoolean, int paramCharacter, .ceylon.language.Integer paramOptionalInteger, .ceylon.language.Float paramOptionalFloat, .ceylon.language.String paramOptionalString, .ceylon.language.Boolean paramOptionalBoolean, .ceylon.language.Character paramOptionalCharacter) {
+    BasicTypes(final long paramInteger, final double paramFloat, final .java.lang.String paramString, final boolean paramBoolean, final int paramCharacter, final .ceylon.language.Integer paramOptionalInteger, final .ceylon.language.Float paramOptionalFloat, final .ceylon.language.String paramOptionalString, final .ceylon.language.Boolean paramOptionalBoolean, final .ceylon.language.Character paramOptionalCharacter) {
         final long privateNonCapturedAttrInteger;
         final double privateNonCapturedAttrFloat;
         final .java.lang.String privateNonCapturedAttrString;
@@ -450,7 +450,7 @@ class BasicTypes {
 }
 abstract class TypeParameterClass<ClassParam> {
     
-    TypeParameterClass(ClassParam classParam) {
+    TypeParameterClass(final ClassParam classParam) {
     }
     
     public abstract ClassParam getAttr();
@@ -459,7 +459,7 @@ abstract class TypeParameterClass<ClassParam> {
 }
 class IntegerParameterClass extends .com.redhat.ceylon.compiler.java.test.structure.type.TypeParameterClass<.ceylon.language.Integer> {
     
-    IntegerParameterClass(long classParam) {
+    IntegerParameterClass(final long classParam) {
         super(.ceylon.language.Integer.instance(classParam));
         this.attr = .ceylon.language.Integer.instance(classParam);
     }

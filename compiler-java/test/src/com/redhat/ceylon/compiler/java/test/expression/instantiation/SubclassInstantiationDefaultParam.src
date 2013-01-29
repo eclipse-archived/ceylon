@@ -13,7 +13,7 @@ class SubclassInstantiationDefaultParam {
         );
     }
     
-    SubclassInstantiationDefaultParam(.java.lang.String name) {
+    SubclassInstantiationDefaultParam(final .java.lang.String name) {
     }
     
     static .java.lang.String $init$name() {

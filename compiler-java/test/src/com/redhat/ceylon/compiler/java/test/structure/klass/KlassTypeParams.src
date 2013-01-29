@@ -2,7 +2,7 @@ package com.redhat.ceylon.compiler.java.test.structure.klass;
 
 class KlassTypeParams<U, V> {
     
-    KlassTypeParams(U uu, V vv) {
+    KlassTypeParams(final U uu, final V vv) {
         this.attr = uu;
         this.var = vv;
     }

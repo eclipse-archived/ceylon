@@ -2,7 +2,7 @@ package com.redhat.ceylon.compiler.java.test.statement.trycatch;
 
 class E extends .ceylon.language.Exception {
     
-    E(.ceylon.language.String description, .java.lang.Throwable cause) {
+    E(final .ceylon.language.String description, final .java.lang.Throwable cause) {
         super(description, cause);
     }
 }

@@ -2,7 +2,7 @@ package com.redhat.ceylon.compiler.java.test.structure.klass;
 
 public abstract class CaseTypes {
     
-    public CaseTypes(.java.lang.String name) {
+    public CaseTypes(final .java.lang.String name) {
     }
 }
 public final class foo_ extends .com.redhat.ceylon.compiler.java.test.structure.klass.CaseTypes {
@@ -43,7 +43,7 @@ public final class bar_ extends .com.redhat.ceylon.compiler.java.test.structure.
 }
 public abstract class CaseTypes2 {
     
-    public CaseTypes2(.java.lang.String name) {
+    public CaseTypes2(final .java.lang.String name) {
     }
 }
 public class Foo extends .com.redhat.ceylon.compiler.java.test.structure.klass.CaseTypes2 {

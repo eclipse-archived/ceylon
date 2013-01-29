@@ -13,7 +13,7 @@ class NamedArgumentInvocationInitWithEmptySequence {
         );
     }
     
-    NamedArgumentInvocationInitWithEmptySequence(.ceylon.language.Sequential<? extends .ceylon.language.Integer> b) {
+    NamedArgumentInvocationInitWithEmptySequence(final .ceylon.language.Sequential<? extends .ceylon.language.Integer> b) {
         final .java.lang.Object o = (
             let
             {

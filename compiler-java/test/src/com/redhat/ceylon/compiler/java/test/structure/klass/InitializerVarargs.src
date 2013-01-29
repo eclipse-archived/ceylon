@@ -13,7 +13,7 @@ class InitializerVarargs {
         );
     }
     
-    InitializerVarargs(.java.lang.String f, .ceylon.language.Sequential<? extends .ceylon.language.String> fs) {
+    InitializerVarargs(final .java.lang.String f, final .ceylon.language.Sequential<? extends .ceylon.language.String> fs) {
         .java.lang.Object $elem$2;
         for (.ceylon.language.Iterator<? extends .ceylon.language.String> $ff$iter$3 = fs.getIterator(); !(($elem$2 = $ff$iter$3.next()) instanceof .ceylon.language.Finished); ) {
             final .java.lang.String ff = ((.ceylon.language.String)$elem$2).toString();

@@ -2,7 +2,7 @@ package com.redhat.ceylon.compiler.java.test.structure.method;
 
 class MethodSpecifyingInitParam {
     
-    MethodSpecifyingInitParam(.ceylon.language.Callable<? extends .java.lang.Object> x) {
+    MethodSpecifyingInitParam(final .ceylon.language.Callable<? extends .java.lang.Object> x) {
         this.x = x;
     }
     private final .ceylon.language.Callable<? extends .java.lang.Object> x;

@@ -412,7 +412,7 @@ class TypeParameterErasure {
     
     class Parameterized<T> {
         
-        Parameterized(T t) {
+        Parameterized(final T t) {
         }
         
         public final <Inner>Inner parameterized(final Inner i, final T t) {
@@ -446,7 +446,7 @@ class TypeParameterErasure {
     
     class ParameterizedWithBounds<T extends .com.redhat.ceylon.compiler.java.test.expression.erasure.TPELeft> {
         
-        ParameterizedWithBounds(T t) {
+        ParameterizedWithBounds(final T t) {
             t.left();
             t.left();
         }
@@ -454,7 +454,7 @@ class TypeParameterErasure {
     
     class ParameterizedWithIntersectionBounds<T extends .com.redhat.ceylon.compiler.java.test.expression.erasure.TPELeft & .com.redhat.ceylon.compiler.java.test.expression.erasure.TPERight> {
         
-        ParameterizedWithIntersectionBounds(T t) {
+        ParameterizedWithIntersectionBounds(final T t) {
             t.left();
             t.left();
             t.right();
@@ -486,13 +486,13 @@ class TypeParameterErasure {
     
     class ParameterizedWithErasedBounds<T> {
         
-        ParameterizedWithErasedBounds(T t) {
+        ParameterizedWithErasedBounds(final T t) {
         }
     }
     
     class ParameterizedWithParameterizedBounds<T extends .ceylon.language.Ordinal<? extends T> & .ceylon.language.Comparable<? super T>> {
         
-        ParameterizedWithParameterizedBounds(T t) {
+        ParameterizedWithParameterizedBounds(final T t) {
         }
     }
     
@@ -714,7 +714,7 @@ class TypeParameterErasure {
     
     class TestPrimitiveBound<T extends .ceylon.language.Integer> {
         
-        TestPrimitiveBound(T init) {
+        TestPrimitiveBound(final T init) {
             T n = init;
         }
     }

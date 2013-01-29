@@ -2,7 +2,7 @@ package com.redhat.ceylon.compiler.java.test.issues.bug02xx;
 
 class Bug233_Ceylon extends .com.redhat.ceylon.compiler.java.test.issues.bug02xx.Bug233_Java {
     
-    Bug233_Ceylon(.com.redhat.ceylon.compiler.java.test.issues.bug02xx.Bug233_Type arg) {
+    Bug233_Ceylon(final .com.redhat.ceylon.compiler.java.test.issues.bug02xx.Bug233_Type arg) {
         super(arg);
     }
     

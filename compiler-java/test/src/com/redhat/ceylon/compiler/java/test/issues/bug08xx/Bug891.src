@@ -15,7 +15,7 @@ final class Bug891_Interface$impl {
 }
 class Bug891_Class implements .com.redhat.ceylon.compiler.java.test.issues.bug08xx.Bug891_Interface {
     
-    Bug891_Class(.ceylon.language.Callable<? extends .java.lang.Object> arg) {
+    Bug891_Class(final .ceylon.language.Callable<? extends .java.lang.Object> arg) {
         this.arg = arg;
         this.$com$redhat$ceylon$compiler$java$test$issues$bug08xx$Bug891_Interface$this = new .com.redhat.ceylon.compiler.java.test.issues.bug08xx.Bug891_Interface$impl(this);
     }

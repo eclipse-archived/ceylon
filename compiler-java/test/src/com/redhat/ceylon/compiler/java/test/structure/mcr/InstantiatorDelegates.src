@@ -55,7 +55,7 @@ final class InstantiatorDelegates$impl<X> {
     
     public class Unary {
         
-        protected Unary(boolean b) {
+        protected Unary(final boolean b) {
         }
     }
     
@@ -79,7 +79,7 @@ final class InstantiatorDelegates$impl<X> {
     
     public class Binary {
         
-        protected Binary(boolean b, long i) {
+        protected Binary(final boolean b, final long i) {
         }
     }
     
@@ -118,7 +118,7 @@ final class InstantiatorDelegates$impl<X> {
     
     public class Binary2 {
         
-        protected Binary2(boolean b, long i) {
+        protected Binary2(final boolean b, final long i) {
         }
     }
     
@@ -142,7 +142,7 @@ final class InstantiatorDelegates$impl<X> {
     
     public class Sequenced {
         
-        protected Sequenced(boolean b, .ceylon.language.Sequential<? extends .ceylon.language.Integer> i) {
+        protected Sequenced(final boolean b, final .ceylon.language.Sequential<? extends .ceylon.language.Integer> i) {
         }
     }
     
@@ -152,7 +152,7 @@ final class InstantiatorDelegates$impl<X> {
     
     public class TypeArg {
         
-        protected TypeArg(X x) {
+        protected TypeArg(final X x) {
         }
     }
 }

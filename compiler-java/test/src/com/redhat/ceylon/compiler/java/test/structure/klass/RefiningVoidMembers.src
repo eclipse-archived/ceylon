@@ -2,7 +2,7 @@ package com.redhat.ceylon.compiler.java.test.structure.klass;
 
 abstract class RefiningAnythingMembersClass<T> {
     
-    RefiningAnythingMembersClass(T t) {
+    RefiningAnythingMembersClass(final T t) {
         this.t = t;
     }
     private final T t;

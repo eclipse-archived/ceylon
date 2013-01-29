@@ -15,7 +15,7 @@ public class MutableList<T> {
     
     public class Cell<T> {
         
-        protected Cell(T car, .com.redhat.ceylon.compiler.java.test.structure.klass.MutableList<T>.Cell<T> cdr) {
+        protected Cell(final T car, final .com.redhat.ceylon.compiler.java.test.structure.klass.MutableList<T>.Cell<T> cdr) {
             this.car = car;
             this.cdr = cdr;
         }

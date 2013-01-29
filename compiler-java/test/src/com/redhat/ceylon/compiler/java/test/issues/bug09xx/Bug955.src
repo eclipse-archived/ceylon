@@ -11,7 +11,7 @@ final class bug955_ {
 }
 class Bug595 {
     
-    Bug595(.ceylon.language.Callable<? extends .ceylon.language.String> str, .java.lang.String att) {
+    Bug595(final .ceylon.language.Callable<? extends .ceylon.language.String> str, final .java.lang.String att) {
         this.str = str;
     }
     private final .ceylon.language.Callable<? extends .ceylon.language.String> str;

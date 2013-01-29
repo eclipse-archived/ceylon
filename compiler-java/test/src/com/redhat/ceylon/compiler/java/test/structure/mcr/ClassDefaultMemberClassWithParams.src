@@ -11,7 +11,7 @@ class ClassDefaultMemberClassWithParams {
     
     public class Member {
         
-        protected Member(long i) {
+        protected Member(final long i) {
         }
     }
     
@@ -44,7 +44,7 @@ class ClassDefaultMemberClassWithParams_sub extends .com.redhat.ceylon.compiler.
     
     public class Member extends .com.redhat.ceylon.compiler.java.test.structure.mcr.ClassDefaultMemberClassWithParams.Member {
         
-        protected Member(long i) {
+        protected Member(final long i) {
             super(i);
         }
     }

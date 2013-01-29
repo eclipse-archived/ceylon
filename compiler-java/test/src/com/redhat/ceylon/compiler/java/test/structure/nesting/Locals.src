@@ -81,7 +81,7 @@ class Local {
                 );
             }
             
-            LC(long j) {
+            LC(final long j) {
                 this.j = j;
             }
             private final long j;
@@ -115,7 +115,7 @@ class Local {
                     );
                 }
                 
-                LCC(long k) {
+                LCC(final long k) {
                     this.k = k;
                     this.$com$redhat$ceylon$compiler$java$test$structure$nesting$Local$local$LC$LCI$this = new LC.LCI$impl(this);
                 }
@@ -170,7 +170,7 @@ class Local {
                     );
                 }
                 
-                LIC(long j) {
+                LIC(final long j) {
                     this.j = j;
                     this.$com$redhat$ceylon$compiler$java$test$structure$nesting$Local$local$LI$LII$this = LI$impl.this.new LII$impl(this);
                 }
@@ -207,7 +207,7 @@ class Local {
             );
         }
         
-        C(long i) {
+        C(final long i) {
             this.i = i;
         }
         private final long i;
@@ -250,7 +250,7 @@ class Local {
                     );
                 }
                 
-                CL(long k) {
+                CL(final long k) {
                     this.k = k;
                 }
                 private final long k;
@@ -284,7 +284,7 @@ class Local {
                         );
                     }
                     
-                    CLC(long l) {
+                    CLC(final long l) {
                         this.l = l;
                         this.$com$redhat$ceylon$compiler$java$test$structure$nesting$Local$C$local2$CL$LCI$this = new CL.LCI$impl(this);
                     }
@@ -350,7 +350,7 @@ class Local {
                     );
                 }
                 
-                IL(long j) {
+                IL(final long j) {
                     this.j = j;
                 }
                 private final long j;
@@ -384,7 +384,7 @@ class Local {
                         );
                     }
                     
-                    ILC(long k) {
+                    ILC(final long k) {
                         this.k = k;
                         this.$com$redhat$ceylon$compiler$java$test$structure$nesting$Local$I$local3$IL$ICI$this = new IL.ICI$impl(this);
                     }

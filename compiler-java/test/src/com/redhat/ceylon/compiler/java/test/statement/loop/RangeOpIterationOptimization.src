@@ -2,7 +2,7 @@ package com.redhat.ceylon.compiler.java.test.statement.loop;
 
 class OptimizedForWithRange {
     
-    OptimizedForWithRange(long start, long end) {
+    OptimizedForWithRange(final long start, final long end) {
         this.start = start;
         this.end = end;
     }

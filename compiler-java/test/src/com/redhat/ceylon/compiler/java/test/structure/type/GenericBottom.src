@@ -2,7 +2,7 @@ package com.redhat.ceylon.compiler.java.test.structure.type;
 
 class GenericBottom<T, U> {
     
-    GenericBottom(.java.lang.Object argObject) {
+    GenericBottom(final .java.lang.Object argObject) {
         this.attrTp = (T).ceylon.language.nothing_.getNothing$();
         this.attrIntersection = .ceylon.language.nothing_.getNothing$();
     }

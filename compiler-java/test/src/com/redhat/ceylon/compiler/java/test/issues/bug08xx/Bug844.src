@@ -22,7 +22,7 @@ public class Bug844_Top<Element> {
 }
 public class Bug844_Bottom<Element, First extends Element> extends .com.redhat.ceylon.compiler.java.test.issues.bug08xx.Bug844_Top<Element> {
     
-    public Bug844_Bottom(First firstAttribute) {
+    public Bug844_Bottom(final First firstAttribute) {
         super();
         this.firstAttribute = firstAttribute;
     }
@@ -40,7 +40,7 @@ public class Bug844_Bottom<Element, First extends Element> extends .com.redhat.c
 }
 public abstract class Bug844_Tuple<Element, First extends Element, Rest> extends .java.lang.Object implements .ceylon.language.Sequence<Element> {
     
-    public Bug844_Tuple(First first, .ceylon.language.Sequential<? extends Element> rest) {
+    public Bug844_Tuple(final First first, final .ceylon.language.Sequential<? extends Element> rest) {
         super();
         this.first = first;
         this.rest = rest;

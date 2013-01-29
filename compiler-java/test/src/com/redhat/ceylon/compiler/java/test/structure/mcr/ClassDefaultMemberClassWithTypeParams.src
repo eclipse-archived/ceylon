@@ -2,7 +2,7 @@ package com.redhat.ceylon.compiler.java.test.structure.mcr;
 
 class ClassDefaultMemberClassWithTypeParams<T> {
     
-    ClassDefaultMemberClassWithTypeParams(T tt) {
+    ClassDefaultMemberClassWithTypeParams(final T tt) {
         this.tt = tt;
     }
     private final T tt;
@@ -13,7 +13,7 @@ class ClassDefaultMemberClassWithTypeParams<T> {
     
     public class Member<U> {
         
-        protected Member(T t, U u) {
+        protected Member(final T t, final U u) {
         }
     }
     
@@ -31,7 +31,7 @@ class ClassDefaultMemberClassWithTypeParams<T> {
 }
 class ClassDefaultMemberClassWithTypeParams_sub<X> extends .com.redhat.ceylon.compiler.java.test.structure.mcr.ClassDefaultMemberClassWithTypeParams<X> {
     
-    ClassDefaultMemberClassWithTypeParams_sub(X xx) {
+    ClassDefaultMemberClassWithTypeParams_sub(final X xx) {
         super(xx);
         this.xx = xx;
     }
@@ -44,7 +44,7 @@ class ClassDefaultMemberClassWithTypeParams_sub<X> extends .com.redhat.ceylon.co
     
     public class Member<Y> extends .com.redhat.ceylon.compiler.java.test.structure.mcr.ClassDefaultMemberClassWithTypeParams<X>.Member<Y> {
         
-        protected Member(X x, Y y) {
+        protected Member(final X x, final Y y) {
             super(x, y);
         }
     }

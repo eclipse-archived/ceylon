@@ -2,7 +2,7 @@ package com.redhat.ceylon.compiler.java.test.expression.attribute;
 
 class InitializerParamAccessWithExtends extends .java.lang.Object {
     
-    InitializerParamAccessWithExtends(boolean b) {
+    InitializerParamAccessWithExtends(final boolean b) {
         super();
         this.b = b;
     }
@@ -24,7 +24,7 @@ class InitializerParamAccessWithExtends extends .java.lang.Object {
 }
 class InitializerParamAccessWithExtends2 extends .com.redhat.ceylon.compiler.java.test.expression.attribute.InitializerParamAccessWithExtends {
     
-    InitializerParamAccessWithExtends2(boolean b) {
+    InitializerParamAccessWithExtends2(final boolean b) {
         super(b);
         this.b = b;
     }

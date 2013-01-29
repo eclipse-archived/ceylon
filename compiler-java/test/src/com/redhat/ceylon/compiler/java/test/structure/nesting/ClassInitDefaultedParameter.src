@@ -13,7 +13,7 @@ class C1 {
         );
     }
     
-    C1(long i) {
+    C1(final long i) {
     }
     
     static long $init$i() {
@@ -50,7 +50,7 @@ class C3 {
         );
     }
     
-    C3(long i, long n) {
+    C3(final long i, final long n) {
     }
     
     static long $init$i() {
@@ -79,7 +79,7 @@ class C4 {
         );
     }
     
-    C4(long i, long n) {
+    C4(final long i, final long n) {
     }
     
     static long $init$n(final long i) {
@@ -99,7 +99,7 @@ class C5<U> {
         );
     }
     
-    C5(long i, U u) {
+    C5(final long i, final U u) {
     }
     
     static <U>U $init$u(final long i) {

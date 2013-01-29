@@ -45,7 +45,7 @@ class OuterReference extends .com.redhat.ceylon.compiler.java.test.expression.se
             );
         }
         
-        InnerClass(boolean b) {
+        InnerClass(final boolean b) {
         }
         
         private final boolean m() {
@@ -118,7 +118,7 @@ class OuterReference extends .com.redhat.ceylon.compiler.java.test.expression.se
                 );
             }
             
-            LocalClass(boolean b) {
+            LocalClass(final boolean b) {
                 .com.redhat.ceylon.compiler.java.test.expression.selfref.OuterReference.this.superTest();
                 .com.redhat.ceylon.compiler.java.test.expression.selfref.OuterReference.this.test();
             }

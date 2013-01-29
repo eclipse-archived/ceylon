@@ -2,12 +2,12 @@ package com.redhat.ceylon.compiler.java.test.expression.instantiation;
 
 class Single<Element> {
     
-    Single(Element e) {
+    Single(final Element e) {
     }
 }
 public class KlassTypeParams<U, V> {
     
-    public KlassTypeParams(U u, V v) {
+    public KlassTypeParams(final U u, final V v) {
     }
     
     public final U foo(final U u, final V v) {

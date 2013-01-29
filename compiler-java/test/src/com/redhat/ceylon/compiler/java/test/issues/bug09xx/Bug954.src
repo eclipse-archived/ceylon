@@ -2,7 +2,7 @@ package com.redhat.ceylon.compiler.java.test.issues.bug09xx;
 
 class Bug954 {
     
-    Bug954(boolean b) {
+    Bug954(final boolean b) {
         final long n = 2L;
         this.x = null;
         x = new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.ceylon.language.Integer>("Integer(Integer)"){

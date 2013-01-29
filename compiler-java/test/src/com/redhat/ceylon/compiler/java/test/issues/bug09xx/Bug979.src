@@ -2,7 +2,7 @@ package com.redhat.ceylon.compiler.java.test.issues.bug09xx;
 
 class Bug979Iterable implements .ceylon.language.Iterable<.ceylon.language.String, .java.lang.Object> {
     
-    Bug979Iterable(.ceylon.language.Iterable<? extends .ceylon.language.String, ? extends .java.lang.Object> strings) {
+    Bug979Iterable(final .ceylon.language.Iterable<? extends .ceylon.language.String, ? extends .java.lang.Object> strings) {
         this.strings = strings;
         this.$ceylon$language$Iterable$this = new .ceylon.language.Iterable$impl<.ceylon.language.String, .java.lang.Object>(this);
         this.$ceylon$language$Container$this = new .ceylon.language.Container$impl<.ceylon.language.String, .java.lang.Object>(this);
@@ -165,7 +165,7 @@ class Bug979Iterable implements .ceylon.language.Iterable<.ceylon.language.Strin
 }
 class Bug979Set extends .java.lang.Object implements .ceylon.language.Set<.ceylon.language.String> {
     
-    Bug979Set(.ceylon.language.Iterable<? extends .ceylon.language.String, ? extends .java.lang.Object> strings) {
+    Bug979Set(final .ceylon.language.Iterable<? extends .ceylon.language.String, ? extends .java.lang.Object> strings) {
         super();
         this.strings = strings;
         this.$ceylon$language$Set$this = new .ceylon.language.Set$impl<.ceylon.language.String>(this);

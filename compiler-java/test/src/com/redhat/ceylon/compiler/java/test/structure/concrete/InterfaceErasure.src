@@ -111,7 +111,7 @@ final class InterfaceErasure$impl<Element, Absent> {
     
     public class Class {
         
-        protected Class(.java.lang.Object p, .java.lang.Object p2) {
+        protected Class(final .java.lang.Object p, final .java.lang.Object p2) {
         }
     }
 }

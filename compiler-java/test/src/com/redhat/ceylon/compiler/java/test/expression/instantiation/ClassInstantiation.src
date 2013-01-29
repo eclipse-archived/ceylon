@@ -16,7 +16,7 @@ class ClassInstantiation {
 }
 class ClassInstantiationWithParam {
     
-    ClassInstantiationWithParam(long i) {
+    ClassInstantiationWithParam(final long i) {
     }
     
     public final .com.redhat.ceylon.compiler.java.test.expression.instantiation.ClassInstantiationWithParam m() {
@@ -25,7 +25,7 @@ class ClassInstantiationWithParam {
 }
 class ClassInstantiationWithParams {
     
-    ClassInstantiationWithParams(long i, .java.lang.String j) {
+    ClassInstantiationWithParams(final long i, final .java.lang.String j) {
     }
     
     public final .com.redhat.ceylon.compiler.java.test.expression.instantiation.ClassInstantiationWithParams m() {

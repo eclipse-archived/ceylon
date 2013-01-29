@@ -107,7 +107,7 @@ public class Html implements .com.redhat.ceylon.compiler.java.test.issues.bug08x
         );
     }
     
-    public Html(.com.redhat.ceylon.compiler.java.test.issues.bug08xx.Head head, .com.redhat.ceylon.compiler.java.test.issues.bug08xx.Body body) {
+    public Html(final .com.redhat.ceylon.compiler.java.test.issues.bug08xx.Head head, final .com.redhat.ceylon.compiler.java.test.issues.bug08xx.Body body) {
         this.head = head;
         this.body = body;
         this.$com$redhat$ceylon$compiler$java$test$issues$bug08xx$Visitable$this = new .com.redhat.ceylon.compiler.java.test.issues.bug08xx.Visitable$impl(this);
@@ -185,7 +185,7 @@ public class Head implements .com.redhat.ceylon.compiler.java.test.issues.bug08x
         );
     }
     
-    public Head(.ceylon.language.String title) {
+    public Head(final .ceylon.language.String title) {
         this.title = title;
         this.$com$redhat$ceylon$compiler$java$test$issues$bug08xx$Visitable$this = new .com.redhat.ceylon.compiler.java.test.issues.bug08xx.Visitable$impl(this);
     }
@@ -275,7 +275,7 @@ public class Container<TagType extends .com.redhat.ceylon.compiler.java.test.iss
         );
     }
     
-    public Container(.java.lang.String name, .ceylon.language.Sequential initialTags) {
+    public Container(final .java.lang.String name, final .ceylon.language.Sequential initialTags) {
         this.$com$redhat$ceylon$compiler$java$test$issues$bug08xx$Visitable$this = new .com.redhat.ceylon.compiler.java.test.issues.bug08xx.Visitable$impl(this);
         this.tags = initialTags;
     }
@@ -339,7 +339,7 @@ public class Body extends .com.redhat.ceylon.compiler.java.test.issues.bug08xx.C
         );
     }
     
-    public Body(.ceylon.language.Sequential initialTags) {
+    public Body(final .ceylon.language.Sequential initialTags) {
         super("body", initialTags);
     }
     
@@ -360,7 +360,7 @@ public class Block extends .com.redhat.ceylon.compiler.java.test.issues.bug08xx.
         );
     }
     
-    public Block(.java.lang.String name, .ceylon.language.Sequential initialTags) {
+    public Block(final .java.lang.String name, final .ceylon.language.Sequential initialTags) {
         super(name, initialTags);
         this.$com$redhat$ceylon$compiler$java$test$issues$bug08xx$Tag$this = new .com.redhat.ceylon.compiler.java.test.issues.bug08xx.Tag$impl(this);
     }
@@ -388,7 +388,7 @@ public class P extends .com.redhat.ceylon.compiler.java.test.issues.bug08xx.Bloc
         );
     }
     
-    public P(.ceylon.language.Sequential tags) {
+    public P(final .ceylon.language.Sequential tags) {
         super("p", tags);
     }
     
@@ -409,7 +409,7 @@ public class Inline extends .com.redhat.ceylon.compiler.java.test.issues.bug08xx
         );
     }
     
-    public Inline(.java.lang.String name, .ceylon.language.Sequential initialTags) {
+    public Inline(final .java.lang.String name, final .ceylon.language.Sequential initialTags) {
         super(name, initialTags);
         this.$com$redhat$ceylon$compiler$java$test$issues$bug08xx$InlineTag$this = new .com.redhat.ceylon.compiler.java.test.issues.bug08xx.InlineTag$impl(this);
         this.$com$redhat$ceylon$compiler$java$test$issues$bug08xx$Tag$this = new .com.redhat.ceylon.compiler.java.test.issues.bug08xx.Tag$impl(this);
@@ -444,7 +444,7 @@ public class B extends .com.redhat.ceylon.compiler.java.test.issues.bug08xx.Inli
         );
     }
     
-    public B(.ceylon.language.Sequential tags) {
+    public B(final .ceylon.language.Sequential tags) {
         super("b", tags);
     }
     

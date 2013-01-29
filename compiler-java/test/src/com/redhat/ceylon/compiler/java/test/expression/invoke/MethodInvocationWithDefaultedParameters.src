@@ -2,7 +2,7 @@ package com.redhat.ceylon.compiler.java.test.expression.invoke;
 
 class Fookls {
     
-    Fookls(long init) {
+    Fookls(final long init) {
         this.init = init;
         this.prop = 42L;
         this.privProp = 24L;
@@ -250,7 +250,7 @@ class Fookls {
 }
 class Foosubkls extends .com.redhat.ceylon.compiler.java.test.expression.invoke.Fookls {
     
-    Foosubkls(long init) {
+    Foosubkls(final long init) {
         super(init);
     }
     

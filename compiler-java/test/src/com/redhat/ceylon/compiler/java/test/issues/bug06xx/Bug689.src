@@ -2,7 +2,7 @@ package com.redhat.ceylon.compiler.java.test.issues.bug06xx;
 
 class Bug689<X, Y> {
     
-    Bug689(X x, Y y, .java.lang.Object xy) {
+    Bug689(final X x, final Y y, final .java.lang.Object xy) {
         this.attributeWithUnion = new .ceylon.language.Tuple(x, new .ceylon.language.Tuple<Y, Y, .ceylon.language.Empty>(y, .ceylon.language.empty_.getEmpty$()));
         this.attributeWithIntersection = new .ceylon.language.Tuple(xy, .ceylon.language.empty_.getEmpty$());
         this.variableWithUnion = new .ceylon.language.Tuple(x, new .ceylon.language.Tuple<Y, Y, .ceylon.language.Empty>(y, .ceylon.language.empty_.getEmpty$()));

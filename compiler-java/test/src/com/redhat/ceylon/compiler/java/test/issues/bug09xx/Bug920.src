@@ -2,7 +2,7 @@ package com.redhat.ceylon.compiler.java.test.issues.bug09xx;
 
 class Bug920_Tuple<Element, First extends Element> {
     
-    Bug920_Tuple(First first) {
+    Bug920_Tuple(final First first) {
         this.first = first;
     }
     private final First first;

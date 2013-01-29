@@ -15,7 +15,7 @@ public class InnerClassUsingOutersTypeParam<T> {
     
     public class Cell {
         
-        protected Cell(T car, .com.redhat.ceylon.compiler.java.test.structure.klass.InnerClassUsingOutersTypeParam<T>.Cell cdr) {
+        protected Cell(final T car, final .com.redhat.ceylon.compiler.java.test.structure.klass.InnerClassUsingOutersTypeParam<T>.Cell cdr) {
             this.car = car;
             this.cdr = cdr;
         }

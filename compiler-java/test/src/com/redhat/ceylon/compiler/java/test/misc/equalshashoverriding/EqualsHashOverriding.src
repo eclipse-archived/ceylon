@@ -2,7 +2,7 @@ package com.redhat.ceylon.compiler.java.test.misc.equalshashoverriding;
 
 class EqualsHashOverriding {
     
-    EqualsHashOverriding(.java.lang.String s) {
+    EqualsHashOverriding(final .java.lang.String s) {
         this.s = s;
     }
     private final .java.lang.String s;
@@ -28,7 +28,7 @@ class EqualsHashOverriding {
 }
 class EqualsHashOverriding2 {
     
-    EqualsHashOverriding2(.java.lang.String s) {
+    EqualsHashOverriding2(final .java.lang.String s) {
         this.hash = (int)0L;
     }
     private final int hash;
@@ -40,7 +40,7 @@ class EqualsHashOverriding2 {
 }
 class EqualsHashOverriding3 {
     
-    EqualsHashOverriding3(.java.lang.String s) {
+    EqualsHashOverriding3(final .java.lang.String s) {
         hash = (int)0L;
     }
     private final int hash;

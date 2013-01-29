@@ -7,7 +7,7 @@ class QualifiedParameterisedInstantiation<G> {
     
     class Inner<T> {
         
-        Inner(.java.lang.String s) {
+        Inner(final .java.lang.String s) {
         }
     }
     

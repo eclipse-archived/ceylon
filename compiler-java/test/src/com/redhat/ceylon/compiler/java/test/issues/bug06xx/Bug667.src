@@ -16,7 +16,7 @@ class Bug667TopClass {
 }
 class Bug667BottomClass extends .com.redhat.ceylon.compiler.java.test.issues.bug06xx.Bug667TopClass {
     
-    Bug667BottomClass(.java.lang.Object n) {
+    Bug667BottomClass(final .java.lang.Object n) {
         super();
         this.n = n;
     }
@@ -50,7 +50,7 @@ final class Bug667Interface$impl<T> {
 }
 class Bug667Class<Nada> implements .com.redhat.ceylon.compiler.java.test.issues.bug06xx.Bug667Interface<.ceylon.language.String> {
     
-    Bug667Class(Nada n) {
+    Bug667Class(final Nada n) {
         this.n = n;
         this.$com$redhat$ceylon$compiler$java$test$issues$bug06xx$Bug667Interface$this = new .com.redhat.ceylon.compiler.java.test.issues.bug06xx.Bug667Interface$impl<.ceylon.language.String>(this);
     }

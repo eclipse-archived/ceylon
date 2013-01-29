@@ -2,7 +2,7 @@ package com.redhat.ceylon.compiler.java.test.structure.method;
 
 class MethodInitializerParameter<T> {
     
-    MethodInitializerParameter(T t) {
+    MethodInitializerParameter(final T t) {
         this.t = t;
     }
     private final T t;

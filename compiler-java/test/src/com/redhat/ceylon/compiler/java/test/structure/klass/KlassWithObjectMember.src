@@ -2,7 +2,7 @@ package com.redhat.ceylon.compiler.java.test.structure.klass;
 
 class KlassWithObjectMember {
     
-    KlassWithObjectMember(.java.lang.String x) {
+    KlassWithObjectMember(final .java.lang.String x) {
         this.x = x;
         final .com.redhat.ceylon.compiler.java.test.structure.klass.KlassWithObjectMember.localobj_ localobj = new .com.redhat.ceylon.compiler.java.test.structure.klass.KlassWithObjectMember.localobj_();
         this.capturedobj = new .com.redhat.ceylon.compiler.java.test.structure.klass.KlassWithObjectMember.capturedobj_();

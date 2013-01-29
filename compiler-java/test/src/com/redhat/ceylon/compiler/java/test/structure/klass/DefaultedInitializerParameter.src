@@ -13,7 +13,7 @@ public class DefaultedInitializerParameter {
         );
     }
     
-    public DefaultedInitializerParameter(long n) {
+    public DefaultedInitializerParameter(final long n) {
     }
     
     public static long $init$n() {
@@ -38,7 +38,7 @@ class DefaultedInitializerParameter2 {
         );
     }
     
-    DefaultedInitializerParameter2(long n, .java.lang.String s) {
+    DefaultedInitializerParameter2(final long n, final .java.lang.String s) {
     }
     
     static .java.lang.String $init$s(final long n) {
@@ -70,7 +70,7 @@ class DefaultedInitializerParameter3 {
         );
     }
     
-    DefaultedInitializerParameter3(long n, long m) {
+    DefaultedInitializerParameter3(final long n, final long m) {
     }
     
     static long $init$n() {
@@ -111,7 +111,7 @@ class DefaultedInitializerParameter4 {
         );
     }
     
-    DefaultedInitializerParameter4(long n, long m) {
+    DefaultedInitializerParameter4(final long n, final long m) {
     }
     
     static long $init$n() {
@@ -152,7 +152,7 @@ class DefaultedInitializerParameter5 {
         );
     }
     
-    DefaultedInitializerParameter5(long n, .ceylon.language.Sequential<? extends .ceylon.language.Integer> seq) {
+    DefaultedInitializerParameter5(final long n, final .ceylon.language.Sequential<? extends .ceylon.language.Integer> seq) {
     }
     
     static long $init$n() {

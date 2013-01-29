@@ -2,12 +2,12 @@ package com.redhat.ceylon.compiler.java.test.issues.bug08xx;
 
 class Bug843_1<Element, Rest> {
     
-    Bug843_1(.ceylon.language.Sequential<? extends Element> rest) {
+    Bug843_1(final .ceylon.language.Sequential<? extends Element> rest) {
     }
 }
 class Bug843_2<Rest> {
     
-    Bug843_2(.ceylon.language.Sequential<? extends .ceylon.language.Integer> rest) {
+    Bug843_2(final .ceylon.language.Sequential<? extends .ceylon.language.Integer> rest) {
     }
 }
 final class bug843_test_ {

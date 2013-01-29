@@ -17,7 +17,7 @@ final class QualifiedInstantiationInInterface$impl<G> {
     
     class Inner<T> {
         
-        Inner(.java.lang.String s) {
+        Inner(final .java.lang.String s) {
         }
     }
     
@@ -54,7 +54,7 @@ final class QualifiedInstantiationInInterface$impl<G> {
             
             class LocalInner<X> {
                 
-                LocalInner(.java.lang.String t) {
+                LocalInner(final .java.lang.String t) {
                 }
             }
             

@@ -238,7 +238,7 @@ final class topLevelLeftAttribute_ {
 }
 class MyException extends .ceylon.language.Exception implements .com.redhat.ceylon.compiler.java.test.expression.erasure.EmptyInterface {
     
-    MyException(.ceylon.language.String m, .java.lang.Throwable x) {
+    MyException(final .ceylon.language.String m, final .java.lang.Throwable x) {
         super(m, x);
         this.$com$redhat$ceylon$compiler$java$test$expression$erasure$EmptyInterface$this = new .com.redhat.ceylon.compiler.java.test.expression.erasure.EmptyInterface$impl(this);
     }
@@ -251,7 +251,7 @@ class MyException extends .ceylon.language.Exception implements .com.redhat.ceyl
 }
 class Test {
     
-    Test(.java.lang.Object n) {
+    Test(final .java.lang.Object n) {
         this.n = n;
         this.leftAttribute = new .com.redhat.ceylon.compiler.java.test.expression.erasure.CLeft();
         this.middleAttribute = new .com.redhat.ceylon.compiler.java.test.expression.erasure.CMiddle();

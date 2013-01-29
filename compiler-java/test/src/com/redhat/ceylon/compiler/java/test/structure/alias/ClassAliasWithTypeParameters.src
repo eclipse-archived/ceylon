@@ -7,7 +7,7 @@ public class ClassAliasWithTypeParameters_Foo<T> {
     
     public ClassAliasWithTypeParameters_Foo(@.com.redhat.ceylon.compiler.java.metadata.Name("t")
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("T")
-    T t) {
+    final T t) {
     }
 }
 @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 4)

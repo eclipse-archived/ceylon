@@ -36,7 +36,7 @@ final class toplevelInteger_ {
 }
 class BottomClass {
     
-    BottomClass(.java.lang.Object argObject, long argInteger) {
+    BottomClass(final .java.lang.Object argObject, final long argInteger) {
         final .java.lang.Object attrObject = .ceylon.language.nothing_.getNothing$();
         final long attrInteger = ((.ceylon.language.Integer).ceylon.language.nothing_.getNothing$()).longValue();
     }

@@ -176,9 +176,9 @@ class Bug708_Class<T> {
     
     Bug708_Class(@.com.redhat.ceylon.compiler.java.metadata.Name("param")
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo(value = "T|ceylon.language::Null|ceylon.language::String", erased = true)
-    .java.lang.Object param, @.com.redhat.ceylon.compiler.java.metadata.Name("param2")
+    final .java.lang.Object param, @.com.redhat.ceylon.compiler.java.metadata.Name("param2")
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo(value = "T|ceylon.language::Null|ceylon.language::String", erased = true)
-    .java.lang.Object param2) {
+    final .java.lang.Object param2) {
         this.param = param;
         this.param2 = param2;
         this.attr = param;

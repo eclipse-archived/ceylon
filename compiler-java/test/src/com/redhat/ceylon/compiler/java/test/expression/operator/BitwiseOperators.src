@@ -149,7 +149,7 @@ final class bwToplevelI1_ {
 }
 class BitwiseOperators {
     
-    BitwiseOperators(.com.redhat.ceylon.compiler.java.test.expression.operator.BWMyInteger initN, .com.redhat.ceylon.compiler.java.test.expression.operator.BWMyInteger initI) {
+    BitwiseOperators(final .com.redhat.ceylon.compiler.java.test.expression.operator.BWMyInteger initN, final .com.redhat.ceylon.compiler.java.test.expression.operator.BWMyInteger initI) {
         this.initN = initN;
         this.initI = initI;
         this.n1 = 0L;
@@ -423,7 +423,7 @@ class BitwiseOperators {
 }
 class BitwiseOperatorsSub extends .com.redhat.ceylon.compiler.java.test.expression.operator.BitwiseOperators {
     
-    BitwiseOperatorsSub(.com.redhat.ceylon.compiler.java.test.expression.operator.BWMyInteger initN, .com.redhat.ceylon.compiler.java.test.expression.operator.BWMyInteger initI) {
+    BitwiseOperatorsSub(final .com.redhat.ceylon.compiler.java.test.expression.operator.BWMyInteger initN, final .com.redhat.ceylon.compiler.java.test.expression.operator.BWMyInteger initI) {
         super(initN, initI);
     }
     

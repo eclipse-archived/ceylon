@@ -25,7 +25,7 @@ class DefaultedVariableAttribute {
         );
     }
     
-    DefaultedVariableAttribute(.ceylon.language.String firstName, .ceylon.language.String lastName) {
+    DefaultedVariableAttribute(final .ceylon.language.String firstName, final .ceylon.language.String lastName) {
         this.firstName = firstName;
         this.lastName = lastName;
     }

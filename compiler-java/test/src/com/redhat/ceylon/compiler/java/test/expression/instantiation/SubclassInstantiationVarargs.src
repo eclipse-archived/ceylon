@@ -13,7 +13,7 @@ class Foo {
         );
     }
     
-    Foo(.ceylon.language.Sequential<? extends .ceylon.language.String> name) {
+    Foo(final .ceylon.language.Sequential<? extends .ceylon.language.String> name) {
     }
     
     static .ceylon.language.Sequential<? extends .ceylon.language.String> $init$name() {
@@ -22,7 +22,7 @@ class Foo {
 }
 class Bar extends .com.redhat.ceylon.compiler.java.test.expression.instantiation.Foo {
     
-    Bar(.java.lang.String name1, .java.lang.String name2) {
+    Bar(final .java.lang.String name1, final .java.lang.String name2) {
         super(new .com.redhat.ceylon.compiler.java.language.ArraySequence<.ceylon.language.String>(.ceylon.language.String.instance(name1), .ceylon.language.String.instance(name2)));
     }
 }

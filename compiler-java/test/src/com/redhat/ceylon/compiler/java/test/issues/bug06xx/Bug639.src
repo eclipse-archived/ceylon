@@ -19,7 +19,7 @@ final class Bug639Widening$impl {
 }
 class Bug639WideningImpl implements .com.redhat.ceylon.compiler.java.test.issues.bug06xx.Bug639Widening {
     
-    Bug639WideningImpl(.java.lang.String impl) {
+    Bug639WideningImpl(final .java.lang.String impl) {
         this.$com$redhat$ceylon$compiler$java$test$issues$bug06xx$Bug639Widening$this = new .com.redhat.ceylon.compiler.java.test.issues.bug06xx.Bug639Widening$impl(this);
         this.implementation = .ceylon.language.String.instance(impl);
     }
@@ -42,7 +42,7 @@ class Bug639WideningImpl implements .com.redhat.ceylon.compiler.java.test.issues
 }
 class Bug639WideningImpl2 implements .com.redhat.ceylon.compiler.java.test.issues.bug06xx.Bug639Widening {
     
-    Bug639WideningImpl2(long impl) {
+    Bug639WideningImpl2(final long impl) {
         this.$com$redhat$ceylon$compiler$java$test$issues$bug06xx$Bug639Widening$this = new .com.redhat.ceylon.compiler.java.test.issues.bug06xx.Bug639Widening$impl(this);
         this.implementation = .ceylon.language.Integer.instance(impl);
     }

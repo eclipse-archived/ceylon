@@ -91,7 +91,7 @@ class MethodRefinementWithSpecifiers_ClassNoParam {
 }
 class MethodRefinementWithSpecifiers_Class implements .com.redhat.ceylon.compiler.java.test.structure.method.MethodRefinementWithSpecifiers_Interface {
     
-    MethodRefinementWithSpecifiers_Class(.ceylon.language.Callable<? extends .java.lang.Object> arg) {
+    MethodRefinementWithSpecifiers_Class(final .ceylon.language.Callable<? extends .java.lang.Object> arg) {
         this.arg = arg;
         this.$com$redhat$ceylon$compiler$java$test$structure$method$MethodRefinementWithSpecifiers_Interface$this = new .com.redhat.ceylon.compiler.java.test.structure.method.MethodRefinementWithSpecifiers_Interface$impl(this);
         this.f9$specifier = .com.redhat.ceylon.compiler.java.test.structure.method.methodRefinementWithSpecifiers_returnsMethod_.methodRefinementWithSpecifiers_returnsMethod();

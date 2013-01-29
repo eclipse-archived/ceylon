@@ -2,7 +2,7 @@ package com.redhat.ceylon.compiler.java.test.expression.invoke;
 
 class CallablePositionalInvocationQualified {
     
-    CallablePositionalInvocationQualified(.ceylon.language.Callable<? extends .java.lang.Object> f) {
+    CallablePositionalInvocationQualified(final .ceylon.language.Callable<? extends .java.lang.Object> f) {
         this.f = f;
     }
     private final .ceylon.language.Callable<? extends .java.lang.Object> f;

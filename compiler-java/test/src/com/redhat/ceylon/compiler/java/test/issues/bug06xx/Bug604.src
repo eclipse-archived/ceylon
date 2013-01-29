@@ -9,7 +9,7 @@ abstract class Bug604<N extends .com.redhat.ceylon.compiler.java.test.issues.bug
     
     public abstract class Edge {
         
-        protected Edge(N n1, N n2) {
+        protected Edge(final N n1, final N n2) {
             this.n1 = n1;
             this.n2 = n2;
         }

@@ -2,6 +2,6 @@ package com.redhat.ceylon.compiler.java.test.structure.import_;
 
 class ImportCeylonLanguageType {
     
-    ImportCeylonLanguageType(long n) {
+    ImportCeylonLanguageType(final long n) {
     }
 }

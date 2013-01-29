@@ -2,7 +2,7 @@ package com.redhat.ceylon.compiler.java.test.structure.mcr;
 
 class ClassDefaultMemberClassSpecifier {
     
-    ClassDefaultMemberClassSpecifier(.com.redhat.ceylon.compiler.java.test.structure.mcr.ClassDefaultMemberClassSpecifier other) {
+    ClassDefaultMemberClassSpecifier(final .com.redhat.ceylon.compiler.java.test.structure.mcr.ClassDefaultMemberClassSpecifier other) {
         this.other = other;
     }
     private final .com.redhat.ceylon.compiler.java.test.structure.mcr.ClassDefaultMemberClassSpecifier other;

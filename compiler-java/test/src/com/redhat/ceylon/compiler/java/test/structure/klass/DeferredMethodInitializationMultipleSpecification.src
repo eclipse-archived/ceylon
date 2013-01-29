@@ -2,7 +2,7 @@ package com.redhat.ceylon.compiler.java.test.structure.klass;
 
 class DeferredMethodInitializationMultipleSpecification {
     
-    DeferredMethodInitializationMultipleSpecification(boolean b) {
+    DeferredMethodInitializationMultipleSpecification(final boolean b) {
         this.s = null;
         if (b) {
             s = new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.ceylon.language.String>("String(String)"){
