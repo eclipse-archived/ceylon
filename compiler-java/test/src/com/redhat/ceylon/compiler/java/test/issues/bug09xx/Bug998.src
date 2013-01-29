@@ -1,0 +1,39 @@
+package com.redhat.ceylon.compiler.java.test.issues.bug09xx;
+
+class Bug998 {
+    
+    Bug998(final long i, final .ceylon.language.Callable<? extends .ceylon.language.Boolean> f) {
+        this.f = f;
+        this.rows = (.ceylon.language.Sequence<? extends .ceylon.language.Boolean>)(.ceylon.language.Sequence)new .com.redhat.ceylon.compiler.java.language.AbstractIterable<.ceylon.language.Boolean, .java.lang.Object>(){
+            
+            public final .ceylon.language.Iterator<.ceylon.language.Boolean> getIterator() {
+                return new .com.redhat.ceylon.compiler.java.language.AbstractIterator<.ceylon.language.Boolean>(){
+                    private final .ceylon.language.Iterator<? extends .ceylon.language.Integer> iter$0 = new .com.redhat.ceylon.compiler.java.language.ArraySequence<.ceylon.language.Integer>(.ceylon.language.Integer.instance(1L)).getIterator();
+                    private .ceylon.language.Integer x;
+                    private boolean x$exhausted;
+                    
+                    private final boolean x() {
+                        final .java.lang.Object $ceylontmpitem0 = iter$0.next();
+                        x$exhausted = $ceylontmpitem0 == .ceylon.language.finished_.getFinished$();
+                        if (x$exhausted) {
+                            return false;
+                        } else {
+                            x = (.ceylon.language.Integer)$ceylontmpitem0;
+                            return true;
+                        }
+                    }
+                    
+                    public final .java.lang.Object next() {
+                        return this.x() ? f.$call() : .ceylon.language.finished_.getFinished$();
+                    }
+                };
+            }
+        }.getSequence();
+    }
+    private final .ceylon.language.Callable<? extends .ceylon.language.Boolean> f;
+    private final .ceylon.language.Sequential<? extends .ceylon.language.Boolean> rows;
+    
+    public final .ceylon.language.Sequential<? extends .ceylon.language.Boolean> getRows() {
+        return rows;
+    }
+}
