@@ -54,5 +54,10 @@ void misc() {
     [1,2,3].definesEvery([]);
     [1,2,3].containsAny([]);
     [1,2,3].containsEvery([]);
+    check(first{1,null,3} exists, "first [1]");
+    check(!first{null,2,3} exists, "first [2]");
+    check(!first{null,null,3} exists, "first [3]");
+    {Integer*} noints={};
+    check(!first(noints) exists, "first [4]");
     print(null);
 }
