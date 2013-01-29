@@ -8,6 +8,8 @@ shared void run() {
     print("Lists & sequences");
     lists();
     sequences();
+    print("Range");
+    testRange();
     print("Characters & strings");
     characters();
     strings();
