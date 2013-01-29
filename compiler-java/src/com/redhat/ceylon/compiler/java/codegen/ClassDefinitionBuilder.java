@@ -439,6 +439,7 @@ public class ClassDefinitionBuilder {
         pdb.sequenced(param.isSequenced());
         pdb.defaulted(param.isDefaulted());
         pdb.type(type, gen.makeJavaTypeAnnotations(param));
+        pdb.modifiers(FINAL);
         parameter(pdb);
         initParam(name, param, type);
         return this;
