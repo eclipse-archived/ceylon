@@ -215,6 +215,11 @@ public class CeylonVisitor extends Visitor implements NaturalVisitor {
         gen.expressionGen().transformSuperInvocation(extendedType, classBuilder);
     }
 
+    public void visit(Tree.ClassSpecifier extendedType) {
+        // ignore this bit entirely, that's for class aliases and we don't reflect this in the AST,
+        // only in type model annotations and that info comes from the model
+    }
+
     // FIXME: implement
     public void visit(Tree.TypeConstraint l) {
     }
