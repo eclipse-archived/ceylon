@@ -2726,17 +2726,22 @@ public class ExpressionTransformer extends AbstractTransformer {
                 method = "unknown";
                 args = List.<JCExpression>of(makeErroneous());
             }
-            // make a "lhs.<method>(start, end)" call
-            safeAccess = at(access).Apply(List.<JCTree.JCExpression>nil(), 
-                    makeSelect(lhs, method), args);
 
             // Because tuple open span access has the type of the indexed element
             // (not a sequential of the union of types in the ranged) a typecast may be required.
             ProducedType rangedSpanType = getTypeArgument(leftCorrespondenceOrRangeType, 1);
             ProducedType expectedType = access.getTypeModel();
             int flags = 0;
-            if(!expectedType.isExactly(rangedSpanType))
+            if(!expectedType.isExactly(rangedSpanType)){
                 flags |= EXPR_DOWN_CAST;
+                // make a "Util.<method>(lhs, start, end)" call
+                at(access);
+                safeAccess = makeUtilInvocation("tuple_"+method, args.prepend(lhs), null);
+            }else{
+                // make a "lhs.<method>(start, end)" call
+                safeAccess = at(access).Apply(List.<JCTree.JCExpression>nil(), 
+                        makeSelect(lhs, method), args);
+            }
             safeAccess = applyErasureAndBoxing(safeAccess, 
                                                rangedSpanType, 
                                                CodegenUtil.hasTypeErased(access), true, BoxingStrategy.BOXED, 
