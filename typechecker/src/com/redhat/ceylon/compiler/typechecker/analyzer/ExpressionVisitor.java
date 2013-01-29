@@ -2890,6 +2890,17 @@ public class ExpressionVisitor extends Visitor {
         ProducedType lhst = leftType(that);
         ProducedType rhst = rightType(that);
         if ( rhst!=null && lhst!=null ) {
+            //hardcoded implicit type conversion Integer->Float
+            TypeDeclaration fd = unit.getFloatDeclaration();
+            TypeDeclaration id = unit.getIntegerDeclaration();
+            if (rhst.getSupertype(fd)!=null &&
+                    lhst.getSupertype(id)!=null) {
+                lhst = fd.getType();
+            }
+            else if (rhst.getSupertype(id)!=null &&
+                    lhst.getSupertype(fd)!=null) {
+                rhst = fd.getType();
+            }
             ProducedType nt = checkSupertype(lhst, type, that.getLeftTerm(), 
                     "operand expression must be of numeric type");
             if (nt!=null) {
@@ -2906,6 +2917,13 @@ public class ExpressionVisitor extends Visitor {
         ProducedType lhst = leftType(that);
         ProducedType rhst = rightType(that);
         if ( rhst!=null && lhst!=null ) {
+            //hardcoded implicit type conversion Integer->Float
+            TypeDeclaration fd = unit.getFloatDeclaration();
+            TypeDeclaration id = unit.getIntegerDeclaration();
+            if (rhst.getSupertype(id)!=null &&
+                    lhst.getSupertype(fd)!=null) {
+                rhst = fd.getType();
+            }
             ProducedType nt = checkSupertype(lhst, type, that.getLeftTerm(), 
                     "operand expression must be of numeric type");
             that.setTypeModel(lhst);
