@@ -50,6 +50,9 @@ function isOfTypes(obj, types) {
     if (obj===null) {
         for (var i=0; i < types.l.length; i++) {
             if(types.l[i].t===Null || types.l[i].t===Anything) return true;
+            else if (types.l[i].t==='u') {
+                if (isOfTypes(null, types.l[i])) return true;
+            }
         }
         return false;
     }
