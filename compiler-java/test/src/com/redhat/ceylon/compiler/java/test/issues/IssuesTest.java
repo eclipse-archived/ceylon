@@ -965,5 +965,12 @@ public class IssuesTest extends CompilerTest {
     public void testBug991() {
         compareWithJavaSource("bug09xx/Bug991");
     }
+
+    @Test
+    public void testBug1001() {
+        assertErrors("bug10xx/Bug1001",
+                new CompilerError(22, "Segment operators not implemented yet"),
+                new CompilerError(22, "Segment operators not implemented yet"));
+    }
 }
 
