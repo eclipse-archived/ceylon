@@ -1080,6 +1080,11 @@ public class ExpressionTransformer extends AbstractTransformer {
         return at(op).Unary(JCTree.NOT, expr);
     }
 
+    public JCExpression transform(Tree.SegmentOp op) {
+        // FIXME: https://github.com/ceylon/ceylon-compiler/issues/836
+        return makeErroneous(op, "Segment operators not implemented yet");
+    }
+
     public JCExpression transform(Tree.RangeOp op) {
         // we need to get the range bound type
         ProducedType comparableType = getSupertype(op.getLeftTerm(), op.getUnit().getComparableDeclaration());
