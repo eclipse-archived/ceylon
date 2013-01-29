@@ -154,8 +154,13 @@ public class TypeUtils {
         }
         if (tp.getContainer() instanceof ClassOrInterface) {
             if (parent == tp.getContainer()) {
-                gen.self((ClassOrInterface)tp.getContainer());
-                gen.out(".$$targs$$.", tp.getName());
+                if (((ClassOrInterface)tp.getContainer()).isAlias()) {
+                    //when resolving for aliases we just take the type arguments from the alias call
+                    gen.out("$$targs$$.", tp.getName());
+                } else {
+                    gen.self((ClassOrInterface)tp.getContainer());
+                    gen.out(".$$targs$$.", tp.getName());
+                }
             } else {
                 gen.out("/*TYPE TYPEPARM ", tp.getName(), parent.getQualifiedNameString(), "*/'",
                         tp.getQualifiedNameString(), "'");

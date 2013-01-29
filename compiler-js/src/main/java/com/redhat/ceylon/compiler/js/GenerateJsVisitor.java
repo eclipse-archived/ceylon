@@ -409,15 +409,19 @@ public class GenerateJsVisitor extends Visitor
         Class d = that.getDeclarationModel();
         if (prototypeStyle && d.isClassOrInterfaceMember()) return;
         comment(that);
+        Tree.ClassSpecifier ext = that.getClassSpecifier();
         out(function, names.name(d), "(");
         //Generate each parameter because we need to append one at the end
         for (Parameter p: that.getParameterList().getParameters()) {
             p.visit(this);
             out(", ");
         }
+        TypeArgumentList targs = ext.getType().getTypeArgumentList();
+        if (targs != null && !targs.getTypes().isEmpty()) {
+            out("$$targs$$,");
+        }
         self(d);
         out(")");
-        ExtendedType ext = that.getExtendedType();
         TypeDeclaration aliased = ext.getType().getDeclarationModel();
         out("{return ");
         qualify(ext.getType(), aliased);
@@ -428,7 +432,17 @@ public class GenerateJsVisitor extends Visitor
                 out(",");
             }
         } else {
-            out("/*PENDIENTE*/");
+            out("/*PENDIENTE NAMED ARG CLASS DECL */");
+        }
+        if (targs != null && !targs.getTypes().isEmpty()) {
+            Map<TypeParameter, ProducedType> invargs = TypeUtils.matchTypeParametersWithArguments(
+                    aliased.getTypeParameters(), targs.getTypeModels());
+            if (invargs != null) {
+                TypeUtils.printTypeArguments(that, invargs, this);
+            } else {
+                out("/*TARGS != TPARAMS!!!! WTF?????*/");
+            }
+            out(",");
         }
         self(d);
         out(");}");
