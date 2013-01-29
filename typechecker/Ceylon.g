@@ -2230,27 +2230,34 @@ interpolatedExpressionStart
     | selfReference
     | nonstringLiteral
     | prefixOperatorStart
-    //now a special case to with a big
-    //lookahead to disambiguate a tuple, 
-    //string literal, or negated expression 
-    //(this is super-nasty!)
-    | expression STRING_LITERAL
     ;
 
 stringExpression returns [Atom atom]
     @init { StringTemplate st=null; }
     : sl1=stringLiteral
       { $atom=$sl1.stringLiteral;
-        st = new StringTemplate($sl1.stringLiteral.getToken());
+        st = new StringTemplate(null);
         st.addStringLiteral($sl1.stringLiteral); }
       ( (interpolatedExpressionStart)=>
+        { $atom=st; }
         e1=expression
         { if ($e1.expression!=null) 
-              st.addExpression($e1.expression);
-          $atom=st; }
+              st.addExpression($e1.expression); }
         sl2=stringLiteral
         { if ($sl2.stringLiteral!=null) 
               st.addStringLiteral($sl2.stringLiteral); }
+      //now a special case to with a big
+      //lookahead to disambiguate a tuple, 
+      //string literal, or negated expression 
+      //(this is super-nasty!)
+      | (expression STRING_LITERAL) => 
+        { $atom=st; }
+        e2=expression 
+        { if ($e2.expression!=null) 
+              st.addExpression($e2.expression); }
+        sl3=stringLiteral
+        { if ($sl3.stringLiteral!=null) 
+              st.addStringLiteral($sl3.stringLiteral); }
       )*
     ;
 
