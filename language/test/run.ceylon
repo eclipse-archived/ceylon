@@ -41,6 +41,7 @@ shared void run() {
     print("Process");
     testProcess();
     tuples();
+    testCurries();
     results();
 }
 
