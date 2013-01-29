@@ -20,7 +20,8 @@
 @nomodel
 class NamedArgumentWithIterable() {
     void m(Integer a, Iterable<Integer> b) {
-    
+    }
+    void defaulted(Integer a, Iterable<Integer> b = {1}) {
     }
     void m2(Exception a, Iterable<Exception> b) {
     
@@ -29,6 +30,7 @@ class NamedArgumentWithIterable() {
     
     }
     void invoke() {
+        m{a=1;};
         m{a=1; 2, 3, 4};
         m{a=1; *[4, 5]};
         m{a=1; *{4, 5}};
@@ -36,6 +38,8 @@ class NamedArgumentWithIterable() {
         m{a=1; 2, 3, *{4, 5}};
         m{a=1; for (i in {2}) i};
         m{a=1; 2, 3, for (i in {4}) i};
+
+        defaulted{a=1;};
         
         Exception e = Exception("", null);
         m2{a=e; e, e, e};
