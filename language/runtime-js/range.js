@@ -171,13 +171,13 @@ function RangeIterator(range) {
 initTypeProto(RangeIterator, 'ceylon.language::RangeIterator', Basic, Iterator);
 RangeIterator$forwardNext = function() {
     var rval = this.current;
-    if (rval === $finished) {
+    if (rval === getFinished()) {
         return rval;
     }
     if (rval.compare(this.range.last) === smaller) {
         this.current = rval.getSuccessor();
     } else {
-        this.current = $finished;
+        this.current = getFinished();
     }
     return rval;
 }

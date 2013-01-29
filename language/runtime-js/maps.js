@@ -6,7 +6,7 @@ function Exception(){}//IGNORE
 function isOfType(a,b){}//IGNORE
 function String$(x,l){}//IGNORE
 function TypeCategory(a,b){}//IGNORE
-var exports,Container,$finished,Cloneable,smaller,larger,Object$,Basic;//IGNORE
+var exports,Container,Cloneable,smaller,larger,Object$,Basic;//IGNORE
 var Iterable,Iterator;//IGNORE
 
 function Map(wat) {
@@ -23,7 +23,7 @@ var Map$proto = Map.$$.prototype;
 Map$proto.equals = function(other) {
     if (isOfType(other, {t:Map}) && other.getSize().equals(this.getSize())) {
         var iter = this.getIterator();
-        var entry; while ((entry = iter.next()) !== $finished) {
+        var entry; while ((entry = iter.next()) !== getFinished()) {
             var oi = other.get(entry.getKey());
             if (oi === null || !entry.getItem().equals(oi)) {
                 return false;
@@ -36,7 +36,7 @@ Map$proto.equals = function(other) {
 Map$proto.getHash = function() {
     var hc=1;
     var iter=this.getIterator();
-    var elem; while((elem=iter.next())!=$finished) {
+    var elem; while((elem=iter.next())!=getFinished()) {
         hc*=31;
         hc += elem.getHash();
     }
@@ -65,7 +65,7 @@ function MapValuesIterator(map) {
 initTypeProto(MapValuesIterator, 'ceylon.language::MapValuesIterator', Basic, Iterator);
 MapValuesIterator.$$.prototype.next = function() {
     var entry = this.it.next();
-    return (entry!==$finished) ? entry.getItem() : $finished;
+    return (entry!==getFinished()) ? entry.getItem() : getFinished();
 }
 
 Map$proto.getKeys = function() { return KeySet(this); }
@@ -91,7 +91,7 @@ function KeySetIterator(map) {
 initTypeProto(KeySetIterator, 'ceylon.language::KeySetIterator', Basic, Iterator);
 KeySetIterator.$$.prototype.next = function() {
     var entry = this.it.next();
-    return (entry!==$finished) ? entry.getKey() : $finished;
+    return (entry!==getFinished()) ? entry.getKey() : getFinished();
 }
 KeySet$proto.union = function(other, $$$mptypes) {
     var set = hashSetFromMap(this.map);
@@ -102,7 +102,7 @@ KeySet$proto.intersection = function(other, $$$mptypes) {
     var set = HashSet(undefined, {Element:{t:'i', l:[this.$$targs$$.Element, $$$mptypes.Other]}});
     var it = this.map.getIterator();
     var entry;
-    while ((entry=it.next()) !== $finished) {
+    while ((entry=it.next()) !== getFinished()) {
         var key = entry.getKey();
         if (other.contains(key)) { set.add(key); }
     }
@@ -112,7 +112,7 @@ KeySet$proto.exclusiveUnion = function(other, $$$mptypes) {
     var set = this.complement(other, $$$mptypes);
     var it = other.getIterator();
     var elem;
-    while ((elem=it.next()) !== $finished) {
+    while ((elem=it.next()) !== getFinished()) {
         if (!this.map.defines(elem)) { set.add(elem); }
     }
     return set;
@@ -121,7 +121,7 @@ KeySet$proto.complement = function(other, $$$mptypes) {
     var set = HashSet(undefined, {Element:{t:'u', l:[this.$$targs$$.Element, $$$mptypes.Other]}});
     var it = this.map.getIterator();
     var entry;
-    while ((entry=it.next()) !== $finished) {
+    while ((entry=it.next()) !== getFinished()) {
         var key = entry.getKey();
         if (!other.contains(key)) { set.add(key); }
     }
@@ -133,7 +133,7 @@ Map$proto.getInverse = function() {
     var it = this.getIterator();
     var entry;
     var newSet = HashSet(undefined, {Element:this.$$targs$$.Key});
-    while ((entry=it.next()) !== $finished) {
+    while ((entry=it.next()) !== getFinished()) {
         var item = entry.getItem();
         var set = inv.put(Entry(item, newSet, {Key:this.$$targs$$.Item, Item:{t:Set, a:{Element:this.$$targs$$.Key}}}), true);
         if (set === null) {
@@ -159,7 +159,7 @@ Map$proto.mapItems = function(mapping, $$$mptypes) {
                 $i.$$targs$$=$$targs1$$;
                 $i.next = function() {
                     var e = this.iter.next();
-                    return e===$finished ? e : Entry(e.getKey(), mapping(e.getKey(), e.getItem()), this.$$targs$$);
+                    return e===getFinished() ? e : Entry(e.getKey(), mapping(e.getKey(), e.getItem()), this.$$targs$$);
                 };
                 return $i;
             }
@@ -216,7 +216,7 @@ HashMap$proto.put = function(entry, keepOldItem) {
 HashMap$proto.putAll = function(entries) {
     var it = entries.getIterator();
     var entry;
-    while ((entry=it.next()) !== $finished) { this.put(entry); }
+    while ((entry=it.next()) !== getFinished()) { this.put(entry); }
 }
 HashMap$proto.getSize = function() { return this.size; }
 HashMap$proto.getEmpty = function() { return this.size===0; }
@@ -269,7 +269,7 @@ HashSet$proto.add = function(elem) { this.map.put(Entry(elem, true, {Key:this.$$
 HashSet$proto.addAll = function(elems) {
     var it = elems.getIterator();
     var elem;
-    while ((elem=it.next()) !== $finished) { this.map.put(Entry(elem, true, {Key:this.$$targs$$.Element, Item:{t:Boolean$}})); }
+    while ((elem=it.next()) !== getFinished()) { this.map.put(Entry(elem, true, {Key:this.$$targs$$.Element, Item:{t:Boolean$}})); }
 }
 HashSet$proto.getSize = function() { return this.map.size; }
 HashSet$proto.getEmpty = function() { return this.map.size===0; }
@@ -290,7 +290,7 @@ HashSet$proto.intersection = function(other, $$$mptypes) {
     var set = HashSet(undefined, {Element:{t:'i', l:[this.$$targs$$.Element, $$$mptypes.Other]}});
     var it = this.getIterator();
     var elem;
-    while ((elem=it.next()) !== $finished) {
+    while ((elem=it.next()) !== getFinished()) {
         if (other.contains(elem)) { set.map.put(Entry(elem, true)); }
     }
     return set;
@@ -299,7 +299,7 @@ HashSet$proto.exclusiveUnion = function(other) {
     var set = this.complement(other);
     var it = other.getIterator();
     var elem;
-    while ((elem=it.next()) !== $finished) {
+    while ((elem=it.next()) !== getFinished()) {
         if (this.map.get(elem) === null) { set.map.put(Entry(elem, true)); }
     }
     return set;
@@ -308,7 +308,7 @@ HashSet$proto.complement = function(other) {
     var set = HashSet(undefined, {Element:{t:'u', l:[this.$$targs$$.Element, $$$mptypes.Other]}});
     var it = this.getIterator();
     var elem;
-    while ((elem=it.next()) !== $finished) {
+    while ((elem=it.next()) !== getFinished()) {
         if (!other.contains(elem)) { set.map.put(Entry(elem, true, {Key:this.$$targs$$.Element, Item:{t:Boolean$}})); }
     }
     return set;
@@ -335,7 +335,7 @@ HashMapIterator.$$.prototype.next = function() {
         }
         return entry;
     }
-    return $finished;
+    return getFinished();
 }
 function HashSetIterator(map, $$targs$$) {
     var it = new HashSetIterator.$$;
@@ -346,5 +346,5 @@ function HashSetIterator(map, $$targs$$) {
 initTypeProto(HashSetIterator, 'ceylon.language::HashSetIterator', Basic, Iterator);
 HashSetIterator.$$.prototype.next = function() {
     var entry = this.mapIt.next();
-    return (entry !== $finished) ? entry.getKey() : $finished;
+    return (entry !== getFinished()) ? entry.getKey() : getFinished();
 }

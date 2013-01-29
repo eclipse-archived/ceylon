@@ -5,7 +5,7 @@ function ArraySequence(x){}//IGNORE
 function Comprehension(x){}//IGNORE
 function Exception(x){}//IGNORE
 function String$(x){}//IGNORE
-var Container,$finished,empty,larger,smaller,exports;//IGNORE
+var Container,empty,larger,smaller,exports;//IGNORE
 
 function Iterable(wat) {
     return wat;
@@ -14,11 +14,11 @@ initTypeProto(Iterable, 'ceylon.language::Iterable', $init$Container());
 function $init$Iterable() { return Iterable; }
 var Iterable$proto=Iterable.$$.prototype;
 Iterable$proto.getEmpty = function() {
-    return this.getIterator().next() === $finished;
+    return this.getIterator().next() === getFinished();
 }
 Iterable$proto.getFirst = function() {
     var e = this.getIterator().next();
-    return e === $finished ? null : e;
+    return e === getFinished() ? null : e;
 }
 Iterable$proto.getRest = function() {
     return this.skipping(1);
@@ -27,7 +27,7 @@ Iterable$proto.getSequence = function() {
     var a = [];
     var iter = this.getIterator();
     var next;
-    while ((next = iter.next()) !== $finished) {
+    while ((next = iter.next()) !== getFinished()) {
         a.push(next);
     }
     return ArraySequence(a, this.$$targs$$);
@@ -38,8 +38,8 @@ Iterable$proto.$map = function(mapper) {
         var it = iter.getIterator();
         return function() {
             var e = it.next();
-            if(e !== $finished) {return mapper(e);}
-            return $finished;
+            if(e !== getFinished()) {return mapper(e);}
+            return getFinished();
         }
     });
 }
@@ -50,7 +50,7 @@ Iterable$proto.$filter = function(select) {
         return function() {
             do {
                 var e = it.next();
-            } while ((e !== $finished) && !select(e));
+            } while ((e !== getFinished()) && !select(e));
             return e;
         }
     });
@@ -58,14 +58,14 @@ Iterable$proto.$filter = function(select) {
 Iterable$proto.fold = function(ini, accum) {
     var r = ini;
     var iter = this.getIterator();
-    var e; while ((e = iter.next()) !== $finished) {
+    var e; while ((e = iter.next()) !== getFinished()) {
         r = accum(r, e);
     }
     return r;
 }
 Iterable$proto.find = function(select) {
     var iter = this.getIterator();
-    var e; while ((e = iter.next()) !== $finished) {
+    var e; while ((e = iter.next()) !== getFinished()) {
         if (select(e)) {
             return e;
         }
@@ -75,7 +75,7 @@ Iterable$proto.find = function(select) {
 Iterable$proto.findLast = function(select) {
     var iter = this.getIterator();
     var last = null;
-    var e; while ((e = iter.next()) !== $finished) {
+    var e; while ((e = iter.next()) !== getFinished()) {
         if (select(e)) {
             last = e;
         }
@@ -85,7 +85,7 @@ Iterable$proto.findLast = function(select) {
 Iterable$proto.$sort = function(/*Callable<Comparison?,Element,Element>*/comparing) {
     var a = [];
     var iter = this.getIterator();
-    var e; while ((e = iter.next()) !== $finished) {
+    var e; while ((e = iter.next()) !== getFinished()) {
         a.push(e);
     }
     a.sort(function(x,y) {
@@ -98,7 +98,7 @@ Iterable$proto.$sort = function(/*Callable<Comparison?,Element,Element>*/compari
 }
 Iterable$proto.any = function(/*Callable<Boolean,Element>*/selecting) {
     var iter = this.getIterator();
-    var e; while ((e = iter.next()) !== $finished) {
+    var e; while ((e = iter.next()) !== getFinished()) {
         if (selecting(e)) {
             return true;
         }
@@ -107,7 +107,7 @@ Iterable$proto.any = function(/*Callable<Boolean,Element>*/selecting) {
 }
 Iterable$proto.$every = function(/*Callable<Boolean,Element>*/selecting) {
     var iter = this.getIterator();
-    var e; while ((e = iter.next()) !== $finished) {
+    var e; while ((e = iter.next()) !== getFinished()) {
         if (!selecting(e)) {
             return false;
         }
@@ -139,7 +139,7 @@ Iterable$proto.taking = function(take) {
         var it = iter.getIterator();
         var i = 0;
         return function() {
-            if (i >= take) {return $finished;}
+            if (i >= take) {return getFinished();}
             ++i;
             return it.next();
         }
@@ -153,7 +153,7 @@ Iterable$proto.by = function(step) {
         var it = iter.getIterator();
         return function() {
             var e = it.next();
-            for (var i=1; i<step && (it.next()!==$finished); i++);
+            for (var i=1; i<step && (it.next()!==getFinished()); i++);
             return e;
         }
     });
@@ -161,7 +161,7 @@ Iterable$proto.by = function(step) {
 Iterable$proto.count = function(sel) {
     var c = 0;
     var iter = this.getIterator();
-    var e; while ((e = iter.next()) !== $finished) {
+    var e; while ((e = iter.next()) !== getFinished()) {
         if (sel(e)) c++;
     }
     return c;
@@ -185,14 +185,14 @@ Iterable$proto.getIndexed = function() {
         return function() {
             var e;
             while ((e = it.next()) === null) {idx++;}
-            return e === $finished ? e : Entry(idx++, e);
+            return e === getFinished() ? e : Entry(idx++, e);
         }
     });
 }
 Iterable$proto.getLast = function() {
     var iter = this.getIterator();
     var l=null;
-    var e; while ((e = iter.next()) !== $finished) {
+    var e; while ((e = iter.next()) !== getFinished()) {
         l=e;
     }
     return l;
@@ -208,7 +208,7 @@ Iterable$proto.group = function(grouping, $$$mptypes) {
     var it = this.getIterator();
     var elem;
     var newSeq = ArraySequence([], this.$$targs$$);
-    while ((elem=it.next()) !== $finished) {
+    while ((elem=it.next()) !== getFinished()) {
         var key = grouping(elem);
         var seq = map.put(Entry(key, newSeq, {Key:$$$mptypes.Grouping, Item:{t:Sequence, a:this.$$targs$$}}), true);
         if (seq === null) {

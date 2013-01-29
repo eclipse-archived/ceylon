@@ -36,7 +36,7 @@ List$proto.equals = function(other) {
 List$proto.getHash = function() {
     var hc=1;
     var iter=this.getIterator();
-    var e; while ((e = iter.next()) != $finished) {
+    var e; while ((e = iter.next()) != getFinished()) {
         hc*=31;
         if (e !== null) {
             hc += e.getHash();
@@ -96,5 +96,5 @@ ListIterator.$$.prototype.next = function() {
     if (this.index <= this.lastIndex) {
         return this.list.get(this.index++);
     }
-    return $finished;
+    return getFinished();
 }

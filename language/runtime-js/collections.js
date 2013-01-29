@@ -8,7 +8,7 @@ function getNothing(){}//IGNORE
 function String$(x,l){}//IGNORE
 function TypeCategory(a,b){}//IGNORE
 function ArraySequence(x){}//IGNORE
-var exports,Container,$finished,Cloneable,smaller,larger,Object$,Basic;//IGNORE
+var exports,Container,Cloneable,smaller,larger,Object$,Basic;//IGNORE
 var Iterable,Iterator;//IGNORE
 
 function Sequential($$sequential) {
@@ -98,7 +98,7 @@ $init$emptyIterator();
 (function($$emptyIterator){
     $$emptyIterator.next=function (){
     var $$emptyIterator=this;
-    return $finished;
+    return getFinished();
 };
 })(emptyIterator.$$.prototype);
 var emptyIterator$2=emptyIterator();

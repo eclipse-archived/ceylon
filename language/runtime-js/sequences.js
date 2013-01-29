@@ -5,7 +5,7 @@ function isOfType(a,b){}//IGNORE
 function smallest(x,y){}//IGNORE
 function largest(x,y){}//IGNORE
 function Exception(){}//IGNORE
-var List,Cloneable,Ranged,exports,larger,smaller,equal,Object$,empty,$finished,Iterator;//IGNORE
+var List,Cloneable,Ranged,exports,larger,smaller,equal,Object$,empty,Iterator;//IGNORE
 var Basic,Category;//IGNORE
 
 function Sequence($$sequence) {
@@ -141,7 +141,7 @@ Array$proto.getIterator = function() {
     var $$$index$$$ = 0;
     var $$$arr$$$ = this;
     return new ComprehensionIterator(function() {
-        return ($$$index$$$ === $$$arr$$$.length) ? $finished : $$$arr$$$[$$$index$$$++];
+        return ($$$index$$$ === $$$arr$$$.length) ? getFinished() : $$$arr$$$[$$$index$$$++];
     }, this.$$targs$$);
 }
 
@@ -150,7 +150,7 @@ exports.array=function(elems, $$$ptypes) {
     var e=[];
     if (!(elems === null || elems === undefined)) {
         var iter=elems.getIterator();
-        var item;while((item=iter.next())!==$finished) {
+        var item;while((item=iter.next())!==getFinished()) {
             e.push(item);
         }
     }
@@ -195,7 +195,7 @@ SequenceBuilder$proto.append = function(e) { this.seq.push(e); }
 SequenceBuilder$proto.appendAll = function(/*Iterable*/arr) {
     if (arr === undefined) return;
     var iter = arr.getIterator();
-    var e; while ((e = iter.next()) !== $finished) {
+    var e; while ((e = iter.next()) !== getFinished()) {
         this.seq.push(e);
     }
 }

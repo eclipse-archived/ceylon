@@ -174,12 +174,6 @@ function getTrue() {return true}
 function getFalse() {return false}
 var $true = true;
 var $false = false;
-function Finished() {}
-initTypeProto(Finished, 'ceylon.language::Finished', Basic);
-var $finished = new Finished.$$;
-$finished.string = String$("exhausted", 9);
-$finished.getString = function() { return this.string; }
-function getFinished() { return $finished; }
 
 function Comparison(name) {
     var that = new Comparison.$$;
@@ -209,8 +203,6 @@ exports.Comparison=Comparison;
 exports.getNull=getNull;
 exports.getTrue=getTrue;
 exports.getFalse=getFalse;
-exports.Finished=Finished;
-exports.getFinished=getFinished;
     });
 }(typeof define==='function' && define.amd ? 
     define : function (factory) {

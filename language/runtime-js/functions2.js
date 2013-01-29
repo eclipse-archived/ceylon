@@ -1,6 +1,5 @@
 //More functions, related to comprehensions and iterables
 var exports=null;//IGNORE
-var $finished=null;//IGNORE
 function String$(a,b){}//IGNORE
 function StringBuilder(){}//IGNORE
 
@@ -8,7 +7,7 @@ function string(/*Iterable<Character>*/chars) {
     if (chars === undefined) return String$('',0);
     var s = StringBuilder();
     var iter = chars.getIterator();
-    var c; while ((c = iter.next()) !== $finished) {
+    var c; while ((c = iter.next()) !== getFinished()) {
         s.appendCharacter(c);
     }
     return s.getString();
@@ -19,7 +18,7 @@ function internalSort(comp, elems, $$$mptypes) {
     var arr = [];
     var it = elems.getIterator();
     var e;
-    while ((e=it.next()) !== $finished) {arr.push(e);}
+    while ((e=it.next()) !== getFinished()) {arr.push(e);}
     if (arr.length === 0) {return empty;}
     arr.sort(function(a, b) {
         var cmp = comp(a,b);

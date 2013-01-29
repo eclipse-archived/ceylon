@@ -1,4 +1,4 @@
-var exports,console,$finished,process$,empty;//IGNORE
+var exports,console,process$,empty;//IGNORE
 function Comparison(x){}//IGNORE
 function Entry(a,b){}//IGNORE
 function Singleton(x){}//IGNORE

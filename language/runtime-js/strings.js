@@ -5,7 +5,7 @@ function Singleton(x){}//IGNORE
 function largest(a,b){}//IGNORE
 function smallest(a,b){}//IGNORE
 var Object$,List,Comparable,Ranged,Summable,Castable,Cloneable,smaller,larger,equal;//IGNORE
-var empty,$finished,Basic,Iterator,exports;//IGNORE
+var empty,Basic,Iterator,exports;//IGNORE
 
 function String$(value,size) {
     var that = new String(value);
@@ -279,11 +279,11 @@ String$proto.join = function(strings) {
     if (strings === undefined) {return String$("", 0)}
     var it = strings.getIterator();
     var str = it.next();
-    if (str === $finished) {return String$("", 0);}
+    if (str === getFinished()) {return String$("", 0);}
     if (this.codePoints === undefined) {this.codePoints = countCodepoints(this)}
     var result = str;
     var len = str.codePoints;
-    while ((str = it.next()) !== $finished) {
+    while ((str = it.next()) !== getFinished()) {
         result += this;
         result += str;
         len += this.codePoints + str.codePoints;
@@ -313,7 +313,7 @@ String$proto.$split = function(sep, discard, group) {
     if (isOfType(sep, {t:Iterable})) {
         var sepChars = {}
         var it = sep.getIterator();
-        var c; while ((c=it.next()) !== $finished) {sepChars[c.value] = true}
+        var c; while ((c=it.next()) !== getFinished()) {sepChars[c.value] = true}
         for (var i=0; i<this.length;) {
             var j = i;
             var cp = this.charCodeAt(i++);
@@ -479,7 +479,7 @@ initTypeProto(StringIterator, 'ceylon.language::StringIterator', Basic, Iterator
 var StringIterator$proto = StringIterator.$$.prototype;
 StringIterator$proto.$$targs$$={Element:{t:Character}, Absent:{t:Null}};
 StringIterator$proto.next = function() {
-    if (this.index >= this.string.length) { return $finished }
+    if (this.index >= this.string.length) { return getFinished(); }
     var first = this.string.charCodeAt(this.index++);
     if ((first&0xfc00) !== 0xd800 || this.index >= this.string.length) {
         return Character(first);

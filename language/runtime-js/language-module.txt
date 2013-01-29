@@ -1,3 +1,6 @@
+#This is the list of language module files that can be compiled from their Ceylon source
+#each line states a list of files to be compiled in one pass
+
 #Anything
 #Array
 #Boolean
@@ -6,37 +9,29 @@
 #REVISAR Comparison
 
 #REVISAR Finished
-#REVISAR Keys
 #native SequenceBuilder
 #native StringBuilder
-#revisar annotations
+#REVISAR annotations
 #native className
 #native flatten
-#REVISAR identityHash
-#REVISAR internalSort
+#native identityHash
+#native internalSort
 #native language
-#REVISAR process
-
-#This is the list of language module files that can be compiled from their Ceylon source
-#each line states a list of files to be compiled in one pass
+#native process
 
 #Basic
 
 #this requires impl of keys requires reified generics
-Keys,Correspondence
+Keys,Correspondence,Finished
 
-Binary,Castable,Cloneable,Closeable,Ranged
-Container,Iterator,Collection,Category
+Binary,Castable,Cloneable,Closeable,Ranged,Container,Iterator,Collection,Category
+List,Tuple,ChainedIterator
+Entry,Comparable,Invertable,Summable,Ordinal,Numeric,Scalar,Exponentiable,Integral
 
 #Iterable
-#Finished
-
-List,Tuple,ChainedIterator
 
 #syntactic sugar prevents Sequential from compiling
 #Sequential,Sequence,Empty
-
-Entry,Comparable,Invertable,Summable,Ordinal,Numeric,Scalar,Exponentiable,Integral
 
 #Identifiable
 #IdentifiableObject
