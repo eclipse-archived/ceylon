@@ -56,7 +56,7 @@ void operators() {
     value spreadList = [ Spread1(), Spread2() ];
     value spread13 = spreadList*.x();
     check(spread13.size == 2, "spread 13 size");
-    check(spread13[0] is String, "spread 13 item 0");
+    check(spread13[0].lowercased=="s1", "spread 13 item 0");
     if (is String s13_1 = spread13[1]) {
         check(s13_1 == "S2", "spread 13 item 1");
     } else { fail("spread 13 item 1"); }
