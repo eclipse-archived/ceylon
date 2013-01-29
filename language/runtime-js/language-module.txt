@@ -1,13 +1,20 @@
 #This is the list of language module files that can be compiled from their Ceylon source
 #each line states a list of files to be compiled in one pass
 
-#Anything
-#Array
-#Boolean
-#Callable
+#Identifiable is a problem because it can't extend itself
+#Identifiable
+Basic
 
-#REVISAR Comparison
-#REVISAR annotations
+#these would need to be compiled together
+#seems certain algebraic types can't be compiled the way regular types are
+#I mean as part of the process of compiling the language module
+#Anything,Object,Null
+#Comparison
+#Sequential,Sequence,Empty
+
+#native Array
+#native Boolean
+#native Callable
 #native SequenceBuilder
 #native StringBuilder
 #native className
@@ -16,10 +23,6 @@
 #native internalSort
 #native language
 #native process
-
-#Identifiable is a problem because it can't extend itself
-#Identifiable
-Basic
 
 #this requires impl of keys requires reified generics
 Keys,Correspondence,Finished
@@ -31,16 +34,14 @@ Entry,Comparable,Invertable,Summable,Ordinal,Numeric,Scalar,Exponentiable,Integr
 #Iterable
 
 #syntactic sugar prevents Sequential from compiling
-#Sequential,Sequence,Empty
 
 Exception,NegativeNumberException,OverflowException,RecursiveInitializationException
 
 #Null
 #Number
 #Map is close to compiling but requires reified types in one method
-#Map
 Set,Range,Singleton
-LazyMap,LazyList,LazySet
+Map,LazyMap,LazyList,LazySet
 
 any,byDecreasing,byIncreasing,byItem,byKey,coalesce,count,emptyOrSingleton,curry,entries,equalTo
 every,first,forItem,forKey,greaterThan,join,largest,lessThan,max,min,smallest,sum,product,zip,print,nothing

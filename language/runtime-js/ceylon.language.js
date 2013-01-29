@@ -131,7 +131,7 @@ Identifiable$proto.getHash = function() { return $identityHash(this); }
  * Overwriting of some methods not yet working in compiled code *
  ****************************************************************/
 
-//#include maps.js
+//#dont include maps.js
 
 function Number$(wat) {
     return wat;
