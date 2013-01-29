@@ -2734,9 +2734,14 @@ public class ExpressionTransformer extends AbstractTransformer {
             int flags = 0;
             if(!expectedType.isExactly(rangedSpanType)){
                 flags |= EXPR_DOWN_CAST;
-                // make a "Util.<method>(lhs, start, end)" call
-                at(access);
-                safeAccess = makeUtilInvocation("tuple_"+method, args.prepend(lhs), null);
+                // make sure we barf properly if we missed a heuristics
+                if(method.equals("spanFrom")){
+                    // make a "Util.<method>(lhs, start, end)" call
+                    at(access);
+                    safeAccess = makeUtilInvocation("tuple_"+method, args.prepend(lhs), null);
+                }else{
+                    safeAccess = makeErroneous(access, "Failed assumption from the compiler backend: only the spanFrom method should be specialised for Tuples. This is likely a compiler bug, please report it.");
+                }
             }else{
                 // make a "lhs.<method>(start, end)" call
                 safeAccess = at(access).Apply(List.<JCTree.JCExpression>nil(), 
