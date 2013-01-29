@@ -3,7 +3,6 @@ package com.redhat.ceylon.compiler.js;
 import java.io.IOException;
 import java.io.Writer;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
@@ -305,25 +304,13 @@ public class GenerateJsVisitor extends Visitor
         boolean first=true;
         boolean ptypes = false;
         //Check if this is the first parameter list
-        final boolean plist0;
-        if (that.getScope() instanceof Method) {
-            plist0 = ((Method)that.getScope()).getParameterLists().get(0)==that.getModel();
-        } else {
-            plist0 = false;
+        if (that.getScope() instanceof Method && that.getModel().isFirst()) {
+            ptypes = ((Method)that.getScope()).getTypeParameters() != null && 
+                    !((Method)that.getScope()).getTypeParameters().isEmpty();
         }
         for (Parameter param: that.getParameters()) {
             if (!first) out(",");
-            com.redhat.ceylon.compiler.typechecker.model.Parameter d = param.getDeclarationModel();
-            //Only add the type arguments to the first parameter list
-            if (plist0 && !ptypes && d.getScope() instanceof Method) {
-                List<TypeParameter> tparms = ((Method)d.getScope()).getTypeParameters();
-                if (tparms != null && !tparms.isEmpty()) {
-                    for (TypeParameter tp : ((Method)d.getScope()).getTypeParameters()) {
-                        ptypes |= TypeUtils.typeContainsTypeParameter(d.getType(), tp) != null;
-                    }
-                }
-            }
-            out(names.name(d));
+            out(names.name(param.getDeclarationModel()));
             first = false;
         }
         if (ptypes) {
