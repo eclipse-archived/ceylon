@@ -320,9 +320,7 @@ public class TypeHierarchyVisitor extends Visitor {
         Type type = getOrBuildType(declaration);
 
         stackOfProcessedType.add(declaration);
-        if (declaration instanceof com.redhat.ceylon.compiler.typechecker.model.Class) {
-            visitDAGNode(declaration.getExtendedTypeDeclaration(), sortedDag, visited, stackOfProcessedType, errorReporter);
-        }
+        visitDAGNode(declaration.getExtendedTypeDeclaration(), sortedDag, visited, stackOfProcessedType, errorReporter);
         for (TypeDeclaration superSatisfiedType : declaration.getSatisfiedTypeDeclarations()) {
             visitDAGNode(superSatisfiedType, sortedDag, visited, stackOfProcessedType, errorReporter);
         }

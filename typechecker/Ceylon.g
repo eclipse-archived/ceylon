@@ -577,7 +577,7 @@ classDeclaration returns [AnyClass declaration]
       | 
         (
           classSpecifier
-          { dec.setExtendedType($classSpecifier.extendedType); }
+          { dec.setClassSpecifier($classSpecifier.classSpecifier); }
         )?
         { expecting=SEMICOLON; }
         SEMICOLON
@@ -669,11 +669,11 @@ extendedType returns [ExtendedType extendedType]
         $extendedType.setInvocationExpression($ci.invocationExpression); }
     ;
 
-classSpecifier returns [ExtendedType extendedType]
-    : COMPUTE { $extendedType = new ExtendedType($COMPUTE); }
+classSpecifier returns [ClassSpecifier classSpecifier]
+    : COMPUTE { $classSpecifier = new ClassSpecifier($COMPUTE); }
       ci=classInstantiation
-      { $extendedType.setType($ci.type);
-        $extendedType.setInvocationExpression($ci.invocationExpression); }
+      { $classSpecifier.setType($ci.type);
+        $classSpecifier.setInvocationExpression($ci.invocationExpression); }
     ;
 
 classInstantiation returns [SimpleType type, InvocationExpression invocationExpression]
@@ -1021,7 +1021,7 @@ declaration returns [Declaration declaration]
     ;*/
 
 annotatedDeclarationStart
-    : annotation* declarationStart
+    : STRING_LITERAL? annotation* declarationStart
     ;
 
 annotatedAssertionStart
@@ -1714,8 +1714,8 @@ positionalArguments returns [PositionalArgumentList positionalArgumentList]
       (
         sa=sequencedArgument
         { if ($sa.sequencedArgument!=null) 
-              $positionalArgumentList.getPositionalArguments()
-                  .addAll($sa.sequencedArgument.getPositionalArguments()); }
+              for (PositionalArgument pa: $sa.sequencedArgument.getPositionalArguments())
+                  $positionalArgumentList.addPositionalArgument(pa); }
       )?
       RPAREN
       { $positionalArgumentList.setEndToken($RPAREN); }
@@ -2230,27 +2230,34 @@ interpolatedExpressionStart
     | selfReference
     | nonstringLiteral
     | prefixOperatorStart
-    //now a special case to with a big
-    //lookahead to disambiguate a tuple, 
-    //string literal, or negated expression 
-    //(this is super-nasty!)
-    | expression STRING_LITERAL
     ;
 
 stringExpression returns [Atom atom]
     @init { StringTemplate st=null; }
     : sl1=stringLiteral
       { $atom=$sl1.stringLiteral;
-        st = new StringTemplate($sl1.stringLiteral.getToken());
+        st = new StringTemplate(null);
         st.addStringLiteral($sl1.stringLiteral); }
       ( (interpolatedExpressionStart)=>
+        { $atom=st; }
         e1=expression
         { if ($e1.expression!=null) 
-              st.addExpression($e1.expression);
-          $atom=st; }
+              st.addExpression($e1.expression); }
         sl2=stringLiteral
         { if ($sl2.stringLiteral!=null) 
               st.addStringLiteral($sl2.stringLiteral); }
+      //now a special case to with a big
+      //lookahead to disambiguate a tuple, 
+      //string literal, or negated expression 
+      //(this is super-nasty!)
+      | (expression STRING_LITERAL) => 
+        { $atom=st; }
+        e2=expression 
+        { if ($e2.expression!=null) 
+              st.addExpression($e2.expression); }
+        sl3=stringLiteral
+        { if ($sl3.stringLiteral!=null) 
+              st.addStringLiteral($sl3.stringLiteral); }
       )*
     ;
 
@@ -2497,6 +2504,13 @@ typeNameWithArguments returns [Identifier identifier, TypeArgumentList typeArgum
     
 annotations returns [AnnotationList annotationList]
     : { $annotationList = new AnnotationList(null); }
+      (
+          STRING_LITERAL
+          { AnonymousAnnotation aa = new AnonymousAnnotation(null);
+            aa.setStringLiteral(new StringLiteral($STRING_LITERAL));
+            $annotationList.setAnonymousAnnotation(aa);
+            $STRING_LITERAL.setType(ASTRING_LITERAL); }
+      )?
       (
         annotation 
         { $annotationList.addAnnotation($annotation.annotation); }

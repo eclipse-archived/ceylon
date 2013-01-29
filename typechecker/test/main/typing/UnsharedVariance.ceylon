@@ -33,3 +33,39 @@ class Capturing5<out T>(T t, Capturing4<T> c) {
     Consumer<T> consumer;
     shared void callIt() {}
 }
+
+
+void unsharedVariance() {
+    class Bar<out T>(T t, Bar<T> bar) {
+        void accept(T tt) {}
+        accept(t);
+        //bar.accept(t);
+    }    
+    class Foo<in T>(T t, Foo<T> foo) {
+         T get() => t;
+         print(get());
+         //foo.get();
+    }
+    class Baz<out T>(T t, Foo<T> foo) {
+         class Inner(T t) {}
+         print(Inner(t));
+         //foo.Inner(t);
+    }
+}
+void backdoorVariance() {
+    class Bar<out T>(T t, Bar<T> bar) {
+        void accept(@error T tt) {}
+        accept(t);
+        bar.accept(t);
+    }    
+    class Foo<in T>(T t, Foo<T> foo) {
+         @error T get() => t;
+         print(get());
+         foo.get();
+    }
+    class Baz<out T>(T t, Baz<T> baz) {
+         class Inner(@error T t) {}
+         print(Inner(t));
+         baz.Inner(t);
+    }
+}

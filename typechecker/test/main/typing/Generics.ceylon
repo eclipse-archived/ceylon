@@ -421,7 +421,7 @@ class Generics() {
 
     interface Super1 satisfies Inter1<Nothing> & Inter2<String> {}
     interface Super2 satisfies Inter1<Integer> & Inter2<Object> {}
-    @error class Impl() satisfies Super1 & Super2 {}
+    class Impl() satisfies Super1 & Super2 {}
     value impl = Impl();
     String implget1 = impl.get();
     @error Integer implget2 = impl.get();
@@ -434,7 +434,7 @@ class Generics() {
 
     interface Super3 satisfies Inter1<Object> & Inter2<String> {}
     interface Super4 satisfies Inter1<Integer> & Inter2<Nothing> {}
-    @error class Conc() satisfies Super3 & Super4 {}
+    class Conc() satisfies Super3 & Super4 {}
     value conc = Conc();
     String concget1 = conc.get();
     Integer concget2 = conc.get();
@@ -462,6 +462,34 @@ class Generics() {
             T t = foo.get();
         }
     }
+    
+    interface Invar<T> {}
+    class SuperInvar() satisfies Invar<Integer> {}
+    interface MixinInvar satisfies Invar<Float> {}
+    @error abstract class SubInvar() extends SuperInvar() satisfies MixinInvar {}
+    
+    interface Contravar<in T> {}
+    class SuperContravar() satisfies Contravar<Integer> {}
+    interface MixinContravar satisfies Contravar<Float> {}
+    abstract class SubContravar() extends SuperContravar() satisfies MixinContravar {}
+    
+    interface ContravarWithMember<in T> {
+        shared void consume(T t) {}
+    }
+    class SuperContravarWithMember() satisfies ContravarWithMember<Integer> {}
+    interface MixinContravarWithMember satisfies ContravarWithMember<Float> {}
+    abstract class SubContravarWithMember() extends SuperContravarWithMember() satisfies MixinContravarWithMember {}
+    
+    interface ContravarBroken<in T> {
+        shared formal void consume(T t);
+    }
+    class SuperContravarBroken() satisfies ContravarBroken<Integer> { 
+        shared actual void consume(Integer t) {}
+    }
+    interface MixinContravarBroken satisfies ContravarBroken<Float> { 
+        shared actual void consume(Float t) {}
+    }
+    @error abstract class SubContravarBroken() extends SuperContravarBroken() satisfies MixinContravarBroken {}
     
     interface Enumerated<out U, in V, W> 
             of E0<U,V,W> | E1<U,V,W> | E2<U,V,W> | E3<U,V,W> | E4<V,W> | E5<U,W> | E6<U,V,W> {}

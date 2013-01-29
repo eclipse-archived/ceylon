@@ -6,53 +6,65 @@
     IMPORT_LIST?
     DECLARATION*)
 
+"A module descriptor."
 ^(MODULE_DESCRIPTOR:STATEMENT_OR_ARGUMENT
     ANNOTATION_LIST?
     IMPORT_PATH
     QUOTED_LITERAL version
     IMPORT_MODULE_LIST)
 
+"A package descriptor."
 ^(PACKAGE_DESCRIPTOR:STATEMENT_OR_ARGUMENT
     ANNOTATION_LIST?
     IMPORT_PATH)
 
+"A list of modules imported by a module."
 ^(IMPORT_MODULE_LIST
     IMPORT_MODULE*)
 
+"A module import."
 ^(IMPORT_MODULE:STATEMENT_OR_ARGUMENT
     ANNOTATION_LIST?
     IMPORT_PATH?
     QUOTED_LITERAL?
     QUOTED_LITERAL version)
 
+"A list of packages imported by a compilation unit."
 ^(IMPORT_LIST 
     IMPORT*)
 
+"A package import."
 ^(IMPORT:STATEMENT_OR_ARGUMENT
     IMPORT_PATH 
     IMPORT_MEMBER_OR_TYPE_LIST)
 
+"A reference to a package or module."
 ^(IMPORT_PATH 
     IDENTIFIER*
     Referenceable model;)
 
+"A list of declarations imported from a package."
 ^(IMPORT_MEMBER_OR_TYPE_LIST
     IMPORT_MEMBER_OR_TYPE*
     IMPORT_WILDCARD?
     ImportList importList;)
 
+"A declaration imported from a package."
 ^(IMPORT_MEMBER_OR_TYPE:STATEMENT_OR_ARGUMENT
     ALIAS?
     IDENTIFIER
     IMPORT_MEMBER_OR_TYPE_LIST?
     Declaration declarationModel;
     Import importModel;)
+"An imported function or value."
 ^(IMPORT_MEMBER:IMPORT_MEMBER_OR_TYPE)
+"An imported type."
 ^(IMPORT_TYPE:IMPORT_MEMBER_OR_TYPE)
 
+"An alias for an imported declaration."
 ^(ALIAS 
     IDENTIFIER)
-^(IMPLICIT)
+"A wildcard in a package import statement."
 ^(IMPORT_WILDCARD)
 
 "A declaration."
@@ -73,6 +85,7 @@
     TYPE_CONSTRAINT_LIST?
     abstract ClassOrInterface declarationModel;)
 
+"The constraints for a certain type parameter."
 ^(TYPE_ALIAS_DECLARATION: TYPE_DECLARATION
     TYPE_CONSTRAINT_LIST?
     TYPE_SPECIFIER?
@@ -101,65 +114,85 @@
     ABSTRACTED_TYPE?
     TypeParameter declarationModel;)
 
+"An aliased type specified in a type or interface alias."
 ^(TYPE_SPECIFIER 
     STATIC_TYPE type)
 
+"An aliased class specified in a class alias."
+^(CLASS_SPECIFIER 
+    SIMPLE_TYPE type
+    INVOCATION_EXPRESSION)
+
+
+"A class declaration or alias."
 ^(ANY_CLASS:CLASS_OR_INTERFACE
     PARAMETER_LIST
     EXTENDED_TYPE?
     Class declarationModel;)
 
+"A class declaration."
 ^(CLASS_DEFINITION:ANY_CLASS
     CLASS_BODY)
 
-^(CLASS_DECLARATION:ANY_CLASS)
+"A class alias."
+^(CLASS_DECLARATION:ANY_CLASS
+    CLASS_SPECIFIER)
 
+"An interface declaration or alias."
 ^(ANY_INTERFACE:CLASS_OR_INTERFACE
     Interface declarationModel;)
 
+"An interface declaration."
 ^(INTERFACE_DEFINITION:ANY_INTERFACE
     ADAPTED_TYPES?
     INTERFACE_BODY)
 
+"An interface alias."
 ^(INTERFACE_DECLARATION:ANY_INTERFACE
     TYPE_SPECIFIER?)
 
+"A function or value declaration."
 ^(abstract TYPED_DECLARATION:DECLARATION
     TYPE?
     abstract TypedDeclaration declarationModel;)
 
+"Any kind of value declaration."
 ^(abstract ANY_ATTRIBUTE:TYPED_DECLARATION)
 
-"A simple or formal attribute declaration."
+"A simple, forward, or formal value declaration."
 ^(ATTRIBUTE_DECLARATION:ANY_ATTRIBUTE 
     SPECIFIER_OR_INITIALIZER_EXPRESSION?
     Value declarationModel;)
 
-"An attribute getter declaration."
+"A value getter declaration."
 ^(ATTRIBUTE_GETTER_DEFINITION:ANY_ATTRIBUTE
     BLOCK
     Getter declarationModel;)
 
-"An attribute setter declaration."
+"An value setter declaration."
 ^(ATTRIBUTE_SETTER_DEFINITION:TYPED_DECLARATION
     BLOCK
     Setter declarationModel;)
 
-"A method declaration."
+"Any kind of function declaration."
 ^(ANY_METHOD:TYPED_DECLARATION
     TYPE_PARAMETER_LIST?
     PARAMETER_LIST*
     TYPE_CONSTRAINT_LIST?
     Method declarationModel;)
-    
+
+"A function declaration followed by a block."
 ^(METHOD_DEFINITION:ANY_METHOD
     BLOCK)
 
+"A function forward declaration or function declaration followed by a specification."
 ^(METHOD_DECLARATION:ANY_METHOD
     SPECIFIER_EXPRESSION?)
 
+"Specifies that a function has no specific return value."
 ^(VOID_MODIFIER:TYPE)
 
+"An object declaration."
 ^(OBJECT_DEFINITION:TYPED_DECLARATION
     EXTENDED_TYPE?
     SATISFIED_TYPES?
@@ -167,28 +200,38 @@
     Value declarationModel;
     Class anonymousClass;)
 
+"A parameter list for a function or class."
 ^(PARAMETER_LIST 
     PARAMETER*
     ParameterList model;)
+"A parameter declaration."
 ^(abstract PARAMETER:TYPED_DECLARATION  
     DEFAULT_ARGUMENT?
     abstract Parameter declarationModel;)
+"The default argument of a defaulted parameter."
 ^(DEFAULT_ARGUMENT SPECIFIER_EXPRESSION)
+"An ordinary (value) parameter."
 ^(VALUE_PARAMETER_DECLARATION:PARAMETER
     ValueParameter declarationModel;)
+"An (functional) parameter with its own parameter list."
 ^(FUNCTIONAL_PARAMETER_DECLARATION:PARAMETER
     PARAMETER_LIST*
     FunctionalParameter declarationModel;)
+"A reference to a parameter declared like an ordinary forward value inside the body of the function or class."
 ^(INITIALIZER_PARAMETER:VALUE_PARAMETER_DECLARATION)
 
+"A list of type parameters in a generic declaration."
 ^(TYPE_PARAMETER_LIST 
     TYPE_PARAMETER_DECLARATION*)
+"A single type parameter of a generic declaration."
 ^(TYPE_PARAMETER_DECLARATION:DECLARATION
     TYPE_VARIANCE?
     TYPE_SPECIFIER?
     TypeParameter declarationModel;)
+"The variance of a type parameter."
 ^(TYPE_VARIANCE)
 
+"A list of statements."
 ^(abstract BODY
     STATEMENT*)
 
@@ -256,8 +299,10 @@
 "Specifies that the type of a method declaration should be inferred."
 ^(FUNCTION_MODIFIER: LOCAL_MODIFIER)
 
+"A variable introduced into the tree by the parser."
 ^(SYNTHETIC_VARIABLE: VALUE_MODIFIER)
 
+"A list of type arguments in a generic invocation."
 ^(TYPE_ARGUMENTS
     List<ProducedType> typeModels;)
 
@@ -265,6 +310,7 @@
 ^(TYPE_ARGUMENT_LIST:TYPE_ARGUMENTS
     TYPE*)
 
+"Indicates that the type arguments to a generic invocation are inferred by the typechecker."
 ^(INFERRED_TYPE_ARGUMENTS:TYPE_ARGUMENTS)
 
 ^(SEQUENCED_TYPE:TYPE
@@ -282,6 +328,7 @@
 ^(CONTINUE:DIRECTIVE)
 ^(BREAK:DIRECTIVE)
 
+"A statement or named argument."
 ^(abstract STATEMENT_OR_ARGUMENT
     COMPILER_ANNOTATION*)
 
@@ -306,6 +353,7 @@
     SPECIFIER_EXPRESSION
     boolean refinement;)
 
+"An expression statement."
 ^(EXPRESSION_STATEMENT:EXECUTABLE_STATEMENT 
     EXPRESSION)
 
@@ -512,9 +560,7 @@
 ^(abstract POSTFIX_EXPRESSION:PRIMARY
     PRIMARY)
 
-"An invocation expression. Note that in the special case of 
-inline callable arguments, there may be more than one
-argument list."
+"An invocation expression."
 ^(INVOCATION_EXPRESSION:POSTFIX_EXPRESSION
     POSITIONAL_ARGUMENT_LIST? 
     NAMED_ARGUMENT_LIST?)
@@ -568,9 +614,12 @@ argument list."
 ^(INDEX_EXPRESSION:POSTFIX_EXPRESSION
     ELEMENT_OR_RANGE)
 
+"An element index or element range."
 ^(abstract ELEMENT_OR_RANGE)
+"An element index."
 ^(ELEMENT:ELEMENT_OR_RANGE
     EXPRESSION)
+"An element range."
 ^(ELEMENT_RANGE:ELEMENT_OR_RANGE
     EXPRESSION? lowerBound
     EXPRESSION? upperBound
@@ -591,6 +640,7 @@ argument list."
     SEQUENCED_ARGUMENT?
     NamedArgumentList namedArgumentList;)
 
+"A comma-separated lost of arguments, possibly including a comprehension or spread argument."
 ^(SEQUENCED_ARGUMENT:STATEMENT_OR_ARGUMENT
     POSITIONAL_ARGUMENT*
     Parameter parameter;)
@@ -599,16 +649,18 @@ argument list."
 ^(POSITIONAL_ARGUMENT_LIST:ARGUMENT_LIST 
     POSITIONAL_ARGUMENT*)
 
-^(ELLIPSIS)
-
+"A single listed argument, spread argument or comprehension."
 ^(abstract POSITIONAL_ARGUMENT 
     ProducedType typeModel; 
     Parameter parameter;)
+"A single listed argument."
 ^(LISTED_ARGUMENT:POSITIONAL_ARGUMENT
     EXPRESSION)
+"A spread argument."
 ^(SPREAD_ARGUMENT:POSITIONAL_ARGUMENT
     EXPRESSION)
 
+"An anonymous function."
 ^(FUNCTION_ARGUMENT:TERM
     TYPE type
     PARAMETER_LIST*
@@ -616,23 +668,31 @@ argument list."
     BLOCK?
     Method declarationModel;)
 
+"A named argument."
 ^(abstract NAMED_ARGUMENT:STATEMENT_OR_ARGUMENT
     IDENTIFIER
     Parameter parameter;)
+    
+"A specifier statement-style named argument."
 ^(SPECIFIED_ARGUMENT:NAMED_ARGUMENT
     SPECIFIER_EXPRESSION)
+
+"A declaration-style named argument."
 ^(abstract TYPED_ARGUMENT:NAMED_ARGUMENT
     TYPE
     abstract TypedDeclaration declarationModel;)
+"A function declaration that occurs as a named argument."
 ^(METHOD_ARGUMENT:TYPED_ARGUMENT
     PARAMETER_LIST*
     BLOCK? 
     SPECIFIER_EXPRESSION?
     Method declarationModel;)
+"A value declaration that occurs as a named argument."
 ^(ATTRIBUTE_ARGUMENT:TYPED_ARGUMENT
     BLOCK? 
     SPECIFIER_EXPRESSION?
     Getter declarationModel;)
+"An object declaration that occurs as a named argument."
 ^(OBJECT_ARGUMENT:TYPED_ARGUMENT
     EXTENDED_TYPE?
     SATISFIED_TYPES?
@@ -640,6 +700,7 @@ argument list."
     Value declarationModel;
     Class anonymousClass;)
 
+"Deprecated!"
 ^(abstract SPECIFIER_OR_INITIALIZER_EXPRESSION EXPRESSION)
 
 "A specifier expression."
@@ -685,29 +746,38 @@ argument list."
 
 "A program element annotation."
 ^(ANNOTATION:INVOCATION_EXPRESSION)
+"An abbreviated doc annotation."
+^(ANONYMOUS_ANNOTATION
+    STRING_LITERAL)
 
 "A list of annotations of a program element."
 ^(ANNOTATION_LIST 
+    ANONYMOUS_ANNOTATION?
     ANNOTATION*)
 
 "A name."
 ^(IDENTIFIER)
 
+"A comprehension."
 ^(COMPREHENSION:POSITIONAL_ARGUMENT
     FOR_COMPREHENSION_CLAUSE)
 
+"A single clause of comprehension"
 ^(abstract COMPREHENSION_CLAUSE:CONTROL_CLAUSE
     ProducedType typeModel;
     ProducedType firstTypeModel;
     boolean possiblyEmpty;)
 
+"The expression at the end of a comprehension."
 ^(EXPRESSION_COMPREHENSION_CLAUSE:COMPREHENSION_CLAUSE
     EXPRESSION)
 
+"A quantifier clause in a comprehension."
 ^(FOR_COMPREHENSION_CLAUSE:COMPREHENSION_CLAUSE
     FOR_ITERATOR
     COMPREHENSION_CLAUSE)
 
+"A filter clause in a comprehension."
 ^(IF_COMPREHENSION_CLAUSE:COMPREHENSION_CLAUSE
     CONDITION_LIST
     COMPREHENSION_CLAUSE)

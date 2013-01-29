@@ -159,11 +159,11 @@ class Operators() {
     @type:"Sequential<String>" value e45 = emp*.uppercased;
     @type:"Sequence<Sequential<Character>>" value x46 = helloworld*.characters;
     @type:"Sequence<String>" value x47 = helloworld*.uppercased;
-    @type:"Null|Sequential<Character>" value x48 = helloworld[0]?.characters;
+    @type:"Null|Sequential<Character>" value x48 = helloworld[1]?.characters;
     @type:"Sequence<Sequential<Character>>" value x49 = helloworld*.characters;
     @type:"Sequence<Iterable<String,Null>>" value x50 = helloworld*.lines;
-    @type:"Null|String" value x51 = helloworld[0]?.normalized;
-    @type:"Null|Iterable<String,Null>" value x512 = helloworld[0]?.split((Character c) => c==` `);
+    @type:"Null|String" value x51 = helloworld[1]?.normalized;
+    @type:"Null|Iterable<String,Null>" value x512 = helloworld[1]?.split((Character c) => c==` `);
     @type:"Sequence<String>" value x52 = helloworld*.normalized;
     @type:"Sequence<Iterable<String,Null>>" value x522 = helloworld*.split((Character c) => c==` `);
     //@type:"Null|String" value x53 = noSequence?[0]?.normalized;
