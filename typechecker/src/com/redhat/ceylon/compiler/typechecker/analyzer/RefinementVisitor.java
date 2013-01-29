@@ -234,33 +234,7 @@ public class RefinementVisitor extends Visitor {
 		    ProducedType st1 = supertypes.get(i);
 		    for (int j=i+1; j<supertypes.size(); j++) {
 		        ProducedType st2 = supertypes.get(j);
-		        if (st1.getDeclaration().equals(st2.getDeclaration()) /*&& !st1.isExactly(st2)*/) {
-		            boolean ok = true;
-		            if (intersectionType(st1, st2, that.getUnit())
-		                    .getDeclaration() instanceof NothingType) {
-		                ok = false;
-		            }
-		            else {
-		                //TODO: type arguments of the qualifying type?
-		                //can't inherit two instantiations of a contravariant type, since
-		                //we don't support contravariant refinement of parameter types
-		                for (TypeParameter tp: st1.getDeclaration().getTypeParameters()) {
-		                    ProducedType ta1 = st1.getTypeArguments().get(tp);
-		                    ProducedType ta2 = st2.getTypeArguments().get(tp);
-		                    if (!tp.isCovariant() && !ta1.isExactly(ta2)) {
-		                        ok = false;
-		                        break;
-		                    }
-		                }
-		            }
-		            if (!ok) {
-		                that.addError("type " + td.getName() +
-		                        " has the same supertype twice with incompatible type arguments: " +
-		                        st1.getProducedTypeName(that.getUnit()) + " and " + 
-		                        st2.getProducedTypeName(that.getUnit()));
-		                broken = true;
-		            }
-		        }
+		        checkSupertypeIntersection(that, td, st1, st2);
 		    }
 		}
 		if (!broken) {
@@ -320,6 +294,40 @@ public class RefinementVisitor extends Visitor {
 		    }
 		}
 	}
+
+    private void checkSupertypeIntersection(Tree.StatementOrArgument that,
+            TypeDeclaration td, ProducedType st1, ProducedType st2) {
+        if (st1.getDeclaration().equals(st2.getDeclaration()) /*&& !st1.isExactly(st2)*/) {
+            boolean ok = true;
+            if (intersectionType(st1, st2, that.getUnit())
+                    .getDeclaration() instanceof NothingType) {
+                ok = false;
+            }
+            else {
+                //can't inherit two instantiations of an invariant type
+                for (TypeParameter tp: st1.getDeclaration().getTypeParameters()) {
+                    ProducedType ta1 = st1.getTypeArguments().get(tp);
+                    ProducedType ta2 = st2.getTypeArguments().get(tp);
+                    if (!tp.isCovariant() && !tp.isContravariant() && 
+                            !ta1.isExactly(ta2)) {
+                        ok = false;
+                        break;
+                    }
+                }
+                //Note: I don't think we need to check type parameters of 
+                //      the qualifying type, since you're not allowed to
+                //      subtype an arbitrary instantiation of a nested
+                //      type - only supertypes of the outer type
+            }
+            if (!ok) {
+                that.addError("type " + td.getName() +
+                        " has the same supertype twice with incompatible type arguments: " +
+                        st1.getProducedTypeName(that.getUnit()) + " and " + 
+                        st2.getProducedTypeName(that.getUnit()));
+                broken = true;
+            }
+        }
+    }
     
     @Override public void visit(Tree.TypedDeclaration that) {
         TypedDeclaration td = that.getDeclarationModel();
