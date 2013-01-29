@@ -339,6 +339,7 @@ public class ExpressionTest extends CompilerTest {
     @Test
     public void testOprSequenceOperators(){
         compareWithJavaSource("operator/SequenceOperators");
+        run("com.redhat.ceylon.compiler.java.test.expression.operator.sequenceOperators");
     }
     @Test
     public void testOprIndexingTuples(){

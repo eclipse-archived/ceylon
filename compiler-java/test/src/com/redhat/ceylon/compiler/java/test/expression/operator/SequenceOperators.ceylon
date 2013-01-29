@@ -80,4 +80,29 @@ shared class SequenceOperators() {
         sync = string[0...];
         sync = string[...1];
     }
+ }
+
+@nomodel
+void sequenceOperators() {
+    value t = [1, "2", Singleton(`3`)];
+    // this appears to be disallowed
+    //value t2 = t[0:2];
+    //assert (t2[0] == 1);
+    //assert (t2[1] == "2");
+    //assert (t2.size == 2);
+    value t3 = t[0...];
+    assert (t == t3);
+    Sequential<Integer> possiblyEmpty = [];
+    Sequence<Integer> notEmpty = [1];
+    value t4 = [*possiblyEmpty][0...]; // Sequential<Integer>
+    value t5 = [*possiblyEmpty][1...]; // Sequential<Integer>
+    // a few of those look bogus, pending https://github.com/ceylon/ceylon-spec/issues/569
+    //value t6 = [1,*possiblyEmpty][0...]; // Tuple<Integer,Integer,Sequence<Integer>> wrong? should be Tuple<Integer,Integer,Sequential<Integer>>
+    //value t7 = [1,*possiblyEmpty][1...]; // Sequence<Integer> wrong? should be Sequential<Integer>
+    value t8 = [*notEmpty][0...]; // Sequential<Integer> wrong? should be Sequence<Integer>
+    value t9 = [*notEmpty][1...]; // Sequential<Integer>
+    value t10 = [*notEmpty][2...]; // Sequential<Integer>
+    value t11 = [1,*notEmpty][0...]; // Tuple<Integer,Integer,Sequence<Integer>>
+    value t12 = [1,*notEmpty][1...]; // Sequence<Integer>
+    //value t13 = [2,*notEmpty][2...]; // Sequence<Integer> wrong? should be Sequential<Integer>
 }
