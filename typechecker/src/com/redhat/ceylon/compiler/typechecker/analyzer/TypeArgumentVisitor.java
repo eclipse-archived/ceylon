@@ -83,6 +83,13 @@ public class TypeArgumentVisitor extends Visitor {
         }
     }
     
+    @Override public void visit(Tree.ClassDeclaration that) {
+        super.visit(that);
+        if (that.getClassSpecifier()!=null) {
+            check(that.getClassSpecifier().getType(), false, null);
+        }
+    }
+    
     @Override public void visit(Tree.InterfaceDeclaration that) {
         super.visit(that);
         if (that.getTypeSpecifier()!=null) {

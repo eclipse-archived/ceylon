@@ -118,6 +118,12 @@
 ^(TYPE_SPECIFIER 
     STATIC_TYPE type)
 
+"An aliased class specified in a class alias."
+^(CLASS_SPECIFIER 
+    SIMPLE_TYPE type
+    INVOCATION_EXPRESSION)
+
+
 "A class declaration or alias."
 ^(ANY_CLASS:CLASS_OR_INTERFACE
     PARAMETER_LIST
@@ -129,7 +135,8 @@
     CLASS_BODY)
 
 "A class alias."
-^(CLASS_DECLARATION:ANY_CLASS)
+^(CLASS_DECLARATION:ANY_CLASS
+    CLASS_SPECIFIER)
 
 "An interface declaration or alias."
 ^(ANY_INTERFACE:CLASS_OR_INTERFACE

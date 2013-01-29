@@ -577,7 +577,7 @@ classDeclaration returns [AnyClass declaration]
       | 
         (
           classSpecifier
-          { dec.setExtendedType($classSpecifier.extendedType); }
+          { dec.setClassSpecifier($classSpecifier.classSpecifier); }
         )?
         { expecting=SEMICOLON; }
         SEMICOLON
@@ -669,11 +669,11 @@ extendedType returns [ExtendedType extendedType]
         $extendedType.setInvocationExpression($ci.invocationExpression); }
     ;
 
-classSpecifier returns [ExtendedType extendedType]
-    : COMPUTE { $extendedType = new ExtendedType($COMPUTE); }
+classSpecifier returns [ClassSpecifier classSpecifier]
+    : COMPUTE { $classSpecifier = new ClassSpecifier($COMPUTE); }
       ci=classInstantiation
-      { $extendedType.setType($ci.type);
-        $extendedType.setInvocationExpression($ci.invocationExpression); }
+      { $classSpecifier.setType($ci.type);
+        $classSpecifier.setInvocationExpression($ci.invocationExpression); }
     ;
 
 classInstantiation returns [SimpleType type, InvocationExpression invocationExpression]

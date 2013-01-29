@@ -40,7 +40,7 @@ public class AliasVisitor extends Visitor {
 	@Override
 	public void visit(Tree.ClassDeclaration that) {
 		super.visit(that);
-		Tree.ExtendedType ts = that.getExtendedType();
+		Tree.ClassSpecifier ts = that.getClassSpecifier();
 		if (ts!=null) {
 			Tree.StaticType st = ts.getType();
 			if (st!=null) {

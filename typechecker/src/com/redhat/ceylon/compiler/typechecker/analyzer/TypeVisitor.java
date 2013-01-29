@@ -42,6 +42,8 @@ import com.redhat.ceylon.compiler.typechecker.model.ValueParameter;
 import com.redhat.ceylon.compiler.typechecker.parser.CeylonLexer;
 import com.redhat.ceylon.compiler.typechecker.tree.Node;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree;
+import com.redhat.ceylon.compiler.typechecker.tree.Tree.ClassSpecifier;
+import com.redhat.ceylon.compiler.typechecker.tree.Tree.InvocationExpression;
 import com.redhat.ceylon.compiler.typechecker.tree.Visitor;
 
 /**
@@ -720,24 +722,24 @@ public class TypeVisitor extends Visitor {
     @Override 
     public void visit(Tree.ClassDeclaration that) {
         super.visit(that);
-        if (that.getExtendedType()==null) {
+        TypeDeclaration td = that.getDeclarationModel();
+        ClassSpecifier cs = that.getClassSpecifier();
+        if (cs==null) {
             that.addError("missing class body or aliased class reference");
         }
         else {
-            Tree.StaticType et = that.getExtendedType().getType();
-            if (et==null) {
+            Tree.SimpleType ct = cs.getType();
+            if (ct==null) {
                 that.addError("malformed aliased class");
             }
-            else if (!(et instanceof Tree.StaticType)) {
-            	that.getExtendedType()
-            			.addError("aliased type must be a class");
+            else if (!(ct instanceof Tree.StaticType)) {
+            	cs.addError("aliased type must be a class");
             }
-            else if (et instanceof Tree.QualifiedType) {
-            	that.getExtendedType()
-            	        .addError("aliased class may not be a qualified type");
+            else if (ct instanceof Tree.QualifiedType) {
+            	cs.addError("aliased class may not be a qualified type");
         	}
             else {
-                ProducedType type = et.getTypeModel();
+                ProducedType type = ct.getTypeModel();
                 if (type!=null) {
                 	/*if (type.containsTypeAliases()) {
                 		et.addError("aliased type involves type aliases: " +
@@ -747,8 +749,27 @@ public class TypeVisitor extends Visitor {
                     	that.getDeclarationModel().setExtendedType(type);
                     } 
                     else {
-                        et.addError("not a class: " + 
+                        ct.addError("not a class: " + 
                                 type.getDeclaration().getName(unit));
+                    }
+                    TypeDeclaration etd = ct.getDeclarationModel();
+                    if (etd==td) {
+                        //TODO: handle indirect circularities!
+                        ct.addError("directly aliases itself: " + td.getName());
+                        return;
+                    }
+                    InvocationExpression ie = cs.getInvocationExpression();
+                    if (ie!=null) {
+                        //TODO: it would probably be better to leave
+                        //      all this following  stuff to 
+                        //ExpressionVisitor.visit(ExtendedTypeExpression)
+                        Tree.Primary pr = ie.getPrimary();
+                        if (pr instanceof Tree.ExtendedTypeExpression) {
+                            pr.setTypeModel(type);
+                            Tree.ExtendedTypeExpression ete = (Tree.ExtendedTypeExpression) pr;
+                            ete.setDeclaration(etd);
+                            ete.setTarget(type);
+                        }
                     }
                 }
             }
@@ -868,6 +889,11 @@ public class TypeVisitor extends Visitor {
     public void visit(Tree.ExtendedType that) {
         super.visit(that);
         TypeDeclaration td = (TypeDeclaration) that.getScope();
+        if (td.isAlias()) {
+            that.addError("alias may not extend a type");
+            return;
+        }
+        InvocationExpression ie = that.getInvocationExpression();
         Tree.SimpleType et = that.getType();
         if (et==null) {
             that.addError("malformed extended type");
@@ -904,11 +930,11 @@ public class TypeVisitor extends Visitor {
         					checkTypeBelongsToContainingScope(type, td.getContainer(), et);
         				}
         			}
-        			if (that.getInvocationExpression()!=null) {
+                    if (ie!=null) {
         				//TODO: it would probably be better to leave
         				//      all this following  stuff to 
         				//ExpressionVisitor.visit(ExtendedTypeExpression)
-        				Tree.Primary pr = that.getInvocationExpression().getPrimary();
+        				Tree.Primary pr = ie.getPrimary();
         				if (pr instanceof Tree.ExtendedTypeExpression) {
         					pr.setTypeModel(type);
         					Tree.ExtendedTypeExpression ete = (Tree.ExtendedTypeExpression) pr;
@@ -935,11 +961,15 @@ public class TypeVisitor extends Visitor {
         	}
         }
     }
-
+    
     @Override 
     public void visit(Tree.SatisfiedTypes that) {
         super.visit(that);
         TypeDeclaration td = (TypeDeclaration) that.getScope();
+        if (td.isAlias()) {
+            that.addError("alias may not satisfy a type");
+            return;
+        }
         List<ProducedType> list = new ArrayList<ProducedType>();
         if ( that.getTypes().isEmpty() ) {
             that.addError("missing types in satisfies");
@@ -1034,8 +1064,13 @@ public class TypeVisitor extends Visitor {
     @Override 
     public void visit(Tree.CaseTypes that) {
         super.visit(that);
-        if (that.getTypes()!=null) {
-            TypeDeclaration td = (TypeDeclaration) that.getScope();
+        TypeDeclaration td = (TypeDeclaration) that.getScope();
+        if (td.isAlias()) {
+            that.addError("alias may not have cases or a self type");
+            return;
+        }
+        List<Tree.StaticType> cts = that.getTypes();
+        if (cts!=null) {
             List<ProducedType> list = new ArrayList<ProducedType>();
             for (Tree.BaseMemberExpression bme: that.getBaseMemberExpressions()) {
                 //bmes have not yet been resolved
@@ -1053,7 +1088,7 @@ public class TypeVisitor extends Visitor {
                     }
                 }
             }
-            for (Tree.StaticType st: that.getTypes()) {
+            for (Tree.StaticType st: cts) {
                 ProducedType type = st.getTypeModel();
                 if (type!=null) {
                     if (type.getDeclaration() instanceof TypeParameter) {
@@ -1066,7 +1101,7 @@ public class TypeVisitor extends Visitor {
                             else {
                                 tp.setSelfTypedDeclaration(td);
                             }
-                            if (that.getTypes().size()>1) {
+                            if (cts.size()>1) {
                                 st.addError("a type may not have more than one self type");
                             }
                         }
