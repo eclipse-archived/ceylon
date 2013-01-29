@@ -1823,6 +1823,8 @@ public class ProducedType extends ProducedReference {
     }*/
     
     public boolean isRecursiveTypeAliasDefinition(TypeDeclaration ad) {
+        //TODO this method could overflow if one of the referenced
+        //     alias definitions is also recursive!
     	TypeDeclaration d = getDeclaration();
 		if (d instanceof TypeAlias||
 			d instanceof ClassAlias||
