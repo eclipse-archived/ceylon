@@ -29,11 +29,11 @@ class AliasingSub2() extends AliasingSubclass() {
     }
 }
 
-interface Matrix<Cell> => Sequence<Sequence<Cell>>;
+interface Matrix<Cell> => Sequence<[Cell+]>;
 class Listleton<T>(List<T> l) => Singleton<List<T>>(l);
 
 class MiMatrix(Integer gridSize) satisfies Matrix<Integer> {
-    value sb = SequenceBuilder<Sequence<Integer>>();
+    value sb = SequenceBuilder<[Integer+]>();
     for (i in 1..gridSize) {
         sb.append([ for (j in 1..gridSize) j ]);
     }
@@ -43,7 +43,7 @@ class MiMatrix(Integer gridSize) satisfies Matrix<Integer> {
     } else {
         grid=[[1]];
     }
-    shared actual Iterator<Sequence<Integer>> iterator { return grid.iterator; }
+    shared actual Iterator<[Integer+]> iterator { return grid.iterator; }
     shared actual String string = grid.string;
     shared actual Integer hash = grid.hash;
     shared actual Boolean equals(Object other) => grid.equals(other);
@@ -51,12 +51,18 @@ class MiMatrix(Integer gridSize) satisfies Matrix<Integer> {
     segment = grid.segment;
     shared actual Matrix<Integer> reversed = grid.reversed;
     shared actual Integer lastIndex = grid.lastIndex;
-    shared actual Sequence<Integer>? get(Integer i) => grid[i];
-    shared actual Sequence<Integer>[] rest = grid.rest;
-    shared actual Sequence<Integer> first = grid.first;
+    shared actual [Integer+]? get(Integer i) => grid[i];
+    shared actual [Integer+][] rest = grid.rest;
+    shared actual [Integer+] first = grid.first;
     shared actual MiMatrix clone => this;
     shared actual Integer size => grid.size;
     shared actual Boolean contains(Object other) => grid.contains(other);
+    last => grid.last;
+    shared actual [Integer+][] spanTo(Integer to) =>
+            to<0 then [] else span(0, to);
+
+    shared actual [Integer+][] spanFrom(Integer from) =>
+            span(from, size);
 }
 
 void testAliasing() {
