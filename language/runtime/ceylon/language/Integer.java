@@ -15,16 +15,14 @@ import com.redhat.ceylon.compiler.java.metadata.ValueType;
     "ceylon.language::Scalar<ceylon.language::Integer>",
     "ceylon.language::Integral<ceylon.language::Integer>",
     "ceylon.language::Binary<ceylon.language::Integer>",
-    "ceylon.language::Exponentiable<ceylon.language::Integer,ceylon.language::Integer>",
-    "ceylon.language::Castable<ceylon.language::Integer|ceylon.language::Float>"
+    "ceylon.language::Exponentiable<ceylon.language::Integer,ceylon.language::Integer>"
 })
 @Class(extendsType="ceylon.language::Object")
 @ValueType
 public final class Integer
     implements Scalar<Integer>, Integral<Integer>,
                Binary<Integer>,
-               Exponentiable<Integer,Integer>,
-               Castable<Numeric> {
+               Exponentiable<Integer,Integer> {
 
     final long value;
 
@@ -99,12 +97,6 @@ public final class Integer
     @Ignore
     @Override
     public Exponentiable$impl<Integer,Integer> $ceylon$language$Exponentiable$impl(){
-        throw Util.makeUnimplementedMixinAccessException();
-    }
-
-    @Ignore
-    @Override
-    public Castable$impl<Numeric> $ceylon$language$Castable$impl(){
         throw Util.makeUnimplementedMixinAccessException();
     }
 
@@ -550,11 +542,6 @@ public final class Integer
     public boolean asSmallAs(@Name("other") Integer other) {
         return value <= other.value;
     }*/
-
-    @Override
-    public <CastValue extends Numeric> CastValue castTo() {
-        return (CastValue)this;
-    }
 
     @Ignore
     public <CastValue extends Numeric> CastValue castTo(long value) {

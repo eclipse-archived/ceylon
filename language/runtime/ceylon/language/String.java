@@ -24,12 +24,11 @@ import com.redhat.ceylon.compiler.java.metadata.ValueType;
                  "ceylon.language::Comparable<ceylon.language::String>",
                  "ceylon.language::Summable<ceylon.language::String>",
                  "ceylon.language::Ranged<ceylon.language::Integer,ceylon.language::String>",
-                 "ceylon.language::Castable<ceylon.language::String>",
                  "ceylon.language::Cloneable<ceylon.language::String>"})
 @ValueType
 public abstract class String
     implements Comparable<String>, Sequential<Character>,
-               Summable<String>, Castable<String> {
+               Summable<String> {
     @Ignore
     protected final ceylon.language.Category$impl $ceylon$language$Category$this;
     @Ignore
@@ -49,8 +48,6 @@ public abstract class String
     @Ignore
     protected final ceylon.language.Summable$impl<String> $ceylon$language$Summable$this;
     @Ignore
-    protected final ceylon.language.Castable$impl<String> $ceylon$language$Castable$this;
-    @Ignore
     protected final ceylon.language.Ranged$impl<Integer,List<Character>> $ceylon$language$Ranged$this;
     @Ignore
     protected final ceylon.language.Cloneable$impl $ceylon$language$Cloneable$this;
@@ -67,7 +64,6 @@ public abstract class String
         this.$ceylon$language$Sequential$this = new ceylon.language.Sequential$impl<Character>(this);
         this.$ceylon$language$Comparable$this = new ceylon.language.Comparable$impl<String>(this);
         this.$ceylon$language$Summable$this = new ceylon.language.Summable$impl<String>(this);
-        this.$ceylon$language$Castable$this = new ceylon.language.Castable$impl<String>(this);
         this.$ceylon$language$Ranged$this = new ceylon.language.Ranged$impl<Integer,List<Character>>((Ranged)this);
         this.$ceylon$language$Cloneable$this = new ceylon.language.Cloneable$impl(this);
         value = s;
@@ -131,12 +127,6 @@ public abstract class String
     @Override
     public Comparable$impl<String> $ceylon$language$Comparable$impl(){
         return $ceylon$language$Comparable$this;
-    }
-
-    @Ignore
-    @Override
-    public Castable$impl<String> $ceylon$language$Castable$impl(){
-        return $ceylon$language$Castable$this;
     }
 
     @Ignore
@@ -260,11 +250,6 @@ public abstract class String
     public boolean asSmallAs(@Name("other") String other) {
         return value.compareTo(other.value) <= 0;
     }*/
-
-    @Override
-    public <CastValue extends String> CastValue castTo() {
-        return (CastValue) this;
-    }
 
     @Ignore
     public static <CastValue extends String> CastValue castTo(java.lang.String value) {

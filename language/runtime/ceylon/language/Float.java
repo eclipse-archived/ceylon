@@ -13,13 +13,11 @@ import com.redhat.ceylon.compiler.java.metadata.ValueType;
 @Class(extendsType="ceylon.language::Object")
 @SatisfiedTypes({
     "ceylon.language::Scalar<ceylon.language::Float>",
-    "ceylon.language::Exponentiable<ceylon.language::Float,ceylon.language::Float>",
-    "ceylon.language::Castable<ceylon.language::Float>"
+    "ceylon.language::Exponentiable<ceylon.language::Float,ceylon.language::Float>"
 })
 @ValueType
 public final class Float
-    implements Scalar<Float>, Exponentiable<Float,Float>,
-               Castable<Float> {
+    implements Scalar<Float>, Exponentiable<Float,Float> {
     
     final double value;
     
@@ -68,12 +66,6 @@ public final class Float
     @Ignore
     @Override
     public Exponentiable$impl<Float,Float> $ceylon$language$Exponentiable$impl(){
-        throw Util.makeUnimplementedMixinAccessException();
-    }
-
-    @Ignore
-    @Override
-    public Castable$impl<Float> $ceylon$language$Castable$impl(){
         throw Util.makeUnimplementedMixinAccessException();
     }
 
@@ -431,11 +423,6 @@ public final class Float
             bits &= 0x7fffffffffffffffL; 
         }
         return (int)(bits ^ (bits >>> 32));
-    }
-    
-    @Override
-    public <CastValue extends Float> CastValue castTo() {
-        return (CastValue)this;
     }
     
     @Ignore

@@ -50,7 +50,6 @@ shared native abstract class String()
                   Comparable<String> &
                   Summable<String> & 
                   Ranged<Integer,String> &
-                  Castable<String> &
                   Cloneable<String> {
     
     doc "The characters in this string."
