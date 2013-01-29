@@ -958,8 +958,7 @@ public class GenerateJsVisitor extends Visitor
         addToPrototype(c, that.getClassBody().getStatements());
 
         if (!addToPrototype) {
-            out("var ", names.name(d), "=",
-                    names.name(c), "();");
+            out("var ", names.name(d), "=", names.name(c), "();");
             endLine();
         }
 

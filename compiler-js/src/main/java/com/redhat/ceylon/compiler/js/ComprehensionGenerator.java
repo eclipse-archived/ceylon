@@ -178,10 +178,11 @@ class ComprehensionGenerator {
         gen.out("if(", lastLoop.valueVarName, "!==", (lastLoop.keyVarName==null)
                 ? finished : "undefined", ")");
         gen.beginBlock();
+        declareExternalLoopVars(lastLoop);
         String tempVarName = names.createTempVariable();
         gen.out("var ", tempVarName, "=");
         expression.visit(gen);
-        gen.out(";"); gen.endLine();
+        gen.endLine(true);
         retainedVars.emitRetainedVars(gen);
         gen.out("next$", lastLoop.valueVarName, "();"); gen.endLine();
         gen.out("return ", tempVarName, ";");
@@ -201,34 +202,63 @@ class ComprehensionGenerator {
         gen.out(")");
     }
 
+    private void declareExternalLoopVars(ComprehensionLoopInfo loop) {
+        if (loop.keyVarName != null) {
+            String tk = names.createTempVariable(loop.keyVarName);
+            gen.out("var ", tk, "=", loop.keyVarName, ";"); gen.endLine();
+            gen.out("function ", names.getter(loop.keyDecl), "(){return ", tk, ";}");
+            gen.endLine();
+            directAccess.remove(loop.keyDecl);
+        }
+        String tv = names.createTempVariable(loop.valueVarName);
+        gen.out("var ", tv, "=", loop.valueVarName, ";"); gen.endLine();
+        gen.out("function ", names.getter(loop.valDecl), "(){return ", tv, ";}");
+        gen.endLine();
+        directAccess.remove(loop.valDecl);
+    }
+
     /** Represents one of the for loops of a comprehension including the associated conditions */
     private class ComprehensionLoopInfo {
         public final ForIterator forIterator;
         public final List<Tree.ConditionList> conditions = new ArrayList<Tree.ConditionList>();
         public final List<List<ConditionGenerator.VarHolder>> conditionVars = new ArrayList<List<ConditionGenerator.VarHolder>>();
         public final String itVarName;
-        public String valueVarName;
-        public String keyVarName = null;
+        public final String valueVarName;
+        public final String keyVarName;
+        public final Declaration keyDecl;
+        public final Declaration valDecl;
 
         public ComprehensionLoopInfo(Comprehension that, ForIterator forIterator) {
             this.forIterator = forIterator;
             itVarName = names.createTempVariable("it");
             Variable valueVar = null;
+            Variable keyVar = null;
             if (forIterator instanceof ValueIterator) {
                 valueVar = ((ValueIterator) forIterator).getVariable();
             } else if (forIterator instanceof KeyValueIterator) {
                 KeyValueIterator kvit = (KeyValueIterator) forIterator;
                 valueVar = kvit.getValueVariable();
-                Variable keyVar = kvit.getKeyVariable();
-                keyVarName = names.name(keyVar.getDeclarationModel());
-                directAccess.add(keyVar.getDeclarationModel());
+                keyVar = kvit.getKeyVariable();
             } else {
                 that.addError("No support yet for iterators of type "
                               + forIterator.getClass().getName());
+                valueVarName = null;
+                keyVarName = null;
+                keyDecl = null;
+                valDecl = null;
                 return;
             }
-            this.valueVarName = names.name(valueVar.getDeclarationModel());
-            directAccess.add(valueVar.getDeclarationModel());
+            if (keyVar == null) {
+                keyVarName = null;
+                keyDecl = null;
+            } else {
+                keyDecl = keyVar.getDeclarationModel();
+                keyVarName = names.name(keyDecl);
+                directAccess.add(keyDecl);
+            }
+            valDecl = valueVar.getDeclarationModel();
+            this.valueVarName = names.name(valDecl);
+            directAccess.add(valDecl);
         }
     }
 }
