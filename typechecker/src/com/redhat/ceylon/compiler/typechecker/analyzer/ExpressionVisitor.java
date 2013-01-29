@@ -1987,7 +1987,7 @@ public class ExpressionVisitor extends Visitor {
             if (tst!=null) {
                 List<ProducedType> tal = tst.getTypeArgumentList();
                 if (tal.size()>=3) {
-                    return isTupleLengthUnbounded(tal.get(2));
+                    return isTupleVariantAtLeastOne(tal.get(2));
                 }
             }
             else if (args.getSupertype(unit.getEmptyDeclaration())!=null) {
@@ -2629,7 +2629,9 @@ public class ExpressionVisitor extends Visitor {
 //                                    er.getUpperBound().getTerm());
 //                        }
 //                        else if (er.getLowerBound()!=null) {
-                        if (er.getLowerBound()!=null && er.getUpperBound()==null) {
+                        if (er.getLowerBound()!=null && 
+                                er.getUpperBound()==null &&
+                                er.getLength()==null) {
                             refineTypeForTupleOpenRange(that, pt, 
                                     er.getLowerBound().getTerm());
                         }
@@ -2652,47 +2654,52 @@ public class ExpressionVisitor extends Visitor {
         else if (t instanceof Tree.PositiveOp) {
             t = ((Tree.PositiveOp) t).getTerm();
         }
-        ProducedType tt = pt.getSupertype(unit.getTupleDeclaration());
-        if (tt!=null) {
+        ProducedType tt = pt;
+        if (tt.getSupertype(unit.getSequentialDeclaration())!=null) {
             if (t instanceof Tree.NaturalLiteral) {
                 int index = Integer.parseInt(t.getText());
                 if (negated) index = -index;
                 List<ProducedType> elementTypes = getTupleElementTypes(tt);
                 boolean variadic = isTupleLengthUnbounded(tt);
                 int minimumLength = getTupleMinimumLength(tt);
+                boolean atLeastOne = isTupleVariantAtLeastOne(tt);
                 if (elementTypes!=null) {
-                    if (index<0) {
+                    if (elementTypes.isEmpty()) {
+                        that.setTypeModel(unit.getNullDeclaration().getType());
+                    }
+                    else if (index<0) {
                         that.setTypeModel(unit.getNullDeclaration().getType());
                     }
                     else if (index<elementTypes.size()-(variadic?1:0)) {
                         ProducedType iet = elementTypes.get(index);
-                        if (iet!=null && !(iet.getDeclaration() instanceof UnknownType)) {
-                            if (index>=minimumLength) {
-                                iet = unionType(iet, 
-                                        unit.getNullDeclaration().getType(), 
-                                        unit);
-                            }
-                            that.setTypeModel(iet);
+                        if (iet==null) return;
+                        if (index>=minimumLength) {
+                            iet = unionType(iet, 
+                                    unit.getNullDeclaration().getType(), 
+                                    unit);
                         }
+                        that.setTypeModel(iet);
+                    }
+                    else if (variadic) {
+                        ProducedType iet = elementTypes.get(elementTypes.size()-1);
+                        if (iet==null) return;
+                        ProducedType it = unit.getIteratedType(iet);
+                        if (it==null) return;
+                        if (!atLeastOne || index>=elementTypes.size()) {
+                            it = unionType(it, 
+                                    unit.getNullDeclaration().getType(), 
+                                    unit);
+                        }
+                        that.setTypeModel(it);
                     }
                     else {
-                        ProducedType iet = elementTypes.get(elementTypes.size()-1);
-                        if (iet!=null && !(iet.getDeclaration() instanceof UnknownType)) {
-                            if (variadic) {
-                                that.setTypeModel(unionType(unit.getIteratedType(iet), 
-                                        unit.getNullDeclaration().getType(), 
-                                        unit));
-                            }
-                            else {
-                                that.setTypeModel(unit.getNullDeclaration().getType());
-                            }
-                        }
+                        that.setTypeModel(unit.getNullDeclaration().getType());
                     }
                 }
             }
         }
     }
-
+    
     private void refineTypeForTupleOpenRange(Tree.IndexExpression that,
             ProducedType pt, Tree.Term l) {
         boolean lnegated = false;
@@ -2703,8 +2710,8 @@ public class ExpressionVisitor extends Visitor {
         else if (l instanceof Tree.PositiveOp) {
             l = ((Tree.PositiveOp) l).getTerm();
         }
-        ProducedType tt = pt.getSupertype(unit.getTupleDeclaration());
-        if (tt!=null) {
+        ProducedType tt = pt;
+        if (tt.getSupertype(unit.getSequentialDeclaration())!=null) {
             if (l instanceof Tree.NaturalLiteral) {
                 int lindex = Integer.parseInt(l.getText());
                 if (lnegated) lindex = -lindex;
@@ -2721,16 +2728,19 @@ public class ExpressionVisitor extends Visitor {
                             index<elementTypes.size()-(variadic?1:0); 
                             index++) {
                         ProducedType et = elementTypes.get(index);
-                        if (et==null || et.getDeclaration() instanceof UnknownType) return;
+                        if (et==null) return;
                         list.add(et);
                     }
                     if (variadic) {
                         ProducedType it = elementTypes.get(elementTypes.size()-1);
-                        if (it==null || it.getDeclaration() instanceof UnknownType) return;
+                        if (it==null) return;
                         ProducedType rt = unit.getIteratedType(it);
+                        if (rt==null) return;
                         list.add(rt);
                     }
-                    that.setTypeModel(unit.getTupleType(list, variadic, atLeastOne, minimumLength-lindex));
+                    that.setTypeModel(unit.getTupleType(list, variadic, 
+                            atLeastOne && lindex<elementTypes.size(), 
+                            minimumLength-lindex));
                 }
             }
         }

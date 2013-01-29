@@ -148,3 +148,41 @@ void test() {
     @type:"Float" value pty = pt[1];
     @type:"Null" value ptz = pt[2];
 }
+
+void testRanges() {
+    @type:"Sequential<Integer>" value s1 = [1, 2, 3, 4, 5][2..3];
+    @type:"Sequential<Integer>" value s2 = [1, 2, 3, 4, 5][2:3];
+    @type:"Integer" value e1 = [1, 2, 3, 4, 5][0];
+    @type:"Integer" value e2 = [1, 2, 3, 4, 5][4];
+    @type:"Null" value e3 = [1, 2, 3, 4, 5][-1];
+    @type:"Null" value e4 = [1, 2, 3, 4, 5][5];
+    [Integer*] possiblyEmpty = [];
+    [Integer+] notEmpty = [1];
+    @type:"Integer" value v1 = notEmpty[0];
+    @type:"Null|Integer" value v2 = notEmpty[1];
+    @type:"Null" value v3 = notEmpty[-1];
+    @type:"Null|Integer" value v4 = possiblyEmpty[0];
+    @type:"Null|Integer" value v5 = possiblyEmpty[1];
+    @type:"Null" value v6 = possiblyEmpty[-1];
+    @type:"Integer" value v7 = [1,*possiblyEmpty][0];
+    @type:"Null|Integer" value v8 = [1,*possiblyEmpty][1];
+    @type:"Null" value v9 = [1,*possiblyEmpty][-1];
+    @type:"Integer" value v10 = [1,*notEmpty][0];
+    @type:"Integer" value v11 = [1,*notEmpty][1];
+    @type:"Null|Integer" value v13 = [1,*notEmpty][2];
+    @type:"Null" value v12 = [1,*notEmpty][-1];
+    @type:"Sequential<Integer>" value t4 = [*possiblyEmpty][0...];
+    @type:"Sequential<Integer>" value t5 = [*possiblyEmpty][1...];
+    @type:"Tuple<Integer,Integer,Sequential<Integer>>" value t6 = [1,*possiblyEmpty][0...];
+    @type:"Sequential<Integer>" value t7 = [1,*possiblyEmpty][1...];
+    @type:"Sequence<Integer>" value t8 = [*notEmpty][0...];
+    @type:"Sequential<Integer>" value t9 = [*notEmpty][1...];
+    @type:"Sequential<Integer>" value t10 = [*notEmpty][2...];
+    @type:"Tuple<Integer,Integer,Sequence<Integer>>" value t11 = [1,*notEmpty][0...];
+    @type:"Sequence<Integer>" value t12 = [1,*notEmpty][1...];
+    @type:"Sequential<Integer>" value t13 = [2,*notEmpty][2...];
+    @type:"Sequence<Integer>" value t14 = notEmpty[0...];
+    @type:"Sequential<Integer>" value t15 = notEmpty[1...];
+    @type:"Sequential<Integer>" value t16 = possiblyEmpty[0...];
+    @type:"Sequential<Integer>" value t17 = possiblyEmpty[1...];
+}

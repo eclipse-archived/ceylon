@@ -416,14 +416,14 @@ public class Unit {
     }
     
     public ProducedType getTupleType(List<ProducedType> elemTypes, 
-    		boolean sequenced, boolean atLeastOne, int firstDefaulted) {
+    		boolean variadic, boolean atLeastOne, int firstDefaulted) {
     	ProducedType result = getEmptyDeclaration().getType();
     	ProducedType union = getNothingDeclaration().getType();
     	int last = elemTypes.size()-1;
     	for (int i=last; i>=0; i--) {
     		ProducedType elemType = elemTypes.get(i);
     		union = unionType(union, elemType, this);
-    		if (sequenced && i==last) {
+    		if (variadic && i==last) {
     			result = atLeastOne ? 
     					getSequenceType(elemType) : 
     					getSequentialType(elemType);
