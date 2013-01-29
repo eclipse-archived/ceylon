@@ -1,0 +1,36 @@
+package com.redhat.ceylon.compiler.java.test.issues.bug09xx;
+
+interface Bug999Interface<Key, Value> {
+    
+    public .com.redhat.ceylon.compiler.java.test.issues.bug09xx.Bug999Interface$impl<Key, Value> $com$redhat$ceylon$compiler$java$test$issues$bug09xx$Bug999Interface$impl();
+    
+    public abstract Value get(final Key k);
+}
+final class Bug999Interface$impl<Key, Value> {
+    
+    Bug999Interface$impl(.com.redhat.ceylon.compiler.java.test.issues.bug09xx.Bug999Interface<? super Key, ? extends Value> $this) {
+        this.$this = $this;
+    }
+    private final .com.redhat.ceylon.compiler.java.test.issues.bug09xx.Bug999Interface<? super Key, ? extends Value> $this;
+}
+class Bug999 implements .com.redhat.ceylon.compiler.java.test.issues.bug09xx.Bug999Interface<.ceylon.language.Integer, .ceylon.language.Boolean> {
+    
+    Bug999(long i, .ceylon.language.Callable<? extends .ceylon.language.Boolean> f) {
+        this.i = i;
+        this.f = f;
+        this.$com$redhat$ceylon$compiler$java$test$issues$bug09xx$Bug999Interface$this = new .com.redhat.ceylon.compiler.java.test.issues.bug09xx.Bug999Interface$impl<.ceylon.language.Integer, .ceylon.language.Boolean>(this);
+    }
+    private final long i;
+    private final .ceylon.language.Callable<? extends .ceylon.language.Boolean> f;
+    protected final .com.redhat.ceylon.compiler.java.test.issues.bug09xx.Bug999Interface$impl<.ceylon.language.Integer, .ceylon.language.Boolean> $com$redhat$ceylon$compiler$java$test$issues$bug09xx$Bug999Interface$this;
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.test.issues.bug09xx.Bug999Interface$impl<.ceylon.language.Integer, .ceylon.language.Boolean> $com$redhat$ceylon$compiler$java$test$issues$bug09xx$Bug999Interface$impl() {
+        return $com$redhat$ceylon$compiler$java$test$issues$bug09xx$Bug999Interface$this;
+    }
+    
+    @.java.lang.Override
+    public final .ceylon.language.Boolean get(final .ceylon.language.Integer k) {
+        return i == k ? f.$call() : null;
+    }
+}
