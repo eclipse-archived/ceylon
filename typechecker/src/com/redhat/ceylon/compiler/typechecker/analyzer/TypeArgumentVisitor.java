@@ -154,7 +154,7 @@ public class TypeArgumentVisitor extends Visitor {
     
     private void checkSupertype(ProducedType type, Node that) {
         if (type!=null) {
-        	List<TypeDeclaration> errors = type.checkDecidability();
+        	List<TypeDeclaration> errors = type.resolveAliases().checkDecidability();
             for (TypeDeclaration td: errors) {
                 that.addError("type with contravariant type parameter " + td.getName() + 
                 		" appears in contravariant location in supertype: " + 
