@@ -77,8 +77,8 @@ shared interface Map<out Key,out Item>
          this map, and every value is the set of keys that 
          stored the `Item` in this map."
     shared default Map<Item,Set<Key>> inverse =>
-            LazyMap ({ for (key->item in this) item -> 
-                LazySet ({ for (k->i in this) if (i==item) k }) });
+            LazyMap { for (key->item in this) item ->
+                LazySet ([ for (k->i in this) if (i==item) k ]) };
     
     doc "Returns a `Map` with the same keys as this map. For
          every key, the item is the result of applying the

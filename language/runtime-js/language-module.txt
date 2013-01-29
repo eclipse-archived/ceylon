@@ -39,7 +39,6 @@ Exception,NegativeNumberException,OverflowException,RecursiveInitializationExcep
 
 #Null
 #Number
-#Map is close to compiling but requires reified types in one method
 Set,Range,Singleton
 Map,LazyMap,LazyList,LazySet
 
