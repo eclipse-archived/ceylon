@@ -55,7 +55,7 @@ function initExistingType(type, cons, typeName) {
 }
 function initExistingTypeProto(type, cons, typeName) {
     var args = [].slice.call(arguments, 0);
-    args.push(Basic);
+    args.push($init$Basic());
     initExistingType.apply(this, args);
     var proto = cons.prototype;
     if ((proto !== undefined) && (proto.getHash === undefined)) {
@@ -112,16 +112,12 @@ function $identityHash(x) {
 
 function Identifiable(obj) {}
 initType(Identifiable, "ceylon.language::Identifiable");
+function $init$Identifiable() { return Identifiable; }
 var Identifiable$proto = Identifiable.$$.prototype;
 Identifiable$proto.equals = function(that) {
     return isOfType(that, {t:Identifiable}) && (that===this);
 }
 Identifiable$proto.getHash = function() { return $identityHash(this); }
-
-function Basic(obj) {
-    return obj;
-}
-initTypeProto(Basic, 'ceylon.language::Basic', Object$, Identifiable);
 
 //INTERFACES
 //#include callable.js
@@ -180,7 +176,7 @@ function Comparison(name) {
     that.name = String$(name);
     return that;
 }
-initTypeProto(Comparison, 'ceylon.language::Comparison', Basic);
+initTypeProto(Comparison, 'ceylon.language::Comparison', $init$Basic());
 var Comparison$proto = Comparison.$$.prototype;
 Comparison$proto.getString = function() { return this.name; }
 
@@ -193,7 +189,6 @@ Comparison$proto.getString = function() { return this.name; }
 
 exports.Identifiable=Identifiable;
 exports.identityHash=$identityHash;
-exports.Basic=Basic;
 exports.Object=Object$;
 exports.Anything=Anything;
 exports.Null=Null;

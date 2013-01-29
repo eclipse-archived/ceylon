@@ -1,6 +1,5 @@
 function initTypeProto(a,b,c,d){}//IGNORE
 function initType(a,b){}//IGNORE
-function Basic(x){}//IGNORE
 function ArraySequence(x){}//IGNORE
 function Comprehension(x){}//IGNORE
 function Exception(x){}//IGNORE
@@ -129,7 +128,7 @@ Iterable$proto.skipping = function(skip) {
         };
         return $cmp$;
     }
-    initTypeProto(skip$iter, 'ceylon.language::SkipIterable', Basic, Iterable);
+    initTypeProto(skip$iter, 'ceylon.language::SkipIterable', $init$Basic(), Iterable);
     return skip$iter(this,skip);
 }
 Iterable$proto.taking = function(take) {
@@ -236,7 +235,7 @@ function ChainedIterable(first, second, $$targs$$, chained) {
     return chained;
 }
 initTypeProto(ChainedIterable, "ceylon.language::ChainedIterable",
-        Basic, Iterable);
+        $init$Basic(), Iterable);
 var ChainedIterable$proto = ChainedIterable.$$.prototype;
 ChainedIterable$proto.getIterator = function() {
     return ChainedIterator(this.first, this.second);

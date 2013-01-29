@@ -8,7 +8,7 @@ function getNothing(){}//IGNORE
 function String$(x,l){}//IGNORE
 function TypeCategory(a,b){}//IGNORE
 function ArraySequence(x){}//IGNORE
-var exports,Container,Cloneable,smaller,larger,Object$,Basic;//IGNORE
+var exports,Container,Cloneable,smaller,larger,Object$;//IGNORE
 var Iterable,Iterator;//IGNORE
 
 function Sequential($$sequential) {
@@ -89,7 +89,7 @@ function emptyIterator(){
 }
 function $init$emptyIterator(){
     if (emptyIterator.$$===undefined){
-        initTypeProto(emptyIterator,'ceylon.language::emptyIterator',Basic,$init$Iterator());
+        initTypeProto(emptyIterator,'ceylon.language::emptyIterator',$init$Basic(),$init$Iterator());
     }
     return emptyIterator;
 }
@@ -114,7 +114,7 @@ function Comprehension(makeNextFunc, $$targs$$, compr) {
     compr.$$targs$$=$$targs$$;
     return compr;
 }
-initTypeProto(Comprehension, 'ceylon.language::Comprehension', Basic, Iterable);
+initTypeProto(Comprehension, 'ceylon.language::Comprehension', $init$Basic(), Iterable);
 var Comprehension$proto = Comprehension.$$.prototype;
 Comprehension$proto.getIterator = function() {
     return ComprehensionIterator(this.makeNextFunc(), this.$$targs$$);
@@ -129,4 +129,4 @@ function ComprehensionIterator(nextFunc, $$targs$$, it) {
     return it;
 }
 initTypeProto(ComprehensionIterator, 'ceylon.language::ComprehensionIterator',
-        Basic, $init$Iterator());
+        $init$Basic(), $init$Iterator());

@@ -7,11 +7,9 @@
 #Callable
 
 #REVISAR Comparison
-
-#REVISAR Finished
+#REVISAR annotations
 #native SequenceBuilder
 #native StringBuilder
-#REVISAR annotations
 #native className
 #native flatten
 #native identityHash
@@ -19,7 +17,9 @@
 #native language
 #native process
 
-#Basic
+#Identifiable is a problem because it can't extend itself
+#Identifiable
+Basic
 
 #this requires impl of keys requires reified generics
 Keys,Correspondence,Finished
@@ -33,21 +33,14 @@ Entry,Comparable,Invertable,Summable,Ordinal,Numeric,Scalar,Exponentiable,Integr
 #syntactic sugar prevents Sequential from compiling
 #Sequential,Sequence,Empty
 
-#Identifiable
-#IdentifiableObject
-
 Exception,NegativeNumberException,OverflowException,RecursiveInitializationException
 
 #Null
 #Number
 #Map is close to compiling but requires reified types in one method
 #Map
-Set,Range
+Set,Range,Singleton
 LazyMap,LazyList,LazySet
-
-#this one has native impls due to its equals() and keys
-#but we just overwrite those methods with our own
-Singleton
 
 any,byDecreasing,byIncreasing,byItem,byKey,coalesce,count,emptyOrSingleton,curry,entries,equalTo
 every,first,forItem,forKey,greaterThan,join,largest,lessThan,max,min,smallest,sum,product,zip,print,nothing

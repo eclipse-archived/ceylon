@@ -6,7 +6,7 @@ function smallest(x,y){}//IGNORE
 function largest(x,y){}//IGNORE
 function Exception(){}//IGNORE
 var List,Cloneable,Ranged,exports,larger,smaller,equal,Object$,empty,Iterator;//IGNORE
-var Basic,Category;//IGNORE
+var Category;//IGNORE
 
 function Sequence($$sequence) {
     List($$sequence);
@@ -60,7 +60,7 @@ function ArraySequence(/* js array */value, $$targs$$) {
     value.$$targs$$=$$targs$$;
     return value;
 }
-initTypeProto(ArraySequence, 'ceylon.language::ArraySequence', Basic, Sequence);
+initTypeProto(ArraySequence, 'ceylon.language::ArraySequence', $init$Basic(), Sequence);
 
 Array$proto.getT$name = function() {
     return (this.$seq ? ArraySequence : (this.length>0?ArrayList:EmptyArray)).$$.T$name;
@@ -174,7 +174,7 @@ function TypeCategory(seq, type) {
     that.seq = seq;
     return that;
 }
-initTypeProto(TypeCategory, 'ceylon.language::TypeCategory', Basic, Category);
+initTypeProto(TypeCategory, 'ceylon.language::TypeCategory', $init$Basic(), Category);
 var TypeCategory$proto = TypeCategory.$$.prototype;
 TypeCategory$proto.contains = function(k) {
     return isOfType(k, this.type) && this.seq.defines(k);
@@ -186,7 +186,7 @@ function SequenceBuilder($$targs$$) {
     that.$$targs$$=$$targs$$;
     return that;
 }
-initTypeProto(SequenceBuilder, 'ceylon.language::SequenceBuilder', Basic);
+initTypeProto(SequenceBuilder, 'ceylon.language::SequenceBuilder', $init$Basic());
 var SequenceBuilder$proto = SequenceBuilder.$$.prototype;
 SequenceBuilder$proto.getSequence = function() {
     return (this.seq.length > 0) ? ArraySequence(this.seq,this.$$targs$$) : empty;

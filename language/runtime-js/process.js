@@ -1,6 +1,5 @@
 // implementation of object "process" in ceylon.language
 
-function Basic(x){}//IGNORE
 function inheritProto(x,y){}//IGNORE
 function String$(x){}//IGNORE
 function ArraySequence(x){}//IGNORE
@@ -11,7 +10,7 @@ function languageClass() {
     Basic(lang);
     return lang;
 }
-initTypeProto(languageClass, "ceylon.language::language", Basic);
+initTypeProto(languageClass, "ceylon.language::language", $init$Basic());
 var lang$proto=languageClass.$$.prototype;
 lang$proto.getVersion=function() {
     return String$("0.5",3);
@@ -36,7 +35,7 @@ function processClass() {
     Basic(proc);
     return proc;
 }
-initTypeProto(processClass, "ceylon.language::process", Basic);
+initTypeProto(processClass, "ceylon.language::process", $init$Basic());
 var process$proto = processClass.$$.prototype;
 
 var argv = empty;

@@ -6,7 +6,7 @@ function Exception(){}//IGNORE
 function isOfType(a,b){}//IGNORE
 function String$(x,l){}//IGNORE
 function TypeCategory(a,b){}//IGNORE
-var exports,Container,Cloneable,smaller,larger,Object$,Basic;//IGNORE
+var exports,Container,Cloneable,smaller,larger,Object$;//IGNORE
 var Iterable,Iterator;//IGNORE
 
 function Map(wat) {
@@ -50,7 +50,7 @@ function MapValues(map, $$targs$$) {
     val.$$targs$$=$$targs$$;
     return val;
 }
-initTypeProto(MapValues, 'ceylon.language::MapValues', Basic, Collection);
+initTypeProto(MapValues, 'ceylon.language::MapValues', $init$Basic(), Collection);
 var MapValues$proto = MapValues.$$.prototype;
 MapValues$proto.getSize = function() { return this.map.getSize(); }
 MapValues$proto.getEmpty = function() { return this.map.getEmpty(); }
@@ -62,7 +62,7 @@ function MapValuesIterator(map) {
     iter.$$targs$$={Element:map.$$targs$$.Item};
     return iter;
 }
-initTypeProto(MapValuesIterator, 'ceylon.language::MapValuesIterator', Basic, Iterator);
+initTypeProto(MapValuesIterator, 'ceylon.language::MapValuesIterator', $init$Basic(), Iterator);
 MapValuesIterator.$$.prototype.next = function() {
     var entry = this.it.next();
     return (entry!==getFinished()) ? entry.getItem() : getFinished();
@@ -75,7 +75,7 @@ function KeySet(map, $$targs$$) {
     set.$$targs$$={Element:map.$$targs$$.Key};
     return set;
 }
-initTypeProto(KeySet, 'ceylon.language::KeySet', Basic, Set);
+initTypeProto(KeySet, 'ceylon.language::KeySet', $init$Basic(), Set);
 var KeySet$proto = KeySet.$$.prototype;
 KeySet$proto.getSize = function() { return this.map.getSize(); }
 KeySet$proto.getEmpty = function() { return this.map.getEmpty(); }
@@ -88,7 +88,7 @@ function KeySetIterator(map) {
     iter.$$targs$$={Element:map.$$targs$$.Key};
     return iter;
 }
-initTypeProto(KeySetIterator, 'ceylon.language::KeySetIterator', Basic, Iterator);
+initTypeProto(KeySetIterator, 'ceylon.language::KeySetIterator', $init$Basic(), Iterator);
 KeySetIterator.$$.prototype.next = function() {
     var entry = this.it.next();
     return (entry!==getFinished()) ? entry.getKey() : getFinished();
@@ -184,7 +184,7 @@ function HashMap(entries, $$targs$$, map) {
     if (entries !== undefined) { map.putAll(entries); }
     return map;
 }
-initTypeProto(HashMap, 'ceylon.language::HashMap', Basic, Map);
+initTypeProto(HashMap, 'ceylon.language::HashMap', $init$Basic(), Map);
 function copyHashMap(orig) {
     var map = HashMap(undefined, orig.$$targs$$);
     for (var hash in Object.keys(orig.map)) {
@@ -256,7 +256,7 @@ function HashSet(elems, $$targs$$, set) {
     if (elems !== undefined) { set.addAll(elems); }
     return set;
 }
-initTypeProto(HashSet, 'ceylon.language::HashSet', Basic, Set);
+initTypeProto(HashSet, 'ceylon.language::HashSet', $init$Basic(), Set);
 function hashSetFromMap(map) {
     var set = new HashSet.$$;
     Basic(set);
@@ -323,7 +323,7 @@ function HashMapIterator(map, $$targs$$) {
     it.arrIndex = 0;
     return it;
 }
-initTypeProto(HashMapIterator, 'ceylon.language::HashMapIterator', Basic, Iterator);
+initTypeProto(HashMapIterator, 'ceylon.language::HashMapIterator', $init$Basic(), Iterator);
 HashMapIterator.$$.prototype.next = function() {
     var hash = this.hashs[this.hashIndex];
     if (hash !== undefined) {
@@ -343,7 +343,7 @@ function HashSetIterator(map, $$targs$$) {
     it.$$targs$$=$$targs$$;
     return it;
 }
-initTypeProto(HashSetIterator, 'ceylon.language::HashSetIterator', Basic, Iterator);
+initTypeProto(HashSetIterator, 'ceylon.language::HashSetIterator', $init$Basic(), Iterator);
 HashSetIterator.$$.prototype.next = function() {
     var entry = this.mapIt.next();
     return (entry !== getFinished()) ? entry.getKey() : getFinished();
