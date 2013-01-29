@@ -34,7 +34,12 @@ function flatten(tf, $$$mptypes) {
     var rf = function() {
         var t = empty;
         var e = null;
-        for (var i=0; i < arguments.length; i++) {
+        var argc = arguments.length;
+        var last = argc>0 ? arguments[argc-1] : undefined;
+        if (typeof(last) === 'object' && typeof(last.Args) === 'object' && typeof(last.Args.t) === 'function') {
+            argc--;
+        }
+        for (var i=0; i < argc; i++) {
             var c = arguments[i]===null ? Null :
                 arguments[i] === undefined ? Empty :
                 arguments[i].getT$all ? arguments[i].getT$all() :
