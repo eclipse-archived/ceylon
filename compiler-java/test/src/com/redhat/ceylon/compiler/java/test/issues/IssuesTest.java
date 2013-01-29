@@ -967,8 +967,8 @@ public class IssuesTest extends CompilerTest {
     }
 
     @Test
-    public void testBug1001() {
-        assertErrors("bug10xx/Bug1001",
+    public void testBug1000() {
+        assertErrors("bug10xx/Bug1000",
                 new CompilerError(22, "Segment operators not implemented yet"),
                 new CompilerError(22, "Segment operators not implemented yet"));
     }
