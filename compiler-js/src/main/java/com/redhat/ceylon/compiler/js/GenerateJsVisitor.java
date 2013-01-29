@@ -933,7 +933,6 @@ public class GenerateJsVisitor extends Visitor
         Value d = that.getDeclarationModel();
         boolean addToPrototype = prototypeStyle && d.isClassOrInterfaceMember();
         Class c = (Class) d.getTypeDeclaration();
-        comment(that);
 
         out(function, names.name(c), "()");
         beginBlock();
@@ -960,7 +959,7 @@ public class GenerateJsVisitor extends Visitor
 
         if (!addToPrototype) {
             out("var ", names.name(d), "=",
-                    names.name(c), "(new ", names.name(c), ".$$);");
+                    names.name(c), "();");
             endLine();
         }
 
