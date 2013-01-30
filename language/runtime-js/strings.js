@@ -5,7 +5,7 @@ function Singleton(x){}//IGNORE
 function largest(a,b){}//IGNORE
 function smallest(a,b){}//IGNORE
 var Object$,List,Comparable,Ranged,Summable,Cloneable,smaller,larger,equal;//IGNORE
-var empty,Iterator,exports;//IGNORE
+var Iterator,exports;//IGNORE
 
 function String$(value,size) {
     var that = new String(value);
@@ -267,13 +267,13 @@ String$proto.lastCharacterOccurrence = function(subc) {
     return null;
 }
 String$proto.getCharacters = function() {
-    return this.length>0 ? this:empty;
+    return this.length>0 ? this:getEmpty();
 }
 String$proto.getFirst = function() { return this.getSize()>0?this.get(0):null; }
 String$proto.getLast = function() { return this.getSize()>0?this.get(this.getSize().getPredecessor()):null; }
 String$proto.getKeys = function() {
     //TODO implement!!!
-    return this.getSize() > 0 ? Range(0, this.getSize().getPredecessor(), [{t:Integer}]) : empty;
+    return this.getSize() > 0 ? Range(0, this.getSize().getPredecessor(), [{t:Integer}]) : getEmpty();
 }
 String$proto.join = function(strings) {
     if (strings === undefined) {return String$("", 0)}
@@ -445,7 +445,7 @@ String$proto.occurrences = function(sub) {
             i+=sub.length;
         } else if ((this.charCodeAt(i++)&0xfc00) === 0xd800) {++i;}
     }
-    return ocs.length > 0 ? ocs : empty;
+    return ocs.length > 0 ? ocs : getEmpty();
 }
 String$proto.$filter = function(f) {
     var r = Iterable.$$.prototype.$filter.apply(this, [f]);
@@ -456,7 +456,7 @@ String$proto.skipping = function(skip) {
     return this.segment(skip, this.getSize());
 }
 String$proto.taking = function(take) {
-    if (take==0) return empty;
+    if (take==0) return getEmpty();
     return this.segment(0, take);
 }
 String$proto.by = function(step) {

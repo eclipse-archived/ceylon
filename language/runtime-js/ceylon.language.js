@@ -124,7 +124,7 @@ Identifiable$proto.getHash = function() { return $identityHash(this); }
 //INTERFACES
 //#include callable.js
 //#dont include iterable.js
-//#include sequential.js
+//#dont include sequential.js
 //#include collections.js
 //Compiled from Ceylon sources
 //#COMPILED
