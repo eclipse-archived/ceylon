@@ -33,7 +33,7 @@ shared class StubClass(
     shared Integer attributeWithThrows = 0;
     
     doc "The stub attribute with `see`."
-    see (methodWithSee, StubException)
+    see (methodWithSee, stubObject.foo)
     shared Integer attributeWithSee = 0;
     
     doc "The stub attribute with `tagged`."
@@ -65,6 +65,10 @@ shared class StubClass(
     shared void methodWithCallableParameter2<Element>(Boolean selecting(Element element)) {}
     
     shared void methodWithCallableParameter3(void fce1(void fce2(void fce3()))) {}
+    
+    shared void methodWithTouple1(Tuple<Integer|Float,Integer,Tuple<Float,Float,[]>> t) {}
+    
+    shared void methodWithTouple2<T>([String|T,Integer=,Float*] t) {}
     
     shared Anything methodWithAnything() { throw; }
     

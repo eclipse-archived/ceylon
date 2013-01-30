@@ -27,14 +27,15 @@ import java.io.Writer;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import com.redhat.ceylon.compiler.typechecker.model.Class;
 import com.redhat.ceylon.compiler.typechecker.model.ClassOrInterface;
 import com.redhat.ceylon.compiler.typechecker.model.Declaration;
 import com.redhat.ceylon.compiler.typechecker.model.Element;
-import com.redhat.ceylon.compiler.typechecker.model.IntersectionType;
 import com.redhat.ceylon.compiler.typechecker.model.Module;
 import com.redhat.ceylon.compiler.typechecker.model.Package;
 import com.redhat.ceylon.compiler.typechecker.model.Parameter;
@@ -42,14 +43,24 @@ import com.redhat.ceylon.compiler.typechecker.model.ProducedType;
 import com.redhat.ceylon.compiler.typechecker.model.Scope;
 import com.redhat.ceylon.compiler.typechecker.model.TypeDeclaration;
 import com.redhat.ceylon.compiler.typechecker.model.TypeParameter;
-import com.redhat.ceylon.compiler.typechecker.model.UnionType;
+import com.redhat.ceylon.compiler.typechecker.model.TypedDeclaration;
 import com.redhat.ceylon.compiler.typechecker.model.Unit;
 import com.redhat.ceylon.compiler.typechecker.model.Value;
+import com.redhat.ceylon.compiler.typechecker.util.ProducedTypeNamePrinter;
 
 public class LinkRenderer {
     
     private static final Map<String, Boolean> checkModuleUrlCache = new HashMap<String, Boolean>();
-    private StringBuffer buffer = new StringBuffer();
+    
+    private static final Set<String> abbreviatedTypes = new HashSet<String>();
+    static {
+        abbreviatedTypes.add("ceylon.language::Empty");
+        abbreviatedTypes.add("ceylon.language::Entry");
+        abbreviatedTypes.add("ceylon.language::Sequence");
+        abbreviatedTypes.add("ceylon.language::Sequential");
+        abbreviatedTypes.add("ceylon.language::Iterable");
+    }
+    
     private Object to;
     private Object from;
     private CeylonDocTool ceylonDocTool;
@@ -57,8 +68,57 @@ public class LinkRenderer {
     private String customText;
     private Scope scope;
     private Declaration anchor;
-    private boolean skipTypeArguments;
-    private boolean forDeclaration = false;
+    private boolean printAbbreviated = true;
+    private boolean printTypeParameters = true;
+    private boolean printTypeParameterDetail = false;
+    
+    private final ProducedTypeNamePrinter producedTypeNamePrinter = new ProducedTypeNamePrinter() {
+        
+        @Override
+        public String getSimpleDeclarationName(Declaration declaration, Unit unit) {
+            String result = null;
+            
+            if (declaration instanceof ClassOrInterface) {
+                ClassOrInterface clazz = (ClassOrInterface) declaration;
+                String clazzUrl = getUrl(clazz, null);
+                result = clazzUrl != null ? buildLinkElement(clazzUrl, clazz.getName()) : clazz.getName();
+            } else if (declaration instanceof TypeParameter) {
+                result = "<span class='type-parameter'>" + declaration.getName(unit) + "</span>";
+            } else if (declaration instanceof TypedDeclaration) {
+                result = processTypedDeclaration((TypedDeclaration) declaration);
+            } else {
+                result = declaration.getName();
+            }
+            
+            return encodeResult(result);
+        }
+
+        @Override
+        public boolean printAbbreviated() {
+            if( isInCeylonLanguageModuleAndLinkToAbbreviatedType() ) {
+                // it looks strange, when in ceylon.language module documentation 
+                // are printed only abbreviated names, for example `shared []`
+                return false;
+            }
+            return printAbbreviated;
+        }
+
+        @Override
+        public boolean printTypeParameters() {
+            return printTypeParameters;
+        }
+
+        @Override
+        public boolean printTypeParameterDetail() {
+            return printTypeParameterDetail;
+        }
+
+        @Override
+        public boolean printQualifyingType() {
+            return false;
+        }
+        
+    };
     
     public LinkRenderer(CeylonDocTool ceylonDocTool, Writer writer, Object from) {
         this.ceylonDocTool = ceylonDocTool;
@@ -67,7 +127,6 @@ public class LinkRenderer {
     }
     
     public LinkRenderer(LinkRenderer linkRenderer) {
-        this.buffer = linkRenderer.buffer;
         this.to = linkRenderer.to;
         this.from = linkRenderer.from;
         this.ceylonDocTool = linkRenderer.ceylonDocTool;
@@ -75,20 +134,13 @@ public class LinkRenderer {
         this.customText = linkRenderer.customText;
         this.scope = linkRenderer.scope;
         this.anchor = linkRenderer.anchor;
-        this.skipTypeArguments = linkRenderer.skipTypeArguments;
-        this.forDeclaration = linkRenderer.forDeclaration;
+        this.printAbbreviated = linkRenderer.printAbbreviated;
+        this.printTypeParameters = linkRenderer.printTypeParameters;
+        this.printTypeParameterDetail = linkRenderer.printTypeParameterDetail;
     }
     
     public LinkRenderer to(Object to) {
         this.to = to;
-        return this;
-    }
-
-    /**
-     * Include things like in/out/default value of Type Parameters
-     */
-    public LinkRenderer forDeclaration(boolean forDeclaration) {
-        this.forDeclaration = forDeclaration;
         return this;
     }
 
@@ -116,39 +168,42 @@ public class LinkRenderer {
         this.anchor = anchor;
         return this;
     }
+    
+    public LinkRenderer printAbbreviated(boolean printAbbreviated) {
+        this.printAbbreviated = printAbbreviated;
+        return this;
+    }
 
-    public LinkRenderer skipTypeArguments() {
-        this.skipTypeArguments = true;
+    public LinkRenderer printTypeParameters(boolean printTypeParameters) {
+        this.printTypeParameters = printTypeParameters;
         return this;
     }
     
+    public LinkRenderer printTypeParameterDetail(boolean printTypeParameterDetail) {
+        this.printTypeParameterDetail = printTypeParameterDetail;
+        return this;
+    }
+
     public String getLink() {
-        try {
-            if (to instanceof String) {
-                processDeclarationLink((String) to);
-            } else if (to instanceof ProducedType) {
-                processProducedType((ProducedType) to);
-            } else if (to instanceof IntersectionType) {
-                processIntersectionType((IntersectionType) to);
-            } else if (to instanceof UnionType) {
-                processUnionType((UnionType) to);
-            } else if (to instanceof ClassOrInterface) {
-                processClassOrInterface((ClassOrInterface) to, null);
-            } else if (to instanceof Declaration) {
-                processDeclaration((Declaration) to);
-            } else if (to instanceof Module) {
-                processModule((Module) to);
-            } else if (to instanceof Package) {
-                processPackage((Package) to);
-            }
-            return buffer.toString();
-        } finally {
-            buffer.setLength(0);
+        String link = null;
+        if (to instanceof String) {
+            link = processWikiLink((String) to);
+        } else if (to instanceof ProducedType) {
+            link = processProducedType((ProducedType) to);
+        } else if (to instanceof TypeDeclaration) {
+            link = processProducedType(((TypeDeclaration) to).getType());
+        } else if (to instanceof TypedDeclaration) {
+            link = processTypedDeclaration((TypedDeclaration) to);
+        } else if (to instanceof Module) {
+            link = processModule((Module) to);
+        } else if (to instanceof Package) {
+            link = processPackage((Package) to);
         }
+        return link;
     }
     
     public String getUrl() {
-        return getUrl(to);
+        return getUrl(to, anchor);
     }
     
     public String getResourceUrl(String to) throws IOException {
@@ -164,181 +219,34 @@ public class LinkRenderer {
         writer.write(link);
     }
 
-    private void processModule(Module module) {
-        String moduleUrl = getUrl(module);
-        buffer.append(buildLinkElement(moduleUrl, module.getNameAsString()));
+    private String processModule(Module module) {
+        String moduleUrl = getUrl(module, anchor);
+        return buildLinkElement(moduleUrl, module.getNameAsString());
     }
     
-    private void processPackage(Package pkg) {
-        String pkgUrl = getUrl(pkg);
-        buffer.append(buildLinkElement(pkgUrl, pkg.getNameAsString()));
+    private String processPackage(Package pkg) {
+        String pkgUrl = getUrl(pkg, anchor);
+        return buildLinkElement(pkgUrl, pkg.getNameAsString());
     }
 
-    private void processProducedType(ProducedType producedType) {
-        if (producedType != null) {
-            TypeDeclaration typeDeclaration = producedType.getDeclaration();
-            Unit unit = typeDeclaration.getUnit();
-            if (typeDeclaration instanceof IntersectionType) {
-                processIntersectionType((IntersectionType) typeDeclaration);
-            } else if (typeDeclaration instanceof UnionType) {
-                processUnionType((UnionType) typeDeclaration);
-            } else if (typeDeclaration instanceof ClassOrInterface) {
-                // special sugar for Sequential<Foo>
-                if(typeDeclaration == unit.getSequentialDeclaration()){
-                    ProducedType iteratedType = unit.getIteratedType(producedType);
-                    // process the iterated type rather than this
-                    processProducedType(iteratedType);
-                    buffer.append("[]");
-                }else {
-                    processClassOrInterface((ClassOrInterface) typeDeclaration, producedType.getTypeArgumentList());
-                }
-            } else if (typeDeclaration instanceof TypeParameter) {
-                buffer.append("<span class='type-parameter'>").append(typeDeclaration.getName()).append("</span>");
-            } else {
-                buffer.append(producedType.getProducedTypeName());
-            }
-        }
-    }
-
-    private void processIntersectionType(IntersectionType intersectionType) {
-        boolean first = true;
-        for (ProducedType st : intersectionType.getSatisfiedTypes()) {
-            if (first) {
-                first = false;
-            } else {
-                buffer.append("&amp;");
-            }
-            processProducedType(st);
-        }
-    }
-
-    private void processUnionType(UnionType unionType) {
-        if( isOptionalTypeAbbreviation(unionType) ) {
-            ProducedType nonOptionalType = getNonOptionalTypeForDisplay(unionType);
-            processProducedType(nonOptionalType);
-            buffer.append("?");
-            return;
-        }
-        
-        boolean first = true;
-        for (ProducedType producedType : unionType.getCaseTypes()) {
-            if (first) {
-                first = false;
-            } else {
-                buffer.append("|");
-            }
-            processProducedType(producedType);
-        }        
-    }
-
-    private void processClassOrInterface(ClassOrInterface clazz, List<ProducedType> typeArguments) {
-        String clazzName = clazz.getName();
-        
-        String clazzUrl = getUrl(clazz);
-        if (clazzUrl != null) {
-            buffer.append(buildLinkElement(clazzUrl, clazzName));
-        } else {
-            buffer.append(clazzName);
-        }
-
-        if (!skipTypeArguments) {
-            if (typeArguments != null) {
-                processTypeParameterList(clazz.getTypeParameters(), typeArguments);
-            } else {
-                processTypeParameterList(clazz.getTypeParameters(), null);
-            }
-        }
-    }
-
-    private void processTypeParameterList(List<TypeParameter> typeParameters, List<ProducedType> typeArguments) {
-        if (typeParameters != null && !typeParameters.isEmpty()){
-            // find the last non-defaulted arg
-            int firstDefaultedTypeArgument = 0;
-            if(!forDeclaration && typeArguments != null){
-                firstDefaultedTypeArgument = typeArguments.size();
-                for(int i=typeArguments.size()-1;i>=0;i--){
-                    TypeParameter typeParameter = typeParameters.get(i);
-                    if(!typeParameter.isDefaulted())
-                        break; // not defaulted, stop
-                    if(typeArguments.get(i).isExactly(typeParameter.getDefaultTypeArgument()))
-                        firstDefaultedTypeArgument = i;
-                    else
-                        break; // found first non-default one so stop
-                }
-            }
-            if(forDeclaration || typeArguments == null || firstDefaultedTypeArgument > 0) {
-                buffer.append("<span class='type-parameter'>");
-                buffer.append("&lt;");
-                boolean first = true;
-                int i = 0;
-                for (TypeParameter typeParam : typeParameters) {
-                    if(!forDeclaration && typeArguments != null && i == firstDefaultedTypeArgument)
-                        break;
-                    ProducedType typeParamType;
-                    if(typeArguments != null)
-                        typeParamType = typeArguments.get(i);
-                    else
-                        typeParamType = typeParam.getType();
-
-                    if (first) {
-                        first = false;
-                    } else {
-                        buffer.append(", ");
-                    }
-
-                    if (forDeclaration) {
-                        if (typeParam.isContravariant()) {
-                            buffer.append("<span class='type-parameter-keyword'>in </span>");
-                        }
-                        if (typeParam.isCovariant()) {
-                            buffer.append("<span class='type-parameter-keyword'>out </span>");
-                        }
-                    }
-
-                    boolean oldForDeclaration = forDeclaration;
-                    forDeclaration = false;
-                    processProducedType(typeParamType);
-                    forDeclaration = oldForDeclaration;
-                    
-                    if (forDeclaration) {
-                        if (typeParam.isDefaulted()) {
-                            if (typeParam.getDefaultTypeArgument() != null) {
-                                buffer.append("<span class='type-parameter-keyword'> = </span>");
-                                oldForDeclaration = forDeclaration;
-                                forDeclaration = false;
-                                processProducedType(typeParam.getDefaultTypeArgument());
-                                forDeclaration = oldForDeclaration;
-                            } else {
-                                buffer.append("<span class='type-parameter-keyword'>=</span>");
-                            }
-                        }
-                    }
-                    i++;
-                }
-                buffer.append("&gt;");
-                buffer.append("</span>");
-            }
-        }
+    private String processProducedType(ProducedType producedType) {
+        String result = producedTypeNamePrinter.getProducedTypeName(producedType, null);
+        return decodeResult(result);
     }
     
-    private void processDeclaration(Declaration decl) {
+    private String processTypedDeclaration(TypedDeclaration decl) {
         String declName = decl.getName();
         Scope declContainer = decl.getContainer();
         
-        if (anchor != null) {
-            throw new IllegalArgumentException();
-        }
-        anchor = decl;
-        
-        String url = getUrl(declContainer);
+        String url = getUrl(declContainer, decl);
         if( url != null ) {
-            buffer.append(buildLinkElement(url, declName));
+            return buildLinkElement(url, declName);
         } else {
-            buffer.append(declName);
+            return declName;
         }
     }
 
-    private void processDeclarationLink(String declLink) {
+    private String processWikiLink(String declLink) {
         String declName;
         Scope currentScope;
         
@@ -372,15 +280,14 @@ public class LinkRenderer {
         }
         
         // we can't link to parameters yet, unless they're toplevel
-        if (currentDecl != null && 
-                !isParameter(currentDecl)) {
-            if (currentDecl instanceof ClassOrInterface) {
-                processClassOrInterface((ClassOrInterface) currentDecl, null);
+        if (currentDecl != null && !isParameter(currentDecl)) {
+            if (currentDecl instanceof TypeDeclaration) {
+                return processProducedType(((TypeDeclaration) currentDecl).getType());
             } else {
-                processDeclaration(currentDecl);
+                return processTypedDeclaration((TypedDeclaration) currentDecl);
             }
         } else {
-            buffer.append(declLink);
+            return declLink;
         }
     }
 
@@ -401,6 +308,19 @@ public class LinkRenderer {
             return false;
         Value value = (Value)decl;
         return !value.isToplevel() && !value.isClassOrInterfaceMember();
+    }
+    
+    private boolean isInCeylonLanguageModuleAndLinkToAbbreviatedType() {
+        if( ceylonDocTool.getCurrentModule().getNameAsString().equals("ceylon.language") ) {
+            String toName = null;
+            if (to instanceof ProducedType) {
+                toName = ((ProducedType) to).getDeclaration().getQualifiedNameString();
+            } else if (to instanceof TypeDeclaration) {
+                toName = ((TypeDeclaration) to).getQualifiedNameString();
+            }
+            return abbreviatedTypes.contains(toName);
+        }
+        return false;
     }
 
     private Declaration resolveDeclaration(Scope scope, String declName, boolean isNested) {
@@ -431,12 +351,6 @@ public class LinkRenderer {
         }
     }
 
-    private boolean isOptionalTypeAbbreviation(UnionType unionType) {
-        return unionType.getCaseTypes().size() == 2 &&
-                com.redhat.ceylon.compiler.typechecker.model.Util.isElementOfUnion(
-                        unionType, unionType.getUnit().getNullDeclaration());
-    }
-
     private boolean isInCurrentModule(Object obj) {
         Module objModule = null;
         if (obj instanceof Module) {
@@ -462,26 +376,7 @@ public class LinkRenderer {
         return (Package) scope;
     }   
 
-    /**
-     * When parameter is <code>UnionType[Element?]</code>, we can not use method <code>Unit.getDefiniteType()</code>, 
-     * because its result is <code>IntersectionType[Element&Object]</code> and to html is rendered <code>Element&Object?</code>.
-     */
-    private ProducedType getNonOptionalTypeForDisplay(UnionType unionType) {
-        ProducedType nonOptionalType = null;
-        Class nothingDeclaration = unionType.getUnit().getNullDeclaration();
-        for (ProducedType ct : unionType.getCaseTypes()) {
-            TypeDeclaration ctd = ct.getDeclaration();
-            if (ctd instanceof Class && ctd.equals(nothingDeclaration)) {
-                continue;
-            } else {
-                nonOptionalType = ct;
-                break;
-            }
-        }
-        return nonOptionalType;
-    }
-
-    private String getUrl(Object to) {
+    private String getUrl(Object to, Declaration anchor) {
         String url;
         
         if (isInCurrentModule(to)) {
@@ -652,4 +547,30 @@ public class LinkRenderer {
         }
         return result.booleanValue();
     }
+    
+    private static String encodeResult(String text) {
+        if (text != null) {
+            text = text.replaceAll("<", "#LT;");
+            text = text.replaceAll(">", "#GT;");
+        }
+        return text;
+    }
+    
+    private static String decodeResult(String text) {
+        if (text != null) {
+            text = text.replaceAll("&", "&amp;");
+            text = text.replaceAll("<", "&lt;");
+            text = text.replaceAll(">", "&gt;");
+            text = text.replaceAll("#LT;", "<");
+            text = text.replaceAll("#GT;", ">");
+
+            text = text.replaceAll("&lt;in ", "&lt;<span class='type-parameter-keyword'>in </span>");
+            text = text.replaceAll(", in ", ", <span class='type-parameter-keyword'>in </span>");
+
+            text = text.replaceAll("&lt;out ", "&lt;<span class='type-parameter-keyword'>out </span>");
+            text = text.replaceAll(", out ", ", <span class='type-parameter-keyword'>out </span>");
+        }
+        return text;
+    }    
+    
 }

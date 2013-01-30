@@ -52,7 +52,7 @@ import com.redhat.ceylon.compiler.typechecker.tree.Node;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree;
 
 public abstract class ClassOrPackageDoc extends CeylonDoc {
-
+    
     public ClassOrPackageDoc(Module module, CeylonDocTool tool, Writer writer) {
 		super(module, tool, writer);
 	}
@@ -72,7 +72,7 @@ public abstract class ClassOrPackageDoc extends CeylonDoc {
         open("div class='signature'");
         around("span class='modifiers'", getModifiers(d));
         write(" ");
-        linkRenderer().to(d.getType()).forDeclaration(true).write();
+        linkRenderer().to(d.getType()).printTypeParameterDetail(true).write();
         close("div");
         writeDescription(d);
         close("td");
@@ -298,7 +298,7 @@ public abstract class ClassOrPackageDoc extends CeylonDoc {
                 open("div class='type-parameter-constraint'");
 
                 write("<span class='type-parameter-keyword'>given </span>");
-                write(typeParam.getName());
+                write("<span class='type-parameter'>", typeParam.getName(), "</span>");
 
                 List<ProducedType> satisfiedTypes = typeParam.getSatisfiedTypes();
                 if (satisfiedTypes != null && !satisfiedTypes.isEmpty()) {
@@ -350,8 +350,6 @@ public abstract class ClassOrPackageDoc extends CeylonDoc {
                 
                 if (param instanceof FunctionalParameter) {
                     writeFunctionalParameter((FunctionalParameter) param);
-                } else if (param.isSequenced()) {
-                    writeSequencedParameter(param);
                 } else {
                     linkRenderer().to(param.getType()).write();
                     write(" ", param.getName());
@@ -370,13 +368,6 @@ public abstract class ClassOrPackageDoc extends CeylonDoc {
         write(" ");
         write(functionParam.getName());
         writeParameterList(functionParam);
-    }
-
-    private void writeSequencedParameter(Parameter param) throws IOException {
-        ProducedType sequencedParamType = param.getUnit().getIteratedType(param.getType());
-        linkRenderer().to(sequencedParamType).write();
-        write("...");
-        write(" ", param.getName());
     }
 
     protected final void writeParameters(Declaration decl) throws IOException {
@@ -471,7 +462,7 @@ public abstract class ClassOrPackageDoc extends CeylonDoc {
             } else {
                 first = false;
             }
-            linkRenderer().to(target).useScope(decl).write();
+            linkRenderer().to(target).useCustomText(target).useScope(decl).printAbbreviated(false).printTypeParameters(false).write();
         }
         close("span");
         

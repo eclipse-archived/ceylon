@@ -192,6 +192,7 @@ public class CeylonDocToolTest {
         assertDocumentationOfRefinedMember(destDir);
         assertSequencedParameter(destDir);
         assertCallableParameter(destDir);
+        assertTupleParameter(destDir);
         assertAnythingReturnType(destDir);
         assertFencedCodeBlockWithSyntaxHighlighter(destDir);
         assertWikiStyleLinkSyntax(destDir);
@@ -507,7 +508,7 @@ public class CeylonDocToolTest {
         assertMatchInFile(destDir, "index.html", Pattern.compile("<div class='see section'><span class='title'>See also: </span><span class='value'><a class='link' href='class_StubClass.html'>StubClass</a>, <a class='link' href='index.html#stubTopLevelAttribute'>stubTopLevelAttribute</a></span></div>"));
         
         assertMatchInFile(destDir, "class_StubClass.html", Pattern.compile("<div class='see section'><span class='title'>See also: </span><span class='value'><a class='link' href='interface_StubInterface.html'>StubInterface</a>, <a class='link' href='index.html#stubTopLevelAttribute'>stubTopLevelAttribute</a>, <a class='link' href='index.html#stubTopLevelMethod'>stubTopLevelMethod</a>"));
-        assertMatchInFile(destDir, "class_StubClass.html", Pattern.compile("<div class='see section'><span class='title'>See also: </span><span class='value'><a class='link' href='class_StubClass.html#methodWithSee'>methodWithSee</a>, <a class='link' href='class_StubException.html'>StubException</a>"));
+        assertMatchInFile(destDir, "class_StubClass.html", Pattern.compile("<div class='see section'><span class='title'>See also: </span><span class='value'><a class='link' href='class_StubClass.html#methodWithSee'>methodWithSee</a>, <a class='link' href='object_stubObject.html#foo'>stubObject.foo</a>"));
         assertMatchInFile(destDir, "class_StubClass.html", Pattern.compile("<div class='see section'><span class='title'>See also: </span><span class='value'><a class='link' href='class_StubClass.html#attributeWithSee'>attributeWithSee</a>, <a class='link' href='class_StubException.html'>StubException</a>, <a class='link' href='a/class_A1.html'>A1</a>"));
     }
     
@@ -596,7 +597,7 @@ public class CeylonDocToolTest {
     
 	private void assertSequencedParameter(File destDir) throws IOException {
         assertMatchInFile(destDir, "class_StubClass.html", 
-                Pattern.compile("<span class='void'>void</span> methodWithSequencedParameter\\(Integer... numbers\\)"));
+                Pattern.compile("<span class='void'>void</span> methodWithSequencedParameter\\(Integer\\[\\] numbers\\)"));
 	}
     
     private void assertCallableParameter(File destDir) throws IOException {
@@ -608,6 +609,14 @@ public class CeylonDocToolTest {
 
         assertMatchInFile(destDir, "class_StubClass.html", 
                 Pattern.compile("methodWithCallableParameter3\\(<span class='void'>void</span> fce1\\(<span class='void'>void</span> fce2\\(<span class='void'>void</span> fce3\\(\\)\\)\\)\\)"));
+    }
+    
+    private void assertTupleParameter(File destDir) throws IOException {
+        assertMatchInFile(destDir, "class_StubClass.html", 
+                Pattern.compile("methodWithTouple1\\(\\[Integer, Float\\] t\\)"));
+        
+        assertMatchInFile(destDir, "class_StubClass.html", 
+                Pattern.compile("methodWithTouple2<span class='type-parameter'>&lt;T&gt;</span>\\(\\[String|<span class='type-parameter'>T</span>, Integer=, Float\\*\\] t\\)"));
     }
     
     private void assertAnythingReturnType(File destDir) throws IOException {
@@ -700,33 +709,35 @@ public class CeylonDocToolTest {
     
     private void assertGenericTypeParams(File destDir) throws IOException {
         assertMatchInFile(destDir, "class_StubClassWithGenericTypeParams.html",
-                Pattern.compile("<span class='sub-navbar-name'>StubClassWithGenericTypeParams<span class='type-parameter'>&lt;<span class='type-parameter-keyword'>in </span>ContravariantType, T1, T2, T3, <span class='type-parameter-keyword'>out </span>CovariantType, DefaultedType<span class='type-parameter-keyword'> = </span>Iterable<span class='type-parameter'>&lt;<a class='link' href='class_StubClass.html'>StubClass</a>&gt;</span>&gt;</span></span>"));
+                Pattern.compile("<span class='sub-navbar-name'>StubClassWithGenericTypeParams<span class='type-parameter'>&lt;<span class='type-parameter-keyword'>in </span>ContravariantType, T1, T2, T3, <span class='type-parameter-keyword'>out </span>CovariantType, DefaultedType<span class='type-parameter-keyword'> = </span>\\{<a class='link' href='class_StubClass.html'>StubClass</a>\\*\\}&gt;</span></span>"));
         assertMatchInFile(destDir, "class_StubClassWithGenericTypeParams.html",
-                Pattern.compile("<div class='type-parameter-constraint'><span class='type-parameter-keyword'>given </span>T1<span class='type-parameter-keyword'> satisfies </span>Number &amp; Closeable</div>"));
+                Pattern.compile("<div class='type-parameter-constraint'><span class='type-parameter-keyword'>given </span><span class='type-parameter'>T1</span><span class='type-parameter-keyword'> satisfies </span>Number &amp; Closeable</div>"));
         assertMatchInFile(destDir, "class_StubClassWithGenericTypeParams.html",
-                Pattern.compile("<div class='type-parameter-constraint'><span class='type-parameter-keyword'>given </span>T2<span class='type-parameter-keyword'> of </span>Number | String</div>"));
+                Pattern.compile("<div class='type-parameter-constraint'><span class='type-parameter-keyword'>given </span><span class='type-parameter'>T2</span><span class='type-parameter-keyword'> of </span>Number | String</div>"));
         assertMatchInFile(destDir, "class_StubClassWithGenericTypeParams.html",
-                Pattern.compile("<div class='type-parameter-constraint'><span class='type-parameter-keyword'>given </span>T3\\(String s\\)</div></div>"));
+                Pattern.compile("<div class='type-parameter-constraint'><span class='type-parameter-keyword'>given </span><span class='type-parameter'>T3</span>\\(String s\\)</div></div>"));
         
         assertMatchInFile(destDir, "class_StubClassWithGenericTypeParams.html",
-                Pattern.compile("<div class='signature'><span class='modifiers'>shared</span> <span class='void'>void</span> methodWithGenericTypeParams<span class='type-parameter'>&lt;<span class='type-parameter-keyword'>in </span>ContravariantType, X1, X2, X3, <span class='type-parameter-keyword'>out </span>CovariantType, DefaultedType<span class='type-parameter-keyword'> = </span>Iterable<span class='type-parameter'>&lt;<a class='link' href='class_StubClass.html'>StubClass</a>&gt;</span>&gt;</span>\\(\\)"));
+                Pattern.compile("<div class='signature'><span class='modifiers'>shared</span> <span class='void'>void</span> methodWithGenericTypeParams<span class='type-parameter'>&lt;<span class='type-parameter-keyword'>in </span>ContravariantType, X1, X2, X3, <span class='type-parameter-keyword'>out </span>CovariantType, DefaultedType<span class='type-parameter-keyword'> = </span>\\{<a class='link' href='class_StubClass.html'>StubClass</a>\\*\\}&gt;</span>\\(\\)"));
         assertMatchInFile(destDir, "class_StubClassWithGenericTypeParams.html",
-                Pattern.compile("<div class='type-parameter-constraint'><span class='type-parameter-keyword'>given </span>X1<span class='type-parameter-keyword'> satisfies </span>Number &amp; Closeable</div>"));
+                Pattern.compile("<div class='type-parameter-constraint'><span class='type-parameter-keyword'>given </span><span class='type-parameter'>X1</span><span class='type-parameter-keyword'> satisfies </span>Number &amp; Closeable</div>"));
         assertMatchInFile(destDir, "class_StubClassWithGenericTypeParams.html",
-                Pattern.compile("<div class='type-parameter-constraint'><span class='type-parameter-keyword'>given </span>X2<span class='type-parameter-keyword'> of </span>Number | String</div>"));
+                Pattern.compile("<div class='type-parameter-constraint'><span class='type-parameter-keyword'>given </span><span class='type-parameter'>X2</span><span class='type-parameter-keyword'> of </span>Number | String</div>"));
         assertMatchInFile(destDir, "class_StubClassWithGenericTypeParams.html",
-                Pattern.compile("<div class='type-parameter-constraint'><span class='type-parameter-keyword'>given </span>T3\\(String s\\)</div>"));
+                Pattern.compile("<div class='type-parameter-constraint'><span class='type-parameter-keyword'>given </span><span class='type-parameter'>T3</span>\\(String s\\)</div>"));
     }
     
     private void assertObjectPageDifferences(File destDir) throws IOException {
-        assertMatchInFile(destDir, "object_caseSensitive.html",
-                Pattern.compile("<title>Object caseSensitive</title>"));
-        assertMatchInFile(destDir, "object_caseSensitive.html",
-                Pattern.compile("<span class='sub-navbar-label'>object</span><i class='icon-object'></i><span class='sub-navbar-name'>caseSensitive</span>"));
-        assertMatchInFile(destDir, "object_caseSensitive.html",
-                Pattern.compile("<a href='index.html#caseSensitive'><span title='Jump to singleton object declaration'>Singleton object declaration</span></a>"));
-        assertNoMatchInFile(destDir, "object_caseSensitive.html", 
+        assertMatchInFile(destDir, "object_stubObject.html",
+                Pattern.compile("<title>Object stubObject</title>"));
+        assertMatchInFile(destDir, "object_stubObject.html",
+                Pattern.compile("<span class='sub-navbar-label'>object</span><i class='icon-object'></i><span class='sub-navbar-name'>stubObject</span>"));
+        assertMatchInFile(destDir, "object_stubObject.html",
+                Pattern.compile("<a href='index.html#stubObject'><span title='Jump to singleton object declaration'>Singleton object declaration</span></a>"));
+        assertNoMatchInFile(destDir, "object_stubObject.html", 
                 Pattern.compile("<table id='section-constructor'"));
+        assertMatchInFile(destDir, "object_stubObject.stubInnerObject.html",
+                Pattern.compile("<a href='object_stubObject.html#stubInnerObject'><span title='Jump to singleton object declaration'>Singleton object declaration</span></a>"));
     }
     
     private void assertExternalLinks(File destDir) throws IOException {
@@ -770,14 +781,14 @@ public class CeylonDocToolTest {
     
     private void assertBug839(File destDir) throws IOException {
         assertMatchInFile(destDir, "class_StubClass.html",
-                Pattern.compile("<div class='signature'><span class='modifiers'>shared</span> Iterable<span class='type-parameter'>&lt;Entry<span class='type-parameter'>&lt;Integer, <span class='type-parameter'>Element</span>&amp;Object&gt;</span>&gt;</span> bug839<span class='type-parameter'>&lt;Element&gt;</span>\\(\\)</div>"));
+                Pattern.compile("<div class='signature'><span class='modifiers'>shared</span> \\{&lt;Integer-&gt;<span class='type-parameter'>Element</span>&amp;Object&gt;\\*\\} bug839<span class='type-parameter'>&lt;Element&gt;</span>\\(\\)</div>"));
     }
 
     private void assertBug968(File destDir) throws IOException {
         assertMatchInFile(destDir, "class_StubClass.html",
-                Pattern.compile("<div class='signature'><span class='modifiers'>shared</span> Iterable<span class='type-parameter'>&lt;Integer&gt;</span> bug968_1\\(\\)</div>"));
+                Pattern.compile("<div class='signature'><span class='modifiers'>shared</span> \\{Integer\\*\\} bug968_1\\(\\)</div>"));
         assertMatchInFile(destDir, "class_StubClass.html",
-                Pattern.compile("<div class='signature'><span class='modifiers'>shared</span> Iterable<span class='type-parameter'>&lt;Integer, Nothing&gt;</span> bug968_2\\(\\)</div>"));
+                Pattern.compile("<div class='signature'><span class='modifiers'>shared</span> \\{Integer\\+\\} bug968_2\\(\\)</div>"));
     }
 
     private void assertBug927LoadingAndSortingInheritedMembers(File destDir) throws IOException {

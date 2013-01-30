@@ -312,7 +312,7 @@ public class ClassDoc extends ClassOrPackageDoc {
             writeSubNavBarLink("#section-exceptions", "Nested Exceptions", 'E', "Jump to nested exceptions");
         }
         if( isObject() ) {
-            writeSubNavBarLink(linkRenderer().to(pkg).useAnchor(klass).getUrl(), "Singleton object declaration", '\0', "Jump to singleton object declaration");
+            writeSubNavBarLink(linkRenderer().to(klass.getContainer()).useAnchor(klass).getUrl(), "Singleton object declaration", '\0', "Jump to singleton object declaration");
         }
         
         close("div"); // sub-navbar-menu
@@ -371,7 +371,7 @@ public class ClassDoc extends ClassOrPackageDoc {
                 }
                 
                 writeIcon(superType.getDeclaration());
-                around("span class='decl' title='"+ superType.getProducedTypeQualifiedName() +"'", linkRenderer().to(superType).forDeclaration(true).getLink());
+                around("span class='decl' title='"+ superType.getProducedTypeQualifiedName() +"'", linkRenderer().to(superType).printTypeParameterDetail(true).getLink());
                 i++;
             }
             while (i-- > 0) {
@@ -396,7 +396,7 @@ public class ClassDoc extends ClassOrPackageDoc {
                 }
                 
                 if( type instanceof ClassOrInterface ) {
-                    linkRenderer().to((ClassOrInterface)type).skipTypeArguments().write();
+                    linkRenderer().to((ClassOrInterface)type).write();
                 } else {
                     linkRenderer().to((ProducedType)type).write(); 
                 }
