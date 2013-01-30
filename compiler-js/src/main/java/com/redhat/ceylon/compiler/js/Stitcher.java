@@ -11,6 +11,7 @@ import java.io.PrintWriter;
 import java.nio.channels.FileChannel;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 
@@ -69,7 +70,6 @@ public class Stitcher {
     private static void compileLanguageModule(List<String> sources, PrintWriter writer, String clmod)
             throws IOException {
         final File clSrcDir = new File("../ceylon.language/src/ceylon/language/");
-        //We'll copy the files to this temporary dir
         File tmpdir = File.createTempFile("ceylonjs", "clsrc");
         tmpdir.delete();
         tmpdir = new File(tmpdir.getAbsolutePath());
@@ -82,38 +82,40 @@ public class Stitcher {
                 "-rep", "build/runtime", "-nocomments", "-optimize",
                 "-out", tmpout.getAbsolutePath(), "-nomodule")));
 
+        //Typecheck the whole language module
+        System.out.println("Compiling language module from Ceylon source");
+        TypeCheckerBuilder tcb = new TypeCheckerBuilder().addSrcDirectory(clSrcDir.getParentFile().getParentFile());
+        tcb.setRepositoryManager(CeylonUtils.repoManager().systemRepo(opts.getSystemRepo())
+                .userRepos(opts.getRepos()).outRepo(opts.getOutDir()).buildManager());
+        //This is to use the JSON metamodel
+        tcb.moduleManagerFactory(new JsModuleManagerFactory(
+                clmod == null ? null : (Map<String,Object>)JSONValue.parse(clmod)));
+        TypeChecker tc = tcb.getTypeChecker();
+        tc.process();
+        if (tc.getErrors() > 0) {
+            System.exit(1);
+        }
+        System.out.println("DONE!");
+
         for (String line : sources) {
-            for (File f : tmpdir.listFiles()) {
-                f.delete();
-            }
             //Compile these files
-            System.out.println("Compiling language module " + line);
+            System.out.println("Compiling " + line);
+            final HashSet<String> includes = new HashSet<String>();
             for (String filename : line.split(",")) {
-                File src = new File(clSrcDir, String.format("%s.ceylon", filename.trim()));
+                final File src = new File(clSrcDir, String.format("%s.ceylon", filename.trim()));
                 if (src.exists() && src.isFile() && src.canRead()) {
-                    File dst = new File(tmpdir, src.getName());
-                    copyFile(src, dst);
+                    includes.add(src.getPath());
                 } else {
                     throw new IllegalArgumentException("Invalid Ceylon language module source " + src);
                 }
             }
-            //Compile all that stuff
-            TypeCheckerBuilder tcb = new TypeCheckerBuilder().addSrcDirectory(tmpdir);
-            tcb.setRepositoryManager(CeylonUtils.repoManager().systemRepo(opts.getSystemRepo())
-                    .userRepos(opts.getRepos()).outRepo(opts.getOutDir()).buildManager());
-            //This is to use the JSON metamodel
-            tcb.moduleManagerFactory(new JsModuleManagerFactory(
-                    clmod == null ? null : (Map<String,Object>)JSONValue.parse(clmod)));
+            //Compile only the files specified in the line
             //Set this before typechecking to share some decls that otherwise would be private
             JsCompiler.compilingLanguageModule=true;
-            TypeChecker tc = tcb.getTypeChecker();
-            tc.process();
-            if (tc.getErrors() > 0) {
-                System.exit(1);
-            }
             JsCompiler jsc = new JsCompiler(tc, opts).stopOnErrors(false);
+            jsc.setFiles(includes);
             jsc.generate();
-            File compsrc = new File(tmpout, "default/default.js");
+            File compsrc = new File(tmpout, "ceylon/language/0.5/ceylon.language-0.5.js");
             if (compsrc.exists() && compsrc.isFile() && compsrc.canRead()) {
                 BufferedReader jsr = new BufferedReader(new FileReader(compsrc));
                 try {
@@ -126,7 +128,7 @@ public class Stitcher {
                     compsrc.delete();
                 }
             } else {
-                System.out.println("WTF??? No generated default.js for language module!!!!");
+                System.out.println("WTF??? No generated js for language module!!!!");
                 System.exit(1);
             }
         }
