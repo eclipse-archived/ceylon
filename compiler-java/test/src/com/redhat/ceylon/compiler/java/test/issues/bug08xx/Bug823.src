@@ -17,13 +17,13 @@ final class bug823_ {
                 $z$4 = ((.ceylon.language.Character)$z$3).intValue();
             } else {
                 $z$4 = 0;
-                $ceylontmpassert0 = "\tunviolated " + "nonempty xx" + .java.lang.System.lineSeparator() + "\tviolated " + "is Character z=xx[0]" + .java.lang.System.lineSeparator();
+                $ceylontmpassert0 = .java.lang.System.lineSeparator() + "\tunviolated " + "nonempty xx" + (.java.lang.System.lineSeparator() + "\tviolated ") + "is Character z=xx[0]";
             }
         } else {
             $xx$2 = null;
             $z$4 = 0;
-            $ceylontmpassert0 = "\tviolated " + "nonempty xx" + .java.lang.System.lineSeparator() + "\tuntested " + "is Character z=xx[0]" + .java.lang.System.lineSeparator();
+            $ceylontmpassert0 = .java.lang.System.lineSeparator() + "\tviolated " + "nonempty xx" + (.java.lang.System.lineSeparator() + "\tuntested ") + "is Character z=xx[0]";
         }
-        if ($ceylontmpassert0 != null) throw new .ceylon.language.Exception(.ceylon.language.String.instance("Assertion failed" + .java.lang.System.lineSeparator() + ($ceylontmpassert0 + "\tat " + "Bug823.ceylon:22:4-22:45")), null);
+        if ($ceylontmpassert0 != null) throw new .ceylon.language.Exception(.ceylon.language.String.instance("Assertion failed" + $ceylontmpassert0), null);
     }
 }

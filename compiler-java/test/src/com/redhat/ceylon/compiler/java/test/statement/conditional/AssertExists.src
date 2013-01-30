@@ -10,7 +10,7 @@ class AssertExists {
         .ceylon.language.Integer $x$1 = null;
         if (($x$1 = x) != null) {
             $x$2 = $x$1.longValue();
-        } else throw new .ceylon.language.Exception(.ceylon.language.String.instance("Assertion failed" + .java.lang.System.lineSeparator() + ("\tviolated " + "exists x" + .java.lang.System.lineSeparator() + "\tat " + "AssertExists.ceylon:23:8-23:25")), null);
+        } else throw new .ceylon.language.Exception(.ceylon.language.String.instance("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "exists x")), null);
         return $x$2;
     }
     
@@ -19,7 +19,7 @@ class AssertExists {
         .ceylon.language.Integer $y$4 = null;
         if (($y$4 = x) != null) {
             $y$5 = $y$4.longValue();
-        } else throw new .ceylon.language.Exception(.ceylon.language.String.instance("Assertion failed" + .java.lang.System.lineSeparator() + ("\tviolated " + "exists y = x" + .java.lang.System.lineSeparator() + "\tat " + "AssertExists.ceylon:27:8-27:29")), null);
+        } else throw new .ceylon.language.Exception(.ceylon.language.String.instance("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "exists y = x")), null);
         return $y$5;
     }
     

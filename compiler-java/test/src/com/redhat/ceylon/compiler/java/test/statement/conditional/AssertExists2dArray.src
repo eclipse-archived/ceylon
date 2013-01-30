@@ -11,7 +11,7 @@ class AssertExists2dArray {
         .ceylon.language.Array<.ceylon.language.Integer> $r$1 = null;
         if (($r$1 = t.get(.ceylon.language.Integer.instance(0L))) != null) {
             $r$2 = $r$1;
-        } else throw new .ceylon.language.Exception(.ceylon.language.String.instance("Assertion failed" + .java.lang.System.lineSeparator() + ("\tviolated " + "exists r=t[0]" + .java.lang.System.lineSeparator() + "\tat " + "AssertExists2dArray.ceylon:24:8-24:30")), null);
+        } else throw new .ceylon.language.Exception(.ceylon.language.String.instance("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "exists r=t[0]")), null);
         $r$2.setItem(0L, .ceylon.language.Integer.instance(100L));
     }
     
@@ -21,7 +21,7 @@ class AssertExists2dArray {
         .ceylon.language.Array<.ceylon.language.String> $r$4 = null;
         if (($r$4 = t.get(.ceylon.language.Integer.instance(0L))) != null) {
             $r$5 = $r$4;
-        } else throw new .ceylon.language.Exception(.ceylon.language.String.instance("Assertion failed" + .java.lang.System.lineSeparator() + ("\tviolated " + "exists r=t[0]" + .java.lang.System.lineSeparator() + "\tat " + "AssertExists2dArray.ceylon:29:8-29:30")), null);
+        } else throw new .ceylon.language.Exception(.ceylon.language.String.instance("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "exists r=t[0]")), null);
         $r$5.setItem(0L, .ceylon.language.String.instance(""));
     }
     
@@ -31,7 +31,7 @@ class AssertExists2dArray {
         .ceylon.language.Array<.java.lang.Object> $r$7 = null;
         if (($r$7 = t.get(.ceylon.language.Integer.instance(0L))) != null) {
             $r$8 = $r$7;
-        } else throw new .ceylon.language.Exception(.ceylon.language.String.instance("Assertion failed" + .java.lang.System.lineSeparator() + ("\tviolated " + "exists r=t[0]" + .java.lang.System.lineSeparator() + "\tat " + "AssertExists2dArray.ceylon:34:8-34:30")), null);
+        } else throw new .ceylon.language.Exception(.ceylon.language.String.instance("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "exists r=t[0]")), null);
         $r$8.setItem(0L, null);
     }
     
@@ -41,7 +41,7 @@ class AssertExists2dArray {
         .ceylon.language.Array<.java.lang.Object> $r$10 = null;
         if (($r$10 = t.get(.ceylon.language.Integer.instance(0L))) != null) {
             $r$11 = $r$10;
-        } else throw new .ceylon.language.Exception(.ceylon.language.String.instance("Assertion failed" + .java.lang.System.lineSeparator() + ("\tviolated " + "exists r=t[0]" + .java.lang.System.lineSeparator() + "\tat " + "AssertExists2dArray.ceylon:39:8-39:30")), null);
+        } else throw new .ceylon.language.Exception(.ceylon.language.String.instance("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "exists r=t[0]")), null);
         $r$11.setItem(0L, obj);
     }
     
@@ -51,7 +51,7 @@ class AssertExists2dArray {
         .ceylon.language.Array $r$13 = null;
         if (($r$13 = ((.ceylon.language.Correspondence<? super .ceylon.language.Integer, ? extends .ceylon.language.Array<.java.lang.Object>>)(.ceylon.language.Correspondence)t).get(.ceylon.language.Integer.instance(0L))) != null) {
             $r$14 = $r$13;
-        } else throw new .ceylon.language.Exception(.ceylon.language.String.instance("Assertion failed" + .java.lang.System.lineSeparator() + ("\tviolated " + "exists r=t[0]" + .java.lang.System.lineSeparator() + "\tat " + "AssertExists2dArray.ceylon:44:8-44:30")), null);
+        } else throw new .ceylon.language.Exception(.ceylon.language.String.instance("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "exists r=t[0]")), null);
         $r$14.setItem(0L, obj);
     }
     

@@ -7,12 +7,12 @@ final class assertionSimple_ {
     
     static void assertionSimple() {
         if (2L + 2L == 4L) {
-        } else throw new .ceylon.language.Exception(.ceylon.language.String.instance("Assertion failed" + ": \"should be 4\"" + .java.lang.System.lineSeparator() + ("\tviolated " + "2+2==4" + .java.lang.System.lineSeparator() + "\tat " + "AssertionSimple.ceylon:22:4-23:18")), null);
+        } else throw new .ceylon.language.Exception(.ceylon.language.String.instance("Assertion failed" + ": \"should be 4\"" + (.java.lang.System.lineSeparator() + "\tviolated " + "2+2==4")), null);
         final long i = 5L;
         if (i < 10L) {
-        } else throw new .ceylon.language.Exception(.ceylon.language.String.instance("Assertion failed" + .java.lang.System.lineSeparator() + ("\tviolated " + "i<10" + .java.lang.System.lineSeparator() + "\tat " + "AssertionSimple.ceylon:25:4-25:16")), null);
+        } else throw new .ceylon.language.Exception(.ceylon.language.String.instance("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "i<10")), null);
         if (i < 10L) {
-        } else throw new .ceylon.language.Exception(.ceylon.language.String.instance("Assertion failed" + .java.lang.System.lineSeparator() + ("\tviolated " + "i\n<\n        10" + .java.lang.System.lineSeparator() + "\tat " + "AssertionSimple.ceylon:26:4-28:11")), null);
+        } else throw new .ceylon.language.Exception(.ceylon.language.String.instance("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "i\n<\n        10")), null);
     }
     
     public static void main(.java.lang.String[] args) {

@@ -17,14 +17,14 @@ class AssertConditionListIsIs {
                 $y1$4 = ((.ceylon.language.Integer)$y1$3).longValue();
             } else {
                 $y1$4 = 0L;
-                $ceylontmpassert0 = "\tunviolated " + "is Integer x1=x" + .java.lang.System.lineSeparator() + "\tviolated " + "is Integer y1=y" + .java.lang.System.lineSeparator();
+                $ceylontmpassert0 = .java.lang.System.lineSeparator() + "\tunviolated " + "is Integer x1=x" + (.java.lang.System.lineSeparator() + "\tviolated ") + "is Integer y1=y";
             }
         } else {
             $x1$2 = 0L;
             $y1$4 = 0L;
-            $ceylontmpassert0 = "\tviolated " + "is Integer x1=x" + .java.lang.System.lineSeparator() + "\tuntested " + "is Integer y1=y" + .java.lang.System.lineSeparator();
+            $ceylontmpassert0 = .java.lang.System.lineSeparator() + "\tviolated " + "is Integer x1=x" + (.java.lang.System.lineSeparator() + "\tuntested ") + "is Integer y1=y";
         }
-        if ($ceylontmpassert0 != null) throw new .ceylon.language.Exception(.ceylon.language.String.instance("Assertion failed" + .java.lang.System.lineSeparator() + ($ceylontmpassert0 + "\tat " + "AssertConditionListIsIs.ceylon:23:8-23:49")), null);
+        if ($ceylontmpassert0 != null) throw new .ceylon.language.Exception(.ceylon.language.String.instance("Assertion failed" + $ceylontmpassert0), null);
         return $x1$2 == $y1$4;
     }
     
@@ -40,14 +40,14 @@ class AssertConditionListIsIs {
                 $y$9 = ((.ceylon.language.Integer)$y$8).longValue();
             } else {
                 $y$9 = 0L;
-                $ceylontmpassert5 = "\tunviolated " + "is Integer x" + .java.lang.System.lineSeparator() + "\tviolated " + "is Integer y" + .java.lang.System.lineSeparator();
+                $ceylontmpassert5 = .java.lang.System.lineSeparator() + "\tunviolated " + "is Integer x" + (.java.lang.System.lineSeparator() + "\tviolated ") + "is Integer y";
             }
         } else {
             $x$7 = 0L;
             $y$9 = 0L;
-            $ceylontmpassert5 = "\tviolated " + "is Integer x" + .java.lang.System.lineSeparator() + "\tuntested " + "is Integer y" + .java.lang.System.lineSeparator();
+            $ceylontmpassert5 = .java.lang.System.lineSeparator() + "\tviolated " + "is Integer x" + (.java.lang.System.lineSeparator() + "\tuntested ") + "is Integer y";
         }
-        if ($ceylontmpassert5 != null) throw new .ceylon.language.Exception(.ceylon.language.String.instance("Assertion failed" + .java.lang.System.lineSeparator() + ($ceylontmpassert5 + "\tat " + "AssertConditionListIsIs.ceylon:27:8-27:43")), null);
+        if ($ceylontmpassert5 != null) throw new .ceylon.language.Exception(.ceylon.language.String.instance("Assertion failed" + $ceylontmpassert5), null);
         return $x$7 == $y$9;
     }
     

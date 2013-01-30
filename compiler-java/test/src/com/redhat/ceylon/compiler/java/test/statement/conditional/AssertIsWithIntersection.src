@@ -7,7 +7,7 @@ class AssertIsIntersection {
     
     public final void m(final .java.lang.Object x) {
         if (x instanceof .com.redhat.ceylon.compiler.java.test.statement.conditional.Foo && x instanceof .com.redhat.ceylon.compiler.java.test.statement.conditional.BarInterface) {
-        } else throw new .ceylon.language.Exception(.ceylon.language.String.instance("Assertion failed" + .java.lang.System.lineSeparator() + ("\tviolated " + "is Foo&BarInterface x" + .java.lang.System.lineSeparator() + "\tat " + "AssertIsWithIntersection.ceylon:23:8-23:38")), null);
+        } else throw new .ceylon.language.Exception(.ceylon.language.String.instance("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "is Foo&BarInterface x")), null);
         ((.com.redhat.ceylon.compiler.java.test.statement.conditional.Foo)x).common();
         ((.com.redhat.ceylon.compiler.java.test.statement.conditional.Foo)x).foo();
         ((.com.redhat.ceylon.compiler.java.test.statement.conditional.BarInterface)x).bar();
@@ -18,7 +18,7 @@ class AssertIsIntersection {
         .java.lang.Object $x$3 = null;
         if (($x$3 = y) instanceof .com.redhat.ceylon.compiler.java.test.statement.conditional.Foo && $x$3 instanceof .com.redhat.ceylon.compiler.java.test.statement.conditional.BarInterface) {
             $x$4 = $x$3;
-        } else throw new .ceylon.language.Exception(.ceylon.language.String.instance("Assertion failed" + .java.lang.System.lineSeparator() + ("\tviolated " + "is Foo&BarInterface x=y" + .java.lang.System.lineSeparator() + "\tat " + "AssertIsWithIntersection.ceylon:29:8-29:40")), null);
+        } else throw new .ceylon.language.Exception(.ceylon.language.String.instance("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "is Foo&BarInterface x=y")), null);
         ((.com.redhat.ceylon.compiler.java.test.statement.conditional.Foo)$x$4).common();
         ((.com.redhat.ceylon.compiler.java.test.statement.conditional.Foo)$x$4).foo();
         ((.com.redhat.ceylon.compiler.java.test.statement.conditional.BarInterface)$x$4).bar();

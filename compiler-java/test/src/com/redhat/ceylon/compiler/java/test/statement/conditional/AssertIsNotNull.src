@@ -7,7 +7,7 @@ class AssertIsNotNull {
     
     public final void m(final .java.lang.Object x) {
         if (!(x == null)) {
-        } else throw new .ceylon.language.Exception(.ceylon.language.String.instance("Assertion failed" + .java.lang.System.lineSeparator() + ("\tviolated " + "is Null x" + .java.lang.System.lineSeparator() + "\tat " + "AssertIsNotNull.ceylon:23:8-23:27")), null);
+        } else throw new .ceylon.language.Exception(.ceylon.language.String.instance("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "is Null x")), null);
         .ceylon.language.print_.print(.ceylon.language.String.instance(x.toString()));
     }
     
@@ -16,7 +16,7 @@ class AssertIsNotNull {
         .java.lang.Object $x$3 = null;
         if (!(($x$3 = y) == null)) {
             $x$4 = $x$3;
-        } else throw new .ceylon.language.Exception(.ceylon.language.String.instance("Assertion failed" + .java.lang.System.lineSeparator() + ("\tviolated " + "is Null x=y" + .java.lang.System.lineSeparator() + "\tat " + "AssertIsNotNull.ceylon:27:8-27:29")), null);
+        } else throw new .ceylon.language.Exception(.ceylon.language.String.instance("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "is Null x=y")), null);
         .ceylon.language.print_.print(.ceylon.language.String.instance($x$4.toString()));
     }
     

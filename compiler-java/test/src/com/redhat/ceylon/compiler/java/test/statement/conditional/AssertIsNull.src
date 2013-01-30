@@ -18,7 +18,7 @@ class AssertIsNull {
         .java.lang.Object $x$1 = null;
         if (($x$1 = x) instanceof .ceylon.language.Integer) {
             $x$2 = ((.ceylon.language.Integer)$x$1).longValue();
-        } else throw new .ceylon.language.Exception(.ceylon.language.String.instance("Assertion failed" + .java.lang.System.lineSeparator() + ("\tviolated " + "is Integer x" + .java.lang.System.lineSeparator() + "\tat " + "AssertIsNull.ceylon:30:8-30:29")), null);
+        } else throw new .ceylon.language.Exception(.ceylon.language.String.instance("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "is Integer x")), null);
         return $x$2;
     }
     
@@ -27,13 +27,13 @@ class AssertIsNull {
         .java.lang.Object $y$4 = null;
         if (($y$4 = x) instanceof .ceylon.language.Integer) {
             $y$5 = ((.ceylon.language.Integer)$y$4).longValue();
-        } else throw new .ceylon.language.Exception(.ceylon.language.String.instance("Assertion failed" + .java.lang.System.lineSeparator() + ("\tviolated " + "is Integer y=x" + .java.lang.System.lineSeparator() + "\tat " + "AssertIsNull.ceylon:35:8-35:31")), null);
+        } else throw new .ceylon.language.Exception(.ceylon.language.String.instance("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "is Integer y=x")), null);
         return $y$5;
     }
     
     private final long m3(final .ceylon.language.Integer x) {
         if (x == null) {
-        } else throw new .ceylon.language.Exception(.ceylon.language.String.instance("Assertion failed" + .java.lang.System.lineSeparator() + ("\tviolated " + "is Null x" + .java.lang.System.lineSeparator() + "\tat " + "AssertIsNull.ceylon:40:8-40:26")), null);
+        } else throw new .ceylon.language.Exception(.ceylon.language.String.instance("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "is Null x")), null);
         return nowt(x);
     }
     
@@ -42,7 +42,7 @@ class AssertIsNull {
         .java.lang.Object $y$9 = null;
         if (($y$9 = x) == null) {
             $y$10 = $y$9;
-        } else throw new .ceylon.language.Exception(.ceylon.language.String.instance("Assertion failed" + .java.lang.System.lineSeparator() + ("\tviolated " + "is Null y=x" + .java.lang.System.lineSeparator() + "\tat " + "AssertIsNull.ceylon:45:8-45:28")), null);
+        } else throw new .ceylon.language.Exception(.ceylon.language.String.instance("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "is Null y=x")), null);
         return nowt($y$10);
     }
     

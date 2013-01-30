@@ -11,37 +11,37 @@ final class assertionSpecial_ {
         .java.lang.Object $a1$1 = null;
         if (($a1$1 = v1) instanceof .ceylon.language.Integer) {
             $a1$2 = ((.ceylon.language.Integer)$a1$1).longValue();
-        } else throw new .ceylon.language.Exception(.ceylon.language.String.instance("Assertion failed" + .java.lang.System.lineSeparator() + ("\tviolated " + "is Integer a1 = v1" + .java.lang.System.lineSeparator() + "\tat " + "AssertionSpecial.ceylon:23:4-23:30")), null);
+        } else throw new .ceylon.language.Exception(.ceylon.language.String.instance("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "is Integer a1 = v1")), null);
         .ceylon.language.print_.print(.ceylon.language.Integer.instance(-$a1$2));
         final .ceylon.language.String v2 = .ceylon.language.String.instance("X");
         final .java.lang.String $a2$5;
         .ceylon.language.String $a2$4 = null;
         if (($a2$4 = v2) != null) {
             $a2$5 = $a2$4.toString();
-        } else throw new .ceylon.language.Exception(.ceylon.language.String.instance("Assertion failed" + .java.lang.System.lineSeparator() + ("\tviolated " + "exists a2 = v2" + .java.lang.System.lineSeparator() + "\tat " + "AssertionSpecial.ceylon:26:4-26:26")), null);
+        } else throw new .ceylon.language.Exception(.ceylon.language.String.instance("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "exists a2 = v2")), null);
         .ceylon.language.print_.print(.ceylon.language.Integer.instance(.ceylon.language.String.getSize($a2$5)));
         final .ceylon.language.Sequential<? extends .ceylon.language.Integer> v3 = new .ceylon.language.Tuple<.ceylon.language.Integer, .ceylon.language.Integer, .ceylon.language.Tuple<.ceylon.language.Integer, ? extends .ceylon.language.Integer, ? extends .ceylon.language.Tuple<.ceylon.language.Integer, ? extends .ceylon.language.Integer, ? extends .ceylon.language.Empty>>>(.ceylon.language.Integer.instance(1L), new .ceylon.language.Tuple<.ceylon.language.Integer, .ceylon.language.Integer, .ceylon.language.Tuple<.ceylon.language.Integer, ? extends .ceylon.language.Integer, ? extends .ceylon.language.Empty>>(.ceylon.language.Integer.instance(2L), new .ceylon.language.Tuple<.ceylon.language.Integer, .ceylon.language.Integer, .ceylon.language.Empty>(.ceylon.language.Integer.instance(3L), .ceylon.language.empty_.getEmpty$())));
         final .ceylon.language.Sequence<? extends .ceylon.language.Integer> $a3$8;
         .ceylon.language.Sequential<? extends .ceylon.language.Integer> $a3$7 = null;
         if (($a3$7 = v3) instanceof .ceylon.language.Sequence) {
             $a3$8 = (.ceylon.language.Sequence<? extends .ceylon.language.Integer>)(.ceylon.language.Sequence)$a3$7;
-        } else throw new .ceylon.language.Exception(.ceylon.language.String.instance("Assertion failed" + .java.lang.System.lineSeparator() + ("\tviolated " + "nonempty a3 = v3" + .java.lang.System.lineSeparator() + "\tat " + "AssertionSpecial.ceylon:29:4-29:28")), null);
+        } else throw new .ceylon.language.Exception(.ceylon.language.String.instance("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "nonempty a3 = v3")), null);
         .ceylon.language.print_.print(.ceylon.language.Integer.instance(((.ceylon.language.Iterable<? extends .ceylon.language.Integer, ? extends .java.lang.Object>)(.ceylon.language.Iterable)$a3$8).getSize()));
         final .ceylon.language.Sequence<? extends .ceylon.language.Integer> $v3$11;
         .ceylon.language.Sequential<? extends .ceylon.language.Integer> $v3$10 = null;
         if (($v3$10 = v3) instanceof .ceylon.language.Sequence) {
             $v3$11 = (.ceylon.language.Sequence<? extends .ceylon.language.Integer>)(.ceylon.language.Sequence)$v3$10;
-        } else throw new .ceylon.language.Exception(.ceylon.language.String.instance("Assertion failed" + .java.lang.System.lineSeparator() + ("\tviolated " + "nonempty v3" + .java.lang.System.lineSeparator() + "\tat " + "AssertionSpecial.ceylon:31:4-31:23")), null);
+        } else throw new .ceylon.language.Exception(.ceylon.language.String.instance("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "nonempty v3")), null);
         final .java.lang.String $v2$14;
         .ceylon.language.String $v2$13 = null;
         if (($v2$13 = v2) != null) {
             $v2$14 = $v2$13.toString();
-        } else throw new .ceylon.language.Exception(.ceylon.language.String.instance("Assertion failed" + .java.lang.System.lineSeparator() + ("\tviolated " + "exists v2" + .java.lang.System.lineSeparator() + "\tat " + "AssertionSpecial.ceylon:32:4-32:21")), null);
+        } else throw new .ceylon.language.Exception(.ceylon.language.String.instance("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "exists v2")), null);
         final long $v1$17;
         .java.lang.Object $v1$16 = null;
         if (($v1$16 = v1) instanceof .ceylon.language.Integer) {
             $v1$17 = ((.ceylon.language.Integer)$v1$16).longValue();
-        } else throw new .ceylon.language.Exception(.ceylon.language.String.instance("Assertion failed" + .java.lang.System.lineSeparator() + ("\tviolated " + "is Integer v1" + .java.lang.System.lineSeparator() + "\tat " + "AssertionSpecial.ceylon:33:4-33:25")), null);
+        } else throw new .ceylon.language.Exception(.ceylon.language.String.instance("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "is Integer v1")), null);
     }
     
     public static void main(.java.lang.String[] args) {

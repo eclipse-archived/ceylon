@@ -13,13 +13,13 @@ class AssertConditionListIsBool {
             $x$2 = ((.ceylon.language.String)$x$1).toString();
             if (.ceylon.language.String.getUppercased($x$2).equals("S")) {
             } else {
-                $ceylontmpassert0 = "\tunviolated " + "is String x" + .java.lang.System.lineSeparator() + "\tviolated " + "x.uppercased==\"S\"" + .java.lang.System.lineSeparator();
+                $ceylontmpassert0 = .java.lang.System.lineSeparator() + "\tunviolated " + "is String x" + (.java.lang.System.lineSeparator() + "\tviolated ") + "x.uppercased==\"S\"";
             }
         } else {
             $x$2 = null;
-            $ceylontmpassert0 = "\tviolated " + "is String x" + .java.lang.System.lineSeparator() + "\tuntested " + "x.uppercased==\"S\"" + .java.lang.System.lineSeparator();
+            $ceylontmpassert0 = .java.lang.System.lineSeparator() + "\tviolated " + "is String x" + (.java.lang.System.lineSeparator() + "\tuntested ") + "x.uppercased==\"S\"";
         }
-        if ($ceylontmpassert0 != null) throw new .ceylon.language.Exception(.ceylon.language.String.instance("Assertion failed" + .java.lang.System.lineSeparator() + ($ceylontmpassert0 + "\tat " + "AssertConditionListIsBool.ceylon:23:8-23:47")), null);
+        if ($ceylontmpassert0 != null) throw new .ceylon.language.Exception(.ceylon.language.String.instance("Assertion failed" + $ceylontmpassert0), null);
         .ceylon.language.print_.print(.ceylon.language.String.instance(.ceylon.language.String.getUppercased($x$2)));
     }
     
@@ -31,13 +31,13 @@ class AssertConditionListIsBool {
             $z$5 = ((.ceylon.language.String)$z$4).toString();
             if (.ceylon.language.String.getUppercased($z$5).equals("S")) {
             } else {
-                $ceylontmpassert3 = "\tunviolated " + "is String z=x" + .java.lang.System.lineSeparator() + "\tviolated " + "z.uppercased==\"S\"" + .java.lang.System.lineSeparator();
+                $ceylontmpassert3 = .java.lang.System.lineSeparator() + "\tunviolated " + "is String z=x" + (.java.lang.System.lineSeparator() + "\tviolated ") + "z.uppercased==\"S\"";
             }
         } else {
             $z$5 = null;
-            $ceylontmpassert3 = "\tviolated " + "is String z=x" + .java.lang.System.lineSeparator() + "\tuntested " + "z.uppercased==\"S\"" + .java.lang.System.lineSeparator();
+            $ceylontmpassert3 = .java.lang.System.lineSeparator() + "\tviolated " + "is String z=x" + (.java.lang.System.lineSeparator() + "\tuntested ") + "z.uppercased==\"S\"";
         }
-        if ($ceylontmpassert3 != null) throw new .ceylon.language.Exception(.ceylon.language.String.instance("Assertion failed" + .java.lang.System.lineSeparator() + ($ceylontmpassert3 + "\tat " + "AssertConditionListIsBool.ceylon:27:8-27:49")), null);
+        if ($ceylontmpassert3 != null) throw new .ceylon.language.Exception(.ceylon.language.String.instance("Assertion failed" + $ceylontmpassert3), null);
         .ceylon.language.print_.print(.ceylon.language.String.instance(.ceylon.language.String.getUppercased($z$5)));
     }
     
