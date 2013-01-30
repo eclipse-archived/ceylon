@@ -175,7 +175,7 @@ abstract class Invocation {
         } else {
             if (this instanceof IndirectInvocationBuilder
                     && (getPrimaryDeclaration() instanceof Getter
-                            || (getPrimaryDeclaration() instanceof Value)
+                            || ((getPrimaryDeclaration() instanceof Value) && Decl.isCaptured(getPrimaryDeclaration()))
                             && !Decl.isLocal(getPrimaryDeclaration()))) {
                 actualPrimExpr = gen.make().Apply(null, 
                         gen.naming.makeQualIdent(primaryExpr, selector), 
