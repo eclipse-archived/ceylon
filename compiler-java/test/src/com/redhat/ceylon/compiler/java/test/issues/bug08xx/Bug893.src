@@ -100,6 +100,7 @@ public abstract class XSingleton893<Element> extends .java.lang.Object implement
         return (.com.redhat.ceylon.compiler.java.test.issues.bug08xx.XIterable893).ceylon.language.nothing_.getNothing$();
     }
     
+    @.java.lang.Override
     public final .com.redhat.ceylon.compiler.java.test.issues.bug08xx.XIterable893<? extends Element> getFail1() {
         return (.com.redhat.ceylon.compiler.java.test.issues.bug08xx.XIterable893).ceylon.language.nothing_.getNothing$();
     }

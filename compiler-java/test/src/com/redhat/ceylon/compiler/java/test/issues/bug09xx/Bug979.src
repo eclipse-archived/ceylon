@@ -373,6 +373,7 @@ class Bug979Set extends .java.lang.Object implements .ceylon.language.Set<.ceylo
         return strings.getIterator();
     }
     
+    @.java.lang.Override
     public final .ceylon.language.Set<? extends .ceylon.language.String> getClone() {
         return this;
     }

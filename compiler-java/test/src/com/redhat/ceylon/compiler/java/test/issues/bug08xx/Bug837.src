@@ -292,10 +292,12 @@ class Bug837<Element extends .ceylon.language.Ordinal<? extends Element>> extend
         return this;
     }
     
+    @.java.lang.Override
     public final .ceylon.language.Iterator<? extends Element> getIterator() {
         return (.ceylon.language.Iterator).ceylon.language.nothing_.getNothing$();
     }
     
+    @.java.lang.Override
     public final long getSize() {
         return ((.ceylon.language.Integer).ceylon.language.nothing_.getNothing$()).longValue();
     }
