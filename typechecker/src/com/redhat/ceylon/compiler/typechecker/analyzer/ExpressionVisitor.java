@@ -2738,9 +2738,14 @@ public class ExpressionVisitor extends Visitor {
                         if (rt==null) return;
                         list.add(rt);
                     }
-                    that.setTypeModel(unit.getTupleType(list, variadic, 
+                    ProducedType rt = unit.getTupleType(list, variadic, 
                             atLeastOne && lindex<elementTypes.size(), 
-                            minimumLength-lindex));
+                            minimumLength-lindex);
+                    //intersect with the type determined using
+                    //Ranged, which may be narrower, for example,
+                    //for String
+                    that.setTypeModel(intersectionType(rt, 
+                            that.getTypeModel(), unit));
                 }
             }
         }

@@ -354,4 +354,15 @@ class Operators() {
     X[] exes = opers*.X();
     X[]() refs = opers*.X; 
     
+    String string = "";
+    Character? c = string[0];
+    Null nl = string[-1];
+    variable String sync;
+    sync = string[0..1];
+    sync = string[0:1];
+    sync = string[0...];
+    sync = string[1...];
+    sync = string[...1];
+    @type:"String" value syncit = string[0...];
+        
 }
