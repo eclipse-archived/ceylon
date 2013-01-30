@@ -893,7 +893,8 @@ public class ClassTransformer extends AbstractTransformer {
                         classBuilder.field(PRIVATE | FINAL, name, specifierType, specifier, false);
                     }
                 }
-                
+
+                // copy from formal declaration
                 for (ParameterList pl : m.getParameterLists()) {
                     Tree.ParameterList tpl = new Tree.ParameterList(null);
                     for (Parameter p : pl.getParameters()) {
