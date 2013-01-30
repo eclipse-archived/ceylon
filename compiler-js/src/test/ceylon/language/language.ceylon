@@ -68,10 +68,10 @@ void testString() {
     checkEqual(cnt, 5, "String.iterator");
     checkEqual(s4, "ÖŨ`𝄞A", "String.iterator");
 
-    //this is checked at compile time so we can't even write it anymore
-    /*if (exists c = s1[-1]) {
+    Integer neg = -1;
+    if (exists c = s1[neg]) {
         fail("String.item");
-    }*/
+    }
     if (exists c = s1[0]) {
         checkEqual(c, `a`, "String.item");
     } else {
