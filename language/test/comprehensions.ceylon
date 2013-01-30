@@ -10,7 +10,7 @@ void comprehensions() {
     for (c in "hello") c.string
   } == array("h", "e", "l", "l", "o"), "comprehensions 2");*/
   check(s1=={ "h", "e", "l", "l", "o", "w", "o", "r", "l", "d" }, "comprehensions 3");
-  check(s2=={ `H`, `W` }, "comprehensions 4");
+  check(s2=={ 'H', 'W' }, "comprehensions 4");
   check(s3=={ "h", "e", "l", "l", "o" }, "comprehensions 5");
   check([for (y in 1..5) for (x in 1..5) if (x>y) x*y]=={2, 3, 4, 5, 6, 8, 10, 12, 15, 20}, "comprehensions 6");
   check([for (x in 1..6) if (x % 2 == 0) for (y in 1..3) x*y]=={2,4,6,4,8,12,6,12,18}, "comprehensions 7");
@@ -19,14 +19,14 @@ void comprehensions() {
   variable Object varcomp = s1;
   check(varcomp is Iterable<Anything>, "comprehension is Iterable");
   check([for (x in {null, "hello", "goodbye"}) if (exists x) if (x.size>5) x]=={"goodbye"}, "comprehensions w/exists 1");
-  check([for (x in {"a", "", "c"}) if (exists c=x[0]) c.uppercased]=={`A`, `C`}, "comprehensions w/exists 2");
+  check([for (x in {"a", "", "c"}) if (exists c=x[0]) c.uppercased]=={'A', 'C'}, "comprehensions w/exists 2");
   check([for (x in {"a", "", "c"}) if (!x.empty) x.uppercased]=={"A", "C"}, "comprehensions w/nonempty 1");
   check([for (x in {"a", "", "c"}) if (!x.empty) x.uppercased]=={"A", "C"}, "comprehensions w/nonempty 2");
   check([for (x in {1,2,"3.1",4}) if (is String x) x.reversed]=={"1.3"}, "comprehensions w/is 1");
   check([for (x in {1.1,2.2,3,4.4}) if (is Integer i=x) i*2]=={6}, "comprehensions w/is 2");
   check(array{for (k->v in entries(["a","b","c","d","e"])) if (k%2==0) v.uppercased}==array({"A","C","E"}), "key-value comprehensions");
   // comprehension nested inside comprehension
-  check([for(i in 1..2)[for(j in 1..2)""i","j""]]==[["1,1","1,2"],["2,1","2,2"]], "nested comprehension " [for(i in 1..2)[for(j in 1..2)""i","j""]] " instead of {{'1,1','1,2'},{'2,1','2,2}}");
+  check([for(i in 1..2)[for(j in 1..2)"'i','j'"]]==[["1,1","1,2"],["2,1","2,2"]], "nested comprehension ' [for(i in 1..2)[for(j in 1..2)"'i','j'"]] ' instead of {{1,1,1,2},{2,1,2,2}}");
 
   //new comprehension-related functions
   check(any { for (x in 1..5) x>4 }, "any");

@@ -75,7 +75,7 @@ class MyIterator() satisfies Iterator<Integer> {
     }
 }*/
 class MyRanged() satisfies Ranged<Integer, Iterable<Character>> {
-    value contents = `a`..`z`;
+    value contents = 'a'..'z';
     shared actual Iterable<Character> span(Integer from, Integer to) {
         return contents.span(from, to);
     }
@@ -135,7 +135,7 @@ void testSatisfaction() {
     check(!category.containsAny {0,11,12,13}, "Category.containsAny [2]");
     value collection = MyCollection();
     check(!collection.empty, "Collection.empty");
-    check(`l` in collection, "Collection.contains");
+    check('l' in collection, "Collection.contains");
     check(collection.string == "{ h, e, l, l, o }", "Collection.string");
     check(MyComparable() <= MyComparable(), "Comparable.compare");
     variable Container<Integer,Null> cwfe = MyContainerWithLastElement();
@@ -168,10 +168,10 @@ void testSatisfaction() {
     /*check(MySequence().last==MySequence().first, "Sequence[1]");
     check(!nonempty MySequence().rest, "Sequence[2]");
     check(MySequence().reversed==MySequence(), "Sequence[3]");*/
-    check(MyRanged().spanFrom(23).sequence=={`x`, `y`, `z`}, "Ranged[1]");
-    check(MyRanged().spanTo(2).sequence=={`a`,`b`,`c`}, "Ranged[2]");
-    check(MyRanged().span(1,3).sequence=={`b`,`c`,`d`}, "Ranged[3]");
-    check(MyRanged().segment(3,1).sequence=={`d`}, "Ranged[4]");
+    check(MyRanged().spanFrom(23).sequence=={'x', 'y', 'z'}, "Ranged[1]");
+    check(MyRanged().spanTo(2).sequence=={'a','b','c'}, "Ranged[2]");
+    check(MyRanged().span(1,3).sequence=={'b','c','d'}, "Ranged[3]");
+    check(MyRanged().segment(3,1).sequence=={'d'}, "Ranged[4]");
 
     variable value ord1 = MyOrdinal(null,null);
     variable value ord2 = MyOrdinal(ord1, null);

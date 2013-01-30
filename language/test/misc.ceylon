@@ -12,10 +12,10 @@ void misc() {
     }
     
     check(stringify(*"hello".characters)=="hello", "args");
-    check(stringify( `h`, `i` )=="hi", "sequenced args");
+    check(stringify( 'h', 'i' )=="hi", "sequenced args");
     //unusable check(stringify { chars="hello".characters; }=="hello", "named args");
     // FIXME: Disabled until we fix the backend
-    //check(stringify { chars=[`h`, `i`]; }=="hi", "named sequenced args");
+    //check(stringify { chars=['h', 'i']; }=="hi", "named sequenced args");
     check(stringify()=="", "no args");
     check(stringify{}=="", "no named args");
             

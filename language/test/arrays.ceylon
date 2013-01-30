@@ -5,7 +5,7 @@ void testArrays() {
     check(a1.size==1, "array.size");
     check(a1[0] exists, "array[0]");
     check(!a1.empty, "array.empty");
-    check(a1.hash==32, "array.hash is " a1.hash " instead of 32");
+    check(a1.hash==32, "array.hash is 'a1.hash' instead of 32");
     a1.setItem(0,10);
     if (exists i=a1[0]) {
         check(i==10, "array.setItem");

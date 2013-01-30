@@ -82,7 +82,7 @@ void test_join() {
     value l3 = {7,8,9};
     value joint = join(l1, l2, l3);
     check(joint.size==l1.size+l2.size+l3.size, "join [1]");
-    check(join("aa", "bb", "cc").sequence=={`a`, `a`, `b`, `b`, `c`, `c`}, "join [2]");
+    check(join("aa", "bb", "cc").sequence=={'a', 'a', 'b', 'b', 'c', 'c'}, "join [2]");
 }
 
 void test_zip() {
@@ -90,8 +90,8 @@ void test_zip() {
     value items = { "one", "two", "three", "four", "five" };
     value z1 = zip(keys, items);
     value z2 = zip(keys, { "uno", "dos", "tres", "cuatro", "cinco", "seis", "siete" });
-    check(z1.size==5, "zip 1:" z1 "");
-    check(z2.size==6, "zip 2:" z2 "");
+    check(z1.size==5, "zip 1:' z1 '");
+    check(z2.size==6, "zip 2:' z2 '");
 }
 
 //This is actually a test for the compiler. "exists" doesn't work yet.
@@ -101,8 +101,8 @@ void test_exists_nonempty() {
     variable Integer[]? empties = Singleton(1);
     value t1 = yes exists then "yes exists" else "WTF";
     check(t1 == "yes exists", "exists 1");
-    value t2 = no exists then "WTF" else "no doesn't exist";
-    check(t2 == "no doesn't exist", "exists 2");
+    value t2 = no exists then "WTF" else "no doesn\'t exist";
+    check(t2 == "no doesn\'t exist", "exists 2");
     value t3 = empties nonempty then "nonempty works" else "nonempty broken";
     check(t3 == "nonempty works", "nonempty 1");
     Integer[] _t4 = {};
@@ -330,7 +330,7 @@ shared void sequences() {
     //value coal2 = coalesce { for (c in "hElLo") null }.sequence;
     //check(!coal2 nonempty, "nonempty coalesced2");
     //check(coal2.size == 0, "coalesced2.size");
-    //check(!`h` in coal2, "coalesced2.contains");
+    //check(!'h' in coal2, "coalesced2.contains");
     value entriesBuilder = SequenceBuilder<Integer->String>();
     entriesBuilder.append(1->"hello");
     entriesBuilder.append(2->"world");
@@ -344,7 +344,7 @@ shared void sequences() {
     }
     check(cntr==2, "entry iteration");
 
-    for (name->initial in { "Gavin"->`G`, "Tom"->`T` }) {
+    for (name->initial in { "Gavin"->'G', "Tom"->'T' }) {
         check(name.initial(1)==initial.string, "entry iteration");
     }
 
@@ -375,7 +375,7 @@ shared void sequences() {
     
     //collect
     check({ 1, 2, 3, 4, 5 }.collect((Integer i) => i*2) == { 2, 4, 6, 8, 10 }, "Sequence<Integer>.collect");
-    check("hola".collect((Character c) => c.uppercased) == {`H`, `O`, `L`, `A`}, "Sequence<String>.collect");
+    check("hola".collect((Character c) => c.uppercased) == {'H', 'O', 'L', 'A'}, "Sequence<String>.collect");
     
     
 }

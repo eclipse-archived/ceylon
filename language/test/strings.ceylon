@@ -11,11 +11,11 @@ void compareIterables<T>(Iterable<T> aIterable, Iterable<T> bIterable, String me
     Iterator<T> bIterator = bIterable.iterator;
     for(T a in aIterable){
         T|Finished b = bIterator.next();
-        check(b != finished, "" message ": Iterator B empty while expecting '" a "'");
-        check(a == b, "" message ": Element '" a "' != '" b "'");
+        check(b != finished, "' message ': Iterator B empty while expecting \'' a '\'");
+        check(a == b, "' message ': Element \'' a '\' != \'' b '\'");
     }
     T|Finished b = bIterator.next();
-    check(b == finished, "" message ": Iterator B not empty: extra '" b "'");
+    check(b == finished, "' message ': Iterator B not empty: extra \'' b '\'");
 }
 
 shared void strings() {
@@ -67,13 +67,13 @@ shared void strings() {
     }
     check(!hello[hello.size] exists, "string element not exists");
     if (exists c = hello[0]) {
-        check(c==`h`, "string first element value");
+        check(c=='h', "string first element value");
     }
     else {
         fail("string first element exists 3");
     }
     if (exists c = hello[hello.size.predecessor]) {
-        check(c==`o`, "string last element value");
+        check(c=='o', "string last element value");
     }
     else {
         fail("string last element exists");
@@ -109,8 +109,8 @@ shared void strings() {
     check(("  " + hello + "\n").trimmed==hello, "string trim");
     check("hello\n    world\ngoodbye   everyone!".normalized=="hello world goodbye everyone!", "string normalize");
     
-    check(`l` in hello, "char in string");
-    check(!`x` in hello, "char not in string");
+    check('l' in hello, "char in string");
+    check(!'x' in hello, "char not in string");
     check("ell" in hello, "substring in string");
     check(!"goodbye" in hello, "substring not in string");
                 
@@ -130,16 +130,16 @@ shared void strings() {
         fail("string last occurrence 2");
     }
         
-    if (exists occ = hello.firstCharacterOccurrence(`l`)) {
+    if (exists occ = hello.firstCharacterOccurrence('l')) {
         check(occ==2, "string first occurrence 1");
     }
     else {
         fail("string first occurrence 2");
     }
-    if (exists nocc = hello.firstCharacterOccurrence(`x`)) {
+    if (exists nocc = hello.firstCharacterOccurrence('x')) {
         fail("string no first occurrence");
     }
-    if (exists locc = "hello hello".lastCharacterOccurrence(`h`)) {
+    if (exists locc = "hello hello".lastCharacterOccurrence('h')) {
         check(locc==6, "string last occurrence 1");
     }
     else {
@@ -148,13 +148,13 @@ shared void strings() {
         
     value chars = hello.characters;
     if (exists char = chars[0]) {
-        check(char==`h`, "string characters 1");
+        check(char=='h', "string characters 1");
     }
     else {
         fail("string characters 2");
     }
     if (exists char = chars[3]) {
-        check(char==`l`, "string characters 3");
+        check(char=='l', "string characters 3");
     }
     else {
         fail("string characters 4");
@@ -163,7 +163,7 @@ shared void strings() {
         fail("string characters 5");
     }
     if (exists c = chars.first) {
-        check(c==`h`, "string first character 1");
+        check(c=='h', "string first character 1");
     }
     else {
         fail("string first character 2");
@@ -191,7 +191,7 @@ shared void strings() {
     check(builder.string=="", "StringBuilder 1");
     builder.append("hello");
     check(builder.string=="hello", "StringBuilder 2");
-    builder.appendCharacter(` `);
+    builder.appendCharacter(' ');
     builder.append("world");
     String s = builder.string;
     check(s=="hello world", "string builder 1");
@@ -200,12 +200,12 @@ shared void strings() {
     builder.appendAll("goodbye", " ", "everyone");
     builder.appendSpace();
     check(builder.string=="hello world goodbye everyone ", "string builder 2");
-    check(StringBuilder().append("a").appendCharacter(`b`)
+    check(StringBuilder().append("a").appendCharacter('b')
         .appendAll("c", "d").appendSpace()
         .append("e").string=="abcd e",
         "string builder chained calls");
     check(builder.size == 29, "StringBuilder.size");
-    check(builder.insert(5,`,`).insert(12,"!!!").string=="hello, world!!! goodbye everyone ", "StringBuilder.insert");
+    check(builder.insert(5,',').insert(12,"!!!").string=="hello, world!!! goodbye everyone ", "StringBuilder.insert");
     check(builder.delete(12,3).delete(5,1).delete(99999,1).string=="hello world goodbye everyone ", "StringBuilder.delete 1");
     check(builder.delete(28,100).string=="hello world goodbye everyone", "StringBuilder.delete 2");
     check(builder.size==28, "StringBuilder.size 2");
@@ -245,18 +245,18 @@ shared void strings() {
     check(!"hello".split((Character c) => c.whitespace, true).empty, "hello.split((Character c) c.whitespace,true) is empty");
     check("hello world".split((Character c) => c.whitespace, true).iterator.next()=="hello", "string split first 3.1");
     check("hello world".split(" ", true).iterator.next()=="hello", "string split first 3.2");
-    check("hello world".split((Character c) => c==` `).sequence.size==2, "string split discarding [1]");
-    check("hello world".split((Character c) => c==` `, false).sequence.size==3, "string split including [1]");
+    check("hello world".split((Character c) => c==' ').sequence.size==2, "string split discarding [1]");
+    check("hello world".split((Character c) => c==' ', false).sequence.size==3, "string split including [1]");
     check("hello world".split().sequence.size==2, "string split default");
-    check("hello world".split((Character c) => c==`l`, true).sequence.size==3, "string split discarding [2]");
+    check("hello world".split((Character c) => c=='l', true).sequence.size==3, "string split discarding [2]");
     check("hello world".split("l", true).sequence.size==3, "string split discarding [3]");
-    check("hello world".split((Character c) => c==`l`, false).sequence.size==5, "string split including [2]");
-    check("hello world".split((Character c) => c==`l`, false, false).sequence=={"he","l","","l","o wor","l","d"}, "string split including [3]");
-    check("hello world".split((Character c) => c==`l`, false, true).sequence=={"he","ll","o wor", "l", "d"}, "string split including [4]");
+    check("hello world".split((Character c) => c=='l', false).sequence.size==5, "string split including [2]");
+    check("hello world".split((Character c) => c=='l', false, false).sequence=={"he","l","","l","o wor","l","d"}, "string split including [3]");
+    check("hello world".split((Character c) => c=='l', false, true).sequence=={"he","ll","o wor", "l", "d"}, "string split including [4]");
     check("hello world".split("l", false, false).sequence=={"he","l","","l","o wor","l","d"}, "string split including [5]");
     check("hello world".split("l", false, true).sequence=={"he","ll","o wor", "l", "d"}, "string split including [6]");
     //With strings
-    check("hello world".split("eo").sequence == "hello world".split({`e`,`o`}).sequence, "string split chars [1]");
+    check("hello world".split("eo").sequence == "hello world".split({'e','o'}).sequence, "string split chars [1]");
     check("hello world".split("eo").sequence == "hello world".split(StringBuilder().append("o").append("e").string).sequence, "string split chars");
     variable value count=0;
     for (tok in "hello world goodbye".split()) {
@@ -266,20 +266,20 @@ shared void strings() {
     check(count==3, "string tokens default");
     
     compareIterables({""}, "".split(), "Empty string");
-    compareIterables({"", ""}, " ".split((Character c) => c==` `, true), "Two empty tokens");
-    compareIterables({"", " ", ""}, " ".split((Character c) => c==` `, false), "Two empty tokens with WS");
-    compareIterables({"hello", "world"}, "hello world".split((Character c) => c==` `, true), "Two parts");
-    compareIterables({"", "hello", "world", ""}, " hello world ".split((Character c) => c==` `, true), "Two parts surounded with WS");
-    compareIterables({"hello", " ", "world"}, "hello world".split((Character c) => c==` `, false), "Two parts with space token");
-    compareIterables({"", " ", "hello", " ", "world", " ", ""}, " hello world ".split((Character c) => c==` `, false), "Two parts surounded with space tokens");
-    compareIterables({"hello", "   ", "world"}, "hello   world".split((Character c) => c==` `, false), "Two parts with grouped space token");
-    compareIterables({"", "  ", "hello", "   ", "world", "    ", ""}, "  hello   world    ".split((Character c) => c==` `, false), "Two parts surounded with grouped space tokens");
-    compareIterables({"a", "b"}, "a/b".split((Character c) => c==`/`, true, false), "a/b");
-    compareIterables({"", "a", "b", ""}, "/a/b/".split((Character c) => c==`/`, true, false), "/a/b/");
-    compareIterables({"", "", "a", "", "b", "", ""}, "//a//b//".split((Character c) => c==`/`, true, false), "//a//b//");
+    compareIterables({"", ""}, " ".split((Character c) => c==' ', true), "Two empty tokens");
+    compareIterables({"", " ", ""}, " ".split((Character c) => c==' ', false), "Two empty tokens with WS");
+    compareIterables({"hello", "world"}, "hello world".split((Character c) => c==' ', true), "Two parts");
+    compareIterables({"", "hello", "world", ""}, " hello world ".split((Character c) => c==' ', true), "Two parts surounded with WS");
+    compareIterables({"hello", " ", "world"}, "hello world".split((Character c) => c==' ', false), "Two parts with space token");
+    compareIterables({"", " ", "hello", " ", "world", " ", ""}, " hello world ".split((Character c) => c==' ', false), "Two parts surounded with space tokens");
+    compareIterables({"hello", "   ", "world"}, "hello   world".split((Character c) => c==' ', false), "Two parts with grouped space token");
+    compareIterables({"", "  ", "hello", "   ", "world", "    ", ""}, "  hello   world    ".split((Character c) => c==' ', false), "Two parts surounded with grouped space tokens");
+    compareIterables({"a", "b"}, "a/b".split((Character c) => c=='/', true, false), "a/b");
+    compareIterables({"", "a", "b", ""}, "/a/b/".split((Character c) => c=='/', true, false), "/a/b/");
+    compareIterables({"", "", "a", "", "b", "", ""}, "//a//b//".split((Character c) => c=='/', true, false), "//a//b//");
     compareIterables({"", "", "a", "", "b", "", ""}, "/?a/&b#/".split((Character c) => c in "/&#?", true, false), "/?a/&b#/ no tokens");
     compareIterables({"", "/", "", "?", "a", "/", "", "&", "b", "#", "", "/", ""}, "/?a/&b#/".split((Character c) => c in "/&#?", false, false), "/?a/&b#/ with tokens");
-    compareIterables({"𐒄𐒅", "𐒁"}, "𐒄𐒅 𐒁".split((Character c) => c==` `, true), "High-surrogate Unicode string");
+    compareIterables({"𐒄𐒅", "𐒁"}, "𐒄𐒅 𐒁".split((Character c) => c==' ', true), "High-surrogate Unicode string");
     compareIterables({"𐒄", "𐒁", ""}, "𐒄𐒅𐒁𐒕".split((Character c) => c in "𐒅𐒕", true), "High-surrogate Unicode delimiters");
     
     check("".reversed=="", "string reversed 1");
@@ -303,7 +303,7 @@ shared void strings() {
     check(nlb.string=="\nhello\n", "string builder newline 2");
 
     value s1 = "as it should";
-    value interp = "String part " 1 " interpolation " 2 " works" s1 "";
+    value interp = "String part ' 1 ' interpolation ' 2 ' works' s1 '";
     check(interp=="String part 1 interpolation 2 worksas it should", "String Interpolation");
 
     //Lines
@@ -312,10 +312,10 @@ shared void strings() {
     value lines = mls.lines.iterator;
     check(mls.size==3, "multiline.size==3");
     if (is String _s=lines.next()) {
-        check(_s=="a", "multiline.lines[0]=='a'");
+        check(_s=="a", "multiline.lines[0]==\'a\'");
     } else { fail("multiline.lines[0]"); }
     if (is String _s=lines.next()) {
-        check(_s=="b", "multiline.lines[1]=='b'");
+        check(_s=="b", "multiline.lines[1]==\'b\'");
     } else { fail("multiline.lines[1]"); }
     check(mls.normalized=="a b", "multiline.normalized");
 
@@ -350,5 +350,5 @@ shared void strings() {
     check("\{#0027}"=="\'", "Unicode escape 10");
 
     check(string ([]) == "", "string()");
-    check(string {`h`, `i`}=="hi", "string(h,i)");
+    check(string {'h', 'i'}=="hi", "string(h,i)");
 }

@@ -17,12 +17,12 @@ void testProcess() {
     } else {
         fail("process.propertyValue (null)");
     }
-    check(process.newline.contains(`\n`), "process.newline");
+    check(process.newline.contains('\n'), "process.newline");
     process.write("write");
     process.writeLine(" and writeLine");
     process.writeError("writeError");
     process.writeErrorLine(" and writeErrorLine");
-    print("Process VM " process.vm " version " process.vmVersion " on " process.os " v" process.osVersion "");
+    print("Process VM 'process.vm' version 'process.vmVersion' on 'process.os' v'process.osVersion'");
     check(process.milliseconds > 0, "process.milliseconds");
     check(process.nanoseconds > 0, "process.milliseconds");
 
@@ -34,10 +34,10 @@ void testProcess() {
     check(!language.versionName.empty, "language.versionName");
     check(language.majorVersionBinary==4, "language.majorVersionBinary");
     check(language.minorVersionBinary==0, "language.minorVersionBinary");
-    print("Ceylon language version " language.version " major " language.majorVersion
-        " minor " language.minorVersion " release " language.releaseVersion
-        " '" language.versionName "' major bin " language.majorVersionBinary " minor bin "
-        language.minorVersionBinary "");
+    print("Ceylon language version 'language.version' major 'language.majorVersion' " +
+        "minor 'language.minorVersion' release 'language.releaseVersion' " +
+        "\''language.versionName'\' major bin 'language.majorVersionBinary' minor bin " +
+        "'language.minorVersionBinary'");
     check(process.string == "process", "process.string");
     check(language.string == "language", "language.string");
 }

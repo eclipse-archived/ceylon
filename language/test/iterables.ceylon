@@ -4,7 +4,7 @@ void testIterables() {
     //Map
     check(s1.map((Integer i) => i*2).sequence == { 2, 4, 6, 8, 10 }, "Iterable.map 1");
     check(s2.map((String s) => s.reversed).sequence == { "olleH", "dlroW" }, "Iterable.map 2");
-    check("hola".map((Character c) => c.uppercased).sequence == {`H`, `O`, `L`, `A`}, "String.map");
+    check("hola".map((Character c) => c.uppercased).sequence == {'H', 'O', 'L', 'A'}, "String.map");
 
     //Filter
     check(s1.filter((Integer i) => i%2==0).sequence == { 2, 4 }, "Iterable.filter 1");
@@ -14,7 +14,7 @@ void testIterables() {
     //Collect (like map, but it's already T[])
     check(s1.collect((Integer i) => i*2) == { 2, 4, 6, 8, 10 }, "Iterable.map 1");
     check(s2.collect((String s) => s.reversed) == { "olleH", "dlroW" }, "Iterable.map 2");
-    check("hola".collect((Character c) => c.uppercased) == {`H`, `O`, `L`, `A`}, "String.map");
+    check("hola".collect((Character c) => c.uppercased) == {'H', 'O', 'L', 'A'}, "String.map");
 
     //Select
     check(s1.select((Integer i) => i%2==0) == { 2, 4 }, "Iterable.filter 1");
@@ -35,7 +35,7 @@ void testIterables() {
         check(s == "World", "Iterable.find 3");
     } else { fail("Iterable.find 3"); }
     if (exists c = "hola!".find((Character c) => !c.letter)) {
-        check(c == `!`, "String.find");
+        check(c == '!', "String.find");
     } else { fail("String.find"); }
     //FindLast
     if (exists four = s1.findLast((Integer i) => i>3)) {
@@ -48,7 +48,7 @@ void testIterables() {
         check(s == "World", "Iterable.findLast 3");
     } else { fail("Iterable.findLast 3"); }
     if (exists c = "hola!".findLast((Character c) => c.letter)) {
-        check(c == `a`, "String.findLast");
+        check(c == 'a', "String.findLast");
     } else { fail("String.findLast"); }
 
     check((1..10).map((Integer i) => i.float).sequence == {1.0, 2.0, 3.0, 4.0, 5.0, 6.0, 7.0, 8.0, 9.0, 10.0}, "map 1");
@@ -176,8 +176,8 @@ void testIterables() {
     check(array{0, 1, 2}.indexed.sequence=={0->0, 1->1, 2->2}, "Array.indexed");
     check(Singleton("A").indexed.sequence=={0->"A"}, "Singleton.indexed");
     check({}.indexed=={}, "Empty.indexed");
-    check({for (c in "abc") c}.indexed.sequence=={0->`a`, 1->`b`, 2->`c`}, "Iterable.indexed");
-    check("abc".indexed.sequence=={0->`a`, 1->`b`, 2->`c`}, "String.indexed");
+    check({for (c in "abc") c}.indexed.sequence=={0->'a', 1->'b', 2->'c'}, "Iterable.indexed");
+    check("abc".indexed.sequence=={0->'a', 1->'b', 2->'c'}, "String.indexed");
     check({1,null,2}.indexed.sequence == {0->1, 2->2}, "indexed with nulls");
 
     //last (defined in ContainerWithFirst but tested here)
@@ -185,7 +185,7 @@ void testIterables() {
     check(Singleton(1).last == 1, "Singleton.last");
     check([1,2,3,4,5,6,7,8,9,10].last==10, "Sequence.last");
     if (exists l="The very last character".last) {
-        check(l==`r`, "String.last [1]");
+        check(l=='r', "String.last [1]");
     } else { fail("String.last [1]"); }
     if ("".last exists) {
         fail("String.last [2]");
@@ -198,7 +198,7 @@ void testIterables() {
     check({1,2}.chain({"a", "b"}).sequence=={1,2,"a","b"}, "Sequence.chain");
     check(Singleton(1).chain({2,3}).sequence=={1,2,3}, "Singleton.chain");
     check((1..3).chain(Singleton(4)).sequence=={1,2,3,4}, "Range.chain");
-    check("abc".chain({1,2}).sequence=={`a`, `b`, `c`, 1, 2}, "String.chain");
+    check("abc".chain({1,2}).sequence=={'a', 'b', 'c', 1, 2}, "String.chain");
     check("".chain(Singleton(1)).sequence=={1}, "\"\".chain");
     check({}.chain({1,2})=={1,2}, "Empty.chain");
     check(array([]).chain({1,2}).sequence==[1,2], "EmptyArray.chain");
@@ -224,7 +224,7 @@ void testIterables() {
     //Iterable-related functions
     check({"aaa", "tt", "z"}.sort(byIncreasing((String s) => s.size)).sequence=={"z","tt","aaa"}, "sort(byIncreasing)");
     check({"z", "aaa", "tt"}.sort(byDecreasing((String s) => s.size)).sequence=={"aaa","tt","z"}, "sort(byDecreasing)");
-    Iterable<String> combined = combine((Character c, Integer i) => "comb " c "+" i "",
+    Iterable<String> combined = combine((Character c, Integer i) => "comb 'c'+'i'",
                                                "hello", { 1,2,3,4 });
     check(combined.sequence.size==4, "combine [1]");
     check(combined.sequence == { "comb h+1", "comb e+2", "comb l+3", "comb l+4" }, "combine [2]");

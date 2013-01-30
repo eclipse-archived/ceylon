@@ -17,14 +17,14 @@ class TypesPair<out X,out Y>(X x, Y y)
         given X satisfies Object
         given Y satisfies Object {
     shared actual default String string {
-        return "(" x.string ", " y.string ")";
+        return "('x', 'y')";
     }
 }
 
 class TypesComplex(Float x, Float y) 
         extends TypesPair<Float, Float>(x,y) {
     shared actual String string {
-        return "" x.string "+" y.string "i"; 
+        return "'x'+'y'i"; 
     }
     shared String pairString {
         return super.string;
@@ -99,7 +99,7 @@ void types() {
     Anything nothing = null;
     Anything one = 1;
     Anything t = T();
-    Anything c = `c`;
+    Anything c = 'c';
     Anything str = "string";
     Anything seq = {"hello"};
     Anything empty = {};
@@ -218,7 +218,7 @@ void types() {
     check(className(1.0)=="ceylon.language::Float", "float classname");
     check(".language::SequenceString" in className("hello"), "string classname [1] " + className("hello"));
     check(".language::EmptyString" in className(""), "string classname [2] " + className(""));
-    check(className(` `)=="ceylon.language::Character", "character classname");
+    check(className(' ')=="ceylon.language::Character", "character classname");
     check(className(1->"hello").startsWith("ceylon.language::Entry"), "entry classname");
     check(className(true)=="ceylon.language::true", "true classname");
     check(className(false)=="ceylon.language::false", "false classname");
@@ -230,8 +230,8 @@ void types() {
     check(pairObj is TypesPair<Object, Object>, "pair type");
     //check(is TypesPair<String, String> pairObj, "pair type");
     value almostZero = TypesComplex(0.1, 0.1);
-    check(almostZero.string=="0.1+0.1i", "complex.string: expected '0.1+0.1i' got " almostZero.string "");
-    check(almostZero.pairString=="(0.1, 0.1)", "complex.pairString: expected (0.1, 0.1) got " almostZero.pairString "");
+    check(almostZero.string=="0.1+0.1i", "complex.string: expected \'0.1+0.1i\' got 'almostZero.string'");
+    check(almostZero.pairString=="(0.1, 0.1)", "complex.pairString: expected (0.1, 0.1) got 'almostZero.pairString'");
     check(ConcreteTypesList().empty, "concreteList.empty");
     testJsIssue9();
 

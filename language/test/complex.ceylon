@@ -4,7 +4,7 @@ class OrderedPair<out X,out Y>(x, y)
     shared X x;
     shared Y y;
     shared actual default String string {
-        return "(" x ", " y ")";
+        return "('x', 'y')";
     }
     shared actual Boolean equals(Object other) {
         if (is OrderedPair<Object,Object> other) {
@@ -20,7 +20,7 @@ class Complex(Float re, Float im)
         extends OrderedPair<Float,Float>(re,im) 
         satisfies Summable<Complex> {
     shared actual String string {
-        return "" re "+" im "i";
+        return "'re'+'im'i";
     }
     shared actual Complex plus(Complex other) {
         return Complex(re+other.re,im+other.im);

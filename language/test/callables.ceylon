@@ -40,7 +40,7 @@ void callables() {
   //From #56
   void resolve(Integer g()) {
     value which=g();
-    check(which==2, "closures: callable returns " which " instead of 2");
+    check(which==2, "closures: callable returns 'which' instead of 2");
   }
   variable Callable<Integer,[]>? f = null;
   for (i in 1..2) {
@@ -69,5 +69,5 @@ void callables() {
     }
   }
   if (exists g=f) { resolve(g); }
-  else { fail("WTF g doesn't exist"); }
+  else { fail("WTF g doesn\'t exist"); }
 }
