@@ -184,6 +184,10 @@ void erasureCasting(EC_A & EC_B & EC_C tripleIntersectionParam,
     [Sequential<[Integer,String]>,Sequential<String>] tupleOfSequentialSomething = nothing;
     String[] sequenceOfStrings2 = tupleOfSequentialSomething[1];
     value sequenceOfSequenceOfStrings = tupleOfSequentialSomething[1...];
+
+    // make sure we don't pick up type parameter constraints on callable type parameters past the first
+    Callable<Callable<Anything,[]>,[]> callableOfCallable = nothing;
+    value callableResult = ec_callableWithBonds(callableOfCallable)();
 }
 
 @nomodel
@@ -263,4 +267,13 @@ class EC_ErasedMemberImpl<Element>() satisfies EC_ErasedMember<Element, Null> {
 class EC_Tuple<out Element, out First>(first)
     given First satisfies Element{
     shared First first;
+}
+
+@nomodel
+// See shuffle
+Callable<Callable<Result,FirstArgs>,SecondArgs> ec_callableWithBonds<Result,FirstArgs,SecondArgs>(Callable<Callable<Result,SecondArgs>,FirstArgs> c)
+        given FirstArgs satisfies Anything[]
+        given SecondArgs satisfies Anything[]
+{
+    return nothing;
 }

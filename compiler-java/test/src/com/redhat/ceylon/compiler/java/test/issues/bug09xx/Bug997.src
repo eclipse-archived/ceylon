@@ -1,0 +1,49 @@
+package com.redhat.ceylon.compiler.java.test.issues.bug09xx;
+
+final class bug997_ {
+    
+    private bug997_() {
+    }
+    
+    static void bug997() {
+        
+        final class format_ {
+            
+            private format_() {
+            }
+            
+            .java.lang.String format(final .java.lang.String first, final .java.lang.String second) {
+                return first + " " + second;
+            }
+        }
+        final format_ format = new format_();
+        final .ceylon.language.Callable<? extends .java.lang.Object> printf = .ceylon.language.compose_.compose(new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.java.lang.Object>("Anything(Anything)"){
+            
+            @.java.lang.Override
+            public .java.lang.Object $call(final .java.lang.Object $param$0) {
+                final .java.lang.Object $$line = $param$0;
+                return (
+                    let
+                    {
+                        .ceylon.language.print_.print($$line);
+                    }
+                    returning null;
+                );
+            }
+        }, new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.ceylon.language.String>("String(String, String)"){
+            
+            @.java.lang.Override
+            public .ceylon.language.String $call(final .java.lang.Object $param$0, final .java.lang.Object $param$1) {
+                final .java.lang.String $$first = ((.ceylon.language.String)$param$0).toString();
+                final .java.lang.String $$second = ((.ceylon.language.String)$param$1).toString();
+                return .ceylon.language.String.instance(format.format($$first, $$second));
+            }
+        });
+        final .ceylon.language.Callable<? extends .java.lang.Object> greetme = .ceylon.language.shuffle_.shuffle(.ceylon.language.curry_.curry(printf)).$call(.ceylon.language.String.instance("Gavin"));
+    }
+    
+    public static void main(.java.lang.String[] args) {
+        .ceylon.language.process_.getProcess$().setupArguments(args);
+        .com.redhat.ceylon.compiler.java.test.issues.bug09xx.bug997_.bug997();
+    }
+}
