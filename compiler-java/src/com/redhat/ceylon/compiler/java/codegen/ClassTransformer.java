@@ -862,16 +862,14 @@ public class ClassTransformer extends AbstractTransformer {
                 attrDecl.setDeclarationModel((Value)decl);
                 attrDecl.setIdentifier(expr.getIdentifier());
                 attrDecl.setScope(op.getScope());
-    
+                attrDecl.setSpecifierOrInitializerExpression(op.getSpecifierExpression());
+                
                 // Make sure the boxing information is set correctly
                 BoxingDeclarationVisitor v = new CompilerBoxingDeclarationVisitor(this);
                 v.visit(attrDecl);
                 
                 // Generate the attribute
                 transform(attrDecl, classBuilder);
-                
-                // Generate the specifier statement
-                result = result.append(expressionGen().transform(op));
             } else if (decl instanceof Method) {
                 // Now build a "fake" declaration for the method
                 Tree.MethodDeclaration methDecl = new Tree.MethodDeclaration(null);
