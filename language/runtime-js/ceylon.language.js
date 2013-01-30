@@ -102,6 +102,8 @@ var Object$proto = Object$.$$.prototype;
 Object$proto.getString = function() { return String$(className(this) + "@" + this.getHash()); }
 //Object$proto.getString=function() { String$(Object.prototype.toString.apply(this)) };
 Object$proto.toString=function() { return this.getString().valueOf(); }
+function $init$Object$() { return Object$; }
+function $init$Object() { return Object$; }
 
 var BasicID=1;
 function $identityHash(x) {

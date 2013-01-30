@@ -10,6 +10,7 @@ Basic
 #I mean as part of the process of compiling the language module
 #Anything,Object,Null
 #Comparison
+#syntactic sugar prevents Sequential from compiling
 #Sequential,Sequence,Empty
 
 #native Array
@@ -31,15 +32,13 @@ Binary,Cloneable,Closeable,Ranged,Container,Iterator,Collection,Category
 List,Tuple,ChainedIterator
 Entry,Comparable,Invertable,Summable,Ordinal,Numeric,Scalar,Exponentiable,Integral
 
+#syntactic sugar prevents this from compiling
 #Iterable
 
-#syntactic sugar prevents Sequential from compiling
 
 Exception,NegativeNumberException,OverflowException,RecursiveInitializationException
-
-#Null
 #Number
-Set,Range,Singleton
+Set,Range,Singleton,AssertionException
 Map,LazyMap,LazyList,LazySet
 
 any,byDecreasing,byIncreasing,byItem,byKey,coalesce,count,emptyOrSingleton,curry,entries,equalTo
