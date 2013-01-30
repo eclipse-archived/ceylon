@@ -95,6 +95,6 @@ void comprehensions() {
     }
     
     @type:"Sequential<Character>" value sst1 = [ *"hello" ];
-    @type:"Tuple<Character,Character,Sequential<Character>>" value sst2 = [ ` `, *"hello" ];
+    @type:"Tuple<Character,Character,Sequential<Character>>" value sst2 = [ ' ', *"hello" ];
     
 }

@@ -163,17 +163,17 @@ class Operators() {
     @type:"Sequence<Sequential<Character>>" value x49 = helloworld*.characters;
     @type:"Sequence<Iterable<String,Null>>" value x50 = helloworld*.lines;
     @type:"Null|String" value x51 = helloworld[1]?.normalized;
-    @type:"Null|Iterable<String,Null>" value x512 = helloworld[1]?.split((Character c) => c==` `);
+    @type:"Null|Iterable<String,Null>" value x512 = helloworld[1]?.split((Character c) => c==' ');
     @type:"Sequence<String>" value x52 = helloworld*.normalized;
-    @type:"Sequence<Iterable<String,Null>>" value x522 = helloworld*.split((Character c) => c==` `);
+    @type:"Sequence<Iterable<String,Null>>" value x522 = helloworld*.split((Character c) => c==' ');
     //@type:"Null|String" value x53 = noSequence?[0]?.normalized;
-    //@type:"Null|Iterable<String,Null>" value x532 = noSequence?[0]?.split((Character c) => c==` `);
+    //@type:"Null|Iterable<String,Null>" value x532 = noSequence?[0]?.split((Character c) => c==' ');
     @type:"Sequence<Operators.X>" value x54 = [Operators()]*.X();
 
     {String*} onetwo = {"one", "two"};
     @type:"Sequential<String>" value x61 = onetwo*.uppercased;
     @type:"Sequential<Sequential<Character>>" value x62 = onetwo*.characters;
-    @type:"Sequential<Iterable<String,Null>>" value x63 = onetwo*.split((Character c) => c==` `);
+    @type:"Sequential<Iterable<String,Null>>" value x63 = onetwo*.split((Character c) => c==' ');
     
     @type:"Sequential<Operators.X>" value s1 = sequence[1...];
     @type:"Sequential<Operators.X>" value s2 = sequence[...2];

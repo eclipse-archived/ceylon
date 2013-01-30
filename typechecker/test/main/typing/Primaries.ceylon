@@ -189,7 +189,7 @@ class Primaries() {
     String interpolated7 = "hello' +10 'world";
     String interpolated8 = "hello' "ABC123".size 'world";
     
-    List<Character> list=[` `];
+    List<Character> list=[' '];
     @type:"Sequential<Integer>" value xxxx = list*.integer;
     Exception("Expecting an Array but got: ' true then "x" else "null" '");    
     

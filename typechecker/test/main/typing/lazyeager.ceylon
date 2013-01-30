@@ -49,15 +49,15 @@ void lazyeager() {
     }
     f(*"hello");
     f(*charseq);
-    f(` `, *charseq);
+    f(' ', *charseq);
     f(*chariter);
-    f(` `, *chariter);
+    f(' ', *chariter);
     value g = f;
     g(*"hello");
     g(*charseq);
-    g(` `, *charseq);
+    g(' ', *charseq);
     g(*chariter);
-    g(` `, *chariter);
+    g(' ', *chariter);
     
     {Integer+} ints = {1, 2, 3};
     [Integer+] intseq = [*ints];

@@ -2220,8 +2220,8 @@ nonstringLiteral returns [Literal literal]
       { $literal = new NaturalLiteral($NATURAL_LITERAL); }
     | FLOAT_LITERAL 
       { $literal = new FloatLiteral($FLOAT_LITERAL); }
-    | CHAR_LITERAL 
-      { $literal = new CharLiteral($CHAR_LITERAL); }
+    | STRING_MID 
+      { $literal = new CharLiteral($STRING_MID); }
     ;
 
 stringLiteral returns [StringLiteral stringLiteral]
@@ -3116,21 +3116,6 @@ NATURAL_LITERAL
     | '$' BinaryDigits
     ;
     
-/*
- Stef: we must take 32-bit code points into account here because AntLR considers each
- character to be 16-bit like in Java, which means that it will consider a high/low surrogate
- pair as two characters and refuse it in a character literal. So we match either a code point
- pair, or a normal 16-bit code point.
-*/
-CHAR_LITERAL
-    :   '`' CharPart '`'
-    ;
-
-fragment
-CharPart
-    : ( ~ ('`' | '\\' | '\n' | '\f' | '\t' | '\r') | EscapeSequence )*
-    ;
-
 fragment ASTRING_LITERAL:;
 
 STRING_LITERAL
@@ -3150,11 +3135,17 @@ STRING_END
     ;
 
 /*
+ Stef: we must take 32-bit code points into account here because AntLR considers each
+ character to be 16-bit like in Java, which means that it will consider a high/low surrogate
+ pair as two characters and refuse it in a character literal. So we match either a code point
+ pair, or a normal 16-bit code point.
+*/
+/*
  Stef: AntLR considers each character to be 16-bit like in Java, which means that it will consider a 
  high/low surrogate pair as two characters, BUT because the special characters we care about, such
  as termination quotes or backslash escapes (including unicode escapes) all fall outside the range
  of both the high and low surrogate parts of 32-bit code points character pairs, so we don't care
- because 32-bit code points, even taked as two chars, cannot match any of our special characters,
+ because 32-bit code points, even taken as two chars, cannot match any of our special characters,
  so we can just process them as-is.
 */
 fragment

@@ -67,7 +67,7 @@ interface Declarations {
     void method() {
         String hello = "hi";
         for (c in hello.characters) {
-            if (c==`h`) {
+            if (c=='h') {
                 try {
                     @error Integer hello = 1;
                 }

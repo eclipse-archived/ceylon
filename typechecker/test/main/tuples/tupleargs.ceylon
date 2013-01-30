@@ -29,5 +29,5 @@ void tupleargs() {
     @type:"String" oneOf(*["hello", "world"]);
     @type:"Integer|Float" oneOf(1, *[1.0]);
     @error @type:"Integer|Float" oneOf(*[1, 1, 1.0]);
-    @type:"Null|Integer|Float|String|Character" firstOf(1,2.0,*["hello", `W`]);
+    @type:"Null|Integer|Float|String|Character" firstOf(1,2.0,*["hello", 'W']);
 }

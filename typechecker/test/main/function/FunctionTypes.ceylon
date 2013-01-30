@@ -280,11 +280,11 @@ void sequencedParams() {
     Anything(Character, Character) str2 = str;
     str(*"hello".characters);
     str();
-    str(`X`);
-    str(`h`, `e`, `l`, `l`, `o`);
+    str('X');
+    str('h', 'e', 'l', 'l', 'o');
     @error str(1);
     @error str("hello".characters);
-    @error str(*`X`);
+    @error str(*'X');
 }
 
  class Outer1() {

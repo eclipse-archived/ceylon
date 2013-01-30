@@ -360,27 +360,27 @@ class Assignability() {
     String joinStrings(Character char, String* strings) { throw; }
     String joinStrings0(Character char, {String*} strings) { throw; }
     
-    joinStrings(`.`, "Hello", "World");
+    joinStrings('.', "Hello", "World");
 
-    joinStrings { char=` `; @error "Hello", "World" };
+    joinStrings { char=' '; @error "Hello", "World" };
 
-    joinStrings0 { char=` `; "Hello", "World" };
+    joinStrings0 { char=' '; "Hello", "World" };
 
-    joinStrings { char=` `; @error strings={"Hello", "World"}; };
+    joinStrings { char=' '; @error strings={"Hello", "World"}; };
 
-    joinStrings0 { char=` `; strings={"Hello", "World"}; };
+    joinStrings0 { char=' '; strings={"Hello", "World"}; };
 
-    joinStrings { char=` `; @error strings="Hello"; @error strings="World"; };
+    joinStrings { char=' '; @error strings="Hello"; @error strings="World"; };
 
-    joinStrings { char=` `; strings=["Hello", "World"]; };
+    joinStrings { char=' '; strings=["Hello", "World"]; };
 
-    joinStrings0 { char=` `; @error strings="Hello"; @error strings="World"; };
+    joinStrings0 { char=' '; @error strings="Hello"; @error strings="World"; };
 
-    @error joinStrings(`.`, 1, 2);
+    @error joinStrings('.', 1, 2);
 
-    joinStrings { char=` `; @error 1, 2 };
+    joinStrings { char=' '; @error 1, 2 };
 
-    joinStrings { char=` `; @error strings={1, 2}; };
+    joinStrings { char=' '; @error strings={1, 2}; };
     
     void w<W>(W* ws) {}
     w<String>("foo");
