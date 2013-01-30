@@ -4,7 +4,25 @@ interface Bug999Interface<Key, Value> {
     
     public .com.redhat.ceylon.compiler.java.test.issues.bug09xx.Bug999Interface$impl<Key, Value> $com$redhat$ceylon$compiler$java$test$issues$bug09xx$Bug999Interface$impl();
     
-    public abstract Value get(final Key k);
+    public abstract Value get1(final Key k);
+    
+    public abstract Value get2(final Key k);
+    
+    public abstract Value getAttr1();
+    
+    public abstract Value getAttr2();
+    
+    public abstract Value getAttr3();
+    
+    public abstract Value getAttr4();
+    
+    public abstract boolean getAttr5();
+    
+    public abstract boolean getAttr6();
+    
+    public abstract boolean getAttr7();
+    
+    public abstract boolean getAttr8();
 }
 final class Bug999Interface$impl<Key, Value> {
     
@@ -15,10 +33,14 @@ final class Bug999Interface$impl<Key, Value> {
 }
 class Bug999 implements .com.redhat.ceylon.compiler.java.test.issues.bug09xx.Bug999Interface<.ceylon.language.Integer, .ceylon.language.Boolean> {
     
-    Bug999(long i, .ceylon.language.Callable<? extends .ceylon.language.Boolean> f) {
+    Bug999(final long i, final .ceylon.language.Callable<? extends .ceylon.language.Boolean> f) {
         this.i = i;
         this.f = f;
         this.$com$redhat$ceylon$compiler$java$test$issues$bug09xx$Bug999Interface$this = new .com.redhat.ceylon.compiler.java.test.issues.bug09xx.Bug999Interface$impl<.ceylon.language.Integer, .ceylon.language.Boolean>(this);
+        this.attr3 = .ceylon.language.Boolean.instance(true);
+        this.attr4 = .ceylon.language.Boolean.instance(true);
+        this.attr7 = true;
+        this.attr8 = true;
     }
     private final long i;
     private final .ceylon.language.Callable<? extends .ceylon.language.Boolean> f;
@@ -30,7 +52,56 @@ class Bug999 implements .com.redhat.ceylon.compiler.java.test.issues.bug09xx.Bug
     }
     
     @.java.lang.Override
-    public final .ceylon.language.Boolean get(final .ceylon.language.Integer k) {
-        return i == k ? f.$call() : null;
+    public final .ceylon.language.Boolean get1(final .ceylon.language.Integer j) {
+        return .ceylon.language.Integer.instance(i).equals(j) ? f.$call() : null;
+    }
+    
+    @.java.lang.Override
+    public final .ceylon.language.Boolean get2(final .ceylon.language.Integer j) {
+        return .ceylon.language.Integer.instance(i).equals(j) ? f.$call() : null;
+    }
+    
+    @.java.lang.Override
+    public final .ceylon.language.Boolean getAttr1() {
+        return .ceylon.language.Boolean.instance(true);
+    }
+    
+    @.java.lang.Override
+    public final .ceylon.language.Boolean getAttr2() {
+        return .ceylon.language.Boolean.instance(true);
+    }
+    private final .ceylon.language.Boolean attr3;
+    
+    @.java.lang.Override
+    public final .ceylon.language.Boolean getAttr3() {
+        return attr3;
+    }
+    private final .ceylon.language.Boolean attr4;
+    
+    @.java.lang.Override
+    public final .ceylon.language.Boolean getAttr4() {
+        return attr4;
+    }
+    
+    @.java.lang.Override
+    public final boolean getAttr5() {
+        return true;
+    }
+    
+    @.java.lang.Override
+    public final boolean getAttr6() {
+        return true;
+    }
+    private final boolean attr7;
+    
+    @.java.lang.Override
+    public final boolean getAttr7() {
+        return attr7;
+    }
+    private final boolean attr8;
+    
+    @.java.lang.Override
+    public final boolean getAttr8() {
+        return attr8;
     }
 }

@@ -981,9 +981,8 @@ public class IssuesTest extends CompilerTest {
         compareWithJavaSource("bug09xx/Bug998");
     }
 
-    // This fails because of what appears to be an AST bug
     @Test
-    public void testBug999_fail() {
+    public void testBug999() {
         compareWithJavaSource("bug09xx/Bug999");
     }
 

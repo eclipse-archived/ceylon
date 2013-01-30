@@ -19,10 +19,28 @@
  */
 @nomodel
 interface Bug999Interface<in Key, out Value> {
-    shared formal Value? get(Key k);
+    shared formal Value? get1(Key k);
+    shared formal Value? get2(Key k);
+    shared formal Value attr1;
+    shared formal Value attr2;
+    shared formal Value attr3;
+    shared formal Value attr4;
+    shared formal Boolean attr5;
+    shared formal Boolean attr6;
+    shared formal Boolean attr7;
+    shared formal Boolean attr8;
 }
 @nomodel
 class Bug999(Integer i, Boolean f()) 
         satisfies Bug999Interface<Integer, Boolean> {
-    get(Integer j) => i==j then f();
+    get1(Integer j) => i==j then f();
+    shared actual Boolean? get2(Integer j) => i==j then f();
+    attr1 => true;
+    shared actual Boolean attr2 => true;
+    attr3 = true;
+    shared actual Boolean attr4 = true;
+    attr5 => true;
+    shared actual Boolean attr6 => true;
+    attr7 = true;
+    shared actual Boolean attr8 = true;
 }
