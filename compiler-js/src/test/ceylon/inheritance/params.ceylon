@@ -8,7 +8,7 @@ class WithDefaulted1<out T>(t, a="A", b="B") given T satisfies Object {
 
 class WithDefaulted2(name, Integer* ints) {
   shared String name;
-  shared Integer count { return ints.size; }
+  shared Integer count => ints.size;
 }
 
 class SubDef1(String name) extends WithDefaulted1<String>(name) {}
