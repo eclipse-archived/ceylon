@@ -311,8 +311,29 @@ public abstract class BoxingDeclarationVisitor extends Visitor {
         TypedDeclaration declaration = that.getDeclaration();
         if(declaration == null)
             return;
-        if(declaration instanceof Method)
+        if(declaration instanceof Method){
             visitMethod((Method) declaration);
+            // if it's not a refinement it's a split decl/specifier part and the specifier part
+            // has extra parameters, we should visit them too
+            if(!that.getRefinement() 
+                    && that.getBaseMemberExpression() instanceof Tree.ParameterizedExpression){
+                Tree.ParameterizedExpression parametersExpr = (ParameterizedExpression) that.getBaseMemberExpression();
+                Declaration refined = CodegenUtil.getTopmostRefinedDeclaration(declaration);
+                if(refined instanceof Method){
+                    Method refinedMethod = (Method) refined;
+                    List<ParameterList> refinedParameterLists = refinedMethod.getParameterLists();
+                    List<com.redhat.ceylon.compiler.typechecker.tree.Tree.ParameterList> parameterLists = parametersExpr.getParameterLists();
+                    // abort on invalid input
+                    if(refinedParameterLists.size() != parameterLists.size())
+                        return;
+                    for (int i=0;i<parameterLists.size();i++) {
+                        ParameterList parameterList = parameterLists.get(i).getModel();
+                        ParameterList refinedParameterList = refinedParameterLists.get(i);
+                        boxAndRawParameterList(parameterList, refinedParameterList);
+                    }
+                }
+            }
+        }
     }
 
     @Override
