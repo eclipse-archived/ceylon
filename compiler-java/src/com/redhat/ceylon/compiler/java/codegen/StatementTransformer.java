@@ -151,17 +151,12 @@ public class StatementTransformer extends AbstractTransformer {
         return childDefs;
     }
 
-    private JCThrow makeThrowException(Type exceptionType, JCExpression expr) {
+    private JCThrow makeThrowAssertionException(JCExpression messageExpr) {
         JCExpression exception = make().NewClass(null, null,
-                makeIdent(exceptionType),
-                List.<JCExpression>of(boxType(expr, typeFact().getStringDeclaration().getType()), makeNull()),
+                makeIdent(syms().ceylonAssertionExceptionType),
+                List.<JCExpression>of(messageExpr),
                 null);
         return make().Throw(exception);
-    }
-    
-    private JCThrow makeThrowAssertionException(JCExpression messageExpr) {
-        //TODO proper exception type
-        return makeThrowException(syms().ceylonExceptionType, messageExpr);
     }
     
     /**
@@ -1486,7 +1481,7 @@ public class StatementTransformer extends AbstractTransformer {
                 // if (by <= 0) throw Exception("step size must be greater than zero");
                 result.append(make().If(
                         make().Binary(JCTree.LE, by.makeIdent(), make().Literal(0)), 
-                        makeThrowException(syms().ceylonExceptionType, 
+                        makeThrowAssertionException( 
                                 make().Literal("step size must be greater than zero")),
                         null));
             } else {
