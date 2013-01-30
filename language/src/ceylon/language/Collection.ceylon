@@ -50,7 +50,7 @@ shared interface Collection<out Element>
          iterator produces the value `null`, the string
          representation contains the string `\"null\"`."
     shared actual default String string => 
-            empty then "{}" else "{ " commaList(this) " }";
+            empty then "{}" else "{ ' commaList(this) ' }";
     
 }
 

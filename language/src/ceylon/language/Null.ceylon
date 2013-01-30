@@ -1,4 +1,4 @@
-doc 'The type of the `null` value. Any union type of form 
+doc "The type of the `null` value. Any union type of form 
      `Null|T` is considered an optional type, whose values
      include `null`. Any type of this form may be written as
      `T?` for convenience.
@@ -10,13 +10,13 @@ doc 'The type of the `null` value. Any union type of form
      
          String? firstArg = process.arguments.first;
          if (exists firstArg) {
-             print("hello " + firstArg);
+             print(\"hello \" + firstArg);
          }
      
      The `else` operator evaluates its second operand if 
      and only if its first operand is `null`:
      
-         String name = process.arguments.first else "world";
+         String name = process.arguments.first else \"world\";
      
      The `then` operator evaluates its second operand when
      its first operand evaluates to `true`, and to `null` 
@@ -24,7 +24,7 @@ doc 'The type of the `null` value. Any union type of form
      
          Float? diff = x>=y then x-y;
      
-     '
+     "
 see (null)
 by "Gavin" 
 shared abstract class Null() 

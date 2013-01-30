@@ -161,8 +161,8 @@ shared interface List<out Element>
     }
     
     doc "Returns a new `List` that contains the specified
-         element appended to the end of this `List`s'
-         elements."
+         element appended to the end of the elements of this 
+         `List`."
     shared default [Element|Other+] withTrailing<Other>(
             doc "The last element of the resulting sequence."
             Other element) {

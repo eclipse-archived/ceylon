@@ -53,7 +53,7 @@ shared class Singleton<out Element>(Element element)
         return SingletonIterator();
     }
     
-    shared actual String string => "[ " first.string " ]";
+    shared actual String string => "[' first.string ']";
     
     doc "Returns a `Singleton` if the given starting index 
          is `0` and the given `length` is greater than `0`.
@@ -81,7 +81,7 @@ shared class Singleton<out Element>(Element element)
     
     doc "A `Singleton` can be equal to another `List` if 
          that `List` has only one element which is equal to 
-         this `Singleton`'s element."
+         this `Singleton`\'s element."
     shared actual Boolean equals(Object that) {
         if (is List<Anything> that) {
             if (that.size==1) {
@@ -96,11 +96,11 @@ shared class Singleton<out Element>(Element element)
     shared actual Integer hash => 31 + element.hash;
     
     doc "Returns `true` if the specified element is this 
-         `Singleton`'s element."
+         `Singleton`\'s element."
     shared actual Boolean contains(Object element) =>
             this.element==element;
     
-    doc "Returns `1` if this Singleton's element
+    doc "Returns `1` if this `Singleton`\'s element
          satisfies the predicate, or `0` otherwise."
     shared actual Integer count
             (Boolean selecting(Element element)) =>

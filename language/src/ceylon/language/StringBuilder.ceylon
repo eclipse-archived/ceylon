@@ -27,13 +27,13 @@ shared native class StringBuilder() {
     
     doc "Append a newline character."
     shared StringBuilder appendNewline() {
-        appendCharacter(`\n`);
+        appendCharacter('\n');
         return this;
     }
     
     doc "Append a space character."
     shared StringBuilder appendSpace() {
-        appendCharacter(` `);
+        appendCharacter(' ');
         return this;
     }
 

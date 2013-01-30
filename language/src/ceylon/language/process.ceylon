@@ -62,16 +62,20 @@ shared native object process {
     
     shared native void exit(Integer code);
     
-    doc "Returns the name of the virtual machine this process is running on."
+    doc "Returns the name of the virtual machine this 
+         process is running on."
     shared native String vm;
     
-    doc "Returns the version of the virtual machine this process is running on."
+    doc "Returns the version of the virtual machine this 
+         process is running on."
     shared native String vmVersion;
     
-    doc "Returns the name of the operating system this process is running on."
+    doc "Returns the name of the operating system this 
+         process is running on."
     shared native String os;
     
-    doc "Returns the version of the operating system this process is running on."
+    doc "Returns the version of the operating system this 
+         process is running on."
     shared native String osVersion;
     
     shared actual String string => "process";
