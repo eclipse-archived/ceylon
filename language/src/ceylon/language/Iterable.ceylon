@@ -420,20 +420,8 @@ shared native interface Iterable<out Element, out Absent=Null>
          method on an `Iterable` which has been obtained using this method will
          not change the default value as there is no `null` value anymore."
     shared default Iterable<Element&Object|Default>
-      defaultNullElements<Default>(Default defaultValue) {
-        alias ElementOrDefault => Element&Object|Default;
-        object iterable satisfies {ElementOrDefault*} {
-            shared actual Iterator<ElementOrDefault> iterator {
-                value iter = outer.iterator;
-                object iterator satisfies Iterator<ElementOrDefault> {
-                    actual shared ElementOrDefault|Finished next()
-                        => iter.next() else defaultValue;
-                }
-                return iterator;
-            }
-        }
-        return iterable;
-    }
+      defaultNullElements<Default>(Default defaultValue)
+        => { for (elem in this) elem else defaultValue };
     
     /*doc "Creates a Map that contains this `Iterable`'s
          elements, grouped in `Sequence`s under the
