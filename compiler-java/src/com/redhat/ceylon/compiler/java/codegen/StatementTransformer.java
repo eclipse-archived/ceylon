@@ -514,7 +514,7 @@ public class StatementTransformer extends AbstractTransformer {
             }
             result.appendList(varDecls);
             result.appendList(stmts);
-            JCExpression message = prependFailureMessage(appendLocation(messageSb.makeIdent(), ass), ass);
+            JCExpression message = prependFailureMessage(messageSb.makeIdent(), ass);
             JCThrow throw_ = makeThrowAssertionFailure(message);
             if (isMulti()) {
                 result.append(make().If(
@@ -551,12 +551,10 @@ public class StatementTransformer extends AbstractTransformer {
         protected JCStatement transformInnermostElse(Cond cond, java.util.List<Condition> rest) {
             if (!isMulti()) {
                 return makeThrowAssertionFailure(prependFailureMessage(
-                        appendLocation(
-                                appendViolation(
-                                        null, 
-                                        "violated",
-                                        cond.getCondition()), 
-                                ass), 
+                        appendViolation(
+                                null, 
+                                "violated",
+                                cond.getCondition()),
                         ass));
             }
             return transformCommonElse(cond, rest);
@@ -582,26 +580,19 @@ public class StatementTransformer extends AbstractTransformer {
             if (docText != null) {
                 p = cat(p, ": " + docText);
             }
-            p = cat(p, newline());
             return cat(p, expr);
         }
         
         private JCExpression appendViolation(JCExpression expr, String state, Tree.Condition condition) {
             JCExpression result;
             if (expr != null) {
-                result = cat(expr, make().Literal("\t" + state+ " "));
+                result = cat(expr, cat(newline(), make().Literal("\t" + state+ " ")));
             } else {
-                result = make().Literal("\t" + state + " ");
+                result = cat(newline(), make().Literal("\t" + state + " "));
             }
             result = cat(result, make().Literal(getSourceCode(condition)));
-            result = cat(result, newline());
+            
             return result;
-        }
-        
-        private JCExpression appendLocation(JCExpression expr, Tree.Assertion ass) {
-            String location = ass.getUnit().getFilename() + ":" + ass.getLocation();
-            JCExpression result = cat(expr, "\tat ");
-            return cat(result, location);
         }
         
         private JCThrow makeThrowAssertionFailure(JCExpression expr) {
