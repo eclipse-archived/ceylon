@@ -34,6 +34,8 @@ import com.redhat.ceylon.compiler.typechecker.tree.Message;
  */
 public class Stitcher {
 
+    private static String VERSION="###";
+
     public static void copyFile(File sourceFile, File destFile) throws IOException {
         if (!destFile.exists()) {
             destFile.createNewFile();
@@ -95,7 +97,6 @@ public class Stitcher {
         if (tc.getErrors() > 0) {
             System.exit(1);
         }
-        System.out.println("DONE!");
 
         for (String line : sources) {
             //Compile these files
@@ -115,13 +116,15 @@ public class Stitcher {
             JsCompiler jsc = new JsCompiler(tc, opts).stopOnErrors(false);
             jsc.setFiles(includes);
             jsc.generate();
-            File compsrc = new File(tmpout, "ceylon/language/0.5/ceylon.language-0.5.js");
+            File compsrc = new File(tmpout, String.format("ceylon/language/%s/ceylon.language-%<s.js", VERSION));
             if (compsrc.exists() && compsrc.isFile() && compsrc.canRead()) {
                 BufferedReader jsr = new BufferedReader(new FileReader(compsrc));
                 try {
                     String jsline = null;
                     while ((jsline = jsr.readLine()) != null) {
-                        writer.println(jsline);
+                        if (!jsline.contains("=require('")) {
+                            writer.println(jsline);
+                        }
                     }
                 } finally {
                     jsr.close();
@@ -158,7 +161,8 @@ public class Stitcher {
                         MetamodelVisitor mmg = null;
                         for (PhasedUnit pu : tc.getPhasedUnits().getPhasedUnits()) {
                             if (!pu.getCompilationUnit().getErrors().isEmpty()) {
-                                System.out.println("whoa, errors in the language module " + pu.getCompilationUnit().getLocation());
+                                System.out.println("whoa, errors in the language module "
+                                        + pu.getCompilationUnit().getLocation());
                                 for (Message err : pu.getCompilationUnit().getErrors()) {
                                     System.out.println(err.getMessage());
                                 }
@@ -202,6 +206,7 @@ public class Stitcher {
             if (!outfile.getParentFile().exists()) {
                 outfile.getParentFile().mkdirs();
             }
+            VERSION=outfile.getParentFile().getName();
             ArrayList<String> clsrc = new ArrayList<String>();
             File clSourcesPath = new File(args[1]);
             if (!(clSourcesPath.exists() && clSourcesPath.isFile() && clSourcesPath.canRead())) {

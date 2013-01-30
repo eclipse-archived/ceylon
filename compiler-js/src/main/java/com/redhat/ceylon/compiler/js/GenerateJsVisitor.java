@@ -1159,7 +1159,7 @@ public class GenerateJsVisitor extends Visitor
             if (param.getDefaultArgument() != null || pd.isSequenced()) {
                 out("if(", paramName, "===undefined){", paramName, "=");
                 if (param.getDefaultArgument() == null) {
-                    out(clAlias, "empty");
+                    out(clAlias, "getEmpty()");
                 } else {
                     final SpecifierExpression defaultExpr =
                             param.getDefaultArgument().getSpecifierExpression();
@@ -2028,7 +2028,7 @@ public class GenerateJsVisitor extends Visitor
     public void visit(SequenceEnumeration that) {
         SequencedArgument sarg = that.getSequencedArgument();
         if (sarg == null) {
-            out(clAlias, "empty");
+            out(clAlias, "getEmpty()");
         } else {
             List<PositionalArgument> positionalArguments = sarg.getPositionalArguments();
             int lim = positionalArguments.size()-1;
@@ -3407,7 +3407,7 @@ public class GenerateJsVisitor extends Visitor
         int count = 0;
         SequencedArgument sarg = that.getSequencedArgument();
         if (sarg == null) {
-        	out(clAlias, "empty");
+        	out(clAlias, "getEmpty()");
         } else {
         	List<Map<TypeParameter,ProducedType>> targs = new ArrayList<Map<TypeParameter,ProducedType>>();
         	List<PositionalArgument> positionalArguments = sarg.getPositionalArguments();
@@ -3444,7 +3444,7 @@ public class GenerateJsVisitor extends Visitor
         		if (count > 0) {
         			out(",");
         		}
-        		out(clAlias, "empty");
+        		out(clAlias, "getEmpty()");
         	} else {
         		count--;
         	}
