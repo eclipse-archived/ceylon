@@ -4,7 +4,7 @@ function ArraySequence(x){}//IGNORE
 function Singleton(x){}//IGNORE
 function largest(a,b){}//IGNORE
 function smallest(a,b){}//IGNORE
-var Object$,List,Comparable,Ranged,Summable,Castable,Cloneable,smaller,larger,equal;//IGNORE
+var Object$,List,Comparable,Ranged,Summable,Cloneable,smaller,larger,equal;//IGNORE
 var empty,Iterator,exports;//IGNORE
 
 function String$(value,size) {
@@ -13,9 +13,9 @@ function String$(value,size) {
     return that;
 }
 initExistingType(String$, String, 'ceylon.language::String', Object$, Sequential, Comparable,
-        Ranged, Summable, Castable, Cloneable);
+        Ranged, Summable, Cloneable);
 var origStrToString = String.prototype.toString;
-inheritProto(String$, Object$, Sequential, Comparable, Ranged, Summable, Castable,
+inheritProto(String$, Object$, Sequential, Comparable, Ranged, Summable,
         Cloneable);
 function SequenceString() {}
 initType(SequenceString, "ceylon.language::SequenceString", String$, Sequence);

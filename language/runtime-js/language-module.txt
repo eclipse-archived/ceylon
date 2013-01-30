@@ -27,7 +27,7 @@ Basic
 #this requires impl of keys requires reified generics
 Keys,Correspondence,Finished
 
-Binary,Castable,Cloneable,Closeable,Ranged,Container,Iterator,Collection,Category
+Binary,Cloneable,Closeable,Ranged,Container,Iterator,Collection,Category
 List,Tuple,ChainedIterator
 Entry,Comparable,Invertable,Summable,Ordinal,Numeric,Scalar,Exponentiable,Integral
 

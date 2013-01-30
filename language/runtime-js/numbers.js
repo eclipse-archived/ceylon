@@ -3,15 +3,15 @@ function String$(x){};//IGNORE
 function Character(x){};//IGNORE
 function inheritProto(a,b,c,d,e,f,g);//IGNORE
 function Exception$(x){};//IGNORE
-var Object$,Castable,Integral,Numeric,Exponentiable,Scalar,equal,smaller,larger,exports;//IGNORE
+var Object$,Integral,Numeric,Exponentiable,Scalar,equal,smaller,larger,exports;//IGNORE
 
 function JSNumber(value) { return Number(value); }
 initExistingType(JSNumber, Number, 'ceylon.language::JSNumber');
 var origNumToString = Number.prototype.toString;
-inheritProto(JSNumber, Object$, Scalar, Castable, $init$Integral(), Exponentiable);
+inheritProto(JSNumber, Object$, Scalar, $init$Integral(), Exponentiable);
 
 function Integer(value) { return Number(value); }
-initTypeProto(Integer, 'ceylon.language::Integer', Object$, Scalar, Castable,
+initTypeProto(Integer, 'ceylon.language::Integer', Object$, Scalar, 
         $init$Integral(), Exponentiable, Binary);
 
 function Float(value) {
@@ -19,7 +19,7 @@ function Float(value) {
     that.$float = true;
     return that;
 }
-initTypeProto(Float, 'ceylon.language::Float', Object$, Scalar, Castable, Exponentiable);
+initTypeProto(Float, 'ceylon.language::Float', Object$, Scalar, Exponentiable);
 
 var JSNum$proto = Number.prototype;
 JSNum$proto.getT$all = function() {
