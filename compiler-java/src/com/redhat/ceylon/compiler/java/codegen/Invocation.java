@@ -586,9 +586,14 @@ class PositionalInvocation extends DirectInvocation {
             return false;
         }
         // check its type arguments
+        // special case for Callable which has only a single type param in Java
+        boolean isCallable = gen.isCeylonCallable(type);
         for(ProducedType typeArg : type.getTypeArgumentList()){
             if(hasConstrainedTypeParameters(typeArg))
                 return true;
+            // stop after the first type arg for Callable
+            if(isCallable)
+                break;
         }
         return false;
     }
