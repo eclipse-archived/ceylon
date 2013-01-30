@@ -34,7 +34,7 @@ void spansegments() {
   
   check("hello"[1..-1]=="eh", "backward string span neg end");
   check("hello".sequence[1..-1]=={ `e`, `h` }, "backward string sequence span neg end");
-  check([1,2,3][1..-1]=={2,1}, "backward sequence span neg end");
+  check([1,2,3][1..-1]=={2,1}, "backward sequence span neg end " [1,2,3][1..-1] " expecting {2,1}");
   check((1..5)[1..-1]==2..1, "range span neg end");
   check(Singleton(0)[1..-1]==Singleton(0), "singleton span neg end");
 }
