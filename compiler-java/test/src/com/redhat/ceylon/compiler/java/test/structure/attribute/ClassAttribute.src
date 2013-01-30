@@ -32,7 +32,7 @@ class SubClassAttribute extends .com.redhat.ceylon.compiler.java.test.structure.
     SubClassAttribute() {
         super();
         this.formalvar = "";
-        formalvarShortcut = "";
+        this.formalvarShortcut = "";
     }
     private final .java.lang.String formalvar;
     

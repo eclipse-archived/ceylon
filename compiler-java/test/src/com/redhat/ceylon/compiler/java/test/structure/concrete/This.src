@@ -62,7 +62,7 @@ final class This$impl {
         }
         
         private final void m3() {
-            m2(1L, 2L);
+            $this.m2(1L, 2L);
         }
     }
 }

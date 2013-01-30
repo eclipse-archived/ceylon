@@ -48,7 +48,7 @@ final class I$impl<T extends .ceylon.language.String, X extends .ceylon.language
             }
             
             private final T m2() {
-                return m1(null);
+                return .com.redhat.ceylon.compiler.java.test.structure.nesting.iic.I$impl.this.$this.m1(null);
             }
         }
     }

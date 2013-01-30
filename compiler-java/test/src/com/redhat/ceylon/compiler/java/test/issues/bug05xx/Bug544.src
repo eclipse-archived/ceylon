@@ -108,7 +108,7 @@ final class Bug544ContainerInterface$impl {
     class Bug544CapturesFromOuterInterface extends .com.redhat.ceylon.compiler.java.test.issues.bug05xx.Bug544 {
         
         Bug544CapturesFromOuterInterface() {
-            super(getS());
+            super($this.getS());
         }
     }
 }
