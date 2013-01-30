@@ -56,7 +56,7 @@ shared class PrimitiveDataTypesTest () {
     j = i % i;
     assertTrue(j == +0);
 
-    j = i ** i;
+    j = i ^ i;
     assertTrue(j == +27);
 
     j = +i;

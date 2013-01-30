@@ -62,7 +62,7 @@ class Optim() extends OptimSuperclass<Integer,Float,Character,String,Boolean>(){
         n1 = n2 * n3;
         n1 = n2 / n3;
         n1 = n2 % n3;
-        n1 = n2 ** n3;
+        n1 = n2 ^ n3;
         
         n1 = n2 += n3;
         n1 = n2 *= n3;
@@ -91,7 +91,7 @@ class Optim() extends OptimSuperclass<Integer,Float,Character,String,Boolean>(){
         n1 = n2 * n3;
         n1 = n2 / n3;
         n1 = n2 % n3;
-        n1 = n2 ** n3;
+        n1 = n2 ^ n3;
         
         n1 = n3 += n2;
         n1 = n3 *= n2;
@@ -115,7 +115,7 @@ class Optim() extends OptimSuperclass<Integer,Float,Character,String,Boolean>(){
         n1 = n2 - n3;
         n1 = n2 * n3;
         n1 = n2 / n3;
-        n1 = n2 ** n3;
+        n1 = n2 ^ n3;
         
         n1 = n2 += n3;
         n1 = n2 *= n3;
@@ -137,7 +137,7 @@ class Optim() extends OptimSuperclass<Integer,Float,Character,String,Boolean>(){
         n1 = n2 - n3;
         n1 = n2 * n3;
         n1 = n2 / n3;
-        n1 = n2 ** n3;
+        n1 = n2 ^ n3;
         
         n1 = n3 += n2;
         n1 = n3 *= n2;

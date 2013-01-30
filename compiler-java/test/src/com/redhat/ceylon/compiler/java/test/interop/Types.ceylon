@@ -222,7 +222,7 @@ void operationsOnBytes() {
     java.byte_attr = java.byte_attr * java.byte_attr;
     java.byte_attr = java.byte_attr / java.byte_attr;
     java.byte_attr = java.byte_attr - java.byte_attr;
-    java.byte_attr = java.byte_attr ** java.byte_attr;
+    java.byte_attr = java.byte_attr ^ java.byte_attr;
     
     java.byte_attr = java.byte_attr++;
     java.byte_attr = ++java.byte_attr;
@@ -247,7 +247,7 @@ void operationsOnBytes2() {
     java.byte = java.byte * java.byte;
     java.byte = java.byte / java.byte;
     java.byte = java.byte - java.byte;
-    java.byte = java.byte ** java.byte;
+    java.byte = java.byte ^ java.byte;
     
     java.byte = java.byte++;
     java.byte = ++java.byte;
@@ -270,7 +270,7 @@ class OperationsOnBytes() extends TypesJava(){
         byte_attr = byte_attr * byte_attr;
         byte_attr = byte_attr / byte_attr;
         byte_attr = byte_attr - byte_attr;
-        byte_attr = byte_attr ** byte_attr;
+        byte_attr = byte_attr ^ byte_attr;
         
         byte_attr = byte_attr++;
         byte_attr = ++byte_attr;
@@ -297,8 +297,8 @@ void operationsOnMixedTypes() {
     java.byte_attr = java.int_attr + java.byte_attr;
     java.int_attr = java.int_attr + java.byte_attr;
     
-    java.byte_attr = java.byte_attr ** java.int_attr;
-    java.byte_attr = java.int_attr ** java.byte_attr;
+    java.byte_attr = java.byte_attr ^ java.int_attr;
+    java.byte_attr = java.int_attr ^ java.byte_attr;
     
     java.byte_attr = java.int_attr++;
     java.byte_attr = ++java.int_attr;

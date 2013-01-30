@@ -26,7 +26,7 @@ void methodArgumentNamedIncovation2<A,B>(A a) {
 
    callFunction<String, Integer> {
        function f(Integer i) {
-           return (i**2).string;
+           return (i^2).string;
        }
    };
    

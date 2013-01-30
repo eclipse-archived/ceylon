@@ -94,7 +94,7 @@ class ArithmeticOperators(MyInteger initN, MyInteger initI) {
         n1 = n1 * n2;
         n1 = n1 / n2;
         n1 = n1 % n2;
-        n1 = n1 ** n2;
+        n1 = n1 ^ n2;
         
         n1 += n2;
         n1 *= n1;
@@ -116,7 +116,7 @@ class ArithmeticOperators(MyInteger initN, MyInteger initI) {
         getterN1 = getterN1 * getterN2;
         getterN1 = getterN1 / getterN2;
         getterN1 = getterN1 % getterN2;
-        getterN1 = getterN1 ** getterN2;
+        getterN1 = getterN1 ^ getterN2;
         
         getterN1 += getterN2;
         getterN1 *= getterN1;
@@ -141,7 +141,7 @@ class ArithmeticOperators(MyInteger initN, MyInteger initI) {
         this.n1 = this.n1 * this.n2;
         this.n1 = this.n1 / this.n2;
         this.n1 = this.n1 % this.n2;
-        this.n1 = this.n1 ** this.n2;
+        this.n1 = this.n1 ^ this.n2;
         
         this.n1 += this.n2;
         this.n1 *= this.n1;
@@ -163,7 +163,7 @@ class ArithmeticOperators(MyInteger initN, MyInteger initI) {
         this.getterN1 = this.getterN1 * this.getterN2;
         this.getterN1 = this.getterN1 / this.getterN2;
         this.getterN1 = this.getterN1 % this.getterN2;
-        this.getterN1 = this.getterN1 ** this.getterN2;
+        this.getterN1 = this.getterN1 ^ this.getterN2;
         
         this.getterN1 += this.getterN2;
         this.getterN1 *= this.getterN1;
@@ -185,7 +185,7 @@ class ArithmeticOperators(MyInteger initN, MyInteger initI) {
         this.boxedN1 = this.boxedN1 * this.boxedN2;
         this.boxedN1 = this.boxedN1 / this.boxedN2;
         this.boxedN1 = this.boxedN1 % this.boxedN2;
-        this.boxedN1 = this.boxedN1 ** this.boxedN2;
+        this.boxedN1 = this.boxedN1 ^ this.boxedN2;
         
         this.boxedN1 += this.boxedN2;
         this.boxedN1 *= this.boxedN1;
@@ -214,7 +214,7 @@ class ArithmeticOperators(MyInteger initN, MyInteger initI) {
         n1 = n1 * n2;
         n1 = n1 / n2;
         n1 = n1 % n2;
-        n1 = n1 ** n2;
+        n1 = n1 ^ n2;
         
         n1 += n2;
         n1 *= n1;
@@ -255,7 +255,7 @@ class ArithmeticOperators(MyInteger initN, MyInteger initI) {
         getterN1 = getterN1 * getterN2;
         getterN1 = getterN1 / getterN2;
         getterN1 = getterN1 % getterN2;
-        getterN1 = getterN1 ** getterN2;
+        getterN1 = getterN1 ^ getterN2;
         
         getterN1 += getterN2;
         getterN1 *= getterN1;
@@ -281,7 +281,7 @@ class ArithmeticOperators(MyInteger initN, MyInteger initI) {
         n1 = n1 * n2;
         n1 = n1 / n2;
         n1 = n1 % n2;
-        n1 = n1 ** n2;
+        n1 = n1 ^ n2;
         
         n1 += n2;
         n1 *= n1;
@@ -306,7 +306,7 @@ class ArithmeticOperators(MyInteger initN, MyInteger initI) {
         toplevelN1 = toplevelN1 * toplevelN2;
         toplevelN1 = toplevelN1 / toplevelN2;
         toplevelN1 = toplevelN1 % toplevelN2;
-        toplevelN1 = toplevelN1 ** toplevelN2;
+        toplevelN1 = toplevelN1 ^ toplevelN2;
         
         toplevelN1 += toplevelN2;
         toplevelN1 *= toplevelN1;
@@ -328,7 +328,7 @@ class ArithmeticOperators(MyInteger initN, MyInteger initI) {
         toplevelGetterN1 = toplevelGetterN1 * toplevelGetterN2;
         toplevelGetterN1 = toplevelGetterN1 / toplevelGetterN2;
         toplevelGetterN1 = toplevelGetterN1 % toplevelGetterN2;
-        toplevelGetterN1 = toplevelGetterN1 ** toplevelGetterN2;
+        toplevelGetterN1 = toplevelGetterN1 ^ toplevelGetterN2;
         
         toplevelGetterN1 += toplevelGetterN2;
         toplevelGetterN1 *= toplevelGetterN1;
@@ -353,7 +353,7 @@ class ArithmeticOperatorsSub(MyInteger initN, MyInteger initI) extends Arithmeti
         super.getterN1 = super.getterN1 * super.getterN2;
         super.getterN1 = super.getterN1 / super.getterN2;
         super.getterN1 = super.getterN1 % super.getterN2;
-        super.getterN1 = super.getterN1 ** super.getterN2;
+        super.getterN1 = super.getterN1 ^ super.getterN2;
         
         super.getterN1 += super.getterN2;
         super.getterN1 *= super.getterN1;
@@ -375,7 +375,7 @@ class ArithmeticOperatorsSub(MyInteger initN, MyInteger initI) extends Arithmeti
         super.boxedN1 = super.boxedN1 * super.boxedN2;
         super.boxedN1 = super.boxedN1 / super.boxedN2;
         super.boxedN1 = super.boxedN1 % super.boxedN2;
-        super.boxedN1 = super.boxedN1 ** super.boxedN2;
+        super.boxedN1 = super.boxedN1 ^ super.boxedN2;
         
         super.boxedN1 += super.boxedN2;
         super.boxedN1 *= super.boxedN1;

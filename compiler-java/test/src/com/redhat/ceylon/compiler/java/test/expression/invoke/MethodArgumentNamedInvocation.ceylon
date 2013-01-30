@@ -25,7 +25,7 @@ void methodArgumentNamedIncovation() {
 
    callFunction {
        function f(Integer i) {
-           return (i**2).string;
+           return (i^2).string;
        }
    };
 
