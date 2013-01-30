@@ -34,7 +34,6 @@ Entry,Comparable,Invertable,Summable,Ordinal,Numeric,Scalar,Exponentiable,Integr
 
 Exception,NegativeNumberException,OverflowException,RecursiveInitializationException
 #Number
-#Map is close to compiling but requires reified types in one method
 Set,Range,Singleton,AssertionException
 Map,LazyMap,LazyList,LazySet
 
