@@ -42,11 +42,13 @@ import com.redhat.ceylon.compiler.typechecker.tree.Tree.AnyMethod;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.AttributeArgument;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.AttributeDeclaration;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.AttributeSetterDefinition;
+import com.redhat.ceylon.compiler.typechecker.tree.Tree.BaseMemberExpression;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.ForComprehensionClause;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.ForIterator;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.FunctionArgument;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.KeyValueIterator;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.ParameterizedExpression;
+import com.redhat.ceylon.compiler.typechecker.tree.Tree.SpecifierStatement;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.ValueIterator;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.Variable;
 import com.redhat.ceylon.compiler.typechecker.tree.Visitor;
@@ -70,11 +72,15 @@ public abstract class BoxingDeclarationVisitor extends Visitor {
     @Override
     public void visit(AnyMethod that) {
         super.visit(that);
-        boxMethod(that.getDeclarationModel());
-        rawTypedDeclaration(that.getDeclarationModel());
-        setErasureState(that.getDeclarationModel());
+        visitMethod(that.getDeclarationModel());
     }
 
+    private void visitMethod(Method method) {
+        boxMethod(method);
+        rawTypedDeclaration(method);
+        setErasureState(method);
+    }
+    
     private void setErasureState(TypedDeclaration decl) {
         // deal with invalid input
         if(decl == null)
@@ -300,11 +306,13 @@ public abstract class BoxingDeclarationVisitor extends Visitor {
     }
 
     @Override
-    public void visit(ParameterizedExpression that) {
+    public void visit(SpecifierStatement that) {
         super.visit(that);
-        for (Tree.ParameterList list : that.getParameterLists()) {
-            boxAndRawParameterList(list.getModel(), list.getModel());
-        }
+        TypedDeclaration declaration = that.getDeclaration();
+        if(declaration == null)
+            return;
+        if(declaration instanceof Method)
+            visitMethod((Method) declaration);
     }
 
     @Override
