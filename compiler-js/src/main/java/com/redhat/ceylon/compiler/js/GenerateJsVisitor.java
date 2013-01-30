@@ -3,6 +3,7 @@ package com.redhat.ceylon.compiler.js;
 import java.io.IOException;
 import java.io.Writer;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
@@ -960,7 +961,17 @@ public class GenerateJsVisitor extends Visitor
         boolean addToPrototype = prototypeStyle && d.isClassOrInterfaceMember();
         Class c = (Class) d.getTypeDeclaration();
 
-        out(function, names.name(c), "()");
+        out(function, names.name(c));
+        Map<TypeParameter, ProducedType> targs=new HashMap<TypeParameter, ProducedType>();
+        if (that.getSatisfiedTypes() != null) {
+            for (StaticType st : that.getSatisfiedTypes().getTypes()) {
+                Map<TypeParameter, ProducedType> stargs = st.getTypeModel().getTypeArguments();
+                if (stargs != null && !stargs.isEmpty()) {
+                    targs.putAll(stargs);
+                }
+            }
+        }
+        out(targs.isEmpty()?"()":"($$targs$$)");
         beginBlock();
         instantiateSelf(c);
         referenceOuter(c);
@@ -968,6 +979,9 @@ public class GenerateJsVisitor extends Visitor
         final List<Declaration> superDecs = new ArrayList<Declaration>();
         if (!prototypeStyle) {
             new SuperVisitor(superDecs).visit(that.getClassBody());
+        }
+        if (!targs.isEmpty()) {
+            self(c); out(".$$targs$$=$$targs$$;"); endLine();
         }
         callSuperclass(that.getExtendedType(), c, that, superDecs);
         callInterfaces(that.getSatisfiedTypes(), c, that, superDecs);
@@ -984,7 +998,11 @@ public class GenerateJsVisitor extends Visitor
         addToPrototype(c, that.getClassBody().getStatements());
 
         if (!addToPrototype) {
-            out("var ", names.name(d), "=", names.name(c), "();");
+            out("var ", names.name(d), "=", names.name(c), "(");
+            if (!targs.isEmpty()) {
+                TypeUtils.printTypeArguments(that, targs, this);
+            }
+            out(");");
             endLine();
         }
 
