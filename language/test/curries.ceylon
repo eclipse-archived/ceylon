@@ -1,4 +1,4 @@
-Integer potencia(Integer base, Integer expo) => base**expo;
+Integer potencia(Integer base, Integer expo) => base^expo;
 Integer veces(Integer x, Integer y) => x*y;
 
 void testCurries() {

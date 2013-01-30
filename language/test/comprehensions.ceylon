@@ -38,9 +38,9 @@ void comprehensions() {
   check(count { for (x in 1..5) x>4 } == 1, "count [1]");
   check(count { for (x in 1..5) x>0 } == 5, "count [2]");
 
-  //*************Newly found bugs here
+  //^^^^^^*Newly found bugs here
   //ceylon-compiler#598
-  value b598 = [ for (x in 0..10) if (x%2==0) x**2 ];
+  value b598 = [ for (x in 0..10) if (x%2==0) x^2 ];
   check(b598 is Sequence<Anything>, "ceylon-compiler #598 [1]");
   check(b598.string=="{ 0, 4, 16, 36, 64, 100 }", "ceylon-compiler #598 [2]");
   //ceylon-compiler#599

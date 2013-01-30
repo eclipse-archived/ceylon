@@ -5,7 +5,7 @@ shared void check(Boolean assertion, String message="") {
     assertionCount+=1;
     if (!assertion) {
         failureCount+=1;
-        print("**** ASSERTION FAILED \"" message "\" ****");
+        print("^^ ASSERTION FAILED \"" message "\" ^^");
     }
 }
 

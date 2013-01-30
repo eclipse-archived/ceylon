@@ -18,15 +18,15 @@ shared void numbers() {
     check(1+1==2, "natural addition");
     check(1-1==+0, "natural subtraction");
     check(2*2==4, "natural multiplication");
-    check(2**3==8, "natural exponentiation");
+    check(2^3==8, "natural exponentiation");
     check(+1 + -1==+0, "integer addition");
     check(+1 - -1==+2, "integer subtraction");
     check(-2*+2==-4, "integer multiplication");
-    check(-2**(+3)==-8, "integer exponentiation");
+    check(-2^(+3)==-8, "integer exponentiation");
     check(1.0+0.5==1.5, "float addition");
     check(1.5-0.5==1.0, "float subtraction");
     check(2.0*2.0==4.0, "float multiplication");
-    check(2.0**3.0==8.0, "float exponentiation");
+    check(2.0^3.0==8.0, "float exponentiation");
     check(2*2.5==5.0, "natural times float");
     check(2.5*3==7.5, "natural times float");
     check(-1*3==-3, "natural times integer");
@@ -171,7 +171,7 @@ shared void numbers() {
     check(1.hash==(3-1)/2.hash, "natural hash");
     check(1.hash!=(-1).hash, "natural hash inverted not same");
     check((+0).hash==(-1+(+1))*+100.hash, "integer hash");
-    check((2.2*2.2*2.2).hash==(2.2**3.0).hash, "float hash");
+    check((2.2*2.2*2.2).hash==(2.2^3.0).hash, "float hash");
     
     check(1.6.integer==1, "1.6.integer is " 1.6.integer " instead of 1");
     check(1.1.integer==1, "1.1.integer is " 1.1.integer " instead of 1");
@@ -413,9 +413,9 @@ shared void numbers() {
     check(obj(1*1.0)  is Float  , "int*float Float");
     check(obj(1/1)    is Integer, "int/int Integer");
     check(obj(1/1.0)  is Float  , "int/float Float");
-    check(obj(2**2)   is Integer, "2**2 Integer");
-    //check(is Float   obj(2**2.0), "2**2.0 Float");
-    check(obj(2.0**2) is Float  , "2.0**2 Float");
+    check(obj(2^2)   is Integer, "2^2 Integer");
+    //check(is Float   obj(2^2.0), "2^2.0 Float");
+    check(obj(2.0^2) is Float  , "2.0^2 Float");
     
     check(0.0.strictlyPositive, "positive zero strictly positive");
     check(!(-0.0).strictlyPositive, "negative zero not strictly positive");

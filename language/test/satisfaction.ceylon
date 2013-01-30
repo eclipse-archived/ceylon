@@ -102,7 +102,7 @@ class MyNumeric(Integer x) satisfies Numeric<MyNumeric> & Exponentiable<MyNumeri
     shared actual MyNumeric divided(MyNumeric other) { return MyNumeric(x/other.x); }
     shared actual MyNumeric positiveValue { return MyNumeric(+x); }
     shared actual MyNumeric negativeValue { return MyNumeric(-x); }
-    shared actual MyNumeric power(Integer exp) { return MyNumeric(x**exp); }
+    shared actual MyNumeric power(Integer exp) { return MyNumeric(x^exp); }
     shared actual Boolean equals(Object o) {
         if (is MyNumeric o) {
             return o.x == x;
@@ -188,7 +188,7 @@ void testSatisfaction() {
     check(MyNumeric(2)*MyNumeric(2)==MyNumeric(4), "Numeric[3]");
     check(MyNumeric(6)/MyNumeric(3)==MyNumeric(2), "Numeric[4]");
     check(MyNumeric(1)*MyNumeric(-1)==-MyNumeric(1), "Numeric[5]");
-    //check(MyNumeric(2)**3==MyNumeric(8), "Numeric[6]");
+    //check(MyNumeric(2)^3==MyNumeric(8), "Numeric[6]");
 
     check(MyInvertable(-1)==-MyInvertable(1), "Invertable");
 
