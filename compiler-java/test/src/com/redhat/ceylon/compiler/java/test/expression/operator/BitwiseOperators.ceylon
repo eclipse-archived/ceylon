@@ -22,8 +22,7 @@
 @nomodel
 abstract class BWMyInteger()
         extends Object()
-        satisfies Castable<BWMyInteger|Float> &
-                  Binary<BWMyInteger> &
+        satisfies Binary<BWMyInteger> &
                   Integral<BWMyInteger> &
                   Exponentiable<BWMyInteger, BWMyInteger>{}
 

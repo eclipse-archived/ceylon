@@ -22,11 +22,10 @@ final class BasicOperatorsB$impl {
     }
     private final .com.redhat.ceylon.compiler.java.test.expression.operator.BasicOperatorsB $this;
 }
-public abstract class EqualityAndComparisonInteger extends .java.lang.Object implements .ceylon.language.Castable<.java.lang.Object>, .ceylon.language.Integral<.com.redhat.ceylon.compiler.java.test.expression.operator.EqualityAndComparisonInteger>, .ceylon.language.Comparable<.com.redhat.ceylon.compiler.java.test.expression.operator.EqualityAndComparisonInteger> {
+public abstract class EqualityAndComparisonInteger extends .java.lang.Object implements .ceylon.language.Integral<.com.redhat.ceylon.compiler.java.test.expression.operator.EqualityAndComparisonInteger>, .ceylon.language.Comparable<.com.redhat.ceylon.compiler.java.test.expression.operator.EqualityAndComparisonInteger> {
     
     public EqualityAndComparisonInteger() {
         super();
-        this.$ceylon$language$Castable$this = new .ceylon.language.Castable$impl<.java.lang.Object>((.ceylon.language.Castable)this);
         this.$ceylon$language$Integral$this = new .ceylon.language.Integral$impl<.com.redhat.ceylon.compiler.java.test.expression.operator.EqualityAndComparisonInteger>(this);
         this.$ceylon$language$Numeric$this = new .ceylon.language.Numeric$impl<.com.redhat.ceylon.compiler.java.test.expression.operator.EqualityAndComparisonInteger>(this);
         this.$ceylon$language$Summable$this = new .ceylon.language.Summable$impl<.com.redhat.ceylon.compiler.java.test.expression.operator.EqualityAndComparisonInteger>(this);
@@ -34,12 +33,6 @@ public abstract class EqualityAndComparisonInteger extends .java.lang.Object imp
         this.$ceylon$language$Enumerable$this = new .ceylon.language.Enumerable$impl<.com.redhat.ceylon.compiler.java.test.expression.operator.EqualityAndComparisonInteger>(this);
         this.$ceylon$language$Ordinal$this = new .ceylon.language.Ordinal$impl<.com.redhat.ceylon.compiler.java.test.expression.operator.EqualityAndComparisonInteger>(this);
         this.$ceylon$language$Comparable$this = new .ceylon.language.Comparable$impl<.com.redhat.ceylon.compiler.java.test.expression.operator.EqualityAndComparisonInteger>(this);
-    }
-    protected final .ceylon.language.Castable$impl<.java.lang.Object> $ceylon$language$Castable$this;
-    
-    @.java.lang.Override
-    public .ceylon.language.Castable$impl<.java.lang.Object> $ceylon$language$Castable$impl() {
-        return $ceylon$language$Castable$this;
     }
     protected final .ceylon.language.Integral$impl<.com.redhat.ceylon.compiler.java.test.expression.operator.EqualityAndComparisonInteger> $ceylon$language$Integral$this;
     

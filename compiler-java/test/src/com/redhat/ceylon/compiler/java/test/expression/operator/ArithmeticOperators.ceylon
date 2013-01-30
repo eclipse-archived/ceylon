@@ -22,8 +22,7 @@
 @nomodel
 abstract class MyInteger()
         extends Object()
-        satisfies Castable<MyInteger|Float> &
-                  Integral<MyInteger> &
+        satisfies Integral<MyInteger> &
                   Exponentiable<MyInteger, MyInteger>{}
 
 @nomodel
