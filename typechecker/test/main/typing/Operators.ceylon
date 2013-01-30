@@ -29,13 +29,13 @@ class Operators() {
     
     @type:"Integer" value w3 = +1;
     
-    @type:"Float" value x4 = 2.4 ** 0.5;
+    @type:"Float" value x4 = 2.4 ^ 0.5;
     
     @type:"Integer" value x5 = (1 + 2) - -3;
     
     @type:"Float" value w4 = -3 * 2.5;
     
-    @type:"Float"  value x6 = 1.0 * 2.5 ** (-0.5);
+    @type:"Float"  value x6 = 1.0 * 2.5 ^ (-0.5);
     
     @type:"Integer" value x7 = 10 % 3;
     @type:"Integer" value x8 = 10 / 3;
@@ -44,7 +44,7 @@ class Operators() {
     
     @type:"Float" value x9 = 1 + 1.0;
     
-    @error value x10 = 1.0 * 2.5 ** -0.5;
+    @error value x10 = 1.0 * 2.5 ^ -0.5;
     
     @type:"Boolean" value x11 = !( true || false ) && true;
     
@@ -320,7 +320,6 @@ class Operators() {
     Set<Integer> si = nothing;
     Set<Object> so = nothing;
     @type:"Set<String|Integer>" value sr0 = ss|si;
-    @type:"Set<String|Integer>" value sr1 = ss^si;
     @type:"Set<Nothing>" value sr2 = ss&si;
     @type:"Set<String>" value sr3 = ss~si;
     @type:"Set<String>" value sr4 = ss&so;

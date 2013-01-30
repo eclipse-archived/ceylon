@@ -16,7 +16,7 @@ void specFunction() {
         x=>100;
     }
     else {
-        x=>100**100;
+        x=>100^100;
     }
     print(x);
 
@@ -25,7 +25,7 @@ void specFunction() {
         y()=>100;
     }
     else {
-        y()=>100**100;
+        y()=>100^100;
     }
     print(y());
     
@@ -39,7 +39,7 @@ void specFunction() {
     if (true) {
     }
     else {
-        w()=>100**100;
+        w()=>100^100;
     }
     @error print(w());
     

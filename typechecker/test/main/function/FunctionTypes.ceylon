@@ -213,7 +213,7 @@ void method() {
     value fw = do<String>;
     @error value fz = do;
 
-    function sqrt(Float x) => x**0.5;
+    function sqrt(Float x) => x^0.5;
     value temp = sqrt;
     Float root(Float x) => temp(x);
     
@@ -263,7 +263,7 @@ void moreTests() {
     callFunction((Integer i) => (i*3).string);
     callFunction {
         function f(Integer i) { 
-            return (i**2).string;
+            return (i^2).string;
         }
     };
 }

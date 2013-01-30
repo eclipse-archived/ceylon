@@ -53,18 +53,18 @@ class Lambdas() {
     
     function apply<X>(X x)(X f(X x)) => f(x);
     
-    function sqrt(Float x) => x**0.5;
+    function sqrt(Float x) => x^0.5;
     
     @type:"Float" apply(2.0)(sqrt);
-    @type:"Float" apply<Float>(2.0)((Float x) => x**3);
+    @type:"Float" apply<Float>(2.0)((Float x) => x^3);
     
     @type:"Float" function applyToTwo(Float f(Float x)) => apply(2.0)(f);
     applyToTwo(sqrt);
-    applyToTwo((Float x) => x**3);
+    applyToTwo((Float x) => x^3);
     
     @type:"Callable<Float,Tuple<Callable<Float,Tuple<Float,Float,Empty>>,Callable<Float,Tuple<Float,Float,Empty>>,Empty>>" value applyToOne = apply(1.0);
     @type:"Float" applyToOne(sqrt);
-    @type:"Float" applyToOne((Float x) => x**3);
+    @type:"Float" applyToOne((Float x) => x^3);
     
     void exec(Callable<Anything,[]> run) {
         run();

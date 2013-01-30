@@ -1846,7 +1846,6 @@ assignmentOperator returns [AssignmentOp operator]
     | REMAINDER_SPECIFY { $operator = new RemainderAssignOp($REMAINDER_SPECIFY); }
     | INTERSECT_SPECIFY { $operator = new IntersectAssignOp($INTERSECT_SPECIFY); }
     | UNION_SPECIFY { $operator = new UnionAssignOp($UNION_SPECIFY); }
-    | XOR_SPECIFY { $operator = new XorAssignOp($XOR_SPECIFY); }
     | COMPLEMENT_SPECIFY { $operator = new ComplementAssignOp($COMPLEMENT_SPECIFY); }
     | AND_SPECIFY { $operator = new AndAssignOp($AND_SPECIFY); }
     | OR_SPECIFY { $operator = new OrAssignOp($OR_SPECIFY); }
@@ -2100,8 +2099,6 @@ unionExpression returns [Term term]
 unionOperator returns [BinaryOperatorExpression operator]
     : UNION_OP
       { $operator = new UnionOp($UNION_OP); }
-    | XOR_OP
-      { $operator = new XorOp($XOR_OP); }
     | COMPLEMENT_OP
       { $operator = new ComplementOp($COMPLEMENT_OP); }
     ;
@@ -3486,10 +3483,6 @@ UNION_OP
     :   '|'
     ;
 
-XOR_OP
-    :   '^'
-    ;
-
 REMAINDER_OP
     :   '%'
     ;
@@ -3531,7 +3524,7 @@ IS_OP
     ;
 
 POWER_OP
-    :    '**'
+    :    '^'
     ;
 
 ADD_SPECIFY
@@ -3556,10 +3549,6 @@ INTERSECT_SPECIFY
 
 UNION_SPECIFY
     :   '|='
-    ;
-
-XOR_SPECIFY
-    :   '^='
     ;
 
 COMPLEMENT_SPECIFY

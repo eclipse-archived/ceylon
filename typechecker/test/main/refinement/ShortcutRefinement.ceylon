@@ -80,7 +80,7 @@ class OtherReallyIndirectlyBroken() extends OtherConcrete() {
 }
 
 class OtherAlsoReallyIndirectlyBroken() extends OtherConcrete() {
-    @error shared actual Float sqr(Float x) { return x**2; }
+    @error shared actual Float sqr(Float x) { return x^2; }
 }
 
 class OtherConcrete() extends OtherAbstract() {
