@@ -179,19 +179,19 @@ class Primaries() {
         
     ann {Float} shared {Float*} floats = {};
     
-    String interpolated0 = "hello" "ABC123".count(function (Character c) => c.digit) "world";
-    String interpolated1 = "hello" { "ABC" 1+1 "123" } "world";
-    String interpolated2 = "hello" Singleton("ABC" 1+1 "123") "world";
-    String interpolated3 = "hello" Singleton { element="ABC" 1+1 "123"; } "world";
-    String interpolated4 = "hello" ("ABC" 1+1 "123") "world";
-    String interpolated5 = "hello" ["ABC" 1+1 "123"] "world";
-    String interpolated6 = "hello" -10 "world";
-    String interpolated7 = "hello" +10 "world";
-    String interpolated8 = "hello" "ABC123".size "world";
+    String interpolated0 = "hello' "ABC123".count(function (Character c) => c.digit) 'world";
+    String interpolated1 = "hello' { "ABC' 1+1 '123" } 'world";
+    String interpolated2 = "hello' Singleton("ABC' 1+1 '123") 'world";
+    String interpolated3 = "hello' Singleton { element="ABC' 1+1 '123"; } 'world";
+    String interpolated4 = "hello' ("ABC' 1+1 '123") 'world";
+    String interpolated5 = "hello' ["ABC' 1+1 '123"] 'world";
+    String interpolated6 = "hello' -10 'world";
+    String interpolated7 = "hello' +10 'world";
+    String interpolated8 = "hello' "ABC123".size 'world";
     
     List<Character> list=[` `];
     @type:"Sequential<Integer>" value xxxx = list*.integer;
-    Exception("Expecting an Array but got: " true then "x" else "null" "");    
+    Exception("Expecting an Array but got: ' true then "x" else "null" '");    
     
 }
 

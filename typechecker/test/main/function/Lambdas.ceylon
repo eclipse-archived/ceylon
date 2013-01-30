@@ -79,7 +79,7 @@ class Lambdas() {
     @type:"String" lazy("hello")();
     
     function name(String first)(String middle)(String last) {
-        return "" first " " middle " " last "";
+        return "' first ' ' middle ' ' last '";
     }
     String n1(String middle)(String last) => name("Gavin")(middle)(last);
     String n2(String last) => name("Gavin")("A")(last);

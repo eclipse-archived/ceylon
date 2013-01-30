@@ -75,8 +75,8 @@ moduleDescriptor returns [ModuleDescriptor moduleDescriptor]
         $moduleDescriptor.getCompilerAnnotations().addAll($compilerAnnotations.annotations); }
       packagePath
       { $moduleDescriptor.setImportPath($packagePath.importPath); }
-      QUOTED_LITERAL
-      { $moduleDescriptor.setVersion(new QuotedLiteral($QUOTED_LITERAL)); }
+      STRING_MID
+      { $moduleDescriptor.setVersion(new QuotedLiteral($STRING_MID)); }
       importModuleList
       { $moduleDescriptor.setImportModuleList($importModuleList.importModuleList); }
     ;
@@ -116,13 +116,13 @@ importModule returns [ImportModule importModule]
     : IMPORT
       { $importModule = new ImportModule($IMPORT); }
       ( 
-        q1=QUOTED_LITERAL
+        q1=STRING_MID
         { $importModule.setQuotedLiteral(new QuotedLiteral($q1)); }
       |
         packagePath
         { $importModule.setImportPath($packagePath.importPath); }
       )
-      q2=QUOTED_LITERAL
+      q2=STRING_MID
       { $importModule.setVersion(new QuotedLiteral($q2)); 
         expecting=SEMICOLON; }
       SEMICOLON
@@ -2220,8 +2220,6 @@ nonstringLiteral returns [Literal literal]
       { $literal = new NaturalLiteral($NATURAL_LITERAL); }
     | FLOAT_LITERAL 
       { $literal = new FloatLiteral($FLOAT_LITERAL); }
-    | QUOTED_LITERAL 
-      { $literal = new QuotedLiteral($QUOTED_LITERAL); }
     | CHAR_LITERAL 
       { $literal = new CharLiteral($CHAR_LITERAL); }
     ;
@@ -2231,49 +2229,26 @@ stringLiteral returns [StringLiteral stringLiteral]
       { $stringLiteral = new StringLiteral($STRING_LITERAL); }
     ;
 
-// special rule for syntactic predicate
-// to distinguish an interpolated expression
-// in a string template this includes every 
-// token that could be the beginning of an 
-// expression, except for '[', '+', '-', and
-// STRING_LITERAL
-interpolatedExpressionStart
-    : LPAREN
-    | LBRACE
-    | LIDENTIFIER 
-    | UIDENTIFIER 
-    | selfReference
-    | nonstringLiteral
-    | prefixOperatorStart
-    ;
-
 stringExpression returns [Atom atom]
     @init { StringTemplate st=null; }
     : sl1=stringLiteral
-      { $atom=$sl1.stringLiteral;
-        st = new StringTemplate(null);
-        st.addStringLiteral($sl1.stringLiteral); }
-      ( (interpolatedExpressionStart)=>
-        { $atom=st; }
-        e1=expression
-        { if ($e1.expression!=null) 
-              st.addExpression($e1.expression); }
-        sl2=stringLiteral
-        { if ($sl2.stringLiteral!=null) 
-              st.addStringLiteral($sl2.stringLiteral); }
-      //now a special case to with a big
-      //lookahead to disambiguate a tuple, 
-      //string literal, or negated expression 
-      //(this is super-nasty!)
-      | (expression STRING_LITERAL) => 
-        { $atom=st; }
-        e2=expression 
+      { $atom=$sl1.stringLiteral; }
+    | STRING_START
+      { st = new StringTemplate(null);
+        st.addStringLiteral(new StringLiteral($STRING_START));
+        $atom=st; }
+      e1=expression
+      { if ($e1.expression!=null) 
+            st.addExpression($e1.expression); }
+      (
+        STRING_MID
+        { st.addStringLiteral(new StringLiteral($STRING_MID)); }
+        e2=expression
         { if ($e2.expression!=null) 
               st.addExpression($e2.expression); }
-        sl3=stringLiteral
-        { if ($sl3.stringLiteral!=null) 
-              st.addStringLiteral($sl3.stringLiteral); }
       )*
+      STRING_END
+      { st.addStringLiteral(new StringLiteral($STRING_END)); }
     ;
 
 typeArguments returns [TypeArgumentList typeArgumentList]
@@ -3156,20 +3131,22 @@ CharPart
     : ( ~ ('`' | '\\' | '\n' | '\f' | '\t' | '\r') | EscapeSequence )*
     ;
 
-QUOTED_LITERAL
-    :   '\'' QuotedLiteralPart '\''?
-    ;
-
-fragment
-ASTRING_LITERAL:;
-
-fragment
-QuotedLiteralPart
-    : ~('\'')*
-    ;
+fragment ASTRING_LITERAL:;
 
 STRING_LITERAL
-    :   '"' StringPart '"'?
+    :   '"' StringPart '"'
+    ;
+
+STRING_START
+    :   '"' StringPart '\''
+    ;
+
+STRING_MID
+    :   '\'' StringPart '\''
+    ;
+
+STRING_END
+    :   '\'' StringPart '"'
     ;
 
 /*
@@ -3182,7 +3159,7 @@ STRING_LITERAL
 */
 fragment
 StringPart
-    : ( ~ ('\\' | '"') | EscapeSequence )*
+    : ( ~ ('\\' | '"' | '\'') | EscapeSequence )*
     ;
     
 fragment

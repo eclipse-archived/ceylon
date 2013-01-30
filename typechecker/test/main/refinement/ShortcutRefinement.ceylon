@@ -185,12 +185,12 @@ object below2 satisfies Below2 {}
 @error object brokenBelow satisfies Below&Below2 {}
 
 class Count1(Integer x) {
-    string = "Count " x "";
+    string = "Count 'x'";
     equals(Object that) => that is Count1|Count2;
     hash => x;
 }
 class Count2(Integer x) extends Object() {
-    string = "Count " x "";
+    string = "Count 'x'";
     equals(Object that) => that is Count1|Count2;
     hash => x;
 }
