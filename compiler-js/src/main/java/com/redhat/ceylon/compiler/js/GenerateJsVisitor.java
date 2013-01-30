@@ -652,23 +652,22 @@ public class GenerateJsVisitor extends Visitor
     private void callSuperclass(ExtendedType extendedType, Class d, Node that,
                 final List<Declaration> superDecs) {
         if (extendedType!=null) {
+            PositionalArgumentList argList = extendedType.getInvocationExpression()
+                    .getPositionalArgumentList();
             TypeDeclaration typeDecl = extendedType.getType().getDeclarationModel();
-            List<PositionalArgument> argList = extendedType.getInvocationExpression()
-                    .getPositionalArgumentList().getPositionalArguments();
-            
             qualify(that, typeDecl);
             out(memberAccessBase(extendedType.getType(), names.name(typeDecl), false),
                     (prototypeStyle && (getSuperMemberScope(extendedType.getType()) != null))
                         ? ".call(this," : "(");
-            
-            for (PositionalArgument arg: argList) {
-                arg.visit(this);
+
+            invoker.generatePositionalArguments(argList, argList.getPositionalArguments(), false);
+            if (argList.getPositionalArguments().size() > 0) {
                 out(",");
             }
             //There may be defaulted args we must pass as undefined
-            if (d.getExtendedTypeDeclaration().getParameterList().getParameters().size() > argList.size()) {
+            if (d.getExtendedTypeDeclaration().getParameterList().getParameters().size() > argList.getPositionalArguments().size()) {
                 List<com.redhat.ceylon.compiler.typechecker.model.Parameter> superParams = d.getExtendedTypeDeclaration().getParameterList().getParameters();
-                for (int i = argList.size(); i < superParams.size(); i++) {
+                for (int i = argList.getPositionalArguments().size(); i < superParams.size(); i++) {
                     com.redhat.ceylon.compiler.typechecker.model.Parameter p = superParams.get(i);
                     if (p.isSequenced()) {
                         out(clAlias, "empty,");
@@ -1286,6 +1285,7 @@ public class GenerateJsVisitor extends Visitor
                     out(".", names.name(d), "=", classParam);
                     endLine(true);
                 }
+                //TODO generate for => expr when no classParam is available
             }
             else if (specInitExpr instanceof LazySpecifierExpression) {
                 out("var ", names.getter(d), "=function(){return ");
