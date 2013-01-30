@@ -3,7 +3,7 @@
 function inheritProto(x,y){}//IGNORE
 function String$(x){}//IGNORE
 function ArraySequence(x){}//IGNORE
-var exports,empty;//IGNORE
+var exports;//IGNORE
 
 function languageClass() {
     var lang = new languageClass.$$;
@@ -19,7 +19,7 @@ lang$proto.getMajorVersion=function() { return 0; }
 lang$proto.getMinorVersion=function() { return 5; }
 lang$proto.getReleaseVersion=function() { return 0; }
 lang$proto.getVersionName=function() { return String$("Analytical Engine",11); }
-lang$proto.getMajorVersionBinary=function() { return 3; }
+lang$proto.getMajorVersionBinary=function() { return 4; }
 lang$proto.getMinorVersionBinary=function() { return 0; }
 var languageString = String$("language", 7);
 lang$proto.getString = function() {
@@ -38,7 +38,7 @@ function processClass() {
 initTypeProto(processClass, "ceylon.language::process", $init$Basic());
 var process$proto = processClass.$$.prototype;
 
-var argv = empty;
+var argv = getEmpty();
 var namedArgs = {};
 if ((typeof process !== "undefined") && (process.argv !== undefined)) {
     // parse command line arguments

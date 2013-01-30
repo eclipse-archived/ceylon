@@ -5,30 +5,8 @@ function isOfType(a,b){}//IGNORE
 function smallest(x,y){}//IGNORE
 function largest(x,y){}//IGNORE
 function Exception(){}//IGNORE
-var List,Cloneable,Ranged,exports,larger,smaller,equal,Object$,empty,Iterator;//IGNORE
+var List,Cloneable,Ranged,exports,larger,smaller,equal,Object$,Iterator;//IGNORE
 var Category;//IGNORE
-
-function Sequence($$sequence) {
-    List($$sequence);
-    return $$sequence;
-}
-function $init$Sequence() {
-    if (Sequence.$$===undefined) {
-        initTypeProto(Sequence, 'ceylon.language::Sequence', $init$Sequential(),
-            $init$Container(), $init$Cloneable());
-    }
-    return Sequence;
-}
-$init$Sequence();
-var Sequence$proto = Sequence.$$.prototype;
-Sequence$proto.getEmpty = function() { return false; }
-Sequence$proto.sort = function(comp) {
-    return internalSort(comp, this, this.$$targs$$);
-}
-Sequence$proto.collect = function(f, $$$mptypes) {
-    return this.map(f, $$$mptypes).getSequence();
-}
-Sequence$proto.getClone = function() { return this; }
 
 function Array$() {
     var that = new Array$.$$;
@@ -58,6 +36,7 @@ initTypeProto(ArrayList, 'ceylon.language::ArrayList', Array$, $init$List());
 function ArraySequence(/* js array */value, $$targs$$) {
     value.$seq = true;
     value.$$targs$$=$$targs$$;
+    this.$$targs$$=$$targs$$;
     return value;
 }
 initTypeProto(ArraySequence, 'ceylon.language::ArraySequence', $init$Basic(), Sequence);
@@ -97,10 +76,10 @@ Array$proto.chain = function(other, $$$mptypes) {
 Array$proto.getFirst = function() { return this.length>0 ? this[0] : null; }
 Array$proto.getLast = function() { return this.length>0 ? this[this.length-1] : null; }
 Array$proto.segment = function(from, len) {
-    if (len <= 0) { return empty; }
+    if (len <= 0) { return getEmpty(); }
     var stop = from + len;
     var seq = this.slice((from>=0)?from:0, (stop>=0)?stop:0);
-    return (seq.length > 0) ? ArraySequence(seq,this.$$targs$$) : empty;
+    return (seq.length > 0) ? ArraySequence(seq,this.$$targs$$) : getEmpty();
 }
 Array$proto.span = function(from, to) {
     if (from > to) {
@@ -111,16 +90,16 @@ Array$proto.span = function(from, to) {
     return this.segment(from, to-from+1);
 }
 Array$proto.spanTo = function(to) {
-    return to < 0 ? empty : this.span(0, to);
+    return to < 0 ? getEmpty() : this.span(0, to);
 }
 Array$proto.spanFrom = function(from) {
     return this.span(from, 0x7fffffff);
 }
 Array$proto.getRest = function() {
-    return this.length<=1 ? empty : ArraySequence(this.slice(1),this.$$targs$$);
+    return this.length<=1 ? getEmpty() : ArraySequence(this.slice(1),this.$$targs$$);
 }
 Array$proto.items = function(keys) {
-    if (keys === undefined) return empty;
+    if (keys === undefined) return getEmpty();
     var seq = [];
     for (var i = 0; i < keys.getSize(); i++) {
         var key = keys.get(i);
@@ -189,7 +168,7 @@ function SequenceBuilder($$targs$$) {
 initTypeProto(SequenceBuilder, 'ceylon.language::SequenceBuilder', $init$Basic());
 var SequenceBuilder$proto = SequenceBuilder.$$.prototype;
 SequenceBuilder$proto.getSequence = function() {
-    return (this.seq.length > 0) ? ArraySequence(this.seq,this.$$targs$$) : empty;
+    return (this.seq.length > 0) ? ArraySequence(this.seq,this.$$targs$$) : getEmpty();
 }
 SequenceBuilder$proto.append = function(e) { this.seq.push(e); }
 SequenceBuilder$proto.appendAll = function(/*Iterable*/arr) {

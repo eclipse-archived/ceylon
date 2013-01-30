@@ -14,12 +14,12 @@ function string(/*Iterable<Character>*/chars) {
 }
 
 function internalSort(comp, elems, $$$mptypes) {
-    if (elems===undefined) {return empty;}
+    if (elems===undefined) {return getEmpty();}
     var arr = [];
     var it = elems.getIterator();
     var e;
     while ((e=it.next()) !== getFinished()) {arr.push(e);}
-    if (arr.length === 0) {return empty;}
+    if (arr.length === 0) {return getEmpty();}
     arr.sort(function(a, b) {
         var cmp = comp(a,b);
         return (cmp===larger) ? 1 : ((cmp===smaller) ? -1 : 0);
@@ -31,7 +31,7 @@ exports.string=string;
 
 function flatten(tf, $$$mptypes) {
     var rf = function() {
-        var t = empty;
+        var t = getEmpty();
         var e = null;
         var argc = arguments.length;
         var last = argc>0 ? arguments[argc-1] : undefined;
@@ -54,7 +54,7 @@ function flatten(tf, $$$mptypes) {
                 e = {t:'u', l:[e, c]};
             }
             var rest;
-            if (t === empty) {
+            if (t === getEmpty()) {
                 rest={t:Empty};
             } else {
                 rest={t:Tuple, a:t.$$$targs$$$};

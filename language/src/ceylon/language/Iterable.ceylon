@@ -252,8 +252,8 @@ shared native interface Iterable<out Element, out Absent=Null>
         }
         else {
             object iterable satisfies {Element*} {
-                value iter = outer.iterator;
                 shared actual Iterator<Element> iterator {
+                    value iter = outer.iterator;
                     variable value i=0;
                     while (i++<skip && !iter.next() is Finished) {}
                     return iter;

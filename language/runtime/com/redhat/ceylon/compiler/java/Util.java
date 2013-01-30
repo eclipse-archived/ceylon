@@ -7,6 +7,7 @@ import java.util.Set;
 
 import ceylon.language.Iterable;
 import ceylon.language.Iterator;
+import ceylon.language.Ranged;
 import ceylon.language.Sequential;
 import ceylon.language.empty_;
 import ceylon.language.finished_;
@@ -592,5 +593,18 @@ public class Util {
      */
     public static RuntimeException makeUnimplementedMixinAccessException() {
         return new RuntimeException("Internal error: should never be called");
+    }
+
+    /**
+     * Specialised version of Tuple.spanFrom for when the typechecker determines that it can do better than the generic one
+     * that returns a Sequential. Here we return a Tuple, although our type signature hides this.
+     */
+    public static Sequential tuple_spanFrom(Ranged tuple, ceylon.language.Integer index){
+        Sequential seq = (Sequential)tuple;
+        long i = index.longValue();
+        while(i-- > 0){
+            seq = seq.getRest();
+        }
+        return seq;
     }
 }
