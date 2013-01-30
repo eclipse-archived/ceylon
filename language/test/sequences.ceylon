@@ -4,7 +4,7 @@ void test_singleton() {
     check(!singleton.empty, "singleton empty");
     check(singleton.defines(0), "singleton defines");
     check(!singleton.defines(1), "singleton defines");
-    check(singleton.string=="[ hello ]", "singleton string");
+    check(singleton.string=="[hello]", "singleton string");
     check(singleton.reversed==singleton, "singleton reversed");
     check(singleton nonempty, "singleton nonempty");
     if (nonempty singleton) {
@@ -53,8 +53,8 @@ void test_singleton() {
     check(singleton.spanTo(0) nonempty, "nonempty singleton spanTo(0)");
     check(singleton.spanTo(1) nonempty, "nonempty singleton spanTo(1)");
     check(singleton.segment(0, 1) nonempty, "nonempty singleton segment(0,1)");
-    check(singleton.span(0, 3).string=="[ hello ]", "singleton span(0,3).string");
-    check(singleton.segment(0, 3).string=="[ hello ]", "singleton segment(0,3).string");
+    check(singleton.span(0, 3).string=="[hello]", "singleton span(0,3).string");
+    check(singleton.segment(0, 3).string=="[hello]", "singleton segment(0,3).string");
     check(!singleton.span(1, 1) nonempty, "!nonempty singleton span(1,1)");
     check(!singleton.spanFrom(1) nonempty, "!nonempty singleton spanFrom(1)");
     check(!singleton.segment(1, 1) nonempty, "!nonempty singleton segment(1,1)");
@@ -271,10 +271,10 @@ shared void sequences() {
 
     value seq = [ 1, 2, 3, 4 ];
     check(seq.size==4, "sequence size");
-    check(seq.string=="[ 1, 2, 3, 4 ]", "sequence.string 4: " + seq.string);
+    check(seq.string=="[1, 2, 3, 4]", "sequence.string 4: " + seq.string);
     check(seq.reversed=={4, 3, 2, 1}, "sequence reversed");
     check(seq.first==1, "sequence first");
-    check(seq.rest.string=="[ 2, 3, 4 ]", "sequence.rest.string " + seq.rest.string);
+    check(seq.rest.string=="[2, 3, 4]", "sequence.rest.string " + seq.rest.string);
     variable value i=0;
     for (s in seq) {
         if (exists it=seq[i]) {
@@ -311,7 +311,7 @@ shared void sequences() {
     Sequential<String?> nulls = [ null, "hello", null, "world" ];
     if (exists n0 = nulls[0]) { fail("sequence with nulls"); }
     if (exists n1 = nulls[1]) {} else { fail("sequence with nulls"); }
-    check(nulls.string=="[ null, hello, null, world ]", "sequence with nulls.string " + nulls.string);
+    check(nulls.string=="[null, hello, null, world]", "sequence with nulls.string " + nulls.string);
     variable value nonnull=0;
     for (o in nulls) {
         if (exists o) { nonnull++; }
