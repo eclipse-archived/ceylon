@@ -1,0 +1,9 @@
+package com.redhat.ceylon.compiler.java.test.issues.bug09xx;
+
+public class Bug940 {
+    
+    public Bug940(final .ceylon.language.Callable<? extends .java.lang.Object> callable) {
+        final .ceylon.language.Callable<? extends .java.lang.Object> z = (.ceylon.language.Callable)callable.$call();
+        z.$call();
+    }
+}
