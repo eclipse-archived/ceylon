@@ -33,7 +33,7 @@ List,Tuple,ChainedIterator
 Entry,Comparable,Invertable,Summable,Ordinal,Numeric,Scalar,Exponentiable,Integral
 
 #syntactic sugar prevents this from compiling
-#Iterable
+Iterable
 
 
 Exception,NegativeNumberException,OverflowException,RecursiveInitializationException

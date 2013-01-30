@@ -8,28 +8,6 @@ function Exception(){}//IGNORE
 var List,Cloneable,Ranged,exports,larger,smaller,equal,Object$,empty,Iterator;//IGNORE
 var Category;//IGNORE
 
-function Sequence($$sequence) {
-    List($$sequence);
-    return $$sequence;
-}
-function $init$Sequence() {
-    if (Sequence.$$===undefined) {
-        initTypeProto(Sequence, 'ceylon.language::Sequence', $init$Sequential(),
-            $init$Container(), $init$Cloneable());
-    }
-    return Sequence;
-}
-$init$Sequence();
-var Sequence$proto = Sequence.$$.prototype;
-Sequence$proto.getEmpty = function() { return false; }
-Sequence$proto.sort = function(comp) {
-    return internalSort(comp, this, this.$$targs$$);
-}
-Sequence$proto.collect = function(f, $$$mptypes) {
-    return this.map(f, $$$mptypes).getSequence();
-}
-Sequence$proto.getClone = function() { return this; }
-
 function Array$() {
     var that = new Array$.$$;
     List(that);
@@ -58,6 +36,7 @@ initTypeProto(ArrayList, 'ceylon.language::ArrayList', Array$, $init$List());
 function ArraySequence(/* js array */value, $$targs$$) {
     value.$seq = true;
     value.$$targs$$=$$targs$$;
+    this.$$targs$$=$$targs$$;
     return value;
 }
 initTypeProto(ArraySequence, 'ceylon.language::ArraySequence', $init$Basic(), Sequence);
