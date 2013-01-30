@@ -456,7 +456,7 @@ public class GenerateJsVisitor extends Visitor
 
     private void addClassDeclarationToPrototype(TypeDeclaration outer, ClassDeclaration that) {
         comment(that);
-        TypeDeclaration dec = that.getExtendedType().getType().getTypeModel().getDeclaration();
+        TypeDeclaration dec = that.getClassSpecifier().getType().getTypeModel().getDeclaration();
         String path = qualifiedPath(that, dec, true);
         if (path.length() > 0) {
             path += '.';
@@ -665,6 +665,18 @@ public class GenerateJsVisitor extends Visitor
                 arg.visit(this);
                 out(",");
             }
+            //There may be defaulted args we must pass as undefined
+            if (d.getExtendedTypeDeclaration().getParameterList().getParameters().size() > argList.size()) {
+                List<com.redhat.ceylon.compiler.typechecker.model.Parameter> superParams = d.getExtendedTypeDeclaration().getParameterList().getParameters();
+                for (int i = argList.size(); i < superParams.size(); i++) {
+                    com.redhat.ceylon.compiler.typechecker.model.Parameter p = superParams.get(i);
+                    if (p.isSequenced()) {
+                        out(clAlias, "empty,");
+                    } else {
+                        out("undefined,");
+                    }
+                }
+            }
             //If the supertype has type arguments, add them to the call
             if (typeDecl.getTypeParameters() != null && !typeDecl.getTypeParameters().isEmpty()) {
                 extendedType.getType().getTypeArgumentList().getTypeModels();
@@ -773,7 +785,8 @@ public class GenerateJsVisitor extends Visitor
         out(clAlias, initFuncName, "(", names.name(d), ",'", qns, "'");
 
         if (extendedType != null) {
-            out(",", typeFunctionName(extendedType.getType(), false));
+            String fname = typeFunctionName(extendedType.getType(), false);
+            out(",", fname);
         } else if (!isInterface) {
             out(",", clAlias, "Basic");
         }
@@ -3469,7 +3482,7 @@ public class GenerateJsVisitor extends Visitor
         conds.specialConditionsAndBlock(that.getConditionList(), null, "if (!");
         //escape
         custom = escapeStringLiteral(sb.toString());
-        out(") { throw ", clAlias, "Exception('", custom, "'); }");
+        out(") { throw ", clAlias, "AssertionException('", custom, "'); }");
         endLine();
     }
 
