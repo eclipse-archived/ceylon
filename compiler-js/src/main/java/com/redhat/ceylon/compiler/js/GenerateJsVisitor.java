@@ -2059,80 +2059,93 @@ public class GenerateJsVisitor extends Visitor
 
     @Override
     public void visit(final SpecifierStatement that) {
-        if (prototypeStyle && (that.getSpecifierExpression() instanceof LazySpecifierExpression)
-                && (that.getScope().getContainer() instanceof TypeDeclaration)) {
-            // A lazy specifier expression in a class/interface. In prototype style
-            // these should go into the prototype, so don't generate them here.
-            return;
+        // A lazy specifier expression in a class/interface should go into the
+        // prototype in prototype style, so don't generate them here.
+        if (!(prototypeStyle && (that.getSpecifierExpression() instanceof LazySpecifierExpression)
+                && (that.getScope().getContainer() instanceof TypeDeclaration))) {
+            specifierStatement(null, that);
         }
-        if (that.getBaseMemberExpression() instanceof BaseMemberExpression) {
-            BaseMemberExpression bme = (BaseMemberExpression) that.getBaseMemberExpression();
+    }
+    
+    private void specifierStatement(final TypeDeclaration outer,
+            final SpecifierStatement specStmt) {
+        
+        if (specStmt.getBaseMemberExpression() instanceof BaseMemberExpression) {
+            BaseMemberExpression bme = (BaseMemberExpression) specStmt.getBaseMemberExpression();
             Declaration bmeDecl = bme.getDeclaration();
-            if (that.getSpecifierExpression() instanceof LazySpecifierExpression) {
+            if (specStmt.getSpecifierExpression() instanceof LazySpecifierExpression) {
                 // attr => expr;
                 if (bmeDecl.isMember()) {
-                    qualify(that, bmeDecl);
+                    qualify(specStmt, bmeDecl);
+                } else {
+                    out ("var ");
                 }
-                else {
-                    out("var ");
-                }
-                out(names.getter(bmeDecl), "=function(){return ");
-                that.getSpecifierExpression().visit(this);
-                out(";};");
+                out(names.getter(bmeDecl), "=function()");
+                beginBlock();
+                if (outer != null) { initSelf(specStmt.getScope()); }
+                out ("return ");
+                specStmt.getSpecifierExpression().visit(this);
+                out(";");
+                endBlockNewLine(true);
                 directAccess.remove(bmeDecl);
             }
-            else {
-                // attr = expr;
-                if (bmeDecl instanceof MethodOrValue) {
-                    final MethodOrValue moval = (MethodOrValue)bmeDecl;
-                    if (moval.isVariable()) {
-                        // simple assignment to a variable attribute
-                        generateMemberAccess(bme, new MemberAccessCallback() {
-                            @Override public void generateValue() {
-                                int boxType = boxUnboxStart(that.getSpecifierExpression().getExpression().getTerm(),
-                                        moval);
-                                that.getSpecifierExpression().getExpression().visit(GenerateJsVisitor.this);
-                                boxUnboxEnd(boxType);
-                            }
-                        }, true);
-                        out(";");
-                    } else if (moval.isMember()) {
-                        // Specifier for a member attribute. This actually defines the
-                        // member (e.g. in shortcut refinement syntax the attribute
-                        // declaration itself can be omitted), so generate the attribute.
-                        generateAttributeGetter(moval,
-                                that.getSpecifierExpression(), null);
-                    } else {
-                        // Specifier for some other attribute, or for a method.
-                        if (prototypeStyle 
-                                || (bmeDecl.isMember() && (bmeDecl instanceof Method))) {
-                            qualify(that, bmeDecl);
+            else if (outer != null) {
+                // "attr = expr;" in a prototype definition
+                if (bmeDecl.isMember() && (bmeDecl instanceof Value)) {
+                    out(names.self(outer), ".", names.getter(bmeDecl),
+                            "=function(){return this.", names.name(bmeDecl), ";};");
+                    endLine();
+                }                
+            }
+            else if (bmeDecl instanceof MethodOrValue) {
+                // "attr = expr;" in an initializer or method
+                final MethodOrValue moval = (MethodOrValue)bmeDecl;
+                if (moval.isVariable()) {
+                    // simple assignment to a variable attribute
+                    generateMemberAccess(bme, new MemberAccessCallback() {
+                        @Override public void generateValue() {
+                            int boxType = boxUnboxStart(specStmt.getSpecifierExpression().getExpression().getTerm(),
+                                    moval);
+                            specStmt.getSpecifierExpression().getExpression().visit(GenerateJsVisitor.this);
+                            boxUnboxEnd(boxType);
                         }
-                        out(names.name(bmeDecl), "=");
-                        that.getSpecifierExpression().visit(this);
-                        out(";");
+                    }, true);
+                    out(";");
+                } else if (moval.isMember()) {
+                    // Specifier for a member attribute. This actually defines the
+                    // member (e.g. in shortcut refinement syntax the attribute
+                    // declaration itself can be omitted), so generate the attribute.
+                    generateAttributeGetter(moval,
+                            specStmt.getSpecifierExpression(), null);
+                } else {
+                    // Specifier for some other attribute, or for a method.
+                    if (prototypeStyle 
+                            || (bmeDecl.isMember() && (bmeDecl instanceof Method))) {
+                        qualify(specStmt, bmeDecl);
                     }
+                    out(names.name(bmeDecl), "=");
+                    specStmt.getSpecifierExpression().visit(this);
+                    out(";");
                 }
             }
         }
-        else if ((that.getBaseMemberExpression() instanceof ParameterizedExpression)
-                    && (that.getSpecifierExpression() != null)) {
-            ParameterizedExpression paramExpr =
-                        (ParameterizedExpression) that.getBaseMemberExpression();
+        else if ((specStmt.getBaseMemberExpression() instanceof ParameterizedExpression)
+                && (specStmt.getSpecifierExpression() != null)) {
+            final ParameterizedExpression paramExpr =
+                    (ParameterizedExpression) specStmt.getBaseMemberExpression();
             if (paramExpr.getPrimary() instanceof BaseMemberExpression) {
                 // func(params) => expr;
                 BaseMemberExpression bme = (BaseMemberExpression) paramExpr.getPrimary();
                 Declaration bmeDecl = bme.getDeclaration();
                 if (bmeDecl.isMember()) {
-                    qualify(that, bmeDecl);
-                }
-                else {
+                    qualify(specStmt, bmeDecl);
+                } else {
                     out("var ");
                 }
                 out(names.name(bmeDecl), "=");
                 singleExprFunction(paramExpr.getParameterLists(),
-                        that.getSpecifierExpression().getExpression(),
-                        that.getScope());
+                        specStmt.getSpecifierExpression().getExpression(),
+                        specStmt.getScope());
                 out(";");
             }
         }
@@ -2140,39 +2153,7 @@ public class GenerateJsVisitor extends Visitor
     
     private void addSpecifierToPrototype(final TypeDeclaration outer,
                 final SpecifierStatement specStmt) {
-        if (specStmt.getBaseMemberExpression() instanceof BaseMemberExpression) {
-            BaseMemberExpression bme = (BaseMemberExpression) specStmt.getBaseMemberExpression();
-            Declaration bmeDecl = bme.getDeclaration();
-            if (specStmt.getSpecifierExpression() instanceof LazySpecifierExpression) {
-                // attr => expr;
-                out(names.self(outer), ".", names.getter(bmeDecl), "=function()");
-                beginBlock();
-                initSelf(specStmt.getScope());
-                out("return ");
-                specStmt.getSpecifierExpression().visit(this);
-                out(";");
-                endBlockNewLine(true);
-            }
-            else if (bmeDecl.isMember() && (bmeDecl instanceof Value)) {
-                // attr = expr;
-                out(names.self(outer), ".", names.getter(bmeDecl),
-                        "=function(){return this.", names.name(bmeDecl), ";};");
-                endLine();
-            }
-        }
-        else if ((specStmt.getBaseMemberExpression() instanceof ParameterizedExpression)
-                    && (specStmt.getSpecifierExpression() != null)) {
-            final ParameterizedExpression paramExpr =
-                    (ParameterizedExpression) specStmt.getBaseMemberExpression();
-            if (paramExpr.getPrimary() instanceof BaseMemberExpression) {
-                // func(params) => expr;
-                BaseMemberExpression bme = (BaseMemberExpression) paramExpr.getPrimary();
-                out(names.self(outer), ".", names.name(bme.getDeclaration()), "=");
-                singleExprFunction(paramExpr.getParameterLists(),
-                        specStmt.getSpecifierExpression().getExpression(), specStmt.getScope());
-                out(";");
-            }
-        }
+        specifierStatement(outer, specStmt);
     }
 
     @Override
