@@ -68,7 +68,8 @@ void testString() {
     checkEqual(cnt, 5, "String.iterator");
     checkEqual(s4, "ÖŨ`𝄞A", "String.iterator");
     
-    if (exists c = s1[-1]) {
+    Integer neg = -1;
+    if (exists c = s1[neg]) {
         fail("String.item");
     }
     if (exists c = s1[0]) {
