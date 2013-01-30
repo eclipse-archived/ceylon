@@ -57,7 +57,7 @@ void testAnonymous() {
   callFunction {
     expect = "0";
     function f(Integer i) {
-      return (i**2).string;
+      return (i^2).string;
     }
   };
 

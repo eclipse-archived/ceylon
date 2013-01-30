@@ -33,9 +33,9 @@ void testIntegerOperators() {
     i2 = 312 % 12;
     check(i2==0, "modulo");
 
-    i1 = 2 ** 10;
+    i1 = 2 ^ 10;
     check(i1==1024, "power");
-    i2 = 10 ** 6;
+    i2 = 10 ^ 6;
     check(i2==1000000, "power");
 }
 
@@ -67,7 +67,7 @@ void testFloatOperators() {
     f1 = f2 * 51.6e2 / -f1;
     check(f2==4275000000000000000.0, "f2*51.6e2/-f1");
         
-    f1 = 150.0 ** 0.5;
+    f1 = 150.0 ^ 0.5;
     check(f1==12.24744871391589, "power");
 }
 
