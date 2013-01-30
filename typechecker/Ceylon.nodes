@@ -351,6 +351,7 @@
 ^(SPECIFIER_STATEMENT:EXECUTABLE_STATEMENT 
     TERM baseMemberExpression
     SPECIFIER_EXPRESSION
+    TypedDeclaration declaration;
     boolean refinement;)
 
 "An expression statement."

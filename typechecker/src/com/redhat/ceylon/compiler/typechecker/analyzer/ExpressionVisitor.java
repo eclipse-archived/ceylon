@@ -692,7 +692,8 @@ public class ExpressionVisitor extends Visitor {
         if (me instanceof Tree.BaseMemberExpression) {
             Tree.BaseMemberExpression bme = (Tree.BaseMemberExpression) me;
             Declaration d = bme.getDeclaration();
-            if (d!=null) { 
+            if (d instanceof TypedDeclaration) {
+                that.setDeclaration((TypedDeclaration) d);
                 Scope cs = that.getScope().getContainer();
                 if (cs instanceof ClassOrInterface && 
                         !d.isDefinedInScope(cs)) {
@@ -841,6 +842,7 @@ public class ExpressionVisitor extends Visitor {
         bme.setDeclaration(v);
         //bme.setTypeModel(v.getType());
         that.setRefinement(true);
+        that.setDeclaration(v);
     }
 
     private ProducedReference getRefinedMember(MethodOrValue sv, ClassOrInterface c) {
@@ -915,6 +917,7 @@ public class ExpressionVisitor extends Visitor {
         bme.setDeclaration(m);
         //bme.setTypeModel(v.getType());
         that.setRefinement(true);
+        that.setDeclaration(m);
     }
 
     @Override public void visit(Tree.Parameter that) {
