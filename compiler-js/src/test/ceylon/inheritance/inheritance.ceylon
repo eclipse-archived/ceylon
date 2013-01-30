@@ -9,5 +9,6 @@ shared void test() {
   testMultipleInheritance();
   bug135();
   testSelfTypes();
+  testDefaulted();
   results();
 }
