@@ -24,11 +24,9 @@ shared class SetOperators() {
         variable Set<Integer> x;
         x = a | b;
         x = a & b;
-        x = a ^ b;
         x = a ~ b;
         x |= a;
         x &= a;
-        x ^= a;
         x ~= a;
     }
 
@@ -44,7 +42,6 @@ shared class SetOperators() {
             }
         }
         variable Set<Integer&Float> x2 = a & b;
-        variable Set<Integer|Float> x3 = a ^ b;
         x1.contains(1);
         x1.contains(1.1);
         variable Set<Integer> x4 = a ~ b;
@@ -59,12 +56,10 @@ shared class SetOperators() {
     void testSetOperatorsAndInvocationOnResult(Set<Integer> a, Set<Float> b) {
         (a | a).contains(1);
         (a & a).contains(1);
-        (a ^ a).contains(1);
         (a ~ a).contains(1);
         
         (a | b).contains(3.14);
         (a & b).contains(3.14);
-        (a ^ b).contains(3.14);
         (a ~ b).contains(3.14);
     }
     
@@ -76,33 +71,27 @@ shared class SetOperators() {
     void testSetOperatorsWithErasedTypes(Set<String> setOfString, Set<Integer | Float> setOfUnionType, Set<Summable<Integer> & Empty> setOfIntersectionType, Set<Nothing> setOfNothing) {
         variable Set<Integer | Float | String> x1 = setOfUnionType | setOfString;
         variable Set<Integer | Float & String> x2 = setOfUnionType & setOfString;
-        variable Set<Integer | Float | String> x3 = setOfUnionType ^ setOfString;
         variable Set<Integer | Float> x4 = setOfUnionType ~ setOfString;
         
         variable Set<Summable<Integer> & Empty | String> y1 = setOfIntersectionType | setOfString;
         variable Set<Summable<Integer> & Empty & String> y2 = setOfIntersectionType & setOfString;
-        variable Set<Summable<Integer> & Empty | String> y3 = setOfIntersectionType ^ setOfString;
         variable Set<Summable<Integer> & Empty> y4 = setOfIntersectionType ~ setOfString;
         
         variable Set<Nothing | String> z1 = setOfNothing | setOfString;
         variable Set<Nothing & String> z2 = setOfNothing & setOfString;
-        variable Set<Nothing | String> z3 = setOfNothing ^ setOfString;
         variable Set<Nothing> z4 = setOfNothing ~ setOfString;
     }
     
     void m3(Set<Integer> a, Set<Nothing> b) {
         Set<Integer> s1 = a | b;
         Set<Nothing> s2 = a & b;
-        Set<Integer> s3 = a ^ b;
         Set<Integer> s4 = a ~ b;
         variable Set<Integer> sync;
         sync = a | b;
         sync = a & b;
-        sync = a ^ b;
         sync = a ~ b;
         sync |= a;
         sync &= a;
-        sync ^= a;
         sync ~= a;
     }
     
@@ -111,17 +100,13 @@ shared class SetOperators() {
         Set<Object> s1 = a | b;
         Set<T> s2 = a & b;
         s2.contains(t);
-        Set<Object> s3 = a ^ b;
-        s3.contains(t);
         Set<Object> s4 = a ~ b;
         variable Set<Object> sync;
         sync = a | b;
         sync = a & b;
-        sync = a ^ b;
         sync = a ~ b;
         sync |= a;
         sync &= a;
-        sync ^= a;
         sync ~= a;
     }
 }
@@ -134,11 +119,9 @@ class SetOperatorsSuper(a, b) {
     shared default void m() {
         sync = a | b;
         sync = a & b;
-        sync = a ^ b;
         sync = a ~ b;
         sync |= a;
         sync &= a;
-        sync ^= a;
         sync ~= a;
     }
 }
@@ -147,11 +130,9 @@ class SetOperatorsSub(Set<Integer> a, Set<Nothing> b) extends SetOperatorsSuper(
     shared actual void m() {
         super.sync = super.a | super.b;
         super.sync = super.a & super.b;
-        super.sync = super.a ^ super.b;
         super.sync = super.a ~ super.b;
         super.sync |= super.a;
         super.sync &= super.a;
-        super.sync ^= super.a;
         super.sync ~= super.a;
     }
 }

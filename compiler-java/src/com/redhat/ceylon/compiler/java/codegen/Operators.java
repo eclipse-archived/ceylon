@@ -105,7 +105,6 @@ public class Operators {
 
         BINARY_UNION(Tree.UnionOp.class, 2, "union"),
         BINARY_INTERSECTION(Tree.IntersectionOp.class, 2, "intersection"),
-        BINARY_XOR(Tree.XorOp.class, 2, "exclusiveUnion"),
         BINARY_COMPLEMENT(Tree.ComplementOp.class, 2, "complement"), 
         
         BINARY_EQUAL(Tree.EqualOp.class, 2, "equals", JCTree.EQ, All){
@@ -263,7 +262,6 @@ public class Operators {
         // Set assignment
         BINARY_UNION(Tree.UnionAssignOp.class, OperatorTranslation.BINARY_UNION),
         BINARY_INTERSECTION(Tree.IntersectAssignOp.class, OperatorTranslation.BINARY_INTERSECTION),
-        BINARY_XOR(Tree.XorAssignOp.class, OperatorTranslation.BINARY_XOR),
         BINARY_COMPLEMENT(Tree.ComplementAssignOp.class, OperatorTranslation.BINARY_COMPLEMENT),
         ;
         
