@@ -982,24 +982,24 @@ public class ClassTransformer extends AbstractTransformer {
             }
         }
 
-        if (useField || Decl.withinInterface(decl) || lazy) {
-            boolean generateCodeAsIfForCompanion = lazy && !Decl.withinInterface(decl);
-            if (!Decl.withinInterface(decl) || model.isShared()) {
+        boolean withinInterface = Decl.withinInterface(decl);
+        if (useField || withinInterface || lazy) {
+            if (!withinInterface || model.isShared()) {
                 // Generate getter in main class or interface (when shared)
-                classBuilder.attribute(makeGetter(decl, generateCodeAsIfForCompanion));
+                classBuilder.attribute(makeGetter(decl, false, lazy));
             }
-            if (Decl.withinInterface(decl)) {
+            if (withinInterface && lazy) {
                 // Generate getter in companion class
-                classBuilder.getCompanionBuilder((Interface)decl.getDeclarationModel().getContainer()).attribute(makeGetter(decl, true));
+                classBuilder.getCompanionBuilder((Interface)decl.getDeclarationModel().getContainer()).attribute(makeGetter(decl, true, lazy));
             }
             if (Decl.isMutable(decl)) {
-                if (!Decl.withinInterface(decl) || model.isShared()) {
+                if (!withinInterface || model.isShared()) {
                     // Generate setter in main class or interface (when shared)
-                    classBuilder.attribute(makeSetter(decl, generateCodeAsIfForCompanion));
+                    classBuilder.attribute(makeSetter(decl, false, lazy));
                 }
-                if (Decl.withinInterface(decl)) {
+                if (withinInterface) {
                     // Generate setter in companion class
-                    classBuilder.getCompanionBuilder((Interface)decl.getDeclarationModel().getContainer()).attribute(makeSetter(decl, true));
+                    classBuilder.getCompanionBuilder((Interface)decl.getDeclarationModel().getContainer()).attribute(makeSetter(decl, true, lazy));
                 }
             }
         }
@@ -1154,9 +1154,10 @@ public class ClassTransformer extends AbstractTransformer {
         return result;
     }
 
-    private AttributeDefinitionBuilder makeGetterOrSetter(Tree.AttributeDeclaration decl, boolean forCompanion, AttributeDefinitionBuilder builder, boolean isGetter) {
+    private AttributeDefinitionBuilder makeGetterOrSetter(Tree.AttributeDeclaration decl, boolean forCompanion, boolean lazy, 
+                                                          AttributeDefinitionBuilder builder, boolean isGetter) {
         at(decl);
-        if (forCompanion) {
+        if (forCompanion || lazy) {
             if (decl.getSpecifierOrInitializerExpression() != null) {
                 Value declarationModel = decl.getDeclarationModel();
                 ProducedTypedReference typedRef = getTypedReference(declarationModel);
@@ -1197,19 +1198,19 @@ public class ClassTransformer extends AbstractTransformer {
             .isFormal((Decl.isFormal(decl) || Decl.withinInterface(decl)) && !forCompanion);
     }
     
-    private AttributeDefinitionBuilder makeGetter(Tree.AttributeDeclaration decl, boolean forCompanion) {
+    private AttributeDefinitionBuilder makeGetter(Tree.AttributeDeclaration decl, boolean forCompanion, boolean lazy) {
         at(decl);
         String attrName = decl.getIdentifier().getText();
         AttributeDefinitionBuilder getter = AttributeDefinitionBuilder
             .getter(this, attrName, decl.getDeclarationModel());
-        return makeGetterOrSetter(decl, forCompanion, getter, true);
+        return makeGetterOrSetter(decl, forCompanion, lazy, getter, true);
     }
 
-    private AttributeDefinitionBuilder makeSetter(Tree.AttributeDeclaration decl, boolean forCompanion) {
+    private AttributeDefinitionBuilder makeSetter(Tree.AttributeDeclaration decl, boolean forCompanion, boolean lazy) {
         at(decl);
         String attrName = decl.getIdentifier().getText();
         AttributeDefinitionBuilder setter = AttributeDefinitionBuilder.setter(this, attrName, decl.getDeclarationModel());
-        return makeGetterOrSetter(decl, forCompanion, setter, false);
+        return makeGetterOrSetter(decl, forCompanion, lazy, setter, false);
     }
 
     public List<JCTree> transformWrappedMethod(Tree.AnyMethod def) {
