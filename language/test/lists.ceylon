@@ -56,13 +56,13 @@ void lists() {
     check(b.span(-1,-2)=={}, "LazyList.span(-1,-2) & equals");
     check(b.span(-2,2)=={1,2,3}, "LazyList.span(-2,2) & equals");
     check(b.span(2,-2)=={3,2,1}, "LazyList.span(2,-2) & equals");
-    check(b.span(2,4)=={3,4,5}, "LazyList.span(2,4) & equals");
-    check(b.span(6,10)=={7,8}, "LazyList.span(6,10) & equals");
-    check(b.spanFrom(4)=={5,6,7,8}, "LazyList.spanFrom(4) & equals");
+    check(b.span(2,4)=={3,4,5}, "LazyList.span(2,4) & equals: " b.span(2,4) " instead of {3,4,5}");
+    check(b.span(6,10)=={7,8}, "LazyList.span(6,10) & equals: " b.span(6,10) " instead of {7,8}");
+    check(b.spanFrom(4)=={5,6,7,8}, "LazyList.spanFrom(4) & equals: " b.spanFrom(4) " instead of {5,6,7,8}");
     check(b.spanFrom(10)=={}, "LazyList.spanFrom(10) & equals");
     check(b.spanTo(4)=={1,2,3,4,5}, "LazyList.spanTo(4) & equals");
     check(b.spanTo(-1)=={}, "LazyList.spanTo(-1) & equals");
-    check(b.segment(2,3)=={3,4,5}, "LazyList.segment");
+    check(b.segment(2,3)=={3,4,5}, "LazyList.segment: " b.segment(2,3) " instead of {3,4,5}");
     if (exists e=b.findLast((Integer x) => true)) {
         check(e==8, "LazyList.findLast");
     } else { fail("LazyList.findLast"); }
