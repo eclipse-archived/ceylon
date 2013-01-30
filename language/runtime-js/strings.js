@@ -35,7 +35,19 @@ String$proto.plus = function(other) {
     var size = this.codePoints + other.codePoints;
     return String$(this+other, isNaN(size)?undefined:size);
 }
-String$proto.equals = function(other) { return other.constructor===String && other.valueOf()===this.valueOf(); }
+String$proto.equals = function(other) {
+    if (other.constructor===String) {
+        return other.valueOf()===this.valueOf();
+    } else if (isOfType(other, {t:Iterable, a:{Element:{t:Character}}})) {
+        if (other.getSize()===this.getSize()) {
+            for (var i=0;i<this.getSize();i++) {
+                if (!this.get(i).equals(other.get(i))) return false;
+            }
+            return true;
+        }
+    }
+    return false;
+}
 String$proto.compare = function(other) {
     var cmp = this.localeCompare(other);
     return cmp===0 ? equal : (cmp<0 ? smaller:larger);
