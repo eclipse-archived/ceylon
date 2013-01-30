@@ -159,6 +159,69 @@ public class StatementTransformer extends AbstractTransformer {
         return make().Throw(exception);
     }
     
+    private JCThrow makeThrowAssertionException(JCExpression messageExpr) {
+        //TODO proper exception type
+        return makeThrowException(syms().ceylonExceptionType, messageExpr);
+    }
+    
+    /**
+     * Helper for constructing {@code throw AssertionException()} statements
+     * @author tom
+     */
+    class AssertionExceptionMessageBuilder {
+        
+        private JCExpression expr;
+        
+        private JCExpression cat(JCExpression str1, JCExpression str2) {
+            if (str2 == null) {
+                return str1;
+            }
+            return make().Binary(JCTree.PLUS, str1, str2);
+        }
+        
+        private JCExpression cat(JCExpression strExpr, String literal) {
+            return cat(strExpr, make().Literal(literal));
+        }
+        
+        private JCExpression newline() {
+            return make().Apply(null, 
+                    makeQualIdent(makeIdent(syms().systemType), "lineSeparator"), 
+                    List.<JCExpression>nil());
+        }
+        
+        public AssertionExceptionMessageBuilder(JCExpression expr) {
+            this.expr = expr;
+        }
+        
+        public AssertionExceptionMessageBuilder prependAssertionDoc(Tree.Assertion ass) {
+            return prependAssertionDoc(getDocAnnotationText(ass));
+        }
+        
+        public AssertionExceptionMessageBuilder prependAssertionDoc(String docText) {
+            JCExpression p = make().Literal("Assertion failed");
+            if (docText != null) {
+                p = cat(p, ": " + docText);
+            }
+            this.expr = cat(p, expr);
+            return this;
+        }
+        
+        public AssertionExceptionMessageBuilder appendViolatedCondition(String state, Tree.Condition condition) {
+            if (expr != null) {
+                expr = cat(expr, cat(newline(), make().Literal("\t" + state+ " ")));
+            } else {
+                expr = cat(newline(), make().Literal("\t" + state + " "));
+            }
+            expr = cat(expr, make().Literal(getSourceCode(condition)));
+            
+            return this;
+        }
+        
+        public JCExpression build() {
+            return expr;
+        }
+    }
+    
     abstract class CondList {
         protected final Tree.Block thenPart;
         protected final java.util.List<Condition> conditions;
@@ -514,8 +577,9 @@ public class StatementTransformer extends AbstractTransformer {
             }
             result.appendList(varDecls);
             result.appendList(stmts);
-            JCExpression message = prependFailureMessage(messageSb.makeIdent(), ass);
-            JCThrow throw_ = makeThrowAssertionFailure(message);
+            JCExpression message = new AssertionExceptionMessageBuilder(
+                    messageSb.makeIdent()).prependAssertionDoc(ass).build();
+            JCThrow throw_ = makeThrowAssertionException(message);
             if (isMulti()) {
                 result.append(make().If(
                         make().Binary(JCTree.NE, messageSb.makeIdent(), makeNull()), 
@@ -528,18 +592,18 @@ public class StatementTransformer extends AbstractTransformer {
             if (!isMulti()) {
                 return null;
             }
-            JCExpression expr = null;
+            AssertionExceptionMessageBuilder msg = new AssertionExceptionMessageBuilder(null);
             boolean seen = false;
             for (Tree.Condition condition : this.conditions) {
                 if (cond.getCondition() == condition) {
-                    expr = appendViolation(expr, "violated", condition);
+                    msg.appendViolatedCondition("violated", condition);
                     seen = true;
                     continue;
                 }
-                expr = appendViolation(expr, seen ? "untested" : "unviolated", condition);
+                msg.appendViolatedCondition(seen ? "untested" : "unviolated", condition);
             }
             return make().Block(0, List.<JCStatement>of( 
-                    make().Exec(make().Assign(messageSb.makeIdent(), expr))));
+                    make().Exec(make().Assign(messageSb.makeIdent(), msg.build()))));
         }
         
         @Override
@@ -550,54 +614,12 @@ public class StatementTransformer extends AbstractTransformer {
         @Override
         protected JCStatement transformInnermostElse(Cond cond, java.util.List<Condition> rest) {
             if (!isMulti()) {
-                return makeThrowAssertionFailure(prependFailureMessage(
-                        appendViolation(
-                                null, 
-                                "violated",
-                                cond.getCondition()),
-                        ass));
+                AssertionExceptionMessageBuilder msg = new AssertionExceptionMessageBuilder(null);
+                msg.appendViolatedCondition("violated", cond.getCondition());
+                msg.prependAssertionDoc(ass);
+                return makeThrowAssertionException(msg.build());
             }
             return transformCommonElse(cond, rest);
-        }
-
-        private JCExpression cat(JCExpression str1, JCExpression str2) {
-            return make().Binary(JCTree.PLUS, str1, str2);
-        }
-        
-        private JCExpression cat(JCExpression strExpr, String literal) {
-            return cat(strExpr, make().Literal(literal));
-        }
-        
-        private JCExpression newline() {
-            return make().Apply(null, 
-                    makeQualIdent(makeIdent(syms().systemType), "lineSeparator"), 
-                    List.<JCExpression>nil());   
-        }
-        
-        private JCExpression prependFailureMessage(JCExpression expr, Tree.Assertion ass) {
-            JCExpression p = make().Literal("Assertion failed");
-            String docText = getDocAnnotationText(ass);
-            if (docText != null) {
-                p = cat(p, ": " + docText);
-            }
-            return cat(p, expr);
-        }
-        
-        private JCExpression appendViolation(JCExpression expr, String state, Tree.Condition condition) {
-            JCExpression result;
-            if (expr != null) {
-                result = cat(expr, cat(newline(), make().Literal("\t" + state+ " ")));
-            } else {
-                result = cat(newline(), make().Literal("\t" + state + " "));
-            }
-            result = cat(result, make().Literal(getSourceCode(condition)));
-            
-            return result;
-        }
-        
-        private JCThrow makeThrowAssertionFailure(JCExpression expr) {
-            //TODO proper exception type
-            return makeThrowException(syms().ceylonExceptionType, expr);
         }
         
         @Override
