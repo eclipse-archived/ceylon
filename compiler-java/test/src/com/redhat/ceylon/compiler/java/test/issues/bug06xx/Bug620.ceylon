@@ -22,7 +22,7 @@ class Bug620<T>()
     given T satisfies Numeric<T> {
     
     void m(Numeric<T> init){
-        variable Numeric<T> n = init;
+        variable T n = init of T;
         n = n + n;
         
     }

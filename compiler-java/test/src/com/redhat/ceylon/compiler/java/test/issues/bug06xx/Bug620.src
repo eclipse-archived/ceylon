@@ -6,8 +6,8 @@ class Bug620<T extends .ceylon.language.Numeric<T>> {
     }
     
     private final void m(final .ceylon.language.Numeric<T> init) {
-        .ceylon.language.Numeric<T> n = init;
-        n = ((T)n).plus((T)n);
+        T n = (T)init;
+        n = n.plus(n);
     }
     
     public static void main(.java.lang.String[] args) {
