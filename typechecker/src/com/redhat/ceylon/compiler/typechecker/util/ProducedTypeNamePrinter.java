@@ -394,7 +394,7 @@ public class ProducedTypeNamePrinter {
                     first = false;
                 }
                 else {
-                    ptn.append(", ");
+                    ptn.append(",");
                 }
                 if (t==null) {
                     ptn.append("unknown");
