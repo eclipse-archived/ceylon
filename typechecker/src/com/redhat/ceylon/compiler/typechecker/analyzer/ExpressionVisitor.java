@@ -863,18 +863,39 @@ public class ExpressionVisitor extends Visitor {
         }*/
         ProducedReference rm = getRefinedMember(sm, c);
         m.setType(rm.getType());
+        List<Tree.ParameterList> tpls;
+        Tree.Term me = that.getBaseMemberExpression();
+        if (me instanceof Tree.ParameterizedExpression) {
+            tpls = ((Tree.ParameterizedExpression) me).getParameterLists();
+        }
+        else {
+            tpls = Collections.emptyList();
+        }
+        int i=0;
         for (ParameterList pl: sm.getParameterLists()) {
             ParameterList l = new ParameterList();
+            Tree.ParameterList tpl = tpls.size()<=i ? 
+                    null : tpls.get(i++);
+            int j=0;
             for (Parameter p: pl.getParameters()) {
-                Parameter vp = new ValueParameter();
-                vp.setSequenced(p.isSequenced());
-                vp.setDefaulted(p.isDefaulted());
-                vp.setName(p.getName());
-                vp.setType(rm.getTypedParameter(p).getFullType());
-                vp.setDeclaration(m);
-                vp.setContainer(m);
-                vp.setScope(m);
-                l.getParameters().add(vp);
+                //TODO: meaningful errors when parameters don't line up
+                //      currently this is handled elsewhere, but we can
+                //      probably do it better right here
+                if (tpl==null || tpl.getParameters().size()<=j) {
+                    Parameter vp = new ValueParameter();
+                    vp.setSequenced(p.isSequenced());
+                    vp.setDefaulted(p.isDefaulted());
+                    vp.setName(p.getName());
+                    vp.setType(rm.getTypedParameter(p).getFullType());
+                    vp.setDeclaration(m);
+                    vp.setContainer(m);
+                    vp.setScope(m);
+                    l.getParameters().add(vp);
+                }
+                else {
+                    Tree.Parameter tp = tpl.getParameters().get(j++);
+                    l.getParameters().add(tp.getDeclarationModel());
+                }
             }
             m.getParameterLists().add(l);
         }

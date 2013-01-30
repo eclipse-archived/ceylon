@@ -119,7 +119,27 @@ class Y() extends X<String>() {
     @error qux = () => "hello";
     fum = (String s) => print(s);
     fo = (String* ss) => print(", ".join(*ss));
+    @error fee = void () => 0;
+}
+
+class Z() extends X<String>() {
+    foo(String s) => print(s.uppercased);
+    bar = "hello";
+    baz(String s(Integer i)) => s(0);
+    @error qux() => "hello";
+    fum(String s) => print(s);
+    fo(String* ss) => print(", ".join(*ss));
     @error fee() => 0;
+}
+
+class W() extends X<String>() {
+    foo(@error Integer s) => print(s.float);
+    @error bar = 1;
+    baz(@error String s(String ss)) => s("");
+    @error qux() => 1;
+    fum(@error Integer s) => print(s);
+    fo(@error Integer* ss) => print(", ".join(*ss*.string));
+    @error fee(Integer i) => print(i);
 }
 
 void testxy() {
