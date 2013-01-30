@@ -4,13 +4,14 @@ import static com.redhat.ceylon.compiler.typechecker.model.Util.addToIntersectio
 import static com.redhat.ceylon.compiler.typechecker.model.Util.addToUnion;
 import static com.redhat.ceylon.compiler.typechecker.model.Util.arguments;
 import static com.redhat.ceylon.compiler.typechecker.model.Util.constructPrincipalInstantiation;
-import static com.redhat.ceylon.compiler.typechecker.model.Util.isElementOfUnion;
 import static com.redhat.ceylon.compiler.typechecker.model.Util.principalQualifyingType;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
+import com.redhat.ceylon.compiler.typechecker.util.ProducedTypeNamePrinter;
 
 
 /**
@@ -1008,7 +1009,7 @@ public class ProducedType extends ProducedReference {
         }
     }
 
-    private List<ProducedType> getSatisfiedTypes() {
+    public List<ProducedType> getSatisfiedTypes() {
         List<ProducedType> satisfiedTypes = new ArrayList<ProducedType>();
         Map<TypeParameter, ProducedType> args = getTypeArguments();
         for (ProducedType satisfiedType: getDeclaration().getSatisfiedTypes()) {
@@ -1173,11 +1174,11 @@ public class ProducedType extends ProducedReference {
     }
     
     public String getProducedTypeName() {
-        return getProducedTypeName(true, null);
+        return getProducedTypeName(null);
     }
 
     public String getProducedTypeName(Unit unit) {
-        return getProducedTypeName(true, unit);
+        return ProducedTypeNamePrinter.DEFAULT.getProducedTypeName(this, unit);
     }
     
     public String getProducedTypeName(boolean abbreviate) {
@@ -1185,328 +1186,7 @@ public class ProducedType extends ProducedReference {
     }
 
     public String getProducedTypeName(boolean abbreviate, Unit unit) {
-        if (getDeclaration()==null) {
-            return "unknown";
-        }
-        else {
-            if (abbreviate) {
-                Unit u = getDeclaration().getUnit();
-                if (abbreviateOptional()) {
-                	ProducedType dt = minus(u.getNullDeclaration());
-                	if (!dt.isPrimitiveAbbreviatedType()) {
-                		return "<" + dt.getProducedTypeName(unit) + ">?";
-                	}
-                	else {
-                		return dt.getProducedTypeName(unit) + "?";
-                	}
-                }
-                if (abbreviateEmpty()) {
-                	return "[]";
-                }
-                if (abbreviateSequential()) {
-                    ProducedType it = u.getIteratedType(this);
-                    if (!it.isPrimitiveAbbreviatedType()) {
-                    	return "<" + it.getProducedTypeName(unit) + ">[]";
-                    }
-                    else {
-                    	return it.getProducedTypeName(unit) + "[]";
-                    }
-                }
-                if (abbreviateSequence()) {
-                    ProducedType it = u.getIteratedType(this);
-                    if (!it.isPrimitiveAbbreviatedType()) {
-                    	return "[<" + it.getProducedTypeName(unit) + ">+]";
-                    }
-                    else {
-                    	return "[" + it.getProducedTypeName(unit) + "+]";
-                    }
-                }
-                if (abbreviateIterable()) {
-                    ProducedType it = u.getIteratedType(this);
-					String etn = it.getProducedTypeName(unit);
-					ProducedType nt = getTypeArgumentList().get(1);
-					String many = nt.getDeclaration() instanceof NothingType ?
-							"+":"*";
-					if (it.isPrimitiveAbbreviatedType()) {
-						return "{" + etn + many + "}";
-					}
-					else {
-						return "{<" + etn + ">" + many + "}";
-					}
-                }
-                if (abbreviateEntry()) {
-                    return u.getKeyType(this).getProducedTypeName(unit) + "->"
-                            + u.getValueType(this).getProducedTypeName(unit);
-                }
-                if (abbreviateCallable()) {
-                    List<ProducedType> tal = getTypeArgumentList();
-                    ProducedType rt = tal.get(0);
-                    String argtypes = argtypes(tal.get(1), unit);
-                    if (rt!=null && argtypes!=null) {
-                    	if (!rt.isPrimitiveAbbreviatedType()) {
-                        	return "<" + rt.getProducedTypeName(unit) + ">" + 
-                        			"(" + argtypes + ")";
-                    	}
-                    	else {
-                    		return rt.getProducedTypeName(unit) + 
-                    				"(" + argtypes + ")";
-                    	}
-                    }
-                }
-                if (abbreviateTuple()) {
-                	String argtypes = argtypes(this, unit);
-                	if (argtypes!=null) {
-                		return "[" + argtypes + "]";
-                	}
-                }
-            }
-            if (getDeclaration() instanceof UnionType) {
-                StringBuilder name = new StringBuilder();
-                for (ProducedType pt: getCaseTypes()) {
-                    if (pt==null) {
-                        name.append("unknown");
-                    }
-                    else if (abbreviate && pt.abbreviateEntry()) {
-                        name.append("<").append(pt.getProducedTypeName(unit)).append(">");
-                    }
-                    else {
-                        name.append(pt.getProducedTypeName(abbreviate, unit));
-                    }
-                    name.append("|");
-                }
-                return name.substring(0,name.length()>0?name.length()-1:0);
-            }
-            else if (getDeclaration() instanceof IntersectionType) {
-                StringBuilder name = new StringBuilder();
-                for (ProducedType pt: getSatisfiedTypes()) {
-                    if (pt==null) {
-                        name.append("unknown");
-                    }
-                    else if (abbreviate && pt.abbreviateEntry() || 
-                    		pt.getDeclaration() instanceof UnionType) {
-                        name.append("<").append(pt.getProducedTypeName(abbreviate, unit)).append(">");
-                    }
-                    else {
-                        name.append(pt.getProducedTypeName(abbreviate, unit));
-                    }
-                    name.append("&");
-                }
-                return name.substring(0,name.length()>0?name.length()-1:0);
-            }
-            else {            
-                return getSimpleProducedTypeName(abbreviate, unit);
-            }
-        }
-    }
-
-	private boolean abbreviateTuple() {
-		return getDeclaration() instanceof Class && 
-				getDeclaration().equals(getDeclaration().getUnit()
-						.getTupleDeclaration());
-	}
-    
-    private static String argtypes(ProducedType args, Unit unit) {
-    	if (args!=null) {
-        	Unit u = args.getDeclaration().getUnit();
-			boolean defaulted=false;
-			if (args.getDeclaration() instanceof UnionType) {
-	        	List<ProducedType> cts = args.getDeclaration().getCaseTypes();
-	        	if (cts.size()==2) {
-	        		TypeDeclaration lc = cts.get(0).getDeclaration();
-					if (lc instanceof Interface && 
-							lc.equals(u.getEmptyDeclaration())) {
-						args = cts.get(1);
-	        			defaulted = true;
-	        		}
-	        		TypeDeclaration rc = cts.get(1).getDeclaration();
-					if (lc instanceof Interface &&
-							rc.equals(u.getEmptyDeclaration())) {
-						args = cts.get(0);
-	        			defaulted = true;
-	        		}
-	        	}
-			}
-    		if (args.getDeclaration() instanceof ClassOrInterface) {
-    			if (args.getDeclaration().equals(u.getTupleDeclaration())) {
-    				List<ProducedType> tal = args.getTypeArgumentList();
-    				if (tal.size()>=3) {
-    					ProducedType first = tal.get(1);
-    					ProducedType rest = tal.get(2);
-    					if (first!=null && rest!=null) {
-    						String argtype = first.getProducedTypeName(unit);
-    						if (rest.getDeclaration() instanceof Interface &&
-    								rest.getDeclaration().equals(u.getEmptyDeclaration())) {
-    							return defaulted ? argtype + "=" : argtype;
-    						}
-    						String argtypes = argtypes(rest, unit);
-    						if (argtypes!=null) {
-    							return defaulted ? 
-    									argtype + "=, " + argtypes : 
-    									argtype + ", " + argtypes;
-    						}
-    					}
-    				}
-    			}
-    			else if (args.getDeclaration().equals(u.getEmptyDeclaration())) {
-    				return defaulted ? "=" : "";
-    			}
-    			else if (!defaulted && args.getDeclaration().equals(u.getSequentialDeclaration())) {
-    				ProducedType elementType = u.getIteratedType(args);
-    				if (elementType!=null) {
-						String etn = elementType.getProducedTypeName(unit);
-    					if (elementType.isPrimitiveAbbreviatedType()) {
-							return etn + "*";
-    					}
-    					else {
-    						return "<" + etn + ">*";
-    					}
-    				}
-    			}
-    			else if (!defaulted && args.getDeclaration().equals(u.getSequenceDeclaration())) {
-    				ProducedType elementType = u.getIteratedType(args);
-    				if (elementType!=null) {
-						String etn = elementType.getProducedTypeName(unit);
-    					if (elementType.isPrimitiveAbbreviatedType()) {
-							return etn + "+";
-    					}
-    					else {
-    						return "<" + etn + ">+";
-    					}
-    				}
-    			}
-    		}
-    	}
-    	return null;
-    }
-
-    private boolean abbreviateEntry() {
-        Unit unit = getDeclaration().getUnit();
-        if (getDeclaration() instanceof Class &&
-            getDeclaration().equals(unit.getEntryDeclaration()) &&
-                getTypeArgumentList().size()==2) {
-            ProducedType kt = unit.getKeyType(this);
-            ProducedType vt = unit.getValueType(this);
-            return kt!=null && vt!=null; /*&&
-                    kt.isPrimitiveAbbreviatedType() && 
-                    vt.isPrimitiveAbbreviatedType();*/
-        }
-        else {
-            return false;
-        }
-    }
-
-    private boolean abbreviateCallable() {
-        return getDeclaration() instanceof Interface &&
-                getDeclaration().equals(getDeclaration().getUnit().getCallableDeclaration()) &&
-                getTypeArgumentList().size()>0 && getTypeArgumentList().get(0)!=null &&
-//                getTypeArgumentList().get(0).isPrimitiveAbbreviatedType() &&
-                getTypeArgumentList().size()==getDeclaration().getTypeParameters().size();
-    }
-
-    private boolean abbreviateSequence() {
-    	if (getDeclaration() instanceof Interface) {
-    		Unit unit = getDeclaration().getUnit();
-    		if (getDeclaration().equals(unit.getSequenceDeclaration())) {
-    			ProducedType et = unit.getIteratedType(this);
-				return et!=null;// && et.isPrimitiveAbbreviatedType();
-    		}
-    	}
-    	return false;
-    }
-
-    private boolean abbreviateSequential() {
-    	if (getDeclaration() instanceof Interface) {
-    		Unit unit = getDeclaration().getUnit();
-    		if (getDeclaration().equals(unit.getSequentialDeclaration())) {
-    			ProducedType et = unit.getIteratedType(this);
-				return et!=null;// && et.isPrimitiveAbbreviatedType();
-    		}
-    	}
-    	return false;
-    }
-
-    private boolean abbreviateIterable() {
-    	if (getDeclaration() instanceof Interface) {
-    		Unit unit = getDeclaration().getUnit();
-    		if (getDeclaration().equals(unit.getIterableDeclaration())) {
-    			ProducedType et = unit.getIteratedType(this);
-				if (et!=null && getTypeArgumentList().size()==2) {
-					ProducedType at = getTypeArgumentList().get(1);
-					if (at!=null) {
-						TypeDeclaration d = at.getDeclaration();
-						return d instanceof NothingType ||
-								d instanceof ClassOrInterface && 
-								d.equals(unit.getNullDeclaration());
-					}
-				}// && et.isPrimitiveAbbreviatedType();
-    		}
-    	}
-    	return false;
-    }
-
-    private boolean abbreviateEmpty() {
-    	if (getDeclaration() instanceof Interface) {
-    		Unit unit = getDeclaration().getUnit();
-    		return getDeclaration().equals(unit.getEmptyDeclaration());
-    	}
-    	return false;
-    }
-    
-    private boolean abbreviateOptional() {
-        if (getDeclaration() instanceof UnionType) {
-            Unit unit = getDeclaration().getUnit();
-            UnionType ut = (UnionType) getDeclaration();
-            return ut.getCaseTypes().size()==2 &&
-                    isElementOfUnion(ut, unit.getNullDeclaration()); /*&&
-                    minus(unit.getNullDeclaration()).isPrimitiveAbbreviatedType();*/
-        }
-        else {
-            return false;
-        }
-    }
-
-    private boolean isPrimitiveAbbreviatedType() {
-        if (getDeclaration() instanceof IntersectionType) {
-            return false;
-        }
-        else if (getDeclaration() instanceof UnionType) {
-            return abbreviateOptional();
-        }
-        else {
-            return !abbreviateEntry();
-        }
-    }
-    
-    private String getSimpleProducedTypeName(boolean abbreviate, Unit unit) {
-        StringBuilder ptn = new StringBuilder();
-        //if (getDeclaration().isMember()) {
-        ProducedType qt = getQualifyingType();
-        if (qt!=null) {
-            ptn.append(qt.getProducedTypeName(abbreviate, unit))
-                .append(".");
-        }
-        //}
-        ptn.append(getDeclaration().getName(unit));
-        if (!getTypeArgumentList().isEmpty()) {
-            ptn.append("<");
-            boolean first = true;
-            for (ProducedType t: getTypeArgumentList()) {
-                if (first) {
-                    first = false;
-                }
-                else {
-                    ptn.append(",");
-                }
-                if (t==null) {
-                    ptn.append("unknown");
-                }
-                else {
-                    ptn.append(t.getProducedTypeName(abbreviate, unit));
-                }
-            }
-            ptn.append(">");
-        }
-        return ptn.toString();
+        return new ProducedTypeNamePrinter(abbreviate).getProducedTypeName(this, unit);
     }
 
     private String getSimpleProducedTypeQualifiedName() {
