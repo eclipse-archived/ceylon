@@ -1824,6 +1824,7 @@ ifComprehensionClause returns [IfComprehensionClause comprehensionClause]
     ;
     
 assignmentExpression returns [Term term]
+    @init { QualifiedMemberOrTypeExpression qe=null; }
     : ee1=thenElseExpression
       { $term = $ee1.term; }
       (
@@ -1833,6 +1834,23 @@ assignmentExpression returns [Term term]
         ee2=functionOrExpression
         { if ($ee2.expression!=null)
               $assignmentOperator.operator.setRightTerm($ee2.expression.getTerm()); }
+      | memberReference
+        { qe = new QualifiedMemberExpression(null);
+          Expression e = new Expression(null);
+          e.setTerm($term);
+          qe.setPrimary(e);
+          qe.setMemberOperator(new MemberOp(null));
+          qe.setIdentifier($memberReference.identifier);
+          qe.setTypeArguments( new InferredTypeArguments(null) );
+          if ($memberReference.typeArgumentList!=null)
+              qe.setTypeArguments($memberReference.typeArgumentList); }
+        positionalArgument
+        { InvocationExpression ie = new InvocationExpression(null);
+          ie.setPrimary(qe);
+          PositionalArgumentList al = new PositionalArgumentList(null);
+          al.addPositionalArgument($positionalArgument.positionalArgument); 
+          ie.setPositionalArgumentList(al);
+          $term = ie; }
       )?
     ;
 
