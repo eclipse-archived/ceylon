@@ -59,6 +59,7 @@ import com.redhat.ceylon.compiler.typechecker.model.UnionType;
 import com.redhat.ceylon.compiler.typechecker.model.Value;
 import com.redhat.ceylon.compiler.typechecker.tree.Node;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree;
+import com.redhat.ceylon.compiler.typechecker.tree.Tree.BaseMemberExpression;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.Comprehension;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.Condition;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.DefaultArgument;
@@ -2561,7 +2562,7 @@ public class ExpressionTransformer extends AbstractTransformer {
             }
             
             if (qualExpr == null && needDollarThis(expr)) {
-                qualExpr = naming.makeQuotedThis();
+                qualExpr = makeQualifiedDollarThis((Tree.BaseMemberExpression)expr);
             }
             if (qualExpr == null && decl.isStaticallyImportable()) {
                 qualExpr = naming.makeQuotedFQIdent(Decl.className((Declaration) decl.getContainer()));
@@ -2597,23 +2598,49 @@ public class ExpressionTransformer extends AbstractTransformer {
     //
     // Array access
 
+    private JCExpression makeQualifiedDollarThis(BaseMemberExpression expr) {
+        Declaration decl = expr.getDeclaration();
+        Interface interf = (Interface) Decl.getClassOrInterfaceContainer(decl);
+        // find the target container interface that is or satisfies the given interface
+        Scope scope = expr.getScope();
+        boolean needsQualified = false;
+        while(scope != null){
+            if(scope instanceof Interface){
+                if(scope == interf || ((Interface)scope).inherits(interf)){
+                    break;
+                }
+                // we only need to qualify it if we're aiming for a $this of an outer interface than the interface we are caught in
+                needsQualified = true;
+            }
+            scope = scope.getContainer();
+        }
+        if(!needsQualified)
+            return naming.makeQuotedThis();
+        interf = (Interface) scope;
+        JCExpression qualifiedCompanionThis = naming.makeQualifiedThis(makeJavaType(interf.getType(), JT_COMPANION | JT_RAW));
+        return naming.makeQualifiedDollarThis(qualifiedCompanionThis);
+    }
+
     private boolean needDollarThis(Tree.StaticMemberOrTypeExpression expr) {
         if (expr instanceof Tree.BaseMemberExpression) {
             // We need to add a `$this` prefix to the member expression if:
             // * The member was declared on an interface I and
             // * The member is being used in the companion class of I or 
-            //   some subinterface of I, and 
+            //   // REMOVED: some subinterface of I, and
+            //   some member type of I, and
             // * The member is shared (non-shared means its only on the companion class)
+            // FIXME: https://github.com/ceylon/ceylon-compiler/issues/1019
             final Declaration decl = expr.getDeclaration();
+            if(!Decl.withinInterface(decl))
+                return false;
             
             // Find the method/getter/setter where the expr is being used
             Scope scope = expr.getScope();
-            while (Decl.isLocalScope(scope)) {
+            while (scope != null && scope instanceof Interface == false) {
                 scope = scope.getContainer();
             }
-            // Is it being used in an interface (=> impl) which is a subtyle of the declaration
-            if (scope instanceof Interface
-                    && ((Interface) scope).getType().isSubtypeOf(scope.getDeclaringType(decl))) {
+            // Is it being used in an interface (=> impl)
+            if (scope instanceof Interface) {
                 return decl.isShared();
             }
         }

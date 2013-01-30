@@ -710,7 +710,11 @@ public class Naming implements LocalId {
     JCExpression makeQuotedThis() {
         return makeUnquotedIdent("$this");
     }
-    
+
+    JCExpression makeQualifiedDollarThis(JCExpression qualifier) {
+        return maker.Select(qualifier, makeUnquotedName("$this"));
+    }
+
     /**
      * Makes an ident for @{code super}.
      */
