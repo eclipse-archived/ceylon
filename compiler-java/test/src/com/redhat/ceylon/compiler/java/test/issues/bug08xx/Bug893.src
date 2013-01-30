@@ -24,10 +24,6 @@ public final class XIterable893$impl<Element> {
     public final .com.redhat.ceylon.compiler.java.test.issues.bug08xx.XIterable893<? extends Element> getFail1() {
         return (.com.redhat.ceylon.compiler.java.test.issues.bug08xx.XIterable893).ceylon.language.nothing_.getNothing$();
     }
-    
-    public final .com.redhat.ceylon.compiler.java.test.issues.bug08xx.XIterable893<? extends Element> getFail2() {
-        return $this.getFail2();
-    }
 }
 public interface XSequential893<Element> extends .com.redhat.ceylon.compiler.java.test.issues.bug08xx.XIterable893<Element> {
     
@@ -59,18 +55,6 @@ public final class XSequence893$impl<Element> {
         this.$this = $this;
     }
     private final .com.redhat.ceylon.compiler.java.test.issues.bug08xx.XSequence893<? extends Element> $this;
-    
-    public final .com.redhat.ceylon.compiler.java.test.issues.bug08xx.XIterable893<? extends Element> getSuccess() {
-        return $this.getSuccess();
-    }
-    
-    public final .com.redhat.ceylon.compiler.java.test.issues.bug08xx.XIterable893<? extends Element> getFail1() {
-        return $this.getFail1();
-    }
-    
-    public final .com.redhat.ceylon.compiler.java.test.issues.bug08xx.XIterable893<? extends Element> getFail2() {
-        return $this.getFail2();
-    }
 }
 public interface XEmpty893 extends .com.redhat.ceylon.compiler.java.test.issues.bug08xx.XSequential893<.java.lang.Object> {
     

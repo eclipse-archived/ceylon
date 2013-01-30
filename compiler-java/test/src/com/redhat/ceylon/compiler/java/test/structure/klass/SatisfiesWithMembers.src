@@ -19,14 +19,6 @@ final class SatisfiesWithMembers$impl {
     }
     private final .com.redhat.ceylon.compiler.java.test.structure.klass.SatisfiesWithMembers $this;
     
-    public final boolean getB() {
-        return $this.getB();
-    }
-    
-    public final boolean getB2() {
-        return $this.getB2();
-    }
-    
     public final void setB2(final boolean b2) {
         $this.setB2(b2);
     }

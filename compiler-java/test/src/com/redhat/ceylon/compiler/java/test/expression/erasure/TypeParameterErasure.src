@@ -14,10 +14,6 @@ final class TPETop$impl {
         this.$this = $this;
     }
     private final .com.redhat.ceylon.compiler.java.test.expression.erasure.TPETop $this;
-    
-    public final long getTopAttribute() {
-        return $this.getTopAttribute();
-    }
 }
 interface TPELeft extends .com.redhat.ceylon.compiler.java.test.expression.erasure.TPETop {
     
@@ -33,10 +29,6 @@ final class TPELeft$impl {
         this.$this = $this;
     }
     private final .com.redhat.ceylon.compiler.java.test.expression.erasure.TPELeft $this;
-    
-    public final long getLeftAttribute() {
-        return $this.getLeftAttribute();
-    }
 }
 interface TPERight extends .com.redhat.ceylon.compiler.java.test.expression.erasure.TPETop {
     
@@ -52,10 +44,6 @@ final class TPERight$impl {
         this.$this = $this;
     }
     private final .com.redhat.ceylon.compiler.java.test.expression.erasure.TPERight $this;
-    
-    public final long getRightAttribute() {
-        return $this.getRightAttribute();
-    }
 }
 class TPECLeft implements .com.redhat.ceylon.compiler.java.test.expression.erasure.TPELeft {
     

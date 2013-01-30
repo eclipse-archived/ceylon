@@ -46,10 +46,6 @@ class DefaultSetter {
         }
         private final .com.redhat.ceylon.compiler.java.test.structure.concrete.DefaultSetter$I $this;
         
-        public final long getAFormal() {
-            return $this.getAFormal();
-        }
-        
         public final void setAFormal(final long aFormal) {
             $this.setAFormal(aFormal);
         }

@@ -12,10 +12,6 @@ final class I$impl {
         this.$this = $this;
     }
     private final .com.redhat.ceylon.compiler.java.test.issues.bug06xx.I $this;
-    
-    public final .ceylon.language.Integer getX() {
-        return $this.getX();
-    }
 }
 class C implements .com.redhat.ceylon.compiler.java.test.issues.bug06xx.I {
     

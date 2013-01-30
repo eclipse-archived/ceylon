@@ -12,10 +12,6 @@ final class Bug329_Something$impl {
         this.$this = $this;
     }
     private final .com.redhat.ceylon.compiler.java.test.issues.bug03xx.Bug329_Something $this;
-    
-    public final .java.lang.Object getSomething() {
-        return $this.getSomething();
-    }
 }
 final class bug329_se_ implements .com.redhat.ceylon.compiler.java.test.issues.bug03xx.Bug329_Something {
     

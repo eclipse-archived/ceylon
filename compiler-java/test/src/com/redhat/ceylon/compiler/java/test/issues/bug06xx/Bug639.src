@@ -12,10 +12,6 @@ final class Bug639Widening$impl {
         this.$this = $this;
     }
     private final .com.redhat.ceylon.compiler.java.test.issues.bug06xx.Bug639Widening $this;
-    
-    public final .java.lang.Object getImplementation() {
-        return $this.getImplementation();
-    }
 }
 class Bug639WideningImpl implements .com.redhat.ceylon.compiler.java.test.issues.bug06xx.Bug639Widening {
     

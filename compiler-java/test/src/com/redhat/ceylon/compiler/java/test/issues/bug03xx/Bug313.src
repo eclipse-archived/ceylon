@@ -33,10 +33,6 @@ final class Bug310$impl {
         this.$this = $this;
     }
     private final .com.redhat.ceylon.compiler.java.test.issues.bug03xx.Bug310 $this;
-    
-    public final long getI() {
-        return $this.getI();
-    }
 }
 final class bug310_ {
     

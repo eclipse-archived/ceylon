@@ -18,14 +18,6 @@ final class Top$impl {
         this.$this = $this;
     }
     private final .com.redhat.ceylon.compiler.java.test.expression.erasure.Top $this;
-    
-    public final long getTopAttribute() {
-        return $this.getTopAttribute();
-    }
-    
-    public final .java.lang.Object getLeftAndRightAttribute() {
-        return $this.getLeftAndRightAttribute();
-    }
 }
 interface Left extends .com.redhat.ceylon.compiler.java.test.expression.erasure.Top {
     
@@ -41,10 +33,6 @@ final class Left$impl {
         this.$this = $this;
     }
     private final .com.redhat.ceylon.compiler.java.test.expression.erasure.Left $this;
-    
-    public final long getLeftAttribute() {
-        return $this.getLeftAttribute();
-    }
 }
 interface Right extends .com.redhat.ceylon.compiler.java.test.expression.erasure.Top {
     
@@ -60,10 +48,6 @@ final class Right$impl {
         this.$this = $this;
     }
     private final .com.redhat.ceylon.compiler.java.test.expression.erasure.Right $this;
-    
-    public final long getRightAttribute() {
-        return $this.getRightAttribute();
-    }
 }
 class CMiddle implements .com.redhat.ceylon.compiler.java.test.expression.erasure.Left, .com.redhat.ceylon.compiler.java.test.expression.erasure.Right {
     

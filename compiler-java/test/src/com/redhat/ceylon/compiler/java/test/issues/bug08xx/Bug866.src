@@ -17,10 +17,6 @@ final class Bug866_Visitable$impl<Visited extends .com.redhat.ceylon.compiler.ja
     }
     private final .com.redhat.ceylon.compiler.java.test.issues.bug08xx.Bug866_Visitable<Visited> $this;
     
-    public final .java.lang.String getDescription() {
-        return $this.getDescription();
-    }
-    
     private void visitChildren(final .ceylon.language.Callable<? extends .java.lang.Object> f, final .ceylon.language.Callable<? extends .java.lang.Object> dispatcher) {
         .java.lang.Object $elem$0;
         for (.ceylon.language.Iterator<? extends .java.lang.Object> $child$iter$1 = $this.getIterator(); !(($elem$0 = $child$iter$1.next()) instanceof .ceylon.language.Finished); ) {

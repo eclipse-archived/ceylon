@@ -377,10 +377,6 @@ final class Barface$impl {
     }
     private final .com.redhat.ceylon.compiler.java.test.expression.invoke.Barface $this;
     
-    public final long getProp() {
-        return $this.getProp();
-    }
-    
     public final .java.lang.Object f1() {
         return (
             let

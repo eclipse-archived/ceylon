@@ -19,16 +19,8 @@ final class Boxer$impl<T> {
     }
     private final .com.redhat.ceylon.compiler.java.test.issues.bug02xx.Boxer<T> $this;
     
-    public final T getOne() {
-        return $this.getOne();
-    }
-    
     public final void setOne(final T one) {
         $this.setOne(one);
-    }
-    
-    public final T getTwo() {
-        return $this.getTwo();
     }
     
     public final void setTwo(final T two) {

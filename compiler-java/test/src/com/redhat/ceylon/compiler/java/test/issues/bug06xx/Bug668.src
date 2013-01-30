@@ -12,10 +12,6 @@ public final class Bug668_X$impl<Element, Nada> {
         this.$this = $this;
     }
     private final .com.redhat.ceylon.compiler.java.test.issues.bug06xx.Bug668_X<? extends Element, ? extends Nada> $this;
-    
-    public final .java.lang.Object getFirst() {
-        return $this.getFirst();
-    }
 }
 public interface Bug668_Y<Element> extends .com.redhat.ceylon.compiler.java.test.issues.bug06xx.Bug668_X<Element, .java.lang.Object> {
     

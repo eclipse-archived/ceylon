@@ -47,10 +47,6 @@ final class RIC_Top$impl<T> {
         this.$this = $this;
     }
     private final .com.redhat.ceylon.compiler.java.test.structure.klass.RIC_Top<? extends T> $this;
-    
-    public final T getVal() {
-        return $this.getVal();
-    }
 }
 abstract class RIC_Middle implements .com.redhat.ceylon.compiler.java.test.structure.klass.RIC_Top<.com.redhat.ceylon.compiler.java.test.structure.klass.RIC_A> {
     

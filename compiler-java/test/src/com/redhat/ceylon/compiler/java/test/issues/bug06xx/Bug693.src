@@ -12,10 +12,6 @@ public final class Bug693_Interface$impl {
         this.$this = $this;
     }
     private final .com.redhat.ceylon.compiler.java.test.issues.bug06xx.Bug693_Interface $this;
-    
-    public final .ceylon.language.Integer getX() {
-        return $this.getX();
-    }
 }
 public class Bug693_Class implements .com.redhat.ceylon.compiler.java.test.issues.bug06xx.Bug693_Interface {
     

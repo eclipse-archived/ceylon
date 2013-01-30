@@ -24,22 +24,6 @@ final class Bug260_Interface$impl {
         this.$this = $this;
     }
     private final .com.redhat.ceylon.compiler.java.test.issues.bug02xx.Bug260_Interface $this;
-    
-    public final .ceylon.language.Integer getAttr() {
-        return $this.getAttr();
-    }
-    
-    public final .ceylon.language.Integer getAttrGetter() {
-        return $this.getAttrGetter();
-    }
-    
-    public final .com.redhat.ceylon.compiler.java.test.issues.bug02xx.Bug260_Interface2 getAttr2() {
-        return $this.getAttr2();
-    }
-    
-    public final .com.redhat.ceylon.compiler.java.test.issues.bug02xx.Bug260_Interface2 getAttr3() {
-        return $this.getAttr3();
-    }
 }
 interface Bug260_Interface2 {
     

@@ -182,14 +182,6 @@ final class RefiningAnythingMembersInterface$impl<T> {
     public T defaultReturnsT() {
         return $this.getDefaultGetterT();
     }
-    
-    public final .java.lang.Object getFormalGetterAnything() {
-        return $this.getFormalGetterAnything();
-    }
-    
-    public final T getFormalGetterT() {
-        return $this.getFormalGetterT();
-    }
 }
 abstract class RefiningAnythingMembersInterface_Boxed implements .com.redhat.ceylon.compiler.java.test.structure.klass.RefiningAnythingMembersInterface<.java.lang.Object> {
     

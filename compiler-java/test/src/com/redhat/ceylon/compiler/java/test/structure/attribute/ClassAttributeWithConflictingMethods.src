@@ -56,10 +56,6 @@ final class InterfaceAttributeWithConflictingMethods$impl {
     }
     private final .com.redhat.ceylon.compiler.java.test.structure.attribute.InterfaceAttributeWithConflictingMethods $this;
     
-    public final .java.lang.String getAttr() {
-        return $this.getAttr();
-    }
-    
     public final void setAttr(final .java.lang.String attr) {
         $this.setAttr(attr);
     }

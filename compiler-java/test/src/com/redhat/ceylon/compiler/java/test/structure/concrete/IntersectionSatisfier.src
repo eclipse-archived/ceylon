@@ -12,10 +12,6 @@ final class IntersectionSatisfier_X$impl<T, N> {
         this.$this = $this;
     }
     private final .com.redhat.ceylon.compiler.java.test.structure.concrete.IntersectionSatisfier_X<? extends T, ? extends N> $this;
-    
-    public final .java.lang.Object getX() {
-        return $this.getX();
-    }
 }
 interface IntersectionSatisfier_I1<T> extends .com.redhat.ceylon.compiler.java.test.structure.concrete.IntersectionSatisfier_X<T, .java.lang.Object> {
     

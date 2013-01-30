@@ -29,10 +29,6 @@ final class RawInv$impl<T, U> {
     }
     private final .com.redhat.ceylon.compiler.java.test.structure.concrete.RawInv<T, U> $this;
     
-    public final T getA() {
-        return $this.getA();
-    }
-    
     public final T getADefault() {
         throw new .ceylon.language.Exception(null, null);
     }
@@ -56,10 +52,6 @@ final class RawInv$impl<T, U> {
     
     public final T mDefaulted$t() {
         return null;
-    }
-    
-    public final U getA2() {
-        return $this.getA2();
     }
 }
 class RawInvImplementor<X, Y> implements .com.redhat.ceylon.compiler.java.test.structure.concrete.RawInv<.java.lang.Object, Y> {
@@ -233,20 +225,12 @@ final class RawOut$impl<T, U> {
     }
     private final .com.redhat.ceylon.compiler.java.test.structure.concrete.RawOut<? extends T, U> $this;
     
-    public final T getA() {
-        return $this.getA();
-    }
-    
     public final T getADefault() {
         throw new .ceylon.language.Exception(null, null);
     }
     
     public T mDefault() {
         throw new .ceylon.language.Exception(null, null);
-    }
-    
-    public final U getA2() {
-        return $this.getA2();
     }
 }
 class RawOutImplementor<X, Y> implements .com.redhat.ceylon.compiler.java.test.structure.concrete.RawOut<.java.lang.Object, Y> {
