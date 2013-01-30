@@ -23,8 +23,9 @@ import com.redhat.ceylon.compiler.typechecker.tree.Visitor;
  */
 public class ValueVisitor extends Visitor {
     
-    private TypedDeclaration declaration;
+    private final TypedDeclaration declaration;
     private boolean inCapturingScope = false;
+    private int sameScope;
     
     public ValueVisitor(TypedDeclaration declaration) {
         this.declaration = declaration;
@@ -62,7 +63,7 @@ public class ValueVisitor extends Visitor {
                     ((Value) d).setCaptured(true);
                 }
                 else if (d instanceof Parameter) {
-                    if (!d.getContainer().equals(that.getScope())) { //a reference from a default argument 
+                    if (!d.getContainer().equals(that.getScope()) || sameScope>0) { //a reference from a default argument 
                                                                      //expression of the same parameter 
                                                                      //list does not capture a parameter
                         ((Parameter) d).setCaptured(true);
@@ -165,7 +166,10 @@ public class ValueVisitor extends Visitor {
     @Override
     public void visit(LazySpecifierExpression that) {
         boolean cs = enterCapturingScope();
-        super.visit(that);
+        sameScope++;
+        that.getExpression().visit(this);
+        sameScope--;
         exitCapturingScope(cs);
     }
+
 }
