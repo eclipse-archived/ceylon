@@ -41,6 +41,7 @@ public class JsModuleManager extends ModuleManager {
             List<PhasedUnits> phasedUnitsOfDependencies, boolean forCompiledModule) {
         if (!clLoaded) {
             clLoaded = true;
+            //If we haven't loaded the language module yet, we need to load it first
             if (!("ceylon.language".equals(artifact.name()) && artifact.artifact().getName().endsWith(".js"))) {
                 if (clmod == null) {
                     ArtifactContext ac = new ArtifactContext("ceylon.language", module.getLanguageModule().getVersion());
@@ -49,12 +50,12 @@ public class JsModuleManager extends ModuleManager {
                     ac.setSuffix(".js");
                     ArtifactResult lmar = getContext().getRepositoryManager().getArtifactResult(ac);
                     resolveModule(lmar, module.getLanguageModule(), null, dependencyTree,
-                            phasedUnitsOfDependencies, true);
+                            phasedUnitsOfDependencies, forCompiledModule);
                 } else {
                     loadModuleFromMap(artifact, module, moduleImport, dependencyTree, phasedUnitsOfDependencies, forCompiledModule, clmod);
                 }
-                return;
             }
+            //Then we continue loading whatever they asked for first.
         }
         //Create a similar artifact but with .js extension
         File js = artifact.artifact();
