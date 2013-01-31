@@ -83,7 +83,6 @@ import com.sun.tools.javac.code.Flags;
 import com.sun.tools.javac.code.TypeTags;
 import com.sun.tools.javac.tree.JCTree;
 import com.sun.tools.javac.tree.JCTree.JCBlock;
-import com.sun.tools.javac.tree.JCTree.JCConditional;
 import com.sun.tools.javac.tree.JCTree.JCExpression;
 import com.sun.tools.javac.tree.JCTree.JCExpressionStatement;
 import com.sun.tools.javac.tree.JCTree.JCLiteral;
@@ -119,7 +118,6 @@ public class ExpressionTransformer extends AbstractTransformer {
     private boolean withinInvocation = false;
     private boolean withinCallableInvocation = false;
     private Tree.ClassOrInterface withinSuperInvocation = null;
-    private boolean outerCompanion;
     
     /** 
      * Whether there is an uninitialized object reference on the operand stack. 
@@ -958,9 +956,6 @@ public class ExpressionTransformer extends AbstractTransformer {
         at(expr);
         
         ProducedType outerClass = com.redhat.ceylon.compiler.typechecker.model.Util.getOuterClassOrInterface(expr.getScope());
-        if (outerCompanion) {
-            return naming.makeQuotedThis();
-        }
         final TypeDeclaration outerDeclaration = outerClass.getDeclaration();
         if (outerDeclaration instanceof Interface) {
             return naming.makeQualifiedThis(makeJavaType(outerClass, JT_COMPANION | JT_RAW));
@@ -2364,14 +2359,10 @@ public class ExpressionTransformer extends AbstractTransformer {
     private JCExpression transformQualifiedMemberPrimary(Tree.QualifiedMemberOrTypeExpression expr) {
         if(expr.getTarget() == null)
             return makeErroneous();
-        boolean prevOuterCompanion = this.outerCompanion;
-        this.outerCompanion = expr.getPrimary() instanceof Tree.Outer
-            && expr.getDeclaration().isFormal();
-        
         BoxingStrategy boxing = (Decl.isValueTypeDecl(expr.getPrimary())) ? BoxingStrategy.UNBOXED : BoxingStrategy.BOXED;
         JCExpression result = transformExpression(expr.getPrimary(), boxing, 
                 expr.getTarget().getQualifyingType());
-        this.outerCompanion = prevOuterCompanion;
+        
         return result;
     }
     
