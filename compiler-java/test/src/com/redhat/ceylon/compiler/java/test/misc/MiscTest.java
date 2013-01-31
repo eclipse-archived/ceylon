@@ -87,7 +87,7 @@ public class MiscTest extends CompilerTest {
                 // Native files
                 "Array", "Boolean", "Callable", "Character", "className",
                 "Exception", "flatten", "Float", "identityHash", "Integer", "internalFirst", "internalSort", 
-                "Keys", "language", "process",
+                "Keys", "language", "process", "integerRangeByIterable",
                 "SequenceBuilder", "SequenceAppender", "String", "StringBuilder", "unflatten",
                 // Problem files
                 "LazySet"
@@ -96,7 +96,7 @@ public class MiscTest extends CompilerTest {
         }
         String[] extras = new String[]{
                 "array", "arrayOfSize", "copyArray", "false", "infinity",
-                "parseFloat", "parseInteger", "string", "true"
+                "parseFloat", "parseInteger", "string", "true", "integerRangeByIterable"
         };
         
         for(String pkg : ceylonPackages){
