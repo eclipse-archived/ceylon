@@ -389,8 +389,7 @@ shared native interface Iterable<out Element, out Absent=Null>
                             i++;
                             next = iter.next();
                         }
-                        if (!is Finished n=next) {
-                            assert(exists n);
+                        if (!is Finished n=next, exists n) {
                             return i++->n;
                         } else {
                             return finished;
