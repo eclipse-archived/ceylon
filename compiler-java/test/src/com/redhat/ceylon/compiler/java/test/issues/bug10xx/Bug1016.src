@@ -9,7 +9,7 @@ final class bug1016_ {
         .java.lang.Object $iterable$1;
         if (($iterable$1 = iterable) instanceof .ceylon.language.Sequential) {
             final .ceylon.language.Sequential<? extends .java.lang.Object> $iterable$2 = (.ceylon.language.Sequential)$iterable$1;
-            final .ceylon.language.Sequence<? extends .java.lang.Object> sequence = (.ceylon.language.Sequence)$iterable$2;
+            final .ceylon.language.Sequence<? extends .java.lang.Object> sequence = (.ceylon.language.Sequence<? extends .java.lang.Object>)(.ceylon.language.Sequence)$iterable$2;
         }
     }
 }

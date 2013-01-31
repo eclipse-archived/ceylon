@@ -983,7 +983,7 @@ public class ExpressionTransformer extends AbstractTransformer {
 
     public JCExpression transform(Tree.OfOp op) {
         ProducedType expectedType = op.getType().getTypeModel();
-        return transformExpression(op.getTerm(), CodegenUtil.getBoxingStrategy(op), expectedType);
+        return transformExpression(op.getTerm(), CodegenUtil.getBoxingStrategy(op), expectedType, EXPR_DOWN_CAST);
     }
 
     public JCExpression transform(Tree.IsOp op) {
