@@ -586,6 +586,35 @@ public class Util {
         }
         return new ArraySequence<T>(newArray);
     }
+    
+    /**
+     * Method for instantiating a Range (or Empty) from a Tree.SpreadOp, 
+     * {@code start:length}. 
+     * @param start The start
+     * @param length The size of the Range to create
+     * @return A range
+     */
+    public static <T extends ceylon.language.Ordinal<? extends T>> Sequential<T> spreadOp(T start, long length) {
+        if (length <= 0) {
+            return (Sequential)empty_.getEmpty$();
+        }
+        if (start instanceof ceylon.language.Integer) {
+            ceylon.language.Integer startInt = (ceylon.language.Integer)start;
+            return new ceylon.language.Range(startInt, 
+                    ceylon.language.Integer.instance(startInt.longValue() + (length - 1)));
+        } else if (start instanceof ceylon.language.Character) {
+            ceylon.language.Character startChar = (ceylon.language.Character)start;
+            return new ceylon.language.Range(startChar, 
+                    ceylon.language.Character.instance((int)(startChar.intValue() + length - 1)));
+        } else {
+            T end = start;
+            long ii = 0L;
+            while (++ii < length) {
+                end = end.getSuccessor();
+            }
+            return new ceylon.language.Range(start, end);
+        }
+    }
 
     /**
      * Returns a runtime exception. To be used by implementors of mixin methods used to access super-interfaces $impl fields

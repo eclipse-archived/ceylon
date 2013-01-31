@@ -108,6 +108,18 @@ shared class Range<Element>(first, last)
         return RangeIterator();
     }
     
+    shared actual {Element*} by(Integer step) {
+        doc "step size must be greater than zero"
+        assert (step > 0);
+        if (step == 1) {
+            return this;
+        }
+        if (is Integer first, is Integer last) {
+            return integerRangeByIterable(this, step);
+        }
+        return Iterable::by(step);
+    }
+    
     doc "Determines if the range includes the given object."
     shared actual Boolean contains(Object element) {
         //TODO: re-enable this implementation once we have
