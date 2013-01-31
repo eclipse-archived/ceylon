@@ -5,9 +5,6 @@
 #Identifiable
 Basic
 
-#these would need to be compiled together
-#seems certain algebraic types can't be compiled the way regular types are
-#I mean as part of the process of compiling the language module
 #Anything,Object,Null
 #Comparison
 Iterable

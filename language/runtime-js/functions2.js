@@ -1,4 +1,3 @@
-//More functions, related to comprehensions and iterables
 var exports=null;//IGNORE
 function String$(a,b){}//IGNORE
 function StringBuilder(){}//IGNORE
@@ -87,3 +86,23 @@ function toTuple(iterable) {
     {First:seq.$$targs$$.Element, Element:seq.$$targs$$.Element, Rest:{t:Sequential, a:seq.$$targs$$}});
 }
 exports.toTuple=toTuple;
+
+function integerRangeByIterable(range, step, $$$mptypes) {
+    return Comprehension(function(){
+        var a = range.getFirst();
+        var b = range.getLast();
+        if (a>b) {
+            a += step;
+            return function() {
+                a -= step;
+                return a<b ? getFinished() : a;
+            }
+        }
+        a-=step;
+        return function() {
+            a += step;
+            return a>b ? getFinished() : a;
+        }
+    }, {Element:range.$$targs$$.Element, Absent:range.$$targs$$.Absent});
+}
+exports.integerRangeByIterable=integerRangeByIterable;

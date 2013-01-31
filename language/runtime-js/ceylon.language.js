@@ -123,18 +123,10 @@ Identifiable$proto.getHash = function() { return $identityHash(this); }
 
 //INTERFACES
 //#include callable.js
-//#dont include iterable.js
-//#dont include sequential.js
 //#include collections.js
 //Compiled from Ceylon sources
 //#COMPILED
 //Ends compiled from Ceylon sources
-
-/****************************************************************
- * Overwriting of some methods not yet working in compiled code *
- ****************************************************************/
-
-//#dont include maps.js
 
 function Number$(wat) {
     return wat;
