@@ -8,6 +8,7 @@ import com.redhat.ceylon.compiler.typechecker.model.Value;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.Expression;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.InvocationExpression;
+import com.redhat.ceylon.compiler.typechecker.tree.Tree.LazySpecifierExpression;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.SpecifierExpression;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.SpecifierOrInitializerExpression;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.SpecifierStatement;
@@ -30,6 +31,7 @@ public class ValueVisitor extends Visitor {
     
     private TypedDeclaration declaration;
     private boolean inCapturingScope = false;
+    private boolean inLazySpecifierExpression = false;
     
     public ValueVisitor(TypedDeclaration declaration) {
         this.declaration = declaration;
@@ -75,11 +77,11 @@ public class ValueVisitor extends Visitor {
                     ((Value) d).setCaptured(true);
                 }
                 else if (d instanceof Parameter) {
-                    if (!d.getContainer().equals(that.getScope())) { //a reference from a default argument 
-                                                                     //expression of the same parameter 
-                                                                     //list does not capture a parameter
-                        ((Parameter) d).setCaptured(true);
-                    } else if (methodSpecifier) {
+                    // a reference from a default argument 
+                    // expression of the same parameter 
+                    // list does not capture a parameter
+                    boolean sameScope = d.getContainer().equals(that.getScope());
+                    if (!sameScope || methodSpecifier || inLazySpecifierExpression) {
                         ((Parameter) d).setCaptured(true);
                     }
                 }
@@ -236,5 +238,13 @@ public class ValueVisitor extends Visitor {
         super.visit(that);
         if(that.getRefinement())
             exitCapturingScope(cs);
+    }
+
+    @Override
+    public void visit(LazySpecifierExpression that) {
+        boolean lse = inLazySpecifierExpression;
+        inLazySpecifierExpression = true;
+        super.visit(that);
+        inLazySpecifierExpression = lse;
     }
 }
