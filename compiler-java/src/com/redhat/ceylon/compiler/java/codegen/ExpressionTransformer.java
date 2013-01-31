@@ -860,7 +860,7 @@ public class ExpressionTransformer extends AbstractTransformer {
                 return makeErroneous(value, "Empty iterable literal with sequenced arguments: "+value);
             ProducedType seqElemType = typeFact().getIteratedType(value.getTypeModel());
             seqElemType = wrapInOptionalForInterop(seqElemType, expectedType);
-            return makeIterable(list, seqElemType);
+            return makeIterable(sequencedArgument, seqElemType, 0);
         } else {
             return makeEmpty();
         }

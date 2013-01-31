@@ -862,50 +862,16 @@ class NamedArgumentInvocation extends Invocation {
     }
     
     private void appendVarsForSequencedArguments(Tree.SequencedArgument sequencedArgument, java.util.List<Parameter> declaredParams) {
-        // collect each remaining argument
-        List<JCTree.JCExpression> x = List.<JCTree.JCExpression>nil();
-        boolean spread = false;
-        
+        // FIXME: this is suspisciously similar to AbstractTransformer.makeIterable(java.util.List<Tree.PositionalArgument> list, ProducedType seqElemType)
+        // and possibly needs to be merged
         Parameter parameter = sequencedArgument.getParameter();
         ProducedType parameterType = parameterType(parameter, parameter.getType(), gen.TP_TO_BOUND);
         // find out the individual type
         ProducedType iteratedType = gen.typeFact().getIteratedType(parameterType);
-        for (Tree.PositionalArgument arg : sequencedArgument.getPositionalArguments()) {
-            gen.at(arg);
-            if(arg instanceof Tree.ListedArgument){
-                Tree.Expression expr = ((Tree.ListedArgument) arg).getExpression();
-                // always boxed since we stuff them into a sequence
-                JCTree.JCExpression javaExpr = gen.expressionGen().transformExpression(expr, BoxingStrategy.BOXED, iteratedType);
-                x = x.append(javaExpr);
-                
-            }else if(arg instanceof Tree.SpreadArgument){
-                Expression expr = ((Tree.SpreadArgument) arg).getExpression();
-                // always boxed since it is a sequence
-                JCTree.JCExpression javaExpr = gen.expressionGen().transformExpression(expr, BoxingStrategy.BOXED, parameterType);
-                // goes first
-                x = x.prepend(javaExpr);
-                spread = true;
-                
-            }else if(arg instanceof Tree.Comprehension){
-                Tree.Comprehension comprehension = (Comprehension) arg;
-                JCTree.JCExpression javaExpr  = gen.expressionGen().transformComprehension(comprehension, parameterType);
-                // goes first
-                x = x.prepend(javaExpr);
-                spread = true;
-            } else {
-                throw Assert.fail();
-            }
-        }
-        gen.at(sequencedArgument);
         // we can't just generate types like Foo<?> if the target type param is not raw because the bounds will
         // not match, so we go raw, we also ignore primitives naturally
-        int flags = JT_RAW | JT_TYPE_ARGUMENT | JT_NO_PRIMITIVES;
-        JCTree.JCExpression sequenceValue;
-        if(!spread)
-            sequenceValue = gen.makeSequence(x, iteratedType,  flags);
-        else{
-            sequenceValue = gen.makeIterable(x, iteratedType, CeylonTransformer.JT_CLASS_NEW | JT_NO_PRIMITIVES);
-        }
+        int flags = JT_RAW | JT_NO_PRIMITIVES;
+        JCTree.JCExpression sequenceValue = gen.makeIterable(sequencedArgument, iteratedType, flags);
         JCTree.JCExpression sequenceType = gen.makeJavaType(parameterType, flags);
         
         Naming.SyntheticName argName = argName(parameter);

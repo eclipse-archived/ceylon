@@ -66,6 +66,7 @@ import com.redhat.ceylon.compiler.typechecker.tree.Node;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.Comprehension;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.Expression;
+import com.redhat.ceylon.compiler.typechecker.tree.Tree.PositionalArgument;
 import com.sun.tools.javac.code.BoundKind;
 import com.sun.tools.javac.code.Symtab;
 import com.sun.tools.javac.code.Type;
@@ -2312,39 +2313,39 @@ public abstract class AbstractTransformer implements Transformation {
     }
 
     /**
-     * Makes an iterable literal, where the last element of `list` can be a spread Iterable.
+     * Makes an iterable literal, for a sequenced argument
      */
-    JCExpression makeIterable(java.util.List<Tree.PositionalArgument> list, ProducedType seqElemType) {
+    JCExpression makeIterable(Tree.SequencedArgument sequencedArgument, ProducedType seqElemType, int flags) {
         ListBuffer<JCExpression> elems = new ListBuffer<JCExpression>();
+        java.util.List<PositionalArgument> list = sequencedArgument.getPositionalArguments();
         int i = list.size();
         boolean spread = false;
         for (Tree.PositionalArgument arg : list) {
+            at(arg);
             i--;
-            ProducedType type;
-            // last expression can be an Iterable<seqElemType>
-            if(i == 0 && (arg instanceof Tree.SpreadArgument || arg instanceof Tree.Comprehension))
-                type = typeFact().getIterableType(seqElemType);
-            else
-                type = seqElemType;
-            
-            // do the expression
             JCExpression jcExpression;
-            if(arg instanceof Tree.ListedArgument){
-                Tree.Expression expr = ((Tree.ListedArgument) arg).getExpression();
-                jcExpression = expressionGen().transformExpression(expr, BoxingStrategy.BOXED, type);
-            }else{
+            // last expression can be an Iterable<seqElemType>
+            if(arg instanceof Tree.SpreadArgument || arg instanceof Tree.Comprehension){
                 // make sure we only have spread/comprehension as last
                 if(i != 0){
                     jcExpression = makeErroneous(arg, "Spread or comprehension argument is not last in sequence literal");
                 }else{
+                    ProducedType type = typeFact().getIterableType(seqElemType);
                     spread = true;
                     if(arg instanceof Tree.SpreadArgument){
                         Tree.Expression expr = ((Tree.SpreadArgument) arg).getExpression();
+                        // always boxed since it is a sequence
                         jcExpression = expressionGen().transformExpression(expr, BoxingStrategy.BOXED, type);
                     }else{
                         jcExpression = expressionGen().transformComprehension((Comprehension) arg, type);
                     }
                 }
+            }else if(arg instanceof Tree.ListedArgument){
+                Tree.Expression expr = ((Tree.ListedArgument) arg).getExpression();
+                // always boxed since we stuff them into a sequence
+                jcExpression = expressionGen().transformExpression(expr, BoxingStrategy.BOXED, seqElemType);
+            }else{
+                jcExpression = makeErroneous(arg, "Unknown argument type: " + arg);
             }
             // the last iterable goes first if spread
             if(i == 0 && spread)
@@ -2355,10 +2356,11 @@ public abstract class AbstractTransformer implements Transformation {
         // small optimisation if we have only a single element
         if(elems.size() == 1 && spread)
             return elems.first();
+        at(sequencedArgument);
         if(spread)
-            return makeIterable(elems.toList(), seqElemType, CeylonTransformer.JT_CLASS_NEW);
+            return makeIterable(elems.toList(), seqElemType, flags | JT_NO_PRIMITIVES);
         else
-            return makeSequence(elems.toList(), seqElemType, CeylonTransformer.JT_CLASS_NEW);
+            return makeSequence(elems.toList(), seqElemType, flags | JT_NO_PRIMITIVES);
     }
 
     /**
