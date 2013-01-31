@@ -1,0 +1,20 @@
+package com.redhat.ceylon.compiler.java.test.issues.bug09xx;
+
+public interface Bug963<Element> extends .ceylon.language.Sequential<Element> {
+    
+    public .com.redhat.ceylon.compiler.java.test.issues.bug09xx.Bug963$impl<Element> $com$redhat$ceylon$compiler$java$test$issues$bug09xx$Bug963$impl();
+    
+    @.java.lang.Override
+    public long getSize();
+}
+public final class Bug963$impl<Element> {
+    
+    public Bug963$impl(.com.redhat.ceylon.compiler.java.test.issues.bug09xx.Bug963<? extends Element> $this) {
+        this.$this = $this;
+    }
+    private final .com.redhat.ceylon.compiler.java.test.issues.bug09xx.Bug963<? extends Element> $this;
+    
+    public final long getSize() {
+        return $this.$ceylon$language$List$impl().getSize();
+    }
+}
