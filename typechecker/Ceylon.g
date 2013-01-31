@@ -75,8 +75,8 @@ moduleDescriptor returns [ModuleDescriptor moduleDescriptor]
         $moduleDescriptor.getCompilerAnnotations().addAll($compilerAnnotations.annotations); }
       packagePath
       { $moduleDescriptor.setImportPath($packagePath.importPath); }
-      STRING_MID
-      { $moduleDescriptor.setVersion(new QuotedLiteral($STRING_MID)); }
+      CHAR_LITERAL
+      { $moduleDescriptor.setVersion(new QuotedLiteral($CHAR_LITERAL)); }
       importModuleList
       { $moduleDescriptor.setImportModuleList($importModuleList.importModuleList); }
     ;
@@ -116,13 +116,13 @@ importModule returns [ImportModule importModule]
     : IMPORT
       { $importModule = new ImportModule($IMPORT); }
       ( 
-        q1=STRING_MID
+        q1=CHAR_LITERAL
         { $importModule.setQuotedLiteral(new QuotedLiteral($q1)); }
       |
         packagePath
         { $importModule.setImportPath($packagePath.importPath); }
       )
-      q2=STRING_MID
+      q2=CHAR_LITERAL
       { $importModule.setVersion(new QuotedLiteral($q2)); 
         expecting=SEMICOLON; }
       SEMICOLON
@@ -2220,9 +2220,8 @@ nonstringLiteral returns [Literal literal]
       { $literal = new NaturalLiteral($NATURAL_LITERAL); }
     | FLOAT_LITERAL 
       { $literal = new FloatLiteral($FLOAT_LITERAL); }
-    | STRING_MID 
-      { $STRING_MID.setType(CHAR_LITERAL);
-        $literal = new CharLiteral($STRING_MID); }
+    | CHAR_LITERAL 
+      { $literal = new CharLiteral($CHAR_LITERAL); }
     ;
 
 stringLiteral returns [StringLiteral stringLiteral]
@@ -3118,22 +3117,19 @@ NATURAL_LITERAL
     ;
     
 fragment ASTRING_LITERAL:;
-fragment CHAR_LITERAL:;
 
+CHAR_LITERAL
+    :   '\'' CharPart '\''
+    ;
+
+fragment STRING_START:;
 STRING_LITERAL
-    :   '"' StringPart '"'
+    :   '"' StringPart ( '"' | '``' { $type = STRING_START; } )
     ;
 
-STRING_START
-    :   '"' StringPart '\''
-    ;
-
-STRING_MID
-    :   '\'' StringPart '\''
-    ;
-
+fragment STRING_MID:;
 STRING_END
-    :   '\'' StringPart '"'
+    :   '``' StringPart ( '"' | '``' { $type = STRING_MID; } )
     ;
 
 /*
@@ -3142,6 +3138,11 @@ STRING_END
  pair as two characters and refuse it in a character literal. So we match either a code point
  pair, or a normal 16-bit code point.
 */
+fragment
+CharPart
+    : ( ~('\\' | '\'') | EscapeSequence )*
+    ;
+    
 /*
  Stef: AntLR considers each character to be 16-bit like in Java, which means that it will consider a 
  high/low surrogate pair as two characters, BUT because the special characters we care about, such
@@ -3152,7 +3153,7 @@ STRING_END
 */
 fragment
 StringPart
-    : ( ~ ('\\' | '"' | '\'') | EscapeSequence )*
+    : ( ~('\\' | '"' | '`') | ( ('`' ~'`') => '`' ) | EscapeSequence )*
     ;
     
 fragment
