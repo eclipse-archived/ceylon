@@ -5,7 +5,7 @@ class DeferredMethodInitializationMultipleSpecification {
     DeferredMethodInitializationMultipleSpecification(final boolean b) {
         this.s = null;
         if (b) {
-            s = (.ceylon.language.Callable)new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.ceylon.language.String>("String(String)"){
+            s = new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.ceylon.language.String>("String(String)"){
                 
                 @.java.lang.Override
                 public .ceylon.language.String $call(final .java.lang.Object $param$0) {
