@@ -671,7 +671,7 @@ public class GenerateJsVisitor extends Visitor
                 for (int i = argList.getPositionalArguments().size(); i < superParams.size(); i++) {
                     com.redhat.ceylon.compiler.typechecker.model.Parameter p = superParams.get(i);
                     if (p.isSequenced()) {
-                        out(clAlias, "empty,");
+                        out(clAlias, "getEmpty(),");
                     } else {
                         out("undefined,");
                     }
@@ -2968,18 +2968,17 @@ public class GenerateJsVisitor extends Visitor
      * @param tmpvar (optional) a variable to which the term is assigned
      * @param negate If true, negates the generated condition
      */
-    void generateIsOfType(Term term, String termString, Type type, String tmpvar, final boolean negate) {
+    void generateIsOfType(Node term, String termString, Type type, String tmpvar, final boolean negate) {
         if (negate) {
             out("!");
         }
         out(clAlias, "isOfType(");
-        if (term != null) {
-            conds.specialConditionRHS(term, tmpvar);
+        if (term instanceof Term) {
+            conds.specialConditionRHS((Term)term, tmpvar);
         } else {
             conds.specialConditionRHS(termString, tmpvar);
         }
         out(",");
-
         TypeUtils.typeNameOrList(term, type.getTypeModel(), this, true);
         out(")");
     }
@@ -3112,7 +3111,7 @@ public class GenerateJsVisitor extends Visitor
                 }
                 firstCatch = false;
                 out("if(");
-                generateIsOfType(null, catchVarName, variable.getType(), null, false);
+                generateIsOfType(variable, catchVarName, variable.getType(), null, false);
                 out(")");
 
                 if (catchClause.getBlock().getStatements().isEmpty()) {
@@ -3193,7 +3192,7 @@ public class GenerateJsVisitor extends Visitor
         final CaseItem item = cc.getCaseItem();
         if (item instanceof IsCase) {
             IsCase isCaseItem = (IsCase) item;
-            generateIsOfType(null, expvar, isCaseItem.getType(), null, false);
+            generateIsOfType(switchTerm, expvar, isCaseItem.getType(), null, false);
             Variable caseVar = isCaseItem.getVariable();
             if (caseVar != null) {
                 directAccess.add(caseVar.getDeclarationModel());
@@ -3224,7 +3223,7 @@ public class GenerateJsVisitor extends Visitor
         if (comment) out("//Switch statement at ", that.getUnit().getFilename(), " (", that.getLocation(), ")");
         endLine();
         //Put the expression in a tmp var
-        final String expvar = names.createTempVariable("switch");
+        final String expvar = names.createTempVariable("case");
         out("var ", expvar, "=");
         Expression expr = that.getSwitchClause().getExpression();
         expr.visit(this);
@@ -3309,7 +3308,7 @@ public class GenerateJsVisitor extends Visitor
         out("return ", clAlias, "Range(");
         out(lhs, ",", end, ")");
         endLine();
-        out("}else return ", clAlias, "empty;}())");
+        out("}else return ", clAlias, "getEmpty();}())");
     }
 
     /** Generates the code for single or multiple parameter lists, with a callback function to generate the function blocks. */
