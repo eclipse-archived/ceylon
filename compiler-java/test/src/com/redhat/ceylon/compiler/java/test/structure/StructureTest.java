@@ -326,6 +326,10 @@ public class StructureTest extends CompilerTest {
         compareWithJavaSource("method/MethodRefinementWithSpecifiers");
     }
     @Test
+    public void testMthDefaultMethodSpecified(){
+        compareWithJavaSource("method/DefaultMethodSpecified");
+    }
+    @Test
     public void testMthLocalMethod(){
         compareWithJavaSource("method/LocalMethod");
     }
