@@ -1,0 +1,70 @@
+package com.redhat.ceylon.compiler.java.test.issues.bug09xx;
+
+interface Bug994$Inner {
+    
+    public .com.redhat.ceylon.compiler.java.test.issues.bug09xx.Bug994$impl.Inner$impl $com$redhat$ceylon$compiler$java$test$issues$bug09xx$Bug994$impl$Inner$impl();
+}
+interface Bug994 extends .ceylon.language.Correspondence<.ceylon.language.Integer, .ceylon.language.Integer> {
+    
+    public .com.redhat.ceylon.compiler.java.test.issues.bug09xx.Bug994$impl $com$redhat$ceylon$compiler$java$test$issues$bug09xx$Bug994$impl();
+    
+    public .java.lang.Object m();
+}
+final class Bug994$impl {
+    
+    Bug994$impl(.com.redhat.ceylon.compiler.java.test.issues.bug09xx.Bug994 $this) {
+        this.$this = $this;
+    }
+    private final .com.redhat.ceylon.compiler.java.test.issues.bug09xx.Bug994 $this;
+    
+    public .java.lang.Object m() {
+        
+        final class localMethod_ {
+            
+            private localMethod_() {
+            }
+            
+            void localMethod() {
+            }
+        }
+        final localMethod_ localMethod = new localMethod_();
+        final .ceylon.language.Callable<? extends .java.lang.Object> b = new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.java.lang.Object>("Anything()"){
+            
+            @.java.lang.Override
+            public .java.lang.Object $call() {
+                return (
+                    let
+                    {
+                        localMethod.localMethod();
+                    }
+                    returning null;
+                );
+            }
+        };
+        return null;
+    }
+    
+    private void mprivate() {
+    }
+    
+    final class Inner$impl {
+        
+        Inner$impl(.com.redhat.ceylon.compiler.java.test.issues.bug09xx.Bug994$Inner $this) {
+            this.$this = $this;
+        }
+        private final .com.redhat.ceylon.compiler.java.test.issues.bug09xx.Bug994$Inner $this;
+        
+        private void m2() {
+            long x = 0L;
+            final .ceylon.language.Integer i1 = .com.redhat.ceylon.compiler.java.test.issues.bug09xx.Bug994$impl.this.$this.get(.ceylon.language.Integer.instance(1L));
+            final .ceylon.language.Integer i2 = .com.redhat.ceylon.compiler.java.test.issues.bug09xx.Bug994$impl.this.$this.get(.ceylon.language.Integer.instance(1L));
+            final .ceylon.language.Integer i3 = .com.redhat.ceylon.compiler.java.test.issues.bug09xx.Bug994$impl.this.$this.get(.ceylon.language.Integer.instance(x++));
+            final .ceylon.language.Integer i4 = .com.redhat.ceylon.compiler.java.test.issues.bug09xx.Bug994$impl.this.$this.get(.ceylon.language.Integer.instance(x++));
+            .com.redhat.ceylon.compiler.java.test.issues.bug09xx.Bug994$impl.this.$this.m();
+            .com.redhat.ceylon.compiler.java.test.issues.bug09xx.Bug994$impl.this.$this.$com$redhat$ceylon$compiler$java$test$issues$bug09xx$Bug994$impl().mprivate();
+            final .com.redhat.ceylon.compiler.java.test.issues.bug09xx.Bug994 foo = .com.redhat.ceylon.compiler.java.test.issues.bug09xx.Bug994$impl.this.$this;
+            foo.m();
+            foo.$com$redhat$ceylon$compiler$java$test$issues$bug09xx$Bug994$impl().mprivate();
+        }
+    }
+}
