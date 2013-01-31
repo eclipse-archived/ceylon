@@ -998,6 +998,11 @@ public class IssuesTest extends CompilerTest {
                 new CompilerError(22, "Segment operators not implemented yet"),
                 new CompilerError(22, "Segment operators not implemented yet"));
     }
+    
+    @Test
+    public void testBug1011() {
+        compareWithJavaSource("bug10xx/Bug1011");
+    }
 
     @Test
     public void testBug1016() {
