@@ -1636,23 +1636,7 @@ public class StatementTransformer extends AbstractTransformer {
                 noExpressionlessReturn = false;
                 // we can cast to TypedDeclaration here because return with expressions are only in Method or Value
                 TypedDeclaration declaration = (TypedDeclaration)ret.getDeclaration();
-                // make sure we use the best declaration for boxing and type
-                ProducedTypedReference typedRef = getTypedReference(declaration);
-                ProducedTypedReference nonWideningTypedRef = nonWideningTypeDecl(typedRef);
-                ProducedType nonWideningType = nonWideningType(typedRef, nonWideningTypedRef);
-                // If this is a return statement in a MPL method we want to know 
-                // the non-widening type of the innermost callable
-                if (declaration instanceof Functional
-                        && Decl.isMpl((Functional)declaration)) {
-                    for (int i = ((Functional)declaration).getParameterLists().size(); i > 1; i--) {
-                        nonWideningType = getReturnTypeOfCallable(nonWideningType);
-                    }
-                }
-                // respect the refining definition of optionality
-                nonWideningType = propagateOptionality(declaration.getType(), nonWideningType);
-                returnExpr = expressionGen().transformExpression(expr.getTerm(), 
-                        CodegenUtil.getBoxingStrategy(nonWideningTypedRef.getDeclaration()),
-                        nonWideningType);
+                returnExpr = expressionGen().transformExpression(declaration, expr.getTerm());
             } finally {
                 noExpressionlessReturn = prevNoExpressionlessReturn;
             }
@@ -1660,21 +1644,6 @@ public class StatementTransformer extends AbstractTransformer {
             returnExpr = makeNull();
         }
         return at(ret).Return(returnExpr);
-    }
-
-    private ProducedType propagateOptionality(ProducedType type, ProducedType nonWideningType) {
-        if(!isNull(type)){
-            if(isOptional(type)){
-                if(!isOptional(nonWideningType)){
-                    return typeFact().getOptionalType(nonWideningType);
-                }
-            }else{
-                if(isOptional(nonWideningType)){
-                    return typeFact().getDefiniteType(nonWideningType);
-                }
-            }
-        }
-        return nonWideningType;
     }
 
     public JCStatement transform(Throw t) {

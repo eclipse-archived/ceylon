@@ -1568,10 +1568,7 @@ public class ClassTransformer extends AbstractTransformer {
             invocation.handleBoxing(true);
             bodyExpr = expressionGen().transformInvocation(invocation);
         } else {
-            ProducedTypedReference typedRef = getTypedReference(model);
-            ProducedTypedReference nonWideningTypedRef = nonWideningTypeDecl(typedRef);
-            ProducedType nonWideningType = nonWideningType(typedRef, nonWideningTypedRef);
-            bodyExpr = expressionGen().transformExpression(term, CodegenUtil.getBoxingStrategy(model), nonWideningType);
+            bodyExpr = expressionGen().transformExpression(model, term);
         }
         if (!Decl.isUnboxedVoid(model) || Strategy.useBoxedVoid(model)) {
             if (returnNull) {

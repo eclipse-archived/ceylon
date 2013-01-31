@@ -51,6 +51,7 @@ import com.redhat.ceylon.compiler.typechecker.model.Parameter;
 import com.redhat.ceylon.compiler.typechecker.model.ParameterList;
 import com.redhat.ceylon.compiler.typechecker.model.ProducedReference;
 import com.redhat.ceylon.compiler.typechecker.model.ProducedType;
+import com.redhat.ceylon.compiler.typechecker.model.ProducedTypedReference;
 import com.redhat.ceylon.compiler.typechecker.model.Scope;
 import com.redhat.ceylon.compiler.typechecker.model.TypeDeclaration;
 import com.redhat.ceylon.compiler.typechecker.model.TypeParameter;
@@ -84,7 +85,6 @@ import com.sun.tools.javac.code.TypeTags;
 import com.sun.tools.javac.tree.JCTree;
 import com.sun.tools.javac.tree.JCTree.JCBlock;
 import com.sun.tools.javac.tree.JCTree.JCExpression;
-import com.sun.tools.javac.tree.JCTree.JCExpressionStatement;
 import com.sun.tools.javac.tree.JCTree.JCLiteral;
 import com.sun.tools.javac.tree.JCTree.JCMethodInvocation;
 import com.sun.tools.javac.tree.JCTree.JCNewArray;
@@ -216,6 +216,40 @@ public class ExpressionTransformer extends AbstractTransformer {
     
     //
     // Any sort of expression
+    
+    JCExpression transformExpression(final TypedDeclaration declaration, final Tree.Term expr) {
+        // make sure we use the best declaration for boxing and type
+        ProducedTypedReference typedRef = getTypedReference(declaration);
+        ProducedTypedReference nonWideningTypedRef = nonWideningTypeDecl(typedRef);
+        ProducedType nonWideningType = nonWideningType(typedRef, nonWideningTypedRef);
+        // If this is a return statement in a MPL method we want to know 
+        // the non-widening type of the innermost callable
+        if (declaration instanceof Functional
+                && Decl.isMpl((Functional)declaration)) {
+            for (int i = ((Functional)declaration).getParameterLists().size(); i > 1; i--) {
+                nonWideningType = getReturnTypeOfCallable(nonWideningType);
+            }
+        }
+        // respect the refining definition of optionality
+        nonWideningType = propagateOptionality(declaration.getType(), nonWideningType);
+        BoxingStrategy boxing = CodegenUtil.getBoxingStrategy(nonWideningTypedRef.getDeclaration());
+        return transformExpression(expr, boxing, nonWideningType);
+    }
+
+    private ProducedType propagateOptionality(ProducedType type, ProducedType nonWideningType) {
+        if(!isNull(type)){
+            if(isOptional(type)){
+                if(!isOptional(nonWideningType)){
+                    return typeFact().getOptionalType(nonWideningType);
+                }
+            }else{
+                if(isOptional(nonWideningType)){
+                    return typeFact().getDefiniteType(nonWideningType);
+                }
+            }
+        }
+        return nonWideningType;
+    }
     
     JCExpression transformExpression(final Tree.Term expr) {
         return transformExpression(expr, BoxingStrategy.BOXED, expr.getTypeModel());
