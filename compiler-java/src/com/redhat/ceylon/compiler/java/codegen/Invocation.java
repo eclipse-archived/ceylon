@@ -1135,7 +1135,9 @@ class NamedArgumentInvocation extends Invocation {
     }
     
     private final void appendDefaulted(Parameter param, JCExpression argExpr) {
-        int flags = 0;
+        // we can't just generate types like Foo<?> if the target type param is not raw because the bounds will
+        // not match, so we go raw
+        int flags = JT_RAW;
         if (getNamedParameterBoxingStrategy(param) == BoxingStrategy.BOXED) {
             flags |= JT_TYPE_ARGUMENT;
         }
