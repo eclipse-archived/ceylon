@@ -188,6 +188,10 @@ void erasureCasting(EC_A & EC_B & EC_C tripleIntersectionParam,
     // make sure we don't pick up type parameter constraints on callable type parameters past the first
     Callable<Callable<Anything,[]>,[]> callableOfCallable = nothing;
     value callableResult = ec_callableWithBonds(callableOfCallable)();
+    
+    // make sure both of these calls go raw
+    Null n1 = min(empty);
+    Null n2 = min{};
 }
 
 @nomodel

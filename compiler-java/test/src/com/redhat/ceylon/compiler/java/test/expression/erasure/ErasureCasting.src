@@ -258,6 +258,14 @@ final class erasureCasting_ {
         final .ceylon.language.Tuple<.ceylon.language.Sequential<? extends .ceylon.language.String>, ? extends .ceylon.language.Sequential<? extends .ceylon.language.String>, ? extends .ceylon.language.Empty> sequenceOfSequenceOfStrings = (.ceylon.language.Tuple<.ceylon.language.Sequential<? extends .ceylon.language.String>, ? extends .ceylon.language.Sequential<? extends .ceylon.language.String>, ? extends .ceylon.language.Empty>)(.ceylon.language.Tuple).com.redhat.ceylon.compiler.java.Util.tuple_spanFrom((.ceylon.language.Ranged<? super .ceylon.language.Integer, ? extends .ceylon.language.Sequential<? extends .ceylon.language.Sequential<? extends .ceylon.language.Sequential<? extends .java.lang.Object>>>>)(.ceylon.language.Ranged)tupleOfSequentialSomething, .ceylon.language.Integer.instance(1L));
         final .ceylon.language.Callable<? extends .ceylon.language.Callable<? extends .java.lang.Object>> callableOfCallable = (.ceylon.language.Callable).ceylon.language.nothing_.getNothing$();
         final .ceylon.language.Callable<? extends .java.lang.Object> callableResult = .com.redhat.ceylon.compiler.java.test.expression.erasure.ec_callableWithBonds_.ec_callableWithBonds(callableOfCallable).$call();
+        final .java.lang.Object n1 = .ceylon.language.min_.min((.ceylon.language.Iterable).ceylon.language.empty_.getEmpty$());
+        final .java.lang.Object n2 = (
+            let
+            {
+                .ceylon.language.Iterable $arg$18$0 = (.ceylon.language.Iterable).ceylon.language.empty_.getEmpty$();
+            }
+            returning .ceylon.language.min_.min($arg$18$0);
+        );
     }
 }
 final class valueOrNada_ {
@@ -266,9 +274,9 @@ final class valueOrNada_ {
     }
     
     static <Value, Nada>void valueOrNada(final .java.lang.Object valueOrNada) {
-        .java.lang.Object $valueOrNada$19;
-        if (($valueOrNada$19 = valueOrNada) != null) {
-            final Value $valueOrNada$20 = (Value)$valueOrNada$19;
+        .java.lang.Object $valueOrNada$20;
+        if (($valueOrNada$20 = valueOrNada) != null) {
+            final Value $valueOrNada$21 = (Value)$valueOrNada$20;
         }
     }
 }
@@ -396,9 +404,9 @@ final class EC_ErasedMember$impl<Element, Absent> {
         return (
             let
             {
-                .java.lang.Object $ceylontmp$p$22 = defaultedParams$p();
+                .java.lang.Object $ceylontmp$p$23 = defaultedParams$p();
             }
-            returning defaultedParams($ceylontmp$p$22);
+            returning defaultedParams($ceylontmp$p$23);
         );
     }
     
@@ -422,9 +430,9 @@ final class EC_ErasedMember$impl<Element, Absent> {
         return (
             let
             {
-                .java.lang.Object $ceylontmp$p$30 = $Class$init$p();
+                .java.lang.Object $ceylontmp$p$31 = $Class$init$p();
             }
-            returning new Class($ceylontmp$p$30);
+            returning new Class($ceylontmp$p$31);
         );
     }
     
