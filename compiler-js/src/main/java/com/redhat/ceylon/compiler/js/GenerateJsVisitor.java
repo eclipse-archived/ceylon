@@ -1810,11 +1810,10 @@ public class GenerateJsVisitor extends Visitor
         if (that.getNamedArgumentList()!=null) {
             NamedArgumentList argList = that.getNamedArgumentList();
             out("(");
-
             Map<String, String> argVarNames = invoker.defineNamedArguments(argList);
-
-            TypeArguments targs = that.getPrimary() instanceof BaseMemberOrTypeExpression ? ((BaseMemberOrTypeExpression)that.getPrimary()).getTypeArguments() : null;
             that.getPrimary().visit(this);
+            TypeArguments targs = that.getPrimary() instanceof BaseMemberOrTypeExpression ?
+                    ((BaseMemberOrTypeExpression)that.getPrimary()).getTypeArguments() : null;
             if (that.getPrimary() instanceof Tree.MemberOrTypeExpression) {
                 Tree.MemberOrTypeExpression mte = (Tree.MemberOrTypeExpression) that.getPrimary();
                 if (mte.getDeclaration() instanceof Functional) {

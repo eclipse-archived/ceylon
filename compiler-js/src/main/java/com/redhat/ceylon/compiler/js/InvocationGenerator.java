@@ -71,14 +71,15 @@ public class InvocationGenerator {
                 if (namedArgumentGiven) {
                     gen.out(argVarNames.get(p.getName()));
                 } else if (p.isSequenced()) {
-                    gen.out(GenerateJsVisitor.getClAlias(), "empty");
+                    gen.out(GenerateJsVisitor.getClAlias(), "getEmpty()");
                 } else if (argList.getSequencedArgument()!=null) {
-                    gen.out(argVarNames.get(p.getName()));
+                    String pname = argVarNames.get(p.getName());
+                    gen.out(pname==null ? "undefined" : pname);
                 } else if (p.isDefaulted()) {
                     gen.out("undefined");
                 } else {
                     //It's an empty Iterable
-                    gen.out(GenerateJsVisitor.getClAlias(), "empty");
+                    gen.out(GenerateJsVisitor.getClAlias(), "getEmpty()");
                 }
                 first = false;
             }
