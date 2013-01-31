@@ -381,6 +381,11 @@ public class ExpressionTransformer extends AbstractTransformer {
                         JCExpression targetType = makeJavaType(expectedType, AbstractTransformer.JT_TYPE_ARGUMENT);
                         result = make().TypeCast(targetType, result);
                     }
+                }else if(exprType.getDeclaration().getSelfType() == null && !simplifyType(exprType).isExactly(simplifyType(expectedType)) && exprType.isSupertypeOf(expectedType)){
+                    // Just the simple case where the expected type is not the same as the
+                    // expression type and there's no erasure, no variances, no self types etc
+                    JCExpression targetType = makeJavaType(expectedType, AbstractTransformer.JT_RAW);
+                    result = make().TypeCast(targetType, result);
                 }else
                     canCast = true;
             }else
