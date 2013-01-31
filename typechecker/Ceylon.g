@@ -2221,7 +2221,8 @@ nonstringLiteral returns [Literal literal]
     | FLOAT_LITERAL 
       { $literal = new FloatLiteral($FLOAT_LITERAL); }
     | STRING_MID 
-      { $literal = new CharLiteral($STRING_MID); }
+      { $STRING_MID.setType(CHAR_LITERAL);
+        $literal = new CharLiteral($STRING_MID); }
     ;
 
 stringLiteral returns [StringLiteral stringLiteral]
@@ -3117,6 +3118,7 @@ NATURAL_LITERAL
     ;
     
 fragment ASTRING_LITERAL:;
+fragment CHAR_LITERAL:;
 
 STRING_LITERAL
     :   '"' StringPart '"'
