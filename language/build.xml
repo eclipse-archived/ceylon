@@ -185,7 +185,7 @@
             <files>
                 <include name="**/*.ceylon"/>
                 <include name="com/redhat/**/*.java"/>
-                <!-- We swap the nativily implemented files for their Java counter parts -->
+            	<!-- We swap the nativily implemented files for their Java counter parts -->
                 <exclude name="ceylon/language/Array.ceylon"/>
                 <include name="ceylon/language/Array.java"/>
                 <include name="ceylon/language/array_.java"/>
@@ -214,8 +214,10 @@
                 <include name="ceylon/language/parseInteger_.java"/>
                 <exclude name="ceylon/language/language.ceylon"/>
                 <include name="ceylon/language/language_.java"/>
-                <exclude name="ceylon/language/process.ceylon"/>
+            	<exclude name="ceylon/language/process.ceylon"/>
                 <include name="ceylon/language/process_.java"/>
+            	<exclude name="ceylon/language/integerRangeByIterable.ceylon"/>
+            	<include name="ceylon/language/integerRangeByIterable_.java"/>
                 <exclude name="ceylon/language/SequenceBuilder.ceylon"/>
                 <include name="ceylon/language/SequenceBuilder.java"/>
                 <include name="ceylon/language/SequenceAppender.java"/>
