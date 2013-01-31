@@ -111,7 +111,7 @@ final class emptiness_ {
         (
             let
             {
-                .ceylon.language.Iterable $arg$4$0 = .com.redhat.ceylon.compiler.java.language.ArrayIterable.<.ceylon.language.Integer>instance(new .com.redhat.ceylon.compiler.java.language.AbstractIterable<.ceylon.language.Integer, .java.lang.Object>(){
+                .ceylon.language.Iterable $arg$4$0 = new .com.redhat.ceylon.compiler.java.language.AbstractIterable<.ceylon.language.Integer, .java.lang.Object>(){
                     
                     public final .ceylon.language.Iterator<.ceylon.language.Integer> getIterator() {
                         return new .com.redhat.ceylon.compiler.java.language.AbstractIterator<.ceylon.language.Integer>(){
@@ -135,7 +135,7 @@ final class emptiness_ {
                             }
                         };
                     }
-                });
+                };
                 .com.redhat.ceylon.compiler.java.test.expression.comprehensions.emptinessMaybeEmpty_.emptinessMaybeEmpty($arg$4$0);
             }
             returning null;
@@ -143,7 +143,7 @@ final class emptiness_ {
         (
             let
             {
-                .ceylon.language.Iterable $arg$6$0 = .com.redhat.ceylon.compiler.java.language.ArrayIterable.<.ceylon.language.Integer>instance(new .com.redhat.ceylon.compiler.java.language.AbstractIterable<.ceylon.language.Integer, .java.lang.Object>(){
+                .ceylon.language.Iterable $arg$6$0 = new .com.redhat.ceylon.compiler.java.language.AbstractIterable<.ceylon.language.Integer, .java.lang.Object>(){
                     
                     public final .ceylon.language.Iterator<.ceylon.language.Integer> getIterator() {
                         return new .com.redhat.ceylon.compiler.java.language.AbstractIterator<.ceylon.language.Integer>(){
@@ -167,7 +167,7 @@ final class emptiness_ {
                             }
                         };
                     }
-                });
+                };
                 .com.redhat.ceylon.compiler.java.test.expression.comprehensions.emptinessNonEmpty_.emptinessNonEmpty($arg$6$0);
             }
             returning null;
