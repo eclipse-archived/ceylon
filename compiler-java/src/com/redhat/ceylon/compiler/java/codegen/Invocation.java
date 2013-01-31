@@ -1180,12 +1180,6 @@ class NamedArgumentInvocation extends Invocation {
             }
         } else if (getPrimary() instanceof Tree.BaseTypeExpression
                 || getPrimary() instanceof Tree.QualifiedTypeExpression) {
-            Map<TypeParameter, ProducedType> typeA = target.getTypeArguments();
-            ListBuffer<JCExpression> typeArgs = ListBuffer.<JCExpression>lb();
-            for (TypeParameter tp : ((TypeDeclaration)target.getDeclaration()).getTypeParameters()) {
-                ProducedType producedType = typeA.get(tp);
-                typeArgs.append(gen.makeJavaType(producedType, JT_TYPE_ARGUMENT));
-            }
             ClassOrInterface declaration = (ClassOrInterface)((Tree.MemberOrTypeExpression) getPrimary()).getDeclaration();
             thisType = gen.makeJavaType(declaration.getType(), JT_COMPANION);
             defaultedParameterInstance = gen.make().NewClass(
