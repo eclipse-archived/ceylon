@@ -15,7 +15,7 @@ class AssertionConditionList {
         } else {
             $ceylontmpassert0 = .java.lang.System.lineSeparator() + "\tviolated " + "x > 0" + (.java.lang.System.lineSeparator() + "\tuntested ") + "x < 10";
         }
-        if ($ceylontmpassert0 != null) throw new .ceylon.language.Exception(.ceylon.language.String.instance("Assertion failed" + $ceylontmpassert0), null);
+        if ($ceylontmpassert0 != null) throw new .ceylon.language.AssertionException("Assertion failed" + $ceylontmpassert0);
         return x == 1L;
     }
     
@@ -37,7 +37,7 @@ class AssertionConditionList {
             $y$3 = 0L;
             $ceylontmpassert1 = .java.lang.System.lineSeparator() + "\tviolated " + "is Integer y = x" + (.java.lang.System.lineSeparator() + "\tuntested ") + "y > 0" + (.java.lang.System.lineSeparator() + "\tuntested ") + "z < 10";
         }
-        if ($ceylontmpassert1 != null) throw new .ceylon.language.Exception(.ceylon.language.String.instance("Assertion failed" + $ceylontmpassert1), null);
+        if ($ceylontmpassert1 != null) throw new .ceylon.language.AssertionException("Assertion failed" + $ceylontmpassert1);
         return $y$3 == 1L;
     }
     
@@ -60,7 +60,7 @@ class AssertionConditionList {
             $y$6 = 0L;
             $ceylontmpassert4 = .java.lang.System.lineSeparator() + "\tviolated " + "z < 10" + (.java.lang.System.lineSeparator() + "\tuntested ") + "is Integer y = x" + (.java.lang.System.lineSeparator() + "\tuntested ") + "y > 0";
         }
-        if ($ceylontmpassert4 != null) throw new .ceylon.language.Exception(.ceylon.language.String.instance("Assertion failed" + $ceylontmpassert4), null);
+        if ($ceylontmpassert4 != null) throw new .ceylon.language.AssertionException("Assertion failed" + $ceylontmpassert4);
         return $y$6 == 1L;
     }
     
@@ -84,7 +84,7 @@ class AssertionConditionList {
             $y$9 = 0L;
             $ceylontmpassert7 = .java.lang.System.lineSeparator() + "\tviolated " + "z < 10" + (.java.lang.System.lineSeparator() + "\tuntested ") + "z > 0" + (.java.lang.System.lineSeparator() + "\tuntested ") + "is Integer y = x";
         }
-        if ($ceylontmpassert7 != null) throw new .ceylon.language.Exception(.ceylon.language.String.instance("Assertion failed" + $ceylontmpassert7), null);
+        if ($ceylontmpassert7 != null) throw new .ceylon.language.AssertionException("Assertion failed" + $ceylontmpassert7);
         return $y$9 == 1L;
     }
     
@@ -111,7 +111,7 @@ class AssertionConditionList {
             $y$14 = 0L;
             $ceylontmpassert10 = .java.lang.System.lineSeparator() + "\tviolated " + "nonempty x" + (.java.lang.System.lineSeparator() + "\tuntested ") + "is Integer y = x[0]" + (.java.lang.System.lineSeparator() + "\tuntested ") + "y > 0";
         }
-        if ($ceylontmpassert10 != null) throw new .ceylon.language.Exception(.ceylon.language.String.instance("Assertion failed" + $ceylontmpassert10), null);
+        if ($ceylontmpassert10 != null) throw new .ceylon.language.AssertionException("Assertion failed" + $ceylontmpassert10);
         return $y$14 == 1L;
     }
     
@@ -134,7 +134,7 @@ class AssertionConditionList {
             $y$17 = 0L;
             $ceylontmpassert15 = .java.lang.System.lineSeparator() + "\tviolated " + "x[0] exists" + (.java.lang.System.lineSeparator() + "\tuntested ") + "is Integer y = x[0]" + (.java.lang.System.lineSeparator() + "\tuntested ") + "y > 0";
         }
-        if ($ceylontmpassert15 != null) throw new .ceylon.language.Exception(.ceylon.language.String.instance("Assertion failed" + $ceylontmpassert15), null);
+        if ($ceylontmpassert15 != null) throw new .ceylon.language.AssertionException("Assertion failed" + $ceylontmpassert15);
         return $y$17 == 1L;
     }
     
@@ -157,7 +157,7 @@ class AssertionConditionList {
             $y1$22 = 0L;
             $ceylontmpassert18 = .java.lang.System.lineSeparator() + "\tviolated " + "is Integer x1 = x" + (.java.lang.System.lineSeparator() + "\tuntested ") + "is Integer y1 = y";
         }
-        if ($ceylontmpassert18 != null) throw new .ceylon.language.Exception(.ceylon.language.String.instance("Assertion failed" + $ceylontmpassert18), null);
+        if ($ceylontmpassert18 != null) throw new .ceylon.language.AssertionException("Assertion failed" + $ceylontmpassert18);
         return $x1$20 + $y1$22 == 0L;
     }
     

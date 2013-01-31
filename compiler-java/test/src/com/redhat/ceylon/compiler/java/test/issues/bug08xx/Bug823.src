@@ -24,6 +24,6 @@ final class bug823_ {
             $z$4 = 0;
             $ceylontmpassert0 = .java.lang.System.lineSeparator() + "\tviolated " + "nonempty xx" + (.java.lang.System.lineSeparator() + "\tuntested ") + "is Character z=xx[0]";
         }
-        if ($ceylontmpassert0 != null) throw new .ceylon.language.Exception(.ceylon.language.String.instance("Assertion failed" + $ceylontmpassert0), null);
+        if ($ceylontmpassert0 != null) throw new .ceylon.language.AssertionException("Assertion failed" + $ceylontmpassert0);
     }
 }

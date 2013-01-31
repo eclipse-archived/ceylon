@@ -7,7 +7,7 @@ class AssertIsNothing {
     
     public final void m(final .java.lang.Object x) {
         if (x == null) {
-        } else throw new .ceylon.language.Exception(.ceylon.language.String.instance("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "is Null x")), null);
+        } else throw new .ceylon.language.AssertionException("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "is Null x"));
     }
     
     public static void main(.java.lang.String[] args) {

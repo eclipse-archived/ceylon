@@ -10,7 +10,7 @@ class AssertExistsSequence {
         .ceylon.language.Integer $y$1 = null;
         if (($y$1 = x.get(.ceylon.language.Integer.instance(0L))) != null) {
             $y$2 = $y$1.longValue();
-        } else throw new .ceylon.language.Exception(.ceylon.language.String.instance("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "exists y=x[0]")), null);
+        } else throw new .ceylon.language.AssertionException("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "exists y=x[0]"));
         return $y$2;
     }
     

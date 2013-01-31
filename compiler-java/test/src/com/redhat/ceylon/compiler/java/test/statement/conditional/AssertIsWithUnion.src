@@ -7,7 +7,7 @@ class AssertIsUnion {
     
     public final void m(final .java.lang.Object x) {
         if (x instanceof .com.redhat.ceylon.compiler.java.test.statement.conditional.Foo || x instanceof .com.redhat.ceylon.compiler.java.test.statement.conditional.Bar) {
-        } else throw new .ceylon.language.Exception(.ceylon.language.String.instance("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "is Foo|Bar x")), null);
+        } else throw new .ceylon.language.AssertionException("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "is Foo|Bar x"));
         ((.com.redhat.ceylon.compiler.java.test.statement.conditional.Common)x).common();
     }
     
@@ -16,7 +16,7 @@ class AssertIsUnion {
         .java.lang.Object $x$3 = null;
         if (($x$3 = y) instanceof .com.redhat.ceylon.compiler.java.test.statement.conditional.Foo || $x$3 instanceof .com.redhat.ceylon.compiler.java.test.statement.conditional.Bar) {
             $x$4 = $x$3;
-        } else throw new .ceylon.language.Exception(.ceylon.language.String.instance("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "is Foo|Bar x=y")), null);
+        } else throw new .ceylon.language.AssertionException("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "is Foo|Bar x=y"));
         ((.com.redhat.ceylon.compiler.java.test.statement.conditional.Common)$x$4).common();
     }
     

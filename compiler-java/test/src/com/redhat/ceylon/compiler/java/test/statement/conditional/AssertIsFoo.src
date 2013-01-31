@@ -10,13 +10,13 @@ class AssertIsFoo {
         .java.lang.Object $x$1 = null;
         if (($x$1 = x) instanceof .com.redhat.ceylon.compiler.java.test.statement.conditional.Foo) {
             $x$2 = (.com.redhat.ceylon.compiler.java.test.statement.conditional.Foo)$x$1;
-        } else throw new .ceylon.language.Exception(.ceylon.language.String.instance("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "is Foo x")), null);
+        } else throw new .ceylon.language.AssertionException("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "is Foo x"));
         $x$2.foo();
         final .com.redhat.ceylon.compiler.java.test.statement.conditional.FooSub $x$5;
         .java.lang.Object $x$4 = null;
         if (($x$4 = $x$2) instanceof .com.redhat.ceylon.compiler.java.test.statement.conditional.FooSub) {
             $x$5 = (.com.redhat.ceylon.compiler.java.test.statement.conditional.FooSub)$x$4;
-        } else throw new .ceylon.language.Exception(.ceylon.language.String.instance("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "is FooSub x")), null);
+        } else throw new .ceylon.language.AssertionException("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "is FooSub x"));
         $x$5.foo2();
     }
     
@@ -25,13 +25,13 @@ class AssertIsFoo {
         .java.lang.Object $x$7 = null;
         if (($x$7 = y) instanceof .com.redhat.ceylon.compiler.java.test.statement.conditional.Foo) {
             $x$8 = (.com.redhat.ceylon.compiler.java.test.statement.conditional.Foo)$x$7;
-        } else throw new .ceylon.language.Exception(.ceylon.language.String.instance("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "is Foo x=y")), null);
+        } else throw new .ceylon.language.AssertionException("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "is Foo x=y"));
         $x$8.foo();
         final .com.redhat.ceylon.compiler.java.test.statement.conditional.FooSub $z$11;
         .java.lang.Object $z$10 = null;
         if (($z$10 = $x$8) instanceof .com.redhat.ceylon.compiler.java.test.statement.conditional.FooSub) {
             $z$11 = (.com.redhat.ceylon.compiler.java.test.statement.conditional.FooSub)$z$10;
-        } else throw new .ceylon.language.Exception(.ceylon.language.String.instance("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "is FooSub z=x")), null);
+        } else throw new .ceylon.language.AssertionException("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "is FooSub z=x"));
         $z$11.foo2();
     }
     
