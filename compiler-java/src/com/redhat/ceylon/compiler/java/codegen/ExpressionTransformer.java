@@ -958,7 +958,7 @@ public class ExpressionTransformer extends AbstractTransformer {
         ProducedType outerClass = com.redhat.ceylon.compiler.typechecker.model.Util.getOuterClassOrInterface(expr.getScope());
         final TypeDeclaration outerDeclaration = outerClass.getDeclaration();
         if (outerDeclaration instanceof Interface) {
-            return naming.makeQualifiedThis(makeJavaType(outerClass, JT_COMPANION | JT_RAW));
+            return makeQualifiedDollarThis(outerClass);
         }
         return naming.makeQualifiedThis(makeJavaType(outerClass));
     }
@@ -2605,7 +2605,11 @@ public class ExpressionTransformer extends AbstractTransformer {
         if(!needsQualified)
             return naming.makeQuotedThis();
         interf = (Interface) scope;
-        JCExpression qualifiedCompanionThis = naming.makeQualifiedThis(makeJavaType(interf.getType(), JT_COMPANION | JT_RAW));
+        return makeQualifiedDollarThis(interf.getType());
+    }
+    
+    private JCExpression makeQualifiedDollarThis(ProducedType targetType){
+        JCExpression qualifiedCompanionThis = naming.makeQualifiedThis(makeJavaType(targetType, JT_COMPANION | JT_RAW));
         return naming.makeQualifiedDollarThis(qualifiedCompanionThis);
     }
 
