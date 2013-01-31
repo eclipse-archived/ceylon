@@ -36,21 +36,24 @@ public class JsModuleManager extends ModuleManager {
     }
 
     @Override
-    public void resolveModule(ArtifactResult artifact, Module module,
-            ModuleImport moduleImport, LinkedList<Module> dependencyTree,
+    public void resolveModule(final ArtifactResult artifact, final Module module,
+            final ModuleImport moduleImport, LinkedList<Module> dependencyTree,
             List<PhasedUnits> phasedUnitsOfDependencies, boolean forCompiledModule) {
         if (!clLoaded) {
             clLoaded = true;
-            if (clmod == null) {
-                ArtifactContext ac = new ArtifactContext("ceylon.language", module.getLanguageModule().getVersion());
-                ac.setFetchSingleArtifact(true);
-                ac.setThrowErrorIfMissing(true);
-                ac.setSuffix(".js");
-                ArtifactResult lmar = getContext().getRepositoryManager().getArtifactResult(ac);
-                resolveModule(lmar, module.getLanguageModule(), null, dependencyTree,
-                        phasedUnitsOfDependencies, true);
-            } else {
-                loadModuleFromMap(artifact, module, moduleImport, dependencyTree, phasedUnitsOfDependencies, forCompiledModule, clmod);
+            if (!("ceylon.language".equals(artifact.name()) && artifact.artifact().getName().endsWith(".js"))) {
+                if (clmod == null) {
+                    ArtifactContext ac = new ArtifactContext("ceylon.language", module.getLanguageModule().getVersion());
+                    ac.setFetchSingleArtifact(true);
+                    ac.setThrowErrorIfMissing(true);
+                    ac.setSuffix(".js");
+                    ArtifactResult lmar = getContext().getRepositoryManager().getArtifactResult(ac);
+                    resolveModule(lmar, module.getLanguageModule(), null, dependencyTree,
+                            phasedUnitsOfDependencies, true);
+                } else {
+                    loadModuleFromMap(artifact, module, moduleImport, dependencyTree, phasedUnitsOfDependencies, forCompiledModule, clmod);
+                }
+                return;
             }
         }
         //Create a similar artifact but with .js extension
