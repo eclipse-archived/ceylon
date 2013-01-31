@@ -407,10 +407,9 @@ shared native interface Iterable<out Element, out Absent=Null>
          given iterable object also in their original
          order."
     shared default {Element|Other*} chain<Other>({Other*} other) {
-        value outerIterable => this; //TODO: remove this when compiler bug is fixed
         object chained satisfies {Element|Other*} {
             shared actual Iterator<Element|Other> iterator =>
-                    ChainedIterator(outerIterable, other);
+                    ChainedIterator(outer, other);
         }
         return chained;
     }

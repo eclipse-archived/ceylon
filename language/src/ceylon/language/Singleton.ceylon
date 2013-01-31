@@ -53,7 +53,7 @@ shared class Singleton<out Element>(Element element)
         return SingletonIterator();
     }
     
-    shared actual String string => "[' first.string ']";
+    shared actual String string => "[``element.string``]";
     
     doc "Returns a `Singleton` if the given starting index 
          is `0` and the given `length` is greater than `0`.

@@ -39,7 +39,6 @@ shared class Entry<out Key, out Item>(key, item)
     
     doc "Returns a description of the entry in the form 
          `key->item`."
-    shared actual String string =>
-            key.string + "->" + item.string;
+    shared actual String string => "``key``->``item``";
     
 }
