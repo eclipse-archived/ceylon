@@ -201,15 +201,32 @@ public class StatementTransformer extends AbstractTransformer {
             return this;
         }
         
-        public AssertionExceptionMessageBuilder appendViolatedCondition(String state, Tree.Condition condition) {
+        private AssertionExceptionMessageBuilder appendCondition(String state, String sourceCode) {
+            JCExpression m = cat(newline(), make().Literal("\t" + state+ " "));
             if (expr != null) {
-                expr = cat(expr, cat(newline(), make().Literal("\t" + state+ " ")));
+                expr = cat(expr, m);
             } else {
-                expr = cat(newline(), make().Literal("\t" + state + " "));
+                expr = m;
             }
-            expr = cat(expr, make().Literal(getSourceCode(condition)));
+            expr = cat(expr, make().Literal(sourceCode));
             
             return this;
+        }
+        
+        public AssertionExceptionMessageBuilder appendViolatedCondition(String sourceCode) {
+            return appendCondition("violated", sourceCode);
+        }
+        
+        public AssertionExceptionMessageBuilder appendViolatedCondition(Tree.Condition condition) {
+            return appendViolatedCondition(getSourceCode(condition));
+        }
+        
+        public AssertionExceptionMessageBuilder appendUnviolatedCondition(Tree.Condition condition) {
+            return appendCondition("unviolated", getSourceCode(condition));
+        }
+        
+        public AssertionExceptionMessageBuilder appendUntestedCondition(Tree.Condition condition) {
+            return appendCondition("untested", getSourceCode(condition));
         }
         
         public JCExpression build() {
@@ -591,11 +608,15 @@ public class StatementTransformer extends AbstractTransformer {
             boolean seen = false;
             for (Tree.Condition condition : this.conditions) {
                 if (cond.getCondition() == condition) {
-                    msg.appendViolatedCondition("violated", condition);
+                    msg.appendViolatedCondition(condition);
                     seen = true;
                     continue;
                 }
-                msg.appendViolatedCondition(seen ? "untested" : "unviolated", condition);
+                if (seen) {
+                    msg.appendUntestedCondition(condition);
+                } else {
+                    msg.appendUnviolatedCondition(condition);
+                }
             }
             return make().Block(0, List.<JCStatement>of( 
                     make().Exec(make().Assign(messageSb.makeIdent(), msg.build()))));
@@ -610,7 +631,7 @@ public class StatementTransformer extends AbstractTransformer {
         protected JCStatement transformInnermostElse(Cond cond, java.util.List<Condition> rest) {
             if (!isMulti()) {
                 AssertionExceptionMessageBuilder msg = new AssertionExceptionMessageBuilder(null);
-                msg.appendViolatedCondition("violated", cond.getCondition());
+                msg.appendViolatedCondition(cond.getCondition());
                 msg.prependAssertionDoc(ass);
                 return makeThrowAssertionException(msg.build());
             }
@@ -1480,9 +1501,12 @@ public class StatementTransformer extends AbstractTransformer {
                         expressionGen().transformExpression(increment, BoxingStrategy.UNBOXED, getType())));
                 // if (by <= 0) throw Exception("step size must be greater than zero");
                 result.append(make().If(
-                        make().Binary(JCTree.LE, by.makeIdent(), make().Literal(0)), 
-                        makeThrowAssertionException( 
-                                make().Literal("step size must be greater than zero")),
+                        make().Binary(JCTree.LE, by.makeIdent(), make().Literal(0)),
+                        makeThrowAssertionException(
+                                new AssertionExceptionMessageBuilder(null)
+                                    .appendViolatedCondition("step > 0")
+                                    .prependAssertionDoc("\"step size must be greater than zero\"")
+                                    .build()),
                         null));
             } else {
                 by = null;
