@@ -376,25 +376,29 @@ shared native interface Iterable<out Element, out Absent=Null>
          results in an iterable object with the entries
          `0->\"hello\"` and `2->\"world\"`."
     shared default {<Integer->Element&Object>*} indexed {
-		object indexes
-		        satisfies {<Integer->Element&Object>*} {
-            value outerCoalesced = outer.coalesced;
-		    shared actual Iterator<Integer->Element&Object> iterator {
-		        object iterator satisfies Iterator<Integer->Element&Object> {
-		            value iter = outerCoalesced.iterator;
-		            variable value i=0;
-		            shared actual <Integer->Element&Object>|Finished next() {
-		                if (!is Finished next = iter.next()) {
-		                    return i++->next;
-		                }
-		                else {
-		                    return finished;
-		                }
-		            }
-		        }
-		        return iterator;
-		    }
-		}
+        object indexes
+                satisfies {<Integer->Element&Object>*} {
+                value orig = outer;
+            shared actual Iterator<Integer->Element&Object> iterator {
+                object iterator satisfies Iterator<Integer->Element&Object> {
+                    value iter = orig.iterator;
+                    variable value i=0;
+                    shared actual <Integer->Element&Object>|Finished next() {
+                        variable value next = iter.next();
+                        while (!next exists) {
+                            i++;
+                            next = iter.next();
+                        }
+                        if (!is Finished n=next, exists n) {
+                            return i++->n;
+                        } else {
+                            return finished;
+                        }
+                    }
+                }
+                return iterator;
+            }
+        }
         return indexes;
     }
             
