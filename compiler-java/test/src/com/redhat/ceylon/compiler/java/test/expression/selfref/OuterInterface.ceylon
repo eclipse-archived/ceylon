@@ -19,14 +19,24 @@
  */
 @nomodel
 interface OuterInterface<T> {
-    void m() {
+    void private() {
     }
-    shared void m2() {
+    shared void sharedFinal() {
     }
+    shared default void sharedDefault(){
+    }
+    shared formal void sharedFormal();
     class InnerClass() {
         void m3() {
-            outer.m();
-            outer.m2();
+            outer.private();
+            outer.sharedFinal();
+            outer.sharedDefault();
+            outer.sharedFormal();
+            value o = outer;
+            o.private();
+            o.sharedFinal();
+            o.sharedDefault();
+            o.sharedFormal();
         }
     }
 }

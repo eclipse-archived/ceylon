@@ -24,8 +24,8 @@ final class OuterInterfaceFormal$impl<T> {
     class InnerClass {
         
         InnerClass() {
-            $this.m();
-            $this.Formal$new();
+            .com.redhat.ceylon.compiler.java.test.expression.selfref.OuterInterfaceFormal$impl.this.$this.m();
+            .com.redhat.ceylon.compiler.java.test.expression.selfref.OuterInterfaceFormal$impl.this.$this.Formal$new();
         }
     }
 }

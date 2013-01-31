@@ -4,7 +4,11 @@ interface OuterInterface<T> {
     
     public .com.redhat.ceylon.compiler.java.test.expression.selfref.OuterInterface$impl<T> $com$redhat$ceylon$compiler$java$test$expression$selfref$OuterInterface$impl();
     
-    public void m2();
+    public void sharedFinal();
+    
+    public .java.lang.Object sharedDefault();
+    
+    public abstract .java.lang.Object sharedFormal();
 }
 final class OuterInterface$impl<T> {
     
@@ -13,10 +17,14 @@ final class OuterInterface$impl<T> {
     }
     private final .com.redhat.ceylon.compiler.java.test.expression.selfref.OuterInterface<T> $this;
     
-    private void m() {
+    private void $private() {
     }
     
-    public void m2() {
+    public void sharedFinal() {
+    }
+    
+    public .java.lang.Object sharedDefault() {
+        return null;
     }
     
     class InnerClass {
@@ -25,8 +33,15 @@ final class OuterInterface$impl<T> {
         }
         
         private final void m3() {
-            .com.redhat.ceylon.compiler.java.test.expression.selfref.OuterInterface$impl.this.m();
-            .com.redhat.ceylon.compiler.java.test.expression.selfref.OuterInterface$impl.this.m2();
+            .com.redhat.ceylon.compiler.java.test.expression.selfref.OuterInterface$impl.this.$this.$com$redhat$ceylon$compiler$java$test$expression$selfref$OuterInterface$impl().$private();
+            .com.redhat.ceylon.compiler.java.test.expression.selfref.OuterInterface$impl.this.$this.sharedFinal();
+            .com.redhat.ceylon.compiler.java.test.expression.selfref.OuterInterface$impl.this.$this.sharedDefault();
+            .com.redhat.ceylon.compiler.java.test.expression.selfref.OuterInterface$impl.this.$this.sharedFormal();
+            final .com.redhat.ceylon.compiler.java.test.expression.selfref.OuterInterface<T> o = .com.redhat.ceylon.compiler.java.test.expression.selfref.OuterInterface$impl.this.$this;
+            o.$com$redhat$ceylon$compiler$java$test$expression$selfref$OuterInterface$impl().$private();
+            o.sharedFinal();
+            o.sharedDefault();
+            o.sharedFormal();
         }
     }
 }

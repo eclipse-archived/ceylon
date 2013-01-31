@@ -212,7 +212,7 @@ public class ExpressionTest extends CompilerTest {
         compareWithJavaSource("selfref/OuterInterfaceFormal");
     }
     @Test
-    public void testSlfBaseOuter_fail() {
+    public void testSlfBaseOuter() {
         compareWithJavaSource("selfref/BaseOuter");
     }
     @Test

@@ -2,6 +2,8 @@ package com.redhat.ceylon.compiler.java.test.expression.selfref;
 
 public interface BaseOuter {
     
+    public .com.redhat.ceylon.compiler.java.test.expression.selfref.BaseOuter$impl $com$redhat$ceylon$compiler$java$test$expression$selfref$BaseOuter$impl();
+    
     public .java.lang.Object getInverse();
 }
 public final class BaseOuter$impl {
@@ -19,11 +21,11 @@ public final class BaseOuter$impl {
             }
             
             public final .com.redhat.ceylon.compiler.java.test.expression.selfref.BaseOuter item() {
-                return $this;
+                return .com.redhat.ceylon.compiler.java.test.expression.selfref.BaseOuter$impl.this.$this;
             }
             
             public final .com.redhat.ceylon.compiler.java.test.expression.selfref.BaseOuter item2() {
-                return $this;
+                return .com.redhat.ceylon.compiler.java.test.expression.selfref.BaseOuter$impl.this.$this;
             }
         }
         final inverse_ inverse = new inverse_();
