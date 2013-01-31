@@ -1,0 +1,14 @@
+package com.redhat.ceylon.compiler.java.test.issues.bug09xx;
+
+class Bug978 {
+    
+    Bug978(final .ceylon.language.Sequential<? extends .ceylon.language.String> strings) {
+        this.strings = strings;
+    }
+    private final .ceylon.language.Sequential<? extends .ceylon.language.String> strings;
+    
+    @.java.lang.Override
+    public final .java.lang.String toString() {
+        return .ceylon.language.String.join(", ", strings);
+    }
+}
