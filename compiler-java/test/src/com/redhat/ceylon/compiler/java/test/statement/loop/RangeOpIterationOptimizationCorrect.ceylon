@@ -137,11 +137,10 @@ void rangeOpIterationOptimizationCorrect() {
     void optimizedWithByMatches(Integer start, Integer end, Integer step) {
         value unoptimized = SequenceBuilder<Integer>();
         @disableOptimization
-        // See https://github.com/ceylon/ceylon.language/issues/192
-        //for (i in (start..end).by(step)) {
-        //    //print("unoptimized " i "");
-        //    unoptimized.append(i);
-        //}
+        for (i in (start..end).by(step)) {
+            //print("unoptimized " i "");
+            unoptimized.append(i);
+        }
         
         value optimized = SequenceBuilder<Integer>();
         @requireOptimization:"RangeOpIteration"
@@ -203,8 +202,10 @@ void rangeOpIterationOptimizationCorrect() {
                     fail("Range.by(" step " didn't throw");
                 }
             } catch (Exception e2) {
-                check(e.message == e2.message, "Exception messages with step= " step " differ");
-                check(e.string == e2.string, "Exception .string values with step= " step " differ");
+                check(e.message == e2.message, "Exception messages with step= " step " differ: Optimized is '"
+                    e.message "' unoptimized is '" e2.message "'");
+                check(e.string == e2.string, "Exception .string values with step= " step " differ: Optimized is '"
+                    e.string "' unoptimized is '" e2.string "'");
             }
         }
     }  
