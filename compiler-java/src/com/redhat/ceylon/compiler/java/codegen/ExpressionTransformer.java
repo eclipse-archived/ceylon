@@ -1908,19 +1908,11 @@ public class ExpressionTransformer extends AbstractTransformer {
         if (!Strategy.generateInstantiator(declaration)) {
             JCExpression qualifier;
             JCExpression qualifierType;
-            if (declaration.getContainer() instanceof Interface
-                    && !(qte.getPrimary() instanceof Tree.Outer)) {
+            if (declaration.getContainer() instanceof Interface) {
                 // When doing qualified invocation through an interface we need
                 // to get the companion.
                 Interface qualifyingInterface = (Interface)declaration.getContainer();
-                qualifier = make().Apply(null, 
-                        makeSelect(transformedPrimary.expr, getCompanionAccessorName(qualifyingInterface)), 
-                        List.<JCExpression>nil());
-                // But when the interface is local the accessor returns Object
-                // so we need to cast it to the type of the companion
-                if (Decl.isAncestorLocal(declaration)) {
-                    qualifier = make().TypeCast(makeJavaType(qualifyingInterface.getType(), JT_COMPANION), qualifier);
-                }
+                qualifier = transformedPrimary.expr;
                 qualifierType = makeJavaType(qualifyingInterface.getType(), JT_COMPANION);
             } else {
                 qualifier = transformedPrimary.expr;
@@ -2549,6 +2541,31 @@ public class ExpressionTransformer extends AbstractTransformer {
                 qualExpr = primaryExpr;
             }
             
+            // Partial fix for https://github.com/ceylon/ceylon-compiler/issues/1023
+            // For interfaces we sometimes need to access either the interface instance or its $impl class
+            Scope declContainer = Decl.container(decl);
+            if(qualExpr != null
+                    // this is only for interface containers
+                    && declContainer instanceof Interface
+                    // we only ever need the $impl if the declaration is not shared
+                    && !decl.isShared()){
+                Interface declaration = (Interface) declContainer;
+                // access the interface $impl instance
+                qualExpr = makeQualIdent(qualExpr, getCompanionAccessorName(declaration));
+                qualExpr = make().Apply(null, qualExpr, List.<JCExpression>nil());
+                // When the interface is local the accessor returns Object
+                // so we need to cast it to the type of the companion
+                if (Decl.isAncestorLocal(declaration)) {
+                    ProducedType type;
+                    // try to find the best type
+                    if(expr instanceof Tree.QualifiedMemberOrTypeExpression)
+                        type = ((Tree.QualifiedMemberOrTypeExpression) expr).getPrimary().getTypeModel();
+                    else
+                        type = declaration.getType();
+                    qualExpr = make().TypeCast(makeJavaType(type, JT_COMPANION), qualExpr);
+                }
+            }
+
             if (qualExpr == null && needDollarThis(expr)) {
                 qualExpr = makeQualifiedDollarThis((Tree.BaseMemberExpression)expr);
             }

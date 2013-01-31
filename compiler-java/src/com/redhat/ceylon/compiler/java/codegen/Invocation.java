@@ -39,6 +39,7 @@ import com.redhat.ceylon.compiler.typechecker.model.Declaration;
 import com.redhat.ceylon.compiler.typechecker.model.Functional;
 import com.redhat.ceylon.compiler.typechecker.model.FunctionalParameter;
 import com.redhat.ceylon.compiler.typechecker.model.Getter;
+import com.redhat.ceylon.compiler.typechecker.model.Interface;
 import com.redhat.ceylon.compiler.typechecker.model.IntersectionType;
 import com.redhat.ceylon.compiler.typechecker.model.Method;
 import com.redhat.ceylon.compiler.typechecker.model.Parameter;
@@ -1227,7 +1228,8 @@ class NamedArgumentInvocation extends Invocation {
                 varType = gen.makeJavaType(type);
             } else {
                 if (getPrimary() instanceof QualifiedTypeExpression
-                        && (((QualifiedTypeExpression)getPrimary()).getPrimary() instanceof Tree.Outer)) {
+                        && !getPrimaryDeclaration().isShared()
+                        && type.getDeclaration() instanceof Interface) {
                     varType = gen.makeJavaType(type, JT_NO_PRIMITIVES | JT_COMPANION);
                 } else {
                     varType = gen.makeJavaType(type, JT_NO_PRIMITIVES);
