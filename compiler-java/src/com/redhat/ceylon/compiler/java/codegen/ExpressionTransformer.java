@@ -981,15 +981,8 @@ public class ExpressionTransformer extends AbstractTransformer {
     }
 
     public JCExpression transform(Tree.OfOp op) {
-        ProducedType exprType = op.getTerm().getTypeModel();
         ProducedType expectedType = op.getType().getTypeModel();
-        // Self type as a type arg:
-        boolean selfTypeCast = exprType.getDeclaration().getSelfType() != null;
-        if (selfTypeCast) {
-            return transformExpression(op.getTerm(), CodegenUtil.getBoxingStrategy(op), expectedType);
-        } else {
-            return transformExpression(op.getTerm());
-        }
+        return transformExpression(op.getTerm(), CodegenUtil.getBoxingStrategy(op), expectedType);
     }
 
     public JCExpression transform(Tree.IsOp op) {
