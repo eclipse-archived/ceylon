@@ -63,7 +63,7 @@ class DefaultedParameterClassInstantiation {
             {
                 long $arg$9$0 = .com.redhat.ceylon.compiler.java.test.expression.instantiation.DefaultedParameterClassInstantiation.$init$m();
                 long $arg$9$1 = .com.redhat.ceylon.compiler.java.test.expression.instantiation.DefaultedParameterClassInstantiation.$init$n($arg$9$0);
-                .ceylon.language.Sequential<? extends .ceylon.language.Integer> $arg$9$2 = .com.redhat.ceylon.compiler.java.test.expression.instantiation.DefaultedParameterClassInstantiation.$init$seq($arg$9$0, $arg$9$1);
+                .ceylon.language.Sequential $arg$9$2 = .com.redhat.ceylon.compiler.java.test.expression.instantiation.DefaultedParameterClassInstantiation.$init$seq($arg$9$0, $arg$9$1);
             }
             returning new .com.redhat.ceylon.compiler.java.test.expression.instantiation.DefaultedParameterClassInstantiation($arg$9$0, $arg$9$1, $arg$9$2);
         );
@@ -72,7 +72,7 @@ class DefaultedParameterClassInstantiation {
             {
                 long $arg$10$0 = 6L;
                 long $arg$10$1 = .com.redhat.ceylon.compiler.java.test.expression.instantiation.DefaultedParameterClassInstantiation.$init$n($arg$10$0);
-                .ceylon.language.Sequential<? extends .ceylon.language.Integer> $arg$10$2 = .com.redhat.ceylon.compiler.java.test.expression.instantiation.DefaultedParameterClassInstantiation.$init$seq($arg$10$0, $arg$10$1);
+                .ceylon.language.Sequential $arg$10$2 = .com.redhat.ceylon.compiler.java.test.expression.instantiation.DefaultedParameterClassInstantiation.$init$seq($arg$10$0, $arg$10$1);
             }
             returning new .com.redhat.ceylon.compiler.java.test.expression.instantiation.DefaultedParameterClassInstantiation($arg$10$0, $arg$10$1, $arg$10$2);
         );
@@ -81,7 +81,7 @@ class DefaultedParameterClassInstantiation {
             {
                 long $arg$11$0 = 6L;
                 long $arg$11$1 = 9L;
-                .ceylon.language.Sequential<? extends .ceylon.language.Integer> $arg$11$2 = .com.redhat.ceylon.compiler.java.test.expression.instantiation.DefaultedParameterClassInstantiation.$init$seq($arg$11$0, $arg$11$1);
+                .ceylon.language.Sequential $arg$11$2 = .com.redhat.ceylon.compiler.java.test.expression.instantiation.DefaultedParameterClassInstantiation.$init$seq($arg$11$0, $arg$11$1);
             }
             returning new .com.redhat.ceylon.compiler.java.test.expression.instantiation.DefaultedParameterClassInstantiation($arg$11$0, $arg$11$1, $arg$11$2);
         );

@@ -316,7 +316,7 @@ final class instantiatorDelegates_ {
             {
                 .com.redhat.ceylon.compiler.java.test.structure.mcr.InstantiatorDelegates<.ceylon.language.String> $arg$37$callable$ = a;
                 boolean $arg$37$0 = true;
-                .ceylon.language.Sequential<? extends .ceylon.language.Integer> $arg$37$1 = $arg$37$callable$.$Sequenced$init$i($arg$37$0);
+                .ceylon.language.Sequential $arg$37$1 = $arg$37$callable$.$Sequenced$init$i($arg$37$0);
             }
             returning $arg$37$callable$.Sequenced$new($arg$37$0, $arg$37$1);
         );

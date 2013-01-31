@@ -10,7 +10,7 @@ final class callableNamedInvocationSequenced_f_ {
             let
             {
                 .ceylon.language.Integer $arg$0$0 = .ceylon.language.Integer.instance(1L);
-                .ceylon.language.Sequential<? extends .ceylon.language.String> $arg$0$1 = (.ceylon.language.Sequential).ceylon.language.empty_.getEmpty$();
+                .ceylon.language.Sequential $arg$0$1 = (.ceylon.language.Sequential).ceylon.language.empty_.getEmpty$();
             }
             returning foo.$call($arg$0$0, $arg$0$1);
         );

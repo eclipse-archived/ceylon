@@ -7,7 +7,7 @@ class NamedArgumentWithEmptySequence {
             let
             {
                 .com.redhat.ceylon.compiler.java.test.expression.invoke.NamedArgumentWithEmptySequence $arg$2$this$ = this;
-                .ceylon.language.Sequential<? extends .ceylon.language.Integer> $arg$2$0 = $arg$2$this$.m$b();
+                .ceylon.language.Sequential $arg$2$0 = $arg$2$this$.m$b();
                 m($arg$2$0);
             }
             returning null;

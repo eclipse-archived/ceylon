@@ -40,7 +40,7 @@ class ClassDefaultMemberClassWithSequencedParams {
         (
             let
             {
-                .ceylon.language.Sequential<? extends .ceylon.language.Integer> $arg$4$0 = $Member$init$i();
+                .ceylon.language.Sequential $arg$4$0 = $Member$init$i();
             }
             returning Member$new($arg$4$0);
         );
@@ -93,7 +93,7 @@ class ClassDefaultMemberClassWithSequencedParams_sub extends .com.redhat.ceylon.
         (
             let
             {
-                .ceylon.language.Sequential<? extends .ceylon.language.Integer> $arg$9$0 = $Member$init$i();
+                .ceylon.language.Sequential $arg$9$0 = $Member$init$i();
             }
             returning Member$new($arg$9$0);
         );

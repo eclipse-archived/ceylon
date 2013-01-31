@@ -97,7 +97,7 @@ class MethodInitializerParameter<T> {
             {
                 m_ $arg$4$this$ = m;
                 long $arg$4$0 = 1L;
-                .ceylon.language.Sequential<? extends .ceylon.language.Integer> $arg$4$1 = $arg$4$this$.m$seq($arg$4$0);
+                .ceylon.language.Sequential $arg$4$1 = $arg$4$this$.m$seq($arg$4$0);
                 m.m($arg$4$0, $arg$4$1);
             }
             returning null;

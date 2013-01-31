@@ -17,7 +17,7 @@ final class bug975_1_test_ {
         (
             let
             {
-                .ceylon.language.Iterable<? extends .ceylon.language.String, ? extends .java.lang.Object> $arg$0$0 = (.ceylon.language.Iterable).ceylon.language.empty_.getEmpty$();
+                .ceylon.language.Iterable $arg$0$0 = (.ceylon.language.Iterable).ceylon.language.empty_.getEmpty$();
                 .com.redhat.ceylon.compiler.java.test.issues.bug09xx.bug975_1_accept_.bug975_1_accept($arg$0$0);
             }
             returning null;

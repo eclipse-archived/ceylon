@@ -37,7 +37,7 @@ class NamedArgumentWithIterable {
             let
             {
                 long $arg$2$0 = 1L;
-                .ceylon.language.Iterable<? extends .ceylon.language.Integer, ? extends .java.lang.Object> $arg$2$1 = (.ceylon.language.Iterable).ceylon.language.empty_.getEmpty$();
+                .ceylon.language.Iterable $arg$2$1 = (.ceylon.language.Iterable).ceylon.language.empty_.getEmpty$();
                 m($arg$2$0, $arg$2$1);
             }
             returning null;
@@ -158,7 +158,7 @@ class NamedArgumentWithIterable {
             {
                 .com.redhat.ceylon.compiler.java.test.expression.invoke.NamedArgumentWithIterable $arg$12$this$ = this;
                 long $arg$12$0 = 1L;
-                .ceylon.language.Iterable<? extends .ceylon.language.Integer, ? extends .java.lang.Object> $arg$12$1 = $arg$12$this$.defaulted$b($arg$12$0);
+                .ceylon.language.Iterable $arg$12$1 = $arg$12$this$.defaulted$b($arg$12$0);
                 defaulted($arg$12$0, $arg$12$1);
             }
             returning null;
