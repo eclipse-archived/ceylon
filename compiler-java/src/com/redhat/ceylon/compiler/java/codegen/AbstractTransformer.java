@@ -2605,7 +2605,7 @@ public abstract class AbstractTransformer implements Transformation {
         return makeJavaType(syms().ceylonReifiedTypeType.tsym);
     }
     
-    public JCExpression makeBottomTypeDescriptor() {
+    public JCExpression makeNothingTypeDescriptor() {
         return make().Select(makeTypeDescriptorType(), 
                 names().fromString("BottomType"));
 
@@ -2872,8 +2872,8 @@ public abstract class AbstractTransformer implements Transformation {
             }
             return make().Apply(null, makeSelect(makeTypeDescriptorType(), "intersection"), typeTestArguments);
         }
-        if(declaration instanceof BottomType){
-            return makeBottomTypeDescriptor();
+        if(declaration instanceof NothingType){
+            return makeNothingTypeDescriptor();
         }
         throw new RuntimeException("Unsupported type: " + declaration);
     }

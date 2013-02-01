@@ -2085,7 +2085,7 @@ public class ClassTransformer extends AbstractTransformer {
             java.util.List<TypeParameter> typeParameters) {
         List<JCExpression> arguments = List.nil();
         for(int i=typeParameters.size()-1;i>=0;i--){
-            arguments = arguments.prepend(gen().makeBottomTypeDescriptor());
+            arguments = arguments.prepend(gen().makeNothingTypeDescriptor());
         }
         return arguments;
     }
