@@ -20,7 +20,7 @@ void characters() {
     check('\f'.integer==12, "escaped chars 4");
     check('\r'.integer==13, "escaped chars 5");
     check('\\'.integer==92, "escaped chars 6");
-    check('\''.integer==96, "escaped chars 7");
+    check('\`'.integer==96, "escaped chars 7");
     check('\"'.integer==34, "escaped chars 8");
     check('\''.integer==39, "escaped chars 9");
     check('\{#00E5}'.integer==229, "Unicode escape 1");
@@ -31,7 +31,7 @@ void characters() {
     check('\{#000D}'=='\r', "Unicode escape 6");
     check('\{#005C}'=='\\', "Unicode escape 7");
     //print('\{#005C}'.integer);
-    check('\{#0060}'=='\'', "Unicode escape 8");
+    check('\{#0060}'=='\`', "Unicode escape 8");
     check('\{#0022}'=='\"', "Unicode escape 9");
     check('\{#0027}'=='\'', "Unicode escape 10");
     
