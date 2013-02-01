@@ -1453,6 +1453,10 @@ namedArguments returns [NamedArgumentList namedArgumentList]
         => namedArgument
         { if ($namedArgument.namedArgument!=null) 
               $namedArgumentList.addNamedArgument($namedArgument.namedArgument); }
+      | (anonymousArgument)
+        => anonymousArgument
+        { if ($anonymousArgument.namedArgument!=null) 
+              $namedArgumentList.addNamedArgument($anonymousArgument.namedArgument); }
       )*
       ( 
         sequencedArgument
@@ -1528,6 +1532,19 @@ namedSpecifiedArgument returns [SpecifiedArgument specifiedArgument]
       { expecting=SEMICOLON; }
       SEMICOLON
       { $specifiedArgument.setEndToken($SEMICOLON); }
+    ;
+
+anonymousArgument returns [SpecifiedArgument namedArgument]
+    @init { $namedArgument = new SpecifiedArgument(null); }
+    : thenElseExpression
+     { Expression e = new Expression(null);
+       e.setTerm($thenElseExpression.term);
+       SpecifierExpression se = new SpecifierExpression(null);
+       se.setExpression(e);
+       $namedArgument.setSpecifierExpression(se); }   
+      { expecting=SEMICOLON; }
+      SEMICOLON
+      { $namedArgument.setEndToken($SEMICOLON); }
     ;
 
 objectArgument returns [ObjectArgument declaration]

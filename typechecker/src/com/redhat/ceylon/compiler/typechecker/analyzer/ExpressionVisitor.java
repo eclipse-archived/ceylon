@@ -19,6 +19,7 @@ import static com.redhat.ceylon.compiler.typechecker.model.Util.isCompletelyVisi
 import static com.redhat.ceylon.compiler.typechecker.model.Util.isTypeUnknown;
 import static com.redhat.ceylon.compiler.typechecker.model.Util.producedType;
 import static com.redhat.ceylon.compiler.typechecker.model.Util.unionType;
+import static com.redhat.ceylon.compiler.typechecker.tree.Util.MISSING_NAME;
 import static com.redhat.ceylon.compiler.typechecker.tree.Util.hasUncheckedNulls;
 import static com.redhat.ceylon.compiler.typechecker.tree.Util.name;
 
@@ -28,6 +29,8 @@ import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
+
+import org.antlr.runtime.CommonToken;
 
 import com.redhat.ceylon.compiler.typechecker.model.Class;
 import com.redhat.ceylon.compiler.typechecker.model.ClassOrInterface;
@@ -56,8 +59,10 @@ import com.redhat.ceylon.compiler.typechecker.model.Unit;
 import com.redhat.ceylon.compiler.typechecker.model.UnknownType;
 import com.redhat.ceylon.compiler.typechecker.model.Value;
 import com.redhat.ceylon.compiler.typechecker.model.ValueParameter;
+import com.redhat.ceylon.compiler.typechecker.parser.CeylonLexer;
 import com.redhat.ceylon.compiler.typechecker.tree.Node;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree;
+import com.redhat.ceylon.compiler.typechecker.tree.Tree.Identifier;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.SpecifierExpression;
 import com.redhat.ceylon.compiler.typechecker.tree.Visitor;
 
@@ -1748,7 +1753,7 @@ public class ExpressionVisitor extends Visitor {
                     Collections.<ProducedType>emptyList()).getFullType();
         }
         if (type!=null) {
-            Parameter parameter = getMatchingParameter(parameters, arg);
+            Parameter parameter = getMatchingParameter(parameters, arg, foundParameters);
             if (parameter!=null) {
                 foundParameters.add(parameter);
                 ProducedType pt = pr.getTypedParameter(parameter)
@@ -2220,7 +2225,7 @@ public class ExpressionVisitor extends Visitor {
 
     private void checkNamedArg(Tree.NamedArgument a, ParameterList pl,
             ProducedReference pr, Set<Parameter> foundParameters) {
-        Parameter p = getMatchingParameter(pl, a);
+        Parameter p = getMatchingParameter(pl, a, foundParameters);
         if (p==null) {
             a.addError("no matching parameter for named argument " + 
                     name(a.getIdentifier()) + " declared by " + 
@@ -2298,11 +2303,34 @@ public class ExpressionVisitor extends Visitor {
                 p.getName() + " of " + pr.getDeclaration().getName(unit));
     }
     
-    private Parameter getMatchingParameter(ParameterList pl, Tree.NamedArgument na) {
+    private Parameter getMatchingParameter(ParameterList pl, Tree.NamedArgument na, 
+            Set<Parameter> foundParameters) {
         String name = name(na.getIdentifier());
-        for (Parameter p: pl.getParameters()) {
-            if (p.getName().equals(name)) {
-                return p;
+        if (MISSING_NAME.equals(name)) {
+            for (Parameter p: pl.getParameters()) {
+                if (!foundParameters.contains(p)) {
+                    CommonToken token = new CommonToken(CeylonLexer.LIDENTIFIER,p.getName());
+                    token.setText(p.getName());
+                    token.setChannel(CommonToken.DEFAULT_CHANNEL);
+                    token.setStartIndex(na.getStartIndex());
+                    token.setStopIndex(na.getStartIndex());
+                    token.setLine(na.getEndToken().getLine());
+                    token.setCharPositionInLine(0);
+                    token.setInputStream(na.getEndToken().getInputStream());
+                    Tree.Identifier node = new Tree.Identifier(token);
+                    node.setScope(na.getScope());
+                    node.setUnit(na.getUnit());
+                    node.setText(p.getName());
+                    na.setIdentifier(node);
+                    return p;
+                }
+            }
+        }
+        else {
+            for (Parameter p: pl.getParameters()) {
+                if (p.getName().equals(name)) {
+                    return p;
+                }
             }
         }
         return null;

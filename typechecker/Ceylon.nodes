@@ -671,7 +671,7 @@
 
 "A named argument."
 ^(abstract NAMED_ARGUMENT:STATEMENT_OR_ARGUMENT
-    IDENTIFIER
+    IDENTIFIER?
     Parameter parameter;)
     
 "A specifier statement-style named argument."

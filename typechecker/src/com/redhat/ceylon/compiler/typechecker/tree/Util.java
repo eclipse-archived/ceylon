@@ -7,9 +7,11 @@ import com.redhat.ceylon.compiler.typechecker.model.TypedDeclaration;
 
 public class Util {
     
+    public static final String MISSING_NAME = "program element with missing name";
+
     public static String name(Tree.Identifier id) {
         if (id==null) {
-            return "program element with missing name";
+            return MISSING_NAME;
         }
         else {
             return id.getText();
