@@ -30,8 +30,6 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
 
-import org.antlr.runtime.CommonToken;
-
 import com.redhat.ceylon.compiler.typechecker.model.Class;
 import com.redhat.ceylon.compiler.typechecker.model.ClassOrInterface;
 import com.redhat.ceylon.compiler.typechecker.model.Declaration;
@@ -59,10 +57,8 @@ import com.redhat.ceylon.compiler.typechecker.model.Unit;
 import com.redhat.ceylon.compiler.typechecker.model.UnknownType;
 import com.redhat.ceylon.compiler.typechecker.model.Value;
 import com.redhat.ceylon.compiler.typechecker.model.ValueParameter;
-import com.redhat.ceylon.compiler.typechecker.parser.CeylonLexer;
 import com.redhat.ceylon.compiler.typechecker.tree.Node;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree;
-import com.redhat.ceylon.compiler.typechecker.tree.Tree.Identifier;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.SpecifierExpression;
 import com.redhat.ceylon.compiler.typechecker.tree.Visitor;
 
@@ -2309,15 +2305,7 @@ public class ExpressionVisitor extends Visitor {
         if (MISSING_NAME.equals(name)) {
             for (Parameter p: pl.getParameters()) {
                 if (!foundParameters.contains(p)) {
-                    CommonToken token = new CommonToken(CeylonLexer.LIDENTIFIER,p.getName());
-                    token.setText(p.getName());
-                    token.setChannel(CommonToken.DEFAULT_CHANNEL);
-                    token.setStartIndex(na.getStartIndex());
-                    token.setStopIndex(na.getStartIndex());
-                    token.setLine(na.getEndToken().getLine());
-                    token.setCharPositionInLine(0);
-                    token.setInputStream(na.getEndToken().getInputStream());
-                    Tree.Identifier node = new Tree.Identifier(token);
+                    Tree.Identifier node = new Tree.Identifier(null);
                     node.setScope(na.getScope());
                     node.setUnit(na.getUnit());
                     node.setText(p.getName());
