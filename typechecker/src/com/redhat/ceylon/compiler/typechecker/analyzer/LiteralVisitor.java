@@ -8,6 +8,7 @@ import java.util.regex.Pattern;
 
 import org.antlr.runtime.Token;
 
+import com.redhat.ceylon.compiler.typechecker.parser.CeylonLexer;
 import com.redhat.ceylon.compiler.typechecker.tree.Node;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.CharLiteral;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.FloatLiteral;
@@ -24,6 +25,15 @@ public class LiteralVisitor extends Visitor {
         StringBuilder result = new StringBuilder();
         stripIndent(that.getText(), getIndentPosition(that), result);
         interpolateEscapes(result, that);
+        int type = that.getToken().getType();
+        if (type==CeylonLexer.STRING_END ||
+            type==CeylonLexer.STRING_MID) {
+            result.deleteCharAt(0);
+        }
+        if (type==CeylonLexer.STRING_START ||
+            type==CeylonLexer.STRING_MID) {
+            result.deleteCharAt(result.length()-1);
+        }
         that.setText(result.toString());
     }
 
