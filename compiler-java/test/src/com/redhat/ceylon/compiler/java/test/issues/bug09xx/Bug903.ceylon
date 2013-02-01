@@ -18,14 +18,14 @@
  * MA  02110-1301, USA.
  */
 @nomodel
-shared interface Bug903<Element> {
+shared interface Bug903 {
 
-    shared formal Element? item(Integer index);
+    shared formal Object? item(Integer index);
     shared formal variable Integer i;
 
     shared default void foo() {
         object obj {
-            shared Element? m() {
+            shared Object? m() {
                 //i = 0;
                 item{
                     index=0;
@@ -34,7 +34,7 @@ shared interface Bug903<Element> {
             }
         }
         class C() {
-            shared Element? m() {
+            shared Object? m() {
                 //i = 0;
                 item{
                     index=0;
@@ -43,7 +43,7 @@ shared interface Bug903<Element> {
             }
         }
         interface I {
-            shared Element? m() {
+            shared Object? m() {
                 //i = 0;
                 item{
                     index=0;

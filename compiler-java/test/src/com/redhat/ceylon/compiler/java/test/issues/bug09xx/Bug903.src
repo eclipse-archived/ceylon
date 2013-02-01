@@ -1,42 +1,92 @@
 package com.redhat.ceylon.compiler.java.test.issues.bug09xx;
 
-public interface Bug903<Element> {
+interface Bug903$foo$0$I {
     
-    public abstract Element item(final long index);
+    public .java.lang.Object I$impl();
     
-    public .java.lang.Object getFoo();
+    public .java.lang.Object m();
 }
-public final class Bug903$impl<Element> {
+public interface Bug903 {
     
-    public Bug903$impl(.com.redhat.ceylon.compiler.java.test.issues.bug09xx.Bug903<Element> $this) {
+    public .com.redhat.ceylon.compiler.java.test.issues.bug09xx.Bug903$impl $com$redhat$ceylon$compiler$java$test$issues$bug09xx$Bug903$impl();
+    
+    public abstract .java.lang.Object item(final long index);
+    
+    public abstract long getI();
+    
+    public abstract void setI(final long i);
+    
+    public .java.lang.Object foo();
+}
+public final class Bug903$impl {
+    
+    public Bug903$impl(.com.redhat.ceylon.compiler.java.test.issues.bug09xx.Bug903 $this) {
         this.$this = $this;
     }
-    private final .com.redhat.ceylon.compiler.java.test.issues.bug09xx.Bug903<Element> $this;
+    private final .com.redhat.ceylon.compiler.java.test.issues.bug09xx.Bug903 $this;
     
-    public final .java.lang.Object getFoo() {
-        final Element e = $this.item(0L);
+    public final void setI(final long i) {
+        $this.setI(i);
+    }
+    
+    public .java.lang.Object foo() {
         
-        final class foobj_ {
+        final class obj_ {
             
-            private foobj_() {
+            private obj_() {
             }
             
-            public final Element foom() {
-                return $this.item(0L);
-            }
-            
-            public final Element foom2() {
-                return (
+            public final .java.lang.Object m() {
+                (
                     let
                     {
-                        .com.redhat.ceylon.compiler.java.test.issues.bug09xx.Bug903<Element> $arg$0$callable$ = $this;
+                        .com.redhat.ceylon.compiler.java.test.issues.bug09xx.Bug903 $arg$0$callable$ = $this;
                         long $arg$0$0 = 0L;
                     }
                     returning $arg$0$callable$.item($arg$0$0);
                 );
+                return $this.item(0L);
             }
         }
-        final foobj_ foobj = new foobj_();
-        return foobj;
+        final obj_ obj = new obj_();
+        
+        class C {
+            
+            C() {
+            }
+            
+            public final .java.lang.Object m() {
+                (
+                    let
+                    {
+                        .com.redhat.ceylon.compiler.java.test.issues.bug09xx.Bug903 $arg$1$callable$ = $this;
+                        long $arg$1$0 = 0L;
+                    }
+                    returning $arg$1$callable$.item($arg$1$0);
+                );
+                return $this.item(0L);
+            }
+        }
+        
+        final class I$impl {
+            
+            I$impl(.com.redhat.ceylon.compiler.java.test.issues.bug09xx.Bug903$foo$0$I $this) {
+                this.$this = $this;
+            }
+            private final .com.redhat.ceylon.compiler.java.test.issues.bug09xx.Bug903$foo$0$I $this;
+            
+            public .java.lang.Object m() {
+                (
+                    let
+                    {
+                        .com.redhat.ceylon.compiler.java.test.issues.bug09xx.Bug903 $arg$2$callable$ = .com.redhat.ceylon.compiler.java.test.issues.bug09xx.Bug903$impl.this.$this;
+                        long $arg$2$0 = 0L;
+                    }
+                    returning $arg$2$callable$.item($arg$2$0);
+                );
+                return .com.redhat.ceylon.compiler.java.test.issues.bug09xx.Bug903$impl.this.$this.item(0L);
+            }
+        }
+        return null;
     }
 }
