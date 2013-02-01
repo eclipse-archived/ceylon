@@ -1536,11 +1536,9 @@ namedSpecifiedArgument returns [SpecifiedArgument specifiedArgument]
 
 anonymousArgument returns [SpecifiedArgument namedArgument]
     @init { $namedArgument = new SpecifiedArgument(null); }
-    : thenElseExpression
-     { Expression e = new Expression(null);
-       e.setTerm($thenElseExpression.term);
-       SpecifierExpression se = new SpecifierExpression(null);
-       se.setExpression(e);
+    : functionOrExpression
+     { SpecifierExpression se = new SpecifierExpression(null);
+       se.setExpression($functionOrExpression.expression);
        $namedArgument.setSpecifierExpression(se); }   
       { expecting=SEMICOLON; }
       SEMICOLON
