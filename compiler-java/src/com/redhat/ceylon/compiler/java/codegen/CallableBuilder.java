@@ -131,7 +131,7 @@ public class CallableBuilder {
             // generate a method for each defaulted param
             for(Tree.Parameter p : parameterListTree.getParameters()){
                 if(p.getDefaultArgument() != null || p.getDeclarationModel().isSequenced()){
-                    MethodDefinitionBuilder methodBuilder = gen.classGen().makeParamDefaultValueMethod(false, null, parameterListTree, p);
+                    MethodDefinitionBuilder methodBuilder = gen.classGen().makeParamDefaultValueMethod(false, null, parameterListTree, p, null);
                     classBody.append(methodBuilder.build());
                 }
             }
