@@ -384,7 +384,7 @@ public class StructureTest2 extends CompilerTest {
     }
     
     @Test
-    public void testCncInterfaceQualifiedMembers_fail(){
+    public void testCncInterfaceQualifiedMembers(){
         compareWithJavaSource("concrete/InterfaceQualifiedMembers");
     }
 }

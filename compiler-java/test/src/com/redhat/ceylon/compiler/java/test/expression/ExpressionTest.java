@@ -216,7 +216,7 @@ public class ExpressionTest extends CompilerTest {
         compareWithJavaSource("selfref/BaseOuter");
     }
     @Test
-    public void testSlfAssignOuter_fail() {
+    public void testSlfAssignOuter() {
         compareWithJavaSource("selfref/AssignOuter");
     }
     @Test
