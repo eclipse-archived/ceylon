@@ -2877,10 +2877,11 @@ public class ExpressionTransformer extends AbstractTransformer {
     private JCExpression transformAssignment(Node op, Tree.Term leftTerm, JCExpression lhs, JCExpression rhs) {
         JCExpression result = null;
 
-        // FIXME: can this be anything else than a Tree.MemberOrTypeExpression or Tree.ParameterizedExpression?
+        // FIXME: can this be anything else than a Tree.StaticMemberOrTypeExpression or Tree.ParameterizedExpression?
         TypedDeclaration decl;
-        if (leftTerm instanceof Tree.MemberOrTypeExpression) {
-            decl = (TypedDeclaration) ((Tree.MemberOrTypeExpression)leftTerm).getDeclaration();
+        if (leftTerm instanceof Tree.StaticMemberOrTypeExpression) {
+            decl = (TypedDeclaration) ((Tree.StaticMemberOrTypeExpression)leftTerm).getDeclaration();
+            lhs = addInterfaceImplAccessorIfRequired(lhs, (StaticMemberOrTypeExpression) leftTerm, decl);
         } else {
             // instanceof Tree.ParameterizedExpression
             decl = (TypedDeclaration) ((Tree.MemberOrTypeExpression)((Tree.ParameterizedExpression)leftTerm).getPrimary()).getDeclaration();
