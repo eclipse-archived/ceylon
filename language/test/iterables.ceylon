@@ -224,7 +224,7 @@ void testIterables() {
     //Iterable-related functions
     check({"aaa", "tt", "z"}.sort(byIncreasing((String s) => s.size)).sequence=={"z","tt","aaa"}, "sort(byIncreasing)");
     check({"z", "aaa", "tt"}.sort(byDecreasing((String s) => s.size)).sequence=={"aaa","tt","z"}, "sort(byDecreasing)");
-    Iterable<String> combined = combine((Character c, Integer i) => "comb 'c'+'i'",
+    Iterable<String> combined = combine((Character c, Integer i) => "comb ``c``+``i``",
                                                "hello", { 1,2,3,4 });
     check(combined.sequence.size==4, "combine [1]");
     check(combined.sequence == { "comb h+1", "comb e+2", "comb l+3", "comb l+4" }, "combine [2]");
