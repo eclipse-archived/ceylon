@@ -75,7 +75,7 @@ void testAliasing() {
     check(use(AliasingSub2().iface), "Aliased member interface");
     Strinteger xxxxx = 5;
     check(xxxxx is Integer, "Type alias");
-    check(Listleton([[1],[2],[3]].first).string=="[ [ 1 ] ]", "class alias ``Listleton([[1],[2],[3]].first)`` instead of [ [ 1 ] ]");
+    check(Listleton([[1],[2],[3]].first).string=="[[1]]", "class alias ``Listleton([[1],[2],[3]].first)`` instead of [ [ 1 ] ]");
     check(MiMatrix(2).string=="{ { 1, 2 }, { 1, 2 } }", "interface alias ``MiMatrix(2)`` instead of { { 1, 2 }, { 1, 2 } }");
     Object xxxxx1 = 6;
     Object xxxxx2 = "XXXX";
