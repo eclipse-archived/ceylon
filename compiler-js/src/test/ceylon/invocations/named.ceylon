@@ -4,7 +4,7 @@ import check {...}
 String namedFunc({Integer*} iter, String desc, Boolean match(Integer i)) {
   for (i in iter) {
     if (match(i)) {
-      return "" desc ": " i "";
+      return "``desc``: ``i``";
     }
   }
   return "[NOT FOUND]";
@@ -13,9 +13,9 @@ String namedFunc({Integer*} iter, String desc, Boolean match(Integer i)) {
 //This one used to break when having seq arg but not all defaulted
 String order(String product, Integer count=1, Float discount=0.0,
           {String*} comments={}) {
-    String commentStr = ", ".join(for (c in comments) "'"c"'");
-    return "Order '" product "', quantity " count ", discount "
-          discount ", comments: " commentStr "";
+    String commentStr = ", ".join(for (c in comments) "'``c``'");
+    return "Order '``product``', quantity ``count``, discount " +
+          "``discount``, comments: ``commentStr``";
 }
 
 void testNamedArguments() {

@@ -203,7 +203,7 @@ shared class C1() {
     shared class C3() extends C1() {
         shared actual default String x = "13";
         shared String f() {
-            return ""outer.x"-"super.x"-"outer.C1().x"-"x"-"C3().x"";
+            return "``outer.x``-``super.x``-``outer.C1().x``-``x``-``C3().x``";
         }
     }
 }
@@ -215,7 +215,7 @@ shared class C2() extends C1() {
             shared actual String x = "222";
         }
         shared String f() {
-            return ""outer.x"-"C1().x"-"x"-"super.x"-"C3().x"-"C2().x"-"C2().f()"-"C3().f()"";
+            return "``outer.x``-``C1().x``-``x``-``super.x``-``C3().x``-``C2().x``-``C2().f()``-``C3().f()``";
         }
     } 
 }

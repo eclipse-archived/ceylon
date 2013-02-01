@@ -1,40 +1,40 @@
 import check {...}
 
 void testCharacter() {
-    Character c1 = `A`;
-    //Character c2 = `𝄞`;
-    Character c3 = `Ũ`;
+    Character c1 = 'A';
+    //Character c2 = '𝄞';
+    Character c3 = 'Ũ';
     checkEqual(c1.string, "A", "Character.string");
     //checkEqual(c2.string, "𝄞", "Character.string");
     checkEqual(c3.string, "Ũ", "Character.string");
-    checkEqual(`Ä`.lowercased, `ä`, "Character.lowercased");
-    checkEqual(`x`.lowercased, `x`, "Character.lowercased");
-    checkEqual(`ö`.uppercased, `Ö`, "Character.uppercased");
-    checkEqual(`#`.uppercased, `#`, "Character.uppercased");
-    checkEqual(`c`.titlecased, `C`, "Character.titlecased");
-    checkEqual(`C`.titlecased, `C`, "Character.titlecased");
-    checkEqual(`9`.titlecased, `9`, "Character.titlecased");
-    checkEqual(`A`.whitespace, false, "Character.whitespace");
-    checkEqual(` `.whitespace, true, "Character.whitespace");
+    checkEqual('Ä'.lowercased, 'ä', "Character.lowercased");
+    checkEqual('x'.lowercased, 'x', "Character.lowercased");
+    checkEqual('ö'.uppercased, 'Ö', "Character.uppercased");
+    checkEqual('#'.uppercased, '#', "Character.uppercased");
+    checkEqual('c'.titlecased, 'C', "Character.titlecased");
+    checkEqual('C'.titlecased, 'C', "Character.titlecased");
+    checkEqual('9'.titlecased, '9', "Character.titlecased");
+    checkEqual('A'.whitespace, false, "Character.whitespace");
+    checkEqual(' '.whitespace, true, "Character.whitespace");
     for (c in "\t") {
         checkEqual(c.whitespace, true, "Character.whitespace");
     }
-    checkEqual(` `.control, false, "Character.control");
+    checkEqual(' '.control, false, "Character.control");
     for (c in "\r") {
         checkEqual(c.control, true, "Character.control");
     }
-    checkEqual(`P`.uppercase, true, "Character.uppercase");
-    checkEqual(`m`.uppercase, false, "Character.uppercase");
-    checkEqual(`#`.uppercase, false, "Character.uppercase");
-    checkEqual(`z`.lowercase, true, "Character.lowercase");
-    checkEqual(`V`.lowercase, false, "Character.lowercase");
-    checkEqual(`+`.lowercase, false, "Character.lowercase");
-    checkEqual(`M`.titlecase, false, "Character.titlecase");
-    checkEqual(`m`.titlecase, false, "Character.titlecase");
-    checkEqual(`6`.titlecase, false, "Character.titlecase");
+    checkEqual('P'.uppercase, true, "Character.uppercase");
+    checkEqual('m'.uppercase, false, "Character.uppercase");
+    checkEqual('#'.uppercase, false, "Character.uppercase");
+    checkEqual('z'.lowercase, true, "Character.lowercase");
+    checkEqual('V'.lowercase, false, "Character.lowercase");
+    checkEqual('+'.lowercase, false, "Character.lowercase");
+    checkEqual('M'.titlecase, false, "Character.titlecase");
+    checkEqual('m'.titlecase, false, "Character.titlecase");
+    checkEqual('6'.titlecase, false, "Character.titlecase");
     
-    checkEqual(`A`.successor, `B`, "Character.successor");
-    checkEqual(`w`.predecessor, `v`, "Character.predecessor");
+    checkEqual('A'.successor, 'B', "Character.successor");
+    checkEqual('w'.predecessor, 'v', "Character.predecessor");
 }
 
 void testString() {
@@ -73,12 +73,12 @@ void testString() {
         fail("String.item");
     }
     if (exists c = s1[0]) {
-        checkEqual(c, `a`, "String.item");
+        checkEqual(c, 'a', "String.item");
     } else {
         fail("String.item");
     }
     if (exists c = s1[2]) {
-        checkEqual(c, `c`, "String.item");
+        checkEqual(c, 'c', "String.item");
     } else {
         fail("String.item");
     }
@@ -86,7 +86,7 @@ void testString() {
         fail("String.item");
     }
     if (exists c = s3[4]) {
-        checkEqual(c, `Ö`, "String.item");
+        checkEqual(c, 'Ö', "String.item");
     } else {
         fail("String.item");
     }

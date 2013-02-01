@@ -58,17 +58,17 @@ void testMethodReference() {
 }
 
 String defParamTest(Integer i1, Integer i2=i1+1, Integer i3=i1+i2) {
-    return "" i1 "," i2 "," i3 "";
+    return "``i1``,``i2``,``i3``";
 }
 class DefParamTest1(Integer i1, Integer i2=i1+1, Integer i3=i1+i2) {
-    shared String s = "" i1 "," i2 "," i3 "";
+    shared String s = "``i1``,``i2``,``i3``";
 }
 class DefParamTest2(Integer i1, Integer i2=i1+1, Integer i3=i1+i2) {
-    shared String f() { return "" i1 "," i2 "," i3 ""; }
+    shared String f() { return "``i1``,``i2``,``i3``"; }
 }
 class DefParamTest3() {
     shared String f(Integer i1, Integer i2=i1+1, Integer i3=i1+i2) {
-        return "" i1 "," i2 "," i3 "";
+        return "``i1``,``i2``,``i3``";
     }
 }
 void testDefaultedParams() {
@@ -147,33 +147,33 @@ interface LazyExprBase {
 }
 class LazyExprTest() satisfies LazyExprBase {
     shared variable Integer x = 1000;
-    shared String f1(Integer i, String f() => ""i"."(++x)"") => ""i":"f()"";
+    shared String f1(Integer i, String f() => "``i``.``(++x)``") => "``i``:``f()``";
     shared Integer f2(Integer i) => 2*(++x)+i;
     shared Integer i1 => ++x;
     shared Integer i2;
     i2 => ++x*2;
-    s1 => ""(++x)".1";
-    s2(Integer i) => ""(++x)"."i"";
+    s1 => "``(++x)``.1";
+    s2(Integer i) => "``(++x)``.``i``";
     
     shared String f3(String f(Integer i)) => f(++x);
 }
 
 variable Integer lx = 1000;
-String lazy_f1(Integer i, String f() => ""i"."(++lx)"") => f();
+String lazy_f1(Integer i, String f() => "``i``.``(++lx)``") => f();
 Integer lazy_f2(Integer i) => 2*(++lx)+i;
 Integer lazy_i1 => ++lx;
 
 class LazyExprTest2() satisfies LazyExprBase {
     shared variable Integer x= 1000;
     shared actual default String s1 => (++x).string;
-    shared actual default String s2(Integer i) => ""++x"-"i"";
+    shared actual default String s2(Integer i) => "``++x``-``i``";
 }
 class LazyExprTest3() extends LazyExprTest2() {
     shared actual variable String s1 = "s1";
 }
 class LazyExprTest4() extends LazyExprTest2() {
     shared variable String assigned = "";
-    shared actual String s1 { return "s1-"super.s1""; }
+    shared actual String s1 { return "s1-``super.s1``"; }
     assign s1 { assigned = s1; }
 }
 
@@ -193,7 +193,7 @@ void testLazyExpressions() {
     check(lazy_i1==4, "=> attribute toplevel");
     
     variable Integer x = 1000;
-    String f1(Integer i, String f() => ""i"."(++x)"") => f();
+    String f1(Integer i, String f() => "``i``.``(++x)``") => f();
     Integer f2(Integer i) => 2*(++x)+i;
     Integer i1 => ++x;
     Integer i2;
@@ -221,7 +221,7 @@ void testLazyExpressions() {
     x = 10;
     check(tst.f1{i=>++x;}=="11:11.2", "=> named arg");
     check(tst.f1{i=>++x; f()=>(++x).string;}=="12:13", "=> named arg function");
-    check(tst.f3{f(Integer i)=>""i"-"++x"";}=="3-14", "=> named arg function with param");
+    check(tst.f3{f(Integer i)=>"``i``-``++x``";}=="3-14", "=> named arg function with param");
 }
 
 shared void test() {

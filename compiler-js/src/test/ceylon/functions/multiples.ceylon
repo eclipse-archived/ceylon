@@ -4,10 +4,10 @@ Comparison multiCompare()(Integer x, Integer y) {
     return x<=>y;
 }
 String multiFullname(String nombre)(String apat)(String amat) {
-    return "" nombre " " apat " " amat "";
+    return "``nombre`` ``apat`` ``amat``";
 }
 String multiDefaulted(String name="A")(String apat)(String amat) {
-    return "" name " " apat " " amat "";
+    return "`` name`` ``apat`` ``amat``";
 }
 String multiSequenced(String* names)(Integer count) {
     value sb = StringBuilder();

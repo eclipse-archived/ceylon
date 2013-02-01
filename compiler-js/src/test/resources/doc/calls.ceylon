@@ -3,7 +3,7 @@ Boolean isEven(Integer x) {
 }
 void greet(String? name) {
   if (exists name) {
-    print("Hello, " name "!");
+    print("Hello, ``name``!");
   }
 }
 String magnify1(Integer|String x) {

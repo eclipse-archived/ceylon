@@ -5,7 +5,7 @@ interface AmbiguousParent {
     shared formal String doSomething();
     shared formal Integer whatever;
     shared default String somethingElse(Integer x) {
-        return "something " x " else";
+        return "something ``x`` else";
     }
 }
 interface Ambiguous1 satisfies AmbiguousParent {
@@ -17,7 +17,7 @@ interface Ambiguous1 satisfies AmbiguousParent {
         if (x%2==0) {
             return AmbiguousParent::somethingElse(x);
         }
-        return "Ambiguous1 something " x " else";
+        return "Ambiguous1 something ``x`` else";
     }
 }
 interface Ambiguous2 satisfies AmbiguousParent {
@@ -26,7 +26,7 @@ interface Ambiguous2 satisfies AmbiguousParent {
     }
     shared actual default Integer whatever { return 2; }
     shared actual default String somethingElse(Integer x) {
-        return "Ambiguous2 " x " something else";
+        return "Ambiguous2 ``x`` something else";
     }
 }
 

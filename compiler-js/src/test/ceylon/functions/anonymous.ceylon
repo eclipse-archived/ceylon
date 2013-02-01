@@ -44,7 +44,7 @@ void testAnonymous() {
 
   //Gavin's test
   void callFunction(String f(Integer i), String expect) {
-    check(f(0)==expect, "anon func returns " f(0) " instead of " expect "");
+    check(f(0)==expect, "anon func returns ``f(0)`` instead of ``expect``");
   }
 
   function f(Integer i) {

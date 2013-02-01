@@ -89,11 +89,11 @@ void testIfExists() {
     variable Integer cnt = 0;
     String? s5 { ++cnt; return "ok"; }
     if (exists x = s5) {
-        check(x=="ok", "if (exists x=y) with getter [value: " x "]");
+        check(x=="ok", "if (exists x=y) with getter [value: ``x``]");
     } else {
         fail("if (exists x=y) with getter [exists]");
     }
-    check(cnt==1, "if (exists x=y) with getter [calls: " cnt "]");
+    check(cnt==1, "if (exists x=y) with getter [calls: ``cnt``]");
 }
 
 void testWhileExists() {
@@ -220,6 +220,6 @@ shared void test() {
     testIfNonempty();
     value assertsBefore=assertionCount();
     testBlocks();
-    check(assertionCount()==assertsBefore+6, "block assertions skipped: " (assertsBefore+6-assertionCount()) "");
+    check(assertionCount()==assertsBefore+6, "block assertions skipped: ``(assertsBefore+6-assertionCount())``");
     results();
 }

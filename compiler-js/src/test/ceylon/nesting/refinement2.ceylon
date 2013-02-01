@@ -5,9 +5,9 @@ shared class X2(String a) {
     abstract shared class RefineTest1(Integer b) {
         shared formal class Inner<Element>(Element c)
                 given Element satisfies Object {
-            shared String origin = "RefineTest1.Inner (" c.string ")";
+            shared String origin = "RefineTest1.Inner (``c``)";
             shared default String x() {
-                return "x and " y() " and a:" a ", b:" b ", c:" c ".";
+                return "x and ``y()`` and a:``a``, b:``b``, c:``c``.";
             }
             shared formal String y();
         }
@@ -20,7 +20,7 @@ shared class X2(String a) {
 //subclasses can use Inner directly
 abstract shared class RefineTest4(String d) {
     shared class Inner(Integer e) {
-        shared String hello() { return "hello from RefineTest2.Inner with " e "."; }
+        shared String hello() { return "hello from RefineTest2.Inner with ``e``."; }
     }
 }
 
@@ -42,7 +42,7 @@ shared class Y2(String h) extends X2(h) {
               return "REFINED " + super.x();
           }
           shared actual String y() {
-              return "y" h ",d:" d ",d2:" d2 ".";
+              return "y``h``,d:``d``,d2:``d2``.";
           }
       }
     }
@@ -61,7 +61,7 @@ shared class SubRef5() extends RefineTest5(6) {
 }
 shared class SubRef51() extends SubRef5() {
     shared actual class Inner(String subg55) extends super.Inner(subg55) {
-        shared actual String x() { return "equis" subg55 "."; }
+        shared actual String x() { return "equis``subg55``."; }
     }
 }
 

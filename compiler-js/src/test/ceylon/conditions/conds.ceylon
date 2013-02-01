@@ -33,16 +33,16 @@ shared void test() {
         check(f.first.uppercased=="A", "nonempty");
         count++;
     }
-    check(count==4, "some conditions were not met: " count " instead of 4");
+    check(count==4, "some conditions were not met: ``count`` instead of 4");
     Integer|String zz = 1;
     assert(is Integer zz2=zz, zz2 > 0);
     check(zz2==1, "special -> boolean");
     //and now some comprehensions
     Sequence<Integer?> seq1 = [ 1, 2, 3, null, 4, 5, null, 6, 7, null, 10];
     value compr1 = { for (i in seq1) if (exists i, i%2==0) i*10 }.sequence;
-    check(compr1==[20,40,60,100],"comprehension [1] is " compr1 " and not [20,40,60,100]");
+    check(compr1==[20,40,60,100],"comprehension [1] is ``compr1`` and not [20,40,60,100]");
     value compr2 = [ for (i in seq1) if (exists i, i%2==0) i*10 ];
-    check(compr2==[20,40,60,100],"comprehension [2] is " compr2 " and not [20,40,60,100]");
+    check(compr2==[20,40,60,100],"comprehension [2] is ``compr2`` and not [20,40,60,100]");
     // !is
     if (!is String zz) {
         check(zz>0, "!is");
@@ -67,7 +67,7 @@ shared void test() {
         check(true,"is,boolean");
     } else { fail("is,boolean"); }
     if (exists c, nonempty seq2, exists zz5=c[0]) {
-        check(zz5==`X`,"exists,nonempty,boolean");
+        check(zz5=='X',"exists,nonempty,boolean");
     } else { fail("exists,nonempty,boolean"); }
     results();
 }

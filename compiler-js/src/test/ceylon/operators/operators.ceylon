@@ -384,10 +384,10 @@ void testAssignmentOperator() {
 
 void testSegments() {
     value seq = [ "one", "two", "three", "four", "five", "six", "seven", "eight", "nine", "ten" ];
-    check(seq[1:2] == ["two", "three" ], "seq[1:2] " seq[1:2] "");
-    check(seq[3:5] == ["four", "five", "six", "seven", "eight"], "seq[3:5] " seq[3:5] "");
-    check("test"[1:2] == "es", "test[1:2] " ("test"[1:2]) "");
-    check("hello"[2:2] == "ll", "hello[2:2] " ("hello"[2:2]) "");
+    check(seq[1:2] == ["two", "three" ], "seq[1:2] ``seq[1:2]``");
+    check(seq[3:5] == ["four", "five", "six", "seven", "eight"], "seq[3:5] ``seq[3:5]``");
+    check("test"[1:2] == "es", "test[1:2] ``("test"[1:2])``");
+    check("hello"[2:2] == "ll", "hello[2:2] ``("hello"[2:2])``");
     value s2 = 0:3;
     value s3 = 2:5;
     check(s2.size == 3, "0:3 [1]");

@@ -10,7 +10,7 @@ shared void check(Boolean assertion, String message="") {
     assertions++;
     if (!assertion) {
         failures++;
-        print("assertion failed \"" message "\"");
+        print("assertion failed \"``message``\"");
     }
 }
 
@@ -18,7 +18,7 @@ shared void checkEqual(Object actual, Object expected, String message="") {
     assertions++;
     if (actual != expected) {
         failures++;
-        print("assertion failed \"" message "\": '" actual "'!='" expected "'");
+        print("assertion failed \"``message``\": '``actual``'!='``expected``'");
     }
 }
 
@@ -27,8 +27,7 @@ shared void fail(String message) {
 }
 
 shared void results() {
-    print("assertions " assertions 
-          ", failures " failures "");
+    print("assertions ``assertions``, failures ``failures``");
 }
 
 shared Integer assertionCount() { return assertions; }

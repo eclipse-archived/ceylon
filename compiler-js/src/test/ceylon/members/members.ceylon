@@ -12,7 +12,7 @@ shared class Counter(Integer initCount=0) {
         return initCount;
     }
     shared actual String string {
-        return "Counter[" + count.string + "]";
+        return "Counter[``count``]";
     }
 }
 
