@@ -23,7 +23,7 @@ Table table = Table {
 };
 
 Table table2 = Table {
-    title="Proyecto Ceylon";
+    "Proyecto Ceylon";
     Row {
         Cell { "Persona" },
         Cell { "Proyecto" },
