@@ -11,6 +11,10 @@ sun.invoke.anon
 sun.invoke.empty
 sun.invoke.util
 com.sun.nio.file
+apple.launcher
+apple.security
+com.apple.concurrent
+com.apple.eio
 # only sun.nio.ByteBuffered should be included but we don't do partial packages
 sun.nio
 sun.nio.ch
@@ -246,6 +250,7 @@ com.sun.rowset.providers
 
 =oracle.jdk.scripting
 com.sun.script.util
+apple.applescript
 
 #oracle.scripting-rhino
 com.sun.script.javascript
@@ -281,6 +286,10 @@ sun.awt.util
 sun.awt.windows
 sun.awt.X11
 com.sun.awt
+apple.laf
+com.apple.eawt
+com.apple.laf
+com.apple.resources
 
 #oracle.font
 sun.font
