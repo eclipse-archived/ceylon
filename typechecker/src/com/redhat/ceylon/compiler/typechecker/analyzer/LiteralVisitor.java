@@ -1,5 +1,9 @@
 package com.redhat.ceylon.compiler.typechecker.analyzer;
 
+import static com.redhat.ceylon.compiler.typechecker.parser.CeylonLexer.STRING_END;
+import static com.redhat.ceylon.compiler.typechecker.parser.CeylonLexer.STRING_MID;
+import static com.redhat.ceylon.compiler.typechecker.parser.CeylonLexer.STRING_START;
+import static com.redhat.ceylon.compiler.typechecker.parser.CeylonLexer.VERBATIM_STRING;
 import static java.lang.Character.toChars;
 import static java.lang.Integer.parseInt;
 
@@ -8,7 +12,6 @@ import java.util.regex.Pattern;
 
 import org.antlr.runtime.Token;
 
-import com.redhat.ceylon.compiler.typechecker.parser.CeylonLexer;
 import com.redhat.ceylon.compiler.typechecker.tree.Node;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.CharLiteral;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.FloatLiteral;
@@ -22,19 +25,23 @@ public class LiteralVisitor extends Visitor {
 	
     @Override
     public void visit(StringLiteral that) {
-        StringBuilder result = new StringBuilder();
-        stripIndent(that.getText(), getIndentPosition(that), result);
-        interpolateEscapes(result, that);
         int type = that.getToken().getType();
-        if (type==CeylonLexer.STRING_END ||
-            type==CeylonLexer.STRING_MID) {
-            result.deleteCharAt(0);
+        String text = that.getText();
+        if (type==VERBATIM_STRING) {
+            that.setText(text.substring(2,text.length()-2));
         }
-        if (type==CeylonLexer.STRING_START ||
-            type==CeylonLexer.STRING_MID) {
-            result.deleteCharAt(result.length()-1);
+        else {
+            StringBuilder result = new StringBuilder();
+            stripIndent(text, getIndentPosition(that), result);
+            interpolateEscapes(result, that);
+            if (type==STRING_END || type==STRING_MID) {
+                result.deleteCharAt(0);
+            }
+            if (type==STRING_START || type==STRING_MID) {
+                result.deleteCharAt(result.length()-1);
+            }
+            that.setText(result.toString());
         }
-        that.setText(result.toString());
     }
 
     @Override

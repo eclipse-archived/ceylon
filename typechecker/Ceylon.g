@@ -2244,6 +2244,8 @@ nonstringLiteral returns [Literal literal]
 stringLiteral returns [StringLiteral stringLiteral]
     : STRING_LITERAL 
       { $stringLiteral = new StringLiteral($STRING_LITERAL); }
+    | VERBATIM_STRING
+      { $stringLiteral = new StringLiteral($VERBATIM_STRING); }
     ;
 
 stringExpression returns [Atom atom]
@@ -2512,11 +2514,14 @@ typeNameWithArguments returns [Identifier identifier, TypeArgumentList typeArgum
 annotations returns [AnnotationList annotationList]
     : { $annotationList = new AnnotationList(null); }
       (
-          STRING_LITERAL
-          { AnonymousAnnotation aa = new AnonymousAnnotation(null);
-            aa.setStringLiteral(new StringLiteral($STRING_LITERAL));
-            $annotationList.setAnonymousAnnotation(aa);
-            $STRING_LITERAL.setType(ASTRING_LITERAL); }
+          stringLiteral
+          { if ($stringLiteral.stringLiteral.getToken().getType()==VERBATIM_STRING)
+                $stringLiteral.stringLiteral.getToken().setType(AVERBATIM_STRING);
+            else
+                $stringLiteral.stringLiteral.getToken().setType(ASTRING_LITERAL);
+            AnonymousAnnotation aa = new AnonymousAnnotation(null);
+            aa.setStringLiteral($stringLiteral.stringLiteral);
+            $annotationList.setAnonymousAnnotation(aa); }
       )?
       (
         annotation 
@@ -2567,7 +2572,10 @@ literalArgument returns [ListedArgument positionalArgument]
         Expression e = new Expression(null);
         e.setTerm($stringLiteral.stringLiteral);
         $positionalArgument.setExpression(e); 
-        $stringLiteral.stringLiteral.getToken().setType(ASTRING_LITERAL); }
+         if ($stringLiteral.stringLiteral.getToken().getType()==VERBATIM_STRING)
+             $stringLiteral.stringLiteral.getToken().setType(AVERBATIM_STRING);
+         else
+             $stringLiteral.stringLiteral.getToken().setType(ASTRING_LITERAL); }
     ;
 
 prefixOperatorStart
@@ -3134,6 +3142,7 @@ NATURAL_LITERAL
     ;
     
 fragment ASTRING_LITERAL:;
+fragment AVERBATIM_STRING:;
 
 CHAR_LITERAL
     :   '\'' CharPart '\''
@@ -3147,6 +3156,10 @@ STRING_LITERAL
 fragment STRING_MID:;
 STRING_END
     :   '``' StringPart ( '"' | '``' { $type = STRING_MID; } )
+    ;
+
+VERBATIM_STRING
+    :	'"""' (~'"'|'"' ~'"'| '""' ~'"')* '"""'
     ;
 
 /*
