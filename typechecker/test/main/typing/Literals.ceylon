@@ -20,7 +20,7 @@ class Literals() {
     value ss2 = [ "hello", "world" ];
     @type:"Tuple<Integer,Integer,Tuple<Integer,Integer,Tuple<Integer,Integer,Tuple<Integer,Integer,Empty>>>>" 
     value ns2 = [ 1, 2, 3, 4 ];
-    @type:"String" value st = "pi = '3.1415' approx";
+    @type:"String" value st = "pi = ``3.1415`` approx";
     @type:"String" value q = "hibernate.org";
     
     Boolean b = true;
@@ -41,7 +41,7 @@ class Literals() {
     @type:"Integer" value nnn = 2.minus(1);
     @type:"Float" value fff = 2.0.times(-3.0);
     
-    @type:"String" @error value st2 = "( 'null' )";
+    @type:"String" @error value st2 = "( ``null`` )";
     
     @type:"Integer" value hex1 = #FF12;
     @type:"Integer" value hex2 = #FF12_A0E9;

@@ -21,15 +21,15 @@ class BinaryOperator(Tree|Integer left, Tree|Integer right, Integer f(Integer a,
         return f(resolve(left), resolve(right));
     }
 
-    shared actual default String string = "Binary('left', 'right')";
+    shared actual default String string = "Binary(``left``, ``right``)";
 }
 
 class Multiplication(Tree|Integer left, Tree|Integer right) 
         extends BinaryOperator(left, right, (Integer a, Integer b) => a * b) {
-    shared actual default String string = "('left' * 'right')";
+    shared actual default String string = "(``left`` * ``right``)";
 }
 
 class Addition(Tree|Integer left, Tree|Integer right) 
         extends BinaryOperator(left, right, (Integer a, Integer b) => a + b) {
-    shared actual default String string = "('left' + 'right')";
+    shared actual default String string = "(``left`` + ``right``)";
 }
