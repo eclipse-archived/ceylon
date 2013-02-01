@@ -288,6 +288,7 @@ sun.awt.X11
 com.sun.awt
 apple.laf
 com.apple.eawt
+com.apple.eawt.event
 com.apple.laf
 com.apple.resources
 
