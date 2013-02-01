@@ -2206,7 +2206,7 @@ public class ExpressionVisitor extends Visitor {
             ProducedReference pr, Set<Parameter> foundParameters) {
         Parameter sp = getUnspecifiedParameter(pr, pl, foundParameters);
         if (sp==null) {
-            sa.addError("all iterable parameters specified by name: " + 
+            sa.addError("all iterable parameters specified by named argument list: " + 
                     pr.getDeclaration().getName(unit) +
                     " does not declare any additional parameters of type Iterable");
         }
@@ -2223,9 +2223,16 @@ public class ExpressionVisitor extends Visitor {
             ProducedReference pr, Set<Parameter> foundParameters) {
         Parameter p = getMatchingParameter(pl, a, foundParameters);
         if (p==null) {
-            a.addError("no matching parameter for named argument " + 
-                    name(a.getIdentifier()) + " declared by " + 
-                    pr.getDeclaration().getName(unit), 101);
+            if (a.getIdentifier()==null) {
+                a.addError("all parameters specified by named argument list: " + 
+                        pr.getDeclaration().getName(unit) +
+                        " does not declare any additional parameters");
+            }
+            else {
+                a.addError("no matching parameter for named argument " + 
+                        name(a.getIdentifier()) + " declared by " + 
+                        pr.getDeclaration().getName(unit), 101);
+            }
         }
         else {
             if (!foundParameters.add(p)) {
