@@ -79,7 +79,8 @@ import com.redhat.ceylon.tools.test.CompilerToolsTests;
     BcTests.class,
     ExpressionTest3.class,
     CompilerToolsTests.class,
-    TopLevelToolTest.class,
+    // FIXME Disabled: it does not run currently in parallel
+    // TopLevelToolTest.class,
     CeylonDocToolTest.class,
     AntToolTests.class
 })
