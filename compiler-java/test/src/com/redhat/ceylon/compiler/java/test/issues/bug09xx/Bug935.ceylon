@@ -37,6 +37,6 @@ void bug_935_test(){
    value results = bug_935_collectMatches(["Merry Christmas", "Happy Holidays"], function (String s) => s.size);
    print("Uppercase letters: ");
    for(result in results[0]){
-       print("Size: " result[0] ", for: '" result[1] "'");
+       print("Size: `` result[0] ``, for: '`` result[1] ``'");
    }
 }

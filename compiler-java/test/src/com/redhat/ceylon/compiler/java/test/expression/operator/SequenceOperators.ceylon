@@ -84,7 +84,7 @@ shared class SequenceOperators() {
 
 @nomodel
 void sequenceOperators() {
-    value t = [1, "2", Singleton(`3`)];
+    value t = [1, "2", Singleton('3')];
     value t3 = t[0...];
     assert (t == t3);
     Sequential<Integer> possiblyEmpty = [];

@@ -22,7 +22,7 @@ shared void bug871(){
     if(bug871_2({}) != ""){ throw; }
     //bug871_2({{},{}});
     value res = bug871_2({{}, {{"a", "b"}, {}, {"c"}, {}, {"d", "e"}}, {}, {{"a", "b"}, {}, {"c"}, {}, {"d", "e"}}, {}});
-    if(res != "abcdeabcde") { throw Exception("Expected something else than " res ""); }
+    if(res != "abcdeabcde") { throw Exception("Expected something else than `` res ``"); }
 }
 @nomodel
 shared String bug871_2(Iterable<Iterable<Iterable<String>>> iterables){

@@ -21,6 +21,6 @@
 class CharacterAsInteger(){
     @error
     shared void m() {
-        Integer x = `a`.integer;
+        Integer x = 'a'.integer;
     }
 }

@@ -74,7 +74,7 @@ shared class StubClass(
     
     doc "Test fenced code block with syntax highlighter.
     
-         ```ceylon
+         \`\``ceylon
          shared default Boolean subset(Set set) {
              for (element in this) {
                  if (!set.contains(element)) {
@@ -83,7 +83,7 @@ shared class StubClass(
              }
              return true;
          }
-         ```
+         \`\``
          
          <i>Lorem ipsum dolor sit amet, consectetur...</i>"
     shared void methodWithCodeExamples() {}

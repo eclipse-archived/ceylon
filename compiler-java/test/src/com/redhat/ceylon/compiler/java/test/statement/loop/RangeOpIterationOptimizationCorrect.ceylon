@@ -21,7 +21,7 @@ void rangeOpIterationOptimizationCorrect() {
 
     void check(Boolean assertion, String message="") {
         if (!assertion) {
-            throw Exception ("**** ASSERTION FAILED \"" message "\" ****");
+            throw Exception ("**** ASSERTION FAILED \"`` message ``\" ****");
         }
     }
     
@@ -32,7 +32,7 @@ void rangeOpIterationOptimizationCorrect() {
     void checkEq<Equatable>(Equatable expect, Equatable got, String message="") 
         given Equatable satisfies Object {
         if (expect != got) {
-            fail("" expect "!=" got ": " message "");
+            fail("`` expect ``!=`` got ``: `` message ``");
         }
     } 
 
@@ -113,7 +113,7 @@ void rangeOpIterationOptimizationCorrect() {
         } 
         
         check(unoptimized.sequence == optimized.sequence, 
-            "Incorrect optimization of `for (i in " start ".." end ") { ... }`");
+            "Incorrect optimization of `for (i in `` start ``..`` end ``) { ... }`");
     }
     
     optimizedMatches(0,0);
@@ -150,7 +150,7 @@ void rangeOpIterationOptimizationCorrect() {
         }
         
         check(unoptimized.sequence == optimized.sequence, 
-            "Incorrect optimization of `for (i in (" start ".." end ").by(" by ")) { ... }`");
+            "Incorrect optimization of `for (i in (`` start ``..`` end ``).by(`` by ``)) { ... }`");
     }
         
     optimizedWithByMatches(0,0,1);
@@ -193,19 +193,19 @@ void rangeOpIterationOptimizationCorrect() {
         try {
             @requireOptimization:"RangeOpIteration"
             for (i in (0..10).by(step)) {
-                fail("Range.by(" step " didn't throw");
+                fail("Range.by(`` step `` didn't throw");
             }
         } catch (Exception e) {
             try {
                 @disableOptimization
                 for (i in (0..10).by(step)) {
-                    fail("Range.by(" step " didn't throw");
+                    fail("Range.by(`` step `` didn't throw");
                 }
             } catch (Exception e2) {
-                check(e.message == e2.message, "Exception messages with step= " step " differ: Optimized is '"
-                    e.message "' unoptimized is '" e2.message "'");
-                check(e.string == e2.string, "Exception .string values with step= " step " differ: Optimized is '"
-                    e.string "' unoptimized is '" e2.string "'");
+                check(e.message == e2.message, "Exception messages with step= `` step `` differ: Optimized is '``
+                    e.message ``' unoptimized is '`` e2.message ``'");
+                check(e.string == e2.string, "Exception .string values with step= `` step `` differ: Optimized is '``
+                    e.string ``' unoptimized is '`` e2.string ``'");
             }
         }
     }  

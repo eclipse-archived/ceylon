@@ -20,18 +20,18 @@
 @nomodel
 class StringTemplate() {
     void m1(String s) {
-        String t = "Foo " s " bar";
+        String t = "Foo ``s`` bar";
     }
     void m2(String s) {
-        String t = "Foo " s "";
+        String t = "Foo ``s``";
     }
     void m3(Integer n) {
-        String t = "Foo " n " bar";
+        String t = "Foo ``n`` bar";
     }
     void m4() {
-        String t = "Foo " ("") " bar";
+        String t = "Foo ``""`` bar";
     }
     void m5() {
-        String t = "Foo " 4 " bar";
+        String t = "Foo ``4`` bar";
     }
 }

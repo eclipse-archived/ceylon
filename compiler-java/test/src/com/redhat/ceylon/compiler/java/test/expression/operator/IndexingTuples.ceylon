@@ -20,7 +20,7 @@
 @nomodel
 class IndexingTuples() {
     void index() {
-        value t = [1, "2", Singleton(`3`)];
+        value t = [1, "2", Singleton('3')];
         Integer v1 = t[0];
     }
 }

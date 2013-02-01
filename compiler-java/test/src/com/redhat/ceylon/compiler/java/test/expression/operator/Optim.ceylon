@@ -145,9 +145,9 @@ class Optim() extends OptimSuperclass<Integer,Float,Character,String,Boolean>(){
     }
 
     void unboxedCharacterArithmetic(){
-        variable Character n1 = `a`;
-        variable Character n2 = `a`;
-        variable Character n3 = `a`;
+        variable Character n1 = 'a';
+        variable Character n2 = 'a';
+        variable Character n3 = 'a';
 
         n1++;
         ++n1;
@@ -282,8 +282,8 @@ class Optim() extends OptimSuperclass<Integer,Float,Character,String,Boolean>(){
     }
 
     void unboxedCharacterComparison(){
-        variable Character n1 = `a`;
-        variable Character n2 = `a`;
+        variable Character n1 = 'a';
+        variable Character n2 = 'a';
         variable Boolean sync;
         
         sync = n1 == n2;
@@ -296,7 +296,7 @@ class Optim() extends OptimSuperclass<Integer,Float,Character,String,Boolean>(){
     }
 
     shared actual void boxedCharacterComparison(Character n2){
-        variable Character n1 = `a`;
+        variable Character n1 = 'a';
         variable Boolean sync;
         
         sync = n1 == n2;

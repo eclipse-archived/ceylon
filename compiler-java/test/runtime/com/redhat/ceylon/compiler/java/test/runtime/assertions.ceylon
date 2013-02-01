@@ -47,16 +47,16 @@ shared void assertEquals(Object? expect, Object? got, String? message = null) {
     if (exists expect) {
         if (exists got) {
             if (expect != got) {
-                throw ComparisonFailed(message else "Expected " expect " but got " got "", 
+                throw ComparisonFailed(message else "Expected `` expect `` but got `` got ``", 
                     expect, got);
             } else {
                 return;
             }
         }
-        throw ComparisonFailed(message else "Expected " expect " but got null", 
+        throw ComparisonFailed(message else "Expected `` expect `` but got null", 
             expect, got);
     } else if (exists got) {
-        throw ComparisonFailed(message else "Expected null but got " got "", 
+        throw ComparisonFailed(message else "Expected null but got `` got ``", 
             expect, got);
     }
 }
@@ -65,16 +65,16 @@ shared void assertApproximatelyEquals(Float? expect, Float? got, Float tolerance
     if (exists expect) {
         if (exists got) {
             if ((expect - got).magnitude > tolerance) {
-                throw ComparisonFailed(message else "Expected " expect " but got " got " (to within " tolerance ")", 
+                throw ComparisonFailed(message else "Expected `` expect `` but got `` got `` (to within `` tolerance ``)", 
                     expect, got);
             } else {
                 return;
             }
         }
-        throw ComparisonFailed(message else "Expected " expect " but got null", 
+        throw ComparisonFailed(message else "Expected `` expect `` but got null", 
             expect, got);
     } else if (exists got) {
-        throw ComparisonFailed(message else "Expected null but got " got "", 
+        throw ComparisonFailed(message else "Expected null but got `` got ``", 
             expect, got);
     }
 }

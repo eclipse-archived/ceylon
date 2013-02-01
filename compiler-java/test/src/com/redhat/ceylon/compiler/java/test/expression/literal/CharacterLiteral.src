@@ -8,7 +8,7 @@ class CharacterLiteral {
     public final void m() {
         final int c1 = 97;
         final int c2 = 73;
-        final int c3 = 96;
+        final int c3 = 39;
         final int c4 = 92;
         final int c5 = 9;
         final int c6 = 10;

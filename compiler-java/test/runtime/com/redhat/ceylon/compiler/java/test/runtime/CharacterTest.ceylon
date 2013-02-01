@@ -22,21 +22,21 @@ shared class CharacterTest() {
 
     @test
     shared void testLowercased() {
-        Character testChar = `A`;
-        assertEquals(`a`,testChar.lowercased);
+        Character testChar = 'A';
+        assertEquals('a',testChar.lowercased);
     }
     
     @test
     shared void testUppercased() {
-        Character testChar = `a`;
-        assertEquals(`A`,testChar.uppercased);
+        Character testChar = 'a';
+        assertEquals('A',testChar.uppercased);
     }
     
     @test
     shared void testUppercase() {
-        Character testCharLower = `a`;
-        Character testCharUpper = `A`;
-        Character testCharDigit = `1`;
+        Character testCharLower = 'a';
+        Character testCharUpper = 'A';
+        Character testCharDigit = '1';
         assertFalse(testCharLower.uppercase);
         assertTrue(testCharUpper.uppercase);
         assertFalse(testCharDigit.uppercase);
@@ -44,9 +44,9 @@ shared class CharacterTest() {
     
     @test
     shared void testLowercase() {
-        Character testCharLower = `a`;
-        Character testCharUpper = `A`;
-        Character testCharDigit = `1`;
+        Character testCharLower = 'a';
+        Character testCharUpper = 'A';
+        Character testCharDigit = '1';
         assertTrue(testCharLower.lowercase);
         assertFalse(testCharUpper.lowercase);
         assertFalse(testCharDigit.lowercase);
@@ -54,9 +54,9 @@ shared class CharacterTest() {
     
     @test
     shared void testDigit() {
-        Character testCharLower = `a`;
-        Character testCharUpper = `A`;
-        Character testCharDigit = `1`;
+        Character testCharLower = 'a';
+        Character testCharUpper = 'A';
+        Character testCharDigit = '1';
         assertFalse(testCharLower.digit);
         assertFalse(testCharUpper.digit);
         assertTrue(testCharDigit.digit);
@@ -64,9 +64,9 @@ shared class CharacterTest() {
     
     @test
     shared void testLetter() {
-        Character testChar = `a`;    
-        Character testDigit = `1`;
-        Character testWhite = ` `;
+        Character testChar = 'a';    
+        Character testDigit = '1';
+        Character testWhite = ' ';
         assertTrue(testChar.letter);
         assertFalse(testDigit.letter);
         assertFalse(testWhite.letter);
@@ -74,9 +74,9 @@ shared class CharacterTest() {
     
     @test
     shared void testWhite() {
-        Character testChar = `a`;    
-        Character testDigit = `1`;
-        Character testWhite = ` `;
+        Character testChar = 'a';    
+        Character testDigit = '1';
+        Character testWhite = ' ';
         assertFalse(testChar.whitespace);
         assertFalse(testDigit.whitespace);
         assertTrue(testWhite.whitespace);

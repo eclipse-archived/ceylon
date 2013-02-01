@@ -20,10 +20,10 @@
 @nomodel
 class CharacterBoxing(){
     void m() {
-        Character b1 = `A`;
+        Character b1 = 'A';
         Character b2 = b1.lowercased;
-        Character b3 = `a`.uppercased;
-        Character? b4 = `a`.successor;
+        Character b3 = 'a'.uppercased;
+        Character? b4 = 'a'.successor;
         Character b5 = successor(b3);
         Character? b6 = successor2(b4);
         Character b7 = successor3(b4);
@@ -42,7 +42,7 @@ class CharacterBoxing(){
         if (exists c) {
             return c.successor;
         } else {
-            return ` `;
+            return ' ';
         }
     }
 }

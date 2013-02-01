@@ -20,8 +20,6 @@
  
 shared String constAbc = "abcdef";
 
-shared String constAbcSingleQuoted = 'abcdef';
-
 shared String constLoremIpsumSingleLine = "Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.";
 
 shared String constLoremIpsumMultiLine = "Lorem ipsum dolor sit amet, consectetur adipisicing elit, 
@@ -32,9 +30,9 @@ shared String[] constAbcArray = [
     "def",
     "xyz"];
     
-shared Character constCharA = `A`;
+shared Character constCharA = 'A';
 
-shared Character constCharAngstromSign = `\{#212B}`;
+shared Character constCharAngstromSign = '\{#212B}';
     
 shared Integer constNumZero = 0;
 

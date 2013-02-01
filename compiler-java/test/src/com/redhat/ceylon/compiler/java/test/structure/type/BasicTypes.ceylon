@@ -48,7 +48,7 @@ shared String globalAttrString = "a";
 @nomodel
 shared Boolean globalAttrBoolean = true;
 @nomodel
-shared Character globalAttrCharacter = `a`;
+shared Character globalAttrCharacter = 'a';
 
 @nomodel
 shared Integer? globalAttrOptionalInteger = null;
@@ -88,7 +88,7 @@ class BasicTypes(Integer paramInteger,
   Float privateAttrFloat = 1.0;
   String privateAttrString = "a";
   Boolean privateAttrBoolean = true;
-  Character privateAttrCharacter = `a`;
+  Character privateAttrCharacter = 'a';
 
   Integer? privateAttrOptionalInteger = null;
   Float? privateAttrOptionalFloat = null;
@@ -100,7 +100,7 @@ class BasicTypes(Integer paramInteger,
   shared Float sharedAttrFloat = 1.0;
   shared String sharedAttrString = "a";
   shared Boolean sharedAttrBoolean = true;
-  shared Character sharedAttrCharacter = `a`;
+  shared Character sharedAttrCharacter = 'a';
 
   shared Integer? sharedAttrOptionalInteger = null;
   shared Float? sharedAttrOptionalFloat = null;

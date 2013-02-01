@@ -178,9 +178,9 @@ void characterTypes() {
     // FIXME
     //Character? c4 = java.return_Character()?.charValue();
     @error
-    java.charParams(`a`, JCharacter(`a`), `a`);
+    java.charParams('a', JCharacter('a'), 'a');
     @error
-    java.charParams(box(`a`), JCharacter(box(`a`)), box(`a`));
+    java.charParams(box('a'), JCharacter(box('a')), box('a'));
     @error
     java.charParams(java.return_char(), JCharacter(java.return_char()), java.return_char());
     @error

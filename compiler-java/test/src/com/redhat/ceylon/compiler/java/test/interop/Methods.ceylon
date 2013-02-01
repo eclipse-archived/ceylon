@@ -101,11 +101,11 @@ void variadicMethods() {
     java.variadicCeylonBoolean(*[true, box(false), true]);
 
     @error
-    java.variadicChar(`a`, box(`b`), `c`);
+    java.variadicChar('a', box('b'), 'c');
     @error
     java.variadicChar(*{});
     @error
-    java.variadicChar(*[`a`, box(`b`), `c`]);
+    java.variadicChar(*['a', box('b'), 'c']);
 
     @error
     java.variadicByte(1, box(2), 3);

@@ -20,13 +20,13 @@
 @nomodel
 class CharacterLiteral(){
     shared void m() {
-        Character c1 = `a`;
-        Character c2 = `I`;
-        Character c3 = `\``;
-        Character c4 = `\\`;
-        Character c5 = `\t`;
-        Character c6 = `\n`;
-        Character c7 = `\{#0001d11e}`;
-        Character c8 = `𝄞`;
+        Character c1 = 'a';
+        Character c2 = 'I';
+        Character c3 = '\'';
+        Character c4 = '\\';
+        Character c5 = '\t';
+        Character c6 = '\n';
+        Character c7 = '\{#0001d11e}';
+        Character c8 = '𝄞';
     }
 }

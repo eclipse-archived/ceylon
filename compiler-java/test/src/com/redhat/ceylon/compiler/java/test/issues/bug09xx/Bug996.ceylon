@@ -19,7 +19,7 @@
  */
 @nomodel
 void bug996(){
-    value t = [1, "2", Singleton(`3`)];
+    value t = [1, "2", Singleton('3')];
     value t2 = t[0...];
     assert (t == t2);
 }

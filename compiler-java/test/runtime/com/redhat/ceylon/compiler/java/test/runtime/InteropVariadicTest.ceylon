@@ -137,11 +137,11 @@ shared class InteropVariadicTest() {
     @test
     shared void testVarargsChar() {
         VariadicJava java = VariadicJava();
-        java.testVarargsChar3(`a`, box(`b`), `c`);
-        java.testVarargsChar3(*[`a`, box(`b`), `c`]);
-        java.testVarargsChar3(`a`, *[box(`b`), `c`]);
-        java.testVarargsChar3(`a`, box(`b`), *[`c`]);
-        value seq = [`a`, box(`b`), `c`];
+        java.testVarargsChar3('a', box('b'), 'c');
+        java.testVarargsChar3(*['a', box('b'), 'c']);
+        java.testVarargsChar3('a', *[box('b'), 'c']);
+        java.testVarargsChar3('a', box('b'), *['c']);
+        value seq = ['a', box('b'), 'c'];
         java.testVarargsChar3(*seq);
 
         java.testVarargsChar0();

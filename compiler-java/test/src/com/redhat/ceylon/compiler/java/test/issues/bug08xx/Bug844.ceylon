@@ -42,7 +42,7 @@ shared abstract class Bug844_Tuple<out Element, out First, out Rest>(first, rest
     shared actual Rest&Element[] rest;
 
     shared actual String string { 
-        return "(" first?.string else "null" ", " rest.string[1...] "";
+        return "(`` first?.string else "null" ``, `` rest.string[1...] ``";
     }
 
     shared actual Element? get(Integer index) {

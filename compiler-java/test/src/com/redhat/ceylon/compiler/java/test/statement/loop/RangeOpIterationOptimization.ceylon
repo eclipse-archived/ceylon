@@ -27,7 +27,7 @@ class OptimizedForWithRange(start, end) {
         for (i in 1..10) {
             sum += i;
         }
-        for (c in `a`..`z`) {
+        for (c in 'a'..'z') {
             sum += c.integer;
         }
     }

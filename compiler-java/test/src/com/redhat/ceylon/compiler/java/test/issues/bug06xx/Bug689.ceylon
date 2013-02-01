@@ -63,5 +63,5 @@ class Bug689<X,Y>(X x, Y y, X&Y xy) {
     sync = Bug689_ModelLoader(1,2,3).variableWithUnion.first;
     sync = (Bug689_ModelLoader(1,2,3).variableWithUnion = [1,2]).first;
     
-    value c = "abc".withLeading(`d`).first;
+    value c = "abc".withLeading('d').first;
 }

@@ -239,8 +239,8 @@ void test_chars() {
     }
     for (Character c2 in items) { print(c2); }
     java.take_chars(items);
-    java.take_chars(array { `a`, `b`, `c`});
-    java.take_chars(array([`a`, `b`, `c`]));
+    java.take_chars(array { 'a', 'b', 'c'});
+    java.take_chars(array(['a', 'b', 'c']));
     java.take_chars(array<Character>({}));
 }
 

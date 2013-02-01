@@ -687,13 +687,11 @@ public class CeylonDocToolTest {
         assertMatchInFile(destDir, "index.html", 
                 Pattern.compile("String constAbc<span class='specifier-operator'> = </span><span class='specifier-start'> \"abcdef\"</span><span class='specifier-semicolon'>;</span>"));
         assertMatchInFile(destDir, "index.html", 
-                Pattern.compile("String constAbcSingleQuoted<span class='specifier-operator'> = </span><span class='specifier-start'> 'abcdef'</span><span class='specifier-semicolon'>;</span>"));
-        assertMatchInFile(destDir, "index.html", 
                 Pattern.compile("String constLoremIpsumMultiLine<span class='specifier-operator'> = </span><span class='specifier-start'> \"Lorem ipsum dolor sit amet, consectetur adipisicing elit, </span><a class='specifier-ellipsis' href='#' title='Click for expand the rest of value.'>...</a><div class='specifier-rest'>                                          sed do eiusmod tempor incididunt ut labore et dolore magna aliqua."));
         assertMatchInFile(destDir, "index.html", 
                 Pattern.compile("String\\[\\] constAbcArray<span class='specifier-operator'> = </span><span class='specifier-start'> \\[</span><a class='specifier-ellipsis' href='#' title='Click for expand the rest of value.'>...</a><div class='specifier-rest'>    \"abc\","));
         assertMatchInFile(destDir, "index.html", 
-                Pattern.compile("Character constCharA<span class='specifier-operator'> = </span><span class='specifier-start'> `A`</span><span class='specifier-semicolon'>;</span>"));
+                Pattern.compile("Character constCharA<span class='specifier-operator'> = </span><span class='specifier-start'> 'A'</span><span class='specifier-semicolon'>;</span>"));
         assertMatchInFile(destDir, "index.html", 
                 Pattern.compile("Integer constNumTwo<span class='specifier-operator'> = </span><span class='specifier-start'> constNumZero \\+ 1 \\+ 1</span><span class='specifier-semicolon'>;</span>"));
         assertMatchInFile(destDir, "index.html", 

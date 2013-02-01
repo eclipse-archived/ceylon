@@ -160,10 +160,6 @@ public class ExpressionTest extends CompilerTest {
         compareWithJavaSource("literal/CharacterLiteral");
     }
     @Test
-    public void testLitQuotedLiteral(){
-        compareWithJavaSource("literal/QuotedLiteral");
-    }
-    @Test
     public void testLitNumericLiteral(){
         compareWithJavaSource("literal/NumericLiteral");
         assertErrors("literal/NumericLiteralErrors",
