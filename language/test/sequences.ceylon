@@ -90,8 +90,8 @@ void test_zip() {
     value items = { "one", "two", "three", "four", "five" };
     value z1 = zip(keys, items);
     value z2 = zip(keys, { "uno", "dos", "tres", "cuatro", "cinco", "seis", "siete" });
-    check(z1.size==5, "zip 1:' z1 '");
-    check(z2.size==6, "zip 2:' z2 '");
+    check(z1.size==5, "zip 1:`` z1 ``");
+    check(z2.size==6, "zip 2:`` z2 ``");
 }
 
 //This is actually a test for the compiler. "exists" doesn't work yet.

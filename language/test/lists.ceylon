@@ -20,10 +20,10 @@ void lists() {
     check({}.withLeading("A")=={"A"}, "Empty.withLeading(A)");
     check({}.withLeading("foo").size==1, "{}.withLeading.size");
     check(array{}.withLeading(1)=={1}, "empty array.withLeading(1)");
-    check(array{1,2}.withLeading("A")=={"A",1,2}, "Array.withLeading(a)' array{1,2}.withLeading("A") '");
-    check([1,2].withLeading("a")=={"a",1,2}, "Sequence.withLeading(a)' [1,2].withLeading("a") '");
-    check([1,2].withLeading("foo").size==3, "Sequence.withLeading.size' [1,2].withLeading("foo").size '");
-    check(Singleton(1).withLeading("a")=={"a",1}, "Singleton.withLeading(a)' Singleton(1).withLeading("a") '");
+    check(array{1,2}.withLeading("A")=={"A",1,2}, "Array.withLeading(a)`` array{1,2}.withLeading("A") ``");
+    check([1,2].withLeading("a")=={"a",1,2}, "Sequence.withLeading(a)`` [1,2].withLeading("a") ``");
+    check([1,2].withLeading("foo").size==3, "Sequence.withLeading.size`` [1,2].withLeading("foo").size ``");
+    check(Singleton(1).withLeading("a")=={"a",1}, "Singleton.withLeading(a)`` Singleton(1).withLeading("a") ``");
     check((1..3).withLeading("a")=={"a",1,2,3}, "Range.withLeading(a)");
     check((1..3).withLeading(0).first==0, "Range.withLeading(a).first");
     check((1..3).withLeading(0).last==3, "Range.withLeading(a).last");
@@ -56,13 +56,13 @@ void lists() {
     check(b.span(-1,-2)=={}, "LazyList.span(-1,-2) & equals");
     check(b.span(-2,2)=={1,2,3}, "LazyList.span(-2,2) & equals");
     check(b.span(2,-2)=={3,2,1}, "LazyList.span(2,-2) & equals");
-    check(b.span(2,4)=={3,4,5}, "LazyList.span(2,4) & equals: ' b.span(2,4) ' instead of {3,4,5}");
-    check(b.span(6,10)=={7,8}, "LazyList.span(6,10) & equals: ' b.span(6,10) ' instead of {7,8}");
-    check(b.spanFrom(4)=={5,6,7,8}, "LazyList.spanFrom(4) & equals: ' b.spanFrom(4) ' instead of {5,6,7,8}");
+    check(b.span(2,4)=={3,4,5}, "LazyList.span(2,4) & equals: `` b.span(2,4) `` instead of {3,4,5}");
+    check(b.span(6,10)=={7,8}, "LazyList.span(6,10) & equals: `` b.span(6,10) `` instead of {7,8}");
+    check(b.spanFrom(4)=={5,6,7,8}, "LazyList.spanFrom(4) & equals: `` b.spanFrom(4) `` instead of {5,6,7,8}");
     check(b.spanFrom(10)=={}, "LazyList.spanFrom(10) & equals");
     check(b.spanTo(4)=={1,2,3,4,5}, "LazyList.spanTo(4) & equals");
     check(b.spanTo(-1)=={}, "LazyList.spanTo(-1) & equals");
-    check(b.segment(2,3)=={3,4,5}, "LazyList.segment: ' b.segment(2,3) ' instead of {3,4,5}");
+    check(b.segment(2,3)=={3,4,5}, "LazyList.segment: `` b.segment(2,3) `` instead of {3,4,5}");
     if (exists e=b.findLast((Integer x) => true)) {
         check(e==8, "LazyList.findLast");
     } else { fail("LazyList.findLast"); }

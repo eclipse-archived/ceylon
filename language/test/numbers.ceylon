@@ -173,10 +173,10 @@ shared void numbers() {
     check((+0).hash==(-1+(+1))*+100.hash, "integer hash");
     check((2.2*2.2*2.2).hash==(2.2^3.0).hash, "float hash");
     
-    check(1.6.integer==1, "1.6.integer is ' 1.6.integer ' instead of 1");
-    check(1.1.integer==1, "1.1.integer is ' 1.1.integer ' instead of 1");
-    check((-1.6).integer==-1, "(-1.6).integer is ' (-1.6).integer ' instead of -2");
-    check((-1.1).integer==-1, "(-1.1).integer is ' (-1.1).integer ' instead of -1");
+    check(1.6.integer==1, "1.6.integer is `` 1.6.integer `` instead of 1");
+    check(1.1.integer==1, "1.1.integer is `` 1.1.integer `` instead of 1");
+    check((-1.6).integer==-1, "(-1.6).integer is `` (-1.6).integer `` instead of -2");
+    check((-1.1).integer==-1, "(-1.1).integer is `` (-1.1).integer `` instead of -1");
     check(2.float==2.0, "natural float");
     check((-3).float==-3.0, "integer float");
     check(4.integer==+4, "natural integer");
@@ -346,7 +346,7 @@ shared void numbers() {
     check(-1T==(parseInteger("-1T") else ""), "parseInteger(-1T)");
     check(-1P==(parseInteger("-1P") else ""), "parseInteger(-1P)");
 
-    print("Testing ' 0.size '-bit integers");
+    print("Testing `` 0.size ``-bit integers");
     if (0.size == 64) {
         check(9223372036854775807==(parseInteger("9223372036854775807") else ""), "parseInteger(9223372036854775807)");
         check(9_223_372_036_854_775_807==(parseInteger("9_223_372_036_854_775_807") else ""), "parseInteger(9_223_372_036_854_775_807)");
@@ -362,7 +362,7 @@ shared void numbers() {
         check(!parseInteger("9007199254740993") exists, "parseInteger(9007199254740993)");
         check(!parseInteger("-9007199254740993") exists, "parseInteger(-9007199254740993)");
     } else {
-        fail("UNKNOWN INTEGER SIZE ' 0.size ' - please add number tests for this platform");
+        fail("UNKNOWN INTEGER SIZE `` 0.size `` - please add number tests for this platform");
     }
 
     check(!parseInteger("") exists, "parseInteger()");
@@ -468,7 +468,7 @@ shared void numbers() {
                 == $00101010101010101010101010101010,
                 "b10101010101010101010101010101010101010101010101010101 >>> 1 == b00101010101010101010101010101010 boxed");
     } else {
-        fail("UNKNOWN INTEGER SIZE ' 0.size ' - please add number tests for this platform");
+        fail("UNKNOWN INTEGER SIZE `` 0.size `` - please add number tests for this platform");
     }
     check(1.leftLogicalShift(2) == $100, "1<<2 == b100");
     check(box(1).leftLogicalShift(2) == $100, "1<<2 == b100 boxed");

@@ -26,7 +26,7 @@ class MapTest<Key, Item>(<Key->Item>* entry)
 
 void testMaps() {
     value m1 = MapTest<Integer, String>(1->"A", 2->"B", 3->"C", 4->"B");
-    check(m1.count((Entry<Integer,String> x) => x.key==2)==1, "Map.count(2->B) is ' m1.count((Entry<Integer,String> x) => x.key==2) ' instead of 1");
+    check(m1.count((Entry<Integer,String> x) => x.key==2)==1, "Map.count(2->B) is `` m1.count((Entry<Integer,String> x) => x.key==2) `` instead of 1");
     check(m1.count((Entry<Integer,String> x) => x.key==100)==0, "Map.count 2");
     check(2->"B" in m1, "Map.contains(2->B) should be true");
     check(!(4.2 in m1), "Map.contains 2");
@@ -46,10 +46,10 @@ void testMaps() {
     }
     check(m1.keys.size==m1.size, "Map.keys 1");
     for (e in m1) {
-        check(e.key in m1.keys, "Map.keys.contains(' e.key ') should be true");
+        check(e.key in m1.keys, "Map.keys.contains(`` e.key ``) should be true");
     }
     check("B"->SetTest(2, 4) in m1.inverse, "Map.inverse should contain B->Set(2,4)");
-    check(m1.inverse.size==m1.size, "Map.inverse 1: sizes original ' m1.size ' vs ' m1.inverse.size '");
+    check(m1.inverse.size==m1.size, "Map.inverse 1: sizes original `` m1.size `` vs `` m1.inverse.size ``");
     value m2 = m1.mapItems((Integer k, String v) => k*100);
     check(1->100 in m2, "Map.mapItems");
     for (k->v in m2) {

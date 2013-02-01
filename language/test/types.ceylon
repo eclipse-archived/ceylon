@@ -17,14 +17,14 @@ class TypesPair<out X,out Y>(X x, Y y)
         given X satisfies Object
         given Y satisfies Object {
     shared actual default String string {
-        return "('x', 'y')";
+        return "(``x``, ``y``)";
     }
 }
 
 class TypesComplex(Float x, Float y) 
         extends TypesPair<Float, Float>(x,y) {
     shared actual String string {
-        return "'x'+'y'i"; 
+        return "``x``+``y``i"; 
     }
     shared String pairString {
         return super.string;
@@ -230,8 +230,8 @@ void types() {
     check(pairObj is TypesPair<Object, Object>, "pair type");
     //check(is TypesPair<String, String> pairObj, "pair type");
     value almostZero = TypesComplex(0.1, 0.1);
-    check(almostZero.string=="0.1+0.1i", "complex.string: expected \'0.1+0.1i\' got 'almostZero.string'");
-    check(almostZero.pairString=="(0.1, 0.1)", "complex.pairString: expected (0.1, 0.1) got 'almostZero.pairString'");
+    check(almostZero.string=="0.1+0.1i", "complex.string: expected '0.1+0.1i' got ``almostZero.string``");
+    check(almostZero.pairString=="(0.1, 0.1)", "complex.pairString: expected (0.1, 0.1) got ``almostZero.pairString``");
     check(ConcreteTypesList().empty, "concreteList.empty");
     testJsIssue9();
 

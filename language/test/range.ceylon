@@ -23,7 +23,7 @@ void testRange() {
     check((0..20).segment(0, 10) == 0:10, "segment method & segment op");
     check((0..20)[0:10] == 0:10, "segment index & segment op");
     
-    variable value az = `a`:26;
+    variable value az = 'a':26;
     check(az.string == "a..z", "a:26 string == " + az.string);
     
 }

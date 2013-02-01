@@ -2,7 +2,7 @@ class C(Float f) satisfies Comparable<C> {
     shared actual Comparison compare(C other) {
         return f<=>other.f;
     }
-    shared actual String string = "C(' f.string ')";
+    shared actual String string = "C(`` f.string ``)";
 }
 
 void comparables() {
@@ -13,6 +13,6 @@ void comparables() {
     }
     C[] cs2 = [ C(1.0), C(2.0), C(0.0) ];
     for (z in zip(cs, cs2)) {
-        check(z.key<z.item, "custom comparables 2: ' z.key ' < ' z.item '?");
+        check(z.key<z.item, "custom comparables 2: `` z.key `` < `` z.item ``?");
     }
 }

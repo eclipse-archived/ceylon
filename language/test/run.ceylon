@@ -49,16 +49,16 @@ shared void run() {
 
 shared void runAndAssert() {
     run();
-    print("There were 'failureCount' failures (out of 'assertionCount' assertions)");
+    print("There were ``failureCount`` failures (out of ``assertionCount`` assertions)");
     if (failureCount!=0) {
-        throw Exception("There were 'failureCount' failures (out of 'assertionCount' assertions)");
+        throw Exception("There were ``failureCount`` failures (out of ``assertionCount`` assertions)");
     }
 }
 
 shared void runAndExit() {
     run();
     if (failureCount!=0) {
-        print("There were 'failureCount' failures (out of 'assertionCount' assertions)");
+        print("There were ``failureCount`` failures (out of ``assertionCount`` assertions)");
     }
     process.exit(failureCount ==0 then 0 else 1);   
 }

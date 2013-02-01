@@ -40,7 +40,7 @@ void callables() {
   //From #56
   void resolve(Integer g()) {
     value which=g();
-    check(which==2, "closures: callable returns 'which' instead of 2");
+    check(which==2, "closures: callable returns ``which`` instead of 2");
   }
   variable Callable<Integer,[]>? f = null;
   for (i in 1..2) {

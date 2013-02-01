@@ -11,11 +11,11 @@ void compareIterables<T>(Iterable<T> aIterable, Iterable<T> bIterable, String me
     Iterator<T> bIterator = bIterable.iterator;
     for(T a in aIterable){
         T|Finished b = bIterator.next();
-        check(b != finished, "' message ': Iterator B empty while expecting \'' a '\'");
-        check(a == b, "' message ': Element \'' a '\' != \'' b '\'");
+        check(b != finished, "``message``: Iterator B empty while expecting '``a``'");
+        check(a == b, "``message``: Element '``a``' != '``b``'");
     }
     T|Finished b = bIterator.next();
-    check(b == finished, "' message ': Iterator B not empty: extra \'' b '\'");
+    check(b == finished, "``message``: Iterator B not empty: extra '``b``'");
 }
 
 shared void strings() {
@@ -303,7 +303,7 @@ shared void strings() {
     check(nlb.string=="\nhello\n", "string builder newline 2");
 
     value s1 = "as it should";
-    value interp = "String part ' 1 ' interpolation ' 2 ' works' s1 '";
+    value interp = "String part `` 1 `` interpolation `` 2 `` works`` s1 ``";
     check(interp=="String part 1 interpolation 2 worksas it should", "String Interpolation");
 
     //Lines
@@ -312,10 +312,10 @@ shared void strings() {
     value lines = mls.lines.iterator;
     check(mls.size==3, "multiline.size==3");
     if (is String _s=lines.next()) {
-        check(_s=="a", "multiline.lines[0]==\'a\'");
+        check(_s=="a", "multiline.lines[0]=='a'");
     } else { fail("multiline.lines[0]"); }
     if (is String _s=lines.next()) {
-        check(_s=="b", "multiline.lines[1]==\'b\'");
+        check(_s=="b", "multiline.lines[1]=='b'");
     } else { fail("multiline.lines[1]"); }
     check(mls.normalized=="a b", "multiline.normalized");
 
