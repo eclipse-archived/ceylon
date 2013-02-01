@@ -1414,7 +1414,14 @@ public class GenerateJsVisitor extends Visitor
 
     /** Escapes a StringLiteral (needs to be quoted). */
     String escapeStringLiteral(String s) {
-        StringBuilder text = new StringBuilder(s);
+        //New String interpolation syntax sometimes gives us strings surrounded
+        //with backticks
+        StringBuilder text;
+        if (s.charAt(0) == '`' || s.charAt(s.length()-1) == '`') {
+            text = new StringBuilder().append('"').append(s.substring(1, s.length()-1)).append('"');
+        } else {
+            text = new StringBuilder(s);
+        }
         //Escape special chars
         for (int i=1; i < text.length()-1;i++) {
             switch(text.charAt(i)) {
