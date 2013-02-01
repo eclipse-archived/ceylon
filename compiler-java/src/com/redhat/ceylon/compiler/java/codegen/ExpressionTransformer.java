@@ -76,6 +76,7 @@ import com.redhat.ceylon.compiler.typechecker.tree.Tree.PositionalArgument;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.QualifiedMemberExpression;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.SequencedArgument;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.SpecifierExpression;
+import com.redhat.ceylon.compiler.typechecker.tree.Tree.StaticMemberOrTypeExpression;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.Super;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.Term;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.ValueIterator;
@@ -2575,30 +2576,7 @@ public class ExpressionTransformer extends AbstractTransformer {
                 qualExpr = primaryExpr;
             }
             
-            // Partial fix for https://github.com/ceylon/ceylon-compiler/issues/1023
-            // For interfaces we sometimes need to access either the interface instance or its $impl class
-            Scope declContainer = Decl.container(decl);
-            if(qualExpr != null
-                    // this is only for interface containers
-                    && declContainer instanceof Interface
-                    // we only ever need the $impl if the declaration is not shared
-                    && !decl.isShared()){
-                Interface declaration = (Interface) declContainer;
-                // access the interface $impl instance
-                qualExpr = makeQualIdent(qualExpr, getCompanionAccessorName(declaration));
-                qualExpr = make().Apply(null, qualExpr, List.<JCExpression>nil());
-                // When the interface is local the accessor returns Object
-                // so we need to cast it to the type of the companion
-                if (Decl.isAncestorLocal(declaration)) {
-                    ProducedType type;
-                    // try to find the best type
-                    if(expr instanceof Tree.QualifiedMemberOrTypeExpression)
-                        type = ((Tree.QualifiedMemberOrTypeExpression) expr).getPrimary().getTypeModel();
-                    else
-                        type = declaration.getType();
-                    qualExpr = make().TypeCast(makeJavaType(type, JT_COMPANION), qualExpr);
-                }
-            }
+            qualExpr = addInterfaceImplAccessorIfRequired(qualExpr, expr, decl);
 
             if (qualExpr == null && needDollarThis(expr)) {
                 qualExpr = makeQualifiedDollarThis((Tree.BaseMemberExpression)expr);
@@ -2636,6 +2614,34 @@ public class ExpressionTransformer extends AbstractTransformer {
 
     //
     // Array access
+
+    private JCExpression addInterfaceImplAccessorIfRequired(JCExpression qualExpr, StaticMemberOrTypeExpression expr, Declaration decl) {
+        // Partial fix for https://github.com/ceylon/ceylon-compiler/issues/1023
+        // For interfaces we sometimes need to access either the interface instance or its $impl class
+        Scope declContainer = Decl.container(decl);
+        if(qualExpr != null
+                // this is only for interface containers
+                && declContainer instanceof Interface
+                // we only ever need the $impl if the declaration is not shared
+                && !decl.isShared()){
+            Interface declaration = (Interface) declContainer;
+            // access the interface $impl instance
+            qualExpr = makeQualIdent(qualExpr, getCompanionAccessorName(declaration));
+            qualExpr = make().Apply(null, qualExpr, List.<JCExpression>nil());
+            // When the interface is local the accessor returns Object
+            // so we need to cast it to the type of the companion
+            if (Decl.isAncestorLocal(declaration)) {
+                ProducedType type;
+                // try to find the best type
+                if(expr instanceof Tree.QualifiedMemberOrTypeExpression)
+                    type = ((Tree.QualifiedMemberOrTypeExpression) expr).getPrimary().getTypeModel();
+                else
+                    type = declaration.getType();
+                qualExpr = make().TypeCast(makeJavaType(type, JT_COMPANION), qualExpr);
+            }
+        }
+        return qualExpr;
+    }
 
     private JCExpression makeQualifiedDollarThis(BaseMemberExpression expr) {
         Declaration decl = expr.getDeclaration();
