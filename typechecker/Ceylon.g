@@ -3154,12 +3154,12 @@ CHAR_LITERAL
 
 fragment STRING_START:;
 STRING_LITERAL
-    :   '"' StringPart ( '"' | '``' { $type = STRING_START; } '`'? )
+    :   '"' StringPart ( '"' | '``' { $type = STRING_START; } (('`' ~'`') => '`')? )
     ;
 
 fragment STRING_MID:;
 STRING_END
-    :   '``' StringPart ( '"' | '``' { $type = STRING_MID; } '`'? )
+    :   '``' StringPart ( '"' | '``' { $type = STRING_MID; } (('`' ~'`') => '`')? )
     ;
 
 VERBATIM_STRING
