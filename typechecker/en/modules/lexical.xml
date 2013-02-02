@@ -4,7 +4,9 @@
     <para>Every Ceylon source file is a sequence of Unicode characters. Lexical
     analysis of the character stream, according to the grammar specified in this
     chapter, results in a stream of tokens. These tokens form the input of the 
-    parser grammar defined in the later chapters of this specification.</para> 
+    parser grammar defined in the later chapters of this specification. The
+    Ceylon lexer is able to completely tokenize a character stream in a single 
+    pass.</para> 
     
     <para>The lexer distinguishes Unicode uppercase letter, lowercase letter, 
     and numeric characters as defined by the Unicode standard. A 
@@ -58,7 +60,7 @@
         
         <programlisting>LineComment: ("//"|"#!") ~(Newline|Return)* (Return Newline | Return | Newline)?</programlisting>
         
-        <programlisting>MultilineComment: "/*" ( MultilineCommmentCharacter | MultilineComment )* "*/"</programlisting>
+        <programlisting>MultilineComment: "/*" (MultilineCommmentCharacter | MultilineComment)* "*/"</programlisting>
         
         <programlisting>MultilineCommmentCharacter: ~("/"|"*") | ("/" ~"*") => "/" | ("*" ~"/") => "*"</programlisting>
         
@@ -75,7 +77,7 @@
         
         <para>Comments are treated as whitespace by both the compiler and documentation
         compiler. Comments may act as token separators, but their content is immediately 
-        discarded by the lexer.</para>
+        discarded by the lexer and they are not visible to the parser.</para>
   
     </section>
     
@@ -125,10 +127,11 @@
         
         <para><literal>
         module package import
-        class interface object given value assign void function
+        alias class interface object given value assign void function
         of extends satisfies adapts abstracts
         in out
         return break continue throw
+        assert
         if else switch case for while try catch finally then
         this outer super
         is exists nonempty
@@ -142,26 +145,47 @@
     <section id="numericliterals">
         <title>Numeric literals</title>
         
-        <para>An integer literal has this form:</para>
+        <para>An integer literal may be expressed in decimal, hexadecimal, or binary 
+        notation:</para>
         
-        <programlisting>IntegerLiteral: Digits Magnitude?</programlisting>
+        <programlisting>IntegerLiteral: DecimalLiteral | HexLiteral | BinLiteral</programlisting>
+        
+        <para>A decimal literal has this form:</para>
+        
+        <programlisting>DecimalLiteral: Digits Magnitude?</programlisting>
+        
+        <para>Hexadecimal literals are prefixed by <literal>#</literal>:</para>
+        
+        <programlisting>HexLiteral: "#" HexDigits</programlisting>
+        
+        <para>Binary literals are prefixed by <literal>$</literal>:</para>
+        
+        <programlisting>BinLiteral: "$" BinDigits</programlisting>
         
         <para>A floating point literal has this form:</para>
         
         <programlisting>FloatLiteral: Digits ("." FractionalDigits (Exponent | Magnitude | FractionalMagnitude)? | FractionalMagnitude)</programlisting>
         
-        <para>Digits may be separated into groups of three using an underscore.</para>
+        <para>Decimal digits may be separated into groups of three using an underscore.</para>
         
         <programlisting>Digits: Digit+ | Digit{1..3} ("_" Digit{3})+</programlisting>
         <programlisting>FractionalDigits: Digit+ | (Digit{3} "_")+ Digit{1..3} </programlisting>
         
-        <para>A digit is a decimal digit.</para>
+        <para>Hexadecimal or binary digits may be separated into groups of four using 
+        an underscore.</para>
+
+        <programlisting>HexDigits: HexDigit+ | HexDigit{1..4} ("_" HexDigit{4})+</programlisting>
+        <programlisting>BinDigits: BinDigit+ | BinDigit{1..4} ("_" Digit{4})+</programlisting>
+
+        <para>A digit is a decimal, hexadecimal, or binary digit.</para>
         
         <programlisting>Digit: "0".."9"</programlisting>
+        <programlisting>HexDigit: "0".."9" | "A".."F" | "a".."f"</programlisting>
+        <programlisting>BinDigit: "0"|"1"</programlisting>
         
         <para>A floating point literal may include either an <emphasis>exponent</emphasis> 
         (for scientific notation) or a <emphasis>magnitude</emphasis> (an SI unit
-        prefix). A natural literal may include a magnitude.</para>
+        prefix). An integer literal may include a magnitude.</para>
         
         <programlisting>Exponent: ("E"|"e") ("+"|"-")? Digit+</programlisting>
         
@@ -181,38 +205,43 @@
         <programlisting>12M</programlisting>
         <programlisting>2.34p</programlisting>
         <programlisting>5u</programlisting>
+        <programlisting>$1010_0101</programlisting>
+        <programlisting>#D00D</programlisting>
         
         <para>The following are <emphasis>not</emphasis> valid numeric literals:</para>
         
         <programlisting>.33  //Error: floating point literals may not begin with a decimal point</programlisting>
         <programlisting>1.  //Error: floating point literals may not end with a decimal point</programlisting>
         <programlisting>99E+3  //Error: floating point literals with an exponent must contain a decimal point</programlisting>
-        <programlisting>12_34  //Error: digit groups must be of length three</programlisting>
+        <programlisting>12_34  //Error: decimal digit groups must be of length three</programlisting>
+        <programlisting>#FF.00  //Error: floating point numbers may not be expressed in hexadecimal notation</programlisting>
         
     </section>
     
     <section id="characterliterals">
         <title>Character literals</title>
         
-        <para>A single character literal consists of a character, surrounded by backticks.</para> 
+        <para>A single character literal consists of a character, surrounded by single
+        quotes.</para> 
         
-        <programlisting>CharacterLiteral: "`" Character "`"</programlisting>
+        <programlisting>CharacterLiteral: "'" Character "'"</programlisting>
         
-        <programlisting>Character: ~("`" | "\") | EscapeSequence</programlisting>
+        <programlisting>Character: ~("'" | "\") | EscapeSequence</programlisting>
         
         <programlisting>EscapeSequence: "\" ("b" | "t" | "n" | "f" | "r" | "\" | "&quot;" | "'" | "`" | "{" CharacterCode "}")</programlisting>
         
-        <programlisting>CharacterCode: HexDigit{4} | HexDigit{8}</programlisting>
-                
-        <programlisting>HexDigit: "0".."9" | "A".."F" | "a".."f"</programlisting>
+        <para>A Unicode codepoint escape is a four-digit or eight-digit hexadecimal literal 
+        surrounded by braces.</para>
         
+        <programlisting>CharacterCode: "#" HexDigit{4} | HexDigit{8}</programlisting>
+                
         <para>The following are legal character literals:</para>
         
-        <programlisting>`A`</programlisting>
-        <programlisting>`#`</programlisting>
-        <programlisting>` `</programlisting>
-        <programlisting>`\n`</programlisting>
-        <programlisting>`\{212B}`</programlisting>
+        <programlisting>'A'</programlisting>
+        <programlisting>'#'</programlisting>
+        <programlisting>' '</programlisting>
+        <programlisting>'\n'</programlisting>
+        <programlisting>'\{#212B}'</programlisting>
         
         <comment><para>TODO: should we support an escape sequence for Unicode character names
         <literal>\{LATIN SMALL LETTER A}</literal> like Python does?</para></comment>
@@ -222,40 +251,38 @@
     <section id="stringliterals">
         <title>String literals</title>
         
-        <para>A character string literal is a character sequence surrounded by 
-        double quotes.</para>
+        <para>A character string literal is a character sequence surrounded by double 
+        quotes.</para>
         
         <programlisting>StringLiteral: "&quot;" StringCharacter* "&quot;"</programlisting>
         
-        <programlisting>StringCharacter: ~( "\" | "&quot;" ) | EscapeSequence</programlisting>
+        <programlisting>StringCharacter: ~( "\" | "&quot;" | "`" ) | "`" ~"`" | EscapeSequence</programlisting>
+        
+        <para>A sequence of two backticks is used to delimit an interpolated expression
+        embedded in a string template.</para>
+        
+        <programlisting>StringStart: "&quot;" StringCharacter* "``"</programlisting>
+        <programlisting>StringMid: "``" StringCharacter* "``"</programlisting>
+        <programlisting>StringEnd: "``" StringCharacter* "&quot;"</programlisting>
+        
+        <para>A <emphasis>verbatim string</emphasis> is a character sequence delimited
+        by a sequence of three double quotes. Verbatim strings do not contain escape
+        sequences or interpolated expressions, so every character occurring inside the
+        verbatim string is interpreted literally.</para>
+        
+        <programlisting>VerbatimStringLiteral: "&quot;&quot;&quot;" VerbatimCharacter* "&quot;&quot;&quot;"</programlisting>
+        
+        <programlisting>VerbatimCharacter: ~"&quot;" | "&quot;" ~"&quot;" | "&quot;" "&quot;" ~"&quot;"</programlisting>
         
         <para>The following are legal strings:</para>
         
         <programlisting>"Hello!"</programlisting>
         <programlisting>"\{00E5}ngstr\{00F6}ms"</programlisting>
         <programlisting>" \t\n\f\r,;:"</programlisting>
+        <programlisting>"""This program prints "hello world" to the console."""</programlisting>
     
     </section>
     
-    <section id="singlequotedliterals">
-        <title>Single quoted literals</title>
-        
-        <para>Single-quoted strings are used to express literal values for 
-        user-defined types. A single quoted literal is a character sequence 
-        surrounded by single quotes:</para>
-        
-        <programlisting>QuotedLiteral: "'" QuotedLiteralCharacter* "'"</programlisting>
-        
-        <programlisting>QuotedLiteralCharacter: ~("'")</programlisting>
-        
-        <comment><para>TODO: should we support escape sequences in quoted literals? At least
-        there should be some way to embed a single quote, right? The problem is that if we
-        make you escape <literal>\</literal>, regular expressions and windows paths get
-        really ugly.</para></comment>
-        
-    </section>
-    
-        
     </section>
     
     <section id="operatorsanddelimiters">
@@ -265,20 +292,21 @@
         
         <para><literal>
         , ; ...
-        #
         { } ( ) [ ]
-        []
-        . ?. []. 
-        =
-        + - / * % **
-        ++ --
-        .. ->
         ?
+        . ?. *. 
+        = =>
+        + - * / % ^ **
+        ++ --
+        .. : ->
         ! &amp;&amp; ||
-        ~ &amp; | ^
+        ~ &amp; |
         === == != &lt; &gt; &lt;= &gt;= &lt;=&gt;
-        := .= += -= /= *= %= |= &amp;= ^= ~= ||= &amp;&amp;=
+        += -= /= *= %= |= &amp;= ^= ~= ||= &amp;&amp;=
+        ::
         </literal></para>
+        
+        <para>Certain symbols serve dual or multiple purposes in the grammar.</para>
         
     </section>
 
