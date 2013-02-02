@@ -35,12 +35,14 @@
     computing, and of its ongoing commitment to portability. 
     However, we recognize that the language and class libraries, designed more 
     than 15 years ago, are no longer the best foundation for a range of today's 
-    business computing problems.</para>
+    business computing problems. We further recognize that Java failed in one
+    environment it was originally promoted for: the web browser.</para>
     
     <para>The goal of this project is to make a clean break with the legacy 
     Java SE platform, by improving upon the Java language and class libraries, 
     and by providing a modular architecture for a new platform based upon the 
-    Java Virtual Machine.</para>
+    Java Virtual Machine. A further goal is to bridge the gap between the web
+    client and server by supporting execution on JavaScript virtual machines.</para>
     
     <para>Of course, we recognize that the ability to interoperate with existing 
     Java code, thereby leveraging existing investment in the Java ecosystem, is a 
@@ -51,11 +53,13 @@
     business computing and enables sophisticated tooling with features like
     refactoring support, code completion, and code navigation. Ceylon aims to 
     retain the overall model of Java, while getting rid of some of Java's warts,
-    including: primitive types, arrays, constructors, getters/setters, checked 
+    and improving upon Java's facilities for creating abstractions and writing 
+    generic libraries and frameworks.
+    <!-- including: primitive types, arrays, constructors, getters/setters, checked 
     exceptions, raw types, wildcard types, <literal>static</literal> members,
     <literal>synchronized</literal> methods and blocks, finalizers, overloading, 
     generic type argument erasure, serialization, unsafe typecasts and reflection, 
-    and the dreaded <literal>NullPointerException</literal>.</para> 
+    and the dreaded <literal>NullPointerException</literal>.--></para> 
     
     <para>Ceylon has the following goals:</para>
     
@@ -65,7 +69,11 @@
             be <emphasis>fun</emphasis>,</para>
         </listitem>
         <listitem>
-            <para>to execute on the JVM, and interoperate with Java code,</para>
+            <para>to execute on the JVM, and on JavaScript virtual machines, 
+            and to interoperate with Java and JavaScript code,</para>
+        </listitem>
+        <listitem>
+            <para>to provide language-level modularity,</para>
         </listitem>
         <listitem>
             <para>to be easy to learn for Java and C# developers,</para>
@@ -76,14 +84,15 @@
             the most concise/cryptic language around,</para>
         </listitem>
         <listitem>
+            <para>to provide an elegant and more flexible syntax to support 
+            frameworks, declarative programming, and meta-programming, and, 
+            in particular</para>
+        </listitem>
+        <listitem>
             <para>to provide a declarative syntax for expressing hierarchical 
             information like user interface definition, externalized data, and 
             system configuration, thereby eliminating Java's dependence upon 
             XML,</para>
-        </listitem>
-        <listitem>
-            <para>to provide a more elegant and more flexible annotation syntax
-            to support frameworks and declarative programming,</para>
         </listitem>
         <listitem>
             <para>to support and encourage a more functional style of programming 
@@ -92,15 +101,8 @@
         </listitem>
         <listitem>
             <para>to expand compile-time typesafety with compile-time safe handling 
-            of null values, compile-time safe typecasts, <!--dimensioned types with
-            typesafe indexing,--> and a more typesafe approach to reflection,</para>
-        </listitem>
-        <listitem>
-            <para>to provide language-level modularity,</para>
-        </listitem>
-        <listitem>
-            <para>to improve on Java's very primitive facilities for meta-programming, 
-            thus making it easier to write frameworks, and</para>
+            of null values, compile-time safe typecasts, and a more typesafe approach 
+            to reflection, and</para>
         </listitem>
         <listitem>
             <para>to make it easy to <emphasis>get things done</emphasis>.</para>
@@ -117,7 +119,8 @@
             <para>the OpenJDK virtual machine,</para>
         </listitem>
         <listitem>
-            <para>a compiler that compiles both Ceylon and Java source,</para>
+            <para>a compiler that compiles Ceylon and Java source to Java 
+            bytecode, and cross-compiles Ceylon to JavaScript,</para>
         </listitem>
         <listitem>
             <para>Eclipse-based tooling,</para>
