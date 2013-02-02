@@ -123,6 +123,10 @@ public class LazySet<Element> implements Set<Element> {
     public <Other> Set union(Set<? extends Other> set) {
         return new LazySet(elems.chain(set));
     }
+    @Override @Ignore
+    public <Default>Iterable<?,?> defaultNullElements(Default defaultValue) {
+        return $ceylon$language$Iterable$this.defaultNullElements(defaultValue);
+    }
 
     @SuppressWarnings({ "unchecked", "rawtypes" })
     @Override

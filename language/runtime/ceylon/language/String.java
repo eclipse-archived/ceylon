@@ -1236,6 +1236,10 @@ public abstract class String
             return instance(value).chain(other);
         }
     }
+    @Override @Ignore
+    public <Default>Iterable<?,?> defaultNullElements(Default defaultValue) {
+        return this;
+    }
     /*@Ignore
     public static <Key> Map<? extends Key, ? extends Sequence<? extends Character>> group(java.lang.String value, Callable<? extends Key> grouping) {
         if (value.isEmpty()) {
@@ -1538,6 +1542,10 @@ public abstract class String
         @Override @Ignore public <Other>Iterable chain(Iterable<? extends Other, ? extends java.lang.Object> other) {
             return $ceylon$language$Iterable$this.chain(other);
         }
+        @Override @Ignore
+        public <Default>Iterable<?,?> defaultNullElements(Default defaultValue) {
+            return $ceylon$language$Iterable$this.defaultNullElements(defaultValue);
+        }
         /*@Override @Ignore
         public <Key> Map<? extends Key, ? extends Sequence<? extends String>> group(Callable<? extends Key> grouping) {
             return $ceylon$language$Iterable$this.group(grouping);
@@ -1732,6 +1740,10 @@ public abstract class String
         }
         @Override @Ignore public <Other>Iterable chain(Iterable<? extends Other, ? extends java.lang.Object> other) {
             return $ceylon$language$Iterable$this.chain(other);
+        }
+        @Override @Ignore
+        public <Default>Iterable<?,?> defaultNullElements(Default defaultValue) {
+            return $ceylon$language$Iterable$this.defaultNullElements(defaultValue);
         }
         /*@Override @Ignore
         public <Key> Map<? extends Key, ? extends Sequence<? extends Integer>> group(Callable<? extends Key> grouping) {
