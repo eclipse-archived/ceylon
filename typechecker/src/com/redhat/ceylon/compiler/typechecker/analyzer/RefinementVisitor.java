@@ -5,8 +5,9 @@ import static com.redhat.ceylon.compiler.typechecker.analyzer.Util.checkAssignab
 import static com.redhat.ceylon.compiler.typechecker.analyzer.Util.checkAssignableToOneOf;
 import static com.redhat.ceylon.compiler.typechecker.analyzer.Util.checkIsExactly;
 import static com.redhat.ceylon.compiler.typechecker.analyzer.Util.checkIsExactlyOneOf;
+import static com.redhat.ceylon.compiler.typechecker.model.Util.addToIntersection;
+import static com.redhat.ceylon.compiler.typechecker.model.Util.areConsistentSupertypes;
 import static com.redhat.ceylon.compiler.typechecker.model.Util.getSignature;
-import static com.redhat.ceylon.compiler.typechecker.model.Util.intersectionType;
 import static com.redhat.ceylon.compiler.typechecker.model.Util.isCompletelyVisible;
 import static com.redhat.ceylon.compiler.typechecker.model.Util.isResolvable;
 import static java.util.Collections.singletonMap;
@@ -42,6 +43,7 @@ import com.redhat.ceylon.compiler.typechecker.model.TypeDeclaration;
 import com.redhat.ceylon.compiler.typechecker.model.TypeParameter;
 import com.redhat.ceylon.compiler.typechecker.model.TypedDeclaration;
 import com.redhat.ceylon.compiler.typechecker.model.UnionType;
+import com.redhat.ceylon.compiler.typechecker.model.Unit;
 import com.redhat.ceylon.compiler.typechecker.model.Value;
 import com.redhat.ceylon.compiler.typechecker.model.ValueParameter;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree;
@@ -237,6 +239,24 @@ public class RefinementVisitor extends Visitor {
 		        checkSupertypeIntersection(that, td, st1, st2);
 		    }
 		}
+		if (!broken && td instanceof TypeParameter) {
+		    List<ProducedType> list = new ArrayList<ProducedType>();
+		    for (ProducedType st: td.getSatisfiedTypes()) {
+		        addToIntersection(list, st, that.getUnit());
+		    }
+		    IntersectionType it = new IntersectionType(that.getUnit());
+		    it.setSatisfiedTypes(list);
+		    if (it.getType().getDeclaration() instanceof NothingType) {
+		        StringBuilder sb = new StringBuilder();
+		        for (ProducedType st: td.getSatisfiedTypes()) {
+		            sb.append(st.getProducedTypeName(that.getUnit())).append(" & ");
+		        }
+		        sb.setLength(sb.length()-3);
+		        that.addError(typeDescription(td) + 
+		                " has unsatisfiable upper bound constraints: the constraints " + 
+		                sb + " cannot be satisfied by any type except Nothing");
+		    }
+		}
 		if (!broken) {
 		    Set<String> errors = new HashSet<String>();
 		    for (ProducedType st: supertypes) {
@@ -294,41 +314,32 @@ public class RefinementVisitor extends Visitor {
 		    }
 		}
 	}
+	
+	private String typeDescription(TypeDeclaration td) {
+	    if (td instanceof TypeParameter) {
+	        Declaration container = (Declaration) td.getContainer();
+            return "type parameter " + td.getName() + " of " + 
+	                container.getName();
+	    }
+	    else {
+	        return "type " + td.getName();
+	    }
+	}
 
     private void checkSupertypeIntersection(Tree.StatementOrArgument that,
             TypeDeclaration td, ProducedType st1, ProducedType st2) {
         if (st1.getDeclaration().equals(st2.getDeclaration()) /*&& !st1.isExactly(st2)*/) {
-            boolean ok = true;
-            if (intersectionType(st1, st2, that.getUnit())
-                    .getDeclaration() instanceof NothingType) {
-                ok = false;
-            }
-            else {
-                //can't inherit two instantiations of an invariant type
-                for (TypeParameter tp: st1.getDeclaration().getTypeParameters()) {
-                    ProducedType ta1 = st1.getTypeArguments().get(tp);
-                    ProducedType ta2 = st2.getTypeArguments().get(tp);
-                    if (!tp.isCovariant() && !tp.isContravariant() && 
-                            !ta1.isExactly(ta2)) {
-                        ok = false;
-                        break;
-                    }
-                }
-                //Note: I don't think we need to check type parameters of 
-                //      the qualifying type, since you're not allowed to
-                //      subtype an arbitrary instantiation of a nested
-                //      type - only supertypes of the outer type
-            }
-            if (!ok) {
-                that.addError("type " + td.getName() +
-                        " has the same supertype twice with incompatible type arguments: " +
-                        st1.getProducedTypeName(that.getUnit()) + " and " + 
-                        st2.getProducedTypeName(that.getUnit()));
+            Unit unit = that.getUnit();
+            if (!areConsistentSupertypes(st1, st2, unit)) {
+                that.addError(typeDescription(td) +
+                        " has the same parameterized supertype twice with incompatible type arguments: " +
+                        st1.getProducedTypeName(unit) + " & " + 
+                        st2.getProducedTypeName(unit));
                 broken = true;
             }
         }
     }
-    
+
     @Override public void visit(Tree.TypedDeclaration that) {
         TypedDeclaration td = that.getDeclarationModel();
         checkVisibility(that, td, td.getType(), "declaration");

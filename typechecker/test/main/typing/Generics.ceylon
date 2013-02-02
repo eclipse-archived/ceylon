@@ -545,6 +545,64 @@ class Generics() {
     class WithParamOfClass<T>(T t) { Anything x = t; } 
 
     void unsatisfiable1<T>() @error given T satisfies Null&String {}
-    void unsatisfiable2<T>() @error given T satisfies Null&Container {}
+    void unsatisfiable2<T>() @error given T satisfies Null&Container<Anything> {}
+    void unsatisfiable3<T>() @error given T satisfies Holder<String>&Holder<Integer> {}
+    void unsatisfiable4<T>() @error given T satisfies Holder<Object>&Holder<T> {}
     
 }
+
+class Invariance() {
+
+    interface O<T> {}
+    interface I satisfies O<I> {}
+    void f1<E>() @error given E satisfies O<E> & O<I> {}
+    void f2<E>() given E satisfies O<E&I> {}
+    void f3<E>() @error given E satisfies O<E> & I {}
+    @error interface F1<E> satisfies O<E> & O<I> {}
+    interface F2<E> satisfies O<E&I> {}
+    @error interface F3<E> satisfies O<E> & I {}
+    
+    void m<E>(O<E> & O<I> val) 
+            given E satisfies O<E> {
+        //these fail because of the famous problem with
+        //not being able to write down the pricipal
+        //instantiation of O<E> & O<I>
+        @error O<E> val1 = val;
+        @error O<I> val2 = val;
+    }
+    
+    void n<E>(F1<E> f1, F2<E> f2, F3<E> f3) 
+            given E satisfies O<E> {
+        O<E> & O<I> g1 = f1; 
+        O<E&I> g2 = f2; 
+        O<E> & O<I> g3 = f3; 
+    }
+    
+}
+
+class CoVariance() {
+
+    interface O<out T> {}
+    interface I satisfies O<I> {}
+    void f1<E>() given E satisfies O<E> & O<I> {}
+    void f2<E>() given E satisfies O<E&I> {}
+    void f3<E>() given E satisfies O<E> & I {}
+    interface F1<E> satisfies O<E> & O<I> {}
+    interface F2<E> satisfies O<E&I> {}
+    interface F3<E> satisfies O<E> & I {}
+    
+    void m<E>(O<E> & O<I> val) 
+            given E satisfies O<E> {
+        O<E> val1 = val;
+        O<I> val2 = val;
+    }
+    
+    void n<E>(F1<E> f1, F2<E> f2, F3<E> f3) 
+            given E satisfies O<E> {
+        O<E> & O<I> g1 = f1; 
+        O<E> & O<I> g2 = f2; 
+        O<E> & O<I> g3 = f3; 
+    }
+    
+}
+

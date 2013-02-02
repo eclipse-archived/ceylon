@@ -574,28 +574,36 @@ public class Util {
      */
     private static boolean haveUninhabitableIntersection
             (ProducedType p, ProducedType q, Unit unit) {
-    	if (emptyMeet(p, q, unit)) return true;
-    	
-        List<TypeDeclaration> stds = p.getDeclaration().getSuperTypeDeclarations();
-        stds.retainAll(q.getDeclaration().getSuperTypeDeclarations());
-        for (TypeDeclaration std: stds) {
-            ProducedType pst = p.getSupertype(std);
-            ProducedType qst = q.getSupertype(std);
-            for (TypeParameter tp: std.getTypeParameters()) {
-                if (tp.isInvariant()) {
-                    ProducedType psta = pst.getTypeArguments().get(tp);
-                    ProducedType qsta = qst.getTypeArguments().get(tp);
-                    if (psta!=null && psta.isWellDefined() &&
-                            qsta!=null && psta.isWellDefined() &&
-                            //what about types with UnknownType as an arg?
-                            !pst.containsTypeParameters() && 
-                            !qst.containsTypeParameters() &&
-                            !pst.isExactly(qst)) {
-                        return true;
-                    }
-                }
-            }
-        }
+    	return emptyMeet(p, q, unit) ||
+    	        hasEmptyIntersectionOfInvariantInstantiations(p, q);
+    }
+
+    private static boolean hasEmptyIntersectionOfInvariantInstantiations(
+            ProducedType p, ProducedType q) {
+//        if (!p.containsTypeParameters() && !q.containsTypeParameters()) {
+    	    List<TypeDeclaration> stds = p.getDeclaration().getSuperTypeDeclarations();
+    	    stds.retainAll(q.getDeclaration().getSuperTypeDeclarations());
+    	    for (TypeDeclaration std: stds) {
+    	        ProducedType pst = null;
+    	        ProducedType qst = null;
+    	        for (TypeParameter tp: std.getTypeParameters()) {
+    	            if (tp.isInvariant()) {
+    	                if (pst==null) pst = p.getSupertype(std);
+    	                if (qst==null) qst = q.getSupertype(std);
+    	                ProducedType psta = pst.getTypeArguments().get(tp);
+    	                ProducedType qsta = qst.getTypeArguments().get(tp);
+    	                if (psta!=null && psta.isWellDefined() &&
+    	                        qsta!=null && psta.isWellDefined() &&
+    	                        //what about types with UnknownType as an arg?
+    	                        !pst.containsTypeParameters() && 
+    	                        !qst.containsTypeParameters() &&
+    	                        !pst.isExactly(qst)) {
+    	                    return true;
+    	                }
+    	            }
+    	        }
+    	    }
+//    	}
         return false;
     }
     
@@ -838,6 +846,26 @@ public class Util {
             args.add(arg);
         }
         return args;
+    }
+
+    public static boolean areConsistentSupertypes(ProducedType st1, 
+            ProducedType st2, Unit unit) {
+        //can't inherit two instantiations of an invariant type
+        //Note: I don't think we need to check type parameters of 
+        //      the qualifying type, since you're not allowed to
+        //      subtype an arbitrary instantiation of a nested
+        //      type - only supertypes of the outer type
+        for (TypeParameter tp: st1.getDeclaration().getTypeParameters()) {
+            if (!tp.isCovariant() && !tp.isContravariant()) {
+                ProducedType ta1 = st1.getTypeArguments().get(tp);
+                ProducedType ta2 = st2.getTypeArguments().get(tp);
+                if (!ta1.isExactly(ta2)) {
+                    return false;
+                }
+            }
+        }
+        return !(intersectionType(st1, st2, unit)
+                .getDeclaration() instanceof NothingType);
     }
 
 }
