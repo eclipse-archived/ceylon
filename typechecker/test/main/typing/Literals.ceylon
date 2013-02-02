@@ -20,8 +20,16 @@ class Literals() {
     value ss2 = [ "hello", "world" ];
     @type:"Tuple<Integer,Integer,Tuple<Integer,Integer,Tuple<Integer,Integer,Tuple<Integer,Integer,Empty>>>>" 
     value ns2 = [ 1, 2, 3, 4 ];
-    @type:"String" value st = "pi = ``3.1415`` approx";
+    @type:"String" value st1 = "pi = ``3.1415`` approx";
+    @type:"String" value st2 = "pi = ```3.1415``` approx";
+    @type:"String" value st3 = "pi = '``3.1415``' approx";
+    @type:"String" value st4 = "pi = \"``3.1415``\" approx";
+    @type:"String" value st5 = "x = ``1``, y = ``0``";
+    @type:"String" value st6 = "x = ``"hello"``, y = ``"goodbye"``";
     @type:"String" value q = "hibernate.org";
+    @type:"String" value vs1 = """Some punctuation characters: "'`\""";
+    @type:"String" value vs2 = """"Hello!"""";
+    @type:"String" value vs3 = """The empty string is written """"";
     
     Boolean b = true;
     
