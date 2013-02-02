@@ -73,6 +73,10 @@
     IDENTIFIER
     abstract Declaration declarationModel;)
 
+^(MISSING_DECLARATION:DECLARATION
+    ANNOTATION_LIST?
+    Declaration declarationModel;)
+
 "A class, interface, or type parameter declaration."
 ^(abstract TYPE_DECLARATION:DECLARATION
     TYPE_PARAMETER_LIST?

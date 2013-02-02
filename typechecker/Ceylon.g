@@ -961,6 +961,11 @@ typeConstraints returns [TypeConstraintList typeConstraintList]
       )+
     ;
 
+annotationListStart
+    : (stringLiteral|annotation) 
+      (LIDENTIFIER|UIDENTIFIER|FUNCTION_MODIFIER|VOID_MODIFIER)
+    ;
+
 declarationOrStatement returns [Statement statement]
     options {memoize=true;}
     : compilerAnnotations
@@ -969,7 +974,7 @@ declarationOrStatement returns [Statement statement]
         { $statement=$d.declaration; }
       | (annotatedAssertionStart) => assertion
         { $statement = $assertion.assertion; }
-      | (annotation LIDENTIFIER) => d1=declaration
+      | (annotationListStart) => d1=declaration
         { $statement=$d1.declaration; }
       | s=statement
         { $statement=$s.statement; }
@@ -979,7 +984,9 @@ declarationOrStatement returns [Statement statement]
     ;
 
 declaration returns [Declaration declaration]
+    @init { $declaration = new MissingDeclaration(null); }
     : annotations
+      { $declaration.setAnnotationList($annotations.annotationList); }
     ( 
       objectDeclaration
       { $declaration=$objectDeclaration.declaration; }
@@ -1002,8 +1009,7 @@ declaration returns [Declaration declaration]
       SEMICOLON
       { $declaration=new BrokenDeclaration($SEMICOLON); }*/
     )
-    { if ($declaration!=null)
-          $declaration.setAnnotationList($annotations.annotationList);  }
+    { $declaration.setAnnotationList($annotations.annotationList);  }
     ;
 
 //special rule for syntactic predicate
@@ -1021,7 +1027,7 @@ declaration returns [Declaration declaration]
     ;*/
 
 annotatedDeclarationStart
-    : STRING_LITERAL? annotation* declarationStart
+    : stringLiteral? annotation* declarationStart
     ;
 
 annotatedAssertionStart

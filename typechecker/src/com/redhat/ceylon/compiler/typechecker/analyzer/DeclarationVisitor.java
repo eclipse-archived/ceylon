@@ -575,6 +575,14 @@ public class DeclarationVisitor extends Visitor {
     }
 
     @Override
+    public void visit(Tree.MissingDeclaration that) {
+        Value value = new Value();
+        that.setDeclarationModel(value);
+        visitDeclaration(that, value);
+        super.visit(that);
+    }
+    
+    @Override
     public void visit(Tree.Parameter that) {
         super.visit(that);
         if (that.getDefaultArgument()!=null) {
