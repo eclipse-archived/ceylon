@@ -211,8 +211,8 @@
     <programlisting>alias Number =&gt; Integer|Float|Whole|Decimal;</programlisting>
     
     <para>
-    The type of a block-local attribute or method may be inferred from its 
-    definition. The keyword <literal>value</literal> or <literal>function</literal> 
+    The type of a block-local attribute or method may be <emphasis>inferred</emphasis> 
+    from its definition. The keyword <literal>value</literal> or <literal>function</literal> 
     must appear in place of the type declaration.
     </para>
     
