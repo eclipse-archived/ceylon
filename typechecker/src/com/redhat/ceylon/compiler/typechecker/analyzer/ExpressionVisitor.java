@@ -4795,7 +4795,7 @@ public class ExpressionVisitor extends Visitor {
         else if (p.isContravariant()) {
             if (!(td.equals(unit.getAnythingDeclaration()))) {
                 //TODO: let it be the intersection of the upper bounds on p
-                that.addError("argument to contravariant type parameter of enumerated supertype must be a type parameter or Anything" + 
+                that.addError("argument to contravariant type parameter of enumerated supertype must be a type parameter or Anything: " + 
                         p.getName() + " of "+ supertype.getDeclaration().getName(unit));
             }
         }
