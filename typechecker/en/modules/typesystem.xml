@@ -30,9 +30,9 @@
     
     <para>Ceylon, like Java and many other object-oriented languages, supports a single
     inheritance model for classes. A class may directly inherit at most one other class, 
-    and all classes eventually inherit, directly or indirectly, the class <literal>Void</literal>
-    defined in the module <literal>ceylon.language</literal>, which acts as the root of 
-    the class hierarchy.</para>
+    and all classes eventually inherit, directly or indirectly, the class 
+    <literal>Anything</literal> defined in the module <literal>ceylon.language</literal>, 
+    which acts as the root of the class hierarchy.</para>
     
     <para>A truly hierarchical type system is much too restrictive for more abstract 
     programming tasks. Therefore, in addition to classes, Ceylon recognizes the following 
@@ -72,6 +72,18 @@
     Rather, it is a <emphasis>type constructor</emphasis>, a function that maps types 
     to types. Given a list of type arguments, the function yields a produced type.</para>
     
+    <para>In light of the fact that Ceylon makes it so easy to construct new types from
+    existing types <emphasis>without the use of inheritance</emphasis>, by forming unions, 
+    intersections, and produced types, it's often useful to assign a name to such a type.</para>
+    
+    <itemizedlist>
+        <listitem>
+            <para>A <emphasis>type alias</emphasis> is a synonym for an expression 
+            involving other types or generic types. A type alias may itself be
+            parameterized.</para>
+        </listitem>
+    </itemizedlist>
+    
     <para>The Ceylon type system is much more complete than most other object oriented
     languages. In Ceylon, it's possible to answer questions that might at first sound
     almost nonsensical if you're used to languages with more traditional type systems. 
@@ -79,74 +91,55 @@
     
     <itemizedlist>
         <listitem>
-            <para>What is the return type of a <literal>void</literal> method?</para>
+            <para>What is the type of a function which accepts a non-null value and returns a 
+            <literal>String</literal>?</para>
         </listitem>
         <listitem>
-            <para>What is the type of an local that may or may not hold a value of 
+            <para>What is the type of a local that may or may not hold a value of 
             type <literal>Element</literal>?</para>
         </listitem>
         <listitem>
-            <para>What is the type of a parameter that accepts either a <literal>String</literal>
-            or a sequence of <literal>String</literal>s?</para>
+            <para>What is the type of a parameter that accepts either an 
+            <literal>Integer</literal> or a <literal>Float</literal>s?</para>
+        </listitem>
+        <listitem>
+            <para>What is the type of a parameter that accepts one or more
+            <literal>String</literal>s?</para>
         </listitem>
         <listitem>
             <para>What is the type of a parameter that accepts values which are instances 
             of both <literal>Persistent</literal> and <literal>Printable</literal>?</para>
         </listitem>
         <listitem>
-            <para>What is the type of a nonempty sequence of <literal>Integer</literal>s, 
-            <literal>Float</literal>s, and <literal>String</literal>s?</para>
+            <para>What is the type of a sequence consisting of a <literal>String</literal>
+            followed by two <literal>Float</literal>s?</para>
         </listitem>
-        <listitem>
+        <!--listitem>
             <para>What is the type that represents methods that accept two <literal>Float</literal>
             values?</para>
         </listitem>
-        <!--listitem>
-            <para>What is the type of an expression that may be evaluated to produce
-            a <literal>String</literal>?</para>
-        </listitem-->
-        <!--
-        <listitem>
-            <para>What is the type of a sequence of natural numbers of length <literal>n+1</literal>?</para>
-        </listitem>
-        -->
         <listitem>
             <para>What is the type that represents subclasses of <literal>Renderer</literal> 
             which must be provided at instantiation time with a function that accepts an 
             object and produces a <literal>String</literal>?</para>
-        </listitem>
+        </listitem-->
     </itemizedlist>
     
-    <para>The answers, as we shall discover, are: <literal>Void</literal>, 
-    <literal>Nothing|Element</literal>, <literal>String|String[]</literal>,
-    <literal>Persistent&amp;Printable</literal>,
-    <literal>Method&lt;Object,Void,Float,Float&gt;</literal>,
-    <literal>Sequence&lt;Integer|Float|String&gt;</literal> and 
-    <literal>Class&lt;Renderer,Callable&lt;String,Object&gt;&gt;</literal>.</para>
-    
-    <!--itemizedlist>
-        <listitem>
-            <para><literal>Void</literal>, </para>
-        </listitem>
-        <listitem>
-            <para><literal>Nothing|T</literal></para>
-        </listitem>
-        <listitem>
-            <para><literal>Method&lt;Void, Float, Float&gt;</literal>, and</para>
-        </listitem>
-        <listitem>
-            <para><literal>Gettable&lt;String&gt;</literal>.</para>
-        </listitem>
-    </itemizedlist-->
-    
+    <para>The answers, as we shall see, are: <literal>String(Object)</literal>, 
+    <literal>Element?</literal>, <literal>Integer|Float</literal>, <literal>{String+}</literal>,
+    <literal>Persistent&amp;Printable</literal>, and <literal>[String,Float,Float]</literal>.</para>
+    <!--<literal>Method&lt;Object,Anything,Float,Float&gt;</literal>,
+    <literal>Class&lt;Renderer,String(Object)&gt;</literal>-->
+        
     <para>It's important that there is always a unique "best" answer to questions
     like this in Ceylon. The "best" answer is called the <emphasis>principal type
     of an expression</emphasis>. Every other type to which the expression is 
     assignable is a supertype of the principal type.</para>
     
-    <para>Thus, every legal Ceylon expression has a unique, computable, well-defined 
-    type without reference to how the expression is used or to what type it is assigned.
-    This is the case even when type inference or type argument inference is used.</para>
+    <para>Thus, every legal Ceylon expression has a unique, well-defined type, 
+    representable within the type system, without reference to how the expression 
+    is used or to what type it is assigned. This is the case even when type inference 
+    or type argument inference comes into play.</para>
     
     <para>Neither this specification nor the internal implementation of the Ceylon 
     compiler itself use any kind of "non-denotable" types. Every type mentioned 
@@ -155,34 +148,36 @@
     messages referring to mysterious types that are not part of the syntax of the 
     language.</para>
     
-    <para>The ability to represent types like <literal>Method</literal>, <literal>Class</literal>,
+    <!--para>The ability to represent types like <literal>Method</literal>, <literal>Class</literal>,
     and <literal>Callable</literal> within the type system, and to therefore write
     code that operates on instances of these types in a typesafe way is what makes
-    Ceylon a <emphasis>higher order</emphasis> language.</para>
+    Ceylon a <emphasis>higher order</emphasis> language.</para-->
     
     <section id="identifiernaming">
         <title>Identifier naming</title>
 
         <para>The Ceylon compiler enforces identifier naming conventions. Types must
-        be named with an initial uppercase. Members, parameters and locals must be 
-        named with an initial lowercase or underscore. A package name element is an
-        initial lowercase identifier.</para>
+        be named with an initial uppercase letter. Methods, attributes, parameters, 
+        and locals must be named with an initial lowercase letter or underscore.</para>
         
-        <programlisting>PackageName: LIdentifier</programlisting>
         <programlisting>TypeName: UIdentifier</programlisting>
         <programlisting>MemberName: LIdentifier</programlisting>
         
-        <para>An underscore <literal>_</literal> is considered a lowercase letter.</para>
+        <para>A package or module name is a sequence of identifiers, each with an 
+        initial lowercase letter or underscore.</para>
         
+        <programlisting>PackageName: LIdentifier</programlisting>
+
         <para>Ceylon defines three identifier namespaces:</para>
         
         <itemizedlist>
             <listitem>
-                <para>classes, interfaces, and type parameters share a single 
-                namespace,</para>
+                <para>classes, interfaces, type aliases, and type parameters share 
+                a single namespace,</para>
             </listitem>
             <listitem>
-                <para>methods, attributes, and locals share a single namespace, and</para>
+                <para>functions, values, and parameters share a single namespace, 
+                and</para>
             </listitem>
             <listitem>
                 <para>packages have their own dedicated namespace.</para>
@@ -191,6 +186,13 @@
         
         <para>The Ceylon parser is able to unambiguously identify which namespace an 
         identifier belongs to.</para>
+        
+        <para>An identifier that begins with an initial lowercase letter may be 
+        <emphasis>forced</emphasis> into the namespace of types by prefixing the
+        identifier <literal>\I</literal>. An identifier that begins with an initial
+        uppercase letter may be forces into the namespace of methods and attributes
+        by prefixing the identifier <literal>\i</literal>. This allow interoperation
+        with languages like Java which do not enforce these naming conventions.</para>
         
     </section>
       
@@ -203,35 +205,35 @@
         
         <itemizedlist>
             <listitem>
-                <para>attribute schemas,</para>
+                <para>value schemas,</para>
             </listitem>
             <listitem>
-                <para>method schemas, and</para>
+                <para>function schemas, and</para>
             </listitem>
             <listitem>
                 <para>class schemas.</para>
             </listitem>
         </itemizedlist>
         
-        <para>The attribute, method, and class schemas are called the 
-        <emphasis>members</emphasis> of the type.</para>
+        <para>The value, function, and class schemas are called the <emphasis>members</emphasis> 
+        of the type.</para>
         
         <para>Speaking formally:</para>
         
         <itemizedlist>
             <listitem>
-                <para>An <emphasis>attribute schema</emphasis> is a name (an initial 
+                <para>A <emphasis>value schema</emphasis> is a name (an initial 
                 lowercase identifier) with a type and mutability.</para>
             </listitem>
             <listitem>
-                <para>A <emphasis>method schema</emphasis> is a name (an initial lowercase 
-                identifier) and an optional list of type parameters, with a type (often 
-                called the <emphasis>return type</emphasis>) and a list of one or more 
-                parameter lists.</para>
+                <para>A <emphasis>function schema</emphasis> is a name (an initial 
+                lowercase identifier) and an optional list of type parameters, with a 
+                type (often called the <emphasis>return type</emphasis>) and a sequence 
+                of one or more parameter lists.</para>
             </listitem>
             <listitem>
-                <para>A <emphasis>class schema</emphasis> is a type schema with a 
-                parameter list.</para>
+                <para>A <emphasis>class schema</emphasis> is a type schema with exactly
+                one parameter list.</para>
             </listitem>
             <listitem>
                 <para>A <emphasis>parameter list</emphasis> is a list of names (initial 
@@ -241,9 +243,13 @@
             </listitem>
         </itemizedlist>
         
-        <para>Speaking slightly less formally, we usually refer to an attribute, method, or 
-        member class of a type, meaning an attribute schema, method schema or class schema
-        that is a member of the type.</para>
+        <para>Speaking slightly less formally, we usually refer to an <emphasis>attribute</emphasis>, 
+        <emphasis>method</emphasis>, or <emphasis>member class</emphasis> of a type, meaning 
+        a value schema, function schema, or class schema that is a member of the type.</para>
+        
+        <para>A function or value schema may occur outside of a type schema. If it occurs 
+        directly in a compilation unit, we often call it a <emphasis>toplevel function</emphasis> 
+        or <emphasis>toplevel value</emphasis>.</para>
         
         <section id="memberdistinctness">
             <title>Member distinctness</title>
@@ -288,7 +294,7 @@
                 <literal>Y</literal> and <literal>X</literal> are the same type.</para>
             </listitem>
             <listitem>
-                <para>Single root: all types are subtypes of the class <literal>Void</literal>
+                <para>Single root: all types are subtypes of the class <literal>Anything</literal>
                 defined in the module <literal>ceylon.language</literal>.</para>
             </listitem>
             <!--listitem>
@@ -400,13 +406,13 @@
         <itemizedlist>
             <listitem>
                 <para>
-                    <literal>X|Bottom</literal> is the same  type as <literal>X</literal> 
+                    <literal>X|Nothing</literal> is the same  type as <literal>X</literal> 
                     for any type <literal>X</literal>, and
                 </para>
             </listitem>
             <listitem>
                 <para>
-                    <literal>X|Void</literal> is the same type as <literal>Void</literal>
+                    <literal>X|Anything</literal> is the same type as <literal>Anything</literal>
                     for any type <literal>X</literal>.
                 </para>
             </listitem>
@@ -428,13 +434,7 @@
                 and <literal>V</literal> that satisfy the type constraints on <literal>T</literal>.</para>
             </listitem>
         </itemizedlist>
-        
-        <comment>
-        <para>TODO: We should probably support aliases for union types using a syntax something 
-        like this:</para>
-        <programlisting>type Printable = String | Integer | Float;</programlisting>
-        </comment>
-        
+                
         </section>
         
         <section id="intersectiontypes">
@@ -449,12 +449,12 @@
         <para>The union type constructor <literal>&amp;</literal> is associative, so the union 
         of three types may be written <literal>X&amp;Y&amp;Z</literal>.</para>
             
-        <programlisting>IntersectionType: EntryType ("&amp;" EntryType)*</programlisting>
+        <programlisting>IntersectionType: AbbreviatedType ("&amp;" AbbreviatedType)*</programlisting>
         
         <para>The intersection <literal>X&amp;Y</literal> inherits all members of both
         <literal>X</literal> and <literal>Y</literal>.</para>
         
-        <programlisting>void store(Persistent&amp;Format&amp;IdentifiableObject object) { ... }</programlisting>
+        <programlisting>void store(Persistent&amp;Printable&amp;Identifiable object) { ... }</programlisting>
         
         <para>Intersection types satisfy the following rules, for any types <literal>X</literal>,
         <literal>Y</literal>, and <literal>Z</literal>:</para>
@@ -506,13 +506,13 @@
         <itemizedlist>
             <listitem>
                 <para>
-                    <literal>X&amp;Bottom</literal> is the same type as <literal>Bottom</literal> 
+                    <literal>X&amp;Nothing</literal> is the same type as <literal>Nothing</literal> 
                     for any type <literal>X</literal>, and
                 </para>
             </listitem>
             <listitem>
                 <para>
-                    <literal>X&amp;Void</literal> is the same type as <literal>X</literal>
+                    <literal>X&amp;Anything</literal> is the same type as <literal>X</literal>
                     for any type <literal>X</literal>.
                 </para>
             </listitem>
@@ -535,18 +535,12 @@
             </listitem>
         </itemizedlist>
         
-        <comment>
-        <para>TODO: We should probably support aliases for intersection types using a syntax 
-        something like this:</para>
-        <programlisting>type Storable = Persistent &amp; Format &amp; IdentifiableObject;</programlisting>
-        </comment>
-        
         </section>
         
         <section id="bottomtype">
             <title>The bottom type</title>
             
-            <para>The special type <literal>Bottom</literal> represents:</para>
+            <para>The special type <literal>Nothing</literal> represents:</para>
             
             <itemizedlist>
                 <listitem>
@@ -557,15 +551,15 @@
                 </listitem>
             </itemizedlist>
             
-            <para><literal>Bottom</literal> is assignable to all other types, but has
+            <para><literal>Nothing</literal> is assignable to all other types, but has
             no instances.</para>
             
-            <para>A reference to a member of an expression of type <literal>Bottom</literal>
+            <para>A reference to a member of an expression of type <literal>Nothing</literal>
             is always an error, since there can never be a receiving instance.</para>
             
-            <para><literal>Bottom</literal> is considered to belong to the module
-            <literal>ceylon.language</literal>. However, its definition is actually
-            implemented directly in the compiler.</para>
+            <para><literal>Nothing</literal> is considered to belong to the module
+            <literal>ceylon.language</literal>. However, it cannot be defined within
+            the language.</para>
             
             <para>Because of the restrictions imposed by Ceylon's mixin inheritance 
             model:</para>
@@ -576,16 +570,23 @@
                 <literal>X</literal> is not a subclass of <literal>Y</literal>, and 
                 <literal>Y</literal> is not a subclass of <literal>X</literal>, then
                 the intersection type <literal>X&amp;Y</literal> is equivalent to 
-                <literal>Bottom</literal>.</para>
+                <literal>Nothing</literal>.</para>
             </listitem>
             <listitem>
                 <para>If <literal>X</literal> is an interface, the intersection type 
-                <literal>X&amp;Nothing</literal> is equivalent to <literal>Bottom</literal>.</para>
+                <literal>X&amp;Nothing</literal> is equivalent to <literal>Nothing</literal>.</para>
+            </listitem>
+            <listitem>
+                <para>If <literal>X&lt;T&gt;</literal> is invariant in its type parameter
+                <literal>T</literal>, and the distinct types <literal>A</literal> and 
+                <literal>B</literal> do not involve type parameters, then 
+                <literal>X&lt;A&gt;&amp;X&lt;B&gt;</literal> is equivalent to 
+                <literal>Nothing</literal>.</para>
             </listitem>
             </itemizedlist>
             
             <comment><para>TODO: Should the name of this type be a keyword, perhaps
-            <literal>bottom</literal>?</para></comment>
+            <literal>nothing</literal>, to emphasize that it is defined primitively?</para></comment>
             
         </section>
         
@@ -614,19 +615,6 @@
         
         <para>The name of a type may not be qualified by the package name.</para>
         
-        <comment><para>TODO: Should we introduce a special syntax for qualification of 
-        identifiers by package name, for example, <literal>:ceylon:language:metamodel:Class</literal>? 
-        This would also allow us to have metamodel references for packages. Using 
-        <literal>.</literal> as a qualifier is not an option, since it would make 
-        the grammar context-senstive like in Java.</para></comment>
-        
-        <!--
-        <comment><para>TODO: Should we allow the abbreviation <literal>Sequence&lt;&gt;</literal>
-        meaning <literal>Sequence&lt;Object&gt;</literal> for covariant types, and 
-        <literal>Comparable&lt;&gt;</literal> meaning <literal>Comparable&lt;Bottom&gt;</literal>
-        for contravariant types?</para></comment>
-        -->
-        
         </section>
         
         <section id="typeinference">
@@ -636,34 +624,39 @@
         forcing the compiler to infer it, by specifying the keyword <literal>value</literal>
         or <literal>function</literal> where the type usually appears.</para>
                 
-        <para>Type inference is only allowed for block local declarations. The keywords
-        <literal>value</literal> and <literal>function</literal> may not be combined with 
-        the <literal>shared</literal> annotation. Nor may they may they be used to declare
-        a toplevel method or attribute.</para>
-        
-        <programlisting>value names = people[].name;</programlisting>
+        <programlisting>value names = people*.name;</programlisting>
 
-        <programlisting>function parse(String text) {
-    return text.tokens(" .!?,:;()\n\f\r\t");
-}</programlisting>
+        <programlisting>function parse(String text) => text.split(" .!?,:;()\n\f\r\t");</programlisting>
 
-        <para>Type inference is supported for declarations which are are referred to only by 
-        statements and declarations that occur within the lexical scope of the declaration. 
-        Type inference is not supported for <literal>shared</literal> declarations which may 
-        be accessed from outside the body containing the declaration, or for declarations
-        which are referred to by statements or declarations that occur earlier in the body
-        containing of the declaration.</para>
+        <para>Type inference is only allowed for block local declarations which are are 
+        referred to only by statements and declarations that occur within the lexical scope 
+        of the declaration. A <literal>value</literal> or <literal>function</literal> 
+        declaration may not:</para>
         
-        <!--
-        <comment><para>TODO: Should we let you leave off the type arguments in the type
-        of a local declaration? For example:</para>
-        <programlisting>Sequence&lt;&gt; names = people[].name;</programlisting></comment>
-        -->
+        <itemizedlist>
+            <listitem>
+                <para>be annotated <literal>shared</literal>,</para>
+            </listitem>
+            <listitem>
+                <para>occur as a toplevel declaration in a compilation unit, or</para>
+            </listitem>
+            <listitem>
+                <para>be referred to by statements or declarations that occur earlier in 
+                the body containing of the declaration.</para>
+            </listitem>
+        </itemizedlist>
+        
+        <para>These restrictions allow the compiler to infer undeclared types in a single 
+        pass of the code.</para>
         
         </section>
         
         <section id="typenameabbreviations">
-            <title>Type name abbreviations</title>
+            <title>Type abbreviations and grouping</title>
+        
+        <para>Type expressions support grouping using angle brackets:</para>
+        
+        <programlisting>GroupedType: "&lt;" EntryType "&gt;"</programlisting>
         
         <para>Certain important types may be written using an abbreviated syntax.</para>
         
@@ -673,47 +666,69 @@
                 type <literal>X</literal>,</para>
             </listitem>
             <listitem>
-                <para><literal>X[]</literal> means <literal>Empty|Sequence&lt;X&gt;</literal> 
+                <para><literal>{X*}</literal> means <literal>Iterable&lt;X,Null&gt;</literal> 
                 for any type <literal>X</literal>,</para>
             </listitem>
-            <!--
             <listitem>
-                <para><literal>X[n]</literal> means <literal>BoundedSequence&lt;X,#n&gt;</literal> 
-                for any type <literal>X</literal> and dimension <literal>n</literal>.</para>
+                <para><literal>{X+}</literal> means <literal>Iterable&lt;X,Nothing&gt;</literal> 
+                for any type <literal>X</literal>,</para>
             </listitem>
-             -->
+            <listitem>
+                <para><literal>[X*]</literal> and <literal>X[]</literal> mean 
+                <literal>Sequential&lt;X&gt;</literal> for any type <literal>X</literal>,</para>
+            </listitem>
+            <listitem>
+                <para><literal>[]</literal> means <literal>Empty</literal> for any type 
+                <literal>X</literal>,</para>
+            </listitem>
+            <listitem>
+                <para><literal>[X+]</literal> means <literal>Sequence&lt;X&gt;</literal> 
+                for any type <literal>X</literal>,</para>
+            </listitem>
             <listitem>
                 <para><literal>X->Y</literal> means <literal>Entry&lt;X,Y&gt;</literal>, and</para>
             </listitem>
             <listitem>
-                <para><literal>X(Y,Z)</literal> means <literal>Callable&lt;X,Y,Z&gt;</literal>
-                where <literal>Y, Z</literal> is a list of types of any length.</para>
+                <para><literal>[X,Y]</literal> means <literal>Tuple&lt;X|Y,X,Tuple&lt;Y,Y,[]&gt;&gt;</literal>
+                where <literal>X,Y</literal> is a list of types of any length.</para>
+            </listitem>
+            <listitem>
+                <para><literal>X(Y,Z)</literal> means <literal>Callable&lt;X,[Y,Z]&gt;</literal>
+                where <literal>Y,Z</literal> is a list of types of any length.</para>
             </listitem>
         </itemizedlist>
         
-        <programlisting>EntryType: AbbreviatedType ("->" AbbreviatedType)?</programlisting>
-        <programlisting>AbbreviatedType: Type (Abbreviation | ParameterTypes)*</programlisting>        
-        <programlisting>Abbreviation: "?" | "[]"</programlisting>
-        <programlisting>ParameterTypes: "(" ( UnionType ("," UnionType)* )? ")"</programlisting>
-                
-        <!--
-        <programlisting>Abbreviation: "?" | "[]" | "[" dimension "]"</programlisting>
-        -->
+        <comment><para>TODO: Write down the correct recursive definition of tuple and
+        function types!</para></comment>
         
+        <programlisting>ContainerType: Type | EmptyType | TupleType | IterableType | GroupedType</programlisting>
+        
+        <programlisting>EmptyType: "[" "]"</programlisting>
+        
+        <programlisting>TupleType: "[" TypeList "]"</programlisting>
+        
+        <programlisting>IterableType: "{" UnionType ("*"|"+") "}"</programlisting>
+        
+        <programlisting>EntryType: UnionType ("->" UnionType)?</programlisting>
+        
+        <programlisting>AbbreviatedType: ContainerType ("?" | "[" "]" | ParameterTypes)*</programlisting>   
+             
+        <programlisting>ParameterTypes: "(" TypeList? ")"</programlisting>
+        
+        <programlisting>TypeList: UnionType ("*"|"+")? | UnionType "," TypeList</programlisting>
+                
         <para>Abbreviations may be combined:</para>
         
         <programlisting>String?[] words = { "hello", "world", null };
 String? firstWord = words[0];
-String->Integer[] onetwo = "onetwo"->{1, 2};
-Float[](Float x, Float[] xs) add = (Float x, Float[] xs) append(xs, x);</programlisting>
+
+String->[Integer,Integer] onetwo = "onetwo"->[1, 2];
+
+[Float+](Float x, Float[] xs) add = (Float x, Float[] xs) => append(xs, x);</programlisting>
         
-        <para>When a type appears in an expression, the abbreviations cannot be used (they 
-        cannot be disambiguated from operator expressions).</para>
+        <para>When a type appears in a value expression, these abbreviations cannot be used 
+        (they cannot be disambiguated from operator expressions).</para>
                 
-        <comment><para>TODO: Java lets you put the <literal>[]</literal> after the variable
-        name. C requires that. Should we support/require this variation? It is consistent
-        with how we declare functional parameters!</para></comment>
-        
         </section>
         
     </section>
