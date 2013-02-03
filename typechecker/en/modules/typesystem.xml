@@ -950,9 +950,8 @@ String->[Integer,Integer] onetwo = "onetwo"->[1, 2];
             disjoint subtypes called <emphasis>cases</emphasis>.</para>
         </listitem>
         <listitem>
-            <para>A type parameter may have an <emphasis>enumerated type bound</emphasis>,
-            with an enumerated list of cases, representing its possible type 
-            arguments.</para>
+            <para>A type parameter may have an <emphasis>enumerated bound</emphasis>,
+            with an enumerated list possible type arguments.</para>
         </listitem>
         <listitem>
             <para>An <literal>abstract</literal> class or interface may have a 
@@ -982,6 +981,12 @@ String->[Integer,Integer] onetwo = "onetwo"->[1, 2];
             then <literal>X</literal> covers <literal>Z</literal>.</para>
         </listitem>
         </itemizedlist>
+        
+        <para>It follows that coverage obeys the identity property of assignability:
+        a type covers itself. However, coverage does not obey the noncircularity property 
+        of assignability. It is possible to have distinct types <literal>A</literal> and 
+        <literal>B</literal> where <literal>A</literal> covers <literal>B</literal> and 
+        <literal>B</literal> covers <literal>A</literal>.</para>
         
         <para>Case enumeration allows safe use of a type in a <literal>switch</literal> 
         statement, or as the subject of the <literal>of</literal> operator. The 
@@ -1013,7 +1018,7 @@ String->[Integer,Integer] onetwo = "onetwo"->[1, 2];
         <itemizedlist>
         <listitem>
             <para>An interface or <literal>abstract</literal> class may optionally 
-            specify an enumerated list of disjoint subtypes, in which case every 
+            specify an enumerated list of subtypes, in which case every 
             non-<literal>abstract</literal> subclass of the interface or 
             <literal>abstract</literal> class must be a subtype of exactly one of 
             the enumerated subtypes.</para>
@@ -1026,17 +1031,14 @@ String->[Integer,Integer] onetwo = "onetwo"->[1, 2];
             <para>An interface or <literal>abstract</literal> class may specify a 
             single self type parameter, which must be a type parameter declared by 
             the interface or <literal>abstract</literal> class or by the immediately 
-            containing type.</para>
+            containing type, if any.</para>
         </listitem>
         </itemizedlist>
         
-        <para>A type declaration with an <literal>of</literal> clause is called an
-        <emphasis>enumerated type</emphasis>.</para>
-        
-        <programlisting>CaseTypes: "of" CaseType ("|" CaseType)*</programlisting>
-        
         <para>The <literal>of</literal> clause may specify multiple types, called
         <emphasis>cases</emphasis>.</para>
+        
+        <programlisting>CaseTypes: "of" CaseType ("|" CaseType)*</programlisting>
         
         <programlisting>CaseType: MemberName | AbbreviatedType</programlisting>
         
@@ -1067,15 +1069,18 @@ String->[Integer,Integer] onetwo = "onetwo"->[1, 2];
         </itemizedlist>
         -->
                
-        <para>If there is exactly one case, and it is a type parameter, then:</para> 
+        <para>If an interface of <literal>abstract</literal> class has exactly one 
+        case, and it is a type parameter of the interface of <literal>abstract</literal> 
+        class, or of the immediately containing type, if any, then that type parameter 
+        is a self type of the interface of <literal>abstract</literal> class, and:</para> 
         
         <itemizedlist>
             <listitem>
-                <para>the type parameter covers the declared type within the body 
-                of the declaration,</para>
+                <para>the self type parameter covers the declared type within the 
+                body of the declaration,</para>
             </listitem>
             <listitem>
-                <para>a type argument to the type parameter in a produced type
+                <para>the type argument to the self type parameter in a produced type
                  of the declared type covers the produced type, and</para>
             </listitem>
             <listitem>
@@ -1099,7 +1104,8 @@ String->[Integer,Integer] onetwo = "onetwo"->[1, 2];
         <programlisting>Comparable&lt;Item&gt; comp = ... ;
 Item item = comp of Item;</programlisting>
     
-        <para>Otherwise, there may be multiple cases, and each case is either:</para>
+        <para>Otherwise, an interface of <literal>abstract</literal> class may have 
+        multiple cases, and each case must be either:</para>
         
         <itemizedlist>
             <listitem>
@@ -1117,8 +1123,11 @@ Item item = comp of Item;</programlisting>
         
         <programlisting>of Root&lt;Element&gt; | Leaf&lt;Element&gt; | Branch&lt;Element&gt;</programlisting>
         
-        <para>A class or interface may not be a subtype of more than one case 
-        of an enumerated type.</para>
+        <para>A class or interface may not be a subtype of more than one case of an 
+        enumerated type.</para>
+        
+        <para>A type parameter may specify multiple cases, and each case must be a 
+        type.</para>
         
     </section>
         
@@ -1127,11 +1136,11 @@ Item item = comp of Item;</programlisting>
     <section id="generictypeparameters">
         <title>Generic type parameters</title>
     
-        <para>Methods, class, and interface <!-- and type parameter --> declarations may be
-        parameterized by one or more generic type parameters. A parameterized class or interface 
-        declaration defines a type constructor, a function that produces a type given a tuple of 
-        compatible type arguments. A parameterized class or method declaration defines a function 
-        that produces the signature of an invokable operation given a tuple of compatible type
+        <para>Method, class, and interface declarations may be parameterized by one or more 
+        generic type parameters. A parameterized class or interface declaration defines a 
+        type constructor, a function that produces a type given a tuple of compatible type 
+        arguments. A parameterized class or method declaration defines a function that 
+        produces the signature of an invokable operation given a tuple of compatible type
         arguments.</para>
         
         <programlisting>TypeParams: "&lt;" (TypeParam ",")* (TypeParam | SequencedTypeParam) "&gt;"</programlisting>
