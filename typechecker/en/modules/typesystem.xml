@@ -1224,6 +1224,11 @@ Item item = comp of Item;</programlisting>
         
         <programlisting>&lt;in Left, in Right, out Result&gt;</programlisting>
         
+        </section>
+        
+        <section id="variancevalidation">
+            <title>Variance validation</title>
+        
         <para>A covariant type parameter may only appear in <emphasis>covariant positions</emphasis> 
         of the parameterized schema. A contravariant type parameter may only appear in 
         <emphasis>contravariant positions</emphasis> of the parameterized schema. An 
@@ -1404,24 +1409,24 @@ Item item = comp of Item;</programlisting>
             <title>Type parameters and enumerated types</title>
         
         <para>If an enumerated type <literal>T&lt;X&gt;</literal> has a case type 
-        which is a produced type of <literal>U</literal> then either:</para>
+        which is a produced type of a type schema <literal>U</literal> then either:</para>
         
         <itemizedlist>
             <listitem>
                 <para><literal>U</literal> is parameterized by a type parameter
-                <literal>X</literal> and <literal>U&lt;X&gt;</literal> is an 
-                invariant subtype of <literal>T&lt;X&gt;</literal>,
+                <literal>X</literal> and <literal>U&lt;X&gt;</literal> obeys the
+                rules enumerated below, or
                 </para>
             </listitem>
             <listitem>
-                <para><literal>T&lt;X&gt;</literal> is covariant in <literal>X</literal>
-                and <literal>U</literal> is an invariant subtype of 
-                <literal>T&lt;Bottom&gt;</literal>, or</para>
+                <para><literal>T&lt;X&gt;</literal> is covariant in 
+                <literal>X</literal> and <literal>U</literal> is an invariant 
+                subtype of <literal>T&lt;Nothing&gt;</literal>, or</para>
             </listitem>
             <listitem>
-                <para><literal>T&lt;X&gt;</literal> is contravariant in <literal>X</literal>
-                and <literal>U</literal> is an invariant subtype of 
-                <literal>T&lt;Void&gt;</literal>. 
+                <para><literal>T&lt;X&gt;</literal> is contravariant in 
+                <literal>X</literal> and <literal>U</literal> is an invariant 
+                subtype of <literal>T&lt;Anything&gt;</literal>. 
                 <emphasis>(TODO: should be the intersection of upper bounds.)</emphasis></para>
             </listitem>
         </itemizedlist>
@@ -1443,307 +1448,7 @@ Item item = comp of Item;</programlisting>
         </itemizedlist>
         
         </section>
-        
-        <section id="sequencedtypeparameters">
-            <title>Sequenced type parameters</title>
-        
-        <para>A <emphasis>sequenced type parameter</emphasis> allows a declaration to be 
-        abstracted over a variable length list of arbitrary types. This allows declarations 
-        with parameter lists to be represented by metamodel objects within the 
-        language.</para>
-        
-        <para>A sequenced type parameter is identified by an elipsis <literal>...</literal>,
-        indicating that it accepts a list of zero or more type arguments.</para>
-        
-        <programlisting>SequencedTypeParam: TypeName "..."</programlisting>
-        
-        <para>Sequenced type parameters are always non-variant.</para>
-        
-        <programlisting>ConcreteClass&lt;Value, Argument...&gt;</programlisting>
-        <programlisting>Method&lt;Value, Result, Argument...&gt;</programlisting>
-        <programlisting>Tuple&lt;Element...&gt;</programlisting>
-        
-        <para>Inside the declaration of the parameterized type or method, a sequenced type 
-        parameter may be used as a type argument to other types which accept a sequenced 
-        type parameter, or it may be used as the type of the last parameter declared by a 
-        parameter list. It may not appear in any other position. The sequenced type 
-        parameter acts as a pseudo-type. It is treated by the Ceylon compiler as if it were 
-        a type with no members, to which no other type may be assigned, and which can only 
-        by assigned to itself.</para>
-        
-        <comment><para>TODO: Should we let you declare a covariant sequenced type parameter?
-        This is useful for modelling tuples. Should we allow you to declare a contravariant
-        sequenced type parameter, and say that method parameter types are contravariant?</para></comment>
-        
-        <!--
-        <comment><para>TODO: should we let you write things like:</para>
-        <programlisting><![CDATA[class Foo<Element...>(Tuple<Bar<Element>...> barTup) {
-    ...
-    void baz(Baz<Element>... bazs) {
-        ...
-    }
-}]]></programlisting>
-        <para>It's probably only really useful if we also let you do stuff like this:</para>
-        <programlisting><![CDATA[List<Result> zip<Result,Argument...>(List<Argument>... args, Result producing(Argument... args)) {
-    return from (Integer i in 0..min(x.lastIndex...)) select (producing(args[i]...));
-}]]></programlisting></comment>
-        -->
-        
-        </section>
-            
-        <!--
-        <section id="thesubtypekeyword">
-            <title>PROPOSAL: The <literal>subtype</literal> keyword</title>
-            
-        <comment><para>NOTE: <literal>subtype</literal> is a proposed feature for a 
-        future version of the language.</para></comment>
-        
-        <para>The keyword <literal>subtype</literal> is used to refer to the runtime 
-        type of an object.</para>
-            
-        <programlisting>Subtype: "subtype" | MemberName "." "subtype"</programlisting>
-        
-        <para>Every class or interface has an implicit type parameter that never needs 
-        to be declared. This special type parameter, referred to using the keyword 
-        <literal>subtype</literal>, represents the runtime type of the current instance 
-        (the instance that is being invoked). It is considered a covariant type parameter
-        of the type, and may only appear in covariant positions of the type definition.
-        It is upper bounded by the type (and is therefore assignable to the type).</para>
-        
-        <programlisting><![CDATA[shared interface Wrapper<out Value> {}]]></programlisting>
-        
-        <programlisting><![CDATA[shared abstract class Wrappable() {
-   shared Wrapper<subtype> wrap() {
-       return Wrapper(this);
-   }
-}]]></programlisting>
-        
-        <programlisting><![CDATA[shared class Special() extends Wrappable() {}]]></programlisting>
-
-        <programlisting><![CDATA[Special special = Special();
-Wrapper<Special> wrapper = special.wrap();]]></programlisting>
-
-        <para>The only expression assignable to the type <literal>subtype</literal> is
-        the self reference <literal>this</literal>, except inside the body of a method 
-        or attribute annotated <literal>definite</literal>, where the class that declares 
-        the method or attribute is assignable to <literal>subtype</literal>. 
-        <emphasis>(Note that <literal>definite</literal> is a proposed feature for a 
-        future version of the language.)</emphasis></para>
-        
-        <para>Every method has an implicit type parameter for each parameter of the
-        method. For a method parameter <literal>x</literal>, the type parameter is
-        referred to using the syntax <literal>x.subtype</literal>. This special type
-        parameter represents the runtime type of the argument to the given parameter
-        when the method is invoked. It is upper bounded by the declared type of the
-        parameter (and is therefore assignable to the parameter type).</para>
-        
-        <programlisting><![CDATA[Entry<Name,x.subtype> named(String name, Object x) {
-    return Name(name) -> x;
-}]]></programlisting>
-        
-        <programlisting><![CDATA[Person gavin = Person("Gavin");
-Entry<Name,Person> entry = named(gavin.name, gavin);]]></programlisting>
-        
-        <para>The only expression assignable to the type <literal>x.subtype</literal> 
-        is the parameter <literal>x</literal> itself.</para>
-        
-        <comment><para>TODO: Should we allow you to refer to the concrete type of a
-        refining member class in a subclass of the current class using the syntax
-        <literal>subtype.MemberClass</literal>, to which the expression 
-        <literal>MemberClass(...)</literal> is assignable? And/or the concrete type of 
-        the containing class of a subtype of the current member class, using the syntax
-        <literal>outer.subtype</literal>, to which <literal>outer</literal> is 
-        assignable? Both would be considered implicit covariant type parameters.</para></comment>
-        
-        <comment><para>TODO: Should we let you declare type constraints on 
-        <literal>subtype</literal>? The only really useful case I can think of would 
-        be an initialization parameter constraint: <literal>given subtype(Foo foo, Bar bar)</literal>,
-        which would let you do <literal>subtype(foo, bar)</literal> to instantiate a new
-        instance of the concrete subclass of the current class, getting an expression
-        of type <literal>subtype</literal>. Note that <literal>given subtype satisfies Foo</literal>
-        (like a Scala "self type" declaration) is really not very different to declaring 
-        the type <literal>satisfies Foo</literal>. Perhaps <literal>given subtype is 
-        Metatype</literal> would be useful.</para>
-        </comment>
-        
-        <comment><para>TODO: Are metatypes constrained so that if <literal>X satisfies Y</literal> 
-        then <literal>X is Y</literal>? If so, then the type of <literal>y.type</literal> 
-        as currently declared is not specific enough (it should be assignable to all 
-        metatypes of Y). So if we do decide to add this constraint, then we should 
-        probably merge together the keyword <literal>subtype</literal> with attribute
-        <literal>Object.type</literal>, and get a new keyword, <literal>type</literal>,
-        which can be used as <literal>subtype</literal> is currently used, or as a
-        member, <literal>x.type</literal>.</para></comment>
-        
-        </section>
-        -->
-        
-    <!--   
-    <section id="dimensionaltypeparameters">
-        <title>PROPOSAL: Dimensional type parameters</title>
-            
-        <comment><para>NOTE: dimensional type parameters are a proposed feature for a 
-        future version of the language.</para></comment>
-        
-        <para>A dimensional type parameter allows a declaration to be abstracted over 
-        the natural numbers.</para>
-        
-        <para>A dimensional type parameter is distinguished by an upper bound of the
-        following form:</para>
-        
-        <programlisting>given N satisfies Dimension</programlisting>
-        
-        <para>Where the type <literal>Dimension</literal> represents the natural numbers:</para>
-        
-        <programlisting>shared interface Dimension of Zero | Successor&lt;Nat&gt; {}
-shared interface Zero satisfies Dimension {}
-shared interface Successor&lt;out N&gt; satisfies Dimension given N satisfies Dimension {}</programlisting>
-        
-        <comment><para>TODO: should we allow more specific constraints on dimensional 
-        type parameters, for example <literal>given N&gt;=#1</literal>.</para></comment>
-        
-        <comment><para>TODO: should we let you declare <literal>X&lt;#n&gt;</literal>
-        instead of <literal>X&lt;N&gt; given N satisfies Dimension</literal>, since
-        actually the <literal>n</literal> is more useful than the <literal>N</literal>
-        inside the declaration.</para></comment>
-        
-     </section>
-     -->
-     
-     <section id="parameterizedtypeparameters">
-        <title>PROPOSAL: Parameterized type parameters</title>
-
-        <comment><para>NOTE: Parameterized type parameters is a proposed feature for a 
-        future version of the language.</para></comment>
-        
-        <para>A <emphasis>parameterized type parameter</emphasis> is defined using a type
-        constraint of form <literal>given X&lt;T&gt;</literal>, which specifies that the 
-        type parameter is itself a parameterized type.</para>
-            
-        <programlisting>given Container&lt;Element&gt;(Element... elements) satisfies Iterable&lt;Element&gt;</programlisting>
     
-        <para>The parameters of a parameterized type parameter may themselves have 
-        constraints. These constraints are be defined in the same list of type
-        constraints.</para>
-        
-        <para>A type argument to a parameterized type parameter must be a parameterized 
-        type with type parameters to which the type parameters of the parameterized
-        type parameter are assignable.</para>
-        
-        <para>A parameterized type parameter appears as a produced type (with type 
-        arguments) in the body of the declaration.</para>
-        
-        <programlisting><![CDATA[Indirect<Key->Item> entry<Indirect<X>,Key,Item>(Indirect<Key> key, Indirect<Item> item) 
-        given Indirect<X>(X x) satisfies Reference<X> {
-    return Indirect(key.indirectedValue->item.indirectedValue);
-}]]></programlisting>
-
-        <para>Note that the argument to a parameterized type parameter is not, strictly
-        speaking, a type. Rather, it is a parameterized type&mdash;a <emphasis>type
-        constructor</emphasis>. For example, in the following, <literal>WeakReference</literal> 
-        is viewed as a function from types <literal>Anything</literal> to produced types 
-        <literal>WeakReference&lt;Anything&gt;</literal>:</para>
-        
-        <programlisting><![CDATA[WeakReference<Person> person = ... ;
-WeakReference<Org> org = ... ;
-//infers Indirect==WeakReference, Key==Person, Value==Org:
-WeakReference<Person->Org> e = entry(person, org);]]></programlisting>
-        
-        <para>Parameterized type parameters allow functions to operate generically 
-        over "container" types:</para>
-                
-        <programlisting><![CDATA[Many<Result> map<Many<X>,Argument,Result>(
-            Result function(Argument arg), 
-            Many<Argument> inputs)
-        given Many<X>() satisfies Iterable<X> & Addable<X> {
-    variable Many<Result> outputs := Many<Result>();
-    for (Argument input in inputs) {
-        outputs.=add(function(input));
-    }
-    return outputs;
-}]]></programlisting>
-
-        <programlisting>Set&lt;Person&gt; people = ... ;
-Set&lt;String&gt; names = map(Person.name, people);</programlisting>
-
-        <para>This effect can not even be achieved with metatypes. Even some cases
-        which can be expressed using metatypes are more elegantly expressed using
-        parameterized type parameters:</para>
-        
-        <programlisting><![CDATA[Many<Element> join<Many<X>,Element>(Many<Element>... sequences)
-        given Many<X>(X... elements) satisfies Sequence<X> 
-        given Element satisfies Object
-        given X satisfies Object {
-    return Many(joinSequences(sequences));
-}]]></programlisting>
-        
-        <comment><para>Note: I think you can get most of the practical value by limiting 
-        type constructor parameterization to methods only. Supporting type constructor 
-        parameterization of classes and interfaces means that you have to be able to 
-        reason about types whose arguments are type constructors. It seems to me that 
-        you don't need to be able to do this if the feature is limited to methods. On the
-        other hand, regularity argues for supporting both.</para></comment>
-        
-        <comment>
-        <para>TODO: There are at least two other interesting functions which map types to 
-        types:</para>
-        <itemizedlist>
-            <listitem>
-                 <para>the identity type constructor <literal>id&lt;T&gt; == T</literal>, 
-                 and</para>
-            </listitem>
-            <listitem>
-                <para>constant type constructors (non-parameterized types), for 
-                example, <literal>String&lt;T&gt; == String</literal>.</para>
-            </listitem>
-        </itemizedlist>
-        <para>Should we allow these type constructors as arguments to a parameterized type 
-        parameter?</para>
-        
-        <programlisting><![CDATA[Comparison compare<Many<X>,Other>(Many<Other> x, Many<Other> y)
-        given Many<X> satisfies Sequence<X> | X
-        given Other satisfies PartlyComparable<Other> {
-    switch (Many<Other>)
-    case (Other) {
-        return x<=>y;
-    }
-    case (Sequence<Other>) {
-        for (Integer i in 0..min(x.size,y.size)) {
-            Comparison c = x[i]<=>y[i];
-            switch (c)
-            case (larger) {
-                return larger;
-            }
-            case (smaller) {
-                return smaller;
-            }
-            else {
-                continue;
-            }
-        }
-        return uncomparable;
-    }
-}]]></programlisting>
-
-        <para>Note that <literal>given S&lt;X&gt; satisfies Sequence&lt;X&gt; | X</literal> is a way of writing
-        <literal>given S&lt;X&gt; satisfies Sequence&lt;X&gt; | id&lt;X&gt;</literal>. A second example:</para>
-        
-        <programlisting><![CDATA[Many<Result> findByKey<Many<E>,Result,Key>(Type<Result> type, Many<Key> keys)
-        given Many<E> of E | E[]
-        given Key satisfies Object {
-    ...
-}]]></programlisting>
-        <programlisting>Person p = findByKey(Person, personId);</programlisting>
-        <programlisting>Order[] orders = findByKey(Order, orderIds);</programlisting>
-        <programlisting><![CDATA[Result[] findManyByIntegerKey<Result>(Type<Result> type, Integer[] keys) = findByKey<Sequence,Result,Integer>;
-Result findSingleByIntegerKey<Result>(Type<Result> type, Integer key) = findByKey<id,Result,Integer>;]]></programlisting>
-<para>Or we could keep it simple :-)</para>
-        </comment>
-        
-    </section>
-    
-    </section>
-
     <section id="generictypeconstraints">
     <title>Generic type constraints</title>
 
@@ -1756,18 +1461,20 @@ Result findSingleByIntegerKey<Result>(Type<Result> type, Integer key) = findByKe
         
         <programlisting>TypeConstraint: "given" TypeName TypeParams? Params? TypeConstraintInheritance</programlisting>
         
-        <programlisting>TypeConstraintInheritance: CaseTypes? Metatypes? SatisfiedTypes? AbstractedType?</programlisting>
-        
-        <programlisting>AbstractedType: "abstracts" Type</programlisting>
+        <programlisting>TypeConstraintInheritance: CaseTypes? SatisfiedTypes?</programlisting>
         
         <!--
-        <programlisting>ConcreteType: "this" "is"</programlisting>
-       -->
+        <programlisting>TypeConstraintInheritance: CaseTypes? SatisfiedTypes? AbstractedType?</programlisting>
         
+        <programlisting>AbstractedType: "abstracts" Type</programlisting>
+        -->
+        
+        <comment>
         <para>Note that the syntax for a type constraint is essentially the same syntax 
         used for other type declarations such as class and interface declarations.</para>
+        </comment>
         
-        <para>There are five different kinds of type constraint:</para>
+        <para>There are two different kinds of type constraint:</para>
         
         <itemizedlist>
             <listitem>
@@ -1775,30 +1482,19 @@ Result findSingleByIntegerKey<Result>(Type<Result> type, Integer key) = findByKe
                 specifies that the type parameter <literal>X</literal> is a subtype of 
                 a given type <literal>T</literal>,</para>
             </listitem>
+            <!--
             <listitem>
                 <para>a <emphasis>lower bound</emphasis>, <literal>given X abstracts T</literal>, 
                 specifies that a given type <literal>T</literal> is a subtype of the 
                 type parameter <literal>X</literal>,</para>
             </listitem>
-            <!--listitem>
-                <para>a subtype bound, <literal>X = subtype</literal>, specifies that 
-                the type parameter <literal>X</literal> represents the concrete type
-                of the current instance, and</para>
-            </listitem-->
+            -->
             <listitem>
                 <para>an <emphasis>enumerated bound</emphasis>, <literal>given X of T|U|V</literal>
                 specifies that the type parameter <literal>X</literal> represents one 
                 of the enumerated types,</para>
             </listitem>
             <!--
-            <listitem>
-                <para>a <emphasis>concrete type bound</emphasis>, <literal>given this is X</literal>
-                is permitted only for type parameters of parameterized interfaces and 
-                <literal>abstract</literal> classes, and specifies that every concrete 
-                subclass of the interface or <literal>abstract</literal> class is a 
-                subtype of the argument to the type parameter <literal>X</literal>,</para>
-            </listitem>
-            -->
             <listitem>
                 <para>a <emphasis>parameter bound</emphasis>, 
                 <literal>given X(...)</literal> specifies that the type parameter 
@@ -1811,91 +1507,42 @@ Result findSingleByIntegerKey<Result>(Type<Result> type, Integer key) = findByKe
                 of a given type <literal>T</literal>. <emphasis>(Note that metatypes are 
                 a proposed feature for a future version of the language.)</emphasis></para>
             </listitem>
+            -->
         </itemizedlist>
-        
-        <para>A constraint may not refer to a sequenced type parameter.</para>
         
         <para>A single <literal>given</literal> clause may specify multiple constraints
         on a certain type parameter. For example, it may specify multiple upper bounds
-        together with a parameter bound. If multiple upper bounds are specified, at most
-        one upper bound may be a class.</para>
+        together with an enumerated bound. If multiple upper bounds are specified, at most
+        one upper bound may be a class, and at most one upper bound may be a type parameter.</para>
         
-        <programlisting><![CDATA[given Value(Integer n) satisfies IdentifiableObject & Comparable<Value>]]></programlisting>
+        <programlisting><![CDATA[given Value satisfies Ordinal & Comparable<Value>]]></programlisting>
         
-        <programlisting><![CDATA[given Value satisfies Numberic<Value>
-given Result(Integer count) satisfies Numeric<Result>]]></programlisting>
-       
         <programlisting><![CDATA[given Quantities satisfies Correspondence<Key,Decimal>]]></programlisting>
-
-        <programlisting><![CDATA[given Other satisfies Ordinal & Comparable<Other> abstracts Element]]></programlisting>
-        
-        <programlisting><![CDATA[given Value is Monoid<Value>]]></programlisting>
         
         <programlisting><![CDATA[given Argument of String | Integer | Float]]></programlisting>
         
-        <comment><para>TODO: Should we let you declare a constraint for a sequenced type 
-        parameter?</para>
-        <programlisting>class Foo&lt;Argument...&gt;(Argument... args) 
-        given Argument satisfies Comparable&lt;Argument&gt; {
-    ...
-}</programlisting></comment>
-
         <comment><para>TODO: Should we inherit generic type constraints from supertypes, 
-        like in C#, or require them to be re-declared, like in Java?</para></comment>
-            
-    <section>
-        <title>Upper bounds</title>
+        like in C#, or require them to be redeclared, like in Java?</para></comment>
         
-        <para>An upper bound constraint makes the type parameter assignable to the
-        upper bound type, and allows operations of the upper bound type to be called
-        upon expressions whose type is the type parameter.</para>
+        <para>A type parameter is a subtype of its upper bounds.</para>
         
-        <programlisting><![CDATA[class Holder<Value>(Value value) 
+        <programlisting><![CDATA[class Holder<Value>(shared Value value) 
         extends Object
         given Value satisfies Object {
-    shared Value value = value;
     shared actual Boolean equals(Object that) {
         if (is Holder<Value> that) {
             return value==that.value;
         }
+        else {
+            return false;
+        }
     }
-    shared actual Integer hash {
-        return value.hash;
-    }
+    shared actual Integer hash =>  value.hash;
 }]]></programlisting>
         
-        <para>Every type parameter has an implicit upper bound of type <literal>Void</literal>.</para>
+        <para>Every type parameter has an implicit upper bound of type 
+        <literal>Anything</literal>.</para>
                 
-    </section>
-    
-    <section>
-        <title>Lower bounds</title>
-        
-        <para>A lower bound constraint makes the lower bound type assignable to the
-        type parameter. The most common usecase is to work around the restriction that 
-        a covariant type parameter may not appear in a contravariant position of the
-        schema of the parameterized type.</para>
-        
-        <programlisting><![CDATA[shared class Set<out Element>(Element... elements)
-        given Element satisfies Object {
-    ...
-     
-    shared Set<UnionElement> union(Set<UnionElement> set)
-            given UnionElement abstracts Element {
-        return ...
-    }
-     
-}]]></programlisting>
-
-        <para>A type parameter of a declaration may not appear anywhere in any lower 
-        bound constraint on any type parameter of the same declaration. It may appear
-        in any constraint on any type parameter of a nested declaration.</para>
-        
-    </section>
-            
-    <section>
-        <title>Enumerated bounds</title>
-       
         <para>An enumerated bound allows the use of an exhaustive <literal>switch</literal>
         with expressions of the parameter type.</para>
         
@@ -1909,10 +1556,8 @@ given Result(Integer count) satisfies Numeric<Result>]]></programlisting>
         return chars.first.uppercased..chars.last.uppercased;
     }
 }]]></programlisting>
-
-    </section>
     
-    <section>
+    <!--section>
         <title>Parameter bounds</title>
 
         <para>A parameter bound allows instantiation of the type represented by the 
@@ -1923,9 +1568,9 @@ given Result(Integer count) satisfies Numeric<Result>]]></programlisting>
     return Result(object.string.lowercased);
 }]]></programlisting>
 
-    </section>
+    </section-->
     
-    <section>
+    <!--section>
         <title>PROPOSAL: Metatype bounds</title>
         
         <comment><para>NOTE: Metatypes are a proposed feature for a future version 
@@ -1951,42 +1596,12 @@ given Result(Integer count) satisfies Numeric<Result>]]></programlisting>
         be considered to satisfy a metatype bound, allowing type class introduction.
         </para></comment>
         
+    </section-->
+        
     </section>
     
-    <section>
-        <title>Generic type constraints and assignability</title>
-            
-        <para>Within the body of the declaration, a generic type constraint affects the 
-        assignability of a type parameter:</para>
-        
-        <itemizedlist>
-            <listitem>
-                <para>A type parameter is considered a subtype of its upper bound.</para>
-            </listitem>
-            <listitem>
-                <para>The lower bound of a type parameter is considered a subtype of the
-                type parameter.</para>
-            </listitem>
-            <listitem>
-                <para>A metamodel reference to the type parameter is assignable to the
-                metatype bound.</para>
-            </listitem>
-            <listitem>
-                <para>A type parameter is considered a supertype of its enumerated type
-                bounds.</para>
-            </listitem>
-            <!--
-            <listitem>
-                <para>A parameterized type is considered a subtype of any type parameter of 
-                the type with a concrete type bound.</para>
-            </listitem>
-             -->
-        </itemizedlist>
-        
-        </section>
-    
     </section>
-    
+
     <section id="generictypearguments">
         <title>Generic type arguments</title>
             
