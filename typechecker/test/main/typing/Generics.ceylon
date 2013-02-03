@@ -544,10 +544,15 @@ class Generics() {
     void withParamOfMethod<T>(T t) { Anything x = t; } 
     class WithParamOfClass<T>(T t) { Anything x = t; } 
 
+    class N()=>Null();
+    class S()=>String();
+
     void unsatisfiable1<T>() @error given T satisfies Null&String {}
     void unsatisfiable2<T>() @error given T satisfies Null&Container<Anything> {}
     void unsatisfiable3<T>() @error given T satisfies Holder<String>&Holder<Integer> {}
     void unsatisfiable4<T>() @error given T satisfies Holder<Object>&Holder<T> {}
+    void unsatisfiable5<T>() @error given T satisfies N&S {}
+    void unsatisfiable6<T>() @error given T satisfies Holder<N>&Holder<S> {}
     
 }
 

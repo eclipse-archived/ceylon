@@ -239,22 +239,21 @@ public class RefinementVisitor extends Visitor {
 		        checkSupertypeIntersection(that, td, st1, st2);
 		    }
 		}
-		if (!broken && td instanceof TypeParameter) {
+		Unit unit = that.getUnit();
+        if (!broken && td instanceof TypeParameter) {
 		    List<ProducedType> list = new ArrayList<ProducedType>();
-		    for (ProducedType st: td.getSatisfiedTypes()) {
-		        addToIntersection(list, st, that.getUnit());
+		    List<ProducedType> upperBounds = td.getSatisfiedTypes();
+            for (ProducedType st: upperBounds) {
+		        addToIntersection(list, st, unit);
 		    }
-		    IntersectionType it = new IntersectionType(that.getUnit());
+		    IntersectionType it = new IntersectionType(unit);
 		    it.setSatisfiedTypes(list);
-		    if (it.getType().getDeclaration() instanceof NothingType) {
-		        StringBuilder sb = new StringBuilder();
-		        for (ProducedType st: td.getSatisfiedTypes()) {
-		            sb.append(st.getProducedTypeName(that.getUnit())).append(" & ");
-		        }
-		        sb.setLength(sb.length()-3);
+		    if (it.canonicalize().getType().getDeclaration() 
+		            instanceof NothingType) {
 		        that.addError(typeDescription(td) + 
 		                " has unsatisfiable upper bound constraints: the constraints " + 
-		                sb + " cannot be satisfied by any type except Nothing");
+		                typeNamesAsIntersection(upperBounds, unit) + 
+		                " cannot be satisfied by any type except Nothing");
 		    }
 		}
 		if (!broken) {
@@ -264,12 +263,12 @@ public class RefinementVisitor extends Visitor {
 		        if (that instanceof Tree.Declaration) {
 		            if (!isCompletelyVisible(td, st)) {
 		                that.addError("supertype of type is not visible everywhere type is visible: " + 
-		                        st.getProducedTypeName(that.getUnit()));
+		                        st.getProducedTypeName(unit));
 		            }
 		            if(!checkModuleVisibility(td, st) ) {
 		                that.addError("supertype occurs in a type that is visible outside this module,"
 		                        +" but comes from an imported module that is not re-exported: " +
-		                        st.getProducedTypeName(that.getUnit()));
+		                        st.getProducedTypeName(unit));
 		            }
 
 		        }
@@ -314,6 +313,18 @@ public class RefinementVisitor extends Visitor {
 		    }
 		}
 	}
+
+    private StringBuilder typeNamesAsIntersection(
+            List<ProducedType> upperBounds, Unit unit) {
+        StringBuilder sb = new StringBuilder();
+        for (ProducedType st: upperBounds) {
+            sb.append(st.getProducedTypeName(unit)).append(" & ");
+        }
+        if (sb.toString().endsWith(" & ")) {
+            sb.setLength(sb.length()-3);
+        }
+        return sb;
+    }
 	
 	private String typeDescription(TypeDeclaration td) {
 	    if (td instanceof TypeParameter) {

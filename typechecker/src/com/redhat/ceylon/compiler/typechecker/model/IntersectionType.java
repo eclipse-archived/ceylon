@@ -58,7 +58,7 @@ public class IntersectionType extends TypeDeclaration {
 	public TypeDeclaration canonicalize() {
 	    List<ProducedType> sts = getSatisfiedTypes();
 		if (sts.isEmpty()) {
-	        return unit.getNothingDeclaration();
+	        return unit.getAnythingDeclaration();
 	    }
 	    else if (sts.size()==1) {
 	    	TypeDeclaration d = sts.get(0).getDeclaration();
