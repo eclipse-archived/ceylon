@@ -723,7 +723,7 @@
              
         <programlisting>ParameterTypes: "(" TypeList? ")"</programlisting>
         
-        <programlisting>TypeList: UnionType ("*"|"+")? | UnionType "," TypeList</programlisting>
+        <programlisting>TypeList: (UnionType "," )* UnionType ("*"|"+")?</programlisting>
                 
         <para>Abbreviations may be combined:</para>
         
@@ -1095,9 +1095,7 @@ String->[Integer,Integer] onetwo = "onetwo"->[1, 2];
     
     shared formal Integer compare(Other that);
     
-    shared Integer reverseCompare(Other that) {    
-        return that.compare(this) of Other;
-    }
+    shared Integer reverseCompare(Other that) => that.compare(this) of Other;
     
 }]]></programlisting>
         
@@ -1136,58 +1134,42 @@ Item item = comp of Item;</programlisting>
     <section id="generictypeparameters">
         <title>Generic type parameters</title>
     
-        <para>Method, class, and interface declarations may be parameterized by one or more 
-        generic type parameters. A parameterized class or interface declaration defines a 
-        type constructor, a function that produces a type given a tuple of compatible type 
-        arguments. A parameterized class or method declaration defines a function that 
-        produces the signature of an invokable operation given a tuple of compatible type
-        arguments.</para>
+        <para>Function, class, and interface schemas may be parameterized by one or more 
+        generic type parameters. A parameterized type schema defines a type constructor, 
+        a function that produces a type given a tuple of compatible type arguments. A 
+        parameterized class or function schema defines a function that produces the 
+        signature of an invokable operation given a tuple of compatible type arguments.</para>
         
-        <programlisting>TypeParams: "&lt;" (TypeParam ",")* (TypeParam | SequencedTypeParam) "&gt;"</programlisting>
+        <programlisting>TypeParams: "&lt;" (TypeParam ",")* TypeParam "&gt;"</programlisting>
         
         <para>A declaration with type parameters is called <emphasis>generic</emphasis> or
         <emphasis>parameterized</emphasis>.</para>
         
         <itemizedlist>
         <listitem>
-            <para>A type declaration with no type parameters defines exactly one type. A 
-            parameterized type declaration defines a template for producing types: one type 
+            <para>A type schema with no type parameters defines exactly one type. A 
+            parameterized type schema defines a template for producing types: one type 
             for each possible combination of type arguments that satisfy the type constraints 
             specified by the type. The types of members of the this type are determined by 
             replacing every appearance of each type parameter in the schema of the 
             parameterized type definition with its type argument.</para>
         </listitem>
         <listitem>
-            <para>A method declaration with no type parameters defines exactly one operation 
-            per type. A parameterized method declaration defines a template for producing
-            overloaded operations: one operation for each possible combination of type arguments 
-            that satisfy the type constraints specified by the method declaration.</para>
+            <para>A function schema with no type parameters defines exactly one operation 
+            per type. A parameterized function declaration defines a template for producing
+            overloaded operations: one operation for each possible combination of type 
+            arguments that satisfy the type constraints specified by the method declaration.</para>
         </listitem>
         <listitem>
-            <para>A class declaration with no type parameters defines exactly one instantiation 
-            operation. A parameterized class declaration defines a template for producing 
+            <para>A class schema with no type parameters defines exactly one instantiation 
+            operation. A parameterized class schema defines a template for producing 
             overloaded instantiation operations: one instantiation operation for each possible 
             combination of type arguments that satisfy the type constraints specified by the 
             class declaration. The type of the object produced by an instantiation operation is 
             determined by substituting the same combination of type arguments for the type 
-            parameters of the parameterized class.</para>
+            parameters of the parameterized class schema.</para>
         </listitem>
         </itemizedlist>
-        
-        <!--
-        <para>There are two kinds of type parameter:</para>
-        
-        <itemizedlist>
-        <listitem>
-            <para>an <emphasis>ordinary type parameter</emphasis> parameterizes the type by some
-            other type, and</para>
-        </listitem>
-        <listitem>
-            <para>a <emphasis>dimensional type parameter</emphasis> parameterizes the type by a
-            natural number.</para>
-        </listitem>
-        </itemizedlist>
-        -->
         
         <comment><para>Note: by convention, type parameter names should be constructed from
         meaningful words. The use of single-letter type parameter names is discouraged. The 
@@ -1196,21 +1178,25 @@ Item item = comp of Item;</programlisting>
         <literal>class Entry&lt;Key,Item&gt;</literal> is reasonable, since
         <literal>Key key</literal> and <literal>Item item</literal> read naturally within 
         the body of the <literal>Entry</literal> class. The following identifier names 
-        usually refer to a type parameter: <literal>Element</literal>, <literal>Other</literal>, 
-        <literal>Key</literal>, <literal>Item</literal>, <literal>Argument</literal> and 
+        usually refer to a type parameter: <literal>Element</literal>, <literal>Other</literal>,
+        <literal>This</literal>, <literal>Value</literal>, <literal>Key</literal>, 
+        <literal>Item</literal>, <literal>Argument</literal>, <literal>Args</literal> and 
         <literal>Result</literal>. Avoid, where reasonable, using these names for interfaces 
         and classes.</para></comment>
         
         <section id="typeparametersandvariance">
             <title>Type parameters and variance</title>
         
-        <para>An <emphasis>ordinary type parameter</emphasis> allows a declaration to be 
-        abstracted over a constrained set of types.</para>
+        <para>A <emphasis>type parameter</emphasis> allows a declaration to be abstracted 
+        over a constrained set of types.</para>
         
         <programlisting>TypeParam: Variance? TypeName</programlisting>
         
-        <para>Every ordinary type parameter has a name. A parameter of a class or interface 
-        declaration has a specified <emphasis>variance</emphasis>.</para> 
+        <para>Every type parameter has a name. A parameter of a type schema has a specified 
+        <emphasis>variance</emphasis>. A parameter of a function schema does not have a
+        variance.</para> 
+        
+        <programlisting>Variance: "out" | "in"</programlisting>
         
         <itemizedlist>
             <listitem>
@@ -1218,42 +1204,30 @@ Item item = comp of Item;</programlisting>
                 keyword <literal>out</literal>.</para>
             </listitem>
             <listitem>
-                <para>A <emphasis>contravariant</emphasis> type parameter is indicated using the
-                keyword <literal>in</literal>.</para>
+                <para>A <emphasis>contravariant</emphasis> type parameter is indicated using 
+                the keyword <literal>in</literal>.</para>
             </listitem>
             <listitem>
                 <para>By default, a type parameter is <emphasis>invariant</emphasis>.</para>
             </listitem>
         </itemizedlist>
         
-        <para>An ordinary type parameter of a method declaration may not specify an explicit 
-        variance and, for the purposes of this section, are considered invariant</para>
-        
-        <programlisting>Variance: "out" | "in"</programlisting>
-        
-        <para>Within the body of the declaration it parameterizes, an ordinary type parameter is 
-        itself a type. The type parameter is a subtype of every upper bound of the type parameter. 
+        <para>Within the body of the schema it parameterizes, a type parameter is itself a 
+        type. The type parameter is a subtype of every upper bound of the type parameter. 
         However, a class or interface may not extend or satisfy a type parameter.</para>
         
-        <programlisting>Map&lt;Key, out Item&gt;</programlisting>
+        <programlisting>&lt;Key, out Item&gt;</programlisting>
         
-        <programlisting>Sender&lt;in Message&gt;</programlisting>
+        <programlisting>&lt;in Message&gt;</programlisting>
         
-        <programlisting>Container&lt;out Element&gt;</programlisting>
+        <programlisting>&lt;out Element&gt;</programlisting>
         
-        <programlisting>BinaryFunction&lt;in Left, in Right, out Result&gt;</programlisting>
-        
-        <!--
-        <comment><para>TODO: Would <literal>produces</literal> and <literal>consumes</literal> 
-        be better?</para></comment>
-        -->
+        <programlisting>&lt;in Left, in Right, out Result&gt;</programlisting>
         
         <para>A covariant type parameter may only appear in <emphasis>covariant positions</emphasis> 
-        of the parameterized declaration. A contravariant type parameter may only appear in 
-        <emphasis>contravariant positions</emphasis> of the parameterized declaration. Invariant 
-        type parameters may appear in any position. As a special exception to this rule, any
-        type parameter or a method or class may appear in any position in the parameter list of
-        the method or class itself.</para>
+        of the parameterized schema. A contravariant type parameter may only appear in 
+        <emphasis>contravariant positions</emphasis> of the parameterized schema. An 
+        invariant type parameter may appear in any position.</para>
         
         <para>Furthermore, a type with a contravariant type parameter may only appear in a
         covariant position in an extended type, satisfied type, case type, or upper bound
@@ -1262,30 +1236,40 @@ Item item = comp of Item;</programlisting>
         <comment><para>Note: this restriction exists to eliminate certain undecidable cases
         described in Tate et al.</para></comment>
         
-        <para>To determine if a type expression occurs in a covariant or contravariant position,
-        we first consider how the type occurs syntactically.</para> 
+        <para>To determine if a type expression occurs in a covariant or contravariant 
+        position, we first consider how the type occurs syntactically. We examine each 
+        <literal>shared</literal> member of the parameterized type schema.</para> 
         
-        <para>In a method declaration:</para>
+        <itemizedlist>
+            <listitem>
+                <para>An extended type, satisfied type, or case type of the type schema 
+                itself is a covariant position.</para>
+            </listitem>
+        </itemizedlist>
+        
+        <para>In a <literal>shared</literal> member method of the parameterized type 
+        schema:</para>
         
         <itemizedlist>
             <listitem>
                 <para>The return type of the method is a covariant position.</para>
             </listitem>
             <listitem>
-                <para>A parameter type of the method is a contravariant position.</para>
+                <para>Any parameter type of the method is a contravariant position.</para>
             </listitem>
             <listitem>
                 <para>Any upper bound of a type parameter of the method is a contravariant 
                 position.</para>
             </listitem>
-            <listitem>
+            <!--listitem>
                 <para>Any lower bound of a type parameter of the method is a covariant 
                 position.</para>
-            </listitem>
+            </listitem-->
         </itemizedlist>
         
-        <para>In a simple attribute declaration not annotated <literal>variable</literal>,
-        or an attribute getter declaration with no matching setter:</para>
+        <para>In a <literal>shared</literal> simple attribute declaration not annotated 
+        <literal>variable</literal>, or a <literal>shared</literal> attribute getter 
+        declaration with no matching setter:</para>
         
         <itemizedlist>
             <listitem>
@@ -1293,8 +1277,9 @@ Item item = comp of Item;</programlisting>
             </listitem>
         </itemizedlist>
         
-        <para>In a simple attribute declaration annotated <literal>variable</literal>, or
-        an attribute getter declaration with a matching setter:</para>
+        <para>In a <literal>shared</literal> simple attribute declaration annotated 
+        <literal>variable</literal>, or a <literal>shared</literal> attribute getter
+        declaration with a matching setter:</para>
         
         <itemizedlist>
             <listitem>
@@ -1302,30 +1287,47 @@ Item item = comp of Item;</programlisting>
             </listitem>
         </itemizedlist>
         
-        <para>In a class declaration:</para>
+        <para>In a <literal>shared</literal> nested class declaration of the 
+        parameterized type schema:</para>
         
         <itemizedlist>
             <listitem>
-                <para>An initializer parameter type of the class is a contravariant position.</para>
+                <para>Any initializer parameter type of the class is a contravariant 
+                position.</para>
             </listitem>
             <listitem>
                 <para>Any upper bound of a type parameter of the class is a contravariant 
                 position.</para>
             </listitem>
-            <listitem>
+            <!--listitem>
                 <para>Any lower bound of a type parameter of the class is a covariant 
                 position.</para>
+            </listitem-->
+            <listitem>
+                <para>An extended type, satisfied type, or case type of the nested class
+                is a covariant position.</para>
             </listitem>
             <listitem>
-                <para>An extended type, satisfied type, or case type is a covariant position.</para>
+                <para>Every covariant position of the nested class schema is a covariant
+                position of the containing type schema. Every contravariant position of 
+                the nested class schema is a contravariant position of the containing type 
+                schema.</para>
             </listitem>
         </itemizedlist>
         
-        <para>In an interface declaration:</para>
+        <para>In a <literal>shared</literal> nested interface declaration of the 
+        parameterized type schema:</para>
         
         <itemizedlist>
             <listitem>
-                <para>An extended type, satisfied type, or case type is a covariant position.</para>
+                <para>An extended type, satisfied type, or case type of the nested interface 
+                is a covariant position.</para>
+            </listitem>
+            <listitem>
+                <para>Every covariant position of the nested interface schema is a covariant
+                position of the containing type schema. Every contravariant position of 
+                the nested interface schema is a contravariant position of the containing 
+                type schema.</para>
             </listitem>
         </itemizedlist>
         
@@ -1334,7 +1336,7 @@ Item item = comp of Item;</programlisting>
         
         <itemizedlist>
             <listitem>
-                <para>A callable parameter of a method or class is contravariant.</para>
+                <para>A callable parameter of a method or nested class is contravariant.</para>
             </listitem>
             <listitem>
                 <para>A callable parameter of a covariant parameter is contravariant.</para>
@@ -1395,11 +1397,6 @@ Item item = comp of Item;</programlisting>
                 is an invariant position.</para>
             </listitem>
         </itemizedlist>
-        
-        <!--
-        <para>These rules apply to members declared by the type, and to members inherited from 
-        supertypes.</para>
-        -->
         
         </section>
         
