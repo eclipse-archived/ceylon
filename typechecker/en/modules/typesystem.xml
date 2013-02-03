@@ -1459,7 +1459,7 @@ Item item = comp of Item;</programlisting>
         
         <para>There may be at most one <literal>given</literal> clause per type parameter.</para>
         
-        <programlisting>TypeConstraint: "given" TypeName TypeParams? Params? TypeConstraintInheritance</programlisting>
+        <programlisting>TypeConstraint: "given" TypeName TypeParams? TypeConstraintInheritance</programlisting>
         
         <programlisting>TypeConstraintInheritance: CaseTypes? SatisfiedTypes?</programlisting>
         
@@ -1606,118 +1606,18 @@ Item item = comp of Item;</programlisting>
         <title>Generic type arguments</title>
             
         <para>A list of <emphasis>type arguments</emphasis> produces a new type schema 
-        from a parameterized type schema, or a new method schema from a method schema 
-        with type parameters.</para>
+        from a parameterized type schema, or a new function schema from a from a
+        parameterized function schema.</para>
         
-        <para>A type argument list is a list of types and dimensions, and an optional 
-        sequenced type argument.</para>
+        <para>A type argument list is a list of types.</para>
         
-        <programlisting>TypeArguments: "&lt;" (UnionType ",")* (UnionType | SequencedType) "&gt;"</programlisting>
-        <!-- 
-        <programlisting>TypeArguments: "&lt;" (TypeArgument ",")* (TypeArgument | SequencedType) "&gt;"</programlisting>
-        -->
+        <programlisting>TypeArguments: "&lt;" (UnionType ",")* UnionType "&gt;"</programlisting>
         
-        <para>A <emphasis>sequenced type argument</emphasis> is either:</para>
-        
-        <itemizedlist>
-            <listitem>
-                <para>a reference to a sequenced type parameter of the containing 
-                declaration, or</para>
-            </listitem>
-            <listitem>
-                <para>a <emphasis>sequenced type</emphasis>, which represents a 
-                sequence of values of some specified type.</para>
-            </listitem>
-        </itemizedlist>
-        
-        <para>A sequenced type argument must appear last in the list of type arguments.</para>
-                
-        <programlisting>SequencedType: TypeName "..."</programlisting>
-        
-        <!-- 
-        <para>A <emphasis>type argument</emphasis> is a type or a dimension:</para>
-        
-        <programlisting>TypeArgument: UnionType | Dimension</programlisting>
-         -->
-         
         <para>A type argument may itself be a parameterized type or type parameter.</para>
         
-        <programlisting>Map&lt;Key, List&lt;Item&gt;&gt;</programlisting>
-        <programlisting>Entry&lt;String,Person?&gt;</programlisting>
-        <programlisting>Stack&lt;Frame&gt;.Entry</programlisting>
-        <programlisting>Callable&lt;Value,Result,Argument...&gt;</programlisting>
-        <programlisting>Callable&lt;String[],Object...&gt;</programlisting>
-        
-        <!--
-        <programlisting>Vector&lt;#10&gt;</programlisting>
-        <programlisting>Matrix&lt;#x,#y&gt;</programlisting>
-        -->
-    
-        <!--
-        <section id="dimensions">
-            <title>PROPOSAL: Dimensions</title>
-        
-            <comment><para>NOTE: dimensional type parameters are a proposed feature
-            for a future version of the language.</para></comment>
-        
-        <para>A <emphasis>dimension</emphasis> is an expression composed of dimensional
-        type parameters, natural number literals, locals of type <literal>Integer</literal>, 
-        the operators <literal>+</literal> and <literal>*</literal>, and parentheses.</para>
-        
-        <programlisting>Dimension: DimensionTerm ("+" DimensionTerm)*</programlisting>
-        <programlisting>DimensionTerm: (DimensionConstant "*")* DimensionAtom</programlisting>
-        <programlisting>DimensionAtom: DimensionConstant | DimensionVariable | ParenDimension</programlisting>
-        <programlisting>ParenDimension: "(" Dimension ")"</programlisting>
-        
-        <para>A <emphasis>dimensional type constant</emphasis> is an expression of form
-        <literal>#c</literal> where <literal>c</literal> is a natural number literal.</para>
-        
-        <programlisting>DimensionConstant: "#" IntegerLiteral</programlisting>
-        
-        <para>A <emphasis>dimensional type variable</emphasis> is a dimensional type parameter, 
-        or an expression of form <literal>#n</literal> where <literal>n</literal> is a local of 
-        type <literal>Integer</literal>.</para>
-        
-        <programlisting>DimensionVariable: TypeName | "#" MemberName</programlisting>
-        
-        <para>The <emphasis>canonical form</emphasis> of a dimension expression is formed
-        by algebraically simplifying the expression to a dimension expression of form:</para>
-        
-        <programlisting>#c + #n * N + #m * M + ...</programlisting>
-        
-        <para>where <literal>c</literal>, <literal>n</literal>, <literal>m</literal>, 
-        <literal>...</literal> are constant natural numbers and <literal>N</literal>, 
-        <literal>M</literal>, <literal>...</literal> are distinct dimensional type
-        variables.</para>
-        
-        <para>Two dimension expressions are considered <emphasis>equivalent</emphasis> if 
-        they have the same canonical form, ignoring the order of terms. For example, the
-        following represent the same type:</para>
-        
-        <programlisting>Vector&lt;#2*N+#i+#3&gt;</programlisting>
-        <programlisting>Vector&lt;(N+#2)+(#i+N+#1)&gt;</programlisting>
-        
-        <comment><para>Note: the <literal>#</literal> symbol acts almost like an operator 
-        that accepts a value of type <literal>Integer</literal>, and returns a 
-        <literal>Type&lt;Dimension&gt;</literal>, where <literal>#0 == Zero</literal>,
-        <literal>#1 == Successor&lt;Zero&gt;</literal>, 
-        <literal>#2 == Successor&lt;Successor&lt;Zero&gt;&gt;</literal>,
-        etc.</para></comment>
-        
-        <comment><para>Note: we will provide a function that does the opposite and obtains 
-        the <literal>Integer</literal> that corresponds to a dimensional type, something
-        like: 
-        <programlisting>shared Integer natural&lt;N&gt;() given N satisfies Dimension { ... }</programlisting></para></comment>
-        
-        <comment><para>TODO: should we allow ranges as arguments to dimensional type 
-        parameters, for example, <literal>Vector&lt;#0...&gt;</literal> or
-        <literal>Vector&lt;#1..#10&gt;</literal>, where <literal>Vector&lt;#c&gt;</literal>
-        is a subtype of <literal>Vector&lt;#m..#n&gt;</literal> if 
-        <literal>m&lt;=c&lt;=n</literal>. If so, we should also allow abbreviations 
-        like <literal>String[1..n]</literal> for sequences.</para></comment>
-        
-        </section>
-        -->
+        <programlisting>&lt;Key, List&lt;Item&gt;&gt;</programlisting>
+        <programlisting>&lt;String, Person?&gt;</programlisting>
+        <programlisting>&lt;String[], [{Object*}]&gt;</programlisting>
          
     <section>
         <title>Type arguments and type constraints</title>
@@ -1730,10 +1630,10 @@ Item item = comp of Item;</programlisting>
                 <para>A type argument to a type parameter with an upper bound must be a 
                 type which is a subtype of all upper bounds.</para>
             </listitem>
-            <listitem>
+            <!--listitem>
                 <para>A type argument to a type parameter with a lower bound must be a 
                 type of which all lower bounds are subtypes.</para>
-            </listitem>
+            </listitem-->
             <listitem>
                 <para>A type argument to a type parameter with an enumerated type bound 
                 must be a subtype of one of the enumerated types, or a type with an 
@@ -1741,13 +1641,6 @@ Item item = comp of Item;</programlisting>
                 constraint.</para>
             </listitem>
             <!--
-            <listitem>
-                <para>A type argument to a type parameter with a concrete type bound must
-                be a supertype of the type being declared when the parameterized type
-                appears in a <literal>extends</literal> or <literal>satisfies</literal>
-                clause.</para>
-            </listitem>
-            -->
             <listitem>
                 <para>A type argument to a type parameter with an initialization parameter
                 specification must be a class with the given initialization parameter
@@ -1758,34 +1651,15 @@ Item item = comp of Item;</programlisting>
                 a metatype assignable to all metatype bounds. <emphasis>(Note that metatype 
                 bounds are a proposed feature for a future version of the language.)</emphasis></para>
             </listitem>
+            -->
         </itemizedlist>
     
-    </section>
-            
-        <section id="typeargumentconformance">
-            <title>Type argument conformance</title>
-        
         <para>A type argument list <emphasis>conforms</emphasis> to a type parameter list 
-        if:</para>
+        if for every type parameter in the list, there is a type argument that satisfies 
+        the constraints of the type parameter.</para>
         
-        <itemizedlist>
-             <listitem>
-                 <para>a type argument that satisfies the constraints of the type parameter 
-                 is specified for every ordinary type parameter,</para>
-             </listitem>
-             <!--
-             <listitem>
-                 <para>a dimension is specified for every dimensional type parameter, and</para>
-             </listitem>
-             -->
-             <listitem>
-                 <para>if the type parameter list has no sequenced type parameter, then 
-                 there are no additional type arguments, and no sequenced type argument.</para>
-             </listitem>
-        </itemizedlist>
+    </section>
         
-        </section>
-                
         <section id="producedtypes">
             <title>Produced types and and variance</title>
             
@@ -1911,40 +1785,9 @@ Item item = comp of Item;</programlisting>
         the dimensional type parameter.</para>
         -->
         
-        <para>In the case of a sequenced type parameter:</para>
-        
-        <itemizedlist>
-        <listitem> 
-            <para>the type arguments are appended to the list of type arguments in every 
-            parameterized type in which the sequenced type parameter appears, and</para>
-        </listitem>
-        <listitem> 
-            <para>a list of parameters whose types are the type arguments is appended to 
-            the list of parameters of every parameter list in which the sequenced type 
-            parameter appears.</para>
-        </listitem>
-        </itemizedlist>
-        
-        <programlisting>Method&lt;Order, Item, Product, Integer&gt;</programlisting>
-        
-        <para>A sequenced type in a type argument list results in a sequenced parameter 
-        in a parameter list.</para>
-        
-        <programlisting>Method&lt;String, Object...&gt;</programlisting>
-
-        <para>A reference to a sequenced type parameter in a type argument list results 
-        in a tuple parameter in a parameter list.</para>
-        
-        <programlisting>Method&lt;String, String, Argument...&gt;</programlisting>
-
-        <comment><para>TODO: should we let you fill in the parameter names, so you can 
-        call this thing using named arguments?
-        <programlisting>Method&lt;Order, Item, Product prod, Integer quantity&gt;</programlisting>
-        </para></comment>
-        
         </section>
                 
-        <section id="reification">
+        <!--section id="reification">
             <title>Reification</title>
         
         <para>Type arguments are <emphasis>reified</emphasis> in Ceylon. An instance of a 
@@ -1986,90 +1829,22 @@ Item item = comp of Item;</programlisting>
                 <para>instantiating a type parameter with an initialization parameter
                 specification, for example, <literal>Result(parent)</literal>.</para>
             </listitem>
-            <!--
-            <listitem>
-                <para>obtaining the numeric value of a dimensional type parameter, for
-                example, <literal>for (Integer i in 0..natural&lt;N&gt;())</literal>.</para>
-            </listitem>
-            -->
         </itemizedlist>
         
         <para>Sequenced type parameters are not reified. None of the above operations can 
         be performed with a sequenced type parameter.</para>
         
-        <!--
-        <para>The implicit type parameter <literal>subtype</literal> evaluates to the 
-        concrete type of the current instance, as determined at runtime. Likewise, an 
-        implicit type parameter of form <literal>x.subtype</literal> evaluates to the 
-        concrete type of the method argument <literal>x</literal>, as determined at runtime. 
-        This is different to other type parameters which reify to the type argument 
-        determined at compile time. <emphasis>Note that support for the <literal>subtype</literal>
-        keyword is a proposed feature for a future version of the language.</emphasis></para>
-        -->
+        </section-->
         
-        </section>
-        
-        <!--
-        <section id="subtypetypeargument">
-            <title>PROPOSAL: The type argument of <literal>subtype</literal></title>
-            
-        <comment><para>NOTE: <literal>subtype</literal> is a proposed feature for a 
-        future version of the language.</para></comment>
-        
-        <para>Any type schema in which the special type parameter <literal>subtype</literal> 
-        occurs is considered a parameterized type. Any occurrence of the type is considered 
-        a produced type, where the type argument to the type parameter <literal>subtype</literal> 
-        is:</para>
-        
-        <itemizedlist>
-            <listitem>
-                <para>the special type <literal>x.subtype</literal>, if the produced type 
-                occurs in the declaration of a method parameter <literal>x</literal>, or</para>
-            </listitem>
-            <listitem>
-                <para>the type itself, otherwise.</para>
-            </listitem>
-        </itemizedlist>
-        
-        <para>Note that in principle the type argument to <literal>subtype</literal> is 
-        always the runtime type of the instance. However, except in the special case of
-        a method argument, there is no syntax for referring to this type.</para>
-        
-        <para>Any method schema in which the special type parameter <literal>x.subtype</literal> 
-        occurs is considered a parameterized method schema. The type argument to the type 
-        parameter <literal>x.subtype</literal> is:</para>
-        
-        <itemizedlist>
-            <listitem>
-                <para>the special type <literal>y.subtype</literal>, if the argument to
-                <literal>x</literal> is a method parameter <literal>y</literal>, or</para>
-            </listitem>
-            <listitem>
-                <para>the statically determined type of the method argument, otherwise.</para>
-            </listitem>
-        </itemizedlist>
-        
-        <para>Note that in principle the type argument to <literal>x.subtype</literal> is 
-        always the runtime type of the argument. However, except in the special case of
-        a method argument, there is no syntax for referring to this type.</para>
-        
-        <comment><para>TODO: Actually, a better way to define this stuff might be to say
-        that the type <literal>x.subtype</literal> is a legitimate type for any expression
-        <literal>x</literal>, but then severely restrict the use of such types in declaration 
-        schemas.</para></comment>
-        
-        </section>
-        -->
-    
         <section id="typeargumentinference">
             <title>Type argument inference</title>
         
-        <para>When a direct invocation expression for a generic method or a direct 
+        <para>When a direct invocation expression for a generic function or a direct 
         instantiation expression for a generic class does not explicitly specify type 
         arguments, the type arguments are inferred from the argument expression types. 
-        The types of the argument expressions and the declared types of the 
-        corresponding parameters determine an <emphasis>inferred lower bound</emphasis> 
-        for each type parameter.</para>
+        The types of the argument expressions and the declared types of the corresponding 
+        parameters determine an <emphasis>inferred lower bound</emphasis> for each type 
+        parameter.</para>
         
         <para>If a list of argument expressions has types <literal>A1,A2,...</literal> 
         and the corresponding list of parameters has declared types <literal>P1,P2,...</literal>, 
@@ -2203,7 +1978,7 @@ Item item = comp of Item;</programlisting>
         
         <itemizedlist>
             <listitem>
-                <para><literal>Bottom</literal>, if the inferred lower bound for 
+                <para><literal>Nothing</literal>, if the inferred lower bound for 
                 <literal>T</literal> is null, or, otherwise,</para>
             </listitem>
             <listitem>
@@ -2217,7 +1992,7 @@ Item item = comp of Item;</programlisting>
         
         <para>Consider the following invocation:</para>
         
-        <programlisting><![CDATA[Element[] prepend<Element>(Element head, Element[] sequence) { ... }
+        <programlisting><![CDATA[[Element+] prepend<Element>(Element head, Element[] sequence) { ... }
 value result = prepend(null, {"hello", "world"});]]></programlisting>
 
         <!--
@@ -2239,8 +2014,8 @@ value result = prepend(null, {"hello", "world"});]]></programlisting>
         
         <para>Now consider:</para>
         
-        <programlisting><![CDATA[class Bag<out Element>(Element... elements) {
-    shared Bag<ExtraElement> with<ExtraElement>(ExtraElement... elements) 
+        <programlisting><![CDATA[class Bag<out Element>(Element* elements) {
+    shared Bag<ExtraElement> with<ExtraElement>(ExtraElement* elements) 
             given ExtraElement abstracts Element { ... }
 }
 Bag<String> bag = Bag("hello", "world");
@@ -2268,20 +2043,23 @@ value biggerBag = bag.with(1, 2, 5.0);]]></programlisting>
         <para>The inferred type of <literal>ExtraElement</literal> is the union 
         type <literal>Integer|Float|String</literal>.</para>
                 
-        <comment><para>TODO: What about lower bounds in which the type parameter 
+        <comment><para>TODO: What about upper bounds in which the type parameter 
         itself appears (the infamous self-type problem with
         <literal>Comparable</literal> and <literal>Numeric</literal>) or in which 
         another type parameter appears?</para></comment>
         
         <comment><para>TODO: This algorithm works fine for type parameters that 
         appear covariantly in the parameter types, and even okay for type
-        parameters that appear nonvariantly. It doesn't really work very well 
+        parameters that appear invariantly. It doesn't really work very well 
         for type parameters that appear contravariantly, where the constraints
         are really of form <literal>A satisfies T</literal>, and they should be
         combined using intersection, not union, and where the default should be
-        <literal>Object</literal> not <literal>Bottom</literal>. Unfortunately
-        we don't currently support intersection types in the spec, or have the 
-        machinery to reason about them in the compiler.</para>
+        <literal>Object</literal> not <literal>Nothing</literal>. We should
+        probably extend the algorithm to make the following work, where both
+        <literal>Consumer</literal> and <literal>Delegate</literal> are 
+        contravariant types:</para>
+        <programlisting><![CDATA[Delegate<Input> delegate = ... ; 
+Consumer<Input> consumer = Consumer(delegate);]]></programlisting>
         <para>Note also that there is something a bit conceptually funny about 
         a type parameter that appears covariantly in a parameter type, and 
         contravariantly in the return type (or vice-versa), so we probably don't 
