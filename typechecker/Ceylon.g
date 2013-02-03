@@ -771,8 +771,8 @@ caseType returns [StaticType type, BaseMemberExpression instance]
       { $instance = new BaseMemberExpression(null);
         $instance.setIdentifier($memberName.identifier);
         $instance.setTypeArguments( new InferredTypeArguments(null) ); }
-    | classDeclaration
-    | objectDeclaration
+    /*| classDeclaration
+    | objectDeclaration*/
     ;
 
 //Support for metatypes

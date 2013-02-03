@@ -535,6 +535,14 @@
             </listitem>
         </itemizedlist>
         
+        <comment><para>Note: an intersection <literal>X&lt;A&gt;&amp;X&lt;P&gt;</literal> of 
+        two instantiations of an invariant type, <literal>X&lt;T&gt;</literal> where 
+        one type argument <literal>P</literal> is a type parameter introduces a known hole in 
+        our type system. It is impossible to form a principal instantiation of <literal>X</literal>
+        for this intersection type without resorting to use-site covariance, which is 
+        non-denoteable in Ceylon. We're investigating how to reasonably prevent such types 
+        arising and produce meaningful errors.</para></comment>
+        
         </section>
         
         <section id="bottomtype">
@@ -747,29 +755,21 @@ String->[Integer,Integer] onetwo = "onetwo"->[1, 2];
                 <para>a class may <emphasis>satisfy</emphasis> one or more interfaces,</para>
             </listitem>
             <listitem>
-                <para>an interface may <emphasis>satisfy</emphasis> one or more other interfaces,</para>
+                <para>an interface may <emphasis>satisfy</emphasis> one or more other 
+                interfaces, or</para>
             </listitem>
-            <!--listitem>
-                <para>an interface may <emphasis>adapt</emphasis> a class and/or one or more 
-                other interfaces,</para>
-            </listitem-->
-            <!--
-            <listitem>
-                <para>an interface may <emphasis>satisfy</emphasis> exactly one class,</para>
-            </listitem>
-            -->
             <listitem>
                 <para>a type parameter may <emphasis>satisfy</emphasis> a class and/or one or 
-                more interfaces or type parameters, or</para>
+                more interfaces or type parameters.</para>
             </listitem>
-            <listitem>
+            <!--listitem>
                 <para>a type parameter may <emphasis>abstract</emphasis> a class, interface or 
                 type parameter.</para>
-            </listitem>
+            </listitem-->
         </itemizedlist>
         
-        <para>If a type declaration extends or satisfies <!--or adapts --> a type, we say 
-        it <emphasis>inherits</emphasis> the type. Inheritance results in a relationship
+        <para>If a type declaration extends or satisfies a type, we say it 
+        <emphasis>inherits</emphasis> the type. Inheritance results in a relationship
         called <emphasis>invariant subtyping</emphasis> between produced types.</para>
         
         <itemizedlist>
@@ -792,17 +792,25 @@ String->[Integer,Integer] onetwo = "onetwo"->[1, 2];
         </listitem>
         </itemizedlist>
         
-        <para>If a type is an invariant subtype of a second type then it is a subtype
-        of the second type.</para>
+        <para>If a type is an invariant subtype of a second type then it is also a 
+        subtype of the second type.</para>
         
         <comment><para>TODO: these rules need to be formalized into the language of
-        type constructors (functions from types to types).</para></comment>
+        <emphasis>type constructors</emphasis>.</para></comment>
         
-        <para>Ceylon visually distinguishes between a list of types which represents a
-        combination (intersection) of the types, and a list of types which represents a 
-        choice between (union of) the types. An intersection is written as 
-        <literal>X &amp; Y &amp; Z</literal>. A union is written as 
-        <literal>X | Y | Z</literal>.</para>
+        <comment>
+        <para>Note: when a type declaration specifies a relationship to other types, 
+        Ceylon visually distinguishes between a list of types which conceptually 
+        represents a combination of (intersection of) the types, and a list of types 
+        which represents a choice between (union of) the types. For example, when a 
+        class <literal>C</literal> satisfies multiple interfaces, they are written as 
+        <literal>X&amp;Y&amp;Z</literal>. On the other hand, the cases of an 
+        enumerated class <literal>E</literal> are written as <literal>X|Y|Z</literal>.
+        This syntax emphasizes that <literal>C</literal> is also a subtype of the 
+        intersection type <literal>X&amp;Y&amp;Z</literal>, and that <literal>E</literal> 
+        may be narrowed to the union type <literal>X|Y|Z</literal> using a 
+        <literal>switch</literal> statement or the <literal>of</literal> operator.</para>
+        </comment>
         
         <section id="pii">
             <title>Principal instantiation inheritance</title>
@@ -831,7 +839,14 @@ String->[Integer,Integer] onetwo = "onetwo"->[1, 2];
             <para>It further follows that if <literal>X</literal> and <literal>Y</literal>
             are distinct types, and <literal>B&lt;T&gt;</literal> is invariant in 
             <literal>T</literal>, then the type <literal>B&lt;X&gt;&amp;B&lt;Y&gt;</literal>
-            is the empty type <literal>Bottom</literal>.</para>
+            is the empty type <literal>Nothing</literal>.</para>
+            
+            <comment><para>Note: in fact, the type checker actually enforces an additional
+            condition, that might be strictly stronger than this one: that the intersection
+            between the direct supertypes of a type must not be equivalent to 
+            <literal>Nothing</literal>. However, in order to prove this, it must first prove
+            that the above condition holds, or the simplification algorithm runs the risk of 
+            not terminating.</para></comment>
         
         </section>
         
@@ -843,10 +858,21 @@ String->[Integer,Integer] onetwo = "onetwo"->[1, 2];
         
         <programlisting>ExtendedType: "extends" ("super" ".")? Type PositionalArguments</programlisting>
     
-        <para>The <literal>extends</literal> clause must specify exactly one superclass. 
-        If the superclass is a parameterized type, the <literal>extends</literal> clause 
-        must specify type arguments. The <literal>extends</literal> clause must specify 
-        arguments for the initializer parameters of the superclass.</para>
+        <para>The <literal>extends</literal> clause must specify exactly one superclass.</para>
+        
+        <itemizedlist>
+            <listitem>
+                <para>If the superclass is a parameterized type, the <literal>extends</literal> 
+                clause must also explicitly specify type arguments.</para>
+            </listitem>
+            <listitem>
+                <para>The <literal>extends</literal> clause must specify arguments for the 
+                initializer parameters of the superclass.</para>
+            </listitem>
+        </itemizedlist>
+        
+        <para>The type arguments may <emphasis>not</emphasis> be inferred from the 
+        initializer arguments.</para>
         
         <programlisting>extends Person(name, org)</programlisting>
         
@@ -859,20 +885,12 @@ String->[Integer,Integer] onetwo = "onetwo"->[1, 2];
         <programlisting>extends super.Buffer()</programlisting>
         
         <comment><para>TODO: This doesn't work if the member class being refined belongs
-        to an interface. A solution would be to let you rename the refined member class
-        in an <literal>import</literal> statement. Another possibility would be to introduce
-        a specialized syntax, for example something like 
-        <literal>super(Reader).Buffer()</literal>.</para></comment>
+        to an interface.</para></comment>
         
         <para>
-        The root class <literal>Void</literal> defined in <literal>ceylon.language</literal> 
+        The root class <literal>Anything</literal> defined in <literal>ceylon.language</literal> 
         does not have a superclass.
         </para>
-        
-        <!--
-        <para>A user-defined class must extend the class <literal>Object</literal> defined 
-        in <literal>ceylon.language</literal> or one of its subclasses.</para>
-        -->
         
     </section>
     
@@ -880,147 +898,135 @@ String->[Integer,Integer] onetwo = "onetwo"->[1, 2];
         <title>Satisfaction</title>
        
         <para>The <literal>satisfies</literal> clause does double duty. It's used to 
-        specify that a type is a subtype of an interface, and to specify upper bound
-        type constraints.</para>
+        specify that a class or interface is a direct subtype of one or more interfaces, 
+        and to specify upper bound type constraints applying to a type parameter.</para>
+        
+        <comment><para>Note: for this reason the keyword is not named 
+        "<literal>implements</literal>". It can't reasonably be said that a type 
+        parameter "implements" its upper bounds. Nor can it be reasonably said that
+        an interface "implements" its super-interfaces.</para></comment>
         
         <itemizedlist>
         <listitem>
-        <para>A class or interface may satisfy one or more interfaces, in which case
-        the class or interface is a subtype of the satisfied interfaces, and inherits 
-        their members.</para>
+            <para>A class or interface may satisfy one or more interfaces, in which case
+            the class or interface is a subtype of the satisfied interfaces, and inherits 
+            their members.</para>
         </listitem>
         <listitem>
-        <para>A type parameter may satisfy one or more interfaces, optionally, a class,
-        and optionally, another type parameter. In this case, the satisfied types are 
-        interpreted as upper bound type constraints on arguments to the type 
-        parameter.</para>
+            <para>A type parameter may satisfy one or more interfaces, optionally, a class,
+            and optionally, another type parameter. In this case, the satisfied types are 
+            interpreted as upper bound type constraints on arguments to the type 
+            parameter.</para>
         </listitem>
         </itemizedlist>
         
-        <programlisting>SatisfiedTypes: "satisfies" Type ("&amp;" Type)*</programlisting>
+        <comment><para>Note: currently, a type parameter upper bound may not be specified
+        in combination with other upper bounds. This restriction will likely be removed in
+        future.</para></comment>
+        
+        <programlisting>SatisfiedTypes: "satisfies" AbbreviatedType ("&amp;" AbbreviatedType)*</programlisting>
     
         <para>The <literal>satisfies</literal> clause may specify multiple types. If a 
         satisfied type is a parameterized type, the <literal>satisfies</literal> clause 
         must specify type arguments.</para>
         
         <programlisting>satisfies Sequence&lt;Element&gt; &amp; Collection&lt;Element&gt;</programlisting>
-                
-        <!--
-        <comment><para>TODO: We could let a class or interface conditionally satisfy or 
-        extend an interface, called a <emphasis>conditional supertype</emphasis>, depending 
-        upon the argument of a type parameter.</para>
-        
-        <programlisting>ConditionalTypes: SatisfiedTypes Conditions</programlisting>
-        
-        <programlisting>Conditions: "if" "(" Condition ("&amp;&amp;" Condition)* ")"</programlisting>
-        
-        <para>A <emphasis>condition</emphasis> would be a list of upper bounds and metatype
-        bounds applying to a type parameter of the class of interface.</para>
-        
-        <programlisting>Condition: TypeName (Metatypes SatisfiedTypes? | SatisfiedTypes)</programlisting>
-        
-        <para>The type parameter must be a covariant or invariant type parameter of
-        the class or interface.</para>
-        
-        <programlisting>satisfies SequenceEquality&lt;T&gt; if (T satisfies Equality&lt;T&gt;)</programlisting>
-        
-        <para>Then a produced type for the class or interface would be a subtype of the
-        conditional supertype if the type arguments satisfy the bounds specified by the 
-        condition.</para>
-        
-        <programlisting><![CDATA[shared interface Sequence<out T>
-        satisfies Iterable<T> &
-                  Category &
-                  Correspondence<Integer,T> & 
-                  Sized
-        satisfies ElementwiseEquality 
-                  if (T satisfies Equality<IdentifiableObject>) {        
-    ... 
-}
-
-shared interface ElementwiseEquality
-        satisfies Equality<Sequence<IdentifiableObject>> &
-                  Correspondence<Integer,IdentifiableObject> & 
-                  Sized
-        given T satisfies Equality<IdentifiableObject> {
-
-    shared actual Boolean equals(Sequence<IdentifiableObject> that) {
-        if (this.size!=that.size) { return false; }
-        for (Integer i in 0..size-1) {
-            if (this[i]!=that[i]) { return false; }
-        }
-        else {
-            return true;
-        }
-    }
-
-    shared actual Integer hash {
-        Integer h:=0;
-        for (Integer i in 0..size-1) {
-            h^=this[i].hash;
-        }
-        return h;
-    }
-      
-}]]></programlisting>
-        
-        <para>An even more flexible form of this, which allows "conditional members",
-        would allow the following simplification to the above example:</para>
-        <programlisting><![CDATA[shared interface Sequence<out T>
-        satisfies Iterable<T> &
-                  Category &
-                  Correspondence<Integer,T> & 
-                  Sized
-        satisfies Equality<Sequence<IdentifiableObject>> 
-                  if (T satisfies Equality<IdentifiableObject>) {        
-    ... 
-
-    shared actual Boolean equals(Sequence<IdentifiableObject> that) 
-            if (T satisfies Equality<IdentifiableObject>) {
-        if (this.size!=that.size) { return false; }
-        for (Integer i in 0..size-1) {
-            if (this[i]!=that[i]) { return false; }
-        }
-        else {
-            return true;
-        }
-    }
-
-    shared actual Integer hash 
-            if (T satisfies Equality<IdentifiableObject>) {
-        Integer h:=0;
-        for (Integer i in 0..size-1) {
-            h^=this[i].hash;
-        }
-        return h;
-    }
-      
-}]]></programlisting>
-        </comment>
-        -->
         
     </section>
     
+    </section>
+    
+    <section id="casesandcoverage">
+        <title>Case enumeration and coverage</title>
+        
+        <para><emphasis>Coverage</emphasis> is a static relationship between classes, 
+        interfaces, and type parameters, produced through the use of <emphasis>case 
+        enumeration</emphasis>:</para>
+        
+        <itemizedlist>
+        <listitem>
+            <para>An <literal>abstract</literal> class or interface may be an 
+            <emphasis>enumerated type</emphasis>, with an enumerated list of 
+            disjoint subtypes called <emphasis>cases</emphasis>.</para>
+        </listitem>
+        <listitem>
+            <para>A type parameter may have an <emphasis>enumerated type bound</emphasis>,
+            with an enumerated list of cases, representing its possible type 
+            arguments.</para>
+        </listitem>
+        <listitem>
+            <para>An <literal>abstract</literal> class or interface may have a 
+            <emphasis>self type</emphasis>, a type parameter representing the
+            concrete type of an instance.</para>
+        </listitem>
+        </itemizedlist>
+        
+        <para>Coverage is a strictly weaker relationship than assignability:</para>
+        
+        <itemizedlist>
+        <listitem>
+            <para>if a type is a subtype of second type, then the second type
+            covers the first.</para>
+        </listitem>
+        <listitem>
+            <para>If a type enumerates its cases, then the union of its cases is
+            covers the type.</para>
+        </listitem>
+        <listitem>
+            <para>If a type declares a self type, then its self type covers the 
+            type.</para>
+        </listitem>
+        <listitem>
+            <para>Coverage is transitive. If <literal>X</literal> covers
+            <literal>Y</literal> and <literal>Y</literal> covers <literal>Z</literal>,
+            then <literal>X</literal> covers <literal>Z</literal>.</para>
+        </listitem>
+        </itemizedlist>
+        
+        <para>Case enumeration allows safe use of a type in a <literal>switch</literal> 
+        statement, or as the subject of the <literal>of</literal> operator. The 
+        compiler is able to statically validate that the <literal>switch</literal> 
+        contains an exhaustive list of all cases of the type, by checking that the
+        union of cases enumerated in the <literal>switch</literal> covers the type,
+        or that the second operand of <literal>of</literal> covers the type.</para>
+        
+        <comment>
+        <para>Note: however, a type is <emphasis>not</emphasis> considered automatically 
+        assignable to the union of its cases, or to its self type. Instead, the type
+        must be <emphasis>explicitly</emphasis> narrowed to the union of its cases, 
+        or to its self type, using either the <literal>of</literal> operator or the
+        <literal>switch</literal> construct. This narrowing type conversion can be
+        statically checked&mdash;if <literal>X</literal> covers <literal>Y</literal>
+        then <literal>Y of X</literal> is guaranteed to succeed at runtime.
+        Unfortunately, and quite unintuitively, the compiler is not able to analyse 
+        coverage implicitly at the same time as assignability, because that results in 
+        undecidability!</para>
+        </comment>
+                
     <section id="cases">
         <title>Cases</title>
         
         <para>The <literal>of</literal> clause does triple duty. It's used to define
-        self types and type families, algebraic types, and enumerated type constraints.</para>
+        self types and type families, "algebraic" (sum) types, and enumerated type 
+        constraints.</para>
         
         <itemizedlist>
         <listitem>
             <para>An interface or <literal>abstract</literal> class may optionally 
-            specify an enumerated list of all its subtypes, in which case no other
-            type may be a direct subtype of the interface or <literal>abstract</literal> 
-            class.</para>
+            specify an enumerated list of disjoint subtypes, in which case every 
+            non-<literal>abstract</literal> subclass of the interface or 
+            <literal>abstract</literal> class must be a subtype of exactly one of 
+            the enumerated subtypes.</para>
         </listitem>
         <listitem>
             <para>Likewise, a type parameter may specify an enumerated list of all
-            types which it accepts as a type argument.</para>
+            types it accepts as a type argument.</para>
         </listitem>
         <listitem>
             <para>An interface or <literal>abstract</literal> class may specify a 
-            single type parameter of itself or of the immediately containing type.</para>
+            single self type parameter, which must be a type parameter declared by 
+            the interface or <literal>abstract</literal> class or by the immediately 
+            containing type.</para>
         </listitem>
         </itemizedlist>
         
@@ -1032,8 +1038,9 @@ shared interface ElementwiseEquality
         <para>The <literal>of</literal> clause may specify multiple types, called
         <emphasis>cases</emphasis>.</para>
         
-        <programlisting>CaseType: MemberName | Type</programlisting>
+        <programlisting>CaseType: MemberName | AbbreviatedType</programlisting>
         
+        <!--
         <para>The compiler is able to infer certain subtyping relationships from the 
         types listed in the <literal>of</literal> clause.</para>
         
@@ -1058,22 +1065,23 @@ shared interface ElementwiseEquality
             for <literal>T</literal> for any type <literal>B</literal>.</para>
         </listitem>
         </itemizedlist>
+        -->
                
         <para>If there is exactly one case, and it is a type parameter, then:</para> 
         
         <itemizedlist>
             <listitem>
-                <para>the declared type is considered a subtype of the type parameter
-                within the body of the declaration,</para>
+                <para>the type parameter covers the declared type within the body 
+                of the declaration,</para>
             </listitem>
             <listitem>
-                <para>every produced type of the declared type is considered a subtype 
-                of the type argument to the type parameter in the produced type, and</para>
+                <para>a type argument to the type parameter in a produced type
+                 of the declared type covers the produced type, and</para>
             </listitem>
             <listitem>
                 <para>every type which extends or satisfies a produced type of the 
-                declared type must also directly or indirectly extend or satisfy the 
-                type argument to the type parameter in the produced type.</para>
+                declared type must also be covered by the type argument to the self
+                type parameter in the produced type.</para>
             </listitem>
         </itemizedlist>
         
@@ -1083,13 +1091,13 @@ shared interface ElementwiseEquality
     shared formal Integer compare(Other that);
     
     shared Integer reverseCompare(Other that) {    
-        return that.compare(this); //this is Other
+        return that.compare(this) of Other;
     }
     
 }]]></programlisting>
         
         <programlisting>Comparable&lt;Item&gt; comp = ... ;
-Item item = comp;</programlisting>
+Item item = comp of Item;</programlisting>
     
         <para>Otherwise, there may be multiple cases, and each case is either:</para>
         
@@ -1109,390 +1117,8 @@ Item item = comp;</programlisting>
         
         <programlisting>of Root&lt;Element&gt; | Leaf&lt;Element&gt; | Branch&lt;Element&gt;</programlisting>
         
-        <para>An explicit list of cases allows safe use of a type in a 
-        <literal>switch</literal> statement. The compiler is able to validate that 
-        the <literal>switch</literal> contains an exhaustive list of all cases of 
-        the type.</para>
-        
-        <comment><para>TODO: If all cases of an interface or class are subtypes of 
-        a certain type, does the compiler automatically reason that the interface 
-        or class is a subtype of that type?</para></comment>
-        
-        <para>Therefore, the <literal>of</literal> declaration is used to simulate 
-        enumerated types and algebraic types.</para>
-        
-        <para>A class or interface may not be a subtype of more than one case of an 
-        enumerated type.</para>
-        
-    </section>
-    
-    <section id="gadts">
-        <title>PROPOSAL: Generalized algebraic types</title>
-        
-        <comment><para>NOTE: Generalized algebraic types are a proposed feature 
-        for a future version of the language.</para></comment>
-        
-        <itemizedlist>
-            <listitem>
-                 <para>A <emphasis>simple algebraic datatype</emphasis> is a 
-                 parameterized type <literal>A&lt;T&gt;</literal> with a list 
-                 of cases where every case <literal>C&lt;T&gt;</literal> is 
-                 parameterized by <literal>T</literal> and for every possible 
-                 type argument <literal>X</literal> satisfying the constraints 
-                 on <literal>T</literal> declared by <literal>A</literal>, 
-                 <literal>C&lt;X&gt;</literal> is a legal produced type where 
-                 <literal>X</literal> also satisfies the constraints on 
-                 <literal>T</literal> declared by <literal>C</literal> and the
-                 produced type <literal>C&lt;X&gt;</literal> is assignable to 
-                 the produced type <literal>A&lt;X&gt;</literal>.</para>
-            </listitem>
-            <listitem>
-                 <para>A <emphasis>generalized algebraic datatype</emphasis> is 
-                 a parameterized type <literal>A&lt;T&gt;</literal> with a list 
-                 of cases where either (a) at least one case is not parameterized 
-                 by <literal>T</literal>&mdash;and is therefore assignable to 
-                 <literal>A&lt;Y&gt;</literal> only for some values of the type 
-                 argument <literal>Y</literal>, or (b) for at least one case
-                 <literal>C&lt;X&gt;</literal> there is a type argument 
-                 <literal>X</literal> satisfying the constraints on 
-                 <literal>T</literal> declared by <literal>A</literal> where 
-                 <literal>C&lt;X&gt;</literal> is not a legal produced type 
-                 since <literal>X</literal> does not satisfy a constraint on 
-                 <literal>T</literal> declared by <literal>C</literal>.</para>
-            </listitem>
-        </itemizedlist>
-        
-        <para>Given a parameterized type <literal>A&lt;T&gt;</literal>, a case 
-        <literal>C&lt;T&gt;</literal> of <literal>A&lt;T&gt;</literal>, and a
-        type argument <literal>X</literal> of <literal>T</literal>, we say that 
-        <literal>C&lt;X&gt;</literal> is the <emphasis>produced case</emphasis> 
-        of the produced type <literal>A&lt;X&gt;</literal>.</para>
-        
-        <para>The cases of a produced type <literal>A&lt;X&gt;</literal> for a 
-        simple algebraic datatype <literal>A&lt;T&gt;</literal> and a type 
-        argument <literal>X</literal> include exactly every produced case 
-        <literal>C&lt;X&gt;</literal> for a case <literal>C&lt;T&gt;</literal> 
-        of <literal>A&lt;T&gt;</literal>. Therefore, for every case of the simple 
-        algebraic datatype <literal>A&lt;T&gt;</literal>, there is a corresponding 
-        produced case of <literal>A&lt;X&gt;</literal>.</para>
-        
-        <para>On the other hand, the cases of a produced type <literal>A&lt;X&gt;</literal> 
-        for a generalized algebraic datatype <literal>A&lt;T&gt;</literal> and a 
-        type argument <literal>X</literal> include only the following:</para>
-        
-        <itemizedlist>
-            <listitem>
-                <para>every case <literal>C</literal> of <literal>A&lt;T&gt;</literal> 
-                which is not parameterized by <literal>T</literal> and which is 
-                assignable to <literal>A&lt;X&gt;</literal>, and</para>
-            </listitem>
-            <listitem>
-                <para>every produced case <literal>C&lt;X&gt;</literal> for a
-                case <literal>C&lt;T&gt;</literal> of <literal>A&lt;T&gt;</literal>
-                which is a legal produced type where <literal>X</literal> satisfies
-                all constraints on <literal>T</literal> declared by <literal>C</literal>.
-                </para>
-            </listitem>
-        </itemizedlist>
-        
-        <para>Therefore, for a given case of the generalized algebraic datatype 
-        <literal>A&lt;T&gt;</literal>, there may be no corresponding case of 
-        <literal>A&lt;X&gt;</literal>. In the extreme case that there is exactly 
-        one case of the produced type <literal>A&lt;X&gt;</literal>, the compiler 
-        treats the type <literal>A&lt;X&gt;</literal> as a type alias of that 
-        unique case. Hence, <literal>A&lt;X&gt;</literal> may have members that
-        are not part of the parameterized type schema <literal>A&lt;T&gt;</literal>.</para>
-        
-        <para>In the following example, the generalized algebraic datatype has 
-        more than one case for each value of <literal>Value</literal>:</para>
-        
-        <programlisting><![CDATA[interface Expression<Value> 
-        of Constant<Value> | Sum | Product | Conjunction | Disjunction
-        given Value of Number | Boolean { ... }
-        
-class Constant<Value>(Value val) 
-        extends Case($val)
-        satisfies Expression<Value> 
-        given Value of Number | Boolean { ... }
-
-class Sum(Expression<Number>... terms) 
-        satisfies Expression<Number> { ... }
-class Product(Expression<Number>... terms) 
-        satisfies Expression<Number> { ... }
-
-class Conjunction(Expression<Boolean>... terms) 
-        satisfies Expression<Boolean> { ... }
-class Disjunction(Expression<Boolean>... terms) 
-        satisfies Expression<Boolean> { ... }]]></programlisting>
-        
-        <para>Then <literal>Expression&lt;Number&gt;</literal> has the cases
-        <literal>Sum</literal>, <literal>Product</literal> and 
-        <literal>Constant&lt;Number&gt;</literal>, but 
-        <literal>Expression&lt;Boolean&gt;</literal> has the cases
-        <literal>Conjunction</literal>, <literal>Disjunction</literal> and 
-        <literal>Constant&lt;Number&gt;</literal>.</para>
-        
-        <!--
-        <para>The key here is that not every case listed in the <literal>of</literal>
-        clause is valid for every possible value of the type parameter <literal>T</literal>. 
-        Indeed, some cases do not even mention <literal>T</literal>, thus limiting 
-        the case to exactly one possible value of <literal>T</literal>. This, the
-        list of cases in a <literal>switch</literal> will depend upon the exact
-        type argument to <literal>T</literal>.</para>
-        
-        <para>However, initially we can support only enumerated types and plain
-        old algebraic types, simply by imposing the restriction that each case
-        must include all the type parameters of the type.</para>
-        
-        <para>We can even use this as the basis for a kind of "conditional"
-        subtyping:</para>
-        -->
-        
-        <para>In this example, the generalized algebraic datatype has exactly 
-        one case for each value of <literal>Value</literal>:</para>
-        
-        <programlisting><![CDATA[interface Expression<Value>
-        of NumericExpression<Value> | BooleanExpression | StringExpression
-        given Value of Number | Boolean | String { ... }
-        
-class NumericExpression<Value>
-        satisfies Expression<Value>
-        given Value satisfies Number { ... }
-
-class BooleanExpression
-        satisfies Expression<Boolean> { ... }
-
-class StringExpression
-        satisfies Expression<String> { 
-    shared StringExpression uppercase { ... }
-    shared StringExpression lowercase { ... }
-    ...
-}]]></programlisting>
-        
-        <para>Then the type <literal>Expression&lt;String&gt;</literal> has the
-        attributes <literal>uppercase</literal> and <literal>lowercase</literal>,
-        even though the parameterized type <literal>Expression&lt;Value&gt;</literal>
-        does not declare these members.</para>
-        
-        <!--  
-        <para>The compiler could reason that every <literal>Expression&lt;Integer&gt;</literal>
-        is actually a <literal>NumericExpression&lt;Integer&gt;</literal>, that
-        every <literal>Expression&lt;Boolean&gt;</literal> is actually a
-        <literal>BooleanExpression</literal> without the need for explicit mention
-        of the subtype.</para>
-        -->
-        
-        <comment>
-        <para>TODO: Actually, a potentially better syntax for GADTs would make the 
-        conditions explicit:</para>
-        
-        <programlisting><![CDATA[interface Expression<Value> 
-        of Constant<Number> | Sum | Product 
-                if (Value satisfies Number)
-        of Constant<Boolean> | Conjunction | Disjunction 
-                if (Value satisfies Boolean)
-        given Value of Number | Boolean { ... }]]></programlisting>
-        </comment>
-        
-    </section>
-    
-    <section id="adaptedtypes">
-        <title>PROPOSAL: Introduction</title>
-        
-        <comment><para>NOTE: Introductions are a proposed feature for a future 
-        version of the language.</para></comment>
-        
-        <para>A toplevel interface may <emphasis>adapt</emphasis> a list of types, 
-        in which case it is called an <emphasis>introduction</emphasis>. The types 
-        are called <emphasis>adapted types</emphasis>.</para>
-        
-        <programlisting>AdaptedTypes: "adapts" Type ("&amp;" Type)*</programlisting>
-                
-        <para>The <literal>adapts</literal> clause may specify multiple types. If 
-        a satisfied type is a parameterized type, the <literal>satisfies</literal> 
-        clause must specify type arguments.</para>
-        
-        <programlisting>adapts Iterable&lt;Element&gt; &amp; Correspondence&lt;Integer,Element&gt;</programlisting>
-        
-        <para>Each adapted type must be class or interface. At most one adapted 
-        type may be a class.</para>
-        
-        <para>An introduction <emphasis>introduces</emphasis> new types to every 
-        type that is a subtype of all the adapted types in:</para>
-        
-        <itemizedlist>
-            <listitem>
-                <para>any compilation unit that imports the introduction, and</para>
-            </listitem>
-            <listitem>
-                <para>the package to which the introduction belongs.</para>
-            </listitem>
-        </itemizedlist>
-        
-        <para>Specifically:</para>
-        
-        <itemizedlist>
-        <listitem>
-            <para>If a type <literal>X</literal> adapts a type <literal>Y</literal>, 
-            then <literal>Y</literal> is an invariant subtype of <literal>X</literal> 
-            in every compilation unit that imports <literal>X</literal> and in the 
-            package to which <literal>X</literal> belongs.</para>
-        </listitem>
-        <listitem>  
-            <para>If a parameterized type <literal>X&lt;T&gt;</literal> inherits a 
-            type <literal>Y</literal>, then <literal>Y</literal> is an invariant 
-            subtype of the produced type <literal>X&lt;B&gt;</literal> for any type 
-            <literal>B</literal> in every compilation unit that imports 
-            <literal>X</literal> and in the package to which <literal>X</literal> 
-            belongs.</para>
-        </listitem>
-        <listitem>  
-            <para>If a parameterized type <literal>X&lt;T&gt;</literal> inherits a 
-            produced type <literal>Y&lt;T&gt;</literal> that depends upon the type
-            parameter <literal>T</literal>, then the produced type <literal>Y&lt;B&gt;</literal> 
-            formed by substituting <literal>B</literal> for <literal>T</literal> is 
-            an invariant subtype of the produced type <literal>X&lt;B&gt;</literal> 
-            for any type <literal>B</literal> in every compilation unit that imports 
-            <literal>X</literal> and in the package to which <literal>X</literal> 
-            belongs.</para>
-        </listitem>
-        </itemizedlist>
-        
-             <para>An introduction may not:</para>
-             
-             <itemizedlist>
-                 <listitem>
-                     <para>declare or inherit a member that refines a member of any 
-                     adapted type, or</para>
-                 </listitem>
-                 <listitem>
-                     <para>declare or inherit a <literal>formal</literal> or 
-                     non-<literal>default</literal> <literal>actual</literal> member
-                     unless the member is inherited from an adapted type.</para>
-                 </listitem>
-             </itemizedlist>
-         
-            <para>If, in a certain compilation unit, multiple introductions of a certain
-            adapted type declare or inherit a member that refines a common member of a 
-            common supertype then either:</para>
-            
-            <itemizedlist>
-                <listitem>
-                    <para>there must be a unique member from the set of members, called the 
-                    <emphasis>most refined</emphasis> member, that refines all the other 
-                    members, or</para>
-                </listitem>
-                <listitem>
-                    <para>the adapted type must declare or inherit a member that refines all 
-                    the members.</para>
-                </listitem>
-            </itemizedlist>
-            
-            <para>At runtime, an operation (method invocation, member class instantiation, or 
-            attribute evaluation) upon any type that is a subtype of all the adapted types is 
-            dispatched according to the following rule:</para>
-            
-            <itemizedlist>
-                <listitem>
-                    <para>If the runtime type of the instance of the adapted type declares 
-                    or inherits a member defining the operation, the operation is dispatched 
-                    to the runtime type of the instance.
-                    </para>
-                </listitem>
-                <listitem>
-                    <para>Otherwise, the operation is dispatched to the introduction that has 
-                    the most-refined member defining the operation.
-                    </para>
-                </listitem>
-            </itemizedlist>
-            
-    </section>
-    
-    <section id="metatypes">
-        <title>PROPOSAL: Metatypes</title>
-        
-        <comment><para>NOTE: Metatypes are a proposed feature for a future version 
-        of the language.</para></comment>
-        
-        <para>Metatype inheritance operates at the level of the metamodel.</para>
-        
-        <itemizedlist>
-        <listitem>
-        <para>The concrete metatype of a type <literal>T</literal> is the concrete 
-        class of the object to which the expression <literal>T</literal> evaluates.
-        The name of this class is not specified here. A class or interface may 
-        optionally specify a list of additional <emphasis>metatypes</emphasis>, 
-        interfaces satisfied by the concrete metatype of the type. A metatype may 
-        not declare or inherit a <literal>formal</literal> member.</para>
-        </listitem>
-        <listitem>
-        <para>A type constraint may specify a list of <emphasis>metatype bounds</emphasis> 
-        which must be satisfied by the concrete metatype of the type argument.</para>
-        </listitem>
-        <listitem>
-        <para>A class or method declaration may explicitly specify a 
-        <emphasis>declared callable type</emphasis> satisfied by the callable type 
-        of the class or method. The declared callable type must by a produced type
-        for the parameterized type <literal>Callable</literal>.</para>
-        </listitem>
-        </itemizedlist>
-        
-        <programlisting>Metatypes: "is" Type ("&amp;" Type)*</programlisting>
-        
-        <para>The <literal>is</literal> clause may specify multiple types, all of
-        which must be interfaces.</para>
-        
-        <programlisting>is Monoid&lt;String&gt;</programlisting>
-        
-        <para>Metatypes and metatype bounds allow a function to operate polymorphically 
-        over the metamodel object that represents a type. For example, a library could 
-        define the following generic functionality:</para>
-        
-        <programlisting><![CDATA[shared interface Joinable<Value> {
-    shared formal Value empty;
-    shared formal Value join(Value x, Value y); 
-}
-
-shared Value join<Value>(Value... sequences)
-        given Value is Joinable<Value> {
-    Value result := Value.empty;
-    for (Value s in sequences) {
-        result := Value.join(result,s);
-    }
-    return result;
-}]]></programlisting>
-
-        <para>Which could be utilized as follows:</para>
-
-<programlisting><![CDATA[shared interface JoinableLinkedList<Element> 
-        satisfies Joinable<LinkedList<Element>> {
-    shared actual LinkedList<Element> empty = LinkedList<Element>();
-    shared actual LinkedList<Element> join(LinkedList<Element> x, LinkedList<Element> y) {
-        return x.append(y);
-    }
-}
-
-shared class LinkedList<Element>(Element... elements) 
-        is JoinableLinkedList<Element> 
-        satisfies List<Element> { ... }]]></programlisting>
-        
-        <para>A declared callable type constrains the types and parameter types of a 
-        declaration. For example, given the following interface alias:</para>
-        
-        <programlisting>shared interface Page = Callable&lt;Html,HttpRequest&gt;;</programlisting>
-        
-        <para>We can explicitly specify the callable type of a method:</para>
-        
-        <programlisting>Html login(HttpRequest request) is Page { ... }</programlisting>
-        
-        <para>Or of a class:</para>
-        
-        <programlisting>class Login(HttpRequest request) is Page extends Html() { ... }</programlisting>
-        
-        <para>This style of declaration is useful when the method is going to be discovered 
-        and invoked reflectively, without a direct dependency from the calling code. The
-        compiler validates the full signature of the method or class against the declared 
-        callable type.</para>
+        <para>A class or interface may not be a subtype of more than one case 
+        of an enumerated type.</para>
         
     </section>
         
