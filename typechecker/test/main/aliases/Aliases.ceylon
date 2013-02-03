@@ -121,3 +121,22 @@ class S() => String();
 @error abstract class StringSubclass() extends S() {}
 @error abstract class IntSubclass() extends I() {}
 class I() => Integer();
+
+void inheritsAlias() {
+    interface I<T> {}
+    interface J satisfies I<J> {}
+    interface K => J;
+    interface L satisfies I<String> {}
+    interface M => L;
+    class X() satisfies I<K> {}
+    class Y() satisfies I<M> {}
+    class Z() satisfies K {}
+    class W() satisfies M {}
+    alias N=>M;
+    class V() satisfies I<I<N>> {}
+    I<J> x = X();
+    I<L> y = Y();
+    J z = Z();
+    M w = W();
+    I<I<L>> v = V();
+}

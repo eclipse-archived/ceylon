@@ -247,6 +247,7 @@ public class ProducedType extends ProducedReference {
                 return false;
             }
             else {
+                st = st.resolveAliases();
                 ProducedType stqt = st.getDeclaration().isStaticallyImportable() ?
                         null : st.getQualifyingType();
                 ProducedType tqt = type.getDeclaration().isStaticallyImportable() ? 
