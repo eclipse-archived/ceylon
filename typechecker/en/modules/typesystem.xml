@@ -2058,8 +2058,9 @@ value biggerBag = bag.with(1, 2, 5.0);]]></programlisting>
         probably extend the algorithm to make the following work, where both
         <literal>Consumer</literal> and <literal>Delegate</literal> are 
         contravariant types:</para>
-        <programlisting><![CDATA[Delegate<Input> delegate = ... ; 
-Consumer<Input> consumer = Consumer(delegate);]]></programlisting>
+        <programlisting><![CDATA[Delegate<String> delegate = ... ;
+Delegate<Object> delegate = ... ; 
+Consumer<String> consumer = Consumer(delegate1, delegate2);]]></programlisting>
         <para>Note also that there is something a bit conceptually funny about 
         a type parameter that appears covariantly in a parameter type, and 
         contravariantly in the return type (or vice-versa), so we probably don't 
