@@ -286,11 +286,38 @@ TypeConstraints?
     
     <section id="parameters">
         <title>Parameters</title>
-    
-        <para>A method or class declaration may declare a list or <emphasis>parameters</emphasis>, 
-        including, optionally:</para>
+        
+        <para>A function or class declaration may declare <emphasis>parameters</emphasis>.
+        A parameter is a value or function belonging to the declaration it parameterizes.
+        Parameters are distinguished from other values or functions because they occur in
+        a <emphasis>parameter list</emphasis>. A value or function is a parameter of a 
+        class or function if it is:</para>
         
         <itemizedlist>
+            <listitem>
+                <para>declared inline in a parameter list of the class or function, or</para>
+            </listitem>
+            <listitem>
+                <para>declared normally, within the body of the class or function, but named 
+                in a parameter list of the class or function.</para>
+            </listitem>
+        </itemizedlist>
+        
+        <para>The following class definitions are semantically identical:</para>
+        
+        <programlisting>class Person(shared String name, shared variable Integer age=0) {}</programlisting>
+        
+        <programlisting>class Person(name, age=0) {
+    shared String name;
+    shared variable Integer age;
+}</programlisting>
+        
+        <para>A parameter list may include, optionally:</para>
+        
+        <itemizedlist>
+            <listitem>
+                <para>one or more <emphasis>required parameters</emphasis>,</para>
+            </listitem>
             <listitem>
                 <para>one or more <emphasis>defaulted parameters</emphasis> (parameters with 
                 default values), and/or</para>
@@ -300,48 +327,29 @@ TypeConstraints?
             </listitem>
         </itemizedlist>
         
-        <para>In a parameter list, parameters with default values must occur after required 
-        parameters. The variadic parameter, if any, must occur last.</para>
+        <para>In a parameter list, parameters with default values, if any, must occur after 
+        required parameters, if any. The variadic parameter, if any, must occur last.</para>
         
         <programlisting>Params: "(" ( (Param ",")* ( Param | (DefaultParam ",")* (DefaultParam | SequencedParam) ) )? ")"</programlisting>
-
-        <para>Each parameter is either:</para>
         
-        <itemizedlist>
-            <listitem>
-                <para>declared with an explicit type and name and may have annotations and/or 
-                parameters of its own, or</para>
-            </listitem>
-            <listitem>
-                <para>a named reference to a value declaration that occurs in the body of the
-                parameterized declaration.</para>
-            </listitem>
-        </itemizedlist>
-        
-        <programlisting>Param: ValueParam | CallableParam | MemberName</programlisting>
-        
-        <para>In the case of a reference, the name of the parameter must be the name of a 
-        simple value or function declared directly in the body of the function or class that 
-        declares the parameter, and the type of the parameter determined by the type of the
-        referenced simple value or function. Any argument to the parameter is used as the 
-        initial value of the attribute or local to which it refers. The simple value or 
-        function may not specify an initial value or implementation.</para>
-        
-        <para>The following class definitions are semantically identical:</para>
-        
-        <programlisting>class Person(name, age=0) {
-    shared String name;
-    shared variable Integer age;
-}</programlisting>
-
-        <programlisting>class Person(shared String name, shared variable Integer age=0) {}</programlisting>
-
         <para>Every parameter list has a corresponding type, which captures the types of the
         individual parameters in the list, whether they are defaulted, and whether the last
         one is variadic. This type is always an subtype of the type <literal>Sequential</literal>
         defined in <literal>ceylon.language</literal>.</para>
         
         <para>The type of an empty parameter list with no parameters is <literal>[]</literal>.</para>
+        
+        <section id="requiredparameters">
+            <title>Required parameters</title>
+        
+        <para>A required parameter is a parameter without a default argument.</para>
+        
+        <programlisting>Param: ValueParam | CallableParam | MemberName</programlisting>
+        
+        <para>Required parameters must occur before any other parameters in the parameter 
+        list.</para>
+        
+        </section>
         
         <section id="defaultedparameters">
             <title>Defaulted parameters</title>
@@ -355,10 +363,6 @@ TypeConstraints?
         
         <programlisting>Specifier: "=" (Expression | Function)</programlisting>
         <programlisting>LazySpecifier: "=&gt;" (Expression | Function)</programlisting>
-        
-        <comment><para>TODO: for consistency, we should support <literal>f(Float x) => x</literal> 
-        in a parameter list, when the callable parameter is fully declared in the body of 
-        the function or class.</para></comment>
         
         <para>Defaulted parameters must occur after required parameters in the parameter 
         list.</para>
@@ -385,6 +389,10 @@ TypeConstraints?
         reference to <literal>null</literal>.</para>
         -->
         
+        <comment><para>TODO: for consistency, we should support <literal>f(Float x) => x</literal> 
+        in a parameter list, when the callable parameter is declared in the body of 
+        the function or class.</para></comment>
+        
         </section>
         
         <section id="sequencedparameters">
@@ -392,7 +400,7 @@ TypeConstraints?
         
         <para>A <emphasis>variadic parameter</emphasis> of type <literal>T</literal>, accepts 
         a sequence of arguments of type <literal>T</literal>. Inside the function or class, 
-        the sequenced parameter has type <literal>T[]</literal>.</para>
+        the variadic parameter has type <literal>T[]</literal>.</para>
         
         <programlisting>SequencedParam: Annotation* UnionType "*" MemberName</programlisting>
         
@@ -413,6 +421,13 @@ TypeConstraints?
         
         <programlisting>ValueParam: Annotation* EntryType MemberName</programlisting>
         
+        <para>An argument to a value parameter must be an expression whose type is
+        assignable to the type of the value parameter.</para>
+        
+        <programlisting>(String label, Anything() onClick)</programlisting>
+        
+        <programlisting>({Value*} values, Comparison(Value,Value) by)</programlisting>
+        
         <para>If a value parameter <literal>x</literal> has type <literal>X</literal>, and a 
         parameter list has type <literal>P</literal>, an invariant subtype of <literal>Sequential&lt;Y&gt;</literal>, 
         then the type of a new parameter list formed by prepending <literal>x</literal> to the 
@@ -432,21 +447,13 @@ TypeConstraints?
         
         <programlisting>CallableParam: Annotation* (EntryType | "void") MemberName Params+</programlisting>
         
-        <para>Think of this as an abstract local function that must be specified by the caller 
-        when the parameterized function is invoked or the parameterized class is instantiated.</para>
-            
+        <para>An argument to a callable parameter must be an expression whose type is
+        assignable to the callable type of the callable parameter.</para>
+                    
         <programlisting>(String label, void onClick())</programlisting>
         
-        <programlisting>(Comparison by(Value x, Value y))</programlisting>
-        
-        <para>A callable parameter declaration is equivalent to a parameter declaration with 
-        no parameter lists where the type is the callable type of the method declaration. So 
-        the above are equivalent to:</para>
-        
-        <programlisting>(String label, Anything() onClick)</programlisting>
-        
-        <programlisting>(Comparison(Value,Value) by)</programlisting>
-        
+        <programlisting>({Value*} values, Comparison by(Value x, Value y))</programlisting>
+                
         <para>If a callable parameter <literal>f</literal> has callable type 
         <literal>Callable&lt;X,A&gt;</literal>, and a parameter list has type <literal>P</literal>, 
         an invariant subtype of <literal>Sequential&lt;Y&gt;</literal>, then the type of a new 
