@@ -342,7 +342,8 @@ TypeConstraints?
         <section id="requiredparameters">
             <title>Required parameters</title>
         
-        <para>A required parameter is a parameter without a default argument.</para>
+        <para>A required parameter is a value or callable parameter without a default 
+        argument.</para>
         
         <programlisting>Param: ValueParam | CallableParam | MemberName</programlisting>
         
@@ -354,8 +355,9 @@ TypeConstraints?
         <section id="defaultedparameters">
             <title>Defaulted parameters</title>
         
-        <para>Defaulted parameters specify a default argument.</para>
-    
+        <para>A defaulted parameter is a value or callable parameter that specifies a 
+        default argument.</para>
+        
         <programlisting>DefaultParam: Param Specifier | CallableParam LazySpecifier | MemberName Specifier</programlisting>
         
         <para>The <literal>=</literal> and <literal>=&gt;</literal> specifiers are used 
@@ -429,10 +431,11 @@ TypeConstraints?
         
         <programlisting>({Value*} values, Comparison(Value,Value) by)</programlisting>
         
-        <para>If a value parameter <literal>x</literal> has type <literal>X</literal>, and a 
-        parameter list has type <literal>P</literal>, an invariant subtype of <literal>Sequential&lt;Y&gt;</literal>, 
-        then the type of a new parameter list formed by prepending <literal>x</literal> to the 
-        first parameter list is <literal>Tuple&lt;X|Y,X,P&gt;</literal>, or
+        <para>If a value parameter <literal>x</literal> has type <literal>X</literal>, 
+        and a parameter list has type <literal>P</literal>, an invariant subtype of 
+        <literal>Sequential&lt;Y&gt;</literal>, then the type of a new parameter list 
+        formed by prepending <literal>x</literal> to the first parameter list is 
+        <literal>Tuple&lt;X|Y,X,P&gt;</literal>, or 
         <literal>[]|Tuple&lt;X|Y,X,P&gt;</literal> if <literal>x</literal> is defaulted.</para>
         
         <!--para>A parameter may not be be declared <literal>variable</literal>, and may not be 
@@ -443,9 +446,9 @@ TypeConstraints?
         <section id="callableparameters">
             <title>Callable parameters</title>
         
-        <para>A <emphasis>value parameter</emphasis> is a function named or defined in a 
-        parameter list. Like any other function declaration, it has a name, type, one or
-        more parameter lists, and, optionally, annotations.</para>
+        <para>A <emphasis>callable parameter</emphasis> is a function named or defined 
+        in a parameter list. Like any other function declaration, it has a name, type, 
+        one or more parameter lists, and, optionally, annotations.</para>
         
         <programlisting>CallableParam: Annotation* (EntryType | "void") MemberName Params+</programlisting>
         
@@ -458,10 +461,10 @@ TypeConstraints?
                 
         <para>If a callable parameter <literal>f</literal> has callable type 
         <literal>Callable&lt;X,A&gt;</literal>, and a parameter list has type <literal>P</literal>, 
-        an invariant subtype of <literal>Sequential&lt;Y&gt;</literal>, then the type of a new 
-        parameter list formed by prepending <literal>f</literal> to the first parameter list is 
-        <literal>Tuple&lt;Y|Callable&lt;X,A&gt;,Callable&lt;X,A&gt;,P&gt;</literal> or
-        <literal>[]|Tuple&lt;Y|Callable&lt;X,A&gt;,Callable&lt;X,A&gt;,P&gt;</literal> if
+        an invariant subtype of <literal>Sequential&lt;Y&gt;</literal>, then the type of 
+        a new parameter list formed by prepending <literal>f</literal> to the first parameter 
+        list is <literal>Tuple&lt;Y|Callable&lt;X,A&gt;,Callable&lt;X,A&gt;,P&gt;</literal> 
+        or <literal>[]|Tuple&lt;Y|Callable&lt;X,A&gt;,Callable&lt;X,A&gt;,P&gt;</literal> if
         <literal>f</literal> is defaulted.</para>
         
         </section>
