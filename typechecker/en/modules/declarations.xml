@@ -1,10 +1,10 @@
 <chapter id="declarations">
     <title>Declarations</title>
     
-    <para>Ceylon is a statically typed language. Classes, interfaces, methods, attributes 
-    and locals must be declared before use. The declaration of a method, attribute, or
-    local must include an explicit type, or allow the type to be infered. This allows the 
-    compiler to detect many errors, including:</para>
+    <para>Ceylon is a statically typed language. Classes, interfaces, functions, values 
+    and aliases must be declared before use. The declaration of a function or value must 
+    include an explicit type, or allow the type to be inferred. This allows the compiler 
+    to detect many errors, including:</para>
     
     <itemizedlist>
         <listitem><para>typing errors in identifier names,</para></listitem>
@@ -26,16 +26,14 @@
         <listitem><para>refinement of a non-<literal>formal</literal>, 
         non-<literal>default</literal> member of a supertype,</para></listitem>
         <listitem><para><literal>switch</literal> statements which do not exhaust all
-        values of an enumerated type, and</para></listitem>
-        <listitem><para><literal>switch</literal> statements which do not exhaust all 
-        cases of a type with enumerated subtypes.</para></listitem>
+        cases of an enumerated type.</para></listitem>
     </itemizedlist>
     
     <para>All declarations follow a general pattern:</para>
         
     <programlisting>Annotation* 
-(keyword | UnionType) (TypeName | MemberName) TypeParams? Params*
-CaseTypes? Metatypes? AdaptedTypes? ExtendedType? SatisfiedTypes? AbstractedType?
+(keyword | EntryType) (TypeName | MemberName) TypeParams? Params*
+CaseTypes? ExtendedType? SatisfiedTypes?
 TypeConstraints?
 (Definition | ";")</programlisting>
 
@@ -45,48 +43,58 @@ TypeConstraints?
     
     <para>This consistent pattern for declarations, together with the strict block structure
     of the language, makes Ceylon a highly regular language.</para>
-
+    
     <section id="compilationunitstructure">
         <title>Compilation unit structure</title>
         
-        <para>A <emphasis>compilation unit</emphasis> is a text file, with the 
-        filename extension <literal>.ceylon</literal>.</para>
+        <para>A <emphasis>compilation unit</emphasis> is a text file, with the filename 
+        extension <literal>.ceylon</literal>. There are three kinds of compilation unit:</para>
         
-        <para>A compilation unit consists of a list of imported types, attributes, and 
-        methods, followed by one or more toplevel type, attribute, or method definitions.</para>
+        <itemizedlist>
+            <listitem>
+                <para>A <emphasis>module descriptor</emphasis> consists of a 
+                <literal>module</literal> declaration. The file must be named
+                <literal>module.ceylon</literal>.</para>
+            </listitem>
+            <listitem>
+                <para>A <emphasis>package descriptor</emphasis> consists of a 
+                <literal>module</literal> declaration. The file must be named
+                <literal>package.ceylon</literal>.</para>
+            </listitem>
+            <listitem>
+                <para>A regular compilation unit consists of a list of imported types, 
+                values, and functions, followed by a list of toplevel type, value, or 
+                function definitions.</para>
+            </listitem>
+        </itemizedlist>
         
-        <programlisting>Import* ToplevelDeclaration+</programlisting>
+        <programlisting>ModuleDescriptor | PackageDescriptor | Import* ToplevelDeclaration*</programlisting>
         
         <section id="topleveldeclarations">
-            <title>Toplevel declarations</title>
+            <title>Toplevel and nested declarations</title>
         
         <para>A <emphasis>toplevel declaration</emphasis> defines a type&mdash;a class or 
-        interface&mdash;or a method or non-<literal>variable</literal> attribute.</para>
+        interface&mdash;or a type alias, or a function or non-<literal>variable</literal> 
+        value.</para>
         
         <programlisting>ToplevelDeclaration: TypeDeclaration | Method | SimpleAttribute | AttributeGetter</programlisting>
         
-        <programlisting>TypeDeclaration: Class | Object | Interface</programlisting>
+        <programlisting>TypeDeclaration: Class | Object | Interface | TypeAlias</programlisting>
         
         <para>A toplevel declaration may not be annotated <literal>formal</literal>,
-        <literal>default</literal>, <!--literal>definite</literal--> or
-        <literal>actual</literal>.</para>
+        <literal>default</literal>, or <literal>actual</literal>.</para>
         
-        <comment><para>TODO: In a future version of the language, we might relax this 
+        <comment><para>Note: in a future version of the language, we might relax this 
         restriction and support package extension with toplevel member refinement. This
         can be viewed as a regularization of the language. The practical application is
         that it would make toplevel invocations and instantiations polymorphic, obviating
         the need for things like dependency injection.</para></comment>
         
-        </section>
+        <para>Most toplevel declarations contain nested declarations.</para>
         
-        <section id="nesteddeclarations">
-            <title>Nested declarations</title>
-            
-            <para>Most toplevel declarations contain nested declarations.</para>
-            
-            <programlisting>Declaration: Method | Attribute | TypeDeclaration</programlisting>
-            
-            <para>Nested declarations are often mixed together with executable statements.</para>
+        <programlisting>Declaration: Method | Attribute | TypeDeclaration</programlisting>
+        
+        <para>Nested declarations are often mixed together with executable statements.</para>
             
         </section>
         
@@ -102,7 +110,7 @@ TypeConstraints?
         only if it explicitly <emphasis>imports</emphasis> the declaration using the 
         <literal>import</literal> statement.</para>
         
-        <programlisting>Import: "import" FullPackageName "{" ImportElements? "}"</programlisting>
+        <programlisting>Import: "import" FullPackageName "{" ImportElements "}"</programlisting>
         
         <para>A package is a namespace. A full package name is a period-separated list of 
         all-lowercase identifiers.</para>
@@ -133,7 +141,7 @@ TypeConstraints?
         declarations from the given package, specifying a list of <emphasis>import
         elements</emphasis>.</para>
         
-        <programlisting>ImportElements: ImportElement ("," ImportElement)* ("," ImportWildcard)? | ImportWildcard</programlisting>
+        <programlisting>ImportElements: (ImportElement ",")* (ImportElement | ImportWildcard)?</programlisting>
         
         <programlisting>ImportElement: ImportTypeElement | ImportMethodAttributeElement</programlisting>
         
@@ -141,10 +149,11 @@ TypeConstraints?
         
         <itemizedlist>
             <listitem>
-                <para>a single toplevel type (a class or interface) of the package,</para>
+                <para>a single toplevel type (a class, interface, or alias) of the 
+                package,</para>
             </listitem>
             <listitem>
-                <para>a single toplevel method or attribute of the package, or</para>
+                <para>a single toplevel function or value of the package, or</para>
             </listitem>
             <listitem>
                 <para>all toplevel declarations of the package.</para>
@@ -161,8 +170,8 @@ TypeConstraints?
         never need to be explicitly imported. They are implicitly imported by every 
         compilation unit.</para>
         
-        <comment><para>Note: an unused import should result in a compiler warning.</para></comment>
-                
+        <comment><para>Note: an unused import results in a compiler warning.</para></comment>
+        
         <section id="typeimports">
             <title>Type imports</title>
         
@@ -187,10 +196,10 @@ TypeConstraints?
         </section>
         
         <section id="methodattributeimports">
-            <title>Method and attribute imports</title>
+            <title>Function and value imports</title>
         
-        <para>An import element that specifies a method or attribute name imports the 
-        toplevel method or attribute with that name from the given package.</para>
+        <para>An import element that specifies a function or value name imports the 
+        toplevel function or value with that name from the given package.</para>
         
         <programlisting>ImportMethodAttributeElement: MethodAttributeAlias? MemberName</programlisting>
         
@@ -226,13 +235,10 @@ TypeConstraints?
 }</programlisting>
         
         <comment><para>TODO: Currently, inheritance of two members with the same name
-        from different unrelated types always results in a compile error. A similar 
-        problem arises with introductions. We could let you resolve this class of problem 
-        by aliasing a member of a type you're importing. This is a bit similar to what 
-        Eiffel does, but it would be a lexical thing, scoped to the compilation unit. 
-        For example:</para>
-        <programlisting>import org.formats { Format { formatToString = format }, ... }</programlisting>
-        </comment>
+        from different unrelated types always results in a compile error. We could let 
+        you resolve this class of problem by aliasing a member of a type you're importing. 
+        This is a bit similar to what Eiffel does, but it would be a lexical thing, 
+        scoped to the compilation unit.</para></comment>
         
         </section>
         
@@ -254,7 +260,7 @@ TypeConstraints?
         
         <programlisting>import my.math { fib = fibonnacciNumber, ... }</programlisting>
                 
-        <para>Overuse of wildcard imports is discouraged.</para>
+        <comment><para>Note: overuse of wildcard imports is discouraged.</para></comment>
         
         </section>
         
@@ -264,8 +270,8 @@ TypeConstraints?
             <para>Inside a compilation unit which imports a declaration, the declaration
             may be referred to by its <emphasis>imported name</emphasis>. For an import
             element with an alias, the imported name is the alias. For an import element
-            with no alias, or for a wildcard import, the imported name is the name of the
-            declaration.</para>
+            with no alias, or for a wildcard import, the imported name is the original
+            name of the declaration.</para>
             
             <para>An import element may not result in an imported name that is the same
             as the name of a toplevel declaration contained in the compilation unit in
@@ -277,100 +283,6 @@ TypeConstraints?
         </section>
         
         </section>
-        
-        <!--
-        <section id="introductions">
-            <title>Introductions</title>
-            
-            <para>An <emphasis>introduction</emphasis> results in an additional assignability
-            relationship within a certain compilation unit. The <literal>adapt</literal>
-            statement <emphasis>introduces</emphasis> one or more interfaces, called the
-            <emphasis>introduced types</emphasis> to another type, called the
-            <emphasis>adapted type</emphasis>:</para>
-            
-            <programlisting>Introduction: "adapt" Type SatisfiedTypes TypeConstraints? ";"</programlisting>
-            
-            <para>A single compilation unit may not have multiple <literal>adapt</literal>
-            statements for the same adapted type.</para>
-            
-            <para>Every introduced type listed in the <literal>satisfies</literal> clause
-            must satisfy the following:</para>
-            
-            <itemizedlist>
-                <listitem>
-                    <para>the introduced type must not be a supertype of the adapted
-                    type,</para>
-                </listitem>
-                <listitem>
-                    <para>the adapted type must be a subtype of every class satisfied
-                    by the introduced type,</para>
-                </listitem>
-                <listitem>
-                    <para>for every <literal>formal</literal> member of the introduced 
-                    type, there must be a member of the adapted type such that the two
-                    members refine, directly or indirectly, a common member of a common
-                    supertype, and</para>
-                </listitem>
-                <listitem>
-                    <para>every <literal>actual</literal> member of the introduced type 
-                    must also be declared <literal>default</literal>.</para>
-                </listitem>
-            </itemizedlist>
-            
-            <comment><para>TODO: should we add the following requirements:</para>
-            <itemizedlist>
-                <listitem>
-                    <para>the introduced type must not refine, directly or indirectly, 
-                    a member of the adapted type,</para>
-                </listitem>
-                <listitem>
-                    <para>if the introduced type and the adapted type both refine, 
-                    directly or indirectly, a common member of a common supertype, the 
-                    adapted type must directly or indirectly refine the member of the 
-                    introduced type.</para>
-                </listitem>
-            </itemizedlist>
-            </comment>
-            
-            <para>The list of introduced types must satisfy the following:</para>
-            
-            <itemizedlist>
-                <listitem>
-                    <para>if two introduced types both have a member that refines, 
-                    directly or indirectly, a common member of a common supertype, then 
-                    either the adapted type must also have a member that refines the 
-                    common member, directly or indirectly, or one of the introduced type 
-                    members must be declared <literal>formal</literal>.</para>
-                </listitem>
-            </itemizedlist>
-            
-            <para>Within the compilation unit that contains an introduction, the adapted
-            type is assignable to the introduced type.</para>
-            
-            <para>At runtime, an operation upon the adapted type (method invocation, member 
-            class instantiation, or attribute evaluation) is dispatched according to the 
-            following rule:</para>
-            
-            <itemizedlist>
-                <listitem>
-                    <para>If the runtime type of the instance of the adapted type declares 
-                    or refines the operation, the operation is dispatched to the runtime
-                    type of the instance.
-                    </para>
-                </listitem>
-                <listitem>
-                    <para>Otherwise, the operation is dispatched to the unique introduced 
-                    type that has a concrete definition of the operation.
-                    </para>
-                </listitem>
-            </itemizedlist>
-            
-            <programlisting>adapt Sequence&lt;T&gt; 
-        satisfies SequenceList&lt;T&gt;
-        given T satisfies Equality;</programlisting>
-            
-        </section>
-        -->
     
     <section id="parameters">
         <title>Parameters</title>
@@ -384,19 +296,14 @@ TypeConstraints?
                 default values), and/or</para>
             </listitem>
             <listitem>
-                <para>a <emphasis>sequenced parameter</emphasis> (a "vararg" parameter).</para>
+                <para>a <emphasis>variadic parameter</emphasis>.</para>
             </listitem>
         </itemizedlist>
         
         <para>In a parameter list, parameters with default values must occur after required 
-        parameters. The sequenced parameter, if any, must occur last.</para>
+        parameters. The variadic parameter, if any, must occur last.</para>
         
-        <programlisting>Params: 
-"("
-Param ("," Param)* ("," DefaultParam)* ("," SequencedParam)? | 
-DefaultParam ("," DefaultParam)* ("," SequencedParam)? | 
-SequencedParam?
-")"</programlisting>
+        <programlisting>Params: "(" ( (Param ",")* ( Param | (DefaultParam ",")* (DefaultParam | SequencedParam) ) )? ")"</programlisting>
 
         <para>Each parameter is either:</para>
         
@@ -406,21 +313,23 @@ SequencedParam?
                 parameters of its own, or</para>
             </listitem>
             <listitem>
-                <para>a named reference to a simple attribute or local.</para>
+                <para>a named reference to a value declaration that occurs in the body of the
+                parameterized declaration.</para>
             </listitem>
         </itemizedlist>
         
-        <programlisting>Param: Annotation* (SimpleParam | CallableParam | EntryParamPair) | MemberName</programlisting>
+        <programlisting>Param: Annotation* (ValueParam | CallableParam) | MemberName</programlisting>
         
-        <programlisting>SimpleParam: UnionType MemberName</programlisting>
+        <programlisting>ValueParam: EntryType MemberName</programlisting>
         
         <!--para>A parameter may not be be declared <literal>variable</literal>, and may not be 
         assigned to within the body of the method or class.</para-->
                 
         <para>In the case of a reference, the name of the parameter must be the name of a 
-        simple attribute or local of the method or class it parameterizes, and the type of the 
-        parameter is the type of this simple attribute or local. Any argument to the parameter 
-        is used as the initial value of the attribute or local to which it refers.</para>
+        simple value of the function or class it parameterizes, and the type of the parameter 
+        is the type of this simple value. Any argument to the parameter is used as the initial 
+        value of the attribute or local to which it refers. The simple value may not specify
+        an initial value</para>
         
         <programlisting>class Person(name, age=0) {
     shared String name;
@@ -433,10 +342,10 @@ SequencedParam?
         <para>A parameter with its own parameter list (or lists) is called a 
         <emphasis>callable parameter</emphasis>.</para>
         
-        <programlisting>CallableParam: (UnionType | "void") MemberName Params+</programlisting>
+        <programlisting>CallableParam: (EntryType | "void") MemberName Params+</programlisting>
         
-        <para>Think of this as an abstract local method that must be defined by the caller 
-        when the method is invoked or the class is instantiated.</para>
+        <para>Think of this as an abstract local function that must be specified by the caller 
+        when the parameterized function is invoked or the parameterized class is instantiated.</para>
             
         <programlisting>(String label, void onClick())</programlisting>
         
@@ -446,9 +355,9 @@ SequencedParam?
         no parameter lists where the type is the callable type of the method declaration. So 
         the above are equivalent to:</para>
         
-        <programlisting>(String label, Callable&lt;Object&gt; onClick)</programlisting>
+        <programlisting>(String label, Anything() onClick)</programlisting>
         
-        <programlisting>(Callable&lt;Comparison,Value,Value&gt; by)</programlisting>
+        <programlisting>(Comparison(Value,Value) by)</programlisting>
         
         </section>
         
@@ -457,17 +366,18 @@ SequencedParam?
         
         <para>Defaulted parameters specify a default argument.</para>
     
-        <programlisting>DefaultParam: Param Specifier</programlisting>
+        <programlisting>DefaultParam: Param Specifier | CallableParam LazySpecifier</programlisting>
         
-        <para>The <literal>=</literal> specifier is used throughout the language to indicate 
-        a value which cannot be reassigned.</para>
+        <para>The <literal>=</literal> and <literal>=&gt;</literal> specifiers is used 
+        throughout the language.</para>
         
         <programlisting>Specifier: "=" (Expression | Function)</programlisting>
+        <programlisting>LazySpecifier: "=&gt;" (Expression | Function)</programlisting>
         
         <para>Defaulted parameters must occur after non-defaulted parameters in the parameter 
         list.</para>
         
-        <programlisting>(Product product, Integer quantity=1)</programlisting>
+        <programlisting>(Product product, Integer quantity=1, Price pricing(Product p) => p.price)</programlisting>
         
         <para>The type of the default argument expression must be assignable to the declared
         type of the parameter.</para>
@@ -479,51 +389,29 @@ SequencedParam?
         -->
         
         <para>A parameter of a method or class annotated <literal>actual</literal> may not 
-        specify a default argument.</para>
-        
-        <para>A parameter of a method or class annotated <literal>actual</literal> inherits 
-        the default argument, if any, if the corresponding parameter of the method it 
-        refines.</para>
+        specify a default argument. Instead, it inherits the default argument, if any, of 
+        the corresponding parameter of the method it refines.</para>
         
         <para></para>
         
         </section>
         
-        <section id="sequencedandtupleparameters">
-            <title>Sequenced and tuple parameters</title>
+        <section id="sequencedparameters">
+            <title>Variadic parameters</title>
         
-        <para>The elipsis <literal>...</literal> indicates that a parameter is either:</para>
+        <para>A <emphasis>variadic parameter</emphasis> of type <literal>T</literal>, accepts 
+        a sequence of arguments of type <literal>T</literal>. Inside the function or class, 
+        the sequenced parameter has type <literal>T[]</literal>.</para>
         
-        <itemizedlist>
-            <listitem>
-                <para>A <emphasis>sequenced parameter</emphasis>, which accepts a list of 
-                arguments of the specified type <literal>T</literal>, or a single argument of 
-                type <literal>T[]</literal>. Inside the method or class, the sequenced parameter 
-                has type <literal>T[]</literal>.</para>
-            </listitem>
-            <listitem>
-                <para>A <emphasis>tuple parameter</emphasis> representing a list of parameters 
-                whose types are defined by a sequenced type parameter. Inside the method or class, 
-                the argument has the pseudo-type of the sequenced type parameter and is assignable 
-                to any tuple parameter of the same pseudo-type.</para>
-            </listitem>
-        </itemizedlist>
+        <programlisting>SequencedParam: Annotation* UnionType "*" MemberName</programlisting>
         
-        <programlisting>SequencedParam: Annotation* UnionType "..." MemberName</programlisting>
+        <para>The variadic parameter must be the last parameter in a parameter list.</para>
         
-        <para>The sequenced parameter or tuple parameter must be the last parameter in the 
-        list.</para>
-        
-        <programlisting>(Name name, Organization? org=null, Address... addresses)</programlisting>
-        
-        <programlisting>(Value instance, Argument... args)</programlisting>
-        
-        <comment><para>TODO: what is the syntax for sequenced parameters when declared by 
-        reference?</para></comment>
-        
+        <programlisting>(Name name, Organization? org=null, Address* addresses)</programlisting>
+                
         </section>
         
-        <section id="entrydestructuring">
+        <!--section id="entrydestructuring">
             <title>Destructuring for parameters of type <literal>Entry</literal></title>
         
         <para>A parameter of type <literal>Entry</literal> may be specified in 
@@ -541,7 +429,7 @@ SequencedParam?
         <programlisting>(Key key -> Item item)</programlisting>
         <programlisting>(String name -> String? password = "guest" -> null)</programlisting>
         
-        </section>
+        </section-->
         
     </section>
     
