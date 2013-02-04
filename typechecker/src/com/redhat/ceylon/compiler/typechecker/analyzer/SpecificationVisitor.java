@@ -538,7 +538,8 @@ public class SpecificationVisitor extends Visitor {
             declarationSection = false;
             lastExecutableStatement = null;
             if (isSharedDeclarationUninitialized()) {
-                d.addError("must be definitely specified by class initializer", 1401);
+                d.addError("must be definitely specified by class initializer: " + 
+                        d.getDeclarationModel().getName(that.getUnit()), 1401);
             }
         }
         else {
@@ -591,8 +592,8 @@ public class SpecificationVisitor extends Visitor {
         super.visit(that);
         if (!cannotSpecify) {
             if (isSharedDeclarationUninitialized()) {
-                that.addError(declaration.getName() + 
-                        " must be definitely specified by class initializer");
+                that.addError("must be definitely specified by class initializer: " +
+                        declaration.getName(that.getUnit()));
             }
         }
         exit();
