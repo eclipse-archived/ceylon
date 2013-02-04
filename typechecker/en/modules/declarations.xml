@@ -320,11 +320,6 @@ TypeConstraints?
         
         <programlisting>Param: Annotation* (ValueParam | CallableParam) | MemberName</programlisting>
         
-        <programlisting>ValueParam: EntryType MemberName</programlisting>
-        
-        <!--para>A parameter may not be be declared <literal>variable</literal>, and may not be 
-        assigned to within the body of the method or class.</para-->
-                
         <para>In the case of a reference, the name of the parameter must be the name of a 
         simple value of the function or class it parameterizes, and the type of the parameter 
         is the type of this simple value. Any argument to the parameter is used as the initial 
@@ -335,6 +330,31 @@ TypeConstraints?
     shared String name;
     shared variable Integer age;
 }</programlisting>
+
+        <para>Every parameter list has a corresponding type, which captures the types of the
+        indicidual parameters in the list, whether they are defaulted, and whether the last
+        one is variadic. This type is always an instantiation of the type <literal>Sequential</literal>
+        defined in <literal>ceylon.language</literal>.</para>
+        
+        <para>The type of an empty parameter list with no parameters is <literal>[]</literal>.</para>
+        
+        <section id="valueparameters">
+            <title>Value parameters</title>
+        
+        <para>A <emphasis>value parameter</emphasis> has a name and type.</para>
+        
+        <programlisting>ValueParam: EntryType MemberName</programlisting>
+        
+        <para>If a value parameter <literal>x</literal> has type <literal>X</literal>, and a 
+        parameter list has type <literal>P</literal>, an invariant subtype of <literal>Sequential&lt;Y&gt;</literal>, 
+        then the type of a new parameter list formed by prepending <literal>x</literal> to the 
+        first parameter list is <literal>Tuple&lt;X|Y,X,P&gt;</literal>, or
+        <literal>[]|Tuple&lt;X|Y,X,P&gt;</literal> if <literal>x</literal> is defaulted.</para>
+        
+        <!--para>A parameter may not be be declared <literal>variable</literal>, and may not be 
+        assigned to within the body of the method or class.</para-->
+                
+        </section>
         
         <section id="callableparameters">
             <title>Callable parameters</title>
@@ -359,6 +379,14 @@ TypeConstraints?
         
         <programlisting>(Comparison(Value,Value) by)</programlisting>
         
+        <para>If a callable parameter <literal>f</literal> has callable type 
+        <literal>Callable&lt;X,A&gt;</literal>, and a parameter list has type <literal>P</literal>, 
+        an invariant subtype of <literal>Sequential&lt;Y&gt;</literal>, then the type of a new 
+        parameter list formed by prepending <literal>f</literal> to the first parameter list is 
+        <literal>Tuple&lt;Y|Callable&lt;X,A&gt;,Callable&lt;X,A&gt;,P&gt;</literal> or
+        <literal>[]|Tuple&lt;Y|Callable&lt;X,A&gt;,Callable&lt;X,A&gt;,P&gt;</literal> if
+        <literal>f</literal> is defaulted.</para>
+        
         </section>
         
         <section id="defaultedparameters">
@@ -374,25 +402,25 @@ TypeConstraints?
         <programlisting>Specifier: "=" (Expression | Function)</programlisting>
         <programlisting>LazySpecifier: "=&gt;" (Expression | Function)</programlisting>
         
-        <para>Defaulted parameters must occur after non-defaulted parameters in the parameter 
+        <para>Defaulted parameters must occur after required parameters in the parameter 
         list.</para>
         
         <programlisting>(Product product, Integer quantity=1, Price pricing(Product p) => p.price)</programlisting>
         
-        <para>The type of the default argument expression must be assignable to the declared
-        type of the parameter.</para>
+        <para>The type of the default argument expression of a value parameter must be 
+        assignable to the declared type of the parameter. The type of the default argument
+        expression of a callable parameter must be assignable to the return type of the
+        callable parameter.</para>
+        
+        <para>A parameter of a method or class annotated <literal>actual</literal> may not 
+        specify a default argument. Instead, it inherits the default argument, if any, of 
+        the corresponding parameter of the method it refines.</para>
         
         <!--
         <para>If the declared type of the parameter is an optional type (a subtype of
         <literal>Nothing</literal>) then the default argument expression must be a value
         reference to <literal>null</literal>.</para>
         -->
-        
-        <para>A parameter of a method or class annotated <literal>actual</literal> may not 
-        specify a default argument. Instead, it inherits the default argument, if any, of 
-        the corresponding parameter of the method it refines.</para>
-        
-        <para></para>
         
         </section>
         
@@ -408,7 +436,10 @@ TypeConstraints?
         <para>The variadic parameter must be the last parameter in a parameter list.</para>
         
         <programlisting>(Name name, Organization? org=null, Address* addresses)</programlisting>
-                
+        
+        <para>The type of a parameter list containing just a variadic parameter of type
+        <literal>T</literal> is <literal>T[]</literal>.</para>
+        
         </section>
         
         <!--section id="entrydestructuring">
