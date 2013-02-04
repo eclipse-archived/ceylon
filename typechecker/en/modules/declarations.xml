@@ -1132,8 +1132,8 @@ TypeConstraints?
         
         <para>A <literal>formal</literal> member class may be instantiated.</para>
         
-        <para>A class which is not annotated <literal>formal</literal> or <literal>abstract</literal>
-        is called a <emphasis>concrete</emphasis> class.</para>
+        <para>A class which is not annotated <literal>formal</literal> or 
+        <literal>abstract</literal> is called a <emphasis>concrete</emphasis> class.</para>
                 
         <para>A concrete class may not have <literal>formal</literal> members.</para>
         
@@ -1224,49 +1224,34 @@ TypeConstraints?
         instance.</para>
                 
         <programlisting>shared abstract class Reader() {
-    shared formal class Buffer(Character... chars) 
-            satisfies Sequence&lt;Character&gt; {}
+    shared formal class Buffer(Character* chars) 
+            satisfies Character[] {}
     ...
 }</programlisting>
 
         <programlisting>shared class FileReader(File file) 
         extends Reader() {
-    shared actual class Buffer(Character... chars) 
+    shared actual class Buffer(Character* chars) 
             extends Reader.Buffer(chars) {
         ...
     }
     ...
 }</programlisting>
         
-        <!--
-        <para>But in the special case where the member class it refines does not
-        specify a body, the refining class is not required to extend the member 
-        class it refines:</para>
+        <para>All of the above rules apply equally to member classes which are 
+        aliases.</para>
         
         <programlisting>shared abstract class Reader() {
-    shared formal class Buffer(Character... chars) 
-            satisfies Sequence&lt;Character&gt;;
+    shared formal class Buffer(Character* chars) => AbstractBuffer(*chars);
     ...
 }</programlisting>
 
         <programlisting>shared class FileReader(File file) 
         extends Reader() {
-    shared actual class Buffer(Character... chars) 
-            satisfies Sequence&lt;Character&gt; {
-        ...
-    }
+    shared actual class Buffer(Character* chars) => FileBuffer(*chars);
     ...
 }</programlisting>
         
-        <para>A member class alias may refine a member class.</para>
-        
-        <programlisting>shared class FileReader(File file) 
-        extends Reader() {
-    shared actual class Buffer(Character... chars) = String;
-    ...
-}</programlisting>
-        -->
-         
     </section>
     
     <section id="anonymousclasses">
