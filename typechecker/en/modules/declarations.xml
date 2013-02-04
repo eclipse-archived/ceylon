@@ -416,8 +416,9 @@ TypeConstraints?
         <section id="valueparameters">
             <title>Value parameters</title>
         
-        <para>A <emphasis>value parameter</emphasis> has a name, type, and, optionally, 
-        annotations.</para>
+        <para>A <emphasis>value parameter</emphasis> is a value named or defined in a 
+        parameter list. Like any other value declaration, it has a name, type, and, 
+        optionally, annotations.</para>
         
         <programlisting>ValueParam: Annotation* EntryType MemberName</programlisting>
         
@@ -442,8 +443,9 @@ TypeConstraints?
         <section id="callableparameters">
             <title>Callable parameters</title>
         
-        <para>A parameter with its own parameter list (or lists) is called a 
-        <emphasis>callable parameter</emphasis>.</para>
+        <para>A <emphasis>value parameter</emphasis> is a function named or defined in a 
+        parameter list. Like any other function declaration, it has a name, type, one or
+        more parameter lists, and, optionally, annotations.</para>
         
         <programlisting>CallableParam: Annotation* (EntryType | "void") MemberName Params+</programlisting>
         
