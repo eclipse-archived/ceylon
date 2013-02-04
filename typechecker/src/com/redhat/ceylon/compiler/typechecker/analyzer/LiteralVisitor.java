@@ -29,7 +29,7 @@ public class LiteralVisitor extends Visitor {
         int type = that.getToken().getType();
         String text = that.getText();
         if (type==VERBATIM_STRING || type==AVERBATIM_STRING) {
-            that.setText(text.substring(2,text.length()-2));
+            that.setText(text.substring(3,text.length()-3));
         }
         else {
             StringBuilder result = new StringBuilder();
@@ -41,7 +41,7 @@ public class LiteralVisitor extends Visitor {
             if (type==STRING_START || type==STRING_MID) {
                 result.deleteCharAt(result.length()-1);
             }
-            that.setText(result.toString());
+            that.setText(result.substring(1, result.length()-1));
         }
     }
 

@@ -50,8 +50,9 @@ public class AssertionVisitor extends Visitor implements NaturalVisitor {
                 }
                 else {
                     String actualType = type.getProducedTypeName(false);
-                    if ( !actualType.equals(expectedType.substring(1,expectedType.length()-1)) )
-                        out(that, "type " + actualType + " not of expected type " + expectedType);
+                    if ( !actualType.equals(expectedType) )
+                        out(that, "type " + actualType + 
+                                " not of expected type " + expectedType);
                 }
             }
         }
@@ -60,7 +61,7 @@ public class AssertionVisitor extends Visitor implements NaturalVisitor {
     @Override
     public void visit(Tree.StatementOrArgument that) {
         if (that instanceof Tree.Variable) {
-            if ( ( (Tree.Variable) that ).getType() instanceof Tree.SyntheticVariable ) {
+            if ( ((Tree.Variable) that).getType() instanceof Tree.SyntheticVariable ) {
                 super.visit(that);
                 return;
             }
