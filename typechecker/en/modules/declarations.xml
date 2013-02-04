@@ -495,23 +495,23 @@ TypeConstraints?
         <title>Interfaces</title>
         
         <para>An <emphasis>interface</emphasis> is a type schema, together with 
-        implementation details for some members of the type. Interfaces may not be 
-        directly instantiated.</para>
+        implementation details for some members of the type. Interfaces may not 
+        be directly instantiated.</para>
         
         <programlisting>Interface: Annotation* InterfaceHeader (InterfaceBody | TypeSpecifier ";")</programlisting>
         
         <para>An interface declaration may optionally specify a list of type 
-        parameters. An interface declaration may have a list of extended interfaces,
-        a list of metatypes, an enumerated list of subtypes, and/or a list of type 
-        constraints.</para>
+        parameters. An interface declaration may also have a list of interfaces 
+        is satisfies, a self type or an enumerated list of cases, and/or a list 
+        of type constraints.</para>
         
         <programlisting>InterfaceHeader: "interface" TypeName TypeParams? InterfaceInheritance TypeConstraints?</programlisting>
         
-        <programlisting>InterfaceInheritance: CaseTypes? Metatypes? AdaptedTypes? SatisfiedTypes?</programlisting>
+        <programlisting>InterfaceInheritance: CaseTypes? SatisfiedTypes?</programlisting>
         
-        <para>To obtain a concrete instance of an interface, it is necessary to define 
-        and instantiate a class that satisfies the interface, or define an anonymous 
-        class that satisfies the interface.</para>
+        <para>To obtain a concrete instance of an interface, it is necessary to 
+        define and instantiate a class that satisfies the interface, or define 
+        an anonymous class that satisfies the interface.</para>
         
         <!--<section id="interfacebodies">
             <title>Interface bodies</title>-->
@@ -520,29 +520,28 @@ TypeConstraints?
         
         <itemizedlist>
             <listitem>
-                <para>member (method, attribute, and member class) declarations, and</para>
+                <para>member (method, attribute, and member class) declarations, 
+                and</para>
             </listitem>
             <listitem>
-                <para>nested interface and <literal>abstract</literal> class declarations.</para>
+                <para>nested interface, type alias, and <literal>abstract</literal> 
+                class declarations.</para>
             </listitem>
         </itemizedlist>
         
         <programlisting>InterfaceBody: "{" Declaration* "}"</programlisting>
         
-        <para>Unlike the body of a class, method, or attribute, the body of an interface
-        is not executable, and does not directly contain procedural code.</para>
+        <para>Unlike the body of a class, method, or attribute, the body of an 
+        interface is not executable, and does not directly contain procedural 
+        code.</para>
 
         <programlisting>shared interface Comparable&lt;Other&gt; {
     
     shared formal Comparison compare(Other other);
     
-    shared Boolean largerThan(Other other) {
-        return compare(other)==larger;
-    }
+    shared Boolean largerThan(Other other) => compare(other)==larger;
     
-    shared Boolean smallerThan(Other other) {
-        return compare(other)==smaller;
-    }
+    shared Boolean smallerThan(Other other) => compare(other)==smaller;
     
 }</programlisting>
 
@@ -550,8 +549,6 @@ TypeConstraints?
         and member classes, and concrete methods, attribute getters, attribute setters, 
         and member classes. An interface may not declare a concrete simple attribute or 
         member <literal>object</literal>.</para>
-        
-        <!--para>A member of an interface may not be annotated <literal>definite</literal>.</para-->
         
         <para>A non-<literal>abstract </literal> nested class declaration is called a
         <emphasis>member class</emphasis> of the interface. A nested interface or 
@@ -610,42 +607,32 @@ TypeConstraints?
             a single class--></para>
         
             <programlisting>shared interface List&lt;Element&gt;
-        satisfies Sequence&lt;Element&gt; &amp; Collection&lt;Element&gt; 
-        given Element satisfies Object {
-    ...
-}</programlisting>
-        
-            <para>The types listed after the <literal>satisfies</literal> keyword are 
-            supertypes of the interface type. Every extended type must be an interface. 
-            An interface may not satisfy the same interface twice (not even with distinct 
-            type arguments).</para>
-            
-            <!--At most one supertype of the interface may be a class. The remaining 
-            supertypes of an interface must be interfaces.-->
-            
-            <para>An interface may adapt any number of interfaces, and at most one class.</para>
-            
-            <programlisting>shared interface SequenceList&lt;Element&gt;
-        adapts Sequence&lt;Element&gt;
-        satisfies List&lt;Element&gt; 
+        satisfies Collection&lt;Element&gt; &amp; Correspondence&lt;Integer,Element&gt;
         given Element satisfies Object {
     ...
 }</programlisting>
             
-            <para>The types listed after the <literal>adapts</literal> keyword are also
-            supertypes of the interface type. Every adapted type must be an interface or
-            class. At most one adapted type may be a class. An interface may not adapt 
-            the same type twice (not even with distinct type arguments).</para>
+            <para>Every type listed in the <literal>satisfies</literal> clause must 
+            be an interface. An interface may not satisfy the same interface twice 
+            (not even with distinct type arguments).</para>
             
-            <!--
-            <para>If an interface does not explicitly declare the class it satisfies using
+            <para>The interface is a subtype of every type listed in the 
+            <literal>satisfies</literal> clause. The interface is also a subtype of 
+            the type <literal>Object</literal> defined in 
+            <literal>ceylon.language</literal>.</para>
+            
+            <!--<para> 
+            At most one supertype of the interface may be a class. The remaining 
+            supertypes of an interface must be interfaces.
+            If an interface does not explicitly declare the class it satisfies using
             <literal>satisfies</literal>, it satisfies the class 
-            <literal>ceylon.language.Object</literal>.</para>
-            -->
+            <literal>ceylon.language.Object</literal>.
+            </para>-->
              
-            <para>An interface inherits all members (methods, attributes and member types) 
-            of every supertype.<!--except for members refined by the interface or by some 
-            supertype of the interface.--></para>
+            <para>An interface inherits all members (methods, attributes and member 
+            types) of every supertype. That is, every member of every supertype of the 
+            interface is also a member of the interface, unless the member is refined 
+            by another supertype or by the interface itself.</para>
             
             <!--
             <para>An interface inherits every class satisfied by every other interface the 
@@ -654,42 +641,29 @@ TypeConstraints?
             -->
             
             <para>The schema of the inherited members is formed by substituting type 
-            arguments specified in the <literal>satisfies</literal> or <literal>adapts</literal> 
-            clause.</para>
+            arguments specified in the <literal>satisfies</literal> clause.</para>
             
-            <para>If an interface satisfies an introduction, the interface must itself be
-            an introduction, and the adapted type of the interface must be a subtype of 
-            the adapted type of the introduction it satisfies.</para>
-            
-            <!--
-            <para>An interface may not inherit two non-<literal>formal</literal> members
-            of different supertypes that both refine the same member of a third supertype.
-            If two supertypes both declare non-<literal>formal</literal> members that
-            refine the same member of a third supertype, the interface must also refine
-            the member.</para>
-            -->
-            
-             <para>An interface that satisfies a nested interface must be a member of the type 
-             that declares the nested interface or of a subtype of the type that declares the 
-             nested interface.</para>
+            <para>An interface that satisfies a nested interface must be a member of 
+            the type that declares the nested interface or of a subtype of the type 
+            that declares the nested interface.</para>
              
         </section>
         
     <section id="interfaceswithcases">
         <title>Interfaces with enumerated cases</title>
         
-        <para>The <literal>of</literal> clause of an interface declaration specifies the 
-        list of cases of the interface.</para>
+        <para>An interface declaration may enumerate a list of cases of the interface.</para>
         
         <programlisting>shared interface Node&lt;Element&gt; 
         of Root&lt;Element&gt; | Branch&lt;Element&gt; | Leaf&lt;Element&gt; { ... }</programlisting>
         
-        <para>The cases may be interfaces, classes, or toplevel anonymous classes. A case 
-        may be an <literal>abstract</literal> class. Each case must be a subtype of the
-        interface type.</para>
+        <para>The cases may be interfaces, classes, or toplevel anonymous classes. A 
+        case may be an <literal>abstract</literal> class. Each case must be a subtype 
+        of the interface type.</para>
                 
-        <para>If an interface has an <literal>of</literal> clause, then every subtype of 
-        the interface must be subtype of one of the enumerated cases.</para>
+        <para>If an interface has an <literal>of</literal> clause, then every 
+        non-<literal>abstract</literal> subclass of the interface must be subclass 
+        of one of the enumerated cases.</para>
                 
     </section>
     
@@ -700,20 +674,20 @@ TypeConstraints?
         type defines an <emphasis>interface alias</emphasis> of the specified interface 
         type.</para>
         
-        <programlisting>TypeSpecifier: "=" Type</programlisting>
+        <programlisting>TypeSpecifier: "=>" EntryType</programlisting>
 
         <para>The specified interface type may be a produced type (it may specify type 
         arguments). An interface alias simply assigns an alternative name to the original 
         interface type or produced type.</para>
         
-        <programlisting>shared interface PeopleByName = Map&lt;String,Person&gt;;</programlisting>
+        <programlisting>shared interface PeopleByName => Map&lt;String,Person&gt;;</programlisting>
         
-        <programlisting>interface Compare&lt;Value&gt; = Callable&lt;Comparison,Value,Value&gt;;</programlisting>
-                
-        <para>Interface aliases are not reified types. The metamodel reference for an 
+        <programlisting>interface Compare&lt;Value&gt; => Comparison(Value,Value);</programlisting>
+        
+        <!--para>Interface aliases are not reified types. The metamodel reference for an 
         interface alias&mdash;for example, <literal>PeopleByName</literal>&mdash;returns 
         the metamodel object for the aliased interface&mdash;in this case, 
-        <literal>Map&lt;String,Person&gt;</literal>.</para>
+        <literal>Map&lt;String,Person&gt;</literal>.</para-->
     
     </section>
         
@@ -727,14 +701,14 @@ TypeConstraints?
 
         <programlisting>Class: Annotation* ClassHeader (ClassBody | TypeSpecifier ";")</programlisting>
         
-        <para>An ordinary class declaration specifies a list of parameters required to 
-        instantiate the type, and, optionally a list of type parameters.  A class 
-        declaration may have a superclass, a list of extended interfaces, a list of 
-        metatypes, an enumerated list of subtypes, and/or a list of type constraints.</para>
+        <para>An ordinary class declaration specifies a list of parameters required 
+        to instantiate the type, and, optionally a list of type parameters.  A class 
+        declaration may have a superclass, a list of interfaces it satisfies, a self
+        type or an enumerated list of cases, and/or a list of type constraints.</para>
         
         <programlisting>ClassHeader: "class" TypeName TypeParams? Params ClassInheritance TypeConstraints?</programlisting>
         
-        <programlisting>ClassInheritance: CaseTypes? Metatypes? ExtendedType? SatisfiedTypes?</programlisting>
+        <programlisting>ClassInheritance: CaseTypes? ExtendedType? SatisfiedTypes?</programlisting>
         
         <para>To obtain an instance of a class, it is necessary to instantiate the
         class, or a subclass of the class.</para> 
@@ -749,8 +723,8 @@ TypeConstraints?
                 <para>member (method, attribute, and member class) declarations,</para>
             </listitem>
             <listitem>
-                <para>nested interface and <literal>abstract</literal> class declarations, 
-                and</para>
+                <para>nested interface, type alias, and <literal>abstract</literal> 
+                class declarations, and</para>
             </listitem>
             <listitem>
                 <para>instance initialization code.</para>
@@ -763,17 +737,15 @@ TypeConstraints?
         
         <programlisting>shared class Counter(Integer initialCount=0) {
     
-    log.info("Initial count: " initialCount "");
-    
     variable Integer n = initialCount;
+    
+    print("Initial count: " n "");
+    
+    shared Integer count => n;
     
     shared void increment() {
         n++;
-        log.info("Count: " n "");
-    }
-    
-    shared Integer count {
-        return n;
+        print("Count: " n "");
     }
     
 }</programlisting>
@@ -783,66 +755,40 @@ TypeConstraints?
         <literal>abstract</literal> class declaration is not part of the schema of the 
         class type, and is therefore not considered a member of the class.</para>
         
-        <!--
-        <para>The body of a class may invoke, evaluate or assign members of the instance 
-        being initialized&mdash;the current instance of the class&mdash;without explicitly 
-        specifying the receiver.</para>
+    <!-- section id="initializerparameters">
+        <title>Initializer parameters</title-->
         
-        <para>The body of a member class may invoke, evaluate or assign members of the 
-        current instance of the containing class or interface&mdash;the receiving instance 
-        of the instantiation expression&mdash;without explicitly specifying the receiver.</para>
-        
-        <para>A class may be declared inside the body of a method, or attribute, in which 
-        case the body of the class may refer to any non-<literal>variable</literal> local, 
-        block local attribute getter or block local method declared earlier within the 
-        containing scope. It may not refer to <literal>variable</literal> locals from the 
-        containing scope.</para>
-        -->
-
-    <section id="initializerparameters">
-        <title>Initializer parameters</title>
-        
-        <para>Ceylon classes do not support a Java-like constructor declaration syntax. 
+        <para>Ceylon classes do not have seperate nested constructor declarations. 
         Instead, the body of the class declares <emphasis>initializer parameters</emphasis>. 
         An initializer parameter may be used anywhere in the class body, including in 
         method and attribute definitions.</para>
         
-        <para>An initializer parameter may be used to specify or initialize the value 
-        of an attribute:</para>
-        
-        <programlisting>shared class Counter(Integer initialCount=0) {
-    shared variable Integer count := initialCount;
+        <!--programlisting>shared class Counter(Integer initialCount=0) {
+    shared variable Integer count = initialCount;
     shared void increment() { count++; }
-}</programlisting>
+}</programlisting-->
         
-        <para>Or, using a more streamlined syntax:</para>
-                
         <programlisting>shared class Counter(count=0) {
     shared variable Integer count;
     shared void increment() { count++; }
 }</programlisting>
         
-        <para>An initializer parameter may even be used within the body of a method,
-        attribute getter, or attribute setter:</para>
-        
         <programlisting>shared class Key(Lock lock) {
     shared void lock() { lock.engage(this); }
     shared void unlock() { lock.disengage(this); }
 }</programlisting>
-
-    </section>
-
+        
     <section id="callabletypeofclass">
         <title>Callable type of a class</title>
         
         <para>The <emphasis>callable type</emphasis> of a class captures the type and parameter 
-        types of the class. The callable type is <literal>Callable&lt;T,P...&gt;</literal>, where
-        <literal>T</literal> is the class and <literal>P...</literal> are the parameter types 
-        of the class. A sequenced parameter is considered of type <literal>T[]</literal>
-        where <literal>T...</literal> is the declared sequenced type.</para>
+        types of the class. The callable type is <literal>Callable&lt;T,P&gt;</literal>, where
+        <literal>T</literal> is the class and <literal>P</literal> is the type of the initializer
+        parameter list of the class.</para>
         
-        <para>An <literal>abstract</literal> class is not callable.</para>
-    
+        <para>An <literal>abstract</literal> class is not callable, except from the 
+        <literal>extends</literal> clause of a subclass.</para>
+        
     </section>
     
     <section id="initializersection">
@@ -858,26 +804,26 @@ TypeConstraints?
         clients.</para>
         
         <programlisting>shared abstract class Point() {
-    shared formal Decimal x;
-    shared formal Decimal y;
+    shared formal Float x;
+    shared formal Float y;
 }</programlisting>
         
-        <programlisting>shared class DiagonalPoint(Decimal distance) 
+        <programlisting>shared class DiagonalPoint(Float distance) 
         extends Point() {
     
-    Decimal pos = distance / 2**0.5;
-    x = pos;
-    y = pos;
+    value d = distance / 2^0.5;
+    x => d;
+    y => d;
     
-    assert ("must have distance " distance " from origin") 
-        that ( x**2 + y**2 &equals; distance**2 );
+    doc "must have correct distance from origin" 
+    assert (x^2 + y^2 &equals; distance^2);
     
 }</programlisting>
         
         <programlisting>shared object origin 
         extends Point() {
-    x = 0.0;
-    y = 0.0;
+    x => 0.0;
+    y => 0.0;
 }</programlisting>
         
         <para>Within a class initializer, a <emphasis>self reference to the instance 
@@ -928,8 +874,7 @@ TypeConstraints?
               specification, or</para>
            </listitem>
            <listitem>
-              <para><literal>return</literal> a self reference to the instance being 
-              initialized.</para>
+              <para>return a self reference to the instance being initialized.</para>
            </listitem>
         </itemizedlist>
         
@@ -997,9 +942,8 @@ TypeConstraints?
             </listitem>
             <listitem>
                 <para>an <literal>object</literal> declaration that directly extends 
-                a class other than <literal>Object</literal> or 
-                <literal>IdentifiableObject</literal> in the module 
-                <literal>ceylon.language</literal>.</para>
+                a class other than <literal>Object</literal> or <literal>Basic</literal> 
+                in <literal>ceylon.language</literal>.</para>
             </listitem>
         </itemizedlist>
         
@@ -1046,12 +990,9 @@ TypeConstraints?
     ... 
 }</programlisting>
 
-        <para>The class specified after the <literal>extends</literal> keyword is the
-        superclass of the class.</para>
-
-        <para>
-        If a class does not explicitly specify a superclass using <literal>extends</literal>,
-        its superclass is the class <literal>IdentifiableObject</literal> defined in 
+        <para>The class is a subtype of the type specified by the <literal>extends</literal> 
+        clause. If a class does not explicitly specify a superclass using <literal>extends</literal>,
+        its superclass is the class <literal>Basic</literal> defined in 
         <literal>ceylon.language</literal>.
         </para>
         
@@ -1063,31 +1004,27 @@ TypeConstraints?
     ... 
 }</programlisting>
         
-        <para>The interfaces listed after the <literal>satisfies</literal> keyword are 
-        supertypes of the class. A class may not satisfy the same interface twice (not 
-        even with distinct type arguments).</para>
+        <para>The class is a subtype of every type listed in the <literal>satisfies</literal> 
+        clause. A class may not satisfy the same interface twice (not even with distinct 
+        type arguments).</para>
         
-        <para>A class:</para>
+        <para>A class inherits all members (methods, attributes, and member types) of every 
+        supertype. That is, every member of every supertype of the class is also a member 
+        of the class, unless the member is refined by another supertype or by the class 
+        itself.</para>
+        
+        <para>Unless the class is declared <literal>abstract</literal> or 
+        <literal>formal</literal>, the class:</para>
         
         <itemizedlist>
             <listitem>
-                <para>inherits all members (methods, attributes, and member types) of every 
-                supertype, <!--except for members refined by the class or by some supertype 
-                of the class,--></para>
-            </listitem>
-            <!--listitem>
-                <para>is assignable to any type to which its superclass is assignable,</para>
-            </listitem-->
-            <listitem>
                 <para>must declare or inherit a member that refines each 
                 <literal>formal</literal> member of every interface it satisfies directly 
-                or indirectly, unless the class is declared <literal>abstract</literal> or
-                <literal>formal</literal>, and</para>
+                or indirectly, and</para>
             </listitem>
              <listitem>
                 <para>must declare or inherit a member that refines each 
-                <literal>formal</literal> member of its superclass, unless the class is 
-                declared <literal>abstract</literal> or <literal>formal</literal>.</para>
+                <literal>formal</literal> member of its superclass.</para>
             </listitem>
             <!--
             <listitem>
@@ -1095,10 +1032,6 @@ TypeConstraints?
                 interface it satisfies directly or indirectly.</para>
             </listitem>
             -->
-            <!--listitem>
-                <para>is assignable to any type to which any interface it satisfies is 
-                assignable.</para>
-            </listitem-->
         </itemizedlist>
         
         <para>The schema of the inherited members is formed by substituting type arguments
@@ -1111,10 +1044,7 @@ TypeConstraints?
         refine the same member of a third supertype, the class must also refine
         the member.</para>
         -->
-            
-        <para>If a class satisfies an introduction, the class must be a subtype of the 
-        adapted type of the introduction.</para>
-            
+        
         <para>The initializer of the superclass of a class is always executed before the 
         initializer of the class whenever the class or any one of its subclasses is 
         instantiated.</para>
@@ -1150,13 +1080,13 @@ TypeConstraints?
             <itemizedlist>
                 <listitem>
                     <para><literal>Callable</literal>,
-                    <emphasis>TODO: remove this restriction</emphasis></para>
+                    <emphasis>(TODO: remove this restriction)</emphasis></para>
                 </listitem>
                 <listitem>
                     <para><literal>Boolean</literal>,</para>
                 </listitem>
                 <listitem>
-                    <para><literal>Integer</literal> and  <literal>Float</literal>,</para>
+                    <para><literal>Integer</literal> and <literal>Float</literal>,</para>
                 </listitem>
                 <listitem>
                     <para><literal>Character</literal>,</para>
@@ -1165,70 +1095,24 @@ TypeConstraints?
                     <para><literal>String</literal>,</para>
                 </listitem>
                 <listitem>
+                    <para><literal>Range</literal>,</para>
+                </listitem>
+                <listitem>
                     <para><literal>Entry</literal>, and</para>
                 </listitem>
                 <listitem>
-                    <para><literal>Range</literal>.</para>
+                    <para><literal>Tuple</literal>.</para>
                 </listitem>
             </itemizedlist>
             
-            <para>This allows the compiler to perform certain optimizations upon these 
+            <para>This allows the compiler to perform certain optimizations for these 
             types.</para>
             
+            <comment><para>TODO: it would be better to have a <literal>final</literal>
+            modifier for this classes, or perhaps declare them 
+            <literal>native(final=true)</literal>.</para></comment>
+            
         </section>
-       
-        <!--
-        <section id="overloadedclasses">
-            <title>Overloaded classes</title>
-            
-            <para>Multiple toplevel classes belonging to the same package, or multiple 
-            nested classes of the same containing body may declare the same name. The 
-            classes are called <emphasis>overloaded</emphasis>.</para>
-            
-            <para>For any class name and package or containing body, there must be a 
-            single <emphasis>root class</emphasis> with the given name belonging to 
-            the given package or body. Other classes with the same name belonging to the 
-            same package or body:</para>
-            
-            <itemizedlist>
-                <listitem>
-                    <para>must extend the root class,</para>
-                </listitem>
-                <listitem>
-                    <para>must have distinct erased signatures,</para>
-                </listitem>
-                <listitem>
-                    <para>may not declare default parameters, and</para>
-                </listitem>
-                <listitem>
-                    <para>except for the root class, may not declare any member with a 
-                    visibility modifier.</para>
-                </listitem>
-            </itemizedlist>
-            
-            <para>Then the class name always refers to the root class, except in 
-            instantiation expressions. An instantiation expression is resolved to a 
-            particular overloaded class declaration at compile time, using the argument 
-            expression types.</para>
-        
-            <para>A package or body may not declare or inherit two classes with the 
-            same name unless either:</para>
-            
-            <itemizedlist>
-                <listitem>
-                    <para>the classes are overloaded,</para>
-                </listitem>
-                <listitem>
-                    <para>one class refines the other class, or</para>
-                </listitem>
-                <listitem>
-                    <para>one class is defined by a supertype, and is not visible
-                    to the subtype that defines the other class.</para>
-                </listitem>
-            </itemizedlist>
-        
-        </section>
-        -->
         
     <section id="abstractandformalclasses">
         <title>Abstract, formal, and default classes</title>
@@ -1271,11 +1155,6 @@ TypeConstraints?
         <programlisting>shared formal class Buffer(Character...) 
         satisfies Sequence&lt;Character&gt;;</programlisting></comment>
         
-        <!--
-        <para>A member of an <literal>abstract</literal> or <literal>formal</literal> class 
-        may not be annotated <literal>definite</literal>.</para>
-        -->
-                
     </section>
             
     <section id="refiningmemberclasses">
