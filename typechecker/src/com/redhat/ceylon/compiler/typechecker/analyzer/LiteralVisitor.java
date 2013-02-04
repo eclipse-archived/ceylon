@@ -1,5 +1,6 @@
 package com.redhat.ceylon.compiler.typechecker.analyzer;
 
+import static com.redhat.ceylon.compiler.typechecker.parser.CeylonLexer.AVERBATIM_STRING;
 import static com.redhat.ceylon.compiler.typechecker.parser.CeylonLexer.STRING_END;
 import static com.redhat.ceylon.compiler.typechecker.parser.CeylonLexer.STRING_MID;
 import static com.redhat.ceylon.compiler.typechecker.parser.CeylonLexer.STRING_START;
@@ -27,7 +28,7 @@ public class LiteralVisitor extends Visitor {
     public void visit(StringLiteral that) {
         int type = that.getToken().getType();
         String text = that.getText();
-        if (type==VERBATIM_STRING) {
+        if (type==VERBATIM_STRING || type==AVERBATIM_STRING) {
             that.setText(text.substring(2,text.length()-2));
         }
         else {
