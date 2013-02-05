@@ -1414,16 +1414,9 @@ public class GenerateJsVisitor extends Visitor
 
     /** Escapes a StringLiteral (needs to be quoted). */
     String escapeStringLiteral(String s) {
-        //New String interpolation syntax sometimes gives us strings surrounded
-        //with backticks
-        StringBuilder text;
-        if (s.charAt(0) == '`' || s.charAt(s.length()-1) == '`') {
-            text = new StringBuilder().append('"').append(s.substring(1, s.length()-1)).append('"');
-        } else {
-            text = new StringBuilder(s);
-        }
+        StringBuilder text = new StringBuilder(s);
         //Escape special chars
-        for (int i=1; i < text.length()-1;i++) {
+        for (int i=0; i < text.length();i++) {
             switch(text.charAt(i)) {
             case 8:text.replace(i, i+1, "\\b"); i++; break;
             case 9:text.replace(i, i+1, "\\t"); i++; break;
@@ -1440,11 +1433,11 @@ public class GenerateJsVisitor extends Visitor
 
     @Override
     public void visit(StringLiteral that) {
-        final int slen = that.getText().codePointCount(1, that.getText().length()-1);
+        final int slen = that.getText().codePointCount(0, that.getText().length());
         if (JsCompiler.compilingLanguageModule) {
-            out("String$(", escapeStringLiteral(that.getText()), ",", Integer.toString(slen), ")");
+            out("String$(\"", escapeStringLiteral(that.getText()), "\",", Integer.toString(slen), ")");
         } else {
-            out(clAlias, "String(", escapeStringLiteral(that.getText()), ",", Integer.toString(slen), ")");
+            out(clAlias, "String(\"", escapeStringLiteral(that.getText()), "\",", Integer.toString(slen), ")");
         }
     }
 
@@ -1456,7 +1449,7 @@ public class GenerateJsVisitor extends Visitor
         boolean first = true;
         for (int i = 0; i < literals.size(); i++) {
             StringLiteral literal = literals.get(i);
-            if (literal.getText().length() > 2) {
+            if (!literal.getText().isEmpty()) {
                 if (!first) { out(","); }
                 first = false;
                 literal.visit(this);
