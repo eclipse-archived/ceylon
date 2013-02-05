@@ -789,19 +789,13 @@ public class ExpressionTransformer extends AbstractTransformer {
     }
 
     public JCExpression transform(Tree.StringLiteral string) {
-        String value = string
-                .getText()
-                .substring(1, string.getText().length() - 1);
         at(string);
-        return ceylonLiteral(value);
+        return ceylonLiteral(string.getText());
     }
 
     public JCExpression transform(Tree.QuotedLiteral string) {
-        String value = string
-                .getText()
-                .substring(1, string.getText().length() - 1);
         at(string);
-        return ceylonLiteral(value);
+        return ceylonLiteral(string.getText());
     }
 
     public JCExpression transform(Tree.CharLiteral lit) {
@@ -851,7 +845,7 @@ public class ExpressionTransformer extends AbstractTransformer {
         java.util.List<Tree.Expression> expressions = expr.getExpressions();
         for (int ii = 0; ii < literals.size(); ii += 1) {
             Tree.StringLiteral literal = literals.get(ii);
-            if (!"\"\"".equals(literal.getText())) {// ignore empty string literals
+            if (!literal.getText().isEmpty()) {// ignore empty string literals
                 at(literal);
                 builder = make().Apply(null, makeSelect(builder, "append"), List.<JCExpression>of(transform(literal)));
             }
