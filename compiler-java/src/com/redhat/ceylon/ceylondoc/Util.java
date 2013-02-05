@@ -88,9 +88,7 @@ public class Util {
         List<String> tags = new ArrayList<String>();
         Annotation tagged = Util.getAnnotation(decl.getAnnotations(), "tagged");
         if (tagged != null) {
-            for (String tag : tagged.getPositionalArguments()) {
-                tags.add(Util.unquote(tag));
-            }
+            tags.addAll(tagged.getPositionalArguments());
         }
         return tags;
     }
@@ -144,7 +142,7 @@ public class Util {
     private static String getRawDoc(Declaration decl) {
         Annotation a = findAnnotation(decl, "doc");
         if (a != null) {
-            return unquote(a.getPositionalArguments().get(0));
+            return a.getPositionalArguments().get(0);
         }
         return "";
     }
@@ -152,7 +150,7 @@ public class Util {
     private static String getRawDoc(List<Annotation> anns) {
         for (Annotation a : anns) {
             if (a.getName().equals("doc") && a.getPositionalArguments() != null && !a.getPositionalArguments().isEmpty()) {
-                return unquote(a.getPositionalArguments().get(0));
+                return a.getPositionalArguments().get(0);
             }
         }
         return "";
@@ -182,18 +180,6 @@ public class Util {
             a = getAnnotation(decl.getRefinedDeclaration().getAnnotations(), name);
         }
         return a;
-    }
-
-    /** Remove quotes from a string, if it starts and ends with them. */
-    public static String unquote(String string) {
-        if (string.length() >= 2) {
-            char first = string.charAt(0);
-            char last = string.charAt(string.length()-1);
-            if ((first == '"' && last == '"') || (first == '\'' && last == '\'')) {
-                return string.substring(1, string.length() - 1);
-            }
-        }
-        return string;
     }
     
     public static String capitalize(String text) {

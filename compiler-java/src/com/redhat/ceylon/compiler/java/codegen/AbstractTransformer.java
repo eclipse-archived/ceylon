@@ -1722,13 +1722,13 @@ public abstract class AbstractTransformer implements Transformation {
             if (a.getPositionalArguments() != null && !a.getPositionalArguments().isEmpty()) {
                 if (a.getName().equals("doc")) {
                     res.add(make().Assign(naming.makeUnquotedIdent("doc"),
-                            make().Literal(Util.unquote(a.getPositionalArguments().get(0)))));
+                            make().Literal(a.getPositionalArguments().get(0))));
                 } else if (a.getName().equals("license")) {
                     res.add(make().Assign(naming.makeUnquotedIdent("license"),
-                            make().Literal(Util.unquote(a.getPositionalArguments().get(0)))));
+                            make().Literal(a.getPositionalArguments().get(0))));
                 } else if (a.getName().equals("by")) {
                     for (String author : a.getPositionalArguments()) {
-                        authors.add(make().Literal(Util.unquote(author)));
+                        authors.add(make().Literal(author));
                     }
                 }
             }

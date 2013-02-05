@@ -418,7 +418,7 @@ public abstract class ClassOrPackageDoc extends CeylonDoc {
                 linkRenderer().to(excType).useScope(decl).write();
 
                 if (excDesc != null) {
-                    write(Util.wikiToHTML(Util.unquote(excDesc), linkRenderer().useScope(decl)));
+                    write(Util.wikiToHTML(excDesc, linkRenderer().useScope(decl)));
                 }
 
                 close("li");
@@ -438,7 +438,7 @@ public abstract class ClassOrPackageDoc extends CeylonDoc {
             if (!deprecated.getPositionalArguments().isEmpty()) {
                 String reason = deprecated.getPositionalArguments().get(0);
                 if (reason != null) {
-                    text += Util.unquote(reason);
+                    text += reason;
                 }
             }
             write(Util.wikiToHTML(text, linkRenderer().useScope(decl)));

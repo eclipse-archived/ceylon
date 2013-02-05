@@ -282,7 +282,7 @@ public abstract class CeylonDoc extends Markup {
         for (Annotation annotation : annotations) {
             if (annotation.getName().equals("by")) {
                 for (String author : annotation.getPositionalArguments()) {
-                    authors.add(Util.unquote(author));
+                    authors.add(author);
                 }
             }
         }
