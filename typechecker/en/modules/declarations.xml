@@ -31,7 +31,7 @@
     
     <para>All declarations follow a general pattern:</para>
         
-    <programlisting>Annotation* 
+    <programlisting>Annotations
 (keyword | EntryType) (TypeName | MemberName) TypeParams? Params*
 CaseTypes? ExtendedType? SatisfiedTypes?
 TypeConstraints?
@@ -404,7 +404,7 @@ TypeConstraints?
         a sequence of arguments of type <literal>T</literal>. Inside the function or class, 
         the variadic parameter has type <literal>T[]</literal>.</para>
         
-        <programlisting>SequencedParam: Annotation* UnionType "*" MemberName</programlisting>
+        <programlisting>SequencedParam: Annotations UnionType "*" MemberName</programlisting>
         
         <para>The variadic parameter must be the last parameter in a parameter list.</para>
         
@@ -422,7 +422,7 @@ TypeConstraints?
         parameter list. Like any other value declaration, it has a name, type, and, 
         optionally, annotations.</para>
         
-        <programlisting>ValueParam: Annotation* EntryType MemberName</programlisting>
+        <programlisting>ValueParam: Annotations EntryType MemberName</programlisting>
         
         <para>An argument to a value parameter must be an expression whose type is
         assignable to the type of the value parameter.</para>
@@ -450,7 +450,7 @@ TypeConstraints?
         in a parameter list. Like any other function declaration, it has a name, type, 
         one or more parameter lists, and, optionally, annotations.</para>
         
-        <programlisting>CallableParam: Annotation* (EntryType | "void") MemberName Params+</programlisting>
+        <programlisting>CallableParam: Annotations (EntryType | "void") MemberName Params+</programlisting>
         
         <para>An argument to a callable parameter must be an expression whose type is
         assignable to the callable type of the callable parameter.</para>
@@ -498,7 +498,7 @@ TypeConstraints?
         implementation details for some members of the type. Interfaces may not 
         be directly instantiated.</para>
         
-        <programlisting>Interface: Annotation* InterfaceHeader (InterfaceBody | TypeSpecifier ";")</programlisting>
+        <programlisting>Interface: Annotations InterfaceHeader (InterfaceBody | TypeSpecifier ";")</programlisting>
         
         <para>An interface declaration may optionally specify a list of type 
         parameters. An interface declaration may also have a list of interfaces 
@@ -701,7 +701,7 @@ TypeConstraints?
         <para>A <emphasis>class</emphasis> is a stateful, instantiable type. It is a 
         type schema, together with implementation details of the members of the type.</para>
 
-        <programlisting>Class: Annotation* ClassHeader (ClassBody | ClassSpecifier ";")</programlisting>
+        <programlisting>Class: Annotations ClassHeader (ClassBody | ClassSpecifier ";")</programlisting>
         
         <para>An ordinary class declaration specifies a list of parameters required 
         to instantiate the type, and, optionally a list of type parameters.  A class 
@@ -1263,7 +1263,7 @@ TypeConstraints?
         a class, instantiate the class, and declare an attribute referring to the 
         resulting class instance in a single declaration.</para>
         
-        <programlisting>Object: Annotation* ObjectHeader ClassBody</programlisting>
+        <programlisting>Object: Annotations ObjectHeader ClassBody</programlisting>
         
         <para>An <literal>object</literal> has an initial lowercase identifier.
         An <literal>object</literal> declaration does not specify parameters or
@@ -1478,7 +1478,7 @@ shared class Branch<Element>(String name, Node<Element> left, Node<Element> righ
         may have parameters and may return a value. If a function belongs to a type,
         it is called a <emphasis>method</emphasis>.</para>
         
-        <programlisting>Method: Annotation* MethodHeader (Block | Specifier? ";")</programlisting>
+        <programlisting>Method: Annotations MethodHeader (Block | Specifier? ";")</programlisting>
         
         <para>All function declarations specify the function name, one or more parameter 
         lists, and, optionally, a list of type parameters. A function declaration may 
@@ -1914,7 +1914,7 @@ case (hexadecimal) {
         or assigned. A getter is defined using a block or lazy specifier, which is executed 
         every time the value is evaluated.</para>
         
-        <programlisting>Attribute: Annotation* AttributeHeader (Block | (Specifier | LazySpecifier)? ";")</programlisting>
+        <programlisting>Attribute: Annotations AttributeHeader (Block | (Specifier | LazySpecifier)? ";")</programlisting>
         
         <para>If a value belongs to a type, it is called an <emphasis>attribute</emphasis>.</para>
         
@@ -2289,24 +2289,34 @@ print(greeting);</programlisting>
 }</programlisting>
             
         </section>
-                        
-    </section>
         
+    </section>
+    
     <section id="annotations">
         <title>Program element annotations</title>
-
-        <para>Declarations may be preceded by a list of annotations. An annotation is an
-        initial lowercase identifier, optionally followed by an argument list. A list of 
-        annotations does not require punctuation between the individual annotations in 
-        the list.</para>
+        
+        <para>Any declaration may be preceded by a list of annotations. An annotation is 
+        an initial lowercase identifier, optionally followed by an argument list.</para>
         
         <programlisting>Annotation: MemberName ( Arguments | Literal+ )?</programlisting>
+        
+        <para>A list of annotations does not require punctuation between the individual 
+        annotations in the list. An annotation list may begin with a string literal, in
+        which case it is interpreted as the argument of a <literal>doc</literal>
+        annotation.</para>
+        
+        <programlisting>Annotations: StringLiteral? Annotation*</programlisting>
         
         <para>For an annotation with no arguments, or with only literal-valued positional
         arguments, the parentheses around, and commas between, the positional arguments 
         may be omitted.</para>
         
-        <programlisting>doc "The user login action"
+        <comment><para>TODO: do we still need this shortcut? The only good usecase for 
+        it was <literal>doc</literal>, and now we've got an even nicer abbreviation for 
+        that case. Wouldn't the annotation list be more readable with all the parens in 
+        there?</para></comment>
+        
+        <programlisting>"The user login action"
 by "Gavin King"
    "Andrew Haley"
 throws (DatabaseException,
@@ -2315,16 +2325,16 @@ seeAlso (LogoutAction.logout)
 scope (session) 
 action { description="Log In"; url="/login"; }
 shared deprecated</programlisting>
-
-        <para>An annotation is an invocation of a toplevel method that occurs when the 
-        program element is loaded by the virtual machine. The return type of this toplevel 
-        method is called the <emphasis>annotation type</emphasis> of the annotation. 
-        Invocation of the toplevel method is called <emphasis>evaluation</emphasis> of the 
-        annotation. The toplevel method may not declare type parameters.</para>
         
-        <programlisting>shared Scope scope(Scope s) { return s; }</programlisting>
-        <programlisting>shared Todo todo(String text) { return Todo(text); }</programlisting>
-
+        <para>An annotation is an invocation of a toplevel function that occurs when the 
+        program element is loaded by the virtual machine. The return type of this function 
+        method is called the <emphasis>annotation type</emphasis> of the annotation. 
+        Invocation of the toplevel function is called <emphasis>evaluation</emphasis> of 
+        the annotation. The toplevel function may not declare type parameters.</para>
+        
+        <programlisting>shared Scope scope(Scope s) => s;</programlisting>
+        <programlisting>shared Todo todo(String text) => Todo(text);</programlisting>
+        
         <section id="annotationarguments">
             <title>Annotation arguments</title>
         
@@ -2332,28 +2342,24 @@ shared deprecated</programlisting>
         three forms.</para>
         
         <itemizedlist>
-        
         <listitem>
         <para>Using a positional argument invocation of the method:</para>
-        
         <programlisting>doc("the name") String name;</programlisting>
         </listitem>
-        
         <listitem>
         <para>Using a named argument invocation of the method:</para>
-        
         <programlisting>doc {description="the name";} String name;</programlisting>
         </listitem>
-        
         <listitem>
         <para>Or using the special abbreviated form for annotations with literal value
         arguments:</para>
-        
         <programlisting>doc "the name" String name;</programlisting>
         </listitem>
-        
         </itemizedlist>
-                        
+        
+        <para>As a special case, the name of the <literal>doc</literal> annotation
+        may be ommitted if it is the first annotation in an annotation list.</para>
+        
         </section>
         
         <section>
@@ -2477,34 +2483,34 @@ shared deprecated</programlisting>
                 or member type defined by a supertype.</para>
             </listitem>
             <listitem>
-                <para><literal>variable</literal> specifies that an attribute
-                or local may be assigned.</para>
+                <para><literal>variable</literal> specifies that a value 
+                may be assigned multiple times.</para>
             </listitem>
             <listitem>
-                <para><literal>deprecated</literal> indicates that a method, 
-                attribute or type is deprecated. It accepts an optional
+                <para><literal>late</literal> disables definite 
+                initialization checking for a reference, allowing the 
+                reference to be initialized after the initializer of
+                the class to which it belongs has already completed.</para>
+            </listitem>
+            <listitem>
+                <para><literal>native</literal> specifies that a program
+                element is actually implemented in a different language, 
+                and that the program element should be ignored by the
+                Ceylon compiler backend.</para>
+            </listitem>
+            <listitem>
+                <para><literal>deprecated</literal> indicates that a value, 
+                function or type is deprecated. It accepts an optional
                 <literal>String</literal> argument. The compiler produces a
                 warning when compiling code that depends upon a deprecated
                 program element.</para>
             </listitem>
-            <!--
-            <listitem>
-                <para><literal>definite</literal> specifies that a method or
-                attribute must be refined by every concrete subclass. 
-                <emphasis>(Note that <literal>definite</literal> is a proposed 
-                feature for a future version of the language.)</emphasis></para>
-            </listitem>
-            -->
             <!-- 
             <listitem>
                 <para><literal>final</literal> specifies that a class may not 
                 be extended.</para>
             </listitem>
              -->
-            <listitem>
-                <para><literal>literal</literal> specifies that a class or 
-                interface has a single quoted literal format.</para>
-            </listitem>
         </itemizedlist>
         
         <para>The following annotation is a hint to the compiler that lets 
@@ -2533,55 +2539,28 @@ shared deprecated</programlisting>
         <comment><para>TODO: how hard would it be to add a <literal>recursive</literal>
         annotation to force the compiler to optimize a tail-recursive method or
         getter?</para></comment>
-               
-       <!--
-       <para>The following annotations are important to the Ceylon SDK.</para>
         
-        <itemizedlist>
-            <listitem>
-                <para><literal>id</literal> specifies that an attribute should
-                be tested by the <literal>equals()</literal> method, and included
-                in the <literal>hash</literal>.</para>
-            </listitem>
-            <listitem>
-                <para><literal>transient</literal> specifies that an attribute 
-                is not included in the serialized form of the object.</para>
-            </listitem>
-            <listitem>
-                <para><literal>read</literal> and <literal>write</literal>
-                indicate methods or attributes that are protected from multithreaded
-                access using a reentrant read/write lock with deadlock detection.</para>
-            </listitem>
-            <listitem>
-                <para><literal>once</literal> indicates that a method or
-                attribute getter is executed at most once, and the resulting 
-                value is cached.</para>
-            </listitem>
-        </itemizedlist>
-        -->
-    
     <section id="refinement">
         <title>Refinement modifiers</title>
         
         <para>A declaration may not be annotated both <literal>formal</literal> 
-        and <literal>default</literal>. <!--<literal>definite</literal>.--></para>
+        and <literal>default</literal>.</para>
         
         <para>If a declaration is annotated <literal>formal</literal>, 
-        <literal>default</literal>, <!--<literal>definite</literal>,--> or 
-        <literal>actual</literal> then it must also be annotated 
-        <literal>shared</literal>.</para>
+        <literal>default</literal>, or <literal>actual</literal> then it must 
+        also be annotated <literal>shared</literal>.</para>
         
     </section>
     
     <section id="visibility">
         <title>Visibility and name resolution</title>
         
-        <para>Classes, interfaces, methods, attributes, locals, parameters and type 
-        parameters have names. Occurrence of a name in code implies a hard dependency 
-        from the code in which the name occurs to the schema of the named declaration. 
-        We say that a class, interface, method, attribute, parameter or type parameter 
-        is <emphasis>visible</emphasis> to a certain program element if its name may 
-        occur in the code that defines that program element.</para>
+        <para>Classes, interfaces, functions, values, aliases, and type parameters 
+        have names. Occurrence of a name in code implies a hard dependency from the 
+        code in which the name occurs to the schema of the named declaration. We say 
+        that a class, interface, value, function, alias, or type parameter is 
+        <emphasis>visible</emphasis> to a certain program element if its name may 
+        occur in the code that belongs to that program element.</para>
                 
         <para>The visibility of a declaration depends upon where it occurs, and upon 
         whether it is annotated <literal>shared</literal>. A toplevel or member 
@@ -2603,14 +2582,14 @@ shared deprecated</programlisting>
             </listitem>
         </itemizedlist>
         
-        <para>A parameter, type parameter, or declaration that occurs directly inside
-        a block (the body of a method, attribute getter or attribute setter) may not 
-        be annotated <literal>shared</literal>.</para>
+        <para>A type parameter, declaration that occurs directly inside a block (the 
+        body of a function, getter, setter, or control structure) may not be annotated 
+        <literal>shared</literal>.</para>
         
         <itemizedlist>
             <listitem>
-                <para>A parameter or type parameter is visible only inside the 
-                declaration to which it belongs.</para> 
+                <para>A type parameter is visible only inside the declaration to which 
+                it belongs.</para> 
             </listitem>
             <listitem>
                 <para>A declaration that occurs directly inside a block is visible 
@@ -2626,10 +2605,8 @@ shared deprecated</programlisting>
         element or package? Program element is easy, since we already have a
         typesafe syntax for referring to a method or type: 
         <literal>shared(ContainingClass)</literal>. Package is a bit tricker.
-        Of course we could use a single quoted literal, 
-        <literal>shared('org.example.containing.package')</literal>, but perhaps 
-        this would justify introducing a literal package name syntax:
-        <literal>shared(:org:example:containing:package)</literal>.</para>
+        Perhaps this would justify introducing a literal package name syntax:
+        <literal>shared(@[org.example.eg2])</literal>.</para>
         </comment>
         
         <para>We say that a produced type is <emphasis>visible</emphasis> to a
@@ -2639,12 +2616,12 @@ shared deprecated</programlisting>
         
         <itemizedlist>
             <listitem>
-                <para>The type of an attribute must be visible everywhere the 
-                attribute itself is visible.</para>
+                <para>The type of a value must be visible everywhere the value 
+                itself is visible.</para>
             </listitem>
             <listitem>
-                <para>The return type of a method must be visible everywhere the 
-                method itself is visible.</para>
+                <para>The return type of a function must be visible everywhere 
+                the function itself is visible.</para>
             </listitem>
             <listitem>
                 <para>The satisfied interfaces of a class or interface must be 
