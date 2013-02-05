@@ -3,23 +3,27 @@
 class Complex(shared Float re, shared Float im) 
         satisfies Exponentiable<Complex,Integer> {
     
+    positiveValue => this;
+
+    negativeValue => Complex(-re,-im);
+
+    plus(Complex other) => Complex(re+other.re, im+other.im);
+
+    minus(Complex other) => Complex(re-other.re, im-other.im);
+
+    times(Complex other) =>
+            Complex(re*other.re-im*other.im, 
+                    re*other.im+im*other.re);
+    
     shared actual Complex divided(Complex other) {
         Float d = other.re^2 + other.im^2;
         return Complex((re*other.re+im*other.im)/d, 
                        (im*other.re-re*other.im)/d);
     }
 
-    shared actual Complex minus(Complex other) => 
-            Complex(re-other.re, im-other.im);
-
-    shared actual Complex negativeValue => Complex(-re,-im);
-
-    shared actual Complex plus(Complex other) => 
-            Complex(re+other.re, im+other.im);
-
-    shared actual Complex positiveValue => this;
-
+    """Accepts non-negative powers."""
     shared actual Complex power(Integer other) {
+        doc "exponent must be non-negative"
         assert(other>=0);
         //lame impl
         variable Complex result = Complex(1.0, 0.0);
@@ -29,12 +33,9 @@ class Complex(shared Float re, shared Float im)
         return result;
     }
 
-    shared actual Complex times(Complex other) =>
-            Complex(re*other.re-im*other.im, 
-                    re*other.im+im*other.re);
-    
     string => im<0.0 then "``re``-``-im``i" 
                      else "``re``+``im``i";
+    
     hash => re.hash + im.hash;
     
     shared actual Boolean equals(Object that) {
