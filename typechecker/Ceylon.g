@@ -1864,7 +1864,9 @@ assignmentExpression returns [Term term]
           qe.setIdentifier($memberReference.identifier);
           qe.setTypeArguments( new InferredTypeArguments(null) );
           if ($memberReference.typeArgumentList!=null)
-              qe.setTypeArguments($memberReference.typeArgumentList); }
+              qe.setTypeArguments($memberReference.typeArgumentList); 
+          $term = qe; }
+        (
         positionalArgument
         { InvocationExpression ie = new InvocationExpression(null);
           ie.setPrimary(qe);
@@ -1872,6 +1874,7 @@ assignmentExpression returns [Term term]
           al.addPositionalArgument($positionalArgument.positionalArgument); 
           ie.setPositionalArgumentList(al);
           $term = ie; }
+        )?
       )?
     ;
 

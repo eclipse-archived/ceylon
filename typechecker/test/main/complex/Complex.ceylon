@@ -1,5 +1,5 @@
-"""A complex number class demonstrating operator
-   polymorphism in Ceylon."""
+"A complex number class demonstrating operator polymorphism 
+ in Ceylon."
 class Complex(shared Float re, shared Float im) 
         satisfies Exponentiable<Complex,Integer> {
     
@@ -21,7 +21,7 @@ class Complex(shared Float re, shared Float im)
                        (im*other.re-re*other.im)/d);
     }
 
-    """Accepts non-negative powers."""
+    "Accepts non-negative powers."
     shared actual Complex power(Integer other) {
         doc "exponent must be non-negative"
         assert(other>=0);

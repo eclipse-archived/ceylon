@@ -363,5 +363,9 @@ class Operators() {
     sync = string[1...];
     sync = string[...1];
     @type:"String" value syncit = string[0...];
+    
+    Integer bin1 = $1010_0101;
+    Integer bin2 = $1111_0000;
+    Integer bin3 = bin1 and (bin1 not);
         
 }
