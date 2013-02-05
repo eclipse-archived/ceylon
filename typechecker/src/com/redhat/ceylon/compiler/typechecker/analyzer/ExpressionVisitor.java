@@ -2956,10 +2956,20 @@ public class ExpressionVisitor extends Visitor {
             ProducedType nt = checkSupertype(lhst, type, that.getLeftTerm(), 
                     "operand expression must be of numeric type");
             if (nt!=null) {
-                ProducedType ot = nt.getTypeArgumentList().get(0);
+                List<ProducedType> tal = nt.getTypeArgumentList();
+                if (tal.isEmpty()) return;
+                ProducedType tt = tal.get(0);
+                that.setTypeModel(tt);
+                ProducedType ot;
+                if (that instanceof Tree.PowerOp) {
+                    if (tal.size()<2) return;
+                    ot = tal.get(1);
+                }
+                else {
+                    ot = tt;
+                }
                 checkAssignable(rhst, ot, that, 
                         "operands must be of compatible numeric type");
-                that.setTypeModel(ot);
             }
         }
     }
