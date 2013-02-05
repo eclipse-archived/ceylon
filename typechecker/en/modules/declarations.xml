@@ -1455,8 +1455,8 @@ shared class Branch<Element>(String name, Node<Element> left, Node<Element> righ
         class, the alias must be annotation <literal>abstract</literal>, and it
         may not be directly instantiated.</para>
         
-        <para>If a <literal>shared </literal>class alias nested inside the body of 
-        a class or interface aliases an <literal>abstract</literal> class, the 
+        <para>If a <literal>shared </literal>class alias nested inside the body 
+        of a class or interface aliases an <literal>abstract</literal> class, the 
         alias must be annotation <literal>abstract</literal> or <literal>formal</literal>.
         If it is annotated <literal>formal</literal>, it is considered a member 
         class of the containing class or interface. If it is annotated 
@@ -1473,171 +1473,166 @@ shared class Branch<Element>(String name, Node<Element> left, Node<Element> righ
     </section>
     
     <section id="methods">
-        <title>Methods</title>
+        <title>Functions</title>
         
-        <para>A <emphasis>method</emphasis> is a callable block of code. Methods may 
-        have parameters and may return a value.</para>
+        <para>A <emphasis>function</emphasis> is a callable block of code. Functions 
+        may have parameters and may return a value. If a function belongs to a type,
+        it is called a <emphasis>method</emphasis>.</para>
         
         <programlisting>Method: Annotation* MethodHeader (Block | Specifier? ";")</programlisting>
         
-        <para>All method declarations specify the method name, one or more parameter 
-        lists, and, optionally, a list of type parameters. A method declaration may 
-        specify a type, called the <emphasis>return type</emphasis>, to which the 
-        values the method returns are assignable, or it may specify that the method 
-        is a <literal>void</literal> method&mdash;a method which does not return a 
-        value. The return type of a <literal>void</literal> method is considered to 
-        be <literal>Void</literal>. A method declaration may have a list of type 
-        constraints.</para>
+        <para>All function declarations specify the function name, one or more parameter 
+        lists, and, optionally, a list of type parameters. A function declaration may 
+        specify a type, called the <emphasis>return type</emphasis>, to which the values 
+        the method returns are assignable, or it may specify that the function is a 
+        <literal>void</literal> function&mdash;a function which does not return a useful 
+        value, and only useful for its effect. The return type of a <literal>void</literal> 
+        function is considered to be <literal>Anything</literal> defined in 
+        <literal>ceylon.language</literal>. A generic function declaration may have a list 
+        of type constraints.</para>
         
-        <programlisting>MethodHeader: (UnionType | "function" | "void") MemberName TypeParams? Params+ Metatypes? TypeConstraints?</programlisting>
+        <programlisting>MethodHeader: (EntryType | "function" | "void") MemberName TypeParams? Params+ TypeConstraints?</programlisting>
         
-        <para>The Ceylon compiler preserves the names of method parameters.</para>
+        <para>The Ceylon compiler preserves the names of function parameters.</para>
         
         <!--<section id="methodbodies">
             <title>Method bodies</title>-->
         
-        <para>A method implementation may be specified using either:</para>
+        <para>A function implementation may be specified using either:</para>
         
         <itemizedlist>
             <listitem>
                 <para>a block of code, or</para>
             </listitem>
             <listitem>
-                <para>a reference to another method.</para>
+                <para>a lazy specifier.</para>
             </listitem>
         </itemizedlist>
         
-        <para>If a method is referenced by a parameter, it must not specify any 
-        implementation.</para>
-
-        <!--
-        <para>A member method body may invoke, evaluate or assign members of the instance
-        being invoked&mdash;the current instance of the class which defines the 
-        method&mdash;without explicitly specifying the receiver.</para>
+        <para>If a function is a parameter, it must not specify any implementation.</para>
         
-        <para>A member method body of a member class may invoke, evaluate or assign members 
-        of the current instance of the containing class or interface (the containing instance 
-        of the instance upon which the method was invoked) without explicitly specifying the 
-        receiver.</para>
-        
-        <para>A toplevel method body may not refer to <literal>this</literal> or 
-        <literal>super</literal>, since there is no current instance.</para>
-        
-        <para>A method may be declared inside the body of another method or attribute, in 
-        which case it may refer to any non-<literal>variable</literal> local, block local 
-        attribute getter or block local method declared earlier within the containing scope. 
-        It may not refer to <literal>variable</literal> locals from the containing scope.</para>
-        -->
+        <comment><para>Note: a <literal>void</literal> function with a concrete 
+        implementation returns the value <literal>null</literal>. However, since a
+        <literal>void</literal> function may be a reference to a non-<literal>void</literal> 
+        function, this behavior should not be depended upon, and should be considered
+        unspecified.</para></comment>
         
         <section id="callabletype">
-            <title>Callable type of a method</title>
+            <title>Callable type of a function</title>
             
-        <para>The <emphasis>callable type</emphasis> of a method captures the return
-        type and parameter types of the method.</para>
+        <para>The <emphasis>callable type</emphasis> of a function captures the return
+        type and parameter types of the function.</para>
         
         <itemizedlist>
         <listitem>
-            <para>The callable type of a method with a single parameter list is 
-            <literal>Callable&lt;R,P...&gt;</literal> where <literal>R</literal> is the 
-            return type of the method, or <literal>Void</literal> if the method is 
-            <literal>void</literal>, and <literal>P...</literal> are the parameter types 
-            of the method.</para>
+            <para>The callable type of a function with a single parameter list is 
+            <literal>Callable&lt;R,P&gt;</literal> where <literal>R</literal> is the 
+            return type of the method, or <literal>Anything</literal> if the function is 
+            <literal>void</literal>, and <literal>P</literal> is the type of the
+            parameter list.</para>
         </listitem>
         <listitem>
-            <para>The callable type of a method with multiple parameter lists is 
-            <literal>Callable&lt;O,P...&gt;</literal>, where <literal>O</literal> is the
+            <para>The callable type of a function with multiple parameter lists is 
+            <literal>Callable&lt;O,P&gt;</literal>, where <literal>O</literal> is the
             callable type of a method produced by eliminating the first parameter list, 
-            and <literal>P...</literal> are the parameter types of the first parameter 
-            list of the method.</para>
+            and <literal>P</literal> is the type of the first parameter list of the
+            function.</para>
         </listitem>
         </itemizedlist>
-        
-        <para>A sequenced parameter is considered of type <literal>T[]</literal> where 
-        <literal>T...</literal> is the declared sequenced type.</para>
         
         </section>
         
         <section id="methodswithblocks">
-            <title>Methods with blocks</title>
+            <title>Functions with blocks</title>
             
-        <para>A method implementation may be a block. If the method is a <literal>void</literal> 
-        method, the block may not contain a <literal>return</literal> directive that 
-        specifies an expression. Otherwise, every conditional execution path of the block 
-        must end in a <literal>return</literal> directive that specifies an expression
-        assignable to the return type of the method.</para>
+        <para>A function implementation may be a block.</para>
+        
+        <itemizedlist>
+            <listitem>
+                <para>If the function is declared <literal>void</literal>, the block 
+                may not contain a <literal>return</literal> directive that specifies 
+                an expression.</para>
+            </listitem>
+            <listitem>
+                <para>Otherwise, every conditional execution path of the block must 
+                end in a <literal>return</literal> directive that specifies an 
+                expression assignable to the return type of the function.</para>
+            </listitem>
+        </itemizedlist>
         
         <programlisting>shared Integer add(Integer x, Integer y) {
     return x + y;
 }</programlisting>
     
-        <programlisting>Identifier createToken() {
-    return Token();
-}</programlisting>
-
-        <programlisting>shared void print(Object... objects) {
-    for (Object obj in objects) {
-        log.info($obj);
+        <programlisting>shared void printAll(Object* objects) {
+    for (obj in objects) {
+        print(obj);
     }
 }</programlisting>
-
-        <programlisting>shared void addEntry(Key key -> Item item) {
-    map.define(key,item);
+        
+        <programlisting>shared void addEntry(Entry&lt;Key,Item&gt; entry) {
+    map.put(entry.key,entry.item);
 }</programlisting>
 
         <programlisting><![CDATA[shared Set<Element> singleton<Element>(Element element) 
         given Element satisfies Comparable<Element> {
     return TreeSet(element);
 }]]></programlisting>
+                
+        </section>
         
-        <!--
-        <programlisting>shared Float[n] float&lt;#n&gt;(Decimal[n] decimals) {
-    return Vector&lt;Float,#n&gt;() 
-                containing (Bounded&lt;#n&gt; i) (decimals[i].float);
-}</programlisting>
-        -->
+        <section id="methodswithspecifiers">
+            <title>Funtions with specifiers</title>
+            
+        <para>Alternatively, a function implementation may be a lazy specifier, that
+        is, an expression specified using <literal>=&gt;</literal>. The type of the 
+        specified expression must be assignable to the return type of the function.
+        In the case of a function declared <literal>void</literal>, the expression
+        must be a legal statement</para>
         
-        <para>Note that a method which declares the return type <literal>Void</literal>
-        is not a <literal>void</literal> method. A method with declared type 
-        <literal>Void</literal> must return a value of type <literal>Void</literal> 
-        (any value will do).</para>
+        <programlisting>shared Integer add(Integer x, Integer y) => x + y;</programlisting>
         
-        <programlisting>void say(String) { ... }
+        <programlisting>shared void addEntry(Entry&lt;Key,Item&gt; entry) => map.put(entry.key,entry.item);</programlisting>
 
-void hello() {
-    say("hello");
-}
+        <programlisting><![CDATA[shared Set<Element> singleton<Element>(Element element) 
+            given Element satisfies Comparable<Element>
+        => TreeSet(element);]]></programlisting>
         
-Void goodbye() {
-    return say("goodbye");
-}</programlisting>
+        </section>
         
-        <para>A non-<literal>void</literal> block local method may be declared using 
-        the keyword <literal>function</literal> in place of the explicit return type 
-        declaration. Then the method return type is inferred:</para>
+        <section id="returntypeinference">
+            <title>Function return type inference</title>
+            
+        <para>A non-<literal>void</literal> block local function with a block or lazy 
+        specifier may be declared using the keyword <literal>function</literal> in place 
+        of the explicit return type declaration. Then the function return type is 
+        inferred:</para>
         
         <itemizedlist>
             <listitem>
-                <para>if the method contains no <literal>return</literal> directive,
-                then the return type of the method is <literal>Bottom</literal> (this
-                is the case where the method always terminates in a <literal>throw</literal>
-                directive), or</para>
+                <para>if the function implementation is a lazy specifier, then the 
+                return type of the function is the type of the specified expression,</para>
             </listitem>
             <listitem>
-                <para>otherwise, the return type of the method is the union of all 
+                <para>if the function implementation is a block, and the function contains 
+                no <literal>return</literal> directive, then the return type of the method 
+                is <literal>Bottom</literal> (this is the case where the method always 
+                terminates in a <literal>throw</literal> directive), or,</para>
+            </listitem>
+            <listitem>
+                <para>otherwise, the return type of the function is the union of all 
                 returned expression types of <literal>return</literal> directives
                 of the method body.</para>
             </listitem>
         </itemizedlist>
         
-        <para>This method has inferred return type <literal>Integer</literal>.</para>
-
-        <programlisting>function add(Integer x, Integer y) {
-    return x + y;
-}</programlisting>
-
-        <para>This method has inferred return type <literal>Float|Integer</literal>.</para>
-
-        <programlisting>function unit(Boolean floating=false) {
+        <para>This function has inferred return type <literal>Integer</literal>.</para>
+        
+        <programlisting>function add(Integer x, Integer y) => x + y;</programlisting>
+        
+        <para>This function has inferred return type <literal>Float|Integer</literal>.</para>
+        
+        <programlisting>function unit(Boolean floating) {
     if (floating) {
         return 1.0;
     }
@@ -1645,125 +1640,94 @@ Void goodbye() {
         return 1;
     }
 }</programlisting>
-
-        <para>This method has inferred return type <literal>Bottom</literal>.</para>
-
+        
+        <para>This function has inferred return type <literal>Bottom</literal>.</para>
+        
         <programlisting>function die() {
     throw;
 }</programlisting>
-
-        
-        </section>
-        
-        <section id="methodswithspecifiers">
-            <title>Methods with specifiers</title>
-            
-        <para>Alternatively, a method implementation may be an expression that evaluates 
-        to a callable object, specified using <literal>=</literal>. The type of the 
-        callable object must be assignable to the callable type of the method.</para>
-        
-        <programlisting>Float say(String words) = person.say;</programlisting>
-        
-        <programlisting>Float sqrt(Float x) = 2.root;</programlisting>
-        
-        <programlisting>Comparison order(String x, String y) = getOrder();</programlisting>
-        
-        <para>The callable object expression may not refer to parameters of the
-        method.</para>
-        
-        <para>A block local method which specifies a callable object expression may be 
-        declared using the keyword <literal>function</literal> in place of the explicit 
-        return type declaration. The return type of the method is inferred to be the
-        type of the type argument to the first type parameter of the expression type
-        <literal>Callable</literal> (the return type).</para>
-        
-        <programlisting>function sqrt(Float x) = 2.root;</programlisting>
         
         </section>
         
         <section id="methodforwarddeclaration">
-            <title>Forward declaration of methods</title>
+            <title>Forward declaration of functions</title>
             
-            <para>The declaration of a method may be separated from the specification
-            of the callable object. If a method declaration does have a specifier, named 
-            arguments, or a block, and is not annotated <literal>formal</literal>, it is 
-            a <emphasis>forward-declared</emphasis> method.</para>
+            <para>The declaration of a function may be separated from the specification
+            of its implementation. If a function declaration does have a lazy specifier, 
+            or a block, and is not annotated <literal>formal</literal>, and is not a 
+            parameter, it is a <emphasis>forward-declared</emphasis> function.</para>
             
-        <programlisting>Comparison order(Value x, Value y);
+            <para>A forward-declared function may later ve specified using a specification
+            statement. The specification statement for a forward-declared function may be:</para>
+            
+            <itemizedlist>
+                <listitem>
+                    <para>A lazy specification statement with parameter lists of exactly
+                    the same types as the function, and a specified expression assignable
+                    to the declared type of the function.</para>
+                </listitem>
+                <listitem>
+                    <para>An ordinary specification statement with a specified expression
+                    assignable to the callable type of the function.</para>
+                </listitem>
+            </itemizedlist>
+            
+        <programlisting>Comparison order(String x, String y);
 if (reverseOrder) {
-    function reverse(Value x, Value y) { return y&lt;=&gt;x; }
-    order = reverse;
+    order(String x, String y) => y&lt;=&gt;x;
 }
 else {
-    function natural(Value x, Value y) { return x&lt;=&gt;y; }
-    order = natural;
+    order(String x, String y) => x&lt;=&gt;y;
+}</programlisting>
+        
+        <programlisting>Comparison format(Integer x);
+switch (base)
+case (decimal) {
+    format = (Integer i) => i.string; 
+}
+case (binary) {
+    format = formatBin;
+}
+case (hexadecimal) {
+    format = formatHex;
 }</programlisting>
             
-            <para>Every forward-declared method must explicitly specify a type. It may 
+            <para>Every forward-declared function must explicitly specify a type. It may 
             not be declared using the keyword <literal>function</literal>.</para>
-        
-            <para>A toplevel method may not be forward-declared. A method of an interface
+            
+            <para>A toplevel function may not be forward-declared. A method of an interface
             may not be forward-declared.</para>
+            
+            <para>If a <literal>shared</literal> method is forward-declared, its 
+            implementation must be definitely secified by all conditional paths in the
+            class initializer.</para>
             
         </section>
                 
         <section id="multipleparameterlists">
-            <title>Methods with multiple parameter lists</title>
+            <title>Functions with multiple parameter lists</title>
             
-        <para>A method may declare multiple lists of parameters. A method which 
-        declares more than one parameter list returns instances of 
-        <literal>Callable</literal>. The compiler infers a nested method whose
-        callable type is formed by taking the method with multiple parameter 
-        lists and eliminating the first parameter list.</para>
+        <para>A function may declare multiple lists of parameters. A function with 
+        more than one parameter list returns instances of <literal>Callable</literal>
+        in <literal>ceylon.language</literal> when invoked. The compiler infers an 
+        anonymous function whose callable type is formed by taking the function with 
+        multiple parameter lists and eliminating the first parameter list.</para>
         
-        <!--
-        <para>The type of the expression specified by the <literal>return</literal> 
-        directive may be be assignable to either:</para>
+        <para>This function declaration:</para>
         
-        <itemizedlist>
-            <listitem><para>the callable type of a method produced by taking the 
-            method with multiple parameter lists and eliminating the first parameter 
-            list, or</para></listitem>
-            <listitem><para>the declared return type of the method.</para></listitem>
-        </itemizedlist>
-        
-        <para>If the <literal>return</literal> expression type is assignable to the 
-        callable type of the method produced by eliminating the first parameter 
-        list of the method, the method body may <emphasis>only</emphasis> refer to 
-        parameters in the first parameter list. It may not refer to parameters of 
-        other parameter lists. Parameters declared by parameter lists other than the 
-        first parameter list are not considered visible inside the body of the 
-        method.</para>
-        
-        <programlisting>Comparison getOrder()(Integer x, Integer y) {
-    Comparison order(Integer x, Integer y) { return x&lt;=&gt;y; }
-    return order;
-}</programlisting>
-
-        <para>Otherwise, if the <literal>return</literal> expression type is assignable 
-        to the declared return type of the method, the method body may refer to any
-        parameter in any one of the parameter lists of the method. The compiler 
-        automatically infers a series of nested methods, one for each parameter list of 
-        the method. The declarations and statements in the method body form the body of 
-        the most nested inferred method.</para>
-        -->
-        
-        <para>This method declaration:</para>
-        
-        <programlisting>Comparison getOrder()(Integer x, Integer y) {
-    return x&lt;=&gt;y;
-}</programlisting>
+        <programlisting><![CDATA[Boolean greaterThan<Element>(Element val)(Element element)
+        given Element satisfies Comparable<Element> => 
+                element>val;]]></programlisting>
 
         <para>is equivalent to the following:</para>
 
-        <programlisting>Callable&lt;Comparison,Integer,Integer&gt; getOrder() {
-    Comparison order(Integer x, Integer y) { return x&lt;=&gt;y; }
-    return order;
-}</programlisting>
+        <programlisting><![CDATA[Boolean(Element) greaterThan<Element>(Element val)
+        given Element satisfies Comparable<Element> => 
+                (Element element) => element>val;]]></programlisting>
 
-        <para>For a method with <literal>n</literal> parameter lists, there are 
-        <literal>n</literal> inferred methods. The <literal>i</literal>th inferred 
-        method:</para>
+        <para>For a function with <literal>n</literal> parameter lists, there are 
+        <literal>n-1</literal> inferred anonymous function.s The <literal>i</literal>th 
+        inferred function:</para>
         
         <itemizedlist>
             <listitem>
@@ -1775,88 +1739,37 @@ else {
                 and</para>
             </listitem>
             <listitem>
-                <para>if <literal>i&lt;n</literal>, has a body which contains the
-                definition of the <literal>i+1</literal>th inferred method and 
-                simply returns a reference to that method, or</para>
+                <para>if <literal>i&lt;n</literal>, returns the <literal>i+1</literal>th 
+                inferred function, or</para>
             </listitem>
             <listitem>
-                <para>otherwise, if <literal>i=n</literal>, has the body of the original
-                declared method.</para>
+                <para>otherwise, if <literal>i==n</literal>, has the implementation 
+                of the original declared function.</para>
             </listitem>
         </itemizedlist>
         
-        <para>The first inferred method replaces the original declared method in the 
-        definition of the class.</para>
+        <para>Then the original function returns the first inferred anonymous function.</para>
         
         <para>This method declaration:</para>
         
-        <programlisting>function fullName(String firstName)(String middleName)(String lastName) {
-    return firstName + " " + middleName + " " + lastName;
-}</programlisting>
+        <programlisting>function fullName(String firstName)(String middleName)(String lastName)
+        => firstName + " " + middleName + " " + lastName;</programlisting>
         
         <para>Is equivalent to:</para>
         
-        <programlisting>function fullName(String firstName) {
-    function fullName2(String middleName) {
-        function fullName3(String lastName) {
-            return firstName + " " + middleName + " " + lastName;
-        }
-        return fullName3;
-    }
-    return fullName2;
-}</programlisting>
-                        
-        </section>
-        
-        <!--
-        <section id="overloadedmethods">
-            <title>Overloaded methods</title>
-            
-            <para>Multiple toplevel methods belonging to the same package, or multiple 
-            methods of the same containing body may may declare the same name. A class or
-            interface may declare or inherit multiple methods with the same name. The 
-            methods are called <emphasis>overloaded</emphasis>. Overloaded methods:</para>
-            
-            <itemizedlist>
-                <listitem>
-                    <para>must have distinct erased signatures, and</para>
-                </listitem>
-                <listitem>
-                    <para>may not declare default parameters.</para>
-                </listitem>
-            </itemizedlist>
-            
-            <para>A class may not not declare or inherit a method with the same name as
-            an attribute it declares or inherits.</para>
-            
-            <para>An invocation expression is resolved to a particular overloaded method 
-            declaration at compile time, using the argument expression types.</para>
-            
-            <para>A package or body may not declare or inherit two methods with the 
-            same name unless either:</para>
-            
-            <itemizedlist>
-                <listitem>
-                    <para>the methods are overloaded,</para>
-                </listitem>
-                <listitem>
-                    <para>one method refines the other method, or</para>
-                </listitem>
-                <listitem>
-                    <para>one method is defined by a supertype, and is not visible
-                    to the subtype that defines the other method.</para>
-                </listitem>
-            </itemizedlist>
+        <programlisting>function fullName(String firstName) =>
+        (String middleName) =>
+                (String lastName) =>
+                        firstName + " " + middleName + " " + lastName;</programlisting>
         
         </section>
-        -->
         
-       <section id="formalmethods">
+        <section id="formalmethods">
             <title>Formal and default methods</title>
             
-            <para>If a method declaration does have a specifier, named arguments, or a 
-            block, and is annotated <literal>shared</literal>, and is a member of 
-            either:</para>
+            <para>If a function declaration does have a specifier, named arguments, 
+            or a block, and is annotated <literal>shared</literal>, and is a method 
+            of either:</para>
             
             <itemizedlist>
                 <listitem>
@@ -1868,42 +1781,40 @@ else {
                 </listitem>
             </itemizedlist> 
             
-            <para>then the method declaration may be annotated <literal>formal</literal>, 
+            <para>then the function declaration may be annotated <literal>formal</literal>, 
             and is called a <literal>formal</literal> method, or, sometimes, an 
             <emphasis>abstract method</emphasis>.</para>
             
             <programlisting>shared formal Item? get(Key key);</programlisting>
-
+            
             <para>A method which is not annotated <literal>formal</literal> is called 
             a <emphasis>concrete</emphasis> method.</para>
-        
+            
             <para>If a concrete method is annotated <literal>shared</literal>, and is 
             a member of a class or interface, then it may be annotated <literal>default</literal>
-            and is called a <literal>default</literal> method.
-            <!--or <literal>definite</literal> <emphasis>(Note that <literal>definite</literal> is a 
-            proposed feature for a future version of the language.)</emphasis> --></para>
+            and is called a <literal>default</literal> method.</para>
             
             <programlisting>shared default void writeLine(String line) {
     write(line);
     write("\n");
 }</programlisting>
-
+            
             <para>A method annotated <literal>formal</literal> may not specify an
             implementation (a specifier, named arguments, or a block).</para>
-        
+            
             <para>A method annotated <literal>default</literal> may specify an
             implementation (a specifier, initializer, named arguments, or a block), or
             may be forward-declared.</para>
-        
+            
             <para>Every <literal>formal</literal> method must explicitly specify a type. 
             It may not be declared using the keyword <literal>function</literal>.</para>
-        
+            
             <para>A toplevel method may not be annotated <literal>formal</literal> or
             <literal>default</literal>.</para>
-
+            
             <para>A block local method may not be annotated <literal>formal</literal> or
             <literal>default</literal>.</para>
-                  
+            
         </section>
                 
         <section id="refiningmethods">
@@ -1915,13 +1826,12 @@ else {
             <listitem>
                 <para>A class or interface may refine any <literal>formal</literal> 
                 or <literal>default</literal> method it inherits, unless it inherits 
-                a non-<literal>formal</literal> non-<literal>default</literal> method that 
-                refines the method.</para>
+                a non-<literal>formal</literal> non-<literal>default</literal> method 
+                that refines the method.</para>
             </listitem>
             <listitem>
                 <para>A concrete class must refine every <literal>formal</literal> 
-                <!--or <literal>definite</literal>--> method it inherits, unless it inherits 
-                a non-<literal>formal</literal> <!--non-<literal>definite</literal>--> 
+                method it inherits, unless it inherits a non-<literal>formal</literal>
                 method that refines the method.</para>
             </listitem>
             </itemizedlist>           
@@ -1957,8 +1867,8 @@ else {
             
             <para>If a method is annotated <literal>actual</literal>, it must 
             refine some method defined by a supertype, and the method it refines 
-            must be either <literal>formal</literal> or <literal>default</literal>. 
-            <!--or <literal>definite</literal>.--></para>
+            must be either <literal>formal</literal> or 
+            <literal>default</literal>.</para>
             
             <para>A method may not, directly or indirectly, refine two different
             methods not themselves annotated <literal>actual</literal>.</para>
@@ -1972,35 +1882,18 @@ else {
 
             <programlisting>class ConcreteSquareRooter()
         extends AbstractSquareRooter() {
-    shared actual Float squareRoot(Float x) { ... }
+    shared actual Float squareRoot(Float x) => x^0.5;
 }</programlisting>
             
-            <para>For <literal>formal</literal> methods, a special shortcut form of 
-            refinement is permitted. A subclass initializer may simply specify an 
-            instance of <literal>Callable</literal> as the implementation of the method 
-            declared by the supertype. No parameter list, return type declaration, or 
-            <literal>actual</literal> annotation is necessary.</para>
+            <para>Alternatively, a subtype may refine a method using a specification
+            statement. The specification statement must satisfy the requirements for
+            specification of a forward-declared function.</para>
             
             <programlisting>class ConcreteSquareRooter()
         extends AbstractSquareRooter() {
-    Float sqrt(Float x) { ... }
-    squareRoot = sqrt;
+    squareRoot(Float x) => x^0.5;
 }</programlisting>
             
-            <para>Toplevel methods cannot be refined, and so toplevel method invocation 
-            is never polymorphic.</para>
-            
-            <!--
-            <comment><para>TODO: are you allowed to refine the default value of a 
-            defaulted parameter?</para></comment>
-            
-            <comment><para>TODO: are you required to have the same parameter names in 
-            the two methods? I don't see that this would be necessary. In a named 
-            argument invocation, you just use the names declared by the member of the 
-            compile-time type, and they are mapped positionally to the parameters of 
-            the refining method.</para></comment>
-            -->
-        
         </section>
         
     </section>
