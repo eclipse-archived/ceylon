@@ -38,6 +38,15 @@ JAVA_CP="$JAVA_CP:$LIB/ceylon-runtime-bootstrap.jar"
 
 #JAVA_DEBUG_OPTS="-Xrunjdwp:transport=dt_socket,address=8787,server=y,suspend=y"
 
+if test -z "$JAVA_OPTS"; then
+	JAVA_OPTS=""
+	JAVA_OPTS="$JAVA_OPTS -Dcom.redhat.ceylon.common.tool.terminal.width=$(tput cols)"
+	JAVA_OPTS="$JAVA_OPTS -Dcom.redhat.ceylon.common.tool.progname=$(basename $PRG)"
+else 
+	echo "Using system JAVA_OPTS: $JAVA_OPTS" 
+fi
+JAVA_OPTS="$JAVA_OPTS $JAVA_DEBUG_OPTS"
+
 # source classpath to set the MINIMAL_CP
 . "$DIR/ceylon-cp.sh"
 
@@ -48,12 +57,10 @@ JAVA_CP="$JAVA_CP:$LIB/ceylon-runtime-bootstrap.jar"
 BOOTSTRAP_CP="$MINIMAL_CP"
 
 java \
- $JAVA_DEBUG_OPTS \
  -Xbootclasspath/p:"$BOOTSTRAP_CP" \
  -cp $JAVA_CP \
  "-Dceylon.home=$CEYLON_HOME" \
  "-Dceylon.system.repo=$CEYLON_REPO" \
- "-Dcom.redhat.ceylon.common.tool.terminal.width=$(tput cols)" \
- "-Dcom.redhat.ceylon.common.tool.progname=$(basename $PRG)" \
+ $JAVA_OPTS \
  com.redhat.ceylon.tools.CeylonTool \
  $ARGS
