@@ -546,9 +546,8 @@ TypeConstraints?
 }</programlisting>
 
         <para>An interface may declare <literal>formal</literal> methods, attributes,
-        and member classes, and concrete methods, attribute getters, attribute setters, 
-        and member classes. An interface may not declare a concrete simple attribute or 
-        member <literal>object</literal>.</para>
+        and member classes, and concrete methods, getters, setters, and member classes.
+        An interface may not declare a member field or member <literal>object</literal>.</para>
         
         <para>A non-<literal>abstract </literal> nested class declaration is called a
         <emphasis>member class</emphasis> of the interface. A nested interface or 
@@ -1556,7 +1555,8 @@ shared class Branch<Element>(String name, Node<Element> left, Node<Element> righ
             <listitem>
                 <para>Otherwise, every conditional execution path of the block must 
                 end in a <literal>return</literal> directive that specifies an 
-                expression assignable to the return type of the function.</para>
+                expression assignable to the return type of the function, or in a 
+                <literal>throw</literal> directive.</para>
             </listitem>
         </itemizedlist>
         
@@ -1582,13 +1582,13 @@ shared class Branch<Element>(String name, Node<Element> left, Node<Element> righ
         </section>
         
         <section id="methodswithspecifiers">
-            <title>Funtions with specifiers</title>
+            <title>Functions with specifiers</title>
             
         <para>Alternatively, a function implementation may be a lazy specifier, that
         is, an expression specified using <literal>=&gt;</literal>. The type of the 
         specified expression must be assignable to the return type of the function.
         In the case of a function declared <literal>void</literal>, the expression
-        must be a legal statement</para>
+        must be a legal statement.</para>
         
         <programlisting>shared Integer add(Integer x, Integer y) => x + y;</programlisting>
         
@@ -1657,17 +1657,17 @@ shared class Branch<Element>(String name, Node<Element> left, Node<Element> righ
             or a block, and is not annotated <literal>formal</literal>, and is not a 
             parameter, it is a <emphasis>forward-declared</emphasis> function.</para>
             
-            <para>A forward-declared function may later ve specified using a specification
+            <para>A forward-declared function may later be specified using a specification
             statement. The specification statement for a forward-declared function may be:</para>
             
             <itemizedlist>
                 <listitem>
-                    <para>A lazy specification statement with parameter lists of exactly
+                    <para>a lazy specification statement with parameter lists of exactly
                     the same types as the function, and a specified expression assignable
-                    to the declared type of the function.</para>
+                    to the declared type of the function, or</para>
                 </listitem>
                 <listitem>
-                    <para>An ordinary specification statement with a specified expression
+                    <para>an ordinary specification statement with a specified expression
                     assignable to the callable type of the function.</para>
                 </listitem>
             </itemizedlist>
@@ -1699,7 +1699,7 @@ case (hexadecimal) {
             may not be forward-declared.</para>
             
             <para>If a <literal>shared</literal> method is forward-declared, its 
-            implementation must be definitely secified by all conditional paths in the
+            implementation must be definitely specified by all conditional paths in the
             class initializer.</para>
             
         </section>
@@ -1767,9 +1767,8 @@ case (hexadecimal) {
         <section id="formalmethods">
             <title>Formal and default methods</title>
             
-            <para>If a function declaration does have a specifier, named arguments, 
-            or a block, and is annotated <literal>shared</literal>, and is a method 
-            of either:</para>
+            <para>If a function declaration does not have a lazy specifier, or a block, 
+            and is annotated <literal>shared</literal>, and is a method of either:</para>
             
             <itemizedlist>
                 <listitem>
@@ -1800,11 +1799,10 @@ case (hexadecimal) {
 }</programlisting>
             
             <para>A method annotated <literal>formal</literal> may not specify an
-            implementation (a specifier, named arguments, or a block).</para>
+            implementation (a lazy specifier, or a block).</para>
             
             <para>A method annotated <literal>default</literal> may specify an
-            implementation (a specifier, initializer, named arguments, or a block), or
-            may be forward-declared.</para>
+            implementation (a lazy specifier, or a block), or may be forward-declared.</para>
             
             <para>Every <literal>formal</literal> method must explicitly specify a type. 
             It may not be declared using the keyword <literal>function</literal>.</para>
@@ -1899,120 +1897,82 @@ case (hexadecimal) {
     </section>
     
     <section id="attributes">
-        <title>Attributes</title>
+        <title>Values</title>
         
-        <para>There are three kinds of declarations related to <emphasis>attribute</emphasis> 
-        definition:</para>
+        <para>There are two basic kinds of <emphasis>value</emphasis>:</para>
         
         <itemizedlist>
             <listitem>
-                <para>Simple attribute declarations define state (very similar to a 
-                Java field or local variable).</para>
+                <para>A <emphasis>reference</emphasis> defines state.</para>
             </listitem>
             <listitem>
-                <para>Attribute getter declarations define how the value of a derived 
-                attribute is obtained.</para>
-            </listitem>
-            <listitem>
-                <para>Attribute setter declarations define how the value of a derived 
-                attribute is assigned.</para>
+                <para>A <emphasis>getter</emphasis> defines how a value is evaluated.</para>
             </listitem>
         </itemizedlist>
         
-        <programlisting>Attribute: Annotation* (SimpleAttribute | AttributeGetter | AttributeSetter)</programlisting>
-    
-        <para>Unlike Java fields, Ceylon attribute access is polymorphic and attribute 
-        definitions may be refined by subclasses.</para>
+        <para>A reference has a persistent value, determined at the moment it is specified 
+        or assigned. A getter is defined using a block or lazy specifier, which is executed 
+        every time the value is evaluated.</para>
         
-        <para>All attributes have a type and name. The type of the attribute is specified
-        by the simple attribute declaration or attribute getter declaration. An attribute 
-        may be <literal>variable</literal>, in which case its value can be assigned using 
-        the <literal>:=</literal> and compound assignment operators. This is the case for
-        simple attributes explicitly annotated <literal>variable</literal>, or for 
-        attributes with a setter declaration.</para>
+        <programlisting>Attribute: Annotation* AttributeHeader (Block | (Specifier | LazySpecifier)? ";")</programlisting>
+        
+        <para>If a value belongs to a type, it is called an <emphasis>attribute</emphasis>.</para>
+        
+        <para>All value declarations specify the attribute name. A value declaration may 
+        specify a type. A value may be <emphasis>variable</emphasis>, in which case its 
+        may be freely assigned using <literal>=</literal> and the compound assignment 
+        operators. This is the case for a reference annotated <literal>variable</literal>, 
+        or for a getter with a matching setter.</para>
             
-        <programlisting>AttributeHeader: (UnionType | "value") MemberName</programlisting>
+        <programlisting>AttributeHeader: (EntryType | "value") MemberName</programlisting>
         
-        <para>Note that an attribute declaration is essentially a method declaration with 
-        zero parameter lists. Likewise, an attribute evaluation is essentially a method 
-        invocation with zero argument lists.</para>
+        <para>If a reference is a parameter, it must not specify a persistent value.</para>
         
-        <para>A toplevel attribute may not be <literal>variable</literal>.</para>
-        
-        <para>If a class declares or inherits a <literal>variable</literal> attribute, it 
-        must (directly or indirectly) extend the class <literal>IdentifiableObject</literal> 
-        defined in <literal>ceylon.language</literal>.</para>
-        
-        <!--
-        <para>An attribute of type <literal>Gettable</literal> or <literal>Settable</literal> 
-        may not be <literal>variable</literal>.</para>
-        -->
-        
-        <!--<section id="attributebodies">
-            <title>Attribute bodies</title>-->
-        <!-- 
-        <para>A member attribute body may invoke, evaluate or assign members of the 
-        instance being invoked&mdash;the current instance of the class which defines the 
-        method&mdash;without explicitly specifying the receiver.</para>
-        
-        <para>A member attribute body of a member class may invoke, evaluate or assign 
-        members of the current instance of the containing class or interface (the containing 
-        instance of the instance upon which the attribute was invoked) without explicitly 
-        specifying the receiver.</para>
-        
-        <para>A toplevel attribute body may not refer to <literal>this</literal> or 
-        <literal>super</literal>, since there is no current instance.</para>
-        
-        <para>An attribute may be declared inside the body of another method or attribute, 
-        in which case it may refer to any non-<literal>variable</literal> local, block local 
-        attribute getter or block local method declared earlier withing the containing scope. 
-        It may not refer to <literal>variable</literal> locals from the containing scope.</para>
-        -->
+        <comment><para>Note: syntactically a value declaration is essentially a function 
+        declaration with zero parameter lists. It is often helpful, in thinking about the 
+        syntax and semantics of Ceylon, to be keep in mind the perspective that a value 
+        is a function with zero parameter lists, or, alternatively, that a function is a
+        value of type <literal>Callable</literal>.</para></comment>
         
         <section id="simpleattributesandlocals">
-            <title>Simple attributes and locals</title>
+            <title>References</title>
             
-        <para>A simple attribute defines state. The value of a simple attribute or local
-        may be specified or initialized as part of the declaration, via a later 
-        specification statement or assignment, or via a parameter that references it.</para>
+        <para>A reference defines state. The persistent value of a simple attribute or local 
+        may be specified or initialized as part of the declaration, via a later specification 
+        statement or assignment, or, if it is a parameter, by an argument to an invocation 
+        expression.</para>
         
-        <programlisting>SimpleAttribute: AttributeHeader (Specifier | Initializer)? ";"</programlisting>
+        <para>A reference annotated <literal>variable</literal> has a persistent value that 
+        can be assigned multiple times. A reference not annotated <literal>variable</literal> 
+        has a persistent value that can be specified exactly once and not subsequently 
+        modified.</para>
         
-        <para>A simple attribute or local annotated <literal>variable</literal> represents a
-        value that can be assigned multiple times. A simple attribute or local not annotated
-        <literal>variable</literal> represents a value that can be specified exactly once.</para>
+        <programlisting>variable Integer count = 0;</programlisting>
         
-        <para>The value of a non-<literal>variable</literal> attribute is specified using 
-        <literal>=</literal>. A <literal>variable</literal> attribute may be initialized using 
-        the assignment operator <literal>:=</literal>.</para>
-
-        <programlisting>Initializer: ":=" Expression</programlisting>
-        
-        <para>If a simple attribute or local is referenced by a parameter, it must not have
-        an initializer or specifier.</para>
-
-        <para>Explicitly typed parameters of classes and methods are also considered to be 
-        locals.</para>
-                 
-        <programlisting>variable Integer count := 0;</programlisting>
-        
-        <programlisting>shared Integer max = +99;</programlisting>
-
         <programlisting>shared Decimal pi = calculatePi();</programlisting>
         
-        <programlisting>shared Integer[] evenDigits = {0,2,4,6,8};</programlisting>
-
-        <para>A simple attribute declared directly inside the body of a class represents state 
-        associated with the instance of the class. Repeated evaluation of the attribute of a 
-        particular instance of the class returns the same result until the attribute of the 
-        instance is assigned a new value.</para>
+        <programlisting>shared Integer[] evenDigits = [0,2,4,6,8];</programlisting>
         
-        <para>A <emphasis>local</emphasis> represents state associated with execution of a
-        particular block of code. A local is really just a special case of a simple attribute 
-        declaration, but one whose state is not held across multiple executions of the block
-        of code in which the local is defined.</para> 
+        <para>A reference declared directly inside the body of a class represents a persistent 
+        value associated with every instance of the class. Repeated evaluation of the attribute 
+        of a particular instance of the class returns the same result until the attribute of 
+        the instance is assigned a new value.</para>
         
-        <itemizedlist>
+        <para>A block-local reference represents state associated with a particular execution 
+        of that block of code.</para> 
+        
+        <para>A toplevel reference may not be annotated <literal>variable</literal>.</para>
+        
+        <comment><para>TODO: this restriction is pretty ineffective, since you can just wrap
+        a variable up in a class instance and keep a reference to the instance. Should we just
+        drop this restriction, or should we simply disallow toplevel references 
+        altogether?</para></comment>
+        
+        <para>If a class declares or inherits a <literal>variable</literal> reference, it 
+        must (directly or indirectly) extend the class <literal>Basic</literal> defined in 
+        <literal>ceylon.language</literal>.</para>
+        
+        <!--itemizedlist>
             <listitem>
                 <para>A simple attribute declared inside a block (the body of a method, 
                 attribute getter, attribute setter, or control structure) is a local.</para>
@@ -2029,34 +1989,132 @@ case (hexadecimal) {
             <listitem>
                 <para>A parameter of a method is a local.</para>
             </listitem>
+        </itemizedlist-->
+        
+        </section>
+        
+        <section id="getterswithblocks">
+            <title>Getters with blocks</title>
+            
+            <para>A getter implementation may be a block.</para>
+            
+            <para>Every conditional execution path of the block must end in a
+            <literal>return</literal> directive that specifies an expression assignable 
+            to the type of the value, or in a <literal>throw</literal> directive.</para>
+                                
+            <programlisting>shared Float total {
+    variable Float sum = 0.0;
+    for (li in lineItems) {
+        sum += li.amount;
+    }
+    return sum;
+}</programlisting>
+            
+        </section>
+                
+        <section id="getterswithspecifiers">
+            <title>Getters with specifiers</title>
+            
+        <para>Alternatively, a getter implementation may be a lazy specifier, that
+        is, an expression specified using <literal>=&gt;</literal>. The type of the 
+        specified expression must be assignable to the type of the value.</para>
+        
+        <programlisting>Name name => Name(firstName, initial, lastName);</programlisting>
+        
+        </section>
+        
+        <section id="attributesetters">
+            <title>Setters</title>
+            
+            <para>A Setter is a callable block of code that accepts a single value 
+            and does not return a value. The block may not contain a 
+            <literal>return</literal> directive that specifies an expression.</para>
+            
+            <programlisting>AttributeSetter: "assign" MemberName Block</programlisting>
+            
+            <para>The name specified in a setter declaration must be the name of a
+            matching getter that directly occurs earlier in the body containing the 
+            setter declaration. If a getter has a setter, we say that the value is 
+            <emphasis>variable</emphasis>.</para>
+            
+            <para>An attribute setter defines how the value is assigned. Within the
+            body of the setter, a value reference to the getter evaluates to the
+            value being assigned.</para>
+            
+            <programlisting>shared String name { return join(firstName, lastName); }
+shared assign name { firstName=first(name); lastName=last(name); }</programlisting>
+            
+            <para>A setter may not be annotated <literal>shared</literal>, 
+            <literal>default</literal> or <literal>actual</literal>. The visibility 
+            and refinement modifiers of an attribute with a setter are specified by 
+            annotating the matching getter.</para>
+            
+            <comment><para>TODO: should we require that the corresponding getter be 
+            annotated <literal>variable</literal>?</para></comment>
+            
+        </section>
+        
+        <section id="attributetypeinference">
+            <title>Value type inference</title>
+        
+        <para>A block-local value with a block, specifier, or lazy specifier may be declared 
+        using the keyword <literal>value</literal> in place of the explicit type declaration. 
+        Then the value's type is inferred:</para>
+        
+        <itemizedlist>
+            <listitem>
+                <para>if the value is a reference with a specifier, then the type of the 
+                value is the type of the specified expression,</para>
+            </listitem>
+            <listitem>
+                <para>if the value is a getter, and the getter implementation is a lazy 
+                specifier, then the type of the value is the type of the specified 
+                expression,</para>
+            </listitem>
+            <listitem>
+                <para>if the value is a getter, and the getter implementation is a block, 
+                and the getter contains no <literal>return</literal> directive, then the 
+                type of the value is <literal>Bottom</literal> (this is the case where 
+                the getter always terminates in a <literal>throw</literal> directive), or</para>
+            </listitem>
+            <listitem>
+                <para>otherwise, the type of the value is the union of all returned 
+                expression types of <literal>return</literal> directives of the getter 
+                body.</para>
+            </listitem>
         </itemizedlist>
         
-        <para>A local is a block local declaration&mdash;it is visible only to statements and 
-        declarations that occur within the lexical scope of the declaration (later in the same 
-        block or class body).</para>
-        
-        <para>The compiler is permitted to optimize block local simple attributes to a simple 
-        Java field declaration or local variable. Block local attributes may not be accessed 
-        via reflection.</para>
-        
-        <para>A block local simple attribute with a specifier or initializer may be declared 
-        using the keyword <literal>value</literal> in place of the explicit type declaration. 
-        The type of the local or attribute is inferred to be the type of the specifier or
-        initializer expression.</para>
-        
         <programlisting>value names = List&lt;String&gt;();</programlisting>
-        <programlisting>variable value count:=0;</programlisting>
-                
+        <programlisting>variable value count = 0;</programlisting>
+        <programlisting>value name => Name(firstName, initial, lastName);</programlisting>
+        
         </section>
         
         <section id="attributeforwarddeclaration">
-            <title>Forward declaration of simple attributes</title>
+            <title>Forward declaration of values</title>
             
-            <para>The declaration of a simple attribute or local may be separated from the 
-            specification or initialization of its value. If an attribute declaration does
-            have a specifier, initializer, named arguments, or a block, and if it is not
-            annotated <literal>formal</literal>, it is a <emphasis>forward-declared</emphasis> 
-            simple attribute or local.</para>
+            <para>The declaration of a reference may be separated from the specification 
+            or initialization of its persistent value. The declaration of a getter may be 
+            separated from the specification of its implementation. If a value declaration 
+            does have a specifier, lazy specifier, or a block, and is not annotated 
+            <literal>formal</literal>, it is a <emphasis>forward-declared</emphasis> 
+            value.</para>
+            
+            <para>A forward-declared value may later be specified using a specification
+            statement.</para>
+            
+            <itemizedlist>
+                <listitem>
+                    <para>The specification statement for a forward-declared getter is
+                    a lazy specification statement with no parameter list, and a specified
+                    expression assignable to the type of the value.</para>
+                </listitem>
+                <listitem>
+                    <para>The specification statement for a forward-declared reference is
+                    an ordinary specification statement with a specified expression
+                    assignable to the type of the value.</para>
+                </listitem>
+            </itemizedlist>
             
             <programlisting>String greeting;
 switch (language)
@@ -2071,102 +2129,24 @@ else {
 }
 print(greeting);</programlisting>
             
-            <para>Every forward-declared simple attribute must explicitly specify a type.
-            It may not be declared using the keyword <literal>value</literal>.</para>
+            <para>Every forward-declared value must explicitly specify a type. It may 
+            not be declared using the keyword <literal>value</literal>.</para>
         
-            <para>A toplevel attribute may not be forward-declared. An attribute of an 
+            <para>A toplevel value may not be forward-declared. An attribute of an 
             interface may not be forward-declared.</para>
             
-        </section>
-        
-        <section id="attributegetters">
-            <title>Attribute getters</title>
-            
-            <para>An attribute getter is a callable block of code with no parameters,
-            that returns a value.</para>
-            
-            <programlisting>AttributeGetter: AttributeHeader Block</programlisting>
-            
-            <para>An attribute getter defines how the value of a derived attribute is
-            obtained.</para>
-                                
-            <programlisting>shared Float total {
-    variable Float sum := 0.0;
-    for (LineItem li in lineItems) {
-        sum += li.amount;
-    }
-    return sum;
-}</programlisting>
-        
-            <para>If an attribute getter has a matching attribute setter, we say that 
-            the attribute is <literal>variable</literal>. Otherwise we say it is 
-            non-<literal>variable</literal>.</para>
-                        
-            <para>A block local attribute getter may be declared using the keyword 
-            <literal>value</literal> in place of the explicit type declaration. Then 
-            the attribute type is inferred:</para>
-        
-        <itemizedlist>
-            <listitem>
-                <para>if the getter contains no <literal>return</literal> directive,
-                then the type of the attribute is <literal>Bottom</literal> (this is 
-                the case where the getter always terminates in a <literal>throw</literal>
-                directive), or</para>
-            </listitem>
-            <listitem>
-                <para>otherwise, the type of the attribute is the union of all returned 
-                expression types of <literal>return</literal> directives of the getter 
-                body.</para>
-            </listitem>
-        </itemizedlist>
-        
-            <para>This attribute has inferred type <literal>Name</literal>.</para>
-        
-            <programlisting>value name { 
-    return Name(firstName, initial, lastName);
-}</programlisting>
-                
-        </section>
-                
-        <section id="attributesetters">
-            <title>Attribute setters</title>
-                    
-            <para>An attribute setter is a callable block of code that accepts a single 
-            value and does not return a value.</para>
-            
-            <programlisting>AttributeSetter: "assign" MemberName Block</programlisting>
-
-            <para>An attribute setter defines how the value of a derived attribute is
-            assigned. Every attribute setter must have a corresponding getter with the
-            same name. The getter declaration must directly occur earlier in the body
-            containing the setter declaration.</para>
-
-
-            <programlisting>shared String name { return join(firstName, lastName); }
-shared assign name { firstName := first(name); lastName := last(name); }</programlisting>
-                        
-            <para>A setter may not be annotated <literal>shared</literal>, 
-            <literal>default</literal> or <literal>actual</literal>. The visibility 
-            and refinement modifiers of an attribute with a setter are specified by 
-            annotating the matching getter.</para>
-            
-            <comment><para>TODO: should we require that the corresponding getter be 
-            annotated <literal>variable</literal>?</para></comment>
-            
-            <!--
-            <comment><para>TODO: should we allow overloaded attribute setters, for example:</para>
-            <programlisting>assign Name name { firstName = name.firstName; lastName = name.lastName; }</programlisting>
-            </comment>
-            -->
+            <para>If a <literal>shared</literal> value is forward-declared, its 
+            implementation must be definitely specified by all conditional paths in the 
+            class initializer.</para>
             
         </section>
         
         <section id="formalattributes">
             <title>Formal and default attributes</title>
             
-            <para>If an attribute declaration does have a specifier, initializer, named 
-            arguments, or a block, and is annotated <literal>shared</literal>, and is a 
-            member of either:</para>
+            <para>If a value declaration does not have a specifier, lazy specifier, or 
+            a block, and is annotated <literal>shared</literal>, and is a member of 
+            either:</para>
             
             <itemizedlist>
                 <listitem>
@@ -2178,7 +2158,7 @@ shared assign name { firstName := first(name); lastName := last(name); }</progra
                 </listitem>
             </itemizedlist> 
             
-            <para>then the attribute declaration may be annotated <literal>formal</literal>, 
+            <para>then the value declaration may be annotated <literal>formal</literal>, 
             and is called a <literal>formal</literal> attribute, or, sometimes, an 
             <emphasis>abstract attribute</emphasis>.</para>
             
@@ -2189,19 +2169,17 @@ shared assign name { firstName := first(name); lastName := last(name); }</progra
         
             <para>If a concrete attribute is annotated <literal>shared</literal>, and is 
             a member of a class or interface, then it may be annotated <literal>default</literal>
-            and is called a <literal>default</literal> attribute.
-            <!--or <literal>definite</literal> <emphasis>(Note that <literal>definite</literal> is a 
-            proposed feature for a future version of the language.)</emphasis> --></para>
+            and is called a <literal>default</literal> attribute.</para>
             
             <programlisting>shared default String greeting = "Hello";</programlisting>
 
             <para>An attribute annotated <literal>formal</literal> may not specify an
-            implementation (a specifier, initializer, named arguments, or a block). Nor
-            may there be a setter for a formal attribute.</para>
+            implementation (a specifier, lazy specifier, or a block). Nor may there be 
+            a setter for a formal attribute.</para>
         
             <para>An attribute annotated <literal>default</literal> may specify an
-            implementation (a specifier, initializer, named arguments, or a block), or
-            may be forward-declared.</para>
+            implementation (a specifier, lazy specifier, or a block), or may be 
+            forward-declared.</para>
         
             <para>Every <literal>formal</literal> attribute must explicitly specify a type. 
             It may not be declared using the keyword <literal>function</literal>.</para>
@@ -2229,16 +2207,14 @@ shared assign name { firstName := first(name); lastName := last(name); }</progra
             </listitem>
             <listitem>
                 <para>A concrete class must refine every <literal>formal</literal> 
-                <!--or <literal>definite</literal>--> attribute it inherits, unless it 
-                inherits a non-<literal>formal</literal> <!--non-<literal>definite</literal>-->
+                attribute it inherits, unless it inherits a non-<literal>formal</literal>
                 attribute that refines the attribute.</para>
             </listitem>
             </itemizedlist>           
             
-            <para>A non-<literal>variable</literal> attribute may be refined by a simple 
-            attribute or attribute getter. A <literal>variable</literal> attribute may be 
-            refined by a <literal>variable</literal> simple attribute or by an attribute 
-            getter and setter pair.</para>
+            <para>Any non-variable attribute may be refined by a reference or getter. A 
+            variable attribute may be refined by a <literal>variable</literal> refernce 
+            or by a getter and setter pair.</para>
             
             <comment><para>TODO: are you allowed to refine a getter or setter without also 
             refining its matching setter or getter?</para></comment>
@@ -2268,8 +2244,7 @@ shared assign name { firstName := first(name); lastName := last(name); }</progra
                     and</para>
                 </listitem>
                 <listitem>
-                    <para>is <literal>variable</literal>, if the attribute it refines is 
-                    <literal>variable</literal>.</para>
+                    <para>is variable, if the attribute it refines is variable.</para>
                 </listitem>
             </itemizedlist>
             
@@ -2278,14 +2253,13 @@ shared assign name { firstName := first(name); lastName := last(name); }</progra
         
             <para>If an attribute is annotated <literal>actual</literal>, it must 
             refine some attribute defined by a supertype, and the attribute it 
-            refines must be either <literal>formal</literal> or <literal>default</literal>. 
-            <!--or <literal>definite</literal>.--></para>
+            refines must be either <literal>formal</literal> or 
+            <literal>default</literal>.</para>
             
             <para>An attribute may not, directly or indirectly, refine two different
             attributes not themselves annotated <literal>actual</literal>.</para>
         
-            <para>A non-<literal>variable</literal> attribute may be refined by a 
-            <literal>variable</literal> attribute.</para>
+            <para>A non-variable attribute may be refined by a variable attribute.</para>
             
             <comment><para>TODO: Is that really allowed? It could break the superclass.
             Should we say that you are allowed to do it when you refine an interface
@@ -2304,26 +2278,15 @@ shared assign name { firstName := first(name); lastName := last(name); }</progra
     shared actual Float pi { ... }
 }</programlisting>
             
-            <para>For <literal>formal</literal>, non-<literal>variable</literal> 
-            attributes, a special shortcut form of refinement is permitted. A 
-            subclass initializer may simply specify a value to the attribute 
-            declared by the superclass. No type declaration or <literal>actual</literal> 
-            annotation is necessary.</para>
+            <para>Alternatively, a subtype may refine an attribute using a specification 
+            statement. The specification statement must satisfy the requirements for 
+            specification of a forward-declared attribute.</para>
             
             <programlisting>class ConcretePi() 
         extends AbstractPi() {
     Float calculatePi() { ... }
     pi = calculatePi();
 }</programlisting>
-
-            <comment><para>TODO: Should we allow this for <literal>variable</literal>
-            attributes?</para></comment>
-            
-            <comment><para>TODO: Why not also allow this for <literal>default</literal>
-            attributes and methods?</para></comment>
-            
-            <para>Toplevel attributes cannot be refined, and so toplevel attribute 
-            evaluation and assignment is never polymorphic.</para>
             
         </section>
                         

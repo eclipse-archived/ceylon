@@ -1272,9 +1272,8 @@ Item item = comp of Item;</programlisting>
             </listitem-->
         </itemizedlist>
         
-        <para>In a <literal>shared</literal> simple attribute declaration not annotated 
-        <literal>variable</literal>, or a <literal>shared</literal> attribute getter 
-        declaration with no matching setter:</para>
+        <para>In a <literal>shared</literal> attribute declaration that is not
+        variable:</para>
         
         <itemizedlist>
             <listitem>
@@ -1282,9 +1281,8 @@ Item item = comp of Item;</programlisting>
             </listitem>
         </itemizedlist>
         
-        <para>In a <literal>shared</literal> simple attribute declaration annotated 
-        <literal>variable</literal>, or a <literal>shared</literal> attribute getter
-        declaration with a matching setter:</para>
+        <para>In a <literal>shared</literal> reference declaration that is 
+        variable:</para>
         
         <itemizedlist>
             <listitem>
