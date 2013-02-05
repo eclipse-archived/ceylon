@@ -684,6 +684,9 @@ TypeConstraints?
         
         <programlisting>interface Compare&lt;Value&gt; => Comparison(Value,Value);</programlisting>
         
+        <para>If the aliased interface is a parameterized type, the aliased type must
+        explicitly specify type arguments.</para>
+        
         <!--para>Interface aliases are not reified types. The metamodel reference for an 
         interface alias&mdash;for example, <literal>PeopleByName</literal>&mdash;returns 
         the metamodel object for the aliased interface&mdash;in this case, 
@@ -699,7 +702,7 @@ TypeConstraints?
         <para>A <emphasis>class</emphasis> is a stateful, instantiable type. It is a 
         type schema, together with implementation details of the members of the type.</para>
 
-        <programlisting>Class: Annotation* ClassHeader (ClassBody | TypeSpecifier ";")</programlisting>
+        <programlisting>Class: Annotation* ClassHeader (ClassBody | ClassSpecifier ";")</programlisting>
         
         <para>An ordinary class declaration specifies a list of parameters required 
         to instantiate the type, and, optionally a list of type parameters.  A class 
@@ -1325,13 +1328,13 @@ TypeConstraints?
          <para>The following declaration:</para>
          
          <programlisting>shared object red extends Color('FF0000') {
-     shared actual String string = "Red";
+     string => "Red";
 }</programlisting>
 
          <para>Is exactly equivalent to:</para>
          
          <programlisting>class Color_red extends Color('FF0000') {
-     shared actual String string = "Red";
+     string => "Red";
 }
 
 shared Color_red red = Color_red();</programlisting>
@@ -1352,7 +1355,7 @@ shared Color_red red = Color_red();</programlisting>
 
 String escapedSearchString = sql.escape(searchString);</programlisting>
 
-        <comment><para>TODO: I'm increasingly inclined to think that this is backwards:
+        <!--comment><para>TODO: I'm increasingly inclined to think that this is backwards:
         a class should be an <literal>object</literal> with parameters. We could rewrite
         this stuff so that a <literal>class</literal> is equivalent to an interface with
         a typeclass that satisfies <literal>Callable</literal> and returns a nested 
@@ -1362,47 +1365,31 @@ String escapedSearchString = sql.escape(searchString);</programlisting>
         since the <literal>of</literal> clause would now always contain a list of types. 
         The only oddity would be that some common values would getter uppercase names: 
         <literal>True</literal>, <literal>False</literal>, <literal>Null</literal>, 
-        etc.</para></comment>
+        etc.</para></comment-->
         
-        <comment><para>TODO: Alternatively, a different approach to making this feature
+        <!--comment><para>TODO: Alternatively, a different approach to making this feature
         feel more regular, that is also perhaps more practically useful, would be to 
         reconceptualize the syntax above as a kind of attribute declaration, and also
         support a parameterized <literal>object</literal> declaration&mdash;which would
         be a useful shortcut for specifying a callable parameter value in a named argument 
         list or refining a method declaration when the callable parameter or method has an 
-        abstract return type.</para></comment>
+        abstract return type.</para></comment-->
         
         <comment><para>TODO: Should we support <literal>object</literal>s as part of the
-        expression syntax, like anonymous classes in Java. The syntax would be, for 
-        example:</para>
-        <programlisting>return object extends AbstractReader(stream) { 
-        ...
-    };</programlisting>
-        <programlisting>return object satisfies Usable { 
+        expression syntax, like anonymous classes in Java. The syntax would be:</para>
+        <programlisting>return object extends AbstractReader(stream) { ... };</programlisting>
+        <programlisting>return object satisfies Closeable { 
         actual void begin() { ... } 
-        actual void close() { ... } 
+        actual void close(Exception? e) { ... } 
     };</programlisting>
-        <para>This is can be viewed as regular, following the same pattern as a regular 
-        class instantiation, which can be written either as <literal>x = X { ... };</literal> 
-        or as <literal>X x { ... }</literal>. Here we're letting you write either 
-        <literal>x = object satisfies X { ... };</literal> or 
-        <literal>object x satisfies X { ... }</literal>.</para>
         </comment>
-        
-        <!--
-        <comment><para>TODO: We could add a built-in type constructor to give access to 
-        the concrete type of an <literal>object</literal>. It would look something like
-        <literal>type&lt;sql&gt;</literal> and in theory you could let it accept any
-        expression, even stuff like <literal>type&lt;foo.x+bar.y&gt;</literal>.</para></comment>
-        -->
         
     </section>
     
     <section id="classeswithcases">
         <title>Classes with enumerated cases</title>
         
-        <para>The <literal>of</literal> clause of a class declaration specifies the 
-        list of cases of the class.</para>
+        <para>A class declaration may enumerate a list of cases of the class.</para>
         
         <programlisting>shared abstract class Boolean() 
         of true | false 
@@ -1424,24 +1411,16 @@ shared class Branch<Element>(String name, Node<Element> left, Node<Element> righ
         be an <literal>abstract</literal> class. Each case must be a subclass of 
         the class.</para>
                         
-        <para>If a class has an <literal>of</literal> clause, then every subtype 
-        of the class must be a subtype of one of the enumerated cases.</para>
+        <para>If a class has an <literal>of</literal> clause, then every 
+        non-<literal>abstract</literal> subclass of the class must be a subtype 
+        of one of the enumerated cases.</para>
         
         <para>A non-<literal>abstract</literal> class may not have an <literal>of</literal> 
         clause.<!--A <literal>final</literal> class may not have an <literal>of</literal> 
         clause. --></para>
         
-        <!--
-        <comment><para>TODO: We could let a non-<literal>abstract</literal> class
-        limit its subtypes. In which case we could use the syntax <literal>of none</literal> 
-        to mean <literal>final</literal>.</para></comment>
-        -->
-        
         <comment><para>TODO: Should we introduce an abbreviated syntax like:</para>
-        <programlisting>shared abstract class Boolean() of case true | case false {}</programlisting>
-        <para>Note that it must be <literal>case</literal> instead of <literal>object</literal>
-        to resolve an ambiguity between an annotation and the class body followed by 
-        a declaration.</para>
+        <programlisting>shared abstract class Boolean() of object true | object false {}</programlisting>
         </comment>
         
     </section>
@@ -1452,19 +1431,30 @@ shared class Branch<Element>(String name, Node<Element> left, Node<Element> righ
         <para>A class declaration which specifies a reference to another class type 
         defines a <emphasis>class alias</emphasis> of the specified class type.</para>
         
+        <programlisting>ClassSpecifier: "=>" Type PositionalArguments</programlisting>
+        
         <para>The specified class type may be a produced type (it may specify type 
         arguments). A class alias simply assigns an alternative name to the original 
         class type or produced type.</para>
         
-        <programlisting>shared class People(Person... people) = ArrayList&lt;Person&gt;;</programlisting>
+        <programlisting>shared class People(Person* people) => ArrayList&lt;Person&gt;(*people);</programlisting>
         
-        <para>The callable type of the specified type must be assignable to the 
-        callable type of the class alias.</para>
+        <para>Arguments to the initializer parameters of the aliased class must be
+        specified.</para>
         
-        <para>Class aliases are not reified types. The metamodel reference for a class 
+        <para>If the aliased class is a parameterized type, the aliased type must
+        explicitly specify type arguments.</para>
+        
+        <para>The type arguments may not be inferred from the initializer arguments.</para>
+        
+        <comment><para>Note: currently the compiler imposes a restriction that the 
+        callable type of the aliased class must be assignable to the callable type of 
+        the class alias. This restriction will be removed in future.</para></comment>
+        
+        <!--para>Class aliases are not reified types. The metamodel reference for a class 
         alias&mdash;for example, <literal>People</literal>&mdash;returns the metamodel 
         object for the aliased class&mdash;in this case, 
-        <literal>ArrayList&lt;Person&gt;</literal>.</para>
+        <literal>ArrayList&lt;Person&gt;</literal>.</para-->
     
     </section>
         
