@@ -134,6 +134,11 @@ class UnionTypeArg implements .ceylon.language.Iterable<.java.lang.Object, .java
     public .ceylon.language.Iterable chain(final .ceylon.language.Iterable other) {
         return (.ceylon.language.Iterable<? extends .java.lang.Object, ? extends .java.lang.Object>)(.ceylon.language.Iterable)$ceylon$language$Iterable$this.chain(other);
     }
+    
+    @.java.lang.Override
+    public .ceylon.language.Iterable defaultNullElements(final .java.lang.Object defaultValue) {
+        return (.ceylon.language.Iterable<? extends .java.lang.Object, ? extends .java.lang.Object>)(.ceylon.language.Iterable)$ceylon$language$Iterable$this.defaultNullElements(defaultValue);
+    }
     protected final .ceylon.language.Container$impl<.java.lang.Object, .java.lang.Object> $ceylon$language$Container$this;
     
     @.java.lang.Override
@@ -291,6 +296,11 @@ class UnionTypeArgOverride implements .ceylon.language.Iterable<.java.lang.Objec
     @.java.lang.Override
     public .ceylon.language.Iterable chain(final .ceylon.language.Iterable other) {
         return (.ceylon.language.Iterable<? extends .java.lang.Object, ? extends .java.lang.Object>)(.ceylon.language.Iterable)$ceylon$language$Iterable$this.chain(other);
+    }
+    
+    @.java.lang.Override
+    public .ceylon.language.Iterable defaultNullElements(final .java.lang.Object defaultValue) {
+        return (.ceylon.language.Iterable<? extends .java.lang.Object, ? extends .java.lang.Object>)(.ceylon.language.Iterable)$ceylon$language$Iterable$this.defaultNullElements(defaultValue);
     }
     protected final .ceylon.language.Container$impl<.java.lang.Object, .java.lang.Object> $ceylon$language$Container$this;
     
