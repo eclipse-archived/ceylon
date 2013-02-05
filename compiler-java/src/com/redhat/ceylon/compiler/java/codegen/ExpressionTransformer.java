@@ -28,6 +28,7 @@ import java.util.HashSet;
 import java.util.Iterator;
 import java.util.LinkedList;
 
+import com.redhat.ceylon.compiler.java.codegen.AbstractTransformer.BoxingStrategy;
 import com.redhat.ceylon.compiler.java.codegen.Invocation.TransformedInvocationPrimary;
 import com.redhat.ceylon.compiler.java.codegen.Naming.Substitution;
 import com.redhat.ceylon.compiler.java.codegen.Naming.SyntheticName;
@@ -64,6 +65,7 @@ import com.redhat.ceylon.compiler.typechecker.tree.Tree.BaseMemberExpression;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.Comprehension;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.Condition;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.DefaultArgument;
+import com.redhat.ceylon.compiler.typechecker.tree.Tree.Expression;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.ExpressionComprehensionClause;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.ForComprehensionClause;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.FunctionArgument;
@@ -89,6 +91,8 @@ import com.sun.tools.javac.tree.JCTree.JCExpression;
 import com.sun.tools.javac.tree.JCTree.JCLiteral;
 import com.sun.tools.javac.tree.JCTree.JCMethodInvocation;
 import com.sun.tools.javac.tree.JCTree.JCNewArray;
+import com.sun.tools.javac.tree.JCTree.JCNewClass;
+import com.sun.tools.javac.tree.JCTree.JCReturn;
 import com.sun.tools.javac.tree.JCTree.JCStatement;
 import com.sun.tools.javac.tree.JCTree.JCUnary;
 import com.sun.tools.javac.tree.JCTree.JCVariableDecl;
@@ -314,16 +318,37 @@ public class ExpressionTransformer extends AbstractTransformer {
         return result;
     }
     
-    JCExpression transform(FunctionArgument farg) {
-        Method model = farg.getDeclarationModel();
-        ProducedType callableType = farg.getTypeModel();
-        // TODO MPL
-        CallableBuilder callableBuilder = CallableBuilder.anonymous(
-                gen(),
-                farg.getExpression(),
+    JCExpression transform(FunctionArgument functionArg) {
+        Method model = functionArg.getDeclarationModel();
+        List<JCStatement> body;
+        boolean prevNoExpressionlessReturn = statementGen().noExpressionlessReturn;
+        try {
+            statementGen().noExpressionlessReturn = isVoid(model.getType());
+            if (functionArg.getBlock() != null) {
+                body = statementGen().transform(functionArg.getBlock()).getStatements();
+                if (!functionArg.getBlock().getDefinitelyReturns()) {
+                    if (isVoid(model.getType())) {
+                        body = body.append(make().Return(makeNull()));
+                    } else {
+                        body = body.append(make().Return(makeErroneous(functionArg.getBlock(), "non-void method doesn't definitely return")));
+                    }
+                }
+            } else {
+                Expression expr = functionArg.getExpression();
+                JCExpression transExpr = expressionGen().transformExpression(expr);
+                JCReturn returnStat = make().Return(transExpr);
+                body = List.<JCStatement>of(returnStat);
+            }
+        } finally {
+            statementGen().noExpressionlessReturn = prevNoExpressionlessReturn;
+        }
+
+        ProducedType callableType = functionArg.getTypeModel();
+        CallableBuilder callableBuilder = CallableBuilder.methodArgument(gen(), 
+                callableType, 
                 model.getParameterLists().get(0),
-                farg.getParameterLists().get(0),
-                callableType);
+                functionArg.getParameterLists().get(0),
+                classGen().transformMplBody(functionArg.getParameterLists(), model, body));
         return callableBuilder.build();
     }
     
