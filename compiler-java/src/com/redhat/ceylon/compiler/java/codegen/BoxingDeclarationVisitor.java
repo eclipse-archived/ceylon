@@ -116,8 +116,14 @@ public abstract class BoxingDeclarationVisitor extends Visitor {
         Method refinedMethod = (Method)refined;
         List<ParameterList> methodParameterLists = method.getParameterLists();
         List<ParameterList> refinedParameterLists = refinedMethod.getParameterLists();
-        // A Callable, which never have primitive parameters
-        setBoxingState(method, refinedMethod);
+        
+        if (method.getName() != null) {
+            // A Callable, which never have primitive parameters
+            setBoxingState(method, refinedMethod);
+        } else {
+            // Anonymous methods are always boxed
+            method.setUnboxed(false);
+        }
         
         // deal with invalid input
         if(methodParameterLists.isEmpty()
