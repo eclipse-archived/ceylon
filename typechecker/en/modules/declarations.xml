@@ -1937,9 +1937,9 @@ case (hexadecimal) {
         <section id="simpleattributesandlocals">
             <title>References</title>
             
-        <para>A reference defines state. The persistent value of a simple attribute or local 
-        may be specified or initialized as part of the declaration, via a later specification 
-        statement or assignment, or, if it is a parameter, by an argument to an invocation 
+        <para>The persistent value of a reference may be specified or initialized as part 
+        of the declaration of the reference, or via a later specification statement or 
+        assignment expression, or, if it is a parameter, by an argument to an invocation 
         expression.</para>
         
         <para>A reference annotated <literal>variable</literal> has a persistent value that 
