@@ -412,7 +412,7 @@
         <para>A <emphasis>package descriptor</emphasis> is defined in a source file
         named <literal>package.ceylon</literal> in the package it describes.</para>
         
-        <programlisting>PackageDescriptor: Annotation* "package" FullPackageName ";"</programlisting>
+        <programlisting>PackageDescriptor: Annotations "package" FullPackageName ";"</programlisting>
         
         <para>A <literal>package</literal> may be annotated <literal>shared</literal>. 
         A <literal>shared</literal> package is visible outside the containing module. 
@@ -435,7 +435,7 @@ shared package org.hibernate.query;</programlisting>
         for a runnable module specifies an <emphasis>entry point</emphasis>, a 
         toplevel method or class with no parameters.</para-->
         
-        <programlisting>ModuleDescriptor: Annotation* "module" FullPackageName QuotedLiteral ModuleBody</programlisting>
+        <programlisting>ModuleDescriptor: Annotations "module" FullPackageName QuotedLiteral ModuleBody</programlisting>
         
         <para>The quoted literal after the module name specifies the version of the
         module.</para>
@@ -443,7 +443,7 @@ shared package org.hibernate.query;</programlisting>
         <para>A module may import other modules.</para>
         
         <programlisting>ModuleBody: "{" ModuleImport* "}"</programlisting>
-        <programlisting>ModuleImport: Annotation* "import" FullPackageName QuotedLiteral ";"</programlisting>
+        <programlisting>ModuleImport: Annotations "import" FullPackageName QuotedLiteral ";"</programlisting>
         
         <para>The quoted literal after the imported module name specifies the version 
         of the imported module.</para>

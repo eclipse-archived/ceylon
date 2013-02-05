@@ -2360,6 +2360,8 @@ shared deprecated</programlisting>
         <para>As a special case, the name of the <literal>doc</literal> annotation
         may be ommitted if it is the first annotation in an annotation list.</para>
         
+        <programlisting>"the name" String name;</programlisting>
+        
         </section>
         
         <section>
