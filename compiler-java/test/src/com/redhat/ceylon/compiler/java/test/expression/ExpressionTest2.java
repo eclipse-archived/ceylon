@@ -42,6 +42,10 @@ public class ExpressionTest2 extends CompilerTest {
         compareWithJavaSource("invoke/AnonymousFunctionPositionalInvocation2");
     }
     @Test
+    public void testInvAnonymousStatementFunction(){
+        compareWithJavaSource("invoke/AnonymousStatementFunction");
+    }
+    @Test
     public void testInvMethodArgumentNamedInvocation(){
         compareWithJavaSource("invoke/MethodArgumentNamedInvocation");
     }
