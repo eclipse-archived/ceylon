@@ -2032,6 +2032,36 @@ finally {
 }</programlisting>
             
         </section>
+        
+        <section id="assertions">
+            <title>Assertions</title>
+            
+            <para>An assertion has an asserted condition list and, optionally, an 
+            annotation list.</para>
+            
+            <programlisting>Assertion: Annotations "assert" ConditionList ";"</programlisting>
+            
+            <para>When the assertion is executed, the condition list is evaluated.
+            If the condition list is not satisfied, an exception of type 
+            <literal>AssertionFailure</literal> in <literal>ceylon.language</literal>
+            is thrown.</para>
+            
+            <para>The message carried by the assertion failure may be specified
+            using a <literal>doc</literal> annotation.</para>
+            
+            <programlisting>"total must be less than well-defined bound"
+assert (exists bound, total&lt;bound);</programlisting>
+            
+            <para>If the assertion contains an assignability, existence, or 
+            nonemptiness condition containing a value reference then the compiler 
+            treats the referenced value as having a narrowed type at program 
+            elements that occur in the lexical scope of the assertion.</para>
+            
+            <programlisting>{Element*} elements = ... ;
+assert (nonempty elements);
+Element first = elements.first;</programlisting>
+            
+        </section>
          
     </section>
 
