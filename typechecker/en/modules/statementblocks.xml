@@ -1071,15 +1071,16 @@ else {
                     <para>A <literal>for</literal> loop definitely returns if it has an
                     <literal>else</literal> block that definitely returns, and there is
                     no <literal>break</literal> directive in the <literal>for</literal>
-                    block.</para>
+                    block, or if the iterated expression type is a nonempty type, and
+                    the <literal>for</literal> block definitely returns.</para>
                 </listitem>
                 <listitem>
                     <para>A <literal>while</literal> loop does not definitely return.</para>
                 </listitem>
-                <listitem>
+                <!--listitem>
                     <para>A <literal>do/while</literal> loop definitely returns if the 
                     <literal>do</literal> block definitely returns.</para>
-                </listitem>
+                </listitem-->
                 <listitem>
                     <para>A <literal>try/catch</literal> exception manager definitely 
                     returns if the <literal>try</literal> block definitely returns and
@@ -1102,39 +1103,39 @@ else {
             <title>Definite initialization</title>
             
             <para>A sequence of statements may <emphasis>definitely initialize</emphasis> a
-            forward-declared local, simple attribute, or method.</para>
+            forward-declared declaration.</para>
             
             <itemizedlist>
                 <listitem>
-                    <para>A sequence of statements definitely initializes a local, simple 
-                    attribute, or method if one of the statements is a specification statement 
-                    or assigment expression for the local or simple attribute or a control 
-                    structure that definitely initializes the local or simple attribute, or 
-                    if the sequence of statements ends in a <literal>return</literal> or 
-                    <literal>throw</literal> directive.</para>
+                    <para>A sequence of statements definitely initializes a declaration if 
+                    one of the statements is a specification statement or assigment 
+                    expression for the declaration or a control structure that definitely 
+                    initializes the declaration, or if the sequence of statements ends in 
+                    a <literal>return</literal> or <literal>throw</literal> directive.</para>
                 </listitem>
                 <listitem>
-                    <para>An <literal>if</literal> conditional definitely initializes a local, 
-                    simple attribute, or method if it has an <literal>else</literal> block and 
-                    both the <literal>if</literal> and <literal>else</literal> blocks definitely
-                    initialize the local or simple attribute.</para>
+                    <para>An <literal>if</literal> conditional definitely initializes a 
+                    declaration if it has an <literal>else</literal> block and both the 
+                    <literal>if</literal> and <literal>else</literal> blocks definitely
+                    initialize the declaration.</para>
                 </listitem>
                 <listitem>
                     <para>A <literal>switch</literal> conditional definitely initializes a
-                    local, simple attribute, or method if all <literal>case</literal> blocks 
-                    definitely initialize the local, simple attribute, or method and the 
-                    <literal>else</literal> block, if any, definitely initializes the local, 
-                    simple attribute, or method.</para>
+                    declaration if all <literal>case</literal> blocks definitely initialize 
+                    the declaration and the <literal>else</literal> block, if any, definitely 
+                    initializes the declaration.</para>
                 </listitem>
                 <listitem>
-                    <para>A <literal>for</literal> loop definitely initializes a local, simple 
-                    attribute, or method if it has an <literal>else</literal> block that 
-                    definitely initializes the local, simple attribute, or method, and there is 
-                    no <literal>break</literal> directive in the <literal>for</literal> block.</para>
+                    <para>A <literal>for</literal> loop definitely initializes a declaration 
+                    if it has an <literal>else</literal> block that definitely initializes 
+                    the declaration, and there is no <literal>break</literal> directive in 
+                    the <literal>for</literal> block, or if the iterated expression type is 
+                    a nonempty type, and the <literal>for</literal> block definitely 
+                    initializes the declaration.</para>
                 </listitem>
                 <listitem>
-                    <para>A <literal>while</literal> loop does not definitely initialize a local, 
-                    simple attribute, or method.</para>
+                    <para>A <literal>while</literal> loop does not definitely initialize a 
+                    declaration.</para>
                 </listitem>
                 <!-- 
                 <listitem>
@@ -1145,25 +1146,24 @@ else {
                 -->
                 <listitem>
                     <para>A <literal>try/catch</literal> exception manager definitely initializes 
-                    a local, simple attribute, or method if the <literal>try</literal> block 
-                    definitely initializes the local, simple attribute, or method and all 
-                    <literal>catch</literal> blocks definitely initialize the local, simple 
-                    attribute, or method or if the <literal>finally</literal> block definitely 
-                    initializes the local, simple attribute, or method.</para>
+                    a declaration if the <literal>try</literal> block definitely initializes the 
+                    declaration and all <literal>catch</literal> blocks definitely initialize the 
+                    declaration or if the <literal>finally</literal> block definitely initializes 
+                    the declaration.</para>
                 </listitem>
             </itemizedlist>
             
-            <para>A local, simple attribute, or method is considered <emphasis>definitely 
-            initialized</emphasis> at a certain statement or declaration if its declaration has 
-            a specifier or initializer, if it is referenced by a parameter, or if it is definitely 
-            initialized by the sequence of statements from its declaration to the given statement 
-            or declaration.</para>
+            <para>A forward-declared declaration is considered <emphasis>definitely initialized</emphasis> 
+            at a certain statement or declaration if its declaration has a specifier or initializer, 
+            if it is referenced by a parameter, or if it is definitely initialized by the sequence 
+            of statements from its declaration to the given statement or declaration.</para>
             
-            <para>A local, simple attribute, or method must be definitely initialized wherever any 
-            value reference to it occurs as an expression within the body in which it is declared.</para>
+            <para>A forward-declared declaration must be definitely initialized wherever any value 
+            reference or callable reference to it occurs as an expression within the body in which 
+            it is declared.</para>
             
-            <para>A <emphasis>shared</emphasis> forward-declared simple attribute or method must be 
-            definitely initialized:</para>
+            <para>A <emphasis>shared</emphasis> forward-declared declaration must be definitely 
+            initialized:</para>
             
             <itemizedlist>
                 <listitem>
@@ -1176,61 +1176,57 @@ else {
                 </listitem>
             </itemizedlist>
             
-            <para>A specification statement for a method or non-<literal>variable</literal> simple 
-            attribute or local may not (indirectly) occur in a <literal>for</literal> or 
-            <literal>while</literal> block unless the declaration itself occurs within the same
+            <para>A specification statement for a method or non-<literal>variable</literal> 
+            reference, getter, or function may not (indirectly) occur in a <literal>for</literal> 
+            or <literal>while</literal> block unless the declaration itself occurs within the same
             <literal>for</literal> or <literal>while</literal> block.</para>
-
+            
         </section>
             
         <section id="definiteuninitialization">
             <title>Definite uninitialization</title>
             
             <para>A sequence of statements may <emphasis>possibly initialize</emphasis> a 
-            forward-declared local, simple attribute, or method.</para>
+            forward-declared declaration.</para>
             
             <itemizedlist>
                 <listitem>
-                    <para>A sequence of statements possibly initializes a local, simple attribute, 
-                    or method if one of the statements is a specification statement for the local, 
-                    simple attribute, or method or a control structure that possibly initializes 
-                    the local, simple attribute, or method.</para>
+                    <para>A sequence of statements possibly initializes a declaration if one of 
+                    the statements is a specification statement for the declaration or a control 
+                    structure that possibly initializes the declaration.</para>
                 </listitem>
                 <listitem>
-                    <para>An <literal>if</literal> conditional possibly initializes a local, simple 
-                    attribute, or method if either the <literal>if</literal> block possibly 
-                    initializes the local, simple attribute, or method or if the <literal>else</literal> 
-                    block, if any, possibly initializes the local, simple attribute, or method.</para>
+                    <para>An <literal>if</literal> conditional possibly initializes a declaration 
+                    if either the <literal>if</literal> block possibly initializes the declaration 
+                    or if the <literal>else</literal> block, if any, possibly initializes the 
+                    declaration.</para>
                 </listitem>
                 <listitem>
-                    <para>A <literal>switch</literal> conditional possibly initializes a local, 
-                    simple attribute, or method if one of the <literal>case</literal> blocks possibly 
-                    initializes the local, simple attribute, or method or the <literal>else</literal> 
-                    block, if any, possibly initializes the local, simple attribute, or method.</para>
+                    <para>A <literal>switch</literal> conditional possibly initializes a declaration 
+                    if one of the <literal>case</literal> blocks possibly initializes the declaration 
+                    or the <literal>else</literal> block, if any, possibly initializes the 
+                    declaration.</para>
                 </listitem>
                 <listitem>
-                    <para>A <literal>for</literal> loop possibly initializes a local, simple attribute, 
-                    or method if the <literal>for</literal> block possibly initializes the local, simple 
-                    attribute, or method or if it has an <literal>else</literal> block that possibly 
-                    initializes the local, simple attribute, or method.</para>
+                    <para>A <literal>for</literal> loop possibly initializes a declaration if the 
+                    <literal>for</literal> block possibly initializes the declaration or if it has 
+                    an <literal>else</literal> block that possibly initializes the declaration.</para>
                 </listitem>
                 <listitem>
-                    <para>A <literal>while</literal> loop possibly initializes a local, simple attribute, 
-                    or method if the <literal>while</literal> block possibly initializes the local, simple 
-                    attribute, or method.</para>
+                    <para>A <literal>while</literal> loop possibly initializes a declaration if the 
+                    <literal>while</literal> block possibly initializes the declaration.</para>
                 </listitem>
                 <listitem>
-                    <para>A <literal>try/catch</literal> exception manager possibly initializes a local, 
-                    simple attribute, or method if the <literal>try</literal> block possibly initializes 
-                    the local, simple attribute, or method, if one of the <literal>catch</literal> 
-                    blocks possibly initializes the local, simple attribute, or method, or if the 
-                    <literal>finally</literal> block possibly initializes the local, simple attribute, 
-                    or method.</para>
+                    <para>A <literal>try/catch</literal> exception manager possibly initializes a 
+                    declaration if the <literal>try</literal> block possibly initializes the 
+                    declaration, if one of the <literal>catch</literal> blocks possibly initializes 
+                    the declaration, or if the <literal>finally</literal> block possibly initializes 
+                    the declaration.</para>
                 </listitem>
             </itemizedlist>
             
-            <para>A forward-declared local, simple attribute, or method is considered <emphasis>definitely 
-            uninitialized</emphasis> at a certain statement or declaration if:</para>
+            <para>A forward-declared declaration is considered <emphasis>definitely uninitialized</emphasis> 
+            at a certain statement or declaration if:</para>
             
             <itemizedlist>
                 <listitem>
@@ -1258,13 +1254,13 @@ else {
                     or <literal>catch</literal> block that possibly initializes it.</para>
                 </listitem>
             </itemizedlist>
-                        
+            
             <para>A method or non-<literal>variable</literal> local or simple attribute must be definitely 
-            uninitialized wherever any value reference to it occurs as a specification statement within
-            the body in which it is declared.</para>
+            uninitialized wherever any value reference or callable reference to it occurs as a specification 
+            statement within the body in which it is declared.</para>
             
         </section>
-            
+        
     </section>
     
     <section id="controlstructures">
