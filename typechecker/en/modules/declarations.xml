@@ -675,9 +675,11 @@ TypeConstraints?
         
         <programlisting>TypeSpecifier: "=>" EntryType</programlisting>
 
-        <para>The specified interface type may be a produced type (it may specify type 
-        arguments). An interface alias simply assigns an alternative name to the original 
-        interface type or produced type.</para>
+        <para>The specified type must be an <emphasis>interface type</emphasis>, that is,
+        a reference to an interface with no type parameters, or a produced type formed by 
+        a reference to a parameterized interface and type arguments. A class alias simply 
+        assigns an alternative name to the original class type. A reference to the alias 
+        may be used anywhere a reference to an interface may be used.</para>
         
         <programlisting>shared interface PeopleByName => Map&lt;String,Person&gt;;</programlisting>
         
@@ -1072,7 +1074,7 @@ TypeConstraints?
          
         </section>
         
-        <section>
+        <section id="restrictedclasses">
             <title>Restrictions on user-defined classes</title>
             
             <para>The following classes may not be directly extended by any class defined
@@ -1432,11 +1434,15 @@ shared class Branch<Element>(String name, Node<Element> left, Node<Element> righ
         
         <programlisting>ClassSpecifier: "=>" Type PositionalArguments</programlisting>
         
-        <para>The specified class type may be a produced type (it may specify type 
-        arguments). A class alias simply assigns an alternative name to the original 
-        class type or produced type.</para>
+        <para>The specified type must be a <emphasis>class type</emphasis>, that is,
+        a reference to a class with no type parameters, or a produced type formed by 
+        a reference to a parameterized class and type arguments. A class alias simply 
+        assigns an alternative name to the original class type. A reference to the 
+        alias may be used anywhere a reference to a class may be used.</para>
         
         <programlisting>shared class People(Person* people) => ArrayList&lt;Person&gt;(*people);</programlisting>
+        
+        <programlisting>class Named&lt;Value&gt;(String name, Value val) => Entry&lt;String,Value&gt;(name, val);</programlisting>
         
         <para>Arguments to the initializer parameters of the aliased class must be
         specified.</para>
@@ -1471,6 +1477,26 @@ shared class Branch<Element>(String name, Node<Element> left, Node<Element> righ
         
     </section>
     
+    <section id="typealiasedeclarations">
+        <title>Type aliases</title>
+        
+        <para>A type alias declaration assigns a name to an arbitrary type expression,
+        usually involving a union and/or intersection of types.</para>
+        
+        <programlisting>TypeAlias: Annotations TypeSpecifier</programlisting>
+        
+        <programlisting>AliasHeader: "alias" TypeName TypeParams? TypeConstraints?</programlisting>
+        
+        <para>The specified type may be any kind of type. A reference to the alias 
+        may be used anywhere a union or intersection type may be used. The alias may
+        not appear in an <literal>extends</literal> or <literal>satisfies</literal>
+        clause. The alias may not be instantiated.</para>
+        
+        <programlisting>shared alias Number => Integer|Float|Decimal|Whole;</programlisting>
+        <programlisting>alias ListLike&lt;Value&gt; => List&lt;Value&gt;|Map&lt;Integer,Value&gt;;</programlisting>
+        
+    </section>
+        
     <section id="methods">
         <title>Functions</title>
         
@@ -2632,6 +2658,11 @@ shared deprecated</programlisting>
             <listitem>
                 <para>The superclass of a class must be visible everywhere the 
                 class itself is visible.</para>
+            </listitem>
+            <listitem>
+                <para>The aliased type of a class alias, interface alias, or 
+                type alias must be visible everywhere the alias itself is 
+                visible.</para>
             </listitem>
         </itemizedlist>
         
