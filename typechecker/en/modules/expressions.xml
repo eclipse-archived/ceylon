@@ -1,30 +1,33 @@
 <chapter id="expressions">
     <title>Expressions</title>
     
-    <para>Ceylon expressions are significantly more flexible than Java, allowing a 
-    more declarative style of programming.</para>
-    
-    <para>Expressions are formed from:</para>
+    <para>An <emphasis>expression</emphasis> is produces a value when executed. 
+    An algorithm expressed using functions and expressions, rather than sequences 
+    of statements is often easier to understand and refactor. Therefore, Ceylon
+    has a highly flexible expressions syntax. Expressions are formed from:</para>
     
     <itemizedlist>
         <listitem>
-            <para>literal values, self references, and metamodel references,</para>
+            <para>literal values and self references,</para>
+        </listitem>
+        <listitem>
+            <para>evaluation and assignment of values,</para>
+        </listitem>
+        <listitem>
+            <para>invocation of functions and instantiation of classes,</para> 
         </listitem>
         <listitem>
             <para>callable references and anonymous functions,</para>
         </listitem>
         <listitem>
-            <para>invocation of methods and instantiation of classes,</para> 
+            <para>comprehensions,</para>
         </listitem>
         <listitem>
-            <para>evaluation and assignment of attributes,</para>
+            <para>metamodel references,</para>
         </listitem>
         <listitem>
-            <para>comprehensions, and</para>
+            <para>enumeration of iterables and tuples, and</para>
         </listitem>
-        <!--listitem>
-            <para>enumeration of sequences, and</para>
-        </listitem-->
         <listitem>
             <para>operators.</para>
         </listitem>
@@ -38,80 +41,63 @@
     to a program element if the type of the expression is assignable to the 
     declared type of the program element.</para>
     
-    <comment><para>TODO: We need a definition of a "constant expression".
-    We might use it for:</para>
-    <itemizedlist>
-    <!--listitem><literal>case</literal> expressions (when are these evaluated?),</listitem-->
-    <listitem>annotations available at compile time, and even perhaps</listitem>
-    <!--listitem>default parameter values (when are these evaluated?), and even</listitem-->
-    <listitem>initializer/specifier expressions in declaration section of class body.</listitem>
-    </itemizedlist>
-    <para>For example we could follow Java's very restrictive model, and say 
-    that a constant expression must be anything formed from literals, metamodel 
-    references, the <literal>..</literal> and <literal>-></literal> operators.
-    Or we could be much less restrictive and just say that it is any expression 
-    that could be used to initialize a toplevel attribute of the package.</para>
-    <para>At the very least, we need to properly define the scope in which the 
-    above things are actually evaluated.</para></comment>
-    
-    <comment><para>TODO: For user interfaces, some kind of support for pass by
-    reference would be especially helpful.</para></comment>
-    
     <section id="objectinstancesidentity">
         <title>Object instances, identity, and reference passing</title>
         
         <para>An <emphasis>object</emphasis> is a unique identifier, together with a 
-        reference to a class, and a value for each simple attribute of the class 
-        (including inherited simple attributes). The object is said to be an 
+        reference to a class, and a persistent value for each reference of the class 
+        (including inherited references). The object is said to be an 
         <emphasis>instance</emphasis> of the class.</para>
         
         <para>A <emphasis>value</emphasis> is a reference to an object (a copy of its 
         unique identifier). At a particular point in the execution of the program, 
-        every attribute of every object that exists, and every initialized local of 
-        every method or initializer that is currently executing has a value. 
-        Furthermore, every time an expression is executed, it produces a value.</para>
+        every reference of every object that exists, and every initialized reference 
+        of every function, getter, setter, or initializer that is currently executing 
+        has a value. Furthermore, every time an expression is executed, it produces a 
+        value.</para>
         
         <para>Two values are said to be <emphasis>identical</emphasis> if they are
-        references to the same object&mdash;if they hold the same unique identifier. The 
-        program may determine if two values of type <literal>IdentifiableObject</literal> 
+        references to the same object&mdash;if they hold the same unique identifier. 
+        The program may determine if two values of type <literal>Identifiable</literal> 
         are identical using the <literal>&identical;</literal> operator. It may not 
-        directly obtain the unique identifier (which is a purely abstract construct). The 
-        program has no way of determining the identity of a value which is not of type 
-        <literal>IdentifiableObject</literal>.</para>
+        directly obtain the unique identifier (which is a purely abstract construct). 
+        The program has no way of determining the identity of a value which is not of 
+        type <literal>Identifiable</literal>.</para>
         
-        <para>Invocation of a method or class initializer results in execution of the 
-        method with parameter values that are copies of the value produced by executing 
-        the argument expressions of the invocation, and a reference to the receiving 
-        instance that is a copy of the value produced by executing the receiver expression. 
-        The value produced by the invocation expression is a copy of the value produced by 
-        execution of the <literal>return</literal> directive expression.</para>
+        <para>Invocation of a function or instantiation of a class results in execution 
+        of the function body or class initializer with parameter values that are copies 
+        of the value produced by executing the argument expressions of the invocation, 
+        and a reference to the receiving instance that is a copy of the value produced 
+        by executing the receiver expression. The value produced by the invocation 
+        expression is a copy of the value produced by execution of the 
+        <literal>return</literal> directive expression.</para>
         
         <programlisting>Person myself(Person me) { return me; }
 Person p = ...;
-assert(myself(p)&identical;p); //assertion never fails</programlisting>
+assert (myself(p)&identical;p); //assertion never fails</programlisting>
 
         <programlisting>Semaphore s = Semaphore();
 this.semaphore = s;
-assert(semaphore&identical;s); //assertion never fails</programlisting>
+assert (semaphore&identical;s); //assertion never fails</programlisting>
         
         <para>A new object is produced by execution of a class instantiation expression.
         The Ceylon compiler guarantees that if execution of a class initializer terminates
-        with no uncaught exception, then every simple attribute of the object has been
-        initialized. The value of an non-<literal>variable</literal> simple attribute or 
-        local is initialized for the first time by execution of a specifier. Every class 
+        with no uncaught exception, then every reference of the object has been initialized
+        with a well-defined persistent value. The value of a reference is initialized for 
+        the first time by execution of a specifier or assignment expression. Every class 
         instantiation expression results in an object with a new unique identifier shared 
         by no other existing object. The object exists from the point at which execution 
         of its initializer terminates. <emphasis>Conceptually</emphasis>, the object exists 
         until execution of the program terminates.</para>
         
         <para>In practice, the object exists at least until the point at which it is not 
-        reachable by recursively following references from a local in a method or
-        initializer currently being executed, or from an expression in a statement 
-        currently being executed. At this point, its simple attribute values are no 
-        longer accessible to expressions which subsequently execute and the object may 
-        be destroyed by the virtual machine. There is no way for the program to determine
-        that an object has been destroyed by the virtual machine (unlike Java, Ceylon
-        does not provide object finalizers).</para>
+        reachable by recursively following references from any function, getter, setter, 
+        or initializer currently being executed, or from an expression in a statement 
+        currently being executed. At this point, its persistent values are no longer 
+        accessible to expressions which subsequently execute and the object may be 
+        destroyed by the virtual machine. There is no way for the program to determine
+        that an object has been destroyed by the virtual machine (Ceylon does not support 
+        finalizers).</para>
         
         <para>As a special exception to the rules defined above:</para>
         
@@ -124,20 +110,21 @@ assert(semaphore&identical;s); //assertion never fails</programlisting>
         </listitem-->
         <listitem>
             <para>The compiler is permitted to emit bytecode that produces a new instance of 
-            certain types in the module <literal>ceylon.language</literal> without execution of 
-            the initializer of the class, whenever any expression is evaluated. These types are:
-            any of the the built-in numeric types, <!-- of <literal>Bits&lt;#n&gt;</literal>,
-            <literal>Bounded&lt;#n&gt;</literal>,--> <literal>Character</literal>, 
-            <literal>Range</literal>, <literal>Entry</literal>, and <literal>String</literal>. 
-            Furthermore, it is permitted to use such a newly-produced instance as the value of 
-            the expression, as long as the newly-produced instance is equal to the value expected 
-            according to the rules above, as determined using the <literal>==</literal> operator.</para>
+            certain types in the module <literal>ceylon.language</literal> without execution 
+            of the initializer of the class, whenever any expression is evaluated. These 
+            types are: any of the the built-in numeric types, <literal>Character</literal>, 
+            <literal>Range</literal>, <literal>Entry</literal>, <literal>String</literal>,
+            and <literal>Tuple</literal>. 
+            Furthermore, it is permitted to use such a newly-produced instance as the value 
+            of the expression, as long as the newly-produced instance is equal to the value 
+            expected according to the rules above, as determined using the <literal>==</literal> 
+            operator.</para>
         </listitem>
         </itemizedlist>
         
-        <para>Therefore, the types listed above directly extend <literal>Object</literal> or
-        <literal>Void</literal> instead of <literal>IdentifiableObject</literal>.</para>
-                
+        <para>Therefore, the types listed above directly extend <literal>Object</literal>
+        instead of <literal>Basic</literal>, and are not <literal>Identifiable</literal>.</para>
+        
         <para>The execution of a Ceylon program complies with the rules laid out by the Java 
         programming language's execution model (Chapter 17 of the Java Language Specification).
         Ceylon attributes and locals are considered <emphasis>variables</emphasis> in the 
@@ -145,56 +132,28 @@ assert(semaphore&identical;s); //assertion never fails</programlisting>
         and assignment is considered an <emphasis>assign</emphasis> operation, again in 
         terms of the JLS.</para>
         
+        <comment><para>TODO: what about on a JavaScript VM?</para></comment>
+        
     </section>
     
-    <!--  
-    <section id="lazyevaluation">
-        <title>PROPOSAL: Lazy evaluation</title>
-        
-        <comment><para>NOTE: Lazy evaluation of expressions is a proposed feature for 
-        a future version of the language.</para></comment>
-        
-        <para>Ceylon supports <emphasis>lazy evaluation</emphasis> of expressions.
-        Conceptually, what triggers evaluation of an expression is not execution
-        of the expression itself, but use of the expression in a context where its 
-        value is required.</para>
-        
-        <para>The first statement of this code fragment causes immediate evaluation 
-        of the expression <literal>calculatePi()</literal>:</para>
-        
-        <programlisting>Float pi = calculatePi();
-Float area = pi * radius**2;</programlisting>
-        
-        <para>But in the following code, <literal>calculatePi()</literal> is not
-        evaluated until the second statement:</para>
-        
-        <programlisting>Gettable&lt;Float&gt; pi = calculatePi();
-Float area = pi * radius**2;</programlisting>
-    
-        <para>The type <literal>Gettable&lt;T&gt;</literal> represents a reference
-        to a value of type <literal>T</literal> that can be computed if and when
-        required.</para>
-        
-        <para>One application of lazy evaluation is <emphasis>pass by 
-        reference</emphasis>. Even <literal>variable</literal> attributes may be 
-        passed by reference, as in the following code:</para>
-        
-        <programlisting>void setGreeting(Settable&lt;String&gt; ref) {
-    ref:="Que honda!";
-}
+    <section id="constantexpressions">
+        <title>Constant expressions</title>
 
-shared variable String greeting := "'sup!";
-setGreeting(greeting);</programlisting>
-        
-        <comment><para>TODO: Do we need to say the following:
-        A <literal>Gettable</literal> object representing an expression that 
-        contains a reference to a <literal>variable</literal> local may not be assigned 
-        to an attribute, passed as a method argument, passed to a control directive, 
-        or referred to by a nested method or class. It may be assigned to a local, or 
-        invoked directly inside the block that obtained it.</para></comment>
+    <comment><para>TODO: We need a definition of a "constant expression".
+    We might use it for:</para>
+    <itemizedlist>
+    <listitem>annotations available at compile time, and even perhaps</listitem>
+    <listitem>initializer/specifier expressions in declaration section of class body.</listitem>
+    </itemizedlist>
+    <para>For example we could follow Java's very restrictive model, and say 
+    that a constant expression must be anything formed from literals, metamodel 
+    references, the <literal>..</literal> and <literal>-></literal> operators.
+    Or we could be much less restrictive and just say that it is any expression 
+    that could be used to initialize a toplevel attribute of the package.</para>
+    <para>At the very least, we need to properly define the scope in which the 
+    above things are actually evaluated.</para></comment>
     
     </section>
-    -->
     
     <section id="literalvalues">
         <title>Literal values</title>
@@ -209,10 +168,7 @@ setGreeting(greeting);</programlisting>
             <para><literal>Character</literal>, and</para>
         </listitem>
         <listitem>
-            <para><literal>String</literal>, along with</para>
-        </listitem>
-        <listitem>
-            <para>single quoted literals.</para>
+            <para><literal>String</literal>.</para>
         </listitem>
     </itemizedlist>
     
@@ -220,12 +176,12 @@ setGreeting(greeting);</programlisting>
     <literal>Character</literal>, and <literal>String</literal> are defined in the 
     module <literal>ceylon.language</literal>.</para>
     
-    <para>Ceylon does not need a special syntax for <literal>Boolean</literal> literal 
-    values, since <literal>Boolean</literal> is just a class with the cases 
+    <comment><para>Note: Ceylon does not need a special syntax for <literal>Boolean</literal> 
+    literal values, since <literal>Boolean</literal> is just a class with the cases 
     <literal>true</literal> and <literal>false</literal>. Likewise, <literal>null</literal> 
-    is just the singleton value of an anonymous class.</para>
+    is just the singleton value of an anonymous class.</para></comment>
     
-    <programlisting>Literal: IntegerLiteral | FloatLiteral | CharacterLiteral | StringLiteral | QuotedLiteral</programlisting>
+    <programlisting>Literal: IntegerLiteral | FloatLiteral | CharacterLiteral | StringLiteral | VerbatimStringLiteral</programlisting>
     
     <para>All literal values are instances of immutable types. The value of a literal 
     expression is an instance of the type. How this instance is produced is not specified 
@@ -303,6 +259,8 @@ Digit{1,2} ":" Digit{2} ( ":" Digit{2} ( ":" Digit{3} )? )?
         expression of type <literal>Integer</literal>.</para>
         
         <programlisting>Integer five = 5;</programlisting>
+        <programlisting>Integer mask = $1111_0000;</programlisting>
+        <programlisting>Integer white = #FFFF;</programlisting>
                 
     </section>
     
@@ -314,13 +272,6 @@ Digit{1,2} ":" Digit{2} ( ":" Digit{2} ( ":" Digit{3} )? )?
         
         <programlisting>shared Float pi = 3.14159;</programlisting>
         
-        <!--
-        <comment><para>TODO: Actually, this is not the best definition,
-        since if we assign the literal to <literal>Decimal</literal>,
-        we don't want it to go through an intermediate conversion to
-        floating point representation.</para></comment>
-        -->
-        
     </section>
     
     <section id="character">
@@ -329,7 +280,7 @@ Digit{1,2} ":" Digit{2} ( ":" Digit{2} ( ":" Digit{3} )? )?
         <para>A single character literal is an expression of type 
         <literal>Character</literal>.</para>
                 
-        <programlisting>if ( string[i] &equals; `+` ) { ... }</programlisting>
+        <programlisting>if (exists ch=string[i], ch &equals; '+') { ... }</programlisting>
         
     </section>
     
@@ -339,17 +290,18 @@ Digit{1,2} ":" Digit{2} ( ":" Digit{2} ( ":" Digit{3} )? )?
         <para>A character string literal is an expression of type
         <literal>String</literal>.</para>
         
-        <programlisting>person.name := "Gavin King";</programlisting>
+        <programlisting>person.name = "Gavin King";</programlisting>
         
-        <programlisting>String multiline = "Strings may
-span multiple lines
-if you prefer.";</programlisting>
-
-        <programlisting>display("Melbourne\tVic\tAustralia\nAtlanta\tGA\tUSA\nGuanajuato\tGto\tMexico\n");</programlisting>
-                
+        <programlisting>print("Melbourne\tVic\tAustralia\nAtlanta\tGA\tUSA\nGuanajuato\tGto\tMexico\n");</programlisting>
+        
+        <para>A verbatim string is also an expression of type
+        <literal>String</literal>.</para>
+        
+        <programlisting>String multiline = """A verbatim string can have \ or a " in it."""";</programlisting>
+        
     </section>
     
-    <section id="quoted">
+    <!--section id="quoted">
         <title>Single quoted literals</title>
         
         <para>Single-quoted strings are used to express literal values for dates, 
@@ -357,25 +309,6 @@ if you prefer.";</programlisting>
         things like names, cron expressions, internet addresses, and phone numbers.
         This is an important facility since Ceylon is a language for expressing 
         structured data.</para>
-        
-        <!--
-        <para>A single quoted literal must be combined with an explicit type 
-        annotation to form an expression.</para>
-        
-        <programlisting>TypedQuotedLiteral: TypeName QuotedLiteral</programlisting>
-        
-        <para>The type of the expression is the specified type.</para>
-                
-        <programlisting>Date date = Date '25/03/2005';</programlisting>
-        <programlisting>Time time = Time '12:00 AM PST';</programlisting>
-        <programlisting>Boolean isEmail = Regex '^\w+@((\w+)\.)+$'.matches(email);</programlisting>
-        <programlisting>Cron schedule = Cron '0 0 23 ? * MON-FRI';</programlisting>
-        <programlisting>Color color = Color 'FF3B66';</programlisting>
-        <programlisting>Url url = Url 'http://jboss.org/ceylon';</programlisting>
-        <programlisting>mail.to := Email 'gavin@hibernate.org';</programlisting>
-        <programlisting>Phone ph = Phone '+1 (404) 129 3456';</programlisting>
-        <programlisting>Duration duration = Duration '1h 30m';</programlisting>
-        -->
         
         <programlisting>Regex regex = '^\w+@((\w+)\.)+$';</programlisting>
         <programlisting>ph = '+1 (404) 129 3456';</programlisting>
@@ -432,34 +365,29 @@ shared interface Color { ... }</programlisting>
         <comment><para>TODO: we should try to support interpolated expressions, 
         just like we do for string literals.</para></comment>
         
-    </section>
+    </section-->
 
     </section>
 
     <section id="stringtemplates">
         <title>String templates</title>
         
-        <para>A character string <emphasis>template</emphasis> contains interpolated 
+        <para>A character <emphasis>string template</emphasis> contains interpolated 
         expressions, surrounded by character string fragments.</para>
         
-        <programlisting>StringTemplate: StringLiteral (Expression StringLiteral)+</programlisting>
-        
-        <para>An interpolated expression may not begin with a string literal or the 
-        unary prefix <literal>+</literal> operator.</para>
+        <programlisting>StringTemplate: StringStart (Expression StringMid)* Expression StringEnd</programlisting>
         
         <para>Each interpolated expression contained in the string template must have 
         a type assignable to <literal>Object</literal> defined in 
         <literal>ceylon.language</literal>.</para>
         
+        <programlisting>print("Hello, ``person.firstName`` ``person.lastName``, the time is ``Time()``.");</programlisting>
+        
+        <programlisting>print("1 + 1 = ``1 + 1``");</programlisting>
+        
+        <para>A string template is an expression of type <literal>String</literal>.</para>
+        
         <!--
-        <para>The entire character string template is an expression of type 
-        <literal>Gettable&lt;String&gt;</literal>.</para>
-        -->
-        
-        <programlisting>log.info("Hello, " person.firstName " " person.lastName ", the time is " Time() ".");</programlisting>
-        
-        <programlisting>log.info("1 + 1 = " 1 + 1 "");</programlisting>
-        
         <para>An interpolated expression in a string template may invoke or evaluate:</para>
         
         <itemizedlist>
@@ -473,97 +401,96 @@ shared interface Color { ... }</programlisting>
                 scope.</para>
             </listitem>
         </itemizedlist>
-        
-        <!-- 
-        <para>Interpolated expressions are evaluated when the 
-        <literal>Gettable&lt;String&gt;</literal> is evaluated to produce a constant 
-        character string.</para>
         -->
-        
-        <comment><para>TODO: Should string templates be evaluated lazily?</para></comment>
         
     </section>
     
     <section id="selfreferences">
-        <title>Self references</title>
+        <title>Self references and the current package reference</title>
         
         <para>The type of the following expressions depends upon the context in which 
         they appear.</para>
         
-        <programlisting>SelfReference: "this" | "super" | "outer"</programlisting>
-        
-        <section>
-            <title><literal>super</literal></title>
-            
-        <para>The keyword <literal>super</literal> refers to the current instance 
-        (the instance that is being invoked), and has the same members as the 
-        immediate superclass of the class, except for <literal>formal</literal> 
-        <!-- and <literal>definite</literal>--> 
-        members. Any invocation of this reference is processed by the method or 
-        attribute defined or inherited by the superclass, bypassing any method 
-        declaration that refines the method on the current class or any subclass 
-        of the current class. The <literal>super</literal> reference is not assignable 
-        to any type. Nor may not be narrowed to any type using <literal>if (is ...)</literal>.
-        There is no <literal>super</literal> reference in an interface member body. 
-        <!--<emphasis>(Note that <literal>definite</literal> is a proposed 
-        feature for a future version of the language.)</emphasis>--></para>
-        
-        <comment><para>TODO: <literal>super</literal> doesn't let you call a refined
-        member belonging to an interface. A solution would be to let you rename 
-        the refined member in an <literal>import</literal> statement. Another
-        possibility would be to introduce a specialized syntax, for example something
-        like <literal>super(Writer).write(string)</literal>.</para></comment>
-        
-    </section>
+        <programlisting>SelfReference: "this" | "super" | "outer" | "package"</programlisting>
         
     <section>
         <title><literal>this</literal></title>
             
         <para>The keyword <literal>this</literal> refers to the current instance, 
         and is assignable to the type of the current class or interface (the class 
-        or interface in which the expression appears).<!--, and to the special 
-        type <literal>subtype</literal>, which represents the concrete type of the 
-        current instance.--></para>
+        or interface in which the expression appears).</para>
         
-        </section>
-        
-        <section>
-            <title><literal>outer</literal></title>
+    </section>
+   
+    <section>
+        <title><literal>outer</literal></title>
             
         <para>The keyword <literal>outer</literal> refers to the current instance
         of the class or interface which immediately contains the current class or 
         interface and is assignable to the type of this containing class or 
         interface.</para>
         
-        </section>
+    </section>
                 
+    <section>
+        <title><literal>super</literal></title>
+            
+        <para>The keyword <literal>super</literal> refers to the current instance 
+        (the instance that is being invoked), and has the same members as the 
+        immediate superclass of the class, except for <literal>formal</literal> 
+        members. Any invocation of this reference is processed by the method or 
+        attribute defined or inherited by the superclass, bypassing any method 
+        declaration that refines the method on the current class or any subclass 
+        of the current class. The <literal>super</literal> reference is not assignable 
+        to any type. Nor may not be narrowed to any type using <literal>if (is ...)</literal>.
+        There is no <literal>super</literal> reference in an interface member body.</para>
+        
+        <comment><para>TODO: the syntax for invoking a member of an inherited
+        interface is still in flux.</para></comment>
+        
+    </section>
+        
+    <section>
+        <title><literal>package</literal></title>
+        
+        <para>The keyword <literal>package</literal> is not an expression, and
+        does not have a well-defined type. However, it may be used to qualify 
+        and disambiguate a value reference or callable reference. A value
+        reference or callable reference qualified by the keyword 
+        <literal>package</literal> always refers to a toplevel member of the
+        containing package, never to an imported declaration or nested 
+        declaration.</para>
+        
+    </section>
+    
     </section>
     
     <section id="compoundexpressions">
         <title>Compound expressions</title>
-
-        <para>An <emphasis>atom</emphasis> is a literal or self reference, an 
-        enumeration expression, or a parenthesized expression.</para>
+        
+        <para>An <emphasis>atom</emphasis> is a literal or self reference, a
+        string template, an iterable or tuple enumeration, or a parenthesized 
+        expression.</para>
     
         <programlisting>Atom: Literal | StringTemplate | SelfReference | ParExpression</programlisting>
     
-        <para>A <emphasis>primary</emphasis> is formed by recursively invoking or 
-        evaluating members of an atom, toplevel method, toplevel attribute, or
-        class.</para>
+        <para>A <emphasis>primary</emphasis> is formed by recursively invoking 
+        or referencing members of an atom, function reference, or value
+        reference.</para>
     
         <programlisting>Primary: Atom | Meta | MemberReference | Invocation</programlisting>
 
         <programlisting>MemberReference: CallableReference | ValueReference</programlisting>
     
         <para>More complex expressions are formed by combining expressions using 
-        operators, including assignment operators.</para>    
-    
-        <programlisting>Expression: Primary | OperatorExpression</programlisting>
-    
+        operators, including assignment operators, and anonymous functions.</para>    
+        
+        <programlisting>Expression: Primary | OperatorExpression | Function</programlisting>
+        
         <para>Parentheses are used for grouping:</para>
-    
+        
         <programlisting>ParExpression: "(" Expression ")"</programlisting>
-    
+        
     <section id="receiverexpressions">
         <title>Receiver expressions</title>
         
@@ -578,16 +505,22 @@ shared interface Color { ... }</programlisting>
         
         <itemizedlist>
             <listitem>
-                <para>the reference is to a toplevel method, toplevel attribute, 
-                or class,</para>
+                <para>the reference is to a toplevel function, toplevel value, or 
+                toplevel class,</para>
             </listitem>
             <listitem>
-                <para>the reference is to a local or parameter, or</para>
+                <para>the reference is within the lexical scope of the referenced 
+                function, value, or class, or</para>
             </listitem>
             <listitem>
-                <para>the current instance of a containing class is the receiver.</para>
+                <para>the reference is within the body of the referenced function,
+                value, or class.</para>
             </listitem>
         </itemizedlist>
+        
+        <para>If the reference has no receiever expression, and it is a reference 
+        to an attribute, method, or member class of a class, the receiving instance 
+        is the current instance of that class.</para>
         
         <para>When a callable reference with a receiver expression is executed, the 
         receiver expresson is evaluated and a reference to the resulting value is 
@@ -604,71 +537,36 @@ shared interface Color { ... }</programlisting>
     </section>
         
     </section>
-    
-    <!--
-    <section id="outerinstancereferences">
-        <title>Outer instance references</title>
         
-        <para>For a nested class, the containing instance may be obtained using
-        the keyword <literal>outer</literal>.</para>
-        
-        <programlisting>OuterReference: (Receiver ".")? "outer"</programlisting>
-        
-        <para>The type of the outer instance reference is the type that contains 
-        the declaration of the receiver expression type (which must be a nested 
-        class). If no receiver expression is specified, the type of the outer 
-        instance reference is the type that contains the declaration of the 
-        current class (the class in which the expression appears, which must be 
-        a nested class).</para>
-        
-        <programlisting>Node node = tree.Node().Node();
-assert() that (tree &equals; node.outer.outer);</programlisting>
-
-        <programlisting>class Catalog() {
-    class Schema() {
-        Catalog catalog { return outer; }
-        class Table() {
-            Schema schema { return outer; }
-            Catalog catalog { return outer.outer; }
-        }
-    }
-}</programlisting>
-        
-    </section>
-    -->
-    
         <section id="anonymousfunctions">
             <title>Anonymous functions</title>
             
-            <para>An anonyomous function declaration may occur in a positional argument 
-            list, <literal>return</literal> directive, or specifier. An anonymous
-            function defines a method with no method name. It comprises one or more
-            parameter lists, followed by an expression.</para>
+            <para>An anonymous function is a function with no name, defined within
+            an expression. It comprises one or more parameter lists, followed by an 
+            expression.</para>
             
-            <programlisting>Function: ("function" | "void")? Params+ Expression</programlisting>
+            <programlisting>Function: ("function" | "void")? Params+ "=>" Expression</programlisting>
             
-            <para>The parameters are the parameters of the method. The expression is 
-            the return value of the method, and the type of the expression is the 
-            return type of the method, unless the method is explicitly declared using 
-            the <literal>void</literal> keyword.</para>
+            <para>The parameters are the parameters of the function. The expression 
+            is the return value of the function, and the type of the expression is the 
+            return type of the function, unless the function is explicitly declared using 
+            the <literal>void</literal> keyword. If the anonymous function is declared
+            <literal>void</literal>, then its return type is <literal>Anything</literal>,
+            and the expression must be a legal statement.</para>
             
-            <para>An anonymous function declaration is treated as an expression. The
-            type of the expression is the callable byte of the method.</para>
+            <para>The type of an anonymous function expression is the callable type 
+            of the function.</para>
             
-            <para>For example:</para>
+            <programlisting>(Value x, Value y) => x&lt;=&gt;y</programlisting>
             
-            <programlisting>() say("Hello")</programlisting>
-                    
-            <programlisting>(Value x, Value y) x&lt;=&gt;y</programlisting>
-
-            <programlisting>void (String name) print(name)</programlisting>
-        
+            <programlisting>void (String name) => print(name)</programlisting>
+            
         </section>
         
     <section id="valuereferences">
         <title>Value references</title>
                 
-        <para>A <emphasis>value reference</emphasis> is a reference to  something&mdash;for 
+        <para>A <emphasis>value reference</emphasis> is a reference to something&mdash;for 
         example, an attribute, a local, or an invocation expression&mdash;that can be 
         <emphasis>evaluated</emphasis>.</para>
 

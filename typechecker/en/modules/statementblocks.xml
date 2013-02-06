@@ -60,8 +60,8 @@
             </listitem>
             <listitem>
                 <para>the second program element indirectly occurs inside the body of a 
-                declaration or control structure that directly occurs earlier in the same 
-                body as the first program element.</para>
+                declaration or control structure, and the first program element directly 
+                occurs earlier than the declaration or control structure.</para>
             </listitem>
         </itemizedlist>
         
@@ -91,8 +91,8 @@
             </listitem>
             <listitem>
                 <para>the second program element sequentially occurs inside the body of a 
-                control structure that directly occurs earlier in the same body as the 
-                first program element.</para>
+                control structure, and the first program element directly occurs earlier 
+                than the declaration or control structure.</para>
             </listitem>
         </itemizedlist>
         

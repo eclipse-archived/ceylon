@@ -280,7 +280,10 @@
         <programlisting>"\{00E5}ngstr\{00F6}ms"</programlisting>
         <programlisting>" \t\n\f\r,;:"</programlisting>
         <programlisting>"""This program prints "hello world" to the console."""</programlisting>
-    
+        
+        <comment><para>TODO: specify how initial whitespace is stripped from multiline
+        string literals.</para></comment>
+        
     </section>
     
     </section>
