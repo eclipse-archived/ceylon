@@ -232,7 +232,7 @@ public class InteropTest extends CompilerTest {
     }
     
     @Test
-    public void testIopRefinesDefaultAccessMethodWithShared(){
+    public void testIopRefinesDefaultAccessMethodWithShared_fail(){
         compile("access/JavaAccessModifiers.java");
         // XXX This error comes from javac rather than the ceylon typechecker
         assertErrors("access/RefinesDefaultAccessMethodWithShared",
