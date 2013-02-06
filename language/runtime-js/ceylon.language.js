@@ -13,8 +13,8 @@ function className(x){}//IGNORE
 function isOfType(a,b){}//IGNORE
 var larger,smaller,Sequence,Category,empty,equal; //IGNORE
 
-function getT$name() {return (this.$$||this.constructor).T$name;}
-function getT$all() {return (this.$$||this.constructor).T$all;}
+function getT$name() {return this.constructor.T$name;}
+function getT$all() {return this.constructor.T$all;}
 function initType(type, typeName) {
     var cons = function() {}
     type.$$ = cons;
