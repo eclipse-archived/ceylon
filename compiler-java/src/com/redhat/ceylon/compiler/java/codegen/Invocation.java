@@ -864,6 +864,8 @@ class NamedArgumentInvocation extends Invocation {
     
     @Override
     protected List<ExpressionAndType> addReifiedArguments(List<ExpressionAndType> result) {
+        if(!gen.supportsReified(producedReference.getDeclaration()))
+            return result;
         int tpCount = gen.getTypeParameters(producedReference).size();
         for(int tpIndex = 0;tpIndex<tpCount;tpIndex++){
             result = result.append(new ExpressionAndType(reifiedTypeArgName(tpIndex).makeIdent(), gen.makeReifiedTypeType()));

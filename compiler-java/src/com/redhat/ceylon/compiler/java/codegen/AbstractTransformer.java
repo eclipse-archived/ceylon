@@ -2814,7 +2814,7 @@ public abstract class AbstractTransformer implements Transformation {
         return makeReifiedTypeArguments(getTypeArguments(ref));
     }
 
-    private boolean supportsReified(Declaration declaration){
+    public boolean supportsReified(Declaration declaration){
         if(declaration instanceof ClassOrInterface){
             // Java constructors don't support reified type arguments
             return Decl.isCeylon((TypeDeclaration) declaration);

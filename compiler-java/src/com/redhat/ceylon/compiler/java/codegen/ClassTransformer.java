@@ -1386,7 +1386,7 @@ public class ClassTransformer extends AbstractTransformer {
                 this, model);
         
         // do the reified type param arguments
-        if(def.getTypeParameterList() != null)
+        if(def.getTypeParameterList() != null && gen().supportsReified(model))
             methodBuilder.reifiedTypeParameters(def.getTypeParameterList().getTypeParameterDeclarations());
         
         final ParameterList parameterList = model.getParameterLists().get(0);
