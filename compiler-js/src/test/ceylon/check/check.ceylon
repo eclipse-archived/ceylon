@@ -59,7 +59,7 @@ shared void test() {
         assert(is String ms, ms[1100] exists);
         fail("check assert [2]");
     } catch (Exception ex) {
-        check("ms is a looong String: 'is String ms, ms[1100] exists'" in ex.message, "custom assert message");
+        check("ms is a looong String: 'is String ms, ms[1100] exists'" in ex.message, "custom assert message was ``ex.message``");
     }
     check(ms2==ms3, "assertion values");
     results();

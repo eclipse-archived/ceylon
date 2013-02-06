@@ -3464,8 +3464,6 @@ public class GenerateJsVisitor extends Visitor
             BaseMemberExpression bme = (BaseMemberExpression)ann.getPrimary();
             if ("doc".equals(bme.getDeclaration().getName())) {
                 custom = ((Tree.ListedArgument)ann.getPositionalArgumentList().getPositionalArguments().get(0)).getExpression().getTerm().getText();
-                //unquote
-                custom = custom.substring(1, custom.length() - 1);
             }
         }
         endLine();
