@@ -650,6 +650,12 @@ public class StructureTest extends CompilerTest {
     }
 
     @Test
+    public void testRfdInterop(){
+        compile("reified/JavaClass.java", "reified/JavaInterface.java");
+        compareWithJavaSource("reified/Interop");
+    }
+
+    @Test
     public void testRfdModelLoader(){
         compile("reified/Class.ceylon", "reified/Method.ceylon");
         compareWithJavaSource("reified/ModelLoader");
