@@ -10,10 +10,10 @@ if "%exit%" == "true" (
 rem set JAVA_DEBUG_OPTS="-Xrunjdwp:transport=dt_socket,address=8787,server=y,suspend=y"
 
 if NOT "%PRESERVE_JAVA_OPTS%" == "true" (
-	set PREPEND_JAVA_OPTS="%JAVA_DEBUG_OPTS%"
+	set PREPEND_JAVA_OPTS=%JAVA_DEBUG_OPTS%
 	rem "Other java opts go here"
 )
-set JAVA_OPTS="%PREPEND_JAVA_OPTS% %JAVA_OPTS%"
+set "JAVA_OPTS=%PREPEND_JAVA_OPTS% %JAVA_OPTS%"
 
 set "LIB=%CEYLON_HOME%\lib"
 set "REPO=%CEYLON_HOME%\repo"
