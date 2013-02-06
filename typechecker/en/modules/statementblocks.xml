@@ -805,21 +805,21 @@ Integer f(Integer n) => n+package.n;</programlisting>
         <programlisting>Block: "{" (Declaration | Statement)* "}"</programlisting>
         
         <para>A <emphasis>statement</emphasis> is an assignment or specification, an 
-        invocation of a method, an instantiation of a class, a control structure, or 
-        a control directive.</para>
+        invocation of a method, an instantiation of a class, a control structure, a 
+        control directive, or an assertion.</para>
 
-        <programlisting>Statement: ExpressionStatement | Specification | DirectiveStatement | ControlStructure</programlisting>
+        <programlisting>Statement: ExpressionStatement | Specification | Assertion | DirectiveStatement | ControlStructure</programlisting>
         
-        <para>The statements, local specifiers, and control structures that directly occur
-        in a block are executed sequentially in the order that they appear inside the block. 
-        Execution of a block begins at the first statement, local specifier, or control 
-        structure of the block. Execution of a block terminates when the last statement, 
-        local specifier, or control structure of the block finishes executing, when a 
-        control directive that terminates the block is executed, or when an exception is 
-        thrown.</para>
-
-        <para>A statement or declaration contained in a block may not evaluate an attribute
-        or local, invoke a method, instantiate a class, or extend a class whose declaration 
+        <para>The statements and reference specifiers that directly occur in a block 
+        are executed sequentially in the lexical order in which they occcur. Execution 
+        of a block begins at the first statement or reference specifier. Execution of 
+        a block terminates when the last statement or reference specifier of the block 
+        finishes executing, or when a control directive that terminates the block is 
+        executed, or when an exception is thrown by an evaluation, invocation, or
+        instantiation.</para>
+        
+        <para>A statement or declaration contained in a block may not evaluate a value, 
+        invoke a function, instantiate a class, or extend a class whose declaration 
         occurs later in the block.</para>
         
         <!-- 
@@ -849,12 +849,12 @@ Integer f(Integer n) => n+package.n;</programlisting>
         <literal>return</literal> or <literal>throw</literal> directive.</para>
         -->
         
-        <para>Every block local declaration must be used somewhere inside the block in which
-        it is declared.</para>
+        <comment><para>Note: an unused block local declaration results in a compiler 
+        warning.</para></comment>
         
         <section id="expressionstatements">
             <title>Expression statements</title>
-            
+        
         <para>Only certain expressions are valid statements:</para>
         
         <itemizedlist>
@@ -876,10 +876,10 @@ Integer f(Integer n) => n+package.n;</programlisting>
         
         <para>For example:</para>
         
-        <programlisting>x := 1;</programlisting>
+        <programlisting>x += 1;</programlisting>
         <programlisting>x++;</programlisting>
-        <programlisting>log.info("Hello");</programlisting>
-        <programlisting>Main(p);</programlisting>
+        <programlisting>print("Hello");</programlisting>
+        <programlisting>Main(process.arguments);</programlisting>
         
         </section>
         
@@ -887,17 +887,17 @@ Integer f(Integer n) => n+package.n;</programlisting>
             <title>Control directives</title>
             
         <para>Control directive statements end execution of the current block and force 
-        the flow of execution to resume in some outer scope. They may only appear at the 
-        end of a block.<!--, so the semicolon terminator is optional--></para>
+        the flow of execution to resume in some outer scope. They may only occur as the
+        lexically last statement of a block.</para>
 
         <programlisting>DirectiveStatement: Directive ";"</programlisting>
         
-        <para>Ceylon provides the following control directives:</para>
+        <para>There are four control directives:</para>
         
         <itemizedlist>
             <listitem>the <literal>return</literal> directive&mdash;to return a value from 
-            a non-<literal>void</literal> method or attribute getter or terminate execution 
-            of a <literal>void</literal> method, setter, or class initializer,</listitem>
+            a getter or non-<literal>void</literal> function or terminate execution of a 
+            setter, class initializer, or <literal>void</literal> method,</listitem>
             <listitem>the <literal>break</literal> directive&mdash;to terminate a loop,</listitem>
             <listitem>the <literal>continue</literal> directive&mdash;to jump to the next iteration 
             of a loop, and</listitem>
@@ -909,30 +909,22 @@ Integer f(Integer n) => n+package.n;</programlisting>
         <para>For example:</para>
         
         <programlisting>throw Exception();</programlisting>
-        <!--programlisting>retry;</programlisting-->
         <programlisting>return x+y;</programlisting>
-        <programlisting>return "Hello";</programlisting>
         <programlisting>break;</programlisting>
         <programlisting>continue;</programlisting>
         
         <para>The <literal>return</literal> directive must sequentially occur in the body 
-        of a method, attribute getter, attribute setter, or class initializer. In the 
-        case of a <literal>void</literal> method, attribute setter, or class initializer, 
-        no expression may be specified. In the case of a non-<literal>void</literal> method 
-        or attribute getter, an expression must be specified. The expression type must be 
-        assignable to the return type of the method or the type of the attribute. When the 
-        directive is executed, the expression is evaluated to determine the return value of 
-        the method or attribute getter.</para>
+        of a function, getter, setter, or class initializer. In the case of a 
+        setter, class initializer, or <literal>void</literal> function, no expression may 
+        be specified. In the case of a getter or non-<literal>void</literal> function, an 
+        expression must be specified. The expression type must be assignable to the return 
+        type of the function or the type of the value. When the directive is executed, the 
+        expression is evaluated to determine the return value of the function or getter.</para>
         
         <programlisting>Return: "return" (Expression | Function)?</programlisting>
         
         <para>The <literal>break</literal> directive must sequentially occur in the body 
-        of a loop.<!--If the loop has no <literal>fail</literal> block, the <literal>break</literal> 
-        directive may not specify an expression. If the loop has a <literal>fail</literal> 
-        block, the <literal>break</literal> directive must specify an expression of type 
-        <literal>ceylon.language.Boolean</literal>. When the directive is executed, the 
-        expression is evaluated and a value of <literal>false</literal> specifies that the 
-        <literal>fail</literal> block should be executed.--></para>
+        of a loop.</para>
         
         <programlisting>Break: "break"</programlisting>
         
@@ -942,54 +934,112 @@ Integer f(Integer n) => n+package.n;</programlisting>
         <programlisting>Continue: "continue"</programlisting>
         
         <para>A <literal>throw</literal> directive may appear anywhere and may specify an 
-        expression of type <literal>ceylon.language.Exception</literal>. When the directive 
-        is executed, the expression is evaluated and the resulting exception is thrown. If 
-        no expression is specified, the directive is equivalent to <literal>throw Exception()</literal>.</para>
+        expression, whose type must be a subtype of type <literal>Exception</literal> 
+        defined in <literal>ceylon.language</literal>. When the directive is executed, the 
+        expression is evaluated and the resulting exception is thrown. If no expression is 
+        specified, the directive is equivalent to <literal>throw Exception()</literal>.</para>
         
         <programlisting>Throw: "throw" Expression?</programlisting>
-                
+        
         </section>
         
         <section id="specificationstatements">
             <title>Specification statements</title>
             
-        <para>A specification statement may specify the value of a forward-declared, 
-        non-<literal>variable</literal> simple attribute or local or the method 
-        reference of a forward-declared method.</para>
+        <para>A specification statement may specify or initialize the persistent 
+        value of a forward-declared reference, or specify the implementation of a
+        forward-declared getter or function.</para>
         
-        <para>Note that the Ceylon language distinguishes between assignment to a 
-        <literal>variable</literal> value (the <literal>:=</literal> operator) and 
-        specification of the value of a non-<literal>variable</literal> local or 
-        attribute (using <literal>=</literal>). The <literal>=</literal> character is 
-        not an operator, and therefore a specification statement is not an expression 
-        statement.</para>
+        <programlisting>Specification: ValueSpecification | LazySpecification</programlisting>
         
-        <para>A specification statement consists of an unqualified value reference and
-        a specifier. The value reference must refer to a declaration which sequentially 
-        occurs earlier in the body in which the specification statement occurs.</para>
+        <para>The persistent value of a forward-declared reference or the 
+        implementation of a forward-declared function may be specified using 
+        <literal>=</literal>. The specification statement consists of an unqualified 
+        value reference and a specifier. The value reference must refer to a 
+        declaration which sequentially occurs earlier in the body in which the 
+        specification statement occurs.</para>
         
-        <programlisting>Specification: MemberName Specifier ";"</programlisting>
-                
+        <programlisting>ValueSpecification: MemberName Specifier ";"</programlisting>
+        
         <para>The type of the specified expression must be assignable to the type of 
-        the simple attribute or local, or to the callable type of the method.</para>
+        the reference, or to the callable type of the function.</para>
         
-        <!--
-        <para>A specification may appear within an control structure, in which case the
-        compiler validates that all paths of execution result in definite specification 
-        of the simple attribute value or method reference before the attribute or value
-        is used in an expression. For example:</para>
-        
-        <programlisting>String description;
-Comparison order(Value x, Value y);
-if (reverseOrder()) {
-    description = "Reverse order";
-    order = reverse;
+        <programlisting>String greeting;
+if (exists name) {
+    greeting = "hello ``name``";
 }
 else {
-    description = "Integer order";
-    order = natural;
+    greeting = "hello world";
 }</programlisting>
-        -->
+        
+        <programlisting>String process(String input);
+if (normalize) {
+    process = String.normalized;
+}
+else {
+    process = (String s) => s;
+}</programlisting>
+        
+        <comment><para>Note: there is an apparent ambiguity here. Is the statement
+        <literal>x=1;</literal> a value specification statement, or an assignment 
+        expression statement? The language resolves this ambiguity by favoring the
+        interpretation as a specification statement whenever that interpretation is
+        viable. This is a transparent solution, since it accepts strictly more code 
+        than the alternative interpretation, and for ambiguous cases the actual 
+        semantics are identical between the two interpretations.</para></comment>
+        
+        <para>The implementation of forward-declared getter or function may be
+        specified using <literal>=&gt;</literal>. The specification statement 
+        consists of either:</para>
+        
+        <itemizedlist>
+            <listitem>
+                <para>an unqualified value reference and a lazy specifier, or</para>
+            </listitem>
+            <listitem>
+                <para>a unqualified callable reference, one or more parameter lists, 
+                and a lazy specifier.</para>
+            </listitem>
+        </itemizedlist>
+        
+        
+        <para>The value reference or callable reference must refer to a declaration 
+        which sequentially occurs earlier in the body in which the specification 
+        statement occurs.</para>
+        
+        <para>A callable reference followed by a parameter list is itself considered 
+        a callable reference, called a <emphasis>parameterized reference</emphasis>. 
+        If the parameter list has type <literal>P</literal> then the callable reference 
+        must have the exact type <literal>Callable&lt;R,P&gt;</literal> for some type 
+        <literal>R</literal>. Then the type of the parameterized reference is
+        <literal>R</literal>.</para>
+        
+        <programlisting>ParameterizedReference: MemberName Params+</programlisting>
+        
+        <para>Thus, the specification statement consists of a parameterized reference
+        followed by a lazy specifier.</para>
+        
+        <programlisting>LazySpecification: (MemberName | ParameterizedReference) LazySpecifier ";"</programlisting>
+        
+        <para>The type of the specified expression must be assignable to the type of 
+        the parameterized reference, or to the type of the value reference.</para>
+        
+        <programlisting>String greeting;
+if (exists name) {
+    greeting => "hello ``name``";
+}
+else {
+    greeting => "hello world";
+}</programlisting>
+        
+        <programlisting>String process(String input);
+if (normalize) {
+    process(String input) => input.normalized;
+}
+else {
+    process(String s) => s;
+}</programlisting>
+        
         </section>
         
         <section id="definitereturn">
