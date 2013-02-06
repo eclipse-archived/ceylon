@@ -1264,7 +1264,7 @@ else {
     </section>
     
     <section id="controlstructures">
-        <title>Control structures</title>
+        <title>Control structures and assertions</title>
         
         <para>Control of execution flow may be achieved using control directives and control 
         structures. Control structures include conditionals, loops, and exception management.</para>
@@ -1301,25 +1301,31 @@ else {
         <para>Control structures are not considered to be expressions, and therefore do not evaluate
         to a value.</para>
         
-        <comment><para>TODO: Should we support, like C and Java, single-statement control structure 
-        bodies without the braces.</para></comment>
+        <para><emphasis>Assertions</emphasis> are runtime checks upon program invariants, or 
+        function preconditions and postconditions. An assertion failure represents a bug in
+        the program, and is not considered recoverable. Therefore, assertions should not be 
+        used to control "normal" execution flow.</para>
+        
+        <comment><para>Note: of course, in certain circumstances, it is appropriate to handle
+        the exception that results from an assertion failure, for example, to display a message
+        to the user, or in a testing framework to aggregate and report the failures that occurred
+        in test assertions. A test failure may be considered "normal" occurrence from the point 
+        of view of a testing framework, but it's not "normal" in the sense intended above.</para></comment>
         
         <section id="controlstructurevariables">
             <title>Control structure variables</title>
        
         <para>Some control structures allow inline declaration of a <emphasis>variable</emphasis>,
-        a local that is scoped to the control structure body.</para>
+        a reference that is scoped to the control structure body.</para>
         
-        <programlisting>TypedVariable: UnionType MemberName</programlisting>
+        <programlisting>TypedVariable: EntryType MemberName</programlisting>
         
-        <para>In most cases, the explicit type be omitted, forcing the compiler to infer it, by 
-        specifying the keyword <literal>value</literal> where the type usually appears. The type 
-        of the variable is inferred to be the type of the expression that follows.</para>
+        <para>In most cases, the explicit type be omitted.</para>
         
-        <programlisting>Variable: UnionType? MemberName</programlisting>
+        <programlisting>Variable: EntryType? MemberName</programlisting>
         
-        <para>If the type is missing from the declarations, the type of the variables is 
-        inferred.</para>
+        <para>If the type is missing from the declaration, the type of the variables is 
+        inferred from the type of the expression that follows.</para>
 
         <comment><para>TODO: write down the rules for inferring the type of control structure
         variables!</para></comment>
@@ -1334,24 +1340,29 @@ else {
 
             <programlisting>IteratorVariable: Variable | CallableVariable | EntryVariablePair</programlisting>
             
-            <para>An iteration variable may be callable.</para>
-            
-            <programlisting>CallableVariable: (UnionType | "void")? MemberName Params+</programlisting>
-        
-            <para>If the return type is missing from the declaration, the return type of the 
-            callable variable is inferred.</para>
-
             <para>An iteration variable of type <literal>Entry</literal> may be specified in 
             destructured form.</para>
         
             <programlisting>EntryVariablePair: Variable "->" Variable</programlisting>
             
+            <para>An iteration variable may be callable.</para>
+            
+            <programlisting>CallableVariable: (EntryType | "void")? MemberName Params+</programlisting>
+        
+            <para>If the return type is missing from the declaration, the return type of the 
+            callable variable is inferred.</para>
+            
+            <comment><para>TODO: is there any value to allowing this syntax? It seems more regular,
+            but I really can't see why I would ever want to write 
+            <literal>for (f(Float x) in functions)</literal>. Perhaps it could help readability in 
+            some cases?</para></comment>
+
         </section>
         
         <section id="controlstructureconditions">
             <title>Control structure conditions</title>
             
-        <para>Some control structures expect conditions. There are five kinds of condition:</para>
+        <para>Some control structures expect conditions. There are four kinds of condition:</para>
         
         <itemizedlist>
             <listitem>
@@ -1364,19 +1375,27 @@ else {
             </listitem>
             <listitem>
                 <para>an <emphasis>existence condition</emphasis> is satisfied when an expression 
-                evaluates to a non-null value,</para>
+                evaluates to a non-null value, and</para>
             </listitem>
             <listitem>
                 <para>a <emphasis>nonemptiness condition</emphasis> is satisfied when an expression 
-                evaluates to a non-null, non-empty value, and</para>
+                evaluates to a non-null, non-empty value.</para>
             </listitem>
-            <listitem>
+            <!--listitem>
                 <para>a <emphasis>subtype condition</emphasis> is satisfies when a given type is a 
                 subtype of the specified type.</para>
-            </listitem>
+            </listitem-->
         </itemizedlist>
         
-        <programlisting>Condition: BooleanCondition | IsCondition | ExistsOrNonemptyCondition | SatisfiesCondition</programlisting>
+        <programlisting>Condition: BooleanCondition | IsCondition | ExistsOrNonemptyCondition</programlisting>
+        
+        <para>A condition list has one or more conditions.</para>
+        
+        <programlisting>ConditionList: "(" Condition ("," Condition) ")"</programlisting>
+        
+        <para>A condition list is satisfied if all of its constituent conditions are satisfied.
+        The conditions are evaluated in the lexical order in which they occur in the condition
+        list.</para>
         
         </section>
         
@@ -1402,7 +1421,7 @@ else {
         <itemizedlist>
             <listitem>
                 <para>an unqualified value reference to a non-<literal>variable</literal>,
-                non-<literal>default</literal> simple attribute, local, or parameter, or</para>
+                non-<literal>default</literal> reference, or</para>
             </listitem>
             <listitem>
                 <para>an inline variable declaration together with an expression.</para>
@@ -1412,7 +1431,7 @@ else {
         <para>In the case of an assignability or existence condition, the type of the variable may be 
         inferred.</para>
                 
-        <programlisting>IsCondition: "is" (TypedVariable Specifier | UnionType MemberName)</programlisting>
+        <programlisting>IsCondition: "is" (TypedVariable Specifier | EntryType MemberName)</programlisting>
         
         <programlisting>ExistsOrNonemptyCondition: ("exists" | "nonempty") (Variable Specifier | MemberName)</programlisting>
         
@@ -1421,39 +1440,39 @@ else {
         <itemizedlist>
             <listitem>
                 <para>a type which is not a subtype of the specified type, but whose intersection
-                with the specified type is not exactly <literal>Bottom</literal>, in the case of an 
+                with the specified type is not exactly <literal>Nothing</literal>, in the case of an 
                 assignability condition,</para>
             </listitem>
             <listitem>
-                <para>a type whose intersection with <literal>Nothing</literal> is not exactly 
-                <literal>Bottom</literal> and whose intersection with <literal>Object</literal> is 
-                not exactly <literal>Bottom</literal>, in the case of an exists condition, or</para>
+                <para>a type whose intersection with <literal>Null</literal> is not exactly 
+                <literal>Nothing</literal> and whose intersection with <literal>Object</literal> is 
+                not exactly <literal>Nothing</literal>, in the case of an exists condition, or</para>
             </listitem>
             <listitem>
-                <para>a subtype of <literal>Nothing|FixedSized&lt;Void&gt;</literal> whose intersection
-                with <literal>None&lt;Bottom&gt;</literal> is not exactly <literal>Bottom</literal>, 
-                and whose intersection with <literal>Some&lt;Bottom&gt;</literal> is not exactly 
-                <literal>Bottom</literal>, in the case of a nonemptiness condition.</para>
+                <para>a subtype of <literal>[Anything*]</literal> whose intersection with 
+                <literal>[]</literal> is not exactly <literal>Nothing</literal>, and whose 
+                intersection with <literal>[Nothing+]</literal> is not exactly 
+                <literal>Nothing</literal>, in the case of a nonemptiness condition.</para>
             </listitem>
         </itemizedlist>
         
-        <para>An assignability condition may narrow to an intersection or union type.</para>
-        
-        <programlisting>if (is Format &amp; IdentifiableObject object) { ... }</programlisting>
-        <programlisting>if (is Integer | Float num) { ... }</programlisting>
+        <comment><para>Note: an assignability condition may narrow to an intersection or union 
+        type.</para>
+        <programlisting>if (is Printable&amp;Identifiable object) { ... }</programlisting>
+        <programlisting>if (is Integer|Float num) { ... }</programlisting></comment>
 
-        <para>Note that an existence or nonemptiness condition is equivalent to&mdash;and may be 
+        <para>Every existence or nonemptiness condition is equivalent to&mdash;and may be 
         considered an abbreviation of&mdash;an assignability condition:</para>
         
         <itemizedlist>
             <listitem>
-                <para><literal>if (exists x)</literal> is equivalent to <literal>if (is Object x)</literal>, 
+                <para><literal>exists x</literal> is equivalent to <literal>is Object x</literal>, 
                 and</para>
             </listitem>
             <listitem>
-                <para><literal>if (nonempty x)</literal> is equivalent to <literal>if (is Some&lt;E&gt; x)</literal>
+                <para><literal>nonempty x</literal> is equivalent to <literal>is [E+] x</literal>
                 where <literal>x</literal> is an expression whose type is an invariant subtype of
-                <literal>FixedSized&lt;E&gt;</literal>.</para>
+                <literal>[E*]</literal>.</para>
             </listitem>
         </itemizedlist>
         
@@ -1462,9 +1481,9 @@ else {
         <itemizedlist>
             <listitem>
                 <para>if the condition contains a value reference, the value will be treated by the 
-                compiler as having type <literal>T&amp;X</literal> where the conditional expression is 
-                of type <literal>T</literal> and <literal>X</literal> is the specified type, inside 
-                the block that immediately follows the condition.</para>
+                compiler as having type <literal>T&amp;X</literal> where the conditional expression 
+                is of type <literal>T</literal> and <literal>X</literal> is the specified type, 
+                inside the block that immediately follows the condition.</para>
             </listitem>
         </itemizedlist>
         
@@ -1485,13 +1504,13 @@ if (is Usable tx) { ... }</programlisting>
         <itemizedlist>
             <listitem>
                 <para>if the condition declares a variable, the declared type of the variable 
-                must be a supertype of <literal>T&amp;Object</literal>, where the specifier expression 
-                is of type <literal>T</literal>, or</para>
+                must be a supertype of <literal>T&amp;Object</literal>, where the specifier 
+                expression is of type <literal>T</literal>, or</para>
             </listitem>
             <listitem>
-                <para>if the condition contains a value reference, the value will be treated by the 
-                compiler as having type <literal>T&amp;Object</literal> inside the block that immediately 
-                follows the condition, where the conditional expression is of type 
+                <para>if the condition contains a value reference, the value will be treated by 
+                the compiler as having type <literal>T&amp;Object</literal> inside the block that 
+                immediately follows the condition, where the conditional expression is of type 
                 <literal>T</literal>.</para>
             </listitem>
         </itemizedlist>
@@ -1500,17 +1519,17 @@ if (is Usable tx) { ... }</programlisting>
         
         <itemizedlist>
             <listitem>
-                <para>if the condition declares a variable, the declared type of the variable must be 
-                a supertype of <literal>T&amp;Some&lt;E&gt;</literal>, where the specifier expression 
-                is of type <literal>T</literal> and <literal>T</literal> is an invariant subtype of
-                <literal>FixedSized&lt;E&gt;</literal>, or</para>
+                <para>if the condition declares a variable, the declared type of the variable must 
+                be a supertype of <literal>T&amp;[E+]</literal>, where the specifier expression is 
+                of type <literal>T</literal> and <literal>T</literal> is an invariant subtype of
+                <literal>[E*]</literal>, or</para>
             </listitem>
             <listitem>
                 <para>if the condition contains a value reference, the value will be treated by the 
-                compiler as having type <literal>T&amp;Some&lt;E&gt;</literal> inside the block that 
+                compiler as having type <literal>T&amp;[E+]</literal> inside the block that 
                 immediately follows the condition, where the conditional expression is of type 
                 <literal>T</literal> and <literal>T</literal> is an invariant subtype of 
-                <literal>FixedSized&lt;E&gt;</literal>.</para>
+                <literal>[E*]</literal>.</para>
             </listitem>
         </itemizedlist>
         
@@ -1524,7 +1543,7 @@ if (is Usable tx) { ... }</programlisting>
         
         <para>Where the <literal>name</literal> declared by the condition hides the outer declaration
         of <literal>name</literal> inside the block that follows.</para>
-                        
+        
         <para>The condition is satisfied if the value reference or expression evaluates to an 
         instance of the required type when the control structure containing the condition is
         executed:</para>
@@ -1537,24 +1556,24 @@ if (is Usable tx) { ... }</programlisting>
             </listitem>
             <listitem>
                 <para>for an existence condition, the condition is satisfied unless the expression 
-                evaluates to an instance of <literal>Nothing</literal> when the control structure is 
-                executed, or</para>
+                evaluates to an instance of <literal>Null</literal> when the control structure 
+                is executed, or</para>
             </listitem>
             <listitem>
-                <para>for a nonemptiness expression, the condition is satisfied unless the expression 
-                evaluates to an instance of <literal>None</literal> or <literal>Nothing</literal>
-                when the control structure is executed.</para>
+                <para>for a nonemptiness expression, the condition is satisfied unless the 
+                expression evaluates to an instance of <literal>[]|Null</literal> when the 
+                control structure is executed.</para>
             </listitem>
         </itemizedlist>
         
-        <para>Note that these are formal definitions. In fact, the compiler erases 
+        <!--para>Note that these are formal definitions. In fact, the compiler erases 
         <literal>Nothing|T</literal> to <literal>T</literal> before generating bytecode.
         So <literal>if (exists x)</literal> is actually processed as <literal>if (x!=null)</literal>
-        by the virtual machine.</para>
+        by the virtual machine.</para-->
         
         </section>
                 
-        <section id="subtypeconditions">
+        <!--section id="subtypeconditions">
             <title>Subtype conditions</title>
         
         <para>A subtype condition specifies a <emphasis>specified type</emphasis> (first) and a 
@@ -1568,9 +1587,9 @@ if (is Usable tx) { ... }</programlisting>
         <para>The condition is satisfied if the given type is a subtype of the specified type when 
         the control structure containing the condition is executed.</para>
         
-        </section>
+        </section-->
         
-        <section id="exhaustivecaselists">
+        <!--section id="exhaustivecaselists">
             <title>Exhaustive lists of cases</title>
             
             <para>A <literal>switch</literal> statement may be <emphasis>exhaustive</emphasis>. 
@@ -1608,24 +1627,8 @@ if (is Usable tx) { ... }</programlisting>
                     which is an enumerated type.</para>
                 </listitem>
             </itemizedlist>
-                        
-            <para>A <literal>switch</literal> is <emphasis>exhaustive</emphasis> if the union type 
-            formed by the types belonging to the exhaustive list of cases of the <literal>switch</literal>
-            expression type is a subtype of the union type formed from by the types of the 
-            <literal>case</literal>s of the <literal>switch</literal>.</para>
             
-            <comment><para>TODO: This sells short what the compiler actually does. In fact it checks
-            if the union type of the <literal>case</literal> types covers any supertype of a type,
-            or even all members of a union type.</para></comment>
-            
-            <comment><para>TODO: define exhaustive for <literal>case (satisfies ...)</literal>.</para></comment>
-            
-            <comment><para>TODO: for a covariant type like <literal>Sequence&lt;Node&lt;Element&gt;&gt;</literal>,
-            should we treat the cases <literal>Sequence&lt;Root&lt;Element&gt;&gt;</literal>,
-            <literal>Sequence&lt;Branch&lt;Element&gt;&gt;</literal>, and
-            <literal>Sequence&lt;Leaf&lt;Element&gt;&gt;</literal> as an exhaustive list of cases?</para></comment>
-            
-        </section>
+        </section-->
         
         <section id="ifelse">
             <title><literal>if/else</literal></title>
@@ -1634,82 +1637,47 @@ if (is Usable tx) { ... }</programlisting>
             
             <programlisting>IfElse: If Else?</programlisting>
 
-            <programlisting>If: "if" "(" Condition ")" Block</programlisting>
+            <programlisting>If: "if"  ConditionList Block</programlisting>
             
             <programlisting>Else: "else" (Block | IfElse)</programlisting>
             
-            <para>When the construct is executed, the condition is evaluated. If the condition is 
-            satisfied, the <literal>if</literal> block is executed. Otherwise, the <literal>else</literal> 
-            block, if any, is executed.</para>
-                                
+            <para>When the construct is executed, the condition list is evaluated. If the 
+            condition list is satisfied, the <literal>if</literal> block is executed. 
+            Otherwise, the <literal>else</literal> block, if any, is executed.</para>
+            
             <para>For example:</para>
             
             <programlisting>if (payment.amount &lt;= account.balance) {
     account.balance -= payment.amount;
-    payment.paid := true;
+    payment.paid = true;
 }
 else {
     throw NotEnoughMoneyException();
 }</programlisting>
-
+            
             <programlisting>shared void welcome(User? user) {
     if (exists user) {
-        log.info("Hi " user.name "!");
+        print("Welcome back, ``user.name``!");
     }
     else {
-        log.info("Hello, World!");
+        print("Welcome to Ceylon!");
     }
 }</programlisting>
             
-            <programlisting>shared Payment payment(Order order) {
-    if (exists Payment p = order.payment) {
-        return p;
-    }
-    else { 
-        return Payment(order);
-    }
-}</programlisting>
-
-            <programlisting>if (exists Payment p = order.payment) {
-    if (p.paid) { 
-        log.info("already paid"); 
-    }
+            <programlisting>if (is CardPayment p = order.payment, 
+        !p.paid) {
+    p.card.charge(total);
 }</programlisting>
             
-            <programlisting>if (is CardPayment p = order.payment) {
-    return p.card;
-}</programlisting>
-            
-        <programlisting>List&lt;Element&gt; list = ...;
-Element element = ...;
-if (satisfies Comparable&lt;Element&gt; Element) {
-    Element test;
-    if (exists Element first = list.first) {
-        test = max(element, first);
-    }
-    else {
-        test = element;
-    }
-    return forAll(Element e in list) every (e&lt;=test);
-}</programlisting>
-<!-- 
-        <programlisting>String string&lt;P...&gt;(Tuple&lt;P...&gt; tuple) {
-    if (T, Q... satisfies P...) {
-        return $tuple.head + ", " + string(tuple.tail);
-    }
-    else {
-        return ";";
-    }
-}</programlisting>
--->
         </section>
         
         <section id="switchcaseelse">
             <title><literal>switch/case/else</literal></title>
             
-            <para>The <literal>switch/case/else</literal> conditional has the following form:</para>
+            <para>The <literal>switch/case/else</literal> conditional has the following 
+            form:</para>
             
-            <programlisting>SwitchCaseElse: Switch ( Cases | "{" Cases "}" )</programlisting>
+            <programlisting>SwitchCaseElse: Switch Cases</programlisting>
             
             <programlisting>Switch: "switch" "(" Expression ")"</programlisting>
             
@@ -1733,93 +1701,57 @@ if (satisfies Comparable&lt;Element&gt; Element) {
                 <listitem>
                     <para>an assignability condition of form <literal>case (is V)</literal> 
                     where the intersection type <literal>V&amp;U</literal> is not exactly
-                    <literal>Bottom</literal>.</para>
+                    <literal>Nothing</literal>.</para>
                 </listitem>
             </itemizedlist>
             
-            <para>Two <literal>case</literal>s are said to be <emphasis>disjoint</emphasis> if
-            the intersection of their types is the <literal>Bottom</literal> type. In every
-            <literal>switch</literal> statement, all <literal>case</literal>s must be
-            mutually disjoint.</para>
+            <para>Two <literal>case</literal>s are said to be <emphasis>disjoint</emphasis> 
+            if the intersection of their types is exactly <literal>Nothing</literal>. In every
+            <literal>switch</literal> statement, all <literal>case</literal>s must be mutually 
+            disjoint.</para>
+            
+            <para>A <literal>switch</literal> is <emphasis>exhaustive</emphasis> if the union 
+            type formed from by the types of the <literal>case</literal>s of the 
+            <literal>switch</literal> covers the <literal>switch</literal> expression type.</para>
             
             <para>If no <literal>else</literal> block is specified, the <literal>switch</literal> 
             must be exhaustive. <!--Conversely, if the <literal>switch</literal> is exhaustive, 
             no <literal>else</literal> block may be specified.--></para>
             
-            <comment><para>TODO: define <literal>case (satisfies ...)</literal>.</para></comment>
+            <programlisting>Case: Expression ("," Expression)* | "is" EntryType</programlisting>
             
-            <programlisting>Case: Expression ("," Expression)* | "is" UnionType | "satisfies" Type</programlisting>
-            
-            <para>An assignability condition <literal>case</literal> may narrow to an intersection or 
-            union type.</para>
-        
+            <comment><para>Note: an assignability condition <literal>case</literal> may narrow to 
+            an intersection or union type.</para>
             <programlisting>case (is Format &amp; IdentifiableObject) { ... }</programlisting>
-            <programlisting>case (is Integer | Float) { ... }</programlisting>
+            <programlisting>case (is Integer | Float) { ... }</programlisting></comment>
 
             <para>If a <literal>switch</literal> has an assignability condition <literal>case</literal>,
-            then the <literal>switch</literal> expression must be an unqualified value reference to a 
-            non-<literal>variable</literal>, non-<literal>default</literal> simple attribute, local, or 
-            parameter.</para>
+            then the <literal>switch</literal> expression must be an unqualified value reference to 
+            a non-<literal>variable</literal>, non-<literal>default</literal> reference.</para>
             
             <para>For an assignability condition <literal>case</literal>, the value referred by the
             <literal>switch</literal> expression will be treated by the compiler as having the 
             intersection type of its declared type with the specified type inside the <literal>case</literal> 
-            block. This intersection type must not be equivalent to <literal>Bottom</literal>.</para>
+            block. This intersection type must not be exactly <literal>Nothing</literal>.</para>
             
             <para>For example:</para>
 
-            <programlisting>shared PaymentProcessor processor {
-    switch (payment.type) 
-    case (null) { 
-        throw NoPaymentTypeException();
-    }
-    case (credit, debit) { 
-        return cardPaymentProcessor;
-    }
-    case (check) { 
-        return checkPaymentProcessor;
-    }
-    else { 
-        return interactivePaymentProcessor;
-    }
+            <programlisting>Boolean? maybe = ... ;
+switch (maybe) 
+case (null, false) {
+    return false;
+}
+case (true) { 
+    return true;
 }</programlisting>
             
-            <programlisting>switch (payment.type) {
-    case (credit, debit) { 
-        log.debug("card payment");
-        cardPaymentProcessor.process(payment, user.card);
-    } 
-    case (check) {
-        log.debug("check payment");
-        checkPaymentProcessor.process(payment);
-    }
-    else {
-        log.debug("other payment type");
-    }
-}</programlisting>
-
-            <programlisting>switch (payment) {
-    case (is CardPayment) { 
-        pay(payment.amount, payment.card);
-    } 
-    case (is CheckPayment) {
-        pay(payment.amount, payment.check);
-    }
-    else {
-        log.debug("other payment type");
-    }
-}</programlisting>
-
-            <programlisting>switch (node) {
-    case (root) { 
-        handleRootNode();
-    } 
-    case (is Leaf) {
-        handleLeafNode(node);
-    }
-    case (is Branch) {
-        handleBranchNode(node);
-    }
+            <programlisting>Integer|Float number = ... ;
+switch (number)
+case (is Integer) { 
+    return sqrt(number.float);
+} 
+case (is Float) { 
+    return sqrt(number);
 }</programlisting>
             
             <para>A Java-style overloaded method may be emulated as follows:</para>
@@ -1828,17 +1760,17 @@ if (satisfies Comparable&lt;Element&gt; Element) {
         given Value of String | Integer | Float {
     switch (printable)
     case (is String) { 
-        stream.writeLine(printable); 
+        print("\"``printable``\""); 
     }
     case (is Integer) { 
-        print($printable); 
+        print(printable + ".00"); 
     }
     case (is Float) { 
-        print( FloatFormat(printable, 2) ); 
+        print(formatFloat(printable, 2)); 
     }
 }</programlisting>
 
-            <para>Or, even better:</para>
+            <!--para>Or, even better:</para>
             
             <programlisting>shared Value join&lt;Value&gt;(Value x, Value y) 
         given Value of String | Integer {
@@ -1849,7 +1781,7 @@ if (satisfies Comparable&lt;Element&gt; Element) {
     case (satisfies Integer) { 
         return (IntegerFormat(x,2)+IntegerFormat(y,2)).parseInteger(2);
     }
-}</programlisting>
+}</programlisting-->
             
         </section>
         
@@ -1927,35 +1859,30 @@ if (satisfies Comparable&lt;Element&gt; Element) {
                                 
             <para>For example:</para>
 
-            <programlisting>for (Person p in people) { 
-    log.info(p.name);
+            <programlisting>for (p in people) { 
+    print(p.name);
 }</programlisting>
 
             <programlisting>variable Float sum := 0.0;
-for (Integer i in -10..10) {
-    sum += x[i] ? 0.0;
+for (i in -10..10) {
+    sum += x[i] else 0.0;
 }</programlisting>
             
-            <programlisting>for (Integer month -> Float temp in monthlyTempsList) { 
-    plot(month,temp); 
-}</programlisting>
-
-            <programlisting>for (String word -> Integer freq in wordFrequencyMap) { 
-    log.info("The frequency of " word " is " freq "."); 
+            <programlisting>for (word -> freq in wordFrequencyMap) { 
+    print("The frequency of ``word`` is ``freq``."); 
 }</programlisting>
             
-            <programlisting>for (Person p in people) {
-    log.debug("Testing person: " p.name ".");
+            <programlisting>for (p in group) {
     if (p.age >= 18) {
-        log.info("Found an adult: " p.name ".");
+        log.info("Found an adult: ``p.name``.");
         break;
     }
 }
 else {
-    log.info("no adults");
+    log.info("No adult in group.");
 }
 </programlisting>
-
+            
         </section>
         
         <section id="while">
@@ -1965,33 +1892,28 @@ else {
             
             <programlisting>While: LoopCondition Block</programlisting>
             
-            <para>The loop condition determines when the loop terminates.</para>
+            <para>The loop condition list determines when the loop terminates.</para>
             
-            <programlisting>LoopCondition: "while" "(" Condition ")"</programlisting>
+            <programlisting>LoopCondition: "while" ConditionList</programlisting>
             
-            <para>When the construct is executed, the loop condition is evaluated repeatedly
-            until the first time the condition is not satisfied, or until a <literal>break</literal>, 
-            <literal>return</literal>, or <literal>throw</literal> directive is executed. 
-            Each time the condition is satisfied, the block is executed.</para>
+            <para>When the construct is executed, the loop condition list is evaluated 
+            repeatedly until the first time the condition list is not satisfied, or 
+            until a <literal>break</literal>, <literal>return</literal>, or 
+            <literal>throw</literal> directive is executed. Each time the condition is 
+            satisfied, the block is executed.</para>
             
             <comment><para>TODO: does <literal>while</literal> need a <literal>fail</literal> 
             block? Python has it, but what is the real usecase?</para></comment>
             
             <para>For example:</para>
             
-            <programlisting>variable Integer n:=0;
-OpenList&lt;Integer&gt; seq = ArrayList&lt;Integer&gt;();
+            <programlisting>variable Integer n=0;
+variable [Integer*] seq = [];
 while (n&lt;=max) {
-    seq.append(n);
+    seq=seq.withTrailing(n);
     n+=step(n);
 }</programlisting>
             
-            <programlisting>variable value iter = org.employees.iterator;
-while (exists iter) {
-    log.info(iter.head.name);
-    iter.=tail;
-}</programlisting>
-                  
         </section>
 
         <section id="trycatchfinally">
@@ -2009,14 +1931,13 @@ while (exists iter) {
             <programlisting>Finally: "finally" Block</programlisting>
 
             <para>Each <literal>catch</literal> block defines a variable. The type of
-            the variable must be assignable to <literal>ceylon.language.Exception</literal>. 
-            If no type is explicitly specified, the type is inferred to be 
-            <literal>ceylon.language.Exception</literal>.</para> 
+            the variable must be assignable to <literal>Exception</literal> in
+            <literal>ceylon.language</literal>. If no type is explicitly specified, 
+            the type is inferred to be <literal>Exception</literal>.</para> 
             
-            <para>A <literal>catch</literal> block type may be a union or intersection
-            type:</para>
-            
-            <programlisting>catch (NotFoundException|DeletedException e) { ... }</programlisting>
+            <comment><para>Note: a <literal>catch</literal> block type may be a union 
+            or intersection type:</para>
+            <programlisting>catch (NotFoundException|DeletedException e) { ... }</programlisting></comment>
             
             <para>If there are multiple <literal>catch</literal> blocks in a certain
             control structure, then:</para>
@@ -2034,21 +1955,21 @@ while (exists iter) {
                     <literal>catch</literal> block belonging to the same control structure.</para>
                 </listitem>
             </itemizedlist>
-                        
+            
             <para>The <literal>try</literal> block may declare a <emphasis>resource</emphasis>
             expression, which may be either:</para>
             
             <itemizedlist>
                 <listitem><para>an unqualified value reference to a non-<literal>variable</literal> 
-                attribute or local,</para></listitem>
+                reference,</para></listitem>
                 <listitem><para>an instantiation expression, or</para></listitem>
                 <listitem><para>an inline variable declaration together with an expression.</para></listitem>
             </itemizedlist>
             
             <para>A resource expresson produces a heavyweight object that must be 
             released when execution of the <literal>try</literal> terminates. Each 
-            resource expression must be of type assignable to 
-            <literal>ceylon.language.Closeable</literal>.</para>
+            resource expression must be of type assignable to <literal>Closeable</literal>
+            in <literal>ceylon.language</literal>.</para>
             
             <programlisting>Resource: MemberName | InitializerReference Arguments | Variable Specifier </programlisting>
             
@@ -2087,40 +2008,29 @@ while (exists iter) {
             
             <para>For example:</para>
             
-            <programlisting>try ( File file = File(name) ) {
+            <programlisting>try (file = File(path)) {
     file.open(readOnly);
     ...
 }
 catch (FileNotFoundException fnfe) {
-    log.info("file not found: " name "");
+    print("file not found: ``path``");
 }
 catch (FileReadException fre) {
-    log.info("could not read from file: " name "");
+    print("could not read from file: ``path``");
 }
 finally {
-    if (file.open) {
-        file.close();
-    }
+    assert (file.closed);
 }</programlisting>
             
-            <programlisting>try (semaphore) {
-    if ( !map.defines(key) ) {
-        map[key] := item;
-    }
-}</programlisting>
-
-            <para>(This example shows a Ceylon-ified version of the Java 
-            <literal>synchronized</literal> block.)</para>
-            
-            <programlisting>try ( Transaction() ) {
-    try ( Session s = Session() ) {
+            <programlisting>try (Transaction()) {
+    try (s = Session()) {
         return s.get(Person, id);
     }
     catch (NotFoundException|DeletedException e) {
         return null;
     }
 }</programlisting>
-
+            
         </section>
          
     </section>
