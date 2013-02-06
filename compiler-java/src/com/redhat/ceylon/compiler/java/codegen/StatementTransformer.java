@@ -1505,7 +1505,7 @@ public class StatementTransformer extends AbstractTransformer {
                         makeThrowAssertionException(
                                 new AssertionExceptionMessageBuilder(null)
                                     .appendViolatedCondition("step > 0")
-                                    .prependAssertionDoc("\"step size must be greater than zero\"")
+                                    .prependAssertionDoc("step size must be greater than zero")
                                     .build()),
                         null));
             } else {
