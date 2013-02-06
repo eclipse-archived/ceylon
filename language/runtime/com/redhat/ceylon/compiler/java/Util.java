@@ -31,7 +31,20 @@ public class Util {
     public static boolean isReified(java.lang.Object o, TypeDescriptor type){
         return o instanceof ReifiedType && ((ReifiedType) o).$is(type);
     }
-    
+
+    /**
+     * Determines if a Java super type fully reified in instanceType is a subtype of testType
+     * @param instanceType a fully reified Java type 
+     * @param testType a type we want to test
+     * @return true if instanceType is a subtype of testType
+     */
+    public static boolean isReifiedJava(TypeDescriptor instanceType, TypeDescriptor testType){
+        // Here instanceType represents a Java supertype (class or interface) with fully reified type params
+        // which means we can figure out the result via inheritance and reflection
+        // FIXME
+        return false;
+    }
+
     /**
      * Returns true if the given object satisfies ceylon.language.Identifiable
      */
