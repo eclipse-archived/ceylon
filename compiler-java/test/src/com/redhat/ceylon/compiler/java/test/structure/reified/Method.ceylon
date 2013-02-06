@@ -4,7 +4,7 @@ shared class MethodClass(){
         method<Integer>();
         method();
     }
-    shared Callable<Void> methodSpec = method<Integer>;
+    shared Callable<Anything,[]> methodSpec = method<Integer>;
     
     void test(){
         methodSpec();

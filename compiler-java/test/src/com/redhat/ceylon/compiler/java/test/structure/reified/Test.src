@@ -2,6 +2,8 @@ package com.redhat.ceylon.compiler.java.test.structure.reified;
 
 public interface TestInterface<Key, Value> {
     
+    public .com.redhat.ceylon.compiler.java.test.structure.reified.TestInterface$impl<Key, Value> $com$redhat$ceylon$compiler$java$test$structure$reified$TestInterface$impl();
+    
     public boolean $com$redhat$ceylon$compiler$java$test$structure$reified$TestInterface$is(.com.redhat.ceylon.compiler.java.TypeDescriptor type);
 }
 public final class TestInterface$impl<Key, Value> {
@@ -29,7 +31,12 @@ public class TestClass<Key, Value> implements .com.redhat.ceylon.compiler.java.R
     }
     private final .com.redhat.ceylon.compiler.java.TypeDescriptor $reifiedKey;
     private final .com.redhat.ceylon.compiler.java.TypeDescriptor $reifiedValue;
-    private final .com.redhat.ceylon.compiler.java.test.structure.reified.TestInterface$impl<Key, .ceylon.language.Integer> $com$redhat$ceylon$compiler$java$test$structure$reified$TestInterface$this;
+    protected final .com.redhat.ceylon.compiler.java.test.structure.reified.TestInterface$impl<Key, .ceylon.language.Integer> $com$redhat$ceylon$compiler$java$test$structure$reified$TestInterface$this;
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.test.structure.reified.TestInterface$impl<Key, .ceylon.language.Integer> $com$redhat$ceylon$compiler$java$test$structure$reified$TestInterface$impl() {
+        return $com$redhat$ceylon$compiler$java$test$structure$reified$TestInterface$this;
+    }
     
     @.java.lang.Override
     public boolean $com$redhat$ceylon$compiler$java$test$structure$reified$TestInterface$is(.com.redhat.ceylon.compiler.java.TypeDescriptor type) {
