@@ -615,3 +615,15 @@ class CoVariance() {
     
 }
 
+interface Bound1 {}
+interface Bound2 {}
+abstract class WithConstraint<in T>() 
+        of WithIntersectionArg|WithBrokenArg1|WithBrokenArg2
+        given T satisfies Bound1&Bound2 {}
+class WithIntersectionArg() extends WithConstraint<Bound1&Bound2>() {}
+@error class WithBrokenArg1() extends WithConstraint<Bound1>() {}
+@error class WithBrokenArg2() extends WithConstraint<Anything>() {}
+abstract class WithoutConstraint<in T>() 
+        of WithAnythingArg {}
+class WithAnythingArg() extends WithoutConstraint<Anything>() {}
+

@@ -1424,8 +1424,10 @@ Item item = comp of Item;</programlisting>
             <listitem>
                 <para><literal>T&lt;X&gt;</literal> is contravariant in 
                 <literal>X</literal> and <literal>U</literal> is an invariant 
-                subtype of <literal>T&lt;Anything&gt;</literal>. 
-                <emphasis>(TODO: should be the intersection of upper bounds.)</emphasis></para>
+                subtype of <literal>T&lt;I&gt;</literal> where <literal>I</literal>
+                is the intersection of all upper bounds on <literal>X</literal>, or
+                <literal>Anything</literal> if <literal>X</literal> has not upper
+                bounds.</para>
             </listitem>
         </itemizedlist>
         

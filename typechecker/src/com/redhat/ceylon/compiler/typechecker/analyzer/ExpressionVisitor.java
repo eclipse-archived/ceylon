@@ -8,6 +8,8 @@ import static com.redhat.ceylon.compiler.typechecker.analyzer.Util.checkTypeBelo
 import static com.redhat.ceylon.compiler.typechecker.analyzer.Util.getBaseDeclaration;
 import static com.redhat.ceylon.compiler.typechecker.analyzer.Util.getTypeArguments;
 import static com.redhat.ceylon.compiler.typechecker.analyzer.Util.inLanguageModule;
+import static com.redhat.ceylon.compiler.typechecker.analyzer.Util.typeDescription;
+import static com.redhat.ceylon.compiler.typechecker.analyzer.Util.typeNamesAsIntersection;
 import static com.redhat.ceylon.compiler.typechecker.model.Util.addToIntersection;
 import static com.redhat.ceylon.compiler.typechecker.model.Util.addToUnion;
 import static com.redhat.ceylon.compiler.typechecker.model.Util.findMatchingOverloadedClass;
@@ -4791,35 +4793,40 @@ public class ExpressionVisitor extends Visitor {
                 //the same as the type parameter of the enumerated supertype
                 if (p.isCovariant() && !tp.isCovariant()) {
                     that.addError("argument to covariant type parameter of supertype must be covariant: " + 
-                            p.getName() + " of "+ supertype.getDeclaration().getName(unit));
+                            typeDescription(p, unit));
                 }
                 if (p.isContravariant() && !tp.isContravariant()) {
                     that.addError("argument to contravariant type parameter of supertype must be contravariant: " + 
-                            p.getName() + " of "+ supertype.getDeclaration().getName(unit));
+                            typeDescription(p, unit));
                 }
             }
             else {
                 that.addError("argument to type parameter of enumerated supertype must be a type parameter of " +
-                        d.getName() + ": " + p.getName() + " of "+ supertype.getDeclaration().getName(unit));
+                        d.getName() + ": " + typeDescription(p, unit));
             }
         }
         else if (p.isCovariant()) {
             if (!(td instanceof NothingType)) {
                 //TODO: let it be the union of the lower bounds on p
                 that.addError("argument to covariant type parameter of enumerated supertype must be a type parameter or Nothing: " + 
-                        p.getName() + " of "+ supertype.getDeclaration().getName(unit));
+                        typeDescription(p, unit));
             }
         }
         else if (p.isContravariant()) {
-            if (!(td.equals(unit.getAnythingDeclaration()))) {
-                //TODO: let it be the intersection of the upper bounds on p
-                that.addError("argument to contravariant type parameter of enumerated supertype must be a type parameter or Anything: " + 
-                        p.getName() + " of "+ supertype.getDeclaration().getName(unit));
+            List<ProducedType> sts = p.getSatisfiedTypes();
+            ProducedType ub = sts.isEmpty() ? 
+                    unit.getAnythingDeclaration().getType() : 
+                    //TODO: do I need to do type arg substitution here??
+                    intersection(sts);
+            if (!(arg.isExactly(ub))) {
+                that.addError("argument to contravariant type parameter of enumerated supertype must be a type parameter or " + 
+                        typeNamesAsIntersection(sts, unit) + ": " + 
+                        typeDescription(p, unit));
             }
         }
         else {
             that.addError("argument to type parameter of enumerated supertype must be a type parameter: " + 
-                    p.getName() + " of "+ supertype.getDeclaration().getName(unit));
+                    typeDescription(p, unit));
         }
     }
     

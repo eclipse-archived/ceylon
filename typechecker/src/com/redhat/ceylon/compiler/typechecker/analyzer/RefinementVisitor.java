@@ -5,6 +5,8 @@ import static com.redhat.ceylon.compiler.typechecker.analyzer.Util.checkAssignab
 import static com.redhat.ceylon.compiler.typechecker.analyzer.Util.checkAssignableToOneOf;
 import static com.redhat.ceylon.compiler.typechecker.analyzer.Util.checkIsExactly;
 import static com.redhat.ceylon.compiler.typechecker.analyzer.Util.checkIsExactlyOneOf;
+import static com.redhat.ceylon.compiler.typechecker.analyzer.Util.typeDescription;
+import static com.redhat.ceylon.compiler.typechecker.analyzer.Util.typeNamesAsIntersection;
 import static com.redhat.ceylon.compiler.typechecker.model.Util.addToIntersection;
 import static com.redhat.ceylon.compiler.typechecker.model.Util.areConsistentSupertypes;
 import static com.redhat.ceylon.compiler.typechecker.model.Util.getSignature;
@@ -250,7 +252,7 @@ public class RefinementVisitor extends Visitor {
 		    it.setSatisfiedTypes(list);
 		    if (it.canonicalize().getType().getDeclaration() 
 		            instanceof NothingType) {
-		        that.addError(typeDescription(td) + 
+		        that.addError(typeDescription(td, unit) + 
 		                " has unsatisfiable upper bound constraints: the constraints " + 
 		                typeNamesAsIntersection(upperBounds, unit) + 
 		                " cannot be satisfied by any type except Nothing");
@@ -314,35 +316,12 @@ public class RefinementVisitor extends Visitor {
 		}
 	}
 
-    private StringBuilder typeNamesAsIntersection(
-            List<ProducedType> upperBounds, Unit unit) {
-        StringBuilder sb = new StringBuilder();
-        for (ProducedType st: upperBounds) {
-            sb.append(st.getProducedTypeName(unit)).append(" & ");
-        }
-        if (sb.toString().endsWith(" & ")) {
-            sb.setLength(sb.length()-3);
-        }
-        return sb;
-    }
-	
-	private String typeDescription(TypeDeclaration td) {
-	    if (td instanceof TypeParameter) {
-	        Declaration container = (Declaration) td.getContainer();
-            return "type parameter " + td.getName() + " of " + 
-	                container.getName();
-	    }
-	    else {
-	        return "type " + td.getName();
-	    }
-	}
-
     private void checkSupertypeIntersection(Tree.StatementOrArgument that,
             TypeDeclaration td, ProducedType st1, ProducedType st2) {
         if (st1.getDeclaration().equals(st2.getDeclaration()) /*&& !st1.isExactly(st2)*/) {
             Unit unit = that.getUnit();
             if (!areConsistentSupertypes(st1, st2, unit)) {
-                that.addError(typeDescription(td) +
+                that.addError(typeDescription(td, unit) +
                         " has the same parameterized supertype twice with incompatible type arguments: " +
                         st1.getProducedTypeName(unit) + " & " + 
                         st2.getProducedTypeName(unit));

@@ -426,5 +426,28 @@ class Util {
         return unit.getPackage().getQualifiedNameString()
                 .startsWith("ceylon.language");
     }
+
+    static String typeDescription(TypeDeclaration td, Unit unit) {
+        if (td instanceof TypeParameter) {
+            Declaration container = (Declaration) td.getContainer();
+            return "type parameter " + td.getName() + " of " + 
+                    container.getName(unit);
+        }
+        else {
+            return "type " + td.getName();
+        }
+    }
+
+    static StringBuilder typeNamesAsIntersection(
+            List<ProducedType> upperBounds, Unit unit) {
+        StringBuilder sb = new StringBuilder();
+        for (ProducedType st: upperBounds) {
+            sb.append(st.getProducedTypeName(unit)).append(" & ");
+        }
+        if (sb.toString().endsWith(" & ")) {
+            sb.setLength(sb.length()-3);
+        }
+        return sb;
+    }
     
 }
