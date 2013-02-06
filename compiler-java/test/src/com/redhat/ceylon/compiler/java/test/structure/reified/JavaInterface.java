@@ -21,5 +21,5 @@
 package com.redhat.ceylon.compiler.java.test.structure.reified;
 
 public interface JavaInterface<T> {
-
+    public <Y> void foo();
 }

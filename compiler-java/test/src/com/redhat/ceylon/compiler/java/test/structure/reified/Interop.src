@@ -14,6 +14,13 @@ public class CeylonClass<Element> extends .com.redhat.ceylon.compiler.java.test.
     }
     private final .com.redhat.ceylon.compiler.java.TypeDescriptor $reifiedElement;
     
+    @.com.redhat.ceylon.compiler.java.metadata.Annotations({@.com.redhat.ceylon.compiler.java.metadata.Annotation("shared"), @.com.redhat.ceylon.compiler.java.metadata.Annotation("actual")})
+    @.java.lang.Override
+    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Anything")
+    @.com.redhat.ceylon.compiler.java.metadata.TypeParameters({@.com.redhat.ceylon.compiler.java.metadata.TypeParameter(value = "T", variance = .com.redhat.ceylon.compiler.java.metadata.Variance.NONE, satisfies = {}, caseTypes = {})})
+    public final <T>void foo() {
+    }
+    
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
     public static void main(.java.lang.String[] args) {
         .ceylon.language.process_.getProcess$().setupArguments(args);
@@ -68,6 +75,23 @@ final class reifiedInstantiateInterop_ {
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Anything")
     static void reifiedInstantiateInterop() {
         final .com.redhat.ceylon.compiler.java.test.structure.reified.CeylonClass<.ceylon.language.Integer> c = new .com.redhat.ceylon.compiler.java.test.structure.reified.CeylonClass<.ceylon.language.Integer>(.com.redhat.ceylon.compiler.java.TypeDescriptor.klass(.ceylon.language.Integer.class));
+        c.foo();
+        c.foo();
+        final .ceylon.language.Callable<? extends .java.lang.Object> f = new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.java.lang.Object>("Anything()"){
+            
+            @.java.lang.Override
+            @.com.redhat.ceylon.compiler.java.metadata.Ignore
+            public .java.lang.Object $call() {
+                return (
+                    let
+                    {
+                        c.<.ceylon.language.Integer>foo();
+                    }
+                    returning null;
+                );
+            }
+        };
+        f.$call();
         final .com.redhat.ceylon.compiler.java.test.structure.reified.JavaClass<.ceylon.language.Integer> c2 = new .com.redhat.ceylon.compiler.java.test.structure.reified.JavaClass<.ceylon.language.Integer>();
         final .ceylon.language.Callable<? extends .com.redhat.ceylon.compiler.java.test.structure.reified.JavaClass<.ceylon.language.Integer>> constr = new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.com.redhat.ceylon.compiler.java.test.structure.reified.JavaClass<.ceylon.language.Integer>>("JavaClass<Integer>()"){
             
