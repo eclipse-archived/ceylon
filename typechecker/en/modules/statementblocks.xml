@@ -426,23 +426,23 @@ class Complex(Float x, Float y=0.0)
         </itemizedlist> 
         
         <para>Declarations that occurs in a block or class initializer section are interspersed
-        with procedural code that initializes simple attributes or locals. Therefore, a program 
-        element in a block or initializer may not refer to a declaration that occurs later in
-        the block or class body. This restriction does not apply to declarations that occur
-        in an interface body or class declaration section.</para>
+        with procedural code that initializes references. Therefore, a program element in a 
+        block or initializer may not refer to a declaration that occurs later in the block or 
+        class body. This restriction does not apply to declarations that occur in an interface 
+        body or class declaration section.</para>
         
-        <para>The following toplevel method declarations, belonging to the same package, 
+        <para>The following toplevel function declarations, belonging to the same package, 
         are legal:</para>
     
-        <programlisting>Float x { return y; }</programlisting>
+        <programlisting>Float x => y;</programlisting>
 
-        <programlisting>Float y { return x; }</programlisting>
+        <programlisting>Float y => x;</programlisting>
         
-        <para>This code is not legal, since the body of a method is an ordinary block:</para>
+        <para>This code is not legal, since the body of a function is an ordinary block:</para>
     
         <programlisting>Float->Float xy() {
-    Float x { return y; }  //compiler error: y is not referenceable
-    Float y { return x; }
+    Float x => y;  //compiler error: y is not referenceable
+    Float y => x;
     return x->y;
 }</programlisting>
 
@@ -450,8 +450,8 @@ class Complex(Float x, Float y=0.0)
         section of the class body:</para>
     
         <programlisting>class Point() {
-    Float x { return y; }  //compiler error: y is not referenceable
-    Float y { return x; }
+    Float x => y;  //compiler error: y is not referenceable
+    Float y => x;
     Float->Float xy = x->y;
 }</programlisting>
 
@@ -459,16 +459,16 @@ class Complex(Float x, Float y=0.0)
         in the declaration section of the class body:</para>
     
         <programlisting>class Point() {
-    Float x { return y; }
-    Float y { return x; }
+    Float x => y;
+    Float y => x;
 }</programlisting>
 
         <para>Likewise, this code is legal, since the statements occur in an interface 
         body:</para>
     
         <programlisting>interface Point {
-    Float x { return y; }
-    Float y { return x; }
+    Float x => y;
+    Float y => x;
 }</programlisting>
 
     </section>
@@ -476,20 +476,20 @@ class Complex(Float x, Float y=0.0)
     <section id="typedetermination">
         <title>Type determinability of a declaration</title>
         
-        <para>An attribute declared using the keyword <literal>value</literal> 
-        or a method declared using the keyword <literal>function</literal> may 
-        be in scope at a program element, but its type may not be 
+        <para>A value declared using the keyword <literal>value</literal> or a
+        function declared using the keyword <literal>function</literal> may be 
+        in scope at a program element, but its type may not be 
         <emphasis>determinable</emphasis> at the program element.</para>
         
-        <para>The type of an attribute or method declared using the keyword 
+        <para>The type of a value or function declared using the keyword 
         <literal>value</literal> or <literal>function</literal> is determinable 
         at a program element if the declaration is in scope at the program 
         element and the program element occurs within the lexical scope of the 
         declaration.</para>
         
-        <comment><para>Note: the type of an attribute or method declared using
+        <comment><para>Note: the type of a value or function declared using
         the keyword <literal>value</literal> or <literal>function</literal> is
-        not determinable within the body of the attribute or method itself.</para></comment>
+        not determinable within the body of the value or function itself.</para></comment>
         
         <para>For any other declaration, the type is considered determinable
         at a program element if the declaration is in scope at the program 
@@ -498,15 +498,15 @@ class Complex(Float x, Float y=0.0)
         <para>The following code is not legal:</para>
         
         <programlisting>interface Point {
-    value x { return y; }  //compiler error: type of y is not determinable
-    value y { return x; }
+    value x => y;  //compiler error: type of y is not determinable
+    value y => x;
 }</programlisting>
         
         <para>However, this code is legal:</para>
         
         <programlisting>interface Point {
-    value x { return y; }
-    Float y { return x; }
+    value x => y;
+    Float y => x;
 }</programlisting>
         
     </section>
@@ -518,19 +518,20 @@ class Complex(Float x, Float y=0.0)
         
         <itemizedlist>
             <listitem>
-                <para>the type name in an unqualified type declaration, for example 
-                <literal>String</literal> or <literal>Sequence</literal> in
-                <literal>Sequence&lt;String&gt;</literal>,</para>
+                <para>the type name in an unqualified type declaration, for 
+                example <literal>String</literal> or <literal>Sequence</literal> 
+                in <literal>Sequence&lt;String&gt;</literal>,</para>
             </listitem>
             <listitem>
-                <para>the member in name an unqualified value reference, for example
-                <literal>counter</literal> in <literal>counter.count</literal>, 
+                <para>the value name in an unqualified value reference, for 
+                example <literal>counter</literal> in <literal>counter.count</literal>, 
                 or</para>
             </listitem>
             <listitem>
-                <para>the member name or type name in an unqualified callable 
+                <para>the function or type name in an unqualified callable 
                 reference, for example <literal>entries</literal> in 
-                <literal>entries(people[].name)</literal>.</para>
+                <literal>entries(people*.name)</literal> or <literal>Entry</literal>
+                in <literal>Entry(name,item)</literal>.</para>
             </listitem>
         </itemizedlist>
         
@@ -563,9 +564,9 @@ class Complex(Float x, Float y=0.0)
                 initialized at the program element.</para>
             </listitem>
         </itemizedlist>
-    
+        
     </section>
-           
+    
     <section id="qualifiedreferenceresolution">
         <title>Qualified reference resolution</title>
         
@@ -577,13 +578,13 @@ class Complex(Float x, Float y=0.0)
                 <literal>Buffer</literal> in <literal>BufferedReader.Buffer</literal>,</para>
             </listitem>
             <listitem>
-                <para>the member name in a qualified value reference, for example
+                <para>the value name in a qualified value reference, for example
                 <literal>count</literal> in <literal>counter.count</literal>, or</para>
             </listitem>
             <listitem>
-                <para>the member name or type name in a qualified callable 
-                reference, for example <literal>name</literal> in 
-                <literal>entries(people[].name)</literal>.</para>
+                <para>the function or type name in a qualified callable reference, 
+                for example <literal>split</literal> in <literal>text.split()</literal>,
+                or <literal>Buffer</literal> in <literal>br.Buffer()</literal>.</para>
             </listitem>
         </itemizedlist>
         
@@ -614,6 +615,10 @@ class Complex(Float x, Float y=0.0)
             </listitem>
         </itemizedlist>
         
+        <comment><para>TODO: that's not true for intersection types! We need more detail
+        here about member resolution for intersection and union types, including how we
+        compute principal instantiations.</para></comment>
+        
         <para>Then the given name refers to this unique member. If the program element 
         is contained in the body of a class or interface, and the member declaration 
         directly occurs in the body of the class or interface, and the qualified reference
@@ -634,7 +639,7 @@ class Complex(Float x, Float y=0.0)
                 definitely initialized at the program element.</para>
             </listitem>
         </itemizedlist>
-                
+        
         <comment><para>TODO: what about "inherited" interfaces and <literal>abstract</literal>
         classes? Currently the compiler allows this!</para></comment>
         
@@ -644,8 +649,8 @@ class Complex(Float x, Float y=0.0)
             <title>Closure</title>
             
             <para>The principle of <emphasis>closure</emphasis> states a that nested body
-            always has access to a set of values for all simple attributes and locals declared 
-            by containing bodies.</para>
+            always has access to a set of values for all references declared by containing 
+            bodies.</para>
     
             <para>If a declaration is nested directly or indirectly inside a class or interface 
             declaration, then there is always a <emphasis>current instance</emphasis> of the 
@@ -678,16 +683,15 @@ innerObject.member();</programlisting>
                         
             <para>If a declaration is nested directly or indirectly inside a block, then there 
             is always a <emphasis>current frame</emphasis> of the block when the nested 
-            declaration is executed. The current frame contains the values of all 
-            non-<literal>variable</literal> locals declared by the block. The current frame is 
-            determined as follows:</para>
+            declaration is executed. The current frame contains the values of all references 
+            declared by the block. The current frame is determined as follows:</para>
             
             <itemizedlist>
                 <listitem>
                     <para>if the nested declaration is nested directly inside a block,
                     the current frame contains the current values at the point of execution
                     of the value reference expression or callable reference expression that
-                    refers to the nested declaration, or, otherwise</para>
+                    refers to the nested declaration, or, otherwise,</para>
                 </listitem>
                 <listitem>
                     <para>if the nested declaration is contained inside the body of another
@@ -700,25 +704,21 @@ innerObject.member();</programlisting>
             
             <para>For example:</para>
             
-            <programlisting>String outerMethod(String s)()() {
-    String middleMethod()() {
-        String innerMethod() {
-            return s;
-        }
+            <programlisting>String()() outerMethod(String s) {
+    String() middleMethod() {
+        String innerMethod() => s;
         return innerMethod;
     }
     return middleMethod;
 }
 
-String middleMethod()() = outerMethod("hello");
-String innerMethod() = middleMethod();
+String middleMethod()() => outerMethod("hello");
+String innerMethod() => middleMethod();
 String result = innerMethod();</programlisting>
 
             <programlisting>Object outerMethod(String s) {
     object middleObject {
-        shared actual String string {
-            return s;
-        }
+        shared actual String string => s;
     }
     return middleObject;
 }
@@ -738,59 +738,60 @@ String result = middleObject.string;</programlisting>
         
     <section id="containingbodies">
         <title>References within a closure</title>
-
+        
         <para>The initializer of a class, or the body of a member of a class may instantiate,
         invoke, evaluate or assign members of the current instance of the class which defines 
         the initializer or member&mdash;the instance being instantiated or invoked&mdash;without 
         explicitly specifying the receiver, or by specifying a self reference 
         <literal>this</literal> as the receiver.</para>
-
+        
         <para>The initializer of a nested class, or the body of a member of a nested class
         or nested interface may invoke, evaluate or assign members of the current instance 
         of the containing class or interface&mdash;the parent instance of the instance being 
         instantiated or invoked&mdash;without explicitly specifying the receiver, or by 
         specifying an outer instance reference <literal>outer</literal> as the receiver.</para>
-
-        <para>A toplevel method or attribute body may not refer to a self reference, since 
-        there is no current instance.</para>
-
-        <para>The body of a method, class, or attribute nested inside the body of another 
-        method or attribute may invoke or evaluate any <!--non-<literal>variable</literal>--> 
-        local, block local attribute getter or block local method whose declaration indirectly 
-        occurs earlier within the containing scope.</para>
         
-        <!--
-        <comment><para>TODO: is there a good reason to add the following limitation: It may 
-        not refer to <literal>variable</literal> locals defined within the containing method 
-        or attribute body.</para></comment>
-        --> 
+        <para>A toplevel function or value body may not refer to a self reference, since 
+        there is no current instance.</para>
+        
+        <para>The body of a value, function, or class nested inside the body of another 
+        function or value may invoke or evaluate any <!--non-<literal>variable</literal>--> 
+        block local value or block local method whose declaration indirectly occurs earlier 
+        within the containing scope.</para>
         
         <para>When a member of a class is hidden by a block local declaration, the member 
         may be accessed via the self reference <literal>this</literal> or via the outer 
-        instance reference <literal>outer</literal>. For example:</para>
+        instance reference <literal>outer</literal>:</para>
         
         <programlisting>shared class Item(name) {
     variable String name;
     shared void changeName(String name) {
-        this.name := name;
+        this.name = name;
     }
 }</programlisting>
         
-            <programlisting>class Catalog(name) {
+        <programlisting>class Catalog(name) {
     shared String name;
     class Schema(name) {
         shared String name;
-        Catalog catalog { return outer; }
-        String catalogName { return outer.name; }
+        Catalog catalog => outer;
+        String catalogName => outer.name;
         class Table(name) {
             shared String name;
-            Schema schema { return outer; }
-            String schemaName { return outer.name; }
-            String catalogName { return catalog.name; }
+            Schema schema => outer;
+            String schemaName => outer.name;
+            String catalogName => catalog.name;
         }
     }
 }</programlisting>
-    
+        
+        <para>When a toplevel declaration of a package is hidden by another declaration, 
+        the toplevel declaration may be accessed via the containing package reference 
+        <literal>package</literal>:</para>
+        
+        <programlisting>Integer n => 0;
+Integer f(Integer n) => n+package.n;</programlisting>
+        
         </section>
     
     </section>
