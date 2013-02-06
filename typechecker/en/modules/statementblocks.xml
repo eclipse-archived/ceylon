@@ -1,19 +1,21 @@
 <chapter id="statementblocks">
-    <title>Blocks and control structures</title>
+    <title>Statements, blocks, and control structures</title>
     
-    <para>Method, attribute, and class bodies contain procedural code that is executed 
-    when the method or attribute is invoked, or when the class is instantiated. The 
-    code contains expressions and control directives and is organized using blocks and 
-    control structures.</para>
+    <para>Function, value, and class bodies contain procedural code that is executed 
+    when the function is invoked, the value evaluated, or the class instantiated. The 
+    code contains expressions and control directives and is organized using blocks 
+    and control structures.</para>
     
-    <para>The Ceylon language has a recursive block structure&mdash;statements and
-    declarations that are syntactically valid in the body of a toplevel declaration 
+    <comment><para>Note: the Ceylon language has a recursive block structure&mdash;statements 
+    and declarations that are syntactically valid in the body of a toplevel declaration 
     are, in general, also syntactically valid in the body of a nested declaration or 
-    of a control structure, and vice-versa.</para>
-        
+    of a control structure, and vice-versa.</para></comment>
+    
+    <!--
     <comment><para>TODO: a named argument list looks very much like a block, but is 
     not currently defined that way. The language would be more regular if we decided to 
     just make it a block.</para></comment>
+    -->
     
     <section id="blockstructure">
         <title>Block structure</title>
@@ -24,7 +26,7 @@
         in the list is said to <emphasis>directly occur</emphasis> in the body. A program 
         element <emphasis>directly occurs earlier</emphasis> than a second program element 
         if both program elements directly occur in a body and the first program element 
-        occurs earlier in the list than the second program element.</para>
+        occurs (lexically) earlier in the list than the second program element.</para>
         
         <!--
         <para>As a special case, the <literal>while</literal> condition of a <literal>do/while</literal> 
@@ -118,8 +120,7 @@
     <section id="declarationnameuniqueness">
         <title>Declaration name uniqueness</title>
         
-        <para>A package may not contain two toplevel declarations (interfaces, 
-        classes, methods, or attributes) with the same name.</para>
+        <para>A package may not contain two toplevel declarations with the same name.</para>
         
         <para>A program element is contained within the <emphasis>namespace</emphasis> 
         of a declaration if either:</para>
@@ -170,8 +171,7 @@
                 inherited declaration,</para>
             </listitem>
             <listitem>
-                <para>the contained declaration is an initializer parameter of the 
-                class, or</para>
+                <para>the contained declaration is a block local declaration, or</para>
             </listitem>
             <listitem>
                 <para>the inherited declaration is a block local declaration.</para>
@@ -301,7 +301,7 @@
                 interface hides a declaration of the containing body.)</para>
             </listitem>
             <listitem>
-                <para>An initializer parameter of a class containing the program element 
+                <para>An block-local declaration of a class containing the program element 
                 hides a declaration inherited by the class.</para>
             </listitem>
             <listitem>
