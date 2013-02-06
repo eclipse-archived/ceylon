@@ -852,30 +852,6 @@ Integer f(Integer n) => n+package.n;</programlisting>
         <para>Every block local declaration must be used somewhere inside the block in which
         it is declared.</para>
         
-        <!--
-        <comment><para>TODO: should we allow blocks and control structures to be annotated, 
-        for example:</para>
-        <programlisting>doc "unsafe assignment" 
-suppressWarnings(typesafety)
-if (it.walksLikeADuck) { Duck duck = it; }</programlisting>
-<programlisting>doc "synchronize on the lock"
-try (lock) { ... }</programlisting>
-</comment>
-        -->
-        
-        <comment><para>TODO: Note that Java does not let you define an interface inside a 
-        method, so we should either add the same restriction, or figure out workaround. 
-        Java doesn't let you define a method inside a method either, but we can wrap the 
-        nested method in an anonymous class.</para></comment>
-        
-        <comment><para>TODO: Note that in Java, all nested classes of interfaces are 
-        considered static inner classes. This results in a very funny semantic for a class 
-        nested inside an interface nested inside another class: the class does not have 
-        access to the members of the containing class. In Ceylon, a nested class is allowed 
-        to invoke all its containing types. We need to figure out how to implement this. 
-        Also consider the related case of a class nested inside an interface nested inside 
-        a method.</para></comment>
-        
         <section id="expressionstatements">
             <title>Expression statements</title>
             
