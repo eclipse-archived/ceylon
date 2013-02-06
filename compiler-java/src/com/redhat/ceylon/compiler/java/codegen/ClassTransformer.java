@@ -314,7 +314,7 @@ public class ClassTransformer extends AbstractTransformer {
         // Generate the inner members list for model loading
         addAtMembers(classBuilder, model);
         // Make sure top types satisfy reified type
-        if(model.getExtendedType() == null || willEraseToObject(model.getExtendedType()))
+        if(model.getExtendedType() == null || willEraseToObject(model.getExtendedType()) || !Decl.isCeylon(model.getExtendedTypeDeclaration()))
             classBuilder.reifiedType();
     }
     
