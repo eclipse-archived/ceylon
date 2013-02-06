@@ -2808,9 +2808,26 @@ public abstract class AbstractTransformer implements Transformation {
     }
 
     public java.util.List<JCExpression> makeReifiedTypeArguments(ProducedReference ref){
+        Declaration declaration = ref.getDeclaration();
+        if(!supportsReified(declaration))
+            return Collections.emptyList();
         return makeReifiedTypeArguments(getTypeArguments(ref));
     }
 
+    private boolean supportsReified(Declaration declaration){
+        if(declaration instanceof ClassOrInterface){
+            // Java constructors don't support reified type arguments
+            return Decl.isCeylon((TypeDeclaration) declaration);
+        }else if(declaration instanceof Method){
+            // Java methods don't support reified type arguments
+            Method m = (Method) CodegenUtil.getTopmostRefinedDeclaration(declaration);
+            // See what its container is
+            return supportsReified(Decl.getClassOrInterfaceContainer(m));
+        }else{
+            throw new RuntimeException("Unhandled declaration type");
+        }
+    }
+    
     private Collection<ProducedType> getTypeArguments(
             ProducedReference producedReference) {
         java.util.List<TypeParameter> typeParameters = getTypeParameters(producedReference);
