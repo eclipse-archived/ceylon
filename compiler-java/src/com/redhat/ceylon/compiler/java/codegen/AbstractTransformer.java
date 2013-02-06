@@ -2819,12 +2819,14 @@ public abstract class AbstractTransformer implements Transformation {
             // Java constructors don't support reified type arguments
             return Decl.isCeylon((TypeDeclaration) declaration);
         }else if(declaration instanceof Method){
+            if(Decl.isToplevel(declaration))
+                return true;
             // Java methods don't support reified type arguments
             Method m = (Method) CodegenUtil.getTopmostRefinedDeclaration(declaration);
             // See what its container is
             return supportsReified(Decl.getClassOrInterfaceContainer(m));
         }else{
-            throw new RuntimeException("Unhandled declaration type");
+            throw new RuntimeException("Unhandled declaration type: " + declaration);
         }
     }
     
