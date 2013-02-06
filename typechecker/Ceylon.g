@@ -1031,7 +1031,7 @@ annotatedDeclarationStart
     ;
 
 annotatedAssertionStart
-    : annotation* ASSERT
+    : stringLiteral? annotation* ASSERT
     ;
 
 //special rule for syntactic predicates

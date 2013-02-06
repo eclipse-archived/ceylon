@@ -23,7 +23,7 @@ class Complex(shared Float re, shared Float im)
 
     "Accepts non-negative powers."
     shared actual Complex power(Integer other) {
-        doc "exponent must be non-negative"
+        "exponent must be non-negative"
         assert(other>=0);
         //lame impl
         variable Complex result = Complex(1.0, 0.0);
