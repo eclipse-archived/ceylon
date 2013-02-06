@@ -654,8 +654,29 @@
             </listitem>
         </itemizedlist>
         
+        <para>Nor may a parameter or forward-declared value or function have an inferred 
+        type.</para>
+        
         <para>These restrictions allow the compiler to infer undeclared types in a single 
         pass of the code.</para>
+        
+        <comment><para>Note: in future releases of the language, the inferred type will
+        be context-dependent, that is, in program elements immediately following an
+        assignment or specification, the inferred type will be the type just assigned.
+        When conditional execution results in definite assignment, the inferred type
+        will be the union of the conditionally assigned types. This will allow us to to
+        relax the restriction that forward-declared functions and values can't have their
+        type inferred. For example:</para>
+        <programlisting>value one;
+if (float) {
+    one = 1.0;
+    Float float = one;
+}
+else {
+    one = 1;
+    Integer int = one;
+}
+Float|Integer num = one;</programlisting></comment>
         
         </section>
         
