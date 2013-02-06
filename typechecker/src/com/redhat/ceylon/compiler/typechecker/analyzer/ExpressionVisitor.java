@@ -4554,9 +4554,17 @@ public class ExpressionVisitor extends Visitor {
     public void visit(Tree.SatisfiedTypes that) {
         super.visit(that);
         TypeDeclaration td = (TypeDeclaration) that.getScope();
+        Set<TypeDeclaration> set = new HashSet<TypeDeclaration>();
         for (Tree.StaticType t: that.getTypes()) {
             ProducedType type = t.getTypeModel();
             if (type!=null) {
+                type = type.resolveAliases();
+                if (!set.add(type.getDeclaration())) {
+                    //this error is not really truly necessary
+                    //but the spec says it is an error, and
+                    //the backend doesn't like it
+                    t.addError("duplicate satisfied type: " + td.getName(unit));
+                }
                 checkSelfTypes(t, td, type);
                 checkExtensionOfMemberType(t, td, type);
                 /*if (!(td instanceof TypeParameter)) {
