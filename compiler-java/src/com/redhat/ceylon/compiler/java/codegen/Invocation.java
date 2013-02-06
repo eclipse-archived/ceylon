@@ -333,7 +333,7 @@ class IndirectInvocationBuilder extends SimpleInvocation {
     protected List<ExpressionAndType> addReifiedArguments(List<ExpressionAndType> result) {
         java.util.List<JCExpression> reifiedTypeArgs = gen.makeReifiedTypeArguments(parameterTypes);
         for(JCExpression reifiedTypeArg : reifiedTypeArgs)
-            result = result.append(new ExpressionAndType(gen.makeReifiedTypeType(), reifiedTypeArg));
+            result = result.append(new ExpressionAndType(reifiedTypeArg, gen.makeReifiedTypeType()));
         return result;
     }
 
@@ -494,7 +494,7 @@ abstract class DirectInvocation extends SimpleInvocation {
     protected List<ExpressionAndType> addReifiedArguments(List<ExpressionAndType> result) {
         java.util.List<JCExpression> reifiedTypeArgs = gen.makeReifiedTypeArguments(producedReference);
         for(JCExpression reifiedTypeArg : reifiedTypeArgs)
-            result = result.append(new ExpressionAndType(gen.makeReifiedTypeType(), reifiedTypeArg));
+            result = result.append(new ExpressionAndType(reifiedTypeArg, gen.makeReifiedTypeType()));
         return result;
     }
 }
@@ -866,7 +866,7 @@ class NamedArgumentInvocation extends Invocation {
     protected List<ExpressionAndType> addReifiedArguments(List<ExpressionAndType> result) {
         int tpCount = gen.getTypeParameters(producedReference).size();
         for(int tpIndex = 0;tpIndex<tpCount;tpIndex++){
-            result = result.append(new ExpressionAndType(gen.makeReifiedTypeType(), reifiedTypeArgName(tpIndex).makeIdent()));
+            result = result.append(new ExpressionAndType(reifiedTypeArgName(tpIndex).makeIdent(), gen.makeReifiedTypeType()));
         }
         return result;
     }
