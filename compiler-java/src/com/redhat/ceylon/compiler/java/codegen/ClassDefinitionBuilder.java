@@ -646,9 +646,14 @@ public class ClassDefinitionBuilder {
         }else{
             // we build the body last to first, and last is false or extended type
             JCExpression lastTest;
-            if(extendedType != null && !gen.willEraseToObject(extendedType))
-                lastTest = gen.make().Apply(null, gen.makeSelect("super", gen.naming.getIsMethodName(extendedType)), List.of(gen.makeUnquotedIdent(paramName)));
-            else
+            if(extendedType != null && !gen.willEraseToObject(extendedType)){
+                if(Decl.isCeylon(extendedType.getDeclaration()))
+                    lastTest = gen.make().Apply(null, gen.makeSelect("super", gen.naming.getIsMethodName(extendedType)), List.of(gen.makeUnquotedIdent(paramName)));
+                else
+                    lastTest = gen.makeUtilInvocation("isReifiedJava", 
+                            List.of(gen.makeReifiedTypeArgument(extendedType), gen.makeUnquotedIdent(paramName)), 
+                            List.<JCTree.JCExpression>nil());
+            }else
                 lastTest = gen.makeBoolean(false);
             List<JCStatement> body = List.<JCStatement>of(gen.make().Return(lastTest));
 
@@ -657,7 +662,14 @@ public class ClassDefinitionBuilder {
                 JCExpression interfacesTest = null;
                 for(ProducedType pt : satisfiedTypes){
                     String isDelegateName = gen.naming.getIsMethodName(pt);
-                    JCExpression isCall = gen.make().Apply(null, gen.makeUnquotedIdent(isDelegateName), List.<JCExpression>of(gen.makeUnquotedIdent(paramName)));
+                    JCExpression isCall;
+                    if(Decl.isCeylon(pt.getDeclaration())){
+                        isCall = gen.make().Apply(null, gen.makeUnquotedIdent(isDelegateName), List.<JCExpression>of(gen.makeUnquotedIdent(paramName)));
+                    }else{
+                        isCall = gen.makeUtilInvocation("isReifiedJava", 
+                                List.of(gen.makeReifiedTypeArgument(pt), gen.makeUnquotedIdent(paramName)), 
+                                List.<JCTree.JCExpression>nil());
+                    }
                     if(interfacesTest != null)
                         interfacesTest = gen.make().Binary(JCTree.OR, isCall, interfacesTest);
                     else

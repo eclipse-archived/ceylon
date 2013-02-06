@@ -2855,7 +2855,7 @@ public abstract class AbstractTransformer implements Transformation {
         return ret;
     }
 
-    private JCExpression makeReifiedTypeArgument(ProducedType pt) {
+    public JCExpression makeReifiedTypeArgument(ProducedType pt) {
         TypeDeclaration declaration = pt.getDeclaration();
         if(declaration instanceof ClassOrInterface){
             List<JCExpression> typeTestArguments = List.nil();
