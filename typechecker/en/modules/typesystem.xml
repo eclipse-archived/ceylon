@@ -985,7 +985,7 @@ String->[Integer,Integer] onetwo = "onetwo"->[1, 2];
         
         <itemizedlist>
         <listitem>
-            <para>if a type is a subtype of second type, then the second type
+            <para>If a type is a subtype of second type, then the second type
             covers the first.</para>
         </listitem>
         <listitem>
