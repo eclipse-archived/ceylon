@@ -658,7 +658,7 @@ shared interface Color { ... }</programlisting>
                 given.</para>
             </listitem>
             <listitem>
-                <para>If the parameter list has a sequenced parameter, one or more 
+                <para>If the parameter list has a variadic parameter, one or more 
                 arguments may optionally be given.</para>
             </listitem>
             <listitem>
@@ -670,7 +670,7 @@ shared interface Color { ... }</programlisting>
                 <literal>T</literal>.</para>
             </listitem>
             <listitem>
-                <para>For a sequenced parameter of type <literal>T*</literal>, the type 
+                <para>For a variadic parameter of type <literal>T*</literal>, the type 
                 of every corresponding argument expression must be assignable to 
                 <literal>T</literal>.</para>
             </listitem>
@@ -877,8 +877,8 @@ shared interface Color { ... }</programlisting>
             </listitem>
             <listitem>
                 <para>Finally, if arguments to all defaulted parameters have been specified,
-                and if the method declares a sequenced parameter, an arbitrary number of arguments 
-                to the sequenced parameter may be specified. 
+                and if the method declares a variadic parameter, an arbitrary number of arguments 
+                to the variadic parameter may be specified. 
                 </para>
             </listitem>
         </itemizedlist>
