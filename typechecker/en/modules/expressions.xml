@@ -792,7 +792,23 @@ shared interface Color { ... }</programlisting>
         <section id="comprehensions">
             <title>Comprehensions</title>
             
-            <comment><para>TODO!!</para></comment>
+            <para>Every comprehension begins with a <literal>for</literal> clause, 
+            and ends with an expression. There may be any number of intervening 
+            <literal>for</literal> or <literal>if</literal> clauses.</para>
+            
+            <programlisting>Comprehension: ForComprehensionClause</programlisting>
+            <programlisting>ForComprehensionClause: "for" ForIterator ComprehensionClause</programlisting>
+            <programlisting>IfComprehensionClause: "if" ConditionList ComprehensionClause</programlisting>
+            <programlisting>ComprehensionClause: ForComprehensionClause | IfComprehensionClause | Expression</programlisting>
+            
+            <para>The type of an argument list containing only a comprehension is 
+            <literal>[T*]</literal> where <literal>T</literal> is the type of the
+            expression which terminates the comprehension, or <literal>[T+]</literal>
+            if there are no <literal>if</literal> clauses, and if every 
+            <literal>for</literal> clause has an iterated expression of nonempty
+            type.</para>
+            
+            <comment><para>TODO: define the semantics of comprehensions.</para></comment>
             
         </section>
         

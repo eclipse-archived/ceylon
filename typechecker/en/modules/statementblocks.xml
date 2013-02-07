@@ -1652,7 +1652,7 @@ if (is Usable tx) { ... }</programlisting>
             
             <programlisting>IfElse: If Else?</programlisting>
 
-            <programlisting>If: "if"  ConditionList Block</programlisting>
+            <programlisting>If: "if" ConditionList Block</programlisting>
             
             <programlisting>Else: "else" (Block | IfElse)</programlisting>
             
@@ -1807,7 +1807,7 @@ case (is Float) {
              
             <programlisting>ForFail: For Fail?</programlisting>
 
-            <programlisting>For: "for" "(" ForIterator ")" Block</programlisting>
+            <programlisting>For: "for" ForIterator Block</programlisting>
             
             <programlisting>Fail: "else" Block</programlisting>
 
@@ -1815,7 +1815,7 @@ case (is Float) {
             declaration and an iterated expression that contains the range of values to 
             be iterated.</para>
             
-            <programlisting>ForIterator: IteratorVariable "in" Expression</programlisting>
+            <programlisting>ForIterator: "(" IteratorVariable "in" Expression ")"</programlisting>
 
             <para>The type of the iterated expression depends upon the iteration variable 
             declarations:</para>
