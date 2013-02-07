@@ -2870,7 +2870,13 @@ public abstract class AbstractTransformer implements Transformation {
                 typeTestArguments = typeTestArguments.prepend(makeReifiedTypeArgument(typeParameters.get(i)));
             }
             typeTestArguments = typeTestArguments.prepend(thisType);
-            return make().Apply(null, makeSelect(makeTypeDescriptorType(), "klass"), typeTestArguments);
+            JCExpression classDescriptor = make().Apply(null, makeSelect(makeTypeDescriptorType(), "klass"), typeTestArguments);
+            if(pt.getQualifyingType() == null)
+                return classDescriptor;
+            else{
+                return make().Apply(null, makeSelect(makeTypeDescriptorType(), "member"), 
+                                                     List.of(makeReifiedTypeArgument(pt.getQualifyingType()), classDescriptor));
+            }
         }
         if(declaration instanceof TypeParameter){
             TypeParameter tp = (TypeParameter) declaration;
