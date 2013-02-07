@@ -611,6 +611,8 @@ shared interface Color { ... }</programlisting>
                 
     </section>
     
+    </section>
+    
     <section id="invocationexpressions">
         <title>Invocation expressions</title>
         
@@ -1540,12 +1542,12 @@ createItemMethod.intercept()
                 postfix increment, postfix decrement:</entry>
                 <entry>
                 <literal>.</literal>,
-                <literal>[].</literal>, 
+                <literal>*.</literal>, 
                 <literal>?.</literal>, 
                 <literal>()</literal>,
                 <literal>{}</literal>,
                 <literal>[]</literal>,
-                <literal>?[]</literal>,
+                <literal>[:]</literal>, 
                 <literal>[..]</literal>, 
                 <literal>[...]</literal>,
                 <literal>++</literal>, 
@@ -1565,7 +1567,7 @@ createItemMethod.intercept()
             <row>
                 <entry>Exponentiation:</entry>
                 <entry>
-                <literal>**</literal>
+                <literal>^</literal>
                 </entry>
                 <entry>Binary</entry>
                 <entry>Right</entry>
@@ -1585,18 +1587,6 @@ createItemMethod.intercept()
                 <entry>Binary</entry>
                 <entry>Left</entry>
             </row>
-            <!--  
-            <row>
-                <entry>Exponentiation, shift:</entry>
-                <entry>
-                <literal>**</literal>,
-                <literal>&lt;&lt;</literal>, 
-                <literal>>></literal>
-                </entry>
-                <entry>Binary</entry>
-                <entry>Left</entry>
-            </row>
-            -->
             <row>
                 <entry>Multiplication, division, remainder,
                 Set intersection:</entry> 
@@ -1608,6 +1598,14 @@ createItemMethod.intercept()
                 </entry>
                 <entry>Binary</entry>
                 <entry>Left</entry>
+            </row>
+            <row>
+                <entry>Scale:</entry>
+                <entry>
+                <literal>**</literal>
+                </entry>
+                <entry>Binary</entry>
+                <entry>Right</entry>
             </row>
             <row>
                 <entry>Addition, subtraction, Set union,
@@ -1622,15 +1620,13 @@ createItemMethod.intercept()
                 <entry>Binary</entry>
                 <entry>Left</entry>
             </row>
-            <!--row>
-                <entry>Date/time composition:</entry> 
-                <entry><literal>@</literal></entry>
-                <entry>Binary</entry>
-                <entry>None</entry>
-            </row-->
             <row>
-                <entry>Range<!--, interval--> and entry construction:</entry> 
-                <entry><literal>..</literal>, <literal>-></literal></entry>
+                <entry>Range and entry construction:</entry> 
+                <entry>
+                <literal>..</literal>,
+                <literal>:</literal>,  
+                <literal>-></literal>
+                </entry>
                 <entry>Binary</entry>
                 <entry>None</entry>
             </row>
@@ -1645,16 +1641,8 @@ createItemMethod.intercept()
                 <entry>Unary postfix</entry>
                 <entry>None</entry>
             </row>
-            <!--
             <row>
-                <entry>Existence, emptiness:</entry>
-                <entry><literal>?</literal>, <literal>??</literal></entry> 
-                <entry>Unary postfix</entry>
-                <entry>None</entry>
-            </row>
-            -->
-            <row>
-                <entry>Comparison, <!--set comparison,--> containment,
+                <entry>Comparison, containment,
                 assignability, inheritance:</entry> 
                 <entry>
                 <literal>&lt;=&gt;</literal>,
@@ -1662,12 +1650,8 @@ createItemMethod.intercept()
                 <literal>&gt;</literal>, 
                 <literal>&lt;=</literal>, 
                 <literal>&gt;=</literal>,
-                <!--<literal>~></literal>,
-                <literal>!~></literal>,
-                <literal>*~></literal>-->
                 <literal>in</literal>,
                 <literal>is</literal>,
-                <!--<literal>extends</literal>,-->
                 <literal>satisfies</literal>
                 </entry>
                 <entry>Binary</entry>
@@ -1726,8 +1710,7 @@ createItemMethod.intercept()
             <row>
                 <entry>Assignment:</entry> 
                 <entry>
-                <literal>:=</literal>, 
-                <literal>.=</literal>,
+                <literal>=</literal>, 
                 <literal>+=</literal>, 
                 <literal>-=</literal>, 
                 <literal>*=</literal>, 

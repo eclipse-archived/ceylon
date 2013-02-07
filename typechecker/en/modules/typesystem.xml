@@ -1211,11 +1211,11 @@ Item item = comp of Item;</programlisting>
         <para>A <emphasis>type parameter</emphasis> allows a declaration to be abstracted 
         over a constrained set of types.</para>
         
-        <programlisting>TypeParam: Variance? TypeName</programlisting>
+        <programlisting>TypeParam: Variance? TypeName ("=" Type)</programlisting>
         
         <para>Every type parameter has a name. A parameter of a type schema has a specified 
         <emphasis>variance</emphasis>. A parameter of a function schema does not have a
-        variance.</para> 
+        variance.</para>
         
         <programlisting>Variance: "out" | "in"</programlisting>
         
@@ -1233,6 +1233,11 @@ Item item = comp of Item;</programlisting>
             </listitem>
         </itemizedlist>
         
+        <para>A type parameter may, optionally, have a default type argument. A type
+        parameter with a default type argument must occur after all type parameters without
+        default type arguments in the type parameter list. The default type argument must
+        satisfy the constraints on the type parameter.</para> 
+        
         <para>Within the body of the schema it parameterizes, a type parameter is itself a 
         type. The type parameter is a subtype of every upper bound of the type parameter. 
         However, a class or interface may not extend or satisfy a type parameter.</para>
@@ -1241,7 +1246,7 @@ Item item = comp of Item;</programlisting>
         
         <programlisting>&lt;in Message&gt;</programlisting>
         
-        <programlisting>&lt;out Element&gt;</programlisting>
+        <programlisting>&lt;out Element=Object&gt;</programlisting>
         
         <programlisting>&lt;in Left, in Right, out Result&gt;</programlisting>
         
@@ -1677,7 +1682,8 @@ Item item = comp of Item;</programlisting>
     
         <para>A type argument list <emphasis>conforms</emphasis> to a type parameter list 
         if for every type parameter in the list, there is a type argument that satisfies 
-        the constraints of the type parameter.</para>
+        the constraints of the type parameter, or there is no explicit type argument and
+        type parameter has a default type argument.</para>
         
     </section>
         
