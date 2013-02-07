@@ -37,6 +37,10 @@ public class AnnotationsTest extends CompilerTest {
         compareWithJavaSource("Klass");
     }
     @Test
+    public void testAnonymousAnnotation(){
+        compareWithJavaSource("AnonymousAnnotation");
+    }
+    @Test
     public void testInterface(){
         compareWithJavaSource("Interface");
     }
