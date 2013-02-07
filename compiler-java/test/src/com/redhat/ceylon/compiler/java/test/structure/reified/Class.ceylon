@@ -5,6 +5,9 @@ shared class Class<Key, Value>(Integer a = 2, Integer b = 3)
 
 shared class SubClass<T>() extends Class<T, Integer>(){}
 
+shared object toplevelObject satisfies Interface<String, Integer>{
+}
+
 void reifiedInstantiate(){
     value c = Class<Integer,String>();
     value c2 = Class<Integer,String>{};

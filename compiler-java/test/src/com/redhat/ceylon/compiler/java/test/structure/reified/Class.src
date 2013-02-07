@@ -151,6 +151,52 @@ public class SubClass<T> extends .com.redhat.ceylon.compiler.java.test.structure
     }
 }
 @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 4)
+@.com.redhat.ceylon.compiler.java.metadata.Name("toplevelObject")
+@.com.redhat.ceylon.compiler.java.metadata.Object
+@.com.redhat.ceylon.compiler.java.metadata.Annotations({@.com.redhat.ceylon.compiler.java.metadata.Annotation("shared")})
+@.com.redhat.ceylon.compiler.java.metadata.SatisfiedTypes({"com.redhat.ceylon.compiler.java.test.structure.reified::Interface<ceylon.language::String,ceylon.language::Integer>"})
+public final class toplevelObject_ implements .com.redhat.ceylon.compiler.java.ReifiedType, .com.redhat.ceylon.compiler.java.test.structure.reified.Interface<.ceylon.language.String, .ceylon.language.Integer> {
+    
+    private toplevelObject_() {
+        this.$com$redhat$ceylon$compiler$java$test$structure$reified$Interface$this = new .com.redhat.ceylon.compiler.java.test.structure.reified.Interface$impl<.ceylon.language.String, .ceylon.language.Integer>(.com.redhat.ceylon.compiler.java.TypeDescriptor.klass(.ceylon.language.String.class), .com.redhat.ceylon.compiler.java.TypeDescriptor.klass(.ceylon.language.Integer.class), this);
+    }
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    protected final .com.redhat.ceylon.compiler.java.test.structure.reified.Interface$impl<.ceylon.language.String, .ceylon.language.Integer> $com$redhat$ceylon$compiler$java$test$structure$reified$Interface$this;
+    
+    @.java.lang.Override
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    public .com.redhat.ceylon.compiler.java.test.structure.reified.Interface$impl<.ceylon.language.String, .ceylon.language.Integer> $com$redhat$ceylon$compiler$java$test$structure$reified$Interface$impl() {
+        return $com$redhat$ceylon$compiler$java$test$structure$reified$Interface$this;
+    }
+    
+    @.java.lang.Override
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    public boolean $com$redhat$ceylon$compiler$java$test$structure$reified$Interface$is(.com.redhat.ceylon.compiler.java.TypeDescriptor type) {
+        return this.$com$redhat$ceylon$compiler$java$test$structure$reified$Interface$this.$com$redhat$ceylon$compiler$java$test$structure$reified$Interface$is(type);
+    }
+    private static final .com.redhat.ceylon.compiler.java.test.structure.reified.toplevelObject_[] value;
+    static {
+        value = new .com.redhat.ceylon.compiler.java.test.structure.reified.toplevelObject_[]{new .com.redhat.ceylon.compiler.java.test.structure.reified.toplevelObject_()};
+    }
+    
+    @.com.redhat.ceylon.compiler.java.metadata.Annotations({@.com.redhat.ceylon.compiler.java.metadata.Annotation("shared")})
+    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("com.redhat.ceylon.compiler.java.test.structure.reified::toplevelObject")
+    public static .com.redhat.ceylon.compiler.java.test.structure.reified.toplevelObject_ getToplevelObject$() {
+        try {
+            return value[0];
+        } catch (.java.lang.NullPointerException ex) {
+            throw new .ceylon.language.RecursiveInitializationException();
+        }
+    }
+    
+    @.java.lang.Override
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    public boolean $is(.com.redhat.ceylon.compiler.java.TypeDescriptor type) {
+        if ($com$redhat$ceylon$compiler$java$test$structure$reified$Interface$is(type)) return true;
+        return false;
+    }
+}
+@.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 4)
 @.com.redhat.ceylon.compiler.java.metadata.Method
 final class reifiedInstantiate_ {
     
