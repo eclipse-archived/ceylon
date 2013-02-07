@@ -1465,18 +1465,32 @@ createItemMethod.intercept()
     <section id="operators">
     <title>Operators</title>
     
-    <para>Operators are syntactic shorthand for more complex expressions
-    involving method invocation or attribute access. Each operator is defined 
-    for a particular type. There is no support for user-defined operator 
-    <emphasis>overloading</emphasis>. However, the semantics of an operator 
-    may be customized by the implementation of the type that the operator
-    applies to. This is called <emphasis>operator polymorphism</emphasis>.</para>
+    <para>Operators are syntactic shorthand for more complex expressions involving 
+    invocation, evaluation, or instantiation. There is no support for user-defined 
+    <emphasis>operator overloading</emphasis>:</para> 
+    
+    <itemizedlist>
+        <listitem>
+            <para>new operator symbols may not be defined outside of the operators
+            specified below, and</para>
+        </listitem>
+        <listitem>
+            <para>the definition of the operators specified below may not be changed 
+            or overloaded.</para>
+        </listitem>
+    </itemizedlist>
+    
+    <para>However, many of the operators below are defined in terms of 
+    <literal>default</literal> or <literal>formal</literal> methods or attributes.
+    So, within well-defined limits a concrete implementation may customize the  
+    behavior of an operator. This approach is called 
+    <emphasis>operator polymorphism</emphasis>.</para>
     
     <para>Some examples:</para>
     
     <programlisting>Float z = x * y + 1.0;</programlisting>
     
-    <programlisting>even := n % 2 &equals; 0;</programlisting>
+    <programlisting>even = n % 2 &equals; 0;</programlisting>
     
     <programlisting>++count;</programlisting>
     
@@ -1484,31 +1498,23 @@ createItemMethod.intercept()
     
     <programlisting>if ( x > 100 || x &lt; 0 ) { ... }</programlisting>
     
-    <programlisting>User? gavin = users["Gavin"];</programlisting>
+    <programlisting>User user = users[userId] else guest;</programlisting>
     
-    <programlisting>List&lt;Item&gt; firstPage = list[0..20];</programlisting>
+    <programlisting>List&lt;Item&gt; firstPage = results[0..20];</programlisting>
     
-    <programlisting>for (Integer n in 1..10) { ... }</programlisting>
+    <programlisting>for (n in 0:length) { ... }</programlisting>
     
-    <programlisting>if (char in `A`..`Z`) { ... }</programlisting>
+    <programlisting>if (char in 'A'..'Z') { ... }</programlisting>
     
-    <programlisting>List&lt;Day&gt; nonworkDays = days[{0,7}];</programlisting>
+    <programlisting>String[] names = people*.name;</programlisting>
     
-    <programlisting>Integer lastIndex = getLastIndex() ? sequence.lastIndex;</programlisting>
-    
-    <programlisting>log.info("Hello " + $person + "!")</programlisting>
-    
-    <programlisting>List&lt;String&gt; names = {person1, person2, person3}[].name;</programlisting>
-    
-    <programlisting>String? name = person?.name;</programlisting>
-    
-    <programlisting>this.total += item.price;</programlisting>
+    <programlisting>this.total += item.price * item.quantity;</programlisting>
         
-    <programlisting>Float vol = length**3;</programlisting>
+    <programlisting>Float vol = length^3;</programlisting>
+    
+    <programlisting>Vector scaled = scale ** vector;</programlisting>
     
     <programlisting>map.define(person.name->person);</programlisting>
-    
-    <programlisting>order.lineItems[index] := LineItem { product = prod; quantity = 1; };</programlisting>
     
     <programlisting>if (!document.internal || user is Employee) { ... }</programlisting>
     
@@ -1520,32 +1526,10 @@ createItemMethod.intercept()
     remaining argument expressions. Optimizations performed by the Ceylon compiler 
     must not alter these behaviours.</para>
     
-    <comment><para>TODO: Should we have operators for function composition, or 
-    even partial application. Perhaps infix <literal>:</literal> could be 
-    composition and postfix <literal>@</literal> could be partial application.</para></comment>
-    
-    <section id="operatorexpressions">
-        <title>Operator expressions</title>
-        
-        <para>The type of an operator expression for an operator that is defined to
-        produce the type <literal>T</literal> is:</para> 
-                        
-        <itemizedlist>
-            <listitem>
-                <para><literal>T</literal>, if <literal>T</literal> is assignable
-                to <literal>Gettable&lt;Object&gt;</literal>, or, otherwise,</para>
-            </listitem>
-            <listitem>
-                <para><literal>Gettable&lt;T&gt;</literal>.</para>
-            </listitem>
-        </itemizedlist>
-        
-    </section>
-    
     <section id="operatorprecedence">
         <title>Operator precedence</title>
         
-        <para>There are 16 distinct operator precedence levels, but these levels
+        <para>There are 18 distinct operator precedence levels, but these levels
         are arranged into layers in order to make them easier to predict.</para>
         
         <itemizedlist>
@@ -1565,19 +1549,12 @@ createItemMethod.intercept()
         binary operators.</para>
         
         <para>There is a single exception to this principal: the binary 
-        exponentiation operator <literal>**</literal> has a higher precedence than 
+        exponentiation operator <literal>^</literal> has a higher precedence than 
         the prefix operators <literal>+</literal> and <literal>-</literal>. The 
         reason for this is that the following expressions should be equivalent:</para>
         
-        <programlisting>-x**2       //means -(x**2)</programlisting>
-        <programlisting>0 - x**2    //means 0 - (x**2)</programlisting>
-        
-        <para>It's important to be aware that in Ceylon, compared to other C-like 
-        languages, the logical not operator <literal>!</literal> has a very low
-        precedence. The following expressions are equivalent:</para>
-        
-        <programlisting>!x.y*2 &equals; 0.0  //means !(x.y*2 &equals; 0.0)</programlisting>
-        <programlisting>x.y*2 != 0.0</programlisting>
+        <programlisting>-x^2       //means -(x^2)</programlisting>
+        <programlisting>0 - x^2    //means 0 - (x^2)</programlisting>
         
         <para>This table defines the relative precedence of the various operators, 
         from highest to lowest, along with associativity rules:</para>
@@ -1808,10 +1785,13 @@ createItemMethod.intercept()
         </tgroup>
         </table>
 
-        <comment><para>Note: if we decide to add <literal>&lt;&lt;</literal> and 
-        <literal>&gt;&gt;</literal> later, we could give them the same precedence
-        as <literal>**</literal>.</para></comment>
-    
+        <para>It's important to be aware that in Ceylon, compared to other C-like 
+        languages, the logical not operator <literal>!</literal> has a very low
+        precedence. The following expressions are equivalent:</para>
+        
+        <programlisting>!x.y &equals; 0.0  //means !(x.y &equals; 0.0)</programlisting>
+        <programlisting>x.y != 0.0</programlisting>
+            
     </section>
     
     <section id="operatordefinition">
@@ -1835,18 +1815,15 @@ createItemMethod.intercept()
         </listitem>
         <listitem>
             <para>the <emphasis>assignment</emphasis> operator
-            <literal>:=</literal> assigns a new value to an instance of
-            <literal>Settable</literal> and returns the new value after 
-            assignment,</para>
+            <literal>=</literal> assigns a new value to a variable and 
+            returns the new value after assignment,</para>
         </listitem>
-        <!-- 
         <listitem>
             <para>the <emphasis>identity</emphasis> operator
             <literal>&identical;</literal> evaluates to <literal>true</literal> 
             if its argument expressions evaluate to references to the same 
             object, and <literal>false</literal> otherwise, and</para>
         </listitem>
-        -->
         <listitem>
             <para>the <emphasis>assignability</emphasis> operator
             <literal>is</literal> evaluates to <literal>true</literal> if 
@@ -1854,15 +1831,6 @@ createItemMethod.intercept()
             assignable to the specified type, and <literal>false</literal> 
             otherwise.</para>
         </listitem>
-        <!-- 
-        <listitem>
-            <para>the <emphasis>existence</emphasis> operator
-            <literal>exists</literal> evaluates to <literal>true</literal> if 
-            its argument expression evaluates to an instance of 
-            <literal>Object</literal>, and <literal>false</literal> 
-            otherwise.</para>
-        </listitem>
-        -->
     </itemizedlist>
         
     <para>All other operators are defined in terms of other operators and/or
@@ -1898,32 +1866,20 @@ createItemMethod.intercept()
             <para>all arithmetic operators,</para>
         </listitem>
         <listitem>
-            <para>all <literal>Set</literal> operators,</para>
-        </listitem>
-        <listitem>
             <para>the comparison and equality operators <literal>&equals;</literal>,
             <literal>!=</literal>, <literal>&lt;=&gt;</literal>, <literal>&lt;</literal>,
             <literal>&gt;</literal>, <literal>&lt;=</literal>, <literal>&gt;=</literal>
-            when the argument expression types are built-in numeric types,</para>
+            when the argument expression types are built-in numeric types, and</para>
         </listitem>
         <listitem>
             <para>the <literal>Range</literal> and <literal>Entry</literal> construction 
-            operators <literal>..</literal> and <literal>-></literal>,</para>
-        </listitem>
-        <listitem>
-            <para>the sequence concatenation operator <literal>+</literal>,</para>
-        </listitem>
-        <listitem>
-            <para>the identity equality operator <literal>&identical;</literal>, and</para>
-        </listitem>
-        <listitem>
-            <para>all assignment and compound assignment operators.</para>
+            operators <literal>..</literal> and <literal>-></literal>.</para>
         </listitem>
     </itemizedlist>
     
-    <para>Therefore, listeners registered for the method invocations and class 
+    <!--para>Therefore, listeners registered for the method invocations and class 
     instantiations that define these operators may not be called when the operator 
-    expressions are executed.</para>
+    expressions are executed.</para-->
     
     </section>
     
@@ -1960,7 +1916,8 @@ createItemMethod.intercept()
             <entry>member</entry>
             <entry></entry>
             <entry><literal>X</literal></entry>
-            <entry><literal>Member &lt;X,T&gt;</literal></entry>
+            <entry>a member of <literal>X</literal>, of type
+            <literal>T</literal></entry>
             <entry><literal>T</literal></entry>
         </row>
         
@@ -1969,105 +1926,25 @@ createItemMethod.intercept()
             <literal>lhs{a=x;b=y;}</literal></entry>
             <entry>invoke</entry>
             <entry></entry>
-            <entry><literal>Callable &lt;T,P...&gt;</literal></entry>
-            <entry><literal>P...</literal></entry>
+            <entry><literal>Callable &lt;T,P&gt;</literal></entry>
+            <entry>argument list of type <literal>P</literal></entry>
             <entry><literal>T</literal></entry>
         </row>
                 
         <row><entry namest="first" nameend="last"><emphasis>Assignment</emphasis></entry></row>
     
         <row>
-            <entry><literal>lhs := rhs</literal></entry>
+            <entry><literal>lhs = rhs</literal></entry>
             <entry>assign</entry>
             <entry><literal></literal></entry>
-            <entry><literal>Settable&lt;X&gt;</literal></entry>
+            <entry>variable of type <literal>X</literal></entry>
             <entry><literal>X</literal></entry>
             <entry><literal>X</literal></entry>
         </row>
         
-        <!--
-        <row><entry namest="first" nameend="last"><emphasis>Format</emphasis></entry></row>
-        
-        <row>
-            <entry><literal>$rhs</literal></entry>
-            <entry>format</entry>
-            <entry><literal>rhs.formatted</literal></entry>
-            <entry></entry>
-            <entry><literal>Format</literal></entry>
-            <entry><literal>String</literal></entry>
-        </row>
-        -->
-    
-        <row><entry namest="first" nameend="last"><emphasis>Compound invocation assignment</emphasis></entry></row>
-        
-        <row>
-            <entry><literal>lhs.=member</literal></entry>
-            <entry>follow</entry>
-            <entry><literal>lhs:=lhs.member</literal></entry>
-            <entry><literal>X</literal></entry>
-            <entry><literal>Attribute &lt;X,X&gt;</literal></entry>
-            <entry><literal>X</literal></entry>
-        </row>
-
-        <row>
-            <entry><literal>lhs.=member(x,y,z)</literal></entry>
-            <entry>apply</entry>
-            <entry><literal>lhs:=lhs.member(x,y,z)</literal></entry>
-            <entry><literal>X</literal></entry>
-            <entry><literal>Method &lt;X,X,P..&gt;</literal>,
-            together with arguments <literal>P...</literal></entry>
-            <entry><literal>X</literal></entry>
-        </row>
-
      </tbody>
     </tgroup>
     </table>
-        
-        <comment><para>TODO: are we really going to add the <literal>.=</literal> operator?</para></comment>
-        
-        <!--
-        <para>Member specification uses one of three different member specification operators:
-        <literal>.</literal>, <literal>.?</literal> or <literal>.*</literal>.</para>
-        
-        <para>The member specification operator depends upon the type of the receiver expression. 
-        If <literal>X</literal> is the type that declares the member, the invocation operator must 
-        be:</para>
-            
-        <itemizedlist>
-            <listitem>
-                <para><literal>.</literal> if the expression is of type <literal>X</literal>,</para>
-            </listitem>
-            <listitem>
-                <para><literal>.?</literal> if the expression is of type <literal>X?</literal>,
-                or</para>
-            </listitem>
-            <listitem>
-                <para><literal>.*</literal> if the expression is of type <literal>Iterable&lt;X&gt;</literal>.</para>
-            </listitem>
-        </itemizedlist>
-                
-        <para>The type of an invocation (argument specification) expression depends upon the type of 
-        the receiver expression:</para>
-            
-        <itemizedlist>
-            <listitem>
-                <para><literal>T</literal> if the receiver expression is of type 
-                <literal>Callable&lt;T&gt;</literal>,</para>
-            </listitem>
-            <listitem>
-                <para><literal>T?</literal> if the expression is of type 
-                <literal>Callable&lt;T&gt;?</literal>,
-                or</para>
-            </listitem>
-            <listitem>
-                <para><literal>Sequence&lt;T&gt;</literal> if the expression is of type 
-                <literal>Iterable&lt;Callable&lt;T&gt;&gt;</literal>.</para>
-            </listitem>
-        </itemizedlist>
-        
-        <para>The arguments specified in the argument specification must be assignable to the
-        parameters of the method reference.</para>
-        -->
         
     </section>
         
@@ -2103,8 +1980,8 @@ createItemMethod.intercept()
             <entry><literal>lhs &identical; rhs</literal></entry>
             <entry>identical</entry>
             <entry><literal>identical(lhs,rhs)</literal></entry>
-            <entry><literal>IdentifiableObject</literal></entry>
-            <entry><literal>IdentifiableObject</literal></entry>
+            <entry><literal>Identifiable</literal></entry>
+            <entry><literal>Identifiable</literal></entry>
             <entry><literal>Boolean</literal></entry>
         </row>
         <row>
@@ -2181,19 +2058,19 @@ createItemMethod.intercept()
         <row><entry namest="first" nameend="last"><emphasis>Assignability</emphasis></entry></row>
         
         <row>
-            <entry><literal>is Type rhs</literal></entry>
+            <entry><literal>rhs is Type</literal></entry>
             <entry>is</entry>
             <entry></entry>
-            <entry>any literal type <literal>T</literal></entry>
             <entry>any type which is not a subtype of 
             <literal>T</literal>, whose intersection with 
             <literal>T</literal> is not <literal>Bottom</literal></entry>
+            <entry>any literal type <literal>T</literal></entry>
             <entry><literal>Boolean</literal></entry>
         </row>
         
+        <!--
         <row><entry namest="first" nameend="last"><emphasis>Inheritance</emphasis></entry></row>
         
-        <!--
         <row>
             <entry><literal>lhs extends rhs</literal></entry>
             <entry>extends</entry>
@@ -2202,7 +2079,6 @@ createItemMethod.intercept()
             <entry><literal>Class &lt;Void&gt;</literal></entry>
             <entry><literal>Boolean</literal></entry>
         </row>
-        -->
         
         <row>
             <entry><literal>satisfies Type rhs</literal></entry>
@@ -2212,6 +2088,7 @@ createItemMethod.intercept()
             <entry><literal>Type&lt;Void&gt;</literal></entry>
             <entry><literal>Boolean</literal></entry>
         </row>
+        -->
         
     </tbody>
     </tgroup>
@@ -2280,8 +2157,8 @@ createItemMethod.intercept()
         <row>
             <entry><literal>lhs ||= rhs</literal></entry>
             <entry>conditional or</entry>
-            <entry><literal>if (lhs) true else lhs:=rhs</literal></entry>
-            <entry><literal>Settable &lt;Boolean&gt;</literal></entry>
+            <entry><literal>if (lhs) true else lhs=rhs</literal></entry>
+            <entry>variable of type <literal>Boolean</literal></entry>
             <entry><literal>Boolean</literal></entry>
             <entry><literal>Boolean</literal></entry>
         </row>
@@ -2289,8 +2166,8 @@ createItemMethod.intercept()
         <row>
             <entry><literal>lhs &amp;&amp;= rhs</literal></entry>
             <entry>conditional and</entry>
-            <entry><literal>if (lhs) lhs:=rhs else false</literal></entry>
-            <entry><literal>Settable &lt;Boolean&gt;</literal></entry>
+            <entry><literal>if (lhs) lhs=rhs else false</literal></entry>
+            <entry>variable of type <literal>Boolean</literal></entry>
             <entry><literal>Boolean</literal></entry>
             <entry><literal>Boolean</literal></entry>
         </row>
@@ -2329,52 +2206,25 @@ createItemMethod.intercept()
         <row><entry namest="first" nameend="last"><emphasis>Existence</emphasis></entry></row>
         
         <row>
-            <entry><!--<<literal>lhs?</literal> or --><literal>exists lhs</literal></entry>
+            <entry><literal>lhs exists</literal></entry>
             <entry>exists</entry>
             <entry><literal>if (exists lhs) true else false</literal></entry>
-            <entry>any type to which <literal>null</literal> is
-            assignable, whose intersection with <literal>Object</literal>
-            is not <literal>Bottom</literal></entry>
+            <entry>any type whose intersections with <literal>Object</literal>
+            and <literal>Null</literal> are not <literal>Nothing</literal></entry>
             <entry></entry>
             <entry><literal>Boolean</literal></entry>
         </row>
         <row>
-            <entry><literal><!--??-->nonempty lhs</literal></entry>
+            <entry><literal>lhs nonempty</literal></entry>
             <entry>nonempty</entry>
             <entry><literal>if (nonempty lhs) true else false</literal></entry>
-            <entry>any subtype of <literal>Nothing|FixedSized&lt;Void&gt;</literal>
-            whose intersection with <literal>None&lt;Bottom&gt;</literal> 
-            is not <literal>Bottom</literal>, and whose intersection with 
-            <literal>Some&lt;Bottom&gt;</literal> is not 
-            <literal>Bottom</literal></entry>
+            <entry>any subtype of <literal>Anything[]?</literal>
+            whose intersections with <literal>[]</literal> and 
+            <literal>[Nothing+]</literal> are not <literal>Nothing</literal></entry>
             <entry></entry>
             <entry><literal>Boolean</literal></entry>
         </row>
-        
-        <row><entry namest="first" nameend="last"><emphasis>Default</emphasis></entry></row>
-        
-        <row>
-            <entry><literal>lhs ? rhs</literal></entry>
-            <entry>default</entry>
-            <entry><literal>if (exists lhs) lhs else rhs</literal></entry>
-            <entry><literal>U</literal> such that <literal>null is U</literal></entry>
-            <entry><literal>V</literal></entry>
-            <entry><literal>U&amp;Object|V</literal></entry>
-        </row>
-       
-        <!--
-        <row><entry namest="first" nameend="last"><emphasis>Default assignment</emphasis></entry></row>
-        
-        <row>
-            <entry><literal>lhs ?= rhs</literal></entry>
-            <entry>default assignment</entry>
-            <entry><literal>if (exists lhs) lhs else lhs:=rhs</literal></entry>
-            <entry><literal>Settable&lt;T?&gt;</literal></entry>
-            <entry><literal>T</literal> or <literal>T?</literal></entry>
-            <entry><literal>T</literal> or <literal>T?</literal></entry>
-        </row>
-        -->
-        
+                
         <row><entry namest="first" nameend="last"><emphasis>Nullsafe invocation</emphasis></entry></row>
         
         <row>
@@ -2382,7 +2232,8 @@ createItemMethod.intercept()
             <entry>nullsafe attribute</entry>
             <entry><literal>if (exists lhs) lhs.member else null</literal></entry>
             <entry><literal>X?</literal></entry>
-            <entry><literal>Attribute &lt;X,T&gt;</literal></entry>
+            <entry>an attribute of type <literal>T</literal>
+            of <literal>X</literal></entry>
             <entry><literal>T?</literal></entry>
         </row>
         
@@ -2391,19 +2242,11 @@ createItemMethod.intercept()
             <entry>nullsafe method</entry>
             <entry></entry>
             <entry><literal>X?</literal></entry>
-            <entry><literal>Method &lt;X,T,P...&gt;</literal></entry>
-            <entry><literal>Callable &lt;T?,P...&gt;</literal></entry>
+            <entry>a method of callable type 
+            <literal>Callable &lt;T,P&gt;</literal> 
+            of <literal>X</literal></entry>
+            <entry><literal>Callable &lt;T?,P&gt;</literal></entry>
         </row>
-        
-        <!--row>
-            <entry><literal>lhs(x,y,z)</literal> or 
-            <literal>lhs{a=x;b=y;}</literal></entry>
-            <entry>nullsafe invoke</entry>
-            <entry><literal>if (exists lhs) lhs(x,y,z) else null</literal></entry>
-            <entry><literal>Callable &lt;T,P...&gt;?</literal></entry>
-            <entry><literal>P...</literal></entry>
-            <entry><literal>T?</literal></entry>
-        </row-->
         
     </tbody>
     </tgroup>
@@ -2446,64 +2289,19 @@ createItemMethod.intercept()
             <entry><literal>lhs.item(index)</literal></entry>
             <entry><literal>Correspondence&lt;X,Y&gt;</literal></entry>
             <entry><literal>X</literal></entry>
-            <entry><literal>Gettable &lt;Y?&gt;</literal></entry>
-        </row>
-        <row>
-            <entry><literal>lhs[index]</literal></entry>
-            <entry>lookup</entry>
-            <entry><literal>lhs.item(index)</literal></entry>
-            <entry><literal>OpenCorrespondence &lt;X,Y&gt;</literal></entry>
-            <entry><literal>X</literal></entry>
-            <entry><literal>Settable &lt;Y?&gt;</literal></entry>
-        </row>
-        <!--
-        <row>
-            <entry><literal>lhs[index]</literal></entry>
-            <entry>bounded lookup</entry>
-            <entry><literal>lhs.item(index)</literal></entry>
-            <entry><literal>Y[n]</literal></entry>
-            <entry><literal>Bound&lt;#n&gt;</literal></entry>
-            <entry><literal>Gettable &lt;Y&gt;</literal></entry>
-        </row>
-        <row>
-            <entry><literal>lhs[index]</literal></entry>
-            <entry>bounded lookup</entry>
-            <entry><literal>lhs.item(index)</literal></entry>
-            <entry><literal>OpenBoundedSequence &lt;Y,n&gt;</literal></entry>
-            <entry><literal>Bound&lt;#n&gt;</literal></entry>
-            <entry><literal>Settable &lt;Y&gt;</literal></entry>
-        </row>
-        -->
-        <row>
-            <entry><literal>lhs?[index]</literal></entry>
-            <entry>nullsafe lookup</entry>
-            <entry><literal>if (exists lhs) lhs[index] else null</literal></entry>
-            <entry><literal>Correspondence&lt;X,Y&gt;?</literal></entry>
-            <entry><literal>X</literal></entry>
             <entry><literal>Y?</literal></entry>
         </row>
         
-        <!--
-        <row>
-            <entry><literal>lhs[indices]</literal></entry>
-            <entry>sequenced lookup</entry>
-            <entry><literal>lhs.items(index)</literal></entry>
-            <entry><literal>Correspondence&lt;X,Y&gt;</literal></entry>
-            <entry><literal>X[]</literal></entry>
-            <entry><literal>Y[]</literal></entry>
-        </row>
-        <row>
-            <entry><literal>lhs[indices]</literal></entry>
-            <entry>iterated lookup</entry>
-            <entry><literal>lhs.items(index)</literal></entry>
-            <entry><literal>Correspondence&lt;X,Y&gt;</literal></entry>
-            <entry><literal>Iterable &lt;X&gt;</literal></entry>
-            <entry><literal>Iterable &lt;Y&gt;</literal></entry>
-        </row>
-        -->
+        <row><entry namest="first" nameend="last"><emphasis>Spans and segments</emphasis></entry></row>
         
-        <row><entry namest="first" nameend="last"><emphasis>Spans</emphasis></entry></row>
-        
+        <row>
+            <entry><literal>lhs[from:to]</literal></entry>
+            <entry>span</entry>
+            <entry><literal>lhs.segment(from,to)</literal></entry>
+            <entry><literal>Ranged&lt;X,Y&gt;</literal></entry>
+            <entry>Two <literal>X</literal> values</entry>
+            <entry><literal>Y</literal></entry>
+        </row>
         <row>
             <entry><literal>lhs[from..to]</literal></entry>
             <entry>span</entry>
@@ -2515,112 +2313,58 @@ createItemMethod.intercept()
         <row>
             <entry><literal>lhs[from...]</literal></entry>
             <entry>upper span</entry>
-            <entry><literal>lhs.span(from)</literal></entry>
+            <entry><literal>lhs.spanFrom(from)</literal></entry>
             <entry><literal>Ranged&lt;X,Y&gt;</literal></entry>
             <entry><literal>X</literal></entry>
             <entry><literal>Y</literal></entry>
         </row>
-        <!--
         <row>
-            <entry><literal>lhs[...y]</literal></entry>
-            <entry>lower range</entry>
-            <entry><literal>lhs.range(0,y)</literal></entry>
-            <entry><literal>List&lt;X&gt;</literal></entry>
-            <entry><literal>Integer</literal></entry>
-            <entry><literal>List&lt;X&gt;</literal></entry>
+            <entry><literal>lhs[...to]</literal></entry>
+            <entry>lower span</entry>
+            <entry><literal>lhs.spanTo(to)</literal></entry>
+            <entry><literal>Ranged&lt;X,Y&gt;</literal></entry>
+            <entry><literal>X</literal></entry>
+            <entry><literal>Y</literal></entry>
         </row>
-        -->
-        
-        <!--
-        <row><entry namest="first" nameend="last"><emphasis>Sequence concatenation</emphasis></entry></row>
-        
-        <row>
-            <entry><literal>lhs + rhs</literal></entry>
-            <entry>join</entry>
-            <entry><literal>join(lhs, rhs)</literal></entry>
-            <entry><literal>X[]</literal></entry>
-            <entry><literal>X[]</literal></entry>
-            <entry><literal>X[]</literal></entry>
-        </row>
-        -->
         
         <row><entry namest="first" nameend="last"><emphasis>Spread invocation</emphasis></entry></row>
-
+        
         <row>
-            <entry><literal>lhs[].member</literal></entry>
+            <entry><literal>lhs*.member</literal></entry>
             <entry>spread attribute</entry>
-            <entry><literal>{ for (X x in lhs) x.member }</literal></entry>
+            <entry><literal>[ for (X x in lhs) x.member ]</literal></entry>
             <entry><literal>X[]</literal></entry>
-            <entry><literal>Attribute&lt;X,T&gt;</literal></entry>
+            <entry>attribite of <literal>X</literal> of
+            type <literal>T</literal></entry>
             <entry><literal>T[]</literal></entry>
         </row>
         
         <row>
-            <entry><literal>lhs[].member</literal></entry>
+            <entry><literal>lhs*.member</literal></entry>
             <entry>spread method</entry>
             <entry></entry>
             <entry><literal>X[]</literal></entry>
-            <entry><literal>Method &lt;X,T,P...&gt;</literal></entry>
-            <entry><literal>Callable &lt;T[],P...&gt;</literal></entry>
+            <entry>method of <literal>X</literal> of
+            callable type <literal>Callable &lt;T,P&gt;</literal></entry>
+            <entry><literal>Callable &lt;T[],P&gt;</literal></entry>
         </row>
         
-        <!--row>
-            <entry><literal>lhs(x,y,z)</literal> or 
-            <literal>lhs{a=x;b=y;}</literal></entry>
-            <entry>spread invoke</entry>
-            <entry><literal>{ for (C c in lhs) c(x,y,z) }</literal></entry>
-            <entry><literal>Callable &lt;T,P...&gt;[]</literal></entry>
-            <entry><literal>P...</literal></entry>
-            <entry><literal>T[]</literal></entry>
-        </row-->
-        <!--  
-        
-        <row><entry namest="first" nameend="last"><emphasis>Shift</emphasis></entry></row>
+        <row><entry namest="first" nameend="last"><emphasis>Spread multiplication</emphasis></entry></row>
         
         <row>
-            <entry><literal>lhs &lt;&lt; rhs</literal></entry>
-            <entry>left shift</entry>
-            <entry><literal>lhs.shiftLeft(rhs)</literal></entry>
-            <entry><literal>List&lt;X&gt;</literal></entry>
-            <entry><literal>Integer</literal></entry>
-            <entry><literal>List&lt;X&gt;</literal></entry>
+            <entry><literal>lhs ** rhs</literal></entry>
+            <entry>scale</entry>
+            <entry><literal>rhs.scale(lhs)</literal></entry>
+            <entry><literal>Y</literal></entry>
+            <entry><literal>Scalable&lt;X,Y&gt;</literal></entry>
+            <entry><literal>X</literal></entry>
         </row>
-        <row>
-            <entry><literal>lhs >> rhs</literal></entry>
-            <entry>right shift</entry>
-            <entry><literal>lhs.shiftRight(rhs)</literal></entry>
-            <entry><literal>List&lt;X&gt;</literal></entry>
-            <entry><literal>Integer</literal></entry>
-            <entry><literal>List&lt;X&gt;</literal></entry>
-        </row>
-        
-        -->
-        
-        <!--
-        <row>
-            <entry><literal>lhs * rhs</literal></entry>
-            <entry>cartesian product</entry>
-            <entry><literal>lhs.product(rhs)</literal></entry>
-            <entry><literal>Set&lt;X&gt;</literal></entry>
-            <entry><literal>Set&lt;Y&gt;</literal></entry>
-            <entry><literal>Set&lt;Pair&lt;X,Y&gt;&gt;</literal></entry>
-        </row>
-        -->
         
     </tbody>
     </tgroup>
     </table>
     
-    <comment><para>TODO: Should <literal>x[i..j]</literal> return the elements
-    from <literal>i</literal> to <literal>j-1</literal>, like in most other
-    languages?</para></comment>
-    
-    <!--
-    <comment><para>TODO: I'm increasingly warming to the idea of a non-destructive 
-    add ("with") operator <literal>@</literal> and <literal>@=</literal>. This is
-    an operation that is very efficient for some kinds of data structures (linked lists, 
-    etc).</para></comment>
-    -->
+    <!-- a cartesian product operator <*> or [*] ??  -->
     
     </section>
     
@@ -2653,7 +2397,7 @@ createItemMethod.intercept()
         <row><entry namest="first" nameend="last"><emphasis>Range and entry constructors</emphasis></entry></row>
 
         <row>
-            <entry><literal>lhs .. rhs</literal></entry>
+            <entry><literal>lhs..rhs</literal></entry>
             <entry>range</entry>
             <entry><literal>Range(lhs, rhs)</literal></entry>
             <entry><literal>T given T satisfies Ordinal &amp; Comparable&lt;T&gt;</literal></entry>
@@ -2662,7 +2406,16 @@ createItemMethod.intercept()
         </row>
         
         <row>
-            <entry><literal>lhs -> rhs</literal></entry>
+            <entry><literal>lhs:rhs</literal></entry>
+            <entry>range</entry>
+            <entry><literal>if (lhs&lt;=0) [] else Range(lhs, rhs)</literal></entry>
+            <entry><literal>T given T satisfies Ordinal &amp; Comparable&lt;T&gt;</literal></entry>
+            <entry><literal>T</literal></entry>
+            <entry><literal>[]|Range&lt;T&gt;</literal></entry>
+        </row>
+        
+        <row>
+            <entry><literal>lhs->rhs</literal></entry>
             <entry>entry</entry>
             <entry><literal>Entry(lhs, rhs)</literal></entry>
             <entry><literal>U given U satisfies Object</literal></entry>
@@ -2785,17 +2538,17 @@ createItemMethod.intercept()
         <row>
             <entry><literal>++rhs</literal></entry>
             <entry>successor</entry>
-            <entry><literal>rhs:=rhs.successor</literal></entry>
+            <entry><literal>rhs=rhs.successor</literal></entry>
             <entry></entry>
-            <entry><literal>Settable &lt;Ordinal&lt;T&gt;&gt;</literal></entry>
+            <entry>variable of type <literal>Ordinal&lt;T&gt;</literal></entry>
             <entry><literal>T</literal></entry>
         </row>
         <row>
             <entry><literal>--rhs</literal></entry>
             <entry>predecessor</entry>
-            <entry><literal>rhs:=rhs.predecessor</literal></entry>
+            <entry><literal>rhs=rhs.predecessor</literal></entry>
             <entry></entry>
-            <entry><literal>Settable &lt;Ordinal&lt;T&gt;&gt;</literal></entry>
+            <entry>variable of type <literal>Ordinal&lt;T&gt;</literal></entry>
             <entry><literal>T</literal></entry>
         </row>
         
@@ -2805,7 +2558,7 @@ createItemMethod.intercept()
             <entry><literal>lhs++</literal></entry>
             <entry>increment</entry>
             <entry><literal>(++lhs).predecessor</literal></entry>
-            <entry><literal>Settable &lt;Ordinal&lt;T&gt;&gt;</literal></entry>
+            <entry>variable of type <literal>Ordinal&lt;T&gt;</literal></entry>
             <entry></entry>
             <entry><literal>T</literal></entry>
         </row>
@@ -2813,7 +2566,7 @@ createItemMethod.intercept()
             <entry><literal>lhs--</literal></entry>
             <entry>decrement</entry>
             <entry><literal>(--lhs).successor</literal></entry>
-            <entry><literal>Settable &lt;Ordinal&lt;T&gt;&gt;</literal></entry>
+            <entry>variable of type <literal>Ordinal&lt;T&gt;</literal></entry>
             <entry></entry>
             <entry><literal>T</literal></entry>
         </row>
@@ -2845,49 +2598,49 @@ createItemMethod.intercept()
         <row>
             <entry><literal>lhs + rhs</literal></entry>
             <entry>sum</entry>
-            <entry><literal>lhs.castTo&lt;N&gt;() .plus(rhs.castTo&lt;N&gt;())</literal></entry>
-            <entry><literal>X satisfies Castable&lt;N&gt; &amp; Summable&lt;X&gt;</literal></entry>
-            <entry><literal>Y satisfies Castable&lt;N&gt; &amp; Summable&lt;Y&gt;</literal></entry>
-            <entry><literal>N of X|Y</literal></entry>
+            <entry><literal>lhs.plus(rhs)</literal></entry>
+            <entry><literal>Summable&lt;X&gt;</literal></entry>
+            <entry><literal>X</literal></entry>
+            <entry><literal>X</literal></entry>
         </row>
         <row>
             <entry><literal>lhs - rhs</literal></entry>
             <entry>difference</entry>
-            <entry><literal>lhs.castTo&lt;N&gt;() .minus(rhs.castTo&lt;N&gt;())</literal></entry>
-            <entry><literal>X satisfies Castable&lt;N&gt; &amp; Subtractable&lt;X,I&gt;</literal></entry>
-            <entry><literal>Y satisfies Castable&lt;N&gt; &amp; Subtractable&lt;Y,J&gt;</literal></entry>
-            <entry><literal>N of I|J</literal></entry>
+            <entry><literal>lhs.minus(rhs)</literal></entry>
+            <entry><literal>Subtractable &lt;X&gt;</literal></entry>
+            <entry><literal>X</literal></entry>
+            <entry><literal>X</literal></entry>
         </row>
         <row>
             <entry><literal>lhs * rhs</literal></entry>
             <entry>product</entry>
-            <entry><literal>lhs.castTo&lt;N&gt;() .times(rhs.castTo&lt;N&gt;())</literal></entry>
-            <entry><literal>X satisfies Castable&lt;N&gt; &amp; Numeric&lt;X&gt;</literal></entry>
-            <entry><literal>Y satisfies Castable&lt;N&gt; &amp; Numeric&lt;Y&gt;</literal></entry>
-            <entry><literal>N of X|Y</literal></entry>
+            <entry><literal>lhs.times(rhs)</literal></entry>
+            <entry><literal>Numeric&lt;X&gt;</literal></entry>
+            <entry><literal>X</literal></entry>
+            <entry><literal>X</literal></entry>
         </row>
         <row>
             <entry><literal>lhs / rhs</literal></entry>
             <entry>quotient</entry>
-            <entry><literal>lhs.castTo&lt;N&gt;() .divided(rhs.castTo&lt;N&gt;())</literal></entry>
-            <entry><literal>X satisfies Castable&lt;N&gt; &amp; Numeric&lt;X&gt;</literal></entry>
-            <entry><literal>Y satisfies Castable&lt;N&gt; &amp; Numeric&lt;Y&gt;</literal></entry>
-            <entry><literal>N of X|Y</literal></entry>
+            <entry><literal>lhs.divided(rhs)</literal></entry>
+            <entry><literal>Numeric&lt;X&gt;</literal></entry>
+            <entry><literal>X</literal></entry>
+            <entry><literal>X</literal></entry>
         </row>
         <row>
             <entry><literal>lhs % rhs</literal></entry>
             <entry>remainder</entry>
-            <entry><literal>lhs.castTo&lt;N&gt;() .remainder(rhs.castTo&lt;N&gt;())</literal></entry>
-            <entry><literal>X satisfies Castable&lt;N&gt; &amp; Integral&lt;X&gt;</literal></entry>
-            <entry><literal>Y satisfies Castable&lt;N&gt; &amp; Integral&lt;Y&gt;</literal></entry>
-            <entry><literal>N of X|Y</literal></entry>
+            <entry><literal>lhs.remainder(rhs)</literal></entry>
+            <entry><literal>Integral&lt;X&gt;</literal></entry>
+            <entry><literal>X</literal></entry>
+            <entry><literal>X</literal></entry>
         </row>
         <row>
-            <entry><literal>lhs ** rhs</literal></entry>
+            <entry><literal>lhs ^ rhs</literal></entry>
             <entry>power</entry>
-            <entry><literal>lhs .power(rhs.castTo&lt;Y&gt;())</literal></entry>
-            <entry><literal>Exponentiable&lt;X,Y&gt;</literal></entry>
-            <entry><literal>Castable&lt;Y&gt;</literal></entry>
+            <entry><literal>lhs.power(rhs)</literal></entry>
+            <entry><literal>Exponentiable &lt;X,Y&gt;</literal></entry>
+            <entry><literal>Y</literal></entry>
             <entry><literal>X</literal></entry>
         </row>
         
@@ -2896,78 +2649,49 @@ createItemMethod.intercept()
         <row>
             <entry><literal>lhs += rhs</literal></entry>
             <entry>add</entry>
-            <entry><literal>lhs:=lhs .plus(rhs.castTo&lt;N&gt;())</literal></entry>
-            <entry><literal>Settable &lt;Summable&lt;N&gt;&gt;</literal></entry>
-            <entry><literal>Castable&lt;N&gt;</literal></entry>
+            <entry><literal>lhs=lhs.plus(rhs)</literal></entry>
+            <entry>variable of type <literal>Summable&lt;N&gt;</literal></entry>
+            <entry><literal>N</literal></entry>
             <entry><literal>N</literal></entry>
         </row>
         <row>
             <entry><literal>lhs -= rhs</literal></entry>
             <entry>subtract</entry>
-            <entry><literal>lhs:=lhs .minus(rhs.castTo&lt;N&gt;())</literal></entry>
-            <entry><literal>Settable &lt;Subtractable&lt;N,N&gt;&gt;</literal></entry>
-            <entry><literal>Castable&lt;N&gt;</literal></entry>
+            <entry><literal>lhs=lhs.minus(rhs)</literal></entry>
+            <entry>variable of type <literal>Subtractable &lt;N&gt;</literal></entry>
+            <entry><literal>N</literal></entry>
             <entry><literal>N</literal></entry>
         </row>
         <row>
             <entry><literal>lhs *= rhs</literal></entry>
             <entry>multiply</entry>
-            <entry><literal>lhs:=lhs .times(rhs.castTo&lt;N&gt;())</literal></entry>
-            <entry><literal>Settable &lt;Numeric&lt;N&gt;&gt;</literal></entry>
-            <entry><literal>Castable&lt;N&gt;</literal></entry>
+            <entry><literal>lhs=lhs.times(rhs)</literal></entry>
+            <entry>variable of type <literal>Numeric&lt;N&gt;</literal></entry>
+            <entry><literal>N</literal></entry>
             <entry><literal>N</literal></entry>
         </row>
         <row>
             <entry><literal>lhs /= rhs</literal></entry>
             <entry>divide</entry>
-            <entry><literal>lhs:=lhs .divided(rhs.castTo&lt;N&gt;())</literal></entry>
-            <entry><literal>Settable &lt;Numeric&lt;N&gt;&gt;</literal></entry>
-            <entry><literal>Castable&lt;N&gt;</literal></entry>
+            <entry><literal>lhs=lhs.divided(rhs)</literal></entry>
+            <entry>variable of type <literal>Numeric&lt;N&gt;</literal></entry>
+            <entry><literal>N</literal></entry>
             <entry><literal>N</literal></entry>
         </row>
         <row>
             <entry><literal>lhs %= rhs</literal></entry>
             <entry>remainder</entry>
-            <entry><literal>lhs:=lhs .remainder(rhs.castTo&lt;N&gt;())</literal></entry>
-            <entry><literal>Settable &lt;Integral&lt;N&gt;&gt;</literal></entry>
-            <entry><literal>Castable&lt;N&gt;</literal></entry>
+            <entry><literal>lhs=lhs.remainder(rhs)</literal></entry>
+            <entry>variable of type <literal>Integral&lt;N&gt;</literal></entry>
+            <entry><literal>N</literal></entry>
             <entry><literal>N</literal></entry>
         </row>
                 
     </tbody>
     </tgroup>
     </table>
-    
-        <!--
-        <para>Built-in converters allow for type promotion of numeric values used in 
-        expressions. Converters exist for the following numeric types:</para>
-        
-        <itemizedlist>
-            <listitem>
-                <para><literal>Integer</literal> to <literal>Integer</literal>,
-                <literal>Float</literal>, <literal>Whole</literal> and 
-                <literal>Decimal</literal></para>
-            </listitem>
-            <listitem>
-                <para><literal>Integer</literal> to <literal>Float</literal>,
-                <literal>Whole</literal> and <literal>Decimal</literal></para>
-            </listitem>
-            <listitem>
-                <para><literal>Float</literal> to <literal>Decimal</literal></para>
-            </listitem>
-            <listitem>
-                <para><literal>Whole</literal> to <literal>Decimal</literal></para>
-            </listitem>
-        </itemizedlist>
-        
-        <para>This means that <literal>x + y</literal> is defined for any combination 
-        of numeric types <literal>X</literal> and <literal>Y</literal>, except for 
-        the combination <literal>Float</literal> and <literal>Whole</literal>, and that
-        <literal>x + y</literal> always produces the same value, with the same type, as
-        <literal>y + x</literal>.</para>
-        -->
-        
-        <para>Ceylon's numeric type system is designed to accommodate the following
+            
+        <!--para>Ceylon's numeric type system is designed to accommodate the following
         considerations:</para>
         
         <itemizedlist>
@@ -3007,42 +2731,12 @@ createItemMethod.intercept()
                 possible for the compiler to detect numeric overflow or loss of
                 significant precision.</para>
             </listitem>
-        </itemizedlist>
+        </itemizedlist-->
         
     </section>
     
     <section id="sets">
     <title>Set operators</title>
-    
-        <!--
-        <para>The C-style bitwise operators are generalized to apply to other types that 
-        are formed from boolean-valued "slots". The interface <literal>Slots</literal> 
-        defines the necessary abstraction.</para>
-        
-        <itemizedlist>
-            <listitem>
-                <para>The class <literal>Byte</literal> represents a fixed length bit string. 
-                In this case, the operators are the standard bitwise operators from other 
-                C-like languages.</para>
-            </listitem>
-            <listitem>
-                <para>A <literal>Boolean</literal> can be seen as a bit string of length 
-                one, so these operators also apply to <literal>Boolean</literal> values.</para>
-            </listitem>
-            <listitem>
-                <para>A <literal>Set&lt;T&gt;</literal>, together with the <literal>in</literal> 
-                operator, may also be viewed in terms of slots, so the operators apply to 
-                <literal>Set</literal>s, where <literal>|</literal>, <literal>&amp;</literal>
-                and binary <literal>~</literal> are interpreted as set union, intersection 
-                and complement operators.</para>
-            </listitem>
-        </itemizedlist>
-        
-        <para>Note that in Ceylon these operators have a higher precedence than they have 
-        in C or Java. Note also that the built-in numeric types are not bit strings, so 
-        explicit conversion to <literal>Bits&lt;#n&gt;</literal> is required before these 
-        operators may be applied to a numeric value.</para>
-        -->
     
     <para>These operators provide traditional mathematical operations for sets.</para>
     
@@ -3068,16 +2762,6 @@ createItemMethod.intercept()
     
         <row><entry namest="first" nameend="last"><emphasis>Set operators</emphasis></entry></row>
         
-        <!--
-        <row>
-            <entry><literal>~rhs</literal></entry>
-            <entry>complement</entry>
-            <entry><literal>rhs.complement</literal></entry>
-            <entry></entry>
-            <entry><literal>FixedSlots&lt;B&gt;</literal></entry>
-            <entry><literal>B</literal></entry>
-        </row>
-        -->
         <row>
             <entry><literal>lhs | rhs</literal></entry>
             <entry>union</entry>
@@ -3095,14 +2779,6 @@ createItemMethod.intercept()
             <entry><literal>Set&lt;X&amp;Y&gt;</literal></entry>
         </row>
         <row>
-            <entry><literal>lhs ^ rhs</literal></entry>
-            <entry>exclusive union</entry>
-            <entry><literal>lhs.exclusiveUnion(rhs)</literal></entry>
-            <entry><literal>Set&lt;X&gt;</literal></entry>
-            <entry><literal>Set&lt;Y&gt;</literal></entry>
-            <entry><literal>Set&lt;X|Y&gt;</literal></entry>
-        </row>
-        <row>
             <entry><literal>lhs ~ rhs</literal></entry>
             <entry>complement</entry>
             <entry><literal>lhs.complement(rhs)</literal></entry>
@@ -3117,32 +2793,24 @@ createItemMethod.intercept()
         <row>
             <entry><literal>lhs |= rhs</literal></entry>
             <entry>union</entry>
-            <entry><literal>lhs:=lhs|rhs</literal></entry>
-            <entry><literal>Settable &lt;Set&lt;X&gt;&gt;</literal></entry>
+            <entry><literal>lhs=lhs|rhs</literal></entry>
+            <entry>variable of type <literal>Set&lt;X&gt;</literal></entry>
             <entry><literal>Set&lt;X&gt;</literal></entry>
             <entry><literal>Set&lt;X&gt;</literal></entry>
         </row>
         <row>
             <entry><literal>lhs &amp;= rhs</literal></entry>
             <entry>intersection</entry>
-            <entry><literal>lhs:=lhs&amp;rhs</literal></entry>
-            <entry><literal>Settable &lt;Set&lt;X&gt;&gt;</literal></entry>
+            <entry><literal>lhs=lhs&amp;rhs</literal></entry>
+            <entry>variable of type <literal>Set&lt;X&gt;</literal></entry>
             <entry><literal>Set&lt;Object&gt;</literal></entry>
-            <entry><literal>Set&lt;X&gt;</literal></entry>
-        </row>
-        <row>
-            <entry><literal>lhs ^= rhs</literal></entry>
-            <entry>exclusive union</entry>
-            <entry><literal>lhs:=lhs^rhs</literal></entry>
-            <entry><literal>Settable &lt;Set&lt;X&gt;&gt;</literal></entry>
-            <entry><literal>Set&lt;X&gt;</literal></entry>
             <entry><literal>Set&lt;X&gt;</literal></entry>
         </row>
         <row>
             <entry><literal>lhs ~= rhs</literal></entry>
             <entry>complement</entry>
-            <entry><literal>lhs:=lhs~rhs</literal></entry>
-            <entry><literal>Settable &lt;Set&lt;X&gt;&gt;</literal></entry>
+            <entry><literal>lhs=lhs~rhs</literal></entry>
+            <entry>variable of type <literal>Set&lt;X&gt;</literal></entry>
             <entry><literal>Set&lt;Object&gt;</literal></entry>
             <entry><literal>Set&lt;X&gt;</literal></entry>
         </row>
@@ -3150,10 +2818,6 @@ createItemMethod.intercept()
     </tbody>
     </tgroup>
     </table>
-    
-        <comment><para>TODO: how can we support the traditional C-style bitwise operators? 
-        Abstracting over sets and binary strings is difficult without type constructor 
-        parameterization.</para></comment>
     
     </section>
     
