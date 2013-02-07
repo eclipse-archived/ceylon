@@ -276,7 +276,8 @@ public class StatementTransformer extends AbstractTransformer {
             java.util.List<Condition> rest = Collections.<Condition>emptyList();
             JCStatement elseBlock = transformInnermostElse(transformedCond, rest);
             Substitution subs = getSubstitution(transformedCond);
-            List<JCStatement> stmts = transformInnermostThen(transformedCond);
+            List<JCStatement> stmts = transformCommonResultDecl(transformedCond, List.<JCStatement>nil());
+            stmts = stmts.appendList(transformInnermostThen(transformedCond));
             stmts = transformCommon(transformedCond, rest, test, 
                     stmts, elseBlock);
             if (subs != null) {
@@ -305,6 +306,7 @@ public class StatementTransformer extends AbstractTransformer {
             JCExpression test = intermediate.makeTest();
             Substitution subs = getSubstitution(intermediate);
             List<JCStatement> stmts = transformList(rest);
+            stmts = transformCommonResultDecl(intermediate, stmts);
             JCStatement intermediateElse = transformIntermediateElse(intermediate, rest);
             stmts = transformCommon(intermediate, rest, test, 
                     stmts, intermediateElse);
@@ -315,8 +317,8 @@ public class StatementTransformer extends AbstractTransformer {
         }
 
         protected abstract JCStatement transformIntermediateElse(Cond transformedCond, java.util.List<Condition> rest);
-        
         protected abstract List<JCStatement> transformCommon(Cond transformedCond, java.util.List<Condition> rest, JCExpression test, List<JCStatement> stmts, JCStatement elseBlock);
+        protected abstract List<JCStatement> transformCommonResultDecl(Cond cond, List<JCStatement> stmts);
     }
     
     class IfCondList extends BlockCondList {
@@ -376,22 +378,6 @@ public class StatementTransformer extends AbstractTransformer {
             if (testVarDecl != null) {
                 varDecls.append(testVarDecl);
             }
-            if (transformedCond.hasResultDecl()) {
-                JCVariableDecl resultVarDecl = make().VarDef(make().Modifiers(Flags.FINAL), 
-                        transformedCond.getVariableName().asName(), 
-                        transformedCond.makeTypeExpr(), 
-                        isDeferred() ? null : transformedCond.makeResultExpr());
-                if (isDeferred()) {
-                    // Note we capture the substitution here, because it won't be 
-                    // in scope when we generate the default assignment branches.
-                    unassignedResultVars.put(transformedCond, 
-                            transformedCond.getVariableName().capture());
-                    varDecls.append(resultVarDecl);
-                    stmts = stmts.prepend(make().Exec(make().Assign(transformedCond.getVariableName().makeIdent(), transformedCond.makeResultExpr())));
-                } else {
-                    stmts = stmts.prepend(resultVarDecl);
-                }
-            }
             JCStatement elsePart;
             if (isDeferred()) {
                 List<JCStatement> assignDefault = List.<JCStatement>nil();
@@ -408,6 +394,27 @@ public class StatementTransformer extends AbstractTransformer {
                     test, 
                     make().Block(0, stmts), 
                     elsePart));
+            return stmts;
+        }
+
+        protected List<JCStatement> transformCommonResultDecl(
+                Cond transformedCond, List<JCStatement> stmts) {
+            if (transformedCond.hasResultDecl()) {
+                JCVariableDecl resultVarDecl = make().VarDef(make().Modifiers(Flags.FINAL), 
+                        transformedCond.getVariableName().asName(), 
+                        transformedCond.makeTypeExpr(), 
+                        isDeferred() ? null : transformedCond.makeResultExpr());
+                if (isDeferred()) {
+                    // Note we capture the substitution here, because it won't be 
+                    // in scope when we generate the default assignment branches.
+                    unassignedResultVars.put(transformedCond, 
+                            transformedCond.getVariableName().capture());
+                    varDecls.append(resultVarDecl);
+                    stmts = stmts.prepend(make().Exec(make().Assign(transformedCond.getVariableName().makeIdent(), transformedCond.makeResultExpr())));
+                } else {
+                    stmts = stmts.prepend(resultVarDecl);
+                }
+            }
             return stmts;
         }
         
@@ -485,6 +492,16 @@ public class StatementTransformer extends AbstractTransformer {
             if (transformedCond.makeTestVarDecl(0, false) != null) {
                 varDecls.append(transformedCond.makeTestVarDecl(0, false));
             }
+            JCStatement elsePart = elseBlock;
+            stmts = List.<JCStatement>of(make().If(
+                    test, 
+                    make().Block(0, stmts), 
+                    elsePart));
+            return stmts;
+        }
+
+        protected List<JCStatement> transformCommonResultDecl(
+                Cond transformedCond, List<JCStatement> stmts) {
             if (transformedCond.hasResultDecl()) {
                 JCVariableDecl resultVarDecl = make().VarDef(make().Modifiers(Flags.FINAL), 
                         transformedCond.getVariableName().asName(), 
@@ -492,11 +509,6 @@ public class StatementTransformer extends AbstractTransformer {
                         transformedCond.makeResultExpr());
                 stmts = stmts.prepend(resultVarDecl);
             }
-            JCStatement elsePart = elseBlock;
-            stmts = List.<JCStatement>of(make().If(
-                    test, 
-                    make().Block(0, stmts), 
-                    elsePart));
             return stmts;
         }
         
@@ -548,18 +560,6 @@ public class StatementTransformer extends AbstractTransformer {
         protected List<JCStatement> transformCommon(Cond cond, 
                 java.util.List<Condition> rest, 
                 JCExpression test, List<JCStatement> stmts, JCStatement elseBlock) {
-            if (cond.hasResultDecl()) {
-                JCVariableDecl resultVarDecl = make().VarDef(make().Modifiers(Flags.FINAL), 
-                        cond.getVariableName().asName(), 
-                        cond.makeTypeExpr(), 
-                        null);
-                // Note we capture the substitution here, because it won't be 
-                // in scope when we generate the default assignment branches.
-                unassignedResultVars.put(cond, 
-                        cond.getVariableName().capture());
-                varDecls.append(resultVarDecl);
-                stmts = stmts.prepend(make().Exec(make().Assign(cond.getVariableName().makeIdent(), cond.makeResultExpr())));
-            }
             
             if (isMulti()) {
                 List<JCStatement> elseStmts = ((JCBlock)elseBlock).getStatements();
@@ -577,6 +577,23 @@ public class StatementTransformer extends AbstractTransformer {
             
             if (cond.makeTestVarDecl(0, true) != null) {
                 stmts = stmts.prepend(cond.makeTestVarDecl(0, true));
+            }
+            return stmts;
+        }
+
+        protected List<JCStatement> transformCommonResultDecl(Cond cond,
+                List<JCStatement> stmts) {
+            if (cond.hasResultDecl()) {
+                JCVariableDecl resultVarDecl = make().VarDef(make().Modifiers(Flags.FINAL), 
+                        cond.getVariableName().asName(), 
+                        cond.makeTypeExpr(), 
+                        null);
+                // Note we capture the substitution here, because it won't be 
+                // in scope when we generate the default assignment branches.
+                unassignedResultVars.put(cond, 
+                        cond.getVariableName().capture());
+                varDecls.append(resultVarDecl);
+                stmts = stmts.prepend(make().Exec(make().Assign(cond.getVariableName().makeIdent(), cond.makeResultExpr())));
             }
             return stmts;
         }
