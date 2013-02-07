@@ -7,10 +7,10 @@ class MethodIfConditionListIsIs {
     
     private final boolean m$priv(final .java.lang.Object x, final .java.lang.Object y) {
         boolean $ceylontmpif0 = false;
-        .java.lang.Object $y1$3;
-        final long $y1$4;
         .java.lang.Object $x1$1;
         final long $x1$2;
+        .java.lang.Object $y1$3;
+        final long $y1$4;
         if (($x1$1 = x) instanceof .ceylon.language.Integer) {
             $x1$2 = ((.ceylon.language.Integer)$x1$1).longValue();
             if (($y1$3 = y) instanceof .ceylon.language.Integer) {
@@ -32,10 +32,10 @@ class MethodIfConditionListIsIs {
     
     private final boolean synthetic$priv(final .java.lang.Object x, final .java.lang.Object y) {
         boolean $ceylontmpif5 = false;
-        .java.lang.Object $y$8;
-        final long $y$9;
         .java.lang.Object $x$6;
         final long $x$7;
+        .java.lang.Object $y$8;
+        final long $y$9;
         if (($x$6 = x) instanceof .ceylon.language.Integer) {
             $x$7 = ((.ceylon.language.Integer)$x$6).longValue();
             if (($y$8 = y) instanceof .ceylon.language.Integer) {
@@ -57,10 +57,10 @@ class MethodIfConditionListIsIs {
     
     private final boolean mElseIf$priv(final .java.lang.Object x, final .java.lang.Object y) {
         boolean $ceylontmpif10 = false;
-        .java.lang.Object $y1$13;
-        final long $y1$14;
         .java.lang.Object $x1$11;
         final long $x1$12;
+        .java.lang.Object $y1$13;
+        final long $y1$14;
         if (($x1$11 = x) instanceof .ceylon.language.Integer) {
             $x1$12 = ((.ceylon.language.Integer)$x1$11).longValue();
             if (($y1$13 = y) instanceof .ceylon.language.Integer) {
