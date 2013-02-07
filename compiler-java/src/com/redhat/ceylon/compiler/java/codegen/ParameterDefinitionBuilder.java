@@ -19,6 +19,7 @@
  */
 package com.redhat.ceylon.compiler.java.codegen;
 
+import com.redhat.ceylon.compiler.typechecker.model.Annotation;
 import com.sun.tools.javac.code.Flags;
 import com.sun.tools.javac.tree.JCTree.JCAnnotation;
 import com.sun.tools.javac.tree.JCTree.JCExpression;
@@ -48,6 +49,8 @@ public class ParameterDefinitionBuilder {
     
     private boolean built = false;
 
+    private java.util.List<Annotation> annos;
+
     private ParameterDefinitionBuilder(AbstractTransformer gen, String name) {
         this.gen = gen;
         this.name = name;
@@ -59,6 +62,11 @@ public class ParameterDefinitionBuilder {
 
     public ParameterDefinitionBuilder modifiers(long mods) {
         this.modifiers |= mods;
+        return this;
+    }
+    
+    public ParameterDefinitionBuilder modelAnnotations(java.util.List<Annotation> annos) {
+        this.annos = annos;
         return this;
     }
     
@@ -104,6 +112,9 @@ public class ParameterDefinitionBuilder {
             }
             if (typeAnnos != null) {
                 annots = annots.appendList(typeAnnos);
+            }
+            if (annos != null) {
+                annots = annots.appendList(gen.makeAtAnnotations(annos));
             }
         }
         Name name = gen.names().fromString(aliasedName != null ? aliasedName : this.name);
