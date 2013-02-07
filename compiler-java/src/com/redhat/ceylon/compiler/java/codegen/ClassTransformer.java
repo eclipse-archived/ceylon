@@ -189,14 +189,18 @@ public class ClassTransformer extends AbstractTransformer {
             classBuilder.method(makeMainForClass(model));
         }
         
-        return classBuilder
+        classBuilder
             .modelAnnotations(model.getAnnotations())
             .modifiers(transformClassDeclFlags(def))
             .satisfies(model.getSatisfiedTypes())
             .caseTypes(model.getCaseTypes(), model.getSelfType())
-            .init(childDefs)
-            .reifiedIs(model.getType(), model.getTypeParameters(), model.getSatisfiedTypes(), model.getExtendedType())
-            .build();
+            .init(childDefs);
+        
+        // aliases don't need an $is method
+        if(!model.isAlias())
+            classBuilder.reifiedIs(model.getType(), model.getTypeParameters(), model.getSatisfiedTypes(), model.getExtendedType());
+        
+        return classBuilder.build();
     }
 
     private List<JCStatement> visitClassOrInterfaceDefinition(Node def, ClassDefinitionBuilder classBuilder) {
