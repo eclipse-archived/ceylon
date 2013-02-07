@@ -1560,9 +1560,6 @@ public class Naming implements LocalId {
     }
     
     public String getIsMethodName(ProducedType type) {
-        if(type.getDeclaration() instanceof Interface){
-            return getCompanionFieldName((Interface) type.getDeclaration(), "$is");
-        }
         return "$is";
     }
 }
