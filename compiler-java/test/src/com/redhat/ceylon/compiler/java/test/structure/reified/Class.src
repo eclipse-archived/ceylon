@@ -7,9 +7,6 @@ public interface Interface<Key, Value> {
     
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
     public .com.redhat.ceylon.compiler.java.test.structure.reified.Interface$impl<Key, Value> $com$redhat$ceylon$compiler$java$test$structure$reified$Interface$impl();
-    
-    @.com.redhat.ceylon.compiler.java.metadata.Ignore
-    public boolean $com$redhat$ceylon$compiler$java$test$structure$reified$Interface$is(.com.redhat.ceylon.compiler.java.TypeDescriptor type);
 }
 @.com.redhat.ceylon.compiler.java.metadata.Ignore
 public final class Interface$impl<Key, Value> {
@@ -26,7 +23,7 @@ public final class Interface$impl<Key, Value> {
     private final .com.redhat.ceylon.compiler.java.test.structure.reified.Interface<Key, Value> $this;
     
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
-    public boolean $com$redhat$ceylon$compiler$java$test$structure$reified$Interface$is(.com.redhat.ceylon.compiler.java.TypeDescriptor type) {
+    public boolean $is(.com.redhat.ceylon.compiler.java.TypeDescriptor type) {
         if (.com.redhat.ceylon.compiler.java.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.reified.Interface.class, $reifiedKey, $reifiedValue).equals(type)) return true;
         return false;
     }
@@ -104,12 +101,6 @@ public class Class<Key, Value> implements .com.redhat.ceylon.compiler.java.Reifi
         return $com$redhat$ceylon$compiler$java$test$structure$reified$Interface$this;
     }
     
-    @.java.lang.Override
-    @.com.redhat.ceylon.compiler.java.metadata.Ignore
-    public boolean $com$redhat$ceylon$compiler$java$test$structure$reified$Interface$is(.com.redhat.ceylon.compiler.java.TypeDescriptor type) {
-        return this.$com$redhat$ceylon$compiler$java$test$structure$reified$Interface$this.$com$redhat$ceylon$compiler$java$test$structure$reified$Interface$is(type);
-    }
-    
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
     public static void main(.java.lang.String[] args) {
         .ceylon.language.process_.getProcess$().setupArguments(args);
@@ -120,7 +111,7 @@ public class Class<Key, Value> implements .com.redhat.ceylon.compiler.java.Reifi
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
     public boolean $is(.com.redhat.ceylon.compiler.java.TypeDescriptor type) {
         if (.com.redhat.ceylon.compiler.java.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.reified.Class.class, $reifiedKey, $reifiedValue).equals(type)) return true;
-        if ($com$redhat$ceylon$compiler$java$test$structure$reified$Interface$is(type)) return true;
+        if ($com$redhat$ceylon$compiler$java$test$structure$reified$Interface$this.$is(type)) return true;
         return false;
     }
 }
@@ -168,12 +159,6 @@ public final class toplevelObject_ implements .com.redhat.ceylon.compiler.java.R
     public .com.redhat.ceylon.compiler.java.test.structure.reified.Interface$impl<.ceylon.language.String, .ceylon.language.Integer> $com$redhat$ceylon$compiler$java$test$structure$reified$Interface$impl() {
         return $com$redhat$ceylon$compiler$java$test$structure$reified$Interface$this;
     }
-    
-    @.java.lang.Override
-    @.com.redhat.ceylon.compiler.java.metadata.Ignore
-    public boolean $com$redhat$ceylon$compiler$java$test$structure$reified$Interface$is(.com.redhat.ceylon.compiler.java.TypeDescriptor type) {
-        return this.$com$redhat$ceylon$compiler$java$test$structure$reified$Interface$this.$com$redhat$ceylon$compiler$java$test$structure$reified$Interface$is(type);
-    }
     private static final .com.redhat.ceylon.compiler.java.test.structure.reified.toplevelObject_[] value;
     static {
         value = new .com.redhat.ceylon.compiler.java.test.structure.reified.toplevelObject_[]{new .com.redhat.ceylon.compiler.java.test.structure.reified.toplevelObject_()};
@@ -192,7 +177,7 @@ public final class toplevelObject_ implements .com.redhat.ceylon.compiler.java.R
     @.java.lang.Override
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
     public boolean $is(.com.redhat.ceylon.compiler.java.TypeDescriptor type) {
-        if ($com$redhat$ceylon$compiler$java$test$structure$reified$Interface$is(type)) return true;
+        if ($com$redhat$ceylon$compiler$java$test$structure$reified$Interface$this.$is(type)) return true;
         return false;
     }
 }

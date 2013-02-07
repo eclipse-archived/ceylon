@@ -43,9 +43,6 @@ public interface CeylonInterface<Element> extends .com.redhat.ceylon.compiler.ja
     
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
     public .com.redhat.ceylon.compiler.java.test.structure.reified.CeylonInterface$impl<Element> $com$redhat$ceylon$compiler$java$test$structure$reified$CeylonInterface$impl();
-    
-    @.com.redhat.ceylon.compiler.java.metadata.Ignore
-    public boolean $com$redhat$ceylon$compiler$java$test$structure$reified$CeylonInterface$is(.com.redhat.ceylon.compiler.java.TypeDescriptor type);
 }
 @.com.redhat.ceylon.compiler.java.metadata.Ignore
 public final class CeylonInterface$impl<Element> {
@@ -59,7 +56,7 @@ public final class CeylonInterface$impl<Element> {
     private final .com.redhat.ceylon.compiler.java.test.structure.reified.CeylonInterface<Element> $this;
     
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
-    public boolean $com$redhat$ceylon$compiler$java$test$structure$reified$CeylonInterface$is(.com.redhat.ceylon.compiler.java.TypeDescriptor type) {
+    public boolean $is(.com.redhat.ceylon.compiler.java.TypeDescriptor type) {
         if (.com.redhat.ceylon.compiler.java.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.reified.CeylonInterface.class, $reifiedElement).equals(type)) return true;
         if (.com.redhat.ceylon.compiler.java.Util.isReifiedJava(.com.redhat.ceylon.compiler.java.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.reified.JavaInterface.class, $reifiedElement), type)) return true;
         return false;

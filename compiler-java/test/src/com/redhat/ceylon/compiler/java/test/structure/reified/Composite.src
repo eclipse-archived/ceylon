@@ -7,9 +7,6 @@ public interface CompositeInterface<Key, Value> {
     
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
     public .com.redhat.ceylon.compiler.java.test.structure.reified.CompositeInterface$impl<Key, Value> $com$redhat$ceylon$compiler$java$test$structure$reified$CompositeInterface$impl();
-    
-    @.com.redhat.ceylon.compiler.java.metadata.Ignore
-    public boolean $com$redhat$ceylon$compiler$java$test$structure$reified$CompositeInterface$is(.com.redhat.ceylon.compiler.java.TypeDescriptor type);
 }
 @.com.redhat.ceylon.compiler.java.metadata.Ignore
 public final class CompositeInterface$impl<Key, Value> {
@@ -26,7 +23,7 @@ public final class CompositeInterface$impl<Key, Value> {
     private final .com.redhat.ceylon.compiler.java.test.structure.reified.CompositeInterface<Key, Value> $this;
     
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
-    public boolean $com$redhat$ceylon$compiler$java$test$structure$reified$CompositeInterface$is(.com.redhat.ceylon.compiler.java.TypeDescriptor type) {
+    public boolean $is(.com.redhat.ceylon.compiler.java.TypeDescriptor type) {
         if (.com.redhat.ceylon.compiler.java.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.reified.CompositeInterface.class, $reifiedKey, $reifiedValue).equals(type)) return true;
         return false;
     }
@@ -55,12 +52,6 @@ public class CompositeClass<Key, Value> implements .com.redhat.ceylon.compiler.j
         return $com$redhat$ceylon$compiler$java$test$structure$reified$CompositeInterface$this;
     }
     
-    @.java.lang.Override
-    @.com.redhat.ceylon.compiler.java.metadata.Ignore
-    public boolean $com$redhat$ceylon$compiler$java$test$structure$reified$CompositeInterface$is(.com.redhat.ceylon.compiler.java.TypeDescriptor type) {
-        return this.$com$redhat$ceylon$compiler$java$test$structure$reified$CompositeInterface$this.$com$redhat$ceylon$compiler$java$test$structure$reified$CompositeInterface$is(type);
-    }
-    
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
     public static void main(.java.lang.String[] args) {
         .ceylon.language.process_.getProcess$().setupArguments(args);
@@ -71,7 +62,7 @@ public class CompositeClass<Key, Value> implements .com.redhat.ceylon.compiler.j
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
     public boolean $is(.com.redhat.ceylon.compiler.java.TypeDescriptor type) {
         if (.com.redhat.ceylon.compiler.java.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.reified.CompositeClass.class, $reifiedKey, $reifiedValue).equals(type)) return true;
-        if ($com$redhat$ceylon$compiler$java$test$structure$reified$CompositeInterface$is(type)) return true;
+        if ($com$redhat$ceylon$compiler$java$test$structure$reified$CompositeInterface$this.$is(type)) return true;
         return false;
     }
 }

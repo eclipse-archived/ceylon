@@ -3,8 +3,6 @@ package com.redhat.ceylon.compiler.java.test.structure.reified;
 public interface TestInterface<Key, Value> {
     
     public .com.redhat.ceylon.compiler.java.test.structure.reified.TestInterface$impl<Key, Value> $com$redhat$ceylon$compiler$java$test$structure$reified$TestInterface$impl();
-    
-    public boolean $com$redhat$ceylon$compiler$java$test$structure$reified$TestInterface$is(.com.redhat.ceylon.compiler.java.TypeDescriptor type);
 }
 public final class TestInterface$impl<Key, Value> {
     
@@ -17,7 +15,7 @@ public final class TestInterface$impl<Key, Value> {
     private final .com.redhat.ceylon.compiler.java.TypeDescriptor $reifiedValue;
     private final .com.redhat.ceylon.compiler.java.test.structure.reified.TestInterface<Key, Value> $this;
     
-    public boolean $com$redhat$ceylon$compiler$java$test$structure$reified$TestInterface$is(.com.redhat.ceylon.compiler.java.TypeDescriptor type) {
+    public boolean $is(.com.redhat.ceylon.compiler.java.TypeDescriptor type) {
         if (.com.redhat.ceylon.compiler.java.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.reified.TestInterface.class, $reifiedKey, $reifiedValue).equals(type)) return true;
         return false;
     }
@@ -38,11 +36,6 @@ public class TestClass<Key, Value> implements .com.redhat.ceylon.compiler.java.R
         return $com$redhat$ceylon$compiler$java$test$structure$reified$TestInterface$this;
     }
     
-    @.java.lang.Override
-    public boolean $com$redhat$ceylon$compiler$java$test$structure$reified$TestInterface$is(.com.redhat.ceylon.compiler.java.TypeDescriptor type) {
-        return this.$com$redhat$ceylon$compiler$java$test$structure$reified$TestInterface$this.$com$redhat$ceylon$compiler$java$test$structure$reified$TestInterface$is(type);
-    }
-    
     public static void main(.java.lang.String[] args) {
         .ceylon.language.process_.getProcess$().setupArguments(args);
         new .com.redhat.ceylon.compiler.java.test.structure.reified.TestClass(.com.redhat.ceylon.compiler.java.TypeDescriptor.BottomType, .com.redhat.ceylon.compiler.java.TypeDescriptor.BottomType);
@@ -51,7 +44,7 @@ public class TestClass<Key, Value> implements .com.redhat.ceylon.compiler.java.R
     @.java.lang.Override
     public boolean $is(.com.redhat.ceylon.compiler.java.TypeDescriptor type) {
         if (.com.redhat.ceylon.compiler.java.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.reified.TestClass.class, $reifiedKey, $reifiedValue).equals(type)) return true;
-        if ($com$redhat$ceylon$compiler$java$test$structure$reified$TestInterface$is(type)) return true;
+        if ($com$redhat$ceylon$compiler$java$test$structure$reified$TestInterface$this.$is(type)) return true;
         return false;
     }
 }
