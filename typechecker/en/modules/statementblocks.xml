@@ -1456,7 +1456,7 @@ else {
                 or</para>
             </listitem>
             <listitem>
-                <para>in the case of a nonemptiness condition, a subtype of <literal>[Anything*]</literal> 
+                <para>in the case of a nonemptiness condition, a subtype of <literal>Anything[]?</literal> 
                 whose intersection with <literal>[]</literal> is not exactly <literal>Nothing</literal>, 
                 and whose intersection with <literal>[Nothing+]</literal> is not exactly 
                 <literal>Nothing</literal>.</para>
@@ -1479,7 +1479,7 @@ else {
             <listitem>
                 <para><literal>nonempty x</literal> is equivalent to <literal>is [E+] x</literal>
                 where <literal>x</literal> is an expression whose type is an invariant subtype of
-                <literal>[E*]</literal>.</para>
+                <literal>E[]?</literal>.</para>
             </listitem>
         </itemizedlist>
         
@@ -1537,14 +1537,14 @@ if (is Usable tx) { ... }</programlisting>
                 <para>if the condition declares a variable, the declared type of the variable must 
                 be a supertype of <literal>T&amp;[E+]</literal>, where the specifier expression is 
                 of type <literal>T</literal> and <literal>T</literal> is an invariant subtype of
-                <literal>[E*]</literal>, or</para>
+                <literal>E[]?</literal>, or</para>
             </listitem>
             <listitem>
                 <para>if the condition contains a value reference, the value will be treated by the 
                 compiler as having type <literal>T&amp;[E+]</literal> inside the block that 
                 immediately follows the condition, where the conditional expression is of type 
                 <literal>T</literal> and <literal>T</literal> is an invariant subtype of 
-                <literal>[E*]</literal>.</para>
+                <literal>E[]?</literal>.</para>
             </listitem>
         </itemizedlist>
         
