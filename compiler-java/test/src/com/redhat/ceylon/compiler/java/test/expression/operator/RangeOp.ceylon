@@ -26,4 +26,26 @@ class RangeOp<T>() {
             given T satisfies Ordinal<T>&Comparable<T> {
         Range<T> range = t1..t2;
     }
+    
+}
+// #1027
+@nomodel
+abstract class RangeOpEnum(Integer i) of rangeOpE|rangeOpF 
+        satisfies Comparable<RangeOpEnum> & Ordinal<RangeOpEnum> {
+    shared actual Comparison compare(RangeOpEnum other) 
+            => i<=>other.i;
+}
+@nomodel
+object rangeOpF extends RangeOpEnum(1) {
+    shared actual RangeOpEnum predecessor => rangeOpE;
+    shared actual RangeOpEnum successor => rangeOpE;
+}
+@nomodel
+object rangeOpE extends RangeOpEnum(2) {
+    shared actual RangeOpEnum predecessor => rangeOpF;
+    shared actual RangeOpEnum successor => rangeOpF;
+}
+@nomodel
+void bug() {
+    Range<RangeOpEnum> range = rangeOpE..rangeOpF;
 }
