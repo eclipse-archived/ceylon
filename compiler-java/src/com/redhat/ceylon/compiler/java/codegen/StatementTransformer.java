@@ -37,6 +37,7 @@ import com.redhat.ceylon.compiler.typechecker.model.TypedDeclaration;
 import com.redhat.ceylon.compiler.typechecker.model.Value;
 import com.redhat.ceylon.compiler.typechecker.tree.Node;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree;
+import com.redhat.ceylon.compiler.typechecker.tree.Tree.AnonymousAnnotation;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.AttributeDeclaration;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.Block;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.BooleanCondition;
@@ -1025,6 +1026,9 @@ public class StatementTransformer extends AbstractTransformer {
             }
             Tree.Literal literal = (Tree.Literal)expression.getTerm();
             docText = literal.getText();
+        } else if (ass.getAnnotationList() != null
+                && ass.getAnnotationList().getAnonymousAnnotation() != null) {
+            docText = ass.getAnnotationList().getAnonymousAnnotation().getStringLiteral().getText();
         }
         return docText;
     }
