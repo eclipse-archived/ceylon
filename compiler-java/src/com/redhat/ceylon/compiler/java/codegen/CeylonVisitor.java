@@ -201,7 +201,10 @@ public class CeylonVisitor extends Visitor implements NaturalVisitor {
     }
 
     public void visit(Tree.Annotation ann) {
-        // Handled in processAnnotations
+        // Handled in AbstractTransformer.makeAtAnnotations
+    }
+    public void visit(Tree.AnonymousAnnotation ann) {
+        // Handled in AbstractTransformer.makeAtAnnotations
     }
 
     // FIXME: also support Tree.SequencedTypeParameter
