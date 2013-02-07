@@ -679,15 +679,7 @@ public class ClassDefinitionBuilder {
                 body = body.prepend(ifInterfacesTest);
             }
             
-            // and first make the call to TypeDescriptor.klass(thisClass, typeParamDescr...).equals(type)
-            List<JCExpression> typeTestArguments = List.nil();
-            JCExpression thisType = gen.makeClassLiteral(type);
-            for(int i=typeParameters.size()-1;i>=0;i--){
-                String name = gen.naming.getTypeArgumentDescriptorName(typeParameters.get(i).getName());
-                typeTestArguments = typeTestArguments.prepend(gen.makeUnquotedIdent(name));
-            }
-            typeTestArguments = typeTestArguments.prepend(thisType);
-            JCExpression classDescriptorCall = gen.make().Apply(null, gen.makeSelect(gen.makeTypeDescriptorType(), "klass"), typeTestArguments);
+            JCExpression classDescriptorCall = gen.makeReifiedTypeArgument(type);
             JCExpression classEqualsCall = gen.make().Apply(null, gen.makeSelect(classDescriptorCall, "equals"), List.of(gen.makeUnquotedIdent(paramName)));
             JCStatement classTest = gen.make().If(classEqualsCall, gen.make().Return(gen.makeBoolean(true)), null);
             body = body.prepend(classTest);
