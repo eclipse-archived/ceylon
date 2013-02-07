@@ -15,7 +15,7 @@
     <property name="test-lib" location="${build.lib}/compiler.js.test.jar" />
     <property name="src" location="${basedir}/src/main/java" />
     <property name="js-src" location="${basedir}/src/main/js" />
-    <property name="runtime" value="${basedir}/build/runtime" />
+    <property name="runtime" value="${build.dir}/runtime" />
 
     <property name="jslangfile" value="ceylon.language.js" />
     <property name="jslangpath" value="ceylon/language/${module.com.redhat.ceylon.compiler.js.version}" />
@@ -108,6 +108,9 @@
             <fileset dir="${build.classes}">
             </fileset>
         </jar>
+        <antcall target="sha1sum">
+            <param name="file" value="${ceylon.js.lib}" />
+        </antcall>
     </target>
 
     <!-- generate the ceylon.language.js file -->
@@ -117,6 +120,9 @@
             <arg value="../ceylon.language/runtime-js/language-module.txt" />
             <arg value="${runtime}/${jslangmodule}" />
         </java>
+        <antcall target="sha1sum">
+            <param name="file" value="${runtime}/${jslangmodule}" />
+        </antcall>
     </target>
 
     <target name="build" depends="ceylon.js.jar,build-js-language-module">
@@ -181,12 +187,6 @@
 
     <target name="dist" depends="build"
             description="Create Ceylon JS compiler distribution">
-        <antcall target="sha1sum">
-            <param name="file" value="${ceylon.js.lib}" />
-        </antcall>
-        <antcall target="sha1sum">
-            <param name="file" value="${runtime}/${jslangmodule}" />
-        </antcall>
     </target>
 
     <target name="publish"
