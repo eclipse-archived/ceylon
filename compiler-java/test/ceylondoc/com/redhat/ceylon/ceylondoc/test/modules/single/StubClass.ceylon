@@ -72,7 +72,7 @@ shared class StubClass(
     
     shared Anything methodWithAnything() { throw; }
     
-    doc "Test fenced code block with syntax highlighter.
+    doc "Test fenced code block delimited by backticks \` with syntax highlighter.
     
          \`\``ceylon
          shared default Boolean subset(Set set) {
@@ -87,6 +87,22 @@ shared class StubClass(
          
          <i>Lorem ipsum dolor sit amet, consectetur...</i>"
     shared void methodWithCodeExamples() {}
+    
+    doc "Test fenced code block delimited by tilde ~ with syntax highlighter.
+    
+         ~~~~~~ceylon
+         shared actual default Integer hash {
+             variable Integer hashCode = 1;
+             for (Element elem in this) {
+                 hashCode *= 31;
+                 hashCode += elem.hash;
+             }
+             return hashCode;
+         }         
+         ~~~~~~
+         
+         <i>Lorem ipsum dolor sit amet, consectetur...</i>"
+    shared void methodWithCodeExamples2() {}
     
     doc "Test automatic syntax highlighter.
     

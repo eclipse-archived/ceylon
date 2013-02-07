@@ -635,6 +635,8 @@ public class CeylonDocToolTest {
                 Pattern.compile("<script type='text/javascript' src='.resources/shBrushCeylon.js'>"));
         assertMatchInFile(destDir, "class_StubClass.html", 
                 Pattern.compile("<pre class=\"brush: ceylon\">shared default Boolean subset\\(Set set\\) \\{"));
+        assertMatchInFile(destDir, "class_StubClass.html", 
+                Pattern.compile("<pre class=\"brush: ceylon\">shared actual default Integer hash \\{"));
     }
     
     private void assertWikiStyleLinkSyntax(File destDir) throws IOException {
