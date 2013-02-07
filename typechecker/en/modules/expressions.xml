@@ -2765,6 +2765,16 @@ createItemMethod.intercept()
     </tbody>
     </tgroup>
     </table>
+    
+        <para>Arithmetic operators automatically perform implicit type conversion
+        from <literal>Integer</literal> to <literal>Float</literal>. If one
+        operand is of type <literal>Integer</literal>, and the other of type
+        <literal>Float</literal>, the operand of type <literal>Integer</literal>
+        is widended to a <literal>Float</literal> in order to make the operator
+        expression well-typed.</para>
+        
+        <comment><para>Note: this is the only circumstance in the language where 
+        implicit type conversion occurs.</para></comment>
             
         <!--para>Ceylon's numeric type system is designed to accommodate the following
         considerations:</para>
