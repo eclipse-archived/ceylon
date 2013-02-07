@@ -376,7 +376,7 @@ public class StatementTransformer extends AbstractTransformer {
                 java.util.List<Condition> rest, JCExpression test, List<JCStatement> stmts, JCStatement elseBlock) {
             JCStatement testVarDecl = transformedCond.makeTestVarDecl(0, false);
             if (testVarDecl != null) {
-                varDecls.append(testVarDecl);
+                varDecls.prepend(testVarDecl);
             }
             JCStatement elsePart;
             if (isDeferred()) {
@@ -409,7 +409,7 @@ public class StatementTransformer extends AbstractTransformer {
                     // in scope when we generate the default assignment branches.
                     unassignedResultVars.put(transformedCond, 
                             transformedCond.getVariableName().capture());
-                    varDecls.append(resultVarDecl);
+                    varDecls.prepend(resultVarDecl);
                     stmts = stmts.prepend(make().Exec(make().Assign(transformedCond.getVariableName().makeIdent(), transformedCond.makeResultExpr())));
                 } else {
                     stmts = stmts.prepend(resultVarDecl);
