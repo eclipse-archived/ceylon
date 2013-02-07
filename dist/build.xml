@@ -281,6 +281,8 @@ Used with another target such as 'package'">
     <target name="install-js" depends="install-typechecker">
         <ant antfile="${ceylon-js.dir}/build.xml" target="publish" dir="${ceylon-js.dir}" inheritall="false">
             <property name="ceylon.repo.dir" value="${ceylon.repo.dir}"/>
+            <!-- Special property that will make the build skip the language module -->
+            <property name="skip.language.module" value="true"/>
         </ant>
     </target>
 
