@@ -28,6 +28,7 @@ import static com.sun.tools.javac.code.Flags.PUBLIC;
 
 import com.redhat.ceylon.compiler.typechecker.model.Annotation;
 import com.redhat.ceylon.compiler.typechecker.model.Declaration;
+import com.redhat.ceylon.compiler.typechecker.model.Interface;
 import com.redhat.ceylon.compiler.typechecker.model.Parameter;
 import com.redhat.ceylon.compiler.typechecker.model.ProducedType;
 import com.redhat.ceylon.compiler.typechecker.model.TypeDeclaration;
@@ -627,23 +628,22 @@ public class ClassDefinitionBuilder {
 
     public ClassDefinitionBuilder reifiedIs(ProducedType type, java.util.List<TypeParameter> typeParameters,
             java.util.List<ProducedType> satisfiedTypes, ProducedType extendedType){
-        MethodDefinitionBuilder method = MethodDefinitionBuilder.systemMethod(gen, gen.naming.getIsMethodName(type));
-        method.modifiers(PUBLIC);
-        method.resultType(List.<JCAnnotation>nil(), gen.make().TypeIdent(TypeTags.BOOLEAN));
-        // in classes this overrides an interface method
-        if(type.getDeclaration() instanceof com.redhat.ceylon.compiler.typechecker.model.Class)
-            method.isOverride(true);
-
-        String paramName = "type";
-        ParameterDefinitionBuilder param = ParameterDefinitionBuilder.instance(gen, paramName);
-        param.type(gen.makeTypeDescriptorType(), List.<JCAnnotation>nil());
-        method.parameter(param);
-
         if ((modifiers & INTERFACE) != 0) {
             // place the real body in the impl class
             concreteInterfaceMemberDefs.reifiedIs(type, typeParameters, satisfiedTypes, extendedType);
-            method.noBody();
         }else{
+            MethodDefinitionBuilder method = MethodDefinitionBuilder.systemMethod(gen, gen.naming.getIsMethodName(type));
+            method.modifiers(PUBLIC);
+            method.resultType(List.<JCAnnotation>nil(), gen.make().TypeIdent(TypeTags.BOOLEAN));
+            // in classes this overrides an interface method
+            if(type.getDeclaration() instanceof com.redhat.ceylon.compiler.typechecker.model.Class)
+                method.isOverride(true);
+
+            String paramName = "type";
+            ParameterDefinitionBuilder param = ParameterDefinitionBuilder.instance(gen, paramName);
+            param.type(gen.makeTypeDescriptorType(), List.<JCAnnotation>nil());
+            method.parameter(param);
+
             // we build the body last to first, and last is false or extended type
             JCExpression lastTest;
             if(extendedType != null && !gen.willEraseToObject(extendedType)){
@@ -661,10 +661,13 @@ public class ClassDefinitionBuilder {
             if(!satisfiedTypes.isEmpty()){
                 JCExpression interfacesTest = null;
                 for(ProducedType pt : satisfiedTypes){
-                    String isDelegateName = gen.naming.getIsMethodName(pt);
                     JCExpression isCall;
-                    if(Decl.isCeylon(pt.getDeclaration())){
-                        isCall = gen.make().Apply(null, gen.makeUnquotedIdent(isDelegateName), List.<JCExpression>of(gen.makeUnquotedIdent(paramName)));
+                    Interface iface = (Interface) pt.getDeclaration();
+                    if(Decl.isCeylon(iface)){
+                        final String implFieldName = gen.getCompanionFieldName(iface);
+                        String isDelegateName = gen.naming.getIsMethodName(pt);
+                        isCall = gen.make().Apply(null, gen.makeSelect(implFieldName, isDelegateName), 
+                                                  List.<JCExpression>of(gen.makeUnquotedIdent(paramName)));
                     }else{
                         isCall = gen.makeUtilInvocation("isReifiedJava", 
                                 List.of(gen.makeReifiedTypeArgument(pt), gen.makeUnquotedIdent(paramName)), 
@@ -689,9 +692,9 @@ public class ClassDefinitionBuilder {
             }
 
             method.body(body);
+            defs(method.build());
         }
         
-        defs(method.build());
         return this;
     }
 
