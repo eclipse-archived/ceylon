@@ -664,9 +664,18 @@ public class ClassDefinitionBuilder {
                     JCExpression isCall;
                     Interface iface = (Interface) pt.getDeclaration();
                     if(Decl.isCeylon(iface)){
-                        final String implFieldName = gen.getCompanionFieldName(iface);
                         String isDelegateName = gen.naming.getIsMethodName(pt);
-                        isCall = gen.make().Apply(null, gen.makeSelect(implFieldName, isDelegateName), 
+                        String implFieldName = gen.getCompanionFieldName(iface);
+                        JCExpression testMethod;
+                        if(isCompanion){
+                            String implMethodName = gen.naming.getCompanionAccessorName(iface);
+                            JCExpression interfaceImplAccessor = gen.make().Apply(null, gen.makeSelect(gen.naming.makeQuotedThis(), implMethodName),
+                                                                                  List.<JCExpression>nil());
+                            testMethod = gen.makeSelect(interfaceImplAccessor, isDelegateName);
+                        }else{
+                            testMethod = gen.makeSelect(implFieldName, isDelegateName);
+                        }
+                        isCall = gen.make().Apply(null, testMethod, 
                                                   List.<JCExpression>of(gen.makeUnquotedIdent(paramName)));
                     }else{
                         isCall = gen.makeUtilInvocation("isReifiedJava", 
