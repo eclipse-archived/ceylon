@@ -465,23 +465,50 @@ shared interface Color { ... }</programlisting>
     
     </section>
     
+        <section id="anonymousfunctions">
+            <title>Anonymous functions</title>
+            
+            <para>An anonymous function is a function with no name, defined within
+            an expression. It comprises one or more parameter lists, followed by an 
+            expression.</para>
+            
+            <programlisting>Function: ("function" | "void")? Params+ ("=>" Expression | Block)</programlisting>
+            
+            <para>The parameters are the parameters of the function. The lazy 
+            specifier or block of code is the implementation of the function. if 
+            the <literal>void</literal> keyword is specified, the function is a 
+            <literal>void</literal> function. Otherwise it its return type is 
+            inferred.</para>
+            
+            <para>The type of an anonymous function expression is the callable type 
+            of the function.</para>
+            
+            <programlisting>(Value x, Value y) => x&lt;=&gt;y</programlisting>
+            
+            <programlisting>void (String name) => print(name)</programlisting>
+            
+            <programlisting>(String string) {
+    value mid = string.size % 2;
+    return [string[0..mid],string[mid+1...]];
+}</programlisting>
+            
+        </section>
+        
     <section id="compoundexpressions">
         <title>Compound expressions</title>
         
         <para>An <emphasis>atom</emphasis> is a literal or self reference, a
         string template, an iterable or tuple enumeration, or a parenthesized 
         expression.</para>
-    
-        <programlisting>Atom: Literal | StringTemplate | SelfReference | ParExpression</programlisting>
-    
-        <para>A <emphasis>primary</emphasis> is formed by recursively invoking 
-        or referencing members of an atom, function reference, or value
-        reference.</para>
-    
-        <programlisting>Primary: Atom | Meta | MemberReference | Invocation</programlisting>
-
-        <programlisting>MemberReference: CallableReference | ValueReference</programlisting>
-    
+        
+        <programlisting>Atom: Literal | StringTemplate | SelfReference | ParExpression | Iterable | Tuple</programlisting>
+        
+        <para>A <emphasis>primary</emphasis> is formed by recursively forming 
+        qualified expression and invocation expression from from an atom or 
+        base expression.</para>
+        
+        <programlisting>Primary: Atom | BaseExpression | QualifiedExpression | Invocation</programlisting>
+        
         <para>More complex expressions are formed by combining expressions using 
         operators, including assignment operators, and anonymous functions.</para>    
         
@@ -492,352 +519,96 @@ shared interface Color { ... }</programlisting>
         <programlisting>ParExpression: "(" Expression ")"</programlisting>
         
     <section id="receiverexpressions">
-        <title>Receiver expressions</title>
+        <title>Base expressions and qualified expressions</title>
         
-        <para>A callable reference or value reference may specify a <emphasis>receiver 
-        expression</emphasis>. The receiver expression produces the instance upon which 
-        a member is invoked or evaluated. The type of the receiver expression must have 
-        a member with the specified name.</para>
+        <para>A <emphasis>base expression</emphasis> is an unqualified 
+        identifier, with an optional list of type arguments:</para>
         
-        <programlisting>Receiver: Primary</programlisting>
+        <programlisting>BaseExpression: (MemberName | TypeName) TypeArguments</programlisting>
         
-        <para>A receiver expression must be explicitly specified, unless:</para>
+        <para>A base expression is either:</para>
         
         <itemizedlist>
             <listitem>
-                <para>the reference is to a toplevel function, toplevel value, or 
+                <para>a reference to a toplevel function, toplevel value, or 
                 toplevel class,</para>
             </listitem>
             <listitem>
-                <para>the reference is within the lexical scope of the referenced 
+                <para>a reference within the lexical scope of the referenced 
                 function, value, or class, or</para>
             </listitem>
             <listitem>
-                <para>the reference is within the body of the referenced function,
+                <para>a reference within the body of the referenced function,
                 value, or class.</para>
             </listitem>
         </itemizedlist>
         
-        <para>If the reference has no receiever expression, and it is a reference 
-        to an attribute, method, or member class of a class, the receiving instance 
-        is the current instance of that class.</para>
+        <para>If a base expression is a reference to an attribute, method, or 
+        member class of a class, the receiving instance is the current instance 
+        of that class.</para>
         
-        <para>When a callable reference with a receiver expression is executed, the 
-        receiver expresson is evaluated and a reference to the resulting value is 
-        held as part of the callable reference. When a value reference with a 
-        receiver expression is executed, the receiver expression is evaluated and a 
-        reference to the resulting value is held as part of the value reference.</para>
+        <para>A <emphasis>qualified expression</emphasis> is a <emphasis>receiver
+        expression</emphasis>, followed by a <emphasis>member operator</emphasis>,
+        followed by an identifier, with an optional list of type arguments.</para>
         
-        <!--
-        <para>An outer instance reference may also specify a receiver expression. The
-        receiver expression must be explicitly specified unless the current instance
-        of the current class is the receiver.</para>
-        -->
+        <programlisting>QualifiedExpression: (Primary ".") (MemberName | TypeName) TypeArguments?</programlisting>
+        
+        <para>A qualified expression is a reference to a member of a type: an
+        attribute, method, or member class.</para>
+        
+        <para>The receiver expression produces the instance upon which the member 
+        is invoked or evaluated. The type of the receiver expression must have a 
+        member with the specified name.</para>
+        
+        <para>When a qualified expression is executed, the receiver expresson is 
+        evaluated and then held until the member is invoked or evaluated.</para>
         
     </section>
-        
-    </section>
-        
-        <section id="anonymousfunctions">
-            <title>Anonymous functions</title>
-            
-            <para>An anonymous function is a function with no name, defined within
-            an expression. It comprises one or more parameter lists, followed by an 
-            expression.</para>
-            
-            <programlisting>Function: ("function" | "void")? Params+ "=>" Expression</programlisting>
-            
-            <para>The parameters are the parameters of the function. The expression 
-            is the return value of the function, and the type of the expression is the 
-            return type of the function, unless the function is explicitly declared using 
-            the <literal>void</literal> keyword. If the anonymous function is declared
-            <literal>void</literal>, then its return type is <literal>Anything</literal>,
-            and the expression must be a legal statement.</para>
-            
-            <para>The type of an anonymous function expression is the callable type 
-            of the function.</para>
-            
-            <programlisting>(Value x, Value y) => x&lt;=&gt;y</programlisting>
-            
-            <programlisting>void (String name) => print(name)</programlisting>
-            
-        </section>
-        
-    <section id="valuereferences">
-        <title>Value references</title>
                 
-        <para>A <emphasis>value reference</emphasis> is a reference to something&mdash;for 
-        example, an attribute, a local, or an invocation expression&mdash;that can be 
-        <emphasis>evaluated</emphasis>.</para>
-
-        <!--para>A value reference may be transparently converted to the actual current 
-        value of the attribute or local, or to the return value of the invocation, or 
-        it may be passed, as a reference, to other code, which may use the reference to 
-        <emphasis>evaluate</emphasis> the current value of the attribute or local, or
-        to perform the invocation. A reference to a <literal>variable</literal> attribute 
-        or local may be used to <emphasis>assign</emphasis> a new value to the attribute 
-        or local.</para-->
+    <section id="attributeandlocalreferences">
+            <title>Value references</title>
         
-        <para>A value reference expression is assignable to <!--<literal>Gettable&lt;T&gt;</literal> 
-        or <literal>Settable&lt;T&gt;</literal> where <literal>T</literal>--> the type 
-        of the attribute or local, or the return type of the invocation expression.</para>
+        <para>A <emphasis>value reference</emphasis> is a base expression or 
+        qualified expression that references a value declaration.</para>
         
-        <section id="attributeandlocalreferences">
-            <title>Attribute and local references</title>
+        <para>The type of a value expression for a value of declared type 
+        <literal>X</literal> is simply <literal>X</literal>.</para>
         
-        <para>An <emphasis>attribute reference</emphasis> is a reference to an attribute
-        of some object. A <emphasis>local reference</emphasis> is a reference to a 
-        local or parameter. An attribute reference specifies the name of the attribute. 
-        A local reference specifies the name of the local or parameter.</para>
-        
-        <programlisting>ValueReference: (Receiver ".")? MemberName</programlisting>
-        
-        <para>The type of an attribute reference or local reference expression for an 
-        attribute, local, or parameter of declared type <literal>X</literal> is simply
-        <literal>X</literal>.</para>
-        
-        <!--
-        <itemizedlist>
-            <listitem>
-                <para><literal>X</literal>, if <literal>X</literal> is assignable
-                to <literal>Gettable&lt;Object&gt;</literal>, or, otherwise,</para>
-            </listitem>
-            <listitem>
-                <para><literal>Gettable&lt;X&gt;</literal>, if the attribute, local, 
-                or parameter is not <literal>variable</literal>, or if the setter is 
-                not visible to the block containing the attribute or local reference, 
-                or</para>
-            </listitem>
-            <listitem>
-                <para><literal>Settable&lt;X&gt;</literal>, if the attribute, local, 
-                or parameter is <literal>variable</literal> and the setter, if any, 
-                is visible to the block containing the attribute or local 
-                reference.</para>
-            </listitem>
-        </itemizedlist>
-        -->
-        
-        </section>
-        
-        <!--section id="passbyreference">
-            <title>PROPOSAL: Pass by reference</title>
-            
-            <comment><para>NOTE: Lazy evaluation and pass by reference is a proposed feature for 
-            a future version of the language.</para></comment>
-        
-            <para>An expression of type <literal>Gettable</literal> or <literal>Settable</literal> 
-            may be assigned to an attribute or local, passed as an argument to a method or initializer, 
-            or returned by a method. If the attribute, local, or parameter to which the expression is 
-            assigned is of declared type <literal>Gettable</literal> or <literal>Settable</literal>, 
-            or if the method which returns the expression is of declared type <literal>Gettable</literal> 
-            or <literal>Settable</literal>, this is called <emphasis>pass by reference</emphasis>, 
-            since it does not result in immediate evaluation of the referenced value. Instead, the 
-            attribute, local, or parameter holds a <emphasis>reference</emphasis> to the value of some 
-            other attribute, local, or parameter.</para>
-            
-            <para>This local holds a reference:</para>
-            
-            <programlisting>Gettable&lt;String&gt; nameRef = person.name;</programlisting>
-            
-            <para>This method returns a reference:</para>
-            
-            <programlisting>Settable&lt;String&gt; getName(Person p) { return p.name; }</programlisting>
-            
-            <para>This class has an initialization parameter which accepts a reference:</para>
-            
-            <programlisting>class Input(Settable&lt;String&gt; model) { ... }</programlisting>
-            
-            <para>This attribute holds a reference to an invocation expression:</para>
-            
-            <programlisting>shared Gettable&lt;Decimal&gt; total = order.calculateTotal();</programlisting>
-            
-            <para>An attribute or local of type <literal>Gettable</literal> or <literal>Settable</literal> 
-            may not be declared <literal>variable</literal>.</para>
-            
-        </section-->
+        <para>A value declaration is never generic, so a value reference never
+        has a type argument list.</para>
         
     </section>
-
+    
     <section id="callablereferences">
         <title>Callable references</title>
         
-        <para>A <emphasis>callable reference</emphasis> is a reference to 
-        something&mdash;a method, callable parameter, or class&mdash;that can be 
-        <emphasis>invoked</emphasis> by specifying a list of arguments.</para>
-        
-        <programlisting>CallableReference: MethodReference | InitializerReference</programlisting>
+        <para>A <emphasis>callable reference</emphasis> is a base expression or
+        qualified expression that references something&mdash;a function or 
+        class&mdash;that can be <emphasis>invoked</emphasis> or 
+        <emphasis>instantiated</emphasis> by specifying a list of arguments.</para>
         
         <para>A callable reference may be invoked immediately, or it may be passed 
         to other code which may invoke the reference. A callable reference captures 
-        the return type and parameter lists of the method, callable parameter, or 
-        class it refers to, allowing compile-time validation of argument types when 
-        the callable reference is invoked.</para>
+        the return type and parameter list types of the function or class it refers 
+        to, allowing compile-time validation of argument types when the callable 
+        reference is invoked.</para>
         
-        <para>A callable reference expression is assignable to 
-        <literal>Callable&lt;T,P...&gt;</literal> where <literal>T</literal> and 
-        <literal>P...</literal> depend upon the schema of the method or class.</para>
+        <para>The type of a callable reference expression is the callable type of
+        the referenced function or class.</para>
         
-        <!--comment><para>TODO: we can support LINQ to SQL-like queries by making 
-        <literal>Callable</literal> provide an AST of the statements contained
-        in the method declaration, allowing translation to SQL.</para></comment-->
+        <para>If a callable reference expression refers to a generic declaration, 
+        either:</para>
+        
+        <itemizedlist>
+            <listitem>
+                <para>it must be immediately followed by an argument list, 
+                allowing the compiler to infer the type arguments, or</para>
+            </listitem>
+            <listitem>
+                <para>it must have an explicit type argument list.</para>
+            </listitem>
+        </itemizedlist>
                 
-        <section id="typearguments">
-            <title>Type arguments</title>
-            
-            <para>If a callable reference expression refers to a generic declaration, 
-            either:</para>
-            
-            <itemizedlist>
-                <listitem>
-                    <para>it must be immediately followed by an argument list, 
-                    allowing the compiler to infer the type arguments, or</para>
-                </listitem>
-                <listitem>
-                    <para>it must specify an explicit type argument list.</para>
-                </listitem>
-            </itemizedlist>
-            
-        </section>
-        
-        <section id="methodreferences">
-            <title>Method references</title>
-        
-        <para>If a callable reference specifies a method name (or callable parameter 
-        name), it is called a <emphasis>method reference</emphasis>.</para>
-
-        <programlisting>MethodReference: (Receiver ".")? MemberName TypeArguments?</programlisting>        
-
-        <para>The type of a method reference expression is assignable to the callable 
-        type of <!--every overloaded version of--> the method. Calling the method 
-        reference results in execution of the method.</para>
-        
-        </section>
-
-        <section id="initializerreferences">
-            <title>Initializer references</title>
-        
-        <para>If a callable reference specifies a class name, it is called an 
-        <emphasis>initializer reference</emphasis>.</para>
-        
-        <programlisting>InitializerReference: (Receiver ".")? TypeName TypeArguments?</programlisting>
-        
-        <para>The type of an initializer reference expression is assignable to the 
-        callable type of <!-- every overloaded version of--> the class. Calling the 
-        initializer reference results in instantiation of the class.</para>
-        
-        </section>
-         
-        <section id="callableobjectsasmethodimplementations">
-            <title>Callable objects as method implementations</title>
-            
-        <para>An expression of type <literal>Callable</literal> may be used to define a 
-        method using <literal>=</literal>. The expression type must be assignable to the 
-        callable type of the method being defined.</para>
-        
-        <programlisting>Comparison order&lt;Value&gt;(Value x, Value y) = reverse;</programlisting>
-        
-        <programlisting>void display(String message) = log.info;</programlisting>
-        
-        <programlisting>String newString(Character... chars) = String;</programlisting>
-        
-        <programlisting>String name(Person p) = Person.name;</programlisting>
-        
-        <programlisting>void print&lt;Printable&gt;(Printable printable) given Printable of String | Integer | Float = printer.print;</programlisting>
-        <programlisting>void printStr(String string) = printer.print&lt;String&gt;;</programlisting>
-        
-        </section>
-        
-        <section id="callableobjectsascallableparameterarguments">
-            <title>Callable objects as callable parameter arguments</title>
-            
-        <para>An expression of type <literal>Callable</literal> may appear as an argument 
-        to a callable parameter, either as a positional argument, or as an argument 
-        specified using <literal>=</literal> in a named argument invocation. The expression 
-        type must be assignable to the callable type of the callable parameter.</para>
-        
-        <para>This method has a callable parameter:</para>
-        
-        <programlisting>void sort(List&lt;String&gt; list, Comparison by(String x, String y)) { ... }</programlisting>
-
-        <para>This code passes a reference to a local method to the method.</para>
-        
-        <programlisting>Comparison reverseAlpha(String x, String y) { return y&lt;=&gt;x; }
-sort(names, reverseAlpha);</programlisting>
-        
-        <para>This class has two callable parameters:</para>
-        
-        <programlisting>shared class TextInput(Integer size=30, String onInit(), String onUpdate(String s)) { ... }</programlisting>
- 
-        <para>This code instantiates the class, passing references to methods which set and
-        get the attribute <literal>person.name</literal>:</para>
-        
-        <programlisting>TextInput input { 
-    size=15; 
-    onInit = set(person.name);
-    onUpdate = get(person.name);
-}</programlisting>
-        
-        </section>
-        
-        <section id="callableobjectsasmethodreturnvalues">
-            <title>Callable objects as method return values</title>
-        
-        <!--  
-        <para>An expression of type <literal>Callable</literal> may be returned by a method 
-        with multiple parameter lists. The expression must be assignable to the callable 
-        type of a method formed by eliminating the first parameter list of the method.</para>
-        
-        <programlisting>Comparison getOrder(Boolean reverse=false)(Integer x, Integer y) {
-    if (reverse) {
-        Comparison reverse(Integer x, Integer y) { return y&lt;=&gt;x; }
-        return reverse;
-    }
-    else {
-        Comparison natural(Integer x, Integer y) { return x&lt;=&gt;y; }
-        return natural;
-    }
-}</programlisting>
-
-        <para>This is slightly simpler using type inference:</para>
-
-        <programlisting>Comparison getOrder(Boolean reverse=false)(Integer x, Integer y) {
-    if (reverse) {
-        function reverse(Integer x, Integer y) { return y&lt;=&gt;x; }
-        return reverse;
-    }
-    else {
-        function natural(Integer x, Integer y) { return x&lt;=&gt;y; }
-        return natural;
-    }
-}</programlisting>
-        -->
-        
-        <para>Calling a method with multiple parameter lists is called <emphasis>partial 
-        application</emphasis> of the method.</para>
-        
-        <programlisting>Comparison order(Integer x, Integer y) = getOrder();
-Comparison comp = order(1,-1);</programlisting>
-
-        <para>This is even simpler using type inference:</para>
-
-        <programlisting>function order(Integer x, Integer y) = getOrder();
-value comp = order(1,-1);</programlisting>
-
-        <para>Or, if we don't need parameter names, we don't even need to explicitly declare the 
-        parameter list:</para>
-
-        <programlisting>value order = getOrder();
-value comp = order(1,-1);</programlisting>
-
-        <para>In this case, <literal>order</literal> is actually not a method at all&mdash;it's
-        just a local of type <literal>Callable&lt;Comparison,Integer,Integer&gt;</literal>.</para>
-
-        <para>Of course, more than one argument list may be specified in a single expression:</para>
-        
-        <programlisting>Comparison comp = getOrder(true)(10, 100);</programlisting>
-        
-        </section>
-        
     </section>
     
     <section id="invocationexpressions">
@@ -845,151 +616,67 @@ value comp = order(1,-1);</programlisting>
         
         <para>A callable object&mdash;any instance of <literal>Callable</literal>&mdash;is 
         <emphasis>invokable</emphasis>. An <emphasis>invocation</emphasis> consists of an 
-        <emphasis>invoked expression</emphasis> of type <literal>Callable&lt;T,P...&gt;</literal>, 
+        <emphasis>invoked expression</emphasis> of type <literal>Callable&lt;R,P&gt;</literal>, 
         together with an argument list and, optionally, an explicit type argument list.</para>
         
-        <programlisting>Invocation: Primary Arguments | SequenceInstantiation</programlisting>
-            
+        <programlisting>Invocation: Primary Arguments</programlisting>
+        
         <para>Any invocation expression where the invoked expression is a callable reference 
         expression is called a <emphasis>direct invocation expression</emphasis> of the 
-        method, callable parameter, or class. In the case of a direct invocation expression, 
-        the compiler has additional information about the schema of the method or class that 
-        is not reified by the <literal>Callable</literal> interface. The compiler is aware 
-        of:</para>
+        function or class.</para> 
+        
+        <para>In a direct invocation expression:</para>
         
         <itemizedlist>
-            <!--
             <listitem>
-                <para>all the overloaded versions of the method or class (the various
-                <literal>Callable</literal> types to which the callable reference
-                expression is assignable),</para>
-            </listitem>
-            -->
-            <listitem>
-                <para>the names of the parameters of the method or class,</para>
+                <para>the compiler has one item of additional information about the schema of 
+                the method or class that is not reified by the <literal>Callable</literal> 
+                interface: the names of the parameters of the function or class, and</para>
             </listitem>
             <listitem>
-                <para>which parameters are defaulted, and their default values, and</para>
-            </listitem>
-            <listitem>
-                <para>whether the last parameter in the list is a sequenced parameter.</para>
+                <para>type argument inference is possible, since the compiler has access to the 
+                type parameters and constraints of the function or class.</para>
             </listitem>
         </itemizedlist>
-        
-        <para>(Furthermore, in the case of a direct invocation expression, type argument 
-        inference is possible, since the compiler is aware of the type parameters and 
-        constraints of the method or class.)</para>
         
         <para>An invocation expression must specify arguments for parameters of the callable 
         object, either by listing parameter values in order or, in the case of a direct 
         invocation, listing named parameter values.</para>
         
-        <programlisting>Arguments: PositionalArguments FunctionalArguments? | NamedArguments</programlisting>
+        <programlisting>Arguments: PositionalArguments | NamedArguments</programlisting>
         
-        <para>Arguments to required parameters must be specified.</para>
-        
-        <itemizedlist>
-            <listitem>
-                <para>If the invocation expression is a direct invocation expression, 
-                arguments to defaulted parameters may optionally be specified, and one or 
-                more arguments to a sequenced parameter may optionally be specified.</para>
-            </listitem>
-            <listitem>
-                <para>Otherwise, an argument must be specified for each defaulted parameter, 
-                and a single argument must be specified for the sequenced parameter.</para>
-            </listitem>
-        </itemizedlist>
-        
-        <para>For a required or defaulted parameter of type <literal>T</literal>, the type 
-        of the corresponding argument expression must be assignable to <literal>T</literal>.</para>
-        
-        <para>If the invocation expression is a direct invocation expression, then for a 
-        sequenced parameter of type <literal>T...</literal>, there may be either:</para>
+        <para>The arguments must conform to the type of the parameter list:</para>
         
         <itemizedlist>
             <listitem>
-                <para>an arbitrary number of argument expressions of type assignable to 
-                <literal>T</literal>, or</para>
+                <para>For each required parameter, an argument must be given.</para>
             </listitem>
             <listitem>
-                <para>a single argument expression of type assignable to 
-                <literal>T[]</literal>.</para>
+                <para>For each defaulted parameter, an argument may optionally be 
+                given.</para>
+            </listitem>
+            <listitem>
+                <para>If the parameter list has a sequenced parameter, one or more 
+                arguments may optionally be given.</para>
+            </listitem>
+            <listitem>
+                <para>No additional arguments may be given.</para>
+            </listitem>
+            <listitem>
+                <para>For a required or defaulted parameter of type <literal>T</literal>, 
+                the type of the corresponding argument expression must be assignable to 
+                <literal>T</literal>.</para>
+            </listitem>
+            <listitem>
+                <para>For a sequenced parameter of type <literal>T*</literal>, the type 
+                of every corresponding argument expression must be assignable to 
+                <literal>T</literal>.</para>
             </listitem>
         </itemizedlist>
         
-        <para>Otherwise, if the invocation is not a direct invocation expression, then a
-        sequenced parameter of type <literal>T...</literal> is treated like an ordinary 
-        required parameter and an argument to the sequenced parameter is always a single
-        expression of type assignable to <literal>T[]</literal>.</para>
-        
-        <comment><para>TODO: Alternatively, we could have a special type that represents a
-        sequenced parameter, allowing the usual invocation semantics even when it's not a
-        direct invocation expression. <literal>String...</literal> would be an abbreviation 
-        for <literal>SequencedArgument&lt;String&gt;</literal> and <literal>names...</literal>
-        would be an abbreviation for <literal>SequencedArgument(names)</literal>.</para></comment>
-        
-        <para>For a tuple parameter of psuedo-type <literal>P...</literal>, the type of the 
-        corresponding argument expression must be <literal>P...</literal>. (That is, it
-        must be a tuple parameter of declared type <literal>P...</literal>.)</para>
-        
-        <!--    
-        <itemizedlist>
-            <listitem>
-                <para><literal>R</literal>, if <literal>R</literal> is assignable
-                to <literal>Gettable&lt;Object&gt;</literal>, or, otherwise,</para>
-            </listitem>
-            <listitem>
-                <para><literal>Gettable&lt;R&gt;</literal></para>
-            </listitem>
-        </itemizedlist>
-         -->
         <para>The type of an invocation expression is simply <literal>R</literal>
-        where <literal>R</literal> is the type argument to the first type parameter 
-        of the expression type <literal>Callable</literal> (the return type).</para>
-        
-        <section id="methodinvocation">
-            <title>Method invocation</title>
-            
-            <para>For a method invocation, the invocation expression is of type <literal>R</literal>
-            <!--literal>Gettable&lt;R&gt;</literal--> where <literal>R</literal> is the return 
-            type of the method. The type of a <literal>void</literal> method invocation 
-            expression is <literal>Void</literal>. <!--literal>Gettable&lt;Void&gt;</literal--></para>
-            
-            <programlisting>log.info("Hello world!")</programlisting>
-            <programlisting>log.info { message = "Hello world!"; }</programlisting>
-            <programlisting>printer.print { join = ", "; "Gavin", "Emmanuel", "Max", "Steve" }</programlisting>
-            <programlisting>hash(default, firstName, initial, lastName)</programlisting>
-            <programlisting>hash { algorithm=default; firstName, initial, lastName }</programlisting>
-    
-            <programlisting>perform {
-    as = subject;
-    void action() {
-        exec("java Hello");
-    }
-}</programlisting>
-
-            <programlisting>check {
-    FilePermission {
-        path = "/usr/bin";
-        action = read | execute;
-    }
-}</programlisting>
-             
-        </section>
-        
-        <section id="classinstantiation">
-            <title>Class instantiation</title>
-            
-            <para>Invocation of an initializer reference is called <emphasis>instantiation</emphasis> 
-            of the class. For a class instantation, the invocation expression is of type <literal>T</literal>
-            <!--literal>Gettable&lt;T&gt;</literal--> where <literal>T</literal> is the class.</para>
-            
-            <programlisting>HashMap&lt;String, Person&gt;(entries)</programlisting>
-            <programlisting>Point { x=1.1; y=-2.3; }</programlisting>
-            <programlisting>ArrayList&lt;String&gt; { capacity=10; "gavin", "max", "emmanuel", "steve", "christian" }</programlisting>
-            <programlisting>input.Tokens()</programlisting>
-            
-        </section>
+        where the invoked expression has type exactly 
+        <literal>Callable&lt;R,P&gt;</literal>.</para>
         
         <section id="sequenceinstantiation">
             <title>Sequence instantiation</title>
@@ -1019,11 +706,6 @@ value comp = order(1,-1);</programlisting>
                     expressions, otherwise.
                 </listitem>
             </itemizedlist>
-            
-            <!--
-            <comment><para>TODO: alternatively, we could support a Java-style syntax of form
-            <literal>String[] { "hello", "world" }</literal>.</para></comment>
-            -->
         
         </section>
         
@@ -1255,12 +937,6 @@ value comp = order(1,-1);</programlisting>
 }</programlisting>            
         </comment>
         
-        <!--
-        <comment><para>TODO: actually, upon reflection, I think it might be better and more
-        regular to use semicolons to separate sequenced arguments in a named argument 
-        invocation.</para></comment>
-        -->
-        
         </section>
                     
         <section id="defaultarguments">
@@ -1324,61 +1000,6 @@ value comp = order(1,-1);</programlisting>
             <listitem><para>assignment to a <literal>variable</literal> attribute or local.</para></listitem>
         </itemizedlist>
         
-        <!--
-        <para>A reference object&mdash;any instance of <literal>Gettable</literal>&mdash;can 
-        be <emphasis>evaluated</emphasis> to produce a value. Evaluation is the process of
-        transforming a reference of type <literal>Gettable&lt;T&gt;</literal> into a value of
-        type <literal>T</literal>.</para>
-        
-        <para>Evaluation occurs automatically wherever an expression of type 
-        <literal>Gettable&lt;T&gt;</literal> appears where an expression of type 
-        <literal>T</literal> is required, in particular, where 
-        <literal>Gettable&lt;T&gt;</literal> occurs:</para>
-        
-        <itemizedlist>
-            <listitem>
-                <para>as the specified expression in a specification statement or declaration 
-                of a member or local of type <literal>T</literal>,</para>
-            </listitem>
-            <listitem>
-                <para>as the receiver expression of a callable reference or value 
-                reference,</para>
-            </listitem>
-            <listitem>
-                <para>as the argument of an invocation or operator expression that expects 
-                a value of type <literal>T</literal>,</para>
-            </listitem>
-            <listitem>
-                <para>in a <literal>return</literal> directive of a method with declared
-                return type <literal>T</literal>,</para>
-            </listitem>
-            <listitem>
-                <para>in a <literal>throw</literal> or <literal>break</literal> 
-                directive,</para>
-            </listitem>
-            <listitem>
-                <para>as a control structure condition, resource, or iteration expression, 
-                or</para>
-            </listitem>
-            <listitem>
-                <para>as an expression statement.</para>
-            </listitem>
-        </itemizedlist>
-                
-        <programlisting>Integer age = person.age;</programlisting>
-        <programlisting>person.say("Hello!");</programlisting>
-        <programlisting>Iterable&lt;String&gt; tokens = input.Tokens();</programlisting>
-        <programlisting>return person.name;</programlisting>
-        <programlisting>throw Exception();</programlisting>
-        <programlisting>if (exists head = iter.head) { ... }</programlisting>
-        
-        <para>If a reference object is of type <literal>Settable</literal>, its value may also 
-        be <emphasis>assigned</emphasis>. Assignment is performed using the <literal>:=</literal> 
-        operator.</para>
-         
-        <programlisting>person.name := "Gavin";</programlisting>
-        -->
-        
     <section id="evaluation">
         <title>Evaluation</title>
         
@@ -1386,20 +1007,6 @@ value comp = order(1,-1);</programlisting>
         of the attribute or local.</para> 
         
         <programlisting>String name = person.name;</programlisting>
-        
-        <!--
-        <para>Sometimes we need to pass an attribute by reference:</para>
-        
-        <programlisting>Gettable&lt;String&gt; nameRef = person.name;
-String name = nameRef;</programlisting>
-        
-        <para>Sometimes we need to transform an attribute reference into a method 
-        reference. The toplevel method <literal>lang.get()</literal> is provided 
-        for this purpose:</para>
-        
-        <programlisting>String getName() = get(person.name);
-String name = getName();</programlisting>
-        -->
         
         <para>When a local evaluation is executed, the current value of the local is 
         immediately obtained. The resulting value is the current value of the local.</para>
@@ -1433,23 +1040,6 @@ String name = getName();</programlisting>
         return value of the attribute getter, as specified by the <literal>return</literal> 
         directive.</para>
         
-        <!--
-        <para>Note that the <literal>item()</literal> method of <literal>Correspondence</literal>
-        is also defined to return a <literal>Gettable</literal>.</para>
-        
-        <programlisting>Person? person = people[index];</programlisting>
-        
-        <para>Therefore an element expression can be passed by reference:</para>
-        
-        <programlisting>Gettable&lt;Person?&gt; personRef = person[index];
-Person? person = personRef;</programlisting>
-        
-        <para>And an element expression can be transformed into method reference:</para>
-        
-        <programlisting>Person? getPerson() = get(people[index]);
-Person? person = getPerson();</programlisting>
-        -->
-        
     </section>
     
     <section id="invocation">
@@ -1462,17 +1052,6 @@ Person? person = getPerson();</programlisting>
         
         <programlisting>log.info("Hello world!");</programlisting>
         <programlisting>Map&lt;String, Person&gt; map = HashMap&lt;String, Person&gt;(entries);</programlisting>
-        
-        <!--
-        <para>Sometimes we need to perform an invocation lazily:</para>
-        
-        <programlisting>Gettable&lt;Void&gt; logInfoHello = log.info("Hello world!");
-void invoke(Void v) {}
-invoke(logInfoHello);</programlisting>
-
-        <programlisting>Gettable&lt;Map&lt;String, Person&gt;&gt; createMapFromEntries = HashMap&lt;String, Person&gt;(entries);
-Map&lt;String, Person&gt; map = createMapFromEntries;</programlisting>
-        -->
         
         <para>When an evaluation of an invocation expression of a callable reference is 
         executed:</para>
@@ -1500,9 +1079,6 @@ Map&lt;String, Person&gt; map = createMapFromEntries;</programlisting>
             </listitem>
         </itemizedlist>
         
-        <!--para>When an evaluation of any other invocation expression is executed, the 
-        <literal>call()</literal> method of <literal>Callable</literal> is invoked.</para-->
-        
         <para>A method invocation evaluates to the return value of the method, as specified 
         by the <literal>return</literal> directive. The argument values are passed to the 
         parameters of the method, and the body of the method is executed.</para>
@@ -1525,29 +1101,6 @@ Map&lt;String, Person&gt; map = createMapFromEntries;</programlisting>
         attribute reference for a <literal>variable</literal> attribute or local.</para>
         
         <programlisting>person.name := "Gavin";</programlisting>
-        
-        <!--
-        <para>Sometimes we need to pass a <literal>variable</literal> attribute by 
-        reference:</para>
-        
-        <programlisting>Settable&lt;String&gt; nameRef = person.name;
-nameRef := "Gavin";</programlisting>
-
-        <para>Sometimes we need to transform a <literal>variable</literal> attribute 
-        reference into a method reference. The toplevel method <literal>lang.set()</literal> 
-        is provided for this purpose:</para>
-        
-        <programlisting>String setName(String name) = set(person.name);
-setName("Gavin");</programlisting>
-
-        <para>Even the following are possible:</para>
-        
-        <programlisting>Settable&lt;String&gt; getName(Person p) { return p.name; }
-getName(p) := "Gavin";</programlisting>
-
-        <programlisting>setName(Settable&lt;String&gt; name, String arg) { name:=arg; }
-setName(p.name, "Gavin");</programlisting>
-        -->
         
         <para>When an attribute or local is assigned:</para>
         
@@ -1575,29 +1128,11 @@ setName(p.name, "Gavin");</programlisting>
             </listitem>
         </itemizedlist>
         
-        <!--
-        <para>Note that the <literal>item()</literal> method of <literal>OpenCorrespondence</literal>
-        is also defined to return an <literal>Settable</literal>.</para>
-        
-        <programlisting>people[index] := person;</programlisting>
-        
-        <para>Therefore an assignable element expression can be passed by reference:</para>
-        
-        <programlisting>Settable&lt;Person?&gt; personRef = people[index];
-personRef := person;</programlisting>
-        
-        <para>And an assignable element expression can be transformed into method 
-        reference:</para>
-        
-        <programlisting>Person? setPerson(Person? p) = set(people[index]);
-setPerson(person);</programlisting>
-        -->
-        
     </section>
     
     </section>
     
-    <section id="metamodelreferences">
+    <!--section id="metamodelreferences">
         <title>Metamodel references</title>
         
         <para>The metamodel object representing a type or program element may be obtained
@@ -1638,12 +1173,10 @@ setPerson(person);</programlisting>
         <comment><para>TODO: Should we have typesafe metamodel reference expressions for 
         parameters? For example: <literal>Parameter&lt;String&gt; wordsParam = Person.say#words;</literal></para></comment>
         
-        <!--
         <comment><para>TODO: Should we remodel member metamodel references as members of the 
         metatype? Then we can get rid of two of the following sections. The reason to not do 
         this is that member class metamodel references have the wrong case for an 
         attribute.</para></comment>
-        -->
         
         <section id="interfaceandclassmetamodelreferences">
             <title>Interface and class metamodel references</title>
@@ -1665,19 +1198,17 @@ setPerson(person);</programlisting>
                 <para>assignable to <literal>Class&lt;X,P...&gt;</literal> where 
                 <literal>X</literal> is the toplevel <literal>abstract</literal> class and 
                 <literal>P...</literal> are the types of the parameter list of the class, 
-                <!--for every overloaded version of the class,--> or</para>
+                or</para>
             </listitem>
             <listitem>
                 <para>assignable to <literal>OpenConcreteClass&lt;X,P...&gt;</literal> where 
                 <literal>X</literal> is the toplevel concrete class and <literal>P...</literal> 
-                are the types of the parameter list of the class, <!--for every overloaded 
-                version of the class,--> or</para>
+                are the types of the parameter list of the class, or</para>
             </listitem>
             <listitem>
                 <para>assignable to <literal>OpenMemberClass&lt;X,Y,P...&gt;</literal> where 
                 <literal>Y</literal> is the member class and <literal>P...</literal> 
-                are the types of the parameter list of the class. <!--for every overloaded 
-                version of the class.--></para>
+                are the types of the parameter list of the class.</para>
             </listitem>
         </itemizedlist>
         
@@ -1709,8 +1240,7 @@ setPerson(person);</programlisting>
                 <para>assignable to <literal>OpenFunction&lt;R,P...&gt;</literal> where 
                 <literal>R</literal> is the callable type of a method produced by 
                 removing the first parameter list of the method, and <literal>P...</literal> 
-                are the types of the first parameter lists of the method. <!--for every 
-                overloaded version of the method.--></para>
+                are the types of the first parameter lists of the method.</para>
             </listitem>
         </itemizedlist>
         
@@ -1740,7 +1270,7 @@ setPerson(person);</programlisting>
                 <literal>R</literal> is the callable type of a method produced by 
                 removing the first parameter list of the method, and 
                 <literal>P...</literal> are the types of the first parameter list of 
-                the method. <!--for every overloaded version of the method.--></para>
+                the method.</para>
             </listitem>
         </itemizedlist>
          
@@ -1761,22 +1291,13 @@ setPerson(person);</programlisting>
         <itemizedlist>
             <listitem>
                 <para>of type <literal>OpenValue&lt;T&gt;</literal> where 
-                <literal>T</literal> is the declared type of the attribute.<!-- ,
-                unless the attribute is declared <literal>variable</literal>, or--></para>
+                <literal>T</literal> is the declared type of the attribute.</para>
             </listitem>
-            <!-- 
-            <listitem>
-                <para>of type <literal>MutableValue&lt;T&gt;</literal> where 
-                <literal>T</literal> is the declared type of the attribute,
-                if the attribute is declared <literal>variable</literal>.</para>
-            </listitem>
-            -->
         </itemizedlist>
         
         <para>Note that for a toplevel attribute <literal>x</literal>, the expression <literal>x</literal>
         is both a metamodel reference and a value reference. This is consistent, since
-        <literal>Value&lt;T&gt;</literal> is assignable to <literal>Gettable&lt;T&gt;</literal>.<!-- 
-        and <literal>MutableValue&lt;T&gt;</literal> is assignable to <literal>Settable&lt;T&gt;</literal>.--></para>
+        <literal>Value&lt;T&gt;</literal> is assignable to <literal>Gettable&lt;T&gt;</literal>.</para>
            
         </section>
         
@@ -1818,15 +1339,7 @@ setPerson(person);</programlisting>
     log.info(attribute.declaringType.name + "." + attribute.name 
                 + "=" + attribute(obj));
 }]]></programlisting>
-        
-        <!--
-        <programlisting><![CDATA[for (Attribute<obj.subtype,String> attribute 
-            in obj.subtype.members(Attribute<obj.subtype,String>)) {
-    log.info(attribute.declaringType.name + "." + attribute.name 
-                + "=" + attribute(obj));
-}]]></programlisting>
-        -->
-        
+                
         <para>The metamodel object for a class, attribute or method satisfies 
         <literal>Callable</literal> and is therefore invokable.</para>
         
@@ -1880,7 +1393,7 @@ createItemMethod.intercept()
         the type. We need this. But if so, why can't we curry type arguments of the 
         member? It's not a problem from the grammar point of view.</para></comment>
         
-    </section>
+    </section-->
 
     <section id="operators">
     <title>Operators</title>
