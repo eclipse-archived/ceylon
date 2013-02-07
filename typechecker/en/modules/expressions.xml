@@ -1071,97 +1071,90 @@ shared interface Color { ... }</programlisting>
         <itemizedlist>
             <listitem><para>invocation of a function or instantiation of a class,</para></listitem>
             <listitem><para>evaluation of a value, or</para></listitem>
-            <listitem><para>assignment to a <literal>variable</literal> value.</para></listitem>
+            <listitem><para>assignment to a variable value.</para></listitem>
         </itemizedlist>
         
     <section id="evaluation">
         <title>Evaluation</title>
         
-        <para>Evaluation of an attribute reference or local reference produces the current value 
-        of the attribute or local.</para> 
+        <para>Evaluation of a value reference produces its current value.</para> 
         
-        <programlisting>String name = person.name;</programlisting>
+        <programlisting>person.name</programlisting>
         
-        <para>When a local evaluation is executed, the current value of the local is 
-        immediately obtained. The resulting value is the current value of the local.</para>
-                
-        <para>When an attribute evaluation is executed:</para>
+        <para>When a value reference expression is executed:</para>
         
         <itemizedlist>
             <listitem>
-                <para>first, the reference expression is executed to obtain the reference 
-                object, then</para>
+                <para>first, the receiver expression, if any, is evaluated to obtain a 
+                receiving instance for the evaluation, then</para>
             </listitem>
             <listitem>
-                <para>the actual member to be invoked is determined by considering the 
-                runtime type of the receiving instance, and then</para>
+                <para>the actual declaration to be invoked is determined by considering 
+                the runtime type of the receiving instance, if any, and then</para>
             </listitem>
             <listitem>
-                <para>if the member is a simple attribute, the current value of the 
-                simple attribute is retrieved from the recieving instance, or</para>
+                <para>if the declaration is a reference, its persistent value is retrieved
+                from the receiving instance, or</para>
             </listitem>
             <listitem>
                 <para>otherwise, execution of the calling context pauses while the body 
-                of the attribute getter is executed by the receiving instance, then,</para>
+                of its getter is executed by the receiving instance, then,</para>
             </listitem>
             <listitem>
-                <para>finally, when execution of the getter ends without a thrown 
-                exception, execution of the calling context resumes.</para>
+                <para>finally, when execution of the getter ends, execution of the 
+                calling context resumes.</para>
             </listitem>
         </itemizedlist>
         
-        <para>The resulting value is the current value of the simple attribute or the 
-        return value of the attribute getter, as specified by the <literal>return</literal> 
-        directive.</para>
+        <para>The resulting value is the persistent value retrieved, or the return value 
+        of the getter, as specified by the <literal>return</literal> directive.</para>
+        
+        <comment><para>TODO: evaluation of callable references constructs a callable
+        object that packages a reference to the receiving instance with a reference to
+        the function to be invoked or class to be instantiated.</para></comment>
         
     </section>
     
     <section id="invocation">
         <title>Invocation</title>
         
-        <para>Evaluation of an invocation expression of a callable reference invokes the 
+        <para>Evaluation of an invocation expression for a callable reference invokes the 
         underlying callable reference. This is called <emphasis>invocation</emphasis> in
-        the case of a method reference, and <emphasis>instantiation</emphasis> in the case
-        of an initializer reference.</para>
+        the case of a function reference, or <emphasis>instantiation</emphasis> in the case
+        of a class reference.</para>
         
-        <programlisting>log.info("Hello world!");</programlisting>
-        <programlisting>Map&lt;String, Person&gt; map = HashMap&lt;String, Person&gt;(entries);</programlisting>
+        <programlisting>print("Hello world!")</programlisting>
+        <programlisting>Entry(person.name, person)</programlisting>
         
-        <para>When an evaluation of an invocation expression of a callable reference is 
-        executed:</para>
+        <para>When an invocation expression is executed:</para>
         
         <itemizedlist>
             <listitem>
-                <para>first, the invoked expression is executed to obtain the callable 
+                <para>first, the callable expression is evaluated to obtain the callable 
                 object, then</para>
             </listitem>
             <listitem>
                 <para>each argument is evaluated in turn in the calling context, then</para>
             </listitem>
             <listitem>
-                <para>the actual member to be invoked is determined by considering the runtime
-                type of the receiving instance and the static types of the arguments, and then</para>
+                <para>the actual declaration to be invoked is determined by considering the 
+                runtime type of the receiving instance, if any, and then</para>
             </listitem>
             <listitem>
-                <para>execution of the calling context pauses while the body of the method or 
-                initializer is executed by the receiving instance with the argument values, 
+                <para>execution of the calling context pauses while the body of the function 
+                or initializer is executed by the receiving instance with the argument values, 
                 then</para>
             </listitem>
             <listitem>
-                <para>finally, when execution of the method or initializer ends without a thrown 
-                exception, execution of the calling context resumes.</para>
+                <para>finally, when execution of the function or initializer ends, execution 
+                of the calling context resumes.</para>
             </listitem>
         </itemizedlist>
         
-        <para>A method invocation evaluates to the return value of the method, as specified 
+        <para>A function invocation evaluates to the return value of the function, as specified 
         by the <literal>return</literal> directive. The argument values are passed to the 
         parameters of the method, and the body of the method is executed.</para>
-        
-        <para>The actual value that invocation of a <literal>void</literal> method returns
-        is not specified here. The type system and the definition of the <literal>is</literal> 
-        operator ensures that a value of type <literal>Void</literal> can never be narrowed
-        to a more specific type.</para>
-        
+                
         <para>A class instantiation evaluates to a new instance of the class. The argument 
         values are passed to the initializer parameters of the class, and the initializer
         is executed.</para>
@@ -1171,34 +1164,34 @@ shared interface Color { ... }</programlisting>
     <section id="assignment">
         <title>Assignment</title>
             
-        <para>The assignment operator <literal>:=</literal> assigns a new value to an 
-        attribute reference for a <literal>variable</literal> attribute or local.</para>
+        <para>Given a value reference to a variable, the assignment operator <literal>=</literal> 
+        assigns it a new value.</para>
         
-        <programlisting>person.name := "Gavin";</programlisting>
+        <programlisting>person.name = "Gavin"</programlisting>
         
-        <para>When an attribute or local is assigned:</para>
+        <para>When an assignment expression is executed:</para>
         
         <itemizedlist>
             <listitem>
-                <para>first, the reference expression is executed to obtain the reference 
-                object, then</para>
+                <para>first, the receiver expression of the value reference expression 
+                is executed to obtain the receiving instance, then</para>
             </listitem>
             <listitem>
-                <para>the actual member to be invoked is determined by considering the 
-                runtime type of the receiving instance, and then</para>
+                <para>the actual declaration to be assigned is determined by considering 
+                the runtime type of the receiving instance, and then</para>
             </listitem>
             <listitem>
-                <para>if the member is a simple attribute or local, the value of the 
-                simple attribute of local is set to the new value,</para>
+                <para>if the member is a reference, its persistent value is updated in 
+                the receiving instance, or</para>
             </listitem>
             <listitem>
                 <para>otherwise, execution of the calling context pauses while the body 
-                of the attribute setter is executed by the receiving instance with the 
-                new value, then,</para>
+                of its setter is executed by the receiving instance with the assigned 
+                value, then,</para>
             </listitem>
             <listitem>
-                <para>finally, when execution of the setter ends without a thrown 
-                exception, execution of the calling context resumes.</para>
+                <para>finally, when execution of the setter ends, execution of the calling 
+                context resumes.</para>
             </listitem>
         </itemizedlist>
         
