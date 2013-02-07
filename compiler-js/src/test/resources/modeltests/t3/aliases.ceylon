@@ -5,7 +5,7 @@ alias Objecton<T> given T satisfies Object => T|Singleton<T>;
 
 shared interface Matrix<Cell> => Sequence<Sequence<Cell>>;
 
-shared class LS<T>(Singleton<T>... ss) given T satisfies Object => LazyList<Singleton<T>>(ss);
+shared class LS<T>(Singleton<T>* ss) given T satisfies Object => LazyList<Singleton<T>>(ss);
 
 shared Strinteger si = "5";
 

@@ -3,8 +3,8 @@ void simple1() {}
 shared Integer simple2() { return 0; }
 void simple3(Integer p1, String p2) {}
 shared void defaulted1(Integer p1, Integer p2=5) {}
-void sequenced1(Integer p1, String... p2) {}
-void sequencedDefaulted(String s="x", Integer... ints) {}
+void sequenced1(Integer p1, String* p2) {}
+void sequencedDefaulted(String s="x", Integer* ints) {}
 shared Integer mpl1(String a)(String b) {
   value insideMpl1 = "skip me";
   return a.size + b.size;
