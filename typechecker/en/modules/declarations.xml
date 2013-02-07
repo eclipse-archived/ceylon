@@ -332,12 +332,10 @@ TypeConstraints?
         
         <programlisting>Params: "(" ( (Param ",")* ( Param | (DefaultParam ",")* (DefaultParam | SequencedParam) ) )? ")"</programlisting>
         
-        <para>Every parameter list has a corresponding type, which captures the types of the
-        individual parameters in the list, whether they are defaulted, and whether the last
-        one is variadic. This type is always an subtype of the type <literal>Sequential</literal>
-        defined in <literal>ceylon.language</literal>.</para>
-        
-        <para>The type of an empty parameter list with no parameters is <literal>[]</literal>.</para>
+        <para>Every parameter list has a type, which captures the types of the individual 
+        parameters in the list, whether they are defaulted, and whether the last parameter 
+        is variadic. This type is always an subtype of <literal>Anything[]</literal>. The 
+        type of an empty parameter list with no parameters is <literal>[]</literal>.</para>
         
         <section id="requiredparameters">
             <title>Required parameters</title>

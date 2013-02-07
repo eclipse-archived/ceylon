@@ -616,10 +616,11 @@ shared interface Color { ... }</programlisting>
     <section id="invocationexpressions">
         <title>Invocation expressions</title>
         
-        <para>A callable object&mdash;any instance of <literal>Callable</literal>&mdash;is 
-        <emphasis>invokable</emphasis>. An <emphasis>invocation</emphasis> consists of an 
-        <emphasis>invoked expression</emphasis> of type <literal>Callable&lt;R,P&gt;</literal>, 
-        together with an argument list and, optionally, an explicit type argument list.</para>
+        <para>A callable expression&mdash;any expression of type 
+        <literal>Callable</literal>&mdash;is <emphasis>invokable</emphasis>. An 
+        <emphasis>invocation</emphasis> consists of an <emphasis>invoked expression</emphasis> 
+        of type <literal>Callable&lt;R,P&gt;</literal>, together with an argument 
+        list and, optionally, an explicit type argument list.</para>
         
         <programlisting>Invocation: Primary Arguments</programlisting>
         
@@ -642,8 +643,7 @@ shared interface Color { ... }</programlisting>
         </itemizedlist>
         
         <para>An invocation expression must specify arguments for parameters of the callable 
-        object, either by listing parameter values in order or, in the case of a direct 
-        invocation, listing named parameter values.</para>
+        object, either as a positional argument list, or a named argument list.</para>
         
         <programlisting>Arguments: PositionalArguments | NamedArguments</programlisting>
         
@@ -680,46 +680,168 @@ shared interface Color { ... }</programlisting>
         where the invoked expression has type exactly 
         <literal>Callable&lt;R,P&gt;</literal>.</para>
         
-        <section id="sequenceinstantiation">
-            <title>Sequence instantiation</title>
+        <section id="tupletypeofarglist">
+            <title>The type of a list of arguments</title>
             
-            <para>An instantiation expression for the type <literal>Sequence</literal> may
-            be written in an abbreviated form where the type name is eliminated.</para>
+            <para>A list of arguments may be formed from:</para>
+            
+            <itemizedlist>
+                <listitem>
+                    <para>any number of <emphasis>listed arguments</emphasis>,
+                    optionally followed by either</para>
+                </listitem>
+                <listitem>
+                    <para>a <emphasis>spread argument</emphasis>, or</para>
+                </listitem>
+                <listitem>
+                    <para>a <emphasis>comprehension</emphasis>.</para>
+                </listitem>
+            </itemizedlist>
+            
+            <programlisting>ArgumentList: ((ListedArgument ",")* (ListedArgument | SpreadArgument | Comprehension))?</programlisting>
+            
+            <para>Every such list of arguments has a type, which captures the types
+            of the individual arguments in the list. This type is always a subtype 
+            of <literal>Anything[]</literal>. The type of an empty argument list with 
+            no arguments is <literal>[]</literal>.</para>
+            
+        </section>
         
-            <programlisting>SequenceInstantiation: "{" Sequence? "}"</programlisting>
+         <section id="defaultarguments">
+            <title>Default arguments</title>
+        
+        <para>When no argument is assigned to a defaulted parameter by the caller, 
+        the default argument defined by the parameter declaration is used. The default 
+        argument expression is evaluated every time the method is invoked with no 
+        argument specified for the defaulted parameter.</para>
+        
+        <para>This class:</para>
+        
+        <programlisting>shared class Counter(Integer initialCount=0) { ... }</programlisting>
+        
+        <para>May be instantiated using any of the following invocations:</para>
+        
+        <programlisting>Counter()</programlisting>
+        <programlisting>Counter(1)</programlisting>
+        <programlisting>Counter {}</programlisting>
+        <programlisting>Counter { initialCount=10; }</programlisting>
+        
+        </section>
+        
+        <section id="listedargs">
+            <title>Listed arguments</title>
             
-            <para>The following expression:</para>
+            <para>A listed argument is an expression.</para>
             
-            <programlisting>{ "hello", "world" }</programlisting>
+            <programlisting>ListedArgument: Expression</programlisting>
             
-            <para>Is equivalent to:</para>
+            <para>If a listed argument is an expression of type <literal>T</literal>, 
+            and an argument list has type <literal>P</literal>, an invariant subtype of 
+            <literal>Sequential&lt;Y&gt;</literal>, then the type of a new argument list 
+            formed by prepending the expression to the first parameter list is 
+            <literal>Tuple&lt;T|Y,T,P&gt;</literal>.</para>
             
-            <programlisting>Sequence { "hello", "world" }</programlisting>
+        </section>
+        
+        <section id="spreadargs">
+            <title>Spread arguments</title>
             
-            <para>The type of a sequence instantiation expression is:</para>
+            <para>A spread argument is an expression prefixed by the 
+            <emphasis>spread operator</emphasis> <literal>*</literal>.</para>
+            
+            <programlisting>SpreadArgument: "* "Expression</programlisting>
+            
+            <para>The expression type <literal>T</literal> must be an invariant subtype of 
+            <literal>{X*}</literal> for some type <literal>X</literal>. We form the
+            <emphasis>sequential type of a spread argument</emphasis> as follows:</para>
+            
+            <itemizedlist>
+                <listitem>
+                    <para>if the expression type <literal>T</literal> is an invariant 
+                    subtype of <literal>X[]</literal>, for some type <literal>X</literal> 
+                    then the sequential type of the spread argument is 
+                    <literal>T</literal>, or, if not,</para>
+                </listitem>
+                <listitem>
+                    <para>if the expression type <literal>T</literal> is an invariant 
+                    subtype of <literal>{X+}</literal>, for some type <literal>X</literal> 
+                    then the sequential type of the spread argument is 
+                    <literal>{X+]</literal>, or, otherwise,</para>
+                </listitem>
+                <listitem>
+                    <para>the expression type <literal>T</literal> is an invariant 
+                    subtype of <literal>{X*}</literal>, for some type <literal>X</literal>
+                    and the sequential type of the spread argument is 
+                    <literal>X[]</literal>,</para>
+                </listitem>
+            </itemizedlist>
+            
+            <para>When a spread argument with an expression type not assignable to 
+            <literal>Anything[]</literal> is evaluated, the elements of the iterable
+            automatically are packaged into a sequence.</para>
+            
+            <comment><para>Note: the spread operator is not truly an operator, and so 
+            a spread argument is not an expresson. It is more correct to view the spread
+            operator as part of the syntax of an argument list.</para></comment>
+            
+            <para>The type of an argument list containing only a spread argument of 
+            sequential type <literal>S</literal> is simply <literal>S</literal>.</para>
+            
+        </section>
+        
+        <section id="comprehensions">
+            <title>Comprehensions</title>
+            
+            <comment><para>TODO!!</para></comment>
+            
+        </section>
+        
+        <section id="sequenceinstantiation">
+            <title>Iterable and tuple enumeration</title>
+            
+            <para>An <emphasis>enumeration expression</emphasis> is an abbreviation for
+            tuple and iterable object instantiation. Iterable enumerations are delimited
+            using braces. Tuple enumerations are delimeted by brackets.</para>
+            
+            <programlisting>Iterable: "{" ArgumentList "}"</programlisting>
+            <programlisting>Tuple: "[" ArgumentList "]"</programlisting>
+            
+            <para>The type of an iterable enumeration expression is:</para>
             
             <itemizedlist>
                 <listitem>
                     <literal>Empty</literal> if there are no argument expressions, or
                 </listitem>
                 <listitem>
-                    <literal>Sequence&lt;X|Y|Z...&gt;</literal> where <literal>X</literal>,
-                    <literal>Y</literal>, <literal>Z</literal> are the types of the argument 
-                    expressions, otherwise.
+                    <literal>Iterable&lt;U,Nothing&gt;</literal> where <literal>U</literal>,
+                    the argument expression list is an invariant suptype of <literal>U[]</literal>.
                 </listitem>
             </itemizedlist>
-        
+            
+            <para>The type of a tuple enumeration expression is the type of the argument 
+            list.</para>
+            
+            <programlisting>{String+} = { "hello", "world" };</programlisting>
+            <programlisting>[] none = [];</programlisting>
+            <programlisting>[Float,Float] xy = [x, y];</programlisting>
+            <programlisting>[Float,Float, String*] xy = [x, y, *labels];</programlisting>
+            
         </section>
         
         <section id="positionalarguments">
-            <title>Positional arguments</title>
+            <title>Positional argument lists</title>
         
-        <para>When arguments are listed, the arguments list is enclosed in parentheses.</para>
+        <para>When invocation arguments are listed positionally, the argument list is 
+        enclosed in parentheses.</para>
             
-        <programlisting>PositionalArguments: "(" PositionalArgument ("," PositionalArgument)* ("," Sequence)? | Sequence? ")"</programlisting>
-        <programlisting>PositionalArgument: Expression | Function</programlisting>
+        <programlisting>PositionalArguments: "(" ArgumentList ")"</programlisting>
         
-        <para>Positional arguments must be listed in the same order as the corresponding
+        <para>If an invocation is formed from a callable expression of type exactly
+        <literal>Callable&lt;R,P&gt;</literal> and a positional argument list of type
+        <literal>A</literal>, <literal>A</literal> must be a subtype of 
+        <literal>P</literal>.</para>
+        
+        <!--para>Positional arguments must be listed in the same order as the corresponding
         parameters.</para>
         
         <itemizedlist>
@@ -745,16 +867,17 @@ shared interface Color { ... }</programlisting>
         <para>For example:</para>
         
         <programlisting>(getProduct(id), 1)</programlisting>
-        <programlisting>((Float x, Float y) x+y)</programlisting>
+        <programlisting>((Float x, Float y) => x+y)</programlisting-->
         
         </section>
         
         <section id="namedarguments">
             <title>Named arguments</title>
             
-        <para>When arguments are named, the argument list is enclosed in braces.</para>
+        <para>When invocation arguments are listed  by name, the argument list is enclosed 
+        in braces.</para>
         
-        <programlisting>NamedArguments: "{" NamedArgument* Sequence? "}"</programlisting>
+        <programlisting>NamedArguments: "{" NamedArgument* ArgumentList "}"</programlisting>
         
         <para>Named arguments may be listed in a different order to the corresponding
         parameters.</para>
@@ -762,7 +885,7 @@ shared interface Color { ... }</programlisting>
         <para>Required and defaulted parameter arguments are specified by name. Arguments to
         a sequenced parameter are specified by listing them, without specifying a name, at the 
         end of the argument list.</para>
-
+        
         <para>A named argument is either:</para> 
         
         <itemizedlist>
@@ -875,12 +998,9 @@ shared interface Color { ... }</programlisting>
         expression syntax.</para>
         </comment-->
         
-        <comment><para>TODO: Should we let you define a getter/setter pair for parameters 
-        which are passed by reference?</para></comment>
-        
         </section>
 
-        <section id="sequencedarguments">
+        <!--section id="sequencedarguments">
             <title>Sequenced and tuple arguments</title>
             
         <para>For a sequenced parameter of type <literal>T...</literal> in a direct 
@@ -939,56 +1059,8 @@ shared interface Color { ... }</programlisting>
 }</programlisting>            
         </comment>
         
-        </section>
+        </section-->
                     
-        <section id="defaultarguments">
-            <title>Default arguments</title>
-        
-        <para>When no argument is assigned to a defaulted parameter by the caller, the 
-        default argument defined by the parameter declaration is used. The default argument 
-        expression is evaluated every time the method is invoked with no argument specified 
-        for the defaulted parameter.</para>
-        
-        <para>This class:</para>
-        
-        <programlisting>shared class Counter(Integer initialCount=0) {
-    
-    variable Integer count := initialCount;
-    
-    ...
-    
-}</programlisting>
-        
-        <para>May be instantiated using any of the following:</para>
-        
-        <programlisting>Counter()</programlisting>
-        <programlisting>Counter(1)</programlisting>
-        <programlisting>Counter {}</programlisting>
-        <programlisting>Counter { initialCount=10; }</programlisting>
-                
-            <para>This method:</para>
-        
-            <programlisting>shared class Counter() {
-    
-    variable Integer count := 0;
-    
-    shared void init(Integer initialCount=0) {
-        count:=initialCount;
-    }
-    
-    ...
-
-}</programlisting>
-            
-            <para>May be invoked using any of the following:</para>
-        
-            <programlisting>counter.init()</programlisting>
-            <programlisting>counter.init(1)</programlisting>
-            <programlisting>counter.init {}</programlisting>
-            <programlisting>counter.init { initialCount=10; }</programlisting>
-
-        </section>
-        
     </section>
     
     <section id="evaluationandassignment">
@@ -997,9 +1069,9 @@ shared interface Color { ... }</programlisting>
         <para>Evaluation of an expression may result in:</para>
         
         <itemizedlist>
-            <listitem><para>invocation of a method or instantiation of a class,</para></listitem>
-            <listitem><para>evaluation of an attribute or local, or</para></listitem>
-            <listitem><para>assignment to a <literal>variable</literal> attribute or local.</para></listitem>
+            <listitem><para>invocation of a function or instantiation of a class,</para></listitem>
+            <listitem><para>evaluation of a value, or</para></listitem>
+            <listitem><para>assignment to a <literal>variable</literal> value.</para></listitem>
         </itemizedlist>
         
     <section id="evaluation">
