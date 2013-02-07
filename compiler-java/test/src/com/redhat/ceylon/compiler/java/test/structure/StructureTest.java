@@ -655,6 +655,11 @@ public class StructureTest extends CompilerTest {
     }
 
     @Test
+    public void testRfdMembers(){
+        compareWithJavaSource("reified/Members");
+    }
+
+    @Test
     public void testRfdInterop(){
         compile("reified/JavaClass.java", "reified/JavaInterface.java");
         compareWithJavaSource("reified/Interop");
