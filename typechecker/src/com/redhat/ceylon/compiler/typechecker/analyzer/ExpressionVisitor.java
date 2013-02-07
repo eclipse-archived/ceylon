@@ -318,6 +318,10 @@ public class ExpressionVisitor extends Visitor {
                             that.addError("does not narrow type: intersection of " + type.getProducedTypeName(unit) + 
                                     " and " + knownType.getProducedTypeName(unit) + " is empty" + help);
                         }
+                        else if (knownType.isSubtypeOf(type)) {
+                            that.addError("tests assignability to Nothing type: " + knownType.getProducedTypeName(unit) + 
+                                    " is a subtype of " + type.getProducedTypeName(unit));
+                        }
                     } 
                     else {
                         if (knownType.isSubtypeOf(type)) {
@@ -334,13 +338,14 @@ public class ExpressionVisitor extends Visitor {
             ProducedType it;
             if (that.getNot()) {
                 //a !is condition, narrow to complement
-                if (type.getDeclaration() instanceof ClassOrInterface) {
+                if (type.getDeclaration() instanceof ClassOrInterface &&
+                        !type.getDeclaration().isParameterized()) {
                     //TODO: see comment in ProducedType - minus() is not robust 
                     it = knownType.minus((ClassOrInterface) type.getDeclaration());
                 }
                 else {
-                    //TODO: what should we really do here?
-                    that.addError("type specified in negated assignability condition must be a class or interface");
+                    //TODO: improve implementation of minus(), and relax this
+                    that.addError("type specified in negated assignability condition must be an unparameterized class or interface types");
                     it = knownType;
                 }
             }
@@ -351,9 +356,9 @@ public class ExpressionVisitor extends Visitor {
             }
             if (it.getDeclaration() instanceof NothingType) {
                 if (that.getNot()) {
-                    that.addError("tests assignability to Nothing type: " +
+                    /*that.addError("tests assignability to Nothing type: " +
                             knownType.getProducedTypeName(unit) + " is a subtype of " + 
-                            type.getProducedTypeName(unit));
+                            type.getProducedTypeName(unit));*/
                 }
                 else {
                     that.addError("tests assignability to Nothing type: intersection of " +
