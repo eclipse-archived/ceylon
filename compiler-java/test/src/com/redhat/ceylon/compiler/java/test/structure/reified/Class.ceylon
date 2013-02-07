@@ -1,5 +1,7 @@
 shared interface Interface<Key, Value>{}
 
+shared interface SubInterface satisfies Interface<String, Integer>{}
+
 shared class Class<Key, Value>(Integer a = 2, Integer b = 3) 
     satisfies Interface<Key, Integer>{}
 
