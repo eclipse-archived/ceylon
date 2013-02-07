@@ -253,7 +253,7 @@
     </target>
 
     <!-- Rule to compile and test -->
-    <target name="build" depends="ceylon.language.java">
+    <target name="build" depends="ceylon.language.java,ceylon.language.js">
         <!-- Temporary hack to prevent problems in the IDE when the compilation fails -->
         <mkdir dir="${ide.dist}"/>
     	<copy todir="${ide.dist}">
