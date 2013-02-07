@@ -707,19 +707,19 @@ Float|Integer num = one;</programlisting></comment>
                 <literal>Sequential&lt;X&gt;</literal> for any type <literal>X</literal>,</para>
             </listitem>
             <listitem>
-                <para><literal>[]</literal> means <literal>Empty</literal> for any type 
-                <literal>X</literal>,</para>
+                <para><literal>[]</literal> means <literal>Empty</literal>,</para>
             </listitem>
             <listitem>
                 <para><literal>[X+]</literal> means <literal>Sequence&lt;X&gt;</literal> 
                 for any type <literal>X</literal>,</para>
             </listitem>
             <listitem>
-                <para><literal>X->Y</literal> means <literal>Entry&lt;X,Y&gt;</literal>, and</para>
+                <para><literal>X->Y</literal> means <literal>Entry&lt;X,Y&gt;</literal>, 
+                for any types <literal>X</literal>, <literal>Y</literal>,</para>
             </listitem>
             <listitem>
                 <para><literal>[X,Y]</literal> means <literal>Tuple&lt;X|Y,X,Tuple&lt;Y,Y,[]&gt;&gt;</literal>
-                where <literal>X,Y</literal> is a list of types of any length.</para>
+                where <literal>X,Y</literal> is a list of types of any length, and</para>
             </listitem>
             <listitem>
                 <para><literal>X(Y,Z)</literal> means <literal>Callable&lt;X,[Y,Z]&gt;</literal>
