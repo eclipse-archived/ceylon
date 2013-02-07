@@ -650,6 +650,11 @@ public class StructureTest extends CompilerTest {
     }
 
     @Test
+    public void testRfdAliases(){
+        compareWithJavaSource("reified/Aliases");
+    }
+
+    @Test
     public void testRfdInterop(){
         compile("reified/JavaClass.java", "reified/JavaInterface.java");
         compareWithJavaSource("reified/Interop");

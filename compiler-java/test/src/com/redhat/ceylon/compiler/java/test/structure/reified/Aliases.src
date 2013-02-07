@@ -1,0 +1,76 @@
+package com.redhat.ceylon.compiler.java.test.structure.reified;
+
+@.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 4)
+@.com.redhat.ceylon.compiler.java.metadata.Annotations({@.com.redhat.ceylon.compiler.java.metadata.Annotation("shared")})
+public class TargetClass implements .com.redhat.ceylon.compiler.java.ReifiedType {
+    
+    public TargetClass() {
+    }
+    
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    public static void main(.java.lang.String[] args) {
+        .ceylon.language.process_.getProcess$().setupArguments(args);
+        new .com.redhat.ceylon.compiler.java.test.structure.reified.TargetClass();
+    }
+    
+    @.java.lang.Override
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    public boolean $is(.com.redhat.ceylon.compiler.java.TypeDescriptor type) {
+        if (.com.redhat.ceylon.compiler.java.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.reified.TargetClass.class).equals(type)) return true;
+        return false;
+    }
+}
+@.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 4)
+@.com.redhat.ceylon.compiler.java.metadata.Alias("com.redhat.ceylon.compiler.java.test.structure.reified::TargetClass")
+@.com.redhat.ceylon.compiler.java.metadata.Annotations({@.com.redhat.ceylon.compiler.java.metadata.Annotation("shared")})
+@.com.redhat.ceylon.compiler.java.metadata.TypeParameters({@.com.redhat.ceylon.compiler.java.metadata.TypeParameter(value = "T", variance = .com.redhat.ceylon.compiler.java.metadata.Variance.NONE, satisfies = {}, caseTypes = {})})
+public final class ClassAlias<T> {
+    
+    private ClassAlias() {
+    }
+    
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    public static void main(.java.lang.String[] args) {
+        .ceylon.language.process_.getProcess$().setupArguments(args);
+        new .com.redhat.ceylon.compiler.java.test.structure.reified.TargetClass();
+    }
+}
+@.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 4)
+@.com.redhat.ceylon.compiler.java.metadata.Annotations({@.com.redhat.ceylon.compiler.java.metadata.Annotation("shared")})
+public interface TargetInterface {
+    
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    public .com.redhat.ceylon.compiler.java.test.structure.reified.TargetInterface$impl $com$redhat$ceylon$compiler$java$test$structure$reified$TargetInterface$impl();
+    
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    public boolean $com$redhat$ceylon$compiler$java$test$structure$reified$TargetInterface$is(.com.redhat.ceylon.compiler.java.TypeDescriptor type);
+}
+@.com.redhat.ceylon.compiler.java.metadata.Ignore
+public final class TargetInterface$impl {
+    
+    public TargetInterface$impl(.com.redhat.ceylon.compiler.java.test.structure.reified.TargetInterface $this) {
+        this.$this = $this;
+    }
+    private final .com.redhat.ceylon.compiler.java.test.structure.reified.TargetInterface $this;
+    
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    public boolean $com$redhat$ceylon$compiler$java$test$structure$reified$TargetInterface$is(.com.redhat.ceylon.compiler.java.TypeDescriptor type) {
+        if (.com.redhat.ceylon.compiler.java.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.reified.TargetInterface.class).equals(type)) return true;
+        return false;
+    }
+}
+@.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 4)
+@.com.redhat.ceylon.compiler.java.metadata.Alias("com.redhat.ceylon.compiler.java.test.structure.reified::TargetInterface")
+@.com.redhat.ceylon.compiler.java.metadata.Annotations({@.com.redhat.ceylon.compiler.java.metadata.Annotation("shared")})
+@.com.redhat.ceylon.compiler.java.metadata.TypeParameters({@.com.redhat.ceylon.compiler.java.metadata.TypeParameter(value = "T", variance = .com.redhat.ceylon.compiler.java.metadata.Variance.NONE, satisfies = {}, caseTypes = {})})
+public interface InterfaceAlias<T> {
+}
+@.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 4)
+@.com.redhat.ceylon.compiler.java.metadata.TypeAlias("com.redhat.ceylon.compiler.java.test.structure.reified::TargetClass&com.redhat.ceylon.compiler.java.test.structure.reified::TargetInterface")
+@.com.redhat.ceylon.compiler.java.metadata.Annotations({@.com.redhat.ceylon.compiler.java.metadata.Annotation("shared")})
+@.com.redhat.ceylon.compiler.java.metadata.TypeParameters({@.com.redhat.ceylon.compiler.java.metadata.TypeParameter(value = "T", variance = .com.redhat.ceylon.compiler.java.metadata.Variance.NONE, satisfies = {}, caseTypes = {})})
+public final class TypeAlias<T> {
+    
+    private TypeAlias() {
+    }
+}
