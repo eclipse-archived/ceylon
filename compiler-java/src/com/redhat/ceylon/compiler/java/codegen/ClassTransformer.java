@@ -318,10 +318,14 @@ public class ClassTransformer extends AbstractTransformer {
         // Generate the inner members list for model loading
         addAtMembers(classBuilder, model);
         // Make sure top types satisfy reified type
+        addReifiedTypeInterface(classBuilder, model);
+    }
+    
+    private void addReifiedTypeInterface(ClassDefinitionBuilder classBuilder, ClassOrInterface model) {
         if(model.getExtendedType() == null || willEraseToObject(model.getExtendedType()) || !Decl.isCeylon(model.getExtendedTypeDeclaration()))
             classBuilder.reifiedType();
     }
-    
+
     /**
      * Transforms the type of the given class parameter
      * @param decl
@@ -2030,6 +2034,9 @@ public class ClassTransformer extends AbstractTransformer {
             objectClassBuilder.defs(builder.build());
         }
 
+        // Make sure top types satisfy reified type
+        addReifiedTypeInterface(objectClassBuilder, klass);
+
         List<JCTree> result = objectClassBuilder
             .annotations(makeAtObject())
             .modelAnnotations(model.getAnnotations())
@@ -2037,6 +2044,7 @@ public class ClassTransformer extends AbstractTransformer {
             .constructorModifiers(PRIVATE)
             .satisfies(decl.getSatisfiedTypes())
             .init(childDefs)
+            .reifiedIs(model.getType(), Collections.<TypeParameter>emptyList(), decl.getSatisfiedTypes(), decl.getExtendedType())
             .build();
         
         if (makeLocalInstance) {
