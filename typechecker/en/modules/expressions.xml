@@ -1581,20 +1581,35 @@ createItemMethod.intercept()
                 <entry>Unary prefix</entry>
                 <entry>Right</entry>
             </row>
-            <row>
+            <!--row>
                 <entry>Default:</entry> 
                 <entry><literal>?</literal></entry>
                 <entry>Binary</entry>
                 <entry>Left</entry>
+            </row-->
+            <row>
+                <entry>Set intersection:</entry> 
+                <entry>
+                <literal>&amp;</literal>
+                </entry>
+                <entry>Binary</entry>
+                <entry>Left</entry>
             </row>
             <row>
-                <entry>Multiplication, division, remainder,
-                Set intersection:</entry> 
+                <entry>Set union and complement:</entry> 
+                <entry>
+                <literal>|</literal>,
+                <literal>~</literal>
+                </entry>
+                <entry>Binary</entry>
+                <entry>Left</entry>
+            </row>
+            <row>
+                <entry>Multiplication, division, remainder:</entry> 
                 <entry>
                 <literal>*</literal>, 
                 <literal>/</literal>, 
-                <literal>%</literal>,
-                <literal>&amp;</literal>
+                <literal>%</literal>
                 </entry>
                 <entry>Binary</entry>
                 <entry>Left</entry>
@@ -1608,14 +1623,10 @@ createItemMethod.intercept()
                 <entry>Right</entry>
             </row>
             <row>
-                <entry>Addition, subtraction, Set union,
-                Set exclusive union, Set complement:</entry> 
+                <entry>Addition, subtraction:</entry> 
                 <entry>
                 <literal>+</literal>, 
-                <literal>-</literal>, 
-                <literal>|</literal>, 
-                <literal>^</literal>,
-                <literal>~</literal>
+                <literal>-</literal>
                 </entry>
                 <entry>Binary</entry>
                 <entry>Left</entry>
