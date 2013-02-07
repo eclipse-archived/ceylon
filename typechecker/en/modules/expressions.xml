@@ -1780,6 +1780,7 @@ createItemMethod.intercept()
                 <literal>&gt;=</literal>,
                 <literal>in</literal>,
                 <literal>is</literal>,
+                <literal>of</literal>,
                 <literal>satisfies</literal>
                 </entry>
                 <entry>Binary</entry>
@@ -1873,7 +1874,7 @@ createItemMethod.intercept()
         <title>Operator definition</title>
         
     <para>The following tables define the semantics of the Ceylon operators. 
-    There are four basic operators which do not have a definition in terms of 
+    There are six basic operators which do not have a definition in terms of 
     other operators or invocations:</para>
     
     <itemizedlist>
@@ -1897,14 +1898,19 @@ createItemMethod.intercept()
             <para>the <emphasis>identity</emphasis> operator
             <literal>&identical;</literal> evaluates to <literal>true</literal> 
             if its argument expressions evaluate to references to the same 
-            object, and <literal>false</literal> otherwise, and</para>
+            object, and <literal>false</literal> otherwise,</para>
         </listitem>
         <listitem>
             <para>the <emphasis>assignability</emphasis> operator
             <literal>is</literal> evaluates to <literal>true</literal> if 
             its argument expression evaluates to an instance of a class
             assignable to the specified type, and <literal>false</literal> 
-            otherwise.</para>
+            otherwise, and</para>
+        </listitem>
+        <listitem>
+            <para>the <emphasis>coverage</emphasis> operator
+            <literal>of</literal> narrows the type of an expression to
+            a specified type that covers its type.</para>
         </listitem>
     </itemizedlist>
         
@@ -2015,6 +2021,18 @@ createItemMethod.intercept()
             <entry>variable of type <literal>X</literal></entry>
             <entry><literal>X</literal></entry>
             <entry><literal>X</literal></entry>
+        </row>
+        
+        <row><entry namest="first" nameend="last"><emphasis>Coverage</emphasis></entry></row>
+    
+        <row>
+            <entry><literal>lhs of Type</literal></entry>
+            <entry>of</entry>
+            <entry><literal></literal></entry>
+            <entry><literal>X</literal></entry>
+            <entry>a literal type <literal>T</literal> that covers 
+            <literal>X</literal></entry>
+            <entry><literal>T</literal></entry>
         </row>
         
      </tbody>
