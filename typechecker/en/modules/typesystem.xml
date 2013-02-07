@@ -689,37 +689,23 @@ Float|Integer num = one;</programlisting></comment>
         
         <para>Certain important types may be written using an abbreviated syntax.</para>
         
+        <programlisting>ContainerType: Type | EmptyType | TupleType | IterableType | GroupedType</programlisting>
+        
+        <para>First, there are postfix-style abbreviations for <emphasis>optional types</emphasis>, 
+        <emphasis>sequence types</emphasis>, and <emphasis>callable types</emphasis>.</para>
+        
+        <programlisting>AbbreviatedType: ContainerType ("?" | "[" "]" | ParameterTypes)*</programlisting>   
+             
+        <programlisting>ParameterTypes: "(" TypeList? ")"</programlisting>
+                
         <itemizedlist>
             <listitem>
                 <para><literal>X?</literal> means <literal>Nothing|X</literal> for any 
                 type <literal>X</literal>,</para>
             </listitem>
             <listitem>
-                <para><literal>{X*}</literal> means <literal>Iterable&lt;X,Null&gt;</literal> 
-                for any type <literal>X</literal>,</para>
-            </listitem>
-            <listitem>
-                <para><literal>{X+}</literal> means <literal>Iterable&lt;X,Nothing&gt;</literal> 
-                for any type <literal>X</literal>,</para>
-            </listitem>
-            <listitem>
-                <para><literal>[X*]</literal> and <literal>X[]</literal> mean 
-                <literal>Sequential&lt;X&gt;</literal> for any type <literal>X</literal>,</para>
-            </listitem>
-            <listitem>
-                <para><literal>[]</literal> means <literal>Empty</literal>,</para>
-            </listitem>
-            <listitem>
-                <para><literal>[X+]</literal> means <literal>Sequence&lt;X&gt;</literal> 
-                for any type <literal>X</literal>,</para>
-            </listitem>
-            <listitem>
-                <para><literal>X->Y</literal> means <literal>Entry&lt;X,Y&gt;</literal>, 
-                for any types <literal>X</literal>, <literal>Y</literal>,</para>
-            </listitem>
-            <listitem>
-                <para><literal>[X,Y]</literal> means <literal>Tuple&lt;X|Y,X,Tuple&lt;Y,Y,[]&gt;&gt;</literal>
-                where <literal>X,Y</literal> is a list of types of any length, and</para>
+                <para><literal>X[]</literal> means <literal>Sequential&lt;X&gt;</literal> 
+                for any type <literal>X</literal>, and</para>
             </listitem>
             <listitem>
                 <para><literal>X(Y,Z)</literal> means <literal>Callable&lt;X,[Y,Z]&gt;</literal>
@@ -727,25 +713,78 @@ Float|Integer num = one;</programlisting></comment>
             </listitem>
         </itemizedlist>
         
-        <comment><para>TODO: Write down the correct recursive definition of tuple and
-        function types!</para></comment>
+        <para>More precisely, the type meant by a callable type abbreviation is
+        <literal>Callable&lt;X,T&gt;</literal> where <literal>X</literal> is the type 
+        outside the parentheses in the the callable type abbreviation, and 
+        <literal>T</literal> is the tuple type formed by the types listed inside the 
+        parentheses.</para>
         
-        <programlisting>ContainerType: Type | EmptyType | TupleType | IterableType | GroupedType</programlisting>
+        <para>Next, abbreviations for <emphasis>iterable types</emphasis> are written
+        using braces.</para>
+        
+        <programlisting>IterableType: "{" UnionType ("*"|"+") "}"</programlisting>
+        
+        <itemizedlist>
+            <listitem>
+                <para><literal>{X*}</literal> means <literal>Iterable&lt;X,Null&gt;</literal> 
+                for any type <literal>X</literal>, and</para>
+            </listitem>
+            <listitem>
+                <para><literal>{X+}</literal> means <literal>Iterable&lt;X,Nothing&gt;</literal> 
+                for any type <literal>X</literal>.</para>
+            </listitem>
+        </itemizedlist>
+        
+        <para>Next, abbreviations for <emphasis>sequence types</emphasis> and 
+        <emphasis>tuple types</emphasis> may be written using brackets.</para>
         
         <programlisting>EmptyType: "[" "]"</programlisting>
         
         <programlisting>TupleType: "[" TypeList "]"</programlisting>
         
-        <programlisting>IterableType: "{" UnionType ("*"|"+") "}"</programlisting>
+        <programlisting>TypeList: (EntryType ",")* UnionType ("*"|"+")?</programlisting>
         
+        <itemizedlist>
+            <listitem>
+                <para><literal>[X*]</literal> means <literal>Sequential&lt;X&gt;</literal> 
+                for any type <literal>X</literal>,</para>
+            </listitem>
+            <listitem>
+                <para><literal>[]</literal> means <literal>Empty</literal>,</para>
+            </listitem>
+            <listitem>
+                <para><literal>[X+]</literal> means <literal>Sequence&lt;X&gt;</literal> 
+                for any type <literal>X</literal>, and</para>
+            </listitem>
+            <listitem>
+                <para><literal>[X,Y]</literal> means <literal>Tuple&lt;X|Y,X,Tuple&lt;Y,Y,[]&gt;&gt;</literal>
+                where <literal>X,Y</literal> is a list of types of any length.</para>
+            </listitem>
+        </itemizedlist>
+        
+        <para>More precisely, the type meant by a tuple type abbreviation is
+        <literal>Tuple&lt;X|Y,X,T&gt;</literal> where <literal>T</literal> is the type 
+        of the tuple type abbreviation formed by removing the first type from the list 
+        of types in the original tuple type abbreviation, and <literal>T</literal> is 
+        an invariant subtype of <literal>Y[]</literal>. The type meant by a tuple type 
+        abbreviation with no types, <literal>[]</literal> is <literal>Empty</literal>.</para>
+        
+        <para>Finally, an <emphasis>entry type</emphasis> may be abbreviated using
+        an arrow.</para>
+                
         <programlisting>EntryType: UnionType ("->" UnionType)?</programlisting>
         
-        <programlisting>AbbreviatedType: ContainerType ("?" | "[" "]" | ParameterTypes)*</programlisting>   
-             
-        <programlisting>ParameterTypes: "(" TypeList? ")"</programlisting>
+        <itemizedlist>
+            <listitem>
+                <para><literal>X->Y</literal> means <literal>Entry&lt;X,Y&gt;</literal>, 
+                for any types <literal>X</literal>, <literal>Y</literal>.</para>
+            </listitem>
+        </itemizedlist>
         
-        <programlisting>TypeList: (UnionType "," )* UnionType ("*"|"+")?</programlisting>
-                
+        <comment><para>Note: the abbreviations <literal>T[]</literal> and 
+        <literal>[T*]</literal> are synonyms. The syntax <literal>T[]</literal> is
+        supported for reasons of nostalgia.</para></comment>
+        
         <para>Abbreviations may be combined:</para>
         
         <programlisting>String?[] words = { "hello", "world", null };
