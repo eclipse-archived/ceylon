@@ -679,10 +679,14 @@ public class ClassDefinitionBuilder {
                 body = body.prepend(ifInterfacesTest);
             }
             
-            JCExpression classDescriptorCall = gen.makeReifiedTypeArgument(type);
-            JCExpression classEqualsCall = gen.make().Apply(null, gen.makeSelect(classDescriptorCall, "equals"), List.of(gen.makeUnquotedIdent(paramName)));
-            JCStatement classTest = gen.make().If(classEqualsCall, gen.make().Return(gen.makeBoolean(true)), null);
-            body = body.prepend(classTest);
+            // no point checking for exact class since anonymous classes can't be referred to by "is"
+            if(!type.getDeclaration().isAnonymous()){
+                // finally check for the exact class match
+                JCExpression classDescriptorCall = gen.makeReifiedTypeArgument(type);
+                JCExpression classEqualsCall = gen.make().Apply(null, gen.makeSelect(classDescriptorCall, "equals"), List.of(gen.makeUnquotedIdent(paramName)));
+                JCStatement classTest = gen.make().If(classEqualsCall, gen.make().Return(gen.makeBoolean(true)), null);
+                body = body.prepend(classTest);
+            }
 
             method.body(body);
         }
