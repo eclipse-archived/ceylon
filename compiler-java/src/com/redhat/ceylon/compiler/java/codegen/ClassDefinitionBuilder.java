@@ -440,6 +440,7 @@ public class ClassDefinitionBuilder {
         pdb.defaulted(param.isDefaulted());
         pdb.type(type, gen.makeJavaTypeAnnotations(param));
         pdb.modifiers(FINAL);
+        pdb.modelAnnotations(param.getAnnotations());
         parameter(pdb);
         initParam(name, param, type);
         return this;
