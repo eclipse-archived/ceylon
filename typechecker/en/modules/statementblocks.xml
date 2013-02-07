@@ -1431,7 +1431,7 @@ else {
         <para>In the case of an assignability or existence condition, the type of the variable may be 
         inferred.</para>
                 
-        <programlisting>IsCondition: "is" (TypedVariable Specifier | EntryType MemberName)</programlisting>
+        <programlisting>IsCondition: "!"? "is" (TypedVariable Specifier | EntryType MemberName)</programlisting>
         
         <programlisting>ExistsOrNonemptyCondition: ("exists" | "nonempty") (Variable Specifier | MemberName)</programlisting>
         
@@ -1439,20 +1439,27 @@ else {
         
         <itemizedlist>
             <listitem>
-                <para>a type which is not a subtype of the specified type, but whose intersection
-                with the specified type is not exactly <literal>Nothing</literal>, in the case of an 
-                assignability condition,</para>
+                <para>in the case of an assignability condition, a type which is not a subtype of 
+                the specified type, but whose intersection with the specified type is not exactly 
+                <literal>Nothing</literal>, except</para>
             </listitem>
             <listitem>
-                <para>a type whose intersection with <literal>Null</literal> is not exactly 
-                <literal>Nothing</literal> and whose intersection with <literal>Object</literal> is 
-                not exactly <literal>Nothing</literal>, in the case of an exists condition, or</para>
+                <para>in the case of a <emphasis>negated assignability condition</emphasis> with 
+                <literal>!is</literal>, a type whose intersection with the specified type is not 
+                exactly <literal>Nothing</literal>, and which is not a supertype of the specified
+                type, or</para>
             </listitem>
             <listitem>
-                <para>a subtype of <literal>[Anything*]</literal> whose intersection with 
-                <literal>[]</literal> is not exactly <literal>Nothing</literal>, and whose 
-                intersection with <literal>[Nothing+]</literal> is not exactly 
-                <literal>Nothing</literal>, in the case of a nonemptiness condition.</para>
+                <para>in the case of an exists condition, a type whose intersection with 
+                <literal>Null</literal> is not exactly <literal>Nothing</literal> and whose 
+                intersection with <literal>Object</literal> is not exactly <literal>Nothing</literal>, 
+                or</para>
+            </listitem>
+            <listitem>
+                <para>in the case of a nonemptiness condition, a subtype of <literal>[Anything*]</literal> 
+                whose intersection with <literal>[]</literal> is not exactly <literal>Nothing</literal>, 
+                and whose intersection with <literal>[Nothing+]</literal> is not exactly 
+                <literal>Nothing</literal>.</para>
             </listitem>
         </itemizedlist>
         
@@ -1483,9 +1490,17 @@ else {
                 <para>if the condition contains a value reference, the value will be treated by the 
                 compiler as having type <literal>T&amp;X</literal> where the conditional expression 
                 is of type <literal>T</literal> and <literal>X</literal> is the specified type, 
-                inside the block that immediately follows the condition.</para>
+                inside the block that immediately follows the condition, unless</para>
+            </listitem>
+            <listitem>
+                <para>it is a <emphasis>negated assignability condition</emphasis> with 
+                <literal>!is</literal>, in which case the value will be treated by the compiler as 
+                having type <literal>T~X</literal>.</para>
             </listitem>
         </itemizedlist>
+        
+        <comment><para>TODO: define the <literal>~</literal> operation, which is in general not very
+        robust due to decidability constraints.</para></comment>
         
         <para>If you prefer, you can think of the following:</para>
         
