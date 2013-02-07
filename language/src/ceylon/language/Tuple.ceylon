@@ -101,9 +101,11 @@ shared class Tuple<out Element, out First, out Rest=[]>
     }
     
     shared actual Element[] span(Integer from, Integer end) {
+        if (from<0 && end<0) { return []; }
         Integer realFrom = from < 0 then 0 else from;
-        return realFrom<=end then this[from:end-realFrom+1] 
-                else this[end:realFrom-end+1].reversed.sequence;
+        Integer realEnd = end < 0 then 0 else end;
+        return realFrom<=realEnd then this[from:realEnd-realFrom+1] 
+                else this[realEnd:realFrom-realEnd+1].reversed.sequence;
     }
     
     shared actual Element[] spanTo(Integer to) =>
