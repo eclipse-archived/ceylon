@@ -1,0 +1,38 @@
+package com.redhat.ceylon.compiler.java.test.issues.bug10xx;
+
+class Bug1024 {
+    
+    Bug1024() {
+    }
+    
+    private final void m$priv(final .java.lang.Object next) {
+        .java.lang.Object $n$1;
+        if (!(($n$1 = next) instanceof .ceylon.language.Finished)) {
+            final .ceylon.language.String $n$2 = (.ceylon.language.String)$n$1;
+            final .java.lang.String $$n$2$5;
+            .ceylon.language.String $n$4 = null;
+            if (($n$4 = $n$2) != null) {
+                $$n$2$5 = $n$4.toString();
+            } else throw new .ceylon.language.AssertionException("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "exists n"));
+        }
+    }
+    
+    private final void m2$priv(final .java.lang.Object next) {
+        while (true) {
+            .java.lang.Object $n$6;
+            if (!(($n$6 = next) instanceof .ceylon.language.Finished)) {
+                final .ceylon.language.String $n$7 = (.ceylon.language.String)$n$6;
+                final .java.lang.String $$n$7$10;
+                .ceylon.language.String $n$9 = null;
+                if (($n$9 = $n$7) != null) {
+                    $$n$7$10 = $n$9.toString();
+                } else throw new .ceylon.language.AssertionException("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "exists n"));
+            } else break;
+        }
+    }
+    
+    public static void main(.java.lang.String[] args) {
+        .ceylon.language.process_.getProcess$().setupArguments(args);
+        new .com.redhat.ceylon.compiler.java.test.issues.bug10xx.Bug1024();
+    }
+}
