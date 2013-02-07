@@ -54,7 +54,7 @@ JAVA_OPTS="$PREPEND_JAVA_OPTS $JAVA_OPTS"
 # We need them here simply to support `cey compile` 
 BOOTSTRAP_CP="$MINIMAL_CP"
 
-java \
+exec java \
  -Xbootclasspath/p:"$BOOTSTRAP_CP" \
  -cp $JAVA_CP \
  "-Dceylon.home=$CEYLON_HOME" \
