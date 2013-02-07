@@ -1502,7 +1502,7 @@ shared class Branch<Element>(String name, Node<Element> left, Node<Element> righ
         may have parameters and may return a value. If a function belongs to a type,
         it is called a <emphasis>method</emphasis>.</para>
         
-        <programlisting>Method: Annotations MethodHeader (Block | Specifier? ";")</programlisting>
+        <programlisting>Method: Annotations MethodHeader (Block | LazySpecifier? ";")</programlisting>
         
         <para>All function declarations specify the function name, one or more parameter 
         lists, and, optionally, a list of type parameters. A function declaration may 

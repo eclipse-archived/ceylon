@@ -852,9 +852,12 @@ shared interface Color { ... }</programlisting>
             
         <programlisting>PositionalArguments: "(" ArgumentList ")"</programlisting>
         
+        <para>The type of the positional argument list is the type of the argument 
+        list.</para>
+        
         <para>If an invocation is formed from a callable expression of type exactly
         <literal>Callable&lt;R,P&gt;</literal> and a positional argument list of type
-        <literal>A</literal>, <literal>A</literal> must be a subtype of 
+        <literal>A</literal>, then <literal>A</literal> must be a subtype of 
         <literal>P</literal>.</para>
         
         <!--para>Positional arguments must be listed in the same order as the corresponding
@@ -888,53 +891,59 @@ shared interface Color { ... }</programlisting>
         </section>
         
         <section id="namedarguments">
-            <title>Named arguments</title>
+            <title>Named argument lists</title>
             
-        <para>When invocation arguments are listed  by name, the argument list is enclosed 
+        <para>When invocation arguments are listed by name, the argument list is enclosed 
         in braces.</para>
         
         <programlisting>NamedArguments: "{" NamedArgument* ArgumentList "}"</programlisting>
         
         <para>Named arguments may be listed in a different order to the corresponding
         parameters.</para>
-
-        <para>Required and defaulted parameter arguments are specified by name. Arguments to
-        a sequenced parameter are specified by listing them, without specifying a name, at the 
-        end of the argument list.</para>
         
-        <para>A named argument is either:</para> 
+        <para>Each named argument in a named argument list is either:</para> 
         
         <itemizedlist>
             <listitem>
-                <para>a specification statement where the name of the value being specified is
-                the parameter name&mdash;it specifies its value using <literal>=</literal>, 
-                followed by an expression, and is terminated by a semicolon, or</para>
+                <para>an <emphasis>anonymous argument</emphasis>&mdash;an expression, with
+                no parameter name explicitly specified,</para>
             </listitem>
             <listitem>
-                <para>a local declaration with a getter or named argument list where the name 
-                of the local is the parameter name&mdash;it specifies the type of the attribute 
-                or <literal>value</literal>, and a block or code or named argument list used to 
-                instantiate the return type, or</para>
+                <para>a <emphasis>specified argument</emphasis>&mdash;a specification 
+                statememt where name of the value of function being specified is interpreted
+                as the name of a parameter,</para>
             </listitem>
             <listitem>
-                <para>a local anonymous class declaration where the name of the local is the
-                parameter name&mdash;an <literal>object</literal> declaration, or</para>
+                <para>an inline value declaration, whose name is the name of a parameter,</para>
             </listitem>
             <listitem>
-                <para>only for callable parameters, a local method declaration with a block or
-                named parameter list where the name of the method is the parameter name&mdash;it 
-                specifies the return type or <literal>function</literal>, a parameter list and a 
-                block of code or named argument list used to instantiate the return type.</para>
+                <para>an inline function declaration, whose name is the name of a parameter, 
+                or</para>
+            </listitem>
+            <listitem>
+                <para>an inline anonymous class declaration whose name is the name of a 
+                parameter.</para>
             </listitem>
         </itemizedlist>
         
-        <programlisting>NamedArgument: SpecifiedNamedArgument | LocalNamedArgument | FunctionalNamedArgument | Object</programlisting>
+        <programlisting>NamedArgument: AnonymousArgument | SpecifiedArgument | ValueArgument | FunctionArgument | ObjectArgument</programlisting>
         
-        <programlisting>SpecifiedNamedArgument: MemberName Specifier ";"</programlisting>
+        <programlisting>AnonymousArgument: Expression</programlisting>
         
-        <programlisting>LocalNamedArgument: (UnionType | "value") MemberName (Block | NamedArguments)</programlisting>
+        <programlisting>SpecifiedArgument: Specification</programlisting>
         
-        <programlisting>FunctionalNamedArgument: (UnionType | "function" | "void") MemberName Params+ (Block | NamedArguments)</programlisting>
+        <programlisting>ValueArgument: AttributeHeader (Block | (Specifier | LazySpecifier) ";")</programlisting>
+        
+        <programlisting>FunctionArgument: MethodHeader (Block | LazySpecifier ";")</programlisting>
+        
+        <programlisting>ObjectArgument: ObjectHeader ClassBody</programlisting>
+        
+        <comment><para>Note: there is an ambiguity here between assignment expressions 
+        and specified arguments. This ambiguity is resolved in favor of interpreting the
+        argument as a specified argument. Therefore an anonymous argument in a named 
+        argument list may not be an assignment expression.</para></comment>
+        
+        <para>A named argument may not declare type parameters.</para>
         
         <para>For example:</para>
         
@@ -955,45 +964,95 @@ shared interface Color { ... }</programlisting>
 }</programlisting>
         
         <programlisting>{
-    Head head { title="Hello"; }
-    Body body {
-        Div { "Hello " name "!" }
-    }
+    Head { title="Hello"; };
+    Body {
+        Div { "Hello " name "!" };
+    };
 }</programlisting>
 
         <programlisting>{
     object iterator 
             satisfies Iterator&lt;Order&gt; {
-        head = order;
-        tail = null;
+        variable value done = false;
+        shared actual Order next() {
+            if (done) {
+                return finished;
+            }
+            else {
+                done=true;
+                return order; 
+            }
+        }
     }   
 }</programlisting>
 
         <programlisting>{ 
     label = "Say Hello"; 
     void onClick() { 
-        say("Hello"); 
+        say("Hello!"); 
     } 
 }</programlisting>
         
         <programlisting>{ 
-    Comparison by(Value x, Value y) { 
-        return x&lt;=&gt;y; 
-    } 
+    function by(Value x, Value y) => x&lt;=&gt;y;
 }</programlisting>
+        
+        <para>Additionally, a named argument list has an ordinary list of arguments, 
+        which may be empty. These are interpeted as a single argument to a parameter
+        of type <literal>Iterable</literal>.</para>
+        
+        <programlisting>{ initialCapacity=2; "hello", "world" }</programlisting>
+        <programlisting>{ initialCapacity=people.size; loadFactor=0.8; for (p in people) p.name->p }</programlisting>
 
-        <para>This is simpler using type inference:</para>
+        <para>Given a parameter list, and a named argument list, we may attempt to 
+        construct an <emphasis>equivalent positional argument list</emphasis> as 
+        follows.</para>
+        
+        <para>Taking each argument in the named argument list in term, on the order 
+        they occur lexically:</para>
+        
+        <itemizedlist>
+            <listitem>
+                <para>if the argument is anonymous, assign it to the first unassigned
+                parameter of the parameter list,</para>
+            </listitem>
+            <listitem>
+                <para>if the argument is named, assign it to the parameter with that
+                name in the parameter list, or</para>
+            </listitem>
+        </itemizedlist>
+        
+        <para>If for any argument, there is no unassigned parameter, no parameter with
+        the given name, or the parameter with the given name has already been assigned
+        an argument, construction of the positional argument list fails, and the 
+        invocation is not well-typed.</para>
+        
+        <para>Next, if the parameter list has an unassigned parameter of type exactly
+        <literal>Iterable&lt;T,N&gt;</literal> for some types <literal>T</literal> and
+        <literal>N</literal>, then an iterable enumeration expression is formed from 
+        the ordinary list of arguments, and assigned to that parameter.</para>
+        
+        <para>If there is no such parameter, and the the ordinary list of arguments is
+        nonempty, then construction of the positional argument list fails, and the 
+        invocation is not well-typed.</para>
+        
+        <para>Finally, we assign each unassigned defaulted parameter its default 
+        argument.</para>
+        
+        <para>The resulting equivalent positional argument list is formed by ordering
+        the arguments according to the position of their corresponding parameters in
+        the parameter list, and then replacing any inline value, function, or object
+        declarations with a reference to the declaration.</para>
 
-        <programlisting>{ 
-    function by(Value x, Value y) { 
-        return x&lt;=&gt;y; 
-    } 
-}</programlisting>
-
-        <comment><para>TODO: Should the named argument list be allowed to contain arbitrary 
+        <para>If an invocation is formed from a callable expression of type exactly
+        <literal>Callable&lt;R,P&gt;</literal> and a named argument list with an
+        equivalent positional argument list of type <literal>A</literal>, then 
+        <literal>A</literal> must be a subtype of <literal>P</literal>.</para>
+        
+        <!--comment><para>TODO: Should the named argument list be allowed to contain arbitrary 
         statements? This is more regular, since you can do it in the body of a class, and 
         attribute/method refinement is the model that we are following here. And it could be 
-        very useful when defining structured data.</para></comment>
+        very useful when defining structured data.</para></comment-->
         
         <!--comment><para>TODO: Especially, should we support <literal>if/else</literal> and
         <literal>for</literal> in a named argument list. This might be super-useful for
