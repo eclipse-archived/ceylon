@@ -6,6 +6,8 @@ shared class MethodClass(){
     }
     shared Callable<Anything,[]> methodSpec = method<Integer>;
     
+    shared Integer method2<T>() => 2;
+    
     void test(){
         methodSpec();
     }
