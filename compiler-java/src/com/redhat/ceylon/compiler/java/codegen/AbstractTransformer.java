@@ -2825,6 +2825,9 @@ public abstract class AbstractTransformer implements Transformation {
             Method m = (Method) CodegenUtil.getTopmostRefinedDeclaration(declaration);
             // See what its container is
             return supportsReified(Decl.getClassOrInterfaceContainer(m));
+        }else if(declaration instanceof FunctionalParameter){
+            // those can never be parameterised
+            return false;
         }else{
             throw new RuntimeException("Unhandled declaration type: " + declaration);
         }
