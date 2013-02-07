@@ -35,7 +35,7 @@
   <property name="build.dist" location="${build}/dist"/>
   <property name="test.reports" location="${build}/test-reports"/>
 
-  <property name="markdown.version" value="0.8-f17d7e2193"/>
+  <property name="markdown.version" value="0.8-c0dcd373ce"/>
   <property name="markdown.lib" location="${base.path}/txtmark-${markdown.version}.jar"/>
   <property name="markdown-papers.version" value="1.2.7"/>
   <property name="markdown-papers.lib" location="${base.path}/markdownpapers-core-${markdown-papers.version}.jar"/>
