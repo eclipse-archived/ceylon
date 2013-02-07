@@ -22,6 +22,7 @@ void assertionSimple() {
     doc "should be 4"
     assert(2+2==4);
     value i = 5;
+    "must be less than 10"
     assert(i<10);
     assert(i
 <
