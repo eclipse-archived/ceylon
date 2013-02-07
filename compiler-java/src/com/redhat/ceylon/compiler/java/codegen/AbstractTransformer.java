@@ -59,6 +59,7 @@ import com.redhat.ceylon.compiler.typechecker.model.Parameter;
 import com.redhat.ceylon.compiler.typechecker.model.ProducedReference;
 import com.redhat.ceylon.compiler.typechecker.model.ProducedType;
 import com.redhat.ceylon.compiler.typechecker.model.ProducedTypedReference;
+import com.redhat.ceylon.compiler.typechecker.model.Scope;
 import com.redhat.ceylon.compiler.typechecker.model.TypeDeclaration;
 import com.redhat.ceylon.compiler.typechecker.model.TypeParameter;
 import com.redhat.ceylon.compiler.typechecker.model.TypedDeclaration;
@@ -2861,13 +2862,17 @@ public abstract class AbstractTransformer implements Transformation {
     }
 
     public JCExpression makeReifiedTypeArgument(ProducedType pt) {
+        return makeReifiedTypeArgument(pt, false);
+    }
+    
+    private JCExpression makeReifiedTypeArgument(ProducedType pt, boolean qualified) {
         TypeDeclaration declaration = pt.getDeclaration();
         if(declaration instanceof ClassOrInterface){
             List<JCExpression> typeTestArguments = List.nil();
             JCExpression thisType = makeClassLiteral(pt);
             java.util.List<ProducedType> typeParameters = pt.getTypeArgumentList();
             for(int i=typeParameters.size()-1;i>=0;i--){
-                typeTestArguments = typeTestArguments.prepend(makeReifiedTypeArgument(typeParameters.get(i)));
+                typeTestArguments = typeTestArguments.prepend(makeReifiedTypeArgument(typeParameters.get(i), qualified));
             }
             typeTestArguments = typeTestArguments.prepend(thisType);
             JCExpression classDescriptor = make().Apply(null, makeSelect(makeTypeDescriptorType(), "klass"), typeTestArguments);
@@ -2875,13 +2880,24 @@ public abstract class AbstractTransformer implements Transformation {
                 return classDescriptor;
             else{
                 return make().Apply(null, makeSelect(makeTypeDescriptorType(), "member"), 
-                                                     List.of(makeReifiedTypeArgument(pt.getQualifyingType()), classDescriptor));
+                                                     List.of(makeReifiedTypeArgument(pt.getQualifyingType(), true), classDescriptor));
             }
         }
         if(declaration instanceof TypeParameter){
             TypeParameter tp = (TypeParameter) declaration;
             String name = naming.getTypeArgumentDescriptorName(tp.getName());
-            return makeUnquotedIdent(name);
+            if(!qualified)
+                return makeUnquotedIdent(name);
+            Scope container = tp.getContainer();
+            JCExpression qualifier = null;
+            if(container instanceof Class){
+                qualifier = naming.makeQualifiedThis(makeJavaType(((Class)container).getType(), JT_RAW));
+            }else if(container instanceof Interface){
+                qualifier = naming.makeQualifiedThis(makeJavaType(((Interface)container).getType(), JT_COMPANION | JT_RAW));
+            }else{
+                throw new RuntimeException("Type parameter container not supported yet: " + container);
+            }
+            return makeSelect(qualifier, name);
         }
         // FIXME: refactor this shite
         if(declaration instanceof UnionType){
