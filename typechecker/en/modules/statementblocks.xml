@@ -1175,8 +1175,8 @@ else {
             reference or callable reference to it occurs as an expression within the body in which 
             it is declared.</para>
             
-            <para>A <emphasis>shared</emphasis> forward-declared declaration must be definitely 
-            initialized:</para>
+            <para>A <literal>shared</literal> forward-declared declaration belonging to a class and 
+            not annotated <literal>late</literal> must be definitely initialized:</para>
             
             <itemizedlist>
                 <listitem>

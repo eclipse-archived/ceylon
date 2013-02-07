@@ -880,12 +880,17 @@ TypeConstraints?
            </listitem>
         </itemizedlist>
         
-        <para>Nor may the a class pass a self reference to the instance being initialized
-        as an argument of its own <literal>extends</literal> clause expression, if any.</para>
+        <para>Nor may the a class pass a self reference to the instance being 
+        initialized as an argument of its own <literal>extends</literal> clause 
+        expression, if any.</para>
         
-        <para>Finally, the initializer of a class may not attempt to narrow the type of a
-        self reference to the instance being initialized using the <literal>if (is ...)</literal>
-        construct.</para>
+        <para>As a special exception to these rules, a statement contained in an 
+        initializer may assign a self-reference to the instance being initialized
+        to a reference annotated <literal>late</literal>.</para>
+        
+        <para>Finally, the initializer of a class may not attempt to narrow the type 
+        of a self reference to the instance being initialized using the 
+        <literal>if (is ...)</literal> construct or <literal>case (is ...)</literal>.</para>
         
         <para>The initializer of a class is executed after the initializer of its 
         superclass.</para>
@@ -1958,7 +1963,7 @@ case (hexadecimal) {
         is a function with zero parameter lists, or, alternatively, that a function is a
         value of type <literal>Callable</literal>.</para></comment>
         
-        <section id="simpleattributesandlocals">
+        <section id="references">
             <title>References</title>
             
         <para>The persistent value of a reference may be specified or initialized as part 
@@ -2014,6 +2019,12 @@ case (hexadecimal) {
                 <para>A parameter of a method is a local.</para>
             </listitem>
         </itemizedlist-->
+        
+        <para>A reference belonging to a class may be annotated <literal>late</literal>, in 
+        which case the initializer of the class is not required to initialize its persistent
+        value. Furthermore, a self-reference to an instance being initialized may be
+        assigned to the reference. If the reference is evaluated before it is initialized,
+        or before its value has been completely initialized, an exception is thrown.</para>
         
         </section>
         
