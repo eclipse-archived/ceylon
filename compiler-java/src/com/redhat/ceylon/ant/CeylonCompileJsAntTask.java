@@ -26,23 +26,17 @@
 package com.redhat.ceylon.ant;
 
 import java.io.File;
-import java.io.IOException;
+import java.io.FileFilter;
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
 import java.util.List;
-import java.util.Set;
 
 import org.apache.tools.ant.BuildException;
 import org.apache.tools.ant.DirectoryScanner;
 import org.apache.tools.ant.Project;
-import org.apache.tools.ant.taskdefs.Execute;
-import org.apache.tools.ant.taskdefs.LogStreamHandler;
 import org.apache.tools.ant.types.Commandline;
 import org.apache.tools.ant.types.FileSet;
-import org.apache.tools.ant.types.Path;
 
-public class CeylonCompileJsAntTask extends CeylonAntTask {
+public class CeylonCompileJsAntTask extends LazyCeylonAntTask {
     
     private List<File> compileList = new ArrayList<File>(2);
     private ModuleSet moduleset = new ModuleSet();
@@ -53,12 +47,15 @@ public class CeylonCompileJsAntTask extends CeylonAntTask {
     private boolean gensrc = true;
     private String user;
     private String pass;
-    private String out;
-    private Path src;
-    private Repo systemRepository;
-    private RepoSet reposet = new RepoSet();
-    private ExitHandler exitHandler = new ExitHandler();
-    
+
+    private static final FileFilter ARTIFACT_FILTER = new FileFilter() {
+        @Override
+        public boolean accept(File pathname) {
+            String name = pathname.getName();
+            return name.endsWith(".js") || name.endsWith(".js.sha1");
+        }
+    };
+
     public CeylonCompileJsAntTask() {
         super("compile-js");
     }
@@ -133,74 +130,6 @@ public class CeylonCompileJsAntTask extends CeylonAntTask {
         }
     }
 
-    /**
-     * Set the source directories to find the source Java and Ceylon files.
-     * @param src the source directories as a path
-     */
-    public void setSrc(Path src) {
-        if (this.src == null) {
-            this.src = src;
-        } else {
-            this.src.append(src);
-        }
-    }
-
-    protected List<File> getSrc() {
-        if (this.src == null) {
-            return Collections.singletonList(getProject().resolveFile("source"));
-        }
-        String[] paths = this.src.list();
-        ArrayList<File> result = new ArrayList<File>(paths.length);
-        for (String path : paths) {
-            result.add(getProject().resolveFile(path));
-        }
-        return result;
-    }
-
-    /**
-     * Set the destination repository into which the Java source files should be
-     * compiled.
-     * @param out the destination repository
-     */
-    public void setOut(String out) {
-        this.out = out;
-    }
-
-    protected String getOut() {
-        if (this.out == null) {
-            return new File(getProject().getBaseDir(), "modules").getPath();
-        }
-        return this.out;
-    }
-
-    /**
-     * Adds a module repository
-     * @param repo the new module repository
-     */
-    public void addConfiguredRep(Repo repo) {
-        reposet.addConfiguredRepo(repo);
-    }
-    
-    public void addConfiguredReposet(RepoSet reposet) {
-        this.reposet.addConfiguredRepoSet(reposet);
-    }
-
-    protected Repo getSystemRepository() {
-        return systemRepository;
-    }
-
-    /**
-     * Sets the system repository
-     * @param rep the new system repository
-     */
-    public void setSysRep(Repo rep) {
-        systemRepository = rep;
-    }
-
-    protected Set<Repo> getRepositories() {
-        return reposet.getRepos();
-    }
-
     @Override
     protected Commandline buildCommandline() {
         resetFileLists();
@@ -225,7 +154,24 @@ public class CeylonCompileJsAntTask extends CeylonAntTask {
             log("Nothing to compile");
             return null;
         }
-        
+        LazyHelper lazyTask = new LazyHelper(this) {
+            @Override
+            protected File getArtifactDir(String version, Module module) {
+                File outModuleDir = new File(getOut(), module.toDir().getPath()+"/"+version);
+                return outModuleDir;
+            }
+            
+            @Override
+            protected FileFilter getArtifactFilter() {
+                return ARTIFACT_FILTER;
+            }
+        };
+
+        if (lazyTask.filterFiles(compileList) 
+                && lazyTask.filterModules(moduleset.getModules())) {
+            log("Everything's up to date");
+            return null;
+        }
         return super.buildCommandline();
     }
     
@@ -244,9 +190,9 @@ public class CeylonCompileJsAntTask extends CeylonAntTask {
             cmd.createArgument().setValue("--src=" + src.getAbsolutePath());
         }
         if (getSystemRepository() != null) {
-            cmd.createArgument().setValue("--sysrep=" + Util.quoteParameter(getSystemRepository().url));
+            cmd.createArgument().setValue("--sysrep=" + Util.quoteParameter(getSystemRepository()));
         }
-        for(Repo repo : getRepositories()){
+        for(Repo repo : getReposet()) {
             // skip empty entries
             if(repo.url == null || repo.url.isEmpty())
                 continue;
@@ -270,20 +216,6 @@ public class CeylonCompileJsAntTask extends CeylonAntTask {
         }
         if (!gensrc) {
             cmd.createArgument().setValue("--skip-src-archive");
-        }
-
-        try {
-            Execute exe = new Execute(new LogStreamHandler(this, Project.MSG_INFO, Project.MSG_WARN));
-            exe.setAntRun(getProject());
-            exe.setWorkingDirectory(getProject().getBaseDir());
-            log("Command line " + Arrays.toString(cmd.getCommandline()), Project.MSG_VERBOSE);
-            exe.setCommandline(cmd.getCommandline());
-            exe.execute();
-            if (exe.getExitValue() != 0) {
-                exitHandler.handleExit(this, exe.getExitValue(), Ceylonc.FAIL_MSG);
-            }
-        } catch (IOException e) {
-            throw new BuildException("Error running Ceylon compiler", e, getLocation());
         }
     }
     @Override
