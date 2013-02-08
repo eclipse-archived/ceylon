@@ -21,6 +21,7 @@
 package com.redhat.ceylon.compiler.java.codegen;
 
 import com.redhat.ceylon.compiler.typechecker.model.Declaration;
+import com.redhat.ceylon.compiler.typechecker.model.Method;
 import com.redhat.ceylon.compiler.typechecker.model.ProducedType;
 import com.redhat.ceylon.compiler.typechecker.model.TypedDeclaration;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree;
@@ -41,6 +42,7 @@ import com.redhat.ceylon.compiler.typechecker.tree.Tree.InvocationExpression;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.IsOp;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.LogicalAssignmentOp;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.LogicalOp;
+import com.redhat.ceylon.compiler.typechecker.tree.Tree.MemberOrTypeExpression;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.NaturalLiteral;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.NegativeOp;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.Nonempty;
@@ -117,7 +119,19 @@ public abstract class BoxingVisitor extends Visitor {
     @Override
     public void visit(Expression that) {
         super.visit(that);
-        propagateFromTerm(that, that.getTerm());
+        Term term = that.getTerm();
+        propagateFromTerm(that, term);
+        
+        // Special case where a method reference surrounded
+        // by an expression will be turned into a Callable
+        // which will need to be marked boxed
+        if (term instanceof MemberOrTypeExpression) {
+            Tree.MemberOrTypeExpression expr = (Tree.MemberOrTypeExpression)term;
+            if (expr.getDeclaration() instanceof Method) {
+                that.setUnboxed(false);
+            }
+        }
+        
     }
 
     @Override
