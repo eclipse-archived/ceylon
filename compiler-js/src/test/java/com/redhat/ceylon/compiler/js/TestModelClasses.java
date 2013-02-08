@@ -180,7 +180,6 @@ public class TestModelClasses {
         ModelUtils.checkMap(cls, MetamodelGenerator.KEY_NAME, "Nested2",
                 MetamodelGenerator.KEY_METATYPE, MetamodelGenerator.METATYPE_CLASS);
         ModelUtils.checkAnnotations(cls, "shared");
-        System.out.println("clase " + cls);
         cls = ((Map<String,Map<String,Object>>)cls.get(MetamodelGenerator.KEY_METHODS)).get("innerMethod1");
         ModelUtils.checkMap(cls, MetamodelGenerator.KEY_NAME, "innerMethod1",
                 MetamodelGenerator.KEY_METATYPE, MetamodelGenerator.METATYPE_METHOD);
