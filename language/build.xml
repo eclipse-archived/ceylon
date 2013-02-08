@@ -333,11 +333,16 @@
     	
     </target>
 
-    <target name="compile.tests.js" depends="ceylon.language.js">
-        <java classname="MainForJsTest" classpathref="js.test.compile.classpath" failonerror="true">
-            <sysproperty key="file.encoding" value="UTF-8" />
-            <arg value="test"/>
-        </java>
+    <target name="compile.tests.js" depends="ceylon.language.js,ceylonc,compile.tests.setup">
+        <ceylon-compile-js
+            executable="${ceylon.compiler.loc}/dist/bin/ceylon"
+            src="${test.src}"
+            sysrep="${build.test.repo}"
+            out="${build.test}">
+            <files>
+                <include name="**/*.ceylon"/>
+            </files>
+        </ceylon-compile-js>
     </target>
 
     <target name="test.js" depends="compile.tests.js"
