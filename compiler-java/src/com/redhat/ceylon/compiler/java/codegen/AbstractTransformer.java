@@ -2929,11 +2929,10 @@ public abstract class AbstractTransformer implements Transformation {
     }
     
     public boolean supportsReifiedAlias(ClassOrInterface decl){
-        if(decl.isAlias() || decl.isAnonymous() || !decl.getTypeParameters().isEmpty() || !supportsReified(decl))
-            return false;
-        Scope container = decl.getContainer();
-        if(container instanceof ClassOrInterface)
-            return supportsReifiedAlias((ClassOrInterface) container);
-        return true;
+        return !decl.isAlias() 
+                && !decl.isAnonymous()
+                && decl.getTypeParameters().isEmpty()
+                && supportsReified(decl)
+                && Decl.isToplevel(decl);
     }
 }
