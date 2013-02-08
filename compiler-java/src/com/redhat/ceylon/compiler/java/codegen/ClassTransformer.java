@@ -1128,7 +1128,14 @@ public class ClassTransformer extends AbstractTransformer {
         return result;
     }
 
-    private int transformAttributeGetSetDeclFlags(TypedDeclaration tdecl, boolean forCompanion) {
+    /**
+     * Returns the modifier flags to be used for the getter & setter for the 
+     * given attribute-like declaration.  
+     * @param tdecl attribute-like declaration (Value, Getter, Parameter etc)
+     * @param forCompanion Whether the getter/setter is on a companion type
+     * @return The modifier flags.
+     */
+    int transformAttributeGetSetDeclFlags(TypedDeclaration tdecl, boolean forCompanion) {
         if (tdecl instanceof Setter) {
             // Spec says: A setter may not be annotated shared, default or 
             // actual. The visibility and refinement modifiers of an attribute 

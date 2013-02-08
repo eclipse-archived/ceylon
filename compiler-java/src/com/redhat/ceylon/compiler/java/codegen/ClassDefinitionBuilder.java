@@ -411,13 +411,25 @@ public class ClassDefinitionBuilder {
 
     
 
-    private void initParam(String name, Parameter decl, JCExpression type) {
-        if (decl.isCaptured()) {
-            JCVariableDecl localVar = gen.make().VarDef(gen.make().Modifiers(FINAL | PRIVATE), gen.names().fromString(name), type , null);
-            defs.append(localVar);
+    private void initParam(String name, Parameter decl) {
+        boolean impliedAttribute = decl.isDefault()
+                || decl.isActual()
+                || decl.isShared();
+        if (impliedAttribute 
+                || decl.isCaptured()) {
+            defs.append(gen.make().VarDef(gen.make().Modifiers(FINAL | PRIVATE), gen.names().fromString(name), 
+                    gen.classGen().transformClassParameterType(decl), null));
+            
             init.append(gen.make().Exec(gen.make().Assign(
                     gen.naming.makeQualifiedName(gen.naming.makeThis(), decl, Naming.NA_IDENT), 
                     gen.naming.makeName(decl, Naming.NA_IDENT))));
+            
+            if (impliedAttribute) {
+                AttributeDefinitionBuilder adb = AttributeDefinitionBuilder.getter(gen, decl.getName(), decl);
+                adb.modifiers(gen.classGen().transformAttributeGetSetDeclFlags(decl, false));
+                attribute(adb);
+            }
+            
         } else if ((decl instanceof ValueParameter) 
                         && ((ValueParameter)decl).isHidden()
                         && (decl.getContainer() instanceof TypeDeclaration)) {
@@ -442,7 +454,7 @@ public class ClassDefinitionBuilder {
         pdb.modifiers(FINAL);
         pdb.modelAnnotations(param.getAnnotations());
         parameter(pdb);
-        initParam(name, param, type);
+        initParam(name, param);
         return this;
     }
     
