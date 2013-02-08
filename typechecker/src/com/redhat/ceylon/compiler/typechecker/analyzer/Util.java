@@ -8,6 +8,7 @@ import java.util.List;
 
 import com.redhat.ceylon.compiler.typechecker.model.Annotation;
 import com.redhat.ceylon.compiler.typechecker.model.Declaration;
+import com.redhat.ceylon.compiler.typechecker.model.DynamicType;
 import com.redhat.ceylon.compiler.typechecker.model.ProducedType;
 import com.redhat.ceylon.compiler.typechecker.model.Scope;
 import com.redhat.ceylon.compiler.typechecker.model.TypeDeclaration;
@@ -221,10 +222,23 @@ class Util {
         }
     }
 
+    private static boolean isOptionalType(ProducedType type) {
+        return type.getDeclaration().getUnit().getNullValueDeclaration()
+                .getType().isSubtypeOf(type);
+    }
+
     static void checkAssignable(ProducedType type, ProducedType supertype, 
             Node node, String message) {
         if (isTypeUnknown(type) || isTypeUnknown(supertype)) {
         	addTypeUnknownError(node, message);
+        }
+        else if (supertype.getDeclaration() instanceof DynamicType && 
+                !isOptionalType(type)) {
+            //ok
+        }
+        else if (type.getDeclaration() instanceof DynamicType &&
+                !isOptionalType(supertype)) {
+            //ok
         }
         else if (!type.isSubtypeOf(supertype)) {
         	node.addError(message + message(type, " is not assignable to ", supertype, node.getUnit()));
@@ -257,12 +271,20 @@ class Util {
         if (isTypeUnknown(type) || isTypeUnknown(supertype)) {
             addTypeUnknownError(node, message);
         }
+        else if (supertype.getDeclaration() instanceof DynamicType && 
+                !isOptionalType(type)) {
+            //ok
+        }
+        else if (type.getDeclaration() instanceof DynamicType &&
+                !isOptionalType(supertype)) {
+            //ok
+        }
         else if (!type.isSubtypeOf(supertype)) {
             node.addError(message + message(type, " is not assignable to ", supertype, node.getUnit()), code);
         }
     }
 
-    static void checkAssignable(ProducedType type, ProducedType supertype, 
+    /*static void checkAssignable(ProducedType type, ProducedType supertype, 
             TypeDeclaration td, Node node, String message) {
         if (isTypeUnknown(type) || isTypeUnknown(supertype)) {
             addTypeUnknownError(node, message);
@@ -270,7 +292,7 @@ class Util {
         else if (!type.isSubtypeOf(supertype)) {
             node.addError(message + message(type, " is not assignable to ", supertype, node.getUnit()));
         }
-    }
+    }*/
 
     static void checkIsExactly(ProducedType type, ProducedType supertype, 
             Node node, String message) {

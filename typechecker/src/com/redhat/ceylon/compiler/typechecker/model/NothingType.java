@@ -23,12 +23,12 @@ public class NothingType extends TypeDeclaration {
     public List<String> getQualifiedName() {
         return Arrays.asList("ceylon","language","Nothing");
     }
-
+    
     @Override
     public String getQualifiedNameString() {
         return "ceylon.language::Nothing";
     }
-
+    
     @Override
     public String toString() {
         return getClass().getSimpleName();
@@ -48,5 +48,5 @@ public class NothingType extends TypeDeclaration {
     public boolean equals(Object object) {
     	return object instanceof NothingType;
     }
-
+    
 }

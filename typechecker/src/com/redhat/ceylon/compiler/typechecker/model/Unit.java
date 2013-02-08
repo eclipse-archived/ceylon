@@ -196,6 +196,9 @@ public class Unit {
             if ("Nothing".equals(name)) {
                 return getNothingDeclaration();
             }
+            if ("Dynamic".equals(name)) {
+                return getDynamicDeclaration();
+            }
             for (Package languageScope : languageModule.getPackages() ) {
                 Declaration d = languageScope.getMember(name, null, false);
                 if (d != null && d.isShared()) {
@@ -662,6 +665,10 @@ public class Unit {
     
     public NothingType getNothingDeclaration() {
         return new NothingType(this);
+    }
+
+    public DynamicType getDynamicDeclaration() {
+        return new DynamicType(this);
     }
 
     public ProducedType denotableType(ProducedType pt) {
