@@ -1,0 +1,17 @@
+package com.redhat.ceylon.compiler.java.test.structure.klass;
+
+class SharedParameter {
+    
+    SharedParameter(final .java.lang.String s) {
+        this.s = s;
+    }
+    private final .java.lang.String s;
+    
+    public final .java.lang.String getS() {
+        return s;
+    }
+    
+    private final .java.lang.String m$priv() {
+        return s;
+    }
+}

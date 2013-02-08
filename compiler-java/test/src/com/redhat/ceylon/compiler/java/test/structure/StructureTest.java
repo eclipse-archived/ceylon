@@ -323,6 +323,21 @@ public class StructureTest extends CompilerTest {
         compareWithJavaSource("klass/KlassHiding");
     }
     
+    @Test
+    public void testKlsSharedParameter(){
+        compareWithJavaSource("klass/SharedParameter");
+    }
+    
+    @Test
+    public void testKlsActualParameter(){
+        compareWithJavaSource("klass/ActualParameter");
+    }
+    
+    @Test
+    public void testKlsDefaultParameter(){
+        compareWithJavaSource("klass/DefaultParameter");
+    }
+    
     //
     // Methods
     

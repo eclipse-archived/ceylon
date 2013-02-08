@@ -1,0 +1,29 @@
+package com.redhat.ceylon.compiler.java.test.structure.klass;
+
+abstract class ActualParameterSuper {
+    
+    ActualParameterSuper() {
+    }
+    
+    public abstract .ceylon.language.String getS();
+}
+class ActualParameter extends .com.redhat.ceylon.compiler.java.test.structure.klass.ActualParameterSuper {
+    
+    ActualParameter(final .java.lang.String string, final .ceylon.language.String s) {
+        super();
+        this.string = string;
+        this.s = s;
+    }
+    private final .java.lang.String string;
+    
+    @.java.lang.Override
+    public final .java.lang.String toString() {
+        return string;
+    }
+    private final .ceylon.language.String s;
+    
+    @.java.lang.Override
+    public final .ceylon.language.String getS() {
+        return s;
+    }
+}

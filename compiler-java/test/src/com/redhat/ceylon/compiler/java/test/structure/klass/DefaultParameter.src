@@ -1,0 +1,13 @@
+package com.redhat.ceylon.compiler.java.test.structure.klass;
+
+class DefaultParameter {
+    
+    DefaultParameter(final .java.lang.String s) {
+        this.s = s;
+    }
+    private final .java.lang.String s;
+    
+    public .java.lang.String getS() {
+        return s;
+    }
+}
