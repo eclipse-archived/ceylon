@@ -2127,7 +2127,7 @@ public class ExpressionVisitor extends Visitor {
         if (pls.isEmpty()) {
             if (dec instanceof TypeDeclaration) {
                 that.addError("type cannot be instantiated: " + 
-                        dec.getName(unit) + " (or return statement is missing)");
+                        dec.getName(unit));
             }
             else {
                 that.addError("member cannot be invoked: " +
