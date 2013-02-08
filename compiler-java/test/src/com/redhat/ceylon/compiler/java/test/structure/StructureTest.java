@@ -635,6 +635,11 @@ public class StructureTest extends CompilerTest {
     }
 
     @Test
+    public void testRfdRefinedVarianceInheritance(){
+        compareWithJavaSource("reified/RVI");
+    }
+
+    @Test
     public void testRfdMethod(){
         compareWithJavaSource("reified/Method");
     }

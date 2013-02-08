@@ -1,0 +1,195 @@
+package com.redhat.ceylon.compiler.java.test.structure.reified;
+
+@.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 4)
+@.com.redhat.ceylon.compiler.java.metadata.Annotations({@.com.redhat.ceylon.compiler.java.metadata.Annotation("shared")})
+public class Top implements .com.redhat.ceylon.compiler.java.ReifiedType {
+    
+    public Top() {
+    }
+    
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    public static void main(.java.lang.String[] args) {
+        .ceylon.language.process_.getProcess$().setupArguments(args);
+        new .com.redhat.ceylon.compiler.java.test.structure.reified.Top();
+    }
+    
+    @.java.lang.Override
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    public boolean $is(.com.redhat.ceylon.compiler.java.TypeDescriptor type) {
+        if (.com.redhat.ceylon.compiler.java.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.reified.Top.class).equals(type)) return true;
+        return false;
+    }
+}
+@.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 4)
+@.com.redhat.ceylon.compiler.java.metadata.Class(extendsType = "com.redhat.ceylon.compiler.java.test.structure.reified::Top")
+@.com.redhat.ceylon.compiler.java.metadata.Annotations({@.com.redhat.ceylon.compiler.java.metadata.Annotation("shared")})
+public class Bottom extends .com.redhat.ceylon.compiler.java.test.structure.reified.Top {
+    
+    public Bottom() {
+        super();
+    }
+    
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    public static void main(.java.lang.String[] args) {
+        .ceylon.language.process_.getProcess$().setupArguments(args);
+        new .com.redhat.ceylon.compiler.java.test.structure.reified.Bottom();
+    }
+    
+    @.java.lang.Override
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    public boolean $is(.com.redhat.ceylon.compiler.java.TypeDescriptor type) {
+        if (.com.redhat.ceylon.compiler.java.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.reified.Bottom.class).equals(type)) return true;
+        return super.$is(type);
+    }
+}
+@.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 4)
+@.com.redhat.ceylon.compiler.java.metadata.Annotations({@.com.redhat.ceylon.compiler.java.metadata.Annotation("shared")})
+@.com.redhat.ceylon.compiler.java.metadata.TypeParameters({@.com.redhat.ceylon.compiler.java.metadata.TypeParameter(value = "Key", variance = .com.redhat.ceylon.compiler.java.metadata.Variance.OUT, satisfies = {}, caseTypes = {})})
+public interface Interface<Key> {
+    
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    public .com.redhat.ceylon.compiler.java.test.structure.reified.Interface$impl<Key> $com$redhat$ceylon$compiler$java$test$structure$reified$Interface$impl();
+}
+@.com.redhat.ceylon.compiler.java.metadata.Ignore
+public final class Interface$impl<Key> {
+    
+    public Interface$impl(@.com.redhat.ceylon.compiler.java.metadata.Ignore
+    .com.redhat.ceylon.compiler.java.TypeDescriptor $reifiedKey, .com.redhat.ceylon.compiler.java.test.structure.reified.Interface<? extends Key> $this) {
+        this.$reifiedKey = $reifiedKey;
+        this.$this = $this;
+    }
+    private .com.redhat.ceylon.compiler.java.TypeDescriptor $reifiedKey;
+    private final .com.redhat.ceylon.compiler.java.test.structure.reified.Interface<? extends Key> $this;
+    
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    public void $refine(@.com.redhat.ceylon.compiler.java.metadata.Ignore
+    .com.redhat.ceylon.compiler.java.TypeDescriptor $reifiedKey) {
+        this.$reifiedKey = $reifiedKey;
+    }
+    
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    public boolean $is(.com.redhat.ceylon.compiler.java.TypeDescriptor type) {
+        if (.com.redhat.ceylon.compiler.java.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.reified.Interface.class, $reifiedKey).equals(type)) return true;
+        return false;
+    }
+}
+@.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 4)
+@.com.redhat.ceylon.compiler.java.metadata.Annotations({@.com.redhat.ceylon.compiler.java.metadata.Annotation("shared")})
+@.com.redhat.ceylon.compiler.java.metadata.SatisfiedTypes({"com.redhat.ceylon.compiler.java.test.structure.reified::Interface<com.redhat.ceylon.compiler.java.test.structure.reified::Top>"})
+public interface SubInterface1 extends .com.redhat.ceylon.compiler.java.test.structure.reified.Interface<.com.redhat.ceylon.compiler.java.test.structure.reified.Top> {
+    
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    public .com.redhat.ceylon.compiler.java.test.structure.reified.SubInterface1$impl $com$redhat$ceylon$compiler$java$test$structure$reified$SubInterface1$impl();
+}
+@.com.redhat.ceylon.compiler.java.metadata.Ignore
+public final class SubInterface1$impl {
+    
+    public SubInterface1$impl(.com.redhat.ceylon.compiler.java.test.structure.reified.SubInterface1 $this) {
+        this.$this = $this;
+    }
+    private final .com.redhat.ceylon.compiler.java.test.structure.reified.SubInterface1 $this;
+    
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    public boolean $is(.com.redhat.ceylon.compiler.java.TypeDescriptor type) {
+        if (.com.redhat.ceylon.compiler.java.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.reified.SubInterface1.class).equals(type)) return true;
+        if ($this.$com$redhat$ceylon$compiler$java$test$structure$reified$Interface$impl().$is(type)) return true;
+        return false;
+    }
+}
+@.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 4)
+@.com.redhat.ceylon.compiler.java.metadata.Annotations({@.com.redhat.ceylon.compiler.java.metadata.Annotation("shared")})
+@.com.redhat.ceylon.compiler.java.metadata.SatisfiedTypes({"com.redhat.ceylon.compiler.java.test.structure.reified::Interface<com.redhat.ceylon.compiler.java.test.structure.reified::Bottom>"})
+public interface SubInterface2 extends .com.redhat.ceylon.compiler.java.test.structure.reified.Interface<.com.redhat.ceylon.compiler.java.test.structure.reified.Bottom> {
+    
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    public .com.redhat.ceylon.compiler.java.test.structure.reified.SubInterface2$impl $com$redhat$ceylon$compiler$java$test$structure$reified$SubInterface2$impl();
+}
+@.com.redhat.ceylon.compiler.java.metadata.Ignore
+public final class SubInterface2$impl {
+    
+    public SubInterface2$impl(.com.redhat.ceylon.compiler.java.test.structure.reified.SubInterface2 $this) {
+        this.$this = $this;
+    }
+    private final .com.redhat.ceylon.compiler.java.test.structure.reified.SubInterface2 $this;
+    
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    public boolean $is(.com.redhat.ceylon.compiler.java.TypeDescriptor type) {
+        if (.com.redhat.ceylon.compiler.java.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.reified.SubInterface2.class).equals(type)) return true;
+        if ($this.$com$redhat$ceylon$compiler$java$test$structure$reified$Interface$impl().$is(type)) return true;
+        return false;
+    }
+}
+@.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 4)
+@.com.redhat.ceylon.compiler.java.metadata.Annotations({@.com.redhat.ceylon.compiler.java.metadata.Annotation("shared")})
+@.com.redhat.ceylon.compiler.java.metadata.SatisfiedTypes({"com.redhat.ceylon.compiler.java.test.structure.reified::SubInterface1"})
+public class Class1 implements .com.redhat.ceylon.compiler.java.ReifiedType, .com.redhat.ceylon.compiler.java.test.structure.reified.SubInterface1 {
+    
+    public Class1() {
+        this.$com$redhat$ceylon$compiler$java$test$structure$reified$SubInterface1$this = new .com.redhat.ceylon.compiler.java.test.structure.reified.SubInterface1$impl(this);
+        this.$com$redhat$ceylon$compiler$java$test$structure$reified$Interface$this = new .com.redhat.ceylon.compiler.java.test.structure.reified.Interface$impl<.com.redhat.ceylon.compiler.java.test.structure.reified.Top>(.com.redhat.ceylon.compiler.java.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.reified.Top.class), this);
+    }
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    protected final .com.redhat.ceylon.compiler.java.test.structure.reified.SubInterface1$impl $com$redhat$ceylon$compiler$java$test$structure$reified$SubInterface1$this;
+    
+    @.java.lang.Override
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    public .com.redhat.ceylon.compiler.java.test.structure.reified.SubInterface1$impl $com$redhat$ceylon$compiler$java$test$structure$reified$SubInterface1$impl() {
+        return $com$redhat$ceylon$compiler$java$test$structure$reified$SubInterface1$this;
+    }
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    protected final .com.redhat.ceylon.compiler.java.test.structure.reified.Interface$impl<.com.redhat.ceylon.compiler.java.test.structure.reified.Top> $com$redhat$ceylon$compiler$java$test$structure$reified$Interface$this;
+    
+    @.java.lang.Override
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    public .com.redhat.ceylon.compiler.java.test.structure.reified.Interface$impl<.com.redhat.ceylon.compiler.java.test.structure.reified.Top> $com$redhat$ceylon$compiler$java$test$structure$reified$Interface$impl() {
+        return $com$redhat$ceylon$compiler$java$test$structure$reified$Interface$this;
+    }
+    
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    public static void main(.java.lang.String[] args) {
+        .ceylon.language.process_.getProcess$().setupArguments(args);
+        new .com.redhat.ceylon.compiler.java.test.structure.reified.Class1();
+    }
+    
+    @.java.lang.Override
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    public boolean $is(.com.redhat.ceylon.compiler.java.TypeDescriptor type) {
+        if (.com.redhat.ceylon.compiler.java.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.reified.Class1.class).equals(type)) return true;
+        if ($com$redhat$ceylon$compiler$java$test$structure$reified$SubInterface1$this.$is(type)) return true;
+        return false;
+    }
+}
+@.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 4)
+@.com.redhat.ceylon.compiler.java.metadata.Class(extendsType = "com.redhat.ceylon.compiler.java.test.structure.reified::Class1")
+@.com.redhat.ceylon.compiler.java.metadata.Annotations({@.com.redhat.ceylon.compiler.java.metadata.Annotation("shared")})
+@.com.redhat.ceylon.compiler.java.metadata.SatisfiedTypes({"com.redhat.ceylon.compiler.java.test.structure.reified::SubInterface2"})
+public class Class2 extends .com.redhat.ceylon.compiler.java.test.structure.reified.Class1 implements .com.redhat.ceylon.compiler.java.test.structure.reified.SubInterface2 {
+    
+    public Class2() {
+        super();
+        this.$com$redhat$ceylon$compiler$java$test$structure$reified$SubInterface2$this = new .com.redhat.ceylon.compiler.java.test.structure.reified.SubInterface2$impl(this);
+        $com$redhat$ceylon$compiler$java$test$structure$reified$Interface$this.$refine(.com.redhat.ceylon.compiler.java.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.reified.Bottom.class));
+    }
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    protected final .com.redhat.ceylon.compiler.java.test.structure.reified.SubInterface2$impl $com$redhat$ceylon$compiler$java$test$structure$reified$SubInterface2$this;
+    
+    @.java.lang.Override
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    public .com.redhat.ceylon.compiler.java.test.structure.reified.SubInterface2$impl $com$redhat$ceylon$compiler$java$test$structure$reified$SubInterface2$impl() {
+        return $com$redhat$ceylon$compiler$java$test$structure$reified$SubInterface2$this;
+    }
+    
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    public static void main(.java.lang.String[] args) {
+        .ceylon.language.process_.getProcess$().setupArguments(args);
+        new .com.redhat.ceylon.compiler.java.test.structure.reified.Class2();
+    }
+    
+    @.java.lang.Override
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    public boolean $is(.com.redhat.ceylon.compiler.java.TypeDescriptor type) {
+        if (.com.redhat.ceylon.compiler.java.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.reified.Class2.class).equals(type)) return true;
+        if ($com$redhat$ceylon$compiler$java$test$structure$reified$SubInterface2$this.$is(type)) return true;
+        return super.$is(type);
+    }
+}
