@@ -222,22 +222,15 @@ class Util {
         }
     }
 
-    private static boolean isOptionalType(ProducedType type) {
-        return type.getDeclaration().getUnit().getNullValueDeclaration()
-                .getType().isSubtypeOf(type);
-    }
-
     static void checkAssignable(ProducedType type, ProducedType supertype, 
             Node node, String message) {
         if (isTypeUnknown(type) || isTypeUnknown(supertype)) {
         	addTypeUnknownError(node, message);
         }
-        else if (supertype.getDeclaration() instanceof DynamicType && 
-                !isOptionalType(type)) {
+        else if (supertype.getDeclaration() instanceof DynamicType) {
             //ok
         }
-        else if (type.getDeclaration() instanceof DynamicType &&
-                !isOptionalType(supertype)) {
+        else if (type.getDeclaration() instanceof DynamicType) {
             //ok
         }
         else if (!type.isSubtypeOf(supertype)) {
@@ -271,12 +264,10 @@ class Util {
         if (isTypeUnknown(type) || isTypeUnknown(supertype)) {
             addTypeUnknownError(node, message);
         }
-        else if (supertype.getDeclaration() instanceof DynamicType && 
-                !isOptionalType(type)) {
+        else if (supertype.getDeclaration() instanceof DynamicType) {
             //ok
         }
-        else if (type.getDeclaration() instanceof DynamicType &&
-                !isOptionalType(supertype)) {
+        else if (type.getDeclaration() instanceof DynamicType) {
             //ok
         }
         else if (!type.isSubtypeOf(supertype)) {
