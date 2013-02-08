@@ -57,7 +57,8 @@ public class CeylonCompileAntTask extends LazyCeylonAntTask  {
             String name = pathname.getName();
             return name.endsWith(".car")
                     || name.endsWith(".src")
-                    || name.endsWith(".sha1");
+                    || name.endsWith(".car.sha1")
+                    || name.endsWith(".src.sha1");
         }
     };
     
