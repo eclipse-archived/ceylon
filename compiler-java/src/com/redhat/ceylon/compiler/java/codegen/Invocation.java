@@ -60,6 +60,7 @@ import com.redhat.ceylon.compiler.typechecker.tree.Tree.FunctionArgument;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.PositionalArgument;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.PositionalArgumentList;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.Primary;
+import com.redhat.ceylon.compiler.typechecker.tree.Tree.QualifiedMemberExpression;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.QualifiedTypeExpression;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.SequencedArgument;
 import com.sun.tools.javac.tree.JCTree;
@@ -160,6 +161,15 @@ abstract class Invocation {
             actualPrimExpr = gen.makeSelect(primaryExpr, "this");
         } else {
             actualPrimExpr = primaryExpr;
+        }
+        
+        if (getPrimary() instanceof Tree.Expression) {
+            Tree.Primary p = getPrimary();
+            while (p instanceof Tree.Expression) {
+                p = (Tree.Primary)((Expression)getPrimary()).getTerm();
+            }
+            primaryExpr = gen.expressionGen().transformFunctional(p, (Functional)((QualifiedMemberExpression)p).getDeclaration());
+            selector = null;
         }
         
         if (getPrimary() instanceof Tree.BaseTypeExpression) {
