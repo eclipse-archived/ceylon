@@ -435,7 +435,10 @@ public class MethodDefinitionBuilder {
         String descriptorName = gen.naming.getTypeArgumentDescriptorName(param.getIdentifier().getText());
         ParameterDefinitionBuilder pdb = ParameterDefinitionBuilder.instance(gen, descriptorName);
         pdb.type(gen.makeTypeDescriptorType(), List.<JCAnnotation>nil());
-        pdb.ignored(true);
+        if(noAnnotations)
+            pdb.noAnnotations();
+        else
+            pdb.ignored(true);
         parameter(pdb);
 
         return this;

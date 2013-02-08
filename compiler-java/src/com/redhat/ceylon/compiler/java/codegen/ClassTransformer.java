@@ -887,6 +887,7 @@ public class ClassTransformer extends AbstractTransformer {
                 makeJavaType(thisType), 
                 null, false);
         MethodDefinitionBuilder ctor = companionBuilder.addConstructorWithInitCode();
+        ctor.noAnnotations();
         if(typeParameterList != null)
             ctor.reifiedTypeParameters(typeParameterList.getTypeParameterDeclarations());
         ctor.modifiers(model.isShared() ? PUBLIC : 0);

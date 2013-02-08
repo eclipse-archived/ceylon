@@ -623,7 +623,8 @@ public class ClassDefinitionBuilder {
     private ParameterDefinitionBuilder makeReifiedParameter(String descriptorName) {
         ParameterDefinitionBuilder pdb = ParameterDefinitionBuilder.instance(gen, descriptorName);
         pdb.type(gen.makeTypeDescriptorType(), List.<JCAnnotation>nil());
-        pdb.ignored(true);
+        if(!isCompanion)
+            pdb.ignored(true);
         return pdb;
     }
 
@@ -635,6 +636,10 @@ public class ClassDefinitionBuilder {
             concreteInterfaceMemberDefs.reifiedIs(type, typeParameters, satisfiedTypes, extendedType);
         }else{
             MethodDefinitionBuilder method = MethodDefinitionBuilder.systemMethod(gen, gen.naming.getIsMethodName(type));
+            if(isCompanion){
+                method.noAnnotations();
+                method.ignoreAnnotations(false); // we don't want any @Ignore annotations on impl classes
+            }
             method.modifiers(PUBLIC);
             method.resultType(List.<JCAnnotation>nil(), gen.make().TypeIdent(TypeTags.BOOLEAN));
             // in classes this overrides an interface method
@@ -719,6 +724,8 @@ public class ClassDefinitionBuilder {
     public ClassDefinitionBuilder addRefineReifiedTypeParametersMethod(TypeParameterList typeParameterList) {
         MethodDefinitionBuilder method = MethodDefinitionBuilder.systemMethod(gen, gen.naming.getRefineTypeParametersMethodName());
         method.modifiers(PUBLIC);
+        method.noAnnotations();
+        method.ignoreAnnotations(false); // we don't want any @Ignore annotations on impl classes
 
         List<JCStatement> body = List.nil();
         for(TypeParameterDeclaration tp : typeParameterList.getTypeParameterDeclarations()){
