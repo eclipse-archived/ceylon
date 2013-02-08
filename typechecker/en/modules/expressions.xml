@@ -480,8 +480,8 @@ shared interface Color { ... }</programlisting>
             <literal>void</literal> function. Otherwise it its return type is 
             inferred.</para>
             
-            <para>The type of an anonymous function expression is the callable type 
-            of the function.</para>
+            <para>The type of an anonymous function expression is the callable 
+            type of the function.</para>
             
             <programlisting>(Value x, Value y) => x&lt;=&gt;y</programlisting>
             
@@ -491,6 +491,12 @@ shared interface Color { ... }</programlisting>
     value mid = string.size % 2;
     return [string[0..mid],string[mid+1...]];
 }</programlisting>
+            
+            <comment><para>Note: there is almost no semantic difference between the
+            following function declarations:</para>
+            <programlisting>Float f(Float x)(Float y) => x*y;</programlisting>
+            <programlisting>Float(Y) f(Float x) => (Float y) => x*y;</programlisting>
+            <para>The first form is strongly preferred.</para></comment>
             
         </section>
         
