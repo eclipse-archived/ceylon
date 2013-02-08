@@ -1,5 +1,6 @@
 package ceylon.language;
 
+import com.redhat.ceylon.compiler.java.TypeDescriptor;
 import com.redhat.ceylon.compiler.java.metadata.CaseTypes;
 import com.redhat.ceylon.compiler.java.metadata.Ceylon;
 import com.redhat.ceylon.compiler.java.metadata.Class;
@@ -11,6 +12,9 @@ import com.redhat.ceylon.compiler.java.metadata.ValueType;
 @CaseTypes({"ceylon.language::true", "ceylon.language::false"})
 @ValueType
 public abstract class Boolean {
+
+    @Ignore
+    public final static TypeDescriptor TYPE_DESCRIPTOR = TypeDescriptor.klass(Boolean.class);
 
     @Ignore
     public static Boolean instance(boolean b) {

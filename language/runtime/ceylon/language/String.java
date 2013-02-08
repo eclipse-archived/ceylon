@@ -1,5 +1,6 @@
 package ceylon.language;
 
+import com.redhat.ceylon.compiler.java.TypeDescriptor;
 import com.redhat.ceylon.compiler.java.language.AbstractCallable;
 import com.redhat.ceylon.compiler.java.language.AbstractIterator;
 import com.redhat.ceylon.compiler.java.language.ArraySequence;
@@ -26,6 +27,10 @@ import com.redhat.ceylon.compiler.java.metadata.ValueType;
 public class String
     implements Comparable<String>, List<Character>,
                Summable<String> {
+    
+    @Ignore
+    public final static TypeDescriptor TYPE_DESCRIPTOR = TypeDescriptor.klass(String.class);
+    
     @Ignore
     protected final ceylon.language.Category$impl $ceylon$language$Category$this;
     @Ignore

@@ -1,5 +1,6 @@
 package ceylon.language;
 
+import com.redhat.ceylon.compiler.java.TypeDescriptor;
 import com.redhat.ceylon.compiler.java.Util;
 import com.redhat.ceylon.compiler.java.metadata.Ceylon;
 import com.redhat.ceylon.compiler.java.metadata.Class;
@@ -15,6 +16,9 @@ import com.redhat.ceylon.compiler.java.metadata.ValueType;
 @ValueType
 public final class Character
         implements Comparable<Character>, Enumerable<Character> {
+
+    @Ignore
+    public final static TypeDescriptor TYPE_DESCRIPTOR = TypeDescriptor.klass(Character.class);
 
     public final int codePoint;
 
