@@ -18,9 +18,17 @@ public final class Interface$impl<Key, Value> {
         this.$reifiedValue = $reifiedValue;
         this.$this = $this;
     }
-    private final .com.redhat.ceylon.compiler.java.TypeDescriptor $reifiedKey;
-    private final .com.redhat.ceylon.compiler.java.TypeDescriptor $reifiedValue;
+    private .com.redhat.ceylon.compiler.java.TypeDescriptor $reifiedKey;
+    private .com.redhat.ceylon.compiler.java.TypeDescriptor $reifiedValue;
     private final .com.redhat.ceylon.compiler.java.test.structure.reified.Interface<Key, Value> $this;
+    
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    public void $refine(@.com.redhat.ceylon.compiler.java.metadata.Ignore
+    .com.redhat.ceylon.compiler.java.TypeDescriptor $reifiedKey, @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    .com.redhat.ceylon.compiler.java.TypeDescriptor $reifiedValue) {
+        this.$reifiedValue = $reifiedValue;
+        this.$reifiedKey = $reifiedKey;
+    }
     
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
     public boolean $is(.com.redhat.ceylon.compiler.java.TypeDescriptor type) {

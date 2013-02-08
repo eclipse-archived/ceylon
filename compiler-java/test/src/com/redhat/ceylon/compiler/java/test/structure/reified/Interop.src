@@ -52,8 +52,14 @@ public final class CeylonInterface$impl<Element> {
         this.$reifiedElement = $reifiedElement;
         this.$this = $this;
     }
-    private final .com.redhat.ceylon.compiler.java.TypeDescriptor $reifiedElement;
+    private .com.redhat.ceylon.compiler.java.TypeDescriptor $reifiedElement;
     private final .com.redhat.ceylon.compiler.java.test.structure.reified.CeylonInterface<Element> $this;
+    
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    public void $refine(@.com.redhat.ceylon.compiler.java.metadata.Ignore
+    .com.redhat.ceylon.compiler.java.TypeDescriptor $reifiedElement) {
+        this.$reifiedElement = $reifiedElement;
+    }
     
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
     public boolean $is(.com.redhat.ceylon.compiler.java.TypeDescriptor type) {
