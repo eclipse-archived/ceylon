@@ -50,7 +50,6 @@ public final class TargetInterface$impl {
     }
     private final .com.redhat.ceylon.compiler.java.test.structure.reified.TargetInterface $this;
     
-    @.com.redhat.ceylon.compiler.java.metadata.Ignore
     public boolean $is(.com.redhat.ceylon.compiler.java.TypeDescriptor type) {
         if (.com.redhat.ceylon.compiler.java.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.reified.TargetInterface.class).equals(type)) return true;
         return false;
