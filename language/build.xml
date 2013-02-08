@@ -10,7 +10,7 @@
     <property name="build.test" location="${build.dir}/test"/>
     <property name="build.test.repo" location="${build.dir}/test-repo"/>
     <property name="ide.dist" location="${basedir}/ide-dist"/>
-	
+    
     <!-- The Java/JS source files for the runtime -->
     <property name="runtime.src" location="runtime"/> 
     <property name="runtime-js.src" location="runtime-js"/> 
@@ -49,7 +49,7 @@
     <property name="ceylon.common.jar" value="${ceylon.common.dir}/com.redhat.ceylon.common-${module.com.redhat.ceylon.common.version}.jar"/>
     <property name="ceylon.common.lib" location="${ceylon.repo.dir}/${ceylon.common.jar}"/>
     <!-- For JS -->
-	<property name="ceylon.compiler-js.dir" value="com/redhat/ceylon/compiler/js/${module.com.redhat.ceylon.compiler.js.version}"/>
+    <property name="ceylon.compiler-js.dir" value="com/redhat/ceylon/compiler/js/${module.com.redhat.ceylon.compiler.js.version}"/>
     <property name="ceylon.compiler-js.jar" value="${ceylon.compiler-js.dir}/com.redhat.ceylon.compiler.js-${module.com.redhat.ceylon.compiler.js.version}.jar"/>
     <property name="ceylon.compiler-js.lib" location="${ceylon.repo.dir}/${ceylon.compiler-js.jar}"/>
     <property name="ceylon.module-resolver.dir" value="com/redhat/ceylon/module-resolver/${module.com.redhat.ceylon.module-resolver.version}"/>
@@ -64,18 +64,18 @@
     <path id="compile.classpath">
         <pathelement path="${ceylon.common.lib}"/>
     </path>
-	
+    
     <path id="test.compile.classpath">
         <pathelement path="${build.dist}/${ceylon.language.car}"/>
         <pathelement path="${junit.lib}"/>
     </path>
-	
+    
     <path id="test.run.classpath">
         <path refid="test.compile.classpath"/>
         <pathelement path="${build.test}"/>
         <pathelement path="${ceylon.common.lib}"/>
     </path>
-	
+    
     <path id="ant-tasks">
         <pathelement path="${ceylon.ant.lib}"/>
     </path>
@@ -108,7 +108,7 @@
         <echo file="${file}.sha1" message="${value}"/>
     </target>
 
-	<target name="ceylonc">
+    <target name="ceylonc">
         <typedef resource="com/redhat/ceylon/ant/antlib.xml" classpathref="ant-tasks"/>
     </target>
 
@@ -125,16 +125,16 @@
         <copy 
             overwrite="true"
             todir="../ceylon-ide-eclipse/plugins/com.redhat.ceylon.eclipse.ui/defaultRepository/">
-        	<fileset dir="${build.dist}">
-        		<include name="**/*"/>
-        	</fileset>
-    	</copy>
+            <fileset dir="${build.dist}">
+                <include name="**/*"/>
+            </fileset>
+        </copy>
     </target>
-	
+    
     <target name="dist"
             depends="build"
             description="Create Ceylon language distribution">
-    	<delete file="${build.dist}/${ceylon.language.src}"/>
+        <delete file="${build.dist}/${ceylon.language.src}"/>
         <delete file="${build.dist}/${ceylon.language.src}.sha1"/>
         <zip destfile="${build.dist}/${ceylon.language.src}">
             <fileset dir="${module.language.src}">
@@ -181,11 +181,11 @@
             noMtimeCheck="true"
             src="${module.language.src}:${runtime.src}"
             out="${build.dist}">
-        	<javacoption>-Xbootstrapceylon</javacoption>
+            <javacoption>-Xbootstrapceylon</javacoption>
             <files>
                 <include name="**/*.ceylon"/>
                 <include name="com/redhat/**/*.java"/>
-            	<!-- We swap the nativily implemented files for their Java counter parts -->
+                <!-- We swap the nativily implemented files for their Java counter parts -->
                 <exclude name="ceylon/language/Array.ceylon"/>
                 <include name="ceylon/language/Array.java"/>
                 <include name="ceylon/language/array_.java"/>
@@ -214,10 +214,10 @@
                 <include name="ceylon/language/parseInteger_.java"/>
                 <exclude name="ceylon/language/language.ceylon"/>
                 <include name="ceylon/language/language_.java"/>
-            	<exclude name="ceylon/language/process.ceylon"/>
+                <exclude name="ceylon/language/process.ceylon"/>
                 <include name="ceylon/language/process_.java"/>
-            	<exclude name="ceylon/language/integerRangeByIterable.ceylon"/>
-            	<include name="ceylon/language/integerRangeByIterable_.java"/>
+                <exclude name="ceylon/language/integerRangeByIterable.ceylon"/>
+                <include name="ceylon/language/integerRangeByIterable_.java"/>
                 <exclude name="ceylon/language/SequenceBuilder.ceylon"/>
                 <include name="ceylon/language/SequenceBuilder.java"/>
                 <include name="ceylon/language/SequenceAppender.java"/>
@@ -241,7 +241,7 @@
             </files>
         </ceylon-compile>
     </target>
-	
+    
     <!-- generate the ceylon.language.js file -->
     <target name="ceylon.language.js">
         <mkdir dir="${ceylon.language.dist}"/>
@@ -256,17 +256,17 @@
     <target name="build" depends="ceylon.language.java,ceylon.language.js">
         <!-- Temporary hack to prevent problems in the IDE when the compilation fails -->
         <mkdir dir="${ide.dist}"/>
-    	<copy todir="${ide.dist}">
+        <copy todir="${ide.dist}">
             <fileset dir="${build.dist}/${ceylon.language.dir}">
                 <include name="${ceylon.language.name}.car"/>
             </fileset>
         </copy>
     </target>
-	
-    <target name="compile.tests.java" depends="ceylon.language.java,ceylonc">
+    
+    <target name="compile.tests.setup">
         <delete dir="${build.test.repo}"/>
         <mkdir dir="${build.test.repo}"/>
-    	<copy todir="${build.test.repo}">
+        <copy todir="${build.test.repo}">
             <fileset dir="${ceylon.compiler.loc}/dist/repo">
                 <exclude name="ceylon/language/**"/>
             </fileset>
@@ -278,39 +278,42 @@
         </copy>
         <delete dir="${build.test}"/>
         <mkdir dir="${build.test}"/>
+    </target>
+
+    <target name="compile.tests.java" depends="ceylon.language.java,ceylonc,compile.tests.setup">
         <ceylon-compile
             executable="${ceylon.compiler.loc}/dist/bin/ceylon"
             src="${test.src}"
-        	sysrep="${build.test.repo}"
+            sysrep="${build.test.repo}"
             out="${build.test}">
             <files>
                 <include name="**/*.ceylon"/>
             </files>
         </ceylon-compile>
-    	<javac
-    	    srcdir="${test.src}"
-    	    destdir="${build.test}"
-    	    debug="true"
-    	    encoding="UTF-8"
-    	    classpathref="test.compile.classpath"
-    	    includeantruntime="false">
-    	    <include name="**/*.java"/>
-    	</javac>
+        <javac
+            srcdir="${test.src}"
+            destdir="${build.test}"
+            debug="true"
+            encoding="UTF-8"
+            classpathref="test.compile.classpath"
+            includeantruntime="false">
+            <include name="**/*.java"/>
+        </javac>
     </target>
     
     <target name="test.java" depends="compile.tests.java"
         description="compile and run the Java tests">
         <java classname="runAndExit_" classpath="${tests.car};${build.dist}/${ceylon.language.car}"
             resultproperty="test.ceylon.result"/>
-    	
-    	<condition property="test.fail.ceylon">
-    		<not><equals arg1="${test.ceylon.result}" arg2="0"/></not>
-    	</condition>
-    	
+        
+        <condition property="test.fail.ceylon">
+            <not><equals arg1="${test.ceylon.result}" arg2="0"/></not>
+        </condition>
+        
         <mkdir dir="${test.reports}"/>
         <junit printsummary="yes" haltonfailure="no" 
-        	errorproperty="test.fail.junit"
-        	failureproperty="test.fail.junit">
+            errorproperty="test.fail.junit"
+            failureproperty="test.fail.junit">
           <classpath refid="test.run.classpath"/>
           <formatter type="xml"/>
 
@@ -327,10 +330,10 @@
           </fileset>
           <report format="frames" todir="${test.reports}"/>
         </junitreport>
-    	
-    	<fail if="${test.fail.ceylon}" message="There were ${test.ceylon.result} failure(s) in the Ceylon tests"/>
-    	<fail if="${test.fail.junit}"  message="There were Junit test failures"/>
-    	
+        
+        <fail if="${test.fail.ceylon}" message="There were ${test.ceylon.result} failure(s) in the Ceylon tests"/>
+        <fail if="${test.fail.junit}"  message="There were Junit test failures"/>
+        
     </target>
 
     <target name="compile.tests.js" depends="ceylon.language.js,ceylonc,compile.tests.setup">
