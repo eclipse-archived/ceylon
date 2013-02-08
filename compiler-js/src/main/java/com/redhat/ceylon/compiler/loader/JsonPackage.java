@@ -177,19 +177,16 @@ public class JsonPackage extends com.redhat.ceylon.compiler.typechecker.model.Pa
         }
         if (m.containsKey(MetamodelGenerator.KEY_INTERFACES)) {
             for (Map.Entry<String,Map<String,Object>> inner : ((Map<String,Map<String,Object>>)m.get(MetamodelGenerator.KEY_INTERFACES)).entrySet()) {
-                System.out.println("Agregando interfaz " + inner.getKey() + " a " + cls);
                 loadInterface(inner.getKey(), inner.getValue(), cls, allparms);
             }
         }
         if (m.containsKey(MetamodelGenerator.KEY_CLASSES)) {
             for (Map.Entry<String,Map<String,Object>> inner : ((Map<String,Map<String,Object>>)m.get(MetamodelGenerator.KEY_CLASSES)).entrySet()) {
-                System.out.println("Agregando clase " + inner.getKey() + " a " + cls);
                 loadClass(inner.getKey(), inner.getValue(), cls, allparms);
             }
         }
         if (m.containsKey(MetamodelGenerator.KEY_OBJECTS)) {
             for (Map.Entry<String,Map<String,Object>> inner : ((Map<String,Map<String,Object>>)m.get(MetamodelGenerator.KEY_OBJECTS)).entrySet()) {
-                System.out.println("Agregando objeto " + inner.getKey() + " a " + cls);
                 loadObject(inner.getKey(), inner.getValue(), cls, allparms);
             }
         }

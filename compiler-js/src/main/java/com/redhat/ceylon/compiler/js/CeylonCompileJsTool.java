@@ -374,8 +374,8 @@ public class CeylonCompileJsTool implements Tool {
             System.err.printf("TypeChecker processing: %6d nanos%n", t2-t1);
             System.err.printf("JS compiler creation:   %6d nanos%n", t3-t2);
             System.err.printf("JS compilation:         %6d nanos%n", t4-t3);
+            System.out.println("Compilation finished.");
         }
-        System.out.println("Compilation finished.");
     }
 
 }
