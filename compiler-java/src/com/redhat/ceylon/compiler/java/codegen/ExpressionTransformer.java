@@ -75,6 +75,7 @@ import com.redhat.ceylon.compiler.typechecker.tree.Tree.InvocationExpression;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.KeyValueIterator;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.NaturalLiteral;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.PositionalArgument;
+import com.redhat.ceylon.compiler.typechecker.tree.Tree.Primary;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.QualifiedMemberExpression;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.SequencedArgument;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.SpecifierExpression;
@@ -1902,7 +1903,11 @@ public class ExpressionTransformer extends AbstractTransformer {
                 return transformCallableSpecifierInvocation(callBuilder, (CallableSpecifierInvocation)invocation);
             } else {
                 at(invocation.getNode());
-                JCExpression result = transformPrimary(invocation.getPrimary(), new TermTransformer() {
+                Primary primary = invocation.getPrimary();
+                while (primary instanceof Tree.Expression) {
+                    primary = (Tree.Primary)((Expression)primary).getTerm();
+                }
+                JCExpression result = transformPrimary(primary, new TermTransformer() {
                     @Override
                     public JCExpression transform(JCExpression primaryExpr, String selector) {
                         TransformedInvocationPrimary transformedPrimary = invocation.transformPrimary(primaryExpr, selector);
