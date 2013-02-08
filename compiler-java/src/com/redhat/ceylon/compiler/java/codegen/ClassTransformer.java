@@ -197,8 +197,11 @@ public class ClassTransformer extends AbstractTransformer {
             .init(childDefs);
         
         // aliases don't need an $is method
-        if(!model.isAlias())
+        if(!model.isAlias()){
             classBuilder.reifiedIs(model.getType(), model.getTypeParameters(), model.getSatisfiedTypes(), model.getExtendedType());
+            if(supportsReifiedAlias(model))
+                classBuilder.reifiedAlias(model.getType());
+        }
         
         return classBuilder.build();
     }

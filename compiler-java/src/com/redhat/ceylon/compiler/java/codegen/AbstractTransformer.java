@@ -2868,6 +2868,12 @@ public abstract class AbstractTransformer implements Transformation {
     private JCExpression makeReifiedTypeArgument(ProducedType pt, boolean qualified) {
         TypeDeclaration declaration = pt.getDeclaration();
         if(declaration instanceof ClassOrInterface){
+            // see if we have an alias for it
+            if(supportsReifiedAlias((ClassOrInterface) declaration)){
+                JCExpression qualifier = makeJavaType(pt, JT_RAW | JT_NO_PRIMITIVES);
+                return makeSelect(qualifier, naming.getTypeDescriptorAliasName());
+            }
+            // no alias, must build it
             List<JCExpression> typeTestArguments = List.nil();
             JCExpression thisType = makeClassLiteral(pt);
             java.util.List<ProducedType> typeParameters = pt.getTypeArgumentList();
@@ -2920,5 +2926,14 @@ public abstract class AbstractTransformer implements Transformation {
             return makeNothingTypeDescriptor();
         }
         throw new RuntimeException("Unsupported type: " + declaration);
+    }
+    
+    public boolean supportsReifiedAlias(ClassOrInterface decl){
+        if(decl.isAlias() || decl.isAnonymous() || !decl.getTypeParameters().isEmpty() || !supportsReified(decl))
+            return false;
+        Scope container = decl.getContainer();
+        if(container instanceof ClassOrInterface)
+            return supportsReifiedAlias((ClassOrInterface) container);
+        return true;
     }
 }

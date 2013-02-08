@@ -1566,4 +1566,8 @@ public class Naming implements LocalId {
     public String getRefineTypeParametersMethodName() {
         return "$refine";
     }
+
+    public String getTypeDescriptorAliasName() {
+        return "$TypeDescriptor";
+    }
 }

@@ -25,6 +25,7 @@ import static com.sun.tools.javac.code.Flags.INTERFACE;
 import static com.sun.tools.javac.code.Flags.PRIVATE;
 import static com.sun.tools.javac.code.Flags.PROTECTED;
 import static com.sun.tools.javac.code.Flags.PUBLIC;
+import static com.sun.tools.javac.code.Flags.STATIC;
 
 import com.redhat.ceylon.compiler.typechecker.model.Annotation;
 import com.redhat.ceylon.compiler.typechecker.model.Declaration;
@@ -751,5 +752,16 @@ public class ClassDefinitionBuilder {
         JCExpression refine = gen.make().Apply(null, gen.makeSelect(companion, gen.naming.getRefineTypeParametersMethodName()), typeParameters.toList());
         init(gen.make().Exec(refine));
         return this;
+    }
+
+
+    public void reifiedAlias(ProducedType type) {
+        JCExpression klass = gen.makeClassLiteral(type);
+        JCExpression classDescriptor = gen.make().Apply(null, gen.makeSelect(gen.makeTypeDescriptorType(), "klass"), List.of(klass));
+        JCVariableDecl varDef = gen.make().VarDef(gen.make().Modifiers(PUBLIC | FINAL | STATIC, gen.makeAtIgnore()), 
+                                                  gen.names().fromString(gen.naming.getTypeDescriptorAliasName()), 
+                                                  gen.makeTypeDescriptorType(), 
+                                                  classDescriptor);
+        defs(varDef);
     }
 }
