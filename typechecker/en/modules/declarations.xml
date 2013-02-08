@@ -402,7 +402,7 @@ TypeConstraints?
         a sequence of arguments of type <literal>T</literal>. Inside the function or class, 
         the variadic parameter has type <literal>T[]</literal>.</para>
         
-        <programlisting>SequencedParameter: Annotations UnionType "*" MemberName</programlisting>
+        <programlisting>VariadicParameter: Annotations UnionType "*" MemberName</programlisting>
         
         <para>The variadic parameter must be the last parameter in a parameter list.</para>
         
