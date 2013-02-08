@@ -419,6 +419,29 @@ public class ClassTransformer extends AbstractTransformer {
             }
             concreteMembersFromSuperinterfaces((Class)model, classBuilder, satisfiedType, satisfiedInterfaces);
         }
+        // now find the set of interfaces we implemented twice with more refined type parameters
+        if(model.getExtendedTypeDeclaration() != null){
+            // reuse that Set
+            satisfiedInterfaces.clear();
+            for(TypeDeclaration interfaceDecl : model.getSatisfiedTypeDeclarations()){
+                collectInterfaces((Interface) interfaceDecl, satisfiedInterfaces);
+            }
+            // now see if we refined them
+            for(Interface iface : satisfiedInterfaces){
+                // skip those we can't do anything about
+                if(!supportsReified(iface))
+                    continue;
+                ProducedType thisType = model.getType().getSupertype(iface);
+                ProducedType superClassType = model.getExtendedType().getSupertype(iface);
+                if(thisType != null
+                        && superClassType != null
+                        && !thisType.isExactly(superClassType)
+                        && thisType.isSubtypeOf(superClassType)){
+                    // we're refining it
+                    classBuilder.refineReifiedType(thisType);
+                }
+            }
+        }
     }
 
     private void collectInterfaces(Interface interfaceDecl, Set<Interface> satisfiedInterfaces) {
@@ -858,7 +881,6 @@ public class ClassTransformer extends AbstractTransformer {
         // make sure we get fields and init code for reified params
         if(typeParameterList != null)
             companionBuilder.reifiedTypeParameters(typeParameterList);
-        
         ProducedType thisType = model.getType();
         companionBuilder.field(PRIVATE | FINAL, 
                 "$this", 
@@ -878,6 +900,9 @@ public class ClassTransformer extends AbstractTransformer {
                                 makeSelect(naming.makeThis(), "$this"), 
                                 naming.makeQuotedThis())));
         ctor.body(bodyStatements.toList());
+        
+        if(typeParameterList != null)
+            companionBuilder.addRefineReifiedTypeParametersMethod(typeParameterList);
     }
 
     public List<JCStatement> transformRefinementSpecifierStatement(SpecifierStatement op, ClassDefinitionBuilder classBuilder) {

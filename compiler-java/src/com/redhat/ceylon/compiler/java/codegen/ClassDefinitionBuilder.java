@@ -608,8 +608,10 @@ public class ClassDefinitionBuilder {
     public ClassDefinitionBuilder reifiedTypeParameter(TypeParameterDeclaration param) {
         String descriptorName = gen.naming.getTypeArgumentDescriptorName(param.getIdentifier().getText());
         parameter(makeReifiedParameter(descriptorName));
-
-        JCVariableDecl localVar = gen.make().VarDef(gen.make().Modifiers(FINAL | PRIVATE), gen.names().fromString(descriptorName), 
+        long flags = PRIVATE;
+        if(!isCompanion)
+            flags |= FINAL;
+        JCVariableDecl localVar = gen.make().VarDef(gen.make().Modifiers(flags), gen.names().fromString(descriptorName), 
                 gen.makeTypeDescriptorType(), null);
         defs(localVar);
         init(gen.make().Exec(gen.make().Assign(
@@ -712,5 +714,35 @@ public class ClassDefinitionBuilder {
         for(TypeParameterDeclaration tp : typeParameterList.getTypeParameterDeclarations()){
             reifiedTypeParameter(tp);
         }
+    }
+
+    public ClassDefinitionBuilder addRefineReifiedTypeParametersMethod(TypeParameterList typeParameterList) {
+        MethodDefinitionBuilder method = MethodDefinitionBuilder.systemMethod(gen, gen.naming.getRefineTypeParametersMethodName());
+        method.modifiers(PUBLIC);
+
+        List<JCStatement> body = List.nil();
+        for(TypeParameterDeclaration tp : typeParameterList.getTypeParameterDeclarations()){
+            String descriptorName = gen.naming.getTypeArgumentDescriptorName(tp.getIdentifier().getText());
+            method.parameter(makeReifiedParameter(descriptorName));
+            body = body.prepend(gen.make().Exec(gen.make().Assign(gen.naming.makeQualIdent(gen.naming.makeThis(), descriptorName), 
+                                                                  gen.naming.makeQualIdent(null, descriptorName))));
+        }
+        method.body(body);
+        defs(method.build());
+        return this;
+    }
+
+
+    public ClassDefinitionBuilder refineReifiedType(ProducedType thisType) {
+        // init: $type$impl.$refine(tp1, tp2...)
+        Interface iface = (Interface) thisType.getDeclaration();
+        String companion = gen.naming.getCompanionFieldName(iface);
+        ListBuffer<JCExpression> typeParameters = new ListBuffer<JCExpression>();
+        for(ProducedType tp : thisType.getTypeArgumentList()){
+            typeParameters.add(gen.makeReifiedTypeArgument(tp));
+        }
+        JCExpression refine = gen.make().Apply(null, gen.makeSelect(companion, gen.naming.getRefineTypeParametersMethodName()), typeParameters.toList());
+        init(gen.make().Exec(refine));
+        return this;
     }
 }
