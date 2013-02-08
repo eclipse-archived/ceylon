@@ -59,6 +59,45 @@ public class TypeDescriptor {
             return b.toString();
         }
     }
+
+    public static class Member extends TypeDescriptor {
+
+        private TypeDescriptor container;
+        private TypeDescriptor member;
+
+        public Member(TypeDescriptor container, TypeDescriptor member) {
+            this.member = member;
+            this.container = container;
+        }
+
+        public TypeDescriptor getContainer() {
+            return container;
+        }
+
+        public TypeDescriptor getMember() {
+            return member;
+        }
+        
+        @Override
+        public boolean equals(Object obj) {
+            if(this == obj)
+                return true;
+            if(obj == null || obj instanceof Member == false)
+                return false;
+            Member other = (Member) obj;
+            return container.equals(other.container)
+                    && member.equals(other.member);
+        }
+
+        @Override
+        public String toString() {
+            StringBuilder b = new StringBuilder();
+            b.append(container);
+            b.append(".");
+            b.append(member);
+            return b.toString();
+        }
+}
     
     private static class Bottom extends TypeDescriptor {
         // FIXME: equals?
@@ -140,6 +179,10 @@ public class TypeDescriptor {
         }
     }
 
+    public static TypeDescriptor member(TypeDescriptor container, TypeDescriptor member){
+        return new Member(container, member);
+    }
+    
     public static TypeDescriptor klass(java.lang.Class<?> klass, TypeDescriptor... typeArguments) {
         return new Class(klass, typeArguments);
     }
