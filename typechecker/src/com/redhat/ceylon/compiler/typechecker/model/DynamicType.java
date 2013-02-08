@@ -96,7 +96,11 @@ public class DynamicType extends Class {
         ProducedType ct = producedType(unit.getCallableDeclaration(), 
                 dt, unit.getTupleType(singletonList(dt), true, false, -1));
         ProducedType at = producedType(unit.getArrayDeclaration(), dt);
-        return asList(ct, at);
+        ProducedType nt = producedType(unit.getNumericDeclaration(), dt);
+        ProducedType ot = producedType(unit.getOrdinalDeclaration(), dt);
+        ProducedType tt = producedType(unit.getComparableDeclaration(), dt);
+        ProducedType bt = unit.getBooleanDeclaration().getType(); 
+        return asList(ct, at, nt, bt, tt, ot);
     }
     
 }
