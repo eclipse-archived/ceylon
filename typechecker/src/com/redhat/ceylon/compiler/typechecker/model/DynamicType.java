@@ -35,7 +35,14 @@ public class DynamicType extends Class {
     
     @Override
     public ParameterList getParameterList() {
-        return new ParameterList();
+        ParameterList pl = new ParameterList();
+        ValueParameter p = new ValueParameter();
+        p.setName("args");
+        p.setType(unit.getDynamicDeclaration().getType());
+        p.setSequenced(true);
+        p.setDeclaration(this);
+        pl.getParameters().add(p);
+        return pl;
     }
     
     @Override
