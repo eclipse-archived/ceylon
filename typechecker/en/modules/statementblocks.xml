@@ -934,7 +934,7 @@ Integer f(Integer n) => n+package.n;</programlisting>
         type of the function or the type of the value. When the directive is executed, the 
         expression is evaluated to determine the return value of the function or getter.</para>
         
-        <programlisting>Return: "return" (Expression | Function)?</programlisting>
+        <programlisting>Return: "return" Expression?</programlisting>
         
         <para>The <literal>break</literal> directive must sequentially occur in the body 
         of a loop.</para>
@@ -1027,7 +1027,7 @@ else {
         <literal>R</literal>. Then the type of the parameterized reference is
         <literal>R</literal>.</para>
         
-        <programlisting>ParameterizedReference: MemberName Params+</programlisting>
+        <programlisting>ParameterizedReference: MemberName Parameters+</programlisting>
         
         <para>Thus, the specification statement consists of a parameterized reference
         followed by a lazy specifier.</para>
@@ -1331,11 +1331,11 @@ else {
         <para>Some control structures allow inline declaration of a <emphasis>variable</emphasis>,
         a reference that is scoped to the control structure body.</para>
         
-        <programlisting>TypedVariable: EntryType MemberName</programlisting>
+        <programlisting>TypedVariable: Type MemberName</programlisting>
         
         <para>In most cases, the explicit type be omitted.</para>
         
-        <programlisting>Variable: EntryType? MemberName</programlisting>
+        <programlisting>Variable: Type? MemberName</programlisting>
         
         <para>If the type is missing from the declaration, the type of the variables is 
         inferred from the type of the expression that follows.</para>
@@ -1360,7 +1360,7 @@ else {
             
             <para>An iteration variable may be callable.</para>
             
-            <programlisting>CallableVariable: (EntryType | "void")? MemberName Params+</programlisting>
+            <programlisting>CallableVariable: (Type | "void")? MemberName Parameters+</programlisting>
         
             <para>If the return type is missing from the declaration, the return type of the 
             callable variable is inferred.</para>
@@ -1444,7 +1444,7 @@ else {
         <para>In the case of an assignability or existence condition, the type of the variable may be 
         inferred.</para>
                 
-        <programlisting>IsCondition: "!"? "is" (TypedVariable Specifier | EntryType MemberName)</programlisting>
+        <programlisting>IsCondition: "!"? "is" (TypedVariable Specifier | Type MemberName)</programlisting>
         
         <programlisting>ExistsOrNonemptyCondition: ("exists" | "nonempty") (Variable Specifier | MemberName)</programlisting>
         
@@ -1746,7 +1746,7 @@ else {
             must be exhaustive. <!--Conversely, if the <literal>switch</literal> is exhaustive, 
             no <literal>else</literal> block may be specified.--></para>
             
-            <programlisting>Case: Expression ("," Expression)* | "is" EntryType</programlisting>
+            <programlisting>Case: Expression ("," Expression)* | "is" Type</programlisting>
             
             <comment><para>Note: an assignability condition <literal>case</literal> may narrow to 
             an intersection or union type.</para>

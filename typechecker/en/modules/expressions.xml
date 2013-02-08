@@ -375,7 +375,7 @@ shared interface Color { ... }</programlisting>
         <para>A character <emphasis>string template</emphasis> contains interpolated 
         expressions, surrounded by character string fragments.</para>
         
-        <programlisting>StringTemplate: StringStart (Expression StringMid)* Expression StringEnd</programlisting>
+        <programlisting>StringTemplate: StringStart (ValueExpression StringMid)* ValueExpression StringEnd</programlisting>
         
         <para>Each interpolated expression contained in the string template must have 
         a type assignable to <literal>Object</literal> defined in 
@@ -472,7 +472,7 @@ shared interface Color { ... }</programlisting>
             an expression. It comprises one or more parameter lists, followed by an 
             expression.</para>
             
-            <programlisting>Function: ("function" | "void")? Params+ ("=>" Expression | Block)</programlisting>
+            <programlisting>FunctionExpression: ("function" | "void")? Parameters+ ("=>" Expression | Block)</programlisting>
             
             <para>The parameters are the parameters of the function. The lazy 
             specifier or block of code is the implementation of the function. if 
@@ -501,7 +501,7 @@ shared interface Color { ... }</programlisting>
         string template, an iterable or tuple enumeration, or a parenthesized 
         expression.</para>
         
-        <programlisting>Atom: Literal | StringTemplate | SelfReference | ParExpression | Iterable | Tuple</programlisting>
+        <programlisting>Atom: Literal | StringTemplate | SelfReference | GroupedExpression | Iterable | Tuple</programlisting>
         
         <para>A <emphasis>primary</emphasis> is formed by recursively forming 
         qualified expression and invocation expression from from an atom or 
@@ -512,11 +512,13 @@ shared interface Color { ... }</programlisting>
         <para>More complex expressions are formed by combining expressions using 
         operators, including assignment operators, and anonymous functions.</para>    
         
-        <programlisting>Expression: Primary | OperatorExpression | Function</programlisting>
+        <programlisting>ValueExpression: Primary | OperatorExpression</programlisting>
+        
+        <programlisting>Expression: ValueExpression | FunctionExpression</programlisting>
         
         <para>Parentheses are used for grouping:</para>
         
-        <programlisting>ParExpression: "(" Expression ")"</programlisting>
+        <programlisting>GroupedExpression: "(" Expression ")"</programlisting>
         
     <section id="receiverexpressions">
         <title>Base expressions and qualified expressions</title>

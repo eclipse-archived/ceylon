@@ -449,7 +449,7 @@
         <para>The union type constructor <literal>&amp;</literal> is associative, so the union 
         of three types may be written <literal>X&amp;Y&amp;Z</literal>.</para>
             
-        <programlisting>IntersectionType: AbbreviatedType ("&amp;" AbbreviatedType)*</programlisting>
+        <programlisting>IntersectionType: PrimaryType ("&amp;" PrimaryType)*</programlisting>
         
         <para>The intersection <literal>X&amp;Y</literal> inherits all members of both
         <literal>X</literal> and <literal>Y</literal>.</para>
@@ -599,11 +599,22 @@
         </section>
         
         <section id="typeofaprogramelement">
-            <title>Type of a program element</title>
+            <title>Type expressions</title>
         
-        <para>Method, attribute, and parameter declarations usually declare a type. 
-        Types are identified by the name of the type (a class, interface, or type 
-        parameter), together with a list of type arguments if the type definition 
+        <para>Function and value declarations usually declare a type, by specifying
+        a <emphasis>type expression</emphasis>.</para>
+        
+        <programlisting>Type: UnionType | EntryType</programlisting>
+        
+        <para>Type expressions are formed by combining produced types using union,
+        intersection, and type abbreviations.</para>
+        
+        <para>Type expressions support grouping using angle brackets:</para>
+        
+        <programlisting>GroupedType: "&lt;" Type "&gt;"</programlisting>
+        
+        <para>Produced types are identified by the name of the type (a class, interface, 
+        or type parameter), together with a list of type arguments if the type definition 
         specifies type parameters.</para>
         
         <programlisting>TypeNameWithArguments: TypeName TypeArguments?</programlisting>
@@ -612,7 +623,7 @@
         interface, the type must be fully qualified by its containing types, except when 
         used inside the body of a containing type.</para>
         
-        <programlisting>Type: TypeNameWithArguments ("." TypeNameWithArguments)*</programlisting> <!-- | Subtype -->
+        <programlisting>QualifiedType: TypeNameWithArguments ("." TypeNameWithArguments)*</programlisting>
         
         <para>If a type has type parameters or a sequenced type parameter, a type argument 
         list must be specified. If a type has no type parameters, and no sequenced type 
@@ -625,79 +636,21 @@
         
         </section>
         
-        <section id="typeinference">
-            <title>Type inference</title>
-        
-        <para>Certain declarations which usually require an explicit type may omit the type, 
-        forcing the compiler to infer it, by specifying the keyword <literal>value</literal>
-        or <literal>function</literal> where the type usually appears.</para>
-                
-        <programlisting>value names = people*.name;</programlisting>
-
-        <programlisting>function parse(String text) => text.split(" .!?,:;()\n\f\r\t");</programlisting>
-
-        <para>Type inference is only allowed for block local declarations which are are 
-        referred to only by statements and declarations that occur within the lexical scope 
-        of the declaration. A <literal>value</literal> or <literal>function</literal> 
-        declaration may not:</para>
-        
-        <itemizedlist>
-            <listitem>
-                <para>be annotated <literal>shared</literal>,</para>
-            </listitem>
-            <listitem>
-                <para>occur as a toplevel declaration in a compilation unit, or</para>
-            </listitem>
-            <listitem>
-                <para>be referred to by statements or declarations that occur earlier in 
-                the body containing of the declaration.</para>
-            </listitem>
-        </itemizedlist>
-        
-        <para>Nor may a parameter or forward-declared value or function have an inferred 
-        type.</para>
-        
-        <para>These restrictions allow the compiler to infer undeclared types in a single 
-        pass of the code.</para>
-        
-        <comment><para>Note: in future releases of the language, the inferred type will
-        be context-dependent, that is, in program elements immediately following an
-        assignment or specification, the inferred type will be the type just assigned.
-        When conditional execution results in definite assignment, the inferred type
-        will be the union of the conditionally assigned types. This will allow us to to
-        relax the restriction that forward-declared functions and values can't have their
-        type inferred. For example:</para>
-        <programlisting>value one;
-if (float) {
-    one = 1.0;
-    Float float = one;
-}
-else {
-    one = 1;
-    Integer int = one;
-}
-Float|Integer num = one;</programlisting></comment>
-        
-        </section>
-        
         <section id="typenameabbreviations">
-            <title>Type abbreviations and grouping</title>
-        
-        <para>Type expressions support grouping using angle brackets:</para>
-        
-        <programlisting>GroupedType: "&lt;" EntryType "&gt;"</programlisting>
+            <title>Type abbreviations</title>
         
         <para>Certain important types may be written using an abbreviated syntax.</para>
         
-        <programlisting>ContainerType: Type | EmptyType | TupleType | IterableType | GroupedType</programlisting>
+        <programlisting>PrimaryType: AtomicType | OptionalType | SequenceType | CallableType</programlisting>   
+        <programlisting>AtomicType: QualifiedType | EmptyType | TupleType | IterableType | GroupedType</programlisting>
         
         <para>First, there are postfix-style abbreviations for <emphasis>optional types</emphasis>, 
         <emphasis>sequence types</emphasis>, and <emphasis>callable types</emphasis>.</para>
-        
-        <programlisting>AbbreviatedType: ContainerType ("?" | "[" "]" | ParameterTypes)*</programlisting>   
-             
-        <programlisting>ParameterTypes: "(" TypeList? ")"</programlisting>
                 
+        <programlisting>OptionalType: PrimaryType "?"</programlisting>
+        <programlisting>SequenceType: PrimaryType "[" "]"</programlisting>
+        <programlisting>CallableType: PrimaryType "(" TypeList? ")"</programlisting>
+        
         <itemizedlist>
             <listitem>
                 <para><literal>X?</literal> means <literal>Nothing|X</literal> for any 
@@ -772,7 +725,7 @@ Float|Integer num = one;</programlisting></comment>
         <para>Finally, an <emphasis>entry type</emphasis> may be abbreviated using
         an arrow.</para>
                 
-        <programlisting>EntryType: UnionType ("->" UnionType)?</programlisting>
+        <programlisting>EntryType: UnionType "->" UnionType</programlisting>
         
         <itemizedlist>
             <listitem>
@@ -797,6 +750,61 @@ String->[Integer,Integer] onetwo = "onetwo"->[1, 2];
         <para>When a type appears in a value expression, these abbreviations cannot be used 
         (they cannot be disambiguated from operator expressions).</para>
                 
+        </section>
+        
+        <section id="typeinference">
+            <title>Type inference</title>
+        
+        <para>Certain declarations which usually require an explicit type may omit the type, 
+        forcing the compiler to infer it, by specifying the keyword <literal>value</literal>
+        or <literal>function</literal> where the type usually appears.</para>
+                
+        <programlisting>value names = people*.name;</programlisting>
+
+        <programlisting>function parse(String text) => text.split(" .!?,:;()\n\f\r\t");</programlisting>
+
+        <para>Type inference is only allowed for block local declarations which are are 
+        referred to only by statements and declarations that occur within the lexical scope 
+        of the declaration. A <literal>value</literal> or <literal>function</literal> 
+        declaration may not:</para>
+        
+        <itemizedlist>
+            <listitem>
+                <para>be annotated <literal>shared</literal>,</para>
+            </listitem>
+            <listitem>
+                <para>occur as a toplevel declaration in a compilation unit, or</para>
+            </listitem>
+            <listitem>
+                <para>be referred to by statements or declarations that occur earlier in 
+                the body containing of the declaration.</para>
+            </listitem>
+        </itemizedlist>
+        
+        <para>Nor may a parameter or forward-declared value or function have an inferred 
+        type.</para>
+        
+        <para>These restrictions allow the compiler to infer undeclared types in a single 
+        pass of the code.</para>
+        
+        <comment><para>Note: in future releases of the language, the inferred type will
+        be context-dependent, that is, in program elements immediately following an
+        assignment or specification, the inferred type will be the type just assigned.
+        When conditional execution results in definite assignment, the inferred type
+        will be the union of the conditionally assigned types. This will allow us to to
+        relax the restriction that forward-declared functions and values can't have their
+        type inferred. For example:</para>
+        <programlisting>value one;
+if (float) {
+    one = 1.0;
+    Float float = one;
+}
+else {
+    one = 1;
+    Integer int = one;
+}
+Float|Integer num = one;</programlisting></comment>
+        
         </section>
         
     </section>
@@ -916,7 +924,7 @@ String->[Integer,Integer] onetwo = "onetwo"->[1, 2];
         <para>A class may extend another class, in which case the first class is a subtype
         of the second class and inherits its members.</para>
         
-        <programlisting>ExtendedType: "extends" ("super" ".")? Type PositionalArguments</programlisting>
+        <programlisting>ExtendedType: "extends" ("super" ".")? QualifiedType PositionalArguments</programlisting>
     
         <para>The <literal>extends</literal> clause must specify exactly one superclass.</para>
         
@@ -984,7 +992,7 @@ String->[Integer,Integer] onetwo = "onetwo"->[1, 2];
         in combination with other upper bounds. This restriction will likely be removed in
         future.</para></comment>
         
-        <programlisting>SatisfiedTypes: "satisfies" AbbreviatedType ("&amp;" AbbreviatedType)*</programlisting>
+        <programlisting>SatisfiedTypes: "satisfies" PrimaryType ("&amp;" PrimaryType)*</programlisting>
     
         <para>The <literal>satisfies</literal> clause may specify multiple types. If a 
         satisfied type is a parameterized type, the <literal>satisfies</literal> clause 
@@ -1100,7 +1108,7 @@ String->[Integer,Integer] onetwo = "onetwo"->[1, 2];
         
         <programlisting>CaseTypes: "of" CaseType ("|" CaseType)*</programlisting>
         
-        <programlisting>CaseType: MemberName | AbbreviatedType</programlisting>
+        <programlisting>CaseType: MemberName | PrimaryType</programlisting>
         
         <!--
         <para>The compiler is able to infer certain subtyping relationships from the 
@@ -1200,7 +1208,7 @@ Item item = comp of Item;</programlisting>
         parameterized class or function schema defines a function that produces the 
         signature of an invokable operation given a tuple of compatible type arguments.</para>
         
-        <programlisting>TypeParams: "&lt;" (TypeParam ",")* TypeParam "&gt;"</programlisting>
+        <programlisting>TypeParameters: "&lt;" (TypeParameter ",")* TypeParameter "&gt;"</programlisting>
         
         <para>A declaration with type parameters is called <emphasis>generic</emphasis> or
         <emphasis>parameterized</emphasis>.</para>
@@ -1250,7 +1258,7 @@ Item item = comp of Item;</programlisting>
         <para>A <emphasis>type parameter</emphasis> allows a declaration to be abstracted 
         over a constrained set of types.</para>
         
-        <programlisting>TypeParam: Variance? TypeName ("=" Type)</programlisting>
+        <programlisting>TypeParameter: Variance? TypeName ("=" Type)</programlisting>
         
         <para>Every type parameter has a name. A parameter of a type schema has a specified 
         <emphasis>variance</emphasis>. A parameter of a function schema does not have a
@@ -1524,7 +1532,7 @@ Item item = comp of Item;</programlisting>
         
         <para>There may be at most one <literal>given</literal> clause per type parameter.</para>
         
-        <programlisting>TypeConstraint: "given" TypeName TypeParams? TypeConstraintInheritance</programlisting>
+        <programlisting>TypeConstraint: "given" TypeName TypeParameters? TypeConstraintInheritance</programlisting>
         
         <programlisting>TypeConstraintInheritance: CaseTypes? SatisfiedTypes?</programlisting>
         
@@ -1676,7 +1684,7 @@ Item item = comp of Item;</programlisting>
         
         <para>A type argument list is a list of types.</para>
         
-        <programlisting>TypeArguments: "&lt;" (UnionType ",")* UnionType "&gt;"</programlisting>
+        <programlisting>TypeArguments: "&lt;" (Type ",")* Type "&gt;"</programlisting>
         
         <para>A type argument may itself be a parameterized type or type parameter.</para>
         
