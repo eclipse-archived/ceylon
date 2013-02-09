@@ -258,8 +258,8 @@
     <programlisting>class Point(Float x, Float y) { ... }</programlisting>
     
     <para>
-    The Ceylon compiler guarantees that the value of any attribute of
-    a class is initialized before it is used in an expression.
+    The Ceylon compiler guarantees that the value of any attribute of a class 
+    is initialized before it is used in an expression.
     </para>
     
     <para>
@@ -281,40 +281,37 @@
     </section>
     
    <section id="methodsandattributes">
-    <title>Methods and attributes</title>
+    <title>Functions, methods, values, and attributes</title>
     
-    <para>
-    Ceylon types have members: <emphasis>methods</emphasis> and 
-    <emphasis>attributes</emphasis>. Ceylon methods are similar to Java methods. 
-    However, Ceylon classes do not contain fields, at least not in the 
-    traditional sense. Instead, Ceylon supports only a higher-level construct: 
-    polymorphic attributes, which are similar to C# properties. Attributes 
-    abstract the internal representation of the state of an object. An attribute 
-    of a class may be refined (overridden) by a subclass of the class.
-    </para>
+    <para><emphasis>Functions</emphasis> and <emphasis>values</emphasis> are 
+    the bread and butter of programming. Ceylon functions are similar to Java 
+    methods, except that they don't need to belong to a class. Ceylon values 
+    are polymorphic, and abstract their internal representation, similar to 
+    C# properties.</para>
     
     <programlisting>String name =&gt; firstName + " " + lastName;</programlisting>
     
-    <para>The Ceylon compiler guarantees that the value of any local declared in 
-    the body of a method or attribute is initialized before it is used in an 
-    expression.</para>
+    <para>The Ceylon compiler guarantees that any value is initialized before 
+    it is used in an expression.</para>
     
     <para>
-    By default, an attribute or local may not be assigned a new value after
-    its initial value has been specified. Mutable attributes and variable 
-    locals must be explicitly declared using the <literal>variable</literal> 
-    annotation.
-    </para>
-    
-    <para>
+    A function belonging to a type is called a <emphasis>method</emphasis>. 
+    A value belonging to a type is called an <emphasis>attribute</emphasis>.  
     There are no <literal>static</literal> members. Instead, 
-    <emphasis>toplevel</emphasis> methods and attributes are declared as direct 
+    <emphasis>toplevel</emphasis> functions and values are declared as direct 
     members of a package. This, along with certain other features, gives the 
     language a more regular block structure.
     </para>
     
     <para>
-    Ceylon does not support method overloading. Each method of a type has a 
+    By default, an attribute or value may not be assigned a new value after
+    its initial value has been specified. Mutable attributes and variable 
+    values must be explicitly declared using the <literal>variable</literal> 
+    annotation.
+    </para>
+    
+    <para>
+    Ceylon does not support function overloading. Each method of a type has a 
     distinct name.
     </para>
     
