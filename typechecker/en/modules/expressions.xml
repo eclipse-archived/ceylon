@@ -593,6 +593,9 @@ shared interface Color { ... }</programlisting>
         where the invoked expression has type exactly 
         <literal>Callable&lt;R,P&gt;</literal>.</para>
         
+        <comment><para>TODO: should we support an infix-operator-style syntax for 
+        method invocation like <literal>string split ",;"</literal>.</para></comment>
+        
         <section id="tupletypeofarglist">
             <title>The type of a list of arguments</title>
             

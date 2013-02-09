@@ -1892,6 +1892,9 @@ case (hexadecimal) {
                 </listitem>
             </itemizedlist>
             
+            <comment><para>TODO: we would like to eventually support contravariant
+            refinement of method parameter types.</para></comment>
+            
             <para>Finally, the refined method must be visible to the method
             annotated <literal>actual</literal>.</para>
             
@@ -2402,7 +2405,7 @@ shared deprecated</programlisting>
         
         </section>
         
-        <section>
+        <section id="annotationtypes">
             <title>Annotation types</title>
             
             <para>The annotation type of an annotation must be a subtype of the interface 
@@ -2475,7 +2478,7 @@ shared deprecated</programlisting>
             
         </section>
         
-        <section>
+        <section id="annotationvalues">
             <title>Annotation values</title>
             
             <para>An <emphasis>annotation value</emphasis> is the value returned when an

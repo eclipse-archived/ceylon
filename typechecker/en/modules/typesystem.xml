@@ -1639,7 +1639,15 @@ Item item = comp of Item;</programlisting>
         return chars.first.uppercased..chars.last.uppercased;
     }
 }]]></programlisting>
-    
+        
+        <comment><para>TODO: do we need lower bound type constraints? With union types
+        they don't appear to be anywhere near as useful.</para></comment>
+        
+        <comment><para>TODO: since we have reified types, it will be possible to support
+        a type constraint that allows instantiation of the type parameter.</para>
+        <programlisting>given T(Object arg)</programlisting>
+        </comment>
+        
     <!--section>
         <title>Parameter bounds</title>
 

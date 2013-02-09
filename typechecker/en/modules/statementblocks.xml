@@ -1863,8 +1863,8 @@ finally {
         <section id="assertions">
             <title>Assertions</title>
             
-            <para>An assertion has an asserted condition list and, optionally, an 
-            annotation list.</para>
+            <para>An assertion has an asserted condition list and, optionally, 
+            an annotation list.</para>
             
             <programlisting>Assertion: Annotations "assert" ConditionList ";"</programlisting>
             
@@ -1882,6 +1882,9 @@ assert (exists bound, total&lt;bound);</programlisting>
             <programlisting>{Element*} elements = ... ;
 assert (nonempty elements);
 Element first = elements.first;</programlisting>
+            
+            <comment><para>TODO: how can we support interpolation in the assertion
+            failure message?</para></comment>
             
         </section>
          
