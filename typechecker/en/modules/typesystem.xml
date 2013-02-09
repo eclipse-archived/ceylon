@@ -598,6 +598,13 @@
             
         </section>
         
+        <section id="bottomtype">
+            <title>The dynamic type</title>
+            
+            <comment><para>TODO: define <literal>Dynamic</literal>.</para></comment>
+            
+        </section>
+            
         <section id="typeofaprogramelement">
             <title>Type expressions</title>
         
