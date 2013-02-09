@@ -1546,6 +1546,9 @@ else {
             
             <programlisting>Else: "else" (Block | IfElse)</programlisting>
             
+            <para>The construct may include a chain of an arbitrary number of child 
+            <literal>else if</literal> clauses.</para>
+            
             <para>For example:</para>
             
             <programlisting>if (payment.amount &lt;= account.balance) {
@@ -1726,7 +1729,7 @@ case (is Float) {
     print(p.name);
 }</programlisting>
 
-            <programlisting>variable Float sum := 0.0;
+            <programlisting>variable Float sum = 0.0;
 for (i in -10..10) {
     sum += x[i] else 0.0;
 }</programlisting>

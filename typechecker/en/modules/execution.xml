@@ -319,7 +319,9 @@ String result = middleObject.string;</programlisting>
             
             <para>When the <literal>if/else</literal> construct is executed, its condition list 
             is evaluated. If the condition list is satisfied, the <literal>if</literal> block is 
-            executed. Otherwise, the <literal>else</literal> block, if any, is executed.</para>
+            executed. Otherwise, the <literal>else</literal> block, if any, is executed, or, if
+            the construct has an <literal>else if</literal>, the child <literal>if</literal>
+            construct is executed.</para>
             
             <para>When a <literal>switch/case/else</literal> construct is executed, its 
             <literal>switch</literal> expression is evaluated to produce a value. The value is

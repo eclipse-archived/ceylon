@@ -868,7 +868,7 @@ shared interface Color { ... }</programlisting>
         <programlisting>{
     description = "Total";
     Float amount { 
-        variable Float total := 0.0;
+        variable Float total = 0.0;
         for (Item item in items) {
             sum += item.amount;
         }
