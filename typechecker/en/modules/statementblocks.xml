@@ -657,100 +657,9 @@ class Complex(Float x, Float y=0.0)
         classes? Currently the compiler allows this!</para></comment>
         
     </section>
-            
-        <section id="closure">
-            <title>Closure</title>
-            
-            <para>The principle of <emphasis>closure</emphasis> states a that nested body
-            always has access to a set of values for all references declared by containing 
-            bodies.</para>
     
-            <para>If a declaration is nested directly or indirectly inside a class or interface 
-            declaration, then there is always a <emphasis>current instance</emphasis> of the 
-            class or interface when the nested declaration body is executed. The current 
-            instance is determined as follows:</para>
-            
-            <itemizedlist>
-                <listitem>
-                    <para>for the innermost class or interface declaration that contains the 
-                    nested declaration, the current instance is the receiving instance of the
-                    invocation, evaluation, or assignment, and</para>
-                </listitem>
-                <listitem>
-                    <para>for any other class or interface that contains the nested declaration,
-                    the current instance is the same object that was the current instance when
-                    the initializer of the current instance of the innermost class or interface 
-                    declaration was executed.</para>
-                </listitem>
-            </itemizedlist>
-            
-            <para>For example:</para>
-            
-            <programlisting>Outer outerObject = Outer();
-Inner innerObject = outerObject.Inner();
-innerObject.member();</programlisting>
-            
-            <para>In this example, <literal>innerObject</literal> is the current instance of 
-            <literal>Inner</literal> when <literal>member()</literal> is executed, and
-            <literal>outerObject</literal> is the current instance of <literal>Outer</literal>.</para>
-                        
-            <para>If a declaration is nested directly or indirectly inside a block, then there 
-            is always a <emphasis>current frame</emphasis> of the block when the nested 
-            declaration is executed. The current frame contains the values of all references 
-            declared by the block. The current frame is determined as follows:</para>
-            
-            <itemizedlist>
-                <listitem>
-                    <para>if the nested declaration is nested directly inside a block,
-                    the current frame contains the current values at the point of execution
-                    of the value reference expression or callable reference expression that
-                    refers to the nested declaration, or, otherwise,</para>
-                </listitem>
-                <listitem>
-                    <para>if the nested declaration is contained inside the body of another
-                    nested declaration, the current frame is the current frame of the 
-                    containing declaration at the point of execution of the value reference 
-                    expression or callable reference expression that refers to the nested 
-                    declaration.</para>
-                </listitem>
-            </itemizedlist>
-            
-            <para>For example:</para>
-            
-            <programlisting>String()() outerMethod(String s) {
-    String() middleMethod() {
-        String innerMethod() => s;
-        return innerMethod;
-    }
-    return middleMethod;
-}
-
-String middleMethod()() => outerMethod("hello");
-String innerMethod() => middleMethod();
-String result = innerMethod();</programlisting>
-
-            <programlisting>Object outerMethod(String s) {
-    object middleObject {
-        shared actual String string => s;
-    }
-    return middleObject;
-}
-
-Object middleObject = outerMethod("hello");
-String result = middleObject.string;</programlisting>
-
-            <para>In both examples, <literal>result</literal> refers to the value 
-            <literal>"hello"</literal>.</para>
-            
-            <para>The set of <!--all declarations which belong directly to a containing body 
-            of a nested declaration, together with the --> current instances of containing 
-            classes and interfaces and current frames of containing blocks is called the 
-            <emphasis>closure</emphasis> of the nested declaration.</para>           
-            
-        </section>
-        
     <section id="containingbodies">
-        <title>References within a closure</title>
+        <title>Local references and closure</title>
         
         <para>The initializer of a class, or the body of a member of a class may instantiate,
         invoke, evaluate or assign members of the current instance of the class which defines 
@@ -768,9 +677,8 @@ String result = middleObject.string;</programlisting>
         there is no current instance.</para>
         
         <para>The body of a value, function, or class nested inside the body of another 
-        function or value may invoke or evaluate any <!--non-<literal>variable</literal>--> 
-        block local value or block local method whose declaration indirectly occurs earlier 
-        within the containing scope.</para>
+        function or value may invoke or evaluate any block local value or block local method 
+        whose declaration indirectly occurs earlier within the containing scope.</para>
         
         <para>When a member of a class is hidden by a block local declaration, the member 
         may be accessed via the self reference <literal>this</literal> or via the outer 

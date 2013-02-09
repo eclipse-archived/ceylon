@@ -1,0 +1,398 @@
+<chapter id="execution">
+    <title>Execution</title>
+    
+    <para>A Ceylon program executes in a virtual machine environment, either:</para>
+    
+    <itemizedlist>
+        <listitem>
+            <para>a Java Virtual Machine (JVM), or</para>
+        </listitem>
+        <listitem>
+            <para>a JavaScript virtual machine.</para>
+        </listitem>
+    </itemizedlist>
+    
+    <para>Despite the obvious differences between languages that these virtual 
+    machines were designed for, they share very much in common in terms of runtime
+    semantics, including common notions such as object identity, primitive value
+    types, garbage collection, dynamic dispatch, and pass by reference.</para>
+    
+    <para>Ceylon abstracts away from the differences between these platforms, and
+    reuses what is common between them.</para>
+    
+    <comment><para>TODO: this chapter is woefully incomplete.</para></comment>
+    
+    <section id="objectinstancesidentity">
+        <title>Object instances, identity, and reference passing</title>
+        
+        <para>An <emphasis>object</emphasis> is a unique identifier, together with a 
+        reference to a class, and a persistent value for each reference of the class 
+        (including inherited references). The object is said to be an 
+        <emphasis>instance</emphasis> of the class.</para>
+        
+        <para>A <emphasis>value</emphasis> is a reference to an object (a copy of its 
+        unique identifier). At a particular point in the execution of the program, 
+        every reference of every object that exists, and every initialized reference 
+        of every function, getter, setter, or initializer that is currently executing 
+        has a value. Furthermore, every time an expression is executed, it produces a 
+        value.</para>
+        
+        <para>Two values are said to be <emphasis>identical</emphasis> if they are
+        references to the same object&mdash;if they hold the same unique identifier. 
+        The program may determine if two values of type <literal>Identifiable</literal> 
+        are identical using the <literal>&identical;</literal> operator. It may not 
+        directly obtain the unique identifier (which is a purely abstract construct). 
+        The program has no way of determining the identity of a value which is not of 
+        type <literal>Identifiable</literal>.</para>
+        
+        <para>Invocation of a function or instantiation of a class results in execution 
+        of the function body or class initializer with parameter values that are copies 
+        of the value produced by executing the argument expressions of the invocation, 
+        and a reference to the receiving instance that is a copy of the value produced 
+        by executing the receiver expression. The value produced by the invocation 
+        expression is a copy of the value produced by execution of the 
+        <literal>return</literal> directive expression.</para>
+        
+        <programlisting>Person myself(Person me) { return me; }
+Person p = ...;
+assert (myself(p)&identical;p); //assertion never fails</programlisting>
+
+        <programlisting>Semaphore s = Semaphore();
+this.semaphore = s;
+assert (semaphore&identical;s); //assertion never fails</programlisting>
+        
+        <para>A new object is produced by execution of a class instantiation expression.
+        The Ceylon compiler guarantees that if execution of a class initializer terminates
+        with no uncaught exception, then every reference of the object has been initialized
+        with a well-defined persistent value. The value of a reference is initialized for 
+        the first time by execution of a specifier or assignment expression. Every class 
+        instantiation expression results in an object with a new unique identifier shared 
+        by no other existing object. The object exists from the point at which execution 
+        of its initializer terminates. <emphasis>Conceptually</emphasis>, the object exists 
+        until execution of the program terminates.</para>
+        
+        <para>In practice, the object exists at least until the point at which it is not 
+        reachable by recursively following references from any function, getter, setter, 
+        or initializer currently being executed, or from an expression in a statement 
+        currently being executed. At this point, its persistent values are no longer 
+        accessible to expressions which subsequently execute and the object may be 
+        destroyed by the virtual machine. There is no way for the program to determine
+        that an object has been destroyed by the virtual machine (Ceylon does not support 
+        finalizers).</para>
+        
+        <para>As a special exception to the rules defined above:</para>
+        
+        <itemizedlist>
+        <!--listitem>
+            <para>The compiler is permitted to emit bytecode that unexpectedly creates or
+            avoids creating an actual instance of <literal>Gettable</literal> or 
+            <literal>Settable</literal>, when an expression is evaluated, as long as this 
+            does not affect the observable behavior of the program.</para>
+        </listitem-->
+        <listitem>
+            <para>The compiler is permitted to emit bytecode that produces a new instance of 
+            certain types in the module <literal>ceylon.language</literal> without execution 
+            of the initializer of the class, whenever any expression is evaluated. These 
+            types are: any of the the built-in numeric types, <literal>Character</literal>, 
+            <literal>Range</literal>, <literal>Entry</literal>, <literal>String</literal>,
+            and <literal>Tuple</literal>. 
+            Furthermore, it is permitted to use such a newly-produced instance as the value 
+            of the expression, as long as the newly-produced instance is equal to the value 
+            expected according to the rules above, as determined using the <literal>==</literal> 
+            operator.</para>
+        </listitem>
+        </itemizedlist>
+        
+        <para>Therefore, the types listed above directly extend <literal>Object</literal>
+        instead of <literal>Basic</literal>, and are not <literal>Identifiable</literal>.</para>
+        
+        <para>The execution of a Ceylon program complies with the rules laid out by the Java 
+        programming language's execution model (Chapter 17 of the Java Language Specification).
+        Ceylon attributes and locals are considered <emphasis>variables</emphasis> in the 
+        sense of the JLS. Evaluation is considered a <emphasis>use</emphasis> operation, 
+        and assignment is considered an <emphasis>assign</emphasis> operation, again in 
+        terms of the JLS.</para>
+        
+        <comment><para>TODO: what about on a JavaScript VM?</para></comment>
+        
+    </section>
+    
+        <section id="closure">
+            <title>Closure</title>
+            
+            <para>The principle of <emphasis>closure</emphasis> states a that nested body
+            always has access to a set of values for all references declared by containing 
+            bodies.</para>
+    
+            <para>If a declaration is nested directly or indirectly inside a class or interface 
+            declaration, then there is always a <emphasis>current instance</emphasis> of the 
+            class or interface when the nested declaration body is executed. The current 
+            instance is determined as follows:</para>
+            
+            <itemizedlist>
+                <listitem>
+                    <para>for the innermost class or interface declaration that contains the 
+                    nested declaration, the current instance is the receiving instance of the
+                    invocation, evaluation, or assignment, and</para>
+                </listitem>
+                <listitem>
+                    <para>for any other class or interface that contains the nested declaration,
+                    the current instance is the same object that was the current instance when
+                    the initializer of the current instance of the innermost class or interface 
+                    declaration was executed.</para>
+                </listitem>
+            </itemizedlist>
+            
+            <para>For example:</para>
+            
+            <programlisting>Outer outerObject = Outer();
+Inner innerObject = outerObject.Inner();
+innerObject.member();</programlisting>
+            
+            <para>In this example, <literal>innerObject</literal> is the current instance of 
+            <literal>Inner</literal> when <literal>member()</literal> is executed, and
+            <literal>outerObject</literal> is the current instance of <literal>Outer</literal>.</para>
+                        
+            <para>If a declaration is nested directly or indirectly inside a block, then there 
+            is always a <emphasis>current frame</emphasis> of the block when the nested 
+            declaration is executed. The current frame contains the values of all references 
+            declared by the block. The current frame is determined as follows:</para>
+            
+            <itemizedlist>
+                <listitem>
+                    <para>if the nested declaration is nested directly inside a block,
+                    the current frame contains the current values at the point of execution
+                    of the value reference expression or callable reference expression that
+                    refers to the nested declaration, or, otherwise,</para>
+                </listitem>
+                <listitem>
+                    <para>if the nested declaration is contained inside the body of another
+                    nested declaration, the current frame is the current frame of the 
+                    containing declaration at the point of execution of the value reference 
+                    expression or callable reference expression that refers to the nested 
+                    declaration.</para>
+                </listitem>
+            </itemizedlist>
+            
+            <para>For example:</para>
+            
+            <programlisting>String()() outerMethod(String s) {
+    String() middleMethod() {
+        String innerMethod() => s;
+        return innerMethod;
+    }
+    return middleMethod;
+}
+
+String middleMethod()() => outerMethod("hello");
+String innerMethod() => middleMethod();
+String result = innerMethod();</programlisting>
+
+            <programlisting>Object outerMethod(String s) {
+    object middleObject {
+        shared actual String string => s;
+    }
+    return middleObject;
+}
+
+Object middleObject = outerMethod("hello");
+String result = middleObject.string;</programlisting>
+
+            <para>In both examples, <literal>result</literal> refers to the value 
+            <literal>"hello"</literal>.</para>
+            
+            <para>The set of <!--all declarations which belong directly to a containing body 
+            of a nested declaration, together with the --> current instances of containing 
+            classes and interfaces and current frames of containing blocks is called the 
+            <emphasis>closure</emphasis> of the nested declaration.</para>           
+            
+        </section>
+        
+    <section id="evaluationandassignment">
+    <title>Evaluation, invocation, and assignment</title>
+        
+    <para>Evaluation of an expression may result in:</para>
+    
+    <itemizedlist>
+        <listitem><para>invocation of a function or instantiation of a class,</para></listitem>
+        <listitem><para>evaluation of a value, or</para></listitem>
+        <listitem><para>assignment to a variable value.</para></listitem>
+    </itemizedlist>
+        
+    <section id="evaluation">
+        <title>Evaluation</title>
+        
+        <para>Evaluation of a value reference produces its current value.</para> 
+        
+        <programlisting>person.name</programlisting>
+        
+        <para>When a value reference expression is executed:</para>
+        
+        <itemizedlist>
+            <listitem>
+                <para>first, the receiver expression, if any, is evaluated to obtain a 
+                receiving instance for the evaluation, then</para>
+            </listitem>
+            <listitem>
+                <para>the actual declaration to be invoked is determined by considering 
+                the runtime type of the receiving instance, if any, and then</para>
+            </listitem>
+            <listitem>
+                <para>if the declaration is a reference, its persistent value is retrieved
+                from the receiving instance, or</para>
+            </listitem>
+            <listitem>
+                <para>otherwise, execution of the calling context pauses while the body 
+                of its getter is executed by the receiving instance, then,</para>
+            </listitem>
+            <listitem>
+                <para>finally, when execution of the getter ends, execution of the 
+                calling context resumes.</para>
+            </listitem>
+        </itemizedlist>
+        
+        <para>The resulting value is the persistent value retrieved, or the return value 
+        of the getter, as specified by the <literal>return</literal> directive.</para>
+        
+        <comment><para>TODO: evaluation of callable references constructs a callable
+        object that packages a reference to the receiving instance with a reference to
+        the function to be invoked or class to be instantiated.</para></comment>
+        
+    </section>
+    
+    <section id="invocation">
+        <title>Invocation</title>
+        
+        <para>Evaluation of an invocation expression for a callable reference invokes the 
+        underlying callable reference. This is called <emphasis>invocation</emphasis> in
+        the case of a function reference, or <emphasis>instantiation</emphasis> in the case
+        of a class reference.</para>
+        
+        <programlisting>print("Hello world!")</programlisting>
+        <programlisting>Entry(person.name, person)</programlisting>
+        
+        <para>When an invocation expression is executed:</para>
+        
+        <itemizedlist>
+            <listitem>
+                <para>first, the callable expression is evaluated to obtain the callable 
+                object, then</para>
+            </listitem>
+            <listitem>
+                <para>each argument is evaluated in turn in the calling context, then</para>
+            </listitem>
+            <listitem>
+                <para>the actual declaration to be invoked is determined by considering the 
+                runtime type of the receiving instance, if any, and then</para>
+            </listitem>
+            <listitem>
+                <para>execution of the calling context pauses while the body of the function 
+                or initializer is executed by the receiving instance with the argument values, 
+                then</para>
+            </listitem>
+            <listitem>
+                <para>finally, when execution of the function or initializer ends, execution 
+                of the calling context resumes.</para>
+            </listitem>
+        </itemizedlist>
+        
+        <para>A function invocation evaluates to the return value of the function, as specified 
+        by the <literal>return</literal> directive. The argument values are passed to the 
+        parameters of the method, and the body of the method is executed.</para>
+                
+        <para>A class instantiation evaluates to a new instance of the class. The argument 
+        values are passed to the initializer parameters of the class, and the initializer
+        is executed.</para>
+             
+    </section>
+    
+    <section id="assignment">
+        <title>Assignment</title>
+            
+        <para>Given a value reference to a variable, the assignment operator <literal>=</literal> 
+        assigns it a new value.</para>
+        
+        <programlisting>person.name = "Gavin"</programlisting>
+        
+        <para>When an assignment expression is executed:</para>
+        
+        <itemizedlist>
+            <listitem>
+                <para>first, the receiver expression of the value reference expression 
+                is executed to obtain the receiving instance, then</para>
+            </listitem>
+            <listitem>
+                <para>the actual declaration to be assigned is determined by considering 
+                the runtime type of the receiving instance, and then</para>
+            </listitem>
+            <listitem>
+                <para>if the member is a reference, its persistent value is updated in 
+                the receiving instance, or</para>
+            </listitem>
+            <listitem>
+                <para>otherwise, execution of the calling context pauses while the body 
+                of its setter is executed by the receiving instance with the assigned 
+                value, then,</para>
+            </listitem>
+            <listitem>
+                <para>finally, when execution of the setter ends, execution of the calling 
+                context resumes.</para>
+            </listitem>
+        </itemizedlist>
+        
+    </section>
+    
+    </section>
+    
+        <section id="reification">
+            <title>Reification</title>
+        
+        <para>Type arguments are <emphasis>reified</emphasis> in Ceylon. An instance of a 
+        generic type holds a reference to its type arguments. Therefore, the following are 
+        legal in Ceylon:</para>
+        
+        <itemizedlist>
+            <listitem>
+                <para>testing the runtime value of a type argument of an instance, for 
+                example, <literal>objectList is List&lt;Person&gt;</literal> or 
+                <literal>case (is List&lt;Person&gt;)</literal>,</para>
+            </listitem>
+            <listitem>
+                <para>filtering exceptions based on type arguments, for example,
+                <literal>catch (NotFoundException&lt;Person&gt; pnfe)</literal>, and</para>
+            </listitem>
+            <listitem>
+                <para>testing the runtime value of an instance against a type parameter,
+                for example <literal>x is Key</literal>, or against a type with a type 
+                parameter as an argument, for example, 
+                <literal>objectList is List&lt;Element&gt;</literal>.</para>
+            </listitem>
+            <!--
+            <listitem>
+                <para>obtaining a <literal>Type</literal> object representing a type with 
+                type arguments, for example, <literal>List&lt;Person&gt;</literal>,</para>
+            </listitem>
+            <listitem>
+                <para>obtaining a <literal>Type</literal> object representing the runtime 
+                value of a type parameter, for example, <literal>Element</literal>, or of 
+                a type with a type parameter as an argument, for example, 
+                <literal>List&lt;Element&gt;</literal>,</para>
+            </listitem>
+            <listitem>
+                <para>obtaining a <literal>Type</literal> object representing the
+                runtime value of a type argument of an instance using reflection, for 
+                example, <literal>objectList.type.arguments.first</literal>, and</para>
+            </listitem>
+            <listitem>
+                <para>instantiating a type parameter with an initialization parameter
+                specification, for example, <literal>Result(parent)</literal>.</para>
+            </listitem>
+            -->
+        </itemizedlist>
+        
+        <comment><para>TODO: much more information about reification and optimization
+        of reified generics.</para></comment>
+        
+        </section>
+        
+</chapter>

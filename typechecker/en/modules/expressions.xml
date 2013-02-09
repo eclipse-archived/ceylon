@@ -41,120 +41,6 @@
     to a program element if the type of the expression is assignable to the 
     declared type of the program element.</para>
     
-    <section id="objectinstancesidentity">
-        <title>Object instances, identity, and reference passing</title>
-        
-        <para>An <emphasis>object</emphasis> is a unique identifier, together with a 
-        reference to a class, and a persistent value for each reference of the class 
-        (including inherited references). The object is said to be an 
-        <emphasis>instance</emphasis> of the class.</para>
-        
-        <para>A <emphasis>value</emphasis> is a reference to an object (a copy of its 
-        unique identifier). At a particular point in the execution of the program, 
-        every reference of every object that exists, and every initialized reference 
-        of every function, getter, setter, or initializer that is currently executing 
-        has a value. Furthermore, every time an expression is executed, it produces a 
-        value.</para>
-        
-        <para>Two values are said to be <emphasis>identical</emphasis> if they are
-        references to the same object&mdash;if they hold the same unique identifier. 
-        The program may determine if two values of type <literal>Identifiable</literal> 
-        are identical using the <literal>&identical;</literal> operator. It may not 
-        directly obtain the unique identifier (which is a purely abstract construct). 
-        The program has no way of determining the identity of a value which is not of 
-        type <literal>Identifiable</literal>.</para>
-        
-        <para>Invocation of a function or instantiation of a class results in execution 
-        of the function body or class initializer with parameter values that are copies 
-        of the value produced by executing the argument expressions of the invocation, 
-        and a reference to the receiving instance that is a copy of the value produced 
-        by executing the receiver expression. The value produced by the invocation 
-        expression is a copy of the value produced by execution of the 
-        <literal>return</literal> directive expression.</para>
-        
-        <programlisting>Person myself(Person me) { return me; }
-Person p = ...;
-assert (myself(p)&identical;p); //assertion never fails</programlisting>
-
-        <programlisting>Semaphore s = Semaphore();
-this.semaphore = s;
-assert (semaphore&identical;s); //assertion never fails</programlisting>
-        
-        <para>A new object is produced by execution of a class instantiation expression.
-        The Ceylon compiler guarantees that if execution of a class initializer terminates
-        with no uncaught exception, then every reference of the object has been initialized
-        with a well-defined persistent value. The value of a reference is initialized for 
-        the first time by execution of a specifier or assignment expression. Every class 
-        instantiation expression results in an object with a new unique identifier shared 
-        by no other existing object. The object exists from the point at which execution 
-        of its initializer terminates. <emphasis>Conceptually</emphasis>, the object exists 
-        until execution of the program terminates.</para>
-        
-        <para>In practice, the object exists at least until the point at which it is not 
-        reachable by recursively following references from any function, getter, setter, 
-        or initializer currently being executed, or from an expression in a statement 
-        currently being executed. At this point, its persistent values are no longer 
-        accessible to expressions which subsequently execute and the object may be 
-        destroyed by the virtual machine. There is no way for the program to determine
-        that an object has been destroyed by the virtual machine (Ceylon does not support 
-        finalizers).</para>
-        
-        <para>As a special exception to the rules defined above:</para>
-        
-        <itemizedlist>
-        <!--listitem>
-            <para>The compiler is permitted to emit bytecode that unexpectedly creates or
-            avoids creating an actual instance of <literal>Gettable</literal> or 
-            <literal>Settable</literal>, when an expression is evaluated, as long as this 
-            does not affect the observable behavior of the program.</para>
-        </listitem-->
-        <listitem>
-            <para>The compiler is permitted to emit bytecode that produces a new instance of 
-            certain types in the module <literal>ceylon.language</literal> without execution 
-            of the initializer of the class, whenever any expression is evaluated. These 
-            types are: any of the the built-in numeric types, <literal>Character</literal>, 
-            <literal>Range</literal>, <literal>Entry</literal>, <literal>String</literal>,
-            and <literal>Tuple</literal>. 
-            Furthermore, it is permitted to use such a newly-produced instance as the value 
-            of the expression, as long as the newly-produced instance is equal to the value 
-            expected according to the rules above, as determined using the <literal>==</literal> 
-            operator.</para>
-        </listitem>
-        </itemizedlist>
-        
-        <para>Therefore, the types listed above directly extend <literal>Object</literal>
-        instead of <literal>Basic</literal>, and are not <literal>Identifiable</literal>.</para>
-        
-        <para>The execution of a Ceylon program complies with the rules laid out by the Java 
-        programming language's execution model (Chapter 17 of the Java Language Specification).
-        Ceylon attributes and locals are considered <emphasis>variables</emphasis> in the 
-        sense of the JLS. Evaluation is considered a <emphasis>use</emphasis> operation, 
-        and assignment is considered an <emphasis>assign</emphasis> operation, again in 
-        terms of the JLS.</para>
-        
-        <comment><para>TODO: what about on a JavaScript VM?</para></comment>
-        
-    </section>
-    
-    <section id="constantexpressions">
-        <title>Constant expressions</title>
-
-    <comment><para>TODO: We need a definition of a "constant expression".
-    We might use it for:</para>
-    <itemizedlist>
-    <listitem>annotations available at compile time, and even perhaps</listitem>
-    <listitem>initializer/specifier expressions in declaration section of class body.</listitem>
-    </itemizedlist>
-    <para>For example we could follow Java's very restrictive model, and say 
-    that a constant expression must be anything formed from literals, metamodel 
-    references, the <literal>..</literal> and <literal>-></literal> operators.
-    Or we could be much less restrictive and just say that it is any expression 
-    that could be used to initialize a toplevel attribute of the package.</para>
-    <para>At the very least, we need to properly define the scope in which the 
-    above things are actually evaluated.</para></comment>
-    
-    </section>
-    
     <section id="literalvalues">
         <title>Literal values</title>
     
@@ -368,7 +254,26 @@ shared interface Color { ... }</programlisting>
     </section-->
 
     </section>
+    
+    <section id="constantexpressions">
+        <title>Constant expressions</title>
 
+    <comment><para>TODO: We need a definition of a "constant expression".
+    We might use it for:</para>
+    <itemizedlist>
+    <listitem>annotations available at compile time, and even perhaps</listitem>
+    <listitem>initializer/specifier expressions in declaration section of class body.</listitem>
+    </itemizedlist>
+    <para>For example we could follow Java's very restrictive model, and say 
+    that a constant expression must be anything formed from literals, metamodel 
+    references, the <literal>..</literal> and <literal>-></literal> operators.
+    Or we could be much less restrictive and just say that it is any expression 
+    that could be used to initialize a toplevel attribute of the package.</para>
+    <para>At the very least, we need to properly define the scope in which the 
+    above things are actually evaluated.</para></comment>
+    
+    </section>
+    
     <section id="stringtemplates">
         <title>String templates</title>
         
@@ -1145,143 +1050,7 @@ shared interface Color { ... }</programlisting>
         </section-->
                     
     </section>
-    
-    <section id="evaluationandassignment">
-        <title>Evaluation, invocation, and assignment</title>
         
-        <para>Evaluation of an expression may result in:</para>
-        
-        <itemizedlist>
-            <listitem><para>invocation of a function or instantiation of a class,</para></listitem>
-            <listitem><para>evaluation of a value, or</para></listitem>
-            <listitem><para>assignment to a variable value.</para></listitem>
-        </itemizedlist>
-        
-    <section id="evaluation">
-        <title>Evaluation</title>
-        
-        <para>Evaluation of a value reference produces its current value.</para> 
-        
-        <programlisting>person.name</programlisting>
-        
-        <para>When a value reference expression is executed:</para>
-        
-        <itemizedlist>
-            <listitem>
-                <para>first, the receiver expression, if any, is evaluated to obtain a 
-                receiving instance for the evaluation, then</para>
-            </listitem>
-            <listitem>
-                <para>the actual declaration to be invoked is determined by considering 
-                the runtime type of the receiving instance, if any, and then</para>
-            </listitem>
-            <listitem>
-                <para>if the declaration is a reference, its persistent value is retrieved
-                from the receiving instance, or</para>
-            </listitem>
-            <listitem>
-                <para>otherwise, execution of the calling context pauses while the body 
-                of its getter is executed by the receiving instance, then,</para>
-            </listitem>
-            <listitem>
-                <para>finally, when execution of the getter ends, execution of the 
-                calling context resumes.</para>
-            </listitem>
-        </itemizedlist>
-        
-        <para>The resulting value is the persistent value retrieved, or the return value 
-        of the getter, as specified by the <literal>return</literal> directive.</para>
-        
-        <comment><para>TODO: evaluation of callable references constructs a callable
-        object that packages a reference to the receiving instance with a reference to
-        the function to be invoked or class to be instantiated.</para></comment>
-        
-    </section>
-    
-    <section id="invocation">
-        <title>Invocation</title>
-        
-        <para>Evaluation of an invocation expression for a callable reference invokes the 
-        underlying callable reference. This is called <emphasis>invocation</emphasis> in
-        the case of a function reference, or <emphasis>instantiation</emphasis> in the case
-        of a class reference.</para>
-        
-        <programlisting>print("Hello world!")</programlisting>
-        <programlisting>Entry(person.name, person)</programlisting>
-        
-        <para>When an invocation expression is executed:</para>
-        
-        <itemizedlist>
-            <listitem>
-                <para>first, the callable expression is evaluated to obtain the callable 
-                object, then</para>
-            </listitem>
-            <listitem>
-                <para>each argument is evaluated in turn in the calling context, then</para>
-            </listitem>
-            <listitem>
-                <para>the actual declaration to be invoked is determined by considering the 
-                runtime type of the receiving instance, if any, and then</para>
-            </listitem>
-            <listitem>
-                <para>execution of the calling context pauses while the body of the function 
-                or initializer is executed by the receiving instance with the argument values, 
-                then</para>
-            </listitem>
-            <listitem>
-                <para>finally, when execution of the function or initializer ends, execution 
-                of the calling context resumes.</para>
-            </listitem>
-        </itemizedlist>
-        
-        <para>A function invocation evaluates to the return value of the function, as specified 
-        by the <literal>return</literal> directive. The argument values are passed to the 
-        parameters of the method, and the body of the method is executed.</para>
-                
-        <para>A class instantiation evaluates to a new instance of the class. The argument 
-        values are passed to the initializer parameters of the class, and the initializer
-        is executed.</para>
-             
-    </section>
-    
-    <section id="assignment">
-        <title>Assignment</title>
-            
-        <para>Given a value reference to a variable, the assignment operator <literal>=</literal> 
-        assigns it a new value.</para>
-        
-        <programlisting>person.name = "Gavin"</programlisting>
-        
-        <para>When an assignment expression is executed:</para>
-        
-        <itemizedlist>
-            <listitem>
-                <para>first, the receiver expression of the value reference expression 
-                is executed to obtain the receiving instance, then</para>
-            </listitem>
-            <listitem>
-                <para>the actual declaration to be assigned is determined by considering 
-                the runtime type of the receiving instance, and then</para>
-            </listitem>
-            <listitem>
-                <para>if the member is a reference, its persistent value is updated in 
-                the receiving instance, or</para>
-            </listitem>
-            <listitem>
-                <para>otherwise, execution of the calling context pauses while the body 
-                of its setter is executed by the receiving instance with the assigned 
-                value, then,</para>
-            </listitem>
-            <listitem>
-                <para>finally, when execution of the setter ends, execution of the calling 
-                context resumes.</para>
-            </listitem>
-        </itemizedlist>
-        
-    </section>
-    
-    </section>
-    
     <!--section id="metamodelreferences">
         <title>Metamodel references</title>
         

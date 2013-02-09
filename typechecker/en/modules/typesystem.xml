@@ -1864,55 +1864,6 @@ Item item = comp of Item;</programlisting>
         
         </section>
                 
-        <!--section id="reification">
-            <title>Reification</title>
-        
-        <para>Type arguments are <emphasis>reified</emphasis> in Ceylon. An instance of a 
-        generic type holds a reference to its type arguments. Therefore, the following are 
-        legal in Ceylon:</para>
-        
-        <itemizedlist>
-            <listitem>
-                <para>testing the runtime value of a type argument of an instance, for 
-                example, <literal>objectList is List&lt;Person&gt;</literal> or 
-                <literal>case (is List&lt;Person&gt;)</literal>,</para>
-            </listitem>
-            <listitem>
-                <para>filtering exceptions based on type arguments, for example,
-                <literal>catch (NotFoundException&lt;Person&gt; pnfe)</literal>,</para>
-            </listitem>
-            <listitem>
-                <para>testing the runtime value of an instance against a type parameter,
-                for example <literal>x is Key</literal>, or against a type with a type 
-                parameter as an argument, for example, 
-                <literal>objectList is List&lt;Element&gt;</literal>,</para>
-            </listitem>
-            <listitem>
-                <para>obtaining a <literal>Type</literal> object representing a type with 
-                type arguments, for example, <literal>List&lt;Person&gt;</literal>,</para>
-            </listitem>
-            <listitem>
-                <para>obtaining a <literal>Type</literal> object representing the runtime 
-                value of a type parameter, for example, <literal>Element</literal>, or of 
-                a type with a type parameter as an argument, for example, 
-                <literal>List&lt;Element&gt;</literal>,</para>
-            </listitem>
-            <listitem>
-                <para>obtaining a <literal>Type</literal> object representing the
-                runtime value of a type argument of an instance using reflection, for 
-                example, <literal>objectList.type.arguments.first</literal>, and</para>
-            </listitem>
-            <listitem>
-                <para>instantiating a type parameter with an initialization parameter
-                specification, for example, <literal>Result(parent)</literal>.</para>
-            </listitem>
-        </itemizedlist>
-        
-        <para>Sequenced type parameters are not reified. None of the above operations can 
-        be performed with a sequenced type parameter.</para>
-        
-        </section-->
-        
         <section id="typeargumentinference">
             <title>Type argument inference</title>
         
