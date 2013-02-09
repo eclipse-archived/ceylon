@@ -1105,6 +1105,9 @@ TypeConstraints?
                     <para><literal>Range</literal>,</para>
                 </listitem>
                 <listitem>
+                    <para><literal>Array</literal>,</para>
+                </listitem>
+                <listitem>
                     <para><literal>Entry</literal>, and</para>
                 </listitem>
                 <listitem>
