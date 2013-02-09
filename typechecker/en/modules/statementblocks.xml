@@ -1183,40 +1183,44 @@ else {
         <title>Control structures and assertions</title>
         
         <para>Control of execution flow may be achieved using control directives and 
-        <emphasis>control structures</emphasis>. Control structures include conditionals, loops, 
-        and exception management.</para>
+        <emphasis>control structures</emphasis>. Control structures include conditionals, 
+        loops, and exception management.</para>
 
         <para>Ceylon provides the following control structures:</para>
         
         <itemizedlist>
             <listitem>
-                <para>the <literal>if/else</literal> conditional&mdash;for controlling execution 
-                based upon a boolean condition, type condition, or check for a non-null or 
+                <para>the <literal>if/else</literal> conditional&mdash;for controlling 
+                execution based on a boolean condition, type condition, or check for a 
+                non-null or non-empty value,</para>
+            </listitem>
+            <listitem>
+                <para>the <literal>switch/case/else</literal> conditional&mdash;for 
+                controlling execution using an enumerated list of values or types,</para>
+            </listitem>
+            <listitem>
+                <para>the <literal>while</literal> loop&mdash;for loops which terminate 
+                based on a boolean condition, type condition, or check for a non-null or 
                 non-empty value,</para>
             </listitem>
             <listitem>
-                <para>the <literal>switch/case/else</literal> conditional&mdash;for controlling 
-                execution using an enumerated list of values or types,</para>
+                <para>the <literal>for/else</literal> loop&mdash;for looping over elements 
+                of an iterable object, and</para>
             </listitem>
             <listitem>
-                <para>the <literal>while</literal> loop&mdash;for loops which terminate based a 
-                boolean condition,</para>
-            </listitem>
-            <listitem>
-                <para>the <literal>for/else</literal> loop&mdash;for looping over elements of a 
-                collection, and</para>
-            </listitem>
-            <listitem>
-                <para>the <literal>try/catch/finally</literal> exception manager&mdash;for managing 
-                exceptions and controlling the lifecycle of objects which require explicit 
-                destruction.</para>
+                <para>the <literal>try/catch/finally</literal> exception manager&mdash;for 
+                managing exceptions and controlling the lifecycle of objects which require 
+                explicit destruction.</para>
             </listitem>
         </itemizedlist>
                 
         <programlisting>ControlStructure: IfElse | SwitchCaseElse | While | ForFail | TryCatchFinally</programlisting>
        
-        <para>Control structures are not considered to be expressions, and therefore do not evaluate
-        to a value.</para>
+        <comment><para>Control structures are not considered to be expressions, and therefore 
+        do not evaluate to a value. However, comprehensions&mdash;and conditional expressions, 
+        planned for a future version of the language&mdash;are part of the expression syntax 
+        and share much of the syntax and semantics of the control structures they resemble.
+        </para></comment>
         
         <para><emphasis>Assertions</emphasis> are runtime checks upon program invariants, or 
         function preconditions and postconditions. An assertion failure represents a bug in
@@ -1227,7 +1231,8 @@ else {
         the exception that results from an assertion failure, for example, to display a message
         to the user, or in a testing framework to aggregate and report the failures that occurred
         in test assertions. A test failure may be considered "normal" occurrence from the point 
-        of view of a testing framework, but it's not "normal" in the sense intended above.</para></comment>
+        of view of a testing framework, but it's not "normal" in the sense intended above.
+        </para></comment>
         
         <section id="controlstructurevariables">
             <title>Control structure variables</title>
