@@ -305,11 +305,12 @@ TypeConstraints?
         
         <para>The following class definitions are semantically identical:</para>
         
-        <programlisting>class Person(shared String name, shared variable Integer age=0) {}</programlisting>
+        <programlisting>class Person(shared String name, shared variable Integer age=0, Address* addresses) {}</programlisting>
         
-        <programlisting>class Person(name, age=0) {
+        <programlisting>class Person(name, age=0, addresses) {
     shared String name;
     shared variable Integer age;
+    Address* addresses;
 }</programlisting>
         
         <para>A parameter list may include, optionally:</para>
