@@ -623,6 +623,21 @@ String result = middleObject.string;</programlisting>
     
     </section>
     
+    <section id="comprehensionevaluation">
+        <title>Evaluation of comprehensions and spread arguments</title>
+        
+        <comment><para>TODO: define the runtime semantics of comprehensions and the spread
+        operator.</para></comment>
+            
+    </section>
+    
+    <section id="enumerationevaluation">
+        <title>Evaluation of enumerations</title>
+        
+        <comment><para>TODO: define the runtime semantics of tuple and iterable enumerations.</para></comment>
+            
+    </section>
+    
     <section id="exceptions">
         <title>Exceptions</title>
         

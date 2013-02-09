@@ -714,14 +714,15 @@ shared interface Color { ... }</programlisting>
             <programlisting>IfComprehensionClause: "if" ConditionList ComprehensionClause</programlisting>
             <programlisting>ComprehensionClause: ForComprehensionClause | IfComprehensionClause | Expression</programlisting>
             
+            <para>A child comprehension clause may refer to iteration variables 
+            and condition variables declared by outer clauses of the comprehension.</para>
+            
             <para>The type of an argument list containing only a comprehension is 
             <literal>[T*]</literal> where <literal>T</literal> is the type of the
             expression which terminates the comprehension, or <literal>[T+]</literal>
             if there are no <literal>if</literal> clauses, and if every 
             <literal>for</literal> clause has an iterated expression of nonempty
             type.</para>
-            
-            <comment><para>TODO: define the semantics of comprehensions.</para></comment>
             
         </section>
         
