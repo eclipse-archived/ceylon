@@ -375,12 +375,12 @@ class Complex(Float x, Float y=0.0)
     </section>
     
     <section id="referenceabilityofdeclaration">
-        <title>Referenceability of a declaration</title>
+        <title>References and block structure</title>
         
         <para>A declaration may be in scope at a program element, but not 
-        <emphasis>referenceable</emphasis> at the program element. A declaration is 
-        referenceable at a program element if the declaration is in scope at the program 
-        element and either:</para>
+        <emphasis>referenceable</emphasis> at the program element. A declaration 
+        is referenceable at a program element if the declaration is in scope at 
+        the program element and either:</para>
         
         <itemizedlist>
             <listitem>
@@ -487,31 +487,34 @@ class Complex(Float x, Float y=0.0)
     </section>
     
     <section id="typedetermination">
-        <title>Type determinability of a declaration</title>
+        <title>Type inference and block structure</title>
         
         <para>A value declared using the keyword <literal>value</literal> or a
         function declared using the keyword <literal>function</literal> may be 
         in scope at a program element, but its type may not be 
-        <emphasis>determinable</emphasis> at the program element.</para>
+        <emphasis>inferrable</emphasis> from the point of view of that program 
+        element.</para>
         
         <para>The type of a value or function declared using the keyword 
-        <literal>value</literal> or <literal>function</literal> is determinable 
-        at a program element if the declaration is in scope at the program 
+        <literal>value</literal> or <literal>function</literal> is inferrable 
+        to a program element if the declaration is in scope at the program 
         element and the program element occurs within the lexical scope of the 
         declaration.</para>
         
         <comment><para>Note: the type of a value or function declared using
         the keyword <literal>value</literal> or <literal>function</literal> is
-        not determinable within the body of the value or function itself.</para></comment>
+        not inferrable within the body of the value or function 
+        itself.</para></comment>
         
-        <para>For any other declaration, the type is considered determinable
-        at a program element if the declaration is in scope at the program 
+        <para>For any other declaration, that is, for declarations which 
+        explicitly specify a type, the type is considered inferrable to a 
+        program element if the declaration is in scope at the program 
         element.</para>
         
         <para>The following code is not legal:</para>
         
         <programlisting>interface Point {
-    value x => y;  //compiler error: type of y is not determinable
+    value x => y;  //compiler error: type of y is not inferrable
     value y => x;
 }</programlisting>
         
@@ -569,7 +572,7 @@ class Complex(Float x, Float y=0.0)
                 <para>the declaration must be referenceable at the program element,</para>
             </listitem>
             <listitem>
-                <para>the type of the declaration must be determinable at the program 
+                <para>the type of the declaration must be inferrable to the program 
                 element, and</para>
             </listitem>
             <listitem>
@@ -644,7 +647,7 @@ class Complex(Float x, Float y=0.0)
                 element,</para>
             </listitem>
             <listitem>
-                <para>the type of the member must be determinable at the program 
+                <para>the type of the member must be inferrable to the program 
                 element, and</para>
             </listitem>
             <listitem>
