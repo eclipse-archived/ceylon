@@ -1319,41 +1319,62 @@ createItemMethod.intercept()
     </section-->
     
     <section id="miscexpressions">
-        <title>Inline conditional expressions and inline class expressions</title>
+        <title>Conditional expressions and anonymous class expressions</title>
         
-        <comment>
-        <para>We plan to support inline <literal>if/then/else</literal> conditional 
-        expressions, for example:</para>
-        <programlisting>Integer port = if (exists setting = process.propertyValue("port")) 
-                    then parseInteger(setting) else 8080;</programlisting>
-        <para>And inline <literal>object</literal> declarations, for example:</para>
-        <programlisting>iterator => object satisfies Iterable&lt;Nothing&gt; { next() => finished; }</programlisting>
-        <!--programlisting>try (object 
-        satisfies Closeable { 
-    begin() => print("beginning");
-    close(Exception? e) => print("closing");
-}) { 
-    ...
-}</programlisting-->
-        <para>Should we also support:</para>
-        <itemizedlist>
-            <listitem>
-                <para>inline <literal>switch/case/else</literal> conditional 
-                expressions,</para>
-            </listitem>
-            <listitem>
-                <para>inline <literal>try/catch</literal> exceptional conditions, 
-                and/or</para>
-            </listitem>
-            <listitem>
-                <para>inline <literal>class</literal> declarations? (This is like 
-                an inline <literal>object</literal> and an anonymous function rolled
-                into one.)</para>
-            </listitem>
-        </itemizedlist>
-        </comment>
+        <para>A <emphasis>conditional expression</emphasis> resembles a control 
+        structure but is part of the expression syntax, and evaluates to a value.</para> 
         
-    </section>
+        <para>An <emphasis>inline class</emphasis> is an anonymous class defined 
+        within an expression.</para>
+        
+        <section>
+            <title>Inline conditional expressions</title>
+         
+            <comment>
+            <para>We plan to support inline <literal>if/then/else</literal> conditional 
+            expressions, for example:</para>
+            <programlisting>Integer port = if (exists setting = process.propertyValue("port")) 
+                        then parseInteger(setting) else 8080;</programlisting>
+            <para>Note that this is more powerful than the <literal>then</literal> and
+            <literal>else</literal> operators because it allows all kinds of conditions,
+            not only boolean conditions.</para>
+            <para>Should we also support:</para>
+            <itemizedlist>
+                <listitem>
+                    <para>inline <literal>switch/case/else</literal> conditional 
+                    expressions, or even</para>
+                </listitem>
+                <listitem>
+                    <para>inline <literal>try/catch</literal> exceptional conditions?</para>
+                </listitem>
+            </itemizedlist>
+            </comment>
+        
+        </section>
+        
+        <section>
+            <title>Inline anonymous class expressions</title>
+            
+            <comment>
+            <para>Should we support inline <literal>object</literal> declarations, for 
+            example:</para>
+            <programlisting>iterator => object satisfies Iterable&lt;Nothing&gt; { next() => finished; }</programlisting>
+            <para>Or, alternatively, a kind of named argument ""instantiation" syntax for
+            interfaces and abstract classes:</para>
+            <programlisting>iterator => Iterable { next() => finished; }</programlisting>
+            <para>The first option is more flexible, but also more verbose. The second is
+            streamlined for the common case and might even be able to do type argument
+            inference as shown here.</para> 
+            
+            <para>If we go with the first option, should we support inline <literal>class</literal> 
+            declarations? This would be like an inline <literal>object</literal> and an 
+            anonymous function rolled into one. We could even support <literal>class</literal>
+            arguments in named argument lists.</para>
+            </comment>
+        
+        </section>
+        
+   </section>
 
     <section id="operators">
     <title>Operators</title>
