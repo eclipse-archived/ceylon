@@ -765,19 +765,25 @@ TypeConstraints?
         An initializer parameter may be used anywhere in the class body, including in 
         method and attribute definitions.</para>
         
-        <!--programlisting>shared class Counter(Integer initialCount=0) {
-    shared variable Integer count = initialCount;
-    shared void increment() { count++; }
-}</programlisting-->
+        <programlisting>shared class Key(Lock lock) {
+    shared void lock() {
+        lock.engage(this);
+        print("Locked.");
+    }
+    shared void unlock() {
+        lock.disengage(this);
+        print("Unlocked.");
+    }
+    shared Boolean locked => lock.engaged;
+}</programlisting>
+        
+        <para>An initializer parameter may be <literal>shared</literal>.</para>
+        
+        <programlisting>shared class Point(shared Float x, shared Float y) { ... }</programlisting>
         
         <programlisting>shared class Counter(count=0) {
     shared variable Integer count;
-    shared void increment() { count++; }
-}</programlisting>
-        
-        <programlisting>shared class Key(Lock lock) {
-    shared void lock() { lock.engage(this); }
-    shared void unlock() { lock.disengage(this); }
+    shared void increment() => count++;
 }</programlisting>
         
     <section id="callabletypeofclass">
