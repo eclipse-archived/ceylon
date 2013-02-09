@@ -1370,14 +1370,6 @@ createItemMethod.intercept()
     
     <programlisting>if (!document.internal || user is Employee) { ... }</programlisting>
     
-    <para>In all operator expressions, the arguments of the operator must be 
-    evaluated from left to right when the expression is executed. In certain cases, 
-    depending upon the definition of the operator, evaluation of the leftmost 
-    argument expression results in a value that causes the final value of the 
-    operator expression to be produced immediately without evaluation of the 
-    remaining argument expressions. Optimizations performed by the Ceylon compiler 
-    must not alter these behaviours.</para>
-    
     <section id="operatorprecedence">
         <title>Operator precedence</title>
         
@@ -1714,30 +1706,6 @@ createItemMethod.intercept()
     following:</para>
     
     <programlisting>X t = x; Y result=y;</programlisting>
-    
-    <para>The tables define semantics only. The compiler is permitted to emit equivalent 
-    bytecode that produces the same value as the pseudo-code that defines the operator, 
-    without actually executing any invocation, for the following operators:</para>
-    
-    <itemizedlist>
-        <listitem>
-            <para>all arithmetic operators,</para>
-        </listitem>
-        <listitem>
-            <para>the comparison and equality operators <literal>&equals;</literal>,
-            <literal>!=</literal>, <literal>&lt;=&gt;</literal>, <literal>&lt;</literal>,
-            <literal>&gt;</literal>, <literal>&lt;=</literal>, <literal>&gt;=</literal>
-            when the argument expression types are built-in numeric types, and</para>
-        </listitem>
-        <listitem>
-            <para>the <literal>Range</literal> and <literal>Entry</literal> construction 
-            operators <literal>..</literal> and <literal>-></literal>.</para>
-        </listitem>
-    </itemizedlist>
-    
-    <!--para>Therefore, listeners registered for the method invocations and class 
-    instantiations that define these operators may not be called when the operator 
-    expressions are executed.</para-->
     
     </section>
     

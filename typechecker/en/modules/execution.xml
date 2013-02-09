@@ -84,42 +84,30 @@ assert (semaphore&identical;s); //assertion never fails</programlisting>
         that an object has been destroyed by the virtual machine (Ceylon does not support 
         finalizers).</para>
         
-        <para>As a special exception to the rules defined above:</para>
+        <section id="valuetypeoptimizations">
+            <title>Value type optimizations</title>
+            
+            <para>As a special exception to the rules defined above, the compiler is permitted 
+            to emit bytecode or compiled JavaScript that produces a new instance of certain 
+            types in the module <literal>ceylon.language</literal> without execution of the 
+            initializer of the class, whenever any expression is evaluated. These types are: 
+            any of the the built-in numeric types, <literal>Character</literal>, 
+            <literal>Range</literal>, <literal>Entry</literal>, <literal>String</literal>, 
+            <literal>Array</literal>, and <literal>Tuple</literal>. Furthermore, it is permitted 
+            to use such a newly-produced instance as the value of the expression, as long as the 
+            newly-produced instance is equal to the value expected according to the rules above, 
+            as determined using the <literal>==</literal> operator.</para>
         
-        <itemizedlist>
-        <!--listitem>
-            <para>The compiler is permitted to emit bytecode that unexpectedly creates or
-            avoids creating an actual instance of <literal>Gettable</literal> or 
-            <literal>Settable</literal>, when an expression is evaluated, as long as this 
-            does not affect the observable behavior of the program.</para>
-        </listitem-->
-        <listitem>
-            <para>The compiler is permitted to emit bytecode that produces a new instance of 
-            certain types in the module <literal>ceylon.language</literal> without execution 
-            of the initializer of the class, whenever any expression is evaluated. These 
-            types are: any of the the built-in numeric types, <literal>Character</literal>, 
-            <literal>Range</literal>, <literal>Entry</literal>, <literal>String</literal>,
-            and <literal>Tuple</literal>. 
-            Furthermore, it is permitted to use such a newly-produced instance as the value 
-            of the expression, as long as the newly-produced instance is equal to the value 
-            expected according to the rules above, as determined using the <literal>==</literal> 
-            operator.</para>
-        </listitem>
-        </itemizedlist>
+            <para>Therefore, the types listed above directly extend <literal>Object</literal>
+            instead of <literal>Basic</literal>, and are not <literal>Identifiable</literal>.</para>
+            
+            <comment><para>Note: this does no justice at all to our compiler. Actually the 
+            compiler infrastructure already supports value type optimization for user-defined 
+            types, though we have not yet exposed this functionality as part of the language.
+            </para></comment>
+            
+        </section>
         
-        <para>Therefore, the types listed above directly extend <literal>Object</literal>
-        instead of <literal>Basic</literal>, and are not <literal>Identifiable</literal>.</para>
-        
-        <comment><para>TODO: what about on a JavaScript VM?</para></comment>
-        
-    </section>
-    
-    <section id="numericoperations">
-        <title>Numeric operations</title>
-        
-        <comment><para>TODO: define the semantics of integer and floating point numeric
-        operations, and specify the differences between the two platforms.</para></comment>
-    
     </section>
     
     <section id="sequentialexecutionandclosure">
@@ -561,6 +549,75 @@ String result = middleObject.string;</programlisting>
                     context resumes.</para>
                 </listitem>
             </itemizedlist>
+            
+        </section>
+    
+    </section>
+    
+    <section id="operatorexpressions">
+        <title>Operator expressions</title>
+        
+        <para>Most operator expression are defined in terms of function invocation, value 
+        evaluation, or a combination of invocations and evaluations. The semantics of 
+        evaluation of an operator expression therefore follows from the above definitions 
+        of evaluation and invocation and from of its definition in terms of evaluation and 
+        invocation.</para>
+        
+        <para>However, this specification allows the compiler to take advantage of the
+        optimized support for primitive value types provided by the virtal machine
+        environment.</para>
+        
+        <section id="operatorexpressionoptimization">
+            <title>Operator expression optimization</title>
+            
+            <para>As a special exception to the rules, the compiler is permitted to optimize 
+            certain operations upon certain types in the module <literal>ceylon.language</literal>. 
+            These types are: any of the the built-in numeric types, <literal>Character</literal>, 
+            <literal>Range</literal>, <literal>Entry</literal>, <literal>String</literal>, 
+            <literal>Array</literal>, and <literal>Tuple</literal>.</para>
+            
+            <para>Thus, the tables in the previous chapter define semantics only. The compiler 
+            may emit bytecode or compiled JavaScript that produces the same value at runtime as 
+            the pseudo-code that defines the operator, without actually executing any invocation, 
+            for the following operators:</para>
+            
+            <itemizedlist>
+                <listitem>
+                    <para>all arithmetic operators,</para>
+                </listitem>
+                <listitem>
+                    <para>the comparison and equality operators <literal>&equals;</literal>,
+                    <literal>!=</literal>, <literal>&lt;=&gt;</literal>, <literal>&lt;</literal>,
+                    <literal>&gt;</literal>, <literal>&lt;=</literal>, <literal>&gt;=</literal>
+                    when the argument expression types are built-in numeric types, and</para>
+                </listitem>
+                <listitem>
+                    <para>the <literal>Range</literal> and <literal>Entry</literal> construction 
+                    operators <literal>..</literal> and <literal>-></literal>.</para>
+                </listitem>
+            </itemizedlist>
+            
+            <!--para>Therefore, listeners registered for the method invocations and class 
+            instantiations that define these operators may not be called when the operator 
+            expressions are executed.</para-->
+            
+            <para>In all operator expressions, the arguments of the operator must be evaluated 
+            from left to right when the expression is executed. In certain cases, depending upon 
+            the definition of the operator, evaluation of the leftmost argument expression results 
+            in a value that causes the final value of the operator expression to be produced 
+            immediately without evaluation of the remaining argument expressions. Optimizations 
+            performed by the Ceylon compiler must not alter these behaviours.</para>
+            
+            <comment><para>Note: this restriction exists to ensure that any effects are not 
+            changed by the optimizations.</para></comment>
+            
+        </section>
+        
+        <section id="numericoperations">
+            <title>Numeric operations</title>
+            
+            <comment><para>TODO: define the semantics of integer and floating point numeric
+            operations, and specify the differences between the two platforms.</para></comment>
             
         </section>
     
