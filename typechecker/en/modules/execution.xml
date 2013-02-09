@@ -128,12 +128,12 @@ assert (semaphore&identical;s); //assertion never fails</programlisting>
             <title>Sequential execution of a body</title>
             
             <para>The statements and reference specifiers that directly occur in a block 
-            are executed sequentially in the lexical order in which they occcur. Execution 
-            of a block begins at the first statement or reference specifier. Execution of 
-            a block terminates when the last statement or reference specifier of the block 
-            finishes executing, or when a control directive that terminates the block is 
-            executed, or when an exception is thrown by an evaluation, invocation, or
-            instantiation.</para>
+            or initializer section of a class body are executed sequentially in the lexical 
+            order in which they occcur. Execution of a block or initializer begins at the 
+            first statement or reference specifier. Execution of a block terminates when the 
+            last statement or reference specifier of the block finishes executing, or when a 
+            control directive that terminates the block is executed, or when an exception is 
+            thrown by an evaluation, invocation, or instantiation.</para>
         
         </section>
         
@@ -221,6 +221,15 @@ String result = middleObject.string;</programlisting>
 
             <para>In both examples, <literal>result</literal> refers to the value 
             <literal>"hello"</literal>.</para>
+            
+        </section>
+        
+        <section id="toplevelinitialization">
+            <title>Initialization of toplevel references</title>
+            
+            <comment><para>TODO: specify the semantics surrounding initialization of 
+            toplevels, the exceptions that can occur, and the differences between the
+            two platforms!</para></comment>
             
         </section>
         
