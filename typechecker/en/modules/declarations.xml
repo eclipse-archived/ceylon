@@ -1503,6 +1503,13 @@ shared class Branch<Element>(String name, Node<Element> left, Node<Element> righ
         
         <programlisting>shared alias Number => Integer|Float|Decimal|Whole;</programlisting>
         <programlisting>alias ListLike&lt;Value&gt; => List&lt;Value&gt;|Map&lt;Integer,Value&gt;;</programlisting>
+        <programlisting>alias Numbered&lt;Num,Value&gt; given Num satisfies Ordinal&lt;Num&gt; 
+        => Correspondence&lt;Num,Value&gt;;</programlisting>
+        
+        <comment><para>Note: class, interface, and type aliases use a "fat arrow" lazy 
+        specifier <literal>=&gt;</literal> instead of <literal>=</literal> because the
+        type parameters declared on the left of the specifier are in scope on the right
+        of the specifier. An alias is in general a type constructor.</para></comment>
         
     </section>
         
