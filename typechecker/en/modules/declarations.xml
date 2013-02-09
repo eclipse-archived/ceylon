@@ -738,13 +738,13 @@ TypeConstraints?
     
     variable Integer n = initialCount;
     
-    print("Initial count: " n "");
+    print("Initial count: ``n``");
     
     shared Integer count => n;
     
     shared void increment() {
         n++;
-        print("Count: " n "");
+        print("Count: ``n``");
     }
     
 }</programlisting>
@@ -820,7 +820,7 @@ TypeConstraints?
     x => d;
     y => d;
     
-    doc "must have correct distance from origin" 
+    "must have correct distance from origin" 
     assert (x^2 + y^2 &equals; distance^2);
     
 }</programlisting>
@@ -1605,13 +1605,13 @@ shared class Branch<Element>(String name, Node<Element> left, Node<Element> righ
     }
 }</programlisting>
         
-        <programlisting>shared void addEntry(Entry&lt;Key,Item&gt; entry) {
+        <programlisting>shared void addEntry(Key->Item entry) {
     map.put(entry.key,entry.item);
 }</programlisting>
 
         <programlisting><![CDATA[shared Set<Element> singleton<Element>(Element element) 
         given Element satisfies Comparable<Element> {
-    return TreeSet(element);
+    return TreeSet { element };
 }]]></programlisting>
                 
         </section>
@@ -1627,11 +1627,11 @@ shared class Branch<Element>(String name, Node<Element> left, Node<Element> righ
         
         <programlisting>shared Integer add(Integer x, Integer y) => x + y;</programlisting>
         
-        <programlisting>shared void addEntry(Entry&lt;Key,Item&gt; entry) => map.put(entry.key,entry.item);</programlisting>
+        <programlisting>shared void addEntry(Key->Item entry) => map.put(entry.key,entry.item);</programlisting>
 
         <programlisting><![CDATA[shared Set<Element> singleton<Element>(Element element) 
             given Element satisfies Comparable<Element>
-        => TreeSet(element);]]></programlisting>
+        => TreeSet { element };]]></programlisting>
         
         </section>
         
@@ -2319,7 +2319,7 @@ print(greeting);</programlisting>
 
             <programlisting>class ConcretePi() 
         extends AbstractPi() {
-    shared actual Float pi { ... }
+    shared actual Float pi = calculatePi();
 }</programlisting>
             
             <para>Alternatively, a subtype may refine an attribute using a specification 
@@ -2328,7 +2328,6 @@ print(greeting);</programlisting>
             
             <programlisting>class ConcretePi() 
         extends AbstractPi() {
-    Float calculatePi() { ... }
     pi = calculatePi();
 }</programlisting>
             
