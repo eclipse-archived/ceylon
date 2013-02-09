@@ -313,6 +313,9 @@ TypeConstraints?
     Address* addresses;
 }</programlisting>
         
+        <comment><para>TODO: are parameters really allowed to be <literal>variable</literal>?
+        Currently the typechecker rejects this, but it's hard to see why it should.</para></comment>
+        
         <para>A parameter list may include, optionally:</para>
         
         <itemizedlist>
