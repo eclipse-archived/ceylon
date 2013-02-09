@@ -613,6 +613,13 @@ TypeConstraints?
             be an interface. An interface may not satisfy the same interface twice 
             (not even with distinct type arguments).</para>
             
+            <comment><para>Note: this second restriction is not strictly necessary.
+            In fact, <literal>satisfies List&lt;One&gt;&amp;List&lt;Two&gt;</literal>
+            means the same thing as <literal>satisfies List&lt;One&amp;Two&gt;</literal>,
+            and the compiler already needs to be able to figure that out when it 
+            comes to multiple instantiations of the same interface inherited 
+            indirectly. Still, the restriction seems harmless enough.</para></comment>
+            
             <para>The interface is a subtype of every type listed in the 
             <literal>satisfies</literal> clause. The interface is also a subtype of 
             the type <literal>Object</literal> defined in 
