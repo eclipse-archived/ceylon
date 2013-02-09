@@ -52,6 +52,7 @@ public class GenerateJsVisitor extends Visitor
     final ConditionGenerator conds;
     private final InvocationGenerator invoker;
     private final List<CommonToken> tokens;
+    private Declaration dyndecl; //to cache the Dynamic declaration
 
     private final class SuperVisitor extends Visitor {
         private final List<Declaration> decs;
@@ -1730,7 +1731,7 @@ public class GenerateJsVisitor extends Visitor
      */
     private String memberAccess(MemberOrTypeExpression expr, boolean qualifyBaseExpr) {
         Declaration decl = expr.getDeclaration();
-        if (isNative(decl)) {
+        if (isNative(decl) || isDynamic(expr)) {
             // direct access to a native element
             return decl.getName();
         }
@@ -1807,7 +1808,9 @@ public class GenerateJsVisitor extends Visitor
 
     @Override
     public void visit(InvocationExpression that) {
-        if (that.getNamedArgumentList()!=null) {
+        if (that.getPrimary() instanceof BaseTypeExpression && isDynamic(that.getPrimary())) {
+            out("{}");
+        } else if (that.getNamedArgumentList()!=null) {
             NamedArgumentList argList = that.getNamedArgumentList();
             out("(");
             Map<String, String> argVarNames = invoker.defineNamedArguments(argList);
@@ -2178,6 +2181,12 @@ public class GenerateJsVisitor extends Visitor
         String returnValue = null;
         MemberOrTypeExpression lhsExpr = null;
         
+        if (isDynamic(that.getLeftTerm())) {
+            that.getLeftTerm().visit(this);
+            out("=");
+            that.getRightTerm().visit(this);
+            return;
+        }
         out("(");
         if (that.getLeftTerm() instanceof BaseMemberExpression) {
             BaseMemberExpression bme = (BaseMemberExpression) that.getLeftTerm();
@@ -2580,13 +2589,25 @@ public class GenerateJsVisitor extends Visitor
     }
 
     @Override public void visit(EqualOp that) {
-        leftEqualsRight(that);
+        if (isDynamic(that.getLeftTerm())) {
+            that.getLeftTerm().visit(this);
+            out("===");
+            that.getRightTerm().visit(this);
+        } else {
+            leftEqualsRight(that);
+        }
     }
 
     @Override public void visit(NotEqualOp that) {
-        out("(!");
-        leftEqualsRight(that);
-        out(")");
+        if (isDynamic(that.getLeftTerm())) {
+            that.getLeftTerm().visit(this);
+            out("!==");
+            that.getRightTerm().visit(this);
+        } else {
+            out("(!");
+            leftEqualsRight(that);
+            out(")");
+        }
     }
 
     @Override public void visit(NotOp that) {
@@ -2618,27 +2639,51 @@ public class GenerateJsVisitor extends Visitor
     }
 
     @Override public void visit(SmallerOp that) {
-        leftCompareRight(that);
-        out(".equals(", clAlias, "getSmaller())");
+        if (isDynamic(that.getLeftTerm())) {
+            that.getLeftTerm().visit(this);
+            out("<");
+            that.getRightTerm().visit(this);
+        } else {
+            leftCompareRight(that);
+            out(".equals(", clAlias, "getSmaller())");
+        }
     }
 
     @Override public void visit(LargerOp that) {
-        leftCompareRight(that);
-        out(".equals(", clAlias, "getLarger())");
+        if (isDynamic(that.getLeftTerm())) {
+            that.getLeftTerm().visit(this);
+            out(">");
+            that.getRightTerm().visit(this);
+        } else {
+            leftCompareRight(that);
+            out(".equals(", clAlias, "getLarger())");
+        }
     }
 
     @Override public void visit(SmallAsOp that) {
-        out("(");
-        leftCompareRight(that);
-        out("!==", clAlias, "getLarger()");
-        out(")");
+        if (isDynamic(that.getLeftTerm())) {
+            that.getLeftTerm().visit(this);
+            out("<=");
+            that.getRightTerm().visit(this);
+        } else {
+            out("(");
+            leftCompareRight(that);
+            out("!==", clAlias, "getLarger()");
+            out(")");
+        }
     }
 
     @Override public void visit(LargeAsOp that) {
-        out("(");
-        leftCompareRight(that);
-        out("!==", clAlias, "getSmaller()");
-        out(")");
+        if (isDynamic(that.getLeftTerm())) {
+            that.getLeftTerm().visit(this);
+            out(">=");
+            that.getRightTerm().visit(this);
+        } else {
+            out("(");
+            leftCompareRight(that);
+            out("!==", clAlias, "getSmaller()");
+            out(")");
+        }
     }
     /** Outputs the CL equivalent of 'a==b' in JS. */
     private void leftEqualsRight(BinaryOperatorExpression that) {
@@ -3149,9 +3194,15 @@ public class GenerateJsVisitor extends Visitor
         that.getPrimary().visit(this);
         ElementOrRange eor = that.getElementOrRange();
         if (eor instanceof Element) {
-            out(".get(");
-            ((Element)eor).getExpression().visit(this);
-            out(")");
+            if (isDynamic(that.getPrimary())) {
+                out("[");
+                ((Element)eor).getExpression().visit(this);
+                out("]");
+            } else {
+                out(".get(");
+                ((Element)eor).getExpression().visit(this);
+                out(")");
+            }
         } else {//range, or spread?
             ElementRange er = (ElementRange)eor;
             Expression sexpr = er.getLength();
@@ -3485,6 +3536,28 @@ public class GenerateJsVisitor extends Visitor
         out("].reifyCeylonType(");
         TypeUtils.printTypeArguments(that, types, this);
         out(")");
+    }
+
+    /** Tells whether a term is of the Dynamic type. */
+    boolean isDynamic(Term term) {
+        if (term instanceof BaseMemberOrTypeExpression) {
+            if (dyndecl == null) {
+                if (((BaseMemberOrTypeExpression)term).getDeclaration().getQualifiedNameString().equals("ceylon.language::Dynamic")) {
+                    dyndecl = ((BaseMemberOrTypeExpression)term).getDeclaration();
+                    return true;
+                }
+            } else {
+                return dyndecl.equals(((BaseMemberOrTypeExpression)term).getDeclaration());
+            }
+        } else if (dyndecl == null) {
+            if (term.getTypeModel().getDeclaration().getQualifiedNameString().equals("ceylon.language::Dynamic")) {
+                dyndecl = term.getTypeModel().getDeclaration();
+                return true;
+            }
+        } else {
+            return dyndecl.equals(term.getTypeModel().getDeclaration());
+        }
+        return false;
     }
 
 }
