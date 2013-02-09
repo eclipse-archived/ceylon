@@ -598,7 +598,7 @@
             
         </section>
         
-        <section id="bottomtype">
+        <section id="dynamictype">
             <title>The dynamic type</title>
             
             <comment><para>TODO: define <literal>Dynamic</literal>.</para></comment>

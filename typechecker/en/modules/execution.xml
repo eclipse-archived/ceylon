@@ -237,140 +237,330 @@ String result = middleObject.string;</programlisting>
         </section>
         
    </section>
+   
+   <section id="executionofcontrolstructures">
+        <title>Execution of control structures and assertions</title>
         
-    <section id="evaluationandassignment">
-    <title>Evaluation, invocation, and assignment</title>
+        <para>Control structures are used to organize nonlinear within a block.</para>
         
-    <para>Evaluation of an expression may result in:</para>
-    
-    <itemizedlist>
-        <listitem><para>invocation of a function or instantiation of a class,</para></listitem>
-        <listitem><para>evaluation of a value, or</para></listitem>
-        <listitem><para>assignment to a variable value.</para></listitem>
-    </itemizedlist>
-        
-    <section id="evaluation">
-        <title>Evaluation</title>
-        
-        <para>Evaluation of a value reference produces its current value.</para> 
-        
-        <programlisting>person.name</programlisting>
-        
-        <para>When a value reference expression is executed:</para>
-        
-        <itemizedlist>
-            <listitem>
-                <para>first, the receiver expression, if any, is evaluated to obtain a 
-                receiving instance for the evaluation, then</para>
-            </listitem>
-            <listitem>
-                <para>the actual declaration to be invoked is determined by considering 
-                the runtime type of the receiving instance, if any, and then</para>
-            </listitem>
-            <listitem>
-                <para>if the declaration is a reference, its persistent value is retrieved
-                from the receiving instance, or</para>
-            </listitem>
-            <listitem>
-                <para>otherwise, execution of the calling context pauses while the body 
-                of its getter is executed by the receiving instance, then,</para>
-            </listitem>
-            <listitem>
-                <para>finally, when execution of the getter ends, execution of the 
-                calling context resumes.</para>
-            </listitem>
-        </itemizedlist>
-        
-        <para>The resulting value is the persistent value retrieved, or the return value 
-        of the getter, as specified by the <literal>return</literal> directive.</para>
-        
-        <comment><para>TODO: evaluation of callable references constructs a callable
-        object that packages a reference to the receiving instance with a reference to
-        the function to be invoked or class to be instantiated.</para></comment>
-        
-    </section>
-    
-    <section id="invocation">
-        <title>Invocation</title>
-        
-        <para>Evaluation of an invocation expression for a callable reference invokes the 
-        underlying callable reference. This is called <emphasis>invocation</emphasis> in
-        the case of a function reference, or <emphasis>instantiation</emphasis> in the case
-        of a class reference.</para>
-        
-        <programlisting>print("Hello world!")</programlisting>
-        <programlisting>Entry(person.name, person)</programlisting>
-        
-        <para>When an invocation expression is executed:</para>
-        
-        <itemizedlist>
-            <listitem>
-                <para>first, the callable expression is evaluated to obtain the callable 
-                object, then</para>
-            </listitem>
-            <listitem>
-                <para>each argument is evaluated in turn in the calling context, then</para>
-            </listitem>
-            <listitem>
-                <para>the actual declaration to be invoked is determined by considering the 
-                runtime type of the receiving instance, if any, and then</para>
-            </listitem>
-            <listitem>
-                <para>execution of the calling context pauses while the body of the function 
-                or initializer is executed by the receiving instance with the argument values, 
-                then</para>
-            </listitem>
-            <listitem>
-                <para>finally, when execution of the function or initializer ends, execution 
-                of the calling context resumes.</para>
-            </listitem>
-        </itemizedlist>
-        
-        <para>A function invocation evaluates to the return value of the function, as specified 
-        by the <literal>return</literal> directive. The argument values are passed to the 
-        parameters of the method, and the body of the method is executed.</para>
-                
-        <para>A class instantiation evaluates to a new instance of the class. The argument 
-        values are passed to the initializer parameters of the class, and the initializer
-        is executed.</para>
-             
-    </section>
-    
-    <section id="assignment">
-        <title>Assignment</title>
+        <section id="evaluationofconditions">
+            <title>Evaluation of condition lists</title>
             
-        <para>Given a value reference to a variable, the assignment operator <literal>=</literal> 
-        assigns it a new value.</para>
+            <para>To determine if a condition list is satsfied, its constituent conditions are 
+            evaluated in the lexical order in which they occur in the condition list. If any 
+            condition is not satisfied, none of the subsequent conditions in the list are 
+            evaluated.</para>
+            
+            <itemizedlist>
+                <listitem>
+                    <para>A boolean condition is satisfied if its expression evaluates to 
+                    <literal>true</literal> when the condition is evaluated.</para>
+                </listitem>
+            </itemizedlist>
         
-        <programlisting>person.name = "Gavin"</programlisting>
+             <para>For any other kind of condition, the condition is satisfied if its value 
+             reference or expression evaluates to an instance of the required type when the 
+             condition is evaluated:</para>
+             
+             <itemizedlist>
+                 <listitem>
+                     <para>for an assignability condition, the condition is satisfied if the 
+                     expression evaluates to an instance of the specified type when the control 
+                     structure is executed,</para>
+                 </listitem>
+                 <listitem>
+                     <para>for an existence condition, the condition is satisfied unless the 
+                     expression evaluates to <literal>null</literal> when the control structure 
+                     is executed, or</para>
+                 </listitem>
+                 <listitem>
+                     <para>for a nonemptiness expression, the condition is satisfied unless the 
+                     expression evaluates to an instance of <literal>[]|Null</literal> when the 
+                     control structure is executed.</para>
+                 </listitem>
+             </itemizedlist>
+             
+             <para>A condition list is satisfied if and only if all of its constituent conditions 
+             are satisfied.</para>
+            
+             <!--para>Note that these are formal definitions. In fact, the compiler erases 
+             <literal>Nothing|T</literal> to <literal>T</literal> before generating bytecode.
+             So <literal>if (exists x)</literal> is actually processed as <literal>if (x!=null)</literal>
+             by the virtual machine.</para-->
         
-        <para>When an assignment expression is executed:</para>
+        </section>
         
-        <itemizedlist>
-            <listitem>
-                <para>first, the receiver expression of the value reference expression 
-                is executed to obtain the receiving instance, then</para>
-            </listitem>
-            <listitem>
-                <para>the actual declaration to be assigned is determined by considering 
-                the runtime type of the receiving instance, and then</para>
-            </listitem>
-            <listitem>
-                <para>if the member is a reference, its persistent value is updated in 
-                the receiving instance, or</para>
-            </listitem>
-            <listitem>
-                <para>otherwise, execution of the calling context pauses while the body 
-                of its setter is executed by the receiving instance with the assigned 
-                value, then,</para>
-            </listitem>
-            <listitem>
-                <para>finally, when execution of the setter ends, execution of the calling 
-                context resumes.</para>
-            </listitem>
-        </itemizedlist>
+        <section id="validationofassertions">
+            <title>Validation of assertions</title>
+            
+            <para>When the assertion is executed, the condition list is evaluated. If the condition 
+            list is not satisfied, an exception of type <literal>AssertionFailure</literal> in 
+            <literal>ceylon.language</literal> is thrown.</para>
+            
+            <para>The information carried by the <literal>AssertionFailure</literal> includes:</para>
+            
+            <itemizedlist>
+                <listitem>
+                    <para>the text of the Ceylon code of the condition that failed,</para>
+                </listitem>
+                <listitem>
+                    <para>the message specified by the <literal>doc</literal> annotation of the
+                    assertion, if any.</para>
+                </listitem>
+            </itemizedlist>
+            
+        </section>
+        
+        <section id="executionofconditionals">
+            <title>Execution of conditionals</title>
+            
+            <para>The <literal>if/else</literal> and <literal>switch/case/else</literal> 
+            constructs control conditional execution.</para>
+            
+            <para>When the <literal>if/else</literal> construct is executed, its condition list 
+            is evaluated. If the condition list is satisfied, the <literal>if</literal> block is 
+            executed. Otherwise, the <literal>else</literal> block, if any, is executed.</para>
+            
+            <para>When a <literal>switch/case/else</literal> construct is executed, its 
+            <literal>switch</literal> expression is evaluated to produce a value. The value is
+            guaranteed to <emphasis>match</emphasis> at most one <literal>case</literal> of the 
+            <literal>switch</literal>. If it matches a certain case, then that <literal>case</literal>
+            block is executed. Otherwise, <literal>switch</literal> is guaranteed to have an 
+            <literal>else</literal>, and so the <literal>else</literal> block is executed.</para>
+            
+            <comment><para>TODO: formally define what it means for a value to match a case!</para></comment>
+            
+        </section>
+        
+        <section id="executionofloops">
+            <title>Execution of loops</title>
+            
+            <para>The <literal>for/else</literal> and <literal>while</literal> loops control
+            repeated execution.</para>
+            
+            <para>When a <literal>while</literal> construct is executed, the loop condition list 
+            is evaluated repeatedly until the first time the condition list is not satisfied, or 
+            until a <literal>break</literal>, <literal>return</literal>, or <literal>throw</literal> 
+            directive is executed. Each time the condition is satisfied, the <literal>while</literal> 
+            block is executed.</para>
+            
+            <para>When a <literal>for/else</literal> construct is executed:</para>
+            
+            <itemizedlist>
+                <listitem>
+                    <para>the iterated expression is evaluated to produce an an instance of
+                    <literal>Iterable</literal>,</para>
+                </listitem>
+                <listitem>
+                    <para>an <literal>Iterator</literal> is obtained by calling 
+                    <literal>iterator</literal> on the iterable object, and then</para>
+                </listitem>
+                <listitem>
+                    <para>the <literal>for</literal> block is executed once for each value 
+                    of produced by repeatedly calling <literal>next()</literal> on iterator, 
+                    until the iterator produces the value <literal>finished</literal>, or 
+                    until a <literal>break</literal>, <literal>return</literal>, or 
+                    <literal>throw</literal> directive is executed.</para>
+                </listitem>
+            </itemizedlist>
+            
+            <para>Note that:</para>
+            
+            <itemizedlist>
+                <listitem>
+                    <para>if the iterated expression is also of type <literal>X[]</literal>,
+                    the compiler is permitted to optimize away the use of <literal>Iterator</literal>, 
+                    instead using indexed element access.</para>
+                </listitem>
+                <listitem>
+                    <para>if the iterated expression is a range constructor expression, the 
+                    compiler is permitted to optimize away creation of the <literal>Range</literal>, 
+                    and generate the indices using the <literal>successor</literal> operation.</para>
+                </listitem>
+            </itemizedlist>
+            
+            <para>We say that the loop <emphasis>exits early</emphasis> if it ends via execution 
+            of a <literal>break</literal>, <literal>return</literal>, or <literal>throw</literal>
+            directive. Otherwise, we say that the loop <emphasis>completes</emphasis> normally.</para>
+             
+            <para>If the loop completes normally, the <literal>else</literal> block is executed. 
+            Otherwise, if the loop exists early, the <literal>else</literal> block is not executed.</para>
+                                 
+        </section>
+        
+        <section>
+             <title>Exception handling</title>
+             
+             <para>When a <literal>try/catch/finally</literal> construct is executed:</para>
+             
+             <itemizedlist>
+                 <listitem>
+                     <para>the resource expression, if any, is evaluated, and then 
+                     <literal>open()</literal> is called on the resulting resource 
+                     instance, then</para>
+                 </listitem>
+                 <listitem>
+                     <para>the <literal>try</literal> block is executed, then</para>
+                 </listitem>
+                 <listitem>
+                     <para><literal>close()</literal> is called on the resource 
+                     instance, if any, with the exception that propagated out of 
+                     the <literal>try</literal> block, if any, then</para>
+                 </listitem>
+                 <listitem>
+                     <para>if an exception did propagate out of the <literal>try</literal> 
+                     block, the first <literal>catch</literal> block with a variable 
+                     to which the exception is assignable, if any, is executed, and 
+                     then</para>
+                 </listitem>
+                 <listitem>
+                     <para>the <literal>finally</literal> block, if any, is 
+                     executed.</para>
+                 </listitem>
+             </itemizedlist>
+             
+             <comment><para>TODO: Precisely what happens if <literal>close()</literal> 
+             throws an exception? Wrap and rethrow the exception as a 
+             <literal>CloseException</literal>, bypassing any handler for the exception 
+             from the <literal>try</literal> block?</para></comment>
+             
+        </section>
         
     </section>
+    
+    <section id="evaluationinvocationandassignment">
+        <title>Evaluation, invocation, and assignment</title>
+            
+        <para>Evaluation of an expression may result in:</para>
+        
+        <itemizedlist>
+            <listitem><para>invocation of a function or instantiation of a class,</para></listitem>
+            <listitem><para>evaluation of a value, or</para></listitem>
+            <listitem><para>assignment to a variable value.</para></listitem>
+        </itemizedlist>
+            
+        <section id="evaluation">
+            <title>Evaluation</title>
+            
+            <para>Evaluation of a value reference produces its current value.</para> 
+            
+            <programlisting>person.name</programlisting>
+            
+            <para>When a value reference expression is executed:</para>
+            
+            <itemizedlist>
+                <listitem>
+                    <para>first, the receiver expression, if any, is evaluated to obtain a 
+                    receiving instance for the evaluation, then</para>
+                </listitem>
+                <listitem>
+                    <para>the actual declaration to be invoked is determined by considering 
+                    the runtime type of the receiving instance, if any, and then</para>
+                </listitem>
+                <listitem>
+                    <para>if the declaration is a reference, its persistent value is retrieved
+                    from the receiving instance, or</para>
+                </listitem>
+                <listitem>
+                    <para>otherwise, execution of the calling context pauses while the body 
+                    of its getter is executed by the receiving instance, then,</para>
+                </listitem>
+                <listitem>
+                    <para>finally, when execution of the getter ends, execution of the 
+                    calling context resumes.</para>
+                </listitem>
+            </itemizedlist>
+            
+            <para>The resulting value is the persistent value retrieved, or the return value 
+            of the getter, as specified by the <literal>return</literal> directive.</para>
+            
+            <comment><para>TODO: evaluation of callable references constructs a callable
+            object that packages a reference to the receiving instance with a reference to
+            the function to be invoked or class to be instantiated.</para></comment>
+            
+        </section>
+        
+        <section id="invocation">
+            <title>Invocation</title>
+            
+            <para>Evaluation of an invocation expression for a callable reference invokes the 
+            underlying callable reference. This is called <emphasis>invocation</emphasis> in
+            the case of a function reference, or <emphasis>instantiation</emphasis> in the case
+            of a class reference.</para>
+            
+            <programlisting>print("Hello world!")</programlisting>
+            <programlisting>Entry(person.name, person)</programlisting>
+            
+            <para>When an invocation expression is executed:</para>
+            
+            <itemizedlist>
+                <listitem>
+                    <para>first, the callable expression is evaluated to obtain the callable 
+                    object, then</para>
+                </listitem>
+                <listitem>
+                    <para>each argument is evaluated in turn in the calling context, then</para>
+                </listitem>
+                <listitem>
+                    <para>the actual declaration to be invoked is determined by considering the 
+                    runtime type of the receiving instance, if any, and then</para>
+                </listitem>
+                <listitem>
+                    <para>execution of the calling context pauses while the body of the function 
+                    or initializer is executed by the receiving instance with the argument values, 
+                    then</para>
+                </listitem>
+                <listitem>
+                    <para>finally, when execution of the function or initializer ends, execution 
+                    of the calling context resumes.</para>
+                </listitem>
+            </itemizedlist>
+            
+            <para>A function invocation evaluates to the return value of the function, as specified 
+            by the <literal>return</literal> directive. The argument values are passed to the 
+            parameters of the method, and the body of the method is executed.</para>
+                    
+            <para>A class instantiation evaluates to a new instance of the class. The argument 
+            values are passed to the initializer parameters of the class, and the initializer
+            is executed.</para>
+                 
+        </section>
+        
+        <section id="assignment">
+            <title>Assignment</title>
+                
+            <para>Given a value reference to a variable, the assignment operator <literal>=</literal> 
+            assigns it a new value.</para>
+            
+            <programlisting>person.name = "Gavin"</programlisting>
+            
+            <para>When an assignment expression is executed:</para>
+            
+            <itemizedlist>
+                <listitem>
+                    <para>first, the receiver expression of the value reference expression 
+                    is executed to obtain the receiving instance, then</para>
+                </listitem>
+                <listitem>
+                    <para>the actual declaration to be assigned is determined by considering 
+                    the runtime type of the receiving instance, and then</para>
+                </listitem>
+                <listitem>
+                    <para>if the member is a reference, its persistent value is updated in 
+                    the receiving instance, or</para>
+                </listitem>
+                <listitem>
+                    <para>otherwise, execution of the calling context pauses while the body 
+                    of its setter is executed by the receiving instance with the assigned 
+                    value, then,</para>
+                </listitem>
+                <listitem>
+                    <para>finally, when execution of the setter ends, execution of the calling 
+                    context resumes.</para>
+                </listitem>
+            </itemizedlist>
+            
+        </section>
     
     </section>
     

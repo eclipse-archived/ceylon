@@ -799,9 +799,9 @@ Integer f(Integer n) => n+package.n;</programlisting>
         <section id="controldirectives">
             <title>Control directives</title>
             
-        <para>Control directive statements end execution of the current block and force 
-        the flow of execution to resume in some outer scope. They may only occur as the
-        lexically last statement of a block.</para>
+        <para>A <emphasis>control directive</emphasis> statement ends execution of the 
+        current block and forces the flow of execution to resume in some outer scope. 
+        They may only occur as the lexically last statement of a block.</para>
 
         <programlisting>DirectiveStatement: Directive ";"</programlisting>
         
@@ -812,8 +812,8 @@ Integer f(Integer n) => n+package.n;</programlisting>
             a getter or non-<literal>void</literal> function or terminate execution of a 
             setter, class initializer, or <literal>void</literal> method,</listitem>
             <listitem>the <literal>break</literal> directive&mdash;to terminate a loop,</listitem>
-            <listitem>the <literal>continue</literal> directive&mdash;to jump to the next iteration 
-            of a loop, and</listitem>
+            <listitem>the <literal>continue</literal> directive&mdash;to jump to the next 
+            iteration of a loop, and</listitem>
             <listitem>the <literal>throw</literal> directive&mdash;to raise an exception.</listitem>
         </itemizedlist>
                 
@@ -859,9 +859,9 @@ Integer f(Integer n) => n+package.n;</programlisting>
         <section id="specificationstatements">
             <title>Specification statements</title>
             
-        <para>A specification statement may specify or initialize the persistent 
-        value of a forward-declared reference, or specify the implementation of a
-        forward-declared getter or function.</para>
+        <para>A <emphasis>specification</emphasis> statement may specify or initialize the 
+        persistent value of a forward-declared reference, or specify the implementation of 
+        a forward-declared getter or function.</para>
         
         <programlisting>Specification: ValueSpecification | LazySpecification</programlisting>
         
@@ -1179,8 +1179,9 @@ else {
     <section id="controlstructures">
         <title>Control structures and assertions</title>
         
-        <para>Control of execution flow may be achieved using control directives and control 
-        structures. Control structures include conditionals, loops, and exception management.</para>
+        <para>Control of execution flow may be achieved using control directives and 
+        <emphasis>control structures</emphasis>. Control structures include conditionals, loops, 
+        and exception management.</para>
 
         <para>Ceylon provides the following control structures:</para>
         
@@ -1228,20 +1229,20 @@ else {
         <section id="controlstructurevariables">
             <title>Control structure variables</title>
        
-        <para>Some control structures allow inline declaration of a <emphasis>variable</emphasis>,
-        a reference that is scoped to the control structure body.</para>
-        
-        <programlisting>TypedVariable: Type MemberName</programlisting>
-        
-        <para>In most cases, the explicit type be omitted.</para>
-        
-        <programlisting>Variable: Type? MemberName</programlisting>
-        
-        <para>If the type is missing from the declaration, the type of the variables is 
-        inferred from the type of the expression that follows.</para>
-
-        <comment><para>TODO: write down the rules for inferring the type of control structure
-        variables!</para></comment>
+            <para>Some control structures allow inline declaration of a <emphasis>variable</emphasis>,
+            a reference that is scoped to the control structure body.</para>
+            
+            <programlisting>TypedVariable: Type MemberName</programlisting>
+            
+            <para>In most cases, the explicit type be omitted.</para>
+            
+            <programlisting>Variable: Type? MemberName</programlisting>
+            
+            <para>If the type is missing from the declaration, the type of the variables is 
+            inferred from the type of the expression that follows.</para>
+            
+            <comment><para>TODO: write down the rules for inferring the type of control structure
+            variables!</para></comment>
         
         </section>
         
@@ -1275,245 +1276,213 @@ else {
         <section id="controlstructureconditions">
             <title>Control structure conditions</title>
             
-        <para>Some control structures expect conditions. There are four kinds of condition:</para>
-        
-        <itemizedlist>
-            <listitem>
-                <para>a <emphasis>boolean condition</emphasis> is satisfied when a boolean expression
-                evaluates to <literal>true</literal>,</para>
-            </listitem>
-            <listitem>
-                <para>an <emphasis>assignabilty condition</emphasis> is satisfied when an expression
-                 evaluates to an instance of a specified type,</para>
-            </listitem>
-            <listitem>
-                <para>an <emphasis>existence condition</emphasis> is satisfied when an expression 
-                evaluates to a non-null value, and</para>
-            </listitem>
-            <listitem>
-                <para>a <emphasis>nonemptiness condition</emphasis> is satisfied when an expression 
-                evaluates to a non-null, non-empty value.</para>
-            </listitem>
-            <!--listitem>
-                <para>a <emphasis>subtype condition</emphasis> is satisfies when a given type is a 
-                subtype of the specified type.</para>
-            </listitem-->
-        </itemizedlist>
-        
-        <programlisting>Condition: BooleanCondition | IsCondition | ExistsOrNonemptyCondition</programlisting>
-        
-        <para>A condition list has one or more conditions.</para>
-        
-        <programlisting>ConditionList: "(" Condition ("," Condition) ")"</programlisting>
-        
-        <para>A condition list is satisfied if all of its constituent conditions are satisfied.
-        The conditions are evaluated in the lexical order in which they occur in the condition
-        list.</para>
+            <para>Some control structures expect conditions. There are four kinds of condition:</para>
+            
+            <itemizedlist>
+                <listitem>
+                    <para>a <emphasis>boolean condition</emphasis> is satisfied when a boolean expression
+                    evaluates to <literal>true</literal>,</para>
+                </listitem>
+                <listitem>
+                    <para>an <emphasis>assignabilty condition</emphasis> is satisfied when an expression
+                     evaluates to an instance of a specified type,</para>
+                </listitem>
+                <listitem>
+                    <para>an <emphasis>existence condition</emphasis> is satisfied when an expression 
+                    evaluates to a non-null value, and</para>
+                </listitem>
+                <listitem>
+                    <para>a <emphasis>nonemptiness condition</emphasis> is satisfied when an expression 
+                    evaluates to a non-null, non-empty value.</para>
+                </listitem>
+                <!--listitem>
+                    <para>a <emphasis>subtype condition</emphasis> is satisfies when a given type is a 
+                    subtype of the specified type.</para>
+                </listitem-->
+            </itemizedlist>
+            
+            <programlisting>Condition: BooleanCondition | IsCondition | ExistsOrNonemptyCondition</programlisting>
+            
+            <para>A condition list has one or more conditions.</para>
+            
+            <programlisting>ConditionList: "(" Condition ("," Condition) ")"</programlisting>
+            
+            <para>A condition in the list may refer to a condition variable defined earlier in the list.</para>
         
         </section>
         
         <section id="booleanconditions">
             <title>Boolean conditions</title>
         
-        <para>A boolean condition is just an expression.</para>
-        
-        <programlisting>BooleanCondition: Expression</programlisting>
-        
-        <para>The expression must be of type <literal>Boolean</literal>.</para>
-        
-        <para>The condition is satisfied if the expression evaluates to <literal>true</literal> when 
-        the containing control structure is executed.</para>
-        
+            <para>A boolean condition is just an expression.</para>
+            
+            <programlisting>BooleanCondition: Expression</programlisting>
+            
+            <para>The expression must be of type <literal>Boolean</literal>.</para>
+                
         </section>
         
         <section id="assignabilityexistencenonemptinessconditions">
             <title>Assignability, existence, and nonemptiness conditions</title>
         
-        <para>An assignability, existence, or nonemptiness condition may contain either:</para>
-        
-        <itemizedlist>
-            <listitem>
-                <para>an unqualified value reference to a non-<literal>variable</literal>,
-                non-<literal>default</literal> reference, or</para>
-            </listitem>
-            <listitem>
-                <para>an inline variable declaration together with an expression.</para>
-            </listitem>
-        </itemizedlist>
-        
-        <para>In the case of an assignability or existence condition, the type of the variable may be 
-        inferred.</para>
-                
-        <programlisting>IsCondition: "!"? "is" (TypedVariable Specifier | Type MemberName)</programlisting>
-        
-        <programlisting>ExistsOrNonemptyCondition: ("exists" | "nonempty") (Variable Specifier | MemberName)</programlisting>
-        
-        <para>The type of the value reference or expression must be:</para>
-        
-        <itemizedlist>
-            <listitem>
-                <para>in the case of an assignability condition, a type which is not a subtype of 
-                the specified type, but whose intersection with the specified type is not exactly 
-                <literal>Nothing</literal>, except</para>
-            </listitem>
-            <listitem>
-                <para>in the case of a <emphasis>negated assignability condition</emphasis> with 
-                <literal>!is</literal>, a type whose intersection with the specified type is not 
-                exactly <literal>Nothing</literal>, and which is not a supertype of the specified
-                type, or</para>
-            </listitem>
-            <listitem>
-                <para>in the case of an exists condition, a type whose intersection with 
-                <literal>Null</literal> is not exactly <literal>Nothing</literal> and whose 
-                intersection with <literal>Object</literal> is not exactly <literal>Nothing</literal>, 
-                or</para>
-            </listitem>
-            <listitem>
-                <para>in the case of a nonemptiness condition, a subtype of <literal>Anything[]?</literal> 
-                whose intersection with <literal>[]</literal> is not exactly <literal>Nothing</literal>, 
-                and whose intersection with <literal>[Nothing+]</literal> is not exactly 
-                <literal>Nothing</literal>.</para>
-            </listitem>
-        </itemizedlist>
-        
-        <comment><para>Note: an assignability condition may narrow to an intersection or union 
-        type.</para>
-        <programlisting>if (is Printable&amp;Identifiable object) { ... }</programlisting>
-        <programlisting>if (is Integer|Float num) { ... }</programlisting></comment>
-
-        <para>Every existence or nonemptiness condition is equivalent to&mdash;and may be 
-        considered an abbreviation of&mdash;an assignability condition:</para>
-        
-        <itemizedlist>
-            <listitem>
-                <para><literal>exists x</literal> is equivalent to <literal>is Object x</literal>, 
-                and</para>
-            </listitem>
-            <listitem>
-                <para><literal>nonempty x</literal> is equivalent to <literal>is [E+] x</literal>
-                where <literal>x</literal> is an expression whose type is an invariant subtype of
-                <literal>E[]?</literal>.</para>
-            </listitem>
-        </itemizedlist>
-        
-        <para>For an <literal>is</literal> condition:</para>
-        
-        <itemizedlist>
-            <listitem>
-                <para>if the condition contains a value reference, the value will be treated by the 
-                compiler as having type <literal>T&amp;X</literal> where the conditional expression 
-                is of type <literal>T</literal> and <literal>X</literal> is the specified type, 
-                inside the block that immediately follows the condition, unless</para>
-            </listitem>
-            <listitem>
-                <para>it is a <emphasis>negated assignability condition</emphasis> with 
-                <literal>!is</literal>, in which case the value will be treated by the compiler as 
-                having type <literal>T~X</literal>.</para>
-            </listitem>
-        </itemizedlist>
-        
-        <comment><para>TODO: define the <literal>~</literal> operation, which is in general not very
-        robust due to decidability constraints.</para></comment>
-        
-        <para>If you prefer, you can think of the following:</para>
-        
-        <programlisting>Transaction tx = ...
-if (is Usable tx) { ... }</programlisting>
-        
-        <para>As an abbreviation of:</para>
-        
-        <programlisting>if (is Transaction&amp;Usable tx = tx) { ... }</programlisting>
-        
-        <para>Where the <literal>tx</literal> declared by the condition hides the outer declaration
-        of <literal>tx</literal> inside the block that follows.</para>
-        
-        <para>For an <literal>exists</literal> condition:</para>
-        
-        <itemizedlist>
-            <listitem>
-                <para>if the condition declares a variable, the declared type of the variable 
-                must be a supertype of <literal>T&amp;Object</literal>, where the specifier 
-                expression is of type <literal>T</literal>, or</para>
-            </listitem>
-            <listitem>
-                <para>if the condition contains a value reference, the value will be treated by 
-                the compiler as having type <literal>T&amp;Object</literal> inside the block that 
-                immediately follows the condition, where the conditional expression is of type 
-                <literal>T</literal>.</para>
-            </listitem>
-        </itemizedlist>
-        
-        <para>For a <literal>nonempty</literal> condition:</para>
-        
-        <itemizedlist>
-            <listitem>
-                <para>if the condition declares a variable, the declared type of the variable must 
-                be a supertype of <literal>T&amp;[E+]</literal>, where the specifier expression is 
-                of type <literal>T</literal> and <literal>T</literal> is an invariant subtype of
-                <literal>E[]?</literal>, or</para>
-            </listitem>
-            <listitem>
-                <para>if the condition contains a value reference, the value will be treated by the 
-                compiler as having type <literal>T&amp;[E+]</literal> inside the block that 
-                immediately follows the condition, where the conditional expression is of type 
-                <literal>T</literal> and <literal>T</literal> is an invariant subtype of 
-                <literal>E[]?</literal>.</para>
-            </listitem>
-        </itemizedlist>
-        
-        <para>If you prefer, you can think of the following:</para>
-        
-        <programlisting>if (exists name) { ... }</programlisting>
-        
-        <para>As an abbreviation of:</para>
-        
-        <programlisting>if (exists String name = name) { ... }</programlisting>
-        
-        <para>Where the <literal>name</literal> declared by the condition hides the outer declaration
-        of <literal>name</literal> inside the block that follows.</para>
-        
-        <para>The condition is satisfied if the value reference or expression evaluates to an 
-        instance of the required type when the control structure containing the condition is
-        executed:</para>
-        
-        <itemizedlist>
-            <listitem>
-                <para>for an assignability condition, the condition is satisfied if the expression 
-                evaluates to an instance of the specified type when the control structure is 
-                executed,</para>
-            </listitem>
-            <listitem>
-                <para>for an existence condition, the condition is satisfied unless the expression 
-                evaluates to an instance of <literal>Null</literal> when the control structure 
-                is executed, or</para>
-            </listitem>
-            <listitem>
-                <para>for a nonemptiness expression, the condition is satisfied unless the 
-                expression evaluates to an instance of <literal>[]|Null</literal> when the 
-                control structure is executed.</para>
-            </listitem>
-        </itemizedlist>
-        
-        <!--para>Note that these are formal definitions. In fact, the compiler erases 
-        <literal>Nothing|T</literal> to <literal>T</literal> before generating bytecode.
-        So <literal>if (exists x)</literal> is actually processed as <literal>if (x!=null)</literal>
-        by the virtual machine.</para-->
+            <para>An assignability, existence, or nonemptiness condition may contain either:</para>
+            
+            <itemizedlist>
+                <listitem>
+                    <para>an unqualified value reference to a non-<literal>variable</literal>,
+                    non-<literal>default</literal> reference, or</para>
+                </listitem>
+                <listitem>
+                    <para>an inline variable declaration together with an expression.</para>
+                </listitem>
+            </itemizedlist>
+            
+            <para>In the case of an assignability or existence condition, the type of the variable may be 
+            inferred.</para>
+                    
+            <programlisting>IsCondition: "!"? "is" (TypedVariable Specifier | Type MemberName)</programlisting>
+            
+            <programlisting>ExistsOrNonemptyCondition: ("exists" | "nonempty") (Variable Specifier | MemberName)</programlisting>
+            
+            <para>The type of the value reference or expression must be:</para>
+            
+            <itemizedlist>
+                <listitem>
+                    <para>in the case of an assignability condition, a type which is not a subtype of 
+                    the specified type, but whose intersection with the specified type is not exactly 
+                    <literal>Nothing</literal>, except</para>
+                </listitem>
+                <listitem>
+                    <para>in the case of a <emphasis>negated assignability condition</emphasis> with 
+                    <literal>!is</literal>, a type whose intersection with the specified type is not 
+                    exactly <literal>Nothing</literal>, and which is not a supertype of the specified
+                    type, or</para>
+                </listitem>
+                <listitem>
+                    <para>in the case of an exists condition, a type whose intersection with 
+                    <literal>Null</literal> is not exactly <literal>Nothing</literal> and whose 
+                    intersection with <literal>Object</literal> is not exactly <literal>Nothing</literal>, 
+                    or</para>
+                </listitem>
+                <listitem>
+                    <para>in the case of a nonemptiness condition, a subtype of <literal>Anything[]?</literal> 
+                    whose intersection with <literal>[]</literal> is not exactly <literal>Nothing</literal>, 
+                    and whose intersection with <literal>[Nothing+]</literal> is not exactly 
+                    <literal>Nothing</literal>.</para>
+                </listitem>
+            </itemizedlist>
+            
+            <comment><para>Note: an assignability condition may narrow to an intersection or union 
+            type.</para>
+            <programlisting>if (is Printable&amp;Identifiable object) { ... }</programlisting>
+            <programlisting>if (is Integer|Float num) { ... }</programlisting></comment>
+    
+            <para>Every existence or nonemptiness condition is equivalent to&mdash;and may be 
+            considered an abbreviation of&mdash;an assignability condition:</para>
+            
+            <itemizedlist>
+                <listitem>
+                    <para><literal>exists x</literal> is equivalent to <literal>is Object x</literal>, 
+                    and</para>
+                </listitem>
+                <listitem>
+                    <para><literal>nonempty x</literal> is equivalent to <literal>is [E+] x</literal>
+                    where <literal>x</literal> is an expression whose type is an invariant subtype of
+                    <literal>E[]?</literal>.</para>
+                </listitem>
+            </itemizedlist>
+            
+            <para>For an <literal>is</literal> condition:</para>
+            
+            <itemizedlist>
+                <listitem>
+                    <para>if the condition contains a value reference, the value will be treated by the 
+                    compiler as having type <literal>T&amp;X</literal> where the conditional expression 
+                    is of type <literal>T</literal> and <literal>X</literal> is the specified type, 
+                    inside the block that immediately follows the condition, unless</para>
+                </listitem>
+                <listitem>
+                    <para>it is a <emphasis>negated assignability condition</emphasis> with 
+                    <literal>!is</literal>, in which case the value will be treated by the compiler as 
+                    having type <literal>T~X</literal>.</para>
+                </listitem>
+            </itemizedlist>
+            
+            <comment><para>TODO: define the <literal>~</literal> operation, which is in general not very
+            robust due to decidability constraints.</para></comment>
+            
+            <para>If you prefer, you can think of the following:</para>
+            
+            <programlisting>Transaction tx = ...
+    if (is Usable tx) { ... }</programlisting>
+            
+            <para>As an abbreviation of:</para>
+            
+            <programlisting>if (is Transaction&amp;Usable tx = tx) { ... }</programlisting>
+            
+            <para>Where the <literal>tx</literal> declared by the condition hides the outer declaration
+            of <literal>tx</literal> inside the block that follows.</para>
+            
+            <para>For an <literal>exists</literal> condition:</para>
+            
+            <itemizedlist>
+                <listitem>
+                    <para>if the condition declares a variable, the declared type of the variable 
+                    must be a supertype of <literal>T&amp;Object</literal>, where the specifier 
+                    expression is of type <literal>T</literal>, or</para>
+                </listitem>
+                <listitem>
+                    <para>if the condition contains a value reference, the value will be treated by 
+                    the compiler as having type <literal>T&amp;Object</literal> inside the block that 
+                    immediately follows the condition, where the conditional expression is of type 
+                    <literal>T</literal>.</para>
+                </listitem>
+            </itemizedlist>
+            
+            <para>For a <literal>nonempty</literal> condition:</para>
+            
+            <itemizedlist>
+                <listitem>
+                    <para>if the condition declares a variable, the declared type of the variable must 
+                    be a supertype of <literal>T&amp;[E+]</literal>, where the specifier expression is 
+                    of type <literal>T</literal> and <literal>T</literal> is an invariant subtype of
+                    <literal>E[]?</literal>, or</para>
+                </listitem>
+                <listitem>
+                    <para>if the condition contains a value reference, the value will be treated by the 
+                    compiler as having type <literal>T&amp;[E+]</literal> inside the block that 
+                    immediately follows the condition, where the conditional expression is of type 
+                    <literal>T</literal> and <literal>T</literal> is an invariant subtype of 
+                    <literal>E[]?</literal>.</para>
+                </listitem>
+            </itemizedlist>
+            
+            <para>If you prefer, you can think of the following:</para>
+            
+            <programlisting>if (exists name) { ... }</programlisting>
+            
+            <para>As an abbreviation of:</para>
+            
+            <programlisting>if (exists String name = name) { ... }</programlisting>
+            
+            <para>Where the <literal>name</literal> declared by the condition hides the outer declaration
+            of <literal>name</literal> inside the block that follows.</para>
         
         </section>
                 
         <!--section id="subtypeconditions">
             <title>Subtype conditions</title>
         
-        <para>A subtype condition specifies a <emphasis>specified type</emphasis> (first) and a 
-        <emphasis>given type</emphasis> (second).</para>
-        
-        <programlisting>SatisfiesCondition: "satisfies" Type Type</programlisting>        
-        
-        <para>The given type will be treated by the compiler as a subtype of the specified type 
-        inside the block that immediately follows the condition.</para>
-        
-        <para>The condition is satisfied if the given type is a subtype of the specified type when 
-        the control structure containing the condition is executed.</para>
+            <para>A subtype condition specifies a <emphasis>specified type</emphasis> (first) and a 
+            <emphasis>given type</emphasis> (second).</para>
+            
+            <programlisting>SatisfiesCondition: "satisfies" Type Type</programlisting>        
+            
+            <para>The given type will be treated by the compiler as a subtype of the specified type 
+            inside the block that immediately follows the condition.</para>
+            
+            <para>The condition is satisfied if the given type is a subtype of the specified type when 
+            the control structure containing the condition is executed.</para>
         
         </section-->
         
@@ -1568,10 +1537,6 @@ if (is Usable tx) { ... }</programlisting>
             <programlisting>If: "if" ConditionList Block</programlisting>
             
             <programlisting>Else: "else" (Block | IfElse)</programlisting>
-            
-            <para>When the construct is executed, the condition list is evaluated. If the 
-            condition list is satisfied, the <literal>if</literal> block is executed. 
-            Otherwise, the <literal>else</literal> block, if any, is executed.</para>
             
             <para>For example:</para>
             
@@ -1663,7 +1628,7 @@ else {
             block. This intersection type must not be exactly <literal>Nothing</literal>.</para>
             
             <para>For example:</para>
-
+            
             <programlisting>Boolean? maybe = ... ;
 switch (maybe) 
 case (null, false) {
@@ -1716,7 +1681,7 @@ case (is Float) {
         <section id="forelse">
             <title><literal>for/else</literal></title>
             
-             <para>The <literal>for/else</literal> loop has the following form:</para>
+            <para>The <literal>for/else</literal> loop has the following form:</para>
              
             <programlisting>ForFail: For Fail?</programlisting>
 
@@ -1736,55 +1701,17 @@ case (is Float) {
             <itemizedlist>
             <listitem>
                 <para>The iterated expression must be an expression of type assignable to 
-                <literal>Iterable&lt;X&gt;</literal> <!--or <literal>Iterator&lt;X&gt;</literal>-->
-                where <literal>X</literal> is the declared type of the iteration variable.</para> 
+                <literal>Iterable&lt;X&gt;</literal> where <literal>X</literal> is the 
+                declared type of the iteration variable.</para> 
             </listitem>
             <listitem>
                 <para>If two iteration variables are defined, the iterated expression type 
-                must be assignable to <literal>Iterable&lt;Entry&lt;U,V&gt;&gt;</literal> <!--or 
-                <literal>Iterator&lt;Entry&lt;U,V&gt;&gt;</literal>--> where <literal>U</literal>
-                and <literal>V</literal> are the declared types of the iteration variables.</para>
+                must be assignable to <literal>Iterable&lt;Entry&lt;U,V&gt;&gt;</literal>
+                where <literal>U</literal> and <literal>V</literal> are the declared types 
+                of the iteration variables.</para>
             </listitem>
             </itemizedlist>
             
-            <para>When the construct is executed:</para>
-            
-            <itemizedlist>
-                <listitem>
-                    <para><!--if the iterated expression is of type <literal>Iterable</literal>,-->
-                    the iterator is obtained by evaluating <literal>iterator</literal>, and 
-                    then</para>
-                </listitem>
-                <listitem>
-                    <para>the <literal>for</literal> block is executed once for each value 
-                    of type <literal>X</literal> produced by the iterator, until the iterator 
-                    is exhausted, or until a <literal>break</literal>, <literal>return</literal>,
-                    or <literal>throw</literal> directive is executed.</para>
-                </listitem>
-            </itemizedlist>
-            
-            <para>Note that:</para>
-            
-            <itemizedlist>
-                <listitem>
-                    <para>if the iterated expression is also of type <literal>Sequence&lt;X&gt;</literal>,
-                    the compiler is permitted to optimize away the use of <literal>Iterator</literal>, 
-                    instead using indexed element access.</para>
-                </listitem>
-                <listitem>
-                    <para>if the iterated expression is a range constructor expression, the compiler 
-                    is permitted to optimize away creation of the <literal>Range</literal>, and generate
-                    the indices using the <literal>successor</literal> operation.</para>
-                </listitem>
-            </itemizedlist>
-            
-            <para>We say that the loop <emphasis>exits early</emphasis> if it ends via execution 
-            of a <literal>break</literal>, <literal>return</literal>, or <literal>throw</literal>
-            directive. Otherwise, we say that the loop <emphasis>completes</emphasis> normally.</para>
-             
-            <para>If the loop completes normally, the <literal>else</literal> block is executed. 
-            Otherwise, if the loop exists early, the <literal>else</literal> block is not executed.</para>
-                                
             <para>For example:</para>
 
             <programlisting>for (p in people) { 
@@ -1823,12 +1750,6 @@ else {
             <para>The loop condition list determines when the loop terminates.</para>
             
             <programlisting>LoopCondition: "while" ConditionList</programlisting>
-            
-            <para>When the construct is executed, the loop condition list is evaluated 
-            repeatedly until the first time the condition list is not satisfied, or 
-            until a <literal>break</literal>, <literal>return</literal>, or 
-            <literal>throw</literal> directive is executed. Each time the condition is 
-            satisfied, the block is executed.</para>
             
             <comment><para>TODO: does <literal>while</literal> need a <literal>fail</literal> 
             block? Python has it, but what is the real usecase?</para></comment>
@@ -1900,40 +1821,7 @@ while (n&lt;=max) {
             in <literal>ceylon.language</literal>.</para>
             
             <programlisting>Resource: MemberName | InitializerReference Arguments | Variable Specifier </programlisting>
-            
-            <para>When the construct is executed:</para>
-            
-            <itemizedlist>
-                <listitem>
-                    <para>the resource expression, if any, is evaluated, and then 
-                    <literal>open()</literal> is called on the resulting resource 
-                    instance, then</para>
-                </listitem>
-                <listitem>
-                    <para>the <literal>try</literal> block is executed, then</para>
-                </listitem>
-                <listitem>
-                    <para><literal>close()</literal> is called on the resource 
-                    instance, if any, with the exception that propagated out of 
-                    the <literal>try</literal> block, if any, then</para>
-                </listitem>
-                <listitem>
-                    <para>if an exception did propagate out of the <literal>try</literal> 
-                    block, the first <literal>catch</literal> block with a variable 
-                    to which the exception is assignable, if any, is executed, and 
-                    then</para>
-                </listitem>
-                <listitem>
-                    <para>the <literal>finally</literal> block, if any, is 
-                    executed.</para>
-                </listitem>
-            </itemizedlist>
-            
-            <comment><para>TODO: Precisely what happens if <literal>close()</literal> 
-            throws an exception? Wrap and rethrow the exception as a 
-            <literal>CloseException</literal>, bypassing any handler for the exception 
-            from the <literal>try</literal> block?</para></comment>
-            
+                        
             <para>For example:</para>
             
             <programlisting>try (file = File(path)) {
@@ -1968,11 +1856,6 @@ finally {
             annotation list.</para>
             
             <programlisting>Assertion: Annotations "assert" ConditionList ";"</programlisting>
-            
-            <para>When the assertion is executed, the condition list is evaluated.
-            If the condition list is not satisfied, an exception of type 
-            <literal>AssertionFailure</literal> in <literal>ceylon.language</literal>
-            is thrown.</para>
             
             <para>The message carried by the assertion failure may be specified
             using a <literal>doc</literal> annotation.</para>
