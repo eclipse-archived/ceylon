@@ -731,14 +731,6 @@ Integer f(Integer n) => n+package.n;</programlisting>
 
         <programlisting>Statement: ExpressionStatement | Specification | Assertion | DirectiveStatement | ControlStructure</programlisting>
         
-        <para>The statements and reference specifiers that directly occur in a block 
-        are executed sequentially in the lexical order in which they occcur. Execution 
-        of a block begins at the first statement or reference specifier. Execution of 
-        a block terminates when the last statement or reference specifier of the block 
-        finishes executing, or when a control directive that terminates the block is 
-        executed, or when an exception is thrown by an evaluation, invocation, or
-        instantiation.</para>
-        
         <para>A statement or declaration contained in a block may not evaluate a value, 
         invoke a function, instantiate a class, or extend a class whose declaration 
         occurs later in the block.</para>
