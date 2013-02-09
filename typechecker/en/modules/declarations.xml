@@ -534,13 +534,9 @@ TypeConstraints?
         code.</para>
 
         <programlisting>shared interface Comparable&lt;Other&gt; {
-    
     shared formal Comparison compare(Other other);
-    
     shared Boolean largerThan(Other other) => compare(other)==larger;
-    
     shared Boolean smallerThan(Other other) => compare(other)==smaller;
-    
 }</programlisting>
 
         <para>An interface may declare <literal>formal</literal> methods, attributes,
