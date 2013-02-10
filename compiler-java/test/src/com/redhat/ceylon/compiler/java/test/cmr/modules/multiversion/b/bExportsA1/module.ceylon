@@ -18,5 +18,5 @@
  * MA  02110-1301, USA.
  */
 module bExportsA1 '1' {
-    export import a '1';
+    shared import a '1';
 }

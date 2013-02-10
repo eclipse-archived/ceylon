@@ -18,5 +18,5 @@
  * MA  02110-1301, USA.
  */
 module com.redhat.ceylon.ceylondoc.test.modules.dependency.c '1.0' {
-    export import com.redhat.ceylon.ceylondoc.test.modules.dependency.b '1.0';
+    shared import com.redhat.ceylon.ceylondoc.test.modules.dependency.b '1.0';
 }
