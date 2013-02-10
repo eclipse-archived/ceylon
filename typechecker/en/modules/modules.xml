@@ -6,8 +6,9 @@
     
     <itemizedlist>
         <listitem>
-            <para>the format of packaged deployable module archives and 
-            source archives,</para>
+            <para>the format of packaged deployable module archives (for
+            the Java platform), module scripts (for the JavaScript platform), 
+            and source archives,</para>
         </listitem>
         <listitem>
             <para>the layout of a module repository</para>
@@ -32,29 +33,68 @@
     <para>Circular dependencies between modules are not supported. The
     Ceylon compiler detects such dependencies and produces an error.</para>
 
-<section id="classloaders">
-    <title>Class loader architecture</title>
+<section id="moduleruntime">
+    <title>The module runtime and module isolation</title>
     
-    <para>Ceylon supports a simplified class loader architecture:</para>
+    <para>At any time, there may be multiple versions of a certain module 
+    available in the virtual machine. Modules execute under the control of 
+    the <emphasis>module runtime</emphasis>. The module runtime:</para>
     
     <itemizedlist>
         <listitem>
-            <para>The <emphasis>bootstrap</emphasis> class loader owns
-            classes required to bootstrap the module runtime. It is the
-            direct parent of all module class loaders, and its classes
-            are visible to all module class loaders.</para>
+            <para>obtains modules from module repositories,</para>
         </listitem>
         <listitem>
-            <para>A <emphasis>module</emphasis> class loader owns classes
-            belonging to a given version of a certain module. Its classes
-            are visible only to classes belonging to the module class loader
-            of a module which declares an explicit dependency on the given
-            version of the first module.</para>
+            <para>reads module metadata and recursively loads 
+            dependencies, and</para>
+        </listitem>
+        <listitem>
+            <para>isolates modules that belong to different
+            assemblies.</para>
         </listitem>
     </itemizedlist>
     
-    <para>At any time, there may be multiple versions of a certain module 
-    available in the VM.</para>
+    <para>The mechanism behind this is platform-dependent.</para>
+    
+    <section id="classloaders">
+        <title>Module isolation for the Java platform</title>
+    
+        <para>In the JVM environment, Ceylon supports a simplified class loader 
+        architecture:</para>
+        
+        <itemizedlist>
+            <listitem>
+                <para>The <emphasis>bootstrap</emphasis> class loader owns
+                classes required to bootstrap the module runtime. It is the
+                direct parent of all module class loaders, and its classes
+                are visible to all module class loaders.</para>
+            </listitem>
+            <listitem>
+                <para>A <emphasis>module</emphasis> class loader owns classes
+                belonging to a given version of a certain module. Its classes
+                are visible only to classes belonging to the module class loader
+                of a module which declares an explicit dependency on the given
+                version of the first module.</para>
+            </listitem>
+        </itemizedlist>
+        
+        <comment><para>The Ceylon module runtime for the JVM is implemented
+        using JBoss Modules. It is included in the Ceylon SDK.</para></comment>
+    
+    </section>
+    
+    <section id="requirejs">
+        <title>Module isolation for the JavaScript platform</title>
+        
+        <para>In the JavaScript environment, modules are loaded using
+        the <literal>require()</literal> function defined by CommonJS 
+        Modules.</para>
+        
+        <comment><para>There are various implementations of the CommonJS-style 
+        <literal>require()</literal> function, and Ceylon module scripts should
+        work with any of them.</para></comment>
+    
+    </section>
     
 </section>
 
@@ -62,11 +102,12 @@
     <title>Module architecture</title>
 
     <para>Compiled code is automatically packaged into <emphasis>module
-    archives</emphasis> by the Ceylon compiler. A <emphasis>module 
-    repository</emphasis> is a repository containing module archives.
-    A module archive is automatically obtained from a module repository 
-    when a class belonging to the module is needed by the compiler or
-    module runtime.</para>
+    archives</emphasis> and <emphasis>module scripts</emphasis> by the 
+    Ceylon compiler. A <emphasis>module repository</emphasis> is a 
+    repository containing module archives, module scripts, and other
+    miscellaneous artifacts. A module archive or module script is 
+    automatically obtained from a module repository when code belonging 
+    to the module is needed by the compiler or module runtime.</para>
     
     <para>Modules that form part of the Ceylon SDK are found in the
     module repository in the <literal>modules</literal> directory of 
@@ -158,7 +199,12 @@
         
         <comment><para>TODO: at some stage we will probably need to add a format
         for specifying version ranges.</para></comment>
-        
+    
+    </section>
+    
+    <section id="modulearchivenamesjava">
+        <title>Module archive names for the Java platform</title>
+    
         <para>A <emphasis>module archive name</emphasis> is constructed from 
         the module name and version identifier. A module archive name is of 
         the following standard form:</para>
@@ -175,6 +221,41 @@
 
         <para>The default module has no version, its module archive name is <literal>default.car</literal></para>
         
+        <para>Finally, a <emphasis>legacy archive name</emphasis> is of the 
+        following standard form:</para>
+        
+        <programlisting><emphasis>&lt;module&gt;</emphasis>-<emphasis>&lt;version&gt;</emphasis>.jar</programlisting>
+        
+        <para>For example:</para>
+        
+        <programlisting>org.h2-1.2.141.jar</programlisting>
+        
+    </section>
+    
+    <section id="modulescriptnamesjs">
+        <title>Module script names for the JavaScript platform</title>
+    
+        <para>A <emphasis>module script name</emphasis> is likewise constructed 
+        from the module name and version identifier. A module script name is of 
+        the following standard form:</para>
+        
+        <programlisting><emphasis>&lt;module&gt;</emphasis>-<emphasis>&lt;version&gt;</emphasis>.js</programlisting>
+        
+        <para>where <literal><emphasis>&lt;module&gt;</emphasis></literal> 
+        is the full name of the module, and 
+        <literal><emphasis>&lt;version&gt;</emphasis></literal> is the module 
+        version identifier. For example:</para>
+        
+        <programlisting>ceylon.language-1.0.1.js</programlisting>
+        <programlisting>org.hibernate-3.0.0.beta.js</programlisting>
+
+        <para>The default module has no version, its module archive name is <literal>default.js</literal></para>
+
+    </section>
+    
+    <section id="sourcearchivenames">
+        <title>Source archive names</title>
+        
         <para>A <emphasis>source archive name</emphasis> is of the following 
         standard form:</para>
         
@@ -186,15 +267,6 @@
         <programlisting>org.hibernate-3.0.0.beta.src</programlisting>
 
         <para>The default module has no version, its source archive name is <literal>default.src</literal></para>
-        
-        <para>Finally, a <emphasis>legacy archive name</emphasis> is of the 
-        following standard form:</para>
-        
-        <programlisting><emphasis>&lt;module&gt;</emphasis>-<emphasis>&lt;version&gt;</emphasis>.jar</programlisting>
-        
-        <para>For example:</para>
-        
-        <programlisting>org.h2-1.2.141.jar</programlisting>
         
     </section>
     
@@ -262,12 +334,33 @@
                 
         <para>A module archive may not contain multiple modules.</para>
         
+        <comment>
+        <para>TODO: should we support the following?</para>
         <para>A module archive may be accompanied by a <emphasis>legacy 
         archive</emphasis>. A legacy archive is a standard Java <literal>jar</literal>
         containing compiled classes required by the module, whose filename 
         adheres to the standard for legacy archive names. At runtime there 
         is no difference between a class packaged in a legacy archive and a 
         class packaged directly in the module archive.</para>
+        </comment>
+        
+    </section>
+    
+    <section id="modulescripts">
+        <title>Module scripts</title>
+        
+        <para>A Ceylon module script is a JavaScript source file which:</para>
+        
+        <itemizedlist>
+            <listitem>
+                <para>complies with the CommonJS Modules specification, 
+                and</para>
+            </listitem>
+            <listitem>
+                <para>has a filename which adheres to the standard for
+                module script names.</para>
+            </listitem>
+        </itemizedlist>
         
     </section>
     
@@ -342,28 +435,31 @@
         <programlisting>http://jboss.org/ceylon/modules</programlisting>
         <programlisting>https://gavin:secret@modules.ceylon-lang.org</programlisting>
         
-        <para>A module repository contains module archives, legacy archives, 
-        and source archives. The address of an archive belonging to the 
+        <para>A module repository contains module archives, module scripts, 
+        and source archives. The address of an artifact belonging to the 
         repository adheres to the following standard form:</para>
         
-        <programlisting><emphasis>&lt;repository&gt;</emphasis>/<emphasis>&lt;module-path&gt;</emphasis>/<emphasis>&lt;version&gt;</emphasis>/<emphasis>&lt;archive&gt;</emphasis></programlisting>
+        <programlisting><emphasis>&lt;repository&gt;</emphasis>/<emphasis>&lt;module-path&gt;</emphasis>/<emphasis>&lt;version&gt;</emphasis>/<emphasis>&lt;artifact&gt;</emphasis></programlisting>
         
         <para>where <literal><emphasis>&lt;repository&gt;</emphasis></literal> 
         is the filesystem path or URL of the repository,
-        <literal><emphasis>&lt;repository&gt;</emphasis></literal> is the name
-        of the archive, and <literal><emphasis>&lt;module-path&gt;</emphasis></literal> 
+        <literal><emphasis>&lt;artifact&gt;</emphasis></literal> is the name
+        of the artifact, <literal><emphasis>&lt;version&gt;</emphasis></literal>
+        is the module version, and <literal><emphasis>&lt;module-path&gt;</emphasis></literal> 
         is formed by replacing every period with a slash in the module name.</para>
 
-        <para>The default module having no version, it's access path does not contain the version.</para>
+        <para>The default module having no version, its access path does not 
+        contain the version.</para>
 
         <programlisting><emphasis>&lt;repository&gt;</emphasis>/default/<emphasis>&lt;archive&gt;</emphasis></programlisting>
         
-        <para>For example, the module archive <literal>ceylon.language-1.0.1.car</literal> 
-        and source archive <literal>ceylon.language-1.0.1.src</literal> belonging to the 
-        repository included in the Ceylon SDK are obtained from the following
-        addresses:</para>
+        <para>For example, the module archive <literal>ceylon.language-1.0.1.car</literal>,
+        module script, and source archive <literal>ceylon.language-1.0.1.src</literal> 
+        belonging to the repository included in the Ceylon SDK are obtained from the 
+        following addresses:</para>
  
         <programlisting>modules/ceylon/language/1.0.1/ceylon.language-1.0.1.car</programlisting>        
+        <programlisting>modules/ceylon/language/1.0.1/ceylon.language-1.0.1.js</programlisting>
         <programlisting>modules/ceylon/language/1.0.1/ceylon.language-1.0.1.src</programlisting>
         
         <para>The module archive <literal>org.hibernate-3.0.0.beta.car</literal>
@@ -449,12 +545,14 @@ shared package org.hibernate.query;</programlisting>
         of the imported module.</para>
         
         <para>An imported module may be annotated <literal>optional</literal> and/or
-        <literal>transitive</literal>.</para>
+        <literal>shared</literal>.</para>
+        
+        <comment><para>TODO: define the semantics of these annotations here.</para></comment>
         
         <programlisting>doc "The best-ever ORM solution!"
 license 'http://www.gnu.org/licenses/lgpl.html'
 module org.hibernate '3.0.0.beta' {
-    transitive import ceylon.language '1.0.1';
+    shared import ceylon.language '1.0.1';
     import javax.sql '4.0';
 }</programlisting>
 
