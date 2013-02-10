@@ -879,12 +879,7 @@ public class DeclarationVisitor extends Visitor {
         }
         if (hasAnnotation(al, "abstract")) {
             if (model instanceof Class) {
-                if (model instanceof ClassAlias) {
-                    that.addError("alias may not be annotated abstract", 1600);
-                }
-                else {
-                    ((Class) model).setAbstract(true);
-                }
+                ((Class) model).setAbstract(true);
             }
             else {
                 that.addError("declaration is not a class, and may not be annotated abstract", 1600);
@@ -968,8 +963,7 @@ public class DeclarationVisitor extends Visitor {
             }
             if (!(that instanceof Tree.AttributeDeclaration) && 
             	!(that instanceof Tree.MethodDeclaration) &&
-            	!(that instanceof Tree.ClassDefinition) &&
-            	!(that instanceof Tree.Parameter)) {
+            	!(that instanceof Tree.AnyClass)) {
             	that.addError("formal member may not have a body", 1100);
             }
         }

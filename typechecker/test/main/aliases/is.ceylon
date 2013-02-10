@@ -12,7 +12,7 @@ class Baz() satisfies Bar {}
 class Qux() => Baz();
 
 Int i = 1;
-class Int() => Integer();
+abstract class Int() => Integer();
 
 
 Y y = Y();

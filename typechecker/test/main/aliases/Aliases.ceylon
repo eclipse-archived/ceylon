@@ -117,10 +117,10 @@ void testOpAliases() {
     Or<Float,Integer> ornum2 = ornum;
 }
 
-class S() => String();
+abstract class S() => String();
 @error abstract class StringSubclass() extends S() {}
 @error abstract class IntSubclass() extends I() {}
-class I() => Integer();
+abstract class I() => Integer();
 
 void inheritsAlias() {
     interface I<T> {}
@@ -140,3 +140,32 @@ void inheritsAlias() {
     M w = W();
     I<I<L>> v = V();
 }
+
+abstract class AbstractClass() {}
+class ConcreteClass() extends AbstractClass() {}
+
+abstract class AbstractOuterClass() {
+    shared formal class InnerAlias() => AbstractClass();
+}
+
+abstract class ConcreteOuterClass() extends AbstractOuterClass() {
+    shared actual class InnerAlias() => ConcreteClass();
+}
+
+class OkOuterClass() {
+    shared abstract class InnerAlias() => AbstractClass();
+    shared abstract class OtherInnerAlias() => ConcreteClass();
+}
+
+abstract class BrokenOuterClass() {
+    @error shared class InnerAlias() => AbstractClass();
+}
+
+abstract class GoodOuterClass() {
+    shared formal class FormalClass() {}
+    shared class YetAnotherInnerAlias() => FormalClass();
+}
+
+abstract class ToplevelAlias() => AbstractClass();
+@error class BrokenToplevelAlias1() => AbstractClass();
+@error formal class BrokenToplevelAlias2() => AbstractClass();

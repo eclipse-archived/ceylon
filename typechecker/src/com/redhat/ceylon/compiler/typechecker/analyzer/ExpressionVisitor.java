@@ -1157,6 +1157,11 @@ public class ExpressionVisitor extends Visitor {
         Class alias = that.getDeclarationModel();
         Class c = alias.getExtendedTypeDeclaration();
         if (c!=null) {
+            if (c.isAbstract()) {
+                if (!alias.isFormal()&&!alias.isAbstract()) {
+                    that.addError("alias of abstract class must be annotated abstract"); //TODO: error code
+                }
+            }
             ProducedType at = alias.getExtendedType();
             ParameterList pl = c.getParameterList();
             ParameterList apl = alias.getParameterList();
