@@ -97,11 +97,11 @@ interface InitializerParams {
         shared default Float fun(Float x) => 0.0;
     }
     class WithSharedActualParams(shared actual String message, 
-            shared actual Float fun(Float x)) 
+            shared actual Float fun(Float x))
             extends WithSharedDefaultAtts() {
         print(message + fun(0.0).string);
     }
-    class WithSharedActualAtts() 
+    class WithSharedActualAtts()
             extends WithSharedDefaultAtts() {
         shared actual String message => "bye";
         shared actual Float fun(Float x)=>-x;
@@ -113,7 +113,7 @@ interface InitializerParams {
         @error print(message + fun(0.0).string);
     }
     class WithSharedActualParams2(shared actual String message, 
-            shared actual Float fun(Float x)) 
+            shared actual Float fun(Float x))
             extends WithSharedDefaultParams(message, fun) {
         print(message + fun(0.0).string);
     }

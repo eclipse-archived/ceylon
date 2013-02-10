@@ -20,5 +20,15 @@ interface SharedParameters {
 
     class Bar(shared String bar="baz", 
             shared String* options) {}
+    
+    abstract class Abstract() {
+        shared formal String? str;
+        shared formal String[] strings;
+    }
+    
+    class Concrete(shared actual String str, 
+                   shared actual String* strings) 
+            extends Abstract() {}
+   
 
 }

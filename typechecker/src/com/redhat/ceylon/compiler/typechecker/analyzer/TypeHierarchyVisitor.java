@@ -15,6 +15,7 @@ import com.redhat.ceylon.compiler.typechecker.model.MethodOrValue;
 import com.redhat.ceylon.compiler.typechecker.model.Parameter;
 import com.redhat.ceylon.compiler.typechecker.model.TypeDeclaration;
 import com.redhat.ceylon.compiler.typechecker.model.Value;
+import com.redhat.ceylon.compiler.typechecker.model.ValueParameter;
 import com.redhat.ceylon.compiler.typechecker.tree.Node;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree;
 import com.redhat.ceylon.compiler.typechecker.tree.Visitor;
@@ -163,11 +164,11 @@ public class TypeHierarchyVisitor extends Visitor {
         //retrieve inherited members (shared)
         List<Declaration> inheritedMembers = currentType.declaration.getInheritedMembers(name);
         boolean sameMemberInherited = false;
-        for(Declaration d:inheritedMembers) {
-            if (!(d instanceof Parameter)) {
+        for (Declaration d:inheritedMembers) {
+//            if (!(d instanceof Parameter)) {
                 sameMemberInherited = true;
                 break;
-            }
+//            }
         }
         return sameMemberInherited;
     }
@@ -214,7 +215,7 @@ public class TypeHierarchyVisitor extends Visitor {
             Type type = orderedTypes.get(subIndex);
             //has a direct member and supertype as inherited members
             Declaration directMember = type.declaration.getDirectMember(name, null, false);
-            boolean isMemberRefined = directMember!=null && directMember.isShared() && !(directMember instanceof Parameter);
+            boolean isMemberRefined = directMember!=null && directMember.isShared(); //&& !(directMember instanceof Parameter);
             isMemberRefined = isMemberRefined && type.declaration.getInheritedMembers(name).contains(declarationOfSupertypeMember);
             if (isMemberRefined) {
                 return true;
@@ -356,9 +357,16 @@ public class TypeHierarchyVisitor extends Visitor {
             type = new Type();
             type.declaration = declaration;
             for (Declaration member : declaration.getMembers()) {
-                if (!(member instanceof MethodOrValue || member instanceof Class) || 
+                if (!(member instanceof MethodOrValue || 
+                      member instanceof Class ||
+                      member instanceof Parameter) || 
                         member.isStaticallyImportable()) {
                     continue;
+                }
+                if (member instanceof ValueParameter) {
+                    if (((ValueParameter) member).isHidden()) {
+                        continue;
+                    }
                 }
                 final String name = member.getName();
                 Type.Members members = type.membersByName.get(name);
