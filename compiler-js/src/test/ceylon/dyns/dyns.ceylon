@@ -1,5 +1,8 @@
 //Test the dynamic annotation
 shared void test() {
+}
+
+void nogo() {
     Dynamic d = Dynamic();
     d.name = "Gavin";
     Integer res = d.add(1, 3);
