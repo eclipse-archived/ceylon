@@ -1795,8 +1795,20 @@ public class ClassTransformer extends AbstractTransformer {
         if(typeParameterList != null){
             java.util.List<TypeParameterDeclaration> typeParameterDeclarations = typeParameterList.getTypeParameterDeclarations();
             overloadBuilder.reifiedTypeParameters(typeParameterDeclarations);
-            for(TypeParameterDeclaration tp : typeParameterDeclarations){
-                args.append(makeUnquotedIdent(naming.getTypeArgumentDescriptorName(tp.getIdentifier().getText())));
+            // we pass the reified type parameters along, but only if we're not building an instantiator
+            if (!Strategy.generateInstantiator(model)) {
+                for(TypeParameterDeclaration tp : typeParameterDeclarations){
+                    args.append(makeUnquotedIdent(naming.getTypeArgumentDescriptorName(tp.getIdentifier().getText())));
+                }
+            }
+        }
+        if (Strategy.generateInstantiator(model)) {
+            Class klass = (Class) model;
+            ProducedType type = klass.isAlias() ? klass.getExtendedType() : klass.getType();
+            type = type.resolveAliases();
+            // fetch the type parameters from the klass we're instantiating itself if any
+            for(ProducedType pt : type.getTypeArgumentList()){
+                args.append(makeReifiedTypeArgument(pt));
             }
         }
         
