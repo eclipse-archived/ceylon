@@ -1319,7 +1319,17 @@ public class ExpressionTransformer extends AbstractTransformer {
             }
         }
 
-        result = at(op).Apply(null, makeSelect(left, actualOperator.ceylonMethod), List.of(right));
+        List<JCExpression> args = List.of(right);
+        
+        // Set operators need reified generics
+        if(originalOperator == OperatorTranslation.BINARY_UNION 
+                || originalOperator == OperatorTranslation.BINARY_INTERSECTION
+                || originalOperator == OperatorTranslation.BINARY_COMPLEMENT){
+            ProducedType otherSetElementType = typeFact().getIteratedType(op.getRightTerm().getTypeModel());
+            args = args.prepend(makeReifiedTypeArgument(otherSetElementType));
+        }
+        
+        result = at(op).Apply(null, makeSelect(left, actualOperator.ceylonMethod), args);
 
         if (loseComparison) {
             result = at(op).Apply(null, makeSelect(result, originalOperator.ceylonMethod), List.<JCExpression> nil());
