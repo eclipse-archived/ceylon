@@ -29,6 +29,7 @@ import com.redhat.ceylon.compiler.typechecker.context.PhasedUnit;
 import com.redhat.ceylon.compiler.typechecker.tree.AnalysisMessage;
 import com.redhat.ceylon.compiler.typechecker.analyzer.AnalysisWarning;
 import com.redhat.ceylon.compiler.typechecker.analyzer.AnalysisError;
+import com.redhat.ceylon.compiler.typechecker.analyzer.UsageWarning;
 import com.redhat.ceylon.compiler.typechecker.model.Module;
 import com.redhat.ceylon.compiler.typechecker.model.TypedDeclaration;
 import com.redhat.ceylon.compiler.typechecker.parser.RecognitionError;
@@ -169,7 +170,7 @@ public class JsCompiler {
      * in the last compilation unit and the stopOnErrors flag is set. */
     protected boolean stopOnError() {
         for (Message err : unitErrors) {
-            if (err instanceof AnalysisError || !(err instanceof AnalysisWarning)) {
+            if (err instanceof AnalysisError || !(err instanceof AnalysisWarning || err instanceof UsageWarning)) {
                 errCount++;
             }
             errors.add(err);
