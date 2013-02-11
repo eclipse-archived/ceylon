@@ -3187,13 +3187,14 @@ public class ExpressionTransformer extends AbstractTransformer {
             JCExpression iteratorTypeExpr = make().TypeApply(makeIdent(syms().ceylonAbstractIteratorType),
                                                              List.<JCExpression>of(makeJavaType(iteratedType, JT_NO_PRIMITIVES)));
             JCExpression iterator = make().NewClass(null, null, iteratorTypeExpr,
-                    List.<JCExpression>nil(), make().AnonymousClassDef(make().Modifiers(0), fields.toList()));
+                    List.<JCExpression>of(makeReifiedTypeArgument(iteratedType)), make().AnonymousClassDef(make().Modifiers(0), fields.toList()));
             //Define the anonymous iterable class
             JCExpression iterable = make().NewClass(null, null,
                     make().TypeApply(makeIdent(syms().ceylonAbstractIterableType),
                         List.<JCExpression>of(makeJavaType(iteratedType, JT_NO_PRIMITIVES),
                                               makeJavaType(absentIterType, JT_NO_PRIMITIVES))),
-                    List.<JCExpression>nil(), make().AnonymousClassDef(make().Modifiers(0), List.<JCTree>of(
+                    List.<JCExpression>of(makeReifiedTypeArgument(iteratedType), makeReifiedTypeArgument(absentIterType)), 
+                    make().AnonymousClassDef(make().Modifiers(0), List.<JCTree>of(
                         make().MethodDef(make().Modifiers(Flags.PUBLIC | Flags.FINAL), names().fromString("getIterator"),
                             makeJavaType(iteratorType, JT_CLASS_NEW|JT_EXTENDS),
                         List.<JCTree.JCTypeParameter>nil(), List.<JCTree.JCVariableDecl>nil(), List.<JCExpression>nil(),
