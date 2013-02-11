@@ -250,7 +250,7 @@ final class reifiedInstantiate_ {
                 return new .com.redhat.ceylon.compiler.java.test.structure.reified.Class<.ceylon.language.Integer, .ceylon.language.String>(.ceylon.language.Integer.$TypeDescriptor, .ceylon.language.String.$TypeDescriptor, $$a, $$b);
             }
         };
-        final .com.redhat.ceylon.compiler.java.test.structure.reified.Class<.ceylon.language.Integer, .ceylon.language.String> c3 = constr.$call(.ceylon.language.Integer.$TypeDescriptor, .ceylon.language.Integer.$TypeDescriptor, .ceylon.language.Integer.instance(3L), .ceylon.language.Integer.instance(4L));
+        final .com.redhat.ceylon.compiler.java.test.structure.reified.Class<.ceylon.language.Integer, .ceylon.language.String> c3 = constr.$call(.ceylon.language.Integer.instance(3L), .ceylon.language.Integer.instance(4L));
         final .com.redhat.ceylon.compiler.java.test.structure.reified.Class<.ceylon.language.Integer, .ceylon.language.String> c4 = (
             let
             {
