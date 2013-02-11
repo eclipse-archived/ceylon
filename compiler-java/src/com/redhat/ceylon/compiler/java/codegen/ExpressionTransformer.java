@@ -987,7 +987,11 @@ public class ExpressionTransformer extends AbstractTransformer {
         if (expr instanceof Tree.ListedArgument) {
             JCExpression first = transformExpression(((Tree.ListedArgument) expr).getExpression());
             JCExpression typeExpr = makeJavaType(tupleType, CeylonTransformer.JT_CLASS_NEW);
-            JCExpression tupleInstance = makeNewClass(typeExpr, List.of(first, rest));
+            // make the tuple
+            JCExpression tupleInstance = makeNewClass(typeExpr, List.of(makeReifiedTypeArgument(tupleType.getTypeArgumentList().get(0)),
+                                                                        makeReifiedTypeArgument(tupleType.getTypeArgumentList().get(1)),
+                                                                        makeReifiedTypeArgument(tupleType.getTypeArgumentList().get(2)),
+                                                                        first, rest));
             return tupleInstance;
         } else if (expr instanceof Tree.SpreadArgument) {
             SpreadArgument spreadExpr = (Tree.SpreadArgument) expr;
