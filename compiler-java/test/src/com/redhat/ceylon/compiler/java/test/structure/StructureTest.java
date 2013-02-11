@@ -655,6 +655,11 @@ public class StructureTest extends CompilerTest {
     }
 
     @Test
+    public void testRfdUtilCalls(){
+        compareWithJavaSource("reified/UtilCalls");
+    }
+
+    @Test
     public void testRfdAliases(){
         compareWithJavaSource("reified/Aliases");
     }

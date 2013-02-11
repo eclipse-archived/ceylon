@@ -1,0 +1,77 @@
+package com.redhat.ceylon.compiler.java.test.structure.reified;
+
+@.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 4)
+@.com.redhat.ceylon.compiler.java.metadata.Method
+public final class utilCalls_ {
+    
+    private utilCalls_() {
+    }
+    
+    @.com.redhat.ceylon.compiler.java.metadata.Annotations({@.com.redhat.ceylon.compiler.java.metadata.Annotation("shared")})
+    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Anything")
+    public static void utilCalls() {
+        final .ceylon.language.Tuple<.java.lang.Object, ? extends .ceylon.language.Integer, ? extends .ceylon.language.Tuple<.ceylon.language.String, ? extends .ceylon.language.String, ? extends .ceylon.language.Empty>> t1 = new .ceylon.language.Tuple(.com.redhat.ceylon.compiler.java.TypeDescriptor.union(.ceylon.language.Integer.$TypeDescriptor, .ceylon.language.String.$TypeDescriptor), .ceylon.language.Integer.$TypeDescriptor, .com.redhat.ceylon.compiler.java.TypeDescriptor.klass(.ceylon.language.Tuple.class, .ceylon.language.String.$TypeDescriptor, .ceylon.language.String.$TypeDescriptor, .ceylon.language.Empty.$TypeDescriptor), .ceylon.language.Integer.instance(1L), new .ceylon.language.Tuple<.ceylon.language.String, .ceylon.language.String, .ceylon.language.Empty>(.ceylon.language.String.$TypeDescriptor, .ceylon.language.String.$TypeDescriptor, .ceylon.language.Empty.$TypeDescriptor, .ceylon.language.String.instance("a"), .ceylon.language.empty_.getEmpty$()));
+        final .ceylon.language.Tuple<.java.lang.Object, ? extends .ceylon.language.Integer, ? extends .ceylon.language.Tuple<.java.lang.Object, ? extends .ceylon.language.Integer, ? extends .ceylon.language.Tuple<.ceylon.language.String, ? extends .ceylon.language.String, ? extends .ceylon.language.Empty>>> t2 = new .ceylon.language.Tuple(.com.redhat.ceylon.compiler.java.TypeDescriptor.union(.ceylon.language.Integer.$TypeDescriptor, .ceylon.language.String.$TypeDescriptor), .ceylon.language.Integer.$TypeDescriptor, .com.redhat.ceylon.compiler.java.TypeDescriptor.klass(.ceylon.language.Sequential.class, .com.redhat.ceylon.compiler.java.TypeDescriptor.union(.ceylon.language.Integer.$TypeDescriptor, .ceylon.language.String.$TypeDescriptor)), .ceylon.language.Integer.instance(1L), (.ceylon.language.Tuple<.java.lang.Object, ? extends .ceylon.language.Integer, ? extends .ceylon.language.Tuple<.ceylon.language.String, ? extends .ceylon.language.String, ? extends .ceylon.language.Empty>>)(.ceylon.language.Tuple)t1);
+        final .ceylon.language.Sequence<? extends .ceylon.language.Integer> t3 = (.ceylon.language.Sequence<? extends .ceylon.language.Integer>)(.ceylon.language.Sequence)new .com.redhat.ceylon.compiler.java.language.AbstractIterable<.ceylon.language.Integer, .java.lang.Object>(.ceylon.language.Integer.$TypeDescriptor, .com.redhat.ceylon.compiler.java.TypeDescriptor.BottomType){
+            
+            public final .ceylon.language.Iterator<.ceylon.language.Integer> getIterator() {
+                return new .com.redhat.ceylon.compiler.java.language.AbstractIterator<.ceylon.language.Integer>(.ceylon.language.Integer.$TypeDescriptor){
+                    private final .ceylon.language.Iterator<? extends .ceylon.language.Integer> iter$0 = new .com.redhat.ceylon.compiler.java.language.ArraySequence<.ceylon.language.Integer>(.ceylon.language.Integer.$TypeDescriptor, .ceylon.language.Integer.instance(1L)).getIterator();
+                    private .ceylon.language.Integer i;
+                    private boolean i$exhausted;
+                    
+                    private final boolean i() {
+                        final .java.lang.Object $ceylontmpitem0 = iter$0.next();
+                        i$exhausted = $ceylontmpitem0 == .ceylon.language.finished_.getFinished$();
+                        if (i$exhausted) {
+                            return false;
+                        } else {
+                            i = (.ceylon.language.Integer)$ceylontmpitem0;
+                            return true;
+                        }
+                    }
+                    
+                    public final .java.lang.Object next() {
+                        return this.i() ? i : .ceylon.language.finished_.getFinished$();
+                    }
+                };
+            }
+        }.getSequence();
+        final .ceylon.language.Iterable<? extends .java.lang.Object, ? extends .java.lang.Object> it1 = new .com.redhat.ceylon.compiler.java.language.ArraySequence(.com.redhat.ceylon.compiler.java.TypeDescriptor.union(.ceylon.language.Integer.$TypeDescriptor, .ceylon.language.String.$TypeDescriptor), .ceylon.language.Integer.instance(1L), .ceylon.language.String.instance("a"));
+        final .ceylon.language.Iterable<? extends .java.lang.Object, ? extends .java.lang.Object> it2 = .com.redhat.ceylon.compiler.java.language.ArrayIterable.<.java.lang.Object>instance(.com.redhat.ceylon.compiler.java.TypeDescriptor.union(.ceylon.language.Integer.$TypeDescriptor, .ceylon.language.String.$TypeDescriptor), (.ceylon.language.Iterable<? extends .java.lang.Object, ? extends .java.lang.Object>)(.ceylon.language.Iterable)it1, .ceylon.language.Integer.instance(1L));
+        final .ceylon.language.Iterable<? extends .ceylon.language.Integer, ? extends .java.lang.Object> it3 = new .com.redhat.ceylon.compiler.java.language.AbstractIterable<.ceylon.language.Integer, .java.lang.Object>(.ceylon.language.Integer.$TypeDescriptor, .com.redhat.ceylon.compiler.java.TypeDescriptor.BottomType){
+            
+            public final .ceylon.language.Iterator<.ceylon.language.Integer> getIterator() {
+                return new .com.redhat.ceylon.compiler.java.language.AbstractIterator<.ceylon.language.Integer>(.ceylon.language.Integer.$TypeDescriptor){
+                    private final .ceylon.language.Iterator<? extends .ceylon.language.Integer> iter$0 = new .com.redhat.ceylon.compiler.java.language.ArraySequence<.ceylon.language.Integer>(.ceylon.language.Integer.$TypeDescriptor, .ceylon.language.Integer.instance(1L)).getIterator();
+                    private .ceylon.language.Integer i;
+                    private boolean i$exhausted;
+                    
+                    private final boolean i() {
+                        final .java.lang.Object $ceylontmpitem1 = iter$0.next();
+                        i$exhausted = $ceylontmpitem1 == .ceylon.language.finished_.getFinished$();
+                        if (i$exhausted) {
+                            return false;
+                        } else {
+                            i = (.ceylon.language.Integer)$ceylontmpitem1;
+                            return true;
+                        }
+                    }
+                    
+                    public final .java.lang.Object next() {
+                        return this.i() ? i : .ceylon.language.finished_.getFinished$();
+                    }
+                };
+            }
+        };
+        final .ceylon.language.Entry<? extends .ceylon.language.Integer, ? extends .ceylon.language.Integer> entry = new .ceylon.language.Entry<.ceylon.language.Integer, .ceylon.language.Integer>(.ceylon.language.Integer.$TypeDescriptor, .ceylon.language.Integer.$TypeDescriptor, .ceylon.language.Integer.instance(1L), .ceylon.language.Integer.instance(2L));
+        final .ceylon.language.Range<.ceylon.language.Integer> range = new .ceylon.language.Range<.ceylon.language.Integer>(.ceylon.language.Integer.$TypeDescriptor, .ceylon.language.Integer.instance(1L), .ceylon.language.Integer.instance(2L));
+        final .ceylon.language.Sequential<? extends .ceylon.language.Integer> segment = .com.redhat.ceylon.compiler.java.Util.<.ceylon.language.Integer>spreadOp(.ceylon.language.Integer.$TypeDescriptor, .ceylon.language.Integer.instance(1L), 2L);
+    }
+    
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    public static void main(.java.lang.String[] args) {
+        .ceylon.language.process_.getProcess$().setupArguments(args);
+        .com.redhat.ceylon.compiler.java.test.structure.reified.utilCalls_.utilCalls();
+    }
+}
