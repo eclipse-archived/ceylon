@@ -2006,6 +2006,27 @@ Item item = comp of Item;</programlisting>
         In fact, the compiler is also able to infer a type for the type parameter 
         that appears in the upper bound.</para></comment>
         
+        <comment><para>TODO: Actually the compiler is even cleverer than this.
+        The algorithm described above works great for type parameters that appear 
+        covariantly in the "output" types, and even okay for type parameters that 
+        appear invariantly. It doesn't really work very well for type parameters 
+        that appear contravariantly, where the constraints are really of form 
+        <literal>A satisfies T</literal>, and they should be combined using 
+        intersection, not union, and where the default should be
+        <literal>Anything</literal> not <literal>Nothing</literal>. Therefore,
+        the compiler's algorithm is engineered to make the following work, where 
+        both <literal>Consumer</literal> and <literal>Delegate</literal> are 
+        contravariant types:</para>
+        <programlisting><![CDATA[Delegate<String> delegate1 = ... ;
+Delegate<Object> delegate2 = ... ; 
+Consumer<String> consumer = Consumer(delegate1, delegate2);]]></programlisting>
+        <!--para>Note also that there is something a bit conceptually funny about 
+        a type parameter that appears covariantly in a parameter type, and 
+        contravariantly in the return type (or vice-versa), so we probably don't 
+        really need to bother about the case where a type parameter appears both 
+        covariantly <emphasis>and</emphasis> contravariantly.</para-->
+        </comment>
+        
         <!--
         <para>The <emphasis>full lower bound for an inferred type parameter</emphasis> 
         <literal>T</literal> of the generic declaration is the union of the lower 
@@ -2085,31 +2106,12 @@ value biggerBag = bag.with(1, 2, 5.0);]]></programlisting>
         
         <para>The inferred type of <literal>ExtraElement</literal> is the union 
         type <literal>Integer|Float|String</literal>.</para>
-                
+        
         <comment><para>TODO: What about upper bounds in which the type parameter 
         itself appears (the infamous self-type problem with
         <literal>Comparable</literal> and <literal>Numeric</literal>) or in which 
         another type parameter appears?</para></comment>
         
-        <comment><para>TODO: This algorithm works fine for type parameters that 
-        appear covariantly in the parameter types, and even okay for type
-        parameters that appear invariantly. It doesn't really work very well 
-        for type parameters that appear contravariantly, where the constraints
-        are really of form <literal>A satisfies T</literal>, and they should be
-        combined using intersection, not union, and where the default should be
-        <literal>Object</literal> not <literal>Nothing</literal>. We should
-        probably extend the algorithm to make the following work, where both
-        <literal>Consumer</literal> and <literal>Delegate</literal> are 
-        contravariant types:</para>
-        <programlisting><![CDATA[Delegate<String> delegate = ... ;
-Delegate<Object> delegate = ... ; 
-Consumer<String> consumer = Consumer(delegate1, delegate2);]]></programlisting>
-        <para>Note also that there is something a bit conceptually funny about 
-        a type parameter that appears covariantly in a parameter type, and 
-        contravariantly in the return type (or vice-versa), so we probably don't 
-        really need to bother about the case where a type parameter appears both 
-        covariantly <emphasis>and</emphasis> contravariantly.</para></comment>
-                
         </section>
         
     </section>
