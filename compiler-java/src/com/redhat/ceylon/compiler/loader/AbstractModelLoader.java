@@ -131,7 +131,8 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
     private static final TypeMirror OBJECT_TYPE = simpleObjectType("java.lang.Object");
     private static final TypeMirror CEYLON_OBJECT_TYPE = simpleObjectType("ceylon.language.Object");
     private static final TypeMirror CEYLON_BASIC_TYPE = simpleObjectType("ceylon.language.Basic");
-    private static final TypeMirror CEYLON_EXCEPTION_TYPE = simpleObjectType("ceylon.language.Exception");;
+    private static final TypeMirror CEYLON_EXCEPTION_TYPE = simpleObjectType("ceylon.language.Exception");
+    private static final TypeMirror CEYLON_REIFIED_TYPE_TYPE = simpleObjectType("com.redhat.ceylon.compiler.java.ReifiedType");
     
     private static final TypeMirror STRING_TYPE = simpleObjectType("java.lang.String");
     private static final TypeMirror CEYLON_STRING_TYPE = simpleObjectType("ceylon.language.String");
@@ -1830,6 +1831,9 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
             }
         }else{
             for(TypeMirror iface : classMirror.getInterfaces()){
+                // ignore ReifiedType interfaces
+                if(sameType(iface, CEYLON_REIFIED_TYPE_TYPE))
+                    continue;
                 try{
                     klass.getSatisfiedTypes().add(getType(iface, klass, VarianceLocation.INVARIANT));
                 }catch(ModelResolutionException x){
