@@ -313,4 +313,51 @@
         
     </section>
 
+    <section id="sourcedirectories">
+        <title>Source layout</title>
+        
+        <para>A <emphasis>source directory</emphasis> contains Ceylon source 
+        code in files with the extension <literal>.ceylon</literal> and Java 
+        source code in files with the extension <literal>.java</literal>. 
+        The module and package to which a compilation unit belongs is 
+        determined by the subdirectory in which the source file is found.</para>
+        
+        <para>The name of the package to which a compilation unit belongs is 
+        formed by replacing every path directory separator character with a 
+        period in the relative path from the source directory to the 
+        subdirectory containing the source file. In the case of a Java source 
+        file, the subdirectory must agree with the package specified by the 
+        Java <literal>package</literal> declaration.</para>
+        
+        <para>The name of the module to which a compilation unit belongs is 
+        determined by searching all containing directories for a module 
+        descriptor. The name of the module is formed by replacing every path
+        directory separator character with a period in the relative path 
+        from the source directory to the subdirectory containing the module 
+        descriptor.</para>
+        
+        <para>Thus, the structure of the source directory containing the 
+        module <literal>org.hello</literal> might be the following:</para>
+        
+        <programlisting><![CDATA[source/
+    org/
+        hello/
+            module.ceylon      //the module descriptor
+            main/
+                hello.ceylon
+            default/
+                DefaultHello.ceylon
+            personalized/
+                PersonalizedHello.ceylon]]></programlisting>
+                
+        <para>The source code for multiple modules may be contained in a
+        single source directory.</para>
+                
+        <comment><para>Note: the tools and IDE support compilation and 
+        execution of source not contained in a well-defined module. This 
+        "default" module is not specified here, and is intended only as
+        a convenience for experimental code.</para></comment>
+        
+    </section>
+    
 </chapter>

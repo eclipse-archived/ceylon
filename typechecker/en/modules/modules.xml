@@ -1,5 +1,5 @@
-<chapter id="modulesandtools">
-    <title>Module system and toolset</title>
+<chapter id="modulesystem">
+    <title>Module system</title>
     
     <para>The Ceylon module architecture enables a toolset which relieves 
     developers of many mundane tasks. The module system specifies:</para>
@@ -54,13 +54,26 @@
         </listitem>
     </itemizedlist>
     
+    <para>Execution of a module begins with a specified toplevel method or 
+    class, or with an entry point specified in the module descriptor, and 
+    imported modules are loaded lazily as classes they contain are needed. 
+    The name and version id of the imported module containing the needed 
+    class are determined from the imported package name specified by the 
+    compilation unit and the imported module version specified by the 
+    module descriptor.</para>
+            
     <para>The mechanism behind this is platform-dependent.</para>
     
     <section id="classloaders">
         <title>Module isolation for the Java platform</title>
     
-        <para>In the JVM environment, Ceylon supports a simplified class loader 
-        architecture:</para>
+        <para>In the JVM environment, Each version of each module is loaded 
+        using a different class loader. Classes inside a module have access 
+        to other classes in the same module and to classes belonging to 
+        modules that are explicitly imported in the module descriptor. 
+        Classes in other modules are not accessible.</para>
+        
+        <para>Ceylon supports a simplified class loader architecture:</para>
         
         <itemizedlist>
             <listitem>
@@ -72,9 +85,9 @@
             <listitem>
                 <para>A <emphasis>module</emphasis> class loader owns classes
                 belonging to a given version of a certain module. Its classes
-                are visible only to classes belonging to the module class loader
-                of a module which declares an explicit dependency on the given
-                version of the first module.</para>
+                are visible only to classes belonging to the module class 
+                loader of a module which declares an explicit dependency on 
+                the given version of the first module.</para>
             </listitem>
         </itemizedlist>
         
@@ -159,7 +172,9 @@
         <para>It is recommended that module names follow the Java package
         naming convention embedding the organization's domain name (in
         this case, <literal>hibernate.org</literal>). The namespace
-        <literal>ceylon</literal> is reserved for SDK modules.</para>
+        <literal>ceylon</literal> is reserved for Ceylon SDK modules. The 
+        namespace <literal>java</literal> is reserved for modules 
+        belonging to the Java SDK.</para>
         
         <para>Any package whose name begins with the module name belongs
         to the module, for example, the packages:</para>
@@ -184,15 +199,14 @@
         or <literal>org.hibernate.core</literal> vs 
         <literal>org.hibernate.example</literal>.</para></comment>
 
-        <para>In a compilation source directory, all packages that do not belong to an
-        identified module belong to the <emphasis>default module</emphasis>. The name
-        of the default module is <literal>default</literal>. The default module has no
-        version and cannot be published to a remote repository nor to the local
-        repository cache (under <filename>~/.ceylon/repo</filename>)</para>
+        <para>In a compilation source directory, all packages that do not belong 
+        to an identified module belong to the <emphasis>default module</emphasis>. 
+        The name of the default module is <literal>default</literal>. The default 
+        module has no version and cannot be published to a remote repository nor 
+        to the local repository cache (under <filename>~/.ceylon/repo</filename>)</para>
         
-        <para>A module <emphasis>version identifier</emphasis> is a
-        character string containing digits, periods, and lowercase
-        letters, for example:</para>
+        <para>A module <emphasis>version identifier</emphasis> is a character 
+        string containing digits, periods, and lowercase letters, for example:</para>
         
         <programlisting>1.0.1</programlisting>
         <programlisting>3.0.0.beta</programlisting>
@@ -570,7 +584,7 @@ module org.hibernate.test '3.0.0.beta' {
 
 </section>
 
-<section id="tools">
+<!--section id="tools">
     <title>Toolset</title>
 
     <para>The Ceylon SDK contains the following tools:</para>
@@ -659,22 +673,7 @@ module org.hibernate.test '3.0.0.beta' {
         
         <programlisting>ceylon.language/1.0.1</programlisting>
         <programlisting>org.h2/1.2.141</programlisting>
-        
-        <!--
-        <para>The VM front end supports an extended format that identifies a
-        versioned reference to a toplevel declaration:</para>
-        
-        <programlisting><emphasis>&lt;package&gt;</emphasis>.<emphasis>&lt;name&gt;</emphasis>/<emphasis>&lt;version&gt;</emphasis></programlisting>
-        
-        <para>where <literal><emphasis>&lt;package&gt;</emphasis></literal> 
-        is the full name of the module, and 
-        <literal><emphasis>&lt;name&gt;</emphasis></literal> is the name of a
-        toplevel method or class. For example:</para>
-        
-        <programlisting>org.hello.main.hello/1.0.1</programlisting>
-        <programlisting>org.hibernate.test.TestSuite/3.0.0.beta</programlisting>
-        -->
-        
+                
     </section>
     
     <section id="vmfrontend">
@@ -722,7 +721,7 @@ module org.hibernate.test '3.0.0.beta' {
         
         <programlisting>ceylon -rep http://jboss.org/ceylon/modules \
         -src ~/projects/hibernate/src \
-        org.hibernate.test/3.0.0.beta --hibernate-arg</programlisting>
+        org.hibernate.test/3.0.0.beta -hibernate-arg</programlisting>
                
         <para>Execution begins with the named toplevel method or class, or
         with the entry point specified in the module descriptor, and imported 
@@ -731,13 +730,7 @@ module org.hibernate.test '3.0.0.beta' {
         class are determined from the imported package name specified by
         the compilation unit and the imported module version specified by 
         the module descriptor.</para>
-        
-        <!--
-        <comment><para>TODO: one slight issue with this is that with 
-        wildcard imports it is sometimes ambiguous which package a class
-        belongs to.</para></comment>
-        -->
-        
+                
         <para>Each version of each module is loaded using a different class 
         loader. Classes inside a module have access to other classes in the 
         same module and to classes belonging to modules that are explicitly 
@@ -994,13 +987,7 @@ module org.hibernate.test '3.0.0.beta' {
                 
         <para>If no version identifier is specified for a module, the module 
         is assumed to exist in a source directory.</para>
-        
-        <!-- 
-        <comment><para>TODO: should the documentation compiler generate HTML
-        directly, or should it generate some intermediate format (XML?) that
-        can be transformed to HTML, DocBook, etc?</para></comment>
-        -->
-        
+                
     </section>
     
     <section id="repositoryreplicator">
@@ -1151,6 +1138,6 @@ module org.hibernate.test '3.0.0.beta' {
         
     </section>
 
-</section>
+</section-->
 
 </chapter>
