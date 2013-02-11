@@ -1175,9 +1175,11 @@ public class ExpressionTransformer extends AbstractTransformer {
         // no erasure cast needed for both terms
         JCExpression key = transformExpression(op.getLeftTerm());
         JCExpression elem = transformExpression(op.getRightTerm());
-        ProducedType entryType = typeFact().getEntryType(op.getLeftTerm().getTypeModel(), op.getRightTerm().getTypeModel());
+        ProducedType leftType = op.getLeftTerm().getTypeModel();
+        ProducedType rightType = op.getRightTerm().getTypeModel();
+        ProducedType entryType = typeFact().getEntryType(leftType, rightType);
         JCExpression typeExpr = makeJavaType(entryType, CeylonTransformer.JT_CLASS_NEW);
-        return at(op).NewClass(null, null, typeExpr , List.<JCExpression> of(key, elem), null);
+        return at(op).NewClass(null, null, typeExpr , List.<JCExpression> of(makeReifiedTypeArgument(leftType), makeReifiedTypeArgument(rightType), key, elem), null);
     }
 
     public JCTree transform(Tree.DefaultOp op) {
