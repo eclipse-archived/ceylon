@@ -3511,7 +3511,7 @@ public class ExpressionVisitor extends Visitor {
             member = getSupertypeMemberDeclaration(that, sq);
         }
         if (member==null) {
-            that.addError("method or attribute does not exist or is ambiguous: " +
+            that.addError("method or attribute does not exist: " +
                     name(that.getIdentifier()), 100);
             unit.getUnresolvedReferences().add(that.getIdentifier());
         }
@@ -3574,10 +3574,12 @@ public class ExpressionVisitor extends Visitor {
             TypedDeclaration member;
             String name = name(that.getIdentifier());
             String container;
+            boolean ambiguous;
             if (packageQualified) {
                 container = "package " + unit.getPackage().getNameAsString();
                 member = (TypedDeclaration) unit.getPackage()
                         .getMember(name, that.getSignature(), that.getEllipsis());
+                ambiguous = false;
             }
             else {
                 pt = pt.resolveAliases(); //needed for aliases like "alias Id<T> => T"
@@ -3585,11 +3587,19 @@ public class ExpressionVisitor extends Visitor {
                 container = "type " + d.getName(unit);
                 member = (TypedDeclaration) d.getMember(name, unit, 
                         that.getSignature(), that.getEllipsis());
+                ambiguous = member==null && d.isMemberAmbiguous(name, unit, 
+                        that.getSignature(), that.getEllipsis());
             }
             if (member==null) {
-                that.addError("member method or attribute does not exist or is ambiguous: " +
-                        name + " in " + container, 100);
-                unit.getUnresolvedReferences().add(that.getIdentifier());
+                if (ambiguous) {
+                    that.addError("member method or attribute is ambiguous: " +
+                            name + " for " + container);
+                }
+                else {
+                    that.addError("member method or attribute does not exist: " +
+                            name + " in " + container, 100);
+                    unit.getUnresolvedReferences().add(that.getIdentifier());
+                }
             }
             else {
                 that.setDeclaration(member);
@@ -3684,7 +3694,7 @@ public class ExpressionVisitor extends Visitor {
             type = getSupertypeTypeDeclaration(that, sq);
         }
         if (type==null) {
-            that.addError("type does not exist or is ambiguous: " + 
+            that.addError("type does not exist: " + 
                     name(that.getIdentifier()), 100);
             unit.getUnresolvedReferences().add(that.getIdentifier());
         }
@@ -3753,10 +3763,12 @@ public class ExpressionVisitor extends Visitor {
             TypeDeclaration type;
             String name = name(that.getIdentifier());
             String container;
+            boolean ambiguous;
             if (packageQualified) {
                 container = "package " + unit.getPackage().getNameAsString();
                 type = (TypeDeclaration) unit.getPackage()
                         .getMember(name, that.getSignature(), that.getEllipsis());
+                ambiguous = false;
             }
             else {
                 pt = pt.resolveAliases(); //needed for aliases like "alias Id<T> => T"
@@ -3764,11 +3776,19 @@ public class ExpressionVisitor extends Visitor {
                 container = "type " + d.getName(unit);
                 type = (TypeDeclaration) d.getMember(name, unit, 
                         that.getSignature(), that.getEllipsis());
+                ambiguous = type==null && d.isMemberAmbiguous(name, unit, 
+                        that.getSignature(), that.getEllipsis());
             }
             if (type==null) {
-                that.addError("member type does not exist or is ambiguous: " +
-                        name + " in " + container, 100);
-                unit.getUnresolvedReferences().add(that.getIdentifier());
+                if (ambiguous) {
+                    that.addError("member type is ambiguous: " +
+                            name + " for " + container);
+                }
+                else {
+                    that.addError("member type does not exist: " +
+                            name + " in " + container, 100);
+                    unit.getUnresolvedReferences().add(that.getIdentifier());
+                }
             }
             else {
                 that.setDeclaration(type);

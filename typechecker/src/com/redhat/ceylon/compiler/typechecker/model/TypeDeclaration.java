@@ -332,14 +332,33 @@ public abstract class TypeDeclaration extends Declaration
      * account, followed by supertypes.
      */
     public Declaration getMember(String name, Unit unit, 
-            List<ProducedType> signature, boolean ellipsis) {
+            List<ProducedType> signature, boolean variadic) {
         //TODO: does not handle aliased members of supertypes
-        Declaration d = unit.getImportedDeclaration(this, name, signature, ellipsis);
+        Declaration d = unit.getImportedDeclaration(this, name, signature, variadic);
         if (d==null) {
-            return getMember(name, signature, ellipsis);
+            return getMemberInternal(name, signature, variadic).getMember();
         }
         else {
             return d;
+        }
+    }
+
+    /**
+     * Is the most-refined member with the given name,
+     * searching this type first, taking aliases into
+     * account, followed by supertypes, ambiguous,
+     * because we could not construct a principal
+     * instantiation for an intersection?
+     */
+    public boolean isMemberAmbiguous(String name, Unit unit, 
+            List<ProducedType> signature, boolean variadic) {
+        //TODO: does not handle aliased members of supertypes
+        Declaration d = unit.getImportedDeclaration(this, name, signature, variadic);
+        if (d==null) {
+            return getMemberInternal(name, signature, variadic).isAmbiguous();
+        }
+        else {
+            return false;
         }
     }
 
@@ -349,36 +368,42 @@ public abstract class TypeDeclaration extends Declaration
      */
     @Override
     public Declaration getMember(String name, 
-            List<ProducedType> signature, boolean ellipsis) {
+            List<ProducedType> signature, boolean variadic) {
+        return getMemberInternal(name, signature, variadic).getMember();
+    }
+
+    private SupertypeDeclaration getMemberInternal(String name,
+            List<ProducedType> signature, boolean variadic) {
         //first search for the member in the local
         //scope, including non-shared declarations
-        Declaration d = getDirectMember(name, signature, ellipsis);
-        if (d==null) d = getDirectMemberOrParameter(name, signature, ellipsis);
+        Declaration d = getDirectMember(name, signature, variadic);
+        if (d==null) d = getDirectMemberOrParameter(name, signature, variadic);
         if (d!=null && d.isShared()) {
             //if it's shared, it's what we're 
             //looking for, return it
             //TODO: should also return it if we're 
             //      calling from local scope!
             if (signature!=null && isAbstraction(d)){
-                // look for a supertype decl that matches the signature better
-                Declaration s = getSupertypeDeclaration(name, signature, ellipsis);
-                if (s!=null && !isAbstraction(s)) {
-                    return s;
+                //look for a supertype decl that matches the signature better
+                SupertypeDeclaration sd = getSupertypeDeclaration(name, signature, variadic);
+                Declaration sm = sd.getMember();
+                if (sm!=null && !isAbstraction(sm)) {
+                    return sd;
                 }
             }
-            return d;
+            return new SupertypeDeclaration(d, false);
         }
         else {
             //now look for inherited shared declarations
-            Declaration s = getSupertypeDeclaration(name, signature, ellipsis);
-            if (s!=null) {
-                return s;
+            SupertypeDeclaration sd = getSupertypeDeclaration(name, signature, variadic);
+            if (sd.getMember()!=null || sd.isAmbiguous()) {
+                return sd;
             }
         }
         //finally return the non-shared member we
         //found earlier, so that the caller can give
         //a nice error message
-        return d;
+        return new SupertypeDeclaration(d, false);
     }
     
     /**
@@ -388,15 +413,15 @@ public abstract class TypeDeclaration extends Declaration
      */
     @Override
     public Declaration getMemberOrParameter(String name, 
-            List<ProducedType> signature, boolean ellipsis) {
+            List<ProducedType> signature, boolean variadic) {
         //first search for the member or parameter 
         //in the local scope, including non-shared 
         //declarations
-        Declaration d = getDirectMemberOrParameter(name, signature, ellipsis);
+        Declaration d = getDirectMemberOrParameter(name, signature, variadic);
         if (d!=null) {
             if (signature!=null && isAbstraction(d)){
                 // look for a supertype decl that matches the signature better
-                Declaration s = getSupertypeDeclaration(name, signature, ellipsis);
+                Declaration s = getSupertypeDeclaration(name, signature, variadic).getMember();
                 if (s!=null && !isAbstraction(s)) {
                     return s;
                 }
@@ -405,7 +430,7 @@ public abstract class TypeDeclaration extends Declaration
         }
         else {
             //now look for inherited shared declarations
-            return getSupertypeDeclaration(name, signature, ellipsis);
+            return getSupertypeDeclaration(name, signature, variadic).getMember();
         }
     }
 
@@ -469,20 +494,35 @@ public abstract class TypeDeclaration extends Declaration
         };
         return getType().getSupertype(new Criteria())!=null;
     }
-
+    
+    private static class SupertypeDeclaration {
+        private Declaration member;
+        private boolean ambiguous;
+        private SupertypeDeclaration(Declaration declaration, boolean ambiguous) {
+            this.member = declaration;
+            this.ambiguous = ambiguous;
+        }
+        private boolean isAmbiguous() {
+            return ambiguous;
+        }
+        private Declaration getMember() {
+            return member;
+        }
+    }
+    
     /**
      * Get the supertype which defines the most-refined
      * member with the given name.
      * @param signature 
      */
-    private Declaration getSupertypeDeclaration(final String name, final List<ProducedType> signature, final boolean ellipsis) {
+    private SupertypeDeclaration getSupertypeDeclaration(final String name, final List<ProducedType> signature, final boolean variadic) {
         class Criteria implements ProducedType.Criteria {
             @Override
             public boolean satisfies(TypeDeclaration type) {
                 // do not look in ourselves
                 if (type == TypeDeclaration.this)
                     return false;
-                Declaration d = type.getDirectMember(name, signature, ellipsis);
+                Declaration d = type.getDirectMember(name, signature, variadic);
                 if (d!=null && d.isShared() && isResolvable(d)) {
                     // only accept abstractions if we don't have a signature
                     return !isAbstraction(d) || signature == null;
@@ -499,11 +539,16 @@ public abstract class TypeDeclaration extends Declaration
         //this works by finding the most-specialized supertype
         //that defines the member
         ProducedType st = getType().getSupertype(new Criteria());
-        if (st!=null) {
-            return st.getDeclaration().getDirectMember(name, signature, ellipsis);
+        if (st == null) {
+            return new SupertypeDeclaration(null, false);
+        }
+        else if (st.getDeclaration() instanceof UnknownType) {
+            return new SupertypeDeclaration(null, true);
         }
         else {
-            return null;
+            Declaration member = st.getDeclaration()
+                    .getDirectMember(name, signature, variadic);
+            return new SupertypeDeclaration(member, false);
         }
     }
 

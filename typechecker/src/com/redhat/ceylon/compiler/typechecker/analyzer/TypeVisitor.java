@@ -516,15 +516,14 @@ public class TypeVisitor extends Visitor {
         else {
         	type = getSupertypeDeclaration(that, sq);
         }
+        String name = name(that.getIdentifier());
         if (type==null) {
-            that.addError("type declaration does not exist or is ambiguous: " + 
-                    name(that.getIdentifier()), 102);
+            that.addError("type declaration does not exist: " + name, 102);
             unit.getUnresolvedReferences().add(that.getIdentifier());
         }
         else {
             if (!type.isVisible(that.getScope())) {
-                that.addError("type is not visible: " +
-                        name(that.getIdentifier()), 400);
+                that.addError("type is not visible: " + name, 400);
             }
             ProducedType outerType = that.getScope().getDeclaringType(type);
             visitSimpleType(that, outerType, type);
@@ -553,18 +552,23 @@ public class TypeVisitor extends Visitor {
         ProducedType pt = that.getOuterType().getTypeModel();
         if (pt!=null) {
             TypeDeclaration d = pt.getDeclaration();
-			TypeDeclaration type = (TypeDeclaration) d.getMember(name(that.getIdentifier()), unit, null, false);
+			String name = name(that.getIdentifier());
+            TypeDeclaration type = (TypeDeclaration) d.getMember(name, unit, null, false);
             if (type==null) {
-                that.addError("member type declaration does not exist or is ambiguous: " + 
-                        name(that.getIdentifier()) +
-                        " in type " + d.getName(), 100);
-                unit.getUnresolvedReferences().add(that.getIdentifier());
+                if (d.isMemberAmbiguous(name, unit, null, false)) {
+                    that.addError("member type declaration is ambiguous: " + 
+                            name + " for type " + d.getName());
+                }
+                else {
+                    that.addError("member type declaration does not exist: " + 
+                            name + " in type " + d.getName(), 100);
+                    unit.getUnresolvedReferences().add(that.getIdentifier());
+                }
             }
             else {
                 if (!type.isVisible(that.getScope())) {
                     that.addError("member type is not visible: " +
-                            name(that.getIdentifier()) +
-                            " of type " + d.getName(), 400);
+                            name + " of type " + d.getName(), 400);
                 }
                 visitSimpleType(that, pt, type);
             }
