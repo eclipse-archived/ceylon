@@ -147,7 +147,7 @@ public class CeylonRunJsTool implements Tool {
         this.func = func;
     }
 
-    @OptionArgument(argumentName="url")
+    @OptionArgument(longName="rep", argumentName="url")
     @Description("A module repository. (default: `./modules`).")
     public void setRepositories(List<String> repos) {
         this.repos = repos;
@@ -238,25 +238,27 @@ public class CeylonRunJsTool implements Tool {
         } else {
             proc = new ProcessBuilder(node, "-e", eval);
         }
-        String nodePath = getNodePath();
-        if (nodePath == null || nodePath.isEmpty()) {
-            nodePath = systemRepo;
-        } else if (systemRepo != null && !systemRepo.isEmpty()) {
-            nodePath = nodePath + File.pathSeparator + systemRepo;
-        }
+        StringBuilder nodePath = new StringBuilder();
+        appendToNodePath(nodePath, getNodePath());
+        appendToNodePath(nodePath, systemRepo);
         //Now append repositories
         for (String repo : repos) {
-            if (nodePath == null || nodePath.isEmpty()) {
-                nodePath = repo;
-            } else {
-                nodePath = nodePath + File.pathSeparator + repo;
-            }
+            appendToNodePath(nodePath, repo);
         }
-        proc.environment().put("NODE_PATH", nodePath);
+        proc.environment().put("NODE_PATH", nodePath.toString());
         if (output != null) {
             proc.redirectErrorStream();
         }
         return proc;
+    }
+
+    private static String appendToNodePath(StringBuilder nodePath, String repo) {
+        if (repo == null || repo.isEmpty()) return "";
+        if (nodePath.length() > 0) {
+            nodePath.append(File.pathSeparator);
+        }
+        nodePath.append(repo);
+        return repo;
     }
 
     @Override
