@@ -350,17 +350,12 @@
 
     <target name="test.js" depends="compile.tests.js"
         description="Run tests on node.js (requires node)">
-        <echo message="Running tests on node.js (node must be installed)" />
-        <mkdir dir="${build.test}/modules/${jslangpath}" />
-        <mkdir dir="${build.test}/opt_modules/${jslangpath}" />
-        <copy file="${runtime}/${jslangmodule}" todir="${build.test}/modules/${jslangpath}" />
-        <copy file="${runtime}/${jslangmodule}.sha1" todir="${build.test}/modules/${jslangpath}" />
-        <copy file="${runtime}/${jslangmodule}" todir="${build.test}/opt_modules/${jslangpath}" />
-        <copy file="${runtime}/${jslangmodule}.sha1" todir="${build.test}/opt_modules/${jslangpath}" />
-        <java classname="NodeTest" classpathref="js.test.run.classpath">
-            <arg value="${build.test}/modules" />
-            <arg value="${build.test}/opt_modules" />
-        </java>
+        <ceylon-run-js
+            executable="${ceylon.compiler.loc}/dist/bin/ceylon"
+            sysrep="${build.test.repo}"
+            module="default">
+            <rep url="build/test" />
+        </ceylon-run-js>
     </target>
 
     <target name="test" depends="test.java" description="compile and run the tests">
