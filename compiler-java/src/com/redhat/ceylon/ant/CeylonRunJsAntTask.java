@@ -35,7 +35,7 @@ public class CeylonRunJsAntTask extends CeylonAntTask {
     private String module;
     private String func;
     private RepoSet reposet = new RepoSet();
-    private Repo sysrepo;
+    private String sysrepo;
 
     public CeylonRunJsAntTask() {
         super("run-js");
@@ -52,7 +52,7 @@ public class CeylonRunJsAntTask extends CeylonAntTask {
         return reposet.getRepos();
     }
 
-    protected Repo getSystemRepository() {
+    protected String getSystemRepository() {
         return sysrepo;
     }
 
@@ -60,7 +60,7 @@ public class CeylonRunJsAntTask extends CeylonAntTask {
      * Sets the system repository
      * @param rep the new system repository
      */
-    public void setSysRep(Repo rep) {
+    public void setSysRep(String rep) {
         sysrepo = rep;
     }
 
@@ -85,7 +85,7 @@ public class CeylonRunJsAntTask extends CeylonAntTask {
             cmd.createArgument().setValue("--run=" + func);
         }
         if (sysrepo != null) {
-            cmd.createArgument().setValue("--sysrep=" + Util.quoteParameter(sysrepo.url));
+            cmd.createArgument().setValue("--sysrep=" + Util.quoteParameter(sysrepo));
         }
         
         for (Repo rep : reposet.getRepos()) {
