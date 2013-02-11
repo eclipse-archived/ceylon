@@ -147,6 +147,167 @@ public class MethodClass implements .com.redhat.ceylon.compiler.java.ReifiedType
     public static final .com.redhat.ceylon.compiler.java.TypeDescriptor $TypeDescriptor = .com.redhat.ceylon.compiler.java.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.reified.MethodClass.class);
 }
 @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 4)
+@.com.redhat.ceylon.compiler.java.metadata.Annotations({@.com.redhat.ceylon.compiler.java.metadata.Annotation("shared")})
+public interface MethodInterface {
+    
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    public .com.redhat.ceylon.compiler.java.test.structure.reified.MethodInterface$impl $com$redhat$ceylon$compiler$java$test$structure$reified$MethodInterface$impl();
+    
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    public <T>void methodWithOverloads(@.com.redhat.ceylon.compiler.java.metadata.Ignore
+    final .com.redhat.ceylon.compiler.java.TypeDescriptor $reifiedT);
+    
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    public abstract <T>long methodWithOverloads$a(@.com.redhat.ceylon.compiler.java.metadata.Ignore
+    final .com.redhat.ceylon.compiler.java.TypeDescriptor $reifiedT);
+    
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    public <T>void methodWithOverloads(@.com.redhat.ceylon.compiler.java.metadata.Ignore
+    final .com.redhat.ceylon.compiler.java.TypeDescriptor $reifiedT, final long a);
+    
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    public abstract <T>long methodWithOverloads$b(@.com.redhat.ceylon.compiler.java.metadata.Ignore
+    final .com.redhat.ceylon.compiler.java.TypeDescriptor $reifiedT, final long a);
+    
+    @.com.redhat.ceylon.compiler.java.metadata.Annotations({@.com.redhat.ceylon.compiler.java.metadata.Annotation("shared")})
+    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Anything")
+    @.com.redhat.ceylon.compiler.java.metadata.TypeParameters({@.com.redhat.ceylon.compiler.java.metadata.TypeParameter(value = "T", variance = .com.redhat.ceylon.compiler.java.metadata.Variance.NONE, satisfies = {}, caseTypes = {})})
+    public <T>void methodWithOverloads(@.com.redhat.ceylon.compiler.java.metadata.Ignore
+    final .com.redhat.ceylon.compiler.java.TypeDescriptor $reifiedT, @.com.redhat.ceylon.compiler.java.metadata.Name("a")
+    @.com.redhat.ceylon.compiler.java.metadata.Defaulted
+    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Integer")
+    final long a, @.com.redhat.ceylon.compiler.java.metadata.Name("b")
+    @.com.redhat.ceylon.compiler.java.metadata.Defaulted
+    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Integer")
+    final long b);
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    public static final .com.redhat.ceylon.compiler.java.TypeDescriptor $TypeDescriptor = .com.redhat.ceylon.compiler.java.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.reified.MethodInterface.class);
+}
+@.com.redhat.ceylon.compiler.java.metadata.Ignore
+public final class MethodInterface$impl {
+    
+    public MethodInterface$impl(.com.redhat.ceylon.compiler.java.test.structure.reified.MethodInterface $this) {
+        this.$this = $this;
+    }
+    private final .com.redhat.ceylon.compiler.java.test.structure.reified.MethodInterface $this;
+    
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    public final <T>void methodWithOverloads(@.com.redhat.ceylon.compiler.java.metadata.Ignore
+    final .com.redhat.ceylon.compiler.java.TypeDescriptor $reifiedT) {
+        (
+            let
+            {
+                long $ceylontmp$a$8 = methodWithOverloads$a($reifiedT);
+                long $ceylontmp$b$9 = methodWithOverloads$b($reifiedT, $ceylontmp$a$8);
+                methodWithOverloads($reifiedT, $ceylontmp$a$8, $ceylontmp$b$9);
+            }
+            returning null;
+        );
+    }
+    
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    public final <T>long methodWithOverloads$a(@.com.redhat.ceylon.compiler.java.metadata.Ignore
+    final .com.redhat.ceylon.compiler.java.TypeDescriptor $reifiedT) {
+        return 2L;
+    }
+    
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    public final <T>void methodWithOverloads(@.com.redhat.ceylon.compiler.java.metadata.Ignore
+    final .com.redhat.ceylon.compiler.java.TypeDescriptor $reifiedT, final long a) {
+        (
+            let
+            {
+                long $ceylontmp$b$11 = methodWithOverloads$b($reifiedT, a);
+                methodWithOverloads($reifiedT, a, $ceylontmp$b$11);
+            }
+            returning null;
+        );
+    }
+    
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    public final <T>long methodWithOverloads$b(@.com.redhat.ceylon.compiler.java.metadata.Ignore
+    final .com.redhat.ceylon.compiler.java.TypeDescriptor $reifiedT, final long a) {
+        return 3L;
+    }
+    
+    public <T>void methodWithOverloads(@.com.redhat.ceylon.compiler.java.metadata.Ignore
+    final .com.redhat.ceylon.compiler.java.TypeDescriptor $reifiedT, final long a, final long b) {
+    }
+    
+    public boolean $is(.com.redhat.ceylon.compiler.java.TypeDescriptor type) {
+        if (.com.redhat.ceylon.compiler.java.test.structure.reified.MethodInterface.$TypeDescriptor.equals(type)) return true;
+        return false;
+    }
+}
+@.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 4)
+@.com.redhat.ceylon.compiler.java.metadata.Annotations({@.com.redhat.ceylon.compiler.java.metadata.Annotation("shared")})
+@.com.redhat.ceylon.compiler.java.metadata.SatisfiedTypes({"com.redhat.ceylon.compiler.java.test.structure.reified::MethodInterface"})
+public class MethodInterfaceImpl implements .com.redhat.ceylon.compiler.java.ReifiedType, .com.redhat.ceylon.compiler.java.test.structure.reified.MethodInterface {
+    
+    public MethodInterfaceImpl() {
+        this.$com$redhat$ceylon$compiler$java$test$structure$reified$MethodInterface$this = new .com.redhat.ceylon.compiler.java.test.structure.reified.MethodInterface$impl(this);
+    }
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    protected final .com.redhat.ceylon.compiler.java.test.structure.reified.MethodInterface$impl $com$redhat$ceylon$compiler$java$test$structure$reified$MethodInterface$this;
+    
+    @.java.lang.Override
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    public .com.redhat.ceylon.compiler.java.test.structure.reified.MethodInterface$impl $com$redhat$ceylon$compiler$java$test$structure$reified$MethodInterface$impl() {
+        return $com$redhat$ceylon$compiler$java$test$structure$reified$MethodInterface$this;
+    }
+    
+    @.java.lang.Override
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    public final <T>long methodWithOverloads$a(@.com.redhat.ceylon.compiler.java.metadata.Ignore
+    final .com.redhat.ceylon.compiler.java.TypeDescriptor $reifiedT) {
+        return $com$redhat$ceylon$compiler$java$test$structure$reified$MethodInterface$this.methodWithOverloads$a($reifiedT);
+    }
+    
+    @.java.lang.Override
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    public final <T>void methodWithOverloads(@.com.redhat.ceylon.compiler.java.metadata.Ignore
+    final .com.redhat.ceylon.compiler.java.TypeDescriptor $reifiedT) {
+        $com$redhat$ceylon$compiler$java$test$structure$reified$MethodInterface$this.methodWithOverloads($reifiedT);
+    }
+    
+    @.java.lang.Override
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    public final <T>long methodWithOverloads$b(@.com.redhat.ceylon.compiler.java.metadata.Ignore
+    final .com.redhat.ceylon.compiler.java.TypeDescriptor $reifiedT, final long a) {
+        return $com$redhat$ceylon$compiler$java$test$structure$reified$MethodInterface$this.methodWithOverloads$b($reifiedT, a);
+    }
+    
+    @.java.lang.Override
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    public final <T>void methodWithOverloads(@.com.redhat.ceylon.compiler.java.metadata.Ignore
+    final .com.redhat.ceylon.compiler.java.TypeDescriptor $reifiedT, final long a) {
+        $com$redhat$ceylon$compiler$java$test$structure$reified$MethodInterface$this.methodWithOverloads($reifiedT, a);
+    }
+    
+    @.java.lang.Override
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    public final <T>void methodWithOverloads(@.com.redhat.ceylon.compiler.java.metadata.Ignore
+    final .com.redhat.ceylon.compiler.java.TypeDescriptor $reifiedT, final long a, final long b) {
+        $com$redhat$ceylon$compiler$java$test$structure$reified$MethodInterface$this.methodWithOverloads($reifiedT, a, b);
+    }
+    
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    public static void main(.java.lang.String[] args) {
+        .ceylon.language.process_.getProcess$().setupArguments(args);
+        new .com.redhat.ceylon.compiler.java.test.structure.reified.MethodInterfaceImpl();
+    }
+    
+    @.java.lang.Override
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    public boolean $is(.com.redhat.ceylon.compiler.java.TypeDescriptor type) {
+        if (.com.redhat.ceylon.compiler.java.test.structure.reified.MethodInterfaceImpl.$TypeDescriptor.equals(type)) return true;
+        if ($com$redhat$ceylon$compiler$java$test$structure$reified$MethodInterface$this.$is(type)) return true;
+        return false;
+    }
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    public static final .com.redhat.ceylon.compiler.java.TypeDescriptor $TypeDescriptor = .com.redhat.ceylon.compiler.java.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.reified.MethodInterfaceImpl.class);
+}
+@.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 4)
 @.com.redhat.ceylon.compiler.java.metadata.Method
 public final class method_ {
     

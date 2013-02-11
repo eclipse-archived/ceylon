@@ -22,6 +22,12 @@ shared class MethodClass(){
     }
 }
 
+shared interface MethodInterface {
+    shared void methodWithOverloads<T>(Integer a = 2, Integer b = 3){}
+}
+
+shared class MethodInterfaceImpl() satisfies MethodInterface {}
+
 shared void method<T>(){
     method<T>();
     method<Integer>();
