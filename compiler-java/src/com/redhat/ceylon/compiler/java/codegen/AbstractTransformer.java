@@ -2199,7 +2199,8 @@ public abstract class AbstractTransformer implements Transformation {
     
     private JCTree.JCMethodInvocation boxArray(JCExpression value, ProducedType type) {
         JCExpression typeExpr = makeJavaType(type, JT_TYPE_ARGUMENT);
-        return make().Apply(List.<JCExpression>of(typeExpr), makeSelect(makeIdent(syms().ceylonArrayType), "instance"), List.<JCExpression>of(value));
+        return make().Apply(List.<JCExpression>of(typeExpr), makeSelect(makeIdent(syms().ceylonArrayType), "instance"), 
+                            List.<JCExpression>of(makeReifiedTypeArgument(type), value));
     }
     
     private JCTree.JCMethodInvocation makeBoxType(JCExpression value, Type type) {
