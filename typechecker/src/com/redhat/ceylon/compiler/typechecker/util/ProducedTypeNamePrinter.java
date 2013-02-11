@@ -63,7 +63,7 @@ public class ProducedTypeNamePrinter {
             if (printAbbreviated()) {
                 Unit u = pt.getDeclaration().getUnit();
                 if (abbreviateOptional(pt)) {
-                    ProducedType dt = pt.minus(u.getNullDeclaration());
+                    ProducedType dt = pt.minus(u.getNullDeclaration().getType());
                     if (!isPrimitiveAbbreviatedType(dt)) {
                         return "<" + getProducedTypeName(dt, unit) + ">?";
                     }

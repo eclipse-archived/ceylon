@@ -342,7 +342,7 @@ public class ExpressionVisitor extends Visitor {
                 if (type.getDeclaration() instanceof ClassOrInterface &&
                         !type.getDeclaration().isParameterized()) {
                     //TODO: see comment in ProducedType - minus() is not robust 
-                    it = knownType.minus((ClassOrInterface) type.getDeclaration());
+                    it = knownType.minus(type);
                 }
                 else {
                     //TODO: improve implementation of minus(), and relax this

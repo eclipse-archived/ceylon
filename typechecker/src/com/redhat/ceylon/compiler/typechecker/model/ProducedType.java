@@ -314,19 +314,23 @@ public class ProducedType extends ProducedReference {
      * with some other types that don't involve the
      * given type.
      */
-    public ProducedType minus(ClassOrInterface ci) {
-        if ((getDeclaration() instanceof ClassOrInterface && getDeclaration().equals(ci)) 
-                || getSupertype(ci) != null) {
-            return getDeclaration().getUnit().getNothingDeclaration().getType();
+    public ProducedType minus(ProducedType pt) {
+        //canonicalize and then remove the type
+        //from the resulting union
+        return resolveAliases().minusInternal(pt);
+    }
+
+    private ProducedType minusInternal(ProducedType pt) {
+        Unit unit = getDeclaration().getUnit();
+        if (isSubtypeOf(pt)) {
+            return unit.getNothingDeclaration().getType();
         }
         else if (getDeclaration() instanceof UnionType) {
             List<ProducedType> types = new ArrayList<ProducedType>();
             for (ProducedType ct: getCaseTypes()) {
-                if (ct.getSupertype(ci)==null) {
-                    addToUnion(types, ct.minus(ci));
-                }
+                addToUnion(types, ct.minus(pt));
             }
-            UnionType ut = new UnionType(getDeclaration().getUnit());
+            UnionType ut = new UnionType(unit);
             ut.setCaseTypes(types);
             return ut.getType();
         }

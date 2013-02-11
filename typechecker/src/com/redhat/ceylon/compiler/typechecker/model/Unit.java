@@ -624,7 +624,8 @@ public class Unit {
     }
 
     public ProducedType getNonemptySequenceType(ProducedType pt) {
-        return pt.minus(getEmptyDeclaration()).getSupertype(getSequenceDeclaration());
+        return pt.minus(getEmptyDeclaration().getType())
+                .getSupertype(getSequenceDeclaration());
     }
     
     public boolean isEntryType(ProducedType pt) {
