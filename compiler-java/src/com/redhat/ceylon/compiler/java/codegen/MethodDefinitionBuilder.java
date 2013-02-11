@@ -432,15 +432,26 @@ public class MethodDefinitionBuilder {
     }
 
     public MethodDefinitionBuilder reifiedTypeParameter(TypeParameterDeclaration param) {
-        String descriptorName = gen.naming.getTypeArgumentDescriptorName(param.getIdentifier().getText());
+        return reifiedTypeParameter(param.getIdentifier().getText());
+    }
+    
+    private MethodDefinitionBuilder reifiedTypeParameter(String name) {
+        String descriptorName = gen.naming.getTypeArgumentDescriptorName(name);
         ParameterDefinitionBuilder pdb = ParameterDefinitionBuilder.instance(gen, descriptorName);
         pdb.type(gen.makeTypeDescriptorType(), List.<JCAnnotation>nil());
+        pdb.modifiers(FINAL);
         if(noAnnotations)
             pdb.noAnnotations();
         else
             pdb.ignored(true);
         parameter(pdb);
 
+        return this;
+    }
+
+    public MethodDefinitionBuilder reifiedTypeParametersFromModel(java.util.List<TypeParameter> typeParameters) {
+        for(TypeParameter typeParam : typeParameters)
+            reifiedTypeParameter(typeParam.getName());
         return this;
     }
     
