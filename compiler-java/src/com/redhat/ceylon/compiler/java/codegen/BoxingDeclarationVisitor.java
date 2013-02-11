@@ -260,6 +260,20 @@ public abstract class BoxingDeclarationVisitor extends Visitor {
     }
     
     @Override
+    public void visit(Tree.Parameter that) {
+        super.visit(that);
+        TypedDeclaration declaration = that.getDeclarationModel();
+        boxAttribute(declaration);
+        rawTypedDeclaration(declaration);
+        setErasureState(declaration);
+        if (declaration.getContainer() instanceof TypeDeclaration 
+                && CodegenUtil.isSmall(declaration)
+                && declaration.getType() != null) {
+            declaration.getType().setUnderlyingType("int");
+        }
+    }
+    
+    @Override
     public void visit(AnyAttribute that) {
         super.visit(that);
         TypedDeclaration declaration = that.getDeclarationModel();

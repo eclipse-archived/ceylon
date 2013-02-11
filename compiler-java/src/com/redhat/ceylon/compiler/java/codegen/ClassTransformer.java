@@ -246,7 +246,8 @@ public class ClassTransformer extends AbstractTransformer {
         for (Tree.Parameter param : paramList.getParameters()) {
             // Overloaded instantiators
             Parameter paramModel = param.getDeclarationModel();
-            Parameter refinedParam = (Parameter)CodegenUtil.getTopmostRefinedDeclaration(param.getDeclarationModel());
+            Parameter refinedParam = CodegenUtil.findParamForDecl(
+                    (TypedDeclaration)CodegenUtil.getTopmostRefinedDeclaration(param.getDeclarationModel()));
             at(param);
             classBuilder.parameter(paramModel);
             if (paramModel.isDefaulted()

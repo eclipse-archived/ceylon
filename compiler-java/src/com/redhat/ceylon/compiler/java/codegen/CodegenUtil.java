@@ -175,12 +175,21 @@ class CodegenUtil {
     }
 
     static Declaration getTopmostRefinedDeclaration(Declaration decl){
-        if(decl instanceof Parameter && decl.getContainer() instanceof Functional){
-            // Parameters in a refined class, interface or method are not considered refinements themselves
+        if (decl instanceof Parameter && decl.getContainer() instanceof Class) {
+            // Parameters in a refined class are not considered refinements themselves
+            // We have in find the refined attribute
+            Class c = (Class)decl.getContainer();
+            Declaration refinedDecl = c.getRefinedMember(decl.getName(), null, false);//?? elipses=false??
+            if(refinedDecl != null && refinedDecl != decl) {
+                return getTopmostRefinedDeclaration(refinedDecl);
+            }
+            return decl;
+        } else if(decl instanceof Parameter && decl.getContainer() instanceof Method){
+            // Parameters in a refined method are not considered refinements themselves
             // so we have to look up the corresponding parameter in the container's refined declaration
-            Functional func = (Functional)decl.getContainer();
+            Method func = (Method)decl.getContainer();
             Parameter param = (Parameter)decl;
-            Functional refinedFunc = (Functional) getTopmostRefinedDeclaration((Declaration)decl.getContainer());
+            Method refinedFunc = (Method) getTopmostRefinedDeclaration((Declaration)decl.getContainer());
             // shortcut if the functional doesn't override anything
             if(refinedFunc == decl.getContainer())
                 return decl;
@@ -205,6 +214,11 @@ class CodegenUtil {
     static Parameter findParamForDecl(Tree.TypedDeclaration decl) {
         String attrName = decl.getIdentifier().getText();
         return findParamForDecl(attrName, decl.getDeclarationModel());
+    }
+    
+    static Parameter findParamForDecl(TypedDeclaration decl) {
+        String attrName = decl.getName();
+        return findParamForDecl(attrName, decl);
     }
     
     static Parameter findParamForDecl(String attrName, TypedDeclaration decl) {
