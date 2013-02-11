@@ -331,9 +331,7 @@ class IndirectInvocationBuilder extends SimpleInvocation {
     
     @Override
     protected List<ExpressionAndType> addReifiedArguments(List<ExpressionAndType> result) {
-        java.util.List<JCExpression> reifiedTypeArgs = gen.makeReifiedTypeArguments(parameterTypes);
-        for(JCExpression reifiedTypeArg : reifiedTypeArgs)
-            result = result.append(new ExpressionAndType(reifiedTypeArg, gen.makeTypeDescriptorType()));
+        // can never be parameterised
         return result;
     }
 
