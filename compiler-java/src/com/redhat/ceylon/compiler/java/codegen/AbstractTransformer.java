@@ -2870,7 +2870,7 @@ public abstract class AbstractTransformer implements Transformation {
         if(declaration instanceof ClassOrInterface){
             // see if we have an alias for it
             if(supportsReifiedAlias((ClassOrInterface) declaration)){
-                JCExpression qualifier = makeJavaType(pt, JT_RAW | JT_NO_PRIMITIVES);
+                JCExpression qualifier = naming.makeDeclarationName(declaration, DeclNameFlag.QUALIFIED);
                 return makeSelect(qualifier, naming.getTypeDescriptorAliasName());
             }
             // no alias, must build it
