@@ -2303,6 +2303,7 @@ public class ExpressionTransformer extends AbstractTransformer {
                 MethodDefinitionBuilder argMethod = MethodDefinitionBuilder.systemMethod(this, argMethodName.getName());
                 argMethod.modifiers(PRIVATE | STATIC);
                 argMethod.ignoreAnnotations();
+                argMethod.reifiedTypeParametersFromModel(subclass.getTypeParameters());
                 for (TypeParameter typeParam : subclass.getTypeParameters()) {
                     argMethod.typeParameter(typeParam);
                 }
@@ -2329,6 +2330,11 @@ public class ExpressionTransformer extends AbstractTransformer {
                 // for the super() invocation, replace the given arguments
                 // with calls to the super$arg$N() methods
                 ListBuffer<JCExpression> argMethodArgs = ListBuffer.<JCExpression>lb();
+                if(subclass.getTypeParameters() != null){
+                    for(TypeParameter tp : subclass.getTypeParameters()){
+                        argMethodArgs.append(naming.makeUnquotedIdent(naming.getTypeArgumentDescriptorName(tp.getName())));
+                    }
+                }
                 for (Parameter parameter : classParameters) {
                     argMethodArgs.append(naming.makeName(parameter, Naming.NA_IDENT));
                 }
