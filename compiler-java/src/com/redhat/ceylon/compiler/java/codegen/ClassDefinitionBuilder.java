@@ -671,6 +671,11 @@ public class ClassDefinitionBuilder {
                 for(ProducedType pt : satisfiedTypes){
                     JCExpression isCall;
                     Interface iface = (Interface) pt.getDeclaration();
+                    // not if it's entirely erased
+                    // FIXME: should this delegate to a Util call?
+                    if(gen.willEraseToObject(pt)){
+                        continue;
+                    }
                     if(Decl.isCeylon(iface)){
                         String isDelegateName = gen.naming.getIsMethodName(pt);
                         String implFieldName = gen.getCompanionFieldName(iface);
@@ -695,8 +700,10 @@ public class ClassDefinitionBuilder {
                     else
                         interfacesTest = isCall;
                 }
-                JCStatement ifInterfacesTest = gen.make().If(interfacesTest, gen.make().Return(gen.makeBoolean(true)), null);
-                body = body.prepend(ifInterfacesTest);
+                if(interfacesTest != null){
+                    JCStatement ifInterfacesTest = gen.make().If(interfacesTest, gen.make().Return(gen.makeBoolean(true)), null);
+                    body = body.prepend(ifInterfacesTest);
+                }
             }
             
             // no point checking for exact class since anonymous classes can't be referred to by "is"
