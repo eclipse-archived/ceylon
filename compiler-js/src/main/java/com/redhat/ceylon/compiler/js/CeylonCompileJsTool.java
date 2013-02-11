@@ -38,6 +38,7 @@ public class CeylonCompileJsTool implements Tool {
     private String user = null;
     private String pass = null;
     private String out = "modules";
+    private String sysrep = null;
 
     private List<String> repos = Collections.emptyList();
     private List<String> src = Collections.singletonList("source");
@@ -104,6 +105,11 @@ public class CeylonCompileJsTool implements Tool {
         return verbose;
     }
 
+    @OptionArgument
+    @Description("Specifies the system repository containing essential modules. (default: '$CEYLON_HOME/repo')")
+    public void setSysrep(String value) {
+        sysrep = value;
+    }
     @Option
     @Description("Print messages while compiling")
     public void setVerbose(boolean verbose) {
@@ -183,7 +189,7 @@ public class CeylonCompileJsTool implements Tool {
 
     @Override
     public void run() throws Exception {
-        final Options opts = new Options(getRepos(), getSrc(), null, getOut(), getUser(), getPass(), isOptimize(),
+        final Options opts = new Options(getRepos(), getSrc(), sysrep, getOut(), getUser(), getPass(), isOptimize(),
                 isModulify(), isIndent(), isComments(), isVerbose(), isProfile(), false, !skipSrc, null);
         run(opts, module);
     }
@@ -193,9 +199,12 @@ public class CeylonCompileJsTool implements Tool {
         if (opts.isVerbose()) {
             System.out.printf("Using repositories: %s%n", opts.getRepos());
         }
-        final RepositoryManager repoman = CeylonUtils.repoManager().systemRepo(opts.getSystemRepo()).userRepos(opts.getRepos()).outRepo(opts.getOutDir()).buildManager();
+        final RepositoryManager repoman = CeylonUtils.repoManager()
+                .systemRepo(opts.getSystemRepo())
+                .userRepos(opts.getRepos()).outRepo(opts.getOutDir()).buildManager();
         final Set<String> onlyFiles = new HashSet<String>();
         long t0, t1, t2, t3, t4;
+        final TypeCheckerBuilder tcb;
         if (opts.isStdin()) {
             VirtualFile src = new VirtualFile() {
                 @Override
@@ -233,17 +242,11 @@ public class CeylonCompileJsTool implements Tool {
                 }
             };
             t0 = System.nanoTime();
-            TypeCheckerBuilder tcb = new TypeCheckerBuilder()
-                .verbose(opts.isVerbose())
+            tcb = new TypeCheckerBuilder()
                 .addSrcDirectory(src);
-            tcb.setRepositoryManager(repoman);
-            typeChecker = tcb.getTypeChecker();
-            t1=System.nanoTime();
         } else {
             t0=System.nanoTime();
-            TypeCheckerBuilder tcb = new TypeCheckerBuilder()
-                .verbose(opts.isVerbose());
-            tcb.setRepositoryManager(repoman);
+            tcb = new TypeCheckerBuilder();
             final List<File> roots = new ArrayList<File>(opts.getSrcDirs().size());
             for (String _srcdir : opts.getSrcDirs()) {
                 roots.add(new File(_srcdir));
@@ -353,10 +356,13 @@ public class CeylonCompileJsTool implements Tool {
             }
             tcb.statistics(opts.isProfile());
             tcb.moduleManagerFactory(new JsModuleManagerFactory());
-            typeChecker = tcb.getTypeChecker();
-            t1=System.nanoTime();
         }
         //getting the type checker does process all types in the source directory
+        tcb.verbose(opts.isVerbose()).setRepositoryManager(repoman);
+        tcb.usageWarnings(false);
+
+        typeChecker = tcb.getTypeChecker();
+        t1=System.nanoTime();
         typeChecker.process();
         
         t2=System.nanoTime();
