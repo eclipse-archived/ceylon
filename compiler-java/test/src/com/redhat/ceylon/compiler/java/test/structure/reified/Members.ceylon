@@ -17,6 +17,11 @@ shared void outerMethod(Object o){
     interface InnerInterface<Inner>{}
     if(is InnerClass<Integer> o){}
     if(is InnerInterface<Integer> o){}
+    class InnerClass2(){}
+}
+
+shared class OuterClass2(){
+    shared class InnerClass(){}
 }
 
 shared void testMembers(Object o){

@@ -11,7 +11,7 @@ public interface Interface<Key, Value> {
 @.com.redhat.ceylon.compiler.java.metadata.Ignore
 public final class Interface$impl<Key, Value> {
     
-    public Interface$impl(.com.redhat.ceylon.compiler.java.TypeDescriptor $reifiedKey, .com.redhat.ceylon.compiler.java.TypeDescriptor $reifiedValue, .com.redhat.ceylon.compiler.java.test.structure.reified.Interface<Key, Value> $this) {
+    public Interface$impl(final .com.redhat.ceylon.compiler.java.TypeDescriptor $reifiedKey, final .com.redhat.ceylon.compiler.java.TypeDescriptor $reifiedValue, .com.redhat.ceylon.compiler.java.test.structure.reified.Interface<Key, Value> $this) {
         this.$reifiedKey = $reifiedKey;
         this.$reifiedValue = $reifiedValue;
         this.$this = $this;
@@ -37,6 +37,8 @@ public interface SubInterface extends .com.redhat.ceylon.compiler.java.test.stru
     
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
     public .com.redhat.ceylon.compiler.java.test.structure.reified.SubInterface$impl $com$redhat$ceylon$compiler$java$test$structure$reified$SubInterface$impl();
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    public static final .com.redhat.ceylon.compiler.java.TypeDescriptor $TypeDescriptor = .com.redhat.ceylon.compiler.java.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.reified.SubInterface.class);
 }
 @.com.redhat.ceylon.compiler.java.metadata.Ignore
 public final class SubInterface$impl {
@@ -47,7 +49,7 @@ public final class SubInterface$impl {
     private final .com.redhat.ceylon.compiler.java.test.structure.reified.SubInterface $this;
     
     public boolean $is(.com.redhat.ceylon.compiler.java.TypeDescriptor type) {
-        if (.com.redhat.ceylon.compiler.java.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.reified.SubInterface.class).equals(type)) return true;
+        if (.com.redhat.ceylon.compiler.java.test.structure.reified.SubInterface.$TypeDescriptor.equals(type)) return true;
         if ($this.$com$redhat$ceylon$compiler$java$test$structure$reified$Interface$impl().$is(type)) return true;
         return false;
     }
@@ -60,8 +62,8 @@ public class Class<Key, Value> implements .com.redhat.ceylon.compiler.java.Reifi
     
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
     public Class(@.com.redhat.ceylon.compiler.java.metadata.Ignore
-    .com.redhat.ceylon.compiler.java.TypeDescriptor $reifiedKey, @.com.redhat.ceylon.compiler.java.metadata.Ignore
-    .com.redhat.ceylon.compiler.java.TypeDescriptor $reifiedValue) {
+    final .com.redhat.ceylon.compiler.java.TypeDescriptor $reifiedKey, @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    final .com.redhat.ceylon.compiler.java.TypeDescriptor $reifiedValue) {
         (
             let
             {
@@ -75,8 +77,8 @@ public class Class<Key, Value> implements .com.redhat.ceylon.compiler.java.Reifi
     
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
     public Class(@.com.redhat.ceylon.compiler.java.metadata.Ignore
-    .com.redhat.ceylon.compiler.java.TypeDescriptor $reifiedKey, @.com.redhat.ceylon.compiler.java.metadata.Ignore
-    .com.redhat.ceylon.compiler.java.TypeDescriptor $reifiedValue, final long a) {
+    final .com.redhat.ceylon.compiler.java.TypeDescriptor $reifiedKey, @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    final .com.redhat.ceylon.compiler.java.TypeDescriptor $reifiedValue, final long a) {
         (
             let
             {
@@ -98,22 +100,22 @@ public class Class<Key, Value> implements .com.redhat.ceylon.compiler.java.Reifi
     final long b) {
         this.$reifiedKey = $reifiedKey;
         this.$reifiedValue = $reifiedValue;
-        this.$com$redhat$ceylon$compiler$java$test$structure$reified$Interface$this = new .com.redhat.ceylon.compiler.java.test.structure.reified.Interface$impl<Key, .ceylon.language.Integer>($reifiedKey, .com.redhat.ceylon.compiler.java.TypeDescriptor.klass(.ceylon.language.Integer.class), this);
+        this.$com$redhat$ceylon$compiler$java$test$structure$reified$Interface$this = new .com.redhat.ceylon.compiler.java.test.structure.reified.Interface$impl<Key, .ceylon.language.Integer>($reifiedKey, .ceylon.language.Integer.$TypeDescriptor, this);
     }
     private final .com.redhat.ceylon.compiler.java.TypeDescriptor $reifiedKey;
     private final .com.redhat.ceylon.compiler.java.TypeDescriptor $reifiedValue;
     
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
     public static <Key, Value>long $init$a(@.com.redhat.ceylon.compiler.java.metadata.Ignore
-    .com.redhat.ceylon.compiler.java.TypeDescriptor $reifiedKey, @.com.redhat.ceylon.compiler.java.metadata.Ignore
-    .com.redhat.ceylon.compiler.java.TypeDescriptor $reifiedValue) {
+    final .com.redhat.ceylon.compiler.java.TypeDescriptor $reifiedKey, @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    final .com.redhat.ceylon.compiler.java.TypeDescriptor $reifiedValue) {
         return 2L;
     }
     
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
     public static <Key, Value>long $init$b(@.com.redhat.ceylon.compiler.java.metadata.Ignore
-    .com.redhat.ceylon.compiler.java.TypeDescriptor $reifiedKey, @.com.redhat.ceylon.compiler.java.metadata.Ignore
-    .com.redhat.ceylon.compiler.java.TypeDescriptor $reifiedValue, final long a) {
+    final .com.redhat.ceylon.compiler.java.TypeDescriptor $reifiedKey, @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    final .com.redhat.ceylon.compiler.java.TypeDescriptor $reifiedValue, final long a) {
         return 3L;
     }
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
@@ -147,7 +149,7 @@ public class SubClass<T> extends .com.redhat.ceylon.compiler.java.test.structure
     
     public SubClass(@.com.redhat.ceylon.compiler.java.metadata.Ignore
     .com.redhat.ceylon.compiler.java.TypeDescriptor $reifiedT) {
-        super($reifiedT, .com.redhat.ceylon.compiler.java.TypeDescriptor.klass(.ceylon.language.Integer.class));
+        super($reifiedT, .ceylon.language.Integer.$TypeDescriptor);
         this.$reifiedT = $reifiedT;
     }
     private final .com.redhat.ceylon.compiler.java.TypeDescriptor $reifiedT;
@@ -173,7 +175,7 @@ public class SubClass<T> extends .com.redhat.ceylon.compiler.java.test.structure
 public final class toplevelObject_ implements .com.redhat.ceylon.compiler.java.ReifiedType, .com.redhat.ceylon.compiler.java.test.structure.reified.Interface<.ceylon.language.String, .ceylon.language.Integer> {
     
     private toplevelObject_() {
-        this.$com$redhat$ceylon$compiler$java$test$structure$reified$Interface$this = new .com.redhat.ceylon.compiler.java.test.structure.reified.Interface$impl<.ceylon.language.String, .ceylon.language.Integer>(.com.redhat.ceylon.compiler.java.TypeDescriptor.klass(.ceylon.language.String.class), .com.redhat.ceylon.compiler.java.TypeDescriptor.klass(.ceylon.language.Integer.class), this);
+        this.$com$redhat$ceylon$compiler$java$test$structure$reified$Interface$this = new .com.redhat.ceylon.compiler.java.test.structure.reified.Interface$impl<.ceylon.language.String, .ceylon.language.Integer>(.ceylon.language.String.$TypeDescriptor, .ceylon.language.Integer.$TypeDescriptor, this);
     }
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
     protected final .com.redhat.ceylon.compiler.java.test.structure.reified.Interface$impl<.ceylon.language.String, .ceylon.language.Integer> $com$redhat$ceylon$compiler$java$test$structure$reified$Interface$this;
@@ -214,12 +216,12 @@ final class reifiedInstantiate_ {
     
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Anything")
     static void reifiedInstantiate() {
-        final .com.redhat.ceylon.compiler.java.test.structure.reified.Class<.ceylon.language.Integer, .ceylon.language.String> c = new .com.redhat.ceylon.compiler.java.test.structure.reified.Class<.ceylon.language.Integer, .ceylon.language.String>(.com.redhat.ceylon.compiler.java.TypeDescriptor.klass(.ceylon.language.Integer.class), .com.redhat.ceylon.compiler.java.TypeDescriptor.klass(.ceylon.language.String.class));
+        final .com.redhat.ceylon.compiler.java.test.structure.reified.Class<.ceylon.language.Integer, .ceylon.language.String> c = new .com.redhat.ceylon.compiler.java.test.structure.reified.Class<.ceylon.language.Integer, .ceylon.language.String>(.ceylon.language.Integer.$TypeDescriptor, .ceylon.language.String.$TypeDescriptor);
         final .com.redhat.ceylon.compiler.java.test.structure.reified.Class<.ceylon.language.Integer, .ceylon.language.String> c2 = (
             let
             {
-                .com.redhat.ceylon.compiler.java.TypeDescriptor $arg$5$reified$0 = .com.redhat.ceylon.compiler.java.TypeDescriptor.klass(.ceylon.language.Integer.class);
-                .com.redhat.ceylon.compiler.java.TypeDescriptor $arg$5$reified$1 = .com.redhat.ceylon.compiler.java.TypeDescriptor.klass(.ceylon.language.String.class);
+                .com.redhat.ceylon.compiler.java.TypeDescriptor $arg$5$reified$0 = .ceylon.language.Integer.$TypeDescriptor;
+                .com.redhat.ceylon.compiler.java.TypeDescriptor $arg$5$reified$1 = .ceylon.language.String.$TypeDescriptor;
                 long $arg$5$0 = .com.redhat.ceylon.compiler.java.test.structure.reified.Class.$init$a($arg$5$reified$0, $arg$5$reified$1);
                 long $arg$5$1 = .com.redhat.ceylon.compiler.java.test.structure.reified.Class.$init$b($arg$5$reified$0, $arg$5$reified$1, $arg$5$0);
             }
@@ -230,14 +232,14 @@ final class reifiedInstantiate_ {
             @.java.lang.Override
             @.com.redhat.ceylon.compiler.java.metadata.Ignore
             public .com.redhat.ceylon.compiler.java.test.structure.reified.Class<.ceylon.language.Integer, .ceylon.language.String> $call() {
-                return new .com.redhat.ceylon.compiler.java.test.structure.reified.Class<.ceylon.language.Integer, .ceylon.language.String>(.com.redhat.ceylon.compiler.java.TypeDescriptor.klass(.ceylon.language.Integer.class), .com.redhat.ceylon.compiler.java.TypeDescriptor.klass(.ceylon.language.String.class));
+                return new .com.redhat.ceylon.compiler.java.test.structure.reified.Class<.ceylon.language.Integer, .ceylon.language.String>(.ceylon.language.Integer.$TypeDescriptor, .ceylon.language.String.$TypeDescriptor);
             }
             
             @.java.lang.Override
             @.com.redhat.ceylon.compiler.java.metadata.Ignore
             public .com.redhat.ceylon.compiler.java.test.structure.reified.Class<.ceylon.language.Integer, .ceylon.language.String> $call(final .java.lang.Object $param$0) {
                 final long $$a = ((.ceylon.language.Integer)$param$0).longValue();
-                return new .com.redhat.ceylon.compiler.java.test.structure.reified.Class<.ceylon.language.Integer, .ceylon.language.String>(.com.redhat.ceylon.compiler.java.TypeDescriptor.klass(.ceylon.language.Integer.class), .com.redhat.ceylon.compiler.java.TypeDescriptor.klass(.ceylon.language.String.class), $$a);
+                return new .com.redhat.ceylon.compiler.java.test.structure.reified.Class<.ceylon.language.Integer, .ceylon.language.String>(.ceylon.language.Integer.$TypeDescriptor, .ceylon.language.String.$TypeDescriptor, $$a);
             }
             
             @.java.lang.Override
@@ -245,16 +247,16 @@ final class reifiedInstantiate_ {
             public .com.redhat.ceylon.compiler.java.test.structure.reified.Class<.ceylon.language.Integer, .ceylon.language.String> $call(final .java.lang.Object $param$0, final .java.lang.Object $param$1) {
                 final long $$a = ((.ceylon.language.Integer)$param$0).longValue();
                 final long $$b = ((.ceylon.language.Integer)$param$1).longValue();
-                return new .com.redhat.ceylon.compiler.java.test.structure.reified.Class<.ceylon.language.Integer, .ceylon.language.String>(.com.redhat.ceylon.compiler.java.TypeDescriptor.klass(.ceylon.language.Integer.class), .com.redhat.ceylon.compiler.java.TypeDescriptor.klass(.ceylon.language.String.class), $$a, $$b);
+                return new .com.redhat.ceylon.compiler.java.test.structure.reified.Class<.ceylon.language.Integer, .ceylon.language.String>(.ceylon.language.Integer.$TypeDescriptor, .ceylon.language.String.$TypeDescriptor, $$a, $$b);
             }
         };
-        final .com.redhat.ceylon.compiler.java.test.structure.reified.Class<.ceylon.language.Integer, .ceylon.language.String> c3 = constr.$call(.com.redhat.ceylon.compiler.java.TypeDescriptor.klass(.ceylon.language.Integer.class), .com.redhat.ceylon.compiler.java.TypeDescriptor.klass(.ceylon.language.Integer.class), .ceylon.language.Integer.instance(3L), .ceylon.language.Integer.instance(4L));
+        final .com.redhat.ceylon.compiler.java.test.structure.reified.Class<.ceylon.language.Integer, .ceylon.language.String> c3 = constr.$call(.ceylon.language.Integer.$TypeDescriptor, .ceylon.language.Integer.$TypeDescriptor, .ceylon.language.Integer.instance(3L), .ceylon.language.Integer.instance(4L));
         final .com.redhat.ceylon.compiler.java.test.structure.reified.Class<.ceylon.language.Integer, .ceylon.language.String> c4 = (
             let
             {
                 long $arg$6$1 = 5L;
-                .com.redhat.ceylon.compiler.java.TypeDescriptor $arg$6$reified$0 = .com.redhat.ceylon.compiler.java.TypeDescriptor.klass(.ceylon.language.Integer.class);
-                .com.redhat.ceylon.compiler.java.TypeDescriptor $arg$6$reified$1 = .com.redhat.ceylon.compiler.java.TypeDescriptor.klass(.ceylon.language.String.class);
+                .com.redhat.ceylon.compiler.java.TypeDescriptor $arg$6$reified$0 = .ceylon.language.Integer.$TypeDescriptor;
+                .com.redhat.ceylon.compiler.java.TypeDescriptor $arg$6$reified$1 = .ceylon.language.String.$TypeDescriptor;
                 long $arg$6$0 = .com.redhat.ceylon.compiler.java.test.structure.reified.Class.$init$a($arg$6$reified$0, $arg$6$reified$1);
             }
             returning new .com.redhat.ceylon.compiler.java.test.structure.reified.Class<.ceylon.language.Integer, .ceylon.language.String>($arg$6$reified$0, $arg$6$reified$1, $arg$6$0, $arg$6$1);

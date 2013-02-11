@@ -6,7 +6,7 @@ public interface TestInterface<Key, Value> {
 }
 public final class TestInterface$impl<Key, Value> {
     
-    public TestInterface$impl(.com.redhat.ceylon.compiler.java.TypeDescriptor $reifiedKey, .com.redhat.ceylon.compiler.java.TypeDescriptor $reifiedValue, .com.redhat.ceylon.compiler.java.test.structure.reified.TestInterface<Key, Value> $this) {
+    public TestInterface$impl(final .com.redhat.ceylon.compiler.java.TypeDescriptor $reifiedKey, final .com.redhat.ceylon.compiler.java.TypeDescriptor $reifiedValue, .com.redhat.ceylon.compiler.java.test.structure.reified.TestInterface<Key, Value> $this) {
         this.$reifiedKey = $reifiedKey;
         this.$reifiedValue = $reifiedValue;
         this.$this = $this;
@@ -30,7 +30,7 @@ public class TestClass<Key, Value> implements .com.redhat.ceylon.compiler.java.R
     public TestClass(.com.redhat.ceylon.compiler.java.TypeDescriptor $reifiedKey, .com.redhat.ceylon.compiler.java.TypeDescriptor $reifiedValue) {
         this.$reifiedKey = $reifiedKey;
         this.$reifiedValue = $reifiedValue;
-        this.$com$redhat$ceylon$compiler$java$test$structure$reified$TestInterface$this = new .com.redhat.ceylon.compiler.java.test.structure.reified.TestInterface$impl<Key, .ceylon.language.Integer>($reifiedKey, .com.redhat.ceylon.compiler.java.TypeDescriptor.klass(.ceylon.language.Integer.class), this);
+        this.$com$redhat$ceylon$compiler$java$test$structure$reified$TestInterface$this = new .com.redhat.ceylon.compiler.java.test.structure.reified.TestInterface$impl<Key, .ceylon.language.Integer>($reifiedKey, .ceylon.language.Integer.$TypeDescriptor, this);
     }
     private final .com.redhat.ceylon.compiler.java.TypeDescriptor $reifiedKey;
     private final .com.redhat.ceylon.compiler.java.TypeDescriptor $reifiedValue;
@@ -58,13 +58,13 @@ final class test_ {
     private test_() {
     }
     
-    static <Key, Value>void test(.com.redhat.ceylon.compiler.java.TypeDescriptor $reifiedKey, .com.redhat.ceylon.compiler.java.TypeDescriptor $reifiedValue, final .java.lang.Object obj) {
+    static <Key, Value>void test(final .com.redhat.ceylon.compiler.java.TypeDescriptor $reifiedKey, final .com.redhat.ceylon.compiler.java.TypeDescriptor $reifiedValue, final .java.lang.Object obj) {
         .java.lang.Object $obj$1;
-        if (.com.redhat.ceylon.compiler.java.Util.isReified($obj$1 = obj, .com.redhat.ceylon.compiler.java.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.reified.TestClass.class, .com.redhat.ceylon.compiler.java.TypeDescriptor.klass(.ceylon.language.String.class), .com.redhat.ceylon.compiler.java.TypeDescriptor.klass(.ceylon.language.Integer.class)))) {
+        if (.com.redhat.ceylon.compiler.java.Util.isReified($obj$1 = obj, .com.redhat.ceylon.compiler.java.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.reified.TestClass.class, .ceylon.language.String.$TypeDescriptor, .ceylon.language.Integer.$TypeDescriptor))) {
             final .com.redhat.ceylon.compiler.java.test.structure.reified.TestClass<.ceylon.language.String, .ceylon.language.Integer> $obj$2 = (.com.redhat.ceylon.compiler.java.test.structure.reified.TestClass)$obj$1;
         }
         .java.lang.Object $obj$4;
-        if (.com.redhat.ceylon.compiler.java.Util.isReified($obj$4 = obj, .com.redhat.ceylon.compiler.java.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.reified.TestInterface.class, .com.redhat.ceylon.compiler.java.TypeDescriptor.klass(.ceylon.language.String.class), $reifiedValue))) {
+        if (.com.redhat.ceylon.compiler.java.Util.isReified($obj$4 = obj, .com.redhat.ceylon.compiler.java.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.reified.TestInterface.class, .ceylon.language.String.$TypeDescriptor, $reifiedValue))) {
             final .com.redhat.ceylon.compiler.java.test.structure.reified.TestInterface<.ceylon.language.String, Value> $obj$5 = (.com.redhat.ceylon.compiler.java.test.structure.reified.TestInterface)$obj$4;
         }
         if (.com.redhat.ceylon.compiler.java.Util.isReified(obj, $reifiedKey)) {

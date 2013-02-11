@@ -47,7 +47,7 @@ public interface CeylonInterface<Element> extends .com.redhat.ceylon.compiler.ja
 @.com.redhat.ceylon.compiler.java.metadata.Ignore
 public final class CeylonInterface$impl<Element> {
     
-    public CeylonInterface$impl(.com.redhat.ceylon.compiler.java.TypeDescriptor $reifiedElement, .com.redhat.ceylon.compiler.java.test.structure.reified.CeylonInterface<Element> $this) {
+    public CeylonInterface$impl(final .com.redhat.ceylon.compiler.java.TypeDescriptor $reifiedElement, .com.redhat.ceylon.compiler.java.test.structure.reified.CeylonInterface<Element> $this) {
         this.$reifiedElement = $reifiedElement;
         this.$this = $this;
     }
@@ -73,7 +73,7 @@ final class reifiedInstantiateInterop_ {
     
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Anything")
     static void reifiedInstantiateInterop() {
-        final .com.redhat.ceylon.compiler.java.test.structure.reified.CeylonClass<.ceylon.language.Integer> c = new .com.redhat.ceylon.compiler.java.test.structure.reified.CeylonClass<.ceylon.language.Integer>(.com.redhat.ceylon.compiler.java.TypeDescriptor.klass(.ceylon.language.Integer.class));
+        final .com.redhat.ceylon.compiler.java.test.structure.reified.CeylonClass<.ceylon.language.Integer> c = new .com.redhat.ceylon.compiler.java.test.structure.reified.CeylonClass<.ceylon.language.Integer>(.ceylon.language.Integer.$TypeDescriptor);
         c.foo();
         c.foo();
         final .ceylon.language.Callable<? extends .java.lang.Object> f = new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.java.lang.Object>("Anything()"){

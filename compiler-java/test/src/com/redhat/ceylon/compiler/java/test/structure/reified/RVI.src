@@ -16,9 +16,11 @@ public class Top implements .com.redhat.ceylon.compiler.java.ReifiedType {
     @.java.lang.Override
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
     public boolean $is(.com.redhat.ceylon.compiler.java.TypeDescriptor type) {
-        if (.com.redhat.ceylon.compiler.java.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.reified.Top.class).equals(type)) return true;
+        if (.com.redhat.ceylon.compiler.java.test.structure.reified.Top.$TypeDescriptor.equals(type)) return true;
         return false;
     }
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    public static final .com.redhat.ceylon.compiler.java.TypeDescriptor $TypeDescriptor = .com.redhat.ceylon.compiler.java.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.reified.Top.class);
 }
 @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 4)
 @.com.redhat.ceylon.compiler.java.metadata.Class(extendsType = "com.redhat.ceylon.compiler.java.test.structure.reified::Top")
@@ -38,9 +40,11 @@ public class Bottom extends .com.redhat.ceylon.compiler.java.test.structure.reif
     @.java.lang.Override
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
     public boolean $is(.com.redhat.ceylon.compiler.java.TypeDescriptor type) {
-        if (.com.redhat.ceylon.compiler.java.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.reified.Bottom.class).equals(type)) return true;
+        if (.com.redhat.ceylon.compiler.java.test.structure.reified.Bottom.$TypeDescriptor.equals(type)) return true;
         return super.$is(type);
     }
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    public static final .com.redhat.ceylon.compiler.java.TypeDescriptor $TypeDescriptor = .com.redhat.ceylon.compiler.java.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.reified.Bottom.class);
 }
 @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 4)
 @.com.redhat.ceylon.compiler.java.metadata.Annotations({@.com.redhat.ceylon.compiler.java.metadata.Annotation("shared")})
@@ -53,7 +57,7 @@ public interface Interface<Key> {
 @.com.redhat.ceylon.compiler.java.metadata.Ignore
 public final class Interface$impl<Key> {
     
-    public Interface$impl(.com.redhat.ceylon.compiler.java.TypeDescriptor $reifiedKey, .com.redhat.ceylon.compiler.java.test.structure.reified.Interface<? extends Key> $this) {
+    public Interface$impl(final .com.redhat.ceylon.compiler.java.TypeDescriptor $reifiedKey, .com.redhat.ceylon.compiler.java.test.structure.reified.Interface<? extends Key> $this) {
         this.$reifiedKey = $reifiedKey;
         this.$this = $this;
     }
@@ -76,6 +80,8 @@ public interface SubInterface1 extends .com.redhat.ceylon.compiler.java.test.str
     
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
     public .com.redhat.ceylon.compiler.java.test.structure.reified.SubInterface1$impl $com$redhat$ceylon$compiler$java$test$structure$reified$SubInterface1$impl();
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    public static final .com.redhat.ceylon.compiler.java.TypeDescriptor $TypeDescriptor = .com.redhat.ceylon.compiler.java.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.reified.SubInterface1.class);
 }
 @.com.redhat.ceylon.compiler.java.metadata.Ignore
 public final class SubInterface1$impl {
@@ -86,7 +92,7 @@ public final class SubInterface1$impl {
     private final .com.redhat.ceylon.compiler.java.test.structure.reified.SubInterface1 $this;
     
     public boolean $is(.com.redhat.ceylon.compiler.java.TypeDescriptor type) {
-        if (.com.redhat.ceylon.compiler.java.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.reified.SubInterface1.class).equals(type)) return true;
+        if (.com.redhat.ceylon.compiler.java.test.structure.reified.SubInterface1.$TypeDescriptor.equals(type)) return true;
         if ($this.$com$redhat$ceylon$compiler$java$test$structure$reified$Interface$impl().$is(type)) return true;
         return false;
     }
@@ -98,6 +104,8 @@ public interface SubInterface2 extends .com.redhat.ceylon.compiler.java.test.str
     
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
     public .com.redhat.ceylon.compiler.java.test.structure.reified.SubInterface2$impl $com$redhat$ceylon$compiler$java$test$structure$reified$SubInterface2$impl();
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    public static final .com.redhat.ceylon.compiler.java.TypeDescriptor $TypeDescriptor = .com.redhat.ceylon.compiler.java.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.reified.SubInterface2.class);
 }
 @.com.redhat.ceylon.compiler.java.metadata.Ignore
 public final class SubInterface2$impl {
@@ -108,7 +116,7 @@ public final class SubInterface2$impl {
     private final .com.redhat.ceylon.compiler.java.test.structure.reified.SubInterface2 $this;
     
     public boolean $is(.com.redhat.ceylon.compiler.java.TypeDescriptor type) {
-        if (.com.redhat.ceylon.compiler.java.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.reified.SubInterface2.class).equals(type)) return true;
+        if (.com.redhat.ceylon.compiler.java.test.structure.reified.SubInterface2.$TypeDescriptor.equals(type)) return true;
         if ($this.$com$redhat$ceylon$compiler$java$test$structure$reified$Interface$impl().$is(type)) return true;
         return false;
     }
@@ -120,7 +128,7 @@ public class Class1 implements .com.redhat.ceylon.compiler.java.ReifiedType, .co
     
     public Class1() {
         this.$com$redhat$ceylon$compiler$java$test$structure$reified$SubInterface1$this = new .com.redhat.ceylon.compiler.java.test.structure.reified.SubInterface1$impl(this);
-        this.$com$redhat$ceylon$compiler$java$test$structure$reified$Interface$this = new .com.redhat.ceylon.compiler.java.test.structure.reified.Interface$impl<.com.redhat.ceylon.compiler.java.test.structure.reified.Top>(.com.redhat.ceylon.compiler.java.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.reified.Top.class), this);
+        this.$com$redhat$ceylon$compiler$java$test$structure$reified$Interface$this = new .com.redhat.ceylon.compiler.java.test.structure.reified.Interface$impl<.com.redhat.ceylon.compiler.java.test.structure.reified.Top>(.com.redhat.ceylon.compiler.java.test.structure.reified.Top.$TypeDescriptor, this);
     }
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
     protected final .com.redhat.ceylon.compiler.java.test.structure.reified.SubInterface1$impl $com$redhat$ceylon$compiler$java$test$structure$reified$SubInterface1$this;
@@ -148,10 +156,12 @@ public class Class1 implements .com.redhat.ceylon.compiler.java.ReifiedType, .co
     @.java.lang.Override
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
     public boolean $is(.com.redhat.ceylon.compiler.java.TypeDescriptor type) {
-        if (.com.redhat.ceylon.compiler.java.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.reified.Class1.class).equals(type)) return true;
+        if (.com.redhat.ceylon.compiler.java.test.structure.reified.Class1.$TypeDescriptor.equals(type)) return true;
         if ($com$redhat$ceylon$compiler$java$test$structure$reified$SubInterface1$this.$is(type)) return true;
         return false;
     }
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    public static final .com.redhat.ceylon.compiler.java.TypeDescriptor $TypeDescriptor = .com.redhat.ceylon.compiler.java.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.reified.Class1.class);
 }
 @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 4)
 @.com.redhat.ceylon.compiler.java.metadata.Class(extendsType = "com.redhat.ceylon.compiler.java.test.structure.reified::Class1")
@@ -162,7 +172,7 @@ public class Class2 extends .com.redhat.ceylon.compiler.java.test.structure.reif
     public Class2() {
         super();
         this.$com$redhat$ceylon$compiler$java$test$structure$reified$SubInterface2$this = new .com.redhat.ceylon.compiler.java.test.structure.reified.SubInterface2$impl(this);
-        $com$redhat$ceylon$compiler$java$test$structure$reified$Interface$this.$refine(.com.redhat.ceylon.compiler.java.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.reified.Bottom.class));
+        $com$redhat$ceylon$compiler$java$test$structure$reified$Interface$this.$refine(.com.redhat.ceylon.compiler.java.test.structure.reified.Bottom.$TypeDescriptor);
     }
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
     protected final .com.redhat.ceylon.compiler.java.test.structure.reified.SubInterface2$impl $com$redhat$ceylon$compiler$java$test$structure$reified$SubInterface2$this;
@@ -182,8 +192,10 @@ public class Class2 extends .com.redhat.ceylon.compiler.java.test.structure.reif
     @.java.lang.Override
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
     public boolean $is(.com.redhat.ceylon.compiler.java.TypeDescriptor type) {
-        if (.com.redhat.ceylon.compiler.java.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.reified.Class2.class).equals(type)) return true;
+        if (.com.redhat.ceylon.compiler.java.test.structure.reified.Class2.$TypeDescriptor.equals(type)) return true;
         if ($com$redhat$ceylon$compiler$java$test$structure$reified$SubInterface2$this.$is(type)) return true;
         return super.$is(type);
     }
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    public static final .com.redhat.ceylon.compiler.java.TypeDescriptor $TypeDescriptor = .com.redhat.ceylon.compiler.java.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.reified.Class2.class);
 }

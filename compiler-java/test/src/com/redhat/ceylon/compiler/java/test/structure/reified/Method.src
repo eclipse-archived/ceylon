@@ -13,7 +13,7 @@ public class MethodClass implements .com.redhat.ceylon.compiler.java.ReifiedType
                 return (
                     let
                     {
-                        <.ceylon.language.Integer>method(.com.redhat.ceylon.compiler.java.TypeDescriptor.klass(.ceylon.language.Integer.class));
+                        <.ceylon.language.Integer>method(.ceylon.language.Integer.$TypeDescriptor);
                     }
                     returning null;
                 );
@@ -25,9 +25,9 @@ public class MethodClass implements .com.redhat.ceylon.compiler.java.ReifiedType
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Anything")
     @.com.redhat.ceylon.compiler.java.metadata.TypeParameters({@.com.redhat.ceylon.compiler.java.metadata.TypeParameter(value = "T", variance = .com.redhat.ceylon.compiler.java.metadata.Variance.NONE, satisfies = {}, caseTypes = {})})
     public final <T>void method(@.com.redhat.ceylon.compiler.java.metadata.Ignore
-    .com.redhat.ceylon.compiler.java.TypeDescriptor $reifiedT) {
+    final .com.redhat.ceylon.compiler.java.TypeDescriptor $reifiedT) {
         <T>method($reifiedT);
-        <.ceylon.language.Integer>method(.com.redhat.ceylon.compiler.java.TypeDescriptor.klass(.ceylon.language.Integer.class));
+        <.ceylon.language.Integer>method(.ceylon.language.Integer.$TypeDescriptor);
         method(.com.redhat.ceylon.compiler.java.TypeDescriptor.BottomType);
     }
     private final .ceylon.language.Callable<? extends .java.lang.Object> methodSpec;
@@ -42,7 +42,7 @@ public class MethodClass implements .com.redhat.ceylon.compiler.java.ReifiedType
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Integer")
     @.com.redhat.ceylon.compiler.java.metadata.TypeParameters({@.com.redhat.ceylon.compiler.java.metadata.TypeParameter(value = "T", variance = .com.redhat.ceylon.compiler.java.metadata.Variance.NONE, satisfies = {}, caseTypes = {})})
     public final <T>long method2(@.com.redhat.ceylon.compiler.java.metadata.Ignore
-    .com.redhat.ceylon.compiler.java.TypeDescriptor $reifiedT) {
+    final .com.redhat.ceylon.compiler.java.TypeDescriptor $reifiedT) {
         return 2L;
     }
     
@@ -53,7 +53,7 @@ public class MethodClass implements .com.redhat.ceylon.compiler.java.ReifiedType
     
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
     public final <T>void methodWithOverloads(@.com.redhat.ceylon.compiler.java.metadata.Ignore
-    .com.redhat.ceylon.compiler.java.TypeDescriptor $reifiedT) {
+    final .com.redhat.ceylon.compiler.java.TypeDescriptor $reifiedT) {
         (
             let
             {
@@ -67,13 +67,13 @@ public class MethodClass implements .com.redhat.ceylon.compiler.java.ReifiedType
     
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
     public final <T>long methodWithOverloads$a(@.com.redhat.ceylon.compiler.java.metadata.Ignore
-    .com.redhat.ceylon.compiler.java.TypeDescriptor $reifiedT) {
+    final .com.redhat.ceylon.compiler.java.TypeDescriptor $reifiedT) {
         return 2L;
     }
     
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
     public final <T>void methodWithOverloads(@.com.redhat.ceylon.compiler.java.metadata.Ignore
-    .com.redhat.ceylon.compiler.java.TypeDescriptor $reifiedT, final long a) {
+    final .com.redhat.ceylon.compiler.java.TypeDescriptor $reifiedT, final long a) {
         (
             let
             {
@@ -86,7 +86,7 @@ public class MethodClass implements .com.redhat.ceylon.compiler.java.ReifiedType
     
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
     public final <T>long methodWithOverloads$b(@.com.redhat.ceylon.compiler.java.metadata.Ignore
-    .com.redhat.ceylon.compiler.java.TypeDescriptor $reifiedT, final long a) {
+    final .com.redhat.ceylon.compiler.java.TypeDescriptor $reifiedT, final long a) {
         return 3L;
     }
     
@@ -94,7 +94,7 @@ public class MethodClass implements .com.redhat.ceylon.compiler.java.ReifiedType
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Anything")
     @.com.redhat.ceylon.compiler.java.metadata.TypeParameters({@.com.redhat.ceylon.compiler.java.metadata.TypeParameter(value = "T", variance = .com.redhat.ceylon.compiler.java.metadata.Variance.NONE, satisfies = {}, caseTypes = {})})
     public final <T>void methodWithOverloads(@.com.redhat.ceylon.compiler.java.metadata.Ignore
-    .com.redhat.ceylon.compiler.java.TypeDescriptor $reifiedT, @.com.redhat.ceylon.compiler.java.metadata.Name("a")
+    final .com.redhat.ceylon.compiler.java.TypeDescriptor $reifiedT, @.com.redhat.ceylon.compiler.java.metadata.Name("a")
     @.com.redhat.ceylon.compiler.java.metadata.Defaulted
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Integer")
     final long a, @.com.redhat.ceylon.compiler.java.metadata.Name("b")
@@ -109,14 +109,14 @@ public class MethodClass implements .com.redhat.ceylon.compiler.java.ReifiedType
             let
             {
                 .com.redhat.ceylon.compiler.java.test.structure.reified.MethodClass $arg$5$this$ = this;
-                .com.redhat.ceylon.compiler.java.TypeDescriptor $arg$5$reified$0 = .com.redhat.ceylon.compiler.java.TypeDescriptor.klass(.ceylon.language.Integer.class);
+                .com.redhat.ceylon.compiler.java.TypeDescriptor $arg$5$reified$0 = .ceylon.language.Integer.$TypeDescriptor;
                 long $arg$5$0 = $arg$5$this$.methodWithOverloads$a($arg$5$reified$0);
                 long $arg$5$1 = $arg$5$this$.methodWithOverloads$b($arg$5$reified$0, $arg$5$0);
                 <.ceylon.language.Integer>methodWithOverloads($arg$5$reified$0, $arg$5$0, $arg$5$1);
             }
             returning null;
         );
-        <.ceylon.language.Integer>methodWithOverloads(.com.redhat.ceylon.compiler.java.TypeDescriptor.klass(.ceylon.language.Integer.class));
+        <.ceylon.language.Integer>methodWithOverloads(.ceylon.language.Integer.$TypeDescriptor);
         (
             let
             {
@@ -140,9 +140,11 @@ public class MethodClass implements .com.redhat.ceylon.compiler.java.ReifiedType
     @.java.lang.Override
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
     public boolean $is(.com.redhat.ceylon.compiler.java.TypeDescriptor type) {
-        if (.com.redhat.ceylon.compiler.java.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.reified.MethodClass.class).equals(type)) return true;
+        if (.com.redhat.ceylon.compiler.java.test.structure.reified.MethodClass.$TypeDescriptor.equals(type)) return true;
         return false;
     }
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    public static final .com.redhat.ceylon.compiler.java.TypeDescriptor $TypeDescriptor = .com.redhat.ceylon.compiler.java.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.reified.MethodClass.class);
 }
 @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 4)
 @.com.redhat.ceylon.compiler.java.metadata.Method
@@ -155,9 +157,9 @@ public final class method_ {
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Anything")
     @.com.redhat.ceylon.compiler.java.metadata.TypeParameters({@.com.redhat.ceylon.compiler.java.metadata.TypeParameter(value = "T", variance = .com.redhat.ceylon.compiler.java.metadata.Variance.NONE, satisfies = {}, caseTypes = {})})
     public static <T>void method(@.com.redhat.ceylon.compiler.java.metadata.Ignore
-    .com.redhat.ceylon.compiler.java.TypeDescriptor $reifiedT) {
+    final .com.redhat.ceylon.compiler.java.TypeDescriptor $reifiedT) {
         .com.redhat.ceylon.compiler.java.test.structure.reified.method_.<T>method($reifiedT);
-        .com.redhat.ceylon.compiler.java.test.structure.reified.method_.<.ceylon.language.Integer>method(.com.redhat.ceylon.compiler.java.TypeDescriptor.klass(.ceylon.language.Integer.class));
+        .com.redhat.ceylon.compiler.java.test.structure.reified.method_.<.ceylon.language.Integer>method(.ceylon.language.Integer.$TypeDescriptor);
         .com.redhat.ceylon.compiler.java.test.structure.reified.method_.method(.com.redhat.ceylon.compiler.java.TypeDescriptor.BottomType);
     }
     
