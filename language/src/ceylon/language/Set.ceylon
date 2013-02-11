@@ -1,5 +1,5 @@
 doc "A collection of unique elements.
-
+     
      A `Set` is a `Collection` of its elements.
      
      Sets may be the subject of the binary union, 

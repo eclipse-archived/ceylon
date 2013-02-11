@@ -4,7 +4,7 @@ doc "Represents a collection which maps _keys_ to _items_,
      
      A `Map` is a `Collection` of its `Entry`s, and a 
      `Correspondence` from keys to items.
-
+     
      The prescence of an entry in a map may be tested
      using the `in` operator:
      
