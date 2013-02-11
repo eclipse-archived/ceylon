@@ -146,7 +146,7 @@ public class MiscTest extends CompilerTest {
             fileManager.getJavaFileObjectsFromFiles(sourceFiles);
         String compilerSourcePath = ceylonSourcePath + File.pathSeparator + javaSourcePath;
         CeyloncTaskImpl task = (CeyloncTaskImpl) compiler.getTask(null, fileManager, null, 
-                Arrays.asList("-sourcepath", compilerSourcePath, "-d", "build/classes-runtime", "-Xbootstrapceylon"/*, "-verbose", "-Xceylonallowduplicates"*/), 
+                Arrays.asList("-sourcepath", compilerSourcePath, "-d", "build/classes-runtime", "-Xbootstrapceylon"/*, "-verbose"*/), 
                 null, compilationUnits1);
         Boolean result = task.call();
         Assert.assertEquals("Compilation failed", Boolean.TRUE, result);
