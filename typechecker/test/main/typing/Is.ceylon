@@ -187,11 +187,11 @@ class Is() {
         if (!is Finished t = next) {
             T tt = t;
         }
-        @error if (!is T next) {
-            //Finished f = next;
+        if (!is T next) {
+            Finished f = next;
         }
-        @error if (!is T t = next) {
-            //Finished f = t;
+        if (!is T t = next) {
+            Finished f = t;
         }
     }
 }

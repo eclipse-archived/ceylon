@@ -339,16 +339,7 @@ public class ExpressionVisitor extends Visitor {
             ProducedType it;
             if (that.getNot()) {
                 //a !is condition, narrow to complement
-                if (type.getDeclaration() instanceof ClassOrInterface &&
-                        !type.getDeclaration().isParameterized()) {
-                    //TODO: see comment in ProducedType - minus() is not robust 
-                    it = knownType.minus(type);
-                }
-                else {
-                    //TODO: improve implementation of minus(), and relax this
-                    that.addError("type specified in negated assignability condition must be an unparameterized class or interface types");
-                    it = knownType;
-                }
+                it = knownType.minus(type);
             }
             else {
                 //narrow to the intersection of the outer type 
@@ -4370,7 +4361,7 @@ public class ExpressionVisitor extends Visitor {
         if (ci instanceof Tree.IsCase) {
             Tree.Type t = ((Tree.IsCase) ci).getType();
             if (t!=null) {
-                return t.getTypeModel().getUnionOfCases(true);
+                return t.getTypeModel().getUnionOfCases();
             }
             else {
                 return null;

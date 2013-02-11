@@ -57,6 +57,9 @@ void ij<T>(T k) given T of I|J {
     switch (k)
     case (is I) {}
     else {}
+    if (!is I k) {
+        @type:"J" value kk=k;
+    }
 }
 
 void testij() {
@@ -135,6 +138,10 @@ void switchit(XXX<String> x) {
     }
     case (is WWW) {
         print("www");
+    }
+    
+    if (!is YYY<String> x) {
+        @type:"ZZZ<String>|WWW" value xx = x;
     }
 }
 

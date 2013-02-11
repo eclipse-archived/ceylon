@@ -317,25 +317,28 @@ public class ProducedType extends ProducedReference {
     public ProducedType minus(ProducedType pt) {
         //canonicalize and then remove the type
         //from the resulting union
-        return resolveAliases().minusInternal(pt);
+        return resolveAliases().minusInternal(pt.resolveAliases());
     }
 
     private ProducedType minusInternal(ProducedType pt) {
         Unit unit = getDeclaration().getUnit();
-        if (isSubtypeOf(pt)) {
+        if (pt.coversInternal(this)) { //note: coversInternal() already calls getUnionOfCases()
             return unit.getNothingDeclaration().getType();
         }
-        else if (getDeclaration() instanceof UnionType) {
-            List<ProducedType> types = new ArrayList<ProducedType>();
-            for (ProducedType ct: getCaseTypes()) {
-                addToUnion(types, ct.minus(pt));
-            }
-            UnionType ut = new UnionType(unit);
-            ut.setCaseTypes(types);
-            return ut.getType();
-        }
         else {
-            return this;
+            ProducedType ucts = getUnionOfCases();
+            if (ucts.getDeclaration() instanceof UnionType) {
+                List<ProducedType> types = new ArrayList<ProducedType>();
+                for (ProducedType ct: ucts.getCaseTypes()) {
+                    addToUnion(types, ct.minus(pt));
+                }
+                UnionType ut = new UnionType(unit);
+                ut.setCaseTypes(types);
+                return ut.getType();
+            }
+            else {
+                return this;
+            }
         }
     }
 
@@ -1268,7 +1271,7 @@ public class ProducedType extends ProducedReference {
      * Form a union type of all cases of the type, 
      * recursively reducing cases to their cases
      */
-    public ProducedType getUnionOfCases(boolean typeParams) {
+    public ProducedType getUnionOfCases() {
         TypeDeclaration sdt = getDeclaration();
         Unit unit = getDeclaration().getUnit();
         //if X is an intersection type A&B, and A is an
@@ -1278,7 +1281,7 @@ public class ProducedType extends ProducedReference {
         if (sdt instanceof IntersectionType) {
             List<ProducedType> list = new ArrayList<ProducedType>();
             for (ProducedType st: sdt.getSatisfiedTypes()) {
-                addToIntersection(list, st.getUnionOfCases(typeParams)
+                addToIntersection(list, st.getUnionOfCases()
                         .substitute(getTypeArguments()), 
                         unit); //argument substitution is unnecessary
             }
@@ -1304,9 +1307,9 @@ public class ProducedType extends ProducedReference {
         else if (sdt.getCaseTypes()==null) {
             return this;
         }
-        else if (sdt instanceof TypeParameter && !typeParams) {
-            return this;
-        }
+//        else if (sdt instanceof TypeParameter && !typeParams) {
+//            return this;
+//        }
         //otherwise, if X is a union A|B, or an enumerated 
         //type, with cases A and B, and A is an enumerated 
         //type with cases U and V, ten the cases of X are
@@ -1316,7 +1319,7 @@ public class ProducedType extends ProducedReference {
             List<ProducedType> list = new ArrayList<ProducedType>();
             for (ProducedType ct: sdt.getCaseTypes()) {
                 addToUnion(list, ct.substitute(getTypeArguments())
-                        .getUnionOfCases(typeParams)); //note recursion
+                        .getUnionOfCases()); //note recursion
             }
             UnionType ut = new UnionType(unit);
             ut.setCaseTypes(list);
@@ -1335,17 +1338,17 @@ public class ProducedType extends ProducedReference {
         return underlyingType;
     }
     
+    /**
+     * Does this type cover the given type?
+     */
     public boolean covers(ProducedType st) {
     	return resolveAliases().coversInternal(st.resolveAliases());
     }
     
-    /**
-     * Does type covers the given type?
-     */
     public boolean coversInternal(ProducedType st) {
         //X covers Y if the union of cases of Y is 
         //a subtype of X
-        if (st.getUnionOfCases(true).isSubtypeOf(this)) {
+        if (st.getUnionOfCases().isSubtypeOf(this)) {
             return true;
         }
         else {
@@ -1360,10 +1363,10 @@ public class ProducedType extends ProducedReference {
                     return true;
                 }
             }
-            //X covers Y if Y is a union type A|B|C and X 
-            //covers all of A, B, and C
-            //NOTE: we don't apply the same rule for enumerated
-            //      types because of decidability problems
+            //X covers Y if Y is a union type A|B|C and X covers all 
+            //of A, B, and C
+            //NOTE: we don't apply the same rule for enumerated types
+            //      because that leads to decidability problems
             if (st.getDeclaration() instanceof UnionType) {
                 for (ProducedType pt: st.getDeclaration().getCaseTypes()) {
                     if (!covers(pt.substituteInternal(st.getTypeArguments()))) {
