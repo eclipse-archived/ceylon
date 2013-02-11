@@ -17,6 +17,8 @@ import ceylon.language.Map;
 import ceylon.language.Sequence;
 import ceylon.language.Sequential;
 
+import com.redhat.ceylon.compiler.java.ReifiedType;
+import com.redhat.ceylon.compiler.java.TypeDescriptor;
 import com.redhat.ceylon.compiler.java.metadata.Ignore;
 import com.redhat.ceylon.compiler.java.metadata.Name;
 import com.redhat.ceylon.compiler.java.metadata.Sequenced;
@@ -26,20 +28,25 @@ import com.redhat.ceylon.compiler.java.metadata.TypeInfo;
  * 
  * @author Enrique Zamudio
  */
-public class MapIterable<Element, Result> implements Iterable<Result,java.lang.Object> {
+public class MapIterable<Element, Result> implements Iterable<Result,java.lang.Object>, ReifiedType {
     private final ceylon.language.Iterable$impl<Result,java.lang.Object> $ceylon$language$Iterable$this;
     private final ceylon.language.Container$impl<Result,java.lang.Object> $ceylon$language$Container$this;
     private final ceylon.language.Category$impl $ceylon$language$Category$this;
     
     final Iterable<? extends Element, ? extends java.lang.Object> iterable;
     final Callable<? extends Result> sel;
+    private TypeDescriptor $reifiedResult;
+    private TypeDescriptor $reifiedElement;
     
-    public MapIterable(Iterable<? extends Element, ? extends java.lang.Object> iterable, Callable<? extends Result> collecting) {
-        this.$ceylon$language$Iterable$this = new ceylon.language.Iterable$impl<Result,java.lang.Object>(this);
-        this.$ceylon$language$Container$this = new ceylon.language.Container$impl<Result,java.lang.Object>(this);
+    public MapIterable(@Ignore TypeDescriptor $reifiedElement, @Ignore TypeDescriptor $reifiedResult,
+            Iterable<? extends Element, ? extends java.lang.Object> iterable, Callable<? extends Result> collecting) {
+        this.$ceylon$language$Iterable$this = new ceylon.language.Iterable$impl<Result,java.lang.Object>($reifiedResult, Null.$TypeDescriptor, this);
+        this.$ceylon$language$Container$this = new ceylon.language.Container$impl<Result,java.lang.Object>($reifiedResult, Null.$TypeDescriptor, this);
         this.$ceylon$language$Category$this = new ceylon.language.Category$impl(this);
         this.iterable = iterable;
         this.sel = collecting;
+        this.$reifiedElement = $reifiedElement;
+        this.$reifiedResult = $reifiedResult;
     }
 
     @Ignore
@@ -61,6 +68,10 @@ public class MapIterable<Element, Result> implements Iterable<Result,java.lang.O
     }
 
     class MapIterator extends AbstractIterator<Result> {
+        public MapIterator() {
+            super($reifiedResult);
+        }
+
         final Iterator<? extends Element> orig = iterable.getIterator();
         java.lang.Object elem;
         
@@ -70,6 +81,11 @@ public class MapIterable<Element, Result> implements Iterable<Result,java.lang.O
                 return sel.$call(elem);
             }
             return elem;
+        }
+        @Override
+        public boolean $is(TypeDescriptor type) {
+            // FIXME: implement me
+            throw new RuntimeException("Not implemented");
         }
     }
     public Iterator<? extends Result> getIterator() { return new MapIterator(); }
@@ -116,8 +132,8 @@ public class MapIterable<Element, Result> implements Iterable<Result,java.lang.O
         return $ceylon$language$Iterable$this.sort(f);
     }
     @Override @Ignore
-    public <R2> Sequential<? extends R2> collect(Callable<? extends R2> f) {
-        return $ceylon$language$Iterable$this.collect(f);
+    public <R2> Sequential<? extends R2> collect(@Ignore TypeDescriptor $reifiedR2, Callable<? extends R2> f) {
+        return $ceylon$language$Iterable$this.collect($reifiedR2, f);
     }
     @Override @Ignore
     public Sequential<? extends Result> select(Callable<? extends Boolean> f) {
@@ -125,18 +141,18 @@ public class MapIterable<Element, Result> implements Iterable<Result,java.lang.O
     }
     @Override
     @Ignore
-    public <R2> Iterable<R2, ? extends java.lang.Object> map(Callable<? extends R2> f) {
-        return new MapIterable<Result, R2>(this, f);
+    public <R2> Iterable<R2, ? extends java.lang.Object> map(@Ignore TypeDescriptor $reifiedR2, Callable<? extends R2> f) {
+        return new MapIterable<Result, R2>($reifiedResult, $reifiedR2, this, f);
     }
     @Override
     @Ignore
     public Iterable<? extends Result, ? extends java.lang.Object> filter(Callable<? extends Boolean> f) {
-        return new FilterIterable<Result,java.lang.Object>(this, f);
+        return new FilterIterable<Result,java.lang.Object>($reifiedResult, Null.$TypeDescriptor, this, f);
     }
     @Override
     @Ignore
-    public <R2> R2 fold(R2 ini, Callable<? extends R2> f) {
-        return (R2) $ceylon$language$Iterable$this.fold(ini, f);
+    public <R2> R2 fold(@Ignore TypeDescriptor $reifiedR2, R2 ini, Callable<? extends R2> f) {
+        return (R2) $ceylon$language$Iterable$this.fold($reifiedR2, ini, f);
     }
     @Override @Ignore
     public boolean any(Callable<? extends Boolean> f) {
@@ -171,12 +187,12 @@ public class MapIterable<Element, Result> implements Iterable<Result,java.lang.O
         return $ceylon$language$Iterable$this.getIndexed();
     }
     @SuppressWarnings("rawtypes") @Override @Ignore
-    public <Other> Iterable chain(Iterable<? extends Other, ?> other) {
-        return $ceylon$language$Iterable$this.chain(other);
+    public <Other> Iterable chain(@Ignore TypeDescriptor $reifiedOther, Iterable<? extends Other, ?> other) {
+        return $ceylon$language$Iterable$this.chain($reifiedOther, other);
     }
     @Override @Ignore
-    public <Default>Iterable<?,?> defaultNullElements(Default defaultValue) {
-        return $ceylon$language$Iterable$this.defaultNullElements(defaultValue);
+    public <Default>Iterable<?,?> defaultNullElements(@Ignore TypeDescriptor $reifiedDefault, Default defaultValue) {
+        return $ceylon$language$Iterable$this.defaultNullElements($reifiedDefault, defaultValue);
     }
     /*@Override @Ignore
     public <Key> Map<? extends Key, ? extends Sequence<? extends Result>> group(Callable<? extends Key> grouping) {
@@ -210,4 +226,9 @@ public class MapIterable<Element, Result> implements Iterable<Result,java.lang.O
 //    public Sequential<?> containsAny$elements() {
 //        return $ceylon$language$Category$this.containsAny$elements();
 //    }
+    @Override
+    public boolean $is(TypeDescriptor type) {
+        // FIXME: implement me
+        throw new RuntimeException("Not implemented");
+    }
 }

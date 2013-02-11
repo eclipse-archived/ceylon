@@ -21,7 +21,7 @@ public final class Float
     implements Scalar<Float>, Exponentiable<Float,Float> {
     
     @Ignore
-    public final static TypeDescriptor TYPE_DESCRIPTOR = TypeDescriptor.klass(Float.class);
+    public final static TypeDescriptor $TypeDescriptor = TypeDescriptor.klass(Float.class);
 
     final double value;
     

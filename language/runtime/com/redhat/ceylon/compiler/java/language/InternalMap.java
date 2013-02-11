@@ -20,11 +20,14 @@ import ceylon.language.List;
 import ceylon.language.List$impl;
 import ceylon.language.Map;
 import ceylon.language.Map$impl;
+import ceylon.language.Null;
 import ceylon.language.Ranged$impl;
 import ceylon.language.Sequence;
 import ceylon.language.Sequential;
 import ceylon.language.Set;
 
+import com.redhat.ceylon.compiler.java.ReifiedType;
+import com.redhat.ceylon.compiler.java.TypeDescriptor;
 import com.redhat.ceylon.compiler.java.metadata.Annotation;
 import com.redhat.ceylon.compiler.java.metadata.Annotations;
 import com.redhat.ceylon.compiler.java.metadata.Ignore;
@@ -37,7 +40,7 @@ import com.redhat.ceylon.compiler.java.metadata.TypeParameters;
  * 
  * @author Enrique Zamudio
  */
-public class InternalMap<Key, Item> implements Map<Key, Item> {
+public class InternalMap<Key, Item> implements Map<Key, Item>, ReifiedType {
 
     private final java.util.Map<? extends Key, ? extends Item> m;
 
@@ -49,16 +52,23 @@ public class InternalMap<Key, Item> implements Map<Key, Item> {
     private final ceylon.language.Collection$impl<Entry<? extends Key,? extends Item>> $ceylon$language$Collection$this;
     private final ceylon.language.Cloneable$impl $ceylon$language$Cloneable$this;
 
-    public InternalMap(final java.util.Map<? extends Key, ? extends Item> map) {
+    private TypeDescriptor $reifiedItem;
+
+    private TypeDescriptor $reifiedKey;
+
+    public InternalMap(@Ignore TypeDescriptor $reifiedKey, @Ignore TypeDescriptor $reifiedItem,
+            final java.util.Map<? extends Key, ? extends Item> map) {
         this.$ceylon$language$Category$this = new ceylon.language.Category$impl(this);
-        this.$ceylon$language$Container$this = new ceylon.language.Container$impl<Entry<? extends Key,? extends Item>,java.lang.Object>(this);;
-        this.$ceylon$language$Iterable$this = new ceylon.language.Iterable$impl<Entry<? extends Key,? extends Item>,java.lang.Object>(this);
-        this.$ceylon$language$Correspondence$this = new ceylon.language.Correspondence$impl<java.lang.Object, Item>(this);
-        this.$ceylon$language$Map$this = new ceylon.language.Map$impl<Key, Item>(this);
-        this.$ceylon$language$Collection$this = new ceylon.language.Collection$impl<Entry<? extends Key,? extends Item>>(this);
-        this.$ceylon$language$Cloneable$this = new ceylon.language.Cloneable$impl((Map)this);
+        this.$ceylon$language$Container$this = new ceylon.language.Container$impl<Entry<? extends Key,? extends Item>,java.lang.Object>(TypeDescriptor.klass(Entry.class, $reifiedKey, $reifiedItem), Null.$TypeDescriptor, this);
+        this.$ceylon$language$Iterable$this = new ceylon.language.Iterable$impl<Entry<? extends Key,? extends Item>,java.lang.Object>(TypeDescriptor.klass(Entry.class, $reifiedKey, $reifiedItem), Null.$TypeDescriptor, this);
+        this.$ceylon$language$Correspondence$this = new ceylon.language.Correspondence$impl<java.lang.Object, Item>(ceylon.language.Object.$TypeDescriptor, $reifiedItem, this);
+        this.$ceylon$language$Map$this = new ceylon.language.Map$impl<Key, Item>($reifiedKey, $reifiedItem, this);
+        this.$ceylon$language$Collection$this = new ceylon.language.Collection$impl<Entry<? extends Key,? extends Item>>(TypeDescriptor.klass(Entry.class, $reifiedKey, $reifiedItem), this);
+        this.$ceylon$language$Cloneable$this = new ceylon.language.Cloneable$impl(TypeDescriptor.klass(Map.class, $reifiedKey, $reifiedItem), (Map)this);
 
         this.m = map;
+        this.$reifiedKey = $reifiedKey;
+        this.$reifiedItem = $reifiedItem;
     }
 
 
@@ -188,7 +198,7 @@ public class InternalMap<Key, Item> implements Map<Key, Item> {
     @Annotations(@Annotation("formal"))
     @TypeInfo("ceylon.language::Iterator<Element>")
     public Iterator<? extends Entry<? extends Key, ? extends Item>> getIterator() {
-        return new AbstractIterator<Entry<? extends Key, ? extends Item>>(){
+        return new AbstractIterator<Entry<? extends Key, ? extends Item>>(TypeDescriptor.klass(Entry.class, $reifiedKey, $reifiedItem)){
             private final java.util.Iterator<? extends java.util.Map.Entry<? extends Key, ? extends Item>> inner = m.entrySet().iterator();
             
             @Override
@@ -197,9 +207,14 @@ public class InternalMap<Key, Item> implements Map<Key, Item> {
             public Object next() {
                 if (inner.hasNext()) {
                     java.util.Map.Entry<? extends Key, ? extends Item> e = inner.next();
-                    return new ceylon.language.Entry<Key, Item>(e.getKey(), e.getValue());
+                    return new ceylon.language.Entry<Key, Item>($reifiedKey, $reifiedItem, e.getKey(), e.getValue());
                 }
                 return ceylon.language.finished_.getFinished$();
+            }
+            @Override
+            public boolean $is(TypeDescriptor type) {
+                // FIXME: implement me
+                throw new RuntimeException("Not implemented");
             }
         };
     }
@@ -236,9 +251,9 @@ public class InternalMap<Key, Item> implements Map<Key, Item> {
     @Annotations(@Annotation("default"))
     @TypeInfo("ceylon.language::Iterable<Result>")
     @TypeParameters(@TypeParameter("Result"))
-    public <Result> Iterable<? extends Result, ?> map(
+    public <Result> Iterable<? extends Result, ?> map(@Ignore TypeDescriptor $reifiedResult,
             Callable<? extends Result> collecting) {
-        return $ceylon$language$Iterable$this.map(collecting);
+        return $ceylon$language$Iterable$this.map($reifiedResult, collecting);
     }
 
     @Override
@@ -253,9 +268,10 @@ public class InternalMap<Key, Item> implements Map<Key, Item> {
     @Annotations(@Annotation("default"))
     @TypeInfo("Result")
     @TypeParameters(@TypeParameter("Result"))
-    public <Result> Result fold(Result initial,
+    public <Result> Result fold(@Ignore TypeDescriptor $reifiedResult,
+            Result initial,
             Callable<? extends Result> accumulating) {
-        return $ceylon$language$Iterable$this.fold(initial, accumulating);
+        return $ceylon$language$Iterable$this.fold($reifiedResult, initial, accumulating);
     }
 
     @Override
@@ -287,8 +303,9 @@ public class InternalMap<Key, Item> implements Map<Key, Item> {
     @TypeInfo("ceylon.language::Sequential<Result>")
     @TypeParameters(@TypeParameter("Result"))
     public <Result> Sequential<? extends Result> collect(
+            @Ignore TypeDescriptor $reifiedResult,
             Callable<? extends Result> collecting) {
-        return $ceylon$language$Iterable$this.collect(collecting);
+        return $ceylon$language$Iterable$this.collect($reifiedResult, collecting);
     }
 
     @Override
@@ -361,12 +378,12 @@ public class InternalMap<Key, Item> implements Map<Key, Item> {
     @Annotations(@Annotation("default"))
     @TypeInfo("ceylon.language::Iterable<Element|Other>")
     @TypeParameters(@TypeParameter("Other"))
-    public <Other> Iterable chain(Iterable<? extends Other, ? extends java.lang.Object> other) {
-        return $ceylon$language$Iterable$this.chain(other);
+    public <Other> Iterable chain(@Ignore TypeDescriptor $reifiedOther, Iterable<? extends Other, ? extends java.lang.Object> other) {
+        return $ceylon$language$Iterable$this.chain($reifiedOther, other);
     }
     @Override @Ignore
-    public <Default>Iterable<?,?> defaultNullElements(Default defaultValue) {
-        return $ceylon$language$Iterable$this.defaultNullElements(defaultValue);
+    public <Default>Iterable<?,?> defaultNullElements(@Ignore TypeDescriptor $reifiedDefault, Default defaultValue) {
+        return $ceylon$language$Iterable$this.defaultNullElements($reifiedDefault, defaultValue);
     }
     /*@Override @Ignore
     public <Key2> Map<? extends Key2, ? extends Sequence<? extends Entry<? extends Key, ? extends Item>>> group(Callable<? extends Key2> grouping) {
@@ -418,7 +435,7 @@ public class InternalMap<Key, Item> implements Map<Key, Item> {
     @Override
     @Annotations(@Annotation("formal"))
     public InternalMap<? extends Key, ? extends Item> getClone() {
-        return new InternalMap<Key,Item>(java.util.Collections.unmodifiableMap(m));
+        return new InternalMap<Key,Item>($reifiedKey, $reifiedItem, java.util.Collections.unmodifiableMap(m));
     }
 
     @Override
@@ -447,14 +464,14 @@ public class InternalMap<Key, Item> implements Map<Key, Item> {
     @TypeInfo("ceylon.language::Map<Key,Result>")
     @TypeParameters(@TypeParameter(value="Result", satisfies="ceylon.language::Object"))
     public <Result> Map<? extends Key, ? extends Result> mapItems(
+            @Ignore TypeDescriptor $reifiedResult,
             Callable<? extends Result> mapping) {
-        return $ceylon$language$Map$this.mapItems(mapping);
+        return $ceylon$language$Map$this.mapItems($reifiedResult, mapping);
     }
 
-//    @Override
-//    @Ignore
-//    public Correspondence$impl<java.lang.Object, ? extends Item> $ceylon$language$Correspondence$impl() {
-//        return corr$impl;
-//    }
-
+    @Override
+    public boolean $is(TypeDescriptor type) {
+        // FIXME: implement me
+        throw new RuntimeException("Not implemented");
+    }
 }

@@ -1,6 +1,8 @@
 package ceylon.language;
 
+import com.redhat.ceylon.compiler.java.TypeDescriptor;
 import com.redhat.ceylon.compiler.java.metadata.Ceylon;
+import com.redhat.ceylon.compiler.java.metadata.Ignore;
 import com.redhat.ceylon.compiler.java.metadata.Method;
 import com.redhat.ceylon.compiler.java.metadata.Name;
 import com.redhat.ceylon.compiler.java.metadata.TypeInfo;
@@ -17,6 +19,8 @@ public final class unflatten_ {
                      @TypeParameter(value="Args", satisfies="ceylon.language::Sequential<ceylon.language::Anything>")})
     @TypeInfo("ceylon.language::Callable<Return,ceylon.language::Tuple<Args,Args,Empty>>")
     public static <Return,Args> Callable<Return> unflatten(
+        @Ignore TypeDescriptor $reifiedReturn,
+        @Ignore TypeDescriptor $reifiedArgs,
         @Name("flatFunction")
         @TypeInfo("ceylon.language::Callable<Return,Args>")
         final Callable<? extends Return> flatFunction) {

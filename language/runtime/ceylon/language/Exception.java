@@ -1,5 +1,6 @@
 package ceylon.language;
 
+import com.redhat.ceylon.compiler.java.ReifiedType;
 import com.redhat.ceylon.compiler.java.TypeDescriptor;
 import com.redhat.ceylon.compiler.java.metadata.Ceylon;
 import com.redhat.ceylon.compiler.java.metadata.Class;
@@ -10,10 +11,10 @@ import com.redhat.ceylon.compiler.java.metadata.TypeInfo;
 
 @Ceylon(major = 4)
 @Class(extendsType = "ceylon.language::Basic")
-public class Exception extends RuntimeException {
+public class Exception extends RuntimeException implements ReifiedType {
 
     @Ignore
-    public final static TypeDescriptor TYPE_DESCRIPTOR = TypeDescriptor.klass(Exception.class);
+    public final static TypeDescriptor $TypeDescriptor = TypeDescriptor.klass(Exception.class);
 
 	private static final long serialVersionUID = -1790691559137471641L;
 
@@ -77,5 +78,11 @@ public class Exception extends RuntimeException {
     @Ignore
     public static Throwable $init$cause(String description){
         return null;
+    }
+
+    @Override
+    public boolean $is(TypeDescriptor type) {
+        // FIXME: implement me
+        throw new RuntimeException("Not implemented");
     }
 }

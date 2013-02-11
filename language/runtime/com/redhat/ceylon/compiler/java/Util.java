@@ -567,11 +567,11 @@ public class Util {
      * @param elements The elements
      * @return A Sequential
      */
-    public static <T> Sequential<T> sequentialInstance(T[] elements) {
+    public static <T> Sequential<T> sequentialInstance(TypeDescriptor $reifiedT, T[] elements) {
         if (elements.length == 0) {
             return (Sequential)empty_.getEmpty$();
         }
-        return new ArraySequence<T>(elements);
+        return new ArraySequence<T>($reifiedT, elements);
     }
 
     /**
@@ -582,7 +582,7 @@ public class Util {
      * @param elements the elements at the start of the sequence
      * @return A Sequential
      */
-    public static <T> Sequential<? extends T> sequentialInstance(Sequential<? extends T> rest, T... elements) {
+    public static <T> Sequential<? extends T> sequentialInstance(TypeDescriptor $reifiedT, Sequential<? extends T> rest, T... elements) {
         if (elements.length == 0){
             if(rest.getEmpty()) {
                 return (Sequential)empty_.getEmpty$();
@@ -591,7 +591,7 @@ public class Util {
         }
         // elements is not empty
         if(rest.getEmpty())
-            return new ArraySequence<T>(elements);
+            return new ArraySequence<T>($reifiedT, elements);
         // we have both, let's find the total size
         int total = (int) (rest.getSize() + elements.length);
         T[] newArray = (T[]) new Object[total];
@@ -601,7 +601,7 @@ public class Util {
         for(Object elem; (elem = iterator.next()) != finished_.getFinished$(); i++){
             newArray[i] = (T) elem;
         }
-        return new ArraySequence<T>(newArray);
+        return new ArraySequence<T>($reifiedT, newArray);
     }
     
     /**
@@ -611,17 +611,17 @@ public class Util {
      * @param length The size of the Range to create
      * @return A range
      */
-    public static <T extends ceylon.language.Ordinal<? extends T>> Sequential<T> spreadOp(T start, long length) {
+    public static <T extends ceylon.language.Ordinal<? extends T>> Sequential<T> spreadOp(TypeDescriptor $reifiedT, T start, long length) {
         if (length <= 0) {
             return (Sequential)empty_.getEmpty$();
         }
         if (start instanceof ceylon.language.Integer) {
             ceylon.language.Integer startInt = (ceylon.language.Integer)start;
-            return new ceylon.language.Range(startInt, 
+            return new ceylon.language.Range($reifiedT, startInt, 
                     ceylon.language.Integer.instance(startInt.longValue() + (length - 1)));
         } else if (start instanceof ceylon.language.Character) {
             ceylon.language.Character startChar = (ceylon.language.Character)start;
-            return new ceylon.language.Range(startChar, 
+            return new ceylon.language.Range($reifiedT, startChar, 
                     ceylon.language.Character.instance((int)(startChar.intValue() + length - 1)));
         } else {
             T end = start;
@@ -629,7 +629,7 @@ public class Util {
             while (++ii < length) {
                 end = end.getSuccessor();
             }
-            return new ceylon.language.Range(start, end);
+            return new ceylon.language.Range($reifiedT, start, end);
         }
     }
 

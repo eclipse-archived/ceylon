@@ -1,6 +1,8 @@
 package ceylon.language;
 
+import com.redhat.ceylon.compiler.java.TypeDescriptor;
 import com.redhat.ceylon.compiler.java.metadata.Ceylon;
+import com.redhat.ceylon.compiler.java.metadata.Ignore;
 import com.redhat.ceylon.compiler.java.metadata.Method;
 import com.redhat.ceylon.compiler.java.metadata.Name;
 import com.redhat.ceylon.compiler.java.metadata.TypeInfo;
@@ -14,7 +16,7 @@ public final class copyArray_ {
     private copyArray_() {}
 
     @TypeParameters(@TypeParameter(value="Element"))
-    public static <Element> void copyArray(
+    public static <Element> void copyArray(@Ignore TypeDescriptor $reifiedElement, 
     @TypeInfo("ceylon.language::Array<Element>")
     @Name("source")
     final Array<Element> source,

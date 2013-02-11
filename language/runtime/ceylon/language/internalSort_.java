@@ -2,9 +2,11 @@ package ceylon.language;
 
 import java.util.Comparator;
 
+import com.redhat.ceylon.compiler.java.TypeDescriptor;
 import com.redhat.ceylon.compiler.java.Util;
 import com.redhat.ceylon.compiler.java.language.ArraySequence;
 import com.redhat.ceylon.compiler.java.metadata.Ceylon;
+import com.redhat.ceylon.compiler.java.metadata.Ignore;
 import com.redhat.ceylon.compiler.java.metadata.Method;
 import com.redhat.ceylon.compiler.java.metadata.Name;
 import com.redhat.ceylon.compiler.java.metadata.TypeInfo;
@@ -19,7 +21,7 @@ final class internalSort_ {
     
     @TypeParameters(@TypeParameter(value="Element"))
     @TypeInfo("ceylon.language::Sequential<Element>")
-    static <Element> Sequential<? extends Element> internalSort(
+    static <Element> Sequential<? extends Element> internalSort(@Ignore TypeDescriptor $reifiedElement,
         @Name("comparing")
         @TypeInfo("ceylon.language::Callable<ceylon.language::Comparison|ceylon.language::Null,ceylon.language::Tuple<Element,Element,ceylon.language::Tuple<Element,Element,ceylon.language::Empty>>>")
         final Callable<? extends Comparison> comparing,
@@ -42,7 +44,7 @@ final class internalSort_ {
             }
         });
 
-        return new ArraySequence<Element>(list);
+        return new ArraySequence<Element>($reifiedElement, list);
     }
     
 }

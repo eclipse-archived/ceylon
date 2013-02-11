@@ -1,5 +1,6 @@
 package ceylon.language;
 
+import com.redhat.ceylon.compiler.java.ReifiedType;
 import com.redhat.ceylon.compiler.java.TypeDescriptor;
 import com.redhat.ceylon.compiler.java.metadata.CaseTypes;
 import com.redhat.ceylon.compiler.java.metadata.Ceylon;
@@ -11,10 +12,10 @@ import com.redhat.ceylon.compiler.java.metadata.ValueType;
 @Class
 @CaseTypes({"ceylon.language::true", "ceylon.language::false"})
 @ValueType
-public abstract class Boolean {
+public abstract class Boolean implements ReifiedType {
 
     @Ignore
-    public final static TypeDescriptor TYPE_DESCRIPTOR = TypeDescriptor.klass(Boolean.class);
+    public final static TypeDescriptor $TypeDescriptor = TypeDescriptor.klass(Boolean.class);
 
     @Ignore
     public static Boolean instance(boolean b) {
@@ -39,4 +40,9 @@ public abstract class Boolean {
         }
     }
 
+    @Override
+    public boolean $is(TypeDescriptor type) {
+        // FIXME: implement me
+        throw new RuntimeException("Not implemented");
+    }
 }

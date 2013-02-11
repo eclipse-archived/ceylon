@@ -18,6 +18,8 @@ import ceylon.language.SequenceBuilder;
 import ceylon.language.Sequential;
 import ceylon.language.finished_;
 
+import com.redhat.ceylon.compiler.java.ReifiedType;
+import com.redhat.ceylon.compiler.java.TypeDescriptor;
 import com.redhat.ceylon.compiler.java.metadata.Class;
 import com.redhat.ceylon.compiler.java.metadata.Ignore;
 import com.redhat.ceylon.compiler.java.metadata.Name;
@@ -33,7 +35,7 @@ import com.redhat.ceylon.compiler.java.metadata.TypeInfo;
 @Ignore
 @Class(extendsType="ceylon.language::Object")
 @SatisfiedTypes("ceylon.language::Iterable<Element,Absent>")
-public abstract class AbstractIterable<Element,Absent> implements Iterable<Element,Absent> {
+public abstract class AbstractIterable<Element,Absent> implements Iterable<Element,Absent>, ReifiedType {
     
     @Ignore
     protected final ceylon.language.Iterable$impl<Element, Absent> $ceylon$language$Iterable$this;
@@ -41,11 +43,15 @@ public abstract class AbstractIterable<Element,Absent> implements Iterable<Eleme
     protected final ceylon.language.Container$impl<Element,Absent> $ceylon$language$Container$this;
     @Ignore
     protected final ceylon.language.Category$impl $ceylon$language$Category$this;
+    private TypeDescriptor $reifiedElement;
+    private TypeDescriptor $reifiedAbsent;
 
-    public AbstractIterable() {
-        this.$ceylon$language$Iterable$this = new ceylon.language.Iterable$impl<Element,Absent>(this);
-        this.$ceylon$language$Container$this = new ceylon.language.Container$impl<Element,Absent>(this);
+    public AbstractIterable(TypeDescriptor $reifiedElement, TypeDescriptor $reifiedAbsent) {
+        this.$ceylon$language$Iterable$this = new ceylon.language.Iterable$impl<Element,Absent>($reifiedElement, $reifiedAbsent, this);
+        this.$ceylon$language$Container$this = new ceylon.language.Container$impl<Element,Absent>($reifiedElement, $reifiedAbsent, this);
         this.$ceylon$language$Category$this = new ceylon.language.Category$impl(this);
+        this.$reifiedElement = $reifiedElement;
+        this.$reifiedAbsent = $reifiedAbsent;
     }
     
     @Ignore
@@ -79,7 +85,7 @@ public abstract class AbstractIterable<Element,Absent> implements Iterable<Eleme
     @Override
     @Ignore
     public Sequential<? extends Element> getSequence() {
-        final SequenceBuilder<Element> sb = new SequenceBuilder<Element>();
+        final SequenceBuilder<Element> sb = new SequenceBuilder<Element>($reifiedElement);
         java.lang.Object next = null;
         for (Iterator<? extends Element> iter = getIterator(); (next = iter.next()) != finished_.getFinished$();) {
             sb.append((Element) next);
@@ -105,21 +111,23 @@ public abstract class AbstractIterable<Element,Absent> implements Iterable<Eleme
 
     @Override
     public <Result> Iterable<? extends Result, ? extends java.lang.Object> map(
+            TypeDescriptor $reifiedResult,
             Callable<? extends Result> collecting) {
-        return new MapIterable<Element, Result>(this, collecting);
+        return new MapIterable<Element, Result>($reifiedElement, $reifiedResult, this, collecting);
     }
 
     @Override
     public Iterable<? extends Element, ? extends java.lang.Object> filter(
             Callable<? extends Boolean> selecting) {
-        return new FilterIterable<Element,  Null>(this, selecting);
+        return new FilterIterable<Element,  Null>($reifiedElement, Null.$TypeDescriptor, this, selecting);
     }
 
     @Override
     @Ignore
-    public <Result> Result fold(Result initial,
+    public <Result> Result fold(TypeDescriptor $reifiedResult,
+            Result initial,
             Callable<? extends Result> accumulating) {
-        return $ceylon$language$Iterable$this.fold(initial, accumulating);
+        return $ceylon$language$Iterable$this.fold($reifiedResult, initial, accumulating);
     }
 
     @Override @Ignore
@@ -138,8 +146,8 @@ public abstract class AbstractIterable<Element,Absent> implements Iterable<Eleme
         return $ceylon$language$Iterable$this.sort(f); 
     }
     @Override @Ignore
-    public <Result> Sequential<? extends Result> collect(Callable<? extends Result> f) {
-        return $ceylon$language$Iterable$this.collect(f);
+    public <Result> Sequential<? extends Result> collect(TypeDescriptor $reifiedResult, Callable<? extends Result> f) {
+        return $ceylon$language$Iterable$this.collect($reifiedResult, f);
     }
     @Override @Ignore
     public Sequential<? extends Element> select(Callable<? extends Boolean> f) {
@@ -178,12 +186,12 @@ public abstract class AbstractIterable<Element,Absent> implements Iterable<Eleme
         return $ceylon$language$Iterable$this.getIndexed();
     }
     @Override @Ignore @SuppressWarnings("rawtypes")
-    public <Other>Iterable chain(Iterable<? extends Other, ? extends java.lang.Object> other) {
-        return $ceylon$language$Iterable$this.chain(other);
+    public <Other>Iterable chain(TypeDescriptor $reifiedOther, Iterable<? extends Other, ? extends java.lang.Object> other) {
+        return $ceylon$language$Iterable$this.chain($reifiedOther, other);
     }
     @Override @Ignore
-    public <Default>Iterable<?,?> defaultNullElements(Default defaultValue) {
-        return $ceylon$language$Iterable$this.defaultNullElements(defaultValue);
+    public <Default>Iterable<?,?> defaultNullElements(TypeDescriptor $reifiedDefault, Default defaultValue) {
+        return $ceylon$language$Iterable$this.defaultNullElements($reifiedDefault, defaultValue);
     }
     /*@Override @Ignore
     public <Key> Map<? extends Key, ? extends Sequence<? extends Element>> group(Callable<? extends Key> grouping) {
@@ -217,4 +225,9 @@ public abstract class AbstractIterable<Element,Absent> implements Iterable<Eleme
 //    public Sequential<?> containsAny$elements() {
 //        return $ceylon$language$Category$this.containsAny$elements();
 //    }
+    @Override
+    public boolean $is(TypeDescriptor type) {
+        // FIXME: implement me
+        throw new RuntimeException("Not implemented");
+    }
 }

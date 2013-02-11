@@ -1,5 +1,6 @@
 package ceylon.language;
 
+import com.redhat.ceylon.compiler.java.TypeDescriptor;
 import com.redhat.ceylon.compiler.java.language.AbstractIterable;
 import com.redhat.ceylon.compiler.java.language.AbstractIterator;
 import com.redhat.ceylon.compiler.java.metadata.Ceylon;
@@ -18,46 +19,24 @@ public final class arrayOfSize_ {
 
     @TypeParameters(@TypeParameter(value="Element"))
     @TypeInfo("ceylon.language::Array<Element>")
-    public static <Element> Array<Element> arrayOfSize(
+    public static <Element> Array<Element> arrayOfSize(@Ignore TypeDescriptor $reifiedElement, 
     @Name("size")
     @TypeInfo("ceylon.language::Integer")
     final long size,
     @Name("element")
     @TypeInfo("Element")
     final Element element) {
-        return arrayOfSize(null, size, element);
+        return arrayOfSize($reifiedElement, null, size, element);
     }
     
     @Ignore
-    public static <Element> Array<Element> arrayOfSize(
+    public static <Element> Array<Element> arrayOfSize(TypeDescriptor $reifiedElement, 
             final Class typeClass,
             final long size,
             final Element element) {
         //TODO: This is horribly inefficient. We should
         //      create an empty array, and then use
         //      Arrays.fill() to populate it!
-        return Array.<Element>instance(typeClass, (int)size, element);
-    }
-    
-    private static <Element> Iterable<Element, ?> getIterable(final long size, 
-    		final Element element) {
-        return new AbstractIterable<Element,Null>() {
-            public Iterator<Element> getIterator() {
-                return new AbstractIterator<Element>() {
-                    long idx = 0;
-
-                    @TypeInfo(value="Element|ceylon.language::Finished", erased=true)
-                    public java.lang.Object next() {
-                        return idx++<size ? element : finished_.getFinished$();
-                    }
-                };
-            }
-
-            @Override
-            public boolean getEmpty() {
-                return size==0;
-            }
-
-        };
+        return Array.<Element>instance($reifiedElement, typeClass, (int)size, element);
     }
 }

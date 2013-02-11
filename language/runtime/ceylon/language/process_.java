@@ -203,7 +203,7 @@ public final class process_ {
 	        for (int i = 0; i < args.length; i++) {
 	            newArgs[i] = String.instance(args[i]);
 	        }
-	        this.args = new ArraySequence<String>(newArgs);
+	        this.args = new ArraySequence<String>(String.$TypeDescriptor, newArgs);
     	}
     }
     

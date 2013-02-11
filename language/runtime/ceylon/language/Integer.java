@@ -26,7 +26,7 @@ public final class Integer
                Exponentiable<Integer,Integer> {
 
     @Ignore
-    public final static TypeDescriptor TYPE_DESCRIPTOR = TypeDescriptor.klass(Integer.class);
+    public final static TypeDescriptor $TypeDescriptor = TypeDescriptor.klass(Integer.class);
 
     final long value;
 
@@ -546,12 +546,6 @@ public final class Integer
     public boolean asSmallAs(@Name("other") Integer other) {
         return value <= other.value;
     }*/
-
-    @Ignore
-    public <CastValue extends Numeric> CastValue castTo(long value) {
-        // FIXME Is this correct?
-        return (CastValue)instance(value);
-    }
 
     @Override
     public Integer getNot() {

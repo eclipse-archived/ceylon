@@ -2,6 +2,8 @@ package ceylon.language;
 
 import java.util.HashSet;
 
+import com.redhat.ceylon.compiler.java.ReifiedType;
+import com.redhat.ceylon.compiler.java.TypeDescriptor;
 import com.redhat.ceylon.compiler.java.language.AbstractCallable;
 import com.redhat.ceylon.compiler.java.metadata.Annotation;
 import com.redhat.ceylon.compiler.java.metadata.Annotations;
@@ -19,7 +21,7 @@ import com.redhat.ceylon.compiler.java.metadata.Variance;
 @TypeParameters(@TypeParameter(value="Element", variance=Variance.OUT,
     satisfies="ceylon.language::Object"))
 @SatisfiedTypes("ceylon.language::Set<Element>")
-public class LazySet<Element> implements Set<Element> {
+public class LazySet<Element> implements Set<Element>, ReifiedType {
     @Ignore
     protected final ceylon.language.Category$impl $ceylon$language$Category$this;
     @Ignore
@@ -34,21 +36,24 @@ public class LazySet<Element> implements Set<Element> {
     protected final ceylon.language.Cloneable$impl $ceylon$language$Cloneable$this;
 
     private final Iterable<? extends Element, ? extends java.lang.Object> elems;
+    private TypeDescriptor $reifiedElement;
 
     @Ignore @SuppressWarnings("unchecked")
-    public LazySet() {
-        this((Iterable<? extends Element, ? extends java.lang.Object>)empty_.getEmpty$());
+    public LazySet(@Ignore TypeDescriptor $reifiedElement) {
+        this($reifiedElement, (Iterable<? extends Element, ? extends java.lang.Object>)empty_.getEmpty$());
     }
-    public LazySet(@Name("elems")
+    public LazySet(@Ignore TypeDescriptor $reifiedElement,
+            @Name("elems")
             @TypeInfo("ceylon.language::Iterable<Element,ceylon.language::Null>")
             Iterable<? extends Element, ? extends java.lang.Object> elems) {
         this.$ceylon$language$Category$this = new ceylon.language.Category$impl(this);
-        this.$ceylon$language$Container$this = new ceylon.language.Container$impl<Element,java.lang.Object>(this);
-        this.$ceylon$language$Iterable$this = new ceylon.language.Iterable$impl<Element,java.lang.Object>(this);
-        this.$ceylon$language$Collection$this = new ceylon.language.Collection$impl<Element>(this);
-        this.$ceylon$language$Set$this = new ceylon.language.Set$impl<Element>(this);
-        this.$ceylon$language$Cloneable$this = new ceylon.language.Cloneable$impl(this);
+        this.$ceylon$language$Container$this = new ceylon.language.Container$impl<Element,java.lang.Object>($reifiedElement, Null.$TypeDescriptor, this);
+        this.$ceylon$language$Iterable$this = new ceylon.language.Iterable$impl<Element,java.lang.Object>($reifiedElement, Null.$TypeDescriptor, this);
+        this.$ceylon$language$Collection$this = new ceylon.language.Collection$impl<Element>($reifiedElement, this);
+        this.$ceylon$language$Set$this = new ceylon.language.Set$impl<Element>($reifiedElement, this);
+        this.$ceylon$language$Cloneable$this = new ceylon.language.Cloneable$impl(TypeDescriptor.klass(Set.class, $reifiedElement), this);
         this.elems = elems;
+        this.$reifiedElement = $reifiedElement;
     }
     
 
@@ -92,7 +97,7 @@ public class LazySet<Element> implements Set<Element> {
     @Annotations(@Annotation("actual"))
     @TypeInfo("ceylon.language::Set<Element>")
     public Set<? extends Element> getClone() {
-        return new LazySet<Element>(elems);
+        return new LazySet<Element>($reifiedElement, elems);
     }
 
     @Override
@@ -120,12 +125,12 @@ public class LazySet<Element> implements Set<Element> {
     @Annotations(@Annotation("actual"))
     @TypeParameters(@TypeParameter(value="Other", satisfies="ceylon.language::Object"))
     @TypeInfo("ceylon.language::Set<Element|Other>")
-    public <Other> Set union(Set<? extends Other> set) {
-        return new LazySet(elems.chain(set));
+    public <Other> Set union(@Ignore TypeDescriptor $reifiedOther, Set<? extends Other> set) {
+        return new LazySet(TypeDescriptor.klass(Set.class, TypeDescriptor.union($reifiedElement, $reifiedOther)), elems.chain($reifiedOther, set));
     }
     @Override @Ignore
-    public <Default>Iterable<?,?> defaultNullElements(Default defaultValue) {
-        return $ceylon$language$Iterable$this.defaultNullElements(defaultValue);
+    public <Default>Iterable<?,?> defaultNullElements(@Ignore TypeDescriptor $reifiedDefault, Default defaultValue) {
+        return $ceylon$language$Iterable$this.defaultNullElements($reifiedDefault, defaultValue);
     }
 
     @SuppressWarnings({ "unchecked", "rawtypes" })
@@ -133,8 +138,9 @@ public class LazySet<Element> implements Set<Element> {
     @Annotations(@Annotation("actual"))
     @TypeParameters(@TypeParameter(value="Other", satisfies="ceylon.language::Object"))
     @TypeInfo("ceylon.language::Set<Element&Other>")
-    public <Other> Set intersection(Set<? extends Other> set) {
-        return new LazySet(set.filter(new AbstractCallable<Boolean>("Set_intersection"){
+    public <Other> Set intersection(@Ignore TypeDescriptor $reifiedOther, Set<? extends Other> set) {
+        return new LazySet(TypeDescriptor.klass(Set.class, TypeDescriptor.intersection($reifiedElement, $reifiedOther)), 
+                set.filter(new AbstractCallable<Boolean>("Set_intersection"){
             @Override
             public Boolean $call(final java.lang.Object e) {
                 return Boolean.instance(elems.find(new AbstractCallable<Boolean>("Set_find2"){
@@ -152,7 +158,7 @@ public class LazySet<Element> implements Set<Element> {
     @Annotations(@Annotation("actual"))
     @TypeParameters(@TypeParameter(value="Other", satisfies="ceylon.language::Object"))
     @TypeInfo("ceylon.language::Set<Element|Other>")
-    public <Other> Set exclusiveUnion(final Set<? extends Other> set) {
+    public <Other> Set exclusiveUnion(@Ignore TypeDescriptor $reifiedOther, final Set<? extends Other> set) {
         Iterable<? extends Element, ? extends java.lang.Object> hereNotThere = elems.filter(new AbstractCallable<Boolean>("Set_xor1"){
             @Override
             public Boolean $call(java.lang.Object e) {
@@ -170,7 +176,7 @@ public class LazySet<Element> implements Set<Element> {
                 }) == null);
             }
         });
-        return new LazySet(hereNotThere.chain(thereNotHere));
+        return new LazySet(TypeDescriptor.klass(Set.class, TypeDescriptor.union($reifiedElement, $reifiedOther)), hereNotThere.chain($reifiedOther, thereNotHere));
     }
 
     @SuppressWarnings({ "unchecked", "rawtypes" })
@@ -178,8 +184,8 @@ public class LazySet<Element> implements Set<Element> {
     @Annotations(@Annotation("actual"))
     @TypeParameters(@TypeParameter(value="Other", satisfies="ceylon.language::Object"))
     @TypeInfo("ceylon.language::Set<Element>")
-    public <Other> Set<? extends Element> complement(final Set<? extends Other> set) {
-        return new LazySet(this.filter(new AbstractCallable<Boolean>("Set_xor2"){
+    public <Other> Set<? extends Element> complement(@Ignore TypeDescriptor $reifiedOther, final Set<? extends Other> set) {
+        return new LazySet($reifiedElement, this.filter(new AbstractCallable<Boolean>("Set_xor2"){
             @Override
             public Boolean $call(final java.lang.Object e) {
                 return Boolean.instance(!set.contains(e));
@@ -237,8 +243,9 @@ public class LazySet<Element> implements Set<Element> {
 
     @Override @Ignore
     public <Result> Iterable<? extends Result, ? extends java.lang.Object> map(
+            @Ignore TypeDescriptor $reifiedResult,
             Callable<? extends Result> collecting) {
-        return elems.map(collecting);
+        return elems.map($reifiedResult, collecting);
     }
 
     @Override @Ignore
@@ -248,9 +255,9 @@ public class LazySet<Element> implements Set<Element> {
     }
 
     @Override @Ignore
-    public <Result> Result fold(Result initial,
+    public <Result> Result fold(@Ignore TypeDescriptor $reifiedResult, Result initial,
             Callable<? extends Result> accumulating) {
-        return elems.fold(initial, accumulating);
+        return elems.fold($reifiedResult, initial, accumulating);
     }
 
     @Override @Ignore
@@ -271,8 +278,9 @@ public class LazySet<Element> implements Set<Element> {
 
     @Override @Ignore
     public <Result> Sequential<? extends Result> collect(
+            @Ignore TypeDescriptor $reifiedResult,
             Callable<? extends Result> collecting) {
-        return elems.collect(collecting);
+        return elems.collect($reifiedResult, collecting);
     }
 
     @Override @Ignore
@@ -323,8 +331,8 @@ public class LazySet<Element> implements Set<Element> {
 
     @SuppressWarnings("rawtypes")
     @Override @Ignore
-    public <Other> Iterable chain(Iterable<? extends Other, ? extends java.lang.Object> other) {
-        return elems.chain(other);
+    public <Other> Iterable chain(@Ignore TypeDescriptor $reifiedOther, Iterable<? extends Other, ? extends java.lang.Object> other) {
+        return elems.chain($reifiedOther, other);
     }
 
     /*@Override @Ignore
@@ -382,5 +390,11 @@ public class LazySet<Element> implements Set<Element> {
     @Override @Ignore
     public java.lang.String toString() {
         return $ceylon$language$Collection$this.toString();
+    }
+
+    @Override
+    public boolean $is(TypeDescriptor type) {
+        // FIXME: implement me
+        throw new RuntimeException("Not implemented");
     }
 }

@@ -2,6 +2,8 @@ package ceylon.language;
 
 import java.util.ArrayList;
 
+import com.redhat.ceylon.compiler.java.ReifiedType;
+import com.redhat.ceylon.compiler.java.TypeDescriptor;
 import com.redhat.ceylon.compiler.java.language.ArraySequence;
 import com.redhat.ceylon.compiler.java.metadata.Ceylon;
 import com.redhat.ceylon.compiler.java.metadata.Class;
@@ -15,11 +17,14 @@ import com.redhat.ceylon.compiler.java.metadata.TypeParameters;
 @Ceylon(major = 4)
 @Class
 @TypeParameters(@TypeParameter(value = "Element"))
-public class SequenceBuilder<Element> {
+public class SequenceBuilder<Element> implements ReifiedType {
 
     java.util.List<Element> list;
+    private TypeDescriptor $reifiedElement;
     
-    public SequenceBuilder() {}
+    public SequenceBuilder(@Ignore TypeDescriptor $reifiedElement) {
+        this.$reifiedElement = $reifiedElement;
+    }
      
     @TypeInfo("ceylon.language::Sequential<Element>")
     public Sequential<? extends Element> getSequence() {
@@ -27,7 +32,7 @@ public class SequenceBuilder<Element> {
             return (Sequential)empty_.getEmpty$();
         }
         else {
-            return new ArraySequence<Element>(list);
+            return new ArraySequence<Element>($reifiedElement, list);
         }
     }
     
@@ -70,4 +75,9 @@ public class SequenceBuilder<Element> {
         return list==null ? true : list.isEmpty();
     }
      
+    @Override
+    public boolean $is(TypeDescriptor type) {
+        // FIXME: implement me
+        throw new RuntimeException("Not implemented");
+    }
 }

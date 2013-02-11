@@ -17,6 +17,8 @@ import ceylon.language.Map;
 import ceylon.language.Sequence;
 import ceylon.language.Sequential;
 
+import com.redhat.ceylon.compiler.java.ReifiedType;
+import com.redhat.ceylon.compiler.java.TypeDescriptor;
 import com.redhat.ceylon.compiler.java.metadata.Ignore;
 import com.redhat.ceylon.compiler.java.metadata.Name;
 import com.redhat.ceylon.compiler.java.metadata.Sequenced;
@@ -26,20 +28,25 @@ import com.redhat.ceylon.compiler.java.metadata.TypeInfo;
  * 
  * @author Enrique Zamudio
  */
-public class FilterIterable<Element,Absent> implements Iterable<Element,Absent> {
+public class FilterIterable<Element,Absent> implements Iterable<Element,Absent>, ReifiedType {
     private final ceylon.language.Iterable$impl<Element,Absent> $ceylon$language$Iterable$this;
     private final ceylon.language.Container$impl<Element,Absent> $ceylon$language$Container$this;
     private final ceylon.language.Category$impl $ceylon$language$Category$this;
     
     final Iterable<? extends Element, ? extends java.lang.Object> iterable;
     final Callable<? extends Boolean> f;
+    private TypeDescriptor $reifiedElement;
+    private TypeDescriptor $reifiedAbsent;
     
-    public FilterIterable(Iterable<? extends Element, ? extends java.lang.Object> iterable, Callable<? extends Boolean> selecting) {
-        this.$ceylon$language$Iterable$this = new ceylon.language.Iterable$impl<Element,Absent>(this);
-        this.$ceylon$language$Container$this = new ceylon.language.Container$impl<Element,Absent>(this);
+    public FilterIterable(@Ignore TypeDescriptor $reifiedElement, @Ignore TypeDescriptor $reifiedAbsent,
+            Iterable<? extends Element, ? extends java.lang.Object> iterable, Callable<? extends Boolean> selecting) {
+        this.$ceylon$language$Iterable$this = new ceylon.language.Iterable$impl<Element,Absent>($reifiedElement, $reifiedAbsent, this);
+        this.$ceylon$language$Container$this = new ceylon.language.Container$impl<Element,Absent>($reifiedElement, $reifiedAbsent, this);
         this.$ceylon$language$Category$this = new ceylon.language.Category$impl(this);
         this.iterable = iterable;
         f = selecting;
+        this.$reifiedElement = $reifiedElement;
+        this.$reifiedAbsent = $reifiedAbsent;
     }
 
     @Ignore
@@ -61,6 +68,10 @@ public class FilterIterable<Element,Absent> implements Iterable<Element,Absent> 
     }
 
     class FilterIterator extends AbstractIterator<Element> {
+        public FilterIterator() {
+            super($reifiedElement);
+        }
+
         final Iterator<? extends Element> iter = iterable.getIterator();
 
         public java.lang.Object next() {
@@ -71,6 +82,11 @@ public class FilterIterable<Element,Absent> implements Iterable<Element,Absent> 
                 flag = elem instanceof Finished ? true : f.$call(elem).booleanValue();
             }
             return elem;
+        }
+        @Override
+        public boolean $is(TypeDescriptor type) {
+            // FIXME: implement me
+            throw new RuntimeException("Not implemented");
         }
     }
     public Iterator<? extends Element> getIterator() { return new FilterIterator(); }
@@ -114,8 +130,8 @@ public class FilterIterable<Element,Absent> implements Iterable<Element,Absent> 
         return $ceylon$language$Iterable$this.sort(f);
     }
     @Override @Ignore
-    public <Result> Sequential<? extends Result> collect(Callable<? extends Result> f) {
-        return $ceylon$language$Iterable$this.collect( f);
+    public <Result> Sequential<? extends Result> collect(@Ignore TypeDescriptor $reifiedResult, Callable<? extends Result> f) {
+        return $ceylon$language$Iterable$this.collect($reifiedResult, f);
     }
     @Override @Ignore
     public Sequential<? extends Element> select(Callable<? extends Boolean> f) {
@@ -123,18 +139,18 @@ public class FilterIterable<Element,Absent> implements Iterable<Element,Absent> 
     }
     @Override
     @Ignore
-    public <Result> Iterable<Result, ? extends java.lang.Object> map(Callable<? extends Result> f) {
-        return new MapIterable<Element, Result>(this, f);
+    public <Result> Iterable<Result, ? extends java.lang.Object> map(@Ignore TypeDescriptor $reifiedResult, Callable<? extends Result> f) {
+        return new MapIterable<Element, Result>($reifiedElement, $reifiedResult, this, f);
     }
     @Override
     @Ignore
     public Iterable<? extends Element, ? extends java.lang.Object> filter(Callable<? extends Boolean> f) {
-        return new FilterIterable<Element,  Null>(this, f);
+        return new FilterIterable<Element,  Null>($reifiedElement, Null.$TypeDescriptor, this, f);
     }
     @Override
     @Ignore
-    public <Result> Result fold(Result ini, Callable<? extends Result> f) {
-        return $ceylon$language$Iterable$this.fold(ini, f);
+    public <Result> Result fold(@Ignore TypeDescriptor $reifiedResult, Result ini, Callable<? extends Result> f) {
+        return $ceylon$language$Iterable$this.fold($reifiedResult, ini, f);
     }
     @Override @Ignore
     public boolean any(Callable<? extends Boolean> f) {
@@ -169,12 +185,12 @@ public class FilterIterable<Element,Absent> implements Iterable<Element,Absent> 
         return $ceylon$language$Iterable$this.getIndexed();
     }
     @Override @Ignore @SuppressWarnings("rawtypes")
-    public <Other> Iterable chain(Iterable<? extends Other, ? extends java.lang.Object> other) {
-        return $ceylon$language$Iterable$this.chain(other);
+    public <Other> Iterable chain(@Ignore TypeDescriptor $reifiedOther, Iterable<? extends Other, ? extends java.lang.Object> other) {
+        return $ceylon$language$Iterable$this.chain($reifiedOther, other);
     }
     @Override @Ignore
-    public <Default>Iterable<?,?> defaultNullElements(Default defaultValue) {
-        return $ceylon$language$Iterable$this.defaultNullElements(defaultValue);
+    public <Default>Iterable<?,?> defaultNullElements(@Ignore TypeDescriptor $reifiedDefault, Default defaultValue) {
+        return $ceylon$language$Iterable$this.defaultNullElements($reifiedDefault, defaultValue);
     }
     /*@Override @Ignore
     public <Key> Map<? extends Key, ? extends Sequence<? extends Element>> group(Callable<? extends Key> grouping) {
@@ -208,4 +224,9 @@ public class FilterIterable<Element,Absent> implements Iterable<Element,Absent> 
 //    public Sequential<?> containsAny$elements() {
 //        return $ceylon$language$Category$this.containsAny$elements();
 //    }
+    @Override
+    public boolean $is(TypeDescriptor type) {
+        // FIXME: implement me
+        throw new RuntimeException("Not implemented");
+    }
 }

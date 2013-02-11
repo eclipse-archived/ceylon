@@ -1,5 +1,7 @@
 package ceylon.language;
 
+import com.redhat.ceylon.compiler.java.ReifiedType;
+import com.redhat.ceylon.compiler.java.TypeDescriptor;
 import com.redhat.ceylon.compiler.java.metadata.Ceylon;
 import com.redhat.ceylon.compiler.java.metadata.Class;
 import com.redhat.ceylon.compiler.java.metadata.Ignore;
@@ -15,13 +17,14 @@ import com.redhat.ceylon.compiler.java.metadata.Variance;
 @TypeParameters({@TypeParameter(value="Key", variance=Variance.IN), 
 	             @TypeParameter(value="Item", variance=Variance.OUT)})
 @SatisfiedTypes("ceylon.language::Category")
-class Keys<Key,Item> implements Category {
+class Keys<Key,Item> implements Category, ReifiedType {
 
 	private Correspondence<? super Key, ? extends Item> correspondence;
     @Ignore
 	protected Category$impl $ceylon$language$Category$this; 
 	
-	Keys(@Name("correspondence")
+	Keys(@Ignore TypeDescriptor $reifiedKey, @Ignore TypeDescriptor $reifiedItem,
+	        @Name("correspondence")
 		@TypeInfo("ceylon.language::Correspondence<Key,Item>")
 	    Correspondence<? super Key, ? extends Item> correspondence) {
 		this.correspondence = correspondence;
@@ -51,4 +54,9 @@ class Keys<Key,Item> implements Category {
 		return $ceylon$language$Category$this.containsEvery(keys);
 	}
 
+    @Override
+    public boolean $is(TypeDescriptor type) {
+        // FIXME: implement me
+        throw new RuntimeException("Not implemented");
+    }
 }

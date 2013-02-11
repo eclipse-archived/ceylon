@@ -1,5 +1,7 @@
 package ceylon.language;
 
+import com.redhat.ceylon.compiler.java.ReifiedType;
+import com.redhat.ceylon.compiler.java.TypeDescriptor;
 import com.redhat.ceylon.compiler.java.metadata.Ceylon;
 import com.redhat.ceylon.compiler.java.metadata.Class;
 import com.redhat.ceylon.compiler.java.metadata.Ignore;
@@ -9,8 +11,11 @@ import com.redhat.ceylon.compiler.java.metadata.TypeInfo;
 
 @Ceylon(major = 4)
 @Class
-public class StringBuilder {
+public class StringBuilder implements ReifiedType {
     
+    @Ignore
+    public final static TypeDescriptor $TypeDescriptor = TypeDescriptor.klass(StringBuilder.class);
+
     final java.lang.StringBuilder builder = new java.lang.StringBuilder();
     
     @Override
@@ -96,4 +101,9 @@ public class StringBuilder {
         return builder.length();
     }
 
+    @Override
+    public boolean $is(TypeDescriptor type) {
+        // FIXME: implement me
+        throw new RuntimeException("Not implemented");
+    }
 }

@@ -1,9 +1,12 @@
 package ceylon.language;
 
+import com.redhat.ceylon.compiler.java.TypeDescriptor;
 import com.redhat.ceylon.compiler.java.language.AbstractIterable;
+import com.redhat.ceylon.compiler.java.language.AbstractIterator;
 import com.redhat.ceylon.compiler.java.metadata.Annotation;
 import com.redhat.ceylon.compiler.java.metadata.Annotations;
 import com.redhat.ceylon.compiler.java.metadata.Ceylon;
+import com.redhat.ceylon.compiler.java.metadata.Ignore;
 import com.redhat.ceylon.compiler.java.metadata.Method;
 import com.redhat.ceylon.compiler.java.metadata.Name;
 import com.redhat.ceylon.compiler.java.metadata.TypeInfo;
@@ -30,7 +33,7 @@ final class integerRangeByIterable_ {
                 "ceylon.language::Comparable<Element>"}))
     @TypeInfo(value="ceylon.language::Iterable<Element, Null>")
     static <Element extends ceylon.language.Ordinal<? extends Element> & ceylon.language.Comparable<? super Element>> 
-            ceylon.language.Iterable<Element, Null> integerRangeByIterable(
+            ceylon.language.Iterable<Element, Null> integerRangeByIterable(@Ignore final TypeDescriptor $reifiedElement,
                     @Name("range")
                     @TypeInfo(value="ceylon.language::Range<Element>")
                     ceylon.language.Range<Element> range,
@@ -38,13 +41,13 @@ final class integerRangeByIterable_ {
                     final long step) {
         final ceylon.language.Range<ceylon.language.Integer> r = (ceylon.language.Range)range; 
         //Optimize for Integer ranges
-        return new AbstractIterable<Element,  Null>() {
+        return new AbstractIterable<Element,  Null>($reifiedElement, Null.$TypeDescriptor) {
             @Override
             @Annotations(@Annotation("formal"))
             @TypeInfo("ceylon.language::Iterator<Element>")
             public Iterator<? extends Element> getIterator() {
 
-                return new Iterator<Element>() {
+                return new AbstractIterator<Element>($reifiedElement) {
                     long current = r.getFirst().longValue();
                     final long lim = r.getLast().longValue();
                     boolean inverse = lim < current;
@@ -66,11 +69,6 @@ final class integerRangeByIterable_ {
                     @Override
                     public java.lang.String toString() {
                         return "RangeIterator";
-                    }
-
-                    @Override
-                    public ceylon.language.Iterator$impl $ceylon$language$Iterator$impl() {
-                        return new ceylon.language.Iterator$impl(this);
                     }
                 };
             }

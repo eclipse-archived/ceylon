@@ -17,6 +17,8 @@ import ceylon.language.Sequence;
 import ceylon.language.Sequential;
 import ceylon.language.finished_;
 
+import com.redhat.ceylon.compiler.java.ReifiedType;
+import com.redhat.ceylon.compiler.java.TypeDescriptor;
 import com.redhat.ceylon.compiler.java.metadata.Ceylon;
 import com.redhat.ceylon.compiler.java.metadata.Class;
 import com.redhat.ceylon.compiler.java.metadata.Ignore;
@@ -29,7 +31,7 @@ import com.redhat.ceylon.compiler.java.metadata.TypeInfo;
 @Ceylon(major = 4)
 @Class(extendsType="ceylon.language::Object")
 @SatisfiedTypes("ceylon.language::Iterable<Element,Absent>")
-public class ArrayIterable<Element,Absent> implements Iterable<Element,Absent> {
+public class ArrayIterable<Element,Absent> implements Iterable<Element,Absent>, ReifiedType {
     @Ignore
     protected final ceylon.language.Iterable$impl<Element, Absent> $ceylon$language$Iterable$this;
     @Ignore
@@ -40,15 +42,19 @@ public class ArrayIterable<Element,Absent> implements Iterable<Element,Absent> {
     protected final Element[] array;
     protected final Iterable<? extends Element, ? extends java.lang.Object> rest;
     protected final long first;
+    private TypeDescriptor $reifiedElement;
+    private TypeDescriptor $reifiedAbsent;
 
-    public ArrayIterable(Iterable<? extends Element, ? extends java.lang.Object> rest, Element... array) {
-        this(rest, array, 0);
+    public ArrayIterable(TypeDescriptor $reifiedElement, TypeDescriptor $reifiedAbsent, 
+            Iterable<? extends Element, ? extends java.lang.Object> rest, Element... array) {
+        this($reifiedElement, $reifiedAbsent, rest, array, 0);
     }
 
     @Ignore
-    public ArrayIterable(Iterable<? extends Element, ? extends java.lang.Object> rest, Element[] array, long first) {
-        this.$ceylon$language$Iterable$this = new ceylon.language.Iterable$impl<Element,Absent>(this);
-        this.$ceylon$language$Container$this = new ceylon.language.Container$impl<Element,Absent>(this);
+    public ArrayIterable(TypeDescriptor $reifiedElement, TypeDescriptor $reifiedAbsent,
+            Iterable<? extends Element, ? extends java.lang.Object> rest, Element[] array, long first) {
+        this.$ceylon$language$Iterable$this = new ceylon.language.Iterable$impl<Element,Absent>($reifiedElement, $reifiedAbsent, this);
+        this.$ceylon$language$Container$this = new ceylon.language.Container$impl<Element,Absent>($reifiedElement, $reifiedAbsent, this);
         this.$ceylon$language$Category$this = new ceylon.language.Category$impl(this);
     	if (array.length==0 || array.length<=first) {
     		throw new IllegalArgumentException("ArrayIterable may not have zero elements (array)");
@@ -59,6 +65,8 @@ public class ArrayIterable<Element,Absent> implements Iterable<Element,Absent> {
         this.array = array;
         this.first = first;
         this.rest = rest;
+        this.$reifiedElement = $reifiedElement;
+        this.$reifiedAbsent = $reifiedAbsent;
     }
 
     @Ignore
@@ -80,14 +88,14 @@ public class ArrayIterable<Element,Absent> implements Iterable<Element,Absent> {
     }
 
     @Ignore
-    public static <Element> Iterable<? extends Element, ? extends java.lang.Object> instance(Iterable<? extends Element, ? extends java.lang.Object> rest, Element... array){
+    public static <Element> Iterable<? extends Element, ? extends java.lang.Object> instance(TypeDescriptor $reifiedElement, Iterable<? extends Element, ? extends java.lang.Object> rest, Element... array){
         // make sure we dont' create ArrayIterables with no fixed elements
         if(array.length == 0)
             return rest;
         // make sure we don't create ArrayIterables with empty rests
         if(rest.getEmpty())
-            return new ArraySequence<Element>(array);
-        return new ArrayIterable<Element,  Null>(rest, array);
+            return new ArraySequence<Element>($reifiedElement, array);
+        return new ArrayIterable<Element,  Null>($reifiedElement, Null.$TypeDescriptor, rest, array);
     }
     
     @Override
@@ -116,7 +124,7 @@ public class ArrayIterable<Element,Absent> implements Iterable<Element,Absent> {
     @Override
     public Iterable<? extends Element, ? extends java.lang.Object> getRest() {
         if(first + 1 < array.length){
-            return new ArrayIterable<Element,  Null>(rest, array, first + 1);
+            return new ArrayIterable<Element,  Null>($reifiedElement, Null.$TypeDescriptor, rest, array, first + 1);
         }else{
             return rest;
         }
@@ -137,7 +145,7 @@ public class ArrayIterable<Element,Absent> implements Iterable<Element,Absent> {
         while((val = iterator.next()) != finished_.getFinished$()){
             elems[i++] = (Element) val;
         }
-        return new ArraySequence<Element>(elems);
+        return new ArraySequence<Element>($reifiedElement, elems);
     }
 
     @Override
@@ -146,6 +154,11 @@ public class ArrayIterable<Element,Absent> implements Iterable<Element,Absent> {
     }
 
     public class ArrayIterableIterator extends AbstractIterator<Element> {
+        
+        public ArrayIterableIterator() {
+            super($reifiedElement);
+        }
+
         private long idx = first;
         private Iterator<Element> restIterator;
 
@@ -167,22 +180,28 @@ public class ArrayIterable<Element,Absent> implements Iterable<Element,Absent> {
             return "ArrayIterableIterator";
         }
 
+        @Override
+        public boolean $is(TypeDescriptor type) {
+            // FIXME: implement me
+            throw new RuntimeException("Not implemented");
+        }
     }
 
     @Override
-    public <Result> Iterable<? extends Result, ? extends java.lang.Object> map(Callable<? extends Result> f) {
-        return new MapIterable<Element, Result>(this, f);
+    public <Result> Iterable<? extends Result, ? extends java.lang.Object> map(@Ignore TypeDescriptor $reifiedResult, 
+            Callable<? extends Result> f) {
+        return new MapIterable<Element, Result>($reifiedElement, $reifiedResult, this, f);
     }
     
     @Override
     public Iterable<? extends Element, ? extends java.lang.Object> filter(Callable<? extends Boolean> f) {
-        return new FilterIterable<Element,  Null>(this, f);
+        return new FilterIterable<Element,  Null>($reifiedElement, Null.$TypeDescriptor, this, f);
     }
 
     @Override
     @Ignore
-    public <Result> Result fold(Result ini, Callable<? extends Result> f) {
-        return $ceylon$language$Iterable$this.fold(ini, f);
+    public <Result> Result fold(@Ignore TypeDescriptor $reifiedResult, Result ini, Callable<? extends Result> f) {
+        return $ceylon$language$Iterable$this.fold($reifiedResult, ini, f);
     }
     
     @Override @Ignore
@@ -202,13 +221,13 @@ public class ArrayIterable<Element,Absent> implements Iterable<Element,Absent> {
     }
 
     @Override
-    public <Result> Sequential<? extends Result> collect(Callable<? extends Result> f) {
-        return $ceylon$language$Iterable$this.collect(f);
+    public <Result> Sequential<? extends Result> collect(@Ignore TypeDescriptor $reifiedResult, Callable<? extends Result> f) {
+        return $ceylon$language$Iterable$this.collect($reifiedResult, f);
     }
 
     @Override
     public Sequential<? extends Element> select(Callable<? extends Boolean> f) {
-        return new FilterIterable<Element,  Null>(this, f).getSequence();
+        return new FilterIterable<Element,  Null>($reifiedElement, Null.$TypeDescriptor, this, f).getSequence();
     }
     
     @Override @Ignore
@@ -249,12 +268,13 @@ public class ArrayIterable<Element,Absent> implements Iterable<Element,Absent> {
     }
     
     @SuppressWarnings("rawtypes")
-    @Override @Ignore public <Other>Iterable chain(Iterable<? extends Other, ? extends java.lang.Object> other) {
-        return $ceylon$language$Iterable$this.chain(other);
+    @Override @Ignore 
+    public <Other>Iterable chain(@Ignore TypeDescriptor $reifiedOther, Iterable<? extends Other, ? extends java.lang.Object> other) {
+        return $ceylon$language$Iterable$this.chain($reifiedOther, other);
     }
     @Override @Ignore
-    public <Default>Iterable<?,?> defaultNullElements(Default defaultValue) {
-        return $ceylon$language$Iterable$this.defaultNullElements(defaultValue);
+    public <Default>Iterable<?,?> defaultNullElements(@Ignore TypeDescriptor $reifiedDefault, Default defaultValue) {
+        return $ceylon$language$Iterable$this.defaultNullElements($reifiedDefault, defaultValue);
     }
     /*@Override @Ignore
     public <Key> Map<? extends Key, ? extends Sequence<? extends Element>> group(Callable<? extends Key> grouping) {
@@ -346,4 +366,9 @@ public class ArrayIterable<Element,Absent> implements Iterable<Element,Absent> {
 //    public Sequential<?> containsAny$elements() {
 //        return $ceylon$language$Category$this.containsAny$elements();
 //    }
+    @Override
+    public boolean $is(TypeDescriptor type) {
+        // FIXME: implement me
+        throw new RuntimeException("Not implemented");
+    }
 }
