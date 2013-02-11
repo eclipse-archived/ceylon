@@ -2827,7 +2827,12 @@ public abstract class AbstractTransformer implements Transformation {
             // Java methods don't support reified type arguments
             Method m = (Method) CodegenUtil.getTopmostRefinedDeclaration(declaration);
             // See what its container is
-            return supportsReified(Decl.getClassOrInterfaceContainer(m));
+            ClassOrInterface container = Decl.getClassOrInterfaceContainer(m);
+            // a method which is not a toplevel and is not a class method, must be a method within method and
+            // that must be Ceylon so it supports it
+            if(container == null)
+                return true;
+            return supportsReified(container);
         }else if(declaration instanceof FunctionalParameter){
             // those can never be parameterised
             return false;
