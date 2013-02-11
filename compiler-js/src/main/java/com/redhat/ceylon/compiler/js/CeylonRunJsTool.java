@@ -124,6 +124,7 @@ public class CeylonRunJsTool implements Tool {
     private String func = "run";
     private String module;
     private String exepath;
+    private String sysrep;
     private List<String> args;
     private PrintStream output;
     private boolean debug;
@@ -150,6 +151,12 @@ public class CeylonRunJsTool implements Tool {
     @Description("A module repository. (default: `./modules`).")
     public void setRepositories(List<String> repos) {
         this.repos = repos;
+    }
+    @OptionArgument
+    @Description("Specifies the system repository containing essential modules. "
+            +"(default is the environment variable CEYLON_REPO)")
+    public void setSysrep(String value) {
+        sysrep = value;
     }
 
     @Argument(argumentName="module", multiplicity="1", order=1)
@@ -196,7 +203,7 @@ public class CeylonRunJsTool implements Tool {
      * @param repos The list of repository paths (used as module paths for node.js)
      * @param output An optional PrintStream to write the output of the node.js process to. */
     static ProcessBuilder buildProcess(String module, String func, List<String> args,
-            String exepath, List<String> repos, PrintStream output) {
+            String exepath, List<String> repos, String systemRepo, PrintStream output) {
         final String node = exepath == null ? findNode() : exepath;
         if (exepath != null) {
             File _f = new File(exepath);
@@ -232,11 +239,10 @@ public class CeylonRunJsTool implements Tool {
             proc = new ProcessBuilder(node, "-e", eval);
         }
         String nodePath = getNodePath();
-        String ceylonRepo = getCeylonRepo();
         if (nodePath == null || nodePath.isEmpty()) {
-            nodePath = ceylonRepo;
-        } else if (ceylonRepo != null && !ceylonRepo.isEmpty()) {
-            nodePath = nodePath + File.pathSeparator + ceylonRepo;
+            nodePath = systemRepo;
+        } else if (systemRepo != null && !systemRepo.isEmpty()) {
+            nodePath = nodePath + File.pathSeparator + systemRepo;
         }
         //Now append repositories
         for (String repo : repos) {
@@ -256,7 +262,10 @@ public class CeylonRunJsTool implements Tool {
     @Override
     public void run() throws Exception {
         //The timeout is to have enough time to start reading on the process streams
-        final ProcessBuilder proc = buildProcess(module, func, args, exepath, repos, output);
+        if (sysrep == null) {
+            sysrep = getCeylonRepo();
+        }
+        final ProcessBuilder proc = buildProcess(module, func, args, exepath, repos, sysrep, output);
         Process nodeProcess = proc.start();
         //All this shit because inheritIO doesn't work on fucking Windows
         new ReadStream(nodeProcess.getInputStream(), output == null ? System.out : output).start();
