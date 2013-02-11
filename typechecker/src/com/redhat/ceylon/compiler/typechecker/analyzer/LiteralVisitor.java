@@ -5,6 +5,7 @@ import static com.redhat.ceylon.compiler.typechecker.parser.CeylonLexer.STRING_E
 import static com.redhat.ceylon.compiler.typechecker.parser.CeylonLexer.STRING_MID;
 import static com.redhat.ceylon.compiler.typechecker.parser.CeylonLexer.STRING_START;
 import static com.redhat.ceylon.compiler.typechecker.parser.CeylonLexer.VERBATIM_STRING;
+import static java.lang.Character.isWhitespace;
 import static java.lang.Character.toChars;
 import static java.lang.Integer.parseInt;
 
@@ -28,12 +29,16 @@ public class LiteralVisitor extends Visitor {
     public void visit(StringLiteral that) {
         int type = that.getToken().getType();
         String text = that.getText();
+        StringBuilder result = new StringBuilder();
+        int indent = getIndentPosition(that);
+        boolean allTrimmed = stripIndent(text, indent, result);
+        if (!allTrimmed) {
+            that.addError("multiline string content should begin at character position " + indent);
+        }
         if (type==VERBATIM_STRING || type==AVERBATIM_STRING) {
-            that.setText(text.substring(3,text.length()-3));
+            that.setText(result.substring(3,text.length()-3));
         }
         else {
-            StringBuilder result = new StringBuilder();
-            stripIndent(text, getIndentPosition(that), result);
             interpolateEscapes(result, that);
             if (type==STRING_END || type==STRING_MID) {
                 result.deleteCharAt(0);
@@ -92,31 +97,39 @@ public class LiteralVisitor extends Visitor {
                 .replace("P", "000000000000000"));
     }
     
-    private static void stripIndent(final String text, final int start, 
+    private static boolean stripIndent(final String text, final int start, 
             final StringBuilder result) {
+        boolean allTrimmed = true;
         int num = 0;
         for (String line: text.split("\n|\r\n?")) {
-            if (num++==0 || line.length()<start) {
+            if (num++==0) {
                 result.append(line);
             }
             else {
                 boolean trimIndent = true;
-                for (int i=0; i<start; i++) {
-                    if (line.charAt(i)!=' ') {
-                        trimIndent = false;
-                        break;
+                if (line.length()<start) {
+                    trimIndent = false;
+                }
+                else {
+                    for (int i=0; i<start; i++) {
+                        if (!isWhitespace(line.charAt(i))) {
+                            trimIndent = false;
+                            break;
+                        }
                     }
                 }
                 if (trimIndent) {
                     result.append(line.substring(start));
                 }
                 else {
+                    allTrimmed = false;
                     result.append(line);
                 }
             }
             result.append("\n");
         }
         result.setLength(result.length()-1);
+        return allTrimmed;
     }
     
     private static Pattern re = Pattern.compile("\\\\(\\{#([^}]*)\\}|(.))");
