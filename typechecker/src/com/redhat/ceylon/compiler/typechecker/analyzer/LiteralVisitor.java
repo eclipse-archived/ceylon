@@ -33,10 +33,10 @@ public class LiteralVisitor extends Visitor {
         int indent = getIndentPosition(that);
         boolean allTrimmed = stripIndent(text, indent, result);
         if (!allTrimmed) {
-            that.addError("multiline string content should begin at character position " + indent);
+            that.addError("multiline string content should align be aligned with start of string: string begins at character position " + indent);
         }
         if (type==VERBATIM_STRING || type==AVERBATIM_STRING) {
-            that.setText(result.substring(3,text.length()-3));
+            that.setText(result.substring(3,result.length()-3));
         }
         else {
             interpolateEscapes(result, that);
@@ -60,8 +60,17 @@ public class LiteralVisitor extends Visitor {
     
 	private int getIndentPosition(Literal that) {
 		Token token = that.getToken();
-		return token==null ? 0 : token.getCharPositionInLine()+1;
+		return token==null ? 
+		        0 : token.getCharPositionInLine() +
+		                getQuoteLength(token);
 	}
+
+    private int getQuoteLength(Token token) {
+        int type = token.getType();
+        return type==VERBATIM_STRING || 
+                type==AVERBATIM_STRING ? 
+                        3 : 1;
+    }
     
     @Override
     public void visit(CharLiteral that) {
