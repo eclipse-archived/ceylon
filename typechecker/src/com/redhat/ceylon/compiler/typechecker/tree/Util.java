@@ -50,6 +50,9 @@ public class Util {
         else if (term instanceof Tree.InvocationExpression) {
             return hasUncheckedNulls(((Tree.InvocationExpression) term).getPrimary(), true);
         }
+        else if (term instanceof Tree.DefaultOp) {
+            return hasUncheckedNulls(((Tree.DefaultOp) term).getRightTerm(), invoking);
+        }
         else if (term instanceof Tree.Expression) {
             return hasUncheckedNulls(((Tree.Expression)term).getTerm(), invoking);
         }

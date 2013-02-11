@@ -61,6 +61,7 @@ import com.redhat.ceylon.compiler.typechecker.model.Value;
 import com.redhat.ceylon.compiler.typechecker.model.ValueParameter;
 import com.redhat.ceylon.compiler.typechecker.tree.Node;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree;
+import com.redhat.ceylon.compiler.typechecker.tree.Tree.Primary;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.SpecifierExpression;
 import com.redhat.ceylon.compiler.typechecker.tree.Visitor;
 
@@ -1532,25 +1533,23 @@ public class ExpressionVisitor extends Visitor {
             }
         }
     }*/
-
+    
     ProducedType unwrap(ProducedType pt, Tree.QualifiedMemberOrTypeExpression mte) {
         ProducedType result;
         Tree.MemberOperator op = mte.getMemberOperator();
+        Primary p = mte.getPrimary();
         if (op instanceof Tree.SafeMemberOp)  {
-            if (unit.isOptionalType(pt)) {
-                result = unit.getDefiniteType(pt);
-            }
-            else {
-                mte.getPrimary().addError("receiver not of optional type");
-                result = pt;
-            }
+            checkOptional(pt, p, p);
+            result = unit.getDefiniteType(pt);
         }
         else if (op instanceof Tree.SpreadOp) {
             if (unit.isIterableType(pt)) {
                 result = unit.getIteratedType(pt);
             }
             else {
-                mte.getPrimary().addError("receiver not of type: Iterable");
+                p.addError("expression must be of iterable type: " +
+                        pt.getProducedTypeName(unit) + 
+                        " is not a subtype of Iterable");
                 result = pt;
             }
         }
@@ -1562,7 +1561,7 @@ public class ExpressionVisitor extends Visitor {
         }
         return result;
     }
-
+    
     ProducedType wrap(ProducedType pt, ProducedType receivingType, 
             Tree.QualifiedMemberOrTypeExpression mte) {
         Tree.MemberOperator op = mte.getMemberOperator();
@@ -3074,14 +3073,10 @@ public class ExpressionVisitor extends Visitor {
             List<ProducedType> list = new ArrayList<ProducedType>();
             addToUnion(list, unit.denotableType(rhst));
             addToUnion(list, unit.getDefiniteType(unit.denotableType(lhst)));
-            if (list.size()==1) {
-                that.setTypeModel(list.get(0));
-            }
-            else {
-                UnionType ut = new UnionType(unit);
-                ut.setCaseTypes(list);
-                that.setTypeModel(ut.getType());
-            }
+            UnionType ut = new UnionType(unit);
+            ut.setCaseTypes(list);
+            ProducedType rt = ut.getType();
+            that.setTypeModel(rt);
             /*that.setTypeModel(rhst);
             ProducedType ot;
             if (isOptionalType(rhst)) {
