@@ -1158,7 +1158,8 @@ public class ExpressionTransformer extends AbstractTransformer {
         final ProducedType type = getTypeArgument(getSupertype(op.getLeftTerm(), op.getUnit().getOrdinalDeclaration()));
         JCExpression startExpr = transformExpression(op.getLeftTerm(), BoxingStrategy.BOXED, type);
         JCExpression lengthExpr = transformExpression(op.getRightTerm(), BoxingStrategy.UNBOXED, typeFact().getIntegerDeclaration().getType());
-        return makeUtilInvocation("spreadOp", List.<JCExpression>of(startExpr, lengthExpr), List.<JCExpression>of(makeJavaType(type, JT_TYPE_ARGUMENT)));
+        return makeUtilInvocation("spreadOp", List.<JCExpression>of(makeReifiedTypeArgument(type), startExpr, lengthExpr), 
+                                  List.<JCExpression>of(makeJavaType(type, JT_TYPE_ARGUMENT)));
     }
 
     public JCExpression transform(Tree.RangeOp op) {
@@ -1167,8 +1168,9 @@ public class ExpressionTransformer extends AbstractTransformer {
         ProducedType paramType = getTypeArgument(comparableType);
         JCExpression lower = transformExpression(op.getLeftTerm(), BoxingStrategy.BOXED, paramType);
         JCExpression upper = transformExpression(op.getRightTerm(), BoxingStrategy.BOXED, paramType);
-        JCExpression typeExpr = makeJavaType(op.getTypeModel(), CeylonTransformer.JT_CLASS_NEW);
-        return at(op).NewClass(null, null, typeExpr, List.<JCExpression> of(lower, upper), null);
+        ProducedType rangeType = typeFact().getRangeType(op.getTypeModel());
+        JCExpression typeExpr = makeJavaType(rangeType, CeylonTransformer.JT_CLASS_NEW);
+        return at(op).NewClass(null, null, typeExpr, List.<JCExpression> of(makeReifiedTypeArgument(rangeType), lower, upper), null);
     }
 
     public JCExpression transform(Tree.EntryOp op) {

@@ -2290,6 +2290,7 @@ public abstract class AbstractTransformer implements Transformation {
         ProducedType sequenceType = arraySequenceType.getDeclaration().getProducedType(null, Arrays.asList(seqElemType));
         JCExpression typeExpr = makeJavaType(sequenceType, makeJavaTypeOpts);
         List<ExpressionAndType> argsAndTypes = List.<ExpressionAndType>nil();
+        argsAndTypes = argsAndTypes.append(new ExpressionAndType(makeReifiedTypeArgument(seqElemType), makeTypeDescriptorType()));
         for (JCExpression arg : elems) {
             argsAndTypes = argsAndTypes.append(new ExpressionAndType(arg, makeJavaType(seqElemType, makeJavaTypeOpts)));
         }
@@ -2380,6 +2381,7 @@ public abstract class AbstractTransformer implements Transformation {
      */
     JCExpression makeIterable(List<JCExpression> elems, ProducedType seqElemType, int makeJavaTypeOpts) {
         JCExpression elemTypeExpr = makeJavaType(seqElemType, makeJavaTypeOpts);
+        elems = elems.prepend(makeReifiedTypeArgument(seqElemType));
         // we delegate to ArrayIterable.instance() so that we can filter out empty Iterables
         return make().Apply(List.<JCExpression>of(elemTypeExpr), makeSelect(makeIdent(syms().ceylonArrayIterableType), "instance"), elems);
     }
