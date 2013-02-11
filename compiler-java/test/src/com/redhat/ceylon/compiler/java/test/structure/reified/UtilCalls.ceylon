@@ -8,4 +8,9 @@ shared void utilCalls(){
     value entry = 1 -> 2;
     value range = 1..2;
     value segment = 1:2;
+    value ignore1 = {1}*.wholePart;
+    // spread sequence
+    variadicMethod(1, 2, *[1]);
 }
+
+shared void variadicMethod(Integer* ints){}

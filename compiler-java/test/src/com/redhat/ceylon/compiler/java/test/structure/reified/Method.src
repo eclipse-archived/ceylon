@@ -180,6 +180,10 @@ public interface MethodInterface {
     @.com.redhat.ceylon.compiler.java.metadata.Defaulted
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Integer")
     final long b);
+    
+    @.com.redhat.ceylon.compiler.java.metadata.Annotations({@.com.redhat.ceylon.compiler.java.metadata.Annotation("shared"), @.com.redhat.ceylon.compiler.java.metadata.Annotation("formal")})
+    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Anything")
+    public abstract .java.lang.Object m();
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
     public static final .com.redhat.ceylon.compiler.java.TypeDescriptor $TypeDescriptor = .com.redhat.ceylon.compiler.java.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.reified.MethodInterface.class);
 }
@@ -244,9 +248,21 @@ public final class MethodInterface$impl {
 @.com.redhat.ceylon.compiler.java.metadata.SatisfiedTypes({"com.redhat.ceylon.compiler.java.test.structure.reified::MethodInterface"})
 public class MethodInterfaceImpl implements .com.redhat.ceylon.compiler.java.ReifiedType, .com.redhat.ceylon.compiler.java.test.structure.reified.MethodInterface {
     
-    public MethodInterfaceImpl() {
+    public MethodInterfaceImpl(@.com.redhat.ceylon.compiler.java.metadata.Name("c")
+    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("com.redhat.ceylon.compiler.java.test.structure.reified::MethodClass")
+    final .com.redhat.ceylon.compiler.java.test.structure.reified.MethodClass c) {
+        this.c = c;
         this.$com$redhat$ceylon$compiler$java$test$structure$reified$MethodInterface$this = new .com.redhat.ceylon.compiler.java.test.structure.reified.MethodInterface$impl(this);
+        this.m$specifier = new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.ceylon.language.Integer>("Integer()"){
+            
+            @.java.lang.Override
+            @.com.redhat.ceylon.compiler.java.metadata.Ignore
+            public .ceylon.language.Integer $call() {
+                return .ceylon.language.Integer.instance(c.<.ceylon.language.Integer>method2(.ceylon.language.Integer.$TypeDescriptor));
+            }
+        };
     }
+    private final .com.redhat.ceylon.compiler.java.test.structure.reified.MethodClass c;
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
     protected final .com.redhat.ceylon.compiler.java.test.structure.reified.MethodInterface$impl $com$redhat$ceylon$compiler$java$test$structure$reified$MethodInterface$this;
     
@@ -290,11 +306,12 @@ public class MethodInterfaceImpl implements .com.redhat.ceylon.compiler.java.Rei
     final .com.redhat.ceylon.compiler.java.TypeDescriptor $reifiedT, final long a, final long b) {
         $com$redhat$ceylon$compiler$java$test$structure$reified$MethodInterface$this.methodWithOverloads($reifiedT, a, b);
     }
+    private final .ceylon.language.Callable<? extends .ceylon.language.Integer> m$specifier;
     
-    @.com.redhat.ceylon.compiler.java.metadata.Ignore
-    public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.getProcess$().setupArguments(args);
-        new .com.redhat.ceylon.compiler.java.test.structure.reified.MethodInterfaceImpl();
+    @.java.lang.Override
+    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Anything")
+    public final .java.lang.Object m() {
+        return m$specifier.$call();
     }
     
     @.java.lang.Override
