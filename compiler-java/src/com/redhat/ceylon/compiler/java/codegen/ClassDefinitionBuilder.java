@@ -670,6 +670,8 @@ public class ClassDefinitionBuilder {
                 JCExpression interfacesTest = null;
                 for(ProducedType pt : satisfiedTypes){
                     JCExpression isCall;
+                    // make sure aliases are resolved
+                    pt = pt.resolveAliases();
                     Interface iface = (Interface) pt.getDeclaration();
                     // not if it's entirely erased
                     // FIXME: should this delegate to a Util call?

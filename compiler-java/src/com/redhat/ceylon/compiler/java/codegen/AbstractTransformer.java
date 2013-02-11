@@ -2812,6 +2812,13 @@ public abstract class AbstractTransformer implements Transformation {
     }
 
     public java.util.List<JCExpression> makeReifiedTypeArguments(ProducedReference ref){
+        // this is a bit tricky:
+        // - for method references (ProducedTypedReference) it's all good
+        // - for classes we get a ProducedType which we use to resolve aliases
+        // -- UNLESS it's a class with an instantiator, in which case we should not resolve aliases
+        //    because the instantiator has the right set of type parameters
+        if(ref instanceof ProducedType && !Strategy.generateInstantiator(ref.getDeclaration()))
+            ref = ((ProducedType)ref).resolveAliases();
         Declaration declaration = ref.getDeclaration();
         if(!supportsReified(declaration))
             return Collections.emptyList();
@@ -2870,7 +2877,7 @@ public abstract class AbstractTransformer implements Transformation {
     }
 
     public JCExpression makeReifiedTypeArgument(ProducedType pt) {
-        return makeReifiedTypeArgument(pt, false);
+        return makeReifiedTypeArgument(pt.resolveAliases(), false);
     }
     
     private JCExpression makeReifiedTypeArgument(ProducedType pt, boolean qualified) {
