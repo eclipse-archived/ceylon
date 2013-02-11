@@ -349,6 +349,10 @@ public abstract class TypeDeclaration extends Declaration
      * account, followed by supertypes, ambiguous,
      * because we could not construct a principal
      * instantiation for an intersection?
+     * TODO: this information should really be encoded 
+     *       into the return value of getMember() but
+     *       I'm leaving it like this for now to avoid
+     *       breaking the backends
      */
     public boolean isMemberAmbiguous(String name, Unit unit, 
             List<ProducedType> signature, boolean variadic) {
@@ -540,12 +544,20 @@ public abstract class TypeDeclaration extends Declaration
         //that defines the member
         ProducedType st = getType().getSupertype(new Criteria());
         if (st == null) {
+            //no such member
             return new SupertypeDeclaration(null, false);
         }
         else if (st.getDeclaration() instanceof UnknownType) {
+            //we're dealing with an ambiguous member of an 
+            //intersection types
+            //TODO: this is pretty fragile - it depends upon
+            //      the fact that getSupertype() just happens
+            //      to return an UnknownType instead of null
+            //      in this case
             return new SupertypeDeclaration(null, true);
         }
         else {
+            //we got exactly one uniquely-defined member
             Declaration member = st.getDeclaration()
                     .getDirectMember(name, signature, variadic);
             return new SupertypeDeclaration(member, false);
