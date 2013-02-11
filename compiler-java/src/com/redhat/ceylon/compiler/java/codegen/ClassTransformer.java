@@ -708,6 +708,8 @@ public class ClassTransformer extends AbstractTransformer {
         concreteWrapper.modifiers(mods);
         concreteWrapper.ignoreAnnotations();
         concreteWrapper.isOverride(true);
+        if(typeParameters != null)
+            concreteWrapper.reifiedTypeParametersFromModel(typeParameters);
         if (!rawifyParametersAndResults) {
             for (TypeParameter tp : typeParameters) {
                 concreteWrapper.typeParameter(tp);
@@ -734,6 +736,11 @@ public class ClassTransformer extends AbstractTransformer {
         }
         
         ListBuffer<JCExpression> arguments = ListBuffer.<JCExpression>lb();
+        if(typeParameters != null){
+            for(TypeParameter tp : typeParameters){
+                arguments.add(naming.makeUnquotedIdent(naming.getTypeArgumentDescriptorName(tp.getName())));
+            }
+        }
         for (Parameter param : parameters) {
             final ProducedTypedReference typedParameter = typedMember.getTypedParameter(param);
             ProducedType type;
