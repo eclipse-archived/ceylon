@@ -818,7 +818,8 @@ class CallableSpecifierInvocation extends Invocation {
 
     @Override
     protected List<ExpressionAndType> addReifiedArguments(List<ExpressionAndType> result) {
-        throw new RuntimeException("not implemented yet");
+        // nothing required here
+        return result;
     }
     
     JCExpression getCallable() {
