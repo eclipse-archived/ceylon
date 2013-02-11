@@ -64,32 +64,14 @@ public class JsModuleManager extends ModuleManager {
                 return;
             }
             if (js.exists() && js.isFile() && js.canRead()) {
-                BufferedReader reader = null;
                 try {
-                    reader = new BufferedReader(new FileReader(js));
-                    String line = reader.readLine();
-                    Map<String,Object> model = null;
-                    while (model == null && (line = reader.readLine()) != null) {
-                        if ((line.startsWith("var $$metamodel$$={") || line.startsWith("$$metamodel$$={")) && line.endsWith("};")) {
-                            line = line.substring(line.indexOf("{", line.indexOf("$$metamodel$$")), line.length()-1);
-                            model = (Map<String,Object>)JSONValue.parse(line);
-                            line = null;
-                        }
-                    }
+                    Map<String,Object> model = loadMetamodel(js);
                     if (model != null) {
                         loadModuleFromMap(artifact, module, moduleImport, dependencyTree, phasedUnitsOfDependencies,
                                 forCompiledModule, model);
                     }
                 } catch (IOException ex) {
                     //nothing to do here, will attempt reading .src
-                } finally {
-                    if (reader != null) {
-                        try {
-                            reader.close();
-                        } catch (IOException ex) {
-                            //nothing to do here
-                        }
-                    }
                 }
             }
         }
@@ -165,6 +147,27 @@ public class JsModuleManager extends ModuleManager {
         ((JsonModule)module).loadDeclarations();
         //module.setAvailable(true);
         return;
+    }
+
+    /** Find the metamodel declaration in a js file, parse it as a Map and return it. */
+    @SuppressWarnings("unchecked")
+    public static Map<String,Object> loadMetamodel(File jsFile) throws IOException {
+        BufferedReader reader = null;
+        try {
+            reader = new BufferedReader(new FileReader(jsFile));
+            String line = reader.readLine();
+            while ((line = reader.readLine()) != null) {
+                if ((line.startsWith("var $$metamodel$$={") || line.startsWith("$$metamodel$$={")) && line.endsWith("};")) {
+                    line = line.substring(line.indexOf("{"), line.length()-1);
+                    return (Map<String,Object>)JSONValue.parse(line);
+                }
+            }
+            return null;
+        } finally {
+            if (reader != null) {
+                reader.close();
+            }
+        }
     }
 
 }

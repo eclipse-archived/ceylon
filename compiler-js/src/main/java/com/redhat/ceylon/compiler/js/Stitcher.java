@@ -172,7 +172,7 @@ public class Stitcher {
                             }
                             pu.getCompilationUnit().visit(mmg);
                         }
-                        writer.print("$$metamodel$$=");
+                        writer.print("var $$metamodel$$=");
                         clModel = JSONObject.toJSONString(mmg.getModel());
                         writer.print(clModel);
                         writer.println(";");
