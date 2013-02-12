@@ -1338,12 +1338,12 @@ public class ProducedType extends ProducedReference {
         else {
             //X covers Y if Y extends Z and X covers Z
             ProducedType et = st.getDeclaration().getExtendedType();
-            if (et!=null && covers(et.substituteInternal(st.getTypeArguments()))) {
+            if (et!=null && coversInternal(et.substituteInternal(st.getTypeArguments()))) {
                 return true;
             }
             //X covers Y if Y satisfies Z and X covers Z
             for (ProducedType pt: st.getDeclaration().getSatisfiedTypes()) {
-                if (covers(pt.substituteInternal(st.getTypeArguments()))) {
+                if (coversInternal(pt.substituteInternal(st.getTypeArguments()))) {
                     return true;
                 }
             }
@@ -1353,7 +1353,7 @@ public class ProducedType extends ProducedReference {
             //      because that leads to decidability problems
             if (st.getDeclaration() instanceof UnionType) {
                 for (ProducedType pt: st.getDeclaration().getCaseTypes()) {
-                    if (!covers(pt.substituteInternal(st.getTypeArguments()))) {
+                    if (!coversInternal(pt.substituteInternal(st.getTypeArguments()))) {
                         return false;
                     }
                 }
