@@ -426,12 +426,12 @@ public class Util {
                 }
             }
             
-            Boolean included = pt.isWellDefined();
-            if (included) {
+            Boolean add = pt.isWellDefined();
+            if (add) {
                 for (Iterator<ProducedType> iter = list.iterator(); iter.hasNext();) {
                     ProducedType t = iter.next();
                     if (pt.isSupertypeOf(t)) {
-                        included = false;
+                        add = false;
                         break;
                     }
                     else if (pt.isSubtypeOf(t)) {
@@ -452,7 +452,19 @@ public class Util {
                     }
                 }
             }
-            if (included) {
+            if (add && list.size()>1) {
+                //it is possible to have a type that is a
+                //supertype of the intersection, even though
+                //it is not a supertype of any of the 
+                //intersected types!
+                IntersectionType it = new IntersectionType(unit);
+                it.setSatisfiedTypes(list);
+                ProducedType type = it.canonicalize().getType();
+                if (pt.isSupertypeOf(type)) {
+                    add = false;
+                }
+            }
+            if (add) {
                 list.add(pt);
             }
         }

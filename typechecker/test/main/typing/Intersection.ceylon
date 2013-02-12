@@ -154,3 +154,19 @@ class Intersection() {
     @error Multi<Nothing,Nothing> check = multiunion;
     
 }
+
+interface IntersectionCanonicalization {
+
+    class Inv<T>() {}
+    
+    interface Co<out T> {}
+    interface A satisfies Co<A> {}
+    interface B satisfies Co<B> {}
+    Inv<A&B&Co<A&B>> foo1(Inv<A&B> inv) => inv;
+    
+    interface Contra<in T> {}
+    interface C satisfies Contra<C> {}
+    interface D satisfies Contra<D> {}
+    Inv<C&D&Contra<C|D>> foo2(Inv<C&D> inv) => inv;
+
+}
