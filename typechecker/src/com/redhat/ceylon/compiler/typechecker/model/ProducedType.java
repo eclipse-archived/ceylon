@@ -1314,8 +1314,9 @@ public class ProducedType extends ProducedReference {
     public void setUnderlyingType(String underlyingType) {
         this.underlyingType = underlyingType;
         // if we have a resolvedAliases cache, update it too
-        if(resolvedAliases != null && resolvedAliases != this)
+        if (resolvedAliases != null && resolvedAliases != this) {
             resolvedAliases.setUnderlyingType(underlyingType);
+        }
     }
     
     public String getUnderlyingType() {
@@ -1337,12 +1338,13 @@ public class ProducedType extends ProducedReference {
         }
         else {
             //X covers Y if Y extends Z and X covers Z
-            ProducedType et = st.getDeclaration().getExtendedType();
+            TypeDeclaration dec = st.getDeclaration();
+            ProducedType et = dec.getExtendedType();
             if (et!=null && coversInternal(et.substituteInternal(st.getTypeArguments()))) {
                 return true;
             }
             //X covers Y if Y satisfies Z and X covers Z
-            for (ProducedType pt: st.getDeclaration().getSatisfiedTypes()) {
+            for (ProducedType pt: dec.getSatisfiedTypes()) {
                 if (coversInternal(pt.substituteInternal(st.getTypeArguments()))) {
                     return true;
                 }
@@ -1351,8 +1353,8 @@ public class ProducedType extends ProducedReference {
             //of A, B, and C
             //NOTE: we don't apply the same rule for enumerated types
             //      because that leads to decidability problems
-            if (st.getDeclaration() instanceof UnionType) {
-                for (ProducedType pt: st.getDeclaration().getCaseTypes()) {
+            if (dec instanceof UnionType) {
+                for (ProducedType pt: dec.getCaseTypes()) {
                     if (!coversInternal(pt.substituteInternal(st.getTypeArguments()))) {
                         return false;
                     }
