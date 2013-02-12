@@ -394,3 +394,26 @@ void testInterEnumCases(Enum i) {
     switch (i)
     case (is Case1|Case2) {}
 }
+
+interface Super1 of Enum1 {}
+interface Super2 of Enum2 {}
+interface Enum1 of EnumCase1 | EnumCase2 satisfies Super1 {}
+interface Enum2 of EnumCase1 | EnumCase2 satisfies Super2 {}
+interface EnumCase1 satisfies Enum1&Enum2 {}
+interface EnumCase2 satisfies Enum1&Enum2 {}
+void testParellelEnumCases(Enum1 e, Super1 s, Super1|Super2|String ss) {
+    switch (e)
+    case (is Enum2) {}
+    switch (e)
+    case (is EnumCase1|EnumCase2) {}
+    switch (s)
+    case (is Super2) {}
+    switch (s)
+    case (is EnumCase1|EnumCase2) {}
+    switch (ss)
+    case (is Enum2|String) {}
+    switch (ss)
+    case (is Super1|String) {}
+    switch (ss)
+    case (is EnumCase1|EnumCase2|String) {}
+}
