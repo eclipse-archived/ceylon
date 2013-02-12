@@ -1053,6 +1053,11 @@ Float|Integer num = one;</programlisting></comment>
             <para>If a type has a self type, then its self type covers the type.</para>
         </listitem>
         <listitem>
+            <para>If a type <literal>X</literal> covers two types <literal>A</literal> 
+            and <literal>B</literal>, then <literal>X</literal> also covers their
+            union <literal>A|B</literal>.</para>
+        </listitem>
+        <listitem>
             <para>Coverage is transitive. If <literal>X</literal> covers
             <literal>Y</literal> and <literal>Y</literal> covers <literal>Z</literal>,
             then <literal>X</literal> covers <literal>Z</literal>.</para>
