@@ -1046,7 +1046,7 @@ Float|Integer num = one;</programlisting></comment>
             covers the first.</para>
         </listitem>
         <listitem>
-            <para>If a type enumerates its cases, then the union of its cases is
+            <para>If a type enumerates its cases, then the union of its cases
             covers the type.</para>
         </listitem>
         <listitem>

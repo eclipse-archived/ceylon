@@ -1289,30 +1289,14 @@ public class ProducedType extends ProducedReference {
             it.setSatisfiedTypes(list);
             return it.canonicalize().getType();
         }
-        /*if (switchType.getDeclaration() instanceof UnionType) {
-            //this branch is not really necessary, because it
-            //does basically the same thing as the else clause
-            //but it's slightly simpler because there are no 
-            //type arguments to substitute
-            List<ProducedType> list = new ArrayList<ProducedType>();
-            for (ProducedType st: switchType.getDeclaration().getCaseTypes()) {
-                addToUnion(list, getUnionOfCases(st));
-            }
-            UnionType ut = new UnionType(unit);
-            ut.setCaseTypes(list);
-            return ut.getType();
-        }*/
         //if X is neither a union, intersection, or enumerated
         //type then its cases are simply X
         else if (sdt.getCaseTypes()==null) {
             return this;
         }
-//        else if (sdt instanceof TypeParameter && !typeParams) {
-//            return this;
-//        }
         //otherwise, if X is a union A|B, or an enumerated 
         //type, with cases A and B, and A is an enumerated 
-        //type with cases U and V, ten the cases of X are
+        //type with cases U and V, then the cases of X are
         //the union U|V|B
         else {
             //build a union of all the cases

@@ -11,3 +11,7 @@ void testMethodVariance(X<String> x, Y<String> y, X<Object> z, Y<Object> w) {
     @type:"X<String>" baz(x,z);
     @type:"Y<Object>" bar(y,w);
 }
+
+class XX<in T>() {}
+class YY<in T>(XX<T> x1, XX<T> x2) {}
+YY<String> y = YY(XX<String>(), XX<Object>());
