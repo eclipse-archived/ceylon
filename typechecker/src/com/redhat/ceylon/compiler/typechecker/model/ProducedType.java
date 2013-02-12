@@ -1365,6 +1365,51 @@ public class ProducedType extends ProducedReference {
         }
     }
     
+    /*public boolean coversInternal(ProducedType st) {
+        //X covers Y if the union of cases of Y is 
+        //a subtype of X
+        if (st.getUnionOfCases().isSubtypeOf(this)) {
+            return true;
+        }
+        else {
+            //X covers Y if Y extends Z and X covers Z
+            ProducedType et = st.getDeclaration().getExtendedType();
+            if (et!=null && coversInternal(et.substituteInternal(st.getTypeArguments()))) {
+                return true;
+            }
+            //X covers Y if Y satisfies Z and X covers Z
+            for (ProducedType pt: st.getDeclaration().getSatisfiedTypes()) {
+                if (coversInternal(pt.substituteInternal(st.getTypeArguments()))) {
+                    return true;
+                }
+            }
+            //X covers Y if Y is a union type A|B|C and X covers all 
+            //of A, B, and C
+            if (st.getDeclaration() instanceof UnionType) {
+                for (ProducedType pt: st.getDeclaration().getCaseTypes()) {
+                    if (!coversInternal(pt.substituteInternal(st.getTypeArguments()))) {
+                        return false;
+                    }
+                }
+                return true;
+            }
+            else {
+                List<ProducedType> cts = st.getDeclaration().getCaseTypes();
+                if (cts!=null) {
+                    for (ProducedType pt: cts) {
+                        if (!coversInternal2(pt.substituteInternal(st.getTypeArguments()))) {
+                            return false;
+                        }
+                    }
+                    return true;
+                }
+                else {
+                    return false;
+                }
+            }
+        }
+    }*/
+    
     public ProducedType withoutUnderlyingType() {
         ProducedType pt = new ProducedType();
         pt.setDeclaration(getDeclaration());

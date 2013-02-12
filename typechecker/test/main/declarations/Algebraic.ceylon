@@ -380,3 +380,17 @@ shared void case2(Status<String> arg) {
     case (is Failed<String>) {  }
     case (is Succeeded<String>) {  }
 }
+
+interface Inter {}
+interface Sub satisfies Inter {}
+interface Enum of Case1|Case2 {}
+interface Case1 of CaseX|CaseY satisfies Enum {}
+interface CaseX satisfies Case1&Sub {}
+interface CaseY satisfies Case1&Sub {}
+interface Case2 satisfies Enum&Inter {}
+void testInterEnumCases(Enum i) {
+    switch (i)
+    case (is Inter) {}
+    switch (i)
+    case (is Case1|Case2) {}
+}
