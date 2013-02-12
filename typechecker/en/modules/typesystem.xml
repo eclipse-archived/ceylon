@@ -1042,16 +1042,15 @@ Float|Integer num = one;</programlisting></comment>
         
         <itemizedlist>
         <listitem>
-            <para>If a type is a subtype of second type, then the second type
-            covers the first.</para>
+            <para>If a type is a subtype of a second type, then the second type
+            covers the first type.</para>
         </listitem>
         <listitem>
             <para>If a type enumerates its cases, then the union of its cases
             covers the type.</para>
         </listitem>
         <listitem>
-            <para>If a type declares a self type, then its self type covers the 
-            type.</para>
+            <para>If a type has a self type, then its self type covers the type.</para>
         </listitem>
         <listitem>
             <para>Coverage is transitive. If <literal>X</literal> covers
