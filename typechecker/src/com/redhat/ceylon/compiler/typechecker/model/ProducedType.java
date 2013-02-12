@@ -10,6 +10,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Stack;
 
 import com.redhat.ceylon.compiler.typechecker.util.ProducedTypeNamePrinter;
 
@@ -322,7 +323,7 @@ public class ProducedType extends ProducedReference {
 
     private ProducedType minusInternal(ProducedType pt) {
         Unit unit = getDeclaration().getUnit();
-        if (pt.coversInternal(this)) { //note: coversInternal() already calls getUnionOfCases()
+        if (pt.coversInternal(this, new Stack<TypeDeclaration>())) { //note: coversInternal() already calls getUnionOfCases()
             return unit.getNothingDeclaration().getType();
         }
         else {
@@ -1327,45 +1328,11 @@ public class ProducedType extends ProducedReference {
      * Does this type cover the given type?
      */
     public boolean covers(ProducedType st) {
-    	return resolveAliases().coversInternal(st.resolveAliases());
+    	return resolveAliases().coversInternal(st.resolveAliases(), 
+    	        new Stack<TypeDeclaration>());
     }
     
-    public boolean coversInternal(ProducedType t) {
-        ProducedType uoc = t.getUnionOfCases();
-        //X covers Y if the union of cases of Y is 
-        //a subtype of X
-        if (uoc.isSubtypeOfInternal(this)) {
-            return true;
-        }
-        TypeDeclaration dec = t.getDeclaration();
-        Map<TypeParameter, ProducedType> args = t.getTypeArguments();
-        if (dec instanceof UnionType) {
-            //X covers Y if Y has the cases A|B|C and 
-            //X covers all of A, B, and C
-            for (ProducedType ct: uoc.getCaseTypes()) {
-                if (!coversInternal(ct.substituteInternal(args))) {
-                    return false;
-                }
-            }
-            return true;
-        }
-        else {
-            //X covers Y if Y extends Z and X covers Z
-            ProducedType et = dec.getExtendedType();
-            if (et!=null && coversInternal(et.substituteInternal(args))) {
-                return true;
-            }
-            //X covers Y if Y satisfies Z and X covers Z
-            for (ProducedType st: dec.getSatisfiedTypes()) {
-                if (coversInternal(st.substituteInternal(args))) {
-                    return true;
-                }
-            }
-            return false;
-        }
-    }
-    
-    /*public boolean coversInternal(ProducedType t, Stack<TypeDeclaration> stack) {
+    public boolean coversInternal(ProducedType t, Stack<TypeDeclaration> stack) {
         ProducedType uoc = t.getUnionOfCases();
         //X covers Y if the union of cases of Y is 
         //a subtype of X
@@ -1402,6 +1369,44 @@ public class ProducedType extends ProducedReference {
             //X covers Y if Y satisfies Z and X covers Z
             for (ProducedType st: dec.getSatisfiedTypes()) {
                 if (coversInternal(st.substituteInternal(args), stack)) {
+                    return true;
+                }
+            }
+            return false;
+        }
+    }
+    
+    //This alternative algorithm, without the stack
+    //fails in one tiny little corner case which we
+    //might be able to disallow - Algebraic.ceylon:345
+    /*public boolean coversInternal(ProducedType t) {
+        ProducedType uoc = t.getUnionOfCases();
+        //X covers Y if the union of cases of Y is 
+        //a subtype of X
+        if (uoc.isSubtypeOfInternal(this)) {
+            return true;
+        }
+        TypeDeclaration dec = t.getDeclaration();
+        Map<TypeParameter, ProducedType> args = t.getTypeArguments();
+        if (dec instanceof UnionType) {
+            //X covers Y if Y has the cases A|B|C and 
+            //X covers all of A, B, and C
+            for (ProducedType ct: uoc.getCaseTypes()) {
+                if (!coversInternal(ct.substituteInternal(args))) {
+                    return false;
+                }
+            }
+            return true;
+        }
+        else {
+            //X covers Y if Y extends Z and X covers Z
+            ProducedType et = dec.getExtendedType();
+            if (et!=null && coversInternal(et.substituteInternal(args))) {
+                return true;
+            }
+            //X covers Y if Y satisfies Z and X covers Z
+            for (ProducedType st: dec.getSatisfiedTypes()) {
+                if (coversInternal(st.substituteInternal(args))) {
                     return true;
                 }
             }
