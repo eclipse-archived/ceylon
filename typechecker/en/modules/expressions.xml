@@ -2196,10 +2196,10 @@ createItemMethod.intercept()
         
         <row>
             <entry><literal>lhs[from:to]</literal></entry>
-            <entry>span</entry>
+            <entry>segment</entry>
             <entry><literal>lhs.segment(from,to)</literal></entry>
             <entry><literal>Ranged&lt;X,Y&gt;</literal></entry>
-            <entry>Two <literal>X</literal> values</entry>
+            <entry><literal>X</literal>, <literal>Integer</literal></entry>
             <entry><literal>Y</literal></entry>
         </row>
         <row>
@@ -2207,7 +2207,7 @@ createItemMethod.intercept()
             <entry>span</entry>
             <entry><literal>lhs.span(from,to)</literal></entry>
             <entry><literal>Ranged&lt;X,Y&gt;</literal></entry>
-            <entry>Two <literal>X</literal> values</entry>
+            <entry><literal>X</literal>, <literal>X</literal></entry>
             <entry><literal>Y</literal></entry>
         </row>
         <row>
@@ -2298,7 +2298,7 @@ createItemMethod.intercept()
 
         <row>
             <entry><literal>lhs..rhs</literal></entry>
-            <entry>range</entry>
+            <entry>spanned range</entry>
             <entry><literal>Range(lhs, rhs)</literal></entry>
             <entry><literal>T given T satisfies Ordinal &amp; Comparable&lt;T&gt;</literal></entry>
             <entry><literal>T</literal></entry>
@@ -2307,11 +2307,11 @@ createItemMethod.intercept()
         
         <row>
             <entry><literal>lhs:rhs</literal></entry>
-            <entry>range</entry>
-            <entry><literal>if (lhs&lt;=0) [] else Range(lhs, rhs)</literal></entry>
+            <entry>segmented range</entry>
+            <entry><literal>if (lhs&lt;=0) [] else TODO</literal></entry>
             <entry><literal>T given T satisfies Ordinal &amp; Comparable&lt;T&gt;</literal></entry>
-            <entry><literal>T</literal></entry>
-            <entry><literal>[]|Range&lt;T&gt;</literal></entry>
+            <entry><literal>Integer</literal></entry>
+            <entry><literal>T[]</literal></entry>
         </row>
         
         <row>
