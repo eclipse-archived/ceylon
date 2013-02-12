@@ -401,7 +401,7 @@ interface Enum1 of EnumCase1 | EnumCase2 satisfies Super1 {}
 interface Enum2 of EnumCase1 | EnumCase2 satisfies Super2 {}
 interface EnumCase1 satisfies Enum1&Enum2 {}
 interface EnumCase2 satisfies Enum1&Enum2 {}
-void testParellelEnumCases(Enum1 e, Super1 s, Super1|Super2|String ss) {
+void testParellelEnumCases(Enum1 e, Super1 s, Super1|Super2|String sss,Super1&Super2|Null ssn) {
     switch (e)
     case (is Enum2) {}
     switch (e)
@@ -410,10 +410,16 @@ void testParellelEnumCases(Enum1 e, Super1 s, Super1|Super2|String ss) {
     case (is Super2) {}
     switch (s)
     case (is EnumCase1|EnumCase2) {}
-    switch (ss)
+    switch (sss)
     case (is Enum2|String) {}
-    switch (ss)
+    switch (sss)
     case (is Super1|String) {}
-    switch (ss)
+    switch (sss)
     case (is EnumCase1|EnumCase2|String) {}
+    switch (ssn)
+    case (is Enum2|Null) {}
+    switch (ssn)
+    case (is Super1|Null) {}
+    switch (ssn)
+    case (is EnumCase1|EnumCase2|Null) {}
 }
