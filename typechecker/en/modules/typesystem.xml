@@ -1038,6 +1038,9 @@ Float|Integer num = one;</programlisting></comment>
         </listitem>
         </itemizedlist>
         
+    <section id="coverage">
+        <title>Coverage</title>
+        
         <para>Coverage is a strictly weaker relationship than assignability:</para>
         
         <itemizedlist>
@@ -1089,7 +1092,9 @@ Float|Integer num = one;</programlisting></comment>
         coverage implicitly at the same time as assignability, because that results in 
         undecidability!</para>
         </comment>
-                
+    
+    </section>
+        
     <section id="cases">
         <title>Cases</title>
         
