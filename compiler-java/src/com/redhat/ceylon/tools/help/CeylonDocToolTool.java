@@ -64,7 +64,7 @@ public class CeylonDocToolTool implements Tool {
         html(".html") {
             @Override
             HtmlVisitor newOutput(CeylonDocToolTool tool, Writer writer) {
-                return new HtmlVisitor(writer);
+                return new HtmlVisitor(writer, tool.omitDoctype);
             }
 
             @Override
@@ -78,7 +78,18 @@ public class CeylonDocToolTool implements Tool {
                         getClass().getResource("resources/ceylondoc-icons.png"),
                         getClass().getResource("resources/ceylondoc-logo.png")};
             }
-        }, 
+        },
+        docbook(".xml") {
+            @Override
+            DocBookVisitor newOutput(CeylonDocToolTool tool, Writer writer) {
+                return new DocBookVisitor(writer, tool.omitDoctype);
+            }
+
+            @Override
+            URL[] supportingResources() {
+                return null;
+            }
+        },
         txt(".txt") {
             @Override
             PlainVisitor newOutput(CeylonDocToolTool tool, Writer writer) {
@@ -107,6 +118,7 @@ public class CeylonDocToolTool implements Tool {
     private boolean allPorcelain;
     protected ToolLoader toolLoader;
     private DocBuilder docBuilder;
+    private boolean omitDoctype;
         
     public final void setToolLoader(ToolLoader toolLoader) {
         this.toolLoader = toolLoader;
@@ -138,6 +150,12 @@ public class CeylonDocToolTool implements Tool {
         this.index = index;
     }
     
+    @Option
+    @Description("Omit the doctype when outputting XML-based formats")
+    public void setOmitDoctype(boolean omitDoctype) {
+        this.omitDoctype = omitDoctype;
+    }
+    
     @OptionArgument(shortName='o', argumentName="dir")
     @Description("Directory to generate the output files in " +
             "(default: The current directory)")
@@ -147,7 +165,7 @@ public class CeylonDocToolTool implements Tool {
     
     @OptionArgument(argumentName="format")
     @Description("The format to generate the documentation in " +
-            "(allowable values: `html` or `txt`, default: `html`)")
+            "(allowable values: `html`, `docbook` or `txt`, default: `html`)")
     public void setFormat(Format format) {
         this.format = format;
     }
@@ -232,7 +250,7 @@ public class CeylonDocToolTool implements Tool {
         ResourceBundle bundle = ResourceBundle.getBundle("com.redhat.ceylon.tools.help.resources.sections");
         try (FileWriter writer = new FileWriter(indexFile)) {
             HtmlVisitor htmlOutput = (HtmlVisitor)Format.html.newOutput(this, writer);
-            Html html = htmlOutput.getHtml();
+            AbstractMl html = htmlOutput.getHtml();
             indexHeader(html, bundle.getString("index.title"), bundle.getString("index.overview"));
             
             List<Doc> porcelain = new ArrayList<>();
@@ -254,7 +272,7 @@ public class CeylonDocToolTool implements Tool {
         }
     }
 
-    private void indexHeader(Html html, String title, String overview) {
+    private void indexHeader(AbstractMl html, String title, String overview) {
         html.doctype("html").text("\n");
         html.open("html", "head").text("\n");
         html.tag("meta charset='UTF-8'").text("\n");
@@ -276,11 +294,11 @@ public class CeylonDocToolTool implements Tool {
         html.open("div class='container-fluid'").text("\n");
     }
     
-    private void indexFooter(Html html) {
+    private void indexFooter(AbstractMl html) {
         html.close("div", "body", "html");
     }
     
-    private void generateToolList(List<Doc> docs, Html html, String title) {
+    private void generateToolList(List<Doc> docs, AbstractMl html, String title) {
         html.open("table class='table table-condensed table-bordered table-hover'").text("\n");
         html.open("thead").text("\n");
         html.open("tr class='table-header'");

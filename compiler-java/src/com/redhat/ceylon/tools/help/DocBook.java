@@ -19,14 +19,18 @@
  */
 package com.redhat.ceylon.tools.help;
 
-class Html extends AbstractMl<Html> {
+import org.tautua.markdownpapers.ast.Node;
 
-    public Html(Appendable out) {
+class DocBook extends AbstractMl<DocBook> {
+
+    public DocBook(Appendable out) {
         super(out);
     }
     
-    public Html link(String linkText, String url) {
-        return open("a href='" + url + "'").text(linkText).close("a");
+    public DocBook markdown(Node doc) {
+        DocBookMarkdownVisitor markdownVisitor = new DocBookMarkdownVisitor(out);
+        doc.accept(markdownVisitor);
+        return this;
     }
     
 }

@@ -45,12 +45,14 @@ public class HtmlVisitor implements Visitor {
     private boolean hadOptions;
     private Doc doc;
     private int optionsDepth = 0;
+    private final boolean omitDoctype;
     
-    HtmlVisitor(Appendable out) {
+    HtmlVisitor(Appendable out, boolean omitDoctype) {
         this.html = new Html(out);
+        this.omitDoctype = omitDoctype;
     }
     
-    Html getHtml() {
+    AbstractMl getHtml() {
         return html;
     }
     
@@ -58,7 +60,9 @@ public class HtmlVisitor implements Visitor {
     public void start(Doc doc) {
         this.doc = doc;
         ResourceBundle bundle = ResourceBundle.getBundle("com.redhat.ceylon.tools.help.resources.sections");
-        html.doctype("html").text("\n");
+        if (!omitDoctype) {
+            html.doctype("html").text("\n");
+        }
         html.open("html", "head");
         html.tag("meta charset='UTF-8'").text("\n");
         html.open("title").text(doc.getInvocation()).close("title").text("\n");
@@ -96,7 +100,7 @@ public class HtmlVisitor implements Visitor {
         html.close("div").text("\n");
     }
 
-    private static void shortcutInfo(Html html, String key, String description) {
+    private static void shortcutInfo(AbstractMl html, String key, String description) {
         html.open("div id='"+key+"'").open("span class='key badge'").text(key).close("span");
         html.open("span class='info muted'").text(description).close("span", "div");
     }
@@ -111,11 +115,11 @@ public class HtmlVisitor implements Visitor {
         html.close("body", "html");
     }
 
-    private static void addTableStart(Html html, String section, String title, int cols) {
+    private static void addTableStart(AbstractMl html, String section, String title, int cols) {
         addTableStart(html, section, Markdown.markdown("##" + title), cols);
     }
     
-    private static void addTableStart(Html html, String sectionId, Node title, int cols) {
+    private static void addTableStart(AbstractMl html, String sectionId, Node title, int cols) {
         html.open("table class='table table-condensed table-bordered'").text("\n");
         html.open("thead").text("\n");
         html.open("tr class='table-header' title='Click for expand/collapse'");
@@ -126,7 +130,7 @@ public class HtmlVisitor implements Visitor {
         html.open("tbody").text("\n");
     }
 
-    private static void addTableEnd(Html html) {
+    private static void addTableEnd(AbstractMl html) {
         html.close("tbody", "table");
     }
     
@@ -262,7 +266,7 @@ public class HtmlVisitor implements Visitor {
         html.open("div class='container-fluid'").text("\n");
     }
 
-    private static void addShortcutKey(Html html, String url, String title, String key, String rest) {
+    private static void addShortcutKey(AbstractMl html, String url, String title, String key, String rest) {
         html.open("a href='" + url + "'");
         html.open("span title='" + title + " [Shortcut: "+key+"]'");
         html.open("span class='accesskey'").text(key).close("span").text(rest).close("span", "a");
