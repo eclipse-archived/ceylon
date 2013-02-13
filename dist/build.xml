@@ -225,7 +225,12 @@ Used with another target such as 'package'">
         <mkdir dir="${dist.dir}/lib"/>
         <copy todir="${dist.dir}/lib">
             <fileset dir="${ceylon-module-resolver.dir}/lib">
-                <include name="shrinkwrap-maven-uberjar-*.jar"/>
+                <include name="sardine-*.jar"/>
+                <include name="httpclient-*.jar"/>
+                <include name="httpcore-*.jar"/>
+                <include name="commons-logging-*.jar"/>
+                <include name="commons-codec-*.jar"/>
+                <include name="slf4j-*.jar"/>
             </fileset>
         </copy>
     </target>
@@ -272,8 +277,7 @@ Used with another target such as 'package'">
         </copy>
     </target>
 
-    <target name="install-compiler" 
-          depends="install-typechecker">
+    <target name="install-compiler" depends="install-typechecker">
         <ant antfile="${ceylon-compiler.dir}/build.xml" target="publish" dir="${ceylon-compiler.dir}" inheritall="false">
             <property name="ceylon.repo.dir" value="${ceylon.repo.dir}"/>
         </ant>
@@ -287,15 +291,10 @@ Used with another target such as 'package'">
         </ant>
     </target>
 
-    <target name="install-typechecker" 
-            depends="install-cmr">
+    <target name="install-typechecker" depends="install-cmr">
         <ant antfile="${ceylon-spec.dir}/build.xml" target="publish" dir="${ceylon-spec.dir}" inheritall="false">
             <property name="ceylon.repo.dir" value="${ceylon.repo.dir}"/>
         </ant>
-        <!--<copy todir="${dist.dir}/repo">
-            <fileset dir="${ceylon-spec.dir}/build/dist">
-            </fileset>
-        </copy>-->
     </target>
 
     <target name="install-language">
@@ -314,17 +313,6 @@ Used with another target such as 'package'">
         <ant antfile="${ceylon-module-resolver.dir}/build.xml" target="publish" dir="${ceylon-module-resolver.dir}" inheritall="false">
             <property name="ceylon.repo.dir" value="${ceylon.repo.dir}"/>
         </ant>
-
-        <copy todir="${dist.dir}/lib">
-            <fileset dir="${ceylon-module-resolver.dir}/lib">
-                <include name="sardine-*.jar"/>
-                <include name="httpclient-*.jar"/>
-                <include name="httpcore-*.jar"/>
-                <include name="commons-logging-*.jar"/>
-                <include name="commons-codec-*.jar"/>
-                <include name="slf4j-*.jar"/>
-            </fileset>
-        </copy>
     </target>
 
     <target name="install-runtime" depends="install-cmr">
@@ -335,11 +323,6 @@ Used with another target such as 'package'">
             <fileset dir="${ceylon-runtime.dir}/build/dist">
             </fileset>
         </copy>
-        <chmod perm="0755">
-            <fileset dir="${dist.dir}/bin">
-                <include name="ceylon"/>
-            </fileset>
-        </chmod>
     </target>
 
     <target name="generate-spec">
