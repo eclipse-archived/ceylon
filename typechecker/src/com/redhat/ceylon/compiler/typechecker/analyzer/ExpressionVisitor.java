@@ -61,9 +61,6 @@ import com.redhat.ceylon.compiler.typechecker.model.Value;
 import com.redhat.ceylon.compiler.typechecker.model.ValueParameter;
 import com.redhat.ceylon.compiler.typechecker.tree.Node;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree;
-import com.redhat.ceylon.compiler.typechecker.tree.Tree.Primary;
-import com.redhat.ceylon.compiler.typechecker.tree.Tree.SpecifierExpression;
-import com.redhat.ceylon.compiler.typechecker.tree.Tree.Type;
 import com.redhat.ceylon.compiler.typechecker.tree.Visitor;
 
 /**
@@ -132,7 +129,7 @@ public class ExpressionVisitor extends Visitor {
         FunctionalParameter p = that.getDeclarationModel();
         Tree.DefaultArgument da = that.getDefaultArgument();
         if (p.isDeclaredVoid() && p.isDefaulted()) { 
-            SpecifierExpression se = da.getSpecifierExpression();
+            Tree.SpecifierExpression se = da.getSpecifierExpression();
             if (se!=null && se.getExpression()!=null &&
                     !isSatementExpression(se.getExpression())) {
                 da.addError("functional parameter is declared void so specified expression must be a statement: " +
@@ -534,8 +531,10 @@ public class ExpressionVisitor extends Visitor {
             n.addError("expression must be a type with fixed size: type not known");
         }
         else*/ if (t!=null && !unit.isEmptyType(t)) {
-            term.addError("expression must be a possibly-empty type: " + 
-                    t.getProducedTypeName(unit) + " is not possibly-empty");
+            if (!dynamic && !t.isUnknown()) {
+                term.addError("expression must be a possibly-empty type: " + 
+                        t.getProducedTypeName(unit) + " is not possibly-empty");
+            }
         }
     }
     
@@ -545,8 +544,10 @@ public class ExpressionVisitor extends Visitor {
         }
         else*/ if (t!=null && !unit.isOptionalType(t) && 
                 !hasUncheckedNulls(term)) {
-            term.addError("expression must be of optional type: " +
-                    t.getProducedTypeName(unit) + " is not optional");
+            if (!dynamic && !t.isUnknown()) {
+                term.addError("expression must be of optional type: " +
+                        t.getProducedTypeName(unit) + " is not optional");
+            }
         }
     }
 
@@ -637,7 +638,7 @@ public class ExpressionVisitor extends Visitor {
     @Override public void visit(Tree.AttributeDeclaration that) {
         super.visit(that);
         Tree.SpecifierOrInitializerExpression sie = that.getSpecifierOrInitializerExpression();
-        Type type = that.getType();
+        Tree.Type type = that.getType();
         inferType(that, sie);
         if (type!=null) {
             ProducedType t = type.getTypeModel();
@@ -989,11 +990,14 @@ public class ExpressionVisitor extends Visitor {
             Tree.SpecifierExpression se) {
         if (var.getType()!=null) {
             ProducedType vt = var.getType().getTypeModel();
-            if (se!=null && se.getExpression()!=null) {
-                ProducedType set = se.getExpression().getTypeModel();
+            Tree.Expression e = se.getExpression();
+            if (se!=null && e!=null) {
+                ProducedType set = e.getTypeModel();
                 if (set!=null) {
-                    checkAssignable(unit.getDefiniteType(set), vt, se, 
-                            "specified expression must be assignable to declared type");
+                    if (!dynamic || !vt.isUnknown() && !set.isUnknown()) {
+                        checkAssignable(unit.getDefiniteType(set), vt, se, 
+                                "specified expression must be assignable to declared type");
+                    }
                 }
             }
         }
@@ -1003,7 +1007,13 @@ public class ExpressionVisitor extends Visitor {
             Tree.SpecifierExpression se) {
         if (var.getType()!=null) {
             ProducedType vt = var.getType().getTypeModel();
-            checkType(unit.getOptionalType(unit.getPossiblyNoneType(vt)), se);
+            Tree.Expression e = se.getExpression();
+            if (se!=null && e!=null) {
+                ProducedType set = e.getTypeModel();
+                if (!dynamic || !vt.isUnknown() && !set.isUnknown()) {
+                    checkType(unit.getOptionalType(unit.getPossiblyNoneType(vt)), se);
+                }
+            }
         }
     }
 
@@ -1042,7 +1052,7 @@ public class ExpressionVisitor extends Visitor {
 
     @Override public void visit(Tree.AttributeArgument that) {
         Tree.SpecifierExpression se = that.getSpecifierExpression();
-        Type type = that.getType();
+        Tree.Type type = that.getType();
         if (se==null) {
             Tree.Type rt = beginReturnScope(type);
             Declaration od = beginReturnDeclaration(that.getDeclarationModel());
@@ -1329,7 +1339,8 @@ public class ExpressionVisitor extends Visitor {
         Tree.Expression e = se.getExpression();
         if (e!=null) {
             ProducedType expressionType = e.getTypeModel();
-            if (expressionType!=null) {
+            if (expressionType!=null && 
+                    !expressionType.isUnknown()) {
                 ProducedType t;
                 if (unit.isOptionalType(expressionType)) {
                     t = unit.getDefiniteType(expressionType);
@@ -1350,7 +1361,8 @@ public class ExpressionVisitor extends Visitor {
         Tree.Expression e = se.getExpression();
         if (e!=null) {
             ProducedType expressionType = e.getTypeModel();
-            if (expressionType!=null) {
+            if (expressionType!=null && 
+                    !expressionType.isUnknown()) {
 //                if (expressionType.getDeclaration() instanceof Interface && 
 //                        expressionType.getDeclaration().equals(unit.getSequentialDeclaration())) {
 //                    expressionType = unit.getEmptyType(unit.getSequenceType(expressionType.getTypeArgumentList().get(0)));
@@ -1563,7 +1575,7 @@ public class ExpressionVisitor extends Visitor {
     ProducedType unwrap(ProducedType pt, Tree.QualifiedMemberOrTypeExpression mte) {
         ProducedType result;
         Tree.MemberOperator op = mte.getMemberOperator();
-        Primary p = mte.getPrimary();
+        Tree.Primary p = mte.getPrimary();
         if (op instanceof Tree.SafeMemberOp)  {
             checkOptional(pt, p, p);
             result = unit.getDefiniteType(pt);
@@ -1609,7 +1621,7 @@ public class ExpressionVisitor extends Visitor {
     
     @Override public void visit(Tree.InvocationExpression that) {
         
-        Primary p = that.getPrimary();
+        Tree.Primary p = that.getPrimary();
         
         if (dynamic && (p.getTypeModel()==null ||
                 p.getTypeModel().isUnknown())) {
