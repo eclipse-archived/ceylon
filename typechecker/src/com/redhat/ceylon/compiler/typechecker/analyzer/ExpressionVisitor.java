@@ -941,9 +941,22 @@ public class ExpressionVisitor extends Visitor {
         super.visit(that);
         Tree.Type type = that.getType();
         Tree.DefaultArgument da = that.getDefaultArgument();
+        Parameter p = that.getDeclarationModel();
         if (da!=null && type!=null) {
             Tree.SpecifierExpression se = da.getSpecifierExpression();
-            checkType(type.getTypeModel(), that.getDeclarationModel().getName(), se, 2100);
+            checkType(type.getTypeModel(), p.getName(), se, 2100);
+        }
+        if (type instanceof Tree.LocalModifier && 
+                !(that instanceof Tree.InitializerParameter)) {
+            type.setTypeModel(new UnknownType(unit).getType());
+            if (!dynamic) {
+                type.addError("parameter may not have inferred type: " + 
+                        p.getName());
+            }
+            else if (p.getDeclaration().isShared()) {
+                type.addError("shared parameter may not have inferred type: " + 
+                        p.getName());
+            }
         }
     }
 

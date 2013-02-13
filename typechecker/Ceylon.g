@@ -829,8 +829,7 @@ parameter returns [Parameter parameter]
         { fp.setType(new FunctionModifier($FUNCTION_MODIFIER));
           $parameter=fp; }
       | VALUE_MODIFIER
-        { fp.setType(new ValueModifier($VALUE_MODIFIER));
-          $parameter=fp; }
+        { vp.setType(new ValueModifier($VALUE_MODIFIER)); }
       )
       memberName
       { vp.setIdentifier($memberName.identifier);

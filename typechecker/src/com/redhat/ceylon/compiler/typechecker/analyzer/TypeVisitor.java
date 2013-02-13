@@ -1161,7 +1161,7 @@ public class TypeVisitor extends Visitor {
     @Override
     public void visit(Tree.ValueParameterDeclaration that) {
         super.visit(that);
-        if (that.getType() instanceof Tree.LocalModifier) {
+        if (that instanceof Tree.InitializerParameter) {
             //i.e. an attribute initializer parameter
             ValueParameter d = that.getDeclarationModel();
             Declaration a = that.getScope().getDirectMember(d.getName(), null, false);

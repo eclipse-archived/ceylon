@@ -616,11 +616,6 @@ public class DeclarationVisitor extends Visitor {
                 }*/
             }
         }
-        if (that.getType() instanceof Tree.LocalModifier && 
-        		!(that instanceof Tree.InitializerParameter)) {
-        	that.getType().setTypeModel(unit.getAnythingDeclaration().getType());
-        	that.getType().addError("parameter may not have inferred type");
-        }
     }
     
     @Override
