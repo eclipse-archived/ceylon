@@ -2,6 +2,7 @@ package com.redhat.ceylon.compiler.typechecker.analyzer;
 
 import static com.redhat.ceylon.compiler.typechecker.parser.CeylonLexer.AVERBATIM_STRING;
 import static com.redhat.ceylon.compiler.typechecker.parser.CeylonLexer.STRING_END;
+import static com.redhat.ceylon.compiler.typechecker.parser.CeylonLexer.STRING_LITERAL;
 import static com.redhat.ceylon.compiler.typechecker.parser.CeylonLexer.STRING_MID;
 import static com.redhat.ceylon.compiler.typechecker.parser.CeylonLexer.STRING_START;
 import static com.redhat.ceylon.compiler.typechecker.parser.CeylonLexer.VERBATIM_STRING;
@@ -21,16 +22,21 @@ import com.redhat.ceylon.compiler.typechecker.tree.Tree.Literal;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.NaturalLiteral;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.QuotedLiteral;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.StringLiteral;
+import com.redhat.ceylon.compiler.typechecker.tree.Tree.StringTemplate;
 import com.redhat.ceylon.compiler.typechecker.tree.Visitor;
 
 public class LiteralVisitor extends Visitor {
 	
+    private int indent;
+    
     @Override
     public void visit(StringLiteral that) {
         int type = that.getToken().getType();
         String text = that.getText();
         StringBuilder result = new StringBuilder();
-        int indent = getIndentPosition(that);
+        if (type==STRING_START||type==STRING_LITERAL) {
+            indent = getIndentPosition(that);
+        }
         boolean allTrimmed = stripIndent(text, indent, result);
         if (!allTrimmed) {
             that.addError("multiline string content should align be aligned with start of string: string begins at character position " + indent);
@@ -48,8 +54,19 @@ public class LiteralVisitor extends Visitor {
             }
             that.setText(result.substring(1, result.length()-1));
         }
+        if (type==STRING_END||type==STRING_LITERAL) {
+            indent = 0;
+        }
     }
 
+    @Override
+    public void visit(StringTemplate that) {
+        int oi = indent;
+        indent = 0;
+        super.visit(that);
+        indent = oi;
+    }
+    
     @Override
     public void visit(QuotedLiteral that) {
         StringBuilder result = new StringBuilder();

@@ -56,4 +56,10 @@ class Literals() {
     @type:"Integer" value bin1 = $0101001101;
     @type:"Integer" value bin2 = $0101_0011;
     
+    String name = "Gavin";
+    String multlineTemplate = "Hello, ``name``,
+                               Welcome back!";
+    
+    @error String brokenTemplate = "Hello, ``name``,
+                                   Welcome back!";
 }
