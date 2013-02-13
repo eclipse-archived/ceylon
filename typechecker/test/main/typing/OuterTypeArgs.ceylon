@@ -100,6 +100,7 @@ class OuterTypeArgs() {
     }
     @error Refines.Contained rc = Extends1().Contained(); 
     Extends2.Contained ec = Extends1().Contained(); 
+    @error Extends1.Contained eco = Extends2().Contained(); 
 
 }
 
