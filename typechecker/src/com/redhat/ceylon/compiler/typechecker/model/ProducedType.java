@@ -1573,4 +1573,8 @@ public class ProducedType extends ProducedReference {
 		return false;
     }
     
+    public boolean isUnknown() {
+        return getDeclaration() instanceof UnknownType;
+    }
+    
 }
