@@ -8,7 +8,6 @@ import java.util.List;
 
 import com.redhat.ceylon.compiler.typechecker.model.Annotation;
 import com.redhat.ceylon.compiler.typechecker.model.Declaration;
-import com.redhat.ceylon.compiler.typechecker.model.DynamicType;
 import com.redhat.ceylon.compiler.typechecker.model.ProducedType;
 import com.redhat.ceylon.compiler.typechecker.model.Scope;
 import com.redhat.ceylon.compiler.typechecker.model.TypeDeclaration;
@@ -227,12 +226,6 @@ class Util {
         if (isTypeUnknown(type) || isTypeUnknown(supertype)) {
         	addTypeUnknownError(node, message);
         }
-        else if (supertype.getDeclaration() instanceof DynamicType) {
-            //ok
-        }
-        else if (type.getDeclaration() instanceof DynamicType) {
-            //ok
-        }
         else if (!type.isSubtypeOf(supertype)) {
         	node.addError(message + message(type, " is not assignable to ", supertype, node.getUnit()));
         }
@@ -263,12 +256,6 @@ class Util {
             Node node, String message, int code) {
         if (isTypeUnknown(type) || isTypeUnknown(supertype)) {
             addTypeUnknownError(node, message);
-        }
-        else if (supertype.getDeclaration() instanceof DynamicType) {
-            //ok
-        }
-        else if (type.getDeclaration() instanceof DynamicType) {
-            //ok
         }
         else if (!type.isSubtypeOf(supertype)) {
             node.addError(message + message(type, " is not assignable to ", supertype, node.getUnit()), code);

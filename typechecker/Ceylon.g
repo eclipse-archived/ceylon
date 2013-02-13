@@ -2736,6 +2736,8 @@ controlStatement returns [ControlStatement controlStatement]
       { $controlStatement=$forElse.statement; }
     | tryCatchFinally
       { $controlStatement=$tryCatchFinally.statement; }
+    | dynamic
+      { $controlStatement=$dynamic.statement; }
     ;
 
 controlBlock returns [Block block]
@@ -2744,6 +2746,16 @@ controlBlock returns [Block block]
       | { displayRecognitionError(getTokenNames(), 
                 new MismatchedTokenException(LBRACE, input)); }
       )
+    ;
+
+dynamic returns [DynamicStatement statement]
+    @init { DynamicClause dc = null; }
+    : { $statement=new DynamicStatement(null); }
+      DYNAMIC 
+      { dc = new DynamicClause($DYNAMIC);
+        $statement.setDynamicClause(dc); }
+      controlBlock
+      { dc.setBlock($controlBlock.block); }
     ;
 
 ifElse returns [IfStatement statement]
@@ -3272,6 +3284,10 @@ CLASS_DEFINITION
 
 CONTINUE
     :   'continue'
+    ;
+    
+DYNAMIC
+    :   'dynamic'
     ;
     
 ELSE_CLAUSE

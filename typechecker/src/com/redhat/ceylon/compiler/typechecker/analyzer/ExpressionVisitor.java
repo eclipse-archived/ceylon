@@ -83,6 +83,7 @@ public class ExpressionVisitor extends Visitor {
     private Declaration returnDeclaration;
     private boolean defaultArgument;
     private boolean isCondition;
+    private boolean dynamic;
 
     private Unit unit;
     
@@ -175,12 +176,14 @@ public class ExpressionVisitor extends Visitor {
     
     @Override public void visit(Tree.ExpressionComprehensionClause that) {
         super.visit(that);
+        if (dynamic) return;
         that.setTypeModel(that.getExpression().getTypeModel());
         that.setFirstTypeModel(unit.getNothingDeclaration().getType());
     }
     
     @Override public void visit(Tree.ForComprehensionClause that) {
         super.visit(that);
+        if (dynamic) return;
         that.setPossiblyEmpty(true);
         Tree.ComprehensionClause cc = that.getComprehensionClause();
         if (cc!=null) {
@@ -210,6 +213,7 @@ public class ExpressionVisitor extends Visitor {
     
     @Override public void visit(Tree.IfComprehensionClause that) {
         super.visit(that);
+        if (dynamic) return;
         that.setPossiblyEmpty(true);
         that.setFirstTypeModel(unit.getNullDeclaration().getType());
         Tree.ComprehensionClause cc = that.getComprehensionClause();
@@ -254,6 +258,7 @@ public class ExpressionVisitor extends Visitor {
     
     @Override public void visit(Tree.Variable that) {
         super.visit(that);
+        if (dynamic) return;
         if (that.getSpecifierExpression()!=null) {
             inferType(that, that.getSpecifierExpression());
             if (that.getType()!=null) {
@@ -557,6 +562,7 @@ public class ExpressionVisitor extends Visitor {
     @Override public void visit(Tree.Resource that) {
         that.addWarning("try with resource not yet supported");
         super.visit(that);
+        if (dynamic) return;
         ProducedType t = null;
         Node typedNode = null;
         if (that.getExpression()!=null) {
@@ -607,6 +613,7 @@ public class ExpressionVisitor extends Visitor {
 
     @Override public void visit(Tree.ValueIterator that) {
         super.visit(that);
+        if (dynamic) return;
         if (that.getVariable()!=null) {
             inferContainedType(that.getVariable(), that.getSpecifierExpression());
             checkContainedType(that.getVariable(), that.getSpecifierExpression());
@@ -615,6 +622,7 @@ public class ExpressionVisitor extends Visitor {
 
     @Override public void visit(Tree.KeyValueIterator that) {
         super.visit(that);
+        if (dynamic) return;
         if (that.getKeyVariable()!=null && that.getValueVariable()!=null) {
             inferKeyType(that.getKeyVariable(), that.getSpecifierExpression());
             inferValueType(that.getValueVariable(), that.getSpecifierExpression());
@@ -625,6 +633,7 @@ public class ExpressionVisitor extends Visitor {
     
     @Override public void visit(Tree.AttributeDeclaration that) {
         super.visit(that);
+        if (dynamic) return;
         Tree.SpecifierOrInitializerExpression sie = that.getSpecifierOrInitializerExpression();
         inferType(that, sie);
         if (that.getType()!=null) {
@@ -682,6 +691,7 @@ public class ExpressionVisitor extends Visitor {
     
     @Override public void visit(Tree.SpecifierStatement that) {
         super.visit(that);
+        if (dynamic) return;
         boolean hasParams = false;
         Tree.Term me = that.getBaseMemberExpression();
         while (me instanceof Tree.ParameterizedExpression) {
@@ -922,6 +932,7 @@ public class ExpressionVisitor extends Visitor {
 
     @Override public void visit(Tree.Parameter that) {
         super.visit(that);
+        if (dynamic) return;
         if (that.getDefaultArgument()!=null && that.getType()!=null) {
             Tree.SpecifierExpression se = that.getDefaultArgument().getSpecifierExpression();
             Tree.Type type = that.getType();
@@ -1027,6 +1038,7 @@ public class ExpressionVisitor extends Visitor {
         }
         else {
             super.visit(that);
+            if (dynamic) return;
             inferType(that, se);
             if (that.getType()!=null) {
                 checkType(that.getType().getTypeModel(), 
@@ -1046,6 +1058,7 @@ public class ExpressionVisitor extends Visitor {
 
     @Override public void visit(Tree.MethodDeclaration that) {
         super.visit(that);
+        if (dynamic) return;
         Tree.SpecifierExpression se = that.getSpecifierExpression();
         if (se!=null) {
             Tree.Expression e = se.getExpression();
@@ -1084,6 +1097,7 @@ public class ExpressionVisitor extends Visitor {
         }
         else {
             super.visit(that);
+            if (dynamic) return;
             Tree.Expression e = se.getExpression();
             if (e!=null) {
                 ProducedType returnType = e.getTypeModel();
@@ -1447,6 +1461,7 @@ public class ExpressionVisitor extends Visitor {
         
     @Override public void visit(Tree.Throw that) {
         super.visit(that);
+        if (dynamic) return;
         Tree.Expression e = that.getExpression();
         if (e!=null) {
             checkAssignable(e.getTypeModel(),
@@ -1457,6 +1472,7 @@ public class ExpressionVisitor extends Visitor {
     
     @Override public void visit(Tree.Return that) {
         super.visit(that);
+        if (dynamic) return;
         if (returnType==null) {
             //misplaced return statements are already handled by ControlFlowVisitor
             //missing return types declarations already handled by TypeVisitor
@@ -1573,6 +1589,11 @@ public class ExpressionVisitor extends Visitor {
     }
     
     @Override public void visit(Tree.InvocationExpression that) {
+        
+        if (dynamic) {
+            super.visit(that);
+            return;
+        }
         
         boolean isDirectInvocation = that.getPrimary() instanceof Tree.MemberOrTypeExpression;
         if (isDirectInvocation) {
@@ -2639,6 +2660,7 @@ public class ExpressionVisitor extends Visitor {
     
     @Override public void visit(Tree.IndexExpression that) {
         super.visit(that);
+        if (dynamic) return;
         ProducedType pt = type(that);
         if (pt==null) {
             that.addError("could not determine type of receiver");
@@ -2844,12 +2866,14 @@ public class ExpressionVisitor extends Visitor {
     
     @Override public void visit(Tree.PostfixOperatorExpression that) {
         super.visit(that);
+        if (dynamic) return;
         visitIncrementDecrement(that, type(that), that.getTerm());
         checkAssignability(that.getTerm(), that);
     }
 
     @Override public void visit(Tree.PrefixOperatorExpression that) {
         super.visit(that);
+        if (dynamic) return;
         visitIncrementDecrement(that, type(that), that.getTerm());
         checkAssignability(that.getTerm(), that);
     }
@@ -3278,6 +3302,7 @@ public class ExpressionVisitor extends Visitor {
     
     @Override public void visit(Tree.ArithmeticOp that) {
         super.visit(that);
+        if (dynamic) return;
         visitArithmeticOperator(that, getArithmeticDeclaration(that));
     }
 
@@ -3310,117 +3335,138 @@ public class ExpressionVisitor extends Visitor {
 
     @Override public void visit(Tree.BitwiseOp that) {
         super.visit(that);
+        if (dynamic) return;
         //that.addWarning("Set operators not yet supported");
         visitSetOperator(that);
     }
 
     @Override public void visit(Tree.LogicalOp that) {
         super.visit(that);
+        if (dynamic) return;
         visitLogicalOperator(that);
     }
 
     @Override public void visit(Tree.EqualityOp that) {
         super.visit(that);
+        if (dynamic) return;
         visitEqualityOperator(that, unit.getObjectDeclaration());
     }
 
     @Override public void visit(Tree.ComparisonOp that) {
         super.visit(that);
+        if (dynamic) return;
         visitComparisonOperator(that, unit.getComparableDeclaration());
     }
 
     @Override public void visit(Tree.IdenticalOp that) {
         super.visit(that);
+        if (dynamic) return;
         visitEqualityOperator(that, unit.getIdentifiableDeclaration());
     }
 
     @Override public void visit(Tree.CompareOp that) {
         super.visit(that);
+        if (dynamic) return;
         visitCompareOperator(that);
     }
 
     @Override public void visit(Tree.DefaultOp that) {
         super.visit(that);
+        if (dynamic) return;
         visitDefaultOperator(that);
     }
         
     @Override public void visit(Tree.ThenOp that) {
         super.visit(that);
+        if (dynamic) return;
         visitThenOperator(that);
     }
         
     @Override public void visit(Tree.NegativeOp that) {
         super.visit(that);
+        if (dynamic) return;
         visitUnaryOperator(that, unit.getInvertableDeclaration());
     }
         
     @Override public void visit(Tree.PositiveOp that) {
         super.visit(that);
+        if (dynamic) return;
         visitUnaryOperator(that, unit.getInvertableDeclaration());
     }
         
     @Override public void visit(Tree.NotOp that) {
         super.visit(that);
+        if (dynamic) return;
         visitUnaryOperator(that, unit.getBooleanDeclaration());
     }
         
     @Override public void visit(Tree.AssignOp that) {
         super.visit(that);
+        if (dynamic) return;
         visitAssignOperator(that);
         checkAssignability(that.getLeftTerm(), that);
     }
         
     @Override public void visit(Tree.ArithmeticAssignmentOp that) {
         super.visit(that);
+        if (dynamic) return;
         visitArithmeticAssignOperator(that, getArithmeticDeclaration(that));
         checkAssignability(that.getLeftTerm(), that);
     }
         
     @Override public void visit(Tree.LogicalAssignmentOp that) {
         super.visit(that);
+        if (dynamic) return;
         visitLogicalOperator(that);
         checkAssignability(that.getLeftTerm(), that);
     }
         
     @Override public void visit(Tree.BitwiseAssignmentOp that) {
         super.visit(that);
-        //that.addWarning("Set operators not yet supported");
+        if (dynamic) return;
         visitSetAssignmentOperator(that);
         checkAssignability(that.getLeftTerm(), that);
     }
         
     @Override public void visit(Tree.RangeOp that) {
         super.visit(that);
+        if (dynamic) return;
         visitRangeOperator(that);
     }
         
     @Override public void visit(Tree.SegmentOp that) {
         super.visit(that);
+        if (dynamic) return;
         visitSegmentOperator(that);
     }
         
     @Override public void visit(Tree.EntryOp that) {
         super.visit(that);
+        if (dynamic) return;
         visitEntryOperator(that);
     }
         
     @Override public void visit(Tree.Exists that) {
         super.visit(that);
+        if (dynamic) return;
         visitExistsOperator(that);
     }
         
     @Override public void visit(Tree.Nonempty that) {
         super.visit(that);
+        if (dynamic) return;
         visitNonemptyOperator(that);
     }
         
     @Override public void visit(Tree.IsOp that) {
         super.visit(that);
+        if (dynamic) return;
         visitIsOperator(that);
     }
         
     @Override public void visit(Tree.OfOp that) {
         super.visit(that);
+        if (dynamic) return;
         visitOfOperator(that);
     }
         
@@ -3436,6 +3482,7 @@ public class ExpressionVisitor extends Visitor {
         
     @Override public void visit(Tree.InOp that) {
         super.visit(that);
+        if (dynamic) return;
         visitInOperator(that);
     }
         
@@ -3493,6 +3540,7 @@ public class ExpressionVisitor extends Visitor {
         /*if (that.getTypeArgumentList()!=null)
             that.getTypeArgumentList().visit(this);*/
         super.visit(that);
+        if (dynamic) return;
         TypedDeclaration member;
         Tree.SupertypeQualifier sq = that.getSupertypeQualifier();
         if (sq==null) {
@@ -3557,6 +3605,7 @@ public class ExpressionVisitor extends Visitor {
         if (that.getTypeArgumentList()!=null)
             that.getTypeArgumentList().visit(this);*/
         super.visit(that);
+        if (dynamic) return;
         ProducedType pt = that.getPrimary().getTypeModel();
         boolean packageQualified = that.getPrimary() instanceof Tree.Package;
         if ((pt!=null||packageQualified) && 
@@ -3674,6 +3723,7 @@ public class ExpressionVisitor extends Visitor {
 
     @Override public void visit(Tree.BaseTypeExpression that) {
         super.visit(that);
+        if (dynamic) return;
         /*if (that.getTypeArgumentList()!=null)
             that.getTypeArgumentList().visit(this);*/
         Tree.SupertypeQualifier sq = that.getSupertypeQualifier();
@@ -3745,6 +3795,7 @@ public class ExpressionVisitor extends Visitor {
         
     @Override public void visit(Tree.QualifiedTypeExpression that) {
         super.visit(that);
+        if (dynamic) return;
         /*that.getPrimary().visit(this);
         if (that.getTypeArgumentList()!=null)
             that.getTypeArgumentList().visit(this);*/
@@ -3862,6 +3913,7 @@ public class ExpressionVisitor extends Visitor {
     
     @Override public void visit(Tree.EntryType that) {
         super.visit(that);
+        if (dynamic) return;
         checkAssignable(that.getKeyType().getTypeModel(), unit.getObjectDeclaration().getType(), 
                 that.getKeyType(), "entry key type must not be an optional type");
         checkAssignable(that.getValueType().getTypeModel(), unit.getObjectDeclaration().getType(), 
@@ -4167,6 +4219,7 @@ public class ExpressionVisitor extends Visitor {
     
     @Override public void visit(Tree.StringTemplate that) {
         super.visit(that);
+        if (dynamic) return;
         for (Tree.Expression e: that.getExpressions()) {
             checkAssignable(e.getTypeModel(), unit.getObjectDeclaration().getType(), e, 
                     "interpolated expression must not be an optional type: " + 
@@ -4284,7 +4337,6 @@ public class ExpressionVisitor extends Visitor {
     @Override
     public void visit(Tree.SwitchCaseList that) {
         super.visit(that);
-
         if (switchExpression!=null) {
             boolean hasIsCase = false;
             for (Tree.CaseClause cc: that.getCaseClauses()) {
@@ -4418,7 +4470,15 @@ public class ExpressionVisitor extends Visitor {
             }
         }
     }
-
+    
+    @Override
+    public void visit(Tree.DynamicStatement that) {
+        boolean od = dynamic;
+        dynamic = true;
+        super.visit(that);
+        dynamic = od;
+    }
+    
     private boolean acceptsTypeArguments(Declaration member, List<ProducedType> typeArguments, 
             Tree.TypeArguments tal, Node parent) {
         return acceptsTypeArguments(null, member, typeArguments, tal, parent);
