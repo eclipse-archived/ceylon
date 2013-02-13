@@ -8,7 +8,7 @@ void nogo() {
         d.name = "Gavin";
         Integer res = d.add(1, 3);
         value first = d.children[0];
-        if (is Integer first) {
+        if (exists first) {
             Integer o = first;
         }
         d.children.set(1, 4);
