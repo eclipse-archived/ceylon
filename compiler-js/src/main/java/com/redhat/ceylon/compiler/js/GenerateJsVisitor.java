@@ -34,7 +34,6 @@ import com.redhat.ceylon.compiler.typechecker.model.TypeParameter;
 import com.redhat.ceylon.compiler.typechecker.model.Util;
 import com.redhat.ceylon.compiler.typechecker.model.Value;
 import com.redhat.ceylon.compiler.typechecker.tree.*;
-import com.redhat.ceylon.compiler.typechecker.tree.Tree.PositionalArgument;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.*;
 
 public class GenerateJsVisitor extends Visitor
@@ -52,7 +51,7 @@ public class GenerateJsVisitor extends Visitor
     final ConditionGenerator conds;
     private final InvocationGenerator invoker;
     private final List<CommonToken> tokens;
-    private Declaration dyndecl; //to cache the Dynamic declaration
+    private int dynblock;
 
     private final class SuperVisitor extends Visitor {
         private final List<Declaration> decs;
@@ -1517,18 +1516,21 @@ public class GenerateJsVisitor extends Visitor
             return;
         }
         Declaration decl = that.getDeclaration();
-        String name = decl.getName();
-        String pkgName = decl.getUnit().getPackage().getQualifiedNameString();
+        if (decl == null && dynblock > 0) {
+            out(that.getIdentifier().getText());
+        } else {
+            String name = decl.getName();
+            String pkgName = decl.getUnit().getPackage().getQualifiedNameString();
 
-        // map Ceylon true/false/null directly to JS true/false/null
-        if ("ceylon.language".equals(pkgName)) {
-            if ("true".equals(name) || "false".equals(name) || "null".equals(name)) {
-                out(name);
-                return;
+            // map Ceylon true/false/null directly to JS true/false/null
+            if ("ceylon.language".equals(pkgName)) {
+                if ("true".equals(name) || "false".equals(name) || "null".equals(name)) {
+                    out(name);
+                    return;
+                }
             }
+            out(memberAccess(that));
         }
-
-        out(memberAccess(that));
     }
 
     private boolean accessDirectly(Declaration d) {
@@ -1729,9 +1731,12 @@ public class GenerateJsVisitor extends Visitor
      * then the LHS is *not* included. If it is a BaseMemberOrTypeExpression and
      * qualifyBaseExpr==true then the qualified path is included.
      */
-    private String memberAccess(MemberOrTypeExpression expr, boolean qualifyBaseExpr) {
+    private String memberAccess(StaticMemberOrTypeExpression expr, boolean qualifyBaseExpr) {
         Declaration decl = expr.getDeclaration();
-        if (isNative(decl) || isDynamic(expr)) {
+        if (decl == null && dynblock > 0) {
+            return expr.getIdentifier().getText();
+        }
+        if (isNative(decl)) {
             // direct access to a native element
             return decl.getName();
         }
@@ -1744,7 +1749,7 @@ public class GenerateJsVisitor extends Visitor
         return memberAccessBase(expr, names.getter(decl), qualifyBaseExpr)
                 + (protoCall ? ".call(this)" : "()");
     }
-    private String memberAccess(MemberOrTypeExpression expr) {
+    private String memberAccess(StaticMemberOrTypeExpression expr) {
         return memberAccess(expr, true);
     }
     
@@ -1759,11 +1764,13 @@ public class GenerateJsVisitor extends Visitor
      * LHS is *not* included. If it is a BaseMemberOrTypeExpression and
      * qualifyBaseExpr==true then the qualified path is included.
      */
-    private void generateMemberAccess(MemberOrTypeExpression expr,
+    private void generateMemberAccess(StaticMemberOrTypeExpression expr,
                 MemberAccessCallback callback, boolean qualifyBaseExpr) {
         Declaration decl = expr.getDeclaration();
         boolean paren = false;
-        if (isNative(decl)) {
+        if (decl == null && dynblock > 0) {
+            out(expr.getIdentifier().getText(), "=");
+        } else if (isNative(decl)) {
             // direct access to a native element
             out(decl.getName(), "=");
         }
@@ -1782,7 +1789,7 @@ public class GenerateJsVisitor extends Visitor
         callback.generateValue();
         if (paren) { out(")"); }
     }
-    private void generateMemberAccess(MemberOrTypeExpression expr, final String strValue,
+    private void generateMemberAccess(StaticMemberOrTypeExpression expr, final String strValue,
             boolean qualifyBaseExpr) {
         generateMemberAccess(expr, new MemberAccessCallback() {
             @Override public void generateValue() { out(strValue); }
@@ -1808,9 +1815,7 @@ public class GenerateJsVisitor extends Visitor
 
     @Override
     public void visit(InvocationExpression that) {
-        if (that.getPrimary() instanceof BaseTypeExpression && isDynamic(that.getPrimary())) {
-            out("{}");
-        } else if (that.getNamedArgumentList()!=null) {
+        if (that.getNamedArgumentList()!=null) {
             NamedArgumentList argList = that.getNamedArgumentList();
             out("(");
             Map<String, String> argVarNames = invoker.defineNamedArguments(argList);
@@ -2179,11 +2184,11 @@ public class GenerateJsVisitor extends Visitor
     @Override
     public void visit(final AssignOp that) {
         String returnValue = null;
-        MemberOrTypeExpression lhsExpr = null;
+        StaticMemberOrTypeExpression lhsExpr = null;
         
-        if (isDynamic(that.getLeftTerm())) {
+        if (that.getLeftTerm().getTypeModel() == null && dynblock > 0) {
             that.getLeftTerm().visit(this);
-            out("=");
+            out("=/*is this ever used? AssignOp/*");
             that.getRightTerm().visit(this);
             return;
         }
@@ -2243,6 +2248,9 @@ public class GenerateJsVisitor extends Visitor
     }
 
     private String qualifiedPath(Node that, Declaration d, boolean inProto) {
+        if (d == null && dynblock > 0) {
+            out("/*AGUAS!!! con " + that.toString() + "*/");
+        }
         boolean isMember = d.isClassOrInterfaceMember();
         if (!isMember && isImported(that, d)) {
             return names.moduleAlias(d.getUnit().getPackage().getModule());
@@ -2589,7 +2597,7 @@ public class GenerateJsVisitor extends Visitor
     }
 
     @Override public void visit(EqualOp that) {
-        if (isDynamic(that.getLeftTerm())) {
+        if (dynblock > 0 && that.getLeftTerm().getTypeModel() == null) {
             that.getLeftTerm().visit(this);
             out("===");
             that.getRightTerm().visit(this);
@@ -2599,7 +2607,7 @@ public class GenerateJsVisitor extends Visitor
     }
 
     @Override public void visit(NotEqualOp that) {
-        if (isDynamic(that.getLeftTerm())) {
+        if (dynblock > 0 && that.getLeftTerm().getTypeModel() == null) {
             that.getLeftTerm().visit(this);
             out("!==");
             that.getRightTerm().visit(this);
@@ -2639,7 +2647,7 @@ public class GenerateJsVisitor extends Visitor
     }
 
     @Override public void visit(SmallerOp that) {
-        if (isDynamic(that.getLeftTerm())) {
+        if (dynblock > 0 && that.getLeftTerm().getTypeModel() == null) {
             that.getLeftTerm().visit(this);
             out("<");
             that.getRightTerm().visit(this);
@@ -2650,7 +2658,7 @@ public class GenerateJsVisitor extends Visitor
     }
 
     @Override public void visit(LargerOp that) {
-        if (isDynamic(that.getLeftTerm())) {
+        if (dynblock > 0 && that.getLeftTerm().getTypeModel() == null) {
             that.getLeftTerm().visit(this);
             out(">");
             that.getRightTerm().visit(this);
@@ -2661,7 +2669,7 @@ public class GenerateJsVisitor extends Visitor
     }
 
     @Override public void visit(SmallAsOp that) {
-        if (isDynamic(that.getLeftTerm())) {
+        if (dynblock > 0 && that.getLeftTerm().getTypeModel() == null) {
             that.getLeftTerm().visit(this);
             out("<=");
             that.getRightTerm().visit(this);
@@ -2674,7 +2682,7 @@ public class GenerateJsVisitor extends Visitor
     }
 
     @Override public void visit(LargeAsOp that) {
-        if (isDynamic(that.getLeftTerm())) {
+        if (dynblock > 0 && that.getLeftTerm().getTypeModel() == null) {
             that.getLeftTerm().visit(this);
             out(">=");
             that.getRightTerm().visit(this);
@@ -2838,7 +2846,7 @@ public class GenerateJsVisitor extends Visitor
    }
 
    private boolean hasSimpleGetterSetter(Declaration decl) {
-       return !((decl instanceof Getter) || (decl instanceof Setter) || decl.isFormal());
+       return (dynblock > 0 && decl == null) || !((decl instanceof Getter) || (decl instanceof Setter) || decl.isFormal());
    }
 
    private void prefixIncrementOrDecrement(Term term, String functionName) {
@@ -2879,6 +2887,10 @@ public class GenerateJsVisitor extends Visitor
    private void postfixIncrementOrDecrement(Term term, String functionName) {
        if (term instanceof BaseMemberExpression) {
            BaseMemberExpression bme = (BaseMemberExpression) term;
+           if (bme.getDeclaration() == null && dynblock > 0) {
+               out(bme.getIdentifier().getText(), "getSuccessor".equals(functionName) ? "++" : "--");
+               return;
+           }
            String oldValueVar = createRetainedTempVar("old" + bme.getDeclaration().getName());
            String applyFunc = String.format("%s.%s()", oldValueVar, functionName);
            out("(", oldValueVar, "=", memberAccess(bme), ",");
@@ -2887,6 +2899,10 @@ public class GenerateJsVisitor extends Visitor
 
        } else if (term instanceof QualifiedMemberExpression) {
            QualifiedMemberExpression qme = (QualifiedMemberExpression) term;
+           if (qme.getDeclaration() == null && dynblock > 0) {
+               out(qme.getIdentifier().getText(), "getSuccessor".equals(functionName) ? "++" : "--");
+               return;
+           }
            String primaryVar = createRetainedTempVar();
            String oldValueVar = createRetainedTempVar("old" + qme.getDeclaration().getName());
            String applyFunc = String.format("%s.%s()", oldValueVar, functionName);
@@ -3194,7 +3210,7 @@ public class GenerateJsVisitor extends Visitor
         that.getPrimary().visit(this);
         ElementOrRange eor = that.getElementOrRange();
         if (eor instanceof Element) {
-            if (isDynamic(that.getPrimary())) {
+            if (that.getPrimary().getTypeModel() == null && dynblock > 0) {
                 out("[");
                 ((Element)eor).getExpression().visit(this);
                 out("]");
@@ -3532,32 +3548,18 @@ public class GenerateJsVisitor extends Visitor
         endLine();
     }
 
+    @Override
+    public void visit(Tree.DynamicClause that) {
+        dynblock++;
+        super.visit(that);
+        dynblock--;
+    }
+
+    /** Closes a native array and invokes reifyCeylonType with the specified type parameters. */
     void closeSequenceWithReifiedType(Node that, Map<TypeParameter,ProducedType> types) {
         out("].reifyCeylonType(");
         TypeUtils.printTypeArguments(that, types, this);
         out(")");
-    }
-
-    /** Tells whether a term is of the Dynamic type. */
-    boolean isDynamic(Term term) {
-        if (term instanceof BaseMemberOrTypeExpression) {
-            if (dyndecl == null) {
-                if (((BaseMemberOrTypeExpression)term).getDeclaration().getQualifiedNameString().equals("ceylon.language::Dynamic")) {
-                    dyndecl = ((BaseMemberOrTypeExpression)term).getDeclaration();
-                    return true;
-                }
-            } else {
-                return dyndecl.equals(((BaseMemberOrTypeExpression)term).getDeclaration());
-            }
-        } else if (dyndecl == null) {
-            if (term.getTypeModel().getDeclaration().getQualifiedNameString().equals("ceylon.language::Dynamic")) {
-                dyndecl = term.getTypeModel().getDeclaration();
-                return true;
-            }
-        } else {
-            return dyndecl.equals(term.getTypeModel().getDeclaration());
-        }
-        return false;
     }
 
 }
