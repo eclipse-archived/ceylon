@@ -20,15 +20,12 @@
 
 package com.redhat.ceylon.compiler.loader.impl.reflect.model;
 
-import java.net.URLClassLoader;
-
 import com.redhat.ceylon.compiler.loader.AbstractModelLoader;
 import com.redhat.ceylon.compiler.loader.model.LazyModule;
 
 public class ReflectionModule extends LazyModule {
 
     private ReflectionModuleManager modelManager;
-    private ClassLoader classLoader;
 
     public ReflectionModule(ReflectionModuleManager reflectionModuleManager) {
         this.modelManager = reflectionModuleManager;
@@ -38,16 +35,4 @@ public class ReflectionModule extends LazyModule {
     protected AbstractModelLoader getModelLoader() {
         return modelManager.getModelLoader();
     }
-
-    public void setClassLoader(URLClassLoader cl) {
-        if(this.classLoader != null){
-            throw new RuntimeException("Module already has a classloader: "+getNameAsString());
-        }
-        this.classLoader = cl;
-    }
-    
-    public ClassLoader getClassLoader(){
-        return classLoader;
-    }
-
 }
