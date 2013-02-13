@@ -88,6 +88,18 @@ class OuterTypeArgs() {
 	Consumer<String>.Inner<Object> ciobj2 = Consumer("hello").Inner("world");
 	@error Consumer<String>.Inner<String> cistr = ciobj;
 	@error Consumer<Integer>.Inner<String> cinat = Consumer("hello").Inner("world");
+	
+	class Contains<out T>() {
+	    shared default class Contained() {}
+	}
+	class Extends1() extends Contains<String>() {}
+    class Extends2() extends Contains<Object>() {}
+    class Refines() extends Extends2() {
+        shared actual class Contained() 
+            extends super.Contained() {}
+    }
+    @error Refines.Contained rc = Extends1().Contained(); 
+    Extends2.Contained ec = Extends1().Contained(); 
 
 }
 
