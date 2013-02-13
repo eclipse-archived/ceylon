@@ -1,79 +1,74 @@
 (function(define) { define(function(require, exports, module) {
-var $$$cl1=require('ceylon/language/0.5/ceylon.language');
-var $$$a12=require('default/assert');
+var $$metamodel$$={"$mod-deps":["check\/0.1"],"$mod-name":"nesting","$mod-version":"0.1","nesting":{"Y2":{"super":{"$pk":"nesting","$nm":"X2"},"$ps":[{"$t":{"$md":"ceylon.language","$pk":"ceylon.language","$nm":"String"},"$mt":"prm","$pt":"v","$nm":"h"}],"$mt":"cls","$an":{"shared":[]},"$c":{"SubRef1":{"super":{"$pk":"nesting","$nm":"RefineTest1"},"$ps":[{"$t":{"$md":"ceylon.language","$pk":"ceylon.language","$nm":"Integer"},"$mt":"prm","$pt":"v","$nm":"d"}],"$mt":"cls","$an":{"shared":[]},"$c":{"Inner":{"super":{"$tp":[{"$mt":"tpm","$nm":"Element"}],"$pk":"nesting","$nm":"Inner"},"$ps":[{"$t":"Element","$mt":"prm","$pt":"v","$nm":"d2"}],"$mt":"cls","$tp":[{"satisfies":[{"$md":"ceylon.language","$pk":"ceylon.language","$nm":"Object"}],"$nm":"Element"}],"$an":{"shared":[],"actual":[]},"$m":{"y":{"$t":{"$md":"ceylon.language","$pk":"ceylon.language","$nm":"String"},"$mt":"mthd","$an":{"shared":[],"actual":[]},"$nm":"y"},"x":{"$t":{"$md":"ceylon.language","$pk":"ceylon.language","$nm":"String"},"$mt":"mthd","$an":{"shared":[],"actual":[]},"$nm":"x"}},"$at":{"suborigin":{"$t":{"$md":"ceylon.language","$pk":"ceylon.language","$nm":"String"},"$mt":"attr","$an":{"shared":[]},"$nm":"suborigin"}},"$nm":"Inner"}},"$nm":"SubRef1"}},"$nm":"Y2"},"SubRef51":{"super":{"$pk":"nesting","$nm":"SubRef5"},"$mt":"cls","$an":{"shared":[]},"$c":{"Inner":{"super":{"$pk":"nesting","$nm":"Inner"},"$ps":[{"$t":{"$md":"ceylon.language","$pk":"ceylon.language","$nm":"String"},"$mt":"prm","$pt":"v","$nm":"subg55"}],"$mt":"cls","$an":{"shared":[],"actual":[]},"$m":{"x":{"$t":{"$md":"ceylon.language","$pk":"ceylon.language","$nm":"String"},"$mt":"mthd","$an":{"shared":[],"actual":[]},"$nm":"x"}},"$nm":"Inner"}},"$nm":"SubRef51"},"A":{"super":{"$md":"ceylon.language","$pk":"ceylon.language","$nm":"Basic"},"$mt":"cls","$m":{"baz":{"$t":{"$md":"ceylon.language","$pk":"ceylon.language","$nm":"String"},"$mt":"mthd","$an":{"shared":[]},"$nm":"baz"}},"$c":{"B":{"super":{"$md":"ceylon.language","$pk":"ceylon.language","$nm":"Basic"},"$mt":"cls","$an":{"shared":[]},"$c":{"C":{"super":{"$md":"ceylon.language","$pk":"ceylon.language","$nm":"Basic"},"$mt":"cls","$an":{"shared":[]},"$m":{"foobar":{"$t":{"$md":"ceylon.language","$pk":"ceylon.language","$nm":"String"},"$mt":"mthd","$an":{"shared":[]},"$nm":"foobar"},"quxx":{"$t":{"$md":"ceylon.language","$pk":"ceylon.language","$nm":"String"},"$mt":"mthd","$an":{"shared":[]},"$nm":"quxx"}},"$nm":"C"}},"$at":{"qux":{"$t":{"$md":"ceylon.language","$pk":"ceylon.language","$nm":"String"},"$mt":"attr","$nm":"qux"}},"$nm":"B"}},"$at":{"foo":{"$t":{"$md":"ceylon.language","$pk":"ceylon.language","$nm":"String"},"$mt":"attr","$nm":"foo"}},"$nm":"A"},"test":{"$t":{"$md":"ceylon.language","$pk":"ceylon.language","$nm":"Anything"},"$mt":"mthd","$an":{"shared":[]},"$nm":"test"},"Unwrapper":{"super":{"$md":"ceylon.language","$pk":"ceylon.language","$nm":"Basic"},"$mt":"cls","$an":{"shared":[]},"$m":{"get":{"$t":{"$md":"ceylon.language","$pk":"ceylon.language","$nm":"Object"},"$mt":"mthd","$an":{"shared":[]},"$nm":"get"}},"$at":{"string":{"$t":{"$md":"ceylon.language","$pk":"ceylon.language","$nm":"String"},"$mt":"gttr","$an":{"shared":[],"actual":[]},"$nm":"string"},"o":{"$t":{"$md":"ceylon.language","$pk":"ceylon.language","$nm":"Object"},"$mt":"attr","$an":{"shared":[]},"$nm":"o"}},"$nm":"Unwrapper"},"SubRef2":{"super":{"$pk":"nesting","$nm":"RefineTest2"},"$mt":"cls","$an":{"shared":[]},"$m":{"x":{"$t":{"$md":"ceylon.language","$pk":"ceylon.language","$nm":"String"},"$mt":"mthd","$an":{"shared":[]},"$nm":"x"}},"$nm":"SubRef2"},"Wrapper":{"super":{"$md":"ceylon.language","$pk":"ceylon.language","$nm":"Basic"},"$mt":"cls","$an":{"shared":[]},"$m":{"get":{"$t":{"$md":"ceylon.language","$pk":"ceylon.language","$nm":"Object"},"$mt":"mthd","$an":{"shared":[]},"$nm":"get"}},"$at":{"string":{"$t":{"$md":"ceylon.language","$pk":"ceylon.language","$nm":"String"},"$mt":"gttr","$an":{"shared":[],"actual":[]},"$nm":"string"},"o":{"$t":{"$md":"ceylon.language","$pk":"ceylon.language","$nm":"Object"},"$mt":"attr","$nm":"o"}},"$nm":"Wrapper"},"O":{"$i":{"InnerInterface":{"$mt":"ifc","$m":{"f":{"$t":{"$md":"ceylon.language","$pk":"ceylon.language","$nm":"String"},"$mt":"mthd","$an":{"shared":[]},"$nm":"f"}},"$nm":"InnerInterface"}},"super":{"$md":"ceylon.language","$pk":"ceylon.language","$nm":"Basic"},"$mt":"cls","$m":{"test1":{"$t":{"$md":"ceylon.language","$pk":"ceylon.language","$nm":"String"},"$mt":"mthd","$an":{"shared":[]},"$nm":"test1"},"test2":{"$t":{"$md":"ceylon.language","$pk":"ceylon.language","$nm":"String"},"$mt":"mthd","$an":{"shared":[]},"$nm":"test2"},"test3":{"$t":{"$md":"ceylon.language","$pk":"ceylon.language","$nm":"String"},"$mt":"mthd","$an":{"shared":[]},"$nm":"test3"}},"$c":{"InnerClass":{"super":{"$md":"ceylon.language","$pk":"ceylon.language","$nm":"Basic"},"$mt":"cls","$m":{"f":{"$t":{"$md":"ceylon.language","$pk":"ceylon.language","$nm":"String"},"$mt":"mthd","$an":{"shared":[]},"$nm":"f"}},"$nm":"InnerClass"}},"$at":{"s":{"$t":{"$md":"ceylon.language","$pk":"ceylon.language","$nm":"String"},"$mt":"attr","$nm":"s"}},"$nm":"O","$o":{"innerObject":{"super":{"$md":"ceylon.language","$pk":"ceylon.language","$nm":"Basic"},"$mt":"obj","$m":{"f":{"$t":{"$md":"ceylon.language","$pk":"ceylon.language","$nm":"String"},"$mt":"mthd","$an":{"shared":[]},"$nm":"f"}},"$nm":"innerObject"}}},"outr":{"$t":{"$md":"ceylon.language","$pk":"ceylon.language","$nm":"Anything"},"$ps":[[{"$t":{"$md":"ceylon.language","$pk":"ceylon.language","$nm":"String"},"$mt":"prm","$pt":"v","$nm":"name"}]],"$mt":"mthd","$an":{"shared":[]},"$nm":"outr"},"testRefinement2":{"$t":{"$md":"ceylon.language","$pk":"ceylon.language","$nm":"Anything"},"$mt":"mthd","$nm":"testRefinement2"},"Holder":{"super":{"$md":"ceylon.language","$pk":"ceylon.language","$nm":"Basic"},"$ps":[{"$t":{"$md":"ceylon.language","$pk":"ceylon.language","$nm":"Object"},"$mt":"prm","$pt":"v","$nm":"o"}],"$mt":"cls","$an":{"shared":[]},"$m":{"get":{"$t":{"$md":"ceylon.language","$pk":"ceylon.language","$nm":"Object"},"$mt":"mthd","$an":{"shared":[]},"$nm":"get"}},"$at":{"string":{"$t":{"$md":"ceylon.language","$pk":"ceylon.language","$nm":"String"},"$mt":"gttr","$an":{"shared":[],"actual":[]},"$nm":"string"}},"$nm":"Holder"},"C1":{"super":{"$md":"ceylon.language","$pk":"ceylon.language","$nm":"Basic"},"$mt":"cls","$an":{"shared":[]},"$c":{"C3":{"super":{"$pk":"nesting","$nm":"C1"},"$mt":"cls","$an":{"shared":[]},"$m":{"f":{"$t":{"$md":"ceylon.language","$pk":"ceylon.language","$nm":"String"},"$mt":"mthd","$an":{"shared":[]},"$nm":"f"}},"$at":{"x":{"$t":{"$md":"ceylon.language","$pk":"ceylon.language","$nm":"String"},"$mt":"attr","$an":{"shared":[],"default":[],"actual":[]},"$nm":"x"}},"$nm":"C3"},"C1":{"super":{"$md":"ceylon.language","$pk":"ceylon.language","$nm":"Basic"},"$mt":"cls","$an":{"shared":[]},"$at":{"x":{"$t":{"$md":"ceylon.language","$pk":"ceylon.language","$nm":"String"},"$mt":"attr","$an":{"shared":[],"default":[]},"$nm":"x"}},"$nm":"C1"}},"$at":{"x":{"$t":{"$md":"ceylon.language","$pk":"ceylon.language","$nm":"String"},"$mt":"attr","$an":{"shared":[],"default":[]},"$nm":"x"}},"$nm":"C1"},"C2":{"super":{"$pk":"nesting","$nm":"C1"},"$mt":"cls","$an":{"shared":[]},"$c":{"C2":{"super":{"$pk":"nesting","$nm":"C1"},"$mt":"cls","$an":{"shared":[]},"$m":{"f":{"$t":{"$md":"ceylon.language","$pk":"ceylon.language","$nm":"String"},"$mt":"mthd","$an":{"shared":[]},"$nm":"f"}},"$c":{"C2":{"super":{"$pk":"nesting","$nm":"C3"},"$mt":"cls","$an":{"shared":[]},"$at":{"x":{"$t":{"$md":"ceylon.language","$pk":"ceylon.language","$nm":"String"},"$mt":"attr","$an":{"shared":[],"actual":[]},"$nm":"x"}},"$nm":"C2"}},"$at":{"x":{"$t":{"$md":"ceylon.language","$pk":"ceylon.language","$nm":"String"},"$mt":"attr","$an":{"shared":[],"actual":[]},"$nm":"x"}},"$nm":"C2"}},"$at":{"x":{"$t":{"$md":"ceylon.language","$pk":"ceylon.language","$nm":"String"},"$mt":"attr","$an":{"shared":[],"actual":[]},"$nm":"x"}},"$nm":"C2"},"Y":{"super":{"$pk":"nesting","$nm":"X"},"$mt":"cls","$an":{"shared":[]},"$c":{"SubRef1":{"super":{"$pk":"nesting","$nm":"RefineTest1"},"$mt":"cls","$an":{"shared":[]},"$c":{"Inner":{"super":{"$pk":"nesting","$nm":"Inner"},"$mt":"cls","$an":{"shared":[],"actual":[]},"$m":{"y":{"$t":{"$md":"ceylon.language","$pk":"ceylon.language","$nm":"String"},"$mt":"mthd","$an":{"shared":[],"actual":[]},"$nm":"y"},"x":{"$t":{"$md":"ceylon.language","$pk":"ceylon.language","$nm":"String"},"$mt":"mthd","$an":{"shared":[],"actual":[]},"$nm":"x"}},"$at":{"suborigin":{"$t":{"$md":"ceylon.language","$pk":"ceylon.language","$nm":"String"},"$mt":"attr","$an":{"shared":[]},"$nm":"suborigin"}},"$nm":"Inner"}},"$nm":"SubRef1"}},"$nm":"Y"},"X":{"super":{"$md":"ceylon.language","$pk":"ceylon.language","$nm":"Basic"},"$mt":"cls","$an":{"shared":[]},"$c":{"RefineTest1":{"abstract":"1","super":{"$md":"ceylon.language","$pk":"ceylon.language","$nm":"Basic"},"$mt":"cls","$an":{"shared":[],"abstract":[]},"$m":{"outerx":{"$t":{"$md":"ceylon.language","$pk":"ceylon.language","$nm":"String"},"$mt":"mthd","$an":{"shared":[]},"$nm":"outerx"}},"$c":{"Inner":{"super":{"$md":"ceylon.language","$pk":"ceylon.language","$nm":"Basic"},"$mt":"cls","$an":{"shared":[],"formal":[]},"$m":{"y":{"$t":{"$md":"ceylon.language","$pk":"ceylon.language","$nm":"String"},"$mt":"mthd","$an":{"shared":[],"formal":[]},"$nm":"y"},"x":{"$t":{"$md":"ceylon.language","$pk":"ceylon.language","$nm":"String"},"$mt":"mthd","$an":{"shared":[],"default":[]},"$nm":"x"}},"$at":{"origin":{"$t":{"$md":"ceylon.language","$pk":"ceylon.language","$nm":"String"},"$mt":"attr","$an":{"shared":[]},"$nm":"origin"}},"$nm":"Inner"}},"$nm":"RefineTest1"}},"$nm":"X"},"NameTest":{"super":{"$md":"ceylon.language","$pk":"ceylon.language","$nm":"Basic"},"$mt":"cls","$an":{"shared":[]},"$m":{"f":{"$t":{"$md":"ceylon.language","$pk":"ceylon.language","$nm":"String"},"$mt":"mthd","$an":{"shared":[]},"$nm":"f"}},"$c":{"NameTest":{"super":{"$md":"ceylon.language","$pk":"ceylon.language","$nm":"Basic"},"$mt":"cls","$an":{"shared":[]},"$m":{"f":{"$t":{"$md":"ceylon.language","$pk":"ceylon.language","$nm":"String"},"$mt":"mthd","$an":{"shared":[]},"$nm":"f"}},"$at":{"x":{"$t":{"$md":"ceylon.language","$pk":"ceylon.language","$nm":"String"},"$mt":"attr","$an":{"shared":[]},"$nm":"x"}},"$nm":"NameTest"}},"$at":{"x":{"$t":{"$md":"ceylon.language","$pk":"ceylon.language","$nm":"String"},"$mt":"attr","$an":{"shared":[]},"$nm":"x"}},"$nm":"NameTest"},"outerf":{"$t":{"$md":"ceylon.language","$pk":"ceylon.language","$nm":"String"},"$mt":"mthd","$nm":"outerf"},"X2":{"super":{"$md":"ceylon.language","$pk":"ceylon.language","$nm":"Basic"},"$ps":[{"$t":{"$md":"ceylon.language","$pk":"ceylon.language","$nm":"String"},"$mt":"prm","$pt":"v","$nm":"a"}],"$mt":"cls","$an":{"shared":[]},"$c":{"RefineTest1":{"abstract":"1","super":{"$md":"ceylon.language","$pk":"ceylon.language","$nm":"Basic"},"$ps":[{"$t":{"$md":"ceylon.language","$pk":"ceylon.language","$nm":"Integer"},"$mt":"prm","$pt":"v","$nm":"b"}],"$mt":"cls","$an":{"shared":[],"abstract":[]},"$m":{"outerx":{"$t":{"$md":"ceylon.language","$pk":"ceylon.language","$nm":"String"},"$mt":"mthd","$an":{"shared":[]},"$nm":"outerx"}},"$c":{"Inner":{"super":{"$md":"ceylon.language","$pk":"ceylon.language","$nm":"Basic"},"$ps":[{"$t":"Element","$mt":"prm","$pt":"v","$nm":"c"}],"$mt":"cls","$tp":[{"satisfies":[{"$md":"ceylon.language","$pk":"ceylon.language","$nm":"Object"}],"$nm":"Element"}],"$an":{"shared":[],"formal":[]},"$m":{"y":{"$t":{"$md":"ceylon.language","$pk":"ceylon.language","$nm":"String"},"$mt":"mthd","$an":{"shared":[],"formal":[]},"$nm":"y"},"x":{"$t":{"$md":"ceylon.language","$pk":"ceylon.language","$nm":"String"},"$mt":"mthd","$an":{"shared":[],"default":[]},"$nm":"x"}},"$at":{"origin":{"$t":{"$md":"ceylon.language","$pk":"ceylon.language","$nm":"String"},"$mt":"attr","$an":{"shared":[]},"$nm":"origin"}},"$nm":"Inner"}},"$nm":"RefineTest1"}},"$nm":"X2"},"OuterC1":{"super":{"$md":"ceylon.language","$pk":"ceylon.language","$nm":"Basic"},"$mt":"cls","$m":{"tst":{"$t":{"$md":"ceylon.language","$pk":"ceylon.language","$nm":"String"},"$mt":"mthd","$an":{"shared":[]},"$nm":"tst"}},"$c":{"A":{"super":{"$md":"ceylon.language","$pk":"ceylon.language","$nm":"Basic"},"$mt":"cls","$m":{"tst":{"$t":{"$md":"ceylon.language","$pk":"ceylon.language","$nm":"String"},"$mt":"mthd","$an":{"shared":[]},"$nm":"tst"}},"$nm":"A"},"B":{"super":{"$pk":"nesting","$nm":"A"},"$mt":"cls","$nm":"B"}},"$nm":"OuterC1"},"SubRef31":{"super":{"$pk":"nesting","$nm":"SubRef3"},"$mt":"cls","$an":{"shared":[]},"$c":{"Inner":{"super":{"$pk":"nesting","$nm":"Inner"},"$mt":"cls","$an":{"shared":[],"actual":[]},"$m":{"x":{"$t":{"$md":"ceylon.language","$pk":"ceylon.language","$nm":"String"},"$mt":"mthd","$an":{"shared":[],"actual":[]},"$nm":"x"}},"$nm":"Inner"}},"$nm":"SubRef31"},"OuterC2":{"super":{"$md":"ceylon.language","$pk":"ceylon.language","$nm":"Basic"},"$mt":"cls","$m":{"tst":{"$t":{"$md":"ceylon.language","$pk":"ceylon.language","$nm":"String"},"$mt":"mthd","$an":{"shared":[]},"$nm":"tst"}},"$c":{"A":{"super":{"$md":"ceylon.language","$pk":"ceylon.language","$nm":"Basic"},"$mt":"cls","$m":{"tst":{"$t":{"$md":"ceylon.language","$pk":"ceylon.language","$nm":"String"},"$mt":"mthd","$an":{"shared":[]},"$nm":"tst"}},"$nm":"A"}},"$nm":"OuterC2"},"testRefinement":{"$t":{"$md":"ceylon.language","$pk":"ceylon.language","$nm":"Anything"},"$mt":"mthd","$nm":"testRefinement"},"returner":{"$t":{"$md":"ceylon.language","$tp":[{"$md":"ceylon.language","$mt":"tpm","$pk":"ceylon.language","$nm":"Object"},{"$md":"ceylon.language","$mt":"tpm","$pk":"ceylon.language","$nm":"Empty"}],"$pk":"ceylon.language","$nm":"Callable"},"$ps":[[{"$t":{"$md":"ceylon.language","$pk":"ceylon.language","$nm":"Object"},"$mt":"prm","$pt":"v","$nm":"o"}]],"$mt":"mthd","$nm":"returner"},"Outer":{"super":{"$md":"ceylon.language","$pk":"ceylon.language","$nm":"Basic"},"$ps":[{"$t":{"$md":"ceylon.language","$pk":"ceylon.language","$nm":"String"},"$mt":"prm","$pt":"v","$nm":"name"}],"$mt":"cls","$an":{"shared":[]},"$m":{"noop":{"$t":{"$md":"ceylon.language","$pk":"ceylon.language","$nm":"Anything"},"$mt":"mthd","$nm":"noop"}},"$c":{"Inner":{"super":{"$md":"ceylon.language","$pk":"ceylon.language","$nm":"Basic"},"$mt":"cls","$m":{"noop":{"$t":{"$md":"ceylon.language","$pk":"ceylon.language","$nm":"Anything"},"$mt":"mthd","$an":{"shared":[]},"$nm":"noop"},"printName":{"$t":{"$md":"ceylon.language","$pk":"ceylon.language","$nm":"Anything"},"$mt":"mthd","$nm":"printName"}},"$at":{"int":{"$t":{"$md":"ceylon.language","$pk":"ceylon.language","$nm":"Integer"},"$mt":"gttr","$an":{"shared":[]},"$nm":"int"},"float":{"$t":{"$md":"ceylon.language","$pk":"ceylon.language","$nm":"Float"},"$mt":"gttr","$an":{"shared":[]},"$nm":"float"}},"$nm":"Inner"}},"$at":{"inner":{"$t":{"$pk":"nesting","$nm":"Inner"},"$mt":"attr","$nm":"inner"},"int":{"$t":{"$md":"ceylon.language","$pk":"ceylon.language","$nm":"Integer"},"$mt":"attr","$nm":"int"},"float":{"$t":{"$md":"ceylon.language","$pk":"ceylon.language","$nm":"Float"},"$mt":"attr","$an":{"shared":[]},"$nm":"float"}},"$nm":"Outer"},"producer":{"$t":{"$md":"ceylon.language","$tp":[{"$md":"ceylon.language","$mt":"tpm","$pk":"ceylon.language","$nm":"Object"},{"$md":"ceylon.language","$mt":"tpm","$pk":"ceylon.language","$nm":"Empty"}],"$pk":"ceylon.language","$nm":"Callable"},"$mt":"mthd","$nm":"producer"},"RefineTest5":{"abstract":"1","super":{"$md":"ceylon.language","$pk":"ceylon.language","$nm":"Basic"},"$ps":[{"$t":{"$md":"ceylon.language","$pk":"ceylon.language","$nm":"Integer"},"$mt":"prm","$pt":"v","$nm":"f"}],"$mt":"cls","$an":{"shared":[],"abstract":[]},"$c":{"Inner":{"super":{"$md":"ceylon.language","$pk":"ceylon.language","$nm":"Basic"},"$ps":[{"$t":{"$md":"ceylon.language","$pk":"ceylon.language","$nm":"String"},"$mt":"prm","$pt":"v","$nm":"g"}],"$mt":"cls","$an":{"shared":[],"default":[]},"$m":{"x":{"$t":{"$md":"ceylon.language","$pk":"ceylon.language","$nm":"String"},"$mt":"mthd","$an":{"shared":[],"default":[]},"$nm":"x"}},"$nm":"Inner"}},"$nm":"RefineTest5"},"RefineTest4":{"abstract":"1","super":{"$md":"ceylon.language","$pk":"ceylon.language","$nm":"Basic"},"$ps":[{"$t":{"$md":"ceylon.language","$pk":"ceylon.language","$nm":"String"},"$mt":"prm","$pt":"v","$nm":"d"}],"$mt":"cls","$an":{"shared":[],"abstract":[]},"$c":{"Inner":{"super":{"$md":"ceylon.language","$pk":"ceylon.language","$nm":"Basic"},"$ps":[{"$t":{"$md":"ceylon.language","$pk":"ceylon.language","$nm":"Integer"},"$mt":"prm","$pt":"v","$nm":"e"}],"$mt":"cls","$an":{"shared":[]},"$m":{"hello":{"$t":{"$md":"ceylon.language","$pk":"ceylon.language","$nm":"String"},"$mt":"mthd","$an":{"shared":[]},"$nm":"hello"}},"$nm":"Inner"}},"$nm":"RefineTest4"},"nameTest":{"super":{"$md":"ceylon.language","$pk":"ceylon.language","$nm":"Basic"},"$mt":"obj","$an":{"shared":[]},"$m":{"f":{"$t":{"$md":"ceylon.language","$pk":"ceylon.language","$nm":"String"},"$mt":"mthd","$an":{"shared":[]},"$nm":"f"}},"$at":{"x":{"$t":{"$md":"ceylon.language","$pk":"ceylon.language","$nm":"String"},"$mt":"attr","$an":{"shared":[]},"$nm":"x"}},"$nm":"nameTest","$o":{"nameTest":{"super":{"$md":"ceylon.language","$pk":"ceylon.language","$nm":"Basic"},"$mt":"obj","$an":{"shared":[]},"$m":{"f":{"$t":{"$md":"ceylon.language","$pk":"ceylon.language","$nm":"String"},"$mt":"mthd","$an":{"shared":[]},"$nm":"f"}},"$at":{"x":{"$t":{"$md":"ceylon.language","$pk":"ceylon.language","$nm":"String"},"$mt":"attr","$an":{"shared":[]},"$nm":"x"}},"$nm":"nameTest"}}},"RefineTest3":{"abstract":"1","super":{"$md":"ceylon.language","$pk":"ceylon.language","$nm":"Basic"},"$mt":"cls","$an":{"shared":[],"abstract":[]},"$c":{"Inner":{"super":{"$md":"ceylon.language","$pk":"ceylon.language","$nm":"Basic"},"$mt":"cls","$an":{"shared":[],"default":[]},"$m":{"x":{"$t":{"$md":"ceylon.language","$pk":"ceylon.language","$nm":"String"},"$mt":"mthd","$an":{"shared":[],"default":[]},"$nm":"x"}},"$nm":"Inner"}},"$nm":"RefineTest3"},"RefineTest2":{"abstract":"1","super":{"$md":"ceylon.language","$pk":"ceylon.language","$nm":"Basic"},"$mt":"cls","$an":{"shared":[],"abstract":[]},"$c":{"Inner":{"super":{"$md":"ceylon.language","$pk":"ceylon.language","$nm":"Basic"},"$mt":"cls","$an":{"shared":[]},"$m":{"hello":{"$t":{"$md":"ceylon.language","$pk":"ceylon.language","$nm":"String"},"$mt":"mthd","$an":{"shared":[]},"$nm":"hello"}},"$nm":"Inner"}},"$nm":"RefineTest2"},"SubRef5":{"super":{"$pk":"nesting","$nm":"RefineTest5"},"$mt":"cls","$an":{"shared":[]},"$m":{"x":{"$t":{"$md":"ceylon.language","$pk":"ceylon.language","$nm":"String"},"$mt":"mthd","$an":{"shared":[]},"$nm":"x"}},"$nm":"SubRef5"},"SubRef4":{"super":{"$pk":"nesting","$nm":"RefineTest4"},"$mt":"cls","$an":{"shared":[]},"$m":{"x":{"$t":{"$md":"ceylon.language","$pk":"ceylon.language","$nm":"String"},"$mt":"mthd","$an":{"shared":[]},"$nm":"x"}},"$nm":"SubRef4"},"SubRef3":{"super":{"$pk":"nesting","$nm":"RefineTest3"},"$mt":"cls","$an":{"shared":[]},"$m":{"x":{"$t":{"$md":"ceylon.language","$pk":"ceylon.language","$nm":"String"},"$mt":"mthd","$an":{"shared":[]},"$nm":"x"}},"$nm":"SubRef3"}}};
+var $$$cl1=require('ceylon/language/0.5/ceylon.language-0.5');
+var $$$c2=require('check/0.1/check-0.1');
 
 //ClassDefinition Outer at nesting.ceylon (3:0-28:0)
-function Outer(name$330, $$outer){
+function Outer(name$743, $$outer){
     $init$Outer();
     if ($$outer===undefined)$$outer=new Outer.$$;
-    $$outer.name$330=name$330;
+    $$outer.name$743=name$743;
     
     //AttributeDeclaration int at nesting.ceylon (4:4-4:18)
-    var int$331=$$$cl1.Integer(10);
-    var getInt$331=function(){return int$331;};
-    $$outer.getInt$331=getInt$331;
+    var int$744=(10);
+    var getInt$744=function(){return int$744;};
+    $$outer.getInt$744=getInt$744;
     
     //AttributeDeclaration float at nesting.ceylon (5:4-5:34)
-    var float$332=getInt$331().getFloat();
-    var getFloat=function(){return float$332;};
+    var float$745=getInt$744().getFloat();
+    var getFloat=function(){return float$745;};
     $$outer.getFloat=getFloat;
     
     //MethodDefinition noop at nesting.ceylon (6:4-6:17)
-    function noop$333(){
-        
+    function noop$746(){
     }
-    $$outer.noop$333=noop$333;
+    $$outer.noop$746=noop$746;
     
     //ClassDefinition Inner at nesting.ceylon (7:4-20:4)
-    function Inner$334($$inner$334){
-        $init$Inner$334();
-        if ($$inner$334===undefined)$$inner$334=new Inner$334.$$;
-        
-        //MethodDefinition printName at nesting.ceylon (8:8-10:8)
-        function printName$335(){
-            $$$cl1.print(name$330);
-        }
+    function Inner$747($$inner$747){
+        $init$Inner$747();
+        if ($$inner$747===undefined)$$inner$747=new Inner$747.$$;
         
         //AttributeGetterDefinition int at nesting.ceylon (11:8-13:8)
         var getInt=function(){
-            return $$outer.getInt$331();
+            return $$outer.getInt$744();
         }
-        $$inner$334.getInt=getInt;
+        $$inner$747.getInt=getInt;
         
         //AttributeGetterDefinition float at nesting.ceylon (14:8-16:8)
         var getFloat=function(){
             return $$outer.getFloat();
         }
-        $$inner$334.getFloat=getFloat;
+        $$inner$747.getFloat=getFloat;
         
         //MethodDefinition noop at nesting.ceylon (17:8-19:8)
         function noop(){
-            $$outer.noop$333();
+            $$outer.noop$746();
         }
-        $$inner$334.noop=noop;
-        return $$inner$334;
+        $$inner$747.noop=noop;
+        return $$inner$747;
     }
-    function $init$Inner$334(){
-        if (Inner$334.$$===undefined){
-            $$$cl1.initTypeProto(Inner$334,'nesting.Outer.Inner',$$$cl1.IdentifiableObject);
+    function $init$Inner$747(){
+        if (Inner$747.$$===undefined){
+            $$$cl1.initTypeProto(Inner$747,'nesting::Outer.Inner',$$$cl1.Basic);
         }
-        return Inner$334;
+        return Inner$747;
     }
-    $$outer.$init$Inner$334=$init$Inner$334;
-    $init$Inner$334();
+    $$outer.$init$Inner$747=$init$Inner$747;
+    $init$Inner$747();
     
     //AttributeDeclaration inner at nesting.ceylon (21:4-21:25)
-    var inner$336=Inner$334();
-    $$$cl1.print(inner$336.getInt());
-    $$$cl1.print(inner$336.getFloat());
-    inner$336.noop();
-    noop$333();
+    var inner$748=Inner$747();
+    $$$cl1.print(inner$748.getInt());
+    $$$cl1.print(inner$748.getFloat());
+    inner$748.noop();
+    noop$746();
     return $$outer;
 }
 exports.Outer=Outer;
 function $init$Outer(){
     if (Outer.$$===undefined){
-        $$$cl1.initTypeProto(Outer,'nesting.Outer',$$$cl1.IdentifiableObject);
+        $$$cl1.initTypeProto(Outer,'nesting::Outer',$$$cl1.Basic);
     }
     return Outer;
 }
@@ -81,46 +76,46 @@ exports.$init$Outer=$init$Outer;
 $init$Outer();
 
 //MethodDefinition outr at nesting.ceylon (30:0-42:0)
-function outr(name$337){
+function outr(name$749){
     
     //AttributeDeclaration uname at nesting.ceylon (31:4-31:34)
-    var uname$338=name$337.getUppercased();
+    var uname$750=name$749.getUppercased();
     
     //MethodDefinition inr at nesting.ceylon (32:4-34:4)
-    function inr$339(){
-        return name$337;
-    }
+    function inr$751(){
+        return name$749;
+    };
     
     //AttributeGetterDefinition uinr at nesting.ceylon (35:4-37:4)
-    var getUinr$340=function(){
-        return uname$338;
-    }
+    var getUinr$752=function(){
+        return uname$750;
+    };
     
     //AttributeDeclaration result at nesting.ceylon (38:4-38:25)
-    var result$341=inr$339();
+    var result$753=inr$751();
     
     //AttributeDeclaration uresult at nesting.ceylon (39:4-39:25)
-    var uresult$342=getUinr$340();
-    $$$cl1.print(result$341);
-    $$$cl1.print(uresult$342);
+    var uresult$754=getUinr$752();
+    $$$cl1.print(result$753);
+    $$$cl1.print(uresult$754);
 }
 exports.outr=outr;
 
 //ClassDefinition Holder at nesting.ceylon (44:0-51:0)
-function Holder(o$343, $$holder){
+function Holder(o$755, $$holder){
     $init$Holder();
     if ($$holder===undefined)$$holder=new Holder.$$;
-    $$holder.o$343=o$343;
+    $$holder.o$755=o$755;
     
     //MethodDefinition get at nesting.ceylon (45:4-47:4)
     function get(){
-        return o$343;
+        return o$755;
     }
     $$holder.get=get;
     
     //AttributeGetterDefinition string at nesting.ceylon (48:4-50:4)
     var getString=function(){
-        return o$343.getString();
+        return o$755.getString();
     }
     $$holder.getString=getString;
     return $$holder;
@@ -128,7 +123,7 @@ function Holder(o$343, $$holder){
 exports.Holder=Holder;
 function $init$Holder(){
     if (Holder.$$===undefined){
-        $$$cl1.initTypeProto(Holder,'nesting.Holder',$$$cl1.IdentifiableObject);
+        $$$cl1.initTypeProto(Holder,'nesting::Holder',$$$cl1.Basic);
     }
     return Holder;
 }
@@ -141,19 +136,19 @@ function Wrapper($$wrapper){
     if ($$wrapper===undefined)$$wrapper=new Wrapper.$$;
     
     //AttributeDeclaration o at nesting.ceylon (54:4-54:18)
-    var o$344=$$$cl1.Integer(100);
-    var getO$344=function(){return o$344;};
-    $$wrapper.getO$344=getO$344;
+    var o$756=(100);
+    var getO$756=function(){return o$756;};
+    $$wrapper.getO$756=getO$756;
     
     //MethodDefinition get at nesting.ceylon (55:4-57:4)
     function get(){
-        return getO$344();
+        return getO$756();
     }
     $$wrapper.get=get;
     
     //AttributeGetterDefinition string at nesting.ceylon (58:4-60:4)
     var getString=function(){
-        return getO$344().getString();
+        return getO$756().getString();
     }
     $$wrapper.getString=getString;
     return $$wrapper;
@@ -161,7 +156,7 @@ function Wrapper($$wrapper){
 exports.Wrapper=Wrapper;
 function $init$Wrapper(){
     if (Wrapper.$$===undefined){
-        $$$cl1.initTypeProto(Wrapper,'nesting.Wrapper',$$$cl1.IdentifiableObject);
+        $$$cl1.initTypeProto(Wrapper,'nesting::Wrapper',$$$cl1.Basic);
     }
     return Wrapper;
 }
@@ -174,8 +169,8 @@ function Unwrapper($$unwrapper){
     if ($$unwrapper===undefined)$$unwrapper=new Unwrapper.$$;
     
     //AttributeDeclaration o at nesting.ceylon (64:4-64:27)
-    var o$345=$$$cl1.Float(23.56);
-    var getO=function(){return o$345;};
+    var o$757=$$$cl1.Float(23.56);
+    var getO=function(){return o$757;};
     $$unwrapper.getO=getO;
     
     //MethodDefinition get at nesting.ceylon (65:4-67:4)
@@ -194,7 +189,7 @@ function Unwrapper($$unwrapper){
 exports.Unwrapper=Unwrapper;
 function $init$Unwrapper(){
     if (Unwrapper.$$===undefined){
-        $$$cl1.initTypeProto(Unwrapper,'nesting.Unwrapper',$$$cl1.IdentifiableObject);
+        $$$cl1.initTypeProto(Unwrapper,'nesting::Unwrapper',$$$cl1.Basic);
     }
     return Unwrapper;
 }
@@ -205,24 +200,24 @@ $init$Unwrapper();
 function producer(){
     
     //AttributeDeclaration o at nesting.ceylon (74:4-74:18)
-    var o$346=$$$cl1.Integer(123);
+    var o$758=(123);
     
     //MethodDefinition produce at nesting.ceylon (75:4-75:35)
-    function produce$347(){
-        return o$346;
-    }
-    return produce$347;
-}
+    function produce$759(){
+        return o$758;
+    };
+    return produce$759;
+};
 
 //MethodDefinition returner at nesting.ceylon (79:0-82:0)
-function returner(o$348){
+function returner(o$760){
     
     //MethodDefinition produce at nesting.ceylon (80:4-80:35)
-    function produce$349(){
-        return o$348;
-    }
-    return produce$349;
-}
+    function produce$761(){
+        return o$760;
+    };
+    return produce$761;
+};
 
 //ClassDefinition A at nesting.ceylon (84:0-105:0)
 function A($$a){
@@ -230,9 +225,9 @@ function A($$a){
     if ($$a===undefined)$$a=new A.$$;
     
     //AttributeDeclaration foo at nesting.ceylon (85:4-85:22)
-    var foo$350=$$$cl1.String("foo",3);
-    var getFoo$350=function(){return foo$350;};
-    $$a.getFoo$350=getFoo$350;
+    var foo$762=$$$cl1.String("foo",3);
+    var getFoo$762=function(){return foo$762;};
+    $$a.getFoo$762=getFoo$762;
     
     //ClassDefinition B at nesting.ceylon (86:4-96:4)
     function B$A($$b$A){
@@ -240,9 +235,9 @@ function A($$a){
         if ($$b$A===undefined)$$b$A=new B$A.$$;
         
         //AttributeDeclaration qux at nesting.ceylon (87:8-87:26)
-        var qux$351=$$$cl1.String("qux",3);
-        var getQux$351=function(){return qux$351;};
-        $$b$A.getQux$351=getQux$351;
+        var qux$763=$$$cl1.String("qux",3);
+        var getQux$763=function(){return qux$763;};
+        $$b$A.getQux$763=getQux$763;
         
         //ClassDefinition C at nesting.ceylon (88:8-95:8)
         function C$B$A($$c$B$A){
@@ -251,13 +246,13 @@ function A($$a){
             
             //MethodDefinition foobar at nesting.ceylon (89:12-91:12)
             function foobar(){
-                return getFoo$350();
+                return getFoo$762();
             }
             $$c$B$A.foobar=foobar;
             
             //MethodDefinition quxx at nesting.ceylon (92:12-94:12)
             function quxx(){
-                return getQux$351();
+                return getQux$763();
             }
             $$c$B$A.quxx=quxx;
             return $$c$B$A;
@@ -265,7 +260,7 @@ function A($$a){
         $$b$A.C$B$A=C$B$A;
         function $init$C$B$A(){
             if (C$B$A.$$===undefined){
-                $$$cl1.initTypeProto(C$B$A,'nesting.A.B.C',$$$cl1.IdentifiableObject);
+                $$$cl1.initTypeProto(C$B$A,'nesting::A.B.C',$$$cl1.Basic);
             }
             return C$B$A;
         }
@@ -276,7 +271,7 @@ function A($$a){
     $$a.B$A=B$A;
     function $init$B$A(){
         if (B$A.$$===undefined){
-            $$$cl1.initTypeProto(B$A,'nesting.A.B',$$$cl1.IdentifiableObject);
+            $$$cl1.initTypeProto(B$A,'nesting::A.B',$$$cl1.Basic);
         }
         return B$A;
     }
@@ -287,32 +282,32 @@ function A($$a){
     function baz(){
         
         //ClassDefinition Baz at nesting.ceylon (98:8-102:8)
-        function Baz$352($$baz$352){
-            $init$Baz$352();
-            if ($$baz$352===undefined)$$baz$352=new Baz$352.$$;
+        function Baz$764($$baz$764){
+            $init$Baz$764();
+            if ($$baz$764===undefined)$$baz$764=new Baz$764.$$;
             
             //MethodDefinition get at nesting.ceylon (99:12-101:12)
             function get(){
-                return getFoo$350();
+                return getFoo$762();
             }
-            $$baz$352.get=get;
-            return $$baz$352;
+            $$baz$764.get=get;
+            return $$baz$764;
         }
-        function $init$Baz$352(){
-            if (Baz$352.$$===undefined){
-                $$$cl1.initTypeProto(Baz$352,'nesting.A.baz.Baz',$$$cl1.IdentifiableObject);
+        function $init$Baz$764(){
+            if (Baz$764.$$===undefined){
+                $$$cl1.initTypeProto(Baz$764,'nesting::A.baz.Baz',$$$cl1.Basic);
             }
-            return Baz$352;
+            return Baz$764;
         }
-        $init$Baz$352();
-        return Baz$352().get();
+        $init$Baz$764();
+        return Baz$764().get();
     }
     $$a.baz=baz;
     return $$a;
 }
 function $init$A(){
     if (A.$$===undefined){
-        $$$cl1.initTypeProto(A,'nesting.A',$$$cl1.IdentifiableObject);
+        $$$cl1.initTypeProto(A,'nesting::A',$$$cl1.Basic);
     }
     return A;
 }
@@ -325,83 +320,82 @@ function O($$o){
     if ($$o===undefined)$$o=new O.$$;
     
     //AttributeDeclaration s at nesting.ceylon (108:4-108:22)
-    var s$353=$$$cl1.String("hello",5);
-    var getS$353=function(){return s$353;};
-    $$o.getS$353=getS$353;
+    var s$765=$$$cl1.String("hello",5);
+    var getS$765=function(){return s$765;};
+    $$o.getS$765=getS$765;
     
     //ClassDefinition InnerClass at nesting.ceylon (109:4-113:4)
-    function InnerClass$354($$innerClass$354){
-        $init$InnerClass$354();
-        if ($$innerClass$354===undefined)$$innerClass$354=new InnerClass$354.$$;
+    function InnerClass$766($$innerClass$766){
+        $init$InnerClass$766();
+        if ($$innerClass$766===undefined)$$innerClass$766=new InnerClass$766.$$;
         
         //MethodDefinition f at nesting.ceylon (110:8-112:8)
         function f(){
-            return getS$353();
+            return getS$765();
         }
-        $$innerClass$354.f=f;
-        return $$innerClass$354;
+        $$innerClass$766.f=f;
+        return $$innerClass$766;
     }
-    function $init$InnerClass$354(){
-        if (InnerClass$354.$$===undefined){
-            $$$cl1.initTypeProto(InnerClass$354,'nesting.O.InnerClass',$$$cl1.IdentifiableObject);
+    function $init$InnerClass$766(){
+        if (InnerClass$766.$$===undefined){
+            $$$cl1.initTypeProto(InnerClass$766,'nesting::O.InnerClass',$$$cl1.Basic);
         }
-        return InnerClass$354;
+        return InnerClass$766;
     }
-    $$o.$init$InnerClass$354=$init$InnerClass$354;
-    $init$InnerClass$354();
+    $$o.$init$InnerClass$766=$init$InnerClass$766;
+    $init$InnerClass$766();
     
     //ObjectDefinition innerObject at nesting.ceylon (114:4-118:4)
-    function innerObject$355(){
-        var $$innerObject$355=new innerObject$355.$$;
+    function innerObject$767(){
+        var $$innerObject$767=new innerObject$767.$$;
         
         //MethodDefinition f at nesting.ceylon (115:8-117:8)
         function f(){
-            return getS$353();
+            return getS$765();
         }
-        $$innerObject$355.f=f;
-        return $$innerObject$355;
+        $$innerObject$767.f=f;
+        return $$innerObject$767;
     }
-    function $init$innerObject$355(){
-        if (innerObject$355.$$===undefined){
-            $$$cl1.initTypeProto(innerObject$355,'nesting.O.innerObject',$$$cl1.IdentifiableObject);
+    function $init$innerObject$767(){
+        if (innerObject$767.$$===undefined){
+            $$$cl1.initTypeProto(innerObject$767,'nesting::O.innerObject',$$$cl1.Basic);
         }
-        return innerObject$355;
+        return innerObject$767;
     }
-    $$o.$init$innerObject$355=$init$innerObject$355;
-    $init$innerObject$355();
-    var innerObject$356=innerObject$355(new innerObject$355.$$);
-    var getInnerObject$356=function(){
-        return innerObject$356;
+    $$o.$init$innerObject$767=$init$innerObject$767;
+    $init$innerObject$767();
+    var innerObject$768=innerObject$767();
+    var getInnerObject$768=function(){
+        return innerObject$768;
     }
     
     //InterfaceDefinition InnerInterface at nesting.ceylon (119:4-123:4)
-    function InnerInterface$357($$innerInterface$357){
+    function InnerInterface$769($$innerInterface$769){
         
         //MethodDefinition f at nesting.ceylon (120:8-122:8)
         function f(){
-            return getS$353();
+            return getS$765();
         }
-        $$innerInterface$357.f=f;
-        
+        $$innerInterface$769.f=f;
     }
-    function $init$InnerInterface$357(){
-        if (InnerInterface$357.$$===undefined){
-            $$$cl1.initTypeProtoI(InnerInterface$357,'nesting.O.InnerInterface');
+    function $init$InnerInterface$769(){
+        if (InnerInterface$769.$$===undefined){
+            $$$cl1.initTypeProto(InnerInterface$769,'nesting::O.InnerInterface');
         }
-        return InnerInterface$357;
+        return InnerInterface$769;
     }
-    $$o.$init$InnerInterface$357=$init$InnerInterface$357;
-    $init$InnerInterface$357();
+    $$o.$init$InnerInterface$769=$init$InnerInterface$769;
+    $init$InnerInterface$769();
     
     //MethodDefinition test1 at nesting.ceylon (124:4-126:4)
     function test1(){
-        return InnerClass$354().f();
+        return InnerClass$766().f();
     }
     $$o.test1=test1;
     
     //MethodDefinition test2 at nesting.ceylon (127:4-129:4)
     function test2(){
-        return getInnerObject$356().f();
+        return getInnerObject$768().f();
     }
     $$o.test2=test2;
     
@@ -409,30 +403,30 @@ function O($$o){
     function test3(){
         
         //ObjectDefinition obj at nesting.ceylon (131:8-131:45)
-        function obj$358(){
-            var $$obj$358=new obj$358.$$;
-            InnerInterface$357($$obj$358);
-            return $$obj$358;
+        function obj$770(){
+            var $$obj$770=new obj$770.$$;
+            InnerInterface$769($$obj$770);
+            return $$obj$770;
         }
-        function $init$obj$358(){
-            if (obj$358.$$===undefined){
-                $$$cl1.initTypeProto(obj$358,'nesting.O.test3.obj',$$$cl1.IdentifiableObject,$init$InnerInterface$357());
+        function $init$obj$770(){
+            if (obj$770.$$===undefined){
+                $$$cl1.initTypeProto(obj$770,'nesting::O.test3.obj',$$$cl1.Basic,$init$InnerInterface$769());
             }
-            return obj$358;
+            return obj$770;
         }
-        $init$obj$358();
-        var obj$359=obj$358(new obj$358.$$);
-        var getObj$359=function(){
-            return obj$359;
+        $init$obj$770();
+        var obj$771=obj$770();
+        var getObj$771=function(){
+            return obj$771;
         }
-        return getObj$359().f();
+        return getObj$771().f();
     }
     $$o.test3=test3;
     return $$o;
 }
 function $init$O(){
     if (O.$$===undefined){
-        $$$cl1.initTypeProto(O,'nesting.O',$$$cl1.IdentifiableObject);
+        $$$cl1.initTypeProto(O,'nesting::O',$$$cl1.Basic);
     }
     return O;
 }
@@ -445,52 +439,52 @@ function OuterC1($$outerC1){
     if ($$outerC1===undefined)$$outerC1=new OuterC1.$$;
     
     //ClassDefinition A at nesting.ceylon (137:4-139:4)
-    function A$360($$a$360){
-        $init$A$360();
-        if ($$a$360===undefined)$$a$360=new A$360.$$;
+    function A$772($$a$772){
+        $init$A$772();
+        if ($$a$772===undefined)$$a$772=new A$772.$$;
         
         //MethodDefinition tst at nesting.ceylon (138:8-138:55)
         function tst(){
             return $$$cl1.String("OuterC1.A.tst()",15);
         }
-        $$a$360.tst=tst;
-        return $$a$360;
+        $$a$772.tst=tst;
+        return $$a$772;
     }
-    function $init$A$360(){
-        if (A$360.$$===undefined){
-            $$$cl1.initTypeProto(A$360,'nesting.OuterC1.A',$$$cl1.IdentifiableObject);
+    function $init$A$772(){
+        if (A$772.$$===undefined){
+            $$$cl1.initTypeProto(A$772,'nesting::OuterC1.A',$$$cl1.Basic);
         }
-        return A$360;
+        return A$772;
     }
-    $$outerC1.$init$A$360=$init$A$360;
-    $init$A$360();
+    $$outerC1.$init$A$772=$init$A$772;
+    $init$A$772();
     
     //ClassDefinition B at nesting.ceylon (140:4-140:27)
-    function B$361($$b$361){
-        $init$B$361();
-        if ($$b$361===undefined)$$b$361=new B$361.$$;
-        A$360($$b$361);
-        return $$b$361;
+    function B$773($$b$773){
+        $init$B$773();
+        if ($$b$773===undefined)$$b$773=new B$773.$$;
+        A$772($$b$773);
+        return $$b$773;
     }
-    function $init$B$361(){
-        if (B$361.$$===undefined){
-            $$$cl1.initType(B$361,'nesting.OuterC1.B',A$360);
+    function $init$B$773(){
+        if (B$773.$$===undefined){
+            $$$cl1.initTypeProto(B$773,'nesting::OuterC1.B',A$772);
         }
-        return B$361;
+        return B$773;
     }
-    $$outerC1.$init$B$361=$init$B$361;
-    $init$B$361();
+    $$outerC1.$init$B$773=$init$B$773;
+    $init$B$773();
     
     //MethodDefinition tst at nesting.ceylon (141:4-141:42)
     function tst(){
-        return B$361().tst();
+        return B$773().tst();
     }
     $$outerC1.tst=tst;
     return $$outerC1;
 }
 function $init$OuterC1(){
     if (OuterC1.$$===undefined){
-        $$$cl1.initTypeProto(OuterC1,'nesting.OuterC1',$$$cl1.IdentifiableObject);
+        $$$cl1.initTypeProto(OuterC1,'nesting::OuterC1',$$$cl1.Basic);
     }
     return OuterC1;
 }
@@ -501,41 +495,41 @@ $init$OuterC1();
 function outerf(){
     
     //ClassDefinition A at nesting.ceylon (145:4-147:4)
-    function A$362($$a$362){
-        $init$A$362();
-        if ($$a$362===undefined)$$a$362=new A$362.$$;
+    function A$774($$a$774){
+        $init$A$774();
+        if ($$a$774===undefined)$$a$774=new A$774.$$;
         
         //MethodDefinition tst at nesting.ceylon (146:8-146:54)
         function tst(){
             return $$$cl1.String("outerf.A.tst()",14);
         }
-        $$a$362.tst=tst;
-        return $$a$362;
+        $$a$774.tst=tst;
+        return $$a$774;
     }
-    function $init$A$362(){
-        if (A$362.$$===undefined){
-            $$$cl1.initTypeProto(A$362,'nesting.outerf.A',$$$cl1.IdentifiableObject);
+    function $init$A$774(){
+        if (A$774.$$===undefined){
+            $$$cl1.initTypeProto(A$774,'nesting::outerf.A',$$$cl1.Basic);
         }
-        return A$362;
+        return A$774;
     }
-    $init$A$362();
+    $init$A$774();
     
     //ClassDefinition B at nesting.ceylon (148:4-148:27)
-    function B$363($$b$363){
-        $init$B$363();
-        if ($$b$363===undefined)$$b$363=new B$363.$$;
-        A$362($$b$363);
-        return $$b$363;
+    function B$775($$b$775){
+        $init$B$775();
+        if ($$b$775===undefined)$$b$775=new B$775.$$;
+        A$774($$b$775);
+        return $$b$775;
     }
-    function $init$B$363(){
-        if (B$363.$$===undefined){
-            $$$cl1.initType(B$363,'nesting.outerf.B',A$362);
+    function $init$B$775(){
+        if (B$775.$$===undefined){
+            $$$cl1.initTypeProto(B$775,'nesting::outerf.B',A$774);
         }
-        return B$363;
+        return B$775;
     }
-    $init$B$363();
-    return B$363().tst();
-}
+    $init$B$775();
+    return B$775().tst();
+};
 
 //ClassDefinition OuterC2 at nesting.ceylon (152:0-160:0)
 function OuterC2($$outerC2){
@@ -543,51 +537,51 @@ function OuterC2($$outerC2){
     if ($$outerC2===undefined)$$outerC2=new OuterC2.$$;
     
     //ClassDefinition A at nesting.ceylon (153:4-155:4)
-    function A$364($$a$364){
-        $init$A$364();
-        if ($$a$364===undefined)$$a$364=new A$364.$$;
+    function A$776($$a$776){
+        $init$A$776();
+        if ($$a$776===undefined)$$a$776=new A$776.$$;
         
         //MethodDefinition tst at nesting.ceylon (154:8-154:55)
         function tst(){
             return $$$cl1.String("OuterC2.A.tst()",15);
         }
-        $$a$364.tst=tst;
-        return $$a$364;
+        $$a$776.tst=tst;
+        return $$a$776;
     }
-    function $init$A$364(){
-        if (A$364.$$===undefined){
-            $$$cl1.initTypeProto(A$364,'nesting.OuterC2.A',$$$cl1.IdentifiableObject);
+    function $init$A$776(){
+        if (A$776.$$===undefined){
+            $$$cl1.initTypeProto(A$776,'nesting::OuterC2.A',$$$cl1.Basic);
         }
-        return A$364;
+        return A$776;
     }
-    $$outerC2.$init$A$364=$init$A$364;
-    $init$A$364();
+    $$outerC2.$init$A$776=$init$A$776;
+    $init$A$776();
     
     //MethodDefinition tst at nesting.ceylon (156:4-159:4)
     function tst(){
         
         //ClassDefinition B at nesting.ceylon (157:8-157:31)
-        function B$365($$b$365){
-            $init$B$365();
-            if ($$b$365===undefined)$$b$365=new B$365.$$;
-            A$364($$b$365);
-            return $$b$365;
+        function B$777($$b$777){
+            $init$B$777();
+            if ($$b$777===undefined)$$b$777=new B$777.$$;
+            A$776($$b$777);
+            return $$b$777;
         }
-        function $init$B$365(){
-            if (B$365.$$===undefined){
-                $$$cl1.initType(B$365,'nesting.OuterC2.tst.B',A$364);
+        function $init$B$777(){
+            if (B$777.$$===undefined){
+                $$$cl1.initTypeProto(B$777,'nesting::OuterC2.tst.B',A$776);
             }
-            return B$365;
+            return B$777;
         }
-        $init$B$365();
-        return B$365().tst();
+        $init$B$777();
+        return B$777().tst();
     }
     $$outerC2.tst=tst;
     return $$outerC2;
 }
 function $init$OuterC2(){
     if (OuterC2.$$===undefined){
-        $$$cl1.initTypeProto(OuterC2,'nesting.OuterC2',$$$cl1.IdentifiableObject);
+        $$$cl1.initTypeProto(OuterC2,'nesting::OuterC2',$$$cl1.Basic);
     }
     return OuterC2;
 }
@@ -600,8 +594,8 @@ function NameTest($$nameTest){
     if ($$nameTest===undefined)$$nameTest=new NameTest.$$;
     
     //AttributeDeclaration x at nesting.ceylon (163:4-163:25)
-    var x$366=$$$cl1.String("1",1);
-    var getX=function(){return x$366;};
+    var x$778=$$$cl1.String("1",1);
+    var getX=function(){return x$778;};
     $$nameTest.getX=getX;
     
     //ClassDefinition NameTest at nesting.ceylon (164:4-176:4)
@@ -610,22 +604,22 @@ function NameTest($$nameTest){
         if ($$nameTest$NameTest===undefined)$$nameTest$NameTest=new NameTest$NameTest.$$;
         
         //AttributeDeclaration x at nesting.ceylon (165:8-165:29)
-        var x$367=$$$cl1.String("2",1);
-        var getX=function(){return x$367;};
+        var x$779=$$$cl1.String("2",1);
+        var getX=function(){return x$779;};
         $$nameTest$NameTest.getX=getX;
         
         //MethodDefinition f at nesting.ceylon (166:8-175:8)
         function f(){
             
             //ClassDefinition NameTest at nesting.ceylon (167:12-173:12)
-            function NameTest$368($$nameTest$368){
-                $init$NameTest$368();
-                if ($$nameTest$368===undefined)$$nameTest$368=new NameTest$368.$$;
+            function NameTest$780($$nameTest$780){
+                $init$NameTest$780();
+                if ($$nameTest$780===undefined)$$nameTest$780=new NameTest$780.$$;
                 
                 //AttributeDeclaration x at nesting.ceylon (168:16-168:37)
-                var x$369=$$$cl1.String("3",1);
-                var getX=function(){return x$369;};
-                $$nameTest$368.getX=getX;
+                var x$781=$$$cl1.String("3",1);
+                var getX=function(){return x$781;};
+                $$nameTest$780.getX=getX;
                 
                 //ClassDefinition NameTest at nesting.ceylon (169:16-171:16)
                 function NameTest$NameTest($$nameTest$NameTest){
@@ -633,36 +627,36 @@ function NameTest($$nameTest){
                     if ($$nameTest$NameTest===undefined)$$nameTest$NameTest=new NameTest$NameTest.$$;
                     
                     //AttributeDeclaration x at nesting.ceylon (170:20-170:41)
-                    var x$370=$$$cl1.String("4",1);
-                    var getX=function(){return x$370;};
+                    var x$782=$$$cl1.String("4",1);
+                    var getX=function(){return x$782;};
                     $$nameTest$NameTest.getX=getX;
                     return $$nameTest$NameTest;
                 }
-                $$nameTest$368.NameTest$NameTest=NameTest$NameTest;
+                $$nameTest$780.NameTest$NameTest=NameTest$NameTest;
                 function $init$NameTest$NameTest(){
                     if (NameTest$NameTest.$$===undefined){
-                        $$$cl1.initTypeProto(NameTest$NameTest,'nesting.NameTest.NameTest.f.NameTest.NameTest',$$$cl1.IdentifiableObject);
+                        $$$cl1.initTypeProto(NameTest$NameTest,'nesting::NameTest.NameTest.f.NameTest.NameTest',$$$cl1.Basic);
                     }
                     return NameTest$NameTest;
                 }
-                $$nameTest$368.$init$NameTest$NameTest=$init$NameTest$NameTest;
+                $$nameTest$780.$init$NameTest$NameTest=$init$NameTest$NameTest;
                 $init$NameTest$NameTest();
                 
                 //MethodDefinition f at nesting.ceylon (172:16-172:66)
                 function f(){
-                    return $$nameTest$368.getX().plus($$nameTest$368.NameTest$NameTest().getX());
+                    return $$nameTest$780.getX().plus($$nameTest$780.NameTest$NameTest().getX());
                 }
-                $$nameTest$368.f=f;
-                return $$nameTest$368;
+                $$nameTest$780.f=f;
+                return $$nameTest$780;
             }
-            function $init$NameTest$368(){
-                if (NameTest$368.$$===undefined){
-                    $$$cl1.initTypeProto(NameTest$368,'nesting.NameTest.NameTest.f.NameTest',$$$cl1.IdentifiableObject);
+            function $init$NameTest$780(){
+                if (NameTest$780.$$===undefined){
+                    $$$cl1.initTypeProto(NameTest$780,'nesting::NameTest.NameTest.f.NameTest',$$$cl1.Basic);
                 }
-                return NameTest$368;
+                return NameTest$780;
             }
-            $init$NameTest$368();
-            return $$nameTest.getX().plus($$nameTest$NameTest.getX()).plus(NameTest$368().f());
+            $init$NameTest$780();
+            return $$nameTest.getX().plus($$nameTest$NameTest.getX()).plus(NameTest$780().f());
         }
         $$nameTest$NameTest.f=f;
         return $$nameTest$NameTest;
@@ -670,7 +664,7 @@ function NameTest($$nameTest){
     $$nameTest.NameTest$NameTest=NameTest$NameTest;
     function $init$NameTest$NameTest(){
         if (NameTest$NameTest.$$===undefined){
-            $$$cl1.initTypeProto(NameTest$NameTest,'nesting.NameTest.NameTest',$$$cl1.IdentifiableObject);
+            $$$cl1.initTypeProto(NameTest$NameTest,'nesting::NameTest.NameTest',$$$cl1.Basic);
         }
         return NameTest$NameTest;
     }
@@ -687,7 +681,7 @@ function NameTest($$nameTest){
 exports.NameTest=NameTest;
 function $init$NameTest(){
     if (NameTest.$$===undefined){
-        $$$cl1.initTypeProto(NameTest,'nesting.NameTest',$$$cl1.IdentifiableObject);
+        $$$cl1.initTypeProto(NameTest,'nesting::NameTest',$$$cl1.Basic);
     }
     return NameTest;
 }
@@ -699,8 +693,8 @@ function nameTest(){
     var $$nameTest=new nameTest.$$;
     
     //AttributeDeclaration x at nesting.ceylon (181:4-181:25)
-    var x$371=$$$cl1.String("1",1);
-    var getX=function(){return x$371;};
+    var x$783=$$$cl1.String("1",1);
+    var getX=function(){return x$783;};
     $$nameTest.getX=getX;
     
     //ObjectDefinition nameTest at nesting.ceylon (182:4-194:4)
@@ -708,80 +702,80 @@ function nameTest(){
         var $$nameTest$nameTest=new nameTest$nameTest.$$;
         
         //AttributeDeclaration x at nesting.ceylon (183:8-183:29)
-        var x$372=$$$cl1.String("2",1);
-        var getX=function(){return x$372;};
+        var x$784=$$$cl1.String("2",1);
+        var getX=function(){return x$784;};
         $$nameTest$nameTest.getX=getX;
         
         //MethodDefinition f at nesting.ceylon (184:8-193:8)
         function f(){
             
             //ObjectDefinition nameTest at nesting.ceylon (185:12-191:12)
-            function nameTest$373(){
-                var $$nameTest$373=new nameTest$373.$$;
+            function nameTest$785(){
+                var $$nameTest$785=new nameTest$785.$$;
                 
                 //AttributeDeclaration x at nesting.ceylon (186:16-186:37)
-                var x$374=$$$cl1.String("3",1);
-                var getX=function(){return x$374;};
-                $$nameTest$373.getX=getX;
+                var x$786=$$$cl1.String("3",1);
+                var getX=function(){return x$786;};
+                $$nameTest$785.getX=getX;
                 
                 //ObjectDefinition nameTest at nesting.ceylon (187:16-189:16)
                 function nameTest$nameTest(){
                     var $$nameTest$nameTest=new nameTest$nameTest.$$;
                     
                     //AttributeDeclaration x at nesting.ceylon (188:20-188:41)
-                    var x$375=$$$cl1.String("4",1);
-                    var getX=function(){return x$375;};
+                    var x$787=$$$cl1.String("4",1);
+                    var getX=function(){return x$787;};
                     $$nameTest$nameTest.getX=getX;
                     return $$nameTest$nameTest;
                 }
                 function $init$nameTest$nameTest(){
                     if (nameTest$nameTest.$$===undefined){
-                        $$$cl1.initTypeProto(nameTest$nameTest,'nesting.nameTest.nameTest.f.nameTest.nameTest',$$$cl1.IdentifiableObject);
+                        $$$cl1.initTypeProto(nameTest$nameTest,'nesting::nameTest.nameTest.f.nameTest.nameTest',$$$cl1.Basic);
                     }
                     return nameTest$nameTest;
                 }
-                $$nameTest$373.$init$nameTest$nameTest=$init$nameTest$nameTest;
+                $$nameTest$785.$init$nameTest$nameTest=$init$nameTest$nameTest;
                 $init$nameTest$nameTest();
-                var nameTest$376=nameTest$nameTest(new nameTest$nameTest.$$);
+                var nameTest$788=nameTest$nameTest();
                 var getNameTest=function(){
-                    return nameTest$376;
+                    return nameTest$788;
                 }
-                $$nameTest$373.getNameTest=getNameTest;
+                $$nameTest$785.getNameTest=getNameTest;
                 
                 //MethodDefinition f at nesting.ceylon (190:16-190:64)
                 function f(){
-                    return $$nameTest$373.getX().plus($$nameTest$373.getNameTest().getX());
+                    return $$nameTest$785.getX().plus($$nameTest$785.getNameTest().getX());
                 }
-                $$nameTest$373.f=f;
-                return $$nameTest$373;
+                $$nameTest$785.f=f;
+                return $$nameTest$785;
             }
-            function $init$nameTest$373(){
-                if (nameTest$373.$$===undefined){
-                    $$$cl1.initTypeProto(nameTest$373,'nesting.nameTest.nameTest.f.nameTest',$$$cl1.IdentifiableObject);
+            function $init$nameTest$785(){
+                if (nameTest$785.$$===undefined){
+                    $$$cl1.initTypeProto(nameTest$785,'nesting::nameTest.nameTest.f.nameTest',$$$cl1.Basic);
                 }
-                return nameTest$373;
+                return nameTest$785;
             }
-            $init$nameTest$373();
-            var nameTest$377=nameTest$373(new nameTest$373.$$);
-            var getNameTest$377=function(){
-                return nameTest$377;
+            $init$nameTest$785();
+            var nameTest$789=nameTest$785();
+            var getNameTest$789=function(){
+                return nameTest$789;
             }
-            return $$nameTest.getX().plus($$nameTest$nameTest.getX()).plus(getNameTest$377().f());
+            return $$nameTest.getX().plus($$nameTest$nameTest.getX()).plus(getNameTest$789().f());
         }
         $$nameTest$nameTest.f=f;
         return $$nameTest$nameTest;
     }
     function $init$nameTest$nameTest(){
         if (nameTest$nameTest.$$===undefined){
-            $$$cl1.initTypeProto(nameTest$nameTest,'nesting.nameTest.nameTest',$$$cl1.IdentifiableObject);
+            $$$cl1.initTypeProto(nameTest$nameTest,'nesting::nameTest.nameTest',$$$cl1.Basic);
         }
         return nameTest$nameTest;
     }
     $$nameTest.$init$nameTest$nameTest=$init$nameTest$nameTest;
     $init$nameTest$nameTest();
-    var nameTest$378=nameTest$nameTest(new nameTest$nameTest.$$);
+    var nameTest$790=nameTest$nameTest();
     var getNameTest=function(){
-        return nameTest$378;
+        return nameTest$790;
     }
     $$nameTest.getNameTest=getNameTest;
     
@@ -794,15 +788,15 @@ function nameTest(){
 }
 function $init$nameTest(){
     if (nameTest.$$===undefined){
-        $$$cl1.initTypeProto(nameTest,'nesting.nameTest',$$$cl1.IdentifiableObject);
+        $$$cl1.initTypeProto(nameTest,'nesting::nameTest',$$$cl1.Basic);
     }
     return nameTest;
 }
 exports.$init$nameTest=$init$nameTest;
 $init$nameTest();
-var nameTest$379=nameTest(new nameTest.$$);
+var nameTest$791=nameTest();
 var getNameTest=function(){
-    return nameTest$379;
+    return nameTest$791;
 }
 exports.getNameTest=getNameTest;
 
@@ -812,8 +806,8 @@ function C1($$c1){
     if ($$c1===undefined)$$c1=new C1.$$;
     
     //AttributeDeclaration x at nesting.ceylon (199:4-199:33)
-    var x$380=$$$cl1.String("1",1);
-    var getX=function(){return x$380;};
+    var x$792=$$$cl1.String("1",1);
+    var getX=function(){return x$792;};
     $$c1.getX=getX;
     
     //ClassDefinition C1 at nesting.ceylon (200:4-202:4)
@@ -822,15 +816,15 @@ function C1($$c1){
         if ($$c1$C1===undefined)$$c1$C1=new C1$C1.$$;
         
         //AttributeDeclaration x at nesting.ceylon (201:8-201:38)
-        var x$381=$$$cl1.String("11",2);
-        var getX=function(){return x$381;};
+        var x$793=$$$cl1.String("11",2);
+        var getX=function(){return x$793;};
         $$c1$C1.getX=getX;
         return $$c1$C1;
     }
     $$c1.C1$C1=C1$C1;
     function $init$C1$C1(){
         if (C1$C1.$$===undefined){
-            $$$cl1.initTypeProto(C1$C1,'nesting.C1.C1',$$$cl1.IdentifiableObject);
+            $$$cl1.initTypeProto(C1$C1,'nesting::C1.C1',$$$cl1.Basic);
         }
         return C1$C1;
     }
@@ -842,16 +836,16 @@ function C1($$c1){
         $init$C3$C1();
         if ($$c3$C1===undefined)$$c3$C1=new C3$C1.$$;
         $$c1.C1$C1($$c3$C1);
-        $$c3$C1.getX$$nesting$C1$C1$=$$c3$C1.getX;
+        $$c3$C1.getX$$nesting$C1$C1=$$c3$C1.getX;
         
         //AttributeDeclaration x at nesting.ceylon (204:8-204:45)
-        var x$382=$$$cl1.String("13",2);
-        var getX=function(){return x$382;};
+        var x$794=$$$cl1.String("13",2);
+        var getX=function(){return x$794;};
         $$c3$C1.getX=getX;
         
         //MethodDefinition f at nesting.ceylon (205:8-207:8)
         function f(){
-            return $$$cl1.StringBuilder().appendAll($$$cl1.ArraySequence([$$$cl1.String("",0),$$c1.getX().getString(),$$$cl1.String("-",1),$$c3$C1.getX$$nesting$C1$C1$().getString(),$$$cl1.String("-",1),$$c1.C1$C1().getX().getString(),$$$cl1.String("-",1),$$c3$C1.getX().getString(),$$$cl1.String("-",1),$$c1.C3$C1().getX().getString(),$$$cl1.String("",0)])).getString();
+            return $$$cl1.StringBuilder().appendAll([$$c1.getX().getString(),$$$cl1.String("-",1),$$c3$C1.getX$$nesting$C1$C1().getString(),$$$cl1.String("-",1),$$c1.C1$C1().getX().getString(),$$$cl1.String("-",1),$$c3$C1.getX().getString(),$$$cl1.String("-",1),$$c1.C3$C1().getX().getString()]).getString();
         }
         $$c3$C1.f=f;
         return $$c3$C1;
@@ -859,7 +853,7 @@ function C1($$c1){
     $$c1.C3$C1=C3$C1;
     function $init$C3$C1(){
         if (C3$C1.$$===undefined){
-            $$$cl1.initType(C3$C1,'nesting.C1.C3',$$c1.C1$C1);
+            $$$cl1.initTypeProto(C3$C1,'nesting::C1.C3',$$c1.C1$C1);
         }
         return C3$C1;
     }
@@ -870,7 +864,7 @@ function C1($$c1){
 exports.C1=C1;
 function $init$C1(){
     if (C1.$$===undefined){
-        $$$cl1.initTypeProto(C1,'nesting.C1',$$$cl1.IdentifiableObject);
+        $$$cl1.initTypeProto(C1,'nesting::C1',$$$cl1.Basic);
     }
     return C1;
 }
@@ -882,22 +876,23 @@ function C2($$c2){
     $init$C2();
     if ($$c2===undefined)$$c2=new C2.$$;
     C1($$c2);
+    $$c2.C1$C1$$nesting$C1=$$c2.C1$C1;
     
     //AttributeDeclaration x at nesting.ceylon (211:4-211:32)
-    var x$383=$$$cl1.String("2",1);
-    var getX=function(){return x$383;};
+    var x$795=$$$cl1.String("2",1);
+    var getX=function(){return x$795;};
     $$c2.getX=getX;
     
     //ClassDefinition C2 at nesting.ceylon (212:4-220:4)
     function C2$C2($$c2$C2){
         $init$C2$C2();
         if ($$c2$C2===undefined)$$c2$C2=new C2$C2.$$;
-        $$c2.C1$C1($$c2$C2);
-        $$c2$C2.getX$$nesting$C1$C1$=$$c2$C2.getX;
+        $$c2.C1$C1$$nesting$C1($$c2$C2);
+        $$c2$C2.getX$$nesting$C1$C1=$$c2$C2.getX;
         
         //AttributeDeclaration x at nesting.ceylon (213:8-213:37)
-        var x$384=$$$cl1.String("22",2);
-        var getX=function(){return x$384;};
+        var x$796=$$$cl1.String("22",2);
+        var getX=function(){return x$796;};
         $$c2$C2.getX=getX;
         
         //ClassDefinition C2 at nesting.ceylon (214:8-216:8)
@@ -907,15 +902,15 @@ function C2($$c2){
             $$c2.C3$C1($$c2$C2$C2);
             
             //AttributeDeclaration x at nesting.ceylon (215:12-215:42)
-            var x$385=$$$cl1.String("222",3);
-            var getX=function(){return x$385;};
+            var x$797=$$$cl1.String("222",3);
+            var getX=function(){return x$797;};
             $$c2$C2$C2.getX=getX;
             return $$c2$C2$C2;
         }
         $$c2$C2.C2$C2$C2=C2$C2$C2;
         function $init$C2$C2$C2(){
             if (C2$C2$C2.$$===undefined){
-                $$$cl1.initType(C2$C2$C2,'nesting.C2.C2.C2',$$c2.C3$C1);
+                $$$cl1.initTypeProto(C2$C2$C2,'nesting::C2.C2.C2',$$c2.C3$C1);
             }
             return C2$C2$C2;
         }
@@ -924,7 +919,7 @@ function C2($$c2){
         
         //MethodDefinition f at nesting.ceylon (217:8-219:8)
         function f(){
-            return $$$cl1.StringBuilder().appendAll($$$cl1.ArraySequence([$$$cl1.String("",0),$$c2.getX().getString(),$$$cl1.String("-",1),$$c2.C1$C1().getX().getString(),$$$cl1.String("-",1),$$c2$C2.getX().getString(),$$$cl1.String("-",1),$$c2$C2.getX$$nesting$C1$C1$().getString(),$$$cl1.String("-",1),$$c2.C3$C1().getX().getString(),$$$cl1.String("-",1),$$c2$C2.C2$C2$C2().getX().getString(),$$$cl1.String("-",1),$$c2$C2.C2$C2$C2().f().getString(),$$$cl1.String("-",1),$$c2.C3$C1().f().getString(),$$$cl1.String("",0)])).getString();
+            return $$$cl1.StringBuilder().appendAll([$$c2.getX().getString(),$$$cl1.String("-",1),$$c2.C1$C1().getX().getString(),$$$cl1.String("-",1),$$c2$C2.getX().getString(),$$$cl1.String("-",1),$$c2$C2.getX$$nesting$C1$C1().getString(),$$$cl1.String("-",1),$$c2.C3$C1().getX().getString(),$$$cl1.String("-",1),$$c2$C2.C2$C2$C2().getX().getString(),$$$cl1.String("-",1),$$c2$C2.C2$C2$C2().f().getString(),$$$cl1.String("-",1),$$c2.C3$C1().f().getString()]).getString();
         }
         $$c2$C2.f=f;
         return $$c2$C2;
@@ -932,7 +927,7 @@ function C2($$c2){
     $$c2.C2$C2=C2$C2;
     function $init$C2$C2(){
         if (C2$C2.$$===undefined){
-            $$$cl1.initType(C2$C2,'nesting.C2.C2',$$c2.C1$C1);
+            $$$cl1.initTypeProto(C2$C2,'nesting::C2.C2',$$c2.C1$C1$$nesting$C1);
         }
         return C2$C2;
     }
@@ -943,44 +938,685 @@ function C2($$c2){
 exports.C2=C2;
 function $init$C2(){
     if (C2.$$===undefined){
-        $$$cl1.initType(C2,'nesting.C2',C1);
+        $$$cl1.initTypeProto(C2,'nesting::C2',C1);
     }
     return C2;
 }
 exports.$init$C2=$init$C2;
 $init$C2();
 
-//MethodDefinition test at nesting.ceylon (223:0-251:0)
+//MethodDefinition test at nesting.ceylon (223:0-253:0)
 function test(){
     outr($$$cl1.String("Hello",5));
-    $$$a12.assert(Holder($$$cl1.String("ok",2)).get().getString().equals($$$cl1.String("ok",2)),$$$cl1.String("holder(ok)",10));
-    $$$a12.assert(Holder($$$cl1.String("ok",2)).getString().equals($$$cl1.String("ok",2)),$$$cl1.String("holder.string",13));
-    $$$a12.assert(Wrapper().get().getString().equals($$$cl1.String("100",3)),$$$cl1.String("wrapper 1",9));
-    $$$a12.assert(Wrapper().getString().equals($$$cl1.String("100",3)),$$$cl1.String("wrapper 2",9));
-    $$$a12.assert(Unwrapper().get().getString().equals($$$cl1.String("23.56",5)),$$$cl1.String("unwrapper 1",11));
-    $$$a12.assert(Unwrapper().getO().getString().equals($$$cl1.String("23.56",5)),$$$cl1.String("unwrapper 2",11));
-    $$$a12.assert(Unwrapper().getString().equals($$$cl1.String("23.56",5)),$$$cl1.String("unwrapper 3",11));
-    $$$a12.assert($$$cl1.isOfType(producer(),'ceylon.language.Callable')/* REIFIED GENERICS SOON!!! term Type[Object()] model {TypeParameter[Callable#Return]=Type[Object]}<ceylon.language.Object> */,$$$cl1.String("function 1",10));
-    $$$a12.assert($$$cl1.isOfType(producer()(),'ceylon.language.Integer'),$$$cl1.String("function 2",10));
-    $$$a12.assert($$$cl1.Integer(123).equals(producer()()),$$$cl1.String("function 3",10));
-    $$$a12.assert($$$cl1.String("something",9).equals(returner($$$cl1.String("something",9))()),$$$cl1.String("function 4",10));
-    $$$a12.assert(A().B$A().C$B$A().foobar().equals($$$cl1.String("foo",3)),$$$cl1.String("foobar",6));
-    $$$a12.assert(A().B$A().C$B$A().quxx().equals($$$cl1.String("qux",3)),$$$cl1.String("quxx",4));
-    $$$a12.assert(A().baz().equals($$$cl1.String("foo",3)),$$$cl1.String("baz",3));
-    $$$a12.assert(O().test1().equals($$$cl1.String("hello",5)),$$$cl1.String("method instantiating inner class",32));
-    $$$a12.assert(O().test2().equals($$$cl1.String("hello",5)),$$$cl1.String("method accessing inner object",29));
-    $$$a12.assert(O().test3().equals($$$cl1.String("hello",5)),$$$cl1.String("method deriving inner interface",31));
-    $$$a12.assert(OuterC1().tst().equals($$$cl1.String("OuterC1.A.tst()",15)),$$$cl1.String("",0));
-    $$$a12.assert(outerf().equals($$$cl1.String("outerf.A.tst()",14)),$$$cl1.String("",0));
-    $$$a12.assert(OuterC2().tst().equals($$$cl1.String("OuterC2.A.tst()",15)),$$$cl1.String("",0));
+    $$$c2.check(Holder($$$cl1.String("ok",2)).get().getString().equals($$$cl1.String("ok",2)),$$$cl1.String("holder(ok)",10));
+    $$$c2.check(Holder($$$cl1.String("ok",2)).getString().equals($$$cl1.String("ok",2)),$$$cl1.String("holder.string",13));
+    $$$c2.check(Wrapper().get().getString().equals($$$cl1.String("100",3)),$$$cl1.String("wrapper 1",9));
+    $$$c2.check(Wrapper().getString().equals($$$cl1.String("100",3)),$$$cl1.String("wrapper 2",9));
+    $$$c2.check(Unwrapper().get().getString().equals($$$cl1.String("23.56",5)),$$$cl1.String("unwrapper 1",11));
+    $$$c2.check(Unwrapper().getO().getString().equals($$$cl1.String("23.56",5)),$$$cl1.String("unwrapper 2",11));
+    $$$c2.check(Unwrapper().getString().equals($$$cl1.String("23.56",5)),$$$cl1.String("unwrapper 3",11));
+    $$$c2.check($$$cl1.isOfType(producer(),{t:$$$cl1.Callable,a:{Arguments:{t:$$$cl1.Empty},Return:{t:$$$cl1.Integer}}}),$$$cl1.String("function 1",10));
+    $$$c2.check($$$cl1.isOfType(producer()(),{t:$$$cl1.Integer}),$$$cl1.String("function 2",10));
+    $$$c2.check((123).equals(producer()()),$$$cl1.String("function 3",10));
+    $$$c2.check($$$cl1.String("something",9).equals(returner($$$cl1.String("something",9))()),$$$cl1.String("function 4",10));
+    $$$c2.check(A().B$A().C$B$A().foobar().equals($$$cl1.String("foo",3)),$$$cl1.String("foobar",6));
+    $$$c2.check(A().B$A().C$B$A().quxx().equals($$$cl1.String("qux",3)),$$$cl1.String("quxx",4));
+    $$$c2.check(A().baz().equals($$$cl1.String("foo",3)),$$$cl1.String("baz",3));
+    $$$c2.check(O().test1().equals($$$cl1.String("hello",5)),$$$cl1.String("method instantiating inner class",32));
+    $$$c2.check(O().test2().equals($$$cl1.String("hello",5)),$$$cl1.String("method accessing inner object",29));
+    $$$c2.check(O().test3().equals($$$cl1.String("hello",5)),$$$cl1.String("method deriving inner interface",31));
+    $$$c2.check(OuterC1().tst().equals($$$cl1.String("OuterC1.A.tst()",15)),$$$cl1.String("",0));
+    $$$c2.check(outerf().equals($$$cl1.String("outerf.A.tst()",14)),$$$cl1.String("",0));
+    $$$c2.check(OuterC2().tst().equals($$$cl1.String("OuterC2.A.tst()",15)),$$$cl1.String("",0));
     Outer($$$cl1.String("Hello",5));
-    $$$a12.assert(NameTest().f().equals($$$cl1.String("1234",4)),$$$cl1.String("Nested class with same name",27));
-    $$$a12.assert(getNameTest().f().equals($$$cl1.String("1234",4)),$$$cl1.String("Nested object with same name",28));
-    $$$a12.assert(C1().C3$C1().f().equals($$$cl1.String("1-11-11-13-13",13)),$$$cl1.String("Several nested classes with same name (1)",41));
-    $$$a12.assert(C2().C2$C2().f().equals($$$cl1.String("2-11-22-11-13-222-2-11-11-222-13-2-11-11-13-13",46)),$$$cl1.String("Several nested classes with same name (2)",41));
-    $$$a12.results();
+    $$$c2.check(NameTest().f().equals($$$cl1.String("1234",4)),$$$cl1.String("Nested class with same name",27));
+    $$$c2.check(getNameTest().f().equals($$$cl1.String("1234",4)),$$$cl1.String("Nested object with same name",28));
+    $$$c2.check(C1().C3$C1().f().equals($$$cl1.String("1-11-11-13-13",13)),$$$cl1.String("Several nested classes with same name (1)",41));
+    $$$c2.check(C2().C2$C2().f().equals($$$cl1.String("2-11-22-11-13-222-2-11-11-222-13-2-11-11-13-13",46)),$$$cl1.String("Several nested classes with same name (2)",41));
+    testRefinement();
+    testRefinement2();
+    $$$c2.results();
 }
 exports.test=test;
+
+//ClassDefinition X at refinement.ceylon (4:0-17:0)
+function X($$x){
+    $init$X();
+    if ($$x===undefined)$$x=new X.$$;
+    
+    //ClassDefinition RefineTest1 at refinement.ceylon (5:4-16:4)
+    function RefineTest1$X($$refineTest1$X){
+        $init$RefineTest1$X();
+        if ($$refineTest1$X===undefined)$$refineTest1$X=new RefineTest1$X.$$;
+        
+        //ClassDefinition Inner at refinement.ceylon (6:8-12:8)
+        function Inner$RefineTest1$X($$inner$RefineTest1$X){
+            $init$Inner$RefineTest1$X();
+            if ($$inner$RefineTest1$X===undefined)$$inner$RefineTest1$X=new Inner$RefineTest1$X.$$;
+            
+            //AttributeDeclaration origin at refinement.ceylon (7:12-7:54)
+            var origin$798=$$$cl1.String("RefineTest1.Inner",17);
+            var getOrigin=function(){return origin$798;};
+            $$inner$RefineTest1$X.getOrigin=getOrigin;
+            
+            //MethodDefinition x at refinement.ceylon (8:12-10:12)
+            function x(){
+                return $$$cl1.String("x and ",6).plus($$inner$RefineTest1$X.y());
+            }
+            $$inner$RefineTest1$X.x=x;
+            return $$inner$RefineTest1$X;
+        }
+        $$refineTest1$X.Inner$RefineTest1$X=Inner$RefineTest1$X;
+        function $init$Inner$RefineTest1$X(){
+            if (Inner$RefineTest1$X.$$===undefined){
+                $$$cl1.initTypeProto(Inner$RefineTest1$X,'nesting::X.RefineTest1.Inner',$$$cl1.Basic);
+            }
+            return Inner$RefineTest1$X;
+        }
+        $$refineTest1$X.$init$Inner$RefineTest1$X=$init$Inner$RefineTest1$X;
+        $init$Inner$RefineTest1$X();
+        
+        //MethodDefinition outerx at refinement.ceylon (13:8-15:8)
+        function outerx(){
+            return $$refineTest1$X.Inner$RefineTest1$X().x();
+        }
+        $$refineTest1$X.outerx=outerx;
+        return $$refineTest1$X;
+    }
+    $$x.RefineTest1$X=RefineTest1$X;
+    function $init$RefineTest1$X(){
+        if (RefineTest1$X.$$===undefined){
+            $$$cl1.initTypeProto(RefineTest1$X,'nesting::X.RefineTest1',$$$cl1.Basic);
+        }
+        return RefineTest1$X;
+    }
+    $$x.$init$RefineTest1$X=$init$RefineTest1$X;
+    $init$RefineTest1$X();
+    return $$x;
+}
+exports.X=X;
+function $init$X(){
+    if (X.$$===undefined){
+        $$$cl1.initTypeProto(X,'nesting::X',$$$cl1.Basic);
+    }
+    return X;
+}
+exports.$init$X=$init$X;
+$init$X();
+
+//ClassDefinition RefineTest2 at refinement.ceylon (20:0-24:0)
+function RefineTest2($$refineTest2){
+    $init$RefineTest2();
+    if ($$refineTest2===undefined)$$refineTest2=new RefineTest2.$$;
+    
+    //ClassDefinition Inner at refinement.ceylon (21:4-23:4)
+    function Inner$RefineTest2($$inner$RefineTest2){
+        $init$Inner$RefineTest2();
+        if ($$inner$RefineTest2===undefined)$$inner$RefineTest2=new Inner$RefineTest2.$$;
+        
+        //MethodDefinition hello at refinement.ceylon (22:8-22:71)
+        function hello(){
+            return $$$cl1.String("hello from RefineTest2.Inner",28);
+        }
+        $$inner$RefineTest2.hello=hello;
+        return $$inner$RefineTest2;
+    }
+    $$refineTest2.Inner$RefineTest2=Inner$RefineTest2;
+    function $init$Inner$RefineTest2(){
+        if (Inner$RefineTest2.$$===undefined){
+            $$$cl1.initTypeProto(Inner$RefineTest2,'nesting::RefineTest2.Inner',$$$cl1.Basic);
+        }
+        return Inner$RefineTest2;
+    }
+    $$refineTest2.$init$Inner$RefineTest2=$init$Inner$RefineTest2;
+    $init$Inner$RefineTest2();
+    return $$refineTest2;
+}
+exports.RefineTest2=RefineTest2;
+function $init$RefineTest2(){
+    if (RefineTest2.$$===undefined){
+        $$$cl1.initTypeProto(RefineTest2,'nesting::RefineTest2',$$$cl1.Basic);
+    }
+    return RefineTest2;
+}
+exports.$init$RefineTest2=$init$RefineTest2;
+$init$RefineTest2();
+
+//ClassDefinition RefineTest3 at refinement.ceylon (27:0-33:0)
+function RefineTest3($$refineTest3){
+    $init$RefineTest3();
+    if ($$refineTest3===undefined)$$refineTest3=new RefineTest3.$$;
+    
+    //ClassDefinition Inner at refinement.ceylon (28:4-32:4)
+    function Inner$RefineTest3($$inner$RefineTest3){
+        $init$Inner$RefineTest3();
+        if ($$inner$RefineTest3===undefined)$$inner$RefineTest3=new Inner$RefineTest3.$$;
+        
+        //MethodDefinition x at refinement.ceylon (29:8-31:8)
+        function x(){
+            return $$$cl1.String("x",1);
+        }
+        $$inner$RefineTest3.x=x;
+        return $$inner$RefineTest3;
+    }
+    $$refineTest3.Inner$RefineTest3=Inner$RefineTest3;
+    function $init$Inner$RefineTest3(){
+        if (Inner$RefineTest3.$$===undefined){
+            $$$cl1.initTypeProto(Inner$RefineTest3,'nesting::RefineTest3.Inner',$$$cl1.Basic);
+        }
+        return Inner$RefineTest3;
+    }
+    $$refineTest3.$init$Inner$RefineTest3=$init$Inner$RefineTest3;
+    $init$Inner$RefineTest3();
+    return $$refineTest3;
+}
+exports.RefineTest3=RefineTest3;
+function $init$RefineTest3(){
+    if (RefineTest3.$$===undefined){
+        $$$cl1.initTypeProto(RefineTest3,'nesting::RefineTest3',$$$cl1.Basic);
+    }
+    return RefineTest3;
+}
+exports.$init$RefineTest3=$init$RefineTest3;
+$init$RefineTest3();
+
+//ClassDefinition Y at refinement.ceylon (35:0-47:0)
+function Y($$y){
+    $init$Y();
+    if ($$y===undefined)$$y=new Y.$$;
+    X($$y);
+    
+    //ClassDefinition SubRef1 at refinement.ceylon (36:4-46:4)
+    function SubRef1$Y($$subRef1$Y){
+        $init$SubRef1$Y();
+        if ($$subRef1$Y===undefined)$$subRef1$Y=new SubRef1$Y.$$;
+        $$y.RefineTest1$X($$subRef1$Y);
+        $$subRef1$Y.Inner$RefineTest1$X$$nesting$X$RefineTest1=$$subRef1$Y.Inner$RefineTest1$X;
+        
+        //ClassDefinition Inner at refinement.ceylon (37:6-45:6)
+        function Inner$RefineTest1$X($$inner$RefineTest1$X){
+            $init$Inner$RefineTest1$X();
+            if ($$inner$RefineTest1$X===undefined)$$inner$RefineTest1$X=new Inner$RefineTest1$X.$$;
+            $$subRef1$Y.Inner$RefineTest1$X$$nesting$X$RefineTest1($$inner$RefineTest1$X);
+            $$inner$RefineTest1$X.x$$nesting$X$RefineTest1$Inner=$$inner$RefineTest1$X.x;
+            
+            //AttributeDeclaration suborigin at refinement.ceylon (38:10-38:51)
+            var suborigin$799=$$$cl1.String("SubRef1.Inner",13);
+            var getSuborigin=function(){return suborigin$799;};
+            $$inner$RefineTest1$X.getSuborigin=getSuborigin;
+            
+            //MethodDefinition x at refinement.ceylon (39:10-41:10)
+            function x(){
+                return $$$cl1.String("REFINED ",8).plus($$inner$RefineTest1$X.x$$nesting$X$RefineTest1$Inner());
+            }
+            $$inner$RefineTest1$X.x=x;
+            
+            //MethodDefinition y at refinement.ceylon (42:10-44:10)
+            function y(){
+                return $$$cl1.String("y",1);
+            }
+            $$inner$RefineTest1$X.y=y;
+            return $$inner$RefineTest1$X;
+        }
+        $$subRef1$Y.Inner$RefineTest1$X=Inner$RefineTest1$X;
+        function $init$Inner$RefineTest1$X(){
+            if (Inner$RefineTest1$X.$$===undefined){
+                $$$cl1.initTypeProto(Inner$RefineTest1$X,'nesting::Y.SubRef1.Inner',$$subRef1$Y.Inner$RefineTest1$X$$nesting$X$RefineTest1);
+            }
+            return Inner$RefineTest1$X;
+        }
+        $$subRef1$Y.$init$Inner$RefineTest1$X=$init$Inner$RefineTest1$X;
+        $init$Inner$RefineTest1$X();
+        return $$subRef1$Y;
+    }
+    $$y.SubRef1$Y=SubRef1$Y;
+    function $init$SubRef1$Y(){
+        if (SubRef1$Y.$$===undefined){
+            $$$cl1.initTypeProto(SubRef1$Y,'nesting::Y.SubRef1',$$y.RefineTest1$X);
+        }
+        return SubRef1$Y;
+    }
+    $$y.$init$SubRef1$Y=$init$SubRef1$Y;
+    $init$SubRef1$Y();
+    return $$y;
+}
+exports.Y=Y;
+function $init$Y(){
+    if (Y.$$===undefined){
+        $$$cl1.initTypeProto(Y,'nesting::Y',X);
+    }
+    return Y;
+}
+exports.$init$Y=$init$Y;
+$init$Y();
+
+//ClassDefinition SubRef2 at refinement.ceylon (49:0-53:0)
+function SubRef2($$subRef2){
+    $init$SubRef2();
+    if ($$subRef2===undefined)$$subRef2=new SubRef2.$$;
+    RefineTest2($$subRef2);
+    
+    //MethodDefinition x at refinement.ceylon (50:4-52:4)
+    function x(){
+        return $$subRef2.Inner$RefineTest2().hello();
+    }
+    $$subRef2.x=x;
+    return $$subRef2;
+}
+exports.SubRef2=SubRef2;
+function $init$SubRef2(){
+    if (SubRef2.$$===undefined){
+        $$$cl1.initTypeProto(SubRef2,'nesting::SubRef2',RefineTest2);
+    }
+    return SubRef2;
+}
+exports.$init$SubRef2=$init$SubRef2;
+$init$SubRef2();
+
+//ClassDefinition SubRef3 at refinement.ceylon (55:0-59:0)
+function SubRef3($$subRef3){
+    $init$SubRef3();
+    if ($$subRef3===undefined)$$subRef3=new SubRef3.$$;
+    RefineTest3($$subRef3);
+    
+    //MethodDefinition x at refinement.ceylon (56:4-58:4)
+    function x(){
+        return $$subRef3.Inner$RefineTest3().x();
+    }
+    $$subRef3.x=x;
+    return $$subRef3;
+}
+exports.SubRef3=SubRef3;
+function $init$SubRef3(){
+    if (SubRef3.$$===undefined){
+        $$$cl1.initTypeProto(SubRef3,'nesting::SubRef3',RefineTest3);
+    }
+    return SubRef3;
+}
+exports.$init$SubRef3=$init$SubRef3;
+$init$SubRef3();
+
+//ClassDefinition SubRef31 at refinement.ceylon (60:0-64:0)
+function SubRef31($$subRef31){
+    $init$SubRef31();
+    if ($$subRef31===undefined)$$subRef31=new SubRef31.$$;
+    SubRef3($$subRef31);
+    $$subRef31.Inner$RefineTest3$$nesting$RefineTest3=$$subRef31.Inner$RefineTest3;
+    
+    //ClassDefinition Inner at refinement.ceylon (61:4-63:4)
+    function Inner$RefineTest3($$inner$RefineTest3){
+        $init$Inner$RefineTest3();
+        if ($$inner$RefineTest3===undefined)$$inner$RefineTest3=new Inner$RefineTest3.$$;
+        $$subRef31.Inner$RefineTest3$$nesting$RefineTest3($$inner$RefineTest3);
+        
+        //MethodDefinition x at refinement.ceylon (62:8-62:51)
+        function x(){
+            return $$$cl1.String("equis",5);
+        }
+        $$inner$RefineTest3.x=x;
+        return $$inner$RefineTest3;
+    }
+    $$subRef31.Inner$RefineTest3=Inner$RefineTest3;
+    function $init$Inner$RefineTest3(){
+        if (Inner$RefineTest3.$$===undefined){
+            $$$cl1.initTypeProto(Inner$RefineTest3,'nesting::SubRef31.Inner',$$subRef31.Inner$RefineTest3$$nesting$RefineTest3);
+        }
+        return Inner$RefineTest3;
+    }
+    $$subRef31.$init$Inner$RefineTest3=$init$Inner$RefineTest3;
+    $init$Inner$RefineTest3();
+    return $$subRef31;
+}
+exports.SubRef31=SubRef31;
+function $init$SubRef31(){
+    if (SubRef31.$$===undefined){
+        $$$cl1.initTypeProto(SubRef31,'nesting::SubRef31',SubRef3);
+    }
+    return SubRef31;
+}
+exports.$init$SubRef31=$init$SubRef31;
+$init$SubRef31();
+
+//MethodDefinition testRefinement at refinement.ceylon (66:0-76:0)
+function testRefinement(){
+    
+    //AttributeDeclaration c1 at refinement.ceylon (67:4-67:36)
+    var c1$800=Y().SubRef1$Y().Inner$RefineTest1$X();
+    $$$c2.check($$$cl1.className(c1$800).equals($$$cl1.String("nesting::Y.SubRef1.Inner",24)),$$$cl1.String("classname is ",13).plus($$$cl1.className(c1$800)));
+    $$$c2.check(c1$800.getOrigin().equals($$$cl1.String("RefineTest1.Inner",17)),$$$cl1.String("refinement [1]",14));
+    $$$c2.check(c1$800.getSuborigin().equals($$$cl1.String("SubRef1.Inner",13)),$$$cl1.String("refinement [2]",14));
+    $$$c2.check(c1$800.x().equals($$$cl1.String("REFINED x and y",15)),$$$cl1.String("refinement [3]",14));
+    $$$c2.check(c1$800.x().equals(Y().SubRef1$Y().outerx()),$$$cl1.String("refinement [4]",14));
+    $$$c2.check(SubRef2().x().equals($$$cl1.String("hello from RefineTest2.Inner",28)),$$$cl1.String("refinement [5]",14));
+    $$$c2.check(SubRef3().x().equals($$$cl1.String("x",1)),$$$cl1.String("refinement [6]",14));
+    $$$c2.check(SubRef31().x().equals($$$cl1.String("equis",5)),$$$cl1.String("refinement [7]",14));
+};
+
+//ClassDefinition X2 at refinement2.ceylon (4:0-18:0)
+function X2(a$801, $$x2){
+    $init$X2();
+    if ($$x2===undefined)$$x2=new X2.$$;
+    $$x2.a$801=a$801;
+    
+    //ClassDefinition RefineTest1 at refinement2.ceylon (5:4-17:4)
+    function RefineTest1$X2(b$802, $$refineTest1$X2){
+        $init$RefineTest1$X2();
+        if ($$refineTest1$X2===undefined)$$refineTest1$X2=new RefineTest1$X2.$$;
+        $$refineTest1$X2.b$802=b$802;
+        
+        //ClassDefinition Inner at refinement2.ceylon (6:8-13:8)
+        function Inner$RefineTest1$X2(c$803, $$targs$$,$$inner$RefineTest1$X2){
+            $init$Inner$RefineTest1$X2();
+            if ($$inner$RefineTest1$X2===undefined)$$inner$RefineTest1$X2=new Inner$RefineTest1$X2.$$;
+            $$$cl1.set_type_args($$inner$RefineTest1$X2,$$targs$$);
+            $$inner$RefineTest1$X2.c$803=c$803;
+            
+            //AttributeDeclaration origin at refinement2.ceylon (8:12-8:62)
+            var origin$804=$$$cl1.StringBuilder().appendAll([$$$cl1.String("RefineTest1.Inner (",19),c$803.getString(),$$$cl1.String(")",1)]).getString();
+            var getOrigin=function(){return origin$804;};
+            $$inner$RefineTest1$X2.getOrigin=getOrigin;
+            
+            //MethodDefinition x at refinement2.ceylon (9:12-11:12)
+            function x(){
+                return $$$cl1.StringBuilder().appendAll([$$$cl1.String("x and ",6),$$inner$RefineTest1$X2.y().getString(),$$$cl1.String(" and a:",7),a$801.getString(),$$$cl1.String(", b:",4),b$802.getString(),$$$cl1.String(", c:",4),c$803.getString(),$$$cl1.String(".",1)]).getString();
+            }
+            $$inner$RefineTest1$X2.x=x;
+            return $$inner$RefineTest1$X2;
+        }
+        $$refineTest1$X2.Inner$RefineTest1$X2=Inner$RefineTest1$X2;
+        function $init$Inner$RefineTest1$X2(){
+            if (Inner$RefineTest1$X2.$$===undefined){
+                $$$cl1.initTypeProto(Inner$RefineTest1$X2,'nesting::X2.RefineTest1.Inner',$$$cl1.Basic);
+            }
+            return Inner$RefineTest1$X2;
+        }
+        $$refineTest1$X2.$init$Inner$RefineTest1$X2=$init$Inner$RefineTest1$X2;
+        $init$Inner$RefineTest1$X2();
+        
+        //MethodDefinition outerx at refinement2.ceylon (14:8-16:8)
+        function outerx(){
+            return $$refineTest1$X2.Inner$RefineTest1$X2(a$801.getUppercased(),{Element:{t:$$$cl1.String}}).x();
+        }
+        $$refineTest1$X2.outerx=outerx;
+        return $$refineTest1$X2;
+    }
+    $$x2.RefineTest1$X2=RefineTest1$X2;
+    function $init$RefineTest1$X2(){
+        if (RefineTest1$X2.$$===undefined){
+            $$$cl1.initTypeProto(RefineTest1$X2,'nesting::X2.RefineTest1',$$$cl1.Basic);
+        }
+        return RefineTest1$X2;
+    }
+    $$x2.$init$RefineTest1$X2=$init$RefineTest1$X2;
+    $init$RefineTest1$X2();
+    return $$x2;
+}
+exports.X2=X2;
+function $init$X2(){
+    if (X2.$$===undefined){
+        $$$cl1.initTypeProto(X2,'nesting::X2',$$$cl1.Basic);
+    }
+    return X2;
+}
+exports.$init$X2=$init$X2;
+$init$X2();
+
+//ClassDefinition RefineTest4 at refinement2.ceylon (21:0-25:0)
+function RefineTest4(d$805, $$refineTest4){
+    $init$RefineTest4();
+    if ($$refineTest4===undefined)$$refineTest4=new RefineTest4.$$;
+    
+    //ClassDefinition Inner at refinement2.ceylon (22:4-24:4)
+    function Inner$RefineTest4(e$806, $$inner$RefineTest4){
+        $init$Inner$RefineTest4();
+        if ($$inner$RefineTest4===undefined)$$inner$RefineTest4=new Inner$RefineTest4.$$;
+        $$inner$RefineTest4.e$806=e$806;
+        
+        //MethodDefinition hello at refinement2.ceylon (23:8-23:83)
+        function hello(){
+            return $$$cl1.StringBuilder().appendAll([$$$cl1.String("hello from RefineTest2.Inner with ",34),e$806.getString(),$$$cl1.String(".",1)]).getString();
+        }
+        $$inner$RefineTest4.hello=hello;
+        return $$inner$RefineTest4;
+    }
+    $$refineTest4.Inner$RefineTest4=Inner$RefineTest4;
+    function $init$Inner$RefineTest4(){
+        if (Inner$RefineTest4.$$===undefined){
+            $$$cl1.initTypeProto(Inner$RefineTest4,'nesting::RefineTest4.Inner',$$$cl1.Basic);
+        }
+        return Inner$RefineTest4;
+    }
+    $$refineTest4.$init$Inner$RefineTest4=$init$Inner$RefineTest4;
+    $init$Inner$RefineTest4();
+    return $$refineTest4;
+}
+exports.RefineTest4=RefineTest4;
+function $init$RefineTest4(){
+    if (RefineTest4.$$===undefined){
+        $$$cl1.initTypeProto(RefineTest4,'nesting::RefineTest4',$$$cl1.Basic);
+    }
+    return RefineTest4;
+}
+exports.$init$RefineTest4=$init$RefineTest4;
+$init$RefineTest4();
+
+//ClassDefinition RefineTest5 at refinement2.ceylon (28:0-34:0)
+function RefineTest5(f$807, $$refineTest5){
+    $init$RefineTest5();
+    if ($$refineTest5===undefined)$$refineTest5=new RefineTest5.$$;
+    $$refineTest5.f$807=f$807;
+    
+    //ClassDefinition Inner at refinement2.ceylon (29:4-33:4)
+    function Inner$RefineTest5(g$808, $$inner$RefineTest5){
+        $init$Inner$RefineTest5();
+        if ($$inner$RefineTest5===undefined)$$inner$RefineTest5=new Inner$RefineTest5.$$;
+        $$inner$RefineTest5.g$808=g$808;
+        
+        //MethodDefinition x at refinement2.ceylon (30:8-32:8)
+        function x(){
+            return g$808.repeat(f$807);
+        }
+        $$inner$RefineTest5.x=x;
+        return $$inner$RefineTest5;
+    }
+    $$refineTest5.Inner$RefineTest5=Inner$RefineTest5;
+    function $init$Inner$RefineTest5(){
+        if (Inner$RefineTest5.$$===undefined){
+            $$$cl1.initTypeProto(Inner$RefineTest5,'nesting::RefineTest5.Inner',$$$cl1.Basic);
+        }
+        return Inner$RefineTest5;
+    }
+    $$refineTest5.$init$Inner$RefineTest5=$init$Inner$RefineTest5;
+    $init$Inner$RefineTest5();
+    return $$refineTest5;
+}
+exports.RefineTest5=RefineTest5;
+function $init$RefineTest5(){
+    if (RefineTest5.$$===undefined){
+        $$$cl1.initTypeProto(RefineTest5,'nesting::RefineTest5',$$$cl1.Basic);
+    }
+    return RefineTest5;
+}
+exports.$init$RefineTest5=$init$RefineTest5;
+$init$RefineTest5();
+
+//ClassDefinition Y2 at refinement2.ceylon (36:0-49:0)
+function Y2(h$809, $$y2){
+    $init$Y2();
+    if ($$y2===undefined)$$y2=new Y2.$$;
+    $$y2.h$809=h$809;
+    X2(h$809,$$y2);
+    
+    //ClassDefinition SubRef1 at refinement2.ceylon (37:4-48:4)
+    function SubRef1$Y2(d$810, $$subRef1$Y2){
+        $init$SubRef1$Y2();
+        if ($$subRef1$Y2===undefined)$$subRef1$Y2=new SubRef1$Y2.$$;
+        $$subRef1$Y2.d$810=d$810;
+        $$y2.RefineTest1$X2((1),$$subRef1$Y2);
+        $$subRef1$Y2.Inner$RefineTest1$X2$$nesting$X2$RefineTest1=$$subRef1$Y2.Inner$RefineTest1$X2;
+        
+        //ClassDefinition Inner at refinement2.ceylon (38:6-47:6)
+        function Inner$RefineTest1$X2(d2$811, $$targs$$,$$inner$RefineTest1$X2){
+            $init$Inner$RefineTest1$X2();
+            if ($$inner$RefineTest1$X2===undefined)$$inner$RefineTest1$X2=new Inner$RefineTest1$X2.$$;
+            $$$cl1.set_type_args($$inner$RefineTest1$X2,$$targs$$);
+            $$inner$RefineTest1$X2.d2$811=d2$811;
+            $$subRef1$Y2.Inner$RefineTest1$X2$$nesting$X2$RefineTest1(d2$811,{Element:$$inner$RefineTest1$X2.$$targs$$.Element},$$inner$RefineTest1$X2);
+            $$inner$RefineTest1$X2.x$$nesting$X2$RefineTest1$Inner=$$inner$RefineTest1$X2.x;
+            
+            //AttributeDeclaration suborigin at refinement2.ceylon (40:10-40:51)
+            var suborigin$812=$$$cl1.String("SubRef1.Inner",13);
+            var getSuborigin=function(){return suborigin$812;};
+            $$inner$RefineTest1$X2.getSuborigin=getSuborigin;
+            
+            //MethodDefinition x at refinement2.ceylon (41:10-43:10)
+            function x(){
+                return $$$cl1.String("REFINED ",8).plus($$inner$RefineTest1$X2.x$$nesting$X2$RefineTest1$Inner());
+            }
+            $$inner$RefineTest1$X2.x=x;
+            
+            //MethodDefinition y at refinement2.ceylon (44:10-46:10)
+            function y(){
+                return $$$cl1.StringBuilder().appendAll([$$$cl1.String("y",1),h$809.getString(),$$$cl1.String(",d:",3),d$810.getString(),$$$cl1.String(",d2:",4),d2$811.getString(),$$$cl1.String(".",1)]).getString();
+            }
+            $$inner$RefineTest1$X2.y=y;
+            return $$inner$RefineTest1$X2;
+        }
+        $$subRef1$Y2.Inner$RefineTest1$X2=Inner$RefineTest1$X2;
+        function $init$Inner$RefineTest1$X2(){
+            if (Inner$RefineTest1$X2.$$===undefined){
+                $$$cl1.initTypeProto(Inner$RefineTest1$X2,'nesting::Y2.SubRef1.Inner',$$subRef1$Y2.Inner$RefineTest1$X2$$nesting$X2$RefineTest1);
+            }
+            return Inner$RefineTest1$X2;
+        }
+        $$subRef1$Y2.$init$Inner$RefineTest1$X2=$init$Inner$RefineTest1$X2;
+        $init$Inner$RefineTest1$X2();
+        return $$subRef1$Y2;
+    }
+    $$y2.SubRef1$Y2=SubRef1$Y2;
+    function $init$SubRef1$Y2(){
+        if (SubRef1$Y2.$$===undefined){
+            $$$cl1.initTypeProto(SubRef1$Y2,'nesting::Y2.SubRef1',$$y2.RefineTest1$X2);
+        }
+        return SubRef1$Y2;
+    }
+    $$y2.$init$SubRef1$Y2=$init$SubRef1$Y2;
+    $init$SubRef1$Y2();
+    return $$y2;
+}
+exports.Y2=Y2;
+function $init$Y2(){
+    if (Y2.$$===undefined){
+        $$$cl1.initTypeProto(Y2,'nesting::Y2',X2);
+    }
+    return Y2;
+}
+exports.$init$Y2=$init$Y2;
+$init$Y2();
+
+//ClassDefinition SubRef4 at refinement2.ceylon (51:0-55:0)
+function SubRef4($$subRef4){
+    $init$SubRef4();
+    if ($$subRef4===undefined)$$subRef4=new SubRef4.$$;
+    RefineTest4($$$cl1.String("t4",2),$$subRef4);
+    
+    //MethodDefinition x at refinement2.ceylon (52:4-54:4)
+    function x(){
+        return $$subRef4.Inner$RefineTest4((5)).hello();
+    }
+    $$subRef4.x=x;
+    return $$subRef4;
+}
+exports.SubRef4=SubRef4;
+function $init$SubRef4(){
+    if (SubRef4.$$===undefined){
+        $$$cl1.initTypeProto(SubRef4,'nesting::SubRef4',RefineTest4);
+    }
+    return SubRef4;
+}
+exports.$init$SubRef4=$init$SubRef4;
+$init$SubRef4();
+
+//ClassDefinition SubRef5 at refinement2.ceylon (57:0-61:0)
+function SubRef5($$subRef5){
+    $init$SubRef5();
+    if ($$subRef5===undefined)$$subRef5=new SubRef5.$$;
+    RefineTest5((6),$$subRef5);
+    
+    //MethodDefinition x at refinement2.ceylon (58:4-60:4)
+    function x(){
+        return $$subRef5.Inner$RefineTest5($$$cl1.String("sr5",3)).x();
+    }
+    $$subRef5.x=x;
+    return $$subRef5;
+}
+exports.SubRef5=SubRef5;
+function $init$SubRef5(){
+    if (SubRef5.$$===undefined){
+        $$$cl1.initTypeProto(SubRef5,'nesting::SubRef5',RefineTest5);
+    }
+    return SubRef5;
+}
+exports.$init$SubRef5=$init$SubRef5;
+$init$SubRef5();
+
+//ClassDefinition SubRef51 at refinement2.ceylon (62:0-66:0)
+function SubRef51($$subRef51){
+    $init$SubRef51();
+    if ($$subRef51===undefined)$$subRef51=new SubRef51.$$;
+    SubRef5($$subRef51);
+    $$subRef51.Inner$RefineTest5$$nesting$RefineTest5=$$subRef51.Inner$RefineTest5;
+    
+    //ClassDefinition Inner at refinement2.ceylon (63:4-65:4)
+    function Inner$RefineTest5(subg55$813, $$inner$RefineTest5){
+        $init$Inner$RefineTest5();
+        if ($$inner$RefineTest5===undefined)$$inner$RefineTest5=new Inner$RefineTest5.$$;
+        $$inner$RefineTest5.subg55$813=subg55$813;
+        $$subRef51.Inner$RefineTest5$$nesting$RefineTest5(subg55$813,$$inner$RefineTest5);
+        
+        //MethodDefinition x at refinement2.ceylon (64:8-64:62)
+        function x(){
+            return $$$cl1.StringBuilder().appendAll([$$$cl1.String("equis",5),subg55$813.getString(),$$$cl1.String(".",1)]).getString();
+        }
+        $$inner$RefineTest5.x=x;
+        return $$inner$RefineTest5;
+    }
+    $$subRef51.Inner$RefineTest5=Inner$RefineTest5;
+    function $init$Inner$RefineTest5(){
+        if (Inner$RefineTest5.$$===undefined){
+            $$$cl1.initTypeProto(Inner$RefineTest5,'nesting::SubRef51.Inner',$$subRef51.Inner$RefineTest5$$nesting$RefineTest5);
+        }
+        return Inner$RefineTest5;
+    }
+    $$subRef51.$init$Inner$RefineTest5=$init$Inner$RefineTest5;
+    $init$Inner$RefineTest5();
+    return $$subRef51;
+}
+exports.SubRef51=SubRef51;
+function $init$SubRef51(){
+    if (SubRef51.$$===undefined){
+        $$$cl1.initTypeProto(SubRef51,'nesting::SubRef51',SubRef5);
+    }
+    return SubRef51;
+}
+exports.$init$SubRef51=$init$SubRef51;
+$init$SubRef51();
+
+//MethodDefinition testRefinement2 at refinement2.ceylon (68:0-78:0)
+function testRefinement2(){
+    
+    //AttributeDeclaration c1 at refinement2.ceylon (69:4-69:54)
+    var c1$814=Y2($$$cl1.String("y2",2)).SubRef1$Y2((99)).Inner$RefineTest1$X2($$$cl1.String("with parm",9),{Element:{t:$$$cl1.String}});
+    $$$c2.check($$$cl1.className(c1$814).equals($$$cl1.String("nesting::Y2.SubRef1.Inner",25)),$$$cl1.String("classname is ",13).plus($$$cl1.className(c1$814)));
+    $$$c2.check(c1$814.getOrigin().equals($$$cl1.String("RefineTest1.Inner (with parm)",29)),$$$cl1.String("refinement [1] ",15).plus(c1$814.getOrigin()));
+    $$$c2.check(c1$814.getSuborigin().equals($$$cl1.String("SubRef1.Inner",13)),$$$cl1.String("refinement [2] ",15).plus(c1$814.getSuborigin()));
+    $$$c2.check(c1$814.x().equals($$$cl1.String("REFINED x and yy2,d:99,d2:with parm. and a:y2, b:1, c:with parm.",64)),$$$cl1.String("refinement [3] ",15).plus(c1$814.x()));
+    $$$c2.check(Y2($$$cl1.String("y3",2)).SubRef1$Y2((10)).outerx().equals($$$cl1.String("REFINED x and yy3,d:10,d2:Y3. and a:y3, b:1, c:Y3.",50)),$$$cl1.String("refinement [4] ",15).plus(Y2($$$cl1.String("y3",2)).SubRef1$Y2((10)).outerx()));
+    $$$c2.check(SubRef4().x().equals($$$cl1.String("hello from RefineTest2.Inner with 5.",36)),$$$cl1.String("refinement [5] ",15).plus(SubRef4().x()));
+    $$$c2.check(SubRef5().x().equals($$$cl1.String("sr5sr5sr5sr5sr5sr5",18)),$$$cl1.String("refinement [6] ",15).plus(SubRef5().x()));
+    $$$c2.check(SubRef51().x().equals($$$cl1.String("equissr5.",9)),$$$cl1.String("refinement [7] ",15).plus(SubRef51().x()));
+};
+exports.$$metamodel$$=$$metamodel$$;
 });
 }(typeof define==='function' && define.amd ? define : function (factory) {
 if (typeof exports!=='undefined') { factory(require, exports, module);
