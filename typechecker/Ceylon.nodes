@@ -35,8 +35,11 @@
 
 "A package import."
 ^(IMPORT:STATEMENT_OR_ARGUMENT
-    IMPORT_PATH 
+    IMPORT_PATH
     IMPORT_MEMBER_OR_TYPE_LIST)
+
+"A dynamic import."
+^(IMPORT_DYNAMIC:IMPORT)
 
 "A reference to a package or module."
 ^(IMPORT_PATH 

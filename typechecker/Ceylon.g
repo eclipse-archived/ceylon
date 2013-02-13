@@ -139,6 +139,10 @@ importDeclaration returns [Import importDeclaration]
     : IMPORT 
       { $importDeclaration = new Import($IMPORT); } 
       (
+        DYNAMIC
+        { $importDeclaration = new ImportDynamic($IMPORT); 
+          $importDeclaration.setImportPath(new ImportPath(null)); }
+      |
         packagePath
         { $importDeclaration.setImportPath($packagePath.importPath); }
       | { displayRecognitionError(getTokenNames(), 

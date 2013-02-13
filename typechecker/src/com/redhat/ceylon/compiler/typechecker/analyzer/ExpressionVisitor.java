@@ -3632,11 +3632,11 @@ public class ExpressionVisitor extends Visitor {
             member = getSupertypeMemberDeclaration(that, sq);
         }
         if (member==null) {
-            if (!dynamic) {
+            //if (!dynamic) {
                 that.addError("method or attribute does not exist: " +
                         name(that.getIdentifier()), 100);
                 unit.getUnresolvedReferences().add(that.getIdentifier());
-            }
+            //}
         }
         else {
             that.setDeclaration(member);

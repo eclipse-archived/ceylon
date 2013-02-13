@@ -6,6 +6,7 @@ public class Import {
 	private String alias;
 	private Declaration declaration;
 	private boolean wildcardImport;
+	private boolean dynamicImport;
 	
 	public Import() {}
 
@@ -44,6 +45,14 @@ public class Import {
     
     public void setWildcardImport(boolean wildcardImport) {
         this.wildcardImport = wildcardImport;
+    }
+    
+    public boolean isDynamicImport() {
+        return dynamicImport;
+    }
+    
+    public void setDynamicImport(boolean dynamicImport) {
+        this.dynamicImport = dynamicImport;
     }
 
 }
