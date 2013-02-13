@@ -1817,22 +1817,34 @@ public class GenerateJsVisitor extends Visitor
     public void visit(InvocationExpression that) {
         if (that.getNamedArgumentList()!=null) {
             NamedArgumentList argList = that.getNamedArgumentList();
-            out("(");
-            Map<String, String> argVarNames = invoker.defineNamedArguments(argList);
-            that.getPrimary().visit(this);
-            TypeArguments targs = that.getPrimary() instanceof BaseMemberOrTypeExpression ?
-                    ((BaseMemberOrTypeExpression)that.getPrimary()).getTypeArguments() : null;
-            if (that.getPrimary() instanceof Tree.MemberOrTypeExpression) {
-                Tree.MemberOrTypeExpression mte = (Tree.MemberOrTypeExpression) that.getPrimary();
-                if (mte.getDeclaration() instanceof Functional) {
-                    Functional f = (Functional) mte.getDeclaration();
-                    invoker.applyNamedArguments(argList, f, argVarNames, getSuperMemberScope(mte)!=null, targs);
+            if (dynblock > 0 && TypeUtils.isUnknown(that.getPrimary().getTypeModel())
+                    && that.getPrimary() instanceof StaticMemberOrTypeExpression
+                    && "new".equals(((StaticMemberOrTypeExpression)that.getPrimary()).getIdentifier().getText())) {
+                invoker.nativeObject(argList);
+            } else {
+                out("(");
+                Map<String, String> argVarNames = invoker.defineNamedArguments(argList);
+                that.getPrimary().visit(this);
+                TypeArguments targs = that.getPrimary() instanceof BaseMemberOrTypeExpression ?
+                        ((BaseMemberOrTypeExpression)that.getPrimary()).getTypeArguments() : null;
+                if (that.getPrimary() instanceof MemberOrTypeExpression) {
+                    MemberOrTypeExpression mte = (MemberOrTypeExpression) that.getPrimary();
+                    if (mte.getDeclaration() instanceof Functional) {
+                        Functional f = (Functional) mte.getDeclaration();
+                        invoker.applyNamedArguments(argList, f, argVarNames, getSuperMemberScope(mte)!=null, targs);
+                    }
                 }
+                out(")");
             }
-            out(")");
         }
         else {
             PositionalArgumentList argList = that.getPositionalArgumentList();
+            if (dynblock > 0 && TypeUtils.isUnknown(that.getPrimary().getTypeModel())
+                    && that.getPrimary() instanceof StaticMemberOrTypeExpression
+                    && "new".equals(((StaticMemberOrTypeExpression)that.getPrimary()).getIdentifier().getText())) {
+                invoker.nativeArray(argList.getPositionalArguments());
+                return;
+            }
             that.getPrimary().visit(this);
             if (prototypeStyle && (getSuperMemberScope(that.getPrimary()) != null)) {
                 out(".call(this");
@@ -2186,9 +2198,9 @@ public class GenerateJsVisitor extends Visitor
         String returnValue = null;
         StaticMemberOrTypeExpression lhsExpr = null;
         
-        if (that.getLeftTerm().getTypeModel() == null && dynblock > 0) {
+        if (dynblock > 0 && TypeUtils.isUnknown(that.getLeftTerm().getTypeModel())) {
             that.getLeftTerm().visit(this);
-            out("=/*is this ever used? AssignOp/*");
+            out("=");
             that.getRightTerm().visit(this);
             return;
         }
@@ -2248,9 +2260,6 @@ public class GenerateJsVisitor extends Visitor
     }
 
     private String qualifiedPath(Node that, Declaration d, boolean inProto) {
-        if (d == null && dynblock > 0) {
-            out("/*AGUAS!!! con " + that.toString() + "*/");
-        }
         boolean isMember = d.isClassOrInterfaceMember();
         if (!isMember && isImported(that, d)) {
             return names.moduleAlias(d.getUnit().getPackage().getModule());
@@ -2597,9 +2606,9 @@ public class GenerateJsVisitor extends Visitor
     }
 
     @Override public void visit(EqualOp that) {
-        if (dynblock > 0 && that.getLeftTerm().getTypeModel() == null) {
+        if (dynblock > 0 && TypeUtils.isUnknown(that.getLeftTerm().getTypeModel())) {
             that.getLeftTerm().visit(this);
-            out("===");
+            out("===" + that.getLeftTerm().getTypeModel().getDeclaration());
             that.getRightTerm().visit(this);
         } else {
             leftEqualsRight(that);
@@ -2607,7 +2616,7 @@ public class GenerateJsVisitor extends Visitor
     }
 
     @Override public void visit(NotEqualOp that) {
-        if (dynblock > 0 && that.getLeftTerm().getTypeModel() == null) {
+        if (dynblock > 0 && TypeUtils.isUnknown(that.getLeftTerm().getTypeModel())) {
             that.getLeftTerm().visit(this);
             out("!==");
             that.getRightTerm().visit(this);
@@ -2647,7 +2656,7 @@ public class GenerateJsVisitor extends Visitor
     }
 
     @Override public void visit(SmallerOp that) {
-        if (dynblock > 0 && that.getLeftTerm().getTypeModel() == null) {
+        if (dynblock > 0 && TypeUtils.isUnknown(that.getLeftTerm().getTypeModel())) {
             that.getLeftTerm().visit(this);
             out("<");
             that.getRightTerm().visit(this);
@@ -2658,7 +2667,7 @@ public class GenerateJsVisitor extends Visitor
     }
 
     @Override public void visit(LargerOp that) {
-        if (dynblock > 0 && that.getLeftTerm().getTypeModel() == null) {
+        if (dynblock > 0 && TypeUtils.isUnknown(that.getLeftTerm().getTypeModel())) {
             that.getLeftTerm().visit(this);
             out(">");
             that.getRightTerm().visit(this);
@@ -2669,7 +2678,7 @@ public class GenerateJsVisitor extends Visitor
     }
 
     @Override public void visit(SmallAsOp that) {
-        if (dynblock > 0 && that.getLeftTerm().getTypeModel() == null) {
+        if (dynblock > 0 && TypeUtils.isUnknown(that.getLeftTerm().getTypeModel())) {
             that.getLeftTerm().visit(this);
             out("<=");
             that.getRightTerm().visit(this);
@@ -2682,7 +2691,7 @@ public class GenerateJsVisitor extends Visitor
     }
 
     @Override public void visit(LargeAsOp that) {
-        if (dynblock > 0 && that.getLeftTerm().getTypeModel() == null) {
+        if (dynblock > 0 && TypeUtils.isUnknown(that.getLeftTerm().getTypeModel())) {
             that.getLeftTerm().visit(this);
             out(">=");
             that.getRightTerm().visit(this);
@@ -2846,7 +2855,8 @@ public class GenerateJsVisitor extends Visitor
    }
 
    private boolean hasSimpleGetterSetter(Declaration decl) {
-       return (dynblock > 0 && decl == null) || !((decl instanceof Getter) || (decl instanceof Setter) || decl.isFormal());
+       return (dynblock > 0 && TypeUtils.isUnknown(decl)) ||
+               !((decl instanceof Getter) || (decl instanceof Setter) || decl.isFormal());
    }
 
    private void prefixIncrementOrDecrement(Term term, String functionName) {
@@ -3210,7 +3220,7 @@ public class GenerateJsVisitor extends Visitor
         that.getPrimary().visit(this);
         ElementOrRange eor = that.getElementOrRange();
         if (eor instanceof Element) {
-            if (that.getPrimary().getTypeModel() == null && dynblock > 0) {
+            if (TypeUtils.isUnknown(that.getPrimary().getTypeModel()) && dynblock > 0) {
                 out("[");
                 ((Element)eor).getExpression().visit(this);
                 out("]");

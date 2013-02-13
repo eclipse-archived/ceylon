@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.Map;
 
 import com.redhat.ceylon.compiler.typechecker.model.ClassOrInterface;
+import com.redhat.ceylon.compiler.typechecker.model.Declaration;
 import com.redhat.ceylon.compiler.typechecker.model.IntersectionType;
 import com.redhat.ceylon.compiler.typechecker.model.Method;
 import com.redhat.ceylon.compiler.typechecker.model.Module;
@@ -254,4 +255,10 @@ public class TypeUtils {
         return r;
     }
 
+    static boolean isUnknown(ProducedType pt) {
+        return pt == null || pt.getProducedTypeQualifiedName().equals("unknown");
+    }
+    static boolean isUnknown(Declaration d) {
+        return d == null || d.getQualifiedNameString().equals("UnknownType");
+    }
 }
