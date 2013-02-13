@@ -7,8 +7,8 @@ void nogo() {
         value d = require("util");
         d.name = "Gavin";
         Integer res = d.add(1, 3);
-        Object? first = d.children[0];
-        if (exists first) {
+        value first = d.children[0];
+        if (is Integer first) {
             Integer o = first;
         }
         d.children.set(1, 4);
