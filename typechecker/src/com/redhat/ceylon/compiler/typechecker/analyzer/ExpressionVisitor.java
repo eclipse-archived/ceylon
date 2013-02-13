@@ -552,6 +552,7 @@ public class ExpressionVisitor extends Visitor {
 
     @Override public void visit(Tree.BooleanCondition that) {
         super.visit(that);
+        if (dynamic) return;
         if (that.getExpression()!=null) {
             checkAssignable(that.getExpression().getTypeModel(), 
                     unit.getBooleanDeclaration().getType(), that, 
