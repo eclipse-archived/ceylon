@@ -53,7 +53,7 @@ public class LiteralVisitor extends Visitor {
             }
             that.setText(result.substring(1, result.length()-1));
         }
-        if (type!=STRING_MID && type!=STRING_END) {
+        if (type!=STRING_MID && type!=STRING_START) {
             indent = 0;
         }
     }
