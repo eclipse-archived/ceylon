@@ -365,17 +365,28 @@ public abstract class CompilerTest {
     }
 
     protected void run(String main) {
-        File car = new File(getDestCar());
-        run(main, car);
+        run(main, getDestModuleWithArtifact());
     }
     
-    protected void run(String main, File... cars) {
+    public class ModuleWithArtifact {
+        private String module;
+        private String version;
+        private File file;
+        public ModuleWithArtifact(String module, String version) {
+            this.module = module;
+            this.version = version;
+            this.file = getModuleArchive(module,version);
+        }
+    }
+
+    protected void run(String main, ModuleWithArtifact... modules) {
         try{
             // make sure we load the stuff from the Car
             
             @SuppressWarnings("deprecation")
-            List<URL> urls = new ArrayList<URL>(cars.length);
-            for (File car : cars) {
+            List<URL> urls = new ArrayList<URL>(modules.length);
+            for (ModuleWithArtifact module : modules) {
+                File car = module.file;
                 Assert.assertTrue("Car exists", car.exists());
                 URL url = car.toURL();
                 urls.add(url);
@@ -496,10 +507,10 @@ public abstract class CompilerTest {
         return dir;
     }
 
-    protected String getDestCar() {
-        return getModuleArchive("default", null).getPath();
+    protected ModuleWithArtifact getDestModuleWithArtifact(){
+        return new ModuleWithArtifact(Module.DEFAULT_MODULE_NAME, null);
     }
-    
+
     protected File getModuleArchive(String moduleName, String version) {
         return getModuleArchive(moduleName, version, destDir);
     }

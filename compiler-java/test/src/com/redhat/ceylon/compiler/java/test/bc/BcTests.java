@@ -21,7 +21,6 @@ package com.redhat.ceylon.compiler.java.test.bc;
 
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -43,14 +42,7 @@ import org.junit.Test;
 
 import com.redhat.ceylon.compiler.java.test.CompilerError;
 import com.redhat.ceylon.compiler.java.test.CompilerTest;
-import com.redhat.ceylon.compiler.java.tools.CeyloncFileManager;
-import com.redhat.ceylon.compiler.java.tools.CeyloncTaskImpl;
-import com.redhat.ceylon.compiler.java.tools.CeyloncTool;
 import com.redhat.ceylon.compiler.java.util.Util;
-import com.sun.source.util.JavacTask;
-import com.sun.tools.javac.api.JavacTool;
-import com.sun.tools.javac.file.JavacFileManager;
-import com.sun.tools.javac.file.ZipFileIndexCache;
 
 public class BcTests extends CompilerTest {
     
@@ -108,10 +100,10 @@ public class BcTests extends CompilerTest {
                 providerModuleSrc, providerPackageSrc);
         
         // Now try running the client
-        File clientCar = getModuleArchive(clientModuleName, "0.1");
-        File providerCar = getModuleArchive(providerModuleName, "0.1");
+        ModuleWithArtifact clientModule = new ModuleWithArtifact(clientModuleName, "0.1");
+        ModuleWithArtifact providerModule = new ModuleWithArtifact(providerModuleName, "0.1");
         run(clientModuleName + "." + main, 
-                clientCar, providerCar);
+                clientModule, providerModule);
     }
     
     @Test

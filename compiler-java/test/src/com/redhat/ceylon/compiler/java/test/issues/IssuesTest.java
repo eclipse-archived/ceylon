@@ -36,8 +36,9 @@ import com.redhat.ceylon.compiler.typechecker.TypeChecker;
 
 public class IssuesTest extends CompilerTest {
 
-    protected String getDestCar() {
-        return getModuleArchive("com.redhat.ceylon.compiler.java.test.issues", "1").getPath();
+    @Override
+    protected ModuleWithArtifact getDestModuleWithArtifact(){
+        return new ModuleWithArtifact("com.redhat.ceylon.compiler.java.test.issues", "1");
     }
     
     @Test
