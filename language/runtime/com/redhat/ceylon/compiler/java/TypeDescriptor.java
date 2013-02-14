@@ -1,11 +1,26 @@
 package com.redhat.ceylon.compiler.java;
 
+import java.util.ArrayList;
+import java.util.List;
 
-public class TypeDescriptor {
+import com.redhat.ceylon.compiler.loader.ModelLoader.DeclarationType;
+import com.redhat.ceylon.compiler.typechecker.model.IntersectionType;
+import com.redhat.ceylon.compiler.typechecker.model.NothingType;
+import com.redhat.ceylon.compiler.typechecker.model.ProducedType;
+import com.redhat.ceylon.compiler.typechecker.model.TypeDeclaration;
+import com.redhat.ceylon.compiler.typechecker.model.UnionType;
 
 public abstract class TypeDescriptor {
 
     public static final TypeDescriptor BottomType = new Bottom();
+
+    //
+    // Methods
+
+    public abstract ProducedType toProducedType(RuntimeModuleManager moduleManager);
+
+    //
+    // Subtypes
     
     public static class Class extends TypeDescriptor {
         private java.lang.Class<?> klass;
@@ -57,6 +72,16 @@ public abstract class TypeDescriptor {
             }
             return b.toString();
         }
+
+        public ProducedType toProducedType(RuntimeModuleManager moduleManager){
+            String typeName = klass.getName();
+            TypeDeclaration decl = (TypeDeclaration) moduleManager.getModelLoader().getDeclaration(typeName, DeclarationType.TYPE);
+            List<ProducedType> typeArgs = new ArrayList<ProducedType>(typeArguments.length);
+            for(TypeDescriptor typeArg : typeArguments){
+                typeArgs.add(typeArg.toProducedType(moduleManager));
+            }
+            return decl.getProducedType(null, typeArgs);
+        }
     }
 
     public static class Member extends TypeDescriptor {
@@ -96,14 +121,27 @@ public abstract class TypeDescriptor {
             b.append(member);
             return b.toString();
         }
-}
+
+        @Override
+        public ProducedType toProducedType(RuntimeModuleManager moduleManager) {
+            throw new RuntimeException("Don't know how to convert "+this+" to ProducedType");
+        }
+    }
     
     private static class Bottom extends TypeDescriptor {
-        // FIXME: equals?
+        @Override
+        public boolean equals(Object obj) {
+            return obj == this;
+        }
+
+        @Override
+        public ProducedType toProducedType(RuntimeModuleManager moduleManager) {
+            return new NothingType(moduleManager.getContext().getModules().getLanguageModule().getUnit()).getType();
+        }
     }
     
     private abstract static class Composite extends TypeDescriptor {
-        private TypeDescriptor[] members;
+        protected final TypeDescriptor[] members;
 
         public Composite(TypeDescriptor[] members) {
             this.members = members;
@@ -155,6 +193,16 @@ public abstract class TypeDescriptor {
         public String toString() {
             return super.toString("|");
         }
+
+        @Override
+        public ProducedType toProducedType(RuntimeModuleManager moduleManager) {
+            UnionType ret = new UnionType(moduleManager.getContext().getModules().getLanguageModule().getUnit());
+            ArrayList<ProducedType> caseTypes = new ArrayList<ProducedType>(members.length);
+            for(TypeDescriptor member : members)
+                caseTypes.add(member.toProducedType(moduleManager));
+            ret.setCaseTypes(caseTypes);
+            return ret.getType();
+        }
     }
 
     public static class Intersection extends Composite {
@@ -176,8 +224,19 @@ public abstract class TypeDescriptor {
         public String toString() {
             return super.toString("&");
         }
+
+        @Override
+        public ProducedType toProducedType(RuntimeModuleManager moduleManager) {
+            IntersectionType ret = new IntersectionType(moduleManager.getContext().getModules().getLanguageModule().getUnit());
+            for(TypeDescriptor member : members)
+                ret.getSatisfiedTypes().add(member.toProducedType(moduleManager));
+            return ret.getType();
+        }
     }
 
+    //
+    // Factory methods
+    
     public static TypeDescriptor member(TypeDescriptor container, TypeDescriptor member){
         return new Member(container, member);
     }
