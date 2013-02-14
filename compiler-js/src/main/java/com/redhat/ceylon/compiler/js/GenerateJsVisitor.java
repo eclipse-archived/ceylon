@@ -3572,5 +3572,8 @@ public class GenerateJsVisitor extends Visitor
         out(")");
     }
 
+    boolean isInDynamicBlock() {
+        return dynblock > 0;
+    }
 }
 

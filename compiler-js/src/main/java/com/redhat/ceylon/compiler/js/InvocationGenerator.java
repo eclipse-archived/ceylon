@@ -31,7 +31,13 @@ public class InvocationGenerator {
     Map<String, String> defineNamedArguments(NamedArgumentList argList) {
         Map<String, String> argVarNames = new HashMap<String, String>();
         for (NamedArgument arg: argList.getNamedArguments()) {
-            String paramName = arg.getParameter().getName();
+            com.redhat.ceylon.compiler.typechecker.model.Parameter p = arg.getParameter();
+            final String paramName;
+            if (p == null && gen.isInDynamicBlock()) {
+                paramName = arg.getIdentifier().getText();
+            } else {
+                paramName = arg.getParameter().getName();
+            }
             String varName = names.createTempVariable(paramName);
             argVarNames.put(paramName, varName);
             retainedVars.add(varName);
