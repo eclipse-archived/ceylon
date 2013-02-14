@@ -619,11 +619,6 @@ public class Unit {
     public ProducedType getNonemptyDefiniteType(ProducedType pt) {
         return getNonemptyType(getDefiniteType(pt));
     }
-
-    public ProducedType getNonemptySequenceType(ProducedType pt) {
-        return pt.minus(getEmptyDeclaration().getType())
-                .getSupertype(getSequenceDeclaration());
-    }
     
     public boolean isEntryType(ProducedType pt) {
         return pt.getSupertype(getEntryDeclaration())!=null;

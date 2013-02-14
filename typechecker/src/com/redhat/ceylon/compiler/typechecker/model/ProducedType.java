@@ -320,7 +320,34 @@ public class ProducedType extends ProducedReference {
         //from the resulting union
         return resolveAliases().minusInternal(pt.resolveAliases());
     }
-
+    
+    /**
+     * Eliminates unioned Null from a type in a
+     * very special way that the backend prefers
+     */
+    public ProducedType eliminateNull() {
+        TypeDeclaration dec = getDeclaration();
+        Unit unit = dec.getUnit();
+        Class nd = unit.getNullDeclaration();
+        if (getSupertype(nd)!=null) {
+            return unit.getNothingDeclaration().getType();
+        }
+        else if (dec instanceof UnionType) {
+            List<ProducedType> types = new ArrayList<ProducedType>();
+            for (ProducedType ct: getCaseTypes()) {
+//                if (ct.getSupertype(nd)==null) {
+                    addToUnion(types, ct.eliminateNull());
+//                }
+            }
+            UnionType ut = new UnionType(unit);
+            ut.setCaseTypes(types);
+            return ut.getType();
+        }
+        else {
+            return this;
+        }
+    }
+    
     private ProducedType minusInternal(ProducedType pt) {
         Unit unit = getDeclaration().getUnit();
         if (pt.coversInternal(this, new Stack<TypeDeclaration>())) { //note: coversInternal() already calls getUnionOfCases()

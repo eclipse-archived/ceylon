@@ -4368,7 +4368,7 @@ public class ExpressionVisitor extends Visitor {
                 }
                 if (switchExpression!=null) {
                     ProducedType st = switchExpression.getTypeModel();
-                    if (st!=null && !(st.getDeclaration() instanceof UnknownType)) {
+                    if (st!=null && !st.isUnknown()) {
                         if (!hasUncheckedNulls(switchExpression.getTerm()) || !isNullCase(t)) {
                             checkAssignable(t, st, e, 
                                     "case must be assignable to switch expression type");
@@ -4398,7 +4398,7 @@ public class ExpressionVisitor extends Visitor {
         }
         if (switchExpression!=null) {
             ProducedType st = switchExpression.getTypeModel();
-            if (t!=null && st!=null) {
+            if (t!=null && st!=null && !st.isUnknown()) {
                 ProducedType pt = t.getTypeModel();
                 checkReified(that, pt);
                 ProducedType it = intersectionType(pt, st, unit);
@@ -4497,8 +4497,7 @@ public class ExpressionVisitor extends Visitor {
     
     private boolean isNullCase(ProducedType ct) {
         TypeDeclaration d = ct.getDeclaration();
-        return d!=null &&
-                d.equals(unit.getNullDeclaration()) &&
+        return d!=null && d instanceof Class &&
                 d.equals(unit.getNullDeclaration());
     }
 
