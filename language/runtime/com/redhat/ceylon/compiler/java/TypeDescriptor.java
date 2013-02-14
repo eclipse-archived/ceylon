@@ -1,6 +1,5 @@
 package com.redhat.ceylon.compiler.java;
 
-import java.lang.reflect.Type;
 
 public class TypeDescriptor {
 
@@ -9,22 +8,22 @@ public class TypeDescriptor {
     public static final TypeDescriptor BottomType = new Bottom();
     
     public static class Class extends TypeDescriptor {
-        private Type klass;
+        private java.lang.Class<?> klass;
         private TypeDescriptor[] typeArguments;
 
-        public Class(Type klass, TypeDescriptor... params){
+        public Class(java.lang.Class<?> klass, TypeDescriptor[] typeArguments){
             this.klass = klass;
-            this.typeArguments = params;
+            this.typeArguments = typeArguments;
         }
 
-        public Type getKlass() {
+        public java.lang.Class<?> getKlass() {
             return klass;
         }
 
         public TypeDescriptor[] getTypeArguments() {
             return typeArguments;
         }
-        
+
         @Override
         public boolean equals(Object obj) {
             if(this == obj)
