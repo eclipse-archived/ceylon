@@ -6,3 +6,4 @@ com.redhat.ceylon.importjar.CeylonImportJarTool
 com.redhat.ceylon.tools.help.CeylonHelpTool
 com.redhat.ceylon.tools.help.CeylonDocToolTool
 com.redhat.ceylon.tools.new_.CeylonNewTool
+com.redhat.ceylon.tools.src.CeylonSrcTool
