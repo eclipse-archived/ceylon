@@ -196,9 +196,11 @@ public class ClassTransformer extends AbstractTransformer {
             .caseTypes(model.getCaseTypes(), model.getSelfType())
             .init(childDefs);
         
-        // aliases don't need an $is method
+        // aliases don't need a $getType method
         if(!model.isAlias()){
-            classBuilder.reifiedIs(model.getType(), model.getTypeParameters(), model.getSatisfiedTypes(), model.getExtendedType());
+            // only classes get a $getType method
+            if(model instanceof Class)
+                classBuilder.addGetTypeMethod(model.getType());
             if(supportsReifiedAlias(model))
                 classBuilder.reifiedAlias(model.getType());
         }
@@ -2073,7 +2075,7 @@ public class ClassTransformer extends AbstractTransformer {
             .constructorModifiers(PRIVATE)
             .satisfies(decl.getSatisfiedTypes())
             .init(childDefs)
-            .reifiedIs(model.getType(), Collections.<TypeParameter>emptyList(), decl.getSatisfiedTypes(), decl.getExtendedType())
+            .addGetTypeMethod(model.getType())
             .build();
         
         if (makeLocalInstance) {

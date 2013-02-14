@@ -634,92 +634,16 @@ public class ClassDefinitionBuilder {
     }
 
 
-    public ClassDefinitionBuilder reifiedIs(ProducedType type, java.util.List<TypeParameter> typeParameters,
-            java.util.List<ProducedType> satisfiedTypes, ProducedType extendedType){
+    public ClassDefinitionBuilder addGetTypeMethod(ProducedType type){
         if ((modifiers & INTERFACE) != 0) {
-            // place the real body in the impl class
-            concreteInterfaceMemberDefs.reifiedIs(type, typeParameters, satisfiedTypes, extendedType);
+            // interfaces don't have that one
         }else{
-            MethodDefinitionBuilder method = MethodDefinitionBuilder.systemMethod(gen, gen.naming.getIsMethodName(type));
-            if(isCompanion){
-                method.noAnnotations();
-                method.ignoreAnnotations(false); // we don't want any @Ignore annotations on impl classes
-            }
+            MethodDefinitionBuilder method = MethodDefinitionBuilder.systemMethod(gen, gen.naming.getGetTypeMethodName());
             method.modifiers(PUBLIC);
-            method.resultType(List.<JCAnnotation>nil(), gen.make().TypeIdent(TypeTags.BOOLEAN));
-            // in classes this overrides an interface method
-            if(type.getDeclaration() instanceof com.redhat.ceylon.compiler.typechecker.model.Class)
-                method.isOverride(true);
+            method.resultType(List.<JCAnnotation>nil(), gen.makeTypeDescriptorType());
+            method.isOverride(true);
 
-            String paramName = "type";
-            ParameterDefinitionBuilder param = ParameterDefinitionBuilder.instance(gen, paramName);
-            param.type(gen.makeTypeDescriptorType(), List.<JCAnnotation>nil());
-            method.parameter(param);
-
-            // we build the body last to first, and last is false or extended type
-            JCExpression lastTest;
-            if(extendedType != null && !gen.willEraseToObject(extendedType)){
-                if(Decl.isCeylon(extendedType.getDeclaration()))
-                    lastTest = gen.make().Apply(null, gen.makeSelect("super", gen.naming.getIsMethodName(extendedType)), List.of(gen.makeUnquotedIdent(paramName)));
-                else
-                    lastTest = gen.makeUtilInvocation("isReifiedJava", 
-                            List.of(gen.makeReifiedTypeArgument(extendedType), gen.makeUnquotedIdent(paramName)), 
-                            List.<JCTree.JCExpression>nil());
-            }else
-                lastTest = gen.makeBoolean(false);
-            List<JCStatement> body = List.<JCStatement>of(gen.make().Return(lastTest));
-
-            // then before that we test every interface
-            if(!satisfiedTypes.isEmpty()){
-                JCExpression interfacesTest = null;
-                for(ProducedType pt : satisfiedTypes){
-                    JCExpression isCall;
-                    // make sure aliases are resolved
-                    pt = pt.resolveAliases();
-                    Interface iface = (Interface) pt.getDeclaration();
-                    // not if it's entirely erased
-                    // FIXME: should this delegate to a Util call?
-                    if(gen.willEraseToObject(pt)){
-                        continue;
-                    }
-                    if(Decl.isCeylon(iface)){
-                        String isDelegateName = gen.naming.getIsMethodName(pt);
-                        String implFieldName = gen.getCompanionFieldName(iface);
-                        JCExpression testMethod;
-                        if(isCompanion){
-                            String implMethodName = gen.naming.getCompanionAccessorName(iface);
-                            JCExpression interfaceImplAccessor = gen.make().Apply(null, gen.makeSelect(gen.naming.makeQuotedThis(), implMethodName),
-                                                                                  List.<JCExpression>nil());
-                            testMethod = gen.makeSelect(interfaceImplAccessor, isDelegateName);
-                        }else{
-                            testMethod = gen.makeSelect(implFieldName, isDelegateName);
-                        }
-                        isCall = gen.make().Apply(null, testMethod, 
-                                                  List.<JCExpression>of(gen.makeUnquotedIdent(paramName)));
-                    }else{
-                        isCall = gen.makeUtilInvocation("isReifiedJava", 
-                                List.of(gen.makeReifiedTypeArgument(pt), gen.makeUnquotedIdent(paramName)), 
-                                List.<JCTree.JCExpression>nil());
-                    }
-                    if(interfacesTest != null)
-                        interfacesTest = gen.make().Binary(JCTree.OR, isCall, interfacesTest);
-                    else
-                        interfacesTest = isCall;
-                }
-                if(interfacesTest != null){
-                    JCStatement ifInterfacesTest = gen.make().If(interfacesTest, gen.make().Return(gen.makeBoolean(true)), null);
-                    body = body.prepend(ifInterfacesTest);
-                }
-            }
-            
-            // no point checking for exact class since anonymous classes can't be referred to by "is"
-            if(!type.getDeclaration().isAnonymous()){
-                // finally check for the exact class match
-                JCExpression classDescriptorCall = gen.makeReifiedTypeArgument(type);
-                JCExpression classEqualsCall = gen.make().Apply(null, gen.makeSelect(classDescriptorCall, "equals"), List.of(gen.makeUnquotedIdent(paramName)));
-                JCStatement classTest = gen.make().If(classEqualsCall, gen.make().Return(gen.makeBoolean(true)), null);
-                body = body.prepend(classTest);
-            }
+            List<JCStatement> body = List.<JCStatement>of(gen.make().Return(gen.makeReifiedTypeArgument(type)));
 
             method.body(body);
             defs(method.build());

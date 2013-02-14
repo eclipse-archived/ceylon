@@ -1559,8 +1559,8 @@ public class Naming implements LocalId {
         return "$reified" + name;
     }
     
-    public String getIsMethodName(ProducedType type) {
-        return "$is";
+    public String getGetTypeMethodName() {
+        return "$getType";
     }
 
     public String getRefineTypeParametersMethodName() {
