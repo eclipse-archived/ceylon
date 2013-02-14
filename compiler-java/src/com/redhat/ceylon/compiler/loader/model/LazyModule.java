@@ -155,12 +155,6 @@ public abstract class LazyModule extends Module {
             // default packages contain it all
             if(isDefault())
                 return true;
-            if(moduleName.equals(AbstractModelLoader.CEYLON_LANGUAGE)){
-                // special case for the language module which doesn't believe that this comes from there.
-                if("com.redhat.ceylon.compiler.java.language".equals(pkgName))
-                    return true;
-                // else fall-back to what's in there
-            }
             // Ceylon rules are simple
             // is it the same package as the module, or a subpackage of it?
             return Util.isSubPackage(moduleName, pkgName);
