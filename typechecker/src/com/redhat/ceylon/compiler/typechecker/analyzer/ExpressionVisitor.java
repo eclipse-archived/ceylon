@@ -257,7 +257,7 @@ public class ExpressionVisitor extends Visitor {
             inferType(that, that.getSpecifierExpression());
             if (that.getType()!=null) {
                 ProducedType t = that.getType().getTypeModel();
-                if (!dynamic || !t.isUnknown()) {
+                if (!t.isUnknown()) {
                     checkType(t, that.getSpecifierExpression());
                 }
             }
@@ -530,11 +530,9 @@ public class ExpressionVisitor extends Visitor {
         /*if (t==null) {
             n.addError("expression must be a type with fixed size: type not known");
         }
-        else*/ if (t!=null && !unit.isEmptyType(t)) {
-            if (!dynamic && !t.isUnknown()) {
-                term.addError("expression must be a possibly-empty type: " + 
-                        t.getProducedTypeName(unit) + " is not possibly-empty");
-            }
+        else*/ if (t!=null && !t.isUnknown() && !unit.isEmptyType(t)) {
+            term.addError("expression must be a possibly-empty type: " + 
+                    t.getProducedTypeName(unit) + " is not possibly-empty");
         }
     }
     
@@ -542,12 +540,9 @@ public class ExpressionVisitor extends Visitor {
         /*if (t==null) {
             n.addError("expression must be of optional type: type not known");
         }
-        else*/ if (t!=null && !unit.isOptionalType(t) && 
-                !hasUncheckedNulls(term)) {
-            if (!dynamic && !t.isUnknown()) {
-                term.addError("expression must be of optional type: " +
-                        t.getProducedTypeName(unit) + " is not optional");
-            }
+        else*/ if (t!=null && !t.isUnknown() && !unit.isOptionalType(t)) {
+            term.addError("expression must be of optional type: " +
+                    t.getProducedTypeName(unit) + " is not optional");
         }
     }
 
@@ -555,7 +550,7 @@ public class ExpressionVisitor extends Visitor {
         super.visit(that);
         if (that.getExpression()!=null) {
             ProducedType t = that.getExpression().getTypeModel();
-            if (!dynamic || !t.isUnknown()) {
+            if (!t.isUnknown()) {
                 checkAssignable(t, unit.getBooleanDeclaration().getType(), that, 
                         "expression must be of boolean type");
             }
@@ -594,7 +589,7 @@ public class ExpressionVisitor extends Visitor {
             }
         }
         if (typedNode!=null) {
-            if (!dynamic || !t.isUnknown()) {
+            if (!t.isUnknown()) {
                 checkAssignable(t, unit.getCloseableDeclaration().getType(), typedNode, 
                         "resource must be closeable");
             }
@@ -642,7 +637,7 @@ public class ExpressionVisitor extends Visitor {
         inferType(that, sie);
         if (type!=null) {
             ProducedType t = type.getTypeModel();
-            if (!dynamic || !t.isUnknown()) {
+            if (!t.isUnknown()) {
                 checkType(t, that.getDeclarationModel().getName(), sie, 2100);
             }
         }
@@ -757,7 +752,7 @@ public class ExpressionVisitor extends Visitor {
                     //      handle the problem
                     t = eraseDefaultedParameters(t);
                 }
-                if (!dynamic || !t.isUnknown()) {
+                if (!t.isUnknown()) {
                     checkType(t, d.getName(unit), sie, 2100);
                 }
             }
@@ -974,8 +969,11 @@ public class ExpressionVisitor extends Visitor {
     private void checkType(ProducedType declaredType, 
             Tree.SpecifierOrInitializerExpression sie) {
         if (sie!=null && sie.getExpression()!=null) {
-            checkAssignable(sie.getExpression().getTypeModel(), declaredType, sie, 
-                    "specified expression must be assignable to declared type");
+            ProducedType t = sie.getExpression().getTypeModel();
+            if (!t.isUnknown()) {
+                checkAssignable(t, declaredType, sie, 
+                        "specified expression must be assignable to declared type");
+            }
         }
     }
 
@@ -983,7 +981,7 @@ public class ExpressionVisitor extends Visitor {
             Tree.SpecifierOrInitializerExpression sie, int code) {
         if (sie!=null && sie.getExpression()!=null) {
             ProducedType t = sie.getExpression().getTypeModel();
-            if (!dynamic || !t.isUnknown()) {
+            if (!t.isUnknown()) {
                 checkAssignable(t, declaredType, sie, 
                         "specified expression must be assignable to declared type of " + name,
                         code);
@@ -993,7 +991,7 @@ public class ExpressionVisitor extends Visitor {
 
     private void checkFunctionType(ProducedType et, Tree.Type that, 
             Tree.SpecifierExpression se) {
-        if (et!=null) {
+        if (et!=null && !et.isUnknown()) {
             checkAssignable(et, that.getTypeModel(), se, 
                     "specified expression type must be assignable to declared return type");
         }
@@ -1007,7 +1005,7 @@ public class ExpressionVisitor extends Visitor {
             if (se!=null && e!=null) {
                 ProducedType set = e.getTypeModel();
                 if (set!=null) {
-                    if (!dynamic || !vt.isUnknown() && !set.isUnknown()) {
+                    if (!vt.isUnknown() && !set.isUnknown()) {
                         checkAssignable(unit.getDefiniteType(set), vt, se, 
                                 "specified expression must be assignable to declared type");
                     }
@@ -1023,7 +1021,7 @@ public class ExpressionVisitor extends Visitor {
             Tree.Expression e = se.getExpression();
             if (se!=null && e!=null) {
                 ProducedType set = e.getTypeModel();
-                if (!dynamic || !vt.isUnknown() && !set.isUnknown()) {
+                if (!vt.isUnknown() && !set.isUnknown()) {
                     checkType(unit.getOptionalType(unit.getPossiblyNoneType(vt)), se);
                 }
             }
@@ -1034,7 +1032,7 @@ public class ExpressionVisitor extends Visitor {
             Tree.SpecifierExpression se) {
         if (var.getType()!=null) {
             ProducedType vt = var.getType().getTypeModel();
-            if (!dynamic || !vt.isUnknown()) {
+            if (!vt.isUnknown()) {
                 checkType(unit.getIterableType(vt), se);
             }
         }
@@ -1045,7 +1043,7 @@ public class ExpressionVisitor extends Visitor {
         if (key.getType()!=null && value.getType()!=null) {
             ProducedType kt = key.getType().getTypeModel();
             ProducedType vt = value.getType().getTypeModel();
-            if (!dynamic || !kt.isUnknown() && !vt.isUnknown()) {
+            if (!kt.isUnknown() && !vt.isUnknown()) {
                 checkType(unit.getIterableType(unit.getEntryType(kt, vt)), se);
             }
         }
@@ -1078,7 +1076,7 @@ public class ExpressionVisitor extends Visitor {
             inferType(that, se);
             if (type!=null) {
                 ProducedType t = type.getTypeModel();
-                if (!dynamic || !t.isUnknown()) {
+                if (!t.isUnknown()) {
                     checkType(t, that.getDeclarationModel().getName(), se, 2100);
                 }
             }
@@ -1102,9 +1100,7 @@ public class ExpressionVisitor extends Visitor {
                 ProducedType returnType = e.getTypeModel();
                 inferFunctionType(that, returnType);
                 if (that.getType()!=null) {
-                    if (!dynamic || !returnType.isUnknown()) {
-                        checkFunctionType(returnType, that.getType(), se);
-                    }
+                    checkFunctionType(returnType, that.getType(), se);
                 }
                 if (that.getType() instanceof Tree.VoidModifier && 
                         !isSatementExpression(e)) {
@@ -1140,9 +1136,7 @@ public class ExpressionVisitor extends Visitor {
                 ProducedType returnType = e.getTypeModel();
                 inferFunctionType(that, returnType);
                 if (that.getType()!=null) {
-                    if (!dynamic || !returnType.isUnknown()) {
-                        checkFunctionType(returnType, that.getType(), se);
-                    }
+                    checkFunctionType(returnType, that.getType(), se);
                 }
                 if (d.isDeclaredVoid() && !isSatementExpression(e)) {
                     se.addError("functional argument is declared void so specified expression must be a statement: " + 
@@ -1505,10 +1499,9 @@ public class ExpressionVisitor extends Visitor {
         Tree.Expression e = that.getExpression();
         if (e!=null) {
             ProducedType et = e.getTypeModel();
-            if (!dynamic || !et.isUnknown()) {
-                checkAssignable(et,
-                        unit.getExceptionDeclaration().getType(), e,
-                        "thrown expression must be an exception");
+            if (!et.isUnknown()) {
+                checkAssignable(et, unit.getExceptionDeclaration().getType(), 
+                        e, "thrown expression must be an exception");
             }
         }
     }
@@ -1542,7 +1535,7 @@ public class ExpressionVisitor extends Visitor {
                     inferReturnType(et, at);
                 }
                 else {
-                    if (!dynamic || !et.isUnknown() && !at.isUnknown()) {
+                    if (!et.isUnknown() && !at.isUnknown()) {
                         checkAssignable(at, et, that.getExpression(), 
                                 "returned expression must be assignable to return type of " +
                                         name, 2100);
@@ -1635,12 +1628,6 @@ public class ExpressionVisitor extends Visitor {
     @Override public void visit(Tree.InvocationExpression that) {
         
         Tree.Primary p = that.getPrimary();
-        
-        if (dynamic && (p.getTypeModel()==null ||
-                p.getTypeModel().isUnknown())) {
-            super.visit(that);
-            return;
-        }
         
         boolean isDirectInvocation = p instanceof Tree.MemberOrTypeExpression;
         if (isDirectInvocation) {
@@ -2160,7 +2147,7 @@ public class ExpressionVisitor extends Visitor {
     private void visitInvocation(Tree.InvocationExpression that, ProducedReference prf) {
         if (prf==null || !prf.isFunctional()) {
             ProducedType pt = that.getPrimary().getTypeModel();
-            if (pt!=null) {
+            if (pt!=null && !pt.isUnknown()) {
                 if (checkCallable(pt, that.getPrimary(), 
                         "invoked expression must be callable")) {
                     List<ProducedType> typeArgs = pt.getSupertype(unit.getCallableDeclaration())
@@ -2322,6 +2309,10 @@ public class ExpressionVisitor extends Visitor {
                 sa.addError("duplicate argument for parameter: " +
                         sp + " of " + pr.getDeclaration().getName(unit));
             }
+            else if (!dynamic && isTypeUnknown(sp.getType())) {
+                sa.addError("parameter type could not be determined: " + 
+                        sp.getName() + " of " + sp.getDeclaration().getName(unit));
+            }
             checkSequencedArgument(sa, pr, sp);
         }
     }
@@ -2345,6 +2336,10 @@ public class ExpressionVisitor extends Visitor {
             if (!foundParameters.add(p)) {
                 a.addError("duplicate argument for parameter: " +
                         p + " of " + pr.getDeclaration().getName(unit));
+            }
+            else if (!dynamic && isTypeUnknown(p.getType())) {
+                a.addError("parameter type could not be determined: " + 
+                        p.getName() + " of " + p.getDeclaration().getName(unit));
             }
             checkNamedArgument(a, pr, p);
         }
@@ -2371,10 +2366,13 @@ public class ExpressionVisitor extends Visitor {
         }
         ProducedType pt = pr.getTypedParameter(p).getFullType();
 //      if (p.isSequenced()) pt = unit.getIteratedType(pt);
-        checkAssignable(argType, pt, a,
-                "named argument must be assignable to parameter " + 
-                p.getName() + " of " + pr.getDeclaration().getName(unit), 
-                2100);
+        if (argType!=null && pt!=null && 
+                !argType.isUnknown() && !pt.isUnknown()) {
+            checkAssignable(argType, pt, a,
+                    "named argument must be assignable to parameter " + 
+                            p.getName() + " of " + pr.getDeclaration().getName(unit), 
+                            2100);
+        }
     }
 
     private void checkArgumentToVoidParameter(Parameter p, Tree.TypedArgument ta) {
@@ -2408,9 +2406,12 @@ public class ExpressionVisitor extends Visitor {
         ProducedType paramType = pr.getTypedParameter(p).getFullType();
         ProducedType att = getTupleType(args, false)
                 .getSupertype(unit.getIterableDeclaration());
-        checkAssignable(att, paramType, sa, 
-                "iterable arguments must be assignable to iterable parameter " + 
-                p.getName() + " of " + pr.getDeclaration().getName(unit));
+        if (att!=null && paramType!=null && 
+                !att.isUnknown() && !paramType.isUnknown()) {
+            checkAssignable(att, paramType, sa, 
+                    "iterable arguments must be assignable to iterable parameter " + 
+                            p.getName() + " of " + pr.getDeclaration().getName(unit));
+        }
     }
     
     private Parameter getMatchingParameter(ParameterList pl, Tree.NamedArgument na, 
@@ -2467,6 +2468,10 @@ public class ExpressionVisitor extends Visitor {
             } 
             else {
                 Tree.PositionalArgument a = args.get(i);
+                if (!dynamic && isTypeUnknown(p.getType())) {
+                    a.addError("parameter type could not be determined: " + 
+                            p.getName() + " of " + p.getDeclaration().getName(unit));
+                }
                 if (a instanceof Tree.SpreadArgument) {
                     checkSpreadArgument(pr, p, a, 
                             (Tree.SpreadArgument) a, 
@@ -2513,8 +2518,11 @@ public class ExpressionVisitor extends Visitor {
         ProducedType at = spreadType(arg.getTypeModel(), unit, true);
         //checkSpreadArgumentSequential(arg, at);
         ProducedType ptt = getParameterTypesAsTupleType(psl, pr);
-        checkAssignable(at, ptt, arg, 
-                "spread argument not assignable to parameter types");
+        if (at!=null && ptt!=null && 
+                !at.isUnknown() && !ptt.isUnknown()) {
+            checkAssignable(at, ptt, arg, 
+                    "spread argument not assignable to parameter types");
+        }
     }
     
     private void checkIndirectInvocationArguments(Tree.InvocationExpression that, 
@@ -2560,7 +2568,8 @@ public class ExpressionVisitor extends Visitor {
                                     paramType);
                             return; //Note: early return!
                         }
-                        else {
+                        else if (at!=null && paramType!=null && 
+                                !at.isUnknown() && !paramType.isUnknown()) {
                             checkAssignable(at, paramType, arg, 
                                     "argument must be assignable to parameter type");
                         }
@@ -2592,8 +2601,11 @@ public class ExpressionVisitor extends Visitor {
         }
         ProducedType ptt = unit.getTupleType(pts, sequenced, false, 
                 firstDefaulted);
-        checkAssignable(at, ptt, sa, 
-                "spread argument not assignable to parameter types");
+        if (at!=null && ptt!=null && 
+                !at.isUnknown() && !ptt.isUnknown()) {
+            checkAssignable(at, ptt, sa, 
+                    "spread argument not assignable to parameter types");
+        }
     }
 
     private void checkSequencedIndirectArgument(List<Tree.PositionalArgument> args, 
@@ -2602,17 +2614,20 @@ public class ExpressionVisitor extends Visitor {
         for (int i=0; i<args.size(); i++) {
             Tree.PositionalArgument a = args.get(i);
             ProducedType at = a.getTypeModel();
-            if (a instanceof Tree.SpreadArgument) {
-                //checkSpreadArgumentSequential((Tree.SpreadArgument) a, at);
-                at = spreadType(at, unit, true);
-                checkAssignable(unit.getIteratedType(at), set, a,
-                        "spread argument must be assignable to sequenced parameter ");
-                checkAssignable(at, paramType, a,
-                        "spread argument must be assignable to sequenced parameter ");
-            }
-            else {
-                checkAssignable(at, set, a, 
-                        "argument must be assignable to sequenced parameter");
+            if (at!=null && set!=null && 
+                    !at.isUnknown() && !set.isUnknown()) {
+                if (a instanceof Tree.SpreadArgument) {
+                    //checkSpreadArgumentSequential((Tree.SpreadArgument) a, at);
+                    at = spreadType(at, unit, true);
+                    checkAssignable(unit.getIteratedType(at), set, a,
+                            "spread argument must be assignable to sequenced parameter ");
+                    checkAssignable(at, paramType, a,
+                            "spread argument must be assignable to sequenced parameter ");
+                }
+                else {
+                    checkAssignable(at, set, a, 
+                            "argument must be assignable to sequenced parameter");
+                }
             }
         }
     }
@@ -2621,8 +2636,11 @@ public class ExpressionVisitor extends Visitor {
             ProducedType paramType) {
         ProducedType at = c.getTypeModel();
         ProducedType set = paramType==null ? null : unit.getIteratedType(paramType);
-        checkAssignable(at, set, c, 
-                "argument must be assignable to sequenced parameter");
+        if (at!=null && set!=null && 
+                !at.isUnknown() && !set.isUnknown()) {
+            checkAssignable(at, set, c, 
+                    "argument must be assignable to sequenced parameter");
+        }
     }
     
     private void checkSequencedPositionalArgument(Parameter p, ProducedReference pr,
@@ -2633,16 +2651,19 @@ public class ExpressionVisitor extends Visitor {
             Tree.PositionalArgument a = args.get(j);
             a.setParameter(p);
             ProducedType at = a.getTypeModel();
-            if (a instanceof Tree.SpreadArgument) {
-                at = spreadType(at, unit, true);
-                checkAssignable(at, paramType, a, 
-                        "spread argument must be assignable to sequenced parameter " + 
-                         p.getName()+ " of " + pr.getDeclaration().getName(unit), 2101);
-            }
-            else {
-                checkAssignable(at, set, a, 
-                        "argument must be assignable to sequenced parameter " + 
-                         p.getName()+ " of " + pr.getDeclaration().getName(unit), 2101);
+            if (at!=null && paramType!=null && 
+                    !at.isUnknown() && !paramType.isUnknown()) {
+                if (a instanceof Tree.SpreadArgument) {
+                    at = spreadType(at, unit, true);
+                    checkAssignable(at, paramType, a, 
+                            "spread argument must be assignable to sequenced parameter " + 
+                                    p.getName()+ " of " + pr.getDeclaration().getName(unit), 2101);
+                }
+                else {
+                    checkAssignable(at, set, a, 
+                            "argument must be assignable to sequenced parameter " + 
+                                    p.getName()+ " of " + pr.getDeclaration().getName(unit), 2101);
+                }
             }
         }
     }
@@ -2652,10 +2673,13 @@ public class ExpressionVisitor extends Visitor {
         ProducedType paramType = pr.getTypedParameter(p).getFullType();
         c.setParameter(p);
         ProducedType at = c.getTypeModel();
-        ProducedType set = paramType==null ? null : unit.getIteratedType(paramType);
-        checkAssignable(at, set, c, 
-                "argument must be assignable to sequenced parameter " + 
-                        p.getName()+ " of " + pr.getDeclaration().getName(unit), 2101);
+        if (at!=null && paramType!=null && 
+                !at.isUnknown() && !paramType.isUnknown()) {
+            ProducedType set = paramType==null ? null : unit.getIteratedType(paramType);
+            checkAssignable(at, set, c, 
+                    "argument must be assignable to sequenced parameter " + 
+                            p.getName()+ " of " + pr.getDeclaration().getName(unit), 2101);
+        }
     }
     
     private boolean hasSpreadArgument(List<Tree.PositionalArgument> args) {
@@ -2672,10 +2696,14 @@ public class ExpressionVisitor extends Visitor {
             Tree.ListedArgument a) {
         ProducedType paramType = pr.getTypedParameter(p).getFullType();
         a.setParameter(p);
-        checkAssignable(a.getTypeModel(), paramType, a, 
-                "argument must be assignable to parameter " + 
-                p.getName() + " of " + pr.getDeclaration().getName(unit), 
-                2100);
+        ProducedType at = a.getTypeModel();
+        if (at!=null && paramType!=null && 
+                !at.isUnknown() && !paramType.isUnknown()) {
+            checkAssignable(at, paramType, a, 
+                    "argument must be assignable to parameter " + 
+                            p.getName() + " of " + pr.getDeclaration().getName(unit), 
+                            2100);
+        }
     }
     
     @Override public void visit(Tree.Comprehension that) {
@@ -2735,9 +2763,8 @@ public class ExpressionVisitor extends Visitor {
             if (that.getElementOrRange()==null) {
                 that.addError("malformed index expression");
             }
-            else if (!dynamic || 
-                        !pt.isUnknown() && 
-                        !involvesUnknownTypes(that.getElementOrRange())) {
+            else if (!pt.isUnknown() && 
+                     !involvesUnknownTypes(that.getElementOrRange())) {
                 if (that.getElementOrRange() instanceof Tree.Element) {
                     ProducedType cst = pt.getSupertype(unit.getCorrespondenceDeclaration());
                     if (cst==null) {
@@ -2926,24 +2953,20 @@ public class ExpressionVisitor extends Visitor {
     @Override public void visit(Tree.PostfixOperatorExpression that) {
         super.visit(that);
         ProducedType type = type(that);
-        if (!dynamic || !type.isUnknown()) {
-            visitIncrementDecrement(that, type, that.getTerm());
-            checkAssignability(that.getTerm(), that);
-        }
+        visitIncrementDecrement(that, type, that.getTerm());
+        checkAssignability(that.getTerm(), that);
     }
 
     @Override public void visit(Tree.PrefixOperatorExpression that) {
         super.visit(that);
         ProducedType type = type(that);
-        if (!dynamic || !type.isUnknown()) {
-            visitIncrementDecrement(that, type, that.getTerm());
-            checkAssignability(that.getTerm(), that);
-        }
+        visitIncrementDecrement(that, type, that.getTerm());
+        checkAssignability(that.getTerm(), that);
     }
     
     private void visitIncrementDecrement(Tree.Term that,
             ProducedType pt, Tree.Term term) {
-        if (pt!=null) {
+        if (pt!=null && !pt.isUnknown()) {
             ProducedType ot = checkSupertype(pt, unit.getOrdinalDeclaration(), 
                     term, "operand expression must be of ordinal type");
             if (ot!=null) {
@@ -2973,7 +2996,8 @@ public class ExpressionVisitor extends Visitor {
             TypeDeclaration type) {
         ProducedType lhst = leftType(that);
         ProducedType rhst = rightType(that);
-        if ( rhst!=null && lhst!=null ) {
+        if ( rhst!=null && lhst!=null && 
+                !rhst.isUnknown() && !lhst.isUnknown()) {
             checkOperandTypes(lhst, rhst, type, that, 
                     "operand expressions must be comparable");
         }
@@ -2983,7 +3007,8 @@ public class ExpressionVisitor extends Visitor {
     private void visitCompareOperator(Tree.CompareOp that) {
         ProducedType lhst = leftType(that);
         ProducedType rhst = rightType(that);
-        if ( rhst!=null && lhst!=null ) {
+        if ( rhst!=null && lhst!=null && 
+                !rhst.isUnknown() && !lhst.isUnknown()) {
             checkOperandTypes(lhst, rhst, unit.getComparableDeclaration(), that, 
                     "operand expressions must be comparable");
         }
@@ -2993,7 +3018,8 @@ public class ExpressionVisitor extends Visitor {
     private void visitRangeOperator(Tree.RangeOp that) {
         ProducedType lhst = leftType(that);
         ProducedType rhst = rightType(that);
-        if ( rhst!=null && lhst!=null ) {
+        if ( rhst!=null && lhst!=null && 
+                !rhst.isUnknown() && !lhst.isUnknown()) {
             ProducedType ot = checkOperandTypes(lhst, rhst, 
                     unit.getOrdinalDeclaration(), that,
                     "operand expressions must be of compatible ordinal type");
@@ -3013,7 +3039,8 @@ public class ExpressionVisitor extends Visitor {
     private void visitSegmentOperator(Tree.SegmentOp that) {
         ProducedType lhst = leftType(that);
         ProducedType rhst = rightType(that);
-        if ( rhst!=null && lhst!=null ) {
+        if ( rhst!=null && lhst!=null && 
+                !rhst.isUnknown() && !lhst.isUnknown()) {
             ProducedType ot = checkSupertype(lhst, unit.getOrdinalDeclaration(), 
                     that.getLeftTerm(), "left operand must be of ordinal type");
             checkAssignable(rhst, unit.getIntegerDeclaration().getType(), 
@@ -3028,7 +3055,8 @@ public class ExpressionVisitor extends Visitor {
     private void visitEntryOperator(Tree.EntryOp that) {
         ProducedType lhst = leftType(that);
         ProducedType rhst = rightType(that);
-        if ( rhst!=null && lhst!=null ) {
+        if ( rhst!=null && lhst!=null && 
+                !rhst.isUnknown() && !lhst.isUnknown()) {
             checkSupertype(lhst, unit.getObjectDeclaration(), that.getLeftTerm(), 
                     "operand expression must not be an optional type");
             checkSupertype(rhst, unit.getObjectDeclaration(), that.getRightTerm(), 
@@ -3041,7 +3069,8 @@ public class ExpressionVisitor extends Visitor {
             TypeDeclaration td) {
         ProducedType lhst = leftType(that);
         ProducedType rhst = rightType(that);
-        if ( rhst!=null && lhst!=null ) {
+        if ( rhst!=null && lhst!=null && 
+                !rhst.isUnknown() && !lhst.isUnknown()) {
             checkSupertype(lhst, td, that.getLeftTerm(), 
                     "operand expression must be of type " + td.getName());
             checkSupertype(rhst, td, that.getRightTerm(), 
@@ -3050,6 +3079,23 @@ public class ExpressionVisitor extends Visitor {
         that.setTypeModel(unit.getBooleanDeclaration().getType());
     }
     
+    private void visitAssignOperator(Tree.AssignOp that) {
+        ProducedType rhst = rightType(that);
+        ProducedType lhst = leftType(that);
+        if ( rhst!=null && lhst!=null  && 
+                !rhst.isUnknown() && !lhst.isUnknown()) {
+            ProducedType leftHandType = lhst;
+            // allow assigning null to java properties that could after all be null
+            if (hasUncheckedNulls(that.getLeftTerm()))
+                leftHandType = unit.getOptionalType(leftHandType);
+            checkAssignable(rhst, leftHandType, that.getRightTerm(), 
+                    "assigned expression must be assignable to declared type", 
+                    2100);
+        }
+        that.setTypeModel(rhst);
+//      that.setTypeModel(lhst); //this version is easier on backend
+    }
+
     private ProducedType checkOperandTypes(ProducedType lhst, ProducedType rhst, 
             TypeDeclaration td, Node node, String message) {
         ProducedType lhsst = checkSupertype(lhst, td, node, message);
@@ -3067,7 +3113,8 @@ public class ExpressionVisitor extends Visitor {
             TypeDeclaration type) {
         ProducedType lhst = leftType(that);
         ProducedType rhst = rightType(that);
-        if ( rhst!=null && lhst!=null ) {
+        if ( rhst!=null && lhst!=null && 
+                !rhst.isUnknown() && !lhst.isUnknown()) {
             //hardcoded implicit type conversion Integer->Float
             TypeDeclaration fd = unit.getFloatDeclaration();
             TypeDeclaration id = unit.getIntegerDeclaration();
@@ -3104,7 +3151,8 @@ public class ExpressionVisitor extends Visitor {
             TypeDeclaration type) {
         ProducedType lhst = leftType(that);
         ProducedType rhst = rightType(that);
-        if ( rhst!=null && lhst!=null ) {
+        if ( rhst!=null && lhst!=null && 
+                !rhst.isUnknown() && !lhst.isUnknown()) {
             //hardcoded implicit type conversion Integer->Float
             TypeDeclaration fd = unit.getFloatDeclaration();
             TypeDeclaration id = unit.getIntegerDeclaration();
@@ -3130,7 +3178,8 @@ public class ExpressionVisitor extends Visitor {
         //TypeDeclaration sd = unit.getSetDeclaration();
         ProducedType lhst = leftType(that);
         ProducedType rhst = rightType(that);
-        if ( rhst!=null && lhst!=null ) {
+        if ( rhst!=null && lhst!=null && 
+                !rhst.isUnknown() && !lhst.isUnknown()) {
             checkAssignable(lhst, unit.getSetType(unit.getObjectDeclaration().getType()), 
                     that.getLeftTerm(), "set operand expression must be a set");
             checkAssignable(lhst, unit.getSetType(unit.getObjectDeclaration().getType()), 
@@ -3155,7 +3204,8 @@ public class ExpressionVisitor extends Visitor {
         //TypeDeclaration sd = unit.getSetDeclaration();
         ProducedType lhst = leftType(that);
         ProducedType rhst = rightType(that);
-        if ( rhst!=null && lhst!=null ) {
+        if ( rhst!=null && lhst!=null && 
+                !rhst.isUnknown() && !lhst.isUnknown()) {
             checkAssignable(lhst, unit.getSetType(unit.getObjectDeclaration().getType()), 
                     that.getLeftTerm(), "set operand expression must be a set");
             checkAssignable(lhst, unit.getSetType(unit.getObjectDeclaration().getType()), 
@@ -3173,17 +3223,23 @@ public class ExpressionVisitor extends Visitor {
 
     private void visitLogicalOperator(Tree.BinaryOperatorExpression that) {
         ProducedType bt = unit.getBooleanDeclaration().getType();
-        checkAssignable(leftType(that), bt, that, 
-                "logical operand expression must be a boolean value");
-        checkAssignable(rightType(that), bt, that, 
-                "logical operand expression must be a boolean value");
+        ProducedType lt = leftType(that);
+        ProducedType rt = rightType(that);
+        if (lt!=null && rt!=null && 
+                !rt.isUnknown() && !lt.isUnknown()) {
+            checkAssignable(lt, bt, that, 
+                    "logical operand expression must be a boolean value");
+            checkAssignable(rt, bt, that, 
+                    "logical operand expression must be a boolean value");
+        }
         that.setTypeModel(bt);
     }
 
     private void visitDefaultOperator(Tree.DefaultOp that) {
         ProducedType lhst = leftType(that);
         ProducedType rhst = rightType(that);
-        if ( rhst!=null && lhst!=null ) {
+        if ( rhst!=null && lhst!=null && 
+                !rhst.isUnknown() && !lhst.isUnknown()) {
             checkOptional(lhst, that.getLeftTerm(), that.getLeftTerm());
             List<ProducedType> list = new ArrayList<ProducedType>();
             addToUnion(list, unit.denotableType(rhst));
@@ -3210,11 +3266,11 @@ public class ExpressionVisitor extends Visitor {
     private void visitThenOperator(Tree.ThenOp that) {
         ProducedType lhst = leftType(that);
         ProducedType rhst = rightType(that);
-        if ( lhst!=null ) {
+        if ( lhst!=null && !lhst.isUnknown()) {
             checkAssignable(lhst, unit.getBooleanDeclaration().getType(), that.getLeftTerm(), 
                     "operand expression must be a boolean value");
         }
-        if ( rhst!=null ) {
+        if ( rhst!=null && !rhst.isUnknown()) {
             checkAssignable(rhst, unit.getObjectDeclaration().getType(), that.getRightTerm(),
                     "operand expression may not be an optional type");
             that.setTypeModel(unit.getOptionalType(unit.denotableType(rhst)));
@@ -3224,7 +3280,8 @@ public class ExpressionVisitor extends Visitor {
     private void visitInOperator(Tree.InOp that) {
         ProducedType lhst = leftType(that);
         ProducedType rhst = rightType(that);
-        if ( rhst!=null && lhst!=null ) {
+        if ( rhst!=null && lhst!=null && 
+                !rhst.isUnknown() && !lhst.isUnknown()) {
             checkAssignable(lhst, unit.getObjectDeclaration().getType(), that.getLeftTerm(), 
                     "operand expression must support equality");
             checkAssignable(rhst, unit.getCategoryDeclaration().getType(), that.getRightTerm(), 
@@ -3236,7 +3293,7 @@ public class ExpressionVisitor extends Visitor {
     private void visitUnaryOperator(Tree.UnaryOperatorExpression that, 
             TypeDeclaration type) {
         ProducedType t = type(that);
-        if (t!=null) {
+        if (t!=null && !t.isUnknown()) {
             ProducedType nt = checkSupertype(t, type, that.getTerm(), 
                     "operand expression must be of correct type");
             if (nt!=null) {
@@ -3279,10 +3336,6 @@ public class ExpressionVisitor extends Visitor {
     }
     
     private void visitIsOperator(Tree.IsOp that) {
-        /*checkAssignable( type(that), 
-                getOptionalType(getObjectDeclaration().getType()), 
-                that.getTerm(), 
-                "expression may not be of void type");*/
         Tree.Type rt = that.getType();
         if (rt!=null) {
             ProducedType t = rt.getTypeModel();
@@ -3310,22 +3363,6 @@ public class ExpressionVisitor extends Visitor {
         that.setTypeModel(unit.getBooleanDeclaration().getType());
     }
     
-    private void visitAssignOperator(Tree.AssignOp that) {
-        ProducedType rhst = rightType(that);
-        ProducedType lhst = leftType(that);
-        if ( rhst!=null && lhst!=null ) {
-            ProducedType leftHandType = lhst;
-            // allow assigning null to java properties that could after all be null
-            if(hasUncheckedNulls(that.getLeftTerm()))
-                leftHandType = unit.getOptionalType(leftHandType);
-            checkAssignable(rhst, leftHandType, that.getRightTerm(), 
-                    "assigned expression must be assignable to declared type", 
-                    2100);
-        }
-        that.setTypeModel(rhst);
-//      that.setTypeModel(lhst); //this version is easier on backend
-    }
-
     private void checkAssignability(Tree.Term that, Node node) {
         if (that instanceof Tree.BaseMemberExpression ||
                 that instanceof Tree.QualifiedMemberExpression) {
@@ -3392,167 +3429,121 @@ public class ExpressionVisitor extends Visitor {
 
     @Override public void visit(Tree.ArithmeticOp that) {
         super.visit(that);
-        if (!dynamic || !involvesUnknownTypes(that)) {
-            visitArithmeticOperator(that, getArithmeticDeclaration(that));
-        }
+        visitArithmeticOperator(that, getArithmeticDeclaration(that));
     }
 
     @Override public void visit(Tree.BitwiseOp that) {
         super.visit(that);
-        if (!dynamic || !involvesUnknownTypes(that)) {
-            visitSetOperator(that);
-        }
+        visitSetOperator(that);
     }
 
     @Override public void visit(Tree.LogicalOp that) {
         super.visit(that);
-        if (!dynamic || !involvesUnknownTypes(that)) {
-            visitLogicalOperator(that);
-        }
+        visitLogicalOperator(that);
     }
 
     @Override public void visit(Tree.EqualityOp that) {
         super.visit(that);
-        if (!dynamic || !involvesUnknownTypes(that)) {
-            visitEqualityOperator(that, unit.getObjectDeclaration());
-        }
+        visitEqualityOperator(that, unit.getObjectDeclaration());
     }
 
     @Override public void visit(Tree.ComparisonOp that) {
         super.visit(that);
-        if (!dynamic || !involvesUnknownTypes(that)) {
-            visitComparisonOperator(that, unit.getComparableDeclaration());
-        }
+        visitComparisonOperator(that, unit.getComparableDeclaration());
     }
 
     @Override public void visit(Tree.IdenticalOp that) {
         super.visit(that);
-        if (!dynamic || !involvesUnknownTypes(that)) {
-            visitEqualityOperator(that, unit.getIdentifiableDeclaration());
-        }
+        visitEqualityOperator(that, unit.getIdentifiableDeclaration());
     }
 
     @Override public void visit(Tree.CompareOp that) {
         super.visit(that);
-        if (!dynamic || !involvesUnknownTypes(that)) {
-            visitCompareOperator(that);
-        }
+        visitCompareOperator(that);
     }
 
     @Override public void visit(Tree.DefaultOp that) {
         super.visit(that);
-        if (!dynamic || !involvesUnknownTypes(that)) {
-            visitDefaultOperator(that);
-        }
+        visitDefaultOperator(that);
     }
         
     @Override public void visit(Tree.ThenOp that) {
         super.visit(that);
-        if (!dynamic || !involvesUnknownTypes(that)) {
-            visitThenOperator(that);
-        }
+        visitThenOperator(that);
     }
         
     @Override public void visit(Tree.NegativeOp that) {
         super.visit(that);
-        if (!dynamic || !involvesUnknownTypes(that)) {
-            visitUnaryOperator(that, unit.getInvertableDeclaration());
-        }
+        visitUnaryOperator(that, unit.getInvertableDeclaration());
     }
         
     @Override public void visit(Tree.PositiveOp that) {
         super.visit(that);
-        if (!dynamic || !involvesUnknownTypes(that)) {
-            visitUnaryOperator(that, unit.getInvertableDeclaration());
-        }
+        visitUnaryOperator(that, unit.getInvertableDeclaration());
     }
     
     @Override public void visit(Tree.NotOp that) {
         super.visit(that);
-        if (!dynamic || !involvesUnknownTypes(that)) {
-            visitUnaryOperator(that, unit.getBooleanDeclaration());
-        }
+        visitUnaryOperator(that, unit.getBooleanDeclaration());
     }
     
     @Override public void visit(Tree.AssignOp that) {
         super.visit(that);
-        if (!dynamic || !involvesUnknownTypes(that)) {
-            visitAssignOperator(that);
-            checkAssignability(that.getLeftTerm(), that);
-        }
+        visitAssignOperator(that);
+        checkAssignability(that.getLeftTerm(), that);
     }
     
     @Override public void visit(Tree.ArithmeticAssignmentOp that) {
         super.visit(that);
-        if (!dynamic || !involvesUnknownTypes(that)) {
-            visitArithmeticAssignOperator(that, getArithmeticDeclaration(that));
-            checkAssignability(that.getLeftTerm(), that);
-        }
+        visitArithmeticAssignOperator(that, getArithmeticDeclaration(that));
+        checkAssignability(that.getLeftTerm(), that);
     }
     
     @Override public void visit(Tree.LogicalAssignmentOp that) {
         super.visit(that);
-        if (!dynamic || !involvesUnknownTypes(that)) {
-            visitLogicalOperator(that);
-            checkAssignability(that.getLeftTerm(), that);
-        }
+        visitLogicalOperator(that);
+        checkAssignability(that.getLeftTerm(), that);
     }
     
     @Override public void visit(Tree.BitwiseAssignmentOp that) {
         super.visit(that);
-        if (!dynamic || !involvesUnknownTypes(that)) {
-            visitSetAssignmentOperator(that);
-            checkAssignability(that.getLeftTerm(), that);
-        }
+        visitSetAssignmentOperator(that);
+        checkAssignability(that.getLeftTerm(), that);
     }
     
     @Override public void visit(Tree.RangeOp that) {
         super.visit(that);
-        if (!dynamic || !involvesUnknownTypes(that)) {
-            visitRangeOperator(that);
-        }
+        visitRangeOperator(that);
     }
     
     @Override public void visit(Tree.SegmentOp that) {
         super.visit(that);
-        if (!dynamic || !involvesUnknownTypes(that)) {
-            visitSegmentOperator(that);
-        }
+        visitSegmentOperator(that);
     }
         
     @Override public void visit(Tree.EntryOp that) {
         super.visit(that);
-        if (!dynamic || !involvesUnknownTypes(that)) {
-            visitEntryOperator(that);
-        }
+        visitEntryOperator(that);
     }
     
     @Override public void visit(Tree.Exists that) {
         super.visit(that);
-        if (!dynamic || !involvesUnknownTypes(that)) {
-            visitExistsOperator(that);
-        }
+        visitExistsOperator(that);
     }
     
     @Override public void visit(Tree.Nonempty that) {
         super.visit(that);
-        if (!dynamic || !involvesUnknownTypes(that)) {
-            visitNonemptyOperator(that);
-        }
+        visitNonemptyOperator(that);
     }
     
     @Override public void visit(Tree.IsOp that) {
         super.visit(that);
-        if (!dynamic || !involvesUnknownTypes(that)) {
-            visitIsOperator(that);
-        }
+        visitIsOperator(that);
     }
     
     @Override public void visit(Tree.OfOp that) {
         super.visit(that);
-        if (!dynamic || !involvesUnknownTypes(that)) {
-            visitOfOperator(that);
-        }
+        visitOfOperator(that);
     }
     
     @Override public void visit(Tree.Extends that) {
@@ -3567,21 +3558,9 @@ public class ExpressionVisitor extends Visitor {
     
     @Override public void visit(Tree.InOp that) {
         super.visit(that);
-        if (!dynamic || !involvesUnknownTypes(that)) {
-            visitInOperator(that);
-        }
+        visitInOperator(that);
     }
     
-    static boolean involvesUnknownTypes(Tree.OperatorExpression oe) {
-        if (oe instanceof Tree.BinaryOperatorExpression) {
-            return ((Tree.BinaryOperatorExpression) oe).getLeftTerm().getTypeModel().isUnknown() ||
-                    ((Tree.BinaryOperatorExpression) oe).getRightTerm().getTypeModel().isUnknown();
-        }
-        else {
-            return ((Tree.UnaryOperatorExpression) oe).getTerm().getTypeModel().isUnknown();
-        }
-    }
-        
     //Atoms:
     
     private void checkOverloadedReference(Tree.MemberOrTypeExpression that) {
@@ -3705,7 +3684,7 @@ public class ExpressionVisitor extends Visitor {
         ProducedType pt = that.getPrimary().getTypeModel();
         boolean packageQualified = that.getPrimary() instanceof Tree.Package;
         boolean check = packageQualified || 
-                pt!=null && (!dynamic || !pt.getType().isUnknown());
+                pt!=null && !pt.getType().isUnknown();
         if (check && that.getIdentifier()!=null && 
                 !that.getIdentifier().getText().equals("")) {
             TypedDeclaration member;
@@ -3796,7 +3775,15 @@ public class ExpressionVisitor extends Visitor {
             else {*/
                 ProducedType t = ptr.getFullType(wrap(ptr.getType(), receivingType, that));
                 that.setTarget(ptr); //TODO: how do we wrap ptr???
-                that.setTypeModel(t);
+                if (isTypeUnknown(t)) {
+                    if (!dynamic) {
+                        that.addError("could not determine type of method or attribute reference: " +
+                                member.getName(unit)  + " of " + receiverType.getDeclaration().getName(unit));
+                    }
+                }
+                else {
+                    that.setTypeModel(t);
+                }
             //}
         }
     }
@@ -3811,7 +3798,7 @@ public class ExpressionVisitor extends Visitor {
             if (isTypeUnknown(t)) {
                 if (!dynamic) {
                     that.addError("could not determine type of method or attribute reference: " +
-                            name(that.getIdentifier()));
+                            member.getName(unit));
                 }
             }
             else {
@@ -4317,10 +4304,10 @@ public class ExpressionVisitor extends Visitor {
         super.visit(that);
         for (Tree.Expression e: that.getExpressions()) {
             ProducedType et = e.getTypeModel();
-            if (!dynamic || !et.isUnknown()) {
+            if (!et.isUnknown()) {
                 checkAssignable(et, unit.getObjectDeclaration().getType(), e, 
                         "interpolated expression must not be an optional type: " + 
-                                et.getProducedTypeName(unit) + 
+                        et.getProducedTypeName(unit) + 
                         " is not assignable to Object");
             }
         }

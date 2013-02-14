@@ -543,11 +543,12 @@ public class RefinementVisitor extends Visitor {
 
     private void checkRefinedMemberTypeAssignable(ProducedReference refiningMember, ProducedReference refinedMember, 
             Tree.Declaration that, String message) {
-        if(hasUncheckedNullType(refinedMember)){
+        if (hasUncheckedNullType(refinedMember)) {
             ProducedType optionalRefinedType = refiningMember.getDeclaration().getUnit().getOptionalType(refinedMember.getType());
             checkAssignableToOneOf(refiningMember.getType(), refinedMember.getType(), optionalRefinedType, that,
                     message);
-        }else{
+        }
+        else{
             checkAssignable(refiningMember.getType(), refinedMember.getType(), that,
                     message);
         }
@@ -555,11 +556,12 @@ public class RefinementVisitor extends Visitor {
 
     private void checkRefinedMemberTypeExactly(ProducedReference refiningMember, ProducedReference refinedMember, 
             Tree.Declaration that, String message) {
-        if(hasUncheckedNullType(refinedMember)){
+        if (hasUncheckedNullType(refinedMember)) {
             ProducedType optionalRefinedType = refiningMember.getDeclaration().getUnit().getOptionalType(refinedMember.getType());
             checkIsExactlyOneOf(refiningMember.getType(), refinedMember.getType(), optionalRefinedType, that,
                     message);
-        }else{
+        }
+        else{
             checkIsExactly(refiningMember.getType(), refinedMember.getType(), that,
                     message);
         }

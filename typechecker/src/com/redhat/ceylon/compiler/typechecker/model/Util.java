@@ -755,7 +755,7 @@ public class Util {
 
     public static boolean isTypeUnknown(ProducedType type) {
         return type==null || type.getDeclaration()==null ||
-                type.getDeclaration() instanceof UnknownType;
+                type.isUnknown();
     }
 
     public static List<ProducedType> getSignature(Declaration dec) {
