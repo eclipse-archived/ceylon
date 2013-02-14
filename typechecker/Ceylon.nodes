@@ -738,21 +738,21 @@
 ^(THIS:SELF_EXPRESSION)
 ^(SUPER:SELF_EXPRESSION)
 
-"Enumerated elements of a sequence."
+"Enumerated elements of an iterable."
 ^(SEQUENCE_ENUMERATION:ATOM 
     SEQUENCED_ARGUMENT?)
 
-^(TUPLE:ATOM 
+"Enumerated elements of a tuple."
+^(TUPLE:ATOM
     SEQUENCED_ARGUMENT?)
+
+^(DYNAMIC:ATOM
+    NAMED_ARGUMENT_LIST)
 
 "A string template."
 ^(STRING_TEMPLATE:ATOM 
     STRING_LITERAL* 
     EXPRESSION*)
-
-^(LAMBDA:ATOM
-    PARAMETER_LIST
-    BLOCK)
 
 "A program element annotation."
 ^(ANNOTATION:INVOCATION_EXPRESSION)
@@ -765,7 +765,7 @@
     ANONYMOUS_ANNOTATION?
     ANNOTATION*)
 
-"A name."
+"An identifier (the name of a program element)."
 ^(IDENTIFIER)
 
 "A comprehension."

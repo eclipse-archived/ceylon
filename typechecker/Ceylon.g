@@ -1037,7 +1037,7 @@ annotatedAssertionStart
 //that distinguish declarations from
 //expressions
 declarationStart
-    : VALUE_MODIFIER
+    : VALUE_MODIFIER (LIDENTIFIER|UIDENTIFIER) //to disambiguate dynamic objects
     | FUNCTION_MODIFIER (LIDENTIFIER|UIDENTIFIER) //to disambiguate anon functions
     | VOID_MODIFIER (LIDENTIFIER|UIDENTIFIER) //to disambiguate anon functions
     | ASSIGN
@@ -1192,6 +1192,8 @@ base returns [Primary primary]
       { $primary=$enumeration.sequenceEnumeration; }
     | tuple
       { $primary=$tuple.tuple; }
+    | dynamicObject
+      { $primary=$dynamicObject.dynamic; }
     | selfReference
       { $primary=$selfReference.atom; }
     | parExpression
@@ -1336,6 +1338,13 @@ tuple returns [Tuple tuple]
       )?
       RBRACKET
       { $tuple.setEndToken($RBRACKET); }
+    ;
+    
+dynamicObject returns [Dynamic dynamic]
+    : VALUE_MODIFIER
+      { $dynamic = new Dynamic($VALUE_MODIFIER); } 
+      namedArguments
+      { $dynamic.setNamedArgumentList($namedArguments.namedArgumentList); }
     ;
     
 expressions returns [ExpressionList expressionList]

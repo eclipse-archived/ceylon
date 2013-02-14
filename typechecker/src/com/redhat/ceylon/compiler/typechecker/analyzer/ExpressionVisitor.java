@@ -4218,6 +4218,13 @@ public class ExpressionVisitor extends Visitor {
 
     }
     
+    @Override public void visit(Tree.Dynamic that) {
+        super.visit(that);
+        if (!dynamic) {
+            that.addError("dynamic instantiation expression occurs outside dynamic block");
+        }
+    }
+    
     @Override public void visit(Tree.Tuple that) {
         super.visit(that);
         ProducedType tt = null;
