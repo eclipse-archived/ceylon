@@ -12,10 +12,16 @@ import ceylon.language.Sequential;
 import ceylon.language.empty_;
 import ceylon.language.finished_;
 
+import com.redhat.ceylon.cmr.api.ArtifactResult;
+import com.redhat.ceylon.cmr.api.Logger;
+import com.redhat.ceylon.cmr.api.RepositoryManager;
+import com.redhat.ceylon.cmr.api.RepositoryManagerBuilder;
 import com.redhat.ceylon.compiler.java.language.ArraySequence;
 import com.redhat.ceylon.compiler.java.metadata.Ceylon;
 import com.redhat.ceylon.compiler.java.metadata.Class;
 import com.redhat.ceylon.compiler.java.metadata.SatisfiedTypes;
+import com.redhat.ceylon.compiler.typechecker.context.Context;
+import com.redhat.ceylon.compiler.typechecker.io.VFS;
 
 /**
  * Helper class for generated Ceylon code that needs to call implementation logic.
@@ -24,25 +30,54 @@ import com.redhat.ceylon.compiler.java.metadata.SatisfiedTypes;
  */
 public class Util {
     
+    private static RuntimeModuleManager moduleManager;
+    
+    static{
+        resetModuleManager();
+    }
+    
+    public static void loadModule(String name, String version, ArtifactResult result, ClassLoader classLoader){
+        moduleManager.loadModule(name, version, result, classLoader);
+    }
+    
+    public static void resetModuleManager() {
+        RepositoryManagerBuilder builder = new RepositoryManagerBuilder(new Logger(){
+
+            @Override
+            public void error(String str) {
+                System.err.println("ERROR: "+str);
+            }
+
+            @Override
+            public void warning(String str) {
+                System.err.println("WARN: "+str);
+            }
+
+            @Override
+            public void info(String str) {
+                System.err.println("INFO: "+str);
+            }
+
+            @Override
+            public void debug(String str) {
+                System.err.println("DEBUG: "+str);
+            }
+            
+        });
+        RepositoryManager repoManager = builder.buildRepository();
+        VFS vfs = new VFS();
+        Context context = new Context(repoManager, vfs);
+        moduleManager = new RuntimeModuleManager(context);
+        moduleManager.initCoreModules();
+        moduleManager.prepareForTypeChecking();
+    }
+
     public static String declClassName(String name) {
         return name.replace("::", ".");
     }
-    
-    public static boolean isReified(java.lang.Object o, TypeDescriptor type){
-        return o instanceof ReifiedType && ((ReifiedType) o).$is(type);
-    }
 
-    /**
-     * Determines if a Java super type fully reified in instanceType is a subtype of testType
-     * @param instanceType a fully reified Java type 
-     * @param testType a type we want to test
-     * @return true if instanceType is a subtype of testType
-     */
-    public static boolean isReifiedJava(TypeDescriptor instanceType, TypeDescriptor testType){
-        // Here instanceType represents a Java supertype (class or interface) with fully reified type params
-        // which means we can figure out the result via inheritance and reflection
-        // FIXME
-        return false;
+    public static boolean isReified(java.lang.Object o, TypeDescriptor type){
+        return o instanceof ReifiedType && ((ReifiedType) o).$getType().toProducedType(moduleManager).isSubtypeOf(type.toProducedType(moduleManager));
     }
 
     /**
