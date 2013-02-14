@@ -2,7 +2,6 @@ package com.redhat.ceylon.compiler.typechecker.analyzer;
 
 import static com.redhat.ceylon.compiler.typechecker.parser.CeylonLexer.AVERBATIM_STRING;
 import static com.redhat.ceylon.compiler.typechecker.parser.CeylonLexer.STRING_END;
-import static com.redhat.ceylon.compiler.typechecker.parser.CeylonLexer.STRING_LITERAL;
 import static com.redhat.ceylon.compiler.typechecker.parser.CeylonLexer.STRING_MID;
 import static com.redhat.ceylon.compiler.typechecker.parser.CeylonLexer.STRING_START;
 import static com.redhat.ceylon.compiler.typechecker.parser.CeylonLexer.VERBATIM_STRING;
@@ -34,7 +33,7 @@ public class LiteralVisitor extends Visitor {
         int type = that.getToken().getType();
         String text = that.getText();
         StringBuilder result = new StringBuilder();
-        if (type==STRING_START||type==STRING_LITERAL) {
+        if (type!=STRING_MID && type!=STRING_END) {
             indent = getIndentPosition(that);
         }
         boolean allTrimmed = stripIndent(text, indent, result);
@@ -54,7 +53,7 @@ public class LiteralVisitor extends Visitor {
             }
             that.setText(result.substring(1, result.length()-1));
         }
-        if (type==STRING_END||type==STRING_LITERAL) {
+        if (type!=STRING_MID && type!=STRING_END) {
             indent = 0;
         }
     }
