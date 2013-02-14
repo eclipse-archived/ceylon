@@ -167,14 +167,18 @@ public class InvocationGenerator {
     }
 
     void nativeObject(NamedArgumentList argList) {
-        gen.out("{");
-        boolean first = true;
-        for (NamedArgument arg : argList.getNamedArguments()) {
-            if (first) { first = false; } else { gen.out(","); }
-            gen.out(arg.getIdentifier().getText(), ":");
-            arg.visit(gen);
+        if (argList.getSequencedArgument() == null) {
+            gen.out("{");
+            boolean first = true;
+            for (NamedArgument arg : argList.getNamedArguments()) {
+                if (first) { first = false; } else { gen.out(","); }
+                gen.out(arg.getIdentifier().getText(), ":");
+                arg.visit(gen);
+            }
+            gen.out("}");
+        } else {
+            nativeArray(argList.getSequencedArgument().getPositionalArguments());
         }
-        gen.out("}");
     }
 
     void nativeArray(List<PositionalArgument> argList) {

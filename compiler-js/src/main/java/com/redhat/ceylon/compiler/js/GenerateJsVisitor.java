@@ -1813,38 +1813,30 @@ public class GenerateJsVisitor extends Visitor
         }
     }
 
+    public void visit(Dynamic that) {
+        invoker.nativeObject(that.getNamedArgumentList());
+    }
+
     @Override
     public void visit(InvocationExpression that) {
         if (that.getNamedArgumentList()!=null) {
             NamedArgumentList argList = that.getNamedArgumentList();
-            if (dynblock > 0 && TypeUtils.isUnknown(that.getPrimary().getTypeModel())
-                    && that.getPrimary() instanceof StaticMemberOrTypeExpression
-                    && "new".equals(((StaticMemberOrTypeExpression)that.getPrimary()).getIdentifier().getText())) {
-                invoker.nativeObject(argList);
-            } else {
-                out("(");
-                Map<String, String> argVarNames = invoker.defineNamedArguments(argList);
-                that.getPrimary().visit(this);
-                TypeArguments targs = that.getPrimary() instanceof BaseMemberOrTypeExpression ?
-                        ((BaseMemberOrTypeExpression)that.getPrimary()).getTypeArguments() : null;
-                if (that.getPrimary() instanceof MemberOrTypeExpression) {
-                    MemberOrTypeExpression mte = (MemberOrTypeExpression) that.getPrimary();
-                    if (mte.getDeclaration() instanceof Functional) {
-                        Functional f = (Functional) mte.getDeclaration();
-                        invoker.applyNamedArguments(argList, f, argVarNames, getSuperMemberScope(mte)!=null, targs);
-                    }
+            out("(");
+            Map<String, String> argVarNames = invoker.defineNamedArguments(argList);
+            that.getPrimary().visit(this);
+            TypeArguments targs = that.getPrimary() instanceof BaseMemberOrTypeExpression ?
+                    ((BaseMemberOrTypeExpression)that.getPrimary()).getTypeArguments() : null;
+            if (that.getPrimary() instanceof MemberOrTypeExpression) {
+                MemberOrTypeExpression mte = (MemberOrTypeExpression) that.getPrimary();
+                if (mte.getDeclaration() instanceof Functional) {
+                    Functional f = (Functional) mte.getDeclaration();
+                    invoker.applyNamedArguments(argList, f, argVarNames, getSuperMemberScope(mte)!=null, targs);
                 }
-                out(")");
             }
+            out(")");
         }
         else {
             PositionalArgumentList argList = that.getPositionalArgumentList();
-            if (dynblock > 0 && TypeUtils.isUnknown(that.getPrimary().getTypeModel())
-                    && that.getPrimary() instanceof StaticMemberOrTypeExpression
-                    && "new".equals(((StaticMemberOrTypeExpression)that.getPrimary()).getIdentifier().getText())) {
-                invoker.nativeArray(argList.getPositionalArguments());
-                return;
-            }
             that.getPrimary().visit(this);
             if (prototypeStyle && (getSuperMemberScope(that.getPrimary()) != null)) {
                 out(".call(this");
