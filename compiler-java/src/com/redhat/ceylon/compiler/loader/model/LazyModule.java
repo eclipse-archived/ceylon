@@ -43,7 +43,7 @@ import com.redhat.ceylon.compiler.typechecker.model.Package;
 public abstract class LazyModule extends Module {
 
     private boolean isJava = false;
-    private Set<String> jarPackages = new HashSet<String>();
+    protected Set<String> jarPackages = new HashSet<String>();
 
     public LazyModule() {
     }
