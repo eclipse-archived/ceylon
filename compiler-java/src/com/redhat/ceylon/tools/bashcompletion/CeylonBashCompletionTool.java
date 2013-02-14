@@ -44,11 +44,11 @@ import com.redhat.ceylon.tools.CeylonTool;
 value="A tool which provides completion suggestions for the Bash shell.")
 @Description("The `<arguments>` are the elements of the `${COMP_WORDS}` bash array variable.\n" +
 		"\n" +
-		"The tool inspects the <arguments> and writes it completions to standard output." +
+		"The tool inspects the `<arguments>` and writes its completions to standard output." +
 		"Currently the tool can complete\n" +
 		"\n" +
 		"* tool names (except tools names which are arguments to another tool),\n" +
-		"* long option names," +
+		"* long option names,\n" +
 		"* long option values **if** the setter type is a `java.lang.File` or a subclass" +
 		"  of `java.lang.Enum`.")
 public class CeylonBashCompletionTool implements Tool {
