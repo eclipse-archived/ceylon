@@ -59,6 +59,7 @@ public class ArraySequence<Element> implements Sequence<Element>, ReifiedType {
 
     protected final Element[] array;
     protected final long first;
+    @Ignore
     private TypeDescriptor $reifiedElement;
 
     public ArraySequence(@Ignore TypeDescriptor $reifiedElement, Element... array) {

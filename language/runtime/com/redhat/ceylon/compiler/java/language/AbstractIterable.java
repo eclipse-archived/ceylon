@@ -43,7 +43,9 @@ public abstract class AbstractIterable<Element,Absent> implements Iterable<Eleme
     protected final ceylon.language.Container$impl<Element,Absent> $ceylon$language$Container$this;
     @Ignore
     protected final ceylon.language.Category$impl $ceylon$language$Category$this;
+    @Ignore
     private TypeDescriptor $reifiedElement;
+    @Ignore
     private TypeDescriptor $reifiedAbsent;
 
     public AbstractIterable(TypeDescriptor $reifiedElement, TypeDescriptor $reifiedAbsent) {

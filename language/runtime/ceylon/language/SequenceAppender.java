@@ -17,6 +17,7 @@ import com.redhat.ceylon.compiler.java.metadata.TypeParameters;
 @TypeParameters(@TypeParameter(value = "Element"))
 public class SequenceAppender<Element> extends SequenceBuilder<Element> {
     
+    @Ignore
     private TypeDescriptor $reifiedElement;
 
     public SequenceAppender(@Ignore TypeDescriptor $reifiedElement, 

@@ -42,7 +42,9 @@ public class ArrayIterable<Element,Absent> implements Iterable<Element,Absent>, 
     protected final Element[] array;
     protected final Iterable<? extends Element, ? extends java.lang.Object> rest;
     protected final long first;
+    @Ignore
     private TypeDescriptor $reifiedElement;
+    @Ignore
     private TypeDescriptor $reifiedAbsent;
 
     public ArrayIterable(TypeDescriptor $reifiedElement, TypeDescriptor $reifiedAbsent, 

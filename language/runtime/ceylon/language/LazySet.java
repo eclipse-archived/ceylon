@@ -36,6 +36,7 @@ public class LazySet<Element> implements Set<Element>, ReifiedType {
     protected final ceylon.language.Cloneable$impl $ceylon$language$Cloneable$this;
 
     private final Iterable<? extends Element, ? extends java.lang.Object> elems;
+    @Ignore
     private TypeDescriptor $reifiedElement;
 
     @Ignore @SuppressWarnings("unchecked")

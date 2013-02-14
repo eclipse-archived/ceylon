@@ -20,6 +20,7 @@ import com.redhat.ceylon.compiler.java.metadata.TypeParameters;
 public class SequenceBuilder<Element> implements ReifiedType {
 
     java.util.List<Element> list;
+    @Ignore
     private TypeDescriptor $reifiedElement;
     
     public SequenceBuilder(@Ignore TypeDescriptor $reifiedElement) {

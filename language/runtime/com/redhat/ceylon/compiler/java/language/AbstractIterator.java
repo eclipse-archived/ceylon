@@ -10,6 +10,7 @@ import ceylon.language.Iterator$impl;
 
 public abstract class AbstractIterator<Element> implements Iterator<Element>, ReifiedType {
     
+    @Ignore
     private TypeDescriptor $reifiedElement;
 
     public AbstractIterator(TypeDescriptor $reifiedElement) {

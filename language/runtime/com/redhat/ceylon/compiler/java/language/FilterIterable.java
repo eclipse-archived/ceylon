@@ -35,7 +35,9 @@ public class FilterIterable<Element,Absent> implements Iterable<Element,Absent>,
     
     final Iterable<? extends Element, ? extends java.lang.Object> iterable;
     final Callable<? extends Boolean> f;
+    @Ignore
     private TypeDescriptor $reifiedElement;
+    @Ignore
     private TypeDescriptor $reifiedAbsent;
     
     public FilterIterable(@Ignore TypeDescriptor $reifiedElement, @Ignore TypeDescriptor $reifiedAbsent,

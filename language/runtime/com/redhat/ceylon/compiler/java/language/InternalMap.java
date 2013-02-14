@@ -52,8 +52,10 @@ public class InternalMap<Key, Item> implements Map<Key, Item>, ReifiedType {
     private final ceylon.language.Collection$impl<Entry<? extends Key,? extends Item>> $ceylon$language$Collection$this;
     private final ceylon.language.Cloneable$impl $ceylon$language$Cloneable$this;
 
+    @Ignore
     private TypeDescriptor $reifiedItem;
 
+    @Ignore
     private TypeDescriptor $reifiedKey;
 
     public InternalMap(@Ignore TypeDescriptor $reifiedKey, @Ignore TypeDescriptor $reifiedItem,

@@ -47,9 +47,10 @@ public final class Array<Element> implements List<Element>, ReifiedType {
 
     private final java.lang.Object array;
     
+    @Ignore
     private TypeDescriptor $reifiedElement;
 
-    private Array(TypeDescriptor $reifiedElement, java.lang.Object array) {
+    private Array(@Ignore TypeDescriptor $reifiedElement, java.lang.Object array) {
         assert(array.getClass().isArray());
         this.$ceylon$language$Category$this = new ceylon.language.Category$impl(this);
         this.$ceylon$language$Container$this = new ceylon.language.Container$impl<Element,java.lang.Object>($reifiedElement, Null.$TypeDescriptor, this);

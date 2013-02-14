@@ -35,7 +35,9 @@ public class MapIterable<Element, Result> implements Iterable<Result,java.lang.O
     
     final Iterable<? extends Element, ? extends java.lang.Object> iterable;
     final Callable<? extends Result> sel;
+    @Ignore
     private TypeDescriptor $reifiedResult;
+    @Ignore
     private TypeDescriptor $reifiedElement;
     
     public MapIterable(@Ignore TypeDescriptor $reifiedElement, @Ignore TypeDescriptor $reifiedResult,
