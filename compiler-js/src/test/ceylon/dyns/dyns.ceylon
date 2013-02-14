@@ -21,7 +21,10 @@ void nogo() {
         Boolean lt = d.age<10 || d.age>5 || d.age<=100 || d.age>=500;
         if (d.something == 5 || d.other != 10) {}
         d.name = null;
-    value n = new { x=3; y="hello"; };
-    value n2 = new (3, "hello");
+        value n = new { x=3; y="hello"; };
+        value n2 = new (3, "hello");
+        function f(value z) => z else x;
+        f(1);
+        f{z="z";};
     }
 }
