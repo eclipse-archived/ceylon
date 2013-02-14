@@ -10,11 +10,11 @@
 	<classpathentry kind="lib" path="lib/ant-1.8.2.jar"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/ceylon-spec"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
-	<classpathentry combineaccessrules="false" kind="src" path="/ceylon.language"/>
 	<classpathentry kind="lib" path="lib/antlr-3.4-complete.jar"/>
 	<classpathentry kind="src" path="/ceylon-module-resolver"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/ceylon-common"/>
 	<classpathentry kind="lib" path="lib/markdownpapers-core-1.2.7.jar"/>
 	<classpathentry kind="lib" path="lib/txtmark-0.8-c0dcd373ce.jar"/>
+	<classpathentry kind="lib" path="/ceylon.language/ide-dist/ceylon.language-0.5.car" sourcepath="/ceylon.language"/>
 	<classpathentry kind="output" path="build/classes"/>
 </classpath>
