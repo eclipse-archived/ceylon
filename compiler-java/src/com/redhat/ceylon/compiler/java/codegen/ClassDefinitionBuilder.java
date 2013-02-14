@@ -40,7 +40,6 @@ import com.redhat.ceylon.compiler.typechecker.tree.Tree;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.ClassOrInterface;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.TypeParameterDeclaration;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.TypeParameterList;
-import com.sun.tools.javac.code.TypeTags;
 import com.sun.tools.javac.tree.JCTree;
 import com.sun.tools.javac.tree.JCTree.JCAnnotation;
 import com.sun.tools.javac.tree.JCTree.JCExpression;
@@ -612,7 +611,12 @@ public class ClassDefinitionBuilder {
         long flags = PRIVATE;
         if(!isCompanion)
             flags |= FINAL;
-        JCVariableDecl localVar = gen.make().VarDef(gen.make().Modifiers(flags), gen.names().fromString(descriptorName), 
+        List<JCAnnotation> annotations;
+        if(!isCompanion)
+            annotations = gen.makeAtIgnore();
+        else
+            annotations = List.nil();
+        JCVariableDecl localVar = gen.make().VarDef(gen.make().Modifiers(flags, annotations), gen.names().fromString(descriptorName), 
                 gen.makeTypeDescriptorType(), null);
         defs(localVar);
         init(gen.make().Exec(gen.make().Assign(
