@@ -442,7 +442,8 @@ public final class Array<Element> implements List<Element>, ReifiedType {
             }
 
             @Override
-            public boolean $is(TypeDescriptor type) {
+            @Ignore
+            public TypeDescriptor $getType() {
                 // FIXME: implement me
                 throw new RuntimeException("Not implemented");
             }
@@ -888,7 +889,8 @@ public final class Array<Element> implements List<Element>, ReifiedType {
     }
 
     @Override
-    public boolean $is(TypeDescriptor type) {
+    @Ignore
+    public TypeDescriptor $getType() {
         // FIXME: implement me
         throw new RuntimeException("Not implemented");
     }

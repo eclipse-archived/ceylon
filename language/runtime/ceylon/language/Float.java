@@ -434,4 +434,11 @@ public final class Float
         // FIXME Is this correct?
         return (CastValue)instance(value);
     }
+
+    @Override
+    @Ignore
+    public TypeDescriptor $getType() {
+        // FIXME: implement me
+        throw new RuntimeException("Not implemented");
+    }
 }

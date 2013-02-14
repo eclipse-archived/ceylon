@@ -693,4 +693,11 @@ public final class Integer
         long mask = 1 << index;
         return value ^ mask;
     }
+
+    @Ignore
+    @Override
+    public TypeDescriptor $getType() {
+        // FIXME: implement me
+        throw new RuntimeException("Not implemented");
+    }
 }

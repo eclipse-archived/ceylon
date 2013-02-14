@@ -544,7 +544,8 @@ public class ArraySequence<Element> implements Sequence<Element>, ReifiedType {
     }
 
     @Override
-    public boolean $is(TypeDescriptor type) {
+    @Ignore
+    public TypeDescriptor $getType() {
         // FIXME: implement me
         throw new RuntimeException("Not implemented");
     }

@@ -85,7 +85,8 @@ public class MapIterable<Element, Result> implements Iterable<Result,java.lang.O
             return elem;
         }
         @Override
-        public boolean $is(TypeDescriptor type) {
+        @Ignore
+        public TypeDescriptor $getType() {
             // FIXME: implement me
             throw new RuntimeException("Not implemented");
         }
@@ -229,7 +230,8 @@ public class MapIterable<Element, Result> implements Iterable<Result,java.lang.O
 //        return $ceylon$language$Category$this.containsAny$elements();
 //    }
     @Override
-    public boolean $is(TypeDescriptor type) {
+    @Ignore
+    public TypeDescriptor $getType() {
         // FIXME: implement me
         throw new RuntimeException("Not implemented");
     }

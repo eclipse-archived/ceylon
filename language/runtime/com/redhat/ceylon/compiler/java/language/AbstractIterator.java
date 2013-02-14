@@ -26,7 +26,8 @@ public abstract class AbstractIterator<Element> implements Iterator<Element>, Re
     }
 
     @Override
-    public boolean $is(TypeDescriptor type) {
+    @Ignore
+    public TypeDescriptor $getType() {
         // FIXME: implement me
         throw new RuntimeException("Not implemented");
     }

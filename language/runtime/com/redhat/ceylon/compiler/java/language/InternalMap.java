@@ -214,7 +214,8 @@ public class InternalMap<Key, Item> implements Map<Key, Item>, ReifiedType {
                 return ceylon.language.finished_.getFinished$();
             }
             @Override
-            public boolean $is(TypeDescriptor type) {
+            @Ignore
+            public TypeDescriptor $getType() {
                 // FIXME: implement me
                 throw new RuntimeException("Not implemented");
             }
@@ -472,7 +473,8 @@ public class InternalMap<Key, Item> implements Map<Key, Item>, ReifiedType {
     }
 
     @Override
-    public boolean $is(TypeDescriptor type) {
+    @Ignore
+    public TypeDescriptor $getType() {
         // FIXME: implement me
         throw new RuntimeException("Not implemented");
     }

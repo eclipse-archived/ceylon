@@ -183,7 +183,8 @@ public class ArrayIterable<Element,Absent> implements Iterable<Element,Absent>, 
         }
 
         @Override
-        public boolean $is(TypeDescriptor type) {
+        @Ignore
+        public TypeDescriptor $getType() {
             // FIXME: implement me
             throw new RuntimeException("Not implemented");
         }
@@ -369,7 +370,8 @@ public class ArrayIterable<Element,Absent> implements Iterable<Element,Absent>, 
 //        return $ceylon$language$Category$this.containsAny$elements();
 //    }
     @Override
-    public boolean $is(TypeDescriptor type) {
+    @Ignore
+    public TypeDescriptor $getType() {
         // FIXME: implement me
         throw new RuntimeException("Not implemented");
     }

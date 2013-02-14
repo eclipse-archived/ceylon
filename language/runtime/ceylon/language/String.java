@@ -474,7 +474,8 @@ public class String
             }
 
             @Override
-            public boolean $is(TypeDescriptor type) {
+            @Ignore
+            public TypeDescriptor $getType() {
                 // FIXME: implement me
                 throw new RuntimeException("Not implemented");
             }
@@ -1481,7 +1482,8 @@ public class String
                 protected abstract boolean peekSeparator();
 
                 @Override
-                public boolean $is(TypeDescriptor type) {
+                @Ignore
+                public TypeDescriptor $getType() {
                     // FIXME: implement me
                     throw new RuntimeException("Not implemented");
                 }
@@ -1682,7 +1684,8 @@ public class String
 //            return $ceylon$language$Category$this.containsAny$elements();
 //        }
         @Override
-        public boolean $is(TypeDescriptor type) {
+        @Ignore
+        public TypeDescriptor $getType() {
             // FIXME: implement me
             throw new RuntimeException("Not implemented");
         }
@@ -1742,7 +1745,8 @@ public class String
                 }
 
                 @Override
-                public boolean $is(TypeDescriptor type) {
+                @Ignore
+                public TypeDescriptor $getType() {
                     // FIXME: implement me
                     throw new RuntimeException("Not implemented");
                 }
@@ -1897,14 +1901,16 @@ public class String
 //            return $ceylon$language$Category$this.containsAny$elements();
 //        }
         @Override
-        public boolean $is(TypeDescriptor type) {
+        @Ignore
+        public TypeDescriptor $getType() {
             // FIXME: implement me
             throw new RuntimeException("Not implemented");
         }
     }
 
     @Override
-    public boolean $is(TypeDescriptor type) {
+    @Ignore
+    public TypeDescriptor $getType() {
         // FIXME: implement me
         throw new RuntimeException("Not implemented");
     }
