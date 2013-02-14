@@ -48,6 +48,11 @@ import junit.framework.Assert;
 
 import org.junit.Before;
 
+import com.redhat.ceylon.cmr.api.ArtifactResult;
+import com.redhat.ceylon.cmr.api.ArtifactResultType;
+import com.redhat.ceylon.cmr.api.ImportType;
+import com.redhat.ceylon.cmr.api.RepositoryException;
+import com.redhat.ceylon.cmr.api.VisibilityType;
 import com.redhat.ceylon.compiler.java.codegen.AbstractTransformer;
 import com.redhat.ceylon.compiler.java.codegen.JavaPositionsRetriever;
 import com.redhat.ceylon.compiler.java.tools.CeyloncFileManager;
@@ -55,6 +60,8 @@ import com.redhat.ceylon.compiler.java.tools.CeyloncTaskImpl;
 import com.redhat.ceylon.compiler.java.tools.CeyloncTool;
 import com.redhat.ceylon.compiler.java.util.RepositoryLister;
 import com.redhat.ceylon.compiler.java.util.Util;
+import com.redhat.ceylon.compiler.typechecker.TypeChecker;
+import com.redhat.ceylon.compiler.typechecker.model.Module;
 import com.sun.source.util.TaskEvent;
 import com.sun.source.util.TaskEvent.Kind;
 import com.sun.source.util.TaskListener;
@@ -378,6 +385,52 @@ public abstract class CompilerTest {
             this.file = getModuleArchive(module,version);
         }
     }
+    
+    private static ArtifactResult makeArtifactResult(final File file) {
+        return new ArtifactResult() {
+            
+            @Override
+            public VisibilityType visibilityType() {
+                // TODO Auto-generated method stub
+                return null;
+            }
+            
+            @Override
+            public String version() {
+                // TODO Auto-generated method stub
+                return null;
+            }
+            
+            @Override
+            public ArtifactResultType type() {
+                // TODO Auto-generated method stub
+                return null;
+            }
+            
+            @Override
+            public String name() {
+                // TODO Auto-generated method stub
+                return null;
+            }
+            
+            @Override
+            public ImportType importType() {
+                // TODO Auto-generated method stub
+                return null;
+            }
+            
+            @Override
+            public List<ArtifactResult> dependencies() throws RepositoryException {
+                // TODO Auto-generated method stub
+                return null;
+            }
+            
+            @Override
+            public File artifact() throws RepositoryException {
+                return file;
+            }
+        };
+    }
 
     protected void run(String main, ModuleWithArtifact... modules) {
         try{
@@ -393,6 +446,12 @@ public abstract class CompilerTest {
             }
             System.err.println("Running " + main +" with classpath" + urls);
             NonCachingURLClassLoader loader = new NonCachingURLClassLoader(urls.toArray(new URL[urls.size()]));
+            // set up the runtime module system
+            com.redhat.ceylon.compiler.java.Util.resetModuleManager();
+            com.redhat.ceylon.compiler.java.Util.loadModule("ceylon.language", TypeChecker.LANGUAGE_MODULE_VERSION, makeArtifactResult(new File("../ceylon.language/ide-dist/ceylon.language-0.5.car")), loader);
+            for (ModuleWithArtifact module : modules) {
+                com.redhat.ceylon.compiler.java.Util.loadModule(module.module, module.version, makeArtifactResult(module.file), loader);
+            }
             String mainClass = main;
             String mainMethod = main.replaceAll("^.*\\.", "");
             if (Util.isInitialLowerCase(mainMethod)) {
