@@ -3,7 +3,7 @@ package com.redhat.ceylon.compiler.java;
 
 public class TypeDescriptor {
 
-    public static final TypeDescriptor[] NO_TYPES = new TypeDescriptor[0];
+public abstract class TypeDescriptor {
 
     public static final TypeDescriptor BottomType = new Bottom();
     
