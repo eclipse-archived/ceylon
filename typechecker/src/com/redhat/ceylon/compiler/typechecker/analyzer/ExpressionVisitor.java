@@ -540,7 +540,9 @@ public class ExpressionVisitor extends Visitor {
         /*if (t==null) {
             n.addError("expression must be of optional type: type not known");
         }
-        else*/ if (t!=null && !t.isUnknown() && !unit.isOptionalType(t)) {
+        else*/ 
+        if (t!=null && !t.isUnknown() && !unit.isOptionalType(t) && 
+                !hasUncheckedNulls(term)) {
             term.addError("expression must be of optional type: " +
                     t.getProducedTypeName(unit) + " is not optional");
         }
