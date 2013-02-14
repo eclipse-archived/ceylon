@@ -34,6 +34,7 @@ import com.redhat.ceylon.common.tool.Option;
 import com.redhat.ceylon.common.tool.OptionArgument;
 import com.redhat.ceylon.common.tool.Tool;
 import com.redhat.ceylon.common.tool.Summary;
+import com.redhat.ceylon.tools.ModuleSpec;
 
 @Summary("Imports a jar file into a Ceylon module repository")
 @Description("Imports the given `<jar-file>` using the module name and version " +
@@ -46,8 +47,7 @@ import com.redhat.ceylon.common.tool.Summary;
 		"`<jar-file>` is the name of the Jar file to import.")
 public class CeylonImportJarTool implements Tool {
 
-    private String module;
-    private String version;
+    private ModuleSpec module;
     private String out;
     private String user;
     private String pass;
@@ -59,7 +59,7 @@ public class CeylonImportJarTool implements Tool {
     }
     
     CeylonImportJarTool(String moduleSpec, String out, String user, String pass, String jarFile, boolean verbose){
-        parseModuleSpec(moduleSpec);
+        setModuleSpec(moduleSpec);
         this.out = out;
         this.user = user;
         this.pass = pass;
@@ -108,9 +108,15 @@ public class CeylonImportJarTool implements Tool {
     
     @Argument(argumentName="module", multiplicity="1", order=0)
     public void setModuleSpec(String module) {
-        parseModuleSpec(module);
+        setModuleSpec(ModuleSpec.parse(module, 
+                ModuleSpec.Option.VERSION_REQUIRED, 
+                ModuleSpec.Option.DEFAULT_MODULE_PROHIBITED));
     }
     
+    public void setModuleSpec(ModuleSpec module) {
+        this.module = module;
+    }
+
     @Argument(argumentName="jar-file", multiplicity="1", order=1)
     public void setFile(String jarFile) {
         this.jarFile = jarFile;
@@ -130,25 +136,6 @@ public class CeylonImportJarTool implements Tool {
         if(!f.getName().toLowerCase().endsWith(".jar"))
             throw new ImportJarException("error.jarFile.notJar");
     }
-
-    private void parseModuleSpec(String moduleSpec) {
-        if(moduleSpec == null || moduleSpec.isEmpty())
-            throw new ImportJarException("error.moduleSpec.empty");
-        int sep = moduleSpec.indexOf("/");
-        if(sep != -1){
-            this.module = moduleSpec.substring(0, sep);
-            if(this.module.isEmpty())
-                throw new ImportJarException("error.moduleSpec.noName");
-            this.version = moduleSpec.substring(sep+1);
-            if(this.version.isEmpty())
-                throw new ImportJarException("error.moduleSpec.noVersion");
-        }else{
-            if(!"default".equals(moduleSpec))
-                throw new ImportJarException("error.moduleSpec.missingVersion");
-            this.module = moduleSpec;
-            this.version = null;
-        }
-    }
     
     public void publish() {
         RepositoryManager outputRepository = CeylonUtils.repoManager()
@@ -158,7 +145,7 @@ public class CeylonImportJarTool implements Tool {
                 .password(pass)
                 .buildOutputManager();
 
-        ArtifactContext context = new ArtifactContext(module, version, ArtifactContext.JAR);
+        ArtifactContext context = new ArtifactContext(module.getName(), module.getVersion(), ArtifactContext.JAR);
         context.setForceOperation(true);
         try{
             outputRepository.putArtifact(context, new File(jarFile));
