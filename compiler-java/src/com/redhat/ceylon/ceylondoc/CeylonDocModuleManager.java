@@ -38,6 +38,7 @@ import com.redhat.ceylon.compiler.typechecker.context.Context;
 import com.redhat.ceylon.compiler.typechecker.model.Module;
 import com.redhat.ceylon.compiler.typechecker.model.Modules;
 import com.redhat.ceylon.compiler.typechecker.model.Package;
+import com.redhat.ceylon.tools.ModuleSpec;
 
 public class CeylonDocModuleManager extends ReflectionModuleManager {
 
@@ -55,7 +56,7 @@ public class CeylonDocModuleManager extends ReflectionModuleManager {
     @Override
     protected boolean isModuleLoadedFromSource(String moduleName) {
         for(ModuleSpec spec : modulesSpecs){
-            if(spec.name.equals(moduleName))
+            if(spec.getName().equals(moduleName))
                 return true;
         }
         return false;

@@ -82,6 +82,7 @@ import com.redhat.ceylon.compiler.typechecker.tree.Tree.CompilationUnit;
 import com.redhat.ceylon.compiler.typechecker.tree.Visitor;
 import com.redhat.ceylon.compiler.typechecker.tree.Walker;
 import com.redhat.ceylon.compiler.typechecker.util.ModuleManagerFactory;
+import com.redhat.ceylon.tools.ModuleSpec;
 
 @Summary("Generates Ceylon API documentation from Ceylon source files")
 @Description("The default module repositories are `modules` and " +
@@ -255,7 +256,7 @@ public class CeylonDocTool implements Tool {
         builder.setRepositoryManager(repository);
         
         // we need to plug in the module manager which can load from .cars
-        final List<ModuleSpec> modules = ModuleSpec.parse(moduleSpecs);
+        final List<ModuleSpec> modules = ModuleSpec.parseEachList(moduleSpecs);
         builder.moduleManagerFactory(new ModuleManagerFactory(){
             @Override
             public ModuleManager createModuleManager(Context context) {
@@ -266,7 +267,7 @@ public class CeylonDocTool implements Tool {
         // only parse what we asked for
         List<String> moduleFilters = new LinkedList<String>();
         for(ModuleSpec spec : modules){
-            moduleFilters.add(spec.name);
+            moduleFilters.add(spec.getName());
         }
         builder.setModuleFilters(moduleFilters);
         
@@ -310,17 +311,17 @@ public class CeylonDocTool implements Tool {
         for(ModuleSpec moduleSpec : moduleSpecs){
             Module foundModule = null;
             for(Module module : modules.getListOfModules()){
-                if(module.getNameAsString().equals(moduleSpec.name)){
-                    if(moduleSpec.version == null || moduleSpec.version.equals(module.getVersion()))
+                if(module.getNameAsString().equals(moduleSpec.getName())){
+                    if(!moduleSpec.isVersioned() || moduleSpec.getVersion().equals(module.getVersion()))
                         foundModule = module;
                 }
             }
             if(foundModule != null)
                 documentedModules.add(foundModule);
-            else if(moduleSpec.version != null)
-                throw new RuntimeException(CeylondMessages.msg("error.cantFindModule", moduleSpec.name, moduleSpec.version));
+            else if(moduleSpec.isVersioned())
+                throw new RuntimeException(CeylondMessages.msg("error.cantFindModule", moduleSpec.getName(), moduleSpec.getVersion()));
             else
-                throw new RuntimeException(CeylondMessages.msg("error.cantFindModuleNoVersion", moduleSpec.name));
+                throw new RuntimeException(CeylondMessages.msg("error.cantFindModuleNoVersion", moduleSpec.getName()));
         }
         return documentedModules;
     }
