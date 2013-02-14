@@ -1,5 +1,6 @@
 package ceylon.language;
 
+import com.redhat.ceylon.compiler.java.ReifiedType;
 import com.redhat.ceylon.compiler.java.TypeDescriptor;
 import com.redhat.ceylon.compiler.java.Util;
 import com.redhat.ceylon.compiler.java.metadata.Ceylon;
@@ -23,7 +24,7 @@ import com.redhat.ceylon.compiler.java.metadata.ValueType;
 public final class Integer
     implements Scalar<Integer>, Integral<Integer>,
                Binary<Integer>,
-               Exponentiable<Integer,Integer> {
+               Exponentiable<Integer,Integer>, ReifiedType {
 
     @Ignore
     public final static TypeDescriptor $TypeDescriptor = TypeDescriptor.klass(Integer.class);

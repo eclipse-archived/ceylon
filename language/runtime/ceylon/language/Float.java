@@ -1,5 +1,6 @@
 package ceylon.language;
 
+import com.redhat.ceylon.compiler.java.ReifiedType;
 import com.redhat.ceylon.compiler.java.TypeDescriptor;
 import com.redhat.ceylon.compiler.java.Util;
 import com.redhat.ceylon.compiler.java.metadata.Ceylon;
@@ -18,7 +19,7 @@ import com.redhat.ceylon.compiler.java.metadata.ValueType;
 })
 @ValueType
 public final class Float
-    implements Scalar<Float>, Exponentiable<Float,Float> {
+    implements Scalar<Float>, Exponentiable<Float,Float>, ReifiedType {
     
     @Ignore
     public final static TypeDescriptor $TypeDescriptor = TypeDescriptor.klass(Float.class);
