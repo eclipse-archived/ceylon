@@ -197,29 +197,4 @@ public abstract class TypeDescriptor {
             throw new IllegalArgumentException("members can't be null or empty");
         return new Intersection(members);
     }
-
-    public static boolean isObject(Object type1, Object type2) {
-        if(type1 instanceof java.lang.Class){
-            if(type2 instanceof java.lang.Class){
-                return type1 == type2;
-            }else if(type2 instanceof TypeDescriptor.Class){
-                TypeDescriptor.Class t2 = (TypeDescriptor.Class) type2;
-                if(t2.typeArguments.length > 0)
-                    return false;
-                return type1 == t2.klass;
-            }else
-                return false;
-        }
-
-        if(type2 instanceof java.lang.Class){
-            if(type1 instanceof TypeDescriptor.Class){
-                TypeDescriptor.Class t1 = (TypeDescriptor.Class) type1;
-                if(t1.typeArguments.length > 0)
-                    return false;
-                return type2 == t1.klass;
-            }else
-                return false;
-        }
-        return type1.equals(type2);
-    }
 }
