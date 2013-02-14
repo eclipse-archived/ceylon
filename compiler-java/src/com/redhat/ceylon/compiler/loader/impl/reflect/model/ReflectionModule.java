@@ -20,8 +20,11 @@
 
 package com.redhat.ceylon.compiler.loader.impl.reflect.model;
 
+import java.util.List;
+
 import com.redhat.ceylon.compiler.loader.AbstractModelLoader;
 import com.redhat.ceylon.compiler.loader.model.LazyModule;
+import com.redhat.ceylon.compiler.typechecker.model.Package;
 
 public class ReflectionModule extends LazyModule {
 

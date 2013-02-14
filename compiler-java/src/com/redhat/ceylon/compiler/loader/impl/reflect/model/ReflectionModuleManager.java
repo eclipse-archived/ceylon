@@ -24,7 +24,6 @@ import java.util.List;
 
 import com.redhat.ceylon.compiler.java.util.Util;
 import com.redhat.ceylon.compiler.loader.AbstractModelLoader;
-import com.redhat.ceylon.compiler.loader.impl.reflect.ReflectionModelLoader;
 import com.redhat.ceylon.compiler.loader.model.LazyModule;
 import com.redhat.ceylon.compiler.loader.model.LazyModuleManager;
 import com.redhat.ceylon.compiler.typechecker.TypeChecker;
@@ -32,7 +31,7 @@ import com.redhat.ceylon.compiler.typechecker.context.Context;
 import com.redhat.ceylon.compiler.typechecker.model.Module;
 import com.redhat.ceylon.compiler.typechecker.model.Modules;
 
-public class ReflectionModuleManager extends LazyModuleManager {
+public abstract class ReflectionModuleManager extends LazyModuleManager {
 
     private AbstractModelLoader modelLoader;
 
@@ -60,9 +59,7 @@ public class ReflectionModuleManager extends LazyModuleManager {
         return modelLoader;
     }
 
-    protected AbstractModelLoader createModelLoader(Modules modules) {
-        return new ReflectionModelLoader(this, modules);
-    }
+    protected abstract AbstractModelLoader createModelLoader(Modules modules);
 
     @Override
     protected Module createModule(List<String> moduleName, String version) {

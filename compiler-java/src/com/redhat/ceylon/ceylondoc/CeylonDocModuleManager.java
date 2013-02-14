@@ -25,10 +25,8 @@ import java.util.List;
 import com.redhat.ceylon.cmr.api.ArtifactContext;
 import com.redhat.ceylon.cmr.api.ArtifactResult;
 import com.redhat.ceylon.cmr.api.Logger;
-import com.redhat.ceylon.cmr.api.RepositoryManager;
 import com.redhat.ceylon.compiler.java.util.Util;
 import com.redhat.ceylon.compiler.loader.AbstractModelLoader;
-import com.redhat.ceylon.compiler.loader.impl.reflect.ReflectionModelLoader;
 import com.redhat.ceylon.compiler.loader.impl.reflect.model.ReflectionModule;
 import com.redhat.ceylon.compiler.loader.impl.reflect.model.ReflectionModuleManager;
 import com.redhat.ceylon.compiler.loader.mirror.ClassMirror;
@@ -64,7 +62,7 @@ public class CeylonDocModuleManager extends ReflectionModuleManager {
     
     @Override
     protected AbstractModelLoader createModelLoader(Modules modules) {
-        return new ReflectionModelLoader(this, modules){
+        return new CeylonDocModelLoader(this, modules){
             @Override
             public ClassMirror lookupNewClassMirror(String name) {
                 // don't load it from class if we are compiling it

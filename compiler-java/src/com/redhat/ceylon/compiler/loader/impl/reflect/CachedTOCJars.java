@@ -22,6 +22,8 @@ package com.redhat.ceylon.compiler.loader.impl.reflect;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Enumeration;
 import java.util.HashSet;
 import java.util.LinkedList;
@@ -30,15 +32,13 @@ import java.util.Set;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipFile;
 
-/**
- * Class loader which looks into a list of jar files
- */
-class ModulesClassLoader extends ClassLoader {
-    
+public class CachedTOCJars {
+
     /**
      * Jar file where we cache the TOC
      */
     static class CachedTOCJar {
+        
         File jar;
         // stores class file names with slashes
         Set<String> contents = new HashSet<String>();
@@ -111,22 +111,38 @@ class ModulesClassLoader extends ClassLoader {
                 inputStream.close();
             }
         }
+        
+        private List<String> getFileNames(String path){
+            try {
+                // add a trailing / to only list members
+                path += "/";
+                ZipFile zf = new ZipFile(jar);
+                try{
+                    Enumeration<? extends ZipEntry> entries = zf.entries();
+                    List<String> ret = new ArrayList<String>();
+                    while(entries.hasMoreElements()){
+                        ZipEntry entry = entries.nextElement();
+                        String name = entry.getName();
+                        // only cache class files
+                        if(!entry.isDirectory() && name.startsWith(path)){
+                            String part = name.substring(path.length());
+                            if(part.indexOf('/') == -1)
+                                ret.add(name);
+                        }
+                    }
+                    return ret;
+                }finally{
+                    zf.close();
+                }
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
+
+        }
     }
     
     private List<CachedTOCJar> jars = new LinkedList<CachedTOCJar>();
     
-    @Override
-    protected Class<?> findClass(String name) throws ClassNotFoundException {
-        String path = name.replace('.', '/').concat(".class");
-        for(CachedTOCJar jar : jars){
-            if(jar.containsFile(path)){
-                byte[] contents = jar.getContents(path);
-                return defineClass(name, contents, 0, contents.length);
-            }
-        }
-        return super.findClass(name);
-    }
-
     public void addJar(File file) {
         jars.add(new CachedTOCJar(file));
     }
@@ -139,6 +155,25 @@ class ModulesClassLoader extends ClassLoader {
             }
         }
         return false;
+    }
+
+    public List<String> getPackageList(String name) {
+        String path = name.replace('.', '/');
+        for(CachedTOCJar jar : jars){
+            if(jar.containsPackage(path)){
+                return jar.getFileNames(path);
+            }
+        }
+        return Collections.emptyList();
+    }
+
+    public byte[] getContents(String path) {
+        for(CachedTOCJar jar : jars){
+            if(jar.containsFile(path)){
+                return jar.getContents(path);
+            }
+        }
+        return null;
     }
 
 }

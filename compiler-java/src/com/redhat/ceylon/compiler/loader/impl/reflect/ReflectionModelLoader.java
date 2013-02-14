@@ -20,9 +20,8 @@
 
 package com.redhat.ceylon.compiler.loader.impl.reflect;
 
-import java.io.File;
+import java.util.List;
 
-import com.redhat.ceylon.cmr.api.ArtifactResult;
 import com.redhat.ceylon.compiler.java.util.Timer;
 import com.redhat.ceylon.compiler.java.util.Util;
 import com.redhat.ceylon.compiler.loader.AbstractModelLoader;
@@ -41,9 +40,7 @@ import com.redhat.ceylon.compiler.typechecker.model.Unit;
  *
  * @author Stéphane Épardaud <stef@epardaud.fr>
  */
-public class ReflectionModelLoader extends AbstractModelLoader {
-
-    ModulesClassLoader classLoader = new ModulesClassLoader();
+public abstract class ReflectionModelLoader extends AbstractModelLoader {
 
     public ReflectionModelLoader(ModuleManager moduleManager, Modules modules){
         this.moduleManager = moduleManager;
@@ -52,7 +49,11 @@ public class ReflectionModelLoader extends AbstractModelLoader {
         this.typeParser = new TypeParser(this, typeFactory);
         this.timer = new Timer(false);
     }
-    
+
+    protected abstract List<String> getPackageList(String packageName);
+    protected abstract boolean packageExists(String packageName);
+    protected abstract Class<?> loadClass(String name);
+
     @Override
     public void loadStandardModules() {
         super.loadStandardModules();
@@ -64,37 +65,41 @@ public class ReflectionModelLoader extends AbstractModelLoader {
     
     @Override
     public boolean loadPackage(String packageName, boolean loadDeclarations) {
-        String quotedPackage = Util.quoteJavaKeywords(packageName);
-        return classLoader.packageExists(quotedPackage);
+        // abort if we already loaded it, but only record that we loaded it if we want
+        // to load the declarations, because merely calling complete() on the package
+        // is OK
+        packageName = Util.quoteJavaKeywords(packageName);
+        if(loadDeclarations && !loadedPackages.add(packageName)){
+            return true;
+        }
+        if(!packageExists(packageName))
+            return false;
+        if(loadDeclarations){
+            for(String file : getPackageList(packageName)){
+                // ignore anything with $ in it because those are local/member/anonymous/impl ones
+                // FIXME: doesn't that remove quoted names too? need to check
+                if(file.indexOf('$') != -1)
+                    continue;
+                // ignore non-class stuff
+                if(!file.toLowerCase().endsWith(".class"))
+                    continue;
+                // turn it into a class name
+                String className = file.substring(0, file.length()-6).replace('/', '.');
+                convertToDeclaration(className, DeclarationType.TYPE);
+            }
+        }
+        return true;
     }
 
     @Override
     public ClassMirror lookupNewClassMirror(String name) {
         Class<?> klass = null;
-        if (lastPartHasLowerInitial(name)) {
+        // first try with the same name, for Java interop with classes with lowercase name
+        klass = loadClass(name);
+        if (klass == null && lastPartHasLowerInitial(name) && !name.endsWith("_")) {
             klass = loadClass(name+"_");
-        } else {
-            klass = loadClass(name);
         }
         return klass != null ? new ReflectionClass(klass) : null;
-    }
-
-    private Class<?> loadClass(String name) {
-        Class<?> klass = null;
-        try {
-            klass = classLoader.loadClass(name);
-        } catch (ClassNotFoundException e) {
-            // ignore
-        }
-        return klass;
-    }
-
-    @Override
-    public void addModuleToClassPath(final Module module, ArtifactResult artifact) {
-        if(artifact == null)
-            return;
-        File file = artifact.artifact();
-        classLoader.addJar(file);
     }
 
     @Override
