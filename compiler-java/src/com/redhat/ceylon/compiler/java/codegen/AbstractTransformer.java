@@ -1407,7 +1407,7 @@ public abstract class AbstractTransformer implements Transformation {
             pt = typeFact().getObjectDeclaration().getType();
         }
         else {
-            pt = pt.minus(typeFact().getNullDeclaration().getType());
+            pt = pt.eliminateNull();
         }
         return pt;
     }
@@ -2114,7 +2114,7 @@ public abstract class AbstractTransformer implements Transformation {
     
     boolean isTypeParameter(ProducedType type) {
         if (typeFact().isOptionalType(type)) {
-            type = type.minus(typeFact().getNullDeclaration().getType());
+            type = type.eliminateNull();
         } 
         return type.getDeclaration() instanceof TypeParameter;
     }
