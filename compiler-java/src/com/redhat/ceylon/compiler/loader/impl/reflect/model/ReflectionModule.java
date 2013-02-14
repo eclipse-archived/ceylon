@@ -38,4 +38,17 @@ public class ReflectionModule extends LazyModule {
     protected AbstractModelLoader getModelLoader() {
         return modelManager.getModelLoader();
     }
+    
+    @Override
+    public List<Package> getPackages() {
+        // make sure we're complete
+        AbstractModelLoader modelLoader = getModelLoader();
+        String name = getNameAsString();
+        for(String pkg : jarPackages){
+            // special case for the language module to hide stuff
+            if(!name.equals("ceylon.language") || pkg.startsWith("ceylon.language"))
+                modelLoader.findOrCreatePackage(this, pkg);
+        }
+        return super.getPackages();
+    }
 }
