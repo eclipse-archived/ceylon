@@ -429,12 +429,6 @@ public final class Float
         }
         return (int)(bits ^ (bits >>> 32));
     }
-    
-    @Ignore
-    public static <CastValue extends Float> CastValue castTo(double value) {
-        // FIXME Is this correct?
-        return (CastValue)instance(value);
-    }
 
     @Override
     @Ignore
