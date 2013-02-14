@@ -655,6 +655,11 @@ public class StructureTest extends CompilerTest {
     }
 
     @Test
+    public void testRfdRuntime(){
+        compileAndRun("com.redhat.ceylon.compiler.java.test.structure.reified.runtime", "reified/Runtime.ceylon");
+    }
+
+    @Test
     public void testRfdUtilCalls(){
         compareWithJavaSource("reified/UtilCalls");
     }
