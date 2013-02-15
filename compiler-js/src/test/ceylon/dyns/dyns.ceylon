@@ -10,7 +10,7 @@ shared void test() {
         check(n.x<100, "n.x<");
         check(n.x>=3, "n.x>=");
         check(n.x<=3, "n.x<=");
-        check(!n.z exists, "n.z");
+        check(!n.z exists, "n.z exists");
         value n2 = value {3, "hello"};
         check(n2.length==2, "n2.length");
         check(n2[0]==3, "n2[0]");
@@ -25,9 +25,10 @@ shared void test() {
         check(n3[0]!="A", "n3[0]!=");
         check(n3.length==3, "n3.length");
         function f(value z) => z else n;
-        //check(f(1)==1, "f(1)");
-        //check(f(null)==n, "f(null)");
-        //check(f{z="z";}=="z", "f(z)");
+        check(f(1)==1, "f(1)");
+        check(f(null)==n, "f(null)");
+        check(f{z="z";}=="z", "f(z)");
+        results();
     }
 }
 
