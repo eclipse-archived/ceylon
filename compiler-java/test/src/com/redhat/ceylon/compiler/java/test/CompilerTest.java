@@ -33,6 +33,7 @@ import java.net.URLClassLoader;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.TreeSet;
@@ -386,7 +387,7 @@ public abstract class CompilerTest {
         }
     }
     
-    private static ArtifactResult makeArtifactResult(final File file) {
+    public static ArtifactResult makeArtifactResult(final File file) {
         return new ArtifactResult() {
             
             @Override
@@ -421,8 +422,7 @@ public abstract class CompilerTest {
             
             @Override
             public List<ArtifactResult> dependencies() throws RepositoryException {
-                // TODO Auto-generated method stub
-                return null;
+                return Collections.emptyList();
             }
             
             @Override
