@@ -44,10 +44,9 @@ public class JsModuleManager extends ModuleManager {
             //If we haven't loaded the language module yet, we need to load it first
             if (!("ceylon.language".equals(artifact.name()) && artifact.artifact().getName().endsWith(".js"))) {
                 if (clmod == null) {
-                    ArtifactContext ac = new ArtifactContext("ceylon.language", module.getLanguageModule().getVersion());
+                    ArtifactContext ac = new ArtifactContext("ceylon.language", module.getLanguageModule().getVersion(), ".js");
                     ac.setFetchSingleArtifact(true);
                     ac.setThrowErrorIfMissing(true);
-                    ac.setSuffix(".js");
                     ArtifactResult lmar = getContext().getRepositoryManager().getArtifactResult(ac);
                     resolveModule(lmar, module.getLanguageModule(), null, dependencyTree,
                             phasedUnitsOfDependencies, forCompiledModule);
