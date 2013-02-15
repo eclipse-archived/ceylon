@@ -624,7 +624,7 @@ public class DeclarationVisitor extends Visitor {
         p.setDeclaration(declaration);
         p.setDefaulted(that.getDefaultArgument()!=null);
         p.setSequenced(that.getType() instanceof Tree.SequencedType);
-        p.setHidden(that.getType() instanceof Tree.LocalModifier);
+        p.setHidden(that instanceof Tree.InitializerParameter);
         that.setDeclarationModel(p);
         visitDeclaration(that, p);
         super.visit(that);
