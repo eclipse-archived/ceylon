@@ -1517,7 +1517,7 @@ public class GenerateJsVisitor extends Visitor
         }
         Declaration decl = that.getDeclaration();
         if (decl == null && dynblock > 0) {
-            out(that.getIdentifier().getText());
+            out(memberAccess(that));
         } else {
             String name = decl.getName();
             String pkgName = decl.getUnit().getPackage().getQualifiedNameString();
@@ -2599,9 +2599,14 @@ public class GenerateJsVisitor extends Visitor
 
     @Override public void visit(EqualOp that) {
         if (dynblock > 0 && TypeUtils.isUnknown(that.getLeftTerm().getTypeModel())) {
+            //Try to use equals() if it exists
+            String ltmp = names.createTempVariable();
+            String rtmp = names.createTempVariable();
+            out("(", ltmp, "=");
             that.getLeftTerm().visit(this);
-            out("===" + that.getLeftTerm().getTypeModel().getDeclaration());
+            out(",", rtmp, "=");
             that.getRightTerm().visit(this);
+            out(",(", ltmp, ".equals&&", ltmp, ".equals(", rtmp, "))||", ltmp, "===", rtmp, ")");
         } else {
             leftEqualsRight(that);
         }
@@ -2609,9 +2614,14 @@ public class GenerateJsVisitor extends Visitor
 
     @Override public void visit(NotEqualOp that) {
         if (dynblock > 0 && TypeUtils.isUnknown(that.getLeftTerm().getTypeModel())) {
+            //Try to use equals() if it exists
+            String ltmp = names.createTempVariable();
+            String rtmp = names.createTempVariable();
+            out("(", ltmp, "=");
             that.getLeftTerm().visit(this);
-            out("!==");
+            out(",", rtmp, "=");
             that.getRightTerm().visit(this);
+            out(",(", ltmp, ".equals&&!", ltmp, ".equals(", rtmp, "))||", ltmp, "!==", rtmp, ")");
         } else {
             out("(!");
             leftEqualsRight(that);
@@ -2649,9 +2659,15 @@ public class GenerateJsVisitor extends Visitor
 
     @Override public void visit(SmallerOp that) {
         if (dynblock > 0 && TypeUtils.isUnknown(that.getLeftTerm().getTypeModel())) {
+            //Try to use compare() if it exists
+            String ltmp = names.createTempVariable();
+            String rtmp = names.createTempVariable();
+            out("(", ltmp, "=");
             that.getLeftTerm().visit(this);
-            out("<");
+            out(",", rtmp, "=");
             that.getRightTerm().visit(this);
+            out(",(", ltmp, ".compare&&", ltmp, ".compare(", rtmp, ").equals(",
+                    clAlias, "getSmaller()))||", ltmp, "<", rtmp, ")");
         } else {
             leftCompareRight(that);
             out(".equals(", clAlias, "getSmaller())");
@@ -2660,9 +2676,15 @@ public class GenerateJsVisitor extends Visitor
 
     @Override public void visit(LargerOp that) {
         if (dynblock > 0 && TypeUtils.isUnknown(that.getLeftTerm().getTypeModel())) {
+            //Try to use compare() if it exists
+            String ltmp = names.createTempVariable();
+            String rtmp = names.createTempVariable();
+            out("(", ltmp, "=");
             that.getLeftTerm().visit(this);
-            out(">");
+            out(",", rtmp, "=");
             that.getRightTerm().visit(this);
+            out(",(", ltmp, ".compare&&", ltmp, ".compare(", rtmp, ").equals(",
+                    clAlias, "getLarger()))||", ltmp, ">", rtmp, ")");
         } else {
             leftCompareRight(that);
             out(".equals(", clAlias, "getLarger())");
@@ -2671,9 +2693,15 @@ public class GenerateJsVisitor extends Visitor
 
     @Override public void visit(SmallAsOp that) {
         if (dynblock > 0 && TypeUtils.isUnknown(that.getLeftTerm().getTypeModel())) {
+            //Try to use compare() if it exists
+            String ltmp = names.createTempVariable();
+            String rtmp = names.createTempVariable();
+            out("(", ltmp, "=");
             that.getLeftTerm().visit(this);
-            out("<=");
+            out(",", rtmp, "=");
             that.getRightTerm().visit(this);
+            out(",(", ltmp, ".compare&&", ltmp, ".compare(", rtmp, "!==",
+                    clAlias, "getLarger()))||", ltmp, "<=", rtmp, ")");
         } else {
             out("(");
             leftCompareRight(that);
@@ -2684,9 +2712,14 @@ public class GenerateJsVisitor extends Visitor
 
     @Override public void visit(LargeAsOp that) {
         if (dynblock > 0 && TypeUtils.isUnknown(that.getLeftTerm().getTypeModel())) {
+            String ltmp = names.createTempVariable();
+            String rtmp = names.createTempVariable();
+            out("(", ltmp, "=");
             that.getLeftTerm().visit(this);
-            out(">=");
+            out(",", rtmp, "=");
             that.getRightTerm().visit(this);
+            out(",(", ltmp, ".compare&&", ltmp, ".compare(", rtmp, "!==",
+                    clAlias, "getSmaller()))||", ltmp, ">=", rtmp, ")");
         } else {
             out("(");
             leftCompareRight(that);
