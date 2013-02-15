@@ -396,7 +396,6 @@ public class LazySet<Element> implements Set<Element>, ReifiedType {
     @Override
     @Ignore
     public TypeDescriptor $getType() {
-        // FIXME: implement me
-        throw new RuntimeException("Not implemented");
+        return TypeDescriptor.klass(LazySet.class, $reifiedElement);
     }
 }

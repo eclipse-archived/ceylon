@@ -698,7 +698,6 @@ public final class Integer
     @Ignore
     @Override
     public TypeDescriptor $getType() {
-        // FIXME: implement me
-        throw new RuntimeException("Not implemented");
+        return $TypeDescriptor;
     }
 }

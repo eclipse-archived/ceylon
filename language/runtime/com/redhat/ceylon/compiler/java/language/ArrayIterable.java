@@ -185,8 +185,7 @@ public class ArrayIterable<Element,Absent> implements Iterable<Element,Absent>, 
         @Override
         @Ignore
         public TypeDescriptor $getType() {
-            // FIXME: implement me
-            throw new RuntimeException("Not implemented");
+            return TypeDescriptor.klass(ArrayIterableIterator.class, $reifiedElement);
         }
     }
 
@@ -372,7 +371,6 @@ public class ArrayIterable<Element,Absent> implements Iterable<Element,Absent>, 
     @Override
     @Ignore
     public TypeDescriptor $getType() {
-        // FIXME: implement me
-        throw new RuntimeException("Not implemented");
+        return TypeDescriptor.klass(ArrayIterable.class, $reifiedElement);
     }
 }

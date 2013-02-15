@@ -88,8 +88,7 @@ public class FilterIterable<Element,Absent> implements Iterable<Element,Absent>,
         @Override
         @Ignore
         public TypeDescriptor $getType() {
-            // FIXME: implement me
-            throw new RuntimeException("Not implemented");
+            return TypeDescriptor.klass(FilterIterator.class, $reifiedElement);
         }
     }
     public Iterator<? extends Element> getIterator() { return new FilterIterator(); }
@@ -230,7 +229,6 @@ public class FilterIterable<Element,Absent> implements Iterable<Element,Absent>,
     @Override
     @Ignore
     public TypeDescriptor $getType() {
-        // FIXME: implement me
-        throw new RuntimeException("Not implemented");
+        return TypeDescriptor.klass(FilterIterable.class, $reifiedElement);
     }
 }

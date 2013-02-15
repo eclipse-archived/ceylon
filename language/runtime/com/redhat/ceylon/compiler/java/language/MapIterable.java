@@ -87,8 +87,7 @@ public class MapIterable<Element, Result> implements Iterable<Result,java.lang.O
         @Override
         @Ignore
         public TypeDescriptor $getType() {
-            // FIXME: implement me
-            throw new RuntimeException("Not implemented");
+            return TypeDescriptor.klass(MapIterator.class);
         }
     }
     public Iterator<? extends Result> getIterator() { return new MapIterator(); }
@@ -232,7 +231,6 @@ public class MapIterable<Element, Result> implements Iterable<Result,java.lang.O
     @Override
     @Ignore
     public TypeDescriptor $getType() {
-        // FIXME: implement me
-        throw new RuntimeException("Not implemented");
+        return TypeDescriptor.klass(MapIterable.class, $reifiedElement, $reifiedResult);
     }
 }

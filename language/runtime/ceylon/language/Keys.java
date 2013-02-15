@@ -21,7 +21,11 @@ class Keys<Key,Item> implements Category, ReifiedType {
 
 	private Correspondence<? super Key, ? extends Item> correspondence;
     @Ignore
-	protected Category$impl $ceylon$language$Category$this; 
+	protected Category$impl $ceylon$language$Category$this;
+    @Ignore
+    private TypeDescriptor $reifiedItem;
+    @Ignore
+    private TypeDescriptor $reifiedKey; 
 	
 	Keys(@Ignore TypeDescriptor $reifiedKey, @Ignore TypeDescriptor $reifiedItem,
 	        @Name("correspondence")
@@ -29,6 +33,8 @@ class Keys<Key,Item> implements Category, ReifiedType {
 	    Correspondence<? super Key, ? extends Item> correspondence) {
 		this.correspondence = correspondence;
 		this.$ceylon$language$Category$this = new Category$impl(this);
+		this.$reifiedKey = $reifiedKey;
+		this.$reifiedItem = $reifiedItem;
 	}
 	
     @Ignore
@@ -57,7 +63,6 @@ class Keys<Key,Item> implements Category, ReifiedType {
     @Override
     @Ignore
     public TypeDescriptor $getType() {
-        // FIXME: implement me
-        throw new RuntimeException("Not implemented");
+        return TypeDescriptor.klass(Keys.class, $reifiedKey, $reifiedItem);
     }
 }

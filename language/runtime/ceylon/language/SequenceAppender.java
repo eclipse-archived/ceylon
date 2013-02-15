@@ -38,5 +38,10 @@ public class SequenceAppender<Element> extends SequenceBuilder<Element> {
     public final Sequence<? extends Element> getSequence() {
         return new ArraySequence<Element>($reifiedElement, list);
     }
-    
+
+    @Override
+    @Ignore
+    public TypeDescriptor $getType() {
+        return TypeDescriptor.klass(SequenceAppender.class, $reifiedElement);
+    }
 }

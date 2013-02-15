@@ -444,8 +444,7 @@ public final class Array<Element> implements List<Element>, ReifiedType {
             @Override
             @Ignore
             public TypeDescriptor $getType() {
-                // FIXME: implement me
-                throw new RuntimeException("Not implemented");
+                return TypeDescriptor.klass(ArrayIterator.class, $reifiedElement);
             }
         }
         return new ArrayIterator();
@@ -891,7 +890,6 @@ public final class Array<Element> implements List<Element>, ReifiedType {
     @Override
     @Ignore
     public TypeDescriptor $getType() {
-        // FIXME: implement me
-        throw new RuntimeException("Not implemented");
+        return TypeDescriptor.klass(Array.class, $reifiedElement);
     }
 }

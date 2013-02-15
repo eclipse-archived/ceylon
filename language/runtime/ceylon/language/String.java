@@ -476,8 +476,7 @@ public class String
             @Override
             @Ignore
             public TypeDescriptor $getType() {
-                // FIXME: implement me
-                throw new RuntimeException("Not implemented");
+                return TypeDescriptor.klass(StringIterator.class);
             }
         }
 
@@ -1484,8 +1483,7 @@ public class String
                 @Override
                 @Ignore
                 public TypeDescriptor $getType() {
-                    // FIXME: implement me
-                    throw new RuntimeException("Not implemented");
+                    return TypeDescriptor.klass(TokenIterator.class);
                 }
             }
 
@@ -1686,8 +1684,7 @@ public class String
         @Override
         @Ignore
         public TypeDescriptor $getType() {
-            // FIXME: implement me
-            throw new RuntimeException("Not implemented");
+            return TypeDescriptor.klass(Tokens.class);
         }
     }
 
@@ -1747,8 +1744,7 @@ public class String
                 @Override
                 @Ignore
                 public TypeDescriptor $getType() {
-                    // FIXME: implement me
-                    throw new RuntimeException("Not implemented");
+                    return TypeDescriptor.klass(OccurrenceIterator.class);
                 }
             }
 
@@ -1903,15 +1899,13 @@ public class String
         @Override
         @Ignore
         public TypeDescriptor $getType() {
-            // FIXME: implement me
-            throw new RuntimeException("Not implemented");
+            return TypeDescriptor.klass(Occurs.class);
         }
     }
 
     @Override
     @Ignore
     public TypeDescriptor $getType() {
-        // FIXME: implement me
-        throw new RuntimeException("Not implemented");
+        return $TypeDescriptor;
     }
 }

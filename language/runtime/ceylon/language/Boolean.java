@@ -43,7 +43,6 @@ public abstract class Boolean implements ReifiedType {
     @Override
     @Ignore
     public TypeDescriptor $getType() {
-        // FIXME: implement me
-        throw new RuntimeException("Not implemented");
+        return $TypeDescriptor;
     }
 }
