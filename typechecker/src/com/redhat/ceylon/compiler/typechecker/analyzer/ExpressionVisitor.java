@@ -61,6 +61,7 @@ import com.redhat.ceylon.compiler.typechecker.model.Value;
 import com.redhat.ceylon.compiler.typechecker.model.ValueParameter;
 import com.redhat.ceylon.compiler.typechecker.tree.Node;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree;
+import com.redhat.ceylon.compiler.typechecker.tree.Tree.Term;
 import com.redhat.ceylon.compiler.typechecker.tree.Visitor;
 
 /**
@@ -3320,11 +3321,12 @@ public class ExpressionVisitor extends Visitor {
         Tree.Type rt = that.getType();
         if (rt!=null) {
             ProducedType t = rt.getTypeModel();
-            if (t!=null) {
+            if (t!=null && !t.isUnknown()) {
                 that.setTypeModel(t);
-                if (that.getTerm()!=null) {
-                    if (that.getTerm()!=null) {
-                        ProducedType pt = that.getTerm().getTypeModel();
+                Term tt = that.getTerm();
+                if (tt!=null) {
+                    if (tt!=null) {
+                        ProducedType pt = tt.getTypeModel();
                         if (pt!=null) {
                             if (!t.covers(pt)) {
                                 that.addError("specified type does not cover the cases of the operand expression: " +
@@ -3333,6 +3335,9 @@ public class ExpressionVisitor extends Visitor {
                         }
                     }
                 }
+            }
+            else if (dynamic) {
+                that.addError("static type not known");
             }
         }
     }
@@ -4468,7 +4473,7 @@ public class ExpressionVisitor extends Visitor {
 
         if (that.getElseClause()==null && switchExpression!=null) {
             ProducedType st = switchExpression.getTypeModel();
-            if (st!=null) {
+            if (st!=null && !st.isUnknown()) {
                 //form the union of all the case types
                 List<ProducedType> list = new ArrayList<ProducedType>();
                 for (Tree.CaseClause cc: that.getCaseClauses()) {
@@ -4485,11 +4490,13 @@ public class ExpressionVisitor extends Visitor {
                 //if the union of the case types covers 
                 //the switch expression type then the 
                 //switch is exhaustive
-                if (!ut.getType().covers(st) && 
-                        !(st.getDeclaration() instanceof UnknownType)) {
+                if (!ut.getType().covers(st)) {
                     that.addError("case types must cover all cases of the switch type or an else clause must appear: " +
                             ut.getType().getProducedTypeName(unit) + " does not cover " + st.getProducedTypeName(unit));
                 }
+            }
+            else if (dynamic) {
+                that.addError("else clause must appear: static type not known");
             }
         }
         
