@@ -7,7 +7,21 @@ shared class Covariant<out Element>(){}
 shared class Contravariant<in Element>(){}
 shared class Bivariant<in In, out Out>(){}
 
+shared class Container<Outer>(){
+    shared class Member<Inner>(){
+        shared class Child<InnerMost>(){}
+    }
+}
+
 void runtime(){
+    Object member = Container<String>().Member<Integer>();
+    assert(member is Container<String>.Member<Integer>);
+    assert(! member is Container<Integer>.Member<Integer>);
+    assert(! member is Container<String>.Member<String>);
+
+    Object member2 = Container<String>().Member<Integer>().Child<Character>();
+    assert(member2 is Container<String>.Member<Integer>.Child<Character>);
+    
     Object invTop1 = Invariant<Top1>();
     assert(invTop1 is Invariant<Top1>);
     assert(! invTop1 is Invariant<Middle1>);
@@ -38,4 +52,9 @@ void runtime(){
     assert(bivMiddle1 is Bivariant<Bottom1,Top1>);
     assert(bivMiddle1 is Bivariant<Bottom1,Middle1>);
     assert(! bivMiddle1 is Bivariant<Bottom1,Bottom1>);
+    
+    class Local<T>(){}
+    
+    Object localInteger = Local<Integer>();
+    assert(localInteger is Local<Integer>);
 }
