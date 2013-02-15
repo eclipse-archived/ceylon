@@ -143,7 +143,9 @@ public abstract class LazyModule extends Module {
             String path = entry.getName();
             if(path.toLowerCase().endsWith(".class")){
                 int sep = path.lastIndexOf('/');
-                String pkg = path.substring(0, sep).replace('/', '.');
+                if(sep != -1)
+                    path = path.substring(0, sep);
+                String pkg = path.replace('/', '.');
                 jarPackages.add(pkg);
             }
         }
