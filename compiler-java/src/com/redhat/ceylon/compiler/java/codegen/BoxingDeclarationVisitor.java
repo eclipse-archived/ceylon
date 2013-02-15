@@ -20,8 +20,6 @@
 
 package com.redhat.ceylon.compiler.java.codegen;
 
-import java.util.List;
-
 import com.redhat.ceylon.compiler.typechecker.model.Class;
 import com.redhat.ceylon.compiler.typechecker.model.Declaration;
 import com.redhat.ceylon.compiler.typechecker.model.Functional;
@@ -37,23 +35,22 @@ import com.redhat.ceylon.compiler.typechecker.model.TypeParameter;
 import com.redhat.ceylon.compiler.typechecker.model.TypedDeclaration;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.AnyAttribute;
-import com.redhat.ceylon.compiler.typechecker.tree.Tree.AnyClass;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.AnyMethod;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.AttributeArgument;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.AttributeDeclaration;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.AttributeSetterDefinition;
-import com.redhat.ceylon.compiler.typechecker.tree.Tree.BaseMemberExpression;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.ForComprehensionClause;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.ForIterator;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.FunctionArgument;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.KeyValueIterator;
-import com.redhat.ceylon.compiler.typechecker.tree.Tree.ParameterizedExpression;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.SpecifierStatement;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.ValueIterator;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.Variable;
 import com.redhat.ceylon.compiler.typechecker.tree.Visitor;
 
 public abstract class BoxingDeclarationVisitor extends Visitor {
+
+    private TypedDeclaration shortcutRefined;
 
     protected abstract boolean isCeylonBasicType(ProducedType type);
     protected abstract boolean isNull(ProducedType type);
@@ -183,7 +180,30 @@ public abstract class BoxingDeclarationVisitor extends Visitor {
         // deal with invalid input
         if(declaration == null)
             return;
-        TypedDeclaration refinedDeclaration = (TypedDeclaration)CodegenUtil.getTopmostRefinedDeclaration(declaration);
+        TypedDeclaration refinedDeclaration = null;
+        if (this.shortcutRefined != null
+                && shortcutRefined instanceof Functional) {
+            // This insanity is to work around the fact that the Parameter of a 
+            // SpecifierStatement doesn't know the Method being specifed, so 
+            // getTopmostRefinedDeclaration() doesn't work
+            int i = 0;
+            outer: for (ParameterList pl :((Functional)shortcutRefined).getParameterLists()) {
+                int j = 0;
+                for (Parameter p : pl.getParameters()) {
+                    if (p == declaration) {
+                        Functional refined = (Functional)CodegenUtil.getTopmostRefinedDeclaration(shortcutRefined);
+                        refinedDeclaration = refined.getParameterLists().get(i).getParameters().get(j);
+                        break outer;
+                    }
+                    j++;
+                }
+                i++;
+            }
+            
+        }
+        if (refinedDeclaration == null) {
+            refinedDeclaration = (TypedDeclaration)CodegenUtil.getTopmostRefinedDeclaration(declaration);
+        }
         // deal with invalid input
         if(refinedDeclaration == null)
             return;
@@ -255,32 +275,13 @@ public abstract class BoxingDeclarationVisitor extends Visitor {
 
     @Override
     public void visit(SpecifierStatement that) {
+        TypedDeclaration prevShortcutRefined = this.shortcutRefined;
+        if (that.getRefinement()) {
+            this.shortcutRefined = that.getDeclaration();
+        }
         super.visit(that);
-        TypedDeclaration declaration = that.getDeclaration();
-        if(declaration == null)
-            return;
-        if(declaration instanceof Method){
-            visitMethod((Method) declaration);
-            // if it's not a refinement it's a split decl/specifier part and the specifier part
-            // has extra parameters, we should visit them too
-            if(!that.getRefinement() 
-                    && that.getBaseMemberExpression() instanceof Tree.ParameterizedExpression){
-                Tree.ParameterizedExpression parametersExpr = (ParameterizedExpression) that.getBaseMemberExpression();
-                Declaration refined = CodegenUtil.getTopmostRefinedDeclaration(declaration);
-                if(refined instanceof Method){
-                    Method refinedMethod = (Method) refined;
-                    List<ParameterList> refinedParameterLists = refinedMethod.getParameterLists();
-                    List<com.redhat.ceylon.compiler.typechecker.tree.Tree.ParameterList> parameterLists = parametersExpr.getParameterLists();
-                    // abort on invalid input
-                    if(refinedParameterLists.size() != parameterLists.size())
-                        return;
-                    for (int i=0;i<parameterLists.size();i++) {
-                        ParameterList parameterList = parameterLists.get(i).getModel();
-                        ParameterList refinedParameterList = refinedParameterLists.get(i);
-                        boxAndRawParameterList(parameterList, refinedParameterList);
-                    }
-                }
-            }
+        if (that.getRefinement()) {
+            this.shortcutRefined = prevShortcutRefined;
         }
     }
 
