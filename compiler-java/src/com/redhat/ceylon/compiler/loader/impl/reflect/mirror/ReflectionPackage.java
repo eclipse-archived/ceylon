@@ -41,7 +41,7 @@ public class ReflectionPackage implements PackageMirror {
             String name = klass.getName();
             int lastDot = name.lastIndexOf('.');
             if(lastDot == -1)
-                pkg = name;
+                pkg = "";//empty package
             else
                 pkg = name.substring(0, lastDot);
         }
