@@ -74,13 +74,17 @@ public abstract class TypeDescriptor {
         }
 
         public ProducedType toProducedType(RuntimeModuleManager moduleManager){
+            return toProducedType(null, moduleManager);
+        }
+        
+        public ProducedType toProducedType(ProducedType qualifyingType, RuntimeModuleManager moduleManager){
             String typeName = klass.getName();
             TypeDeclaration decl = (TypeDeclaration) moduleManager.getModelLoader().getDeclaration(typeName, DeclarationType.TYPE);
             List<ProducedType> typeArgs = new ArrayList<ProducedType>(typeArguments.length);
             for(TypeDescriptor typeArg : typeArguments){
                 typeArgs.add(typeArg.toProducedType(moduleManager));
             }
-            return decl.getProducedType(null, typeArgs);
+            return decl.getProducedType(qualifyingType, typeArgs);
         }
     }
 
@@ -124,7 +128,7 @@ public abstract class TypeDescriptor {
 
         @Override
         public ProducedType toProducedType(RuntimeModuleManager moduleManager) {
-            throw new RuntimeException("Don't know how to convert "+this+" to ProducedType");
+            return ((Class)member).toProducedType(container.toProducedType(moduleManager), moduleManager);
         }
     }
     
