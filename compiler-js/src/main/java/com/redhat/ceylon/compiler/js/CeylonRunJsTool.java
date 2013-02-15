@@ -8,7 +8,11 @@ import java.io.InputStreamReader;
 import java.io.PrintStream;
 import java.util.Collections;
 import java.util.List;
+import java.util.Map;
 
+import com.redhat.ceylon.cmr.api.ArtifactContext;
+import com.redhat.ceylon.cmr.api.RepositoryManager;
+import com.redhat.ceylon.cmr.ceylon.CeylonUtils;
 import com.redhat.ceylon.common.tool.Argument;
 import com.redhat.ceylon.common.tool.Description;
 import com.redhat.ceylon.common.tool.OptionArgument;
@@ -16,6 +20,7 @@ import com.redhat.ceylon.common.tool.RemainingSections;
 import com.redhat.ceylon.common.tool.Summary;
 import com.redhat.ceylon.common.tool.Tool;
 import com.redhat.ceylon.common.tool.Tools;
+import com.redhat.ceylon.compiler.loader.JsModuleManager;
 
 @Summary("Executes a Ceylon program")
 @Description(
@@ -202,7 +207,7 @@ public class CeylonRunJsTool implements Tool {
      * @param exepath The full path to the node.js executable
      * @param repos The list of repository paths (used as module paths for node.js)
      * @param output An optional PrintStream to write the output of the node.js process to. */
-    static ProcessBuilder buildProcess(String module, String func, List<String> args,
+    static ProcessBuilder buildProcess(final String module, final String version, String func, List<String> args,
             String exepath, List<String> repos, String systemRepo, PrintStream output) {
         final String node = exepath == null ? findNode() : exepath;
         if (exepath != null) {
@@ -212,16 +217,7 @@ public class CeylonRunJsTool implements Tool {
             }
         }
 
-        final boolean isDefault = "default".equals(module);
-        String version = "";
-        if (!isDefault && !module.contains("/")) {
-            throw new CeylonRunJsException("Specified module is not default and is missing version.");
-        }
-        if (!isDefault) {
-            version = module.substring(module.indexOf('/')+1);
-            module = module.substring(0, module.indexOf('/'));
-        }
-
+        final boolean isDefault = module.equals("default");
         //The timeout is to have enough time to start reading on the process streams
         final String eval = String.format("setTimeout(function(){},50);require('%s%s/%s%s').%s();",
                 module.replace(".", "/"),
@@ -261,13 +257,64 @@ public class CeylonRunJsTool implements Tool {
         return repo;
     }
 
+    private List<String> getDependencies(File jsmod) throws IOException {
+        final Map<String,Object> model = JsModuleManager.loadMetamodel(jsmod);
+        if (model == null) {
+            return Collections.emptyList();
+        }
+        @SuppressWarnings("unchecked")
+        List<String> deps = (List<String>)model.get("$mod-deps");
+        return deps;
+    }
+
+    private void loadDependencies(RepositoryManager repoman, File jsmod) throws IOException {
+        final List<String> deps = getDependencies(jsmod);
+        if (deps == null) {
+            return;
+        }
+        for (String dep : deps) {
+            //Module names have escaped forward slashes due to JSON encoding
+            int idx = dep.indexOf('/');
+            ArtifactContext ac = new ArtifactContext(dep.substring(0, idx), dep.substring(idx+1), ".js");
+            ac.setFetchSingleArtifact(true);
+            ac.setThrowErrorIfMissing(true);
+            File other = repoman.getArtifact(ac);
+            loadDependencies(repoman, other);
+        }
+    }
+
     @Override
     public void run() throws Exception {
         //The timeout is to have enough time to start reading on the process streams
         if (sysrep == null) {
             sysrep = getCeylonRepo();
         }
-        final ProcessBuilder proc = buildProcess(module, func, args, exepath, repos, sysrep, output);
+        final boolean isDefault = "default".equals(module);
+        String version = "";
+        if (!isDefault && !module.contains("/")) {
+            throw new CeylonRunJsException("Specified module is not default and is missing version.");
+        }
+        final String modname;
+        if (isDefault) {
+            modname = module;
+        } else {
+            version = module.substring(module.indexOf('/')+1);
+            modname = module.substring(0, module.indexOf('/'));
+        }
+
+        //Create a repository manager to load the js module we're going to run
+        final RepositoryManager repoman = CeylonUtils.repoManager()
+                .systemRepo(sysrep)
+                .userRepos(repos).buildManager();
+        ArtifactContext ac = new ArtifactContext(modname, version, ".js");
+        ac.setFetchSingleArtifact(true);
+        ac.setThrowErrorIfMissing(true);
+        File jsmod = repoman.getArtifact(ac);
+        if (jsmod == null) {
+            throw new CeylonRunJsException("Cannot find module " + module + " in specified modules");
+        }
+        loadDependencies(repoman, jsmod);
+        final ProcessBuilder proc = buildProcess(modname, version, func, args, exepath, repos, sysrep, output);
         Process nodeProcess = proc.start();
         //All this shit because inheritIO doesn't work on fucking Windows
         new ReadStream(nodeProcess.getInputStream(), output == null ? System.out : output).start();
