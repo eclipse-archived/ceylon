@@ -32,6 +32,7 @@ function isOfType(obj, type) {
         if (obj === null) {
             return type.t===Null || type.t===Anything;
         }
+        if (obj.getT$all === undefined) { return false; }
         var typeName = type.t.$$.T$name;
         if (obj.getT$all && typeName in obj.getT$all()) {
             if (type.a && obj.$$targs$$) {
@@ -56,6 +57,7 @@ function isOfTypes(obj, types) {
         }
         return false;
     }
+    if (obj.getT$all === undefined) { return false; }
     var unions = false;
     var inters = true;
     var _ints=false;
