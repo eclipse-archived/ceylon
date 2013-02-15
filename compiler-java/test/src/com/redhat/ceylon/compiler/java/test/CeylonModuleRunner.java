@@ -44,7 +44,6 @@ import org.junit.runners.ParentRunner;
 import org.junit.runners.model.InitializationError;
 
 import com.redhat.ceylon.compiler.java.codegen.Decl;
-import com.redhat.ceylon.compiler.java.test.CompilerTest.ModuleWithArtifact;
 import com.redhat.ceylon.compiler.java.tools.CeylonLog;
 import com.redhat.ceylon.compiler.java.tools.CeyloncFileManager;
 import com.redhat.ceylon.compiler.java.tools.LanguageCompiler;
@@ -89,6 +88,8 @@ public class CeylonModuleRunner extends ParentRunner<Runner> {
     private File outRepo;
     
     private TestLoader testLoader;
+
+    private Runnable moduleInitialiser;
     
     private static void scan(File relativeTo, List<String> list, File file) {
         if (file.isDirectory()) {
@@ -233,7 +234,7 @@ public class CeylonModuleRunner extends ParentRunner<Runner> {
         Assert.fail("No tests found");
     }
 
-    private URLClassLoader classLoaderForModule(String moduleName, File repo)
+    private URLClassLoader classLoaderForModule(final String moduleName, File repo)
             throws MalformedURLException {
         File moduleDir = new File(repo, moduleName.replace(".", "/"));
         if (!moduleDir.exists()) {
@@ -253,8 +254,8 @@ public class CeylonModuleRunner extends ParentRunner<Runner> {
         } else if (files.length > 1) {
             throw new RuntimeException("Unexpectedly more than one car file in " + moduleDir);
         }
-        String version = files[0];
-        File carFile;
+        final String version = files[0];
+        final File carFile;
         if (version.equals("default.car")) {
             carFile = new File(moduleDir, version);
         } else {
@@ -265,12 +266,18 @@ public class CeylonModuleRunner extends ParentRunner<Runner> {
             throw new RuntimeException(carFile + " doesn't exist");
         }
         URL outCar = carFile.toURI().toURL();
-        URLClassLoader cl = new URLClassLoader(new URL[]{outCar}, 
+        final URLClassLoader cl = new URLClassLoader(new URL[]{outCar}, 
                 getClass().getClassLoader());
-        // set up the runtime module system
-        com.redhat.ceylon.compiler.java.Util.resetModuleManager();
-        com.redhat.ceylon.compiler.java.Util.loadModule("ceylon.language", TypeChecker.LANGUAGE_MODULE_VERSION, CompilerTest.makeArtifactResult(new File("../ceylon.language/ide-dist/ceylon.language-0.5.car")), cl);
-        com.redhat.ceylon.compiler.java.Util.loadModule(moduleName, version, CompilerTest.makeArtifactResult(carFile), cl);
+        
+        moduleInitialiser = new Runnable(){
+            @Override
+            public void run() {
+                // set up the runtime module system
+                com.redhat.ceylon.compiler.java.Util.resetModuleManager();
+                com.redhat.ceylon.compiler.java.Util.loadModule("ceylon.language", TypeChecker.LANGUAGE_MODULE_VERSION, CompilerTest.makeArtifactResult(new File("../ceylon.language/ide-dist/ceylon.language-0.5.car")), cl);
+                com.redhat.ceylon.compiler.java.Util.loadModule(moduleName, version, CompilerTest.makeArtifactResult(carFile), cl);
+            }
+        };
         return cl;
     }
 
@@ -385,10 +392,16 @@ public class CeylonModuleRunner extends ParentRunner<Runner> {
     
     @Override
     public void run(RunNotifier notifier) {
-        try {
-            super.run(notifier);
-        } finally {
-            delete(outRepo);
+        synchronized(CompilerTest.RUN_LOCK){
+            // the module initialiser code needs to run in a protected section because the language module Util is not loaded by
+            // the test classloader but by our own classloader, which may be shared with other tests running in parallel, so if
+            // we set up the module system while another thread is setting it up for other modules we're toast
+            moduleInitialiser.run();
+            try {
+                super.run(notifier);
+            } finally {
+                delete(outRepo);
+            }
         }
     }
     

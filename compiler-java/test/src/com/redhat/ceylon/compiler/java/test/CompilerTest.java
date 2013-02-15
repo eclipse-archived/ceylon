@@ -73,9 +73,15 @@ public abstract class CompilerTest {
 
     protected final static String dir = "test/src";
     protected final static String destDirGeneral = "build/test-cars";
+    public static final String LANGUAGE_MODULE_CAR = "../ceylon.language/ide-dist/ceylon.language-0.5.car";
     protected final String destDir;
     protected final String moduleName;
     protected final List<String> defaultOptions;
+    
+    /**
+     * See run() for why this is needed.
+     */
+    public static final Object RUN_LOCK = new Object();
 
     public CompilerTest() {
         // for comparing with java source
@@ -433,46 +439,51 @@ public abstract class CompilerTest {
     }
 
     protected void run(String main, ModuleWithArtifact... modules) {
-        try{
-            // make sure we load the stuff from the Car
-            
-            @SuppressWarnings("deprecation")
-            List<URL> urls = new ArrayList<URL>(modules.length);
-            for (ModuleWithArtifact module : modules) {
-                File car = module.file;
-                Assert.assertTrue("Car exists", car.exists());
-                URL url = car.toURL();
-                urls.add(url);
+        synchronized(RUN_LOCK){
+            // the module initialiser code needs to run in a protected section because the language module Util is not loaded by
+            // the test classloader but by our own classloader, which may be shared with other tests running in parallel, so if
+            // we set up the module system while another thread is setting it up for other modules we're toast
+            try{
+                // make sure we load the stuff from the Car
+
+                @SuppressWarnings("deprecation")
+                List<URL> urls = new ArrayList<URL>(modules.length);
+                for (ModuleWithArtifact module : modules) {
+                    File car = module.file;
+                    Assert.assertTrue("Car exists", car.exists());
+                    URL url = car.toURL();
+                    urls.add(url);
+                }
+                System.err.println("Running " + main +" with classpath" + urls);
+                NonCachingURLClassLoader loader = new NonCachingURLClassLoader(urls.toArray(new URL[urls.size()]));
+                // set up the runtime module system
+                com.redhat.ceylon.compiler.java.Util.resetModuleManager();
+                com.redhat.ceylon.compiler.java.Util.loadModule("ceylon.language", TypeChecker.LANGUAGE_MODULE_VERSION, makeArtifactResult(new File(LANGUAGE_MODULE_CAR)), loader);
+                for (ModuleWithArtifact module : modules) {
+                    com.redhat.ceylon.compiler.java.Util.loadModule(module.module, module.version, makeArtifactResult(module.file), loader);
+                }
+                String mainClass = main;
+                String mainMethod = main.replaceAll("^.*\\.", "");
+                if (Util.isInitialLowerCase(mainMethod)) {
+                    mainClass = main + "_";
+                }
+                java.lang.Class<?> klass = java.lang.Class.forName(mainClass, true, loader);
+                if (Util.isInitialLowerCase(mainMethod)) {
+                    // A main method
+                    Method m = klass.getDeclaredMethod(mainMethod);
+                    m.setAccessible(true);
+                    m.invoke(null);
+                } else {
+                    // A main class
+                    final Constructor<?> ctor = klass.getDeclaredConstructor();
+                    ctor.setAccessible(true);
+                    ctor.newInstance();
+                }
+
+                loader.clearCache();
+            }catch(Exception x){
+                throw new RuntimeException(x);
             }
-            System.err.println("Running " + main +" with classpath" + urls);
-            NonCachingURLClassLoader loader = new NonCachingURLClassLoader(urls.toArray(new URL[urls.size()]));
-            // set up the runtime module system
-            com.redhat.ceylon.compiler.java.Util.resetModuleManager();
-            com.redhat.ceylon.compiler.java.Util.loadModule("ceylon.language", TypeChecker.LANGUAGE_MODULE_VERSION, makeArtifactResult(new File("../ceylon.language/ide-dist/ceylon.language-0.5.car")), loader);
-            for (ModuleWithArtifact module : modules) {
-                com.redhat.ceylon.compiler.java.Util.loadModule(module.module, module.version, makeArtifactResult(module.file), loader);
-            }
-            String mainClass = main;
-            String mainMethod = main.replaceAll("^.*\\.", "");
-            if (Util.isInitialLowerCase(mainMethod)) {
-                mainClass = main + "_";
-            }
-            java.lang.Class<?> klass = java.lang.Class.forName(mainClass, true, loader);
-            if (Util.isInitialLowerCase(mainMethod)) {
-                // A main method
-                Method m = klass.getDeclaredMethod(mainMethod);
-                m.setAccessible(true);
-                m.invoke(null);
-            } else {
-                // A main class
-                final Constructor<?> ctor = klass.getDeclaredConstructor();
-                ctor.setAccessible(true);
-                ctor.newInstance();
-            }
-            
-            loader.clearCache();
-        }catch(Exception x){
-            throw new RuntimeException(x);
         }
     }
 
