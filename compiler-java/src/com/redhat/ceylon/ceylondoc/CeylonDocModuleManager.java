@@ -64,6 +64,11 @@ public class CeylonDocModuleManager extends ReflectionModuleManager {
     protected AbstractModelLoader createModelLoader(Modules modules) {
         return new CeylonDocModelLoader(this, modules){
             @Override
+            protected boolean isLoadedFromSource(String className) {
+                return tool.getCompiledClasses().contains(className);
+            }
+            
+            @Override
             public ClassMirror lookupNewClassMirror(String name) {
                 // don't load it from class if we are compiling it
                 if(tool.getCompiledClasses().contains(name)){

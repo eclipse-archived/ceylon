@@ -84,11 +84,19 @@ public abstract class ReflectionModelLoader extends AbstractModelLoader {
                 if(!file.toLowerCase().endsWith(".class"))
                     continue;
                 // turn it into a class name
+                // FIXME: this is terrible
                 String className = file.substring(0, file.length()-6).replace('/', '.');
-                convertToDeclaration(className, DeclarationType.TYPE);
+                // the logic for lower-cased names should be abstracted somewhere sane
+                if(!isLoadedFromSource(className) 
+                        && (!className.endsWith("_") || !isLoadedFromSource(className.substring(0, className.length()-1))))
+                    convertToDeclaration(className, DeclarationType.TYPE);
             }
         }
         return true;
+    }
+
+    protected boolean isLoadedFromSource(String className) {
+        return false;
     }
 
     @Override
