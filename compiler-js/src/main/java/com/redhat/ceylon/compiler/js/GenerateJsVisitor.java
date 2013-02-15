@@ -1516,9 +1516,7 @@ public class GenerateJsVisitor extends Visitor
             return;
         }
         Declaration decl = that.getDeclaration();
-        if (decl == null && dynblock > 0) {
-            out(memberAccess(that));
-        } else {
+        if (decl != null) {
             String name = decl.getName();
             String pkgName = decl.getUnit().getPackage().getQualifiedNameString();
 
@@ -1529,8 +1527,8 @@ public class GenerateJsVisitor extends Visitor
                     return;
                 }
             }
-            out(memberAccess(that));
         }
+        out(memberAccess(that));
     }
 
     private boolean accessDirectly(Declaration d) {
@@ -2712,6 +2710,7 @@ public class GenerateJsVisitor extends Visitor
 
     @Override public void visit(LargeAsOp that) {
         if (dynblock > 0 && TypeUtils.isUnknown(that.getLeftTerm().getTypeModel())) {
+            //Try to use compare() if it exists
             String ltmp = names.createTempVariable();
             String rtmp = names.createTempVariable();
             out("(", ltmp, "=");
