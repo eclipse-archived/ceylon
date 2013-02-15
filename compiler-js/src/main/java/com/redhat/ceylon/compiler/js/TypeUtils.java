@@ -18,6 +18,7 @@ import com.redhat.ceylon.compiler.typechecker.model.TypeDeclaration;
 import com.redhat.ceylon.compiler.typechecker.model.TypeParameter;
 import com.redhat.ceylon.compiler.typechecker.model.UnionType;
 import com.redhat.ceylon.compiler.typechecker.tree.Node;
+import com.redhat.ceylon.compiler.typechecker.tree.Tree;
 
 /** A convenience class to help with the handling of certain type declarations. */
 public class TypeUtils {
@@ -79,9 +80,11 @@ public class TypeUtils {
 
     static void outputQualifiedTypename(Node node, ProducedType pt, GenerateJsVisitor gen) {
         TypeDeclaration t = pt.getDeclaration();
-        if (t.getName().equals("Nothing")) {
+        if (t.getQualifiedNameString().equals("ceylon.language::Nothing")) {
             //Hack in the model means hack here as well
             gen.out(GenerateJsVisitor.getClAlias(), "Nothing");
+        } else if (t.getQualifiedNameString().equals("ceylon.language::null")) {
+            gen.out(GenerateJsVisitor.getClAlias(), "Null");
         } else {
             if (t.isAlias()) {
                 t = t.getExtendedTypeDeclaration();
@@ -261,4 +264,15 @@ public class TypeUtils {
     static boolean isUnknown(Declaration d) {
         return d == null || d.getQualifiedNameString().equals("UnknownType");
     }
+
+    /** Generates the code to throw an Exception if a dynamic object is not of the specified type. */
+    static void generateDynamicCheck(Tree.Expression term, final ProducedType t, final GenerateJsVisitor gen) {
+        String tmp = gen.getNames().createTempVariable();
+        gen.out("(", tmp, "=");
+        term.visit(gen);
+        gen.out(",", GenerateJsVisitor.getClAlias(), "isOfType(", tmp, ",");
+        TypeUtils.typeNameOrList(term, t, gen, true);
+        gen.out(")?", tmp, ":", GenerateJsVisitor.getClAlias(), "throwexc('dynamic objects cannot be used here'))");
+    }
+
 }
