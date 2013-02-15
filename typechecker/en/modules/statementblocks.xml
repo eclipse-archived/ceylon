@@ -1609,6 +1609,8 @@ else {
                 </listitem>
             </itemizedlist>
             
+            <programlisting>Case: Expression ("," Expression)* | "is" Type</programlisting>
+            
             <para>Two <literal>case</literal>s are said to be <emphasis>disjoint</emphasis> 
             if the intersection of their types is exactly <literal>Nothing</literal>. In every
             <literal>switch</literal> statement, all <literal>case</literal>s must be mutually 
@@ -1622,7 +1624,10 @@ else {
             must be exhaustive. <!--Conversely, if the <literal>switch</literal> is exhaustive, 
             no <literal>else</literal> block may be specified.--></para>
             
-            <programlisting>Case: Expression ("," Expression)* | "is" Type</programlisting>
+            <comment><para>Note: On the other hand, even if the <literal>switch</literal> 
+            <emphasis>is</emphasis> exhaustive, an <literal>else</literal> block may be 
+            specified, in order to allow a <literal>switch</literal> that accommodates additional 
+            cases without resulting in a compilation error.</para></comment>
             
             <comment><para>Note: an assignability condition <literal>case</literal> may narrow to 
             an intersection or union type.</para>
