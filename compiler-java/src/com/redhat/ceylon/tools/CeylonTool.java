@@ -78,7 +78,7 @@ public class CeylonTool implements Tool {
     }
     
     @Option
-    @Description("If an error propogates to the top level tool, print its stacktrace.")
+    @Description("If an error propagates to the top level tool, print its stack trace.")
     public void setStacktraces(boolean stacktraces) {
         this.stacktraces = stacktraces;
     }

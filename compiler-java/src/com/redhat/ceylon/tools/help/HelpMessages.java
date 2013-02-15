@@ -19,9 +19,11 @@
  */
 package com.redhat.ceylon.tools.help;
 
+import java.text.MessageFormat;
 import java.util.ResourceBundle;
 
 import com.redhat.ceylon.common.Messages;
+import com.redhat.ceylon.common.tool.Tools;
 
 public class HelpMessages extends Messages {
 
@@ -29,6 +31,10 @@ public class HelpMessages extends Messages {
     
     public static String msg(String msgKey, Object... msgArgs) {
         return Messages.msg(RESOURCE_BUNDLE, msgKey, msgArgs);
+    }
+    
+    static String getMoreInfo() {
+        return MessageFormat.format(HelpMessages.msg("more.info"), Tools.progName());   
     }
     
 }

@@ -19,6 +19,7 @@
  */
 package com.redhat.ceylon.tools.help;
 
+import java.text.MessageFormat;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
@@ -184,7 +185,7 @@ public class DocBuilder {
             sb.append(newline);
         }
         sb.append(newline);
-        sb.append("See `" + Tools.progName() + " help <command>` for more information on a particular command");
+        sb.append(HelpMessages.getMoreInfo());
         sb.append(newline);
         sb.append(newline);
         
@@ -437,7 +438,9 @@ public class DocBuilder {
         if (toolBundle != null && toolBundle.containsKey(key)) {
             String msg = toolBundle.getString(key);
             if (msg != null) {
-                return msg;
+                // Pass through a message format so that translators don't have to guess 
+                // which things need doubled '' and which not.
+                return MessageFormat.format(msg, new Object[]{});
             }
         }
         return "";
@@ -465,6 +468,7 @@ public class DocBuilder {
         return toolBundle;
     }
 
+    
     private Summary getSummary(ToolModel<?> model) {
         return model.getToolClass().getAnnotation(Summary.class);
     }
@@ -482,11 +486,15 @@ public class DocBuilder {
     }
 
     private String getSections(ToolModel<?> model) {
-        RemainingSections sections = model.getToolClass().getAnnotation(RemainingSections.class);
-        if (sections != null) {
-            return sections.value();
+        ResourceBundle toolBundle = getToolBundle(model);
+        String msg = msg(toolBundle, "sections.remaining");
+        if (msg.isEmpty()) {
+            RemainingSections sections = model.getToolClass().getAnnotation(RemainingSections.class);
+            if (sections != null) {
+                msg = sections.value();
+            }
         }
-        return "";
+        return msg;
     }
 
     private String getOptionDescription(ToolModel<?> model, OptionModel<?> opt) {
