@@ -3336,9 +3336,9 @@ public class ExpressionVisitor extends Visitor {
                     }
                 }
             }
-            else if (dynamic) {
+            /*else if (dynamic) {
                 that.addError("static type not known");
-            }
+            }*/
         }
     }
     
@@ -4495,9 +4495,9 @@ public class ExpressionVisitor extends Visitor {
                             ut.getType().getProducedTypeName(unit) + " does not cover " + st.getProducedTypeName(unit));
                 }
             }
-            else if (dynamic) {
+            /*else if (dynamic) {
                 that.addError("else clause must appear: static type not known");
-            }
+            }*/
         }
         
     }
