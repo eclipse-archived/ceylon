@@ -179,6 +179,13 @@ class CodegenUtil {
             // Parameters in a refined class are not considered refinements themselves
             // We have in find the refined attribute
             Class c = (Class)decl.getContainer();
+            if (c.isAlias()) {
+                int index = c.getParameterList().getParameters().indexOf(decl);
+                while (c.isAlias()) {
+                    c = c.getExtendedTypeDeclaration();
+                }
+                decl = c.getParameterList().getParameters().get(index);
+            }
             Declaration refinedDecl = c.getRefinedMember(decl.getName(), null, false);//?? elipses=false??
             if(refinedDecl != null && refinedDecl != decl) {
                 return getTopmostRefinedDeclaration(refinedDecl);

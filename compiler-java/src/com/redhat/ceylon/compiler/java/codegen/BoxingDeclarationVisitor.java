@@ -114,9 +114,6 @@ public abstract class BoxingDeclarationVisitor extends Visitor {
                 || (!(refined instanceof Method)))
             return;
         Method refinedMethod = (Method)refined;
-        List<ParameterList> methodParameterLists = method.getParameterLists();
-        List<ParameterList> refinedParameterLists = refinedMethod.getParameterLists();
-        
         if (method.getName() != null) {
             // A Callable, which never have primitive parameters
             setBoxingState(method, refinedMethod);
@@ -124,74 +121,8 @@ public abstract class BoxingDeclarationVisitor extends Visitor {
             // Anonymous methods are always boxed
             method.setUnboxed(false);
         }
-        
-        // deal with invalid input
-        if(methodParameterLists.isEmpty()
-                || refinedParameterLists.isEmpty())
-            return;
-
-        boxAndRawParameterLists(methodParameterLists, refinedParameterLists);
-    }
-    
-    private void boxAndRawParameterLists(List<ParameterList> paramLists, List<ParameterList> refinedParamLists) {
-        if (paramLists.size() != refinedParamLists.size()) {
-            // abort on errors caught by the typechecker
-            return;
-        }
-        for (int ii = 0; ii < paramLists.size(); ii++) {
-            ParameterList paramList = paramLists.get(ii);
-            ParameterList refinedParamList = refinedParamLists.get(ii);
-            boxAndRawParameterList(paramList, refinedParamList);
-        }
-    }
-    private void boxAndRawParameterList(ParameterList paramList, ParameterList refinedParamList) {
-        if (paramList.getParameters().size() != 
-                refinedParamList.getParameters().size()) {
-            // abort on errors caught by the typechecker
-            return;
-        }
-        for (int jj = 0; jj < paramList.getParameters().size(); jj++) {
-            Parameter param = paramList.getParameters().get(jj);
-            Parameter refinedParam = refinedParamList.getParameters().get(jj);
-            if (param instanceof Functional && refinedParam instanceof Functional) {
-                boxAndRawParameterLists(((Functional)param).getParameterLists(),
-                        ((Functional)refinedParam).getParameterLists());
-            }
-            setBoxingState(param, refinedParam);
-            // also mark params as raw if needed
-            rawTypedDeclaration(param);
-            setErasureState(param);
-        }
     }
 
-    @Override
-    public void visit(AnyClass that) {
-        super.visit(that);
-        Class klass = that.getDeclarationModel();
-        // deal with invalid input
-        if(klass == null)
-            return;
-        List<ParameterList> parameterLists = klass.getParameterLists();
-        // deal with invalid input
-        if(parameterLists.isEmpty())
-            return;
-        List<ParameterList> refinedParameterLists;
-        // If this is an alias we're bound by the aliased type's parameters, not by ours
-        // For ex:
-        // - class AliasedType<T>(T x){}
-        // - class Alias(Integer x) = AliasedType<Integer>;
-        // where Alias's x parameter is not really unboxed
-        if(klass.isAlias()){
-            // error handling
-            if(klass.getExtendedTypeDeclaration() == null)
-                return;
-            refinedParameterLists = klass.getExtendedTypeDeclaration().getParameterLists();
-        }else
-            refinedParameterLists = parameterLists;
-        
-        boxAndRawParameterLists(parameterLists, refinedParameterLists);
-    }
-    
     private void setBoxingState(TypedDeclaration declaration, TypedDeclaration refinedDeclaration) {
         ProducedType type = declaration.getType();
         if(type == null){
@@ -263,20 +194,17 @@ public abstract class BoxingDeclarationVisitor extends Visitor {
     public void visit(Tree.Parameter that) {
         super.visit(that);
         TypedDeclaration declaration = that.getDeclarationModel();
-        boxAttribute(declaration);
-        rawTypedDeclaration(declaration);
-        setErasureState(declaration);
-        if (declaration.getContainer() instanceof TypeDeclaration 
-                && CodegenUtil.isSmall(declaration)
-                && declaration.getType() != null) {
-            declaration.getType().setUnderlyingType("int");
-        }
+        visitAttributeOrParameter(declaration);
     }
     
     @Override
     public void visit(AnyAttribute that) {
         super.visit(that);
         TypedDeclaration declaration = that.getDeclarationModel();
+        visitAttributeOrParameter(declaration);
+    }
+    
+    private void visitAttributeOrParameter(TypedDeclaration declaration) {
         boxAttribute(declaration);
         rawTypedDeclaration(declaration);
         setErasureState(declaration);
