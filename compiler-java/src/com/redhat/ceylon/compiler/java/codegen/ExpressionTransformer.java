@@ -3122,6 +3122,8 @@ public class ExpressionTransformer extends AbstractTransformer {
 
     JCExpression transformComprehension(Comprehension comp, ProducedType expectedType) {
         ProducedType elementType = comp.getForComprehensionClause().getTypeModel();
+        // get rid of anonymous types
+        elementType = typeFact().denotableType(elementType);
         elementType = wrapInOptionalForInterop(elementType, expectedType);
         return new ComprehensionTransformation(comp, elementType).transformComprehension();
     }
