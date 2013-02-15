@@ -693,7 +693,7 @@ public class ClassDefinitionBuilder {
 
 
     public void reifiedAlias(ProducedType type) {
-        JCExpression klass = gen.makeClassLiteral(type);
+        JCExpression klass = gen.makeUnerasedClassLiteral(type.getDeclaration());
         JCExpression classDescriptor = gen.make().Apply(null, gen.makeSelect(gen.makeTypeDescriptorType(), "klass"), List.of(klass));
         JCVariableDecl varDef = gen.make().VarDef(gen.make().Modifiers(PUBLIC | FINAL | STATIC, gen.makeAtIgnore()), 
                                                   gen.names().fromString(gen.naming.getTypeDescriptorAliasName()), 

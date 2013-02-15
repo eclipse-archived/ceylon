@@ -2811,6 +2811,14 @@ public abstract class AbstractTransformer implements Transformation {
         return makeSelect(makeJavaType(type, JT_NO_PRIMITIVES | JT_RAW), "class");
     }
 
+    /**
+     * Same as makeClassLiteral but does not use erasure rules
+     */
+    public JCExpression makeUnerasedClassLiteral(TypeDeclaration declaration) {
+        JCExpression className = naming.makeDeclarationName(declaration, DeclNameFlag.QUALIFIED);
+        return makeSelect(className, "class");
+    }
+
     public java.util.List<JCExpression> makeReifiedTypeArguments(ProducedReference ref){
         // this is a bit tricky:
         // - for method references (ProducedTypedReference) it's all good
@@ -2890,7 +2898,7 @@ public abstract class AbstractTransformer implements Transformation {
             }
             // no alias, must build it
             List<JCExpression> typeTestArguments = List.nil();
-            JCExpression thisType = makeClassLiteral(pt);
+            JCExpression thisType = makeUnerasedClassLiteral(declaration);
             java.util.List<ProducedType> typeParameters = pt.getTypeArgumentList();
             for(int i=typeParameters.size()-1;i>=0;i--){
                 typeTestArguments = typeTestArguments.prepend(makeReifiedTypeArgument(typeParameters.get(i), qualified));
