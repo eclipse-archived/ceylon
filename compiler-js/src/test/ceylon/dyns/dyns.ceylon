@@ -28,6 +28,10 @@ shared void test() {
         check(f(1)==1, "f(1)");
         check(f(null)==n, "f(null)");
         check(f{z="z";}=="z", "f(z)");
+        if (n is Singleton<Object>) {
+            fail("what? n is NOT a Singleton!");
+        }
+        check(!n is Category, "n is a Category?");
         results();
     }
 }
