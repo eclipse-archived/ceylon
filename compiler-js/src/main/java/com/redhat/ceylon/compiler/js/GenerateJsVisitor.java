@@ -115,7 +115,7 @@ public class GenerateJsVisitor extends Visitor
 
     private final TypeUtils types;
     private final Writer out;
-    private final boolean prototypeStyle;
+    final boolean prototypeStyle;
     private CompilationUnit root;
     private static String clAlias="";
     private static final String function="function ";
@@ -1666,7 +1666,7 @@ public class GenerateJsVisitor extends Visitor
      * represents an access to a supertype member and returns the scope of that
      * member or null.
      */
-    private Scope getSuperMemberScope(Node node) {
+    Scope getSuperMemberScope(Node node) {
         Scope scope = null;
         if (node instanceof BaseMemberOrTypeExpression) {
             // Check for "Supertype::member"
@@ -1817,61 +1817,7 @@ public class GenerateJsVisitor extends Visitor
 
     @Override
     public void visit(InvocationExpression that) {
-        if (that.getNamedArgumentList()!=null) {
-            NamedArgumentList argList = that.getNamedArgumentList();
-            out("(");
-            Map<String, String> argVarNames = invoker.defineNamedArguments(argList);
-            that.getPrimary().visit(this);
-            TypeArguments targs = that.getPrimary() instanceof BaseMemberOrTypeExpression ?
-                    ((BaseMemberOrTypeExpression)that.getPrimary()).getTypeArguments() : null;
-            if (that.getPrimary() instanceof MemberOrTypeExpression) {
-                MemberOrTypeExpression mte = (MemberOrTypeExpression) that.getPrimary();
-                if (mte.getDeclaration() instanceof Functional) {
-                    Functional f = (Functional) mte.getDeclaration();
-                    invoker.applyNamedArguments(argList, f, argVarNames, getSuperMemberScope(mte)!=null, targs);
-                }
-            }
-            out(")");
-        }
-        else {
-            PositionalArgumentList argList = that.getPositionalArgumentList();
-            that.getPrimary().visit(this);
-            if (prototypeStyle && (getSuperMemberScope(that.getPrimary()) != null)) {
-                out(".call(this");
-                if (!argList.getPositionalArguments().isEmpty()) {
-                    out(",");
-                }
-            }
-            else {
-                out("(");
-            }
-            argList.visit(this);
-            TypeArguments targs = that.getPrimary() instanceof StaticMemberOrTypeExpression ? ((StaticMemberOrTypeExpression)that.getPrimary()).getTypeArguments() : null;
-            if (targs != null && targs.getTypeModels() != null && !targs.getTypeModels().isEmpty()) {
-                if (argList.getPositionalArguments().size() > 0) {
-                    out(",");
-                }
-                Declaration bmed = ((StaticMemberOrTypeExpression)that.getPrimary()).getDeclaration();
-                if (bmed instanceof Functional) {
-                    if (((Functional) bmed).getParameterLists().get(0).getParameters().size() > argList.getPositionalArguments().size()
-                    		// has no comprehension
-                    		&& (argList.getPositionalArguments().isEmpty()
-                    			|| argList.getPositionalArguments().get(argList.getPositionalArguments().size()-1) instanceof Tree.Comprehension == false)) {
-                        out("undefined,");
-                    }
-                    if (targs != null && targs.getTypeModels() != null && !targs.getTypeModels().isEmpty()) {
-                        Map<TypeParameter, ProducedType> invargs = TypeUtils.matchTypeParametersWithArguments(
-                                ((Functional) bmed).getTypeParameters(), targs.getTypeModels());
-                        if (invargs != null) {
-                            TypeUtils.printTypeArguments(that, invargs, this);
-                        } else {
-                            out("/*TARGS != TPARAMS!!!! WTF?????*/");
-                        }
-                    }
-                }
-            }
-            out(")");
-        }
+        invoker.generateInvocation(that);
     }
 
     @Override
@@ -2096,7 +2042,6 @@ public class GenerateJsVisitor extends Visitor
     
     private void specifierStatement(final TypeDeclaration outer,
             final SpecifierStatement specStmt) {
-        
         if (specStmt.getBaseMemberExpression() instanceof BaseMemberExpression) {
             BaseMemberExpression bme = (BaseMemberExpression) specStmt.getBaseMemberExpression();
             Declaration bmeDecl = bme.getDeclaration();
@@ -2151,7 +2096,12 @@ public class GenerateJsVisitor extends Visitor
                         qualify(specStmt, bmeDecl);
                     }
                     out(names.name(bmeDecl), "=");
-                    specStmt.getSpecifierExpression().visit(this);
+                    if (dynblock > 0 && TypeUtils.isUnknown(specStmt.getSpecifierExpression().getExpression().getTypeModel())) {
+                        TypeUtils.generateDynamicCheck(specStmt.getSpecifierExpression().getExpression(),
+                                bme.getTypeModel(), this);
+                    } else {
+                        specStmt.getSpecifierExpression().visit(this);
+                    }
                     out(";");
                 }
             }
@@ -2190,7 +2140,6 @@ public class GenerateJsVisitor extends Visitor
         
         if (dynblock > 0 && TypeUtils.isUnknown(that.getLeftTerm().getTypeModel())) {
             that.getLeftTerm().visit(this);
-            out("=");
             that.getRightTerm().visit(this);
             return;
         }
