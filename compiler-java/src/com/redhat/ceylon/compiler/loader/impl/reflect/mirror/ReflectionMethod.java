@@ -111,9 +111,10 @@ public class ReflectionMethod implements MethodMirror {
             javaParameters = ((Constructor<?>)method).getGenericParameterTypes();
             annotations = ((Constructor<?>)method).getParameterAnnotations();
         }
-        parameters = new ArrayList<VariableMirror>(javaParameters.length);
-        for(int i=0;i<javaParameters.length;i++)
-            parameters.add(new ReflectionVariable(javaParameters[i], annotations[i]));
+        parameters = new ArrayList<VariableMirror>(annotations.length);
+        int extraParameters = javaParameters.length - annotations.length;
+        for(int i=0;i<annotations.length;i++)
+            parameters.add(new ReflectionVariable(javaParameters[i+extraParameters], annotations[i]));
         return parameters;
     }
 
