@@ -44,9 +44,11 @@ import org.junit.runners.ParentRunner;
 import org.junit.runners.model.InitializationError;
 
 import com.redhat.ceylon.compiler.java.codegen.Decl;
+import com.redhat.ceylon.compiler.java.test.CompilerTest.ModuleWithArtifact;
 import com.redhat.ceylon.compiler.java.tools.CeylonLog;
 import com.redhat.ceylon.compiler.java.tools.CeyloncFileManager;
 import com.redhat.ceylon.compiler.java.tools.LanguageCompiler;
+import com.redhat.ceylon.compiler.typechecker.TypeChecker;
 import com.redhat.ceylon.compiler.typechecker.context.PhasedUnit;
 import com.redhat.ceylon.compiler.typechecker.context.PhasedUnits;
 import com.redhat.ceylon.compiler.typechecker.model.Unit;
@@ -265,6 +267,10 @@ public class CeylonModuleRunner extends ParentRunner<Runner> {
         URL outCar = carFile.toURI().toURL();
         URLClassLoader cl = new URLClassLoader(new URL[]{outCar}, 
                 getClass().getClassLoader());
+        // set up the runtime module system
+        com.redhat.ceylon.compiler.java.Util.resetModuleManager();
+        com.redhat.ceylon.compiler.java.Util.loadModule("ceylon.language", TypeChecker.LANGUAGE_MODULE_VERSION, CompilerTest.makeArtifactResult(new File("../ceylon.language/ide-dist/ceylon.language-0.5.car")), cl);
+        com.redhat.ceylon.compiler.java.Util.loadModule(moduleName, version, CompilerTest.makeArtifactResult(carFile), cl);
         return cl;
     }
 
