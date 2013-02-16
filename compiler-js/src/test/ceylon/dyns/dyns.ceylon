@@ -2,8 +2,11 @@ import check { ... }
 
 //Test the dynamic annotation
 shared void test() {
+    variable Singleton<Object> testSingleton = Singleton(1);
+    String zzz;
     dynamic {
         value n = value { x=3; y="hello"; };
+        n.a={1};
         check(n.x==3, "n.x==");
         check(n.x!=9, "n.x!=");
         check(n.x>1, "n.x>");
@@ -11,6 +14,7 @@ shared void test() {
         check(n.x>=3, "n.x>=");
         check(n.x<=3, "n.x<=");
         check(!n.z exists, "n.z exists");
+        check(n.a is {Integer*}, "n.a is {Integer*}");
         value n2 = value {3, "hello"};
         check(n2.length==2, "n2.length");
         check(n2[0]==3, "n2[0]");
@@ -32,6 +36,57 @@ shared void test() {
             fail("what? n is NOT a Singleton!");
         }
         check(!n is Category, "n is a Category?");
+        try {
+            testSingleton = n;
+            fail("dynamic should not be assignable to typed");
+        } catch (Exception e) {
+            check(true);
+            try {
+                value poop = Singleton(n);
+                fail("dynamic should not be passed to typed methods");
+            } catch (Exception e2) {
+                check(true);
+            }
+        }
+        try {
+            Singleton<Object> ts2 = n;
+            fail("Typed declaration with dynamic value");
+        } catch (Exception e) {
+            check(true);
+        }
+        try {
+            zzz = n3[0];
+            check(zzz=="a", "typed is assignable to typed");
+        } catch (Exception e) {
+            fail("typed should be assignable to typed");
+        }
+        try {
+            print(n);
+            fail("dynamic should not be passed to typed methods");
+        } catch (Exception e) {
+            check(true);
+        }
+        try {
+            value tuple = [n, n2];
+            print(tuple[0]);
+            fail("cannot create tuples with dynamic types");
+        } catch (Exception e) {
+            check(true);
+        }
+        try {
+            value iter = {n, n2};
+            print(n.first);
+            fail("cannot create sequence enumerations with dynamic types");
+        } catch (Exception e) {
+            check(true);
+        }
+        try {
+            value iter = coalesce{n,null,n2,null,n3};
+            print(iter.first);
+            fail("cannot create sequenced args with dynamic types");
+        } catch (Exception e) {
+            check(true);
+        }
         results();
     }
 }
