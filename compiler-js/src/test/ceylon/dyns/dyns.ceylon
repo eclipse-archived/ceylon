@@ -5,7 +5,7 @@ shared void test() {
     variable Singleton<Object> testSingleton = Singleton(1);
     String zzz;
     dynamic {
-        value n = value { x=3; y="hello"; };
+        variable value n = value { x=3; y="hello"; };
         n.a={1};
         check(n.x==3, "n.x==");
         check(n.x!=9, "n.x!=");
@@ -87,6 +87,11 @@ shared void test() {
         } catch (Exception e) {
             check(true);
         }
+        n = value{5};
+        check(n.length==1, "reassign n");
+        n = Singleton(1);
+        //Can't use n.size right now because it breaks at runtime
+        check(n.getSize() == 1, "reassigned n to Ceylon type");
         results();
     }
 }
