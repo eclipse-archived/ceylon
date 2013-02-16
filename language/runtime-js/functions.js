@@ -169,7 +169,7 @@ function add_type_arg(obj, name, type) {
     obj.$$targs$$[name]=type;
 }
 function throwexc(msg) {
-    throw Exception(msg);
+    throw Exception(msg.getT$all?msg:String$(msg));
 }
 function dynattrib(obj, at) {
     if (obj === undefined || obj === null) { return null; }
