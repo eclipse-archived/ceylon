@@ -2085,10 +2085,16 @@ public class GenerateJsVisitor extends Visitor
                     // simple assignment to a variable attribute
                     generateMemberAccess(bme, new MemberAccessCallback() {
                         @Override public void generateValue() {
-                            int boxType = boxUnboxStart(specStmt.getSpecifierExpression().getExpression().getTerm(),
-                                    moval);
-                            specStmt.getSpecifierExpression().getExpression().visit(GenerateJsVisitor.this);
-                            boxUnboxEnd(boxType);
+                            if (dynblock > 0 && !TypeUtils.isUnknown(moval.getType())
+                                    && TypeUtils.isUnknown(specStmt.getSpecifierExpression().getExpression().getTypeModel())) {
+                                TypeUtils.generateDynamicCheck(specStmt.getSpecifierExpression().getExpression(),
+                                        moval.getType(), GenerateJsVisitor.this);
+                            } else {
+                                int boxType = boxUnboxStart(specStmt.getSpecifierExpression().getExpression().getTerm(),
+                                        moval);
+                                specStmt.getSpecifierExpression().getExpression().visit(GenerateJsVisitor.this);
+                                boxUnboxEnd(boxType);
+                            }
                         }
                     }, true);
                     out(";");
