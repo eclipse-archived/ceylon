@@ -66,24 +66,6 @@
     
     </section>
     
-    <!--section id="modularity">
-    <title>Modularity</title>
-    
-    <para>
-    Ceylon features language-level <emphasis>package</emphasis> and 
-    <emphasis>module</emphasis> constructs, along with language-level access 
-    control via the <literal>shared</literal> annotation which can be used to 
-    express block-local, package-private, module-private, and public visibility 
-    for program elements. There's no equivalent to Java's <literal>protected</literal>.
-    </para>
-    
-    <para>A module corresponds to a packaged archive with versioning. A 
-    <emphasis>module descriptor</emphasis> expresses dependencies between
-    modules. The tooling and execution model for the language is based 
-    around modularity and module archives.</para>
-    
-    </section-->
-    
     </section>
 
     <section id="thetypesystem">
@@ -497,6 +479,24 @@ shared abstract class AbstractMetaThingy() { ... }</programlisting>
     An especially important application of this facility is Ceylon's built-in 
     support for program element annotations.
     </para>
+    
+    </section>
+    
+    <section id="modularity">
+    <title>Modularity</title>
+    
+    <para>
+    Toplevel declarations are organized into <emphasis>packages</emphasis> and 
+    <emphasis>modules</emphasis>. Ceylon features language-level access control 
+    via the <literal>shared</literal> annotation which can be used to express 
+    block-local, package-private, module-private, and public visibility for 
+    a program element. There's no equivalent to Java's <literal>protected</literal>.
+    </para>
+    
+    <para>A module corresponds to a versioned packaged archive. Its 
+    <emphasis>module descriptor</emphasis> expresses its dependencies to other
+    modules. The tooling and execution model for the language is based around 
+    modularity and module archives.</para>
     
     </section>
     
