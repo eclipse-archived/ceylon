@@ -678,10 +678,10 @@ public class ExpressionVisitor extends Visitor {
                             Tree.Parameter lastParam = params.get(params.size()-1);
                             boolean refSequenced = lastParam.getDeclarationModel().isSequenced();
                             if (refSequenced && !variadic) {
-                                lastParam.addError("parameter list in referenced declaration does not have a sequenced parameter");
+                                lastParam.addError("parameter list in referenced declaration does not have a variadic parameter");
                             }
                             if (!refSequenced && variadic) {
-                                lastParam.addError("parameter list in referenced declaration has a sequenced parameter");                            
+                                lastParam.addError("parameter list in referenced declaration has a variadic parameter");                            
                             }
                         }
                         pt = ct.getTypeArgumentList().get(0);
@@ -736,7 +736,7 @@ public class ExpressionVisitor extends Visitor {
                 if (hasParams && d instanceof Method && 
                         ((Method) d).isDeclaredVoid() && 
                         !isSatementExpression(sie.getExpression())) {
-                    that.addError("method is declared void so specified expression must be a statement: " + 
+                    that.addError("function is declared void so specified expression must be a statement: " + 
                             d.getName(unit));
                 }
                 if (d instanceof Value && 
@@ -1107,7 +1107,7 @@ public class ExpressionVisitor extends Visitor {
                 }
                 if (that.getType() instanceof Tree.VoidModifier && 
                         !isSatementExpression(e)) {
-                    se.addError("method is declared void so specified expression must be a statement: " +
+                    se.addError("function is declared void so specified expression must be a statement: " +
                             that.getDeclarationModel().getName());
                 }
             }
@@ -1192,8 +1192,6 @@ public class ExpressionVisitor extends Visitor {
         validateEnumeratedSupertypes(that, that.getAnonymousClass());
     }
     
-    //TODO: this whole method can be removed once the backend
-    //      implements full support for the new class alias stuff
     @Override public void visit(Tree.ClassDeclaration that) {
         super.visit(that);
         Class alias = that.getDeclarationModel();
@@ -1204,6 +1202,9 @@ public class ExpressionVisitor extends Visitor {
                     that.addError("alias of abstract class must be annotated abstract"); //TODO: error code
                 }
             }
+            //TODO: all this can be removed once the backend
+            //      implements full support for the new class 
+            //      alias stuff
             ProducedType at = alias.getExtendedType();
             ParameterList pl = c.getParameterList();
             ParameterList apl = alias.getParameterList();
@@ -1523,7 +1524,7 @@ public class ExpressionVisitor extends Visitor {
             if (name==null) name = "anonymous function";
             if (e==null) {
                 if (!(returnType instanceof Tree.VoidModifier)) {
-                    that.addError("a non-void method, function or getter must return a value: " +
+                    that.addError("non-void function or getter must return a value: " +
                             name);
                 }
             }
@@ -1531,7 +1532,7 @@ public class ExpressionVisitor extends Visitor {
                 ProducedType et = returnType.getTypeModel();
                 ProducedType at = e.getTypeModel();
                 if (returnType instanceof Tree.VoidModifier) {
-                    that.addError("a void method, void function, setter, or class initializer may not return a value: " +
+                    that.addError("void function, setter, or class initializer may not return a value: " +
                             name);
                 }
                 else if (returnType instanceof Tree.LocalModifier) {
@@ -2487,7 +2488,7 @@ public class ExpressionVisitor extends Visitor {
                                 (Tree.Comprehension) a);
                     }
                     else {
-                        a.addError("not a sequenced parameter: parameter " + 
+                        a.addError("not a variadic parameter: parameter " + 
                                 p.getName() + " of " + pr.getDeclaration().getName());
                     }
                     break;
@@ -2560,7 +2561,7 @@ public class ExpressionVisitor extends Visitor {
                                 paramType);
                         }
                         else {
-                            arg.addError("not a sequenced parameter: parameter " + i);
+                            arg.addError("not a variadic parameter: parameter " + i);
                         }
                         break;
                     }
@@ -2623,13 +2624,13 @@ public class ExpressionVisitor extends Visitor {
                     //checkSpreadArgumentSequential((Tree.SpreadArgument) a, at);
                     at = spreadType(at, unit, true);
                     checkAssignable(unit.getIteratedType(at), set, a,
-                            "spread argument must be assignable to sequenced parameter ");
+                            "spread argument must be assignable to variadic parameter ");
                     checkAssignable(at, paramType, a,
-                            "spread argument must be assignable to sequenced parameter ");
+                            "spread argument must be assignable to variadic parameter ");
                 }
                 else {
                     checkAssignable(at, set, a, 
-                            "argument must be assignable to sequenced parameter");
+                            "argument must be assignable to variadic parameter");
                 }
             }
         }
@@ -2642,7 +2643,7 @@ public class ExpressionVisitor extends Visitor {
         if (at!=null && set!=null && 
                 !at.isUnknown() && !set.isUnknown()) {
             checkAssignable(at, set, c, 
-                    "argument must be assignable to sequenced parameter");
+                    "argument must be assignable to variadic parameter");
         }
     }
     
@@ -2659,12 +2660,12 @@ public class ExpressionVisitor extends Visitor {
                 if (a instanceof Tree.SpreadArgument) {
                     at = spreadType(at, unit, true);
                     checkAssignable(at, paramType, a, 
-                            "spread argument must be assignable to sequenced parameter " + 
+                            "spread argument must be assignable to variadic parameter " + 
                                     p.getName()+ " of " + pr.getDeclaration().getName(unit), 2101);
                 }
                 else {
                     checkAssignable(at, set, a, 
-                            "argument must be assignable to sequenced parameter " + 
+                            "argument must be assignable to variadic parameter " + 
                                     p.getName()+ " of " + pr.getDeclaration().getName(unit), 2101);
                 }
             }
@@ -2680,7 +2681,7 @@ public class ExpressionVisitor extends Visitor {
                 !at.isUnknown() && !paramType.isUnknown()) {
             ProducedType set = paramType==null ? null : unit.getIteratedType(paramType);
             checkAssignable(at, set, c, 
-                    "argument must be assignable to sequenced parameter " + 
+                    "argument must be assignable to variadic parameter " + 
                             p.getName()+ " of " + pr.getDeclaration().getName(unit), 2101);
         }
     }
@@ -2732,7 +2733,7 @@ public class ExpressionVisitor extends Visitor {
         super.visit(that);
         Declaration dec = ((Tree.MemberOrTypeExpression) that.getPrimary()).getDeclaration();
         if (dec!=null && !dec.isToplevel()) {
-            that.getPrimary().addError("annotation must be a toplevel method reference");
+            that.getPrimary().addError("annotation must be a toplevel function reference");
         }
     }
     
@@ -3632,7 +3633,7 @@ public class ExpressionVisitor extends Visitor {
         }
         if (member==null) {
             if (!dynamic) {
-                that.addError("method or attribute does not exist: " +
+                that.addError("function or value does not exist: " +
                         name(that.getIdentifier()), 100);
                 unit.getUnresolvedReferences().add(that.getIdentifier());
             }
@@ -3640,7 +3641,7 @@ public class ExpressionVisitor extends Visitor {
         else {
             that.setDeclaration(member);
             if (!member.isVisible(that.getScope())) {
-                that.addError("method or attribute is not visible: " +
+                that.addError("function or value is not visible: " +
                         name(that.getIdentifier()), 400);
             }
             Tree.TypeArguments tal = that.getTypeArguments();
@@ -3804,7 +3805,7 @@ public class ExpressionVisitor extends Visitor {
             ProducedType t = pr.getFullType();
             if (isTypeUnknown(t)) {
                 if (!dynamic) {
-                    that.addError("could not determine type of method or attribute reference: " +
+                    that.addError("could not determine type of function or value reference: " +
                             member.getName(unit));
                 }
             }

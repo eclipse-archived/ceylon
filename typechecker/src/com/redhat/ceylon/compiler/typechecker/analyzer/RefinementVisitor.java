@@ -369,7 +369,7 @@ public class RefinementVisitor extends Visitor {
                     dec instanceof TypeAlias ||
                     dec instanceof Parameter;
             if (!mayBeShared && dec.isShared()) {
-                that.addError("shared member is not a method, attribute, class, or interface", 1200);
+                that.addError("shared declaration is not a function, value, class, interface, or alias", 1200);
             }
             
             boolean mayBeRefined = 
@@ -587,13 +587,13 @@ public class RefinementVisitor extends Visitor {
     private void checkNonrefinableDeclaration(Tree.Declaration that,
             Declaration dec) {
         if (dec.isActual()) {
-            that.addError("actual declaration is not a method, getter, simple attribute, or class", 1301);
+            that.addError("actual declaration is not a method, getter, reference attribute, or class", 1301);
         }
         if (dec.isFormal()) {
-            that.addError("formal declaration is not a method, getter, simple attribute, or class", 1302);
+            that.addError("formal declaration is not a method, getter, reference attribute, or class", 1302);
         }
         if (dec.isDefault()) {
-            that.addError("default declaration is not a method, getter, simple attribute, or class", 1303);
+            that.addError("default declaration is not a method, getter, reference attribute, or class", 1303);
         }
     }
 
@@ -708,7 +708,7 @@ public class RefinementVisitor extends Visitor {
                 if (p.getDefaultArgument()!=null) {
                     if (foundSequenced) {
                     	p.getDefaultArgument()
-                            .addError("defaulted parameter must occur before sequenced parameter");
+                            .addError("defaulted parameter must occur before variadic parameter");
                     }
                     foundDefault = true;
                     if (!pl.isFirst()) {
@@ -719,11 +719,11 @@ public class RefinementVisitor extends Visitor {
                 else if (isSequenced(p)) {
                 	Tree.Type st = p.getType();
                     if (foundSequenced) {
-						st.addError("parameter list may have at most one sequenced parameter");
+						st.addError("parameter list may have at most one variadic parameter");
                     }
                     foundSequenced = true;
                     if (!pl.isFirst()) {
-                    	st.addError("only the first parameter list may have a sequenced parameter");
+                    	st.addError("only the first parameter list may have a variadic parameter");
                     }
                 }
                 else {
@@ -731,7 +731,7 @@ public class RefinementVisitor extends Visitor {
                         p.addError("required parameter must occur before defaulted parameters");
                     }
                     if (foundSequenced) {
-                        p.addError("required parameter must occur before sequenced parameter");
+                        p.addError("required parameter must occur before variadic parameter");
                     }
                 }
             }

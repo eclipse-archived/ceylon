@@ -846,7 +846,7 @@ public class TypeVisitor extends Visitor {
         Tree.SpecifierExpression sie = that.getSpecifierExpression();
         if (sie==null
                 && that.getType() instanceof Tree.FunctionModifier) {
-            that.getType().addError("method must specify an explicit return type or definition");
+            that.getType().addError("function must specify an explicit return type or definition");
         }
         TypedDeclaration dec = that.getDeclarationModel();
         if (dec!=null) {
@@ -881,7 +881,7 @@ public class TypeVisitor extends Visitor {
                     param.setType(dec.getType());
                     param.setSequenced(that.getType() instanceof Tree.SequencedType);
                     if (sie!=null) {
-                        sie.addError("attribute is an initializer parameter and may not have an initial value: " + 
+                        sie.addError("value is an initializer parameter and may not have an initial value: " + 
                         		dec.getName());
                     }
                 }
@@ -1148,13 +1148,13 @@ public class TypeVisitor extends Visitor {
             ValueParameter d = that.getDeclarationModel();
             Declaration a = that.getScope().getDirectMember(d.getName(), null, false);
             if (a==null) {
-                that.addError("attribute does not exist: " + d.getName());
+                that.addError("parameter declaration does not exist: " + d.getName());
             }
             else if (!(a instanceof Value) && !(a instanceof Method)) {
-                that.addError("not a simple attribute or method: " + d.getName());
+                that.addError("parameter is not a reference value or function: " + d.getName());
             }
             else if (a.isFormal()) {
-                that.addError("initializer parameter refers to a formal attribute: " + 
+                that.addError("parameter is a formal attribute: " + 
                         d.getName());
             }
             /*else if (a.isDefault()) {
@@ -1183,7 +1183,7 @@ public class TypeVisitor extends Visitor {
     		Value v = (Value) that.getDeclarationModel();
 			ValueParameter p = v.getInitializerParameter();
 			if (p==null) {
-				that.getType().addError("attribute has no matching initializer parameter, so may not be sequenced: " +
+				that.getType().addError("value is not a parameter, so may not be variadic: " +
 						v.getName());
 			}
 			else {
@@ -1196,7 +1196,7 @@ public class TypeVisitor extends Visitor {
     public void visit(Tree.AnyMethod that) {
     	super.visit(that);
     	if (that.getType() instanceof Tree.SequencedType) {
-    		that.getType().addError("method may not be sequenced");
+    		that.getType().addError("function type may not be variadic");
     	}
     }
     

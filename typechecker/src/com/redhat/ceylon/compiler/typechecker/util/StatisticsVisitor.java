@@ -49,8 +49,8 @@ public class StatisticsVisitor extends Visitor {
         System.out.println(statements + " statements, " + 
                         declarations + " declarations, " + 
                         classes + " classes, " + 
-                        methods + " methods, " + 
-                        attributes + " attributes");
+                        methods + " functions, " + 
+                        attributes + " values");
     }
     
 }
