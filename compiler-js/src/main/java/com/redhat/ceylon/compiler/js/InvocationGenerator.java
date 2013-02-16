@@ -167,13 +167,19 @@ public class InvocationGenerator {
                 if (arg instanceof Tree.ListedArgument) {
                     if (!first) gen.out(",");
                     expr = ((Tree.ListedArgument) arg).getExpression();
+                    ProducedType exprType = expr.getTypeModel();
+                    boolean dyncheck = gen.isInDynamicBlock() && !TypeUtils.isUnknown(arg.getParameter()) && exprType.isUnknown();
                     if (forceSequenced || (arg.getParameter() != null && arg.getParameter().isSequenced())) {
+                        if (dyncheck) {
+                            //We don't have a real type so get the one declared in the parameter
+                            exprType = arg.getParameter().getType();
+                        }
                         if (sequencedType == null) {
-                            sequencedType=expr.getTypeModel();
+                            sequencedType=exprType;
                         } else {
                             ArrayList<ProducedType> cases = new ArrayList<ProducedType>(2);
                             Util.addToUnion(cases, sequencedType);
-                            Util.addToUnion(cases, expr.getTypeModel());
+                            Util.addToUnion(cases, exprType);
                             if (cases.size() > 1) {
                                 UnionType ut = new UnionType(that.getUnit());
                                 ut.setCaseTypes(cases);
@@ -185,9 +191,14 @@ public class InvocationGenerator {
                         if (!opened) gen.out("[");
                         opened=true;
                     }
-                    int boxType = gen.boxUnboxStart(expr.getTerm(), arg.getParameter());
-                    arg.visit(gen);
-                    gen.boxUnboxEnd(boxType);
+                    if (dyncheck) {
+                        TypeUtils.generateDynamicCheck(((Tree.ListedArgument) arg).getExpression(),
+                                arg.getParameter().getType(), gen);
+                    } else {
+                        int boxType = gen.boxUnboxStart(expr.getTerm(), arg.getParameter());
+                        arg.visit(gen);
+                        gen.boxUnboxEnd(boxType);
+                    }
                 } else if (arg instanceof Tree.SpreadArgument || arg instanceof Tree.Comprehension) {
                     if (arg instanceof Tree.SpreadArgument) {
                         expr = ((Tree.SpreadArgument) arg).getExpression();
