@@ -1337,9 +1337,13 @@ public class GenerateJsVisitor extends Visitor
         out("var ", varName);
         if (expr != null) {
             out("=");
-            int boxType = boxStart(expr.getExpression().getTerm());
-            expr.visit(this);
-            boxUnboxEnd(boxType);
+            if (dynblock > 0 && TypeUtils.isUnknown(expr.getExpression().getTypeModel()) && !TypeUtils.isUnknown(decl.getType())) {
+                TypeUtils.generateDynamicCheck(expr.getExpression(), decl.getType(), this);
+            } else {
+                int boxType = boxStart(expr.getExpression().getTerm());
+                expr.visit(this);
+                boxUnboxEnd(boxType);
+            }
         } else if (param != null) {
             out("=", param);
         }
@@ -1812,6 +1816,7 @@ public class GenerateJsVisitor extends Visitor
     }
 
     public void visit(Dynamic that) {
+        //this is value{xxx}
         invoker.nativeObject(that.getNamedArgumentList());
     }
 
@@ -1969,7 +1974,7 @@ public class GenerateJsVisitor extends Visitor
         for (PositionalArgument arg: positionalArguments) {
             if (!first) out(",");
             if (arg instanceof Tree.ListedArgument) {
-            	((Tree.ListedArgument) arg).getExpression().visit(this);
+                ((Tree.ListedArgument) arg).getExpression().visit(this);
             } else if(arg instanceof Tree.SpreadArgument)
             	((Tree.SpreadArgument) arg).getExpression().visit(this);
             else // comprehension
@@ -2008,7 +2013,11 @@ public class GenerateJsVisitor extends Visitor
                         out(",");
                     }
                 }
-                expr.visit(this);
+                if (dynblock > 0 && expr instanceof ListedArgument && TypeUtils.isUnknown(expr.getTypeModel())) {
+                    TypeUtils.generateDynamicCheck(((ListedArgument)expr).getExpression(), types.anything.getType(), this);
+                } else {
+                    expr.visit(this);
+                }
                 count++;
             }
             if (chainedType == null) {
@@ -2140,6 +2149,7 @@ public class GenerateJsVisitor extends Visitor
         
         if (dynblock > 0 && TypeUtils.isUnknown(that.getLeftTerm().getTypeModel())) {
             that.getLeftTerm().visit(this);
+            out("=");
             that.getRightTerm().visit(this);
             return;
         }
@@ -3466,8 +3476,9 @@ public class GenerateJsVisitor extends Visitor
         		if (count > 0) {
         			out(",");
         		}
+        		ProducedType exprType = expr.getTypeModel();
         		if (count==lim && spread) {
-        			if (expr.getTypeModel().getDeclaration().inherits(types.tuple)) {
+        			if (exprType.getDeclaration().inherits(types.tuple)) {
         				expr.visit(this);
         			} else {
         				expr.visit(this);
@@ -3484,7 +3495,12 @@ public class GenerateJsVisitor extends Visitor
         			} else {
         				targs.add(that.getTypeModel().getTypeArguments());
         			}
-        			expr.visit(this);
+        			if (dynblock > 0 && TypeUtils.isUnknown(exprType) && expr instanceof ListedArgument) {
+                        exprType = types.anything.getType();
+        			    TypeUtils.generateDynamicCheck(((ListedArgument)expr).getExpression(), exprType, this);
+        			} else {
+                        expr.visit(this);
+        			}
         		}
         		count++;
         	}
@@ -3534,7 +3550,9 @@ public class GenerateJsVisitor extends Visitor
     @Override
     public void visit(Tree.DynamicClause that) {
         dynblock++;
+        out("/*Begin dynamic block*/");
         super.visit(that);
+        out("/*End dynamic block*/");
         dynblock--;
     }
 
