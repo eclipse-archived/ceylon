@@ -6,6 +6,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.PrintStream;
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
@@ -314,7 +315,18 @@ public class CeylonRunJsTool implements Tool {
             throw new CeylonRunJsException("Cannot find module " + module + " in specified modules");
         }
         loadDependencies(repoman, jsmod);
-        final ProcessBuilder proc = buildProcess(modname, version, func, args, exepath, repos, sysrep, output);
+        //Filter out remote repos; any stuff needed from there's already been downloaded
+        //by the CMR into local repo.
+        //BTW all this shit would be one line in Ceylon:
+        //repos.filter((String s) => !":" in s)
+        //or, [for (r in repos) if (!":" in r) r]
+        final ArrayList<String> localRepos = new ArrayList<String>(repos.size());
+        for (String r : repos) {
+            if (!r.contains(":")) {
+                localRepos.add(r);
+            }
+        }
+        final ProcessBuilder proc = buildProcess(modname, version, func, args, exepath, localRepos, sysrep, output);
         Process nodeProcess = proc.start();
         //All this shit because inheritIO doesn't work on fucking Windows
         new ReadStream(nodeProcess.getInputStream(), output == null ? System.out : output).start();
