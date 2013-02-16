@@ -191,14 +191,14 @@ public class InvocationGenerator {
                         if (!opened) gen.out("[");
                         opened=true;
                     }
+                    int boxType = gen.boxUnboxStart(expr.getTerm(), arg.getParameter());
                     if (dyncheck) {
                         TypeUtils.generateDynamicCheck(((Tree.ListedArgument) arg).getExpression(),
                                 arg.getParameter().getType(), gen);
                     } else {
-                        int boxType = gen.boxUnboxStart(expr.getTerm(), arg.getParameter());
                         arg.visit(gen);
-                        gen.boxUnboxEnd(boxType);
                     }
+                    gen.boxUnboxEnd(boxType);
                 } else if (arg instanceof Tree.SpreadArgument || arg instanceof Tree.Comprehension) {
                     if (arg instanceof Tree.SpreadArgument) {
                         expr = ((Tree.SpreadArgument) arg).getExpression();

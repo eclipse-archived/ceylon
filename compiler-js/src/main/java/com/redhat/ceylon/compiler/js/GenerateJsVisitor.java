@@ -1337,13 +1337,13 @@ public class GenerateJsVisitor extends Visitor
         out("var ", varName);
         if (expr != null) {
             out("=");
+            int boxType = boxStart(expr.getExpression().getTerm());
             if (dynblock > 0 && TypeUtils.isUnknown(expr.getExpression().getTypeModel()) && !TypeUtils.isUnknown(decl.getType())) {
                 TypeUtils.generateDynamicCheck(expr.getExpression(), decl.getType(), this);
             } else {
-                int boxType = boxStart(expr.getExpression().getTerm());
                 expr.visit(this);
-                boxUnboxEnd(boxType);
             }
+            boxUnboxEnd(boxType);
         } else if (param != null) {
             out("=", param);
         }
@@ -1553,7 +1553,7 @@ public class GenerateJsVisitor extends Visitor
 
     /** Returns true if the declaration is annotated "nativejs" */
     private static boolean isNative(Declaration d) {
-        return hasAnnotationByName(getToplevel(d), "nativejs");
+        return hasAnnotationByName(getToplevel(d), "nativejs") || TypeUtils.isUnknown(d);
     }
 
     private static Declaration getToplevel(Declaration d) {
@@ -1830,6 +1830,13 @@ public class GenerateJsVisitor extends Visitor
         invoker.generatePositionalArguments(that, that.getPositionalArguments(), false);
     }
 
+    /** Box a term, visit it, unbox it. */
+    private void box(Term term) {
+        final int t = boxStart(term);
+        term.visit(this);
+        boxUnboxEnd(t);
+    }
+
     // Make sure fromTerm is compatible with toTerm by boxing it when necessary
     private int boxStart(Term fromTerm) {
         boolean fromNative = isNative(fromTerm);
@@ -1857,7 +1864,7 @@ public class GenerateJsVisitor extends Visitor
     int boxUnboxStart(boolean fromNative, ProducedType fromType, boolean toNative) {
         if (fromNative != toNative) {
             // Box the value
-            String fromTypeName = fromType.getProducedTypeQualifiedName();
+            String fromTypeName = TypeUtils.isUnknown(fromType) ? "UNKNOWN" : fromType.getProducedTypeQualifiedName();
             if (fromNative) {
                 // conversion from native value to Ceylon value
                 if (fromTypeName.equals("ceylon.language::String")) {
@@ -2085,16 +2092,16 @@ public class GenerateJsVisitor extends Visitor
                     // simple assignment to a variable attribute
                     generateMemberAccess(bme, new MemberAccessCallback() {
                         @Override public void generateValue() {
+                            int boxType = boxUnboxStart(specStmt.getSpecifierExpression().getExpression().getTerm(),
+                                    moval);
                             if (dynblock > 0 && !TypeUtils.isUnknown(moval.getType())
                                     && TypeUtils.isUnknown(specStmt.getSpecifierExpression().getExpression().getTypeModel())) {
                                 TypeUtils.generateDynamicCheck(specStmt.getSpecifierExpression().getExpression(),
                                         moval.getType(), GenerateJsVisitor.this);
                             } else {
-                                int boxType = boxUnboxStart(specStmt.getSpecifierExpression().getExpression().getTerm(),
-                                        moval);
                                 specStmt.getSpecifierExpression().getExpression().visit(GenerateJsVisitor.this);
-                                boxUnboxEnd(boxType);
                             }
+                            boxUnboxEnd(boxType);
                         }
                     }, true);
                     out(";");
@@ -2566,9 +2573,9 @@ public class GenerateJsVisitor extends Visitor
             String ltmp = names.createTempVariable();
             String rtmp = names.createTempVariable();
             out("(", ltmp, "=");
-            that.getLeftTerm().visit(this);
+            box(that.getLeftTerm());
             out(",", rtmp, "=");
-            that.getRightTerm().visit(this);
+            box(that.getRightTerm());
             out(",(", ltmp, ".equals&&", ltmp, ".equals(", rtmp, "))||", ltmp, "===", rtmp, ")");
         } else {
             leftEqualsRight(that);
@@ -2581,9 +2588,9 @@ public class GenerateJsVisitor extends Visitor
             String ltmp = names.createTempVariable();
             String rtmp = names.createTempVariable();
             out("(", ltmp, "=");
-            that.getLeftTerm().visit(this);
+            box(that.getLeftTerm());
             out(",", rtmp, "=");
-            that.getRightTerm().visit(this);
+            box(that.getRightTerm());
             out(",(", ltmp, ".equals&&!", ltmp, ".equals(", rtmp, "))||", ltmp, "!==", rtmp, ")");
         } else {
             out("(!");
@@ -2626,9 +2633,9 @@ public class GenerateJsVisitor extends Visitor
             String ltmp = names.createTempVariable();
             String rtmp = names.createTempVariable();
             out("(", ltmp, "=");
-            that.getLeftTerm().visit(this);
+            box(that.getLeftTerm());
             out(",", rtmp, "=");
-            that.getRightTerm().visit(this);
+            box(that.getRightTerm());
             out(",(", ltmp, ".compare&&", ltmp, ".compare(", rtmp, ").equals(",
                     clAlias, "getSmaller()))||", ltmp, "<", rtmp, ")");
         } else {
@@ -2643,9 +2650,9 @@ public class GenerateJsVisitor extends Visitor
             String ltmp = names.createTempVariable();
             String rtmp = names.createTempVariable();
             out("(", ltmp, "=");
-            that.getLeftTerm().visit(this);
+            box(that.getLeftTerm());
             out(",", rtmp, "=");
-            that.getRightTerm().visit(this);
+            box(that.getRightTerm());
             out(",(", ltmp, ".compare&&", ltmp, ".compare(", rtmp, ").equals(",
                     clAlias, "getLarger()))||", ltmp, ">", rtmp, ")");
         } else {
@@ -2660,9 +2667,9 @@ public class GenerateJsVisitor extends Visitor
             String ltmp = names.createTempVariable();
             String rtmp = names.createTempVariable();
             out("(", ltmp, "=");
-            that.getLeftTerm().visit(this);
+            box(that.getLeftTerm());
             out(",", rtmp, "=");
-            that.getRightTerm().visit(this);
+            box(that.getRightTerm());
             out(",(", ltmp, ".compare&&", ltmp, ".compare(", rtmp, "!==",
                     clAlias, "getLarger()))||", ltmp, "<=", rtmp, ")");
         } else {
@@ -2679,9 +2686,9 @@ public class GenerateJsVisitor extends Visitor
             String ltmp = names.createTempVariable();
             String rtmp = names.createTempVariable();
             out("(", ltmp, "=");
-            that.getLeftTerm().visit(this);
+            box(that.getLeftTerm());
             out(",", rtmp, "=");
-            that.getRightTerm().visit(this);
+            box(that.getRightTerm());
             out(",(", ltmp, ".compare&&", ltmp, ".compare(", rtmp, "!==",
                     clAlias, "getSmaller()))||", ltmp, ">=", rtmp, ")");
         } else {
@@ -2730,19 +2737,14 @@ public class GenerateJsVisitor extends Visitor
         void generate(BinaryOpTermGenerator termgen);
     }
     private void binaryOp(final BinaryOperatorExpression that, final BinaryOpGenerator gen) {
-        final GenerateJsVisitor visitor = this;
         gen.generate(new BinaryOpTermGenerator() {
             @Override
             public void left() {
-                int boxTypeLeft = boxStart(that.getLeftTerm());
-                that.getLeftTerm().visit(visitor);
-                boxUnboxEnd(boxTypeLeft);
+                box(that.getLeftTerm());
             }
             @Override
             public void right() {
-                int boxTypeRight = boxStart(that.getRightTerm());
-                that.getRightTerm().visit(visitor);
-                boxUnboxEnd(boxTypeRight);
+                box(that.getRightTerm());
             }
         });
     }
