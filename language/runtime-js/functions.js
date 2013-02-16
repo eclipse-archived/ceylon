@@ -32,7 +32,7 @@ function isOfType(obj, type) {
         if (obj === null) {
             return type.t===Null || type.t===Anything;
         }
-        if (obj.getT$all === undefined) { return false; }
+        if (obj === undefined || obj.getT$all === undefined) { return false; }
         var typeName = type.t.$$.T$name;
         if (obj.getT$all && typeName in obj.getT$all()) {
             if (type.a && obj.$$targs$$) {
@@ -57,7 +57,7 @@ function isOfTypes(obj, types) {
         }
         return false;
     }
-    if (obj.getT$all === undefined) { return false; }
+    if (obj === undefined || obj.getT$all === undefined) { return false; }
     var unions = false;
     var inters = true;
     var _ints=false;
@@ -168,7 +168,22 @@ function add_type_arg(obj, name, type) {
     }
     obj.$$targs$$[name]=type;
 }
-
+function throwexc(msg) {
+    throw Exception(msg);
+}
+function dynattrib(obj, at) {
+    if (obj === undefined || obj === null) { return null; }
+    if (obj.getT$all !== undefined) {
+        var m = 'get'+at[0].toUpperCase()+at.substring(1);
+        if (typeof obj[m] === 'function') {
+            return obj[m]();
+        }
+        if (obj[at] === undefined) {
+            throw Exception("Invalid dynamic attribute " + at);
+        }
+        return obj[at];
+    }
+}
 exports.set_type_args=set_type_args;
 exports.add_type_arg=add_type_arg;
 exports.exists=exists;
@@ -176,3 +191,5 @@ exports.nonempty=nonempty;
 exports.isOfType=isOfType;
 exports.className=className;
 exports.identityHash=identityHash;
+exports.throwexc=throwexc;
+exports.dynattrib=dynattrib;
