@@ -30,6 +30,18 @@
     </para>
     
     <para>
+    Ceylon improves upon the Java language and type system to reduce verbosity 
+    and increase typesafety compared to Java and C#. Ceylon encourages a more 
+    functional, somewhat less imperative style of programming, resulting in code 
+    which is easier to reason about, and easier to refactor. 
+    </para>
+    
+    </section>
+    
+    <section id="runtimeandplatform">
+        <title>Runtime and platform</title>
+    
+    <para>
     Ceylon programs execute in any standard Java Virtual Machine or on any
     JavaScript virtual machine, and take advantage of the memory management and 
     concurrency features of the virtual machine in which they execute. Ceylon
@@ -41,48 +53,58 @@
     <para>
     The Ceylon compiler is able to compile Ceylon code that calls Java classes or 
     interfaces, and Java code that calls Ceylon classes or interfaces. JavaScript
-    code is able to call Ceylon classes and functions compiled to JavaScript.
+    code is able to interact with Ceylon classes and functions compiled to JavaScript. 
+    Via a special <emphasis>dynamic</emphasis> mode, code written in Ceylon may call
+    functions defined natively in JavaScript.
     </para>
     
     <para>
-    Ceylon improves upon the Java language and type system to reduce verbosity 
-    and increase typesafety compared to Java and C#. Ceylon encourages a more 
-    functional, somewhat less imperative style of programming, resulting in code 
-    which is easier to reason about, and easier to refactor. Moreover, Ceylon 
-    provides its own native SDK as a replacement for the Java platform class 
-    libraries.
+    Moreover, Ceylon provides its own native SDK as a replacement for the Java 
+    platform class libraries. Certain SDK modules depend upon services available
+    only on the Java platform. Other SDK modules, including the core 
+    <emphasis>language module</emphasis>, are cross-platform and may also be used 
+    in a JavaScript virtual machine.
     </para>
     
     </section>
     
     <section id="thetypesystem">
-    <title>The type system</title>
+    <title>Type system</title>
     
     <para>
-    Ceylon, like Java, features a hybrid type system with both subtype polymorphism 
-    and parameteric polymorphism. A type is either a stateless <emphasis>interface</emphasis>, 
-    a stateful <emphasis>class</emphasis>, a <emphasis>type parameter</emphasis>, or 
-    a <emphasis>union</emphasis> or <emphasis>intersection</emphasis> of other types.
-    A class, interface, or type parameter may be defined as a subtype of another type.
-    A class or interface may declare type parameters, which abstract the definition 
-    of the class or interface over all types which may be substituted for the type 
+    Ceylon, like Java and C#, features a hybrid type system with both subtype 
+    polymorphism and parameteric polymorphism. A type is either a stateless 
+    <emphasis>interface</emphasis>, a stateful <emphasis>class</emphasis>, a 
+    <emphasis>type parameter</emphasis>, or a <emphasis>union</emphasis> or 
+    <emphasis>intersection</emphasis> of other types. A class, interface, or 
+    type parameter may be defined as a subtype of another type. A class or 
+    interface may declare type parameters, which abstract the definition of the 
+    class or interface over all types which may be substituted for the type 
     parameters.
+    </para>
+    
+    <para>
+    Like C#, and unlike Java, Ceylon's type system is fully reified. In 
+    particular, generic type arguments are reified, eliminating many problems 
+    that result from type erasure in Java.
     </para>
     
     <para>
     There are no primitive types or arrays in Ceylon&mdash;every Ceylon type can 
     be represented within the language itself. So all values are instances of the 
-    type hierarchy root <literal>Anything</literal>, which is a class. However, the 
-    Ceylon compiler is permitted to optimize certain code to take advantage of the 
-    optimized performance of primitive types on the Java or JavaScript VM.
+    type hierarchy root <literal>Anything</literal>, which is a class. However, 
+    the Ceylon compiler is permitted to optimize certain code to take advantage 
+    of the optimized performance of primitive types on the Java or JavaScript VM.
     </para>
     
     <para>
-    The type system is based upon computation of <emphasis>principal types</emphasis>.
-    Within the language, there is no way to produce an expression which does not
-    have a unique principal type expressible within the language itself. The 
-    principal type is a subtype of all other types to which the expression could
-    be assigned.
+    Furthermore, all types inferred or even computed internally by the Ceylon 
+    compiler are expressible within the language itself. Within the type system,
+    <emphasis>non-denoteable</emphasis> types simply do not arise. The type system 
+    is based upon computation of <emphasis>principal types</emphasis>. There is no 
+    way to construct an expression which does not have a unique principal type 
+    expressible within the language. The principal type of an expression is a 
+    subtype of all other types to which the expression could be soundly assigned.
     </para>
     
     </section>
@@ -139,7 +161,7 @@
     </section>
     
     <section id="simplifiedgenerics">
-    <title>Simplified generics and fully-reified types</title>
+    <title>Simplified generics</title>
     
     <para>
     Ceylon does not support Java-style wildcard type parameters, raw types, or any 
@@ -158,16 +180,12 @@
     Ceylon has a somewhat more expressive system of generic type constraints with 
     a cleaner, more regular syntax. The syntax for declaring constraints on a type 
     parameter looks very similar to a class or interface declaration. Ceylon supports 
-    upper bound type constraints and <emphasis>enumerated bounds</emphasis>.
+    upper bound type constraints and also <emphasis>enumerated bounds</emphasis>.
     </para>
     
-    <programlisting>interface Producer&lt;out Value&gt; 
-        given Value satisfies Object { ... }</programlisting>
-    
-    <para>
-    Ceylon's type system is fully reified. In particular, generic type arguments 
-    are reified, eliminating many problems that result from type erasure in Java.
-    </para>
+    <programlisting>interface Producer&lt;out Value, in Rate&gt; 
+        given Value satisfies Object 
+        given Rate of Float|Decimal { ... }</programlisting>
     
     </section>
     
@@ -176,15 +194,20 @@
 
     <para>
     A <emphasis>union type</emphasis>, for example <literal>String|Number</literal>, 
-    or <emphasis>intersection type</emphasis>, for example <literal>String&amp;Number</literal>,
-    may be formed from two or more types defined elsewhere. 
+    or <emphasis>intersection type</emphasis>, for example 
+    <literal>Identifiable&amp;List&lt;String&gt;</literal>, may be formed from 
+    two or more types defined elsewhere. 
     </para>
     
     <para>
     Union types make it possible to write code that operates polymorphically 
     over types defined in disparate branches of the type heirarchy without the 
     need for intermediate adaptor classes. Intersection types make it possible 
-    to operate polymorphically over all subtypes of a list of types.
+    to operate polymorphically over all subtypes of a list of types. Union and
+    intersection types provide some of the benefits of structural ("duck") 
+    typing, within the confines of a nominative type system, and therefore 
+    certain Ceylon idioms are reminiscent of code written in dynamically-typed
+    languages.  
     </para>
         
     <para>
@@ -211,9 +234,10 @@
     <programlisting>alias Number =&gt; Integer|Float|Whole|Decimal;</programlisting>
     
     <para>
-    The type of a block-local attribute or method may be <emphasis>inferred</emphasis> 
-    from its definition. The keyword <literal>value</literal> or <literal>function</literal> 
-    must appear in place of the type declaration.
+    Local <emphasis>type inference</emphasis> allows a type annotation to be
+    eliminated altogether. The type of a block-local attribute or method is 
+    inferred from its definition if the keyword <literal>value</literal> or 
+    <literal>function</literal> occurs in place of the type declaration.
     </para>
     
     <programlisting>value name = person.name;</programlisting>
@@ -238,7 +262,7 @@
     <para>
     By limiting type inference to local declarations, Ceylon ensures that all 
     types may be inferred by the compiler in a single pass of the source code. 
-    Type inference works in the "forward" and "outward" directions. The compiler 
+    Type inference works in the "downward" and "outward" directions. The compiler 
     is able to determine the type of an expression without considering the rest 
     of the statement or declaration in which it appears.
     </para>
@@ -263,10 +287,10 @@
     </para>
     
     <para>
-    A class may be a member of an outer class. A member class may be refined 
-    (overridden) by a subclass of the outer class. Instantiation is therefore 
-    a polymorphic operation in Ceylon, eliminating the need for factory methods
-    in some circumstances.
+    A class may be a member of an outer class. Such a member class may be 
+    refined (overridden) by a subclass of the outer class. Instantiation is 
+    therefore a polymorphic operation in Ceylon, eliminating the need for a 
+    factory method in some circumstances.
     </para>
     
     <para>
@@ -411,22 +435,20 @@ shared abstract class AbstractMetaThingy() { ... }</programlisting>
     <para><emphasis>Sequences</emphasis> are Ceylon's version of arrays. 
     However, the <literal>Sequential</literal> interface does not provide 
     operations for mutating the elements of the sequence. Because this 
-    interface so useful, a type like <literal>Sequential&lt;String&gt;</literal> 
+    interface is so useful, a type like <literal>Sequential&lt;String&gt;</literal> 
     may be abbreviated to <literal>String[]</literal>.</para>
     
     <para>A <emphasis>nonempty sequence</emphasis> is a kind of sequence
     which always has at least one element. The special-purpose 
-    <literal>if (nonempty ... )</literal> construct narrows a sequence type 
-    to a nonempty sequence type.</para>
+    <literal>if (nonempty ... )</literal> construct narrows a sequence 
+    type to a nonempty sequence type.</para>
     
     <para><emphasis>Tuples</emphasis> are a kind of sequence where the 
     type of each element is encoded into the static type of the tuple.
     <literal>Tuple</literal> is just an ordinary class in Ceylon, but 
     syntactic abbreviations let us write down tuple types in using a 
     streamlined syntax, for example, <literal>[Float,Float]</literal>.
-    </para>
-    
-    <para>There is also a convenient syntax for instantiating tuples and
+    There is also a convenient syntax for instantiating tuples and
     accessing their elements.</para>
     
     <programlisting>[Float,Float] origin = [0.0, 0.0];
@@ -533,16 +555,13 @@ Float y = origin[1];</programlisting>
     </section>
     
     <section id="structureddata">
-    <title>User interfaces and structured data</title>
+    <title>Named arguments and tree-like structures</title>
     
     <para>
-    Ceylon introduces a set of syntax extensions that support the definition 
-    of domain-specific languages and expression of structured data. These 
-    extensions include specialized syntax for initializing objects and 
-    collections and expressing literal values of user-defined types. The goal 
-    of this facility is to replace the use of XML for expressing hierarchical 
-    structures such as documents, user interfaces, configuration and serialized 
-    data.
+    Ceylon's named argument lists provide an elegant means of initializing objects 
+    and collections. The goal of this facility is to replace the use of XML for 
+    expressing hierarchical structures such as documents, user interfaces, 
+    configuration and serialized data.
     </para>
     
     <programlisting>Html page = Html {
@@ -596,6 +615,11 @@ Float y = origin[1];</programlisting>
     express block-local, package-private, module-private, and public visibility 
     for program elements. There's no equivalent to Java's <literal>protected</literal>.
     </para>
+    
+    <para>A module corresponds to a packaged archive with versioning. A 
+    <emphasis>module descriptor</emphasis> expresses dependencies between
+    modules. The tooling and execution model for the language is based 
+    around modularity and module archives.</para>
     
     </section>
     
