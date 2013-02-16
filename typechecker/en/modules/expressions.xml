@@ -2271,8 +2271,8 @@ createItemMethod.intercept()
     <section id="constructors">
     <title>Operators for creating objects</title>
     
-        <para>These operators simplify the syntax for creating certain commonly 
-        used built-in types.</para>
+        <para>These operators simplify the syntax for instantiating certain 
+        commonly used built-in types.</para>
     
     <table>
     <tgroup cols="6">
@@ -2591,15 +2591,21 @@ createItemMethod.intercept()
     </tgroup>
     </table>
     
-        <para>Arithmetic operators automatically perform implicit type conversion
-        from <literal>Integer</literal> to <literal>Float</literal>. If one
-        operand is of type <literal>Integer</literal>, and the other of type
-        <literal>Float</literal>, the operand of type <literal>Integer</literal>
-        is widended to a <literal>Float</literal> in order to make the operator
-        expression well-typed.</para>
+        <para>Arithmetic operators automatically widen from <literal>Integer</literal> 
+        to <literal>Float</literal> when necessary. If one operand expression is 
+        of static type <literal>Integer</literal>, and the other is of type 
+        <literal>Float</literal>, the operand of type <literal>Integer</literal> 
+        is widened to a <literal>Float</literal> in order to make the operator 
+        expression well-typed. Widening is performed by evaluating the attribute 
+        <literal>float</literal> defined by <literal>Integer</literal>.</para>
         
         <comment><para>Note: this is the only circumstance in the language where 
-        implicit type conversion occurs.</para></comment>
+        implicit type conversion occurs. In fact, it is more correct to view this 
+        behavior as an instance of operator overloading than as an implicit type 
+        conversion. Implicit widening does not occur when an expression of type 
+        <literal>Integer</literal> is merely assigned to the type 
+        <literal>Float</literal>, since such behavior would result in ambiguities 
+        when generics come into play.</para></comment>
             
         <!--para>Ceylon's numeric type system is designed to accommodate the following
         considerations:</para>
