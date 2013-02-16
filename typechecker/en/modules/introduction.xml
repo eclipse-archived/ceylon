@@ -36,8 +36,6 @@
     which is easier to reason about, and easier to refactor. 
     </para>
     
-    </section>
-    
     <section id="runtimeandplatform">
         <title>Runtime and platform</title>
     
@@ -68,6 +66,26 @@
     
     </section>
     
+    <!--section id="modularity">
+    <title>Modularity</title>
+    
+    <para>
+    Ceylon features language-level <emphasis>package</emphasis> and 
+    <emphasis>module</emphasis> constructs, along with language-level access 
+    control via the <literal>shared</literal> annotation which can be used to 
+    express block-local, package-private, module-private, and public visibility 
+    for program elements. There's no equivalent to Java's <literal>protected</literal>.
+    </para>
+    
+    <para>A module corresponds to a packaged archive with versioning. A 
+    <emphasis>module descriptor</emphasis> expresses dependencies between
+    modules. The tooling and execution model for the language is based 
+    around modularity and module archives.</para>
+    
+    </section-->
+    
+    </section>
+
     <section id="thetypesystem">
     <title>Type system</title>
     
@@ -106,8 +124,6 @@
     expressible within the language. The principal type of an expression is a 
     subtype of all other types to which the expression could be soundly assigned.
     </para>
-    
-    </section>
     
     <section id="mixininheritance">
     <title>Mixin inheritance</title>
@@ -269,6 +285,31 @@
     
     </section>
     
+    <section id="metaprogramming">
+    <title>Metaprogramming</title>
+    
+    <para>
+    Ceylon provides sophisticated support for meta-programming, including a 
+    typesafe <emphasis>metamodel</emphasis> and <emphasis>events</emphasis>. 
+    Generic code may invoke members reflectively and intercept member invocations. 
+    This facility is more powerful, and much more typesafe, than reflection in 
+    Java.
+    </para>
+    
+    </section>
+    
+    </section>
+    
+    <section id="objectorientedprogramming">
+        <title>Object-oriented programming</title>
+        
+    <para>The primary unit of organization of an object-oriented program is
+    the class. But Ceylon, unlike Java, doesn't require that <emphasis>every</emphasis> 
+    function or value belong to a class. It's perfectly normal to program 
+    with a mix of classes and toplevel functions. Contrary to popular belief, 
+    this does not make the program less object-oriented. A function is, after 
+    all, an object.</para>
+    
     <section id="initializationandinstantiation">
     <title>Class initialization and instantiation</title>
     
@@ -366,6 +407,40 @@
     
     </section>
     
+    <section id="firstclassfunctions">
+    <title>First-class functions and higher-order programming</title>
+    
+    <para>
+    Ceylon supports first-class function types and higher-order functions, 
+    with minimal extensions to the traditional C syntax. A method declaration 
+    may specify a <emphasis>callable parameter</emphasis> that accepts 
+    references to other methods with a certain signature. 
+    </para>
+    
+    <programlisting>String find(Boolean where(String string)) { ... }</programlisting>
+    
+    <para>
+    The argument of such a callable parameter may be either a reference to a 
+    named function declared elsewhere, or a new function defined inline as part 
+    of the method invocation. A function may even return an invocable reference 
+    to another function.
+    </para>
+    
+    <programlisting>value result = { "C", "Java", "Ceylon" }.find((String s) =&gt; s.size>1);</programlisting>
+    
+    <!--programlisting>value matches = { "", "hello", "world" }.filter((String s) =&gt; nonempty s);</programlisting-->
+    
+    <para>
+    The type of a function is expressed within the type system as an 
+    instantiation of the interface <literal>Callable</literal>. The parameter 
+    types are expressed as a tuple type. So the type of the function 
+    <literal>(String s) =&gt; s.size>1</literal> is 
+    <literal>Callable&lt;Boolean,[String]&gt;</literal>, which may be 
+    abbreviated to <literal>Boolean(String)</literal>.
+    </para>
+    
+    </section>
+    
     <section id="compilerenforcednamingconventions">
     <title>Naming conventions, annotations, and inline documentation</title>
     
@@ -393,6 +468,76 @@ shared abstract class AbstractMetaThingy() { ... }</programlisting>
     The documentation compiler reads inline documentation specified 
     using the <literal>doc</literal> annotation.
     </para>
+    
+    </section>
+    
+    <section id="structureddata">
+    <title>Named arguments and tree-like structures</title>
+    
+    <para>
+    Ceylon's named argument lists provide an elegant means of initializing objects 
+    and collections. The goal of this facility is to replace the use of XML for 
+    expressing hierarchical structures such as documents, user interfaces, 
+    configuration and serialized data.
+    </para>
+    
+    <programlisting>Html page = Html {
+    Head { 
+        title="Hello"; 
+    };
+    Body { 
+        P {
+            css = "greeting"; 
+            "Hello, World!" 
+        }; 
+    };
+}</programlisting>
+    
+    <para>
+    An especially important application of this facility is Ceylon's built-in 
+    support for program element annotations.
+    </para>
+    
+    </section>
+    
+    </section>
+    
+    <section id="thelanguagemodule">
+        <title>Language module</title>
+        
+    <para>The Ceylon language module defines a set of built-in types which form 
+    the basis for several powerful features of the language. The following 
+    functionality is defined as syntactic "sugar" that makes it easier and more 
+    convenient to interact with the language module.</para>
+    
+    <section id="operatorsandoperatorpolymorphism">
+    <title>Operators and operator polymorphism</title>
+    
+    <para>
+    Ceylon features a rich set of operators, including most of the operators 
+    supported by C and Java. True operator overloading is not supported. 
+    However, each operator is defined to act upon a certain class or interface 
+    type, allowing application of the operator to any class which extends or 
+    satisfies that type. For example, the <literal>+</literal> operater may be
+    applied to any class that satisfies the interface <literal>Summable</literal>. 
+    This approach is called <emphasis>operator polymorphism</emphasis>.
+    </para>
+    
+    </section>
+    
+    <section id="numerictypes">
+    <title>Numeric types</title>
+    
+    <para>Ceylon's numeric type system is much simpler than C, C# or Java, with
+    exactly two built-in numeric types (compared to six in Java and eleven in 
+    C#). The built-in types are classes representing integers and floating point 
+    numbers. <literal>Integer</literal> and <literal>Float</literal> values are 
+    64 bit by default, and may be optimized for 32 bit architectures via use of 
+    the <literal>small</literal> annotation.</para>
+    
+    <para>The module <literal>ceylon.math</literal> provides two additonal
+    numeric types representing arbitrary precision integers and arbitrary 
+    precision decimals.</para>
     
     </section>
     
@@ -429,17 +574,44 @@ shared abstract class AbstractMetaThingy() { ... }</programlisting>
     
     </section>
     
+    <section>
+    <title>Iterable objects and comprehensions</title>
+    
+    <para>The interface <literal>Iterable</literal> represents a stream of
+    values, which might be evaluated lazily. This interface is of central
+    importance in the language module, and so the language provides a
+    syntactic abbreviation for the type of an iterable object. The 
+    abbreviation <literal>{String*}</literal> means 
+    <literal>Iterable&lt;String&gt;</literal>. There is a convenient syntax
+    for instantiating an iterable object, given a list of values:</para>
+    
+    <programlisting>{String*} words = {"hello", "world", "goodbye"};</programlisting>
+    
+    <para><emphasis>Comprehensions</emphasis> are an expressive syntax for
+    filtering and transforming streams of values. For example, they may be 
+    used when instantiating a sequence or collection:</para>
+    
+    <programlisting>value adults = { for (p in people) if (p.age>18) p.name };</programlisting>
+    <programlisting>value peopleByName = HashMap { for (p in people) p.name->p };</programlisting>
+    
+    <para>Comprehensions are evaluated lazily.</para>
+        
+    </section>
+    
     <section id="sequences">
     <title>Sequences and tuples</title>
     
     <para><emphasis>Sequences</emphasis> are Ceylon's version of arrays. 
     However, the <literal>Sequential</literal> interface does not provide 
-    operations for mutating the elements of the sequence. Because this 
-    interface is so useful, a type like <literal>Sequential&lt;String&gt;</literal> 
-    may be abbreviated to <literal>String[]</literal>.</para>
+    operations for mutating the elements of the sequence&mdash;sequences
+    are considered immutable. Because this interface is so useful, a type 
+    like <literal>Sequential&lt;String&gt;</literal> may be abbreviated to 
+    <literal>[String*]</literal>, or, for the sake of tradition, to 
+    <literal>String[]</literal>.</para>
     
     <para>A <emphasis>nonempty sequence</emphasis> is a kind of sequence
-    which always has at least one element. The special-purpose 
+    which always has at least one element. A nonempty sequence type is 
+    written <literal>[String+]</literal>. The special-purpose 
     <literal>if (nonempty ... )</literal> construct narrows a sequence 
     type to a nonempty sequence type.</para>
     
@@ -456,56 +628,8 @@ Float x = origin[0];
 Float y = origin[1];</programlisting>
     
     <!--programlisting>String[] languages = [ "Java", "Python", "Ceylon", "Smalltalk", "ML" ];</programlisting-->
-    
-    </section>
-    
-    <section>
-    <title>Comprehensions</title>
-    
-    <para><emphasis>Comprehensions</emphasis> are an expressive syntax for
-    filtering and transforming streams of values. For example, they may be 
-    used when instantiating a sequence or collection:</para>
-    
-    <programlisting>value adults = { for (p in people) if (p.age>18) p.name };</programlisting>
-    <programlisting>value peopleByName = HashMap { for (p in people) p.name->p };</programlisting>
         
-    </section>
-    
-    <section id="firstclassfunctions">
-    <title>First-class functions and higher-order programming</title>
-    
-    <para>
-    Ceylon supports first-class function types and higher-order functions, 
-    with minimal extensions to the traditional C syntax. A method declaration 
-    may specify a <emphasis>callable parameter</emphasis> that accepts 
-    references to other methods with a certain signature. 
-    </para>
-    
-    <programlisting>String find(Boolean where(String string)) { ... }</programlisting>
-    
-    <para>
-    The argument of such a callable parameter may be either a reference to a 
-    named method declared elsewhere, or a new function defined inline as part 
-    of the method invocation. A method may even return an invocable reference 
-    to another method.
-    </para>
-    
-    <programlisting>value result = { "C", "Java", "Ceylon" }.find((String s) =&gt; s.size>1);</programlisting>
-    
-    <!--programlisting>value matches = { "", "hello", "world" }.filter((String s) =&gt; nonempty s);</programlisting-->
-    
-    <para>
-    The type of a function is expressed within the type system as an 
-    instantiation of the interface <literal>Callable</literal>. The parameter 
-    types are expressed as a tuple type. So the type of the function 
-    <literal>(String s) =&gt; s.size>1</literal> is 
-    <literal>Callable&lt;Boolean,[String]&gt;</literal>, which may be 
-    abbreviated to <literal>Boolean(String)</literal>.
-    </para>
-    
-    </section>
-    
-    <section id="controlflow">
+    <!--section id="controlflow">
     <title>Control flow and exceptions</title>
     
     <para>
@@ -521,78 +645,9 @@ Float y = origin[1];</programlisting>
     exceptions are not supported.
     </para>
     
-    </section>
-    
-    <section id="operatorsandoperatorpolymorphism">
-    <title>Operators and operator polymorphism</title>
-    
-    <para>
-    Ceylon features a rich set of operators, including most of the operators 
-    supported by C and Java. True operator overloading is not supported. 
-    However, each operator is defined to act upon a certain class or interface 
-    type, allowing application of the operator to any class which extends or 
-    satisfies that type. For example, the <literal>+</literal> operater may be
-    applied to any class that satisfies the interface <literal>Summable</literal>. 
-    This approach is called <emphasis>operator polymorphism</emphasis>.
-    </para>
+    </section-->
     
     </section>
-    
-    <section id="numerictypes">
-    <title>Numeric types</title>
-    
-    <para>Ceylon's numeric type system is much simpler than C, C# or Java, with
-    exactly two built-in numeric types (compared to six in Java and eleven in 
-    C#). The built-in types are classes representing integers and floating point 
-    numbers. <literal>Integer</literal> and <literal>Float</literal> values are 
-    64 bit by default, and may be optimized for 32 bit architectures via use of 
-    the <literal>small</literal> annotation.</para>
-    
-    <para>The module <literal>ceylon.math</literal> provides two additonal
-    numeric types representing arbitrary precision integers and arbitrary 
-    precision decimals.</para>
-    
-    </section>
-    
-    <section id="structureddata">
-    <title>Named arguments and tree-like structures</title>
-    
-    <para>
-    Ceylon's named argument lists provide an elegant means of initializing objects 
-    and collections. The goal of this facility is to replace the use of XML for 
-    expressing hierarchical structures such as documents, user interfaces, 
-    configuration and serialized data.
-    </para>
-    
-    <programlisting>Html page = Html {
-    Head { 
-        title="Hello"; 
-    };
-    Body { 
-        P {
-            css = "greeting"; 
-            "Hello, World!" 
-        }; 
-    };
-}</programlisting>
-    
-    <para>
-    An especially important application of this facility is Ceylon's built-in 
-    support for program element annotations.
-    </para>
-    
-    </section>
-    
-    <section id="metaprogramming">
-    <title>Metaprogramming</title>
-    
-    <para>
-    Ceylon provides sophisticated support for meta-programming, including a 
-    typesafe <emphasis>metamodel</emphasis> and <emphasis>events</emphasis>. 
-    Generic code may invoke members reflectively and intercept member invocations. 
-    This facility is more powerful, and much more typesafe, than reflection in 
-    Java.
-    </para>
     
     <!--  
     <para>
@@ -603,24 +658,6 @@ Float y = origin[1];</programlisting>
     "type classes" in Haskell.
     </para>
     -->
-    </section>
-    
-    <section id="modularity">
-    <title>Modularity</title>
-    
-    <para>
-    Ceylon features language-level <emphasis>package</emphasis> and 
-    <emphasis>module</emphasis> constructs, along with language-level access 
-    control via the <literal>shared</literal> annotation which can be used to 
-    express block-local, package-private, module-private, and public visibility 
-    for program elements. There's no equivalent to Java's <literal>protected</literal>.
-    </para>
-    
-    <para>A module corresponds to a packaged archive with versioning. A 
-    <emphasis>module descriptor</emphasis> expresses dependencies between
-    modules. The tooling and execution model for the language is based 
-    around modularity and module archives.</para>
-    
     </section>
     
     <!-- 
