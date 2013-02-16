@@ -30,6 +30,7 @@ public class TypeUtils {
     final TypeDeclaration _integer;
     final TypeDeclaration _float;
     final TypeDeclaration _null;
+    final TypeDeclaration anything;
 
     TypeUtils(Module languageModule) {
         com.redhat.ceylon.compiler.typechecker.model.Package pkg = languageModule.getPackage("ceylon.language");
@@ -40,6 +41,7 @@ public class TypeUtils {
         _integer = (TypeDeclaration)pkg.getMember("Integer", null, false);
         _float = (TypeDeclaration)pkg.getMember("Float", null, false);
         _null = (TypeDeclaration)pkg.getMember("Null", null, false);
+        anything = (TypeDeclaration)pkg.getMember("Anything", null, false);
     }
 
     /** Prints the type arguments, usually for their reification. */
@@ -85,6 +87,8 @@ public class TypeUtils {
             gen.out(GenerateJsVisitor.getClAlias(), "Nothing");
         } else if (t.getQualifiedNameString().equals("ceylon.language::null")) {
             gen.out(GenerateJsVisitor.getClAlias(), "Null");
+        } else if (pt.isUnknown()) {
+            gen.out(GenerateJsVisitor.getClAlias(), "Anything");
         } else {
             if (t.isAlias()) {
                 t = t.getExtendedTypeDeclaration();
@@ -166,8 +170,8 @@ public class TypeUtils {
                     gen.out(".$$targs$$.", tp.getName());
                 }
             } else {
-                gen.out("/*TYPE TYPEPARM ", tp.getName(), parent.getQualifiedNameString(), "*/'",
-                        tp.getQualifiedNameString(), "'");
+                //This can happen in expressions such as Singleton(n) when n is dynamic
+                gen.out("{/*NO PARENT*/t:", GenerateJsVisitor.getClAlias(), "Anything}");
             }
         } else {
             //it has to be a method, right?
@@ -259,14 +263,14 @@ public class TypeUtils {
     }
 
     static boolean isUnknown(ProducedType pt) {
-        return pt == null || pt.getProducedTypeQualifiedName().equals("unknown");
+        return pt == null || pt.isUnknown();
     }
     static boolean isUnknown(Declaration d) {
         return d == null || d.getQualifiedNameString().equals("UnknownType");
     }
 
     /** Generates the code to throw an Exception if a dynamic object is not of the specified type. */
-    static void generateDynamicCheck(Tree.Expression term, final ProducedType t, final GenerateJsVisitor gen) {
+    static void generateDynamicCheck(Tree.Term term, final ProducedType t, final GenerateJsVisitor gen) {
         String tmp = gen.getNames().createTempVariable();
         gen.out("(", tmp, "=");
         term.visit(gen);
