@@ -21,7 +21,7 @@ function exists(value) {
     return value !== null && value !== undefined;
 }
 function nonempty(value) {
-    return value !== null && value !== undefined && !value.getEmpty();
+    return value !== null && value !== undefined && !value.empty;
 }
 
 function isOfType(obj, type) {

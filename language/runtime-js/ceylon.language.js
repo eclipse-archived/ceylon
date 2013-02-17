@@ -72,14 +72,58 @@ function inheritProto(type) {
     var proto = type.$$.prototype;
     for (var i=1; i<arguments.length; ++i) {
         var superProto = arguments[i].$$.prototype;
-        for (var $ in superProto) {proto[$] = superProto[$]}
+        var names = Object.getOwnPropertyNames(superProto);
+        for (var j=0; j<names.length; ++j) {
+            var name = names[j];
+            var desc = Object.getOwnPropertyDescriptor(superProto, name);
+            // only copy own, enumerable properties
+            if (desc && desc.enumerable) {
+                if (desc.get) {
+                    // defined through getter/setter, so copy the definition
+                    Object.defineProperty(proto, name, desc);
+                } else {
+                    proto[name] = desc.value;
+                }
+            }
+        }
     }
+}
+// Define a property on the given object (which may be a prototype).
+// "get" and "set" are getter/setter functions, and the latter is optional.
+function defineAttr(obj, name, get, set) {
+    Object.defineProperty(obj, name, {get: get, set: set, configurable: true, enumerable: true});
+}
+// Create a copy of the given property. The name of the copied property is name+suffix.
+// This is used in closure mode to provide access to inherited attribute implementations.
+function copySuperAttr(obj, name, suffix) {
+    var desc;
+    var o = obj;
+    // It may be an inherited property, so check the prototype chain.
+    do {
+        if ((desc = Object.getOwnPropertyDescriptor(o, name))) {break;}
+        o = o.__proto__;
+    } while (o);
+    if (desc) {
+        Object.defineProperty(obj, name+suffix, desc);
+    }
+}
+// read/writeAttrib return the getter/setter for the given property as defined in the
+// given type. This is used in prototype mode to access inherited attribute implementations.
+function attrGetter(type, name) {
+    return Object.getOwnPropertyDescriptor(type.$$.prototype, name).get;
+}
+function attrSetter(type, name, value) {
+    return Object.getOwnPropertyDescriptor(type.$$.prototype, name).set;
 }
 exports.initType=initType;
 exports.initTypeProto=initTypeProto;
 exports.initExistingType=initExistingType;
 exports.initExistingTypeProto=initExistingTypeProto;
 exports.inheritProto=inheritProto;
+exports.defineAttr=defineAttr;
+exports.copySuperAttr=copySuperAttr;
+exports.attrGetter=attrGetter;
+exports.attrSetter=attrSetter;
 
 function Anything(wat) {
     return wat;
@@ -99,9 +143,10 @@ function Object$(wat) {
 }
 initTypeProto(Object$, 'ceylon.language::Object', Anything);
 var Object$proto = Object$.$$.prototype;
-Object$proto.getString = function() { return String$(className(this) + "@" + this.getHash()); }
-//Object$proto.getString=function() { String$(Object.prototype.toString.apply(this)) };
-Object$proto.toString=function() { return this.getString().valueOf(); }
+defineAttr(Object$proto, 'string', function(){
+    return String$(className(this) + "@" + this.hash);
+});
+Object$proto.toString=function() { return this.string.valueOf(); }
 function $init$Object$() { return Object$; }
 function $init$Object() { return Object$; }
 
@@ -119,7 +164,7 @@ var Identifiable$proto = Identifiable.$$.prototype;
 Identifiable$proto.equals = function(that) {
     return isOfType(that, {t:Identifiable}) && (that===this);
 }
-Identifiable$proto.getHash = function() { return $identityHash(this); }
+defineAttr(Identifiable$proto, 'hash', function(){ return $identityHash(this); });
 
 //INTERFACES
 //#include callable.js
@@ -157,10 +202,10 @@ Boolean.prototype.getT$all = function() {
     return (this.valueOf()?trueClass:falseClass).$$.T$all;
 }
 Boolean.prototype.equals = function(other) {return other.constructor===Boolean && other==this;}
-Boolean.prototype.getHash = function() {return this.valueOf()?1:0;}
+defineAttr(Boolean.prototype, 'hash', function(){ return this.valueOf()?1:0; });
 var trueString = String$("true", 4);
 var falseString = String$("false", 5);
-Boolean.prototype.getString = function() {return this.valueOf()?trueString:falseString;}
+defineAttr(Boolean.prototype, 'string', function(){ return this.valueOf()?trueString:falseString; });
 function getTrue() {return true}
 function getFalse() {return false}
 var $true = true;
@@ -173,7 +218,7 @@ function Comparison(name) {
 }
 initTypeProto(Comparison, 'ceylon.language::Comparison', $init$Basic());
 var Comparison$proto = Comparison.$$.prototype;
-Comparison$proto.getString = function() { return this.name; }
+defineAttr(Comparison$proto, 'string', function(){ return this.name; });
 
 //#include functions.js
 //#include functions2.js

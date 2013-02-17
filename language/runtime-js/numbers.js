@@ -16,31 +16,31 @@ initTypeProto(Integer, 'ceylon.language::Integer', Object$, Scalar,
 
 function Float(value) {
     var that = new Number(value);
-    that.$float = true;
+    that.float$ = true;
     return that;
 }
 initTypeProto(Float, 'ceylon.language::Float', Object$, Scalar, Exponentiable);
 
 var JSNum$proto = Number.prototype;
 JSNum$proto.getT$all = function() {
-    return (this.$float ? Float : Integer).$$.T$all;
+    return (this.float$ ? Float : Integer).$$.T$all;
 }
 JSNum$proto.getT$name = function() {
-    return (this.$float ? Float : Integer).$$.T$name;
+    return (this.float$ ? Float : Integer).$$.T$name;
 }
 JSNum$proto.toString = origNumToString;
-JSNum$proto.getString = function() { return String$(this.toString()) }
+defineAttr(JSNum$proto, 'string', function(){ return String$(this.toString()); });
 JSNum$proto.plus = function(other) {
-    return (this.$float||other.$float) ? Float(this+other) : (this+other);
+    return (this.float$||other.float$) ? Float(this+other) : (this+other);
 }
 JSNum$proto.minus = function(other) {
-    return (this.$float||other.$float) ? Float(this-other) : (this-other);
+    return (this.float$||other.float$) ? Float(this-other) : (this-other);
 }
 JSNum$proto.times = function(other) {
-    return (this.$float||other.$float) ? Float(this*other) : (this*other);
+    return (this.float$||other.float$) ? Float(this*other) : (this*other);
 }
 JSNum$proto.divided = function(other) {
-    if (this.$float||other.$float) { return Float(this/other); }
+    if (this.float$||other.float$) { return Float(this/other); }
     if (other == 0) {
         throw Exception(String$("Division by Zero"));
     }
@@ -48,48 +48,48 @@ JSNum$proto.divided = function(other) {
 }
 JSNum$proto.remainder = function(other) { return this%other; }
 JSNum$proto.power = function(exp) {
-    if (this.$float||exp.$float) { return Float(Math.pow(this, exp)); }
+    if (this.float$||exp.float$) { return Float(Math.pow(this, exp)); }
     if (exp<0 && this!=1 && this!=-1) {
         throw Exception(String$("Negative exponent"));
     }
     return Math.pow(this, exp)|0;
 }
-JSNum$proto.getNegativeValue = function() {
-    return this.$float ? Float(-this) : -this;
-}
-JSNum$proto.getPositiveValue = function() {
-    return this.$float ? this : this.valueOf();
-}
+defineAttr(JSNum$proto, 'negativeValue', function() {
+    return this.float$ ? Float(-this) : -this;
+});
+defineAttr(JSNum$proto, 'positiveValue', function() {
+    return this.float$ ? this : this.valueOf();
+});
 JSNum$proto.equals = function(other) { return other==this.valueOf(); }
 JSNum$proto.compare = function(other) {
     var value = this.valueOf();
     return value==other ? equal : (value<other ? smaller:larger);
 }
-JSNum$proto.getFloat = function() { return Float(this.valueOf()); }
-JSNum$proto.getInteger = function() { return this|0; }
-JSNum$proto.getIntegerValue = function() { return this|0; }
-JSNum$proto.getCharacter = function() { return Character(this.valueOf()); }
-JSNum$proto.getSuccessor = function() { return this+1 }
-JSNum$proto.getPredecessor = function() { return this-1 }
-JSNum$proto.getUnit = function() { return this == 1 }
-JSNum$proto.getZero = function() { return this == 0 }
-JSNum$proto.getFractionalPart = function() {
-    if (!this.$float) { return 0; }
+defineAttr(JSNum$proto, '$float', function(){ return Float(this.valueOf()); });
+defineAttr(JSNum$proto, 'integer', function(){ return this|0; });
+defineAttr(JSNum$proto, 'integerValue', function(){ return this|0; });
+defineAttr(JSNum$proto, 'character', function(){ return Character(this.valueOf()); });
+defineAttr(JSNum$proto, 'successor', function(){ return this+1; });
+defineAttr(JSNum$proto, 'predecessor', function(){ return this-1; });
+defineAttr(JSNum$proto, 'unit', function(){ return this == 1; });
+defineAttr(JSNum$proto, 'zero', function(){ return this == 0; });
+defineAttr(JSNum$proto, 'fractionalPart', function() {
+    if (!this.float$) { return 0; }
     return Float(this - (this>=0 ? Math.floor(this) : Math.ceil(this)));
-}
-JSNum$proto.getWholePart = function() {
-    if (!this.$float) { return this.valueOf(); }
+});
+defineAttr(JSNum$proto, 'wholePart', function() {
+    if (!this.float$) { return this.valueOf(); }
     return Float(this>=0 ? Math.floor(this) : Math.ceil(this));
-}
-JSNum$proto.getSign = function() { return this > 0 ? 1 : this < 0 ? -1 : 0; }
-JSNum$proto.getHash = function() {
-    return this.$float ? String$(this.toPrecision()).getHash() : this.valueOf();
-}
+});
+defineAttr(JSNum$proto, 'sign', function(){ return this > 0 ? 1 : this < 0 ? -1 : 0; });
+defineAttr(JSNum$proto, 'hash', function() {
+    return this.float$ ? String$(this.toPrecision()).hash : this.valueOf();
+});
 JSNum$proto.distanceFrom = function(other) {
-    return (this.$float ? this.getWholePart() : this) - other;
+    return (this.float$ ? this.wholePart : this) - other;
 }
 //Binary interface
-JSNum$proto.getNot = function() { return ~this; }
+defineAttr(JSNum$proto, 'not', function(){ return ~this; });
 JSNum$proto.leftLogicalShift = function(i) { return this << i; }
 JSNum$proto.rightLogicalShift = function(i) { return this >> i; }
 JSNum$proto.rightArithmeticShift = function(i) { return this >>> i; }
@@ -112,8 +112,8 @@ JSNum$proto.flip = function(idx) {
 JSNum$proto.clear = function(index) {
     return this.set(index, false);
 }
-JSNum$proto.getSize = function() { return 53; }
-JSNum$proto.getMagnitude = function() { return Math.abs(this); }
+defineAttr(JSNum$proto, 'size', function(){ return 53; });
+defineAttr(JSNum$proto, 'magnitude', function(){ return Math.abs(this); });
 
 function $parseInteger(s) {
     //xkcd.com/208/
@@ -146,11 +146,11 @@ function $parseInteger(s) {
 }
 function $parseFloat(s) { return Float(parseFloat(s)); }
 
-JSNum$proto.getUndefined = function() { return isNaN(this); }
-JSNum$proto.getFinite = function() { return this!=Infinity && this!=-Infinity && !isNaN(this); }
-JSNum$proto.getInfinite = function() { return this==Infinity || this==-Infinity; }
-JSNum$proto.getStrictlyPositive = function() { return this>0 || (this==0 && (1/this==Infinity)); }
-JSNum$proto.getStrictlyNegative = function() { return this<0 || (this==0 && (1/this==-Infinity)); }
+defineAttr(JSNum$proto, 'undefined', function(){ return isNaN(this); });
+defineAttr(JSNum$proto, 'finite', function(){ return this!=Infinity && this!=-Infinity && !isNaN(this); });
+defineAttr(JSNum$proto, 'infinite', function(){ return this==Infinity || this==-Infinity; });
+defineAttr(JSNum$proto, 'strictlyPositive', function(){ return this>0 || (this==0 && (1/this==Infinity)); });
+defineAttr(JSNum$proto, 'strictlyNegative', function() { return this<0 || (this==0 && (1/this==-Infinity)); });
 
 var $infinity = Float(Infinity);
 function getInfinity() { return $infinity; }

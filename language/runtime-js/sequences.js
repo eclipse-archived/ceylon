@@ -50,7 +50,7 @@ Array$proto.getT$all = function() {
 
 exports.EmptyArray=EmptyArray;
 
-Array$proto.getSize = function() { return this.length; }
+defineAttr(Array$proto, 'size', function(){ return this.length; });
 Array$proto.setItem = function(idx,elem) {
     if (idx >= 0 && idx < this.length) {
         this[idx] = elem;
@@ -60,21 +60,21 @@ Array$proto.get = function(idx) {
     var result = this[idx];
     return result!==undefined ? result:null;
 }
-Array$proto.getLastIndex = function() {
+defineAttr(Array$proto, 'lastIndex', function() {
     return this.length>0 ? (this.length-1) : null;
-}
-Array$proto.getReversed = function() {
+});
+defineAttr(Array$proto, 'reversed', function() {
     if (this.length === 0) { return this; }
     var arr = this.slice(0);
     arr.reverse();
     return this.$seq ? ArraySequence(arr,this.$$targs$$) : arr.reifyCeylonType(this.$$targs$$);
-}
+});
 Array$proto.chain = function(other, $$$mptypes) {
     if (this.length === 0) { return other; }
     return Iterable.$$.prototype.chain.call(this, other, $$$mptypes);
 }
-Array$proto.getFirst = function() { return this.length>0 ? this[0] : null; }
-Array$proto.getLast = function() { return this.length>0 ? this[this.length-1] : null; }
+defineAttr(Array$proto, 'first', function(){ return this.length>0 ? this[0] : null; });
+defineAttr(Array$proto, 'last', function() { return this.length>0 ? this[this.length-1] : null; });
 Array$proto.segment = function(from, len) {
     if (len <= 0) { return getEmpty(); }
     var stop = from + len;
@@ -95,19 +95,19 @@ Array$proto.spanTo = function(to) {
 Array$proto.spanFrom = function(from) {
     return this.span(from, 0x7fffffff);
 }
-Array$proto.getRest = function() {
+defineAttr(Array$proto, 'rest', function() {
     return this.length<=1 ? getEmpty() : ArraySequence(this.slice(1),this.$$targs$$);
-}
+});
 Array$proto.items = function(keys) {
     if (keys === undefined) return getEmpty();
     var seq = [];
-    for (var i = 0; i < keys.getSize(); i++) {
+    for (var i = 0; i < keys.size; i++) {
         var key = keys.get(i);
         seq.push(this.get(key));
     }
     return ArraySequence(seq,this.$$targs$$);
 }
-Array$proto.getKeys = function() { return TypeCategory(this, {t:Integer}); }
+defineAttr(Array$proto, 'keys', function(){ return TypeCategory(this, {t:Integer}); });
 Array$proto.contains = function(elem) {
     for (var i=0; i<this.length; i++) {
         if (elem.equals(this[i])) {
@@ -116,19 +116,19 @@ Array$proto.contains = function(elem) {
     }
     return false;
 }
-Array$proto.getIterator = function() {
+defineAttr(Array$proto, 'iterator', function() {
     var $$$index$$$ = 0;
     var $$$arr$$$ = this;
     return new ComprehensionIterator(function() {
         return ($$$index$$$ === $$$arr$$$.length) ? getFinished() : $$$arr$$$[$$$index$$$++];
     }, this.$$targs$$);
-}
+});
 
 exports.ArrayList=ArrayList;
 exports.array=function(elems, $$$ptypes) {
     var e=[];
     if (!(elems === null || elems === undefined)) {
-        var iter=elems.getIterator();
+        var iter=elems.iterator;
         var item;while((item=iter.next())!==getFinished()) {
             e.push(item);
         }
@@ -167,18 +167,18 @@ function SequenceBuilder($$targs$$) {
 }
 initTypeProto(SequenceBuilder, 'ceylon.language::SequenceBuilder', $init$Basic());
 var SequenceBuilder$proto = SequenceBuilder.$$.prototype;
-SequenceBuilder$proto.getSequence = function() {
+defineAttr(SequenceBuilder$proto, 'sequence', function() {
     return (this.seq.length > 0) ? ArraySequence(this.seq,this.$$targs$$) : getEmpty();
-}
+});
 SequenceBuilder$proto.append = function(e) { this.seq.push(e); }
 SequenceBuilder$proto.appendAll = function(/*Iterable*/arr) {
     if (arr === undefined) return;
-    var iter = arr.getIterator();
+    var iter = arr.iterator;
     var e; while ((e = iter.next()) !== getFinished()) {
         this.seq.push(e);
     }
 }
-SequenceBuilder$proto.getSize = function() { return this.seq.length; }
+defineAttr(SequenceBuilder$proto, 'size', function(){ return this.seq.length; });
 
 function SequenceAppender(other, $$targs$$) {
     var that = new SequenceAppender.$$;

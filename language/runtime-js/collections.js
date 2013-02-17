@@ -26,14 +26,14 @@ function $init$Comprehension() {
 }
 $init$Comprehension();
 var Comprehension$proto = Comprehension.$$.prototype;
-Comprehension$proto.getIterator = function() {
+defineAttr(Comprehension$proto, 'iterator', function() {
     return ComprehensionIterator(this.makeNextFunc(), this.$$targs$$);
-}
-Comprehension$proto.getSequence = function() {
+});
+defineAttr(Comprehension$proto, 'sequence', function() {
     var sb = SequenceBuilder(this.$$targs$$);
     sb.appendAll(this);
-    return sb.getSequence();
-}
+    return sb.sequence;
+});
 exports.Comprehension=Comprehension;
 
 function ComprehensionIterator(nextFunc, $$targs$$, it) {
