@@ -90,8 +90,8 @@ shared void test() {
         n = value{5};
         check(n.length==1, "reassign n");
         n = Singleton(1);
-        check(n.getSize() == 1, "Ceylon method in dynamic type");
-        //check(n.size == 1, "Ceylon attribute in dynamic type");
+        //check(n.getSize() == 1, "Ceylon method in dynamic type");
+        check(n.size == 1, "Ceylon attribute in dynamic type");
         results();
     }
 }

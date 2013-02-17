@@ -233,16 +233,16 @@ public class JsIdentifierNames {
     private String getName(Declaration decl, boolean forGetterSetter) {
         if (decl == null) { return null; }
         String name = decl.getName();
-        if (!((decl.isShared() || decl.isToplevel())
-                && (forGetterSetter || (decl instanceof Method)
-                        || (decl instanceof ClassOrInterface)))) {
-            // The identifier will not be used outside the generated .js file,
-            // so we can simply disambiguate it with a numeric ID.
-            name = uniqueVarNames.get(decl);
-            if (name == null) {
-                name = String.format("%s$%d", decl.getName(), getUID(decl));
-            }
-        } else {
+        // check if it's a shared member or a toplevel function
+        boolean nonLocal = (decl.isShared() && decl.isMember())
+                || (decl.isToplevel() && (forGetterSetter || (decl instanceof Method)
+                                          || (decl instanceof ClassOrInterface)));
+        if (nonLocal && (decl instanceof com.redhat.ceylon.compiler.typechecker.model.Class)
+                && Character.isLowerCase(decl.getName().charAt(0))) {
+            // A lower-case class name belongs to an object and is not public.
+            nonLocal = false;
+        }
+        if (nonLocal) {
             // The identifier might be accessed from other .js files, so it must
             // be reliably reproducible. In most cases simply using the original
             // name is ok because otherwise it would result in a name collision in
@@ -261,6 +261,14 @@ public class JsIdentifierNames {
                     // JavaScript class
                     name = '$' + name;
                 }
+            }
+        }
+        else {
+            // The identifier will not be used outside the generated .js file,
+            // so we can simply disambiguate it with a numeric ID.
+            name = uniqueVarNames.get(decl);
+            if (name == null) {
+                name = String.format("%s$%d", decl.getName(), getUID(decl));
             }
         }
         return name;

@@ -80,7 +80,7 @@ class ComprehensionGenerator {
             if (loopIndex == 0) {
                 gen.out("=");
                 loop.forIterator.getSpecifierExpression().visit(gen);
-                gen.out(".getIterator()");
+                gen.out(".iterator");
             }
             gen.out(";"); gen.endLine();
 
@@ -127,8 +127,8 @@ class ComprehensionGenerator {
 
                 // get key/value if necessary
                 if (loop.keyVarName != null) {
-                    gen.out(loop.keyVarName, "=", elemVarName, ".getKey();"); gen.endLine();
-                    gen.out(loop.valueVarName, "=", elemVarName, ".getItem();"); gen.endLine();
+                    gen.out(loop.keyVarName, "=", elemVarName, ".key;"); gen.endLine();
+                    gen.out(loop.valueVarName, "=", elemVarName, ".item;"); gen.endLine();
                 }
 
                 // generate conditions as nested ifs
@@ -142,7 +142,7 @@ class ComprehensionGenerator {
                     ComprehensionLoopInfo nextLoop = loops.get(loopIndex+1);
                     gen.out(nextLoop.itVarName, "=");
                     nextLoop.forIterator.getSpecifierExpression().visit(gen);
-                    gen.out(".getIterator();"); gen.endLine();
+                    gen.out(".iterator;"); gen.endLine();
                     gen.out("next$", nextLoop.valueVarName, "();"); gen.endLine();
                 }
 
@@ -206,15 +206,11 @@ class ComprehensionGenerator {
         if (loop.keyVarName != null) {
             String tk = names.createTempVariable(loop.keyVarName);
             gen.out("var ", tk, "=", loop.keyVarName, ";"); gen.endLine();
-            gen.out("function ", names.getter(loop.keyDecl), "(){return ", tk, ";}");
-            gen.endLine();
-            directAccess.remove(loop.keyDecl);
+            names.forceName(loop.keyDecl, tk);
         }
         String tv = names.createTempVariable(loop.valueVarName);
         gen.out("var ", tv, "=", loop.valueVarName, ";"); gen.endLine();
-        gen.out("function ", names.getter(loop.valDecl), "(){return ", tv, ";}");
-        gen.endLine();
-        directAccess.remove(loop.valDecl);
+        names.forceName(loop.valDecl, tv);
     }
 
     /** Represents one of the for loops of a comprehension including the associated conditions */
