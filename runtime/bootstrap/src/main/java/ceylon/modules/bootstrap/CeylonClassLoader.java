@@ -9,6 +9,8 @@ import java.net.URLClassLoader;
 import java.util.LinkedList;
 import java.util.List;
 
+import com.redhat.ceylon.common.Versions;
+
 public class CeylonClassLoader extends URLClassLoader {
     
     public CeylonClassLoader() throws URISyntaxException, MalformedURLException, FileNotFoundException {
@@ -52,7 +54,7 @@ public class CeylonClassLoader extends URLClassLoader {
         findLibraries(archives, ceylonLib);
         
         // List all the necessary Ceylon JARs and CARs
-        String version = "0.5";
+        String version = determineSystemVersion();
         archives.add(getRepoJar(ceylonRepo, "com.redhat.ceylon.compiler.java", version));
         archives.add(getRepoCar(ceylonRepo, "ceylon.language", version));
         archives.add(getRepoJar(ceylonRepo, "ceylon.runtime", version));
@@ -108,6 +110,16 @@ public class CeylonClassLoader extends URLClassLoader {
             ceylonLib = new File(determineHome(), "lib");
         }
         return ceylonLib;
+    }
+    
+    public static String determineSystemVersion() {
+        // Determine the Ceylon system/language/runtime version
+        String ceylonSystemVersion = System.getProperty("ceylon.system.version");
+        if (ceylonSystemVersion == null) {
+            // Second try the constant defined in Versions
+            ceylonSystemVersion = Versions.CEYLON_VERSION_NUMBER;
+        }
+        return ceylonSystemVersion;
     }
     
     private static File getRepoJar(File repo, String moduleName, String version) {
