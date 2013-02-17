@@ -274,7 +274,7 @@ public class CeylonTool implements Tool {
 
     ToolLoader getPluginLoader() {
         if (pluginLoader == null) {
-            pluginLoader = new CeylonToolLoader(ClassLoader.getSystemClassLoader());
+            pluginLoader = new CeylonToolLoader(this.getClass().getClassLoader());
         }
         return pluginLoader;
     }
