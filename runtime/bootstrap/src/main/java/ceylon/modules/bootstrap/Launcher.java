@@ -2,12 +2,24 @@ package ceylon.modules.bootstrap;
 
 import java.io.File;
 import java.lang.reflect.Method;
-import java.net.URL;
 import java.util.List;
 
 public class Launcher {
 
     public static void main(String[] args) throws Throwable {
+        // If the --sysrep option was set on the command line we set the corresponding system property
+        String ceylonSystemRepo = getArgument(args, "--sysrep");
+        if (ceylonSystemRepo != null) {
+            System.setProperty("ceylon.system.repo", ceylonSystemRepo);
+        }
+        
+        // If the --system option was set on the command line we set the corresponding system property
+        String ceylonSystemVersion = getArgument(args, "--system");
+        if (ceylonSystemVersion != null) {
+            System.setProperty("ceylon.system.version", ceylonSystemVersion);
+        }
+        
+        // Create the class loader that knows where to find all the Ceylon dependencies
         CeylonClassLoader loader = new CeylonClassLoader();
 
         // We actually need to construct and set a new class path for the compiler
@@ -49,12 +61,24 @@ public class Launcher {
         mainMethod.invoke(null, (Object)args);
     }
     
-    private static boolean hasArgument(String[] args, String test) {
+    private static boolean hasArgument(final String[] args, final String test) {
         for (String arg : args) {
-            if (arg.equals(test)) {
+            if (arg.equals(test) || arg.startsWith(test + "=")) {
                 return true;
             }
         }
         return false;
+    }
+    
+    private static String getArgument(final String[] args, final String test) {
+        for (int i=0; i < args.length; i++) {
+            if (i < (args.length - 1) && args[i].equals(test)) {
+                return args[i + 1];
+            }
+            if (args[i].startsWith(test + "=")) {
+                return args[i].substring(test.length() + 1);
+            }
+        }
+        return null;
     }
 }
