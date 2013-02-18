@@ -459,9 +459,9 @@ abstract class TypeParameterClass<ClassParam> {
 }
 class IntegerParameterClass extends .com.redhat.ceylon.compiler.java.test.structure.type.TypeParameterClass<.ceylon.language.Integer> {
     
-    IntegerParameterClass(final long classParam) {
-        super(.ceylon.language.Integer.instance(classParam));
-        this.attr = .ceylon.language.Integer.instance(classParam);
+    IntegerParameterClass(final .ceylon.language.Integer classParam) {
+        super(classParam);
+        this.attr = classParam;
     }
     private final .ceylon.language.Integer attr;
     
