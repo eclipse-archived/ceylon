@@ -44,7 +44,7 @@ import com.redhat.ceylon.cmr.spi.MergeStrategy;
 public abstract class AbstractJBossRuntime extends AbstractRuntime {
     @Override
     public ClassLoader createClassLoader(String name, String version, Configuration conf) throws Exception {
-        ModuleLoader moduleLoader = createModuleLoader(conf);
+        CeylonModuleLoader moduleLoader = createModuleLoader(conf);
         ModuleIdentifier moduleIdentifier;
         try{
             moduleIdentifier = ModuleIdentifier.fromString(name + ":" + version);
@@ -124,5 +124,5 @@ public abstract class AbstractJBossRuntime extends AbstractRuntime {
      * @param conf the configuration
      * @return the module loader
      */
-    protected abstract ModuleLoader createModuleLoader(Configuration conf);
+    protected abstract CeylonModuleLoader createModuleLoader(Configuration conf);
 }
