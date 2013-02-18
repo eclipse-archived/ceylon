@@ -325,6 +325,7 @@ public class GenerateJsVisitor extends Visitor
 
     private void visitStatements(List<? extends Statement> statements) {
         List<String> oldRetainedVars = retainedVars.reset(null);
+        final List<? extends Statement> prevStatements = currentStatements;
         currentStatements = statements;
 
         for (int i=0; i<statements.size(); i++) {
@@ -335,7 +336,7 @@ public class GenerateJsVisitor extends Visitor
         }
         retainedVars.reset(oldRetainedVars);
         
-        currentStatements = null;
+        currentStatements = prevStatements;
     }
 
     @Override
@@ -854,6 +855,9 @@ public class GenerateJsVisitor extends Visitor
 
     private void addToPrototype(ClassOrInterface d, List<Statement> statements) {
         if (prototypeStyle && !statements.isEmpty()) {
+            final List<? extends Statement> prevStatements = currentStatements;
+            currentStatements = statements;
+            
             out("(function(", names.self(d), ")");
             beginBlock();
             for (Statement s: statements) {
@@ -862,6 +866,8 @@ public class GenerateJsVisitor extends Visitor
             endBlock();
             out(")(", names.name(d), ".$$.prototype);");
             endLine();
+            
+            currentStatements = prevStatements;
         }
     }
 
