@@ -204,6 +204,9 @@ class CodegenUtil {
                 throw new RuntimeException("Different numbers of parameter lists");
             }
             for (int ii = 0; ii < func.getParameterLists().size(); ii++) {
+                if (func.getParameterLists().get(ii).getParameters().size() != refinedFunc.getParameterLists().get(ii).getParameters().size()) {
+                    throw new RuntimeException("Different sized parameter lists");
+                }
                 // find the index of the parameter
                 int index = func.getParameterLists().get(ii).getParameters().indexOf(param);
                 if (index == -1) {
