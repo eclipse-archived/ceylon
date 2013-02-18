@@ -23,6 +23,7 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 
@@ -56,6 +57,8 @@ public class CeylonModuleLoader extends ModuleLoader {
     private static final ModuleIdentifier LANGUAGE;
     private static final ModuleIdentifier COMMON;
     private static final ModuleIdentifier CMR;
+    private static final ModuleIdentifier TYPECHECKER;
+    private static final ModuleIdentifier COMPILER;
     private static final ModuleIdentifier MAVEN;
     private static final ModuleIdentifier MODULES;
     private static final ModuleIdentifier JANDEX;
@@ -71,6 +74,8 @@ public class CeylonModuleLoader extends ModuleLoader {
         LANGUAGE = ModuleIdentifier.create("ceylon.language", defaultVersion);
         COMMON = ModuleIdentifier.create("com.redhat.ceylon.common", defaultVersion);
         CMR = ModuleIdentifier.create("com.redhat.ceylon.module-resolver", defaultVersion);
+        TYPECHECKER = ModuleIdentifier.create("com.redhat.ceylon.typechecker", defaultVersion);
+        COMPILER = ModuleIdentifier.create("com.redhat.ceylon.compiler.java", defaultVersion);
         MAVEN = ModuleIdentifier.create("com.redhat.ceylon.maven-support");
         MODULES = ModuleIdentifier.create("org.jboss.modules");
         JANDEX = ModuleIdentifier.create("org.jboss.jandex");
@@ -82,6 +87,8 @@ public class CeylonModuleLoader extends ModuleLoader {
         BOOTSTRAP.add(LANGUAGE);
         BOOTSTRAP.add(COMMON);
         BOOTSTRAP.add(CMR);
+        BOOTSTRAP.add(TYPECHECKER);
+        BOOTSTRAP.add(COMPILER);
         BOOTSTRAP.add(MAVEN);
         BOOTSTRAP.add(MODULES);
         BOOTSTRAP.add(JANDEX);
@@ -165,17 +172,11 @@ public class CeylonModuleLoader extends ModuleLoader {
 
     @Override
     protected org.jboss.modules.Module preloadModule(ModuleIdentifier mi) throws ModuleLoadException {
-        if (BOOTSTRAP.contains(mi))
+        if (BOOTSTRAP.contains(mi)){
             return org.jboss.modules.Module.getBootModuleLoader().loadModule(mi);
-
-        final Module module = super.preloadModule(mi);
-
-        if (module != null) {
-            ArtifactResult result = artifacts.get(mi);
-            // com.redhat.ceylon.compiler.java.Util.loadModule(mi.getName(), mi.getSlot(), result, SecurityActions.getClassLoader(module))
         }
 
-        return module;
+        return super.preloadModule(mi);
     }
 
     /**
@@ -345,5 +346,17 @@ public class CeylonModuleLoader extends ModuleLoader {
 
     public String toString() {
         return "Ceylon ModuleLoader: " + repository;
+    }
+
+    public void setupRuntimeModuleSystem() throws ModuleLoadException {
+        Module languageModule = org.jboss.modules.Module.getBootModuleLoader().loadModule(LANGUAGE);
+        ArtifactResult languageModuleArtifactResult = findArtifact(LANGUAGE);
+        com.redhat.ceylon.compiler.java.Util.loadModule(LANGUAGE.getName(), LANGUAGE.getSlot(), languageModuleArtifactResult, SecurityActions.getClassLoader(languageModule));
+
+        for(Entry<ModuleIdentifier, ArtifactResult> moduleSpec : artifacts.entrySet()){
+            ModuleIdentifier mi = moduleSpec.getKey();
+            final Module module = findLoadedModuleLocal(mi);
+            com.redhat.ceylon.compiler.java.Util.loadModule(mi.getName(), mi.getSlot(), moduleSpec.getValue(), SecurityActions.getClassLoader(module));
+        }
     }
 }
