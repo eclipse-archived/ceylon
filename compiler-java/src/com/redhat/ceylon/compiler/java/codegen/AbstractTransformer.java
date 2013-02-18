@@ -34,6 +34,7 @@ import org.antlr.runtime.Token;
 
 import com.redhat.ceylon.ceylondoc.Util;
 import com.redhat.ceylon.common.Versions;
+import com.redhat.ceylon.compiler.java.codegen.CallBuilder.ArgumentHandling;
 import com.redhat.ceylon.compiler.java.codegen.Naming.DeclNameFlag;
 import com.redhat.ceylon.compiler.java.loader.CeylonModelLoader;
 import com.redhat.ceylon.compiler.java.loader.TypeFactory;
@@ -2284,11 +2285,13 @@ public abstract class AbstractTransformer implements Transformation {
         for (JCExpression arg : elems) {
             argsAndTypes = argsAndTypes.append(new ExpressionAndType(arg, makeJavaType(seqElemType, makeJavaTypeOpts)));
         }
-        return CallBuilder.instance(this)
+        CallBuilder cb = CallBuilder.instance(this)
                 .instantiate(typeExpr)
-                .argumentsAndTypes(argsAndTypes)
-                .evaluateArgumentsFirst(expressionGen().hasBackwardBranches())
-                .build();
+                .argumentsAndTypes(argsAndTypes);
+        if (expressionGen().hasBackwardBranches()) {
+                cb.argumentHandling(ArgumentHandling.ARGUMENTS_EVAL_FIRST, naming.alias("uninit"));
+        }
+        return cb.build();
     }
     
     /**

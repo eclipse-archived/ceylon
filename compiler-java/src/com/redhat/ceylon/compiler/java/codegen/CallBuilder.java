@@ -16,6 +16,12 @@ public class CallBuilder {
         NEW
     }
     
+    public enum ArgumentHandling {
+        NORMAL,
+        ARGUMENTS_ALIASED,
+        ARGUMENTS_EVAL_FIRST
+    }
+    
     private static final String MISSING_TYPE = "Type expression required when evaluateArgumentsFirst()";
     
     private final AbstractTransformer gen;
@@ -27,8 +33,11 @@ public class CallBuilder {
 
     private JCExpression methodOrClass;
     private ExpressionAndType instantiateQualfier;
-    private boolean argumentsFirst;
-    private SyntheticName basename;
+    private ArgumentHandling argumentHandling = ArgumentHandling.NORMAL;
+    private Naming.SyntheticName basename;
+    private boolean built = false;
+    
+    private List<JCStatement> primaryAndArguments;
     
     private CallBuilder(AbstractTransformer gen) {
         this.gen = gen;
@@ -99,20 +108,24 @@ public class CallBuilder {
      * stack.
      * @see "#929"
      */
-    public CallBuilder evaluateArgumentsFirst(boolean argumentsFirst) {
-        this.argumentsFirst = argumentsFirst;
+    public CallBuilder argumentHandling(ArgumentHandling argumentHandling, Naming.SyntheticName basename) {
+        if (built) {
+            throw new RuntimeException();
+        }
+        this.argumentHandling = argumentHandling;
+        this.basename = basename;
         return this;
     }
     
     public JCExpression build() {
+        if (built) {
+            throw new RuntimeException();
+        }
+        built = true;
         JCExpression result;
-        
-        List<JCStatement> primaryAndArguments;
         List<JCExpression> arguments;
         final JCExpression newEncl;
-        
-        if (argumentsFirst) {
-            basename = gen.naming.alias("uninit");
+        if (argumentHandling != ArgumentHandling.NORMAL) {
             primaryAndArguments = List.<JCStatement>nil();
             arguments = List.<JCExpression>nil();
             if (instantiateQualfier != null 
@@ -120,7 +133,7 @@ public class CallBuilder {
                 if (instantiateQualfier.type == null) {
                     throw Assert.fail(MISSING_TYPE);
                 }
-                SyntheticName qualName = getQualifierName();
+                SyntheticName qualName = getQualifierName(basename);
                 primaryAndArguments = List.<JCStatement>of(gen.makeVar(qualName, 
                         instantiateQualfier.type, 
                         instantiateQualfier.expression));
@@ -130,11 +143,12 @@ public class CallBuilder {
             }
             int argumentNum = 0;
             for (ExpressionAndType argumentAndType : argumentsAndTypes) {
-                SyntheticName name = getArgumentName(argumentNum);
+                SyntheticName name = getArgumentName(basename, argumentNum);
                 if (argumentAndType.type == null) {
                     throw Assert.fail(MISSING_TYPE);
                 }
-                if (kind == Kind.NEW) {
+                if (argumentHandling == ArgumentHandling.ARGUMENTS_ALIASED
+                        || (argumentHandling == ArgumentHandling.ARGUMENTS_EVAL_FIRST && kind == Kind.NEW)) {
                     primaryAndArguments = primaryAndArguments.append(gen.makeVar(name, 
                             argumentAndType.type, 
                             argumentAndType.expression));
@@ -159,20 +173,27 @@ public class CallBuilder {
         default:
             throw Assert.fail();
         }
-        if (this.argumentsFirst) { 
+        if (this.argumentHandling == ArgumentHandling.ARGUMENTS_EVAL_FIRST) { 
             result = gen.make().LetExpr(primaryAndArguments, result);    
         }
         
         return result;
     }
 
-    private SyntheticName getArgumentName(int argumentNum) {
+    private SyntheticName getArgumentName(Naming.SyntheticName basename, int argumentNum) {
         SyntheticName name = basename.suffixedBy("$arg$"+argumentNum);
         return name;
     }
 
-    private SyntheticName getQualifierName() {
+    private SyntheticName getQualifierName(Naming.SyntheticName basename) {
         SyntheticName qualName = basename.suffixedBy("$qual");
         return qualName;
-    }    
+    }
+    
+    public List<JCStatement> getPrimaryAndArguments() {
+        if (!built) {
+            throw new RuntimeException();
+        }
+        return primaryAndArguments;
+    }
 }

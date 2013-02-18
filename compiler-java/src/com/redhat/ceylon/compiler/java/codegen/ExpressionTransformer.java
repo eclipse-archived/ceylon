@@ -28,7 +28,7 @@ import java.util.HashSet;
 import java.util.Iterator;
 import java.util.LinkedList;
 
-import com.redhat.ceylon.compiler.java.codegen.AbstractTransformer.BoxingStrategy;
+import com.redhat.ceylon.compiler.java.codegen.CallBuilder.ArgumentHandling;
 import com.redhat.ceylon.compiler.java.codegen.Invocation.TransformedInvocationPrimary;
 import com.redhat.ceylon.compiler.java.codegen.Naming.Substitution;
 import com.redhat.ceylon.compiler.java.codegen.Naming.SyntheticName;
@@ -1984,8 +1984,10 @@ public class ExpressionTransformer extends AbstractTransformer {
             // Note: here we're not fully qualifying the class name because the JLS says that if "new" is qualified the class name
             // is qualified relative to it
             JCExpression type = makeJavaType(classType, AbstractTransformer.JT_CLASS_NEW | AbstractTransformer.JT_NON_QUALIFIED);
-            callBuilder.evaluateArgumentsFirst(stacksUninitializedOperand(invocation) 
-                    && hasBackwardBranches());
+            if (stacksUninitializedOperand(invocation) 
+                    && hasBackwardBranches()) {
+                callBuilder.argumentHandling(ArgumentHandling.ARGUMENTS_EVAL_FIRST, naming.alias("uninit"));
+            }
             callBuilder.instantiate(new ExpressionAndType(qualifier, qualifierType), type);
         } else {
             callBuilder.typeArguments(List.<JCExpression>nil());
@@ -2011,11 +2013,12 @@ public class ExpressionTransformer extends AbstractTransformer {
             }
         } else {
             ProducedType classType = (ProducedType)type.getTarget();
-            resultExpr = callBuilder
-                    .instantiate(makeJavaType(classType, AbstractTransformer.JT_CLASS_NEW))
-                    .evaluateArgumentsFirst(stacksUninitializedOperand(invocation) 
-                            && hasBackwardBranches())
-                    .build();
+            callBuilder.instantiate(makeJavaType(classType, AbstractTransformer.JT_CLASS_NEW));
+            if (stacksUninitializedOperand(invocation) 
+                    && hasBackwardBranches()) {
+                callBuilder.argumentHandling(ArgumentHandling.ARGUMENTS_EVAL_FIRST, naming.alias("uninit"));
+            }
+            resultExpr = callBuilder.build();
         }
         return resultExpr;
     }
