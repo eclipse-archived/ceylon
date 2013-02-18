@@ -29,7 +29,8 @@
 
     <dependencies>
         <module name="com.redhat.ceylon.compiler.java" slot="0.5"/>
-        <module name="com.redhat.ceylon.spec" slot="0.5"/>
+        <module name="com.redhat.ceylon.typechecker" slot="0.5"/>
+        <module name="com.redhat.ceylon.common" slot="0.5"/>
         <module name="com.redhat.ceylon.module-resolver" slot="0.5"/>
     </dependencies>
 </module>
