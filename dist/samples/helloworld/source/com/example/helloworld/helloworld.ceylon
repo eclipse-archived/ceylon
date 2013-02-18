@@ -15,7 +15,7 @@
  */
 doc "The classic Hello World program"
 shared void hello(String name = "World") {
-    print("Hello, " name "!");
+    print("Hello, `` name ``!");
 }
 
 doc "The runnable method of the module." 

@@ -19,7 +19,7 @@ import java.lang { JInteger = Integer }
 doc "The classic Hello World program"
 shared void hello(String name = "World") {
     value i = JInteger(2);
-    javaPrint("Hello, " name "!");
+    javaPrint("Hello, `` name ``!");
     JavaPrinter(name).print("Hello again, ");
 }
 

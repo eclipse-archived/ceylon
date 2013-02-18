@@ -1,6 +1,6 @@
 doc "The classic Hello World program"
 shared void hello(String name = "World") {
-    print("Hello, " name "!");
+    print("Hello, `` name ``!");
 }
 
 doc "Run the module `@[module.name]`." 
