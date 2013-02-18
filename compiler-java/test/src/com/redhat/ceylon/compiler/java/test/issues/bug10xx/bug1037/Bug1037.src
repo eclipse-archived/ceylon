@@ -1,0 +1,17 @@
+package com.redhat.ceylon.compiler.java.test.issues.bug10xx.bug1037;
+
+class Bug1037 extends .com.redhat.ceylon.compiler.java.test.issues.bug10xx.bug1037.Bug1037Java {
+    
+    Bug1037() {
+        super();
+        test(new .com.redhat.ceylon.compiler.java.language.ArraySequence<.ceylon.language.String>(.ceylon.language.String.instance("")));
+    }
+    
+    public final void test(final .ceylon.language.Sequential<? extends .ceylon.language.String> helllo) {
+    }
+    
+    public static void main(.java.lang.String[] args) {
+        .ceylon.language.process_.getProcess$().setupArguments(args);
+        new .com.redhat.ceylon.compiler.java.test.issues.bug10xx.bug1037.Bug1037();
+    }
+}
