@@ -5,27 +5,13 @@
 <project name="project" default="default">
 	
 	<property name="ceylon.home" value="../.."/>
-	<property name="ceylon.ant.lib" value="${ceylon.home}/repo/com/redhat/ceylon/ant/0.4/com.redhat.ceylon.ant-0.4.jar"/>
+	<property name="ceylon.ant.lib" value="${ceylon.home}/repo/com/redhat/ceylon/ant/0.5/com.redhat.ceylon.ant-0.5.jar"/>
 	
 	<target name="ceylon-ant-taskdefs">
 	  <path id="ant-tasks">
 	    <pathelement location="${ceylon.ant.lib}"/>
 	  </path>
-	  <taskdef name="ceylonc"
-	    classname="com.redhat.ceylon.ant.Ceylonc"
-	    classpathref="ant-tasks"/>
-	  <taskdef name="ceylonc-js"
-	    classname="com.redhat.ceylon.ant.CeyloncJs"
-	    classpathref="ant-tasks"/>
-	  <taskdef name="ceylond"
-	    classname="com.redhat.ceylon.ant.Ceylond"
-	    classpathref="ant-tasks"/>
-	  <taskdef name="ceylon"
-	    classname="com.redhat.ceylon.ant.Ceylon"
-	    classpathref="ant-tasks"/>
-	  <taskdef name="ceylon-js"
-	    classname="com.redhat.ceylon.ant.CeylonJs"
-	    classpathref="ant-tasks"/>
+      <typedef resource="com/redhat/ceylon/ant/antlib.xml" classpathref="ant-tasks"/>
 	</target>
 	
     <target name="default" depends="doc, run">
@@ -35,29 +21,29 @@
     </target>
 
     <target name="compile" depends="ceylon-ant-taskdefs">
-    	<ceylonc>
+    	<ceylon-compile>
     		<module name="default"/>
-    	</ceylonc>
+    	</ceylon-compile>
     </target>
 
     <target name="compile-js" depends="ceylon-ant-taskdefs">
-        <ceylonc-js>
+        <ceylon-compile-js>
             <module name="default"/>
-        </ceylonc-js>
+        </ceylon-compile-js>
     </target>
 
     <target name="doc" depends="ceylon-ant-taskdefs">
-        <ceylond>
+        <ceylon-doc>
             <module name="default"/>
-        </ceylond>
+        </ceylon-doc>
     </target>
 
     <target name="run" depends="compile">
-        <ceylon module="default"/>
+        <ceylon-run module="default"/>
     </target>
 
     <target name="run-js" depends="compile-js">
-        <ceylon-js module="default"/>
+        <ceylon-run-js module="default"/>
     </target>
 
 	<target name="clean">

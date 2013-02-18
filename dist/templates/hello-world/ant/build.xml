@@ -11,50 +11,36 @@
 	  <path id="ant-tasks">
 	    <pathelement location="${ceylon.ant.lib}"/>
 	  </path>
-	  <taskdef name="ceylonc"
-	    classname="com.redhat.ceylon.ant.Ceylonc"
-	    classpathref="ant-tasks"/>
-	  <taskdef name="ceylonc-js"
-	    classname="com.redhat.ceylon.ant.CeyloncJs"
-	    classpathref="ant-tasks"/>
-	  <taskdef name="ceylond"
-	    classname="com.redhat.ceylon.ant.Ceylond"
-	    classpathref="ant-tasks"/>
-	  <taskdef name="ceylon"
-	    classname="com.redhat.ceylon.ant.Ceylon"
-	    classpathref="ant-tasks"/>
-	  <taskdef name="ceylon-js"
-	    classname="com.redhat.ceylon.ant.CeylonJs"
-	    classpathref="ant-tasks"/>
+      <typedef resource="com/redhat/ceylon/ant/antlib.xml" classpathref="ant-tasks"/>
 	</target>
 	
     <target name="default" depends="doc, run">
     </target>
 
     <target name="compile" depends="ceylon-ant-taskdefs">
-        <ceylonc>
+        <ceylon-compile>
             <module name="@[module.name]"/>
-        </ceylonc>
+        </ceylon-compile>
     </target>
 
     <target name="compile-js" depends="ceylon-ant-taskdefs">
-        <ceylonc-js>
+        <ceylon-compile-js>
             <module name="@[module.name]"/>
-        </ceylonc-js>
+        </ceylon-compile-js>
     </target>
 
     <target name="doc" depends="ceylon-ant-taskdefs">
-        <ceylond>
+        <ceylon-doc>
             <module name="@[module.name]"/>
-        </ceylond>
+        </ceylon-doc>
     </target>
 
     <target name="run" depends="compile">
-        <ceylon module="@[module.name]/@[module.version]"/>
+        <ceylon-run module="@[module.name]/@[module.version]"/>
     </target>
 
     <target name="run-js" depends="compile-js">
-        <ceylon-js module="@[module.name]/@[module.version]"/>
+        <ceylon-run-js module="@[module.name]/@[module.version]"/>
     </target>
 
 	<target name="clean">

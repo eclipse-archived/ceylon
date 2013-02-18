@@ -5,40 +5,32 @@
 <project name="project" default="default">
 	
 	<property name="ceylon.home" value="../.."/>
-	<property name="ceylon.ant.lib" value="${ceylon.home}/repo/com/redhat/ceylon/ant/0.4/com.redhat.ceylon.ant-0.4.jar"/>
+    <property name="ceylon.ant.lib" value="${ceylon.home}/repo/com/redhat/ceylon/ant/0.5/com.redhat.ceylon.ant-0.5.jar"/>
 	
 	<target name="ceylon-ant-taskdefs">
 	  <path id="ant-tasks">
 	    <pathelement location="${ceylon.ant.lib}"/>
 	  </path>
-	  <taskdef name="ceylonc"
-	    classname="com.redhat.ceylon.ant.Ceylonc"
-	    classpathref="ant-tasks"/>
-	  <taskdef name="ceylond"
-	    classname="com.redhat.ceylon.ant.Ceylond"
-	    classpathref="ant-tasks"/>
-	  <taskdef name="ceylon"
-	    classname="com.redhat.ceylon.ant.Ceylon"
-	    classpathref="ant-tasks"/>
+      <typedef resource="com/redhat/ceylon/ant/antlib.xml" classpathref="ant-tasks"/>
 	</target>
 	
     <target name="default" depends="doc, run">
     </target>
 
     <target name="compile" depends="ceylon-ant-taskdefs">
-    	<ceylonc>
+    	<ceylon-compile>
     		<module name="com.example.interop"/>
-    	</ceylonc>
+    	</ceylon-compile>
     </target>
 
     <target name="doc" depends="compile">
-        <ceylond>
+        <ceylon-doc>
             <module name="com.example.interop"/>
-        </ceylond>
+        </ceylon-doc>
     </target>
 
     <target name="run" depends="compile">
-        <ceylon module="com.example.interop/1.0.0"/>
+        <ceylon-run module="com.example.interop/1.0.0"/>
     </target>
 
 	<target name="clean">
