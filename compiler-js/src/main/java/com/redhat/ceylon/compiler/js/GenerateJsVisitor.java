@@ -1834,9 +1834,8 @@ public class GenerateJsVisitor extends Visitor
 
     /**
      * Returns a string representing a read access to a member, as represented by
-     * the given expression. If the expression is a QualifiedMemberOrTypeExpression
-     * then the LHS is *not* included. If it is a BaseMemberOrTypeExpression and
-     * qualifyBaseExpr==true then the qualified path is included.
+     * the given expression. If lhs==null and the expression is a BaseMemberExpression
+     * then the qualified path is prepended.
      */
     private String memberAccess(StaticMemberOrTypeExpression expr, String lhs) {
         Declaration decl = expr.getDeclaration();
@@ -1865,9 +1864,8 @@ public class GenerateJsVisitor extends Visitor
     /**
      * Generates a write access to a member, as represented by the given expression.
      * The given callback is responsible for generating the assigned value.
-     * If the expression is a QualifiedMemberOrTypeExpression then the
-     * LHS is *not* included. If it is a BaseMemberOrTypeExpression and
-     * qualifyBaseExpr==true then the qualified path is included.
+     * If lhs==null and the expression is a BaseMemberExpression
+     * then the qualified path is prepended.
      */
     private void generateMemberAccess(StaticMemberOrTypeExpression expr,
                 GenerateCallback callback, String lhs) {
