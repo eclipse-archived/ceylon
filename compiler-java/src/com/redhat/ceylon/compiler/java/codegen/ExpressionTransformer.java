@@ -730,6 +730,33 @@ public class ExpressionTransformer extends AbstractTransformer {
         return ret;
     }
     
+    private final class InvocationTermTransformer implements TermTransformer {
+        private final Invocation invocation;
+        private final CallBuilder callBuilder;
+        
+        private InvocationTermTransformer(
+                Invocation invocation,
+                CallBuilder callBuilder) {
+            this.invocation = invocation;
+            this.callBuilder = callBuilder;
+        }
+
+        @Override
+        public JCExpression transform(JCExpression primaryExpr, String selector) {
+            TransformedInvocationPrimary transformedPrimary = invocation.transformPrimary(primaryExpr, selector);
+            boolean prev = uninitializedOperand(stacksUninitializedOperand(invocation));
+            callBuilder.argumentsAndTypes(transformArgumentList(invocation, transformedPrimary));
+            uninitializedOperand(prev);
+            JCExpression resultExpr;
+            if (invocation instanceof NamedArgumentInvocation) {
+                resultExpr = transformNamedArgumentInvocationOrInstantiation((NamedArgumentInvocation)invocation, callBuilder, transformedPrimary);
+            } else {
+                resultExpr = transformPositionalInvocationOrInstantiation(invocation, callBuilder, transformedPrimary);
+            }
+            return resultExpr;
+        }
+    }
+
     private static class VarianceCastResult {
         ProducedType castType;
         
@@ -1907,22 +1934,7 @@ public class ExpressionTransformer extends AbstractTransformer {
                 while (primary instanceof Tree.Expression) {
                     primary = (Tree.Primary)((Expression)primary).getTerm();
                 }
-                JCExpression result = transformPrimary(primary, new TermTransformer() {
-                    @Override
-                    public JCExpression transform(JCExpression primaryExpr, String selector) {
-                        TransformedInvocationPrimary transformedPrimary = invocation.transformPrimary(primaryExpr, selector);
-                        boolean prev = uninitializedOperand(stacksUninitializedOperand(invocation));
-                        callBuilder.argumentsAndTypes(transformArgumentList(invocation, transformedPrimary));
-                        uninitializedOperand(prev);
-                        JCExpression resultExpr;
-                        if (invocation instanceof NamedArgumentInvocation) {
-                            resultExpr = transformNamedArgumentInvocationOrInstantiation((NamedArgumentInvocation)invocation, callBuilder, transformedPrimary);
-                        } else {
-                            resultExpr = transformPositionalInvocationOrInstantiation(invocation, callBuilder, transformedPrimary);
-                        }
-                        return resultExpr;
-                    }
-                });
+                JCExpression result = transformPrimary(primary, new InvocationTermTransformer(invocation, callBuilder));
                 return result;
                 
             }
@@ -2335,6 +2347,13 @@ public class ExpressionTransformer extends AbstractTransformer {
         elementExpr = applyErasureAndBoxing(elementExpr, srcElementType, CodegenUtil.hasTypeErased(expr.getPrimary()),
                 true, BoxingStrategy.BOXED, 
                 srcElementType, 0);
+        boolean aliasArguments = (transformer instanceof InvocationTermTransformer)
+                && ((InvocationTermTransformer)transformer).invocation.getNode() instanceof Tree.InvocationExpression
+                && ((Tree.InvocationExpression)((InvocationTermTransformer)transformer).invocation.getNode()).getPositionalArgumentList() != null;
+        if (aliasArguments) {
+            ((InvocationTermTransformer)transformer).callBuilder.argumentHandling(
+                    ArgumentHandling.ARGUMENTS_ALIASED, varBaseName);        
+        }
         JCExpression appliedExpr = transformMemberExpression(expr, elementExpr, transformer);
         
         // This short-circuit is here for spread invocations
@@ -2382,6 +2401,10 @@ public class ExpressionTransformer extends AbstractTransformer {
         List<JCStatement> stmts = List.<JCStatement>of(
                 makeVar(srcIterableName, srcIterableTypeExpr, srcIterableExpr),
                 makeVar(builderVar, builderTypeExpr, builderInitExpr));
+        if (aliasArguments) {
+            stmts = stmts.appendList(((InvocationTermTransformer)transformer).callBuilder.getPrimaryAndArguments());
+        }
+        
         stmts = stmts.appendList(forStmt);
         JCExpression spread = make().LetExpr(stmts, 
                 make().Apply(
