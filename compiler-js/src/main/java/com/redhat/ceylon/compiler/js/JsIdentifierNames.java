@@ -118,7 +118,14 @@ public class JsIdentifierNames {
      * to represent the given declaration.
      */
     public String name(Declaration decl) {
-        return getName(decl, false);
+        return getName(decl, false, false);
+    }
+    
+    /**
+     * Determine a secondary, private identifier name for the given declaration.
+     */
+    public String privateName(Declaration decl) {
+        return getName(decl, false, true);
     }
 
     /**
@@ -127,7 +134,7 @@ public class JsIdentifierNames {
      */
     public String getter(Declaration decl) {
         if (decl == null) { return ""; }
-        String name = getName(decl, true);
+        String name = getName(decl, true, false);
         return String.format("get%c%s", Character.toUpperCase(name.charAt(0)),
                 name.substring(1));
     }
@@ -137,7 +144,7 @@ public class JsIdentifierNames {
      * for the setter of the given declaration.
      */
     public String setter(Declaration decl) {
-        String name = getName(decl, true);
+        String name = getName(decl, true, false);
         return String.format("set%c%s", Character.toUpperCase(name.charAt(0)),
                 name.substring(1));
     }
@@ -230,13 +237,16 @@ public class JsIdentifierNames {
     private Map<Declaration, String> uniqueVarNames =
             new HashMap<Declaration, String>();
 
-    private String getName(Declaration decl, boolean forGetterSetter) {
+    private String getName(Declaration decl, boolean forGetterSetter, boolean priv) {
         if (decl == null) { return null; }
         String name = decl.getName();
-        // check if it's a shared member or a toplevel function
-        boolean nonLocal = (decl.isShared() && decl.isMember())
+        boolean nonLocal = !priv;
+        if (nonLocal) {
+            // check if it's a shared member or a toplevel function
+            nonLocal = (decl.isShared() && decl.isMember())
                 || (decl.isToplevel() && (forGetterSetter || (decl instanceof Method)
                                           || (decl instanceof ClassOrInterface)));
+        }
         if (nonLocal && (decl instanceof com.redhat.ceylon.compiler.typechecker.model.Class)
                 && Character.isLowerCase(decl.getName().charAt(0))) {
             // A lower-case class name belongs to an object and is not public.
@@ -268,7 +278,8 @@ public class JsIdentifierNames {
             // so we can simply disambiguate it with a numeric ID.
             name = uniqueVarNames.get(decl);
             if (name == null) {
-                name = String.format("%s$%d", decl.getName(), getUID(decl));
+                name = String.format(priv ? "%s$%d_" : "%s$%d",
+                        decl.getName(), getUID(decl));
             }
         }
         return name;

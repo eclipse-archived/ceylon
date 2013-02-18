@@ -965,7 +965,7 @@ public class GenerateJsVisitor extends Visitor
             Class c = (Class) d.getTypeDeclaration();
             comment(that);
             outerSelf(d);
-            out(".", names.name(d), "=");
+            out(".", names.privateName(d), "=");
             outerSelf(d);
             out(".", names.name(c), "();");
             endLine();
@@ -1039,16 +1039,17 @@ public class GenerateJsVisitor extends Visitor
                 endLine();
             }
         }
-        else if (!addToPrototype) {
-            if (d.isActual()) {
-                out("delete ");
-                outerSelf(d);
-                out(".", names.name(d));
-                endLine(true);
-            }
+        else {
+            out(clAlias, "defineAttr(");
             outerSelf(d);
-            out(".", names.name(d), "=", names.name(d));
-            endLine(true);
+            out(",'", names.name(d), "',function(){return ");
+            if (addToPrototype) {
+                out("this.", names.privateName(d));
+            } else {
+                out(names.name(d));
+            }
+            out(";});");
+            endLine();
         }
     }
 
@@ -1354,12 +1355,12 @@ public class GenerateJsVisitor extends Visitor
                 if ((specInitExpr != null)
                         && !(specInitExpr instanceof LazySpecifierExpression)) {
                     outerSelf(d);
-                    out(".", names.name(d), "=");
+                    out(".", names.privateName(d), "=");
                     super.visit(that);
                     endLine(true);
                 } else if (classParam != null) {
                     outerSelf(d);
-                    out(".", names.name(d), "=", classParam);
+                    out(".", names.privateName(d), "=", classParam);
                     endLine(true);
                 }
                 //TODO generate for => expr when no classParam is available
@@ -1440,12 +1441,6 @@ public class GenerateJsVisitor extends Visitor
                     endLine();
                 }
                 else {
-                    if (decl.isMember()) {
-                        out("delete ");
-                        outerSelf(decl);
-                        out(".", varName);
-                        endLine(true);
-                    }
                     out("var ", names.getter(decl),"=function(){return ", varName, ";};");
                     endLine();
                     shareGetter(decl);
@@ -1484,9 +1479,16 @@ public class GenerateJsVisitor extends Visitor
                     out(")");
                     endLine(true);
                 }
-                else if (d.isActual()) {
-                    out("delete ", names.self(outer), ".", names.name(d));
-                    endLine(true);
+                else {
+                    out(clAlias, "defineAttr(", names.self(outer), ",'", names.name(d),
+                            "',function(){return this.", names.privateName(d), ";}");
+                    if (d.isVariable()) {
+                        final String param = names.createTempVariable(d.getName());
+                        out(",function(", param, "){return this.", names.privateName(d),
+                                "=", param, ";}");
+                    }
+                    out(");");
+                    endLine();
                 }
             }
         }
