@@ -9,7 +9,6 @@ class TestList<Element>(Element* elems) satisfies List<Element> {
     shared actual TestList<Element> spanTo(Integer b) => TestList(*elems.spanTo(b));
     shared actual TestList<Element> segment(Integer a, Integer b) => TestList(*elems.segment(a, b));
     shared actual TestList<Element> clone => TestList(*elems);
-    shared actual Iterator<Element> iterator => elems.iterator;
 }
 
 void lists() {
@@ -79,4 +78,11 @@ void lists() {
     check(empty167=={}, "empty167=={}");
     check({}==empty167, "{}==empty167");
     check(empty167.hash=={}.hash, "empty167.hash=={}.hash");
+    //#197
+    value nulled197 = TestList(1,2,3,null,5,6,7);
+    try {
+        check(nulled197.count((Integer? i) => i exists) == 6, "list with nullls (#197)");
+    } catch (AssertionException e) {
+        fail("list with nulls #197 still not fixed");
+    }
 }
