@@ -5,7 +5,6 @@ import java.util.List;
 
 import com.redhat.ceylon.cmr.api.ArtifactResult;
 import com.redhat.ceylon.compiler.loader.AbstractModelLoader;
-import com.redhat.ceylon.compiler.loader.impl.reflect.ReflectionModelLoader;
 import com.redhat.ceylon.compiler.loader.impl.reflect.model.ReflectionModule;
 import com.redhat.ceylon.compiler.loader.impl.reflect.model.ReflectionModuleManager;
 import com.redhat.ceylon.compiler.loader.model.LazyModule;
