@@ -1059,5 +1059,10 @@ public class IssuesTest extends CompilerTest {
                 new CompilerError(22, "CompilerBoxingDeclarationVisitor caused an exception visiting ValueParameterDeclaration node: java.lang.RuntimeException: Different sized parameter lists at com.redhat.ceylon.compiler.java.codegen.CodegenUtil.getTopmostRefinedDeclaration(CodegenUtil.java:208)"),
                 new CompilerError(23, "method test in class com.redhat.ceylon.compiler.java.test.issues.bug10xx.bug1037.Bug1037Java cannot be applied to given types;\n  required: no arguments\n  found: com.redhat.ceylon.compiler.java.language.ArraySequence<ceylon.language.String>\n  reason: actual and formal argument lists differ in length"));
     }
+    
+    @Test
+    public void testBug1042_fail() {
+        compareWithJavaSource("bug10xx/Bug1042");
+    }
 }
 
