@@ -432,9 +432,9 @@ class CallableWithDefaulted {
                     
                     @.java.lang.Override
                     public .ceylon.language.Integer $call(final .java.lang.Object $param$0, final .java.lang.Object $param$1) {
-                        final .ceylon.language.Integer a = (.ceylon.language.Integer)$param$0;
-                        final .ceylon.language.Integer b = (.ceylon.language.Integer)$param$1;
-                        return a.plus(b);
+                        final long a = ((.ceylon.language.Integer)$param$0).longValue();
+                        final long b = ((.ceylon.language.Integer)$param$1).longValue();
+                        return .ceylon.language.Integer.instance(a + b);
                     }
                 };
                 methodWithDefaultCallableParam$priv($arg$8$0);

@@ -66,8 +66,8 @@ final class anonymousStatementFunction_ {
                     
                     @.java.lang.Override
                     public .ceylon.language.Float $call(final .java.lang.Object $param$0) {
-                        final .ceylon.language.Float x = (.ceylon.language.Float)$param$0;
-                        return x.times(x);
+                        final double x = ((.ceylon.language.Float)$param$0).doubleValue();
+                        return .ceylon.language.Float.instance(x * x);
                     }
                 };
                 ggg.ggg($arg$1$0);
