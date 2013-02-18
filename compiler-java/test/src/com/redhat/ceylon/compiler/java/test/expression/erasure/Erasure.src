@@ -516,10 +516,11 @@ class Test {
             {
                 .ceylon.language.Iterable<? extends .com.redhat.ceylon.compiler.java.test.expression.erasure.Top, ? extends .java.lang.Object> $spread$39$iterable = (.ceylon.language.Iterable<? extends .com.redhat.ceylon.compiler.java.test.expression.erasure.Top, ? extends .java.lang.Object>)(.ceylon.language.Iterable)leftsAndRights;
                 .ceylon.language.SequenceBuilder $spread$39$sequenceBuilder = new .ceylon.language.SequenceBuilder();
+                .java.lang.Object $spread$39$arg$0 = new .com.redhat.ceylon.compiler.java.test.expression.erasure.CMiddle();
                 .java.lang.Object $spread$39$iteration;
                 for (.ceylon.language.Iterator<? extends .com.redhat.ceylon.compiler.java.test.expression.erasure.Top> $spread$39$iterator = $spread$39$iterable.getIterator(); !(($spread$39$iteration = $spread$39$iterator.next()) instanceof .ceylon.language.Finished); ) {
                     .com.redhat.ceylon.compiler.java.test.expression.erasure.Top $spread$39$element = (.com.redhat.ceylon.compiler.java.test.expression.erasure.Top)$spread$39$iteration;
-                    $spread$39$sequenceBuilder.append(((.com.redhat.ceylon.compiler.java.test.expression.erasure.Top)$spread$39$element).leftAndRightMethod(new .com.redhat.ceylon.compiler.java.test.expression.erasure.CMiddle()));
+                    $spread$39$sequenceBuilder.append(((.com.redhat.ceylon.compiler.java.test.expression.erasure.Top)$spread$39$element).leftAndRightMethod($spread$39$arg$0));
                 }
             }
             returning $spread$39$sequenceBuilder.getSequence();

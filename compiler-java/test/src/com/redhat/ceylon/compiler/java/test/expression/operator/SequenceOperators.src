@@ -76,10 +76,11 @@ public class SequenceOperators {
             {
                 .ceylon.language.Iterable<? extends .ceylon.language.String, ? extends .java.lang.Object> $spread$2$iterable = sequence;
                 .ceylon.language.SequenceBuilder<.ceylon.language.Character> $spread$2$sequenceBuilder = new .ceylon.language.SequenceBuilder<.ceylon.language.Character>();
+                .ceylon.language.Integer $spread$2$arg$0 = .ceylon.language.Integer.instance(0L);
                 .java.lang.Object $spread$2$iteration;
                 for (.ceylon.language.Iterator<? extends .ceylon.language.String> $spread$2$iterator = $spread$2$iterable.getIterator(); !(($spread$2$iteration = $spread$2$iterator.next()) instanceof .ceylon.language.Finished); ) {
                     .ceylon.language.String $spread$2$element = (.ceylon.language.String)$spread$2$iteration;
-                    $spread$2$sequenceBuilder.append($spread$2$element.get(.ceylon.language.Integer.instance(0L)));
+                    $spread$2$sequenceBuilder.append($spread$2$element.get($spread$2$arg$0));
                 }
             }
             returning $spread$2$sequenceBuilder.getSequence();
