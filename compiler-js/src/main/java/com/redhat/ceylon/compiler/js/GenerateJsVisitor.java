@@ -1039,6 +1039,17 @@ public class GenerateJsVisitor extends Visitor
                 endLine();
             }
         }
+        else if (!addToPrototype) {
+            if (d.isActual()) {
+                out("delete ");
+                outerSelf(d);
+                out(".", names.name(d));
+                endLine(true);
+            }
+            outerSelf(d);
+            out(".", names.name(d), "=", names.name(d));
+            endLine(true);
+        }
     }
 
     private void superRef(Declaration d, ClassOrInterface sub, String parentSuffix) {
