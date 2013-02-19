@@ -183,8 +183,12 @@ public class CeylonModuleLoader extends ModuleLoader {
         }
 
         final Module module = super.preloadModule(mi);
-        ArtifactResult result = artifacts.get(mi);
-        com.redhat.ceylon.compiler.java.Util.loadModule(mi.getName(), mi.getSlot(), result, SecurityActions.getClassLoader(module));
+        if(module != null){
+            ArtifactResult result = artifacts.get(mi);
+            // transform "null" into null version for the default module
+            String version = mi.getName().equals(RepositoryManager.DEFAULT_MODULE) ? null : mi.getSlot();
+            com.redhat.ceylon.compiler.java.Util.loadModule(mi.getName(), version, result, SecurityActions.getClassLoader(module));
+        }
 
         return module;
     }
