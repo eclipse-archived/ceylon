@@ -25,7 +25,7 @@ shared interface Numeric<Other> of Other
 
 }
 
-interface Vec<Num> satisfies Scalable<Num,Vec<Num>>&Num[] {}
+interface Vec<Num> satisfies Scalable<Num,Vec<Num>>&[Num+] {}
 interface Num satisfies Numeric<Num> {}
 
 void test(Num n, Vec<Num> ns)  {

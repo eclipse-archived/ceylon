@@ -1,4 +1,4 @@
-interface AbstractBranch<out T> satisfies Tree<T> {
+@error interface AbstractBranch<out T> satisfies Tree<T> {
     shared formal Tree<T> left;
     shared formal Tree<T> right;
 }

@@ -355,7 +355,7 @@ class Operators() {
     
     String string = "";
     Character? c = string[0];
-    Null nl = string[-1];
+    @error Null nl = string[-1];
     variable String sync;
     sync = string[0..1];
     sync = string[0:1];

@@ -1,6 +1,6 @@
 interface Association 
     of OneToOne | OneToMany { }
-interface OneTo satisfies Association {}
+@error interface OneTo satisfies Association {}
 class OneToOne() satisfies OneTo {}
 class OneToMany() satisfies OneTo {}
 @error class Broken() satisfies Association {}
@@ -28,5 +28,5 @@ class ZZZ() extends XXX() {}
 class YYY() extends XXX() {}
 class YYY1() extends YYY() {}
 object xxx extends XXX() {}
-abstract class WWW() extends XXX() {}
+@error abstract class WWW() extends XXX() {}
 object www extends WWW() {}

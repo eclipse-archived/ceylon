@@ -10,7 +10,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Stack;
 
 import com.redhat.ceylon.compiler.typechecker.util.ProducedTypeNamePrinter;
 
@@ -350,7 +349,7 @@ public class ProducedType extends ProducedReference {
     
     private ProducedType minusInternal(ProducedType pt) {
         Unit unit = getDeclaration().getUnit();
-        if (pt.coversInternal(this, new Stack<TypeDeclaration>())) { //note: coversInternal() already calls getUnionOfCases()
+        if (pt.coversInternal(this)) { //note: coversInternal() already calls getUnionOfCases()
             return unit.getNothingDeclaration().getType();
         }
         else {
@@ -1355,11 +1354,10 @@ public class ProducedType extends ProducedReference {
      * Does this type cover the given type?
      */
     public boolean covers(ProducedType st) {
-    	return resolveAliases().coversInternal(st.resolveAliases(), 
-    	        new Stack<TypeDeclaration>());
+    	return resolveAliases().coversInternal(st.resolveAliases());
     }
     
-    public boolean coversInternal(ProducedType t, Stack<TypeDeclaration> stack) {
+    /*public boolean coversInternal(ProducedType t, Stack<TypeDeclaration> stack) {
         ProducedType uoc = t.getUnionOfCases();
         //X covers Y if the union of cases of Y is 
         //a subtype of X
@@ -1401,12 +1399,12 @@ public class ProducedType extends ProducedReference {
             }
             return false;
         }
-    }
+    }*/
     
     //This alternative algorithm, without the stack
     //fails in one tiny little corner case which we
     //might be able to disallow - Algebraic.ceylon:345
-    /*public boolean coversInternal(ProducedType t) {
+    public boolean coversInternal(ProducedType t) {
         ProducedType uoc = t.getUnionOfCases();
         //X covers Y if the union of cases of Y is 
         //a subtype of X
@@ -1439,7 +1437,7 @@ public class ProducedType extends ProducedReference {
             }
             return false;
         }
-    }*/
+    }
     
     public ProducedType withoutUnderlyingType() {
         ProducedType pt = new ProducedType();

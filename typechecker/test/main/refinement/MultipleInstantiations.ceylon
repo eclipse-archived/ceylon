@@ -125,9 +125,9 @@ interface I2 { shared String name { return "Tom"; } }
 
 class MethodIfNonEmptySequence() {
     shared void m1(String s) {
-        if (nonempty s) {
-            Character c = s.first;
-            Character[] chars = s.rest;
+        if (nonempty chars = s.characters) {
+            Character c = chars.first;
+            Character[] chars = chars.rest;
         }
     }
     shared void m2(String[] s) {

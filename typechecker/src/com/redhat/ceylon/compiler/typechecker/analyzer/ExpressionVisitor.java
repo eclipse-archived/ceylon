@@ -1155,10 +1155,7 @@ public class ExpressionVisitor extends Visitor {
         super.visit(that);
         endReturnDeclaration(od);
         endReturnScope(rt, null);
-        Class c = that.getDeclarationModel();
-        if (!c.isAbstract()) {
-            validateEnumeratedSupertypes(that, c);
-        }
+        validateEnumeratedSupertypes(that, that.getDeclarationModel());
     }
     
     @Override public void visit(Tree.ClassOrInterface that) {
@@ -1172,6 +1169,7 @@ public class ExpressionVisitor extends Visitor {
         super.visit(that);
         endReturnDeclaration(od);
         endReturnScope(rt, null);
+        validateEnumeratedSupertypes(that, that.getDeclarationModel());
     }
 
     @Override public void visit(Tree.ObjectDefinition that) {
@@ -4930,7 +4928,7 @@ public class ExpressionVisitor extends Visitor {
         }
     }
 
-    private void validateEnumeratedSupertypes(Node that, Class d) {
+    private void validateEnumeratedSupertypes(Node that, ClassOrInterface d) {
         ProducedType type = d.getType();
         for (ProducedType supertype: type.getSupertypes()) {
             if (!type.isExactly(supertype)) {
@@ -4948,7 +4946,7 @@ public class ExpressionVisitor extends Visitor {
                         }
                     }
                     if (types.isEmpty()) {
-                        that.addError("concrete type is not a subtype of any case of enumerated supertype: " + 
+                        that.addError("not a subtype of any case of enumerated supertype: " + 
                                 d.getName(unit) + " is a subtype of " + std.getName(unit));
                     }
                     else if (types.size()>1) {

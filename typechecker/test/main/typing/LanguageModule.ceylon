@@ -7,8 +7,8 @@ class LanguageModule() {
     //print(append({"one", "two" , "three"}, "four").size==4);
     print(["one", "two" , "three"].withTrailing("four").size==4);
     
-    if ("hello" nonempty) {}
-    Character[] chars = "hello";
+    if ("hello".characters nonempty) {}
+    List<Character> chars = "hello";
     
     [Integer*] ints2 = {};
     {Integer*} ints1 = {};

@@ -37,5 +37,5 @@ void coverage() {
     {Nothing*}&{String+} x3 = nothing;
     {Nothing+} y3 = x3 of {Nothing+};
     
-    abstract class Problem() satisfies Empty&{Nothing+} {}
+    @error abstract class Problem() satisfies Empty&{Nothing+} {}
 }

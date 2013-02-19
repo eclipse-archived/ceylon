@@ -160,7 +160,7 @@ Integer fib(Integer n) {
 
     interface Association 
         of OneToOne | OneToMany { }
-    interface OneTo satisfies Association {}
+    @error interface OneTo satisfies Association {}
     class OneToOne() satisfies OneTo {}
     class OneToMany() satisfies OneTo {}
     @error class Broken() satisfies Association {}
@@ -299,9 +299,9 @@ class Concrete3() extends Abstract1() {}*/
 interface J1 of J2|J3 {}
 interface J2 satisfies J1 {}
 interface J3 satisfies J1 {}
-interface J4 satisfies J1 {}
+@error interface J4 satisfies J1 {}
 interface J5 of J6|N {}
-interface J6 satisfies J1&J5 {}
+@error interface J6 satisfies J1&J5 {}
 interface N satisfies J5 {}
 
 void testHardCase(J4 i) {
@@ -342,7 +342,8 @@ void testHardCase(J4 i) {
     
     J5 ni = nothing;
     
-    switch(ni)
+    //this is an error after #595
+    @error switch(ni)
     case (is N|J2|J3) {}
 }
 
