@@ -257,7 +257,7 @@ public class InteropTest extends CompilerTest {
     public void testIopCallsDefaultAccessMethod(){
         compile("access/JavaAccessModifiers.java");
         assertErrors("access/CallsDefaultAccessMethod",
-                new CompilerError(23, "member method or attribute does not exist or is ambiguous: packageAccessMethod in type JavaAccessModifiers"));
+                new CompilerError(23, "member method or attribute does not exist: packageAccessMethod in type JavaAccessModifiers"));
     }
     
     @Test
@@ -277,11 +277,12 @@ public class InteropTest extends CompilerTest {
     @Test
     public void testIopNamedInvocations(){
         assertErrors("NamedInvocations",
-                new CompilerError(30, "could not determine type of method or attribute reference: createTempFile"),
+                new CompilerError(30, "could not determine type of function or value reference: createTempFile"),
                 new CompilerError(30, "overloaded declarations may not be called using named arguments: createTempFile"),
                 new CompilerError(30, "named invocations of Java methods not supported"),
                 new CompilerError(32, "named invocations of Java methods not supported"),
                 new CompilerError(35, "named invocations of Java methods not supported"),
+                new CompilerError(35, "could not determine type of method or attribute reference: createTempFile of File"),
                 new CompilerError(35, "overloaded declarations may not be called using named arguments: createTempFile"),
                 new CompilerError(37, "named invocations of Java methods not supported")
         );
