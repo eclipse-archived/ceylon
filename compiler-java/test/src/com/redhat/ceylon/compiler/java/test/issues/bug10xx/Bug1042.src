@@ -1,1 +1,22 @@
 package com.redhat.ceylon.compiler.java.test.issues.bug10xx;
+
+interface Bug1042<T> {
+    
+    public .com.redhat.ceylon.compiler.java.test.issues.bug10xx.Bug1042$impl<T> $com$redhat$ceylon$compiler$java$test$issues$bug10xx$Bug1042$impl();
+}
+final class Bug1042$impl<T> {
+    
+    Bug1042$impl(.com.redhat.ceylon.compiler.java.test.issues.bug10xx.Bug1042<? super T> $this) {
+        this.$this = $this;
+    }
+    private final .com.redhat.ceylon.compiler.java.test.issues.bug10xx.Bug1042<? super T> $this;
+}
+final class bug1042_ {
+    
+    private bug1042_() {
+    }
+    
+    static void bug1042(final .com.redhat.ceylon.compiler.java.test.issues.bug10xx.Bug1042<? super .ceylon.language.String> xx) {
+        final .com.redhat.ceylon.compiler.java.test.issues.bug10xx.Bug1042 x1 = xx;
+    }
+}
