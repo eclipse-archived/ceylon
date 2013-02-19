@@ -173,10 +173,20 @@ public class CeylonModuleLoader extends ModuleLoader {
     @Override
     protected org.jboss.modules.Module preloadModule(ModuleIdentifier mi) throws ModuleLoadException {
         if (BOOTSTRAP.contains(mi)){
-            return org.jboss.modules.Module.getBootModuleLoader().loadModule(mi);
+            if(mi.equals(LANGUAGE)){
+                Module languageModule = org.jboss.modules.Module.getBootModuleLoader().loadModule(LANGUAGE);
+//                ArtifactResult languageModuleArtifactResult = findArtifact(LANGUAGE);
+//                com.redhat.ceylon.compiler.java.Util.loadModule(LANGUAGE.getName(), LANGUAGE.getSlot(), languageModuleArtifactResult, SecurityActions.getClassLoader(languageModule));
+                return languageModule;
+            }else
+                return org.jboss.modules.Module.getBootModuleLoader().loadModule(mi);
         }
 
-        return super.preloadModule(mi);
+        final Module module = super.preloadModule(mi);
+        ArtifactResult result = artifacts.get(mi);
+        com.redhat.ceylon.compiler.java.Util.loadModule(mi.getName(), mi.getSlot(), result, SecurityActions.getClassLoader(module));
+
+        return module;
     }
 
     /**
@@ -352,11 +362,11 @@ public class CeylonModuleLoader extends ModuleLoader {
         Module languageModule = org.jboss.modules.Module.getBootModuleLoader().loadModule(LANGUAGE);
         ArtifactResult languageModuleArtifactResult = findArtifact(LANGUAGE);
         com.redhat.ceylon.compiler.java.Util.loadModule(LANGUAGE.getName(), LANGUAGE.getSlot(), languageModuleArtifactResult, SecurityActions.getClassLoader(languageModule));
-
-        for(Entry<ModuleIdentifier, ArtifactResult> moduleSpec : artifacts.entrySet()){
-            ModuleIdentifier mi = moduleSpec.getKey();
-            final Module module = findLoadedModuleLocal(mi);
-            com.redhat.ceylon.compiler.java.Util.loadModule(mi.getName(), mi.getSlot(), moduleSpec.getValue(), SecurityActions.getClassLoader(module));
-        }
+//
+//        for(Entry<ModuleIdentifier, ArtifactResult> moduleSpec : artifacts.entrySet()){
+//            ModuleIdentifier mi = moduleSpec.getKey();
+//            final Module module = findLoadedModuleLocal(mi);
+//            com.redhat.ceylon.compiler.java.Util.loadModule(mi.getName(), mi.getSlot(), moduleSpec.getValue(), SecurityActions.getClassLoader(module));
+//        }
     }
 }
