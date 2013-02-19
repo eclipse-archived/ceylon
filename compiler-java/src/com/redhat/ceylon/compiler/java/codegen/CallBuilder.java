@@ -16,11 +16,8 @@ public class CallBuilder {
         NEW
     }
     
-    public enum ArgumentHandling {
-        NORMAL,
-        ARGUMENTS_ALIASED,
-        ARGUMENTS_EVAL_FIRST
-    }
+    public static final int CB_ALIAS_ARGS = 1<<0;
+    public static final int CB_LET = 1<<1;
     
     private static final String MISSING_TYPE = "Type expression required when evaluateArgumentsFirst()";
     
@@ -33,11 +30,12 @@ public class CallBuilder {
 
     private JCExpression methodOrClass;
     private ExpressionAndType instantiateQualfier;
-    private ArgumentHandling argumentHandling = ArgumentHandling.NORMAL;
+    private int cbOpts;
     private Naming.SyntheticName basename;
     private boolean built = false;
     
-    private List<JCStatement> primaryAndArguments;
+    private final ListBuffer<JCStatement> statements = ListBuffer.<JCStatement>lb();
+    private boolean voidMethod;
     
     private CallBuilder(AbstractTransformer gen) {
         this.gen = gen;
@@ -108,13 +106,29 @@ public class CallBuilder {
      * stack.
      * @see "#929"
      */
-    public CallBuilder argumentHandling(ArgumentHandling argumentHandling, Naming.SyntheticName basename) {
+    public CallBuilder argumentHandling(int cbOpts, Naming.SyntheticName basename) {
         if (built) {
             throw new RuntimeException();
         }
-        this.argumentHandling = argumentHandling;
+        this.cbOpts = cbOpts;
         this.basename = basename;
         return this;
+    }
+    
+    public int getArgumentHandling() {
+        return cbOpts;
+    }
+    
+    public CallBuilder appendStatement(JCStatement stmt) {
+        this.statements.append(stmt);
+        return this;
+    }
+
+    public List<JCStatement> getStatements() {
+        if (!built) {
+            throw new RuntimeException();
+        }
+        return statements.toList();
     }
     
     public JCExpression build() {
@@ -125,31 +139,30 @@ public class CallBuilder {
         JCExpression result;
         List<JCExpression> arguments;
         final JCExpression newEncl;
-        if (argumentHandling != ArgumentHandling.NORMAL) {
-            primaryAndArguments = List.<JCStatement>nil();
-            arguments = List.<JCExpression>nil();
+        
+        if ((cbOpts & CB_ALIAS_ARGS) != 0) {
             if (instantiateQualfier != null 
                     && instantiateQualfier.expression != null) {
                 if (instantiateQualfier.type == null) {
                     throw Assert.fail(MISSING_TYPE);
                 }
                 SyntheticName qualName = getQualifierName(basename);
-                primaryAndArguments = List.<JCStatement>of(gen.makeVar(qualName, 
+                appendStatement(gen.makeVar(qualName, 
                         instantiateQualfier.type, 
                         instantiateQualfier.expression));
                 newEncl = qualName.makeIdent();
             } else {
                 newEncl = null;
             }
+            arguments = List.<JCExpression>nil();
             int argumentNum = 0;
             for (ExpressionAndType argumentAndType : argumentsAndTypes) {
                 SyntheticName name = getArgumentName(basename, argumentNum);
                 if (argumentAndType.type == null) {
                     throw Assert.fail(MISSING_TYPE);
                 }
-                if (argumentHandling == ArgumentHandling.ARGUMENTS_ALIASED
-                        || (argumentHandling == ArgumentHandling.ARGUMENTS_EVAL_FIRST && kind == Kind.NEW)) {
-                    primaryAndArguments = primaryAndArguments.append(gen.makeVar(name, 
+                if ((cbOpts & CB_ALIAS_ARGS) != 0) {
+                    appendStatement(gen.makeVar(name, 
                             argumentAndType.type, 
                             argumentAndType.expression));
                 }
@@ -159,7 +172,6 @@ public class CallBuilder {
             
         } else {
             newEncl = this.instantiateQualfier != null ? this.instantiateQualfier.expression : null;
-            primaryAndArguments = null;
             arguments = ExpressionAndType.toExpressionList(this.argumentsAndTypes);
         }
         switch (kind) {
@@ -173,8 +185,12 @@ public class CallBuilder {
         default:
             throw Assert.fail();
         }
-        if (this.argumentHandling == ArgumentHandling.ARGUMENTS_EVAL_FIRST) { 
-            result = gen.make().LetExpr(primaryAndArguments, result);    
+        if ((cbOpts & CB_LET) != 0) {
+            if (voidMethod) {
+                result = gen.make().LetExpr(statements.toList().append(gen.make().Exec(result)), gen.makeNull());
+            } else {
+                result = gen.make().LetExpr(statements.toList(), result);
+            }
         }
         
         return result;
@@ -189,11 +205,9 @@ public class CallBuilder {
         SyntheticName qualName = basename.suffixedBy("$qual");
         return qualName;
     }
-    
-    public List<JCStatement> getPrimaryAndArguments() {
-        if (!built) {
-            throw new RuntimeException();
-        }
-        return primaryAndArguments;
+
+    public void voidMethod(boolean voidMethod) {
+        this.voidMethod = voidMethod;
     }
+        
 }

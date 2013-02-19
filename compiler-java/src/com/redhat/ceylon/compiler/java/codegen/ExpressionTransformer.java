@@ -28,7 +28,6 @@ import java.util.HashSet;
 import java.util.Iterator;
 import java.util.LinkedList;
 
-import com.redhat.ceylon.compiler.java.codegen.CallBuilder.ArgumentHandling;
 import com.redhat.ceylon.compiler.java.codegen.Invocation.TransformedInvocationPrimary;
 import com.redhat.ceylon.compiler.java.codegen.Naming.Substitution;
 import com.redhat.ceylon.compiler.java.codegen.Naming.SyntheticName;
@@ -1998,7 +1997,7 @@ public class ExpressionTransformer extends AbstractTransformer {
             JCExpression type = makeJavaType(classType, AbstractTransformer.JT_CLASS_NEW | AbstractTransformer.JT_NON_QUALIFIED);
             if (stacksUninitializedOperand(invocation) 
                     && hasBackwardBranches()) {
-                callBuilder.argumentHandling(ArgumentHandling.ARGUMENTS_EVAL_FIRST, naming.alias("uninit"));
+                callBuilder.argumentHandling(CallBuilder.CB_ALIAS_ARGS | CallBuilder.CB_LET, naming.alias("uninit"));
             }
             callBuilder.instantiate(new ExpressionAndType(qualifier, qualifierType), type);
         } else {
@@ -2028,7 +2027,7 @@ public class ExpressionTransformer extends AbstractTransformer {
             callBuilder.instantiate(makeJavaType(classType, AbstractTransformer.JT_CLASS_NEW));
             if (stacksUninitializedOperand(invocation) 
                     && hasBackwardBranches()) {
-                callBuilder.argumentHandling(ArgumentHandling.ARGUMENTS_EVAL_FIRST, naming.alias("uninit"));
+                callBuilder.argumentHandling(CallBuilder.CB_ALIAS_ARGS | CallBuilder.CB_LET, naming.alias("uninit"));
             }
             resultExpr = callBuilder.build();
         }
@@ -2352,7 +2351,7 @@ public class ExpressionTransformer extends AbstractTransformer {
                 && ((Tree.InvocationExpression)((InvocationTermTransformer)transformer).invocation.getNode()).getPositionalArgumentList() != null;
         if (aliasArguments) {
             ((InvocationTermTransformer)transformer).callBuilder.argumentHandling(
-                    ArgumentHandling.ARGUMENTS_ALIASED, varBaseName);        
+                    CallBuilder.CB_ALIAS_ARGS, varBaseName);
         }
         JCExpression appliedExpr = transformMemberExpression(expr, elementExpr, transformer);
         
@@ -2402,7 +2401,7 @@ public class ExpressionTransformer extends AbstractTransformer {
                 makeVar(srcIterableName, srcIterableTypeExpr, srcIterableExpr),
                 makeVar(builderVar, builderTypeExpr, builderInitExpr));
         if (aliasArguments) {
-            stmts = stmts.appendList(((InvocationTermTransformer)transformer).callBuilder.getPrimaryAndArguments());
+            stmts = stmts.appendList(((InvocationTermTransformer)transformer).callBuilder.getStatements());
         }
         
         stmts = stmts.appendList(forStmt);
