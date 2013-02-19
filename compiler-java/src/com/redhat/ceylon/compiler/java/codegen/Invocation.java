@@ -27,7 +27,6 @@ import static com.sun.tools.javac.code.Flags.FINAL;
 
 import java.util.ArrayList;
 import java.util.HashSet;
-import java.util.Map;
 import java.util.Set;
 import java.util.TreeMap;
 
@@ -543,8 +542,6 @@ class PositionalInvocation extends DirectInvocation {
     @Override
     protected boolean isArgumentSpread(int argIndex) {
         PositionalArgument arg = getPositional().getPositionalArguments().get(argIndex);
-        if(!arg.getParameter().isSequenced())
-            return false;
         return arg instanceof Tree.SpreadArgument || arg instanceof Tree.Comprehension;
     }
     
