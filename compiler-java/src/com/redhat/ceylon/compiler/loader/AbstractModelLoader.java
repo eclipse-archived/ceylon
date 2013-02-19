@@ -72,7 +72,6 @@ import com.redhat.ceylon.compiler.typechecker.model.ClassOrInterface;
 import com.redhat.ceylon.compiler.typechecker.model.Declaration;
 import com.redhat.ceylon.compiler.typechecker.model.Element;
 import com.redhat.ceylon.compiler.typechecker.model.Functional;
-import com.redhat.ceylon.compiler.typechecker.model.FunctionalParameter;
 import com.redhat.ceylon.compiler.typechecker.model.Interface;
 import com.redhat.ceylon.compiler.typechecker.model.Method;
 import com.redhat.ceylon.compiler.typechecker.model.MethodOrValue;
@@ -557,11 +556,11 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
             minor = 0;
         if(major != Versions.JVM_BINARY_MAJOR_VERSION
                 || minor != Versions.JVM_BINARY_MINOR_VERSION){
-            logError("You are using a Ceylon class compiled for an incompatible version of the Ceylon compiler ("+major+"."+minor+")."
+            logError("Ceylon class " + classMirror.getQualifiedName() + " was compiled by an incompatible version of the Ceylon compiler"
+                    +"\nThe class was compiled using "+major+"."+minor+"."
                     +"\nThis compiler supports "+Versions.JVM_BINARY_MAJOR_VERSION+"."+Versions.JVM_BINARY_MINOR_VERSION+"."
                     +"\nPlease try to recompile your module using a compatible compiler."
-                    +"\nBinary compatibility will only be supported after Ceylon 1.0."
-                    +"\nOffending class: "+classMirror.getQualifiedName());
+                    +"\nBinary compatibility will only be supported after Ceylon 1.0.");
             binaryCompatibilityErrorRaised = true;
         }
     }
