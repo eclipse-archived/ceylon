@@ -308,8 +308,17 @@
     
     <target name="test.java" depends="compile.tests.java"
         description="compile and run the Java tests">
+        <ceylon-run
+            executable="${ceylon.compiler.loc}/dist/bin/ceylon"
+            sysrep="${build.test.repo}"
+        	run="runAndExit"
+        	module="default">
+        	<rep url="${build.test}"/>
+        </ceylon-run>
+    	<!--
         <java classname="runAndExit_" classpath="${tests.car};${build.dist}/${ceylon.language.car}"
             resultproperty="test.ceylon.result"/>
+        -->
         
         <condition property="test.fail.ceylon">
             <not><equals arg1="${test.ceylon.result}" arg2="0"/></not>
