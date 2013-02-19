@@ -541,7 +541,7 @@ class PositionalInvocation extends DirectInvocation {
     }
     @Override
     protected Parameter getParameter(int argIndex) {
-        return getPositional().getPositionalArguments().get(argIndex).getParameter();
+        return parameters.get(argIndex >= parameters.size() ? parameters.size()-1 : argIndex);
     }
     @Override
     protected int getNumArguments() {
