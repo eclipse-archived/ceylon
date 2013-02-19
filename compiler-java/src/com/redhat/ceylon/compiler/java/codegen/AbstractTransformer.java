@@ -1342,7 +1342,7 @@ public abstract class AbstractTransformer implements Transformation {
                         }
                     }else if (ta.getDeclaration() instanceof NothingType){
                         // - The Ceylon type Foo<Bottom> appearing anywhere else results in the Java type
-                        // - Foo<? super Object> if Foo is contravariant in T, or
+                        // - Foo if Foo is contravariant in T (see https://github.com/ceylon/ceylon-compiler/issues/1042), or
                         // - Foo<? extends Object> if Foo is covariant in T and not depended on by other type params
                         // - Foo<Object> otherwise
                         // this is more correct than Foo<?> because a method returning Foo<?> could never override a method returning Foo<Object>
