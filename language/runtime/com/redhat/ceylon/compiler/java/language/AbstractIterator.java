@@ -3,10 +3,10 @@ package com.redhat.ceylon.compiler.java.language;
 import ceylon.language.Iterator;
 import ceylon.language.Iterator$impl;
 
-import com.redhat.ceylon.compiler.java.ReifiedType;
-import com.redhat.ceylon.compiler.java.TypeDescriptor;
 import com.redhat.ceylon.compiler.java.Util;
 import com.redhat.ceylon.compiler.java.metadata.Ignore;
+import com.redhat.ceylon.compiler.java.runtime.model.ReifiedType;
+import com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor;
 
 public abstract class AbstractIterator<Element> implements Iterator<Element>, ReifiedType {
     

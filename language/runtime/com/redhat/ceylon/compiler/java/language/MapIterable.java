@@ -17,12 +17,12 @@ import ceylon.language.Map;
 import ceylon.language.Sequence;
 import ceylon.language.Sequential;
 
-import com.redhat.ceylon.compiler.java.ReifiedType;
-import com.redhat.ceylon.compiler.java.TypeDescriptor;
 import com.redhat.ceylon.compiler.java.metadata.Ignore;
 import com.redhat.ceylon.compiler.java.metadata.Name;
 import com.redhat.ceylon.compiler.java.metadata.Sequenced;
 import com.redhat.ceylon.compiler.java.metadata.TypeInfo;
+import com.redhat.ceylon.compiler.java.runtime.model.ReifiedType;
+import com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor;
 
 /** A convenience class for the Iterable.map() method.
  * 

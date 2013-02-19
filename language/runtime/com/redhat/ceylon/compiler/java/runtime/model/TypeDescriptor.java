@@ -1,4 +1,4 @@
-package com.redhat.ceylon.compiler.java;
+package com.redhat.ceylon.compiler.java.runtime.model;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -12,7 +12,7 @@ import com.redhat.ceylon.compiler.typechecker.model.UnionType;
 
 public abstract class TypeDescriptor {
 
-    public static final TypeDescriptor BottomType = new Bottom();
+    public static final TypeDescriptor NothingType = new Nothing();
 
     //
     // Methods
@@ -132,7 +132,7 @@ public abstract class TypeDescriptor {
         }
     }
     
-    private static class Bottom extends TypeDescriptor {
+    private static class Nothing extends TypeDescriptor {
         @Override
         public boolean equals(Object obj) {
             return obj == this;

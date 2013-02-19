@@ -26,14 +26,14 @@ import ceylon.language.Sequence;
 import ceylon.language.Sequential;
 import ceylon.language.Set;
 
-import com.redhat.ceylon.compiler.java.ReifiedType;
-import com.redhat.ceylon.compiler.java.TypeDescriptor;
 import com.redhat.ceylon.compiler.java.metadata.Annotation;
 import com.redhat.ceylon.compiler.java.metadata.Annotations;
 import com.redhat.ceylon.compiler.java.metadata.Ignore;
 import com.redhat.ceylon.compiler.java.metadata.TypeInfo;
 import com.redhat.ceylon.compiler.java.metadata.TypeParameter;
 import com.redhat.ceylon.compiler.java.metadata.TypeParameters;
+import com.redhat.ceylon.compiler.java.runtime.model.ReifiedType;
+import com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor;
 
 /** An immutable map returned by certain methods and functions of the language module.
  * This is only to avoid depending on ceylon.collection.

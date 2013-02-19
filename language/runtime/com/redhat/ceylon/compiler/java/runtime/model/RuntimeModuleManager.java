@@ -1,4 +1,4 @@
-package com.redhat.ceylon.compiler.java;
+package com.redhat.ceylon.compiler.java.runtime.model;
 
 import java.util.Collections;
 import java.util.List;

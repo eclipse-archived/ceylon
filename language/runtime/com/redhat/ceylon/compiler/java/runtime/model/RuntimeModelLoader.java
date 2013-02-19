@@ -1,4 +1,4 @@
-package com.redhat.ceylon.compiler.java;
+package com.redhat.ceylon.compiler.java.runtime.model;
 
 import java.io.File;
 import java.util.HashMap;
