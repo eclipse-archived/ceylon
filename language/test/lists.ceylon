@@ -2,6 +2,7 @@ class TestList<Element>(Element* elems) satisfies List<Element> {
     shared actual Boolean equals(Object other) => List::equals(other);
     shared actual Element? get(Integer x) => elems[x];
     shared actual TestList<Element> reversed => TestList(*elems.reversed);
+    shared actual TestList<Element> rest => TestList(*elems.rest);
     shared actual Integer hash => List::hash;
     shared actual Integer? lastIndex => elems.lastIndex;
     shared actual TestList<Element> span(Integer a, Integer b) => TestList(*elems.span(a, b));

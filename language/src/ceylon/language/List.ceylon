@@ -36,6 +36,9 @@ shared interface List<out Element>
     see (lastIndex)
     shared actual default Integer size => (lastIndex else -1) + 1;
     
+    doc "The rest of the list, without the first element."
+    shared actual formal List<Element> rest;
+    
     doc "Determines if the given index refers to an element
          of this sequence, that is, if
          `index<=sequence.lastIndex`."

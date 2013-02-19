@@ -19,6 +19,8 @@ shared class LazyList<out Element>({Element*} elems)
         }
     }
     
+    shared actual List<Element> rest => LazyList(elems.rest);
+    
     shared actual Iterator<Element> iterator => 
             elems.iterator;
     

@@ -46,7 +46,7 @@ by "Gavin"
 see (string)
 shared native abstract class String()
         extends Object()
-        satisfies Character[] & 
+        satisfies List<Character> & 
                   Comparable<String> &
                   Summable<String> & 
                   Ranged<Integer,String> &
@@ -81,6 +81,9 @@ shared native abstract class String()
                  single-character tokens. If `false` each 
                  separator token will be of size `1`."
             Boolean groupSeparators=true);
+    
+    doc "The rest of the string, without the first element."
+    shared actual formal String rest;
     
     doc "Join the given strings, using this string as a 
          separator."

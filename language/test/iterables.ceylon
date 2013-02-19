@@ -9,7 +9,7 @@ void testIterables() {
     //Filter
     check(s1.filter((Integer i) => i%2==0).sequence == { 2, 4 }, "Iterable.filter 1");
     check(s2.filter((String s) => "e" in s).sequence == { "Hello" }, "Iterable.filter 2");
-    check("h o l a".filter((Character c) => c.letter) == "hola", "String.filter");
+    check(string("h o l a".filter((Character c) => c.letter)) == "hola", "String.filter");
 
     //Collect (like map, but it's already T[])
     check(s1.collect((Integer i) => i*2) == { 2, 4, 6, 8, 10 }, "Iterable.map 1");
@@ -17,9 +17,9 @@ void testIterables() {
     check("hola".collect((Character c) => c.uppercased) == {'H', 'O', 'L', 'A'}, "String.map");
 
     //Select
-    check(s1.select((Integer i) => i%2==0) == { 2, 4 }, "Iterable.filter 1");
-    check(s2.select((String s) => "e" in s) == { "Hello" }, "Iterable.filter 2");
-    check("h o l a".select((Character c) => c.letter) == "hola", "String.filter");
+    check(s1.select((Integer i) => i%2==0) == { 2, 4 }, "Iterable.select 1");
+    check(s2.select((String s) => "e" in s) == { "Hello" }, "Iterable.select 2");
+    check("h o l a".select((Character c) => c.letter) == "hola", "String.select");
 
     //Fold
     check(s1.fold(0, (Integer a, Integer b) => a+b) == 15, "Iterable.fold 1");

@@ -216,8 +216,8 @@ void types() {
     
     check(className(1)=="ceylon.language::Integer", "natural classname");
     check(className(1.0)=="ceylon.language::Float", "float classname");
-    check(".language::SequenceString" in className("hello"), "string classname [1] " + className("hello"));
-    check(".language::EmptyString" in className(""), "string classname [2] " + className(""));
+    check("ceylon.language::String" == className("hello"), "string classname [1] " + className("hello"));
+    check("ceylon.language::String" == className(""), "string classname [2] " + className(""));
     check(className(' ')=="ceylon.language::Character", "character classname");
     check(className(1->"hello").startsWith("ceylon.language::Entry"), "entry classname");
     check(className(true)=="ceylon.language::true", "true classname");

@@ -5,7 +5,7 @@ doc "A fixed-size array of elements. An array may have zero
      This class is provided primarily to support interoperation 
      with Java, and for some performance-critical low-level 
      programming tasks."
-shared abstract class Array<Element>() 
+shared abstract native class Array<Element>() 
         extends Object()
         satisfies List<Element> &
                   Cloneable<Array<Element>> &
@@ -24,6 +24,9 @@ shared abstract class Array<Element>()
     doc "Reverse this array, returning a new array."
     shared actual formal Array<Element> reversed;
 
+    doc "The rest of the array, without the first element."
+    shared actual formal Array<Element> rest;
+    
 }
 
 doc "Create an array containing the given elements. If no

@@ -23,8 +23,8 @@ shared void strings() {
     
     check(hello.size==5, "string size 1");
     check("".size==0, "empty string size 2");
-    check(!"" nonempty);
-    check("a" nonempty);
+    check(!"".characters nonempty);
+    check("a".characters nonempty);
     check(!"".lastIndex exists, "empty string last index");
     check(!""[0] exists, "empty string first element exists");
     check(!hello  is Identifiable, "string is Identifiable");
