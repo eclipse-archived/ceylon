@@ -720,13 +720,22 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
         LazyPackage pkg = packagesByName.get(quotedPkgName);
         if(pkg != null)
             return pkg;
-        pkg = new LazyPackage(this);
+        // try to find it from the module, perhaps it already got created and we didn't catch it
+        if(module instanceof LazyModule){
+            pkg = (LazyPackage) ((LazyModule) module).findPackageNoLazyLoading(pkgName);
+        }else if(module != null){
+            pkg = (LazyPackage) module.getDirectPackage(pkgName);
+        }
+        boolean isNew = pkg == null;
+        if(pkg == null){
+            pkg = new LazyPackage(this);
+            // FIXME: some refactoring needed
+            pkg.setName(pkgName == null ? Collections.<String>emptyList() : Arrays.asList(pkgName.split("\\.")));
+        }
         packagesByName.put(quotedPkgName, pkg);
-        // FIXME: some refactoring needed
-        pkg.setName(pkgName == null ? Collections.<String>emptyList() : Arrays.asList(pkgName.split("\\.")));
 
         // only bind it if we already have a module
-        if(module != null){
+        if(isNew && module != null){
             pkg.setModule(module);
             if(module instanceof LazyModule)
                 ((LazyModule) module).addPackage(pkg);

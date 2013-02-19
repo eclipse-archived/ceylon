@@ -108,6 +108,15 @@ public abstract class LazyModule extends Module {
         return null;
     }
 
+    public Package findPackageNoLazyLoading(String name) {
+        // make sure we don't call any overloaded getPackages() that might trigger lazy loading
+        for(Package pkg : super.getPackages()){
+            if(pkg.getNameAsString().equals(name))
+                return pkg;
+        }
+        return null;
+    }
+
     protected abstract AbstractModelLoader getModelLoader();
 
     public boolean isJava() {
