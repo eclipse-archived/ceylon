@@ -81,7 +81,7 @@ public class MiscTest extends CompilerTest {
         String ceylonSourcePath = "../ceylon.language/src";
         String javaSourcePath = "../ceylon.language/runtime";
         
-        String[] ceylonPackages = {"ceylon.language", "ceylon.language.descriptor"};
+        String[] ceylonPackages = {"ceylon.language", "ceylon.language.metamodel"};
         HashSet exceptions = new HashSet();
         for (String ex : new String[] {
                 // Native files
@@ -121,7 +121,13 @@ public class MiscTest extends CompilerTest {
         for(String extra : extras)
             addJavaSourceFile(extra, sourceFiles, javaPkgDir);
         
-        String[] javaPackages = {"ceylon.language.descriptor", "com/redhat/ceylon/compiler/java", "com/redhat/ceylon/compiler/java/language", "com/redhat/ceylon/compiler/java/metadata"};
+        String[] javaPackages = {
+                "com/redhat/ceylon/compiler/java", 
+                "com/redhat/ceylon/compiler/java/language", 
+                "com/redhat/ceylon/compiler/java/metadata",
+                "com/redhat/ceylon/compiler/java/runtime/ide",
+                "com/redhat/ceylon/compiler/java/runtime/model",
+                };
         for(String pkg : javaPackages){
             File pkgDir = new File(javaSourcePath, pkg.replaceAll("\\.", "/"));
             File[] files = pkgDir.listFiles();
