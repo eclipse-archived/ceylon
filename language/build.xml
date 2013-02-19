@@ -276,6 +276,11 @@
                 <include name="ceylon/language/**"/>
             </fileset>
         </copy>
+        <copy todir="${build.test.repo}">
+            <fileset dir="${ceylon.compiler.loc}/dist/repo">
+                <include name="ceylon/language/0.5/module.xml"/>
+            </fileset>
+        </copy>
         <delete dir="${build.test}"/>
         <mkdir dir="${build.test}"/>
     </target>
