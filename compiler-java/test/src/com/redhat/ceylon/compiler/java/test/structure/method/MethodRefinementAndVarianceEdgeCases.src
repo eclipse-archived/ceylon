@@ -109,7 +109,7 @@ class MRAVEC_BottomNothing extends .com.redhat.ceylon.compiler.java.test.structu
     }
     
     @.java.lang.Override
-    public final .com.redhat.ceylon.compiler.java.test.structure.method.MRAVEC_Contravariant<? super .java.lang.Object> f4() {
+    public final .com.redhat.ceylon.compiler.java.test.structure.method.MRAVEC_Contravariant f4() {
         return (.com.redhat.ceylon.compiler.java.test.structure.method.MRAVEC_Contravariant).ceylon.language.nothing_.getNothing$();
     }
     

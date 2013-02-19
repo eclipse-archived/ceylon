@@ -189,7 +189,7 @@ class Conversions {
         final .com.redhat.ceylon.compiler.java.test.structure.type.GenCon<? super .java.lang.Object> v3;
         final .com.redhat.ceylon.compiler.java.test.structure.type.GenInv<.java.lang.Object> b1;
         final .com.redhat.ceylon.compiler.java.test.structure.type.GenCov<? extends .java.lang.Object> b2;
-        final .com.redhat.ceylon.compiler.java.test.structure.type.GenCon<? super .java.lang.Object> b3;
+        final .com.redhat.ceylon.compiler.java.test.structure.type.GenCon b3;
     }
     
     public static void main(.java.lang.String[] args) {
