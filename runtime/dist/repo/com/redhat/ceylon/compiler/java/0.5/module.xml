@@ -44,6 +44,7 @@
     </resources>
 
     <dependencies>
+        <module name="ceylon.language" slot="0.5"/>
         <module name="com.redhat.ceylon.common" slot="0.5"/>
         <module name="com.redhat.ceylon.typechecker" slot="0.5"/>
         <module name="com.redhat.ceylon.module-resolver" slot="0.5"/>
