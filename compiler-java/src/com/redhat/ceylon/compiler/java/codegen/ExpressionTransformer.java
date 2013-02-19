@@ -1757,10 +1757,6 @@ public class ExpressionTransformer extends AbstractTransformer {
     }
     
     private final List<ExpressionAndType> transformArgumentList(Invocation invocation, TransformedInvocationPrimary transformedPrimary, CallBuilder callBuilder) {
-        // don't try to work on broken stuff
-        if (!invocation.validNumberOfParameters()) {
-            return List.<ExpressionAndType>nil();
-        }
         return transformArguments(invocation, transformedPrimary, callBuilder);   
     }
     
@@ -1920,10 +1916,6 @@ public class ExpressionTransformer extends AbstractTransformer {
             if (invocation.getPrimary() instanceof Tree.StaticMemberOrTypeExpression){
                 transformTypeArguments(callBuilder, 
                         ((Tree.StaticMemberOrTypeExpression)invocation.getPrimary()).getTypeArguments().getTypeModels());
-            }
-            // don't try to work on broken stuff
-            if (!invocation.validNumberOfParameters()) {
-                return makeErroneous(invocation.getNode(), "Invalid number of parameters");
             }
             if (invocation instanceof CallableSpecifierInvocation) {
                 return transformCallableSpecifierInvocation(callBuilder, (CallableSpecifierInvocation)invocation);

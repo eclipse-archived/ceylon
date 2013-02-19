@@ -140,10 +140,6 @@ abstract class Invocation {
         this.boxingStrategy = boxingStrategy;
     }
     
-    protected boolean validNumberOfParameters() {
-        return true;
-    }
-
     class TransformedInvocationPrimary {
         final JCExpression expr;
         final String selector;
@@ -327,18 +323,6 @@ class IndirectInvocationBuilder extends SimpleInvocation {
         this.comprehension = comprehension;
         this.argumentExpressions = argumentExpressions;
         this.parameterTypes = parameterTypes;
-    }
-    
-    @Override
-    protected boolean validNumberOfParameters() {
-        int argumentCount = argumentExpressions.size();
-        // check that we have enough
-        if(argumentCount < minimumParameters)
-            return false;
-        // check that we don't have too many
-        if(variadic)
-            return true;
-        return argumentCount <= parameterTypes.size();
     }
     
     @Override
