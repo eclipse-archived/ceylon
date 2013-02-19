@@ -178,9 +178,6 @@ defineAttr(String$proto, 'hash', function() {
   }
   return this._hash;
 });
-defineAttr(String$proto, 'first', function() {
-    return this.get(0);
-});
 
 function cmpSubString(str, subStr, offset) {
     for (var i=0; i<subStr.length; ++i) {
@@ -281,7 +278,7 @@ String$proto.lastCharacterOccurrence = function(subc) {
 defineAttr(String$proto, 'characters', function() {
     return this.length>0 ? this:getEmpty();
 });
-defineAttr(String$proto, 'first', function(){ return this.size>0?this.get(0):null; });
+defineAttr(String$proto, 'first', function() { return this.get(0); });
 defineAttr(String$proto, 'last', function(){ return this.size>0?this.get(this.size.predecessor):null; });
 defineAttr(String$proto, 'keys', function() {
     //TODO implement!!!
