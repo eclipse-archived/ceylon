@@ -517,4 +517,9 @@ public class ExpressionTest2 extends CompilerTest {
                 "com.redhat.ceylon.compiler.java.test.expression.invoke.avoidBackwardBranchWithVarargs_run", 
                 "invoke/AvoidBackwardBranchWithVarargs.ceylon");
     }
+    
+    @Test
+    public void testInvSpreadArguments(){
+        compareWithJavaSource("invoke/SpreadArguments");
+    }
 }

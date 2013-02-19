@@ -1,0 +1,274 @@
+package com.redhat.ceylon.compiler.java.test.expression.invoke;
+
+final class spreadArguments_ {
+    
+    private spreadArguments_() {
+    }
+    
+    static void spreadArguments(final long i, final .java.lang.String s) {
+    }
+}
+class SpreadArguments<T> {
+    
+    SpreadArguments(final long i, final T s) {
+    }
+    
+    public final void m(final long i, final T s) {
+    }
+    
+    public final void m2(final long i) {
+        (
+            let
+            {
+                .ceylon.language.Sequential<? extends T> $ceylontmp$s$1 = m2$s(i);
+                m2(i, $ceylontmp$s$1);
+            }
+            returning null;
+        );
+    }
+    
+    public final .ceylon.language.Sequential<? extends T> m2$s(final long i) {
+        return (.ceylon.language.Sequential).ceylon.language.empty_.getEmpty$();
+    }
+    
+    public final void m2(final long i, final .ceylon.language.Sequential<? extends T> s) {
+    }
+    
+    private final void use$priv(final .ceylon.language.Tuple<.java.lang.Object, ? extends .ceylon.language.Integer, ? extends .ceylon.language.Tuple<.ceylon.language.String, ? extends .ceylon.language.String, ? extends .ceylon.language.Empty>> args) {
+        (
+            let
+            {
+                .ceylon.language.Tuple<.java.lang.Object, ? extends .ceylon.language.Integer, ? extends .ceylon.language.Tuple<.ceylon.language.String, ? extends .ceylon.language.String, ? extends .ceylon.language.Empty>> $tuple$2 = args;
+                .com.redhat.ceylon.compiler.java.test.expression.invoke.spreadArguments_.spreadArguments(((.ceylon.language.Integer)$tuple$2.get(.ceylon.language.Integer.instance(0L))).longValue(), ((.ceylon.language.String)$tuple$2.get(.ceylon.language.Integer.instance(1L))).toString());
+            }
+            returning null;
+        );
+        (
+            let
+            {
+                .ceylon.language.Tuple<.ceylon.language.String, ? extends .ceylon.language.String, ? extends .ceylon.language.Empty> $tuple$4 = ((.ceylon.language.Tuple<.java.lang.Object, ? extends .ceylon.language.Integer, ? extends .ceylon.language.Tuple<.ceylon.language.String, ? extends .ceylon.language.String, ? extends .ceylon.language.Empty>>)(.ceylon.language.Tuple)args).getRest();
+                .com.redhat.ceylon.compiler.java.test.expression.invoke.spreadArguments_.spreadArguments(0L, ((.ceylon.language.String)$tuple$4.get(.ceylon.language.Integer.instance(0L))).toString());
+            }
+            returning null;
+        );
+        (
+            let
+            {
+                .ceylon.language.Tuple<.java.lang.Object, ? extends .ceylon.language.Integer, ? extends .ceylon.language.Tuple<.ceylon.language.String, ? extends .ceylon.language.String, ? extends .ceylon.language.Empty>> $tuple$6 = args;
+            }
+            returning new .com.redhat.ceylon.compiler.java.test.expression.invoke.SpreadArguments<.ceylon.language.String>(((.ceylon.language.Integer)$tuple$6.get(.ceylon.language.Integer.instance(0L))).longValue(), (.ceylon.language.String)$tuple$6.get(.ceylon.language.Integer.instance(1L)));
+        );
+        (
+            let
+            {
+                .ceylon.language.Tuple<.ceylon.language.String, ? extends .ceylon.language.String, ? extends .ceylon.language.Empty> $tuple$8 = ((.ceylon.language.Tuple<.java.lang.Object, ? extends .ceylon.language.Integer, ? extends .ceylon.language.Tuple<.ceylon.language.String, ? extends .ceylon.language.String, ? extends .ceylon.language.Empty>>)(.ceylon.language.Tuple)args).getRest();
+            }
+            returning new .com.redhat.ceylon.compiler.java.test.expression.invoke.SpreadArguments<.ceylon.language.String>(0L, (.ceylon.language.String)$tuple$8.get(.ceylon.language.Integer.instance(0L)));
+        );
+        final .ceylon.language.Callable<? extends .java.lang.Object> f = (.ceylon.language.Callable).ceylon.language.nothing_.getNothing$();
+        (
+            let
+            {
+                .ceylon.language.Tuple<.java.lang.Object, ? extends .ceylon.language.Integer, ? extends .ceylon.language.Tuple<.ceylon.language.String, ? extends .ceylon.language.String, ? extends .ceylon.language.Empty>> $tuple$10 = args;
+            }
+            returning f.$call((.ceylon.language.Integer)$tuple$10.get(.ceylon.language.Integer.instance(0L)), (.ceylon.language.String)$tuple$10.get(.ceylon.language.Integer.instance(1L)));
+        );
+        (
+            let
+            {
+                .ceylon.language.Tuple<.ceylon.language.String, ? extends .ceylon.language.String, ? extends .ceylon.language.Empty> $tuple$12 = ((.ceylon.language.Tuple<.java.lang.Object, ? extends .ceylon.language.Integer, ? extends .ceylon.language.Tuple<.ceylon.language.String, ? extends .ceylon.language.String, ? extends .ceylon.language.Empty>>)(.ceylon.language.Tuple)args).getRest();
+            }
+            returning f.$call(.ceylon.language.Integer.instance(1L), (.ceylon.language.String)$tuple$12.get(.ceylon.language.Integer.instance(0L)));
+        );
+        final .com.redhat.ceylon.compiler.java.test.expression.invoke.SpreadArguments<.ceylon.language.String> sa = (.com.redhat.ceylon.compiler.java.test.expression.invoke.SpreadArguments).ceylon.language.nothing_.getNothing$();
+        (
+            let
+            {
+                .ceylon.language.Tuple<.ceylon.language.Integer, ? extends .ceylon.language.Integer, ? extends .ceylon.language.Empty> $tuple$14 = new .ceylon.language.Tuple<.ceylon.language.Integer, .ceylon.language.Integer, .ceylon.language.Empty>(.ceylon.language.Integer.instance(0L), .ceylon.language.empty_.getEmpty$());
+                sa.m2(((.ceylon.language.Integer)$tuple$14.get(.ceylon.language.Integer.instance(0L))).longValue(), (.ceylon.language.Sequential<? extends .ceylon.language.String>)(.ceylon.language.Sequential)$tuple$14.getRest());
+            }
+            returning null;
+        );
+        (
+            let
+            {
+                .ceylon.language.Tuple<.java.lang.Object, ? extends .ceylon.language.Integer, ? extends .ceylon.language.Tuple<.ceylon.language.String, ? extends .ceylon.language.String, ? extends .ceylon.language.Empty>> $tuple$16 = new .ceylon.language.Tuple(.ceylon.language.Integer.instance(0L), new .ceylon.language.Tuple<.ceylon.language.String, .ceylon.language.String, .ceylon.language.Empty>(.ceylon.language.String.instance("hello"), .ceylon.language.empty_.getEmpty$()));
+                sa.m2(((.ceylon.language.Integer)$tuple$16.get(.ceylon.language.Integer.instance(0L))).longValue(), (.ceylon.language.Sequential<? extends .ceylon.language.String>)(.ceylon.language.Sequential)$tuple$16.getRest());
+            }
+            returning null;
+        );
+        (
+            let
+            {
+                .ceylon.language.Tuple<.java.lang.Object, ? extends .ceylon.language.Integer, ? extends .ceylon.language.Tuple<.ceylon.language.String, ? extends .ceylon.language.String, ? extends .ceylon.language.Tuple<.ceylon.language.String, ? extends .ceylon.language.String, ? extends .ceylon.language.Empty>>> $tuple$18 = new .ceylon.language.Tuple(.ceylon.language.Integer.instance(0L), new .ceylon.language.Tuple<.ceylon.language.String, .ceylon.language.String, .ceylon.language.Tuple<.ceylon.language.String, ? extends .ceylon.language.String, ? extends .ceylon.language.Empty>>(.ceylon.language.String.instance("hello"), new .ceylon.language.Tuple<.ceylon.language.String, .ceylon.language.String, .ceylon.language.Empty>(.ceylon.language.String.instance("world"), .ceylon.language.empty_.getEmpty$())));
+                sa.m2(((.ceylon.language.Integer)$tuple$18.get(.ceylon.language.Integer.instance(0L))).longValue(), (.ceylon.language.Sequential<? extends .ceylon.language.String>)(.ceylon.language.Sequential)$tuple$18.getRest());
+            }
+            returning null;
+        );
+        final .ceylon.language.Tuple<.java.lang.Object, ? extends .ceylon.language.Integer, ? extends .ceylon.language.Tuple<.ceylon.language.String, ? extends .ceylon.language.String, ? extends .ceylon.language.Sequence<? extends .ceylon.language.String>>> t = (.ceylon.language.Tuple).ceylon.language.nothing_.getNothing$();
+        (
+            let
+            {
+                .ceylon.language.Tuple<.java.lang.Object, ? extends .ceylon.language.Integer, ? extends .ceylon.language.Tuple<.ceylon.language.String, ? extends .ceylon.language.String, ? extends .ceylon.language.Sequence<? extends .ceylon.language.String>>> $tuple$20 = t;
+                sa.m2(((.ceylon.language.Integer)$tuple$20.get(.ceylon.language.Integer.instance(0L))).longValue(), (.ceylon.language.Sequential<? extends .ceylon.language.String>)(.ceylon.language.Sequential)$tuple$20.getRest());
+            }
+            returning null;
+        );
+    }
+    
+    private final void withSpreadOp$priv(final .ceylon.language.Tuple<.java.lang.Object, ? extends .ceylon.language.Integer, ? extends .ceylon.language.Tuple<.ceylon.language.String, ? extends .ceylon.language.String, ? extends .ceylon.language.Empty>> args) {
+        final .ceylon.language.Iterable<? extends .com.redhat.ceylon.compiler.java.test.expression.invoke.SpreadArguments<.ceylon.language.String>, ? extends .java.lang.Object> iter = (.ceylon.language.Iterable).ceylon.language.nothing_.getNothing$();
+        (
+            let
+            {
+                .ceylon.language.Iterable<? extends .com.redhat.ceylon.compiler.java.test.expression.invoke.SpreadArguments<.ceylon.language.String>, ? extends .java.lang.Object> $spread$22$iterable = iter;
+                .ceylon.language.SequenceBuilder<.java.lang.Object> $spread$22$sequenceBuilder = new .ceylon.language.SequenceBuilder<.java.lang.Object>();
+                .ceylon.language.Tuple<.java.lang.Object, ? extends .ceylon.language.Integer, ? extends .ceylon.language.Tuple<.ceylon.language.String, ? extends .ceylon.language.String, ? extends .ceylon.language.Empty>> $tuple$23 = args;
+                long $spread$22$arg$0 = ((.ceylon.language.Integer)$tuple$23.get(.ceylon.language.Integer.instance(0L))).longValue();
+                .ceylon.language.String $spread$22$arg$1 = (.ceylon.language.String)$tuple$23.get(.ceylon.language.Integer.instance(1L));
+                .java.lang.Object $spread$22$iteration;
+                for (.ceylon.language.Iterator<? extends .com.redhat.ceylon.compiler.java.test.expression.invoke.SpreadArguments<.ceylon.language.String>> $spread$22$iterator = $spread$22$iterable.getIterator(); !(($spread$22$iteration = $spread$22$iterator.next()) instanceof .ceylon.language.Finished); ) {
+                    .com.redhat.ceylon.compiler.java.test.expression.invoke.SpreadArguments<.ceylon.language.String> $spread$22$element = (.com.redhat.ceylon.compiler.java.test.expression.invoke.SpreadArguments<.ceylon.language.String>)$spread$22$iteration;
+                    $spread$22$sequenceBuilder.append((
+                        let
+                        {
+                            $spread$22$element.m($spread$22$arg$0, $spread$22$arg$1);
+                        }
+                        returning null;
+                    ));
+                }
+            }
+            returning $spread$22$sequenceBuilder.getSequence();
+        );
+        (
+            let
+            {
+                .ceylon.language.Iterable<? extends .com.redhat.ceylon.compiler.java.test.expression.invoke.SpreadArguments<.ceylon.language.String>, ? extends .java.lang.Object> $spread$24$iterable = iter;
+                .ceylon.language.SequenceBuilder<.java.lang.Object> $spread$24$sequenceBuilder = new .ceylon.language.SequenceBuilder<.java.lang.Object>();
+                .ceylon.language.Tuple<.ceylon.language.String, ? extends .ceylon.language.String, ? extends .ceylon.language.Empty> $tuple$25 = ((.ceylon.language.Tuple<.java.lang.Object, ? extends .ceylon.language.Integer, ? extends .ceylon.language.Tuple<.ceylon.language.String, ? extends .ceylon.language.String, ? extends .ceylon.language.Empty>>)(.ceylon.language.Tuple)args).getRest();
+                long $spread$24$arg$0 = 0L;
+                .ceylon.language.String $spread$24$arg$1 = (.ceylon.language.String)$tuple$25.get(.ceylon.language.Integer.instance(0L));
+                .java.lang.Object $spread$24$iteration;
+                for (.ceylon.language.Iterator<? extends .com.redhat.ceylon.compiler.java.test.expression.invoke.SpreadArguments<.ceylon.language.String>> $spread$24$iterator = $spread$24$iterable.getIterator(); !(($spread$24$iteration = $spread$24$iterator.next()) instanceof .ceylon.language.Finished); ) {
+                    .com.redhat.ceylon.compiler.java.test.expression.invoke.SpreadArguments<.ceylon.language.String> $spread$24$element = (.com.redhat.ceylon.compiler.java.test.expression.invoke.SpreadArguments<.ceylon.language.String>)$spread$24$iteration;
+                    $spread$24$sequenceBuilder.append((
+                        let
+                        {
+                            $spread$24$element.m($spread$24$arg$0, $spread$24$arg$1);
+                        }
+                        returning null;
+                    ));
+                }
+            }
+            returning $spread$24$sequenceBuilder.getSequence();
+        );
+        (
+            let
+            {
+                .ceylon.language.Iterable<? extends .com.redhat.ceylon.compiler.java.test.expression.invoke.SpreadArguments<.ceylon.language.String>, ? extends .java.lang.Object> $spread$26$iterable = iter;
+                .ceylon.language.SequenceBuilder<.java.lang.Object> $spread$26$sequenceBuilder = new .ceylon.language.SequenceBuilder<.java.lang.Object>();
+                long $spread$26$arg$0 = 0L;
+                .ceylon.language.Sequential<? extends .ceylon.language.String> $spread$26$arg$1 = ((.ceylon.language.Tuple<.java.lang.Object, ? extends .ceylon.language.Integer, ? extends .ceylon.language.Tuple<.ceylon.language.String, ? extends .ceylon.language.String, ? extends .ceylon.language.Empty>>)(.ceylon.language.Tuple)args).getRest();
+                .java.lang.Object $spread$26$iteration;
+                for (.ceylon.language.Iterator<? extends .com.redhat.ceylon.compiler.java.test.expression.invoke.SpreadArguments<.ceylon.language.String>> $spread$26$iterator = $spread$26$iterable.getIterator(); !(($spread$26$iteration = $spread$26$iterator.next()) instanceof .ceylon.language.Finished); ) {
+                    .com.redhat.ceylon.compiler.java.test.expression.invoke.SpreadArguments<.ceylon.language.String> $spread$26$element = (.com.redhat.ceylon.compiler.java.test.expression.invoke.SpreadArguments<.ceylon.language.String>)$spread$26$iteration;
+                    $spread$26$sequenceBuilder.append((
+                        let
+                        {
+                            $spread$26$element.m2($spread$26$arg$0, $spread$26$arg$1);
+                        }
+                        returning null;
+                    ));
+                }
+            }
+            returning $spread$26$sequenceBuilder.getSequence();
+        );
+        (
+            let
+            {
+                .ceylon.language.Iterable<? extends .com.redhat.ceylon.compiler.java.test.expression.invoke.SpreadArguments<.ceylon.language.String>, ? extends .java.lang.Object> $spread$27$iterable = iter;
+                .ceylon.language.SequenceBuilder<.java.lang.Object> $spread$27$sequenceBuilder = new .ceylon.language.SequenceBuilder<.java.lang.Object>();
+                long $spread$27$arg$0 = 0L;
+                .ceylon.language.Sequential<? extends .ceylon.language.String> $spread$27$arg$1 = (.ceylon.language.Sequential<? extends .ceylon.language.String>)(.ceylon.language.Sequential)((.ceylon.language.Tuple<.java.lang.Object, ? extends .ceylon.language.Integer, ? extends .ceylon.language.Tuple<.ceylon.language.String, ? extends .ceylon.language.String, ? extends .ceylon.language.Empty>>)(.ceylon.language.Tuple)args).getRest().getRest();
+                .java.lang.Object $spread$27$iteration;
+                for (.ceylon.language.Iterator<? extends .com.redhat.ceylon.compiler.java.test.expression.invoke.SpreadArguments<.ceylon.language.String>> $spread$27$iterator = $spread$27$iterable.getIterator(); !(($spread$27$iteration = $spread$27$iterator.next()) instanceof .ceylon.language.Finished); ) {
+                    .com.redhat.ceylon.compiler.java.test.expression.invoke.SpreadArguments<.ceylon.language.String> $spread$27$element = (.com.redhat.ceylon.compiler.java.test.expression.invoke.SpreadArguments<.ceylon.language.String>)$spread$27$iteration;
+                    $spread$27$sequenceBuilder.append((
+                        let
+                        {
+                            $spread$27$element.m2($spread$27$arg$0, $spread$27$arg$1);
+                        }
+                        returning null;
+                    ));
+                }
+            }
+            returning $spread$27$sequenceBuilder.getSequence();
+        );
+        (
+            let
+            {
+                .ceylon.language.Iterable<? extends .com.redhat.ceylon.compiler.java.test.expression.invoke.SpreadArguments<.ceylon.language.String>, ? extends .java.lang.Object> $spread$28$iterable = iter;
+                .ceylon.language.SequenceBuilder<.java.lang.Object> $spread$28$sequenceBuilder = new .ceylon.language.SequenceBuilder<.java.lang.Object>();
+                .ceylon.language.Tuple<.ceylon.language.Integer, ? extends .ceylon.language.Integer, ? extends .ceylon.language.Empty> $tuple$29 = new .ceylon.language.Tuple<.ceylon.language.Integer, .ceylon.language.Integer, .ceylon.language.Empty>(.ceylon.language.Integer.instance(0L), .ceylon.language.empty_.getEmpty$());
+                long $spread$28$arg$0 = ((.ceylon.language.Integer)$tuple$29.get(.ceylon.language.Integer.instance(0L))).longValue();
+                .ceylon.language.Sequential<? extends .ceylon.language.String> $spread$28$arg$1 = (.ceylon.language.Sequential<? extends .ceylon.language.String>)(.ceylon.language.Sequential)$tuple$29.getRest();
+                .java.lang.Object $spread$28$iteration;
+                for (.ceylon.language.Iterator<? extends .com.redhat.ceylon.compiler.java.test.expression.invoke.SpreadArguments<.ceylon.language.String>> $spread$28$iterator = $spread$28$iterable.getIterator(); !(($spread$28$iteration = $spread$28$iterator.next()) instanceof .ceylon.language.Finished); ) {
+                    .com.redhat.ceylon.compiler.java.test.expression.invoke.SpreadArguments<.ceylon.language.String> $spread$28$element = (.com.redhat.ceylon.compiler.java.test.expression.invoke.SpreadArguments<.ceylon.language.String>)$spread$28$iteration;
+                    $spread$28$sequenceBuilder.append((
+                        let
+                        {
+                            $spread$28$element.m2($spread$28$arg$0, $spread$28$arg$1);
+                        }
+                        returning null;
+                    ));
+                }
+            }
+            returning $spread$28$sequenceBuilder.getSequence();
+        );
+        (
+            let
+            {
+                .ceylon.language.Iterable<? extends .com.redhat.ceylon.compiler.java.test.expression.invoke.SpreadArguments<.ceylon.language.String>, ? extends .java.lang.Object> $spread$30$iterable = iter;
+                .ceylon.language.SequenceBuilder<.java.lang.Object> $spread$30$sequenceBuilder = new .ceylon.language.SequenceBuilder<.java.lang.Object>();
+                .ceylon.language.Tuple<.java.lang.Object, ? extends .ceylon.language.Integer, ? extends .ceylon.language.Tuple<.ceylon.language.String, ? extends .ceylon.language.String, ? extends .ceylon.language.Empty>> $tuple$31 = new .ceylon.language.Tuple(.ceylon.language.Integer.instance(0L), new .ceylon.language.Tuple<.ceylon.language.String, .ceylon.language.String, .ceylon.language.Empty>(.ceylon.language.String.instance("hello"), .ceylon.language.empty_.getEmpty$()));
+                long $spread$30$arg$0 = ((.ceylon.language.Integer)$tuple$31.get(.ceylon.language.Integer.instance(0L))).longValue();
+                .ceylon.language.Sequential<? extends .ceylon.language.String> $spread$30$arg$1 = (.ceylon.language.Sequential<? extends .ceylon.language.String>)(.ceylon.language.Sequential)$tuple$31.getRest();
+                .java.lang.Object $spread$30$iteration;
+                for (.ceylon.language.Iterator<? extends .com.redhat.ceylon.compiler.java.test.expression.invoke.SpreadArguments<.ceylon.language.String>> $spread$30$iterator = $spread$30$iterable.getIterator(); !(($spread$30$iteration = $spread$30$iterator.next()) instanceof .ceylon.language.Finished); ) {
+                    .com.redhat.ceylon.compiler.java.test.expression.invoke.SpreadArguments<.ceylon.language.String> $spread$30$element = (.com.redhat.ceylon.compiler.java.test.expression.invoke.SpreadArguments<.ceylon.language.String>)$spread$30$iteration;
+                    $spread$30$sequenceBuilder.append((
+                        let
+                        {
+                            $spread$30$element.m2($spread$30$arg$0, $spread$30$arg$1);
+                        }
+                        returning null;
+                    ));
+                }
+            }
+            returning $spread$30$sequenceBuilder.getSequence();
+        );
+        (
+            let
+            {
+                .ceylon.language.Iterable<? extends .com.redhat.ceylon.compiler.java.test.expression.invoke.SpreadArguments<.ceylon.language.String>, ? extends .java.lang.Object> $spread$32$iterable = iter;
+                .ceylon.language.SequenceBuilder<.java.lang.Object> $spread$32$sequenceBuilder = new .ceylon.language.SequenceBuilder<.java.lang.Object>();
+                .ceylon.language.Tuple<.java.lang.Object, ? extends .ceylon.language.Integer, ? extends .ceylon.language.Tuple<.ceylon.language.String, ? extends .ceylon.language.String, ? extends .ceylon.language.Tuple<.ceylon.language.String, ? extends .ceylon.language.String, ? extends .ceylon.language.Empty>>> $tuple$33 = new .ceylon.language.Tuple(.ceylon.language.Integer.instance(0L), new .ceylon.language.Tuple<.ceylon.language.String, .ceylon.language.String, .ceylon.language.Tuple<.ceylon.language.String, ? extends .ceylon.language.String, ? extends .ceylon.language.Empty>>(.ceylon.language.String.instance("hello"), new .ceylon.language.Tuple<.ceylon.language.String, .ceylon.language.String, .ceylon.language.Empty>(.ceylon.language.String.instance("world"), .ceylon.language.empty_.getEmpty$())));
+                long $spread$32$arg$0 = ((.ceylon.language.Integer)$tuple$33.get(.ceylon.language.Integer.instance(0L))).longValue();
+                .ceylon.language.Sequential<? extends .ceylon.language.String> $spread$32$arg$1 = (.ceylon.language.Sequential<? extends .ceylon.language.String>)(.ceylon.language.Sequential)$tuple$33.getRest();
+                .java.lang.Object $spread$32$iteration;
+                for (.ceylon.language.Iterator<? extends .com.redhat.ceylon.compiler.java.test.expression.invoke.SpreadArguments<.ceylon.language.String>> $spread$32$iterator = $spread$32$iterable.getIterator(); !(($spread$32$iteration = $spread$32$iterator.next()) instanceof .ceylon.language.Finished); ) {
+                    .com.redhat.ceylon.compiler.java.test.expression.invoke.SpreadArguments<.ceylon.language.String> $spread$32$element = (.com.redhat.ceylon.compiler.java.test.expression.invoke.SpreadArguments<.ceylon.language.String>)$spread$32$iteration;
+                    $spread$32$sequenceBuilder.append((
+                        let
+                        {
+                            $spread$32$element.m2($spread$32$arg$0, $spread$32$arg$1);
+                        }
+                        returning null;
+                    ));
+                }
+            }
+            returning $spread$32$sequenceBuilder.getSequence();
+        );
+    }
+}
