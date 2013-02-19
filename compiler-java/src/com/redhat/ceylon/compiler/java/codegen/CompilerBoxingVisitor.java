@@ -43,4 +43,9 @@ public class CompilerBoxingVisitor extends BoxingVisitor {
     protected boolean hasErasure(ProducedType type) {
         return transformer.hasErasure(type);
     }
+
+    @Override
+    protected boolean isTypeParameter(ProducedType type) {
+        return transformer.isTypeParameter(type);
+    }
 }

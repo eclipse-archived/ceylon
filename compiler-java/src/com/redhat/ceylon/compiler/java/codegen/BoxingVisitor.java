@@ -20,6 +20,8 @@
 
 package com.redhat.ceylon.compiler.java.codegen;
 
+import java.util.List;
+
 import com.redhat.ceylon.compiler.typechecker.model.Declaration;
 import com.redhat.ceylon.compiler.typechecker.model.Method;
 import com.redhat.ceylon.compiler.typechecker.model.ProducedType;
@@ -54,6 +56,7 @@ import com.redhat.ceylon.compiler.typechecker.tree.Tree.PowerOp;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.PrefixOperatorExpression;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.QualifiedMemberExpression;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.SpecifierStatement;
+import com.redhat.ceylon.compiler.typechecker.tree.Tree.StaticMemberOrTypeExpression;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.StringLiteral;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.StringTemplate;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.Term;
@@ -64,6 +67,7 @@ public abstract class BoxingVisitor extends Visitor {
     protected abstract boolean isBooleanTrue(Declaration decl);
     protected abstract boolean isBooleanFalse(Declaration decl);
     protected abstract boolean hasErasure(ProducedType type);
+    protected abstract boolean isTypeParameter(ProducedType type);
 
     @Override
     public void visit(BaseMemberExpression that) {
@@ -138,8 +142,32 @@ public abstract class BoxingVisitor extends Visitor {
     public void visit(InvocationExpression that) {
         super.visit(that);
         propagateFromTerm(that, that.getPrimary());
+        
+        // Specifically for method invocations we check if the return type is
+        // a type parameter and if so if one of the type arguments is erased,
+        // in that case we mark the expressionitself as erased as well
+        if (that.getPrimary() instanceof StaticMemberOrTypeExpression) {
+            StaticMemberOrTypeExpression expr = (StaticMemberOrTypeExpression)that.getPrimary();
+            if (expr.getDeclaration() instanceof Method) {
+                Method mth = (Method)expr.getDeclaration();
+                if (isTypeParameter(mth.getType()) && hasErasedTypeParameter(expr.getTypeArguments().getTypeModels())) {
+                    CodegenUtil.markTypeErased(that);
+                }
+            }
+        }
     }
 
+    private boolean hasErasedTypeParameter(List<ProducedType> typeArguments) {
+        if (typeArguments != null){
+            for (ProducedType arg : typeArguments) {
+                if (hasErasure(arg) /*|| willEraseToSequential(param.getType())*/) {
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+    
     @Override
     public void visit(ParameterizedExpression that) {
         super.visit(that);
