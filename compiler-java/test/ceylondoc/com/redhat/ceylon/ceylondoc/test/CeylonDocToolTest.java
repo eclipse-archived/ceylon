@@ -789,7 +789,7 @@ public class CeylonDocToolTest {
         assertMatchInFile(destDir, "class_StubClass.html",
                 Pattern.compile("<div class='signature'><span class='modifiers'>shared</span> String\\? bug691AbbreviatedOptionalType1\\(\\)</div>"));
         assertMatchInFile(destDir, "class_StubClass.html",
-                Pattern.compile("<div class='signature'><span class='modifiers'>shared</span> <span class='type-parameter'>Element</span>\\? bug691AbbreviatedOptionalType2<span class='type-parameter'>&lt;Element&gt;</span>\\(\\)</div>"));
+                Pattern.compile("<div class='signature'><span class='modifiers'>shared</span> &lt;<span class='type-parameter'>Element</span>&amp;Object&gt;\\? bug691AbbreviatedOptionalType2<span class='type-parameter'>&lt;Element&gt;</span>\\(\\)</div>"));
     }
     
     private void assertBug839(File destDir) throws IOException {
