@@ -1798,8 +1798,6 @@ public class ExpressionTransformer extends AbstractTransformer {
         boolean wrapIntoArray = false;
         ListBuffer<JCExpression> arrayWrap = new ListBuffer<JCExpression>();
         for (int argIndex = 0; argIndex < numArguments; argIndex++) {
-            final JCExpression expr;
-            final JCExpression type;
             BoxingStrategy boxingStrategy = invocation.getParameterBoxingStrategy(argIndex);
             ProducedType parameterType = invocation.getParameterType(argIndex);
             // for Java methods of variadic primitives, it's better to wrap them ourselves into an array
@@ -1812,119 +1810,38 @@ public class ExpressionTransformer extends AbstractTransformer {
                     && !invocation.isSpread())
                 wrapIntoArray = true;
 
+            ExpressionAndType exprAndType;
             if (invocation.isArgumentSpread(argIndex) 
                     && !invocation.isParameterSequenced(argIndex) 
                     && !invocation.isJavaMethod()) {
-                // Spread tuple Argument
-                // invoking f(*args), where declared f(A a, B a) (last param not sequenced)
-                final Expression tupleArgument = invocation.getArgumentExpression(argIndex);
-                final ProducedType callableType = invocation.getPrimary().getTypeModel().getFullType();
-                
-                // Only evaluate the tuple expr once
-                SyntheticName tupleAlias = naming.alias("tuple");
-                JCExpression tupleType = makeJavaType(tupleArgument.getTypeModel(), 0);
-                JCExpression tupleExpr = transformExpression(tupleArgument, BoxingStrategy.BOXED, null);
-                callBuilder.appendStatement(makeVar(tupleAlias, tupleType, tupleExpr));
-                
-                if (callBuilder.getArgumentHandling() == 0) {
-                    // XXX Hack: Only do this if we're not already doing 
-                    // something funky with arguments e.g. SpreadOp
-                    callBuilder.argumentHandling(CallBuilder.CB_LET, naming.alias("spreadarg"));
-                }
-                callBuilder.voidMethod(invocation.getReturnType() == null 
-                        || Decl.isUnboxedVoid(invocation.getPrimaryDeclaration())); 
-                
-                int spreadArgIndex = argIndex;
-                int lastArgIndex = Math.min(getNumParametersOfCallable(callableType), getMinimumParameterCountForCallable(callableType)); 
-                for (; spreadArgIndex < lastArgIndex; spreadArgIndex++) {
-                    boxingStrategy = invocation.getParameterBoxingStrategy(spreadArgIndex);
-                    ProducedType paramType = getParameterTypeOfCallable(callableType, spreadArgIndex);
-                    JCExpression tupleIndex = boxType(make().Literal((long)spreadArgIndex-argIndex), 
-                            typeFact().getIntegerDeclaration().getType());
-                    JCExpression tupleElement = make().Apply(null, 
-                            naming.makeQualIdent(tupleAlias.makeIdent(), "get"),
-                            List.<JCExpression>of(tupleIndex));
-                    
-                    tupleElement = applyErasureAndBoxing(tupleElement, 
-                            typeFact().getAnythingDeclaration().getType(), 
-                            true, boxingStrategy, paramType);
-                    JCExpression argType = makeJavaType(paramType, boxingStrategy == BoxingStrategy.BOXED ? JT_NO_PRIMITIVES : 0);
-                    result = result.append(new ExpressionAndType(tupleElement, argType));
-                }
-                if (spreadArgIndex < getNumParametersOfCallable(callableType)) {
-                    boxingStrategy = invocation.getParameterBoxingStrategy(spreadArgIndex);
-                    ProducedType paramType = getParameterTypeOfCallable(callableType, spreadArgIndex);
-                    JCExpression tupleElement = tupleAlias.makeIdent();
-                    for (int kk = spreadArgIndex; kk <  getNumParametersOfCallable(callableType); kk++) {
-                        tupleElement = make().Apply(null, naming.makeQualIdent(tupleElement, "getRest"),
-                                List.<JCExpression>nil());
-                    }
-                    tupleElement = applyErasureAndBoxing(tupleElement, 
-                            typeFact().getAnythingDeclaration().getType(), 
-                            true, boxingStrategy, paramType);
-                    JCExpression argType = makeJavaType(paramType, boxingStrategy == BoxingStrategy.BOXED ? JT_NO_PRIMITIVES : 0);
-                    result = result.append(new ExpressionAndType(tupleElement, argType));
-                }
-                
+                result = transformSpreadTupleArgument(invocation, callBuilder,
+                        result, argIndex);
                 break;
-                
             } else if (!invocation.isParameterSequenced(argIndex)
                     // if it's spread and not Java, we pass it along
                     // invoking f(a, *b), where declared f(A a, B b)
                     || (invocation.isArgumentSpread(argIndex) && !invocation.isJavaMethod())
                     // if it's sequenced, Java and there's no spread at all, pass it along
                     || (invocation.isParameterSequenced(argIndex) && invocation.isJavaMethod() && !invocation.isSpread())) {
-                expr = invocation.getTransformedArgumentExpression(argIndex);
-                type = makeJavaType(invocation.getParameterType(argIndex), boxingStrategy == BoxingStrategy.BOXED ? JT_NO_PRIMITIVES : 0);
+                exprAndType = transformArgument(invocation, argIndex,
+                        boxingStrategy);
             } else {
-                final ProducedType iteratedType = typeFact().getIteratedType(parameterType);
                 // we must have a sequenced param
-                
                 if(invocation.isSpread()){
-                    // invoking f(a, *b), where declared f(A a, B* b)
-                    // we can have several remaining arguments and the last one is spread
-                    List<JCExpression> x = List.<JCExpression>nil();
-                    for ( ; argIndex < numArguments; argIndex++) {
-                        JCExpression argExpr = invocation.getTransformedArgumentExpression(argIndex);
-                        // the last parameter is spread and must be put first
-                        if(argIndex < numArguments - 1)
-                            x = x.append(argExpr);
-                        else
-                            x = x.prepend(argExpr);
-                    }
-                    if(invocation.isJavaMethod()){
-                        // collect all the initial arguments and wrap into a Java array
-                        // first arg is the spread part
-                        JCExpression last = x.head;
-                        // remove it from x
-                        x = x.tail;
-                        
-                        ProducedType lastType = invocation.getArgumentExpression(numArguments-1).getTypeModel();
-
-                        // must translate it into a Util call
-                        expr = sequenceToJavaArray(last, parameterType, boxingStrategy, lastType, x);
-                    }else{
-                        JCExpression typeExpr = makeJavaType(iteratedType, JT_TYPE_ARGUMENT);
-                        expr = makeUtilInvocation("sequentialInstance", x, List.of(typeExpr));
-                    }
+                    exprAndType = transformSpreadArgument(invocation,
+                            numArguments, argIndex, boxingStrategy,
+                            parameterType);
+                    argIndex = numArguments;
                 }else{
-                    // invoking f(a, b, c), where declared f(A a, B* b)
-                    // collect each remaining argument and box with an ArraySequence<T>
-                    List<JCExpression> x = List.<JCExpression>nil();
-                    boolean prev = this.uninitializedOperand(true);
-                    for ( ; argIndex < numArguments; argIndex++) {
-                        x = x.append(invocation.getTransformedArgumentExpression(argIndex));
-                    }
-                    this.uninitializedOperand(prev);
-                    expr = makeSequence(x, iteratedType, JT_TYPE_ARGUMENT);
-
+                    exprAndType = transformVariadicArgument(invocation,
+                            numArguments, argIndex, parameterType);
+                    argIndex = numArguments;
                 }
-                type = makeJavaType(typeFact().getSequenceType(iteratedType).getType());
             }
             if(!wrapIntoArray)
-                result = result.append(new ExpressionAndType(expr, type));
+                result = result.append(exprAndType);
             else
-                arrayWrap.append(expr);
+                arrayWrap.append(exprAndType.expression);
         }
         if(wrapIntoArray){
             // must have at least one arg, so take the last one
@@ -1936,6 +1853,133 @@ public class ExpressionTransformer extends AbstractTransformer {
             result = result.append(new ExpressionAndType(arrayExpr, arrayTypeExpr));
         }
         return result;
+    }
+
+    private ExpressionAndType transformVariadicArgument(
+            SimpleInvocation invocation, int numArguments, int argIndex,
+            ProducedType parameterType) {
+        ExpressionAndType exprAndType;
+        final ProducedType iteratedType = typeFact().getIteratedType(parameterType);
+        final JCExpression expr;
+        final JCExpression type;
+        // invoking f(a, b, c), where declared f(A a, B* b)
+        // collect each remaining argument and box with an ArraySequence<T>
+        List<JCExpression> x = List.<JCExpression>nil();
+        boolean prev = this.uninitializedOperand(true);
+        for (int ii = argIndex ; ii < numArguments; ii++) {
+            x = x.append(invocation.getTransformedArgumentExpression(ii));
+        }
+        this.uninitializedOperand(prev);
+        expr = makeSequence(x, iteratedType, JT_TYPE_ARGUMENT);
+        type = makeJavaType(typeFact().getSequenceType(iteratedType).getType());
+        exprAndType = new ExpressionAndType(expr, type);
+        return exprAndType;
+    }
+
+    private ExpressionAndType transformSpreadArgument(
+            SimpleInvocation invocation, int numArguments, int argIndex,
+            BoxingStrategy boxingStrategy, ProducedType parameterType) {
+        ExpressionAndType exprAndType;
+        final ProducedType iteratedType = typeFact().getIteratedType(parameterType);
+        final JCExpression expr;
+        final JCExpression type;
+        // invoking f(a, *b), where declared f(A a, B* b)
+        // we can have several remaining arguments and the last one is spread
+        List<JCExpression> x = List.<JCExpression>nil();
+        for (int ii = argIndex ; ii < numArguments; ii++) {
+            JCExpression argExpr = invocation.getTransformedArgumentExpression(ii);
+            // the last parameter is spread and must be put first
+            if(ii < numArguments - 1)
+                x = x.append(argExpr);
+            else
+                x = x.prepend(argExpr);
+        }
+        if(invocation.isJavaMethod()){
+            // collect all the initial arguments and wrap into a Java array
+            // first arg is the spread part
+            JCExpression last = x.head;
+            // remove it from x
+            x = x.tail;
+            
+            ProducedType lastType = invocation.getArgumentExpression(numArguments-1).getTypeModel();
+
+            // must translate it into a Util call
+            expr = sequenceToJavaArray(last, parameterType, boxingStrategy, lastType, x);
+        }else{
+            JCExpression typeExpr = makeJavaType(iteratedType, JT_TYPE_ARGUMENT);
+            expr = makeUtilInvocation("sequentialInstance", x, List.of(typeExpr));
+        }
+        type = makeJavaType(typeFact().getSequenceType(iteratedType).getType());
+        exprAndType = new ExpressionAndType(expr, type);
+        return exprAndType;
+    }
+
+    private List<ExpressionAndType> transformSpreadTupleArgument(
+            SimpleInvocation invocation, CallBuilder callBuilder,
+            List<ExpressionAndType> result, int argIndex) {
+        BoxingStrategy boxingStrategy;
+        // Spread tuple Argument
+        // invoking f(*args), where declared f(A a, B a) (last param not sequenced)
+        final Expression tupleArgument = invocation.getArgumentExpression(argIndex);
+        final ProducedType callableType = invocation.getPrimary().getTypeModel().getFullType();
+        
+        // Only evaluate the tuple expr once
+        SyntheticName tupleAlias = naming.alias("tuple");
+        JCExpression tupleType = makeJavaType(tupleArgument.getTypeModel(), 0);
+        JCExpression tupleExpr = transformExpression(tupleArgument, BoxingStrategy.BOXED, null);
+        callBuilder.appendStatement(makeVar(tupleAlias, tupleType, tupleExpr));
+        
+        if (callBuilder.getArgumentHandling() == 0) {
+            // XXX Hack: Only do this if we're not already doing 
+            // something funky with arguments e.g. SpreadOp
+            callBuilder.argumentHandling(CallBuilder.CB_LET, naming.alias("spreadarg"));
+        }
+        callBuilder.voidMethod(invocation.getReturnType() == null 
+                || Decl.isUnboxedVoid(invocation.getPrimaryDeclaration())); 
+        
+        int spreadArgIndex = argIndex;
+        int lastArgIndex = Math.min(getNumParametersOfCallable(callableType), getMinimumParameterCountForCallable(callableType)); 
+        for (; spreadArgIndex < lastArgIndex; spreadArgIndex++) {
+            boxingStrategy = invocation.getParameterBoxingStrategy(spreadArgIndex);
+            ProducedType paramType = getParameterTypeOfCallable(callableType, spreadArgIndex);
+            JCExpression tupleIndex = boxType(make().Literal((long)spreadArgIndex-argIndex), 
+                    typeFact().getIntegerDeclaration().getType());
+            JCExpression tupleElement = make().Apply(null, 
+                    naming.makeQualIdent(tupleAlias.makeIdent(), "get"),
+                    List.<JCExpression>of(tupleIndex));
+            
+            tupleElement = applyErasureAndBoxing(tupleElement, 
+                    typeFact().getAnythingDeclaration().getType(), 
+                    true, boxingStrategy, paramType);
+            JCExpression argType = makeJavaType(paramType, boxingStrategy == BoxingStrategy.BOXED ? JT_NO_PRIMITIVES : 0);
+            result = result.append(new ExpressionAndType(tupleElement, argType));
+        }
+        if (spreadArgIndex < getNumParametersOfCallable(callableType)) {
+            boxingStrategy = invocation.getParameterBoxingStrategy(spreadArgIndex);
+            ProducedType paramType = getParameterTypeOfCallable(callableType, spreadArgIndex);
+            JCExpression tupleElement = tupleAlias.makeIdent();
+            for (int kk = spreadArgIndex; kk <  getNumParametersOfCallable(callableType); kk++) {
+                tupleElement = make().Apply(null, naming.makeQualIdent(tupleElement, "getRest"),
+                        List.<JCExpression>nil());
+            }
+            tupleElement = applyErasureAndBoxing(tupleElement, 
+                    typeFact().getAnythingDeclaration().getType(), 
+                    true, boxingStrategy, paramType);
+            JCExpression argType = makeJavaType(paramType, boxingStrategy == BoxingStrategy.BOXED ? JT_NO_PRIMITIVES : 0);
+            result = result.append(new ExpressionAndType(tupleElement, argType));
+        }
+        return result;
+    }
+
+    private ExpressionAndType transformArgument(SimpleInvocation invocation,
+            int argIndex, BoxingStrategy boxingStrategy) {
+        ExpressionAndType exprAndType;
+        final JCExpression expr;
+        final JCExpression type;
+        expr = invocation.getTransformedArgumentExpression(argIndex);
+        type = makeJavaType(invocation.getParameterType(argIndex), boxingStrategy == BoxingStrategy.BOXED ? JT_NO_PRIMITIVES : 0);
+        exprAndType = new ExpressionAndType(expr, type);
+        return exprAndType;
     }
     
     private List<ExpressionAndType> transformArgumentsForNamedInvocation(NamedArgumentInvocation invocation) {
