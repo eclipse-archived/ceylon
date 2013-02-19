@@ -32,6 +32,7 @@ import org.apache.tools.ant.Task;
 class ExitHandler {
 
     private String errorProperty;
+    private String resultProperty;
     private boolean failOnError = true;
     
     String getErrorProperty() {
@@ -46,15 +47,28 @@ class ExitHandler {
     void setFailOnError(boolean failOnError) {
         this.failOnError = failOnError;
     }
+    String getResultProperty() {
+        return resultProperty;
+    }
+    void setResultProperty(String resultProperty) {
+        this.resultProperty = resultProperty;
+    }
+
     void handleExit(Task task, int sc, String message) {
-        if (errorProperty != null) {
+        if (resultProperty != null) {
             task.getProject().setNewProperty(
-                errorProperty, "true");
+                resultProperty, Integer.toString(sc));
         }
-        if (failOnError) {
-            throw new BuildException(message, task.getLocation());
-        } else {
-            task.log(message, Project.MSG_ERR);
+        if(sc != 0){
+            if (errorProperty != null) {
+                task.getProject().setNewProperty(
+                        errorProperty, "true");
+            }
+            if (failOnError) {
+                throw new BuildException(message, task.getLocation());
+            } else {
+                task.log(message, Project.MSG_ERR);
+            }
         }
     }
     

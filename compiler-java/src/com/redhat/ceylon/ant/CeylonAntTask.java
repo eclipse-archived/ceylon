@@ -76,6 +76,14 @@ public abstract class CeylonAntTask extends Task {
         this.exitHandler.setErrorProperty(errorProperty);
     }
     
+    /**
+     * Sets the Ceylon program exit code into the given property
+     * @param resultProperty the property to set to the Ceylon program exit code
+     */
+    public void setResultProperty(String resultProperty){
+        this.exitHandler.setResultProperty(resultProperty);
+    }
+    
     /** Executes the task */
     public void execute() {
         Java7Checker.check();
@@ -103,6 +111,8 @@ public abstract class CeylonAntTask extends Task {
             if (exe.getExitValue() != 0) {
                 String message = formatFailureMessage(cmd);
                 exitHandler.handleExit(this, exe.getExitValue(), message);
+            }else{
+                exitHandler.handleExit(this, exe.getExitValue(), null);
             }
         } catch (IOException e) {
             throw new BuildException("Error running Ceylon compiler", e, getLocation());
