@@ -281,6 +281,7 @@ public class InteropTest extends CompilerTest {
                 new CompilerError(30, "overloaded declarations may not be called using named arguments: createTempFile"),
                 new CompilerError(30, "named invocations of Java methods not supported"),
                 new CompilerError(32, "named invocations of Java methods not supported"),
+                new CompilerError(35, "could not determine type of method or attribute reference: createTempFile of File"),
                 new CompilerError(35, "named invocations of Java methods not supported"),
                 new CompilerError(35, "could not determine type of method or attribute reference: createTempFile of File"),
                 new CompilerError(35, "overloaded declarations may not be called using named arguments: createTempFile"),
