@@ -139,7 +139,7 @@ public class BcTests extends CompilerTest {
     public void testBinaryVersionIncompatible(){
         compile("JavaOldVersion.java");
         assertErrors("CeylonNewVersion", 
-                new CompilerError(-1, "You are using a Ceylon class compiled for an incompatible version of the Ceylon compiler (0.0).\n  This compiler supports 4.0.\n  Please try to recompile your module using a compatible compiler.\n  Binary compatibility will only be supported after Ceylon 1.0.\n  Offending class: com.redhat.ceylon.compiler.java.test.bc.JavaOldVersion"));
+                new CompilerError(-1, "Ceylon class com.redhat.ceylon.compiler.java.test.bc.JavaOldVersion was compiled by an incompatible version of the Ceylon compiler\n  The class was compiled using 0.0.\n  This compiler supports 4.0.\n  Please try to recompile your module using a compatible compiler.\n  Binary compatibility will only be supported after Ceylon 1.0."));
     }
     
     @Test
