@@ -180,4 +180,9 @@ public abstract class LazyModule extends Module {
         return JDKUtils.isJDKPackage(moduleName, packageName)
                 || JDKUtils.isOracleJDKPackage(moduleName, packageName);
     }
+
+    public void addPackage(Package pkg){
+        // make sure we don't call any overloaded getPackages() that might trigger lazy loading
+        super.getPackages().add(pkg);
+    }
 }

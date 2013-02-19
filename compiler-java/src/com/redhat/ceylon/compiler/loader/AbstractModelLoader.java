@@ -728,7 +728,10 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
         // only bind it if we already have a module
         if(module != null){
             pkg.setModule(module);
-            module.getPackages().add(pkg);
+            if(module instanceof LazyModule)
+                ((LazyModule) module).addPackage(pkg);
+            else
+                module.getPackages().add(pkg);
         }
         
         // only load package descriptors for new packages after a certain phase

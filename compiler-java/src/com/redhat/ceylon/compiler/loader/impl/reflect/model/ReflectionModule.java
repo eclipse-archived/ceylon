@@ -29,6 +29,7 @@ import com.redhat.ceylon.compiler.typechecker.model.Package;
 public class ReflectionModule extends LazyModule {
 
     private ReflectionModuleManager modelManager;
+    private boolean packagesLoaded = true;
 
     public ReflectionModule(ReflectionModuleManager reflectionModuleManager) {
         this.modelManager = reflectionModuleManager;
@@ -43,11 +44,18 @@ public class ReflectionModule extends LazyModule {
     public List<Package> getPackages() {
         // make sure we're complete
         AbstractModelLoader modelLoader = getModelLoader();
-        String name = getNameAsString();
-        for(String pkg : jarPackages){
-            // special case for the language module to hide stuff
-            if(!name.equals("ceylon.language") || pkg.startsWith("ceylon.language"))
-                modelLoader.findOrCreatePackage(this, pkg);
+        if(!packagesLoaded){
+            synchronized(modelLoader){
+                if(!packagesLoaded){
+                    String name = getNameAsString();
+                    for(String pkg : jarPackages){
+                        // special case for the language module to hide stuff
+                        if(!name.equals("ceylon.language") || pkg.startsWith("ceylon.language"))
+                            modelLoader.findOrCreatePackage(this, pkg);
+                    }
+                    packagesLoaded = true;
+                }
+            }
         }
         return super.getPackages();
     }
