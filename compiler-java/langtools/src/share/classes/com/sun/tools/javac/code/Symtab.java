@@ -586,8 +586,8 @@ public class Symtab {
         ceylonAtTypeAliasType = enterClass("com.redhat.ceylon.compiler.java.metadata.TypeAlias");
         
         ceylonUtilType = enterClass("com.redhat.ceylon.compiler.java.Util");
-        ceylonTypeDescriptorType = enterClass("com.redhat.ceylon.compiler.java.TypeDescriptor");
-        ceylonReifiedTypeType = enterClass("com.redhat.ceylon.compiler.java.ReifiedType");
+        ceylonTypeDescriptorType = enterClass("com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor");
+        ceylonReifiedTypeType = enterClass("com.redhat.ceylon.compiler.java.runtime.model.ReifiedType");
 
         synthesizeEmptyInterfaceIfMissing(autoCloseableType);
         synthesizeEmptyInterfaceIfMissing(cloneableType);

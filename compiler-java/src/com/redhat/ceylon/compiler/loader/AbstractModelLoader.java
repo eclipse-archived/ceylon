@@ -132,7 +132,7 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
     private static final TypeMirror CEYLON_OBJECT_TYPE = simpleObjectType("ceylon.language.Object");
     private static final TypeMirror CEYLON_BASIC_TYPE = simpleObjectType("ceylon.language.Basic");
     private static final TypeMirror CEYLON_EXCEPTION_TYPE = simpleObjectType("ceylon.language.Exception");
-    private static final TypeMirror CEYLON_REIFIED_TYPE_TYPE = simpleObjectType("com.redhat.ceylon.compiler.java.ReifiedType");
+    private static final TypeMirror CEYLON_REIFIED_TYPE_TYPE = simpleObjectType("com.redhat.ceylon.compiler.java.runtime.model.ReifiedType");
     
     private static final TypeMirror STRING_TYPE = simpleObjectType("java.lang.String");
     private static final TypeMirror CEYLON_STRING_TYPE = simpleObjectType("ceylon.language.String");

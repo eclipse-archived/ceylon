@@ -2611,7 +2611,7 @@ public abstract class AbstractTransformer implements Transformation {
     
     public JCExpression makeNothingTypeDescriptor() {
         return make().Select(makeTypeDescriptorType(), 
-                names().fromString("BottomType"));
+                names().fromString("NothingType"));
 
     }
 
