@@ -312,13 +312,10 @@
             executable="${ceylon.compiler.loc}/dist/bin/ceylon"
             sysrep="${build.test.repo}"
         	run="runAndExit"
-        	module="default">
+        	module="default"
+        	resultproperty="test.ceylon.result">
         	<rep url="${build.test}"/>
         </ceylon-run>
-    	<!--
-        <java classname="runAndExit_" classpath="${tests.car};${build.dist}/${ceylon.language.car}"
-            resultproperty="test.ceylon.result"/>
-        -->
         
         <condition property="test.fail.ceylon">
             <not><equals arg1="${test.ceylon.result}" arg2="0"/></not>
