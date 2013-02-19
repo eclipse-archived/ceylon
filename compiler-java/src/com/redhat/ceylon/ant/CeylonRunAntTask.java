@@ -37,7 +37,7 @@ public class CeylonRunAntTask extends CeylonAntTask {
     private Path src;   
     private String run;
     private String module;
-    private Repo systemRepository;
+    private String systemRepository;
     private RepoSet reposet = new RepoSet();
     
     public CeylonRunAntTask() {
@@ -68,6 +68,14 @@ public class CeylonRunAntTask extends CeylonAntTask {
         this.reposet.addConfiguredRepoSet(reposet);
     }
     
+    /**
+     * Sets the system repository
+     * @param rep the new system repository
+     */
+    public void setSysRep(String rep) {
+        systemRepository = rep;
+    }
+
     /**
      * Set the fully qualified name of a toplevel method or class with no parameters.
      */
@@ -105,7 +113,7 @@ public class CeylonRunAntTask extends CeylonAntTask {
             cmd.createArgument().setValue("--src="+src.toString());
         }
         if (systemRepository != null) {
-            cmd.createArgument().setValue("--sysrep=" + Util.quoteParameter(systemRepository.url));
+            cmd.createArgument().setValue("--sysrep=" + Util.quoteParameter(systemRepository));
         }
         
         for(Repo rep : this.reposet.getRepos()){
