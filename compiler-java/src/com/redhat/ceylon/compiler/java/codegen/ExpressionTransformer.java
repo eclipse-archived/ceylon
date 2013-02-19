@@ -744,7 +744,7 @@ public class ExpressionTransformer extends AbstractTransformer {
         public JCExpression transform(JCExpression primaryExpr, String selector) {
             TransformedInvocationPrimary transformedPrimary = invocation.transformPrimary(primaryExpr, selector);
             boolean prev = uninitializedOperand(stacksUninitializedOperand(invocation));
-            callBuilder.argumentsAndTypes(transformArgumentList(invocation, transformedPrimary));
+            callBuilder.argumentsAndTypes(transformArgumentList(invocation, transformedPrimary, callBuilder));
             uninitializedOperand(prev);
             JCExpression resultExpr;
             if (invocation instanceof NamedArgumentInvocation) {
@@ -1756,16 +1756,16 @@ public class ExpressionTransformer extends AbstractTransformer {
         }
     }
     
-    private final List<ExpressionAndType> transformArgumentList(Invocation invocation, TransformedInvocationPrimary transformedPrimary) {
+    private final List<ExpressionAndType> transformArgumentList(Invocation invocation, TransformedInvocationPrimary transformedPrimary, CallBuilder callBuilder) {
         // don't try to work on broken stuff
         if (!invocation.validNumberOfParameters()) {
             return List.<ExpressionAndType>nil();
         }
-        return transformArguments(invocation, transformedPrimary);   
+        return transformArguments(invocation, transformedPrimary, callBuilder);   
     }
     
     private final List<ExpressionAndType> transformArguments(Invocation invocation,
-            TransformedInvocationPrimary transformedPrimary) {
+            TransformedInvocationPrimary transformedPrimary, CallBuilder callBuilder) {
         List<ExpressionAndType> result = List.<ExpressionAndType>nil();
         withinInvocation(false);
         // Implicit arguments
@@ -1782,14 +1782,14 @@ public class ExpressionTransformer extends AbstractTransformer {
         // Explicit arguments
         if (invocation instanceof SuperInvocation) {
             withinSuperInvocation(((SuperInvocation)invocation).getSub());
-            result = result.appendList(transformArgumentsForSimpleInvocation((SimpleInvocation)invocation));
+            result = result.appendList(transformArgumentsForSimpleInvocation((SimpleInvocation)invocation, callBuilder));
             withinSuperInvocation(null);
         } else if (invocation instanceof NamedArgumentInvocation) {
             result = result.appendList(transformArgumentsForNamedInvocation((NamedArgumentInvocation)invocation));
         } else if (invocation instanceof CallableSpecifierInvocation) {
             result = result.appendList(transformArgumentsForCallableSpecifier((CallableSpecifierInvocation)invocation));
         } else if (invocation instanceof SimpleInvocation) {
-            result = result.appendList(transformArgumentsForSimpleInvocation((SimpleInvocation)invocation));
+            result = result.appendList(transformArgumentsForSimpleInvocation((SimpleInvocation)invocation, callBuilder));
         } else {
             throw Assert.fail();
         }
@@ -1797,7 +1797,7 @@ public class ExpressionTransformer extends AbstractTransformer {
         return result;
     }
     
-    private List<ExpressionAndType> transformArgumentsForSimpleInvocation(SimpleInvocation invocation) {
+    private List<ExpressionAndType> transformArgumentsForSimpleInvocation(SimpleInvocation invocation, CallBuilder callBuilder) {
         List<ExpressionAndType> result = List.<ExpressionAndType>nil();
         int numArguments = invocation.getNumArguments();
         boolean wrapIntoArray = false;
@@ -2038,7 +2038,7 @@ public class ExpressionTransformer extends AbstractTransformer {
         at(invocation.getNode());
         JCExpression result = callBuilder
             .invoke(naming.makeQuotedQualIdent(invocation.getCallable(), Naming.getCallableMethodName()))
-            .argumentsAndTypes(transformArgumentList(invocation, null))
+            .argumentsAndTypes(transformArgumentList(invocation, null, callBuilder))
             .build();
         if(invocation.handleBoxing)
             result = applyErasureAndBoxing(result, invocation.getReturnType(), 
@@ -2125,7 +2125,7 @@ public class ExpressionTransformer extends AbstractTransformer {
                     expr = naming.makeSuper();
                 }
                 final List<JCExpression> superArguments = transformSuperInvocationArguments(
-                        extendedType, classBuilder, builder);
+                        extendedType, classBuilder, builder, callBuilder);
                 JCExpression superExpr = callBuilder.invoke(expr)    
                     .arguments(superArguments)
                     .build();
@@ -2148,10 +2148,10 @@ public class ExpressionTransformer extends AbstractTransformer {
      */
     private List<JCExpression> transformSuperInvocationArguments(
             Tree.ExtendedType extendedType,
-            ClassDefinitionBuilder classBuilder, SuperInvocation invocation) {
+            ClassDefinitionBuilder classBuilder, SuperInvocation invocation, CallBuilder callBuilder) {
         boolean prev = this.uninitializedOperand(stacksUninitializedOperand(invocation));
         // We could create a TransformedPrimary(expr, "super") here if needed
-        List<ExpressionAndType> superArgumentsAndTypes = transformArgumentList(invocation, null);
+        List<ExpressionAndType> superArgumentsAndTypes = transformArgumentList(invocation, null, callBuilder);
         this.uninitializedOperand(prev);
         final List<JCExpression> superArguments;
         if (stacksUninitializedOperand(invocation) 
