@@ -1169,7 +1169,7 @@ public class ExpressionTransformer extends AbstractTransformer {
         ProducedType paramType = getTypeArgument(comparableType);
         JCExpression lower = transformExpression(op.getLeftTerm(), BoxingStrategy.BOXED, paramType);
         JCExpression upper = transformExpression(op.getRightTerm(), BoxingStrategy.BOXED, paramType);
-        ProducedType rangeType = typeFact().getRangeType(op.getTypeModel());
+        ProducedType rangeType = op.getTypeModel();
         JCExpression typeExpr = makeJavaType(rangeType, CeylonTransformer.JT_CLASS_NEW);
         return at(op).NewClass(null, null, typeExpr, List.<JCExpression> of(makeReifiedTypeArgument(rangeType), lower, upper), null);
     }
