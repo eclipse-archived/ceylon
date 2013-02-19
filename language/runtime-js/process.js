@@ -12,19 +12,19 @@ function languageClass() {
 }
 initTypeProto(languageClass, "ceylon.language::language", $init$Basic());
 var lang$proto=languageClass.$$.prototype;
-lang$proto.getVersion=function() {
+defineAttr(lang$proto, 'version', function() {
     return String$("0.5",3);
-}
-lang$proto.getMajorVersion=function() { return 0; }
-lang$proto.getMinorVersion=function() { return 5; }
-lang$proto.getReleaseVersion=function() { return 0; }
-lang$proto.getVersionName=function() { return String$("Analytical Engine",11); }
-lang$proto.getMajorVersionBinary=function() { return 4; }
-lang$proto.getMinorVersionBinary=function() { return 0; }
+});
+defineAttr(lang$proto, 'majorVersion', function(){ return 0; });
+defineAttr(lang$proto, 'minorVersion', function(){ return 5; });
+defineAttr(lang$proto, 'releaseVersion', function(){ return 0; });
+defineAttr(lang$proto, 'versionName', function(){ return String$("Analytical Engine",11); });
+defineAttr(lang$proto, 'majorVersionBinary', function(){ return 4; });
+defineAttr(lang$proto, 'minorVersionBinary', function(){ return 0; });
 var languageString = String$("language", 7);
-lang$proto.getString = function() {
+defineAttr(lang$proto, 'string', function() {
     return languageString;
-}
+});
 
 var language$ = languageClass();
 function getLanguage() { return language$; }
@@ -89,7 +89,7 @@ if ((typeof process !== "undefined") && (process.argv !== undefined)) {
         }
     }
 }
-process$proto.getArguments = function() { return argv; }
+defineAttr(process$proto, 'arguments', function(){ return argv; });
 process$proto.namedArgumentPresent = function(name) {
     return (name in namedArgs);
 }
@@ -139,7 +139,7 @@ process$proto.propertyValue = function(name) {
     return (value !== undefined) ? value : null;
 }
 
-process$proto.getNewline = function() { return linesep; }
+defineAttr(process$proto, 'newline', function(){ return linesep; });
 
 if ((typeof process !== "undefined") && (process.stdout !== undefined)) {
     process$proto.write = function(string) {
@@ -181,12 +181,12 @@ process$proto.readLine = function() {
     return String$("", 0);//TODO
 }
 
-process$proto.getMilliseconds = function() {
+defineAttr(process$proto, 'milliseconds', function() {
     return Date.now();
-}
-process$proto.getNanoseconds = function() {
+});
+defineAttr(process$proto, 'nanoseconds', function() {
     return Date.now()*1000000;
-}
+});
 
 if ((typeof process !== "undefined") && (process.exit !== undefined)) {
     process$proto.exit = function(code) {
@@ -197,32 +197,32 @@ if ((typeof process !== "undefined") && (process.exit !== undefined)) {
 }
 
 var processString = String$("process", 7);
-process$proto.getString = function() {
+defineAttr(process$proto, 'string', function() {
     return processString;
-}
-process$proto.getVm = function() {
+});
+defineAttr(process$proto, 'vm', function() {
     if (typeof process !== "undefined" && process.execPath && process.execPath.match(/node(\.exe)?$/)) {
         return String$("node.js", 7);
     } else if (typeof window === 'object') {
         return String$("Browser", 7);
     }
     return String$("Unknown JavaScript environment", 30);
-}
-process$proto.getVmVersion = function() {
+});
+defineAttr(process$proto, 'vmVersion', function() {
     if (typeof process !== "undefined" && typeof process.version === 'string') {
         return String$(process.version);
     }
     return String$("Unknown");
-}
-process$proto.getOs = function() {
+});
+defineAttr(process$proto, 'os',function() {
     if (typeof process !== "undefined" && typeof process.platform === 'string') {
         return String$(process.platform);
     }
     return String$("Unknown");
-}
-process$proto.getOsVersion = function() {
+});
+defineAttr(process$proto, 'osVersion', function() {
     return String$("Unknown");
-}
+});
 
 var process$ = processClass();
 function getProcess() { return process$; }

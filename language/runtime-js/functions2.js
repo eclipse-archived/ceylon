@@ -5,17 +5,17 @@ function StringBuilder(){}//IGNORE
 function string(/*Iterable<Character>*/chars) {
     if (chars === undefined) return String$('',0);
     var s = StringBuilder();
-    var iter = chars.getIterator();
+    var iter = chars.iterator;
     var c; while ((c = iter.next()) !== getFinished()) {
         s.appendCharacter(c);
     }
-    return s.getString();
+    return s.string;
 }
 
 function internalSort(comp, elems, $$$mptypes) {
     if (elems===undefined) {return getEmpty();}
     var arr = [];
-    var it = elems.getIterator();
+    var it = elems.iterator;
     var e;
     while ((e=it.next()) !== getFinished()) {arr.push(e);}
     if (arr.length === 0) {return getEmpty();}
@@ -67,9 +67,9 @@ function flatten(tf, $$$mptypes) {
 }
 function unflatten(ff, $$$mptypes) {
     var ru = function ru(seq) {
-        if (seq===undefined || seq.getSize() === 0) { return ff(); }
+        if (seq===undefined || seq.size === 0) { return ff(); }
         var a = [];
-        for (var i = 0; i < seq.getSize(); i++) {
+        for (var i = 0; i < seq.size; i++) {
             a[i] = seq.get(i);
         }
         a[i]=ru.$$targs$$;
@@ -81,16 +81,16 @@ function unflatten(ff, $$$mptypes) {
 
 //internal
 function toTuple(iterable) {
-  var seq = iterable.getSequence();
-  return Tuple(seq.getFirst(), seq.getRest().getSequence(),
+  var seq = iterable.sequence;
+  return Tuple(seq.first, seq.rest.sequence,
     {First:seq.$$targs$$.Element, Element:seq.$$targs$$.Element, Rest:{t:Sequential, a:seq.$$targs$$}});
 }
 exports.toTuple=toTuple;
 
 function integerRangeByIterable(range, step, $$$mptypes) {
     return Comprehension(function(){
-        var a = range.getFirst();
-        var b = range.getLast();
+        var a = range.first;
+        var b = range.last;
         if (a>b) {
             a += step;
             return function() {
