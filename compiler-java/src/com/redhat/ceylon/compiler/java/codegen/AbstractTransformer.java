@@ -1348,7 +1348,8 @@ public abstract class AbstractTransformer implements Transformation {
                         // this is more correct than Foo<?> because a method returning Foo<?> could never override a method returning Foo<Object>
                         // see https://github.com/ceylon/ceylon-compiler/issues/1003
                         if (tp.isContravariant()) {
-                            jta = make().Wildcard(make().TypeBoundKind(BoundKind.SUPER), make().Type(syms().objectType));
+                            typeArgs = null;
+                            break;
                         } else if (tp.isCovariant() && !isDependedOn) {
                             jta = make().Wildcard(make().TypeBoundKind(BoundKind.EXTENDS), make().Type(syms().objectType));
                         } else {
