@@ -188,7 +188,7 @@ public class CallBuilder {
         if ((cbOpts & CB_LET) != 0) {
             if (voidMethod) {
                 result = gen.make().LetExpr(statements.toList().append(gen.make().Exec(result)), gen.makeNull());
-            } else {
+            } else if (!statements.isEmpty()) {
                 result = gen.make().LetExpr(statements.toList(), result);
             }
         }
