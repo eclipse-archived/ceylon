@@ -46,7 +46,7 @@ public class ProducedType extends ProducedReference {
     
     public boolean isExactlyInternal(ProducedType type) {
         if (getDeclaration() instanceof NothingType) {
-            return type.getDeclaration() instanceof NothingType;
+            return type.isNothing();
         }
         else if (getDeclaration() instanceof UnionType) {
             List<ProducedType> cases = getCaseTypes();
@@ -197,10 +197,10 @@ public class ProducedType extends ProducedReference {
      * a certain self type constraint.
      */
     public boolean isSubtypeOfInternal(ProducedType type) {
-        if (getDeclaration() instanceof NothingType) {
+        if (isNothing()) {
             return true;
         }
-        else if (type.getDeclaration() instanceof NothingType) {
+        else if (type.isNothing()) {
             return false;
         }
         else if (getDeclaration() instanceof UnionType) {
@@ -1600,6 +1600,10 @@ public class ProducedType extends ProducedReference {
     
     public boolean isUnknown() {
         return getDeclaration() instanceof UnknownType;
+    }
+    
+    public boolean isNothing() {
+        return getDeclaration() instanceof NothingType;
     }
     
 }

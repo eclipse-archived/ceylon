@@ -318,7 +318,7 @@ public class ExpressionVisitor extends Visitor {
                 if (knownType!=null) {
                     String help = " (expression is already of the specified type)";
                     if (that.getNot()) {
-                        if (intersectionType(type,knownType, unit).getDeclaration() instanceof NothingType) {
+                        if (intersectionType(type,knownType, unit).isNothing()) {
                             that.addError("does not narrow type: intersection of " + type.getProducedTypeName(unit) + 
                                     " and " + knownType.getProducedTypeName(unit) + " is empty" + help);
                         }
@@ -414,7 +414,7 @@ public class ExpressionVisitor extends Visitor {
                                 }
                             }
                             else if (tp.isContravariant()) {
-                                if (!(ta.getDeclaration() instanceof NothingType)) {
+                                if (!ta.isNothing()) {
                                     that.addWarning("type argument to contravariant (in) type parameter in assignability condition must be Nothing (until we implement reified generics)");
                                 }
                             }
@@ -3334,8 +3334,7 @@ public class ExpressionVisitor extends Visitor {
                                 t.getProducedTypeName(unit));
                     }
                     else {
-                        ProducedType it = intersectionType(t, pt, unit);
-                        if (it.getDeclaration() instanceof NothingType) {
+                        if (intersectionType(t, pt, unit).isNothing()) {
                             that.addError("tests assignability to Nothing type: intersection of " +
                                     pt.getProducedTypeName(unit) + " and " + 
                                     t.getProducedTypeName(unit) +
@@ -4420,21 +4419,9 @@ public class ExpressionVisitor extends Visitor {
                 if (cc.getCaseItem() instanceof Tree.IsCase) {
                     hasIsCase = true;
                 }
-                ProducedType ct = getType(cc);
-                if (!isTypeUnknown(ct)) {
-                    for (Tree.CaseClause occ: that.getCaseClauses()) {
-                        if (occ==cc) break;
-                        ProducedType oct = getType(occ);
-                        if (!isTypeUnknown(oct)) {
-                            //TODO: the following test doesn't work for cases of an interface!
-                            if (!intersectionType(ct, oct, unit)
-                                    .isExactly(unit.getNothingDeclaration().getType())) {
-                                cc.getCaseItem().addError("cases are not disjoint: " + 
-                                    ct.getProducedTypeName(unit) + " and " + 
-                                        oct.getProducedTypeName(unit));
-                            }
-                        }
-                    }
+                for (Tree.CaseClause occ: that.getCaseClauses()) {
+                    if (occ==cc) break;
+                    checkCasesDisjoint(getType(cc), getType(occ), occ);
                 }
             }
             if (hasIsCase) {
@@ -4808,7 +4795,15 @@ public class ExpressionVisitor extends Visitor {
         List<ProducedType> cases = td.getCaseTypes();
         td.setCaseTypes(null);
         
-        if (!(td instanceof TypeParameter)) {
+        if (td instanceof TypeParameter) {
+            for (Tree.StaticType t: that.getTypes()) {
+                for (Tree.StaticType ot: that.getTypes()) {
+                    if (t==ot) break;
+                    checkCasesDisjoint(t.getTypeModel(), ot.getTypeModel(), ot);
+                }
+            }
+        }
+        else {
             for (Tree.StaticType t: that.getTypes()) {
                 ProducedType type = t.getTypeModel();
                 if (!(type.getDeclaration() instanceof TypeParameter)) {
@@ -4837,6 +4832,17 @@ public class ExpressionVisitor extends Visitor {
         
         //TODO: get rid of this awful hack:
         td.setCaseTypes(cases);
+    }
+
+    private void checkCasesDisjoint(ProducedType type, ProducedType other,
+            Node ot) {
+        if (!isTypeUnknown(type) && !isTypeUnknown(other)) {
+            if (!intersectionType(type, other, unit).isNothing()) {
+                ot.addError("cases are not disjoint: " + 
+                        type.getProducedTypeName(unit) + " and " + 
+                        other.getProducedTypeName(unit));
+            }
+        }
     }
 
     private void checkExtensionOfMemberType(Node that, TypeDeclaration td,

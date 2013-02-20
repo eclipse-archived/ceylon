@@ -570,7 +570,7 @@ public class Unit {
     
     public boolean isNonemptyIterableType(ProducedType type) {
     	ProducedType ft = getFirstType(type);
-    	return ft!=null && ft.getDeclaration() instanceof NothingType;
+    	return ft!=null && ft.isNothing();
     }
 
     public ProducedType getSetElementType(ProducedType type) {
@@ -643,10 +643,10 @@ public class Unit {
     public boolean isOptionalType(ProducedType pt) {
         //must have non-empty intersection with Null
         //and non-empty intersection with Value
-        return !(intersectionType(getNullDeclaration().getType(), pt, this)
-                        .getDeclaration() instanceof NothingType) &&
-               !(intersectionType(getObjectDeclaration().getType(), pt, this)
-                        .getDeclaration() instanceof NothingType);
+        return !intersectionType(getNullDeclaration().getType(), pt, this)
+                        .isNothing() &&
+               !intersectionType(getObjectDeclaration().getType(), pt, this)
+                        .isNothing();
     }
     
     public boolean isPossiblyEmptyType(ProducedType pt) {
@@ -654,10 +654,10 @@ public class Unit {
         return isSequentialType(getDefiniteType(pt)) &&
         //must have non-empty intersection with Empty
         //and non-empty intersection with Sequence<Nothing>
-               !(intersectionType(getEmptyDeclaration().getType(), pt, this)
-                        .getDeclaration() instanceof NothingType) &&
-               !(intersectionType(getSequenceType(getNothingDeclaration().getType()), pt, this)
-                        .getDeclaration() instanceof NothingType);
+               !intersectionType(getEmptyDeclaration().getType(), pt, this)
+                        .isNothing() &&
+               !intersectionType(getSequenceType(getNothingDeclaration().getType()), pt, this)
+                        .isNothing();
     }
     
     public boolean isCallableType(ProducedType pt) {

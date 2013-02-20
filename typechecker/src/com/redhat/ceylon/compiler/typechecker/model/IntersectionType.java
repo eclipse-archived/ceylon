@@ -61,9 +61,9 @@ public class IntersectionType extends TypeDeclaration {
 	        return unit.getAnythingDeclaration();
 	    }
 	    else if (sts.size()==1) {
-	    	TypeDeclaration d = sts.get(0).getDeclaration();
-	    	if (d instanceof NothingType) {
-	    		return d;
+	    	ProducedType st = sts.get(0);
+            if (st.isNothing()) {
+	    		return st.getDeclaration();
 	    	}
 	    }
 		for (ProducedType st: sts) {

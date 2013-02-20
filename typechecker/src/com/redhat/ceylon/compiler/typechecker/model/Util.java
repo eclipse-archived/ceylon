@@ -876,8 +876,7 @@ public class Util {
                 }
             }
         }
-        return !(intersectionType(st1, st2, unit)
-                .getDeclaration() instanceof NothingType);
+        return !intersectionType(st1, st2, unit).isNothing();
     }
 
 }

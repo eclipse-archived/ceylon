@@ -48,7 +48,7 @@ void testEnumConstraints() {
 interface I {}
 interface J {}
 
-void ij<T>(T k) given T of I|J {
+void ij<T>(T k) @error given T of I|J {
     @error switch (k)
     case (is I) {}
     case (is J) {}
@@ -184,6 +184,17 @@ void switchAnything(Anything any) {
         print("something else"); 
         print(any.somethingElse); 
     }
+}
+
+void withAnything<T>(T t1, T t2) 
+       given T of SomethingUsual | SomethingElse {
+   switch (t1)
+   case (is SomethingUsual) {
+       assert (is SomethingUsual t2);
+   }
+   case (is SomethingElse) {
+       assert (is SomethingElse t2);
+   }
 }
 
 interface Interface of Class1 | Class2 {}

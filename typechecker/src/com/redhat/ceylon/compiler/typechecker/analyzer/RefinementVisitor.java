@@ -33,7 +33,6 @@ import com.redhat.ceylon.compiler.typechecker.model.Method;
 import com.redhat.ceylon.compiler.typechecker.model.MethodOrValue;
 import com.redhat.ceylon.compiler.typechecker.model.Module;
 import com.redhat.ceylon.compiler.typechecker.model.ModuleImport;
-import com.redhat.ceylon.compiler.typechecker.model.NothingType;
 import com.redhat.ceylon.compiler.typechecker.model.Package;
 import com.redhat.ceylon.compiler.typechecker.model.Parameter;
 import com.redhat.ceylon.compiler.typechecker.model.ParameterList;
@@ -250,8 +249,7 @@ public class RefinementVisitor extends Visitor {
 		    }
 		    IntersectionType it = new IntersectionType(unit);
 		    it.setSatisfiedTypes(list);
-		    if (it.canonicalize().getType().getDeclaration() 
-		            instanceof NothingType) {
+		    if (it.canonicalize().getType().isNothing()) {
 		        that.addError(typeDescription(td, unit) + 
 		                " has unsatisfiable upper bound constraints: the constraints " + 
 		                typeNamesAsIntersection(upperBounds, unit) + 
