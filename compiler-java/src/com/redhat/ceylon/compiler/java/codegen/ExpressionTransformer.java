@@ -78,6 +78,7 @@ import com.redhat.ceylon.compiler.typechecker.tree.Tree.Primary;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.QualifiedMemberExpression;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.SequencedArgument;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.SpecifierExpression;
+import com.redhat.ceylon.compiler.typechecker.tree.Tree.SpreadArgument;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.StaticMemberOrTypeExpression;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.Super;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.Term;
@@ -944,16 +945,14 @@ public class ExpressionTransformer extends AbstractTransformer {
         SequencedArgument sequencedArgument = value.getSequencedArgument();
         if(sequencedArgument != null){
             java.util.List<PositionalArgument> args = sequencedArgument.getPositionalArguments();
-            return makeTuple(args);
+            return makeTuple(value.getTypeModel(), args);
         }
         // nothing in there
         return makeEmpty();
     }
 
-    public JCExpression comprehensionAsSequential(Comprehension comprehension, ProducedType expectedType) {
-        JCExpression sequential = iterableToSequence(transformComprehension(comprehension));
-        ProducedType elementType = comprehension.getForComprehensionClause().getTypeModel();
-        ProducedType sequentialType = typeFact().getSequentialType(elementType);
+    private JCExpression sequentialEmptiness(JCExpression sequential, 
+            ProducedType expectedType, ProducedType sequentialType) {
         int flags = 0;
         // make sure we detect that we're downcasting a sequential into a sequence if we know the comprehension is non-empty
         if(expectedType.getSupertype(typeFact().getSequenceDeclaration()) != null)
@@ -961,58 +960,58 @@ public class ExpressionTransformer extends AbstractTransformer {
         return applyErasureAndBoxing(sequential, sequentialType, false, true, BoxingStrategy.BOXED, expectedType, flags);
     }
     
-    private JCExpression makeTuple(java.util.List<Tree.PositionalArgument> expressions) {
-        java.util.List<ProducedType> expressionTypes = new LinkedList<ProducedType>();
-        for(Tree.PositionalArgument expr : expressions){
-            expressionTypes.add(expr.getTypeModel());
-        }
-        boolean spread = false;
-        // turn the last type from a sequence to its element type
-        if(!expressions.isEmpty()){
-            int lastIndex = expressions.size()-1;
-            Tree.PositionalArgument last = expressions.get(lastIndex);
-            if(last instanceof Tree.SpreadArgument){
-                ProducedType lastType = expressionTypes.get(lastIndex);
-                expressionTypes.set(lastIndex, typeFact().getIteratedType(lastType));
-                spread = true;
-            }else if(last instanceof Tree.Comprehension){
-                spread = true;
-            }
-        }
-        return makeTuple(expressions.iterator(), expressionTypes, spread);
+    public JCExpression comprehensionAsSequential(Comprehension comprehension, ProducedType expectedType) {
+        JCExpression sequential = iterableToSequence(transformComprehension(comprehension));
+        ProducedType elementType = comprehension.getForComprehensionClause().getTypeModel();
+        ProducedType sequentialType = typeFact().getSequentialType(elementType);
+        return sequentialEmptiness(sequential, expectedType, sequentialType);
     }
     
-    private JCExpression makeTuple(Iterator<Tree.PositionalArgument> iter, java.util.List<ProducedType> expressionTypes, boolean spread) {
-        if (iter.hasNext()) {
-            // no erasure here? really?
-            Tree.PositionalArgument expr = iter.next();
-            JCExpression first;
-            if(expr instanceof Tree.ListedArgument)
-                first = transformExpression(((Tree.ListedArgument) expr).getExpression());
-            else if(expr instanceof Tree.SpreadArgument){
-                first = transformExpression(((Tree.SpreadArgument) expr).getExpression());
-            }else{
-                Tree.Comprehension comp = (Tree.Comprehension) expr;
-                ProducedType elementType = expressionTypes.get(0);
-                ProducedType expectedType = comp.getForComprehensionClause().getPossiblyEmpty() 
-                        ? typeFact().getSequentialType(elementType)
-                        : typeFact().getSequenceType(elementType);
-                first = comprehensionAsSequential(comp, expectedType);
-            }
-            // last one with ellipsis is just a sequence
-            if(!iter.hasNext() && spread)
-                return first;
-            // make the tuple type
-            ProducedType tupleType = typeFact().getTupleType(expressionTypes, spread, false /* FIXME: What? */, -1);
+    private JCExpression makeTuple(ProducedType tupleType, java.util.List<Tree.PositionalArgument> expressions) {
+        if (expressions.isEmpty()) {
+            return makeEmpty();// A tuple terminated by empty
+        }
+        ProducedType restType;
+        if (tupleType.getSupertype(typeFact().getEmptyDeclaration()) != null) {
+            return makeEmpty();// A tuple terminated by *[] (another kind of empty)
+        } else 
+        if (tupleType.getTypeArgumentList().size()==3) {//An intermediate Tuple
+            restType = tupleType.getTypeArgumentList().get(2);
+        } else {// A Tuple terminated by a Element[]
+            restType = typeFact().getSequentialType(tupleType.getTypeArgumentList().get(0));
+        }
+        // Recurse the transform the rest
+        JCExpression rest = makeTuple(restType, expressions.subList(1, expressions.size()));
+        // Now transform the first
+        Tree.PositionalArgument expr = expressions.get(0);
+        if (expr instanceof Tree.ListedArgument) {
+            JCExpression first = transformExpression(((Tree.ListedArgument) expr).getExpression());
             JCExpression typeExpr = makeJavaType(tupleType, CeylonTransformer.JT_CLASS_NEW);
-            // get the rest of the tuple
-            expressionTypes.remove(0);
-            JCExpression rest = makeTuple(iter, expressionTypes, spread);
-            // make the tuple
-            return makeNewClass(typeExpr, List.of(first, rest));
+            JCExpression tupleInstance = makeNewClass(typeExpr, List.of(first, rest));
+            return tupleInstance;
+        } else if (expr instanceof Tree.SpreadArgument) {
+            SpreadArgument spreadExpr = (Tree.SpreadArgument) expr;
+            JCExpression result = transformExpression(spreadExpr.getExpression());
+            if (!typeFact().isSequentialType(spreadExpr.getTypeModel())) {
+                result = iterableToSequence(result);
+                ProducedType elementType = typeFact().getIteratedType(spreadExpr.getTypeModel());
+                ProducedType sequentialType = typeFact().getSequentialType(elementType);
+                ProducedType expectedType = spreadExpr.getTypeModel();
+                if (typeFact().isNonemptyIterableType(spreadExpr.getTypeModel())) {
+                    expectedType = typeFact().getSequenceType(elementType);
+                }
+                result = sequentialEmptiness(result, expectedType, sequentialType);
+            }
+            return result;
+        } else if (expr instanceof Tree.Comprehension) {
+            Tree.Comprehension comp = (Tree.Comprehension) expr;
+            ProducedType elementType = expr.getTypeModel(); 
+            ProducedType expectedType = comp.getForComprehensionClause().getPossiblyEmpty() 
+                    ? typeFact().getSequentialType(elementType)
+                    : typeFact().getSequenceType(elementType);
+            return comprehensionAsSequential(comp, expectedType);
         } else {
-            // nothing in there
-            return makeEmpty();
+            return makeErroneous(expr, "Unexpected tuple argument");
         }
     }
     
