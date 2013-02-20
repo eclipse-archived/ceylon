@@ -152,6 +152,10 @@ public class ExpressionTest extends CompilerTest {
         compareWithJavaSource("literal/SequenceLiteral");
     }
     @Test
+    public void testLitTupleLiteral(){
+        compareWithJavaSource("literal/TupleLiteral");
+    }
+    @Test
     public void testLitStringLiteral(){
         compareWithJavaSource("literal/StringLiteral");
     }
