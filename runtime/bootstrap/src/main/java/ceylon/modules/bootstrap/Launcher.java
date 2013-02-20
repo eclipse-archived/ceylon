@@ -50,9 +50,6 @@ public class Launcher {
         // Set context class loader for current thread
         Thread.currentThread().setContextClassLoader(loader);
         
-        Class<?> testClass = loader.loadClass("com.redhat.ceylon.compiler.java.metadata.Package");
-        System.err.println(testClass);
-
         // Find the proper class and method to execute
         Class<?> mainClass = loader.loadClass("com.redhat.ceylon.tools.CeylonTool");
         Method mainMethod = mainClass.getMethod("main", args.getClass());
