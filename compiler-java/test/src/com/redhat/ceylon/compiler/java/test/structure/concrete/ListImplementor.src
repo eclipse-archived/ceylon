@@ -77,11 +77,6 @@ class ListImplementor<X> implements .ceylon.language.List<X> {
     }
     
     @.java.lang.Override
-    public .ceylon.language.Iterable<? extends X, ? extends .java.lang.Object> getRest() {
-        return $ceylon$language$Iterable$this.getRest();
-    }
-    
-    @.java.lang.Override
     public .ceylon.language.Sequential<? extends X> getSequence() {
         return $ceylon$language$Iterable$this.getSequence();
     }
@@ -289,6 +284,11 @@ class ListImplementor<X> implements .ceylon.language.List<X> {
     @.java.lang.Override
     public final .ceylon.language.Iterator<? extends X> getIterator() {
         throw new .ceylon.language.Exception(null, null);
+    }
+    
+    @.java.lang.Override
+    public final .ceylon.language.List<? extends X> getRest() {
+        return (.ceylon.language.List).ceylon.language.nothing_.getNothing$();
     }
     
     public static void main(.java.lang.String[] args) {

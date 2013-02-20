@@ -164,11 +164,6 @@ public abstract class Bug476<T> implements .ceylon.language.List<T> {
     }
     
     @.java.lang.Override
-    public .ceylon.language.Iterable<? extends T, ? extends .java.lang.Object> getRest() {
-        return $ceylon$language$Iterable$this.getRest();
-    }
-    
-    @.java.lang.Override
     public .ceylon.language.Sequential<? extends T> getSequence() {
         return $ceylon$language$Iterable$this.getSequence();
     }

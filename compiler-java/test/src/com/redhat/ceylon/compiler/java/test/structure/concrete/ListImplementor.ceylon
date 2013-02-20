@@ -63,4 +63,6 @@ class ListImplementor<X>() satisfies List<X> {
     shared actual Iterator<X> iterator {
         throw;
     }
+    
+    shared actual List<X> rest => nothing;
 }
