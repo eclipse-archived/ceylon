@@ -266,6 +266,9 @@ abstract class SimpleInvocation extends Invocation {
     }
 
     protected abstract Tree.Expression getArgumentExpression(int argIndex);
+    protected ProducedType getArgumentType(int argIndex) {
+        return getArgumentExpression(argIndex).getTypeModel();
+    }
     
     protected abstract JCExpression getTransformedArgumentExpression(int argIndex);
     
@@ -382,6 +385,14 @@ class IndirectInvocationBuilder extends SimpleInvocation {
     @Override
     protected Tree.Expression getArgumentExpression(int argIndex) {
         return argumentExpressions.get(argIndex);
+    }
+    
+    @Override
+    protected ProducedType getArgumentType(int argIndex) {
+        if (argIndex == argumentExpressions.size() && comprehension != null) {   
+            return gen.typeFact().getSequentialType(comprehension.getTypeModel());
+        }
+        return super.getArgumentType(argIndex);
     }
     
     @Override
@@ -503,6 +514,14 @@ class PositionalInvocation extends DirectInvocation {
         if(arg instanceof Tree.SpreadArgument)
             return ((Tree.SpreadArgument) arg).getExpression();
         throw new RuntimeException("Trying to get an argument expression which is a Comprehension: " + arg);
+    }
+    @Override
+    protected ProducedType getArgumentType(int argIndex) {
+        PositionalArgument arg = getPositional().getPositionalArguments().get(argIndex);
+        if (arg instanceof Tree.Comprehension) {
+            return gen.typeFact().getSequentialType(arg.getTypeModel());
+        }
+        return arg.getTypeModel();
     }
     @Override
     protected JCExpression getTransformedArgumentExpression(int argIndex) {
@@ -692,6 +711,10 @@ class CallableInvocation extends DirectInvocation {
     @Override
     protected Expression getArgumentExpression(int argIndex) {
         throw new RuntimeException("I override getTransformedArgumentExpression(), so should never be called");
+    }
+    @Override
+    protected ProducedType getArgumentType(int argIndex) {
+        return callableParameters.get(argIndex).getType();
     }
 }
 
