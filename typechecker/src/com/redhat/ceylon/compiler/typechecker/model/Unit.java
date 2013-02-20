@@ -632,6 +632,14 @@ public class Unit {
         return pt.getSupertype(getSequentialDeclaration())!=null;
     }
     
+    public boolean isSequenceType(ProducedType pt) {
+        return pt.getSupertype(getSequenceDeclaration())!=null;
+    }
+    
+    public boolean isEmptyType(ProducedType pt) {
+        return pt.getSupertype(getEmptyDeclaration())!=null;
+    }
+    
     public boolean isOptionalType(ProducedType pt) {
         //must have non-empty intersection with Null
         //and non-empty intersection with Value
@@ -641,7 +649,7 @@ public class Unit {
                         .getDeclaration() instanceof NothingType);
     }
     
-    public boolean isEmptyType(ProducedType pt) {
+    public boolean isPossiblyEmptyType(ProducedType pt) {
         //must be a subtype of Sequential<Anything>
         return isSequentialType(getDefiniteType(pt)) &&
         //must have non-empty intersection with Empty

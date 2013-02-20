@@ -531,7 +531,7 @@ public class ExpressionVisitor extends Visitor {
         /*if (t==null) {
             n.addError("expression must be a type with fixed size: type not known");
         }
-        else*/ if (t!=null && !t.isUnknown() && !unit.isEmptyType(t)) {
+        else*/ if (t!=null && !t.isUnknown() && !unit.isPossiblyEmptyType(t)) {
             term.addError("expression must be a possibly-empty type: " + 
                     t.getProducedTypeName(unit) + " is not possibly-empty");
         }
@@ -612,7 +612,7 @@ public class ExpressionVisitor extends Visitor {
                                 et.getProducedTypeName(unit) + 
                                 " is not a subtype of Iterable");
                     }
-                    else if (et!=null && et.isSubtypeOf(unit.getEmptyDeclaration().getType())) {
+                    else if (et!=null && unit.isEmptyType(et)) {
                         se.addError("iterated expression is definitely empty");
                     }
                 }
@@ -1371,7 +1371,7 @@ public class ExpressionVisitor extends Visitor {
 //                    expressionType = unit.getEmptyType(unit.getSequenceType(expressionType.getTypeArgumentList().get(0)));
 //                }
                 ProducedType t;
-                if (unit.isEmptyType(expressionType)) {
+                if (unit.isPossiblyEmptyType(expressionType)) {
                     t = unit.getNonemptyDefiniteType(expressionType);
                 }
                 else {
@@ -1597,9 +1597,9 @@ public class ExpressionVisitor extends Visitor {
             //note: the following is nice, even though
             //      it is not actually blessed by the
             //      language spec!
-            return receivingType.getSupertype(unit.getSequenceDeclaration())==null ?
-                    unit.getSequentialType(pt) :
-                    unit.getSequenceType(pt);
+            return unit.isSequenceType(receivingType) ?
+                    unit.getSequenceType(pt) :
+                    unit.getSequentialType(pt);
         }
         else {
             return pt;
@@ -2033,7 +2033,7 @@ public class ExpressionVisitor extends Visitor {
     }
     
     private ProducedType nonemptyArgs(ProducedType args) {
-        return unit.isEmptyType(args) ? 
+        return unit.isPossiblyEmptyType(args) ? 
                 unit.getNonemptyType(args) : args;
     }
     
@@ -2048,10 +2048,10 @@ public class ExpressionVisitor extends Visitor {
                     return result;
                 }
             }
-            else if (args.getSupertype(unit.getEmptyDeclaration())!=null) {
+            else if (unit.isEmptyType(args)) {
                 return new LinkedList<ProducedType>();
             }
-            else if (args.getSupertype(unit.getSequentialDeclaration())!=null) {
+            else if (unit.isSequentialType(args)) {
                 LinkedList<ProducedType> sequenced = new LinkedList<ProducedType>();
                 sequenced.add(args);
                 return sequenced;
@@ -2071,10 +2071,10 @@ public class ExpressionVisitor extends Visitor {
                     return isTupleLengthUnbounded(tal.get(2));
                 }
             }
-            else if (args.getSupertype(unit.getEmptyDeclaration())!=null) {
+            else if (unit.isEmptyType(args)) {
                 return false;
             }
-            else if (args.getSupertype(unit.getSequentialDeclaration())!=null) {
+            else if (unit.isSequentialType(args)) {
                 return true;
             }
         }
@@ -2090,13 +2090,13 @@ public class ExpressionVisitor extends Visitor {
                     return isTupleVariantAtLeastOne(tal.get(2));
                 }
             }
-            else if (args.getSupertype(unit.getEmptyDeclaration())!=null) {
+            else if (unit.isEmptyType(args)) {
                 return false;
             }
-            else if (args.getSupertype(unit.getSequenceDeclaration())!=null) {
+            else if (unit.isSequenceType(args)) {
                 return true;
             }
-            else if (args.getSupertype(unit.getSequentialDeclaration())!=null) {
+            else if (unit.isSequentialType(args)) {
                 return false;
             }
         }
@@ -2105,7 +2105,7 @@ public class ExpressionVisitor extends Visitor {
     
     private int getTupleMinimumLength(ProducedType args) {
         if (args!=null) {
-            if (unit.isEmptyType(args)) {
+            if (unit.isPossiblyEmptyType(args)) {
                 return 0;
             }
             ProducedType tst = args.getSupertype(unit.getTupleDeclaration());
@@ -2115,10 +2115,10 @@ public class ExpressionVisitor extends Visitor {
                     return getTupleMinimumLength(tal.get(2))+1;
                 }
             }
-            else if (args.getSupertype(unit.getEmptyDeclaration())!=null) {
+            else if (unit.isEmptyType(args)) {
                 return 0;
             }
-            else if (args.getSupertype(unit.getSequentialDeclaration())!=null) {
+            else if (unit.isSequentialType(args)) {
                 return 0;
             }
         }
@@ -2830,7 +2830,7 @@ public class ExpressionVisitor extends Visitor {
             t = ((Tree.PositiveOp) t).getTerm();
         }
         ProducedType tt = pt;
-        if (tt.getSupertype(unit.getSequentialDeclaration())!=null) {
+        if (unit.isSequentialType(tt)) {
             if (t instanceof Tree.NaturalLiteral) {
                 int index = Integer.parseInt(t.getText());
                 if (negated) index = -index;
@@ -2886,7 +2886,7 @@ public class ExpressionVisitor extends Visitor {
             l = ((Tree.PositiveOp) l).getTerm();
         }
         ProducedType tt = pt;
-        if (tt.getSupertype(unit.getSequentialDeclaration())!=null) {
+        if (unit.isSequentialType(tt)) {
             if (l instanceof Tree.NaturalLiteral) {
                 int lindex = Integer.parseInt(l.getText());
                 if (lnegated) lindex = -lindex;
