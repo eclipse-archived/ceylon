@@ -101,7 +101,7 @@ public class SetOperators {
         .ceylon.language.Set x1 = setOfUnionType.union(setOfString);
         .ceylon.language.Set<? extends .ceylon.language.Integer> x2 = (.ceylon.language.Set<? extends .ceylon.language.Integer>)(.ceylon.language.Set)setOfUnionType.intersection(setOfString);
         .ceylon.language.Set x4 = setOfUnionType.complement(setOfString);
-        .ceylon.language.Set<? extends .ceylon.language.Sequential<? extends .ceylon.language.Character>> y1 = setOfIntersectionType.union(setOfString);
+        .ceylon.language.Set y1 = setOfIntersectionType.union(setOfString);
         .ceylon.language.Set<? extends .java.lang.Object> y2 = setOfIntersectionType.intersection(setOfString);
         .ceylon.language.Set<? extends .ceylon.language.Sequential<? extends .java.lang.Object>> y4 = setOfIntersectionType.complement(setOfString);
         .ceylon.language.Set<? extends .ceylon.language.String> z1 = setOfNothing.union(setOfString);

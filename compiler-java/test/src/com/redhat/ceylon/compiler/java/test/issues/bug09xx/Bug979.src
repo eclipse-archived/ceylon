@@ -399,7 +399,7 @@ class Bug979Set extends .java.lang.Object implements .ceylon.language.Set<.ceylo
     }
     
     @.java.lang.Override
-    public final <Other>.ceylon.language.Set<? extends .ceylon.language.Sequential<? extends .ceylon.language.Character>> intersection(final .ceylon.language.Set<? extends Other> set) {
+    public final <Other>.ceylon.language.Set intersection(final .ceylon.language.Set<? extends Other> set) {
         return (.ceylon.language.Set).ceylon.language.nothing_.getNothing$();
     }
     
