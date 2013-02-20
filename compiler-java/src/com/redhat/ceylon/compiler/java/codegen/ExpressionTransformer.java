@@ -1810,16 +1810,25 @@ public class ExpressionTransformer extends AbstractTransformer {
                 wrapIntoArray = true;
 
             ExpressionAndType exprAndType;
-            if (invocation.isArgumentSpread(argIndex) 
-                    && !invocation.isParameterSequenced(argIndex) 
+            if (invocation.isArgumentSpread(argIndex)  
                     && !invocation.isJavaMethod()) {
-                result = transformSpreadTupleArgument(invocation, callBuilder,
-                        result, argIndex);
-                break;
+                if (!invocation.isParameterSequenced(argIndex)) {
+                    result = transformSpreadTupleArgument(invocation, callBuilder,
+                            result, argIndex);
+                    break;
+                } 
+                ProducedType argType = invocation.getArgumentType(argIndex);
+                if (argType.getSupertype(typeFact().getSequentialDeclaration()) != null) {
+                    exprAndType = transformArgument(invocation, argIndex,
+                            boxingStrategy);
+                } else if (argType.getSupertype(typeFact().getIterableDeclaration()) != null) {
+                    exprAndType = transformArgument(invocation, argIndex,
+                            boxingStrategy);
+                    exprAndType = new ExpressionAndType(iterableToSequential(exprAndType.expression), exprAndType.type);
+                } else {
+                    exprAndType = new ExpressionAndType(makeErroneous(invocation.getNode(), "Unexpected spread argument"), makeErroneous(invocation.getNode()));
+                }
             } else if (!invocation.isParameterSequenced(argIndex)
-                    // if it's spread and not Java, we pass it along
-                    // invoking f(a, *b), where declared f(A a, B b)
-                    || (invocation.isArgumentSpread(argIndex) && !invocation.isJavaMethod())
                     // if it's sequenced, Java and there's no spread at all, pass it along
                     || (invocation.isParameterSequenced(argIndex) && invocation.isJavaMethod() && !invocation.isSpread())) {
                 exprAndType = transformArgument(invocation, argIndex,
