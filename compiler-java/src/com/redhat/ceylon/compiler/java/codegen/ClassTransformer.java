@@ -1724,7 +1724,7 @@ public class ClassTransformer extends AbstractTransformer {
                     makeJavaType(classModel.getType(), AbstractTransformer.JT_COMPANION),
                     make().NewClass(null, 
                             null,
-                            makeJavaType(classModel.getType(), AbstractTransformer.JT_COMPANION),
+                            makeJavaType(classModel.getType(), AbstractTransformer.JT_CLASS_NEW | AbstractTransformer.JT_COMPANION),
                             List.<JCExpression>nil(), null)));
         }
         
