@@ -23,9 +23,10 @@ void spreadArguments(Integer i, String s) {}
 class SpreadArguments<T>(Integer i,  T s) {
     shared void m(Integer i, T s) {}
     shared void m2(Integer i, T* s) {}
+    //shared void m3(Integer+ i) {}
+    shared void m4(Integer* i) {}
 
-    void use([Integer, String] args) {
-        
+    void spreadTuple([Integer, String] args) {
         spreadArguments(*args);
         spreadArguments(0, *args.rest);
         
@@ -43,7 +44,7 @@ class SpreadArguments<T>(Integer i,  T s) {
         [Integer, String, String+] t = nothing;
         sa.m2(*t);
     }
-    void withSpreadOp([Integer, String] args) {
+    void spreadTupleWithSpreadOp([Integer, String] args) {
         Iterable<SpreadArguments<String>> iter = nothing;
         iter*.m(*args);
         iter*.m(0, *args.rest);
@@ -52,5 +53,15 @@ class SpreadArguments<T>(Integer i,  T s) {
         iter*.m2(*[0]);
         iter*.m2(*[0, "hello"]);
         iter*.m2(*[0, "hello", "world"]);
+    }
+    void spreadIterator({Integer*} iter, {Integer+} nonEmptyIter) {
+        //sa.m3(*nonEmptyIter);
+        m4(*iter);
+        m4(*nonEmptyIter);
+    }
+    void spreadIteratorWithSpreadOp({Integer*} iter, {Integer+} nonEmptyIter) {
+        Iterable<SpreadArguments<String>> sas = nothing;
+        sas*.m4(*iter);
+        sas*.m4(*nonEmptyIter);
     }
 }
