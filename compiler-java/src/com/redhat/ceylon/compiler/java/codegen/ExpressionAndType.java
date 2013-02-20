@@ -40,4 +40,8 @@ class ExpressionAndType {
         return lb.toList();
     }
     
+    public String toString() {
+        return type + " " + expression;
+    }
+    
 }
