@@ -19,7 +19,6 @@ package ceylon.modules.jboss.runtime;
 
 import org.jboss.modules.Module;
 import org.jboss.modules.ModuleIdentifier;
-import org.jboss.modules.ModuleLoader;
 import org.jboss.modules.ModuleNotFoundException;
 
 import ceylon.modules.CeylonRuntimeException;
@@ -54,7 +53,6 @@ public abstract class AbstractJBossRuntime extends AbstractRuntime {
             throw cre;
         }
         try {
-            moduleLoader.setupRuntimeModuleSystem();
             Module module = moduleLoader.loadModule(moduleIdentifier);
             return SecurityActions.getClassLoader(module);
         } catch (ModuleNotFoundException e) {
