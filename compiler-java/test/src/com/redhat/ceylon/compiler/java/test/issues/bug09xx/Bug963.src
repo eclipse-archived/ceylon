@@ -1,6 +1,6 @@
 package com.redhat.ceylon.compiler.java.test.issues.bug09xx;
 
-public interface Bug963<Element> extends .ceylon.language.Sequential<Element> {
+public interface Bug963<Element> extends .ceylon.language.List<Element> {
     
     public .com.redhat.ceylon.compiler.java.test.issues.bug09xx.Bug963$impl<Element> $com$redhat$ceylon$compiler$java$test$issues$bug09xx$Bug963$impl();
     

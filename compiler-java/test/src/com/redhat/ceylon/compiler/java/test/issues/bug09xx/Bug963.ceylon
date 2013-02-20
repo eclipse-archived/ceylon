@@ -19,6 +19,6 @@
  */
 @nomodel
 shared interface Bug963<out Element>
-        satisfies Element[] {
+        satisfies List<Element> {
     shared actual default Integer size => List::size;
 }
