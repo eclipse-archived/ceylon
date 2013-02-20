@@ -34,7 +34,7 @@ class SpreadArguments<T> {
     public final void m2(final long i, final .ceylon.language.Sequential<? extends T> s) {
     }
     
-    private final void use$priv(final .ceylon.language.Tuple<.java.lang.Object, ? extends .ceylon.language.Integer, ? extends .ceylon.language.Tuple<.ceylon.language.String, ? extends .ceylon.language.String, ? extends .ceylon.language.Empty>> args) {
+    private final void spreadTuple$priv(final .ceylon.language.Tuple<.java.lang.Object, ? extends .ceylon.language.Integer, ? extends .ceylon.language.Tuple<.ceylon.language.String, ? extends .ceylon.language.String, ? extends .ceylon.language.Empty>> args) {
         (
             let
             {
@@ -116,7 +116,7 @@ class SpreadArguments<T> {
         );
     }
     
-    private final void withSpreadOp$priv(final .ceylon.language.Tuple<.java.lang.Object, ? extends .ceylon.language.Integer, ? extends .ceylon.language.Tuple<.ceylon.language.String, ? extends .ceylon.language.String, ? extends .ceylon.language.Empty>> args) {
+    private final void spreadTupleWithSpreadOp$priv(final .ceylon.language.Tuple<.java.lang.Object, ? extends .ceylon.language.Integer, ? extends .ceylon.language.Tuple<.ceylon.language.String, ? extends .ceylon.language.String, ? extends .ceylon.language.Empty>> args) {
         final .ceylon.language.Iterable<? extends .com.redhat.ceylon.compiler.java.test.expression.invoke.SpreadArguments<.ceylon.language.String>, ? extends .java.lang.Object> iter = (.ceylon.language.Iterable).ceylon.language.nothing_.getNothing$();
         (
             let
@@ -269,6 +269,73 @@ class SpreadArguments<T> {
                 }
             }
             returning $spread$32$sequenceBuilder.getSequence();
+        );
+    }
+    
+    public final void m4() {
+        (
+            let
+            {
+                .ceylon.language.Sequential<? extends .ceylon.language.Integer> $ceylontmp$i$35 = m4$i();
+                m4($ceylontmp$i$35);
+            }
+            returning null;
+        );
+    }
+    
+    public final .ceylon.language.Sequential<? extends .ceylon.language.Integer> m4$i() {
+        return (.ceylon.language.Sequential).ceylon.language.empty_.getEmpty$();
+    }
+    
+    public final void m4(final .ceylon.language.Sequential<? extends .ceylon.language.Integer> i) {
+    }
+    
+    private final void spreadIterator$priv(final .ceylon.language.Iterable<? extends .ceylon.language.Integer, ? extends .java.lang.Object> iter, final .ceylon.language.Iterable<? extends .ceylon.language.Integer, ? extends .java.lang.Object> nonEmptyIter) {
+        m4(iter.getSequence());
+        m4(nonEmptyIter.getSequence());
+    }
+    
+    private final void spreadIteratorWithSpreadOp$priv(final .ceylon.language.Iterable<? extends .ceylon.language.Integer, ? extends .java.lang.Object> iter, final .ceylon.language.Iterable<? extends .ceylon.language.Integer, ? extends .java.lang.Object> nonEmptyIter) {
+        final .ceylon.language.Iterable<? extends .com.redhat.ceylon.compiler.java.test.expression.invoke.SpreadArguments<.ceylon.language.String>, ? extends .java.lang.Object> sas = (.ceylon.language.Iterable).ceylon.language.nothing_.getNothing$();
+        (
+            let
+            {
+                .ceylon.language.Iterable<? extends .com.redhat.ceylon.compiler.java.test.expression.invoke.SpreadArguments<.ceylon.language.String>, ? extends .java.lang.Object> $spread$36$iterable = sas;
+                .ceylon.language.SequenceBuilder<.java.lang.Object> $spread$36$sequenceBuilder = new .ceylon.language.SequenceBuilder<.java.lang.Object>();
+                .ceylon.language.Sequential<? extends .ceylon.language.Integer> $spread$36$arg$0 = iter.getSequence();
+                .java.lang.Object $spread$36$iteration;
+                for (.ceylon.language.Iterator<? extends .com.redhat.ceylon.compiler.java.test.expression.invoke.SpreadArguments<.ceylon.language.String>> $spread$36$iterator = $spread$36$iterable.getIterator(); !(($spread$36$iteration = $spread$36$iterator.next()) instanceof .ceylon.language.Finished); ) {
+                    .com.redhat.ceylon.compiler.java.test.expression.invoke.SpreadArguments<.ceylon.language.String> $spread$36$element = (.com.redhat.ceylon.compiler.java.test.expression.invoke.SpreadArguments<.ceylon.language.String>)$spread$36$iteration;
+                    $spread$36$sequenceBuilder.append((
+                        let
+                        {
+                            $spread$36$element.m4($spread$36$arg$0);
+                        }
+                        returning null;
+                    ));
+                }
+            }
+            returning $spread$36$sequenceBuilder.getSequence();
+        );
+        (
+            let
+            {
+                .ceylon.language.Iterable<? extends .com.redhat.ceylon.compiler.java.test.expression.invoke.SpreadArguments<.ceylon.language.String>, ? extends .java.lang.Object> $spread$37$iterable = sas;
+                .ceylon.language.SequenceBuilder<.java.lang.Object> $spread$37$sequenceBuilder = new .ceylon.language.SequenceBuilder<.java.lang.Object>();
+                .ceylon.language.Sequential<? extends .ceylon.language.Integer> $spread$37$arg$0 = nonEmptyIter.getSequence();
+                .java.lang.Object $spread$37$iteration;
+                for (.ceylon.language.Iterator<? extends .com.redhat.ceylon.compiler.java.test.expression.invoke.SpreadArguments<.ceylon.language.String>> $spread$37$iterator = $spread$37$iterable.getIterator(); !(($spread$37$iteration = $spread$37$iterator.next()) instanceof .ceylon.language.Finished); ) {
+                    .com.redhat.ceylon.compiler.java.test.expression.invoke.SpreadArguments<.ceylon.language.String> $spread$37$element = (.com.redhat.ceylon.compiler.java.test.expression.invoke.SpreadArguments<.ceylon.language.String>)$spread$37$iteration;
+                    $spread$37$sequenceBuilder.append((
+                        let
+                        {
+                            $spread$37$element.m4($spread$37$arg$0);
+                        }
+                        returning null;
+                    ));
+                }
+            }
+            returning $spread$37$sequenceBuilder.getSequence();
         );
     }
 }
