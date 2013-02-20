@@ -605,9 +605,16 @@ public class ExpressionVisitor extends Visitor {
         if (se!=null) {
             Tree.Expression e = se.getExpression();
             if (e!=null) {
-                if (e.getTypeModel()!=null && e.getTypeModel()
-                        .isSubtypeOf(unit.getEmptyDeclaration().getType())) {
-                    se.addError("iterated expression is definitely empty");
+                ProducedType et = e.getTypeModel();
+                if (et!=null && !et.isUnknown()) {
+                    if (!unit.isIterableType(et)) {
+                        se.addError("expression is not iterable: " + 
+                                et.getProducedTypeName(unit) + 
+                                " is not a subtype of Iterable");
+                    }
+                    else if (et!=null && et.isSubtypeOf(unit.getEmptyDeclaration().getType())) {
+                        se.addError("iterated expression is definitely empty");
+                    }
                 }
             }
         }
@@ -624,6 +631,23 @@ public class ExpressionVisitor extends Visitor {
 
     @Override public void visit(Tree.KeyValueIterator that) {
         super.visit(that);
+        Tree.SpecifierExpression se = that.getSpecifierExpression();
+        if (se!=null) {
+            Tree.Expression e = se.getExpression();
+            if (e!=null) {
+                ProducedType et = e.getTypeModel();
+                if (et!=null && !et.isUnknown()) {
+                    ProducedType it = unit.getIteratedType(et);
+                    if (it!=null && !it.isUnknown()) {
+                        if (!unit.isEntryType(it)) {
+                            se.addError("iterated element type is not an entry type: " + 
+                                    it.getProducedTypeName(unit) + 
+                                    " is not a subtype of Entry");
+                        }
+                    }
+                }
+            }
+        }
         Tree.Variable kv = that.getKeyVariable();
         Tree.Variable vv = that.getValueVariable();
         if (kv!=null && vv!=null) {
@@ -1234,10 +1258,6 @@ public class ExpressionVisitor extends Visitor {
             if (spec!=null) {
                 setType(local, spec, that);
             }
-            else {
-//                local.addError("could not infer type of: " + 
-//                        name(that.getIdentifier()));
-            }
         }
     }
 
@@ -1247,10 +1267,6 @@ public class ExpressionVisitor extends Visitor {
             Tree.LocalModifier local = (Tree.LocalModifier) that.getType();
             if (spec!=null) {
                 setType(local, spec, that);
-            }
-            else {
-//                local.addError("could not infer type of: " + 
-//                        name(that.getIdentifier()));
             }
         }
     }
@@ -1280,10 +1296,6 @@ public class ExpressionVisitor extends Visitor {
             if (se!=null) {
                 setTypeFromOptionalType(local, se, that);
             }
-            else {
-//                local.addError("could not infer type of: " + 
-//                        name(that.getIdentifier()));
-            }
         }
     }
 
@@ -1293,10 +1305,6 @@ public class ExpressionVisitor extends Visitor {
             Tree.LocalModifier local = (Tree.LocalModifier) that.getType();
             if (se!=null) {
                 setTypeFromEmptyType(local, se, that);
-            }
-            else {
-//                local.addError("could not infer type of: " + 
-//                        name(that.getIdentifier()));
             }
         }
     }
@@ -1308,10 +1316,6 @@ public class ExpressionVisitor extends Visitor {
             if (se!=null) {
                 setTypeFromIterableType(local, se, that);
             }
-            else {
-//                local.addError("could not infer type of: " + 
-//                        name(that.getIdentifier()));
-            }
         }
     }
 
@@ -1322,10 +1326,6 @@ public class ExpressionVisitor extends Visitor {
             if (se!=null) {
                 setTypeFromKeyType(local, se, key);
             }
-            else {
-//                local.addError("could not infer type of key: " + 
-//                        name(key.getIdentifier()));
-            }
         }
     }
 
@@ -1335,10 +1335,6 @@ public class ExpressionVisitor extends Visitor {
             Tree.LocalModifier local = (Tree.LocalModifier) value.getType();
             if (se!=null) {
                 setTypeFromValueType(local, se, value);
-            }
-            else {
-//                local.addError("could not infer type of value: " + 
-//                        name(value.getIdentifier()));
             }
         }
     }
@@ -1360,8 +1356,6 @@ public class ExpressionVisitor extends Visitor {
                 local.setTypeModel(t);
                 that.getDeclarationModel().setType(t);
             }
-            //        local.addError("could not infer type of: " + 
-            //                name(that.getIdentifier()));
         }
     }
     
@@ -1386,8 +1380,6 @@ public class ExpressionVisitor extends Visitor {
                 local.setTypeModel(t);
                 that.getDeclarationModel().setType(t);
             }
-            //        local.addError("could not infer type of: " + 
-            //                name(that.getIdentifier()));
         }
     }
     
@@ -1396,16 +1388,13 @@ public class ExpressionVisitor extends Visitor {
         if (se.getExpression()!=null) {
             ProducedType expressionType = se.getExpression().getTypeModel();
             if (expressionType!=null) {
-                if (unit.isIterableType(expressionType)) {
-                    ProducedType t = unit.getIteratedType(expressionType);
+                ProducedType t = unit.getIteratedType(expressionType);
+                if (t!=null) {
                     local.setTypeModel(t);
                     that.getDeclarationModel().setType(t);
-                    return;
                 }
             }
         }
-//        local.addError("could not infer type of: " + 
-//                name(that.getIdentifier()));
     }
     
     private void setTypeFromKeyType(Tree.LocalModifier local,
@@ -1414,21 +1403,16 @@ public class ExpressionVisitor extends Visitor {
         if (e!=null) {
             ProducedType expressionType = e.getTypeModel();
             if (expressionType!=null) {
-                if (unit.isIterableType(expressionType)) {
-                    ProducedType entryType = unit.getIteratedType(expressionType);
-                    if (entryType!=null) {
-                        if (unit.isEntryType(entryType)) {
-                            ProducedType et = unit.getKeyType(entryType);
-                            local.setTypeModel(et);
-                            that.getDeclarationModel().setType(et);
-                            return;
-                        }
+                ProducedType entryType = unit.getIteratedType(expressionType);
+                if (entryType!=null) {
+                    ProducedType kt = unit.getKeyType(entryType);
+                    if (kt!=null) {
+                        local.setTypeModel(kt);
+                        that.getDeclarationModel().setType(kt);
                     }
                 }
             }
         }
-//        local.addError("could not infer type of: " + 
-//                name(that.getIdentifier()));
     }
     
     private void setTypeFromValueType(Tree.LocalModifier local,
@@ -1437,21 +1421,16 @@ public class ExpressionVisitor extends Visitor {
         if (e!=null) {
             ProducedType expressionType = e.getTypeModel();
             if (expressionType!=null) {
-                if (unit.isIterableType(expressionType)) {
-                    ProducedType entryType = unit.getIteratedType(expressionType);
-                    if (entryType!=null) {
-                        if (unit.isEntryType(entryType)) {
-                            ProducedType et = unit.getValueType(entryType);
-                            local.setTypeModel(et);
-                            that.getDeclarationModel().setType(et);
-                            return;
-                        }
+                ProducedType entryType = unit.getIteratedType(expressionType);
+                if (entryType!=null) {
+                    ProducedType vt = unit.getValueType(entryType);
+                    if (vt!=null) {
+                        local.setTypeModel(vt);
+                        that.getDeclarationModel().setType(vt);
                     }
                 }
             }
         }
-//        local.addError("could not infer type of: " + 
-//                name(that.getIdentifier()));
     }
     
     private void setType(Tree.LocalModifier local, 

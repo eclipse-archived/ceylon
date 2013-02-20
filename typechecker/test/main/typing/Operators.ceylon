@@ -367,5 +367,10 @@ class Operators() {
     Integer bin1 = $1010_0101;
     Integer bin2 = $1111_0000;
     Integer bin3 = bin1 and (bin1 not);
+    
+    Object set = nothing;
+    for (@error me in set) {}
+    {Object*} map = nothing;
+    for (@error k->v in map) {}
         
 }
