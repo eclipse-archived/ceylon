@@ -115,7 +115,7 @@ final class anonFunctionNullary_ {
             
             @.java.lang.Override
             public .ceylon.language.Tuple<.ceylon.language.Comparison, ? extends .ceylon.language.Comparison, ? extends .ceylon.language.Tuple<.ceylon.language.Comparison, ? extends .ceylon.language.Comparison, ? extends .ceylon.language.Empty>> $call() {
-                return new .ceylon.language.Tuple(.ceylon.language.larger_.getLarger$(), new .ceylon.language.Tuple<.ceylon.language.smaller_, .ceylon.language.smaller_, .ceylon.language.Empty>(.ceylon.language.smaller_.getSmaller$(), .ceylon.language.empty_.getEmpty$()));
+                return new .ceylon.language.Tuple<.ceylon.language.Comparison, .ceylon.language.Comparison, .ceylon.language.Tuple<.ceylon.language.Comparison, ? extends .ceylon.language.Comparison, ? extends .ceylon.language.Empty>>(.ceylon.language.larger_.getLarger$(), new .ceylon.language.Tuple<.ceylon.language.Comparison, .ceylon.language.Comparison, .ceylon.language.Empty>(.ceylon.language.smaller_.getSmaller$(), .ceylon.language.empty_.getEmpty$()));
             }
         };
         final .ceylon.language.Callable<? extends T> t1 = new .com.redhat.ceylon.compiler.java.language.AbstractCallable<T>("T()"){
