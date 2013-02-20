@@ -961,7 +961,7 @@ public class ExpressionTransformer extends AbstractTransformer {
     }
     
     public JCExpression comprehensionAsSequential(Comprehension comprehension, ProducedType expectedType) {
-        JCExpression sequential = iterableToSequence(transformComprehension(comprehension));
+        JCExpression sequential = iterableToSequential(transformComprehension(comprehension));
         ProducedType elementType = comprehension.getForComprehensionClause().getTypeModel();
         ProducedType sequentialType = typeFact().getSequentialType(elementType);
         return sequentialEmptiness(sequential, expectedType, sequentialType);
@@ -993,7 +993,7 @@ public class ExpressionTransformer extends AbstractTransformer {
             SpreadArgument spreadExpr = (Tree.SpreadArgument) expr;
             JCExpression result = transformExpression(spreadExpr.getExpression());
             if (!typeFact().isSequentialType(spreadExpr.getTypeModel())) {
-                result = iterableToSequence(result);
+                result = iterableToSequential(result);
                 ProducedType elementType = typeFact().getIteratedType(spreadExpr.getTypeModel());
                 ProducedType sequentialType = typeFact().getSequentialType(elementType);
                 ProducedType expectedType = spreadExpr.getTypeModel();
