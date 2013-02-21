@@ -30,10 +30,6 @@ else
 fi
 
 LIB="$CEYLON_HOME/lib"
-REPO="$CEYLON_HOME/repo"
-RUNTIME_REPO="$CEYLON_HOME/runtime-repo"
-
-JAVA_CP="$LIB/ceylon-runtime-bootstrap.jar"
 
 #JAVA_DEBUG_OPTS="-Xrunjdwp:transport=dt_socket,address=8787,server=y,suspend=y"
 
@@ -44,20 +40,7 @@ if [ "$PRESERVE_JAVA_OPTS" != "true" ]; then
 fi
 JAVA_OPTS="$PREPEND_JAVA_OPTS $JAVA_OPTS"
 
-# source classpath to set the MINIMAL_CP
-. "$DIR/ceylon-cp.sh"
-
-# BOOTSTRAP_CP are classes required by the compiler to run. 
-# They have to go to the boot class path on Mac OS X
-# so just put it there for all (Linux) OSes for consistency.
-# We need them here simply to support `cey compile` 
-BOOTSTRAP_CP="$MINIMAL_CP"
-
 exec java \
- -Xbootclasspath/p:"$BOOTSTRAP_CP" \
- -cp $JAVA_CP \
- "-Dceylon.home=$CEYLON_HOME" \
- "-Dceylon.system.repo=$CEYLON_REPO" \
  $JAVA_OPTS \
- com.redhat.ceylon.tools.CeylonTool \
- $ARGS
+ -jar "$LIB/ceylon-bootstrap.jar" \
+ "$@"
