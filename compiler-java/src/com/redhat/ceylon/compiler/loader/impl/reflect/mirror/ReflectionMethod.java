@@ -113,7 +113,8 @@ public class ReflectionMethod implements MethodMirror {
         }
         parameters = new ArrayList<VariableMirror>(annotations.length);
         int extraParameters = javaParameters.length - annotations.length;
-        for(int i=0;i<annotations.length;i++)
+        int parametersCount = Math.min(javaParameters.length, annotations.length);
+        for(int i=0;i<parametersCount;i++)
             parameters.add(new ReflectionVariable(javaParameters[i+extraParameters], annotations[i]));
         return parameters;
     }
