@@ -21,6 +21,8 @@ package com.redhat.ceylon.ceylondoc.test;
 
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.nio.CharBuffer;
 import java.nio.MappedByteBuffer;
@@ -30,10 +32,16 @@ import java.nio.charset.Charset;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.jar.JarOutputStream;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+import java.util.zip.ZipEntry;
 
+import javax.tools.JavaCompiler;
+import javax.tools.JavaCompiler.CompilationTask;
 import javax.tools.JavaFileObject;
+import javax.tools.StandardJavaFileManager;
+import javax.tools.ToolProvider;
 
 import junit.framework.Assert;
 
@@ -44,10 +52,16 @@ import org.junit.rules.TestName;
 
 import com.redhat.ceylon.ceylondoc.CeylonDocTool;
 import com.redhat.ceylon.ceylondoc.Util;
+import com.redhat.ceylon.cmr.api.ArtifactContext;
+import com.redhat.ceylon.cmr.api.RepositoryManager;
+import com.redhat.ceylon.cmr.ceylon.CeylonUtils;
+import com.redhat.ceylon.common.config.Repositories;
+import com.redhat.ceylon.common.config.Repositories.Repository;
 import com.redhat.ceylon.compiler.java.tools.CeyloncTool;
 import com.redhat.ceylon.compiler.typechecker.TypeChecker;
 import com.redhat.ceylon.compiler.typechecker.model.Module;
 import com.sun.source.util.JavacTask;
+import com.sun.tools.javac.api.JavacTool;
 import com.sun.tools.javac.file.JavacFileManager;
 
 public class CeylonDocToolTest {
@@ -380,9 +394,13 @@ public class CeylonDocToolTest {
                 "ceylon.json", 
                 "ceylon.process",
                 "ceylon.math",
-                "ceylon.test"};
+                "ceylon.test",
+        };
         
-        CeylonDocTool tool = tool(Arrays.asList(new File("../ceylon-sdk/source")), Arrays.asList(fullModuleNames), true, "../ceylon-sdk/modules");
+        compileSdkJavaFiles();
+        
+        CeylonDocTool tool = tool(Arrays.asList(new File("../ceylon-sdk/source")), Arrays.asList(fullModuleNames), true, 
+                "build/CeylonDocToolTest/" + name.getMethodName() + "-native");
         tool.setIncludeNonShared(false);
         tool.setIncludeSourceCode(true);
         tool.makeDoc();
@@ -393,6 +411,58 @@ public class CeylonDocToolTest {
 
             assertFileExists(destDir, "index.html");
         }
+    }
+
+    /**
+     * This is disgusting, but the current CeylonDoc doesn't handle source files, so we need to compile them first,
+     * and we do it using javac to avoid compiling the whole SDK for one java file.
+     */
+    private void compileSdkJavaFiles() throws FileNotFoundException, IOException {
+        // put it all in a special folder
+        File dir = new File("build", "CeylonDocToolTest/" + name.getMethodName() + "-native");
+        if (dir.exists()) {
+            Util.delete(dir);
+        }
+        dir.mkdirs();
+
+        // download a required jar
+        RepositoryManager repoManager = CeylonUtils.repoManager().buildManager();
+        File artifact = repoManager.getArtifact(new ArtifactContext("org.jboss.xnio.api", "3.1.0.Beta8", ".jar"));
+
+        // fire up the java compiler
+        JavaCompiler compiler = ToolProvider.getSystemJavaCompiler();
+        List<String> options = Arrays.asList("-sourcepath", "../ceylon-sdk/source", "-d", dir.getAbsolutePath(), "-classpath", artifact.getAbsolutePath());
+        StandardJavaFileManager fileManager = compiler.getStandardFileManager(null, null, null);
+        String[] fileNames = new String[]{
+                "ceylon/net/httpd/internal/JavaHelper.java",
+        };
+        List<String> qualifiedNames = new ArrayList<String>(fileNames.length);
+        for(String name : fileNames){
+            qualifiedNames.add("../ceylon-sdk/source/" + name);
+        }
+        Iterable<? extends JavaFileObject> fileObjects = fileManager.getJavaFileObjectsFromStrings(qualifiedNames);
+        CompilationTask task = compiler.getTask(null, null, null, options, null, fileObjects);
+        Boolean ret = task.call();
+        Assert.assertEquals("Compilation failed", Boolean.TRUE, ret);
+        
+        // now we need to zip it up
+        File jarFolder = new File(dir, "ceylon/net/0.5");
+        jarFolder.mkdirs();
+        File jarFile = new File(jarFolder, "ceylon.net-0.5.car");
+        // now jar it up
+        JarOutputStream outputStream = new JarOutputStream(new FileOutputStream(jarFile));
+        for(String name : fileNames){
+            String classFile = name.substring(0, name.length()-5) + ".class";
+            ZipEntry entry = new ZipEntry(classFile);
+            outputStream.putNextEntry(entry);
+
+            File javaFile = new File(dir, classFile);
+            FileInputStream inputStream = new FileInputStream(javaFile);
+            com.redhat.ceylon.compiler.java.util.Util.copy(inputStream, outputStream);
+            inputStream.close();
+            outputStream.flush();
+        }
+        outputStream.close();
     }
 
     private Module makeDefaultModule() {
