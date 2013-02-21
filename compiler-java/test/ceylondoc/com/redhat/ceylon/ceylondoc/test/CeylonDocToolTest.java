@@ -200,13 +200,14 @@ public class CeylonDocToolTest {
         assertLinksToRefinedDeclaration(destDir);
         assertGenericTypeParams(destDir);
         assertObjectPageDifferences(destDir);
+        assertSharedParameterOfClass(destDir);
         assertBug659ShowInheritedMembers(destDir);
         assertBug691AbbreviatedOptionalType(destDir);
         assertBug839(destDir);
         assertBug927LoadingAndSortingInheritedMembers(destDir);
         assertBug968(destDir);
     }
-    
+
     // fails until we put an M5 SDK on Herd
     @Test
     @Ignore("M5")
@@ -768,7 +769,14 @@ public class CeylonDocToolTest {
                 Pattern.compile("ceylon.math.whole::Whole = <a class='link' href='https://modules.ceylon-lang.org/test/ceylon/math/0.4/module-doc/whole/interface_Whole.html'>ceylon.math.whole::Whole</a>"));
         assertMatchInFile(destDir, "index.html",
                 Pattern.compile("ceylon.math.whole::Whole.power = <a class='link' href='https://modules.ceylon-lang.org/test/ceylon/math/0.4/module-doc/whole/interface_Whole.html#power'>ceylon.math.whole::Whole.power</a>"));
-    }    
+    }
+    
+    private void assertSharedParameterOfClass(File destDir) throws IOException {
+        assertMatchInFile(destDir, "class_StubClass.html", 
+                Pattern.compile("<td id='printHello' nowrap><i class='icon-shared-member'></i>printHello</td>"));
+        assertMatchInFile(destDir, "class_StubClass.html", 
+                Pattern.compile("<div class='signature'><span class='modifiers'>shared</span> <span class='void'>void</span> printHello\\(String name\\)</div>"));
+    }
 
     private void assertBug659ShowInheritedMembers(File destDir) throws IOException {
     	assertMatchInFile(destDir, "class_StubClass.html",

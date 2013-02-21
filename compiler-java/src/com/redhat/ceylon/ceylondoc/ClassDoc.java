@@ -45,15 +45,17 @@ import com.redhat.ceylon.compiler.typechecker.model.Interface;
 import com.redhat.ceylon.compiler.typechecker.model.Method;
 import com.redhat.ceylon.compiler.typechecker.model.MethodOrValue;
 import com.redhat.ceylon.compiler.typechecker.model.Package;
+import com.redhat.ceylon.compiler.typechecker.model.Parameter;
 import com.redhat.ceylon.compiler.typechecker.model.ProducedType;
 import com.redhat.ceylon.compiler.typechecker.model.TypeDeclaration;
+import com.redhat.ceylon.compiler.typechecker.model.TypedDeclaration;
 import com.redhat.ceylon.compiler.typechecker.model.Value;
 
 public class ClassDoc extends ClassOrPackageDoc {
 
     private ClassOrInterface klass;
     private List<Method> methods;
-    private List<MethodOrValue> attributes;
+    private List<TypedDeclaration> attributes;
     private List<ClassOrInterface> subclasses;
     private List<ClassOrInterface> satisfyingClassesOrInterfaces;
     private List<Class> satisfyingClasses;
@@ -98,7 +100,7 @@ public class ClassDoc extends ClassOrPackageDoc {
         methods = new ArrayList<Method>();
         satisfyingClasses = new ArrayList<Class>();
         satisfyingInterfaces = new ArrayList<Interface>();
-        attributes = new ArrayList<MethodOrValue>();
+        attributes = new ArrayList<TypedDeclaration>();
         innerInterfaces = new ArrayList<Interface>();
         innerClasses = new ArrayList<Class>();
         innerExceptions = new ArrayList<Class>();
@@ -111,6 +113,8 @@ public class ClassDoc extends ClassOrPackageDoc {
                     attributes.add((Value) m);
                 } else if (m instanceof Getter) {
                     attributes.add((Getter) m);
+                } else if(m instanceof Parameter ) {
+                    attributes.add((Parameter) m);
                 } else if (m instanceof Method) {
                     methods.add((Method) m);
                 } else if (m instanceof Interface) {
@@ -511,7 +515,7 @@ public class ClassDoc extends ClassOrPackageDoc {
             return;
         }
         openTable(null, "Attributes", 2, true);
-        for (MethodOrValue attribute : attributes) {
+        for (TypedDeclaration attribute : attributes) {
             doc(attribute);
         }
         closeTable();

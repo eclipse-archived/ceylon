@@ -38,7 +38,6 @@ import com.redhat.ceylon.compiler.typechecker.model.ClassOrInterface;
 import com.redhat.ceylon.compiler.typechecker.model.Declaration;
 import com.redhat.ceylon.compiler.typechecker.model.Functional;
 import com.redhat.ceylon.compiler.typechecker.model.FunctionalParameter;
-import com.redhat.ceylon.compiler.typechecker.model.Method;
 import com.redhat.ceylon.compiler.typechecker.model.MethodOrValue;
 import com.redhat.ceylon.compiler.typechecker.model.Module;
 import com.redhat.ceylon.compiler.typechecker.model.Parameter;
@@ -46,6 +45,7 @@ import com.redhat.ceylon.compiler.typechecker.model.ParameterList;
 import com.redhat.ceylon.compiler.typechecker.model.ProducedType;
 import com.redhat.ceylon.compiler.typechecker.model.TypeDeclaration;
 import com.redhat.ceylon.compiler.typechecker.model.TypeParameter;
+import com.redhat.ceylon.compiler.typechecker.model.TypedDeclaration;
 import com.redhat.ceylon.compiler.typechecker.model.Unit;
 import com.redhat.ceylon.compiler.typechecker.model.Value;
 import com.redhat.ceylon.compiler.typechecker.tree.Node;
@@ -80,7 +80,7 @@ public abstract class ClassOrPackageDoc extends CeylonDoc {
         close("tr");
     }
 
-    protected final void doc(MethodOrValue d) throws IOException {
+    protected final void doc(TypedDeclaration d) throws IOException {
         // put the id on the td because IE8 doesn't support id attributes on tr (yeah right)
         open("tr");
         
@@ -98,7 +98,7 @@ public abstract class ClassOrPackageDoc extends CeylonDoc {
         around("span class='modifiers'", getModifiers(d));
         write(" ");
         
-        if( d instanceof Method && ((Method) d).isDeclaredVoid() ) {
+        if( d instanceof Functional && ((Functional) d).isDeclaredVoid() ) {
             around("span class='void'", "void");
         } else {
             linkRenderer().to(d.getType()).write();    
@@ -109,11 +109,11 @@ public abstract class ClassOrPackageDoc extends CeylonDoc {
         if( isConstantValue(d) ) {
             writeConstantValue((Value) d);
         }
-        if( d instanceof Method ) {
-            Method m = (Method) d;
-            writeTypeParameters(m.getTypeParameters());
-            writeParameterList(m);
-            writeTypeParametersConstraints(m.getTypeParameters());
+        if( d instanceof Functional ) {
+            Functional f = (Functional) d;
+            writeTypeParameters(f.getTypeParameters());
+            writeParameterList(f);
+            writeTypeParametersConstraints(f.getTypeParameters());
         }
         close("div");
         writeDescription(d);
@@ -233,17 +233,17 @@ public abstract class ClassOrPackageDoc extends CeylonDoc {
         }
     }
 
-    private void writeLinkSource(MethodOrValue m) throws IOException {
+    private void writeLinkSource(TypedDeclaration d) throws IOException {
         if (!tool.isIncludeSourceCode()) {
             return;
         }
         String srcUrl;
-        if (m.isToplevel()) {
-            srcUrl = linkRenderer().getSrcUrl(m);
+        if (d.isToplevel()) {
+            srcUrl = linkRenderer().getSrcUrl(d);
         } else {
-            srcUrl = linkRenderer().getSrcUrl(m.getContainer());
+            srcUrl = linkRenderer().getSrcUrl(d.getContainer());
         }
-        int[] lines = tool.getDeclarationSrcLocation(m);
+        int[] lines = tool.getDeclarationSrcLocation(d);
         if(lines != null){
             open("a class='link-source-code' title='Link to source code' href='" + srcUrl + "#" + lines[0] + "," + lines[1] + "'");
             write("<i class='icon-source-code'></i>");

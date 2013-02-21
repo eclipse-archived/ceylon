@@ -35,6 +35,7 @@ import com.redhat.ceylon.compiler.typechecker.model.Interface;
 import com.redhat.ceylon.compiler.typechecker.model.MethodOrValue;
 import com.redhat.ceylon.compiler.typechecker.model.Module;
 import com.redhat.ceylon.compiler.typechecker.model.Package;
+import com.redhat.ceylon.compiler.typechecker.model.TypedDeclaration;
 
 public abstract class CeylonDoc extends Markup {
 
@@ -339,7 +340,7 @@ public abstract class CeylonDoc extends Markup {
                 }
             }
 
-            if (decl instanceof MethodOrValue) {
+            if (decl instanceof TypedDeclaration) {
                 if( decl.isShared() ) {
                     icons.add("icon-shared-member");
                 }
