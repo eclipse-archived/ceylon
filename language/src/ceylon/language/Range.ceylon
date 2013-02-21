@@ -32,8 +32,8 @@ shared class Range<Element>(first, last)
     shared Boolean decreasing => last<first; 
     
     Element next(Element x) =>
-        decreasing then x.predecessor 
-                else x.successor;
+            decreasing then x.predecessor 
+                    else x.successor;
 
     doc "The nonzero number of elements in the range."
     shared actual Integer size {
