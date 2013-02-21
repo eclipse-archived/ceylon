@@ -370,10 +370,15 @@ public class CeylonDocToolTest {
             Assert.fail("You don't have ceylon-sdk checked out at " + sdkDir.getAbsolutePath() + " so this test doesn't apply");
         }
         String[] fullModuleNames = {
-                "ceylon.file", "ceylon.collection", 
-                "ceylon.dbc", "ceylon.io", 
-                "ceylon.net", "ceylon.json", 
-                "ceylon.process", "ceylon.math",
+                "ceylon.file",
+                "ceylon.collection", 
+                "ceylon.dbc",
+                "ceylon.io",
+                "ceylon.util", 
+                "ceylon.net",
+                "ceylon.json", 
+                "ceylon.process",
+                "ceylon.math",
                 "ceylon.test"};
         
         CeylonDocTool tool = tool(Arrays.asList(new File("../ceylon-sdk/source")), Arrays.asList(fullModuleNames), true, "../ceylon-sdk/modules");
