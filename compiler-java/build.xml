@@ -303,10 +303,12 @@
        classpathref="compiler.classpath"
        includeantruntime="true">
       <exclude name="**/*Main5.java"/>
+      <exclude name="**/Java7Checker.java"/>
       <exclude name="com/redhat/ceylon/tools/Tool.java"/>
       <exclude name="com/redhat/ceylon/tools/Plugin.java"/>
-      <exclude name="com/redhat/ceylon/tools/Java7Checker.java"/>
       <exclude name="com/redhat/ceylon/ant/**"/>
+      <exclude name="com/redhat/ceylon/launcher/Launcher.java"/>
+      <exclude name="com/redhat/ceylon/launcher/CeylonClassLoader.java"/>
       <include name="com/redhat/**"/>
       <include name="com/sun/tools/javac/**"/>
       <include name="com/sun/source/**"/>
@@ -319,8 +321,10 @@
   	-->
   	<delete dir="${build.classes}">
   	  <include name="**/*Main5.class"/>
-  	  <include name="com/redhat/ceylon/tools/Java7Checker.class"/>
-          <include name="com/redhat/ceylon/ant/**"/>
+  	  <include name="**/Java7Checker.class"/>
+      <include name="com/redhat/ceylon/ant/**"/>
+      <include name="com/redhat/ceylon/launcher/Launcher.java"/>
+      <include name="com/redhat/ceylon/launcher/CeylonClassLoader.java"/>
   	</delete>
     <javac
        srcdir="${javac.src}:${ceylonc.src}"
@@ -332,10 +336,12 @@
        source="1.5"
        includeantruntime="true">
       <include name="**/*Main5.java"/>
+      <include name="**/Java7Checker.java"/>
       <include name="com/redhat/ceylon/tools/Tool.java"/>
       <include name="com/redhat/ceylon/tools/Plugin.java"/>
-      <include name="com/redhat/ceylon/tools/Java7Checker.java"/>
       <include name="com/redhat/ceylon/ant/**"/>
+      <include name="com/redhat/ceylon/launcher/Launcher.java"/>
+      <include name="com/redhat/ceylon/launcher/CeylonClassLoader.java"/>
     </javac>
   	<copy todir="${build.classes}">
       <fileset dir="${ceylonc.src}">
@@ -380,39 +386,51 @@
     </copy>
   </target>
 
+    <!-- Rule to build compiler jar -->
+    <target name="compiler.jar" depends="compiler.classes">
+        <mkdir dir="${build.lib}"/>
+        <jar destfile="${build.lib}/compiler.jar">
+          <fileset dir="${build.classes}">
+            <exclude name="ceylon/**"/>
+            <exclude name="com/redhat/ceylon/compiler/java/test/**"/>
+            <exclude name="com/redhat/ceylon/ant/**"/>
+          </fileset>
+          <fileset dir="${javac.src}">
+            <include name="com/sun/tools/javac/resources/*.properties"/>
+          </fileset>
+        </jar>
+    </target>
+
+    <!-- Rule to build ant jar -->
+    <target name="ant.jar" depends="compiler.classes">
+        <mkdir dir="${build.lib}"/>
+        <jar destfile="${build.lib}/ant.jar">
+          <fileset dir="${build.classes}">
+            <include name="com/redhat/ceylon/ant/**"/>
+          </fileset>
+        </jar>
+    </target>
+
+    <!-- Rule to build runtime jar -->
+    <target name="bootstrap.jar" depends="compiler.classes">
+        <mkdir dir="${build.lib}"/>
+        <jar destfile="${build.lib}/ceylon-bootstrap.jar" filesetmanifest="merge">
+            <fileset dir="${build.classes}">
+              <include name="com/redhat/ceylon/launcher/**"/>
+              <include name="META-INF/MANIFEST.MF"/>
+            </fileset>
+        </jar>
+    </target>
+
   <!-- Rule to build compiler jar -->
-  <target name="build" depends="compiler.classes">
+  <target name="build" depends="compiler.jar,ant.jar,bootstrap.jar">
     <mkdir dir="${build.dist}"/>
     <mkdir dir="${build.bin}"/>
-    <mkdir dir="${build.lib}"/>
     <mkdir dir="${build.ceylon.cars}"/>
-    <jar destfile="${build.lib}/compiler.jar">
-      <fileset dir="${build.classes}">
-        <exclude name="ceylon/**"/>
-        <exclude name="com/redhat/ceylon/compiler/java/test/**"/>
-        <exclude name="com/redhat/ceylon/ant/**"/>
-      </fileset>
-      <fileset dir="${javac.src}">
-        <include name="com/sun/tools/javac/resources/*.properties"/>
-      </fileset>
-    </jar>
-    <jar destfile="${build.lib}/ant.jar">
-      <fileset dir="${build.classes}">
-        <include name="com/redhat/ceylon/ant/**"/>
-      </fileset>
-    </jar>
 
-    <filter token="VERSION" value="${module.com.redhat.ceylon.compiler.version}"/>
     <copy todir="${build.bin}">
         <fileset dir="${basedir}/bin">
-            <exclude name="*.in"/>
         </fileset>
-    </copy>
-    <copy todir="${build.bin}" filtering="yes">
-        <fileset dir="${basedir}/bin">
-            <include name="*.in"/>
-        </fileset>
-        <globmapper from="*.in" to="*"/>
     </copy>
     <chmod perm="0755">
         <fileset dir="${build.bin}">
