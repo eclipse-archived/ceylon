@@ -167,15 +167,17 @@ public class CeylonTool implements Tool {
         out.println(Tools.progName() + " version " + Versions.CEYLON_VERSION);
     }
     
-
-    
     public static void main(String[] args) throws Exception {
+        System.exit(start(args));
+    }
+
+    public static int start(String[] args) throws Exception {
         if (args.length > 0 && ARG_VERSION.equals(args[0])) {
             version(System.out);
-            System.exit(SC_OK);
+            return SC_OK;
         } else {
             Java7Checker.check();
-            System.exit(new CeylonTool().bootstrap(false, args));
+            return new CeylonTool().bootstrap(false, args);
         }
     }
 
@@ -194,6 +196,7 @@ public class CeylonTool implements Tool {
     public int bootstrap(String[] args) throws Exception {
         return bootstrap(false, args);
     }
+    
     int bootstrap(boolean recursive, String... args) throws Exception {
         int result;
         Exception error = null;
