@@ -1,0 +1,29 @@
+package com.redhat.ceylon.compiler.java.test.issues.bug10xx.bug1041;
+
+final class bug1041_ {
+    
+    private bug1041_() {
+    }
+    
+    static void bug1041() {
+        final .ceylon.language.Integer elvisOp1 = (
+            let
+            {
+                .java.lang.String $safe$0 = .com.redhat.ceylon.compiler.java.Util.checkNull(new .com.redhat.ceylon.compiler.java.test.issues.bug10xx.bug1041.Bug1041Java().getProp());
+            }
+            returning $safe$0 != null ? .ceylon.language.Integer.instance(.ceylon.language.String.getSize($safe$0)) : null;
+        );
+        final .ceylon.language.Integer elvisOp2 = (
+            let
+            {
+                .java.lang.String $safe$1 = .com.redhat.ceylon.compiler.java.Util.checkNull(new .com.redhat.ceylon.compiler.java.test.issues.bug10xx.bug1041.Bug1041Java().method((int)4L));
+            }
+            returning $safe$1 != null ? .ceylon.language.Integer.instance(.ceylon.language.String.getSize($safe$1)) : null;
+        );
+    }
+    
+    public static void main(.java.lang.String[] args) {
+        .ceylon.language.process_.getProcess$().setupArguments(args);
+        .com.redhat.ceylon.compiler.java.test.issues.bug10xx.bug1041.bug1041_.bug1041();
+    }
+}
