@@ -370,66 +370,8 @@ public class ExpressionVisitor extends Visitor {
         /*if (that.getExpression()!=null) {
             that.getExpression().visit(this);
         }*/
-        checkReified(that, type);
     }
-
-    private void checkReified(Node that, ProducedType type) {
-        if (type!=null) {
-            TypeDeclaration dec = type.getDeclaration();
-            if (dec instanceof UnionType) {
-                for (ProducedType pt: dec.getCaseTypes()) {
-                    checkReified(that, pt);
-                }
-            }
-            else if (dec instanceof IntersectionType) {
-                for (ProducedType pt: dec.getSatisfiedTypes()) {
-                    checkReified(that, pt);
-                }
-            }
-            else if (dec instanceof TypeParameter) {
-//                that.addWarning("type parameter in assignability condition not yet supported (until we implement reified generics)");
-            }
-            else if (isGeneric(dec)) {
-                List<TypeParameter> params = dec.getTypeParameters();
-                List<ProducedType> args = type.getTypeArgumentList();
-                if (params.size()==args.size()) {
-                    for (int i=0; i<params.size(); i++) {
-                        TypeParameter tp = params.get(i);
-                        ProducedType ta = args.get(i);
-                        if (ta!=null) {
-                            if (tp.isCovariant()) {
-                                List<ProducedType> list = new ArrayList<ProducedType>();
-                                addToIntersection(list, unit.getAnythingDeclaration().getType(), unit);
-                                for (ProducedType st: tp.getSatisfiedTypes()) {
-                                    if (!tp.isSelfType()) {
-                                        st = st.substitute(type.getTypeArguments());
-                                        addToIntersection(list, st, unit);
-                                    }
-                                }
-                                IntersectionType ut = new IntersectionType(unit);
-                                ut.setSatisfiedTypes(list);
-//                                if (!ut.getType().isSubtypeOf(ta)) {
-//                                    that.addWarning("type argument to covariant (out) type parameter in assignability condition must be " +
-//                                            ut.getType().getProducedTypeName(unit) + " (until we implement reified generics)");
-//                                }
-                            }
-                            else if (tp.isContravariant()) {
-//                                if (!ta.isNothing()) {
-//                                    that.addWarning("type argument to contravariant (in) type parameter in assignability condition must be Nothing (until we implement reified generics)");
-//                                }
-                            }
-                            else {
-//                                that.addWarning("type argument to invariant type parameter in assignability condition not yet supported (until we implement reified generics)");
-                            }
-                        }
-                    }
-                }
-                //else there is another error, so don't bother
-                //with this check at all
-            }
-        }
-    }
-
+    
     @Override public void visit(Tree.SatisfiesCondition that) {
         super.visit(that);
         that.addWarning("satisfies conditions not yet supported");
@@ -3325,7 +3267,6 @@ public class ExpressionVisitor extends Visitor {
         if (rt!=null) {
             ProducedType t = rt.getTypeModel();
             if (t!=null) {
-                checkReified(that, t);
                 if (that.getTerm()!=null) {
                     ProducedType pt = that.getTerm().getTypeModel();
                     if (pt!=null && pt.isSubtypeOf(t)) {
@@ -4382,7 +4323,6 @@ public class ExpressionVisitor extends Visitor {
             ProducedType st = switchExpression.getTypeModel();
             if (t!=null && st!=null && !st.isUnknown()) {
                 ProducedType pt = t.getTypeModel();
-                checkReified(that, pt);
                 ProducedType it = intersectionType(pt, st, unit);
                 if (!hasUncheckedNulls(switchExpression.getTerm()) || !isNullCase(pt)) {
                     if (it.isExactly(unit.getNothingDeclaration().getType())) {
