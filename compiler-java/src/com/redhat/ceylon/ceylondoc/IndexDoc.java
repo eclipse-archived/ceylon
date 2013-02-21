@@ -33,11 +33,11 @@ import com.redhat.ceylon.compiler.typechecker.model.Getter;
 import com.redhat.ceylon.compiler.typechecker.model.Method;
 import com.redhat.ceylon.compiler.typechecker.model.Module;
 import com.redhat.ceylon.compiler.typechecker.model.Package;
+import com.redhat.ceylon.compiler.typechecker.model.Parameter;
 import com.redhat.ceylon.compiler.typechecker.model.Scope;
 import com.redhat.ceylon.compiler.typechecker.model.Setter;
 import com.redhat.ceylon.compiler.typechecker.model.TypeParameter;
 import com.redhat.ceylon.compiler.typechecker.model.Value;
-import com.redhat.ceylon.compiler.typechecker.model.ValueParameter;
 
 public class IndexDoc extends CeylonDoc {
 
@@ -121,7 +121,7 @@ public class IndexDoc extends CeylonDoc {
             if (decl.isMember()) {
                 name = ((ClassOrInterface) container).getName() + "." + name;
             }
-        } else if (decl instanceof Setter || decl instanceof ValueParameter || decl instanceof TypeParameter) {
+        } else if (decl instanceof Setter || decl instanceof Parameter || decl instanceof TypeParameter) {
             return false; // ignore
         } else {
             throw new RuntimeException("Unknown type of object: " + decl);
