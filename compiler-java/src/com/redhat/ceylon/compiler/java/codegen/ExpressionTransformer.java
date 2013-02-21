@@ -25,7 +25,6 @@ import static com.sun.tools.javac.code.Flags.PRIVATE;
 import static com.sun.tools.javac.code.Flags.STATIC;
 
 import java.util.HashSet;
-import java.util.Iterator;
 import java.util.LinkedList;
 
 import com.redhat.ceylon.compiler.java.codegen.Invocation.TransformedInvocationPrimary;
@@ -82,19 +81,21 @@ import com.redhat.ceylon.compiler.typechecker.tree.Tree.SpreadArgument;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.StaticMemberOrTypeExpression;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.Super;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.Term;
-import com.redhat.ceylon.compiler.typechecker.tree.Tree.Tuple;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.ValueIterator;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.Variable;
 import com.sun.tools.javac.code.Flags;
 import com.sun.tools.javac.code.TypeTags;
 import com.sun.tools.javac.tree.JCTree;
 import com.sun.tools.javac.tree.JCTree.JCBlock;
+import com.sun.tools.javac.tree.JCTree.JCClassDecl;
 import com.sun.tools.javac.tree.JCTree.JCExpression;
 import com.sun.tools.javac.tree.JCTree.JCLiteral;
+import com.sun.tools.javac.tree.JCTree.JCMethodDecl;
 import com.sun.tools.javac.tree.JCTree.JCMethodInvocation;
 import com.sun.tools.javac.tree.JCTree.JCNewArray;
 import com.sun.tools.javac.tree.JCTree.JCReturn;
 import com.sun.tools.javac.tree.JCTree.JCStatement;
+import com.sun.tools.javac.tree.JCTree.JCTypeParameter;
 import com.sun.tools.javac.tree.JCTree.JCUnary;
 import com.sun.tools.javac.tree.JCTree.JCVariableDecl;
 import com.sun.tools.javac.util.Context;
@@ -3153,6 +3154,7 @@ public class ExpressionTransformer extends AbstractTransformer {
         final HashSet<String> fieldNames = new HashSet<String>();
         final ListBuffer<Substitution> fieldSubst = new ListBuffer<Substitution>();
         private JCExpression error;
+        private JCStatement initIterator;
         public ComprehensionTransformation(final Comprehension comp, ProducedType elementType) {
             this.comp = comp;
             targetIterType = typeFact().getIterableType(elementType);
@@ -3205,26 +3207,67 @@ public class ExpressionTransformer extends AbstractTransformer {
                             makeFinished()))
             )), null));
             //Define the inner iterator class
-            ProducedType iteratorType = typeFact().getIteratorType(iteratedType);
-            JCExpression iteratorTypeExpr = make().TypeApply(makeIdent(syms().ceylonAbstractIteratorType),
-                                                             List.<JCExpression>of(makeJavaType(iteratedType, JT_NO_PRIMITIVES)));
-            JCExpression iterator = make().NewClass(null, null, iteratorTypeExpr,
-                    List.<JCExpression>of(makeReifiedTypeArgument(iteratedType)), make().AnonymousClassDef(make().Modifiers(0), fields.toList()));
-            //Define the anonymous iterable class
-            JCExpression iterable = make().NewClass(null, null,
-                    make().TypeApply(makeIdent(syms().ceylonAbstractIterableType),
-                        List.<JCExpression>of(makeJavaType(iteratedType, JT_NO_PRIMITIVES),
-                                              makeJavaType(absentIterType, JT_NO_PRIMITIVES))),
-                    List.<JCExpression>of(makeReifiedTypeArgument(iteratedType), makeReifiedTypeArgument(absentIterType)), 
-                    make().AnonymousClassDef(make().Modifiers(0), List.<JCTree>of(
-                        make().MethodDef(make().Modifiers(Flags.PUBLIC | Flags.FINAL), names().fromString("getIterator"),
-                            makeJavaType(iteratorType, JT_CLASS_NEW|JT_EXTENDS),
-                        List.<JCTree.JCTypeParameter>nil(), List.<JCTree.JCVariableDecl>nil(), List.<JCExpression>nil(),
-                        make().Block(0, List.<JCStatement>of(make().Return(iterator))), null)
-            )));
+            
+            JCMethodDecl getIterator = makeGetIterator(iteratedType);
+            JCExpression iterable = makeAnonymousIterable(iteratedType, getIterator);
             for (Substitution subs : fieldSubst) {
                 subs.close();
             }
+            return iterable;
+        }
+        /**
+         * Builds a {@code getIterator()} method which contains a local class 
+         * extending {@code AbstractIterator} and initialises the iter$0 field
+         * to a new instance of that local class.
+         * 
+         * Doesn't use an anonymous class due to #974.
+         * @param iteratedType
+         * @return
+         */
+        private JCMethodDecl makeGetIterator(ProducedType iteratedType) {
+            ProducedType iteratorType = typeFact().getIteratorType(iteratedType);
+            JCExpression iteratorTypeExpr = make().TypeApply(makeIdent(syms().ceylonAbstractIteratorType),
+                    List.<JCExpression>of(makeJavaType(iteratedType, JT_NO_PRIMITIVES)));
+            MethodDefinitionBuilder iteratorCtor = MethodDefinitionBuilder.constructor(gen());
+            iteratorCtor.body(make().Exec(make().Apply(null, naming.makeSuper(), List.<JCExpression>of(makeReifiedTypeArgument(iteratedType)))));
+            iteratorCtor.body(initIterator);
+            SyntheticName iteratorClassName = naming.synthetic("$ComprehensionIterator$");
+            JCClassDecl iteratorClass = make().ClassDef(
+                    make().Modifiers(Flags.FINAL), 
+                    iteratorClassName.asName(), // name 
+                    List.<JCTypeParameter>nil(), // type params
+                    iteratorTypeExpr, //extending
+                    List.<JCExpression>nil(), // implementing
+                    List.<JCTree>of(iteratorCtor.build()).appendList(fields));
+            JCExpression iterator = make().NewClass(null, List.<JCExpression>nil(), iteratorClassName.makeIdent(), 
+                    List.<JCExpression>nil(), 
+                    null);
+            JCBlock iteratorBlock = make().Block(0, List.<JCStatement>of(
+                    iteratorClass,
+                    make().Return(iterator)));
+            return make().MethodDef(make().Modifiers(Flags.PUBLIC | Flags.FINAL), names().fromString("getIterator"),
+                    makeJavaType(iteratorType, JT_CLASS_NEW|JT_EXTENDS),
+                List.<JCTree.JCTypeParameter>nil(), List.<JCTree.JCVariableDecl>nil(), List.<JCExpression>nil(),
+                iteratorBlock, null);
+        }
+        /**
+         * Builds an anonymous subclass of AbstractIterable whose 
+         * {@code getIterator()} uses the given getIteratorBody.
+         * @param iteratedType
+         * @param iteratorType
+         * @param getIteratorBody
+         * @return
+         */
+        private JCExpression makeAnonymousIterable(ProducedType iteratedType,
+                JCMethodDecl getIterator) {
+            JCExpression iterable = make().NewClass(null, null,
+                    make().TypeApply(makeIdent(syms().ceylonAbstractIterableType),
+                        List.<JCExpression>of(makeJavaType(iteratedType, JT_NO_PRIMITIVES),
+                                makeJavaType(absentIterType, JT_NO_PRIMITIVES))),
+                                List.<JCExpression>of(makeReifiedTypeArgument(iteratedType), 
+                                        makeReifiedTypeArgument(absentIterType)), 
+                    make().AnonymousClassDef(make().Modifiers(0), 
+                            List.<JCTree>of(getIterator)));
             return iterable;
         }
 
@@ -3328,9 +3371,10 @@ public class ExpressionTransformer extends AbstractTransformer {
             if (clause == comp.getForComprehensionClause()) {
                 //The first iterator can be initialized as a field
                 fields.add(make().VarDef(make().Modifiers(Flags.PRIVATE | Flags.FINAL), iterVar.asName(), iterTypeExpr,
-                    make().Apply(null, makeSelect(transformExpression(specexpr.getExpression()), "getIterator"), 
-                            List.<JCExpression>nil())));
+                    null));
                 fieldNames.add(iterVar.getName());
+                initIterator = make().Exec(make().Assign(iterVar.makeIdent(), make().Apply(null, makeSelect(transformExpression(specexpr.getExpression()), "getIterator"), 
+                        List.<JCExpression>nil())));
             } else {
                 //The subsequent iterators need to be inside a method,
                 //in case they depend on the current element of the previous iterator
