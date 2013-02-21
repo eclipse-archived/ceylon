@@ -26,11 +26,11 @@
 package com.sun.tools.javac.comp;
 
 import java.util.*;
-import java.util.Set;
 import javax.lang.model.element.ElementKind;
 import javax.tools.JavaFileObject;
 
 import com.sun.tools.javac.code.*;
+import com.sun.tools.javac.code.Scope.DelegatedScope;
 import com.sun.tools.javac.jvm.*;
 import com.sun.tools.javac.tree.*;
 import com.sun.tools.javac.util.*;
@@ -3057,6 +3057,9 @@ public class Attr extends JCTree.Visitor {
             scope = env.info.scope.next;
         }else
             scope = env.info.scope;
+        if (scope instanceof DelegatedScope) {
+            throw new AssertionError("Broken use of LetExpr");
+        }
         
         // make a new environment which captures the current one
         Env<AttrContext> localEnv =
