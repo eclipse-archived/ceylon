@@ -1768,7 +1768,7 @@ public abstract class AbstractTransformer implements Transformation {
             else
                 spec = List.<JCExpression>of(dependencyName);
             
-            if (Util.getAnnotation(dependency, "export") != null) {
+            if (Util.getAnnotation(dependency, "shared") != null) {
                 JCExpression exported = make().Assign(naming.makeUnquotedIdent("export"), make().Literal(true));
                 spec = spec.append(exported);
             }
