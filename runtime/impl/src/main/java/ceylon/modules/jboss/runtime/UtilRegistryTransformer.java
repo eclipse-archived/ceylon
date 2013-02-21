@@ -22,14 +22,13 @@ import java.security.ProtectionDomain;
 
 import com.redhat.ceylon.cmr.api.ArtifactResult;
 import com.redhat.ceylon.cmr.api.RepositoryManager;
-
 import org.jboss.modules.ModuleIdentifier;
 
 /**
  * Per module Util registry.
  * <p/>
  * A bit of a hack / workaround to register stuff on first class load.
- *
+ * <p/>
  * Check this again when re-linking usage is more common!
  *
  * @author <a href="mailto:ales.justin@jboss.org">Ales Justin</a>
@@ -50,12 +49,16 @@ public class UtilRegistryTransformer implements ClassFileTransformer {
             synchronized (this) {
                 if (done == false) {
                     done = true;
-                    // transform "null" into null version for the default module
-                    String version = mi.getName().equals(RepositoryManager.DEFAULT_MODULE) ? null : mi.getSlot();
-                    com.redhat.ceylon.compiler.java.Util.loadModule(mi.getName(), version, result, loader);
+                    registerModule(mi.getName(), mi.getSlot(), result, loader);
                 }
             }
         }
         return classfileBuffer;
+    }
+
+    static void registerModule(String name, String version, ArtifactResult result, ClassLoader cl) {
+        // transform "null" into null version for the default module
+        version = RepositoryManager.DEFAULT_MODULE.equals(name) ? null : version;
+        com.redhat.ceylon.compiler.java.Util.loadModule(name, version, result, cl);
     }
 }

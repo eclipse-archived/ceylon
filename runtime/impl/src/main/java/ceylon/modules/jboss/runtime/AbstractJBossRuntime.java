@@ -17,15 +17,10 @@
 
 package ceylon.modules.jboss.runtime;
 
-import org.jboss.modules.Module;
-import org.jboss.modules.ModuleIdentifier;
-import org.jboss.modules.ModuleNotFoundException;
-
 import ceylon.modules.CeylonRuntimeException;
 import ceylon.modules.Configuration;
 import ceylon.modules.Main;
 import ceylon.modules.api.runtime.AbstractRuntime;
-
 import com.redhat.ceylon.cmr.api.Logger;
 import com.redhat.ceylon.cmr.api.RepositoryManager;
 import com.redhat.ceylon.cmr.api.RepositoryManagerBuilder;
@@ -33,6 +28,10 @@ import com.redhat.ceylon.cmr.ceylon.CeylonUtils;
 import com.redhat.ceylon.cmr.impl.JULLogger;
 import com.redhat.ceylon.cmr.spi.ContentTransformer;
 import com.redhat.ceylon.cmr.spi.MergeStrategy;
+import org.jboss.modules.Module;
+import org.jboss.modules.ModuleIdentifier;
+import org.jboss.modules.ModuleLoader;
+import org.jboss.modules.ModuleNotFoundException;
 
 /**
  * Abstract Ceylon JBoss Modules runtime.
@@ -41,19 +40,17 @@ import com.redhat.ceylon.cmr.spi.MergeStrategy;
  * @author <a href="mailto:ales.justin@jboss.org">Ales Justin</a>
  */
 public abstract class AbstractJBossRuntime extends AbstractRuntime {
-    @Override
     public ClassLoader createClassLoader(String name, String version, Configuration conf) throws Exception {
-        CeylonModuleLoader moduleLoader = createModuleLoader(conf);
         ModuleIdentifier moduleIdentifier;
-        try{
+        try {
             moduleIdentifier = ModuleIdentifier.fromString(name + ":" + version);
-        }catch(IllegalArgumentException x){
+        } catch (IllegalArgumentException x) {
             CeylonRuntimeException cre = new CeylonRuntimeException("Invalid module name or version: contains invalid characters");
             cre.initCause(x);
             throw cre;
         }
         try {
-            moduleLoader.setupRuntimeModuleSystem();
+            ModuleLoader moduleLoader = createModuleLoader(conf);
             Module module = moduleLoader.loadModule(moduleIdentifier);
             return SecurityActions.getClassLoader(module);
         } catch (ModuleNotFoundException e) {
@@ -123,6 +120,7 @@ public abstract class AbstractJBossRuntime extends AbstractRuntime {
      *
      * @param conf the configuration
      * @return the module loader
+     * @throws Exception for any error during creation
      */
-    protected abstract CeylonModuleLoader createModuleLoader(Configuration conf);
+    protected abstract ModuleLoader createModuleLoader(Configuration conf) throws Exception;
 }

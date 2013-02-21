@@ -26,6 +26,15 @@ import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 
+import ceylon.modules.api.util.ModuleVersion;
+import ceylon.modules.jboss.repository.ResourceLoaderProvider;
+import com.redhat.ceylon.cmr.api.ArtifactContext;
+import com.redhat.ceylon.cmr.api.ArtifactResult;
+import com.redhat.ceylon.cmr.api.ImportType;
+import com.redhat.ceylon.cmr.api.JDKUtils;
+import com.redhat.ceylon.cmr.api.RepositoryManager;
+import com.redhat.ceylon.cmr.api.VisibilityType;
+import com.redhat.ceylon.common.Versions;
 import org.jboss.modules.DependencySpec;
 import org.jboss.modules.LocalLoader;
 import org.jboss.modules.ModuleIdentifier;
@@ -35,17 +44,6 @@ import org.jboss.modules.ModuleSpec;
 import org.jboss.modules.ResourceLoader;
 import org.jboss.modules.ResourceLoaderSpec;
 import org.jboss.modules.filter.PathFilters;
-
-import ceylon.modules.api.util.ModuleVersion;
-import ceylon.modules.jboss.repository.ResourceLoaderProvider;
-
-import com.redhat.ceylon.cmr.api.ArtifactContext;
-import com.redhat.ceylon.cmr.api.ArtifactResult;
-import com.redhat.ceylon.cmr.api.ImportType;
-import com.redhat.ceylon.cmr.api.JDKUtils;
-import com.redhat.ceylon.cmr.api.RepositoryManager;
-import com.redhat.ceylon.cmr.api.VisibilityType;
-import com.redhat.ceylon.common.Versions;
 
 /**
  * Ceylon JBoss Module loader.
@@ -113,10 +111,18 @@ public class CeylonModuleLoader extends ModuleLoader {
     private Map<ModuleIdentifier, List<DependencySpec>> dependencies = new ConcurrentHashMap<ModuleIdentifier, List<DependencySpec>>();
     private Graph<ModuleIdentifier, ModuleIdentifier, Boolean> graph = new Graph<ModuleIdentifier, ModuleIdentifier, Boolean>();
 
-    public CeylonModuleLoader(RepositoryManager repository) {
+    public CeylonModuleLoader(RepositoryManager repository) throws Exception {
         if (repository == null)
             throw new IllegalArgumentException("Null repository adapter");
         this.repository = repository;
+        // initialise runtime modules
+        init();
+    }
+
+    protected void init() throws Exception {
+        org.jboss.modules.Module languageModule = org.jboss.modules.Module.getBootModuleLoader().loadModule(LANGUAGE);
+        ArtifactResult languageModuleArtifactResult = findArtifact(LANGUAGE);
+        UtilRegistryTransformer.registerModule(LANGUAGE.getName(), LANGUAGE.getSlot(), languageModuleArtifactResult, SecurityActions.getClassLoader(languageModule));
     }
 
     /**
@@ -342,11 +348,5 @@ public class CeylonModuleLoader extends ModuleLoader {
 
     public String toString() {
         return "Ceylon ModuleLoader: " + repository;
-    }
-
-    public void setupRuntimeModuleSystem() throws ModuleLoadException {
-        org.jboss.modules.Module languageModule = org.jboss.modules.Module.getBootModuleLoader().loadModule(LANGUAGE);
-        ArtifactResult languageModuleArtifactResult = findArtifact(LANGUAGE);
-        com.redhat.ceylon.compiler.java.Util.loadModule(LANGUAGE.getName(), LANGUAGE.getSlot(), languageModuleArtifactResult, SecurityActions.getClassLoader(languageModule));
     }
 }

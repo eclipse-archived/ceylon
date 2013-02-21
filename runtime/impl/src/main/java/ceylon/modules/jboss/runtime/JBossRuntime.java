@@ -18,8 +18,8 @@
 package ceylon.modules.jboss.runtime;
 
 import ceylon.modules.Configuration;
-
 import com.redhat.ceylon.cmr.api.RepositoryManager;
+import org.jboss.modules.ModuleLoader;
 
 /**
  * Default Ceylon Modules runtime.
@@ -27,8 +27,7 @@ import com.redhat.ceylon.cmr.api.RepositoryManager;
  * @author <a href="mailto:ales.justin@jboss.org">Ales Justin</a>
  */
 public class JBossRuntime extends AbstractJBossRuntime {
-    @Override
-    protected CeylonModuleLoader createModuleLoader(Configuration conf) {
+    protected ModuleLoader createModuleLoader(Configuration conf) throws Exception {
         RepositoryManager repository = createRepository(conf);
         return new CeylonModuleLoader(repository);
     }
