@@ -7,6 +7,7 @@ import java.util.Set;
 
 import ceylon.language.Iterable;
 import ceylon.language.Iterator;
+import ceylon.language.Null;
 import ceylon.language.Ranged;
 import ceylon.language.Sequential;
 import ceylon.language.empty_;
@@ -80,7 +81,14 @@ public class Util {
     }
 
     public static boolean isReified(java.lang.Object o, TypeDescriptor type){
-        return o instanceof ReifiedType && ((ReifiedType) o).$getType().toProducedType(moduleManager).isSubtypeOf(type.toProducedType(moduleManager));
+        TypeDescriptor instanceType;
+        if(o == null)
+            instanceType = Null.$TypeDescriptor;
+        else if(o instanceof ReifiedType)
+            instanceType = ((ReifiedType) o).$getType();
+        else
+            return false; // FIXME: interop?
+        return instanceType.toProducedType(moduleManager).isSubtypeOf(type.toProducedType(moduleManager));
     }
 
     /**
