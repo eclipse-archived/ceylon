@@ -81,9 +81,5 @@ void lists() {
     check(empty167.hash=={}.hash, "empty167.hash=={}.hash");
     //#197
     value nulled197 = TestList(1,2,3,null,5,6,7);
-    try {
-        check(nulled197.count((Integer? i) => i exists) == 6, "list with nullls (#197)");
-    } catch (AssertionException e) {
-        fail("list with nulls #197 still not fixed");
-    }
+    check(nulled197.count((Integer? i) => i exists) == 6, "list with nulls (see #197)");
 }
