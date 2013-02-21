@@ -55,7 +55,7 @@ public class Launcher {
         
         // Find the proper class and method to execute
         Class<?> mainClass = loader.loadClass("com.redhat.ceylon.tools.CeylonTool");
-        Method mainMethod = mainClass.getMethod("main", args.getClass());
+        Method mainMethod = mainClass.getMethod("start", args.getClass());
 
         // Invoke the actual ceylon tool
         mainMethod.invoke(null, (Object)args);
