@@ -492,6 +492,14 @@ public class RefinementVisitor extends Visitor {
                 	Map<TypeParameter, ProducedType> args = ci.getType()
                 			.getSupertype((TypeDeclaration)refined.getContainer())
                 			.getTypeArguments();
+                	//for every type constraint of the refining member, there must
+                	//be at least one type constraint of the refined member which
+                	//is assignable to it, guaranteeing that the intersection of
+                	//the refined member bounds is assignable to the intersection
+                	//of the refining member bounds
+                	//TODO: would it be better to just form the intersections and
+                	//      test assignability directly (the error messages might
+                	//      not be as helpful, but it might be less restrictive)
                 	boolean ok = false;
                 	for (ProducedType st: refinedTypeParam.getSatisfiedTypes()) {
                 		if (st.substitute(args).isSubtypeOf(bound)) {
