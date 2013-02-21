@@ -484,7 +484,7 @@
 
       <batchtest fork="yes" todir="${test.reports}">
         <fileset dir="${test.src}">
-          <include name="com/redhat/ceylon/compiler/java/test/cmr/CMRTestHTTP.java"/>
+          <include name="com/redhat/ceylon/compiler/java/test/ConcurrentTests.java"/>
         </fileset>
       </batchtest>
     </junit>
