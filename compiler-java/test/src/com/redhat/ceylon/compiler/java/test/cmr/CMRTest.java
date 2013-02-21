@@ -443,7 +443,7 @@ public class CMRTest extends CompilerTest {
 
     
     @Test
-    public void testMdlMultipleRepos(){
+    public void testMdlMultipleRepos_fail(){
         cleanCars("build/ceylon-cars-a");
         cleanCars("build/ceylon-cars-b");
         cleanCars("build/ceylon-cars-c");

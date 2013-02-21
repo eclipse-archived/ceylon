@@ -18,5 +18,8 @@
  * MA  02110-1301, USA.
  */
 import com.redhat.ceylon.compiler.java.test.cmr.modules.depend.a {A}
+import com.redhat.ceylon.compiler.java.test.cmr.modules.depend.b {gimme}
 
-A a = A();
+void ac() {
+    A a = gimme();
+}

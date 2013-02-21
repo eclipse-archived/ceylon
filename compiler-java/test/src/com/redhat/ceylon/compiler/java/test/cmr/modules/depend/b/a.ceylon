@@ -20,3 +20,5 @@
 import com.redhat.ceylon.compiler.java.test.cmr.modules.depend.a {A}
 
 A a = A();
+
+shared A gimme() { return A(); }
