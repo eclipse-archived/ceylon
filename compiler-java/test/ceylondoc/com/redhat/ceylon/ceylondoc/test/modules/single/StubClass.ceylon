@@ -73,7 +73,7 @@ shared class StubClass(
     shared Anything methodWithAnything() { throw; }
     
     doc "Test fenced code block delimited by backticks \` with syntax highlighter.
-    
+         
          \`\``ceylon
          shared default Boolean subset(Set set) {
              for (element in this) {
@@ -89,7 +89,7 @@ shared class StubClass(
     shared void methodWithCodeExamples() {}
     
     doc "Test fenced code block delimited by tilde ~ with syntax highlighter.
-    
+         
          ~~~~~~ceylon
          shared actual default Integer hash {
              variable Integer hashCode = 1;
@@ -105,7 +105,7 @@ shared class StubClass(
     shared void methodWithCodeExamples2() {}
     
     doc "Test automatic syntax highlighter.
-    
+         
              shared default Boolean subset(Set set) {
                  for (element in this) {
                      if (!set.contains(element)) {
@@ -120,7 +120,7 @@ shared class StubClass(
     
     
     doc "Wiki-style links:
-    
+         
          1. StubClass = [[StubClass]]
          1. StubInterface = [[StubInterface]]
          1. StubInnerException = [[StubInnerException]]
@@ -137,7 +137,7 @@ shared class StubClass(
          1. unresolvable = [[unresolvable]]
          1. imported A1 = [[A1]]
          1. imported AliasA2 = [[AliasA2]]
-
+         
          
          Wiki-style links with full qualified name:
          
