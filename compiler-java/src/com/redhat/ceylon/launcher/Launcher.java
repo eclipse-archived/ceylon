@@ -60,6 +60,10 @@ public class Launcher {
         // Invoke the actual ceylon tool
         mainMethod.invoke(null, (Object)args);
     }
+
+    public static void run(String... args) throws Throwable {
+        main(args);
+    }
     
     private static boolean hasArgument(final String[] args, final String test) {
         for (String arg : args) {
