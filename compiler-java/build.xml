@@ -136,28 +136,11 @@
 
   <target name="dist" depends="build"
     description="Create Ceylon compiler distribution">
-    <zip destfile="${build.dist}/${ceylon.compiler.jar}">
-      <fileset dir="${build.classes}">
-        <exclude name="ceylon/**"/>
-        <exclude name="com/redhat/ceylon/compiler/java/test/**"/>
-        <exclude name="com/redhat/ceylon/ant/**"/>
-      </fileset>
-      <fileset dir="${javac.src}">
-        <include name="com/sun/tools/javac/resources/*.properties"/>
-      </fileset>
-    </zip>
+    <copy tofile="${build.dist}/${ceylon.compiler.jar}" file="${build.lib}/compiler.jar" />
     <antcall target="sha1sum">
       <param name="file" value="${build.dist}/${ceylon.compiler.jar}" />
     </antcall>    
-    <zip destfile="${build.dist}/${ceylon.ant.jar}">
-      <fileset dir="${build.classes}">
-        <include name="com/redhat/ceylon/ant/**"/>
-      </fileset>
-      <zipfileset src="${ceylon.common.lib}"/>
-      <zipfileset src="${ceylon.module-resolver.lib}"/>
-      <zipfileset src="${ceylon.typechecker.lib}"/>
-      <zipfileset src="${antlr.lib}"/>
-    </zip>
+    <copy tofile="${build.dist}/${ceylon.ant.jar}" file="${build.lib}/ant.jar" />
     <antcall target="sha1sum">
       <param name="file" value="${build.dist}/${ceylon.ant.jar}" />
     </antcall>    
@@ -394,6 +377,7 @@
             <exclude name="ceylon/**"/>
             <exclude name="com/redhat/ceylon/compiler/java/test/**"/>
             <exclude name="com/redhat/ceylon/ant/**"/>
+            <exclude name="com/redhat/ceylon/launcher/**"/>
           </fileset>
           <fileset dir="${javac.src}">
             <include name="com/sun/tools/javac/resources/*.properties"/>
